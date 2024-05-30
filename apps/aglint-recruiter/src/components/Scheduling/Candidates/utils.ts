@@ -1,8 +1,16 @@
 /* eslint-disable security/detect-object-injection */
-import { DB, InterviewMeetingTypeDb } from '@aglint/shared-types';
+import {
+  CandidateType,
+  DB,
+  InterviewMeetingTypeDb,
+  InterviewScheduleTypeDB,
+  InterviewSession,
+  JobApplcationDB,
+} from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
 
+import { ResumeJson } from '@/src/apiUtils/resumeScoring/types';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 import toast from '@/src/utils/toast';
 
@@ -17,6 +25,28 @@ export type MailHandlerparam = {
   application_id: string;
   filter_id: string;
   supabase: ReturnType<typeof createServerClient<DB>>;
+};
+
+export type ApplicationList = {
+  applications: JobApplcationDB;
+  candidates: CandidateType;
+  file: {
+    id: string;
+    created_at: string;
+    file_url: string;
+    candidate_id: string;
+    resume_json: ResumeJson;
+    type: string;
+  };
+  schedule: InterviewScheduleTypeDB | null;
+  public_jobs: {
+    id: string;
+    job_title: string;
+  };
+  interview_session_meetings: {
+    interview_meeting: null | InterviewMeetingTypeDb;
+    interview_session: InterviewSession;
+  }[];
 };
 
 export const mailHandler = async ({

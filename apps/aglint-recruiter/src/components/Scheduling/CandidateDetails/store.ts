@@ -1,4 +1,5 @@
 import {
+  DatabaseTable,
   InterviewModuleType,
   InterviewScheduleTypeDB,
   PlanCombinationRespType,
@@ -8,7 +9,6 @@ import { create } from 'zustand';
 import { InterviewScheduleContextType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 
 import { SelectedApplicationTypeDB, SessionsType } from './types';
-import { use } from 'react';
 
 export interface SchedulingApplication {
   initialLoading: boolean;
@@ -54,7 +54,7 @@ export interface SchedulingApplication {
   isMultipleCancelOpen: boolean;
   isMultipleRescheduleOpen: boolean;
   isIndividualRescheduleOpen: boolean;
-  selectedFilterId: string;
+  selectedApplicationLog: DatabaseTable['application_logs'];
 }
 
 const initialState: SchedulingApplication = {
@@ -91,7 +91,7 @@ const initialState: SchedulingApplication = {
   selectedSlots: [],
   selectedCombIds: [],
   scheduleFlow: 'self_scheduling',
-  selectedFilterId: '',
+  selectedApplicationLog: null,
 };
 
 export const useSchedulingApplicationStore = create<SchedulingApplication>()(
@@ -103,8 +103,9 @@ export const useSchedulingApplicationStore = create<SchedulingApplication>()(
 export const setInitalLoading = (initialLoading: boolean) =>
   useSchedulingApplicationStore.setState({ initialLoading });
 
-export const setSelectedFilterId = (selectedFilterId: string) =>
-  useSchedulingApplicationStore.setState({ selectedFilterId });
+export const setSelectedApplicationLog = (
+  selectedApplicationLog: DatabaseTable['application_logs'],
+) => useSchedulingApplicationStore.setState({ selectedApplicationLog });
 
 export const setIndividualCancelOpen = (isIndividualCancelOpen: boolean) =>
   useSchedulingApplicationStore.setState({ isIndividualCancelOpen });

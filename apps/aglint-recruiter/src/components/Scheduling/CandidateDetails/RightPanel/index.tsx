@@ -19,7 +19,7 @@ import IconCancelSchedule from '../../ScheduleDetails/Icons/IconCancelSchedule';
 import IconReschedule from '../../ScheduleDetails/Icons/IconReschedule';
 import { formatTimeWithTimeZone } from '../../utils';
 import { useAllActivities } from '../hooks';
-import { setMultipleCancelOpen, setSelectedFilterId } from '../store';
+import { setMultipleCancelOpen, setSelectedApplicationLog } from '../store';
 import CancelMultipleScheduleDialog from './CancelMultipleScheduleDialog';
 import IconApplicationLogs from './IconApplicationLogs';
 import IconSessionType from './IconSessionType';
@@ -110,34 +110,36 @@ function RightPanel({
                             );
                           })}
                         </Stack>
-                        {act?.metadata?.filter_id&& <Stack direction={'row'} spacing={2}>
-                          <ScheduleButton
-                            textLabel={'Request Reschedule'}
-                            slotIcon={<IconReschedule />}
-                            onClickProps={{
-                              onClick: () => {
-                                //
-                              },
-                            }}
-                          />
-                          <ScheduleButton
-                            textLabel={'Cancel Schedule'}
-                            slotIcon={<IconCancelSchedule />}
-                            textColorProps={{
-                              style: {
-                                color: '#D93F4C',
-                              },
-                            }}
-                            onClickProps={{
-                              style: { background: '#FFF0F1' },
-                              onClick: () => {
-                                setSelectedFilterId(act?.metadata?.filter_id)
-                                setMultipleCancelOpen(true);
-                              },
-                            }}
-                          />
-                        </Stack>}
-                       
+                        {act?.metadata?.filter_id &&
+                          act?.metadata?.action === 'waiting' && (
+                            <Stack direction={'row'} spacing={2}>
+                              <ScheduleButton
+                                textLabel={'Request Reschedule'}
+                                slotIcon={<IconReschedule />}
+                                onClickProps={{
+                                  onClick: () => {
+                                    //
+                                  },
+                                }}
+                              />
+                              <ScheduleButton
+                                textLabel={'Cancel Schedule'}
+                                slotIcon={<IconCancelSchedule />}
+                                textColorProps={{
+                                  style: {
+                                    color: '#D93F4C',
+                                  },
+                                }}
+                                onClickProps={{
+                                  style: { background: '#FFF0F1' },
+                                  onClick: () => {
+                                    setSelectedApplicationLog(act);
+                                    setMultipleCancelOpen(true);
+                                  },
+                                }}
+                              />
+                            </Stack>
+                          )}
                       </Stack>
                     }
                     slotImage={<IconApplicationLogs act={act} />}

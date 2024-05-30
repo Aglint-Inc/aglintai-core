@@ -6,7 +6,7 @@ import Loader from '@/src/components/Common/Loader';
 import ROUTES from '@/src/utils/routing/routes';
 
 import ListCardInterviewSchedule from '../ListCard';
-import { ApplicationList } from '../store';
+import { ApplicationList } from '../utils';
 
 function AllList({
   isPending,

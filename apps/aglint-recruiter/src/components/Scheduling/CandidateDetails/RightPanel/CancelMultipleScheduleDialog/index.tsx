@@ -19,8 +19,8 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
   const isCancelOpen = useSchedulingApplicationStore(
     (state) => state.isMultipleCancelOpen,
   );
-  const selectedFilterId = useSchedulingApplicationStore(
-    (state) => state.selectedFilterId,
+  const selectedApplicationLog = useSchedulingApplicationStore(
+    (state) => state.selectedApplicationLog,
   );
   const initialSessions = useSchedulingApplicationStore(
     (state) => state.initialSessions,
@@ -31,12 +31,13 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
 
   const onClickCancel = async () => {
     try {
-      if (selectedFilterId) {
+      const filter_id = selectedApplicationLog.metadata?.filter_id;
+      if (filter_id) {
         const { data: checkFilterJson, error: errMeetFilterJson } =
           await supabase
             .from('interview_filter_json')
             .select('*')
-            .eq('id', selectedFilterId);
+            .eq('id', filter_id);
 
         const selectedSessions = initialSessions.filter((ses) =>
           checkFilterJson[0].session_ids.includes(ses.id),
@@ -62,7 +63,7 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
           const { error: errFilterJson } = await supabase
             .from('interview_filter_json')
             .delete()
-            .eq('id', selectedFilterId);
+            .eq('id', filter_id);
 
           if (errFilterJson) throw new Error(errFilterJson.message);
         }
@@ -113,6 +114,14 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
           axios.post('/api/scheduling/v1/cancel_calender_event', {
             calender_event: ses.interview_meeting.meeting_json,
           });
+        });
+
+        await supabase.from('application_logs').update({
+          ...selectedApplicationLog,
+          metadata: {
+            ...selectedApplicationLog.metadata,
+            action: 'canceled',
+          },
         });
       }
     } catch {

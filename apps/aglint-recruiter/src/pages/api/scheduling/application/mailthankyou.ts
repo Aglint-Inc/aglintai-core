@@ -56,6 +56,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         sessions:
           session_details as DatabaseTable['application_logs']['metadata']['sessions'],
         filter_id,
+        action: 'waiting',
       },
     });
 
