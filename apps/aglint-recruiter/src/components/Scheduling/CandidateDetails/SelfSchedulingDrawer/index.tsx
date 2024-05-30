@@ -18,6 +18,7 @@ import {
   setStepScheduling,
   useSchedulingApplicationStore,
 } from '../store';
+import RescheduleSlot from './RescheduleSlot';
 import SelectDateRange from './StepSelectDate';
 import StepSlotOptions from './StepSlotOptions';
 
@@ -83,7 +84,6 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
             is_debrief: isDebrief,
             recruiter_id: recruiter.id,
             recruiterUser,
-            schedulingOptions,
             selCoordinator,
             selectedApplication,
             selectedSessionIds,
@@ -169,12 +169,14 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
             <>
               {stepScheduling === 'pick_date' ? (
                 <SelectDateRange />
+              ) : stepScheduling === 'reschedule' ? (
+                <RescheduleSlot />
               ) : (
                 <StepSlotOptions isDebrief={isDebrief} />
               )}
             </>
           }
-          isBottomBar={stepScheduling !== 'pick_date'}
+          isBottomBar={stepScheduling === 'slot_options'}
         />
       </Drawer>
     </>
