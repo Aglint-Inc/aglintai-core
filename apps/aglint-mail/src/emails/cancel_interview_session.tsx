@@ -20,7 +20,7 @@ interface InterviewBookingConfirmationType {
   companyLogo?: string;
 }
 
-const dummy = {
+export const dummy = {
   subject: 'You have selected for the Interview at Huwaei',
   body: '<p>Dear [firstName],</p> <p>I regret to inform you that we need to cancel your scheduled interview session [sessionName] at [companyName].</p> <p>We apologize for any inconvenience caused and will be in touch soon to reschedule.</p> <p>Best regards,<br> [companyName]</p>',
   companyLogo:
