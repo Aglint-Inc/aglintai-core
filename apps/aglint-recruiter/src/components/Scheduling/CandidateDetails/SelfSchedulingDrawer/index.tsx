@@ -14,6 +14,7 @@ import {
   setinitialSessions,
   setIsScheduleNowOpen,
   setSchedulingOptions,
+  setSelectedApplicationLog,
   setSelectedSessionIds,
   setStepScheduling,
   useSchedulingApplicationStore,
@@ -37,6 +38,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
     stepScheduling,
     selectedCombIds,
     scheduleFlow,
+    selectedApplicationLog,
   } = useSchedulingApplicationStore((state) => ({
     dateRange: state.dateRange,
     selectedApplication: state.selectedApplication,
@@ -48,6 +50,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
     stepScheduling: state.stepScheduling,
     selectedCombIds: state.selectedCombIds,
     scheduleFlow: state.scheduleFlow,
+    selectedApplicationLog: state.selectedApplicationLog,
   }));
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
@@ -75,23 +78,25 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
       if (isDebrief && selectedCombIds.length === 0) {
         toast.warning('Please select a time slot to schedule.');
       } else {
+        const bodyParams: ApiBodyParamsSendToCandidate = {
+          dateRange,
+          initialSessions,
+          is_mail: true,
+          is_debrief: isDebrief,
+          recruiter_id: recruiter.id,
+          recruiterUser,
+          selCoordinator,
+          selectedApplication,
+          selectedSessionIds,
+          selectedDebrief: schedulingOptions.find(
+            (opt) => opt.plan_comb_id === selectedCombIds[0],
+          ),
+          user_tz: dayjs.tz.guess(),
+          selectedApplicationLog,
+        };
         const res = await axios.post(
           '/api/scheduling/application/sendtocandidate',
-          {
-            dateRange,
-            initialSessions,
-            is_mail: true,
-            is_debrief: isDebrief,
-            recruiter_id: recruiter.id,
-            recruiterUser,
-            selCoordinator,
-            selectedApplication,
-            selectedSessionIds,
-            selectedDebrief: schedulingOptions.find(
-              (opt) => opt.plan_comb_id === selectedCombIds[0],
-            ),
-            user_tz: dayjs.tz.guess(),
-          } as ApiBodyParamsSendToCandidate,
+          bodyParams,
         );
 
         if (res.status === 200 && res.data) {
@@ -127,6 +132,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
     setSchedulingOptions([]);
     setSelectedSessionIds([]);
     setStepScheduling('pick_date');
+    setSelectedApplicationLog(null);
   };
 
   return (
