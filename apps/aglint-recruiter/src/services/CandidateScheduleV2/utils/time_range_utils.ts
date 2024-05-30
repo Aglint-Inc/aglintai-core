@@ -1,4 +1,4 @@
-import { TimeDurationDayjsType } from '@aglint/shared-types';
+import { TimeDurationDayjsType, TimeDurationType } from '@aglint/shared-types';
 import { Dayjs } from 'dayjs';
 
 import { userTzDayjs } from './userTzDayjs';
@@ -103,13 +103,17 @@ export const dayjsMax = (day1: Dayjs, day2: Dayjs) => {
   return day2;
 };
 
-export const convertCalEventToDayjsChunk = (
-  start_time: string,
-  end_time: string,
-) => {
+export const dayjsMin = (day1: Dayjs, day2: Dayjs) => {
+  if (day1.isBefore(day2, precission)) {
+    return day1;
+  }
+  return day2;
+};
+
+export const convertTimeDurStrToDayjsChunk = (chunk_str: TimeDurationType) => {
   const chunk: TimeDurationDayjsType = {
-    startTime: userTzDayjs(start_time),
-    endTime: userTzDayjs(end_time),
+    startTime: userTzDayjs(chunk_str.startTime),
+    endTime: userTzDayjs(chunk_str.endTime),
   };
 
   return chunk;
