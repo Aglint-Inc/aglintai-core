@@ -29,7 +29,6 @@ interface InterviewBookingConfirmationType {
 
 // export dummy
 export const dummy: InterviewBookingConfirmationType = {
-  subject: 'Interview Booking Confirmation Email',
   body: '<p>Dear [firstName],</p><p>We are pleased to confirm your interview for the [jobTitle] position . Please find the details of your interview below.</p><p>[viewDetailsLink]<p/><p>Regards,<br/>[companyName] Recruitment Team</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
@@ -46,7 +45,6 @@ export const dummy: InterviewBookingConfirmationType = {
 export const getSubject = (companyName: any) => `${companyName}`;
 
 export function InterviewBookingConfirmation({
-  subject = dummy.subject,
   body = dummy.body,
   meetingDetails = dummy.meetingDetails,
   companyLogo = dummy.companyLogo,
@@ -57,7 +55,7 @@ export function InterviewBookingConfirmation({
       <Head />
       <Tailwind>
         <Preview>Interview Booking Confirmation</Preview>
-        <Body className="bg-[#f0f0f0] font-sans ">
+        <Body className="bg-[#f0f0f0] font-sans  p-[20px]">
           <Container className="px-[3px] mx-auto">
             <Container className="p-[20px] pt-[40px] bg-white">
               <Img
@@ -65,9 +63,6 @@ export function InterviewBookingConfirmation({
                 className="w-[120px] mb-[10px]"
                 alt="Company logo"
               />
-              <Heading className="text-[24px]  mb-[0px] text-[#2F3941]">
-                {htmlParser.parse(subject)}
-              </Heading>
 
               <Text className="">{htmlParser.parse(body)}</Text>
 

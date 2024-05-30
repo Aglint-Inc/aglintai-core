@@ -57,7 +57,7 @@ export function InterviewBookingConfirmation({
       <Head />
       <Tailwind>
         <Preview>Interview Booking Confirmation</Preview>
-        <Body className="bg-[#f0f0f0] font-sans ">
+        <Body className="bg-[#f0f0f0] font-sans  p-[20px]">
           <Container className="px-[3px] mx-auto">
             <Container className="p-[20px] pt-[40px] bg-white">
               <Img
@@ -104,6 +104,7 @@ export function InterviewBookingConfirmation({
               >
                 Cancel Schedule
               </Button>
+              <Text className="bm-0">Thank You</Text>
               <Text className="text-[#999999] text-[10px] mt-10 leading-4">
                 If you have any queries please &nbsp;
                 <Link

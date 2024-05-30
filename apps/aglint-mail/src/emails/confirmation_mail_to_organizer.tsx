@@ -57,7 +57,7 @@ export function InterviewBookingConfirmation({
       <Head />
       <Tailwind>
         <Preview>Interview Booking Confirmation</Preview>
-        <Body className="bg-[#f0f0f0] font-sans ">
+        <Body className="bg-[#f0f0f0] font-sans  p-[20px]">
           <Container className="px-[3px] mx-auto">
             <Container className="p-[20px] pt-[40px] bg-white">
               <Img
@@ -102,7 +102,7 @@ export function InterviewBookingConfirmation({
                 href={meetingDetails.link}
                 className="px-3 py-2 bg-[#337FBD] text-white br rounded-md text-[14px]"
               >
-                Confrim Interview
+                Confirm Interview
               </Button>
               <Text className="my-0">Thank You</Text>
               <Text className="text-[#999999] text-[10px] mt-10 leading-4">
