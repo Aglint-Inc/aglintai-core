@@ -30,6 +30,8 @@ const dummy = {
 const companyLogo =
   'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png';
 
+export const getSubject = (companyName: any) => `${companyName}`;
+
 export function InterviewBookingConfirmation({
   subject = dummy.subject,
   body = dummy.body,
