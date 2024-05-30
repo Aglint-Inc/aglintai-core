@@ -1,8 +1,8 @@
 /* eslint-disable security/detect-object-injection */
 import { TimeDurationDayjsType, TimeDurationType } from '@aglint/shared-types';
 
-import { DayjsTimeRange, FuncParams } from './types';
-import { userTzDayjs } from './utils/userTzDayjs';
+import { DayjsTimeRange, FuncParams } from '../types';
+import { userTzDayjs } from './userTzDayjs';
 
 export const findCommonTimeRangeUtil = (
   ints_meta: FuncParams[],

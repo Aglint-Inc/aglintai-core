@@ -11,16 +11,16 @@ import {
 import { Dayjs } from 'dayjs';
 import { cloneDeep } from 'lodash';
 
+import { DBDetailsType } from '../types';
+import { getInterviewerBlockedTimes } from './isEventFreeTime';
 import { ScheduleUtils } from './ScheduleUtils';
-import { DBDetailsType } from './types';
-import { getInterviewerBlockedTimes } from './utils/isEventFreeTime';
 import {
   dayjsMax,
   isTimeChunksEnclosed,
   isTimeChunksLeftOverlapped,
   isTimeChunksOverLapps,
-} from './utils/time_range_utils';
-import { userTzDayjs } from './utils/userTzDayjs';
+} from './time_range_utils';
+import { userTzDayjs } from './userTzDayjs';
 
 // private util functions
 /**
