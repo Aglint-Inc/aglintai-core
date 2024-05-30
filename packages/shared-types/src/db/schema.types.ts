@@ -1889,6 +1889,7 @@ export type Database = {
           name: string
           priority: Database["public"]["Enums"]["task_priority"]
           recruiter_id: string | null
+          request_availability_id: string | null
           schedule_date_range: Json | null
           session_ids: Json[] | null
           start_date: string | null
@@ -1910,6 +1911,7 @@ export type Database = {
           name: string
           priority?: Database["public"]["Enums"]["task_priority"]
           recruiter_id?: string | null
+          request_availability_id?: string | null
           schedule_date_range?: Json | null
           session_ids?: Json[] | null
           start_date?: string | null
@@ -1931,6 +1933,7 @@ export type Database = {
           name?: string
           priority?: Database["public"]["Enums"]["task_priority"]
           recruiter_id?: string | null
+          request_availability_id?: string | null
           schedule_date_range?: Json | null
           session_ids?: Json[] | null
           start_date?: string | null
@@ -1941,6 +1944,13 @@ export type Database = {
           type?: Database["public"]["Enums"]["task_type_enum"] | null
         }
         Relationships: [
+          {
+            foreignKeyName: "new_tasks_request_availability_id_fkey"
+            columns: ["request_availability_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_request_availability"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "public_new_tasks_application_id_fkey"
             columns: ["application_id"]
@@ -4742,7 +4752,12 @@ export type Database = {
       activity_type: "aglint" | "user" | "candidate"
       agent_type: "scheduler" | "job" | "sourcing" | "screening"
       agent_types: "scheduler" | "screening" | "job_assistant" | "sourcing"
-      application_logger: "email_agent" | "phone_agent" | "user" | "system"
+      application_logger:
+        | "email_agent"
+        | "phone_agent"
+        | "user"
+        | "system"
+        | "candidate"
       application_logs_type: "standard" | "schedule" | "interview"
       application_processing_status:
         | "not started"

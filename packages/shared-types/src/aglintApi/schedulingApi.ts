@@ -1,4 +1,4 @@
-import { RecruiterUserType } from '../data.types';
+import { RecruiterUserType } from "../data.types";
 
 export type ApiCancelScheduledInterview = {
   session_ids: string[];
@@ -18,7 +18,7 @@ export type APICandidateConfirmSlot = {
   schedule_id: string;
   filter_id?: string;
   //  if tasks id is present
-  agent_type: 'email' | 'phone' | 'self';
+  agent_type: "email" | "phone" | "self";
   task_id: string | null;
   candidate_email?: string;
   candidate_name?: string;
@@ -41,7 +41,7 @@ export type APIFindAltenativeTimeSlot = {
 
 export type APIUpdateMeetingInterviewers = {
   meeting_id: string;
-  replaced_inters: Pick<RecruiterUserType, 'email' | 'user_id'>[];
+  replaced_inters: Pick<RecruiterUserType, "email" | "user_id">[];
   candidate_email: string;
 };
 
@@ -53,6 +53,7 @@ export type APIFindAltenativeTimeSlotResponse = {
 export type APICandScheduleMailThankYou = {
   filter_id: string;
   cand_tz: string;
+  task_id: string;
 };
 
 export type APIOptions = {
