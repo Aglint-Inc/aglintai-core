@@ -1,4 +1,9 @@
-import { TimeDurationDayjsType, TimeDurationType } from '@aglint/shared-types';
+import {
+  InterviewSessionTypeDB,
+  TimeDurationDayjsType,
+  TimeDurationType,
+} from '@aglint/shared-types';
+import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 
 import { userTzDayjs } from './utils/userTzDayjs';
 
@@ -48,4 +53,22 @@ export class ScheduleUtils {
       endTime: t.endTime.format(),
     };
   };
+
+  static getSessionRounds(db_int_sessions: InterviewSessionTypeDB[]) {
+    let sorted_sessions = db_int_sessions.sort(
+      (s1, s2) => s1.session_order - s2.session_order,
+    );
+    let session_rounds: InterviewSessionTypeDB[][] = [[]];
+    let curr_round = 0;
+    for (let sess of sorted_sessions) {
+      // eslint-disable-next-line security/detect-object-injection
+      session_rounds[curr_round].push({ ...sess });
+      if (sess.break_duration >= SINGLE_DAY_TIME) {
+        session_rounds.push([]);
+        curr_round++;
+      }
+    }
+    session_rounds = session_rounds.filter((s) => s.length > 0);
+    return session_rounds;
+  }
 }

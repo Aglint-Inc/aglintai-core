@@ -598,7 +598,7 @@ const getTasks = ({
       ? supabase
           .from('new_tasks')
           .select(
-            '*, applications(* , candidates( * ), public_jobs( * ))',
+            '*, applications(* , candidates( * ), public_jobs( * )), candidate_request_availability ( id,slots )',
             getCount ? { count: 'exact' } : {},
           )
           .or(
@@ -607,7 +607,7 @@ const getTasks = ({
       : supabase
           .from('new_tasks')
           .select(
-            '*, applications(* , candidates( * ), public_jobs( * ))',
+            '*, applications(* , candidates( * ), public_jobs( * )), candidate_request_availability ( id,slots )',
             getCount ? { count: 'exact' } : {},
           )
   )
@@ -639,7 +639,9 @@ export const updateTask = ({
       ? supabase.from('new_tasks').update(task).eq('id', task.id)
       : supabase.from('new_tasks').insert(task)
   )
-    .select('*, applications(* , candidates( * ), public_jobs( * ))')
+    .select(
+      '*, applications(* , candidates( * ), public_jobs( * )), candidate_request_availability ( id,slots )',
+    )
     .single()
     .then(({ data, error }) => {
       const temp = data as unknown as Omit<typeof data, 'applications'> & {

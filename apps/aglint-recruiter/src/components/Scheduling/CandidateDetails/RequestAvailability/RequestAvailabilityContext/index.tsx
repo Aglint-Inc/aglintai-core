@@ -10,7 +10,6 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -111,7 +110,9 @@ function RequestAvailabilityProvider({ children }) {
             'DD/MM/YYYY',
           ),
           current_interview_day: 1,
-          previously_selected_dates: [dayjs().format('DD/MM/YYYY')],
+          previously_selected_dates: [
+            dayjs().add(-1, 'day').format('DD/MM/YYYY'),
+          ],
         } as CandReqAvailableSlots,
       );
       setDateSlots(dateSlots);
@@ -200,6 +201,35 @@ export const createTask = async (data: DatabaseTableInsert['new_tasks']) => {
     if (error) throw new Error(error.message);
     return task;
   } catch (error) {
-    toast.error(error);
+    toast.error(error.message);
   }
 };
+
+export async function insertTaskProgress({
+  request_availability_id,
+  taskData,
+}) {
+  const { data: task } = await axios.post(
+    `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,
+    {
+      request_id: request_availability_id,
+    },
+  );
+
+  if (task.id) {
+    const { data: progress } = await axios.post(
+      `/api/scheduling/request_availability/insertTaskProgress`,
+      {
+        data: {
+          ...taskData,
+          title: 'Candidate submitted the availability',
+          progress_type: 'request_availability_list',
+          task_id: task.id,
+        } as DatabaseTableInsert['new_tasks_progress'],
+      },
+    );
+
+    return progress;
+  }
+  return null;
+}

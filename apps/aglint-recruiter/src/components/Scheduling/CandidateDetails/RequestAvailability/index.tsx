@@ -102,6 +102,7 @@ function RequestAvailability() {
           name: session.name,
           session_duration: session.session_duration,
           break_duration: session.break_duration,
+          session_order: session.session_order,
         };
       }),
       total_slots: null,
@@ -166,6 +167,7 @@ function RequestAvailability() {
         }),
         status: 'in_progress',
         type: 'schedule',
+        request_availability_id: result.id,
       });
       await createTaskProgress({
         data: {

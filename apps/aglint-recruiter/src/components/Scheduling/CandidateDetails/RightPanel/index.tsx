@@ -96,7 +96,7 @@ function RightPanel({
                             act.recruiter_user?.first_name,
                             act.recruiter_user?.last_name,
                           )}
-                          src={act.recruiter_user.profile_image}
+                          src={act.recruiter_user?.profile_image}
                           variant={'circular'}
                           height={'24px'}
                           width={'24px'}

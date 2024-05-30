@@ -171,6 +171,10 @@
   text-decoration: underline;
 }
 
+.text-underline {
+  text-decoration: underline;
+}
+
 .text-grey_600.width-80px {
   width: 80px;
 }

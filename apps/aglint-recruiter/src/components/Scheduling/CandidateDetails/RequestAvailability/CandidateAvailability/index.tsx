@@ -14,9 +14,11 @@ import { DatePicker } from '@/devlink2/DatePicker';
 import { TimePick } from '@/devlink2/TimePick';
 import CandidateSlotLoad from '@/src/components/Common/Lotties/CandidateSlotLoad';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import {
+  insertTaskProgress,
   updateCandidateRequestAvailability,
   useRequestAvailabilityContext,
 } from '../RequestAvailabilityContext';
@@ -114,11 +116,24 @@ function CandidateAvailability() {
       data: { slots: selectedSlots },
       id: String(router.query?.request_id),
     });
+
+    await insertTaskProgress({
+      request_availability_id: candidateRequestAvailability?.id,
+      taskData: {
+        created_by: {
+          name: getFullName(
+            candidateRequestAvailability.applications.candidates.first_name,
+            candidateRequestAvailability.applications.candidates.last_name,
+          ),
+          id: candidateRequestAvailability.applications.candidates.id,
+        },
+      },
+    });
   };
 
   useEffect(() => {
     if (candidateRequestAvailability?.slots) {
-      router.push('/scheduling/request-availability/submitted');
+      // router.push('/scheduling/request-availability/submitted');
     }
   }, [candidateRequestAvailability]);
 
