@@ -66,14 +66,14 @@ const handler = async (
       }));
       return bulkCreateFiles(supabase, safeFiles)
         .then((filesData) => {
-          const safeApplications = filesData.map(
-            ({ candidate_id, id: candidate_file_id }) => ({
+          const safeApplications: Parameters<typeof bulkCreateApplications>[1] =
+            filesData.map(({ candidate_id, id: candidate_file_id }) => ({
               id: uuidv4(),
               candidate_id,
               job_id,
               candidate_file_id,
-            }),
-          );
+              source: 'csv_upload',
+            }));
           return bulkCreateApplications(supabase, safeApplications)
             .then((): CsvUploadApi['response'] => ({
               confirmation: true,

@@ -93,6 +93,8 @@ const JobAssessments = ({ onOpen }: { onOpen: () => void }) => {
   if (jobAssessments.length === 0)
     return (
       <EmptyAssessmentList
+        message={'No assessments added'}
+        linkText={'Browse all assessments'}
         onClickBrowseAssessment={{ onClick: () => onOpen() }}
       />
     );

@@ -224,6 +224,7 @@ const createJobApplication = async (
       applied_at: created_at,
       is_resume_fetching: false,
       candidate_file_id: fileId,
+      source: 'ashby',
     })
     .select();
 };

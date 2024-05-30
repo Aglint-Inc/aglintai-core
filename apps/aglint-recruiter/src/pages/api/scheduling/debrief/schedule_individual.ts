@@ -2,7 +2,7 @@
 /* eslint-disable security/detect-object-injection */
 import {
   APICandidateConfirmSlot,
-  ApiFindAvailability,
+  APIFindAvailability,
   DatabaseTableInsert,
 } from '@aglint/shared-types';
 import axios from 'axios';
@@ -96,7 +96,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(200).send('no availibity found');
     }
 
-    const firstSlot = availabilities.plan_combs[0].sessions[0];
+    const firstSlot = availabilities.plan_combs.filter(
+      (item) => !item.sessions[0].is_conflict,
+    )[0].sessions[0];
     const candidate_email = jobData.candidates.email;
 
     await confirmSlot({
@@ -400,11 +402,11 @@ const findAvailibility = async ({
     {
       session_ids: [session_id],
       recruiter_id: recruiter_id,
-      start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
-      end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-      user_tz: 'America/Los_Angeles',
+      start_date_str: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+      end_date_str: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+      candidate_tz: 'America/Los_Angeles',
       is_debreif: true,
-    } as ApiFindAvailability,
+    } as APIFindAvailability,
   );
 
   if (resAllOptions.data.length === 0) {

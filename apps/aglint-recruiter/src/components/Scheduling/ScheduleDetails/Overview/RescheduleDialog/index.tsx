@@ -1,5 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
-import { ApiFindAvailability } from '@aglint/shared-types';
+import { APIFindAvailability, DatabaseTable } from '@aglint/shared-types';
 import { PlanCombinationRespType } from '@aglint/shared-types';
 import { Dialog, Stack } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
@@ -68,11 +67,11 @@ function RescheduleDialog({
       const res = await axios.post('/api/scheduling/v1/find_availability', {
         session_ids: [schedule.interview_session.id],
         recruiter_id: recruiter.id,
-        start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
-        end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-        user_tz: dayjs.tz.guess(),
+        start_date_str: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+        end_date_str: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+        candidate_tz: dayjs.tz.guess(),
         is_debreif: false,
-      } as ApiFindAvailability);
+      } as APIFindAvailability);
 
       if (res.status === 200) {
         const respTyped = res.data as {
@@ -167,7 +166,7 @@ function RescheduleDialog({
 
         addScheduleActivity({
           title: `Rescheduled interview with new booking link for ${schedule.interview_session.name}`,
-          logger: recruiterUser.user_id,
+          logged_by: 'user',
           application_id: schedule.applications.id,
           type: 'schedule',
           supabase,

@@ -18,6 +18,7 @@ export function InterviewConfirmed({
   slotInterviewConfirmedCard,
   slotButton,
   onClickAddCalender = {},
+  slotBanner,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -46,6 +47,12 @@ export function InterviewConfirmed({
               tag="div"
             >
               {"Interview Confirmed!"}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1727")}
+              tag="div"
+            >
+              {slotBanner}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "div-block-1482")}

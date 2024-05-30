@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import {
   APICandidateConfirmSlot,
-  ApiFindAvailability,
+  APIFindAvailability,
   DB,
   InterviewMeetingTypeDb,
   InterviewSessionRelationTypeDB,
@@ -134,20 +134,22 @@ export const createCloneSession = async ({
 
     const organizer_id = await getOrganizerId(application_id, supabase);
 
-    const { error: errorInsertedMeetings } = await supabase
-      .from('interview_meeting')
-      .insert(
-        refSessions.map((ses) => {
-          return {
-            interview_schedule_id: ses.new_schedule_id,
-            status: ses.isSelected ? 'waiting' : 'not_scheduled',
-            instructions: refSessions.find((s) => s.id === ses.id)
-              ?.interview_module?.instructions,
-            id: ses.new_meeting_id,
-            organizer_id,
-          } as InterviewMeetingTypeDb;
-        }),
-      );
+    const { data: insertedMeetings, error: errorInsertedMeetings } =
+      await supabase
+        .from('interview_meeting')
+        .insert(
+          refSessions.map((ses) => {
+            return {
+              interview_schedule_id: ses.new_schedule_id,
+              status: ses.isSelected ? 'waiting' : 'not_scheduled',
+              instructions: refSessions.find((s) => s.id === ses.id)
+                ?.interview_module?.instructions,
+              id: ses.new_meeting_id,
+              organizer_id,
+            } as InterviewMeetingTypeDb;
+          }),
+        )
+        .select();
 
     if (errorInsertedMeetings) throw new Error(errorInsertedMeetings.message);
 
@@ -197,10 +199,17 @@ export const createCloneSession = async ({
       .filter((ses) => ses.isSelected)
       .map((session) => session.newId);
 
+    const updatedRefSessions = refSessions.map((ses) => ({
+      ...ses,
+      interview_meeting: insertedMeetings.find(
+        (meet) => meet.id === ses.new_meeting_id,
+      ),
+    }));
+
     return {
       schedule: data[0],
       session_ids: newSessionIds,
-      refSessions,
+      refSessions: updatedRefSessions,
     };
   } catch (e) {
     await supabase
@@ -291,17 +300,19 @@ export const sendToCandidate = async ({
 
       if (errorFilterJson) throw new Error(errorFilterJson.message);
 
-      addScheduleActivity({
-        title: `Sent booking link to ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.first_name)} for ${createCloneRes.refSessions
-          .filter((ses) => ses.isSelected)
-          .map((ses) => ses.name)
-          .join(' , ')}`,
-        application_id: selectedApplication.id,
-        logger: recruiterUser.user_id,
-        type: 'schedule',
-        supabase,
-        created_by: recruiterUser.user_id,
-      });
+      if (!is_debrief) {
+        addScheduleActivity({
+          title: `Sent booking link to ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.first_name)} for ${createCloneRes.refSessions
+            .filter((ses) => ses.isSelected)
+            .map((ses) => ses.name)
+            .join(' , ')}`,
+          application_id: selectedApplication.id,
+          logged_by: 'user',
+          type: 'schedule',
+          supabase,
+          created_by: recruiterUser.user_id,
+        });
+      }
 
       if (!is_debrief && is_mail) {
         mailHandler({
@@ -311,7 +322,7 @@ export const sendToCandidate = async ({
         });
       }
       if (is_debrief && selectedDebrief) {
-        await scheduleDebrief({
+        const res = await scheduleDebrief({
           selectedDebrief,
           candidate_email: selectedApplication.candidates.email,
           candidate_id: selectedApplication.candidates.id,
@@ -324,6 +335,23 @@ export const sendToCandidate = async ({
           schedule_id: createCloneRes.schedule.id,
           user_tz,
         });
+
+        if (res) {
+          addScheduleActivity({
+            title: `Scheduling ${createCloneRes.refSessions
+              .filter((ses) => ses.isSelected)
+              .map((ses) => ses.name)
+              .join(' , ')}`,
+            application_id: selectedApplication.id,
+            logged_by: 'user',
+            type: 'schedule',
+            supabase,
+            created_by: recruiterUser.user_id,
+          });
+        } else {
+          console.log('Error in scheduling debrief');
+          throw new Error('Error in scheduling debrief');
+        }
       }
     } else {
       const organizer_id = await getOrganizerId(
@@ -364,22 +392,19 @@ export const sendToCandidate = async ({
 
       if (errorFilterJson) throw new Error(errorFilterJson.message);
 
-      addScheduleActivity({
-        title: is_debrief
-          ? initialSessions
-              .filter((ses) => selectedSessionIds.includes(ses.id))
-              .map((ses) => ses.name)
-              .join(' , ')
-          : `Candidate invited for session ${initialSessions
-              .filter((ses) => selectedSessionIds.includes(ses.id))
-              .map((ses) => ses.name)
-              .join(' , ')}`,
-        logger: recruiterUser.user_id,
-        application_id: selectedApplication.id,
-        type: 'schedule',
-        supabase,
-        created_by: recruiterUser.user_id,
-      });
+      if (!is_debrief) {
+        addScheduleActivity({
+          title: `Candidate invited for session ${initialSessions
+            .filter((ses) => selectedSessionIds.includes(ses.id))
+            .map((ses) => ses.name)
+            .join(' , ')}`,
+          logged_by: 'user',
+          application_id: selectedApplication.id,
+          type: 'schedule',
+          supabase,
+          created_by: recruiterUser.user_id,
+        });
+      }
 
       if (!is_debrief && is_mail) {
         mailHandler({
@@ -390,7 +415,7 @@ export const sendToCandidate = async ({
       }
 
       if (is_debrief && selectedDebrief) {
-        await scheduleDebrief({
+        const resSchDeb = await scheduleDebrief({
           selectedDebrief,
           candidate_email: selectedApplication.candidates.email,
           candidate_id: selectedApplication.candidates.id,
@@ -403,6 +428,23 @@ export const sendToCandidate = async ({
           schedule_id: checkSch[0].id,
           user_tz,
         });
+
+        if (resSchDeb) {
+          addScheduleActivity({
+            title: `Scheduling ${initialSessions
+              .filter((ses) => selectedSessionIds.includes(ses.id))
+              .map((ses) => ses.name)
+              .join(' , ')}`,
+            logged_by: 'user',
+            application_id: selectedApplication.id,
+            type: 'schedule',
+            supabase,
+            created_by: recruiterUser.user_id,
+          });
+        } else {
+          console.log('Error in scheduling debrief');
+          throw new Error('Error in scheduling debrief');
+        }
       }
     }
     return true;
@@ -464,6 +506,9 @@ const scheduleDebrief = async ({
 
   if (res.status === 200) {
     console.log('Booked debrief session');
+    return true;
+  } else {
+    return false;
   }
 };
 
@@ -589,7 +634,7 @@ export const scheduleWithAgent = async ({
             .join(' , ')} via ${
             type === 'email_agent' ? 'email agent' : 'phone agent'
           }`,
-          logger: rec_user_id,
+          logged_by: 'user',
           type: 'schedule',
           application_id,
           task_id,
@@ -679,7 +724,7 @@ export const scheduleWithAgent = async ({
             .join(' , ')} via ${
             type === 'email_agent' ? 'email agent' : 'phone agent'
           }`,
-          logger: rec_user_id,
+          logged_by: 'user',
           type: 'schedule',
           application_id,
           task_id,
@@ -821,7 +866,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
             .join(' , ')} via ${
             type === 'email_agent' ? 'Email Agent' : 'Phone Agent'
           }`,
-          logger: rec_user_id,
+          logged_by: 'user',
           type: 'schedule',
           application_id,
           task_id: task.id,
@@ -900,7 +945,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
             .join(' , ')} via ${
             type === 'email_agent' ? 'Email Agent' : 'Phone Agent'
           }`,
-          logger: rec_user_id,
+          logged_by: 'user',
           type: 'schedule',
           application_id,
           task_id: task.id,
@@ -1285,11 +1330,11 @@ const checkAvailibility = async ({
     {
       session_ids: session_ids,
       recruiter_id: recruiter_id,
-      start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
-      end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-      user_tz: timezone || 'America/Los_Angeles',
+      start_date_str: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+      end_date_str: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+      candidate_tz: timezone || 'America/Los_Angeles',
       is_debreif: false,
-    } as ApiFindAvailability,
+    } as APIFindAvailability,
   );
 
   if (resAllOptions.data.length === 0) {
@@ -1368,7 +1413,7 @@ export const onClickResendInvite = async ({
         addScheduleActivity({
           title: `Resent booking link to ${candidate_name} for ${session_name}`,
           application_id: application_id,
-          logger: rec_user_id,
+          logged_by: 'user',
           type: 'schedule',
           supabase,
           created_by: rec_user_id,

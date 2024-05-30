@@ -50,7 +50,7 @@
   right: 0%;
   bottom: 0%;
 
-  border: 1px solid #e9ebed;
+  border: 1px dashed #68737d;
   border-radius: 10px;
 }
 
@@ -70,6 +70,26 @@
   border-radius: 10px;
 
   background-color: #edf7ff;
+
+  color: #337fbd;
+}
+
+.semi-active-bg {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  display: flex;
+  padding: 4px 16px;
+  justify-content: center;
+  align-items: center;
+
+  border: 1px dashed #5293c7;
+  border-radius: 10px;
+
+  background-color: white;
 
   color: #337fbd;
 }

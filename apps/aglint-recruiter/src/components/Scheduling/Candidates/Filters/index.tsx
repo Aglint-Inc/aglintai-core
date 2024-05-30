@@ -1,5 +1,4 @@
-import { useFilterCandidateStore } from '../filter-store';
-import { FilterType } from '../store';
+import { FilterType, useFilterCandidateStore } from '../filter-store';
 import FilterCordinator from './FilterCordinator';
 import FilterInterviewModule from './FilterInterviewModule';
 import FilterJob from './FilterJob';

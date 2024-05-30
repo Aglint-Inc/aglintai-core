@@ -4,6 +4,7 @@ import {
   APICandScheduleMailThankYou,
   APISendgridPayload,
   CalendarEvent,
+  DatabaseTable,
 } from '@aglint/shared-types';
 import axios from 'axios';
 import { has } from 'lodash';
@@ -21,7 +22,8 @@ const required_fields: (keyof APICandScheduleMailThankYou)[] = [
 ];
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { cand_tz, filter_id } = req.body as APICandScheduleMailThankYou;
+    const { cand_tz, filter_id, task_id } =
+      req.body as APICandScheduleMailThankYou;
     required_fields.forEach((field) => {
       if (!has(req.body, field)) {
         throw new Error(`missing Field ${field}`);
@@ -39,20 +41,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const email_templates = filterJson.interview_schedule.applications
       .public_jobs.recruiter.email_template as CompanyEmailsTypeDB;
 
-    const session_details = supabaseWrap(
-      await supabaseAdmin
-        .from('interview_session')
-        .select('*,interview_meeting(meeting_json,meeting_link)')
-        .in('id', filterJson.session_ids),
-    );
+    const session_details = await fetchSessionDetails(filterJson.session_ids);
 
     addScheduleActivity({
       title: `Booked ${session_details.map((ses) => ses.name).join(' , ')}`,
       application_id: filterJson.interview_schedule.application_id,
-      logger: filterJson.interview_schedule.application_id,
+      logged_by: 'candidate',
       type: 'schedule',
       supabase: supabaseAdmin,
       created_by: null,
+      task_id,
+      metadata: {
+        type: 'booking_confirmation',
+        sessions:
+          session_details as DatabaseTable['application_logs']['metadata']['sessions'],
+        filter_id,
+        action: 'waiting',
+      },
     });
 
     const company_name =
@@ -116,3 +121,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default handler;
+
+export const fetchSessionDetails = async (session_ids: string[]) => {
+  const { data, error } = await supabaseAdmin
+    .from('interview_session')
+    .select(
+      '*,interview_meeting(id,start_time,end_time,status,cal_event_id,meeting_link,meeting_json),interview_session_relation(*,interview_module_relation(id,recruiter_user(user_id,email,first_name,last_name,profile_image)))',
+    )
+    .in('id', session_ids);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+};

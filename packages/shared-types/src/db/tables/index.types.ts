@@ -1,13 +1,16 @@
 import { Database } from "../schema.types";
 import { Type } from "../utils.types";
+import { CustomApplicationLogs } from "./application_logs.types copy";
 import { CustomApplications } from "./applications.types";
 import { CandidateRequestAvailability } from "./candidate_request_availability.type";
 import { CustomInterviewSessionCancel } from "./interview_session_cancel.types";
 import { CustomInterviewSessionRelation } from "./interview_session_relation.types";
+import { CustomInterviewSession } from "./interview_sessions.types";
 import { CustomNewTasks } from "./new_tasks.types";
 import { CustomNewTaskProgress } from "./new_tasks_progress.types";
 import { CustomRecruiter } from "./recruiter.types";
 import { CustomRecruiterUser } from "./recruiter_user.types";
+import { CustomWorkflowAction } from "./workflow_action.types";
 
 type DatabaseTables = Database["public"]["Tables"];
 
@@ -35,5 +38,8 @@ export type Tables = Type<
     interview_session_cancel: CustomInterviewSessionCancel;
     applications: CustomApplications;
     candidate_request_availability: CandidateRequestAvailability;
+    interview_session: CustomInterviewSession;
+    workflow_action: CustomWorkflowAction;
+    application_logs: CustomApplicationLogs;
   }
 >;

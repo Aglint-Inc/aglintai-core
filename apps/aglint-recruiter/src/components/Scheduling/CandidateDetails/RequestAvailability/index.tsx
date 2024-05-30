@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
 import {
   Autocomplete,
   Checkbox,
@@ -7,6 +7,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -18,10 +19,19 @@ import GreenBgCheckedIcon from '@/src/components/Common/Icons/GreenBgCheckedIcon
 import PopUpArrowIcon from '@/src/components/Common/Icons/PopUpArrowIcon';
 import ToggleBtn from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/utils/UIToggle';
 import DateRange from '@/src/components/Tasks/Components/DateRange';
+import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { getFullName } from '@/src/utils/jsonResume';
+import { supabase } from '@/src/utils/supabase/client';
+import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 
+import { addScheduleActivity } from '../../Candidates/queries/utils';
+import { useAllActivities } from '../hooks';
 import { useSchedulingApplicationStore } from '../store';
-import { insertCandidateRequestAvailability } from './RequestAvailabilityContext';
+import {
+  createTask,
+  insertCandidateRequestAvailability,
+} from './RequestAvailabilityContext';
 import {
   availabilityArrayList,
   convertMinutesToHoursAndMinutes,
@@ -32,10 +42,13 @@ import {
 
 function RequestAvailability() {
   const router = useRouter();
-  const { recruiter } = useAuthDetails();
+  const { recruiter, recruiterUser } = useAuthDetails();
 
   const { selectedSessionIds, initialSessions, selectedApplication } =
     useSchedulingApplicationStore();
+  const { refetch } = useAllActivities({
+    application_id: selectedApplication?.id,
+  });
 
   const selectedSessions = selectedSessionIds.length
     ? initialSessions.filter((ele) => selectedSessionIds.includes(ele.id))
@@ -72,6 +85,127 @@ function RequestAvailability() {
   ]);
   const [markCreateTicket, setMarkCreateTicket] = useState(false);
 
+  // handle submit
+
+  async function handleSubmit() {
+    const result = await insertCandidateRequestAvailability({
+      application_id: selectedApplication.id,
+      recruiter_id: recruiter.id,
+      availability: availability,
+      date_range: [...selectedDate],
+      is_task_created: markCreateTicket,
+      number_of_days: selectedDays.value,
+      number_of_slots: selectedSlots.value,
+      session_ids: selectedSessions.map((session) => {
+        return {
+          id: session.id,
+          name: session.name,
+          session_duration: session.session_duration,
+          break_duration: session.break_duration,
+        };
+      }),
+      total_slots: null,
+    });
+
+    // send request availability email to candidate
+
+    const body = fillEmailTemplate(
+      recruiter.email_template['request_candidate_slot'].body,
+      {
+        company_name: recruiter.name,
+        schedule_name: selectedSessions.map((ele) => ele.name).join(','),
+        first_name: selectedApplication.candidates.first_name,
+        last_name: selectedApplication.candidates.last_name,
+        job_title: selectedApplication.public_jobs.job_title,
+        availability_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${result.id}'>Pick Your Slot</a>`,
+      },
+    );
+
+    const subject = fillEmailTemplate(
+      recruiter.email_template['request_candidate_slot'].subject,
+      {
+        company_name: recruiter.name,
+        schedule_name: selectedSessions.map((ele) => ele.name).join(','),
+        first_name: selectedApplication.candidates.first_name,
+        last_name: selectedApplication.candidates.last_name,
+        job_title: selectedApplication.public_jobs.job_title,
+      },
+    );
+
+    await axios.post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
+      fromEmail: `messenger@aglinthq.com`,
+      fromName: 'Aglint',
+      email: selectedApplication.candidates.email,
+      subject: subject,
+      text: body,
+    });
+    // end
+
+    let task = null as null | DatabaseTable['new_tasks'];
+    if (markCreateTicket) {
+      task = await createTask({
+        assignee: [recruiterUser.user_id],
+        created_by: recruiterUser.user_id,
+        name: `Request Availability ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.last_name)} - ${selectedApplication.public_jobs.job_title.trim()}.`,
+        agent: null,
+        application_id: selectedApplication.id,
+        due_date: selectedDate[0].toString(),
+        priority: 'medium',
+        recruiter_id: recruiter.id,
+        schedule_date_range: {
+          end_date: selectedDate[0].toString(),
+          start_date: selectedDate[1].toString(),
+        },
+        start_date: dayjs().toString(),
+        task_owner: recruiterUser.user_id,
+        session_ids: selectedSessions.map((ele) => {
+          return {
+            id: ele.id,
+            name: ele.name,
+          } as DatabaseTableInsert['new_tasks']['session_ids'][number];
+        }),
+        status: 'in_progress',
+        type: 'schedule',
+      });
+      await createTaskProgress({
+        data: {
+          created_by: {
+            id: recruiterUser.user_id,
+            name: getFullName(
+              recruiterUser.first_name,
+              recruiterUser.last_name,
+            ),
+          },
+          task_id: task.id,
+          progress_type: 'standard',
+        },
+        type: 'request_availability',
+        optionData: {
+          sessions: task.session_ids,
+          candidateName: getFullName(
+            selectedApplication.candidates.first_name,
+            selectedApplication.candidates.last_name,
+          ),
+        },
+      });
+    }
+
+    addScheduleActivity({
+      application_id: selectedApplication.id,
+      created_by: recruiterUser.user_id,
+      logged_by: 'user',
+      supabase: supabase,
+      title: `Request Availability from ${getFullName(
+        selectedApplication.candidates.first_name,
+        selectedApplication.candidates.last_name,
+      )} to Schedule Interviews for ${selectedSessions.map((ele) => ele.name).join(',')}`,
+      type: 'schedule',
+      task_id: task ? task.id : null,
+    });
+    refetch(); // refetching activities
+    getDrawerClose();
+  }
+
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClose = () => {
     setAnchorEl(null);
@@ -83,7 +217,7 @@ function RequestAvailability() {
       <ReqAvailability
         textDateAvailability={
           <Stack>
-            {`${selectedDate[0]?.format('MMM DD')}-${selectedDate[1]?.format('MMM DD')}`}
+            {`${selectedDate[0]?.format('MMMM DD')} - ${selectedDate[1]?.format('MMMM DD')}`}
             <Popover
               id={id}
               open={open}
@@ -109,11 +243,7 @@ function RequestAvailability() {
                 onChange={(e) => {
                   setSelectedDate(e);
                 }}
-                value={
-                  dayjs(selectedDate[0]).toString() == 'Invalid Date'
-                    ? [dayjs(selectedDate[0]), dayjs(selectedDate[1])]
-                    : [dayjs(selectedDate[0]), dayjs(selectedDate[1])]
-                }
+                value={[dayjs(selectedDate[0]), dayjs(selectedDate[1])]}
               />
             </Popover>
           </Stack>
@@ -148,11 +278,12 @@ function RequestAvailability() {
         slotAvailabilityCriteria={
           <>
             <Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
-              <Typography width={'450px'}>
+              <Typography variant='body2' width={'450px'}>
                 Minimum number of days should be selected.
               </Typography>
               <Autocomplete
                 fullWidth
+                disableClearable
                 disablePortal
                 value={selectedDays}
                 options={requestDaysListOptions}
@@ -171,11 +302,12 @@ function RequestAvailability() {
             </Stack>
 
             <Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
-              <Typography width={'450px'}>
+              <Typography variant='body2' width={'450px'}>
                 Minimum number of slots selected per each day.
               </Typography>
               <Autocomplete
                 fullWidth
+                disableClearable
                 disablePortal
                 value={selectedSlots}
                 options={slotsListOptions}
@@ -220,28 +352,7 @@ function RequestAvailability() {
           />
         }
         onClickReqAvailability={{
-          onClick: () => {
-            insertCandidateRequestAvailability({
-              application_id: selectedApplication.id,
-              recruiter_id: recruiter.id,
-              availability: availability,
-              date_range: [...selectedDate],
-              is_task_created: markCreateTicket,
-              number_of_days: selectedDays.value,
-              number_of_slots: selectedSlots.value,
-              session_ids: selectedSessions.map((session) => {
-                return {
-                  id: session.id,
-                  name: session.name,
-                  session_duration: session.session_duration,
-                  break_duration: session.break_duration,
-                };
-              }),
-              total_slots: null,
-            });
-
-            getDrawerClose();
-          },
+          onClick: handleSubmit,
         }}
         onClickClose={{ onClick: getDrawerClose }}
         onClickCancel={{ onClick: getDrawerClose }}

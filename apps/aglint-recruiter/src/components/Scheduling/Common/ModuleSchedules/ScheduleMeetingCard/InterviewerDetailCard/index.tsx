@@ -10,7 +10,7 @@ import { CustomTooltip } from '@/src/components/Common/Tooltip';
 import { calculateHourDifference } from '@/src/components/Scheduling/InterviewTypes/utils';
 import { convertTimeZoneToAbbreviation } from '@/src/components/Scheduling/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { ScheduleListType } from '../../hooks';
