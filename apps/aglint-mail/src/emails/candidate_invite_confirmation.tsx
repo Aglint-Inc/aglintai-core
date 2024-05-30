@@ -78,7 +78,7 @@ export function InterviewBookingConfirmation({
                 }}
                 className="my-8 rounded-md "
               >
-                <Text className="m-0 border border-solid	border-slate-500">
+                <Text className="m-0">
                   {htmlParser.parse(meetingDetails.dateTime)}
                 </Text>
                 <Text className="m-0 flex gap-1 item-center my-1">
@@ -102,7 +102,7 @@ export function InterviewBookingConfirmation({
                 href={meetingDetails.link}
                 className="px-3 py-2 bg-[#337FBD] text-white br rounded-md text-[14px]"
               >
-                Confrim Interview
+                Confirm Interview
               </Button>
               <Text className="text-[#999999] text-[10px] mt-10 leading-4">
                 If you have any queries please &nbsp;

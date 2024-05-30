@@ -78,7 +78,7 @@ export function InterviewBookingConfirmation({
                 }}
                 className="my-8 rounded-md "
               >
-                <Text className="m-0 border border-solid	border-slate-500">
+                <Text className="m-0">
                   {htmlParser.parse(meetingDetails.dateTime)}
                 </Text>
                 <Text className="m-0 flex gap-1 item-center my-1">
@@ -100,7 +100,7 @@ export function InterviewBookingConfirmation({
               </Container>
               <Button
                 href={meetingDetails.link}
-                className="px-3 py-2 bg-[#D93F4C] text-white br rounded-md text-[14px]"
+                className="px-3 py-2 bg-[#337FBD] text-white br rounded-md text-[14px]"
               >
                 Confrim Interview
               </Button>
@@ -112,7 +112,7 @@ export function InterviewBookingConfirmation({
                   target="_blank"
                   className="text-[#337FBD] underline"
                 >
-                  Cancel Schedule
+                  Join Now
                 </Link>
                 <br />
                 If you’d like to unsubscribe and stop receiving emails &nbsp;

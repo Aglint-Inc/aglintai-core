@@ -19,7 +19,6 @@ interface InterviewBookingConfirmationType {
   body?: string;
   companyLogo?: string;
   meetingDetails: {
-    dateTime?: string;
     type?: string;
     platform?: string;
     duration?: string;
@@ -34,7 +33,6 @@ export const dummy: InterviewBookingConfirmationType = {
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   meetingDetails: {
-    dateTime: '<strong>Fri, May 12, 2024</strong> 09:00 AM - 09:30 PM PST',
     type: '<strong>Personality and cultural fit</strong>',
     platform: 'Google meet',
     duration: '45 minutes',
@@ -78,9 +76,6 @@ export function InterviewBookingConfirmation({
                 }}
                 className="my-8 rounded-md "
               >
-                <Text className="m-0 border border-solid	border-slate-500">
-                  {htmlParser.parse(meetingDetails.dateTime)}
-                </Text>
                 <Text className="m-0 flex gap-1 item-center my-1">
                   <Img
                     src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/booking_confirmation_personality_logo.png"
@@ -102,7 +97,7 @@ export function InterviewBookingConfirmation({
                 href={meetingDetails.link}
                 className="px-3 py-2 bg-[#337FBD] text-white br rounded-md text-[14px]"
               >
-                Confrim Interview
+                Pick your slot
               </Button>
               <Text className="text-[#999999] text-[10px] mt-10 leading-4">
                 If you have any queries please &nbsp;

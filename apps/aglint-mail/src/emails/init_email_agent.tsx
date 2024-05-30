@@ -29,8 +29,8 @@ interface InterviewBookingConfirmationType {
 
 // export dummy
 export const dummy: InterviewBookingConfirmationType = {
-  subject: 'Meeting Reschedule Request From Candidate',
-  body: '<p>Dear [recruiterName],</p><p>[firstName] is requesting to reschedule betweeen [dateRange] stating reason [rescheduleReason]</p><p>Additional notes from [firstName] : [additionalRescheduleNotes]</p><p>Thank you</p>',
+  subject: 'Schedule Your Interview with [companyName] - Important Next Step',
+  body: '<p>Hi [candidateFirstName],</p><p>Congratulations! You have been selected for an interview at [companyName] for the [jobRole] position. Your qualifications are impressive, and we are excited to meet you and discuss them further.</p><p>Please let me know your availability within the following date range: [startDate] - [endDate] ([companyTimeZone]).</p><p>Also, to make sure we find an interview time that works well for you, could you tell us your general location.</p><p>Or use the following link to schedule your interview: [selfScheduleLink]</p><p>Looking forward to connecting with you!</p><p>Best regards,<br>[companyName] Recruitment Team</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   meetingDetails: {
@@ -78,7 +78,7 @@ export function InterviewBookingConfirmation({
                 }}
                 className="my-8 rounded-md "
               >
-                <Text className="m-0">
+                <Text className="m-0 border border-solid	border-slate-500">
                   {htmlParser.parse(meetingDetails.dateTime)}
                 </Text>
                 <Text className="m-0 flex gap-1 item-center my-1">
@@ -102,7 +102,7 @@ export function InterviewBookingConfirmation({
                 href={meetingDetails.link}
                 className="px-3 py-2 bg-[#337FBD] text-white br rounded-md text-[14px]"
               >
-                Reschedule
+                Confrim Interview
               </Button>
               <Text className="text-[#999999] text-[10px] mt-10 leading-4">
                 If you have any queries please &nbsp;
