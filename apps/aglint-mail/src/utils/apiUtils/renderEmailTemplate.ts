@@ -3,7 +3,15 @@ import { ServerError } from './customErrors';
 import { validatePayload } from './validate-payload';
 import React from 'react'; // Import React to use React.createElement
 
-export const renderEmailTemplate = async (filename: string, payload = {}) => {
+type Payload = {
+  subject: string;
+  body: string;
+};
+
+export const renderEmailTemplate = async (
+  filename: string,
+  payload = {} as Payload,
+) => {
   const {
     default: Template,
     dummy,
@@ -21,5 +29,5 @@ export const renderEmailTemplate = async (filename: string, payload = {}) => {
 
   const element = React.createElement(Template, payload);
   const html = render(element);
-  return { html, subject: getSubject(payload) };
+  return { html, subject: getSubject(payload.subject) };
 };

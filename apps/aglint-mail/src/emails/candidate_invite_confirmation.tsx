@@ -43,8 +43,7 @@ export const dummy: InterviewBookingConfirmationType = {
 };
 
 // export get subject
-export const getSubject = (p: any) =>
-  `Job Hunt Strategy Questions and Answers - Session with `;
+export const getSubject = (companyName: any) => `${companyName}`;
 
 export function InterviewBookingConfirmation({
   subject = dummy.subject,

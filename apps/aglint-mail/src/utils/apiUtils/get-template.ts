@@ -25,10 +25,7 @@ const fetchTemplate = async (
       .eq('type', mail_type),
   );
   let data = null;
-  if (mail_type === 'candidate_invite_confirmation') {
-    data = fillEmail(fields, templates);
-  } else if (mail_type === 'debrief_calendar_invite') {
-  }
+  data = fillEmail(fields, templates);
 
   return data;
 };
@@ -43,7 +40,6 @@ export const fillEmail = <T extends EmailTempPath>(
   if (email_template) {
     updated_template = { ...email_template };
   }
-
   for (let key of Object.keys(dynamic_fields)) {
     updated_template.subject = updated_template.subject.replaceAll(
       key,
@@ -95,7 +91,7 @@ export type EmailDynamicParams<T extends EmailTempPath> = {
   candidate_invite_confirmation: {
     '[firstName]': string;
     '[viewDetailsLink]': string;
-    '[companyNmae]': string;
+    '[companyName]': string;
     '[jobTitle]': string;
   };
   debrief_calendar_invite: {
@@ -108,5 +104,6 @@ export type EmailDynamicParams<T extends EmailTempPath> = {
     '[companyName]': string;
     '[firstName]': string;
     '[sessionName]': string;
+    '[jobTitle]': string;
   };
 }[T];
