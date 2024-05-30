@@ -23,7 +23,7 @@ interface InterviewBookingConfirmationType {
 // export dummy
 export const dummy: InterviewBookingConfirmationType = {
   subject: 'Availability for [jobTitle] Interview',
-  body: '<p>Hi [firstName],</p><p>We hope you are doing well. We would like to schedule an interview for the [jobTitle] position.</p><p>Please let us know your availability by clicking on the following link: [availabilityLink]</p><p>Looking forward to hearing from you.</p><p>Best regards,<br>Aglint Recruitment Team</p>',
+  body: '<p>Hi [firstName],</p><p>We hope you are doing well. We would like to schedule an interview for the [jobTitle] position.</p><p>Please let us know your availability by clicking on the following link: [availabilityLink]</p><p>Looking forward to hearing from you.</p><p>Best regards,<br>[companyName] Recruitment Team</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
 };
