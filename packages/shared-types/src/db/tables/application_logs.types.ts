@@ -8,7 +8,7 @@ export type CustomApplicationLogs = TableType<
       type: "booking_confirmation";
       sessions: CustomMeta[];
       filter_id: string;
-      action: "waiting" | "canceled" | "recheduled";
+      action: "waiting" | "canceled" | "rescheduled";
     };
   }
 >;
