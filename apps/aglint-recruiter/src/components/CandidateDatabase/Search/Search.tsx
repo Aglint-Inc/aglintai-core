@@ -21,7 +21,7 @@ import {
   useCandidateSearchCtx,
 } from '../../../context/CandidateSearchProvider/CandidateSearchProvider';
 import Loader from '../../Common/Loader';
-import InCompleteLottie from '../../Common/Lotties/CandidateDatabase/IncompleteLottie';
+import InCompleteLottie from '../../Common/Lotties/CandidateDatabase_IncompleteLottie';
 import MuiAvatar from '../../Common/MuiAvatar';
 import { supabaseWrap } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 import AddToJobOptions from '../Database/CandAddToJobMenu';

@@ -4,8 +4,8 @@ import { InterviewCompleted } from '@/devlink/InterviewCompleted';
 import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
 
 import Loader from '../../Common/Loader';
-import CompleteLottie from '../../Common/Lotties/Interview/CompletedLottie';
-import InCompleteLottie from '../../Common/Lotties/Interview/IncompleteLottie';
+import CompleteLottie from '../../Common/Lotties/CompletedLottie';
+import InCompleteLottie from '../../Common/Lotties/IncompleteLottie';
 import MuiAvatar from '../../Common/MuiAvatar';
 
 function InterviewThanks() {

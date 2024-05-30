@@ -5,9 +5,8 @@ import React, { useRef, useState } from 'react';
 import { AiTranscript } from '@/devlink/AiTranscript';
 import { InterviewTranscriptCard } from '@/devlink/InterviewTranscriptCard';
 import { UserTranscript } from '@/devlink/UserTranscript';
+import PlayStop from '@/src/components/Common/Lotties/playStopLottie';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-
-import PlayStop from '../../../../Common/Lotties/JobApplicationDashboard/PlayStop';
 
 function ConversationCard({
   roleImage,

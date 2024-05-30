@@ -1,11 +1,12 @@
+// this file is not used
 import { Stack } from '@mui/material';
 
 function SpeakerLevelLottie({ children, speaking }) {
   return (
     <Stack
-      borderRadius={{xs:'10px',md:'50%'}}
-      height={ {xs:'80px',md:'140px'}}
-      width={ {xs:'80px',md:'140px'}}
+      borderRadius={{ xs: '10px', md: '50%' }}
+      height={{ xs: '80px', md: '140px' }}
+      width={{ xs: '80px', md: '140px' }}
       direction={'row'}
       justifyContent={'center'}
       alignItems={'center'}

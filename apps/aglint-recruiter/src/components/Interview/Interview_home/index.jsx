@@ -8,7 +8,7 @@ import { NewInterviewScreen } from '@/devlink/NewInterviewScreen';
 import { useCandidateAssessment } from '@/src/context/CandidateAssessment';
 import { useInterviewContext } from '@/src/context/InterviewContext';
 
-import CompleteLoaderLottie from '../../Common/Lotties/Interview/CompleteLoaderLottie';
+import CompleteLoaderLottie from '../../Common/Lotties/CompleteLoaderLottie';
 import MuiAvatar from '../../Common/MuiAvatar';
 import MuiPopup from '../../Common/MuiPopup';
 import SidePanelDrawer from '../../Common/SidePanelDrawer';

@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import { DisconnectInterviewModal } from '@/devlink/DisconnectInterviewModal';
 import { NewInterviewScreen } from '@/devlink/NewInterviewScreen';
-import CompleteLoaderLottie from '@/src/components/Common/Lotties/CandidateAssessment/CompleteLoaderLottie';
+import CompleteLoaderLottie from '@/src/components/Common/Lotties/CompleteLoaderLottie';
 import { useCandidateAssessment } from '@/src/context/CandidateAssessment';
 import { useInterviewContext } from '@/src/context/InterviewContext';
 

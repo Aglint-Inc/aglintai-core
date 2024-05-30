@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { DeletePopup } from '@/devlink3/DeletePopup';
 
-import Loader from '../../Common/Lotties/Integrations/Loader';
+import Loader from '../../Common/Lotties/Integration_Loader';
 import { ShowCode } from '../../Common/ShowCode';
 import { SchedulingReasonTypes } from '../types';
 

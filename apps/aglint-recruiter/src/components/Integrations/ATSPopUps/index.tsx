@@ -11,7 +11,7 @@ import { LearnHowLever } from '@/devlink3/LearnHowLever';
 import toast from '@/src/utils/toast';
 
 import Icon from '../../Common/Icons/Icon';
-import Loader from '../../Common/Lotties/Integrations/Loader';
+import Loader from '../../Common/Lotties/Integration_Loader';
 import { ShowCode } from '../../Common/ShowCode';
 import { PopUpReasonTypes } from '../types';
 

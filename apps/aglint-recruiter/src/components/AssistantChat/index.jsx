@@ -11,7 +11,7 @@ import { UserChat } from '@/devlink/UserChat';
 import { UserChatIcon } from '@/devlink/UserChatIcon';
 import { useJobPostAssistantContext } from '@/src/context/JobPostAssistant';
 
-import ChatMessageLoader from '../Common/Lotties/AssistantChat/ChatMessageLoader';
+import ChatMessageLoader from '../Common/Lotties/ChatMessageLoader';
 import MuiAvatar from '../Common/MuiAvatar';
 const totalCharacter = 250;
 function ChatMessages() {

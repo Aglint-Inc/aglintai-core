@@ -14,7 +14,7 @@ import ResizeWindowContext from '@/src/context/ResizeWindow/context';
 import ROUTES from '@/src/utils/routing/routes';
 
 import Icon from '../Common/Icons/Icon';
-import MenuLottie from '../Common/Lotties/AppLayout/MenuLottie';
+import MenuLottie from '../Common/Lotties/MenuLottie';
 import { isEnvProd } from '../JobsDashboard/JobPostCreateUpdate/utils';
 import CompanyList from './CompanyList';
 import SideNavbar from './SideNavbar';

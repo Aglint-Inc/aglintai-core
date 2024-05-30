@@ -43,8 +43,8 @@ import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import { calculateTotalExperience } from '../../CandidateDatabase/AppoloSearch/utils';
-import LottieAnimations from '../../Common/Lotties/Agent/LottieIcons';
-import ChatMessageLoader from '../../Common/Lotties/AssistantChat/ChatMessageLoader';
+import ChatMessageLoader from '../../Common/Lotties/ChatMessageLoader';
+import LottieAnimations from '../../Common/Lotties/LottieIcons';
 import MuiAvatar from '../../Common/MuiAvatar';
 import CompanyLogo from '../../JobApplicationsDashboard/Common/CompanyLogo';
 import { processing_sourcing } from './util';

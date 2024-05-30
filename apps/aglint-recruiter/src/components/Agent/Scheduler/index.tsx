@@ -44,8 +44,8 @@ import { TimelineEmpty } from '@/devlink3/TimelineEmpty';
 import * as AuthContext from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
 
-import LottieAnimations from '../../Common/Lotties/Agent/LottieIcons';
-import ChatMessageLoader from '../../Common/Lotties/AssistantChat/ChatMessageLoader';
+import ChatMessageLoader from '../../Common/Lotties/ChatMessageLoader';
+import LottieAnimations from '../../Common/Lotties/LottieIcons';
 import MuiAvatar from '../../Common/MuiAvatar';
 
 export type messageType = {

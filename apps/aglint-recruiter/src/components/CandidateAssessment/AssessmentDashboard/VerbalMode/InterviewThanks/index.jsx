@@ -2,8 +2,8 @@ import { Stack } from '@mui/material';
 
 import { InterviewCompleted } from '@/devlink/InterviewCompleted';
 import Loader from '@/src/components/Common/Loader';
-import CompleteLottie from '@/src/components/Common/Lotties/CandidateAssessment/CompletedLottie';
-import InCompleteLottie from '@/src/components/Common/Lotties/CandidateAssessment/IncompleteLottie';
+import CompleteLottie from '@/src/components/Common/Lotties/CompletedLottie';
+import InCompleteLottie from '@/src/components/Common/Lotties/IncompleteLottie';
 import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
 
 // import Loader from '../../Common/Loader';
