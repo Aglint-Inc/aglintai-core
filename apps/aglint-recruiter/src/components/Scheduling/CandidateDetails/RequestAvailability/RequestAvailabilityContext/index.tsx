@@ -21,17 +21,11 @@ export type candidateRequestAvailabilityType =
     };
   };
 
-export type dateSlotsType = {
-  curr_day: string;
-  slots: {
-    startTime: string;
-    endTime: string;
-  }[];
-};
-
 interface ContextValue {
-  dateSlots: null | dateSlotsType[];
-  setDateSlots: (x: dateSlotsType[]) => void;
+  dateSlots: null | DatabaseTable['candidate_request_availability']['slots'];
+  setDateSlots: (
+    x: DatabaseTable['candidate_request_availability']['slots'],
+  ) => void;
 
   candidateRequestAvailability: candidateRequestAvailabilityType | null;
   setCandidateRequestAvailability: (
@@ -41,11 +35,19 @@ interface ContextValue {
   loading: boolean;
   setLoading: (x: boolean) => void;
 
-  selectedDateSlots: null | dateSlotsType[];
-  setSelectedDateSlots: (x: dateSlotsType[]) => void;
+  selectedDateSlots:
+    | null
+    | DatabaseTable['candidate_request_availability']['slots'];
+  setSelectedDateSlots: (
+    x: DatabaseTable['candidate_request_availability']['slots'],
+  ) => void;
 
-  selectedSlots: null | dateSlotsType['slots'];
-  setSelectedSlots: (x: dateSlotsType['slots']) => void;
+  selectedSlots:
+    | null
+    | DatabaseTable['candidate_request_availability']['slots'];
+  setSelectedSlots: (
+    x: DatabaseTable['candidate_request_availability']['slots'],
+  ) => void;
 }
 const defaultProvider: ContextValue = {
   dateSlots: [],
@@ -65,13 +67,15 @@ const useRequestAvailabilityContext = () =>
 function RequestAvailabilityProvider({ children }) {
   const [candidateRequestAvailability, setCandidateRequestAvailability] =
     useState<candidateRequestAvailabilityType | null>(null);
-  const [dateSlots, setDateSlots] = useState<dateSlotsType[]>([]);
-  const [selectedDateSlots, setSelectedDateSlots] = useState<dateSlotsType[]>(
-    [],
-  );
-  const [selectedSlots, setSelectedSlots] = useState<dateSlotsType['slots']>(
-    [],
-  );
+  const [dateSlots, setDateSlots] = useState<
+    DatabaseTable['candidate_request_availability']['slots']
+  >([]);
+  const [selectedDateSlots, setSelectedDateSlots] = useState<
+    DatabaseTable['candidate_request_availability']['slots']
+  >([]);
+  const [selectedSlots, setSelectedSlots] = useState<
+    DatabaseTable['candidate_request_availability']['slots']
+  >([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 

@@ -18,11 +18,13 @@ export function ConfirmationPopup({
   isBlueButtonVisible = true,
   isGreyButtonVisible = true,
   isDescriptionVisible = true,
+  widthStyleProps = {},
 }) {
   return (
     <_Component
       className={_utils.cx(_styles, "assessment_duplicate_popup")}
       tag="div"
+      {...widthStyleProps}
     >
       <_Builtin.Block className={_utils.cx(_styles, "popup_header")} tag="div">
         <_Builtin.Block className={_utils.cx(_styles, "popup_title")} tag="div">

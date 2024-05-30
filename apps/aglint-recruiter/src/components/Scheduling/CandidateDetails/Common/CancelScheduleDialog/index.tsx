@@ -6,17 +6,17 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { addScheduleActivity } from '../../../Candidates/queries/utils';
-import {
-  setIsCancelOpen,
-  useInterviewSchedulingStore,
-} from '../../../Candidates/store';
 import { cancelMailHandler } from '../../../Candidates/utils';
-import { setinitialSessions, useSchedulingApplicationStore } from '../../store';
+import {
+  setIndividualCancelOpen,
+  setinitialSessions,
+  useSchedulingApplicationStore,
+} from '../../store';
 
 function CancelScheduleDialog({ refetch }: { refetch: () => void }) {
   const { recruiterUser, recruiter } = useAuthDetails();
-  const isCancelOpen = useInterviewSchedulingStore(
-    (state) => state.isCancelOpen,
+  const isCancelOpen = useSchedulingApplicationStore(
+    (state) => state.isIndividualCancelOpen,
   );
   const selectedSession = useSchedulingApplicationStore(
     (state) => state.selectedSession,
@@ -78,13 +78,13 @@ function CancelScheduleDialog({ refetch }: { refetch: () => void }) {
         await addScheduleActivity({
           title: `Cancelled session ${selectedSession.name}`,
           application_id: selectedApplication.id,
-          logger: recruiterUser.user_id,
+          logged_by: 'user',
           type: 'schedule',
           supabase,
           created_by: recruiterUser.user_id,
         });
 
-        setIsCancelOpen(false);
+        setIndividualCancelOpen(false);
 
         setinitialSessions(
           initialSessions.map((session) => {
@@ -126,7 +126,7 @@ function CancelScheduleDialog({ refetch }: { refetch: () => void }) {
       }}
       open={isCancelOpen}
       onClose={() => {
-        setIsCancelOpen(false);
+        setIndividualCancelOpen(false);
       }}
     >
       <DeletePopup
@@ -137,7 +137,7 @@ function CancelScheduleDialog({ refetch }: { refetch: () => void }) {
         isIcon={false}
         onClickCancel={{
           onClick: () => {
-            setIsCancelOpen(false);
+            setIndividualCancelOpen(false);
           },
         }}
         onClickDelete={{

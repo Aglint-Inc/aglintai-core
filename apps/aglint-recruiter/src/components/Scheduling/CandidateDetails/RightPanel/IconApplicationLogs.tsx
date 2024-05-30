@@ -1,6 +1,3 @@
-import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
-import React from 'react';
-
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { EmailAgentIcon } from '@/src/components/Tasks/Components/EmailAgentIcon';
 import { PhoneAgentIcon } from '@/src/components/Tasks/Components/PhoneAgentIcon';
@@ -15,11 +12,11 @@ function IconApplicationLogs({
 }) {
   return (
     <>
-      {act.logger === EmailAgentId ? (
+      {act.logged_by === 'email_agent' ? (
         <EmailAgentIcon />
-      ) : act.logger === PhoneAgentId ? (
+      ) : act.logged_by === 'phone_agent' ? (
         <PhoneAgentIcon />
-      ) : act.logger == act.application_id ? (
+      ) : act.logged_by == 'candidate' ? (
         <svg
           width='24'
           height='24'
@@ -49,18 +46,20 @@ function IconApplicationLogs({
             fill='#68737D'
           />
         </svg>
-      ) : (
+      ) : act.logged_by == 'user' ? (
         <MuiAvatar
           level={getFullName(
             act.recruiter_user?.first_name,
             act.recruiter_user?.last_name,
           )}
-          src={act.recruiter_user.profile_image}
+          src={act.recruiter_user?.profile_image}
           variant={'circular'}
           height={'24px'}
           width={'24px'}
           fontSize={'10px'}
         />
+      ) : (
+        ''
       )}
     </>
   );

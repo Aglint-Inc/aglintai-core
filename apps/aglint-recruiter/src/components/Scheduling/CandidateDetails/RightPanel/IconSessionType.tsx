@@ -1,7 +1,4 @@
 import { DatabaseTable } from '@aglint/shared-types';
-import React from 'react';
-
-import { IndividualIcon } from '@/src/components/JobNewInterviewPlan/sessionForms';
 
 function IconSessionType({
   type,

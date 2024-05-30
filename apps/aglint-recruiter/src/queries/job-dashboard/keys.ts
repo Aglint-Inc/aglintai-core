@@ -40,6 +40,9 @@ export const jobDashboardQueryKeys = {
       'interviewPlanEnabled',
     ],
   }),
+  workflows: ({ job_id }: { job_id: string }) => ({
+    queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'workflows'],
+  }),
 } as const;
 
 export const useJobId = () => {

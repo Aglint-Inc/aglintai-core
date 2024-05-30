@@ -298,7 +298,7 @@ export const sendToCandidate = async ({
             .map((ses) => ses.name)
             .join(' , ')}`,
           application_id: selectedApplication.id,
-          logger: recruiterUser.user_id,
+          logged_by: 'user',
           type: 'schedule',
           supabase,
           created_by: recruiterUser.user_id,
@@ -334,7 +334,7 @@ export const sendToCandidate = async ({
               .map((ses) => ses.name)
               .join(' , ')}`,
             application_id: selectedApplication.id,
-            logger: recruiterUser.user_id,
+            logged_by: 'user',
             type: 'schedule',
             supabase,
             created_by: recruiterUser.user_id,
@@ -389,7 +389,7 @@ export const sendToCandidate = async ({
             .filter((ses) => selectedSessionIds.includes(ses.id))
             .map((ses) => ses.name)
             .join(' , ')}`,
-          logger: recruiterUser.user_id,
+          logged_by: 'user',
           application_id: selectedApplication.id,
           type: 'schedule',
           supabase,
@@ -426,7 +426,7 @@ export const sendToCandidate = async ({
               .filter((ses) => selectedSessionIds.includes(ses.id))
               .map((ses) => ses.name)
               .join(' , ')}`,
-            logger: recruiterUser.user_id,
+            logged_by: 'user',
             application_id: selectedApplication.id,
             type: 'schedule',
             supabase,
@@ -625,7 +625,7 @@ export const scheduleWithAgent = async ({
             .join(' , ')} via ${
             type === 'email_agent' ? 'email agent' : 'phone agent'
           }`,
-          logger: rec_user_id,
+          logged_by: 'user',
           type: 'schedule',
           application_id,
           task_id,
@@ -715,7 +715,7 @@ export const scheduleWithAgent = async ({
             .join(' , ')} via ${
             type === 'email_agent' ? 'email agent' : 'phone agent'
           }`,
-          logger: rec_user_id,
+          logged_by: 'user',
           type: 'schedule',
           application_id,
           task_id,
@@ -857,7 +857,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
             .join(' , ')} via ${
             type === 'email_agent' ? 'Email Agent' : 'Phone Agent'
           }`,
-          logger: rec_user_id,
+          logged_by: 'user',
           type: 'schedule',
           application_id,
           task_id: task.id,
@@ -936,7 +936,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
             .join(' , ')} via ${
             type === 'email_agent' ? 'Email Agent' : 'Phone Agent'
           }`,
-          logger: rec_user_id,
+          logged_by: 'user',
           type: 'schedule',
           application_id,
           task_id: task.id,
@@ -1404,7 +1404,7 @@ export const onClickResendInvite = async ({
         addScheduleActivity({
           title: `Resent booking link to ${candidate_name} for ${session_name}`,
           application_id: application_id,
-          logger: rec_user_id,
+          logged_by: 'user',
           type: 'schedule',
           supabase,
           created_by: rec_user_id,

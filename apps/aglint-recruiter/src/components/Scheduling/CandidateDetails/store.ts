@@ -8,6 +8,7 @@ import { create } from 'zustand';
 import { InterviewScheduleContextType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 
 import { SelectedApplicationTypeDB, SessionsType } from './types';
+import { use } from 'react';
 
 export interface SchedulingApplication {
   initialLoading: boolean;
@@ -48,6 +49,12 @@ export interface SchedulingApplication {
     | 'phone_agent'
     | 'request_availibility'
     | 'debrief';
+
+  isIndividualCancelOpen: boolean;
+  isMultipleCancelOpen: boolean;
+  isMultipleRescheduleOpen: boolean;
+  isIndividualRescheduleOpen: boolean;
+  selectedFilterId: string;
 }
 
 const initialState: SchedulingApplication = {
@@ -67,6 +74,10 @@ const initialState: SchedulingApplication = {
   },
   members: [],
   schedulingOptions: [],
+  isIndividualCancelOpen: false,
+  isMultipleCancelOpen: false,
+  isMultipleRescheduleOpen: false,
+  isIndividualRescheduleOpen: false,
   stepScheduling: 'pick_date',
   fetchingPlan: false,
   isViewProfileOpen: false,
@@ -80,6 +91,7 @@ const initialState: SchedulingApplication = {
   selectedSlots: [],
   selectedCombIds: [],
   scheduleFlow: 'self_scheduling',
+  selectedFilterId: '',
 };
 
 export const useSchedulingApplicationStore = create<SchedulingApplication>()(
@@ -90,6 +102,22 @@ export const useSchedulingApplicationStore = create<SchedulingApplication>()(
 
 export const setInitalLoading = (initialLoading: boolean) =>
   useSchedulingApplicationStore.setState({ initialLoading });
+
+export const setSelectedFilterId = (selectedFilterId: string) =>
+  useSchedulingApplicationStore.setState({ selectedFilterId });
+
+export const setIndividualCancelOpen = (isIndividualCancelOpen: boolean) =>
+  useSchedulingApplicationStore.setState({ isIndividualCancelOpen });
+
+export const setMultipleCancelOpen = (isMultipleCancelOpen: boolean) =>
+  useSchedulingApplicationStore.setState({ isMultipleCancelOpen });
+
+export const setMultipleRescheduleOpen = (isMultipleRescheduleOpen: boolean) =>
+  useSchedulingApplicationStore.setState({ isMultipleRescheduleOpen });
+
+export const setIndividualRescheduleOpen = (
+  isIndividualRescheduleOpen: boolean,
+) => useSchedulingApplicationStore.setState({ isIndividualRescheduleOpen });
 
 export const setScheduleFlow = (
   scheduleFlow: SchedulingApplication['scheduleFlow'],

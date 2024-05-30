@@ -7,11 +7,11 @@ import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 
 import {
+  FilterType,
   setFilter,
   setFilterVisible,
   useFilterCandidateStore,
 } from '../../filter-store';
-import { FilterType } from '../../store';
 
 function FilterInterviewModule() {
   const { allModules } = useSchedulingContext();

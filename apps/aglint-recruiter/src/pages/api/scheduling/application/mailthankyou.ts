@@ -4,6 +4,7 @@ import {
   APICandScheduleMailThankYou,
   APISendgridPayload,
   CalendarEvent,
+  DatabaseTable,
 } from '@aglint/shared-types';
 import axios from 'axios';
 import { has } from 'lodash';
@@ -45,15 +46,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     addScheduleActivity({
       title: `Booked ${session_details.map((ses) => ses.name).join(' , ')}`,
       application_id: filterJson.interview_schedule.application_id,
-      logger: filterJson.interview_schedule.application_id,
+      logged_by: 'candidate',
       type: 'schedule',
       supabase: supabaseAdmin,
       created_by: null,
-      filter_id,
       task_id,
       metadata: {
         type: 'booking_confirmation',
-        sessions: session_details,
+        sessions:
+          session_details as DatabaseTable['application_logs']['metadata']['sessions'],
+        filter_id,
       },
     });
 

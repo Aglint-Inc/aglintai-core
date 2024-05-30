@@ -1,4 +1,3 @@
-import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
@@ -8,20 +7,20 @@ import { Activities } from '@/devlink3/Activities';
 import { ActivitiesCard } from '@/devlink3/ActivitiesCard';
 import { ConfirmScheduleList } from '@/devlink3/ConfirmScheduleList';
 import { ConfirmScheduleListCard } from '@/devlink3/ConfirmScheduleListCard';
+import { ScheduleButton } from '@/devlink3/ScheduleButton';
 import Icon from '@/src/components/Common/Icons/Icon';
 import Loader from '@/src/components/Common/Loader';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { PanelIcon } from '@/src/components/JobNewInterviewPlan/sessionForms';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
-import { EmailAgentIcon } from '@/src/components/Tasks/Components/EmailAgentIcon';
-import { PhoneAgentIcon } from '@/src/components/Tasks/Components/PhoneAgentIcon';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
-import { getFullName } from '@/src/utils/jsonResume';
 
 import IconScheduleType from '../../Candidates/ListCard/Icon';
 import { getScheduleType } from '../../Candidates/utils';
+import IconCancelSchedule from '../../ScheduleDetails/Icons/IconCancelSchedule';
+import IconReschedule from '../../ScheduleDetails/Icons/IconReschedule';
 import { formatTimeWithTimeZone } from '../../utils';
 import { useAllActivities } from '../hooks';
+import { setMultipleCancelOpen, setSelectedFilterId } from '../store';
+import CancelMultipleScheduleDialog from './CancelMultipleScheduleDialog';
 import IconApplicationLogs from './IconApplicationLogs';
 import IconSessionType from './IconSessionType';
 
@@ -32,10 +31,11 @@ function RightPanel({
 }) {
   const router = useRouter();
 
-  const { data: activities, isLoading, isFetched } = allActivities;
+  const { data: activities, isLoading, isFetched, refetch } = allActivities;
 
   return (
     <>
+      <CancelMultipleScheduleDialog refetch={refetch} />
       <Activities
         slotActivitiesCard={
           <>
@@ -66,42 +66,80 @@ function RightPanel({
                         router.push(`/tasks?task_id=${act.task_id}`);
                       },
                     }}
-                    isContentVisible={true}
-                    slotContent={act?.metadata?.sessions?.map((session) => {
-                      return (
-                        <ConfirmScheduleList
-                          key={session.id}
-                          textDate={dayjs(
-                            session.interview_meeting.start_time,
-                          ).format('DD MMM')}
-                          slotConfirmScheduleList={
-                            <ConfirmScheduleListCard
-                              textDuration={getBreakLabel(
-                                session.session_duration,
-                              )}
-                              textPanelName={session.name}
-                              textMeetingPlatformName={getScheduleType(
-                                session.schedule_type,
-                              )}
-                              textTime={formatTimeWithTimeZone({
-                                start_time:
+                    isRescheduleVisible={false}
+                    isContentVisible={Boolean(act.metadata?.sessions)}
+                    slotContent={
+                      <Stack spacing={2}>
+                        <Stack spacing={1}>
+                          {act?.metadata?.sessions?.map((session) => {
+                            return (
+                              <ConfirmScheduleList
+                                key={session.id}
+                                textDate={dayjs(
                                   session.interview_meeting.start_time,
-                                end_time: session.interview_meeting.end_time,
-                                timeZone: userTzDayjs.tz.guess(),
-                              })}
-                              slotIconPanel={
-                                <IconSessionType type={session.session_type} />
-                              }
-                              slotMeetingIcon={
-                                <IconScheduleType
-                                  type={session.schedule_type}
-                                />
-                              }
-                            />
-                          }
-                        />
-                      );
-                    })}
+                                ).format('DD MMMM YYYY')}
+                                slotConfirmScheduleList={
+                                  <ConfirmScheduleListCard
+                                    textDuration={getBreakLabel(
+                                      session.session_duration,
+                                    )}
+                                    textPanelName={session.name}
+                                    textMeetingPlatformName={getScheduleType(
+                                      session.schedule_type,
+                                    )}
+                                    textTime={formatTimeWithTimeZone({
+                                      start_time:
+                                        session.interview_meeting.start_time,
+                                      end_time:
+                                        session.interview_meeting.end_time,
+                                      timeZone: userTzDayjs.tz.guess(),
+                                    })}
+                                    slotIconPanel={
+                                      <IconSessionType
+                                        type={session.session_type}
+                                      />
+                                    }
+                                    slotMeetingIcon={
+                                      <IconScheduleType
+                                        type={session.schedule_type}
+                                      />
+                                    }
+                                  />
+                                }
+                              />
+                            );
+                          })}
+                        </Stack>
+                        {act?.metadata?.filter_id&& <Stack direction={'row'} spacing={2}>
+                          <ScheduleButton
+                            textLabel={'Request Reschedule'}
+                            slotIcon={<IconReschedule />}
+                            onClickProps={{
+                              onClick: () => {
+                                //
+                              },
+                            }}
+                          />
+                          <ScheduleButton
+                            textLabel={'Cancel Schedule'}
+                            slotIcon={<IconCancelSchedule />}
+                            textColorProps={{
+                              style: {
+                                color: '#D93F4C',
+                              },
+                            }}
+                            onClickProps={{
+                              style: { background: '#FFF0F1' },
+                              onClick: () => {
+                                setSelectedFilterId(act?.metadata?.filter_id)
+                                setMultipleCancelOpen(true);
+                              },
+                            }}
+                          />
+                        </Stack>}
+                       
+                      </Stack>
+                    }
                     slotImage={<IconApplicationLogs act={act} />}
                   />
                 );

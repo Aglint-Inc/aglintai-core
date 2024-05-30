@@ -7,11 +7,7 @@ import toast from '@/src/utils/toast';
 
 import { addScheduleActivity } from '../../../Candidates/queries/utils';
 import {
-  setIsCancelOpen,
-  setIsRescheduleOpen,
-  useInterviewSchedulingStore,
-} from '../../../Candidates/store';
-import {
+  setIndividualRescheduleOpen,
   setinitialSessions,
   setSelectedSessionIds,
   useSchedulingApplicationStore,
@@ -19,8 +15,8 @@ import {
 
 function RescheduleDialog({ refetch }: { refetch: () => void }) {
   const { recruiterUser } = useAuthDetails();
-  const isRescheduleOpen = useInterviewSchedulingStore(
-    (state) => state.isRescheduleOpen,
+  const isRescheduleOpen = useSchedulingApplicationStore(
+    (state) => state.isIndividualRescheduleOpen,
   );
   const selectedSession = useSchedulingApplicationStore(
     (state) => state.selectedSession,
@@ -71,7 +67,7 @@ function RescheduleDialog({ refetch }: { refetch: () => void }) {
         await addScheduleActivity({
           title: `Cancelled session ${selectedSession.name}`,
           application_id: selectedApplication.id,
-          logger: recruiterUser.user_id,
+          logged_by: 'user',
           type: 'schedule',
           supabase,
           created_by: recruiterUser.user_id,
@@ -92,8 +88,7 @@ function RescheduleDialog({ refetch }: { refetch: () => void }) {
             }
           }),
         );
-        setIsCancelOpen(false);
-        setIsRescheduleOpen(false);
+        setIndividualRescheduleOpen(false);
         setSelectedSessionIds([selectedSession.id]);
       }
     } catch (e) {
@@ -114,7 +109,7 @@ function RescheduleDialog({ refetch }: { refetch: () => void }) {
       }}
       open={isRescheduleOpen}
       onClose={() => {
-        setIsRescheduleOpen(false);
+        setIndividualRescheduleOpen(false);
       }}
     >
       <ConfirmationPopup
@@ -125,7 +120,7 @@ function RescheduleDialog({ refetch }: { refetch: () => void }) {
         isIcon={false}
         onClickCancel={{
           onClick: () => {
-            setIsRescheduleOpen(false);
+            setIndividualRescheduleOpen(false);
           },
         }}
         onClickAction={{
