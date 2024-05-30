@@ -58,6 +58,10 @@ function RightPanel({
               </Stack>
             ) : (
               activities?.map((act, ind) => {
+                const sessions =
+                  act?.metadata?.sessions?.sort(
+                    (s1, s2) => s1.session_order - s2.session_order,
+                  ) || [];
                 return (
                   <ActivitiesCard
                     key={act.id}
@@ -76,7 +80,7 @@ function RightPanel({
                     slotContent={
                       <Stack spacing={2} width={'100%'}>
                         <Stack spacing={1} width={'100%'}>
-                          {act?.metadata?.sessions?.map((session) => {
+                          {sessions.map((session) => {
                             return (
                               <ConfirmScheduleList
                                 key={session.id}
