@@ -2,7 +2,8 @@
   "name": "aglint-mail",
   "description": "A live preview of your emails right in your browser.",
   "scripts": {
-    "build": "tsup",
+    "build": "next build",
+    "start": "next start",
     "dev": "next dev --port 3100",
     "test": "vitest run",
     "test:watch": "vitest",
