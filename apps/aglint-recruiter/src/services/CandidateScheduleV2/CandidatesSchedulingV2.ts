@@ -2,7 +2,6 @@
 import {
   APIFindAvailability,
   APIOptions,
-  CalConflictType,
   ConflictReason,
   InterviewSessionApiRespType,
   PauseJson,
@@ -10,7 +9,6 @@ import {
   SessionCombinationRespType,
   SessionInterviewerApiRespType,
   SessionsCombType,
-  TimeDurationDayjsType,
   TimeDurationType,
 } from '@aglint/shared-types';
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
@@ -26,7 +24,6 @@ import {
   FuncParams,
   IntervsWorkHrsEventMapType,
   IntervsWorkHrsEventType,
-  SlotIntDetails,
 } from './types';
 import { findCommonTimeRangeUtil } from './utils/commonTimeRanges';
 import { fetch_details_from_db } from './utils/fetch_details_from_db';
@@ -374,23 +371,19 @@ export class CandidatesSchedulingV2 {
       const cacheCurrPlanCalc = () => {
         const indef_paused_inters: {
           session_id: string;
-          inters: {
-            interviewer_id: string;
+          inters: (Pick<SessionInterviewerApiRespType, 'user_id'> & {
             pause_json: PauseJson;
-          }[];
+          })[];
         }[] = [];
         const curr_day_paused_inters: {
           session_id: string;
-          inters: {
-            interviewer_id: string;
+          inters: (Pick<SessionInterviewerApiRespType, 'user_id'> & {
             pause_json: PauseJson;
-          }[];
+          })[];
         }[] = [];
         const cal_disc_inters: {
           session_id: string;
-          inters: {
-            interviewer_id: string;
-          }[];
+          inters: Pick<SessionInterviewerApiRespType, 'user_id'>[];
         }[] = [];
         const session_ints_common_time: {
           session_id: string;
@@ -430,13 +423,13 @@ export class CandidatesSchedulingV2 {
                 .isCalenderConnected
             ) {
               cal_disc_inters[sess_idx].inters.push({
-                interviewer_id: attendee.user_id,
+                ...attendee,
               });
             }
             if (interviewer_pause_json) {
               if (interviewer_pause_json.isManual) {
                 indef_paused_inters[sess_idx].inters.push({
-                  interviewer_id: attendee.user_id,
+                  ...attendee,
                   pause_json: interviewer_pause_json,
                 });
               } else {
@@ -463,7 +456,7 @@ export class CandidatesSchedulingV2 {
                   )
                 ) {
                   curr_day_paused_inters[sess_idx].inters.push({
-                    interviewer_id: attendee.user_id,
+                    ...attendee,
                     pause_json: interviewer_pause_json,
                   });
                 }
@@ -491,6 +484,19 @@ export class CandidatesSchedulingV2 {
           session_ints_common_time,
         } = cacheCurrPlanCalc();
 
+        if (
+          cal_disc_inters.some((s) => s.inters.length > 0) &&
+          !this.api_options.include_conflicting_slots.calender_not_connected
+        ) {
+          return [];
+        }
+        if (
+          indef_paused_inters.some((s) => s.inters.length > 0) &&
+          !this.api_options.include_conflicting_slots.interviewer_pause
+        ) {
+          return [];
+        }
+
         /**
          * checking  conflicts
          * soft conflicts with key words,
@@ -502,102 +508,158 @@ export class CandidatesSchedulingV2 {
          * @param sess_slot
          * @returns
          */
-        const verifyForConflicts = (sess_slot: SessionCombinationRespType) => {
+        const verifyForConflicts = (
+          sess_slot: SessionCombinationRespType,
+          sessn_idx: number,
+        ) => {
           const upd_sess_slot: SessionCombinationRespType = { ...sess_slot };
+          const curr_sess_cal_dic_ints = cal_disc_inters[sessn_idx].inters;
+          const curr_sess_indef_paused_ints =
+            indef_paused_inters[sessn_idx].inters;
+          const curr_sess_curr_day_paused_ints =
+            curr_day_paused_inters[sessn_idx].inters;
+          const curr_sess_common_time = session_ints_common_time[sessn_idx];
           const session_attendees: SessionInterviewerApiRespType[] = [
             ...upd_sess_slot.qualifiedIntervs,
             ...upd_sess_slot.trainingIntervs,
           ];
 
-          // for (const attendee of session_attendees) {
-          //   const conflict_reasons: ConflictReason[] = [];
-          //   const attendee_pause_info =
-          //     this.db_details.all_session_int_details[sess_slot.session_id]
-          //       .interviewers[attendee.user_id].pause_json;
-          //   if (attendee_pause_info) {
-          //     if (attendee_pause_info.isManual) {
-          //       conflict_reasons.push({
-          //         conflict_event: null,
-          //         conflict_type: 'interviewer_paused',
-          //         end_time: null,
-          //         start_time: null,
-          //       });
-          //     } else {
-          //       if (
-          //         isTimeChunksEnclosed(
-          //           {
-          //             startTime: this.getTimeInCandTimeZone(
-          //               attendee_pause_info.start_date,
-          //             ),
-          //             endTime: this.getTimeInCandTimeZone(
-          //               attendee_pause_info.end_date,
-          //             ),
-          //           },
-          //           {
-          //             startTime: this.getTimeInCandTimeZone(
-          //               sess_slot.start_time,
-          //             ),
-          //             endTime: this.getTimeInCandTimeZone(sess_slot.end_time),
-          //           },
-          //         )
-          //       ) {
-          //         conflict_reasons.push({
-          //           conflict_type: 'interviewer_paused',
-          //           conflict_event: null,
-          //           start_time: attendee_pause_info.start_date,
-          //           end_time: attendee_pause_info.end_date,
-          //         });
-          //       }
-          //     }
-          //   }
+          const is_all_ints_available = curr_sess_common_time.common_time.some(
+            (t) => {
+              return isTimeChunksEnclosed(
+                {
+                  startTime: this.getTimeInCandTimeZone(t.startTime),
+                  endTime: this.getTimeInCandTimeZone(t.endTime),
+                },
+                {
+                  startTime: this.getTimeInCandTimeZone(
+                    upd_sess_slot.start_time,
+                  ),
+                  endTime: this.getTimeInCandTimeZone(upd_sess_slot.end_time),
+                },
+              );
+            },
+          );
+          const is_load_checked = true;
+          if (is_all_ints_available && is_load_checked) {
+            upd_sess_slot.is_conflict = false;
+            return upd_sess_slot;
+          } else {
+            upd_sess_slot.is_conflict = true;
+          }
+          for (const attendee of session_attendees) {
+            const int_conflic_reasons: ConflictReason[] = [];
+            // cal disconnected conflict
+            if (
+              curr_sess_cal_dic_ints.find((s) => s.user_id === attendee.user_id)
+            ) {
+              int_conflic_reasons.push({
+                conflict_type: 'calender_diconnected',
+                conflict_event: null,
+                start_time: null,
+                end_time: null,
+              });
+            }
 
-          //   const int_with_events = this.intervs_details_map.get(
-          //     attendee.user_id,
-          //   );
-          //   if (!int_with_events.isCalenderConnected) {
-          //     conflict_reasons.push({
-          //       conflict_event: '',
-          //       conflict_type: 'calender_diconnected',
-          //       start_time: '',
-          //       end_time: '',
-          //     });
-          //   }
-          //   const conflicting_events = int_with_events.cal_date_events[
-          //     currDay.format()
-          //   ].filter((cal_event) => {
-          //     return isTimeChunksOverLapps(
-          //       {
-          //         startTime: this.getTimeInCandTimeZone(
-          //           cal_event.start.dateTime,
-          //         ),
-          //         endTime: this.getTimeInCandTimeZone(cal_event.end.dateTime),
-          //       },
-          //       {
-          //         startTime: this.getTimeInCandTimeZone(
-          //           upd_sess_slot.start_time,
-          //         ),
-          //         endTime: this.getTimeInCandTimeZone(upd_sess_slot.end_time),
-          //       },
-          //     );
-          //   });
-          //   conflicting_events.forEach((conf_ev) => {
-          //     const ev_type = conf_ev.cal_type;
-          //     conflict_reasons.push({
-          //       conflict_type: ev_type,
-          //       conflict_event: conf_ev.summary,
-          //       end_time: conf_ev.end.dateTime,
-          //       start_time: conf_ev.start.dateTime,
-          //     });
-          //   });
-          //   if (conflict_reasons.length > 0) {
-          //     upd_sess_slot.ints_conflicts.push({
-          //       interviewer: {
-          //         user_id: attendee.user_id,
-          //       },
-          //       conflict_reasons: conflict_reasons,
-          //     });
-          //   }
-          // }
+            // indefenetly paused inters
+            if (
+              curr_sess_indef_paused_ints.some(
+                (s) => s.user_id === attendee.user_id,
+              )
+            ) {
+              int_conflic_reasons.push({
+                conflict_type: 'interviewer_paused',
+                conflict_event: null,
+                start_time: null,
+                end_time: null,
+              });
+            }
+
+            const curr_day_paused_inter = curr_sess_curr_day_paused_ints.find(
+              (s) => s.user_id === attendee.user_id,
+            );
+
+            //curr_day paused ints
+            if (curr_day_paused_inter) {
+              const last_paused_date = this.getTimeIntTimeZone(
+                curr_day_paused_inter.pause_json.end_date,
+                upd_sess_slot.session_id,
+                attendee.user_id,
+              );
+              if (
+                isTimeChunksOverLapps(
+                  {
+                    startTime: last_paused_date
+                      .startOf('day')
+                      .tz(this.api_payload.candidate_tz),
+                    endTime: last_paused_date
+                      .endOf('day')
+                      .tz(this.api_payload.candidate_tz),
+                  },
+                  {
+                    startTime: this.getTimeInCandTimeZone(
+                      upd_sess_slot.start_time,
+                    ),
+                    endTime: this.getTimeInCandTimeZone(
+                      upd_sess_slot.start_time,
+                    ),
+                  },
+                )
+              ) {
+                if (
+                  this.api_options.include_conflicting_slots
+                    .calender_not_connected
+                ) {
+                  int_conflic_reasons.push({
+                    conflict_type: 'interviewer_paused',
+                    conflict_event: null,
+                    start_time: curr_day_paused_inter.pause_json.start_date,
+                    end_time: curr_day_paused_inter.pause_json.end_date,
+                  });
+                } else {
+                  return null;
+                }
+              }
+            }
+
+            const conflicting_events = this.intervs_details_map
+              .get(attendee.user_id)
+              .cal_date_events[currDay.format()].filter((cal_event) => {
+                return isTimeChunksOverLapps(
+                  {
+                    startTime: this.getTimeInCandTimeZone(
+                      cal_event.start.dateTime,
+                    ),
+                    endTime: this.getTimeInCandTimeZone(cal_event.end.dateTime),
+                  },
+                  {
+                    startTime: this.getTimeInCandTimeZone(
+                      upd_sess_slot.start_time,
+                    ),
+                    endTime: this.getTimeInCandTimeZone(upd_sess_slot.end_time),
+                  },
+                );
+              });
+            //conflicting events
+            conflicting_events.forEach((conf_ev) => {
+              const ev_type = conf_ev.cal_type;
+              int_conflic_reasons.push({
+                conflict_type: ev_type,
+                conflict_event: conf_ev.summary,
+                end_time: conf_ev.end.dateTime,
+                start_time: conf_ev.start.dateTime,
+              });
+            });
+
+            if (int_conflic_reasons.length > 0) {
+              upd_sess_slot.ints_conflicts.push({
+                interviewer: {
+                  user_id: attendee.user_id,
+                },
+                conflict_reasons: [...int_conflic_reasons],
+              });
+            }
+          }
 
           return upd_sess_slot;
         };
@@ -621,7 +683,10 @@ export class CandidatesSchedulingV2 {
             is_conflict: false,
           };
 
-          let slot_with_conflicts = verifyForConflicts(session_slot);
+          let slot_with_conflicts = verifyForConflicts(
+            session_slot,
+            session_idx,
+          );
           if (!slot_with_conflicts) {
             return [];
           } else {
@@ -668,7 +733,7 @@ export class CandidatesSchedulingV2 {
         }
       };
 
-      // this is the staring of execution
+      //NOTE: this is the staring of execution
       calcScheduleCombs();
 
       return schedule_combs;
