@@ -1,7 +1,7 @@
 .div-block-1404 {
   display: flex;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: stretch;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
 }
@@ -25,7 +25,7 @@
 
 .div-block-1532 {
   width: 1px;
-  height: 34px;
+  height: 100%;
   margin-top: 5px;
   margin-bottom: 5px;
   background-color: rgba(28, 28, 28, 0.1);
@@ -33,6 +33,7 @@
 
 .div-block-1533 {
   display: flex;
+  width: 100%;
   flex-direction: column;
   justify-content: flex-start;
   flex-wrap: nowrap;
@@ -171,6 +172,10 @@
   opacity: 0.8;
 }
 
+.div-block-1785 {
+  width: 100%;
+}
+
 .div-block-1567 {
   display: flex;
   justify-content: flex-start;
@@ -235,4 +240,14 @@
 
 .text-sm.text-underline.text-grey-600.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.text-sm.text-underline.text-blue-500.view-req {
+  position: absolute;
+  left: auto;
+  top: 10px;
+  right: 16px;
+  bottom: auto;
+
+  cursor: pointer;
 }

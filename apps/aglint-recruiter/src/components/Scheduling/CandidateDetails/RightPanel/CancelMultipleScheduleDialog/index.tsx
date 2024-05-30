@@ -116,13 +116,15 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
           });
         });
 
-        await supabase.from('application_logs').update({
-          ...selectedApplicationLog,
-          metadata: {
-            ...selectedApplicationLog.metadata,
-            action: 'canceled',
-          },
-        });
+        await supabase
+          .from('application_logs')
+          .update({
+            metadata: {
+              ...selectedApplicationLog.metadata,
+              action: 'canceled',
+            },
+          })
+          .eq('id', selectedApplicationLog.id);
       }
     } catch {
       //

@@ -19,7 +19,12 @@ import IconCancelSchedule from '../../ScheduleDetails/Icons/IconCancelSchedule';
 import IconReschedule from '../../ScheduleDetails/Icons/IconReschedule';
 import { formatTimeWithTimeZone } from '../../utils';
 import { useAllActivities } from '../hooks';
-import { setMultipleCancelOpen, setSelectedApplicationLog } from '../store';
+import {
+  setIsScheduleNowOpen,
+  setMultipleCancelOpen,
+  setSelectedApplicationLog,
+  setStepScheduling,
+} from '../store';
 import CancelMultipleScheduleDialog from './CancelMultipleScheduleDialog';
 import IconApplicationLogs from './IconApplicationLogs';
 import IconSessionType from './IconSessionType';
@@ -69,8 +74,8 @@ function RightPanel({
                     isRescheduleVisible={false}
                     isContentVisible={Boolean(act.metadata?.sessions)}
                     slotContent={
-                      <Stack spacing={2}>
-                        <Stack spacing={1}>
+                      <Stack spacing={2} width={'100%'}>
+                        <Stack spacing={1} width={'100%'}>
                           {act?.metadata?.sessions?.map((session) => {
                             return (
                               <ConfirmScheduleList
@@ -118,7 +123,9 @@ function RightPanel({
                                 slotIcon={<IconReschedule />}
                                 onClickProps={{
                                   onClick: () => {
-                                    //
+                                    setStepScheduling('reschedule');
+                                    setSelectedApplicationLog(act);
+                                    setIsScheduleNowOpen(true);
                                   },
                                 }}
                               />

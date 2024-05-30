@@ -28,7 +28,7 @@ export interface SchedulingApplication {
     start_date: string;
     end_date: string;
   };
-  stepScheduling: 'pick_date' | 'preference' | 'slot_options';
+  stepScheduling: 'pick_date' | 'preference' | 'slot_options' | 'reschedule';
   members: InterviewScheduleContextType['members'];
   schedulingOptions: PlanCombinationRespType[];
   isScheduleNowOpen: boolean;
