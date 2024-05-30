@@ -1,6 +1,6 @@
- 
 export const emailsDirRelativePath =
-  process.env.NEXT_PUBLIC_EMAILS_DIR_RELATIVE_PATH ?? '.\\src\\emails';
+  process.env.NEXT_PUBLIC_EMAILS_DIR_RELATIVE_PATH ??
+  `.${process.env.NEXT_PUBLIC_OS_PATH_SEPARATOR}src${process.env.NEXT_PUBLIC_OS_PATH_SEPARATOR}emails`;
 
 export const userProjectLocation = '.';
 // this trickery to find the path separator for the OS is for this to work both on the client
