@@ -81,6 +81,14 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.embed_flex.fixedd {
+  width: 23px;
+}
+
 #w-node-_43adaaae-1a1b-734e-b593-cfcafc2e1daf-fc2e1daf {
   grid-column-start: span 1;
   grid-column-end: span 1;

@@ -39,11 +39,15 @@
 
 .text-lg {
   font-size: 18px;
-  line-height: 14px;
+  line-height: 24px;
 }
 
 .fw-semibold {
   font-weight: 600;
+}
+
+.text-grey-600 {
+  color: #68737d;
 }
 
 .grid-2-copy {

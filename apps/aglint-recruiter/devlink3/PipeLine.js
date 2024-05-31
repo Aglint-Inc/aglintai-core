@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
@@ -29,7 +30,7 @@ export function PipeLine({
         <_Builtin.Block className={_utils.cx(_styles, "arrow_left")} tag="div">
           <_Builtin.HtmlEmbed
             className={_utils.cx(_styles, "embed_flex")}
-            value="%3Csvg%20width%3D%2234%22%20height%3D%2289%22%20viewBox%3D%220%200%2034%2089%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M34%200V89H0C0%2089%2034%2047%2034%2044.5C34%2042%200%200%200%200H34Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
+            value="%3Csvg%20width%3D%2234%22%20height%3D%2289%22%20viewbox%3D%220%200%2034%2089%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M34%200V89H0C0%2089%2034%2047%2034%2044.5C34%2042%200%200%200%200H34Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
           />
         </_Builtin.Block>
       ) : null}
@@ -63,7 +64,7 @@ export function PipeLine({
         <_Builtin.Block className={_utils.cx(_styles, "arrow_right")} tag="div">
           <_Builtin.HtmlEmbed
             className={_utils.cx(_styles, "embed_flex")}
-            value="%3Csvg%20width%3D%2234%22%20height%3D%2289%22%20viewBox%3D%220%200%2034%2089%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0%200L34%2044L0%2089.5V0Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
+            value="%3Csvg%20width%3D%2234%22%20height%3D%2289%22%20viewbox%3D%220%200%2034%2089%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0%200L34%2044L0%2089.5V0Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
           />
         </_Builtin.Block>
       ) : null}

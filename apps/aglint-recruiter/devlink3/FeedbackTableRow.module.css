@@ -153,6 +153,10 @@
   color: #68737d;
 }
 
+.fw-semibold.name-text {
+  color: #467b7c;
+}
+
 .text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
@@ -166,8 +170,17 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .text-gray-600.is_link {
   color: #337fbd;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-gray-600.underline {
   text-decoration: underline;
   cursor: pointer;
 }
@@ -200,6 +213,23 @@
 .text-sm {
   font-size: 12px;
   line-height: 16px;
+}
+
+.text-grey-600.text-underline {
+  text-decoration: underline;
+}
+
+.text-underline {
+  text-decoration: underline;
+}
+
+.text-grey-600.text-underline.cursor-pointer {
+  transition: opacity 250ms ease;
+  cursor: pointer;
+}
+
+.text-grey-600.text-underline.cursor-pointer:hover {
+  opacity: 0.8;
 }
 
 .recommendation_info {

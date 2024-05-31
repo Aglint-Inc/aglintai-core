@@ -96,15 +96,23 @@
   color: #68737d;
 }
 
-.text-grey_600.hide {
-  display: none;
+.fw-semibold.name-text {
+  color: #467b7c;
 }
 
 .hide {
   display: none;
 }
 
+.text-grey_600.hide {
+  display: none;
+}
+
 .text-grey_600.text-underline {
+  text-decoration: underline;
+}
+
+.text-underline {
   text-decoration: underline;
 }
 
@@ -115,6 +123,11 @@
 .text-sm {
   font-size: 12px;
   line-height: 16px;
+}
+
+.text-grey_600.text-underline-copy {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .mt-10 {

@@ -46,6 +46,10 @@
   text-decoration: underline;
 }
 
+.text-underline {
+  text-decoration: underline;
+}
+
 .text-grey-600.text-underline.cursor-pointer {
   transition: opacity 250ms ease;
   cursor: pointer;
@@ -53,6 +57,10 @@
 
 .text-grey-600.text-underline.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .div-block-1570 {
@@ -174,7 +182,7 @@
 }
 
 .arrow-tooltips-drawer.grey-600 {
-  background-color: var(--grey-600);
+  background-color: var(--grey-600\<deleted\|variable-440e5aa6\>);
 }
 
 .arrow-tooltips-drawer.grey-600.task {
@@ -247,6 +255,11 @@
 
 .text-grey_600.width-80px {
   width: 80px;
+}
+
+.text-grey_600.text-underline-copy {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .div-block-1545 {

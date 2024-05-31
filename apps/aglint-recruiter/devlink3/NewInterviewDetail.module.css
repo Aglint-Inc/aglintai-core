@@ -109,6 +109,14 @@
   color: #68737d;
 }
 
+.fw-semibold.name-text {
+  color: #467b7c;
+}
+
+.hide {
+  display: none;
+}
+
 .div-block-1499 {
   display: flex;
   overflow: auto;

@@ -35,6 +35,10 @@
   text-decoration: underline;
 }
 
+.text-underline {
+  text-decoration: underline;
+}
+
 .text-blue-500.text-underline.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -42,6 +46,10 @@
 
 .text-blue-500.text-underline.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .text-sm {
@@ -60,6 +68,10 @@
 
 .text-blue-500.text-capital {
   text-transform: uppercase;
+}
+
+.fw-semibold {
+  font-weight: 600;
 }
 
 .div-block-1708 {

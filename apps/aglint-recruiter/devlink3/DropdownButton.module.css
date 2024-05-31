@@ -47,6 +47,10 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .icons.cursor-pointer.mr-20 {
   margin-right: 20px;
   transition-property: none;
@@ -63,4 +67,8 @@
   top: -10px;
   right: auto;
   bottom: auto;
+}
+
+.icons.pointer {
+  cursor: pointer;
 }

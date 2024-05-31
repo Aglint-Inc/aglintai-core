@@ -93,6 +93,10 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .icons.cursor-pointer.mr-20 {
   margin-right: 20px;
   transition-property: none;
@@ -201,6 +205,10 @@
   color: #467b7c;
 }
 
+.hide {
+  display: none;
+}
+
 .div-block-1391 {
   display: flex;
   flex-direction: column;
@@ -218,10 +226,6 @@
 }
 
 .div-block-1390.hide {
-  display: none;
-}
-
-.hide {
   display: none;
 }
 
