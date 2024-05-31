@@ -39,6 +39,7 @@ import { InterviewConfirmedCard } from '@/devlink2/InterviewConfirmedCard';
 import { RequestReschedule } from '@/devlink2/RequestReschedule';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { ScheduleButton } from '@/devlink3/ScheduleButton';
+import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
 import NotFoundPage from '@/src/pages/404';
 import { API_get_scheduling_reason } from '@/src/pages/api/get_scheduling_reason/types';
@@ -49,7 +50,6 @@ import toast from '@/src/utils/toast';
 
 import AUIButton from '../../Common/AUIButton';
 import Loader from '../../Common/Loader';
-import CandidateSlotLoad from '../../Common/Lotties/CandidateSlotLoad';
 import CompanyLogo from '../../JobApplicationsDashboard/Common/CompanyLogo';
 import { getBreakLabel } from '../../JobNewInterviewPlan/utils';
 import DateRange from '../../Tasks/Components/DateRange';

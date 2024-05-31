@@ -12,10 +12,10 @@ import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import Loader from '../../Common/Loader';
+import InCompleteLottie from '../../Common/Lotties/CandidateDatabase_IncompleteLottie';
 import MuiAvatar from '../../Common/MuiAvatar';
 import UITypography from '../../Common/UITypography';
 import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
-import InCompleteLottie from '../IncompleteLottie';
 import { newCandJob } from '../Search/Search';
 import AddToJobOptions from './CandAddToJobMenu';
 import { useCandFilter } from './CandDbProvider';

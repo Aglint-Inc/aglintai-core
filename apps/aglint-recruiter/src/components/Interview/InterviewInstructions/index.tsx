@@ -9,7 +9,7 @@ import { useCandidateAssessment } from '@/src/context/CandidateAssessment';
 import { useInterviewContext } from '@/src/context/InterviewContext';
 import { supabase } from '@/src/utils/supabase/client';
 
-import Loader from '../../SignUpComp/Loader/Index';
+import Loader from '../../Common/Lotties/SignUp/Index';
 function InterviewInstructions() {
   const { assessmentDetails, fetching } = useCandidateAssessment();
   const { startInterview, video_Urls, startVideoInterview, videoAssessment } =

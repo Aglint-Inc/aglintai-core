@@ -14,6 +14,7 @@ import { NewChat } from '@/devlink3/NewChat';
 import { NewChatButton } from '@/devlink3/NewChatButton';
 import { SuggetionPill } from '@/devlink3/SuggetionPill';
 import { WidgetGrid3X3 } from '@/devlink3/WidgetGrid3X3';
+import { CalculatingResumeScore } from '@/public/lottie/CalculatingResumeScore';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { useJobAssistantContext } from '@/src/context/JobAssistant';
@@ -25,7 +26,6 @@ import {
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 
 import Loader from '../../Common/Loader';
-import { CalculatingResumeScore } from '../../Common/Lotties/Calculating';
 import MuiAvatar from '../../Common/MuiAvatar';
 import ApplicationDetails from '../../JobApplicationsDashboard/ApplicationCard/ApplicationDetails';
 import CandidateCard from './CandidateCard';

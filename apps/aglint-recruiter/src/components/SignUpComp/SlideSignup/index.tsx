@@ -15,7 +15,7 @@ import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import Loader from '../../Common/Loader';
+import Loader from '../../Common/Lotties/Loader';
 import { Details, SignUpError } from './types';
 import { handleEmail, handlePassword, stepObj } from './utils';
 
