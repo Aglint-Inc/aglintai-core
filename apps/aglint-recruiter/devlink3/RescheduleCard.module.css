@@ -150,6 +150,10 @@
   text-decoration: underline;
 }
 
+.text-underline {
+  text-decoration: underline;
+}
+
 .text-blue-500.text-underline.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -160,12 +164,7 @@
 }
 
 .cursor-pointer {
-  transition: opacity 250ms ease;
   cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.8;
 }
 
 .text-sm {

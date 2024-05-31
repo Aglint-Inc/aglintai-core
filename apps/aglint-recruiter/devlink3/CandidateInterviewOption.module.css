@@ -25,6 +25,10 @@
   display: none;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .div-block-1615 {
   display: flex;
   justify-content: flex-start;
@@ -73,6 +77,10 @@
   top: -10px;
   right: auto;
   bottom: auto;
+}
+
+.icons.pointer {
+  cursor: pointer;
 }
 
 .text-green-500 {

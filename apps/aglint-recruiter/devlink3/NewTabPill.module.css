@@ -1,4 +1,4 @@
-.div-block-1681 {
+.tab_pill {
   position: relative;
 
   display: flex;
@@ -10,23 +10,23 @@
   cursor: pointer;
 }
 
-.div-block-1681:hover {
+.tab_pill:hover {
   opacity: 0.8;
 }
 
-.div-block-1680 {
+.tab_pill_default {
   display: flex;
   height: 100%;
-  padding: 10px 28px;
+  padding: var(--space-2) var(--space-5);
   justify-content: center;
   align-items: center;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
 
-  color: #68737d;
+  color: var(--neutral-11);
 }
 
-.div-block-1682 {
+.tab_pill_active {
   position: absolute;
   left: 0%;
   top: 0%;
@@ -34,27 +34,25 @@
   bottom: 0%;
 
   display: flex;
-  padding: 10px 28px;
+  padding: var(--space-2) var(--space-5);
   justify-content: center;
   align-items: center;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
 
-  border-bottom: 0px none #1f73b7;
+  background-color: var(--white);
 
-  background-color: white;
-
-  color: #1f73b7;
+  color: var(--neutral-12);
 }
 
-.div-block-1736 {
+.active_pill_underline {
   position: absolute;
   left: 0%;
   top: auto;
   right: 0%;
-  bottom: 0%;
+  bottom: -1px;
 
   height: 2px;
 
-  background-color: #1f73b7;
+  background-color: var(--accent-10);
 }

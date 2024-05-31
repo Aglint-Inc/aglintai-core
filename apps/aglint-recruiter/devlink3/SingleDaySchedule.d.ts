@@ -11,4 +11,5 @@ declare function SingleDaySchedule(props: {
   isMultiDay?: Types.Visibility.VisibilityConditions;
   onClickSingleDay?: Types.Devlink.RuntimeProps;
   rotateArrow?: Types.Devlink.RuntimeProps;
+  isRotateArrowVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

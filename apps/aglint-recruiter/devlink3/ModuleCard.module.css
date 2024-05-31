@@ -161,6 +161,10 @@
   margin-top: 2px;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .module_params.cursor-pointer {
   cursor: pointer;
 }

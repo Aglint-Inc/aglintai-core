@@ -63,6 +63,10 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .icons.cursor-pointer.mr-20 {
   margin-right: 20px;
   transition-property: none;
@@ -79,6 +83,10 @@
   top: -10px;
   right: auto;
   bottom: auto;
+}
+
+.icons.pointer {
+  cursor: pointer;
 }
 
 .text-yellow-800 {
@@ -105,6 +113,10 @@
   text-decoration: underline;
 }
 
+.text-underline {
+  text-decoration: underline;
+}
+
 .text-blue-500.text-underline.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -112,6 +124,11 @@
 
 .text-blue-500.text-underline.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
 }
 
 .text-blue-500.cursor-pointer {
@@ -129,7 +146,7 @@
 
 .button_primary {
   display: flex;
-  padding: 6px 16px;
+  padding: 8px 16px;
   justify-content: center;
   align-items: center;
   grid-column-gap: 10px;
@@ -175,6 +192,16 @@
 
 .button_primary.greay_btn.width-auto {
   width: auto;
+}
+
+.button_primary.greay_btn.width-auto-copy {
+  width: auto;
+  background-color: var(--accent-3);
+  color: var(--accent-11);
+}
+
+.button_primary.greay_btn.width-auto-copy:hover {
+  background-color: var(--accent-4);
 }
 
 .button_primary.is_outline {
@@ -238,6 +265,10 @@
   background-color: #d8dcde;
 }
 
+.hide {
+  display: none;
+}
+
 .button_primary.success {
   padding-top: 8px;
   padding-bottom: 8px;
@@ -246,5 +277,23 @@
 .button_primary.green-btn {
   padding-top: 8px;
   padding-bottom: 8px;
-  background-color: #228f67;
+  background-color: var(--accent-9);
+}
+
+.button_primary.large_btn {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.button_primary.green_btn {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.button_primary.large_btn-copy {
+  position: relative;
+  overflow: hidden;
+  width: 300px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }

@@ -154,6 +154,10 @@
   color: #68737d;
 }
 
+.fw-semibold.name-text {
+  color: #467b7c;
+}
+
 .header_session {
   display: flex;
   padding: 10px 20px;

@@ -57,6 +57,10 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .icons.cursor-pointer.mr-20 {
   margin-right: 20px;
   transition-property: none;
@@ -113,6 +117,10 @@
   text-decoration: underline;
 }
 
+.text-underline {
+  text-decoration: underline;
+}
+
 .text-blue-500.text-underline.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -138,6 +146,10 @@
 
 .text-blue-500.text-capital {
   text-transform: uppercase;
+}
+
+.fw-semibold {
+  font-weight: 600;
 }
 
 .div-block-1660 {
@@ -192,10 +204,6 @@
 
 .color-grey-600 {
   color: #68737d;
-}
-
-.fw-semibold {
-  font-weight: 600;
 }
 
 .text-sm.text-capitalize {
@@ -254,6 +262,16 @@
 
 .text-sm.text-underline.text-grey-600.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.text-sm.text-underline.text-blue-500.view-req {
+  position: absolute;
+  left: auto;
+  top: 10px;
+  right: 16px;
+  bottom: auto;
+
+  cursor: pointer;
 }
 
 .relative-1 {
