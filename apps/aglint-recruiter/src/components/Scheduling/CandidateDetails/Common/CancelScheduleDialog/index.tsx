@@ -79,7 +79,6 @@ function CancelScheduleDialog({ refetch }: { refetch: () => void }) {
           title: `Cancelled session ${selectedSession.name}`,
           application_id: selectedApplication.id,
           logged_by: 'user',
-          type: 'schedule',
           supabase,
           created_by: recruiterUser.user_id,
         });

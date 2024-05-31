@@ -168,7 +168,6 @@ function RescheduleDialog({
           title: `Rescheduled interview with new booking link for ${schedule.interview_session.name}`,
           logged_by: 'user',
           application_id: schedule.applications.id,
-          type: 'schedule',
           supabase,
           created_by: recruiterUser.user_id,
         });
