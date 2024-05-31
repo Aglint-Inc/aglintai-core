@@ -102,7 +102,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     addScheduleActivity({
       title: `Auto scheduling ${selectedDebrief.interview_session.name}`,
       logged_by: 'user',
-      type: 'schedule',
       application_id,
       task_id: task.task.id,
       supabase: supabaseAdmin,
