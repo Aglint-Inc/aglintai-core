@@ -21,10 +21,9 @@ import { formatTimeWithTimeZone } from '../../utils';
 import { useAllActivities } from '../hooks';
 import {
   setIsScheduleNowOpen,
-  setMultipleCancelOpen,
-  setSelectedApplicationLog,
   setStepScheduling,
-} from '../store';
+} from '../SelfSchedulingDrawer/store';
+import { setMultipleCancelOpen, setSelectedApplicationLog } from '../store';
 import CancelMultipleScheduleDialog from './CancelMultipleScheduleDialog';
 import IconApplicationLogs from './IconApplicationLogs';
 import IconSessionType from './IconSessionType';

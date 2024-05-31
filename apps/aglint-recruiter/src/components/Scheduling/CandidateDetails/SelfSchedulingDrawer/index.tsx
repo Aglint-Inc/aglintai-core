@@ -10,47 +10,53 @@ import toast from '@/src/utils/toast';
 
 import { useGetScheduleApplication } from '../hooks';
 import {
-  setDateRange,
   setinitialSessions,
-  setIsScheduleNowOpen,
-  setSchedulingOptions,
   setSelectedApplicationLog,
   setSelectedSessionIds,
-  setStepScheduling,
   useSchedulingApplicationStore,
 } from '../store';
 import RescheduleSlot from './RescheduleSlot';
+import StepScheduleFilter from './StepScheduleFilter';
 import SelectDateRange from './StepSelectDate';
 import StepSlotOptions from './StepSlotOptions';
+import {
+  setDateRange,
+  setIsScheduleNowOpen,
+  setSchedulingOptions,
+  setStepScheduling,
+  useSchedulingFlowStore,
+} from './store';
 
 function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
   const currentDate = dayjs();
   const initialEndDate = currentDate.add(7, 'day');
   const { recruiter, recruiterUser } = useAuthDetails();
   const {
-    dateRange,
     selectedApplication,
     initialSessions,
-    isScheduleNowOpen,
     selectedSessionIds,
-    schedulingOptions,
-    selCoordinator,
-    stepScheduling,
     selectedCombIds,
-    scheduleFlow,
     selectedApplicationLog,
   } = useSchedulingApplicationStore((state) => ({
-    dateRange: state.dateRange,
     selectedApplication: state.selectedApplication,
     initialSessions: state.initialSessions,
-    isScheduleNowOpen: state.isScheduleNowOpen,
     selectedSessionIds: state.selectedSessionIds,
-    schedulingOptions: state.schedulingOptions,
-    selCoordinator: state.selCoordinator,
-    stepScheduling: state.stepScheduling,
     selectedCombIds: state.selectedCombIds,
-    scheduleFlow: state.scheduleFlow,
     selectedApplicationLog: state.selectedApplicationLog,
+  }));
+
+  const {
+    dateRange,
+    schedulingOptions,
+    isScheduleNowOpen,
+    scheduleFlow,
+    stepScheduling,
+  } = useSchedulingFlowStore((state) => ({
+    dateRange: state.dateRange,
+    schedulingOptions: state.schedulingOptions,
+    isScheduleNowOpen: state.isScheduleNowOpen,
+    scheduleFlow: state.scheduleFlow,
+    stepScheduling: state.stepScheduling,
   }));
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
@@ -85,7 +91,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
           is_debrief: isDebrief,
           recruiter_id: recruiter.id,
           recruiterUser,
-          selCoordinator,
+          selCoordinator: null,
           selectedApplication,
           selectedSessionIds,
           selectedDebrief: schedulingOptions.find(
@@ -177,6 +183,8 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                 <SelectDateRange />
               ) : stepScheduling === 'reschedule' ? (
                 <RescheduleSlot />
+              ) : stepScheduling === 'preference' ? (
+                <StepScheduleFilter />
               ) : (
                 <StepSlotOptions isDebrief={isDebrief} />
               )}

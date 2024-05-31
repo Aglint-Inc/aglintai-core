@@ -8,8 +8,8 @@ import { ScheduleTypeButton } from '@/devlink3/ScheduleTypeButton';
 import {
   setIsScheduleNowOpen,
   setScheduleFlow,
-  useSchedulingApplicationStore,
-} from '../store';
+} from '../SelfSchedulingDrawer/store';
+import { useSchedulingApplicationStore } from '../store';
 
 function TopBarButtons() {
   const router = useRouter();
