@@ -14,7 +14,7 @@ import {
 import { ApplicationList } from '@/src/components/Scheduling/Candidates/utils';
 import { ReadJobApplicationApi } from '@/src/pages/api/job/jobApplications/read';
 import { AssessmentResult } from '@/src/queries/assessment/types';
-import { Job } from '@/src/queries/job/types';
+import { Job } from '@/src/queries/jobs/types';
 
 import { TasksAgentContextType } from '../TasksContextProvider/TasksContextProvider';
 import useProviderJobApplicationActions from './hooks';

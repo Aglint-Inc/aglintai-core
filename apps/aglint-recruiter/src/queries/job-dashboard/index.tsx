@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { supabase } from '@/src/utils/supabase/client';
 
-import { Job } from '../job/types';
+import { Job } from '../jobs/types';
 import { jobDashboardQueryKeys } from './keys';
 import { DashboardTypes } from './types';
 

@@ -10,7 +10,7 @@ import { JobEmptyState } from '@/devlink/JobEmptyState';
 import { JobsListingCard } from '@/devlink/JobsListingCard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { FilterHeader } from '@/src/context/Tasks/Filters/FilterHeader';
-import { Job } from '@/src/queries/job/types';
+import { Job } from '@/src/queries/jobs/types';
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 import ROUTES from '@/src/utils/routing/routes';
 

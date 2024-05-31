@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { ScoreJson } from '@/src/context/JobApplicationsContext/types';
 import { palette } from '@/src/context/Theme/Theme';
-import { Job } from '@/src/queries/job/types';
+import { Job } from '@/src/queries/jobs/types';
 
 const Priority = {
   low: '#467B7C',

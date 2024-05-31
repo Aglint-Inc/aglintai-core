@@ -10,8 +10,8 @@ import {
   useJobRefresh,
   useJobUIUpdate,
   useJobUpdate,
-} from '@/src/queries/job';
-import { Job } from '@/src/queries/job/types';
+} from '@/src/queries/jobs';
+import { Job } from '@/src/queries/jobs/types';
 
 import { JobApplicationSections } from '../JobApplicationsContext/types';
 import { hashCode } from '../JobDashboard/hooks';

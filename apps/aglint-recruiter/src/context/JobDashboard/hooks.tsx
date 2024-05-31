@@ -15,7 +15,6 @@ import {
 } from '@/src/queries/assessment';
 import { Assessment } from '@/src/queries/assessment/types';
 import { useInterviewPlans } from '@/src/queries/interview-plans';
-import { Job } from '@/src/queries/job/types';
 import {
   useJobDashboardRefresh,
   useJobInterviewPlanEnabled,
@@ -27,6 +26,7 @@ import {
 } from '@/src/queries/job-dashboard';
 import { useJobScoringPoll } from '@/src/queries/job-scoring-param';
 import { useJobWorkflow } from '@/src/queries/job-workflow';
+import { Job } from '@/src/queries/jobs/types';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';

@@ -5,7 +5,7 @@ import { DB } from '@aglint/shared-types';
 import { Applications, ApplicationsUpdate } from '@aglint/shared-types';
 
 import { selectJobApplicationQuery } from '@/src/apiUtils/job/jobApplications/read/utils';
-import { Job } from '@/src/queries/job/types';
+import { Job } from '@/src/queries/jobs/types';
 import { supabase } from '@/src/utils/supabase/client';
 
 import {
