@@ -29,10 +29,12 @@ export const fetchIntsCalEventsDetails = async (
     all_events: [],
     tokens: i.schedule_auth as any,
     cal_date_events: {},
-    freeTimes: [],
+    freeTimes: {},
     int_schedule_setting: i.scheduling_settings,
     isCalenderConnected: false,
-    work_hours: [],
+    work_hours: {},
+    day_off: {},
+    holiday: {},
   }));
 
   const getCalEventType = (cal_event_summary: string): CalConflictType => {
@@ -60,7 +62,7 @@ export const fetchIntsCalEventsDetails = async (
     let newInt: InterDetailsType = {
       ...int,
       cal_date_events: {},
-      freeTimes: [],
+      freeTimes: {},
       isCalenderConnected: false,
     };
     try {
@@ -124,6 +126,8 @@ export const fetchIntsCalEventsDetails = async (
       isCalenderConnected: i.isCalenderConnected,
       tokens: i.tokens,
       work_hours: i.work_hours,
+      day_off: {},
+      holiday: {},
     };
   });
 

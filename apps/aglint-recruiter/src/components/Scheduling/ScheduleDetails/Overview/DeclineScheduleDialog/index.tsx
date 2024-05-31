@@ -66,7 +66,6 @@ function DeclineScheduleDialog({
           title: `Declined ${schedule.interview_session.name}. Reason: ${reason} `,
           application_id: schedule.applications.id,
           logged_by: 'user',
-          type: 'schedule',
           supabase: supabase,
           created_by: recruiterUser.user_id,
         });

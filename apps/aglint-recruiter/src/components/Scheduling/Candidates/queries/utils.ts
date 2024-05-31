@@ -1,4 +1,4 @@
-import { DatabaseTable, DB } from '@aglint/shared-types';
+import { DatabaseEnums, DatabaseTable, DB } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 
 import { supabase } from '@/src/utils/supabase/client';
@@ -43,31 +43,31 @@ export const addScheduleActivity = async ({
   application_id,
   description,
   task_id,
-  type,
   logged_by,
   supabase,
   created_by,
   metadata,
+  module = 'scheduler',
 }: {
   title: string;
   application_id: string;
   description?: string;
   task_id?: string;
-  type: DatabaseTable['application_logs']['type'];
   logged_by: DatabaseTable['application_logs']['logged_by'];
   supabase: ReturnType<typeof createServerClient<DB>>;
   created_by: string;
   metadata?: DatabaseTable['application_logs']['metadata'];
+  module?: DatabaseEnums['modules'];
 }) => {
   const { data, error } = await supabase.from('application_logs').insert({
     application_id,
     title,
     description,
     task_id,
-    type,
     created_by,
     logged_by,
     metadata,
+    module,
   });
 
   if (error) {

@@ -110,20 +110,24 @@ export type InterDetailsType = {
   cal_date_events: {
     [cal_date_str: string]: MinCalEventDetailTypes[];
   };
-  freeTimes: InterDayFreeTime[];
-  work_hours: InterDayWorkHr[];
+  freeTimes: InterDayFreeTime;
+  work_hours: InterDayWorkHr;
   isCalenderConnected: boolean;
   int_schedule_setting: schedulingSettingType;
+  day_off: InterDayHolidayOff;
+  holiday: InterDayHolidayOff;
 };
 
 export type InterDayFreeTime = {
-  curr_date: string;
-  free_times: TimeDurationType[];
+  [curr_date: string]: TimeDurationType[];
 };
 
 export type InterDayWorkHr = {
-  curr_date: string;
-  work_hrs: TimeDurationType[];
+  [curr_date: string]: TimeDurationType[];
+};
+
+export type InterDayHolidayOff = {
+  [date: string]: TimeDurationType[];
 };
 
 export type CompServiceKeyCred = {
