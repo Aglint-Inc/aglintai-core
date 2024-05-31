@@ -3,14 +3,14 @@ import { Avatar, Drawer, LinearProgress, Stack } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { LottieComponentProps } from 'lottie-react';
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { NavBottom } from '@/devlink/NavBottom';
 import { CompanyProfileHeader } from '@/devlink2/CompanyProfileHeader';
 import { NavProfileBlock } from '@/devlink2/NavProfileBlock';
 import { ResponsiveBanner } from '@/devlink2/ResponsiveBanner';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import ResizeWindowContext from '@/src/context/ResizeWindow/context';
+import { useResizeWindow } from '@/src/context/ResizeWindow/ResizeWindow';
 import ROUTES from '@/src/utils/routing/routes';
 
 import Icon from '../Common/Icons/Icon';
@@ -25,7 +25,7 @@ export default function AppLayout({ children }) {
   const { recruiter, recruiterUser, userDetails } = useAuthDetails();
   const queryClient = useQueryClient();
   const router = useRouter();
-  const { windowSize } = useContext(ResizeWindowContext);
+  const { windowSize } = useResizeWindow();
   const [expand, setExpand] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(false);
   const companyName = recruiter?.name;

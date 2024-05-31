@@ -5,9 +5,13 @@ import React from 'react';
 import { SchedulingDashboard as SchedulingDashboardDev } from '@/devlink3/SchedulingDashboard';
 import ROUTES from '@/src/utils/routing/routes';
 
-import InterviewConversion from './InterviewConversion';
+import CancelReasons from './CancelReasons';
+import CompletedInterviewBarChart from './CompletedInterview';
+import InterviewersAnalyticCards from './InterviewersAnalyticCards';
 import InterviewMeetingStatus from './InterviewMeetingStatus';
 import LeaderBoardWidget from './LeaderBoardWidget';
+import RecentRescheduleCancel from './RecentRescheduleCancel';
+import ScheduleAnalyticsCards from './ScheduleAnalyticsCards';
 import TrainingProgress from './TrainingProgress';
 import InterviewTrainingStatus from './TrainingStatus';
 
@@ -40,9 +44,7 @@ const SchedulingDashboard = () => {
         }}
         slotFirstGrid={
           <>
-            <Stack>
-              <InterviewConversion />
-            </Stack>
+            <CancelReasons />
             <LeaderBoardWidget />
           </>
         }
@@ -53,6 +55,14 @@ const SchedulingDashboard = () => {
           </>
         }
         slotTrainingProgress={<TrainingProgress />}
+        slotScheduleCount={<ScheduleAnalyticsCards />}
+        slotRecentReschedule={<RecentRescheduleCancel />}
+        slotCompletedInterview={
+          <>
+            <CompletedInterviewBarChart />
+            <InterviewersAnalyticCards />
+          </>
+        }
       />
     </Stack>
   );

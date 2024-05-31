@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { RecentRescheduleList } from "./RecentRescheduleList";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./RecentReschedule.module.css";
 
@@ -32,7 +32,9 @@ export function RecentReschedule({
         className={_utils.cx(_styles, "div-block-1782")}
         tag="div"
       >
-        {slotRecentRescheduleList ?? <RecentRescheduleList />}
+        {slotRecentRescheduleList ?? (
+          <SlotComp componentNeme="RecentResceduleList" />
+        )}
       </_Builtin.Block>
     </_Component>
   );
