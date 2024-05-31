@@ -209,8 +209,9 @@ const WorkflowBrowser = () => {
           textWorkflowTrigger={getTriggerOption(trigger, phase)}
           textJobs={`Used in ${jobCount} job${jobCount === 1 ? '' : 's'}`}
           onClickDelete={{ style: { display: 'none' } }}
+          isEditButton={false}
           onClickEdit={{
-            style: { display: 'none' },
+            onClick: () => handleClick(checked ? 'delete' : 'insert', id),
           }}
         />
       );
