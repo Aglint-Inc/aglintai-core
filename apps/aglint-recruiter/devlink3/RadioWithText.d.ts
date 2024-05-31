@@ -6,4 +6,5 @@ declare function RadioWithText(props: {
   isSelected?: Types.Visibility.VisibilityConditions;
   textRadio?: React.ReactNode;
   onClickRadio?: Types.Devlink.RuntimeProps;
+  isText?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

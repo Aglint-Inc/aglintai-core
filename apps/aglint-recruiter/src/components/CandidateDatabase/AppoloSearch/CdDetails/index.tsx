@@ -7,7 +7,7 @@ import { CandidateDialog } from '@/devlink/CandidateDialog';
 import { CandidateExperience } from '@/devlink/CandidateExperience';
 import { CdExperienceCard } from '@/devlink/CdExperienceCard';
 import { EmailOutReach } from '@/devlink/EmailOutReach';
-import LoaderGrey from '@/src/components/Common/LoaderGrey';
+import LoaderGrey from '@/public/lottie/LoaderGrey';
 import { palette } from '@/src/context/Theme/Theme';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';

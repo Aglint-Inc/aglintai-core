@@ -117,6 +117,10 @@
   color: #87929d;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .div-block-1452 {
   display: flex;
   flex-direction: column;

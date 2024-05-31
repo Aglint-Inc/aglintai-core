@@ -58,6 +58,14 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.embed_flex.fixedd {
+  width: 23px;
+}
+
 .relative-1 {
   position: relative;
   z-index: 1;

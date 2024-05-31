@@ -11,7 +11,7 @@ import React, { Dispatch, useState } from 'react';
 import { ScheduleOptions } from '@/devlink2/ScheduleOptions';
 import { ButtonGrey } from '@/devlink3/ButtonGrey';
 import { ButtonPrimaryDefaultRegular } from '@/devlink3/ButtonPrimaryDefaultRegular';
-import LoaderGrey from '@/src/components/Common/LoaderGrey';
+import LoaderGrey from '@/public/lottie/LoaderGrey';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -168,7 +168,6 @@ function RescheduleDialog({
           title: `Rescheduled interview with new booking link for ${schedule.interview_session.name}`,
           logged_by: 'user',
           application_id: schedule.applications.id,
-          type: 'schedule',
           supabase,
           created_by: recruiterUser.user_id,
         });

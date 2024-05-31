@@ -7,7 +7,7 @@ import {
   LinearScale,
   Tooltip,
 } from 'chart.js/auto';
-import React, { useState } from 'react';
+import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import { NewInterviewDetail } from '@/devlink3/NewInterviewDetail';
@@ -15,7 +15,6 @@ import { NoData } from '@/devlink3/NoData';
 import { useInterviewMeetingStatus } from '@/src/queries/scheduling-dashboard';
 
 import Loader from '../../Common/Loader';
-import SchedulingDropdown from './SchedulingDropdown';
 import { interviewMeetingTimeFormat } from './utils';
 
 type MeetingStatusObjType = ReturnType<
@@ -28,17 +27,18 @@ type InterviewMeetingStatusCountProps = {
   };
 };
 export const InterviewMeetingStatus = () => {
-  const [type, setType] =
-    useState<InterviewMeetingStatusProps['type']>('month');
   return (
     <NewInterviewDetail
-      slotDropdownButton={
-        <SchedulingDropdown
-          type={type}
-          onChange={(e) => setType(e.target.value as typeof type)}
-        />
+      textHeading={'Declined Interviews'}
+      // slotDropdownButton={
+      //   <SchedulingDropdown
+      //     type={type}
+      //     onChange={(e) => setType(e.target.value as typeof type)}
+      //   />
+      // }
+      slotInterviewDetailPill={
+        <InterviewMeetingStatusComponent type={'month'} />
       }
-      slotInterviewDetailPill={<InterviewMeetingStatusComponent type={type} />}
     />
   );
 };
@@ -80,7 +80,7 @@ const InterviewMeetingStatusComponent = ({
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 
 const StackedBar = ({
-  interviewMeetingStatus: { timeline, cancelled, completed, not_scheduled },
+  interviewMeetingStatus: { timeline, cancelled },
 }: InterviewMeetingStatusCountProps) => {
   return (
     <Bar
@@ -130,31 +130,10 @@ const StackedBar = ({
         labels: timeline,
         datasets: [
           {
-            label: 'Completed interviews',
-            data: completed,
-            backgroundColor: '#228F67',
-            barThickness: 20,
-            borderSkipped: 'left',
-            borderRadius: {
-              topLeft: 5,
-              bottomLeft: 5,
-            },
-          },
-          {
             label: 'Cancelled interviews',
             data: cancelled,
-            backgroundColor: '#E35B66',
-            barThickness: 20,
-          },
-          {
-            label: 'Not scheduled interviews',
-            data: not_scheduled,
             backgroundColor: '#D8DCDE',
             barThickness: 20,
-            borderRadius: {
-              topRight: 5,
-              bottomRight: 5,
-            },
           },
         ],
       }}

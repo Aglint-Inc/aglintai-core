@@ -201,7 +201,6 @@ function RequestAvailability() {
         selectedApplication.candidates.first_name,
         selectedApplication.candidates.last_name,
       )} to Schedule Interviews for ${selectedSessions.map((ele) => ele.name).join(',')}`,
-      type: 'schedule',
       task_id: task ? task.id : null,
     });
     refetch(); // refetching activities

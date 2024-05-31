@@ -9,7 +9,7 @@ import { ButtonPrimarySmall } from '@/devlink/ButtonPrimarySmall';
 import { CdSavedList } from '@/devlink/CdSavedList';
 import { SavedList } from '@/devlink/SavedList';
 import { SavedListMenu } from '@/devlink/SavedListMenu';
-import LoaderGrey from '@/src/components/Common/LoaderGrey';
+import LoaderGrey from '@/public/lottie/LoaderGrey';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ROUTES from '@/src/utils/routing/routes';

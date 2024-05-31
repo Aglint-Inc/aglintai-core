@@ -44,7 +44,7 @@
 
 .div-block-1434.height-40.job-cand {
   padding-left: 1%;
-  grid-template-columns: 20px 1fr 130px 110px 160px;
+  grid-template-columns: 20px 1fr 130px 110px 160px 160px 130px;
 }
 
 .div-block-1434.height-53 {
@@ -55,7 +55,7 @@
 
 .div-block-1434.height-53.job-cand {
   padding-left: 1%;
-  grid-template-columns: 20px 1fr 130px 110px 160px;
+  grid-template-columns: 20px 1fr 130px 110px 160px 160px 130px;
   cursor: pointer;
 }
 
@@ -110,6 +110,10 @@
 
 .text-grey-500 {
   color: #87929d;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .div-block-1440 {
@@ -190,11 +194,19 @@
   bottom: auto;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .text-blue-500 {
   color: #337fbd;
 }
 
 .text-blue-500.text-underline {
+  text-decoration: underline;
+}
+
+.text-underline {
   text-decoration: underline;
 }
 
@@ -205,6 +217,11 @@
 
 .text-blue-500.text-underline.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
 }
 
 .text-blue-500.cursor-pointer {
@@ -218,6 +235,10 @@
 
 .text-blue-500.text-capital {
   text-transform: uppercase;
+}
+
+.fw-semibold {
+  font-weight: 600;
 }
 
 .div-block-1453 {

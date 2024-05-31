@@ -6,7 +6,13 @@
 import { InterviewerSessionRelation, RecruiterUserType } from '../data.types';
 import { InterviewSessionApiType } from './types';
 
-export type CalConflictType = 'soft' | 'ooo' | 'cal_event';
+export type CalConflictType =
+  | 'soft'
+  | 'ooo'
+  | 'out_of_working_hours'
+  | 'holiday'
+  | 'day_off'
+  | 'cal_event';
 export type ConflictReason = {
   conflict_type:
     | CalConflictType

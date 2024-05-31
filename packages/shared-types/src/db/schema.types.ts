@@ -153,9 +153,9 @@ export type Database = {
           id: string
           logged_by: Database["public"]["Enums"]["application_logger"]
           metadata: Json | null
+          module: Database["public"]["Enums"]["modules"]
           task_id: string | null
           title: string | null
-          type: Database["public"]["Enums"]["application_logs_type"]
         }
         Insert: {
           application_id: string
@@ -165,9 +165,9 @@ export type Database = {
           id?: string
           logged_by?: Database["public"]["Enums"]["application_logger"]
           metadata?: Json | null
+          module?: Database["public"]["Enums"]["modules"]
           task_id?: string | null
           title?: string | null
-          type?: Database["public"]["Enums"]["application_logs_type"]
         }
         Update: {
           application_id?: string
@@ -177,9 +177,9 @@ export type Database = {
           id?: string
           logged_by?: Database["public"]["Enums"]["application_logger"]
           metadata?: Json | null
+          module?: Database["public"]["Enums"]["modules"]
           task_id?: string | null
           title?: string | null
-          type?: Database["public"]["Enums"]["application_logs_type"]
         }
         Relationships: [
           {
@@ -1051,6 +1051,7 @@ export type Database = {
           id: string
           instructions: string | null
           interview_schedule_id: string
+          meeting_flow: Database["public"]["Enums"]["meeting_flow"]
           meeting_json: Json | null
           meeting_link: string | null
           organizer_id: string | null
@@ -1066,6 +1067,7 @@ export type Database = {
           id?: string
           instructions?: string | null
           interview_schedule_id: string
+          meeting_flow?: Database["public"]["Enums"]["meeting_flow"]
           meeting_json?: Json | null
           meeting_link?: string | null
           organizer_id?: string | null
@@ -1081,6 +1083,7 @@ export type Database = {
           id?: string
           instructions?: string | null
           interview_schedule_id?: string
+          meeting_flow?: Database["public"]["Enums"]["meeting_flow"]
           meeting_json?: Json | null
           meeting_link?: string | null
           organizer_id?: string | null
@@ -4733,7 +4736,6 @@ export type Database = {
         | "user"
         | "system"
         | "candidate"
-      application_logs_type: "standard" | "schedule" | "interview"
       application_processing_status:
         | "not started"
         | "processing"
@@ -4765,6 +4767,17 @@ export type Database = {
         | "cancel_interview_session"
         | "init_email_agent"
         | "confirmation_mail_to_organizer"
+        | "interview"
+        | "rejection"
+        | "phone_screening"
+        | "interview_resend"
+        | "application_received"
+        | "phone_screening_resend"
+        | "request_candidate_slot"
+        | "candidate_cancel_request"
+        | "candidate_reschedule_request"
+        | "recruiter_rescheduling_email"
+        | "candidate_availability_request"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"
@@ -4782,6 +4795,8 @@ export type Database = {
         | "zoom"
       interviewer_type: "qualified" | "shadow" | "reverse_shadow"
       job_scoring_param_status: "loading" | "success"
+      meeting_flow: "self_scheduling" | "candidate_request" | "debrief"
+      modules: "standard" | "scheduler" | "assessment" | "jobs"
       permissions_type:
         | "jobs_create"
         | "jobs_read"

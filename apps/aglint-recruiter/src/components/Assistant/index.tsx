@@ -14,11 +14,11 @@ import { WelcomeMatAssistant } from '@/devlink2/WelcomeMatAssistant';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 
-import ChatMessageLoader from '../AssistantChat/ChatMessageLoader';
+import ChatMessageLoader from '../Common/Lotties/ChatMessageLoader';
+import Loader from '../Common/Lotties/Loader';
 import UITypography from '../Common/UITypography';
 import ResumePreviewer from '../JobApplicationsDashboard/ApplicationCard/ApplicationDetails/ResumePreviewer';
 import { formatTimeStamp } from '../JobApplicationsDashboard/utils';
-import Loader from '../SignUpComp/Loader/Index';
 
 function Assistant() {
   const { recruiter } = useAuthDetails();

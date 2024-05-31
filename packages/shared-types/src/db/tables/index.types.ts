@@ -1,6 +1,6 @@
 import { Database } from "../schema.types";
 import { Type } from "../utils.types";
-import { CustomApplicationLogs } from "./application_logs.types copy";
+import { CustomApplicationLogs } from "./application_logs.types";
 import { CustomApplications } from "./applications.types";
 import { CandidateRequestAvailability } from "./candidate_request_availability.type";
 import { CustomInterviewSessionCancel } from "./interview_session_cancel.types";

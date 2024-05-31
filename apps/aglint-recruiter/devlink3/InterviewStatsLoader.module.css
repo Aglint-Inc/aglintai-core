@@ -26,6 +26,18 @@
   height: 56px;
 }
 
+.div-block-1507.height-56.interviewers {
+  grid-template-columns: 40% 20% 20% 20%;
+}
+
+.div-block-1507.height-56.interviewers.height-auto {
+  height: auto;
+}
+
+.div-block-1507.interviewers {
+  grid-template-columns: 40% 20% 20% 20%;
+}
+
 .div-block-1508 {
   padding: 16px;
 }
@@ -42,6 +54,11 @@
   align-items: center;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
+}
+
+.div-block-1508.padd-10 {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .div-block-1601 {

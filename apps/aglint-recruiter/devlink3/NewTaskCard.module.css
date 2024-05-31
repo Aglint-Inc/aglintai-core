@@ -28,6 +28,22 @@
   grid-row-gap: 8px;
 }
 
+.div-block-1435.overview-wrap {
+  justify-content: space-between;
+}
+
+.div-block-1435.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+.div-block-1435.space-between {
+  justify-content: space-between;
+}
+
 .div-block-1449 {
   position: absolute;
   left: 0%;

@@ -4,6 +4,8 @@ export const scheduling_options_schema = z.object({
   make_training_optional: z.boolean().default(true),
   use_recruiting_blocks: z.boolean().default(true),
   check_next_minutes: z.number().default(30),
+  cand_start_time: z.number().default(8),
+  cand_end_time: z.number().default(18),
   include_conflicting_slots: z
     .object({
       show_soft_conflicts: z.boolean().default(true),
@@ -14,8 +16,7 @@ export const scheduling_options_schema = z.object({
       calender_not_connected: z.boolean().default(false),
       day_off: z.boolean().default(false),
       holiday: z.boolean().default(false),
-      override_work_hr_start: z.number().min(0).nullable().default(null),
-      override_work_hr_end: z.number().max(24).nullable().default(null),
+      out_of_working_hrs: z.boolean().default(false),
     })
     .default({}), // Ensure defaults for nested object
 });

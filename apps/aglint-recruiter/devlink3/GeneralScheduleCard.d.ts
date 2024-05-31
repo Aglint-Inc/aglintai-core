@@ -41,4 +41,6 @@ declare function GeneralScheduleCard(props: {
   isEditOptionVisible?: Types.Visibility.VisibilityConditions;
   slotBreakCard?: Types.Devlink.Slot;
   isBreakCardVisible?: Types.Visibility.VisibilityConditions;
+  isRolesvisible?: Types.Visibility.VisibilityConditions;
+  slotRoles?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -12,7 +12,7 @@ import { ButtonPrimary } from '@/devlink2/ButtonPrimary';
 import { CalendarPick } from '@/devlink2/CalendarPick';
 import { DatePicker } from '@/devlink2/DatePicker';
 import { TimePick } from '@/devlink2/TimePick';
-import CandidateSlotLoad from '@/src/components/Common/Lotties/CandidateSlotLoad';
+import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';

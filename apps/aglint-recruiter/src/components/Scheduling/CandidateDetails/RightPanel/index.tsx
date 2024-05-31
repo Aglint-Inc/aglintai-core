@@ -19,7 +19,12 @@ import IconCancelSchedule from '../../ScheduleDetails/Icons/IconCancelSchedule';
 import IconReschedule from '../../ScheduleDetails/Icons/IconReschedule';
 import { formatTimeWithTimeZone } from '../../utils';
 import { useAllActivities } from '../hooks';
-import { setMultipleCancelOpen, setSelectedApplicationLog } from '../store';
+import {
+  setIsScheduleNowOpen,
+  setMultipleCancelOpen,
+  setSelectedApplicationLog,
+  setStepScheduling,
+} from '../store';
 import CancelMultipleScheduleDialog from './CancelMultipleScheduleDialog';
 import IconApplicationLogs from './IconApplicationLogs';
 import IconSessionType from './IconSessionType';
@@ -53,6 +58,10 @@ function RightPanel({
               </Stack>
             ) : (
               activities?.map((act, ind) => {
+                const sessions =
+                  act?.metadata?.sessions?.sort(
+                    (s1, s2) => s1.session_order - s2.session_order,
+                  ) || [];
                 return (
                   <ActivitiesCard
                     key={act.id}
@@ -69,9 +78,9 @@ function RightPanel({
                     isRescheduleVisible={false}
                     isContentVisible={Boolean(act.metadata?.sessions)}
                     slotContent={
-                      <Stack spacing={2}>
-                        <Stack spacing={1}>
-                          {act?.metadata?.sessions?.map((session) => {
+                      <Stack spacing={2} width={'100%'}>
+                        <Stack spacing={1} width={'100%'}>
+                          {sessions.map((session) => {
                             return (
                               <ConfirmScheduleList
                                 key={session.id}
@@ -118,7 +127,9 @@ function RightPanel({
                                 slotIcon={<IconReschedule />}
                                 onClickProps={{
                                   onClick: () => {
-                                    //
+                                    setStepScheduling('reschedule');
+                                    setSelectedApplicationLog(act);
+                                    setIsScheduleNowOpen(true);
                                   },
                                 }}
                               />

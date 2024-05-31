@@ -5,4 +5,5 @@ declare function NewInterviewDetail(props: {
   as?: React.ElementType;
   slotInterviewDetailPill?: Types.Devlink.Slot;
   slotDropdownButton?: Types.Devlink.Slot;
+  textHeading?: React.ReactNode;
 }): React.JSX.Element;

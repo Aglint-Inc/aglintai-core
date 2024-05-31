@@ -1,5 +1,4 @@
 import { Stack } from '@mui/material';
-import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -11,6 +10,7 @@ import { useJobs } from '@/src/context/JobsContext';
 import { useCurrentJob } from '@/src/queries/job-assessment/keys';
 
 import Loader from '../Common/Loader';
+import { capitalize } from '../JobApplicationsDashboard/utils';
 import AssessmentResetWrapper from '../NewAssessment/Common/wrapper/resetWrapper';
 import JobAssessment from './list';
 

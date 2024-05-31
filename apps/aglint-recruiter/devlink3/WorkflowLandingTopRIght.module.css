@@ -2,6 +2,7 @@
   position: relative;
 
   display: flex;
+  height: var(--space-6);
   padding: 6px 12px;
   justify-content: flex-start;
   align-items: center;
@@ -9,9 +10,9 @@
   grid-row-gap: 8px;
 
   border: 1px none #1f73b7;
-  border-radius: 4px;
+  border-radius: 6px;
 
-  background-color: #1f73b7;
+  background-color: var(--accent-9);
 
   transition: all 200ms ease;
 
@@ -21,7 +22,7 @@
 }
 
 .new_workflow_btn:hover {
-  background-color: hsla(206.8421052631579, 75.10%, 36.17%, 1.00);
+  background-color: var(--accent-11);
 }
 
 .embed_flex {
@@ -56,12 +57,7 @@
 }
 
 .cursor-pointer {
-  transition: opacity 250ms ease;
   cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.8;
 }
 
 .embed_flex.fixedd {

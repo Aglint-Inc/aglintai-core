@@ -7,3 +7,4 @@ export * from './data.types';
 export * from './aglintApi/index';
 export * from './api_payloads/index';
 export * from './scheduleTypes/index';
+export * from './aglint-mail/index';
