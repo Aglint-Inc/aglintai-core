@@ -282,7 +282,6 @@ export type Database = {
           is_new: boolean
           is_resume_fetching: boolean
           job_id: string
-          module: Database["public"]["Enums"]["modules"]
           overall_interview_score: number
           overall_score: number
           phone_screening: Json | null
@@ -306,7 +305,6 @@ export type Database = {
           is_new?: boolean
           is_resume_fetching?: boolean
           job_id: string
-          module?: Database["public"]["Enums"]["modules"]
           overall_interview_score?: number
           overall_score?: number
           phone_screening?: Json | null
@@ -330,7 +328,6 @@ export type Database = {
           is_new?: boolean
           is_resume_fetching?: boolean
           job_id?: string
-          module?: Database["public"]["Enums"]["modules"]
           overall_interview_score?: number
           overall_score?: number
           phone_screening?: Json | null
