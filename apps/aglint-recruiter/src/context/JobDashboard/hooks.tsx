@@ -24,7 +24,7 @@ import {
   useJobSkills,
   useJobTenureAndExperience,
 } from '@/src/queries/job-dashboard';
-import { useJobScoringPoll } from '@/src/queries/job-scoring-param';
+import { useJobScoringPoll } from '@/src/queries/job-scoring';
 import { useJobWorkflow } from '@/src/queries/job-workflow';
 import { Job } from '@/src/queries/jobs/types';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
@@ -77,7 +77,7 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
   const interviewPlanEnabled = useJobInterviewPlanEnabled(job);
   const interviewPlans = useInterviewPlans();
   const scoringPoll = useJobScoringPoll(job);
-  const workflows = useJobWorkflow({ job_id: job?.id });
+  const workflows = useJobWorkflow({ id: job?.id });
 
   const refreshDashboard = useJobDashboardRefresh();
 

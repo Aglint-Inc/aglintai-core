@@ -30,7 +30,7 @@ const useWorkflowContext = () => {
   );
 
   const handleUpdateWorkflow = useCallback(
-    (payload: Parameters<typeof updateWorkflowMutation>[0]) =>
+    (payload: Parameters<typeof updateWorkflowMutation>[0]['payload']) =>
       updateWorkflowMutation({ id: workflow?.id ?? null, payload }),
     [workflow],
   );

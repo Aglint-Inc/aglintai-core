@@ -5,13 +5,13 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { jobQueryKeys } from './keys';
+import { jobsQueryKeys } from './keys';
 import { Job, JobCreate, JobInsert } from './types';
 
 export const useJobRead = () => {
   const queryClient = useQueryClient();
   const { recruiter_id } = useAuthDetails();
-  const { queryKey } = jobQueryKeys.jobs();
+  const { queryKey } = jobsQueryKeys.jobs();
   const response = useQuery({
     queryKey,
     queryFn: () => readJobs(recruiter_id),
@@ -25,7 +25,7 @@ export const useJobRead = () => {
 
 export const useJobCreate = () => {
   const { recruiter_id } = useAuthDetails();
-  const { queryKey } = jobQueryKeys.jobs();
+  const { queryKey } = jobsQueryKeys.jobs();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (newJob: Omit<JobCreate, 'jd_json'>) => {
@@ -74,7 +74,7 @@ export const useJobCreate = () => {
 
 export const useJobUpdate = () => {
   const queryClient = useQueryClient();
-  const { queryKey } = jobQueryKeys.jobs();
+  const { queryKey } = jobsQueryKeys.jobs();
   const mutation = useMutation({
     mutationFn: (job: Parameters<typeof updateJob>[0]) => updateJob(job),
     onMutate: (job) => {
@@ -102,7 +102,7 @@ export const useJobUpdate = () => {
 
 export const useJobUIUpdate = () => {
   const queryClient = useQueryClient();
-  const { queryKey } = jobQueryKeys.jobs();
+  const { queryKey } = jobsQueryKeys.jobs();
   const mutate = (newJob: Partial<Job>) => {
     const previousJobs = queryClient.getQueryData<Job[]>(queryKey);
     const newJobs = previousJobs.reduce((acc, curr) => {
@@ -117,7 +117,7 @@ export const useJobUIUpdate = () => {
 
 export const useJobDelete = () => {
   const queryClient = useQueryClient();
-  const { queryKey } = jobQueryKeys.jobs();
+  const { queryKey } = jobsQueryKeys.jobs();
   const mutation = useMutation({
     mutationFn: (id: Job['id']) => deleteJob(id),
     onMutate: (id) => {
@@ -139,7 +139,7 @@ export const useJobDelete = () => {
 
 export const useJobRefresh = () => {
   const queryClient = useQueryClient();
-  const { queryKey } = jobQueryKeys.jobs();
+  const { queryKey } = jobsQueryKeys.jobs();
   const mutation = useMutation({
     mutationFn: (id: Job['id']) => readJob(id),
     onSuccess: (data) => {

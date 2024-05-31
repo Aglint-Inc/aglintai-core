@@ -5,7 +5,17 @@ import type React from 'react';
 
 import ROUTES from '../utils/routing/routes';
 
-const queryClient = new QueryClient();
+export const GC_TIME = 5 * 60 * 1000;
+export const STALE_TIME = 0;
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      gcTime: GC_TIME,
+      staleTime: STALE_TIME,
+    },
+  },
+});
 
 type Pages = typeof ROUTES;
 

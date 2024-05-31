@@ -66,9 +66,9 @@ const JobWorkflows = () => {
   const { setPopup } = useJobDashboardStore(({ setPopup }) => ({
     setPopup,
   }));
-  const updateMutations = useJobWorkflowUpdateMutations({ job_id: job?.id });
-  const deleteMutations = useJobWorkflowDeleteMutations({ job_id: job?.id });
-  const { mutate } = useJobWorkflowDisconnect({ job_id: job?.id });
+  const updateMutations = useJobWorkflowUpdateMutations({ id: job?.id });
+  const deleteMutations = useJobWorkflowDeleteMutations({ id: job?.id });
+  const { mutate } = useJobWorkflowDisconnect({ id: job?.id });
   if (status === 'pending')
     return (
       <>
@@ -142,7 +142,7 @@ const WorkflowBrowser = () => {
       setSelections,
     }),
   );
-  const { mutate } = useJobWorkflowConnect({ job_id: job?.id });
+  const { mutate } = useJobWorkflowConnect({ id: job?.id });
   const workflowIds = (workflows ?? []).map(({ id }) => id);
 
   const handleClose = useCallback(() => {

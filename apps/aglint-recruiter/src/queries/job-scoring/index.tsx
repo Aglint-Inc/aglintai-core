@@ -2,24 +2,26 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { supabase } from '@/src/utils/supabase/client';
 
-import { jobQueryKeys } from '../jobs/keys';
+import { GC_TIME } from '..';
+import { jobsQueryKeys } from '../jobs/keys';
 import { Job } from '../jobs/types';
 import { jobScoringParamKeys } from './keys';
 
 export const useJobScoringPoll = (job: Job) => {
   const queryClient = useQueryClient();
-  const job_id = job?.id;
-  const { queryKey: jobQueryKey } = jobQueryKeys.jobs();
-  const { queryKey } = jobScoringParamKeys.job({ job_id });
+  const id = job?.id;
+  const { queryKey: jobQueryKey } = jobsQueryKeys.jobs();
+  const { queryKey } = jobScoringParamKeys.scoring({ id });
   const jobs = queryClient.getQueryData<Job[]>(jobQueryKey);
   const query = useQuery({
     queryKey,
     enabled: !!job,
+    gcTime: job ? GC_TIME : 0,
     refetchInterval: job?.scoring_criteria_loading ? 5000 : false,
     queryFn: async () => {
-      const polledData = await readJobScoring(job_id);
+      const polledData = await readJobScoring(id);
       const newJobs = jobs.reduce((acc, curr) => {
-        if (curr.id === job_id) acc.push({ ...curr, ...polledData });
+        if (curr.id === id) acc.push({ ...curr, ...polledData });
         else acc.push(curr);
         return acc;
       }, [] as Job[]);

@@ -1,47 +1,44 @@
 import { useRouter } from 'next/router';
 
-import { appKey } from '..';
+import type { JobRequisite } from '../job';
+import { jobQueryKeys } from '../job/keys';
 
 export const jobDashboardQueryKeys = {
-  all: { queryKey: [appKey, 'job_dashboard'] as string[] },
-  job: ({ job_id }: { job_id: string }) => ({
-    queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }],
+  dashboard: (args: JobRequisite) => ({
+    queryKey: [...jobQueryKeys.job(args).queryKey, 'dashboard'] as string[],
   }),
-  matches: ({ job_id }: { job_id: string }) => ({
-    queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'matches'],
+  matches: (args: JobRequisite) => ({
+    queryKey: [...jobDashboardQueryKeys.dashboard(args).queryKey, 'matches'],
   }),
-  skills: ({ job_id }: { job_id: string }) => ({
-    queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'skills'],
+  skills: (args: JobRequisite) => ({
+    queryKey: [...jobDashboardQueryKeys.dashboard(args).queryKey, 'skills'],
   }),
-  locations: ({ job_id }: { job_id: string }) => ({
-    queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'locations'],
+  locations: (args: JobRequisite) => ({
+    queryKey: [...jobDashboardQueryKeys.dashboard(args).queryKey, 'locations'],
   }),
-  assessments: ({ job_id }: { job_id: string }) => ({
+  assessments: (args: JobRequisite) => ({
     queryKey: [
-      ...jobDashboardQueryKeys.all.queryKey,
-      { job_id },
+      ...jobDashboardQueryKeys.dashboard(args).queryKey,
       'assessments',
     ],
   }),
-  tenureAndExperience: ({ job_id }: { job_id: string }) => ({
+  tenureAndExperience: (args: JobRequisite) => ({
     queryKey: [
-      ...jobDashboardQueryKeys.all.queryKey,
-      { job_id },
+      ...jobDashboardQueryKeys.dashboard(args).queryKey,
       'tenureAndExperience',
     ],
   }),
-  schedules: ({ job_id }: { job_id: string }) => ({
-    queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'schedules'],
+  schedules: (args: JobRequisite) => ({
+    queryKey: [...jobDashboardQueryKeys.dashboard(args).queryKey, 'schedules'],
   }),
-  interviewPlanEnabled: ({ job_id }: { job_id: string }) => ({
+  interviewPlanEnabled: (args: JobRequisite) => ({
     queryKey: [
-      ...jobDashboardQueryKeys.all.queryKey,
-      { job_id },
+      ...jobDashboardQueryKeys.dashboard(args).queryKey,
       'interviewPlanEnabled',
     ],
   }),
-  workflows: ({ job_id }: { job_id: string }) => ({
-    queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'workflows'],
+  workflows: (args: JobRequisite) => ({
+    queryKey: [...jobDashboardQueryKeys.dashboard(args).queryKey, 'workflows'],
   }),
 } as const;
 

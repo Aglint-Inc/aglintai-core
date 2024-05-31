@@ -1,25 +1,21 @@
-import { appKey, argsToKeys } from '..';
-import { GetJobWorkflow } from '.';
+import { appKey } from '..';
+import type { JobRequisite } from '../job';
+import { jobQueryKeys } from '../job/keys';
 
 export const jobWorkflowQueryKeys = {
-  all: { queryKey: [appKey, 'jobWorkflow'] as string[] },
-  workflow: (args: GetJobWorkflow) => ({
-    queryKey: [...jobWorkflowQueryKeys.all.queryKey, ...argsToKeys(args)],
+  workflow: (args: JobRequisite) => ({
+    queryKey: [...jobQueryKeys.job(args).queryKey, 'workflow'],
   }),
 } as const;
 
 export const jobWorkflowMutationKeys = {
-  all: { mutationKey: [appKey, 'jobWorkflow'] as string[] },
-  update: (args: GetJobWorkflow) => ({
-    mutationKey: [
-      ...jobWorkflowMutationKeys.all.mutationKey,
-      ...argsToKeys(args),
-    ],
+  job: (args: JobRequisite) => ({
+    mutationKey: [appKey, 'jobs', args] as string[],
   }),
-  delete: (args: GetJobWorkflow) => ({
-    mutationKey: [
-      ...jobWorkflowMutationKeys.all.mutationKey,
-      ...argsToKeys(args),
-    ],
+  update: (args: JobRequisite) => ({
+    mutationKey: [...jobWorkflowMutationKeys.job(args).mutationKey],
+  }),
+  delete: (args: JobRequisite) => ({
+    mutationKey: [...jobWorkflowMutationKeys.job(args).mutationKey],
   }),
 } as const;
