@@ -17,6 +17,7 @@ import { ScheduleUtils } from './ScheduleUtils';
 import {
   convertTimeDurStrToDayjsChunk,
   dayjsMax,
+  dayjsMin,
   isTimeChunksEnclosed,
   isTimeChunksLeftOverlapped,
   isTimeChunksOverLapps,
@@ -184,6 +185,10 @@ export const findEachInterviewerFreeTimes = (
     current_day: Dayjs,
   ) => {
     const int_timezone = interviewer.int_schedule_setting.timeZone.tzCode;
+    const cand_time: TimeDurationDayjsType = {
+      startTime: current_day.set('hour', api_options.cand_start_time),
+      endTime: current_day.set('hour', api_options.cand_end_time),
+    };
     const day1_interviewer_time: TimeDurationDayjsType & { day: string } = {
       startTime: userTzDayjs(current_day.startOf('day').toISOString()).tz(
         int_timezone,
@@ -208,24 +213,18 @@ export const findEachInterviewerFreeTimes = (
         .format('dddd'),
     };
 
-    let work_time_duration: TimeDurationType[] = [];
-    let curr_day_holidays: TimeDurationType[] = [];
-    let curr_day_offs: TimeDurationType[] = [];
     let day1_details = getCurrDayWorkingHours(
       day1_interviewer_time.startTime,
       interviewer,
     );
-    if (day1_details.holiday) {
-      curr_day_holidays.push({
-        ...day1_details.holiday,
-      });
-    }
-    if (day1_details.day_off) {
-      curr_day_offs.push({
-        ...day1_details.day_off,
-      });
-    }
-    if (day1_details.work_hour) {
+
+    let work_time_duration: TimeDurationType[] = [];
+    let curr_day_holidays: TimeDurationType[] = [];
+    let curr_day_offs: TimeDurationType[] = [];
+    if (
+      day1_interviewer_time.day === day2_interviewer_time.day &&
+      day1_details.work_hour
+    ) {
       const curr_day_work_hrs = getWorkHourFromIntAvil(
         {
           startTime: userTzDayjs(day1_details.work_hour.startTime).tz(
@@ -236,28 +235,39 @@ export const findEachInterviewerFreeTimes = (
         day1_interviewer_time,
       );
       const chunk_js = convertTimeDurStrToDayjsChunk(curr_day_work_hrs);
-      if (
-        chunk_js.startTime.tz(api_payload.candidate_tz).hour() <=
-          api_options.cand_start_time &&
-        chunk_js.endTime.tz(api_payload.candidate_tz).hour() >=
-          api_options.cand_start_time
-      ) {
-        curr_day_work_hrs.startTime = current_day
-          .set('hours', api_options.cand_start_time)
-          .tz(int_timezone)
-          .format();
+
+      if (isTimeChunksOverLapps(chunk_js, cand_time)) {
+        curr_day_work_hrs.startTime = dayjsMax(
+          chunk_js.startTime,
+          cand_time.startTime,
+        ).format();
+        curr_day_work_hrs.endTime = dayjsMin(
+          chunk_js.endTime,
+          cand_time.endTime,
+        ).format();
         work_time_duration.push({
           ...curr_day_work_hrs,
         });
       }
     }
-    let day2_work_hours = getCurrDayWorkingHours(
-      day2_interviewer_time.startTime,
-      interviewer,
-    );
+
+    if (day1_details.holiday) {
+      curr_day_holidays.push({
+        ...day1_details.holiday,
+      });
+    }
+    if (day1_details.day_off) {
+      curr_day_offs.push({
+        ...day1_details.day_off,
+      });
+    }
 
     // if candidate and interviewr are in same time zone
     if (day1_interviewer_time.day !== day2_interviewer_time.day) {
+      let day2_work_hours = getCurrDayWorkingHours(
+        day2_interviewer_time.startTime,
+        interviewer,
+      );
       if (day2_work_hours.work_hour) {
         const curr_day_work_hrs = getWorkHourFromIntAvil(
           {
@@ -298,7 +308,6 @@ export const findEachInterviewerFreeTimes = (
         });
       }
     }
-
     return { work_time_duration, curr_day_holidays, curr_day_offs };
   };
 

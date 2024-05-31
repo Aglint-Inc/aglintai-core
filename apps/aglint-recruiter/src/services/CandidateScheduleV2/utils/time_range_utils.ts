@@ -112,12 +112,20 @@ export const dayjsMin = (day1: Dayjs, day2: Dayjs) => {
 
 export const convertTimeDurStrToDayjsChunk = (
   chunk_str: TimeDurationType,
-  tz: string,
+  tz?: string,
 ) => {
-  const chunk: TimeDurationDayjsType = {
-    startTime: userTzDayjs(chunk_str.startTime).tz(tz),
-    endTime: userTzDayjs(chunk_str.endTime).tz(tz),
-  };
+  let chunk: TimeDurationDayjsType;
+  if (tz) {
+    chunk = {
+      startTime: userTzDayjs(chunk_str.startTime).tz(tz),
+      endTime: userTzDayjs(chunk_str.endTime).tz(tz),
+    };
+  } else {
+    chunk = {
+      startTime: userTzDayjs(chunk_str.startTime),
+      endTime: userTzDayjs(chunk_str.endTime),
+    };
+  }
 
   return chunk;
 };
