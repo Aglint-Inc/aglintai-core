@@ -2433,6 +2433,7 @@ textarea.w-select {
   --radius-5: 12px;
   --radius-3: 6px;
   --sand-10: #82827c;
+  --neutral-10: var(--sand-10);
   --radius-2: 4px;
   --space-2: 8px;
   --radius-1: 3px;
@@ -2441,6 +2442,7 @@ textarea.w-select {
   --space-4: 16px;
   --space-7: 40px;
   --sand-6: #dad9d6;
+  --neutral-6: var(--sand-6);
   --space-6: 32px;
   --space-1: 4px;
   --space-5: 24px;
@@ -2466,27 +2468,36 @@ textarea.w-select {
   --sand-a1: rgba(85, 85, 0, 0.01);
   --neutral-a1: var(--sand-a1);
   --sand-12: #21201c;
+  --neutral-12: var(--sand-12);
   --sand-a2: rgba(37, 37, 0, 0.03);
   --sand-7: #cfceca;
+  --neutral-7: var(--sand-7);
   --sand-11: #63635e;
+  --neutral-11: var(--sand-11);
   --sand-9: #8d8d86;
+  --neutral-9: var(--sand-9);
   --sand-8: #bcbbb5;
+  --neutral-8: var(--sand-8);
   --sand-5: #e2e1de;
+  --neutral-5: var(--sand-5);
   --sand-3: #f1f0ef;
+  --neutral-3: var(--sand-3);
   --sand-4: #e9e8e6;
+  --neutral-4: var(--sand-4);
   --sand-2: #f9f9f8;
+  --neutral-2: var(--sand-2);
   --sand-1: #fdfdfc;
+  --neutral-1: var(--sand-1);
   --text: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   --spacing\<deleted\|variable-6272ca72-0103-9b5c-18bd-925d9826d467\>: 2px;
-  --white-2: white;
 }
 
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  color: #2f3941;
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: -0.154px;
+  font-family: var(--text);
+  color: var(--neutral-12);
+  font-size: var(--font-size-2);
+  line-height: var(--line-height-2);
+  letter-spacing: var(--letter-spacing-2);
 }
 
 h1 {
