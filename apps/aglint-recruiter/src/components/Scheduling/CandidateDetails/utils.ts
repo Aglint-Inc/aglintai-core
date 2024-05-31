@@ -2,6 +2,7 @@
 import {
   APICandidateConfirmSlot,
   APIFindAvailability,
+  DatabaseTable,
   DB,
   InterviewMeetingTypeDb,
   InterviewSessionRelationTypeDB,
@@ -134,20 +135,22 @@ export const createCloneSession = async ({
 
     const organizer_id = await getOrganizerId(application_id, supabase);
 
-    const { error: errorInsertedMeetings } = await supabase
-      .from('interview_meeting')
-      .insert(
-        refSessions.map((ses) => {
-          return {
-            interview_schedule_id: ses.new_schedule_id,
-            status: ses.isSelected ? 'waiting' : 'not_scheduled',
-            instructions: refSessions.find((s) => s.id === ses.id)
-              ?.interview_module?.instructions,
-            id: ses.new_meeting_id,
-            organizer_id,
-          } as InterviewMeetingTypeDb;
-        }),
-      );
+    const { data: insertedMeetings, error: errorInsertedMeetings } =
+      await supabase
+        .from('interview_meeting')
+        .insert(
+          refSessions.map((ses) => {
+            return {
+              interview_schedule_id: ses.new_schedule_id,
+              status: ses.isSelected ? 'waiting' : 'not_scheduled',
+              instructions: refSessions.find((s) => s.id === ses.id)
+                ?.interview_module?.instructions,
+              id: ses.new_meeting_id,
+              organizer_id,
+            } as InterviewMeetingTypeDb;
+          }),
+        )
+        .select();
 
     if (errorInsertedMeetings) throw new Error(errorInsertedMeetings.message);
 
@@ -197,10 +200,17 @@ export const createCloneSession = async ({
       .filter((ses) => ses.isSelected)
       .map((session) => session.newId);
 
+    const updatedRefSessions = refSessions.map((ses) => ({
+      ...ses,
+      interview_meeting: insertedMeetings.find(
+        (meet) => meet.id === ses.new_meeting_id,
+      ),
+    }));
+
     return {
       schedule: data[0],
       session_ids: newSessionIds,
-      refSessions,
+      refSessions: updatedRefSessions,
     };
   } catch (e) {
     await supabase
@@ -225,6 +235,7 @@ export const sendToCandidate = async ({
   recruiterUser,
   supabase,
   user_tz,
+  selectedApplicationLog,
 }: {
   is_mail: boolean;
   is_debrief?: boolean;
@@ -246,6 +257,7 @@ export const sendToCandidate = async ({
   };
   supabase: ReturnType<typeof createServerClient<DB>>;
   user_tz: string;
+  selectedApplicationLog?: DatabaseTable['application_logs'];
 }) => {
   try {
     const scheduleName = getScheduleName({
@@ -437,6 +449,22 @@ export const sendToCandidate = async ({
           throw new Error('Error in scheduling debrief');
         }
       }
+    }
+
+    if (selectedApplicationLog) {
+      await supabase
+        .from('application_logs')
+        .update({
+          metadata: {
+            ...selectedApplicationLog.metadata,
+            action: 'rescheduled',
+          },
+        })
+        .eq('id', selectedApplicationLog.id);
+      await supabase
+        .from('interview_filter_json')
+        .delete()
+        .eq('id', selectedApplicationLog.metadata.filter_id);
     }
     return true;
   } catch (e) {
