@@ -178,6 +178,7 @@ export type Database = {
           id: string
           logged_by: Database["public"]["Enums"]["application_logger"]
           metadata: Json | null
+          module: Database["public"]["Enums"]["modules"]
           task_id: string | null
           title: string | null
         }
@@ -189,6 +190,7 @@ export type Database = {
           id?: string
           logged_by?: Database["public"]["Enums"]["application_logger"]
           metadata?: Json | null
+          module?: Database["public"]["Enums"]["modules"]
           task_id?: string | null
           title?: string | null
         }
@@ -200,6 +202,7 @@ export type Database = {
           id?: string
           logged_by?: Database["public"]["Enums"]["application_logger"]
           metadata?: Json | null
+          module?: Database["public"]["Enums"]["modules"]
           task_id?: string | null
           title?: string | null
         }
