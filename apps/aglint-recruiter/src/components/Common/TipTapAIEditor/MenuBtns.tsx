@@ -23,6 +23,7 @@ const MenuBtn = styled(IconButton)({
 import { CreateJobCheckItem } from '@/devlink/CreateJobCheckItem';
 import { GenerateJobDescAi } from '@/devlink/GenerateJobDescAi';
 import { LoadingGenerate } from '@/devlink/LoadingGenerate';
+import DescGenerating from '@/public/lottie/DescGenerating';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
   generateJobDescription,
@@ -36,7 +37,6 @@ import toast from '@/src/utils/toast';
 
 import { useJobForm } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import Icon from '../Icons/Icon';
-import DescGenerating from '../Lotties/DescGenerating';
 import UITypography from '../UITypography';
 import { useTipTap } from './context';
 

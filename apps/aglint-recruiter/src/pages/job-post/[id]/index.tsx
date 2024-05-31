@@ -6,9 +6,9 @@ import { useEffect, useState } from 'react';
 
 import { InvalidJob } from '@/devlink/InvalidJob';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
+import InvalidJobPostLottie from '@/public/lottie/InvalidJobPostLottie';
 import Seo from '@/src/components/Common/Seo';
 import JobPostPublic from '@/src/components/JobPost';
-import InvalidJobPostLottie from '@/src/components/JobPost/InvalidJobPostLottie';
 
 function JobPost() {
   const router = useRouter();

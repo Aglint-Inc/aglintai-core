@@ -13,13 +13,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
 import { Checkbox } from '@/devlink/Checkbox';
+import LoaderGrey from '@/public/lottie/LoaderGrey';
 import { palette } from '@/src/context/Theme/Theme';
 import { errorMessages } from '@/src/utils/errorMessages';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Icon from '../../Common/Icons/Icon';
-import LoaderGrey from '../../Common/LoaderGrey';
 import UITextField from '../../Common/UITextField';
 
 const initialError = () => {
