@@ -1,7 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { Stack } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useCallback, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
@@ -33,6 +32,7 @@ import toast from '@/src/utils/toast';
 import AUIButton from '../Common/AUIButton';
 import Loader from '../Common/Loader';
 import MuiAvatar from '../Common/MuiAvatar';
+import { capitalize } from '../JobApplicationsDashboard/utils';
 import OptimisticWrapper from '../NewAssessment/Common/wrapper/loadingWapper';
 import IconScheduleType from '../Scheduling/Candidates/ListCard/Icon';
 import InterviewDeletePopup, { InterviewDeletePopupType } from './deletePopup';

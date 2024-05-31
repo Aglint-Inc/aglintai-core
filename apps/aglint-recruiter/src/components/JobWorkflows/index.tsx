@@ -1,5 +1,4 @@
 import { Stack } from '@mui/material';
-import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 
 import { Breadcrum } from '@/devlink2/Breadcrum';
@@ -9,6 +8,7 @@ import { useCurrentJob } from '@/src/queries/job-assessment/keys';
 import ROUTES from '@/src/utils/routing/routes';
 
 import Loader from '../Common/Loader';
+import { capitalize } from '../JobApplicationsDashboard/utils';
 import JobWorkflow from './list';
 
 const JobWorkflowDashboard = () => {
