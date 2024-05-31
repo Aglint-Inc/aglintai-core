@@ -221,10 +221,7 @@ export const findEachInterviewerFreeTimes = (
     let work_time_duration: TimeDurationType[] = [];
     let curr_day_holidays: TimeDurationType[] = [];
     let curr_day_offs: TimeDurationType[] = [];
-    if (
-      day1_interviewer_time.day === day2_interviewer_time.day &&
-      day1_details.work_hour
-    ) {
+    if (day1_details.work_hour) {
       const curr_day_work_hrs = getWorkHourFromIntAvil(
         {
           startTime: userTzDayjs(day1_details.work_hour.startTime).tz(
@@ -240,11 +237,15 @@ export const findEachInterviewerFreeTimes = (
         curr_day_work_hrs.startTime = dayjsMax(
           chunk_js.startTime,
           cand_time.startTime,
-        ).format();
+        )
+          .tz(api_payload.candidate_tz)
+          .format();
         curr_day_work_hrs.endTime = dayjsMin(
           chunk_js.endTime,
           cand_time.endTime,
-        ).format();
+        )
+          .tz(api_payload.candidate_tz)
+          .format();
         work_time_duration.push({
           ...curr_day_work_hrs,
         });
@@ -281,16 +282,18 @@ export const findEachInterviewerFreeTimes = (
           day2_interviewer_time,
         );
         const chunk_js = convertTimeDurStrToDayjsChunk(curr_day_work_hrs);
-
-        if (
-          chunk_js.startTime.tz(api_payload.candidate_tz).hour() <=
-            api_options.cand_end_time &&
-          chunk_js.endTime.tz(api_payload.candidate_tz).hour() >=
-            api_options.cand_end_time
-        ) {
-          curr_day_work_hrs.endTime = current_day
-            .set('hours', api_options.cand_end_time)
-            .tz(int_timezone)
+        if (isTimeChunksOverLapps(chunk_js, cand_time)) {
+          curr_day_work_hrs.startTime = dayjsMax(
+            chunk_js.startTime,
+            cand_time.startTime,
+          )
+            .tz(api_payload.candidate_tz)
+            .format();
+          curr_day_work_hrs.endTime = dayjsMin(
+            chunk_js.endTime,
+            cand_time.endTime,
+          )
+            .tz(api_payload.candidate_tz)
             .format();
           work_time_duration.push({
             ...curr_day_work_hrs,
