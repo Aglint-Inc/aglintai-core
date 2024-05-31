@@ -446,7 +446,7 @@ const useJobFilterAndSort = (jobs: Job[]) => {
       }
     });
   }, [filteredJobs, sort.order, sort.type]);
-  let filterOptions = getFilterOptions(filteredJobs);
+  let filterOptions = getFilterOptions(jobs);
   return {
     sortOptions,
     setSort,
