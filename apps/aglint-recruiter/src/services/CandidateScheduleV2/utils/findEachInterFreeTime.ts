@@ -159,6 +159,7 @@ export const findEachInterviewerFreeTimes = (
       db_details.comp_schedule_setting,
       interviewer.cal_date_events[current_day.startOf('day').format()] ?? [], // when for particular day there are no events
       api_payload.candidate_tz,
+      api_options,
     );
 
     let nearest_curr_time = ScheduleUtils.getNearestCurrTime(
