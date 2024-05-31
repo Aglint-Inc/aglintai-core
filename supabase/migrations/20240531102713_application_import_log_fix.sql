@@ -7,13 +7,8 @@ AS $function$
 DECLARE 
   title TEXT;
   logged_by application_logger;
-  recruiter_id UUID;
   created_by UUID := NULL;
 BEGIN
-
-  SELECT public_jobs.recruiter_id INTO recruiter_id
-  FROM public_jobs
-  WHERE public_jobs.id = NEW.job_id;
 
   CASE NEW.source
     WHEN 'lever' THEN
@@ -31,15 +26,15 @@ BEGIN
     WHEN 'resume_upload' THEN
       title := 'Application uploaded through Resume upload';
       logged_by := 'user';
-      created_by := recruiter_id;
+      created_by := auth.uid();
     WHEN 'csv_upload' THEN
       title := 'Application uploaded through CSV upload';
       logged_by := 'user';
-      created_by := recruiter_id;
+      created_by := auth.uid();
     WHEN 'manual_upload' THEN
       title := 'Application uploaded through Manual upload';
       logged_by := 'user';
-      created_by := recruiter_id;
+      created_by := auth.uid();
   END CASE;
 
   INSERT INTO application_logs(application_id, title, created_by, logged_by, module)
