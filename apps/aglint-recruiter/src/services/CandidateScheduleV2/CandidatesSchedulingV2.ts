@@ -508,10 +508,10 @@ export class CandidatesSchedulingV2 {
          * @returns
          */
         const verifyForConflicts = (
-          sess_slot: SessionCombinationRespType,
+          sesn_slot: SessionCombinationRespType,
           sessn_idx: number,
         ) => {
-          const upd_sess_slot: SessionCombinationRespType = { ...sess_slot };
+          const upd_sess_slot: SessionCombinationRespType = { ...sesn_slot };
           const curr_sess_cal_dic_ints = cal_disc_inters[sessn_idx].inters;
           const curr_sess_indef_paused_ints =
             indef_paused_inters[sessn_idx].inters;
@@ -576,6 +576,7 @@ export class CandidatesSchedulingV2 {
               });
             }
 
+            //TEST:
             const curr_day_paused_inter = curr_sess_curr_day_paused_ints.find(
               (s) => s.user_id === attendee.user_id,
             );
@@ -587,29 +588,25 @@ export class CandidatesSchedulingV2 {
                 upd_sess_slot.session_id,
                 attendee.user_id,
               );
-              if (
-                isTimeChunksOverLapps(
-                  {
-                    startTime: last_paused_date
-                      .startOf('day')
-                      .tz(this.api_payload.candidate_tz),
-                    endTime: last_paused_date
-                      .endOf('day')
-                      .tz(this.api_payload.candidate_tz),
-                  },
-                  {
-                    startTime: this.getTimeInCandTimeZone(
-                      upd_sess_slot.start_time,
-                    ),
-                    endTime: this.getTimeInCandTimeZone(
-                      upd_sess_slot.start_time,
-                    ),
-                  },
-                )
-              ) {
+              const is_time_overlapps = isTimeChunksOverLapps(
+                {
+                  startTime: last_paused_date
+                    .startOf('day')
+                    .tz(this.api_payload.candidate_tz),
+                  endTime: last_paused_date
+                    .endOf('day')
+                    .tz(this.api_payload.candidate_tz),
+                },
+                {
+                  startTime: this.getTimeInCandTimeZone(
+                    upd_sess_slot.start_time,
+                  ),
+                  endTime: this.getTimeInCandTimeZone(upd_sess_slot.start_time),
+                },
+              );
+              if (is_time_overlapps) {
                 if (
-                  this.api_options.include_conflicting_slots
-                    .calender_not_connected
+                  this.api_options.include_conflicting_slots.interviewer_pause
                 ) {
                   int_conflic_reasons.push({
                     conflict_type: 'interviewer_paused',
@@ -734,15 +731,34 @@ export class CandidatesSchedulingV2 {
                 );
               });
             //conflicting events
-            conflicting_events.forEach((conf_ev) => {
-              const ev_type = conf_ev.cal_type;
+            for (let conf_event of conflicting_events) {
+              const ev_type = conf_event.cal_type;
+              if (
+                ev_type === 'soft' &&
+                !this.api_options.include_conflicting_slots.show_soft_conflicts
+              ) {
+                return null;
+              }
+              if (
+                ev_type === 'cal_event' &&
+                !this.api_options.include_conflicting_slots
+                  .show_conflicts_events
+              ) {
+                return null;
+              }
+              if (
+                ev_type === 'ooo' &&
+                !this.api_options.include_conflicting_slots.out_of_office
+              ) {
+                return null;
+              }
               int_conflic_reasons.push({
                 conflict_type: ev_type,
-                conflict_event: conf_ev.summary,
-                end_time: conf_ev.end.dateTime,
-                start_time: conf_ev.start.dateTime,
+                conflict_event: conf_event.summary,
+                end_time: conf_event.end.dateTime,
+                start_time: conf_event.start.dateTime,
               });
-            });
+            }
 
             if (int_conflic_reasons.length > 0) {
               upd_sess_slot.ints_conflicts.push({
