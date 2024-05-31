@@ -103,6 +103,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             job_id: post.id,
             status: 'new',
             candidate_file_id: fileId,
+            source: 'apply_link',
           })
           .select();
 
@@ -159,6 +160,7 @@ const insertCandidate = async (
         job_id: jobId,
         status: 'new',
         candidate_file_id: fileId,
+        source: 'apply_link',
       })
       .select();
 

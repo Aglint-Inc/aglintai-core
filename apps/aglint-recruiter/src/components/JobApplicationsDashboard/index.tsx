@@ -34,6 +34,7 @@ import { RcCheckbox } from '@/devlink2/RcCheckbox';
 import { SelectActionBar } from '@/devlink2/SelectActionBar';
 import { TopApplicantsTable } from '@/devlink2/TopApplicantsTable';
 import { NewTabPill } from '@/devlink3/NewTabPill';
+import NoApplicants from '@/public/lottie/NoApplicants';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
@@ -59,7 +60,6 @@ import ResumeUpload from './FileUpload';
 import { getBoundingStatus, useKeyPress, useMouseClick } from './hooks';
 import ImportCandidatesCSV from './ImportCandidatesCsv';
 import ImportManualCandidates from './ImportManualCandidates';
-import NoApplicants from './Lotties/NoApplicants';
 import SearchField from './SearchField';
 import { capitalize, handleOngoingWarning } from './utils';
 

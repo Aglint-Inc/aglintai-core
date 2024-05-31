@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
-import { RecruiterUserType } from '@aglint/shared-types';
+import { DatabaseTable, RecruiterUserType } from '@aglint/shared-types';
 import { DB } from '@aglint/shared-types';
 import { CookieOptions, createServerClient, serialize } from '@supabase/ssr';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -23,6 +23,7 @@ export interface ApiBodyParamsSendToCandidate {
   selectedDebrief: SchedulingApplication['schedulingOptions'][number];
   recruiterUser: RecruiterUserType;
   user_tz: string;
+  selectedApplicationLog: DatabaseTable['application_logs'];
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -60,6 +61,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       user_tz: bodyParams.user_tz,
       supabase: supabase,
       is_debrief: bodyParams.is_debrief,
+      selectedApplicationLog: bodyParams.selectedApplicationLog,
     });
 
     if (resSendToCandidate) {

@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@aglint/shared-utils": "*",
+    "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "5.14.8",
     "@mui/material": "^5.14.10",
@@ -37,6 +38,7 @@
     "@tiptap/extension-text-align": "^2.1.11",
     "@tiptap/extension-text-style": "^2.1.11",
     "@tiptap/extension-underline": "^2.1.11",
+    "@tiptap/pm": "^2.4.0",
     "@tiptap/react": "^2.1.11",
     "@tiptap/starter-kit": "^2.1.11",
     "@tiptap/suggestion": "^2.1.16",
@@ -47,6 +49,7 @@
     "@webflow/webflow-cli": "^1.6.9",
     "axios": "^1.6.8",
     "chart.js": "^4.4.1",
+    "date-fns": "^3.6.0",
     "dayjs-plugin-utc": "^0.1.2",
     "formidable": "^3.5.1",
     "framer-motion": "^10.16.4",
@@ -92,8 +95,8 @@
     "zustand": "^4.4.7"
   },
   "devDependencies": {
-    "@aglint/shared-types": "*",
     "@aglint/eslint-plugin-linter": "*",
+    "@aglint/shared-types": "*",
     "@types/lodash": "^4.14.199",
     "@types/react": "^18",
     "@types/react-beautiful-dnd": "^13.1.6",

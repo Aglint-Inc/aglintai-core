@@ -52,6 +52,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const payload: APICandScheduleMailThankYou = {
         cand_tz: req_body.user_tz,
         filter_id: req_body.filter_id,
+        task_id: req_body.task_id,
       };
       axios.post(
         `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,

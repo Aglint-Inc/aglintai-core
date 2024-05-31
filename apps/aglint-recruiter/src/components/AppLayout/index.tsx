@@ -14,9 +14,9 @@ import ResizeWindowContext from '@/src/context/ResizeWindow/context';
 import ROUTES from '@/src/utils/routing/routes';
 
 import Icon from '../Common/Icons/Icon';
+import MenuLottie from '../Common/Lotties/MenuLottie';
 import { isEnvProd } from '../JobsDashboard/JobPostCreateUpdate/utils';
 import CompanyList from './CompanyList';
-import MenuLottie from './MenuLottie';
 import SideNavbar from './SideNavbar';
 
 export default function AppLayout({ children }) {

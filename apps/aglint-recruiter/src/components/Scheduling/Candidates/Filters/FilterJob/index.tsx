@@ -7,11 +7,11 @@ import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import { useJobs } from '@/src/context/JobsContext';
 
 import {
+  FilterType,
   setFilter,
   setFilterVisible,
   useFilterCandidateStore,
 } from '../../filter-store';
-import { FilterType } from '../../store';
 
 function FilterJob() {
   const { jobs } = useJobs();

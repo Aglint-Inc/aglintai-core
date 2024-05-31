@@ -85,12 +85,12 @@ function SideDrawerEdit() {
             ?.filter((user) => user.interviewer_type === 'qualified')
             .map((user) => ({
               name: getFullName(
-                user.interview_module_relation.recruiter_user.first_name,
-                user.interview_module_relation.recruiter_user.last_name,
+                user.interview_module_relation.recruiter_user?.first_name,
+                user.interview_module_relation.recruiter_user?.last_name,
               ),
-              value: user.interview_module_relation.id,
+              value: user.interview_module_relation?.id,
               start_icon_url:
-                user.interview_module_relation.recruiter_user.profile_image,
+                user.interview_module_relation.recruiter_user?.profile_image,
             })) || [],
         );
 
@@ -528,8 +528,9 @@ function SideDrawerEdit() {
                         </>
                       }
                       isInterviewerDropVisible={
-                        Number(optionsInterviewers?.length) >
-                        Number(selectedInterviewers?.length)
+                        moduleCurrent?.members.filter(
+                          (user) => user.training_status == 'qualified',
+                        ).length > Number(selectedInterviewers?.length)
                       }
                       slotMemberCountDropdown={
                         selectedInterviewers?.length > 0 && (

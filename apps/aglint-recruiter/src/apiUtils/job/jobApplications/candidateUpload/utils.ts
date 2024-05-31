@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Applications, DB } from '@aglint/shared-types';
+import { Applications, DatabaseEnums, DB } from '@aglint/shared-types';
 import { CandidateFiles } from '@aglint/shared-types';
 import { Candidate } from '@aglint/shared-types';
 import { PostgrestError, SupabaseClient } from '@supabase/supabase-js';
@@ -337,6 +337,7 @@ export const createApplication = async (
   job_id: string,
   candidate_id: string,
   candidate_file_id: string,
+  source: DatabaseEnums['application_source'],
   tries: number = 0,
   prev_error?: PostgrestError,
   signal?: CandidateCreateAction['request']['signal'],
@@ -346,7 +347,7 @@ export const createApplication = async (
   const timeout = setTimeout(() => timerSignal.abort(), 15000);
   const { data, error } = await supabase
     .from('applications')
-    .insert({ candidate_id, job_id, candidate_file_id })
+    .insert({ candidate_id, job_id, candidate_file_id, source })
     .select()
     .abortSignal(signal)
     .abortSignal(timerSignal.signal);
@@ -358,6 +359,7 @@ export const createApplication = async (
         job_id,
         candidate_id,
         candidate_file_id,
+        source,
         tries,
         error,
         signal,
