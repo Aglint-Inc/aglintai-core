@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ToggleWithText } from "./ToggleWithText";
 import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./SchedulerFilters.module.css";
 
@@ -54,12 +54,7 @@ export function SchedulerFilters({
           className={_utils.cx(_styles, "conflict_block")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {textNumberNoConflicts}
-          </_Builtin.Block>
+          <Text content={textNumberNoConflicts} />
           <_Builtin.Block
             className={_utils.cx(_styles, "type_of_conflict")}
             tag="div"
@@ -80,12 +75,7 @@ export function SchedulerFilters({
           className={_utils.cx(_styles, "conflict_block")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {textNumberSoftConflicts}
-          </_Builtin.Block>
+          <Text content={textNumberSoftConflicts} />
           <_Builtin.Block
             className={_utils.cx(_styles, "type_of_conflict")}
             tag="div"
@@ -106,12 +96,7 @@ export function SchedulerFilters({
           className={_utils.cx(_styles, "conflict_block")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {textNumberHardConflicts}
-          </_Builtin.Block>
+          <Text content={textNumberHardConflicts} />
           <_Builtin.Block
             className={_utils.cx(_styles, "type_of_conflict")}
             tag="div"
@@ -132,12 +117,7 @@ export function SchedulerFilters({
           className={_utils.cx(_styles, "conflict_block")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {textNumberOutsideWorkHours}
-          </_Builtin.Block>
+          <Text content={textNumberOutsideWorkHours} />
           <_Builtin.Block
             className={_utils.cx(_styles, "type_of_conflict")}
             tag="div"
@@ -198,7 +178,9 @@ export function SchedulerFilters({
             className={_utils.cx(_styles, "slot_prefer_user_search_fielf")}
             tag="div"
           >
-            {slotPreferedInterviewersSearch}
+            {slotPreferedInterviewersSearch ?? (
+              <SlotComp componentNeme="Slot for preferred Interviewers" />
+            )}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
@@ -221,12 +203,14 @@ export function SchedulerFilters({
               <_Builtin.Block tag="div">{"SelectedMemberPill"}</_Builtin.Block>
             )}
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "slot_prefer_user_search_fielf")}
-            tag="div"
-          >
-            {slotTimeRangeSearch}
-          </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "slot_prefer_user_search_fielf")}
+          tag="div"
+        >
+          {slotTimeRangeSearch ?? (
+            <SlotComp componentNeme="Slot for time range search" />
+          )}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "checkbox_wrap")} tag="div">

@@ -153,7 +153,9 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
         <SideDrawerLarge
           onClickBack={{
             onClick: () => {
-              setStepScheduling('pick_date');
+              stepScheduling === 'preference'
+                ? setStepScheduling('pick_date')
+                : setStepScheduling('preference');
             },
           }}
           textDrawertitle={
@@ -167,7 +169,13 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
           }
           onClickPrimary={{
             onClick: () => {
-              if (!saving) onClickSendToCandidate();
+              if (stepScheduling === 'preference') {
+                ///
+              } else if (stepScheduling === 'slot_options') {
+                if (!saving) {
+                  onClickSendToCandidate();
+                }
+              }
             },
           }}
           onClickCancel={{
@@ -190,7 +198,9 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
               )}
             </>
           }
-          isBottomBar={stepScheduling === 'slot_options'}
+          isBottomBar={
+            stepScheduling === 'slot_options' || stepScheduling === 'preference'
+          }
         />
       </Drawer>
     </>

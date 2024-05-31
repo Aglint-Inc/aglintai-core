@@ -1,12 +1,11 @@
+import { PlanCombinationRespType } from '@aglint/shared-types';
 import { Stack, TextField, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 
 import { Checkbox } from '@/devlink/Checkbox';
-import { RcCheckbox } from '@/devlink2/RcCheckbox';
 import { ToggleButton } from '@/devlink2/ToggleButton';
 import { SchedulerFilters } from '@/devlink3/SchedulerFilters';
 
-import MembersAutoComplete from '../../../Common/MembersTextField';
 import { setFilters, useSchedulingFlowStore } from '../store';
 import PreferedInterviewers from './PreferedInterviewers';
 
@@ -24,19 +23,45 @@ function StepScheduleFilter() {
   let hardConflicts = [];
 
   noConflicts = filters.isNoConflicts
-    ? schedulingOptions.filter((option) =>
-        option.sessions.every((session) => !session.is_conflict),
+    ? schedulingOptions.filter(
+        (option) =>
+          option.sessions.every((session) => !session.is_conflict) &&
+          (filters.preferredInterviewers.length === 0 ||
+            option.sessions.some((session) =>
+              filters.preferredInterviewers.some(
+                (interviewer) =>
+                  session.qualifiedIntervs.some(
+                    (interv) => interv.user_id === interviewer.user_id,
+                  ) ||
+                  session.trainingIntervs.some(
+                    (interv) => interv.user_id === interviewer.user_id,
+                  ),
+              ),
+            )),
       )
     : [];
 
   softConflicts = filters.isSoftConflicts
     ? schedulingOptions.filter((option) => {
-        return option.sessions.some((session) =>
-          session.ints_conflicts.some((conflict) =>
-            conflict.conflict_reasons.some(
-              (reason) => reason.conflict_type === 'soft',
-            ),
-          ),
+        return option.sessions.some(
+          (session) =>
+            session.ints_conflicts.some((conflict) =>
+              conflict.conflict_reasons.some(
+                (reason) => reason.conflict_type === 'soft',
+              ),
+            ) &&
+            (filters.preferredInterviewers.length === 0 ||
+              option.sessions.some((session) =>
+                filters.preferredInterviewers.some(
+                  (interviewer) =>
+                    session.qualifiedIntervs.some(
+                      (interv) => interv.user_id === interviewer.user_id,
+                    ) ||
+                    session.trainingIntervs.some(
+                      (interv) => interv.user_id === interviewer.user_id,
+                    ),
+                ),
+              )),
         );
       })
     : [];
@@ -44,37 +69,27 @@ function StepScheduleFilter() {
   hardConflicts = filters.isHardConflicts
     ? schedulingOptions.filter((option) => {
         return option.sessions.some((session) =>
-          session.ints_conflicts.some((conflict) =>
-            conflict.conflict_reasons.some(
-              (reason) => reason.conflict_type !== 'soft',
-            ),
+          session.ints_conflicts.some(
+            (conflict) =>
+              conflict.conflict_reasons.some(
+                (reason) => reason.conflict_type !== 'soft',
+              ) &&
+              (filters.preferredInterviewers.length === 0 ||
+                option.sessions.some((session) =>
+                  filters.preferredInterviewers.some(
+                    (interviewer) =>
+                      session.qualifiedIntervs.some(
+                        (interv) => interv.user_id === interviewer.user_id,
+                      ) ||
+                      session.trainingIntervs.some(
+                        (interv) => interv.user_id === interviewer.user_id,
+                      ),
+                  ),
+                )),
           ),
         );
       })
     : [];
-
-  let allInterviewers = [];
-
-  schedulingOptions.forEach((option) => {
-    option.sessions.forEach((session) => {
-      session.qualifiedIntervs.forEach((interv) =>
-        allInterviewers.push(interv),
-      );
-      session.trainingIntervs.forEach((interv) => allInterviewers.push(interv));
-    });
-  });
-
-  const uniqueInterviewersSet = new Set();
-  const uniqueInterviewers = [];
-
-  allInterviewers.forEach((interv) => {
-    const intervKey = JSON.stringify(interv);
-    if (!uniqueInterviewersSet.has(intervKey)) {
-      uniqueInterviewersSet.add(intervKey);
-      uniqueInterviewers.push(interv);
-    }
-  });
-  console.log(uniqueInterviewers);
 
   return (
     <>
@@ -97,11 +112,7 @@ function StepScheduleFilter() {
         textNumberHardConflicts={hardConflicts.length}
         textNumberSoftConflicts={softConflicts.length}
         textNumberOutsideWorkHours={0}
-        slotPreferedInterviewersSearch={
-          <MembersAutoComplete renderUsers={uniqueInterviewers}  />
-        }
-        slotPreferedInterviewers={<PreferedInterviewers />}
-        slotPreferedTimeRanges={'time range'}
+        slotPreferedInterviewersSearch={<PreferedInterviewers />}
         slotSuggestionControlTooltip={
           <>
             <Stack

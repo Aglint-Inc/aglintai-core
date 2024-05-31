@@ -1,8 +1,6 @@
 import { PlanCombinationRespType } from '@aglint/shared-types';
 import { create } from 'zustand';
 
-import { testData } from '../testdata';
-
 export interface SchedulingFlow {
   isScheduleNowOpen: boolean;
   dateRange: {
@@ -21,18 +19,20 @@ export interface SchedulingFlow {
     | 'debrief';
   fetchingPlan: boolean;
   selectedSlots: PlanCombinationRespType[];
+  filteredSchedulingOptions: PlanCombinationRespType[];
   filters: {
     isNoConflicts: boolean;
     isSoftConflicts: boolean;
     isHardConflicts: boolean;
     isOutSideWorkHours: boolean;
     preferredInterviewers: {
+      user_id: string;
       first_name: string;
       last_name: string;
       email: string;
       position: string;
       profile_image: string;
-    };
+    }[];
     preferredDateRanges: {
       start_date: string;
       end_date: string;
@@ -42,13 +42,14 @@ export interface SchedulingFlow {
 }
 
 const initialState: SchedulingFlow = {
-  isScheduleNowOpen: true,
+  isScheduleNowOpen: false,
   dateRange: {
     start_date: '',
     end_date: '',
   },
-  schedulingOptions: testData,
-  stepScheduling: 'preference',
+  schedulingOptions: [],
+  filteredSchedulingOptions: [],
+  stepScheduling: 'pick_date',
   noOptions: false,
   isSendToCandidateOpen: false,
   scheduleFlow: 'self_scheduling',
@@ -71,6 +72,13 @@ export const useSchedulingFlowStore = create<SchedulingFlow>()(() => ({
 
 export const setScheduleFlow = (scheduleFlow: SchedulingFlow['scheduleFlow']) =>
   useSchedulingFlowStore.setState({ scheduleFlow });
+
+export const setFilteredSchedulingOptions = (
+  schedulingOptions: PlanCombinationRespType[],
+) =>
+  useSchedulingFlowStore.setState({
+    filteredSchedulingOptions: schedulingOptions,
+  });
 
 export const setFilters = (filters: Partial<SchedulingFlow['filters']>) =>
   useSchedulingFlowStore.setState((state) => ({
