@@ -14,12 +14,12 @@ import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { ScheduleUtils } from '@/src/services/CandidateScheduleV2/ScheduleUtils';
 import {
   CHECK_NEXT_MINUTES,
   DEFAULT_CANDIDATE_REQ_END_HOUR,
   DEFAULT_CANDIDATE_REQ_START_HOUR,
 } from '@/src/services/CandidateScheduleV2/utils/constants';
+import { ScheduleUtils } from '@/src/services/CandidateScheduleV2/utils/ScheduleUtils';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

@@ -27,7 +27,7 @@ import {
 } from '@aglint/shared-types';
 import { schedulingSettingType } from '@aglint/shared-types';
 
-import { ScheduleUtils } from '@/src/services/CandidateScheduleV2/ScheduleUtils';
+import { ScheduleUtils } from '@/src/services/CandidateScheduleV2/utils/ScheduleUtils';
 import { EmailWebHook } from '@/src/services/EmailWebhook/EmailWebhook';
 import {
   CompanyEmailsTypeDB,

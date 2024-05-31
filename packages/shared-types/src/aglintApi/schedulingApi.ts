@@ -61,6 +61,8 @@ export type APIOptions = {
   include_free_time: boolean;
   check_next_minutes: number;
   make_training_optional: boolean;
+  cand_start_time: number;
+  cand_end_time: number;
   include_conflicting_slots: {
     show_soft_conflicts: boolean;
     show_conflicts_events: boolean;
@@ -68,10 +70,9 @@ export type APIOptions = {
     interviewer_pause: boolean;
     out_of_office: boolean;
     calender_not_connected: boolean;
-    override_work_hr_start: number | null;
-    override_work_hr_end: number | null;
     day_off: boolean;
     holiday: boolean;
+    out_of_working_hrs: boolean;
   };
 };
 

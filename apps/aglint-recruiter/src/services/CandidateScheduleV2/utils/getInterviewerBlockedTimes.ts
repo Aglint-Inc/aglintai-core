@@ -1,4 +1,5 @@
 import {
+  APIOptions,
   MinCalEventDetailTypes,
   schedulingSettingType,
   TimeDurationDayjsType,
@@ -17,11 +18,24 @@ export const getInterviewerBlockedTimes = (
   comp_shedule_settings: schedulingSettingType,
   int_events: MinCalEventDetailTypes[],
   cand_tz: string,
+  api_options: APIOptions,
 ): TimeDurationDayjsType[] => {
-  const free_time_keyWords: string[] = [
-    ...comp_shedule_settings.schedulingKeyWords.free,
-    ...comp_shedule_settings.schedulingKeyWords.recruitingBlocks,
-  ].map((key_word: string) => key_word.toLowerCase());
+  let free_time_keyWords: string[] = [];
+  if (api_options.include_free_time) {
+    free_time_keyWords = [
+      ...free_time_keyWords,
+      ...comp_shedule_settings.schedulingKeyWords.free,
+    ];
+  }
+  if (api_options.use_recruiting_blocks) {
+    free_time_keyWords = [
+      ...free_time_keyWords,
+      ...comp_shedule_settings.schedulingKeyWords.recruitingBlocks,
+    ];
+  }
+  free_time_keyWords = free_time_keyWords.map((key_word: string) =>
+    key_word.toLowerCase(),
+  );
 
   const isEventFreeTime = (cal_event: MinCalEventDetailTypes) => {
     let is_event_free_time = false;
@@ -37,6 +51,7 @@ export const getInterviewerBlockedTimes = (
   };
   const free_time_events: MinCalEventDetailTypes[] = [];
   const busy_time_events: MinCalEventDetailTypes[] = [];
+
   int_events.forEach((cal_event) => {
     if (isEventFreeTime(cal_event)) {
       free_time_events.push(cal_event);

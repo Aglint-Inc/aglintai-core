@@ -1,15 +1,14 @@
 /* eslint-disable security/detect-object-injection */
 import { TimeDurationDayjsType, TimeDurationType } from '@aglint/shared-types';
 
-import { DayjsTimeRange, FuncParams } from './types';
-import { userTzDayjs } from './utils/userTzDayjs';
+import { DayjsTimeRange, FuncParams } from '../types';
+import { userTzDayjs } from './userTzDayjs';
 
 export const findCommonTimeRangeUtil = (
   ints_meta: FuncParams[],
   resp_tz: string,
 ): TimeDurationType[] => {
   //TODO: rewrite the merging function for beeter understanding
-
   if (ints_meta.find((i) => i.time_ranges.length === 0)) return [];
   const int_sorted_range: DayjsTimeRange[] = ints_meta.map((i) => ({
     inter_id: i.inter_id,

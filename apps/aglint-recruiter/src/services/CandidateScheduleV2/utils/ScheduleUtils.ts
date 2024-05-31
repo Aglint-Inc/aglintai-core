@@ -1,6 +1,6 @@
 import { TimeDurationDayjsType, TimeDurationType } from '@aglint/shared-types';
 
-import { userTzDayjs } from './utils/userTzDayjs';
+import { userTzDayjs } from './userTzDayjs';
 
 export class ScheduleUtils {
   static convertDateFormatToDayjs = (
