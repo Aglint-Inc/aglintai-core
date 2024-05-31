@@ -300,10 +300,10 @@
 
 .div-block-1304 {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: nowrap;
-  grid-column-gap: 12px;
-  grid-row-gap: 12px;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 .div-block-1328 {

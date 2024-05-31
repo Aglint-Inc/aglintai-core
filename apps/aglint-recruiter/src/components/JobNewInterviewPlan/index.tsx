@@ -6,6 +6,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
+import { RolesPill } from '@/devlink/RolesPill';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { AddScheduleCard as AddScheduleCardDev } from '@/devlink3/AddScheduleCard';
@@ -26,7 +27,10 @@ import {
 } from '@/src/queries/interview-plans/types';
 import { useCurrentJob } from '@/src/queries/job-assessment/keys';
 import { getFullName } from '@/src/utils/jsonResume';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import {
+  capitalizeAll,
+  capitalizeFirstLetter,
+} from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import AUIButton from '../Common/AUIButton';
@@ -290,28 +294,14 @@ const InterviewSession = ({
   const {
     getLoadingState,
     interviewPlans: { data },
-    companyMembers,
     job,
     handleReorderSessions,
   } = useJobInterviewPlan();
   const [hover, setHover] = useState(false);
-  const team = Object.entries(session.members_meta).reduce(
-    (acc, [key, value]) => {
-      if (!acc.has(key) && value) {
-        const member =
-          !!(job?.[key] ?? undefined) &&
-          companyMembers.data.find(({ user_id }) => user_id === job[key]);
-        if (member) acc.set(member.user_id, member);
-      }
-      return acc;
-    },
-    new Map<string, (typeof companyMembers)['data'][number]>(),
-  );
   const members = session.interview_session_relation.reduce(
     (acc, curr) => {
       if (session.session_type === 'debrief') {
-        if (curr.recruiter_user && !team.has(curr.recruiter_user.user_id))
-          acc.members.push(curr.recruiter_user);
+        if (curr.recruiter_user) acc.members.push(curr.recruiter_user);
       } else {
         if (curr.interview_module_relation.recruiter_user) {
           acc[curr.interviewer_type].push(
@@ -325,10 +315,17 @@ const InterviewSession = ({
     {
       qualified: [],
       training: [],
-      members: [...team.values()],
+      members: [],
     } as InterviewSessonMembers & {
       members: CompanyMember[];
     },
+  );
+  const roles = Object.entries(session?.members_meta ?? {}).reduce(
+    (acc, [key, value]) => {
+      if (value) acc.push(key as (typeof acc)[number]);
+      return acc;
+    },
+    [] as (keyof typeof session.members_meta)[],
   );
   const isLoading = getLoadingState(session.id);
 
@@ -411,6 +408,10 @@ const InterviewSession = ({
                 </Stack>
               </Stack>
             }
+            isRolesvisible={
+              session.session_type === 'debrief' && !!roles.length
+            }
+            slotRoles={<Roles roles={roles} />}
             isSubHeaderVisible={false}
             isHeaderTitleVisible={true}
             isDebriefIconVisible={session.session_type === 'debrief'}
@@ -483,6 +484,20 @@ const InterviewSession = ({
         </Stack>
       </OptimisticWrapper>
     </Stack>
+  );
+};
+
+const Roles = ({ roles }: { roles: string[] }) => {
+  return (
+    <>
+      {roles.map((role) => (
+        <RolesPill
+          key={role}
+          onClickRemoveRoles={{ style: { display: 'none' } }}
+          textRoles={capitalizeFirstLetter(role)}
+        />
+      ))}
+    </>
   );
 };
 
