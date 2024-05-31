@@ -47,7 +47,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       title: `Booked ${session_details.map((ses) => ses.name).join(' , ')}`,
       application_id: filterJson.interview_schedule.application_id,
       logged_by: 'candidate',
-      type: 'schedule',
       supabase: supabaseAdmin,
       created_by: null,
       task_id,
