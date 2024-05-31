@@ -51,5 +51,3 @@ $function$
 ;
 
 CREATE TRIGGER application_import_log AFTER INSERT ON public.applications FOR EACH ROW EXECUTE FUNCTION trigger_application_import_log();
-
-
