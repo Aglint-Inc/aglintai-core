@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { RecentDeclineList } from "./RecentDeclineList";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./RecentDeclines.module.css";
 
@@ -30,7 +30,9 @@ export function RecentDeclines({
         className={_utils.cx(_styles, "div-block-1782")}
         tag="div"
       >
-        {slotRecentDeclineList ?? <RecentDeclineList />}
+        {slotRecentDeclineList ?? (
+          <SlotComp componentNeme="RecentDeclineList" />
+        )}
       </_Builtin.Block>
     </_Component>
   );
