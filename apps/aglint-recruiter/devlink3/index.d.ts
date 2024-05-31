@@ -202,6 +202,7 @@ export * from "./TaskTableJobCard";
 export * from "./TaskTableJobSubCard";
 export * from "./TaskUpdateButton";
 export * from "./TeamEmpty";
+export * from "./Text";
 export * from "./Timeline";
 export * from "./TimelineBlock";
 export * from "./TimelineDummyOne";

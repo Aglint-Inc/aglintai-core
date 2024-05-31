@@ -21,6 +21,24 @@ export interface SchedulingFlow {
     | 'debrief';
   fetchingPlan: boolean;
   selectedSlots: PlanCombinationRespType[];
+  filters: {
+    isNoConflicts: boolean;
+    isSoftConflicts: boolean;
+    isHardConflicts: boolean;
+    isOutSideWorkHours: boolean;
+    preferredInterviewers: {
+      first_name: string;
+      last_name: string;
+      email: string;
+      position: string;
+      profile_image: string;
+    };
+    preferredDateRanges: {
+      start_date: string;
+      end_date: string;
+    }[];
+    isWorkLoad: boolean;
+  };
 }
 
 const initialState: SchedulingFlow = {
@@ -36,6 +54,15 @@ const initialState: SchedulingFlow = {
   scheduleFlow: 'self_scheduling',
   fetchingPlan: false,
   selectedSlots: [],
+  filters: {
+    isNoConflicts: true,
+    isSoftConflicts: true,
+    isHardConflicts: true,
+    isOutSideWorkHours: true,
+    preferredInterviewers: [],
+    preferredDateRanges: [],
+    isWorkLoad: true,
+  },
 };
 
 export const useSchedulingFlowStore = create<SchedulingFlow>()(() => ({
@@ -44,6 +71,11 @@ export const useSchedulingFlowStore = create<SchedulingFlow>()(() => ({
 
 export const setScheduleFlow = (scheduleFlow: SchedulingFlow['scheduleFlow']) =>
   useSchedulingFlowStore.setState({ scheduleFlow });
+
+export const setFilters = (filters: Partial<SchedulingFlow['filters']>) =>
+  useSchedulingFlowStore.setState((state) => ({
+    filters: { ...state.filters, ...filters },
+  }));
 
 export const setSelectedSlots = (selectedSlots: PlanCombinationRespType[]) =>
   useSchedulingFlowStore.setState({ selectedSlots });
