@@ -110,10 +110,13 @@ export const dayjsMin = (day1: Dayjs, day2: Dayjs) => {
   return day2;
 };
 
-export const convertTimeDurStrToDayjsChunk = (chunk_str: TimeDurationType) => {
+export const convertTimeDurStrToDayjsChunk = (
+  chunk_str: TimeDurationType,
+  tz: string,
+) => {
   const chunk: TimeDurationDayjsType = {
-    startTime: userTzDayjs(chunk_str.startTime),
-    endTime: userTzDayjs(chunk_str.endTime),
+    startTime: userTzDayjs(chunk_str.startTime).tz(tz),
+    endTime: userTzDayjs(chunk_str.endTime).tz(tz),
   };
 
   return chunk;

@@ -71,6 +71,7 @@ export type APIOptions = {
     calender_not_connected: boolean;
     day_off: boolean;
     holiday: boolean;
+    out_of_working_hrs: boolean;
   };
 };
 

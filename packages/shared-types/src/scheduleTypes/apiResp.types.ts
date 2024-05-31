@@ -10,6 +10,8 @@ export type CalConflictType =
   | 'soft'
   | 'ooo'
   | 'out_of_working_hours'
+  | 'holiday'
+  | 'day_off'
   | 'cal_event';
 export type ConflictReason = {
   conflict_type:

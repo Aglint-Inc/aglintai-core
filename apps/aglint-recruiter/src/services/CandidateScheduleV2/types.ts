@@ -30,6 +30,8 @@ export type IntervsWorkHrsEventType = Pick<
   | 'work_hours'
   | 'email'
   | 'isCalenderConnected'
+  | 'day_off'
+  | 'holiday'
 > & {
   interviewer_tz: string;
 };
