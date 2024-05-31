@@ -18,7 +18,7 @@ const useWorkflowContext = () => {
   } = useRouter();
   const {
     workflows: { data, status },
-    workflowUpdate: { mutate: updateWorkflowMuation },
+    handleUpdateWorkflow: updateWorkflowMutation,
   } = useWorkflows();
 
   const workflow = useMemo(
@@ -30,8 +30,8 @@ const useWorkflowContext = () => {
   );
 
   const handleUpdateWorkflow = useCallback(
-    (payload: Parameters<typeof updateWorkflowMuation>[0]['payload']) =>
-      updateWorkflowMuation({ id: workflow?.id ?? null, payload }),
+    (payload: Parameters<typeof updateWorkflowMutation>[0]) =>
+      updateWorkflowMutation({ id: workflow?.id ?? null, payload }),
     [workflow],
   );
 

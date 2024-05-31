@@ -120,11 +120,13 @@ const updateWorkflow = async ({ id, payload }: UpdateWorkflow) => {
 };
 
 export const useWorkflowCreate = (args: WorkflowKeys) => {
+  const { recruiter_id } = args;
   const { mutationKey } = workflowMutationKeys.workflow(args);
   const { queryKey } = workflowQueryKeys.workflow(args);
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: createWorkflow,
+    mutationFn: (variables: Pick<InsertWorkflow, 'id' | 'payload'>) =>
+      createWorkflow({ ...variables, recruiter_id }),
     mutationKey,
     onMutate: ({ id, payload }) => {
       const previousWorkflows = queryClient.getQueryData<Workflow[]>(queryKey);
