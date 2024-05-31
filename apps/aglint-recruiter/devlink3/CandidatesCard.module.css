@@ -71,6 +71,10 @@
   color: #d93f4c;
 }
 
+.link-copy.no-color {
+  color: transparent;
+}
+
 .embed_flex {
   display: flex;
   align-items: center;
@@ -100,6 +104,10 @@
 
 .embed_flex.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .embed_flex.fixedd {

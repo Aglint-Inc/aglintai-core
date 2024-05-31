@@ -37,6 +37,10 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .icons.cursor-pointer.mr-20 {
   margin-right: 20px;
   transition-property: none;
@@ -143,6 +147,10 @@
 
 .fw-semibold.name-text {
   color: #467b7c;
+}
+
+.hide {
+  display: none;
 }
 
 .div-block-1733 {

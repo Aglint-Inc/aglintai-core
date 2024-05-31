@@ -1,6 +1,5 @@
 .button-wrapper {
   position: relative;
-  padding: 3px;
   border-radius: 4px;
   transition: all 300ms ease;
 }
@@ -160,6 +159,8 @@
 }
 
 .button-block.primary.default {
+  justify-content: center;
+  align-items: center;
   background-color: var(--blue600-cb1b4518);
   color: var(--white-9747b35e);
 }

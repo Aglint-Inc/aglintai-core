@@ -30,6 +30,10 @@
   padding: 20px;
 }
 
+.assessment_duplicate_popup.width-100 {
+  width: 100%;
+}
+
 .popup_header {
   display: flex;
   justify-content: space-between;
@@ -134,6 +138,10 @@
   color: #467b7c;
 }
 
+.hide {
+  display: none;
+}
+
 .po-up_close {
   cursor: pointer;
 }
@@ -144,6 +152,10 @@
 
 .po-up_close.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .embed_flex-2 {
@@ -180,12 +192,14 @@
   cursor: pointer;
 }
 
-.hide {
-  display: none;
+.text-gray-600.underline {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .slot_widget {
   display: flex;
+  height: 100%;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 10px;
@@ -240,6 +254,10 @@
   text-transform: uppercase;
 }
 
+.text-underline {
+  text-decoration: underline;
+}
+
 .text-sm.text-grey_600.text-underline.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -288,6 +306,16 @@
 
 .text-sm.text-underline.text-grey-600.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.text-sm.text-underline.text-blue-500.view-req {
+  position: absolute;
+  left: auto;
+  top: 10px;
+  right: 16px;
+  bottom: auto;
+
+  cursor: pointer;
 }
 
 .div-block-1688 {
@@ -355,6 +383,17 @@
   grid-template-rows: auto;
 }
 
+.button-pop-wrap.streachfull {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+}
+
 .wide_button {
   position: relative;
   z-index: 1;
@@ -412,6 +451,16 @@
 
 .button_primary.greay_btn.width-auto {
   width: auto;
+}
+
+.button_primary.greay_btn.width-auto-copy {
+  width: auto;
+  background-color: var(--accent-3);
+  color: var(--accent-11);
+}
+
+.button_primary.greay_btn.width-auto-copy:hover {
+  background-color: var(--accent-4);
 }
 
 .button_primary.is_outline {
@@ -483,7 +532,25 @@
 .button_primary.green-btn {
   padding-top: 8px;
   padding-bottom: 8px;
-  background-color: #228f67;
+  background-color: var(--accent-9);
+}
+
+.button_primary.large_btn {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.button_primary.green_btn {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.button_primary.large_btn-copy {
+  position: relative;
+  overflow: hidden;
+  width: 300px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .button-yellow {

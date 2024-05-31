@@ -77,6 +77,16 @@
   width: auto;
 }
 
+.button_primary.greay_btn.width-auto-copy {
+  width: auto;
+  background-color: var(--accent-3);
+  color: var(--accent-11);
+}
+
+.button_primary.greay_btn.width-auto-copy:hover {
+  background-color: var(--accent-4);
+}
+
 .button_primary.is_outline {
   border: 1px solid #1f73b7;
   background-color: white;
@@ -150,7 +160,25 @@
 .button_primary.green-btn {
   padding-top: 8px;
   padding-bottom: 8px;
-  background-color: #228f67;
+  background-color: var(--accent-9);
+}
+
+.button_primary.large_btn {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.button_primary.green_btn {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.button_primary.large_btn-copy {
+  position: relative;
+  overflow: hidden;
+  width: 300px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .embed_flex {
@@ -178,6 +206,10 @@
 
 .embed_flex.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .embed_flex.fixedd {

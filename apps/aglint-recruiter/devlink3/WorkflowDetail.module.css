@@ -1,5 +1,6 @@
 .workflow_listing {
   overflow: auto;
+  background-color: var(--neutral-2);
   height: calc(100vh - 60px);
 }
 

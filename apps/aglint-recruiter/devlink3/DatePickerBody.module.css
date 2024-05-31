@@ -56,12 +56,7 @@
 }
 
 .cursor-pointer {
-  transition: opacity 250ms ease;
   cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.8;
 }
 
 .embed_flex.fixedd {
@@ -87,6 +82,10 @@
 }
 
 .text-grey_600.text-underline {
+  text-decoration: underline;
+}
+
+.text-underline {
   text-decoration: underline;
 }
 
@@ -152,6 +151,16 @@
 
 .button_primary.greay_btn.width-auto {
   width: auto;
+}
+
+.button_primary.greay_btn.width-auto-copy {
+  width: auto;
+  background-color: var(--accent-3);
+  color: var(--accent-11);
+}
+
+.button_primary.greay_btn.width-auto-copy:hover {
+  background-color: var(--accent-4);
 }
 
 .button_primary.is_outline {
@@ -223,7 +232,7 @@
 .button_primary.green-btn {
   padding-top: 8px;
   padding-bottom: 8px;
-  background-color: #228f67;
+  background-color: var(--accent-9);
 }
 
 .button_primary.large_btn {

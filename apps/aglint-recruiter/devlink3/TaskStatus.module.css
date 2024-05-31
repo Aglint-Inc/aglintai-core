@@ -37,6 +37,10 @@
   background-color: #cee2f2;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .div-block-1351.not-started {
   background-color: #e9ebed;
 }
@@ -83,6 +87,10 @@
   bottom: auto;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 16px;
@@ -110,6 +118,10 @@
 
 .text-grey_600 {
   color: #68737d;
+}
+
+.text-underline {
+  text-decoration: underline;
 }
 
 .text-sm.text-grey_600.text-underline.cursor-pointer {
@@ -160,6 +172,16 @@
 
 .text-sm.text-underline.text-grey-600.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.text-sm.text-underline.text-blue-500.view-req {
+  position: absolute;
+  left: auto;
+  top: 10px;
+  right: 16px;
+  bottom: auto;
+
+  cursor: pointer;
 }
 
 .relative-1 {

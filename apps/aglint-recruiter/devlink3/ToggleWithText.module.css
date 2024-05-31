@@ -1,6 +1,6 @@
 .tooggle_with_text {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
@@ -44,12 +44,7 @@
 }
 
 .cursor-pointer {
-  transition: opacity 250ms ease;
   cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.8;
 }
 
 .embed_flex.fixedd {

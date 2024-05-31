@@ -34,6 +34,10 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .icons.cursor-pointer.mr-20 {
   margin-right: 20px;
   transition-property: none;
@@ -52,6 +56,10 @@
   bottom: auto;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .text-sm-4 {
   font-size: 12px;
   line-height: 16px;
@@ -59,6 +67,10 @@
 
 .text-blue-500 {
   color: #337fbd;
+}
+
+.text-underline {
+  text-decoration: underline;
 }
 
 .text-grey-600 {

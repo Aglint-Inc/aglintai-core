@@ -3,15 +3,16 @@ import * as Types from "./types";
 
 declare function SchedulerFilters(props: {
   as?: React.ElementType;
-  singleDaySchedule?: Types.Devlink.Slot;
-  slotPreferdInterviewerInput?: Types.Devlink.Slot;
-  slotSelectedTimeRanges?: Types.Devlink.Slot;
-  slotSelectedTiimeRangeInput?: Types.Devlink.Slot;
-  slotWorkloadPreference?: Types.Devlink.Slot;
-  slotToggleWithText?: Types.Devlink.Slot;
-  textNoConflicts?: React.ReactNode;
-  onClickChangeDate?: Types.Devlink.RuntimeProps;
-  textSoftConflicts?: React.ReactNode;
-  textHardConflicts?: React.ReactNode;
-  textOutsideWorkHours?: React.ReactNode;
+  textDateRange?: React.ReactNode;
+  onClickEditDateRange?: Types.Devlink.RuntimeProps;
+  textNumberNoConflicts?: React.ReactNode;
+  textNumberSoftConflicts?: React.ReactNode;
+  textNumberHardConflicts?: React.ReactNode;
+  textNumberOutsideWorkHours?: React.ReactNode;
+  slotSuggestionControlTooltip?: Types.Devlink.Slot;
+  slotPreferedInterviewers?: Types.Devlink.Slot;
+  slotPreferedInterviewersSearch?: Types.Devlink.Slot;
+  slotPreferedTimeRanges?: Types.Devlink.Slot;
+  slotTimeRangeSearch?: Types.Devlink.Slot;
+  slotCheckbox?: Types.Devlink.Slot;
 }): React.JSX.Element;
