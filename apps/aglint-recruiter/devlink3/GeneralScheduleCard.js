@@ -51,6 +51,8 @@ export function GeneralScheduleCard({
   isEditOptionVisible = true,
   slotBreakCard,
   isBreakCardVisible = false,
+  isRolesvisible = false,
+  slotRoles,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -282,6 +284,30 @@ export function GeneralScheduleCard({
               tag="div"
             >
               {slotTrainees}
+            </_Builtin.Block>
+          </_Builtin.Block>
+        ) : null}
+        {isRolesvisible ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1303")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1305")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold")}
+                tag="div"
+              >
+                {"Roles"}
+              </_Builtin.Block>
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1304")}
+              tag="div"
+            >
+              {slotRoles}
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
