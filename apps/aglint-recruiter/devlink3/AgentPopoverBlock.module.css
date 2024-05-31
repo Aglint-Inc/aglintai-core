@@ -11,20 +11,21 @@
   grid-column-gap: 1px;
   grid-row-gap: 1px;
 
-  border: 1px solid #e9ebed;
+  border: 1px solid var(--neutral-6);
   border-radius: 10px;
 
-  background-color: #e9ebed;
+  background-color: var(--neutral-6);
 }
 
 .agent_item-copy {
   padding: 10px;
   background-color: white;
   transition: all 200ms ease;
+  cursor: pointer;
 }
 
 .agent_item-copy:hover {
-  background-color: #f8f9f9;
+  background-color: var(--accent-2);
 }
 
 .agent_title {
@@ -33,6 +34,8 @@
   align-items: center;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
+
+  color: var(--accent-11);
 }
 
 .embed_flex {
@@ -67,45 +70,9 @@
 }
 
 .cursor-pointer {
-  transition: opacity 250ms ease;
   cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.8;
 }
 
 .embed_flex.fixedd {
   width: 23px;
-}
-
-.text-grey_600 {
-  color: #68737d;
-}
-
-.text-grey_600.hide {
-  display: none;
-}
-
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
-.text-grey_600.text-underline {
-  text-decoration: underline;
-}
-
-.text-grey_600.width-80px {
-  width: 80px;
-}
-
-.text-sm {
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.text-grey_600.text-underline-copy {
-  text-decoration: underline;
-  cursor: pointer;
 }

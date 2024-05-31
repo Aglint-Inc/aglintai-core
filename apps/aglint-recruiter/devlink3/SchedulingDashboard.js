@@ -1,17 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ScheduleCountStats } from "./ScheduleCountStats";
-import { Reason } from "./Reason";
-import { LeaderBoard } from "./LeaderBoard";
-import { TrainingProgress } from "./TrainingProgress";
-import { CardWithNumber } from "./CardWithNumber";
-import { NewInterviewDetail } from "./NewInterviewDetail";
-import { InterviewModuleStats } from "./InterviewModuleStats";
-import { RecentReschedule } from "./RecentReschedule";
-import { RecentDeclines } from "./RecentDeclines";
-import { CompletedInterviews } from "./CompletedInterviews";
-import { InterviewersDash } from "./InterviewersDash";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./SchedulingDashboard.module.css";
 
@@ -136,7 +126,7 @@ export function SchedulingDashboard({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block tag="div">
-        {slotScheduleCount ?? <ScheduleCountStats />}
+        {slotScheduleCount ?? <SlotComp componentNeme="ScheduleCountStats" />}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1772")}
@@ -150,12 +140,7 @@ export function SchedulingDashboard({
             className={_utils.cx(_styles, "div-block-1462")}
             tag="div"
           >
-            {slotFirstGrid ?? (
-              <>
-                <Reason />
-                <LeaderBoard />
-              </>
-            )}
+            {slotFirstGrid ?? <SlotComp componentNeme="Reason, LeaderBoard" />}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1467")}
@@ -170,7 +155,9 @@ export function SchedulingDashboard({
               tag="div"
             >
               <_Builtin.Block tag="div">
-                {slotTrainingProgress ?? <TrainingProgress />}
+                {slotTrainingProgress ?? (
+                  <SlotComp componentNeme="Training Progress" />
+                )}
               </_Builtin.Block>
               <_Builtin.Block className={_utils.cx(_styles, "hide")} tag="div">
                 {slotInterviewModuleStats}
@@ -182,7 +169,7 @@ export function SchedulingDashboard({
           className={_utils.cx(_styles, "div-block-1774")}
           tag="div"
         >
-          {slotsCradsWithNumber ?? <CardWithNumber />}
+          {slotsCradsWithNumber ?? <SlotComp componentNeme="CardWithNumber" />}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
@@ -198,10 +185,7 @@ export function SchedulingDashboard({
           tag="div"
         >
           {slotGridInterviewDetail ?? (
-            <>
-              <NewInterviewDetail />
-              <InterviewModuleStats />
-            </>
+            <SlotComp componentNeme="NewInterviewDetail, InterviewModuleStats" />
           )}
         </_Builtin.Block>
         <_Builtin.Block
@@ -209,10 +193,7 @@ export function SchedulingDashboard({
           tag="div"
         >
           {slotRecentReschedule ?? (
-            <>
-              <RecentReschedule />
-              <RecentDeclines />
-            </>
+            <SlotComp componentNeme="RecentRescedule, RecentDeclines" />
           )}
         </_Builtin.Block>
         <_Builtin.Block
@@ -220,10 +201,7 @@ export function SchedulingDashboard({
           tag="div"
         >
           {slotCompletedInterview ?? (
-            <>
-              <CompletedInterviews />
-              <InterviewersDash />
-            </>
+            <SlotComp componentNeme="CompletedInterviews, InterviewersDash" />
           )}
         </_Builtin.Block>
       </_Builtin.Block>

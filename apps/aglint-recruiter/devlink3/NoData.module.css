@@ -8,6 +8,8 @@
   flex-wrap: nowrap;
   align-items: center;
 
+  background-color: white;
+
   color: #c2c8cc;
 }
 
@@ -40,4 +42,12 @@
 
 .embed_flex.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.embed_flex.fixedd {
+  width: 23px;
 }

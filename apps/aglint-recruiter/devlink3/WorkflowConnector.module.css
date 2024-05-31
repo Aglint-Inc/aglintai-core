@@ -3,6 +3,7 @@
   width: 100%;
   justify-content: center;
   align-items: center;
+  color: var(--neutral-6);
 }
 
 .embed_flex {
@@ -37,12 +38,7 @@
 }
 
 .cursor-pointer {
-  transition: opacity 250ms ease;
   cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.8;
 }
 
 .embed_flex.fixedd {

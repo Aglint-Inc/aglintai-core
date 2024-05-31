@@ -57,6 +57,10 @@
   color: #68737d;
 }
 
+.text-underline {
+  text-decoration: underline;
+}
+
 .text-sm.text-grey_600.text-underline.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -64,6 +68,10 @@
 
 .text-sm.text-grey_600.text-underline.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .text-blue-500 {
@@ -90,9 +98,45 @@
   color: rgba(28, 28, 28, 0.4);
 }
 
+.text-sm.text-underline {
+  text-decoration: underline;
+}
+
+.text-grey-600 {
+  color: #68737d;
+}
+
+.text-sm.text-underline.text-grey-600.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-sm.text-underline.text-grey-600.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.text-sm.text-underline.text-blue-500.view-req {
+  position: absolute;
+  left: auto;
+  top: 10px;
+  right: 16px;
+  bottom: auto;
+
+  cursor: pointer;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .text-20 {
   font-size: 20px;
   line-height: 28px;
+}
+
+.text-20.fw-semibold {
+  width: 84px;
 }
 
 .text-xsm {

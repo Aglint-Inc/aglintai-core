@@ -54,6 +54,10 @@
   color: #68737d;
 }
 
+.text-underline {
+  text-decoration: underline;
+}
+
 .text-sm.text-grey_600.text-underline.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -61,6 +65,10 @@
 
 .text-sm.text-grey_600.text-underline.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .text-blue-500 {
@@ -102,6 +110,16 @@
 
 .text-sm.text-underline.text-grey-600.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.text-sm.text-underline.text-blue-500.view-req {
+  position: absolute;
+  left: auto;
+  top: 10px;
+  right: 16px;
+  bottom: auto;
+
+  cursor: pointer;
 }
 
 .relative-1 {
@@ -196,6 +214,14 @@
   color: #87929d;
 }
 
+.fw-semibold.name-text {
+  color: #467b7c;
+}
+
+.hide {
+  display: none;
+}
+
 .timer_flex {
   display: flex;
   justify-content: flex-start;
@@ -212,10 +238,6 @@
   align-items: center;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
-}
-
-.hide {
-  display: none;
 }
 
 .icons {
@@ -245,4 +267,8 @@
   top: -10px;
   right: auto;
   bottom: auto;
+}
+
+.icons.pointer {
+  cursor: pointer;
 }

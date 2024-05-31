@@ -1,5 +1,6 @@
 .debrief_company_settings {
   display: flex;
+  width: 100%;
   padding: 20px;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -22,6 +23,10 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .text-gray-600.is_link {
   color: #337fbd;
   text-decoration: underline;
@@ -34,4 +39,9 @@
 
 .fw-semibold {
   font-weight: 600;
+}
+
+.text-gray-600.underline {
+  text-decoration: underline;
+  cursor: pointer;
 }

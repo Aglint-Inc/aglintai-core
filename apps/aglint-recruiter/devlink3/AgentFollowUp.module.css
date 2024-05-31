@@ -71,6 +71,10 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .embed_flex.fixedd {
   width: 23px;
 }
@@ -81,6 +85,10 @@
 }
 
 .link.text-underline {
+  text-decoration: underline;
+}
+
+.text-underline {
   text-decoration: underline;
 }
 

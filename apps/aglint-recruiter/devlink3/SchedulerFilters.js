@@ -168,9 +168,9 @@ export function SchedulerFilters({
         >
           {slotSuggestionControlTooltip ?? (
             <>
-              <ToggleWithText />
-              <ToggleWithText />
-              <ToggleWithText />
+              <SlotComp componentNeme="ToggleWithText" />
+              <SlotComp componentNeme="ToggleWithText" />
+              <SlotComp componentNeme="ToggleWithText" />
             </>
           )}
         </_Builtin.Block>
