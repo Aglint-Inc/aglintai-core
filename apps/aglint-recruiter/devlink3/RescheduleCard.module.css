@@ -124,6 +124,10 @@
   color: #467b7c;
 }
 
+.hide {
+  display: none;
+}
+
 .div-block-1642 {
   display: flex;
   grid-column-gap: 10px;
@@ -146,6 +150,10 @@
   text-decoration: underline;
 }
 
+.text-underline {
+  text-decoration: underline;
+}
+
 .text-blue-500.text-underline.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -153,6 +161,10 @@
 
 .text-blue-500.text-underline.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .text-sm {
@@ -175,10 +187,6 @@
 
 .text-grey-600 {
   color: #68737d;
-}
-
-.hide {
-  display: none;
 }
 
 .text-grey-600.text-underline {

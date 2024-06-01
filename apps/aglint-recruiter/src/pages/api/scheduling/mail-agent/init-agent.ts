@@ -27,7 +27,7 @@ import {
 } from '@aglint/shared-types';
 import { schedulingSettingType } from '@aglint/shared-types';
 
-import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
+import { ScheduleUtils } from '@/src/services/CandidateScheduleV2/utils/ScheduleUtils';
 import { EmailWebHook } from '@/src/services/EmailWebhook/EmailWebhook';
 import {
   CompanyEmailsTypeDB,
@@ -66,11 +66,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         '[candidateFirstName]': cand_details.candidate_name.split(' ')[0],
         '[companyName]': cand_details.company_name,
         '[jobRole]': cand_details.job_role,
-        '[endDate]': CandidatesScheduling.convertDateFormatToDayjs(
+        '[endDate]': ScheduleUtils.convertDateFormatToDayjs(
           cand_details.filter_json.end_date,
           cand_details.company_timezone,
         ).format(BookingDateFormat),
-        '[startDate]': CandidatesScheduling.convertDateFormatToDayjs(
+        '[startDate]': ScheduleUtils.convertDateFormatToDayjs(
           cand_details.filter_json.start_date,
           cand_details.company_timezone,
         ).format(BookingDateFormat),

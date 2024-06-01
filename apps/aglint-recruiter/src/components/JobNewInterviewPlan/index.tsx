@@ -1,12 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 import { Stack } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useCallback, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
+import { RolesPill } from '@/devlink/RolesPill';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { AddScheduleCard as AddScheduleCardDev } from '@/devlink3/AddScheduleCard';
@@ -27,12 +27,16 @@ import {
 } from '@/src/queries/interview-plans/types';
 import { useCurrentJob } from '@/src/queries/job-assessment/keys';
 import { getFullName } from '@/src/utils/jsonResume';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import {
+  capitalizeAll,
+  capitalizeFirstLetter,
+} from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import AUIButton from '../Common/AUIButton';
 import Loader from '../Common/Loader';
 import MuiAvatar from '../Common/MuiAvatar';
+import { capitalize } from '../JobApplicationsDashboard/utils';
 import OptimisticWrapper from '../NewAssessment/Common/wrapper/loadingWapper';
 import IconScheduleType from '../Scheduling/Candidates/ListCard/Icon';
 import InterviewDeletePopup, { InterviewDeletePopupType } from './deletePopup';
@@ -308,9 +312,20 @@ const InterviewSession = ({
 
       return acc;
     },
-    { qualified: [], training: [], members: [] } as InterviewSessonMembers & {
+    {
+      qualified: [],
+      training: [],
+      members: [],
+    } as InterviewSessonMembers & {
       members: CompanyMember[];
     },
+  );
+  const roles = Object.entries(session?.members_meta ?? {}).reduce(
+    (acc, [key, value]) => {
+      if (value) acc.push(key as (typeof acc)[number]);
+      return acc;
+    },
+    [] as (keyof typeof session.members_meta)[],
   );
   const isLoading = getLoadingState(session.id);
 
@@ -393,6 +408,10 @@ const InterviewSession = ({
                 </Stack>
               </Stack>
             }
+            isRolesvisible={
+              session.session_type === 'debrief' && !!roles.length
+            }
+            slotRoles={<Roles roles={roles} />}
             isSubHeaderVisible={false}
             isHeaderTitleVisible={true}
             isDebriefIconVisible={session.session_type === 'debrief'}
@@ -465,6 +484,20 @@ const InterviewSession = ({
         </Stack>
       </OptimisticWrapper>
     </Stack>
+  );
+};
+
+const Roles = ({ roles }: { roles: string[] }) => {
+  return (
+    <>
+      {roles.map((role) => (
+        <RolesPill
+          key={role}
+          onClickRemoveRoles={{ style: { display: 'none' } }}
+          textRoles={capitalizeFirstLetter(role)}
+        />
+      ))}
+    </>
   );
 };
 

@@ -8,7 +8,7 @@ import { StatusBadge } from '@/devlink2/StatusBadge';
 import { HistoryPill } from '@/devlink3/HistoryPill';
 import { HistoryTrainingCard } from '@/devlink3/HistoryTrainingCard';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
-import { pages } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 
 import IconScheduleType from '../../../Candidates/ListCard/Icon';
 import { getScheduleType } from '../../../Candidates/utils';
@@ -36,6 +36,7 @@ function ListCardInterviewerModules({
     confirmedCount,
     moduleMeetings,
   } = module;
+
   const [collapseOpen, setCollapseOpen] = useState(false);
 
   if (status === 'qualified')
@@ -122,7 +123,7 @@ function ListCardInterviewerModules({
         onClickCard={{
           onClick: () => {
             router.push(
-              pages['/scheduling/module/members/[module_id]']({
+              ROUTES['/scheduling/module/members/[module_id]']({
                 module_id: module.module_id,
               }),
             );
@@ -135,39 +136,49 @@ function ListCardInterviewerModules({
     (item) => item.interview_meeting.status === 'completed',
   );
 
-  const trainingStatusArray: {
-    text: 'shadow' | 'reverse shadow';
+  const shadowMeetings = completedMeetings.filter((item) =>
+    item.users.some(
+      (user) => user.id === user_id && user.training_type === 'shadow',
+    ),
+  );
+
+  const reverseShadowMeetings = completedMeetings.filter((item) =>
+    item.users.some(
+      (user) => user.id === user_id && user.training_type === 'reverse_shadow',
+    ),
+  );
+
+  const shadowArray: {
+    text: 'shadow';
     meeting: ScheduleListType[number]['interview_meeting'];
   }[] = [
     ...new Array(interview_module.settings?.noShadow || 0).fill({
       text: 'shadow',
       meeting: null,
     }),
+  ].map((item, ind) => {
+    return {
+      ...item,
+      meeting: shadowMeetings[Number(ind)]?.interview_meeting,
+    };
+  });
+
+  const reverseShadowArray: {
+    text: 'reverse shadow';
+    meeting: ScheduleListType[number]['interview_meeting'];
+  }[] = [
     ...new Array(interview_module.settings?.noReverseShadow || 0).fill({
       text: 'reverse shadow',
       meeting: null,
     }),
   ].map((item, ind) => {
-    const shadowMeetings = completedMeetings.filter((item) =>
-      item.users.some(
-        (user) => user.id === user_id && user.training_type === 'shadow',
-      ),
-    );
-
-    const reverseShadowMeetings = completedMeetings.filter((item) =>
-      item.users.some(
-        (user) =>
-          user.id === user_id && user.training_type === 'reverse_shadow',
-      ),
-    );
     return {
       ...item,
-      meeting:
-        item.text === 'shadow'
-          ? shadowMeetings[Number(ind)]?.interview_meeting
-          : reverseShadowMeetings[Number(ind)]?.interview_meeting,
+      meeting: reverseShadowMeetings[Number(ind)]?.interview_meeting,
     };
   });
+
+  const trainingStatusArray = [...shadowArray, ...reverseShadowArray];
 
   if (status === 'training') {
     return (
@@ -332,7 +343,7 @@ function ListCardInterviewerModules({
         onClickCard={{
           onClick: () => {
             router.push(
-              pages['/scheduling/module/members/[module_id]']({
+              ROUTES['/scheduling/module/members/[module_id]']({
                 module_id: module.module_id,
               }),
             );

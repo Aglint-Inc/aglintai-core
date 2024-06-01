@@ -1,0 +1,137 @@
+.jobs_workflow_warper {
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+}
+
+.text-grey-600 {
+  color: #68737d;
+}
+
+.hide {
+  display: none;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-grey-600.text-underline {
+  text-decoration: underline;
+}
+
+.text-underline {
+  text-decoration: underline;
+}
+
+.text-grey-600.text-underline.cursor-pointer {
+  transition: opacity 250ms ease;
+  cursor: pointer;
+}
+
+.text-grey-600.text-underline.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.div-block-1754 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.div-block-1755 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.cursor-pointer.mr-20 {
+  margin-right: 20px;
+  transition-property: none;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.icons.task-hover {
+  position: absolute;
+  left: 50px;
+  top: -10px;
+  right: auto;
+  bottom: auto;
+}
+
+.icons.pointer {
+  cursor: pointer;
+}
+
+.text-blue-500 {
+  color: #337fbd;
+}
+
+.text-blue-500.text-underline {
+  text-decoration: underline;
+}
+
+.text-blue-500.text-underline.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-blue-500.text-underline.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.text-blue-500.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-blue-500.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.text-blue-500.text-capital {
+  text-transform: uppercase;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.slotworkflowcard {
+  display: flex;
+  max-width: 700px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+}

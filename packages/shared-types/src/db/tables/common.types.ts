@@ -1,3 +1,6 @@
+import { EmailTempPath, EmailTemplateFields, EmailTemplateType } from "../..";
+import { CustomMembersMeta } from "../common.types";
+
 export type CustomSchedulingSettings = {
   isAutomaticTimezone: boolean;
   timeZone: {
@@ -39,4 +42,9 @@ export type CustomSchedulingSettings = {
     start_time: string;
     end_time: string;
   };
+  debrief_defaults: CustomMembersMeta;
+};
+
+export type CustomEmailTemplate = {
+  [id in keyof EmailTemplateType | EmailTempPath]: EmailTemplateFields;
 };

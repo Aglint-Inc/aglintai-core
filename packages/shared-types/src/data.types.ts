@@ -95,6 +95,17 @@ export type EmailTemplateFields = {
   fromName: string;
 };
 
+export type EmailTempPath =
+  | "candidate_availability_request"
+  | "candidate_invite_confirmation"
+  | "debrief_calendar_invite"
+  | "cancel_interview_session"
+  | "init_email_agent"
+  | "confirmation_mail_to_organizer"
+  | "candidate_reschedule_request"
+  | "candidate_cancel_request"
+  | "recruiter_rescheduling_email";
+
 export type EmailTemplateType = {
   interview: EmailTemplateFields;
   rejection: EmailTemplateFields;
@@ -212,10 +223,6 @@ export type InterviewModuleRelationType =
     };
   };
 
-export type AgentChatType = DatabaseTable["agent_chatx"];
-
-export type AgentActivityType = DatabaseTableInsert["agent_activity"];
-
 export type InterviewMeetingTypeDb = DatabaseTableInsert["interview_meeting"];
 
 export type IntegrationType = DatabaseTable["request_integration_tool"];
@@ -237,11 +244,6 @@ export type InterviewSession = DatabaseTable["interview_session"];
 
 export type InterviewerSessionRelation =
   DatabaseTable["interview_session_relation"];
-
-export type SubTaskProgress = DatabaseTable["sub_task_progress"];
-
-export type InterviewScheduleActivityTypeDb =
-  DatabaseTable["interview_schedule_activity"];
 
 export type ApplicationLogsTypeDb = DatabaseTable["application_logs"];
 

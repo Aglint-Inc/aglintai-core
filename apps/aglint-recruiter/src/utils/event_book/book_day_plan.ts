@@ -13,8 +13,9 @@ import {
 import axios from 'axios';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
-import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
+import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
+import { scheduling_options_schema } from '@/src/types/scheduling/schema_find_availability_payload';
 
 import { EmailTemplateFiller } from '../emailTemplate/EmailTemplateFiller';
 import { fetchScheduleDetails } from '../emailTemplate/fetchCompEmailTemplate';
@@ -23,7 +24,10 @@ import { updateTrainingStatus } from '../scheduling_v2/update_training_status';
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 import { bookSession, CalEventAttendeesAuthDetails } from './book_session';
 import { fetchMeetingsInfo } from './fetchMeetingsInfo';
-
+type ConfirmInt = Pick<
+  SessionInterviewerType,
+  'session_id' | 'user_id' | 'interview_module_relation_id'
+>;
 export const bookCandidatePlan = async (req_body: APICandidateConfirmSlot) => {
   let { candidate_plan, recruiter_id, user_tz, is_debreif } = req_body;
   const all_sess_ids: string[] = candidate_plan.reduce((tot, curr) => {
@@ -32,23 +36,23 @@ export const bookCandidatePlan = async (req_body: APICandidateConfirmSlot) => {
 
   const first_day_slot = candidate_plan[0].sessions;
   const last_day_slot = candidate_plan[candidate_plan.length - 1].sessions;
-  const cand_scheduling = new CandidatesScheduling(
+
+  const cand_scheduling = new CandidatesSchedulingV2(
     {
-      company_id: recruiter_id,
+      recruiter_id: recruiter_id,
       session_ids: all_sess_ids,
-      user_tz,
+      candidate_tz: user_tz,
+      start_date_str: userTzDayjs(first_day_slot[0].start_time).format(
+        'DD/MM/YYYY',
+      ),
+      end_date_str: userTzDayjs(last_day_slot[0].start_time).format(
+        'DD/MM/YYYY',
+      ),
     },
-    {
-      start_date_js: userTzDayjs(first_day_slot[0].start_time)
-        .tz(user_tz)
-        .startOf('day'),
-      end_date_js: userTzDayjs(last_day_slot[0].start_time)
-        .tz(user_tz)
-        .endOf('day'),
-    },
+    scheduling_options_schema.parse({}),
   );
   await cand_scheduling.fetchDetails();
-  await cand_scheduling.fetchInterviewrsCalEvents();
+  await cand_scheduling.fetchIntsEventsFreeTimeWorkHrs();
   const { company_cred, ses_with_ints } = cand_scheduling.db_details;
   const meetings_info = await fetchMeetingsInfo(
     ses_with_ints.map((s) => s.meeting_id),
@@ -66,7 +70,7 @@ export const bookCandidatePlan = async (req_body: APICandidateConfirmSlot) => {
       }[];
     };
   }) => {
-    const confirmInterviewers = async (inters: SessionInterviewerType[]) => {
+    const confirmInterviewers = async (inters: ConfirmInt[]) => {
       await Promise.all(
         inters.map(async (int) => {
           if (!is_debreif) {
@@ -108,18 +112,19 @@ export const bookCandidatePlan = async (req_body: APICandidateConfirmSlot) => {
       const meeting_info = meetings_info.find(
         (m) => m.meeting_id === session.meeting_id,
       );
-      const all_inters = [
-        ...session.qualifiedIntervs,
-        ...session.trainingIntervs,
-      ].filter((int) => int.user_id !== meeting_info.organizer_id);
+      const sess_inters_full_details =
+        cand_scheduling.db_details.all_session_int_details[session.session_id];
 
-      let meeting_attendees: CalEventAttendeesAuthDetails[] = all_inters.map(
-        (attendee) => ({
-          email: attendee.email,
-          schedule_auth: attendee.schedule_auth,
-          user_id: attendee.user_id,
-        }),
-      );
+      const meeting_attendees: CalEventAttendeesAuthDetails[] = [
+        ...session.qualifiedIntervs.slice(1),
+        ...session.trainingIntervs,
+      ].map((attendee) => ({
+        email: attendee.email,
+        user_id: attendee.user_id,
+        schedule_auth:
+          sess_inters_full_details.interviewers[attendee.user_id].schedule_auth,
+      }));
+
       const meeting_organizer = {
         email: meeting_info.meeting_organizer_email,
         schedule_auth: meeting_info.meeting_organizer_auth,
@@ -144,12 +149,28 @@ export const bookCandidatePlan = async (req_body: APICandidateConfirmSlot) => {
         updateTrainingStatus({
           training_ints: training_ints.map((i) => ({
             interviewer_module_relation_id: i.interview_module_relation_id,
-            session_id: i.session_id,
+            session_id: session.session_id,
           })),
         });
       }
+      const organizer =
+        sess_inters_full_details.interviewers[
+          session.qualifiedIntervs[0].user_id
+        ];
 
-      await confirmInterviewers(all_inters);
+      const confirm_ints: ConfirmInt[] = [
+        organizer,
+        ...meeting_attendees.map(
+          (attendee): ConfirmInt => ({
+            interview_module_relation_id:
+              sess_inters_full_details.interviewers[attendee.user_id]
+                .interview_module_relation_id,
+            session_id: session.session_id,
+            user_id: attendee.user_id,
+          }),
+        ),
+      ];
+      await confirmInterviewers(confirm_ints);
       const temp = temp_filler.fillEmail('confirmation_mail_to_organizer', {
         '[companyName]': schedule_details.company_name,
         '[firstName]': req_body.candidate_name,

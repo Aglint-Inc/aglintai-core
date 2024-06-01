@@ -1,12 +1,20 @@
 {
   "name": "@aglint/shared-types",
   "scripts": {
-    "supabase": "npx supabase gen types typescript --project-id plionpfmgvenmdwwjzac --schema public > src/db/schema.types.ts"
+    "lint": "tsup",
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "supabase:dev": "npx supabase gen types typescript --project-id plionpfmgvenmdwwjzac --schema public > src/db/schema.types.ts",
+    "supabase:local": "npx supabase gen types typescript --local > src/db/schema.types.ts",
+    "pull": "git pull origin development --no-rebase"
   },
   "version": "0.0.1",
-  "main": "./index.ts",
-  "types": "./index.ts",
-  "dependencies": {
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "devDependencies": {
+    "@aglint/typescript-config": "*",
+    "@supabase/ssr": "latest",
+    "tsup": "^8.0.2",
     "typescript": "latest"
   }
 }

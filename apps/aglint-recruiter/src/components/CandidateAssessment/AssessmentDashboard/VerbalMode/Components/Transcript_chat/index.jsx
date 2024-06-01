@@ -8,9 +8,8 @@ import { AiCardScript } from '@/Interview_devlink/AiCardScript';
 import { InterviewerCardScript } from '@/Interview_devlink/InterviewerCardScript';
 import { TranscriptBlock } from '@/Interview_devlink/TranscriptBlock';
 import { UserCardScript } from '@/Interview_devlink/UserCardScript';
+import PlayStop from '@/src/components/Common/Lotties/playStopLottie';
 import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
-
-import PlayStop from '../PlayStop';
 
 function Transcript_chat() {
   const { interviewerIndex, conversations } = useInterviewPrep();

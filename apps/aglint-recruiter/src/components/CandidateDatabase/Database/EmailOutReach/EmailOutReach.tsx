@@ -11,7 +11,7 @@ import { ConnectMailModal } from '@/devlink/ConnectMailModal';
 import { EmailSuccessCard } from '@/devlink/EmailSuccessCard';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { MailLink } from '@/devlink/MailLink';
-import EmailGenerating from '@/src/components/Common/Lotties/EmailGenerating';
+import EmailGenerating from '@/public/lottie/EmailGenerating';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UISelect from '@/src/components/Common/Uiselect';
@@ -68,7 +68,9 @@ const EmailOutReach = ({
     try {
       if (!candEmailData) return;
       if (email && !email.toEmail && !email.subject && !email.body) {
-        toast.error('Please enter a valid email address, subject, and message body.');
+        toast.error(
+          'Please enter a valid email address, subject, and message body.',
+        );
         return;
       }
       dispatch({

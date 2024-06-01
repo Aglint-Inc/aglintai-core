@@ -8,10 +8,10 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
-
-const supabase = createClient<DB>(supabaseUrl, supabaseAnonKey);
+const supabase = createClient<DB>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY,
+);
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -103,6 +103,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             job_id: post.id,
             status: 'new',
             candidate_file_id: fileId,
+            source: 'apply_link',
           })
           .select();
 
@@ -159,6 +160,7 @@ const insertCandidate = async (
         job_id: jobId,
         status: 'new',
         candidate_file_id: fileId,
+        source: 'apply_link',
       })
       .select();
 

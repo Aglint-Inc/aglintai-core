@@ -5,7 +5,7 @@ import {
   InputProps,
   OutlinedInputProps,
   Stack,
-  Typography
+  Typography,
 } from '@mui/material';
 import MuiTextField from '@mui/material/TextField';
 import { errorMessages } from '@utils/errorMessages';
@@ -48,6 +48,7 @@ type Props = {
   select?: boolean;
   secondaryText?: string;
   labelBold?: 'default' | 'normal';
+  defaultLabelColor?: string;
 };
 
 // eslint-disable-next-line react/display-name
@@ -81,15 +82,16 @@ const UITextField = React.forwardRef(
       select,
       height,
       secondaryText,
-      labelBold = 'default'
+      labelBold = 'default',
+      defaultLabelColor = null,
     }: Props,
-    ref?: React.Ref<HTMLInputElement>
+    ref?: React.Ref<HTMLInputElement>,
   ) => {
     const [contentExceeded, setContentExceeded] = useState(false);
-    let labelColor = palette.grey[800];
+    let labelColor = defaultLabelColor ? defaultLabelColor : palette.grey[800];
 
     if (disabled) {
-      labelColor = palette.grey[600];
+      labelColor = defaultLabelColor ? defaultLabelColor : palette.grey[600];
     }
 
     return (
@@ -139,20 +141,20 @@ const UITextField = React.forwardRef(
           minRows={minRows}
           maxRows={maxRows}
           InputProps={{
-            ...InputProps
+            ...InputProps,
           }}
           onBlur={() => {
             onBlur();
             setContentExceeded(false);
           }}
           type={type}
-          sx={{
-            '& .MuiOutlinedInput-root': {
-              height: height ? `${height}px !important` : '100%',
-              borderRadius: `${borderRadius}px`
-            },
-            width: width
-          }}
+          // sx={{
+          //   '& .MuiOutlinedInput-root': {
+          //     height: height ? `${height}px !important` : '100%',
+          //     borderRadius: `${borderRadius}px`,
+          //   },
+          //   width: width,
+          // }}
           {...rest}
         >
           {children}
@@ -175,7 +177,7 @@ const UITextField = React.forwardRef(
         )}
       </Stack>
     );
-  }
+  },
 );
 
 export default UITextField;

@@ -3,7 +3,6 @@ import * as _Builtin from "./_Builtin";
 import { SidedrawerBodySession } from "./SidedrawerBodySession";
 import { SidedrawerBodyDebrief } from "./SidedrawerBodyDebrief";
 import { SidedrawerBodyBreak } from "./SidedrawerBodyBreak";
-import { DropdownList } from "./DropdownList";
 import * as _utils from "./utils";
 import _styles from "./SideDrawerBlock.module.css";
 

@@ -44,6 +44,10 @@
   text-transform: capitalize;
 }
 
+.text-red-600 {
+  color: #cc3340;
+}
+
 .fw-semibold.text-purple {
   color: #a81897;
 }
@@ -64,6 +68,50 @@
   color: #d93f4c;
 }
 
+.fw-semibold.plr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.plr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.fw-semibold.text-yellow-700 {
+  color: #ad5918;
+}
+
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.text-grey-500 {
+  color: #87929d;
+}
+
+.text-grey_400 {
+  color: #c2c8cc;
+}
+
+.text-grey_600 {
+  color: #68737d;
+}
+
+.fw-semibold.name-text {
+  color: #467b7c;
+}
+
+.hide {
+  display: none;
+}
+
 .im_action {
   display: flex;
   align-items: center;
@@ -80,10 +128,6 @@
   display: none;
 }
 
-.hide {
-  display: none;
-}
-
 .embed_flex.custom_top {
   margin-top: 2px;
 }
@@ -95,6 +139,10 @@
 
 .embed_flex.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .embed_flex.fixedd {
@@ -204,6 +252,11 @@
 
 .text-gray-600.is_link {
   color: #337fbd;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-gray-600.underline {
   text-decoration: underline;
   cursor: pointer;
 }

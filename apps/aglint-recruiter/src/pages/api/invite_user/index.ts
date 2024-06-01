@@ -7,7 +7,7 @@ import { companyType } from '@/src/utils/userRoles';
 
 import { server_getUserRoleAndId } from '../reset_password';
 
-export const supabase = createClient<DB>(
+const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
 );

@@ -5,16 +5,18 @@ import {
   LocalizationProvider,
 } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 function DateRange({
   onChange,
   value,
   disablePast = true,
+  calendars = 1,
 }: {
-  onChange: (x: any) => void;
-  value: any[];
+  onChange: (date: [Dayjs, Dayjs]) => void;
+  value: [Dayjs, Dayjs];
   disablePast?: boolean;
+  calendars?: 1 | 2 | 3;
 }) {
   return (
     <Stack
@@ -28,6 +30,7 @@ function DateRange({
         },
         '& .MuiDayCalendar-weekContainer div div': {
           p: '0.5px 1.7px',
+          height: '38px',
         },
         '&>div': {
           height: 334,
@@ -44,6 +47,9 @@ function DateRange({
           width: '32.7px',
           fontSize: '0.72rem',
         },
+        '& .MuiPickersSlideTransition-root': {
+          minHeight: 235,
+        },
       }}
       direction={'column'}
       justifyContent={'center'}
@@ -57,7 +63,7 @@ function DateRange({
               ? [dayjs(value[0]), dayjs(value[1])]
               : [dayjs(), dayjs()]
           }
-          calendars={1}
+          calendars={calendars}
           onChange={onChange}
         />
       </LocalizationProvider>

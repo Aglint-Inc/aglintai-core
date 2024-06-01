@@ -16,19 +16,19 @@ import { LoadingJobsAts } from '@/devlink/LoadingJobsAts';
 import { NoResultAts } from '@/devlink/NoResultAts';
 import { SkeletonLoaderAtsCard } from '@/devlink/SkeletonLoaderAtsCard';
 import { ButtonPrimaryDefaultRegular } from '@/devlink3/ButtonPrimaryDefaultRegular';
+import LoaderLever from '@/public/lottie/AddJobWithIntegrations';
+import FetchingJobsLever from '@/public/lottie/FetchingJobsLever';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
 import { STATE_GREENHOUSE_DIALOG } from '@/src/context/IntegrationProvider/utils';
 import { useJobs } from '@/src/context/JobsContext';
 import { ScrollList } from '@/src/utils/framer-motions/Animation';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import LoaderLever from '../Loader';
 import { POSTED_BY } from '../utils';
-import FetchingJobsLever from './Loader';
 import { ExtendedJobGreenhouse, JobGreenhouse } from './types';
 import {
   createJobApplications,
@@ -139,7 +139,7 @@ export function GreenhouseModal() {
           ...prev,
           greenhouse: { open: false, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
         }));
-        router.push(`${pageRoutes.JOBS}/${newJobs[0].id}`);
+        router.push(ROUTES['/jobs/[id]']({ id: newJobs[0].id }));
       } else {
         toast.error(
           'Import failed. Please try again later or contact support for assistance.',

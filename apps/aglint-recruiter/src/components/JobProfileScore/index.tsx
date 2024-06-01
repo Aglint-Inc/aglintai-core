@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 import { Popover, Stack } from '@mui/material';
-import { capitalize } from 'lodash';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import { ChangeEventHandler, FC, useEffect, useRef, useState } from 'react';
@@ -32,6 +31,7 @@ import { Job } from '@/src/queries/job/types';
 import Loader from '../Common/Loader';
 import ScoreWheel, { ScoreWheelParams } from '../Common/ScoreWheel';
 import UITextField from '../Common/UITextField';
+import { capitalize } from '../JobApplicationsDashboard/utils';
 import { JdJsonType } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 
 type Sections = 'experience' | 'education' | 'skills';
@@ -177,7 +177,7 @@ const ProfileScoreControls = () => {
                   <UITextField
                     name='experience'
                     type='number'
-                    width='60px'
+                    width='70px'
                     value={weights.experience}
                     onChange={(e) => handleChange(e)}
                     disabled={disabled.experience}
@@ -197,7 +197,7 @@ const ProfileScoreControls = () => {
                   <UITextField
                     name='skills'
                     type='number'
-                    width='60px'
+                    width='70px'
                     value={weights.skills}
                     onChange={(e) => handleChange(e)}
                     disabled={disabled.skills}
@@ -217,7 +217,7 @@ const ProfileScoreControls = () => {
                   <UITextField
                     name='education'
                     type='number'
-                    width='60px'
+                    width='70px'
                     value={weights.education}
                     onChange={(e) => handleChange(e)}
                     disabled={disabled.education}

@@ -10,4 +10,8 @@ declare function ActivitiesCard(props: {
   onClickViewTask?: Types.Devlink.RuntimeProps;
   textDesc?: React.ReactNode;
   isViewTaskVisible?: Types.Visibility.VisibilityConditions;
+  slotContent?: Types.Devlink.Slot;
+  onClickReschedule?: Types.Devlink.RuntimeProps;
+  isRescheduleVisible?: Types.Visibility.VisibilityConditions;
+  isContentVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

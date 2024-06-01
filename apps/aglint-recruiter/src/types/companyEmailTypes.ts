@@ -1,14 +1,4 @@
-import { EmailTemplateFields } from '@aglint/shared-types';
-export type EmailTempPath =
-  | 'candidate_availability_request'
-  | 'candidate_invite_confirmation'
-  | 'debrief_calendar_invite'
-  | 'cancel_interview_session'
-  | 'init_email_agent'
-  | 'confirmation_mail_to_organizer'
-  | 'candidate_reschedule_request'
-  | 'candidate_cancel_request'
-  | 'recruiter_rescheduling_email';
+import { EmailTempPath, EmailTemplateFields } from '@aglint/shared-types';
 
 export type EmailDynamicParams<T extends EmailTempPath> = {
   init_email_agent: {

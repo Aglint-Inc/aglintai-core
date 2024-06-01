@@ -1,8 +1,8 @@
-import { SubTaskProgress } from '@aglint/shared-types';
+import { DatabaseTable } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 
@@ -18,7 +18,7 @@ export type LoggerType = (
   log_msg: string,
   title_attr: TitleAttrType,
   created?: 'candidate' | 'phone_agent' | 'email_agent',
-  progress_type?: SubTaskProgress['progress_type'],
+  progress_type?: DatabaseTable['new_tasks_progress']['progress_type'],
   transcript?: Record<string, any> | Record<string, any>[],
 ) => Promise<void>;
 

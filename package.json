@@ -9,9 +9,11 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
-    "supabase": "npx supabase gen types typescript --project-id plionpfmgvenmdwwjzac --schema public > packages/shared-types/src/schema.ts",
+    "supabase:dev": "npx supabase gen types typescript --project-id plionpfmgvenmdwwjzac --schema public > packages/shared-types/src/db/schema.types.ts",
+    "supabase:local": "npx supabase gen types typescript --local > packages/shared-types/src/db/schema.types.ts",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "autofix": "eslint . --fix"
+    "autofix": "eslint . --fix",
+    "pull": "git pull origin development --no-rebase"
   },
   "devDependencies": {
     "prettier": "^3.2.5",
@@ -22,6 +24,7 @@
     "node": "^18.18.0 || >=20.0.0"
   },
   "dependencies": {
+    "@vercel/edge": "^1.1.1",
     "dayjs": "^1.11.11"
   }
 }

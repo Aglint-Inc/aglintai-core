@@ -15,9 +15,10 @@ import CandidateFeedback from './CandidateFeedback';
 import DeleteScheduleDialog from './Common/CancelScheduleDialog';
 import RescheduleDialog from './Common/RescheduleDialog';
 import FullSchedule from './FullSchedule';
-import { useGetScheduleApplication } from './hooks';
+import { useAllActivities, useGetScheduleApplication } from './hooks';
+import RequestAvailabilityDrawer from './RequestAvailability/Components/RequestAvailabilityDrawer';
+import { RequestAvailabilityProvider } from './RequestAvailability/RequestAvailabilityContext';
 import RightPanel from './RightPanel';
-import ScheduleNowTopbar from './ScheduleNowTopbar';
 import StatusUpdateDropdownBreadcrum from './StatusUpdateDropdownBreadcrum';
 import {
   resetSchedulingApplicationState,
@@ -26,6 +27,7 @@ import {
   useSchedulingApplicationStore,
 } from './store';
 import TabsSchedulingApplication from './Tabs';
+import TopBarButtons from './TopBarButtons';
 
 function SchedulingApplication() {
   const router = useRouter();
@@ -43,9 +45,14 @@ function SchedulingApplication() {
     selectedApplication: state.selectedApplication,
     scheduleName: state.scheduleName,
     tab: state.tab,
+    dateRange: state.dateRange,
   }));
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
+
+  const allActivities = useAllActivities({
+    application_id: selectedApplication?.id,
+  });
 
   useEffect(() => {
     if (router.isReady && router.query.application_id) {
@@ -55,20 +62,19 @@ function SchedulingApplication() {
     return () => {
       resetSchedulingApplicationState();
     };
-  }, [router]);
-
-  const isDebrief = initialSessions
-    .filter((ses) => selectedSessionIds.includes(ses.id))
-    .some((ses) => ses.session_type === 'debrief');
+  }, [router.query.application_id]);
 
   return (
     <>
-      <DeleteScheduleDialog />
-      <RescheduleDialog />
+      <RequestAvailabilityProvider>
+        <RequestAvailabilityDrawer />
+      </RequestAvailabilityProvider>
+      <DeleteScheduleDialog refetch={allActivities.refetch} />
+      <RescheduleDialog refetch={allActivities.refetch} />
       <PageLayout
         onClickBack={{
           onClick: () => {
-            window.history.back();
+            router.back();
           },
         }}
         isBackButton={true}
@@ -94,17 +100,15 @@ function SchedulingApplication() {
               />
             ) : (
               <CandidateSchedule
+                slotScheduleButton={<TopBarButtons />}
                 slotDarkPill={<TabsSchedulingApplication />}
                 onClickClose={{
                   onClick: () => {
                     setSelectedSessionIds([]);
                   },
                 }}
-                slotScheduleNowButton={
-                  <ScheduleNowTopbar isDebrief={isDebrief} />
-                }
                 isScheduleNowVisible={selectedSessionIds.length > 0}
-                slotCandidateCard={<RightPanel />}
+                slotCandidateCard={<RightPanel allActivities={allActivities} />}
                 slotFullScheduleCard={
                   tab === 'candidate_detail' ? (
                     <CandidateInfo
@@ -113,7 +117,7 @@ function SchedulingApplication() {
                       file={selectedApplication.candidate_files}
                     />
                   ) : tab === 'interview_plan' ? (
-                    <FullSchedule />
+                    <FullSchedule refetch={allActivities.refetch} />
                   ) : tab === 'feedback' ? (
                     <FeedbackWindow
                       interview_sessions={initialSessions.map((item) => ({

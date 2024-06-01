@@ -51,10 +51,11 @@ import { DangerMessage } from '@/devlink3/DangerMessage';
 import { NewInterviewPlanCard } from '@/devlink3/NewInterviewPlanCard';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ResumeWrap } from '@/devlink3/ResumeWrap';
+import NoApplicants from '@/public/lottie/NoApplicants';
+import ResumeWait from '@/public/lottie/ResumeWait';
 import { getSafeAssessmentResult } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
 import AUIButton from '@/src/components/Common/AUIButton';
 import Loader from '@/src/components/Common/Loader';
-import ResumeWait from '@/src/components/Common/Lotties/ResumeWait';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import ScoreWheel, {
@@ -89,7 +90,7 @@ import { palette } from '@/src/context/Theme/Theme';
 import { Job } from '@/src/queries/job/types';
 import { getFullName } from '@/src/utils/jsonResume';
 // import interviewerList from '@/src/utils/interviewer_list';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
 // import CandidateAvatar from '../../Common/CandidateAvatar';
@@ -105,10 +106,10 @@ import InterviewScore, {
 // } from '../../Common/InterviewScore';
 import ResumeScore from '../../Common/ResumeScore';
 import CopyWrapper from '../../Common/Wrappers/copyWrapper';
+import { useKeyPress } from '../../hooks';
 // import RedirectWrapper from '../../Common/Wrappers/redirectWrapper';
 import { CheckIcon, FileIcon, UploadIcon } from '../../ImportManualCandidates';
 import useUploadCandidate from '../../ImportManualCandidates/hooks';
-import NoApplicants from '../../Lotties/NoApplicants';
 import {
   capitalize,
   formatTimeStamp,
@@ -291,12 +292,15 @@ const NewJobApplicationSideDrawer = ({
     JobApplicationSections.SCREENING,
   );
 
+  const { pressed: right } = useKeyPress('ArrowRight');
+  const { pressed: left } = useKeyPress('ArrowLeft');
+
   const [tab, setTab] = useState<TabType>('Details');
   const interviewEnabled =
     (interviewPlanEnabled?.data ?? false) &&
     (application?.emailValidity?.isValidEmail ?? false);
   const memoDependency = JSON.stringify(views);
-  const tabs = useMemo(
+  const tabsList = useMemo(
     () =>
       (
         [
@@ -307,33 +311,50 @@ const NewJobApplicationSideDrawer = ({
           'Tasks',
           'Activity',
         ] as (typeof tab)[]
-      )
-        .filter((tab) => {
-          switch (tab) {
-            case 'Details':
-              return true;
-            case 'Screening':
-              return views.screening;
-            case 'Assessment':
-              return views.assessment;
-            case 'Interview':
-              return views.interview && interviewEnabled;
-            case 'Tasks':
-              return views.interview && interviewEnabled;
-            case 'Activity':
-              return false;
-          }
-        })
-        .map((t) => (
-          <NewTabPill
-            key={t}
-            onClickPill={{ onClick: () => setTab(t) }}
-            textLabel={t}
-            isPillActive={tab === t}
-          />
-        )),
+      ).filter((tab) => {
+        switch (tab) {
+          case 'Details':
+            return true;
+          case 'Screening':
+            return views.screening;
+          case 'Assessment':
+            return views.assessment;
+          case 'Interview':
+            return views.interview && interviewEnabled;
+          case 'Tasks':
+            return views.interview && interviewEnabled;
+          case 'Activity':
+            return false;
+        }
+      }),
     [tab, memoDependency, interviewEnabled],
   );
+
+  const tabs = useMemo(
+    () =>
+      tabsList.map((t) => (
+        <NewTabPill
+          key={t}
+          onClickPill={{ onClick: () => setTab(t) }}
+          textLabel={t}
+          isPillActive={tab === t}
+        />
+      )),
+    [tabsList],
+  );
+
+  useEffect(() => {
+    if (left) {
+      setTab((prev) => {
+        const position = tabsList.indexOf(prev);
+        return tabsList[position === 0 ? tabsList.length - 1 : position - 1];
+      });
+    } else if (right) {
+      setTab((prev) => {
+        return tabsList[(tabsList.indexOf(prev) + 1) % tabsList.length];
+      });
+    }
+  }, [left, right]);
   return (
     <>
       <CandidateSideDrawer
@@ -1024,7 +1045,7 @@ const NewInterviewStatus = ({
                   onClick: () => {
                     navigator.clipboard
                       .writeText(
-                        `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.CANDIDATE_ASSESSMENT}/${application.id}`,
+                        `${process.env.NEXT_PUBLIC_HOST_NAME}${ROUTES['/candidate-assessment/']()}/${application.id}`,
                       )
                       .then(() => {
                         toast.success('Interview link copied.');

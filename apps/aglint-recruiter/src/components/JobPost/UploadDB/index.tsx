@@ -4,7 +4,7 @@ import {
   JobTypeDB,
   RecruiterType,
 } from '@aglint/shared-types';
-import { Grid, IconButton, Stack, TextField, Typography } from '@mui/material';
+import { Grid, IconButton, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
@@ -13,13 +13,14 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
 import { Checkbox } from '@/devlink/Checkbox';
+import LoaderGrey from '@/public/lottie/LoaderGrey';
 import { palette } from '@/src/context/Theme/Theme';
 import { errorMessages } from '@/src/utils/errorMessages';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Icon from '../../Common/Icons/Icon';
-import LoaderGrey from '../../Common/LoaderGrey';
+import UITextField from '../../Common/UITextField';
 
 const initialError = () => {
   return {
@@ -234,11 +235,10 @@ function UploadDB({
       </Stack>
       <Grid container spacing={'20px'} pt={'20px'}>
         <Grid item xs={12} sm={6} md={6}>
-          <TextField
+          <UITextField
             required
-            id='first_name'
-            margin='none'
             fullWidth
+            placeholder='First Name'
             label='First Name'
             error={error.firstName.error}
             helperText={error.firstName.error ? error.firstName.msg : null}
@@ -249,11 +249,10 @@ function UploadDB({
           />
         </Grid>
         <Grid item xs={12} sm={6} md={6}>
-          <TextField
-            id='last_name'
-            margin='none'
+          <UITextField
             fullWidth
             label='Last Name'
+            placeholder='Last Name'
             value={profile?.lastName}
             onChange={(e) => {
               setProfile({ ...profile, lastName: e.target.value });
@@ -263,12 +262,11 @@ function UploadDB({
           />
         </Grid>
         <Grid item xs={12} sm={6} md={6}>
-          <TextField
+          <UITextField
             required
-            id='email'
-            margin='none'
             fullWidth
             label='Email'
+            placeholder='Email'
             value={profile?.email}
             onChange={(e) => {
               setProfile({ ...profile, email: e.target.value });
@@ -278,11 +276,10 @@ function UploadDB({
           />
         </Grid>
         <Grid item xs={12} sm={6} md={6}>
-          <TextField
-            id='phone'
-            margin='none'
+          <UITextField
             fullWidth
             label='Phone'
+            placeholder='Phone'
             value={profile?.phoneNumber}
             onChange={(e) => {
               setProfile({ ...profile, phoneNumber: e.target.value });
@@ -291,12 +288,9 @@ function UploadDB({
         </Grid>
 
         <Grid item xs={12}>
-          <TextField
-            sx={{ px: '3px' }}
+          <UITextField
             value={profile.usn}
             fullWidth
-            margin='none'
-            id='linkedIn-url'
             label='LinkedIn URL'
             placeholder='https://www.linkedin.com/in/your-id'
             error={error.linkedinUrl.error}

@@ -55,8 +55,7 @@ function CancelScheduleDialog({
         addScheduleActivity({
           title: `Canceled ${schedule.interview_session.name}. Reason: ${reason} `,
           application_id: schedule.applications.id,
-          logger: recruiterUser.user_id,
-          type: 'schedule',
+          logged_by: 'user',
           supabase: supabase,
           created_by: recruiterUser.user_id,
         });

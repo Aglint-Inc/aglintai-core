@@ -2,7 +2,11 @@
 /* eslint-disable no-console */
 import { TaskTypeDb } from '@aglint/shared-types';
 import { DB } from '@aglint/shared-types';
-import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
+import {
+  EmailAgentId,
+  PhoneAgentId,
+  SystemAgentId,
+} from '@aglint/shared-utils';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -10,13 +14,15 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { ApiBodyParamsScheduleAgent } from '../application/schedulewithagent';
+import { ApiBodyParamScheduleIndividual } from '../debrief/schedule_individual';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY || '';
+const supabase = createClient<DB>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY,
+);
 
-const supabase = createClient<DB>(supabaseUrl, supabaseAnonKey);
-
-const url = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/schedulewithagent`;
+const agent_url = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/schedulewithagent`;
+const debrief_url = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/debrief/schedule_individual`;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -26,7 +32,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         '*,applications(id,candidates(first_name),public_jobs(id,recruiter!public_jobs_recruiter_id_fkey(id,name))),recruiter_user(user_id,first_name,last_name,email,phone),interview_filter_json(*)',
       )
       .eq('status', 'scheduled')
-      .or(`assignee.eq.{"${EmailAgentId}"},assignee.eq.{"${PhoneAgentId}"}`)
+      .or(
+        `assignee.eq.{"${EmailAgentId}"},assignee.eq.{"${PhoneAgentId}"},assignee.eq.{"${SystemAgentId}"}`,
+      )
       .lt('trigger_count', 2)
       .lt('start_date', new Date().toISOString())
       .order('created_by', {
@@ -40,25 +48,44 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await Promise.all(
           data.map(async (task) => {
             try {
-              axios.post(url, {
-                application_id: task.application_id,
-                dateRange: task.schedule_date_range,
-                recruiter_id: task.applications.public_jobs.recruiter.id,
-                recruiter_user_name: getFullName(
-                  task.recruiter_user.first_name,
-                  task.recruiter_user.last_name,
-                ),
-                session_ids: (task.session_ids as any).map((ses) => ses.id),
-                task_id: task.id,
-                type: task.assignee.includes(EmailAgentId)
-                  ? 'email_agent'
-                  : 'phone_agent',
-                candidate_name: task.applications.candidates.first_name,
-                company_name: task.applications.public_jobs.recruiter.name,
-                rec_user_phone: task.recruiter_user.phone,
-                rec_user_id: task.recruiter_user.user_id,
-                user_tz: 'Asia/Calcutta',
-              } as ApiBodyParamsScheduleAgent);
+              if (task.assignee[0] === SystemAgentId) {
+                const bodyParams: ApiBodyParamScheduleIndividual = {
+                  application_id: task.application_id,
+                  dateRange: task.schedule_date_range,
+                  rec_user_id: task.recruiter_user.user_id,
+                  session_id: task.interview_filter_json.session_ids[0],
+                  recruiter_id: task.applications.public_jobs.recruiter.id,
+                  task_id: task.id,
+                  user_tz: 'Asia/Calcutta',
+                  recruiter_user_name: getFullName(
+                    task.recruiter_user.first_name,
+                    task.recruiter_user.last_name,
+                  ),
+                };
+                axios.post(debrief_url, bodyParams);
+              } else {
+                axios.post(agent_url, {
+                  application_id: task.application_id,
+                  dateRange: task.schedule_date_range,
+                  recruiter_id: task.applications.public_jobs.recruiter.id,
+                  recruiter_user_name: getFullName(
+                    task.recruiter_user.first_name,
+                    task.recruiter_user.last_name,
+                  ),
+                  session_ids: task.interview_filter_json.session_ids,
+                  task_id: task.id,
+                  type: task.assignee.includes(EmailAgentId)
+                    ? 'email_agent'
+                    : task.assignee.includes(EmailAgentId)
+                      ? 'phone_agent'
+                      : '',
+                  candidate_name: task.applications.candidates.first_name,
+                  company_name: task.applications.public_jobs.recruiter.name,
+                  rec_user_phone: task.recruiter_user.phone,
+                  rec_user_id: task.recruiter_user.user_id,
+                  user_tz: 'Asia/Calcutta',
+                } as ApiBodyParamsScheduleAgent);
+              }
             } catch (error) {
               console.error('Error for application:', error.message);
             }

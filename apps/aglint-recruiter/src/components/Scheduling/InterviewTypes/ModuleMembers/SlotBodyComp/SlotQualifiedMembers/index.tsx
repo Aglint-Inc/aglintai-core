@@ -6,7 +6,7 @@ import { MemberListCard } from '@/devlink2/MemberListCard';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { getFullName } from '@/src/utils/jsonResume';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 
 import { useGetMeetingsByModuleId } from '../../../queries/hooks';
 import { getHours } from '../../../queries/utils';
@@ -63,7 +63,7 @@ function SlotQualifiedMembers({
   return (
     <>
       {allQualified.length === 0 && (
-        <EmptyGeneral textEmpt={'No Members Added Yet'} />
+        <EmptyGeneral textEmpt={'No members yet'} />
       )}
       {allQualified.map((user) => {
         const member = members.filter(
@@ -79,7 +79,9 @@ function SlotQualifiedMembers({
             onClickCard={{
               onClick: () => {
                 router.push(
-                  `${pageRoutes.SCHEDULINGINTERVIEWER}/${user.user_id}`,
+                  ROUTES['/scheduling/interviewer/[member_id]']({
+                    member_id: user.user_id,
+                  }),
                 );
               },
             }}

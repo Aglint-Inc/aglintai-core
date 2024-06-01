@@ -1,8 +1,10 @@
 import {
+  PlanCombinationRespType,
+  SessionCombinationRespType,
+} from '@aglint/shared-types';
+import {
   holidayType,
-  PlanCombinationType,
   schedulingSettingType,
-  SessionCombinationType,
   SessionInterviewerApiRespType,
   SessionInterviewerType,
   SessionsCombType,
@@ -19,9 +21,13 @@ dayjs.extend(timezone);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
-export const combineSlots = (plan_combs: PlanCombinationType[][]) => {
-  const convertCombsToTimeSlot = (all_plan_combs: PlanCombinationType[]) => {
-    const convertSessionCombToSlot = (session_comb: SessionCombinationType) => {
+export const combineSlots = (plan_combs: PlanCombinationRespType[][]) => {
+  const convertCombsToTimeSlot = (
+    all_plan_combs: PlanCombinationRespType[],
+  ) => {
+    const convertSessionCombToSlot = (
+      session_comb: SessionCombinationRespType,
+    ) => {
       const session_slot: SessionSlotType = {
         break_duration: session_comb.break_duration,
         duration: session_comb.duration,
@@ -35,6 +41,7 @@ export const combineSlots = (plan_combs: PlanCombinationType[][]) => {
         session_type: session_comb.session_type,
         start_time: session_comb.start_time,
         end_time: session_comb.end_time,
+        meeting_id: session_comb.meeting_id,
       };
       return session_slot;
     };
@@ -75,6 +82,9 @@ export const convertIntToResp = (inters: SessionInterviewerType[]) => {
     training_type: i.training_type,
     interviewer_type: i.interviewer_type,
     interview_module_relation_id: i.interview_module_relation_id,
+    user_id: i.user_id,
+    int_tz: i.int_tz,
+    position: i.position,
   }));
 
   return r;

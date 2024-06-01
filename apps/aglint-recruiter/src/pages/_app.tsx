@@ -25,9 +25,11 @@ const MyApp = ({ Component, pageProps }) => {
         <PHProvider>
           <DevlinkMainProvider>
             <Theme>
-              <QueryProvider>
-                {provider(<Component {...pageProps} />)}
-              </QueryProvider>
+              <ScreenSizeProvider>
+                <QueryProvider>
+                  {provider(<Component {...pageProps} />)}
+                </QueryProvider>
+              </ScreenSizeProvider>
             </Theme>
           </DevlinkMainProvider>
         </PHProvider>

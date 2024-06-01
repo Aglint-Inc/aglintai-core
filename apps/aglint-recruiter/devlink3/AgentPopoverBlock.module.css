@@ -1,0 +1,78 @@
+.agent_popover_wrap {
+  display: flex;
+}
+
+.agent_popover {
+  display: flex;
+  overflow: hidden;
+  width: 300px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 1px;
+  grid-row-gap: 1px;
+
+  border: 1px solid var(--neutral-6);
+  border-radius: 10px;
+
+  background-color: var(--neutral-6);
+}
+
+.agent_item-copy {
+  padding: 10px;
+  background-color: white;
+  transition: all 200ms ease;
+  cursor: pointer;
+}
+
+.agent_item-copy:hover {
+  background-color: var(--accent-2);
+}
+
+.agent_title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+
+  color: var(--accent-11);
+}
+
+.embed_flex {
+  display: flex;
+  align-items: center;
+}
+
+.embed_flex.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+.embed_flex.custom_top {
+  margin-top: 2px;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.embed_flex.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.embed_flex.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.embed_flex.fixedd {
+  width: 23px;
+}

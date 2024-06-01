@@ -69,7 +69,7 @@
 .div-block-1393.radius-10.height-100 {
   width: 120px;
   height: 100%;
-  padding-top: 12px;
+  padding-top: 20px;
   justify-content: center;
   align-items: flex-start;
 
@@ -111,6 +111,10 @@
   text-decoration: underline;
 }
 
+.text-underline {
+  text-decoration: underline;
+}
+
 .text-blue-500.text-underline.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -118,6 +122,10 @@
 
 .text-blue-500.text-underline.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .text-sm {

@@ -72,9 +72,7 @@ function SlotTrainingMembers({
     <>
       {selUser?.user_id && <MoveToQualifiedDialog editModule={editModule} />}
 
-      {allTrainees.length === 0 && (
-        <EmptyGeneral textEmpt={'No Members Added Yet'} />
-      )}
+      {allTrainees.length === 0 && <EmptyGeneral textEmpt={'No members yet'} />}
       {allTrainees.map((user) => {
         const member = members.find(
           (member) => member.user_id === user.user_id,
@@ -83,7 +81,9 @@ function SlotTrainingMembers({
         if (!member) return null; //this line added temporarily becasue of data inconsistency
 
         const progressDataUser = progress.filter(
-          (prog) => prog.interview_module_relation_id === user.id,
+          (prog) =>
+            prog.interview_module_relation_id === user.id &&
+            prog.interview_meeting.status === 'completed',
         );
 
         return (

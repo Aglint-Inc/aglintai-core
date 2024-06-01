@@ -97,6 +97,10 @@
   color: #467b7c;
 }
 
+.hide {
+  display: none;
+}
+
 .div-block-1714 {
   display: flex;
   justify-content: flex-start;
@@ -106,10 +110,11 @@
 }
 
 .div-block-1713 {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   flex: 0 0 auto;
   border-radius: 100px;
+  box-shadow: 0 2px 5px 0 hsla(0, 0.00%, 0.00%, 0.07);
 }
 
 .div-block-1715 {
@@ -124,16 +129,16 @@
   color: #68737d;
 }
 
-.hide {
-  display: none;
-}
-
 .text-sm {
   font-size: 12px;
   line-height: 16px;
 }
 
 .text-grey-600.text-underline {
+  text-decoration: underline;
+}
+
+.text-underline {
   text-decoration: underline;
 }
 
@@ -144,4 +149,8 @@
 
 .text-grey-600.text-underline.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }

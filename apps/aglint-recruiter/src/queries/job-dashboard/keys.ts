@@ -1,7 +1,5 @@
 import { useRouter } from 'next/router';
 
-import { pageRoutes } from '@/src/utils/pageRouting';
-
 import { appKey } from '..';
 
 export const jobDashboardQueryKeys = {
@@ -42,12 +40,15 @@ export const jobDashboardQueryKeys = {
       'interviewPlanEnabled',
     ],
   }),
+  workflows: ({ job_id }: { job_id: string }) => ({
+    queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'workflows'],
+  }),
 } as const;
 
 export const useJobId = () => {
   const router = useRouter();
   const job_id = (
-    (router?.pathname ?? null).startsWith(pageRoutes.JOBDASHBOARD)
+    (router?.pathname ?? null).startsWith('/jobs/[id]')
       ? router?.query?.id ?? null
       : null
   ) as string;

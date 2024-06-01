@@ -54,8 +54,7 @@ function StatusUpdateDropdownBreadcrum() {
         await addScheduleActivity({
           title: `Moved to ${status}`,
           application_id: selectedApplication.id,
-          logger: recruiterUser.user_id,
-          type: 'schedule',
+          logged_by: 'user',
           supabase: supabase,
           created_by: recruiterUser.user_id,
         });

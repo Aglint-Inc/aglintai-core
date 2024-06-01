@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 import { ChatMessage } from '@/devlink/ChatMessage';
 import { JobAssist } from '@/devlink/JobAssist';
 import { JobAssistCardSmall } from '@/devlink/JobAssistCardSmall';
+import { CalculatingResumeScore } from '@/public/lottie/CalculatingResumeScore';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { useJobAssistantContext } from '@/src/context/JobAssistant';
@@ -25,7 +26,6 @@ import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 
 import EmptyState from '../../CandidateDatabase/Search/EmptyState';
 import Loader from '../../Common/Loader';
-import { CalculatingResumeScore } from '../../Common/Lotties/Calculating';
 import MuiAvatar from '../../Common/MuiAvatar';
 import ApplicationDetails from '../../JobApplicationsDashboard/ApplicationCard/ApplicationDetails';
 import CandidateCard from './CandidateCard';

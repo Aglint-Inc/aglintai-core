@@ -17,6 +17,7 @@ import { agent_activities } from '@/src/utils/scheduling_v2/agents_activity';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import { getCandidateLogger } from '../../../../utils/scheduling_v2/getCandidateLogger';
+import { ApiDebriefAddUsers } from '../application/debrief-add-users';
 
 var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');
@@ -47,27 +48,48 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       schedule_id: req_body.schedule_id,
     });
 
-    if (req_body.filter_id) {
+    if (req_body.filter_id && !req_body.is_debreif) {
       const payload: APICandScheduleMailThankYou = {
         cand_tz: req_body.user_tz,
         filter_id: req_body.filter_id,
+        task_id: req_body.task_id,
       };
       axios.post(
         `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,
         payload,
       );
+      const payloadDebriefAddUsers: ApiDebriefAddUsers = {
+        filter_id: req_body.filter_id,
+      };
+      axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/debrief-add-users`,
+        payloadDebriefAddUsers,
+      ); // add confirmed users to next debrief session
+    }
+
+    const session_ids: string[] = req_body.candidate_plan.reduce(
+      (s_ids, curr) => {
+        s_ids = [...s_ids, ...curr.sessions.map((s) => s.session_id)];
+        return s_ids;
+      },
+      [],
+    );
+
+    for (let session_id of session_ids) {
+      try {
+        axios.post(
+          `${process.env.NEXT_PUBLIC_AGENT_API}/api/slack/notify-interview-confirmation`,
+          {
+            session_id,
+          },
+        );
+      } catch {
+        //
+      }
     }
 
     // save snapshot of interview meeting details to tasks
     if (req_body.task_id) {
-      const session_ids: string[] = req_body.candidate_plan.reduce(
-        (s_ids, curr) => {
-          s_ids = [...s_ids, ...curr.sessions.map((s) => s.session_id)];
-          return s_ids;
-        },
-        [],
-      );
-
       axios.post(
         `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/save_meeting_to_task`,
         {
@@ -76,6 +98,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       );
     }
+    session_ids.forEach((s) => {
+      axios.post(
+        `https://apis-ta7r36xoza-wl.a.run.app/api/slack/notify-interview-confirmation`,
+        {
+          session_id: s,
+        },
+      );
+    });
 
     if (
       req_body.task_id &&

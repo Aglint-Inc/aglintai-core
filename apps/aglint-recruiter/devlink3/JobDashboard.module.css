@@ -89,6 +89,10 @@
   color: #68737d;
 }
 
+.text-underline {
+  text-decoration: underline;
+}
+
 .text-sm.text-grey_600.text-underline.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -96,6 +100,10 @@
 
 .text-sm.text-grey_600.text-underline.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .text-blue-500 {
@@ -137,6 +145,16 @@
 
 .text-sm.text-underline.text-grey-600.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.text-sm.text-underline.text-blue-500.view-req {
+  position: absolute;
+  left: auto;
+  top: 10px;
+  right: 16px;
+  bottom: auto;
+
+  cursor: pointer;
 }
 
 .relative-1 {
@@ -201,6 +219,14 @@
   grid-row-gap: 10px;
 
   background-color: white;
+
+  transition: all 200ms ease;
+
+  cursor: pointer;
+}
+
+.jd_stat:hover {
+  background-color: hsla(210, 33.33%, 97.65%, 1.00);
 }
 
 .fw-semibold.relative_2 {
@@ -277,6 +303,10 @@
   line-height: 28px;
 }
 
+.text-xl.text-count-schedule {
+  color: #151d48;
+}
+
 .candidate_flex {
   display: flex;
   grid-column-gap: 4px;
@@ -298,6 +328,11 @@
 
 .text-gray-600.is_link {
   color: #337fbd;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-gray-600.underline {
   text-decoration: underline;
   cursor: pointer;
 }
@@ -537,34 +572,38 @@
   color: white;
 }
 
-.div-block-1710 {
+.div-block-1710-copy {
+  overflow: hidden;
   border: 1px solid #e9ebed;
   border-radius: 10px;
-  background-color: white;
+  background-color: #f7f9fb;
 }
 
-.div-block-1711 {
+.div-block-1711-copy {
   display: flex;
   padding: 10px 16px;
   justify-content: space-between;
   align-items: center;
-
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-
-  background-color: #f7f9fb;
+  background-color: #e9ebed;
 }
 
-.div-block-1712 {
+.module_card_wrapper {
   display: flex;
-  padding: 16px;
+  padding: 0px;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+
+  background-color: white;
 }
 
-.div-block-1712.gap-20 {
+.module_card_wrapper.gap-20 {
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+
+.module_card_wrapper.gap-20-copy {
   grid-column-gap: 20px;
   grid-row-gap: 20px;
 }
