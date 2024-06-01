@@ -199,7 +199,7 @@ function Theme({ children }) {
             fontWeight: '500',
           },
           contained: {
-            boxShadow: 'var(--shadow-1)', // Level 1 shadow
+            boxShadow: 'none', // Level 1 shadow
           },
           outlined: {
             padding: 'var(--space-2) var(--space-3)',
@@ -208,10 +208,87 @@ function Theme({ children }) {
             padding: 'var(--space-2) var(--space-3)',
           },
         },
+        variants: [
+          {
+            props: { size: 'small' },
+            style: {
+              padding: 'var(--space-1) var(--space-2)',
+              fontSize: 'var(--font-size-1)',
+              lineHeight: 'var(--line-height-1)',
+              letterSpacing: 'var(--letter-spacing-1)',
+              minWidth: 'auto',
+            },
+          },
+        ],
       },
       MuiButtonBase: {
         defaultProps: {
           disableRipple: true, // Disable ripple effect globally for all components
+        },
+      },
+      MuiIconButton: {
+        defaultProps: {
+          disableRipple: true, // Disable ripple effect globally for all components
+        },
+        styleOverrides: {
+          root: {
+            padding: 'var(--space-1)',
+            fontFamily: 'var(--text)', // Use --text for font
+            borderRadius: 'var(--radius-2)',
+            '&.MuiIconButton-colorPrimary': {
+              backgroundColor: 'var(--accent-4)',
+              color: '#ffffff',
+              '&:hover': {
+                backgroundColor: 'var(--accent-5)',
+              },
+            },
+            '&.MuiIconButton-colorSecondary': {
+              backgroundColor: 'var(--neutral-5)',
+              color: '#ffffff',
+              '&:hover': {
+                backgroundColor: 'var(--neutral-6)',
+              },
+            },
+            '&.MuiIconButton-colorSuccess': {
+              backgroundColor: 'var(--jade-5)',
+              color: '#ffffff',
+              '&:hover': {
+                backgroundColor: 'var(--jade-6)',
+              },
+            },
+            '&.MuiIconButton-colorError': {
+              backgroundColor: 'var(--tomato-5)',
+              color: '#ffffff',
+              '&:hover': {
+                backgroundColor: 'var(--tomato-6)',
+              },
+            },
+            '&.MuiIconButton-colorWarning': {
+              backgroundColor: 'var(--yellow-5)',
+              color: '#ffffff',
+              '&:hover': {
+                backgroundColor: 'var(--yellow-6)',
+              },
+            },
+            '&.MuiIconButton-colorInfo': {
+              backgroundColor: 'var(--sky-5)',
+              color: '#ffffff',
+              '&:hover': {
+                backgroundColor: 'var(--sky-6)',
+              },
+            },
+            '&.MuiIconButton-outlined': {
+              border: '1px solid currentColor',
+              backgroundColor: 'transparent',
+            },
+            '&.MuiIconButton-contained': {
+              backgroundColor: 'currentColor',
+              color: '#ffffff',
+              '&:hover': {
+                backgroundColor: 'darken(currentColor, 0.1)',
+              },
+            },
+          },
         },
       },
       MuiTypography: {
@@ -222,82 +299,22 @@ function Theme({ children }) {
         },
       },
 
-      MuiDialog: {
+      MuiFormControlLabel: {
+        styleOverrides: {
+          root: {
+            // margin: 'var(--space-2)',
+            fontFamily: 'var(--text)', // Use --text for font
+          },
+          label: {
+            fontSize: 'var(--font-size-2)',
+          },
+        },
+      },
+      MuiInputLabel: {
         defaultProps: {
-          // You can set default props here if needed
-        },
-        styleOverrides: {
-          paper: {
-            borderRadius: '4px',
-            marginTop: '4px',
-            // padding: 'var(--space-4)',
-            boxShadow: 'var(--shadow-4)', // Level 4 shadow
-            fontFamily: 'var(--text)', // Use --text for font
-          },
-          paperFullScreen: {
-            borderRadius: '0',
-            // padding: 'var(--space-4)',
-            boxShadow: 'var(--shadow-4)', // Level 4 shadow
-            fontFamily: 'var(--text)', // Use --text for font
-          },
-          paperFullWidth: {
-            // padding: 'var(--space-4)',
-            boxShadow: 'var(--shadow-4)', // Level 4 shadow
-            fontFamily: 'var(--text)', // Use --text for font
-          },
-          paperScrollBody: {
-            borderRadius: '4px',
-            marginTop: '4px',
-            // padding: 'var(--space-4)',
-            boxShadow: 'var(--shadow-4)', // Level 4 shadow
-            fontFamily: 'var(--text)', // Use --text for font
-          },
-          paperScrollPaper: {
-            borderRadius: '4px',
-            marginTop: '4px',
-            // padding: 'var(--space-4)',
-            boxShadow: 'var(--shadow-4)', // Level 4 shadow
-            fontFamily: 'var(--text)', // Use --text for font
-          },
+          shrink: false,
         },
       },
-      
-      MuiCard: {
-        styleOverrides: {
-          root: {
-            padding: 'var(--space-4)',
-            borderRadius: 'var(--radius-4)',
-            boxShadow: 'var(--shadow-2)', // Level 2 shadow
-          },
-        },
-      },
-
-      MuiContainer: {
-        styleOverrides: {
-          root: {
-            padding: 'var(--space-5)',
-          },
-        },
-      },
-
-      // MuiGrid: {
-      //   styleOverrides: {
-      //     container: {
-      //       gap: 'var(--space-3)',
-      //     },
-      //   },
-      // },
-
-      // MuiPaper: {
-      //   styleOverrides: {
-      //     root: {
-      //       padding: 'var(--space-4)',
-      //       borderRadius: 'var(--radius-3)',
-      //       boxShadow: 'var(--shadow-3)', // Level 3 shadow
-      //     },
-      //   },
-      // },
-
       MuiInputBase: {
         defaultProps: {
           size: 'small',
@@ -306,8 +323,9 @@ function Theme({ children }) {
         },
         styleOverrides: {
           root: {
-            padding: 'var(--space-2)',
+            padding: 'var(--space-1) var(--space-2)',
             fontFamily: 'var(--text)', // Use --text for font
+            backgroundColor: 'var(--white)',
           },
           input: {
             fontSize: 'var(--font-size-2)',
@@ -317,16 +335,28 @@ function Theme({ children }) {
           },
         },
       },
-
       MuiTextField: {
         defaultProps: {
           size: 'small',
           variant: 'outlined',
+          InputLabelProps: {
+            shrink: false,
+          },
+          placeholder: 'Enter text',
         },
         styleOverrides: {
           root: {
+            '& .Mui-disabled': {
+              backgroundColor: 'var(--neutral-2)',
+            },
+            '& .MuiInputLabel-root': {
+              display: 'none',
+            },
+            '& fieldset legend': {
+              display: 'none',
+            },
             '& .MuiInputBase-root': {
-              padding: 'var(--space-1)',
+              padding: 'var(--space-1) var(--space-2)',
               fontSize: 'var(--font-size-2)',
               lineHeight: 'var(--line-height-2)',
               letterSpacing: 'var(--letter-spacing-3)',
@@ -337,25 +367,37 @@ function Theme({ children }) {
               },
             },
             '& .MuiInputBase-input': {
-              padding: 'var(--space-1)',
+              padding: 'var(--space-1)  var(--space-2)',
               fontSize: 'var(--font-size-2)',
               lineHeight: 'var(--line-height-2)',
               letterSpacing: 'var(--letter-spacing-3)',
               fontFamily: 'var(--text)', // Use --text for font
+              color: 'var(--neutral-11)',
+            },
+            '& .MuiOutlinedInput-notchedOutline': {
+              top: 0,
+            },
+            '& .MuiButtonBase-root': { // Button inside textfield  
+              paddingRight: 'var(--space-3)',
             },
           },
         },
       },
-
       MuiAutocomplete: {
         defaultProps: {
           renderInput: (params) => <TextField {...params} />,
         },
         styleOverrides: {
-          // root: {
-          //   padding: 'var(--space-2)',
-          //   fontFamily: 'var(--text)', // Use --text for font
-          // },
+          root: {
+            '& .MuiInputLabel-root': {
+              display: 'none',
+            },
+            '& fieldset legend': {
+              display: 'none',
+            },
+            // padding: 'var(--space-1) var(--space-2)',
+            // fontFamily: 'var(--text)', // Use --text for font
+          },
           // inputRoot: {
           //   '&[class*="MuiInput-root"] .MuiAutocomplete-input': {
           //     padding: 'var(--space-2) !important',
@@ -379,7 +421,7 @@ function Theme({ children }) {
           //   },
           // },
           input: {
-            padding: 'var(--space-1) !important',
+            // padding: 'var(--space-1) !important',
             // fontSize: 'var(--font-size-2)',
             // lineHeight: 'var(--line-height-2)',
             // letterSpacing: 'var(--letter-spacing-2)',
@@ -425,6 +467,103 @@ function Theme({ children }) {
           // },
         },
       },
+      MuiInputAdornment: {
+        styleOverrides: {
+          root: {
+            padding: 'var(--space-1)',
+            fontFamily: 'var(--text)', // Use --text for font
+          },
+        },
+      },
+      MuiFormControl: {
+        styleOverrides: {
+          root: {
+            '& .MuiInputLabel-root': {
+              transform: 'translate(14px, 8px) scale(1)',
+              color: 'var(--neutral-11)',
+            },
+            '& .MuiInputLabel-root.MuiFormLabel-filled': {
+              display: 'none',
+            },
+            '& .MuiOutlinedInput-notchedOutline': {
+              top: 0,
+            },
+          },
+        },
+      },
+      MuiSelect: {
+        styleOverrides: {
+          root: {
+            fontFamily: 'var(--text)', // Use --text for font
+            '& .MuiInputLabel-root': {
+              display: 'none',
+            },
+            '& fieldset legend': {
+              display: 'none',
+            },
+            '& .MuiOutlinedInput-notchedOutline': {
+              top: 0,
+            },
+          },
+          select: {
+            padding: 'var(--space-1)',
+            fontSize: 'var(--font-size-2)',
+            lineHeight: 'var(--line-height-2)',
+            letterSpacing: 'var(--letter-spacing-3)',
+            fontFamily: 'var(--text)', // Use --text for font
+          },
+          icon: {
+            right: 'var(--space-1)',
+          },
+        },
+      },
+      MuiCheckbox: {
+        defaultProps: {
+          disableRipple: true, // No more ripple, on the whole application
+        },
+      },
+      MuiRadio: {
+        defaultProps: {
+          disableRipple: true, // No more ripple, on the whole application
+        },
+        styleOverrides: {
+          root: {
+            padding: 'var(--space-1)',
+          },
+        },
+      },
+      MuiRadioGroup: {
+        defaultProps: {
+          disableRipple: true, // No more ripple, on the whole application
+        },
+        styleOverrides: {
+          root: {
+            gap: 'var(--space-2)',
+          },
+        },
+      },
+      MuiSwitch: {
+        styleOverrides: {
+          root: {
+            width: '40px', // adjusted width
+            height: '24px', // adjusted height
+            padding: '2px', // adjusted padding
+          },
+          switchBase: {
+            padding: '2px', // adjusted padding
+            '&.Mui-checked': {
+              transform: 'translateX(16px)', // adjust the position when checked
+            },
+          },
+          thumb: {
+            width: '20px', // adjusted width
+            height: '20px', // adjusted height
+          },
+          track: {
+            borderRadius: '12px', // adjusted borderRadius
+          },
+        },
+      },
 
       MuiAlert: {
         styleOverrides: {
@@ -433,6 +572,9 @@ function Theme({ children }) {
             borderRadius: 'var(--radius-2)',
             boxShadow: 'var(--shadow-2)', // Level 2 shadow
             fontFamily: 'var(--text)', // Use --text for font
+            fontSize: 'var(--font-size-2)',
+            lineHeight: 'var(--line-height-2)',
+            letterSpacing: 'var(--letter-spacing-2)',
           },
         },
       },
@@ -452,13 +594,7 @@ function Theme({ children }) {
           },
         },
       },
-      MuiBox: {
-        styleOverrides: {
-          root: {
-            padding: 'var(--space-2)',
-          },
-        },
-      },
+
       MuiChip: {
         styleOverrides: {
           root: {
@@ -475,6 +611,15 @@ function Theme({ children }) {
         styleOverrides: {
           root: {
             color: 'var(--accent-9)',
+          },
+        },
+      },
+
+      MuiTimePicker: {
+        styleOverrides: {
+          root: {
+            padding: 'var(--space-2)',
+            fontFamily: 'var(--text)', // Use --text for font
           },
         },
       },
@@ -533,53 +678,7 @@ function Theme({ children }) {
           },
         },
       },
-      MuiDivider: {
-        styleOverrides: {
-          root: {
-            margin: 'var(--space-3) 0',
-          },
-        },
-      },
-      MuiDrawer: {
-        styleOverrides: {
-          paper: {
-            padding: 'var(--space-4)',
-            // borderRadius: 'var(--radius-3)',
-            border: 'none',
-            boxShadow: 'var(--shadow-3)', // Level 3 shadow
-          },
-        },
-      },
-      MuiFormControlLabel: {
-        styleOverrides: {
-          root: {
-            // margin: 'var(--space-2)',
-            fontFamily: 'var(--text)', // Use --text for font
-          },
-          label: {
-            fontSize: 'var(--font-size-2)',
-          },
-        },
-      },
-      MuiIconButton: {
-        defaultProps: {
-          disableRipple: true, // Disable ripple effect globally for all components
-        },
-        styleOverrides: {
-          root: {
-            padding: 'var(--space-2)',
-            fontFamily: 'var(--text)', // Use --text for font
-          },
-        },
-      },
-      MuiInputAdornment: {
-        styleOverrides: {
-          root: {
-            padding: 'var(--space-1)',
-            fontFamily: 'var(--text)', // Use --text for font
-          },
-        },
-      },
+
       MuiMenu: {
         styleOverrides: {
           paper: {
@@ -607,50 +706,7 @@ function Theme({ children }) {
         //   },
         // },
       },
-      MuiCheckbox: {
-        defaultProps: {
-          disableRipple: true, // No more ripple, on the whole application
-        },
-      },
-
-      MuiRadio: {
-        defaultProps: {
-          disableRipple: true, // No more ripple, on the whole application
-        },
-        styleOverrides: {
-          root: {
-            padding: 'var(--space-1)',
-          },
-        },
-      },
-      MuiRadioGroup: {
-        defaultProps: {
-          disableRipple: true, // No more ripple, on the whole application
-        },
-        styleOverrides: {
-          root: {
-            gap: 'var(--space-2)',
-          },
-        },
-      },
-      MuiSelect: {
-        styleOverrides: {
-          root: {
-            padding: 'var(--space-2)',
-            fontFamily: 'var(--text)', // Use --text for font
-          },
-          select: {
-            padding: 'var(--space-1)',
-            fontSize: 'var(--font-size-2)',
-            lineHeight: 'var(--line-height-2)',
-            letterSpacing: 'var(--letter-spacing-3)',
-            fontFamily: 'var(--text)', // Use --text for font
-          },
-          icon: {
-            right: 'var(--space-1)',
-          },
-        },
-      },
+      
       MuiSkeleton: {
         styleOverrides: {
           root: {
@@ -678,13 +734,7 @@ function Theme({ children }) {
           },
         },
       },
-      // MuiStack: {
-      //   styleOverrides: {
-      //     root: {
-      //       gap: 'var(--space-2)',
-      //     },
-      //   },
-      // },
+ 
       MuiStaticDateTimePicker: {
         styleOverrides: {
           root: {
@@ -693,36 +743,7 @@ function Theme({ children }) {
           },
         },
       },
-      MuiSwitch: {
-        styleOverrides: {
-          root: {
-            width: '40px', // adjusted width
-            height: '24px', // adjusted height
-            padding: '2px', // adjusted padding
-          },
-          switchBase: {
-            padding: '2px', // adjusted padding
-            '&.Mui-checked': {
-              transform: 'translateX(16px)', // adjust the position when checked
-            },
-          },
-          thumb: {
-            width: '20px', // adjusted width
-            height: '20px', // adjusted height
-          },
-          track: {
-            borderRadius: '12px', // adjusted borderRadius
-          },
-        },
-      },
-      MuiTimePicker: {
-        styleOverrides: {
-          root: {
-            padding: 'var(--space-2)',
-            fontFamily: 'var(--text)', // Use --text for font
-          },
-        },
-      },
+
       MuiTooltip: {
         styleOverrides: {
           tooltip: {
@@ -734,6 +755,7 @@ function Theme({ children }) {
           },
         },
       },
+
       MuiTable: {
         styleOverrides: {
           root: {
@@ -791,6 +813,151 @@ function Theme({ children }) {
           },
         },
       },
+
+      MuiTab: {
+        styleOverrides: {
+          root: {
+            textTransform: 'capitalize', // Set text to title case
+            fontWeight: 500, // Medium font weight
+            fontSize: 'var(--font-size-2)', // Custom font size
+          },
+        },
+      },
+      MuiDialog: {
+        defaultProps: {
+          // You can set default props here if needed
+        },
+        styleOverrides: {
+          paper: {
+            borderRadius: '4px',
+            marginTop: '4px',
+            // padding: 'var(--space-4)',
+            boxShadow: 'var(--shadow-4)', // Level 4 shadow
+            fontFamily: 'var(--text)', // Use --text for font
+          },
+          paperFullScreen: {
+            borderRadius: '0',
+            // padding: 'var(--space-4)',
+            boxShadow: 'var(--shadow-4)', // Level 4 shadow
+            fontFamily: 'var(--text)', // Use --text for font
+          },
+          paperFullWidth: {
+            // padding: 'var(--space-4)',
+            boxShadow: 'var(--shadow-4)', // Level 4 shadow
+            fontFamily: 'var(--text)', // Use --text for font
+          },
+          paperScrollBody: {
+            borderRadius: '4px',
+            marginTop: '4px',
+            // padding: 'var(--space-4)',
+            boxShadow: 'var(--shadow-4)', // Level 4 shadow
+            fontFamily: 'var(--text)', // Use --text for font
+          },
+          paperScrollPaper: {
+            borderRadius: '4px',
+            marginTop: '4px',
+            // padding: 'var(--space-4)',
+            boxShadow: 'var(--shadow-4)', // Level 4 shadow
+            fontFamily: 'var(--text)', // Use --text for font
+          },
+        },
+      },
+      MuiBox: {
+        styleOverrides: {
+          root: {
+            padding: 'var(--space-2)',
+          },
+        },
+      },
+      MuiStack: {
+        styleOverrides: {
+          root: {
+            '& .react-tel-input .form-control:focus': {
+              borderColor: 'var(--accent-9)',
+              outline: 'none !important',
+            },
+            '& .react-tel-input .form-control:hover':{
+              borderColor: 'var(--neutral-9)',
+            },
+            '& .react-tel-input .flag-dropdown:focus': {
+              borderColor: 'var(--accent-9)',
+              outline: 'none !important',
+            },
+          },
+        },
+      },
+      MuiCard: {
+        styleOverrides: {
+          root: {
+            padding: 'var(--space-4)',
+            borderRadius: 'var(--radius-4)',
+            boxShadow: 'var(--shadow-2)', // Level 2 shadow
+          },
+        },
+      },
+
+      MuiContainer: {
+        styleOverrides: {
+          root: {
+            padding: 'var(--space-5)',
+          },
+        },
+      },
+
+      MuiDivider: {
+        styleOverrides: {
+          root: {
+            margin: 'var(--space-3) 0',
+          },
+        },
+      },
+      MuiDrawer: {
+        styleOverrides: {
+          paper: {
+            padding: 'var(--space-4)',
+            // borderRadius: 'var(--radius-3)',
+            border: 'none',
+            boxShadow: 'var(--shadow-3)', // Level 3 shadow
+          },
+        },
+      },
+            
+      MuiSnackbarContent: {
+        styleOverrides: {
+          root: {
+            '&.success': {
+              backgroundColor: 'var(--jade-9)',
+            },
+            '&.error': {
+              backgroundColor: 'var(--tomato-9)',
+            },
+            '&.warning': {
+              backgroundColor: 'var(--yellow-9)',
+            },
+            '&.info': {
+              backgroundColor: 'var(--sky-9)',
+            },
+          },
+        },
+      },
+
+      // MuiGrid: {
+      //   styleOverrides: {
+      //     container: {
+      //       gap: 'var(--space-3)',
+      //     },
+      //   },
+      // },
+
+      // MuiPaper: {
+      //   styleOverrides: {
+      //     root: {
+      //       padding: 'var(--space-4)',
+      //       borderRadius: 'var(--radius-3)',
+      //       boxShadow: 'var(--shadow-3)', // Level 3 shadow
+      //     },
+      //   },
+      // },
     }
     
   });

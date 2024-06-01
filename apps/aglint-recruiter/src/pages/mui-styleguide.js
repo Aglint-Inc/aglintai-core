@@ -1,11 +1,16 @@
 import { AccountCircle } from '@mui/icons-material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close'; 
+import DeleteIcon from '@mui/icons-material/Delete';
+import ErrorIcon from '@mui/icons-material/Error';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import InboxIcon from '@mui/icons-material/Inbox';
+import InfoIcon from '@mui/icons-material/Info';
 import MailIcon from '@mui/icons-material/Mail';
-import SearchIcon from '@mui/icons-material/Search';
+import SaveIcon from '@mui/icons-material/Save';
+import WarningIcon from '@mui/icons-material/Warning';
 import {
     Accordion,
     AccordionDetails,
@@ -104,60 +109,156 @@ const CardExample = () => {
     );
 };
 
-const ButtonExamples = () => (
-    <>
+const ButtonExamples = () => {
+    const colors = ['primary', 'secondary', 'success', 'error', 'warning', 'info'];
+  
+    return (
+      <>
         <Typography variant="h4" gutterBottom>
-            Buttons
+          Buttons
         </Typography>
         <Grid container spacing={2}>
-            {['primary', 'secondary', 'success', 'error', 'warning', 'info'].map((color) => (
-                <Grid item key={color}>
-                    <Button variant="contained" color={color}>
-                        {color.charAt(0).toUpperCase() + color.slice(1)}
-                    </Button>
-                </Grid>
-            ))}
-            {['primary', 'secondary'].map((color) => (
-                <Grid item key={color}>
-                    <Button variant="outlined" color={color}>
-                        Outlined {color.charAt(0).toUpperCase() + color.slice(1)}
-                    </Button>
-                </Grid>
-            ))}
+          {colors.map((color) => (
+            <Grid item key={color}>
+              <Button variant="contained" color={color}>
+                {color.charAt(0).toUpperCase() + color.slice(1)}
+              </Button>
+            </Grid>
+          ))}
+          {['primary', 'secondary'].map((color) => (
+            <Grid item key={color}>
+              <Button variant="outlined" color={color}>
+                Outlined {color.charAt(0).toUpperCase() + color.slice(1)}
+              </Button>
+            </Grid>
+          ))}
+          {colors.map((color) => (
+            <Grid item key={color}>
+              <Button variant="text" color={color}>
+                Text {color.charAt(0).toUpperCase() + color.slice(1)}
+              </Button>
+            </Grid>
+          ))}
         </Grid>
-
+  
         <Typography variant="h4" gutterBottom>
-            Small Buttons
+          Buttons with Icons
         </Typography>
         <Grid container spacing={2}>
-            {['primary', 'secondary', 'success', 'error', 'warning', 'info'].map((color) => (
-                <Grid item key={color}>
-                    <Button variant="contained" color={color} size="small">
-                        Small {color.charAt(0).toUpperCase() + color.slice(1)}
-                    </Button>
-                </Grid>
-            ))}
-            {['primary', 'secondary'].map((color) => (
-                <Grid item key={color}>
-                    <Button variant="outlined" color={color} size="small">
-                        Small Outlined {color.charAt(0).toUpperCase() + color.slice(1)}
-                    </Button>
-                </Grid>
-            ))}
+          {[
+            { color: 'primary', label: 'Save', icon: <SaveIcon /> },
+            { color: 'secondary', label: 'Delete', icon: <DeleteIcon /> },
+            { color: 'success', label: 'Success', icon: <CheckIcon /> },
+            { color: 'error', label: 'Error', icon: <ErrorIcon /> },
+            { color: 'warning', label: 'Warning', icon: <WarningIcon /> },
+            { color: 'info', label: 'Info', icon: <InfoIcon /> },
+          ].map(({ color, label, icon }) => (
+            <Grid item key={color}>
+              <Button variant="contained" color={color} startIcon={icon}>
+                {label}
+              </Button>
+            </Grid>
+          ))}
         </Grid>
-    </>
-);
+  
+        <Typography variant="h4" gutterBottom>
+          Small Buttons
+        </Typography>
+        <Grid container spacing={2}>
+          {colors.map((color) => (
+            <Grid item key={color}>
+              <Button variant="contained" color={color} size="small">
+                Small {color.charAt(0).toUpperCase() + color.slice(1)}
+              </Button>
+            </Grid>
+          ))}
+          {['primary', 'secondary'].map((color) => (
+            <Grid item key={color}>
+              <Button variant="outlined" color={color} size="small">
+                Small Outlined {color.charAt(0).toUpperCase() + color.slice(1)}
+              </Button>
+            </Grid>
+          ))}
+          {colors.map((color) => (
+            <Grid item key={color}>
+              <Button variant="text" color={color} size="small">
+                Small Text {color.charAt(0).toUpperCase() + color.slice(1)}
+              </Button>
+            </Grid>
+          ))}
+        </Grid>
+  
+        <Typography variant="h4" gutterBottom>
+          Small Buttons with Icons
+        </Typography>
+        <Grid container spacing={2}>
+          {[
+            { color: 'primary', label: 'Save', icon: <SaveIcon /> },
+            { color: 'secondary', label: 'Delete', icon: <DeleteIcon /> },
+            { color: 'success', label: 'Success', icon: <CheckIcon /> },
+            { color: 'error', label: 'Error', icon: <ErrorIcon /> },
+            { color: 'warning', label: 'Warning', icon: <WarningIcon /> },
+            { color: 'info', label: 'Info', icon: <InfoIcon /> },
+          ].map(({ color, label, icon }) => (
+            <Grid item key={color}>
+              <Button variant="contained" color={color} size="small" startIcon={icon}>
+                {label}
+              </Button>
+            </Grid>
+          ))}
+        </Grid>
+  
+        <Typography variant="h4" gutterBottom>
+          Loading State Buttons
+        </Typography>
+        <Grid container spacing={2}>
+            <Grid item>
+              <Button variant="contained" disabled>
+                <CircularProgress size={24} color="inherit" />
+              </Button>
+            </Grid>
+        </Grid>
+  
+        <Typography variant="h4" gutterBottom>
+          Icon Buttons
+        </Typography>
+        <Grid container spacing={2}>
+          {colors.map((color) => (
+            <Grid item key={color}>
+              <IconButton color={color}>
+                <SaveIcon />
+              </IconButton>
+            </Grid>
+          ))}
+        </Grid>
+      </>
+    );
+  };
+  
 
 const ButtonGroupExample = () => (
     <>
         <Typography variant="h4" gutterBottom>
             Button Group
         </Typography>
-        <ButtonGroup color="primary" aria-label="outlined primary button group">
-            <Button>One</Button>
-            <Button>Two</Button>
-            <Button>Three</Button>
-        </ButtonGroup>
+        <Box sx={{ display: 'flex', '& > *': { m: 1 } }}>
+            <ButtonGroup color="primary" aria-label="outlined primary button group">
+                <Button>One</Button>
+                <Button>Two</Button>
+                <Button>Three</Button>
+            </ButtonGroup>
+
+            <ButtonGroup color="primary" variant="contained" aria-label="outlined primary button group">
+                <Button>One</Button>
+                <Button>Two</Button>
+                <Button>Three</Button>
+            </ButtonGroup>
+            <ButtonGroup color="primary" variant="text" aria-label="outlined primary button group">
+                <Button>One</Button>
+                <Button>Two</Button>
+                <Button>Three</Button>
+            </ButtonGroup>
+        </Box>
     </>
 );
 
@@ -174,6 +275,7 @@ const ToggleButtonExample = () => {
                 Toggle Button
             </Typography>
             <ToggleButtonGroup
+                size='small'
                 value={alignment}
                 exclusive
                 onChange={handleAlignment}
@@ -328,9 +430,11 @@ const AlertExamples = () => (
             Alerts
         </Typography>
         {['error', 'warning', 'info', 'success'].map((severity) => (
-            <Alert severity={severity} key={severity}>
-                This is a {severity} alert — check it out!
-            </Alert>
+            <Box sx={{ marginBottom: '20px' }} key={severity}>
+                <Alert severity={severity} key={severity}>
+                    This is a {severity} alert — check it out!
+                </Alert>
+            </Box>
         ))}
     </>
 );
@@ -603,6 +707,7 @@ const FormElementsExample = () => {
                         variant="outlined"
                         fullWidth
                         margin="normal"
+                        placeholder='Enter your text'
                     />
                 </Grid>
                 <Grid item xs={4} sm={6}>
@@ -621,6 +726,7 @@ const FormElementsExample = () => {
                         variant="outlined"
                         fullWidth
                         margin="normal"
+                        placeholder='Enter your password'
                     />
                 </Grid>
                 <Grid item xs={6} sm={6}>
@@ -760,45 +866,60 @@ const TooltipExample = () => {
 
 const SnackbarExample = () => {
     const [open, setOpen] = useState(false);
-
-    const handleClick = () => {
-        setOpen(true);
+    const [status, setStatus] = useState('info'); // Default status
+  
+    const handleClick = (newStatus) => () => {
+      setStatus(newStatus);
+      setOpen(true);
     };
-
+  
     const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpen(false);
+      if (reason === 'clickaway') {
+        return;
+      }
+      setOpen(false);
     };
-
+  
     return (
-        <>
-            <Typography variant="h4" gutterBottom>
-                Snackbar
-            </Typography>
-            <Button variant="outlined" onClick={handleClick}>
-                Show Snackbar
-            </Button>
-            <Snackbar
-                open={open}
-                autoHideDuration={6000}
-                onClose={handleClose}
-                message="This is a snackbar message."
-                action={
-                    <>
-                        <Button color="secondary" size="small" onClick={handleClose}>
-                            UNDO
-                        </Button>
-                        <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
-                            <CloseIcon fontSize="small" />
-                        </IconButton>
-                    </>
-                }
-            />
-        </>
+      <>
+        <Typography variant="h4" gutterBottom>
+          Snackbar
+        </Typography>
+        <Button variant="outlined" onClick={handleClick('success')}>
+          Show Success Snackbar
+        </Button>
+        <Button variant="outlined" onClick={handleClick('error')}>
+          Show Error Snackbar
+        </Button>
+        <Button variant="outlined" onClick={handleClick('warning')}>
+          Show Warning Snackbar
+        </Button>
+        <Button variant="outlined" onClick={handleClick('info')}>
+          Show Info Snackbar
+        </Button>
+        <Snackbar
+          open={open}
+          autoHideDuration={6000}
+          onClose={handleClose}
+          message={`This is a ${status} snackbar message.`}
+          ContentProps={{
+            className: status,
+          }}
+          action={
+            <>
+              <Button color="secondary" size="small" onClick={handleClose}>
+                UNDO
+              </Button>
+              <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            </>
+          }
+        />
+      </>
     );
-};
+  };
+  
 
 const BreadcrumbsExample = () => (
     <>
@@ -1047,26 +1168,27 @@ const StyleGuide = () => {
     };
 
     return (
-        <Grid container spacing={4} sx={{ p: 4 }}>
-            <Grid item xs={12} sm={6} md={3}>
+        <Grid container spacing={4} sx={{ p: 4 }} style={{background: 'var(--neutral-2)'}}>
+           
+            <Grid item xs={12} sm={6} md={8}>
+                <ButtonExamples />
+                <ButtonGroupExample />
+                <ToggleButtonExample />
+            </Grid>
+            <Grid item xs={12} sm={6} md={6}>
                 <TypographyExamples />
                 <LinksExample />
                 <BreadcrumbsExample />
                 <SnackbarExample />
 
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-                <ButtonExamples />
-                <ButtonGroupExample />
-                <ToggleButtonExample />
-            </Grid>
             <Grid item xs={12} sm={6} md={6}>
                 <FormElementsExample />
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={12} sm={6} md={6}>
                 <TableExample />
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={12} sm={6} md={6}>
                 <AlertExamples />
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
