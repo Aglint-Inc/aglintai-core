@@ -5,8 +5,10 @@ import dayjs from 'dayjs';
 import { Checkbox } from '@/devlink/Checkbox';
 import { ToggleButton } from '@/devlink2/ToggleButton';
 import { SchedulerFilters } from '@/devlink3/SchedulerFilters';
+import { TimeBlock } from '@/devlink3/TimeBlock';
 
 import { setFilters, useSchedulingFlowStore } from '../store';
+import DateRangeField from './DateRangeField';
 import PreferedInterviewers from './PreferedInterviewers';
 
 function StepScheduleFilter() {
@@ -37,6 +39,23 @@ function StepScheduleFilter() {
                     (interv) => interv.user_id === interviewer.user_id,
                   ),
               ),
+            )) &&
+          (filters.preferredDateRanges.length === 0 ||
+            option.sessions.some((session) =>
+              filters.preferredDateRanges.some((dateRange) => {
+                const sessionStartTime =
+                  new Date(session.start_time).getTime() %
+                  (24 * 60 * 60 * 1000);
+                const rangeStartTime =
+                  new Date(dateRange.startTime).getTime() %
+                  (24 * 60 * 60 * 1000);
+                const rangeEndTime =
+                  new Date(dateRange.endTime).getTime() % (24 * 60 * 60 * 1000);
+                return (
+                  sessionStartTime >= rangeStartTime &&
+                  sessionStartTime < rangeEndTime
+                );
+              }),
             )),
       )
     : [];
@@ -61,6 +80,24 @@ function StepScheduleFilter() {
                       (interv) => interv.user_id === interviewer.user_id,
                     ),
                 ),
+              )) &&
+            (filters.preferredDateRanges.length === 0 ||
+              option.sessions.some((session) =>
+                filters.preferredDateRanges.some((dateRange) => {
+                  const sessionStartTime =
+                    new Date(session.start_time).getTime() %
+                    (24 * 60 * 60 * 1000);
+                  const rangeStartTime =
+                    new Date(dateRange.startTime).getTime() %
+                    (24 * 60 * 60 * 1000);
+                  const rangeEndTime =
+                    new Date(dateRange.endTime).getTime() %
+                    (24 * 60 * 60 * 1000);
+                  return (
+                    sessionStartTime >= rangeStartTime &&
+                    sessionStartTime < rangeEndTime
+                  );
+                }),
               )),
         );
       })
@@ -85,6 +122,24 @@ function StepScheduleFilter() {
                         (interv) => interv.user_id === interviewer.user_id,
                       ),
                   ),
+                )) &&
+              (filters.preferredDateRanges.length === 0 ||
+                option.sessions.some((session) =>
+                  filters.preferredDateRanges.some((dateRange) => {
+                    const sessionStartTime =
+                      new Date(session.start_time).getTime() %
+                      (24 * 60 * 60 * 1000);
+                    const rangeStartTime =
+                      new Date(dateRange.startTime).getTime() %
+                      (24 * 60 * 60 * 1000);
+                    const rangeEndTime =
+                      new Date(dateRange.endTime).getTime() %
+                      (24 * 60 * 60 * 1000);
+                    return (
+                      sessionStartTime >= rangeStartTime &&
+                      sessionStartTime < rangeEndTime
+                    );
+                  }),
                 )),
           ),
         );
@@ -107,7 +162,7 @@ function StepScheduleFilter() {
             }}
           />
         }
-        slotTimeRangeSearch={<TextField />}
+        slotTimeRangeSearch={<DateRangeField />}
         textNumberNoConflicts={noConflicts.length}
         textNumberHardConflicts={hardConflicts.length}
         textNumberSoftConflicts={softConflicts.length}

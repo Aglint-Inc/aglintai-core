@@ -40,20 +40,18 @@ function PreferedInterviewers() {
 
   return (
     <Stack width={'100%'}>
-      {uniqueInterviewers?.length > 0 && (
-        <MembersAutoComplete
-          pillColor={'#F5F5F5'}
-          renderUsers={uniqueInterviewers}
-          selectedUsers={filters.preferredInterviewers}
-          maxWidth='100%'
-          setSelectedUsers={(users) => {
-            setFilters({
-              preferredInterviewers: users,
-            });
-          }}
-          disabled={false}
-        />
-      )}
+      <MembersAutoComplete
+        pillColor={'#F5F5F5'}
+        renderUsers={uniqueInterviewers}
+        selectedUsers={filters.preferredInterviewers}
+        maxWidth='100%'
+        setSelectedUsers={(users) => {
+          setFilters({
+            preferredInterviewers: users,
+          });
+        }}
+        disabled={false}
+      />
     </Stack>
   );
 }

@@ -34,8 +34,8 @@ export interface SchedulingFlow {
       profile_image: string;
     }[];
     preferredDateRanges: {
-      start_date: string;
-      end_date: string;
+      startTime: string;
+      endTime: string;
     }[];
     isWorkLoad: boolean;
   };

@@ -58,14 +58,23 @@ function SelectDateRange() {
     try {
       setNoOptions(false);
       setFetchingPlan(true);
-      const res = await axios.post('/api/scheduling/v1/find_availability', {
+
+      const bodyParams: APIFindAvailability = {
         session_ids: session_ids,
         recruiter_id: rec_id,
         start_date_str: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
         end_date_str: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
         candidate_tz: dayjs.tz.guess(),
-        is_debreif: true,
-      } as APIFindAvailability);
+        options: {
+          include_conflicting_slots: {
+            out_of_working_hrs: true,
+          },
+        },
+      };
+      const res = await axios.post(
+        '/api/scheduling/v1/find_availability',
+        bodyParams,
+      );
 
       if (res.status === 200) {
         const respTyped = res.data as ApiResponseFindAvailability;
@@ -98,7 +107,6 @@ function SelectDateRange() {
           start_date_str: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
           end_date_str: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
           candidate_tz: dayjs.tz.guess(),
-          is_debreif: false,
         } as APIFindAvailability,
       );
 
