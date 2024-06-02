@@ -10,6 +10,7 @@ import { TimeBlock } from '@/devlink3/TimeBlock';
 import { setFilters, useSchedulingFlowStore } from '../store';
 import DateRangeField from './DateRangeField';
 import PreferedInterviewers from './PreferedInterviewers';
+import { filterSchedulingOptions } from './utils';
 
 function StepScheduleFilter() {
   const { dateRange, schedulingOptions, filters } = useSchedulingFlowStore(
@@ -20,131 +21,8 @@ function StepScheduleFilter() {
     }),
   );
 
-  let noConflicts = [];
-  let softConflicts = [];
-  let hardConflicts = [];
-
-  noConflicts = filters.isNoConflicts
-    ? schedulingOptions.filter(
-        (option) =>
-          option.sessions.every((session) => !session.is_conflict) &&
-          (filters.preferredInterviewers.length === 0 ||
-            option.sessions.some((session) =>
-              filters.preferredInterviewers.some(
-                (interviewer) =>
-                  session.qualifiedIntervs.some(
-                    (interv) => interv.user_id === interviewer.user_id,
-                  ) ||
-                  session.trainingIntervs.some(
-                    (interv) => interv.user_id === interviewer.user_id,
-                  ),
-              ),
-            )) &&
-          (filters.preferredDateRanges.length === 0 ||
-            option.sessions.some((session) =>
-              filters.preferredDateRanges.some((dateRange) => {
-                const sessionStartTime =
-                  new Date(session.start_time).getTime() %
-                  (24 * 60 * 60 * 1000);
-                const rangeStartTime =
-                  new Date(dateRange.startTime).getTime() %
-                  (24 * 60 * 60 * 1000);
-                const rangeEndTime =
-                  new Date(dateRange.endTime).getTime() % (24 * 60 * 60 * 1000);
-                return (
-                  sessionStartTime >= rangeStartTime &&
-                  sessionStartTime < rangeEndTime
-                );
-              }),
-            )),
-      )
-    : [];
-
-  softConflicts = filters.isSoftConflicts
-    ? schedulingOptions.filter((option) => {
-        return option.sessions.some(
-          (session) =>
-            session.ints_conflicts.some((conflict) =>
-              conflict.conflict_reasons.some(
-                (reason) => reason.conflict_type === 'soft',
-              ),
-            ) &&
-            (filters.preferredInterviewers.length === 0 ||
-              option.sessions.some((session) =>
-                filters.preferredInterviewers.some(
-                  (interviewer) =>
-                    session.qualifiedIntervs.some(
-                      (interv) => interv.user_id === interviewer.user_id,
-                    ) ||
-                    session.trainingIntervs.some(
-                      (interv) => interv.user_id === interviewer.user_id,
-                    ),
-                ),
-              )) &&
-            (filters.preferredDateRanges.length === 0 ||
-              option.sessions.some((session) =>
-                filters.preferredDateRanges.some((dateRange) => {
-                  const sessionStartTime =
-                    new Date(session.start_time).getTime() %
-                    (24 * 60 * 60 * 1000);
-                  const rangeStartTime =
-                    new Date(dateRange.startTime).getTime() %
-                    (24 * 60 * 60 * 1000);
-                  const rangeEndTime =
-                    new Date(dateRange.endTime).getTime() %
-                    (24 * 60 * 60 * 1000);
-                  return (
-                    sessionStartTime >= rangeStartTime &&
-                    sessionStartTime < rangeEndTime
-                  );
-                }),
-              )),
-        );
-      })
-    : [];
-
-  hardConflicts = filters.isHardConflicts
-    ? schedulingOptions.filter((option) => {
-        return option.sessions.some((session) =>
-          session.ints_conflicts.some(
-            (conflict) =>
-              conflict.conflict_reasons.some(
-                (reason) => reason.conflict_type !== 'soft',
-              ) &&
-              (filters.preferredInterviewers.length === 0 ||
-                option.sessions.some((session) =>
-                  filters.preferredInterviewers.some(
-                    (interviewer) =>
-                      session.qualifiedIntervs.some(
-                        (interv) => interv.user_id === interviewer.user_id,
-                      ) ||
-                      session.trainingIntervs.some(
-                        (interv) => interv.user_id === interviewer.user_id,
-                      ),
-                  ),
-                )) &&
-              (filters.preferredDateRanges.length === 0 ||
-                option.sessions.some((session) =>
-                  filters.preferredDateRanges.some((dateRange) => {
-                    const sessionStartTime =
-                      new Date(session.start_time).getTime() %
-                      (24 * 60 * 60 * 1000);
-                    const rangeStartTime =
-                      new Date(dateRange.startTime).getTime() %
-                      (24 * 60 * 60 * 1000);
-                    const rangeEndTime =
-                      new Date(dateRange.endTime).getTime() %
-                      (24 * 60 * 60 * 1000);
-                    return (
-                      sessionStartTime >= rangeStartTime &&
-                      sessionStartTime < rangeEndTime
-                    );
-                  }),
-                )),
-          ),
-        );
-      })
-    : [];
+  const { hardConflicts, noConflicts, softConflicts, outSideWorkHours } =
+    filterSchedulingOptions({ filters, schedulingOptions });
 
   return (
     <>
@@ -162,11 +40,11 @@ function StepScheduleFilter() {
             }}
           />
         }
-        slotTimeRangeSearch={<DateRangeField />}
+        slotTimeRangeSelector={<DateRangeField />}
         textNumberNoConflicts={noConflicts.length}
         textNumberHardConflicts={hardConflicts.length}
         textNumberSoftConflicts={softConflicts.length}
-        textNumberOutsideWorkHours={0}
+        textNumberOutsideWorkHours={outSideWorkHours.length}
         slotPreferedInterviewersSearch={<PreferedInterviewers />}
         slotSuggestionControlTooltip={
           <>

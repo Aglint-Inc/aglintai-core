@@ -9,7 +9,7 @@ declare function SchedulerFilters(props: {
   textNumberOutsideWorkHours?: React.ReactNode;
   slotSuggestionControlTooltip?: Types.Devlink.Slot;
   slotPreferedInterviewersSearch?: Types.Devlink.Slot;
-  slotTimeRangeSearch?: Types.Devlink.Slot;
+  slotTimeRangeSelector?: Types.Devlink.Slot;
   slotCheckbox?: Types.Devlink.Slot;
   textDateRange?: React.ReactNode;
 }): React.JSX.Element;

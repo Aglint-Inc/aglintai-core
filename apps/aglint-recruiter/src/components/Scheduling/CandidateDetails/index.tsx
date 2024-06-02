@@ -45,7 +45,6 @@ function SchedulingApplication() {
     selectedApplication: state.selectedApplication,
     scheduleName: state.scheduleName,
     tab: state.tab,
-    dateRange: state.dateRange,
   }));
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();

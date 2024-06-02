@@ -21,11 +21,13 @@ import SelectDateRange from './StepSelectDate';
 import StepSlotOptions from './StepSlotOptions';
 import {
   setDateRange,
+  setFilteredSchedulingOptions,
   setIsScheduleNowOpen,
   setSchedulingOptions,
   setStepScheduling,
   useSchedulingFlowStore,
 } from './store';
+import { filterSchedulingOptions } from './StepScheduleFilter/utils';
 
 function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
   const currentDate = dayjs();
@@ -51,12 +53,14 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
     isScheduleNowOpen,
     scheduleFlow,
     stepScheduling,
+    filters,
   } = useSchedulingFlowStore((state) => ({
     dateRange: state.dateRange,
     schedulingOptions: state.schedulingOptions,
     isScheduleNowOpen: state.isScheduleNowOpen,
     scheduleFlow: state.scheduleFlow,
     stepScheduling: state.stepScheduling,
+    filters: state.filters,
   }));
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
@@ -170,7 +174,13 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
           onClickPrimary={{
             onClick: () => {
               if (stepScheduling === 'preference') {
-                ///
+                const { allFilteredOptions } = filterSchedulingOptions({
+                  filters,
+                  schedulingOptions,
+                });
+
+                setFilteredSchedulingOptions(allFilteredOptions);
+                setStepScheduling('slot_options');
               } else if (stepScheduling === 'slot_options') {
                 if (!saving) {
                   onClickSendToCandidate();
@@ -183,7 +193,13 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
               resetState();
             },
           }}
-          textPrimaryButton={!isDebrief ? 'Send to Candidate' : 'Schedule Now'}
+          textPrimaryButton={
+            !isDebrief
+              ? stepScheduling === 'preference'
+                ? 'Continue'
+                : 'Send to Candidate'
+              : 'Schedule Now'
+          }
           isSelectedNumber={false}
           slotSideDrawerbody={
             <>

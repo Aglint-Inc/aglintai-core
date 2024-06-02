@@ -7,6 +7,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
 import { sendToCandidate } from '@/src/components/Scheduling/CandidateDetails/utils';
+import { SchedulingFlow } from '@/src/components/Scheduling/CandidateDetails/SelfSchedulingDrawer/store';
 
 export interface ApiBodyParamsSendToCandidate {
   is_mail: boolean;
@@ -20,7 +21,7 @@ export interface ApiBodyParamsSendToCandidate {
     start_date: string;
     end_date: string;
   };
-  selectedDebrief: SchedulingApplication['schedulingOptions'][number];
+  selectedDebrief: SchedulingFlow['schedulingOptions'][number];
   recruiterUser: RecruiterUserType;
   user_tz: string;
   selectedApplicationLog: DatabaseTable['application_logs'];

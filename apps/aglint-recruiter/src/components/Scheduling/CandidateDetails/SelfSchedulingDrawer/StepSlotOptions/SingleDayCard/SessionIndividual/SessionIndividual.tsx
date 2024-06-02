@@ -44,7 +44,13 @@ function SessionIndividual({
           );
 
           const userHardConflicts = allUserConflicts.filter(
-            (item) => item.conflict_type !== 'soft',
+            (item) =>
+              item.conflict_type !== 'soft' &&
+              item.conflict_type !== 'out_of_working_hours',
+          );
+
+          const userOutsideWorkHours = allUserConflicts.filter(
+            (item) => item.conflict_type === 'out_of_working_hours',
           );
 
           return (
@@ -88,6 +94,15 @@ function SessionIndividual({
                       isSoftConflict={false}
                       conflictReasons={userHardConflicts}
                       textCount={userHardConflicts.length}
+                    />
+                  )}
+                  {userOutsideWorkHours.length > 0 && (
+                    <ConflictWithHover
+                      isHardConflict={false}
+                      isOutsideWorkHours={true}
+                      isSoftConflict={false}
+                      conflictReasons={userOutsideWorkHours}
+                      textCount={userOutsideWorkHours.length}
                     />
                   )}
                 </>
