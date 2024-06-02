@@ -119,7 +119,7 @@ const UITextField = React.forwardRef(
           </Stack>
         )}
         {secondaryText && (
-          <Typography variant='body2'>{secondaryText}</Typography>
+          <Typography variant='body1'>{secondaryText}</Typography>
         )}
         <MuiTextField
           name={name}

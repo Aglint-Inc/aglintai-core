@@ -92,7 +92,7 @@ function CancelScheduleDialog({
         isWidget={true}
         slotWidget={
           <Stack spacing={2} width={'100%'}>
-            <Typography variant='body2'>
+            <Typography variant='body1'>
               Please provide a reason for reschedule.
             </Typography>
             <Stack spacing={1}>
@@ -108,7 +108,7 @@ function CancelScheduleDialog({
                     spacing={1}
                   >
                     <Checkbox isChecked={rea === reason} />
-                    <Typography variant='body2' color={'#000'}>
+                    <Typography variant='body1' color={'#000'}>
                       {rea}
                     </Typography>
                   </Stack>
@@ -116,7 +116,7 @@ function CancelScheduleDialog({
               })}
             </Stack>
 
-            <Typography variant='body2'>Additional Notes</Typography>
+            <Typography variant='body1'>Additional Notes</Typography>
             <TextField
               multiline
               value={notes}

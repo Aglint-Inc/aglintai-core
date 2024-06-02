@@ -269,7 +269,7 @@ function InterviewerLevelSettings({
                 renderOption={(props, option) => {
                   return (
                     <li {...props}>
-                      <Typography variant='body2' color={'#000'}>
+                      <Typography variant='body1' color={'#000'}>
                         {option.label}
                       </Typography>
                     </li>

@@ -155,7 +155,7 @@ function DebriedForm({
             <MenuItem value='google_meet'>
               <Stack direction={'row'} spacing={2}>
                 <IconScheduleType type='google_meet' />
-                <Typography variant='body2' color={'#000'}>
+                <Typography variant='body1' color={'#000'}>
                   Google Meet
                 </Typography>
               </Stack>
@@ -163,7 +163,7 @@ function DebriedForm({
             <MenuItem value='zoom'>
               <Stack direction={'row'} spacing={2}>
                 <IconScheduleType type='zoom' />
-                <Typography variant='body2' color={'#000'}>
+                <Typography variant='body1' color={'#000'}>
                   Zoom
                 </Typography>
               </Stack>
@@ -171,7 +171,7 @@ function DebriedForm({
             <MenuItem value='phone_call'>
               <Stack direction={'row'} spacing={2}>
                 <IconScheduleType type='phone_call' />
-                <Typography variant='body2' color={'#000'}>
+                <Typography variant='body1' color={'#000'}>
                   Phone Call
                 </Typography>
               </Stack>
@@ -179,7 +179,7 @@ function DebriedForm({
             <MenuItem value='in_person_meeting'>
               <Stack direction={'row'} spacing={2}>
                 <IconScheduleType type='in_person_meeting' />
-                <Typography variant='body2' color={'#000'}>
+                <Typography variant='body1' color={'#000'}>
                   In Person Meeting
                 </Typography>
               </Stack>

@@ -606,7 +606,7 @@ function CandidateSearchHistory() {
                                 pt={10}
                               >
                                 <EmptyState />
-                                <Typography variant='body2'>
+                                <Typography variant='body1'>
                                   No search history found.
                                 </Typography>
                               </Stack>

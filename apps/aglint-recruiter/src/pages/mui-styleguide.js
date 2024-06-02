@@ -1272,7 +1272,62 @@ const StyleGuide = () => {
                 <AvatarGroupExample/>
                 <BadgeExample/>
             </Grid>
-            <Grid item xs={12} sm={6} md={4}></Grid>
+            <Grid item xs={12} sm={6} md={4}>
+                <Paper elevation={1} sx={{ padding: 2, margin: 2 }}>
+                    <TextField
+                    label="Hidden Label"
+                    placeholder="Enter text"
+                    variant="outlined"
+                    fullWidth
+                    sx={{
+                        '& input::placeholder': {
+                        color: 'inherit',
+                        opacity: 1,
+                        },
+                    }}
+                    />
+                </Paper>
+                <Paper elevation={2} sx={{ padding: 2, margin: 2 }}>
+                    <Select
+                    label="Hidden Label"
+                    placeholder="Select an option"
+                    variant="outlined"
+                    displayEmpty
+                    fullWidth
+                    sx={{
+                        '& input::placeholder': {
+                        color: 'inherit',
+                        opacity: 1,
+                        },
+                    }}
+                    >
+                    <MenuItem value=""><em>None</em></MenuItem>
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                    </Select>
+                </Paper>
+                <Paper elevation={3} sx={{ padding: 2, margin: 2 }}>
+                    <Autocomplete
+                    options={['Option 1', 'Option 2', 'Option 3']}
+                    renderInput={(params) => (
+                        <TextField
+                        {...params}
+                        label="Hidden Label"
+                        placeholder="Choose an option"
+                        variant="outlined"
+                        fullWidth
+                        sx={{
+                            '& input::placeholder': {
+                            color: 'inherit',
+                            opacity: 1,
+                            },
+                        }}
+                        />
+                    )}
+                    />
+                </Paper>
+            </Grid>
             {/* <Grid item xs={12} sm={6} md={4}>
                 <StepperExample />
             </Grid> */}

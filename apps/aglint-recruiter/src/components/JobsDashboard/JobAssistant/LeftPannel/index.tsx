@@ -55,7 +55,7 @@ function LeftPanel() {
         mb={'10px'}
         justifyContent={'space-between'}
       >
-        <Typography width={'70px'} variant='body2'>
+        <Typography width={'70px'} variant='body1'>
           Chat List
         </Typography>
 
@@ -110,7 +110,7 @@ function LeftPanel() {
                 <Typography
                   className='one-one-line-clamp'
                   // width={'100%'}
-                  variant='body2'
+                  variant='body1'
                 >
                   {time}
                 </Typography>

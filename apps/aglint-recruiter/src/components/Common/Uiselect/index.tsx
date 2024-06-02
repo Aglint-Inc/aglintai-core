@@ -64,30 +64,30 @@ const UISelect = ({
         // displayEmpty
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
-        sx={{
-          '&': {
-            width: '100%',
-            fieldset: {
-              py: 0,
+        // sx={{
+        //   '&': {
+        //     width: '100%',
+        //     fieldset: {
+        //       py: 0,
 
-              border: `1px solid ${outlineColor}!important`,
-            },
-            '&:hover fieldset': {
-              py: 0,
+        //       border: `1px solid ${outlineColor}!important`,
+        //     },
+        //     '&:hover fieldset': {
+        //       py: 0,
 
-              border: `1px solid ${outlineColor}!important`,
-            },
-            '.MuiSelect-outlined': {
-              py: 0,
+        //       border: `1px solid ${outlineColor}!important`,
+        //     },
+        //     '.MuiSelect-outlined': {
+        //       py: 0,
 
-              fontSize: '14px',
-              p: size === 'md' ? '8px 14px' : '4px 12px',
-            },
-            outline: `${size === 'md' ? '3px' : '2px'} solid ${
-              focus ? borderColor : 'transparent'
-            }`,
-          },
-        }}
+        //       fontSize: '14px',
+        //       p: size === 'md' ? '8px 14px' : '4px 12px',
+        //     },
+        //     outline: `${size === 'md' ? '3px' : '2px'} solid ${
+        //       focus ? borderColor : 'transparent'
+        //     }`,
+        //   },
+        // }}
         defaultValue={defaultValue}
       >
         {menuOptions.length === 0 ? (
