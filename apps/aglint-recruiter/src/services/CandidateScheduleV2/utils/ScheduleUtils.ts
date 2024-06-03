@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import {
+  InterviewSessionTypeDB,
   PlanCombinationRespType,
   TimeDurationDayjsType,
   TimeDurationType,
@@ -104,4 +105,22 @@ export class ScheduleUtils {
 
     return all_day_combs;
   };
+  static getSessionRounds(db_int_sessions: InterviewSessionTypeDB[]) {
+    let sorted_sessions = db_int_sessions.sort(
+      (s1, s2) => s1.session_order - s2.session_order,
+    );
+    let session_rounds: InterviewSessionTypeDB[][] = [[]];
+    let curr_round = 0;
+    for (let sess of sorted_sessions) {
+      // eslint-disable-next-line security/detect-object-injection
+      session_rounds[curr_round].push({ ...sess });
+      if (sess.break_duration >= 1440) {
+        session_rounds.push([]);
+        curr_round++;
+      }
+    }
+
+    session_rounds = session_rounds.filter((s) => s.length > 0);
+    return session_rounds;
+  }
 }
