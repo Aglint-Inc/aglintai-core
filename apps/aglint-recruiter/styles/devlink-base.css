@@ -1286,6 +1286,7 @@
       display: block;
     }
   }
+  */
   .w-tabs {
     position: relative;
   }
@@ -1337,7 +1338,7 @@
     .w-tab-link {
       display: block;
     }
-  } */
+  } 
   .w-ix-emptyfix:after {
     content: "";
   }
