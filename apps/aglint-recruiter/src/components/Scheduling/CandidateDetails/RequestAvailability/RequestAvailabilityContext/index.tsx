@@ -4,12 +4,15 @@ import {
   DatabaseTable,
   DatabaseTableInsert,
   DatabaseTableUpdate,
+  InterviewSessionTypeDB,
 } from '@aglint/shared-types';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
 
+import { ScheduleUtils } from '@/src/services/CandidateScheduleV2/utils/ScheduleUtils';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -34,6 +37,10 @@ interface ContextValue {
   loading: boolean;
   setLoading: (x: boolean) => void;
 
+  daySlots: DatabaseTable['candidate_request_availability']['slots'];
+  setDaySlots: (
+    x: DatabaseTable['candidate_request_availability']['slots'],
+  ) => void;
   selectedDateSlots:
     | null
     | DatabaseTable['candidate_request_availability']['slots'];
@@ -47,6 +54,12 @@ interface ContextValue {
   setSelectedSlots: (
     x: DatabaseTable['candidate_request_availability']['slots'],
   ) => void;
+
+  multiDaySessions: InterviewSessionTypeDB[][] | null;
+  setMultiDaySessions: (x: InterviewSessionTypeDB[][] | null) => void;
+
+  openDaySlotPopup: null | number;
+  setOpenDaySlotPopup: (x: null | number) => void;
 }
 const defaultProvider: ContextValue = {
   dateSlots: [],
@@ -55,10 +68,16 @@ const defaultProvider: ContextValue = {
   setCandidateRequestAvailability: () => {},
   loading: true,
   setLoading: () => {},
+  daySlots: [],
+  setDaySlots: () => {},
   selectedDateSlots: [],
   setSelectedDateSlots: () => {},
   selectedSlots: [],
   setSelectedSlots: () => {},
+  multiDaySessions: [],
+  setMultiDaySessions: () => {},
+  openDaySlotPopup: null,
+  setOpenDaySlotPopup: () => {},
 };
 const RequestAvailabilityContext = createContext<ContextValue>(defaultProvider);
 const useRequestAvailabilityContext = () =>
@@ -69,6 +88,8 @@ function RequestAvailabilityProvider({ children }) {
   const [dateSlots, setDateSlots] = useState<
     DatabaseTable['candidate_request_availability']['slots']
   >([]);
+
+  const [daySlots, setDaySlots] = useState([]);
   const [selectedDateSlots, setSelectedDateSlots] = useState<
     DatabaseTable['candidate_request_availability']['slots']
   >([]);
@@ -76,6 +97,11 @@ function RequestAvailabilityProvider({ children }) {
     DatabaseTable['candidate_request_availability']['slots']
   >([]);
   const [loading, setLoading] = useState(true);
+  const [multiDaySessions, setMultiDaySessions] = useState<
+    InterviewSessionTypeDB[][]
+  >([]);
+
+  const [openDaySlotPopup, setOpenDaySlotPopup] = useState<null | number>(null);
   const router = useRouter();
 
   async function getRequestAvailabilityData({ request_id }) {
@@ -89,39 +115,44 @@ function RequestAvailabilityProvider({ children }) {
       setLoading(false);
       return;
     }
-    const {
-      applications: { candidates },
-    } = requestAvailability;
+
     setCandidateRequestAvailability(
       requestAvailability as candidateRequestAvailabilityType,
     );
 
+    // check multi-day
+
+    const meetingsRound = ScheduleUtils.getSessionRounds(
+      requestAvailability.session_ids as InterviewSessionTypeDB[],
+    );
+    setMultiDaySessions(meetingsRound);
+
+    const allDates = getDatesBetween(
+      requestAvailability?.date_range[0],
+      requestAvailability?.date_range[1],
+    );
+
     try {
-      const { data: dateSlots } = await axios.post(
-        '/api/scheduling/v1/cand_req_available_slots',
-        {
-          candidate_tz: candidates.timezone || 'Asia/Calcutta',
-          recruiter_id: requestAvailability.recruiter_id,
-          session_ids: requestAvailability.session_ids.map((ele) => ele.id),
-          date_range_start: dayjs(requestAvailability.date_range[0]).format(
-            'DD/MM/YYYY',
-          ),
-          date_range_end: dayjs(requestAvailability.date_range[1]).format(
-            'DD/MM/YYYY',
-          ),
-          current_interview_day: 1,
-          previously_selected_dates: [
-            dayjs().add(-1, 'day').format('DD/MM/YYYY'),
-          ],
-        } as CandReqAvailableSlots,
-      );
-      setDateSlots(dateSlots);
+      for (let i = 0; i < meetingsRound.length; i++) {
+        const dateSlots = await getDateSlots({
+          requestAvailability,
+          day: i + 1,
+          prev_dates: allDates,
+        });
+        setDateSlots((prev) => [
+          ...prev,
+          {
+            round: i + 1,
+            dates:
+              dateSlots as DatabaseTable['candidate_request_availability']['slots'][number]['dates'],
+          },
+        ]);
+      }
     } catch (error) {
       toast.error('Something went wrong!');
     }
     setLoading(false);
   }
-
   useEffect(() => {
     if (router.query?.request_id) {
       getRequestAvailabilityData({
@@ -129,6 +160,7 @@ function RequestAvailabilityProvider({ children }) {
       });
     }
   }, [router.query?.request_id]);
+ 
   return (
     <RequestAvailabilityContext.Provider
       value={{
@@ -138,10 +170,16 @@ function RequestAvailabilityProvider({ children }) {
         setCandidateRequestAvailability,
         loading,
         setLoading,
+        daySlots,
+        setDaySlots,
         selectedDateSlots,
         setSelectedDateSlots,
         selectedSlots,
         setSelectedSlots,
+        multiDaySessions,
+        setMultiDaySessions,
+        openDaySlotPopup,
+        setOpenDaySlotPopup,
       }}
     >
       {children}
@@ -232,4 +270,48 @@ export async function insertTaskProgress({
     return progress;
   }
   return null;
+}
+
+export async function getDateSlots({
+  requestAvailability,
+  day,
+  prev_dates = [dayjs().add(-1, 'day').format('DD/MM/YYYY')],
+}: {
+  requestAvailability: candidateRequestAvailabilityType;
+  day: number;
+  prev_dates?: string[];
+}) {
+  const { data: dateSlots } = await axios.post(
+    '/api/scheduling/v1/cand_req_available_slots',
+    {
+      candidate_tz: userTzDayjs.tz.guess(),
+      recruiter_id: requestAvailability.recruiter_id,
+      session_ids: requestAvailability.session_ids.map((ele) => ele.id),
+      date_range_start: dayjs(requestAvailability.date_range[0]).format(
+        'DD/MM/YYYY',
+      ),
+      date_range_end: dayjs(requestAvailability.date_range[1]).format(
+        'DD/MM/YYYY',
+      ),
+      current_interview_day: day,
+      previously_selected_dates: prev_dates.map((ele) =>
+        dayjs(ele).format('DD/MM/YYYY'),
+      ),
+    } as CandReqAvailableSlots,
+  );
+  return dateSlots;
+}
+
+export function getDatesBetween(startDate: string, endDate: string) {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const dateArray = [];
+  let currentDate = start;
+
+  while (currentDate <= end) {
+    dateArray.push(dayjs(currentDate).toString());
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return dateArray;
 }
