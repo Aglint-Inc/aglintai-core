@@ -13,6 +13,7 @@ import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import UITextField from '@/src/components/Common/UITextField';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import { palette } from '@/src/context/Theme/Theme';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -147,7 +148,7 @@ function PauseResumeDialog({
                         sx={{ cursor: 'pointer' }}
                       >
                         <Checkbox isChecked={selectedType === 'isManual'} />
-                        <Typography variant='body1' color={'#000'}>
+                        <Typography variant='body1' color={palette.grey[800]}>
                           Indefinitely
                         </Typography>
                         <Typography variant='body1'>
@@ -169,7 +170,7 @@ function PauseResumeDialog({
                         }}
                       >
                         <Checkbox isChecked={selectedType === 'twoWeek'} />
-                        <Typography variant='body1' color={'#000'}>
+                        <Typography variant='body1' color={palette.grey[800]}>
                           2 Weeks
                         </Typography>
                         <Typography variant='body1'>
@@ -191,7 +192,7 @@ function PauseResumeDialog({
                         }}
                       >
                         <Checkbox isChecked={selectedType === 'oneMonth'} />
-                        <Typography variant='body1' color={'#000'}>
+                        <Typography variant='body1' color={palette.grey[800]}>
                           1 Month
                         </Typography>
                         <Typography variant='body1'>
@@ -213,7 +214,7 @@ function PauseResumeDialog({
                         }}
                       >
                         <Checkbox isChecked={selectedType === 'threeMonth'} />
-                        <Typography variant='body1' color={'#000'}>
+                        <Typography variant='body1' color={palette.grey[800]}>
                           3 Months
                         </Typography>
                         <Typography variant='body1'>
@@ -235,7 +236,7 @@ function PauseResumeDialog({
                         }}
                       >
                         <Checkbox isChecked={selectedType === 'custom'} />
-                        <Typography variant='body1' color={'#000'}>
+                        <Typography variant='body1' color={palette.grey[800]}>
                           Custom date
                         </Typography>
                       </Stack>
@@ -355,7 +356,7 @@ function PauseResumeDialog({
                       renderOption={(props, option) => {
                         return (
                           <li {...props}>
-                            <Typography variant='body1' color={'#000'}>
+                            <Typography variant='body1' color={palette.grey[800]}>
                               {option.name}
                             </Typography>
                           </li>

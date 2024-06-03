@@ -147,6 +147,34 @@ function Theme({ children }) {
         letterSpacing: 'var(--letter-spacing-2)',
         color: 'var(--neutral-11)',
       },
+      body1medium: {
+        fontWeight: 500,
+        fontSize: 'var(--font-size-2)',
+        lineHeight: 'var(--line-height-2)',
+        letterSpacing: 'var(--letter-spacing-2)',
+        color: 'var(--neutral-12)',
+      },
+      body1bold: {
+        fontWeight: 700,
+        fontSize: 'var(--font-size-2)',
+        lineHeight: 'var(--line-height-2)',
+        letterSpacing: 'var(--letter-spacing-2)',
+        color: 'var(--neutral-12)',
+      },
+      body2medium: {
+        fontWeight: 500,
+        fontSize: 'var(--font-size-1)',
+        lineHeight: 'var(--line-height-1)',
+        letterSpacing: 'var(--letter-spacing-1)',
+        color: 'var(--neutral-12)',
+      },
+      body2bold: {
+        fontWeight: 700,
+        fontSize: 'var(--font-size-1)',
+        lineHeight: 'var(--line-height-1)',
+        letterSpacing: 'var(--letter-spacing-1)',
+        color: 'var(--neutral-12)',
+      },
       body2: {
         fontFamily: 'var(--text)',
         fontWeight: 'var(--font-weight-normal)',
@@ -292,6 +320,14 @@ function Theme({ children }) {
         },
       },
       MuiTypography: {
+        defaultProps: {
+          variantMapping: {
+            body1bold: 'p',
+            body1medium: 'p',
+            body2bold: 'p',
+            body2medium: 'p',
+          },
+        },
         styleOverrides: {
           root: {
             fontFamily: 'var(--text)', // Use --text for font
@@ -682,10 +718,11 @@ function Theme({ children }) {
       MuiMenu: {
         styleOverrides: {
           paper: {
-            padding: 'var(--space-3)',
+            padding: 0,
             borderRadius: 'var(--radius-2)',
-            boxShadow: 'var(--shadow-3)', // Level 3 shadow
-            fontFamily: 'var(--text)', // Use --text for font
+            '& .MuiMenu-list': {
+                padding: 0,
+            },
           },
         },
       },
@@ -693,18 +730,17 @@ function Theme({ children }) {
         styleOverrides: {
           root: {
             padding: 'var(--space-2)',
-            fontFamily: 'var(--text)', // Use --text for font
           },
         },
       },
       MuiPopover: {
-        // styleOverrides: {
-        //   paper: {
-        //     padding: 'var(--space-3)',
-        //     borderRadius: 'var(--radius-2)',
-        //     boxShadow: 'var(--shadow-3)', // Level 3 shadow
-        //   },
-        // },
+        styleOverrides: {
+          paper: {
+            padding: 0,
+            borderRadius: 'var(--radius-2)',
+            boxShadow: 'var(--shadow-3)', // Level 3 shadow
+          },
+        },
       },
       
       MuiSkeleton: {
@@ -872,6 +908,9 @@ function Theme({ children }) {
       MuiStack: {
         styleOverrides: {
           root: {
+            '& .MuiStack-root': {
+              borderColor: 'var(--neutral-6)',
+            },
             '& .react-tel-input .form-control:focus': {
               borderColor: 'var(--accent-9)',
               outline: 'none !important',
@@ -908,13 +947,14 @@ function Theme({ children }) {
         styleOverrides: {
           root: {
             margin: 'var(--space-3) 0',
+            bg: 'var(--neutral-3)',
           },
         },
       },
       MuiDrawer: {
         styleOverrides: {
           paper: {
-            padding: 'var(--space-4)',
+            padding: 0,
             // borderRadius: 'var(--radius-3)',
             border: 'none',
             boxShadow: 'var(--shadow-3)', // Level 3 shadow
@@ -975,37 +1015,37 @@ export default Theme;
 
 export const palette = {
   white: {
-    100: 'var(--whiteA6)',
-    200: 'var(--whiteA3)',
-    300: 'var(--whiteA1)',
+    100: 'var(--white-a6)',
+    200: 'var(--white-a3)',
+    300: 'var(--white-a1)',
     700: 'var(--white)',
   },
   grey: {
-    100: 'var(--sand1)',
-    400: 'var(--sand6)',
-    500: 'var(--sand8)',
-    600: 'var(--sand10)',
-    700: 'var(--sand11)',
-    800: 'var(--sand12)',
+    100: 'var(--sand-1)',
+    400: 'var(--sand-6)',
+    500: 'var(--sand-8)',
+    600: 'var(--sand-10)',
+    700: 'var(--sand-11)',
+    800: 'var(--sand-12)',
   },
   blue: {
-    400: 'var(--sky8)',
-    600: 'var(--sky9)',
+    400: 'var(--sky-8)',
+    600: 'var(--sky-9)',
   },
   green: {
-    800: 'var(--jade12)',
+    800: 'var(--jade-12)',
   },
   red: {
-    400: 'var(--tomato8)',
-    500: 'var(--tomato9)',
-    800: 'var(--tomato12)',
+    400: 'var(--tomato-8)',
+    500: 'var(--tomato-9)',
+    800: 'var(--tomato-12)',
   },
   yellow: {
-    600: 'var(--yellow8)',
-    700: 'var(--yellow9)',
-    800: 'var(--yellow10)',
+    600: 'var(--yellow-8)',
+    700: 'var(--yellow-9)',
+    800: 'var(--yellow-10)',
   },
   kale: {
-    600: 'var(--jade8)',
+    600: 'var(--jade-8)',
   },
 };

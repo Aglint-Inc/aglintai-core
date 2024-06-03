@@ -103,7 +103,7 @@ const UISelect = ({
           </Stack>
         ) : (
           menuOptions.map((menu, idx) => (
-            <MenuItem sx={{ padding: '5px' }} key={idx} value={menu.value}>
+            <MenuItem key={idx} value={menu.value}>
               {menu.name}
             </MenuItem>
           ))

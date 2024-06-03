@@ -60,6 +60,7 @@ import {
     Rating,
     Select,
     Snackbar,
+    Stack,
     Step,
     StepLabel,
     Stepper,
@@ -213,8 +214,12 @@ const ButtonExamples = () => {
         </Typography>
         <Grid container spacing={2}>
             <Grid item>
-              <Button variant="contained" disabled>
-                <CircularProgress size={24} color="inherit" />
+              <Button variant="contained" size="small" disabled>
+                <CircularProgress size={16} color="inherit" />
+              </Button>
+              
+              <Button variant="outlined" size="small" disabled>
+                <CircularProgress size={16} color="inherit" /> Error
               </Button>
             </Grid>
         </Grid>
@@ -303,11 +308,18 @@ const TypographyExamples = () => (
         <Typography variant="h4" gutterBottom>
             Typography
         </Typography>
-        {['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'subtitle1', 'subtitle2', 'body1', 'body2', 'button', 'caption', 'overline'].map((variant) => (
+        {['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'subtitle1', 'subtitle2', 'button', 'caption', 'overline'].map((variant) => (
             <Typography variant={variant} display={variant === 'button' || variant === 'caption' || variant === 'overline' ? 'block' : undefined} gutterBottom key={variant}>
                 {`${variant} Text`}
             </Typography>
         ))}
+        <Typography variant="body1" gutterBottom>Body 1</Typography>
+        <Typography variant="body1medium" gutterBottom>Body 1 Medium</Typography>
+        <Typography variant="body1bold" gutterBottom>Body 1 Bold</Typography>
+
+        <Typography variant="body2" gutterBottom>Body 2</Typography>
+        <Typography variant="body2medium" gutterBottom>Body 2 Medium</Typography>
+        <Typography variant="body2bold" gutterBottom>Body 2 Bold</Typography>
     </>
 );
 const TableExample = () => {
@@ -821,40 +833,40 @@ const TooltipExample = () => {
             <Grid container spacing={3}>
                 <Grid item xs={12} sm={4}>
                     <Tooltip title="Delete">
-                        <Button variant="contained">Delete</Button>
+                        <Button variant="contained" size='small'>Delete</Button>
                     </Tooltip>
                 </Grid>
                 <Grid item xs={12} sm={4}>
                     <Tooltip title="Add" arrow>
-                        <Button variant="contained" color="primary">
+                        <Button variant="contained" color="primary" size='small'>
                             Add
                         </Button>
                     </Tooltip>
                 </Grid>
                 <Grid item xs={12} sm={4}>
                     <Tooltip title="Edit" placement="right">
-                        <Button variant="contained" color="secondary">
+                        <Button variant="contained" color="secondary" size='small'>
                             Edit
                         </Button>
                     </Tooltip>
                 </Grid>
                 <Grid item xs={12} sm={4}>
                     <Tooltip title="Save" placement="bottom">
-                        <Button variant="contained" color="success">
+                        <Button variant="contained" color="success" size='small'>
                             Save
                         </Button>
                     </Tooltip>
                 </Grid>
                 <Grid item xs={12} sm={4}>
                     <Tooltip title="Info" placement="top-start">
-                        <Button variant="contained" color="info">
+                        <Button variant="contained" color="info" size='small'>
                             Info
                         </Button>
                     </Tooltip>
                 </Grid>
                 <Grid item xs={12} sm={4}>
                     <Tooltip title="Warning" placement="top-end">
-                        <Button variant="contained" color="warning">
+                        <Button variant="contained" color="warning" size='small'>
                             Warning
                         </Button>
                     </Tooltip>
@@ -885,18 +897,20 @@ const SnackbarExample = () => {
         <Typography variant="h4" gutterBottom>
           Snackbar
         </Typography>
-        <Button variant="outlined" onClick={handleClick('success')}>
-          Show Success Snackbar
-        </Button>
-        <Button variant="outlined" onClick={handleClick('error')}>
-          Show Error Snackbar
-        </Button>
-        <Button variant="outlined" onClick={handleClick('warning')}>
-          Show Warning Snackbar
-        </Button>
-        <Button variant="outlined" onClick={handleClick('info')}>
-          Show Info Snackbar
-        </Button>
+        <Stack spacing={2} direction={"row"}>
+            <Button variant="outlined" size="small" onClick={handleClick('success')}>
+            Success
+            </Button>
+            <Button variant="outlined" size="small" onClick={handleClick('error')}>
+            Error
+            </Button>
+            <Button variant="outlined" size="small" onClick={handleClick('warning')}>
+            Warning
+            </Button>
+            <Button variant="outlined" size="small" onClick={handleClick('info')}>
+            Info
+            </Button>
+        </Stack>
         <Snackbar
           open={open}
           autoHideDuration={6000}
@@ -1180,7 +1194,6 @@ const StyleGuide = () => {
                 <LinksExample />
                 <BreadcrumbsExample />
                 <SnackbarExample />
-
             </Grid>
             <Grid item xs={12} sm={6} md={6}>
                 <FormElementsExample />
@@ -1202,7 +1215,7 @@ const StyleGuide = () => {
                 <Typography variant="h4" gutterBottom>
                     Popover
                 </Typography>
-                <Button aria-describedby={popoverOpen ? 'simple-popover' : undefined} variant="contained" onClick={handlePopoverClick}>
+                <Button size='small' aria-describedby={popoverOpen ? 'simple-popover' : undefined} variant="contained" onClick={handlePopoverClick}>
                     Open Popover
                 </Button>
                 <Popover
@@ -1224,7 +1237,7 @@ const StyleGuide = () => {
                 <Typography variant="h4" gutterBottom>
                     Dialog
                 </Typography>
-                <Button variant="outlined" onClick={handleClickOpen}>
+                <Button variant="outlined"  size="small" onClick={handleClickOpen}>
                     Open Dialog
                 </Button>
                 <Dialog open={dialogOpen} onClose={handleClose}>
@@ -1240,7 +1253,7 @@ const StyleGuide = () => {
                     </DialogActions>
                 </Dialog>
                 
-                <Button variant="outlined" onClick={handleClickOpenConfirm} style={{ marginLeft: '10px' }}>
+                <Button variant="outlined" size="small" onClick={handleClickOpenConfirm} style={{ marginLeft: '10px' }}>
                     Open Confirm Dialog
                 </Button>
                 <Dialog open={dialogOpenConfirm} onClose={handleCloseConfirm}>
@@ -1267,7 +1280,6 @@ const StyleGuide = () => {
                 <RatingExample/>
                 <ChipExample/>
                 <AccordionExample/>
-                <DialogExample/>
                 <AvatarExample/>
                 <AvatarGroupExample/>
                 <BadgeExample/>
@@ -1279,12 +1291,6 @@ const StyleGuide = () => {
                     placeholder="Enter text"
                     variant="outlined"
                     fullWidth
-                    sx={{
-                        '& input::placeholder': {
-                        color: 'inherit',
-                        opacity: 1,
-                        },
-                    }}
                     />
                 </Paper>
                 <Paper elevation={2} sx={{ padding: 2, margin: 2 }}>
@@ -1294,12 +1300,6 @@ const StyleGuide = () => {
                     variant="outlined"
                     displayEmpty
                     fullWidth
-                    sx={{
-                        '& input::placeholder': {
-                        color: 'inherit',
-                        opacity: 1,
-                        },
-                    }}
                     >
                     <MenuItem value=""><em>None</em></MenuItem>
                     <MenuItem value={10}>Ten</MenuItem>
@@ -1317,12 +1317,6 @@ const StyleGuide = () => {
                         placeholder="Choose an option"
                         variant="outlined"
                         fullWidth
-                        sx={{
-                            '& input::placeholder': {
-                            color: 'inherit',
-                            opacity: 1,
-                            },
-                        }}
                         />
                     )}
                     />

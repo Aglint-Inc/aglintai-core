@@ -12,6 +12,7 @@ import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon';
 import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { palette } from '@/src/context/Theme/Theme';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import {
@@ -155,7 +156,7 @@ function DebriedForm({
             <MenuItem value='google_meet'>
               <Stack direction={'row'} spacing={2}>
                 <IconScheduleType type='google_meet' />
-                <Typography variant='body1' color={'#000'}>
+                <Typography variant='body1' color={palette.grey[800]}>
                   Google Meet
                 </Typography>
               </Stack>
@@ -163,7 +164,7 @@ function DebriedForm({
             <MenuItem value='zoom'>
               <Stack direction={'row'} spacing={2}>
                 <IconScheduleType type='zoom' />
-                <Typography variant='body1' color={'#000'}>
+                <Typography variant='body1' color={palette.grey[800]}>
                   Zoom
                 </Typography>
               </Stack>
@@ -171,7 +172,7 @@ function DebriedForm({
             <MenuItem value='phone_call'>
               <Stack direction={'row'} spacing={2}>
                 <IconScheduleType type='phone_call' />
-                <Typography variant='body1' color={'#000'}>
+                <Typography variant='body1' color={palette.grey[800]}>
                   Phone Call
                 </Typography>
               </Stack>
@@ -179,7 +180,7 @@ function DebriedForm({
             <MenuItem value='in_person_meeting'>
               <Stack direction={'row'} spacing={2}>
                 <IconScheduleType type='in_person_meeting' />
-                <Typography variant='body1' color={'#000'}>
+                <Typography variant='body1' color={palette.grey[800]}>
                   In Person Meeting
                 </Typography>
               </Stack>
