@@ -5,7 +5,6 @@ import * as _interactions from "./interactions";
 import { BookMark } from "./BookMark";
 import { ViewTask } from "./ViewTask";
 import { JdAnalysis } from "./JdAnalysis";
-import { JdScreening } from "./JdScreening";
 import { CandidateInterviewScore } from "./CandidateInterviewScore";
 import { CandidateExperience } from "./CandidateExperience";
 import { CandidateDetails } from "./CandidateDetails";
@@ -668,7 +667,7 @@ export function CandidateSideDrawer({
             {slotCandidateDetails ?? (
               <>
                 <JdAnalysis />
-                <JdScreening />
+                {/* <JdScreening /> */}
                 <CandidateInterviewScore />
                 <CandidateExperience />
                 <CandidateDetails />
