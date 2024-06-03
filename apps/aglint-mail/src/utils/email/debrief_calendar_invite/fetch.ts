@@ -1,5 +1,5 @@
-import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
 import dayjs from 'dayjs';
+import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
 import {
   DurationCalculator,
   scheduleTypeIcon,
@@ -11,14 +11,14 @@ export default async function Index(
   application_id: string,
   meeting_id: string,
 ) {
-  let { data: session } = await supabaseAdmin
+  const { data: session } = await supabaseAdmin
     .from('interview_session')
     .select(
       'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
     )
     .eq('id', session_id);
 
-  let {
+  const {
     data: [candidateJob],
   } = await supabaseAdmin
     .from('applications')
@@ -27,7 +27,7 @@ export default async function Index(
     )
     .eq('id', application_id);
 
-  let [
+  const [
     {
       interview_meeting: { start_time, end_time },
       name,
@@ -38,7 +38,7 @@ export default async function Index(
   ] = session;
 
   const Session = {
-    date: `${dayjs(start_time).format('ddd MMMM DD, YYYY')}`,
+    date: dayjs(start_time).format('ddd MMMM DD, YYYY'),
     Time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
     sessionType: name,
     platform: schedule_type,
@@ -55,7 +55,7 @@ export default async function Index(
   const body = {
     recipient_email: email,
     mail_type: 'candidate_invite_confirmation',
-    recruiter_id: recruiter_id,
+    recruiter_id,
     payload: {
       '[companyName]': company,
       '[firstName]': first_name,
