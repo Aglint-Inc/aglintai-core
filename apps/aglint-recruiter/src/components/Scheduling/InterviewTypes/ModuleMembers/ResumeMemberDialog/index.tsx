@@ -16,13 +16,6 @@ function ResumeMemberDialog({ editModule }: { editModule: any }) {
 
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isResumeDialogOpen}
       onClose={() => {
         setIsResumeDialogOpen(false);

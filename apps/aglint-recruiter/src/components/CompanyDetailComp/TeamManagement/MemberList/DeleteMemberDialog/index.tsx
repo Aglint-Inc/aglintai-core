@@ -23,13 +23,6 @@ function DeleteMemberDialog({
 }) {
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={openForDelete || openForCancel}
       onClose={() => {
         // resetState();
@@ -40,9 +33,9 @@ function DeleteMemberDialog({
         <ShowCode.When isTrue={openForDelete}>
           <DeletePopup
             textTitle={
-              <Typography variant='subtitle1' fontWeight={500}>
+              <Typography variant='body1bold'>
                 Delete the member:{' '}
-                <span style={{ fontWeight: 700 }}>{name}</span>
+                <span style={{ color: 'var(--error-11)' }}>{name}</span>
               </Typography>
             }
             textDescription={
@@ -53,7 +46,7 @@ function DeleteMemberDialog({
                 {warning && (
                   <>
                     <br />
-                    <Typography variant='subtitle2' color={'yellow.500'}>
+                    <Typography variant='body1' color={'var(--error-11)'}>
                       Warning: {warning}
                     </Typography>
                   </>
@@ -72,9 +65,9 @@ function DeleteMemberDialog({
         <ShowCode.When isTrue={openForCancel}>
           <DeletePopup
             textTitle={
-              <Typography variant='subtitle1' fontWeight={500}>
+              <Typography variant='body1bold'>
                 Cancel invitation to:{' '}
-                <span style={{ fontWeight: 700 }}>{name}</span>
+                <span style={{ color: 'var(--warning-11)' }}>{name}</span>
               </Typography>
             }
             textDescription={

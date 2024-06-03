@@ -39,13 +39,6 @@ function PauseDialog() {
 
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isPauseDialogOpen}
       onClose={() => {
         resetState();
