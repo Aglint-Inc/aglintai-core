@@ -112,3 +112,8 @@ export const setDateRange = (dateRange: {
   start_date: string;
   end_date: string;
 }) => useSchedulingFlowStore.setState({ dateRange });
+
+export const resetFilterStore = () =>
+  useSchedulingFlowStore.setState({
+    ...initialState,
+  });

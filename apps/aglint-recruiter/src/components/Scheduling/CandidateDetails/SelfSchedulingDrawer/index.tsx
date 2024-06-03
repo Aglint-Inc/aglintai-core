@@ -20,6 +20,7 @@ import StepScheduleFilter from './StepScheduleFilter';
 import SelectDateRange from './StepSelectDate';
 import StepSlotOptions from './StepSlotOptions';
 import {
+  resetFilterStore,
   setDateRange,
   setIsScheduleNowOpen,
   setSchedulingOptions,
@@ -68,8 +69,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
       end_date: initialEndDate.toISOString(),
     });
     return () => {
-      setIsScheduleNowOpen(false);
-      setSchedulingOptions([]);
+      resetFilterStore();
       setSelectedSessionIds([]);
     };
   }, []);
