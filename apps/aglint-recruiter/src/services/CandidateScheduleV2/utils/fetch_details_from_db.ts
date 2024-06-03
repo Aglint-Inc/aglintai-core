@@ -21,6 +21,7 @@ export type UserMeetingDetails = {
   [user_id: string]: {
     [week_start_time: string]: {
       [meeting_date: string]: {
+        meeting_time: string;
         meeting_duration: number;
         meeting_cnt: number;
       };
@@ -135,6 +136,7 @@ export const fetch_details_from_db = async (
         ints_map.get(meeting.interv_user_id).scheduling_settings.timeZone
           .tzCode,
       );
+      const meeting_date = meeting_start_time.startOf('day');
       const week_start_time = meeting_start_time.startOf('week').startOf('day');
       if (!ints_schd_meetings[meeting.interv_user_id]) {
         ints_schd_meetings[meeting.interv_user_id] = {};
@@ -147,19 +149,20 @@ export const fetch_details_from_db = async (
       }
       if (
         !ints_schd_meetings[meeting.interv_user_id][week_start_time.format()][
-          meeting_start_time.format()
+          meeting_date.format()
         ]
       ) {
         ints_schd_meetings[meeting.interv_user_id][week_start_time.format()][
-          meeting_start_time.format()
+          meeting_date.format()
         ] = {
           meeting_cnt: 0,
           meeting_duration: 0,
+          meeting_time: meeting_start_time.format(),
         };
       }
       const curr_day_details =
         ints_schd_meetings[meeting.interv_user_id][week_start_time.format()][
-          meeting_start_time.format()
+          meeting_date.format()
         ];
       curr_day_details.meeting_cnt += 1;
       curr_day_details.meeting_duration += meeting.meeting_duration;

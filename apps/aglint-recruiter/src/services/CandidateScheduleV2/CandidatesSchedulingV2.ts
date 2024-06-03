@@ -491,7 +491,7 @@ export class CandidatesSchedulingV2 {
                 isIntervLoadPassed(
                   currDay,
                   this.db_details,
-                  attendee.email,
+                  attendee.user_id,
                   this.intervs_details_map.get(attendee.user_id)
                     .int_schedule_setting,
                   plan_comb,

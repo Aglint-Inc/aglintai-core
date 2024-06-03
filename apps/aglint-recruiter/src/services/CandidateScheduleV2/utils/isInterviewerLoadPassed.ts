@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import {
   CalConflictType,
   InterviewSessionApiRespType,
@@ -6,12 +7,16 @@ import {
 import { Dayjs } from 'dayjs';
 
 import { DBDetailsType } from '../types';
-import { userTzDayjs } from './userTzDayjs';
+
+type LoadType = {
+  total_interview: number;
+  total_duration: number;
+};
 
 export const isIntervLoadPassed = (
   current_day: Dayjs,
   db_details: DBDetailsType,
-  int_email: string,
+  inter_id: string,
   int_schedule_setting: schedulingSettingType,
   plan_comb: InterviewSessionApiRespType[],
 ): {
@@ -20,50 +25,39 @@ export const isIntervLoadPassed = (
   week_load_density: number;
   day_load_density: number;
 } => {
-  const curr_week_start_day = current_day.startOf('week');
-  const curr_week_end_day = current_day.endOf('week');
-  const int_meetings = db_details.ints_schd_meetings.get(int_email);
-  const curr_week_meetings = int_meetings.filter((meet) => {
-    const meet_date = userTzDayjs(meet.meeting_date).tz(
-      int_schedule_setting.timeZone.tzCode,
-    );
-    return (
-      meet_date.isSameOrAfter(curr_week_start_day, 'date') &&
-      meet_date.isSameOrBefore(curr_week_end_day, 'date')
-    );
-  });
+  const int_tz = int_schedule_setting.timeZone.tzCode;
+  const curr_week_start_day = current_day
+    .tz(int_tz)
+    .startOf('week')
+    .startOf('day');
 
-  console.log(curr_week_meetings);
+  const curr_week_meetings_obj =
+    db_details.ints_schd_meetings[inter_id][curr_week_start_day.format()];
 
+  const weekly_load: LoadType = {
+    total_interview: 0,
+    total_duration: 0,
+  };
+  const day_load: LoadType = {
+    total_interview: 0,
+    total_duration: 0,
+  };
+
+  for (const [curr_date, val] of Object.entries(curr_week_meetings_obj)) {
+    weekly_load.total_duration += val.meeting_duration;
+    weekly_load.total_interview += val.meeting_cnt;
+    if (curr_date === current_day.tz(int_tz).format()) {
+      day_load.total_duration += val.meeting_duration;
+      day_load.total_interview += val.meeting_cnt;
+    }
+  }
   const slot_int_sessions = plan_comb.filter((sess) =>
-    sess.qualifiedIntervs.find((int) => int.email === int_email),
+    sess.qualifiedIntervs.find((int) => int.user_id === inter_id),
   );
   const curr_slot_load = {
     total_interview: slot_int_sessions.length,
     total_duration: slot_int_sessions.reduce((sum, curr) => {
       return sum + curr.duration;
-    }, 0),
-  };
-  const weekly_load = {
-    total_interview: curr_week_meetings.reduce((sum, curr) => {
-      return sum + curr.meeting_cnt;
-    }, 0),
-    total_duration: curr_week_meetings.reduce((sum, curr) => {
-      return sum + curr.meeting_duration;
-    }, 0),
-  };
-  const curr_day_meetings = int_meetings.filter((meet) => {
-    const meet_date = userTzDayjs(meet.meeting_date).tz(
-      int_schedule_setting.timeZone.tzCode,
-    );
-    return meet_date.isSame(current_day, 'day');
-  });
-  const day_load = {
-    total_interview: curr_day_meetings.reduce((sum, curr) => {
-      return sum + curr.meeting_cnt;
-    }, 0),
-    total_duration: curr_day_meetings.reduce((sum, curr) => {
-      return sum + curr.meeting_duration;
     }, 0),
   };
 
@@ -77,14 +71,10 @@ export const isIntervLoadPassed = (
   const week_limit = int_schedule_setting.interviewLoad.weeklyLimit;
   const day_limit = int_schedule_setting.interviewLoad.dailyLimit;
 
-  console.log(int_email);
-  console.log(day_load);
-  console.log(weekly_load);
   const int_day_load_density = day_load.total_interview / day_limit.value;
   const int_week_load_density = weekly_load.total_interview / week_limit.value;
   const hrs_day_load_density = day_load.total_duration / day_limit.value;
   const hrs_week_load_density = weekly_load.total_duration / week_limit.value;
-  console.log(int_week_load_density);
   if (week_limit.type === 'Hours') {
     if (week_limit.value >= weekly_load.total_duration) {
       if (day_limit.type === 'Hours') {
