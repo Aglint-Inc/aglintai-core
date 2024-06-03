@@ -1,19 +1,18 @@
-
 import { ScheduleOptionsList } from '@/devlink3/ScheduleOptionsList';
 
-import { useSchedulingApplicationStore } from '../../store';
+import { useSchedulingFlowStore } from '../store';
 import DayCardWrapper from './DayCardWrapper';
 import { extractPlanData, groupByDateRange } from './utils';
 
 export type GroupByDateRange = ReturnType<typeof groupByDateRange>;
 
 function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
-  const schedulingOptions = useSchedulingApplicationStore(
-    (state) => state.schedulingOptions,
+  const filteredSchedulingOptions = useSchedulingFlowStore(
+    (state) => state.filteredSchedulingOptions,
   );
 
   const groupedData: GroupByDateRange = groupByDateRange(
-    extractPlanData(schedulingOptions),
+    extractPlanData(filteredSchedulingOptions),
   );
 
   return (
