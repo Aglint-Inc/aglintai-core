@@ -104,7 +104,6 @@ export const FilterHeader = ({
             onChange={(e) => {
               search.setValue(e.target.value);
             }}
-            borderRadius={10}
             height={42}
           />
         </Stack>
@@ -225,7 +224,7 @@ export const FilterHeader = ({
                         <ShowCode.Else>
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DateCalendar
-                            views={['day']}
+                              views={['day']}
                               disablePast
                               value={dayjs(selectedDate[0])}
                               onChange={(e) => {

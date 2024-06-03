@@ -489,7 +489,10 @@ function SideDrawerEdit() {
                       slotToggle={
                         <AntSwitch
                           checked={trainingToggle}
-                          onClick={() => setTrainingToggle(!trainingToggle)}
+                          onClick={() => {
+                            setTrainingToggle(!trainingToggle);
+                            setTrainingInterviewers([]);
+                          }}
                         />
                       }
                       slotInterviewModePill={

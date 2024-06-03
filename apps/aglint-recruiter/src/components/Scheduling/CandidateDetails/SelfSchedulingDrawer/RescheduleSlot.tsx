@@ -7,11 +7,10 @@ import { ScheduleTypeButton } from '@/devlink3/ScheduleTypeButton';
 import ScheduleIndividualCard from '../FullSchedule/ScheduleIndividual';
 import {
   SchedulingApplication,
-  setScheduleFlow,
   setSelectedSessionIds,
-  setStepScheduling,
   useSchedulingApplicationStore,
 } from '../store';
+import { setScheduleFlow, setStepScheduling } from './store';
 
 function RescheduleSlot() {
   const { initialSessions, selectedApplicationLog, selectedApplication } =

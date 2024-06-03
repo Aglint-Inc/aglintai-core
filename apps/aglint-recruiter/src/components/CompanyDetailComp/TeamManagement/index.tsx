@@ -173,7 +173,6 @@ const TeamManagement = () => {
                 }}
                 placeholder='Search by Name, Email or Title'
                 onChange={handleSearchInputChange}
-                borderRadius={10}
                 height={42}
               />
             </Stack>

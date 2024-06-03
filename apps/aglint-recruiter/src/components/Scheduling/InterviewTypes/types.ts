@@ -98,8 +98,8 @@ export type MemberType = {
   email: string;
   profile_image: string;
   position: string;
-  schedule_auth: JSON | null;
-  role: RecruiterUserType['role'];
+  schedule_auth?: JSON | null;
+  role: RecruiterUserType['role'] | null;
 };
 
 export type TransformSchedule = ScheduleType & {

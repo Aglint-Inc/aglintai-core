@@ -31,6 +31,7 @@ import { addScheduleActivity } from '../Candidates/queries/utils';
 import { mailHandler } from '../Candidates/utils';
 import { getScheduleName } from '../utils';
 import { fetchInterviewDataJob, fetchInterviewDataSchedule } from './hooks';
+import { SchedulingFlow } from './SelfSchedulingDrawer/store';
 import { SchedulingApplication } from './store';
 
 export const fetchInterviewMeetingProgresstask = async ({
@@ -248,7 +249,7 @@ export const sendToCandidate = async ({
     start_date: string;
     end_date: string;
   };
-  selectedDebrief: SchedulingApplication['schedulingOptions'][number];
+  selectedDebrief: SchedulingFlow['schedulingOptions'][number];
   recruiterUser: {
     email: string;
     first_name: string;
