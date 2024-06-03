@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -16,7 +17,7 @@ export function InviteTeamCard({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "tu-list-item-user-image")}
+          className={_utils.cx(_styles, "team-user-image-wrap")}
           tag="div"
         >
           {slotAvatar}

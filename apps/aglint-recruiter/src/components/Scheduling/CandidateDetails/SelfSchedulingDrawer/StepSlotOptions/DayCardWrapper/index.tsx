@@ -1,8 +1,9 @@
 import { PlanCombinationRespType } from '@aglint/shared-types';
-import { Collapse } from '@mui/material';
+import { Collapse, Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
+import { ButtonTextSmall } from '@/devlink/ButtonTextSmall';
 import { DateOption } from '@/devlink3/DateOption';
 import { ScheduleOption } from '@/devlink3/ScheduleOption';
 
@@ -33,6 +34,11 @@ function DayCardWrapper({
   const isMultiDay = dates.length > 1 ? true : false;
 
   const [collapse, setCollapse] = useState(false);
+  const [displayedSlots, setDisplayedSlots] = useState(10);
+
+  const loadMoreSlots = () => {
+    setDisplayedSlots((prevCount) => prevCount + 10);
+  };
 
   return (
     <>
@@ -52,7 +58,7 @@ function DayCardWrapper({
         }}
         slotScheduleOption={
           <Collapse in={collapse}>
-            {slots?.map((slot) => {
+            {slots.slice(0, displayedSlots)?.map((slot) => {
               const daySessions = dates.map((date) => {
                 return {
                   date: date,
@@ -87,6 +93,16 @@ function DayCardWrapper({
                 />
               );
             })}
+            {displayedSlots < slots.length && (
+              <Stack direction={'row'} justifyContent={'center'} p={1}>
+                <ButtonTextSmall
+                  textLabel={'Load More'}
+                  onClickButton={{
+                    onClick: loadMoreSlots,
+                  }}
+                />
+              </Stack>
+            )}
           </Collapse>
         }
       />

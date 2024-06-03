@@ -180,7 +180,7 @@ function SubTaskProgress() {
                             border={'1px solid'}
                             borderColor={'grey.200'}
                           >
-                            <Typography variant='body2'>
+                            <Typography variant='body1'>
                               <span
                                 dangerouslySetInnerHTML={{
                                   __html: marked(

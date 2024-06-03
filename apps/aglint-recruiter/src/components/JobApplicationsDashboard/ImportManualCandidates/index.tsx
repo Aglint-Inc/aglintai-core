@@ -358,7 +358,7 @@ const FormBody = ({
             >
               {applicant.resume.value ? <FileIcon /> : <UploadIcon />}
               <Typography
-                variant='body2'
+                variant='body1'
                 sx={{ textAlgin: 'center', fontSize: '14px' }}
                 style={{
                   color: applicant.resume.error ? 'red' : 'inherit',

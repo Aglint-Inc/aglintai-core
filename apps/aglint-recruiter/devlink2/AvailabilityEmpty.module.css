@@ -46,17 +46,6 @@
   }
 }
 
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
-}
-
 .text-underline {
   transition: all 250ms ease;
   text-decoration: underline;

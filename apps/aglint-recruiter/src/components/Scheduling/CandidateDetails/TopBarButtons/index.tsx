@@ -8,8 +8,9 @@ import { ScheduleTypeButton } from '@/devlink3/ScheduleTypeButton';
 import {
   setIsScheduleNowOpen,
   setScheduleFlow,
-  useSchedulingApplicationStore,
-} from '../store';
+  setStepScheduling,
+} from '../SelfSchedulingDrawer/store';
+import { useSchedulingApplicationStore } from '../store';
 
 function TopBarButtons() {
   const router = useRouter();
@@ -49,6 +50,7 @@ function TopBarButtons() {
           onClickButton={{
             onClick: () => {
               setScheduleFlow('self_scheduling');
+              setStepScheduling('pick_date');
               setIsScheduleNowOpen(true);
             },
           }}

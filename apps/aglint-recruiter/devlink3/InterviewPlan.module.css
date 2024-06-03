@@ -107,7 +107,7 @@
 }
 
 .text-grey_600 {
-  color: #68737d;
+  color: var(--sand-11);
 }
 
 .fw-semibold.name-text {
@@ -119,7 +119,7 @@
 }
 
 .text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+  color: var(--sand-11);
 }
 
 .text-gray-600.cursor-pointer {
@@ -221,8 +221,9 @@
 }
 
 .text-sm {
-  font-size: 12px;
-  line-height: 16px;
+  font-size: var(--font-size-1);
+  line-height: var(--line-height-1);
+  letter-spacing: var(--letter-spacing-1);
 }
 
 .text-grey-600.text-underline {

@@ -3,13 +3,10 @@ import AppLayout from '@components/AppLayout';
 import ErrorBoundary from '@components/Common/ErrorBoundary';
 import { DevlinkMainProvider } from '@context/DevlinkContext';
 import '@styles/globals.scss';
-import '@styles/toast.scss';
 import PropTypes from 'prop-types';
 import { Suspense } from 'react';
 import 'regenerator-runtime/runtime';
-import '../../devlink/global.css';
-import '../../devlink2/global.css';
-import '../../devlink3/global.css';
+
 import { PHProvider } from '../components/PostHog/postHog';
 import { AuthProvider } from '../context/AuthContext/AuthContext';
 import JobsProvider from '../context/JobsContext';

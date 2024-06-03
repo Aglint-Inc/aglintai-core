@@ -6,7 +6,7 @@
 
 .div-block-1280 {
   display: flex;
-  padding: 10px 16px;
+  padding: var(--space-2) 16px;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #e9ebed;
@@ -27,8 +27,9 @@
 
 .div-block-1076 {
   padding: 6px 16px;
-  border: 1px solid #e9ebed;
+  border: 1px solid var(--neutral-5);
   border-radius: 6px;
+  color: var(--neutral-10);
   cursor: pointer;
 }
 
@@ -41,9 +42,9 @@
 
   border-style: none;
 
-  background-color: #68737d;
+  background-color: var(--accent-3);
 
-  color: white;
+  color: var(--accent-11);
 }
 
 .div-block-1079 {

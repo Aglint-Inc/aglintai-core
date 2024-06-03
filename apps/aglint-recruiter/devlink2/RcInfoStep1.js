@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./RcInfoStep1.module.css";
 
@@ -55,7 +57,7 @@ export function RcInfoStep1({
             className={_utils.cx(_styles, "div-block-386")}
             tag="div"
           >
-            {slotInput}
+            {slotInput ?? <SlotComp componentName="slot for MUI Form" />}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

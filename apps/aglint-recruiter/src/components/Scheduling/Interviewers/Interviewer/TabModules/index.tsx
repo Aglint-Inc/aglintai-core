@@ -45,7 +45,7 @@ function TabInterviewModules({
               );
             })
           ) : (
-            <Typography variant='body2'>
+            <Typography variant='body1'>
               No Interview Types Added Yet
             </Typography>
           )

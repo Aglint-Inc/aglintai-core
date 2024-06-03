@@ -54,7 +54,7 @@ function Overview({
               );
             })
           ) : (
-            <Typography variant='body2'>No Schedules</Typography>
+            <Typography variant='body1'>No Schedules</Typography>
           )
         }
         slotTrainingModules={

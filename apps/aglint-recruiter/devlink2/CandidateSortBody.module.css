@@ -20,12 +20,6 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
-.inline-block {
-  display: inline;
-  margin-right: 2px;
-  margin-left: 2px;
-}
-
 @media screen and (max-width: 767px) {
   .text-gray-600.mobile-12 {
     font-size: 12px;
@@ -40,30 +34,13 @@
   max-width: 500px;
 }
 
-.fw-semibold {
-  font-weight: 600;
-}
-
-.text-gray-600.margin_bottom_10 {
-  margin-bottom: 10px;
-}
-
 .text-gray-600.maxwidth-custom {
   max-width: 292px;
-}
-
-.text-gray-600.relative_2 {
-  position: relative;
-  z-index: 2;
 }
 
 .text-sm {
   font-size: 12px;
   line-height: 16px;
-}
-
-.text-xsm {
-  font-size: 10px;
 }
 
 .cl-sort-option-wrapper {
@@ -108,37 +85,15 @@
   opacity: 0.8;
 }
 
-.icon-block.clickable.padding-4 {
-  padding: 4px;
-}
-
-.icon-block._10x10 {
-  width: 10px;
-  height: 10px;
-  min-height: 10px;
-  min-width: 10px;
-}
-
-.icon-block._10x10.sort {
-  position: relative;
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icon-block._10x10.sort:hover {
-  opacity: 0.8;
-}
-
 .icon-block._30x30 {
   width: 30px;
   height: 30px;
   min-height: 30px;
   min-width: 30px;
-}
 
-.icon-block._30x30.rs-add {
   border-radius: 6px;
-  background-color: hsla(0, 0.00%, 33.73%, 1.00);
+
+  background-color: #f8f9f9;
 }
 
 .icon-block._12x12 {
@@ -172,50 +127,6 @@
   min-width: 16px;
 }
 
-.icon-block._16x16.rounded {
-  border-radius: 100px;
-}
-
-.overflow-hidden {
-  overflow: hidden;
-}
-
-.icon-block._40x40 {
-  width: 40px;
-  height: 40px;
-  min-height: 40px;
-  min-width: 40px;
-}
-
-.icon-block._40x40.cs-add {
-  border-radius: 12px;
-  background-color: var(--gray-200);
-}
-
-.icon-block.height-12 {
-  height: 12px;
-}
-
-.icon-block._50x50 {
-  width: 50px;
-  height: 50px;
-  min-height: 50px;
-  min-width: 50px;
-}
-
-.icon-block._50x50.contain.relative {
-  position: relative;
-  z-index: 5;
-}
-
-.relative {
-  position: relative;
-}
-
-.icon-block.contain {
-  object-fit: contain;
-}
-
 .icon-block._8x8 {
   width: 8px;
   height: 8px;
@@ -239,37 +150,6 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
-}
-
-.svg-icon.sort-filled {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-  z-index: 99;
-
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
-.text-red-500 {
-  color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
-}
-
-.text-blue-500 {
-  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
-}
-
-.text-green-500 {
-  color: hsla(157.9816513761468, 61.58%, 34.71%, 1.00);
-}
-
-.text-fuschia-600 {
-  color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
-}
-
-.text-gray-700 {
-  color: var(--gray-700);
 }
 
 .cl-sort-option-bg {

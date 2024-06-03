@@ -26,3 +26,36 @@
   background-color: #d93f4c;
   color: white;
 }
+
+.div-block-1679.small {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.div-block-1679.small.primary {
+  background-color: var(--accent-9);
+}
+
+.div-block-1679.small.primary:hover {
+  background-color: var(--accent-10);
+  opacity: 1;
+}
+
+.div-block-1679.small.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}

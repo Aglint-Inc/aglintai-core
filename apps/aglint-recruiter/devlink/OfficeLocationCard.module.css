@@ -30,10 +30,6 @@
   color: var(--kale600-c60cbc05);
 }
 
-.text-kale-500 {
-  color: var(--kale500-ffd3d2f8);
-}
-
 .job-post-tag {
   position: absolute;
   left: auto;

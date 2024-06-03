@@ -86,7 +86,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                 width='16px'
                 color='#555555'
               />
-              <Typography variant='body2' color={palette.grey[800]}>
+              <Typography variant='body1' color={palette.grey[800]}>
                 {headCell.label}
               </Typography>
             </Stack>
@@ -233,7 +233,7 @@ export const EnhancedCell = ({ children, sx = {} }) => (
   >
     <Typography
       className='one-line-clamp'
-      variant='body2'
+      variant='body1'
       color={palette.grey[800]}
     >
       {children}

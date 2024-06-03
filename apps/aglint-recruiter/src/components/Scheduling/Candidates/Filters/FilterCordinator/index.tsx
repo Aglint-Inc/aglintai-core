@@ -230,7 +230,7 @@ function FilterCordinator() {
                             height={'20px'}
                             fontSize={'14px'}
                           />
-                          <Typography variant='body2'>
+                          <Typography variant='body1'>
                             {getFullName(option.first_name, option.last_name)}
                           </Typography>
                         </Stack>

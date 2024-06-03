@@ -59,10 +59,6 @@
   z-index: 1;
 }
 
-.icons.ml--6 {
-  margin-left: -6px;
-}
-
 .icons.hide {
   display: none;
 }
@@ -80,6 +76,21 @@
 
 .icons.pointer {
   cursor: pointer;
+}
+
+.icons.closediv {
+  position: absolute;
+  left: auto;
+  top: -7px;
+  right: -7px;
+  bottom: auto;
+
+  cursor: pointer;
+}
+
+.icons.lottie {
+  width: 16px;
+  height: 16px;
 }
 
 .div-block-1693 {
@@ -137,4 +148,18 @@
 
 .text-underline:hover {
   opacity: 0.7;
+}
+
+@media screen and (max-width: 479px) {
+  .text-grey-600.mob {
+    font-size: 12px;
+  }
+}
+
+.max-width-700 {
+  max-width: 700px;
+}
+
+.text-align-center {
+  text-align: center;
 }

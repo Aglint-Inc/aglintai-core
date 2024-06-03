@@ -95,6 +95,10 @@ export function MemberRow({
           </>
         )}
       </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "text-gray-600")}
+        tag="div"
+      />
     </_Component>
   );
 }

@@ -1246,7 +1246,7 @@ const ResumeUpload: React.FC<{
             >
               {resume ? <FileIcon /> : <UploadIcon />}
               <Typography
-                variant='body2'
+                variant='body1'
                 sx={{ textAlgin: 'center', fontSize: '14px' }}
                 style={{
                   fontWeight: resume ? 600 : 400,

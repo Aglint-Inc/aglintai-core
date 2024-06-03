@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
-import { SubLinkSubMenu } from '@/devlink2/SubLinkSubMenu';
+import { SublinkSubMenu } from '@/devlink2/SublinkSubMenu';
 import { SublinkTab } from '@/devlink2/SublinkTab';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { featureFlag } from '@/src/utils/Constants';
@@ -114,11 +114,11 @@ function SettingsSubNabItem({ tab }: { tab: string }) {
     <>
       {settingsItems.map((item, i) => {
         return (
-          <SubLinkSubMenu
+          <SublinkSubMenu
             key={i}
-            textSubMenu={item.label}
+            textLink={item.label}
             isActive={router.query.subtab === item.value}
-            onClickSubMenu={{
+            onClickLink={{
               onClick: (e: any) => {
                 e.stopPropagation();
                 router.push(

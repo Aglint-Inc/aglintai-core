@@ -51,7 +51,17 @@ function SingleDayCard({
     .map((item) => item.conflict_reasons)
     .map((item) => item)
     .flat()
-    .filter((item) => item.conflict_type !== 'soft');
+    .filter(
+      (item) =>
+        item.conflict_type !== 'soft' &&
+        item.conflict_type !== 'out_of_working_hours',
+    );
+
+  const sesOutsideWorkHours = sesAllConflicts
+    .map((item) => item.conflict_reasons)
+    .map((item) => item)
+    .flat()
+    .filter((item) => item.conflict_type === 'out_of_working_hours');
 
   const [collapse, setCollapse] = React.useState(false);
 
@@ -88,6 +98,14 @@ function SingleDayCard({
               isHardConflict={true}
               isOutsideWorkHours={false}
               textCount={sesHardConflicts.length}
+            />
+          )}
+          {sesOutsideWorkHours.length > 0 && (
+            <ConflictChip
+              isSoftConflict={false}
+              isHardConflict={false}
+              isOutsideWorkHours={true}
+              textCount={sesOutsideWorkHours.length}
             />
           )}
         </>

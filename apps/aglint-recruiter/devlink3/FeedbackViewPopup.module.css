@@ -45,15 +45,15 @@
   grid-row-gap: 8px;
 }
 
-.po-up_close {
+.popup_close {
   cursor: pointer;
 }
 
-.po-up_close.cursor-pointer {
+.popup_close.cursor-pointer {
   transition: all 250ms ease;
 }
 
-.po-up_close.cursor-pointer:hover {
+.popup_close.cursor-pointer:hover {
   opacity: 0.8;
 }
 

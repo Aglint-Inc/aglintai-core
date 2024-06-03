@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { JobAssistCards } from "./JobAssistCards";
@@ -184,7 +185,7 @@ export function JobAssist({
             </_Builtin.Block>
             {isSuggestionVisible ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-759")}
+                className={_utils.cx(_styles, "div-block-759", "hide")}
                 tag="div"
               >
                 {slotSuggestion ?? <JobAssistCardSmall />}
