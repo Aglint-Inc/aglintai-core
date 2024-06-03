@@ -23,7 +23,7 @@ export default async function Index(
   } = await supabaseAdmin
     .from('applications')
     .select(
-      'candidates(first_name,email,recruiter_id,recruiter(name)),public_jobs(recruiter(logo),job_title,company)',
+      'candidates(first_name,email,recruiter_id,recruiter(name)),public_jobs(job_title,company)',
     )
     .eq('id', application_id);
 
@@ -47,11 +47,7 @@ export default async function Index(
       first_name,
       recruiter: { name: recruiterName },
     },
-    public_jobs: {
-      company,
-      job_title,
-      recruiter: { logo },
-    },
+    public_jobs: { company, job_title },
   } = candidateJob;
   const Sessions = sessions.map((session) => {
     const {
@@ -75,7 +71,6 @@ export default async function Index(
     recipient_email: email,
     mail_type: 'candidate_reschedule_request',
     recruiter_id,
-    company_logo: logo,
     payload: {
       '[firstName]': first_name,
       '[rescheduleReason]': reason,
