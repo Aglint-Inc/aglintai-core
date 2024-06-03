@@ -141,34 +141,40 @@ const candReqAvailability = (payload: CandReqAvailableSlots) => {
     const cand_selected_dates: Dayjs[] = [];
     const session_rounds = getSessionRounds();
 
-    if (payload.current_interview_day == 1) {
-      let curr_day = cand_start_date;
-      while (curr_day.isSameOrBefore(cand_end_date, 'date')) {
-        cand_selected_dates.push(curr_day);
-        curr_day = curr_day.add(1, 'day');
-      }
-    } else {
-      const prev_day_sessions =
-        session_rounds[payload.current_interview_day - 2];
-      const prev_day_break =
-        prev_day_sessions[prev_day_sessions.length - 1].break_duration /
-        SINGLE_DAY_TIME;
-
-      const prev_cand_selected_days: Dayjs[] =
-        payload.previously_selected_dates.map((sel_day) =>
-          ScheduleUtils.convertDateFormatToDayjs(sel_day, payload.candidate_tz),
-        );
-
-      prev_cand_selected_days.forEach((sel_day) => {
-        let next_int_day = sel_day.add(prev_day_break, 'day');
-        if (next_int_day.format('dddd') === DaysOfWeek.SATURDAY) {
-          next_int_day = next_int_day.add(2, 'day');
-        } else if (next_int_day.format('dddd') === DaysOfWeek.SUNDAY) {
-          next_int_day = next_int_day.add(1, 'day');
-        }
-        cand_selected_dates.push(next_int_day);
-      });
+    let curr_day = cand_start_date;
+    while (curr_day.isSameOrBefore(cand_end_date, 'date')) {
+      cand_selected_dates.push(curr_day);
+      curr_day = curr_day.add(1, 'day');
     }
+
+    // if (payload.current_interview_day == 1) {
+    //   let curr_day = cand_start_date;
+    //   while (curr_day.isSameOrBefore(cand_end_date, 'date')) {
+    //     cand_selected_dates.push(curr_day);
+    //     curr_day = curr_day.add(1, 'day');
+    //   }
+    // } else {
+    //   const prev_day_sessions =
+    //     session_rounds[payload.current_interview_day - 2];
+    //   const prev_day_break =
+    //     prev_day_sessions[prev_day_sessions.length - 1].break_duration /
+    //     SINGLE_DAY_TIME;
+
+    //   const prev_cand_selected_days: Dayjs[] =
+    //     payload.previously_selected_dates.map((sel_day) =>
+    //       ScheduleUtils.convertDateFormatToDayjs(sel_day, payload.candidate_tz),
+    //     );
+
+    //   prev_cand_selected_days.forEach((sel_day) => {
+    //     let next_int_day = sel_day.add(prev_day_break, 'day');
+    //     if (next_int_day.format('dddd') === DaysOfWeek.SATURDAY) {
+    //       next_int_day = next_int_day.add(2, 'day');
+    //     } else if (next_int_day.format('dddd') === DaysOfWeek.SUNDAY) {
+    //       next_int_day = next_int_day.add(1, 'day');
+    //     }
+    //     cand_selected_dates.push(next_int_day);
+    //   });
+    // }
 
     const isCalcSlotsForWeekEnd = (curr_day: Dayjs) => {
       if (

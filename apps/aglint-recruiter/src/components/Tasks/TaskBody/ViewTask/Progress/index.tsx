@@ -1,3 +1,4 @@
+import { DatabaseTable } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Stack, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -27,6 +28,7 @@ import { useTaskStatesContext } from '../../../TaskStatesContext';
 import AgentFollowUpCard from './AgentFolllowUpCard';
 import PhoneTranscript from './PhoneTrancript';
 import ProgressTitle from './ProgressTitle';
+import RequestAvailabilityList from './RequestAvailabilityList';
 import SessionCard, { meetingCardType } from './SessionCard';
 
 function SubTaskProgress() {
@@ -37,7 +39,11 @@ function SubTaskProgress() {
   const today = dayjs();
   const selectedTask = tasks.find((ele) => ele.id === router.query?.task_id);
   const { data: sessionList } = useSessionsList();
-
+  const dateSlots = (
+    selectedTask.candidate_request_availability?.slots
+      ? selectedTask.candidate_request_availability?.slots
+      : []
+  ) as DatabaseTable['candidate_request_availability']['slots'];
   return (
     <>
       <FollowUp />
@@ -92,7 +98,6 @@ function SubTaskProgress() {
                     },
                   );
                 }
-
                 return (
                   <TaskProgress
                     isLineVisible={progressList.length !== i + 1}
@@ -284,6 +289,20 @@ function SubTaskProgress() {
                           <AgentFollowUpCard
                             progress_created_at={item.created_at}
                           />
+                        </ShowCode.When>
+                        <ShowCode.When
+                          isTrue={
+                            item.progress_type === 'request_availability_list'
+                          }
+                        >
+                          {dateSlots.map((dateSlot, i) => {
+                            return (
+                              <RequestAvailabilityList
+                                key={i}
+                                dateSlots={dateSlot}
+                              />
+                            );
+                          })}
                         </ShowCode.When>
                       </ShowCode>
                     }

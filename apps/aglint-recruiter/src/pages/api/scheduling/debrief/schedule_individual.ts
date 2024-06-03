@@ -85,7 +85,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       dateRange,
     });
 
-    if (availabilities.plan_combs.length === 0) {
+    if (availabilities[0][0].length === 0) {
       console.log('no availibity found');
       await updateFailedTask({
         dateRange,
@@ -96,7 +96,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(200).send('no availibity found');
     }
 
-    const firstSlot = availabilities.plan_combs.filter(
+    const firstSlot = availabilities[0][0].filter(
       (item) => !item.sessions[0].is_conflict,
     )[0].sessions[0];
     const candidate_email = jobData.candidates.email;

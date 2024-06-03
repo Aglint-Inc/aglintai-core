@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
+import { ScheduleUtils } from '@/src/services/CandidateScheduleV2/utils/ScheduleUtils';
 import toast from '@/src/utils/toast';
 
 import { useGetScheduleApplication } from '../hooks';
@@ -17,7 +18,7 @@ import {
 } from '../store';
 import RescheduleSlot from './RescheduleSlot';
 import StepScheduleFilter from './StepScheduleFilter';
-import { filterSchedulingOptions } from './StepScheduleFilter/utils';
+import { filterSchedulingOptionsArray } from './StepScheduleFilter/utils';
 import SelectDateRange from './StepSelectDate';
 import StepSlotOptions from './StepSlotOptions';
 import {
@@ -50,18 +51,20 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
 
   const {
     dateRange,
-    schedulingOptions,
+    filteredSchedulingOptions,
     isScheduleNowOpen,
     scheduleFlow,
     stepScheduling,
     filters,
+    schedulingOptions,
   } = useSchedulingFlowStore((state) => ({
     dateRange: state.dateRange,
-    schedulingOptions: state.schedulingOptions,
+    filteredSchedulingOptions: state.filteredSchedulingOptions,
     isScheduleNowOpen: state.isScheduleNowOpen,
     scheduleFlow: state.scheduleFlow,
     stepScheduling: state.stepScheduling,
     filters: state.filters,
+    schedulingOptions: state.schedulingOptions,
   }));
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
@@ -88,45 +91,52 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
       if (isDebrief && selectedCombIds.length === 0) {
         toast.warning('Please select a time slot to schedule.');
       } else {
-        const bodyParams: ApiBodyParamsSendToCandidate = {
-          dateRange,
-          initialSessions,
-          is_mail: true,
-          is_debrief: isDebrief,
-          recruiter_id: recruiter.id,
-          recruiterUser,
-          selCoordinator: null,
-          selectedApplication,
-          selectedSessionIds,
-          selectedDebrief: schedulingOptions.find(
-            (opt) => opt.plan_comb_id === selectedCombIds[0],
-          ),
-          user_tz: dayjs.tz.guess(),
-          selectedApplicationLog,
-        };
-        const res = await axios.post(
-          '/api/scheduling/application/sendtocandidate',
-          bodyParams,
-        );
-
-        if (res.status === 200 && res.data) {
-          setinitialSessions(
-            initialSessions.map((session) => ({
-              ...session,
-              interview_meeting: selectedSessionIds.includes(session.id)
-                ? session.interview_meeting
-                  ? {
-                      ...session.interview_meeting,
-                      status: 'waiting',
-                    }
-                  : { status: 'waiting', interview_schedule_id: null }
-                : session.interview_meeting
-                  ? { ...session.interview_meeting }
-                  : null,
-            })),
+        if (selectedCombIds.length < 5) {
+          toast.warning('Please select at least 5 time slots to schedule.');
+        } else {
+          const bodyParams: ApiBodyParamsSendToCandidate = {
+            dateRange,
+            initialSessions,
+            is_mail: true,
+            is_debrief: isDebrief,
+            recruiter_id: recruiter.id,
+            recruiterUser,
+            selCoordinator: null,
+            selectedApplication,
+            selectedSessionIds,
+            selectedDebrief: filteredSchedulingOptions.find(
+              (opt) => opt.plan_comb_id === selectedCombIds[0],
+            ),
+            user_tz: dayjs.tz.guess(),
+            selectedApplicationLog,
+            selectedSlots: filteredSchedulingOptions.filter((opt) =>
+              selectedCombIds.includes(opt.plan_comb_id),
+            ),
+          };
+          const res = await axios.post(
+            '/api/scheduling/application/sendtocandidate',
+            bodyParams,
           );
+
+          if (res.status === 200 && res.data) {
+            setinitialSessions(
+              initialSessions.map((session) => ({
+                ...session,
+                interview_meeting: selectedSessionIds.includes(session.id)
+                  ? session.interview_meeting
+                    ? {
+                        ...session.interview_meeting,
+                        status: 'waiting',
+                      }
+                    : { status: 'waiting', interview_schedule_id: null }
+                  : session.interview_meeting
+                    ? { ...session.interview_meeting }
+                    : null,
+              })),
+            );
+          }
+          resetState();
         }
-        resetState();
       }
     } catch (e) {
       toast.error('Error sending to candidate.');
@@ -174,13 +184,21 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
           onClickPrimary={{
             onClick: () => {
               if (stepScheduling === 'preference') {
-                const { allFilteredOptions } = filterSchedulingOptions({
+                const { allFilteredOptions } = filterSchedulingOptionsArray({
                   filters,
                   schedulingOptions,
                 });
-
-                setFilteredSchedulingOptions(allFilteredOptions);
-                setStepScheduling('slot_options');
+                const combs = ScheduleUtils.createCombsForMultiDaySlots(
+                  allFilteredOptions,
+                ).flatMap((comb) => comb);
+                if (combs.length === 0) {
+                  toast.warning(
+                    'No available slots found for the selected preferences.',
+                  );
+                  } else {
+                  setFilteredSchedulingOptions(combs);
+                  setStepScheduling('slot_options');
+                }
               } else if (stepScheduling === 'slot_options') {
                 if (!saving) {
                   onClickSendToCandidate();
@@ -196,7 +214,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
           textPrimaryButton={
             !isDebrief
               ? stepScheduling === 'preference'
-                ? 'Continue'
+                ? 'Get Combinations'
                 : 'Send to Candidate'
               : 'Schedule Now'
           }

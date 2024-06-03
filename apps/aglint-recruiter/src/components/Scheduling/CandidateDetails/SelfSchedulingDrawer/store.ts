@@ -1,13 +1,15 @@
 import { PlanCombinationRespType } from '@aglint/shared-types';
 import { create } from 'zustand';
 
+import { ApiResponseFindAvailability } from '../types';
+
 export interface SchedulingFlow {
   isScheduleNowOpen: boolean;
   dateRange: {
     start_date: string;
     end_date: string;
   };
-  schedulingOptions: PlanCombinationRespType[];
+  schedulingOptions: ApiResponseFindAvailability;
   stepScheduling: 'pick_date' | 'preference' | 'slot_options' | 'reschedule';
   noOptions: boolean;
   isSendToCandidateOpen: boolean;
@@ -102,7 +104,7 @@ export const setNoOptions = (noOptions: boolean) =>
   useSchedulingFlowStore.setState({ noOptions });
 
 export const setSchedulingOptions = (
-  schedulingOptions: PlanCombinationRespType[],
+  schedulingOptions: ApiResponseFindAvailability,
 ) => useSchedulingFlowStore.setState({ schedulingOptions });
 
 export const setFetchingPlan = (fetchingPlan: boolean) =>
