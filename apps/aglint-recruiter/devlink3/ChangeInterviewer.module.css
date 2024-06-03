@@ -131,7 +131,7 @@
 }
 
 .text-grey_600 {
-  color: #68737d;
+  color: var(--sand-11);
 }
 
 .fw-semibold.name-text {
@@ -142,15 +142,15 @@
   display: none;
 }
 
-.po-up_close {
+.popup_close {
   cursor: pointer;
 }
 
-.po-up_close.cursor-pointer {
+.popup_close.cursor-pointer {
   transition: all 250ms ease;
 }
 
-.po-up_close.cursor-pointer:hover {
+.popup_close.cursor-pointer:hover {
   opacity: 0.8;
 }
 
@@ -174,7 +174,7 @@
 }
 
 .text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+  color: var(--sand-11);
 }
 
 .text-gray-600.cursor-pointer {
@@ -238,12 +238,13 @@
 }
 
 .text-sm {
-  font-size: 12px;
-  line-height: 16px;
+  font-size: var(--font-size-1);
+  line-height: var(--line-height-1);
+  letter-spacing: var(--letter-spacing-1);
 }
 
 .text-sm.color-grey-600 {
-  color: #68737d;
+  color: var(--sand-11);
 }
 
 .color-grey-600 {
@@ -567,7 +568,7 @@
 
   transition: all 200ms ease-in-out;
 
-  color: white;
+  color: var(--white);
 
   cursor: pointer;
 }

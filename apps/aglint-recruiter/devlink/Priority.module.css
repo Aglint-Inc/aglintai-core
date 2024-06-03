@@ -10,9 +10,3 @@
   grid-column-gap: 4px;
   grid-row-gap: 4px;
 }
-
-.il-priority.top {
-  color: hsla(0, 0.00%, 0.00%, 1.00);
-  font-size: 14px;
-  line-height: 1.4;
-}

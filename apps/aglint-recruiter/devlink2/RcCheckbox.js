@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./RcCheckbox.module.css";
 
@@ -32,12 +33,7 @@ export function RcCheckbox({
           />
         ) : null}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "text-first-cap")}
-        tag="div"
-      >
-        {text}
-      </_Builtin.Block>
+      <Text content={text} weight="" />
     </_Component>
   );
 }

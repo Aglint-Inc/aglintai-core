@@ -2,24 +2,25 @@
   position: relative;
 
   display: flex;
-  width: 40px;
-  height: 40px;
+  width: var(--space-7);
+  height: var(--space-7);
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  border-radius: 8px;
+  border-radius: var(--radius-3);
 
   cursor: pointer;
 }
 
 .navlink:hover {
-  color: var(--red-400);
+  color: var(--red-400\<deleted\|variable-dd53ad27\>);
 }
 
 .navlink_icon {
   position: relative;
-  z-index: 2;
+  z-index: 1;
+  color: var(--neutral-11);
 }
 
 .icons {
@@ -38,16 +39,8 @@
   opacity: 0.7;
 }
 
-.icons.cursor-pointer.width-28 {
-  width: 28px;
-}
-
 .icons.cursor-pointer.height-28 {
   height: 28px;
-}
-
-.icons.cursor-pointer.p-4 {
-  padding: 4px;
 }
 
 .icons.cursor-pointer.three-dot {
@@ -67,10 +60,6 @@
 
 .icons.rotate-180 {
   transform: rotate(180deg);
-}
-
-.icons.pause {
-  display: none;
 }
 
 .icons.avatar-play {
@@ -106,10 +95,6 @@
   color: var(--white-80449ce7);
 }
 
-.relative {
-  position: relative;
-}
-
 .icons.hide {
   display: none;
 }
@@ -125,8 +110,8 @@
   }
 }
 
-.icons.mb-63 {
-  margin-bottom: 63px;
+.icons.mb-9 {
+  margin-bottom: var(--space-9);
 }
 
 .mt-4 {
@@ -143,6 +128,10 @@
 
 .icons.mt-2 {
   margin-top: 2px;
+}
+
+.mt-2 {
+  margin-top: var(--space-2);
 }
 
 .icons.bookmarked {
@@ -164,10 +153,17 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
+  z-index: 2;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   border-radius: 8px;
 
-  background-color: rgba(233, 235, 237, 0.5);
+  background-color: var(--accent-4);
+
+  color: var(--accent-11);
 }
 
 .navlink_tooltip {
@@ -179,7 +175,9 @@
   z-index: 110;
 
   display: none;
-  padding: 4px 8px;
+  height: var(--space-5);
+  padding-right: var(--space-2);
+  padding-left: var(--space-2);
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
@@ -189,67 +187,13 @@
   grid-template-columns: max-content;
   grid-template-rows: auto;
 
+  border: 1px solid var(--neutral-3);
   border-radius: 6px;
 
-  background-color: #2f3941;
+  background-color: var(--neutral-2);
 
-  color: white;
+  color: var(--neutral-11);
   font-size: 12px;
-}
-
-.navlink_tooltip.cd {
-  width: 110px;
-}
-
-.navlink_tooltip.csetting {
-  width: 125px;
-}
-
-.navlink_tooltip.logout {
-  width: 65px;
-}
-
-.navlink_tooltip.ticket {
-  width: 170px;
-}
-
-.navlink_tooltip.message {
-  display: none;
-  width: 160px;
-}
-
-.navlink_tooltip.schedule {
-  width: 85px;
-}
-
-.navlink_tooltip.schedule-copy {
-  display: none;
-  width: 90px;
-  justify-content: center;
-}
-
-.navlink_tooltip.phone-screen {
-  display: none;
-  width: 135px;
-}
-
-.navlink_tooltip.integration {
-  width: 94px;
-}
-
-.navlink_tooltip.tickets {
-  display: none;
-  width: 50px;
-}
-
-.navlink_tooltip.no_fixed {
-  display: grid;
-  width: auto;
-  grid-auto-columns: 1fr;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
-  grid-template-columns: max-content;
-  grid-template-rows: auto;
 }
 
 .no_wrap {

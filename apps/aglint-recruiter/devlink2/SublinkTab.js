@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./SublinkTab.module.css";
 
@@ -17,17 +19,7 @@ export function SublinkTab({
       tag="div"
       {...onClickTab}
     >
-      <_Builtin.Block
-        className={_utils.cx(
-          _styles,
-          "fw-semibold",
-          "relative_2",
-          "text-first-cap"
-        )}
-        tag="div"
-      >
-        {text}
-      </_Builtin.Block>
+      <Text content={text} color="" weight="medium" />
       {isSubMenuVisible ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1220", "cursor-none")}
@@ -38,9 +30,11 @@ export function SublinkTab({
       ) : null}
       {isActtive ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "is_active_bg")}
+          className={_utils.cx(_styles, "active_sublink")}
           tag="div"
-        />
+        >
+          <Text content={text} color="" weight="medium" />
+        </_Builtin.Block>
       ) : null}
     </_Component>
   );

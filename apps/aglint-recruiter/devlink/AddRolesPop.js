@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { SlotComp } from "./SlotComp";
 import { ButtonPrimaryRegular } from "./ButtonPrimaryRegular";
 import * as _utils from "./utils";
 import _styles from "./AddRolesPop.module.css";
@@ -30,13 +32,13 @@ export function AddRolesPop({
         className={_utils.cx(_styles, "slot-roles-wrappers")}
         tag="div"
       >
-        {slotRolesPills}
+        {slotRolesPills ?? <SlotComp componentName="Slot for Pills" />}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "slot-input-fomrs-roles")}
         tag="div"
       >
-        {slotInput}
+        {slotInput ?? <SlotComp componentName="Slot for MUI Input" />}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "roles-btn-wrappers-pop")}

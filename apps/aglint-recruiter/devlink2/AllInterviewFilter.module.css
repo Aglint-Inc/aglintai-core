@@ -1,13 +1,17 @@
 .all-interview-filter {
   display: flex;
+  overflow: auto;
   width: 150px;
-  padding: 16px;
+  max-height: 400px;
+  padding: var(--space-1) var(--space-2);
   flex-direction: column;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 
-  border: 1px solid #e9ebed;
-  border-radius: 10px;
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-2);
+
+  background-color: var(--neutral-2);
 }
 
 .jobs-wrap {
@@ -33,6 +37,14 @@
   align-items: center;
 }
 
+.icons.cursor-pointer.no-trans {
+  transition-property: none;
+}
+
+.icons.cursor-pointer.no-transition {
+  transition-property: none;
+}
+
 .icons.ml-4 {
   margin-left: 4px;
 }
@@ -45,10 +57,6 @@
 .relative-1 {
   position: relative;
   z-index: 1;
-}
-
-.icons.ml--6 {
-  margin-left: -6px;
 }
 
 .icons.hide {
@@ -64,6 +72,25 @@
   .hide {
     display: none;
   }
+}
+
+.icons.pointer {
+  cursor: pointer;
+}
+
+.icons.closediv {
+  position: absolute;
+  left: auto;
+  top: -7px;
+  right: -7px;
+  bottom: auto;
+
+  cursor: pointer;
+}
+
+.icons.lottie {
+  width: 16px;
+  height: 16px;
 }
 
 .all-interview-filter-copy {

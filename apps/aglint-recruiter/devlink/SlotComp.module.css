@@ -1,0 +1,12 @@
+.slot-comp {
+  display: flex;
+  padding-right: 4px;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+
+  border-radius: 3px;
+
+  background-color: #ffefd6;
+}

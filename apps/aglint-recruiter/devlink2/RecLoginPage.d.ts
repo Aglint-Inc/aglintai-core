@@ -10,4 +10,8 @@ declare function RecLoginPage(props: {
   onclickLinkedIn?: Types.Devlink.RuntimeProps;
   onclickSignup?: Types.Devlink.RuntimeProps;
   onclickForgotPassword?: Types.Devlink.RuntimeProps;
+  slotLottie?: Types.Devlink.Slot;
+  textLogin?: React.ReactNode;
+  isLoginButtonDisable?: Types.Visibility.VisibilityConditions;
+  isLottieVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

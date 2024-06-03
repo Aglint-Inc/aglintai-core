@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./SoundTask.module.css";
 
@@ -33,12 +34,8 @@ export function SoundTask({
           tag="div"
         >
           {isShowVisible ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-blue-500")}
-              tag="div"
-              {...onClickShow}
-            >
-              {"Show Transcript"}
+            <_Builtin.Block tag="div" {...onClickShow}>
+              <Text weight="medium" color="accent" content="" />
             </_Builtin.Block>
           ) : null}
           {isHideVisible ? (

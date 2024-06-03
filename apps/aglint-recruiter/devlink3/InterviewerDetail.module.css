@@ -184,7 +184,7 @@
 }
 
 .text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+  color: var(--sand-11);
 }
 
 .tab_wrapper {

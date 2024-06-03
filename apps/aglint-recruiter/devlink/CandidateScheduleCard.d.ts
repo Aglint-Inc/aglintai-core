@@ -13,4 +13,5 @@ declare function CandidateScheduleCard(props: {
   isTitle?: Types.Visibility.VisibilityConditions;
   textDuration?: React.ReactNode;
   slotButton?: Types.Devlink.Slot;
+  isSlotButtonVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

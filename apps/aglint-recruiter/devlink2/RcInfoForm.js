@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./RcInfoForm.module.css";
 
@@ -41,7 +43,7 @@ export function RcInfoForm({
               className={_utils.cx(_styles, "sl-company-image-block")}
               tag="div"
             >
-              {slotLogo}
+              {slotLogo ?? <SlotComp componentName="slot for Logo" />}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "sl-com-title-info-block")}
@@ -51,7 +53,9 @@ export function RcInfoForm({
                 className={_utils.cx(_styles, "div-block-411")}
                 tag="div"
               >
-                {slotChangeLogoBtn}
+                {slotChangeLogoBtn ?? (
+                  <SlotComp componentName="slot for Button" />
+                )}
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "text-gray-600")}
@@ -64,7 +68,9 @@ export function RcInfoForm({
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block tag="div">{slotForm}</_Builtin.Block>
+        <_Builtin.Block tag="div">
+          {slotForm ?? <SlotComp componentName="slot for Form" />}
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

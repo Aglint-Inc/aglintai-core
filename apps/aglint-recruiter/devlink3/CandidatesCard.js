@@ -36,7 +36,7 @@ export function CandidatesCard({
       {isLinks ? (
         <_Builtin.Block className={_utils.cx(_styles, "share_links")} tag="div">
           <_Builtin.Block
-            className={_utils.cx(_styles, "link-copy")}
+            className={_utils.cx(_styles, "feedback-link-wrap")}
             tag="div"
             {...onClickResendInvite}
           >
@@ -49,7 +49,7 @@ export function CandidatesCard({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "link-copy")}
+            className={_utils.cx(_styles, "feedback-link-wrap")}
             tag="div"
             {...onClickCopyInvite}
           >

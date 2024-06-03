@@ -34,12 +34,7 @@ export function CloseJobModal({
           {textLocation}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "color-grey-600")}
-        tag="div"
-      >
-        {textWarning}
-      </_Builtin.Block>
+      <_Builtin.Paragraph>{textWarning}</_Builtin.Paragraph>
       <_Builtin.Block
         className={_utils.cx(_styles, "confirm-close-job-wrap")}
         tag="div"
