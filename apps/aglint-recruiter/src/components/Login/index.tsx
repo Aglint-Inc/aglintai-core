@@ -6,6 +6,7 @@ import {
   Typography,
 } from '@mui/material';
 import { IconExclamationCircle } from '@tabler/icons-react';
+import LoaderGrey from 'aglint-recruiter/public/lottie/LoaderGrey';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -24,6 +25,8 @@ interface loginFormInputs {
 
 function Login() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
   // const [errorCheck, setErrorCheck] = useState({
   //   email: {
   //     error: false,
@@ -151,8 +154,9 @@ function Login() {
       password: '',
     },
   });
-  const onSubmit: SubmitHandler<loginFormInputs> = (data) => {
-    supabase.auth
+  const onSubmit: SubmitHandler<loginFormInputs> = async (data) => {
+    setIsLoading(true);
+    await supabase.auth
       .signInWithPassword({
         email: data.email,
         password: data.password,
@@ -164,6 +168,7 @@ function Login() {
           toast.error(error.message);
         } else router.push(ROUTES['/loading']());
       });
+    setIsLoading(false);
   };
   const {
     register,
@@ -213,6 +218,14 @@ function Login() {
   return (
     <>
       <RecLoginPage
+        isLoginButtonDisable={isLoading}
+        textLogin={isLoading ? '' : 'Login'}
+        slotLottie={
+          <Stack width={'100%'}>
+            <LoaderGrey />
+          </Stack>
+        }
+        isLottieVisible={isLoading}
         onclickForgotPassword={{
           onClick: () => {
             router.push(ROUTES['/forgot-password']());
@@ -242,6 +255,11 @@ function Login() {
               onFocus={() => setLoginError(null)}
               error={errors.email && Boolean(errors.email.message)}
               helperText={String(errors?.email?.message || '')}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  if (!isLoading) handleSubmit(onSubmit)();
+                }
+              }}
             />
 
             <TextField
@@ -252,6 +270,11 @@ function Login() {
               onFocus={() => setLoginError(null)}
               error={errors.password && Boolean(errors.password.message)}
               helperText={String(errors?.password?.message || '')}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  if (!isLoading) handleSubmit(onSubmit)();
+                }
+              }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position='end'>
@@ -400,7 +423,9 @@ function Login() {
             /> */}
           </Stack>
         }
-        onclickLogin={{ onClick: handleSubmit(onSubmit) }}
+        onclickLogin={{
+          onClick: handleSubmit(onSubmit),
+        }}
       />
     </>
   );
