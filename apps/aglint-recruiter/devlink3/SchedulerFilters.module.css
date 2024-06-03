@@ -194,6 +194,14 @@
   grid-row-gap: 16px;
 }
 
+.header_wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
 .checkbox_wrap {
   display: flex;
   flex-direction: column;

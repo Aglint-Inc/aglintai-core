@@ -7,12 +7,12 @@ import { extractPlanData, groupByDateRange } from './utils';
 export type GroupByDateRange = ReturnType<typeof groupByDateRange>;
 
 function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
-  const schedulingOptions = useSchedulingFlowStore(
-    (state) => state.schedulingOptions,
+  const filteredSchedulingOptions = useSchedulingFlowStore(
+    (state) => state.filteredSchedulingOptions,
   );
 
   const groupedData: GroupByDateRange = groupByDateRange(
-    extractPlanData(schedulingOptions),
+    extractPlanData(filteredSchedulingOptions),
   );
 
   return (
