@@ -1,16 +1,16 @@
-.div-block-1338 {
+.create-task {
   position: relative;
 
   display: flex;
   width: 600px;
   height: 100vh;
-  padding: 0px;
+  padding: var(--space-4);
   flex-direction: column;
   justify-content: flex-start;
   flex-wrap: nowrap;
 }
 
-.div-block-1339 {
+.dtawer-tittle {
   display: flex;
   height: 62px;
   padding-top: 16px;
@@ -18,7 +18,7 @@
   align-items: center;
 }
 
-.div-block-1339.plr-16 {
+.dtawer-tittle.plr-16 {
   padding-right: 16px;
   padding-bottom: 8px;
   padding-left: 16px;
@@ -27,41 +27,6 @@
 .plr-16 {
   padding-right: 16px;
   padding-left: 16px;
-}
-
-.text-grey-600 {
-  color: #68737d;
-}
-
-.hide {
-  display: none;
-}
-
-.text-sm {
-  font-size: var(--font-size-1);
-  line-height: var(--line-height-1);
-  letter-spacing: var(--letter-spacing-1);
-}
-
-.text-grey-600.text-underline {
-  text-decoration: underline;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
-.text-grey-600.text-underline.cursor-pointer {
-  transition: opacity 250ms ease;
-  cursor: pointer;
-}
-
-.text-grey-600.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
 }
 
 .icons {
@@ -78,6 +43,10 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .icons.cursor-pointer.mr-20 {
@@ -100,15 +69,6 @@
 
 .icons.pointer {
   cursor: pointer;
-}
-
-.text-lg {
-  font-size: 18px;
-  line-height: 24px;
-}
-
-.fw-semibold {
-  font-weight: 600;
 }
 
 .div-block-1344 {

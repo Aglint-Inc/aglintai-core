@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./InterviewModuleCard.module.css";
 
@@ -41,20 +42,7 @@ export function InterviewModuleCard({
           className={_utils.cx(_styles, "div-block-1319")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "fw-semibold",
-              "text-capitalize-word"
-            )}
-            id={_utils.cx(
-              _styles,
-              "w-node-_1eadd607-1492-0d1b-a196-62336e91e7a9-6e91e7a7"
-            )}
-            tag="div"
-          >
-            {textModuleName}
-          </_Builtin.Block>
+          <Text content={textModuleName} />
           {isArchivedIconVisible ? (
             <_Builtin.HtmlEmbed
               className={_utils.cx(_styles, "icons")}
@@ -62,14 +50,6 @@ export function InterviewModuleCard({
             />
           ) : null}
         </_Builtin.Block>
-        {isObjectiveVisible ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey-600", "two-line-clamp")}
-            tag="div"
-          >
-            {textObjective}
-          </_Builtin.Block>
-        ) : null}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1066")}
@@ -79,16 +59,7 @@ export function InterviewModuleCard({
         )}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-600")}
-          id={_utils.cx(
-            _styles,
-            "w-node-_1eadd607-1492-0d1b-a196-62336e91e7ac-6e91e7a7"
-          )}
-          tag="div"
-        >
-          {textMembersCount}
-        </_Builtin.Block>
+        <Text content={textMembersCount} />
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1067")}
           tag="div"
@@ -100,18 +71,7 @@ export function InterviewModuleCard({
         className={_utils.cx(_styles, "div-block-1066", "center")}
         tag="div"
       >
-        {isUpcomingScheduleVisible ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            id={_utils.cx(
-              _styles,
-              "w-node-_1eadd607-1492-0d1b-a196-62336e91e7b0-6e91e7a7"
-            )}
-            tag="div"
-          >
-            {textUpcomingSchedules}
-          </_Builtin.Block>
-        ) : null}
+        <Text content={textUpcomingSchedules} />
         {isUpcomingScheduleEmpty ? (
           <_Builtin.Block
             className={_utils.cx(_styles, "text-gray-400")}
@@ -125,18 +85,7 @@ export function InterviewModuleCard({
         className={_utils.cx(_styles, "div-block-1066", "center")}
         tag="div"
       >
-        {isCompletedScheduleVisible ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            id={_utils.cx(
-              _styles,
-              "w-node-_1eadd607-1492-0d1b-a196-62336e91e7b3-6e91e7a7"
-            )}
-            tag="div"
-          >
-            {textCompletedSchedules}
-          </_Builtin.Block>
-        ) : null}
+        <Text content={textCompletedSchedules} />
         {isCompletedScheduleEmpty ? (
           <_Builtin.Block
             className={_utils.cx(_styles, "text-gray-400")}

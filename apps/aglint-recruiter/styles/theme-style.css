@@ -202,22 +202,27 @@ body.component-grid > div:not(.w-embed) {
 [class*="Checkbox_icons__"] svg > rect{
     fill: var(--accent-9);
 }
-[class*="ButtonPrimaryDefaultRegular_button-block__"],
-[class*="ConfirmationPopup_button_primary__"],
+[class*="_button_new__"],
+[class*="_button-block__"],
+[class*="_button_primary__"],
 [class*="ButtonPrimaryRegular_is-button-bg-blue__"]  {
     background-color: var(--accent-9) !important;
     color: var(--neutral-1) !important;
 }
-[class*="ButtonPrimaryDefaultRegular_button-block__"]:hover,
-[class*="ConfirmationPopup_button_primary__"]:hover,
+[class*="_button_new__"]:hover,
+[class*="_button-block__"]:hover,
+[class*="_button_primary__"]:hover,
 [class*="ButtonPrimaryRegular_is-button-bg-blue__"]:hover {
     background-color: var(--accent-10) !important;
 }
-[class*="ConfirmationPopup_greay_btn__"] {
+
+[class*="_grey_btn__"],
+[class*="_greay_btn__"] {
     background-color: var(--neutral-a4) !important;
     color: var(--neutral-12) !important;
 }
-[class*="ConfirmationPopup_greay_btn__"]:hover {
+[class*="_grey_btn__"]:hover,
+[class*="_greay_btn__"]:hover {
     background-color: var(--neutral-a5) !important;
 }
 [class*="SlotComp_slot-comp__"] {

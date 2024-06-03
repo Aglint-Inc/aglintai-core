@@ -12,19 +12,22 @@ export function InterviewersButton({
   isTrainingActive = false,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1448")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "task-switch-button-group")}
+      tag="div"
+    >
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1443")}
+        className={_utils.cx(_styles, "task-switch-button-group-inner")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1444")}
+          className={_utils.cx(_styles, "task-switch-button")}
           tag="div"
           {...onClickQualified}
         >
           {isQualifiedActive ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1445")}
+              className={_utils.cx(_styles, "task-switch-button-inner")}
               tag="div"
             >
               <_Builtin.HtmlEmbed

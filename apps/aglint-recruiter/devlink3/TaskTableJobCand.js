@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { TaskTableJobCard } from "./TaskTableJobCard";
 import * as _utils from "./utils";
 import _styles from "./TaskTableJobCand.module.css";
@@ -81,12 +82,7 @@ export function TaskTableJobCand({
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500")}
-              tag="div"
-            >
-              {textStatusHeader}
-            </_Builtin.Block>
+            <Text content={textStatusHeader} color="neutral" weight="medium" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1435")}
@@ -96,12 +92,11 @@ export function TaskTableJobCand({
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500")}
-              tag="div"
-            >
-              {textPriorityHeader}
-            </_Builtin.Block>
+            <Text
+              content={textPriorityHeader}
+              color="neutral"
+              weight="medium"
+            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1435")}
@@ -111,12 +106,11 @@ export function TaskTableJobCand({
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500")}
-              tag="div"
-            >
-              {textAssigneeHeader}
-            </_Builtin.Block>
+            <Text
+              content={textAssigneeHeader}
+              color="neutral"
+              weight="medium"
+            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1435")}
@@ -126,12 +120,11 @@ export function TaskTableJobCand({
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500")}
-              tag="div"
-            >
-              {textCandidateHeader}
-            </_Builtin.Block>
+            <Text
+              content={textCandidateHeader}
+              color="neutral"
+              weight="medium"
+            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1435")}

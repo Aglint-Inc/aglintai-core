@@ -29,9 +29,9 @@ export function ViewTask({
   _interactions.useInteractions(_interactionsData, _styles);
 
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1338")} tag="div">
+    <_Component className={_utils.cx(_styles, "create-task")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1339", "plr-16")}
+        className={_utils.cx(_styles, "dtawer-tittle", "plr-16")}
         tag="div"
       >
         <_Builtin.Block

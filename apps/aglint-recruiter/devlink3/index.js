@@ -68,7 +68,6 @@ export * from "./DashboardWarning";
 export * from "./DateOption";
 export * from "./DatePickerBody";
 export * from "./DebriefDefaults";
-export * from "./DeletePopup";
 export * from "./DevLinkProvider";
 export * from "./Divider";
 export * from "./DragPill";

@@ -92,6 +92,8 @@ export * from "./DatePicker";
 export * from "./DayOff";
 export * from "./DayoffList";
 export * from "./DelJobBtn";
+export * from "./DeleteAssessmentPopup";
+export * from "./DeleteJobPopup";
 export * from "./DevLinkProvider";
 export * from "./DragAndDrop";
 export * from "./DuplicateAssessmentPopup";
