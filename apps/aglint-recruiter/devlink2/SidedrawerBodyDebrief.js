@@ -3,7 +3,6 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Attendee } from "./Attendee";
 import { SelectedMemberPill } from "./SelectedMemberPill";
-import { InlineEmptyBlock } from "./InlineEmptyBlock";
 import * as _utils from "./utils";
 import _styles from "./SidedrawerBodyDebrief.module.css";
 
@@ -153,7 +152,6 @@ export function SidedrawerBodyDebrief({
               <SelectedMemberPill textMemberName="Ogyen Thoga" />
               <SelectedMemberPill textMemberName="Punith G" />
               <SelectedMemberPill textMemberName="Dheeraj Kumar Sah" />
-              <InlineEmptyBlock textEmptyMessage="No Member Selected " />
             </>
           )}
         </_Builtin.Block>

@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { AddCompanyWebsite } from "./AddCompanyWebsite";
 import { AddCompanyDetails } from "./AddCompanyDetails";
 import * as _utils from "./utils";
@@ -16,12 +18,7 @@ export function AddCompany({
         className={_utils.cx(_styles, "cs-sidebar-header")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "fw-semibold", "text-grey-600")}
-          tag="div"
-        >
-          {"Add Company"}
-        </_Builtin.Block>
+        <Text content="" />
         <_Builtin.Block
           className={_utils.cx(_styles, "icon-block", "clickable")}
           tag="div"

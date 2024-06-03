@@ -63,7 +63,8 @@ export function RecLoginPage({
                   _styles,
                   "sl-auth-link-block",
                   "just-logo",
-                  "single"
+                  "single",
+                  "modified"
                 )}
                 tag="div"
                 {...onclickGoogle}

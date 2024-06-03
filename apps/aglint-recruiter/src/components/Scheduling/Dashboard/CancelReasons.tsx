@@ -86,7 +86,7 @@ const CancelReasons = () => {
                       />
 
                       <Typography
-                        variant='body2'
+                        variant='body1'
                         sx={{
                           textWrap: 'nowrap',
                           textTransform: 'capitalize',
@@ -95,7 +95,7 @@ const CancelReasons = () => {
                         {capitalizeFirstLetter(name)}
                       </Typography>
                     </Stack>
-                    <Typography variant='body2'>
+                    <Typography variant='body1'>
                       {((count / totalCount) * 100).toFixed(0)}%
                     </Typography>
                   </Stack>

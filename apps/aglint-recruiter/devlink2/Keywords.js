@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./Keywords.module.css";
 
@@ -15,29 +17,12 @@ export function Keywords({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1231")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Keywords"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey-600")}
-            tag="div"
-          >
-            {
-              "Use keywords to mark events on interviewers’ calendars that can be overridden for interview scheduling."
-            }
-          </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1229")}
           tag="div"
         >
-          {slotKeywordsCard}
+          {slotKeywordsCard ?? (
+            <SlotComp componentName="slot for keyword card" />
+          )}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

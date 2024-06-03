@@ -277,7 +277,7 @@ function RequestAvailability() {
         slotAvailabilityCriteria={
           <>
             <Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
-              <Typography variant='body2' width={'450px'}>
+              <Typography variant='body1' width={'450px'}>
                 Minimum number of days should be selected.
               </Typography>
               <Autocomplete
@@ -301,7 +301,7 @@ function RequestAvailability() {
             </Stack>
 
             <Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
-              <Typography variant='body2' width={'450px'}>
+              <Typography variant='body1' width={'450px'}>
                 Minimum number of slots selected per each day.
               </Typography>
               <Autocomplete

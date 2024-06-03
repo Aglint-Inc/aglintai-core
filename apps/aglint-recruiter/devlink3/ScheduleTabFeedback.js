@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { FeedbackTableRow } from "./FeedbackTableRow";
 import * as _utils from "./utils";
 import _styles from "./ScheduleTabFeedback.module.css";
@@ -18,23 +19,18 @@ export function ScheduleTabFeedback({
       {...styleMinWidth}
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "all-interview-table-copy")}
+        className={_utils.cx(_styles, "feedbaack-layout-table")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "allinterview_row")}
+          className={_utils.cx(_styles, "feedback-table-header")}
           tag="div"
         >
           <_Builtin.Block
             className={_utils.cx(_styles, "header_interviewer")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Interviewer"}
-            </_Builtin.Block>
+            <Text content="Interviewer" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "header_session", "width-324-copy")}
@@ -62,23 +58,13 @@ export function ScheduleTabFeedback({
             className={_utils.cx(_styles, "header_recommendation")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Recommendation"}
-            </_Builtin.Block>
+            <Text content="Recommendation" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "header_feedback")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Feedback"}
-            </_Builtin.Block>
+            <Text content="Feedback" />
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

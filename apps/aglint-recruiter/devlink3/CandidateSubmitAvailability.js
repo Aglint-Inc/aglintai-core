@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { DateOption } from "./DateOption";
 import * as _utils from "./utils";
 import _styles from "./CandidateSubmitAvailability.module.css";
@@ -13,11 +14,7 @@ export function CandidateSubmitAvailability({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1768")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "text-grey-600")} tag="div">
-        {
-          "These are the options that selected by the candidate. Click schedule to view and pick one schedule for the interview."
-        }
-      </_Builtin.Block>
+      <Text content="" weight="" color="neutral" />
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1771")}
         tag="div"

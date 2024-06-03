@@ -1,0 +1,15 @@
+.radix-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+
+  transition: all 200ms ease;
+
+  cursor: pointer;
+}
+
+.icon_placeholder {
+  display: flex;
+}

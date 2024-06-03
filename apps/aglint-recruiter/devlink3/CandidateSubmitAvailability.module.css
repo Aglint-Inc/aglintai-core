@@ -10,40 +10,6 @@
   border-radius: 10px;
 }
 
-.text-grey-600 {
-  color: #68737d;
-}
-
-.hide {
-  display: none;
-}
-
-.text-sm {
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.text-grey-600.text-underline {
-  text-decoration: underline;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
-.text-grey-600.text-underline.cursor-pointer {
-  transition: opacity 250ms ease;
-  cursor: pointer;
-}
-
-.text-grey-600.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
 .div-block-1771 {
   display: flex;
   flex-direction: column;
@@ -70,4 +36,8 @@
 .div-block-1769.grey {
   background-color: #e9ebed;
   color: #2f3941;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }

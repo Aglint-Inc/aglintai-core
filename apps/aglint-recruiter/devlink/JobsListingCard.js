@@ -2,11 +2,12 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./JobsListingCard.module.css";
 
 const _interactionsData = JSON.parse(
-  '{"events":{"e-1308":{"id":"e-1308","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-443","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1309"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"4c8f5e59-2551-ecd2-b94c-afc3e4f6dd07","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"4c8f5e59-2551-ecd2-b94c-afc3e4f6dd07","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1695892125484},"e-1309":{"id":"e-1309","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-444","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1308"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"4c8f5e59-2551-ecd2-b94c-afc3e4f6dd07","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"4c8f5e59-2551-ecd2-b94c-afc3e4f6dd07","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1695892125487},"e-1500":{"id":"e-1500","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-554","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1501"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"d2a2d408-40b5-fcac-a4cc-8987465dcabd","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"d2a2d408-40b5-fcac-a4cc-8987465dcabd","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1704344326765},"e-1501":{"id":"e-1501","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-555","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1500"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"d2a2d408-40b5-fcac-a4cc-8987465dcabd","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"d2a2d408-40b5-fcac-a4cc-8987465dcabd","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1704344326769}},"actionLists":{"a-443":{"id":"a-443","title":"Job Card Hover In","actionItemGroups":[{"actionItems":[{"id":"a-443-n","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".applicants-number.selected","selectorGuids":["f5f55dd6-917b-0ffc-bcec-dec748becaa4","cc6fc94f-ada0-ae9b-262b-af75e2fa8f5f"]},"globalSwatchId":"287ff474","rValue":34,"bValue":103,"gValue":143,"aValue":1}},{"id":"a-443-n-3","actionTypeId":"STYLE_TEXT_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".applicants-number.selected","selectorGuids":["f5f55dd6-917b-0ffc-bcec-dec748becaa4","cc6fc94f-ada0-ae9b-262b-af75e2fa8f5f"]},"globalSwatchId":"80449ce7","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-443-n-2","actionTypeId":"STYLE_TEXT_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-24.text-green-700","selectorGuids":["35e9d16b-c2e9-846f-7103-916aec42eab4","19b6b36c-6d91-704c-abf0-673091f056cb"]},"globalSwatchId":"80449ce7","rValue":255,"bValue":255,"gValue":255,"aValue":1}}]}],"useFirstGroupAsInitialState":false,"createdOn":1695892134302},"a-444":{"id":"a-444","title":"Job Card Hover Out","actionItemGroups":[{"actionItems":[{"id":"a-444-n","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".applicants-number.selected","selectorGuids":["f5f55dd6-917b-0ffc-bcec-dec748becaa4","cc6fc94f-ada0-ae9b-262b-af75e2fa8f5f"]},"globalSwatchId":"8db28f70","rValue":237,"bValue":244,"gValue":248,"aValue":1}},{"id":"a-444-n-2","actionTypeId":"STYLE_TEXT_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".applicants-number.selected","selectorGuids":["f5f55dd6-917b-0ffc-bcec-dec748becaa4","cc6fc94f-ada0-ae9b-262b-af75e2fa8f5f"]},"globalSwatchId":"a1b0a24f","rValue":24,"bValue":70,"gValue":97,"aValue":1}},{"id":"a-444-n-3","actionTypeId":"STYLE_TEXT_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-24.text-green-700","selectorGuids":["35e9d16b-c2e9-846f-7103-916aec42eab4","19b6b36c-6d91-704c-abf0-673091f056cb"]},"globalSwatchId":"a1b0a24f","rValue":24,"bValue":70,"gValue":97,"aValue":1}}]}],"useFirstGroupAsInitialState":false,"createdOn":1695892134302},"a-554":{"id":"a-554","title":"job-warn-hover in","actionItemGroups":[{"actionItems":[{"id":"a-554-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":"none"}},{"id":"a-554-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-554-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":"flex"}},{"id":"a-554-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":true,"createdOn":1704344343923},"a-555":{"id":"a-555","title":"job-warn-hover out","actionItemGroups":[{"actionItems":[{"id":"a-555-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":0,"unit":""}},{"id":"a-555-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":300,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1704344343923}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+  '{"events":{"e-1308":{"id":"e-1308","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-443","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1309"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"4c8f5e59-2551-ecd2-b94c-afc3e4f6dd07","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"4c8f5e59-2551-ecd2-b94c-afc3e4f6dd07","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1695892125484},"e-1309":{"id":"e-1309","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-444","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1308"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"4c8f5e59-2551-ecd2-b94c-afc3e4f6dd07","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"4c8f5e59-2551-ecd2-b94c-afc3e4f6dd07","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1695892125487},"e-1500":{"id":"e-1500","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-554","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1501"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"d2a2d408-40b5-fcac-a4cc-8987465dcabd","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"d2a2d408-40b5-fcac-a4cc-8987465dcabd","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1704344326765},"e-1501":{"id":"e-1501","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-555","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1500"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"d2a2d408-40b5-fcac-a4cc-8987465dcabd","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"d2a2d408-40b5-fcac-a4cc-8987465dcabd","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1704344326769}},"actionLists":{"a-443":{"id":"a-443","title":"Job Card Hover In","actionItemGroups":[{"actionItems":[{"id":"a-443-n","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{},"globalSwatchId":"287ff474","rValue":34,"bValue":103,"gValue":143,"aValue":1}},{"id":"a-443-n-3","actionTypeId":"STYLE_TEXT_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{},"globalSwatchId":"80449ce7","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-443-n-2","actionTypeId":"STYLE_TEXT_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{},"globalSwatchId":"80449ce7","rValue":255,"bValue":255,"gValue":255,"aValue":1}}]}],"useFirstGroupAsInitialState":false,"createdOn":1695892134302},"a-444":{"id":"a-444","title":"Job Card Hover Out","actionItemGroups":[{"actionItems":[{"id":"a-444-n","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{},"globalSwatchId":"8db28f70","rValue":237,"bValue":244,"gValue":248,"aValue":1}},{"id":"a-444-n-2","actionTypeId":"STYLE_TEXT_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{},"globalSwatchId":"a1b0a24f","rValue":24,"bValue":70,"gValue":97,"aValue":1}},{"id":"a-444-n-3","actionTypeId":"STYLE_TEXT_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{},"globalSwatchId":"a1b0a24f","rValue":24,"bValue":70,"gValue":97,"aValue":1}}]}],"useFirstGroupAsInitialState":false,"createdOn":1695892134302},"a-554":{"id":"a-554","title":"job-warn-hover in","actionItemGroups":[{"actionItems":[{"id":"a-554-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":"none"}},{"id":"a-554-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-554-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":"flex"}},{"id":"a-554-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":true,"createdOn":1704344343923},"a-555":{"id":"a-555","title":"job-warn-hover out","actionItemGroups":[{"actionItems":[{"id":"a-555-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":0,"unit":""}},{"id":"a-555-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":300,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1704344343923}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
 );
 
 export function JobsListingCard({
@@ -53,20 +54,7 @@ export function JobsListingCard({
             className={_utils.cx(_styles, "job-details")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-529")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                dyn={{
-                  bind: {},
-                }}
-                tag="div"
-              >
-                {textJobRole}
-              </_Builtin.Block>
-            </_Builtin.Block>
+            <Text content={textJobRole} weight="bold" />
             <_Builtin.Block
               className={_utils.cx(_styles, "tittle-company-location")}
               tag="div"
@@ -75,18 +63,10 @@ export function JobsListingCard({
                 className={_utils.cx(_styles, "company-location")}
                 tag="div"
               >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "color-grey-600")}
-                  dyn={{
-                    bind: {},
-                  }}
-                  tag="div"
-                >
-                  {textCompanyLocation}
-                </_Builtin.Block>
+                <Text content={textCompanyLocation} color="neutral" />
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-530")}
+                className={_utils.cx(_styles, "slot-ats-badge")}
                 tag="div"
               >
                 {slotAtsBadge}
@@ -95,7 +75,7 @@ export function JobsListingCard({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "draft-warn-wrap")}
+          className={_utils.cx(_styles, "flex-horizontal", "center", "gap-3")}
           tag="div"
         >
           {isJobWarningVisible ? (
@@ -112,12 +92,7 @@ export function JobsListingCard({
                 className={_utils.cx(_styles, "job-desc-warn-wrap")}
                 tag="div"
               >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-sm")}
-                  tag="div"
-                >
-                  {"Missing Job Description"}
-                </_Builtin.Block>
+                <Text content="Missing Job Description" size="1" align="" />
               </_Builtin.Block>
             </_Builtin.Block>
           ) : null}
@@ -135,21 +110,7 @@ export function JobsListingCard({
             >
               {slotStatusIcon}
             </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "text-sm",
-                "fw-semibold",
-                "text-white",
-                "text-first-capitialize"
-              )}
-              dyn={{
-                bind: {},
-              }}
-              tag="div"
-            >
-              {textJobsStatus}
-            </_Builtin.Block>
+            <Text content={textJobsStatus} size="1" weight="bold" />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
@@ -158,149 +119,7 @@ export function JobsListingCard({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-549", "hide")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "applicants-number")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              dyn={{
-                bind: {},
-              }}
-              tag="div"
-            >
-              {newCount}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "", "color-grey-600")}
-              tag="div"
-            >
-              {"New"}
-            </_Builtin.Block>
-          </_Builtin.Block>
-          {isScreeningPillsVisible ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "applicants-number")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                dyn={{
-                  bind: {},
-                }}
-                tag="div"
-              >
-                {screeningCount}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "", "color-grey-600")}
-                tag="div"
-              >
-                {"Screening"}
-              </_Builtin.Block>
-            </_Builtin.Block>
-          ) : null}
-          {isAssessmentPillVisible ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "applicants-number")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                dyn={{
-                  bind: {},
-                }}
-                tag="div"
-              >
-                {assessmentCount}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "", "color-grey-600")}
-                tag="div"
-              >
-                {"Assessment"}
-              </_Builtin.Block>
-            </_Builtin.Block>
-          ) : null}
-          <_Builtin.Block
-            className={_utils.cx(_styles, "applicants-number")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              dyn={{
-                bind: {},
-              }}
-              tag="div"
-            >
-              {interviewCount}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "color-grey-600")}
-              tag="div"
-            >
-              {"Interview"}
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "applicants-number")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              dyn={{
-                bind: {},
-              }}
-              tag="div"
-            >
-              {qualifiedCount}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "color-grey-600")}
-              tag="div"
-            >
-              {"Qualified"}
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "applicants-number")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              dyn={{
-                bind: {},
-              }}
-              tag="div"
-            >
-              {disqualifiedCount}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "color-grey-600")}
-              tag="div"
-            >
-              {"Disqualified"}
-            </_Builtin.Block>
-          </_Builtin.Block>
-          {isStatusVisible ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "status-connect", "hide")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-grey-500")}
-                tag="div"
-              >
-                {textStatus}
-              </_Builtin.Block>
-            </_Builtin.Block>
-          ) : null}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "jd_pipeline_pillls", "grow-if")}
+          className={_utils.cx(_styles, "jd_pipeline_pilll")}
           tag="div"
         >
           <_Builtin.Block
@@ -318,16 +137,11 @@ export function JobsListingCard({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "relative_2")}
+                className={_utils.cx(_styles, "job-pill-text")}
                 tag="div"
               >
-                {"New"}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "relative_2")}
-                tag="div"
-              >
-                {newCount}
+                <Text content="New" />
+                <Text content={newCount} />
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(
@@ -377,16 +191,11 @@ export function JobsListingCard({
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "relative_2")}
+                  className={_utils.cx(_styles, "job-pill-text")}
                   tag="div"
                 >
-                  {"Screening"}
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "relative_2")}
-                  tag="div"
-                >
-                  {screeningCount}
+                  <Text content="Screening" />
+                  <Text content={screeningCount} />
                 </_Builtin.Block>
                 <_Builtin.Block
                   className={_utils.cx(_styles, "is_end", "change_on_hover")}
@@ -432,16 +241,11 @@ export function JobsListingCard({
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "relative_2")}
+                  className={_utils.cx(_styles, "job-pill-text")}
                   tag="div"
                 >
-                  {"Assessment"}
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "relative_2")}
-                  tag="div"
-                >
-                  {assessmentCount}
+                  <Text content="Assessment" />
+                  <Text content={assessmentCount} />
                 </_Builtin.Block>
                 <_Builtin.Block
                   className={_utils.cx(_styles, "is_end", "change_on_hover")}
@@ -487,16 +291,11 @@ export function JobsListingCard({
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "relative_2")}
+                  className={_utils.cx(_styles, "job-pill-text")}
                   tag="div"
                 >
-                  {"Interview"}
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "relative_2")}
-                  tag="div"
-                >
-                  {interviewCount}
+                  <Text content="Interview" />
+                  <Text content={interviewCount} />
                 </_Builtin.Block>
                 <_Builtin.Block
                   className={_utils.cx(_styles, "is_end", "change_on_hover")}
@@ -541,16 +340,11 @@ export function JobsListingCard({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "relative_2")}
+                className={_utils.cx(_styles, "job-pill-text")}
                 tag="div"
               >
-                {"Qualified"}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "relative_2")}
-                tag="div"
-              >
-                {qualifiedCount}
+                <Text content="Qualified" />
+                <Text content={qualifiedCount} />
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "is_end", "change_on_hover")}
@@ -594,16 +388,11 @@ export function JobsListingCard({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "relative_2")}
+                className={_utils.cx(_styles, "job-pill-text")}
                 tag="div"
               >
-                {"Disqualified"}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "relative_2")}
-                tag="div"
-              >
-                {disqualifiedCount}
+                <Text content="Disqualified" />
+                <Text content={disqualifiedCount} />
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "is_end", "change_on_hover")}
@@ -616,15 +405,7 @@ export function JobsListingCard({
             />
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-500")}
-          dyn={{
-            bind: {},
-          }}
-          tag="div"
-        >
-          {textPostedDate}
-        </_Builtin.Block>
+        <Text content={textPostedDate} color="neutral" />
       </_Builtin.Block>
     </_Component>
   );

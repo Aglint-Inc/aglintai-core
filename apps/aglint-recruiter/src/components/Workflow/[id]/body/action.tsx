@@ -220,7 +220,7 @@ const EmailBody: React.FC<FormsType> = memo(
           sx={{
             mt: '8px',
             border: '1px solid',
-            borderColor: palette.grey[300],
+            borderColor: palette.grey[400],
             borderRadius: '4px',
           }}
         >

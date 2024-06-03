@@ -101,7 +101,7 @@
 }
 
 .text-grey_600 {
-  color: #68737d;
+  color: var(--sand-11);
 }
 
 .fw-semibold.name-text {
@@ -238,7 +238,7 @@
 }
 
 .text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+  color: var(--sand-11);
 }
 
 .text-gray-600.cursor-pointer {

@@ -2,6 +2,8 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./FeedbackCandidate.module.css";
 
@@ -28,27 +30,22 @@ export function FeedbackCandidate({
   _interactions.useInteractions(_interactionsData, _styles);
 
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1576")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "candidate-feedback-page")}
+      tag="div"
+    >
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1584")}
         tag="div"
       >
         <_Builtin.Block tag="div">{slotLogo}</_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1577")}
+          className={_utils.cx(_styles, "feedback-box")}
           tag="div"
         >
           {isRatingVisible ? (
-            <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "text-lg",
-                "fw-semibold",
-                "text-grey-600"
-              )}
-              tag="div"
-            >
-              {"Please rate your experience with us"}
+            <_Builtin.Block tag="div">
+              <Text content="" size="4" />
             </_Builtin.Block>
           ) : null}
           {isRatingVisible ? (
@@ -187,7 +184,9 @@ export function FeedbackCandidate({
               className={_utils.cx(_styles, "div-block-1582")}
               tag="div"
             >
-              {slotFeedbackInput}
+              {slotFeedbackInput ?? (
+                <SlotComp componentNeme="MUI Rich Text Input" />
+              )}
             </_Builtin.Block>
           ) : null}
           {isRatingVisible ? (

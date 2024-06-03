@@ -1,13 +1,14 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ProfileInterviewScore } from "./ProfileInterviewScore";
+import { DeleteProfileInterviewScore } from "./DeleteProfileInterviewScore";
 import { InterviewAiTranscriptCard } from "./InterviewAiTranscriptCard";
 import { InterviewCandidateCard } from "./InterviewCandidateCard";
-import { ResumeScore } from "./ResumeScore";
+import { DeleteResumeScore } from "./DeleteResumeScore";
 import { CandidateEducationCard } from "./CandidateEducationCard";
 import { CandidateExperienceCard } from "./CandidateExperienceCard";
 import { CandidateSkillPills } from "./CandidateSkillPills";
-import { ActivityFlowCard } from "./ActivityFlowCard";
+import { DeleteActivityFlowCard } from "./DeleteActivityFlowCard";
 import * as _utils from "./utils";
 import _styles from "./ProfileShare.module.css";
 
@@ -469,7 +470,7 @@ export function ProfileShare({
                 )}
                 tag="div"
               >
-                {slotInterview ?? <ProfileInterviewScore />}
+                {slotInterview ?? <DeleteProfileInterviewScore />}
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "ps-tab-transcript-block")}
@@ -524,7 +525,7 @@ export function ProfileShare({
             className={_utils.cx(_styles, "ps-container")}
             tag="div"
           >
-            {slotResume ?? <ResumeScore />}
+            {slotResume ?? <DeleteResumeScore />}
           </_Builtin.Block>
         </_Builtin.Section>
       ) : null}
@@ -667,7 +668,7 @@ export function ProfileShare({
                 className={_utils.cx(_styles, "ps-activity-wrapper")}
                 tag="div"
               >
-                {slotActivity ?? <ActivityFlowCard />}
+                {slotActivity ?? <DeleteActivityFlowCard />}
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>

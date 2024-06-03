@@ -33,16 +33,8 @@
   opacity: 0.7;
 }
 
-.icons.cursor-pointer.width-28 {
-  width: 28px;
-}
-
 .icons.cursor-pointer.height-28 {
   height: 28px;
-}
-
-.icons.cursor-pointer.p-4 {
-  padding: 4px;
 }
 
 .icons.cursor-pointer.three-dot {
@@ -62,10 +54,6 @@
 
 .icons.rotate-180 {
   transform: rotate(180deg);
-}
-
-.icons.pause {
-  display: none;
 }
 
 .icons.avatar-play {
@@ -101,10 +89,6 @@
   color: var(--white-80449ce7);
 }
 
-.relative {
-  position: relative;
-}
-
 .icons.hide {
   display: none;
 }
@@ -120,8 +104,8 @@
   }
 }
 
-.icons.mb-63 {
-  margin-bottom: 63px;
+.icons.mb-9 {
+  margin-bottom: var(--space-9);
 }
 
 .mt-4 {
@@ -134,6 +118,27 @@
 
 .icons.mr--10 {
   margin-right: -8px;
+}
+
+.icons.mt-2 {
+  margin-top: 2px;
+}
+
+.mt-2 {
+  margin-top: var(--space-2);
+}
+
+.icons.bookmarked {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
+.icons.start {
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .text-yellow-800 {
@@ -170,15 +175,6 @@
   align-items: center;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
-}
-
-.cursor-pointer.grow-job-wishlist {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  flex: 0 0 auto;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
 }
 
 .cursor-pointer.discard-job {

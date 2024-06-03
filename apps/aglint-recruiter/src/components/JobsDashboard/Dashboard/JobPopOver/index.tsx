@@ -69,10 +69,10 @@ function JobsPopOver({ currecntJob }) {
                     spacing={'10px'}
                   >
                     <Typography>{capitalize(job.job_title)}</Typography>
-                    <Typography variant='body2'>
+                    <Typography variant='body1'>
                       {capitalize(job.job_type)}
                     </Typography>
-                    <Typography variant='body2'>
+                    <Typography variant='body1'>
                       {capitalize(job.location)}
                     </Typography>
                   </Stack>

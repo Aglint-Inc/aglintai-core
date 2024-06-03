@@ -28,7 +28,7 @@ function TraininingModules({
           );
         })
       ) : (
-        <Typography variant='body2'>No Interview Types Added Yet</Typography>
+        <Typography variant='body1'>No Interview Types Added Yet</Typography>
       )}
     </>
   );

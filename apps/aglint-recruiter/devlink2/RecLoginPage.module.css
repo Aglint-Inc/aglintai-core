@@ -119,6 +119,18 @@
   grid-row-gap: 10px;
 }
 
+.sl-auth-link-block.just-logo.single.modified {
+  width: 100%;
+  border-style: none;
+  background-color: var(--neutral-2);
+  box-shadow: none;
+}
+
+.sl-auth-link-block.just-logo.single.modified:hover {
+  border-style: none;
+  background-color: var(--neutral-3);
+}
+
 .sl-auth-divider-wrapper {
   display: flex;
   align-items: center;
@@ -193,10 +205,11 @@
 
 .sl-button.basic {
   background-color: hsla(206.8421052631579, 0.00%, 100.00%, 1.00);
+  color: var(--neutral-11);
 }
 
 .sl-button.basic:hover {
-  background-color: hsla(206.8421052631579, 0.00%, 93.33%, 1.00);
+  background-color: var(--neutral-3);
 }
 
 .sl-button.disable {
@@ -322,7 +335,7 @@
 }
 
 .sl-inline-block.sign-up-link:hover {
-  color: hsla(206.95652173913044, 72.89%, 55.73%, 1.00);
+  color: var(--accent-12);
 }
 
 .div-block-385 {
@@ -332,12 +345,6 @@
 
 .text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
-.inline-block {
-  display: inline;
-  margin-right: 2px;
-  margin-left: 2px;
 }
 
 @media screen and (max-width: 767px) {

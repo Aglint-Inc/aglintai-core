@@ -1,6 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { RcFormRadio } from "./RcFormRadio";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./LoginAtsInfo.module.css";
 
@@ -23,30 +24,13 @@ export function LoginAtsInfo({
           className={_utils.cx(_styles, "div-block-388")}
           tag="div"
         >
-          {slotRadioButtons ?? (
-            <>
-              <RcFormRadio />
-              <RcFormRadio />
-              <RcFormRadio />
-              <RcFormRadio />
-              <RcFormRadio
-                isTextVisible={true}
-                isImageAvailabe={false}
-                text="Other"
-              />
-              <RcFormRadio
-                isImageAvailabe={false}
-                isTextVisible={true}
-                text="I do not use any ATS system"
-              />
-            </>
-          )}
+          {slotRadioButtons ?? <SlotComp componentName="Radio Group" />}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-425")}
           tag="div"
         >
-          {slotOthers}
+          {slotOthers ?? <SlotComp componentName="slotOther" />}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "div-block-414")} tag="div">
@@ -54,7 +38,7 @@ export function LoginAtsInfo({
           className={_utils.cx(_styles, "div-block-389")}
           tag="div"
         >
-          {slotAdditionalInfo}
+          {slotAdditionalInfo ?? <SlotComp componentName="Aditinal Info" />}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
