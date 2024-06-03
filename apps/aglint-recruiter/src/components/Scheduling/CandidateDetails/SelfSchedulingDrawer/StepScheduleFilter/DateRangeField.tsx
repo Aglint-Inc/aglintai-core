@@ -1,20 +1,15 @@
-import { MenuItem, Stack, TextField } from '@mui/material';
+import { Stack } from '@mui/material';
+import { DesktopTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import React from 'react';
 
+import { Checkbox } from '@/devlink/Checkbox';
 import { RolesPill } from '@/devlink/RolesPill';
-
-import { setFilters, useSchedulingFlowStore } from '../store';
 import { TimeRangeSelector } from '@/devlink3/TimeRangeSelector';
-import { Checkbox } from '@/devlink';
-import SelectTime, { ClockIcon } from '../../../Settings/Components/SelectTime';
-import { DesktopTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-interface DateRange {
-  startTime: string;
-  endTime: string;
-}
+import { ClockIcon } from '../../../Settings/Components/SelectTime';
+import { setFilters, useSchedulingFlowStore } from '../store';
 
 function DateRangeField() {
   const filters = useSchedulingFlowStore((state) => state.filters);
@@ -71,7 +66,6 @@ function DateRangeField() {
                 slots={{
                   openPickerIcon: ClockIcon,
                 }}
-                ampm={false}
                 sx={{
                   width: '150px',
                   '& input': {
@@ -93,7 +87,6 @@ function DateRangeField() {
                 slots={{
                   openPickerIcon: ClockIcon,
                 }}
-                ampm={false}
                 sx={{
                   width: '150px',
                   '& input': {
@@ -106,12 +99,13 @@ function DateRangeField() {
         }
         onClickAdd={{
           onClick: () => {
+            if (!value?.startTime || !value?.endTime) return;
             setFilters({
               preferredDateRanges: [
                 ...filters.preferredDateRanges,
                 {
-                  startTime: dayjs(value.startTime).toISOString(),
-                  endTime: dayjs(value.endTime).toISOString(),
+                  startTime: dayjs(value.startTime)?.toISOString(),
+                  endTime: dayjs(value.endTime)?.toISOString(),
                 },
               ],
             });

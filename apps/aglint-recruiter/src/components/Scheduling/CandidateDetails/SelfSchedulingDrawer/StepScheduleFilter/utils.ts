@@ -1,6 +1,52 @@
+/* eslint-disable security/detect-object-injection */
 import { PlanCombinationRespType } from '@aglint/shared-types';
-import { SchedulingFlow } from '../store';
 import dayjs from 'dayjs';
+
+import { SchedulingFlow } from '../store';
+
+export const filterByDateRanges = ({
+  schedulingOptions,
+  preferredDateRanges,
+}: {
+  schedulingOptions: PlanCombinationRespType[];
+  preferredDateRanges: SchedulingFlow['filters']['preferredDateRanges'];
+}) => {
+  if (preferredDateRanges.length === 0) {
+    return schedulingOptions;
+  }
+
+  return schedulingOptions.filter((option) => {
+    // Group sessions by date
+    const sessionsByDate: {
+      [date: string]: PlanCombinationRespType['sessions'];
+    } = option.sessions.reduce((acc, session) => {
+      const date = dayjs(session.start_time).format('YYYY-MM-DD');
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(session);
+      return acc;
+    }, {});
+
+    // Check each day's sessions against the preferred date ranges
+    return Object.values(sessionsByDate).every((daySessions) => {
+      const firstSessionStartTime = extractTime(daySessions[0].start_time);
+      const lastSessionEndTime = extractTime(
+        daySessions[daySessions.length - 1].end_time,
+      );
+
+      return preferredDateRanges.some((dateRange) => {
+        const rangeStartTime = extractTime(dateRange.startTime);
+        const rangeEndTime = extractTime(dateRange.endTime);
+
+        return (
+          firstSessionStartTime >= rangeStartTime &&
+          lastSessionEndTime <= rangeEndTime
+        );
+      });
+    });
+  });
+};
 
 export function filterSchedulingOptions({
   schedulingOptions,
@@ -29,40 +75,6 @@ export function filterSchedulingOptions({
       )
     );
   };
-
-  if (filters.preferredDateRanges.length > 0) {
-    schedulingOptions = schedulingOptions.filter((option) => {
-      // Group sessions by date
-      const sessionsByDate: {
-        [date: string]: PlanCombinationRespType['sessions'];
-      } = option.sessions.reduce((acc, session) => {
-        const date = dayjs(session.start_time).format('YYYY-MM-DD');
-        if (!acc[date]) {
-          acc[date] = [];
-        }
-        acc[date].push(session);
-        return acc;
-      }, {});
-
-      // Check each day's sessions against the preferred date ranges
-      return Object.values(sessionsByDate).every((daySessions) => {
-        const firstSessionStartTime = extractTime(daySessions[0].start_time);
-        const lastSessionEndTime = extractTime(
-          daySessions[daySessions.length - 1].end_time,
-        );
-
-        return filters.preferredDateRanges.some((dateRange) => {
-          const rangeStartTime = extractTime(dateRange.startTime);
-          const rangeEndTime = extractTime(dateRange.endTime);
-
-          return (
-            firstSessionStartTime >= rangeStartTime &&
-            lastSessionEndTime <= rangeEndTime
-          );
-        });
-      });
-    });
-  }
 
   // Filter for no conflicts
   if (filters.isNoConflicts) {

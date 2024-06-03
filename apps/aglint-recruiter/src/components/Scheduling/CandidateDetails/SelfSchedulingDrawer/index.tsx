@@ -17,6 +17,7 @@ import {
 } from '../store';
 import RescheduleSlot from './RescheduleSlot';
 import StepScheduleFilter from './StepScheduleFilter';
+import { filterSchedulingOptions } from './StepScheduleFilter/utils';
 import SelectDateRange from './StepSelectDate';
 import StepSlotOptions from './StepSlotOptions';
 import {
@@ -28,7 +29,6 @@ import {
   setStepScheduling,
   useSchedulingFlowStore,
 } from './store';
-import { filterSchedulingOptions } from './StepScheduleFilter/utils';
 
 function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
   const currentDate = dayjs();

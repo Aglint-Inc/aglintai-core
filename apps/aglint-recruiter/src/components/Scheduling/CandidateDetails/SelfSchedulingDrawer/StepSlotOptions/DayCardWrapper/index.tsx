@@ -1,8 +1,9 @@
 import { PlanCombinationRespType } from '@aglint/shared-types';
 import { Collapse, Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
+import { ButtonTextSmall } from '@/devlink/ButtonTextSmall';
 import { DateOption } from '@/devlink3/DateOption';
 import { ScheduleOption } from '@/devlink3/ScheduleOption';
 
@@ -11,10 +12,6 @@ import {
   useSchedulingApplicationStore,
 } from '../../../store';
 import SingleDayCard from '../SingleDayCard';
-import { ButtonGrey } from '@/devlink3';
-import { ButtonTextGrey } from '@/devlink/ButtonTextGrey';
-import { ButtonOutlinedSmall } from '@/devlink';
-import { ButtonTextSmall } from '@/devlink/ButtonTextSmall';
 
 function DayCardWrapper({
   isDebrief,

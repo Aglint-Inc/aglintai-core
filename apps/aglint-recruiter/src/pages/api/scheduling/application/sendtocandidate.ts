@@ -5,9 +5,9 @@ import { DB } from '@aglint/shared-types';
 import { CookieOptions, createServerClient, serialize } from '@supabase/ssr';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { SchedulingFlow } from '@/src/components/Scheduling/CandidateDetails/SelfSchedulingDrawer/store';
 import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
 import { sendToCandidate } from '@/src/components/Scheduling/CandidateDetails/utils';
-import { SchedulingFlow } from '@/src/components/Scheduling/CandidateDetails/SelfSchedulingDrawer/store';
 
 export interface ApiBodyParamsSendToCandidate {
   is_mail: boolean;
