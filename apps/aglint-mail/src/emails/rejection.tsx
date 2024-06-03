@@ -4,7 +4,6 @@ import {
   Head,
   Html,
   Img,
-  Link,
   Preview,
   Tailwind,
   Text,
@@ -12,26 +11,24 @@ import {
 import { Parser } from 'html-to-react';
 import * as React from 'react';
 
-interface InterviewBookingConfirmationType {
+interface RejectionType {
   body?: string;
   companyLogo?: string;
 }
 
 // export dummy
-export const dummy: InterviewBookingConfirmationType = {
+export const dummy: RejectionType = {
   body: '<p>Hi [firstName],</p><p>Thank you for your interest in the position [jobTitle].</p><p>We have reviewed your application and carefully considered your qualifications. Based on your profile and the number of other qualified applications, for the moment, we are not able to move forward in the recruiting process with you.</p><p>Good luck in your search!</p><p>Sincerely,</p><p>[companyName]</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
 };
 
-const companyLogo =
-  'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png';
-
 export const getSubject = (companyName: any) => `${companyName}`;
 
-export const InterviewBookingConfirmation = ({
+export const Rejection = ({
   body = dummy.body,
-}: InterviewBookingConfirmationType) => {
+  companyLogo = dummy.companyLogo,
+}: RejectionType) => {
   const htmlParser = Parser();
   return (
     <Html>
@@ -49,7 +46,7 @@ export const InterviewBookingConfirmation = ({
 
               <Text className="">{htmlParser.parse(body)}</Text>
 
-              <Text className="text-[#999999] text-[10px] leading-4 mt-10 ">
+              {/* <Text className="text-[#999999] text-[10px] leading-4 mt-10 ">
                 If you have any queries please &nbsp;
                 <Link
                   className="text-[#337FBD] underline"
@@ -67,7 +64,7 @@ export const InterviewBookingConfirmation = ({
                 >
                   click here
                 </Link>
-              </Text>
+              </Text> */}
             </Container>
             <Text className="flex items-center text-[10px] mx-auto w-fit text-gray-500">
               Powered By
@@ -84,4 +81,7 @@ export const InterviewBookingConfirmation = ({
     </Html>
   );
 };
-export default InterviewBookingConfirmation;
+export default Rejection;
+
+// [firstName]
+// [jobTitle]

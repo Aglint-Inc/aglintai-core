@@ -4,7 +4,6 @@ import {
   Head,
   Html,
   Img,
-  Link,
   Preview,
   Tailwind,
   Text,
@@ -16,20 +15,17 @@ interface InterviewBookingConfirmationType {
   body?: string;
   companyLogo?: string;
 }
-
 export const dummy = {
-  body: '<p>Dear [firstName],</p> <p>I regret to inform you that we need to cancel your scheduled interview session [sessionName] at [companyName].</p> <p>We apologize for any inconvenience caused and will be in touch soon to reschedule.</p> <p>Best regards,<br> [companyName]</p>',
+  body: '<p>Dear [firstName],</p> <p>I regret to inform you that we need to cancel your scheduled interview session [sessionName] at [companyName].</p> <p>We apologize for any inconvenience caused and will be in touch soon to reschedule.</p> <p>Best regards,<br> [companyName]</p>  ',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
 };
-
-const companyLogo =
-  'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png';
 
 export const getSubject = (companyName: any) => `${companyName}`;
 
 export const InterviewBookingConfirmation = ({
   body = dummy.body,
+  companyLogo = dummy.companyLogo,
 }: InterviewBookingConfirmationType) => {
   const htmlParser = Parser();
   return (
@@ -46,9 +42,9 @@ export const InterviewBookingConfirmation = ({
                 src={companyLogo}
               />
 
-              <Text className="">{htmlParser.parse(body)}</Text>
+              <Text>{htmlParser.parse(body)}</Text>
 
-              <Text className="text-[#999999] text-[10px] leading-4 mt-10 ">
+              {/* <Text className="text-[#999999] text-[10px] leading-4 mt-10 ">
                 If you have any queries please &nbsp;
                 <Link
                   className="text-[#337FBD] underline"
@@ -66,7 +62,7 @@ export const InterviewBookingConfirmation = ({
                 >
                   click here
                 </Link>
-              </Text>
+              </Text> */}
             </Container>
             <Text className="flex items-center text-[10px] mx-auto w-fit text-gray-500">
               Powered By
@@ -84,3 +80,7 @@ export const InterviewBookingConfirmation = ({
   );
 };
 export default InterviewBookingConfirmation;
+
+// [firstName]
+// [sessionName]
+// [companyName]
