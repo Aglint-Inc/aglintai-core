@@ -78,7 +78,6 @@ export default async function Index(
       'meetingDetails': [...Sessions],
     },
   };
-  console.log(body);
 
   return body;
 }
