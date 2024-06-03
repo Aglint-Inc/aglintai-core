@@ -1,6 +1,6 @@
 import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
 
-export default async function Index(
+export default async function CancelInterviewSession(
   session_id: string,
   application_id: string,
 ) {
@@ -29,7 +29,7 @@ export default async function Index(
 
   const body = {
     recipient_email: email,
-    mail_type: 'candidate_invite_confirmation',
+    mail_type: 'cancel_interview_session',
     recruiter_id,
     company_logo: logo,
     payload: {
