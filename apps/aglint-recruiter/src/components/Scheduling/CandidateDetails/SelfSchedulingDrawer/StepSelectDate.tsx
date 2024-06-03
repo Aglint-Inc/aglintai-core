@@ -6,12 +6,12 @@ import { DatePickerBody } from '@/devlink3/DatePickerBody';
 import DateRange from '@/src/components/Tasks/Components/DateRange';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
-import { ScheduleUtils } from '@/src/services/CandidateScheduleV2/utils/ScheduleUtils';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import { useAllActivities, useGetScheduleApplication } from '../hooks';
 import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
+import { ApiResponseFindAvailability } from '../types';
 import {
   setDateRange,
   setFetchingPlan,
@@ -77,13 +77,13 @@ function SelectDateRange() {
       );
 
       if (res.status === 200) {
-        const combs = ScheduleUtils.createCombsForMultiDaySlots(res.data);
+        const slots = res.data as ApiResponseFindAvailability;
 
-        if (combs.length === 0) {
+        if (slots.length === 0) {
           setNoOptions(true);
           toast.error('No availability found.');
         } else {
-          setSchedulingOptions(combs.flatMap((comb) => comb));
+          setSchedulingOptions(slots);
           setStepScheduling('preference');
         }
       } else {

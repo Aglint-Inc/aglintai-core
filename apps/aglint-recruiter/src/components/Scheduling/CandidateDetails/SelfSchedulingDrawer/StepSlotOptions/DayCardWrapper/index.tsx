@@ -13,6 +13,8 @@ import {
 } from '../../../store';
 import SingleDayCard from '../SingleDayCard';
 
+const NUMBER_OF_SLOTS_TO_DISPLAY = 20;
+
 function DayCardWrapper({
   isDebrief,
   item,
@@ -34,10 +36,12 @@ function DayCardWrapper({
   const isMultiDay = dates.length > 1 ? true : false;
 
   const [collapse, setCollapse] = useState(false);
-  const [displayedSlots, setDisplayedSlots] = useState(10);
+  const [displayedSlots, setDisplayedSlots] = useState(
+    NUMBER_OF_SLOTS_TO_DISPLAY,
+  );
 
   const loadMoreSlots = () => {
-    setDisplayedSlots((prevCount) => prevCount + 10);
+    setDisplayedSlots((prevCount) => prevCount + NUMBER_OF_SLOTS_TO_DISPLAY);
   };
 
   return (
@@ -69,14 +73,22 @@ function DayCardWrapper({
                   ),
                 };
               });
+
               return (
                 <ScheduleOption
                   key={slot.plan_comb_id}
                   isSelected={selectedCombIds.includes(slot.plan_comb_id)}
-                  isCheckbox={false}
+                  isCheckbox={!isDebrief}
                   onClickSelect={{
                     onClick: () => {
-                      if (isDebrief) setSelectedCombIds([slot.plan_comb_id]);
+                      if (isDebrief) {
+                        setSelectedCombIds([slot.plan_comb_id]);
+                      } else {
+                        setSelectedCombIds([
+                          ...selectedCombIds,
+                          slot.plan_comb_id,
+                        ]);
+                      }
                     },
                   }}
                   isRadio={isDebrief}
