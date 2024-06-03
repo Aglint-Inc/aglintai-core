@@ -26,6 +26,7 @@ const reactQueryPageRoute: (keyof Pages)[] = [
   '/jobs',
   '/jobs/[id]',
   '/jobs/create',
+  '/jobs/[id]/candidate-list',
   '/jobs/[id]/job-details',
   '/jobs/[id]/profile-score',
   '/scheduling/interviewer/[member_id]',
