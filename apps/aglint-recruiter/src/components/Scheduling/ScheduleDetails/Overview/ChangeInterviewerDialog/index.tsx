@@ -148,12 +148,6 @@ function ChangeInterviewerDialog({
 
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isChangeInterviewerOpen}
       onClose={() => {
         resetState();

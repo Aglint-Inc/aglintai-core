@@ -122,7 +122,7 @@ const CompanyDetailComp = () => {
               <>
                 <CircularProgress
                   color='inherit'
-                  size={'15px'}
+                  size={'16px'}
                   sx={{ color: palette.grey[400] }}
                 />
               </>
