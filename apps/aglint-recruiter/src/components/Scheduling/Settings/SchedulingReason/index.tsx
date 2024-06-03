@@ -254,7 +254,6 @@ const AddEditReasonsDialogs = ({
     <Dialog
       open={true}
       onClose={onClose}
-      sx={{ '& .MuiPaper-root': { borderRadius: '12px' } }}
     >
       <Stack p={3} gap={2} width={{ md: '500px' }}>
         <Stack

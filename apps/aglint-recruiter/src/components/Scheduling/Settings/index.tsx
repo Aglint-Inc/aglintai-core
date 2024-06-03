@@ -619,13 +619,6 @@ function SchedulingSettings({
                         );
                       })}
                       <Dialog
-                        sx={{
-                          '& .MuiDialog-paper': {
-                            background: 'transparent',
-                            border: 'none',
-                            borderRadius: '10px',
-                          },
-                        }}
                         open={open}
                         onClose={() => {
                           // resetState();

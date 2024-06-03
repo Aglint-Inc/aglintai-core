@@ -72,13 +72,6 @@ function FilterDropDown({
           horizontal: 'left',
         }}
         transformOrigin={{ vertical: -10, horizontal: 0 }}
-        sx={{
-          '& .MuiPopover-paper': {
-            borderRadius: '10px',
-            borderColor: '#E9EBED',
-            minWidth: '176px',
-          },
-        }}
       >
         <FilterDropdown
           isRemoveVisible={false}
@@ -105,11 +98,6 @@ function FilterDropDown({
                   }}
                 />
                 <Typography
-                  sx={{
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
                   onClick={() => {
                     if (selectedItems.includes(item)) {
                       setSelectedItems((ele: ItemType[]) =>

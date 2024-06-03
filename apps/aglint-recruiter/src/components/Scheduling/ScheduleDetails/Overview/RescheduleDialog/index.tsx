@@ -219,12 +219,6 @@ function RescheduleDialog({
 
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isRescheduleOpen}
       onClose={() => {
         setIsRescheduleOpen(false);
