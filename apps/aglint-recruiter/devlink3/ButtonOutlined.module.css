@@ -14,16 +14,6 @@
   cursor: pointer;
 }
 
-.radix-button.is_disabled {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-
-  background-color: var(--neutral-3);
-}
-
 .icon_placeholder {
   display: flex;
 }
@@ -42,11 +32,11 @@
   grid-column-gap: 4px;
   grid-row-gap: 4px;
 
-  background-color: var(--neutral-3);
+  background-color: #f1f0ef;
 
-  box-shadow: 0 0 0 0.5px var(--neutral-3);
+  box-shadow: 0 0 0 0.5px #f1f0ef;
 
-  color: var(--neutral-8);
+  color: #bcbbb5;
 
   cursor: not-allowed;
 }
@@ -65,11 +55,11 @@
   grid-column-gap: 4px;
   grid-row-gap: 4px;
 
-  background-color: var(--neutral-3);
+  background-color: #f1f0ef;
 
-  box-shadow: 0 0 0 0.5px var(--neutral-3);
+  box-shadow: 0 0 0 0.5px #f1f0ef;
 
-  color: var(--neutral-8);
+  color: #bcbbb5;
 
   cursor: progress;
 }

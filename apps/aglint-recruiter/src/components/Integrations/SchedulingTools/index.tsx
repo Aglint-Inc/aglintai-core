@@ -6,6 +6,8 @@ import { useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+import { ButtonSoft } from '@/devlink2/ButtonSoft';
+import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { IntegrationCard } from '@/devlink2/IntegrationCard';
 import { IntegrationUpload } from '@/devlink2/IntegrationUpload';
 import { ToggleButton } from '@/devlink2/ToggleButton';
@@ -419,27 +421,37 @@ function CardButtons({
 }) {
   return (
     <>
-      <ButtonGrey
+      <ButtonSoft
+        size='2'
+        isLeftIcon=''
+        isRightIcon=''
+        color={'neutral'}
         onClickButton={{
           onClick: secondaryAction,
         }}
-        textLabel={secondaryText}
+        textButton={secondaryText}
       />
       {primaryText === 'Edit' ||
       primaryText === 'Re-Connect' ||
       primaryText === 'Re-Upload' ? (
-        <ButtonPrimaryOutlinedRegular
-          buttonProps={{
-            onClick: primaryAction,
-          }}
-          buttonText={primaryText}
-        />
-      ) : (
-        <ButtonPrimaryRegular
+        <ButtonSoft
+          size='2'
+          isLeftIcon=''
+          isRightIcon=''
           onClickButton={{
             onClick: primaryAction,
           }}
-          textLabel={primaryText}
+          textButton={primaryText}
+        />
+      ) : (
+        <ButtonSolid
+          size='2'
+          isLeftIcon=''
+          isRightIcon=''
+          onClickButton={{
+            onClick: primaryAction,
+          }}
+          textButton={primaryText}
         />
       )}
     </>
