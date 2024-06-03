@@ -394,8 +394,8 @@ function CardButtons({
     <>
       <ButtonSoft
         size='2'
-        isLeftIcon=''
-        isRightIcon=''
+        isLeftIcon={false}
+        isRightIcon={false}
         color={'neutral'}
         onClickButton={{
           onClick: secondaryAction,
@@ -405,8 +405,8 @@ function CardButtons({
       {primaryText === 'Edit API Key' ? (
         <ButtonSoft
           size='2'
-          isLeftIcon=''
-          isRightIcon=''
+          isLeftIcon={false}
+          isRightIcon={false}
           onClickButton={{
             onClick: primaryAction,
           }}
@@ -415,8 +415,8 @@ function CardButtons({
       ) : (
         <ButtonSolid
           size='2'
-          isLeftIcon=''
-          isRightIcon=''
+          isLeftIcon={false}
+          isRightIcon={false}
           onClickButton={{
             onClick: primaryAction,
           }}
