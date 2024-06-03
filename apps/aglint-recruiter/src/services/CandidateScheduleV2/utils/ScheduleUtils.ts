@@ -70,7 +70,9 @@ export class ScheduleUtils {
       }
 
       let combs: PlanCombinationRespType[] = curr_int_day_combs[curr_round_idx];
-
+      if (combs.length === 0) {
+        return [];
+      }
       if (final_combs.length === 0) {
         final_combs = cloneDeep(combs);
       } else {
@@ -100,7 +102,9 @@ export class ScheduleUtils {
       curr_day_idx++
     ) {
       const curr_day_combs = findMultiDaySlot([], all_combs[curr_day_idx], 0);
-      all_day_combs.push([...curr_day_combs]);
+      if (curr_day_combs.length > 0) {
+        all_day_combs.push([...curr_day_combs]);
+      }
     }
 
     return all_day_combs;

@@ -1,9 +1,7 @@
-import { Stack, Typography } from '@mui/material';
+import { Checkbox, Stack, Switch, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 
-import { Checkbox } from '@/devlink/Checkbox';
-import { ToggleButton } from '@/devlink2/ToggleButton';
 import { SchedulerFilters } from '@/devlink3/SchedulerFilters';
 
 import { setFilters, useSchedulingFlowStore } from '../store';
@@ -52,13 +50,12 @@ function StepScheduleFilter() {
         textDateRange={`${dayjs(dateRange.start_date).format('MMMM DD')} - ${dayjs(dateRange.end_date).format('MMMM DD')}`}
         slotCheckbox={
           <Checkbox
-            isChecked={filters.isWorkLoad}
-            onClickCheck={{
-              onClick: () => {
-                setFilters({
-                  isWorkLoad: !filters.isWorkLoad,
-                });
-              },
+            size='small'
+            checked={filters.isWorkLoad}
+            onChange={() => {
+              setFilters({
+                isWorkLoad: !filters.isWorkLoad,
+              });
             }}
           />
         }
@@ -78,17 +75,16 @@ function StepScheduleFilter() {
                 cursor: 'pointer',
               }}
             >
-              <ToggleButton
-                isActive={filters.isNoConflicts}
-                isInactive={!filters.isNoConflicts}
-                onclickToggle={{
-                  onClick: () => {
-                    setFilters({
-                      isNoConflicts: !filters.isNoConflicts,
-                    });
-                  },
+              <Switch
+                size='small'
+                checked={filters.isNoConflicts}
+                onChange={() => {
+                  setFilters({
+                    isNoConflicts: !filters.isNoConflicts,
+                  });
                 }}
               />
+
               <Typography variant={'body2'}>Show only no conflicts</Typography>
             </Stack>
             <Stack
@@ -99,17 +95,16 @@ function StepScheduleFilter() {
                 cursor: 'pointer',
               }}
             >
-              <ToggleButton
-                isActive={filters.isSoftConflicts}
-                isInactive={!filters.isSoftConflicts}
-                onclickToggle={{
-                  onClick: () => {
-                    setFilters({
-                      isSoftConflicts: !filters.isSoftConflicts,
-                    });
-                  },
+              <Switch
+                size='small'
+                checked={filters.isSoftConflicts}
+                onChange={() => {
+                  setFilters({
+                    isSoftConflicts: !filters.isSoftConflicts,
+                  });
                 }}
               />
+
               <Typography variant={'body2'}>
                 Show soft conflict suggestions
               </Typography>
@@ -122,17 +117,16 @@ function StepScheduleFilter() {
                 cursor: 'pointer',
               }}
             >
-              <ToggleButton
-                isActive={filters.isHardConflicts}
-                isInactive={!filters.isHardConflicts}
-                onclickToggle={{
-                  onClick: () => {
-                    setFilters({
-                      isHardConflicts: !filters.isHardConflicts,
-                    });
-                  },
+              <Switch
+                size='small'
+                checked={filters.isHardConflicts}
+                onChange={() => {
+                  setFilters({
+                    isHardConflicts: !filters.isHardConflicts,
+                  });
                 }}
               />
+
               <Typography variant={'body2'}>
                 Show hard conflict suggestions
               </Typography>
@@ -145,17 +139,16 @@ function StepScheduleFilter() {
                 cursor: 'pointer',
               }}
             >
-              <ToggleButton
-                isActive={filters.isOutSideWorkHours}
-                isInactive={!filters.isOutSideWorkHours}
-                onclickToggle={{
-                  onClick: () => {
-                    setFilters({
-                      isOutSideWorkHours: !filters.isOutSideWorkHours,
-                    });
-                  },
+              <Switch
+                size='small'
+                checked={filters.isOutSideWorkHours}
+                onChange={() => {
+                  setFilters({
+                    isOutSideWorkHours: !filters.isOutSideWorkHours,
+                  });
                 }}
               />
+
               <Typography variant={'body2'}>
                 Suggest times over outside work hours
               </Typography>
