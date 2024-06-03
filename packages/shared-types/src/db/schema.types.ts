@@ -1006,6 +1006,7 @@ export type Database = {
           filter_json: Json
           id: string
           schedule_id: string | null
+          selected_options: Json[] | null
           session_ids: string[]
         }
         Insert: {
@@ -1014,6 +1015,7 @@ export type Database = {
           filter_json: Json
           id?: string
           schedule_id?: string | null
+          selected_options?: Json[] | null
           session_ids?: string[]
         }
         Update: {
@@ -1022,6 +1024,7 @@ export type Database = {
           filter_json?: Json
           id?: string
           schedule_id?: string | null
+          selected_options?: Json[] | null
           session_ids?: string[]
         }
         Relationships: [
