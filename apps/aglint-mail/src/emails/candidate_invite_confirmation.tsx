@@ -114,7 +114,7 @@ export const InterviewBookingConfirmation = ({
                 className="px-3 py-2 bg-[#337FBD] text-white br rounded-md text-[14px]"
                 href={meetingLink}
               >
-                Confirm Interview
+                View Details
               </Button>
               {/* <Text className="text-[#999999] text-[10px] mt-10 leading-4">
                 If you have any queries please &nbsp;
