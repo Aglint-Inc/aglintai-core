@@ -10,47 +10,58 @@ import toast from '@/src/utils/toast';
 
 import { useGetScheduleApplication } from '../hooks';
 import {
-  setDateRange,
   setinitialSessions,
-  setIsScheduleNowOpen,
-  setSchedulingOptions,
   setSelectedApplicationLog,
   setSelectedSessionIds,
-  setStepScheduling,
   useSchedulingApplicationStore,
 } from '../store';
 import RescheduleSlot from './RescheduleSlot';
+import StepScheduleFilter from './StepScheduleFilter';
+import { filterSchedulingOptions } from './StepScheduleFilter/utils';
 import SelectDateRange from './StepSelectDate';
 import StepSlotOptions from './StepSlotOptions';
+import {
+  resetFilterStore,
+  setDateRange,
+  setFilteredSchedulingOptions,
+  setIsScheduleNowOpen,
+  setSchedulingOptions,
+  setStepScheduling,
+  useSchedulingFlowStore,
+} from './store';
 
 function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
   const currentDate = dayjs();
   const initialEndDate = currentDate.add(7, 'day');
   const { recruiter, recruiterUser } = useAuthDetails();
   const {
-    dateRange,
     selectedApplication,
     initialSessions,
-    isScheduleNowOpen,
     selectedSessionIds,
-    schedulingOptions,
-    selCoordinator,
-    stepScheduling,
     selectedCombIds,
-    scheduleFlow,
     selectedApplicationLog,
   } = useSchedulingApplicationStore((state) => ({
-    dateRange: state.dateRange,
     selectedApplication: state.selectedApplication,
     initialSessions: state.initialSessions,
-    isScheduleNowOpen: state.isScheduleNowOpen,
     selectedSessionIds: state.selectedSessionIds,
-    schedulingOptions: state.schedulingOptions,
-    selCoordinator: state.selCoordinator,
-    stepScheduling: state.stepScheduling,
     selectedCombIds: state.selectedCombIds,
-    scheduleFlow: state.scheduleFlow,
     selectedApplicationLog: state.selectedApplicationLog,
+  }));
+
+  const {
+    dateRange,
+    schedulingOptions,
+    isScheduleNowOpen,
+    scheduleFlow,
+    stepScheduling,
+    filters,
+  } = useSchedulingFlowStore((state) => ({
+    dateRange: state.dateRange,
+    schedulingOptions: state.schedulingOptions,
+    isScheduleNowOpen: state.isScheduleNowOpen,
+    scheduleFlow: state.scheduleFlow,
+    stepScheduling: state.stepScheduling,
+    filters: state.filters,
   }));
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
@@ -62,8 +73,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
       end_date: initialEndDate.toISOString(),
     });
     return () => {
-      setIsScheduleNowOpen(false);
-      setSchedulingOptions([]);
+      resetFilterStore();
       setSelectedSessionIds([]);
     };
   }, []);
@@ -85,7 +95,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
           is_debrief: isDebrief,
           recruiter_id: recruiter.id,
           recruiterUser,
-          selCoordinator,
+          selCoordinator: null,
           selectedApplication,
           selectedSessionIds,
           selectedDebrief: schedulingOptions.find(
@@ -147,7 +157,9 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
         <SideDrawerLarge
           onClickBack={{
             onClick: () => {
-              setStepScheduling('pick_date');
+              stepScheduling === 'preference'
+                ? setStepScheduling('pick_date')
+                : setStepScheduling('preference');
             },
           }}
           textDrawertitle={
@@ -161,7 +173,19 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
           }
           onClickPrimary={{
             onClick: () => {
-              if (!saving) onClickSendToCandidate();
+              if (stepScheduling === 'preference') {
+                const { allFilteredOptions } = filterSchedulingOptions({
+                  filters,
+                  schedulingOptions,
+                });
+
+                setFilteredSchedulingOptions(allFilteredOptions);
+                setStepScheduling('slot_options');
+              } else if (stepScheduling === 'slot_options') {
+                if (!saving) {
+                  onClickSendToCandidate();
+                }
+              }
             },
           }}
           onClickCancel={{
@@ -169,7 +193,13 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
               resetState();
             },
           }}
-          textPrimaryButton={!isDebrief ? 'Send to Candidate' : 'Schedule Now'}
+          textPrimaryButton={
+            !isDebrief
+              ? stepScheduling === 'preference'
+                ? 'Continue'
+                : 'Send to Candidate'
+              : 'Schedule Now'
+          }
           isSelectedNumber={false}
           slotSideDrawerbody={
             <>
@@ -177,12 +207,16 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                 <SelectDateRange />
               ) : stepScheduling === 'reschedule' ? (
                 <RescheduleSlot />
+              ) : stepScheduling === 'preference' ? (
+                <StepScheduleFilter />
               ) : (
                 <StepSlotOptions isDebrief={isDebrief} />
               )}
             </>
           }
-          isBottomBar={stepScheduling === 'slot_options'}
+          isBottomBar={
+            stepScheduling === 'slot_options' || stepScheduling === 'preference'
+          }
         />
       </Drawer>
     </>
