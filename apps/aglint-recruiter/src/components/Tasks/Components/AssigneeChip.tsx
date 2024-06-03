@@ -87,11 +87,8 @@ function AssigneeChip({
                   <AvatarWithName
                     slotAvatar={
                       <MuiAvatar
-                        height={'25px'}
-                        width={'25px'}
                         src={assigneeDetails.profile_image}
-                        variant='circular'
-                        fontSize='14px'
+                        variant='rounded-small'
                         level={capitalizeAll(
                           assigneeDetails?.first_name +
                             ' ' +

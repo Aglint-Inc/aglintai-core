@@ -241,10 +241,7 @@ function IndividualCard({
           <MuiAvatar
             src={member.profile_image}
             level={getFullName(member.first_name, member.last_name) || ''}
-            variant='circular'
-            height='40px'
-            width='40px'
-            fontSize='16px'
+            variant='rounded-medium'
           />
         }
         textName={getFullName(member.first_name, member.last_name) || ''}

@@ -17,10 +17,7 @@ const CandidateAvatar = ({
       <MuiAvatar
         level={getCandidateDetails(application, 'name').value}
         src={`${application.candidates.avatar}?d=404`}
-        variant={'circular'}
-        width={'100%'}
-        height={'100%'}
-        fontSize={`${fontSize}px`}
+        variant={'rounded-small'}
       />
     </Stack>
   );

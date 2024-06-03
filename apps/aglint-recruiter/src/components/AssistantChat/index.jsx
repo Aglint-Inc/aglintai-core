@@ -64,8 +64,7 @@ function ChatMessages() {
             textCompanyName={companyDetails?.name}
             slotLogo={
               <MuiAvatar
-                height='40px'
-                width='40px'
+                variant='rounded-medium'
                 src={companyDetails?.logo}
               />
             }
@@ -190,8 +189,7 @@ export function ChatConversation() {
                     textMessage={message.value}
                     slotLogo={
                       <MuiAvatar
-                        height='30px'
-                        width='30px'
+                        variant='rounded-medium'
                         src={companyDetails?.logo}
                       />
                     }

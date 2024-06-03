@@ -525,10 +525,7 @@ function SourcingAgent() {
                                                       ? null
                                                       : item.photo_url
                                                   }
-                                                  variant={'rounded'}
-                                                  width={'80px'}
-                                                  height={'80px'}
-                                                  fontSize={'30px'}
+                                                  variant={'rounded-large'}
                                                 />
                                               }
                                               textName={getFullName(

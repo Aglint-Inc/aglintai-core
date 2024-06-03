@@ -155,10 +155,7 @@ function SubTaskProgress() {
                           <MuiAvatar
                             level={InterviewerCreator?.first_name}
                             src={InterviewerCreator?.profile_image}
-                            variant='circular'
-                            width='24px'
-                            height='24px'
-                            fontSize='12px'
+                            variant='rounded-small'
                           />
                         </ShowCode.When>
                       </ShowCode>

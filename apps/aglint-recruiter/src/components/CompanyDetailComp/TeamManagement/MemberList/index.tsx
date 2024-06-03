@@ -130,10 +130,7 @@ const Member = ({
           <MuiAvatar
             src={member.profile_image}
             level={getFullName(member.first_name, member.last_name)}
-            variant='circular'
-            height='100%'
-            width='100%'
-            fontSize='12px'
+            variant='rounded-small'
           />
         }
         userEmail={member.email}
