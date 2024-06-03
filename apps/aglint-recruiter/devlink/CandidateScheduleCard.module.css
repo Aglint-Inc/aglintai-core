@@ -220,16 +220,6 @@
   margin-top: 20px;
 }
 
-.fw-semibold.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
 .duration_row {
   position: relative;
   z-index: 5;
