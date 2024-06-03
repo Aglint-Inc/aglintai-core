@@ -188,6 +188,11 @@ export class CandidatesSchedulingV2 {
     return findCurrentDayPlan();
   }
 
+  public findAvailabilitySlotsDateRange() {
+    const { findAvailabilitySlots } = this.findMultiDaySlots();
+    return findAvailabilitySlots();
+  }
+
   // find slots for the date range
   public findCandSlotsForDateRange() {
     const { findAllDayPlans } = this.findMultiDaySlots();
@@ -931,8 +936,23 @@ export class CandidatesSchedulingV2 {
       }
       return all_combs;
     };
+    const findAvailabilitySlots = () => {
+      let dayjs_start_date = this.schedule_dates.user_start_date_js;
+      let dayjs_end_date = this.schedule_dates.user_end_date_js;
 
-    return { findCurrentDayPlan, findAllDayPlans };
+      let curr_date = dayjs_start_date;
+      let all_combs: PlanCombinationRespType[][][] = [];
+      while (curr_date.isSameOrBefore(dayjs_end_date)) {
+        const plan_combs = findMultiDaySlotsUtil([], curr_date, 0);
+        if (plan_combs.length > 0) {
+          const session_combs = plan_combs;
+          all_combs = [...all_combs, session_combs];
+        }
+        curr_date = curr_date.add(1, 'day');
+      }
+      return all_combs;
+    };
+    return { findCurrentDayPlan, findAllDayPlans, findAvailabilitySlots };
   };
 
   /**

@@ -33,12 +33,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     await cand_schedule.fetchDetails();
     await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
-    const combs = cand_schedule.findMultiDayComb();
-
-    return res.status(200).json({
-      plan_combs: combs,
-      total: combs.length,
-    });
+    const slots = cand_schedule.findAvailabilitySlotsDateRange();
+    // const combs = ScheduleUtils.createCombsForMultiDaySlots(slots);
+    return res.status(200).json(slots);
   } catch (error) {
     console.log(error);
     return res.status(500).send(error.message);
