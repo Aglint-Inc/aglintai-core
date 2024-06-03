@@ -1,6 +1,6 @@
 import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
 
-export default async function Index(
+export default async function CancelInterviewSession(
   session_id: string,
   application_id: string,
 ) {

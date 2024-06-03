@@ -7,7 +7,7 @@ import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import { sendMail } from '../../../config/sendgrid';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
-import CancelInterviewSession from '../../../utils/email/cancel-interview-session';
+import CancelInterviewSession from '../../../utils/email/cancel-interview-session/fetch';
 
 interface ReqPayload {
   session_id: string;

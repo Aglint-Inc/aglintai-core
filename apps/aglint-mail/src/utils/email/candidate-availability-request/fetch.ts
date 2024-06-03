@@ -6,7 +6,7 @@ import {
   sessionTypeIcon,
 } from '../common/functions';
 
-export default async function cancelInterviewSession(
+export default async function CandidateAvailabilityRequest(
   session_ids: string[],
   application_id: string,
   schedule_id: string,
