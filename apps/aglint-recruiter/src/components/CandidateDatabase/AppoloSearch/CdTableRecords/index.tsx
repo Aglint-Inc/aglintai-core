@@ -186,7 +186,7 @@ function CdTableRecords({ loading }) {
                     </Stack>
                   );
                 })}
-                <Typography variant='body2' sx={{ textWrap: 'nowrap' }}>
+                <Typography variant='body1' sx={{ textWrap: 'nowrap' }}>
                   {candidate.employment_history.length > 3 &&
                     `+ ${candidate.employment_history.length - 3} more`}
                 </Typography>
@@ -201,10 +201,7 @@ function CdTableRecords({ loading }) {
                       ? null
                       : candidate.photo_url
                   }
-                  variant={'rounded'}
-                  width={'24px'}
-                  height={'24px'}
-                  fontSize={'14px'}
+                  variant={'rounded-small'}
                 />
               </>
             }

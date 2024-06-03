@@ -33,6 +33,7 @@ import DateSelect from '@/src/components/Scheduling/Settings/Components/DateSele
 import MuiSelect from '@/src/components/Scheduling/Settings/Components/MuiSelect';
 import SelectTime from '@/src/components/Scheduling/Settings/Components/SelectTime';
 import { hoursList } from '@/src/components/Scheduling/Settings/utils';
+import { palette } from '@/src/context/Theme/Theme';
 import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
 
@@ -269,7 +270,7 @@ function InterviewerLevelSettings({
                 renderOption={(props, option) => {
                   return (
                     <li {...props}>
-                      <Typography variant='body2' color={'#000'}>
+                      <Typography variant='body1' color={palette.grey[800]}>
                         {option.label}
                       </Typography>
                     </li>
@@ -470,15 +471,10 @@ function InterviewerLevelSettings({
                             return pre.filter((ele) => ele !== item);
                           });
                         }}
-                        sx={{
-                          p: '5px',
-                        }}
+                        
                         deleteIcon={
                           <IconButton>
                             <Icon
-                              width='14'
-                              height='14'
-                              color='grey'
                               variant='CloseThinIcon'
                             />
                           </IconButton>
@@ -521,15 +517,9 @@ function InterviewerLevelSettings({
                             return pre.filter((ele) => ele !== item);
                           });
                         }}
-                        sx={{
-                          p: '5px',
-                        }}
                         deleteIcon={
                           <IconButton>
                             <Icon
-                              width='14'
-                              height='14'
-                              color='grey'
                               variant='CloseThinIcon'
                             />
                           </IconButton>
@@ -575,15 +565,9 @@ function InterviewerLevelSettings({
                             return pre.filter((ele) => ele !== item);
                           });
                         }}
-                        sx={{
-                          p: '5px',
-                        }}
                         deleteIcon={
                           <IconButton>
                             <Icon
-                              width='14'
-                              height='14'
-                              color='grey'
                               variant='CloseThinIcon'
                             />
                           </IconButton>
@@ -629,15 +613,9 @@ function InterviewerLevelSettings({
                             return pre.filter((ele) => ele !== item);
                           });
                         }}
-                        sx={{
-                          p: '5px',
-                        }}
                         deleteIcon={
                           <IconButton>
                             <Icon
-                              width='14'
-                              height='14'
-                              color='grey'
                               variant='CloseThinIcon'
                             />
                           </IconButton>

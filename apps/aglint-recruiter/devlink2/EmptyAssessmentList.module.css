@@ -58,10 +58,6 @@
   z-index: 1;
 }
 
-.icons.ml--6 {
-  margin-left: -6px;
-}
-
 .icons.hide {
   display: none;
 }
@@ -81,14 +77,6 @@
   cursor: pointer;
 }
 
-.icons.picked {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-}
-
 .icons.closediv {
   position: absolute;
   left: auto;
@@ -97,6 +85,11 @@
   bottom: auto;
 
   cursor: pointer;
+}
+
+.icons.lottie {
+  width: 16px;
+  height: 16px;
 }
 
 .text-grey-600 {
@@ -165,12 +158,6 @@
   color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
 }
 
-.inline-block {
-  display: inline;
-  margin-right: 2px;
-  margin-left: 2px;
-}
-
 .clickable {
   transition: all 300ms ease;
   cursor: pointer;
@@ -182,8 +169,4 @@
 
 .text-blue-500.ml-12 {
   margin-left: 8px;
-}
-
-.text-no-wrap {
-  white-space: nowrap;
 }

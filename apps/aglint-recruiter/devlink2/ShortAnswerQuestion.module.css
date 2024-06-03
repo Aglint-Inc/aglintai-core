@@ -20,12 +20,6 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
-.inline-block {
-  display: inline;
-  margin-right: 2px;
-  margin-left: 2px;
-}
-
 @media screen and (max-width: 767px) {
   .text-gray-600.mobile-12 {
     font-size: 12px;
@@ -40,30 +34,13 @@
   max-width: 500px;
 }
 
-.fw-semibold {
-  font-weight: 600;
-}
-
-.text-gray-600.margin_bottom_10 {
-  margin-bottom: 10px;
-}
-
 .text-gray-600.maxwidth-custom {
   max-width: 292px;
-}
-
-.text-gray-600.relative_2 {
-  position: relative;
-  z-index: 2;
 }
 
 .text-sm {
   font-size: 12px;
   line-height: 16px;
-}
-
-.text-xsm {
-  font-size: 10px;
 }
 
 .ps_input_slot {
@@ -87,43 +64,12 @@
   grid-row-gap: 6px;
 }
 
-.ps_input_slot.isloard {
-  position: relative;
-  height: 40px;
-  border-radius: 4px;
-}
-
-.ps_input_slot.isloard.textarea {
-  height: 100px;
-}
-
-.ps_input_slot.options {
-  position: relative;
-
-  display: flex;
-  height: 40px;
-  flex-direction: column;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
-
-  border-radius: 4px;
-}
-
 .ps_input_slot.option_flex {
   display: flex;
   width: 100%;
   flex-direction: column;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-}
-
-.ps_input_slot.is_grid {
-  display: grid;
-  grid-auto-columns: 1fr;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto;
 }
 
 .toggle_flex {
@@ -134,8 +80,16 @@
 }
 
 .slot_toggle {
+  display: flex;
   width: auto;
   height: 20px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.slot_toggle.is_fixed_wisth {
+  width: 30.000001907348633px;
+  height: 0px;
 }
 
 .input_relative {

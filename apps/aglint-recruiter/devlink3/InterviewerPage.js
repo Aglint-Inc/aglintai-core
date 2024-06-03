@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./InterviewerPage.module.css";
 
@@ -11,17 +12,12 @@ export function InterviewerPage({
   slotInterviewerDetail,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1429")} tag="div">
+    <_Component className={_utils.cx(_styles, "interviewer-page")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1430")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey_600")}
-          tag="div"
-        >
-          {textInterviewDetail}
-        </_Builtin.Block>
+        <Text content={textInterviewDetail} weight="" color="neutral" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1431")}

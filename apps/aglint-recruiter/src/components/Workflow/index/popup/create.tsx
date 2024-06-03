@@ -48,7 +48,6 @@ const Create = () => {
           textPopupButton={'Create Workflow'}
           slotWidget={<Form />}
         />
-        ;
       </Dialog>
     </>
   );

@@ -22,6 +22,8 @@ import UITextField from '@/src/components/Common/UITextField';
 import DateRange from '@/src/components/Tasks/Components/DateRange';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
+import { palette } from '../../Theme/Theme';
+
 // eslint-disable-next-line no-unused-vars
 type ArgumentsType<T extends (...args: any[]) => any> = Parameters<T>;
 
@@ -102,7 +104,6 @@ export const FilterHeader = ({
             onChange={(e) => {
               search.setValue(e.target.value);
             }}
-            borderRadius={10}
             height={42}
           />
         </Stack>
@@ -223,7 +224,7 @@ export const FilterHeader = ({
                         <ShowCode.Else>
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DateCalendar
-                            views={['day']}
+                              views={['day']}
                               disablePast
                               value={dayjs(selectedDate[0])}
                               onChange={(e) => {
@@ -380,7 +381,7 @@ function FilterDropDown({
         sx={{
           '& .MuiPopover-paper': {
             borderRadius: '10px',
-            borderColor: '#E9EBED',
+            borderColor: palette.grey[400],
             minWidth: '176px',
             // maxHeight: '400px',
             // overflow: 'hidden',
@@ -594,7 +595,7 @@ const SortDropDown = ({
         sx={{
           '& .MuiPopover-paper': {
             borderRadius: '10px',
-            borderColor: '#E9EBED',
+            borderColor: palette.grey[400],
             minWidth: '176px',
             // maxHeight: '400px',
             // overflow: 'hidden',
@@ -714,7 +715,7 @@ const SortOptionsDropDown = ({
         sx={{
           '& .MuiPopover-paper': {
             borderRadius: '10px',
-            borderColor: '#E9EBED',
+            borderColor: palette.grey[400],
             minWidth: '176px',
           },
         }}

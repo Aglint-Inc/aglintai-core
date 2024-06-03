@@ -440,10 +440,8 @@ const CandidateDashboard = () => {
                           slotImage={
                             <MuiAvatar
                               src={data.avatar}
-                              height='16.26px'
-                              width='16px'
                               level='avatar'
-                              variant='circular'
+                              variant='rounded-xs'
                             />
                           }
                           isCheckboxVisible={true}

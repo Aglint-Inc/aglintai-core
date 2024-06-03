@@ -17,8 +17,8 @@ export async function updateRecruiter(id: string, obj: RecruiterType) {
 export function GreenHouseLogo() {
   return (
     <svg
-      width='60'
-      height='60'
+      width='40'
+      height='40'
       viewBox='0 0 60 60'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
@@ -47,8 +47,8 @@ export function GreenHouseLogo() {
 export function LeverLogo() {
   return (
     <svg
-      width='60'
-      height='60'
+      width='40'
+      height='40'
       viewBox='0 0 60 60'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
@@ -85,8 +85,8 @@ export function LeverLogo() {
 export function AshbyLogo() {
   return (
     <svg
-      width='60'
-      height='60'
+      width='40'
+      height='40'
       viewBox='0 0 60 60'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
@@ -118,8 +118,8 @@ export function AshbyLogo() {
 export function GooglLogo() {
   return (
     <svg
-      width='60'
-      height='60'
+      width='40'
+      height='40'
       viewBox='0 0 60 60'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
@@ -148,8 +148,8 @@ export function GooglLogo() {
 export function SlackLogo() {
   return (
     <svg
-      width='60'
-      height='60'
+      width='40'
+      height='40'
       viewBox='0 0 60 60'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
@@ -194,8 +194,8 @@ export function SlackLogo() {
 export function TeamsLogo() {
   return (
     <svg
-      width='60'
-      height='60'
+      width='40'
+      height='40'
       viewBox='0 0 60 60'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
@@ -278,8 +278,8 @@ export function TeamsLogo() {
 export function ZoomLogo() {
   return (
     <svg
-      width='60'
-      height='60'
+      width='40'
+      height='40'
       viewBox='0 0 60 60'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'

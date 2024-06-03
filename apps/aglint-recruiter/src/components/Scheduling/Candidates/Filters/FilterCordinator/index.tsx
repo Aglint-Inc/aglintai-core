@@ -190,10 +190,7 @@ function FilterCordinator() {
                             option.last_name,
                           )}
                           src={option.profile_image}
-                          variant={'circular'}
-                          width={'20px'}
-                          height={'20px'}
-                          fontSize={'14px'}
+                          variant={'roudend-small'}
                         />
                       }
                       textMemberName={getFullName(
@@ -225,12 +222,9 @@ function FilterCordinator() {
                               option.last_name,
                             )}
                             src={option.profile_image}
-                            variant={'circular'}
-                            width={'20px'}
-                            height={'20px'}
-                            fontSize={'14px'}
+                            variant={'rounded-small'}
                           />
-                          <Typography variant='body2'>
+                          <Typography variant='body1'>
                             {getFullName(option.first_name, option.last_name)}
                           </Typography>
                         </Stack>

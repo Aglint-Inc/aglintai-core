@@ -44,7 +44,6 @@ type Props = {
   height?: number;
   noBorder?: boolean;
   width?: string;
-  borderRadius?: number;
   select?: boolean;
   secondaryText?: string;
   labelBold?: 'default' | 'normal';
@@ -77,7 +76,6 @@ const UITextField = React.forwardRef(
       InputProps,
       children,
       defaultValue,
-      borderRadius = 4,
       width,
       select,
       height,
@@ -119,7 +117,7 @@ const UITextField = React.forwardRef(
           </Stack>
         )}
         {secondaryText && (
-          <Typography variant='body2'>{secondaryText}</Typography>
+          <Typography variant='body1'>{secondaryText}</Typography>
         )}
         <MuiTextField
           name={name}
@@ -151,7 +149,6 @@ const UITextField = React.forwardRef(
           sx={{
             '& .MuiOutlinedInput-root': {
               height: height ? `${height}px !important` : '100%',
-              borderRadius: `${borderRadius}px`,
             },
             width: width,
           }}

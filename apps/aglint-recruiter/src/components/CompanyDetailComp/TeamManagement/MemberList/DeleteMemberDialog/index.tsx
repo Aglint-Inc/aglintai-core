@@ -47,7 +47,7 @@ function DeleteMemberDialog({
             }
             textDescription={
               <>
-                <Typography variant='body2'>
+                <Typography variant='body1'>
                   By clicking delete the member will be permanently deleted.
                 </Typography>
                 {warning && (
@@ -78,7 +78,7 @@ function DeleteMemberDialog({
               </Typography>
             }
             textDescription={
-              <Typography variant='body2'>
+              <Typography variant='body1'>
                 By clicking cancel invitation will be cancelled and removed from
                 the members list.
               </Typography>

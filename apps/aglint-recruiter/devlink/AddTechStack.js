@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { SlotComp } from "./SlotComp";
 import { ButtonPrimaryRegular } from "./ButtonPrimaryRegular";
 import * as _utils from "./utils";
 import _styles from "./AddTechStack.module.css";
@@ -29,13 +31,13 @@ export function AddTechStack({
         className={_utils.cx(_styles, "slot-roles-wrappers")}
         tag="div"
       >
-        {slotTechPills}
+        {slotTechPills ?? <SlotComp componentName="slot for Pills" />}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "slot-input-fomrs-roles")}
         tag="div"
       >
-        {slotInput}
+        {slotInput ?? <SlotComp componentName="slot for MUI Input" />}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "roles-btn-wrappers-pop")}

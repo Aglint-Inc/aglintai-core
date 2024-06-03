@@ -1,7 +1,8 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { VideoSwitcherCard } from "./VideoSwitcherCard";
-import { AudioSwitcherCard } from "./AudioSwitcherCard";
+import { DeleteAudioSwitcherCard } from "./DeleteAudioSwitcherCard";
 import * as _utils from "./utils";
 import _styles from "./AssessmentSetting.module.css";
 
@@ -58,7 +59,7 @@ export function AssessmentSetting({
             {slotSwitchAudioVideo ?? (
               <>
                 <VideoSwitcherCard />
-                <AudioSwitcherCard />
+                <DeleteAudioSwitcherCard />
               </>
             )}
           </_Builtin.Block>

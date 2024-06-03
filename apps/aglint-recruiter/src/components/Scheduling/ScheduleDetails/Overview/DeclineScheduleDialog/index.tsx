@@ -6,6 +6,7 @@ import React, { Dispatch, useEffect, useState } from 'react';
 import { Checkbox } from '@/devlink/Checkbox';
 import { DeletePopup } from '@/devlink3/DeletePopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { palette } from '@/src/context/Theme/Theme';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -101,7 +102,7 @@ function DeclineScheduleDialog({
         isWidget={true}
         slotWidget={
           <Stack spacing={2} width={'100%'}>
-            <Typography variant='body2'>
+            <Typography variant='body1'>
               Please provide a reason for reschedule.
             </Typography>
             <Stack spacing={1}>
@@ -117,7 +118,7 @@ function DeclineScheduleDialog({
                     spacing={1}
                   >
                     <Checkbox isChecked={rea === reason} />
-                    <Typography variant='body2' color={'#000'}>
+                    <Typography variant='body1' color={palette.grey[800]}>
                       {rea}
                     </Typography>
                   </Stack>
@@ -125,7 +126,7 @@ function DeclineScheduleDialog({
               })}
             </Stack>
 
-            <Typography variant='body2'>Additional Notes</Typography>
+            <Typography variant='body1'>Additional Notes</Typography>
             <TextField
               multiline
               value={notes}

@@ -6,7 +6,7 @@
 
 .div-block-1628 {
   padding: 16px 12px;
-  background-color: #f8f9f9;
+  background-color: var(--neutral-2);
 }
 
 .div-block-1629 {
@@ -53,8 +53,9 @@
 }
 
 .text-sm {
-  font-size: 12px;
-  line-height: 16px;
+  font-size: var(--font-size-1);
+  line-height: var(--line-height-1);
+  letter-spacing: var(--letter-spacing-1);
 }
 
 .text-blue-500.cursor-pointer {

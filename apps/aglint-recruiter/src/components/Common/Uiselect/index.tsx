@@ -34,15 +34,10 @@ const UISelect = ({
   label,
   defaultValue,
   startIcon,
-  size = 'md',
 }: Props) => {
   let [focus, setFocus] = useState(false);
-  let outlineColor = palette.grey[300];
-  // let outlineColor = '#b1cee6';
+
   let borderColor = `#b1cee6`;
-  if (focus) {
-    outlineColor = palette.blue[600];
-  }
 
   return (
     <Stack
@@ -64,30 +59,30 @@ const UISelect = ({
         // displayEmpty
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
-        sx={{
-          '&': {
-            width: '100%',
-            fieldset: {
-              py: 0,
+        // sx={{
+        //   '&': {
+        //     width: '100%',
+        //     fieldset: {
+        //       py: 0,
 
-              border: `1px solid ${outlineColor}!important`,
-            },
-            '&:hover fieldset': {
-              py: 0,
+        //       border: `1px solid ${outlineColor}!important`,
+        //     },
+        //     '&:hover fieldset': {
+        //       py: 0,
 
-              border: `1px solid ${outlineColor}!important`,
-            },
-            '.MuiSelect-outlined': {
-              py: 0,
+        //       border: `1px solid ${outlineColor}!important`,
+        //     },
+        //     '.MuiSelect-outlined': {
+        //       py: 0,
 
-              fontSize: '14px',
-              p: size === 'md' ? '8px 14px' : '4px 12px',
-            },
-            outline: `${size === 'md' ? '3px' : '2px'} solid ${
-              focus ? borderColor : 'transparent'
-            }`,
-          },
-        }}
+        //       fontSize: '14px',
+        //       p: size === 'md' ? '8px 14px' : '4px 12px',
+        //     },
+        //     outline: `${size === 'md' ? '3px' : '2px'} solid ${
+        //       focus ? borderColor : 'transparent'
+        //     }`,
+        //   },
+        // }}
         defaultValue={defaultValue}
       >
         {menuOptions.length === 0 ? (
@@ -103,7 +98,7 @@ const UISelect = ({
           </Stack>
         ) : (
           menuOptions.map((menu, idx) => (
-            <MenuItem sx={{ padding: '5px' }} key={idx} value={menu.value}>
+            <MenuItem key={idx} value={menu.value}>
               {menu.name}
             </MenuItem>
           ))

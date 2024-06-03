@@ -255,6 +255,11 @@
   margin-left: -9px;
 }
 
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
 .default_stage {
   position: absolute;
   left: 0%;

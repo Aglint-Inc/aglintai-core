@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -26,12 +27,6 @@ export function EmailTemplateCards({
         >
           {"Edit"}
         </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "text-grey-500", "relative-1")}
-        tag="div"
-      >
-        {textDescription}
       </_Builtin.Block>
       {isActive ? (
         <_Builtin.Block

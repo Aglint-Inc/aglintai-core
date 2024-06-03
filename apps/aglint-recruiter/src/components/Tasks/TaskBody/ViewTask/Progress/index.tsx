@@ -160,10 +160,7 @@ function SubTaskProgress() {
                           <MuiAvatar
                             level={InterviewerCreator?.first_name}
                             src={InterviewerCreator?.profile_image}
-                            variant='circular'
-                            width='24px'
-                            height='24px'
-                            fontSize='12px'
+                            variant='rounded-small'
                           />
                         </ShowCode.When>
                       </ShowCode>
@@ -185,7 +182,7 @@ function SubTaskProgress() {
                             border={'1px solid'}
                             borderColor={'grey.200'}
                           >
-                            <Typography variant='body2'>
+                            <Typography variant='body1'>
                               <span
                                 dangerouslySetInnerHTML={{
                                   __html: marked(

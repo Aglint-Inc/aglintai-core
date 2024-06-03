@@ -1,8 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { PickSlotDay } from "./PickSlotDay";
-import { MultiDaySelect } from "./MultiDaySelect";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./AvailabilityReq.module.css";
 
@@ -37,10 +36,7 @@ export function AvailabilityReq({
       </_Builtin.Block>
       <_Builtin.Block tag="div">
         {slotPickSlotDay ?? (
-          <>
-            <PickSlotDay />
-            <MultiDaySelect />
-          </>
+          <SlotComp componentName="<PickSlotDay> <MultiDaySelect>" />
         )}
       </_Builtin.Block>
       <_Builtin.Block

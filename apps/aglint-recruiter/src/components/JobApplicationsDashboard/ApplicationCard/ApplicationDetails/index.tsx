@@ -775,10 +775,7 @@ const TaskMemeber = ({ task }: { task: JobApplication['tasks'][number] }) => {
     <MuiAvatar
       level={name}
       src={member?.profile_image ?? null}
-      variant='circular'
-      width='24px'
-      height='24px'
-      fontSize='12px'
+      variant='rounded-small'
     />
   );
 };
@@ -1246,7 +1243,7 @@ const ResumeUpload: React.FC<{
             >
               {resume ? <FileIcon /> : <UploadIcon />}
               <Typography
-                variant='body2'
+                variant='body1'
                 sx={{ textAlgin: 'center', fontSize: '14px' }}
                 style={{
                   fontWeight: resume ? 600 : 400,

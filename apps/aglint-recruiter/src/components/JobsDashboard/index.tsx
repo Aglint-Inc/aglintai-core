@@ -110,7 +110,6 @@ const DashboardComp = () => {
                           </InputAdornment>
                         ),
                       }}
-                      borderRadius={10}
                       height={42}
                     />
                   </Stack>

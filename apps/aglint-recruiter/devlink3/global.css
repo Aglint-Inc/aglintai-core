@@ -2508,6 +2508,20 @@ h2 {
   line-height: 1.4;
 }
 
+p {
+  margin-bottom: 10px;
+  color: var(--neutral-11);
+}
+
+a {
+  color: var(--accent-10);
+  text-decoration: underline;
+}
+
+strong {
+  font-weight: bold;
+}
+
 figure {
   margin-bottom: 0px;
 }

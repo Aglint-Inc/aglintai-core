@@ -116,10 +116,7 @@ const AvatarSelectDropDown = ({
                           <MuiAvatar
                             src={url}
                             level={name}
-                            variant='circular'
-                            fontSize='10px'
-                            height='18px'
-                            width='18px'
+                            variant='rounded-xs'
                           />
                         </Stack>
                       ))}
@@ -128,11 +125,7 @@ const AvatarSelectDropDown = ({
                         <MuiAvatar
                           src={null}
                           level={`${menu.start_icon_url.slice(3).length}+`}
-                          variant='circular'
-                          fontSize='10px'
-                          height='18px'
-                          width='18px'
-                          bgColor={palette.grey['400']}
+                          variant='rounded-xs'
                           extended={true}
                         />
                       </Stack>
@@ -142,10 +135,7 @@ const AvatarSelectDropDown = ({
                   <MuiAvatar
                     src={menu.start_icon_url}
                     level={menu.name}
-                    variant='circular'
-                    fontSize='10px'
-                    height='18px'
-                    width='18px'
+                    variant='rounded-xs'
                   />
                 ))}
               {menu.name}

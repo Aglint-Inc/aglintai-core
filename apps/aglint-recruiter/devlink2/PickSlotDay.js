@@ -2,9 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
-import { CalendarPick } from "./CalendarPick";
-import { TimePick } from "./TimePick";
-import { ButtonPrimary } from "./ButtonPrimary";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./PickSlotDay.module.css";
 
@@ -59,7 +57,7 @@ export function PickSlotDay({
           className={_utils.cx(_styles, "slot-calender-pick")}
           tag="div"
         >
-          {slotCalenderPick ?? <CalendarPick />}
+          {slotCalenderPick ?? <SlotComp componentName="CalanderPick" />}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
@@ -105,7 +103,7 @@ export function PickSlotDay({
           ) : null}
         </_Builtin.Block>
         <_Builtin.Block tag="div">
-          {slotTimePick ?? <TimePick slotSlotPicker={slotSlotPicker} />}
+          {slotTimePick ?? <SlotComp componentName="TimePick" />}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
@@ -116,7 +114,7 @@ export function PickSlotDay({
           className={_utils.cx(_styles, "div-block-1716")}
           tag="div"
         >
-          {slotPrimaryButton ?? <ButtonPrimary />}
+          {slotPrimaryButton ?? <SlotComp componentName="PrimaryButton" />}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

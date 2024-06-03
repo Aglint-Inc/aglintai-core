@@ -6,7 +6,7 @@ interface MuiAvatarProps {
   level: string;
   width?: string;
   height?: string;
-  variant: 'circular' | 'rounded' | 'square';
+  variant: 'circular' | 'rounded' | 'square' | 'rounded-xs' | 'rounded-small' | 'rounded-medium' | 'rounded-large';
   src?: string;
   fontSize?: string;
   dynamicSizing?: boolean;

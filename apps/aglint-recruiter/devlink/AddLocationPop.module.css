@@ -23,10 +23,6 @@
   font-weight: 600;
 }
 
-.text-capitalize-word {
-  text-transform: capitalize;
-}
-
 .fw-semibold.one-line-clamp.mx-width-662 {
   max-width: 612px;
 }
@@ -48,20 +44,8 @@
   opacity: 0.7;
 }
 
-.fw-semibold.cursor-pointer.capitialize {
-  text-transform: capitalize;
-}
-
 .color-grey-600 {
   color: #68737d;
-}
-
-.fw-semibold.color-grey-600.margin-top-10 {
-  margin-top: 10px;
-}
-
-.text-align-center {
-  text-align: center;
 }
 
 .hide {
@@ -79,14 +63,6 @@
   color: var(--blue800-09c1dfbf);
 }
 
-.text-grey-800 {
-  color: var(--grey800-e42b2e06);
-}
-
-.fw-semibold.margin-right-5 {
-  margin-right: 5px;
-}
-
 .fw-semibold.text-kale-800 {
   color: #012b30;
 }
@@ -101,14 +77,6 @@
 
 .text-grey-700 {
   color: var(--grey700-7fbe857b);
-}
-
-.text-grey-100 {
-  color: var(--gray100-3a86b552);
-}
-
-.text-red-800 {
-  color: var(--red800-2e6a9098);
 }
 
 .color-black {
@@ -129,30 +97,6 @@
 
 .color-grey-500 {
   color: var(--grey500-0d508ad8);
-}
-
-.fw-semibold.indeed {
-  display: none;
-}
-
-.fw-semibold.lever {
-  display: none;
-}
-
-.fw-semibold.workday {
-  display: none;
-}
-
-.fw-semibold.indeed-text {
-  display: none;
-}
-
-.fw-semibold.lever-text {
-  display: none;
-}
-
-.fw-semibold.workday-text {
-  display: none;
 }
 
 .text-grey-500 {
@@ -207,15 +151,6 @@
   color: var(--grey400-863ed4b5);
 }
 
-.fw-semibold.grow-line {
-  flex: 0 0 auto;
-}
-
-.fw-semibold.z-index-5 {
-  position: relative;
-  z-index: 5;
-}
-
 .fw-semibold.text-lg.text-yellow-600.mobile-14 {
   color: #ed8f1c;
   -webkit-text-stroke-color: #ed8f1c;
@@ -227,24 +162,8 @@
   }
 }
 
-.fw-semibold.mb-14 {
-  margin-bottom: 14px;
-}
-
 .color-blue-600 {
   color: var(--blue600-aad8d97e);
-}
-
-.fw-semibold.mb-15 {
-  margin-bottom: 15px;
-}
-
-.fw-semibold.text-kale-700 {
-  color: #03363d;
-}
-
-.text-kale-700 {
-  color: var(--kale700-f5e4c087);
 }
 
 .fw-semibold.new-greenhouse {
@@ -261,6 +180,10 @@
 
 .text-red-500 {
   color: var(--red500-2e806c7d);
+}
+
+.text-align-center {
+  text-align: center;
 }
 
 .text-gray-600 {
@@ -284,21 +207,6 @@
   margin-top: 20px;
 }
 
-.fw-semibold.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.text-sm {
-  font-size: 12px;
-  line-height: 1.4;
-}
-
 .div-block-988 {
   display: flex;
   margin-top: 10px;
@@ -313,16 +221,8 @@
   align-items: center;
 }
 
-.icons.cursor-pointer.width-28 {
-  width: 28px;
-}
-
 .icons.cursor-pointer.height-28 {
   height: 28px;
-}
-
-.icons.cursor-pointer.p-4 {
-  padding: 4px;
 }
 
 .icons.cursor-pointer.three-dot {
@@ -342,10 +242,6 @@
 
 .icons.rotate-180 {
   transform: rotate(180deg);
-}
-
-.icons.pause {
-  display: none;
 }
 
 .icons.avatar-play {
@@ -381,8 +277,8 @@
   display: none;
 }
 
-.icons.mb-63 {
-  margin-bottom: 63px;
+.icons.mb-9 {
+  margin-bottom: var(--space-9);
 }
 
 .mt-4 {
@@ -399,6 +295,10 @@
 
 .icons.mt-2 {
   margin-top: 2px;
+}
+
+.mt-2 {
+  margin-top: var(--space-2);
 }
 
 .icons.bookmarked {

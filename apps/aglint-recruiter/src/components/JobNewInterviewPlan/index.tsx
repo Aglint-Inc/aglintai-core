@@ -537,10 +537,7 @@ const InterviewSessionMember = ({ member }: InterviewSessionMemberProps) => {
         <MuiAvatar
           src={member.profile_image}
           level={name}
-          variant='circular'
-          fontSize='10px'
-          height='100%'
-          width='100%'
+          variant='rounded-small'
         />
       }
     />

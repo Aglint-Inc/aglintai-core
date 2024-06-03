@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { SlotComp } from "./SlotComp";
 import { ButtonPrimaryRegular } from "./ButtonPrimaryRegular";
 import * as _utils from "./utils";
 import _styles from "./NewSocialLinkPop.module.css";
@@ -29,7 +31,7 @@ export function NewSocialLinkPop({
         className={_utils.cx(_styles, "slot-social-forms")}
         tag="div"
       >
-        {slotSocialForms}
+        {slotSocialForms ?? <SlotComp componentName="Slot for MUI form" />}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "roles-btn-wrappers-pop")}

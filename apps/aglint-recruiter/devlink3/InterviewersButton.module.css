@@ -1,27 +1,27 @@
-.div-block-1448 {
+.task-switch-button-group {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
 }
 
-.div-block-1443 {
+.task-switch-button-group-inner {
   display: flex;
   overflow: hidden;
   justify-content: flex-start;
   align-items: center;
 
   border: 1px solid #d8dcde;
-  border-radius: 10px;
+  border-radius: var(--radius-2);
 
   cursor: pointer;
 }
 
-.div-block-1444 {
+.task-switch-button {
   position: relative;
-  padding: 10px;
+  padding: var(--space-1);
 }
 
-.div-block-1445 {
+.task-switch-button-inner {
   position: absolute;
   left: 0%;
   top: 0%;
@@ -32,7 +32,7 @@
   justify-content: center;
   align-items: center;
 
-  background-color: #e9ebed;
+  background-color: var(--sand-1);
 }
 
 .icons {
@@ -99,7 +99,7 @@
 }
 
 .text-grey_600 {
-  color: #68737d;
+  color: var(--sand-11);
 }
 
 .text-grey_600.hide {
@@ -128,8 +128,9 @@
 }
 
 .text-sm {
-  font-size: 12px;
-  line-height: 16px;
+  font-size: var(--font-size-1);
+  line-height: var(--line-height-1);
+  letter-spacing: var(--letter-spacing-1);
 }
 
 .text-grey_600.text-underline-copy {

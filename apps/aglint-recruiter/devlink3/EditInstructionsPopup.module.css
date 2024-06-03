@@ -139,7 +139,7 @@
 }
 
 .text-grey_600 {
-  color: #68737d;
+  color: var(--sand-11);
 }
 
 .fw-semibold.name-text {
@@ -150,15 +150,15 @@
   display: none;
 }
 
-.po-up_close {
+.popup_close {
   cursor: pointer;
 }
 
-.po-up_close.cursor-pointer {
+.popup_close.cursor-pointer {
   transition: all 250ms ease;
 }
 
-.po-up_close.cursor-pointer:hover {
+.popup_close.cursor-pointer:hover {
   opacity: 0.8;
 }
 
@@ -383,7 +383,7 @@
 
   transition: all 200ms ease-in-out;
 
-  color: white;
+  color: var(--white);
 
   cursor: pointer;
 }

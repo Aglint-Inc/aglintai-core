@@ -17,31 +17,6 @@
   border-radius: 100px;
 }
 
-.div-block-1272.blue {
-  background-color: #edf7ff;
-  color: #144a75;
-}
-
-.div-block-1272.grey {
-  background-color: #f8f9f9;
-  color: #49545c;
-}
-
-.div-block-1272.kale {
-  background-color: #f5fcfc;
-  color: #17494d;
-}
-
-.div-block-1272.red {
-  background-color: #fff0f1;
-  color: #8c232c;
-}
-
-.div-block-1272.yellow {
-  background-color: #fff7ed;
-  color: #ad5918;
-}
-
 .div-block-1272.confirmed {
   color: #337fbd;
 }
@@ -100,10 +75,6 @@
   z-index: 1;
 }
 
-.icons.ml--6 {
-  margin-left: -6px;
-}
-
 .icons.hide {
   display: none;
 }
@@ -121,6 +92,21 @@
 
 .icons.pointer {
   cursor: pointer;
+}
+
+.icons.closediv {
+  position: absolute;
+  left: auto;
+  top: -7px;
+  right: -7px;
+  bottom: auto;
+
+  cursor: pointer;
+}
+
+.icons.lottie {
+  width: 16px;
+  height: 16px;
 }
 
 .text-green-500 {

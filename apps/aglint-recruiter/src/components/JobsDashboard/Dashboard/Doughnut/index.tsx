@@ -142,13 +142,13 @@ const DashboardDoughnutChart: FC<{
                     }}
                   />
                   <Typography
-                    variant='body2'
+                    variant='body1'
                     sx={{ textWrap: 'nowrap', textTransform: 'capitalize' }}
                   >
                     {capitalize(name)}
                   </Typography>
                 </Stack>
-                <Typography variant='body2'>
+                <Typography variant='body1'>
                   {((count / totalCount) * 100).toFixed(0)}%
                 </Typography>
               </Stack>
