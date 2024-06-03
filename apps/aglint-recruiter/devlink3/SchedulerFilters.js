@@ -1,15 +1,14 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { SlotComp } from "./SlotComp";
 import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
+import { TimeRangeSelector } from "./TimeRangeSelector";
 import * as _utils from "./utils";
 import _styles from "./SchedulerFilters.module.css";
 
 export function SchedulerFilters({
   as: _Component = _Builtin.Block,
-  textDateRange = "April 04 - April 05",
-  onClickEditDateRange = {},
   textNumberNoConflicts = "0",
   textNumberSoftConflicts = "0",
   textNumberHardConflicts = "0",
@@ -20,31 +19,27 @@ export function SchedulerFilters({
     </>
   ),
   slotSuggestionControlTooltip,
-  slotPreferedInterviewers,
   slotPreferedInterviewersSearch,
-  slotPreferedTimeRanges,
-  slotTimeRangeSearch,
+  slotTimeRangeSelector,
   slotCheckbox,
+  textDateRange = "April 04 - April 05",
 }) {
   return (
     <_Component
       className={_utils.cx(_styles, "schedule_preferences")}
       tag="div"
     >
-      <_Builtin.Block
-        className={_utils.cx(_styles, "timeblock", "is_link")}
-        tag="div"
-      >
-        <_Builtin.HtmlEmbed
-          className={_utils.cx(_styles, "embed_flex-3")}
-          value="%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewbox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M7%202.5V4H13V2.5C13.0208%202.1875%2013.1875%202.02083%2013.5%202C13.8125%202.02083%2013.9792%202.1875%2014%202.5V4H15C15.5625%204.02083%2016.0312%204.21875%2016.4062%204.59375C16.7812%204.96875%2016.9792%205.4375%2017%206V7V8V16C16.9792%2016.5625%2016.7812%2017.0312%2016.4062%2017.4062C16.0312%2017.7812%2015.5625%2017.9792%2015%2018H5C4.4375%2017.9792%203.96875%2017.7812%203.59375%2017.4062C3.21875%2017.0312%203.02083%2016.5625%203%2016V8V7V6C3.02083%205.4375%203.21875%204.96875%203.59375%204.59375C3.96875%204.21875%204.4375%204.02083%205%204H6V2.5C6.02083%202.1875%206.1875%202.02083%206.5%202C6.8125%202.02083%206.97917%202.1875%207%202.5ZM4%208V16C4%2016.2917%204.09375%2016.5312%204.28125%2016.7188C4.46875%2016.9062%204.70833%2017%205%2017H15C15.2917%2017%2015.5312%2016.9062%2015.7188%2016.7188C15.9062%2016.5312%2016%2016.2917%2016%2016V8H4ZM5%205C4.70833%205%204.46875%205.09375%204.28125%205.28125C4.09375%205.46875%204%205.70833%204%206V7H16V6C16%205.70833%2015.9062%205.46875%2015.7188%205.28125C15.5312%205.09375%2015.2917%205%2015%205H5ZM6.25%2010C6.10417%2010.0208%206.02083%2010.1042%206%2010.25V12.75C6.02083%2012.8958%206.10417%2012.9792%206.25%2013H13.75C13.8958%2012.9792%2013.9792%2012.8958%2014%2012.75V10.25C13.9792%2010.1042%2013.8958%2010.0208%2013.75%2010H6.25ZM5%2010.25C5%209.89583%205.125%209.60417%205.375%209.375C5.60417%209.125%205.89583%209%206.25%209H13.75C14.1042%209%2014.3958%209.125%2014.625%209.375C14.875%209.60417%2015%209.89583%2015%2010.25V12.75C15%2013.1042%2014.875%2013.3958%2014.625%2013.625C14.3958%2013.875%2014.1042%2014%2013.75%2014H6.25C5.89583%2014%205.60417%2013.875%205.375%2013.625C5.125%2013.3958%205%2013.1042%205%2012.75V10.25Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
-        />
-        <_Builtin.Block tag="div">{textDateRange}</_Builtin.Block>
-        <_Builtin.HtmlEmbed
-          className={_utils.cx(_styles, "embed_flex-3")}
-          value="%3Csvg%20width%3D%2215%22%20height%3D%2216%22%20viewbox%3D%220%200%2015%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M12.1641%203.05469C12.0078%202.91406%2011.8281%202.84375%2011.625%202.84375C11.4219%202.84375%2011.2422%202.91406%2011.0859%203.05469L10.4766%203.6875L11.8125%205.02344L12.4453%204.41406C12.5859%204.25781%2012.6562%204.07812%2012.6562%203.875C12.6562%203.67187%2012.5859%203.49219%2012.4453%203.33594L12.1641%203.05469ZM5.92969%208.23438C5.83594%208.32812%205.77344%208.44531%205.74219%208.58594L5.36719%2010.1328L6.91406%209.78125C7.05469%209.73438%207.17188%209.66406%207.26562%209.57031L11.2734%205.5625L9.9375%204.22656L5.92969%208.23438ZM10.5703%202.53906C10.8828%202.24219%2011.2344%202.09375%2011.625%202.09375C12.0312%202.09375%2012.3828%202.24219%2012.6797%202.53906L12.9609%202.82031C13.2578%203.13281%2013.4062%203.48437%2013.4062%203.875C13.4062%204.28125%2013.2578%204.63281%2012.9609%204.92969L7.80469%2010.1094C7.60156%2010.3125%207.35938%2010.4453%207.07812%2010.5078L4.96875%2011C4.82812%2011.0156%204.71094%2010.9766%204.61719%2010.8828C4.52344%2010.7891%204.48438%2010.6797%204.5%2010.5547L4.99219%208.42188C5.05469%208.14062%205.1875%207.89844%205.39062%207.69531L10.5703%202.53906ZM3.375%203.5H6.375C6.60938%203.51563%206.73438%203.64062%206.75%203.875C6.73438%204.10938%206.60938%204.23438%206.375%204.25H3.375C3.0625%204.26562%202.79688%204.375%202.57812%204.57812C2.375%204.79688%202.26562%205.0625%202.25%205.375V12.125C2.26562%2012.4375%202.375%2012.7031%202.57812%2012.9219C2.79688%2013.125%203.0625%2013.2344%203.375%2013.25H10.125C10.4375%2013.2344%2010.7031%2013.125%2010.9219%2012.9219C11.125%2012.7031%2011.2344%2012.4375%2011.25%2012.125V9.125C11.2656%208.89062%2011.3906%208.76562%2011.625%208.75C11.8594%208.76562%2011.9844%208.89062%2012%209.125V12.125C11.9844%2012.6562%2011.8047%2013.1016%2011.4609%2013.4609C11.1016%2013.8047%2010.6562%2013.9844%2010.125%2014H3.375C2.84375%2013.9844%202.39844%2013.8047%202.03906%2013.4609C1.69531%2013.1016%201.51562%2012.6562%201.5%2012.125V5.375C1.51562%204.84375%201.69531%204.39844%202.03906%204.03906C2.39844%203.69531%202.84375%203.51563%203.375%203.5Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
-          {...onClickEditDateRange}
-        />
+      <_Builtin.Block className={_utils.cx(_styles, "slottimeblock")} tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "timeblock", "is_link")}
+          tag="div"
+        >
+          <_Builtin.HtmlEmbed
+            className={_utils.cx(_styles, "embed_flex-3")}
+            value="%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewbox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M7%202.5V4H13V2.5C13.0208%202.1875%2013.1875%202.02083%2013.5%202C13.8125%202.02083%2013.9792%202.1875%2014%202.5V4H15C15.5625%204.02083%2016.0312%204.21875%2016.4062%204.59375C16.7812%204.96875%2016.9792%205.4375%2017%206V7V8V16C16.9792%2016.5625%2016.7812%2017.0312%2016.4062%2017.4062C16.0312%2017.7812%2015.5625%2017.9792%2015%2018H5C4.4375%2017.9792%203.96875%2017.7812%203.59375%2017.4062C3.21875%2017.0312%203.02083%2016.5625%203%2016V8V7V6C3.02083%205.4375%203.21875%204.96875%203.59375%204.59375C3.96875%204.21875%204.4375%204.02083%205%204H6V2.5C6.02083%202.1875%206.1875%202.02083%206.5%202C6.8125%202.02083%206.97917%202.1875%207%202.5ZM4%208V16C4%2016.2917%204.09375%2016.5312%204.28125%2016.7188C4.46875%2016.9062%204.70833%2017%205%2017H15C15.2917%2017%2015.5312%2016.9062%2015.7188%2016.7188C15.9062%2016.5312%2016%2016.2917%2016%2016V8H4ZM5%205C4.70833%205%204.46875%205.09375%204.28125%205.28125C4.09375%205.46875%204%205.70833%204%206V7H16V6C16%205.70833%2015.9062%205.46875%2015.7188%205.28125C15.5312%205.09375%2015.2917%205%2015%205H5ZM6.25%2010C6.10417%2010.0208%206.02083%2010.1042%206%2010.25V12.75C6.02083%2012.8958%206.10417%2012.9792%206.25%2013H13.75C13.8958%2012.9792%2013.9792%2012.8958%2014%2012.75V10.25C13.9792%2010.1042%2013.8958%2010.0208%2013.75%2010H6.25ZM5%2010.25C5%209.89583%205.125%209.60417%205.375%209.375C5.60417%209.125%205.89583%209%206.25%209H13.75C14.1042%209%2014.3958%209.125%2014.625%209.375C14.875%209.60417%2015%209.89583%2015%2010.25V12.75C15%2013.1042%2014.875%2013.3958%2014.625%2013.625C14.3958%2013.875%2014.1042%2014%2013.75%2014H6.25C5.89583%2014%205.60417%2013.875%205.375%2013.625C5.125%2013.3958%205%2013.1042%205%2012.75V10.25Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
+          />
+          <_Builtin.Block tag="div">{textDateRange}</_Builtin.Block>
+        </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "conflict_block_wrapper")}
@@ -54,12 +49,7 @@ export function SchedulerFilters({
           className={_utils.cx(_styles, "conflict_block")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {textNumberNoConflicts}
-          </_Builtin.Block>
+          <Text content={textNumberNoConflicts} />
           <_Builtin.Block
             className={_utils.cx(_styles, "type_of_conflict")}
             tag="div"
@@ -80,12 +70,7 @@ export function SchedulerFilters({
           className={_utils.cx(_styles, "conflict_block")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {textNumberSoftConflicts}
-          </_Builtin.Block>
+          <Text content={textNumberSoftConflicts} />
           <_Builtin.Block
             className={_utils.cx(_styles, "type_of_conflict")}
             tag="div"
@@ -106,12 +91,7 @@ export function SchedulerFilters({
           className={_utils.cx(_styles, "conflict_block")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {textNumberHardConflicts}
-          </_Builtin.Block>
+          <Text content={textNumberHardConflicts} />
           <_Builtin.Block
             className={_utils.cx(_styles, "type_of_conflict")}
             tag="div"
@@ -132,12 +112,7 @@ export function SchedulerFilters({
           className={_utils.cx(_styles, "conflict_block")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {textNumberOutsideWorkHours}
-          </_Builtin.Block>
+          <Text content={textNumberOutsideWorkHours} />
           <_Builtin.Block
             className={_utils.cx(_styles, "type_of_conflict")}
             tag="div"
@@ -183,25 +158,44 @@ export function SchedulerFilters({
           {"Prefered Interviewers"}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "flex_ver_left_16")}
+          className={_utils.cx(_styles, "slot_prefer_user_search_fielf")}
+          tag="div"
+        >
+          {slotPreferedInterviewersSearch ?? (
+            <SlotComp componentNeme="Slot for preferred Interviewers" />
+          )}
+        </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "sub_session_with_heading")}
+        tag="div"
+      >
+        <_Builtin.Block
+          className={_utils.cx(_styles, "header_wrapper")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "slot_prefered_users")}
+            className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
-            {slotPreferedInterviewers ?? (
-              <_Builtin.Block tag="div">{"SelectedMemberPill"}</_Builtin.Block>
-            )}
+            {"Prefered Time Ranges"}
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "slot_prefer_user_search_fielf")}
-            tag="div"
-          >
-            {slotPreferedInterviewersSearch ?? (
-              <SlotComp componentNeme="Slot for preferred Interviewers" />
-            )}
-          </_Builtin.Block>
+          <Text
+            content="Add the time ranges that you are available"
+            color="neutral"
+            weight=""
+          />
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "slot_prefer_user_search_fielf")}
+          tag="div"
+        >
+          {slotTimeRangeSelector ?? (
+            <>
+              <SlotComp componentNeme="Slot for time range selector" />
+              <TimeRangeSelector />
+            </>
+          )}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
@@ -209,50 +203,31 @@ export function SchedulerFilters({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Prefered Time Ranges"}
+          {"Preference by workload"}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "flex_ver_left_16")}
+          className={_utils.cx(_styles, "checkbox_wrap")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "slot_prefered_users")}
+            className={_utils.cx(_styles, "checkbox_text")}
             tag="div"
           >
-            {slotPreferedTimeRanges ?? (
-              <_Builtin.Block tag="div">{"SelectedMemberPill"}</_Builtin.Block>
-            )}
+            <_Builtin.Block tag="div">
+              {slotCheckbox ?? (
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "embed_flex")}
+                  value="%3Csvg%20width%3D%2216%22%20height%3D%2220%22%20viewBox%3D%220%200%2016%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20y%3D%222%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%224%22%20fill%3D%22%231F73B7%22%2F%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M7%2010.5858L10.2929%207.29289C10.6834%206.90237%2011.3166%206.90237%2011.7071%207.29289C12.0976%207.68342%2012.0976%208.31658%2011.7071%208.70711L7.70711%2012.7071C7.31658%2013.0976%206.68342%2013.0976%206.29289%2012.7071L4.29289%2010.7071C3.90237%2010.3166%203.90237%209.68342%204.29289%209.29289C4.68342%208.90237%205.31658%208.90237%205.70711%209.29289L7%2010.5858Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
+                />
+              )}
+            </_Builtin.Block>
+            <Text
+              content="Workload availability set for each interviewers considered as a preference."
+              color="neutral"
+              weight=""
+            />
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "slot_prefer_user_search_fielf")}
-          tag="div"
-        >
-          {slotTimeRangeSearch ?? (
-            <SlotComp componentNeme="Slot for time range search" />
-          )}
-        </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "checkbox_wrap")} tag="div">
-        <_Builtin.Block
-          className={_utils.cx(_styles, "checkbox_text")}
-          tag="div"
-        >
-          <_Builtin.Block tag="div">
-            {slotCheckbox ?? (
-              <_Builtin.HtmlEmbed
-                className={_utils.cx(_styles, "embed_flex")}
-                value="%3Csvg%20width%3D%2216%22%20height%3D%2220%22%20viewBox%3D%220%200%2016%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20y%3D%222%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%224%22%20fill%3D%22%231F73B7%22%2F%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M7%2010.5858L10.2929%207.29289C10.6834%206.90237%2011.3166%206.90237%2011.7071%207.29289C12.0976%207.68342%2012.0976%208.31658%2011.7071%208.70711L7.70711%2012.7071C7.31658%2013.0976%206.68342%2013.0976%206.29289%2012.7071L4.29289%2010.7071C3.90237%2010.3166%203.90237%209.68342%204.29289%209.29289C4.68342%208.90237%205.31658%208.90237%205.70711%209.29289L7%2010.5858Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
-              />
-            )}
-          </_Builtin.Block>
-          <Text content="" weight="medium" />
-        </_Builtin.Block>
-        <Text
-          content="Workload availability set for each interviewers considered as a preference."
-          color="neutral"
-          weight=""
-        />
       </_Builtin.Block>
     </_Component>
   );

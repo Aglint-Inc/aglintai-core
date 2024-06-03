@@ -7,10 +7,6 @@
   border-radius: 10px;
 }
 
-.relative.zindex-3 {
-  z-index: 3;
-}
-
 .relative.ai-comm {
   overflow: hidden;
   border-radius: 4px;
@@ -38,14 +34,6 @@
   grid-row-gap: 4px;
 }
 
-.relative.width-inc {
-  width: 162.1171875px;
-}
-
-.mt-10 {
-  margin-top: 10px;
-}
-
 .email-outreach-button {
   display: flex;
   padding: 3px 9px;
@@ -67,6 +55,11 @@
 
 .email-outreach-button:hover {
   opacity: 0.6;
+}
+
+.email-outreach-button.p-4 {
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
 .text-email-out {
@@ -94,16 +87,8 @@
   opacity: 0.7;
 }
 
-.icons.cursor-pointer.width-28 {
-  width: 28px;
-}
-
 .icons.cursor-pointer.height-28 {
   height: 28px;
-}
-
-.icons.cursor-pointer.p-4 {
-  padding: 4px;
 }
 
 .icons.cursor-pointer.three-dot {
@@ -123,10 +108,6 @@
 
 .icons.rotate-180 {
   transform: rotate(180deg);
-}
-
-.icons.pause {
-  display: none;
 }
 
 .icons.avatar-play {
@@ -166,8 +147,8 @@
   display: none;
 }
 
-.icons.mb-63 {
-  margin-bottom: 63px;
+.icons.mb-9 {
+  margin-bottom: var(--space-9);
 }
 
 .mt-4 {
@@ -180,6 +161,27 @@
 
 .icons.mr--10 {
   margin-right: -8px;
+}
+
+.icons.mt-2 {
+  margin-top: 2px;
+}
+
+.mt-2 {
+  margin-top: var(--space-2);
+}
+
+.icons.bookmarked {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
+.icons.start {
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .email-outreach-fetching {

@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -16,6 +17,7 @@ export function InterviewConfirmed({
   textPlatformName = "Google Meet",
   textSentMail = "Information has sent to raimonrts@gmail.com",
   onClickContactSupport = {},
+  slotBanner,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "interview-confirmed")} tag="div">
@@ -25,6 +27,9 @@ export function InterviewConfirmed({
         tag="div"
       >
         {"Interview Confirmed !"}
+      </_Builtin.Block>
+      <_Builtin.Block className={_utils.cx(_styles, "div-block-989")} tag="div">
+        {slotBanner}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "text-lg", "text-grey-600")}

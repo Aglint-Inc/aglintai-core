@@ -6,4 +6,5 @@ declare function SlotPicker(props: {
   textDateHeading?: React.ReactNode;
   onClickClose?: Types.Devlink.RuntimeProps;
   slotTime?: Types.Devlink.Slot;
+  isCloseButtonVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

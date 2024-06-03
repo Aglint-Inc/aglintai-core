@@ -1,6 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { OptionAvailable } from "./OptionAvailable";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./AvailableOptionCardDate.module.css";
 
@@ -48,7 +49,7 @@ export function AvailableOptionCardDate({
         className={_utils.cx(_styles, "div-block-1110")}
         tag="div"
       >
-        {slotOptionAvailable ?? <OptionAvailable />}
+        {slotOptionAvailable ?? <SlotComp componentName="OptionAvailable" />}
       </_Builtin.Block>
     </_Component>
   );

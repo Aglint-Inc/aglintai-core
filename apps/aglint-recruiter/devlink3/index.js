@@ -212,6 +212,8 @@ export * from "./TaskUpdateButton";
 export * from "./TeamEmpty";
 export * from "./Text";
 export * from "./ThemeStyle";
+export * from "./TimeBlock";
+export * from "./TimeRangeSelector";
 export * from "./Timeline";
 export * from "./TimelineBlock";
 export * from "./TimelineDummyOne";

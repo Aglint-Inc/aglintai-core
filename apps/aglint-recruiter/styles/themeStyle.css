@@ -203,12 +203,14 @@ body.component-grid > div:not(.w-embed) {
     fill: var(--accent-9);
 }
 [class*="ButtonPrimaryDefaultRegular_button-block__"],
-[class*="ConfirmationPopup_button_primary__"]  {
+[class*="ConfirmationPopup_button_primary__"]
+[class*="ButtonPrimaryRegular_is-button-bg-blue__"]  {
     background-color: var(--accent-9) !important;
     color: var(--neutral-1) !important;
 }
 [class*="ButtonPrimaryDefaultRegular_button-block__"]:hover,
-[class*="ConfirmationPopup_button_primary__"]:hover {
+[class*="ConfirmationPopup_button_primary__"]:hover
+[class*="ButtonPrimaryRegular_is-button-bg-blue__"]:hover {
     background-color: var(--accent-10) !important;
 }
 [class*="ConfirmationPopup_greay_btn__"] {

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./ResetPassword.module.css";
 
@@ -22,18 +23,21 @@ export function ResetPassword({
             className={_utils.cx(_styles, "forgot-password-header-wrapper")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-xl", "fw-semibold")}
-              tag="div"
-            >
-              {"Reset Password"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-md", "text-grey-600")}
-              tag="div"
-            >
-              {"Enter new password to reset your password for your account."}
-            </_Builtin.Block>
+            <Text
+              content="Reset Password"
+              size="6"
+              weight="bold"
+              align=""
+              highContrast=""
+            />
+            <Text
+              content="Enter new password to reset your password for your account."
+              size="2"
+              weight=""
+              align=""
+              highContrast=""
+              color="neutral"
+            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "forgot-password-slot")}

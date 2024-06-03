@@ -1,8 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { TrainingProgressList } from "./TrainingProgressList";
-import { TrainingProgressLoader } from "./TrainingProgressLoader";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./TrainingProgress.module.css";
 
@@ -96,8 +95,8 @@ export function TrainingProgress({
         <_Builtin.Block tag="div">
           {slotTrainingProgressList ?? (
             <>
-              <TrainingProgressList />
-              <TrainingProgressLoader />
+              <SlotComp componentNeme="TrainingProgressList" />
+              <SlotComp componentNeme="TrainingProgressLoader" />
             </>
           )}
         </_Builtin.Block>
