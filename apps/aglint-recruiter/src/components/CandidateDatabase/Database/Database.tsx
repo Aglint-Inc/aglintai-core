@@ -215,10 +215,7 @@ const CandDatabase = () => {
                             detail.last_name,
                           )}
                           src={detail.profile_image}
-                          fontSize={'12px'}
-                          variant={'rounded'}
-                          width={'100%'}
-                          height={'100%'}
+                          variant={'rounded-small'}
                         />
                       }
                       textName={getFullName(

@@ -775,10 +775,7 @@ const TaskMemeber = ({ task }: { task: JobApplication['tasks'][number] }) => {
     <MuiAvatar
       level={name}
       src={member?.profile_image ?? null}
-      variant='circular'
-      width='24px'
-      height='24px'
-      fontSize='12px'
+      variant='rounded-small'
     />
   );
 };

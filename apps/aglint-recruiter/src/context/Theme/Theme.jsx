@@ -617,9 +617,64 @@ function Theme({ children }) {
       MuiAvatar: {
         styleOverrides: {
           root: {
-            width: 'var(--space-7)',
-            height: 'var(--space-7)',
-            fontFamily: 'var(--text)', // Use --text for font
+            objectFit: 'cover',
+            '&.MuiAvatar-circular-small': {
+              fontSize: 'var(--font-size-2)',
+              width: 'var(--space-5)',
+              height: 'var(--space-5)',
+            },
+            '&.MuiAvatar-circular-medium': {
+              fontSize: 'var(--font-size-4)',
+              width: 'var(--space-7)',
+              height: 'var(--space-7)',
+            },
+            '&.MuiAvatar-circular-large': {
+              fontSize: 'var(--font-size-6)',
+              width: 'var(--space-9)',
+              height: 'var(--space-9)',
+            },
+            '&.MuiAvatar-rounded-xs': {
+              fontSize: 'var(--font-size-2)',
+              width: 'var(--space-4)',
+              height: 'var(--space-4)',
+              borderRadius: 'var(--radius-4)',
+            },
+            '&.MuiAvatar-rounded-small': {
+              fontSize: 'var(--font-size-2)',
+              width: 'var(--space-5)',
+              height: 'var(--space-5)',
+              borderRadius: 'var(--radius-4)',
+            },
+            '&.MuiAvatar-rounded-medium': {
+              fontSize: 'var(--font-size-4)',
+              width: 'var(--space-7)',
+              height: 'var(--space-7)',
+              borderRadius: 'var(--radius-4)',
+            },
+            '&.MuiAvatar-rounded-large': {
+              fontSize: 'var(--font-size-6)',
+              width: 'var(--space-9)',
+              height: 'var(--space-9)',
+              borderRadius: 'var(--radius-4)',
+            },
+            '&.MuiAvatar-square-small': {
+              fontSize: 'var(--font-size-2)',
+              width: 'var(--space-5)',
+              height: 'var(--space-5)',
+              borderRadius: 'var(--radius-2)',
+            },
+            '&.MuiAvatar-square-medium': {
+              fontSize: 'var(--font-size-4)',
+              width: 'var(--space-7)',
+              height: 'var(--space-7)',
+              borderRadius: 'var(--radius-2)',
+            },
+            '&.MuiAvatar-square-large': {
+              fontSize: 'var(--font-size-6)',
+              width: 'var(--space-9)',
+              height: 'var(--space-9)',
+              borderRadius: 'var(--radius-2)',
+            },
           },
         },
       },
@@ -634,14 +689,23 @@ function Theme({ children }) {
       MuiChip: {
         styleOverrides: {
           root: {
-            borderRadius: 'var(--radius-2)',
             padding: 'var(--space-1)',
+            borderRadius: 'var(--radius-2)',
             fontFamily: 'var(--text)', // Use --text for font
+            fontSize: 'var(--font-size-2)',
+            lineHeight: 'var(--line-height-2)',
+            letterSpacing: 'var(--letter-spacing-2)',
+            backgroundColor: 'var(--neutral-a3)',
+            color: 'var(--neutral-a11)',
           },
           label: {
-            fontSize: 'var(--font-size-2)',
-          },
+            padding: '0 var(--space-1)',
+            // fontSize: 'var(--font-size-2)',
+            // lineHeight: 'var(--line-height-2)',
+            // letterSpacing: 'var(--letter-spacing-2)',
+          }
         },
+        
       },
       MuiCircularProgress: {
         styleOverrides: {

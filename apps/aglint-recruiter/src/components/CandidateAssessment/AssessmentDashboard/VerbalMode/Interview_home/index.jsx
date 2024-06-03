@@ -85,11 +85,9 @@ function Interview_home() {
       <NewInterviewScreen
         slotInterviewLogo={
           <MuiAvatar
-            height={'40px'}
-            width={'40px'}
             src={assessmentDetails?.public_jobs?.logo}
             fontSize={'20px'}
-            variant={'rounded'}
+            variant={'rounded-medium'}
           />
         }
         onClickEndInterview={{

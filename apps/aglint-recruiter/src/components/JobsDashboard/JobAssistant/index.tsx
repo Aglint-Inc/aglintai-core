@@ -111,7 +111,7 @@ function JobAssistant({ setMaximizeChat, maximizeChat }) {
             isChatBody={fetching || !!messages.length}
             slotLogo={
               <MuiAvatar
-                variant='rounded'
+                variant='rounded-small'
                 src={recruiter?.logo}
                 level={recruiter?.name}
               />
@@ -153,10 +153,9 @@ function JobAssistant({ setMaximizeChat, maximizeChat }) {
                         slotProfile={
                           sender == chatusers.recruiter ? (
                             <MuiAvatar
-                              variant='rounded'
+                              variant='rounded-small'
                               src={recruiterUser.profile_image}
                               level={recruiterUser.first_name}
-                              fontSize='20px'
                             />
                           ) : (
                             <AssistantLogo width={40} height={40} />

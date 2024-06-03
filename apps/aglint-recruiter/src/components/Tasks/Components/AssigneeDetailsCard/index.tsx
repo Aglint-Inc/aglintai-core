@@ -78,11 +78,8 @@ function AssigneeDetailsCard({
     <MemberDetail
       slotImage={
         <MuiAvatar
-          height={'40px'}
-          width={'40px'}
           src={assigneeDetails?.profile_image}
-          variant='circular'
-          fontSize='14px'
+          variant='rounded-medium'
           level={getFullName(
             assigneeDetails?.first_name,
             assigneeDetails?.last_name,

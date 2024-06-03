@@ -88,10 +88,7 @@ function MembersAutoComplete({
                   <MuiAvatar
                     src={user.profile_image}
                     level={getFullName(user?.first_name, user?.last_name)}
-                    variant='circular'
-                    height='24px'
-                    width='24px'
-                    fontSize='12px'
+                    variant='rounded-small'
                   />
                 }
                 textMemberName={user.first_name}
@@ -169,10 +166,7 @@ function MembersAutoComplete({
                       <MuiAvatar
                         src={option.profile_image}
                         level={getFullName(option.first_name, option.last_name)}
-                        variant='circular'
-                        height='24px'
-                        width='24px'
-                        fontSize='12px'
+                        variant='rounded-small'
                       />
                       <Stack
                         direction={'row'}

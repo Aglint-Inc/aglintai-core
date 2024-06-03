@@ -370,10 +370,7 @@ const Roles = () => {
                   <MuiAvatar
                     src={user?.profile_image ?? null}
                     level={name}
-                    variant='circular'
-                    fontSize='16px'
-                    width='42px'
-                    height='42px'
+                    variant='rounded-medium'
                   />
                 }
                 textDesignation={user?.position ?? '--'}

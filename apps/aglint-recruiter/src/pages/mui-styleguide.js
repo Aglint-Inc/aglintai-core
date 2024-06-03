@@ -481,9 +481,18 @@ const AccordionExample = () => {
 const AvatarExample = () => {
     return (
         <div>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-            <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+            <Avatar alt="Remy Sharp" variant= "rounded-small" src="/images/logo/aglint.svg" />
+            <Avatar alt="Travis Howard" variant= "rounded-medium" src="/static/images/avatar/2.jpg" />
+            <Avatar alt="Cindy Baker" variant= "rounded-large" src="/static/images/avatar/3.jpg" />
+            
+            <Avatar alt="Remy Sharp" variant= "square-small" src="/static/images/avatar/1.jpg" />
+            <Avatar alt="Remy Sharp" variant= "square-medium" src="/static/images/avatar/1.jpg" />
+            <Avatar alt="Remy Sharp" variant= "square-large" src="/static/images/avatar/1.jpg" />
+            
+            <Avatar alt="Travis Howard" variant= "circular-small" src="/static/images/avatar/2.jpg" />
+            <Avatar alt="Travis Howard" variant= "circular-medium" src="/static/images/avatar/2.jpg" />
+            <Avatar alt="Travis Howard" variant= "circular-large" src="/static/images/avatar/2.jpg" />
+            <Avatar alt="Cindy Baker" variant= "string" src="/static/images/avatar/3.jpg" />
         </div>
     );
 };
@@ -495,11 +504,11 @@ const AvatarGroupExample = () => {
                 Avatar Group
             </Typography>
             <AvatarGroup max={4}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-                <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-                <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-                <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
-                <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
+                <Avatar alt="Remy Sharp" size='1' src="/static/images/avatar/1.jpg" />
+                <Avatar alt="Travis Howard" size='2' src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Cindy Baker"  size='3' src="/static/images/avatar/3.jpg" />
+                <Avatar alt="Agnes Walker"  size='4' src="/static/images/avatar/4.jpg" />
+                <Avatar alt="Trevor Henderson"  size='5' src="/static/images/avatar/5.jpg" />
             </AvatarGroup>
         </Container>
     );

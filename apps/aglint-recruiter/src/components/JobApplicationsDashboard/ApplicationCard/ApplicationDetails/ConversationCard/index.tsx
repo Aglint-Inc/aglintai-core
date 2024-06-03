@@ -58,10 +58,7 @@ function ConversationCard({
                   <MuiAvatar
                     src={roleImage}
                     level={roleName}
-                    height={'24px'}
-                    width={'24px'}
-                    fontSize={'15px'}
-                    variant={'circular'}
+                    variant={'rounded-small'}
                   />
                 }
                 textAnswer={textForSpeech}
@@ -90,10 +87,7 @@ function ConversationCard({
                   <MuiAvatar
                     src={roleImage}
                     level={roleName}
-                    height={'24px'}
-                    width={'24px'}
-                    fontSize={'15px'}
-                    variant={'circular'}
+                    variant='rounded-small'
                   />
                 }
                 textQuestion={textForSpeech}
