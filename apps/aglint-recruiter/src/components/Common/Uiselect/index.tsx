@@ -34,15 +34,10 @@ const UISelect = ({
   label,
   defaultValue,
   startIcon,
-  size = 'md',
 }: Props) => {
   let [focus, setFocus] = useState(false);
-  let outlineColor = palette.grey[300];
-  // let outlineColor = '#b1cee6';
+
   let borderColor = `#b1cee6`;
-  if (focus) {
-    outlineColor = palette.blue[600];
-  }
 
   return (
     <Stack

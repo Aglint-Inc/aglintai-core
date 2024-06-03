@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable security/detect-object-injection */
 import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
@@ -140,67 +141,67 @@ function CandidateAvailability() {
   if (candidateRequestAvailability) {
     return (
       <AvailabilityReq
-        isPickedCalendarActive={markAsAllDateSelected}
-        textPickDays={`Pick at least ${candidateRequestAvailability.number_of_days} days.`}
-        isPickSlotIconActive={markAsAllSlotsSelected}
-        textPickSlots={`Pick at least  ${candidateRequestAvailability.number_of_slots} slots from each day.`}
-        slotPrimaryButton={
-          <ButtonPrimary
-            onClickButton={{
-              onClick: handleSubmit,
-            }}
-            textLabel={'Submit Availability'}
-          />
-        }
-        slotCalenderPick={
-          <CalendarPick
-            slotDatePicker={dateSlots
-              .filter((ele) => ele.slots.length)
-              .map((dateSlot) => {
-                return (
-                  <DatePicker
-                    // isDisable={}
-                    isActive={selectedDateSlots
-                      .map((ele) => ele.curr_day)
-                      .includes(dateSlot.curr_day)}
-                    key={dateSlot.curr_day}
-                    textDate={dayjs(dateSlot.curr_day).format('DD')}
-                    textDay={dayjs(dateSlot.curr_day).format('dddd')}
-                    textMonth={dayjs(dateSlot.curr_day).format('MMM')}
-                    onClickDate={{
-                      onClick: () => handleClickDate(dateSlot),
-                    }}
-                  />
-                );
-              })}
-          />
-        }
-        slotTimePick={
-          <TimePick
-            slotSlotPicker={
-              <ShowCode>
-                <ShowCode.When isTrue={selectedDateSlots.length === 0}>
-                  <AvailabilityEmpty />
-                </ShowCode.When>
-                <ShowCode.Else>
-                  {selectedDateSlots
-                    .sort((a, b) =>
-                      dayjs(a.curr_day).isAfter(dayjs(b.curr_day)) ? 1 : -1,
-                    )
-                    .map((slotTime, i) => {
-                      return (
-                        <SlotColumn
-                          onClose={() => handleClickDate(slotTime)}
-                          key={i}
-                          slotTime={slotTime}
-                        />
-                      );
-                    })}
-                </ShowCode.Else>
-              </ShowCode>
-            }
-          />
-        }
+        // isPickedCalendarActive={markAsAllDateSelected}
+        // textPickDays={`Pick at least ${candidateRequestAvailability.number_of_days} days.`}
+        // isPickSlotIconActive={markAsAllSlotsSelected}
+        // textPickSlots={`Pick at least  ${candidateRequestAvailability.number_of_slots} slots from each day.`}
+        // slotPrimaryButton={
+        //   <ButtonPrimary
+        //     onClickButton={{
+        //       onClick: handleSubmit,
+        //     }}
+        //     textLabel={'Submit Availability'}
+        //   />
+        // }
+        // slotCalenderPick={
+        //   <CalendarPick
+        //     slotDatePicker={dateSlots
+        //       .filter((ele) => ele.slots.length)
+        //       .map((dateSlot) => {
+        //         return (
+        //           <DatePicker
+        //             // isDisable={}
+        //             isActive={selectedDateSlots
+        //               .map((ele) => ele.curr_day)
+        //               .includes(dateSlot.curr_day)}
+        //             key={dateSlot.curr_day}
+        //             textDate={dayjs(dateSlot.curr_day).format('DD')}
+        //             textDay={dayjs(dateSlot.curr_day).format('dddd')}
+        //             textMonth={dayjs(dateSlot.curr_day).format('MMM')}
+        //             onClickDate={{
+        //               onClick: () => handleClickDate(dateSlot),
+        //             }}
+        //           />
+        //         );
+        //       })}
+        //   />
+        // }
+        // slotTimePick={
+        //   <TimePick
+        //     slotSlotPicker={
+        //       <ShowCode>
+        //         <ShowCode.When isTrue={selectedDateSlots.length === 0}>
+        //           <AvailabilityEmpty />
+        //         </ShowCode.When>
+        //         <ShowCode.Else>
+        //           {selectedDateSlots
+        //             .sort((a, b) =>
+        //               dayjs(a.curr_day).isAfter(dayjs(b.curr_day)) ? 1 : -1,
+        //             )
+        //             .map((slotTime, i) => {
+        //               return (
+        //                 <SlotColumn
+        //                   onClose={() => handleClickDate(slotTime)}
+        //                   key={i}
+        //                   slotTime={slotTime}
+        //                 />
+        //               );
+        //             })}
+        //         </ShowCode.Else>
+        //       </ShowCode>
+        //     }
+        //   />
+        // }
       />
     );
   }

@@ -111,8 +111,6 @@ function Filters({ setFilteredInterviewer }) {
           }}
           placeholder='Search by Name, Email or Title'
           onChange={handleSearchInputChange}
-          borderRadius={10}
-          height={42}
         />
         <FilterDropDown
           title={'Qualified'}
