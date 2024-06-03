@@ -10,13 +10,13 @@ import { SingleDaySchedule } from '@/devlink3/SingleDaySchedule';
 function RequestAvailabilityList({
   dateSlots,
 }: {
-  dateSlots: DatabaseTable['candidate_request_availability']['slots'];
+  dateSlots: DatabaseTable['candidate_request_availability']['slots'][number];
 }) {
   return (
     <CandidateSubmitAvailability
       slotList={
-        dateSlots.length &&
-        dateSlots.map((date, ind) => {
+        dateSlots.dates.length &&
+        dateSlots.dates.map((date, ind) => {
           return (
             <DateSlots
               key={ind}
@@ -36,14 +36,14 @@ function DateSlots({
   dateSlots,
   currDate,
 }: {
-  dateSlots: DatabaseTable['candidate_request_availability']['slots'][number]['slots'];
+  dateSlots: DatabaseTable['candidate_request_availability']['slots'][number]['dates'][number]['slots'];
   currDate: string;
 }) {
   const [openCollapse, setOpenCollapse] = useState(false);
   return (
     <DateOption
       textdate={dayjs(currDate).format('dddd, MMM DD')}
-      textOptionCount={`${dateSlots.length} options`}
+      textOptionCount={`${dateSlots?.length} options`}
       slotScheduleOption={
         <Collapse in={openCollapse}>
           {dateSlots.map((slot, ind) => {
@@ -63,7 +63,7 @@ function DateSlots({
 function SlotTime({
   slot,
 }: {
-  slot: DatabaseTable['candidate_request_availability']['slots'][number]['slots'][number];
+  slot: DatabaseTable['candidate_request_availability']['slots'][number]['dates'][number]['slots'][number];
 }) {
   return (
     <>

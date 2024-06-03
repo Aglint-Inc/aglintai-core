@@ -295,7 +295,14 @@ function SubTaskProgress() {
                             item.progress_type === 'request_availability_list'
                           }
                         >
-                          <RequestAvailabilityList dateSlots={dateSlots} />
+                          {dateSlots.map((dateSlot, i) => {
+                            return (
+                              <RequestAvailabilityList
+                                key={i}
+                                dateSlots={dateSlot}
+                              />
+                            );
+                          })}
                         </ShowCode.When>
                       </ShowCode>
                     }
