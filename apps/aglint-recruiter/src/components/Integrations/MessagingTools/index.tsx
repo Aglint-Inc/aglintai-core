@@ -13,11 +13,11 @@ function MessagingTools() {
       url: 'slack.com',
       logo: <SlackLogo />,
     },
-    {
-      name: 'teams' as MessagingToolsType,
-      url: 'teams.live.com',
-      logo: <TeamsLogo />,
-    },
+    // {
+    //   name: 'teams' as MessagingToolsType,
+    //   url: 'teams.live.com',
+    //   logo: <TeamsLogo />,
+    // },
   ];
 
   return (

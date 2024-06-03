@@ -6,17 +6,17 @@ import _styles from "./ButtonSolid.module.css";
 
 export function ButtonSolid({
   as: _Component = _Builtin.Block,
-  slotIcon,
-  textButton = "Button Text",
-  isLeftIcon = true,
-  isRightIcon = true,
   onClickButton = {},
-  slotLoader,
-  isLoading = false,
-  isDisabled = false,
   size = "3",
   color = "accent",
   highContrast = "false",
+  isLeftIcon = false,
+  slotIcon,
+  textButton = "Button Text",
+  isRightIcon = false,
+  isDisabled = false,
+  isLoading = false,
+  slotLoader,
 }) {
   return (
     <_Component
@@ -83,18 +83,18 @@ export function ButtonSolid({
           tag="div"
           button-size-solid={size}
         >
-          <_Builtin.Block tag="div">
-            {slotLoader ?? (
+          {slotLoader ?? (
+            <_Builtin.Block tag="div">
               <_Builtin.Image
                 className={_utils.cx(_styles, "loader_place_holder")}
                 loading="lazy"
                 width="auto"
                 height="auto"
                 alt=""
-                src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/665d54fd36db641586a0319a_kOnzy.gif"
+                src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/665d6d6ac63854bb312ed8b2_kOnzy.gif"
               />
-            )}
-          </_Builtin.Block>
+            </_Builtin.Block>
+          )}
         </_Builtin.Block>
       ) : null}
     </_Component>
