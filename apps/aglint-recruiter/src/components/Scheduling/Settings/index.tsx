@@ -43,6 +43,7 @@ import { WorkingHourDay } from '@/devlink2/WorkingHourDay';
 import { WorkingHours } from '@/devlink2/WorkingHours';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { palette } from '@/src/context/Theme/Theme';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
@@ -397,7 +398,7 @@ function SchedulingSettings({
                           <Typography variant='body1' fontSize={'15px'}>
                             Default Break Times
                           </Typography>
-                          <Typography variant='body2'>
+                          <Typography variant='body1'>
                             Define standard break times for the company.
                           </Typography>
                         </Stack>
@@ -636,7 +637,7 @@ function SchedulingSettings({
                           textPopupTitle='Add Holiday'
                           textPopupDescription={
                             <Stack gap={1}>
-                              <Typography variant='body2'>Day off</Typography>
+                              <Typography variant='body1'>Day off</Typography>
                               <Stack>
                                 <UITextField
                                   placeholder='Enter the name of the holiday'
@@ -644,14 +645,14 @@ function SchedulingSettings({
                                   ref={eventRef}
                                 />
                               </Stack>
-                              <Typography variant='body2'>Date</Typography>
+                              <Typography variant='body1'>Date</Typography>
                               <DateSelect
                                 selectedDates={daysOff}
                                 dateRef={dateRef}
                                 getDate={getDate}
                               />
 
-                              <Typography variant='body2'>Location</Typography>
+                              <Typography variant='body1'>Location</Typography>
                               <Stack
                                 fontSize={'12px'}
                                 direction={'row'}
@@ -699,7 +700,7 @@ function SchedulingSettings({
                                     specificLocationOn === 'specific_locations'
                                   }
                                 >
-                                  <Typography variant='body2'>
+                                  <Typography variant='body1'>
                                     Pick locations
                                   </Typography>
 
@@ -1101,7 +1102,7 @@ export const TimezoneSelector = ({
         renderOption={(props, option) => {
           return (
             <li {...props}>
-              <Typography variant='body2' color={'#000'}>
+              <Typography variant='body1' color={palette.grey[800]}>
                 {option.label}
               </Typography>
             </li>

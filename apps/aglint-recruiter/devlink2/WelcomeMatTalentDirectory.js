@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./WelcomeMatTalentDirectory.module.css";
 
@@ -37,12 +39,14 @@ export function WelcomeMatTalentDirectory({
             src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/65bb5eacd718d145190af7c6_Browser.png"
           />
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "welcome_mat_header")}
-          tag="div"
-        >
-          {"Your Central Hub for Candidate Information"}
-        </_Builtin.Block>
+        <Text
+          size="6"
+          weight="bold"
+          content="Your Central Hub for Candidate Information"
+          align=""
+          color="neutral-12"
+          highContrast=""
+        />
         <_Builtin.Block className={_utils.cx(_styles, "wm_cards")} tag="div">
           <_Builtin.Block
             className={_utils.cx(_styles, "wm_card")}
@@ -52,20 +56,22 @@ export function WelcomeMatTalentDirectory({
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Candidate Database"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-gray-600")}
-              tag="div"
-            >
-              {
-                "Access a rich reservoir of candidate profiles. Your Talent Directory is your go-to source for detailed information on potential hires, from background and skills to contact details."
-              }
-            </_Builtin.Block>
+            <Text
+              size="2"
+              weight="bold"
+              content="Candidate Database"
+              align=""
+              color="neutral-12"
+              highContrast=""
+            />
+            <Text
+              size="2"
+              weight=""
+              content="Access a rich reservoir of candidate profiles. Your Talent Directory is your go-to source for detailed information on potential hires, from background and skills to contact details."
+              align=""
+              color="neutral"
+              highContrast=""
+            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "wm_card")}
@@ -75,20 +81,22 @@ export function WelcomeMatTalentDirectory({
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Edit and Customize Profiles"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-gray-600")}
-              tag="div"
-            >
-              {
-                "Keep candidate information current and relevant. Easily update profiles with new information or notes from your interactions, ensuring you always have the most accurate data at your fingertips."
-              }
-            </_Builtin.Block>
+            <Text
+              size="2"
+              weight="bold"
+              content="Edit and Customize Profiles"
+              align=""
+              color="neutral-12"
+              highContrast=""
+            />
+            <Text
+              size="2"
+              weight=""
+              content="Keep candidate information current and relevant. Easily update profiles with new information or notes from your interactions, ensuring you always have the most accurate data at your fingertips."
+              align=""
+              color="neutral"
+              highContrast=""
+            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "wm_card")}
@@ -98,20 +106,22 @@ export function WelcomeMatTalentDirectory({
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Streamlined Outreach"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-gray-600")}
-              tag="div"
-            >
-              {
-                "Reach out directly from their profile with our integrated communication tools. Whether it's a first-time introduction or a follow-up, effective engagement is just a click away."
-              }
-            </_Builtin.Block>
+            <Text
+              size="2"
+              weight="bold"
+              content="Streamlined Outreach"
+              align=""
+              color="neutral-12"
+              highContrast=""
+            />
+            <Text
+              size="2"
+              weight=""
+              content="Reach out directly from their profile with our integrated communication tools. Whether it's a first-time introduction or a follow-up, effective engagement is just a click away."
+              align=""
+              color="neutral"
+              highContrast=""
+            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "wm_card")}
@@ -121,20 +131,22 @@ export function WelcomeMatTalentDirectory({
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Efficiency in Action"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-gray-600")}
-              tag="div"
-            >
-              {
-                "Sort, filter, and manage candidates with ease. Whether you're preparing for a recruitment drive or looking for specific skills, our user-friendly interface lets you navigate and organize profiles effortlessly."
-              }
-            </_Builtin.Block>
+            <Text
+              size="2"
+              weight="bold"
+              content="Efficiency in Action"
+              align=""
+              color="neutral-12"
+              highContrast=""
+            />
+            <Text
+              size="2"
+              weight=""
+              content="Sort, filter, and manage candidates with ease. Whether you're preparing for a recruitment drive or looking for specific skills, our user-friendly interface lets you navigate and organize profiles effortlessly."
+              align=""
+              color="neutral"
+              highContrast=""
+            />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

@@ -11,4 +11,5 @@ declare function WorkflowCard(props: {
   slotCheckbox?: Types.Devlink.Slot;
   isCheckboxVisible?: Types.Visibility.VisibilityConditions;
   isChecked?: Types.Visibility.VisibilityConditions;
+  isEditButton?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -119,7 +119,7 @@ const UITextField = React.forwardRef(
           </Stack>
         )}
         {secondaryText && (
-          <Typography variant='body2'>{secondaryText}</Typography>
+          <Typography variant='body1'>{secondaryText}</Typography>
         )}
         <MuiTextField
           name={name}
@@ -148,13 +148,13 @@ const UITextField = React.forwardRef(
             setContentExceeded(false);
           }}
           type={type}
-          sx={{
-            '& .MuiOutlinedInput-root': {
-              height: height ? `${height}px !important` : '100%',
-              borderRadius: `${borderRadius}px`,
-            },
-            width: width,
-          }}
+          // sx={{
+          //   '& .MuiOutlinedInput-root': {
+          //     height: height ? `${height}px !important` : '100%',
+          //     borderRadius: `${borderRadius}px`,
+          //   },
+          //   width: width,
+          // }}
           {...rest}
         >
           {children}

@@ -27,7 +27,7 @@ export function MyFeedbackPopup({
           <Text content="My Feedback" weight="medium" />
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "po-up_close")}
+          className={_utils.cx(_styles, "popup_close")}
           tag="div"
           {...onClickClose}
         >

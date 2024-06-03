@@ -9,6 +9,7 @@ import React, { Dispatch, useEffect, useState } from 'react';
 import { Checkbox } from '@/devlink/Checkbox';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { palette } from '@/src/context/Theme/Theme';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -123,7 +124,7 @@ function RequestRescheduleDialog({
         isWidget={true}
         slotWidget={
           <Stack spacing={2}>
-            <Typography variant='body2'>
+            <Typography variant='body1'>
               Choose a date range that you want to reschedule with
             </Typography>
             <Stack spacing={2} direction={'row'}>
@@ -185,7 +186,7 @@ function RequestRescheduleDialog({
               </LocalizationProvider>
             </Stack>
 
-            <Typography variant='body2'>
+            <Typography variant='body1'>
               Please provide a reason for reschedule.
             </Typography>
             <Stack spacing={1}>
@@ -201,7 +202,7 @@ function RequestRescheduleDialog({
                     spacing={1}
                   >
                     <Checkbox isChecked={rea === reason} />
-                    <Typography variant='body2' color={'#000'}>
+                    <Typography variant='body1' color={palette.grey[800]}>
                       {rea}
                     </Typography>
                   </Stack>
@@ -209,7 +210,7 @@ function RequestRescheduleDialog({
               })}
             </Stack>
 
-            <Typography variant='body2'>Additional Notes</Typography>
+            <Typography variant='body1'>Additional Notes</Typography>
             <TextField
               multiline
               value={notes}

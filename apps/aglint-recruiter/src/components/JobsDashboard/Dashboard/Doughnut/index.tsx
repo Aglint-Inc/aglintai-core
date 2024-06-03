@@ -20,9 +20,10 @@ import { getOrderedGraphValues } from '../utils';
 
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 
-const DoughnutChart: React.FC<{
+export const DoughnutChart: React.FC<{
   locations: ReturnType<typeof getOrderedGraphValues>;
-}> = ({ locations }) => {
+  fixedHeight?: boolean;
+}> = ({ locations, fixedHeight = false }) => {
   const { names, counts, colors } = locations.reduce(
     (acc, { color, name, count }) => {
       acc.names.push(capitalize(name));
@@ -52,9 +53,19 @@ const DoughnutChart: React.FC<{
 
   return (
     <Stack
-      width={
-        s ? (m ? (l ? (xl ? '275px' : '250px') : '225px') : '200px') : '175px'
-      }
+      {...(fixedHeight
+        ? { height: '100%' }
+        : {
+            width: s
+              ? m
+                ? l
+                  ? xl
+                    ? '275px'
+                    : '250px'
+                  : '225px'
+                : '200px'
+              : '175px',
+          })}
       style={{ aspectRatio: 1 }}
     >
       <Doughnut
@@ -131,13 +142,13 @@ const DashboardDoughnutChart: FC<{
                     }}
                   />
                   <Typography
-                    variant='body2'
+                    variant='body1'
                     sx={{ textWrap: 'nowrap', textTransform: 'capitalize' }}
                   >
                     {capitalize(name)}
                   </Typography>
                 </Stack>
-                <Typography variant='body2'>
+                <Typography variant='body1'>
                   {((count / totalCount) * 100).toFixed(0)}%
                 </Typography>
               </Stack>

@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { InterviewDetailPill } from "./InterviewDetailPill";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./NewInterviewDetail.module.css";
 
@@ -9,6 +9,7 @@ export function NewInterviewDetail({
   as: _Component = _Builtin.Block,
   slotInterviewDetailPill,
   slotDropdownButton,
+  textHeading = "Interviews Detail",
 }) {
   return (
     <_Component
@@ -27,7 +28,7 @@ export function NewInterviewDetail({
           className={_utils.cx(_styles, "fw-semibold", "p-lr-16")}
           tag="div"
         >
-          {"Interviews Detail"}
+          {textHeading}
         </_Builtin.Block>
         <_Builtin.Block tag="div">{slotDropdownButton}</_Builtin.Block>
       </_Builtin.Block>
@@ -35,7 +36,9 @@ export function NewInterviewDetail({
         className={_utils.cx(_styles, "div-block-1499")}
         tag="div"
       >
-        {slotInterviewDetailPill ?? <InterviewDetailPill />}
+        {slotInterviewDetailPill ?? (
+          <SlotComp componentNeme="InterviewDetailPill" />
+        )}
       </_Builtin.Block>
     </_Component>
   );

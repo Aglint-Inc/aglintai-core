@@ -112,7 +112,7 @@ export function ScheduleTabOverview({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "link-copy")}
+              className={_utils.cx(_styles, "feedback-link-wrap")}
               tag="div"
               {...onClickReschedule}
             >
@@ -123,7 +123,7 @@ export function ScheduleTabOverview({
               <_Builtin.Block tag="div">{"Reschedule"}</_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "link-copy", "no-color")}
+              className={_utils.cx(_styles, "feedback-link-wrap", "no-color")}
               tag="div"
               {...onClickCancelSchedule}
             >

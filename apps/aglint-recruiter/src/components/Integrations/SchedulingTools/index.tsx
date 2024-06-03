@@ -295,7 +295,7 @@ function Scheduling() {
               }
             >
               <Stack direction={'column'} spacing={'5px'}>
-                <Typography mb={0.5} variant='body2'>
+                <Typography mb={0.5} variant='body1'>
                   Domain Name
                 </Typography>
 
@@ -311,7 +311,7 @@ function Scheduling() {
                 <ShowCode>
                   <ShowCode.When isTrue={fileData}>
                     <>
-                      <Typography mb={0.5} variant='body2'>
+                      <Typography mb={0.5} variant='body1'>
                         Service Key
                       </Typography>
                       <TextField fullWidth disabled value={fileData} />
@@ -364,7 +364,7 @@ function Scheduling() {
                 direction={'row'}
                 spacing={2}
               >
-                <Typography variant='body2'>Show keys</Typography>
+                <Typography variant='body1'>Show keys</Typography>
                 <ToggleButton
                   onclickToggle={{
                     onClick: () => {
@@ -376,19 +376,19 @@ function Scheduling() {
                 />
               </Stack>
               <Stack direction={'column'} spacing={1}>
-                <Typography variant='body2'>Account Id</Typography>
+                <Typography variant='body1'>Account Id</Typography>
                 <TextField
                   type={hideApiKey ? 'password' : 'text'}
                   fullWidth
                   inputRef={accountIdRef}
                 />
-                <Typography variant='body2'>Client Id</Typography>
+                <Typography variant='body1'>Client Id</Typography>
                 <TextField
                   type={hideApiKey ? 'password' : 'text'}
                   fullWidth
                   inputRef={clientIdRef}
                 />
-                <Typography variant='body2'>Client Secrete</Typography>
+                <Typography variant='body1'>Client Secrete</Typography>
                 <TextField
                   type={hideApiKey ? 'password' : 'text'}
                   fullWidth

@@ -40,7 +40,7 @@ export function FeedbackViewPopup({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "po-up_close", "cursor-pointer")}
+          className={_utils.cx(_styles, "popup_close", "cursor-pointer")}
           tag="div"
           {...onClickClose}
         >
@@ -59,7 +59,7 @@ export function FeedbackViewPopup({
             className={_utils.cx(_styles, "title_desc")}
             tag="div"
           >
-            <Text content="Recommendation" weight="medium" />
+            <Text content="" weight="medium" />
             <Text content={textRecomendation} color="neutral" weight="" />
           </_Builtin.Block>
         ) : null}

@@ -148,7 +148,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({
                 <Typography variant='h3'>
                   {(recruiter as { name: string })?.name}
                 </Typography>
-                <Typography variant='body2'>
+                <Typography variant='body1'>
                   {[
                     (
                       recruiter as {

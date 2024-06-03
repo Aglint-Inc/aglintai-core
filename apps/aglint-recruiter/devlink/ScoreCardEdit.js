@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Checkbox } from "./Checkbox";
@@ -6,7 +7,6 @@ import _styles from "./ScoreCardEdit.module.css";
 
 export function ScoreCardEdit({
   as: _Component = _Builtin.Block,
-  textEdit = "Dorem ipsum dolor sit amet, consectetur adipiscing elit.Dorem ipsum dolor sit amet, consectetur adipiscing elit.",
   onClickDelete = {},
   slotButtonUpdate,
   slotCheckBox,

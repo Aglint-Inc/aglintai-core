@@ -250,7 +250,7 @@ export function LeverModalComp() {
           >
             <AtsJobs
               textNumberofJobs={
-                <Typography variant='body2'>
+                <Typography variant='body1'>
                   {selectedLeverPostings.length == 0
                     ? `Showing ${leverPostings.length} Jobs from lever`
                     : `${selectedLeverPostings.length} Jobs selected`}

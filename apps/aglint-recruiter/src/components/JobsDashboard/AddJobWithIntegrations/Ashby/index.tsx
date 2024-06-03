@@ -244,7 +244,7 @@ export function AshbyModalComp() {
           >
             <AshbyAtsJob
               textNumberOfJobs={
-                <Typography variant='body2'>
+                <Typography variant='body1'>
                   {selectedAshbyPostings.length == 0
                     ? `Showing ${postings.length} Jobs from ashby`
                     : `${selectedAshbyPostings.length} Jobs selected`}

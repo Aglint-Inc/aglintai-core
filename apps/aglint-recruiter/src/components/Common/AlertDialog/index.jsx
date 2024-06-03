@@ -61,7 +61,7 @@ export default function AlertDialog({
             </IconButton>
           </Stack>
           <Stack p={{ xs: '12px', sm: '20px' }} spacing={2}>
-            {Subtitle && <Typography variant='body2'>{Subtitle}</Typography>}
+            {Subtitle && <Typography variant='body1'>{Subtitle}</Typography>}
             {caution && (
               <Alert
                 severity='warning'

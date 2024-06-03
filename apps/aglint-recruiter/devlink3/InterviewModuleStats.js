@@ -1,8 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { InterviewModuleStatsCard } from "./InterviewModuleStatsCard";
-import { InterviewStatsLoader } from "./InterviewStatsLoader";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./InterviewModuleStats.module.css";
 
@@ -99,9 +98,9 @@ export function InterviewModuleStats({
         >
           {slotInterviewModuleStatsCard ?? (
             <>
-              <InterviewModuleStatsCard />
-              <InterviewModuleStatsCard />
-              <InterviewStatsLoader />
+              <SlotComp componentNeme="InterviewModuleStatsCard" />
+              <SlotComp componentNeme="InterviewModuleStatsCard" />
+              <SlotComp componentNeme="InterviewStatsLoader" />
             </>
           )}
         </_Builtin.Block>

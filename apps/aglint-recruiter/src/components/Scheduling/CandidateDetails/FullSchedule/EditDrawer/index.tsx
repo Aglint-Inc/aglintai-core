@@ -19,6 +19,7 @@ import {
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { palette } from '@/src/context/Theme/Theme';
 import { ApiBodyParamsSessionCache } from '@/src/pages/api/scheduling/application/candidatesessioncache';
 import { useInterviewModules } from '@/src/queries/interview-modules';
 import {
@@ -448,7 +449,7 @@ function SideDrawerEdit() {
                       <MenuItem value='google_meet'>
                         <Stack direction={'row'} spacing={2}>
                           <IconScheduleType type='google_meet' />
-                          <Typography variant='body2' color={'#000'}>
+                          <Typography variant='body1' color={palette.grey[800]}>
                             Google Meet
                           </Typography>
                         </Stack>
@@ -456,7 +457,7 @@ function SideDrawerEdit() {
                       <MenuItem value='zoom'>
                         <Stack direction={'row'} spacing={2}>
                           <IconScheduleType type='zoom' />
-                          <Typography variant='body2' color={'#000'}>
+                          <Typography variant='body1' color={palette.grey[800]}>
                             Zoom
                           </Typography>
                         </Stack>
@@ -464,7 +465,7 @@ function SideDrawerEdit() {
                       <MenuItem value='phone_call'>
                         <Stack direction={'row'} spacing={2}>
                           <IconScheduleType type='phone_call' />
-                          <Typography variant='body2' color={'#000'}>
+                          <Typography variant='body1' color={palette.grey[800]}>
                             Phone Call
                           </Typography>
                         </Stack>
@@ -472,7 +473,7 @@ function SideDrawerEdit() {
                       <MenuItem value='in_person_meeting'>
                         <Stack direction={'row'} spacing={2}>
                           <IconScheduleType type='in_person_meeting' />
-                          <Typography variant='body2' color={'#000'}>
+                          <Typography variant='body1' color={palette.grey[800]}>
                             In Person Meeting
                           </Typography>
                         </Stack>

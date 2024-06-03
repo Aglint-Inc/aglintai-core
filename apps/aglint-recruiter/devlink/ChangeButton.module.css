@@ -23,35 +23,6 @@
   align-items: center;
 }
 
-.nav-logo {
-  display: flex;
-  align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
-
-  color: var(--grey800-e42b2e06);
-  text-decoration: none;
-}
-
-.embed_flex.rotate {
-  transform: rotate(180deg);
-}
-
-.embed_flex.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
-}
-
 .embed_flex.ml--1 {
   margin-left: -9px;
 }

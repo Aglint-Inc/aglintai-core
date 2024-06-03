@@ -1,19 +1,17 @@
-.scheduler_layout {
+.page_layout {
   width: 100%;
   height: 100vh;
 }
 
-.scheduler_topbar {
+.pagelayout_topbar {
   position: relative;
 
   display: flex;
-  height: 60px;
+  height: var(--space-8);
   padding-right: 20px;
   padding-left: 20px;
   justify-content: space-between;
   align-items: center;
-
-  border-bottom: 1px solid #e9ebed;
 }
 
 .top_left {
@@ -24,16 +22,6 @@
   align-items: center;
   grid-column-gap: 16px;
   grid-row-gap: 16px;
-}
-
-.top_left.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
-.relative-1 {
-  position: relative;
-  z-index: 1;
 }
 
 .back_button {
@@ -56,21 +44,6 @@
   display: flex;
 }
 
-.embed_flex.rotate_180 {
-  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
-  transform-style: preserve-3d;
-}
-
-.embed_flex.with_bg {
-  position: relative;
-  z-index: 2;
-}
-
-.embed_flex.with_bg.rotate-180 {
-  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
-  transform-style: preserve-3d;
-}
-
 .embed_flex.relative_3 {
   position: relative;
   z-index: 3;
@@ -82,12 +55,6 @@
 
 .text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
-.inline-block {
-  display: inline;
-  margin-right: 2px;
-  margin-left: 2px;
 }
 
 @media screen and (max-width: 767px) {
@@ -104,30 +71,13 @@
   max-width: 500px;
 }
 
-.fw-semibold {
-  font-weight: 600;
-}
-
-.text-gray-600.margin_bottom_10 {
-  margin-bottom: 10px;
-}
-
 .text-gray-600.maxwidth-custom {
   max-width: 292px;
-}
-
-.text-gray-600.relative_2 {
-  position: relative;
-  z-index: 2;
 }
 
 .text-sm {
   font-size: 12px;
   line-height: 16px;
-}
-
-.text-xsm {
-  font-size: 10px;
 }
 
 .topbar_left {
@@ -145,12 +95,7 @@
   grid-row-gap: 10px;
 }
 
-.topbar_right.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
-.div-block-1112 {
+.autosave_widget {
   position: absolute;
   left: 0%;
   top: 0%;
@@ -161,4 +106,26 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  pointer-events: none;
+}
+
+.divider-x {
+  position: absolute;
+  left: 0%;
+  top: auto;
+  right: 0%;
+  bottom: 0%;
+
+  width: 100%;
+  height: 1px;
+
+  background-color: var(--neutral-6);
+
+  pointer-events: none;
+}
+
+.slot-body-global {
+  overflow: auto;
+  height: calc(100vh - 48px);
 }

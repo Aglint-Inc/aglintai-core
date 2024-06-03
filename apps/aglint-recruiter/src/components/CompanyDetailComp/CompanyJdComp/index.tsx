@@ -162,7 +162,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
                   }}
                 />
                 <Typography
-                  variant='body2'
+                  variant='body1'
                   sx={{ cursor: 'pointer' }}
                   onClick={() => {
                     recruiter.employment_type[type[0]] = !type[1];
@@ -177,11 +177,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
         </Stack>
       </Stack>
       <Stack>
-        <UITypography
-          type={'small'}
-          color={palette.grey[800]}
-          fontBold='default'
-        >
+        <UITypography>
           Workplace Type
         </UITypography>
         <Stack
@@ -212,7 +208,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
                 />
                 <Stack direction={'row'} spacing={'4px'}>
                   <Typography
-                    variant='body2'
+                    variant='body1'
                     sx={{ cursor: 'pointer', color: palette.grey[800] }}
                     onClick={() => {
                       recruiter.workplace_type[type[0]] = !type[1];
@@ -222,7 +218,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
                     {capitalize(workplaceType[type[0]][0]).replaceAll(' ', '-')}
                   </Typography>
                   <Typography
-                    variant='body2'
+                    variant='body1'
                     sx={{ cursor: 'pointer' }}
                     onClick={() => {
                       recruiter.workplace_type[type[0]] = !type[1];

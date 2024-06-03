@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { InterviewersCardList } from "./InterviewersCardList";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./InterviewersDash.module.css";
 
@@ -162,16 +162,9 @@ export function InterviewersDash({
         >
           {slotInterviewersCardList ?? (
             <>
-              <InterviewersCardList />
-              <InterviewersCardList />
-              <InterviewersCardList />
-              <InterviewersCardList />
-              <InterviewersCardList />
-              <InterviewersCardList />
-              <InterviewersCardList />
-              <InterviewersCardList />
-              <InterviewersCardList />
-              <InterviewersCardList />
+              <SlotComp componentNeme="InterviewersCardList" />
+              <SlotComp componentNeme="InterviewersCardList" />
+              <SlotComp componentNeme="InterviewersCardList" />
             </>
           )}
         </_Builtin.Block>

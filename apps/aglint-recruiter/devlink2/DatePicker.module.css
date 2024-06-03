@@ -1,6 +1,5 @@
 .div-block-1720 {
   position: relative;
-  cursor: pointer;
 }
 
 .div-block-1719 {
@@ -17,6 +16,8 @@
 
   border: 1px solid #e9ebed;
   border-radius: 10px;
+
+  cursor: pointer;
 }
 
 .div-block-1719.active {
@@ -45,44 +46,28 @@
   font-weight: 600;
 }
 
-.text-yellow-800 {
-  color: hsla(23.07692307692308, 68.42%, 26.08%, 1.00);
-}
-
 .text-grey-600 {
   color: #68737d;
-}
-
-.color-black {
-  color: hsla(0, 0.00%, 0.00%, 1.00);
-}
-
-.text-gray-400 {
-  color: var(--gray-400);
-}
-
-.text-gray-500 {
-  color: var(--gray-500);
 }
 
 .text-sm.fw-semibold.text_camel {
   text-transform: capitalize;
 }
 
-.text-sm.text-grey-600.grow {
-  flex: 0 0 auto;
-}
-
 .text-kale-600 {
-  color: var(--kale-600);
+  color: var(--kale-600\<deleted\|variable-fc9c3cf7-09bb-7364-ed8d-95d89e6d8422\>);
 }
 
 .text-color-black {
   color: var(--black-9b0fc3fc);
 }
 
+.text-yellow-800 {
+  color: hsla(23.07692307692308, 68.42%, 26.08%, 1.00);
+}
+
 .text-kale-800 {
-  color: var(--kale-800);
+  color: var(--kale-800\<deleted\|variable-f2fd7071-1c51-e4c0-2aa9-ed4d60cbbee9\>);
 }
 
 .text-sm.text-blue-600 {
@@ -93,14 +78,6 @@
   color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
 }
 
-.text-black-100 {
-  color: var(--black-100);
-}
-
-.text-fuschia-600 {
-  color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
-}
-
 .text-red-500 {
   color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
 }
@@ -109,51 +86,8 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
-.text-green-600 {
-  color: hsla(158.09523809523807, 95.45%, 25.88%, 1.00);
-}
-
-.relative {
-  position: relative;
-}
-
-.text-sm.jenfjker {
-  width: 136px;
-}
-
-.text-blue-500 {
-  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
-}
-
-.text-underline {
-  transition: all 250ms ease;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.text-underline:hover {
-  opacity: 0.7;
-}
-
-.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.7;
-}
-
-.text-sm.copied {
-  display: none;
-}
-
 .text-yellow-600 {
   color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
-}
-
-.text-color-white {
-  color: white;
 }
 
 .div-block-1726 {

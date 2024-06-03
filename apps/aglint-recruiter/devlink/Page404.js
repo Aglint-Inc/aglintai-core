@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./Page404.module.css";
 
@@ -41,17 +43,7 @@ export function Page404({ as: _Component = _Builtin.Block }) {
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "page-404-title-wrapper")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-lg")}
-                tag="div"
-              >
-                {"Oops. Something went wrong."}
-              </_Builtin.Block>
-            </_Builtin.Block>
+            <Text content="" size="3" color="error" align="center" />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

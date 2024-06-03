@@ -24,6 +24,7 @@
     "@mui/x-date-pickers": "^6.19.6",
     "@mui/x-date-pickers-pro": "^7.2.0",
     "@next/bundle-analyzer": "^14.2.0",
+    "@radix-ui/colors": "^3.0.0",
     "@react-email/components": "^0.0.17",
     "@react-email/render": "^0.0.13",
     "@sendgrid/mail": "^8.1.3",

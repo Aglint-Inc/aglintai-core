@@ -50,33 +50,3 @@
 .icons.pointer {
   cursor: pointer;
 }
-
-.text-grey-600 {
-  color: #68737d;
-}
-
-.hide {
-  display: none;
-}
-
-.text-sm {
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.text-grey-600.text-underline {
-  text-decoration: underline;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
-.text-grey-600.text-underline.cursor-pointer {
-  transition: opacity 250ms ease;
-  cursor: pointer;
-}
-
-.text-grey-600.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
-}

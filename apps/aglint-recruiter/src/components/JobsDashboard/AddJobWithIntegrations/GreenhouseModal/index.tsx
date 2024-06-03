@@ -274,7 +274,7 @@ export function GreenhouseModal() {
           >
             <GreenhouseAts
               textNumberofJobs={
-                <Typography variant='body2'>
+                <Typography variant='body1'>
                   {selectedGreenhousePostings.length == 0
                     ? `Showing ${
                         postings.filter((job) => {

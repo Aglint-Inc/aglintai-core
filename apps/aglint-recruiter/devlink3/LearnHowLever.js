@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./LearnHowLever.module.css";
 
@@ -14,14 +15,15 @@ export function LearnHowLever({
         className={_utils.cx(_styles, "popup_title_block")}
         tag="div"
       >
+        <Text
+          size="4"
+          weight="bold"
+          align=""
+          highContrast=""
+          content="How to connect with Lever"
+        />
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-lg", "fw-semibold")}
-          tag="div"
-        >
-          {"How to connect with Lever"}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "po-up_close")}
+          className={_utils.cx(_styles, "popup_close")}
           tag="div"
           {...onClickClose}
         >
@@ -91,11 +93,8 @@ export function LearnHowLever({
         className={_utils.cx(_styles, "popup_link_block")}
         tag="div"
       >
-        <_Builtin.Block tag="div">
-          {"For more guidelines visit :"}
-        </_Builtin.Block>
+        <Text content="" weight="" color="neutral" />
         <_Builtin.Link
-          className={_utils.cx(_styles, "link")}
           button={false}
           block=""
           options={{

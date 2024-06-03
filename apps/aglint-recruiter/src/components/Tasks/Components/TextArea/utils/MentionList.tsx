@@ -98,7 +98,7 @@ export default forwardRef((props: any, ref) => {
               <ShowCode>
                 <ShowCode.When isTrue={item.first_name === 'email'}>
                   <Stack spacing={'5px'} direction={'column'}>
-                    {/* <Typography variant='body2'>Agents</Typography> */}
+                    {/* <Typography variant='body1'>Agents</Typography> */}
                     <AgentPill
                       isEmailAgentVisible
                       isPhoneAgentVisible={false}
@@ -111,7 +111,7 @@ export default forwardRef((props: any, ref) => {
                       isPhoneAgentVisible
                       isEmailAgentVisible={false}
                     />
-                    {/* <Typography variant='body2'>Interviewers</Typography> */}
+                    {/* <Typography variant='body1'>Interviewers</Typography> */}
                   </Stack>
                 </ShowCode.When>
                 <hr

@@ -26,8 +26,10 @@
 }
 
 .header-interview-list-wrap {
-  padding: 20px 20px 0px;
-  border-bottom: 1px solid #e9ebed;
+  padding-top: var(--space-4);
+  padding-right: var(--space-4);
+  padding-left: var(--space-4);
+  border-bottom: 1px solid var(--neutral-6);
 }
 
 .div-block-1498 {
@@ -95,10 +97,6 @@
   z-index: 1;
 }
 
-.icons.ml--6 {
-  margin-left: -6px;
-}
-
 .icons.hide {
   display: none;
 }
@@ -118,45 +116,19 @@
   cursor: pointer;
 }
 
-.text-grey-600 {
-  color: #68737d;
-}
+.icons.closediv {
+  position: absolute;
+  left: auto;
+  top: -7px;
+  right: -7px;
+  bottom: auto;
 
-.text-sm {
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.text-grey-600.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
-.text-lg {
-  font-size: 18px;
-  line-height: 1.33;
-}
-
-@media screen and (max-width: 991px) {
-  .text-lg {
-    font-size: 16px;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .text-lg {
-    font-size: 16px;
-  }
-}
-
-.text-underline {
-  transition: all 250ms ease;
-  text-decoration: underline;
   cursor: pointer;
 }
 
-.text-underline:hover {
-  opacity: 0.7;
+.icons.lottie {
+  width: 16px;
+  height: 16px;
 }
 
 .edit_flex_block {

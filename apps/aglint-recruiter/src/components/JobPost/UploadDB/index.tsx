@@ -341,7 +341,7 @@ function UploadDB({
                     />
                   </svg>
                 )}
-                <Typography variant='body2' sx={{ textAlgin: 'center' }}>
+                <Typography variant='body1' sx={{ textAlgin: 'center' }}>
                   {file
                     ? `Uploaded File: ${file?.name}`
                     : 'Please upload your resume in PDF or DOC format.'}

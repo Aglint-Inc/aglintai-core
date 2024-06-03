@@ -369,7 +369,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
                   justifyContent={!openTest ? 'space-between' : 'flex-end'}
                 >
                   {!openTest && (
-                    <Typography variant='body2'>
+                    <Typography variant='body1'>
                       See it in Action: Request a Test Mail Input the name and
                       job title, then use your email to see the feature
                       firsthand.

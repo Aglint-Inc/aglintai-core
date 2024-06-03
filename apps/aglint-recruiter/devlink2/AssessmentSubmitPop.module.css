@@ -40,10 +40,6 @@
   color: var(--black-9b0fc3fc);
 }
 
-.text-green-600 {
-  color: hsla(158.09523809523807, 95.45%, 25.88%, 1.00);
-}
-
 .inline-block {
   display: inline;
   margin-right: 2px;
@@ -56,18 +52,6 @@
 
 .text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
-.text-lg.text-gray-400 {
-  color: var(--gray-400);
-}
-
-.text-gray-400 {
-  color: var(--gray-400);
-}
-
-.text-align-center {
-  text-align: center;
 }
 
 .icons {
@@ -86,6 +70,14 @@
   opacity: 0.7;
 }
 
+.icons.cursor-pointer.no-trans {
+  transition-property: none;
+}
+
+.icons.cursor-pointer.no-transition {
+  transition-property: none;
+}
+
 .icons.ml-4 {
   margin-left: 4px;
 }
@@ -100,8 +92,38 @@
   z-index: 1;
 }
 
-.icons.ml--6 {
-  margin-left: -6px;
+.icons.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
+.icons.pointer {
+  cursor: pointer;
+}
+
+.icons.closediv {
+  position: absolute;
+  left: auto;
+  top: -7px;
+  right: -7px;
+  bottom: auto;
+
+  cursor: pointer;
+}
+
+.icons.lottie {
+  width: 16px;
+  height: 16px;
 }
 
 .text-sm {
@@ -114,15 +136,28 @@
   z-index: 1;
 }
 
-.hide {
-  display: none;
-  flex-direction: row;
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
 }
 
 @media screen and (max-width: 479px) {
-  .hide {
-    display: none;
+  .text-grey-600.mob {
+    font-size: 12px;
   }
+}
+
+.max-width-700 {
+  max-width: 700px;
+}
+
+.text-align-center {
+  text-align: center;
 }
 
 .div-block-991 {
@@ -149,17 +184,17 @@
 
   border-radius: 6px;
 
-  background-color: #1f73b7;
+  background-color: var(--accent-9);
 
   transition: all 200ms ease-in-out;
 
-  color: white;
+  color: var(--white);
 
   cursor: pointer;
 }
 
 .button_primary:hover {
-  background-color: #144a75;
+  background-color: var(--accent-10);
 }
 
 .button_primary.is_disabled {
@@ -179,10 +214,6 @@
 
   padding-top: 8px;
   padding-bottom: 8px;
-}
-
-.button_primary.is_enabled.main {
-  position: static;
 }
 
 .button_primary.is_enabled.main-green {
@@ -212,16 +243,6 @@
   cursor: progress;
 }
 
-.button_primary.confirm_availability {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  background-color: #228f67;
-}
-
-.button_primary.confirm_availability:hover {
-  background-color: #038153;
-}
-
 .button_primary.is_grey {
   background-color: #e9ebed;
   color: #2f3941;
@@ -229,12 +250,6 @@
 
 .button_primary.is_grey:hover {
   background-color: hsla(210.00000000000023, 18.58%, 85.26%, 1.00);
-}
-
-.button_primary.is_primarruy {
-  width: 100%;
-  padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .button_primary.greay_btn {
