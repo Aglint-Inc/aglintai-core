@@ -6,7 +6,7 @@ import {
   sessionTypeIcon,
 } from '../common/functions';
 
-export default async function Index(
+export default async function cancelInterviewSession(
   session_ids: string[],
   application_id: string,
   schedule_id: string,
@@ -38,7 +38,7 @@ export default async function Index(
     } = session;
     return {
       date: dayjs(start_time).format('ddd MMMM DD, YYYY'),
-      Time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
+      time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
       sessionType: name,
       platform: schedule_type,
       duration: DurationCalculator(session_duration),

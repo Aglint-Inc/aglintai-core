@@ -54,7 +54,10 @@ const Sessions = ({ meetingDetail }) => {
         padding: '10px 20px',
       }}
     >
-      <Text className="m-0">{htmlParser.parse(meetingDetail.dateTime)}</Text>
+      <Text className="m-0">
+        <strong>{htmlParser.parse(meetingDetail.date)} </strong>
+        {htmlParser.parse(meetingDetail.time)}
+      </Text>
       <Text className="m-0 flex gap-1 item-center my-1">
         <Img className="inline " src={meetingDetail.sessionTypeIcon} />
         &nbsp;
