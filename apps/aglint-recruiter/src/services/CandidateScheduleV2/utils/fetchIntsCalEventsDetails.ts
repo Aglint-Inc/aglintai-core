@@ -25,7 +25,6 @@ export const fetchIntsCalEventsDetails = async (
     interviewer_id: i.user_id,
     name: getFullName(i.first_name, i.last_name),
     profile_img: i.profile_image,
-    shedule_settings: i.scheduling_settings,
     all_events: [],
     tokens: i.schedule_auth as any,
     cal_date_events: {},

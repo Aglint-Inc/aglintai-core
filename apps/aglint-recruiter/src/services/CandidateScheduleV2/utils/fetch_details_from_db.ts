@@ -18,9 +18,14 @@ import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 import { userTzDayjs } from './userTzDayjs';
 
 export type UserMeetingDetails = {
-  meeting_date: string;
-  meeting_duration: number;
-  meeting_cnt: number;
+  [user_id: string]: {
+    [week_start_time: string]: {
+      [meeting_date: string]: {
+        meeting_duration: number;
+        meeting_cnt: number;
+      };
+    };
+  };
 };
 
 export const fetch_details_from_db = async (
@@ -47,8 +52,8 @@ export const fetch_details_from_db = async (
       await supabaseAdmin.rpc('get_interview_session_data', {
         session_ids: session_ids,
         company_id,
-        meet_start_date: null,
-        meet_end_date: null,
+        meet_start_date: meeting_date.start,
+        meet_end_date: meeting_date.end,
       }),
     );
 
@@ -72,6 +77,94 @@ export const fetch_details_from_db = async (
         ? (JSON.parse(decrypt_string(r[0].service_cred)) as CompServiceKeyCred)
         : null,
     };
+  };
+  const getAllSessionIntDetails = (
+    db_ses_with_ints: InterviewSessionApiType[],
+  ) => {
+    const all_session_int_detail: AllSessionIntDetails = {};
+    db_ses_with_ints.forEach((s) => {
+      all_session_int_detail[s.session_id] = {
+        break_duration: s.break_duration,
+        duration: s.duration,
+        interviewer_cnt: s.interviewer_cnt,
+        interviewers: {},
+        location: s.location,
+        meeting_id: s.meeting_id,
+        module_id: s.module_id,
+        module_name: s.module_name,
+        schedule_type: s.schedule_type,
+        session_id: s.session_id,
+        session_name: s.session_name,
+        session_order: s.session_order,
+        session_type: s.session_type,
+      };
+      const all_ints = [...s.qualifiedIntervs, ...s.trainingIntervs];
+      all_ints.forEach((int) => {
+        all_session_int_detail[s.session_id].interviewers[int.user_id] = {
+          email: int.email,
+          first_name: int.first_name,
+          interview_module_relation_id: int.interview_module_relation_id,
+          interviewer_type: int.interviewer_type,
+          last_name: int.last_name,
+          pause_json: int.pause_json,
+          profile_image: int.profile_image,
+          schedule_auth: int.schedule_auth,
+          scheduling_settings: int.scheduling_settings,
+          session_id: int.session_id,
+          training_type: int.training_type,
+          user_id: int.user_id,
+          position: int.position,
+          int_tz: int.int_tz,
+        };
+      });
+    });
+    return all_session_int_detail;
+  };
+
+  const getInterviewersMeetings = (
+    unique_inters: SessionInterviewerType[],
+    int_meetings: InterviewerMeetingScheduled[],
+  ) => {
+    const ints_schd_meetings: UserMeetingDetails = {};
+    const ints_map = new Map<string, SessionInterviewerType>();
+    for (let int of unique_inters) {
+      ints_map.set(int.user_id, int);
+    }
+    int_meetings.map((meeting) => {
+      const meeting_start_time = userTzDayjs(meeting.meeting_start_time).tz(
+        ints_map.get(meeting.interv_user_id).scheduling_settings.timeZone
+          .tzCode,
+      );
+      const week_start_time = meeting_start_time.startOf('week').startOf('day');
+      if (!ints_schd_meetings[meeting.interv_user_id]) {
+        ints_schd_meetings[meeting.interv_user_id] = {};
+      }
+      if (
+        !ints_schd_meetings[meeting.interv_user_id][week_start_time.format()]
+      ) {
+        ints_schd_meetings[meeting.interv_user_id][week_start_time.format()] =
+          {};
+      }
+      if (
+        !ints_schd_meetings[meeting.interv_user_id][week_start_time.format()][
+          meeting_start_time.format()
+        ]
+      ) {
+        ints_schd_meetings[meeting.interv_user_id][week_start_time.format()][
+          meeting_start_time.format()
+        ] = {
+          meeting_cnt: 0,
+          meeting_duration: 0,
+        };
+      }
+      const curr_day_details =
+        ints_schd_meetings[meeting.interv_user_id][week_start_time.format()][
+          meeting_start_time.format()
+        ];
+      curr_day_details.meeting_cnt += 1;
+      curr_day_details.meeting_duration += meeting.meeting_duration;
+    });
+    return ints_schd_meetings;
   };
 
   const {
@@ -120,101 +213,12 @@ export const fetch_details_from_db = async (
       return session;
     })
     .sort((s1, s2) => s1.session_order - s2.session_order);
-
-  // interviewer meeting info
-  const getInterviewersMeetings = () => {
-    const ints_schd_meetings = new Map<string, UserMeetingDetails[]>();
-    interviewers.forEach((int) => {
-      if (!ints_schd_meetings.get(int.user_id)) {
-        let current_day = userTzDayjs(meeting_date.start)
-          .tz(int.scheduling_settings.timeZone.tzCode)
-          .startOf('day');
-        const end_day = userTzDayjs(meeting_date.end).tz(
-          int.scheduling_settings.timeZone.tzCode,
-        );
-        let meeting_details: UserMeetingDetails[] = [];
-        while (current_day.isSameOrBefore(end_day, 'day')) {
-          const meeting_day: UserMeetingDetails = {
-            meeting_cnt: int_meetings.filter((i) => {
-              let isSameDate = false;
-              if (
-                userTzDayjs(i.meeting_start_time)
-                  .tz(int.scheduling_settings.timeZone.tzCode)
-                  .isSame(current_day, 'day')
-              ) {
-                isSameDate = true;
-              }
-              return isSameDate && i.interv_user_id === int.user_id;
-            }).length,
-            meeting_date: current_day.format(),
-            meeting_duration: int_meetings
-              .filter((i) => {
-                let isSameDate = false;
-                if (
-                  userTzDayjs(i.meeting_start_time)
-                    .tz(int.scheduling_settings.timeZone.tzCode)
-                    .isSame(current_day, 'day')
-                ) {
-                  isSameDate = true;
-                }
-                return isSameDate && i.interv_user_id === int.user_id;
-              })
-              .reduce((sum, curr) => {
-                return sum + curr.meeting_duration;
-              }, 0),
-          };
-          meeting_details.push(meeting_day);
-          current_day = current_day.add(1, 'day');
-        }
-        ints_schd_meetings.set(int.email, meeting_details);
-      }
-    });
-
-    return ints_schd_meetings;
-  };
-
-  const ints_schd_meetings = getInterviewersMeetings();
-
-  const getAllSessionIntDetails = () => {
-    const all_session_int_detail: AllSessionIntDetails = {};
-    db_ses_with_ints.forEach((s) => {
-      all_session_int_detail[s.session_id] = {
-        break_duration: s.break_duration,
-        duration: s.duration,
-        interviewer_cnt: s.interviewer_cnt,
-        interviewers: {},
-        location: s.location,
-        meeting_id: s.meeting_id,
-        module_id: s.module_id,
-        module_name: s.module_name,
-        schedule_type: s.schedule_type,
-        session_id: s.session_id,
-        session_name: s.session_name,
-        session_order: s.session_order,
-        session_type: s.session_type,
-      };
-      const all_ints = [...s.qualifiedIntervs, ...s.trainingIntervs];
-      all_ints.forEach((int) => {
-        all_session_int_detail[s.session_id].interviewers[int.user_id] = {
-          email: int.email,
-          first_name: int.first_name,
-          interview_module_relation_id: int.interview_module_relation_id,
-          interviewer_type: int.interviewer_type,
-          last_name: int.last_name,
-          pause_json: int.pause_json,
-          profile_image: int.profile_image,
-          schedule_auth: int.schedule_auth,
-          scheduling_settings: int.scheduling_settings,
-          session_id: int.session_id,
-          training_type: int.training_type,
-          user_id: int.user_id,
-          position: int.position,
-          int_tz: int.int_tz,
-        };
-      });
-    });
-    return all_session_int_detail;
-  };
+  const all_session_int_details = getAllSessionIntDetails(db_ses_with_ints);
+  const unique_inters = getUniqueInts(interviewers);
+  const ints_schd_meetings = getInterviewersMeetings(
+    unique_inters,
+    int_meetings,
+  );
   const api_sess_ints: InterviewSessionApiRespType[] = db_ses_with_ints.map(
     (s) => ({
       break_duration: s.break_duration,
@@ -232,15 +236,14 @@ export const fetch_details_from_db = async (
       session_type: s.session_type,
     }),
   );
-
   return {
     company_cred,
     api_sess_ints,
-    all_inters: getUniqueInts(interviewers),
+    all_inters: unique_inters,
     comp_schedule_setting,
     int_meetings,
     ints_schd_meetings,
-    all_session_int_details: getAllSessionIntDetails(),
+    all_session_int_details: all_session_int_details,
   };
 };
 

@@ -10,6 +10,8 @@ export type CalConflictType =
   | 'soft'
   | 'ooo'
   | 'out_of_working_hours'
+  | 'week_load_reached'
+  | 'day_load_reached'
   | 'holiday'
   | 'day_off'
   | 'cal_event';
