@@ -6,7 +6,7 @@ import {
   sessionTypeIcon,
 } from '../common/functions';
 
-export default async function Index(
+export default async function CandidateCancelRequest(
   session_ids: string[],
   application_id: string,
   meeting_id: string,
@@ -43,6 +43,8 @@ export default async function Index(
     },
     public_jobs: { company },
   } = candidateJob;
+  console.log('abc');
+
   const Sessions = sessions.map((session) => {
     const {
       interview_meeting: { start_time, end_time },
@@ -53,7 +55,7 @@ export default async function Index(
     } = session;
     return {
       date: dayjs(start_time).format('ddd MMMM DD, YYYY'),
-      Time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
+      time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
       sessionType: name,
       platform: schedule_type,
       duration: DurationCalculator(session_duration),
@@ -61,6 +63,8 @@ export default async function Index(
       meetingIcon: scheduleTypeIcon(schedule_type),
     };
   });
+  console.log('error');
+
   const body = {
     recipient_email: email,
     mail_type: 'candidate_cancel_request',
@@ -70,7 +74,7 @@ export default async function Index(
       '[rescheduleReason]': session_cancel.reason,
       '[recruiterName]': recruiterName,
       '[companyName]': company,
-      '[pickYourSlotLink]': `https://dev.aglinthq.com/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
+      'meetingLink': `https://dev.aglinthq.com/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
       'meetingDetails': [...Sessions],
     },
   };

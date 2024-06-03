@@ -17,7 +17,6 @@ interface DataPayload {
   recipient_email: string;
   mail_type: string;
   recruiter_id: string;
-  company_logo: string;
   payload: {
     '[firstName]': string;
     '[sessionName]': string;
@@ -50,7 +49,6 @@ export async function POST(req: Request) {
       data.mail_type,
       data.payload,
     );
-    filled_body.company_logo = data.company_logo;
     const { emails } = await getEmails();
 
     const emailIdx = emails.findIndex((e) => e === data.mail_type);

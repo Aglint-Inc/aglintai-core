@@ -7,14 +7,12 @@ import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import { sendMail } from '../../../config/sendgrid';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
-import CandidateAvailabilityRequest from '../../../utils/email/candidate-availability-request/fetch';
+import DebriefCalenderInvite from '../../../utils/email/debrief_calendar_invite/fetch';
 
 interface ReqPayload {
-  session_id: string[];
+  session_id: string;
   application_id: string;
-  mail_type: string;
-  schedule_id: string;
-  filter_id: string;
+  meeting_id: string;
 }
 interface DataPayload {
   recipient_email: string;
@@ -23,8 +21,9 @@ interface DataPayload {
   payload: {
     '[companyName]': string;
     '[firstName]': string;
-    'pickYourSlot': string;
-    'meetingDetails': {
+    '[jobTitle]': string;
+    'meetingLink': string;
+    'meetingDetail': {
       date: string;
       time: string;
       sessionType: string;
@@ -32,12 +31,12 @@ interface DataPayload {
       duration: string;
       sessionTypeIcon: any;
       meetingIcon: string;
-    }[];
+    };
   };
 }
 
 export async function POST(req: Request) {
-  const { session_id, application_id, schedule_id, filter_id }: ReqPayload =
+  const { session_id, application_id, meeting_id }: ReqPayload =
     await req.json();
 
   try {
@@ -51,27 +50,23 @@ export async function POST(req: Request) {
     if (!application_id) {
       throw new ClientError('payload attribute missing', 400);
     }
-    if (!filter_id) {
-      throw new ClientError('filter_id is missing', 400);
+    if (!meeting_id) {
+      throw new ClientError('meeting_id is missing', 400);
     }
-
-    if (!schedule_id) {
-      throw new ClientError('schedule_id is missing', 400);
-    }
-
-    const data: DataPayload = await CandidateAvailabilityRequest(
+    const data: DataPayload = await DebriefCalenderInvite(
       session_id,
       application_id,
-      schedule_id,
-      filter_id,
+      meeting_id,
     );
+
     const filled_body = await fetchTemplate(
       data.recruiter_id,
       data.mail_type,
       data.payload,
     );
-    filled_body.meetingDetails = data.payload.meetingDetails;
-    filled_body.bookingLink = data.payload.pickYourSlot;
+    filled_body.meetingLink = data.payload.meetingLink;
+    console.log(filled_body);
+
     const { emails } = await getEmails();
 
     const emailIdx = emails.findIndex((e) => e === data.mail_type);
@@ -81,6 +76,7 @@ export async function POST(req: Request) {
         `${data.mail_type} does not match any mail_type`,
         400,
       );
+    console.log('data');
 
     const { html, subject } = await renderEmailTemplate(
       emails[emailIdx],

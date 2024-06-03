@@ -7,24 +7,25 @@ import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import { sendMail } from '../../../config/sendgrid';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
-import DebriefCalenderInvite from '../../../utils/email/debrief_calendar_invite/fetch';
+import CandidateCancelRequest from '../../../utils/email/candidate_cancel_request/fetch';
 
 interface ReqPayload {
-  session_id: string;
+  session_id: string[];
   application_id: string;
   meeting_id: string;
+  interview_cancel_id: string;
 }
 interface DataPayload {
   recipient_email: string;
   mail_type: string;
   recruiter_id: string;
-  company_logo: string;
   payload: {
-    '[companyName]': string;
     '[firstName]': string;
-    '[jobTitle]': string;
+    '[rescheduleReason]': string;
+    '[recruiterName]': string;
+    '[companyName]': string;
     'meetingLink': string;
-    'meetingDetail': {
+    'meetingDetails': {
       date: string;
       time: string;
       sessionType: string;
@@ -32,13 +33,17 @@ interface DataPayload {
       duration: string;
       sessionTypeIcon: any;
       meetingIcon: string;
-    };
+    }[];
   };
 }
 
 export async function POST(req: Request) {
-  const { session_id, application_id, meeting_id }: ReqPayload =
-    await req.json();
+  const {
+    session_id,
+    application_id,
+    meeting_id,
+    interview_cancel_id,
+  }: ReqPayload = await req.json();
 
   try {
     // if(!api_key)  throw new ClientError("api_key not found",401)
@@ -54,12 +59,15 @@ export async function POST(req: Request) {
     if (!meeting_id) {
       throw new ClientError('meeting_id is missing', 400);
     }
-    const data: DataPayload = await DebriefCalenderInvite(
+    if (!interview_cancel_id) {
+      throw new ClientError('interview_cancel_id is missing', 400);
+    }
+    const data: DataPayload = await CandidateCancelRequest(
       session_id,
       application_id,
       meeting_id,
+      interview_cancel_id,
     );
-    console.log(data);
 
     const filled_body = await fetchTemplate(
       data.recruiter_id,
