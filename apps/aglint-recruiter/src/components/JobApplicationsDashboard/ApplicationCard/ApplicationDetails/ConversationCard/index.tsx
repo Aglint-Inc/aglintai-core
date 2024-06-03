@@ -87,7 +87,7 @@ function ConversationCard({
                   <MuiAvatar
                     src={roleImage}
                     level={roleName}
-                    variant='rounded-small'
+                    variant={'rounded-small'}
                   />
                 }
                 textQuestion={textForSpeech}
