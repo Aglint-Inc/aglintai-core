@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ScreeningQuestionCard } from "./ScreeningQuestionCard";
 import * as _utils from "./utils";
 import _styles from "./AssessmentEpilogue.module.css";
 
@@ -45,7 +44,7 @@ export function AssessmentEpilogue({
             className={_utils.cx(_styles, "div-block-555")}
             tag="div"
           >
-            {slotEndingMessageVideo ?? <ScreeningQuestionCard />}
+            {slotEndingMessageVideo}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

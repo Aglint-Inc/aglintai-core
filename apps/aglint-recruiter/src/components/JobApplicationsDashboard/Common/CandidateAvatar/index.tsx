@@ -5,13 +5,7 @@ import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 
 import { getCandidateDetails } from '../../utils';
 
-const CandidateAvatar = ({
-  application,
-  fontSize = 28,
-}: {
-  application: JobApplication;
-  fontSize?: number;
-}) => {
+const CandidateAvatar = ({ application }: { application: JobApplication }) => {
   return (
     <Stack width={'100%'} sx={{ aspectRatio: 1 }}>
       <MuiAvatar
