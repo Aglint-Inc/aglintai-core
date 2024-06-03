@@ -6,11 +6,14 @@ import {
   sessionTypeIcon,
 } from '../common/functions';
 
-export default async function CandidateInviteConfirmation(
+//     application_id: string;
+//     session_ids: string[];
+//     meeting_id: string;
+
+export default async function Index(
   session_ids: string[],
   application_id: string,
-  schedule_id: string,
-  filter_id: string,
+  meeting_id: string,
 ) {
   const { data: sessions } = await supabaseAdmin
     .from('interview_session')
@@ -24,12 +27,17 @@ export default async function CandidateInviteConfirmation(
   } = await supabaseAdmin
     .from('applications')
     .select(
-      'candidates(first_name,email,recruiter_id),public_jobs(recruiter(logo),job_title,company)',
+      'candidates(first_name,email,recruiter_id,recruiter(name)),public_jobs(recruiter(logo),job_title,company)',
     )
     .eq('id', application_id);
 
   const {
-    candidates: { email, recruiter_id, first_name },
+    candidates: {
+      email,
+      recruiter_id,
+      first_name,
+      recruiter: { name: recruiter_name },
+    },
     public_jobs: {
       company,
       job_title,
@@ -47,7 +55,7 @@ export default async function CandidateInviteConfirmation(
     } = session;
     return {
       date: dayjs(start_time).format('ddd MMMM DD, YYYY'),
-      time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
+      Time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
       sessionType: name,
       platform: schedule_type,
       duration: DurationCalculator(session_duration),
@@ -58,17 +66,23 @@ export default async function CandidateInviteConfirmation(
 
   const body = {
     recipient_email: email,
-    mail_type: 'candidate_invite_confirmation',
+    mail_type: 'confirmation_mail_to_organizer',
     recruiter_id,
     company_logo: logo,
     payload: {
       '[companyName]': company,
       '[firstName]': first_name,
       '[jobTitle]': job_title,
-      'meetingLink': `https://dev.aglinthq.com/scheduling/invite/${schedule_id}?filter_id=${filter_id}`,
+      '[recruiterName]': recruiter_name,
+      'meetingLink': `https://dev.aglinthq.com/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
       'meetingDetails': [...Sessions],
     },
   };
+  console.log(body);
 
   return body;
 }
+
+// [recruiterName]
+// [firstName]
+// [meetingLink]

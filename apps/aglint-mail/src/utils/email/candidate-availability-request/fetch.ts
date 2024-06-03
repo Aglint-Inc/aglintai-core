@@ -24,7 +24,7 @@ export default async function cancelInterviewSession(
   } = await supabaseAdmin
     .from('applications')
     .select(
-      'candidates(first_name,email,recruiter_id),public_jobs(logo,company)',
+      'candidates(first_name,email,recruiter_id),public_jobs(recruiter(logo),company)',
     )
     .eq('id', application_id);
 
@@ -49,7 +49,10 @@ export default async function cancelInterviewSession(
 
   const {
     candidates: { email, recruiter_id, first_name },
-    public_jobs: { company, logo },
+    public_jobs: {
+      company,
+      recruiter: { logo },
+    },
   } = candidateJob;
 
   const body = {

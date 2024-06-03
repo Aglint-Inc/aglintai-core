@@ -28,7 +28,7 @@ interface CandidateRescheduleRequestType {
 
 // export dummy
 export const dummy: CandidateRescheduleRequestType = {
-  body: '<p>Dear [recruiterName],</p><p>[firstName] is requesting to reschedule betweeen [dateRange] stating reason [rescheduleReason]</p><p>Additional notes from [firstName] : [additionalRescheduleNotes]</p><p>Thank you</p>',
+  body: '<p>Dear [recruiterName],</p><p>[firstName] is requesting to reschedule betweeen [dateRange] stating reason [rescheduleReason]</p><p>Additional notes from [firstName] : [additionalRescheduleNotes]</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   meetingDetails: [
@@ -62,7 +62,7 @@ const Sessions = ({ meetingDetail }) => {
   const htmlParser = Parser();
   return (
     <Container
-      className="my-3 rounded-md "
+      className="my-0 mb-3 rounded-md "
       style={{
         border: '1px solid #E9EBED',
         padding: '10px 20px',
@@ -107,6 +107,9 @@ export const CandidateRescheduleRequest = ({
               />
 
               <Text className="">{htmlParser.parse(body)}</Text>
+              <Text className="text-[12px] my-0">
+                Current Schedule{meetingDetails.length > 1 && 's'} :
+              </Text>
               {meetingDetails.map((meetingDetail, i) => (
                 <Sessions key={i} meetingDetail={meetingDetail} />
               ))}

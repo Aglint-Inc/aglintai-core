@@ -23,7 +23,7 @@ export default async function Index(
   } = await supabaseAdmin
     .from('applications')
     .select(
-      'candidates(first_name,email,recruiter_id),public_jobs(logo,job_title,company)',
+      'candidates(first_name,email,recruiter_id),public_jobs(recruiter(logo),job_title,company)',
     )
     .eq('id', application_id);
 
@@ -49,13 +49,18 @@ export default async function Index(
 
   const {
     candidates: { email, recruiter_id, first_name },
-    public_jobs: { company, job_title },
+    public_jobs: {
+      company,
+      job_title,
+      recruiter: { logo },
+    },
   } = candidateJob;
 
   const body = {
     recipient_email: email,
-    mail_type: 'candidate_invite_confirmation',
+    mail_type: 'debrief_mail_to_organizer',
     recruiter_id,
+    company_logo: logo,
     payload: {
       '[companyName]': company,
       '[firstName]': first_name,

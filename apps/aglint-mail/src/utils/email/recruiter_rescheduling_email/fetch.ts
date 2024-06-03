@@ -6,11 +6,11 @@ import {
   sessionTypeIcon,
 } from '../common/functions';
 
-export default async function CandidateInviteConfirmation(
+export default async function Index(
   session_ids: string[],
   application_id: string,
-  schedule_id: string,
-  filter_id: string,
+  meeting_id: string,
+  interview_cancel_id: string,
 ) {
   const { data: sessions } = await supabaseAdmin
     .from('interview_session')
@@ -18,25 +18,35 @@ export default async function CandidateInviteConfirmation(
       'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
     )
     .in('id', session_ids);
-
   const {
     data: [candidateJob],
   } = await supabaseAdmin
     .from('applications')
     .select(
-      'candidates(first_name,email,recruiter_id),public_jobs(recruiter(logo),job_title,company)',
+      'candidates(first_name,email,recruiter_id,recruiter(name)),public_jobs(recruiter(logo),job_title,company)',
     )
     .eq('id', application_id);
 
   const {
-    candidates: { email, recruiter_id, first_name },
+    data: [session_cancel],
+  } = await supabaseAdmin
+    .from('interview_session_cancel')
+    .select('other_details,reason')
+    .eq('id', interview_cancel_id);
+  const { reason } = session_cancel;
+
+  const {
+    candidates: {
+      email,
+      recruiter_id,
+      first_name,
+      recruiter: { name: recruiterName },
+    },
     public_jobs: {
       company,
-      job_title,
       recruiter: { logo },
     },
   } = candidateJob;
-
   const Sessions = sessions.map((session) => {
     const {
       interview_meeting: { start_time, end_time },
@@ -47,7 +57,7 @@ export default async function CandidateInviteConfirmation(
     } = session;
     return {
       date: dayjs(start_time).format('ddd MMMM DD, YYYY'),
-      time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
+      Time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
       sessionType: name,
       platform: schedule_type,
       duration: DurationCalculator(session_duration),
@@ -55,20 +65,19 @@ export default async function CandidateInviteConfirmation(
       meetingIcon: scheduleTypeIcon(schedule_type),
     };
   });
-
   const body = {
     recipient_email: email,
-    mail_type: 'candidate_invite_confirmation',
+    mail_type: 'candidate_reschedule_request',
     recruiter_id,
     company_logo: logo,
     payload: {
-      '[companyName]': company,
       '[firstName]': first_name,
-      '[jobTitle]': job_title,
-      'meetingLink': `https://dev.aglinthq.com/scheduling/invite/${schedule_id}?filter_id=${filter_id}`,
+      '[rescheduleReason]': reason,
+      '[scheduleName]': recruiterName,
+      '[companyName]': company,
+      '[pickYourSlotLink]': `https://dev.aglinthq.com/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
       'meetingDetails': [...Sessions],
     },
   };
-
   return body;
 }

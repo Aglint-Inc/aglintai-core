@@ -1,6 +1,6 @@
 import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
 
-export default async function CancelInterviewSession(
+export default async function Index(
   session_id: string,
   application_id: string,
 ) {
@@ -16,13 +16,16 @@ export default async function CancelInterviewSession(
   } = await supabaseAdmin
     .from('applications')
     .select(
-      'candidates(first_name,email,recruiter_id),public_jobs(logo,job_title,company)',
+      'candidates(first_name,email,recruiter_id),public_jobs(recruiter(logo),job_title,company)',
     )
     .eq('id', application_id);
-
   const {
     candidates: { email, recruiter_id, first_name },
-    public_jobs: { company, job_title, logo },
+    public_jobs: {
+      company,
+      job_title,
+      recruiter: { logo },
+    },
   } = candidateJob;
 
   const [{ name }] = session;
