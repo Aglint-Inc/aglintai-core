@@ -75,7 +75,7 @@ export async function POST(req: Request) {
       data.payload,
     );
     filled_body.meetingLink = data.payload.meetingLink;
-    console.log(filled_body);
+    filled_body.meetingDetails = data.payload.meetingDetails
 
     const { emails } = await getEmails();
 
@@ -86,7 +86,6 @@ export async function POST(req: Request) {
         `${data.mail_type} does not match any mail_type`,
         400,
       );
-    console.log('data');
 
     const { html, subject } = await renderEmailTemplate(
       emails[emailIdx],

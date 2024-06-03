@@ -43,7 +43,6 @@ export default async function CandidateCancelRequest(
     },
     public_jobs: { company },
   } = candidateJob;
-  console.log('abc');
 
   const Sessions = sessions.map((session) => {
     const {
@@ -63,7 +62,6 @@ export default async function CandidateCancelRequest(
       meetingIcon: scheduleTypeIcon(schedule_type),
     };
   });
-  console.log('error');
 
   const body = {
     recipient_email: email,

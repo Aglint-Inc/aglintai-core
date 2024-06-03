@@ -67,7 +67,6 @@ export async function POST(req: Request) {
       filter_id,
     );
 
-    console.log(data.payload.meetingLink);
 
     const filled_body = await fetchTemplate(
       data.recruiter_id,
