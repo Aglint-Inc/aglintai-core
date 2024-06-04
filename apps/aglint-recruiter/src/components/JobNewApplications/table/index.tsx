@@ -1,25 +1,45 @@
+/* eslint-disable security/detect-object-injection */
 import { DatabaseEnums } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
+import { memo } from 'react';
 
 import { ApplicantsListEmpty } from '@/devlink2/ApplicantsListEmpty';
+import { ApplicantsTable } from '@/devlink2/ApplicantsTable';
 import NoApplicants from '@/public/lottie/NoApplicants';
 import { useApplications } from '@/src/context/ApplicationsContext';
+import { useJobDetails } from '@/src/context/JobDashboard';
 import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 
 import ApplicantsList from './list';
 
-const List = () => {
+export const Table = memo(() => {
+  const section = useJobDashboardStore(({ section }) => section);
+  return (
+    <>
+      <ApplicantsTable
+        isAllChecked={false}
+        isScreeningVisible={section === 'screening'}
+        isInterviewVisible={section === 'assessment'}
+        isDisqualifiedVisible={section === 'disqualified'}
+      />
+      <List />
+    </>
+  );
+});
+Table.displayName = 'Table';
+
+const List = memo(() => {
+  const {
+    job: { count },
+  } = useJobDetails();
   const section = useJobDashboardStore(({ section }) => section);
   const applications = useSectionApplication(section);
-  if (
-    applications.status === 'success' &&
-    applications.data.pages.flatMap((page) => page).length === 0
-  )
-    return <EmptyList />;
+  if ((count[section] ?? 0) === 0) return <EmptyList />;
   return <ApplicantsList key={section} applications={applications} />;
-};
+});
+List.displayName = 'List';
 
-const EmptyList = () => {
+const EmptyList = memo(() => {
   const section = useJobDashboardStore(({ section }) => section);
   return (
     <Stack height={'50vh'} justifyContent={'center'}>
@@ -31,9 +51,8 @@ const EmptyList = () => {
       </Stack>
     </Stack>
   );
-};
-
-export default List;
+});
+EmptyList.displayName = 'EmptyList';
 
 const useSectionApplication = (
   section: DatabaseEnums['application_status'],

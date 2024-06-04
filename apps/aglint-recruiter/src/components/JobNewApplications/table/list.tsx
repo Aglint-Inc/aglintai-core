@@ -21,7 +21,7 @@ const ApplicantsList = ({
   const rowVirtualizer = useVirtualizer({
     count: hasNextPage ? allRows.length + 1 : allRows.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 72,
+    estimateSize: () => 48,
     overscan: 5,
   });
 
@@ -51,7 +51,7 @@ const ApplicantsList = ({
     <Stack
       ref={parentRef}
       style={{
-        height: `100%`,
+        height: `calc(100vh - 168px)`,
         width: `100%`,
         overflow: 'auto',
       }}

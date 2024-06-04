@@ -12,7 +12,7 @@ import Loader from '../Common/Loader';
 import SectionIcons from '../JobApplicationsDashboard/Common/SectionIcons';
 import { capitalize } from '../JobApplicationsDashboard/utils';
 import { BreadCrumbs } from './layout';
-import List from './table';
+import { Table } from './table';
 
 const ApplicationsDashboard = () => {
   const { job, initialLoad } = useJobDetails();
@@ -35,13 +35,11 @@ const ApplicationsComponent = () => {
   const { job } = useJobDetails();
   return (
     <JobDetails
-      isEditJob={false}
-      isWarningVisible={
-        job.status == 'published' && (!job.jd_json || !job.description)
-          ? true
-          : false
-      }
       isImportCandidates={job.status === 'published'}
+      onclickAddCandidates={() => {}}
+      isFetchingPillVisible={true}
+      slotRefresh={<></>}
+      slotShowFilterButton={<>KKKK</>}
       slotLoadingLottie={
         <CircularProgress
           style={{
@@ -53,7 +51,9 @@ const ApplicationsComponent = () => {
       }
       slotBreadcrumb={<BreadCrumbs />}
       slotTabs={<NewJobDetailsTabs />}
-      slotTable={<List />}
+      slotTable={<Table />}
+      isFilterVisible={true}
+      slotFilters={<>Filters</>}
     />
   );
 };
@@ -88,12 +88,6 @@ const SectionCard = ({
         slotStartIcon={<SectionIcons section={status} />}
         isStartIconVisible={true}
         textLabel={`${capitalize(status)} (${job.count[status]})`}
-        onClickPill={{
-          style: {
-            minWidth: '200px',
-            minHeight: '60px',
-          },
-        }}
       />
     </Stack>
   );

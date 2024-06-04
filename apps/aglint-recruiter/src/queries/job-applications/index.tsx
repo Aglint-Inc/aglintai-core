@@ -5,7 +5,7 @@ import { supabase } from '@/src/utils/supabase/client';
 
 import { jobQueryKeys } from '../job/keys';
 
-const ROWS = 14;
+const ROWS = 30;
 
 export const applicationsQueries = {
   all: ({ job_id }: ApplicationAllQueryPrerequistes) => ({
@@ -75,7 +75,7 @@ const getApplications = async ({
     await supabase
       .from('application_view')
       .select('*')
-      .range(index, index + ROWS)
+      .range(index, index + ROWS - 1)
       .eq('job_id', job_id)
       .eq('status', status)
       .throwOnError()
