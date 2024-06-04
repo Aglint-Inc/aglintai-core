@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { Text } from "./Text";
 import { TrainingProgressDetail } from "./TrainingProgressDetail";
 import * as _utils from "./utils";
 import _styles from "./MemberListCard.module.css";
@@ -67,46 +68,30 @@ export function MemberListCard({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1069")}
+            className={_utils.cx(_styles, "mlc-name-wrap")}
             tag="div"
             {...onClickCard}
           >
             {isProfileVisible ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1070")}
+                className={_utils.cx(_styles, "mlc-pic-wrap")}
                 tag="div"
               >
                 {slotProfileImage}
               </_Builtin.Block>
             ) : null}
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1071")}
+              className={_utils.cx(_styles, "mlc-name")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                tag="div"
-              >
-                {textName}
-              </_Builtin.Block>
-              {isRoleVisible ? (
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-grey-600")}
-                  tag="div"
-                >
-                  {textRole}
-                </_Builtin.Block>
-              ) : null}
+              <Text content={textName} weight="bold" />
+              <Text content={textRole} color="neutral" weight="" />
               {isTextObjectiveVisible ? (
                 <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "text-grey-600",
-                    "two-line-clamp"
-                  )}
+                  className={_utils.cx(_styles, "two-line-clamp")}
                   tag="div"
                 >
-                  {textObjective}
+                  <Text content={textObjective} color="neutral" weight="" />
                 </_Builtin.Block>
               ) : null}
             </_Builtin.Block>

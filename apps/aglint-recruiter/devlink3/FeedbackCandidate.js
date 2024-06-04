@@ -198,7 +198,7 @@ export function FeedbackCandidate({
             >
               <ButtonSolid
                 onClickButton={onClickSubmit}
-                textButton="Submit feedback"
+                textButton="Submit Feedback"
               />
             </_Builtin.Block>
           ) : null}

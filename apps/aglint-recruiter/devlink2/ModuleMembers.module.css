@@ -1,4 +1,4 @@
-.div-block-1678 {
+.module-member-wrap {
   display: flex;
   width: 900px;
   padding: var(--space-4);
@@ -8,19 +8,19 @@
   grid-row-gap: var(--space-6);
 }
 
-.div-block-1501 {
+.mm-header-wrap {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
-.div-block-1502 {
+.mm-slot-list-card {
   display: flex;
-  margin-top: 16px;
+  margin-top: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }

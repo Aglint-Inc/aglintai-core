@@ -16,10 +16,10 @@ export function ModuleMembers({
   isMembersTrainingVisible = true,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1678")} tag="div">
+    <_Component className={_utils.cx(_styles, "module-member-wrap")} tag="div">
       <_Builtin.Block tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1501")}
+          className={_utils.cx(_styles, "mm-header-wrap")}
           tag="div"
         >
           <Text content="Qualified" />
@@ -32,7 +32,7 @@ export function ModuleMembers({
           />
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1502")}
+          className={_utils.cx(_styles, "mm-slot-list-card")}
           tag="div"
         >
           {slotQualifiedMemberList ?? <MemberListCard />}
@@ -41,7 +41,7 @@ export function ModuleMembers({
       {isMembersTrainingVisible ? (
         <_Builtin.Block tag="div">
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1501")}
+            className={_utils.cx(_styles, "mm-header-wrap")}
             tag="div"
           >
             <Text content="Members in training" />
@@ -54,7 +54,7 @@ export function ModuleMembers({
             />
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1502")}
+            className={_utils.cx(_styles, "mm-slot-list-card")}
             tag="div"
           >
             {slotMembersInTraining ?? <MemberListCard />}
