@@ -3,6 +3,8 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
+import { ButtonGhost } from "./ButtonGhost";
+import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./UserDetails.module.css";
 
@@ -52,19 +54,19 @@ export function UserDetails({
             >
               <Text content="Change profile photo" />
             </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-sm", "color-grey-600")}
-              tag="div"
-            >
-              {
-                "Upload a square profile image (PNG or JPEG). Maximum size: 5 MB."
-              }
+            <_Builtin.Block tag="div">
+              <Text
+                content="Upload a square profile image (PNG or JPEG). "
+                size="1"
+                color="neutral"
+              />
+              <Text content="Maximum size: 5 MB." color="neutral" size="1" />
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
         {isWarningVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-921")}
+            className={_utils.cx(_styles, "ud-slot-warning")}
             tag="div"
           >
             {slotWarning}
@@ -79,15 +81,10 @@ export function UserDetails({
           {slotUserForm ?? <SlotComp componentName="slotUserForm" />}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "flex-horizontal", "mt-2")}
+          className={_utils.cx(_styles, "slot-button-edit-profile")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "slot-button-edit-profile")}
-            tag="div"
-          >
-            {slotUserInfoBtn ?? <SlotComp componentName="slotForButton" />}
-          </_Builtin.Block>
+          {slotUserInfoBtn ?? <SlotComp componentName="slotForButton" />}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
@@ -95,18 +92,28 @@ export function UserDetails({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "button-cancel")}
+          className={_utils.cx(_styles, "width-50")}
           tag="div"
           {...onClickClose}
         >
-          <Text content="Cancel" />
+          <ButtonGhost
+            isRightIcon={false}
+            isLeftIcon={false}
+            textButton="Cancel"
+            size="2"
+          />
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "button-cancel", "accent")}
+          className={_utils.cx(_styles, "width-50")}
           tag="div"
           {...onClickUpdate}
         >
-          <Text content="Update" />
+          <ButtonSolid
+            isLeftIcon={false}
+            isRightIcon={false}
+            textButton="Update"
+            size="2"
+          />
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

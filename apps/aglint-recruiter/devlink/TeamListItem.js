@@ -108,11 +108,7 @@ export function TeamListItem({
         <Text content={textLastActive} />
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "tu-list-item", "actions-copy", "center")}
-        id={_utils.cx(
-          _styles,
-          "w-node-a60860aa-9493-87fc-f445-b3f1087efc9b-087efc8b"
-        )}
+        className={_utils.cx(_styles, "three-dot-wrap")}
         tag="div"
       >
         <_Builtin.Block

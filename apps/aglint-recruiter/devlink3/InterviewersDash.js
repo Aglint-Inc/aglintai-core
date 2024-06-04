@@ -23,7 +23,7 @@ export function InterviewersDash({
         className={_utils.cx(_styles, "dashboard-widget-header", "header")}
         tag="div"
       >
-        <Text content="" />
+        <Text content="Interviewers" />
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1783")}
           tag="div"

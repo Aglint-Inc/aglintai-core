@@ -16,17 +16,6 @@
   grid-row-gap: 10px;
 }
 
-.accent-link {
-  display: flex;
-  grid-column-gap: var(--space-1);
-  grid-row-gap: var(--space-1);
-  color: var(--accent-11);
-}
-
-.accent-link:hover {
-  color: var(--accent-12);
-}
-
 .div-block-1502 {
   display: flex;
   margin-top: 16px;

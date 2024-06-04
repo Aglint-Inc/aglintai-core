@@ -105,10 +105,6 @@
   color: var(--sand-11);
 }
 
-.fw-semibold.name-text {
-  color: #467b7c;
-}
-
 .hide {
   display: none;
 }

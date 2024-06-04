@@ -221,6 +221,7 @@
 }
 
 .team-table-wrap {
+  overflow: hidden;
   flex-direction: column;
   grid-auto-columns: 1fr;
   grid-template-columns: 1fr;

@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { ButtonSurface } from "./ButtonSurface";
 import { MemberListCard } from "./MemberListCard";
 import * as _utils from "./utils";
 import _styles from "./ModuleMembers.module.css";
@@ -21,14 +22,14 @@ export function ModuleMembers({
           className={_utils.cx(_styles, "div-block-1501")}
           tag="div"
         >
-          <Text content="" />
-          <_Builtin.Block
-            className={_utils.cx(_styles, "accent-link")}
-            tag="div"
-            {...onClickAddMember}
-          >
-            {"Add"}
-          </_Builtin.Block>
+          <Text content="Qualified" />
+          <ButtonSurface
+            onClickButton={onClickAddMember}
+            size="2"
+            textButton="Add"
+            isRightIcon={false}
+            isLeftIcon={false}
+          />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1502")}
@@ -44,13 +45,13 @@ export function ModuleMembers({
             tag="div"
           >
             <Text content="Members in training" />
-            <_Builtin.Block
-              className={_utils.cx(_styles, "accent-link")}
-              tag="div"
-              {...onClickAddTrainee}
-            >
-              {"Add"}
-            </_Builtin.Block>
+            <ButtonSurface
+              onClickButton={onClickAddTrainee}
+              size="2"
+              textButton="Add"
+              isRightIcon={false}
+              isLeftIcon={false}
+            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1502")}

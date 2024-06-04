@@ -3,7 +3,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
-import { ButtonPrimaryRegular } from "./ButtonPrimaryRegular";
+import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./UserChangeEmail.module.css";
 
@@ -31,7 +31,7 @@ export function UserChangeEmail({
         {slotEmail ?? <SlotComp componentName="Slot for Email field." />}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "flex-horizontal", "mt-2")}
+        className={_utils.cx(_styles, "flex-horizontal")}
         tag="div"
       >
         <_Builtin.Block
@@ -39,7 +39,12 @@ export function UserChangeEmail({
           tag="div"
           {...onClickEmailChange}
         >
-          <ButtonPrimaryRegular textLabel="Change Email" />
+          <ButtonSolid
+            isLeftIcon={false}
+            isRightIcon={false}
+            textButton="Change Email"
+            size="2"
+          />
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

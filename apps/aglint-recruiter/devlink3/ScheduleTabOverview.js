@@ -3,6 +3,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { RescheduleCard } from "./RescheduleCard";
+import { Text } from "./Text";
 import { ScheduleCard } from "./ScheduleCard";
 import { MembersList } from "./MembersList";
 import { HeaderWithSlot } from "./HeaderWithSlot";
@@ -46,9 +47,7 @@ export function ScheduleTabOverview({
         </_Builtin.Block>
       ) : null}
       <_Builtin.Block className={_utils.cx(_styles, "tab_row")} tag="div">
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Schedule Info"}
-        </_Builtin.Block>
+        <Text content="" />
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1414")}
           tag="div"
@@ -146,12 +145,7 @@ export function ScheduleTabOverview({
           className={_utils.cx(_styles, "div-block-1423")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Candidate"}
-          </_Builtin.Block>
+          <Text content="Candidate" />
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1424")}
             tag="div"
@@ -165,12 +159,7 @@ export function ScheduleTabOverview({
           className={_utils.cx(_styles, "div-block-1423")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Members"}
-          </_Builtin.Block>
+          <Text content="Members" />
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1425")}
             tag="div"
@@ -194,9 +183,7 @@ export function ScheduleTabOverview({
         className={_utils.cx(_styles, "div-block-1422")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Interview Module"}
-        </_Builtin.Block>
+        <Text content="Interview Module" />
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1421", "cursor-pointer")}
           tag="div"

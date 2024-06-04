@@ -24,7 +24,7 @@ export function RecentReschedule({
         className={_utils.cx(_styles, "reschedule-req-header")}
         tag="div"
       >
-        <Text content="" />
+        <Text content="RecentReschedule" />
         <_Builtin.Block tag="div">{slotDropdown}</_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

@@ -51,9 +51,7 @@ export function PageLayout({
           className={_utils.cx(_styles, "topbar_right")}
           tag="div"
         >
-          {slotTopbarRight ?? (
-            <SlotComp componentName="topbar right components" />
-          )}
+          {slotTopbarRight}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "autosave_widget")}

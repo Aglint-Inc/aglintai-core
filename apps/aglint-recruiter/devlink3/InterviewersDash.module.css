@@ -7,10 +7,12 @@
 
 .div-block-1487.over-hidden {
   overflow: hidden;
+  background-color: var(--white);
 }
 
 .div-block-1487.height-430 {
   height: 430px;
+  background-color: var(--white);
 }
 
 .dashboard-widget-header {
@@ -91,7 +93,7 @@
   top: 0px;
   z-index: 2;
   grid-template-columns: 25% 25% 50%;
-  background-color: white;
+  background-color: var(--white);
 }
 
 .div-block-1507.height-56 {

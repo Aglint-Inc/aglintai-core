@@ -97,7 +97,7 @@ export function MyScheduleSubCard({
                 >
                   {isPhoneCallVisible ? (
                     <_Builtin.Block
-                      className={_utils.cx(_styles, "div-block-1390")}
+                      className={_utils.cx(_styles, "card_flex")}
                       tag="div"
                     >
                       <_Builtin.Block tag="div">
@@ -115,7 +115,7 @@ export function MyScheduleSubCard({
                   >
                     {isMeetingPlatformVisible ? (
                       <_Builtin.Block
-                        className={_utils.cx(_styles, "div-block-1390")}
+                        className={_utils.cx(_styles, "card_flex")}
                         tag="div"
                       >
                         <_Builtin.Block tag="div">
@@ -128,7 +128,7 @@ export function MyScheduleSubCard({
                     ) : null}
                     {isDurationVisible ? (
                       <_Builtin.Block
-                        className={_utils.cx(_styles, "div-block-1390")}
+                        className={_utils.cx(_styles, "card_flex")}
                         tag="div"
                       >
                         <_Builtin.Block tag="div">
@@ -145,7 +145,7 @@ export function MyScheduleSubCard({
                   </_Builtin.Block>
                   {isLocationVisible ? (
                     <_Builtin.Block
-                      className={_utils.cx(_styles, "div-block-1390", "hide")}
+                      className={_utils.cx(_styles, "card_flex", "hide")}
                       tag="div"
                     >
                       <_Builtin.Block tag="div">

@@ -30,10 +30,6 @@
   }
 }
 
-.rd-job-list-item:hover {
-  box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
-}
-
 @media screen and (max-width: 991px) {
   .rd-job-list-item {
     padding-top: 20px;
@@ -290,7 +286,7 @@
   grid-row-gap: var(--space-1);
 
   border: 1px none var(--success-3);
-  border-radius: var(--radius-full);
+  border-radius: var(--space-1);
 
   background-color: var(--success-9);
 

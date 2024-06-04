@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { CompanyLocation } from "./CompanyLocation";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./CompanyInfo.module.css";
 
@@ -39,7 +39,7 @@ export function CompanyInfo({
           className={_utils.cx(_styles, "slot-location-saved-wrappers")}
           tag="div"
         >
-          {slotLocation ?? <CompanyLocation />}
+          {slotLocation ?? <SlotComp componentName="CompanyLocation" />}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "cj-add-skill-btn-new")}

@@ -4,6 +4,7 @@ import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
+import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./FeedbackCandidate.module.css";
 
@@ -195,12 +196,10 @@ export function FeedbackCandidate({
               tag="div"
               {...onClickSubmit}
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                tag="div"
-              >
-                {"Submit feedback"}
-              </_Builtin.Block>
+              <ButtonSolid
+                onClickButton={onClickSubmit}
+                textButton="Submit feedback"
+              />
             </_Builtin.Block>
           ) : null}
           {isThankYouVisible ? (

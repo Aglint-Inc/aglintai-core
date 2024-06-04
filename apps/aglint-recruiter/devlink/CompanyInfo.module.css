@@ -1,5 +1,5 @@
 .company-info-wrap {
-  width: 600px;
+  width: 700px;
   padding-top: var(--space-4);
   padding-bottom: var(--space-7);
 }
@@ -18,10 +18,14 @@
 }
 
 .slot-location-saved-wrappers {
-  display: flex;
+  display: grid;
+  width: 100%;
   flex-direction: column;
+  grid-auto-columns: 1fr;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
 }
 
 .cj-add-skill-btn-new {

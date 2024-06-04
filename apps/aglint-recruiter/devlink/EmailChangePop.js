@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { ButtonPrimaryRegular } from "./ButtonPrimaryRegular";
+import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./EmailChangePop.module.css";
 
@@ -35,11 +35,16 @@ export function EmailChangePop({
           />
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "mt-2")}
+          className={_utils.cx(_styles, "check-inbox-btn-wrap")}
           tag="div"
           {...onClickClose}
         >
-          <ButtonPrimaryRegular textLabel="" />
+          <ButtonSolid
+            isLeftIcon={false}
+            isRightIcon={false}
+            textButton="Close"
+            size="2"
+          />
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

@@ -1,13 +1,9 @@
 .job-dashboard-layout {
   display: flex;
-  overflow: scroll;
   height: 100vh;
-  padding-bottom: var(--space-7);
   flex-direction: column;
   align-items: stretch;
   flex: 1;
-  grid-column-gap: var(--space-4);
-  grid-row-gap: var(--space-4);
 }
 
 @media screen and (max-width: 991px) {

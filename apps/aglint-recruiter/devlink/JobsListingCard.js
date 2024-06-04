@@ -40,6 +40,7 @@ export function JobsListingCard({
       className={_utils.cx(_styles, "rd-job-list-item")}
       data-w-id="4c8f5e59-2551-ecd2-b94c-afc3e4f6dd07"
       tag="div"
+      box-shadow="3"
       {...onClickCard}
     >
       <_Builtin.Block

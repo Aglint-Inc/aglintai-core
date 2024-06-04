@@ -6,8 +6,10 @@
   grid-column-gap: 16px;
   grid-row-gap: 16px;
 
-  border: 1px solid #e9ebed;
+  border: 1px solid var(--neutral-6);
   border-radius: 16px;
+
+  background-color: var(--white);
 }
 
 .reschedule-req-header {
