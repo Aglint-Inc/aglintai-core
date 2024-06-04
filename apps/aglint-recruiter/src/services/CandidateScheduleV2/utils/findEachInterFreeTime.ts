@@ -9,11 +9,11 @@ import {
   TimeDurationDayjsType,
   TimeDurationType,
 } from '@aglint/shared-types';
+import { ScheduleUtils } from '@aglint/shared-utils';
 import { Dayjs } from 'dayjs';
 
 import { DBDetailsType } from '../types';
 import { getInterviewerBlockedTimes } from './getInterviewerBlockedTimes';
-import { ScheduleUtils } from './ScheduleUtils';
 import {
   convertTimeDurStrToDayjsChunk,
   dayjsMax,
