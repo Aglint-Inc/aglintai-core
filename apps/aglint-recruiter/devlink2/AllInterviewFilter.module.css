@@ -88,11 +88,6 @@
   cursor: pointer;
 }
 
-.icons.lottie {
-  width: 16px;
-  height: 16px;
-}
-
 .all-interview-filter-copy {
   display: flex;
   padding: 0px;

@@ -14,16 +14,6 @@
   cursor: pointer;
 }
 
-.radix-button.is_disabled {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-
-  background-color: var(--neutral-3);
-}
-
 .icon_placeholder {
   display: flex;
 }

@@ -23,19 +23,9 @@
   background-color: #f8f9f9;
 }
 
-.time_range_available.fixed_loader {
-  width: 100%;
-}
-
 .relative_2 {
   position: relative;
   z-index: 2;
-}
-
-.relative_2.ehfeiruytfivrtf {
-  z-index: 1;
-  opacity: 0;
-  pointer-events: none;
 }
 
 .default_bg {

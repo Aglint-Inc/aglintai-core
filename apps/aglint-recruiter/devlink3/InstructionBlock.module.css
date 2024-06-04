@@ -66,7 +66,3 @@
 .text-underline {
   text-decoration: underline;
 }
-
-.text-grey_600 {
-  color: var(--sand-11);
-}

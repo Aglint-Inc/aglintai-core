@@ -46,10 +46,6 @@
   font-weight: 600;
 }
 
-.text-grey-600 {
-  color: #68737d;
-}
-
 .grid-2-copy {
   max-width: 900px;
   grid-template-columns: 1fr 1fr 1fr;

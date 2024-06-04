@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { DarkPill } from "./DarkPill";
 import * as _utils from "./utils";
 import _styles from "./GraphBlock.module.css";
@@ -22,9 +23,7 @@ export function GraphBlock({
       tag="div"
     >
       <_Builtin.Block className={_utils.cx(_styles, "graph_title")} tag="div">
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {textGraphTitle}
-        </_Builtin.Block>
+        <Text content={textGraphTitle} weight="medium" />
         <_Builtin.Block
           className={_utils.cx(_styles, "graph_filter")}
           tag="div"

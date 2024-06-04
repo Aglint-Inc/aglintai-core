@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./InterviewersDash.module.css";
@@ -19,12 +20,10 @@ export function InterviewersDash({
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1488", "header")}
+        className={_utils.cx(_styles, "dashboard-widget-header", "header")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Interviewers"}
-        </_Builtin.Block>
+        <Text content="" />
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1783")}
           tag="div"
@@ -103,12 +102,7 @@ export function InterviewersDash({
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500")}
-              tag="div"
-            >
-              {"Name"}
-            </_Builtin.Block>
+            <Text weight="medium" size="2" color="neutral" content="Name" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1508", "padd-10")}
@@ -118,12 +112,7 @@ export function InterviewersDash({
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500")}
-              tag="div"
-            >
-              {"Upcoming"}
-            </_Builtin.Block>
+            <Text weight="medium" size="2" color="neutral" content="Upcoming" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1508", "padd-10")}
@@ -133,12 +122,12 @@ export function InterviewersDash({
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500")}
-              tag="div"
-            >
-              {"Completed"}
-            </_Builtin.Block>
+            <Text
+              weight="medium"
+              size="2"
+              color="neutral"
+              content="Completed"
+            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1508", "padd-10")}
@@ -148,12 +137,7 @@ export function InterviewersDash({
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500")}
-              tag="div"
-            >
-              {"Declined"}
-            </_Builtin.Block>
+            <Text weight="medium" size="2" color="neutral" content="Declined" />
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

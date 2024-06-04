@@ -47,53 +47,20 @@
   text-transform: uppercase;
 }
 
-.text-grey_400 {
-  color: #c2c8cc;
-}
-
 .text-grey_600 {
   color: var(--sand-11);
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
-.text-sm.text-grey_600.text-underline.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.text-sm.text-grey_600.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
 }
 
 .text-blue-500 {
   color: #337fbd;
 }
 
-.text-sm.badge {
-  color: #228f67;
+.text-underline {
+  text-decoration: underline;
 }
 
-.text-sm.done {
-  color: #228f67;
-}
-
-.text-sm.in-progress {
-  color: #337fbd;
-}
-
-.text-sm.progress {
-  color: #68737d;
-}
-
-.text-sm.justnow-text {
-  color: rgba(28, 28, 28, 0.4);
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .text-sm.text-underline {
@@ -187,32 +154,14 @@
   color: #d93f4c;
 }
 
-.fw-semibold.plr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
-.plr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
 .text-lg {
   font-size: 18px;
   line-height: 24px;
 }
 
-.fw-semibold.text-yellow-700 {
-  color: #ad5918;
-}
-
 .fw-semibold.p-lr-16 {
   padding-right: 16px;
   padding-left: 16px;
-}
-
-.text-grey-500 {
-  color: #87929d;
 }
 
 .fw-semibold.name-text {
@@ -255,11 +204,6 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
-}
-
-.icons.cursor-pointer.mr-20 {
-  margin-right: 20px;
-  transition-property: none;
 }
 
 .icons.task-hover {

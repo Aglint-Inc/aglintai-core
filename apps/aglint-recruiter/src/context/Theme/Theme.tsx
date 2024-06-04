@@ -636,13 +636,13 @@ function Theme({ children }) {
               fontSize: 'var(--font-size-2)',
               width: 'var(--space-4)',
               height: 'var(--space-4)',
-              borderRadius: 'var(--radius-full)',
+              borderRadius: 'var(--radius-1)',
             },
             '&.MuiAvatar-rounded-small': {
               fontSize: 'var(--font-size-2)',
               width: 'var(--space-5)',
               height: 'var(--space-5)',
-              borderRadius: 'var(--radius-full)',
+              borderRadius: 'var(--radius-1)',
             },
             '&.MuiAvatar-rounded-medium': {
               fontSize: 'var(--font-size-4)',

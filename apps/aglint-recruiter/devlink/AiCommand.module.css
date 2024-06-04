@@ -16,36 +16,9 @@
   position: relative;
 }
 
-.relative.upload-video-wrap {
-  overflow: hidden;
-  border-radius: 10px;
-}
-
 .relative.ai-comm {
   overflow: hidden;
   border-radius: 4px;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
-}
-
-.relative.mt-12 {
-  margin-top: 12px;
-}
-
-.relative.mt-12.flex {
-  display: flex;
-  align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
 }
 
 .div-block-640 {
@@ -83,10 +56,6 @@
 
 .cursor-pointer:hover {
   opacity: 0.7;
-}
-
-.icons.cursor-pointer.height-28 {
-  height: 28px;
 }
 
 .icons.cursor-pointer.three-dot {
@@ -143,6 +112,17 @@
 
 .icons.hide {
   display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .icons.mb-9 {

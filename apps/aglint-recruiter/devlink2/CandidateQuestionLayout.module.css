@@ -90,11 +90,6 @@
   cursor: pointer;
 }
 
-.icons.lottie {
-  width: 16px;
-  height: 16px;
-}
-
 .text-lg {
   font-size: 18px;
   line-height: 1.33;
@@ -118,20 +113,6 @@
 
 .text-color-black {
   color: var(--black-9b0fc3fc);
-}
-
-.inline-block {
-  display: inline;
-  margin-right: 2px;
-  margin-left: 2px;
-}
-
-.text-grey-600 {
-  color: #68737d;
-}
-
-.text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
 .div-block-976 {
@@ -167,6 +148,16 @@
   border-radius: 8px;
 
   background-color: #d8dcde;
+}
+
+.text-grey-600 {
+  color: #68737d;
+}
+
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
 }
 
 .text-kale-600 {
@@ -206,26 +197,12 @@
   color: hsla(206.95652173913044, 69.70%, 19.41%, 1.00);
 }
 
-.text-yellow-600 {
-  color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
-}
-
-@media screen and (max-width: 767px) {
-  .fw-semibold.text-lg.text-yellow-600.mobile-14 {
-    font-size: 14px;
-  }
-}
-
 .fw-semibold.text-grey-400 {
   color: #c2c8cc;
 }
 
 .text-blue-500 {
   color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
-}
-
-.text-color-white {
-  color: white;
 }
 
 .fw-semibold.relative_2 {

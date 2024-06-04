@@ -7,6 +7,8 @@ import { PageLayout } from '@/devlink2/PageLayout';
 import Seo from '@/src/components/Common/Seo';
 import Integrations from '@/src/components/Integrations';
 import RequestNew from '@/src/components/Integrations/RequestNewPopUp';
+import { ButtonSoft } from '@/devlink2/ButtonSoft';
+import { ButtonGhost } from '@/devlink2/ButtonGhost';
 
 function IntegrationsPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,15 +26,16 @@ function IntegrationsPage() {
         slotTopbarLeft={'Integrations'}
         slotTopbarRight={
           <Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
-            <ButtonTextRegular
+            <ButtonGhost
+              size='2'
+              isRightIcon=''
               onClickButton={{
                 onClick: () => {
                   setIsOpen(true);
                 },
               }}
-              slotStartIcon={<IconCategory />}
-              isStartIcon={true}
-              textLabel={'Request Integration'}
+              slotIcon={<IconCategory width='16' height='16'/>}
+              textButton={'Request Integration'}
             />
           </Stack>
         }

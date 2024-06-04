@@ -104,22 +104,10 @@
   }
 }
 
-.text-grey-500 {
-  color: var(--grey500-0d508ad8);
-}
-
 @media screen and (max-width: 479px) {
   .text-xxxl.fw-semibold.res-text-xxxl {
     font-size: 20px;
   }
-}
-
-.text-red-800 {
-  color: var(--red800-2e6a9098);
-}
-
-.text-xxxl.text-red-800.margin-bottom-10 {
-  margin-bottom: 10px;
 }
 
 .company-info-wrappers {
@@ -161,10 +149,6 @@
 
 .cursor-pointer:hover {
   opacity: 0.7;
-}
-
-.icons.cursor-pointer.height-28 {
-  height: 28px;
 }
 
 .icons.cursor-pointer.three-dot {
@@ -300,8 +284,8 @@
   color: var(--green800-a83af583);
 }
 
-.text-color-black {
-  color: hsla(0, 0.00%, 0.00%, 1.00);
+.text-grey-500 {
+  color: var(--grey500-0d508ad8);
 }
 
 .text-lg.fw-semibold.inline-block {
@@ -524,6 +508,10 @@
   z-index: 6;
 }
 
+.text-color-black {
+  color: hsla(0, 0.00%, 0.00%, 1.00);
+}
+
 .text-green-500 {
   color: var(--green500-287ff474);
 }
@@ -547,10 +535,6 @@
   }
 }
 
-.color-blue-600 {
-  color: var(--blue600-aad8d97e);
-}
-
 .fw-semibold.new-greenhouse {
   color: #14413d;
 }
@@ -567,16 +551,8 @@
   text-align: center;
 }
 
-.text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
-}
-
-.fw-semibold.text-blue-600.no-underline {
-  text-decoration: none;
 }
 
 .text-no-wrap {
@@ -660,14 +636,6 @@
   .text-xl {
     font-size: 18px;
   }
-}
-
-.fw-medium {
-  font-weight: 500;
-}
-
-.fw-bold {
-  font-weight: 700;
 }
 
 .text-grey-200 {
@@ -770,14 +738,6 @@
   line-height: 1.4;
 }
 
-.text-white {
-  color: white;
-}
-
-.text-sm.fw-semibold.text-white.text-first-capitialize {
-  text-transform: capitalize;
-}
-
 .text-kale-600 {
   color: var(--kale600-c60cbc05);
 }
@@ -795,6 +755,6 @@
   width: 49.91667175292969px;
 }
 
-.text-sm.text-first-capital {
-  text-transform: capitalize;
+.color-blue-600 {
+  color: var(--blue600-aad8d97e);
 }

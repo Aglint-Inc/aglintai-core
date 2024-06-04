@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ImportJobCard } from "./ImportJobCard";
 import * as _utils from "./utils";
 import _styles from "./NewJobSelect.module.css";
 
@@ -91,7 +90,7 @@ export function NewJobSelect({
             className={_utils.cx(_styles, "cj-imports-options-drawer")}
             tag="div"
           >
-            {slotImportJobCard ?? <ImportJobCard />}
+            {slotImportJobCard}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

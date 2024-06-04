@@ -90,22 +90,6 @@
   max-width: 500px;
 }
 
-@media screen and (max-width: 991px) {
-  .text-grey-600.max-width-600 {
-    max-width: 500px;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .text-grey-600.max-width-600 {
-    max-width: none;
-  }
-}
-
-.max-width-600 {
-  max-width: 600px;
-}
-
 .fw-semibold {
   font-weight: 600;
 }
@@ -181,14 +165,6 @@
   line-height: 1.4;
 }
 
-.text-white {
-  color: white;
-}
-
-.text-sm.fw-semibold.text-white.text-first-capitialize {
-  text-transform: capitalize;
-}
-
 .color-grey-500 {
   color: var(--grey500-0d508ad8);
 }
@@ -217,10 +193,6 @@
   color: var(--yellow800-b1e3bc9b);
 }
 
-.text-grey-400 {
-  color: var(--grey400-863ed4b5);
-}
-
 .text-grey-500 {
   color: var(--grey500-0d508ad8);
 }
@@ -246,6 +218,10 @@
   opacity: 0.8;
 }
 
+.text-grey-400 {
+  color: var(--grey400-863ed4b5);
+}
+
 .text-sm.text-grey-500.width-ticket-d {
   width: 49.91667175292969px;
 }
@@ -267,10 +243,6 @@
 
 .text-capitalize {
   text-transform: uppercase;
-}
-
-.text-sm.text-first-capital {
-  text-transform: capitalize;
 }
 
 .text-color-white {
