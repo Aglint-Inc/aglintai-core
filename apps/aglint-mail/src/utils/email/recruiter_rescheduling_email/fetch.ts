@@ -6,6 +6,7 @@ import {
   sessionTypeIcon,
 } from '../common/functions';
 import type { RecruiterReschedulingEmailType } from '../../types/supabase-fetch';
+import type { MeetingDetails } from '../../types/apiTypes';
 
 export default async function recruiterReschedulingEmail(
   session_ids: string[],
@@ -59,7 +60,7 @@ export default async function recruiterReschedulingEmail(
     },
     public_jobs: { company },
   } = candidateJob;
-  const Sessions = sessions.map((session) => {
+  const Sessions: MeetingDetails[] = sessions.map((session) => {
     const {
       interview_meeting: { start_time, end_time },
       name,

@@ -1,19 +1,11 @@
+import type { MeetingDetails } from './apiTypes';
+
 // ----------------------------------------- common types
 interface Common {
   recipient_email: string;
   mail_type: string;
   recruiter_id: string;
   companyLogo: string;
-}
-
-interface MeetingDetail {
-  date: string;
-  time: string;
-  sessionType: string;
-  platform: string;
-  duration: string;
-  sessionTypeIcon: string;
-  meetingIcon: string;
 }
 
 // ----------------------------------------- for supabase fetching functions
@@ -42,7 +34,7 @@ export interface CandidateCancelRequestType extends Common {
     '[recruiterName]': string;
     '[companyName]': string;
     'meetingLink': string;
-    'meetingDetails': MeetingDetail[];
+    'meetingDetails': MeetingDetails[];
   };
 }
 
@@ -55,7 +47,7 @@ export interface CandidateRescheduleRequestType extends Common {
     '[jobTitle]': string;
     '[DateTime]': string;
     '[pickYourSlotLink]': string;
-    'meetingDetails': MeetingDetail[];
+    'meetingDetails': MeetingDetails[];
   };
 }
 
@@ -64,7 +56,7 @@ export interface CandidateAvailabilityRequestType extends Common {
     '[companyName]': string;
     '[firstName]': string;
     'pickYourSlot': string;
-    'meetingDetails': MeetingDetail[];
+    'meetingDetails': MeetingDetails[];
   };
 }
 
@@ -74,7 +66,7 @@ export interface CandidateInviteConfirmationType extends Common {
     '[firstName]': string;
     '[jobTitle]': string;
     'meetingLink': string;
-    'meetingDetails': MeetingDetail[];
+    'meetingDetails': MeetingDetails[];
   };
 }
 
@@ -85,7 +77,7 @@ export interface ConfiramtionMailToOrganizerType extends Common {
     '[jobTitle]': string;
     '[recruiterName]': string;
     'meetingLink': string;
-    'meetingDetails': MeetingDetail[];
+    'meetingDetails': MeetingDetails[];
   };
 }
 
@@ -96,7 +88,7 @@ export interface DebriefCalendarInviteBodyType extends Common {
     '[firstName]': string;
     '[jobTitle]': string;
     'meetingLink': string;
-    'meetingDetail': MeetingDetail;
+    'meetingDetail': MeetingDetails;
   };
 }
 
@@ -112,7 +104,7 @@ export interface InitEmailAgentType extends Common {
   };
 }
 
-export interface InterviewType {
+export interface InterviewType extends Common {
   payload: {
     '[firstName]': string;
     '[jobTitle]': string;
@@ -157,7 +149,7 @@ export interface RecruiterReschedulingEmailType extends Common {
     '[scheduleName]': string;
     '[companyName]': string;
     '[pickYourSlotLink]': string;
-    'meetingDetails': [];
+    'meetingDetails': MeetingDetails[];
   };
 }
 

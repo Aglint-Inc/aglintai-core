@@ -6,6 +6,7 @@ import {
   sessionTypeIcon,
 } from '../common/functions';
 import type { ConfiramtionMailToOrganizerType } from '../../types/supabase-fetch';
+import type { MeetingDetails } from '../../types/apiTypes';
 
 export default async function confiramtionMailToOrganizer(
   session_ids: string[],
@@ -46,7 +47,7 @@ export default async function confiramtionMailToOrganizer(
     public_jobs: { company, job_title },
   } = candidateJob;
 
-  const Sessions = sessions.map((session) => {
+  const Sessions: MeetingDetails[] = sessions.map((session) => {
     const {
       interview_meeting: { start_time, end_time },
       name,

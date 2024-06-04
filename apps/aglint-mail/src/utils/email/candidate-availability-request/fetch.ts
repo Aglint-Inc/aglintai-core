@@ -6,6 +6,7 @@ import {
   sessionTypeIcon,
 } from '../common/functions';
 import type { CandidateAvailabilityRequestType } from '../../types/supabase-fetch';
+import type { MeetingDetails } from '../../types/apiTypes';
 
 export default async function candidateAvailabilityRequest(
   session_ids: string[],
@@ -37,7 +38,7 @@ export default async function candidateAvailabilityRequest(
     throw new Error('candidate and job details are not available');
   }
 
-  const Sessions = sessions.map((session) => {
+  const Sessions: MeetingDetails[] = sessions.map((session) => {
     const {
       interview_meeting: { start_time, end_time },
       name,

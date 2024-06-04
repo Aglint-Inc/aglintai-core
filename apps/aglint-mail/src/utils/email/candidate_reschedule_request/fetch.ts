@@ -6,6 +6,7 @@ import {
   sessionTypeIcon,
 } from '../common/functions';
 import type { CandidateRescheduleRequestType } from '../../types/supabase-fetch';
+import type { MeetingDetails } from '../../types/apiTypes';
 
 export default async function candidateRescheduleRequest(
   session_ids: string[],
@@ -59,7 +60,7 @@ export default async function candidateRescheduleRequest(
     },
     public_jobs: { company, job_title },
   } = candidateJob;
-  const Sessions = sessions.map((session) => {
+  const Sessions: MeetingDetails[] = sessions.map((session) => {
     const {
       interview_meeting: { start_time, end_time },
       name,
@@ -69,7 +70,7 @@ export default async function candidateRescheduleRequest(
     } = session;
     return {
       date: dayjs(start_time).format('ddd MMMM DD, YYYY'),
-      Time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
+      time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
       sessionType: name,
       platform: schedule_type,
       duration: durationCalculator(session_duration),

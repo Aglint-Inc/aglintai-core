@@ -6,6 +6,7 @@ import {
   sessionTypeIcon,
 } from '../common/functions';
 import type { DebriefCalendarInviteBodyType } from '../../types/supabase-fetch';
+import type { MeetingDetails } from '../../types/apiTypes';
 
 export default async function debriefCalenderInvite(
   session_id: string,
@@ -56,7 +57,7 @@ export default async function debriefCalenderInvite(
     session_duration,
     session_type,
   } = session;
-  const Session = {
+  const Session: MeetingDetails = {
     date: dayjs(interview_meeting.start_time).format('ddd MMMM DD, YYYY'),
     time: `${dayjs(interview_meeting.start_time).format('hh:mm A')} - ${dayjs(interview_meeting.end_time).format('hh:mm A')}`,
     sessionType: name,
