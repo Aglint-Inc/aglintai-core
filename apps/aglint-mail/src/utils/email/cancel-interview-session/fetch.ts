@@ -1,24 +1,37 @@
-import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
+import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
+import type { CancelInterviewSessionType } from '../../types/supabase-fetch';
 
-export default async function CancelInterviewSession(
+export default async function cancelInterviewSession(
   session_id: string,
   application_id: string,
 ) {
-  const { data: session } = await supabaseAdmin
-    .from('interview_session')
-    .select(
-      'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
-    )
-    .eq('id', session_id);
+  const [session] = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_session')
+      .select(
+        'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
+      )
+      .eq('id', session_id),
+  );
 
-  const {
-    data: [candidateJob],
-  } = await supabaseAdmin
-    .from('applications')
-    .select(
-      'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
-    )
-    .eq('id', application_id);
+  if (!session) {
+    throw new Error('session details not avalible');
+  }
+
+  const [candidateJob] = supabaseWrap(
+    await supabaseAdmin
+      .from('applications')
+      .select(
+        'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+      )
+      .eq('id', application_id),
+  );
+  if (!candidateJob) {
+    throw new Error(
+      'candidate details and job details are details not avalible',
+    );
+  }
+
   const {
     candidates: {
       email,
@@ -29,9 +42,9 @@ export default async function CancelInterviewSession(
     public_jobs: { company, job_title },
   } = candidateJob;
 
-  const [{ name }] = session;
+  const { name } = session;
 
-  const body = {
+  const body: CancelInterviewSessionType = {
     recipient_email: email,
     mail_type: 'cancel_interview_session',
     recruiter_id,

@@ -1,11 +1,11 @@
-export function DurationCalculator(min) {
-  let m = min % 60;
-  let h = Math.floor(min / 60);
+export function durationCalculator(min) {
+  const m = min % 60;
+  const h = Math.floor(min / 60);
 
   if (h > 0)
-    if (m > 0) return h + ':' + m + ' Hours';
-    else return h + ' Hours';
-  else return m + ' Minutes';
+    if (m > 0) return `${h}:${m} Hours`;
+    else return `${h} Hours`;
+  return `${m} Minutes`;
 }
 
 export function sessionTypeIcon(platform) {

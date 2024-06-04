@@ -1,15 +1,19 @@
-import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
+import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
+import type { ApplicationReceivedDataType } from '../../types/supabase-fetch';
 
-export default async function ApplicationReceived(application_id: string) {
-  const {
-    data: [candidateJob],
-  } = await supabaseAdmin
-    .from('applications')
-    .select(
-      'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
-    )
-    .eq('id', application_id);
+export default async function applicationReceived(application_id: string) {
+  const [candidateJob] = supabaseWrap(
+    await supabaseAdmin
+      .from('applications')
+      .select(
+        'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+      )
+      .eq('id', application_id),
+  );
 
+  if (!candidateJob) {
+    throw new Error('no data in Application'); // Re-throw the Supabase error for further handling
+  }
   const {
     candidates: {
       email,
@@ -20,7 +24,7 @@ export default async function ApplicationReceived(application_id: string) {
     public_jobs: { company, job_title },
   } = candidateJob;
 
-  const body = {
+  const body: ApplicationReceivedDataType = {
     recipient_email: email,
     mail_type: 'application_received',
     recruiter_id,

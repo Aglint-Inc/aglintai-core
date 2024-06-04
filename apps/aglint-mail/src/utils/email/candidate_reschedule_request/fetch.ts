@@ -1,31 +1,41 @@
 import dayjs from 'dayjs';
-import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
+import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
-  DurationCalculator,
+  durationCalculator,
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../common/functions';
+import type { CandidateRescheduleRequestType } from '../../types/supabase-fetch';
 
-export default async function Index(
+export default async function candidateRescheduleRequest(
   session_ids: string[],
   application_id: string,
   meeting_id: string,
   interview_cancel_id: string,
 ) {
-  const { data: sessions } = await supabaseAdmin
-    .from('interview_session')
-    .select(
-      'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
-    )
-    .in('id', session_ids);
-  const {
-    data: [candidateJob],
-  } = await supabaseAdmin
-    .from('applications')
-    .select(
-      'candidates(first_name,email,recruiter_id,recruiter(name,logo)),public_jobs(job_title,company)',
-    )
-    .eq('id', application_id);
+  const sessions = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_session')
+      .select(
+        'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
+      )
+      .in('id', session_ids),
+  );
+
+  if (!sessions) {
+    throw new Error('sessions not available');
+  }
+  const [candidateJob] = supabaseWrap(
+    await supabaseAdmin
+      .from('applications')
+      .select(
+        'candidates(first_name,email,recruiter_id,recruiter(name,logo)),public_jobs(job_title,company)',
+      )
+      .eq('id', application_id),
+  );
+  if (!candidateJob) {
+    throw new Error('candidate and job details are not available');
+  }
 
   const {
     data: [session_cancel],
@@ -62,12 +72,12 @@ export default async function Index(
       Time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
       sessionType: name,
       platform: schedule_type,
-      duration: DurationCalculator(session_duration),
+      duration: durationCalculator(session_duration),
       sessionTypeIcon: sessionTypeIcon(session_type),
       meetingIcon: scheduleTypeIcon(schedule_type),
     };
   });
-  const body = {
+  const body: CandidateRescheduleRequestType = {
     recipient_email: email,
     mail_type: 'candidate_reschedule_request',
     recruiter_id,
@@ -85,9 +95,3 @@ export default async function Index(
   };
   return body;
 }
-
-// [firstName]
-// [recruiterRescheduleReason]
-// [scheduleName]
-// [pickYourSlotLink]
-// [companyName]

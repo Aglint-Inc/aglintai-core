@@ -1,38 +1,51 @@
 import dayjs from 'dayjs';
-import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
+import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
-  DurationCalculator,
+  durationCalculator,
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../common/functions';
+import type { CandidateCancelRequestType } from '../../types/supabase-fetch';
 
-export default async function CandidateCancelRequest(
+export default async function candidateCancelRequest(
   session_ids: string[],
   application_id: string,
   meeting_id: string,
   interview_cancel_id: string,
 ) {
-  const { data: sessions } = await supabaseAdmin
-    .from('interview_session')
-    .select(
-      'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
-    )
-    .in('id', session_ids);
-  const {
-    data: [candidateJob],
-  } = await supabaseAdmin
-    .from('applications')
-    .select(
-      'candidates(first_name,email,recruiter_id,recruiter(name,logo)),public_jobs(job_title,company)',
-    )
-    .eq('id', application_id);
+  const sessions = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_session')
+      .select(
+        'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
+      )
+      .in('id', session_ids),
+  );
+  if (!sessions) {
+    throw new Error('sessions not available');
+  }
+  const [candidateJob] = supabaseWrap(
+    await supabaseAdmin
+      .from('applications')
+      .select(
+        'candidates(first_name,email,recruiter_id,recruiter(name,logo)),public_jobs(job_title,company)',
+      )
+      .eq('id', application_id),
+  );
+  if (!candidateJob) {
+    throw new Error('candidate details and jobs details not available');
+  }
 
-  const {
-    data: [session_cancel],
-  } = await supabaseAdmin
-    .from('interview_session_cancel')
-    .select('reason')
-    .eq('id', interview_cancel_id);
+  const [session_cancel] = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_session_cancel')
+      .select('reason')
+      .eq('id', interview_cancel_id),
+  );
+
+  if (!candidateJob) {
+    throw new Error('cancel session details not available');
+  }
 
   const {
     candidates: {
@@ -57,13 +70,13 @@ export default async function CandidateCancelRequest(
       time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
       sessionType: name,
       platform: schedule_type,
-      duration: DurationCalculator(session_duration),
+      duration: durationCalculator(session_duration),
       sessionTypeIcon: sessionTypeIcon(session_type),
       meetingIcon: scheduleTypeIcon(schedule_type),
     };
   });
 
-  const body = {
+  const body: CandidateCancelRequestType = {
     recipient_email: email,
     mail_type: 'candidate_cancel_request',
     recruiter_id,

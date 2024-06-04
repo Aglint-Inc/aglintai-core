@@ -13,6 +13,7 @@ interface ReqPayload {
   session_id: string;
   application_id: string;
   meeting_id: string;
+  recruiter_user_id: string;
 }
 interface DataPayload {
   recipient_email: string;
@@ -36,8 +37,12 @@ interface DataPayload {
 }
 
 export async function POST(req: Request) {
-  const { session_id, application_id, meeting_id }: ReqPayload =
-    await req.json();
+  const {
+    session_id,
+    application_id,
+    meeting_id,
+    recruiter_user_id,
+  }: ReqPayload = await req.json();
 
   try {
     // if(!api_key)  throw new ClientError("api_key not found",401)
@@ -57,6 +62,7 @@ export async function POST(req: Request) {
       session_id,
       application_id,
       meeting_id,
+      recruiter_user_id,
     );
     const filled_body = await fetchTemplate(
       data.recruiter_id,

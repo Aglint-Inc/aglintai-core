@@ -1,69 +1,87 @@
 import dayjs from 'dayjs';
-import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
+import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
-  DurationCalculator,
+  durationCalculator,
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../common/functions';
+import type { DebriefCalendarInviteBodyType } from '../../types/supabase-fetch';
 
-export default async function DebriefCalenderInvite(
+export default async function debriefCalenderInvite(
   session_id: string,
   application_id: string,
   meeting_id: string,
+  recruiter_user_id: string,
 ) {
-  const { data: session } = await supabaseAdmin
-    .from('interview_session')
-    .select(
-      'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
-    )
-    .eq('id', session_id);
+  const [session] = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_session')
+      .select(
+        'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
+      )
+      .eq('id', session_id),
+  );
+
+  if (!session) {
+    throw new Error('session not available');
+  }
+  const [candidateJob] = supabaseWrap(
+    await supabaseAdmin
+      .from('applications')
+      .select(
+        'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+      )
+      .eq('id', application_id),
+  );
+
+  if (!candidateJob) {
+    throw new Error('candidate and job details are not available');
+  }
+  const [teamMember] = supabaseWrap(
+    await supabaseAdmin
+      .from('recruiter_user')
+      .select('first_name')
+      .eq('user_id', recruiter_user_id),
+  );
+
+  if (!teamMember) {
+    throw new Error('recruiter user detail not available');
+  }
+
+  const teamMemberName = teamMember.first_name;
   const {
-    data: [candidateJob],
-  } = await supabaseAdmin
-    .from('applications')
-    .select(
-      'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
-    )
-    .eq('id', application_id);
-  const [
-    {
-      interview_meeting: { start_time, end_time },
-      name,
-      schedule_type,
-      session_duration,
-      session_type,
-    },
-  ] = session;
+    interview_meeting,
+    name,
+    schedule_type,
+    session_duration,
+    session_type,
+  } = session;
   const Session = {
-    date: dayjs(start_time).format('ddd MMMM DD, YYYY'),
-    time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
+    date: dayjs(interview_meeting.start_time).format('ddd MMMM DD, YYYY'),
+    time: `${dayjs(interview_meeting.start_time).format('hh:mm A')} - ${dayjs(interview_meeting.end_time).format('hh:mm A')}`,
     sessionType: name,
-    platform: schedule_type,
-    duration: DurationCalculator(session_duration),
+    platform: session.schedule_type,
+    duration: durationCalculator(session_duration),
     sessionTypeIcon: sessionTypeIcon(session_type),
     meetingIcon: scheduleTypeIcon(schedule_type),
   };
-  const {
-    candidates: {
-      email,
-      recruiter_id,
-      first_name,
-      recruiter: { logo },
-    },
-    public_jobs: { company, job_title },
-  } = candidateJob;
-  const body = {
-    recipient_email: email,
+
+  const { candidates, public_jobs } = candidateJob;
+
+  const body: DebriefCalendarInviteBodyType = {
+    recipient_email: candidates.email,
     mail_type: 'debrief_calendar_invite',
-    recruiter_id,
-    companyLogo: logo,
+    recruiter_id: candidates.recruiter_id,
+    companyLogo: candidates.recruiter.logo,
     payload: {
-      '[companyName]': company,
-      '[firstName]': first_name,
-      '[jobTitle]': job_title,
+      '[teamMemberName]': teamMemberName,
+      '[companyName]': public_jobs.company,
+      '[firstName]': candidates.first_name,
+      '[jobTitle]': public_jobs.job_title,
       'meetingLink': `${process.env.BASE_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
       'meetingDetail': Session,
     },
   };
+
   return body;
 }

@@ -1,21 +1,28 @@
 import { ScheduleUtils } from '@aglint/shared-utils';
-import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
+import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
+import type { InitEmailAgentType } from '../../types/supabase-fetch';
 
-export default async function InitEmailAgent(
+interface FilterJson {
+  start_date: string;
+  end_date: string;
+  user_tz: string;
+}
+export default async function initEmailAgent(
   filter_id: string,
   meeting_id: string,
 ) {
-  const {
-    data: [filterJson],
-  }: any = await supabaseAdmin
-    .from('interview_filter_json')
-    .select(
-      'filter_json,interview_schedule(applications(public_jobs(job_title,company),candidates(first_name,email,recruiter_id,recruiter(logo))))',
-    )
-    .eq('id', filter_id);
+  const [filterJson] = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_filter_json')
+      .select(
+        'filter_json,interview_schedule(applications(public_jobs(job_title,company),candidates(first_name,email,recruiter_id,recruiter(logo))))',
+      )
+      .eq('id', filter_id),
+  );
 
+  const { end_date, start_date, user_tz } =
+    filterJson.filter_json as unknown as FilterJson;
   const {
-    filter_json: { start_date, end_date, user_tz },
     interview_schedule: {
       applications: {
         candidates: {
@@ -29,7 +36,7 @@ export default async function InitEmailAgent(
     },
   } = filterJson;
 
-  const body = {
+  const body: InitEmailAgentType = {
     recipient_email: email,
     mail_type: 'init_email_agent',
     recruiter_id,

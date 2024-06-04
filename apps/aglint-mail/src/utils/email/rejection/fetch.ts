@@ -1,14 +1,19 @@
-import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
+import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
+import type { RejectionType } from '../../types/supabase-fetch';
 
-export default async function Rejection(application_id: string) {
-  const {
-    data: [candidateJob],
-  } = await supabaseAdmin
-    .from('applications')
-    .select(
-      'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
-    )
-    .eq('id', application_id);
+export default async function rejection(application_id: string) {
+  const [candidateJob] = supabaseWrap(
+    await supabaseAdmin
+      .from('applications')
+      .select(
+        'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+      )
+      .eq('id', application_id),
+  );
+
+  if (!candidateJob) {
+    throw new Error('candidate and jobs details are not available');
+  }
 
   const {
     candidates: {
@@ -20,7 +25,7 @@ export default async function Rejection(application_id: string) {
     public_jobs: { company, job_title },
   } = candidateJob;
 
-  const body = {
+  const body: RejectionType = {
     recipient_email: email,
     mail_type: 'rejection',
     recruiter_id,

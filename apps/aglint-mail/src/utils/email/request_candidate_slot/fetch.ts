@@ -1,21 +1,22 @@
-import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
+import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
+import type { RequestCandidateSlotType } from '../../types/supabase-fetch';
 
-// application_id: string;
-//     request_id: string;
-
-export default async function RequestCandidateSlot(
+export default async function requestCandidateSlot(
   application_id: string,
   request_id: string,
 ) {
-  const {
-    data: [candidateJob],
-  } = await supabaseAdmin
-    .from('applications')
-    .select(
-      'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
-    )
-    .eq('id', application_id);
+  const [candidateJob] = supabaseWrap(
+    await supabaseAdmin
+      .from('applications')
+      .select(
+        'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+      )
+      .eq('id', application_id),
+  );
 
+  if (!candidateJob) {
+    throw new Error('candidate and jobs details are not available');
+  }
   const {
     candidates: {
       email,
@@ -26,7 +27,7 @@ export default async function RequestCandidateSlot(
     public_jobs: { company, job_title },
   } = candidateJob;
 
-  const body = {
+  const body: RequestCandidateSlotType = {
     recipient_email: email,
     mail_type: 'request_candidate_slot',
     recruiter_id,
@@ -41,10 +42,3 @@ export default async function RequestCandidateSlot(
 
   return body;
 }
-
-// http://localhost:3100/api/request-candidate-slot
-
-// {
-//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637",
-//   "request_id":"296b1fc6-a0a9-4185-8853-7fb6984992b2"
-// }

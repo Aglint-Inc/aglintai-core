@@ -1,36 +1,41 @@
 import dayjs from 'dayjs';
-import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
+import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
-  DurationCalculator,
+  durationCalculator,
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../common/functions';
+import type { ConfiramtionMailToOrganizerType } from '../../types/supabase-fetch';
 
-//     application_id: string;
-//     session_ids: string[];
-//     meeting_id: string;
-
-export default async function Confirmation_mail_to_organizer(
+export default async function confiramtionMailToOrganizer(
   session_ids: string[],
   application_id: string,
   meeting_id: string,
 ) {
-  const { data: sessions } = await supabaseAdmin
-    .from('interview_session')
-    .select(
-      'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
-    )
-    .in('id', session_ids);
+  const sessions = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_session')
+      .select(
+        'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
+      )
+      .in('id', session_ids),
+  );
 
-  const {
-    data: [candidateJob],
-  } = await supabaseAdmin
-    .from('applications')
-    .select(
-      'candidates(first_name,email,recruiter_id,recruiter(name,logo)),public_jobs(job_title,company)',
-    )
-    .eq('id', application_id);
+  if (!sessions) {
+    throw new Error('sessions are not available');
+  }
+  const [candidateJob] = supabaseWrap(
+    await supabaseAdmin
+      .from('applications')
+      .select(
+        'candidates(first_name,email,recruiter_id,recruiter(name,logo)),public_jobs(job_title,company)',
+      )
+      .eq('id', application_id),
+  );
 
+  if (!candidateJob) {
+    throw new Error('candidate and job details are not available');
+  }
   const {
     candidates: {
       email,
@@ -54,13 +59,13 @@ export default async function Confirmation_mail_to_organizer(
       time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
       sessionType: name,
       platform: schedule_type,
-      duration: DurationCalculator(session_duration),
+      duration: durationCalculator(session_duration),
       sessionTypeIcon: sessionTypeIcon(session_type),
       meetingIcon: scheduleTypeIcon(schedule_type),
     };
   });
 
-  const body = {
+  const body: ConfiramtionMailToOrganizerType = {
     recipient_email: email,
     mail_type: 'confirmation_mail_to_organizer',
     recruiter_id,
@@ -77,7 +82,3 @@ export default async function Confirmation_mail_to_organizer(
 
   return body;
 }
-
-// [recruiterName]
-// [firstName]
-// [meetingLink]
