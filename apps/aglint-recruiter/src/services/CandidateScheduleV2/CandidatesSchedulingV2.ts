@@ -692,19 +692,6 @@ export class CandidatesSchedulingV2 {
               }
             }
 
-            if (
-              load_reached_ints[sessn_idx].inters.find(
-                (i) => i.user_id === attendee.user_id,
-              )
-            ) {
-              int_conflic_reasons.push({
-                conflict_event: '',
-                conflict_type: 'day_load_reached',
-                end_time: null,
-                start_time: null,
-              });
-            }
-
             let is_slot_day_off = false;
             attendee_details.day_off[curr_day_str].forEach((t) => {
               is_slot_day_off = isTimeChunksOverLapps(
@@ -902,6 +889,9 @@ export class CandidatesSchedulingV2 {
             return [session_slot, ...upcoming_sessn_slots];
           }
         };
+        const curr_time = ScheduleUtils.getNearestCurrTime(
+          this.api_payload.candidate_tz,
+        );
         const cand_start_time = currDay.set(
           'hours',
           this.api_options.cand_start_time,
@@ -911,6 +901,12 @@ export class CandidatesSchedulingV2 {
           this.api_options.cand_end_time,
         );
         let cand_time = cand_start_time;
+        if (curr_time.isAfter(cand_time, 'day')) {
+          return [];
+        }
+        if (curr_time.isSame(cand_time, 'day')) {
+          cand_time = curr_time;
+        }
 
         while (cand_time.isBefore(cand_end_time, 'minutes')) {
           const slot_comb = getSessionsAvailability(0, cand_time.format());
