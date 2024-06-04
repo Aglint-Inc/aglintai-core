@@ -3,21 +3,6 @@
   flex-direction: column;
 }
 
-.change-email-wrap.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
-}
-
 .text-desc-wrap-mail {
   margin-top: 10px;
   margin-bottom: 20px;

@@ -17,21 +17,6 @@
   }
 }
 
-.job-dashboard-layout.profile-wrappers {
-  overflow: visible;
-  height: auto;
-  min-height: 100vh;
-  padding-bottom: 0px;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-}
-
-.job-dashboard-layout.no-scroll {
-  overflow: visible;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-}
-
 .job-dashboard-header {
   position: sticky;
   top: 0px;
@@ -98,16 +83,6 @@
 @media screen and (max-width: 479px) {
   .mobile-hide {
     display: none;
-  }
-}
-
-.slot-input-search-job.mobile-show {
-  display: none;
-}
-
-@media screen and (max-width: 479px) {
-  .slot-input-search-job.mobile-show {
-    display: block;
   }
 }
 
