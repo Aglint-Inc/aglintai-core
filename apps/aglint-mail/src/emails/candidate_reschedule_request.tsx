@@ -126,25 +126,7 @@ export const CandidateRescheduleRequest = ({
                 Rescheudle
               </Button>
               <Text className="py-[10px] my-0">Thank You</Text>
-              {/* <Text className="text-[#999999] text-[10px] mt-10 leading-4">
-                If you have any queries please &nbsp;
-                <Link
-                  className="text-[#337FBD] underline"
-                  href="https://notion.so"
-                  target="_blank"
-                >
-                  contact support
-                </Link>
-                <br />
-                If you'd like to unsubscribe and stop receiving emails &nbsp;
-                <Link
-                  className="text-[#337FBD] underline"
-                  href="https://notion.so"
-                  target="_blank"
-                >
-                  click here
-                </Link>
-              </Text> */}
+             
             </Container>
             <Text className="flex items-center text-[10px]  mx-auto w-fit text-gray-500">
               Powered By
@@ -153,7 +135,7 @@ export const CandidateRescheduleRequest = ({
                 className="w-[70px] mx-2 inline "
                 src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png"
               />
-              @ 2023 Aglint Inc. All Right Reserved
+              @ 2024 Aglint Inc. All Right Reserved
             </Text>
           </Container>
         </Body>

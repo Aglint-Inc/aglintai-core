@@ -8,9 +8,7 @@ import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate
 import { sendMail } from '../../../config/sendgrid';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
 import ApplicationReceived from '../../../utils/email/application_received/fetch';
-import type {
-  FilledPayload,
-} from '../../../utils/types/apiTypes';
+import type { FilledPayload } from '../../../utils/types/apiTypes';
 
 interface ReqPayload {
   application_id: string;
@@ -94,3 +92,7 @@ export async function POST(req: Request) {
     }
   }
 }
+
+//{
+//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637"
+// }

@@ -32,11 +32,11 @@ export async function POST(req: Request) {
 
   try {
     if (!session_id) {
-      throw new ClientError('mail_type attribute missing', 400);
+      throw new ClientError('session_id attribute missing', 400);
     }
 
     if (!application_id) {
-      throw new ClientError('payload attribute missing', 400);
+      throw new ClientError('application_id attribute missing', 400);
     }
 
     const data: DataPayload = await CancelInterviewSession(
