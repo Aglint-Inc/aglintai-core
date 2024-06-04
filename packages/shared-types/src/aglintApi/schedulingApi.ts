@@ -119,11 +119,5 @@ export type CandReqAvailableSlots = {
 };
 
 export type APIGetCandidateSelectedSlots = {
-  session_ids: string[];
-  recruiter_id: string;
-  date_range_start: string;
-  date_range_end: string;
-  candidate_tz: string;
   cand_availability_id: string;
-  options?: APIOptions;
 };

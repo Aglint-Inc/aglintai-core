@@ -489,8 +489,9 @@ export class CandidatesSchedulingV2 {
 
       const common_time_range = this.findCommonTimeRange(
         all_int_attendees.map((s) => {
-          const curr_day_free_times = this.intervs_details_map.get(s.user_id)
-            .freeTimes[curr_day_str];
+          const curr_day_free_times =
+            this.intervs_details_map.get(s.user_id).freeTimes[curr_day_str] ??
+            [];
           return {
             inter_id: s.user_id,
             time_ranges: curr_day_free_times, //TODO: where is free time
@@ -784,7 +785,6 @@ export class CandidatesSchedulingV2 {
             }
           }
         }
-
         let is_slot_day_off = false;
         attendee_details.day_off[curr_day_str].forEach((t) => {
           is_slot_day_off = isTimeChunksOverLapps(

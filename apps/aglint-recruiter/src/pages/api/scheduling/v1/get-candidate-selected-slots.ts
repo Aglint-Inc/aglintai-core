@@ -8,27 +8,32 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const parsedData = schema_verify_interviewer_selected_slots.parse({
       ...req.body,
-      options: req.body.options || {
-        include_conflicting_slots: {},
-      },
     });
+    const {
+      api_options,
+      cand_tz,
+      session_ids,
+      candidate_selected_slots,
+      start_date_str,
+      end_date_str,
+      recruiter_id,
+    } = await fetchCandidateAvailability(parsedData.cand_availability_id);
     const cand_schedule = new CandidatesSchedulingV2(
       {
-        recruiter_id: parsedData.recruiter_id,
-        session_ids: parsedData.session_ids,
-        candidate_tz: parsedData.candidate_tz,
-        start_date_str: parsedData.date_range_start,
-        end_date_str: parsedData.date_range_end,
+        recruiter_id: recruiter_id,
+        session_ids: session_ids,
+        candidate_tz: cand_tz,
+        start_date_str: start_date_str,
+        end_date_str: end_date_str,
       },
-      parsedData.options,
+      api_options,
     );
     await cand_schedule.fetchDetails();
     await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
-    const cand_selected_slots = await fetchCandidateAvailability(
-      parsedData.cand_availability_id,
+    const all_combs = cand_schedule.getCandidateSelectedSlots(
+      candidate_selected_slots,
     );
-    const all_combs =
-      cand_schedule.getCandidateSelectedSlots(cand_selected_slots);
+
     return res.status(200).send(all_combs);
   } catch (err) {
     // eslint-disable-next-line no-console
