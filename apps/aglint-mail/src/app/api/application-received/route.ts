@@ -8,6 +8,7 @@ import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate
 import { sendMail } from '../../../config/sendgrid';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
 import ApplicationReceived from '../../../utils/email/application_received/fetch';
+import type { FilledPayload } from '../../../utils/types/apiTypes';
 
 interface ReqPayload {
   application_id: string;
@@ -29,14 +30,11 @@ export async function POST(req: Request) {
   const { application_id }: ReqPayload = await req.json();
 
   try {
-    // if(!api_key)  throw new ClientError("api_key not found",401)
-    // if( api_key !== API_KEY)  throw new ClientError("invalid api Key",401)
-
     if (!application_id) {
       throw new ClientError('payload attribute application_id missing', 400);
     }
     const data: DataPayload = await ApplicationReceived(application_id);
-    const filled_body = await fetchTemplate(
+    const filled_body: FilledPayload = await fetchTemplate(
       data.recruiter_id,
       data.mail_type,
       data.payload,
@@ -75,7 +73,7 @@ export async function POST(req: Request) {
     if (e instanceof MailArgValidationError) {
       return NextResponse.json(
         {
-          error: `${e.name}: mail_type:candidate_availability_request,  ${e.message}`,
+          error: `${e.name}: mail_type:appli,  ${e.message}`,
         },
         {
           status: 400,
@@ -94,3 +92,7 @@ export async function POST(req: Request) {
     }
   }
 }
+
+//{
+//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637"
+// }

@@ -8,6 +8,7 @@ import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate
 import { sendMail } from '../../../config/sendgrid';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
 import CancelInterviewSession from '../../../utils/email/cancel-interview-session/fetch';
+import type { FilledPayload } from '../../../utils/types/apiTypes';
 
 interface ReqPayload {
   session_id: string;
@@ -17,6 +18,7 @@ interface DataPayload {
   recipient_email: string;
   mail_type: string;
   recruiter_id: string;
+  companyLogo: string;
   payload: {
     '[firstName]': string;
     '[sessionName]': string;
@@ -29,26 +31,24 @@ export async function POST(req: Request) {
   const { session_id, application_id }: ReqPayload = await req.json();
 
   try {
-    // if(!api_key)  throw new ClientError("api_key not found",401)
-    // if( api_key !== API_KEY)  throw new ClientError("invalid api Key",401)
-
     if (!session_id) {
-      throw new ClientError('mail_type attribute missing', 400);
+      throw new ClientError('session_id attribute missing', 400);
     }
 
     if (!application_id) {
-      throw new ClientError('payload attribute missing', 400);
+      throw new ClientError('application_id attribute missing', 400);
     }
 
     const data: DataPayload = await CancelInterviewSession(
       session_id,
       application_id,
     );
-    const filled_body = await fetchTemplate(
+    const filled_body: FilledPayload = await fetchTemplate(
       data.recruiter_id,
       data.mail_type,
       data.payload,
     );
+    filled_body.companyLogo = data.companyLogo;
     const { emails } = await getEmails();
 
     const emailIdx = emails.findIndex((e) => e === data.mail_type);
@@ -58,7 +58,6 @@ export async function POST(req: Request) {
         `${data.mail_type} does not match any mail_type`,
         400,
       );
-
     const { html, subject } = await renderEmailTemplate(
       emails[emailIdx],
       filled_body,

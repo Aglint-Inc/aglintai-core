@@ -8,6 +8,7 @@ import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate
 import { sendMail } from '../../../config/sendgrid';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
 import Rejection from '../../../utils/email/rejection/fetch';
+import type { FilledPayload } from '../../../utils/types/apiTypes';
 
 interface ReqPayload {
   application_id: string;
@@ -34,7 +35,7 @@ export async function POST(req: Request) {
       throw new ClientError('application_id attribute missing', 400);
     }
     const data: DataPayload = await Rejection(application_id);
-    const filled_body = await fetchTemplate(
+    const filled_body: FilledPayload = await fetchTemplate(
       data.recruiter_id,
       data.mail_type,
       data.payload,

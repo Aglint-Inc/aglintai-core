@@ -8,6 +8,10 @@ import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate
 import { sendMail } from '../../../config/sendgrid';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
 import DebriefCalenderInvite from '../../../utils/email/debrief_calendar_invite/fetch';
+import type {
+  FilledPayload,
+  MeetingDetails,
+} from '../../../utils/types/apiTypes';
 
 interface ReqPayload {
   session_id: string;
@@ -24,15 +28,7 @@ interface DataPayload {
     '[firstName]': string;
     '[jobTitle]': string;
     'meetingLink': string;
-    'meetingDetail': {
-      date: string;
-      time: string;
-      sessionType: string;
-      platform: any;
-      duration: string;
-      sessionTypeIcon: any;
-      meetingIcon: string;
-    };
+    'meetingDetail': MeetingDetails;
   };
 }
 
@@ -64,7 +60,7 @@ export async function POST(req: Request) {
       meeting_id,
       recruiter_user_id,
     );
-    const filled_body = await fetchTemplate(
+    const filled_body: FilledPayload = await fetchTemplate(
       data.recruiter_id,
       data.mail_type,
       data.payload,

@@ -34,7 +34,7 @@ export const ApplicationReceived = ({
     <Html>
       <Head />
       <Tailwind>
-        <Preview>Interview Booking Confirmation</Preview>
+        <Preview>Application Received</Preview>
         <Body className="bg-[#f0f0f0] font-sans p-[20px]">
           <Container className="px-[3px] mx-auto">
             <Container className="p-[20px] pt-[40px] bg-white">
@@ -44,26 +44,6 @@ export const ApplicationReceived = ({
                 src={companyLogo}
               />
               <Text className="">{htmlParser.parse(body)}</Text>
-
-              {/* <Text className="text-[#999999] text-[10px] leading-4 mt-10 ">
-                If you have any queries please &nbsp;
-                <Link
-                  className="text-[#337FBD] underline"
-                  href="https://notion.so"
-                  target="_blank"
-                >
-                  contact support
-                </Link>
-                <br />
-                If you’d like to unsubscribe and stop receiving emails &nbsp;
-                <Link
-                  className="text-[#337FBD] underline"
-                  href="https://notion.so"
-                  target="_blank"
-                >
-                  click here
-                </Link>
-              </Text> */}
             </Container>
             <Text className="flex items-center text-[10px] mx-auto w-fit text-gray-500">
               Powered By
@@ -72,7 +52,7 @@ export const ApplicationReceived = ({
                 className="w-[70px] mx-2 inline "
                 src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png"
               />
-              @ 2023 Aglint Inc. All Right Reserved
+              @ 2024 Aglint Inc. All Right Reserved
             </Text>
           </Container>
         </Body>
@@ -82,7 +62,6 @@ export const ApplicationReceived = ({
 };
 export default ApplicationReceived;
 
-// [firstName]
-// [jobTitle]
-// [companyName]
-// [supportLink];
+// {
+//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637"
+// }

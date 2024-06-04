@@ -8,6 +8,10 @@ import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate
 import { sendMail } from '../../../config/sendgrid';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
 import CandidateAvailabilityRequest from '../../../utils/email/candidate-availability-request/fetch';
+import type {
+  FilledPayload,
+  MeetingDetails,
+} from '../../../utils/types/apiTypes';
 
 interface ReqPayload {
   session_id: string[];
@@ -16,23 +20,17 @@ interface ReqPayload {
   schedule_id: string;
   filter_id: string;
 }
+
 interface DataPayload {
   recipient_email: string;
   mail_type: string;
   recruiter_id: string;
+  companyLogo: string;
   payload: {
     '[companyName]': string;
     '[firstName]': string;
     'pickYourSlot': string;
-    'meetingDetails': {
-      date: string;
-      time: string;
-      sessionType: string;
-      platform: any;
-      duration: string;
-      sessionTypeIcon: any;
-      meetingIcon: string;
-    }[];
+    'meetingDetails': MeetingDetails[];
   };
 }
 
@@ -65,11 +63,12 @@ export async function POST(req: Request) {
       schedule_id,
       filter_id,
     );
-    const filled_body = await fetchTemplate(
+    const filled_body: FilledPayload = await fetchTemplate(
       data.recruiter_id,
       data.mail_type,
       data.payload,
     );
+    filled_body.companyLogo = data.companyLogo;
     filled_body.meetingDetails = data.payload.meetingDetails;
     filled_body.bookingLink = data.payload.pickYourSlot;
     const { emails } = await getEmails();
