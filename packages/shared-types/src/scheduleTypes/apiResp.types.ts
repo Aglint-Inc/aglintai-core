@@ -10,6 +10,9 @@ export type CalConflictType =
   | 'soft'
   | 'ooo'
   | 'out_of_working_hours'
+  | 'week_load_reached'
+  | 'day_load_reached'
+  | 'day_passed'
   | 'holiday'
   | 'day_off'
   | 'cal_event';
@@ -43,6 +46,8 @@ export type InterviewSessionApiRespType = Pick<
 > & {
   qualifiedIntervs: SessionInterviewerApiRespType[];
   trainingIntervs: SessionInterviewerApiRespType[];
+  week_load_den: number;
+  day_load_den: number;
 };
 
 export type SessionCombinationRespType = InterviewSessionApiRespType & {
@@ -50,6 +55,7 @@ export type SessionCombinationRespType = InterviewSessionApiRespType & {
   end_time: string;
   ints_conflicts: InterviwerConflicts[];
   is_conflict: boolean;
+  conflict_types: ConflictReason['conflict_type'][];
 };
 
 export type SessionInterviewerApiRespType = Pick<

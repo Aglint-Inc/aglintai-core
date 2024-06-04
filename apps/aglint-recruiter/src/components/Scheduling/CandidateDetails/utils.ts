@@ -31,6 +31,7 @@ import { addScheduleActivity } from '../Candidates/queries/utils';
 import { mailHandler } from '../Candidates/utils';
 import { getScheduleName } from '../utils';
 import { fetchInterviewDataJob, fetchInterviewDataSchedule } from './hooks';
+import { SchedulingFlow } from './SelfSchedulingDrawer/store';
 import { SchedulingApplication } from './store';
 
 export const fetchInterviewMeetingProgresstask = async ({
@@ -231,6 +232,7 @@ export const sendToCandidate = async ({
   selCoordinator,
   recruiter_id,
   dateRange,
+  selectedSlots,
   selectedDebrief,
   recruiterUser,
   supabase,
@@ -248,7 +250,8 @@ export const sendToCandidate = async ({
     start_date: string;
     end_date: string;
   };
-  selectedDebrief: SchedulingApplication['schedulingOptions'][number];
+  selectedSlots?: SchedulingFlow['filteredSchedulingOptions'];
+  selectedDebrief: SchedulingFlow['filteredSchedulingOptions'][number];
   recruiterUser: {
     email: string;
     first_name: string;
@@ -298,6 +301,8 @@ export const sendToCandidate = async ({
           },
           session_ids: createCloneRes.session_ids,
           schedule_id: createCloneRes.schedule.id,
+          selected_options: selectedSlots,
+          created_by: recruiterUser.user_id,
         })
         .select();
 
@@ -389,6 +394,8 @@ export const sendToCandidate = async ({
           },
           session_ids: selectedSessionIds,
           schedule_id: checkSch[0].id,
+          selected_options: selectedSlots,
+          created_by: recruiterUser.user_id,
         })
         .select();
 

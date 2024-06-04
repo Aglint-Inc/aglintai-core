@@ -34,13 +34,6 @@ function ATSPopUps({
 }) {
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isOpen}
       onClose={close}
       maxWidth={'md'}
@@ -205,17 +198,6 @@ function ATSPopUps({
                         }
                       >
                         <Stack
-                          sx={{
-                            border: '1px solid',
-                            cursor: 'pointer',
-                            height: '36px',
-                            width: '38px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            borderRadius: 1,
-                            borderColor: 'grey.200',
-                          }}
                           onClick={() => {
                             navigator.clipboard
                               .writeText(inputValue)

@@ -2,8 +2,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { AvailableTimeRange } from "./AvailableTimeRange";
-import { AvailableTimeRangeLoader } from "./AvailableTimeRangeLoader";
-import { AvailableTimerangeEmpty } from "./AvailableTimerangeEmpty";
 import * as _utils from "./utils";
 import _styles from "./DayColumn.module.css";
 
@@ -53,8 +51,6 @@ export function DayColumn({
             <AvailableTimeRange />
             <AvailableTimeRange />
             <AvailableTimeRange />
-            <AvailableTimeRangeLoader />
-            <AvailableTimerangeEmpty />
           </>
         )}
       </_Builtin.Block>

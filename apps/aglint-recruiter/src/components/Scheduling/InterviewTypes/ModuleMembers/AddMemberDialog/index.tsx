@@ -45,13 +45,6 @@ function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
 
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isAddMemberDialogOpen}
       onClose={() => {
         setIsAddMemberDialogOpen(false);
@@ -72,7 +65,13 @@ function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
             disabled={loading}
             renderUsers={allMembers}
             selectedUsers={selectedUsers}
-            setSelectedUsers={setSelectedUsers}
+            setSelectedUsers={(users) => {
+              const updateUsers = users.map((user) => ({
+                ...user,
+                role: null,
+              })); // role is not used in the code
+              setSelectedUsers(updateUsers);
+            }}
           />
         }
         isWidget={true}

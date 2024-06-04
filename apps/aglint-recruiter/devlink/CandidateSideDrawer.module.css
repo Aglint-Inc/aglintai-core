@@ -219,10 +219,6 @@
   }
 }
 
-.color-blue-600 {
-  color: var(--blue600-aad8d97e);
-}
-
 .fw-semibold.new-greenhouse {
   color: #14413d;
 }
@@ -243,16 +239,8 @@
   text-align: center;
 }
 
-.text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
-}
-
-.fw-semibold.text-blue-600.no-underline {
-  text-decoration: none;
 }
 
 .text-no-wrap {
@@ -277,10 +265,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.icons.cursor-pointer.height-28 {
-  height: 28px;
 }
 
 .icons.cursor-pointer.three-dot {
@@ -392,14 +376,6 @@
   line-height: 1.4;
 }
 
-.text-white {
-  color: white;
-}
-
-.text-sm.fw-semibold.text-white.text-first-capitialize {
-  text-transform: capitalize;
-}
-
 .text-blue-500 {
   color: var(--blue500-72579298);
 }
@@ -421,12 +397,12 @@
   width: 49.91667175292969px;
 }
 
-.text-capitalize {
-  text-transform: uppercase;
+.color-blue-600 {
+  color: var(--blue600-aad8d97e);
 }
 
-.text-sm.text-first-capital {
-  text-transform: capitalize;
+.text-capitalize {
+  text-transform: uppercase;
 }
 
 .div-block-644 {
@@ -545,11 +521,6 @@
   grid-row-gap: 10px;
 }
 
-.cvs-intro-profile-block.horizont {
-  flex-direction: row;
-  align-items: center;
-}
-
 .cvs-intro-profile-block.width-600 {
   width: 600px;
 }
@@ -581,22 +552,6 @@
 
 .max-width-500 {
   max-width: 500px;
-}
-
-@media screen and (max-width: 991px) {
-  .text-grey-600.max-width-600 {
-    max-width: 500px;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .text-grey-600.max-width-600 {
-    max-width: none;
-  }
-}
-
-.max-width-600 {
-  max-width: 600px;
 }
 
 .text-grey-600.mt-5 {
@@ -677,25 +632,9 @@
   grid-row-gap: 6px;
 }
 
-.relative.upload-video-wrap {
-  overflow: hidden;
-  border-radius: 10px;
-}
-
 .relative.ai-comm {
   overflow: hidden;
   border-radius: 4px;
-}
-
-.relative.mt-12 {
-  margin-top: 12px;
-}
-
-.relative.mt-12.flex {
-  display: flex;
-  align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
 }
 
 .email-outreach-button {

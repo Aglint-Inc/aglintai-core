@@ -82,8 +82,6 @@ const JobWorkflows = () => {
   if (jobWorkflows.length === 0)
     return (
       <EmptyAssessmentList
-        message={'No workflows added'}
-        linkText={'Browse all workflows'}
         onClickBrowseAssessment={{ onClick: () => setPopup({ open: true }) }}
       />
     );

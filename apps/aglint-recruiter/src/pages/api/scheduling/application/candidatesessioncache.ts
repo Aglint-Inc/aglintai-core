@@ -18,6 +18,9 @@ export interface ApiBodyParamsSessionCache {
   rec_user_id: string;
 }
 
+export type ApiResponseSessionCache = Awaited<
+  ReturnType<typeof createCloneSession>
+>;
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const supabase = createServerClient<DB>(

@@ -84,13 +84,6 @@ function DeclineScheduleDialog({
 
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isDeclineOpen}
       onClose={() => {
         setIsDeclineOpen(false);

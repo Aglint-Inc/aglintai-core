@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import { IconCategory } from '@tabler/icons-react';
 import { useState } from 'react';
 
-import { ButtonTextRegular } from '@/devlink/ButtonTextRegular';
+import { ButtonGhost } from '@/devlink2/ButtonGhost';
 import { PageLayout } from '@/devlink2/PageLayout';
 import Seo from '@/src/components/Common/Seo';
 import Integrations from '@/src/components/Integrations';
@@ -24,15 +24,16 @@ function IntegrationsPage() {
         slotTopbarLeft={'Integrations'}
         slotTopbarRight={
           <Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
-            <ButtonTextRegular
+            <ButtonGhost
+              size='2'
+              isRightIcon={false}
               onClickButton={{
                 onClick: () => {
                   setIsOpen(true);
                 },
               }}
-              slotStartIcon={<IconCategory />}
-              isStartIcon={true}
-              textLabel={'Request Integration'}
+              slotIcon={<IconCategory width='16' height='16' />}
+              textButton={'Request Integration'}
             />
           </Stack>
         }

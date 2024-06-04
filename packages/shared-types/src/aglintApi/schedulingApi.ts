@@ -1,4 +1,4 @@
-import { RecruiterUserType } from "../data.types";
+import { RecruiterUserType } from '../data.types';
 
 export type ApiCancelScheduledInterview = {
   session_ids: string[];
@@ -18,7 +18,7 @@ export type APICandidateConfirmSlot = {
   schedule_id: string;
   filter_id?: string;
   //  if tasks id is present
-  agent_type: "email" | "phone" | "self";
+  agent_type: 'email' | 'phone' | 'self';
   task_id: string | null;
   candidate_email?: string;
   candidate_name?: string;
@@ -41,7 +41,7 @@ export type APIFindAltenativeTimeSlot = {
 
 export type APIUpdateMeetingInterviewers = {
   meeting_id: string;
-  replaced_inters: Pick<RecruiterUserType, "email" | "user_id">[];
+  replaced_inters: Pick<RecruiterUserType, 'email' | 'user_id'>[];
   candidate_email: string;
 };
 
@@ -57,22 +57,23 @@ export type APICandScheduleMailThankYou = {
 };
 
 export type APIOptions = {
-  use_recruiting_blocks: boolean;
-  include_free_time: boolean;
-  check_next_minutes: number;
-  make_training_optional: boolean;
-  cand_start_time: number;
-  cand_end_time: number;
-  include_conflicting_slots: {
-    show_soft_conflicts: boolean;
-    show_conflicts_events: boolean;
-    interviewers_load: boolean;
-    interviewer_pause: boolean;
-    out_of_office: boolean;
-    calender_not_connected: boolean;
-    day_off: boolean;
-    holiday: boolean;
-    out_of_working_hrs: boolean;
+  use_recruiting_blocks?: boolean;
+  include_free_time?: boolean;
+  check_next_minutes?: number;
+  make_training_optional?: boolean;
+  cand_start_time?: number;
+  cand_end_time?: number;
+  include_conflicting_slots?: {
+    show_soft_conflicts?: boolean;
+    show_conflicts_events?: boolean;
+    interviewers_load?: boolean;
+    interviewer_pause?: boolean;
+    out_of_office?: boolean;
+    calender_not_connected?: boolean;
+    day_off?: boolean;
+    holiday?: boolean;
+    out_of_working_hrs?: boolean;
+    day_passed: boolean;
   };
 };
 
@@ -110,10 +111,9 @@ export type CandReqAvailableSlots = {
   candidate_tz: string;
   current_interview_day: number; // starts from 1
   previously_selected_dates: string[];
-  options?: {
-    cand_start_hour: number;
-    cand_end_hour: number;
-    show_slots_saturday: boolean;
-    show_slots_sunday: boolean;
-  };
+  options?: APIOptions;
+};
+
+export type APIGetCandidateSelectedSlots = {
+  cand_availability_id: string;
 };

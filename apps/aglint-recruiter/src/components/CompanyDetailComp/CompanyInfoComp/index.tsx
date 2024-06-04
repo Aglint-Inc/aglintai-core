@@ -119,7 +119,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
 
                       return (
                         <>
-                          <Stack p={'4px'}>
+                          <Stack p={'var(--space-1)'}>
                             <CompanyLocation
                               // isHeadQuaterVisible={isHeadQuaterVisible[0]}
                               isHeadQuaterVisible={isHeadQuaterVisible}

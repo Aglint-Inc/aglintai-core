@@ -33,10 +33,6 @@
   opacity: 0.7;
 }
 
-.icons.cursor-pointer.height-28 {
-  height: 28px;
-}
-
 .icons.cursor-pointer.three-dot {
   width: 20px;
   height: 20px;
@@ -174,47 +170,8 @@
   color: white;
 }
 
-.nav-bar-icon-hover.cd {
-  width: 110px;
-}
-
-.nav-bar-icon-hover.csetting {
-  width: 125px;
-}
-
-.nav-bar-icon-hover.logout {
-  width: 65px;
-}
-
-.nav-bar-icon-hover.ticket {
-  width: 170px;
-}
-
-.nav-bar-icon-hover.message {
-  display: none;
-  width: 160px;
-}
-
-.nav-bar-icon-hover.schedule {
-  width: 85px;
-}
-
 .nav-bar-icon-hover.schedule-copy {
   display: none;
   width: 90px;
   justify-content: center;
-}
-
-.nav-bar-icon-hover.phone-screen {
-  display: none;
-  width: 135px;
-}
-
-.nav-bar-icon-hover.integration {
-  width: 94px;
-}
-
-.nav-bar-icon-hover.tickets {
-  display: none;
-  width: 50px;
 }

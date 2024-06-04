@@ -63,10 +63,7 @@ function InterviewerDetailsCard({
                 <MuiAvatar
                   level={fullName}
                   src={user.profile_image}
-                  variant={'circular'}
-                  width={'100%'}
-                  height={'100%'}
-                  fontSize={'14px'}
+                  variant={'rounded-medium'}
                 />
               }
               textJobTitle={user.position}
@@ -106,10 +103,7 @@ function InterviewerDetailsCard({
               key={user.id}
               src={user.profile_image}
               level={getFullName(user.first_name, user.last_name)}
-              variant='circular'
-              height='40px'
-              width='40px'
-              fontSize='12px'
+              variant='rounded-medium'
             />
           }
           textName={getFullName(user.first_name, user.last_name)}

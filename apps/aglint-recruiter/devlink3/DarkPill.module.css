@@ -9,13 +9,15 @@
   justify-content: flex-start;
   align-items: center;
 
-  border-radius: 6px;
+  border-radius: var(--radius-2);
 
-  background-color: white;
+  background-color: var(--white);
 
-  box-shadow: inset 0 0 0 1px #e9ebed;
+  box-shadow: inset 0 0 0 1px var(--neutral-6);
 
   transition: all 200ms ease;
+
+  color: var(--neutral-11);
 
   cursor: pointer;
 }
@@ -37,7 +39,7 @@
   justify-content: flex-start;
   align-items: center;
 
-  background-color: #49545c;
+  background-color: var(--accent-9);
 
   color: white;
 }

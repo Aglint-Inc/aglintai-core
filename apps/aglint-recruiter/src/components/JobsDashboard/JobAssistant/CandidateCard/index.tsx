@@ -78,10 +78,7 @@ function CandidateCard({
         textOVerview={'sdsd'}
         slotProfile={
           <MuiAvatar
-            variant='rounded'
-            fontSize='10px'
-            width='16px'
-            height='16px'
+            variant='rounded-xs'
             src={'/recruiter.logo'}
             level={`${first_name} ${last_name || ''}`}
           />

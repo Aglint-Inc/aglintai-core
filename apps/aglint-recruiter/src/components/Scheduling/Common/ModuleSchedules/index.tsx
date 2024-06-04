@@ -61,7 +61,6 @@ function ModuleSchedules({
             onChange={(e) => {
               setChangeText(e.target.value);
             }}
-            borderRadius={10}
             height={42}
           />
         </Stack>

@@ -22,30 +22,8 @@
   display: flex;
   padding: var(--space-4);
   align-items: center;
-  grid-column-gap: var(--space-1);
-  grid-row-gap: var(--space-1);
-}
-
-.interviewer_details.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-}
-
-.interviewer_details.width-324 {
-  width: 100%;
-  height: auto;
-}
-
-.interviewer_details.width-300px {
-  width: 25%;
-}
-
-.interviewer_details.min-324px {
-  width: auto;
-  min-width: 324px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .inteerviewr_avatar {
@@ -53,7 +31,7 @@
   width: 40px;
   height: 40px;
   flex: 0 0 auto;
-  border-radius: 100px;
+  border-radius: var(--radius-3);
 }
 
 .session_colum_fixed_width {
@@ -72,28 +50,10 @@
 
   display: flex;
   width: 250px;
-  padding: var(--space-4);
+  padding: var(--space-2) var(--space-4);
   align-items: center;
   grid-column-gap: var(--space-1);
   grid-row-gap: var(--space-1);
-}
-
-.recommendation_info.hide {
-  display: none;
-}
-
-.recommendation_info.width-324 {
-  width: 100%;
-  height: auto;
-}
-
-.recommendation_info.width-300px {
-  width: 25%;
-}
-
-.recommendation_info.min-324px {
-  width: auto;
-  min-width: 324px;
 }
 
 .feedbackemptyadmin {
@@ -133,10 +93,6 @@
   cursor: pointer;
 }
 
-.feedback-link-wrap.red {
-  color: #d93f4c;
-}
-
 .feedback-link-wrap.no-color {
   color: transparent;
 }
@@ -159,16 +115,6 @@
 
 .cursor-pointer {
   cursor: pointer;
-}
-
-.icons.cursor-pointer.mr-20 {
-  margin-right: 20px;
-  transition-property: none;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
 }
 
 .icons.task-hover {
@@ -201,15 +147,6 @@
   grid-row-gap: var(--space-1);
 
   background-color: var(--white);
-}
-
-.feedbacknotsubmitted.coulumn-req {
-  flex-direction: column;
-  justify-content: flex-start;
-  flex-wrap: nowrap;
-  align-items: flex-start;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
 }
 
 .link-wrap {
@@ -262,22 +199,4 @@
   align-items: center;
   grid-column-gap: var(--space-1);
   grid-row-gap: var(--space-1);
-}
-
-.candidate_cell.hide {
-  display: none;
-}
-
-.candidate_cell.width-324 {
-  width: 100%;
-  height: auto;
-}
-
-.candidate_cell.width-300px {
-  width: 25%;
-}
-
-.candidate_cell.min-324px {
-  width: auto;
-  min-width: 324px;
 }

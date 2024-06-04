@@ -5,6 +5,7 @@ import { DB } from '@aglint/shared-types';
 import { CookieOptions, createServerClient, serialize } from '@supabase/ssr';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { SchedulingFlow } from '@/src/components/Scheduling/CandidateDetails/SelfSchedulingDrawer/store';
 import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
 import { sendToCandidate } from '@/src/components/Scheduling/CandidateDetails/utils';
 
@@ -20,7 +21,8 @@ export interface ApiBodyParamsSendToCandidate {
     start_date: string;
     end_date: string;
   };
-  selectedDebrief: SchedulingApplication['schedulingOptions'][number];
+  selectedSlots?: SchedulingFlow['filteredSchedulingOptions'];
+  selectedDebrief: SchedulingFlow['filteredSchedulingOptions'][number];
   recruiterUser: RecruiterUserType;
   user_tz: string;
   selectedApplicationLog: DatabaseTable['application_logs'];
@@ -62,6 +64,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       supabase: supabase,
       is_debrief: bodyParams.is_debrief,
       selectedApplicationLog: bodyParams.selectedApplicationLog,
+      selectedSlots: bodyParams.selectedSlots,
     });
 
     if (resSendToCandidate) {

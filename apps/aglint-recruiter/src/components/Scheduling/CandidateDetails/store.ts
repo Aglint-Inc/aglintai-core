@@ -2,7 +2,6 @@ import {
   DatabaseTable,
   InterviewModuleType,
   InterviewScheduleTypeDB,
-  PlanCombinationRespType,
 } from '@aglint/shared-types';
 import { create } from 'zustand';
 
@@ -24,31 +23,13 @@ export interface SchedulingApplication {
   selectedSchedule: InterviewScheduleTypeDB;
   interviewModules: InterviewModuleType[];
   scheduleName: string;
-  dateRange: {
-    start_date: string;
-    end_date: string;
-  };
-  stepScheduling: 'pick_date' | 'preference' | 'slot_options' | 'reschedule';
   members: InterviewScheduleContextType['members'];
-  schedulingOptions: PlanCombinationRespType[];
-  isScheduleNowOpen: boolean;
   isViewProfileOpen: boolean;
-  fetchingPlan: boolean;
   fetchingSchedule: boolean;
   selCoordinator: string | null;
-  noOptions: boolean;
-  isSendToCandidateOpen: boolean;
   isEditOpen: boolean;
   isEditBreakOpen: boolean;
   editSession: SessionsType[0];
-  selectedSlots: PlanCombinationRespType[];
-  selectedCombIds: string[];
-  scheduleFlow:
-    | 'self_scheduling'
-    | 'email_agent'
-    | 'phone_agent'
-    | 'request_availibility'
-    | 'debrief';
 
   isIndividualCancelOpen: boolean;
   isMultipleCancelOpen: boolean;
@@ -66,31 +47,18 @@ const initialState: SchedulingApplication = {
   initialSessions: [],
   selectedSchedule: null,
   interviewModules: [],
-  isScheduleNowOpen: false,
   scheduleName: '',
-  dateRange: {
-    start_date: '',
-    end_date: '',
-  },
   members: [],
-  schedulingOptions: [],
   isIndividualCancelOpen: false,
   isMultipleCancelOpen: false,
   isMultipleRescheduleOpen: false,
   isIndividualRescheduleOpen: false,
-  stepScheduling: 'pick_date',
-  fetchingPlan: false,
   isViewProfileOpen: false,
   fetchingSchedule: true,
   selCoordinator: null,
-  noOptions: false,
-  isSendToCandidateOpen: false,
   isEditOpen: false,
   isEditBreakOpen: false,
   editSession: null,
-  selectedSlots: [],
-  selectedCombIds: [],
-  scheduleFlow: 'self_scheduling',
   selectedApplicationLog: null,
 };
 
@@ -120,19 +88,11 @@ export const setIndividualRescheduleOpen = (
   isIndividualRescheduleOpen: boolean,
 ) => useSchedulingApplicationStore.setState({ isIndividualRescheduleOpen });
 
-export const setScheduleFlow = (
-  scheduleFlow: SchedulingApplication['scheduleFlow'],
-) => useSchedulingApplicationStore.setState({ scheduleFlow });
-
 export const setIsEditOpen = (isEditOpen: boolean) =>
   useSchedulingApplicationStore.setState({ isEditOpen });
 
 export const setIsEditBreakOpen = (isEditBreakOpen: boolean) =>
   useSchedulingApplicationStore.setState({ isEditBreakOpen });
-
-export const setStepScheduling = (
-  stepScheduling: SchedulingApplication['stepScheduling'],
-) => useSchedulingApplicationStore.setState({ stepScheduling });
 
 export const setSelectedSession = (selectedSession: SessionsType[0]) =>
   useSchedulingApplicationStore.setState({ selectedSession });
@@ -149,20 +109,11 @@ export const setSelectedSchedule = (
 export const setinitialSessions = (initialSessions: SessionsType) =>
   useSchedulingApplicationStore.setState({ initialSessions });
 
-export const setIsScheduleNowOpen = (isScheduleNowOpen: boolean) =>
-  useSchedulingApplicationStore.setState({ isScheduleNowOpen });
-
 export const setSelectedSessionIds = (selectedSessionIds: string[]) =>
   useSchedulingApplicationStore.setState({ selectedSessionIds });
 
 export const setTab = (tab: SchedulingApplication['tab']) =>
   useSchedulingApplicationStore.setState({ tab });
-
-export const setIsSendToCandidateOpen = (isSendToCandidateOpen: boolean) =>
-  useSchedulingApplicationStore.setState({ isSendToCandidateOpen });
-
-export const setNoOptions = (noOptions: boolean) =>
-  useSchedulingApplicationStore.setState({ noOptions });
 
 export const setSelectedApplication = (
   selectedApplication: SelectedApplicationTypeDB,
@@ -174,10 +125,6 @@ export const setInterviewModules = (interviewModules: InterviewModuleType[]) =>
 export const setScheduleName = (scheduleName: string) =>
   useSchedulingApplicationStore.setState({ scheduleName });
 
-export const setSchedulingOptions = (
-  schedulingOptions: PlanCombinationRespType[],
-) => useSchedulingApplicationStore.setState({ schedulingOptions });
-
 export const setSelCoordinator = (selCoordinator: string | null) =>
   useSchedulingApplicationStore.setState({ selCoordinator });
 
@@ -187,11 +134,9 @@ export const setIsViewProfileOpen = (isViewProfileOpen: boolean) =>
 export const setFetchingSchedule = (fetchingSchedule: boolean) =>
   useSchedulingApplicationStore.setState({ fetchingSchedule });
 
-export const setFetchingPlan = (fetchingPlan: boolean) =>
-  useSchedulingApplicationStore.setState({ fetchingPlan });
-
 export const setMembers = (members: InterviewScheduleContextType['members']) =>
   useSchedulingApplicationStore.setState({ members });
+
 export const setApplicationCandidateFeedback = (
   feedback: SchedulingApplication['selectedApplication']['feedback'],
 ) =>
@@ -204,17 +149,6 @@ export const setApplicationCandidateFeedback = (
     }
     return temp;
   });
-
-export const setDateRange = (dateRange: {
-  start_date: string;
-  end_date: string;
-}) => useSchedulingApplicationStore.setState({ dateRange });
-
-export const setSelectedSlots = (selectedSlots: PlanCombinationRespType[]) =>
-  useSchedulingApplicationStore.setState({ selectedSlots });
-
-export const setSelectedCombIds = (selectedCombIds: string[]) =>
-  useSchedulingApplicationStore.setState({ selectedCombIds });
 
 export const resetSchedulingApplicationState = () =>
   useSchedulingApplicationStore.setState({ ...initialState });

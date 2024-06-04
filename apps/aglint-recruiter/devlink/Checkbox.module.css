@@ -6,10 +6,10 @@
   justify-content: center;
   align-items: center;
 
-  border: 1px solid var(--grey300-03a46dba);
-  border-radius: 4px;
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-2);
 
-  background-color: white;
+  background-color: var(--white);
 
   cursor: pointer;
 }
@@ -28,10 +28,6 @@
 
 .cursor-pointer:hover {
   opacity: 0.7;
-}
-
-.icons.cursor-pointer.height-28 {
-  height: 28px;
 }
 
 .icons.cursor-pointer.three-dot {

@@ -148,12 +148,6 @@ function ChangeInterviewerDialog({
 
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isChangeInterviewerOpen}
       onClose={() => {
         resetState();
@@ -233,10 +227,7 @@ function ChangeInterviewerDialog({
                           <MuiAvatar
                             level={getFullName(user.first_name, user.last_name)}
                             src={user.profile_image}
-                            variant={'circular'}
-                            width={'100%'}
-                            height={'100%'}
-                            fontSize={'18px'}
+                            variant={'rounded-medium'}
                           />
                         }
                       />

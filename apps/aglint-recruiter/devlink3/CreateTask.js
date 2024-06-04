@@ -3,6 +3,8 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
 import { ViewTaskCard } from "./ViewTaskCard";
+import { ButtonSoft } from "./ButtonSoft";
+import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./CreateTask.module.css";
 
@@ -44,21 +46,19 @@ export function CreateTask({
         className={_utils.cx(_styles, "div-block-1511")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1512")}
-          tag="div"
-          {...onClickCancel}
-        >
-          <_Builtin.Block tag="div">{"Cancel"}</_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1513")}
-          tag="div"
-          {...onClickPrimaryButton}
-        >
-          <_Builtin.Block tag="div">{slotButtonIcon}</_Builtin.Block>
-          <_Builtin.Block tag="div">{textPrimaryButton}</_Builtin.Block>
-        </_Builtin.Block>
+        <ButtonSoft
+          onClickButton={onClickCancel}
+          textButton="Cancel"
+          size="3"
+          color="neutral"
+          highContrast="false"
+        />
+        <ButtonSolid
+          textButton={textPrimaryButton}
+          onClickButton={onClickPrimaryButton}
+          slotIcon={slotButtonIcon}
+          isLeftIcon={true}
+        />
       </_Builtin.Block>
     </_Component>
   );

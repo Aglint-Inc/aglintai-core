@@ -84,10 +84,7 @@ function InterviewerListCard({
                   <MuiAvatar
                     level={fullName}
                     src={item.profile_image}
-                    variant={'circular'}
-                    width={'100%'}
-                    height={'100%'}
-                    fontSize={'14px'}
+                    variant={'rounded-small'}
                   />
                 }
                 textJobTitle={item.department}

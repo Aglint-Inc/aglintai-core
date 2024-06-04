@@ -15,14 +15,6 @@
   font-weight: 600;
 }
 
-.text-white {
-  color: white;
-}
-
-.text-sm.fw-semibold.text-white.text-first-capitialize {
-  text-transform: capitalize;
-}
-
 .text-grey-600 {
   color: var(--grey600-d5bebe21);
 }
@@ -53,10 +45,6 @@
 
 .text-yellow-800 {
   color: var(--yellow800-b1e3bc9b);
-}
-
-.text-grey-400 {
-  color: var(--grey400-863ed4b5);
 }
 
 .text-grey-500 {
@@ -101,6 +89,10 @@
   opacity: 0.8;
 }
 
+.text-grey-400 {
+  color: var(--grey400-863ed4b5);
+}
+
 .text-sm.text-grey-500.width-ticket-d {
   width: 49.91667175292969px;
 }
@@ -122,10 +114,6 @@
 
 .text-capitalize {
   text-transform: uppercase;
-}
-
-.text-sm.text-first-capital {
-  text-transform: capitalize;
 }
 
 .text-color-white {

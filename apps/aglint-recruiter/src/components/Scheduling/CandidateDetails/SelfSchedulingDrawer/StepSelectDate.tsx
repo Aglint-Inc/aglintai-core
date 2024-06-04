@@ -10,33 +10,34 @@ import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import { useAllActivities, useGetScheduleApplication } from '../hooks';
+import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
+import { ApiResponseFindAvailability } from '../types';
 import {
   setDateRange,
   setFetchingPlan,
   setIsScheduleNowOpen,
   setNoOptions,
   setSchedulingOptions,
-  setSelectedSessionIds,
   setStepScheduling,
-  useSchedulingApplicationStore,
-} from '../store';
-import { ApiResponseFindAvailability } from '../types';
+  useSchedulingFlowStore,
+} from './store';
 
 function SelectDateRange() {
   const { recruiter, recruiterUser } = useAuthDetails();
-  const {
-    dateRange,
-    selectedSessionIds,
-    fetchingPlan,
-    selectedApplication,
-    scheduleFlow,
-  } = useSchedulingApplicationStore((state) => ({
-    dateRange: state.dateRange,
-    selectedSessionIds: state.selectedSessionIds,
-    fetchingPlan: state.fetchingPlan,
-    selectedApplication: state.selectedApplication,
-    scheduleFlow: state.scheduleFlow,
-  }));
+  const { selectedSessionIds, selectedApplication } =
+    useSchedulingApplicationStore((state) => ({
+      selectedSessionIds: state.selectedSessionIds,
+      selectedApplication: state.selectedApplication,
+    }));
+
+  const { dateRange, fetchingPlan, scheduleFlow } = useSchedulingFlowStore(
+    (state) => ({
+      dateRange: state.dateRange,
+      fetchingPlan: state.fetchingPlan,
+      scheduleFlow: state.scheduleFlow,
+    }),
+  );
+
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
   const { refetch } = useAllActivities({
     application_id: selectedApplication?.id,
@@ -57,22 +58,33 @@ function SelectDateRange() {
     try {
       setNoOptions(false);
       setFetchingPlan(true);
-      const res = await axios.post('/api/scheduling/v1/find_availability', {
+
+      const bodyParams: APIFindAvailability = {
         session_ids: session_ids,
         recruiter_id: rec_id,
         start_date_str: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
         end_date_str: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
         candidate_tz: dayjs.tz.guess(),
-        is_debreif: true,
-      } as APIFindAvailability);
+        options: {
+          include_conflicting_slots: {
+            out_of_working_hrs: true,
+          },
+        },
+      };
+      const res = await axios.post(
+        '/api/scheduling/v1/find_availability',
+        bodyParams,
+      );
 
       if (res.status === 200) {
-        const respTyped = res.data as ApiResponseFindAvailability;
-        if (respTyped.plan_combs.length === 0) {
+        const slots = res.data as ApiResponseFindAvailability;
+
+        if (slots.length === 0) {
+          setNoOptions(true);
           toast.error('No availability found.');
         } else {
-          setSchedulingOptions(respTyped.plan_combs);
-          setStepScheduling('slot_options');
+          setSchedulingOptions(slots);
+          setStepScheduling('preference');
         }
       } else {
         toast.error('Error retrieving availability.');
@@ -96,7 +108,6 @@ function SelectDateRange() {
           start_date_str: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
           end_date_str: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
           candidate_tz: dayjs.tz.guess(),
-          is_debreif: false,
         } as APIFindAvailability,
       );
 

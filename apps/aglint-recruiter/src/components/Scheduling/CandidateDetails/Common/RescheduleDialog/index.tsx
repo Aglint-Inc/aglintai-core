@@ -99,13 +99,6 @@ function RescheduleDialog({ refetch }: { refetch: () => void }) {
 
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isRescheduleOpen}
       onClose={() => {
         setIndividualRescheduleOpen(false);

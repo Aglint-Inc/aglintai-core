@@ -116,13 +116,6 @@ function CancelScheduleDialog({ refetch }: { refetch: () => void }) {
 
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isCancelOpen}
       onClose={() => {
         setIndividualCancelOpen(false);

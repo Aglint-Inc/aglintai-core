@@ -244,24 +244,12 @@
   }
 }
 
-.fw-medium {
-  font-weight: 500;
-}
-
 .fw-semibold {
   font-weight: 600;
 }
 
 .text-grey-700 {
   color: var(--grey700-7fbe857b);
-}
-
-.mt-20 {
-  margin-top: 20px;
-}
-
-.fw-bold {
-  font-weight: 700;
 }
 
 .text-grey-200 {
@@ -465,22 +453,6 @@
 
 .max-width-500 {
   max-width: 500px;
-}
-
-@media screen and (max-width: 991px) {
-  .text-grey-600.max-width-600 {
-    max-width: 500px;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .text-grey-600.max-width-600 {
-    max-width: none;
-  }
-}
-
-.max-width-600 {
-  max-width: 600px;
 }
 
 .text-grey-600.mt-5 {

@@ -37,20 +37,6 @@
   color: var(--black-9b0fc3fc);
 }
 
-.inline-block {
-  display: inline;
-  margin-right: 2px;
-  margin-left: 2px;
-}
-
-.text-grey-600 {
-  color: #68737d;
-}
-
-.text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
 .cb-body-wrapper {
   display: grid;
   height: 100%;

@@ -39,8 +39,7 @@ function InterviewThanks() {
           slotCompanyLogo={
             jobDetails?.logo ? (
               <MuiAvatar
-                width={'60px'}
-                height={'60px'}
+              variant='rounded-medium'
                 src={jobDetails?.logo}
               />
             ) : null

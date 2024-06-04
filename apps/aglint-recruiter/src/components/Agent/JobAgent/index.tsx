@@ -154,10 +154,9 @@ function JobAgent() {
                             slotAvatar={
                               sender == chatusers.recruiter ? (
                                 <MuiAvatar
-                                  variant='rounded'
+                                  variant='rounded-small'
                                   src={recruiterUser.profile_image}
                                   level={recruiterUser.first_name}
-                                  fontSize='20px'
                                 />
                               ) : (
                                 <AssistantLogo />

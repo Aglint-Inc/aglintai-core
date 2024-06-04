@@ -1,30 +1,31 @@
 import { PlanCombinationRespType } from '@aglint/shared-types';
-import { Collapse } from '@mui/material';
+import { Collapse, Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
+import { ButtonTextSmall } from '@/devlink/ButtonTextSmall';
 import { DateOption } from '@/devlink3/DateOption';
 import { ScheduleOption } from '@/devlink3/ScheduleOption';
 
-import {
-  setSelectedCombIds,
-  useSchedulingApplicationStore,
-} from '../../../store';
 import SingleDayCard from '../SingleDayCard';
+
+const NUMBER_OF_SLOTS_TO_DISPLAY = 20;
 
 function DayCardWrapper({
   isDebrief,
   item,
+  onClickSelect,
+  selectedCombIds,
 }: {
   isDebrief: boolean;
   item: {
     dateArray: string[];
     plans: PlanCombinationRespType[];
   };
+  // eslint-disable-next-line no-unused-vars
+  onClickSelect: (comb_id: string) => void;
+  selectedCombIds: string[];
 }) {
-  const selectedCombIds = useSchedulingApplicationStore(
-    (state) => state.selectedCombIds,
-  );
   const dates = item?.dateArray || [];
   const header = dates
     .map((date) => dayjs(date).format('MMMM DD dddd'))
@@ -33,6 +34,13 @@ function DayCardWrapper({
   const isMultiDay = dates.length > 1 ? true : false;
 
   const [collapse, setCollapse] = useState(false);
+  const [displayedSlots, setDisplayedSlots] = useState(
+    NUMBER_OF_SLOTS_TO_DISPLAY,
+  );
+
+  const loadMoreSlots = () => {
+    setDisplayedSlots((prevCount) => prevCount + NUMBER_OF_SLOTS_TO_DISPLAY);
+  };
 
   return (
     <>
@@ -52,7 +60,7 @@ function DayCardWrapper({
         }}
         slotScheduleOption={
           <Collapse in={collapse}>
-            {slots?.map((slot) => {
+            {slots.slice(0, displayedSlots)?.map((slot) => {
               const daySessions = dates.map((date) => {
                 return {
                   date: date,
@@ -63,14 +71,15 @@ function DayCardWrapper({
                   ),
                 };
               });
+
               return (
                 <ScheduleOption
                   key={slot.plan_comb_id}
                   isSelected={selectedCombIds.includes(slot.plan_comb_id)}
-                  isCheckbox={false}
+                  isCheckbox={!isDebrief}
                   onClickSelect={{
                     onClick: () => {
-                      if (isDebrief) setSelectedCombIds([slot.plan_comb_id]);
+                      onClickSelect(slot.plan_comb_id);
                     },
                   }}
                   isRadio={isDebrief}
@@ -87,6 +96,16 @@ function DayCardWrapper({
                 />
               );
             })}
+            {displayedSlots < slots.length && (
+              <Stack direction={'row'} justifyContent={'center'} p={1}>
+                <ButtonTextSmall
+                  textLabel={'Load More'}
+                  onClickButton={{
+                    onClick: loadMoreSlots,
+                  }}
+                />
+              </Stack>
+            )}
           </Collapse>
         }
       />

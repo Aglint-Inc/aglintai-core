@@ -44,7 +44,6 @@ type Props = {
   height?: number;
   noBorder?: boolean;
   width?: string;
-  borderRadius?: number;
   select?: boolean;
   secondaryText?: string;
   labelBold?: 'default' | 'normal';
@@ -77,7 +76,6 @@ const UITextField = React.forwardRef(
       InputProps,
       children,
       defaultValue,
-      borderRadius = 4,
       width,
       select,
       height,
@@ -148,13 +146,12 @@ const UITextField = React.forwardRef(
             setContentExceeded(false);
           }}
           type={type}
-          // sx={{
-          //   '& .MuiOutlinedInput-root': {
-          //     height: height ? `${height}px !important` : '100%',
-          //     borderRadius: `${borderRadius}px`,
-          //   },
-          //   width: width,
-          // }}
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              height: height ? `${height}px !important` : '100%',
+            },
+            width: width,
+          }}
           {...rest}
         >
           {children}
