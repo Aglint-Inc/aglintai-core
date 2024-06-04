@@ -17,7 +17,8 @@ interface RecruiterReschedulingEmailType {
   companyLogo?: string;
   meetingLink?: string;
   meetingDetails: {
-    dateTime?: string;
+    date?: string;
+    time?: string;
     sessionType?: string;
     platform?: string;
     duration?: string;
@@ -33,7 +34,8 @@ export const dummy: RecruiterReschedulingEmailType = {
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   meetingDetails: [
     {
-      dateTime: '<strong>Fri, May 12, 2024</strong> 09:00 AM - 09:30 PM PST',
+      date: 'Fri, May 12, 2024',
+      time: '09:00 AM - 09:30 PM PST',
       sessionType: '<strong>Personality and cultural fit</strong>',
       platform: 'Google meet',
       duration: '45 minutes',
@@ -43,7 +45,8 @@ export const dummy: RecruiterReschedulingEmailType = {
         'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/google_meet.png',
     },
     {
-      dateTime: '<strong>Fri, May 12, 2024</strong> 09:00 AM - 09:30 PM PST',
+      date: 'Fri, May 12, 2024',
+      time: '09:00 AM - 09:30 PM PST',
       sessionType: '<strong> and cultural fit</strong>',
       platform: 'Google meet',
       duration: '45 minutes',
@@ -68,7 +71,10 @@ const Sessions = ({ meetingDetail }) => {
         padding: '10px 20px',
       }}
     >
-      <Text className="m-0">{htmlParser.parse(meetingDetail.dateTime)}</Text>
+      <Text className="m-0">
+        <strong>{htmlParser.parse(meetingDetail.date)} </strong>
+        {htmlParser.parse(meetingDetail.time)}
+      </Text>
       <Text className="m-0 flex gap-1 item-center my-1">
         <Img className="inline " src={meetingDetail.sessionTypeIcon} />
         &nbsp;
