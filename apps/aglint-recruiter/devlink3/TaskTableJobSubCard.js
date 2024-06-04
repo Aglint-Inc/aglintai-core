@@ -45,7 +45,7 @@ export function TaskTableJobSubCard({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1435", "space-between")}
+        className={_utils.cx(_styles, "task_row_cell", "space-between")}
         id={_utils.cx(
           _styles,
           "w-node-f9fb816c-f256-bc7d-a704-0fc71d499d71-1d499d6e"
@@ -78,7 +78,7 @@ export function TaskTableJobSubCard({
         ) : null}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1435")}
+        className={_utils.cx(_styles, "task_row_cell")}
         id={_utils.cx(
           _styles,
           "w-node-f9fb816c-f256-bc7d-a704-0fc71d499d70-1d499d6e"
@@ -88,7 +88,7 @@ export function TaskTableJobSubCard({
         {slotStatus}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1435")}
+        className={_utils.cx(_styles, "task_row_cell")}
         id={_utils.cx(
           _styles,
           "w-node-_9125883b-4bc5-805a-822c-4bac0484cce7-1d499d6e"
@@ -98,7 +98,7 @@ export function TaskTableJobSubCard({
         {slotPriorityPill}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1435")}
+        className={_utils.cx(_styles, "task_row_cell")}
         id={_utils.cx(
           _styles,
           "w-node-f9fb816c-f256-bc7d-a704-0fc71d499d74-1d499d6e"
@@ -119,7 +119,7 @@ export function TaskTableJobSubCard({
         />
       ) : null}
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1435")}
+        className={_utils.cx(_styles, "task_row_cell")}
         id={_utils.cx(
           _styles,
           "w-node-_5f0d21cb-c241-e5a7-54af-22d4e63b1af0-1d499d6e"
@@ -129,7 +129,7 @@ export function TaskTableJobSubCard({
         {slotCandidate}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1435")}
+        className={_utils.cx(_styles, "task_row_cell")}
         id={_utils.cx(
           _styles,
           "w-node-_20bac36b-272e-4219-72cc-f14b1b9a7193-1d499d6e"

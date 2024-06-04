@@ -50,13 +50,6 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
 
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isOpen}
       onClose={close}
       maxWidth={'md'}

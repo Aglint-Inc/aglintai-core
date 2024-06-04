@@ -338,10 +338,7 @@ function InterviewFeedbackPage() {
             <MuiAvatar
               level={application.candidates.first_name}
               src={application?.candidates.avatar}
-              variant={'rounded'}
-              width={'100%'}
-              height={'100%'}
-              fontSize={'48px'}
+              variant={'rounded-large'}
             />
           }
           companyName={job?.company}

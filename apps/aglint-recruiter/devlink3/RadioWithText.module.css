@@ -25,64 +25,9 @@
   align-items: center;
 }
 
-.radio_active.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-}
-
-.radio_active.custom_top {
-  margin-top: 2px;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.radio_active.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.radio_active.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.radio_active.fixedd {
-  width: 23px;
-}
-
 .radio_inactive {
   display: flex;
   width: 16px;
   height: 16px;
   align-items: center;
-}
-
-.radio_inactive.hide {
-  display: none;
-}
-
-.radio_inactive.custom_top {
-  margin-top: 2px;
-}
-
-.radio_inactive.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.radio_inactive.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.radio_inactive.fixedd {
-  width: 23px;
 }

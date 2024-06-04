@@ -26,9 +26,12 @@ type RequestSessions = {
 }[];
 
 type dateSlotsType = {
-  curr_day: string;
-  slots: {
-    startTime: string;
-    endTime: string;
+  round: number;
+  dates: {
+    curr_day: string;
+    slots: {
+      startTime: string;
+      endTime: string;
+    }[];
   }[];
 };

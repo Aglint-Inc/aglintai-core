@@ -399,10 +399,10 @@
 
   border-style: solid;
   border-width: 1px;
-  border-color: hsla(199.9999999999999, 8.33%, 85.88%, 1.00);
+  border-color: hsla(199.9999999999999, 8.33%, 85.88%, 1);
   border-radius: 4px;
 
-  background-color: hsla(206.66666666666666, 0.00%, 100.00%, 1.00);
+  background-color: hsla(206.66666666666666, 0%, 100%, 1);
 
   cursor: pointer;
 }

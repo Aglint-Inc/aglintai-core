@@ -308,10 +308,7 @@ const Member = ({
             <MuiAvatar
               src={member.profile_image}
               level={name}
-              variant='circular'
-              fontSize='10px'
-              height='100%'
-              width='100%'
+              variant='rounded-small'
             />
           }
         />
@@ -394,10 +391,7 @@ const InterviewerPills = ({
           <MuiAvatar
             src={interviewer.profile_image}
             level={name}
-            variant='circular'
-            fontSize='10px'
-            height='100%'
-            width='100%'
+            variant='rounded-small'
           />
         }
       />

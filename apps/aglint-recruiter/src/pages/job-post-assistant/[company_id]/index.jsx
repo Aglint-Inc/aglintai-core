@@ -1,10 +1,9 @@
-import ChatMessages from '@/src/components/AssistantChat';
-import { JobPostAssistantProvider } from '@/src/context/JobPostAssistant';
+  import { JobPostAssistantProvider } from '@/src/context/JobPostAssistant';
 
 function JobAssistant() {
   return (
     <JobPostAssistantProvider>
-      <ChatMessages />
+      {/* <ChatMessages /> */}
     </JobPostAssistantProvider>
   );
 }

@@ -594,10 +594,7 @@ function SideDrawerEdit() {
                                   <MuiAvatar
                                     src={interviewer.start_icon_url}
                                     level={getFullName(interviewer.name, '')}
-                                    variant='circular'
-                                    fontSize='10px'
-                                    height='100%'
-                                    width='100%'
+                                    variant='rounded-small'
                                   />
                                 }
                               />
@@ -626,10 +623,7 @@ function SideDrawerEdit() {
                                   <MuiAvatar
                                     src={interviewer.start_icon_url}
                                     level={getFullName(interviewer.name, '')}
-                                    variant='circular'
-                                    fontSize='10px'
-                                    height='100%'
-                                    width='100%'
+                                    variant='rounded-small'
                                   />
                                 }
                               />

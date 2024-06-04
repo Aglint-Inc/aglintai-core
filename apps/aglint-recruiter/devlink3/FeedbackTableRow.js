@@ -50,7 +50,7 @@ export function FeedbackTableRow({
           className={_utils.cx(_styles, "one-line-clamp")}
           tag="div"
         >
-          <Text content={textInterviewerName} />
+          <Text content={textInterviewerName} weight="medium" />
           <Text content={textjobTitle} weight="regular" color="neutral" />
         </_Builtin.Block>
       </_Builtin.Block>

@@ -95,12 +95,9 @@ function TableRow({ name, email, phone, profile_image, index }) {
         spacing={'5px'}
       >
         <MuiAvatar
-          width={'20px'}
-          height={'20px'}
           src={profile_image}
-          fontSize={'12px'}
           level={name}
-          variant={'circular'}
+          variant={'rounded-small'}
         />
         <Typography variant='body1' className='one-line-clamp'>
           {name}

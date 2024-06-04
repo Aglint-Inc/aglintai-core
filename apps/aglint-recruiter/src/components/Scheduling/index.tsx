@@ -287,13 +287,6 @@ const InterviewerModule = ({
                     slotMemberPic={
                       <AvatarGroup
                         total={mod.users.length}
-                        sx={{
-                          '& .MuiAvatar-root': {
-                            width: '26px',
-                            height: '26px',
-                            fontSize: '12px',
-                          },
-                        }}
                       >
                         {mod.users.slice(0, 5).map((user) => {
                           return (
@@ -304,10 +297,7 @@ const InterviewerModule = ({
                                 user.first_name,
                                 user.last_name,
                               )}
-                              variant='circular'
-                              height='26px'
-                              width='26px'
-                              fontSize='12px'
+                              variant='rounded-small'
                             />
                           );
                         })}

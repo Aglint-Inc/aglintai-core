@@ -30,10 +30,6 @@
   border-radius: 100px;
 }
 
-.div-block-1347.stroke {
-  border: 1px solid #d8dcde;
-}
-
 .div-block-1348 {
   width: 1px;
   height: 100%;
@@ -84,53 +80,20 @@
   text-transform: uppercase;
 }
 
-.text-grey_400 {
-  color: #c2c8cc;
-}
-
 .text-grey_600 {
   color: var(--sand-11);
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
-.text-sm.text-grey_600.text-underline.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.text-sm.text-grey_600.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
 }
 
 .text-blue-500 {
   color: #337fbd;
 }
 
-.text-sm.badge {
-  color: #228f67;
+.text-underline {
+  text-decoration: underline;
 }
 
-.text-sm.done {
-  color: #228f67;
-}
-
-.text-sm.in-progress {
-  color: #337fbd;
-}
-
-.text-sm.progress {
-  color: #68737d;
-}
-
-.text-sm.justnow-text {
-  color: rgba(28, 28, 28, 0.4);
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .text-sm.text-underline {
@@ -179,16 +142,6 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
-}
-
-.icons.cursor-pointer.mr-20 {
-  margin-right: 20px;
-  transition-property: none;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
 }
 
 .icons.task-hover {

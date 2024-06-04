@@ -26,6 +26,7 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
+  z-index: 1;
 
   border-color: #1f73b7;
 
@@ -56,10 +57,6 @@
 
 .text-kale-600 {
   color: var(--kale-600\<deleted\|variable-fc9c3cf7-09bb-7364-ed8d-95d89e6d8422\>);
-}
-
-.text-color-black {
-  color: var(--black-9b0fc3fc);
 }
 
 .text-yellow-800 {
@@ -96,6 +93,7 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
+  z-index: 2;
 
   border-radius: 10px;
 

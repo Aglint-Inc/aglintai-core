@@ -1,6 +1,6 @@
 .toast-container {
-  --radius: 5px;
-  --stack-gap: 20px;
+  --radius: var(--space-1);
+  --stack-gap: var(--space-4);
   --safe-area-gap: env(safe-area-inset-bottom);
 
   position: fixed;
@@ -22,8 +22,8 @@
 
     & .toast-inner {
       --toast-bg: none;
-      --toast-fg: #000;
-      --toast-border-color: #eaeaea;
+      --toast-fg: var(--sand-12);
+      --toast-border-color: var(--sand-6);
       box-sizing: border-box;
       border-radius: var(--radius);
       border: 1px solid var(--toast-border-color);
@@ -35,58 +35,52 @@
       background-color: var(--toast-bg);
       height: var(--height);
       transition: all 0.25s ease;
-      box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.3);
+      /* box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.3); */
+      box-shadow: var(--shadow-5);
 
       &.default {
-        --toast-fg: #000;
-        --toast-bg: #fff;
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
+        --toast-fg: var(--sand-12);
+        --toast-bg: var(--sand-1);
+        box-shadow: var(--shadow-3);
       }
 
       &.success {
-        //   --toast-bg: #edf8f4;
-        //   --toast-border-color: var(--toast-bg);
-        --toast-bg: #edf8f4;
-        color: #228f67;
+        --toast-bg: var(--jade-3);
+        --toast-fg: var(--jade-11);
+        --toast-border-color: var(--jade-6);
       }
 
       &.error {
-        //   --toast-bg: #fff0f1;
-        //   --toast-border-color: var(--toast-bg);
-        --toast-bg: #fff0f1;
-        color: #d93f4c;
+        --toast-bg: var(--tomatto-3);
+        --toast-fg: var(--tomatto-11);
+        --toast-border-color: var(--tomatto-6);
       }
 
       &.warning {
-        //   --toast-bg: #fff7ed;
-        //   --toast-border-color: var(--toast-bg);
-        --toast-bg: #fff7ed;
-        color: #f79a3e;
+        --toast-bg: var(--yellow-3);
+        --toast-fg: var(--yellow-11);
+        --toast-border-color: var(--yellow-6);
       }
 
       &.dark {
-        --toast-bg: #2f3941;
-        --toast-fg: #fff;
-        --toast-border-color: #333;
+        --toast-bg: var(--sand-2);
+        --toast-fg: var(--sand-12);
+        --toast-border-color: var(--sand-6);
 
         & .toast-button {
-          --button-fg: #fff;
+          --button-fg: var(--sand-12);
           --button-bg: transparent;
           --button-border: transparent;
           --button-border-hover: transparent;
-          --button-fg-hover: #fff;
-          // &:not(.cancel-button) {
-          //   &::before {
-          //     content: url('/images/toast/_X - 16px icon.svg');
-          //   }
-          // }
+          --button-fg-hover: var(--sand-12);
+
           &.cancel-button {
-            --cancel-button-bg: #2f3941;
-            --cancel-button-fg: #888;
-            --cancel-button-border: #333;
+            --cancel-button-bg: var(--sand-2);
+            --cancel-button-fg: var(--sand-9);
+            --cancel-button-border: var(--sand-6);
 
             &:hover {
-              color: #fff;
+              color: var(--sand12);
               border-color: var(--button-border);
             }
           }
@@ -105,10 +99,10 @@
 
     & .toast-button {
       --button-fg: none;
-      --button-bg: #fff;
-      --button-border: #fff;
-      --button-border-hover: #fff;
-      --button-fg-hover: #fff;
+      --button-bg: var(--sand-1);
+      --button-border: var(--sand-1);
+      --button-border-hover: var(--sand-1);
+      --button-fg-hover: var(--sand-1);
       min-width: auto;
       height: 24px;
       line-height: 22px;
@@ -125,15 +119,9 @@
       border: 1px solid var(--button-border);
       transition: all 0.2s ease;
 
-      // &:hover {
-      //   border-color: var(--button-border-hover);
-      //   background-color: transparent;
-      //   color: var(--button-fg-hover);
-      // }
-
       &.cancel-button {
         --cancel-button-bg: none;
-        --cancel-button-fg: #666;
+        --cancel-button-fg: var(--sand-9);
         border: none;
         background-color: none;
         color: var(--cancel-button-fg);
@@ -141,21 +129,18 @@
         background-color: var(--cancel-button-bg);
 
         &:hover {
-          --cancel-button-fg: #000;
+          --cancel-button-fg: var(--sand-12);
           --cancel-button-border: transparent;
         }
-        // &::before {
-        //   content: url('/images/toast/_X - 16px icon.svg');
-        // }
       }
     }
 
     & .default .toast-button {
-      --button-fg: #fff;
-      --button-bg: #000;
-      --button-border: #000;
-      --button-border-hover: #000;
-      --button-fg-hover: #000;
+      --button-fg: var(--sand-12);
+      --button-bg: var(--sand-1);
+      --button-border: var(--sand-1);
+      --button-border-hover: var(--sand-1);
+      --button-fg-hover: var(--sand-1);
     }
 
     &:after {
@@ -165,7 +150,6 @@
       right: 0;
       top: calc(100% + 1px);
       width: 100%;
-      /* This for destroy the middle toast, still keep `spread` */
       height: 1000px;
       background: transparent;
     }
@@ -235,6 +219,6 @@
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .hideScrollbar {
--ms-overflow-style: none;  /* IE and Edge */
-scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }

@@ -33,10 +33,6 @@
   color: #68737d;
 }
 
-.hide {
-  display: none;
-}
-
 .text-sm {
   font-size: var(--font-size-1);
   line-height: var(--line-height-1);
@@ -134,16 +130,6 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
-}
-
-.icons.cursor-pointer.mr-20 {
-  margin-right: 20px;
-  transition-property: none;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
 }
 
 .icons.task-hover {
@@ -245,13 +231,8 @@
   display: none;
 }
 
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
-.text-grey_600.text-underline {
-  text-decoration: underline;
+.hide {
+  display: none;
 }
 
 .text-grey_600.width-80px {
@@ -293,11 +274,6 @@
 
 .div-block-1546.cursor-pointer:hover {
   background-color: hsla(356, 56.31%, 92.37%, 1.00);
-}
-
-.div-block-1546.cursor-pointer.blue {
-  background-color: #edf7ff;
-  color: #337fbd;
 }
 
 .div-block-1546.cursor-pointer.green {

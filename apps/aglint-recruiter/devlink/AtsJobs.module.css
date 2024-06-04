@@ -1,15 +1,12 @@
 .ats-wrappers-outer {
-  padding-right: 0px;
-  padding-bottom: 0px;
-  padding-left: 0px;
-  border: 1px none #e9ebed;
-  border-radius: 10px;
+  border: 1px none var(--neutral-6);
+  border-radius: var(--radius-4);
 }
 
 .ats-import-wrappers {
   position: relative;
   display: flex;
-  margin-top: 24px;
+  margin-top: var(--space-5);
   justify-content: space-between;
   align-items: center;
 }
@@ -29,7 +26,8 @@
 
 .aui-button-wrap {
   position: relative;
-  display: inline-block;
+  z-index: 1;
+  display: flex;
   align-items: center;
 }
 
@@ -143,15 +141,6 @@
   outline-offset: 0px;
   outline-style: solid;
   outline-width: 3px;
-}
-
-.aui-button.is-small.is-button-outlined.dark {
-  border-color: var(--grey600-d5bebe21);
-  color: var(--grey600-d5bebe21);
-}
-
-.aui-button.is-small.is-button-outlined.dark:hover {
-  background-color: hsla(208.57142857142856, 9.17%, 44.90%, 0.08);
 }
 
 .aui-button.is-small.is-button-outlined.danger {
@@ -284,12 +273,12 @@
   right: 0%;
   bottom: 0%;
 
-  background-color: var(--gray-100\<deleted\|variable-3a86b552\>);
+  background-color: var(--neutral-2);
 }
 
 .ats-search-wrappers {
   display: flex;
-  margin-top: 18px;
+  margin-top: var(--space-4);
   justify-content: space-between;
 }
 
@@ -311,17 +300,17 @@
 .ats-tab-wappers {
   display: flex;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .ats-tab-menu {
   position: relative;
 
-  padding: 6px 16px;
+  padding: var(--space-1) var(--space-4);
 
-  border: 1px solid #e9ebed;
-  border-radius: 4px;
+  border: 1px solid var(--neutral-1);
+  border-radius: var(--radius-2);
 
   transition: all 250ms ease;
 
@@ -329,15 +318,7 @@
 }
 
 .ats-tab-menu:hover {
-  background-color: #e9ebed;
-}
-
-.text-relative {
-  position: relative;
-}
-
-.text-relative.zindex-1 {
-  z-index: 1;
+  background-color: var(--neutral-3);
 }
 
 .ats-tab-menu-active {
@@ -347,23 +328,19 @@
   right: 0%;
   bottom: 0%;
 
-  border-radius: 4px;
+  border-radius: var(--radius-2);
 
-  background-color: #e9ebed;
+  background-color: var(--neutral-3);
 }
 
 .slot-ats-cards-wrappers {
   display: flex;
   overflow: scroll;
   max-height: 430px;
-  margin-top: 34px;
+  margin-top: var(--space-6);
   flex-direction: column;
 }
 
 .slot-ats-cards-wrappers.height-480 {
   max-height: 480px;
-}
-
-.pagination-wrappers {
-  margin-top: 70px;
 }

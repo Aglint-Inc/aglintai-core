@@ -149,10 +149,6 @@
   color: white;
 }
 
-.fw-semibold {
-  font-weight: 600;
-}
-
 .div-block-385 {
   display: none;
   margin-bottom: 0px;
@@ -160,12 +156,6 @@
 
 .text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
-@media screen and (max-width: 767px) {
-  .text-gray-600.mobile-12 {
-    font-size: 12px;
-  }
 }
 
 .text-no-wrap {

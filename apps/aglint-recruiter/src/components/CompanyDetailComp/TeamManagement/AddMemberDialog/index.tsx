@@ -266,10 +266,7 @@ const AddMember = ({
                         <MuiAvatar
                           // src={data.}
                           level={getFullName(data.first_name, data.last_name)}
-                          variant='circular'
-                          height='50px'
-                          width='50px'
-                          fontSize='16px'
+                          variant='rounded-medium'
                         />
                       }
                     />
@@ -599,10 +596,7 @@ const AddMember = ({
                   <MuiAvatar
                     src={member.profile_image}
                     level={getFullName(member.first_name, member.last_name)}
-                    variant='circular'
-                    height='100%'
-                    width='100%'
-                    fontSize='16px'
+                    variant='rounded-small'
                   />
                 }
                 slotButton={

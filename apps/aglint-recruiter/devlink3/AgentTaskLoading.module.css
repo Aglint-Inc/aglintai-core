@@ -19,24 +19,6 @@
   cursor: pointer;
 }
 
-.task_card.is_new {
-  height: auto;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  flex-direction: row;
-  align-items: center;
-
-  transition: all 200ms ease;
-}
-
-.task_card.is_new:hover {
-  background-color: #f8f9f9;
-}
-
-.task_card.is_active {
-  background-color: #f7f9fb;
-}
-
 .task_card.is_new_with_dropdown {
   z-index: 2;
 

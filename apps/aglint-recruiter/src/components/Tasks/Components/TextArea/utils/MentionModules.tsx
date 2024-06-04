@@ -121,12 +121,9 @@ export default forwardRef((props: any, ref) => {
                 />
                 <ShowCode.Else>
                   <MuiAvatar
-                    fontSize='12px'
-                    width={'25px'}
-                    height={'25px'}
                     level={item?.first_name}
                     src={item?.profile_image}
-                    variant='circular'
+                    variant='rounded-small'
                   />
                   <Typography variant='body1'>
                     {capitalize(

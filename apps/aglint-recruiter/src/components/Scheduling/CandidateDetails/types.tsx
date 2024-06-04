@@ -95,7 +95,4 @@ export type InterviewDataResponseType = {
   };
 };
 
-export type ApiResponseFindAvailability = {
-  plan_combs: PlanCombinationRespType[];
-  total: number;
-};
+export type ApiResponseFindAvailability = PlanCombinationRespType[][][];

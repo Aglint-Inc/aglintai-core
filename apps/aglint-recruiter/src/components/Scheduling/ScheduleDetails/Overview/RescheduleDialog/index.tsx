@@ -219,12 +219,6 @@ function RescheduleDialog({
 
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isRescheduleOpen}
       onClose={() => {
         setIsRescheduleOpen(false);
@@ -308,10 +302,7 @@ function RescheduleDialog({
               schedule?.candidates.last_name,
             )}
             src={schedule?.candidates.avatar}
-            variant={'circular'}
-            width={'100%'}
-            height={'100%'}
-            fontSize={'12px'}
+            variant={'rounded-small'}
           />
         }
         slotDateRangeInput={

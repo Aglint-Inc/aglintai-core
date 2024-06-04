@@ -63,13 +63,6 @@ function CreateModuleDialog() {
 
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isCreateDialogOpen}
       onClose={() => {
         setIsCreateDialogOpen(false);

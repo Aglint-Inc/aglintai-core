@@ -20,10 +20,6 @@
   grid-row-gap: 6px;
 }
 
-.flex-hor-left.emial {
-  margin-top: 10px;
-}
-
 .radio-wrapper {
   display: flex;
   width: 16px;
@@ -52,10 +48,6 @@
 
 .cursor-pointer:hover {
   opacity: 0.7;
-}
-
-.icons.cursor-pointer.height-28 {
-  height: 28px;
 }
 
 .icons.cursor-pointer.three-dot {

@@ -76,7 +76,7 @@
 
   border-radius: 10px;
 
-  background-color: hsla(180, 53.85%, 97.45%, 1.00);
+  background-color: hsla(180, 53.85%, 97.45%, 1);
 }
 
 .div-block-410 {
@@ -106,15 +106,19 @@
 }
 
 .text-kale-600 {
-  color: var(--kale-600\<deleted\|variable-fc9c3cf7-09bb-7364-ed8d-95d89e6d8422\>);
+  color: var(
+    --kale-600\<deleted\|variable-fc9c3cf7-09bb-7364-ed8d-95d89e6d8422\>
+  );
 }
 
 .text-yellow-800 {
-  color: hsla(23.07692307692308, 68.42%, 26.08%, 1.00);
+  color: hsla(23.07692307692308, 68.42%, 26.08%, 1);
 }
 
 .text-kale-800 {
-  color: var(--kale-800\<deleted\|variable-f2fd7071-1c51-e4c0-2aa9-ed4d60cbbee9\>);
+  color: var(
+    --kale-800\<deleted\|variable-f2fd7071-1c51-e4c0-2aa9-ed4d60cbbee9\>
+  );
 }
 
 .text-sm.text-blue-600 {
@@ -122,19 +126,19 @@
 }
 
 .text-blue-600 {
-  color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
+  color: hsla(206.8421052631579, 71.03%, 41.96%, 1);
 }
 
 .text-red-500 {
-  color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
+  color: hsla(354.93506493506493, 66.96%, 54.9%, 1);
 }
 
 .text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+  color: hsla(208.57142857142856, 9.17%, 44.9%, 1);
 }
 
 .text-yellow-600 {
-  color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
+  color: hsla(33.014354066985646, 85.31%, 51.96%, 1);
 }
 
 .jdet-main-action-menu {
@@ -254,7 +258,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px none hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
+  border-bottom: 1px none hsla(210.00000000000023, 10%, 92.16%, 1);
 }
 
 @media screen and (max-width: 767px) {
