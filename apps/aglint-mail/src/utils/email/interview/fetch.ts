@@ -11,12 +11,7 @@ export default async function Interview(application_id: string) {
     .eq('id', application_id);
 
   const {
-    candidates: {
-      email,
-      recruiter_id,
-      first_name,
-      recruiter: { logo },
-    },
+    candidates: { email, recruiter_id, first_name },
     public_jobs: { company, job_title },
   } = candidateJob;
 
@@ -24,7 +19,7 @@ export default async function Interview(application_id: string) {
     recipient_email: email,
     mail_type: 'interview',
     recruiter_id,
-    companyLogo: logo,
+    companyLogo: '',
     payload: {
       '[firstName]': first_name,
       '[jobTitle]': job_title,

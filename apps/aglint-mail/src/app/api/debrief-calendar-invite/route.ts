@@ -58,7 +58,6 @@ export async function POST(req: Request) {
       application_id,
       meeting_id,
     );
-
     const filled_body = await fetchTemplate(
       data.recruiter_id,
       data.mail_type,

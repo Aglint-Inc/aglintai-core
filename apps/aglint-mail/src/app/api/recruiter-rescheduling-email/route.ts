@@ -7,11 +7,15 @@ import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import { sendMail } from '../../../config/sendgrid';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
-import Rejection from '../../../utils/email/rejection/fetch';
+import RecruiterReschedulingEmail from '../../../utils/email/recruiter_rescheduling_email/fetch';
 
 interface ReqPayload {
+  session_ids: string[];
   application_id: string;
+  meeting_id: string;
+  interview_cancel_id: string;
 }
+``;
 interface DataPayload {
   recipient_email: string;
   mail_type: string;
@@ -19,27 +23,63 @@ interface DataPayload {
   companyLogo: string;
   payload: {
     '[firstName]': string;
-    '[jobTitle]': string;
+    '[recruiterRescheduleReason]': string;
+    '[scheduleName]': string;
     '[companyName]': string;
+    '[pickYourSlotLink]': string;
+    'meetingDetails': {
+      date: string;
+      time: string;
+      sessionType: string;
+      platform: any;
+      duration: string;
+      sessionTypeIcon: any;
+      meetingIcon: string;
+    }[];
   };
 }
 
 export async function POST(req: Request) {
-  const { application_id }: ReqPayload = await req.json();
+  const {
+    session_ids,
+    application_id,
+    meeting_id,
+    interview_cancel_id,
+  }: ReqPayload = await req.json();
 
   try {
     // if(!api_key)  throw new ClientError("api_key not found",401)
     // if( api_key !== API_KEY)  throw new ClientError("invalid api Key",401)
+
+    if (!session_ids) {
+      throw new ClientError('mail_type attribute session_ids missing', 400);
+    }
+    if (!interview_cancel_id) {
+      throw new ClientError(
+        'mail_type attribute interview_cancel_id missing',
+        400,
+      );
+    }
+
     if (!application_id) {
       throw new ClientError('application_id attribute missing', 400);
     }
-    const data: DataPayload = await Rejection(application_id);
+    if (!meeting_id) {
+      throw new ClientError('meeting_id is missing', 400);
+    }
+    const data: DataPayload = await RecruiterReschedulingEmail(
+      session_ids,
+      application_id,
+      meeting_id,
+      interview_cancel_id,
+    );
     const filled_body = await fetchTemplate(
       data.recruiter_id,
       data.mail_type,
       data.payload,
     );
     filled_body.companyLogo = data.companyLogo;
+    filled_body.meetingDetails = data.payload.meetingDetails;
     const { emails } = await getEmails();
 
     const emailIdx = emails.findIndex((e) => e === data.mail_type);
