@@ -54,6 +54,8 @@
 }
 
 .cv-list-column-wrapper.header {
+  padding-top: 8px;
+  padding-bottom: 8px;
   background-color: #f8f9f9;
 }
 

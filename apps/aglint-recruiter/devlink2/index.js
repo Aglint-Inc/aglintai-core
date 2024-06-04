@@ -64,6 +64,7 @@ export * from "./BrowseAssessment";
 export * from "./BrowseScreeningPop";
 export * from "./ButtonDanger";
 export * from "./ButtonFilter";
+export * from "./ButtonGhost";
 export * from "./ButtonPrimary";
 export * from "./ButtonSoft";
 export * from "./ButtonSolid";
