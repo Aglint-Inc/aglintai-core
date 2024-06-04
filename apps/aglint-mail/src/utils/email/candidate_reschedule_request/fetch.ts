@@ -38,6 +38,12 @@ export default async function candidateRescheduleRequest(
     throw new Error('candidate and job details are not available');
   }
 
+  interface SessionCancel {
+    other_details: {
+      dateRange: { start: string; end: string };
+    };
+    reason;
+  }
   const {
     data: [session_cancel],
   } = await supabaseAdmin
@@ -49,7 +55,7 @@ export default async function candidateRescheduleRequest(
       dateRange: { start, end },
     },
     reason,
-  }: any = session_cancel;
+  } = session_cancel as unknown as SessionCancel;
 
   const {
     candidates: {
