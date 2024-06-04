@@ -187,6 +187,21 @@ export function filterSchedulingOptionsArray({
           });
         }
 
+        if (filters.isWorkLoad) {
+          allOptions = allOptions
+            .map((option) => {
+              const totalWorkload = option.sessions.reduce(
+                (acc, session) => acc + session.day_load_den,
+                0,
+              );
+              return {
+                ...option,
+                totalWorkload,
+              };
+            })
+            .sort((a, b) => a.totalWorkload - b.totalWorkload);
+        }
+
         let noConflicts: PlanCombinationRespType[] = [];
         let softConflicts: PlanCombinationRespType[] = [];
         let hardConflicts: PlanCombinationRespType[] = [];

@@ -195,7 +195,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                   toast.warning(
                     'No available slots found for the selected preferences.',
                   );
-                  } else {
+                } else {
                   setFilteredSchedulingOptions(combs);
                   setStepScheduling('slot_options');
                 }
@@ -214,7 +214,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
           textPrimaryButton={
             !isDebrief
               ? stepScheduling === 'preference'
-                ? 'Get Combinations'
+                ? 'Continue'
                 : 'Send to Candidate'
               : 'Schedule Now'
           }
