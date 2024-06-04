@@ -3,7 +3,7 @@ import { Stack } from '@mui/material';
 import { memo, useCallback, useMemo } from 'react';
 
 import { CandidateListItem } from '@/devlink2/CandidateListItem';
-import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
+import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 
 import ResumeScore from '../resumeScore';
 import { formatTimeStamp } from '../utils';
@@ -11,7 +11,7 @@ import { formatTimeStamp } from '../utils';
 const ApplicationCard = memo(
   ({ application }: { application: DatabaseView['application_view'] }) => {
     const { checklist, setChecklist, currentApplication } =
-      useJobDashboardStore(
+      useApplicationsStore(
         ({ checklist, setChecklist, currentApplication }) => ({
           checklist,
           setChecklist,

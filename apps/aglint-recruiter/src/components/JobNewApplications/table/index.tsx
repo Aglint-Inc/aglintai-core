@@ -7,12 +7,12 @@ import { ApplicantsListEmpty } from '@/devlink2/ApplicantsListEmpty';
 import { ApplicantsTable } from '@/devlink2/ApplicantsTable';
 import NoApplicants from '@/public/lottie/NoApplicants';
 import { useApplications } from '@/src/context/ApplicationsContext';
-import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
+import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 
 import ApplicantsList from './list';
 
 export const Table = memo(() => {
-  const section = useJobDashboardStore(({ section }) => section);
+  const section = useApplicationsStore(({ section }) => section);
   return (
     <>
       <ApplicantsTable
@@ -31,7 +31,7 @@ const List = memo(() => {
   const {
     job: { count },
   } = useApplications();
-  const section = useJobDashboardStore(({ section }) => section);
+  const section = useApplicationsStore(({ section }) => section);
   const applications = useSectionApplication(section);
   if ((count[section] ?? 0) === 0) return <EmptyList />;
   if (applications.status === 'error') return <>Error</>;
@@ -41,7 +41,7 @@ const List = memo(() => {
 List.displayName = 'List';
 
 const EmptyList = memo(() => {
-  const section = useJobDashboardStore(({ section }) => section);
+  const section = useApplicationsStore(({ section }) => section);
   return (
     <Stack height={'50vh'} justifyContent={'center'}>
       <Stack>

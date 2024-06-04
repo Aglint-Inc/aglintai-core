@@ -5,8 +5,8 @@ import { CircularProgress, Stack } from '@mui/material';
 import { JobDetails } from '@/devlink2/JobDetails';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { useApplications } from '@/src/context/ApplicationsContext';
+import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useJobDetails } from '@/src/context/JobDashboard';
-import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 import NotFoundPage from '@/src/pages/404';
 
 import Loader from '../Common/Loader';
@@ -76,7 +76,7 @@ const SectionCard = ({
   status: DatabaseView['application_view']['status'];
 }) => {
   const { job } = useJobDetails();
-  const { section, setSection } = useJobDashboardStore(
+  const { section, setSection } = useApplicationsStore(
     ({ section, setSection }) => ({
       section,
       setSection,
