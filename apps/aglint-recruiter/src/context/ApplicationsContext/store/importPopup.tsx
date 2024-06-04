@@ -1,26 +1,19 @@
 import { CreateSlice } from '.';
 
-type ImportPopup = {
-  open: boolean;
-};
-
 export type ImportPopupSlice = {
-  importPopup: ImportPopup;
+  importPopup: boolean;
   // eslint-disable-next-line no-unused-vars
-  setImportPopup: (importPopup: Partial<ImportPopup>) => void;
+  setImportPopup: (importPopup: boolean) => void;
   resetImportPopup: () => void;
 };
 
-const initialImportPopup: ImportPopup = {
-  open: false,
-};
+const initialImportPopup: boolean = false;
 
 export const createImportPopupSlice: CreateSlice<ImportPopupSlice> = (set) => ({
-  importPopup: structuredClone(initialImportPopup),
+  importPopup: initialImportPopup,
   setImportPopup: (importPopup) =>
-    set((state) => ({
-      importPopup: { ...state.importPopup, ...importPopup },
-    })),
-  resetImportPopup: () =>
-    set({ importPopup: structuredClone(initialImportPopup) }),
+    set({
+      importPopup,
+    }),
+  resetImportPopup: () => set({ importPopup: initialImportPopup }),
 });

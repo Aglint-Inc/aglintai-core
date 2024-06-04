@@ -2,6 +2,7 @@ import { create, StateCreator } from 'zustand';
 
 import { ChecklistSlice, createChecklistSlice } from './checklist';
 import { createSectionSlice, SectionSlice } from './currentSection';
+import { createFiltersSlice, FilterSortSlice } from './filters';
 import { createImportPopupSlice, ImportPopupSlice } from './importPopup';
 import {
   createCurrentApplicationSlice,
@@ -11,13 +12,15 @@ import {
 type SlicesType = ImportPopupSlice &
   SectionSlice &
   ChecklistSlice &
-  CurrentApplicationSlice;
+  CurrentApplicationSlice &
+  FilterSortSlice;
 
 const Slices = {
   createChecklistSlice,
   createSectionSlice,
   createImportPopupSlice,
   createCurrentApplicationSlice,
+  createFiltersSlice,
 };
 
 export type CreateSlice<
