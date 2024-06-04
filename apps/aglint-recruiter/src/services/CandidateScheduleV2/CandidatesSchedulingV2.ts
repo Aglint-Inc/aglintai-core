@@ -549,7 +549,7 @@ export class CandidatesSchedulingV2 {
         }
 
         if (
-          load_reached_ints.length > 0 &&
+          load_reached_ints.some((curr_sess) => curr_sess.inters.length > 0) &&
           !this.api_options.include_conflicting_slots.interviewers_load
         ) {
           return [];
