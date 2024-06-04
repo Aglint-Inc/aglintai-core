@@ -11,6 +11,7 @@ import {
 } from '@react-email/components';
 import { Parser } from 'html-to-react';
 import * as React from 'react';
+import { aglintLogo } from '../utils/assets/common';
 
 interface ConfirmMailToOrganizerType {
   body?: string;
@@ -97,7 +98,7 @@ export const ConfirmMailToOrganizer = ({
             <Container className="p-[20px] pt-[40px] bg-white">
               <Img
                 alt="Company logo"
-                className="w-[120px] mb-[10px]"
+                className="w-[80px] mb-[10px]"
                 src={companyLogo}
               />
 
@@ -115,9 +116,9 @@ export const ConfirmMailToOrganizer = ({
             <Text className="flex items-center text-[10px]  mx-auto w-fit text-gray-500">
               Powered By
               <Img
-                alt="Notion's Logo"
-                className="w-[70px] mx-2 inline "
-                src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png"
+                alt="Aglint Logo"
+                className="w-[70px] mx-2 inline-block"
+                src={aglintLogo}
               />
               @ 2024 Aglint Inc. All Right Reserved
             </Text>
