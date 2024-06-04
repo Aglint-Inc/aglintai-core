@@ -17,6 +17,7 @@ export const scheduling_options_schema = z.object({
       day_off: z.boolean().default(false),
       holiday: z.boolean().default(false),
       out_of_working_hrs: z.boolean().default(false),
+      day_passed: z.boolean().default(false),
     })
     .default({}), // Ensure defaults for nested object
 });

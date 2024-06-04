@@ -98,6 +98,7 @@ export class CandidatesSchedulingV2 {
           _api_options.include_conflicting_slots.show_soft_conflicts,
         out_of_working_hrs:
           _api_options.include_conflicting_slots.out_of_working_hrs,
+        day_passed: _api_options.include_conflicting_slots.day_passed,
       },
     };
     this.intervs_details_map = new Map();
@@ -928,6 +929,29 @@ export class CandidatesSchedulingV2 {
         }
       }
 
+      const curr_time = ScheduleUtils.getNearestCurrTime(
+        this.api_payload.candidate_tz,
+      );
+      if (
+        curr_time.isSameOrAfter(
+          userTzDayjs(upd_sess_slot.start_time).tz(
+            this.api_payload.candidate_tz,
+          ),
+          'day',
+        )
+      ) {
+        const unique_conflicts = new Set<ConflictReason['conflict_type']>();
+
+        upd_sess_slot.ints_conflicts.forEach((int) => {
+          for (let intr of int.conflict_reasons) {
+            unique_conflicts.add(intr.conflict_type);
+          }
+        });
+        upd_sess_slot.is_conflict = true;
+        upd_sess_slot.conflict_types = [...Array.from(unique_conflicts)];
+        upd_sess_slot.conflict_types.push('day_passed');
+      }
+
       return upd_sess_slot;
     };
     const getSessionsAvailability = (
@@ -948,6 +972,7 @@ export class CandidatesSchedulingV2 {
         end_time: curr_sess_end_time.format(),
         ints_conflicts: [],
         is_conflict: false,
+        conflict_types: [],
       };
 
       let slot_with_conflicts = verifyForConflicts(session_slot, session_idx);
@@ -1013,11 +1038,18 @@ export class CandidatesSchedulingV2 {
         'hours',
         this.api_options.cand_end_time,
       );
+      // TODO: flag
       let cand_time = cand_start_time;
-      if (curr_time.isAfter(cand_time, 'day')) {
+      if (
+        !this.api_options.include_conflicting_slots.day_passed &&
+        curr_time.isAfter(cand_time, 'day')
+      ) {
         return [];
       }
-      if (curr_time.isSame(cand_time, 'day')) {
+      if (
+        !this.api_options.include_conflicting_slots.day_passed &&
+        curr_time.isSame(cand_time, 'day')
+      ) {
         cand_time = curr_time;
       }
 
