@@ -13,7 +13,7 @@ const ApplicationProvider = (props: React.PropsWithChildren) => {
     throw Error(
       'ApplicationProvider used in an invalid path. Cannot find job_id in pathname',
     );
-  const value = useApplicationsActions({ job_id });
+  const value = useApplicationsActions();
   return (
     <ApplicationsContext.Provider value={value}>
       {props.children ?? <></>}

@@ -4,6 +4,7 @@ import { CircularProgress, Stack } from '@mui/material';
 
 import { JobDetails } from '@/devlink2/JobDetails';
 import { NewTabPill } from '@/devlink3/NewTabPill';
+import { useApplications } from '@/src/context/ApplicationsContext';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 import NotFoundPage from '@/src/pages/404';
@@ -15,8 +16,8 @@ import { BreadCrumbs } from './layout';
 import { Table } from './table';
 
 const ApplicationsDashboard = () => {
-  const { job, initialLoad } = useJobDetails();
-  return initialLoad ? (
+  const { job, initialJobLoad } = useApplications();
+  return initialJobLoad ? (
     job !== undefined ? (
       <ApplicationsComponent />
     ) : (

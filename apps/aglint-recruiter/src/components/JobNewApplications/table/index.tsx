@@ -7,7 +7,6 @@ import { ApplicantsListEmpty } from '@/devlink2/ApplicantsListEmpty';
 import { ApplicantsTable } from '@/devlink2/ApplicantsTable';
 import NoApplicants from '@/public/lottie/NoApplicants';
 import { useApplications } from '@/src/context/ApplicationsContext';
-import { useJobDetails } from '@/src/context/JobDashboard';
 import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 
 import ApplicantsList from './list';
@@ -31,10 +30,12 @@ Table.displayName = 'Table';
 const List = memo(() => {
   const {
     job: { count },
-  } = useJobDetails();
+  } = useApplications();
   const section = useJobDashboardStore(({ section }) => section);
   const applications = useSectionApplication(section);
   if ((count[section] ?? 0) === 0) return <EmptyList />;
+  if (applications.status === 'error') return <>Error</>;
+  if (applications.status === 'pending') return <>Loading...</>;
   return <ApplicantsList key={section} applications={applications} />;
 });
 List.displayName = 'List';

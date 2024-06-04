@@ -15,7 +15,7 @@ export const applicationsQueries = {
     infiniteQueryOptions({
       queryKey: [...applicationsQueries.all({ job_id }).queryKey, filters],
       initialPageParam: { index: 0, job_id, ...filters },
-      enabled: !!count,
+      enabled: !!job_id && !!count,
       refetchOnWindowFocus: false,
       maxPages: Math.trunc(count / ROWS) + (count % ROWS ? 1 : 0) + 1,
       placeholderData: keepPreviousData,

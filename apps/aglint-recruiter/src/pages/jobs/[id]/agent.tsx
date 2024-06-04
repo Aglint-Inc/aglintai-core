@@ -5,7 +5,7 @@ import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
 import JobAgent from '@/src/components/Agent/JobAgent';
 import Seo from '@/src/components/Common/Seo';
-import JobApplicationProvider from '@/src/context/JobApplicationsContext';
+import { ApplicationProvider } from '@/src/context/ApplicationsContext';
 import { JobAssistantProvider } from '@/src/context/JobAssistant';
 import JobDashboardProvider, {
   useJobDetails,
@@ -29,7 +29,7 @@ JobAgentPage.privateProvider = function privateProvider(page) {
   return (
     <JobDashboardProvider>
       <JobInterviewPlanProvider>
-        <JobApplicationProvider>{page}</JobApplicationProvider>
+        <ApplicationProvider>{page}</ApplicationProvider>
       </JobInterviewPlanProvider>
     </JobDashboardProvider>
   );

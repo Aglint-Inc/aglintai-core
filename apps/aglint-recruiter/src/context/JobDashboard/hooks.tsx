@@ -36,6 +36,7 @@ import { useJobDashboardStore } from './store';
 const useProviderJobDashboardActions = (job_id: string = undefined) => {
   const { recruiter } = useAuthDetails();
   const router = useRouter();
+
   const {
     jobs,
     initialLoad: jobLoad,
@@ -50,6 +51,7 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
         : undefined,
     [initialJobLoad, jobs.status, jobs.data, jobId],
   );
+
   const assessments = useAllAssessments();
   const templates = useAllAssessmentTemplates();
   const assessmentData = assessments?.data

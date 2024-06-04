@@ -2,14 +2,14 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import { Breadcrum } from '@/devlink2/Breadcrum';
-import { useJobDetails } from '@/src/context/JobDashboard';
+import { useApplications } from '@/src/context/ApplicationsContext';
 import ROUTES from '@/src/utils/routing/routes';
 
 import { capitalize } from '../JobApplicationsDashboard/utils';
 
 export const BreadCrumbs = () => {
   const { push } = useRouter();
-  const { job } = useJobDetails();
+  const { job } = useApplications();
   return (
     <>
       <Breadcrum

@@ -11,7 +11,7 @@ export type SectionSlice = {
   resetSection: () => void;
 };
 
-const initialSection = 'new' as Section;
+const initialSection = 'qualified' as Section;
 
 export const createSectionSlice: CreateSlice<SectionSlice> = (set) => ({
   section: initialSection,

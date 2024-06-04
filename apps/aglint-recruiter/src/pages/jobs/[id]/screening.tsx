@@ -1,7 +1,7 @@
 import Seo from '@components/Common/Seo';
 
 import ScreeningDashboardComp from '@/src/components/NewScreening/JobDashboard';
-import JobApplicationProvider from '@/src/context/JobApplicationsContext';
+import { ApplicationProvider } from '@/src/context/ApplicationsContext';
 import JobDashboardProvider from '@/src/context/JobDashboard';
 import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
 
@@ -23,7 +23,7 @@ ScreeningPage.privateProvider = function privateProvider(page) {
   return (
     <JobDashboardProvider>
       <JobInterviewPlanProvider>
-        <JobApplicationProvider> {page}</JobApplicationProvider>
+        <ApplicationProvider>{page}</ApplicationProvider>
       </JobInterviewPlanProvider>
     </JobDashboardProvider>
   );

@@ -1,7 +1,7 @@
 import Seo from '@components/Common/Seo';
 
 import JobHiringTeamDashboard from '@/src/components/JobHiringTeam';
-import JobApplicationProvider from '@/src/context/JobApplicationsContext';
+import { ApplicationProvider } from '@/src/context/ApplicationsContext';
 import JobDashboardProvider from '@/src/context/JobDashboard';
 import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
 
@@ -21,7 +21,7 @@ JobHiringTeamPage.privateProvider = (page) => {
   return (
     <JobDashboardProvider>
       <JobInterviewPlanProvider>
-        <JobApplicationProvider>{page}</JobApplicationProvider>
+        <ApplicationProvider>{page}</ApplicationProvider>
       </JobInterviewPlanProvider>
     </JobDashboardProvider>
   );
