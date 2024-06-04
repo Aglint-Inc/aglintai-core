@@ -13,7 +13,7 @@ import {
   SessionsCombType,
   TimeDurationType,
 } from '@aglint/shared-types';
-import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
+import { ScheduleUtils, SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { Dayjs } from 'dayjs';
 import { cloneDeep } from 'lodash';
 import { nanoid } from 'nanoid';
@@ -34,7 +34,6 @@ import { findEachInterviewerFreeTimes } from './utils/findEachInterFreeTime';
 import { calcIntsCombsForEachSessionRound } from './utils/interviewersCombsForSession';
 import { isIntervLoadPassed } from './utils/isInterviewerLoadPassed';
 import { planCombineSlots } from './utils/planCombine';
-import { ScheduleUtils } from './utils/ScheduleUtils';
 import {
   convertTimeDurStrToDayjsChunk,
   isTimeChunksEnclosed,

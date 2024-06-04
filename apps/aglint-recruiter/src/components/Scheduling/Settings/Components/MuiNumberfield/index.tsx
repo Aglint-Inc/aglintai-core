@@ -26,7 +26,6 @@ function MuiNumberfield({
   }
 
   const debouncedChange = useCallback(
-    // eslint-disable-next-line react-compiler/react-compiler
     debounce((newValue) => {
       handleSelect(newValue);
     }, 500),
