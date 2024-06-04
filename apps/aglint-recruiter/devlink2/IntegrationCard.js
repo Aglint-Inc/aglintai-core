@@ -3,6 +3,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { Text } from "./Text";
+import { ButtonSoft } from "./ButtonSoft";
 import * as _utils from "./utils";
 import _styles from "./IntegrationCard.module.css";
 
@@ -82,14 +83,20 @@ export function IntegrationCard({
         {slotButton ??
           (isComingSoon ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "coming_soon_button")}
+              id={_utils.cx(
+                _styles,
+                "w-node-_873e575d-affc-c17c-9a00-983c37c523b3-c20717d8"
+              )}
               tag="div"
             >
-              <_Builtin.HtmlEmbed
-                className={_utils.cx(_styles, "embed_flex")}
-                value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewbox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6.125%205.5V7H9.875V5.5C9.85938%204.96875%209.67969%204.52344%209.33594%204.16406C8.97656%203.82031%208.53125%203.64063%208%203.625C7.46875%203.64063%207.02344%203.82031%206.66406%204.16406C6.32031%204.52344%206.14062%204.96875%206.125%205.5ZM5%207V5.5C5.01562%204.65625%205.30469%203.94531%205.86719%203.36719C6.44531%202.80469%207.15625%202.51563%208%202.5C8.84375%202.51563%209.55469%202.80469%2010.1328%203.36719C10.6953%203.94531%2010.9844%204.65625%2011%205.5V7H11.75C12.1719%207.01562%2012.5234%207.16406%2012.8047%207.44531C13.0859%207.72656%2013.2344%208.07812%2013.25%208.5V13C13.2344%2013.4219%2013.0859%2013.7734%2012.8047%2014.0547C12.5234%2014.3359%2012.1719%2014.4844%2011.75%2014.5H4.25C3.82812%2014.4844%203.47656%2014.3359%203.19531%2014.0547C2.91406%2013.7734%202.76562%2013.4219%202.75%2013V8.5C2.76562%208.07812%202.91406%207.72656%203.19531%207.44531C3.47656%207.16406%203.82812%207.01562%204.25%207H5ZM3.875%208.5V13C3.89062%2013.2344%204.01562%2013.3594%204.25%2013.375H11.75C11.9844%2013.3594%2012.1094%2013.2344%2012.125%2013V8.5C12.1094%208.26562%2011.9844%208.14062%2011.75%208.125H4.25C4.01562%208.14062%203.89062%208.26562%203.875%208.5Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+              <ButtonSoft
+                textButton="Coming Soon"
+                color="neutral"
+                size="2"
+                isDisabled={true}
+                isLeftIcon={false}
+                isRightIcon={false}
               />
-              <_Builtin.Block tag="div">{"Coming Soon"}</_Builtin.Block>
             </_Builtin.Block>
           ) : null)}
       </_Builtin.Block>

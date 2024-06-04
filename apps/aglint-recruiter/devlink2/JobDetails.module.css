@@ -111,10 +111,6 @@
   color: var(--kale-600\<deleted\|variable-fc9c3cf7-09bb-7364-ed8d-95d89e6d8422\>);
 }
 
-.text-color-black {
-  color: var(--black-9b0fc3fc);
-}
-
 .text-yellow-800 {
   color: hsla(23.07692307692308, 68.42%, 26.08%, 1.00);
 }
@@ -282,6 +278,10 @@
   margin-left: 2px;
 }
 
+.text-color-black {
+  color: var(--black-9b0fc3fc);
+}
+
 .text-yellow-700 {
   color: hsla(26.174496644295296, 75.63%, 38.63%, 1.00);
 }
@@ -323,22 +323,12 @@
   }
 }
 
-@media screen and (max-width: 767px) {
-  .fw-semibold.text-lg.text-yellow-600.mobile-14 {
-    font-size: 14px;
-  }
-}
-
 .fw-semibold.text-grey-400 {
   color: #c2c8cc;
 }
 
 .text-blue-500 {
   color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
-}
-
-.text-color-white {
-  color: white;
 }
 
 .fw-semibold.relative_2 {
@@ -417,11 +407,6 @@
   bottom: auto;
 
   cursor: pointer;
-}
-
-.icons.lottie {
-  width: 16px;
-  height: 16px;
 }
 
 .job-desc-warn-wrap {
@@ -666,10 +651,6 @@
   grid-row-gap: 8px;
 }
 
-.cvs-header-copy-block.clickable.padding-medium {
-  padding: 10px 16px;
-}
-
 .cvs-header-close-button {
   display: flex;
   margin-left: auto;
@@ -718,12 +699,6 @@
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-}
-
-@media screen and (max-width: 767px) {
-  .text-gray-600.mobile-12 {
-    font-size: 12px;
-  }
 }
 
 .text-no-wrap {
@@ -851,11 +826,6 @@
 
 .ps-analysis-text {
   padding-left: 14px;
-}
-
-.ps-analysis-text.inline-block {
-  display: inline-block;
-  padding-left: 0px;
 }
 
 .cvs-score-detail-btn {
