@@ -102,3 +102,8 @@ export async function POST(req: Request) {
     }
   }
 }
+
+// {
+//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637",
+//   "request_id":"1122333"
+// }
