@@ -1,5 +1,5 @@
-import { DatabaseTable } from "../index.schema.types";
-import { TableType } from "./index.types";
+import type { DatabaseTable } from "../index.schema.types";
+import type { TableType } from "./index.types";
 
 export type CustomApplicationLogs = TableType<
   "application_logs",

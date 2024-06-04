@@ -1,5 +1,9 @@
-import { EmailTempPath, EmailTemplateFields, EmailTemplateType } from "../..";
-import { CustomMembersMeta } from "../common.types";
+import type {
+  EmailTempPath,
+  EmailTemplateFields,
+  EmailTemplateType,
+} from "../..";
+import type { CustomMembersMeta } from "../common.types";
 
 export type CustomSchedulingSettings = {
   isAutomaticTimezone: boolean;

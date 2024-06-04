@@ -8,3 +8,12 @@ export type CustomMembersMeta = {
       >
     | "previous_interviewers"]: boolean;
 };
+
+export type CustomApplicationBadges = {
+  skills: number;
+  schools: number;
+  positions: number;
+  leadership: number;
+  jobStability: number;
+  careerGrowth: number;
+};

@@ -1,5 +1,5 @@
-import { CustomEmailTemplate, CustomSchedulingSettings } from "./common.types";
-import { TableType } from "./index.types";
+import type { CustomEmailTemplate } from "./common.types";
+import type { TableType } from "./index.types";
 
 export type CustomWorkflowAction = TableType<
   "workflow_action",

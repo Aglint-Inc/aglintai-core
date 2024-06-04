@@ -1,8 +1,8 @@
-import { Functions } from "./functions/index.types";
-import { Database } from "./schema.types";
-import { Tables } from "./tables/index.types";
-import { Type } from "./utils.types";
-import { Views } from "./views/index.types";
+import type { Functions } from "./functions/index.types";
+import type { Database } from "./schema.types";
+import type { Tables } from "./tables/index.types";
+import type { Type } from "./utils.types";
+import type { Views } from "./views/index.types";
 
 export type DB = Type<
   Database,

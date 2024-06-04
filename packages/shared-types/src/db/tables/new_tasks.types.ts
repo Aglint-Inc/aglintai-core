@@ -1,5 +1,5 @@
-import { DatabaseEnums } from "../index.schema.types";
-import { TableType } from "./index.types";
+import type { DatabaseEnums } from "../index.schema.types";
+import type { TableType } from "./index.types";
 
 export type CustomNewTasks = TableType<
   "new_tasks",
