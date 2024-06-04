@@ -4,6 +4,7 @@ import {
   APIOptions,
   CalConflictType,
   ConflictReason,
+  DatabaseTable,
   InterviewSessionApiRespType,
   PauseJson,
   PlanCombinationRespType,
@@ -202,6 +203,70 @@ export class CandidatesSchedulingV2 {
     return findAllDayPlans();
   }
 
+  public verifyIntSelectedSlots = (
+    date_range_slots: PlanCombinationRespType[][][],
+  ) => {
+    for (const curr_int_day_slots of date_range_slots) {
+      for (const curr_round_slots of curr_int_day_slots) {
+        const cached_free_time = new Map<string, TimeDurationType[]>();
+
+        for (const curr_slot of curr_round_slots) {
+          const cand_date = userTzDayjs(curr_slot.sessions[0].start_time).tz(
+            this.api_payload.candidate_tz,
+          );
+          const { verifyCurrDaySlot } = this.calcMeetingCombinsForPlan(
+            cand_date,
+            curr_slot.sessions,
+            cached_free_time,
+          );
+          verifyCurrDaySlot(curr_slot.sessions);
+        }
+      }
+    }
+  };
+
+  public getCandidateSelectedSlots = (
+    cand_selected_slots: DatabaseTable['candidate_request_availability']['slots'],
+  ) => {
+    const session_rounds = this.getSessionRounds();
+    let ints_combs_for_each_round = calcIntsCombsForEachSessionRound(
+      session_rounds,
+      this.api_options.make_training_optional,
+    );
+    let all_combs: PlanCombinationRespType[][][] = [];
+    for (
+      let curr_round_idx = 0;
+      curr_round_idx < session_rounds.length;
+      ++curr_round_idx
+    ) {
+      const current_round_int_combs = ints_combs_for_each_round[curr_round_idx];
+      const current_round_combs: PlanCombinationRespType[][] = [];
+      for (let curr_date_slots of cand_selected_slots[curr_round_idx].dates) {
+        const cand_date = userTzDayjs(curr_date_slots.curr_day).tz(
+          this.api_payload.candidate_tz,
+        );
+
+        const curr_day_slots = this.findFixedBreakSessionCombs(
+          current_round_int_combs,
+          cand_date,
+        );
+        const curr_day_combs: PlanCombinationRespType[] = [];
+        curr_date_slots.slots.forEach((slot_time) => {
+          const comb = curr_day_slots.find(
+            (c) => c.sessions[0].start_time === slot_time.startTime,
+          );
+          if (comb) {
+            curr_day_combs.push({ ...comb });
+          }
+        });
+        current_round_combs.push([...curr_day_combs]);
+      }
+
+      all_combs.push([...current_round_combs]);
+    }
+    return all_combs;
+  };
+
   public async ignoreTrainee() {
     this.db_details.ses_with_ints = this.db_details.ses_with_ints.map((s) => ({
       ...s,
@@ -228,87 +293,6 @@ export class CandidatesSchedulingV2 {
     return session_rounds;
   }
 
-  public findMultiDayComb() {
-    let session_rounds = this.getSessionRounds();
-    let ints_combs_for_each_round = calcIntsCombsForEachSessionRound(
-      session_rounds,
-      this.api_options.make_training_optional,
-    );
-    let dayjs_start_date: Dayjs = this.schedule_dates.user_start_date_js;
-    let dayjs_end_date: Dayjs = this.schedule_dates.user_end_date_js;
-
-    const findMultiDayPlanUtil = (
-      final_combs: PlanCombinationRespType[],
-      curr_date: Dayjs,
-      curr_round_idx: number,
-    ): PlanCombinationRespType[] => {
-      if (curr_round_idx === session_rounds.length) {
-        return final_combs;
-      }
-
-      if (userTzDayjs(curr_date).isAfter(dayjs_end_date, 'date')) {
-        return [];
-      }
-
-      let combs: PlanCombinationRespType[] = [];
-      // for multiday plan find the immmediade next day slots
-      while (
-        combs.length === 0 &&
-        curr_date.isSameOrBefore(dayjs_end_date, 'day')
-      ) {
-        combs = this.findFixedBreakSessionCombs(
-          ints_combs_for_each_round[curr_round_idx],
-          curr_date.startOf('day'),
-        );
-        if (combs.length === 0) {
-          if (curr_round_idx === 0) {
-            break;
-          } else {
-            curr_date = curr_date.add(1, 'day');
-          }
-        }
-      }
-      if (combs.length === 0) {
-        return [];
-      }
-      if (final_combs.length === 0) {
-        final_combs = cloneDeep(combs);
-      } else {
-        const temp_combs: PlanCombinationRespType[] = [];
-        const next_day_combs: PlanCombinationRespType[] = cloneDeep(combs);
-        for (let final_slot of final_combs) {
-          for (let nextdaySlot of next_day_combs) {
-            temp_combs.push({
-              plan_comb_id: nanoid(),
-              sessions: [...final_slot.sessions, ...nextdaySlot.sessions],
-            });
-          }
-        }
-        final_combs = cloneDeep(temp_combs);
-      }
-
-      const days_gap = Math.floor(
-        session_rounds[curr_round_idx][
-          session_rounds[curr_round_idx].length - 1
-        ].break_duration / SINGLE_DAY_TIME,
-      );
-
-      const next_day = curr_date.add(days_gap, 'day');
-      return findMultiDayPlanUtil(final_combs, next_day, ++curr_round_idx);
-    };
-
-    let curr_date = dayjs_start_date;
-    let all_combs: PlanCombinationRespType[] = [];
-    while (curr_date.isSameOrBefore(dayjs_end_date)) {
-      let combs = findMultiDayPlanUtil([], curr_date, 0);
-      if (combs.length > 0) {
-        all_combs = [...all_combs, ...combs];
-      }
-      curr_date = curr_date.add(1, 'day');
-    }
-    return all_combs;
-  }
-
   /**
   @returns combination of slots in a paricular day
   @param interview_sessions - particualar day sessions with fixed breaks
@@ -316,17 +300,21 @@ export class CandidatesSchedulingV2 {
 **/
   private findFixedBreakSessionCombs = (
     interviewrs_sesn_comb: InterviewSessionApiRespType[][],
-    currDay: Dayjs, // cand time zone
+    curr_day: Dayjs, // cand time zone
   ) => {
     const cached_free_time = new Map<string, TimeDurationType[]>();
     let all_schedule_combs: PlanCombinationRespType[] = [];
-    const curr_day_str = currDay.startOf('day').format();
+
     const exploreSessionCombs = (
       current_comb: InterviewSessionApiRespType[],
       session_idx,
     ) => {
       if (session_idx === interviewrs_sesn_comb.length) {
-        const combs = calcMeetingCombinsForPlan(current_comb);
+        const combs = this.calcMeetingCombinsForPlan(
+          curr_day,
+          current_comb,
+          cached_free_time,
+        ).generateSlotsForCurrDay();
         all_schedule_combs = [...all_schedule_combs, ...combs];
         return;
       }
@@ -335,598 +323,6 @@ export class CandidatesSchedulingV2 {
         exploreSessionCombs(current_comb, session_idx + 1);
         current_comb.pop();
       }
-    };
-
-    /**
-     * @param plan_comb single interview plan with assigned interviewers
-     * @returns all possible slots for that day
-     */
-    const calcMeetingCombinsForPlan = (
-      plan_comb: InterviewSessionApiRespType[],
-    ) => {
-      // main variable
-      const schedule_combs: PlanCombinationRespType[] = [];
-
-      const getInterviewersCommonTime = (
-        curr_session: InterviewSessionApiRespType,
-      ) => {
-        const all_int_attendees = [
-          ...curr_session.qualifiedIntervs,
-          ...curr_session.trainingIntervs,
-        ];
-        let map_key: string[] = [
-          curr_session.session_id,
-          ...all_int_attendees.map((s) => s.user_id),
-        ];
-        map_key = map_key.sort();
-        if (cached_free_time.has(map_key.join('_'))) {
-          return cached_free_time.get(map_key.join('_'));
-        }
-
-        const common_time_range = this.findCommonTimeRange(
-          all_int_attendees.map((s) => {
-            const curr_day_free_times = this.intervs_details_map.get(s.user_id)
-              .freeTimes[curr_day_str];
-            return {
-              inter_id: s.user_id,
-              time_ranges: curr_day_free_times, //TODO: where is free time
-            };
-          }),
-        );
-        cached_free_time.set(map_key.join('_'), common_time_range);
-        return common_time_range;
-      };
-
-      const cacheCurrPlanCalc = () => {
-        const indef_paused_inters: {
-          session_id: string;
-          inters: (Pick<SessionInterviewerApiRespType, 'user_id'> & {
-            pause_json: PauseJson;
-          })[];
-        }[] = [];
-        const curr_day_paused_inters: {
-          session_id: string;
-          inters: (Pick<SessionInterviewerApiRespType, 'user_id'> & {
-            pause_json: PauseJson;
-          })[];
-        }[] = [];
-        const cal_disc_inters: {
-          session_id: string;
-          inters: Pick<SessionInterviewerApiRespType, 'user_id'>[];
-        }[] = [];
-        const load_reached_ints: {
-          session_id: string;
-          inters: (Pick<SessionInterviewerApiRespType, 'user_id'> & {
-            type: CalConflictType;
-          })[];
-        }[] = [];
-        const session_ints_common_time: {
-          session_id: string;
-          common_time: TimeDurationType[];
-        }[] = [];
-
-        let slot_week_load_density = 0;
-        let slot_day_load_density = 0;
-
-        for (let sess_idx = 0; sess_idx < plan_comb.length; ++sess_idx) {
-          const curr_sess = plan_comb[sess_idx];
-          const session_attendees: SessionInterviewerApiRespType[] = [
-            ...curr_sess.qualifiedIntervs,
-            ...curr_sess.trainingIntervs,
-          ];
-          indef_paused_inters.push({
-            session_id: curr_sess.session_id,
-            inters: [],
-          });
-          curr_day_paused_inters.push({
-            session_id: curr_sess.session_id,
-            inters: [],
-          });
-          cal_disc_inters.push({
-            session_id: curr_sess.session_id,
-            inters: [],
-          });
-          load_reached_ints.push({
-            session_id: curr_sess.session_id,
-            inters: [],
-          });
-          const sesn_int_common_time = getInterviewersCommonTime(curr_sess);
-          session_ints_common_time.push({
-            session_id: curr_sess.session_id,
-            common_time: sesn_int_common_time,
-          });
-          let cnt_qualified_ints = 0;
-
-          session_attendees.forEach((attendee) => {
-            const interviewer_pause_json = this.getIntPauseJson(
-              curr_sess.session_id,
-              attendee.user_id,
-            );
-            if (
-              !this.intervs_details_map.get(attendee.user_id)
-                .isCalenderConnected
-            ) {
-              cal_disc_inters[sess_idx].inters.push({
-                ...attendee,
-              });
-            }
-            if (interviewer_pause_json) {
-              if (interviewer_pause_json.isManual) {
-                indef_paused_inters[sess_idx].inters.push({
-                  ...attendee,
-                  pause_json: interviewer_pause_json,
-                });
-              } else {
-                const last_paused_date = this.getTimeIntTimeZone(
-                  interviewer_pause_json.end_date,
-                  curr_sess.session_id,
-                  attendee.user_id,
-                );
-                if (
-                  isTimeChunksOverLapps(
-                    {
-                      startTime: last_paused_date
-                        .startOf('day')
-                        .tz(this.api_payload.candidate_tz),
-                      endTime: last_paused_date
-                        .endOf('day')
-                        .tz(this.api_payload.candidate_tz),
-                    },
-                    {
-                      startTime:
-                        this.getTimeInCandTimeZone(currDay).startOf('day'),
-                      endTime: this.getTimeInCandTimeZone(currDay.endOf('day')),
-                    },
-                  )
-                ) {
-                  curr_day_paused_inters[sess_idx].inters.push({
-                    ...attendee,
-                    pause_json: interviewer_pause_json,
-                  });
-                }
-              }
-            }
-
-            if (attendee.training_type === 'qualified') {
-              cnt_qualified_ints++;
-              const { is_passed, type, day_load_density, week_load_density } =
-                isIntervLoadPassed(
-                  currDay,
-                  this.db_details,
-                  attendee.user_id,
-                  this.intervs_details_map.get(attendee.user_id)
-                    .int_schedule_setting,
-                  plan_comb,
-                );
-
-              slot_day_load_density += day_load_density;
-              slot_week_load_density += week_load_density;
-
-              if (!is_passed) {
-                load_reached_ints[sess_idx].inters.push({
-                  user_id: attendee.user_id,
-                  type,
-                });
-              }
-            }
-          });
-          slot_day_load_density = slot_day_load_density / cnt_qualified_ints;
-          slot_week_load_density = slot_week_load_density / cnt_qualified_ints;
-        }
-        return {
-          indef_paused_inters,
-          curr_day_paused_inters,
-          cal_disc_inters,
-          session_ints_common_time,
-          load_reached_ints,
-          slot_day_load_density,
-          slot_week_load_density,
-        };
-      };
-
-      const calcScheduleCombs = () => {
-        const {
-          cal_disc_inters,
-          curr_day_paused_inters,
-          indef_paused_inters,
-          session_ints_common_time,
-          load_reached_ints,
-          slot_day_load_density,
-          slot_week_load_density,
-        } = cacheCurrPlanCalc();
-
-        if (
-          cal_disc_inters.some((s) => s.inters.length > 0) &&
-          !this.api_options.include_conflicting_slots.calender_not_connected
-        ) {
-          return [];
-        }
-        if (
-          indef_paused_inters.some((s) => s.inters.length > 0) &&
-          !this.api_options.include_conflicting_slots.interviewer_pause
-        ) {
-          return [];
-        }
-
-        if (
-          load_reached_ints.some((curr_sess) => curr_sess.inters.length > 0) &&
-          !this.api_options.include_conflicting_slots.interviewers_load
-        ) {
-          return [];
-        }
-
-        /**
-         * checking  conflicts
-         * soft conflicts with key words,
-         * hard conflicts any meeting,
-         * out of office,
-         * interviewer paused
-         * calender disconnected
-         * interviewer load  TODO: later
-         * @param sess_slot
-         * @returns
-         */
-        const verifyForConflicts = (
-          sesn_slot: SessionCombinationRespType,
-          sessn_idx: number,
-        ) => {
-          const upd_sess_slot: SessionCombinationRespType = { ...sesn_slot };
-          const curr_sess_cal_dic_ints = cal_disc_inters[sessn_idx].inters;
-          const curr_sess_indef_paused_ints =
-            indef_paused_inters[sessn_idx].inters;
-          const curr_sess_curr_day_paused_ints =
-            curr_day_paused_inters[sessn_idx].inters;
-          const curr_sess_common_time = session_ints_common_time[sessn_idx];
-          upd_sess_slot.day_load_den = slot_day_load_density;
-          upd_sess_slot.week_load_den = slot_week_load_density;
-          const session_attendees: SessionInterviewerApiRespType[] = [
-            ...upd_sess_slot.qualifiedIntervs,
-            ...upd_sess_slot.trainingIntervs,
-          ];
-          const is_all_ints_available = curr_sess_common_time.common_time.some(
-            (t) => {
-              return isTimeChunksEnclosed(
-                {
-                  startTime: this.getTimeInCandTimeZone(t.startTime),
-                  endTime: this.getTimeInCandTimeZone(t.endTime),
-                },
-                {
-                  startTime: this.getTimeInCandTimeZone(
-                    upd_sess_slot.start_time,
-                  ),
-                  endTime: this.getTimeInCandTimeZone(upd_sess_slot.end_time),
-                },
-              );
-            },
-          );
-          const is_load_checked = load_reached_ints.length === 0;
-          if (is_all_ints_available && is_load_checked) {
-            upd_sess_slot.is_conflict = false;
-            return upd_sess_slot;
-          } else {
-            upd_sess_slot.is_conflict = true;
-          }
-          for (const attendee of session_attendees) {
-            const attendee_details = this.intervs_details_map.get(
-              attendee.user_id,
-            );
-            const int_conflic_reasons: ConflictReason[] = [];
-            // cal disconnected conflict
-            if (
-              curr_sess_cal_dic_ints.find((s) => s.user_id === attendee.user_id)
-            ) {
-              int_conflic_reasons.push({
-                conflict_type: 'calender_diconnected',
-                conflict_event: null,
-                start_time: null,
-                end_time: null,
-              });
-            }
-            const attendee_load = load_reached_ints[sessn_idx].inters.find(
-              (s) => s.user_id === attendee.user_id,
-            );
-            if (attendee_load) {
-              int_conflic_reasons.push({
-                conflict_type: attendee_load.type,
-                conflict_event: null,
-                end_time: null,
-                start_time: null,
-              });
-            }
-
-            // indefenetly paused inters
-            if (
-              curr_sess_indef_paused_ints.some(
-                (s) => s.user_id === attendee.user_id,
-              )
-            ) {
-              int_conflic_reasons.push({
-                conflict_type: 'interviewer_paused',
-                conflict_event: null,
-                start_time: null,
-                end_time: null,
-              });
-            }
-
-            //TEST:
-            const curr_day_paused_inter = curr_sess_curr_day_paused_ints.find(
-              (s) => s.user_id === attendee.user_id,
-            );
-
-            //curr_day paused ints
-            if (curr_day_paused_inter) {
-              const last_paused_date = this.getTimeIntTimeZone(
-                curr_day_paused_inter.pause_json.end_date,
-                upd_sess_slot.session_id,
-                attendee.user_id,
-              );
-              const is_time_overlapps = isTimeChunksOverLapps(
-                {
-                  startTime: last_paused_date
-                    .startOf('day')
-                    .tz(this.api_payload.candidate_tz),
-                  endTime: last_paused_date
-                    .endOf('day')
-                    .tz(this.api_payload.candidate_tz),
-                },
-                {
-                  startTime: this.getTimeInCandTimeZone(
-                    upd_sess_slot.start_time,
-                  ),
-                  endTime: this.getTimeInCandTimeZone(upd_sess_slot.start_time),
-                },
-              );
-              if (is_time_overlapps) {
-                if (
-                  this.api_options.include_conflicting_slots.interviewer_pause
-                ) {
-                  int_conflic_reasons.push({
-                    conflict_type: 'interviewer_paused',
-                    conflict_event: null,
-                    start_time: curr_day_paused_inter.pause_json.start_date,
-                    end_time: curr_day_paused_inter.pause_json.end_date,
-                  });
-                } else {
-                  return null;
-                }
-              }
-            }
-
-            let is_slot_day_off = false;
-            attendee_details.day_off[curr_day_str].forEach((t) => {
-              is_slot_day_off = isTimeChunksOverLapps(
-                convertTimeDurStrToDayjsChunk(t, this.api_payload.candidate_tz),
-                {
-                  startTime: userTzDayjs(upd_sess_slot.start_time).tz(
-                    this.api_payload.candidate_tz,
-                  ),
-                  endTime: userTzDayjs(upd_sess_slot.end_time).tz(
-                    this.api_payload.candidate_tz,
-                  ),
-                },
-              );
-              if (is_slot_day_off) {
-                if (this.api_options.include_conflicting_slots.day_off) {
-                  int_conflic_reasons.push({
-                    conflict_type: 'day_off',
-                    conflict_event: 'Day Off',
-                    start_time: t.startTime,
-                    end_time: t.endTime,
-                  });
-                }
-              }
-            });
-
-            let is_slot_holiday = false;
-            attendee_details.holiday[curr_day_str].forEach((t) => {
-              let flag = isTimeChunksOverLapps(
-                convertTimeDurStrToDayjsChunk(t, this.api_payload.candidate_tz),
-                {
-                  startTime: userTzDayjs(upd_sess_slot.start_time).tz(
-                    this.api_payload.candidate_tz,
-                  ),
-                  endTime: userTzDayjs(upd_sess_slot.end_time).tz(
-                    this.api_payload.candidate_tz,
-                  ),
-                },
-              );
-              if (flag) {
-                is_slot_holiday = true;
-                int_conflic_reasons.push({
-                  conflict_type: 'holiday',
-                  conflict_event: 'Holiday',
-                  start_time: t.startTime,
-                  end_time: t.endTime,
-                });
-              }
-            });
-
-            if (
-              is_slot_holiday &&
-              !this.api_options.include_conflicting_slots.holiday
-            ) {
-              return null;
-            }
-
-            let is_slot_out_of_work_hrs = !attendee_details.work_hours[
-              curr_day_str
-            ].some((t) => {
-              return isTimeChunksEnclosed(
-                convertTimeDurStrToDayjsChunk(t, this.api_payload.candidate_tz),
-                {
-                  startTime: userTzDayjs(upd_sess_slot.start_time).tz(
-                    this.api_payload.candidate_tz,
-                  ),
-                  endTime: userTzDayjs(upd_sess_slot.end_time).tz(
-                    this.api_payload.candidate_tz,
-                  ),
-                },
-              );
-            });
-            if (is_slot_out_of_work_hrs) {
-              if (
-                this.api_options.include_conflicting_slots.out_of_working_hrs
-              ) {
-                int_conflic_reasons.push({
-                  conflict_type: 'out_of_working_hours',
-                  conflict_event: '',
-                  end_time: '',
-                  start_time: '',
-                });
-              } else {
-                return null;
-              }
-            }
-            if (attendee_details.work_hours[curr_day_str])
-              if (
-                is_slot_day_off &&
-                !this.api_options.include_conflicting_slots.day_off
-              ) {
-                return null;
-              }
-            const conflicting_events = this.intervs_details_map
-              .get(attendee.user_id)
-              .cal_date_events[curr_day_str].filter((cal_event) => {
-                return isTimeChunksOverLapps(
-                  {
-                    startTime: this.getTimeInCandTimeZone(
-                      cal_event.start.dateTime,
-                    ),
-                    endTime: this.getTimeInCandTimeZone(cal_event.end.dateTime),
-                  },
-                  {
-                    startTime: this.getTimeInCandTimeZone(
-                      upd_sess_slot.start_time,
-                    ),
-                    endTime: this.getTimeInCandTimeZone(upd_sess_slot.end_time),
-                  },
-                );
-              });
-            //conflicting events
-            for (let conf_event of conflicting_events) {
-              const ev_type = conf_event.cal_type;
-              if (
-                ev_type === 'soft' &&
-                !this.api_options.include_conflicting_slots.show_soft_conflicts
-              ) {
-                return null;
-              }
-              if (
-                ev_type === 'cal_event' &&
-                !this.api_options.include_conflicting_slots
-                  .show_conflicts_events
-              ) {
-                return null;
-              }
-              if (
-                ev_type === 'ooo' &&
-                !this.api_options.include_conflicting_slots.out_of_office
-              ) {
-                return null;
-              }
-              int_conflic_reasons.push({
-                conflict_type: ev_type,
-                conflict_event: conf_event.summary,
-                end_time: conf_event.end.dateTime,
-                start_time: conf_event.start.dateTime,
-              });
-            }
-
-            if (int_conflic_reasons.length > 0) {
-              upd_sess_slot.ints_conflicts.push({
-                interviewer: {
-                  user_id: attendee.user_id,
-                },
-                conflict_reasons: [...int_conflic_reasons],
-              });
-            }
-          }
-
-          return upd_sess_slot;
-        };
-        const getSessionsAvailability = (
-          session_idx: number,
-          session_start_time: string,
-        ): SessionCombinationRespType[] => {
-          const curr_session = plan_comb[session_idx];
-          const curr_sess_start_time =
-            this.getTimeInCandTimeZone(session_start_time);
-
-          const curr_sess_end_time = this.getTimeInCandTimeZone(
-            session_start_time,
-          ).add(curr_session.duration, 'minutes');
-
-          let session_slot: SessionCombinationRespType = {
-            ...curr_session,
-            start_time: curr_sess_start_time.format(),
-            end_time: curr_sess_end_time.format(),
-            ints_conflicts: [],
-            is_conflict: false,
-          };
-
-          let slot_with_conflicts = verifyForConflicts(
-            session_slot,
-            session_idx,
-          );
-          if (!slot_with_conflicts) {
-            return [];
-          } else {
-            session_slot = {
-              ...slot_with_conflicts,
-            };
-          }
-
-          if (session_idx + 1 === plan_comb.length) {
-            return [{ ...session_slot }];
-          }
-          const upcoming_sessn_slots = getSessionsAvailability(
-            session_idx + 1,
-            curr_sess_end_time.add(curr_session.break_duration).format(),
-          );
-          if (upcoming_sessn_slots.length === 0) {
-            return [];
-          } else {
-            return [session_slot, ...upcoming_sessn_slots];
-          }
-        };
-        const curr_time = ScheduleUtils.getNearestCurrTime(
-          this.api_payload.candidate_tz,
-        );
-        const cand_start_time = currDay.set(
-          'hours',
-          this.api_options.cand_start_time,
-        );
-        const cand_end_time = currDay.set(
-          'hours',
-          this.api_options.cand_end_time,
-        );
-        let cand_time = cand_start_time;
-        if (curr_time.isAfter(cand_time, 'day')) {
-          return [];
-        }
-        if (curr_time.isSame(cand_time, 'day')) {
-          cand_time = curr_time;
-        }
-
-        while (cand_time.isBefore(cand_end_time, 'minutes')) {
-          const slot_comb = getSessionsAvailability(0, cand_time.format());
-          if (slot_comb.length > 0) {
-            schedule_combs.push({
-              plan_comb_id: nanoid(),
-              sessions: [...slot_comb],
-            });
-          }
-          cand_time = cand_time.add(
-            this.api_options.check_next_minutes,
-            'minutes',
-          );
-        }
-      };
-
-      //NOTE: this is the staring of execution
-      calcScheduleCombs();
-
-      return schedule_combs;
     };
 
     exploreSessionCombs([], 0);
@@ -1065,4 +461,593 @@ export class CandidatesSchedulingV2 {
       user_id
     ].pause_json;
   }
+  /**
+   * @param plan_comb single interview plan with assigned interviewers
+   * @returns all possible slots for that day
+   */
+  private calcMeetingCombinsForPlan = (
+    curr_day_js: Dayjs,
+    plan_comb: InterviewSessionApiRespType[],
+    cached_free_time: Map<string, TimeDurationType[]>,
+  ) => {
+    let curr_day_str = curr_day_js.startOf('day').format();
+    const getInterviewersCommonTime = (
+      curr_session: InterviewSessionApiRespType,
+    ) => {
+      const all_int_attendees = [
+        ...curr_session.qualifiedIntervs,
+        ...curr_session.trainingIntervs,
+      ];
+      let map_key: string[] = [
+        curr_session.session_id,
+        ...all_int_attendees.map((s) => s.user_id),
+      ];
+      map_key = map_key.sort();
+      if (cached_free_time.has(map_key.join('_'))) {
+        return cached_free_time.get(map_key.join('_'));
+      }
+
+      const common_time_range = this.findCommonTimeRange(
+        all_int_attendees.map((s) => {
+          const curr_day_free_times =
+            this.intervs_details_map.get(s.user_id).freeTimes[curr_day_str] ??
+            [];
+          return {
+            inter_id: s.user_id,
+            time_ranges: curr_day_free_times, //TODO: where is free time
+          };
+        }),
+      );
+      cached_free_time.set(map_key.join('_'), common_time_range);
+      return common_time_range;
+    };
+    const cacheCurrPlanCalc = () => {
+      const indef_paused_inters: {
+        session_id: string;
+        inters: (Pick<SessionInterviewerApiRespType, 'user_id'> & {
+          pause_json: PauseJson;
+        })[];
+      }[] = [];
+      const curr_day_paused_inters: {
+        session_id: string;
+        inters: (Pick<SessionInterviewerApiRespType, 'user_id'> & {
+          pause_json: PauseJson;
+        })[];
+      }[] = [];
+      const cal_disc_inters: {
+        session_id: string;
+        inters: Pick<SessionInterviewerApiRespType, 'user_id'>[];
+      }[] = [];
+      const load_reached_ints: {
+        session_id: string;
+        inters: (Pick<SessionInterviewerApiRespType, 'user_id'> & {
+          type: CalConflictType;
+        })[];
+      }[] = [];
+      const session_ints_common_time: {
+        session_id: string;
+        common_time: TimeDurationType[];
+      }[] = [];
+
+      let slot_week_load_density = 0;
+      let slot_day_load_density = 0;
+
+      for (let sess_idx = 0; sess_idx < plan_comb.length; ++sess_idx) {
+        const curr_sess = plan_comb[sess_idx];
+        const session_attendees: SessionInterviewerApiRespType[] = [
+          ...curr_sess.qualifiedIntervs,
+          ...curr_sess.trainingIntervs,
+        ];
+        indef_paused_inters.push({
+          session_id: curr_sess.session_id,
+          inters: [],
+        });
+        curr_day_paused_inters.push({
+          session_id: curr_sess.session_id,
+          inters: [],
+        });
+        cal_disc_inters.push({
+          session_id: curr_sess.session_id,
+          inters: [],
+        });
+        load_reached_ints.push({
+          session_id: curr_sess.session_id,
+          inters: [],
+        });
+        const sesn_int_common_time = getInterviewersCommonTime(curr_sess);
+        session_ints_common_time.push({
+          session_id: curr_sess.session_id,
+          common_time: sesn_int_common_time,
+        });
+        let cnt_qualified_ints = 0;
+
+        session_attendees.forEach((attendee) => {
+          const interviewer_pause_json = this.getIntPauseJson(
+            curr_sess.session_id,
+            attendee.user_id,
+          );
+          if (
+            !this.intervs_details_map.get(attendee.user_id).isCalenderConnected
+          ) {
+            cal_disc_inters[sess_idx].inters.push({
+              ...attendee,
+            });
+          }
+          if (interviewer_pause_json) {
+            if (interviewer_pause_json.isManual) {
+              indef_paused_inters[sess_idx].inters.push({
+                ...attendee,
+                pause_json: interviewer_pause_json,
+              });
+            } else {
+              const last_paused_date = this.getTimeIntTimeZone(
+                interviewer_pause_json.end_date,
+                curr_sess.session_id,
+                attendee.user_id,
+              );
+              if (
+                isTimeChunksOverLapps(
+                  {
+                    startTime: last_paused_date
+                      .startOf('day')
+                      .tz(this.api_payload.candidate_tz),
+                    endTime: last_paused_date
+                      .endOf('day')
+                      .tz(this.api_payload.candidate_tz),
+                  },
+                  {
+                    startTime:
+                      this.getTimeInCandTimeZone(curr_day_js).startOf('day'),
+                    endTime: this.getTimeInCandTimeZone(
+                      curr_day_js.endOf('day'),
+                    ),
+                  },
+                )
+              ) {
+                curr_day_paused_inters[sess_idx].inters.push({
+                  ...attendee,
+                  pause_json: interviewer_pause_json,
+                });
+              }
+            }
+          }
+
+          if (attendee.training_type === 'qualified') {
+            cnt_qualified_ints++;
+            const { is_passed, type, day_load_density, week_load_density } =
+              isIntervLoadPassed(
+                curr_day_js,
+                this.db_details,
+                attendee.user_id,
+                this.intervs_details_map.get(attendee.user_id)
+                  .int_schedule_setting,
+                plan_comb,
+              );
+
+            slot_day_load_density += day_load_density;
+            slot_week_load_density += week_load_density;
+
+            if (!is_passed) {
+              load_reached_ints[sess_idx].inters.push({
+                user_id: attendee.user_id,
+                type,
+              });
+            }
+          }
+        });
+        slot_day_load_density = slot_day_load_density / cnt_qualified_ints;
+        slot_week_load_density = slot_week_load_density / cnt_qualified_ints;
+      }
+      return {
+        indef_paused_inters,
+        curr_day_paused_inters,
+        cal_disc_inters,
+        session_ints_common_time,
+        load_reached_ints,
+        slot_day_load_density,
+        slot_week_load_density,
+      };
+    };
+    const {
+      cal_disc_inters,
+      curr_day_paused_inters,
+      indef_paused_inters,
+      session_ints_common_time,
+      load_reached_ints,
+      slot_day_load_density,
+      slot_week_load_density,
+    } = cacheCurrPlanCalc();
+
+    /**
+     * checking  conflicts
+     * soft conflicts with key words,
+     * hard conflicts any meeting,
+     * out of office,
+     * interviewer paused
+     * calender disconnected
+     * interviewer load  TODO: later
+     * @param sess_slot
+     * @returns
+     */
+    const verifyForConflicts = (
+      sesn_slot: SessionCombinationRespType,
+      sessn_idx: number,
+    ) => {
+      const upd_sess_slot: SessionCombinationRespType = { ...sesn_slot };
+      const curr_sess_cal_dic_ints = cal_disc_inters[sessn_idx].inters;
+      const curr_sess_indef_paused_ints = indef_paused_inters[sessn_idx].inters;
+      const curr_sess_curr_day_paused_ints =
+        curr_day_paused_inters[sessn_idx].inters;
+      const curr_sess_common_time = session_ints_common_time[sessn_idx];
+      upd_sess_slot.day_load_den = slot_day_load_density;
+      upd_sess_slot.week_load_den = slot_week_load_density;
+      const session_attendees: SessionInterviewerApiRespType[] = [
+        ...upd_sess_slot.qualifiedIntervs,
+        ...upd_sess_slot.trainingIntervs,
+      ];
+      const is_all_ints_available = curr_sess_common_time.common_time.some(
+        (t) => {
+          return isTimeChunksEnclosed(
+            {
+              startTime: this.getTimeInCandTimeZone(t.startTime),
+              endTime: this.getTimeInCandTimeZone(t.endTime),
+            },
+            {
+              startTime: this.getTimeInCandTimeZone(upd_sess_slot.start_time),
+              endTime: this.getTimeInCandTimeZone(upd_sess_slot.end_time),
+            },
+          );
+        },
+      );
+      const is_load_checked = load_reached_ints.length === 0;
+      if (is_all_ints_available && is_load_checked) {
+        upd_sess_slot.is_conflict = false;
+        return upd_sess_slot;
+      } else {
+        upd_sess_slot.is_conflict = true;
+      }
+      for (const attendee of session_attendees) {
+        const attendee_details = this.intervs_details_map.get(attendee.user_id);
+        const int_conflic_reasons: ConflictReason[] = [];
+        // cal disconnected conflict
+        if (
+          curr_sess_cal_dic_ints.find((s) => s.user_id === attendee.user_id)
+        ) {
+          int_conflic_reasons.push({
+            conflict_type: 'calender_diconnected',
+            conflict_event: null,
+            start_time: null,
+            end_time: null,
+          });
+        }
+        const attendee_load = load_reached_ints[sessn_idx].inters.find(
+          (s) => s.user_id === attendee.user_id,
+        );
+        if (attendee_load) {
+          int_conflic_reasons.push({
+            conflict_type: attendee_load.type,
+            conflict_event: null,
+            end_time: null,
+            start_time: null,
+          });
+        }
+
+        // indefenetly paused inters
+        if (
+          curr_sess_indef_paused_ints.some(
+            (s) => s.user_id === attendee.user_id,
+          )
+        ) {
+          int_conflic_reasons.push({
+            conflict_type: 'interviewer_paused',
+            conflict_event: null,
+            start_time: null,
+            end_time: null,
+          });
+        }
+
+        //TEST:
+        const curr_day_paused_inter = curr_sess_curr_day_paused_ints.find(
+          (s) => s.user_id === attendee.user_id,
+        );
+
+        //curr_day paused ints
+        if (curr_day_paused_inter) {
+          const last_paused_date = this.getTimeIntTimeZone(
+            curr_day_paused_inter.pause_json.end_date,
+            upd_sess_slot.session_id,
+            attendee.user_id,
+          );
+          const is_time_overlapps = isTimeChunksOverLapps(
+            {
+              startTime: last_paused_date
+                .startOf('day')
+                .tz(this.api_payload.candidate_tz),
+              endTime: last_paused_date
+                .endOf('day')
+                .tz(this.api_payload.candidate_tz),
+            },
+            {
+              startTime: this.getTimeInCandTimeZone(upd_sess_slot.start_time),
+              endTime: this.getTimeInCandTimeZone(upd_sess_slot.start_time),
+            },
+          );
+          if (is_time_overlapps) {
+            if (this.api_options.include_conflicting_slots.interviewer_pause) {
+              int_conflic_reasons.push({
+                conflict_type: 'interviewer_paused',
+                conflict_event: null,
+                start_time: curr_day_paused_inter.pause_json.start_date,
+                end_time: curr_day_paused_inter.pause_json.end_date,
+              });
+            } else {
+              return null;
+            }
+          }
+        }
+        let is_slot_day_off = false;
+        attendee_details.day_off[curr_day_str].forEach((t) => {
+          is_slot_day_off = isTimeChunksOverLapps(
+            convertTimeDurStrToDayjsChunk(t, this.api_payload.candidate_tz),
+            {
+              startTime: userTzDayjs(upd_sess_slot.start_time).tz(
+                this.api_payload.candidate_tz,
+              ),
+              endTime: userTzDayjs(upd_sess_slot.end_time).tz(
+                this.api_payload.candidate_tz,
+              ),
+            },
+          );
+          if (is_slot_day_off) {
+            if (this.api_options.include_conflicting_slots.day_off) {
+              int_conflic_reasons.push({
+                conflict_type: 'day_off',
+                conflict_event: 'Day Off',
+                start_time: t.startTime,
+                end_time: t.endTime,
+              });
+            }
+          }
+        });
+
+        let is_slot_holiday = false;
+        attendee_details.holiday[curr_day_str].forEach((t) => {
+          let flag = isTimeChunksOverLapps(
+            convertTimeDurStrToDayjsChunk(t, this.api_payload.candidate_tz),
+            {
+              startTime: userTzDayjs(upd_sess_slot.start_time).tz(
+                this.api_payload.candidate_tz,
+              ),
+              endTime: userTzDayjs(upd_sess_slot.end_time).tz(
+                this.api_payload.candidate_tz,
+              ),
+            },
+          );
+          if (flag) {
+            is_slot_holiday = true;
+            int_conflic_reasons.push({
+              conflict_type: 'holiday',
+              conflict_event: 'Holiday',
+              start_time: t.startTime,
+              end_time: t.endTime,
+            });
+          }
+        });
+
+        if (
+          is_slot_holiday &&
+          !this.api_options.include_conflicting_slots.holiday
+        ) {
+          return null;
+        }
+
+        let is_slot_out_of_work_hrs = !attendee_details.work_hours[
+          curr_day_str
+        ].some((t) => {
+          return isTimeChunksEnclosed(
+            convertTimeDurStrToDayjsChunk(t, this.api_payload.candidate_tz),
+            {
+              startTime: userTzDayjs(upd_sess_slot.start_time).tz(
+                this.api_payload.candidate_tz,
+              ),
+              endTime: userTzDayjs(upd_sess_slot.end_time).tz(
+                this.api_payload.candidate_tz,
+              ),
+            },
+          );
+        });
+        if (is_slot_out_of_work_hrs) {
+          if (this.api_options.include_conflicting_slots.out_of_working_hrs) {
+            int_conflic_reasons.push({
+              conflict_type: 'out_of_working_hours',
+              conflict_event: '',
+              end_time: '',
+              start_time: '',
+            });
+          } else {
+            return null;
+          }
+        }
+        if (attendee_details.work_hours[curr_day_str])
+          if (
+            is_slot_day_off &&
+            !this.api_options.include_conflicting_slots.day_off
+          ) {
+            return null;
+          }
+        const conflicting_events = this.intervs_details_map
+          .get(attendee.user_id)
+          .cal_date_events[curr_day_str].filter((cal_event) => {
+            return isTimeChunksOverLapps(
+              {
+                startTime: this.getTimeInCandTimeZone(cal_event.start.dateTime),
+                endTime: this.getTimeInCandTimeZone(cal_event.end.dateTime),
+              },
+              {
+                startTime: this.getTimeInCandTimeZone(upd_sess_slot.start_time),
+                endTime: this.getTimeInCandTimeZone(upd_sess_slot.end_time),
+              },
+            );
+          });
+        //conflicting events
+        for (let conf_event of conflicting_events) {
+          const ev_type = conf_event.cal_type;
+          if (
+            ev_type === 'soft' &&
+            !this.api_options.include_conflicting_slots.show_soft_conflicts
+          ) {
+            return null;
+          }
+          if (
+            ev_type === 'cal_event' &&
+            !this.api_options.include_conflicting_slots.show_conflicts_events
+          ) {
+            return null;
+          }
+          if (
+            ev_type === 'ooo' &&
+            !this.api_options.include_conflicting_slots.out_of_office
+          ) {
+            return null;
+          }
+          int_conflic_reasons.push({
+            conflict_type: ev_type,
+            conflict_event: conf_event.summary,
+            end_time: conf_event.end.dateTime,
+            start_time: conf_event.start.dateTime,
+          });
+        }
+
+        if (int_conflic_reasons.length > 0) {
+          upd_sess_slot.ints_conflicts.push({
+            interviewer: {
+              user_id: attendee.user_id,
+            },
+            conflict_reasons: [...int_conflic_reasons],
+          });
+        }
+      }
+
+      return upd_sess_slot;
+    };
+    const getSessionsAvailability = (
+      session_idx: number,
+      session_start_time: string,
+    ): SessionCombinationRespType[] => {
+      const curr_session = plan_comb[session_idx];
+      const curr_sess_start_time =
+        this.getTimeInCandTimeZone(session_start_time);
+
+      const curr_sess_end_time = this.getTimeInCandTimeZone(
+        session_start_time,
+      ).add(curr_session.duration, 'minutes');
+
+      let session_slot: SessionCombinationRespType = {
+        ...curr_session,
+        start_time: curr_sess_start_time.format(),
+        end_time: curr_sess_end_time.format(),
+        ints_conflicts: [],
+        is_conflict: false,
+      };
+
+      let slot_with_conflicts = verifyForConflicts(session_slot, session_idx);
+      if (!slot_with_conflicts) {
+        return [];
+      } else {
+        session_slot = {
+          ...slot_with_conflicts,
+        };
+      }
+
+      if (session_idx + 1 === plan_comb.length) {
+        return [{ ...session_slot }];
+      }
+      const upcoming_sessn_slots = getSessionsAvailability(
+        session_idx + 1,
+        curr_sess_end_time.add(curr_session.break_duration).format(),
+      );
+      if (upcoming_sessn_slots.length === 0) {
+        return [];
+      } else {
+        return [session_slot, ...upcoming_sessn_slots];
+      }
+    };
+
+    const isDayConflictPassed = () => {
+      if (
+        cal_disc_inters.some((s) => s.inters.length > 0) &&
+        !this.api_options.include_conflicting_slots.calender_not_connected
+      ) {
+        return false;
+      }
+      if (
+        indef_paused_inters.some((s) => s.inters.length > 0) &&
+        !this.api_options.include_conflicting_slots.interviewer_pause
+      ) {
+        return false;
+      }
+
+      if (
+        load_reached_ints.some((curr_sess) => curr_sess.inters.length > 0) &&
+        !this.api_options.include_conflicting_slots.interviewers_load
+      ) {
+        return false;
+      }
+      return true;
+    };
+
+    const generateSlotsForCurrDay = () => {
+      if (!isDayConflictPassed()) {
+        return [];
+      }
+      const schedule_combs: PlanCombinationRespType[] = [];
+
+      const curr_time = ScheduleUtils.getNearestCurrTime(
+        this.api_payload.candidate_tz,
+      );
+      const cand_start_time = curr_day_js.set(
+        'hours',
+        this.api_options.cand_start_time,
+      );
+      const cand_end_time = curr_day_js.set(
+        'hours',
+        this.api_options.cand_end_time,
+      );
+      let cand_time = cand_start_time;
+      if (curr_time.isAfter(cand_time, 'day')) {
+        return [];
+      }
+      if (curr_time.isSame(cand_time, 'day')) {
+        cand_time = curr_time;
+      }
+
+      while (cand_time.isBefore(cand_end_time, 'minutes')) {
+        const slot_comb = getSessionsAvailability(0, cand_time.format());
+        if (slot_comb.length > 0) {
+          schedule_combs.push({
+            plan_comb_id: nanoid(),
+            sessions: [...slot_comb],
+          });
+        }
+        cand_time = cand_time.add(
+          this.api_options.check_next_minutes,
+          'minutes',
+        );
+      }
+
+      return schedule_combs;
+    };
+
+    const verifyCurrDaySlot = (slot: SessionCombinationRespType[]) => {
+      const cand_time = userTzDayjs(slot[0].start_time).tz(
+        this.api_payload.candidate_tz,
+      );
+      const slot_comb_conflicts = getSessionsAvailability(
+        0,
+        cand_time.format(),
+      );
+      return slot_comb_conflicts;
+    };
+    return { generateSlotsForCurrDay, verifyCurrDaySlot };
+  };
 }

@@ -436,7 +436,6 @@ export const findEachInterviewerFreeTimes = (
         userTzDayjs(start_date).tz(api_payload.candidate_tz).startOf('day'),
         userTzDayjs(end_date).tz(api_payload.candidate_tz).endOf('day'),
       );
-
       upd_interv = { ...upd_interv };
     }
 

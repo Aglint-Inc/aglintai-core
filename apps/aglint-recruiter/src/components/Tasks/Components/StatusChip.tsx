@@ -2,7 +2,6 @@ import { DB } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 
 import { TaskStatus } from '@/devlink3/TaskStatus';
-import { palette } from '@/src/context/Theme/Theme';
 
 function StatusChip({
   status,

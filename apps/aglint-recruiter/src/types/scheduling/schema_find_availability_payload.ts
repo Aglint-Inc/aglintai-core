@@ -46,3 +46,7 @@ export const schema_find_slots_date_range = z.object({
   candidate_tz: z.string(),
   options: scheduling_options_schema.default({}), // Ensure default values are applied
 });
+
+export const schema_verify_interviewer_selected_slots = z.object({
+  cand_availability_id: z.string(),
+});
