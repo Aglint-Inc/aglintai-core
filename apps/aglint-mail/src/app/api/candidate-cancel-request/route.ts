@@ -8,6 +8,10 @@ import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate
 import { sendMail } from '../../../config/sendgrid';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
 import CandidateCancelRequest from '../../../utils/email/candidate_cancel_request/fetch';
+import type {
+  FilledPayload,
+  MeetingDetails,
+} from '../../../utils/types/apiTypes';
 
 interface ReqPayload {
   session_id: string[];
@@ -25,15 +29,7 @@ interface DataPayload {
     '[recruiterName]': string;
     '[companyName]': string;
     'meetingLink': string;
-    'meetingDetails': {
-      date: string;
-      time: string;
-      sessionType: string;
-      platform: any;
-      duration: string;
-      sessionTypeIcon: any;
-      meetingIcon: string;
-    }[];
+    'meetingDetails': MeetingDetails[];
   };
 }
 
@@ -69,13 +65,13 @@ export async function POST(req: Request) {
       interview_cancel_id,
     );
 
-    const filled_body = await fetchTemplate(
+    const filled_body: FilledPayload = await fetchTemplate(
       data.recruiter_id,
       data.mail_type,
       data.payload,
     );
     filled_body.meetingLink = data.payload.meetingLink;
-    filled_body.meetingDetails = data.payload.meetingDetails
+    filled_body.meetingDetails = data.payload.meetingDetails;
 
     const { emails } = await getEmails();
 

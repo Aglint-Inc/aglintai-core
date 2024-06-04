@@ -8,6 +8,7 @@ import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate
 import { sendMail } from '../../../config/sendgrid';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
 import PhoneScreeningResend from '../../../utils/email/phone-screening-resend/fetch';
+import type { FilledPayload } from '../../../utils/types/apiTypes';
 
 interface ReqPayload {
   application_id: string;
@@ -36,7 +37,7 @@ export async function POST(req: Request) {
       throw new ClientError('payload attribute application_id missing', 400);
     }
     const data: DataPayload = await PhoneScreeningResend(application_id);
-    const filled_body = await fetchTemplate(
+    const filled_body: FilledPayload = await fetchTemplate(
       data.recruiter_id,
       data.mail_type,
       data.payload,

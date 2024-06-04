@@ -8,6 +8,7 @@ import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate
 import { sendMail } from '../../../config/sendgrid';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
 import InitEmailAgent from '../../../utils/email/init_email_agent/fetch';
+import type { FilledPayload } from '../../../utils/types/apiTypes';
 
 interface ReqPayload {
   meeting_id: string;
@@ -32,15 +33,11 @@ interface DataPayload {
 }
 
 export async function POST(req: Request) {
-  const {
-    application_id,
-    meeting_id,
-  }: ReqPayload = await req.json();
+  const { application_id, meeting_id }: ReqPayload = await req.json();
 
   try {
     // if(!api_key)  throw new ClientError("api_key not found",401)
     // if( api_key !== API_KEY)  throw new ClientError("invalid api Key",401)
-
 
     if (!application_id) {
       throw new ClientError('payload attribute missing', 400);
@@ -48,11 +45,8 @@ export async function POST(req: Request) {
     if (!meeting_id) {
       throw new ClientError('meeting_id is missing', 400);
     }
-    const data: DataPayload = await InitEmailAgent(
-      application_id,
-      meeting_id
-    );
-    const filled_body = await fetchTemplate(
+    const data: DataPayload = await InitEmailAgent(application_id, meeting_id);
+    const filled_body: FilledPayload = await fetchTemplate(
       data.recruiter_id,
       data.mail_type,
       data.payload,
