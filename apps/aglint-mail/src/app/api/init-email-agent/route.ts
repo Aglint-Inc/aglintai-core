@@ -33,7 +33,6 @@ interface DataPayload {
 
 export async function POST(req: Request) {
   const {
-    candidateRequestAvailability_id,
     application_id,
     meeting_id,
   }: ReqPayload = await req.json();
@@ -42,9 +41,6 @@ export async function POST(req: Request) {
     // if(!api_key)  throw new ClientError("api_key not found",401)
     // if( api_key !== API_KEY)  throw new ClientError("invalid api Key",401)
 
-    if (!candidateRequestAvailability_id) {
-      throw new ClientError('mail_type attribute missing', 400);
-    }
 
     if (!application_id) {
       throw new ClientError('payload attribute missing', 400);
@@ -54,8 +50,7 @@ export async function POST(req: Request) {
     }
     const data: DataPayload = await InitEmailAgent(
       application_id,
-      meeting_id,
-      candidateRequestAvailability_id,
+      meeting_id
     );
     const filled_body = await fetchTemplate(
       data.recruiter_id,

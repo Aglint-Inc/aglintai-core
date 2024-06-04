@@ -11,7 +11,7 @@ import {
 import { Parser } from 'html-to-react';
 import * as React from 'react';
 
-interface PhoneScreeningResendType {
+export interface PhoneScreeningResendType {
   body?: string;
   companyLogo?: string;
 }
@@ -25,7 +25,7 @@ export const dummy: PhoneScreeningResendType = {
 
 export const getSubject = (companyName: any) => `${companyName}`;
 
-export const PhoneScreeningResend = ({
+const PhoneScreeningResend = ({
   body = dummy.body,
   companyLogo = dummy.companyLogo,
 }: PhoneScreeningResendType) => {
@@ -81,8 +81,7 @@ export const PhoneScreeningResend = ({
     </Html>
   );
 };
-export default PhoneScreeningResendType;
-
+export default PhoneScreeningResend;
 // [firstName]
 // [jobTitle]
 // [companyName]

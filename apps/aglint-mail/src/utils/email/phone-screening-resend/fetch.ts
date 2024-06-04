@@ -19,7 +19,6 @@ export default async function PhoneScreeningResend(application_id: string) {
     },
     public_jobs: { id: job_id, company, job_title },
   } = candidateJob;
-
   const body = {
     recipient_email: email,
     mail_type: 'phone_screening_resend',
@@ -32,7 +31,6 @@ export default async function PhoneScreeningResend(application_id: string) {
       '[phoneScreeningLink]': `${process.env.BASE_URL}/candidate-phone-screening?job_post_id=${job_id}&application_id=${application_id}`,
     },
   };
-
   return body;
 }
 
