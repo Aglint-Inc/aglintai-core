@@ -30,7 +30,7 @@ export interface SchedulingApplication {
   isEditOpen: boolean;
   isEditBreakOpen: boolean;
   editSession: SessionsType[0];
-  selectedCombIds: string[];
+
   isIndividualCancelOpen: boolean;
   isMultipleCancelOpen: boolean;
   isMultipleRescheduleOpen: boolean;
@@ -59,7 +59,6 @@ const initialState: SchedulingApplication = {
   isEditOpen: false,
   isEditBreakOpen: false,
   editSession: null,
-  selectedCombIds: [],
   selectedApplicationLog: null,
 };
 
@@ -150,9 +149,6 @@ export const setApplicationCandidateFeedback = (
     }
     return temp;
   });
-
-export const setSelectedCombIds = (selectedCombIds: string[]) =>
-  useSchedulingApplicationStore.setState({ selectedCombIds });
 
 export const resetSchedulingApplicationState = () =>
   useSchedulingApplicationStore.setState({ ...initialState });

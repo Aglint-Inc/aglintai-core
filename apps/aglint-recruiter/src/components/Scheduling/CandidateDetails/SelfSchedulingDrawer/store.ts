@@ -41,6 +41,7 @@ export interface SchedulingFlow {
     }[];
     isWorkLoad: boolean;
   };
+  selectedCombIds: string[];
 }
 
 const initialState: SchedulingFlow = {
@@ -66,6 +67,7 @@ const initialState: SchedulingFlow = {
     preferredDateRanges: [],
     isWorkLoad: true,
   },
+  selectedCombIds: [],
 };
 
 export const useSchedulingFlowStore = create<SchedulingFlow>()(() => ({
@@ -114,6 +116,9 @@ export const setDateRange = (dateRange: {
   start_date: string;
   end_date: string;
 }) => useSchedulingFlowStore.setState({ dateRange });
+
+export const setSelectedCombIds = (selectedCombIds: string[]) =>
+  useSchedulingFlowStore.setState({ selectedCombIds });
 
 export const resetFilterStore = () =>
   useSchedulingFlowStore.setState({
