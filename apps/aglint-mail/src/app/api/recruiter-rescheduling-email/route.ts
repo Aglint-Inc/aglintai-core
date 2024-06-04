@@ -48,15 +48,14 @@ export async function POST(req: Request) {
   }: ReqPayload = await req.json();
 
   try {
-    // if(!api_key)  throw new ClientError("api_key not found",401)
-    // if( api_key !== API_KEY)  throw new ClientError("invalid api Key",401)
+  
 
     if (!session_ids) {
-      throw new ClientError('mail_type attribute session_ids missing', 400);
+      throw new ClientError('attribute session_ids missing', 400);
     }
     if (!interview_cancel_id) {
       throw new ClientError(
-        'mail_type attribute interview_cancel_id missing',
+        'attribute interview_cancel_id missing',
         400,
       );
     }
@@ -113,7 +112,7 @@ export async function POST(req: Request) {
     if (e instanceof MailArgValidationError) {
       return NextResponse.json(
         {
-          error: `${e.name}: mail_type:candidate_availability_request,  ${e.message}`,
+          error: `${e.name}: mail_type:recruiter_rescheduling_email,  ${e.message}`,
         },
         {
           status: 400,
@@ -123,7 +122,7 @@ export async function POST(req: Request) {
     if (e) {
       return NextResponse.json(
         {
-          error: `${e.name}: mail_type:candidate_availability_request,  ${e.message}`,
+          error: `${e.name}: mail_type:recruiter_rescheduling_email,  ${e.message}`,
         },
         {
           status: 500,

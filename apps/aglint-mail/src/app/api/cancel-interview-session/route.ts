@@ -81,7 +81,7 @@ export async function POST(req: Request) {
     if (e instanceof MailArgValidationError) {
       return NextResponse.json(
         {
-          error: `${e.name}: mail_type:candidate_availability_request,  ${e.message}`,
+          error: `${e.name}: mail_type:Cancel-Interview-Session,  ${e.message}`,
         },
         {
           status: 400,
@@ -91,7 +91,7 @@ export async function POST(req: Request) {
     if (e) {
       return NextResponse.json(
         {
-          error: `${e.name}: mail_type:candidate_availability_request,  ${e.message}`,
+          error: `${e.name}: mail_type:Cancel-Interview-Session,  ${e.message}`,
         },
         {
           status: 500,
