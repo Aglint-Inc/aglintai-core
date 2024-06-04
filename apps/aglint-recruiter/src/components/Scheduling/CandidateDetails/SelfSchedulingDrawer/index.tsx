@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
-import { ScheduleUtils } from '@/src/services/CandidateScheduleV2/utils/ScheduleUtils';
+import { createCombsForMultiDaySlots } from '@/src/services/CandidateScheduleV2/utils/createCombsForMultiDaySlots';
 import toast from '@/src/utils/toast';
 
 import { useGetScheduleApplication } from '../hooks';
@@ -190,7 +190,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                   filters,
                   schedulingOptions,
                 });
-                const combs = ScheduleUtils.createCombsForMultiDaySlots(
+                const combs = createCombsForMultiDaySlots(
                   allFilteredOptions,
                 ).flatMap((comb) => comb);
                 if (combs.length === 0) {
