@@ -1,6 +1,6 @@
 import { ScheduleOptionsList } from '@/devlink3/ScheduleOptionsList';
 
-import { useSchedulingFlowStore } from '../store';
+import { setSelectedCombIds, useSchedulingFlowStore } from '../store';
 import DayCardWrapper from './DayCardWrapper';
 import { extractPlanData, groupByDateRange } from './utils';
 
@@ -11,9 +11,25 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
     (state) => state.filteredSchedulingOptions,
   );
 
+  const selectedCombIds = useSchedulingFlowStore(
+    (state) => state.selectedCombIds,
+  );
+
   const groupedData: GroupByDateRange = groupByDateRange(
     extractPlanData(filteredSchedulingOptions),
   );
+
+  const onClickSelect = (comb_id: string) => {
+    if (isDebrief) {
+      setSelectedCombIds([comb_id]);
+    } else {
+      if (!selectedCombIds.includes(comb_id)) {
+        setSelectedCombIds([...selectedCombIds, comb_id]);
+      } else {
+        setSelectedCombIds(selectedCombIds.filter((id) => id !== comb_id));
+      }
+    }
+  };
 
   return (
     <ScheduleOptionsList
@@ -28,6 +44,8 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
                 key={item.dateArray.join(', ')}
                 isDebrief={isDebrief}
                 item={item}
+                onClickSelect={onClickSelect}
+                selectedCombIds={selectedCombIds}
               />
             );
           })}

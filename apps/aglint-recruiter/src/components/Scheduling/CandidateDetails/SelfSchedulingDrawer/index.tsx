@@ -39,13 +39,13 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
     selectedApplication,
     initialSessions,
     selectedSessionIds,
-    selectedCombIds,
+
     selectedApplicationLog,
   } = useSchedulingApplicationStore((state) => ({
     selectedApplication: state.selectedApplication,
     initialSessions: state.initialSessions,
     selectedSessionIds: state.selectedSessionIds,
-    selectedCombIds: state.selectedCombIds,
+
     selectedApplicationLog: state.selectedApplicationLog,
   }));
 
@@ -55,6 +55,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
     isScheduleNowOpen,
     scheduleFlow,
     stepScheduling,
+    selectedCombIds,
     filters,
     schedulingOptions,
   } = useSchedulingFlowStore((state) => ({
@@ -64,6 +65,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
     scheduleFlow: state.scheduleFlow,
     stepScheduling: state.stepScheduling,
     filters: state.filters,
+    selectedCombIds: state.selectedCombIds,
     schedulingOptions: state.schedulingOptions,
   }));
 
@@ -195,7 +197,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                   toast.warning(
                     'No available slots found for the selected preferences.',
                   );
-                  } else {
+                } else {
                   setFilteredSchedulingOptions(combs);
                   setStepScheduling('slot_options');
                 }
@@ -214,7 +216,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
           textPrimaryButton={
             !isDebrief
               ? stepScheduling === 'preference'
-                ? 'Get Combinations'
+                ? 'Continue'
                 : 'Send to Candidate'
               : 'Schedule Now'
           }
