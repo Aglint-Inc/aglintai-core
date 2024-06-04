@@ -7,7 +7,7 @@
   "plugins": [
     "@typescript-eslint",
     "simple-import-sort",
-    // "eslint-plugin-react-compiler", //causing issues in the build
+    "eslint-plugin-react-compiler", //causing issues in the build
     "jsx-a11y",
     "@aglint/linter"
   ],

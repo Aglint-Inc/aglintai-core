@@ -69,10 +69,7 @@ const InterviewTab = () => {
                               member.rec_user.first_name,
                               member.rec_user.last_name,
                             )}
-                            variant='circular'
-                            height='40px'
-                            width='40px'
-                            fontSize='16px'
+                            variant='rounded-medium'
                           />
                         }
                         isCalenderNotConnected={

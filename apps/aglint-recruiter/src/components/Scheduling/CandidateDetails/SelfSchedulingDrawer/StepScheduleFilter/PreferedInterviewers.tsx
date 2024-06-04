@@ -12,31 +12,34 @@ function PreferedInterviewers() {
 
   const uniqueInterviewers = [];
 
-  schedulingOptions.forEach((option) => {
-    option.sessions.forEach((session) => {
-      session.qualifiedIntervs.forEach((interv) => {
-        const existingIndex = uniqueInterviewers.findIndex(
-          (existingInterv) => existingInterv.user_id === interv.user_id,
-        );
+  schedulingOptions
+    .flatMap((option) => option)
+    .flatMap((option) => option)
+    .forEach((option) => {
+      option.sessions.forEach((session) => {
+        session.qualifiedIntervs.forEach((interv) => {
+          const existingIndex = uniqueInterviewers.findIndex(
+            (existingInterv) => existingInterv.user_id === interv.user_id,
+          );
 
-        if (existingIndex === -1) {
-          // Push the interv object directly if it doesn't already exist in the array
-          uniqueInterviewers.push(interv);
-        }
-      });
+          if (existingIndex === -1) {
+            // Push the interv object directly if it doesn't already exist in the array
+            uniqueInterviewers.push(interv);
+          }
+        });
 
-      session.trainingIntervs.forEach((interv) => {
-        const existingIndex = uniqueInterviewers.findIndex(
-          (existingInterv) => existingInterv.user_id === interv.user_id,
-        );
+        session.trainingIntervs.forEach((interv) => {
+          const existingIndex = uniqueInterviewers.findIndex(
+            (existingInterv) => existingInterv.user_id === interv.user_id,
+          );
 
-        if (existingIndex === -1) {
-          // Push the interv object directly if it doesn't already exist in the array
-          uniqueInterviewers.push(interv);
-        }
+          if (existingIndex === -1) {
+            // Push the interv object directly if it doesn't already exist in the array
+            uniqueInterviewers.push(interv);
+          }
+        });
       });
     });
-  });
 
   return (
     <Stack width={'100%'}>

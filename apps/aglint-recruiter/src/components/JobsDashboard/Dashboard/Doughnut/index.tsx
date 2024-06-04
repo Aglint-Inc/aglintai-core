@@ -107,14 +107,8 @@ const DashboardDoughnutChart: FC<{
   const safeLocations = getOrderedGraphValues(locations);
   return (
     <Stack
-      sx={{
-        bgcolor: '#F7F9FB',
-        p: '24px',
-        borderRadius: '16px',
-      }}
       display={'flex'}
       flexDirection={'column'}
-      spacing={'16px'}
       width={'100%'}
     >
       <Stack

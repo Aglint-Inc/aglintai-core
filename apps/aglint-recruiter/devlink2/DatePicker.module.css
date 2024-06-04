@@ -26,6 +26,7 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
+  z-index: 1;
 
   border-color: #1f73b7;
 
@@ -96,6 +97,7 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
+  z-index: 2;
 
   border-radius: 10px;
 

@@ -619,13 +619,6 @@ function SchedulingSettings({
                         );
                       })}
                       <Dialog
-                        sx={{
-                          '& .MuiDialog-paper': {
-                            background: 'transparent',
-                            border: 'none',
-                            borderRadius: '10px',
-                          },
-                        }}
                         open={open}
                         onClose={() => {
                           // resetState();
@@ -857,15 +850,9 @@ function SchedulingSettings({
                                   return pre.filter((ele) => ele !== item);
                                 });
                               }}
-                              sx={{
-                                p: '5px',
-                              }}
                               deleteIcon={
                                 <IconButton>
                                   <Icon
-                                    width='14'
-                                    height='14'
-                                    color='grey'
                                     variant='CloseThinIcon'
                                   />
                                 </IconButton>
@@ -911,15 +898,9 @@ function SchedulingSettings({
                                   return pre.filter((ele) => ele !== item);
                                 });
                               }}
-                              sx={{
-                                p: '5px',
-                              }}
                               deleteIcon={
                                 <IconButton>
                                   <Icon
-                                    width='14'
-                                    height='14'
-                                    color='grey'
                                     variant='CloseThinIcon'
                                   />
                                 </IconButton>
@@ -965,15 +946,9 @@ function SchedulingSettings({
                                   return pre.filter((ele) => ele !== item);
                                 });
                               }}
-                              sx={{
-                                p: '5px',
-                              }}
                               deleteIcon={
                                 <IconButton>
                                   <Icon
-                                    width='14'
-                                    height='14'
-                                    color='grey'
                                     variant='CloseThinIcon'
                                   />
                                 </IconButton>
@@ -1019,15 +994,9 @@ function SchedulingSettings({
                                   return pre.filter((ele) => ele !== item);
                                 });
                               }}
-                              sx={{
-                                p: '5px',
-                              }}
                               deleteIcon={
                                 <IconButton>
                                   <Icon
-                                    width='14'
-                                    height='14'
-                                    color='grey'
                                     variant='CloseThinIcon'
                                   />
                                 </IconButton>

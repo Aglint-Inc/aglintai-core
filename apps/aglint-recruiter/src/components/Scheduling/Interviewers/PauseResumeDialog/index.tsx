@@ -104,13 +104,6 @@ function PauseResumeDialog({
   return (
     <>
       <Dialog
-        sx={{
-          '& .MuiDialog-paper': {
-            background: 'transparent',
-            border: 'none',
-            borderRadius: '10px',
-          },
-        }}
         open={pauseResumeDialog.isOpen}
         onClose={() => {
           // resetState();

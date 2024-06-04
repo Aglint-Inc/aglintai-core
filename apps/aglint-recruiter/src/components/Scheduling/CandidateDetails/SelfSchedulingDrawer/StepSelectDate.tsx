@@ -77,12 +77,13 @@ function SelectDateRange() {
       );
 
       if (res.status === 200) {
-        const respTyped = res.data as ApiResponseFindAvailability;
-        if (respTyped.plan_combs.length === 0) {
+        const slots = res.data as ApiResponseFindAvailability;
+
+        if (slots.length === 0) {
           setNoOptions(true);
           toast.error('No availability found.');
         } else {
-          setSchedulingOptions(respTyped.plan_combs);
+          setSchedulingOptions(slots);
           setStepScheduling('preference');
         }
       } else {

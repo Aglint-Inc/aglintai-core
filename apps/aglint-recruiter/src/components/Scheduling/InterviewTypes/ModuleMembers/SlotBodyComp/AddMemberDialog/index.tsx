@@ -63,13 +63,6 @@ function SettingsDialog({ editModule }: { editModule: ModuleType }) {
 
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isSettingDialogOpen}
       onClose={() => {
         setIsSettingsDialogOpen(false);

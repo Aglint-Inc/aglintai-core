@@ -6,10 +6,9 @@ import { capitalize } from 'lodash';
 import posthog from 'posthog-js';
 import { useRef, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink2/ButtonSoft';
+import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { IntegrationCard } from '@/devlink2/IntegrationCard';
-import { ButtonGrey } from '@/devlink3/ButtonGrey';
-import { ButtonPrimaryDefaultRegular } from '@/devlink3/ButtonPrimaryDefaultRegular';
-import { ButtonPrimaryOutlinedRegular } from '@/devlink3/ButtonPrimaryOutlinedRegular';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
 
@@ -393,25 +392,35 @@ function CardButtons({
 }) {
   return (
     <>
-      <ButtonGrey
+      <ButtonSoft
+        size='2'
+        isLeftIcon={false}
+        isRightIcon={false}
+        color={'neutral'}
         onClickButton={{
           onClick: secondaryAction,
         }}
-        textLabel={secondaryText}
+        textButton={secondaryText}
       />
       {primaryText === 'Edit API Key' ? (
-        <ButtonPrimaryOutlinedRegular
-          buttonProps={{
+        <ButtonSoft
+          size='2'
+          isLeftIcon={false}
+          isRightIcon={false}
+          onClickButton={{
             onClick: primaryAction,
           }}
-          buttonText={primaryText}
+          textButton={primaryText}
         />
       ) : (
-        <ButtonPrimaryDefaultRegular
-          buttonProps={{
+        <ButtonSolid
+          size='2'
+          isLeftIcon={false}
+          isRightIcon={false}
+          onClickButton={{
             onClick: primaryAction,
           }}
-          buttonText={primaryText}
+          textButton={primaryText}
         />
       )}
     </>

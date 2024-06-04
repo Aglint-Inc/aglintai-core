@@ -14,14 +14,11 @@ export function DatePicker({
   isDisable = false,
 }) {
   return (
-    <_Component
-      className={_utils.cx(_styles, "div-block-1720")}
-      tag="div"
-      {...onClickDate}
-    >
+    <_Component className={_utils.cx(_styles, "div-block-1720")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1719")}
         tag="div"
+        {...onClickDate}
       >
         <_Builtin.Block tag="div">{textMonth}</_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "text-30")} tag="div">
@@ -35,6 +32,7 @@ export function DatePicker({
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1719", "active")}
           tag="div"
+          {...onClickDate}
         >
           <_Builtin.Block tag="div">{textMonth}</_Builtin.Block>
           <_Builtin.Block className={_utils.cx(_styles, "text-30")} tag="div">

@@ -97,7 +97,7 @@ const AddRolesDialog: React.FC<RolesProps> = ({
                 return (
                   <li
                     {...props}
-                    style={{ background: '#d8dcde50', margin: '1px' }}
+                    // style={{ background: '#d8dcde50', margin: '1px' }}
                   >
                     <Stack
                       direction={'row'}

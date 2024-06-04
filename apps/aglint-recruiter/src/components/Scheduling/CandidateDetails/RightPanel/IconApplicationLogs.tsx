@@ -53,10 +53,7 @@ function IconApplicationLogs({
             act.recruiter_user?.last_name,
           )}
           src={act.recruiter_user?.profile_image}
-          variant={'circular'}
-          height={'24px'}
-          width={'24px'}
-          fontSize={'10px'}
+          variant={'rounded-small'}
         />
       ) : (
         ''

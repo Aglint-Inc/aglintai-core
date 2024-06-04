@@ -36,8 +36,7 @@ function Transcript({ setOpenPanelDrawer, conversations, interviewerImage }) {
               <InterviewCandidateCard
                 slotCandidateImage={
                   <MuiAvatar
-                    width={'24px'}
-                    height={'24px'}
+                  variant='rounded-small'
                     src={interviewerImage}
                   />
                 }

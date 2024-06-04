@@ -97,13 +97,6 @@ function RequestRescheduleDialog({
 
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isRequestRescheduleOpen}
       onClose={() => {
         setIsRequestRescheduleOpen(false);

@@ -112,13 +112,6 @@ function PhoneFollowUp() {
   }
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={openPhoneFollowUp}
       onClose={closePopUp}
       maxWidth={'md'}

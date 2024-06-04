@@ -130,10 +130,7 @@ export function Modules() {
                                       user.first_name,
                                       user.last_name,
                                     )}
-                                    variant='circular'
-                                    height='26px'
-                                    width='26px'
-                                    fontSize='12px'
+                                    variant='rounded-small'
                                   />
                                 );
                               })}

@@ -1,10 +1,9 @@
 import { capitalize } from 'lodash';
-import React from 'react';
 
 import { IntegrationCard } from '@/devlink2/IntegrationCard';
 
 import { MessagingToolsType } from '../types';
-import { SlackLogo, TeamsLogo } from '../utils';
+import { SlackLogo } from '../utils';
 
 function MessagingTools() {
   const messagingTools = [
@@ -13,11 +12,11 @@ function MessagingTools() {
       url: 'slack.com',
       logo: <SlackLogo />,
     },
-    {
-      name: 'teams' as MessagingToolsType,
-      url: 'teams.live.com',
-      logo: <TeamsLogo />,
-    },
+    // {
+    //   name: 'teams' as MessagingToolsType,
+    //   url: 'teams.live.com',
+    //   logo: <TeamsLogo />,
+    // },
   ];
 
   return (
