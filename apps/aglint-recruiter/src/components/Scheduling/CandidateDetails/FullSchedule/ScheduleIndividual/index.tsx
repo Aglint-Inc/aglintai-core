@@ -129,10 +129,6 @@ function ScheduleIndividualCard({
           <Checkbox
             size='small'
             checked={selectedSessionIds.includes(session.id)}
-            onChange={(e) => {
-              e.stopPropagation();
-              onClickCheckBox({ session });
-            }}
           />
         ) : (
           <Stack width={'18px'}></Stack>

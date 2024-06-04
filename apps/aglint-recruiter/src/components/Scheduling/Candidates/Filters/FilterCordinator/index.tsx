@@ -190,7 +190,7 @@ function FilterCordinator() {
                             option.last_name,
                           )}
                           src={option.profile_image}
-                          variant={'roudend-small'}
+                          variant={'rounded-small'}
                         />
                       }
                       textMemberName={getFullName(

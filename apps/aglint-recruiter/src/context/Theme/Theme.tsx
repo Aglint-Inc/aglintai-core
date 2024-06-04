@@ -1,9 +1,27 @@
 import { createTheme, TextField } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
+import { TypographyOptions } from '@mui/material/styles/createTypography';
 import * as radixColors from '@radix-ui/colors';
 import React, { useState } from 'react';
 
 import AppContext from './context';
+
+declare module '@mui/material/Typography' {
+  // eslint-disable-next-line no-unused-vars
+  interface TypographyPropsVariantOverrides {
+    body1medium: true;
+    body1bold: true;
+    body2medium: true;
+    body2bold: true;
+  }
+}
+
+interface ExtendedTypographyOptions extends TypographyOptions {
+  body1medium: React.CSSProperties;
+  body1bold: React.CSSProperties;
+  body2medium: React.CSSProperties;
+  body2bold: React.CSSProperties;
+}
 
 function Theme({ children }) {
   const [color, setColor] = useState('#1976d2');
@@ -12,13 +30,10 @@ function Theme({ children }) {
     breakpoints: {
       values: {
         xs: 0,
-        ss: 400,
         sm: 600,
-        mm: 750,
         md: 960,
         lg: 1280,
         xl: 1536,
-        xxl: 1920,
       },
     },
     palette: {
@@ -52,27 +67,18 @@ function Theme({ children }) {
         main: radixColors.jade.jade9,
         contrastText: radixColors.whiteA.whiteA12,
       },
+
       background: {
-        primary: radixColors.sand.sand1,
-        secondary: radixColors.sand.sand3,
         default: radixColors.sand.sand2,
         paper: radixColors.sand.sand2,
-        kale: radixColors.sand.sand12,
       },
       text: {
         primary: radixColors.sand.sand12,
         secondary: radixColors.sand.sand11,
         disabled: radixColors.sand.sand8,
-        hint: radixColors.sand.sand9,
-      },
-      border: {
-        main: radixColors.sand.sand7,
-      },
-      bordercolor: {
-        main: radixColors.sand.sand8,
       },
     },
-    
+
     typography: {
       fontFamily: 'var(--text)',
       h1: {
@@ -209,7 +215,7 @@ function Theme({ children }) {
         textTransform: 'uppercase',
         color: 'var(--neutral-11)',
       },
-    },
+    } as ExtendedTypographyOptions,
     components: {
       MuiButton: {
         defaultProps: {
@@ -352,11 +358,6 @@ function Theme({ children }) {
         },
       },
       MuiInputBase: {
-        defaultProps: {
-          size: 'small',
-          variant: 'outlined',
-          disableRipple: true, // Disable ripple effect globally for all components
-        },
         styleOverrides: {
           root: {
             padding: 'var(--space-1) var(--space-2)',
@@ -413,7 +414,8 @@ function Theme({ children }) {
             '& .MuiOutlinedInput-notchedOutline': {
               top: 0,
             },
-            '& .MuiButtonBase-root': { // Button inside textfield  
+            '& .MuiButtonBase-root': {
+              // Button inside textfield
               paddingRight: 'var(--space-3)',
             },
           },
@@ -569,9 +571,6 @@ function Theme({ children }) {
         },
       },
       MuiRadioGroup: {
-        defaultProps: {
-          disableRipple: true, // No more ripple, on the whole application
-        },
         styleOverrides: {
           root: {
             gap: 'var(--space-2)',
@@ -703,9 +702,8 @@ function Theme({ children }) {
             // fontSize: 'var(--font-size-2)',
             // lineHeight: 'var(--line-height-2)',
             // letterSpacing: 'var(--letter-spacing-2)',
-          }
+          },
         },
-        
       },
       MuiCircularProgress: {
         styleOverrides: {
@@ -715,14 +713,14 @@ function Theme({ children }) {
         },
       },
 
-      MuiTimePicker: {
-        styleOverrides: {
-          root: {
-            padding: 'var(--space-2)',
-            fontFamily: 'var(--text)', // Use --text for font
-          },
-        },
-      },
+      // MuiTimePicker: {
+      //   styleOverrides: {
+      //     root: {
+      //       padding: 'var(--space-2)',
+      //       fontFamily: 'var(--text)', // Use --text for font
+      //     },
+      //   },
+      // },
       MuiCollapse: {
         styleOverrides: {
           root: {
@@ -730,54 +728,54 @@ function Theme({ children }) {
           },
         },
       },
-      MuiDateCalendar: {
-        styleOverrides: {
-          root: {
-            padding: 'var(--space-2)',
-            fontFamily: 'var(--text)', // Use --text for font
-          },
-        },
-      },
-      MuiDatePicker: {
-        styleOverrides: {
-          root: {
-            padding: 'var(--space-2)',
-            fontFamily: 'var(--text)', // Use --text for font
-          },
-        },
-      },
-      MuiDateRangeCalendar: {
-        styleOverrides: {
-          root: {
-            padding: 'var(--space-2)',
-            fontFamily: 'var(--text)', // Use --text for font
-          },
-        },
-      },
-      MuiDesktopDatePicker: {
-        styleOverrides: {
-          root: {
-            padding: 'var(--space-2)',
-            fontFamily: 'var(--text)', // Use --text for font
-          },
-        },
-      },
-      MuiDesktopDateTimePicker: {
-        styleOverrides: {
-          root: {
-            padding: 'var(--space-2)',
-            fontFamily: 'var(--text)', // Use --text for font
-          },
-        },
-      },
-      MuiDesktopTimePicker: {
-        styleOverrides: {
-          root: {
-            padding: 'var(--space-2)',
-            fontFamily: 'var(--text)', // Use --text for font
-          },
-        },
-      },
+      // MuiDateCalendar: {
+      //   styleOverrides: {
+      //     root: {
+      //       padding: 'var(--space-2)',
+      //       fontFamily: 'var(--text)', // Use --text for font
+      //     },
+      //   },
+      // },
+      // MuiDatePicker: {
+      //   styleOverrides: {
+      //     root: {
+      //       padding: 'var(--space-2)',
+      //       fontFamily: 'var(--text)', // Use --text for font
+      //     },
+      //   },
+      // },
+      // MuiDateRangeCalendar: {
+      //   styleOverrides: {
+      //     root: {
+      //       padding: 'var(--space-2)',
+      //       fontFamily: 'var(--text)', // Use --text for font
+      //     },
+      //   },
+      // },
+      // MuiDesktopDatePicker: {
+      //   styleOverrides: {
+      //     root: {
+      //       padding: 'var(--space-2)',
+      //       fontFamily: 'var(--text)', // Use --text for font
+      //     },
+      //   },
+      // },
+      // MuiDesktopDateTimePicker: {
+      //   styleOverrides: {
+      //     root: {
+      //       padding: 'var(--space-2)',
+      //       fontFamily: 'var(--text)', // Use --text for font
+      //     },
+      //   },
+      // },
+      // MuiDesktopTimePicker: {
+      //   styleOverrides: {
+      //     root: {
+      //       padding: 'var(--space-2)',
+      //       fontFamily: 'var(--text)', // Use --text for font
+      //     },
+      //   },
+      // },
 
       MuiMenu: {
         styleOverrides: {
@@ -785,7 +783,7 @@ function Theme({ children }) {
             padding: 0,
             borderRadius: 'var(--radius-2)',
             '& .MuiMenu-list': {
-                padding: 0,
+              padding: 0,
             },
           },
         },
@@ -806,7 +804,7 @@ function Theme({ children }) {
           },
         },
       },
-      
+
       MuiSkeleton: {
         styleOverrides: {
           root: {
@@ -834,15 +832,15 @@ function Theme({ children }) {
           },
         },
       },
- 
-      MuiStaticDateTimePicker: {
-        styleOverrides: {
-          root: {
-            padding: 'var(--space-2)',
-            fontFamily: 'var(--text)', // Use --text for font
-          },
-        },
-      },
+
+      // MuiStaticDateTimePicker: {
+      //   styleOverrides: {
+      //     root: {
+      //       padding: 'var(--space-2)',
+      //       fontFamily: 'var(--text)', // Use --text for font
+      //     },
+      //   },
+      // },
 
       MuiTooltip: {
         styleOverrides: {
@@ -962,13 +960,13 @@ function Theme({ children }) {
           },
         },
       },
-      MuiBox: {
-        styleOverrides: {
-          root: {
-            padding: 'var(--space-2)',
-          },
-        },
-      },
+      // MuiBox: {
+      //   styleOverrides: {
+      //     root: {
+      //       padding: 'var(--space-2)',
+      //     },
+      //   },
+      // },
       MuiStack: {
         styleOverrides: {
           root: {
@@ -979,7 +977,7 @@ function Theme({ children }) {
               borderColor: 'var(--accent-9)',
               outline: 'none !important',
             },
-            '& .react-tel-input .form-control:hover':{
+            '& .react-tel-input .form-control:hover': {
               borderColor: 'var(--neutral-9)',
             },
             '& .react-tel-input .flag-dropdown:focus': {
@@ -1025,7 +1023,7 @@ function Theme({ children }) {
           },
         },
       },
-            
+
       MuiSnackbarContent: {
         styleOverrides: {
           root: {
@@ -1062,8 +1060,7 @@ function Theme({ children }) {
       //     },
       //   },
       // },
-    }
-    
+    },
   });
 
   return (
@@ -1073,7 +1070,6 @@ function Theme({ children }) {
   );
 }
 export default Theme;
-
 
 // Create a theme instance.
 

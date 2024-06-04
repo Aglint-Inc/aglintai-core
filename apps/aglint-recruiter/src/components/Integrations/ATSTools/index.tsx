@@ -9,9 +9,6 @@ import { useRef, useState } from 'react';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { IntegrationCard } from '@/devlink2/IntegrationCard';
-import { ButtonGrey } from '@/devlink3/ButtonGrey';
-import { ButtonPrimaryDefaultRegular } from '@/devlink3/ButtonPrimaryDefaultRegular';
-import { ButtonPrimaryOutlinedRegular } from '@/devlink3/ButtonPrimaryOutlinedRegular';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
 
@@ -397,8 +394,8 @@ function CardButtons({
     <>
       <ButtonSoft
         size='2'
-        isLeftIcon=''
-        isRightIcon=''
+        isLeftIcon={false}
+        isRightIcon={false}
         color={'neutral'}
         onClickButton={{
           onClick: secondaryAction,
@@ -408,8 +405,8 @@ function CardButtons({
       {primaryText === 'Edit API Key' ? (
         <ButtonSoft
           size='2'
-          isLeftIcon=''
-          isRightIcon=''
+          isLeftIcon={false}
+          isRightIcon={false}
           onClickButton={{
             onClick: primaryAction,
           }}
@@ -418,8 +415,8 @@ function CardButtons({
       ) : (
         <ButtonSolid
           size='2'
-          isLeftIcon=''
-          isRightIcon=''
+          isLeftIcon={false}
+          isRightIcon={false}
           onClickButton={{
             onClick: primaryAction,
           }}

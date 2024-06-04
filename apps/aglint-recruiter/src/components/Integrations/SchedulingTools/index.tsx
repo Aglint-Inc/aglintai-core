@@ -5,14 +5,11 @@ import { capitalize } from 'lodash';
 import { useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
-import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { IntegrationCard } from '@/devlink2/IntegrationCard';
 import { IntegrationUpload } from '@/devlink2/IntegrationUpload';
 import { ToggleButton } from '@/devlink2/ToggleButton';
-import { ButtonGrey } from '@/devlink3/ButtonGrey';
-import { ButtonPrimaryOutlinedRegular } from '@/devlink3/ButtonPrimaryOutlinedRegular';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -423,8 +420,8 @@ function CardButtons({
     <>
       <ButtonSoft
         size='2'
-        isLeftIcon=''
-        isRightIcon=''
+        isLeftIcon={false}
+        isRightIcon={false}
         color={'neutral'}
         onClickButton={{
           onClick: secondaryAction,
@@ -436,8 +433,8 @@ function CardButtons({
       primaryText === 'Re-Upload' ? (
         <ButtonSoft
           size='2'
-          isLeftIcon=''
-          isRightIcon=''
+          isLeftIcon={false}
+          isRightIcon={false}
           onClickButton={{
             onClick: primaryAction,
           }}
@@ -446,8 +443,8 @@ function CardButtons({
       ) : (
         <ButtonSolid
           size='2'
-          isLeftIcon=''
-          isRightIcon=''
+          isLeftIcon={false}
+          isRightIcon={false}
           onClickButton={{
             onClick: primaryAction,
           }}
