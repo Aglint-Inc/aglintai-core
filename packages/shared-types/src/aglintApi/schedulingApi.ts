@@ -73,6 +73,7 @@ export type APIOptions = {
     day_off?: boolean;
     holiday?: boolean;
     out_of_working_hrs?: boolean;
+    day_passed: boolean;
   };
 };
 
@@ -110,12 +111,7 @@ export type CandReqAvailableSlots = {
   candidate_tz: string;
   current_interview_day: number; // starts from 1
   previously_selected_dates: string[];
-  options?: {
-    cand_start_hour: number;
-    cand_end_hour: number;
-    show_slots_saturday: boolean;
-    show_slots_sunday: boolean;
-  };
+  options?: APIOptions;
 };
 
 export type APIGetCandidateSelectedSlots = {
