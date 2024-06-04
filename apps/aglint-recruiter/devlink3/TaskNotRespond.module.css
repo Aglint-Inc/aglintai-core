@@ -15,10 +15,6 @@
   color: #703815;
 }
 
-.fw-semibold {
-  font-weight: 600;
-}
-
 .div-block-1759 {
   display: flex;
   justify-content: flex-start;
@@ -53,16 +49,6 @@
 
 .cursor-pointer {
   cursor: pointer;
-}
-
-.icons.cursor-pointer.mr-20 {
-  margin-right: 20px;
-  transition-property: none;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
 }
 
 .icons.task-hover {
@@ -117,12 +103,12 @@
   text-transform: uppercase;
 }
 
-.text-grey-600 {
-  color: #68737d;
+.fw-semibold {
+  font-weight: 600;
 }
 
-.hide {
-  display: none;
+.text-grey-600 {
+  color: #68737d;
 }
 
 .text-grey-600.text-underline {

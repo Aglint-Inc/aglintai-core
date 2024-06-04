@@ -110,16 +110,6 @@
   cursor: pointer;
 }
 
-.icons.cursor-pointer.mr-20 {
-  margin-right: 20px;
-  transition-property: none;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
 .icons.task-hover {
   position: absolute;
   left: 50px;
@@ -152,10 +142,6 @@
   border-radius: 6px;
 
   background-color: #f7f9fb;
-}
-
-.interviewscount.no-width {
-  width: auto;
 }
 
 .div-block-1707 {

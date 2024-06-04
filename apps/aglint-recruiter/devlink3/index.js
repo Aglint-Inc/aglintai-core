@@ -1,5 +1,9 @@
 "use client";
 
+console.warn(
+  "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
+);
+
 export * as _Builtin from "./_Builtin";
 export * from "./devlinkContext";
 export * from "./interactions";
@@ -25,9 +29,14 @@ export * from "./BannerLoading";
 export * from "./BannerWarning";
 export * from "./BodyWithSidePanel";
 export * from "./ButtonDangerOutlinedRegular";
+export * from "./ButtonGhost";
 export * from "./ButtonGrey";
+export * from "./ButtonOutlined";
 export * from "./ButtonPrimaryDefaultRegular";
 export * from "./ButtonPrimaryOutlinedRegular";
+export * from "./ButtonSoft";
+export * from "./ButtonSolid";
+export * from "./ButtonSurface";
 export * from "./CandidateCard";
 export * from "./CandidateFeedback";
 export * from "./CandidateInterviewButton";
@@ -64,6 +73,7 @@ export * from "./DashboardWarning";
 export * from "./DateOption";
 export * from "./DatePickerBody";
 export * from "./DebriefDefaults";
+export * from "./DeletePopup";
 export * from "./DevLinkProvider";
 export * from "./Divider";
 export * from "./DragPill";
@@ -214,7 +224,6 @@ export * from "./TimelineBlock";
 export * from "./TimelineDummyOne";
 export * from "./TimelineDummyTwo";
 export * from "./TimelineEmpty";
-export * from "./TimeRangeSelector";
 export * from "./ToggleWithText";
 export * from "./TrainingProgress";
 export * from "./TrainingProgressList";

@@ -3,6 +3,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { TaskUpdateButton } from "./TaskUpdateButton";
+import { Text } from "./Text";
 import { NewTaskCard } from "./NewTaskCard";
 import { TaskTableCard } from "./TaskTableCard";
 import * as _utils from "./utils";
@@ -59,82 +60,57 @@ export function TaskTable({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1435")}
+            className={_utils.cx(_styles, "task_row_cell")}
             id={_utils.cx(
               _styles,
               "w-node-e2a009d4-d014-04d6-b837-039f401c4ecb-401c4ec4"
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500")}
-              tag="div"
-            >
-              {"Task"}
-            </_Builtin.Block>
+            <Text weight="medium" content="Task" />
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1435")}
+            className={_utils.cx(_styles, "task_row_cell")}
             id={_utils.cx(
               _styles,
               "w-node-e2a009d4-d014-04d6-b837-039f401c4ec8-401c4ec4"
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500")}
-              tag="div"
-            >
-              {"Status"}
-            </_Builtin.Block>
+            <Text weight="medium" content="Status" />
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1435")}
+            className={_utils.cx(_styles, "task_row_cell")}
             id={_utils.cx(
               _styles,
               "w-node-_98446a6e-7f10-ed73-7fea-bb5776f6dc5c-401c4ec4"
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500")}
-              tag="div"
-            >
-              {"Priority"}
-            </_Builtin.Block>
+            <Text weight="medium" content="Priority" />
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1435")}
+            className={_utils.cx(_styles, "task_row_cell")}
             id={_utils.cx(
               _styles,
               "w-node-e2a009d4-d014-04d6-b837-039f401c4ece-401c4ec4"
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500")}
-              tag="div"
-            >
-              {"Assignee"}
-            </_Builtin.Block>
+            <Text weight="medium" content="Assignee" />
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1435", "gap-8")}
+            className={_utils.cx(_styles, "task_row_cell", "gap-8")}
             id={_utils.cx(
               _styles,
               "w-node-e2a009d4-d014-04d6-b837-039f401c4ed1-401c4ec4"
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500")}
-              tag="div"
-            >
-              {"Job"}
-            </_Builtin.Block>
+            <Text weight="medium" content="Job" />
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1435", "hide")}
+            className={_utils.cx(_styles, "task_row_cell", "hide")}
             id={_utils.cx(
               _styles,
               "w-node-e2a009d4-d014-04d6-b837-039f401c4ed4-401c4ec4"

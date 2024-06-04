@@ -3,6 +3,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { JobsBanner } from "./JobsBanner";
+import { Text } from "./Text";
 import { PipeLine } from "./PipeLine";
 import { ScheduleCardSmall } from "./ScheduleCardSmall";
 import { GraphBlock } from "./GraphBlock";
@@ -24,8 +25,8 @@ export function JobDashboard({
   textBelowAveragePercentage = "27%",
   textNotAMatchPercentage = "27%",
   textTopMatchCount = "11 Candidates",
-  textGoodMatchCount = "11 Candidates",
-  textAveageMatchCount = "11 Candidates",
+  textGoodMatchCount = "12 Candidates",
+  textAveageMatchCount = "13 Candidates",
   textBelowAverageCount = "11 Candidates",
   textNotAMatchCount = "11 Candidates",
   slotPipeline,
@@ -104,12 +105,7 @@ export function JobDashboard({
                 className={_utils.cx(_styles, "candidate_flex")}
                 tag="div"
               >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-gray-600")}
-                  tag="div"
-                >
-                  {textTopMatchCount}
-                </_Builtin.Block>
+                <Text content={textTopMatchCount} weight="" color="neutral" />
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
@@ -133,12 +129,7 @@ export function JobDashboard({
                 className={_utils.cx(_styles, "candidate_flex")}
                 tag="div"
               >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-gray-600")}
-                  tag="div"
-                >
-                  {textGoodMatchCount}
-                </_Builtin.Block>
+                <Text content={textGoodMatchCount} weight="" color="neutral" />
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
@@ -162,12 +153,11 @@ export function JobDashboard({
                 className={_utils.cx(_styles, "candidate_flex")}
                 tag="div"
               >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-gray-600")}
-                  tag="div"
-                >
-                  {textAveageMatchCount}
-                </_Builtin.Block>
+                <Text
+                  content={textAveageMatchCount}
+                  weight=""
+                  color="neutral"
+                />
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
@@ -191,12 +181,11 @@ export function JobDashboard({
                 className={_utils.cx(_styles, "candidate_flex")}
                 tag="div"
               >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-gray-600")}
-                  tag="div"
-                >
-                  {textBelowAverageCount}
-                </_Builtin.Block>
+                <Text
+                  content={textBelowAverageCount}
+                  weight=""
+                  color="neutral"
+                />
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
@@ -220,12 +209,7 @@ export function JobDashboard({
                 className={_utils.cx(_styles, "candidate_flex")}
                 tag="div"
               >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-gray-600")}
-                  tag="div"
-                >
-                  {textNotAMatchCount}
-                </_Builtin.Block>
+                <Text content={textNotAMatchCount} weight="" color="neutral" />
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
@@ -560,12 +544,7 @@ export function JobDashboard({
               className={_utils.cx(_styles, "div-block-1711-copy")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-sm")}
-                tag="div"
-              >
-                {"Settings"}
-              </_Builtin.Block>
+              <Text content="Settings" color="neutral" size="1" weight="" />
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "module_card_wrapper")}
@@ -573,6 +552,9 @@ export function JobDashboard({
             >
               {slotModuleCard ?? (
                 <>
+                  <ModuleCard textName="Profile Score" />
+                  <ModuleCard textName="Profile Score" />
+                  <ModuleCard textName="Profile Score" />
                   <ModuleCard textName="Profile Score" />
                   <ModuleCard textName="Profile Score" />
                 </>

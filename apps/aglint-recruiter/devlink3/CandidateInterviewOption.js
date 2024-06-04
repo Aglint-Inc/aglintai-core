@@ -13,7 +13,11 @@ export function CandidateInterviewOption({
   isQualifiedVisible = true,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1614")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "div-block-1614")}
+      tag="div"
+      box-shadow="3"
+    >
       <_Builtin.Block className={_utils.cx(_styles, "text-grey-500")} tag="div">
         {textCurrentStats}
       </_Builtin.Block>

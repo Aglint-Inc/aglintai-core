@@ -18,7 +18,11 @@ export function EditOptionModule({
   isResendInviteVisible = true,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1329")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "div-block-1329")}
+      tag="div"
+      shadow="3"
+    >
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1331")}
         tag="div"

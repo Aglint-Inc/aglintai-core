@@ -1,6 +1,9 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
+import { ButtonSoft } from "./ButtonSoft";
+import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./DashboardWarning.module.css";
 
@@ -40,35 +43,24 @@ export function DashboardWarning({
           )}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {textWarningTitle}
-          </_Builtin.Block>
-          <_Builtin.Block tag="div">{textDesc}</_Builtin.Block>
+          <Text content={textWarningTitle} weight="medium" />
+          <Text content={textDesc} weight="" size="1" color="neutral" />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "right_buttons")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-block-29", "cursor-pointer")}
-            tag="div"
-            {...onClickDismiss}
-          >
-            {"Ignore"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "button_primary")}
-            tag="div"
-            {...onClickView}
-          >
-            <_Builtin.Block tag="div">
-              {"View"}
-              <br />
-            </_Builtin.Block>
-          </_Builtin.Block>
+          <ButtonSoft
+            onClickButton={onClickDismiss}
+            size="2"
+            textButton="Ignore"
+          />
+          <ButtonSolid
+            onClickButton={onClickView}
+            size="2"
+            highContrast="true"
+            textButton="View"
+          />
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
