@@ -5,6 +5,9 @@ import { memo, useCallback, useMemo } from 'react';
 import { CandidateListItem } from '@/devlink2/CandidateListItem';
 import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 
+import ResumeScore from '../resumeScore';
+import { formatTimeStamp } from '../utils';
+
 const ApplicationCard = memo(
   ({ application }: { application: DatabaseView['application_view'] }) => {
     const { checklist, setChecklist, currentApplication } =
@@ -32,6 +35,20 @@ const ApplicationCard = memo(
       else setChecklist([...checklist, application.id]);
     }, [checklist, isChecked, application]);
 
+    const location = useMemo(
+      () =>
+        [application.city, application.country]
+          .filter(Boolean)
+          .join(', ')
+          .trim(),
+      [application.city, application.country],
+    );
+
+    const appliedDate = useMemo(
+      () => formatTimeStamp(application.applied_at),
+      [application.applied_at],
+    );
+
     return (
       <CandidateListItem
         slotBookmark={<Banners application={application} />}
@@ -40,12 +57,17 @@ const ApplicationCard = memo(
         isChecked={isChecked}
         slotProfileImage={<></>}
         name={application.name}
-        jobTitle={'---'}
-        location={application.city}
-        slotResumeScore={application.resume_score}
+        jobTitle={application.current_job_title || '---'}
+        location={location || '---'}
+        slotResumeScore={
+          <ResumeScore
+            resume_processing_state={application.resume_processing_state}
+            resume_score={application.resume_score}
+          />
+        }
         isInterviewVisible={false}
         slotAssessmentScore={application.interview_score}
-        appliedDate={application.applied_at}
+        appliedDate={appliedDate}
         isHighlighted={isSelected}
         isScreeningVisible={false}
         slotScreening={<></>}

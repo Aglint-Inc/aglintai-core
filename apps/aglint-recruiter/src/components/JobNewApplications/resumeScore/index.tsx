@@ -4,7 +4,7 @@ import { Stack, Tooltip } from '@mui/material';
 import { ResumeTag } from '@/devlink2/ResumeTag';
 import { CalculatingResumeScore } from '@/public/lottie/CalculatingResumeScore';
 
-import { ResumeScoreTag } from '../../ResumeScoreTag';
+import { ScoreTag } from './scoreTag';
 
 const ResumeScore = ({
   resume_processing_state,
@@ -51,7 +51,7 @@ const ResumeScore = ({
         </Tooltip>
       );
     case 'processed':
-      return <ResumeScoreTag score={resume_score} />;
+      return <ScoreTag score={resume_score} />;
   }
 };
 
