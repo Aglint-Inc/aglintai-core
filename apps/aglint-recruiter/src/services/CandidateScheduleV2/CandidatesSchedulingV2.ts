@@ -4,6 +4,7 @@ import {
   APIOptions,
   CalConflictType,
   ConflictReason,
+  DatabaseTable,
   InterviewSessionApiRespType,
   PauseJson,
   PlanCombinationRespType,
@@ -202,8 +203,68 @@ export class CandidatesSchedulingV2 {
     return findAllDayPlans();
   }
 
-  public verifyIntSelectedSlots = () => {
-    const { verifySlot } = this.calcMeetingCombinsForPlan();
+  public verifyIntSelectedSlots = (
+    date_range_slots: PlanCombinationRespType[][][],
+  ) => {
+    for (const curr_int_day_slots of date_range_slots) {
+      for (const curr_round_slots of curr_int_day_slots) {
+        const cached_free_time = new Map<string, TimeDurationType[]>();
+
+        for (const curr_slot of curr_round_slots) {
+          const cand_date = userTzDayjs(curr_slot.sessions[0].start_time).tz(
+            this.api_payload.candidate_tz,
+          );
+          const { verifyCurrDaySlot } = this.calcMeetingCombinsForPlan(
+            cand_date,
+            curr_slot.sessions,
+            cached_free_time,
+          );
+          verifyCurrDaySlot(curr_slot.sessions);
+        }
+      }
+    }
+  };
+
+  public getCandidateSelectedSlots = (
+    cand_selected_slots: DatabaseTable['candidate_request_availability']['slots'],
+  ) => {
+    const session_rounds = this.getSessionRounds();
+    let ints_combs_for_each_round = calcIntsCombsForEachSessionRound(
+      session_rounds,
+      this.api_options.make_training_optional,
+    );
+    let all_combs: PlanCombinationRespType[][][] = [];
+    for (
+      let curr_round_idx = 0;
+      curr_round_idx < session_rounds.length;
+      ++curr_round_idx
+    ) {
+      const current_round_int_combs = ints_combs_for_each_round[curr_round_idx];
+      const current_round_combs: PlanCombinationRespType[][] = [];
+      for (let curr_date_slots of cand_selected_slots[curr_round_idx].dates) {
+        const cand_date = userTzDayjs(curr_date_slots.curr_day).tz(
+          this.api_payload.candidate_tz,
+        );
+
+        const curr_day_slots = this.findFixedBreakSessionCombs(
+          current_round_int_combs,
+          cand_date,
+        );
+        const curr_day_combs: PlanCombinationRespType[] = [];
+        curr_date_slots.slots.forEach((slot_time) => {
+          const comb = curr_day_slots.find(
+            (c) => c.sessions[0].start_time === slot_time.startTime,
+          );
+          if (comb) {
+            curr_day_combs.push({ ...comb });
+          }
+        });
+        current_round_combs.push([...curr_day_combs]);
+      }
+
+      all_combs.push([...current_round_combs]);
+    }
+    return all_combs;
   };
 
   public async ignoreTrainee() {
@@ -977,14 +1038,16 @@ export class CandidatesSchedulingV2 {
       return schedule_combs;
     };
 
-    const verifySlot = () => {
-      const cand_time = userTzDayjs().tz(this.api_payload.candidate_tz);
+    const verifyCurrDaySlot = (slot: SessionCombinationRespType[]) => {
+      const cand_time = userTzDayjs(slot[0].start_time).tz(
+        this.api_payload.candidate_tz,
+      );
       const slot_comb_conflicts = getSessionsAvailability(
         0,
         cand_time.format(),
       );
-      console.log(slot_comb_conflicts);
+      return slot_comb_conflicts;
     };
-    return { generateSlotsForCurrDay, verifySlot };
+    return { generateSlotsForCurrDay, verifyCurrDaySlot };
   };
 }
