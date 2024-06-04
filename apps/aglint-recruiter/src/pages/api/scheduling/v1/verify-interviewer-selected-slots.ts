@@ -28,7 +28,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
     await cand_schedule.fetchDetails();
     await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
-    cand_schedule.verifyIntSelectedSlots();
   } catch (err) {
     return res.status(500).send(err.message);
   }
