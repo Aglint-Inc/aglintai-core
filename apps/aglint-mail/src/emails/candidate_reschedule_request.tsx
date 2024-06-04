@@ -92,7 +92,7 @@ export const CandidateRescheduleRequest = ({
     <Html>
       <Head />
       <Tailwind>
-        <Preview>Interview Booking Confirmation</Preview>
+        <Preview>Interview Reschedule Request</Preview>
         <Body className="bg-[#f0f0f0] font-sans  p-[20px]">
           <Container className="px-[3px] mx-auto">
             <Container className="p-[20px] pt-[40px] bg-white">

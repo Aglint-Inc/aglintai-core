@@ -31,11 +31,9 @@ export async function POST(req: Request) {
   const { application_id }: ReqPayload = await req.json();
 
   try {
-    // if(!api_key)  throw new ClientError("api_key not found",401)
-    // if( api_key !== API_KEY)  throw new ClientError("invalid api Key",401)
 
     if (!application_id) {
-      throw new ClientError('payload attribute application_id missing', 400);
+      throw new ClientError('attribute application_id missing', 400);
     }
     const data: DataPayload = await InterviewResend(application_id);
     const filled_body: FilledPayload = await fetchTemplate(
@@ -77,7 +75,7 @@ export async function POST(req: Request) {
     if (e instanceof MailArgValidationError) {
       return NextResponse.json(
         {
-          error: `${e.name}: mail_type:candidate_availability_request,  ${e.message}`,
+          error: `${e.name}: mail_type:interview_resend,  ${e.message}`,
         },
         {
           status: 400,
@@ -87,7 +85,7 @@ export async function POST(req: Request) {
     if (e) {
       return NextResponse.json(
         {
-          error: `${e.name}: mail_type:candidate_availability_request,  ${e.message}`,
+          error: `${e.name}: mail_type:interview_resend,  ${e.message}`,
         },
         {
           status: 500,
@@ -96,3 +94,7 @@ export async function POST(req: Request) {
     }
   }
 }
+
+// {
+//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637"
+// }

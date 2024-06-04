@@ -16,7 +16,6 @@ interface ReqPayload {
   meeting_id: string;
   interview_cancel_id: string;
 }
-``;
 interface DataPayload {
   recipient_email: string;
   mail_type: string;
@@ -49,15 +48,14 @@ export async function POST(req: Request) {
   }: ReqPayload = await req.json();
 
   try {
-    // if(!api_key)  throw new ClientError("api_key not found",401)
-    // if( api_key !== API_KEY)  throw new ClientError("invalid api Key",401)
+  
 
     if (!session_ids) {
-      throw new ClientError('mail_type attribute session_ids missing', 400);
+      throw new ClientError('attribute session_ids missing', 400);
     }
     if (!interview_cancel_id) {
       throw new ClientError(
-        'mail_type attribute interview_cancel_id missing',
+        'attribute interview_cancel_id missing',
         400,
       );
     }
@@ -114,7 +112,7 @@ export async function POST(req: Request) {
     if (e instanceof MailArgValidationError) {
       return NextResponse.json(
         {
-          error: `${e.name}: mail_type:candidate_availability_request,  ${e.message}`,
+          error: `${e.name}: mail_type:recruiter_rescheduling_email,  ${e.message}`,
         },
         {
           status: 400,
@@ -124,7 +122,7 @@ export async function POST(req: Request) {
     if (e) {
       return NextResponse.json(
         {
-          error: `${e.name}: mail_type:candidate_availability_request,  ${e.message}`,
+          error: `${e.name}: mail_type:recruiter_rescheduling_email,  ${e.message}`,
         },
         {
           status: 500,
@@ -133,3 +131,13 @@ export async function POST(req: Request) {
     }
   }
 }
+
+// {
+//   "session_ids": [
+//     "5e7953c5-3e56-4d89-9857-29c34b55ce9d",
+//     "f5053399-1998-4b43-8ba5-801db1018e27"
+//   ],
+//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637",
+//   "meeting_id":"8daab34c-9c19-445b-aa96-3b4735307414",
+//   "interview_cancel_id":"db87ebee-c84a-4dda-99f5-35a3fe298af4"
+// }

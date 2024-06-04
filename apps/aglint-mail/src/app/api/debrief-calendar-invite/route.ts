@@ -46,11 +46,11 @@ export async function POST(req: Request) {
     // if( api_key !== API_KEY)  throw new ClientError("invalid api Key",401)
 
     if (!session_id) {
-      throw new ClientError('mail_type attribute missing', 400);
+      throw new ClientError('session_id attribute missing', 400);
     }
 
     if (!application_id) {
-      throw new ClientError('payload attribute missing', 400);
+      throw new ClientError('application_id attribute missing', 400);
     }
     if (!meeting_id) {
       throw new ClientError('meeting_id is missing', 400);
@@ -102,7 +102,7 @@ export async function POST(req: Request) {
     if (e instanceof MailArgValidationError) {
       return NextResponse.json(
         {
-          error: `${e.name}: mail_type:candidate_availability_request,  ${e.message}`,
+          error: `${e.name}: mail_type:debrief_calender_invite,  ${e.message}`,
         },
         {
           status: 400,
@@ -112,7 +112,7 @@ export async function POST(req: Request) {
     if (e) {
       return NextResponse.json(
         {
-          error: `${e.name}: mail_type:candidate_availability_request,  ${e.message}`,
+          error: `${e.name}: mail_type:debrief_calender_invite,  ${e.message}`,
         },
         {
           status: 500,

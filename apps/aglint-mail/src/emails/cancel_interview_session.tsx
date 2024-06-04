@@ -33,7 +33,7 @@ export const InterviewBookingConfirmation = ({
     <Html>
       <Head />
       <Tailwind>
-        <Preview>Cancel Interview Session</Preview>
+        <Preview>Interview Session Canceled</Preview>
         <Body className="bg-[#f0f0f0] font-sans  p-[20px]">
           <Container className="px-[3px] mx-auto">
             <Container className="p-[20px] pt-[40px] bg-white">

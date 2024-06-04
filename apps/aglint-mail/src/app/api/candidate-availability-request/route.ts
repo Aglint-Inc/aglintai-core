@@ -43,11 +43,11 @@ export async function POST(req: Request) {
     // if( api_key !== API_KEY)  throw new ClientError("invalid api Key",401)
 
     if (!session_id) {
-      throw new ClientError('mail_type attribute missing', 400);
+      throw new ClientError('session_id attribute missing', 400);
     }
 
     if (!application_id) {
-      throw new ClientError('payload attribute missing', 400);
+      throw new ClientError('application_id attribute missing', 400);
     }
     if (!filter_id) {
       throw new ClientError('filter_id is missing', 400);

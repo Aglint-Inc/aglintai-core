@@ -31,7 +31,7 @@ export async function POST(req: Request) {
 
   try {
     if (!application_id) {
-      throw new ClientError('payload attribute application_id missing', 400);
+      throw new ClientError('attribute application_id missing', 400);
     }
     const data: DataPayload = await ApplicationReceived(application_id);
     const filled_body: FilledPayload = await fetchTemplate(
@@ -73,7 +73,7 @@ export async function POST(req: Request) {
     if (e instanceof MailArgValidationError) {
       return NextResponse.json(
         {
-          error: `${e.name}: mail_type:appli,  ${e.message}`,
+          error: `${e.name}: mail_type:application received,  ${e.message}`,
         },
         {
           status: 400,
@@ -83,7 +83,7 @@ export async function POST(req: Request) {
     if (e) {
       return NextResponse.json(
         {
-          error: `${e.name}: mail_type:candidate_availability_request,  ${e.message}`,
+          error: `${e.name}: mail_type:application received,  ${e.message}`,
         },
         {
           status: 500,
