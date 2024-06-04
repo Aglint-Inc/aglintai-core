@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { AllInterviewersCard } from "./AllInterviewersCard";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./AllInterviewers.module.css";
 
@@ -74,7 +74,9 @@ export function AllInterviewers({
         className={_utils.cx(_styles, "all-interviewers-body")}
         tag="div"
       >
-        {slotAllInterviewesCard ?? <AllInterviewersCard />}
+        {slotAllInterviewesCard ?? (
+          <SlotComp componentName="AllInterviewersCard" />
+        )}
       </_Builtin.Block>
     </_Component>
   );

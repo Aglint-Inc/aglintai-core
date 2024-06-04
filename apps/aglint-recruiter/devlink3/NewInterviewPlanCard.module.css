@@ -39,8 +39,10 @@
   justify-content: flex-start;
   align-items: stretch;
 
-  border: 1px solid #e9ebed;
-  border-radius: 10px;
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+
+  background-color: var(--white);
 }
 
 .div-block-1589 {

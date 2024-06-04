@@ -1,26 +1,19 @@
-.interview-sub-table {
-  display: flex;
-  width: 100%;
-}
-
-.interview-sub-table-left {
+.interview-member-list-wrap {
   display: flex;
   overflow: auto;
   width: 100%;
   height: 100%;
-  padding: 20px;
+  padding-bottom: var(--space-4);
   flex-direction: column;
-  grid-column-gap: 40px;
-  grid-row-gap: 40px;
 }
 
-.interview-sub-table-left.plr-0 {
+.interview-member-list-wrap.plr-0 {
   padding-top: 0px;
   padding-right: 0px;
   padding-left: 0px;
 }
 
-.interview-sub-table-left.plr-0.gap-0 {
+.interview-member-list-wrap.plr-0.gap-0 {
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
@@ -32,13 +25,13 @@
   border-bottom: 1px solid var(--neutral-6);
 }
 
-.div-block-1498 {
+.im-detail-wrap {
   display: flex;
-  padding-bottom: 20px;
+  padding-bottom: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .div-block-1497 {
@@ -152,5 +145,8 @@
   flex-wrap: nowrap;
   grid-column-gap: 30px;
   grid-row-gap: 30px;
+
+  background-color: var(--neutral-2);
+
   height: calc(100vh - 190px);
 }

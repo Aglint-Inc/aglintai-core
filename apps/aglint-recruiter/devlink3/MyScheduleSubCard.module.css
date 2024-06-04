@@ -11,8 +11,10 @@
   justify-content: flex-start;
   align-items: stretch;
 
-  border: 1px solid #e9ebed;
-  border-radius: 10px;
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+
+  background-color: var(--white);
 }
 
 .div-block-1388 {
@@ -252,8 +254,8 @@
 
   width: 10px;
 
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
+  border-top-left-radius: var(--space-2);
+  border-bottom-left-radius: var(--space-2);
 
-  background-color: #337fbd;
+  background-color: var(--sky-6);
 }

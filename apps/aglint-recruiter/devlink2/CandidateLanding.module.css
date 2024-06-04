@@ -296,10 +296,9 @@
 
 .powered-footer-wrap {
   display: flex;
-  margin-top: 70px;
   align-items: center;
-  grid-column-gap: 14px;
-  grid-row-gap: 14px;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
 }
 
 .powered-footer-wrap.mt-30 {

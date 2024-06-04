@@ -54,13 +54,16 @@ export function MemberListCard({
   _interactions.useInteractions(_interactionsData, _styles);
 
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1324")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "memberl-list-card-wrap")}
+      tag="div"
+    >
       <_Builtin.Block
         className={_utils.cx(_styles, "interview-sub-table-card")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1503")}
+          className={_utils.cx(_styles, "member-list-left-wrap")}
           tag="div"
         >
           <_Builtin.Block

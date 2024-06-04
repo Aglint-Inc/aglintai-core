@@ -1,7 +1,6 @@
 .company-info-wrap {
   width: 700px;
-  padding-top: var(--space-4);
-  padding-bottom: var(--space-7);
+  padding: var(--space-4) var(--space-4) var(--space-8);
 }
 
 .cs-info-wrapper {
