@@ -6,7 +6,7 @@ import {
   sessionTypeIcon,
 } from '../common/functions';
 
-export default async function Index(
+export default async function RecruiterReschedulingEmail(
   session_ids: string[],
   application_id: string,
   meeting_id: string,
@@ -54,7 +54,7 @@ export default async function Index(
     } = session;
     return {
       date: dayjs(start_time).format('ddd MMMM DD, YYYY'),
-      Time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
+      time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
       sessionType: name,
       platform: schedule_type,
       duration: DurationCalculator(session_duration),
@@ -64,12 +64,13 @@ export default async function Index(
   });
   const body = {
     recipient_email: email,
-    mail_type: 'candidate_reschedule_request',
+    mail_type: 'recruiter_rescheduling_email', // CHANGED THE MAIL TYPE
     recruiter_id,
     companyLogo: logo,
     payload: {
+      //   TODO: "One is missing IN SUBJECT, CHECK SUBJECT"
       '[firstName]': first_name,
-      '[rescheduleReason]': reason,
+      '[recruiterRescheduleReason]': reason,
       '[scheduleName]': recruiterName,
       '[companyName]': company,
       '[pickYourSlotLink]': `${process.env.BASE_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
