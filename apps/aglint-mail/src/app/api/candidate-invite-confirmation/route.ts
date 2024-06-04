@@ -16,7 +16,6 @@ import type {
 interface ReqPayload {
   session_id: string[];
   application_id: string;
-  mail_type: string;
   schedule_id: string;
   filter_id: string;
 }
@@ -24,6 +23,7 @@ interface DataPayload {
   recipient_email: string;
   mail_type: string;
   recruiter_id: string;
+  companyLogo: string;
   payload: {
     '[companyName]': string;
     '[firstName]': string;
@@ -70,6 +70,7 @@ export async function POST(req: Request) {
     );
     filled_body.meetingDetails = data.payload.meetingDetails;
     filled_body.meetingLink = data.payload.meetingLink;
+    filled_body.companyLogo = data.companyLogo;
     const { emails } = await getEmails();
 
     const emailIdx = emails.findIndex((e) => e === data.mail_type);
@@ -122,3 +123,13 @@ export async function POST(req: Request) {
     }
   }
 }
+
+// {
+//   "session_id": [
+//     "5e7953c5-3e56-4d89-9857-29c34b55ce9d",
+//     "f5053399-1998-4b43-8ba5-801db1018e27"
+//   ],
+//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637",
+//   "schedule_id":"74559de0-2bc8-4028-a748-a7eae2f68182",
+//   "filter_id":"6e76d21f-7b7f-49c9-9398-b74dde1cedf1"
+// }

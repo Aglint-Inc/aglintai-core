@@ -23,6 +23,7 @@ interface DataPayload {
   recipient_email: string;
   mail_type: string;
   recruiter_id: string;
+  companyLogo: string;
   payload: {
     '[firstName]': string;
     '[rescheduleReason]': string;
@@ -72,7 +73,7 @@ export async function POST(req: Request) {
     );
     filled_body.meetingLink = data.payload.meetingLink;
     filled_body.meetingDetails = data.payload.meetingDetails;
-
+    filled_body.companyLogo = data.companyLogo;
     const { emails } = await getEmails();
 
     const emailIdx = emails.findIndex((e) => e === data.mail_type);
@@ -125,3 +126,12 @@ export async function POST(req: Request) {
     }
   }
 }
+
+// {
+//   "session_id": [
+//     "5e7953c5-3e56-4d89-9857-29c34b55ce9d"
+//   ],
+//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637",
+//   "meeting_id": "8daab34c-9c19-445b-aa96-3b4735307414",
+//   "interview_cancel_id": "6c7731d5-01fe-440a-86d6-63c051c15c4f"
+// }

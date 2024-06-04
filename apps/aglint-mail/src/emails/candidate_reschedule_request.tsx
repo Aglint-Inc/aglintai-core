@@ -44,17 +44,6 @@ export const dummy: CandidateRescheduleRequestType = {
       meetingIcon:
         'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/google_meet.png',
     },
-    {
-      date: 'Fri, May 12, 2024',
-      time: '09:00 AM - 09:30 PM PST',
-      sessionType: '<strong> and cultural fit</strong>',
-      platform: 'Google meet',
-      duration: '45 minutes',
-      sessionTypeIcon:
-        'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/debrief.png',
-      meetingIcon:
-        'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/google_meet.png',
-    },
   ],
 };
 
@@ -126,7 +115,6 @@ export const CandidateRescheduleRequest = ({
                 Rescheudle
               </Button>
               <Text className="py-[10px] my-0">Thank You</Text>
-             
             </Container>
             <Text className="flex items-center text-[10px]  mx-auto w-fit text-gray-500">
               Powered By

@@ -23,6 +23,7 @@ interface DataPayload {
   recipient_email: string;
   mail_type: string;
   recruiter_id: string;
+  companyLogo: string;
   payload: {
     '[companyName]': string;
     '[firstName]': string;
@@ -67,6 +68,7 @@ export async function POST(req: Request) {
     );
     filled_body.meetingLink = data.payload.meetingLink;
     filled_body.meetingDetail = data.payload.meetingDetail;
+    filled_body.companyLogo = data.companyLogo;
     const { emails } = await getEmails();
 
     const emailIdx = emails.findIndex((e) => e === data.mail_type);
@@ -119,3 +121,12 @@ export async function POST(req: Request) {
     }
   }
 }
+
+// {
+//   "session_id": [
+//     "5e7953c5-3e56-4d89-9857-29c34b55ce9d"
+//   ],
+//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637",
+//   "meeting_id":"8daab34c-9c19-445b-aa96-3b4735307414",
+//   "recruiter_user_id":"5d2bb73b-0e3b-4c63-bc60-920554345950"
+// }

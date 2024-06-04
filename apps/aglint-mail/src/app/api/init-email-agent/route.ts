@@ -15,7 +15,6 @@ interface ReqPayload {
   application_id: string;
   candidateRequestAvailability_id: string;
 }
-``;
 interface DataPayload {
   recipient_email: string;
   mail_type: string;

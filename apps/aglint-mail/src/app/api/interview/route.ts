@@ -8,9 +8,7 @@ import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate
 import { sendMail } from '../../../config/sendgrid';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
 import Interview from '../../../utils/email/interview/fetch';
-import type {
-  FilledPayload,
-} from '../../../utils/types/apiTypes';
+import type { FilledPayload } from '../../../utils/types/apiTypes';
 
 interface ReqPayload {
   application_id: string;
