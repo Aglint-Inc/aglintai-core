@@ -1,19 +1,16 @@
 import { NextResponse } from 'next/server';
-import InitEmailAgent from '../../../utils/email/init_email_agent/fetch';
+import RequestCandidateSlot from '../../../utils/email/request_candidate_slot/fetch';
 
 interface ReqPayload {
-  filter_id: string;
-  meeting_id: string;
+  application_id: string;
+  request_id: string;
 }
 
 export async function POST(req: Request) {
-  const { filter_id, meeting_id }: ReqPayload = await req.json();
+  const { application_id, request_id }: ReqPayload = await req.json();
 
   try {
-    // if(!api_key)  throw new ClientError("api_key not found",401)
-    // if( api_key !== API_KEY)  throw new ClientError("invalid api Key",401)
-
-    const data = await InitEmailAgent(filter_id, meeting_id);
+    const data = await RequestCandidateSlot(application_id, request_id);
     return NextResponse.json(
       { message: 'success', data },
       {

@@ -61,7 +61,7 @@ export default async function DebriefCalenderInvite(
       '[companyName]': company,
       '[firstName]': first_name,
       '[jobTitle]': job_title,
-      'meetingLink': `https://dev.aglinthq.com/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
+      'meetingLink': `${process.env.BASE_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
       'meetingDetail': Session,
     },
   };

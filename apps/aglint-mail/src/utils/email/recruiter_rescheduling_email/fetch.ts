@@ -72,7 +72,7 @@ export default async function Index(
       '[rescheduleReason]': reason,
       '[scheduleName]': recruiterName,
       '[companyName]': company,
-      '[pickYourSlotLink]': `https://dev.aglinthq.com/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
+      '[pickYourSlotLink]': `${process.env.BASE_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
       'meetingDetails': [...Sessions],
     },
   };

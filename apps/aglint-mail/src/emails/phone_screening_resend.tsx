@@ -44,7 +44,7 @@ export const PhoneScreeningResend = ({
                 src={companyLogo}
               />
 
-              <Text className="">{htmlParser.parse(body)}</Text>
+              <Text>{htmlParser.parse(body)}</Text>
 
               {/* <Text className="text-[#999999] text-[10px] leading-4 mt-10 ">
                 If you have any queries please &nbsp;
