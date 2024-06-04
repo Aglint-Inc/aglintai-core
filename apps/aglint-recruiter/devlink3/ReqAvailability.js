@@ -2,6 +2,8 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { ScheduleSelectPill } from "./ScheduleSelectPill";
+import { ButtonSoft } from "./ButtonSoft";
+import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./ReqAvailability.module.css";
 
@@ -200,25 +202,16 @@ export function ReqAvailability({
         className={_utils.cx(_styles, "div-block-1752")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1751")}
-          tag="div"
-          {...onClickCancel}
-        >
-          <_Builtin.Block tag="div">{"Cancel"}</_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1751", "blue")}
-          tag="div"
-          {...onClickReqAvailability}
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-white")}
-            tag="div"
-          >
-            {"Request Availability"}
-          </_Builtin.Block>
-        </_Builtin.Block>
+        <ButtonSoft
+          onClickButton={onClickCancel}
+          textButton="Cancel"
+          size="2"
+        />
+        <ButtonSolid
+          onClickButton={onClickReqAvailability}
+          textButton="Request Availability"
+          size="2"
+        />
       </_Builtin.Block>
     </_Component>
   );

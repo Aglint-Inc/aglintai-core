@@ -23,7 +23,7 @@ export function NewScheduleCard({
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1490")} tag="div">
+    <_Component className={_utils.cx(_styles, "my-schedule-card")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1491")}
         tag="div"
