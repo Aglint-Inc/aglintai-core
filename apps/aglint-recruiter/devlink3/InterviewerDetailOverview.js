@@ -3,6 +3,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
 import { ButtonSurface } from "./ButtonSurface";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./InterviewerDetailOverview.module.css";
 
@@ -40,7 +41,7 @@ export function InterviewerDetailOverview({
           className={_utils.cx(_styles, "div-block-1702")}
           tag="div"
         >
-          {slotUpcomingSchedule}
+          {slotUpcomingSchedule ?? <SlotComp componentNeme="" />}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
@@ -64,7 +65,7 @@ export function InterviewerDetailOverview({
           className={_utils.cx(_styles, "div-block-1703")}
           tag="div"
         >
-          {slotTrainingModules}
+          {slotTrainingModules ?? <SlotComp componentNeme="Schedules" />}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

@@ -2,9 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
-import { ConflictOutsideWorkHours } from "./ConflictOutsideWorkHours";
-import { ConflictSoft } from "./ConflictSoft";
-import { ConflictHard } from "./ConflictHard";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./MemberRow.module.css";
 
@@ -87,18 +85,11 @@ export function MemberRow({
         className={_utils.cx(_styles, "slot_conflicts_block")}
         tag="div"
       >
-        {slotConflicts ?? (
-          <>
-            <ConflictOutsideWorkHours />
-            <ConflictSoft />
-            <ConflictHard />
-          </>
-        )}
+        {slotConflicts ?? <SlotComp componentNeme="Conflicts" />}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "text-gray-600")}
-        tag="div"
-      />
+      <_Builtin.Block className={_utils.cx(_styles, "text-gray-600")} tag="div">
+        {"??"}
+      </_Builtin.Block>
     </_Component>
   );
 }

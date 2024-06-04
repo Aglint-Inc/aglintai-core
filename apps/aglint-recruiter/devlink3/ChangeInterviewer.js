@@ -3,7 +3,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { Text } from "./Text";
-import { InterviewerList } from "./InterviewerList";
+import { SlotComp } from "./SlotComp";
 import { ButtonSoft } from "./ButtonSoft";
 import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
@@ -32,7 +32,7 @@ export function ChangeInterviewer({
     >
       <_Builtin.Block className={_utils.cx(_styles, "popup_header")} tag="div">
         <_Builtin.Block className={_utils.cx(_styles, "popup_title")} tag="div">
-          <Text content="" />
+          <Text content="??" />
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "popup_close")} tag="div">
           <_Builtin.HtmlEmbed
@@ -84,11 +84,9 @@ export function ChangeInterviewer({
             >
               {slotInterviewerList ?? (
                 <>
-                  <InterviewerList />
-                  <InterviewerList />
-                  <InterviewerList />
-                  <InterviewerList />
-                  <InterviewerList />
+                  <SlotComp componentNeme="InterviewerList" />
+                  <SlotComp componentNeme="InterviewerList" />
+                  <SlotComp componentNeme="InterviewerList" />
                 </>
               )}
             </_Builtin.Block>

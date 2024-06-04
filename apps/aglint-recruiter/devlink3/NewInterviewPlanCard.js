@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { SlotComp } from "./SlotComp";
 import { Text } from "./Text";
 import { EditOptionModule } from "./EditOptionModule";
 import * as _utils from "./utils";
@@ -45,7 +46,10 @@ export function NewInterviewPlanCard({
   _interactions.useInteractions(_interactionsData, _styles);
 
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1400")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "newinterviewplancard")}
+      tag="div"
+    >
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1394")}
         tag="div"
@@ -127,7 +131,9 @@ export function NewInterviewPlanCard({
                 tag="div"
               >
                 {isCheckboxVisible ? (
-                  <_Builtin.Block tag="div">{slotCheckbox}</_Builtin.Block>
+                  <_Builtin.Block tag="div">
+                    {slotCheckbox ?? <SlotComp componentNeme="Checkbox" />}
+                  </_Builtin.Block>
                 ) : null}
                 <_Builtin.Block
                   className={_utils.cx(_styles, "div-block-1386")}
@@ -140,7 +146,9 @@ export function NewInterviewPlanCard({
                   >
                     <Text content={textDate} weight="medim" />
                     <Text content={textTime} weight="medium" />
-                    <_Builtin.Block tag="div">{slotStatus}</_Builtin.Block>
+                    <_Builtin.Block tag="div">
+                      {slotStatus ?? <SlotComp componentNeme="Status" />}
+                    </_Builtin.Block>
                   </_Builtin.Block>
                   <_Builtin.Block
                     className={_utils.cx(_styles, "div-block-1392")}
@@ -234,7 +242,9 @@ export function NewInterviewPlanCard({
               >
                 {isScheduleNowButtonVisible ? (
                   <_Builtin.Block tag="div">
-                    {slotScheduleNowButton}
+                    {slotScheduleNowButton ?? (
+                      <SlotComp componentNeme="Schedule Now" />
+                    )}
                   </_Builtin.Block>
                 ) : null}
                 {isThreeDotVisible ? (

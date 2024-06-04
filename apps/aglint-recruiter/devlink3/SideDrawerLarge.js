@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ScheduleOptionsList } from "./ScheduleOptionsList";
+import { SlotComp } from "./SlotComp";
 import { ButtonSurface } from "./ButtonSurface";
 import * as _utils from "./utils";
 import _styles from "./SideDrawerLarge.module.css";
@@ -51,7 +51,7 @@ export function SideDrawerLarge({
         className={_utils.cx(_styles, "sidedrawer_body")}
         tag="div"
       >
-        {slotSideDrawerbody ?? <ScheduleOptionsList />}
+        {slotSideDrawerbody ?? <SlotComp componentNeme="ScheduleOptionList" />}
       </_Builtin.Block>
       {isBottomBar ? (
         <_Builtin.Block

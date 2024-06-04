@@ -2,8 +2,8 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
-import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
+import { Text } from "./Text";
 import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./FeedbackCandidate.module.css";
@@ -39,7 +39,9 @@ export function FeedbackCandidate({
         className={_utils.cx(_styles, "div-block-1584")}
         tag="div"
       >
-        <_Builtin.Block tag="div">{slotLogo}</_Builtin.Block>
+        <_Builtin.Block tag="div">
+          {slotLogo ?? <SlotComp componentNeme="Logo" />}
+        </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "feedback-box")}
           tag="div"
@@ -185,9 +187,7 @@ export function FeedbackCandidate({
               className={_utils.cx(_styles, "div-block-1582")}
               tag="div"
             >
-              {slotFeedbackInput ?? (
-                <SlotComp componentNeme="MUI Rich Text Input" />
-              )}
+              {slotFeedbackInput ?? <SlotComp componentNeme="" />}
             </_Builtin.Block>
           ) : null}
           {isRatingVisible ? (

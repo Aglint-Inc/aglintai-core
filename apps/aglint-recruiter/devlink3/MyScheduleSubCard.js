@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { SlotComp } from "./SlotComp";
 import { MembersList } from "./MembersList";
 import * as _utils from "./utils";
 import _styles from "./MyScheduleSubCard.module.css";
@@ -54,7 +55,9 @@ export function MyScheduleSubCard({
                 {isTimeVisible ? (
                   <_Builtin.Block tag="div">{textTime}</_Builtin.Block>
                 ) : null}
-                <_Builtin.Block tag="div">{slotStatus}</_Builtin.Block>
+                <_Builtin.Block tag="div">
+                  {slotStatus ?? <SlotComp componentNeme="Status" />}
+                </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "div-block-1392")}
@@ -119,7 +122,7 @@ export function MyScheduleSubCard({
                         tag="div"
                       >
                         <_Builtin.Block tag="div">
-                          {slotMeetingIcon}
+                          {slotMeetingIcon ?? <SlotComp componentNeme="Icon" />}
                         </_Builtin.Block>
                         <_Builtin.Block tag="div">
                           {textMeetingPlatform}

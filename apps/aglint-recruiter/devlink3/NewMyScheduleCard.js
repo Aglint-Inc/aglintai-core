@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { MyScheduleSubCard } from "./MyScheduleSubCard";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./NewMyScheduleCard.module.css";
 
@@ -15,7 +15,7 @@ export function NewMyScheduleCard({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "div-block-1400", "my-schedule")}
+      className={_utils.cx(_styles, "newinterviewplancard", "my-schedule")}
       tag="div"
     >
       <_Builtin.Block
@@ -99,7 +99,9 @@ export function NewMyScheduleCard({
           className={_utils.cx(_styles, "div-block-1405", "no-border")}
           tag="div"
         >
-          {slotMyScheduleSubCard ?? <MyScheduleSubCard />}
+          {slotMyScheduleSubCard ?? (
+            <SlotComp componentNeme="My Schedule Sub Card" />
+          )}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

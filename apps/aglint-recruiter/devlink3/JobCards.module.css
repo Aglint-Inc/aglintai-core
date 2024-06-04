@@ -1,4 +1,4 @@
-.div-block-1093 {
+.job-card-wrapper {
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -6,7 +6,7 @@
   grid-row-gap: 10px;
 }
 
-.div-block-1095 {
+.job-card {
   display: flex;
   padding: var(--space-3) var(--space-4);
   align-items: center;
@@ -48,25 +48,4 @@
 
 .icons.pointer {
   cursor: pointer;
-}
-
-.text-sm-4 {
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.text-blue-500 {
-  color: #337fbd;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
-.text-grey-600 {
-  color: #68737d;
-}
-
-.text-gray-600 {
-  color: var(--sand-11);
 }

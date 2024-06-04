@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { SlotComp } from "./SlotComp";
 import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./ReminderList.module.css";
@@ -29,7 +30,9 @@ export function ReminderList({
         className={_utils.cx(_styles, "div-block-1621")}
         tag="div"
       >
-        <_Builtin.Block tag="div">{slotIcon}</_Builtin.Block>
+        <_Builtin.Block tag="div">
+          {slotIcon ?? <SlotComp componentNeme="Icon" />}
+        </_Builtin.Block>
         <Text content={textReminder} weight="" color="neutral" />
       </_Builtin.Block>
       <_Builtin.Block

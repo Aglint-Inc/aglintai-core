@@ -1,8 +1,8 @@
-.div-block-1400 {
+.newinterviewplancard {
   position: relative;
 }
 
-.div-block-1400.my-schedule {
+.newinterviewplancard.my-schedule {
   padding: 16px 16px 16px 0px;
 }
 
@@ -51,10 +51,8 @@
   flex-wrap: nowrap;
   align-items: stretch;
 
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-
-  background-color: #f79a3e;
+  border-top-left-radius: var(--radius-4);
+  border-bottom-left-radius: var(--radius-4);
 }
 
 .div-block-1399 {

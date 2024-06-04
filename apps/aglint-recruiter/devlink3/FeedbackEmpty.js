@@ -16,7 +16,7 @@ export function FeedbackEmpty({
         className={_utils.cx(_styles, "div-block-1293")}
         tag="div"
       >
-        <Text content="" weight="" color="neutral" />
+        <Text content="??" weight="" color="neutral" />
         <_Builtin.Block tag="div">
           <ButtonSoft
             onClickButton={onClickSubmit}

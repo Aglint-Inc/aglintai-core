@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./HeaderWithSlot.module.css";
 
@@ -18,7 +19,7 @@ export function HeaderWithSlot({
         className={_utils.cx(_styles, "div-block-1426")}
         tag="div"
       >
-        {slotCoordinators}
+        {slotCoordinators ?? <SlotComp componentNeme="Candiate" />}
       </_Builtin.Block>
     </_Component>
   ) : null;
