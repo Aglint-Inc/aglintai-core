@@ -45,6 +45,8 @@ export type InterviewSessionApiRespType = Pick<
 > & {
   qualifiedIntervs: SessionInterviewerApiRespType[];
   trainingIntervs: SessionInterviewerApiRespType[];
+  week_load_den: number;
+  day_load_den: number;
 };
 
 export type SessionCombinationRespType = InterviewSessionApiRespType & {

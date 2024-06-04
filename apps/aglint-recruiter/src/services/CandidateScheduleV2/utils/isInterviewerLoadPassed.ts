@@ -43,7 +43,7 @@ export const isIntervLoadPassed = (
     total_duration: 0,
   };
 
-  for (const [curr_date, val] of Object.entries(curr_week_meetings_obj)) {
+  for (const [curr_date, val] of Object.entries(curr_week_meetings_obj || {})) {
     weekly_load.total_duration += val.meeting_duration;
     weekly_load.total_interview += val.meeting_cnt;
     if (curr_date === current_day.tz(int_tz).format()) {

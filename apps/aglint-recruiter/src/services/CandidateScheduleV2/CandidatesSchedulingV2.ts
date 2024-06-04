@@ -405,6 +405,9 @@ export class CandidatesSchedulingV2 {
           common_time: TimeDurationType[];
         }[] = [];
 
+        let slot_week_load_density = 0;
+        let slot_day_load_density = 0;
+
         for (let sess_idx = 0; sess_idx < plan_comb.length; ++sess_idx) {
           const curr_sess = plan_comb[sess_idx];
           const session_attendees: SessionInterviewerApiRespType[] = [
@@ -433,8 +436,7 @@ export class CandidatesSchedulingV2 {
             common_time: sesn_int_common_time,
           });
           let cnt_qualified_ints = 0;
-          let slot_week_load_density = 0;
-          let slot_day_load_density = 0;
+
           session_attendees.forEach((attendee) => {
             const interviewer_pause_json = this.getIntPauseJson(
               curr_sess.session_id,
@@ -498,7 +500,8 @@ export class CandidatesSchedulingV2 {
                 );
 
               slot_day_load_density += day_load_density;
-              slot_day_load_density += week_load_density;
+              slot_week_load_density += week_load_density;
+
               if (!is_passed) {
                 load_reached_ints[sess_idx].inters.push({
                   user_id: attendee.user_id,
@@ -516,6 +519,8 @@ export class CandidatesSchedulingV2 {
           cal_disc_inters,
           session_ints_common_time,
           load_reached_ints,
+          slot_day_load_density,
+          slot_week_load_density,
         };
       };
 
@@ -525,6 +530,9 @@ export class CandidatesSchedulingV2 {
           curr_day_paused_inters,
           indef_paused_inters,
           session_ints_common_time,
+          load_reached_ints,
+          slot_day_load_density,
+          slot_week_load_density,
         } = cacheCurrPlanCalc();
 
         if (
@@ -536,6 +544,13 @@ export class CandidatesSchedulingV2 {
         if (
           indef_paused_inters.some((s) => s.inters.length > 0) &&
           !this.api_options.include_conflicting_slots.interviewer_pause
+        ) {
+          return [];
+        }
+
+        if (
+          load_reached_ints.length > 0 &&
+          !this.api_options.include_conflicting_slots.interviewers_load
         ) {
           return [];
         }
@@ -562,6 +577,8 @@ export class CandidatesSchedulingV2 {
           const curr_sess_curr_day_paused_ints =
             curr_day_paused_inters[sessn_idx].inters;
           const curr_sess_common_time = session_ints_common_time[sessn_idx];
+          upd_sess_slot.day_load_den = slot_day_load_density;
+          upd_sess_slot.week_load_den = slot_week_load_density;
           const session_attendees: SessionInterviewerApiRespType[] = [
             ...upd_sess_slot.qualifiedIntervs,
             ...upd_sess_slot.trainingIntervs,
@@ -582,7 +599,7 @@ export class CandidatesSchedulingV2 {
               );
             },
           );
-          const is_load_checked = true;
+          const is_load_checked = load_reached_ints.length === 0;
           if (is_all_ints_available && is_load_checked) {
             upd_sess_slot.is_conflict = false;
             return upd_sess_slot;
@@ -603,6 +620,17 @@ export class CandidatesSchedulingV2 {
                 conflict_event: null,
                 start_time: null,
                 end_time: null,
+              });
+            }
+            const attendee_load = load_reached_ints[sessn_idx].inters.find(
+              (s) => s.user_id === attendee.user_id,
+            );
+            if (attendee_load) {
+              int_conflic_reasons.push({
+                conflict_type: attendee_load.type,
+                conflict_event: null,
+                end_time: null,
+                start_time: null,
               });
             }
 
@@ -662,6 +690,19 @@ export class CandidatesSchedulingV2 {
                   return null;
                 }
               }
+            }
+
+            if (
+              load_reached_ints[sessn_idx].inters.find(
+                (i) => i.user_id === attendee.user_id,
+              )
+            ) {
+              int_conflic_reasons.push({
+                conflict_event: '',
+                conflict_type: 'day_load_reached',
+                end_time: null,
+                start_time: null,
+              });
             }
 
             let is_slot_day_off = false;

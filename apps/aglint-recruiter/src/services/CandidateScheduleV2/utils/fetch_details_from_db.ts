@@ -130,6 +130,9 @@ export const fetch_details_from_db = async (
     const ints_map = new Map<string, SessionInterviewerType>();
     for (let int of unique_inters) {
       ints_map.set(int.user_id, int);
+      if (!ints_schd_meetings[int.user_id]) {
+        ints_schd_meetings[int.user_id] = {};
+      }
     }
     int_meetings.map((meeting) => {
       const meeting_start_time = userTzDayjs(meeting.meeting_start_time).tz(
@@ -138,9 +141,7 @@ export const fetch_details_from_db = async (
       );
       const meeting_date = meeting_start_time.startOf('day');
       const week_start_time = meeting_start_time.startOf('week').startOf('day');
-      if (!ints_schd_meetings[meeting.interv_user_id]) {
-        ints_schd_meetings[meeting.interv_user_id] = {};
-      }
+
       if (
         !ints_schd_meetings[meeting.interv_user_id][week_start_time.format()]
       ) {
@@ -237,6 +238,8 @@ export const fetch_details_from_db = async (
       session_name: s.session_name,
       session_order: s.session_order,
       session_type: s.session_type,
+      day_load_den: 0,
+      week_load_den: 0,
     }),
   );
   return {
