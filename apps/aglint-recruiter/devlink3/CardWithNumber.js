@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./CardWithNumber.module.css";
 
@@ -15,9 +16,7 @@ export function CardWithNumber({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "cardwithnumber")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-        {textTitle}
-      </_Builtin.Block>
+      <Text content={textTitle} weight="medium" />
       <_Builtin.Block className={_utils.cx(_styles, "year_flex")} tag="div">
         <_Builtin.Block tag="div">{textNumber}</_Builtin.Block>
         <_Builtin.Block
@@ -27,9 +26,7 @@ export function CardWithNumber({
           {textNumberType}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "text-gray-600")} tag="div">
-        {textDescription}
-      </_Builtin.Block>
+      <Text content={textDescription} color="neutral" weight="" />
       {isEmpty ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "cardwithnumber-copy")}

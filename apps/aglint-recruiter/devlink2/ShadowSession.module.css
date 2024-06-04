@@ -91,11 +91,6 @@
   cursor: pointer;
 }
 
-.icons.lottie {
-  width: 16px;
-  height: 16px;
-}
-
 .mt-40 {
   display: flex;
   margin-top: 40px;

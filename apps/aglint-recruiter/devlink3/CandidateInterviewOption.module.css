@@ -13,20 +13,10 @@
   border-radius: 10px;
 
   background-color: white;
-
-  box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
 }
 
 .text-grey-500 {
   color: #87929d;
-}
-
-.hide {
-  display: none;
-}
-
-.cursor-pointer {
-  cursor: pointer;
 }
 
 .div-block-1615 {
@@ -61,14 +51,8 @@
   opacity: 0.8;
 }
 
-.icons.cursor-pointer.mr-20 {
-  margin-right: 20px;
-  transition-property: none;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .icons.task-hover {

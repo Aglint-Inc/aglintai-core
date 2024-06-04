@@ -1,22 +1,22 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import * as _utils from "./utils";
-import _styles from "./BackButton.module.css";
+import { ButtonGhost } from "./ButtonGhost";
 
 export function BackButton({
   as: _Component = _Builtin.Block,
   onclickProps = {},
 }) {
   return (
-    <_Component
-      className={_utils.cx(_styles, "aui-button", "signup-back")}
-      tag="div"
-      {...onclickProps}
-    >
-      <_Builtin.Block className={_utils.cx(_styles, "text-gray-600")} tag="div">
-        {"Back"}
-      </_Builtin.Block>
+    <_Component tag="div" {...onclickProps}>
+      <ButtonGhost
+        onClickButton={onclickProps}
+        isRightIcon={false}
+        isLeftIcon={false}
+        size="2"
+        textButton="Back"
+        color="neutral"
+      />
     </_Component>
   );
 }

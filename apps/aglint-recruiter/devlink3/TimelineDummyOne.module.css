@@ -171,10 +171,6 @@
   text-decoration: underline;
 }
 
-.text-grey_600 {
-  color: var(--sand-11);
-}
-
 .timeindicator {
   display: flex;
   align-items: center;
@@ -182,17 +178,12 @@
   grid-row-gap: 10px;
 }
 
+.text-grey_600 {
+  color: var(--sand-11);
+}
+
 .text-grey_600.hide {
   display: none;
-}
-
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
-.text-grey_600.text-underline {
-  text-decoration: underline;
 }
 
 .text-grey_600.width-80px {

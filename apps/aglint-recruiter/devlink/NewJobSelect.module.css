@@ -222,10 +222,6 @@
   }
 }
 
-.color-blue-600 {
-  color: var(--blue600-aad8d97e);
-}
-
 .fw-semibold.new-greenhouse {
   color: #14413d;
 }
@@ -246,16 +242,8 @@
   text-align: center;
 }
 
-.text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
-}
-
-.fw-semibold.text-blue-600.no-underline {
-  text-decoration: none;
 }
 
 .text-no-wrap {
@@ -300,10 +288,6 @@
 
 .cj-option-block.grey {
   background-color: hsla(173.68421052631572, 76.00%, 95.10%, 1.00);
-}
-
-.grey-100 {
-  background-color: var(--gray100-3a86b552);
 }
 
 .yellow-100 {
@@ -408,22 +392,6 @@
 
 .max-width-500 {
   max-width: 500px;
-}
-
-@media screen and (max-width: 991px) {
-  .text-grey-600.max-width-600 {
-    max-width: 500px;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .text-grey-600.max-width-600 {
-    max-width: none;
-  }
-}
-
-.max-width-600 {
-  max-width: 600px;
 }
 
 .text-grey-600.mt-5 {

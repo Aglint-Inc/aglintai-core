@@ -46,7 +46,7 @@ export function TaskTableCard({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1435", "overview-wrap")}
+        className={_utils.cx(_styles, "task_row_cell", "overview-wrap")}
         id={_utils.cx(
           _styles,
           "w-node-_577b6da5-5053-c3a6-5b02-37d3f9aebf10-f9aebf0d"
@@ -79,7 +79,7 @@ export function TaskTableCard({
         ) : null}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1435")}
+        className={_utils.cx(_styles, "task_row_cell")}
         id={_utils.cx(
           _styles,
           "w-node-_577b6da5-5053-c3a6-5b02-37d3f9aebf0f-f9aebf0d"
@@ -89,7 +89,7 @@ export function TaskTableCard({
         {slotStatus ?? <TaskStatus />}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1435")}
+        className={_utils.cx(_styles, "task_row_cell")}
         id={_utils.cx(
           _styles,
           "w-node-_11278828-2b21-6637-8526-f1ac7659ccbf-f9aebf0d"
@@ -99,7 +99,7 @@ export function TaskTableCard({
         {slotPriority ?? <PriorityPill />}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1435")}
+        className={_utils.cx(_styles, "task_row_cell")}
         id={_utils.cx(
           _styles,
           "w-node-_577b6da5-5053-c3a6-5b02-37d3f9aebf13-f9aebf0d"
@@ -110,7 +110,7 @@ export function TaskTableCard({
         {slotAssignedToCard}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1435")}
+        className={_utils.cx(_styles, "task_row_cell")}
         id={_utils.cx(
           _styles,
           "w-node-_577b6da5-5053-c3a6-5b02-37d3f9aebf1d-f9aebf0d"
@@ -126,7 +126,7 @@ export function TaskTableCard({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1435", "hide")}
+        className={_utils.cx(_styles, "task_row_cell", "hide")}
         id={_utils.cx(
           _styles,
           "w-node-_577b6da5-5053-c3a6-5b02-37d3f9aebf20-f9aebf0d"

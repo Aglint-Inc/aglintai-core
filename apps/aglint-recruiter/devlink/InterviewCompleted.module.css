@@ -99,10 +99,6 @@
   color: var(--grey500-0d508ad8);
 }
 
-.text-color-black {
-  color: hsla(0, 0.00%, 0.00%, 1.00);
-}
-
 .text-lg.fw-semibold.inline-block {
   display: inline;
 }
@@ -176,14 +172,6 @@
 
 .text-grey-600-3 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
-.text-grey-600-3.mt-5 {
-  margin-top: 5px;
-}
-
-.mt-5 {
-  margin-top: 5px;
 }
 
 .text-grey-600-3.inline-block {

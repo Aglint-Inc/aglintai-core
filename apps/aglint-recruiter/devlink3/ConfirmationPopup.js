@@ -1,6 +1,9 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
+import { ButtonSoft } from "./ButtonSoft";
+import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./ConfirmationPopup.module.css";
 
@@ -36,12 +39,7 @@ export function ConfirmationPopup({
               />
             </_Builtin.Block>
           ) : null}
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {textPopupTitle}
-          </_Builtin.Block>
+          <Text content={textPopupTitle} weight="medium" />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "popup_close")}
@@ -55,14 +53,7 @@ export function ConfirmationPopup({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "popup_body")} tag="div">
-        {isDescriptionVisible ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-gray-600")}
-            tag="div"
-          >
-            {textPopupDescription}
-          </_Builtin.Block>
-        ) : null}
+        <Text content={textPopupDescription} weight="" color="neutral" />
         {isWidget ? (
           <_Builtin.Block
             className={_utils.cx(_styles, "slot_widget")}
@@ -81,13 +72,14 @@ export function ConfirmationPopup({
             className={_utils.cx(_styles, "wide_button", "width-100")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "button_primary", "greay_btn")}
-              tag="div"
-              {...onClickCancel}
-            >
-              <_Builtin.Block tag="div">{"Cancel"}</_Builtin.Block>
-            </_Builtin.Block>
+            <ButtonSoft
+              onClickButton={onClickCancel}
+              textButton="Cancel"
+              color="neutral"
+              size="2"
+              isLeftIcon={false}
+              isRightIcon={false}
+            />
           </_Builtin.Block>
         ) : null}
         {isBlueButtonVisible ? (
@@ -99,13 +91,11 @@ export function ConfirmationPopup({
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "button_primary")}
-              tag="div"
-              {...onClickAction}
-            >
-              <_Builtin.Block tag="div">{textPopupButton}</_Builtin.Block>
-            </_Builtin.Block>
+            <ButtonSolid
+              textButton={textPopupButton}
+              onClickButton={onClickAction}
+              size="2"
+            />
           </_Builtin.Block>
         ) : null}
         {isYellowButtonVisible ? (
@@ -113,13 +103,11 @@ export function ConfirmationPopup({
             className={_utils.cx(_styles, "wide_button", "width-100")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "button-yellow")}
-              tag="div"
-              {...onClickAction}
-            >
-              <_Builtin.Block tag="div">{textPopupButton}</_Builtin.Block>
-            </_Builtin.Block>
+            <ButtonSolid
+              onClickButton={onClickAction}
+              textButton={textPopupButton}
+              size="2"
+            />
           </_Builtin.Block>
         ) : null}
       </_Builtin.Block>

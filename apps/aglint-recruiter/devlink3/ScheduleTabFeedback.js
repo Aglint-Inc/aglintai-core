@@ -30,7 +30,7 @@ export function ScheduleTabFeedback({
             className={_utils.cx(_styles, "header_interviewer")}
             tag="div"
           >
-            <Text content="Interviewer" />
+            <Text content="Interviewer" weight="medium" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "header_session", "width-324-copy")}
@@ -58,13 +58,13 @@ export function ScheduleTabFeedback({
             className={_utils.cx(_styles, "header_recommendation")}
             tag="div"
           >
-            <Text content="Recommendation" />
+            <Text content="Recommendation" weight="medium" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "header_feedback")}
             tag="div"
           >
-            <Text content="Feedback" />
+            <Text content="Feedback" weight="medium" />
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

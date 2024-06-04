@@ -6,12 +6,6 @@
   cursor: pointer;
 }
 
-.nav-sub-link-menu.sub-menu {
-  padding-top: 0px;
-  padding-right: 0px;
-  padding-left: 0px;
-}
-
 .bg-active-link {
   position: absolute;
   left: 0%;
@@ -43,10 +37,6 @@
 
 .cursor-pointer:hover {
   opacity: 0.7;
-}
-
-.icons.cursor-pointer.height-28 {
-  height: 28px;
 }
 
 .icons.cursor-pointer.three-dot {
