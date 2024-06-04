@@ -16,7 +16,6 @@ interface ReqPayload {
   meeting_id: string;
   interview_cancel_id: string;
 }
-``;
 interface DataPayload {
   recipient_email: string;
   mail_type: string;
@@ -133,3 +132,13 @@ export async function POST(req: Request) {
     }
   }
 }
+
+// {
+//   "session_ids": [
+//     "5e7953c5-3e56-4d89-9857-29c34b55ce9d",
+//     "f5053399-1998-4b43-8ba5-801db1018e27"
+//   ],
+//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637",
+//   "meeting_id":"8daab34c-9c19-445b-aa96-3b4735307414",
+//   "interview_cancel_id":"db87ebee-c84a-4dda-99f5-35a3fe298af4"
+// }
