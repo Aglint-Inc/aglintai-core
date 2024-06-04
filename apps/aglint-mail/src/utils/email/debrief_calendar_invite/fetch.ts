@@ -22,7 +22,7 @@ export default async function DebriefCalenderInvite(
   } = await supabaseAdmin
     .from('applications')
     .select(
-      'candidates(first_name,email,recruiter_id),public_jobs(job_title,company)',
+      'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
     )
     .eq('id', application_id);
   const [
@@ -44,13 +44,19 @@ export default async function DebriefCalenderInvite(
     meetingIcon: scheduleTypeIcon(schedule_type),
   };
   const {
-    candidates: { email, recruiter_id, first_name },
+    candidates: {
+      email,
+      recruiter_id,
+      first_name,
+      recruiter: { logo },
+    },
     public_jobs: { company, job_title },
   } = candidateJob;
   const body = {
     recipient_email: email,
     mail_type: 'debrief_calendar_invite',
     recruiter_id,
+    companyLogo: logo,
     payload: {
       '[companyName]': company,
       '[firstName]': first_name,

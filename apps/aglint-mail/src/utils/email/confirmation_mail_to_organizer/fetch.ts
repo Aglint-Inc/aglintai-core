@@ -27,7 +27,7 @@ export default async function Confirmation_mail_to_organizer(
   } = await supabaseAdmin
     .from('applications')
     .select(
-      'candidates(first_name,email,recruiter_id,recruiter(name)),public_jobs(job_title,company)',
+      'candidates(first_name,email,recruiter_id,recruiter(name,logo)),public_jobs(job_title,company)',
     )
     .eq('id', application_id);
 
@@ -36,7 +36,7 @@ export default async function Confirmation_mail_to_organizer(
       email,
       recruiter_id,
       first_name,
-      recruiter: { name: recruiter_name },
+      recruiter: { name: recruiter_name, logo },
     },
     public_jobs: { company, job_title },
   } = candidateJob;
@@ -64,6 +64,7 @@ export default async function Confirmation_mail_to_organizer(
     recipient_email: email,
     mail_type: 'confirmation_mail_to_organizer',
     recruiter_id,
+    companyLogo: logo,
     payload: {
       '[companyName]': company,
       '[firstName]': first_name,

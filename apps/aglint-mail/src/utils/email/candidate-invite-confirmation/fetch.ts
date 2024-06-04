@@ -24,12 +24,17 @@ export default async function CandidateInviteConfirmation(
   } = await supabaseAdmin
     .from('applications')
     .select(
-      'candidates(first_name,email,recruiter_id),public_jobs(job_title,company)',
+      'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
     )
     .eq('id', application_id);
 
   const {
-    candidates: { email, recruiter_id, first_name },
+    candidates: {
+      email,
+      recruiter_id,
+      first_name,
+      recruiter: { logo },
+    },
     public_jobs: { company, job_title },
   } = candidateJob;
 
@@ -56,6 +61,7 @@ export default async function CandidateInviteConfirmation(
     recipient_email: email,
     mail_type: 'candidate_invite_confirmation',
     recruiter_id,
+    companyLogo: logo,
     payload: {
       '[companyName]': company,
       '[firstName]': first_name,

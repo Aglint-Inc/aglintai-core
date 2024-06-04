@@ -23,7 +23,7 @@ export default async function CandidateCancelRequest(
   } = await supabaseAdmin
     .from('applications')
     .select(
-      'candidates(first_name,email,recruiter_id,recruiter(name)),public_jobs(job_title,company)',
+      'candidates(first_name,email,recruiter_id,recruiter(name,logo)),public_jobs(job_title,company)',
     )
     .eq('id', application_id);
 
@@ -39,7 +39,7 @@ export default async function CandidateCancelRequest(
       email,
       recruiter_id,
       first_name,
-      recruiter: { name: recruiterName },
+      recruiter: { name: recruiterName, logo },
     },
     public_jobs: { company },
   } = candidateJob;
@@ -67,6 +67,7 @@ export default async function CandidateCancelRequest(
     recipient_email: email,
     mail_type: 'candidate_cancel_request',
     recruiter_id,
+    companyLogo: logo,
     payload: {
       '[firstName]': first_name,
       '[rescheduleReason]': session_cancel.reason,

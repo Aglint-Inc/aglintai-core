@@ -1,16 +1,6 @@
 import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
 
-export default async function CancelInterviewSession(
-  session_id: string,
-  application_id: string,
-) {
-  const { data: session } = await supabaseAdmin
-    .from('interview_session')
-    .select(
-      'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
-    )
-    .eq('id', session_id);
-
+export default async function Interview(application_id: string) {
   const {
     data: [candidateJob],
   } = await supabaseAdmin
@@ -19,6 +9,7 @@ export default async function CancelInterviewSession(
       'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
     )
     .eq('id', application_id);
+
   const {
     candidates: {
       email,
@@ -29,20 +20,25 @@ export default async function CancelInterviewSession(
     public_jobs: { company, job_title },
   } = candidateJob;
 
-  const [{ name }] = session;
-
   const body = {
     recipient_email: email,
-    mail_type: 'cancel_interview_session',
+    mail_type: 'interview',
     recruiter_id,
     companyLogo: logo,
     payload: {
       '[firstName]': first_name,
-      '[sessionName]': name,
-      '[companyName]': company,
       '[jobTitle]': job_title,
+      '[companyName]': company,
+      '[supportLink]': '',
+      '[interviewLink]': ``,
     },
   };
 
   return body;
 }
+
+// http://localhost:3100/api/interview
+
+// {
+//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637"
+// }

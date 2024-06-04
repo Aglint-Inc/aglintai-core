@@ -23,7 +23,9 @@ export default async function CandidateAvailabilityRequest(
     data: [candidateJob],
   } = await supabaseAdmin
     .from('applications')
-    .select('candidates(first_name,email,recruiter_id),public_jobs(company)')
+    .select(
+      'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(company)',
+    )
     .eq('id', application_id);
 
   const Sessions = sessions.map((session) => {
@@ -46,7 +48,12 @@ export default async function CandidateAvailabilityRequest(
   });
 
   const {
-    candidates: { email, recruiter_id, first_name },
+    candidates: {
+      email,
+      recruiter_id,
+      first_name,
+      recruiter: { logo },
+    },
     public_jobs: { company },
   } = candidateJob;
 
@@ -54,6 +61,7 @@ export default async function CandidateAvailabilityRequest(
     recipient_email: email,
     mail_type: 'candidate_availability_request',
     recruiter_id,
+    companyLogo: logo,
     payload: {
       '[companyName]': company,
       '[firstName]': first_name,
