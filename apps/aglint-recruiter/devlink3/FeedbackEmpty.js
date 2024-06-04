@@ -21,7 +21,7 @@ export function FeedbackEmpty({
           <ButtonSoft
             onClickButton={onClickSubmit}
             size="2"
-            textButton="Submit Feedback"
+            textButton="Add Feedback"
           />
         </_Builtin.Block>
       </_Builtin.Block>

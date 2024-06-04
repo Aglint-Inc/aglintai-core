@@ -32,7 +32,11 @@ export function CandidateSubmitAvailability({
           size="1"
           textButton="Schedule Now"
         />
-        <ButtonSoft onClickButton={onClickReReq} size="1" textButton="" />
+        <ButtonSoft
+          onClickButton={onClickReReq}
+          size="1"
+          textButton="Request Availability Again"
+        />
       </_Builtin.Block>
     </_Component>
   );
