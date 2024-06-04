@@ -36,7 +36,7 @@ export const dummy: RecruiterReschedulingEmailType = {
     {
       date: 'Fri, May 12, 2024',
       time: '09:00 AM - 09:30 PM PST',
-      sessionType: '<strong>Personality and cultural fit</strong>',
+      sessionType: 'Personality and cultural fit',
       platform: 'Google meet',
       duration: '45 minutes',
       sessionTypeIcon:
@@ -111,7 +111,6 @@ export const RecruiterReschedulingEmail = ({
               >
                 Reschedule
               </Button>
-             
             </Container>
             <Text className="flex items-center text-[10px]  mx-auto w-fit text-gray-500">
               Powered By
