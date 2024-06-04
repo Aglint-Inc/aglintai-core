@@ -75,6 +75,7 @@ export const allowedPaths = new Set([
   '/api/scheduling/application/mailthankyou',
   '/api/scheduling/application/debrief-add-users',
   '/api/scheduling/cron/trigger',
+  '/api/workflow-cron',
   '/api/scheduling/request_availability/getCandidateRequestData',
   '/api/getUserLocation',
   'https://aglint-phone-ngrok-app.ngrok.io/api/create-phone-call',
