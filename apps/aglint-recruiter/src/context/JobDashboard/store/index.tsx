@@ -1,10 +1,13 @@
 import { create, StateCreator } from 'zustand';
 
 import { DashboardSlices, DashboardSlicesType } from './[id]';
+import { CandidateSlices, CandidateSlicesType } from './candidate-list';
 import { WorkflowSlices, WorkflowSlicesType } from './workflow';
 
-type SlicesType = DashboardSlicesType & WorkflowSlicesType;
-const Slices = { ...DashboardSlices, ...WorkflowSlices };
+type SlicesType = DashboardSlicesType &
+  WorkflowSlicesType &
+  CandidateSlicesType;
+const Slices = { ...DashboardSlices, ...WorkflowSlices, ...CandidateSlices };
 
 export type CreateSlice<
   // eslint-disable-next-line no-unused-vars
