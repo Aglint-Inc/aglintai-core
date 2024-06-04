@@ -20,7 +20,7 @@ export function AddTechStack({
       className={_utils.cx(_styles, "available-roles-pop-wrappers")}
       tag="div"
     >
-      <Text content="Add Specialities" weight="bold" />
+      <Text content="Add Specialities" weight="medium" />
       <Text
         color="neutral"
         content="Choose from the list or type your own and press enter"

@@ -20,7 +20,7 @@ export function NewSocialLinkPop({
       className={_utils.cx(_styles, "social-link-pop-wrappers")}
       tag="div"
     >
-      <Text content="Add New Social Link" weight="bold" />
+      <Text content="Add New Social Link" weight="medium" />
       <Text
         content="Enter name and url of the social media of your choice"
         color="neutral"

@@ -63,7 +63,7 @@ export function TeamListItem({
             className={_utils.cx(_styles, "one-line-clamp")}
             tag="div"
           >
-            <Text content={userName} weight="bold" />
+            <Text content={userName} weight="medium" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "user-status-wrap")}

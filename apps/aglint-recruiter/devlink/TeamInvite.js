@@ -24,7 +24,7 @@ export function TeamInvite({
         className={_utils.cx(_styles, "team-invite-header")}
         tag="div"
       >
-        <Text content={textTitle} weight="bold" />
+        <Text content={textTitle} weight="medium" />
         <_Builtin.Block
           className={_utils.cx(_styles, "ti-close-wrap")}
           tag="div"

@@ -20,7 +20,7 @@ export function AddDepartmentPop({
       className={_utils.cx(_styles, "available-roles-pop-wrappers")}
       tag="div"
     >
-      <Text weight="bold" content="Add Departments" />
+      <Text weight="medium" content="Add Departments" />
       <Text
         content="Choose from the list or type your own and press enter"
         color="neutral"

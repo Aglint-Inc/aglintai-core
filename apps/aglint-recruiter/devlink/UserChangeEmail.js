@@ -16,7 +16,7 @@ export function UserChangeEmail({
   return (
     <_Component className={_utils.cx(_styles, "change-email-wrap")} tag="div">
       <_Builtin.Block tag="div">
-        <Text content="Change Email" weight="bold" />
+        <Text content="Change Email" weight="medium" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "text-desc-wrap-mail")}

@@ -20,7 +20,7 @@ export function AddRolesPop({
       className={_utils.cx(_styles, "available-roles-pop-wrappers")}
       tag="div"
     >
-      <Text weight="bold" content="Add Roles" />
+      <Text weight="medium" content="Add Roles" />
       <Text
         color="neutral"
         content="Choose from the list or type your own and press enter"

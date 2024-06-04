@@ -28,7 +28,7 @@ export function TeamPendingInvites({
         className={_utils.cx(_styles, "pi-header-block")}
         tag="div"
       >
-        <Text content="Pending Invites" weight="bold" />
+        <Text content="Pending Invites" weight="medium" />
         <Text content={textTitleDescription} color="neutral" />
       </_Builtin.Block>
       <_Builtin.Block

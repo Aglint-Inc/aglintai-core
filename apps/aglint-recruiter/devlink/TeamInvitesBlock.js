@@ -28,7 +28,7 @@ export function TeamInvitesBlock({
           className={_utils.cx(_styles, "pi-user-info")}
           tag="div"
         >
-          <Text content={name} weight="bold" />
+          <Text content={name} weight="medium" />
           <Text content={email} color="neutral" />
         </_Builtin.Block>
       </_Builtin.Block>

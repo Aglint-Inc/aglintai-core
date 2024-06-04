@@ -27,7 +27,7 @@ export function AddLocationPop({
       tag="div"
     >
       <_Builtin.Block tag="div">
-        <Text content={headerText} weight="bold" />
+        <Text content={headerText} weight="medium" />
       </_Builtin.Block>
       {isLocationDescVisible ? (
         <_Builtin.Block
