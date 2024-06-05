@@ -46,6 +46,9 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
                 item={item}
                 onClickSelect={onClickSelect}
                 selectedCombIds={selectedCombIds}
+                isDisabled={false}
+                isCheckboxAndRadio={true}
+                isDayCollapseNeeded={false}
               />
             );
           })}

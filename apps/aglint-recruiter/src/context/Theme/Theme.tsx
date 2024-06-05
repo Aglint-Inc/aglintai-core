@@ -721,13 +721,6 @@ function Theme({ children }) {
       //     },
       //   },
       // },
-      MuiCollapse: {
-        styleOverrides: {
-          root: {
-            padding: 'var(--space-2)',
-          },
-        },
-      },
       // MuiDateCalendar: {
       //   styleOverrides: {
       //     root: {
