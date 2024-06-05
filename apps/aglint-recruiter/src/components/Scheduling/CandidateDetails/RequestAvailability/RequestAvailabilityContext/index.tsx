@@ -6,12 +6,12 @@ import {
   DatabaseTableUpdate,
   InterviewSessionTypeDB,
 } from '@aglint/shared-types';
+import { ScheduleUtils } from '@aglint/shared-utils';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { ScheduleUtils } from '@/src/services/CandidateScheduleV2/utils/ScheduleUtils';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -160,7 +160,7 @@ function RequestAvailabilityProvider({ children }) {
       });
     }
   }, [router.query?.request_id]);
- 
+
   return (
     <RequestAvailabilityContext.Provider
       value={{

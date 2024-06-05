@@ -73,7 +73,7 @@ export type APIOptions = {
     day_off?: boolean;
     holiday?: boolean;
     out_of_working_hrs?: boolean;
-    day_passed: boolean;
+    day_passed?: boolean;
   };
 };
 
