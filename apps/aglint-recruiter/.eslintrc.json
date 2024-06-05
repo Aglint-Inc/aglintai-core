@@ -32,7 +32,7 @@
   ],
   "rules": {
     "no-unused-vars": "error",
-    "no-console": "error",
+    "no-console": ["error", { "allow": ["error"] }],
     "react-hooks/exhaustive-deps": "off",
     "jsx-a11y/click-events-have-key-events": "off",
     "simple-import-sort/exports": "error",

@@ -3,6 +3,7 @@ import { Type } from "../utils.types";
 import { CustomApplicationLogs } from "./application_logs.types";
 import { CustomApplications } from "./applications.types";
 import { CandidateRequestAvailability } from "./candidate_request_availability.type";
+import { CustomInterviewFilterJson } from "./interview_filter_json";
 import { CustomCompanyEmailTemplate } from "./company_email_template.types";
 import { CustomInterviewSessionCancel } from "./interview_session_cancel.types";
 import { CustomInterviewSessionRelation } from "./interview_session_relation.types";
@@ -42,6 +43,7 @@ export type Tables = Type<
     interview_session: CustomInterviewSession;
     workflow_action: CustomWorkflowAction;
     application_logs: CustomApplicationLogs;
+    interview_filter_json: CustomInterviewFilterJson;
     company_email_template: CustomCompanyEmailTemplate;
   }
 >;
