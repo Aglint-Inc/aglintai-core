@@ -1027,7 +1027,15 @@ const ScheduleCard = (props: ScheduleCardProps) => {
         textDay={props.round.title}
         isSelected={isSelected}
         slotButton={
-          enabled ? isSelected ? <ChangeButton /> : <SelectButton /> : <></>
+          enabled ? (
+            isSelected ? (
+              <ChangeButton onClickButton={{ onClick: () => setOpen(true) }} />
+            ) : (
+              <SelectButton onClickButton={{ onClick: () => setOpen(true) }} />
+            )
+          ) : (
+            <></>
+          )
         }
         textDuration={getDurationText(duration)}
         slotSessionInfo={
