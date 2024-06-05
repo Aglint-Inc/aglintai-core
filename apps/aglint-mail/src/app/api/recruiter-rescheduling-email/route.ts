@@ -27,9 +27,8 @@ interface DataPayload {
     '[scheduleName]': string;
     '[companyName]': string;
     '[pickYourSlotLink]': string;
+    '[jobTitle]': string;
     'meetingDetails': {
-      date: string;
-      time: string;
       sessionType: string;
       platform: any;
       duration: string;
@@ -48,16 +47,11 @@ export async function POST(req: Request) {
   }: ReqPayload = await req.json();
 
   try {
-  
-
     if (!session_ids) {
       throw new ClientError('attribute session_ids missing', 400);
     }
     if (!interview_cancel_id) {
-      throw new ClientError(
-        'attribute interview_cancel_id missing',
-        400,
-      );
+      throw new ClientError('attribute interview_cancel_id missing', 400);
     }
 
     if (!application_id) {
@@ -139,5 +133,5 @@ export async function POST(req: Request) {
 //   ],
 //   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637",
 //   "meeting_id":"8daab34c-9c19-445b-aa96-3b4735307414",
-//   "interview_cancel_id":"db87ebee-c84a-4dda-99f5-35a3fe298af4"
+//   "interview_cancel_id":"d904061b-ab58-4aeb-972d-fa86000a29d3"
 // }

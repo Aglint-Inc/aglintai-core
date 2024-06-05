@@ -14,7 +14,7 @@ import type {
 } from '../../../utils/types/apiTypes';
 
 interface ReqPayload {
-  session_id: string;
+  session_ids: string;
   application_id: string;
   meeting_id: string;
   recruiter_user_id: string;
@@ -35,7 +35,7 @@ interface DataPayload {
 
 export async function POST(req: Request) {
   const {
-    session_id,
+    session_ids,
     application_id,
     meeting_id,
     recruiter_user_id,
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
     // if(!api_key)  throw new ClientError("api_key not found",401)
     // if( api_key !== API_KEY)  throw new ClientError("invalid api Key",401)
 
-    if (!session_id) {
+    if (!session_ids) {
       throw new ClientError('session_id attribute missing', 400);
     }
 
@@ -55,8 +55,11 @@ export async function POST(req: Request) {
     if (!meeting_id) {
       throw new ClientError('meeting_id is missing', 400);
     }
+    if (!recruiter_user_id) {
+      throw new ClientError('recruiter_user_id is missing', 400);
+    }
     const data: DataPayload = await DebriefCalenderInvite(
-      session_id,
+      session_ids,
       application_id,
       meeting_id,
       recruiter_user_id,
@@ -123,10 +126,10 @@ export async function POST(req: Request) {
 }
 
 // {
-//   "session_id": [
+//   "session_ids": [
 //     "5e7953c5-3e56-4d89-9857-29c34b55ce9d"
 //   ],
 //   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637",
 //   "meeting_id":"8daab34c-9c19-445b-aa96-3b4735307414",
-//   "recruiter_user_id":"5d2bb73b-0e3b-4c63-bc60-920554345950"
+//   "recruiter_user_id": "7f6c4cae-78b6-4eb6-86fd-9a0e0310147b"
 // }

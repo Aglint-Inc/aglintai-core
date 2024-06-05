@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   durationCalculator,
+  platformRemoveUnderscore,
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../common/functions';
@@ -30,7 +31,7 @@ export default async function debriefCalenderInvite(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+        'candidates(first_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
       )
       .eq('id', application_id),
   );
@@ -38,18 +39,22 @@ export default async function debriefCalenderInvite(
   if (!candidateJob) {
     throw new Error('candidate and job details are not available');
   }
-  const [teamMember] = supabaseWrap(
+
+  const { candidates, public_jobs } = candidateJob;
+
+  const [recruiter_user] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
-      .select('first_name')
+      .select('email,first_name')
       .eq('user_id', recruiter_user_id),
   );
 
-  if (!teamMember) {
-    throw new Error('recruiter user detail not available');
+  if (!recruiter_user) {
+    throw new Error('cancel session details not available');
   }
 
-  const teamMemberName = teamMember.first_name;
+  const { first_name: teamMemberName, email } = recruiter_user;
+
   const {
     interview_meeting,
     name,
@@ -61,16 +66,14 @@ export default async function debriefCalenderInvite(
     date: dayjs(interview_meeting.start_time).format('ddd MMMM DD, YYYY'),
     time: `${dayjs(interview_meeting.start_time).format('hh:mm A')} - ${dayjs(interview_meeting.end_time).format('hh:mm A')}`,
     sessionType: name,
-    platform: session.schedule_type,
+    platform: platformRemoveUnderscore(session.schedule_type),
     duration: durationCalculator(session_duration),
     sessionTypeIcon: sessionTypeIcon(session_type),
     meetingIcon: scheduleTypeIcon(schedule_type),
   };
 
-  const { candidates, public_jobs } = candidateJob;
-
   const body: DebriefCalendarInviteBodyType = {
-    recipient_email: candidates.email,
+    recipient_email: email,
     mail_type: 'debrief_calendar_invite',
     recruiter_id: candidates.recruiter_id,
     companyLogo: candidates.recruiter.logo,

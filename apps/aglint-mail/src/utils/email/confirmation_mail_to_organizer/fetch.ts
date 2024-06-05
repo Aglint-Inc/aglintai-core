@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   durationCalculator,
+  platformRemoveUnderscore,
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../common/functions';
@@ -12,6 +13,7 @@ export default async function confiramtionMailToOrganizer(
   session_ids: string[],
   application_id: string,
   meeting_id: string,
+  recruiter_user_id: string,
 ) {
   const sessions = supabaseWrap(
     await supabaseAdmin
@@ -29,7 +31,7 @@ export default async function confiramtionMailToOrganizer(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,email,recruiter_id,recruiter(name,logo)),public_jobs(job_title,company)',
+        'candidates(first_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
       )
       .eq('id', application_id),
   );
@@ -37,12 +39,24 @@ export default async function confiramtionMailToOrganizer(
   if (!candidateJob) {
     throw new Error('candidate and job details are not available');
   }
+  const [recruiter_user] = supabaseWrap(
+    await supabaseAdmin
+      .from('recruiter_user')
+      .select('email,first_name')
+      .eq('user_id', recruiter_user_id),
+  );
+
+  if (!recruiter_user) {
+    throw new Error('cancel session details not available');
+  }
+
+  const { first_name: recruiter_name, email } = recruiter_user;
+
   const {
     candidates: {
-      email,
       recruiter_id,
       first_name,
-      recruiter: { name: recruiter_name, logo },
+      recruiter: { logo },
     },
     public_jobs: { company, job_title },
   } = candidateJob;
@@ -59,7 +73,7 @@ export default async function confiramtionMailToOrganizer(
       date: dayjs(start_time).format('ddd MMMM DD, YYYY'),
       time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
       sessionType: name,
-      platform: schedule_type,
+      platform: platformRemoveUnderscore(schedule_type),
       duration: durationCalculator(session_duration),
       sessionTypeIcon: sessionTypeIcon(session_type),
       meetingIcon: scheduleTypeIcon(schedule_type),

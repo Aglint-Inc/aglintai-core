@@ -14,10 +14,11 @@ import type {
 import candidateRescheduleRequest from '../../../utils/email/candidate_reschedule_request/fetch';
 
 interface ReqPayload {
-  session_id: string[];
+  session_ids: string[];
   application_id: string;
   meeting_id: string;
   interview_cancel_id: string;
+  recruiter_user_id: string;
 }
 interface DataPayload {
   recipient_email: string;
@@ -27,28 +28,30 @@ interface DataPayload {
   payload: {
     '[firstName]': string;
     '[rescheduleReason]': string;
-    '[scheduleName]': string;
+    '[recruiterName]': string;
     '[companyName]': string;
     '[jobTitle]': string;
-    '[DateTime]': string;
     '[pickYourSlotLink]': string;
+    '[additionalRescheduleNotes]': string;
+    '[dateRange]': string;
     'meetingDetails': MeetingDetails[];
   };
 }
 
 export async function POST(req: Request) {
   const {
-    session_id,
+    session_ids,
     application_id,
     meeting_id,
     interview_cancel_id,
+    recruiter_user_id,
   }: ReqPayload = await req.json();
 
   try {
     // if(!api_key)  throw new ClientError("api_key not found",401)
     // if( api_key !== API_KEY)  throw new ClientError("invalid api Key",401)
 
-    if (!session_id) {
+    if (!session_ids) {
       throw new ClientError('session_id attribute missing', 400);
     }
 
@@ -61,12 +64,16 @@ export async function POST(req: Request) {
     if (!interview_cancel_id) {
       throw new ClientError('interview_cancel_id is missing', 400);
     }
+    if (!recruiter_user_id) {
+      throw new ClientError('recruiter_user_id is missing', 400);
+    }
 
     const data: DataPayload = await candidateRescheduleRequest(
-      session_id,
+      session_ids,
       application_id,
       meeting_id,
       interview_cancel_id,
+      recruiter_user_id,
     );
 
     const filled_body: FilledPayload = await fetchTemplate(
@@ -131,10 +138,12 @@ export async function POST(req: Request) {
 }
 
 // {
-//   "session_id": [
-//     "5e7953c5-3e56-4d89-9857-29c34b55ce9d",
-//     "f5053399-1998-4b43-8ba5-801db1018e27"
+//   "session_ids": [
+//       "5e7953c5-3e56-4d89-9857-29c34b55ce9d",
+//       "f5053399-1998-4b43-8ba5-801db1018e27"
 //   ],
 //   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637",
-//   "meeting_id":"8daab34c-9c19-445b-aa96-3b4735307414"
+//   "meeting_id": "8daab34c-9c19-445b-aa96-3b4735307414",
+//   "interview_cancel_id": "d904061b-ab58-4aeb-972d-fa86000a29d3",
+//   "recruiter_user_id": "7f6c4cae-78b6-4eb6-86fd-9a0e0310147b"
 // }

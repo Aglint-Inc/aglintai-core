@@ -39,3 +39,7 @@ export default async function rejection(application_id: string) {
 
   return body;
 }
+
+// {
+//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637"
+// }
