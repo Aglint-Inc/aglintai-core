@@ -15,7 +15,7 @@ import {
 } from '@aglint/shared-types';
 import { ScheduleUtils, SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { Dayjs } from 'dayjs';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isEqual } from 'lodash';
 import { nanoid } from 'nanoid';
 import { z } from 'zod';
 
@@ -204,25 +204,35 @@ export class CandidatesSchedulingV2 {
   }
 
   public verifyIntSelectedSlots = (
-    date_range_slots: PlanCombinationRespType[][][],
+    selected_slots: PlanCombinationRespType[],
   ) => {
-    for (const curr_int_day_slots of date_range_slots) {
-      for (const curr_round_slots of curr_int_day_slots) {
+    const verified_slots: PlanCombinationRespType[] = [];
+    for (const comb of selected_slots) {
+      // TODO: type fix
+      const session_rounds = ScheduleUtils.getSessionRounds(
+        comb.sessions,
+      ) as unknown as SessionCombinationRespType[][];
+      let is_option_verified = true;
+      for (const curr_round_sess of session_rounds) {
+        const cand_date = userTzDayjs(curr_round_sess[0].start_time).tz(
+          this.api_payload.candidate_tz,
+        );
         const cached_free_time = new Map<string, TimeDurationType[]>();
-
-        for (const curr_slot of curr_round_slots) {
-          const cand_date = userTzDayjs(curr_slot.sessions[0].start_time).tz(
-            this.api_payload.candidate_tz,
-          );
-          const { verifyCurrDaySlot } = this.calcMeetingCombinsForPlan(
-            cand_date,
-            curr_slot.sessions,
-            cached_free_time,
-          );
-          verifyCurrDaySlot(curr_slot.sessions);
+        const { verifyCurrDaySlot } = this.calcMeetingCombinsForPlan(
+          cand_date,
+          curr_round_sess,
+          cached_free_time,
+        );
+        if (verifyCurrDaySlot(curr_round_sess)) {
+          is_option_verified = false;
+          break;
         }
       }
+      if (is_option_verified) {
+        verified_slots.push(comb);
+      }
     }
+    return verified_slots;
   };
 
   public getCandidateSelectedSlots = (
@@ -660,12 +670,12 @@ export class CandidatesSchedulingV2 {
 
     /**
      * checking  conflicts
+     * calender disconnected
+     * interviewer load
      * soft conflicts with key words,
      * hard conflicts any meeting,
-     * out of office,
      * interviewer paused
-     * calender disconnected
-     * interviewer load  TODO: later
+     * out of office etc..,
      * @param sess_slot
      * @returns
      */
@@ -1070,14 +1080,29 @@ export class CandidatesSchedulingV2 {
     };
 
     const verifyCurrDaySlot = (slot: SessionCombinationRespType[]) => {
-      const cand_time = userTzDayjs(slot[0].start_time).tz(
+      const slot_start_time = userTzDayjs(slot[0].start_time).tz(
         this.api_payload.candidate_tz,
       );
       const slot_comb_conflicts = getSessionsAvailability(
         0,
-        cand_time.format(),
+        slot_start_time.format(),
       );
-      return slot_comb_conflicts;
+      let are_conflict_same = true;
+      if (slot_comb_conflicts.length === 0) {
+        return false;
+      }
+      for (let sesn_idx = 0; sesn_idx < slot.length; ++sesn_idx) {
+        if (
+          !isEqual(
+            slot_comb_conflicts[sesn_idx].ints_conflicts,
+            slot[sesn_idx].ints_conflicts,
+          )
+        ) {
+          are_conflict_same = false;
+          break;
+        }
+      }
+      return are_conflict_same;
     };
     return { generateSlotsForCurrDay, verifyCurrDaySlot };
   };

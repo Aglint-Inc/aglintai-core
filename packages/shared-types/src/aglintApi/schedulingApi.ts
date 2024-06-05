@@ -1,4 +1,5 @@
 import { RecruiterUserType } from '../data.types';
+import { PlanCombinationRespType } from '../scheduleTypes';
 
 export type ApiCancelScheduledInterview = {
   session_ids: string[];
@@ -116,4 +117,14 @@ export type CandReqAvailableSlots = {
 
 export type APIGetCandidateSelectedSlots = {
   cand_availability_id: string;
+};
+
+export type APIVerifyRecruiterSelectedSlots = {
+  selected_slots: PlanCombinationRespType[];
+  candidate_tz: string;
+  start_date_str: string;
+  end_date_str: string;
+  recruiter_id: string;
+  api_options?: APIOptions;
+  filter_json_id: string;
 };
