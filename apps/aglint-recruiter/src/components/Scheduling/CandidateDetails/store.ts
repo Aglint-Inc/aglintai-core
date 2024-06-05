@@ -18,6 +18,7 @@ export interface SchedulingApplication {
     | 'candidate_feedback';
   initialSessions: SessionsType;
   selectedSessionIds: string[];
+  requestSessionIds: string[];
   selectedApplication: SelectedApplicationTypeDB;
   selectedSession: SessionsType[0] | null;
   selectedSchedule: InterviewScheduleTypeDB;
@@ -30,7 +31,7 @@ export interface SchedulingApplication {
   isEditOpen: boolean;
   isEditBreakOpen: boolean;
   editSession: SessionsType[0];
-
+  availabilities: DatabaseTable['candidate_request_availability'][];
   isIndividualCancelOpen: boolean;
   isMultipleCancelOpen: boolean;
   isMultipleRescheduleOpen: boolean;
@@ -42,6 +43,8 @@ const initialState: SchedulingApplication = {
   initialLoading: true,
   selectedApplication: null,
   selectedSessionIds: [],
+  requestSessionIds: [],
+  availabilities: [],
   tab: 'interview_plan',
   selectedSession: null,
   initialSessions: [],
@@ -70,6 +73,13 @@ export const useSchedulingApplicationStore = create<SchedulingApplication>()(
 
 export const setInitalLoading = (initialLoading: boolean) =>
   useSchedulingApplicationStore.setState({ initialLoading });
+
+export const setRequestSessionIds = (requestSessionIds: string[]) =>
+  useSchedulingApplicationStore.setState({ requestSessionIds });
+
+export const setAvailabilities = (
+  availabilities: DatabaseTable['candidate_request_availability'][],
+) => useSchedulingApplicationStore.setState({ availabilities });
 
 export const setSelectedApplicationLog = (
   selectedApplicationLog: DatabaseTable['application_logs'],

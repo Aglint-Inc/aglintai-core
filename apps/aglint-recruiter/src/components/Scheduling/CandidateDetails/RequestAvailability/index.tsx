@@ -50,18 +50,19 @@ function RequestAvailability() {
   const { recruiter, recruiterUser } = useAuthDetails();
 
   const {
-    selectedSessionIds,
+    requestSessionIds,
     initialSessions,
     selectedApplication,
     selectedSchedule,
+    
   } = useSchedulingApplicationStore();
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
   const { refetch } = useAllActivities({
     application_id: selectedApplication?.id,
   });
 
-  const selectedSessions = selectedSessionIds.length
-    ? initialSessions.filter((ele) => selectedSessionIds.includes(ele.id))
+  const selectedSessions = requestSessionIds.length
+    ? initialSessions.filter((ele) => requestSessionIds.includes(ele.id))
     : [];
 
   const totalSessionMinutes = selectedSessions.reduce(
