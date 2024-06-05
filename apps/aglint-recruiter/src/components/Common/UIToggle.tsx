@@ -40,7 +40,7 @@ const AntSwitch = styled(Switch)(() => ({
   },
 }));
 
-function ToggleBtn({ isChecked, handleChange }) {
+function ToggleBtn({ isChecked, handleChange }:{ isChecked:boolean, handleChange :any}) {
   return (
     <FormControlLabel
       sx={{
