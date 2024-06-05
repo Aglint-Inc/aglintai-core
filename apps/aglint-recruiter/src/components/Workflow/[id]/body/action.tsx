@@ -38,7 +38,7 @@ const Actions = () => {
     );
   });
   const emailTemplate = all_company_email_template.find(
-    ({ type }) => type === trigger,
+    ({ type }) => type === ACTION_TRIGGER_MAP[trigger][0].value,
   );
   return (
     <>
@@ -229,7 +229,7 @@ const ACTION_TRIGGER_MAP: {
     },
     {
       value: 'upcoming_interview_reminder_interviewers',
-      name: 'Send emails to interviews',
+      name: 'Send emails to interviewers',
     },
   ],
 };
