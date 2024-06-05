@@ -27,7 +27,7 @@ import { AllInterview } from '@/devlink2/AllInterview';
 import { ApplicantsListEmpty } from '@/devlink2/ApplicantsListEmpty';
 import { ApplicantsTable } from '@/devlink2/ApplicantsTable';
 import { Breadcrum } from '@/devlink2/Breadcrum';
-import { CandidatesListPagination } from '@/devlink2/CandidatesListPagination';
+// import { CandidatesListPagination } from '@/devlink2/CandidatesListPagination';
 import { JobDetails } from '@/devlink2/JobDetails';
 import { JobDetailsFilterBlock } from '@/devlink2/JobDetailsFilterBlock';
 import { RcCheckbox } from '@/devlink2/RcCheckbox';
@@ -49,7 +49,6 @@ import Loader from '../Common/Loader';
 import RefreshButton from '../Common/RefreshButton';
 import { POSTED_BY } from '../JobsDashboard/AddJobWithIntegrations/utils';
 import ApplicationCard, { CustomDragLayer } from './ApplicationCard';
-import ApplicationDetails from './ApplicationCard/ApplicationDetails';
 import DeleteCandidate from './CandidateActions/deleteCandidates';
 import MailCandidate from './CandidateActions/mailCandidate';
 import MoveCandidate from './CandidateActions/moveCandidate';
@@ -150,12 +149,6 @@ const JobApplicationComponent = () => {
     <>
       <DNDLayerSwitcher applicationLimit={applicationLimit}>
         <JobDetails
-          isEditJob={false}
-          isWarningVisible={
-            job.status == 'published' && (!job.jd_json || !job.description)
-              ? true
-              : false
-          }
           isFilterVisible={
             !!((sectionApplications ?? []).length + job.count[section])
           }
@@ -186,20 +179,6 @@ const JobApplicationComponent = () => {
               posthog.capture('Import Candidates Clicked');
             },
           }}
-          slotSidebar={
-            <ApplicationDetails
-              open={currentApplication !== -1}
-              onClose={() => handleSelectCurrentApplication(-1)}
-              handleSelectNextApplication={() => handleSelectNextApplication()}
-              handleSelectPrevApplication={() => handleSelectPrevApplication()}
-              application={
-                sectionApplications[
-                  currentApplication === -1 ? 0 : currentApplication
-                ]
-              }
-              hideNextPrev={false}
-            />
-          }
           slotTabs={<NewJobDetailsTabs />}
           slotFilters={
             <NewJobFilterBlock
@@ -215,12 +194,6 @@ const JobApplicationComponent = () => {
               sectionApplications={sectionApplications}
               handleSelectCurrentApplication={handleSelectCurrentApplication}
               currentApplication={currentApplication}
-            />
-          }
-          slotPagination={
-            <ApplicationPagination
-              size={sectionApplications.length}
-              limits={applicationLimit}
             />
           }
         />
@@ -418,7 +391,6 @@ const ApplicationTable = ({
         onClickSelectAll={{ onClick: () => handleSelectAllMin() }}
         isAllChecked={isAllChecked}
         isInterviewVisible={views.assessment}
-        slotCandidatesList={applicantsList}
         isDisqualifiedVisible={views.disqualified}
         isScreeningVisible={views.screening}
       />
@@ -432,68 +404,68 @@ const ApplicationTable = ({
   );
 };
 
-const ApplicationPagination = ({
-  size,
-  limits,
-}: {
-  size: number;
-  limits: CountJobs;
-}) => {
-  const {
-    paginationLimit,
-    pageNumber,
-    handleJobApplicationPaginate,
-    section,
-    allApplicationsDisabled,
-    cardStates: {
-      checkList: { disabled },
-    },
-  } = useJobApplications();
+// const ApplicationPagination = ({
+//   size,
+//   limits,
+// }: {
+//   size: number;
+//   limits: CountJobs;
+// }) => {
+//   const {
+//     paginationLimit,
+//     pageNumber,
+//     handleJobApplicationPaginate,
+//     section,
+//     allApplicationsDisabled,
+//     cardStates: {
+//       checkList: { disabled },
+//     },
+//   } = useJobApplications();
 
-  const disable = allApplicationsDisabled || disabled;
+//   const disable = allApplicationsDisabled || disabled;
 
-  const totalCandidatesCount = limits[section];
-  const totalPageCount = Math.ceil(totalCandidatesCount / paginationLimit);
-  const handleNext = async () => {
-    if (!disabled && totalPageCount > 1) {
-      const newPageNum = (pageNumber[section] + 1) % totalPageCount;
-      await handleJobApplicationPaginate(
-        newPageNum === 0 ? totalPageCount : newPageNum,
-        section,
-      );
-    }
-  };
-  const handlePrevious = async () => {
-    if (!disabled && totalPageCount > 1) {
-      const newPageNum = pageNumber[section] - 1;
-      await handleJobApplicationPaginate(
-        newPageNum === 0 ? totalPageCount : newPageNum,
-        section,
-      );
-    }
-  };
-  return totalCandidatesCount !== 0 ? (
-    <Stack style={{ backgroundColor: 'white' }}>
-      <Stack
-        style={{
-          opacity: disable ? 0.5 : 1,
-          pointerEvents: disable ? 'none' : 'auto',
-        }}
-      >
-        <CandidatesListPagination
-          onclickNext={{ onClick: async () => await handleNext() }}
-          onclickPrevious={{ onClick: async () => await handlePrevious() }}
-          totalPageCount={totalPageCount}
-          currentCandidatesCount={size}
-          totalCandidatesCount={totalCandidatesCount}
-          slotPageNumber={<PageCountSlot totalPageCount={totalPageCount} />}
-        />
-      </Stack>
-    </Stack>
-  ) : (
-    <></>
-  );
-};
+//   const totalCandidatesCount = limits[section];
+//   const totalPageCount = Math.ceil(totalCandidatesCount / paginationLimit);
+//   const handleNext = async () => {
+//     if (!disabled && totalPageCount > 1) {
+//       const newPageNum = (pageNumber[section] + 1) % totalPageCount;
+//       await handleJobApplicationPaginate(
+//         newPageNum === 0 ? totalPageCount : newPageNum,
+//         section,
+//       );
+//     }
+//   };
+//   const handlePrevious = async () => {
+//     if (!disabled && totalPageCount > 1) {
+//       const newPageNum = pageNumber[section] - 1;
+//       await handleJobApplicationPaginate(
+//         newPageNum === 0 ? totalPageCount : newPageNum,
+//         section,
+//       );
+//     }
+//   };
+//   return totalCandidatesCount !== 0 ? (
+//     <Stack style={{ backgroundColor: 'white' }}>
+//       <Stack
+//         style={{
+//           opacity: disable ? 0.5 : 1,
+//           pointerEvents: disable ? 'none' : 'auto',
+//         }}
+//       >
+//         <CandidatesListPagination
+//           onclickNext={{ onClick: async () => await handleNext() }}
+//           onclickPrevious={{ onClick: async () => await handlePrevious() }}
+//           totalPageCount={totalPageCount}
+//           currentCandidatesCount={size}
+//           totalCandidatesCount={totalCandidatesCount}
+//           slotPageNumber={<PageCountSlot totalPageCount={totalPageCount} />}
+//         />
+//       </Stack>
+//     </Stack>
+//   ) : (
+//     <></>
+//   );
+// };
 
 export const PageCountSlot = ({
   totalPageCount,
