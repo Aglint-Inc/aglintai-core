@@ -11,8 +11,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const {
       workflow_id,
       workflow_action_id,
-      target,
-      medium,
       trigger,
       execution_time,
       // payload,
@@ -21,8 +19,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (
       !workflow_id ||
       !workflow_action_id ||
-      !target ||
-      !medium ||
       !trigger ||
       !meta ||
       !execution_time
