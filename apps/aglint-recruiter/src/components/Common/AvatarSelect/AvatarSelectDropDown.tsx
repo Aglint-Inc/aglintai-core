@@ -49,10 +49,11 @@ const AvatarSelectDropDown = ({
         onChange={onChange}
         sx={{
           '.MuiOutlinedInput-root': {
-            border: `1px solid ${error ? 'var(--error-6)' : 'var(--neutral-6)'}`,
+            // border: `1px solid ${error ? 'var(--error-6)' : 'var(--neutral-6)'}`,
             '&.Mui-focused': {
-              borderColor: ` ${error ? 'var(--error-a6)' : 'var(--accent-a6)'}`,
-              outline: `3px solid ${error ? 'var(--error-a6)' : 'var(--accent-a6)'}`,
+              // borderColor: ` ${error ? 'var(--error-a6)' : 'var(--accent-a6)'}`,
+              // outline: 'none',
+              // shadow: 'none',
             },
           },
           '.MuiSelect-outlined': {
@@ -89,7 +90,7 @@ const AvatarSelectDropDown = ({
           menuOptions.map((menu, idx) => (
             <MenuItem
               sx={{
-                padding: 'var(--space-1)',
+                padding: 'var(--space-2)',
                 direction: 'ltr',
                 display: 'flex',
                 gap: 'var(--space-1)',

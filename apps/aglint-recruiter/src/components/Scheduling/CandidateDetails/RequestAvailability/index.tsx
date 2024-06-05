@@ -17,7 +17,7 @@ import { ScheduleSelectPill } from '@/devlink3/ScheduleSelectPill';
 import { ToggleWithText } from '@/devlink3/ToggleWithText';
 import GreenBgCheckedIcon from '@/src/components/Common/Icons/GreenBgCheckedIcon';
 import PopUpArrowIcon from '@/src/components/Common/Icons/PopUpArrowIcon';
-import ToggleBtn from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/utils/UIToggle';
+import ToggleBtn from '@/src/components/Common/UIToggle';
 import DateRange from '@/src/components/Tasks/Components/DateRange';
 import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
