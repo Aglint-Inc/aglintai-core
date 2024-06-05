@@ -42,7 +42,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
     const verified_slots =
       cand_schedule.verifyIntSelectedSlots(selected_options);
-    const all_day_plans = convertToCandSideResp(
+    const all_day_plans = convertOptionsToDateRangeSlots(
       verified_slots,
       filter_json_data.filter_json.user_tz,
     );
@@ -69,37 +69,77 @@ const fetch_details_from_db = async (filter_json_id: string) => {
   };
 };
 
-const convertToCandSideResp = (
-  verified_slots: PlanCombinationRespType[],
-  candidate_tz,
+const convertOptionsToDateRangeSlots = (
+  verified_options: PlanCombinationRespType[],
+  candidate_tz: string,
 ) => {
   let all_day_plans: SessionsCombType[][][] = [];
-  const day_map_slots: {
-    [int_start_day: string]: PlanCombinationRespType[][];
+  const sesn_round_cnt = ScheduleUtils.getSessionRounds(
+    verified_options[0].sessions,
+  ).length;
+  const slot_map: {
+    [int_start_date: string]: PlanCombinationRespType[][];
   } = {};
 
-  for (let curr_int_day_slots of verified_slots) {
-    const session_rounds = ScheduleUtils.getSessionRounds(
-      curr_int_day_slots.sessions,
-    ) as unknown as SessionCombinationRespType[][];
-    const int_start_day = userTzDayjs(session_rounds[0][0].start_time)
+  for (let slot_option of verified_options) {
+    const int_start_date = userTzDayjs(slot_option.sessions[0].start_time)
       .tz(candidate_tz)
       .startOf('day')
       .format();
-    const plan_combs: PlanCombinationRespType[] = session_rounds.map((s) => {
-      return {
-        plan_comb_id: nanoid(),
-        sessions: s,
-      };
-    });
-    if (!day_map_slots[int_start_day]) {
-      day_map_slots[int_start_day] = [];
+    if (!slot_map[int_start_date]) {
+      slot_map[int_start_date] = new Array(sesn_round_cnt);
     }
-    day_map_slots[int_start_day].push([...plan_combs]);
+    const slot_rounds = ScheduleUtils.getSessionRounds(
+      slot_option.sessions,
+    ) as unknown as SessionCombinationRespType[][];
+    for (
+      let curr_round_idx = 0;
+      curr_round_idx < sesn_round_cnt;
+      ++curr_round_idx
+    ) {
+      const curr_round_slots = slot_rounds[curr_round_idx];
+      if (!slot_map[int_start_date][curr_round_idx]) {
+        slot_map[int_start_date][curr_round_idx] = [];
+      }
+      slot_map[int_start_date][curr_round_idx].push({
+        plan_comb_id: nanoid(),
+        sessions: [...curr_round_slots],
+      });
+    }
   }
-  for (const slots of Object.values(day_map_slots)) {
-    const session_combs = planCombineSlots(slots);
-    all_day_plans = [...all_day_plans, session_combs];
+
+  for (let curr_int_day_slots of Object.values(slot_map)) {
+    all_day_plans.push(planCombineSlots(curr_int_day_slots));
   }
+
   return all_day_plans;
 };
+
+// const day_map_slots: {
+//     [int_start_day: string]: PlanCombinationRespType[][];
+//   } = {};
+
+//   for (let curr_int_day_slots of verified_options) {
+//     const session_rounds = ScheduleUtils.getSessionRounds(
+//       curr_int_day_slots.sessions,
+//     ) as unknown as SessionCombinationRespType[][];
+//     const int_start_day = userTzDayjs(session_rounds[0][0].start_time)
+//       .tz(candidate_tz)
+//       .startOf('day')
+//       .format();
+//     const plan_combs: PlanCombinationRespType[] = session_rounds.map((s) => {
+//       return {
+//         plan_comb_id: nanoid(),
+//         sessions: s,
+//       };
+//     });
+//     console.log(plan_combs);
+//     if (!day_map_slots[int_start_day]) {
+//       day_map_slots[int_start_day] = [];
+//     }
+//     day_map_slots[int_start_day].push([...plan_combs]);
+//   }
+//   for (const slots of Object.values(day_map_slots)) {
+//     const session_combs = planCombineSlots(slots);
+//     all_day_plans = [...all_day_plans, session_combs];
+//   }

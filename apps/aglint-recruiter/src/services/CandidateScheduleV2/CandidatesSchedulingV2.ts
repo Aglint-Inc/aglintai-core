@@ -214,9 +214,9 @@ export class CandidatesSchedulingV2 {
       ) as unknown as SessionCombinationRespType[][];
       let is_option_verified = true;
       for (const curr_round_sess of session_rounds) {
-        const cand_date = userTzDayjs(curr_round_sess[0].start_time).tz(
-          this.api_payload.candidate_tz,
-        );
+        const cand_date = userTzDayjs(curr_round_sess[0].start_time)
+          .tz(this.api_payload.candidate_tz)
+          .startOf('day');
         const cached_free_time = new Map<string, TimeDurationType[]>();
         const { verifyCurrDaySlot } = this.calcMeetingCombinsForPlan(
           cand_date,
@@ -228,8 +228,9 @@ export class CandidatesSchedulingV2 {
           break;
         }
       }
+      verified_slots.push(comb);
       if (is_option_verified) {
-        verified_slots.push(comb);
+        //
       }
     }
     return verified_slots;
