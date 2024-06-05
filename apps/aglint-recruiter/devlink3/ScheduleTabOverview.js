@@ -2,10 +2,8 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
-import { RescheduleCard } from "./RescheduleCard";
-import { ScheduleCard } from "./ScheduleCard";
-import { MembersList } from "./MembersList";
-import { HeaderWithSlot } from "./HeaderWithSlot";
+import { SlotComp } from "./SlotComp";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./ScheduleTabOverview.module.css";
 
@@ -42,18 +40,16 @@ export function ScheduleTabOverview({
     <_Component className={_utils.cx(_styles, "tab_overview")} tag="div">
       {isScheduleCardVisible ? (
         <_Builtin.Block tag="div">
-          {slotRescheduleCard ?? <RescheduleCard />}
+          {slotRescheduleCard ?? <SlotComp componentNeme="REScheduleCard" />}
         </_Builtin.Block>
       ) : null}
       <_Builtin.Block className={_utils.cx(_styles, "tab_row")} tag="div">
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Schedule Info"}
-        </_Builtin.Block>
+        <Text content="" />
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1414")}
           tag="div"
         >
-          {slotScheduleCard ?? <ScheduleCard />}
+          {slotScheduleCard ?? <SlotComp componentNeme="ScheduleCard" />}
         </_Builtin.Block>
         {isMeetingLinkVisible ? (
           <_Builtin.Block
@@ -146,17 +142,12 @@ export function ScheduleTabOverview({
           className={_utils.cx(_styles, "div-block-1423")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Candidate"}
-          </_Builtin.Block>
+          <Text content="Candidate" />
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1424")}
             tag="div"
           >
-            {slotCandidate}
+            {slotCandidate ?? <SlotComp componentNeme="Candiate" />}
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}
@@ -165,17 +156,12 @@ export function ScheduleTabOverview({
           className={_utils.cx(_styles, "div-block-1423")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Members"}
-          </_Builtin.Block>
+          <Text content="Members" />
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1425")}
             tag="div"
           >
-            {slotMembers ?? <MembersList />}
+            {slotMembers ?? <SlotComp componentNeme="Member List" />}
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}
@@ -183,20 +169,13 @@ export function ScheduleTabOverview({
         className={_utils.cx(_styles, "div-block-1728")}
         tag="div"
       >
-        {slotHeaderWithSlot ?? (
-          <>
-            <HeaderWithSlot />
-            <HeaderWithSlot />
-          </>
-        )}
+        {slotHeaderWithSlot ?? <SlotComp componentNeme="HeaderWithSlot" />}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1422")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Interview Module"}
-        </_Builtin.Block>
+        <Text content="Interview Module" />
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1421", "cursor-pointer")}
           tag="div"

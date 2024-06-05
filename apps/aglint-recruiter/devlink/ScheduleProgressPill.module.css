@@ -27,10 +27,9 @@
   right: 0%;
   bottom: 0%;
   z-index: 1;
-}
 
-.is_starting.changing_bg_color {
-  border-radius: 10px 0px 0px 10px;
+  border-top-left-radius: var(--radius-2);
+  border-bottom-left-radius: var(--radius-2);
 }
 
 .is_ending {
@@ -41,7 +40,7 @@
   bottom: 0%;
   z-index: 2;
 
-  border-radius: 0px 10px 10px 0px;
+  border-radius: 0px var(--radius-2) var(--radius-2) 0px;
 }
 
 .slot_dynamic_icon {
@@ -251,10 +250,6 @@
   }
 }
 
-.color-blue-600 {
-  color: var(--blue600-aad8d97e);
-}
-
 .fw-semibold.new-greenhouse {
   color: #14413d;
 }
@@ -275,16 +270,8 @@
   text-align: center;
 }
 
-.text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
-}
-
-.fw-semibold.text-blue-600.no-underline {
-  text-decoration: none;
 }
 
 .text-no-wrap {

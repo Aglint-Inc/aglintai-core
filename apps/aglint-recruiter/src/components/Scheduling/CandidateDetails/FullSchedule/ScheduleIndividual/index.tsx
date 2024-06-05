@@ -1,8 +1,7 @@
-import { Stack } from '@mui/material';
+import { Checkbox, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
-import { Checkbox } from '@/devlink/Checkbox';
 import { StatusBadge } from '@/devlink2/StatusBadge';
 import { EditOptionModule } from '@/devlink3/EditOptionModule';
 import { NewInterviewPlanCard } from '@/devlink3/NewInterviewPlanCard';
@@ -128,13 +127,8 @@ function ScheduleIndividualCard({
         session.interview_meeting.status === 'reschedule' ||
         isCheckboxVisible ? (
           <Checkbox
-            isChecked={selectedSessionIds.includes(session.id)}
-            onClickCheck={{
-              onClick: (e) => {
-                e.stopPropagation();
-                onClickCheckBox({ session });
-              },
-            }}
+            size='small'
+            checked={selectedSessionIds.includes(session.id)}
           />
         ) : (
           <Stack width={'18px'}></Stack>

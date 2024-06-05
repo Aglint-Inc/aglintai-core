@@ -11,13 +11,15 @@
   justify-content: flex-start;
   align-items: stretch;
 
-  border: 1px solid #e9ebed;
-  border-radius: 10px;
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+
+  background-color: var(--white);
 }
 
 .div-block-1388 {
   width: 100%;
-  padding: 16px;
+  padding: var(--space-3);
 }
 
 .div-block-1388.padding-26-l {
@@ -57,16 +59,16 @@
   width: 200px;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .div-block-1392 {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .div-block-1384 {
@@ -97,16 +99,6 @@
   cursor: pointer;
 }
 
-.icons.cursor-pointer.mr-20 {
-  margin-right: 20px;
-  transition-property: none;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
 .icons.task-hover {
   position: absolute;
   left: 50px;
@@ -123,12 +115,12 @@
   font-weight: 600;
 }
 
-.relative-1 {
+.fw-semibold.relative_2 {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
-.fw-semibold.relative_2 {
+.relative_2 {
   position: relative;
   z-index: 2;
 }
@@ -165,23 +157,9 @@
   color: #d93f4c;
 }
 
-.fw-semibold.plr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
-.plr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
 .text-lg {
   font-size: 18px;
   line-height: 24px;
-}
-
-.fw-semibold.text-yellow-700 {
-  color: #ad5918;
 }
 
 .fw-semibold.p-lr-16 {
@@ -189,20 +167,8 @@
   padding-left: 16px;
 }
 
-.text-grey-500 {
-  color: #87929d;
-}
-
-.text-grey_400 {
-  color: #c2c8cc;
-}
-
 .text-grey_600 {
   color: var(--sand-11);
-}
-
-.fw-semibold.name-text {
-  color: #467b7c;
 }
 
 .hide {
@@ -217,15 +183,15 @@
   grid-row-gap: 10px;
 }
 
-.div-block-1390 {
+.card_flex {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
-.div-block-1390.hide {
+.card_flex.hide {
   display: none;
 }
 
@@ -288,8 +254,8 @@
 
   width: 10px;
 
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
+  border-top-left-radius: var(--space-2);
+  border-bottom-left-radius: var(--space-2);
 
-  background-color: #337fbd;
+  background-color: var(--sky-6);
 }

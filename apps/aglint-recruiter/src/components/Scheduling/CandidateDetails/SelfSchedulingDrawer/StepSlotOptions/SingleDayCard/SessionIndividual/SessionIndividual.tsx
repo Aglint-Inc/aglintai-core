@@ -61,10 +61,7 @@ function SessionIndividual({
                 <MuiAvatar
                   level={getFullName(member.first_name, member.last_name)}
                   src={member.profile_image}
-                  variant={'circular'}
-                  width={'100%'}
-                  height={'100%'}
-                  fontSize={'14px'}
+                  variant={'rounded-small'}
                 />
               }
               isShadow={member.training_type === 'shadow'}

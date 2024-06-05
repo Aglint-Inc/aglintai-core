@@ -117,11 +117,6 @@
   cursor: pointer;
 }
 
-.icons.lottie {
-  width: 16px;
-  height: 16px;
-}
-
 .intagration-link {
   display: flex;
   justify-content: flex-start;
@@ -144,36 +139,5 @@
   grid-template-rows: auto;
 }
 
-.coming_soon_button {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-  z-index: 1;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
-
-  border-radius: 4px;
-
-  background-color: #e9ebed;
-
-  cursor: auto;
-}
-
-.embed_flex {
-  display: flex;
-}
-
-.embed_flex.relative_3 {
-  position: relative;
-  z-index: 3;
-}
-
-.embed_flex.is_cursor {
-  cursor: pointer;
+#w-node-_873e575d-affc-c17c-9a00-983c37c523b3-c20717d8 {
 }

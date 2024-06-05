@@ -16,7 +16,9 @@
   position: relative;
 
   display: flex;
-  padding: 10px;
+  height: var(--space-6);
+  padding-right: var(--space-3);
+  padding-left: var(--space-3);
   align-items: center;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
@@ -33,7 +35,7 @@
   opacity: 1;
 }
 
-.div-block-365 {
+.nav_link_content {
   position: relative;
   z-index: 2;
 
@@ -41,6 +43,8 @@
   width: 100%;
   justify-content: space-between;
   align-items: center;
+
+  color: var(--neutral-11);
 }
 
 .job-link-tag {
@@ -54,7 +58,7 @@
 
   border-radius: 100px;
 
-  color: var(--white\<deleted\|variable-80449ce7\>);
+  color: var(--neutral-10);
 }
 
 .job-link-tag.blue-500 {
@@ -77,138 +81,14 @@
   background-color: var(--red500-2e806c7d);
 }
 
-.text-sm {
-  font-size: 12px;
-  line-height: 1.4;
+.job-link-tag.not_active {
+  background-color: transparent;
+  color: var(--white);
 }
 
-.fw-semibold {
-  font-weight: 600;
-}
-
-.text-white {
-  color: white;
-}
-
-.text-sm.fw-semibold.text-white.text-first-capitialize {
-  text-transform: capitalize;
-}
-
-.text-grey-600 {
-  color: var(--grey600-d5bebe21);
-}
-
-.color-grey-500 {
-  color: var(--grey500-0d508ad8);
-}
-
-.text-green-500 {
-  color: var(--green500-287ff474);
-}
-
-.text-kale-800 {
-  color: var(--kale800-682c1482);
-}
-
-.color-black {
-  color: var(--black-0fdbd865);
-}
-
-.text-yellow-600 {
-  color: var(--yellow600-1478b5f5);
-}
-
-.text-blue-500 {
-  color: var(--blue500-72579298);
-}
-
-.text-yellow-800 {
-  color: var(--yellow800-b1e3bc9b);
-}
-
-.text-grey-400 {
-  color: var(--grey400-863ed4b5);
-}
-
-.text-grey-500 {
-  color: var(--grey500-0d508ad8);
-}
-
-.color-white {
-  color: var(--white-80449ce7);
-}
-
-.color-grey-600 {
-  color: #68737d;
-}
-
-.text-green-800 {
-  color: var(--green800-a83af583);
-}
-
-.text-blue-600 {
-  color: var(--blue600-aad8d97e);
-}
-
-.cursor-pointer {
-  transition: opacity 200ms ease;
-  cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.7;
-}
-
-.text-kale-600 {
-  color: var(--kale600-c60cbc05);
-}
-
-.clickable {
-  transition: all 300ms ease;
-  cursor: pointer;
-}
-
-.clickable:hover {
-  opacity: 0.8;
-}
-
-.text-sm.text-grey-500.width-ticket-d {
-  width: 49.91667175292969px;
-}
-
-.color-blue-600 {
-  color: var(--blue600-aad8d97e);
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
-}
-
-.text-capitalize {
-  text-transform: uppercase;
-}
-
-.text-sm.text-first-capital {
-  text-transform: capitalize;
-}
-
-.text-color-white {
-  color: white;
-}
-
-.text-blue-800 {
-  color: var(--blue800-09c1dfbf);
-}
-
-.text-red-500 {
-  color: var(--red500-2e806c7d);
+.job-link-tag.active-tage {
+  background-color: var(--accent-9);
+  color: var(--white);
 }
 
 .aui_nav_sublink_active-drop {
@@ -217,10 +97,12 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
+  z-index: 2;
 
   display: flex;
   width: 100%;
-  padding: 10px;
+  padding-right: var(--space-3);
+  padding-left: var(--space-3);
   justify-content: space-between;
   align-items: center;
   grid-column-gap: 8px;
@@ -228,7 +110,9 @@
 
   border-radius: 6px;
 
-  background-color: #f8f9f9;
+  background-color: var(--accent-3);
 
   opacity: 1;
+
+  color: var(--accent-10);
 }

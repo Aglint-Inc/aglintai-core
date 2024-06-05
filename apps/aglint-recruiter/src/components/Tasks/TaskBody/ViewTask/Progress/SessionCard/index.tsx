@@ -90,10 +90,7 @@ function SessionCard({
                         <MuiAvatar
                           level={getFullName(user.first_name, user.last_name)}
                           src={user?.profile_image}
-                          variant={'circular'}
-                          width={'24px'}
-                          height={'24px'}
-                          fontSize={'12px'}
+                          variant={'rounded-small'}
                         />
                       }
                     />

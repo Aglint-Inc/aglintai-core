@@ -1,12 +1,14 @@
-.div-block-1459 {
+.scheduling-dashboard {
   display: flex;
   overflow: auto;
   height: 100vh;
-  padding: 20px 20px 100px;
+  padding: var(--space-5);
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
+
+  background-color: var(--neutral-2);
 }
 
 .div-block-1460 {
@@ -20,7 +22,7 @@
 
 .schedule_dashboard_link {
   display: flex;
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-2);
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: nowrap;
@@ -28,10 +30,16 @@
   grid-column-gap: 16px;
   grid-row-gap: 16px;
 
-  border: 1px solid #e9ebed;
+  border: 1px solid var(--neutral-a6);
   border-radius: 10px;
 
+  background-color: var(--neutral-3);
+
   cursor: pointer;
+}
+
+.schedule_dashboard_link:hover {
+  background-color: var(--neutral-5);
 }
 
 .icons {
@@ -54,16 +62,6 @@
   cursor: pointer;
 }
 
-.icons.cursor-pointer.mr-20 {
-  margin-right: 20px;
-  transition-property: none;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
 .icons.task-hover {
   position: absolute;
   left: 50px;
@@ -80,12 +78,12 @@
   font-weight: 600;
 }
 
-.relative-1 {
+.fw-semibold.relative_2 {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
-.fw-semibold.relative_2 {
+.relative_2 {
   position: relative;
   z-index: 2;
 }
@@ -122,23 +120,9 @@
   color: #d93f4c;
 }
 
-.fw-semibold.plr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
-.plr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
 .text-lg {
   font-size: 18px;
   line-height: 24px;
-}
-
-.fw-semibold.text-yellow-700 {
-  color: #ad5918;
 }
 
 .fw-semibold.p-lr-16 {
@@ -146,20 +130,8 @@
   padding-left: 16px;
 }
 
-.text-grey-500 {
-  color: #87929d;
-}
-
-.text-grey_400 {
-  color: #c2c8cc;
-}
-
 .text-grey_600 {
   color: var(--sand-11);
-}
-
-.fw-semibold.name-text {
-  color: #467b7c;
 }
 
 .hide {
@@ -190,12 +162,6 @@
   grid-row-gap: 20px;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
-}
-
-.div-block-1462.block {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
 }
 
 .div-block-1467 {

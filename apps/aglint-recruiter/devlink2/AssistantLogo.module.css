@@ -8,8 +8,6 @@
 
   border-radius: 8px;
 
-  background-color: #ffeedb;
-
   cursor: pointer;
 }
 
@@ -78,9 +76,4 @@
   bottom: auto;
 
   cursor: pointer;
-}
-
-.icons.lottie {
-  width: 16px;
-  height: 16px;
 }

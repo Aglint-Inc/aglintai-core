@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./HeaderWithSlot.module.css";
 
@@ -12,14 +14,12 @@ export function HeaderWithSlot({
 }) {
   return isCoordinatorVisible ? (
     <_Component className={_utils.cx(_styles, "div-block-1423")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-        {textHeading}
-      </_Builtin.Block>
+      <Text content={textHeading} />
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1426")}
         tag="div"
       >
-        {slotCoordinators}
+        {slotCoordinators ?? <SlotComp componentNeme="Candiate" />}
       </_Builtin.Block>
     </_Component>
   ) : null;

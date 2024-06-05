@@ -39,52 +39,12 @@
   grid-row-gap: 4px;
 }
 
-.header_interviewer.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-}
-
-.header_interviewer.width-324 {
-  width: 25%;
-}
-
-.header_interviewer.width-25 {
-  width: 25%;
-}
-
-.header_interviewer.widthh-324px {
-  width: 25%;
-}
-
-.header_interviewer.width-25-copy {
-  width: 25%;
-}
-
 .header_session {
   display: flex;
   padding: 10px 20px;
   align-items: center;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
-}
-
-.header_session.hide {
-  display: none;
-}
-
-.header_session.width-25 {
-  width: 25%;
-}
-
-.header_session.widthh-324px {
-  width: 25%;
-}
-
-.header_session.width-25-copy {
-  width: 25%;
 }
 
 .header_session.width-324-copy {
@@ -104,11 +64,6 @@
 
 .fw-semibold {
   font-weight: 600;
-}
-
-.relative-1 {
-  position: relative;
-  z-index: 1;
 }
 
 .fw-semibold.relative_2 {
@@ -153,23 +108,9 @@
   color: #d93f4c;
 }
 
-.fw-semibold.plr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
-.plr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
 .text-lg {
   font-size: 18px;
   line-height: 24px;
-}
-
-.fw-semibold.text-yellow-700 {
-  color: #ad5918;
 }
 
 .fw-semibold.p-lr-16 {
@@ -177,20 +118,12 @@
   padding-left: 16px;
 }
 
-.text-grey-500 {
-  color: #87929d;
-}
-
-.text-grey_400 {
-  color: #c2c8cc;
-}
-
 .text-grey_600 {
   color: var(--sand-11);
 }
 
-.fw-semibold.name-text {
-  color: #467b7c;
+.hide {
+  display: none;
 }
 
 .header_recommendation {
@@ -201,52 +134,12 @@
   grid-row-gap: 4px;
 }
 
-.header_recommendation.hide {
-  display: none;
-}
-
-.header_recommendation.width-324 {
-  width: 25%;
-}
-
-.header_recommendation.width-25 {
-  width: 25%;
-}
-
-.header_recommendation.widthh-324px {
-  width: 25%;
-}
-
-.header_recommendation.width-25-copy {
-  width: 25%;
-}
-
 .header_feedback {
   display: flex;
   padding: 10px 20px;
   align-items: center;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
-}
-
-.header_feedback.hide {
-  display: none;
-}
-
-.header_feedback.width-324 {
-  width: 25%;
-}
-
-.header_feedback.width-25 {
-  width: 25%;
-}
-
-.header_feedback.widthh-324px {
-  width: 25%;
-}
-
-.header_feedback.width-25-copy {
-  width: 25%;
 }
 
 .slot_candidaterow {

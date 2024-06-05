@@ -17,6 +17,7 @@ export const scheduling_options_schema = z.object({
       day_off: z.boolean().default(false),
       holiday: z.boolean().default(false),
       out_of_working_hrs: z.boolean().default(false),
+      day_passed: z.boolean().default(false),
     })
     .default({}), // Ensure defaults for nested object
 });
@@ -45,4 +46,8 @@ export const schema_find_slots_date_range = z.object({
   date_range_end: z.string(),
   candidate_tz: z.string(),
   options: scheduling_options_schema.default({}), // Ensure default values are applied
+});
+
+export const schema_verify_interviewer_selected_slots = z.object({
+  cand_availability_id: z.string(),
 });

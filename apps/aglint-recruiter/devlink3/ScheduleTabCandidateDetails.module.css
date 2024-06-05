@@ -37,10 +37,6 @@
   font-weight: 600;
 }
 
-.text-grey-600 {
-  color: #68737d;
-}
-
 .cvs-intro-profile-block-copy {
   display: flex;
   flex-direction: column;
@@ -83,16 +79,6 @@
   cursor: pointer;
 }
 
-.icons.cursor-pointer.mr-20 {
-  margin-right: 20px;
-  transition-property: none;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
 .icons.task-hover {
   position: absolute;
   left: 50px;
@@ -105,8 +91,8 @@
   cursor: pointer;
 }
 
-.hide {
-  display: none;
+.text-grey-600 {
+  color: #68737d;
 }
 
 .text-sm {
@@ -187,12 +173,12 @@
   grid-row-gap: 10px;
 }
 
-.relative-1 {
+.fw-semibold.relative_2 {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
-.fw-semibold.relative_2 {
+.relative_2 {
   position: relative;
   z-index: 2;
 }
@@ -229,39 +215,17 @@
   color: #d93f4c;
 }
 
-.fw-semibold.plr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
-.plr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
-.fw-semibold.text-yellow-700 {
-  color: #ad5918;
-}
-
 .fw-semibold.p-lr-16 {
   padding-right: 16px;
   padding-left: 16px;
-}
-
-.text-grey-500 {
-  color: #87929d;
-}
-
-.text-grey_400 {
-  color: #c2c8cc;
 }
 
 .text-grey_600 {
   color: var(--sand-11);
 }
 
-.fw-semibold.name-text {
-  color: #467b7c;
+.hide {
+  display: none;
 }
 
 .analysisc_block {
@@ -356,13 +320,6 @@
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-}
-
-.div-block-786 {
-  display: flex;
-  flex-direction: column;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
 }
 
 .schedule-tab-wrap-ana {

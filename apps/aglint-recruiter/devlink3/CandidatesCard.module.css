@@ -67,10 +67,6 @@
   cursor: pointer;
 }
 
-.feedback-link-wrap.red {
-  color: #d93f4c;
-}
-
 .feedback-link-wrap.no-color {
   color: transparent;
 }

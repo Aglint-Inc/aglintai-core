@@ -448,10 +448,7 @@ const CandidateDetailCard = ({
         <MuiAvatar
           level={getFullName(candidate.first_name, candidate.last_name)}
           src={candidate.profile_image}
-          variant={'rounded'}
-          width={'100%'}
-          height={'100%'}
-          fontSize={'12px'}
+          variant={'rounded-small'}
         />
       }
       isChecked={isChecked}

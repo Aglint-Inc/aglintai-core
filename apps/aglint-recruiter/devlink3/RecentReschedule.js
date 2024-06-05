@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./RecentReschedule.module.css";
@@ -23,9 +24,7 @@ export function RecentReschedule({
         className={_utils.cx(_styles, "reschedule-req-header")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Recent Reschedule Requests"}
-        </_Builtin.Block>
+        <Text content="RecentReschedule" />
         <_Builtin.Block tag="div">{slotDropdown}</_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

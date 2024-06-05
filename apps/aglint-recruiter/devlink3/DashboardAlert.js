@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
+import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./DashboardAlert.module.css";
 
@@ -32,22 +34,22 @@ export function DashboardAlert({
         )}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {textTitile}
-        </_Builtin.Block>
-        <_Builtin.Block tag="div">{textShortDescription}</_Builtin.Block>
+        <Text content={textTitile} weight="medium" />
+        <Text
+          content={textShortDescription}
+          size="1"
+          weight=""
+          color="neutral"
+        />
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "right_buttons")} tag="div">
-        <_Builtin.Block
-          className={_utils.cx(_styles, "button_primary")}
-          tag="div"
-          {...onClickBanner}
-        >
-          <_Builtin.Block tag="div">
-            {"View"}
-            <br />
-          </_Builtin.Block>
-        </_Builtin.Block>
+        <ButtonSolid
+          onClickButton={onClickBanner}
+          highContrast="true"
+          textButton="View"
+          size="2"
+          color="accent"
+        />
       </_Builtin.Block>
     </_Component>
   );

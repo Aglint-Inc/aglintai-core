@@ -82,11 +82,6 @@
   cursor: pointer;
 }
 
-.icons.lottie {
-  width: 16px;
-  height: 16px;
-}
-
 .text-grey-600 {
   color: #68737d;
 }
@@ -99,23 +94,6 @@
 .text-grey-600.relative-1 {
   position: relative;
   z-index: 1;
-}
-
-.text-lg {
-  font-size: 18px;
-  line-height: 1.33;
-}
-
-@media screen and (max-width: 991px) {
-  .text-lg {
-    font-size: 16px;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .text-lg {
-    font-size: 16px;
-  }
 }
 
 .text-underline {
@@ -142,19 +120,14 @@
   text-align: center;
 }
 
-.text-blue-500 {
-  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
+.accent-link-with-underline {
+  display: flex;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+  color: var(--accent-11);
+  text-decoration: underline;
 }
 
-.clickable {
-  transition: all 300ms ease;
-  cursor: pointer;
-}
-
-.clickable:hover {
-  opacity: 0.8;
-}
-
-.text-blue-500.ml-12 {
-  margin-left: 8px;
+.accent-link-with-underline:hover {
+  color: var(--accent-12);
 }

@@ -34,7 +34,11 @@ function ConflictWithHover({
                   return (
                     <ConflictReason
                       key={ind}
-                      textConflictReason={item.conflict_event}
+                      textConflictReason={
+                        item.conflict_type === 'out_of_working_hours'
+                          ? item.conflict_event || 'Out of working hours'
+                          : item.conflict_event
+                      }
                     />
                   );
                 })}

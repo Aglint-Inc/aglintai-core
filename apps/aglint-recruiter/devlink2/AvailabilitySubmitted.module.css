@@ -86,11 +86,6 @@
   cursor: pointer;
 }
 
-.icons.lottie {
-  width: 16px;
-  height: 16px;
-}
-
 .div-block-1729 {
   display: flex;
   flex-direction: column;
@@ -124,18 +119,8 @@
   color: var(--black-9b0fc3fc);
 }
 
-.inline-block {
-  display: inline;
-  margin-right: 2px;
-  margin-left: 2px;
-}
-
 .text-grey-600 {
   color: #68737d;
-}
-
-.text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
 .text-sm {
@@ -236,6 +221,10 @@
 
 .text-red-500 {
   color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
+}
+
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
 .text-yellow-600 {

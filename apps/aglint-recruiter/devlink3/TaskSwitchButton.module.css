@@ -1,144 +1,48 @@
-.div-block-1448 {
+.task-switch-button-group {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
 }
 
-.div-block-1443 {
+.task_switch_comp {
   display: flex;
-  overflow: hidden;
-  justify-content: flex-start;
-  align-items: center;
-
-  border: 1px solid #d8dcde;
-  border-radius: 10px;
-
-  cursor: pointer;
+  border-radius: var(--radius-2);
+  background-color: var(--neutral-3);
 }
 
-.div-block-1444 {
-  position: relative;
-  padding: 10px;
-}
-
-.div-block-1445 {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  background-color: #e9ebed;
-}
-
-.text-grey_600 {
-  color: var(--sand-11);
-}
-
-.text-grey_600.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-}
-
-.relative-1 {
+.taskwitch_individual {
   position: relative;
   z-index: 1;
-}
 
-.text-grey_600.text-underline {
-  text-decoration: underline;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
-.text-grey_600.width-80px {
-  width: 80px;
-}
-
-.text-sm {
-  font-size: var(--font-size-1);
-  line-height: var(--line-height-1);
-  letter-spacing: var(--letter-spacing-1);
-}
-
-.text-grey_600.text-underline-copy {
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.div-block-1446 {
-  position: relative;
-  padding: 10px;
-}
-
-.div-block-1447 {
   display: flex;
+  padding: var(--space-2) var(--space-4);
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
-}
 
-.div-block-1447.dark-grey {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
+  transition: all 200ms ease;
 
-  justify-content: center;
-  align-items: center;
-
-  background-color: #e9ebed;
-}
-
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.icons.cursor-pointer {
-  transition: all 250ms ease;
   cursor: pointer;
 }
 
-.icons.cursor-pointer:hover {
-  opacity: 0.8;
+.taskwitch_individual:hover {
+  color: var(--accent-11);
 }
 
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.icons.cursor-pointer.mr-20 {
-  margin-right: 20px;
-  transition-property: none;
-}
-
-.relative_2 {
+.text_wrap {
   position: relative;
   z-index: 2;
 }
 
-.icons.task-hover {
+.active_wrap {
   position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
-}
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 1;
 
-.icons.pointer {
-  cursor: pointer;
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-2);
+
+  background-color: var(--white);
 }

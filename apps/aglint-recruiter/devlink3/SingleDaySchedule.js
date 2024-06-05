@@ -1,10 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ConflictOutsideWorkHours } from "./ConflictOutsideWorkHours";
-import { ConflictSoft } from "./ConflictSoft";
-import { ConflictHard } from "./ConflictHard";
-import { SessionDetails } from "./SessionDetails";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./SingleDaySchedule.module.css";
 
@@ -67,13 +64,7 @@ export function SingleDaySchedule({
             className={_utils.cx(_styles, "slot_conflicts")}
             tag="div"
           >
-            {slotConflicts ?? (
-              <>
-                <ConflictOutsideWorkHours isHover={false} />
-                <ConflictSoft />
-                <ConflictHard />
-              </>
-            )}
+            {slotConflicts ?? <SlotComp componentNeme="Conflicts" />}
           </_Builtin.Block>
         </_Builtin.Block>
         {isRotateArrowVisible ? (
@@ -93,21 +84,7 @@ export function SingleDaySchedule({
         className={_utils.cx(_styles, "schedule_option_expandeed")}
         tag="div"
       >
-        {slotSessionDetails ?? (
-          <>
-            <SessionDetails />
-            <SessionDetails
-              isMemberRow={false}
-              textSessionName={
-                <>
-                  {"Break"}
-                  <br />
-                </>
-              }
-            />
-            <SessionDetails />
-          </>
-        )}
+        {slotSessionDetails ?? <SlotComp componentNeme="Session Details" />}
       </_Builtin.Block>
     </_Component>
   );

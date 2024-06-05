@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./InstructionBlock.module.css";
 
@@ -28,7 +29,7 @@ export function InstructionBlock({
         className={_utils.cx(_styles, "slot_instructions")}
         tag="div"
       >
-        {slotInstruction}
+        {slotInstruction ?? <SlotComp componentNeme="Instructions" />}
       </_Builtin.Block>
     </_Component>
   );

@@ -19,7 +19,7 @@ export type DBDetailsType = {
   all_inters: SessionInterviewerType[];
   comp_schedule_setting: schedulingSettingType;
   int_meetings: InterviewerMeetingScheduled[];
-  ints_schd_meetings: Map<string, UserMeetingDetails[]>;
+  ints_schd_meetings: UserMeetingDetails;
   all_session_int_details: AllSessionIntDetails;
 };
 
@@ -32,6 +32,7 @@ export type IntervsWorkHrsEventType = Pick<
   | 'isCalenderConnected'
   | 'day_off'
   | 'holiday'
+  | 'int_schedule_setting'
 > & {
   interviewer_tz: string;
 };

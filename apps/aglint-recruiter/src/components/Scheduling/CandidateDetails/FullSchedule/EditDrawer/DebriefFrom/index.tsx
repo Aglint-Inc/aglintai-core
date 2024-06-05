@@ -130,10 +130,7 @@ function DebriedForm({
                     <MuiAvatar
                       src={member.start_icon_url}
                       level={getFullName(member.name, '')}
-                      variant='circular'
-                      fontSize='10px'
-                      height='100%'
-                      width='100%'
+                      variant='rounded-small'
                     />
                   }
                 />

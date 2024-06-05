@@ -89,9 +89,7 @@ export default forwardRef((props, ref) => {
             }}
           >
             <MuiAvatar
-              fontSize='12px'
-              width={20}
-              height={20}
+              variant='rounded-small'
               level={item.candidates?.first_name}
               src={item.candidates?.avatar}
             />

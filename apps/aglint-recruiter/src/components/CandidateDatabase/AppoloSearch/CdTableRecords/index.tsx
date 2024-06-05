@@ -201,10 +201,7 @@ function CdTableRecords({ loading }) {
                       ? null
                       : candidate.photo_url
                   }
-                  variant={'rounded'}
-                  width={'24px'}
-                  height={'24px'}
-                  fontSize={'14px'}
+                  variant={'rounded-small'}
                 />
               </>
             }

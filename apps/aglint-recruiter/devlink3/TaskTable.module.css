@@ -7,8 +7,8 @@
   position: relative;
 
   display: flex;
-  height: 60px;
-  padding: 10px 16px;
+  height: 48px;
+  padding: var(--space-2) 16px;
   justify-content: flex-start;
   align-items: center;
 
@@ -39,7 +39,7 @@
   align-content: center;
   grid-template-columns: 20px 1fr 130px 110px 160px 190px;
 
-  background-color: white;
+  background-color: var(--neutral-2);
 }
 
 .div-block-1434.height-40.job-cand {
@@ -49,7 +49,7 @@
 
 .div-block-1434.height-53 {
   position: relative;
-  height: 53px;
+  height: var(--space-8);
   align-content: center;
 }
 
@@ -77,26 +77,26 @@
   align-items: center;
 }
 
-.div-block-1435 {
+.task_row_cell {
   position: relative;
   z-index: 1;
 
   display: flex;
-  padding: 16px;
+  padding: var(--space-1) 16px;
   justify-content: flex-start;
   align-items: center;
 }
 
-.div-block-1435.gap-8 {
+.task_row_cell.gap-8 {
   grid-column-gap: 8px;
   grid-row-gap: 8px;
 }
 
-.div-block-1435.overview-wrap {
+.task_row_cell.overview-wrap {
   justify-content: space-between;
 }
 
-.div-block-1435.hide {
+.task_row_cell.hide {
   display: none;
 }
 
@@ -104,7 +104,7 @@
   display: none;
 }
 
-.div-block-1435.space-between {
+.task_row_cell.space-between {
   justify-content: space-between;
 }
 
@@ -112,26 +112,22 @@
   color: #87929d;
 }
 
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.div-block-1440 {
+.new_task {
   display: flex;
   width: 100%;
-  height: 53px;
+  height: var(--space-8);
   justify-content: flex-start;
   align-items: center;
 
   border-bottom: 1px solid #eaf1f3;
 }
 
-.div-block-1440.job-cand {
+.new_task.job-cand {
   justify-content: space-between;
   align-items: center;
 }
 
-.div-block-1440.job-cand.height-40 {
+.new_task.job-cand.height-40 {
   height: 40px;
 }
 
@@ -144,20 +140,23 @@
   width: 20px;
 }
 
-.div-block-1442 {
+.link-flex-accent {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-}
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 
-.div-block-1442.cursor-pointer {
+  transition: opacity 200ms ease;
+
+  color: var(--accent-11);
+  text-decoration: none;
+
   cursor: pointer;
 }
 
-.div-block-1442.cursor-pointer:hover {
-  opacity: 0.8;
+.link-flex-accent:hover {
+  opacity: 0.88;
 }
 
 .icons {
@@ -176,14 +175,8 @@
   opacity: 0.8;
 }
 
-.icons.cursor-pointer.mr-20 {
-  margin-right: 20px;
-  transition-property: none;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .icons.task-hover {
@@ -196,50 +189,6 @@
 
 .icons.pointer {
   cursor: pointer;
-}
-
-.text-blue-500 {
-  color: #337fbd;
-}
-
-.text-blue-500.text-underline {
-  text-decoration: underline;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
-.text-blue-500.text-underline.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.text-blue-500.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.text-sm {
-  font-size: var(--font-size-1);
-  line-height: var(--line-height-1);
-  letter-spacing: var(--letter-spacing-1);
-}
-
-.text-blue-500.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.text-blue-500.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.text-blue-500.text-capital {
-  text-transform: uppercase;
-}
-
-.fw-semibold {
-  font-weight: 600;
 }
 
 .div-block-1453 {

@@ -57,7 +57,7 @@ export default function AppLayout({ children }) {
   }, []);
 
   useEffect(() => {
-    if (windowSize.innerWidth < 991) {
+    if (windowSize?.innerWidth < 991) {
       const status = router.query.status;
       if (status) {
         setExpand(false);

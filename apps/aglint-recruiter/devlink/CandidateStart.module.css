@@ -71,10 +71,6 @@
   color: var(--grey500-0d508ad8);
 }
 
-.text-color-black {
-  color: hsla(0, 0.00%, 0.00%, 1.00);
-}
-
 .text-lg.fw-semibold.inline-block {
   display: inline;
 }

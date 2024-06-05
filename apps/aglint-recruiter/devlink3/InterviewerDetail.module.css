@@ -110,16 +110,6 @@
   cursor: pointer;
 }
 
-.icons.cursor-pointer.mr-20 {
-  margin-right: 20px;
-  transition-property: none;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
 .icons.task-hover {
   position: absolute;
   left: 50px;
@@ -154,37 +144,12 @@
   background-color: #f7f9fb;
 }
 
-.interviewscount.no-width {
-  width: auto;
-}
-
 .div-block-1707 {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
-}
-
-.text-sm-4 {
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.text-blue-500 {
-  color: #337fbd;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
-.text-grey-600 {
-  color: #68737d;
-}
-
-.text-gray-600 {
-  color: var(--sand-11);
 }
 
 .tab_wrapper {
@@ -204,5 +169,8 @@
   flex-wrap: nowrap;
   grid-column-gap: 30px;
   grid-row-gap: 30px;
+
+  background-color: var(--neutral-2);
+
   height: calc(100vh - 190px);
 }

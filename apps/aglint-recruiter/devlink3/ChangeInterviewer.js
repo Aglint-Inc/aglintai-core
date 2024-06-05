@@ -2,7 +2,10 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
-import { InterviewerList } from "./InterviewerList";
+import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
+import { ButtonSoft } from "./ButtonSoft";
+import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./ChangeInterviewer.module.css";
 
@@ -29,12 +32,7 @@ export function ChangeInterviewer({
     >
       <_Builtin.Block className={_utils.cx(_styles, "popup_header")} tag="div">
         <_Builtin.Block className={_utils.cx(_styles, "popup_title")} tag="div">
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Change Interviewer"}
-          </_Builtin.Block>
+          <Text content="??" />
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "popup_close")} tag="div">
           <_Builtin.HtmlEmbed
@@ -45,12 +43,7 @@ export function ChangeInterviewer({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "popup_body")} tag="div">
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-gray-600")}
-          tag="div"
-        >
-          {textAvailableDesc}
-        </_Builtin.Block>
+        <Text content={textAvailableDesc} weight="" color="neutral" />
         <_Builtin.Block className={_utils.cx(_styles, "slot_widget")} tag="div">
           <_Builtin.Block tag="div">
             <_Builtin.Block
@@ -91,11 +84,9 @@ export function ChangeInterviewer({
             >
               {slotInterviewerList ?? (
                 <>
-                  <InterviewerList />
-                  <InterviewerList />
-                  <InterviewerList />
-                  <InterviewerList />
-                  <InterviewerList />
+                  <SlotComp componentNeme="InterviewerList" />
+                  <SlotComp componentNeme="InterviewerList" />
+                  <SlotComp componentNeme="InterviewerList" />
                 </>
               )}
             </_Builtin.Block>
@@ -109,26 +100,31 @@ export function ChangeInterviewer({
         <_Builtin.Block
           className={_utils.cx(_styles, "wide_button", "width-100")}
           tag="div"
-          {...onClickClose}
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "button_primary", "greay_btn")}
-            tag="div"
-          >
-            <_Builtin.Block tag="div">{"Cancel"}</_Builtin.Block>
-          </_Builtin.Block>
+          <ButtonSoft
+            onClickButton={onClickClose}
+            color="neutral"
+            size="2"
+            isRightIcon={false}
+            isLeftIcon={false}
+            textButton={
+              <>
+                {"Cancel"}
+                <br />
+              </>
+            }
+          />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "wide_button", "width-100")}
           tag="div"
           {...onClickChange}
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "button_primary")}
-            tag="div"
-          >
-            <_Builtin.Block tag="div">{"Change"}</_Builtin.Block>
-          </_Builtin.Block>
+          <ButtonSolid
+            onClickButton={onClickChange}
+            textButton="Change"
+            size="2"
+          />
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

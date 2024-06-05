@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { ButtonSoft } from "./ButtonSoft";
+import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./GeneralPopupLarge.module.css";
 
@@ -69,13 +71,14 @@ export function GeneralPopupLarge({
           className={_utils.cx(_styles, "wide_button", "width-100")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "button_primary", "greay_btn")}
-            tag="div"
-            {...onClickClose}
-          >
-            <_Builtin.Block tag="div">{"Cancel"}</_Builtin.Block>
-          </_Builtin.Block>
+          <ButtonSoft
+            onClickButton={onClickClose}
+            textButton="Cancel"
+            isLeftIcon={false}
+            isRightIcon={false}
+            color="neutral"
+            size="2"
+          />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "wide_button", "width-100", "pos-2")}
@@ -85,13 +88,11 @@ export function GeneralPopupLarge({
           )}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "button_primary")}
-            tag="div"
-            {...onClickAction}
-          >
-            <_Builtin.Block tag="div">{textPopupButton}</_Builtin.Block>
-          </_Builtin.Block>
+          <ButtonSolid
+            onClickButton={onClickAction}
+            textButton={textPopupButton}
+            size="2"
+          />
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

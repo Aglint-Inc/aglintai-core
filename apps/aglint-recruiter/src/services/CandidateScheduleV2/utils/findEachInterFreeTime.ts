@@ -9,11 +9,11 @@ import {
   TimeDurationDayjsType,
   TimeDurationType,
 } from '@aglint/shared-types';
+import { ScheduleUtils } from '@aglint/shared-utils';
 import { Dayjs } from 'dayjs';
 
 import { DBDetailsType } from '../types';
 import { getInterviewerBlockedTimes } from './getInterviewerBlockedTimes';
-import { ScheduleUtils } from './ScheduleUtils';
 import {
   convertTimeDurStrToDayjsChunk,
   dayjsMax,
@@ -436,7 +436,6 @@ export const findEachInterviewerFreeTimes = (
         userTzDayjs(start_date).tz(api_payload.candidate_tz).startOf('day'),
         userTzDayjs(end_date).tz(api_payload.candidate_tz).endOf('day'),
       );
-
       upd_interv = { ...upd_interv };
     }
 

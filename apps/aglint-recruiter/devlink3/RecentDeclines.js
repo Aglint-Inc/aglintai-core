@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./RecentDeclines.module.css";
@@ -22,9 +23,7 @@ export function RecentDeclines({
         className={_utils.cx(_styles, "reschedule-req-header")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Recent Declines"}
-        </_Builtin.Block>
+        <Text content="RecentDeclines" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1782")}

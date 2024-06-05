@@ -8,6 +8,8 @@
   flex-direction: column;
   justify-content: flex-start;
   flex-wrap: nowrap;
+
+  background-color: var(--white);
 }
 
 .dtawer-tittle {
@@ -49,16 +51,6 @@
   cursor: pointer;
 }
 
-.icons.cursor-pointer.mr-20 {
-  margin-right: 20px;
-  transition-property: none;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
 .icons.task-hover {
   position: absolute;
   left: 50px;
@@ -96,46 +88,4 @@
   grid-template-rows: auto;
 
   background-color: white;
-}
-
-.div-block-1512 {
-  display: flex;
-  padding: 10px 16px;
-  justify-content: center;
-  align-items: center;
-
-  border-radius: 4px;
-
-  background-color: #e9ebed;
-
-  transition: all 250ms ease;
-
-  cursor: pointer;
-}
-
-.div-block-1512:hover {
-  opacity: 0.8;
-}
-
-.div-block-1513 {
-  display: flex;
-  padding: 10px 16px;
-  justify-content: center;
-  align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-
-  border-radius: 4px;
-
-  background-color: #337fbd;
-
-  transition: all 250ms ease;
-
-  color: white;
-
-  cursor: pointer;
-}
-
-.div-block-1513:hover {
-  background-color: #1f73b7;
 }

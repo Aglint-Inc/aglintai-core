@@ -185,10 +185,7 @@ function FilterCreatedBy() {
                       <MuiAvatar
                         src={item.profile_image}
                         level={getFullName(item.first_name, item.last_name)}
-                        variant='circular'
-                        height='20px'
-                        width='20px'
-                        fontSize='10px'
+                        variant='rounded-small'
                       />
                       <Typography variant='body1'>
                         {capitalize(item.first_name)}
@@ -223,10 +220,7 @@ function FilterCreatedBy() {
                     <MuiAvatar
                       src={item.profile_image}
                       level={getFullName(item.first_name, item.last_name)}
-                      variant='circular'
-                      height='20px'
-                      width='20px'
-                      fontSize='10px'
+                      variant='rounded-small'
                     />
                     <Typography variant='body1'>
                       {capitalize(item.first_name)}

@@ -1,8 +1,8 @@
 .score-edit-card {
   width: 100%;
   padding: 15px;
-  border: 1px solid #e9ebed;
-  border-radius: 4px;
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-2);
   background-color: white;
 }
 
@@ -43,10 +43,6 @@
 
 .cursor-pointer:hover {
   opacity: 0.7;
-}
-
-.icons.cursor-pointer.height-28 {
-  height: 28px;
 }
 
 .icons.cursor-pointer.three-dot {

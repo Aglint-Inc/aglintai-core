@@ -97,11 +97,6 @@
   cursor: pointer;
 }
 
-.icons.lottie {
-  width: 16px;
-  height: 16px;
-}
-
 .div-block-1700 {
   position: absolute;
   left: auto;
@@ -139,10 +134,6 @@
 
 .text-kale-600 {
   color: var(--kale-600\<deleted\|variable-fc9c3cf7-09bb-7364-ed8d-95d89e6d8422\>);
-}
-
-.text-color-black {
-  color: var(--black-9b0fc3fc);
 }
 
 .text-yellow-800 {

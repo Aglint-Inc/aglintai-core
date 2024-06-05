@@ -60,10 +60,6 @@
   align-items: center;
 }
 
-.icons.cursor-pointer.height-28 {
-  height: 28px;
-}
-
 .icons.cursor-pointer.three-dot {
   width: 20px;
   height: 20px;
@@ -207,14 +203,6 @@
   line-height: 1.4;
 }
 
-.text-white {
-  color: white;
-}
-
-.text-sm.fw-semibold.text-white.text-first-capitialize {
-  text-transform: capitalize;
-}
-
 .text-grey-600 {
   color: var(--grey600-d5bebe21);
 }
@@ -247,10 +235,6 @@
   color: var(--yellow800-b1e3bc9b);
 }
 
-.text-grey-400 {
-  color: var(--grey400-863ed4b5);
-}
-
 .text-grey-500 {
   color: var(--grey500-0d508ad8);
 }
@@ -276,6 +260,10 @@
   opacity: 0.8;
 }
 
+.text-grey-400 {
+  color: var(--grey400-863ed4b5);
+}
+
 .text-sm.text-grey-500.width-ticket-d {
   width: 49.91667175292969px;
 }
@@ -286,10 +274,6 @@
 
 .text-capitalize {
   text-transform: uppercase;
-}
-
-.text-sm.text-first-capital {
-  text-transform: capitalize;
 }
 
 .text-color-white {

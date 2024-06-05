@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { FeedbackTableRow } from "./FeedbackTableRow";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./ScheduleTabFeedback.module.css";
 
@@ -30,7 +30,7 @@ export function ScheduleTabFeedback({
             className={_utils.cx(_styles, "header_interviewer")}
             tag="div"
           >
-            <Text content="Interviewer" />
+            <Text content="Interviewer" weight="medium" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "header_session", "width-324-copy")}
@@ -58,20 +58,22 @@ export function ScheduleTabFeedback({
             className={_utils.cx(_styles, "header_recommendation")}
             tag="div"
           >
-            <Text content="Recommendation" />
+            <Text content="Recommendation" weight="medium" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "header_feedback")}
             tag="div"
           >
-            <Text content="Feedback" />
+            <Text content="Feedback" weight="medium" />
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_candidaterow")}
           tag="div"
         >
-          {slotFeedbackTableRow ?? <FeedbackTableRow />}
+          {slotFeedbackTableRow ?? (
+            <SlotComp componentNeme="Feedback Table Row" />
+          )}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
