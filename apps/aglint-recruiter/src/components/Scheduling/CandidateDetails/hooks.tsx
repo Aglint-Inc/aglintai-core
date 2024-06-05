@@ -6,6 +6,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 import {
+  DatabaseTable,
   DB,
   InterviewMeetingTypeDb,
   InterviewPlanTypeDB,
@@ -211,6 +212,7 @@ export const fetchInterviewDataSchedule = async (
       data: {
         interview_data: InterviewDataResponseType[];
         application_data: ApplicationDataResponseType;
+        request_data: DatabaseTable['candidate_request_availability'][];
       };
       error: any;
     };
