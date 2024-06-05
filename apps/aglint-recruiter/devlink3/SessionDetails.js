@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { MemberRow } from "./MemberRow";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./SessionDetails.module.css";
 
@@ -56,12 +56,7 @@ export function SessionDetails({
           className={_utils.cx(_styles, "slot_member_row")}
           tag="div"
         >
-          {slotMemberRow ?? (
-            <>
-              <MemberRow />
-              <MemberRow />
-            </>
-          )}
+          {slotMemberRow ?? <SlotComp componentNeme="MemebersRow" />}
         </_Builtin.Block>
       ) : null}
     </_Component>

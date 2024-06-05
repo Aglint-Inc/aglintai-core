@@ -138,10 +138,6 @@
   color: var(--sand-11);
 }
 
-.fw-semibold.name-text {
-  color: #467b7c;
-}
-
 .hide {
   display: none;
 }
@@ -304,36 +300,8 @@
   display: flex;
   padding-right: 16px;
   padding-left: 16px;
-  justify-content: flex-start;
+  justify-content: flex-end;
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-}
-
-.div-block-1751 {
-  display: flex;
-  width: 50%;
-  padding: 10px 16px;
-  justify-content: center;
-  align-items: center;
-
-  border-radius: 4px;
-
-  background-color: #e9ebed;
-
-  transition: opacity 250ms ease;
-
-  cursor: pointer;
-}
-
-.div-block-1751:hover {
-  opacity: 0.8;
-}
-
-.div-block-1751.blue {
-  background-color: #337fbd;
-}
-
-.text-white {
-  color: white;
 }

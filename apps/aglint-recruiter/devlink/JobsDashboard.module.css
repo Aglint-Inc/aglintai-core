@@ -1,13 +1,9 @@
 .job-dashboard-layout {
   display: flex;
-  overflow: scroll;
   height: 100vh;
-  padding-bottom: var(--space-7);
   flex-direction: column;
   align-items: stretch;
   flex: 1;
-  grid-column-gap: var(--space-4);
-  grid-row-gap: var(--space-4);
 }
 
 @media screen and (max-width: 991px) {
@@ -18,18 +14,14 @@
 }
 
 .job-dashboard-header {
-  position: sticky;
-  top: 0px;
   z-index: 99;
 
   display: flex;
   width: 100%;
-  min-height: 48px;
-  padding: var(--space-2) var(--space-4);
+  height: 48px;
+  padding: var(--space-3) var(--space-4);
   justify-content: space-between;
   align-items: center;
-
-  border-bottom: 1px solid var(--neutral-6);
 
   background-color: var(--white);
 }
@@ -50,12 +42,25 @@
   }
 }
 
+.job-dashboard-header.bottom_border {
+  height: 40px;
+  border-bottom: 1px solid var(--neutral-6);
+}
+
+.job-dashboard-header.bottom_border-copy {
+  height: 48px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  justify-content: space-between;
+  align-items: center;
+
+  border-bottom: 1px solid var(--neutral-6);
+}
+
 .rd-jobs-header-wrapper {
   position: relative;
 
   display: flex;
-  min-height: 60px;
-  padding: 10px 20px;
   justify-content: space-between;
   align-items: center;
   align-self: stretch;
@@ -70,7 +75,7 @@
 }
 
 .slot-input-search-job {
-  height: 40px;
+  height: 36px;
 }
 
 @media screen and (max-width: 479px) {
@@ -88,11 +93,18 @@
 
 .all-job-list {
   display: flex;
+  overflow: auto;
+  padding-top: var(--space-4);
   padding-right: var(--space-4);
+  padding-bottom: var(--space-4);
   padding-left: var(--space-4);
   flex-direction: column;
-  grid-column-gap: var(--space-4);
-  grid-row-gap: var(--space-4);
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
+
+  background-color: var(--neutral-2);
+
+  height: calc(100vh - 88px);
 }
 
 @media screen and (min-width: 1280px) {

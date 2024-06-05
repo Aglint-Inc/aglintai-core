@@ -104,7 +104,6 @@ export const FilterHeader = ({
             onChange={(e) => {
               search.setValue(e.target.value);
             }}
-            height={42}
           />
         </Stack>
       )}

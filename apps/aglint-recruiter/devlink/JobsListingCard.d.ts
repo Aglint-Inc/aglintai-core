@@ -11,7 +11,6 @@ declare function JobsListingCard(props: {
   bgColorProps?: Types.Devlink.RuntimeProps;
   textJobsStatus?: React.ReactNode;
   onClickCard?: Types.Devlink.RuntimeProps;
-  slotStatusIcon?: Types.Devlink.Slot;
   newCount?: React.ReactNode;
   slotAtsBadge?: Types.Devlink.Slot;
   isStatusVisible?: Types.Visibility.VisibilityConditions;

@@ -1,8 +1,6 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { CandidateListItem } from "./CandidateListItem";
-import { TopCandidateListItem } from "./TopCandidateListItem";
 import * as _utils from "./utils";
 import _styles from "./ApplicantsTable.module.css";
 
@@ -10,7 +8,6 @@ export function ApplicantsTable({
   as: _Component = _Builtin.Block,
   onClickSelectAll = {},
   isAllChecked = true,
-  slotCandidatesList,
   isScreeningVisible = true,
   isInterviewVisible = true,
   isDisqualifiedVisible = true,
@@ -227,14 +224,6 @@ export function ApplicantsTable({
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block tag="div">
-        {slotCandidatesList ?? (
-          <>
-            <CandidateListItem />
-            <TopCandidateListItem />
-          </>
-        )}
       </_Builtin.Block>
     </_Component>
   );

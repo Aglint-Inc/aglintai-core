@@ -1,16 +1,13 @@
 .resume-match-tag {
   display: flex;
-  height: 30px;
-  padding-right: 16px;
-  padding-left: 16px;
+  height: var(--space-5);
+  padding-right: var(--space-2);
+  padding-left: var(--space-2);
   align-items: center;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
 
-  border-style: solid;
-  border-width: 1px;
-  border-color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
-  border-radius: 100px;
+  border-radius: var(--radius-2);
 
   background-color: #f8f9f9;
 }

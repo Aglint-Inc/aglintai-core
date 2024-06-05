@@ -73,7 +73,7 @@
 }
 
 .text-red-500 {
-  color: #d93f4c;
+  color: var(--error-11);
 }
 
 .text-azure {
@@ -165,10 +165,6 @@
 
 .text-grey_600 {
   color: var(--sand-11);
-}
-
-.fw-semibold.name-text {
-  color: #467b7c;
 }
 
 .hide {

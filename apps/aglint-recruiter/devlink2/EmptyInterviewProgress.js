@@ -33,12 +33,7 @@ export function EmptyInterviewProgress({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(
-          _styles,
-          "text-blue-500",
-          "text-underline",
-          "cursor-pointer"
-        )}
+        className={_utils.cx(_styles, "accent-link-with-underline")}
         tag="div"
         {...onClickCreateInterviewPlan}
       >

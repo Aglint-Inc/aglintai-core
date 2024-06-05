@@ -15,13 +15,7 @@ export function LearnHowGreenhouse({
         className={_utils.cx(_styles, "popup_title_block")}
         tag="div"
       >
-        <Text
-          size="4"
-          weight="bold"
-          align=""
-          highContrast=""
-          content="How to connect with Greenhouse"
-        />
+        <Text size="4" weight="bold" align="" highContrast="" content="" />
         <_Builtin.Block
           className={_utils.cx(_styles, "popup_close")}
           tag="div"

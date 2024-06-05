@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { InterviewModuleCard } from "./InterviewModuleCard";
 import { InterviewBreakCard } from "./InterviewBreakCard";
 import * as _utils from "./utils";
@@ -25,23 +26,11 @@ export function InterviewPlan({
         {slotInterviewCoordinator}
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "title_wrap")} tag="div">
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Interview Plan"}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-gray-600")}
-          tag="div"
-        >
-          {
-            "Add your interview type to form an interview plan. You can find your interview type in "
-          }
-          <_Builtin.Span
-            className={_utils.cx(_styles, "link")}
-            {...onClickScheduler}
-          >
-            {"scheduler"}
-          </_Builtin.Span>
-        </_Builtin.Block>
+        <Text />
+        <Text
+          weight=""
+          content="Add your interview type to form an interview plan. You can find your interview type in scheduler"
+        />
       </_Builtin.Block>
       {isEmptyVisible ? (
         <_Builtin.Block

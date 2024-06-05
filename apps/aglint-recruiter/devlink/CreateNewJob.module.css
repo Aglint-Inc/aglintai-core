@@ -580,7 +580,7 @@
 .new-layout-sublink {
   display: flex;
   width: 216px;
-  padding: var(--space-4) var(--space-2);
+  padding: var(--space-3);
   flex-direction: column;
   flex: 0 0 auto;
   grid-column-gap: var(--space-1);

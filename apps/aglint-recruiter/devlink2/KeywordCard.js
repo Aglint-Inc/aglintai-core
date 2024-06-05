@@ -18,10 +18,7 @@ export function KeywordCard({
       <_Builtin.Block className={_utils.cx(_styles, "header_desc")} tag="div">
         <Text content={textTitle} />
         {isTextWarningVisible ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1167", "no-border")}
-            tag="div"
-          >
+          <_Builtin.Block tag="div">
             <Text content={textWarning} weight="" color="neutral" />
           </_Builtin.Block>
         ) : null}

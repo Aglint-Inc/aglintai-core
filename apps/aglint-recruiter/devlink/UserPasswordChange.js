@@ -17,7 +17,7 @@ export function UserPasswordChange({
         className={_utils.cx(_styles, "profile-header-wrappers")}
         tag="div"
       >
-        <Text content="Password Update" weight="bold" />
+        <Text content="Password Update" weight="medium" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "slot-password-form")}

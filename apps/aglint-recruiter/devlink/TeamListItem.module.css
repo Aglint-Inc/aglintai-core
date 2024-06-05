@@ -5,9 +5,6 @@
   grid-template-columns: 25% 15% 17% 20% 13% 10%;
   grid-template-rows: auto;
 
-  border-bottom-left-radius: var(--radius-2);
-  border-bottom-right-radius: var(--radius-2);
-
   background-color: var(--white);
 }
 
@@ -77,6 +74,13 @@
 
 .user-detail-wrap {
   margin-left: var(--space-6);
+}
+
+.three-dot-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .actions-team-card {
@@ -260,12 +264,6 @@
   grid-row-end: span 1;
 }
 #w-node-a60860aa-9493-87fc-f445-b3f1087efc98-087efc8b {
-  grid-column-start: span 1;
-  grid-column-end: span 1;
-  grid-row-start: span 1;
-  grid-row-end: span 1;
-}
-#w-node-a60860aa-9493-87fc-f445-b3f1087efc9b-087efc8b {
   grid-column-start: span 1;
   grid-column-end: span 1;
   grid-row-start: span 1;

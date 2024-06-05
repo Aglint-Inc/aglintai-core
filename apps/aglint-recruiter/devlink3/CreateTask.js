@@ -49,7 +49,7 @@ export function CreateTask({
         <ButtonSoft
           onClickButton={onClickCancel}
           textButton="Cancel"
-          size="3"
+          size="2"
           color="neutral"
           highContrast="false"
         />
@@ -57,7 +57,8 @@ export function CreateTask({
           textButton={textPrimaryButton}
           onClickButton={onClickPrimaryButton}
           slotIcon={slotButtonIcon}
-          isLeftIcon={true}
+          isLeftIcon={false}
+          size="2"
         />
       </_Builtin.Block>
     </_Component>
