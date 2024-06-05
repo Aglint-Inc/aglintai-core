@@ -88,10 +88,6 @@
   color: var(--sand-11);
 }
 
-.fw-semibold.name-text {
-  color: #467b7c;
-}
-
 .hide {
   display: none;
 }
@@ -156,9 +152,9 @@
 }
 
 .text-green-500 {
-  color: #228f67;
+  color: var(--success-11);
 }
 
 .text-red-500 {
-  color: #d93f4c;
+  color: var(--error-11);
 }

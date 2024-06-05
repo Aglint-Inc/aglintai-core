@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./ConfirmScheduleListCard.module.css";
 
@@ -19,7 +20,9 @@ export function ConfirmScheduleListCard({
         className={_utils.cx(_styles, "div-block-1765")}
         tag="div"
       >
-        <_Builtin.Block tag="div">{slotIconPanel}</_Builtin.Block>
+        <_Builtin.Block tag="div">
+          {slotIconPanel ?? <SlotComp componentNeme="Icon" />}
+        </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {textPanelName}
         </_Builtin.Block>
@@ -33,7 +36,9 @@ export function ConfirmScheduleListCard({
           className={_utils.cx(_styles, "div-block-1766")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{slotMeetingIcon}</_Builtin.Block>
+          <_Builtin.Block tag="div">
+            {slotMeetingIcon ?? <SlotComp componentNeme="Icon" />}
+          </_Builtin.Block>
           <_Builtin.Block tag="div">{textMeetingPlatformName}</_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

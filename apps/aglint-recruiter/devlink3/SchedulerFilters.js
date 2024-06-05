@@ -3,7 +3,6 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
-import { TimeRangeSelector } from "./TimeRangeSelector";
 import * as _utils from "./utils";
 import _styles from "./SchedulerFilters.module.css";
 
@@ -182,10 +181,7 @@ export function SchedulerFilters({
           tag="div"
         >
           {slotTimeRangeSelector ?? (
-            <>
-              <SlotComp componentNeme="Slot for time range selector" />
-              <TimeRangeSelector />
-            </>
+            <SlotComp componentNeme="Slot for time range selector" />
           )}
         </_Builtin.Block>
       </_Builtin.Block>

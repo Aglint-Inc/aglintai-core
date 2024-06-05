@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { AvatarWithName } from "./AvatarWithName";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./FeedbackViewPopup.module.css";
 
@@ -36,7 +36,9 @@ export function FeedbackViewPopup({
         <_Builtin.Block className={_utils.cx(_styles, "popup_title")} tag="div">
           <Text content="Feedback of" weight="" />
           <_Builtin.Block tag="div">
-            {slotAvatarWithName ?? <AvatarWithName />}
+            {slotAvatarWithName ?? (
+              <SlotComp componentNeme="Avatar with Name" />
+            )}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

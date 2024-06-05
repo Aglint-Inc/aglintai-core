@@ -166,7 +166,6 @@ const AddLocationDialog: React.FC<LocationProps> = ({
   };
 
   const debouncedSearch = useCallback(
-    // eslint-disable-next-line react-compiler/react-compiler
     debounce((text: string) => {
       handleChange(text, 'city');
     }, 500),

@@ -1,7 +1,9 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
+import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./AddLocationPop.module.css";
 
@@ -24,26 +26,19 @@ export function AddLocationPop({
       className={_utils.cx(_styles, "new-location-pop-wrappers")}
       tag="div"
     >
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-454")} tag="div">
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {headerText}
-        </_Builtin.Block>
+      <_Builtin.Block tag="div">
+        <Text content={headerText} weight="medium" />
       </_Builtin.Block>
       {isLocationDescVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-988")}
+          className={_utils.cx(_styles, "location-warning-wrap")}
           tag="div"
         >
           <_Builtin.HtmlEmbed
             className={_utils.cx(_styles, "icons")}
             value="%3Csvg%20width%3D%2222%22%20height%3D%2213px%22%20viewbox%3D%220%200%2017%2016%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M8%204C7.72386%204%207.5%204.22386%207.5%204.5V9C7.5%209.27614%207.72386%209.5%208%209.5C8.27614%209.5%208.5%209.27614%208.5%209V4.5C8.5%204.22386%208.27614%204%208%204ZM8%2013C8.55228%2013%209%2012.5523%209%2012C9%2011.4477%208.55228%2011%208%2011C7.44772%2011%207%2011.4477%207%2012C7%2012.5523%207.44772%2013%208%2013ZM8%2016C3.85786%2016%200.5%2012.6421%200.5%208.5C0.5%204.35786%203.85786%201%208%201C12.1421%201%2015.5%204.35786%2015.5%208.5C15.5%2012.6421%2012.1421%2016%208%2016ZM8%2015C11.5899%2015%2014.5%2012.0899%2014.5%208.5C14.5%204.91015%2011.5899%202%208%202C4.41015%202%201.5%204.91015%201.5%208.5C1.5%2012.0899%204.41015%2015%208%2015Z%22%20fill%3D%22%23E35B66%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E"
           />
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-red-600")}
-            tag="div"
-          >
-            {textLocationDesc}
-          </_Builtin.Block>
+          <Text content={textLocationDesc} color="error" />
         </_Builtin.Block>
       ) : null}
       <_Builtin.Block
@@ -54,7 +49,7 @@ export function AddLocationPop({
       </_Builtin.Block>
       {isCheckboxVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-453")}
+          className={_utils.cx(_styles, "location-pop-check-wrap")}
           tag="div"
         >
           <_Builtin.Block
@@ -69,56 +64,38 @@ export function AddLocationPop({
               />
             ) : null}
           </_Builtin.Block>
-          <_Builtin.Block tag="div">{"Is this the headquarter"}</_Builtin.Block>
+          <Text content="Is this the headquarter" />
         </_Builtin.Block>
       ) : null}
       <_Builtin.Block
-        className={_utils.cx(_styles, "roles-btn-wrappers-pop")}
+        className={_utils.cx(_styles, "pop-button-wrappers")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "pop-button-wrappers")}
-          tag="div"
-        >
+        <_Builtin.Block tag="div" {...onClickAdd}>
+          <ButtonSolid
+            isLeftIcon={false}
+            isRightIcon={false}
+            textButton="Add"
+            size="2"
+          />
+        </_Builtin.Block>
+        {isAddDisable ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-987")}
+            className={_utils.cx(_styles, "disable-wrap")}
+            id={_utils.cx(
+              _styles,
+              "w-node-_29bff11b-2f0f-0fb8-8f76-a5d2759ca272-8facdcb2"
+            )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-986", "primary")}
-              id={_utils.cx(
-                _styles,
-                "w-node-_044aa0d8-d364-cf9a-f7f2-1183971856d8-8facdcb2"
-              )}
-              tag="div"
-              {...onClickAdd}
-            >
-              <_Builtin.Block tag="div">{textButtonLabel}</_Builtin.Block>
-            </_Builtin.Block>
-            {isAddDisable ? (
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "div-block-986",
-                  "primary",
-                  "disable"
-                )}
-                id={_utils.cx(
-                  _styles,
-                  "w-node-_29bff11b-2f0f-0fb8-8f76-a5d2759ca272-8facdcb2"
-                )}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-grey-400")}
-                  tag="div"
-                >
-                  {textButtonLabel}
-                </_Builtin.Block>
-              </_Builtin.Block>
-            ) : null}
+            <ButtonSolid
+              isLeftIcon={false}
+              isRightIcon={false}
+              textButton="Add"
+              isDisabled={true}
+            />
           </_Builtin.Block>
-        </_Builtin.Block>
+        ) : null}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "close-pop")}

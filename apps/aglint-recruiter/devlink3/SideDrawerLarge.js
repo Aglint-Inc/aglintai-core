@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ScheduleOptionsList } from "./ScheduleOptionsList";
+import { SlotComp } from "./SlotComp";
+import { ButtonSurface } from "./ButtonSurface";
 import * as _utils from "./utils";
 import _styles from "./SideDrawerLarge.module.css";
 
@@ -50,7 +51,7 @@ export function SideDrawerLarge({
         className={_utils.cx(_styles, "sidedrawer_body")}
         tag="div"
       >
-        {slotSideDrawerbody ?? <ScheduleOptionsList />}
+        {slotSideDrawerbody ?? <SlotComp componentNeme="ScheduleOptionList" />}
       </_Builtin.Block>
       {isBottomBar ? (
         <_Builtin.Block
@@ -65,18 +66,14 @@ export function SideDrawerLarge({
               className={_utils.cx(_styles, "wide_button", "width-100")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "button_primary",
-                  "greay_btn",
-                  "large_btn"
-                )}
-                tag="div"
-                {...onClickBack}
-              >
-                <_Builtin.Block tag="div">{"Back"}</_Builtin.Block>
-              </_Builtin.Block>
+              <ButtonSurface
+                onClickButton={onClickBack}
+                isLeftIcon={false}
+                isRightIcon={false}
+                color="neutral"
+                size="3"
+                textButton="Back"
+              />
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(

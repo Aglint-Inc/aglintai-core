@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { ButtonPrimaryRegular } from "./ButtonPrimaryRegular";
+import { ButtonSoft } from "./ButtonSoft";
 import * as _utils from "./utils";
 import _styles from "./EmailChangePop.module.css";
 
@@ -25,7 +25,7 @@ export function EmailChangePop({
           className={_utils.cx(_styles, "emial-change-text")}
           tag="div"
         >
-          <Text size="5" weight="bold" content="Check your inbox" />
+          <Text size="5" weight="medium" content="Check your inbox" />
           <Text
             content={textDesc}
             size="2"
@@ -34,13 +34,14 @@ export function EmailChangePop({
             align=""
           />
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "mt-2")}
-          tag="div"
-          {...onClickClose}
-        >
-          <ButtonPrimaryRegular textLabel="" />
-        </_Builtin.Block>
+        <ButtonSoft
+          onClickButton={onClickClose}
+          size="2"
+          color="neutral"
+          isLeftIcon={false}
+          isRightIcon={false}
+          textButton="Close"
+        />
       </_Builtin.Block>
     </_Component>
   );

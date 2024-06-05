@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { SlotComp } from "./SlotComp";
 import { EditOptionModule } from "./EditOptionModule";
 import { AddScheduleCard } from "./AddScheduleCard";
 import * as _utils from "./utils";
@@ -156,7 +157,9 @@ export function GeneralScheduleCard({
               >
                 {textModuleName}
               </_Builtin.Block>
-              <_Builtin.Block tag="div">{slotStatusPill}</_Builtin.Block>
+              <_Builtin.Block tag="div">
+                {slotStatusPill ?? <SlotComp componentNeme="Candiate" />}
+              </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "three-dot-wrap")}
@@ -209,7 +212,9 @@ export function GeneralScheduleCard({
             className={_utils.cx(_styles, "div-block-1301")}
             tag="div"
           >
-            <_Builtin.Block tag="div">{slotPlatformIcon}</_Builtin.Block>
+            <_Builtin.Block tag="div">
+              {slotPlatformIcon ?? <SlotComp componentNeme="Icon" />}
+            </_Builtin.Block>
             <_Builtin.Block tag="div">{textPlatformName}</_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
@@ -259,7 +264,7 @@ export function GeneralScheduleCard({
               className={_utils.cx(_styles, "div-block-1304")}
               tag="div"
             >
-              {slotInterviewers}
+              {slotInterviewers ?? <SlotComp componentNeme="Candiate" />}
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
@@ -283,7 +288,7 @@ export function GeneralScheduleCard({
               className={_utils.cx(_styles, "div-block-1304")}
               tag="div"
             >
-              {slotTrainees}
+              {slotTrainees ?? <SlotComp componentNeme="Candiate" />}
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
@@ -331,7 +336,7 @@ export function GeneralScheduleCard({
               className={_utils.cx(_styles, "div-block-1304")}
               tag="div"
             >
-              {slotMembers}
+              {slotMembers ?? <SlotComp componentNeme="Candiate" />}
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}

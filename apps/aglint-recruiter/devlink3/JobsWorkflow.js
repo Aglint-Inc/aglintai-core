@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./JobsWorkflow.module.css";
 
@@ -16,17 +17,11 @@ export function JobsWorkflow({
       className={_utils.cx(_styles, "jobs_workflow_warper")}
       tag="div"
     >
-      <_Builtin.Block className={_utils.cx(_styles, "text-grey-600")} tag="div">
-        {
-          "Click on add to add workflow. Use the toggle to enable/disable workflow .Click here to "
-        }
-        <_Builtin.Span
-          className={_utils.cx(_styles, "text-underline", "cursor-pointer")}
-          {...onClickCreateWorkflow}
-        >
-          {"create workflow"}
-        </_Builtin.Span>
-      </_Builtin.Block>
+      <Text
+        weight=""
+        color="neutral"
+        content="Click on add to add workflow. Use the toggle to enable/disable workflow."
+      />
       {isVisible ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1754")}

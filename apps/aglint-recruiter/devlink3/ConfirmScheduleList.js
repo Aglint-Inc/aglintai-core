@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ConfirmScheduleListCard } from "./ConfirmScheduleListCard";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./ConfirmScheduleList.module.css";
 
@@ -28,10 +28,7 @@ export function ConfirmScheduleList({
           tag="div"
         >
           {slotConfirmScheduleList ?? (
-            <>
-              <ConfirmScheduleListCard />
-              <ConfirmScheduleListCard />
-            </>
+            <SlotComp componentNeme="Confirmation Schedule List Cards" />
           )}
         </_Builtin.Block>
       </_Builtin.Block>

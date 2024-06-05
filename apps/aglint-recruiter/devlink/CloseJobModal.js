@@ -1,6 +1,9 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
+import { ButtonGhost } from "./ButtonGhost";
+import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./CloseJobModal.module.css";
 
@@ -19,40 +22,24 @@ export function CloseJobModal({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "close-job-modal-pop")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-        {textPopupTitle}
-      </_Builtin.Block>
+      <Text content={textPopupTitle} weight="bold" />
       <_Builtin.Block
         className={_utils.cx(_styles, "close-data-wrap")}
         tag="div"
       >
-        <_Builtin.Block tag="div">{textJobTitle}</_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-sm", "color-grey-600")}
-          tag="div"
-        >
-          {textLocation}
-        </_Builtin.Block>
+        <Text content={textJobTitle} />
+        <Text content={textLocation} size="1" color="neutral" />
       </_Builtin.Block>
-      <_Builtin.Paragraph>{textWarning}</_Builtin.Paragraph>
+      <Text content={textWarning} color="neutral" />
       <_Builtin.Block
         className={_utils.cx(_styles, "confirm-close-job-wrap")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "text-grow")} tag="div">
-          {"Confirm by typing the job title"}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-red-500", "text-grow")}
-          tag="div"
-        >
-          {textJobTitle}
-        </_Builtin.Block>
-        <_Builtin.Block tag="div">{"below."}</_Builtin.Block>
+        <Text content="Confirm by typing the job title" />
+        <Text content={textJobTitle} color="error" />
+        <Text content="below." />
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "slot-input")} tag="div">
-        {slotInput}
-      </_Builtin.Block>
+      <_Builtin.Block tag="div">{slotInput}</_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "close-job-btn-modal")}
         tag="div"
@@ -64,29 +51,36 @@ export function CloseJobModal({
         />
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "buttn_flex")} tag="div">
-        <_Builtin.Block className={_utils.cx(_styles, "wide_button")} tag="div">
-          <_Builtin.Block
-            className={_utils.cx(_styles, "button_primary", "greay_btn")}
-            tag="div"
-            {...onClickCancel}
-          >
-            <_Builtin.Block tag="div">{"Cancel"}</_Builtin.Block>
-          </_Builtin.Block>
+        <_Builtin.Block tag="div" {...onClickCancel}>
+          <ButtonGhost
+            isLeftIcon={false}
+            isRightIcon={false}
+            textButton="Cancel"
+            size="2"
+          />
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "wide_button")} tag="div">
-          <_Builtin.Block
-            className={_utils.cx(_styles, "button_primary", "danger")}
-            tag="div"
-            {...onClickCloseJob}
-          >
-            <_Builtin.Block tag="div">{textButton}</_Builtin.Block>
+          <_Builtin.Block tag="div" {...onClickCloseJob}>
+            <ButtonSolid
+              textButton={textButton}
+              color="error"
+              isLeftIcon={false}
+              isRightIcon={false}
+              size="2"
+            />
           </_Builtin.Block>
           {isDisabled ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "button_primary", "is_disabled")}
+              className={_utils.cx(_styles, "disable-wrap")}
               tag="div"
             >
-              <_Builtin.Block tag="div">{textButton}</_Builtin.Block>
+              <ButtonSolid
+                textButton={textButton}
+                color="error"
+                isLeftIcon={false}
+                isRightIcon={false}
+                isDisabled={true}
+              />
             </_Builtin.Block>
           ) : null}
         </_Builtin.Block>

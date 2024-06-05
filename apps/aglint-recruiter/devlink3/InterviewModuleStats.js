@@ -21,7 +21,7 @@ export function InterviewModuleStats({
         className={_utils.cx(_styles, "dashboard-widget-header", "header")}
         tag="div"
       >
-        <Text content="" />
+        <Text content="Interview Type" />
         {isViewAllVisible ? (
           <_Builtin.Block
             className={_utils.cx(
