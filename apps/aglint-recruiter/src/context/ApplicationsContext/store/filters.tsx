@@ -10,17 +10,29 @@ type Sort = {
   order: 'asc' | 'desc';
 };
 
-type Filters = Pick<
-  DatabaseView['application_view'],
-  | 'resume_score'
-  | 'resume_processing_state'
-  | 'current_job_title'
-  | 'badges'
-  | 'city'
-  | 'country'
-> & {
+type FilterKeys =
+  | keyof Pick<
+      DatabaseView['application_view'],
+      'resume_score' | 'current_job_title' | 'city' | 'country' | 'badges'
+    >
+  | 'search';
+
+type FilterValues = {
   search: DatabaseView['application_view']['name'];
+  badges: (keyof DatabaseView['application_view']['badges'])[];
+  city: DatabaseView['application_view']['city'][];
+  country: DatabaseView['application_view']['country'][];
+  current_job_title: DatabaseView['application_view']['current_job_title'][];
+  resume_score: (
+    | 'Top match'
+    | 'Good match'
+    | 'Average match'
+    | 'Poor match'
+    | 'Not a match'
+  )[];
 };
+
+type Filters = { [id in FilterKeys]: FilterValues[id] };
 
 export type FilterSortSlice = {
   filters: Filters;
@@ -36,12 +48,11 @@ export type FilterSortSlice = {
 
 const initialFilters: Filters = {
   search: '',
-  badges: null,
-  city: null,
-  country: null,
-  current_job_title: null,
-  resume_processing_state: null,
-  resume_score: null,
+  badges: [],
+  city: [],
+  country: [],
+  current_job_title: [],
+  resume_score: [],
 };
 
 const initialSort: Sort = {

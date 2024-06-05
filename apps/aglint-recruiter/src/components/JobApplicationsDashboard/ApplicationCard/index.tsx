@@ -454,7 +454,7 @@ const getBadge = (key: string, count: number, pills: any) => {
     case 'jobStability':
       return count >= 90 ? <InsightTagReliable /> : null;
     case 'jobHopping':
-      return count >= 0 ? <JobHopper /> : null;
+      return count >= 10 ? <JobHopper /> : null;
     case 'careerGrowth':
       return count >= 90 ? <InsightTagAmbitious /> : null;
   }

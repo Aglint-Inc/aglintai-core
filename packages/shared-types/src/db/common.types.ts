@@ -16,4 +16,5 @@ export type CustomApplicationBadges = {
   leadership: number;
   jobStability: number;
   careerGrowth: number;
+  jobHopping: number;
 };

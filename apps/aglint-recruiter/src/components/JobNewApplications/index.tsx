@@ -12,6 +12,7 @@ import NotFoundPage from '@/src/pages/404';
 import Loader from '../Common/Loader';
 import SectionIcons from '../JobApplicationsDashboard/Common/SectionIcons';
 import { capitalize } from '../JobApplicationsDashboard/utils';
+import Filters from './filters';
 import { BreadCrumbs } from './layout';
 import { Table } from './table';
 
@@ -54,7 +55,7 @@ const ApplicationsComponent = () => {
       slotTabs={<NewJobDetailsTabs />}
       slotTable={<Table />}
       isFilterVisible={true}
-      slotFilters={<>Filters</>}
+      slotFilters={<Filters />}
     />
   );
 };

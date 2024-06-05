@@ -1,6 +1,8 @@
+/* eslint-disable security/detect-object-injection */
 import { DatabaseTable, DatabaseView } from '@aglint/shared-types';
 import { infiniteQueryOptions, keepPreviousData } from '@tanstack/react-query';
 
+import { ApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { jobQueryKeys } from '../job/keys';
@@ -61,24 +63,81 @@ type ApplicationAllQueryPrerequistes = {
   count?: number;
 };
 
-type PageParams = ApplicationAllQueryPrerequistes & {
-  overall_score?: number;
-  status: DatabaseView['application_view']['status'];
-};
+type PageParams = ApplicationAllQueryPrerequistes &
+  ApplicationsStore['filters'] & {
+    status: DatabaseView['application_view']['status'];
+  };
 
 const getApplications = async ({
-  pageParam: { job_id, index, status },
+  pageParam: { job_id, index, status, resume_score, badges, search },
 }: {
   pageParam: PageParams & { index: number };
 }) => {
-  const applications = (
-    await supabase
-      .from('application_view')
-      .select('*')
-      .range(index, index + ROWS - 1)
-      .eq('job_id', job_id)
-      .eq('status', status)
-      .throwOnError()
-  ).data.map((application, i) => ({ ...application, index: index + i }));
+  const query = supabase
+    .from('application_view')
+    .select('*')
+    .range(index, index + ROWS - 1)
+    .eq('job_id', job_id)
+    .eq('status', status);
+
+  if (search.length) {
+    query.textSearch('name', search.trim(), {
+      type: 'plain',
+      config: 'english',
+    });
+  }
+
+  if (resume_score.length) {
+    query.or(
+      resume_score
+        .map((score) => {
+          const { max, min } = resumeScoreRange(score);
+          return `and(resume_score.gte.${min},resume_score.lte.${max})`;
+        })
+        .join(','),
+    );
+  }
+
+  if (badges.length) {
+    query.or(
+      badges
+        .map((badge) => `badges->${badge}.gt.${BADGE_CONSTANTS[badge]}`)
+        .join(','),
+    );
+  }
+
+  const applications = (await query.throwOnError()).data.map(
+    (application, i) => ({ ...application, index: index + i }),
+  );
   return applications;
+};
+
+const resumeScoreRange = (
+  match: ApplicationsStore['filters']['resume_score'][number],
+) => {
+  switch (match) {
+    case 'Top match':
+      return { max: 100, min: 80 };
+    case 'Good match':
+      return { max: 79, min: 60 };
+    case 'Average match':
+      return { max: 59, min: 40 };
+    case 'Poor match':
+      return { max: 39, min: 20 };
+    case 'Not a match':
+      return { max: 19, min: 0 };
+  }
+};
+
+const BADGE_CONSTANTS: {
+  // eslint-disable-next-line no-unused-vars
+  [id in ApplicationsStore['filters']['badges'][number]]: number;
+} = {
+  careerGrowth: 89,
+  jobStability: 89,
+  leadership: 69,
+  jobHopping: 0,
+  positions: 0,
+  schools: 0,
+  skills: 0,
 };

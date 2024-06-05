@@ -414,84 +414,101 @@ function FilterDropDown({
                 {optionList.header && (
                   <Typography>{optionList.header}</Typography>
                 )}
-                {optionList.options
-                  .filter((ele) =>
-                    ele.label.toLowerCase().includes(searchText.toLowerCase()),
-                  )
-                  .map(({ id, label }) => {
-                    return (
-                      <Stack
-                        key={id}
-                        direction={'row'}
-                        sx={{ alignItems: 'center' }}
-                        spacing={1}
-                        onClick={() => {
-                          let temp = [];
-                          if (selectedItems.includes(id)) {
-                            temp = selectedItems.filter(
-                              (innerEle) => innerEle !== id,
+                {optionList.options.length === 0 ? (
+                  <Stack
+                    pt={1}
+                    px={1}
+                    style={{
+                      color: palette.grey[600],
+                      fontSize: '14px',
+                      fontWeight: 400,
+                      fontStyle: 'italic',
+                    }}
+                  >
+                    No options available
+                  </Stack>
+                ) : (
+                  optionList.options
+                    .filter((ele) =>
+                      ele.label
+                        .toLowerCase()
+                        .includes(searchText.toLowerCase()),
+                    )
+                    .map(({ id, label }) => {
+                      return (
+                        <Stack
+                          key={id}
+                          direction={'row'}
+                          sx={{ alignItems: 'center' }}
+                          spacing={1}
+                          onClick={() => {
+                            let temp = [];
+                            if (selectedItems.includes(id)) {
+                              temp = selectedItems.filter(
+                                (innerEle) => innerEle !== id,
+                              );
+                            } else {
+                              temp = [...selectedItems, id];
+                            }
+                            //@ts-ignore
+                            const preData =
+                              JSON.parse(localStorage.getItem('taskFilters')) ||
+                              {};
+                            if (title === 'Job') {
+                              preData.Job = [...temp];
+                            }
+                            if (title === 'Priority') {
+                              preData.Priority = [...temp];
+                            }
+                            if (title === 'Status') {
+                              preData.Status = [...temp];
+                            }
+                            if (title === 'Assignee') {
+                              preData.Assignee = [...temp];
+                            }
+
+                            localStorage.setItem(
+                              'taskFilters',
+                              JSON.stringify(preData),
                             );
-                          } else {
-                            temp = [...selectedItems, id];
-                          }
-                          //@ts-ignore
-                          const preData =
-                            JSON.parse(localStorage.getItem('taskFilters')) ||
-                            {};
-                          if (title === 'Job') {
-                            preData.Job = [...temp];
-                          }
-                          if (title === 'Priority') {
-                            preData.Priority = [...temp];
-                          }
-                          if (title === 'Status') {
-                            preData.Status = [...temp];
-                          }
-                          if (title === 'Assignee') {
-                            preData.Assignee = [...temp];
-                          }
 
-                          localStorage.setItem(
-                            'taskFilters',
-                            JSON.stringify(preData),
-                          );
-
-                          setSelectedItems(temp);
-                        }}
-                      >
-                        <Checkbox
-                          isChecked={selectedItems.includes(id)}
-                          onClickCheck={{}}
-                        />
-                        <Typography
-                          sx={{
-                            fontSize: '14px',
-                            fontWeight: 600,
-                            cursor: 'pointer',
+                            setSelectedItems(temp);
                           }}
-                          // onClick={() => {
-                          //   if (selectedItems.includes(item)) {
-                          //     setSelectedItems((ele: ItemType[]) =>
-                          //       ele.filter((innerEle: ItemType) => innerEle !== item),
-                          //     );
-                          //   } else {
-                          //     setSelectedItems((ele: ItemType[]) => [...ele, item]);
-                          //   }
-                          // }}
                         >
-                          {title !== 'Job' &&
-                            capitalizeFirstLetter(
-                              label.replaceAll('null', '') || '',
-                            )}
+                          <Checkbox
+                            isChecked={selectedItems.includes(id)}
+                            onClickCheck={{}}
+                          />
+                          <Typography
+                            sx={{
+                              fontSize: '14px',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                            }}
+                            // onClick={() => {
+                            //   if (selectedItems.includes(item)) {
+                            //     setSelectedItems((ele: ItemType[]) =>
+                            //       ele.filter((innerEle: ItemType) => innerEle !== item),
+                            //     );
+                            //   } else {
+                            //     setSelectedItems((ele: ItemType[]) => [...ele, item]);
+                            //   }
+                            // }}
+                          >
+                            {title !== 'Job' &&
+                              capitalizeFirstLetter(
+                                label.replaceAll('null', '') || '',
+                              )}
 
-                          {title === 'Job' &&
-                            capitalizeFirstLetter(
-                              label.replaceAll('null', '') || '',
-                            )}
-                        </Typography>
-                      </Stack>
-                    );
-                  })}
+                            {title === 'Job' &&
+                              capitalizeFirstLetter(
+                                label.replaceAll('null', '') || '',
+                              )}
+                          </Typography>
+                        </Stack>
+                      );
+                    })
+                )}
               </>
             );
           })}

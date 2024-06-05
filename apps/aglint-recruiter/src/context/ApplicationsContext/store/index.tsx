@@ -43,6 +43,7 @@ const createApplicationsSlice: StateCreator<
     get().resetSection();
     get().resetChecklist();
     get().resetCurrentApplication();
+    get().resetFilterSort();
   },
 });
 
