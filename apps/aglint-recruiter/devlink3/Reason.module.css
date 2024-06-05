@@ -6,6 +6,7 @@
   grid-column-gap: 16px;
   grid-row-gap: 16px;
 
+  border: 1px solid var(--sky-6);
   border-radius: 16px;
 
   background-color: var(--sky-2);
@@ -75,10 +76,6 @@
 
 .text-grey_600 {
   color: var(--sand-11);
-}
-
-.fw-semibold.name-text {
-  color: #467b7c;
 }
 
 .hide {

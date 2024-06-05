@@ -76,7 +76,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   const [isError, setError] = useState(false);
   return (
     <Stack
-      sx={{ overflowY: 'auto', height: 'calc(100vh - 60px)' }}
+      // sx={{ overflowY: 'auto', height: 'calc(100vh - 60px)' }}
       width={'100%'}
     >
       <YTransform uniqueKey={router.query.tab}>

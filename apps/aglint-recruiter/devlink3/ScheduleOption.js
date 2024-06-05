@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { SingleDaySchedule } from "./SingleDaySchedule";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./ScheduleOption.module.css";
 
@@ -72,12 +72,8 @@ export function ScheduleOption({
         >
           {slotSingleDaySchedule ?? (
             <>
-              <SingleDaySchedule isMultiDay={true} />
-              <SingleDaySchedule
-                isMultiDay={true}
-                textDayCount="Day 2"
-                textDate="April 04"
-              />
+              <SlotComp componentNeme="SingleDaySchedule" />
+              <SlotComp componentNeme="SingleDaySchedule" />
             </>
           )}
         </_Builtin.Block>

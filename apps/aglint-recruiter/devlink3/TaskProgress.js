@@ -1,14 +1,11 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import * as _interactions from "./interactions";
-import { TranscriptCard } from "./TranscriptCard";
+import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
+import { ButtonGhost } from "./ButtonGhost";
 import * as _utils from "./utils";
 import _styles from "./TaskProgress.module.css";
-
-const _interactionsData = JSON.parse(
-  '{"events":{"e-81":{"id":"e-81","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-58","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-82"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"b9121ed1-beeb-6c7a-90d1-55885df7ceae","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"b9121ed1-beeb-6c7a-90d1-55885df7ceae","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1716979210746}},"actionLists":{"a-58":{"id":"a-58","title":"Req-recent-reschedule hover in","actionItemGroups":[{"actionItems":[{"id":"a-58-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.text-underline.text-blue-500.view-req","selectorGuids":["8dc9ea7b-682a-9ca2-5212-49b405bc4978","3ee0110b-cb1a-ae21-d0cd-e1755ffe60cb","8f018daf-ab50-e59f-ddde-28a63babe37d","756eda23-1f35-5cde-d354-ecb6f9929139"]},"value":0,"unit":""}},{"id":"a-58-n-5","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":true,"id":"b9121ed1-beeb-6c7a-90d1-55885df7ceae"},"globalSwatchId":"","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-58-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.text-underline.text-blue-500.view-req","selectorGuids":["8dc9ea7b-682a-9ca2-5212-49b405bc4978","3ee0110b-cb1a-ae21-d0cd-e1755ffe60cb","8f018daf-ab50-e59f-ddde-28a63babe37d","756eda23-1f35-5cde-d354-ecb6f9929139"]},"value":"none"}}]},{"actionItems":[{"id":"a-58-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.text-underline.text-blue-500.view-req","selectorGuids":["8dc9ea7b-682a-9ca2-5212-49b405bc4978","3ee0110b-cb1a-ae21-d0cd-e1755ffe60cb","8f018daf-ab50-e59f-ddde-28a63babe37d","756eda23-1f35-5cde-d354-ecb6f9929139"]},"value":1,"unit":""}},{"id":"a-58-n-6","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":true,"id":"b9121ed1-beeb-6c7a-90d1-55885df7ceae"},"globalSwatchId":"","rValue":247,"bValue":251,"gValue":249,"aValue":1}},{"id":"a-58-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.text-underline.text-blue-500.view-req","selectorGuids":["8dc9ea7b-682a-9ca2-5212-49b405bc4978","3ee0110b-cb1a-ae21-d0cd-e1755ffe60cb","8f018daf-ab50-e59f-ddde-28a63babe37d","756eda23-1f35-5cde-d354-ecb6f9929139"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1716979214379}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
-);
 
 export function TaskProgress({
   as: _Component = _Builtin.Block,
@@ -24,8 +21,6 @@ export function TaskProgress({
   slotSoundTask,
   isSoundTaskVisible = false,
 }) {
-  _interactions.useInteractions(_interactionsData, _styles);
-
   return (
     <_Component className={_utils.cx(_styles, "task_progress")} tag="div">
       <_Builtin.Block tag="div">
@@ -39,43 +34,35 @@ export function TaskProgress({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1347")}
+                className={_utils.cx(_styles, "user-wrapper")}
                 tag="div"
               >
                 {slotImage}
               </_Builtin.Block>
               {isLineVisible ? (
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-1348")}
+                  className={_utils.cx(_styles, "progres-line")}
                   tag="div"
                 />
               ) : null}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1350")}
+              className={_utils.cx(_styles, "progress-details")}
               tag="div"
             >
-              <_Builtin.Block tag="div">{textTask}</_Builtin.Block>
+              <Text content={textTask} weight="" />
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1366")}
+                className={_utils.cx(_styles, "transcript-card-wrapper")}
                 tag="div"
               >
                 {slotMailContent ?? (
-                  <>
-                    <TranscriptCard />
-                    <TranscriptCard />
-                  </>
+                  <SlotComp componentNeme="Transcript Cards" />
                 )}
               </_Builtin.Block>
               {isSoundTaskVisible ? (
                 <_Builtin.Block tag="div">{slotSoundTask}</_Builtin.Block>
               ) : null}
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-sm", "text-grey_600")}
-                tag="div"
-              >
-                {textTime}
-              </_Builtin.Block>
+              <Text content={textTime} weight="" size="1" color="neutral" />
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
@@ -90,7 +77,7 @@ export function TaskProgress({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1347")}
+              className={_utils.cx(_styles, "user-wrapper")}
               tag="div"
             >
               <_Builtin.HtmlEmbed
@@ -100,31 +87,21 @@ export function TaskProgress({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1350")}
+            className={_utils.cx(_styles, "progress-details")}
             tag="div"
           >
-            <_Builtin.Block tag="div">
-              {"Call complted. Scheduled meeting on 5th April After Noon."}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "text-sm",
-                "text-blue-500",
-                "text-underline",
-                "cursor-pointer"
-              )}
-              tag="div"
-              {...onClickViewTranscript}
-            >
-              {"View transcript"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-sm", "text-grey_600")}
-              tag="div"
-            >
-              {textTimeCompleted}
-            </_Builtin.Block>
+            <Text content="Task Completed." weight="" />
+            <ButtonGhost
+              onClickButton={onClickViewTranscript}
+              size="1"
+              textButton="View Transcript"
+            />
+            <Text
+              content={textTimeCompleted}
+              weight=""
+              size="1"
+              color="neutral"
+            />
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}

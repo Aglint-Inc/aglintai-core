@@ -19,7 +19,7 @@ export function UserProfile({
         className={_utils.cx(_styles, "user-profile-header")}
         tag="div"
       >
-        <Text content="Profile" weight="bold" />
+        <Text content="Profile" weight="" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "profile-new-layout")}

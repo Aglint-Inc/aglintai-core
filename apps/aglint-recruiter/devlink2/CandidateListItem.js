@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { Text } from "./Text";
 import { ResumeTag } from "./ResumeTag";
 import { ScreeningStatus } from "./ScreeningStatus";
 import { AssessmentScore } from "./AssessmentScore";
@@ -137,17 +138,17 @@ export function CandidateListItem({
           <_Builtin.Block tag="div">
             <_Builtin.HtmlEmbed
               className={_utils.cx(_styles, "icons")}
-              value="%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewbox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.25%22%20y%3D%220.25%22%20width%3D%2223.5%22%20height%3D%2223.5%22%20rx%3D%2211.75%22%20fill%3D%22%23F8F9F9%22%2F%3E%0A%3Crect%20x%3D%220.25%22%20y%3D%220.25%22%20width%3D%2223.5%22%20height%3D%2223.5%22%20rx%3D%2211.75%22%20stroke%3D%22%23D8DCDE%22%20stroke-width%3D%220.5%22%2F%3E%0A%3Cpath%20d%3D%22M12%2012C11.4531%2012%2010.9531%2011.8672%2010.5%2011.6016C10.0469%2011.3359%209.67969%2010.9688%209.39844%2010.5C9.13281%2010.0312%209%209.53125%209%209C9%208.46875%209.13281%207.96875%209.39844%207.5C9.67969%207.03125%2010.0469%206.66406%2010.5%206.39844C10.9531%206.13281%2011.4531%206%2012%206C12.5469%206%2013.0469%206.13281%2013.5%206.39844C13.9531%206.66406%2014.3203%207.03125%2014.6016%207.5C14.8672%207.96875%2015%208.46875%2015%209C15%209.53125%2014.8672%2010.0312%2014.6016%2010.5C14.3203%2010.9688%2013.9531%2011.3359%2013.5%2011.6016C13.0469%2011.8672%2012.5469%2012%2012%2012ZM10.9219%2013.125H13.0781C14.25%2013.1562%2015.2344%2013.5625%2016.0312%2014.3438C16.8125%2015.1406%2017.2188%2016.125%2017.25%2017.2969C17.25%2017.5%2017.1797%2017.6641%2017.0391%2017.7891C16.9141%2017.9297%2016.75%2018%2016.5469%2018H7.45312C7.25%2018%207.08594%2017.9297%206.96094%2017.7891C6.82031%2017.6641%206.75%2017.5%206.75%2017.2969C6.78125%2016.125%207.1875%2015.1406%207.96875%2014.3438C8.76562%2013.5625%209.75%2013.1562%2010.9219%2013.125Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+              value="%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0%204C0%201.79086%201.79086%200%204%200H20C22.2091%200%2024%201.79086%2024%204V20C24%2022.2091%2022.2091%2024%2020%2024H4C1.79086%2024%200%2022.2091%200%2020V4Z%22%20fill%3D%22%238D8D86%22%2F%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20transform%3D%22translate(4%204)%22%20fill%3D%22white%22%20fill-opacity%3D%220.01%22%2F%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M12.0001%204.93359C9.86464%204.93359%208.13347%206.66476%208.13347%208.80026C8.13347%2010.5633%209.31346%2012.0508%2010.9268%2012.516C9.65315%2012.6712%208.56074%2013.1217%207.73781%2013.9327C6.69044%2014.965%206.16016%2016.5016%206.16016%2018.5068C6.16016%2018.7867%206.387%2019.0135%206.66682%2019.0135C6.94665%2019.0135%207.17349%2018.7867%207.17349%2018.5068C7.17349%2016.6722%207.65652%2015.4356%208.44911%2014.6544C9.24319%2013.8719%2010.4287%2013.4669%2012.0001%2013.4669C13.5715%2013.4669%2014.757%2013.8719%2015.5512%2014.6545C16.3437%2015.4356%2016.8268%2016.6722%2016.8268%2018.5068C16.8268%2018.7867%2017.0536%2019.0135%2017.3335%2019.0135C17.6133%2019.0136%2017.8401%2018.7867%2017.8401%2018.5069C17.8401%2016.5016%2017.3098%2014.965%2016.2624%2013.9327C15.4395%2013.1217%2014.3471%2012.6712%2013.0735%2012.516C14.6867%2012.0508%2015.8668%2010.5633%2015.8668%208.80026C15.8668%206.66476%2014.1356%204.93359%2012.0001%204.93359ZM9.1468%208.80026C9.1468%207.22441%2010.4243%205.94693%2012.0001%205.94693C13.576%205.94693%2014.8535%207.22441%2014.8535%208.80026C14.8535%2010.3761%2013.576%2011.6536%2012.0001%2011.6536C10.4243%2011.6536%209.1468%2010.3761%209.1468%208.80026Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
             />
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold", "line-clamp-1")}
+            className={_utils.cx(_styles, "text-no-wrap")}
             tag="div"
           >
-            {name}
+            <Text content={name} />
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1695")}
+            className={_utils.cx(_styles, "bookmark_slot")}
             tag="div"
           >
             {slotBookmark}
@@ -310,7 +311,7 @@ export function CandidateListItem({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-titlecase")}
+            className={_utils.cx(_styles, "text-titlecase", "text-no-wrap")}
             tag="div"
           >
             {jobTitle}
@@ -346,7 +347,7 @@ export function CandidateListItem({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-titlecase")}
+            className={_utils.cx(_styles, "text-titlecase", "text-no-wrap")}
             tag="div"
           >
             {location}
@@ -376,7 +377,12 @@ export function CandidateListItem({
           className={_utils.cx(_styles, "cv-list-column", "date", "width-100")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{appliedDate}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-no-wrap")}
+            tag="div"
+          >
+            {appliedDate}
+          </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

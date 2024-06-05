@@ -23,7 +23,7 @@ export function RecentDeclines({
         className={_utils.cx(_styles, "reschedule-req-header")}
         tag="div"
       >
-        <Text content="" />
+        <Text content="RecentDeclines" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1782")}

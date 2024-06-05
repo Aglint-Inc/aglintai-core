@@ -61,7 +61,6 @@ function ModuleSchedules({
             onChange={(e) => {
               setChangeText(e.target.value);
             }}
-            height={42}
           />
         </Stack>
       }

@@ -1,8 +1,16 @@
 .nav-sub-link-menu {
   position: relative;
-  padding: var(--space-2) var(--space-4);
-  border-radius: 10px;
+
+  display: flex;
+  height: var(--space-6);
+  padding: 0px var(--space-3);
+  justify-content: flex-start;
+  align-items: center;
+
+  border-radius: var(--radius-1);
+
   transition: opacity 250ms ease;
+
   cursor: pointer;
 }
 
@@ -12,15 +20,25 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
+  z-index: 2;
+
+  display: flex;
+  padding-right: var(--space-3);
+  padding-left: var(--space-3);
+  justify-content: flex-start;
+  align-items: center;
 
   border-radius: var(--radius-4);
 
-  background-color: var(--neutral-2);
+  background-color: var(--accent-3);
+
+  color: var(--accent-9);
 }
 
 .nav-sub-text {
   position: relative;
   z-index: 1;
+  color: var(--neutral-11);
 }
 
 .icons {

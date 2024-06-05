@@ -1,7 +1,7 @@
 .div-block-1614 {
   display: flex;
   width: 280px;
-  padding: 16px;
+  padding: var(--space-4);
   flex-direction: column;
   justify-content: flex-start;
   flex-wrap: nowrap;
@@ -9,14 +9,10 @@
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 
-  border: 1px solid #e9ebed;
-  border-radius: 10px;
+  border: 1px solid var(--neutral-a6);
+  border-radius: var(--radius-4);
 
-  background-color: white;
-}
-
-.text-grey-500 {
-  color: #87929d;
+  background-color: var(--white-a12);
 }
 
 .div-block-1615 {
@@ -68,9 +64,9 @@
 }
 
 .text-green-500 {
-  color: #228f67;
+  color: var(--success-11);
 }
 
 .text-red-500 {
-  color: #d93f4c;
+  color: var(--error-11);
 }

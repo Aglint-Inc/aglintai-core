@@ -1,7 +1,9 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ScheduleSelectPill } from "./ScheduleSelectPill";
+import { SlotComp } from "./SlotComp";
+import { ButtonSoft } from "./ButtonSoft";
+import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./ReqAvailability.module.css";
 
@@ -109,7 +111,7 @@ export function ReqAvailability({
             className={_utils.cx(_styles, "div-block-1747")}
             tag="div"
           >
-            {slotScheduleSelectPill ?? <ScheduleSelectPill />}
+            {slotScheduleSelectPill ?? <SlotComp componentNeme="Prefernce" />}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -126,7 +128,7 @@ export function ReqAvailability({
             className={_utils.cx(_styles, "slot-toggle-button")}
             tag="div"
           >
-            {slotReqToggle}
+            {slotReqToggle ?? <SlotComp componentNeme="Prefernce" />}
           </_Builtin.Block>
           {isCheckingSlotsVisible ? (
             <_Builtin.Block
@@ -137,7 +139,9 @@ export function ReqAvailability({
                 className={_utils.cx(_styles, "check-slots-wrap")}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{slotCheckingIcon}</_Builtin.Block>
+                <_Builtin.Block tag="div">
+                  {slotCheckingIcon ?? <SlotComp componentNeme="Prefernce" />}
+                </_Builtin.Block>
                 <_Builtin.Block
                   className={_utils.cx(_styles, "text-grey-600")}
                   tag="div"
@@ -178,14 +182,14 @@ export function ReqAvailability({
             className={_utils.cx(_styles, "div-block-1750")}
             tag="div"
           >
-            {slotAvailabilityCriteria}
+            {slotAvailabilityCriteria ?? <SlotComp componentNeme="Prefernce" />}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1748")}
             tag="div"
           >
             <_Builtin.Block tag="div">
-              {slotCheckboxAvailability}
+              {slotCheckboxAvailability ?? <SlotComp componentNeme="Ceckbox" />}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "fw-semibold")}
@@ -200,25 +204,16 @@ export function ReqAvailability({
         className={_utils.cx(_styles, "div-block-1752")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1751")}
-          tag="div"
-          {...onClickCancel}
-        >
-          <_Builtin.Block tag="div">{"Cancel"}</_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1751", "blue")}
-          tag="div"
-          {...onClickReqAvailability}
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-white")}
-            tag="div"
-          >
-            {"Request Availability"}
-          </_Builtin.Block>
-        </_Builtin.Block>
+        <ButtonSoft
+          onClickButton={onClickCancel}
+          textButton="Cancel"
+          size="2"
+        />
+        <ButtonSolid
+          onClickButton={onClickReqAvailability}
+          textButton="Request Availability"
+          size="2"
+        />
       </_Builtin.Block>
     </_Component>
   );

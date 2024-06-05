@@ -12,6 +12,7 @@ export function JobsDashboard({
   slotSearchInputJob,
   textJobsHeader = "All Jobs",
   onClickAddJob = {},
+  slotFilters,
 }) {
   return (
     <_Component
@@ -26,7 +27,7 @@ export function JobsDashboard({
           className={_utils.cx(_styles, "rd-jobs-header-wrapper")}
           tag="div"
         >
-          <Text content={textJobsHeader} weight="bold" />
+          <Text content={textJobsHeader} weight="medium" />
           <_Builtin.Block
             className={_utils.cx(
               _styles,
@@ -38,6 +39,16 @@ export function JobsDashboard({
             {slotSearchInputJob}
           </_Builtin.Block>
         </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(
+          _styles,
+          "job-dashboard-header",
+          "bottom_border-copy"
+        )}
+        tag="div"
+      >
+        {slotFilters}
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "all-job-list")} tag="div">
         {slotAllJobs ?? <SlotComp componentName="JobsListingCard" />}
