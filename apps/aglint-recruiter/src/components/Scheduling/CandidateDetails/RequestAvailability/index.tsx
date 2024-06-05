@@ -36,6 +36,8 @@ import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
 import {
   createTask,
   insertCandidateRequestAvailability,
+  sendEmailToCandidate,
+  updateCandidateRequestAvailability,
 } from './RequestAvailabilityContext';
 import {
   availabilityArrayList,
@@ -54,7 +56,6 @@ function RequestAvailability() {
     initialSessions,
     selectedApplication,
     selectedSchedule,
-    
   } = useSchedulingApplicationStore();
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
   const { refetch } = useAllActivities({
@@ -136,136 +137,158 @@ function RequestAvailability() {
         }
       }
 
-      const result = await insertCandidateRequestAvailability({
-        application_id: selectedApplication.id,
-        recruiter_id: recruiter.id,
-        availability: availability,
-        date_range: [...selectedDate],
-        is_task_created: markCreateTicket,
-        number_of_days: selectedDays.value,
-        number_of_slots: selectedSlots.value,
-        session_ids: localSessions.map((session) => {
-          return {
-            id: session.id,
-            name: session.name,
-            session_duration: session.session_duration,
-            break_duration: session.break_duration,
-            session_order: session.session_order,
-            location: session.location,
-            session_type: session.session_type,
-          };
-        }),
-        total_slots: null,
-      });
-
-      const updateMeetings: DatabaseTableInsert['interview_meeting'][] =
-        localSessions.map((ses) => {
-          return {
-            id: ses.interview_meeting.id,
-            interview_schedule_id: ses.interview_meeting.interview_schedule_id,
-            status: 'waiting',
-            meeting_flow: 'candidate_request',
-          };
-        });
-      await supabase.from('interview_meeting').upsert(updateMeetings);
-      fetchInterviewDataByApplication();
-
-      // send request availability email to candidate
-
-      const body = fillEmailTemplate(
-        recruiter.email_template['request_candidate_slot'].body,
-        {
-          company_name: recruiter.name,
-          schedule_name: selectedSessions.map((ele) => ele.name).join(','),
-          first_name: selectedApplication.candidates.first_name,
-          last_name: selectedApplication.candidates.last_name,
-          job_title: selectedApplication.public_jobs.job_title,
-          availability_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${result.id}'>Pick Your Slot</a>`,
-        },
-      );
-
-      const subject = fillEmailTemplate(
-        recruiter.email_template['request_candidate_slot'].subject,
-        {
-          company_name: recruiter.name,
-          schedule_name: selectedSessions.map((ele) => ele.name).join(','),
-          first_name: selectedApplication.candidates.first_name,
-          last_name: selectedApplication.candidates.last_name,
-          job_title: selectedApplication.public_jobs.job_title,
-        },
-      );
-
-      await axios.post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
-        fromEmail: `messenger@aglinthq.com`,
-        fromName: 'Aglint',
-        email: selectedApplication.candidates.email,
-        subject: subject,
-        text: body,
-      });
-      // end
-
-      let task = null as null | DatabaseTable['new_tasks'];
-      if (markCreateTicket) {
-        task = await createTask({
-          assignee: [recruiterUser.user_id],
-          created_by: recruiterUser.user_id,
-          name: `Request Availability ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.last_name)} - ${selectedApplication.public_jobs.job_title.trim()}.`,
-          agent: null,
-          application_id: selectedApplication.id,
-          due_date: selectedDate[0].toString(),
-          priority: 'medium',
-          recruiter_id: recruiter.id,
-          schedule_date_range: {
-            end_date: selectedDate[0].toString(),
-            start_date: selectedDate[1].toString(),
-          },
-          start_date: dayjs().toString(),
-          task_owner: recruiterUser.user_id,
-          session_ids: selectedSessions.map((ele) => {
-            return {
-              id: ele.id,
-              name: ele.name,
-            } as DatabaseTableInsert['new_tasks']['session_ids'][number];
-          }),
-          status: 'in_progress',
-          type: 'schedule',
-          request_availability_id: result.id,
-        });
-        await createTaskProgress({
+      if (router.query?.candidate_request_availability) {
+        await updateCandidateRequestAvailability({
+          id: String(router.query?.candidate_request_availability),
           data: {
-            created_by: {
-              id: recruiterUser.user_id,
-              name: getFullName(
-                recruiterUser.first_name,
-                recruiterUser.last_name,
+            availability: availability,
+            date_range: [...selectedDate],
+            number_of_days: selectedDays.value,
+            number_of_slots: selectedSlots.value,
+            slots: null,
+          },
+        });
+      } else {
+        const result = await insertCandidateRequestAvailability({
+          application_id: selectedApplication.id,
+          recruiter_id: recruiter.id,
+          availability: availability,
+          date_range: [...selectedDate],
+          is_task_created: markCreateTicket,
+          number_of_days: selectedDays.value,
+          number_of_slots: selectedSlots.value,
+          session_ids: localSessions.map((session) => {
+            return {
+              id: session.id,
+              name: session.name,
+              session_duration: session.session_duration,
+              break_duration: session.break_duration,
+              session_order: session.session_order,
+              location: session.location,
+              session_type: session.session_type,
+            };
+          }),
+          total_slots: null,
+        });
+
+        const updateMeetings: DatabaseTableInsert['interview_meeting'][] =
+          localSessions.map((ses) => {
+            return {
+              id: ses.interview_meeting.id,
+              interview_schedule_id:
+                ses.interview_meeting.interview_schedule_id,
+              status: 'waiting',
+              meeting_flow: 'candidate_request',
+            };
+          });
+        await supabase.from('interview_meeting').upsert(updateMeetings);
+        fetchInterviewDataByApplication();
+
+        // send request availability email to candidate
+        const body = fillEmailTemplate(
+          recruiter.email_template['request_candidate_slot'].body,
+          {
+            company_name: recruiter.name,
+            schedule_name: selectedSessions.map((ele) => ele.name).join(','),
+            first_name: selectedApplication.candidates.first_name,
+            last_name: selectedApplication.candidates.last_name,
+            job_title: selectedApplication.public_jobs.job_title,
+            availability_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${result.id}'>Pick Your Slot</a>`,
+          },
+        );
+        const subject = fillEmailTemplate(
+          recruiter.email_template['request_candidate_slot'].subject,
+          {
+            company_name: recruiter.name,
+            schedule_name: selectedSessions.map((ele) => ele.name).join(','),
+            first_name: selectedApplication.candidates.first_name,
+            last_name: selectedApplication.candidates.last_name,
+            job_title: selectedApplication.public_jobs.job_title,
+          },
+        );
+        await axios.post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
+          fromEmail: `messenger@aglinthq.com`,
+          fromName: 'Aglint',
+          email: selectedApplication.candidates.email,
+          subject: subject,
+          text: body,
+        });
+        sendEmailToCandidate({
+          email: selectedApplication.candidates.email,
+          emailBody: recruiter.email_template['request_candidate_slot'].body,
+          emailSubject:
+            recruiter.email_template['request_candidate_slot'].subject,
+          first_name: selectedApplication.candidates.first_name,
+          last_name: selectedApplication.candidates.last_name,
+          job_title: selectedApplication.public_jobs.job_title,
+          recruiter,
+          sessionNames: selectedSessions.map((ele) => ele.name),
+          request_id: result.id,
+        });
+        // end
+        let task = null as null | DatabaseTable['new_tasks'];
+        if (markCreateTicket) {
+          task = await createTask({
+            assignee: [recruiterUser.user_id],
+            created_by: recruiterUser.user_id,
+            name: `Request Availability ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.last_name)} - ${selectedApplication.public_jobs.job_title.trim()}.`,
+            agent: null,
+            application_id: selectedApplication.id,
+            due_date: selectedDate[0].toString(),
+            priority: 'medium',
+            recruiter_id: recruiter.id,
+            schedule_date_range: {
+              end_date: selectedDate[0].toString(),
+              start_date: selectedDate[1].toString(),
+            },
+            start_date: dayjs().toString(),
+            task_owner: recruiterUser.user_id,
+            session_ids: selectedSessions.map((ele) => {
+              return {
+                id: ele.id,
+                name: ele.name,
+              } as DatabaseTableInsert['new_tasks']['session_ids'][number];
+            }),
+            status: 'in_progress',
+            type: 'schedule',
+            request_availability_id: result.id,
+          });
+          await createTaskProgress({
+            data: {
+              created_by: {
+                id: recruiterUser.user_id,
+                name: getFullName(
+                  recruiterUser.first_name,
+                  recruiterUser.last_name,
+                ),
+              },
+              task_id: task.id,
+              progress_type: 'standard',
+            },
+            type: 'request_availability',
+            optionData: {
+              sessions: task.session_ids,
+              candidateName: getFullName(
+                selectedApplication.candidates.first_name,
+                selectedApplication.candidates.last_name,
               ),
             },
-            task_id: task.id,
-            progress_type: 'standard',
-          },
-          type: 'request_availability',
-          optionData: {
-            sessions: task.session_ids,
-            candidateName: getFullName(
-              selectedApplication.candidates.first_name,
-              selectedApplication.candidates.last_name,
-            ),
-          },
+          });
+        }
+        addScheduleActivity({
+          application_id: selectedApplication.id,
+          created_by: recruiterUser.user_id,
+          logged_by: 'user',
+          supabase: supabase,
+          title: `Request Availability from ${getFullName(
+            selectedApplication.candidates.first_name,
+            selectedApplication.candidates.last_name,
+          )} to Schedule Interviews for ${selectedSessions.map((ele) => ele.name).join(',')}`,
+          module: 'scheduler',
+          task_id: task ? task.id : null,
         });
       }
 
-      addScheduleActivity({
-        application_id: selectedApplication.id,
-        created_by: recruiterUser.user_id,
-        logged_by: 'user',
-        supabase: supabase,
-        title: `Request Availability from ${getFullName(
-          selectedApplication.candidates.first_name,
-          selectedApplication.candidates.last_name,
-        )} to Schedule Interviews for ${selectedSessions.map((ele) => ele.name).join(',')}`,
-        module: 'scheduler',
-        task_id: task ? task.id : null,
-      });
       refetch(); // refetching activities
       getDrawerClose();
       setSelectedSessionIds([]);

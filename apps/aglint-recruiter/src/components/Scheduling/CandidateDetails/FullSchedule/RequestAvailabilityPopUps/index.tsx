@@ -34,13 +34,13 @@ function RequestAvailabilityPopUps() {
     });
   }
 
-  function handleRequestAgain(ids: string[]) {
+  function handleRequestAgain(request_id:string, ids: string[]) {
     setRequestSessionIds(ids);
     const currentPath = router.pathname;
     const currentQuery = router.query;
     const updatedQuery = {
       ...currentQuery,
-      candidate_request_availability: 'true',
+      candidate_request_availability: request_id,
     };
     router.replace({
       pathname: currentPath,
@@ -141,6 +141,7 @@ function RequestAvailabilityPopUps() {
                             onClickButton={{
                               onClick: () =>
                                 handleRequestAgain(
+                                  item.id,
                                   item.session_ids.map((ele) => ele.id),
                                 ),
                             }}
