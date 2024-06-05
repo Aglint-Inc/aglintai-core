@@ -142,10 +142,6 @@
   color: var(--sand-11);
 }
 
-.fw-semibold.name-text {
-  color: #467b7c;
-}
-
 .is_start {
   position: absolute;
   left: 0%;

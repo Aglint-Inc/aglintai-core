@@ -40,5 +40,5 @@
 }
 
 .text-yellow-800 {
-  color: #703815;
+  color: var(--warning-11);
 }

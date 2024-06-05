@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { CompanyLocation } from "./CompanyLocation";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./CompanyInfo.module.css";
 
@@ -28,7 +28,7 @@ export function CompanyInfo({
         tag="div"
       >
         <_Builtin.Block tag="div">
-          <Text weight="bold" content="Office Location" />
+          <Text weight="medium" content="Office Location" />
           <Text
             weight=""
             content="Include office locations to organize data, schedule effectively, and identify correct time zones."
@@ -39,7 +39,7 @@ export function CompanyInfo({
           className={_utils.cx(_styles, "slot-location-saved-wrappers")}
           tag="div"
         >
-          {slotLocation ?? <CompanyLocation />}
+          {slotLocation ?? <SlotComp componentName="CompanyLocation" />}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "cj-add-skill-btn-new")}
@@ -61,7 +61,7 @@ export function CompanyInfo({
           className={_utils.cx(_styles, "cs-info-header")}
           tag="div"
         >
-          <Text weight="bold" content="Departments" />
+          <Text weight="medium" content="Departments" />
           <Text
             weight=""
             content="Catalog your departments to sort and filter data efficiently, aiding in job posting and scheduling."
@@ -96,7 +96,7 @@ export function CompanyInfo({
             className={_utils.cx(_styles, "cs-info-header")}
             tag="div"
           >
-            <Text weight="bold" content="Specialties" />
+            <Text weight="medium" content="Specialties" />
             <Text
               weight=""
               content="Define your specialties to streamline the search and match process for job candidates."
@@ -132,7 +132,7 @@ export function CompanyInfo({
             className={_utils.cx(_styles, "cs-info-header")}
             tag="div"
           >
-            <Text weight="bold" content="Available Roles" />
+            <Text weight="medium" content="Available Roles" />
             <Text
               weight=""
               content="List available roles to assist in filtering applications and matching candidates to job positions."

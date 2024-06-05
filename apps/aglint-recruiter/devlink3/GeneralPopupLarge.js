@@ -77,6 +77,7 @@ export function GeneralPopupLarge({
             isLeftIcon={false}
             isRightIcon={false}
             color="neutral"
+            size="2"
           />
         </_Builtin.Block>
         <_Builtin.Block
@@ -90,6 +91,7 @@ export function GeneralPopupLarge({
           <ButtonSolid
             onClickButton={onClickAction}
             textButton={textPopupButton}
+            size="2"
           />
         </_Builtin.Block>
       </_Builtin.Block>

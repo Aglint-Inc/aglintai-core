@@ -1,8 +1,8 @@
 .jobs-wrap {
-  display: flex;
   align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+  cursor: pointer;
 }
 
 .cursor-pointer {

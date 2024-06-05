@@ -62,8 +62,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  grid-column-gap: 22px;
-  grid-row-gap: 22px;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
 }
 
 .cj-option-block-white {

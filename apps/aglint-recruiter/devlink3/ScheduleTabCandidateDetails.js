@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./ScheduleTabCandidateDetails.module.css";
 
@@ -97,7 +98,9 @@ export function ScheduleTabCandidateDetails({
               className={_utils.cx(_styles, "email-phone-linkedin")}
               tag="div"
             >
-              {slotEmailPhoneIcon}
+              {slotEmailPhoneIcon ?? (
+                <SlotComp componentNeme="Email Linkedin" />
+              )}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "resume-candidate-details")}
@@ -181,7 +184,9 @@ export function ScheduleTabCandidateDetails({
               tag="div"
             >
               <_Builtin.Block tag="div">{"Experience"}</_Builtin.Block>
-              <_Builtin.Block tag="div">{slotExperienceScore}</_Builtin.Block>
+              <_Builtin.Block tag="div">
+                {slotExperienceScore ?? <SlotComp componentNeme="Score" />}
+              </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "text-grey-600")}
@@ -199,7 +204,9 @@ export function ScheduleTabCandidateDetails({
               tag="div"
             >
               <_Builtin.Block tag="div">{"Skill"}</_Builtin.Block>
-              <_Builtin.Block tag="div">{slotSkillScore}</_Builtin.Block>
+              <_Builtin.Block tag="div">
+                {slotSkillScore ?? <SlotComp componentNeme="Skill Score" />}
+              </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "text-grey-600")}
@@ -217,7 +224,9 @@ export function ScheduleTabCandidateDetails({
               tag="div"
             >
               <_Builtin.Block tag="div">{"Education"}</_Builtin.Block>
-              <_Builtin.Block tag="div">{slotEducationScore}</_Builtin.Block>
+              <_Builtin.Block tag="div">
+                {slotEducationScore ?? <SlotComp componentNeme="Score" />}
+              </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "text-grey-600")}
@@ -255,13 +264,9 @@ export function ScheduleTabCandidateDetails({
             className={_utils.cx(_styles, "div-block-806")}
             tag="div"
           >
-            {slotScreeningScore}
+            {slotScreeningScore ?? <SlotComp componentNeme="Score" />}
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-786")}
-          tag="div"
-        />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "schedule-tab-wrap-ana")}
@@ -290,7 +295,9 @@ export function ScheduleTabCandidateDetails({
                 {"Assesment"}
               </_Builtin.Block>
             </_Builtin.Block>
-            <_Builtin.Block tag="div">{slotAssesmentScore}</_Builtin.Block>
+            <_Builtin.Block tag="div">
+              {slotAssesmentScore ?? <SlotComp componentNeme="Score" />}
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

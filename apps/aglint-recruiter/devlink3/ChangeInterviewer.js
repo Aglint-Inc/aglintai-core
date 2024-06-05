@@ -2,7 +2,8 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
-import { InterviewerList } from "./InterviewerList";
+import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import { ButtonSoft } from "./ButtonSoft";
 import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
@@ -31,12 +32,7 @@ export function ChangeInterviewer({
     >
       <_Builtin.Block className={_utils.cx(_styles, "popup_header")} tag="div">
         <_Builtin.Block className={_utils.cx(_styles, "popup_title")} tag="div">
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Change Interviewer"}
-          </_Builtin.Block>
+          <Text content="??" />
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "popup_close")} tag="div">
           <_Builtin.HtmlEmbed
@@ -47,12 +43,7 @@ export function ChangeInterviewer({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "popup_body")} tag="div">
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-gray-600")}
-          tag="div"
-        >
-          {textAvailableDesc}
-        </_Builtin.Block>
+        <Text content={textAvailableDesc} weight="" color="neutral" />
         <_Builtin.Block className={_utils.cx(_styles, "slot_widget")} tag="div">
           <_Builtin.Block tag="div">
             <_Builtin.Block
@@ -93,11 +84,9 @@ export function ChangeInterviewer({
             >
               {slotInterviewerList ?? (
                 <>
-                  <InterviewerList />
-                  <InterviewerList />
-                  <InterviewerList />
-                  <InterviewerList />
-                  <InterviewerList />
+                  <SlotComp componentNeme="InterviewerList" />
+                  <SlotComp componentNeme="InterviewerList" />
+                  <SlotComp componentNeme="InterviewerList" />
                 </>
               )}
             </_Builtin.Block>

@@ -1,9 +1,9 @@
-.div-block-1407 {
+.schedule-details-page {
   display: flex;
   background-color: var(--white);
 }
 
-.div-block-1408 {
+.schedule-tab-overview-wraper {
   overflow: auto;
   width: 480px;
   flex-grow: 0;
@@ -63,6 +63,9 @@
   flex-wrap: nowrap;
   grid-column-gap: 30px;
   grid-row-gap: 30px;
+
+  background-color: var(--neutral-2);
+
   height: calc(100vh - 109px);
 }
 

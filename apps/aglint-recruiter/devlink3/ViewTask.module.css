@@ -8,6 +8,8 @@
   flex-direction: column;
   justify-content: flex-start;
   flex-wrap: nowrap;
+
+  background-color: var(--white);
 }
 
 .dtawer-tittle {

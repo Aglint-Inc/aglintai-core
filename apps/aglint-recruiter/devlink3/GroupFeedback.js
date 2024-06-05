@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./GroupFeedback.module.css";
 
@@ -50,9 +51,13 @@ export function GroupFeedback({
             {textTime}
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block tag="div">{slotStatusPill}</_Builtin.Block>
+        <_Builtin.Block tag="div">
+          {slotStatusPill ?? <SlotComp componentNeme="Status" />}
+        </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block tag="div">{slotFeedbackTableRow}</_Builtin.Block>
+      <_Builtin.Block tag="div">
+        {slotFeedbackTableRow ?? <SlotComp componentNeme="Feedback" />}
+      </_Builtin.Block>
     </_Component>
   );
 }
