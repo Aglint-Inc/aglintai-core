@@ -1,6 +1,6 @@
 import {
   APICandidateConfirmSlot,
-  APIFindSlotsDateRange,
+  APIVerifyRecruiterSelectedSlots,
 } from '@aglint/shared-types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
@@ -81,21 +81,20 @@ export type InviteMetaParams = {
 };
 
 export type InviteSlotsParams = {
-  filter_json: ApiResponseCandidateInvite['filter_json'];
-  recruiter: ApiResponseCandidateInvite['recruiter'];
+  filter_json_id: string;
   user_tz: string;
 };
-const getInviteSlots = async ({ filter_json, user_tz }: InviteSlotsParams) => {
+const getInviteSlots = async ({
+  filter_json_id,
+  user_tz,
+}: InviteSlotsParams) => {
   try {
-    const paylod: APIFindSlotsDateRange = {
-      session_ids: filter_json.session_ids,
-      recruiter_id: filter_json.recruiter_id,
-      start_date_str: filter_json.start_date,
-      end_date_str: filter_json.end_date,
+    const paylod: APIVerifyRecruiterSelectedSlots = {
+      filter_json_id,
       candidate_tz: user_tz,
     };
     const resSchOpt = await axios.post(
-      '/api/scheduling/v1/find_slots_date_range',
+      '/api/scheduling/v1/verify-recruiter-selected-slots',
       {
         ...paylod,
       },

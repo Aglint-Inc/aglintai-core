@@ -194,10 +194,10 @@ const fetchCandDetails = async ({ filter_json_id, candidate_email }) => {
   const cand_basic_info = rec.interview_schedule.applications.candidates;
   const job = rec.interview_schedule.applications.public_jobs;
   // const sched_setting = rec.interview_schedule;
-  const filter_json = rec.filter_json as TFilterJSON;
+  const filter_json = rec.filter_json;
 
   const geo = cand_basic_info.geolocation as GeoPoint | null;
-  if (filter_json.session_ids.length === 0) {
+  if (rec.session_ids.length === 0) {
     throw new Error('Empty sessions');
   }
 
@@ -205,7 +205,7 @@ const fetchCandDetails = async ({ filter_json_id, candidate_email }) => {
     await supabaseAdmin
       .from('interview_session')
       .select()
-      .in('id', filter_json.session_ids),
+      .in('id', rec.session_ids),
   );
 
   const company_sched_sett = job.recruiter
@@ -244,15 +244,6 @@ const fetchCandDetails = async ({ filter_json_id, candidate_email }) => {
   }
 
   return cand_details;
-};
-
-export type TFilterJSON = {
-  user_tz: string;
-  end_date: string;
-  start_date: string;
-  session_ids: string[];
-  recruiter_id: string;
-  organizer_name: string;
 };
 
 type CandidateScheduleDetails = InterviewFilterJsonType & {

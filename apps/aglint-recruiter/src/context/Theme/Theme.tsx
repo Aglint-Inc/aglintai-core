@@ -1,4 +1,3 @@
-import { Padding } from '@mui/icons-material';
 import { createTheme, TextField } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { TypographyOptions } from '@mui/material/styles/createTypography';
@@ -230,7 +229,7 @@ function Theme({ children }) {
             lineHeight: 'var(--line-height-2)',
             letterSpacing: 'var(--letter-spacing-2)',
             borderRadius: 'var(--radius-2)',
-            fontFamily: 'var(--text)', 
+            fontFamily: 'var(--text)',
             fontWeight: '500',
           },
           contained: {
@@ -268,7 +267,7 @@ function Theme({ children }) {
         styleOverrides: {
           root: {
             padding: 'var(--space-1)',
-            fontFamily: 'var(--text)', 
+            fontFamily: 'var(--text)',
             borderRadius: 'var(--radius-2)',
             '&.MuiIconButton-colorPrimary': {
               backgroundColor: 'var(--accent-4)',
@@ -337,7 +336,7 @@ function Theme({ children }) {
         },
         styleOverrides: {
           root: {
-            fontFamily: 'var(--text)', 
+            fontFamily: 'var(--text)',
           },
         },
       },
@@ -346,7 +345,7 @@ function Theme({ children }) {
         styleOverrides: {
           root: {
             // margin: 'var(--space-2)',
-            fontFamily: 'var(--text)', 
+            fontFamily: 'var(--text)',
           },
           label: {
             fontSize: 'var(--font-size-2)',
@@ -362,14 +361,14 @@ function Theme({ children }) {
         styleOverrides: {
           root: {
             padding: 'var(--space-1) var(--space-2)',
-            fontFamily: 'var(--text)', 
+            fontFamily: 'var(--text)',
             backgroundColor: 'var(--white)',
           },
           input: {
             fontSize: 'var(--font-size-2)',
             lineHeight: 'var(--line-height-2)',
             letterSpacing: 'var(--letter-spacing-3)',
-            fontFamily: 'var(--text)', 
+            fontFamily: 'var(--text)',
           },
         },
       },
@@ -398,7 +397,7 @@ function Theme({ children }) {
               fontSize: 'var(--font-size-2)',
               lineHeight: 'var(--line-height-2)',
               letterSpacing: 'var(--letter-spacing-3)',
-              fontFamily: 'var(--text)', 
+              fontFamily: 'var(--text)',
               borderRadius: 'var(--radius-2)',
               '&.Mui-focused': {
                 boxShadow: 'var(--shadow-4)', // Level 4 shadow
@@ -409,7 +408,7 @@ function Theme({ children }) {
               fontSize: 'var(--font-size-2)',
               lineHeight: 'var(--line-height-2)',
               letterSpacing: 'var(--letter-spacing-3)',
-              fontFamily: 'var(--text)', 
+              fontFamily: 'var(--text)',
               color: 'var(--neutral-11)',
             },
             '& .MuiOutlinedInput-notchedOutline': {
@@ -435,7 +434,7 @@ function Theme({ children }) {
               display: 'none',
             },
             // padding: 'var(--space-1) var(--space-2)',
-            // fontFamily: 'var(--text)', 
+            // fontFamily: 'var(--text)',
           },
           // inputRoot: {
           //   '&[class*="MuiInput-root"] .MuiAutocomplete-input': {
@@ -443,7 +442,7 @@ function Theme({ children }) {
           //     fontSize: 'var(--font-size-2)',
           //     lineHeight: 'var(--line-height-2)',
           //     letterSpacing: 'var(--letter-spacing-2)',
-          //     fontFamily: 'var(--text)', 
+          //     fontFamily: 'var(--text)',
           //   },
           //   '& .MuiOutlinedInput-root': {
           //     padding: 'var(--space-2)',
@@ -464,19 +463,19 @@ function Theme({ children }) {
             // fontSize: 'var(--font-size-2)',
             // lineHeight: 'var(--line-height-2)',
             // letterSpacing: 'var(--letter-spacing-2)',
-            // fontFamily: 'var(--text)', 
+            // fontFamily: 'var(--text)',
           },
           // paper: {
           //   boxShadow: 'var(--shadow-3)', // Level 3 shadow
           //   borderRadius: 'var(--radius-3)',
-          //   fontFamily: 'var(--text)', 
+          //   fontFamily: 'var(--text)',
           // },
           // option: {
           //   padding: 'var(--space-2) var(--space-3)',
           //   fontSize: 'var(--font-size-2)',
           //   lineHeight: 'var(--line-height-2)',
           //   letterSpacing: 'var(--letter-spacing-2)',
-          //   fontFamily: 'var(--text)', 
+          //   fontFamily: 'var(--text)',
           //   '&[aria-selected="true"]': {
           //     backgroundColor: 'var(--color-background-selected)',
           //   },
@@ -502,7 +501,7 @@ function Theme({ children }) {
           // groupLabel: {
           //   backgroundColor: 'var(--neutral-2)',
           //   padding: 'var(--space-1) var(--space-2)',
-          //   fontFamily: 'var(--text)', 
+          //   fontFamily: 'var(--text)',
           // },
         },
       },
@@ -510,7 +509,7 @@ function Theme({ children }) {
         styleOverrides: {
           root: {
             padding: 'var(--space-1)',
-            fontFamily: 'var(--text)', 
+            fontFamily: 'var(--text)',
           },
         },
       },
@@ -533,7 +532,7 @@ function Theme({ children }) {
       MuiSelect: {
         styleOverrides: {
           root: {
-            fontFamily: 'var(--text)', 
+            fontFamily: 'var(--text)',
             '& .MuiInputLabel-root': {
               display: 'none',
             },
@@ -549,7 +548,7 @@ function Theme({ children }) {
             fontSize: 'var(--font-size-2)',
             lineHeight: 'var(--line-height-2)',
             letterSpacing: 'var(--letter-spacing-3)',
-            fontFamily: 'var(--text)', 
+            fontFamily: 'var(--text)',
           },
           icon: {
             right: 'var(--space-1)',
@@ -607,7 +606,7 @@ function Theme({ children }) {
             padding: 'var(--space-2) var(--space-3)',
             borderRadius: 'var(--radius-2)',
             boxShadow: 'var(--shadow-2)', // Level 2 shadow
-            fontFamily: 'var(--text)', 
+            fontFamily: 'var(--text)',
             fontSize: 'var(--font-size-2)',
             lineHeight: 'var(--line-height-2)',
             letterSpacing: 'var(--letter-spacing-2)',
@@ -691,7 +690,7 @@ function Theme({ children }) {
           root: {
             padding: 'var(--space-1)',
             borderRadius: 'var(--radius-2)',
-            fontFamily: 'var(--text)', 
+            fontFamily: 'var(--text)',
             fontSize: 'var(--font-size-2)',
             lineHeight: 'var(--line-height-2)',
             letterSpacing: 'var(--letter-spacing-2)',
@@ -702,14 +701,12 @@ function Theme({ children }) {
               height: 'var(--space-4)',
               margin: '0 var(--space-1)',
               padding: 0,
-            }
+            },
           },
           label: {
             padding: '0 var(--space-1)',
           },
-          icon: {
-            
-          },
+          icon: {},
         },
       },
       MuiCircularProgress: {
@@ -724,7 +721,7 @@ function Theme({ children }) {
       //   styleOverrides: {
       //     root: {
       //       padding: 'var(--space-2)',
-      //       fontFamily: 'var(--text)', 
+      //       fontFamily: 'var(--text)',
       //     },
       //   },
       // },
@@ -732,7 +729,7 @@ function Theme({ children }) {
       //   styleOverrides: {
       //     root: {
       //       padding: 'var(--space-2)',
-      //       fontFamily: 'var(--text)', 
+      //       fontFamily: 'var(--text)',
       //     },
       //   },
       // },
@@ -740,7 +737,7 @@ function Theme({ children }) {
       //   styleOverrides: {
       //     root: {
       //       padding: 'var(--space-2)',
-      //       fontFamily: 'var(--text)', 
+      //       fontFamily: 'var(--text)',
       //     },
       //   },
       // },
@@ -748,7 +745,7 @@ function Theme({ children }) {
       //   styleOverrides: {
       //     root: {
       //       padding: 'var(--space-2)',
-      //       fontFamily: 'var(--text)', 
+      //       fontFamily: 'var(--text)',
       //     },
       //   },
       // },
@@ -756,7 +753,7 @@ function Theme({ children }) {
       //   styleOverrides: {
       //     root: {
       //       padding: 'var(--space-2)',
-      //       fontFamily: 'var(--text)', 
+      //       fontFamily: 'var(--text)',
       //     },
       //   },
       // },
@@ -764,7 +761,7 @@ function Theme({ children }) {
       //   styleOverrides: {
       //     root: {
       //       padding: 'var(--space-2)',
-      //       fontFamily: 'var(--text)', 
+      //       fontFamily: 'var(--text)',
       //     },
       //   },
       // },
@@ -772,7 +769,7 @@ function Theme({ children }) {
       //   styleOverrides: {
       //     root: {
       //       padding: 'var(--space-2)',
-      //       fontFamily: 'var(--text)', 
+      //       fontFamily: 'var(--text)',
       //     },
       //   },
       // },
@@ -837,7 +834,7 @@ function Theme({ children }) {
       //   styleOverrides: {
       //     root: {
       //       padding: 'var(--space-2)',
-      //       fontFamily: 'var(--text)', 
+      //       fontFamily: 'var(--text)',
       //     },
       //   },
       // },
@@ -865,7 +862,7 @@ function Theme({ children }) {
       MuiTableBody: {
         styleOverrides: {
           root: {
-            fontFamily: 'var(--text)', 
+            fontFamily: 'var(--text)',
           },
         },
       },
@@ -874,7 +871,7 @@ function Theme({ children }) {
           root: {
             padding: 'var(--space-2)',
             borderBottom: 'none',
-            fontFamily: 'var(--text)', 
+            fontFamily: 'var(--text)',
           },
           head: {
             fontWeight: 'bold',
@@ -895,7 +892,7 @@ function Theme({ children }) {
       MuiTableHead: {
         styleOverrides: {
           root: {
-            fontFamily: 'var(--text)', 
+            fontFamily: 'var(--text)',
           },
         },
       },
@@ -931,32 +928,32 @@ function Theme({ children }) {
             marginTop: '4px',
             // padding: 'var(--space-4)',
             boxShadow: 'var(--shadow-4)', // Level 4 shadow
-            fontFamily: 'var(--text)', 
+            fontFamily: 'var(--text)',
           },
           paperFullScreen: {
             borderRadius: '0',
             // padding: 'var(--space-4)',
             boxShadow: 'var(--shadow-4)', // Level 4 shadow
-            fontFamily: 'var(--text)', 
+            fontFamily: 'var(--text)',
           },
           paperFullWidth: {
             // padding: 'var(--space-4)',
             boxShadow: 'var(--shadow-4)', // Level 4 shadow
-            fontFamily: 'var(--text)', 
+            fontFamily: 'var(--text)',
           },
           paperScrollBody: {
             borderRadius: '4px',
             marginTop: '4px',
             // padding: 'var(--space-4)',
             boxShadow: 'var(--shadow-4)', // Level 4 shadow
-            fontFamily: 'var(--text)', 
+            fontFamily: 'var(--text)',
           },
           paperScrollPaper: {
             borderRadius: '4px',
             marginTop: '4px',
             // padding: 'var(--space-4)',
             boxShadow: 'var(--shadow-4)', // Level 4 shadow
-            fontFamily: 'var(--text)', 
+            fontFamily: 'var(--text)',
           },
         },
       },

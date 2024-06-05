@@ -51,11 +51,19 @@ export class ScheduleUtils {
       endTime: t.endTime.format(),
     };
   };
-  static getSessionRounds(db_int_sessions: InterviewSessionTypeDB[]) {
+  static getSessionRounds(
+    db_int_sessions: Pick<
+      InterviewSessionTypeDB,
+      'session_order' | 'break_duration'
+    >[]
+  ) {
     let sorted_sessions = db_int_sessions.sort(
       (s1, s2) => s1.session_order - s2.session_order
     );
-    let session_rounds: InterviewSessionTypeDB[][] = [[]];
+    let session_rounds: Pick<
+      InterviewSessionTypeDB,
+      'session_order' | 'break_duration'
+    >[][] = [[]];
     let curr_round = 0;
     for (let sess of sorted_sessions) {
       // eslint-disable-next-line security/detect-object-injection

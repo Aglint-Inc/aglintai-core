@@ -124,7 +124,7 @@ function RequestAvailabilityProvider({ children }) {
 
     const meetingsRound = ScheduleUtils.getSessionRounds(
       requestAvailability.session_ids as InterviewSessionTypeDB[],
-    );
+    ) as unknown as InterviewSessionTypeDB[][];
     setMultiDaySessions(meetingsRound);
 
     const allDates = getDatesBetween(
