@@ -9,6 +9,8 @@ import {
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { WorkflowAction } from '../workflow-action';
+import { workflowActionQueryKeys } from '../workflow-action/keys';
 import { workflowMutationKeys, workflowQueryKeys } from './keys';
 
 export const useWorkflowQuery = (args: GetWorkflow) => {
@@ -80,16 +82,19 @@ export const useWorkflowUpdate = (args: WorkflowKeys) => {
     mutationKey,
     onMutate: (variables) => {
       const previousWorkflows = queryClient.getQueryData<Workflow[]>(queryKey);
+      let previousWorkflow: Workflow = null;
       const newWorkflows = structuredClone(previousWorkflows).reduce(
         (acc, curr) => {
-          if (curr.id === variables.id)
+          if (curr.id === variables.id) {
+            previousWorkflow = structuredClone(curr);
             acc.push(structuredClone({ ...curr, ...variables.payload }));
-          else acc.push(curr);
+          } else acc.push(curr);
           return acc;
         },
         [] as Workflow[],
       );
       queryClient.setQueryData<Workflow[]>(queryKey, newWorkflows);
+      return { previousWorkflow };
     },
     onError: (_error, variables) => {
       toast.error('Unable to update workflow');
@@ -103,6 +108,15 @@ export const useWorkflowUpdate = (args: WorkflowKeys) => {
       );
       queryClient.setQueryData<Workflow[]>(queryKey, newWorkflows);
     },
+    onSuccess: (data, variables, context) => {
+      const { queryKey: actionQueryKey } =
+        workflowActionQueryKeys.workflowAction({ workflow_id: data.id });
+      if (
+        variables.payload.trigger &&
+        context.previousWorkflow.trigger !== data.trigger
+      )
+        queryClient.setQueryData<WorkflowAction[]>(actionQueryKey, []);
+    },
   });
 };
 type UpdateWorkflow = {
@@ -114,7 +128,8 @@ const updateWorkflow = async ({ id, payload }: UpdateWorkflow) => {
     .from('workflow')
     .update(payload)
     .eq('id', id)
-    .select();
+    .select()
+    .single();
   if (error) throw new Error(error.message);
   return data;
 };

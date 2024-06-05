@@ -15,11 +15,13 @@ import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loa
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
+import { useWorkflowStore } from '@/src/context/Workflows/store';
 
 const Actions = () => {
   const {
     emailTemplates: { data: all_company_email_template },
   } = useAuthDetails();
+  const actionsLoad = useWorkflowStore(({ actionsLoad }) => actionsLoad);
   const {
     actions: { data, status },
     actionMutations: mutations,
@@ -29,7 +31,8 @@ const Actions = () => {
   if (status === 'error') return <>Error</>;
   if (status === 'pending') return <Loader />;
   const actions = data.map((action) => {
-    const loading = !!mutations.find((mutation) => mutation.id === action.id);
+    const loading =
+      actionsLoad || !!mutations.find((mutation) => mutation.id === action.id);
     return (
       <OptimisticWrapper key={action.id} loading={loading}>
         <Action key={action.id} action={action} />
@@ -38,7 +41,7 @@ const Actions = () => {
     );
   });
   const emailTemplate = all_company_email_template.find(
-    ({ type }) => type === trigger,
+    ({ type }) => type === ACTION_TRIGGER_MAP[trigger][0].value,
   );
   return (
     <>
@@ -229,7 +232,7 @@ const ACTION_TRIGGER_MAP: {
     },
     {
       value: 'upcoming_interview_reminder_interviewers',
-      name: 'Send emails to interviews',
+      name: 'Send emails to interviewers',
     },
   ],
 };

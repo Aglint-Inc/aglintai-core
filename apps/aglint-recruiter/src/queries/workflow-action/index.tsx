@@ -139,6 +139,9 @@ const updateWorkflowAction = async ({ id, payload }: UpdateWorkflowAction) => {
 };
 
 export const useWorkflowActionCreate = (args: WorkflowActionKeys) => {
+  const {
+    emailTemplates: { data: all_company_email_template },
+  } = useAuthDetails();
   const { mutationKey } = workflowActionMutationKeys.workflowAction(args);
   const { queryKey } = workflowActionQueryKeys.workflowAction(args);
   const queryClient = useQueryClient();
@@ -153,6 +156,9 @@ export const useWorkflowActionCreate = (args: WorkflowActionKeys) => {
         ...(payload as WorkflowAction),
         id,
         workflow_id,
+        company_email_template: all_company_email_template.find(
+          ({ id }) => id === payload.email_template_id,
+        ),
       });
       queryClient.setQueryData<WorkflowAction[]>(queryKey, newWorkflowActions);
     },
