@@ -674,6 +674,7 @@ export type Database = {
         Row: {
           application_id: string
           availability: Json | null
+          booking_confirmed: boolean
           created_at: string
           date_range: Json | null
           id: string
@@ -684,10 +685,12 @@ export type Database = {
           session_ids: Json | null
           slots: Json | null
           total_slots: number | null
+          user_timezone: string | null
         }
         Insert: {
           application_id: string
           availability?: Json | null
+          booking_confirmed?: boolean
           created_at?: string
           date_range?: Json | null
           id?: string
@@ -698,10 +701,12 @@ export type Database = {
           session_ids?: Json | null
           slots?: Json | null
           total_slots?: number | null
+          user_timezone?: string | null
         }
         Update: {
           application_id?: string
           availability?: Json | null
+          booking_confirmed?: boolean
           created_at?: string
           date_range?: Json | null
           id?: string
@@ -712,6 +717,7 @@ export type Database = {
           session_ids?: Json | null
           slots?: Json | null
           total_slots?: number | null
+          user_timezone?: string | null
         }
         Relationships: [
           {
@@ -3280,7 +3286,7 @@ export type Database = {
           phase: Database["public"]["Enums"]["workflow_phase"] | null
           recruiter_id: string | null
           title: string | null
-          trigger: Database["public"]["Enums"]["workflow_trigger"] | null
+          trigger: Database["public"]["Enums"]["workflow_trigger"]
         }
         Insert: {
           created_at?: string
@@ -3289,7 +3295,7 @@ export type Database = {
           phase?: Database["public"]["Enums"]["workflow_phase"] | null
           recruiter_id?: string | null
           title?: string | null
-          trigger?: Database["public"]["Enums"]["workflow_trigger"] | null
+          trigger: Database["public"]["Enums"]["workflow_trigger"]
         }
         Update: {
           created_at?: string
@@ -3298,7 +3304,7 @@ export type Database = {
           phase?: Database["public"]["Enums"]["workflow_phase"] | null
           recruiter_id?: string | null
           title?: string | null
-          trigger?: Database["public"]["Enums"]["workflow_trigger"] | null
+          trigger?: Database["public"]["Enums"]["workflow_trigger"]
         }
         Relationships: [
           {
@@ -3313,32 +3319,36 @@ export type Database = {
       workflow_action: {
         Row: {
           created_at: string
+          email_template_id: string
           id: string
-          medium: Database["public"]["Enums"]["workflow_action_medium"] | null
           order: number
           payload: Json | null
-          target: Database["public"]["Enums"]["workflow_action_target"] | null
           workflow_id: string | null
         }
         Insert: {
           created_at?: string
+          email_template_id: string
           id?: string
-          medium?: Database["public"]["Enums"]["workflow_action_medium"] | null
           order: number
           payload?: Json | null
-          target?: Database["public"]["Enums"]["workflow_action_target"] | null
           workflow_id?: string | null
         }
         Update: {
           created_at?: string
+          email_template_id?: string
           id?: string
-          medium?: Database["public"]["Enums"]["workflow_action_medium"] | null
           order?: number
           payload?: Json | null
-          target?: Database["public"]["Enums"]["workflow_action_target"] | null
           workflow_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "workflow_action_email_template_id_fkey"
+            columns: ["email_template_id"]
+            isOneToOne: false
+            referencedRelation: "company_email_template"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "workflow_action_workflow_id_fkey"
             columns: ["workflow_id"]
@@ -4836,6 +4846,10 @@ export type Database = {
         | "candidate_reschedule_request"
         | "recruiter_rescheduling_email"
         | "candidate_availability_request"
+        | "self_schedule_request_reminder"
+        | "upcoming_interview_reminder_candidate"
+        | "availability_request_reminder"
+        | "upcoming_interview_reminder_interviewers"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"
@@ -4973,24 +4987,11 @@ export type Database = {
         | "recruiting_coordinator"
         | "sourcer"
         | "hiring_manager"
-      workflow_action_medium: "email" | "slack"
-      workflow_action_target:
-        | "applicant"
-        | "recruiter"
-        | "hiring_manager"
-        | "interviewers"
-        | "recruiting_coordinator"
-        | "custom"
       workflow_phase: "before" | "after" | "now"
       workflow_trigger:
-        | "application_new"
-        | "application_phone_screening"
-        | "application_assessment"
-        | "application_interview"
-        | "application_qualified"
-        | "application_disqualified"
-        | "booking_link_sent"
-        | "interview_start"
+        | "self_schedule_request_reminder"
+        | "upcoming_interview_reminder"
+        | "availability_request_reminder"
     }
     CompositeTypes: {
       location_type: {
