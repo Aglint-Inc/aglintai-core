@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import type { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import type { DatabaseTable, DatabaseView } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import React, { memo } from 'react';
 
@@ -15,16 +15,16 @@ import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loa
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
-import { emailTemplates } from '@/src/utils/emailTemplate';
 
 const Actions = () => {
   const {
-    recruiter: { email_template },
+    recruiter: { company_email_template: all_company_email_template },
   } = useAuthDetails();
   const {
     actions: { data, status },
     actionMutations: mutations,
     handleCreateAction,
+    workflow: { trigger },
   } = useWorkflow();
   if (status === 'error') return <>Error</>;
   if (status === 'pending') return <Loader />;
@@ -37,6 +37,9 @@ const Actions = () => {
       </OptimisticWrapper>
     );
   });
+  const emailTemplate = all_company_email_template.find(
+    ({ type }) => type === trigger,
+  );
   return (
     <>
       {actions}
@@ -46,11 +49,10 @@ const Actions = () => {
             onClick: () =>
               handleCreateAction({
                 order: data.length ? data[data.length - 1].order + 1 : 1,
-                medium: 'email',
-                target: 'applicant',
+                email_template_id: emailTemplate.id,
                 payload: {
-                  key: 'application_received',
-                  template: email_template['application_received'],
+                  body: emailTemplate.body,
+                  subject: emailTemplate.subject,
                 },
               }),
           }}
@@ -86,53 +88,44 @@ const Forms = (props: ActionProps) => {
   return (
     <>
       <ActionForm {...props} />
-      <TemplateForm {...props} />
-      <Template key={props.action.payload.key} {...props} />
+      <Template key={props.action.email_template_id} {...props} />
     </>
   );
 };
 
-const ActionForm = ({ action: { id, medium, target } }: ActionProps) => {
-  const { handleUpdateAction } = useWorkflow();
-  const payload = { medium, target };
+const ActionForm = ({
+  action: {
+    id,
+    company_email_template: { type },
+  },
+}: ActionProps) => {
+  const {
+    recruiter: { company_email_template: all_company_email_template },
+  } = useAuthDetails();
+  const {
+    handleUpdateAction,
+    workflow: { trigger },
+  } = useWorkflow();
   return (
     <UISelect
       label='Do this'
-      value={JSON.stringify(payload)}
-      menuOptions={ACTION_OPTIONS}
+      value={type}
+      menuOptions={ACTION_TRIGGER_MAP[trigger]}
       onChange={(e) => {
-        const { medium, target } = JSON.parse(e.target.value) as typeof payload;
+        const {
+          body,
+          id: email_template_id,
+          subject,
+        } = all_company_email_template.find(
+          ({ type }) => type === e.target.value,
+        );
         handleUpdateAction({
           id,
           payload: {
-            medium,
-            target,
-          },
-        });
-      }}
-    />
-  );
-};
-
-const TemplateForm = ({ action: { id, payload } }: ActionProps) => {
-  const {
-    recruiter: { email_template },
-  } = useAuthDetails();
-  const { handleUpdateAction } = useWorkflow();
-  return (
-    <UISelect
-      label='Template'
-      value={payload?.key}
-      menuOptions={TEMPLATE_OPTIONS}
-      onChange={(e) => {
-        const safeKey = e.target
-          .value as ActionProps['action']['payload']['key'];
-        handleUpdateAction({
-          id,
-          payload: {
+            email_template_id,
             payload: {
-              key: safeKey,
-              template: email_template?.[safeKey],
+              subject,
+              body,
             },
           },
         });
@@ -141,20 +134,13 @@ const TemplateForm = ({ action: { id, payload } }: ActionProps) => {
   );
 };
 
-const Template = ({
-  action: {
-    payload: { template },
-  },
-}: ActionProps) => {
-  const sender_name = <SenderName name='fromName' value={template} />;
+const Template = ({ action: { payload } }: ActionProps) => {
+  const email_subject = <EmailSubject name='subject' value={payload} />;
 
-  const email_subject = <EmailSubject name='subject' value={template} />;
-
-  const email_body = <EmailBody name='body' value={template} />;
+  const email_body = <EmailBody name='body' value={payload} />;
 
   const forms = (
     <Stack spacing={'20px'}>
-      {sender_name}
       {email_subject}
       {email_body}
     </Stack>
@@ -167,28 +153,11 @@ type EmailTemplate = DatabaseTable['recruiter']['email_template'];
 
 type FormsType = {
   name: keyof Omit<EmailTemplate[keyof EmailTemplate], 'default'>;
-  value: EmailTemplate[keyof EmailTemplate];
+  value: {
+    [key in keyof DatabaseTable['workflow_action']['payload']]: DatabaseTable['workflow_action']['payload'][key];
+  };
   disabled?: boolean;
 };
-
-const SenderName: React.FC<FormsType> = memo(
-  ({ name, value, disabled = true }) => {
-    return (
-      <UITextField
-        label={'Sender Name'}
-        disabled={disabled}
-        name={name}
-        placeholder={'Sender Name'}
-        value={value[name]}
-        error={false}
-        helperText={null}
-        onChange={null}
-        defaultLabelColor={palette.grey[800]}
-      />
-    );
-  },
-);
-SenderName.displayName = 'SenderName';
 
 const EmailSubject: React.FC<FormsType> = memo(
   ({ name, value, disabled = true }) => {
@@ -237,98 +206,33 @@ const EmailBody: React.FC<FormsType> = memo(
 );
 EmailBody.displayName = 'EmailBody';
 
-const TEMPLATE_OPTIONS: {
-  name: string;
-  value: ActionProps['action']['payload']['key'];
-}[] = Object.entries(emailTemplates).map(([key, { heading }]) => ({
-  name: heading,
-  value: key as ActionProps['action']['payload']['key'],
-}));
-
-const ACTION_PAYLOAD: {
-  medium: DatabaseEnums['workflow_action_medium'][];
-  target: DatabaseEnums['workflow_action_target'];
-}[] = [
-  {
-    medium: ['email'],
-    target: 'applicant',
-  },
-  {
-    medium: ['email'],
-    target: 'hiring_manager',
-  },
-  {
-    medium: ['email'],
-    target: 'interviewers',
-  },
-  {
-    medium: ['email'],
-    target: 'recruiter',
-  },
-  {
-    medium: ['email'],
-    target: 'recruiting_coordinator',
-  },
-];
-
-export const ACTION_OPTIONS = ACTION_PAYLOAD.reduce(
-  (acc, { target, medium: mediums }) => {
-    acc.push(
-      ...mediums.map((medium) => ({
-        name: getActionOption(medium, target),
-        value: JSON.stringify({
-          medium,
-          target,
-        }) as unknown as (typeof acc)[number]['value'],
-      })),
-    );
-    return acc;
-  },
-  [] as {
+const ACTION_TRIGGER_MAP: {
+  // eslint-disable-next-line no-unused-vars
+  [trigger in DatabaseView['workflow_view']['trigger']]: {
     name: string;
-    value: {
-      medium: DatabaseEnums['workflow_action_medium'];
-      target: DatabaseEnums['workflow_action_target'];
-    };
-  }[],
-);
-
-function getActionOption(
-  medium: DatabaseEnums['workflow_action_medium'],
-  target: DatabaseEnums['workflow_action_target'],
-): string {
-  let message = '';
-  switch (target) {
-    case 'applicant':
-      message = 'the Applicant';
-      break;
-    case 'custom':
-      message = 'custom emails';
-      break;
-    case 'hiring_manager':
-      message = 'the Hiring Manager';
-      break;
-    case 'interviewers':
-      message = 'the Interviewers';
-      break;
-    case 'recruiter':
-      message = 'the Recruiter';
-      break;
-    case 'recruiting_coordinator':
-      message = 'the Recruiting coordinator';
-      break;
-  }
-  let preMessage = '';
-  switch (medium) {
-    case 'email':
-      preMessage = 'an email';
-      break;
-    case 'slack':
-      preMessage = 'a slack message';
-      break;
-  }
-  return `Send ${preMessage} to ${message}`;
-}
+    value: DatabaseTable['company_email_template']['type'];
+  }[];
+} = {
+  availability_request_reminder: [
+    { value: 'availability_request_reminder', name: 'Send email to applicant' },
+  ],
+  self_schedule_request_reminder: [
+    {
+      value: 'self_schedule_request_reminder',
+      name: 'Send email to applicant',
+    },
+  ],
+  upcoming_interview_reminder: [
+    {
+      value: 'upcoming_interview_reminder_candidate',
+      name: 'Send email to applicant',
+    },
+    {
+      value: 'upcoming_interview_reminder_interviewers',
+      name: 'Send emails to interviews',
+    },
+  ],
+};
 
 const ActionIcon = () => {
   return (

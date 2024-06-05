@@ -21,7 +21,12 @@ export type SocialsType = {
   [key: string]: string;
 };
 
-export type RecruiterType = Omit<DatabaseTable["recruiter"], "socials"> & {
+export type RecruiterType = Omit<
+  DatabaseTable["recruiter"] & {
+    company_email_template: DatabaseTable["company_email_template"][];
+  },
+  "socials"
+> & {
   socials: SocialsType | null;
 };
 

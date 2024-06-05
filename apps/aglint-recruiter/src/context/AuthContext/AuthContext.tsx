@@ -145,7 +145,7 @@ const AuthProvider = ({ children }) => {
     const { data: recruiterRel, error: errorRel } = await supabase
       .from('recruiter_relation')
       .select(
-        '*, recruiter(*),recruiter_user!public_recruiter_relation_user_id_fkey(*)',
+        '*, recruiter(*, company_email_template(*)), recruiter_user!public_recruiter_relation_user_id_fkey(*)',
       )
       .match({ user_id: userDetails.user.id, is_active: true })
       .single();
