@@ -22,18 +22,18 @@ export async function POST(req: Request) {
     }
     const filled_body: FilledPayload = await fetchTemplate(
       'd353b3a0-3e19-45d0-8623-4bd35577f548',
-      'upcoming_interview_reminder',
+      'upcoming_interview_reminder_interviewers',
       '',
     );
     const { emails } = await getEmails();
 
     const emailIdx = emails.findIndex(
-      (e) => e === 'upcoming_interview_reminder',
+      (e) => e === 'upcoming_interview_reminder_interviewers',
     );
 
     if (emailIdx === -1)
       throw new ClientError(
-        `upcoming_interview_reminder does not match any mail_type`,
+        `upcoming_interview_reminder_interviewers does not match any mail_type`,
         400,
       );
 

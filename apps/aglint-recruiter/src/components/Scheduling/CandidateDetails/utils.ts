@@ -292,16 +292,23 @@ export const sendToCandidate = async ({
         .from('interview_filter_json')
         .insert({
           filter_json: {
-            session_ids: createCloneRes.session_ids,
-            recruiter_id: recruiter_id,
             start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
             end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-            user_tz: user_tz,
             organizer_name: recruiterUser.first_name,
           },
           session_ids: createCloneRes.session_ids,
           schedule_id: createCloneRes.schedule.id,
-          selected_options: selectedSlots,
+          selected_options: selectedSlots.map((slot) => {
+            return {
+              ...slot,
+              sessions: slot.sessions.map((ses) => ({
+                ...ses,
+                session_id: createCloneRes.refSessions.find(
+                  (s) => s.id === ses.session_id,
+                ).newId,
+              })),
+            };
+          }),
           created_by: recruiterUser.user_id,
         })
         .select();
@@ -385,11 +392,8 @@ export const sendToCandidate = async ({
         .from('interview_filter_json')
         .insert({
           filter_json: {
-            session_ids: selectedSessionIds,
-            recruiter_id: recruiter_id,
             start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
             end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-            user_tz: user_tz,
             organizer_name: recruiterUser.first_name,
           },
           session_ids: selectedSessionIds,
@@ -616,7 +620,6 @@ export const scheduleWithAgent = async ({
           organizer_name: recruiter_user_name,
           sessions_ids: createCloneRes.session_ids,
           schedule_id: createCloneRes.schedule.id,
-          recruiter_id,
           supabase,
           rec_user_id,
         });
@@ -714,7 +717,6 @@ export const scheduleWithAgent = async ({
           organizer_name: recruiter_user_name,
           sessions_ids: session_ids,
           schedule_id: checkSch[0].id,
-          recruiter_id,
           supabase,
           rec_user_id,
         });
@@ -861,7 +863,6 @@ export const scheduleWithAgentWithoutTaskId = async ({
           organizer_name: recruiter_user_name,
           sessions_ids: createCloneRes.session_ids,
           schedule_id: createCloneRes.schedule.id,
-          recruiter_id,
           supabase,
           rec_user_id,
         });
@@ -946,7 +947,6 @@ export const scheduleWithAgentWithoutTaskId = async ({
           organizer_name: recruiter_user_name,
           sessions_ids: session_ids,
           schedule_id: checkSch[0].id,
-          recruiter_id,
           supabase,
           rec_user_id,
         });
@@ -1005,7 +1005,6 @@ export const createFilterJson = async ({
   sessions_ids,
   schedule_id,
   organizer_name,
-  recruiter_id,
   dateRange,
   supabase,
   rec_user_id,
@@ -1013,7 +1012,6 @@ export const createFilterJson = async ({
   sessions_ids: string[];
   schedule_id: string;
   organizer_name: string;
-  recruiter_id: string;
   dateRange: {
     start_date: string;
     end_date: string;
@@ -1025,8 +1023,6 @@ export const createFilterJson = async ({
     .from('interview_filter_json')
     .insert({
       filter_json: {
-        session_ids: sessions_ids,
-        recruiter_id: recruiter_id,
         start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
         end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
         organizer_name: organizer_name,
