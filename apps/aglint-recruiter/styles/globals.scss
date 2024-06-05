@@ -34,10 +34,10 @@ div#__next {
   overflow: hidden;
 }
 
-[class*='slot-body-global'] {
-  overflow: hidden;
-  height: calc(100vh - 60px) !important;
-}
+// [class*='slot-body-global'] {
+//   overflow: hidden;
+//   height: calc(100vh - 60px) !important;
+// }
 
 #job-application-stack {
   -webkit-user-select: none; /* Safari */

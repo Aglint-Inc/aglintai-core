@@ -117,10 +117,6 @@
   color: var(--sand-11);
 }
 
-.fw-semibold.name-text {
-  color: #467b7c;
-}
-
 .embed_link {
   display: flex;
   justify-content: flex-start;

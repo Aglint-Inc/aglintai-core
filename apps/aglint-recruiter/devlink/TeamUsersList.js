@@ -30,7 +30,7 @@ export function TeamUsersList({
           <Text
             content="Manage Team"
             size="2"
-            weight="bold"
+            weight="medium"
             align=""
             highContrast=""
             color=""

@@ -18,15 +18,21 @@ export const fetchCandidateAvailability = async (request_id: string) => {
   }
   const zod_options = scheduling_options_schema.parse({
     include_conflicting_slots: {
-      day_off: avail_details.availability.day_offs,
-      out_of_working_hrs: avail_details.availability.outside_work_hours,
+      day_off: true,
+      day_passed: true,
+      holiday: true,
+      interviewer_pause: true,
+      interviewers_load: true,
+      out_of_office: true,
+      out_of_working_hrs: true,
+      show_conflicts_events: true,
+      show_soft_conflicts: true,
     },
     include_free_time: avail_details.availability.free_keywords,
     use_recruiting_blocks: avail_details.availability.recruiting_block_keywords,
   });
 
-  const cand_tz =
-    avail_details.applications.candidates.timezone ?? 'asia/colombo';
+  const cand_tz = avail_details.applications.candidates.timezone;
   return {
     session_ids: avail_details.session_ids.map((s) => s.id),
     candidate_selected_slots: avail_details.slots,

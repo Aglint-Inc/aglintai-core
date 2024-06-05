@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { SlotComp } from "./SlotComp";
 import { AvatarWithName } from "./AvatarWithName";
 import * as _utils from "./utils";
 import _styles from "./InterviewModuleCard.module.css";
@@ -66,7 +67,9 @@ export function InterviewModuleCard({
             className={_utils.cx(_styles, "div-block-804")}
             tag="div"
           >
-            <_Builtin.Block tag="div">{slotPlatformLogo}</_Builtin.Block>
+            <_Builtin.Block tag="div">
+              {slotPlatformLogo ?? <SlotComp componentNeme="Icon" />}
+            </_Builtin.Block>
             <_Builtin.Block tag="div">{textPlatformName}</_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

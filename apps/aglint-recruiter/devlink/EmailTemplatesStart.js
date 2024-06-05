@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { EmailTemplateCards } from "./EmailTemplateCards";
-import { EditEmail } from "./EditEmail";
+import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./EmailTemplatesStart.module.css";
 
@@ -25,27 +25,26 @@ export function EmailTemplatesStart({
   slotEmailDetails,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-508")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-757")} tag="div">
+    <_Component className={_utils.cx(_styles, "email-template-wrap")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "email-template-left-wrap")}
+        tag="div"
+      >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-507")}
+          className={_utils.cx(_styles, "email-template-left-head")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Email Templates"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "color-grey-600")}
-            tag="div"
-          >
-            {"Emails will be triggered in mentioned events."}
-          </_Builtin.Block>
+          <Text content="Email Templates" weight="bold" />
+          <Text
+            content="Emails will be triggered in mentioned events."
+            color="neutral"
+          />
         </_Builtin.Block>
         {isWarningVisible ? (
-          <_Builtin.Block className={_utils.cx(_styles, "mb-20")} tag="div">
+          <_Builtin.Block
+            className={_utils.cx(_styles, "slot-email-temp-warning")}
+            tag="div"
+          >
             {slotWarning}
           </_Builtin.Block>
         ) : null}
@@ -59,14 +58,17 @@ export function EmailTemplatesStart({
         >
           {slotEmailTemplateCards ?? (
             <>
-              <EmailTemplateCards />
-              <EmailTemplateCards />
+              <SlotComp componentName="EmailTemplateCards" />
+              <SlotComp componentName="EmailTemplateCards" />
             </>
           )}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-772")} tag="div">
-        {slotEmailDetails ?? <EditEmail />}
+      <_Builtin.Block
+        className={_utils.cx(_styles, "email-template-right-wrap")}
+        tag="div"
+      >
+        {slotEmailDetails ?? <SlotComp componentName="EditEmail" />}
       </_Builtin.Block>
     </_Component>
   );

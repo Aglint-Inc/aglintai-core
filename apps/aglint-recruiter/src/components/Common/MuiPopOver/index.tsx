@@ -23,7 +23,7 @@ function MuiPopOver({ body, button }: { body: ReactNode; button: ReactNode }) {
             sx={{
               '& .MuiPopover-paper': {
                 border: 'none',
-                padding: '10px',
+                padding: 'var(--space-2)',
               },
             }}
           >

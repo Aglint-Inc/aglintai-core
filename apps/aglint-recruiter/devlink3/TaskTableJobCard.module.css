@@ -1,4 +1,4 @@
-.div-block-1440 {
+.new_task {
   display: flex;
   width: 100%;
   height: var(--space-8);
@@ -8,12 +8,12 @@
   border-bottom: 1px solid #eaf1f3;
 }
 
-.div-block-1440.job-cand {
+.new_task.job-cand {
   justify-content: space-between;
   align-items: center;
 }
 
-.div-block-1440.job-cand.height-40 {
+.new_task.job-cand.height-40 {
   height: 40px;
 }
 

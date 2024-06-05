@@ -11,7 +11,7 @@ export function ScorePillMust({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "skills-wrapps", "blue-100")}
+      className={_utils.cx(_styles, "skills-wrapps", "must-have")}
       tag="div"
       {...onClickEditText}
     >

@@ -1,3 +1,4 @@
+import { DatabaseTable } from '@aglint/shared-types';
 import { Popover, Stack, Typography } from '@mui/material';
 import React from 'react';
 
@@ -42,7 +43,7 @@ function FilterStatus() {
   };
 
   const renderStatus = (
-    status: FilterCandidateState['filter']['status'][0],
+    status: DatabaseTable['interview_meeting']['status'],
     label: string,
   ) => {
     return (
@@ -135,9 +136,10 @@ function FilterStatus() {
         <FilterDropdown
           slotOption={
             <>
-              {renderStatus('ongoing', 'Ongoing')}
-              {renderStatus('not_scheduled', 'Not Scheduled')}
+              {renderStatus('waiting', 'Waiting')}
+              {renderStatus('confirmed', 'Confirmed')}
               {renderStatus('completed', 'Completed')}
+              {renderStatus('cancelled', 'Cancelled')}
             </>
           }
           onClickDelete={{

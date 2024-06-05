@@ -58,7 +58,11 @@ export function NewJobStep4({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-507", "remove-bottom")}
+            className={_utils.cx(
+              _styles,
+              "email-template-left-head",
+              "remove-bottom"
+            )}
             tag="div"
           >
             <_Builtin.Block

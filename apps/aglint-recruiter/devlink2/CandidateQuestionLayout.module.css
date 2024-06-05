@@ -188,15 +188,6 @@
   text-transform: capitalize;
 }
 
-.fw-semibold.z-index-5 {
-  position: relative;
-  z-index: 5;
-}
-
-.text-blue-800 {
-  color: hsla(206.95652173913044, 69.70%, 19.41%, 1.00);
-}
-
 .fw-semibold.text-grey-400 {
   color: #c2c8cc;
 }
@@ -280,10 +271,9 @@
 
 .powered-footer-wrap {
   display: flex;
-  margin-top: 70px;
   align-items: center;
-  grid-column-gap: 14px;
-  grid-row-gap: 14px;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
 }
 
 .powered-footer-wrap.mt-30 {

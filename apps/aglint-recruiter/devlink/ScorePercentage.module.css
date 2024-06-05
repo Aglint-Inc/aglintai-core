@@ -16,6 +16,7 @@
   width: 20px;
   height: 20px;
   border-radius: 4px;
+  background-color: var(--neutral-3);
 }
 
 .blue-200 {
@@ -28,6 +29,10 @@
 
 .indicator-box.purple {
   background-color: #886bd8;
+}
+
+.indicator-box.must-have {
+  background-color: var(--accent-3);
 }
 
 .fw-semibold {

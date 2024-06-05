@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./ScheduleCardSmall.module.css";
 
@@ -49,7 +50,9 @@ export function ScheduleCardSmall({
             className={_utils.cx(_styles, "meeting_type")}
             tag="div"
           >
-            <_Builtin.Block tag="div">{slotPlatformLogo}</_Builtin.Block>
+            <_Builtin.Block tag="div">
+              {slotPlatformLogo ?? <SlotComp componentNeme="logo" />}
+            </_Builtin.Block>
             <_Builtin.Block tag="div">{textPlatformName}</_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

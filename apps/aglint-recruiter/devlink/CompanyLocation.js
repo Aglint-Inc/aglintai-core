@@ -31,7 +31,7 @@ export function CompanyLocation({
         className={_utils.cx(_styles, "flex-horizontal", "center", "gap-2")}
         tag="div"
       >
-        <Text content={textLocationHeader} weight="bold" />
+        <Text content={textLocationHeader} weight="medium" />
         {isHeadQuaterVisible ? (
           <_Builtin.Block
             className={_utils.cx(_styles, "success-badge")}
