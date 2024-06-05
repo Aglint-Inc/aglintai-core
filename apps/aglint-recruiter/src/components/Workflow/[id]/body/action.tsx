@@ -18,7 +18,7 @@ import { useWorkflow } from '@/src/context/Workflows/[id]';
 
 const Actions = () => {
   const {
-    recruiter: { company_email_template: all_company_email_template },
+    emailTemplates: { data: all_company_email_template },
   } = useAuthDetails();
   const {
     actions: { data, status },
@@ -100,7 +100,7 @@ const ActionForm = ({
   },
 }: ActionProps) => {
   const {
-    recruiter: { company_email_template: all_company_email_template },
+    emailTemplates: { data: all_company_email_template },
   } = useAuthDetails();
   const {
     handleUpdateAction,

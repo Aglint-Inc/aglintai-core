@@ -84,7 +84,7 @@ const deleteWorkflowAction = async ({ id }: DeleteWorkflowAction) => {
 
 export const useWorkflowActionUpdate = (args: WorkflowActionKeys) => {
   const {
-    recruiter: { company_email_template: all_company_email_template },
+    emailTemplates: { data: all_company_email_template },
   } = useAuthDetails();
   const { mutationKey } = workflowActionMutationKeys.workflowAction(args);
   const { queryKey } = workflowActionQueryKeys.workflowAction(args);
