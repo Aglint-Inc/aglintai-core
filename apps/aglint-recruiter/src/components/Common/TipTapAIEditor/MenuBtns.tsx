@@ -1,44 +1,33 @@
-/* eslint-disable react/jsx-key */
 import styled from '@emotion/styled';
 import { Button, IconButton, Tooltip } from '@mui/material';
 import Popover from '@mui/material/Popover';
 import Stack from '@mui/material/Stack';
 import Image from 'next/image';
-import posthog from 'posthog-js';
 import React, { useState } from 'react';
-
-// import { palette } from '@/src/context/Theme/Theme';
-
-const MenuBtn = styled(IconButton)({
-  borderRadius: '4px',
-  padding: '1px',
-  '&.is-active': {
-    // backgroundColor: palette.grey['200'],
-  },
-  '&:hover': {
-    // backgroundColor: palette.grey['200'],
-  },
-});
 
 import { CreateJobCheckItem } from '@/devlink/CreateJobCheckItem';
 import { GenerateJobDescAi } from '@/devlink/GenerateJobDescAi';
 import { LoadingGenerate } from '@/devlink/LoadingGenerate';
 import DescGenerating from '@/public/lottie/DescGenerating';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import {
-  generateJobDescription,
-  JDGenParams,
-} from '@/src/utils/prompts/addNewJob/generateJobDescription';
-// import {
-//   generateJobDescription,
-//   JDGenParams,
-// } from '@/src/utils/prompts/addNewJob/GenerateJobDescription';
+import { generateJobDescription, JDGenParams } from '@/src/utils/prompts/addNewJob/generateJobDescription';
 import toast from '@/src/utils/toast';
 
 import { useJobForm } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import Icon from '../Icons/Icon';
 import UITypography from '../UITypography';
 import { useTipTap } from './context';
+
+const MenuBtn = styled(IconButton)({
+  borderRadius: 'var(--radius-2)',
+  padding: 'var(--space-1)',
+  '&.is-active': {
+    backgroundColor: 'var(--neutral-4)',
+  },
+  '&:hover': {
+    backgroundColor: 'var(--neutral-5)',
+  },
+});
 
 function MenuBtns({
   borderRadius,
@@ -49,12 +38,12 @@ function MenuBtns({
     <Stack
       direction={'row'}
       justifyContent={'space-between'}
-      borderBottom={'1px solid #D8DCDE'}
-      pr={'10px'}
+      borderBottom={'1px solid var(--neutral-6)'}
+      pr={'var(--space-2)'}
       style={{
         position: 'sticky',
         top: 0,
-        backgroundColor: '#fff',
+        backgroundColor: 'var(--white)',
         zIndex: 2,
         ...(borderRadius && {
           borderTopLeftRadius: borderRadius,
@@ -87,8 +76,8 @@ const TipTapMenus = () => {
     <Stack
       direction={'row'}
       alignItems={'center'}
-      gap={0.5}
-      p={1}
+      gap={'var(--space-1)'}
+      p={'var(--space-1)'}
       sx={{ position: 'sticky', top: '0', zIndex: '111' }}
     >
       <Button
@@ -105,13 +94,13 @@ const TipTapMenus = () => {
       >
         <UITypography type='small'>{typography}</UITypography>
       </Button>
-      <Tooltip title={'Bold'} placement='top-start'>
+      <Tooltip title={'regular'} placement='top-start'>
         <MenuBtn
           onClick={() => editor.chain().focus().toggleBold().run()}
           disabled={!editor.can().chain().focus().toggleBold().run()}
           className={editor.isActive('bold') ? 'is-active' : ''}
         >
-          <Icon height='30' width='30' variant='Bold' />
+          <Icon height='24' width='24' variant='Bold' />
         </MenuBtn>
       </Tooltip>
       <Tooltip title={'Italic'} placement='top-start'>
@@ -122,7 +111,7 @@ const TipTapMenus = () => {
           disabled={!editor.can().chain().focus().toggleItalic().run()}
           className={editor.isActive('italic') ? 'is-active' : ''}
         >
-          <Icon height='30' width='30' variant='Italic' />
+          <Icon height='24' width='24' variant='Italic' />
         </MenuBtn>
       </Tooltip>
       <Tooltip title={'Underline'} placement='top-start'>
@@ -133,7 +122,7 @@ const TipTapMenus = () => {
           disabled={!editor.can().chain().focus().toggleUnderline().run()}
           className={editor.isActive('underline') ? 'is-active' : ''}
         >
-          <Icon height='30' width='30' variant='Underline' />
+          <Icon height='24' width='24' variant='Underline' />
         </MenuBtn>
       </Tooltip>
       <Tooltip title={'Bullet List'} placement='top-start'>
@@ -144,7 +133,7 @@ const TipTapMenus = () => {
           disabled={!editor.can().chain().focus().toggleBulletList().run()}
           className={editor.isActive('bulletList') ? 'is-active' : ''}
         >
-          <Icon height='30' width='30' variant='BulletLint' />
+          <Icon height='24' width='24' variant='BulletLint' />
         </MenuBtn>
       </Tooltip>
       <Tooltip title={'Order List'} placement='top-start'>
@@ -158,8 +147,8 @@ const TipTapMenus = () => {
           <Image
             unoptimized
             src={'/images/svg/orderList.svg'}
-            height={30}
-            width={30}
+            height={24}
+            width={24}
             alt='orderlist'
           />
         </MenuBtn>
@@ -175,8 +164,8 @@ const TipTapMenus = () => {
           <Image
             unoptimized
             src={'/images/svg/alignRight.svg'}
-            height={30}
-            width={30}
+            height={24}
+            width={24}
             alt='alignLeft'
           />
         </MenuBtn>
@@ -192,8 +181,8 @@ const TipTapMenus = () => {
           <Image
             unoptimized
             src={'/images/svg/alignLeft.svg'}
-            height={30}
-            width={30}
+            height={24}
+            width={24}
             alt='alignRight'
           />
         </MenuBtn>
@@ -208,7 +197,7 @@ const TipTapMenus = () => {
         }}
       >
         <Stack
-          gap={0.4}
+          gap={'var(--space-1)'}
           direction={'column'}
           width={'100px'}
           minHeight={'100px'}
@@ -268,7 +257,7 @@ const TipTapMenus = () => {
 const TipTapUndoRedo = () => {
   const { editor } = useTipTap();
   return (
-    <Stack direction={'row'} alignItems={'center'} gap={0.5}>
+    <Stack direction={'row'} alignItems={'center'} gap={'var(--space-1)'}>
       <Tooltip title='Undo' placement='top'>
         <MenuBtn
           disabled={!editor?.can().undo()}
@@ -278,6 +267,12 @@ const TipTapUndoRedo = () => {
           }}
           sx={{
             cursor: 'pointer',
+            width: 'var(--space-6)',
+            height: 'var(--space-6)',
+            backgroundColor: 'var(--neutral-4)',
+            '&:hover': {
+              backgroundColor: 'var(--neutral-5)',
+            },
           }}
         >
           <Image
@@ -288,8 +283,8 @@ const TipTapUndoRedo = () => {
                 ? '/images/svg/undo-active.svg'
                 : '/images/svg/undo-disabled.svg'
             }
-            width={22}
-            height={22}
+            width={16}
+            height={16}
             priority
           />
         </MenuBtn>
@@ -304,6 +299,12 @@ const TipTapUndoRedo = () => {
           }}
           sx={{
             cursor: 'pointer',
+            width: 'var(--space-6)',
+            height: 'var(--space-6)',
+            backgroundColor: 'var(--neutral-4)',
+            '&:hover': {
+              backgroundColor: 'var(--neutral-5)',
+            },
           }}
         >
           <Image
@@ -314,8 +315,8 @@ const TipTapUndoRedo = () => {
                 ? '/images/svg/redo-active.svg'
                 : '/images/svg/redo-disabled.svg'
             }
-            width={22}
-            height={22}
+            width={16}
+            height={16}
             priority
           />
         </MenuBtn>
@@ -347,7 +348,6 @@ export const GenerateDescription = ({ isAiGenerating, setIsAiGenerating }) => {
     if (!enableGenerate) return;
     try {
       setIsAiGenerating(true);
-      posthog.capture('Generate Job Description clicked');
       const jdGenConfig: JDGenParams = {
         workPlaceType: formFields.workPlaceType,
         location: formFields.jobLocation,
