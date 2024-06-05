@@ -17,6 +17,7 @@ interface ReqPayload {
   session_id: string;
   application_id: string;
   meeting_id: string;
+  recruiter_user_id: string;
 }
 interface DataPayload {
   recipient_email: string;
@@ -33,8 +34,12 @@ interface DataPayload {
 }
 
 export async function POST(req: Request) {
-  const { session_id, application_id, meeting_id }: ReqPayload =
-    await req.json();
+  const {
+    session_id,
+    application_id,
+    meeting_id,
+    recruiter_user_id,
+  }: ReqPayload = await req.json();
 
   try {
     // if(!api_key)  throw new ClientError("api_key not found",401)
@@ -50,10 +55,14 @@ export async function POST(req: Request) {
     if (!meeting_id) {
       throw new ClientError('meeting_id is missing', 400);
     }
+    if (!recruiter_user_id) {
+      throw new ClientError('recruiter_user_id is missing', 400);
+    }
     const data: DataPayload = await DebriefCalenderInvite(
       session_id,
       application_id,
       meeting_id,
+      recruiter_user_id,
     );
     const filled_body: FilledPayload = await fetchTemplate(
       data.recruiter_id,
@@ -122,4 +131,5 @@ export async function POST(req: Request) {
 //   ],
 //   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637",
 //   "meeting_id":"8daab34c-9c19-445b-aa96-3b4735307414",
+//   "recruiter_user_id": "7f6c4cae-78b6-4eb6-86fd-9a0e0310147b"
 // }

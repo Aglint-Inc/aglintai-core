@@ -43,10 +43,11 @@ export interface CandidateRescheduleRequestType extends Common {
   payload: {
     '[firstName]': string;
     '[rescheduleReason]': string;
-    '[scheduleName]': string;
+    '[recruiterName]': string;
     '[companyName]': string;
     '[jobTitle]': string;
-    '[DateTime]': string;
+    '[dateRange]': string;
+    '[additionalRescheduleNotes]': string;
     '[pickYourSlotLink]': string;
     'meetingDetails': MeetingDetails[];
   };

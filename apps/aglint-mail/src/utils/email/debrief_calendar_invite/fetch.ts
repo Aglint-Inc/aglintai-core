@@ -13,6 +13,7 @@ export default async function debriefCalenderInvite(
   session_id: string,
   application_id: string,
   meeting_id: string,
+  recruiter_user_id: string,
 ) {
   const [session] = supabaseWrap(
     await supabaseAdmin
@@ -30,7 +31,7 @@ export default async function debriefCalenderInvite(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+        'candidates(first_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
       )
       .eq('id', application_id),
   );
@@ -41,20 +42,18 @@ export default async function debriefCalenderInvite(
 
   const { candidates, public_jobs } = candidateJob;
 
-  const [recruiter] = supabaseWrap(
+  const [recruiter_user] = supabaseWrap(
     await supabaseAdmin
-      .from('recruiter_relation')
-      .select('recruiter_user(first_name)')
-      .eq('recruiter_id', candidates.recruiter_id),
+      .from('recruiter_user')
+      .select('email,first_name')
+      .eq('user_id', recruiter_user_id),
   );
 
-  if (!recruiter) {
-    throw new Error('recruiter user detail not available');
+  if (!recruiter_user) {
+    throw new Error('cancel session details not available');
   }
 
-  const {
-    recruiter_user: { first_name: teamMemberName },
-  } = recruiter;
+  const { first_name: teamMemberName, email } = recruiter_user;
 
   const {
     interview_meeting,
@@ -74,7 +73,7 @@ export default async function debriefCalenderInvite(
   };
 
   const body: DebriefCalendarInviteBodyType = {
-    recipient_email: candidates.email,
+    recipient_email: email,
     mail_type: 'debrief_calendar_invite',
     recruiter_id: candidates.recruiter_id,
     companyLogo: candidates.recruiter.logo,

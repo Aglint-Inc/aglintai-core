@@ -17,6 +17,7 @@ export default async function candidateCancelRequest(
   application_id: string,
   meeting_id: string,
   interview_cancel_id: string,
+  recruiter_user_id: string,
 ) {
   const sessions = supabaseWrap(
     await supabaseAdmin
@@ -33,7 +34,7 @@ export default async function candidateCancelRequest(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,email,recruiter_id,recruiter(name,logo)),public_jobs(job_title,company)',
+        'candidates(first_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
       )
       .eq('id', application_id),
   );
@@ -51,15 +52,24 @@ export default async function candidateCancelRequest(
   if (!session_cancel) {
     throw new Error('cancel session details not available');
   }
+  const [recruiter_user] = supabaseWrap(
+    await supabaseAdmin
+      .from('recruiter_user')
+      .select('email,first_name')
+      .eq('user_id', recruiter_user_id),
+  );
+
+  if (!recruiter_user) {
+    throw new Error('cancel session details not available');
+  }
 
   const { note } = session_cancel.other_details as unknown as SessionCancel;
 
   const {
     candidates: {
-      email,
       recruiter_id,
       first_name,
-      recruiter: { name: recruiterName, logo },
+      recruiter: { logo },
     },
     public_jobs: { company },
   } = candidateJob;
@@ -84,14 +94,14 @@ export default async function candidateCancelRequest(
   });
 
   const body: CandidateCancelRequestType = {
-    recipient_email: email,
+    recipient_email: recruiter_user.email,
     mail_type: 'candidate_cancel_request',
     recruiter_id,
     companyLogo: logo,
     payload: {
       '[firstName]': first_name,
       '[rescheduleReason]': session_cancel.reason,
-      '[recruiterName]': recruiterName,
+      '[recruiterName]': recruiter_user.first_name,
       '[companyName]': company,
       '[additionalRescheduleNotes]': note,
       'meetingLink': `https://dev.aglinthq.com/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
