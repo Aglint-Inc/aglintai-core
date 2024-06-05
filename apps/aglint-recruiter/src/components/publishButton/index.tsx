@@ -2,7 +2,6 @@ import { Button, CircularProgress, Stack } from '@mui/material';
 import { useEffect } from 'react';
 
 import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
-import { palette } from '@/src/context/Theme/Theme';
 
 const PublishButton = ({
   onClick,
@@ -38,6 +37,14 @@ const PublishButton = ({
       <Button
         sx={{
           pointerEvents: disabled ? 'none' : 'auto',
+          color: 
+            publishing === 0
+              ? disabled
+                ? 'var(--neutral-11)'
+                : 'var(--white)'
+              : publishing === 1
+                ? 'var(--white)'
+                : 'var(--white)',
           flexDirection: 'row',
           alignItems: 'center',
           gap: '20px',
@@ -45,22 +52,21 @@ const PublishButton = ({
           backgroundColor:
             publishing === 0
               ? disabled
-                ? palette.grey['400']
-                : '#1f73b7'
+                ? 'var(--neutral-3)'
+                : 'var(--accent-9)'
               : publishing === 1
-                ? '#144a75'
-                : '#228f67',
+                ? 'var(--accent-11)'
+                : 'var(--success-9)',
           fontWeight: 'inherit',
           padding: '8px 16px',
           width: '120px',
           transition: 'all 1s ease !important',
           overflow: 'hidden',
-          borderRadius: '6px',
+          borderRadius: '4px',
           '&:hover': {
-            backgroundColor: publishing === 2 ? '#228f67' : '#144a75',
+            backgroundColor: publishing === 2 ? 'var(--success-9)' : 'var(--accent-10)',
           },
         }}
-        style={{ color: 'white' }}
         onClick={async () => await handlClick()}
       >
         <Stack
@@ -93,7 +99,7 @@ const PublishButton = ({
                   color='inherit'
                   size={'10px'}
                   sx={{
-                    color: palette.white[400],
+                    color: 'var(--white)',
                     opacity: publishing === 1 ? 1 : 0,
                     transition: '500ms',
                   }}

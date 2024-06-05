@@ -90,56 +90,58 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
   const onClickSendToCandidate = async () => {
     try {
       setSaving(true);
+
       if (isDebrief && selectedCombIds.length === 0) {
         toast.warning('Please select a time slot to schedule.');
-      } else {
-        if (selectedCombIds.length < 5) {
-          toast.warning('Please select at least 5 time slots to schedule.');
-        } else {
-          const bodyParams: ApiBodyParamsSendToCandidate = {
-            dateRange,
-            initialSessions,
-            is_mail: true,
-            is_debrief: isDebrief,
-            recruiter_id: recruiter.id,
-            recruiterUser,
-            selCoordinator: null,
-            selectedApplication,
-            selectedSessionIds,
-            selectedDebrief: filteredSchedulingOptions.find(
-              (opt) => opt.plan_comb_id === selectedCombIds[0],
-            ),
-            user_tz: dayjs.tz.guess(),
-            selectedApplicationLog,
-            selectedSlots: filteredSchedulingOptions.filter((opt) =>
-              selectedCombIds.includes(opt.plan_comb_id),
-            ),
-          };
-          const res = await axios.post(
-            '/api/scheduling/application/sendtocandidate',
-            bodyParams,
-          );
-
-          if (res.status === 200 && res.data) {
-            setinitialSessions(
-              initialSessions.map((session) => ({
-                ...session,
-                interview_meeting: selectedSessionIds.includes(session.id)
-                  ? session.interview_meeting
-                    ? {
-                        ...session.interview_meeting,
-                        status: 'waiting',
-                      }
-                    : { status: 'waiting', interview_schedule_id: null }
-                  : session.interview_meeting
-                    ? { ...session.interview_meeting }
-                    : null,
-              })),
-            );
-          }
-          resetState();
-        }
+        return;
       }
+      if (!isDebrief && selectedCombIds.length < 5) {
+        toast.warning('Please select at least 5 time slots to schedule.');
+        return;
+      }
+
+      const bodyParams: ApiBodyParamsSendToCandidate = {
+        dateRange,
+        initialSessions,
+        is_mail: true,
+        is_debrief: isDebrief,
+        recruiter_id: recruiter.id,
+        recruiterUser,
+        selCoordinator: null,
+        selectedApplication,
+        selectedSessionIds,
+        selectedDebrief: filteredSchedulingOptions.find(
+          (opt) => opt.plan_comb_id === selectedCombIds[0],
+        ),
+        user_tz: dayjs.tz.guess(),
+        selectedApplicationLog,
+        selectedSlots: filteredSchedulingOptions.filter((opt) =>
+          selectedCombIds.includes(opt.plan_comb_id),
+        ),
+      };
+      const res = await axios.post(
+        '/api/scheduling/application/sendtocandidate',
+        bodyParams,
+      );
+
+      if (res.status === 200 && res.data) {
+        setinitialSessions(
+          initialSessions.map((session) => ({
+            ...session,
+            interview_meeting: selectedSessionIds.includes(session.id)
+              ? session.interview_meeting
+                ? {
+                    ...session.interview_meeting,
+                    status: 'waiting',
+                  }
+                : { status: 'waiting', interview_schedule_id: null }
+              : session.interview_meeting
+                ? { ...session.interview_meeting }
+                : null,
+          })),
+        );
+      }
+      resetState();
     } catch (e) {
       toast.error('Error sending to candidate.');
     } finally {
