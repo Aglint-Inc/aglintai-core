@@ -1,7 +1,6 @@
 import { Stack } from '@mui/system';
 import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
-// import FontFamily from '@tiptap/extension-font-family'
 import TextAlign from '@tiptap/extension-text-align';
 import TextStyle from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
@@ -12,7 +11,6 @@ import StarterKit from '@tiptap/starter-kit';
 import React, { useEffect, useState } from 'react';
 
 import { SkeletonParagraph } from '@/devlink2/SkeletonParagraph';
-import { palette } from '@/src/context/Theme/Theme';
 
 import { TipTapAIEditorCtxType, TipTapCtx } from './context';
 import MenuBtns from './MenuBtns';
@@ -56,7 +54,6 @@ const TipTapAIEditor = ({
   const [selectedText, setSelectedText] =
     useState<TipTapAIEditorCtxType['selectedText']>('');
 
-  // const [isAiGenerating, setIsAiGenerating] = useState(false);
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -77,9 +74,7 @@ const TipTapAIEditor = ({
     ],
     editable: !disabled,
     content: initialValue || '',
-    onBlur() {
-      // editor.commands.unsetHighlight();
-    },
+    onBlur() {},
     onFocus() {},
     onSelectionUpdate({ editor }) {
       const { view, state } = editor;
@@ -90,7 +85,6 @@ const TipTapAIEditor = ({
         to: to,
       });
       setSelectedText(text);
-      // editor.commands.setHighlight();
     },
     onUpdate({ editor }) {
       if (editor.isEmpty) {
@@ -109,6 +103,7 @@ const TipTapAIEditor = ({
   useEffect(() => {
     if (editor && defaultJson) editor.commands.setContent(defaultJson, true);
   }, [defaultJson, editor]);
+
   return (
     <TipTapCtx.Provider
       value={{
@@ -121,10 +116,10 @@ const TipTapAIEditor = ({
       <Stack
         sx={{
           ...(border && {
-            mt: '8px',
+            mt: 'var(--space-2)',
             border: '1px solid',
-            borderColor: palette.grey[300],
-            borderRadius: borderRadius || '4px',
+            borderColor: 'var(--neutral-6)',
+            borderRadius: borderRadius || 'var(--space-1)',
           }),
         }}
       >
@@ -137,25 +132,27 @@ const TipTapAIEditor = ({
                   opacity: disabled ? 0.5 : 1,
                 }}
               >
-                <MenuBtns borderRadius={(border && borderRadius) || '4px'} />
+                <MenuBtns borderRadius={(border && borderRadius) || 'var(--space-1)'} />
               </Stack>
             </>
           )}
           <Stack
             position={'relative'}
             sx={{
+              backgroundColor:'var(--white)',
+              borderRadius: borderRadius || 'var(--space-2)',
               '& .ProseMirror': {
                 minHeight: '250px',
                 width: '100%',
                 wordBreak: 'break-word',
-                color: disabled ? '#c2c8cc' : palette.grey[800],
+                color: disabled ? 'var(--neutral-3)' : 'var(--neutral-12)',
                 cursor: disabled ? 'default' : 'auto',
               },
               '& .ProseMirror *::selection': {
-                background: '#EDF8F4',
+                background: 'var(--accent-4)',
               },
               '.tiptap p.is-editor-empty:first-child::before ': {
-                color: '#adb5bd',
+                color: 'var(--neutral-12)',
                 content: 'attr(data-placeholder)',
                 float: 'left',
                 height: 0,
@@ -166,21 +163,6 @@ const TipTapAIEditor = ({
               },
             }}
           >
-            {/* {isAiGenerating && (
-            <Stack
-              zIndex={1}
-              position={'absolute'}
-              width={'100%'}
-              height={'100%'}
-              bgcolor={palette.grey[100]}
-              direction={'row'}
-              justifyContent={'center'}
-              alignItems={'center'}
-            >
-              <Loader />
-            </Stack>
-          )} */}
-
             <Stack p={2}>
               {loader.isLoading ? (
                 <Stack gap={1}>
@@ -193,13 +175,6 @@ const TipTapAIEditor = ({
               )}
             </Stack>
           </Stack>
-
-          {/* {enablAI && (
-          <GenerateDescription
-            isAiGenerating={isAiGenerating}
-            setIsAiGenerating={setIsAiGenerating}
-          />
-        )} */}
         </div>
       </Stack>
     </TipTapCtx.Provider>
@@ -225,13 +200,11 @@ export const EventHandler = Extension.create({
                 event.clipboardData.getData('text/plain'),
               );
               const content = state.schema.nodeFromJSON(json);
-              // Create a new state with modifications
               const newState = state.tr.insert(
                 state.doc.content.size - 2,
                 content,
               );
 
-              // Dispatch the transaction to update the state
               event.preventDefault();
               dispatch(newState);
               return true;
@@ -253,17 +226,14 @@ function convertTextToProseMirrorJSON(text) {
     const trimmedLine = line.trim();
 
     if (trimmedLine.startsWith('•') || trimmedLine.startsWith('●')) {
-      // Start or continue a bullet list
       if (!isInBulletList) {
         isInBulletList = true;
         json.content.push({ type: 'bulletList', content: [] });
       }
 
-      // Create a new list item
       currentListItem = { type: 'listItem', content: [] };
       json.content[json.content.length - 1].content.push(currentListItem);
 
-      // Add the content of the list item if not empty
       const listItemContent = trimmedLine.slice(1).trim();
       if (listItemContent.length > 0) {
         currentListItem.content.push({
@@ -272,10 +242,8 @@ function convertTextToProseMirrorJSON(text) {
         });
       }
     } else {
-      // Not a bullet point, treat as a regular paragraph
       isInBulletList = false;
 
-      // Add the content of the paragraph if not empty
       if (trimmedLine.length > 0) {
         json.content.push({
           type: 'paragraph',

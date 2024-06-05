@@ -58,7 +58,7 @@ const UIPhoneInput = ({
   }
 
   return (
-    <Stack direction={'column'} gap={'5px'} sx={customPhoneStyle} p={'0px'}>
+    <Stack direction={'column'} gap={'4px'} sx={customPhoneStyle} p={'0px'}>
       {label && (
         <UITypography type={labelSize} color={labelColor} fontBold={labelBold}>
           {label}
@@ -116,7 +116,7 @@ const UIPhoneInput = ({
           spacing={'2px'}
         >
           <Stack className='placeholder-icon'>
-            <Icon height='13px' color={palette.red[400]} variant='AlertIcon' />
+            <Icon height='12px' color={palette.red[400]} variant='AlertIcon' />
           </Stack>
           <Stack className='placeholder'>
             <UITypography type='small' color={palette.red[400]}>
@@ -131,7 +131,7 @@ const UIPhoneInput = ({
 
 export const customPhoneStyle = {
   '& .react-tel-input .flag-dropdown': {
-    borderColor: palette.grey[300]
+    borderColor: 'var(--neutral-6)',
   },
   '& .country-list': {
     width: 'fit-content !important',
@@ -140,30 +140,30 @@ export const customPhoneStyle = {
   },
   '& .react-tel-input .form-control.invalid-number , & .react-tel-input .flag-dropdown.invalid-number':
     {
-      backgroundColor: '#ffffff',
-      borderColor: palette.red[400]
+      backgroundColor: 'var(--white)',
+      borderColor: 'var(--neutral-6)'
     },
   '& .react-tel-input .form-control.invalid-number:focus': {
-    backgroundColor: '#ffffff',
-    borderColor: palette.red[400],
+    backgroundColor: 'var(--white)',
+    borderColor: 'var(--neutral-6)',
     outline: '3px solid',
-    outlineColor: palette.red[300]
+    outlineColor: 'var(--accent-a9)'
   },
   '& .react-tel-input .form-control:focus , & .react-tel-input .flag-dropdown:focus':
     {
       outline: '3px solid',
-      outlineColor: palette.blue[300]
+      outlineColor: 'var(--accent-a9)'
       // borderColor: palette.blue[400],
     },
   '& .react-tel-input .form-control': {
     width: '100%',
     height: 'unset',
-    lineHeight: 0,
-    fontSize: '14px',
-    borderColor: palette.grey[300]
+    lineHeight: 'var(--line-height-2)',
+    fontSize: 'var(--font-size-2)',
+    borderColor: 'var(--neutral-6)',
   },
   '& input': {
-    padding: '10px 10px'
+    padding: 'var(--space-2) var(--space-3)',
   }
 };
 

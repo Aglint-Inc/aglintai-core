@@ -17,7 +17,7 @@ export const scoreWheelDependencies = {
     experience: 34,
     education: 33,
   } as ScoreWheelParams,
-  wheelColors: ['#886BD8', '#30AABC', '#5D7DF5'],
+  wheelColors: ['var(--color-skill)', 'var(--color-exp)', 'var(--color-edu)'],
   parameterOrder: ['skills', 'experience', 'education'],
 };
 
