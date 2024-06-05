@@ -21,9 +21,9 @@ export interface ApplicationReceivedDataType extends Common {
 export interface CancelInterviewSessionType extends Common {
   payload: {
     '[firstName]': string;
-    '[sessionName]': string;
     '[companyName]': string;
     '[jobTitle]': string;
+    'meetingDetails': MeetingDetails[];
   };
 }
 
