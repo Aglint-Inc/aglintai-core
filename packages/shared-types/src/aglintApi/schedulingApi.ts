@@ -120,11 +120,7 @@ export type APIGetCandidateSelectedSlots = {
 };
 
 export type APIVerifyRecruiterSelectedSlots = {
-  selected_slots: PlanCombinationRespType[];
   candidate_tz: string;
-  start_date_str: string;
-  end_date_str: string;
-  recruiter_id: string;
   api_options?: APIOptions;
   filter_json_id: string;
 };

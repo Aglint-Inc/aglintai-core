@@ -17,7 +17,7 @@ import { scheduling_options_schema } from '@/src/types/scheduling/schema_find_av
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let { api_options, filter_json_id } =
+  let { api_options, filter_json_id, candidate_tz } =
     req.body as APIVerifyRecruiterSelectedSlots;
   try {
     const { filter_json_data } = await fetch_details_from_db(filter_json_id);
@@ -30,7 +30,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       filter_json_data.selected_options as PlanCombinationRespType[];
     const cand_schedule = new CandidatesSchedulingV2(
       {
-        candidate_tz: filter_json_data.filter_json.user_tz,
+        candidate_tz: candidate_tz,
         end_date_str: filter_json_data.filter_json.end_date,
         recruiter_id: filter_json_data.filter_json.recruiter_id,
         session_ids: selected_options[0].sessions.map((s) => s.session_id),
@@ -42,8 +42,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
     const verified_slots =
       cand_schedule.verifyIntSelectedSlots(selected_options);
-    convertToCandSideResp(verified_slots, filter_json_data.filter_json.user_tz);
-    return res.status(200).send('ok');
+    const all_day_plans = convertToCandSideResp(
+      verified_slots,
+      filter_json_data.filter_json.user_tz,
+    );
+    return res.status(200).json(all_day_plans);
   } catch (error) {
     console.error(error);
     res.status(500).send(error.message);
@@ -98,4 +101,5 @@ const convertToCandSideResp = (
     const session_combs = planCombineSlots(slots);
     all_day_plans = [...all_day_plans, session_combs];
   }
+  return all_day_plans;
 };
