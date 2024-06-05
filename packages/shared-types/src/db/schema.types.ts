@@ -699,6 +699,7 @@ export type Database = {
         Row: {
           application_id: string
           availability: Json | null
+          booking_confirmed: boolean
           created_at: string
           date_range: Json | null
           id: string
@@ -709,10 +710,12 @@ export type Database = {
           session_ids: Json | null
           slots: Json | null
           total_slots: number | null
+          user_timezone: string | null
         }
         Insert: {
           application_id: string
           availability?: Json | null
+          booking_confirmed?: boolean
           created_at?: string
           date_range?: Json | null
           id?: string
@@ -723,10 +726,12 @@ export type Database = {
           session_ids?: Json | null
           slots?: Json | null
           total_slots?: number | null
+          user_timezone?: string | null
         }
         Update: {
           application_id?: string
           availability?: Json | null
+          booking_confirmed?: boolean
           created_at?: string
           date_range?: Json | null
           id?: string
@@ -737,6 +742,7 @@ export type Database = {
           session_ids?: Json | null
           slots?: Json | null
           total_slots?: number | null
+          user_timezone?: string | null
         }
         Relationships: [
           {
