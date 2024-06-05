@@ -88,7 +88,7 @@ export const CandidateAvailabilityRequest = ({
         <Preview>Schedule Interview</Preview>
         <Body className="bg-[#f0f0f0] font-sans  p-[20px]">
           <Container className="px-[3px] mx-auto">
-            <Container className="p-[20px] pt-[40px] bg-white">
+            <Container className="p-[50px] bg-white">
               <Img
                 alt="Company logo"
                 className="w-[80px] mb-[10px]"
