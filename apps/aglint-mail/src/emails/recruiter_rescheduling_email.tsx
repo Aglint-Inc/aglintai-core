@@ -18,8 +18,6 @@ interface RecruiterReschedulingEmailType {
   companyLogo?: string;
   meetingLink?: string;
   meetingDetails: {
-    date?: string;
-    time?: string;
     sessionType?: string;
     platform?: string;
     duration?: string;
@@ -35,8 +33,6 @@ export const dummy: RecruiterReschedulingEmailType = {
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   meetingDetails: [
     {
-      date: 'Fri, May 12, 2024',
-      time: '09:00 AM - 09:30 PM PST',
       sessionType: 'Personality and cultural fit',
       platform: 'Google meet',
       duration: '45 minutes',
@@ -61,10 +57,6 @@ const Sessions = ({ meetingDetail }) => {
         padding: '10px 20px',
       }}
     >
-      <Text className="m-0">
-        <strong>{htmlParser.parse(meetingDetail.date)} </strong>
-        {htmlParser.parse(meetingDetail.time)}
-      </Text>
       <Text className="m-0 flex gap-1 item-center my-1">
         <Img className="inline " src={meetingDetail.sessionTypeIcon} />
         &nbsp;
