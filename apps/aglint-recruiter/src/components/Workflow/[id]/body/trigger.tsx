@@ -1,4 +1,4 @@
-import { DatabaseEnums } from '@aglint/shared-types';
+import { DatabaseEnums, DatabaseView } from '@aglint/shared-types';
 
 import { WorkflowConnector } from '@/devlink3/WorkflowConnector';
 import { WorkflowItem } from '@/devlink3/WorkflowItem';
@@ -92,39 +92,19 @@ const DURATION_OPTIONS: { name: string; value: number }[] = [
 ];
 
 const TRIGGER_PAYLOAD: {
-  trigger: DatabaseEnums['workflow_trigger'];
+  trigger: DatabaseView['workflow_view']['trigger'];
   phase: DatabaseEnums['workflow_phase'][];
 }[] = [
   {
-    trigger: 'application_new',
+    trigger: 'availability_request_reminder',
     phase: ['now', 'after'],
   },
   {
-    trigger: 'application_phone_screening',
+    trigger: 'self_schedule_request_reminder',
     phase: ['now', 'after'],
   },
   {
-    trigger: 'application_phone_screening',
-    phase: ['now', 'after'],
-  },
-  {
-    trigger: 'application_interview',
-    phase: ['now', 'after'],
-  },
-  {
-    trigger: 'application_qualified',
-    phase: ['now', 'after'],
-  },
-  {
-    trigger: 'application_disqualified',
-    phase: ['now', 'after'],
-  },
-  {
-    trigger: 'booking_link_sent',
-    phase: ['now', 'after'],
-  },
-  {
-    trigger: 'interview_start',
+    trigger: 'upcoming_interview_reminder',
     phase: ['before', 'now'],
   },
 ];
@@ -145,40 +125,25 @@ const TRIGGER_OPTIONS = TRIGGER_PAYLOAD.reduce(
   [] as {
     name: string;
     value: {
-      trigger: DatabaseEnums['workflow_trigger'];
+      trigger: DatabaseView['workflow_view']['trigger'];
       phase: DatabaseEnums['workflow_phase'];
     };
   }[],
 );
 
 export function getTriggerOption(
-  trigger: DatabaseEnums['workflow_trigger'],
+  trigger: DatabaseView['workflow_view']['trigger'],
   phase: DatabaseEnums['workflow_phase'],
 ): string {
   let message = '';
   switch (trigger) {
-    case 'application_new':
-      message = 'receiving a new application';
+    case 'availability_request_reminder':
+      message = 'sending an availability request';
       break;
-    case 'application_phone_screening':
-      message = 'moving an application to phone screening';
+    case 'self_schedule_request_reminder':
+      message = 'sending an self schedule request';
       break;
-    case 'application_assessment':
-      message = 'moving an application to assessment';
-      break;
-    case 'application_interview':
-      message = 'moving an application to interview';
-      break;
-    case 'application_qualified':
-      message = 'moving an application to qualifed';
-      break;
-    case 'application_disqualified':
-      message = 'moving an application to disqualified';
-      break;
-    case 'booking_link_sent':
-      message = 'sending a booking link';
-      break;
-    case 'interview_start':
+    case 'upcoming_interview_reminder':
       message = 'starting an interview';
       break;
   }

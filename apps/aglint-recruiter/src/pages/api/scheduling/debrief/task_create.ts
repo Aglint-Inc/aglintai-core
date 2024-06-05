@@ -79,7 +79,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       organizer_name: recruiter_user.first_name,
       sessions_ids: [session_id],
       schedule_id: schedule_id,
-      recruiter_id,
       supabase: supabaseAdmin,
       rec_user_id: organizer_id,
     });

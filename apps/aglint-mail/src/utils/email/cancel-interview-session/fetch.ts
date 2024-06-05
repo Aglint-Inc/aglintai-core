@@ -1,21 +1,29 @@
+import dayjs from 'dayjs';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import type { CancelInterviewSessionType } from '../../types/supabase-fetch';
+import {
+  durationCalculator,
+  platformRemoveUnderscore,
+  scheduleTypeIcon,
+  sessionTypeIcon,
+} from '../common/functions';
+import type { MeetingDetails } from '../../types/apiTypes';
 
 export default async function cancelInterviewSession(
-  session_id: string,
+  session_ids: string[],
   application_id: string,
 ) {
-  const [session] = supabaseWrap(
+  const sessions = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
       .select(
         'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
       )
-      .eq('id', session_id),
+      .in('id', session_ids),
   );
 
-  if (!session) {
-    throw new Error('session details not avalible');
+  if (!sessions) {
+    throw new Error('sessions detail not avalible');
   }
 
   const [candidateJob] = supabaseWrap(
@@ -32,6 +40,25 @@ export default async function cancelInterviewSession(
     );
   }
 
+  const Sessions: MeetingDetails[] = sessions.map((session) => {
+    const {
+      interview_meeting: { start_time, end_time },
+      name,
+      schedule_type,
+      session_duration,
+      session_type,
+    } = session;
+    return {
+      date: dayjs(start_time).format('ddd MMMM DD, YYYY'),
+      time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
+      sessionType: name,
+      platform: platformRemoveUnderscore(schedule_type),
+      duration: durationCalculator(session_duration),
+      sessionTypeIcon: sessionTypeIcon(session_type),
+      meetingIcon: scheduleTypeIcon(schedule_type),
+    };
+  });
+
   const {
     candidates: {
       email,
@@ -42,8 +69,6 @@ export default async function cancelInterviewSession(
     public_jobs: { company, job_title },
   } = candidateJob;
 
-  const { name } = session;
-
   const body: CancelInterviewSessionType = {
     recipient_email: email,
     mail_type: 'cancel_interview_session',
@@ -51,9 +76,9 @@ export default async function cancelInterviewSession(
     companyLogo: logo,
     payload: {
       '[firstName]': first_name,
-      '[sessionName]': name,
       '[companyName]': company,
       '[jobTitle]': job_title,
+      'meetingDetails': [...Sessions],
     },
   };
 

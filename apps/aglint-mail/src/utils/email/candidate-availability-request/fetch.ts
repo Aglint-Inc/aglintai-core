@@ -1,7 +1,7 @@
-import dayjs from 'dayjs';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   durationCalculator,
+  platformRemoveUnderscore,
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../common/functions';
@@ -17,9 +17,7 @@ export default async function candidateAvailabilityRequest(
   const sessions = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
-      .select(
-        'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
-      )
+      .select('session_type,session_duration,schedule_type,name')
       .in('id', session_ids),
   );
 
@@ -39,18 +37,10 @@ export default async function candidateAvailabilityRequest(
   }
 
   const Sessions: MeetingDetails[] = sessions.map((session) => {
-    const {
-      interview_meeting: { start_time, end_time },
-      name,
-      schedule_type,
-      session_duration,
-      session_type,
-    } = session;
+    const { name, schedule_type, session_duration, session_type } = session;
     return {
-      date: dayjs(start_time).format('ddd MMMM DD, YYYY'),
-      time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
       sessionType: name,
-      platform: schedule_type,
+      platform: platformRemoveUnderscore(schedule_type),
       duration: durationCalculator(session_duration),
       sessionTypeIcon: sessionTypeIcon(session_type),
       meetingIcon: scheduleTypeIcon(schedule_type),

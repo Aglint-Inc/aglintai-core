@@ -377,10 +377,13 @@ const DetailsPopup = () => {
       <CandidateScheduleCard
         isPopup={true}
         isSelected={false}
+        slotButton={''}
         textDuration={getDurationText(duration)}
         onClickClose={{ onClick: () => setDetailsPop(false) }}
         textPopupTitle={schedule_name}
         slotSessionInfo={<Sessions sessions={meetings} showBreak={true} />}
+        isSlotButtonVisible={false}
+        isTitle={false}
       />
     </Dialog>
   );
@@ -1027,7 +1030,15 @@ const ScheduleCard = (props: ScheduleCardProps) => {
         textDay={props.round.title}
         isSelected={isSelected}
         slotButton={
-          enabled ? isSelected ? <ChangeButton /> : <SelectButton /> : <></>
+          enabled ? (
+            isSelected ? (
+              <ChangeButton onClickButton={{ onClick: () => setOpen(true) }} />
+            ) : (
+              <SelectButton onClickButton={{ onClick: () => setOpen(true) }} />
+            )
+          ) : (
+            <></>
+          )
         }
         textDuration={getDurationText(duration)}
         slotSessionInfo={

@@ -1,7 +1,7 @@
-import dayjs from 'dayjs';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   durationCalculator,
+  platformRemoveUnderscore,
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../common/functions';
@@ -17,9 +17,7 @@ export default async function recruiterReschedulingEmail(
   const sessions = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
-      .select(
-        'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
-      )
+      .select('session_type,session_duration,schedule_type,name')
       .in('id', session_ids),
   );
 
@@ -58,21 +56,13 @@ export default async function recruiterReschedulingEmail(
       first_name,
       recruiter: { name: recruiterName, logo },
     },
-    public_jobs: { company },
+    public_jobs: { job_title, company },
   } = candidateJob;
   const Sessions: MeetingDetails[] = sessions.map((session) => {
-    const {
-      interview_meeting: { start_time, end_time },
-      name,
-      schedule_type,
-      session_duration,
-      session_type,
-    } = session;
+    const { name, schedule_type, session_duration, session_type } = session;
     return {
-      date: dayjs(start_time).format('ddd MMMM DD, YYYY'),
-      time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
       sessionType: name,
-      platform: schedule_type,
+      platform: platformRemoveUnderscore(schedule_type),
       duration: durationCalculator(session_duration),
       sessionTypeIcon: sessionTypeIcon(session_type),
       meetingIcon: scheduleTypeIcon(schedule_type),
@@ -80,15 +70,15 @@ export default async function recruiterReschedulingEmail(
   });
   const body: RecruiterReschedulingEmailType = {
     recipient_email: email,
-    mail_type: 'recruiter_rescheduling_email', // CHANGED THE MAIL TYPE
+    mail_type: 'recruiter_rescheduling_email',
     recruiter_id,
     companyLogo: logo,
     payload: {
-      //   TODO: "One is missing IN SUBJECT, CHECK SUBJECT"
       '[firstName]': first_name,
       '[recruiterRescheduleReason]': reason,
       '[scheduleName]': recruiterName,
       '[companyName]': company,
+      '[jobTitle]': job_title,
       '[pickYourSlotLink]': `${process.env.BASE_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
       'meetingDetails': [...Sessions],
     },
