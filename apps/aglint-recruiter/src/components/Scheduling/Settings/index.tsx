@@ -51,12 +51,12 @@ import FilterInput from '../../CandidateDatabase/Search/FilterInput';
 import Icon from '../../Common/Icons/Icon';
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
+import ToggleBtn from '../../Common/UIToggle';
 import { interviewLocationType } from '../../CompanyDetailComp/TeamManagement/AddMemberDialog';
 import DateSelect from './Components/DateSelector';
 import MuiNumberfield from './Components/MuiNumberfield';
 import MuiSelect from './Components/MuiSelect';
 import SelectTime from './Components/SelectTime';
-import ToggleBtn from './Components/ToggleBtn';
 import DebriefDefaults from './DebriefDefaults';
 import SchedulingEmailTemplates from './SchedulingEmailTemplates';
 import SchedulingRegions from './SchedulingReason';
@@ -565,7 +565,7 @@ function SchedulingSettings({
                   }
                   slotTimeZoneToggle={
                     <ToggleBtn
-                      handleCheck={(e) => {
+                      handleChange={(e:any) => { 
                         setIsTimeZone(e);
                         if (e) {
                           setSelectedTimeZone(
@@ -575,7 +575,7 @@ function SchedulingSettings({
                           );
                         }
                       }}
-                      isActive={isTimeZone}
+                      isChecked={isTimeZone}
                     />
                   }
                 />

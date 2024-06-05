@@ -27,12 +27,7 @@ export function TaskTableJobCard({
     <_Component tag="div">
       <_Builtin.Block tag="div">
         <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "div-block-1440",
-            "job-cand",
-            "height-40"
-          )}
+          className={_utils.cx(_styles, "new_task", "job-cand", "height-40")}
           data-w-id="9da4f4b4-a7a7-a6db-016f-1db257523c4b"
           tag="div"
         >

@@ -173,7 +173,6 @@ const TeamManagement = () => {
                 }}
                 placeholder='Search by Name, Email or Title'
                 onChange={handleSearchInputChange}
-                height={42}
               />
             </Stack>
             <Stack display={'flex'} flexDirection={'row'} gap={'10px'}>

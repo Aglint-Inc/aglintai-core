@@ -1,18 +1,18 @@
 .task-not-respond-wrap {
   display: flex;
-  padding: 10px 16px;
+  padding: var(--space-2) var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 
-  border-radius: 10px;
+  border-radius: var(--radius-4);
 
-  background-color: #fff7ed;
+  background-color: var(--warning-a3);
 }
 
 .text-yellow-800 {
-  color: #703815;
+  color: var(--warning-11);
 }
 
 .div-block-1759 {
@@ -21,105 +21,4 @@
   align-items: center;
   grid-column-gap: 16px;
   grid-row-gap: 16px;
-}
-
-.div-block-1758 {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
-}
-
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.icons.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
-}
-
-.icons.pointer {
-  cursor: pointer;
-}
-
-.text-blue-500 {
-  color: #337fbd;
-}
-
-.text-blue-500.text-underline {
-  text-decoration: underline;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
-.text-blue-500.text-underline.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.text-blue-500.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.text-sm {
-  font-size: var(--font-size-1);
-  line-height: var(--line-height-1);
-  letter-spacing: var(--letter-spacing-1);
-}
-
-.text-blue-500.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.text-blue-500.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.text-blue-500.text-capital {
-  text-transform: uppercase;
-}
-
-.fw-semibold {
-  font-weight: 600;
-}
-
-.text-grey-600 {
-  color: #68737d;
-}
-
-.text-grey-600.text-underline {
-  text-decoration: underline;
-}
-
-.text-grey-600.text-underline.cursor-pointer {
-  transition: opacity 250ms ease;
-  cursor: pointer;
-}
-
-.text-grey-600.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
 }

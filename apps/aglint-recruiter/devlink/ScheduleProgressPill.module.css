@@ -27,10 +27,9 @@
   right: 0%;
   bottom: 0%;
   z-index: 1;
-}
 
-.is_starting.changing_bg_color {
-  border-radius: 10px 0px 0px 10px;
+  border-top-left-radius: var(--radius-2);
+  border-bottom-left-radius: var(--radius-2);
 }
 
 .is_ending {
@@ -41,7 +40,7 @@
   bottom: 0%;
   z-index: 2;
 
-  border-radius: 0px 10px 10px 0px;
+  border-radius: 0px var(--radius-2) var(--radius-2) 0px;
 }
 
 .slot_dynamic_icon {

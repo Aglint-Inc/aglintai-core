@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./RecentRescheduleList.module.css";
 
@@ -58,7 +59,9 @@ export function RecentRescheduleList({
           tag="div"
         >
           <_Builtin.Block tag="div">{textDesc}</_Builtin.Block>
-          <_Builtin.Block tag="div">{slotIcon}</_Builtin.Block>
+          <_Builtin.Block tag="div">
+            {slotIcon ?? <SlotComp componentNeme="Icon" />}
+          </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

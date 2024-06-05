@@ -183,7 +183,7 @@ body.component-grid > div:not(.w-embed) {
   box-shadow: 0 0 0 1px var(--neutral-a3), 0 0 0 0.5px var(--black-a1), 0 1px 1px 0 var(--neutral-a2), 0 2px 1px -1px var(--black-a1), 0 1px 3px 0 var(--black-a1);
 }
 
-[box-shadow="3"] {
+[box-shadow="3"]:hover {
   box-shadow: 0 0 0 1px var(--neutral-a3), 0 2px 3px -2px var(--neutral-a3), 0 3px 12px -4px var(--black-a2), 0 4px 16px -8px var(--black-a2);
 }
 

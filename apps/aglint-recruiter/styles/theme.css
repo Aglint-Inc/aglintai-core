@@ -396,7 +396,9 @@
     --shadow-5: 0 0 0 1px var(--neutral-a3), 0 12px 60px var(--black-a3), 0 12px 32px -16px var(--neutral-a5);
     --shadow-6: 0 0 0 1px var(--neutral-a3), 0 12px 60px var(--black-a3), 0 16px 64px var(--neutral-a2), 0 16px 36px -20px var(--neutral-a7);
 
-    
+    --color-skill:#886BD8;
+    --color-exp:#30AABC;
+    --color-edu:#5D7DF5;
   }
   
   body {

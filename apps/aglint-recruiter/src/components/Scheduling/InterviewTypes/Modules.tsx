@@ -78,7 +78,6 @@ export function Modules() {
                     setTextSearch(e.target.value);
                   }}
                   value={textSearch}
-                  height={42}
                   width={'250px'}
                 />
                 <FilterDepartment />

@@ -16,6 +16,10 @@ function DayCardWrapper({
   item,
   onClickSelect,
   selectedCombIds,
+  isDayCollapseNeeded = true,
+  isSlotCollapseNeeded = true,
+  isDisabled = false,
+  isCheckboxAndRadio = true,
 }: {
   isDebrief: boolean;
   item: {
@@ -25,6 +29,10 @@ function DayCardWrapper({
   // eslint-disable-next-line no-unused-vars
   onClickSelect: (comb_id: string) => void;
   selectedCombIds: string[];
+  isDayCollapseNeeded?: boolean;
+  isSlotCollapseNeeded?: boolean;
+  isDisabled?: boolean;
+  isCheckboxAndRadio?: boolean;
 }) {
   const dates = item?.dateArray || [];
   const header = dates
@@ -45,6 +53,7 @@ function DayCardWrapper({
   return (
     <>
       <DateOption
+        isDisabled={isDisabled}
         onClickDateOption={{
           onClick: () => {
             setCollapse(!collapse);
@@ -55,58 +64,65 @@ function DayCardWrapper({
         textOptionCount={`${slots.length} options`}
         rotateArrow={{
           style: {
+            display: isDayCollapseNeeded ? 'block' : 'none',
             transform: collapse ? 'rotate(180deg)' : '',
           },
         }}
         slotScheduleOption={
-          <Collapse in={collapse}>
-            {slots.slice(0, displayedSlots)?.map((slot) => {
-              const daySessions = dates.map((date) => {
-                return {
-                  date: date,
-                  sessions: slot.sessions.filter(
-                    (session) =>
-                      dayjs(session.start_time).format('MMMM DD') ===
-                      dayjs(date).format('MMMM DD'),
-                  ),
-                };
-              });
+          !isDisabled && (
+            <Collapse in={isDayCollapseNeeded ? collapse : true}>
+              <Stack spacing={1} pt={'10px'}>
+                {slots.slice(0, displayedSlots)?.map((slot) => {
+                  const daySessions = dates.map((date) => {
+                    return {
+                      date: date,
+                      sessions: slot.sessions.filter(
+                        (session) =>
+                          dayjs(session.start_time).format('MMMM DD') ===
+                          dayjs(date).format('MMMM DD'),
+                      ),
+                    };
+                  });
 
-              return (
-                <ScheduleOption
-                  key={slot.plan_comb_id}
-                  isSelected={selectedCombIds.includes(slot.plan_comb_id)}
-                  isCheckbox={!isDebrief}
-                  onClickSelect={{
-                    onClick: () => {
-                      onClickSelect(slot.plan_comb_id);
-                    },
-                  }}
-                  isRadio={isDebrief}
-                  slotSingleDaySchedule={daySessions?.map((item, ind) => {
-                    return (
-                      <SingleDayCard
-                        key={ind}
-                        item={item}
-                        ind={ind}
-                        isMultiDay={isMultiDay}
-                      />
-                    );
-                  })}
-                />
-              );
-            })}
-            {displayedSlots < slots.length && (
-              <Stack direction={'row'} justifyContent={'center'} p={1}>
-                <ButtonTextSmall
-                  textLabel={'Load More'}
-                  onClickButton={{
-                    onClick: loadMoreSlots,
-                  }}
-                />
+                  return (
+                    <ScheduleOption
+                      isCheckboxAndRadio={isCheckboxAndRadio}
+                      key={slot.plan_comb_id}
+                      isSelected={selectedCombIds.includes(slot.plan_comb_id)}
+                      isCheckbox={!isDebrief}
+                      onClickSelect={{
+                        onClick: () => {
+                          onClickSelect(slot.plan_comb_id);
+                        },
+                      }}
+                      isRadio={isDebrief}
+                      slotSingleDaySchedule={daySessions?.map((item, ind) => {
+                        return (
+                          <SingleDayCard
+                            key={ind}
+                            item={item}
+                            ind={ind}
+                            isMultiDay={isMultiDay}
+                            isCollapseNeeded={isSlotCollapseNeeded}
+                          />
+                        );
+                      })}
+                    />
+                  );
+                })}
+                {displayedSlots < slots.length && (
+                  <Stack direction={'row'} justifyContent={'center'} p={1}>
+                    <ButtonTextSmall
+                      textLabel={'Load More'}
+                      onClickButton={{
+                        onClick: loadMoreSlots,
+                      }}
+                    />
+                  </Stack>
+                )}
               </Stack>
-            )}
-          </Collapse>
+            </Collapse>
+          )
         }
       />
     </>

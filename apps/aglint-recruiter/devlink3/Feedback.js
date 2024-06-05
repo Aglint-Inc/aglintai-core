@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
+import { ButtonSurface } from "./ButtonSurface";
 import * as _utils from "./utils";
 import _styles from "./Feedback.module.css";
 
@@ -16,38 +18,24 @@ export function Feedback({
         className={_utils.cx(_styles, "div-block-1291")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Recommendation level"}
-        </_Builtin.Block>
-        <_Builtin.Block tag="div">{textRecommendLevel}</_Builtin.Block>
+        <Text content="" />
+        <Text content={textRecommendLevel} weight="" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1291")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Feedback"}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-600")}
-          tag="div"
-        >
-          {textFeedback}
-        </_Builtin.Block>
+        <Text content="Feedback" />
+        <Text content={textFeedback} weight="" color="neutral" />
       </_Builtin.Block>
       <_Builtin.Block tag="div">
-        <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "text-blue-500",
-            "text-underline",
-            "cursor-pointer"
-          )}
-          tag="div"
-          {...onClickEditFeedback}
-        >
-          {"Edit Feedback"}
-        </_Builtin.Block>
+        <ButtonSurface
+          onClickButton={onClickEditFeedback}
+          size="1"
+          isLeftIcon={false}
+          isRightIcon={false}
+          textButton="Edit Feedback"
+        />
       </_Builtin.Block>
     </_Component>
   );
