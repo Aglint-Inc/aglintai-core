@@ -32,7 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       {
         candidate_tz: candidate_tz,
         end_date_str: filter_json_data.filter_json.end_date,
-        recruiter_id: filter_json_data.filter_json.recruiter_id,
+        recruiter_id: filter_json_data.interview_schedule.recruiter_id,
         session_ids: selected_options[0].sessions.map((s) => s.session_id),
         start_date_str: filter_json_data.filter_json.start_date,
       },
@@ -44,7 +44,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       cand_schedule.verifyIntSelectedSlots(selected_options);
     const all_day_plans = convertOptionsToDateRangeSlots(
       verified_slots,
-      filter_json_data.filter_json.user_tz,
+      candidate_tz,
     );
     return res.status(200).json(all_day_plans);
   } catch (error) {
