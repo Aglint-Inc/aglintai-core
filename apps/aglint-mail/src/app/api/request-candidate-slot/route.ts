@@ -28,7 +28,6 @@ interface DataPayload {
 }
 
 export async function POST(req: Request) {
-  console.log('first');
   const { application_id, request_id }: ReqPayload = await req.json();
 
   try {
