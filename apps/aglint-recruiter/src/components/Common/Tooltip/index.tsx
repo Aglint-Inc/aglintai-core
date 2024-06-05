@@ -10,7 +10,7 @@ export const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
     background: '#fff',
     padding: '0px',
     boxShadow: '0px 4px 8px 0px #04444D26',
-    border: '1px solid #E9EBED',
+    border: '1px solid var(--neutral-6)',
     borderRadius: '10px',
     color: palette.grey[600],
     fontSize: '14px',
