@@ -33,6 +33,7 @@ export interface CandidateCancelRequestType extends Common {
     '[rescheduleReason]': string;
     '[recruiterName]': string;
     '[companyName]': string;
+    '[additionalRescheduleNotes]': string;
     'meetingLink': string;
     'meetingDetails': MeetingDetails[];
   };

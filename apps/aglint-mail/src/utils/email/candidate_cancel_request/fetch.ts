@@ -9,6 +9,9 @@ import {
 import type { CandidateCancelRequestType } from '../../types/supabase-fetch';
 import type { MeetingDetails } from '../../types/apiTypes';
 
+interface SessionCancel {
+  note: string;
+}
 export default async function candidateCancelRequest(
   session_ids: string[],
   application_id: string,
@@ -41,13 +44,15 @@ export default async function candidateCancelRequest(
   const [session_cancel] = supabaseWrap(
     await supabaseAdmin
       .from('interview_session_cancel')
-      .select('reason')
+      .select('reason,other_details')
       .eq('id', interview_cancel_id),
   );
 
-  if (!candidateJob) {
+  if (!session_cancel) {
     throw new Error('cancel session details not available');
   }
+
+  const { note } = session_cancel.other_details as unknown as SessionCancel;
 
   const {
     candidates: {
@@ -88,6 +93,7 @@ export default async function candidateCancelRequest(
       '[rescheduleReason]': session_cancel.reason,
       '[recruiterName]': recruiterName,
       '[companyName]': company,
+      '[additionalRescheduleNotes]': note,
       'meetingLink': `https://dev.aglinthq.com/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
       'meetingDetails': [...Sessions],
     },
