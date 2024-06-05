@@ -151,6 +151,7 @@ export interface RecruiterReschedulingEmailType extends Common {
     '[scheduleName]': string;
     '[companyName]': string;
     '[pickYourSlotLink]': string;
+    '[jobTitle]': string;
     'meetingDetails': MeetingDetails[];
   };
 }

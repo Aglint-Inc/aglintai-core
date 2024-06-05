@@ -56,7 +56,7 @@ export default async function recruiterReschedulingEmail(
       first_name,
       recruiter: { name: recruiterName, logo },
     },
-    public_jobs: { company },
+    public_jobs: { job_title, company },
   } = candidateJob;
   const Sessions: MeetingDetails[] = sessions.map((session) => {
     const { name, schedule_type, session_duration, session_type } = session;
@@ -70,15 +70,15 @@ export default async function recruiterReschedulingEmail(
   });
   const body: RecruiterReschedulingEmailType = {
     recipient_email: email,
-    mail_type: 'recruiter_rescheduling_email', // CHANGED THE MAIL TYPE
+    mail_type: 'recruiter_rescheduling_email',
     recruiter_id,
     companyLogo: logo,
     payload: {
-      //   TODO: "One is missing IN SUBJECT, CHECK SUBJECT"
       '[firstName]': first_name,
       '[recruiterRescheduleReason]': reason,
       '[scheduleName]': recruiterName,
       '[companyName]': company,
+      '[jobTitle]': job_title,
       '[pickYourSlotLink]': `${process.env.BASE_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
       'meetingDetails': [...Sessions],
     },
