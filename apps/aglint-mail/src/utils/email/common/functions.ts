@@ -27,3 +27,10 @@ export function scheduleTypeIcon(platform) {
   if (platform === 'in_person_meeting')
     return 'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/in_person_meeting.png';
 }
+
+export function platformRemoveUnderscore(name) {
+  if (name === 'google_meet') return 'Google Meet';
+  else if (name === 'in_person_meeting') return 'In Person Meeting';
+  else if (name === 'phone_call') return 'Phone Call';
+  else if (name === 'zoom') return 'Zoom';
+}

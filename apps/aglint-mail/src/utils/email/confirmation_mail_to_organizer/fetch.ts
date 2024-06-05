@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   durationCalculator,
+  platformRemoveUnderscore,
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../common/functions';
@@ -59,7 +60,7 @@ export default async function confiramtionMailToOrganizer(
       date: dayjs(start_time).format('ddd MMMM DD, YYYY'),
       time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
       sessionType: name,
-      platform: schedule_type,
+      platform: platformRemoveUnderscore(schedule_type),
       duration: durationCalculator(session_duration),
       sessionTypeIcon: sessionTypeIcon(session_type),
       meetingIcon: scheduleTypeIcon(schedule_type),

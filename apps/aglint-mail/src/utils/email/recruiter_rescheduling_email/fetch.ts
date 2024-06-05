@@ -1,6 +1,7 @@
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   durationCalculator,
+  platformRemoveUnderscore,
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../common/functions';
@@ -61,7 +62,7 @@ export default async function recruiterReschedulingEmail(
     const { name, schedule_type, session_duration, session_type } = session;
     return {
       sessionType: name,
-      platform: schedule_type,
+      platform: platformRemoveUnderscore(schedule_type),
       duration: durationCalculator(session_duration),
       sessionTypeIcon: sessionTypeIcon(session_type),
       meetingIcon: scheduleTypeIcon(schedule_type),

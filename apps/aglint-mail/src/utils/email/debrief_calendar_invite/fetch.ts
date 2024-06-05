@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   durationCalculator,
+  platformRemoveUnderscore,
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../common/functions';
@@ -66,7 +67,7 @@ export default async function debriefCalenderInvite(
     date: dayjs(interview_meeting.start_time).format('ddd MMMM DD, YYYY'),
     time: `${dayjs(interview_meeting.start_time).format('hh:mm A')} - ${dayjs(interview_meeting.end_time).format('hh:mm A')}`,
     sessionType: name,
-    platform: session.schedule_type,
+    platform: platformRemoveUnderscore(session.schedule_type),
     duration: durationCalculator(session_duration),
     sessionTypeIcon: sessionTypeIcon(session_type),
     meetingIcon: scheduleTypeIcon(schedule_type),
