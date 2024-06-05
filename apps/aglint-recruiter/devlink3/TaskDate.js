@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./TaskDate.module.css";
 
@@ -15,13 +17,13 @@ export function TaskDate({
   textButton2 = "In a date range",
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1509")} tag="div">
+    <_Component className={_utils.cx(_styles, "date-range-widget")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1517")}
+        className={_utils.cx(_styles, "date-range-switcher")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1518")}
+          className={_utils.cx(_styles, "date-range-switcher-tab")}
           tag="div"
           {...onClickSpecificDate}
         >
@@ -31,24 +33,14 @@ export function TaskDate({
               tag="div"
             />
           ) : null}
-          <_Builtin.Block
-            className={_utils.cx(_styles, "relative-1")}
-            tag="div"
-          >
-            {textButton1}
-          </_Builtin.Block>
+          <Text content={textButton1} weight="" />
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1518")}
+          className={_utils.cx(_styles, "date-range-switcher-tab")}
           tag="div"
           {...onClickInDateRange}
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "relative-1")}
-            tag="div"
-          >
-            {textButton2}
-          </_Builtin.Block>
+          <Text content={textButton2} weight="" />
           {isInDateRangeActive ? (
             <_Builtin.Block
               className={_utils.cx(_styles, "div-block-1519", "right")}
@@ -57,7 +49,9 @@ export function TaskDate({
           ) : null}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block tag="div">{slotDate}</_Builtin.Block>
+      <_Builtin.Block tag="div">
+        {slotDate ?? <SlotComp componentNeme="MUI Calander" />}
+      </_Builtin.Block>
     </_Component>
   );
 }

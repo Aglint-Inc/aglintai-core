@@ -6,9 +6,10 @@
   grid-column-gap: 30px;
   grid-row-gap: 30px;
 
+  border: 1px solid var(--success-6);
   border-radius: 10px;
 
-  background-color: rgba(237, 248, 244, 0.5);
+  background-color: var(--success-2);
 }
 
 .div-block-1784 {
@@ -75,10 +76,6 @@
 
 .text-grey_600 {
   color: var(--sand-11);
-}
-
-.fw-semibold.name-text {
-  color: #467b7c;
 }
 
 .hide {

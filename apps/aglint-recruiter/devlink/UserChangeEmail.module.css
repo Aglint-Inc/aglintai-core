@@ -56,4 +56,8 @@
 
 .slot-button-edit-profile {
   position: relative;
+  display: flex;
+  margin-top: var(--space-2);
+  flex-direction: row;
+  flex-wrap: nowrap;
 }

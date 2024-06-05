@@ -3,6 +3,7 @@
   padding: 0px;
   border: 1px solid #e9ebed;
   border-radius: 10px;
+  background-color: var(--white);
 }
 
 .div-block-1471 {
@@ -110,10 +111,6 @@
 
 .text-grey_600 {
   color: var(--sand-11);
-}
-
-.fw-semibold.name-text {
-  color: #467b7c;
 }
 
 .hide {

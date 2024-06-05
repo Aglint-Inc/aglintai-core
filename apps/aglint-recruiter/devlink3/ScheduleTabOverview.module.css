@@ -26,70 +26,6 @@
   display: none;
 }
 
-.fw-semibold {
-  font-weight: 600;
-}
-
-.fw-semibold.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.fw-semibold.relative_2.two-line-clamp.capitalize {
-  text-transform: capitalize;
-}
-
-.fw-semibold.capitalize {
-  text-transform: capitalize;
-}
-
-.text-red-600 {
-  color: #cc3340;
-}
-
-.fw-semibold.text-purple {
-  color: #a81897;
-}
-
-.fw-semibold.text-green {
-  color: #228f67;
-}
-
-.fw-semibold.text-yellow {
-  color: #eac05b;
-}
-
-.fw-semibold.text-orange {
-  color: #ed942d;
-}
-
-.fw-semibold.text-red {
-  color: #d93f4c;
-}
-
-.text-lg {
-  font-size: 18px;
-  line-height: 24px;
-}
-
-.fw-semibold.p-lr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
-.text-grey_600 {
-  color: var(--sand-11);
-}
-
-.fw-semibold.name-text {
-  color: #467b7c;
-}
-
 .div-block-1414 {
   width: 100%;
 }
@@ -139,8 +75,16 @@
   color: #68737d;
 }
 
+.fw-semibold {
+  font-weight: 600;
+}
+
 .text-sm.text-capitalize {
   text-transform: uppercase;
+}
+
+.text-grey_600 {
+  color: var(--sand-11);
 }
 
 .text-blue-500 {
@@ -275,6 +219,11 @@
   margin-top: 2px;
 }
 
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
 .embed_flex.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -289,7 +238,7 @@
 }
 
 .text-red-500 {
-  color: #d93f4c;
+  color: var(--error-11);
 }
 
 .div-block-1423 {
@@ -358,4 +307,51 @@
 
 .div-block-1421.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.fw-semibold.relative_2.two-line-clamp.capitalize {
+  text-transform: capitalize;
+}
+
+.fw-semibold.capitalize {
+  text-transform: capitalize;
+}
+
+.text-red-600 {
+  color: #cc3340;
+}
+
+.fw-semibold.text-purple {
+  color: #a81897;
+}
+
+.fw-semibold.text-green {
+  color: #228f67;
+}
+
+.fw-semibold.text-yellow {
+  color: #eac05b;
+}
+
+.fw-semibold.text-orange {
+  color: #ed942d;
+}
+
+.fw-semibold.text-red {
+  color: #d93f4c;
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
 }

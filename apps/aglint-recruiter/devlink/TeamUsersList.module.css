@@ -1,7 +1,7 @@
 .manage-team-wrap {
   display: flex;
-  padding-top: var(--space-4);
-  padding-bottom: 140px;
+  width: 100%;
+  padding: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: var(--space-3);
@@ -221,6 +221,7 @@
 }
 
 .team-table-wrap {
+  overflow: hidden;
   flex-direction: column;
   grid-auto-columns: 1fr;
   grid-template-columns: 1fr;

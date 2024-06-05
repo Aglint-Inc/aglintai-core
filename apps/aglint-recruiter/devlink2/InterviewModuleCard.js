@@ -17,7 +17,7 @@ export function InterviewModuleCard({
   slotMemberPic,
   textUpcomingSchedules = "2",
   textCompletedSchedules = "2",
-  isUpcomingScheduleEmpty = false,
+  isUpcomingScheduleEmpty = true,
   isUpcomingScheduleVisible = true,
   isCompletedScheduleEmpty = false,
   isCompletedScheduleVisible = true,
@@ -72,28 +72,12 @@ export function InterviewModuleCard({
         tag="div"
       >
         <Text content={textUpcomingSchedules} />
-        {isUpcomingScheduleEmpty ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-gray-400")}
-            tag="div"
-          >
-            {"No schedules"}
-          </_Builtin.Block>
-        ) : null}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1066", "center")}
         tag="div"
       >
         <Text content={textCompletedSchedules} />
-        {isCompletedScheduleEmpty ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-gray-400")}
-            tag="div"
-          >
-            {"No schedules"}
-          </_Builtin.Block>
-        ) : null}
       </_Builtin.Block>
     </_Component>
   );

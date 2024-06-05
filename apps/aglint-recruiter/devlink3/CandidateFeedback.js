@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./CandidateFeedback.module.css";
 
@@ -30,7 +31,9 @@ export function CandidateFeedback({
             className={_utils.cx(_styles, "div-block-1720")}
             tag="div"
           >
-            <_Builtin.Block tag="div">{slotEmoji}</_Builtin.Block>
+            <_Builtin.Block tag="div">
+              {slotEmoji ?? <SlotComp componentNeme="Icon" />}
+            </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "text-grey-600")}
               tag="div"

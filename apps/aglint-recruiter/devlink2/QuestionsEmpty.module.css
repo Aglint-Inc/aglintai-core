@@ -57,15 +57,6 @@
   text-transform: capitalize;
 }
 
-.fw-semibold.z-index-5 {
-  position: relative;
-  z-index: 5;
-}
-
-.text-blue-800 {
-  color: hsla(206.95652173913044, 69.70%, 19.41%, 1.00);
-}
-
 .text-lg {
   font-size: 18px;
   line-height: 1.33;
