@@ -17,7 +17,6 @@ interface ReqPayload {
   session_id: string;
   application_id: string;
   meeting_id: string;
-  recruiter_user_id: string;
 }
 interface DataPayload {
   recipient_email: string;
@@ -34,12 +33,8 @@ interface DataPayload {
 }
 
 export async function POST(req: Request) {
-  const {
-    session_id,
-    application_id,
-    meeting_id,
-    recruiter_user_id,
-  }: ReqPayload = await req.json();
+  const { session_id, application_id, meeting_id }: ReqPayload =
+    await req.json();
 
   try {
     // if(!api_key)  throw new ClientError("api_key not found",401)
@@ -59,7 +54,6 @@ export async function POST(req: Request) {
       session_id,
       application_id,
       meeting_id,
-      recruiter_user_id,
     );
     const filled_body: FilledPayload = await fetchTemplate(
       data.recruiter_id,
@@ -128,5 +122,4 @@ export async function POST(req: Request) {
 //   ],
 //   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637",
 //   "meeting_id":"8daab34c-9c19-445b-aa96-3b4735307414",
-//   "recruiter_user_id":"5d2bb73b-0e3b-4c63-bc60-920554345950"
 // }
