@@ -4,6 +4,7 @@ import { WorkflowConnector } from '@/devlink3/WorkflowConnector';
 import { WorkflowItem } from '@/devlink3/WorkflowItem';
 import UISelect from '@/src/components/Common/Uiselect';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
+import { useWorkflowStore } from '@/src/context/Workflows/store';
 
 const Trigger = () => {
   return (
@@ -37,21 +38,26 @@ const Forms = () => {
 const TriggerForm = () => {
   const {
     workflow: { trigger, phase, interval },
-    handleUpdateWorkflow,
+    handleAsyncUpdateWorkflow,
   } = useWorkflow();
+  const setActionsLoad = useWorkflowStore(
+    ({ setActionsLoad }) => setActionsLoad,
+  );
   const payload = { trigger, phase };
   return (
     <UISelect
       label='When will the event trigger?'
       value={JSON.stringify(payload)}
       menuOptions={TRIGGER_OPTIONS}
-      onChange={(e) => {
+      onChange={async (e) => {
         const { phase, trigger } = JSON.parse(e.target.value) as typeof payload;
-        handleUpdateWorkflow({
+        if (trigger !== payload.trigger) setActionsLoad(true);
+        await handleAsyncUpdateWorkflow({
           phase,
           trigger,
           interval: phase === 'now' ? 0 : interval === 0 ? 30 : interval,
         });
+        setActionsLoad(false);
       }}
     />
   );

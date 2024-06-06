@@ -18,7 +18,10 @@ const useWorkflowContext = () => {
   } = useRouter();
   const {
     workflows: { data, status },
-    workflowUpdate: { mutate: updateWorkflowMuation },
+    workflowUpdate: {
+      mutate: updateWorkflowMuation,
+      mutateAsync: updateWorkflowAsyncMuation,
+    },
   } = useWorkflows();
 
   const workflow = useMemo(
@@ -32,6 +35,17 @@ const useWorkflowContext = () => {
   const handleUpdateWorkflow = useCallback(
     (payload: Parameters<typeof updateWorkflowMuation>[0]['payload']) =>
       updateWorkflowMuation({ id: workflow?.id ?? null, payload }),
+    [workflow],
+  );
+
+  const handleAsyncUpdateWorkflow = useCallback(
+    async (payload: Parameters<typeof updateWorkflowMuation>[0]['payload']) => {
+      try {
+        await updateWorkflowAsyncMuation({ id: workflow?.id ?? null, payload });
+      } catch {
+        //
+      }
+    },
     [workflow],
   );
 
@@ -66,6 +80,7 @@ const useWorkflowContext = () => {
     actions,
     actionMutations,
     handleUpdateWorkflow,
+    handleAsyncUpdateWorkflow,
     handleCreateAction,
     handleDeleteAction,
     handleUpdateAction,
