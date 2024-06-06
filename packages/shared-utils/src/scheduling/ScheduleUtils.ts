@@ -11,7 +11,6 @@ export class ScheduleUtils {
     user_tz: string,
     is_start_day = true
   ) => {
-    console.log(user_date);
     const [day, month, year] = user_date.split('/');
     if (!day || !month || !year) {
       throw new Error(`Date should in the format DD/MM/YYYY`);
