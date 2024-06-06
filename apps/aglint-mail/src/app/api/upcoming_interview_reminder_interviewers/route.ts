@@ -15,8 +15,8 @@ import confiramtionMailToOrganizerRemainder from '../../../utils/email/upcoming_
 
 interface ReqPayload {
   application_id: string;
-  meeting_ids: string;
-  recruiter_user_id: string;
+  meeting_id: string;
+  recruiter_user_ids: string[];
 }
 interface DataPayload {
   recipient_email: string;
@@ -34,49 +34,54 @@ interface DataPayload {
 }
 
 export async function POST(req: Request) {
-  const { application_id, meeting_ids, recruiter_user_id }: ReqPayload =
+  const { application_id, meeting_id, recruiter_user_ids }: ReqPayload =
     await req.json();
 
   try {
     if (!application_id) {
       throw new ClientError('application_id attribute missing', 400);
     }
-    if (!meeting_ids) {
+    if (!meeting_id) {
       throw new ClientError('meeting_id is missing', 400);
     }
-    if (!recruiter_user_id) {
+    if (!recruiter_user_ids) {
       throw new ClientError('recruiter_user_id is missing', 400);
     }
 
-    const data: DataPayload = await confiramtionMailToOrganizerRemainder(
-      application_id,
-      meeting_ids,
-      recruiter_user_id,
-    );
-
-    const filled_body: FilledPayload = await fetchTemplate(
-      data.recruiter_id,
-      data.mail_type,
-      data.payload,
-    );
-    filled_body.meetingLink = data.payload.meetingLink;
-    filled_body.meetingDetails = data.payload.meetingDetails;
-    filled_body.companyLogo = data.companyLogo;
-    const { emails } = await getEmails();
-
-    const emailIdx = emails.findIndex((e) => e === data.mail_type);
-
-    if (emailIdx === -1)
-      throw new ClientError(
-        `${data.mail_type} does not match any mail_type`,
-        400,
+    const emailPromises = recruiter_user_ids.map(async (user_id) => {
+      const data: DataPayload = await confiramtionMailToOrganizerRemainder(
+        application_id,
+        meeting_id,
+        user_id,
       );
 
-    const { html, subject } = await renderEmailTemplate(
-      emails[emailIdx],
-      filled_body,
-    );
-    await sendMail({ email: data.recipient_email, html, subject });
+      const filled_body: FilledPayload = await fetchTemplate(
+        data.recruiter_id,
+        data.mail_type,
+        data.payload,
+      );
+      filled_body.meetingLink = data.payload.meetingLink;
+      filled_body.meetingDetails = data.payload.meetingDetails;
+      filled_body.companyLogo = data.companyLogo;
+      const { emails } = await getEmails();
+
+      const emailIdx = emails.findIndex((e) => e === data.mail_type);
+
+      if (emailIdx === -1)
+        throw new ClientError(
+          `${data.mail_type} does not match any mail_type`,
+          400,
+        );
+
+      const { html, subject } = await renderEmailTemplate(
+        emails[emailIdx],
+        filled_body,
+      );
+      await sendMail({ email: data.recipient_email, html, subject });
+    });
+
+    await Promise.all(emailPromises);
+
     return NextResponse.json('success', {
       status: 200,
     });
