@@ -3369,6 +3369,7 @@ export type Database = {
         Row: {
           completed_at: string | null
           created_at: string
+          execute_at: string
           id: number
           meta: Json | null
           started_at: string | null
@@ -3380,6 +3381,7 @@ export type Database = {
         Insert: {
           completed_at?: string | null
           created_at?: string
+          execute_at: string
           id?: number
           meta?: Json | null
           started_at?: string | null
@@ -3391,6 +3393,7 @@ export type Database = {
         Update: {
           completed_at?: string | null
           created_at?: string
+          execute_at?: string
           id?: number
           meta?: Json | null
           started_at?: string | null
@@ -3823,6 +3826,16 @@ export type Database = {
         Returns: {
           total_records: number
         }[]
+      }
+      create_new_workflow_action_log: {
+        Args: {
+          workflow_id: string
+          workflow_action_id: string
+          interval_minutes: number
+          phase: string
+          meta: Json
+        }
+        Returns: undefined
       }
       createrecuriterrelation:
         | {
@@ -4793,6 +4806,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      workflow_action_log_cron: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
     }
     Enums: {
       activity_type: "aglint" | "user" | "candidate"
@@ -4850,6 +4867,7 @@ export type Database = {
         | "upcoming_interview_reminder_candidate"
         | "availability_request_reminder"
         | "upcoming_interview_reminder_interviewers"
+        | "slack-interviewer-confirmation"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"
