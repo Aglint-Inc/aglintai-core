@@ -21,9 +21,9 @@ export interface ApplicationReceivedDataType extends Common {
 export interface CancelInterviewSessionType extends Common {
   payload: {
     '[firstName]': string;
-    '[sessionName]': string;
     '[companyName]': string;
     '[jobTitle]': string;
+    'meetingDetails': MeetingDetails[];
   };
 }
 
@@ -33,6 +33,7 @@ export interface CandidateCancelRequestType extends Common {
     '[rescheduleReason]': string;
     '[recruiterName]': string;
     '[companyName]': string;
+    '[additionalRescheduleNotes]': string;
     'meetingLink': string;
     'meetingDetails': MeetingDetails[];
   };
@@ -42,10 +43,11 @@ export interface CandidateRescheduleRequestType extends Common {
   payload: {
     '[firstName]': string;
     '[rescheduleReason]': string;
-    '[scheduleName]': string;
+    '[recruiterName]': string;
     '[companyName]': string;
     '[jobTitle]': string;
-    '[DateTime]': string;
+    '[dateRange]': string;
+    '[additionalRescheduleNotes]': string;
     '[pickYourSlotLink]': string;
     'meetingDetails': MeetingDetails[];
   };
@@ -149,6 +151,7 @@ export interface RecruiterReschedulingEmailType extends Common {
     '[scheduleName]': string;
     '[companyName]': string;
     '[pickYourSlotLink]': string;
+    '[jobTitle]': string;
     'meetingDetails': MeetingDetails[];
   };
 }

@@ -1,6 +1,6 @@
 export interface MeetingDetails {
-  date: string;
-  time: string;
+  date?: string;
+  time?: string;
   sessionType: string;
   platform: any;
   duration: string;

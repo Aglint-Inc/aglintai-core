@@ -5,38 +5,29 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getResponseFactory } from '@/src/utils/apiUtils/responseFactory';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  // console.log('req.method', req.method, req.body);
   const getResponse = getResponseFactory<APIWorkFlowCron['response']>(res);
-
   try {
+    if (req.method !== 'POST')
+      return getResponse({ error: 'Method not allowed' }, 405);
     const {
       workflow_id,
       workflow_action_id,
-      target,
-      medium,
-      trigger,
       execution_time,
       // payload,
       meta,
     } = req.body as APIWorkFlowCron['request'];
-    if (
-      !workflow_id ||
-      !workflow_action_id ||
-      !target ||
-      !medium ||
-      !trigger ||
-      !meta ||
-      !execution_time
-    )
+    if (!workflow_id || !workflow_action_id || !meta || !execution_time)
       return getResponse(
         { error: 'Invalid request. Required props missing.' },
         401,
       );
-    switch (trigger) {
-      case 'application_received': {
+    switch (meta.email_type) {
+      case 'self_schedule_request_reminder': {
         if (meta.application_id) {
           axios.post('api/upcoming_interview_reminder_candidate', {
             recipient_email: 'chandan@aglinthq.com',
-          });
+            });
         }
       }
     }

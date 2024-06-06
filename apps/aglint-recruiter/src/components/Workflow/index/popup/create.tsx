@@ -22,7 +22,7 @@ const Create = () => {
     handleCreateWorkflow({
       title,
       phase: 'now',
-      trigger: 'application_new',
+      trigger: 'availability_request_reminder',
     });
     resetPopup();
   }, [title]);

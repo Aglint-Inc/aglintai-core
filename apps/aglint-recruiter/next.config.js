@@ -15,8 +15,8 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/python_api/:path*',
-        destination: 'http://127.0.0.1:5328/:path*', // Proxy to Backend
+        source: '/api/emails/:path',
+        destination: `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/:path`, // proxy to mail api
       },
     ];
   },
@@ -46,9 +46,7 @@ const nextConfig = {
       },
     ],
   },
-  "transpilePackages": [
-    "@aglint/shared-utils"
-  ]
+  transpilePackages: ['@aglint/shared-utils'],
 };
 
 module.exports = withBundleAnalyzer(nextConfig);
