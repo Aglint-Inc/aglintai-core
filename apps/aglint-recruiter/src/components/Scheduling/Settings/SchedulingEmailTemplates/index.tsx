@@ -10,7 +10,6 @@ import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { CompanyEmailsType } from '@/src/types/companyEmailTypes';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
@@ -141,7 +140,7 @@ function SchedulingEmailTemplates() {
                             sx={{
                               mt: '8px',
                               border: '1px solid',
-                              borderColor: palette.grey[300],
+                              borderColor: 'var(--neutral-6)',
                               borderRadius: '4px',
                             }}
                           >

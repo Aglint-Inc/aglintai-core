@@ -11,7 +11,6 @@ import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { Job } from '@/src/queries/job/types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
@@ -161,7 +160,7 @@ const EmailTemplate = ({ setIsSaving }) => {
                             sx={{
                               mt: '8px',
                               border: '1px solid',
-                              borderColor: palette.grey[300],
+                              borderColor: 'var(neutral-6)',
                               borderRadius: '4px',
                             }}
                           >

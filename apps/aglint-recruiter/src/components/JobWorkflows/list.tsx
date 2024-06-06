@@ -325,7 +325,7 @@ const Filters = () => {
         search={{
           value: search,
           setValue: (newValue) => setFilters({ search: newValue }),
-          placeholder: 'Search in workflows',
+          placeholder: 'Search workflow',
         }}
       />
     ),

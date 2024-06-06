@@ -13,7 +13,6 @@ import {
   ContextValue,
   useAuthDetails,
 } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { API_reset_password } from '@/src/pages/api/reset_password/type';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
@@ -142,17 +141,17 @@ const Member = ({
           style:
             member.join_status === 'invited'
               ? {
-                  backgroundColor: palette.yellow[200],
-                  color: palette.yellow[800],
+                  backgroundColor: 'var(--warning-a2)',
+                  color: 'var(--warning-a11)',
                 }
               : member.is_suspended === true
                 ? {
-                    backgroundColor: palette.red[200],
-                    color: palette.red[800],
+                    backgroundColor: 'var(--error-a2)',
+                    color: 'var(--error-a11)',
                   }
                 : {
-                    backgroundColor: palette.green[200],
-                    color: palette.green[800],
+                    backgroundColor: 'var(--success-a2)',
+                    color: 'var(--success-a11)',
                   },
         }}
         userStatusText={

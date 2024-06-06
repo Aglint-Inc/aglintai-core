@@ -10,7 +10,6 @@ import {
   supabaseWrap,
 } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -134,7 +133,7 @@ const EmailTemplateModalComp = ({
             <CircularProgress
               color='inherit'
               size={'15px'}
-              sx={{ color: palette.grey[400] }}
+              sx={{ color: 'var(--neutral-6)' }}
             />
           </>
         }

@@ -97,9 +97,8 @@ function AddJob() {
           paper: {
             style: {
               border: 'none',
-              borderRadius: '10px',
               overflow: 'visible !important',
-              background: 'transparent',
+              boxShadow: 'none',
             },
           },
         }}

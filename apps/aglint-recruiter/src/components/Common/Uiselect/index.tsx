@@ -1,4 +1,3 @@
-import { palette } from '@context/Theme/Theme';
 import { Stack } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -90,7 +89,7 @@ const UISelect = ({
             px={1}
             style={{
               fontStyle: 'italic',
-              color: palette.grey[400],
+              color: 'var(--neutral-9)',
               cursor: 'default',
             }}
           >

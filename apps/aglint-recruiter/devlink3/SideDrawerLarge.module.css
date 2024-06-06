@@ -28,6 +28,10 @@
   z-index: 2;
 }
 
+.flex_hr_10.disabled_text {
+  color: var(--neutral-9);
+}
+
 .embed_flex {
   display: flex;
   align-items: center;
@@ -126,12 +130,12 @@
 
 .sidedrawer_body {
   overflow: hidden;
-  height: calc(100vh - 129px);
+  height: calc(100vh - 121px);
 }
 
 .sidedrawer_bottom_bar {
   display: flex;
-  height: 73px;
+  height: 65px;
   padding: 16px;
   justify-content: space-between;
 
@@ -174,115 +178,6 @@
 
 .wide_button.width-100 {
   width: 100%;
-}
-
-.button_primary {
-  display: flex;
-  padding: 8px 16px;
-  justify-content: center;
-  align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-
-  border-radius: 6px;
-
-  background-color: #1f73b7;
-
-  transition: all 200ms ease;
-
-  color: white;
-
-  cursor: pointer;
-}
-
-.button_primary:hover {
-  background-color: #144a75;
-}
-
-.button_primary.danger {
-  width: 100%;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  background-color: #d93f4c;
-}
-
-.button_primary.danger:hover {
-  background-color: #cc3340;
-}
-
-.button_primary.greay_btn {
-  width: 100%;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  background-color: #e9ebed;
-  color: #2f3941;
-}
-
-.button_primary.greay_btn:hover {
-  background-color: #d8dcde;
-}
-
-.button_primary.greay_btn.width-auto-copy {
-  width: auto;
-  background-color: var(--accent-3);
-  color: var(--accent-11);
-}
-
-.button_primary.greay_btn.width-auto-copy:hover {
-  background-color: var(--accent-4);
-}
-
-.button_primary.is_outline {
-  border: 1px solid #1f73b7;
-  background-color: white;
-  color: #1f73b7;
-}
-
-.button_primary.is_outline.width-100 {
-  width: 100%;
-}
-
-.button_primary.greay_btn-copy-copy {
-  height: 36px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  background-color: #e9ebed;
-  color: #2f3941;
-}
-
-.button_primary.greay_btn-copy-copy:hover {
-  background-color: #d8dcde;
-}
-
-.button_primary.green-btn {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  background-color: var(--accent-9);
-}
-
-.button_primary.large_btn {
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.button_primary.large_btn-copy {
-  position: relative;
-  overflow: hidden;
-  width: 300px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.selected_number {
-  padding: 4px 12px;
-
-  border-radius: 100px;
-
-  background-color: white;
-
-  color: var(--blue-600\<deleted\|variable-cb1b4518\>);
-  font-size: 12px;
-  line-height: 12px;
 }
 
 #w-node-_97c88937-31b4-9fc3-c74d-05cc519b9feb-519b9fdf {
