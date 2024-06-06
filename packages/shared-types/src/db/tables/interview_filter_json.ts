@@ -1,4 +1,5 @@
 import { InterviewFilterJsonType } from '../../data.types';
+import { PlanCombinationRespType } from '../../scheduleTypes';
 import { TableType } from './index.types';
 
 export type FilterJSON = {
@@ -9,5 +10,5 @@ export type FilterJSON = {
 
 export type CustomInterviewFilterJson = TableType<
   'interview_filter_json',
-  { filter_json: FilterJSON }
+  { filter_json: FilterJSON; selected_options: PlanCombinationRespType[] }
 >;

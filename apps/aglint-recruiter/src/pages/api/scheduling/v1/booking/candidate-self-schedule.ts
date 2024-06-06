@@ -5,30 +5,32 @@ import {
 } from '@aglint/shared-types';
 import { ScheduleUtils } from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { z } from 'zod';
+import * as v from 'valibot';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import { bookInterviewPlan } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/bookInterviewPlan';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { scheduling_options_schema } from '@/src/types/scheduling/schema_find_availability_payload';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
-const slot_time = z.object({
-  start_time: z.string(),
-  end_time: z.string(),
+const slot_time = v.object({
+  start_time: v.string(),
+  end_time: v.string(),
 });
-const schema_candidate_direct_booking = z.object({
-  cand_tz: z.string(),
-  filter_id: z.string(),
-  task_id: z.string().optional(),
-  //   candidate_email: z.string(),
-  //   candidate_name: z.string(),
-  //   candidate_id: z.string(),
-  selected_plan: slot_time.array(),
+const schema_candidate_direct_booking = v.object({
+  filter_id: v.pipe(v.string(), v.nonEmpty('required filter_id')),
+  cand_tz: v.pipe(v.string(), v.nonEmpty('required cand_tz')),
+  task_id: v.nullish(v.string()),
+  selected_plan: v.array(slot_time),
 });
+
+type CandidateDirectBookingType = v.InferOutput<
+  typeof schema_candidate_direct_booking
+>;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const parsed = schema_candidate_direct_booking.parse(req.body);
+    const parsed = v.parse(schema_candidate_direct_booking, req.body);
     const { filter_json_data } = await fetch_details(parsed.filter_id);
 
     const interviewer_selected_options =
@@ -55,8 +57,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
     await cand_schedule.fetchDetails();
     await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
-    const plan_comb = cand_schedule.verifyIntSelectedSlots(cand_filtered_plans);
-    return res.status(200).json(plan_comb);
+    //TODO: verified
+    // const verified_plans =
+    //   cand_schedule.verifyIntSelectedSlots(cand_filtered_plans);
+    // if (verified_plans.length === 0) {
+    //   throw new Error('Requested plan does not exist');
+    // }
+    const details = await bookInterviewPlan(
+      cand_schedule,
+      cand_filtered_plans[0],
+      filter_json_data,
+    );
+    return res.status(200).json(details);
   } catch (err) {
     console.error(err);
     return res.status(200).send(err.message);
@@ -68,7 +80,7 @@ const fetch_details = async (filter_id: string) => {
   const [filter_json_data] = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')
-      .select('*,interview_schedule(recruiter_id)')
+      .select('*,interview_schedule(recruiter_id, id)')
       .eq('id', filter_id),
   );
   if (!filter_json_data) {
@@ -81,7 +93,7 @@ const fetch_details = async (filter_id: string) => {
 
 const getCandFilteredSlots = (
   interviewer_selected_options: PlanCombinationRespType[],
-  parsed_body: z.infer<typeof schema_candidate_direct_booking>,
+  parsed_body: CandidateDirectBookingType,
 ) => {
   const int_rounds_length = ScheduleUtils.getSessionRounds(
     interviewer_selected_options[0].sessions,
