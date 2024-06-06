@@ -234,6 +234,10 @@ const ACTION_TRIGGER_MAP: {
       value: 'upcoming_interview_reminder_interviewers',
       name: 'Send emails to interviewers',
     },
+    {
+      value: 'slack-interviewer-confirmation',
+      name: 'Send slack messages to interviewers',
+    },
   ],
 };
 
