@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { BookedMeetingDetails, FetchDBScheduleDetails } from './types';
+import { BookedMeetingDetails, ScheduleDBDetails } from './types';
 type SessionData = {
   session_id: string[];
   application_id: string;
@@ -9,7 +9,7 @@ type SessionData = {
 };
 
 export const sendMailsToOrganizer = async (
-  schedule_db_details: FetchDBScheduleDetails,
+  schedule_db_details: ScheduleDBDetails,
   booked_meeting_details: BookedMeetingDetails,
 ) => {
   const sendMail = async (meeting: SessionData) => {
@@ -24,8 +24,7 @@ export const sendMailsToOrganizer = async (
   booked_meeting_details.map(async (meeting) => {
     await sendMail({
       recruiter_user_id: meeting.meeting_organizer.user_id,
-      application_id:
-        schedule_db_details.filter_json_data.interview_schedule.applications.id,
+      application_id: schedule_db_details.application.id,
       meeting_id: meeting.booked_meeting.meeting_id,
       session_id: [meeting.booked_meeting.session_id],
     });

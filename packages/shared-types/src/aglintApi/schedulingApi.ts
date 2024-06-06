@@ -132,3 +132,9 @@ export type AssignTrainingInt = {
 export type APIAssignTrainingInterviewerType = {
   training_ints: AssignTrainingInt[];
 };
+
+export type APIConfirmRecruiterSelectedOption = {
+  selectedOption: PlanCombinationRespType;
+  availability_req_id: string;
+  user_tz: string;
+};

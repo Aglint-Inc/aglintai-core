@@ -11,7 +11,7 @@ import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/Candi
 import { confirmInterviewers } from './confirmInterviewers';
 import { createMeetingEvents } from './createMeetingEvents';
 import { sendMailsToOrganizer } from './sendMailsToOrganizer';
-import { FetchDBScheduleDetails } from './types';
+import { ScheduleDBDetails } from './types';
 import { updateMeetingEventDetails } from './updateMeetingInfo';
 import { updateTrainingStatus } from './updateTrainingStatus';
 
@@ -22,7 +22,7 @@ import { updateTrainingStatus } from './updateTrainingStatus';
 export const bookInterviewPlan = async (
   cand_schedule: CandidatesSchedulingV2,
   verified_slot: PlanCombinationRespType,
-  schedule_db_details: FetchDBScheduleDetails,
+  schedule_db_details: ScheduleDBDetails,
 ) => {
   // create calender events for all sessions
   const booked_meeting_details = await createMeetingEvents(

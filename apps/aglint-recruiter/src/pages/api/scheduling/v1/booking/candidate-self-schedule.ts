@@ -8,7 +8,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
-import { bookInterviewPlan } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/bookInterviewPlan';
 import { fetchDBScheduleDetails } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/fetchDBScheduleDetails';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { scheduling_options_schema } from '@/src/types/scheduling/schema_find_availability_payload';
@@ -65,12 +64,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (verified_plans.length === 0) {
       throw new Error('Requested plan does not exist');
     }
-    const details = await bookInterviewPlan(
-      cand_schedule,
-      verified_plans[0],
-      schedule_db_details,
-    );
-    return res.status(200).json(details);
+    // const details = await bookInterviewPlan(
+    //   cand_schedule,
+    //   verified_plans[0],
+    //   schedule_db_details,
+    // );
+    return res.status(200).json('ok');
   } catch (err) {
     console.error(err);
     return res.status(200).send(err.message);
