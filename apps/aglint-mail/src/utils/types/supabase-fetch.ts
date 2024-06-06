@@ -106,6 +106,18 @@ export interface InitEmailAgentType extends Common {
   };
 }
 
+export interface InitEmailAgentRemainderType extends Common {
+  payload: {
+    '[candidateFirstName]': string;
+    '[Company Name]': string;
+    '[Job Title]': string;
+    '[startDate]': string;
+    '[endDate]': string;
+    '[companyTimeZone]': string;
+    '[selfScheduleLink]': string;
+  };
+}
+
 export interface InterviewType extends Common {
   payload: {
     '[firstName]': string;
