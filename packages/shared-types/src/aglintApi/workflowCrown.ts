@@ -2,9 +2,15 @@ import { DatabaseEnums, DatabaseTable } from "..";
 
 export type APIWorkFlowCron = {
   request: {
+    id: string;
     workflow_id: string;
     workflow_action_id: string;
     meta: {
+      session_id: string;
+      meeting_id: string;
+      recruiter_user_id: string;
+      filter_id: string;
+      schedule_id: string;
       start_time: string;
       application_id: string;
       email_type: DatabaseEnums["email_types"];
@@ -15,4 +21,9 @@ export type APIWorkFlowCron = {
   response: {
     success: boolean;
   };
+};
+
+type recipients = {
+  type: string;
+  value: string;
 };

@@ -16,9 +16,11 @@ import sendMail from '../../../config/sendgrid';
 interface ReqPayload {
   session_id: string[];
   application_id: string;
-  mail_type: string;
   schedule_id: string;
   filter_id: string;
+}
+interface Meta {
+  meta: ReqPayload;
 }
 
 interface DataPayload {
@@ -35,33 +37,32 @@ interface DataPayload {
 }
 
 export async function POST(req: Request) {
-  const { session_id, application_id, schedule_id, filter_id }: ReqPayload =
-    await req.json();
+  const { meta }: Meta = await req.json();
 
   try {
     // if(!api_key)  throw new ClientError("api_key not found",401)
     // if( api_key !== API_KEY)  throw new ClientError("invalid api Key",401)
 
-    if (!session_id) {
+    if (!meta.session_id) {
       throw new ClientError('session_id attribute missing', 400);
     }
 
-    if (!application_id) {
+    if (!meta.application_id) {
       throw new ClientError('application_id attribute missing', 400);
     }
-    if (!filter_id) {
+    if (!meta.filter_id) {
       throw new ClientError('filter_id is missing', 400);
     }
 
-    if (!schedule_id) {
+    if (!meta.schedule_id) {
       throw new ClientError('schedule_id is missing', 400);
     }
 
     const data: DataPayload = await candidateAvailabilityRequestReminder(
-      session_id,
-      application_id,
-      schedule_id,
-      filter_id,
+      meta.session_id,
+      meta.application_id,
+      meta.schedule_id,
+      meta.filter_id,
     );
     const filled_body: FilledPayload = await fetchTemplate(
       data.recruiter_id,
