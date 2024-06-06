@@ -191,6 +191,15 @@ function RequestAvailability() {
             },
           });
         }
+        addScheduleActivity({
+          application_id: selectedApplication.id,
+          created_by: recruiterUser.user_id,
+          logged_by: 'user',
+          supabase: supabase,
+          title: `Resend request availability to Schedule Interviews for ${selectedSessions.map((ele) => ele.name).join(',')}`,
+          module: 'scheduler',
+          task_id: task_id,
+        });
       } else {
         const result = await insertCandidateRequestAvailability({
           application_id: selectedApplication.id,
