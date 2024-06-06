@@ -10,10 +10,10 @@ import { jobQueryKeys } from '../job/keys';
 const ROWS = 30;
 
 export const applicationsQueries = {
-  all: ({ job_id }: ApplicationAllQueryPrerequistes) => ({
+  all: ({ job_id }: ApplicationsAllQueryPrerequistes) => ({
     queryKey: [...jobQueryKeys.job({ id: job_id }).queryKey, 'applications'],
   }),
-  applications: ({ job_id, count, ...filters }: PageParams) =>
+  applications: ({ job_id, count, ...filters }: Params) =>
     infiniteQueryOptions({
       queryKey: [...applicationsQueries.all({ job_id }).queryKey, filters],
       initialPageParam: { index: 0, job_id, ...filters },
@@ -44,12 +44,12 @@ export const applicationsQueries = {
     }),
 };
 
-type ApplicationAllQueryPrerequistes = {
+type ApplicationsAllQueryPrerequistes = {
   job_id: DatabaseTable['public_jobs']['id'];
   count?: number;
 };
 
-type PageParams = ApplicationAllQueryPrerequistes & {
+type Params = ApplicationsAllQueryPrerequistes & {
   filters: ApplicationsStore['filters'];
   sort: ApplicationsStore['sort'];
   status: DatabaseView['application_view']['status'];
@@ -58,11 +58,11 @@ type PageParams = ApplicationAllQueryPrerequistes & {
 const getApplications = async ({
   pageParam: { job_id, index, status, filters, sort },
 }: {
-  pageParam: PageParams & { index: number };
+  pageParam: Params & { index: number };
 }) => {
   const query = supabase
     .from('application_view')
-    .select('*')
+    .select()
     .range(index, index + ROWS - 1)
     .eq('job_id', job_id)
     .eq('status', status);
