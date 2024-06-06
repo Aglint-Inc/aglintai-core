@@ -5,35 +5,58 @@ import {
 } from '../../../utils/apiUtils/customErrors';
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
-import { sendMail } from '../../../config/sendgrid';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
 import type { FilledPayload } from '../../../utils/types/apiTypes';
+import initEmailAgentRemainder from '../../../utils/email/self-scheduling-reminder/fetch';
+import sendMail from '../../../config/sendgrid';
 
 interface ReqPayload {
+  meeting_id: string;
+  filter_id: string;
+}
+interface DataPayload {
   recipient_email: string;
+  mail_type: string;
+  recruiter_id: string;
+  companyLogo: string;
+  payload: {
+    '[candidateFirstName]': string;
+    '[Company Name]': string;
+    '[Job Title]': string;
+    '[startDate]': string;
+    '[endDate]': string;
+    '[companyTimeZone]': string;
+    '[selfScheduleLink]': string;
+  };
 }
 
 export async function POST(req: Request) {
-  const { recipient_email }: ReqPayload = await req.json();
+  const { filter_id, meeting_id }: ReqPayload = await req.json();
 
   try {
-    if (!recipient_email) {
-      throw new ClientError('recipient_email attribute missing', 400);
+    if (!filter_id) {
+      throw new ClientError('filter_id attribute missing', 400);
     }
-    const filled_body: FilledPayload = await fetchTemplate(
-      'd353b3a0-3e19-45d0-8623-4bd35577f548',
-      'self_schedule_request_reminder',
-      '',
+    if (!meeting_id) {
+      throw new ClientError('meeting_id attribute missing', 400);
+    }
+    const data: DataPayload = await initEmailAgentRemainder(
+      filter_id,
+      meeting_id,
     );
+    const filled_body: FilledPayload = await fetchTemplate(
+      data.recruiter_id,
+      data.mail_type,
+      data.payload,
+    );
+    filled_body.companyLogo = data.companyLogo;
     const { emails } = await getEmails();
 
-    const emailIdx = emails.findIndex(
-      (e) => e === 'self_schedule_request_reminder',
-    );
+    const emailIdx = emails.findIndex((e) => e === data.mail_type);
 
     if (emailIdx === -1)
       throw new ClientError(
-        `self_schedule_request_reminder does not match any mail_type`,
+        `${data.mail_type} does not match any mail_type`,
         400,
       );
 
@@ -41,7 +64,7 @@ export async function POST(req: Request) {
       emails[emailIdx],
       filled_body,
     );
-    await sendMail({ email: recipient_email, html, subject });
+    await sendMail({ email: data.recipient_email, html, subject });
     return NextResponse.json('success', {
       status: 200,
     });
@@ -60,7 +83,7 @@ export async function POST(req: Request) {
     if (e instanceof MailArgValidationError) {
       return NextResponse.json(
         {
-          error: `${e.name}: mail_type:rejection,  ${e.message}`,
+          error: `${e.name}: mail_type:self_scheduling_request_remainder,  ${e.message}`,
         },
         {
           status: 400,
@@ -70,7 +93,7 @@ export async function POST(req: Request) {
     if (e) {
       return NextResponse.json(
         {
-          error: `${e.name}: mail_type:rejection,  ${e.message}`,
+          error: `${e.name}: mail_type:self_scheduling_request_remainder,  ${e.message}`,
         },
         {
           status: 500,
@@ -79,3 +102,8 @@ export async function POST(req: Request) {
     }
   }
 }
+
+// {
+//     "meeting_id": "8daab34c-9c19-445b-aa96-3b4735307414",
+//     "filter_id": "71b8859d-b6c6-425e-8b1a-e97ae8bb9498"
+// }

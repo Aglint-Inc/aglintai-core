@@ -5,13 +5,13 @@ import {
 } from '../../../utils/apiUtils/customErrors';
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
-import { sendMail } from '../../../config/sendgrid';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
 import DebriefCalenderInvite from '../../../utils/email/debrief_calendar_invite/fetch';
 import type {
   FilledPayload,
   MeetingDetails,
 } from '../../../utils/types/apiTypes';
+import sendMail from '../../../config/sendgrid';
 
 interface ReqPayload {
   session_ids: string;
@@ -86,7 +86,8 @@ export async function POST(req: Request) {
       emails[emailIdx],
       filled_body,
     );
-    await sendMail({ email: data.recipient_email, html, subject });
+    await sendMail
+    ({ email: data.recipient_email, html, subject });
     return NextResponse.json('success', {
       status: 200,
     });

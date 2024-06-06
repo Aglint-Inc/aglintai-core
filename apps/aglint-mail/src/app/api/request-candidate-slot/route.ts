@@ -5,10 +5,10 @@ import {
 } from '../../../utils/apiUtils/customErrors';
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
-import { sendMail } from '../../../config/sendgrid';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
 import RequestCandidateSlot from '../../../utils/email/request_candidate_slot/fetch';
 import type { FilledPayload } from '../../../utils/types/apiTypes';
+import sendMail from '../../../config/sendgrid';
 
 interface ReqPayload {
   application_id: string;

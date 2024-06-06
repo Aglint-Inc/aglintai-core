@@ -5,13 +5,13 @@ import {
 } from '../../../utils/apiUtils/customErrors';
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
-import { sendMail } from '../../../config/sendgrid';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
 import CancelInterviewSession from '../../../utils/email/cancel-interview-session/fetch';
 import type {
   FilledPayload,
   MeetingDetails,
 } from '../../../utils/types/apiTypes';
+import sendMail from '../../../config/sendgrid';
 
 interface ReqPayload {
   session_ids: string[];
@@ -106,5 +106,5 @@ export async function POST(req: Request) {
 
 // {
 //   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637",
-//   "session_ids":["5e7953c5-3e56-4d89-9857-29c34b55ce9d"]
+//   "session_id":"5e7953c5-3e56-4d89-9857-29c34b55ce9d"
 // }
