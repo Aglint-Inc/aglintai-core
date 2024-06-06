@@ -82,7 +82,7 @@ export default async function confiramtionMailToOrganizer(
 
   const body: ConfiramtionMailToOrganizerType = {
     recipient_email: email,
-    mail_type: 'confirmation_mail_to_organizer',
+    mail_type: 'upcoming_interview_reminder_interviewers',
     recruiter_id,
     companyLogo: logo,
     payload: {

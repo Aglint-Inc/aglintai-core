@@ -38,7 +38,7 @@ export default async function initEmailAgentRemainder(
 
   const body: InitEmailAgentRemainderType = {
     recipient_email: email,
-    mail_type: 'self_schedule_request_reminder',
+    mail_type: 'init_email_agent',
     recruiter_id,
     companyLogo: logo,
     payload: {
