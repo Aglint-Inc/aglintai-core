@@ -5,13 +5,13 @@ import {
 } from '../../../utils/apiUtils/customErrors';
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
-import { sendMail } from '../../../config/sendgrid';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
 import type {
   FilledPayload,
   MeetingDetails,
 } from '../../../utils/types/apiTypes';
 import confiramtionMailToOrganizerRemainder from '../../../utils/email/upcoming_interview_reminder_interviewers/fetch';
+import sendMail from '../../../config/sendgrid';
 
 interface ReqPayload {
   application_id: string;
