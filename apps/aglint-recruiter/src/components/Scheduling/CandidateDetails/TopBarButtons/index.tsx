@@ -10,7 +10,7 @@ import {
   setScheduleFlow,
   setStepScheduling,
 } from '../SelfSchedulingDrawer/store';
-import { useSchedulingApplicationStore } from '../store';
+import { setRequestSessionIds, useSchedulingApplicationStore } from '../store';
 
 function TopBarButtons() {
   const router = useRouter();
@@ -66,6 +66,7 @@ function TopBarButtons() {
           onClickButton={{
             onClick: () => {
               setScheduleFlow('request_availibility');
+              setRequestSessionIds(selectedSessionIds);
               const currentPath = router.pathname; // '/scheduling/application/[application_id]'
               const currentQuery = router.query; // { application_id: '84caebfb-8db6-4881-a88f-400726884504' }
               const updatedQuery = {

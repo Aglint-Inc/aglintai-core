@@ -9,13 +9,14 @@ import { AvailabilityReq } from '@/devlink2/AvailabilityReq';
 import { ButtonPrimary } from '@/devlink2/ButtonPrimary';
 import { MultiDaySelect } from '@/devlink2/MultiDaySelect';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import {
   insertTaskProgress,
   updateCandidateRequestAvailability,
-  useRequestAvailabilityContext
+  useRequestAvailabilityContext,
 } from '../RequestAvailabilityContext';
 import { convertMinutesToHoursAndMinutes } from '../utils';
 import AvailableSlots from './AvailableSlots';
@@ -32,14 +33,14 @@ function CandidateAvailability() {
   const handleOpen = async (day: number) => {
     setOpenDaySlotPopup(day);
   };
-
   async function handleSubmit() {
     if (multiDaySessions.length !== daySlots.length) {
       toast.message('Please select slots from each day');
       return;
     }
+
     await updateCandidateRequestAvailability({
-      data: { slots: daySlots },
+      data: { slots: daySlots, user_timezone: userTzDayjs.tz.guess(),  },
       id: String(router.query?.request_id),
     });
     insertTaskProgress({

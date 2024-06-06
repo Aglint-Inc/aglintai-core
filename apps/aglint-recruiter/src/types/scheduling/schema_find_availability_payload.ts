@@ -50,4 +50,5 @@ export const schema_find_slots_date_range = z.object({
 
 export const schema_verify_interviewer_selected_slots = z.object({
   cand_availability_id: z.string(),
+  user_tz: z.string(),
 });
