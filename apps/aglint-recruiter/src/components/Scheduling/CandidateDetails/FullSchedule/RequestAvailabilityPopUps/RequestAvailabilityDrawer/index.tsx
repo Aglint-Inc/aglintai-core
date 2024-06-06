@@ -8,14 +8,20 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { useAllActivities, useGetScheduleApplication } from '../../../hooks';
+import { updateCandidateRequestAvailability } from '../../../RequestAvailability/RequestAvailabilityContext';
+import { useSchedulingApplicationStore } from '../../../store';
 import { useAvailabilityContext } from '../RequestAvailabilityContext';
 import FinalScreen from './ FinalScreen';
 import RequestAvailabilityBody from './RequestAvailabilityBody';
@@ -30,6 +36,9 @@ function RequestAvailabilityDrawer() {
     setSelectedIndex,
     setSelectedDateSlots,
   } = useAvailabilityContext();
+  const { recruiterUser } = useAuthDetails();
+  const { selectedApplication } = useSchedulingApplicationStore();
+  const [loading, setLoading] = useState(false);
   const {
     data: availableSlots,
     isFetched,
@@ -37,7 +46,10 @@ function RequestAvailabilityDrawer() {
   } = useRequestAvailabilityDetails({
     request_id: router.query?.request_availability_id as string,
   });
-
+  const { fetchInterviewDataByApplication } = useGetScheduleApplication();
+  const { refetch } = useAllActivities({
+    application_id: selectedApplication.id,
+  });
   function closeDrawer() {
     const currentPath = router.pathname; // Get current path
     const currentQuery = { ...router.query }; // Get current query parameters
@@ -60,9 +72,17 @@ function RequestAvailabilityDrawer() {
   }, [availableSlots, selectedIndex, router.query?.request_availability_id]);
 
   async function handleContinue() {
+    const { data: requestData } = await axios.post(
+      `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,
+      {
+        request_id: router.query?.request_availability_id,
+      },
+    );
+    const task_id = requestData.id;
     if (selectedIndex !== availableSlots.length) {
       setSelectedIndex((pre) => pre + 1);
     } else {
+      setLoading(true);
       const allSessions: SessionCombinationRespType[] = selectedDateSlots
         .map((ele) => ele.dateSlots)
         .flat()
@@ -85,7 +105,24 @@ function RequestAvailabilityDrawer() {
         );
 
         if (res.status === 200) {
+          await updateCandidateRequestAvailability({
+            id: String(router.query?.request_availability_id),
+            data: {
+              booking_confirmed: true,
+            },
+          });
+          await addScheduleActivity({
+            application_id: selectedApplication.id,
+            created_by: recruiterUser.user_id,
+            logged_by: 'user',
+            supabase: supabase,
+            title: `Meeting has been booked successfully!`,
+            module: 'scheduler',
+            task_id: task_id,
+          });
+          refetch();
           toast.success('Booked sessions');
+          fetchInterviewDataByApplication();
           closeDrawer();
         } else {
           throw new Error('Booking failed');
@@ -93,6 +130,7 @@ function RequestAvailabilityDrawer() {
       } catch (error) {
         toast.error(error.message);
       }
+      setLoading(false);
     }
   }
   function handleBack() {
@@ -123,6 +161,7 @@ function RequestAvailabilityDrawer() {
           !selectedDateSlots.find((ele) => ele.round === selectedIndex + 1) &&
           selectedIndex !== availableSlots?.length
         }
+        isLoading={loading}
         textPrimaryButton={
           selectedIndex !== availableSlots?.length ? 'Continue' : 'Schedule Now'
         }
