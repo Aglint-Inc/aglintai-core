@@ -14,7 +14,7 @@ import type {
 } from '../../../utils/types/apiTypes';
 
 interface ReqPayload {
-  session_id: string[];
+  session_ids: string[];
   application_id: string;
   schedule_id: string;
   filter_id: string;
@@ -34,15 +34,15 @@ interface DataPayload {
 }
 
 export async function POST(req: Request) {
-  const { session_id, application_id, schedule_id, filter_id }: ReqPayload =
+  const { session_ids, application_id, schedule_id, filter_id }: ReqPayload =
     await req.json();
 
   try {
     // if(!api_key)  throw new ClientError("api_key not found",401)
     // if( api_key !== API_KEY)  throw new ClientError("invalid api Key",401)
 
-    if (!session_id) {
-      throw new ClientError('session_id attribute missing', 400);
+    if (!session_ids) {
+      throw new ClientError('session_ids attribute missing', 400);
     }
 
     if (!application_id) {
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
     }
 
     const data: DataPayload = await CandidateInviteConfirmation(
-      session_id,
+      session_ids,
       application_id,
       schedule_id,
       filter_id,
@@ -125,7 +125,7 @@ export async function POST(req: Request) {
 }
 
 // {
-//   "session_id": [
+//   "session_ids ": [
 //     "5e7953c5-3e56-4d89-9857-29c34b55ce9d",
 //     "f5053399-1998-4b43-8ba5-801db1018e27"
 //   ],

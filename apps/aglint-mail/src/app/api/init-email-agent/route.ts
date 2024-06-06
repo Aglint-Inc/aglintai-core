@@ -12,8 +12,7 @@ import type { FilledPayload } from '../../../utils/types/apiTypes';
 
 interface ReqPayload {
   meeting_id: string;
-  application_id: string;
-  candidateRequestAvailability_id: string;
+  filter_id: string;
 }
 interface DataPayload {
   recipient_email: string;
@@ -32,19 +31,19 @@ interface DataPayload {
 }
 
 export async function POST(req: Request) {
-  const { application_id, meeting_id }: ReqPayload = await req.json();
+  const { meeting_id, filter_id }: ReqPayload = await req.json();
 
   try {
     // if(!api_key)  throw new ClientError("api_key not found",401)
     // if( api_key !== API_KEY)  throw new ClientError("invalid api Key",401)
 
-    if (!application_id) {
-      throw new ClientError('payload attribute missing', 400);
-    }
     if (!meeting_id) {
       throw new ClientError('meeting_id is missing', 400);
     }
-    const data: DataPayload = await InitEmailAgent(application_id, meeting_id);
+    if (!filter_id) {
+      throw new ClientError('filter_id is missing', 400);
+    }
+    const data: DataPayload = await InitEmailAgent(filter_id, meeting_id);
     const filled_body: FilledPayload = await fetchTemplate(
       data.recruiter_id,
       data.mail_type,
@@ -84,7 +83,7 @@ export async function POST(req: Request) {
     if (e instanceof MailArgValidationError) {
       return NextResponse.json(
         {
-          error: `${e.name}: mail_type:candidate_availability_request,  ${e.message}`,
+          error: `${e.name}: mail_type:init_email_agent,  ${e.message}`,
         },
         {
           status: 400,
@@ -94,7 +93,7 @@ export async function POST(req: Request) {
     if (e) {
       return NextResponse.json(
         {
-          error: `${e.name}: mail_type:candidate_availability_request,  ${e.message}`,
+          error: `${e.name}: mail_type:init_email_agent,  ${e.message}`,
         },
         {
           status: 500,

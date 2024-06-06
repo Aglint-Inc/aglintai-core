@@ -1,4 +1,4 @@
-import { Tables } from "./schema.types";
+import { Database, Tables } from "./schema.types";
 
 export type CustomMembersMeta = {
   [id in
@@ -8,3 +8,11 @@ export type CustomMembersMeta = {
       >
     | "previous_interviewers"]: boolean;
 };
+
+export type CustomEmailTypes = Extract<
+  Database["public"]["Enums"]["email_types"],
+  | "self_schedule_request_reminder"
+  | "upcoming_interview_reminder_candidate"
+  | "upcoming_interview_reminder_interviewers"
+  | "availability_request_reminder"
+>;

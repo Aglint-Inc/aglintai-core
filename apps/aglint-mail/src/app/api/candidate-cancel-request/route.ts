@@ -18,6 +18,7 @@ interface ReqPayload {
   application_id: string;
   meeting_id: string;
   interview_cancel_id: string;
+  recruiter_user_id: string;
 }
 interface DataPayload {
   recipient_email: string;
@@ -40,6 +41,7 @@ export async function POST(req: Request) {
     application_id,
     meeting_id,
     interview_cancel_id,
+    recruiter_user_id,
   }: ReqPayload = await req.json();
 
   try {
@@ -59,11 +61,15 @@ export async function POST(req: Request) {
     if (!interview_cancel_id) {
       throw new ClientError('interview_cancel_id is missing', 400);
     }
+    if (!recruiter_user_id) {
+      throw new ClientError('interview_cancel_id is missing', 400);
+    }
     const data: DataPayload = await CandidateCancelRequest(
       session_id,
       application_id,
       meeting_id,
       interview_cancel_id,
+      recruiter_user_id,
     );
 
     const filled_body: FilledPayload = await fetchTemplate(
@@ -133,5 +139,6 @@ export async function POST(req: Request) {
 //   ],
 //   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637",
 //   "meeting_id": "8daab34c-9c19-445b-aa96-3b4735307414",
-//   "interview_cancel_id": "6c7731d5-01fe-440a-86d6-63c051c15c4f"
+//   "interview_cancel_id": "6c7731d5-01fe-440a-86d6-63c051c15c4f",
+//   "recruiter_user_id": "7f6c4cae-78b6-4eb6-86fd-9a0e0310147b"
 // }

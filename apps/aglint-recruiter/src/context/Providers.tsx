@@ -22,8 +22,8 @@ const Providers = BuildProviderTree([
   DevlinkMainProvider,
   Theme,
   ScreenSizeProvider,
-  AuthProvider,
   QueryProvider,
+  AuthProvider,
   JobsProvider,
 ]);
 
