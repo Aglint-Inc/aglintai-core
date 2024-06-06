@@ -147,6 +147,7 @@ function RequestAvailability() {
             slots: null,
           },
         });
+
         sendEmailToCandidate({
           email: selectedApplication.candidates.email,
           emailBody: recruiter.email_template['request_candidate_slot'].body,
@@ -160,6 +161,36 @@ function RequestAvailability() {
           request_id: result.id,
         });
         toast.message('Request sent successfully!');
+        const { data: requestData } = await axios.post(
+          `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,
+          {
+            request_id: router.query?.candidate_request_availability,
+          },
+        );
+        const task_id = requestData.id;
+        if (task_id) {
+          createTaskProgress({
+            data: {
+              created_by: {
+                id: recruiterUser.user_id,
+                name: getFullName(
+                  recruiterUser.first_name,
+                  recruiterUser.last_name,
+                ),
+              },
+              task_id: task_id,
+              progress_type: 'standard',
+            },
+            type: 're_request_availability',
+            optionData: {
+              assignerId: recruiterUser.user_id,
+              assignerName: getFullName(
+                recruiterUser.first_name,
+                recruiterUser.last_name,
+              ),
+            },
+          });
+        }
       } else {
         const result = await insertCandidateRequestAvailability({
           application_id: selectedApplication.id,
