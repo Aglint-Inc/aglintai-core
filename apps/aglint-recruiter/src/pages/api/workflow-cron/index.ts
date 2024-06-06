@@ -25,14 +25,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     switch (meta.email_type) {
       case 'self_schedule_request_reminder': {
         if (meta.application_id) {
-          axios
-            .post(
-              process.env.NEXT_PUBLIC_MAIL_HOST +
-                '/api/upcoming_interview_reminder_candidate',
-              {
-                recipient_email: 'ravi@aglinthq.com',
-              },
-            )
+          axios.post(
+            process.env.NEXT_PUBLIC_MAIL_HOST +
+              '/api/upcoming_interview_reminder_candidate',
+            {
+              recipient_email: 'ravi@aglinthq.com',
+            },
+          );
         }
       }
     }

@@ -1,22 +1,21 @@
 import {
-  APICandidateConfirmSlot,
+  APIConfirmRecruiterSelectedOption,
   PlanCombinationRespType,
+  SessionCombinationRespType,
 } from '@aglint/shared-types';
 import { Drawer } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
-import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
-import { useSchedulingApplicationStore } from '../../../store';
 import { useAvailabilityContext } from '../RequestAvailabilityContext';
 import FinalScreen from './ FinalScreen';
 import RequestAvailabilityBody from './RequestAvailabilityBody';
@@ -38,9 +37,6 @@ function RequestAvailabilityDrawer() {
   } = useRequestAvailabilityDetails({
     request_id: router.query?.request_availability_id as string,
   });
-  const { recruiter } = useAuthDetails();
-  const { selectedSchedule, selectedApplication } =
-    useSchedulingApplicationStore();
 
   function closeDrawer() {
     const currentPath = router.pathname; // Get current path
@@ -62,45 +58,29 @@ function RequestAvailabilityDrawer() {
   useEffect(() => {
     if (availableSlots) handleClick(availableSlots[Number(selectedIndex)]);
   }, [availableSlots, selectedIndex, router.query?.request_availability_id]);
+
   async function handleContinue() {
     if (selectedIndex !== availableSlots.length) {
       setSelectedIndex((pre) => pre + 1);
     } else {
-      const selectedSessions = selectedDateSlots
+      const allSessions: SessionCombinationRespType[] = selectedDateSlots
         .map((ele) => ele.dateSlots)
         .flat()
-        .map((ele) => {
-          return {
-            sessions: ele.sessions.map((ele) => {
-              return {
-                session_id: ele.session_id,
-                start_time: ele.start_time,
-                end_time: ele.end_time,
-              };
-            }),
-          };
-        });
+        .map((ele) => ele.sessions)
+        .flat();
 
-      const bodyParams: APICandidateConfirmSlot = {
-        candidate_plan: selectedSessions,
-        recruiter_id: recruiter.id,
+      const bodyParams: APIConfirmRecruiterSelectedOption = {
+        availability_req_id: String(router.query?.request_availability_id),
+        selectedOption: {
+          plan_comb_id: nanoid(),
+          sessions: allSessions,
+        },
         user_tz: userTzDayjs.tz.guess(),
-        schedule_id: selectedSchedule.id,
-        is_debreif: false,
-        agent_type: 'self',
-        task_id: null,
-        candidate_email: selectedApplication.candidates.email,
-        candidate_id: selectedApplication.candidates.id,
-        candidate_name: getFullName(
-          selectedApplication.candidates.first_name,
-          selectedApplication.candidates.last_name,
-        ),
-        filter_id: null,
       };
 
       try {
         const res = await axios.post(
-          `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/confirm_interview_slot`,
+          `/api/scheduling/v1/booking/confirm-recruiter-selected-option`,
           bodyParams,
         );
 

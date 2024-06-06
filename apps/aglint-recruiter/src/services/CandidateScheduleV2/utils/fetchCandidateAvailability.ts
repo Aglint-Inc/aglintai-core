@@ -4,12 +4,7 @@ import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate
 import { scheduling_options_schema } from '@/src/types/scheduling/schema_find_availability_payload';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import { userTzDayjs } from './userTzDayjs';
-
-export const fetchCandidateAvailability = async (
-  request_id: string,
-  user_tz: string,
-) => {
+export const fetchCandidateAvailability = async (request_id: string) => {
   const [avail_details] = supabaseWrap(
     await supabaseAdmin
       .from('candidate_request_availability')
@@ -40,14 +35,8 @@ export const fetchCandidateAvailability = async (
   return {
     session_ids: avail_details.session_ids.map((s) => s.id),
     candidate_selected_slots: avail_details.slots,
-    start_date_str: userTzDayjs(avail_details.date_range[0])
-      .tz(user_tz)
-      .subtract(2, 'day')
-      .format('DD/MM/YYYY'),
-    end_date_str: userTzDayjs(avail_details.date_range[1])
-      .tz(user_tz)
-      .add(2, 'day')
-      .format('DD/MM/YYYY'),
+    start_date_str: avail_details.date_range[0],
+    end_date_str: avail_details.date_range[1],
     api_options: zod_options,
     recruiter_id: avail_details.recruiter_id,
   };

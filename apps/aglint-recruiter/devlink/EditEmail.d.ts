@@ -12,4 +12,6 @@ declare function EditEmail(props: {
   isSaveChangesButtonVisible?: Types.Visibility.VisibilityConditions;
   isRequestTestMailVisible?: Types.Visibility.VisibilityConditions;
   textTipsMessage?: React.ReactNode;
+  onClickPreview?: Types.Devlink.RuntimeProps;
+  isPreviewVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
