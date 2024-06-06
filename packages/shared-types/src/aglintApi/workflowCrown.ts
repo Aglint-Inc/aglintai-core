@@ -7,10 +7,9 @@ export type APIWorkFlowCron = {
     meta: {
       start_time: string;
       application_id: string;
+      email_type: DatabaseEnums["email_types"];
     };
     payload: DatabaseTable["workflow_action"]["payload"];
-    // trigger: DatabaseTable["workflow"]["trigger"];
-    trigger: DatabaseEnums["email_types"];
     execution_time: string;
   };
   response: {
