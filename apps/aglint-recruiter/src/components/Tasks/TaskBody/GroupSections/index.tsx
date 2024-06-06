@@ -1,4 +1,4 @@
-import { Collapse, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, Collapse, Stack, Tooltip, Typography } from '@mui/material';
 import { IconCaretDownFilled, IconCaretRightFilled } from '@tabler/icons-react';
 import { useState } from 'react';
 
@@ -39,8 +39,9 @@ function GroupSections({
               <IconCaretDownFilled
                 style={{
                   cursor: 'pointer',
+                  color: 'var(--neutral-9)',
                 }}
-                size={'20px'}
+                size={'16px'}
                 onClick={() => {
                   setSectionIndex(false);
                 }}
@@ -50,8 +51,9 @@ function GroupSections({
               <IconCaretRightFilled
                 style={{
                   cursor: 'pointer',
+                  color: 'var(--neutral-9)'
                 }}
-                size={'20px'}
+                size={'16px'}
                 onClick={() => {
                   setSectionIndex(true);
                 }}
@@ -63,25 +65,34 @@ function GroupSections({
           <ShowCode>
             <ShowCode.When isTrue={selectedGroupBy.label === 'job'}>
               <Stack alignItems={'center'} direction={'row'} spacing={'10px'}>
+                
                 <Typography
                   sx={{
                     cursor: 'pointer',
                   }}
-                  fontSize={'14px'}
                 >
                   {capitalizeFirstLetter(item.job)}
                 </Typography>
 
                 <Tooltip title='Task count'>
+                <Stack 
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    backgroundColor: 'var(--neutral-3)',
+                    padding: 'var(--space-1)',
+                    borderRadius: 'var(--radius-full)',
+                    minWidth: 'var(--space-5)',
+                  }}>
                   <Typography
                     sx={{
                       cursor: 'pointer',
                     }}
-                    variant='caption'
-                    fontSize={'14px'}
+                    variant='body2bold'
                   >
                     {item.tasklist.length}
                   </Typography>
+                  </Stack>
                 </Tooltip>
               </Stack>
             </ShowCode.When>
@@ -101,15 +112,24 @@ function GroupSections({
                 />
 
                 <Tooltip title='Task count'>
+                <Stack
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    backgroundColor: 'var(--neutral-3)',
+                    padding: 'var(--space-1)',
+                    borderRadius: 'var(--radius-full)',
+                    minWidth: 'var(--space-5)',
+                  }}>
                   <Typography
                     sx={{
                       cursor: 'pointer',
                     }}
-                    variant='caption'
-                    fontSize={'14px'}
+                    variant='body2bold'
                   >
                     {item.tasklist.length}
                   </Typography>
+                </Stack>
                 </Tooltip>
               </Stack>
             </ShowCode.When>
@@ -121,45 +141,72 @@ function GroupSections({
                 isLowVisible={item.priority === 'low'}
               />{' '}
               <Tooltip title='Task count'>
+              <Stack
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    backgroundColor: 'var(--neutral-3)',
+                    padding: 'var(--space-1)',
+                    borderRadius: 'var(--radius-full)',
+                    minWidth: 'var(--space-5)',
+                  }}>
                 <Typography
                   sx={{
                     cursor: 'pointer',
                   }}
-                  variant='caption'
-                  fontSize={'16px'}
+                  variant='body2bold'
                 >
                   {item.tasklist.length}
                 </Typography>
+              </Stack>
               </Tooltip>
             </ShowCode.When>
             <ShowCode.When isTrue={selectedGroupBy.label === 'status'}>
               Status :
               <StatusChip status={item.status} />
               <Tooltip title='Task count'>
-                <Typography
+                <Stack
                   sx={{
-                    cursor: 'pointer',
-                  }}
-                  variant='caption'
-                  fontSize={'16px'}
-                >
-                  {item.tasklist.length}
-                </Typography>
+                    display: 'flex',
+                    alignItems: 'center',
+                    backgroundColor: 'var(--neutral-3)',
+                    padding: 'var(--space-1)',
+                    borderRadius: 'var(--radius-full)',
+                    minWidth: 'var(--space-5)',
+                  }}>
+                  <Typography
+                    sx={{
+                      cursor: 'pointer',
+                    }}
+                    variant='body2bold'
+                  >
+                    {item.tasklist.length}
+                  </Typography>
+                </Stack>
               </Tooltip>
             </ShowCode.When>
             <ShowCode.When isTrue={selectedGroupBy.label === 'assignee'}>
               Assignee :
               <AssigneeChip assigneeId={item.assignee} />
               <Tooltip title='Task count'>
-                <Typography
+              <Stack
                   sx={{
-                    cursor: 'pointer',
-                  }}
-                  variant='caption'
-                  fontSize={'16px'}
-                >
-                  {item.tasklist.length}
-                </Typography>
+                    display: 'flex',
+                    alignItems: 'center',
+                    backgroundColor: 'var(--neutral-3)',
+                    padding: 'var(--space-1)',
+                    borderRadius: 'var(--radius-full)',
+                    minWidth: 'var(--space-5)',
+                  }}>
+                  <Typography
+                    sx={{
+                      cursor: 'pointer',
+                    }}
+                    variant='body2bold'
+                  >
+                    {item.tasklist.length}
+                  </Typography>
+                </Stack>
               </Tooltip>
             </ShowCode.When>
           </ShowCode>
