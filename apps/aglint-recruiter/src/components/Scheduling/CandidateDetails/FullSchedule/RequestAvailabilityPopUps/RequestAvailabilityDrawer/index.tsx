@@ -23,8 +23,8 @@ import RequestAvailabilityBody from './RequestAvailabilityBody';
 
 function RequestAvailabilityDrawer() {
   const router = useRouter();
+
   const {
-    // selectedRequestAvailability,
     setSelectedDayAvailableBlocks,
     selectedDateSlots,
     selectedIndex,
@@ -188,17 +188,19 @@ export const useRequestAvailabilityDetails = ({
 };
 
 async function getRequestAvailabilityDetails(request_id: string) {
-  // eslint-disable-next-line no-useless-catch
-  try {
-    const { data } = await axios.post(
-      '/api/scheduling/v1/get-candidate-selected-slots',
-      {
-        cand_availability_id: request_id,
-        user_tz: userTzDayjs.tz.guess(),
-      },
-    );
-    return data as PlanCombinationRespType[][][];
-  } catch (error) {
-    throw error;
+  if (request_id) {
+    // eslint-disable-next-line no-useless-catch
+    try {
+      const { data } = await axios.post(
+        '/api/scheduling/v1/get-candidate-selected-slots',
+        {
+          cand_availability_id: request_id,
+          user_tz: userTzDayjs.tz.guess(),
+        },
+      );
+      return data as PlanCombinationRespType[][][];
+    } catch (error) {
+      throw error;
+    }
   }
 }

@@ -27,7 +27,6 @@ import {
 } from '@/src/pages/api/scheduling/application/candidatesessioncache';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
-import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 import toast from '@/src/utils/toast';
 
 import { addScheduleActivity } from '../../Candidates/queries/utils';
@@ -137,7 +136,7 @@ function RequestAvailability() {
         }
       }
 
-      if (router.query?.candidate_request_availability) {
+      if (router.query?.candidate_request_availability !== 'true') {
         await updateCandidateRequestAvailability({
           id: String(router.query?.candidate_request_availability),
           data: {
@@ -185,34 +184,7 @@ function RequestAvailability() {
         fetchInterviewDataByApplication();
 
         // send request availability email to candidate
-        const body = fillEmailTemplate(
-          recruiter.email_template['request_candidate_slot'].body,
-          {
-            company_name: recruiter.name,
-            schedule_name: selectedSessions.map((ele) => ele.name).join(','),
-            first_name: selectedApplication.candidates.first_name,
-            last_name: selectedApplication.candidates.last_name,
-            job_title: selectedApplication.public_jobs.job_title,
-            availability_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${result.id}'>Pick Your Slot</a>`,
-          },
-        );
-        const subject = fillEmailTemplate(
-          recruiter.email_template['request_candidate_slot'].subject,
-          {
-            company_name: recruiter.name,
-            schedule_name: selectedSessions.map((ele) => ele.name).join(','),
-            first_name: selectedApplication.candidates.first_name,
-            last_name: selectedApplication.candidates.last_name,
-            job_title: selectedApplication.public_jobs.job_title,
-          },
-        );
-        await axios.post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
-          fromEmail: `messenger@aglinthq.com`,
-          fromName: 'Aglint',
-          email: selectedApplication.candidates.email,
-          subject: subject,
-          text: body,
-        });
+
         sendEmailToCandidate({
           email: selectedApplication.candidates.email,
           emailBody: recruiter.email_template['request_candidate_slot'].body,
@@ -345,7 +317,7 @@ function RequestAvailability() {
           },
         }}
         isCheckingSlotsVisible={false}
-        isFoundSlots={true}
+        isFoundSlots={false}
         textFoundSlots={`Found 126 slots for the sugeestion`}
         slotCheckingIcon={<GreenBgCheckedIcon />}
         slotReqToggle={availabilityArrayList.map((ele, i) => (
@@ -435,6 +407,7 @@ function RequestAvailability() {
               })
             : null
         }
+        isCheckbox={router.query.candidate_request_availability === 'true'}
         slotCheckboxAvailability={
           <Checkbox
             onChange={(e) => {

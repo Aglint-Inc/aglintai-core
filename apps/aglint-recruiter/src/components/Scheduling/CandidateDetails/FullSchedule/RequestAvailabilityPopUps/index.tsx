@@ -1,5 +1,6 @@
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -34,8 +35,7 @@ function RequestAvailabilityPopUps() {
     });
   }
 
-  function handleRequestAgain(request_id:string, ids: string[]) {
-    setRequestSessionIds(ids);
+  function handleRequestAgain(request_id: string) {
     const currentPath = router.pathname;
     const currentQuery = router.query;
     const updatedQuery = {
@@ -48,11 +48,18 @@ function RequestAvailabilityPopUps() {
     });
   }
 
+  useEffect(() => {
+    const selectedRequest = availabilities?.find((item) => {
+      return item.id == router.query?.candidate_request_availability;
+    });
+    if (selectedRequest)
+      setRequestSessionIds(selectedRequest.session_ids.map((ele) => ele.id));
+  }, [router.query?.candidate_request_availability]);
   return (
     <div>
       <RequestAvailabilityDrawer />
       <Stack direction={'column'} gap={1}>
-        {availabilities.length > 0 &&
+        {availabilities &&
           availabilities.map((item) => {
             return (
               <>
@@ -94,7 +101,9 @@ function RequestAvailabilityPopUps() {
                             size={1}
                             onClickButton={{
                               onClick: () => {
-                                navigator.clipboard.writeText(item.id);
+                                navigator.clipboard.writeText(
+                                  `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${item.id}`,
+                                );
                                 toast.message('Invited link copied!');
                               },
                             }}
@@ -139,11 +148,7 @@ function RequestAvailabilityPopUps() {
                             isRightIcon={false}
                             size={1}
                             onClickButton={{
-                              onClick: () =>
-                                handleRequestAgain(
-                                  item.id,
-                                  item.session_ids.map((ele) => ele.id),
-                                ),
+                              onClick: () => handleRequestAgain(item.id),
                             }}
                           />
                         </>

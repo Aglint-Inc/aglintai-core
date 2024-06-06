@@ -28,6 +28,10 @@ function RequestAvailabilityList() {
       slotButton={
         <>
           <ButtonSolid
+            isDisabled={
+              selectedTask.candidate_request_availability.booking_confirmed ||
+              !selectedTask.candidate_request_availability.slots
+            }
             textButton={'Schedule'}
             isLoading={false}
             isLeftIcon={false}
@@ -42,6 +46,10 @@ function RequestAvailabilityList() {
             }}
           />
           <ButtonSoft
+            isDisabled={
+              selectedTask.candidate_request_availability.booking_confirmed ||
+              !selectedTask.candidate_request_availability.slots
+            }
             textButton={'Request again'}
             isLoading={false}
             isLeftIcon={false}
