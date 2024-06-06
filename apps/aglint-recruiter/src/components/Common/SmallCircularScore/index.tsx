@@ -1,7 +1,5 @@
 import { Stack } from '@mui/material';
 
-import { palette } from '@/src/context/Theme/Theme';
-
 export const SmallCircularScore = ({
   score,
   scale = 1,
@@ -20,7 +18,7 @@ export const SmallCircularScore = ({
   };
   const yellow = {
     score: '#703815',
-    border: palette.yellow[700],
+    border: 'var(--warning-6)',
     background: '#FFF7ED',
   };
   const red = {

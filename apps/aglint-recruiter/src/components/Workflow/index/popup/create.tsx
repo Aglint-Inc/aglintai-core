@@ -47,6 +47,7 @@ const Create = () => {
           textPopupTitle={'Create Workflow'}
           textPopupButton={'Create Workflow'}
           slotWidget={<Form />}
+          textPopupDescription={'Enter the name for workflow. Next, you will be able to add steps to the workflow.'}
         />
       </Dialog>
     </>

@@ -251,7 +251,7 @@ export default Support;
 //       slotIssue={
 //         <LineText
 //           line='two'
-//           color={palette.grey[600]}
+//           color={'var(--neutral-11)'}
 //           text={
 //             ticket.content?.length
 //               ? // @ts-ignore
@@ -376,7 +376,7 @@ export default Support;
 //       textAssigneeName={
 //         <LineText
 //           line='one'
-//           color={palette.grey[600]}
+//           color={'var(--neutral-11)'}
 //           text={assign_to || 'Not Assigned'}
 //         />
 //       }

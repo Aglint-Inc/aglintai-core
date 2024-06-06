@@ -5,7 +5,6 @@ import posthog from 'posthog-js';
 
 import { Checkbox } from '@/devlink/Checkbox';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
@@ -130,7 +129,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
       <Stack>
         <UITypography
           type={'small'}
-          color={palette.grey[800]}
+          color={'var(--neutral-12)'}
           fontBold='default'
         >
           Employment Type
@@ -209,7 +208,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
                 <Stack direction={'row'} spacing={'4px'}>
                   <Typography
                     variant='body1'
-                    sx={{ cursor: 'pointer', color: palette.grey[800] }}
+                    sx={{ cursor: 'pointer', color: 'var(--neutral-12)' }}
                     onClick={() => {
                       recruiter.workplace_type[type[0]] = !type[1];
                       handleChange({ ...recruiter });

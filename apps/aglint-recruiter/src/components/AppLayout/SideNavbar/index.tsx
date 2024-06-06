@@ -95,6 +95,14 @@ function SideNavbar() {
       roles: ['admin', 'recruiter', 'recruiting_coordinator', 'interviewer'],
     },
     {
+      text: 'Workflows',
+      SubComponents: null,
+      route: ROUTES['/workflows'](),
+      comingsoon: false,
+      isvisible: true,
+      roles: ['admin', 'recruiter'],
+    },
+    {
       text: 'Sourcing Hub',
       SubComponents: null,
       route: ROUTES['/candidates/history'](),
@@ -118,7 +126,6 @@ function SideNavbar() {
       isvisible: isAssistantEnabled,
       roles: ['admin'],
     },
-
     {
       text: 'Phone Screening',
       SubComponents: null,
@@ -151,14 +158,6 @@ function SideNavbar() {
       comingsoon: false,
       isvisible: true,
       roles: ['admin'],
-    },
-    {
-      text: 'Workflows',
-      SubComponents: null,
-      route: ROUTES['/workflows'](),
-      comingsoon: false,
-      isvisible: true,
-      roles: ['admin', 'recruiter'],
     },
   ];
 
