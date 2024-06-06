@@ -7,8 +7,10 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GeneralBanner } from '@/devlink/GeneralBanner';
 import Icon from '@/src/components/Common/Icons/Icon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
 
+import { sendEmailToCandidate } from '../../RequestAvailability/RequestAvailabilityContext';
 import {
   setRequestSessionIds,
   useSchedulingApplicationStore,
@@ -18,7 +20,9 @@ import RequestAvailabilityDrawer from './RequestAvailabilityDrawer';
 
 function RequestAvailabilityPopUps() {
   const router = useRouter();
-  const { availabilities } = useSchedulingApplicationStore();
+  const { recruiter } = useAuthDetails();
+  const { availabilities, selectedApplication } =
+    useSchedulingApplicationStore();
 
   const { setSelectedRequestAvailability } = useAvailabilityContext();
 
@@ -92,6 +96,35 @@ function RequestAvailabilityPopUps() {
                             isLeftIcon={false}
                             isRightIcon={false}
                             size={1}
+                            onClickButton={{
+                              onClick: () => {
+                                sendEmailToCandidate({
+                                  email: selectedApplication.candidates.email,
+                                  emailBody:
+                                    recruiter.email_template[
+                                      'request_candidate_slot'
+                                    ].body,
+                                  emailSubject:
+                                    recruiter.email_template[
+                                      'request_candidate_slot'
+                                    ].subject,
+                                  first_name:
+                                    selectedApplication.candidates.first_name,
+                                  last_name:
+                                    selectedApplication.candidates.last_name,
+                                  job_title:
+                                    selectedApplication.public_jobs.job_title,
+                                  recruiter,
+                                  sessionNames: item.session_ids.map(
+                                    (ele) => ele.name,
+                                  ),
+                                  request_id: item.id,
+                                });
+                                toast.message(
+                                  'Resend invited link sent successfully!',
+                                );
+                              },
+                            }}
                           />
                           <ButtonSoft
                             textButton={'Copy invite'}

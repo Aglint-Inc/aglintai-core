@@ -137,7 +137,7 @@ function RequestAvailability() {
       }
 
       if (router.query?.candidate_request_availability !== 'true') {
-        await updateCandidateRequestAvailability({
+        const result = await updateCandidateRequestAvailability({
           id: String(router.query?.candidate_request_availability),
           data: {
             availability: availability,
@@ -147,6 +147,19 @@ function RequestAvailability() {
             slots: null,
           },
         });
+        sendEmailToCandidate({
+          email: selectedApplication.candidates.email,
+          emailBody: recruiter.email_template['request_candidate_slot'].body,
+          emailSubject:
+            recruiter.email_template['request_candidate_slot'].subject,
+          first_name: selectedApplication.candidates.first_name,
+          last_name: selectedApplication.candidates.last_name,
+          job_title: selectedApplication.public_jobs.job_title,
+          recruiter,
+          sessionNames: selectedSessions.map((ele) => ele.name),
+          request_id: result.id,
+        });
+        toast.message('Request sent successfully!');
       } else {
         const result = await insertCandidateRequestAvailability({
           application_id: selectedApplication.id,
@@ -197,6 +210,7 @@ function RequestAvailability() {
           sessionNames: selectedSessions.map((ele) => ele.name),
           request_id: result.id,
         });
+        toast.message('Request sent successfully!');
         // end
         let task = null as null | DatabaseTable['new_tasks'];
         if (markCreateTicket) {
