@@ -5,10 +5,10 @@ import {
 } from '../../../utils/apiUtils/customErrors';
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
-import { sendMail } from '../../../config/sendgrid';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
 import InitEmailAgent from '../../../utils/email/init_email_agent/fetch';
 import type { FilledPayload } from '../../../utils/types/apiTypes';
+import sendMail from '../../../config/sendgrid';
 
 interface ReqPayload {
   meeting_id: string;
@@ -102,7 +102,6 @@ export async function POST(req: Request) {
     }
   }
 }
-
 
 // {
 //     "meeting_id": "8daab34c-9c19-445b-aa96-3b4735307414",
