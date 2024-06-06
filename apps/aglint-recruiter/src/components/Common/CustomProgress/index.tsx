@@ -1,11 +1,10 @@
-import { palette } from '@context/Theme/Theme';
 import PropTypes from 'prop-types';
 
 function CustomProgress({
   size = 10,
   strokeWidth,
   fillColor,
-  bgFill = palette.grey[200],
+  bgFill = 'var(--neutral-1)',
   bgColor,
   fontSize,
   label,
@@ -17,7 +16,7 @@ function CustomProgress({
   let filled = progress < 1 ? progress : progress / 100;
   // filled = filled * 0.75;
   strokeWidth = strokeWidth ? strokeWidth : (size * 2) / 10;
-  fillColor = fillColor ? fillColor : palette.blue[500];
+  fillColor = fillColor ? fillColor : 'var(--accent-9)';
   fontSize = fontSize ? fontSize : `${size / 3}px`;
   return (
     <div

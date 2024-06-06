@@ -33,7 +33,7 @@ function InstructionsComp({ editModule }: { editModule: ModuleType }) {
         // sx={{
         //   mt: '8px',
         //   border: '1px solid',
-        //   borderColor: palette.grey[300],
+        //   borderColor: 'var(neutral-6)',
         //   borderRadius: '4px',
         //   maxHeight: '600px',
         //   overflow: 'auto',

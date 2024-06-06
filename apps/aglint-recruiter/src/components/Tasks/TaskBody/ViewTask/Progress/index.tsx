@@ -1,4 +1,3 @@
-import { DatabaseTable } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Stack, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -39,11 +38,7 @@ function SubTaskProgress() {
   const today = dayjs();
   const selectedTask = tasks.find((ele) => ele.id === router.query?.task_id);
   const { data: sessionList } = useSessionsList();
-  const dateSlots = (
-    selectedTask.candidate_request_availability?.slots
-      ? selectedTask.candidate_request_availability?.slots
-      : []
-  ) as DatabaseTable['candidate_request_availability']['slots'];
+ 
   return (
     <>
       <FollowUp />
@@ -295,14 +290,7 @@ function SubTaskProgress() {
                             item.progress_type === 'request_availability_list'
                           }
                         >
-                          {dateSlots.map((dateSlot, i) => {
-                            return (
-                              <RequestAvailabilityList
-                                key={i}
-                                dateSlots={dateSlot}
-                              />
-                            );
-                          })}
+                          <RequestAvailabilityList />
                         </ShowCode.When>
                       </ShowCode>
                     }

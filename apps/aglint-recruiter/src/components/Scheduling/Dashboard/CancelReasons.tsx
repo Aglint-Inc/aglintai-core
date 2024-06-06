@@ -50,21 +50,15 @@ const CancelReasons = () => {
         />
       }
       slotReasonGraph={
-        <Stack
-          p={1}
-          sx={{
-            bgcolor: '#F7F9FB',
-            borderRadius: '16px',
-          }}
-        >
+        <Stack>
           <Stack alignItems={'center'} justifyContent={'space-around'} gap={3}>
-            <Stack height={'225px'}>
+            <Stack height={'224px'}>
               <DoughnutChart locations={chartData} fixedHeight={true} />
             </Stack>
             <Stack
               gap={1}
               width={'100%'}
-              maxHeight={'50px'}
+              maxHeight={'48px'}
               overflow={'scroll'}
             >
               {chartData.map(({ color, count, name }, i) => {
@@ -89,10 +83,10 @@ const CancelReasons = () => {
                         variant='body1'
                         sx={{
                           textWrap: 'nowrap',
-                          textTransform: 'capitalize',
+                          // textTransform: 'capitalize',
                         }}
                       >
-                        {capitalizeFirstLetter(name)}
+                        {name}
                       </Typography>
                     </Stack>
                     <Typography variant='body1'>

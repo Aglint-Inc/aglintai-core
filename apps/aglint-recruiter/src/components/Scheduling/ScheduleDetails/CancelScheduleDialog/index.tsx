@@ -6,7 +6,6 @@ import React, { Dispatch, useEffect, useState } from 'react';
 import { Checkbox } from '@/devlink/Checkbox';
 import { DeletePopup } from '@/devlink3/DeletePopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { ApiBodyParamsCancelSchedule } from '@/src/pages/api/scheduling/application/cancelschedule';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -102,7 +101,7 @@ function CancelScheduleDialog({
                     spacing={1}
                   >
                     <Checkbox isChecked={rea === reason} />
-                    <Typography variant='body1' color={palette.grey[800]}>
+                    <Typography variant='body1' color={'var(--neutral-12)'}>
                       {rea}
                     </Typography>
                   </Stack>

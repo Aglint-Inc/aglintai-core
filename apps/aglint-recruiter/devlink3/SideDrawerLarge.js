@@ -2,7 +2,8 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { SlotComp } from "./SlotComp";
-import { ButtonSurface } from "./ButtonSurface";
+import { ButtonSoft } from "./ButtonSoft";
+import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./SideDrawerLarge.module.css";
 
@@ -18,6 +19,8 @@ export function SideDrawerLarge({
   isBottomBar = true,
   slotSideDrawerIcon,
   onClickBack = {},
+  isDisabled = false,
+  isLoading = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "large_sidedrawer")} tag="div">
@@ -66,13 +69,11 @@ export function SideDrawerLarge({
               className={_utils.cx(_styles, "wide_button", "width-100")}
               tag="div"
             >
-              <ButtonSurface
+              <ButtonSoft
                 onClickButton={onClickBack}
-                isLeftIcon={false}
-                isRightIcon={false}
                 color="neutral"
-                size="3"
                 textButton="Back"
+                size="2"
               />
             </_Builtin.Block>
             <_Builtin.Block
@@ -88,23 +89,13 @@ export function SideDrawerLarge({
               )}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "button_primary", "large_btn")}
-                tag="div"
-                {...onClickPrimary}
-              >
-                <_Builtin.Block tag="div">{textPrimaryButton}</_Builtin.Block>
-                {isSelectedNumber ? (
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "selected_number")}
-                    tag="div"
-                  >
-                    <_Builtin.Block tag="div">
-                      {textSelectedNumber}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                ) : null}
-              </_Builtin.Block>
+              <ButtonSolid
+                textButton={textPrimaryButton}
+                isDisabled={isDisabled}
+                isLoading={isLoading}
+                onClickButton={onClickPrimary}
+                size="2"
+              />
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

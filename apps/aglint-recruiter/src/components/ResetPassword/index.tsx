@@ -285,7 +285,7 @@ export default function ResetPasswordComponent() {
             </Stack>
             <Button
               variant='contained'
-              color='info'
+              color='primary'
               size='medium'
               // onClick={handleSubmit}
               type='submit'
