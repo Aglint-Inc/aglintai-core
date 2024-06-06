@@ -4,12 +4,10 @@ export type APIWorkFlowCron = {
   request: {
     workflow_id: string;
     workflow_action_id: string;
-    meta:
-      | {
-          application_id: string;
-          email_type: 'debrief_calendar_invite';
-        }
-      | {};
+    meta: {
+      application_id: string;
+      email_type: DatabaseEnums['email_types'];
+    };
     payload: DatabaseTable['workflow_action']['payload'];
     execution_time: string;
   };
