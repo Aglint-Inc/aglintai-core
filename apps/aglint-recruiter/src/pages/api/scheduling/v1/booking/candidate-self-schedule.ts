@@ -30,8 +30,8 @@ type CandidateDirectBookingType = v.InferOutput<
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const parsed = v.parse(schema_candidate_direct_booking, req.body);
-    const { filter_json_data } = await fetchDBScheduleDetails(parsed.filter_id);
-
+    const schedule_db_details = await fetchDBScheduleDetails(parsed.filter_id);
+    const { filter_json_data } = schedule_db_details;
     const interviewer_selected_options =
       filter_json_data.selected_options as PlanCombinationRespType[];
 
@@ -39,9 +39,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       interviewer_selected_options,
       parsed,
     );
+
     const zod_options = scheduling_options_schema.parse({
       include_conflicting_slots: {},
     });
+
     const cand_schedule = new CandidatesSchedulingV2(
       {
         candidate_tz: parsed.cand_tz,
@@ -54,18 +56,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       zod_options,
     );
+
     await cand_schedule.fetchDetails();
+
     await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
-    //TODO: verified
-    // const verified_plans =
-    //   cand_schedule.verifyIntSelectedSlots(cand_filtered_plans);
-    // if (verified_plans.length === 0) {
-    //   throw new Error('Requested plan does not exist');
-    // }
+    const verified_plans =
+      cand_schedule.verifyIntSelectedSlots(cand_filtered_plans);
+    if (verified_plans.length === 0) {
+      throw new Error('Requested plan does not exist');
+    }
     const details = await bookInterviewPlan(
       cand_schedule,
-      cand_filtered_plans[0],
-      filter_json_data,
+      verified_plans[0],
+      schedule_db_details,
     );
     return res.status(200).json(details);
   } catch (err) {
