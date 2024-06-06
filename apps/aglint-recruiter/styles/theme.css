@@ -449,6 +449,13 @@
     --chart-element-9: var(--chart-color-9);
     --chart-element-10: var(--chart-color-10);
     
+
+    /* Interview progres colors */
+    --status-waiting: #FFB057;
+    --status-confirmed: #5293C7;
+    --status-completed: #5EAE91;
+    --status-cancelled: #E35B66;
+    --status-default: #D8DCDE;
   }
   
   body {
