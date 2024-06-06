@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./CandidateExperienceCard.module.css";
 
@@ -21,7 +22,7 @@ export function CandidateExperienceCard({
     >
       {isLogoVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-791")}
+          className={_utils.cx(_styles, "cec-logo-wrap")}
           tag="div"
         >
           <_Builtin.Block
@@ -32,46 +33,25 @@ export function CandidateExperienceCard({
           </_Builtin.Block>
           {isCurrentVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-790")}
+              className={_utils.cx(_styles, "cec-current-wrap")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-xsm")}
-                tag="div"
-              >
-                {"Current"}
-              </_Builtin.Block>
+              <Text size="1" content="Current" />
             </_Builtin.Block>
           ) : null}
         </_Builtin.Block>
       ) : null}
       <_Builtin.Block
-        className={_utils.cx(_styles, "cvs-company-info-block")}
+        className={_utils.cx(
+          _styles,
+          "cvs-company-info-block",
+          "one-line-clamp"
+        )}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "one-line-clamp")}
-          tag="div"
-        >
-          {textRole}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-600", "one-line-clamp")}
-          tag="div"
-        >
-          {textCompany}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "text-sm",
-            "fw-semibold",
-            "text-grey-500"
-          )}
-          tag="div"
-        >
-          {textDate}
-        </_Builtin.Block>
+        <Text content={textRole} />
+        <Text content={textCompany} color="neutral" size="2" />
+        <Text content={textDate} size="1" color="neutral" weight="medium" />
       </_Builtin.Block>
       {isBadgeVisible ? (
         <_Builtin.Block className={_utils.cx(_styles, "book-badge")} tag="div">

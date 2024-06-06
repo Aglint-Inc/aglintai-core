@@ -13,26 +13,39 @@ export function ScoreSetting({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "score-setting-wrap", "padd-20")}
+      className={_utils.cx(_styles, "score-setting-wrapper")}
       tag="div"
     >
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-713")} tag="div">
-        <Text content="Profile Score" weight="bold" />
-        <Text content="Setup scoring criteria encompassing experience, skills, and education. Specify necessary criteria in each section, and our system will generate a candidate score by comparing it with the details provided in their resume." />
+      <_Builtin.Block
+        className={_utils.cx(_styles, "score-setting-header")}
+        tag="div"
+      >
+        <Text content="Profile Score" weight="medium" />
+        <Text
+          content="Setup scoring criteria encompassing experience, skills, and education. Specify necessary criteria in each section, and our system will generate a candidate score by comparing it with the details provided in their resume."
+          weight=""
+          color="neutral"
+        />
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-934")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "score-setting-banner")}
+        tag="div"
+      >
         {slotBanner}
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-661")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "score-setting-indicator")}
+        tag="div"
+      >
         <_Builtin.Block
           className={_utils.cx(_styles, "indicate-wrap")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "indicator-box", "must-have")}
+            className={_utils.cx(_styles, "indicator-box", "blue-200")}
             tag="div"
           />
-          <Text content="Must have" />
+          <_Builtin.Block tag="div">{"Must have"}</_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "indicate-wrap")}
@@ -42,7 +55,7 @@ export function ScoreSetting({
             className={_utils.cx(_styles, "indicator-box", "grey-200")}
             tag="div"
           />
-          <Text content="Nice to have" />
+          <_Builtin.Block tag="div">{"Nice to have"}</_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

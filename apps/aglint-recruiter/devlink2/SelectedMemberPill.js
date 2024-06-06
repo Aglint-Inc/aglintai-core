@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./SelectedMemberPill.module.css";
 
@@ -20,16 +21,7 @@ export function SelectedMemberPill({
     >
       <_Builtin.Block className={_utils.cx(_styles, "avatar_block")} tag="div">
         <_Builtin.Block className={_utils.cx(_styles, "slot_avatar")} tag="div">
-          {slotMemberAvatar ?? (
-            <_Builtin.Image
-              className={_utils.cx(_styles, "cover_image")}
-              loading="lazy"
-              width="auto"
-              height="auto"
-              alt=""
-              src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/660575d2376f14b089565d8b_IMG_1491.jpg"
-            />
-          )}
+          {slotMemberAvatar ?? <SlotComp componentName="Avatar" />}
         </_Builtin.Block>
         {isShadow ? (
           <_Builtin.HtmlEmbed

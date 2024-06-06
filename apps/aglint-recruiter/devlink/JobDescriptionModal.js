@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./JobDescriptionModal.module.css";
 
@@ -13,9 +14,7 @@ export function JobDescriptionModal({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "candidate-job-modal")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-        {"Paste your job description"}
-      </_Builtin.Block>
+      <Text content="Paste your job description" weight="medium" />
       <_Builtin.Block
         className={_utils.cx(_styles, "slot-input-job-description")}
         tag="div"

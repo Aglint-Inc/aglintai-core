@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { NewInterviewModuleCard } from "./NewInterviewModuleCard";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./NewInterviewModule.module.css";
 
@@ -33,10 +33,12 @@ export function NewInterviewModule({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1068")}
+        className={_utils.cx(_styles, "slot_intervoew_module_card")}
         tag="div"
       >
-        {slotNewInterviewModuleCard ?? <NewInterviewModuleCard />}
+        {slotNewInterviewModuleCard ?? (
+          <SlotComp componentName="NewInterviewerModuleCard" />
+        )}
       </_Builtin.Block>
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "hide")}

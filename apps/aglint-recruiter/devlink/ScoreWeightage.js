@@ -1,8 +1,9 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { ScorePercentage } from "./ScorePercentage";
-import { ButtonOutlinedRegular } from "./ButtonOutlinedRegular";
+import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./ScoreWeightage.module.css";
 
@@ -13,17 +14,15 @@ export function ScoreWeightage({
   onClickEqualize = {},
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-936")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "score-weightage-wrap")}
+      tag="div"
+    >
       <_Builtin.Block
         className={_utils.cx(_styles, "right-score-card")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "fw-semibold", "text-align-center")}
-          tag="div"
-        >
-          {"Score Weightage"}
-        </_Builtin.Block>
+        <Text content="Score Weightage" weight="medium" align="center" />
         <_Builtin.Block
           className={_utils.cx(_styles, "slot-score-wrap")}
           tag="div"
@@ -31,22 +30,22 @@ export function ScoreWeightage({
           {slotScoreWheel}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-664")}
+          className={_utils.cx(_styles, "sw-slot-score")}
           tag="div"
         >
           {slotScorePercent ?? <ScorePercentage />}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-665")}
+          className={_utils.cx(_styles, "sw-button-wrap")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-666")}
-            tag="div"
-          >
-            <_Builtin.Block tag="div" {...onClickEqualize}>
-              <ButtonOutlinedRegular textLabel="Reset" />
-            </_Builtin.Block>
+          <_Builtin.Block tag="div" {...onClickEqualize}>
+            <ButtonSolid
+              isRightIcon={false}
+              isLeftIcon={false}
+              size="2"
+              textButton="Reset"
+            />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

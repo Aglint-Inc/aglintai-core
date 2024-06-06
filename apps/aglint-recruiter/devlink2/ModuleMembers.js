@@ -22,10 +22,10 @@ export function ModuleMembers({
           className={_utils.cx(_styles, "mm-header-wrap")}
           tag="div"
         >
-          <Text content="Qualified" />
+          <Text content="Qualified Members" />
           <ButtonSurface
             onClickButton={onClickAddMember}
-            size="2"
+            size="1"
             textButton="Add"
             isRightIcon={false}
             isLeftIcon={false}
@@ -35,7 +35,13 @@ export function ModuleMembers({
           className={_utils.cx(_styles, "mm-slot-list-card")}
           tag="div"
         >
-          {slotQualifiedMemberList ?? <MemberListCard />}
+          {slotQualifiedMemberList ?? (
+            <>
+              <MemberListCard />
+              <MemberListCard />
+              <MemberListCard />
+            </>
+          )}
         </_Builtin.Block>
       </_Builtin.Block>
       {isMembersTrainingVisible ? (
@@ -47,7 +53,7 @@ export function ModuleMembers({
             <Text content="Members in training" />
             <ButtonSurface
               onClickButton={onClickAddTrainee}
-              size="2"
+              size="1"
               textButton="Add"
               isRightIcon={false}
               isLeftIcon={false}
@@ -57,7 +63,13 @@ export function ModuleMembers({
             className={_utils.cx(_styles, "mm-slot-list-card")}
             tag="div"
           >
-            {slotMembersInTraining ?? <MemberListCard />}
+            {slotMembersInTraining ?? (
+              <>
+                <MemberListCard />
+                <MemberListCard />
+                <MemberListCard />
+              </>
+            )}
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}

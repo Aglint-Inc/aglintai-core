@@ -41,6 +41,10 @@
   z-index: 2;
 }
 
+.flex_hr_10.disabled_text {
+  color: var(--neutral-9);
+}
+
 .wi_icon {
   width: 20px;
   height: 20px;
@@ -48,7 +52,9 @@
 
 .embed_flex {
   display: flex;
+  overflow: hidden;
   align-items: center;
+  cursor: pointer;
 }
 
 .embed_flex.hide {

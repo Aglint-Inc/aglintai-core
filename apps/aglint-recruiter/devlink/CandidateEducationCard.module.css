@@ -2,12 +2,12 @@
   position: relative;
 
   display: flex;
-  padding: 10px;
+  padding: var(--space-2);
   align-items: center;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
 
-  border-radius: 4px;
+  border-radius: var(--radius-2);
 }
 
 .cvs-school-info-block {
@@ -21,191 +21,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
-}
-
-.text-grey-600 {
-  color: var(--grey600-d5bebe21);
-}
-
-.max-width-500 {
-  max-width: 500px;
-}
-
-.fw-semibold {
-  font-weight: 600;
-}
-
-.text-grey-600.mt-5 {
-  margin-top: 5px;
-}
-
-.mt-5 {
-  margin-top: 5px;
-}
-
-.inline-text {
-  display: inline;
-}
-
-.cursor-pointer {
-  transition: opacity 200ms ease;
-  cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.7;
-}
-
-.text-sm-2 {
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.text-grey-600.mt-9 {
-  margin-top: 9px;
-}
-
-.mt-9 {
-  margin-top: 9px;
-}
-
-.text-grey-600.text-grow {
-  white-space: nowrap;
-}
-
-.text-grow {
-  flex: 0 0 auto;
-}
-
-.text-sm-default {
-  font-size: 12px;
-  line-height: 1.3333333333333333;
-  letter-spacing: 0px;
-}
-
-.mt-10 {
-  margin-top: 10px;
-}
-
-.text-grey-600.mt-4 {
-  margin-top: 4px;
-}
-
-.mt-4 {
-  margin-top: 4px;
-}
-
-@media screen and (max-width: 479px) {
-  .text-grey-600.mob {
-    font-size: 12px;
-  }
-}
-
-.text-sm {
-  font-size: 12px;
-  line-height: 1.4;
-}
-
-.color-grey-500 {
-  color: var(--grey500-0d508ad8);
-}
-
-.text-green-500 {
-  color: var(--green500-287ff474);
-}
-
-.text-kale-800 {
-  color: var(--kale800-682c1482);
-}
-
-.color-black {
-  color: var(--black-0fdbd865);
-}
-
-.text-yellow-600 {
-  color: var(--yellow600-1478b5f5);
-}
-
-.text-blue-500 {
-  color: var(--blue500-72579298);
-}
-
-.text-yellow-800 {
-  color: var(--yellow800-b1e3bc9b);
-}
-
-.text-grey-500 {
-  color: var(--grey500-0d508ad8);
-}
-
-.color-white {
-  color: var(--white-80449ce7);
-}
-
-.color-grey-600 {
-  color: #68737d;
-}
-
-.text-green-800 {
-  color: var(--green800-a83af583);
-}
-
-.text-blue-600 {
-  color: var(--blue600-aad8d97e);
-}
-
-.text-kale-600 {
-  color: var(--kale600-c60cbc05);
-}
-
-.clickable {
-  transition: all 300ms ease;
-  cursor: pointer;
-}
-
-.clickable:hover {
-  opacity: 0.8;
-}
-
-.text-grey-400 {
-  color: var(--grey400-863ed4b5);
-}
-
-.text-sm.text-grey-500.width-ticket-d {
-  width: 49.91667175292969px;
-}
-
-.color-blue-600 {
-  color: var(--blue600-aad8d97e);
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
-}
-
-.text-capitalize {
-  text-transform: uppercase;
-}
-
-.text-color-white {
-  color: white;
-}
-
-.text-blue-800 {
-  color: var(--blue800-09c1dfbf);
-}
-
-.text-red-500 {
-  color: var(--red500-2e806c7d);
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .book-badge {
@@ -222,8 +39,8 @@
   justify-content: center;
   align-items: center;
 
-  border: 1px solid #e9ebed;
-  border-radius: 100px;
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-full);
 
-  background-color: white;
+  background-color: var(--white);
 }

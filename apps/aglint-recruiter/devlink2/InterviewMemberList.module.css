@@ -27,6 +27,7 @@
 
 .im-detail-wrap {
   display: flex;
+  height: 84px;
   padding-bottom: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
@@ -135,7 +136,7 @@
   padding-top: var(--space-1);
 }
 
-.max-width-700 {
+.type_description {
   max-width: 700px;
 }
 

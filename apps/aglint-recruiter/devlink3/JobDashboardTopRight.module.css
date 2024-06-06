@@ -115,11 +115,6 @@
   background-color: var(--accent-9);
 }
 
-.button_primary.large_btn {
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
 .button_primary.large_btn-copy {
   position: relative;
   overflow: hidden;
@@ -130,7 +125,9 @@
 
 .embed_flex {
   display: flex;
+  overflow: hidden;
   align-items: center;
+  cursor: pointer;
 }
 
 .embed_flex.hide {

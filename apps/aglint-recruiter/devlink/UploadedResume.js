@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { UploadedResumeList } from "./UploadedResumeList";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./UploadedResume.module.css";
 
@@ -16,7 +17,10 @@ export function UploadedResume({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "upload-resume-list")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-611")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "upload-resume-body")}
+        tag="div"
+      >
         {slotUploadResumeList ?? <UploadedResumeList />}
       </_Builtin.Block>
       <_Builtin.Block
@@ -25,15 +29,10 @@ export function UploadedResume({
       >
         <_Builtin.Block tag="div">{slotSecondaryButton}</_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-817")}
+          className={_utils.cx(_styles, "upload-resume-bottom-right")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "color-grey-600")}
-            tag="div"
-          >
-            {textCountDocument}
-          </_Builtin.Block>
+          <Text content={textCountDocument} color="neutral" />
           <_Builtin.Block tag="div">{slotPrimaryButton}</_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

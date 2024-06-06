@@ -1,8 +1,8 @@
-.div-block-717 {
+.jwl-wrap {
   display: flex;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .icons {
@@ -123,12 +123,4 @@
 .icons.start {
   justify-content: center;
   align-items: flex-start;
-}
-
-.text-yellow-800 {
-  color: var(--yellow800-b1e3bc9b);
-}
-
-.fw-semibold {
-  font-weight: 600;
 }

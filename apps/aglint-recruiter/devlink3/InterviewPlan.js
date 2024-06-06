@@ -4,6 +4,8 @@ import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
 import { InterviewModuleCard } from "./InterviewModuleCard";
 import { InterviewBreakCard } from "./InterviewBreakCard";
+import { AddScheduleCard } from "./AddScheduleCard";
+import { GeneralScheduleCard } from "./GeneralScheduleCard";
 import * as _utils from "./utils";
 import _styles from "./InterviewPlan.module.css";
 
@@ -26,7 +28,7 @@ export function InterviewPlan({
         {slotInterviewCoordinator}
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "title_wrap")} tag="div">
-        <Text />
+        <Text content="Interview plan for this job" weight="medium" />
         <Text
           weight=""
           content="Add your interview type to form an interview plan. You can find your interview type in scheduler"
@@ -63,9 +65,11 @@ export function InterviewPlan({
           <>
             <InterviewModuleCard />
             <InterviewBreakCard />
+            <AddScheduleCard isAddSessionOptionVisible={false} />
           </>
         )}
       </_Builtin.Block>
+      <GeneralScheduleCard />
     </_Component>
   );
 }

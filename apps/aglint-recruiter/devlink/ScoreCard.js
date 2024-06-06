@@ -3,7 +3,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { ScorePillNice } from "./ScorePillNice";
 import { ScorePillMust } from "./ScorePillMust";
-import { ButtonSoft } from "./ButtonSoft";
+import { AddButton } from "./AddButton";
 import * as _utils from "./utils";
 import _styles from "./ScoreCard.module.css";
 
@@ -49,14 +49,7 @@ export function ScoreCard({
         )}
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "div-block-701")} tag="div">
-        {slotAddButton ?? (
-          <ButtonSoft
-            isLeftIcon={false}
-            isRightIcon={false}
-            size="2"
-            textButton="Add required skills"
-          />
-        )}
+        {slotAddButton ?? <AddButton />}
       </_Builtin.Block>
     </_Component>
   );

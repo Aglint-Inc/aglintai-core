@@ -14,15 +14,15 @@ export function InterviewResultStatus({
   return (
     <_Component className={_utils.cx(_styles, "jd-analysis-wrap")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-774", "width-100")}
+        className={_utils.cx(_styles, "jd-analysis-header-wrap", "width-100")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-781")}
+          className={_utils.cx(_styles, "jd-analysis-header-left")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-773")}
+            className={_utils.cx(_styles, "jd-analysis-title")}
             tag="div"
           >
             <_Builtin.HtmlEmbed
@@ -38,12 +38,12 @@ export function InterviewResultStatus({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-782")}
+          className={_utils.cx(_styles, "jd-analysis-right")}
           tag="div"
         >
           <_Builtin.Block tag="div">{slotAssessmentScore}</_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-780")}
+            className={_utils.cx(_styles, "dropdown-icon-wrap")}
             tag="div"
             {...onClickIcons}
           >

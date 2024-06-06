@@ -21,15 +21,7 @@
   background-color: white;
 }
 
-.div-block-1329.static {
-  position: static;
-}
-
-.div-block-1329.static.width-180 {
-  width: 180px;
-}
-
-.div-block-1331 {
+.add-plan-links {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -39,20 +31,22 @@
   grid-row-gap: 12px;
 }
 
-.div-block-1330 {
+.add_plan_link {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
+
+  cursor: pointer;
 }
 
-.div-block-1330.cursor-pointer {
+.add_plan_link.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
 }
 
-.div-block-1330.cursor-pointer:hover {
+.add_plan_link.cursor-pointer:hover {
   opacity: 0.8;
 }
 

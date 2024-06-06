@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { InterviewScreenCard } from "./InterviewScreenCard";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./InterviewMemberSide.module.css";
 
@@ -106,7 +106,7 @@ export function InterviewMemberSide({
         tag="div"
         {...propsGrids}
       >
-        {slotInterviewCard ?? <InterviewScreenCard />}
+        {slotInterviewCard ?? <SlotComp componentName="InterviewScreenCard" />}
       </_Builtin.Block>
     </_Component>
   );

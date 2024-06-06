@@ -9,11 +9,9 @@
   grid-row-gap: var(--space-2);
 
   border: 1px solid var(--neutral-6);
-  border-radius: var(--radius-4);
+  border-radius: var(--radius-2);
 
   background-color: var(--white);
-
-  box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
 }
 
 .add-job-wrappers {
@@ -26,8 +24,8 @@
 
 .create-icon-wrap {
   display: flex;
-  width: 50px;
-  height: 50px;
+  width: var(--space-5);
+  height: var(--space-5);
   padding: var(--space-1);
   flex-direction: column;
   justify-content: center;
@@ -35,7 +33,7 @@
   flex: 0 0 auto;
 
   border: 0.6px solid var(--neutral-6);
-  border-radius: var(--radius-4);
+  border-radius: var(--radius-2);
 
   background-color: var(--white);
 }

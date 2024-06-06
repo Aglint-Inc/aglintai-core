@@ -1,12 +1,12 @@
 .break_duration {
   display: flex;
-  padding: 16px;
+  padding: var(--space-4);
   flex-direction: row;
   justify-content: space-between;
   grid-column-gap: 16px;
   grid-row-gap: 16px;
 
-  border: 1px dashed #c2c8cc;
+  border: 1px solid var(--neutral-6);
   border-radius: 10px;
 
   background-color: white;
@@ -85,11 +85,6 @@
   line-height: 24px;
 }
 
-.fw-semibold.p-lr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
 .text-grey_600 {
   color: var(--sand-11);
 }
@@ -107,7 +102,9 @@
 
 .embed_flex {
   display: flex;
+  overflow: hidden;
   align-items: center;
+  cursor: pointer;
 }
 
 .embed_flex.hide {

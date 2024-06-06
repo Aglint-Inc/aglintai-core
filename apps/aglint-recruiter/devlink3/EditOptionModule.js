@@ -24,12 +24,12 @@ export function EditOptionModule({
       shadow="3"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1331")}
+        className={_utils.cx(_styles, "add-plan-links")}
         tag="div"
       >
         {isViewScheduleVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1330", "cursor-pointer")}
+            className={_utils.cx(_styles, "add_plan_link", "cursor-pointer")}
             tag="div"
             {...onClickViewInSchedule}
           >
@@ -42,7 +42,7 @@ export function EditOptionModule({
         ) : null}
         {isEditVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1330", "cursor-pointer")}
+            className={_utils.cx(_styles, "add_plan_link", "cursor-pointer")}
             tag="div"
             {...onClickEdit}
           >
@@ -55,7 +55,7 @@ export function EditOptionModule({
         ) : null}
         {isRescheduleVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1330", "cursor-pointer")}
+            className={_utils.cx(_styles, "add_plan_link", "cursor-pointer")}
             tag="div"
             {...onClickReschedule}
           >
@@ -68,7 +68,7 @@ export function EditOptionModule({
         ) : null}
         {isResendInviteVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1330", "cursor-pointer")}
+            className={_utils.cx(_styles, "add_plan_link", "cursor-pointer")}
             tag="div"
             {...onClickResendInvite}
           >
@@ -81,7 +81,7 @@ export function EditOptionModule({
         ) : null}
         {isCancelScheduleVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1330", "cursor-pointer")}
+            className={_utils.cx(_styles, "add_plan_link", "cursor-pointer")}
             tag="div"
             {...onClickCancelSchedule}
           >

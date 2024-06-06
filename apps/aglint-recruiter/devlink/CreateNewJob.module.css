@@ -390,6 +390,7 @@
 
 .text-underline {
   transition: all 250ms ease;
+  color: var(--accent-11);
   text-decoration: underline;
   cursor: pointer;
 }
@@ -422,14 +423,15 @@
   z-index: 2;
 }
 
-.div-block-558 {
+.jud-right-text {
   position: relative;
 
-  display: flex;
   justify-content: flex-end;
   align-items: center;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
+
+  color: var(--sky-11);
 }
 
 .cursor-pointer.discard-job {

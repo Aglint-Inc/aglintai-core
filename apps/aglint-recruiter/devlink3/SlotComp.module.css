@@ -1,5 +1,6 @@
 .slot-comp {
   display: flex;
+  width: 100%;
   padding-right: 4px;
   justify-content: center;
   align-items: center;

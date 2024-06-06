@@ -98,11 +98,6 @@
   line-height: 24px;
 }
 
-.fw-semibold.p-lr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
 .text-grey_600 {
   color: var(--sand-11);
 }
@@ -266,11 +261,6 @@
   padding-top: 8px;
   padding-bottom: 8px;
   background-color: var(--accent-9);
-}
-
-.button_primary.large_btn {
-  padding-top: 10px;
-  padding-bottom: 10px;
 }
 
 .button_primary.large_btn-copy {

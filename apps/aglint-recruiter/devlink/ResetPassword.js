@@ -25,7 +25,7 @@ export function ResetPassword({
           >
             <Text
               content="Reset Password"
-              size="6"
+              size="4"
               weight="bold"
               align=""
               highContrast=""

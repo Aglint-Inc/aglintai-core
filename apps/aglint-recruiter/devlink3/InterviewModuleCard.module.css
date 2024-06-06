@@ -4,7 +4,7 @@
   width: 100%;
   flex-direction: column;
 
-  border: 1px solid #e9ebed;
+  border: 1px solid var(--neutral-6);
   border-radius: 10px;
 
   background-color: white;
@@ -12,9 +12,10 @@
 
 .interview_module_topbar {
   display: flex;
-  padding: 16px;
+  padding: var(--space-2) var(--space-4);
   justify-content: space-between;
-  background-color: #f8f9f9;
+  border-bottom: 1px solid var(--neutral-6);
+  background-color: var(--white);
 }
 
 .fw-semibold {
@@ -68,11 +69,6 @@
   line-height: 24px;
 }
 
-.fw-semibold.p-lr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
 .text-grey_600 {
   color: var(--sand-11);
 }
@@ -90,7 +86,9 @@
 
 .embed_flex {
   display: flex;
+  overflow: hidden;
   align-items: center;
+  cursor: pointer;
 }
 
 .embed_flex.hide {
@@ -120,7 +118,7 @@
 
 .interview_module_body {
   display: flex;
-  padding: 16px;
+  padding: var(--space-4);
   flex-direction: column;
   grid-column-gap: 16px;
   grid-row-gap: 16px;

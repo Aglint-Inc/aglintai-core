@@ -74,10 +74,19 @@ export function MemberListCard({
           >
             {isProfileVisible ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "mlc-pic-wrap")}
+                className={_utils.cx(_styles, "avatar_40")}
                 tag="div"
               >
-                {slotProfileImage}
+                {slotProfileImage ?? (
+                  <_Builtin.Image
+                    className={_utils.cx(_styles, "cover_image")}
+                    loading="lazy"
+                    width="auto"
+                    height="auto"
+                    alt=""
+                    src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/660575d2376f14b089565d8b_IMG_1491.jpg"
+                  />
+                )}
               </_Builtin.Block>
             ) : null}
             <_Builtin.Block
@@ -85,7 +94,7 @@ export function MemberListCard({
               tag="div"
             >
               <Text content={textName} weight="bold" />
-              <Text content={textRole} color="neutral" weight="" />
+              <Text content={textRole} color="neutral" weight="" size="1" />
               {isTextObjectiveVisible ? (
                 <_Builtin.Block
                   className={_utils.cx(_styles, "two-line-clamp")}

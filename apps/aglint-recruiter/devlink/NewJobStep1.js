@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./NewJobStep1.module.css";
 
@@ -15,41 +16,27 @@ export function NewJobStep1({
   isWarningVisible = true,
 }) {
   return (
-    <_Component
-      className={_utils.cx(
-        _styles,
-        "job-sidebar-main-block",
-        "cj-step-1",
-        "height-auto"
-      )}
-      tag="div"
-    >
+    <_Component className={_utils.cx(_styles, "jd-step-wrap")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "email-template-left-head")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Job Details"}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "color-grey-600")}
-          tag="div"
-        >
-          {
-            "Enter the basic job details and write with AI or paste your job description and add required skills for this job role"
-          }
-        </_Builtin.Block>
+        <Text content="Job Details" weight="medium" />
+        <Text
+          content="Enter the basic job details and write with AI or paste your job description and add required skills for this job role"
+          color="neutral"
+        />
       </_Builtin.Block>
       {isWarningVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-816")}
+          className={_utils.cx(_styles, "jd-slot-warning")}
           tag="div"
         >
           {slotWarning}
         </_Builtin.Block>
       ) : null}
       <_Builtin.Block
-        className={_utils.cx(_styles, "cj-main-wrapper", "height-auto")}
+        className={_utils.cx(_styles, "cj-main-wrapper")}
         tag="div"
       >
         <_Builtin.Block

@@ -6,7 +6,7 @@
   grid-row-gap: 0px;
   grid-template-columns: 216px 1fr;
   grid-template-rows: auto;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 48px);
 }
 
 .slot_sidemenu_tabs {

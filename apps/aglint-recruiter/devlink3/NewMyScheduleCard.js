@@ -61,11 +61,7 @@ export function NewMyScheduleCard({
                   {textDate}
                 </_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "text-blue-500",
-                    "text-capital"
-                  )}
+                  className={_utils.cx(_styles, "accent-text", "text-capital")}
                   tag="div"
                 >
                   {textDay}

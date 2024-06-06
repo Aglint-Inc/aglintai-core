@@ -1,7 +1,9 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { ButtonSolid } from "./ButtonSolid";
+import { ButtonSoft } from "./ButtonSoft";
 import { ButtonSurface } from "./ButtonSurface";
 import * as _utils from "./utils";
 import _styles from "./TaskNotRespond.module.css";
@@ -17,24 +19,21 @@ export function TaskNotRespond({
       className={_utils.cx(_styles, "task-not-respond-wrap")}
       tag="div"
     >
-      <_Builtin.Block
-        className={_utils.cx(_styles, "text-yellow-800")}
-        tag="div"
-      >
-        {"Candidate didn’t responded to the request"}
-      </_Builtin.Block>
+      <Text weight="" content="" />
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1759")}
         tag="div"
       >
-        <ButtonSolid onClickButton={onClickReqPhone} size="1" textButton="" />
-        <ButtonSurface
-          onClickButton={onClickResendInvite}
-          isLeftIcon={false}
-          isRightIcon={false}
-          color="accent"
+        <ButtonSolid
+          onClickButton={onClickReqPhone}
           size="1"
-          textButton=""
+          textButton="Make a phone call"
+        />
+        <ButtonSoft
+          onClickButton={onClickResendInvite}
+          size="1"
+          textButton="Resend Invite"
+          color="neutral"
         />
         <ButtonSurface
           onClickButton={onClickCopyInvite}

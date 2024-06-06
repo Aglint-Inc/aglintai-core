@@ -27,7 +27,7 @@ export function ScheduleReason({
       >
         {isMainHeadingVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1725")}
+            className={_utils.cx(_styles, "scheduling_reason_header")}
             tag="div"
           >
             <Text content={textMainHeading} weight="medium" />

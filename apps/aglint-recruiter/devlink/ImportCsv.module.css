@@ -1,34 +1,39 @@
-.div-block-723 {
+.ic-lisitening-count {
   display: flex;
   height: 39.1875px;
-  margin-bottom: 10px;
+  margin-bottom: var(--space-2);
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
 
-.text-grey-600 {
-  color: var(--grey600-d5bebe21);
+.ic-desc-wrap {
+  margin-bottom: var(--space-3);
 }
 
-.max-width-500 {
-  max-width: 500px;
+.ic-slot-import {
+  height: 350px;
 }
 
-.fw-semibold {
-  font-weight: 600;
+.ic-bottom-wrap {
+  display: flex;
+  margin-top: var(--space-3);
+  justify-content: space-between;
+  align-items: center;
 }
 
-.text-grey-600.mt-5 {
-  margin-top: 5px;
+.ic-bottom-left {
+  display: flex;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
-.mt-5 {
-  margin-top: 5px;
-}
-
-.inline-text {
-  display: inline;
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .cursor-pointer {
@@ -38,84 +43,6 @@
 
 .cursor-pointer:hover {
   opacity: 0.7;
-}
-
-.text-sm-2 {
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.text-grey-600.mt-9 {
-  margin-top: 9px;
-}
-
-.mt-9 {
-  margin-top: 9px;
-}
-
-.text-grey-600.text-grow {
-  white-space: nowrap;
-}
-
-.text-grow {
-  flex: 0 0 auto;
-}
-
-.text-sm-default {
-  font-size: 12px;
-  line-height: 1.3333333333333333;
-  letter-spacing: 0px;
-}
-
-.mt-10 {
-  margin-top: 10px;
-}
-
-.text-grey-600.mt-4 {
-  margin-top: 4px;
-}
-
-.mt-4 {
-  margin-top: 4px;
-}
-
-@media screen and (max-width: 479px) {
-  .text-grey-600.mob {
-    font-size: 12px;
-  }
-}
-
-.div-block-524 {
-  margin-bottom: 12px;
-}
-
-.color-grey-700 {
-  color: var(--grey700-7fbe857b);
-}
-
-.div-block-727 {
-  height: 350px;
-}
-
-.div-block-725 {
-  display: flex;
-  margin-top: 14px;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.div-block-724 {
-  display: flex;
-  align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
-}
-
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .icons.cursor-pointer.three-dot {
@@ -189,6 +116,10 @@
   margin-bottom: var(--space-9);
 }
 
+.mt-4 {
+  margin-top: 4px;
+}
+
 .icons.mt-3 {
   margin-top: 3px;
 }
@@ -216,8 +147,4 @@
 .icons.start {
   justify-content: center;
   align-items: flex-start;
-}
-
-.text-yellow-800 {
-  color: var(--yellow800-b1e3bc9b);
 }

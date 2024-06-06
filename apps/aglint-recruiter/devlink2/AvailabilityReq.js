@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./AvailabilityReq.module.css";
@@ -16,23 +17,14 @@ export function AvailabilityReq({
         className={_utils.cx(_styles, "available-req-header")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-lg", "fw-semibold")}
-          tag="div"
-        >
-          {"Your availability requested"}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "text-grey-600",
-            "max-width-700",
-            "text-align-center"
-          )}
-          tag="div"
-        >
-          {textDesc}
-        </_Builtin.Block>
+        <Text
+          content="Your availability requested"
+          align="center"
+          color="neutral-12"
+          size="4"
+          weight="bold"
+        />
+        <Text content={textDesc} align="center" color="neutral" />
       </_Builtin.Block>
       <_Builtin.Block tag="div">
         {slotPickSlotDay ?? (

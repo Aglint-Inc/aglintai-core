@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { MoveAssessment } from "./MoveAssessment";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./CandidateSelectionPopup.module.css";
 
@@ -84,13 +84,13 @@ export function CandidateSelectionPopup({
           </_Builtin.Block>
         ) : null}
         <_Builtin.Block tag="div">
-          {slotMoveAssessment ?? <MoveAssessment />}
+          {slotMoveAssessment ?? <SlotComp componentName="MoveAssesment" />}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "cansel-buttons-wrapper")}
           tag="div"
         >
-          {slotButtons}
+          {slotButtons ?? <SlotComp componentName="Buton" />}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

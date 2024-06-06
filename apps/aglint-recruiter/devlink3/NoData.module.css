@@ -8,12 +8,16 @@
   flex-wrap: nowrap;
   align-items: center;
 
-  color: #c2c8cc;
+  background-color: var(--neutral-2);
+
+  color: var(--neutral-11);
 }
 
 .embed_flex {
   display: flex;
+  overflow: hidden;
   align-items: center;
+  cursor: pointer;
 }
 
 .embed_flex.hide {

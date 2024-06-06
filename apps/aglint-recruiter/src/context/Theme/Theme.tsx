@@ -559,6 +559,17 @@ function Theme({ children }) {
         defaultProps: {
           disableRipple: true, // No more ripple, on the whole application
         },
+        styleOverrides: {
+          root: {
+            color: 'var(--neutral-9)',
+            '&.Mui-checked': {
+              // color: 'var(--neutral-9)',
+            },
+            '&.Mui-checked.MuiCheckbox-indeterminate': {
+              // color: 'var(--neutral-6)',
+            }
+          },
+        }
       },
       MuiRadio: {
         defaultProps: {
@@ -567,6 +578,7 @@ function Theme({ children }) {
         styleOverrides: {
           root: {
             padding: 'var(--space-1)',
+            color: 'var(--neutral-9)',
           },
         },
       },

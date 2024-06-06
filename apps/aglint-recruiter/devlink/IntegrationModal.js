@@ -44,7 +44,10 @@ export function IntegrationModal({
           />
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-536")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "im-slot-ats-job")}
+        tag="div"
+      >
         {slotApiKey ?? <LoadingJobsAts />}
       </_Builtin.Block>
     </_Component>

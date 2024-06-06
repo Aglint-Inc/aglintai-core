@@ -16,24 +16,18 @@ export function NewJobSelect({
         className={_utils.cx(_styles, "cj-option-wrapper")}
         tag="div"
       >
-        <Text content="Select an option to continue with" weight="bold" />
+        <Text content="Select an option to continue with" weight="medium" />
         <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "cj-option-block",
-            "yellow-100",
-            "small-card-add-job"
-          )}
+          className={_utils.cx(_styles, "cj-option-card-wrap")}
           tag="div"
+          box-shadow="3"
           {...onClickCreateJobAglint}
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "frame-1036")}
+            className={_utils.cx(_styles, "cj-badge-wrap")}
             tag="div"
           >
-            <_Builtin.Block className={_utils.cx(_styles, "text-6")} tag="div">
-              {"Recommended"}
-            </_Builtin.Block>
+            <Text content="Recommended" color="accent" size="1" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "cj-option-icon-block")}
@@ -51,17 +45,12 @@ export function NewJobSelect({
             className={_utils.cx(_styles, "cj-option-info")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "medium-bold-5")}
-              tag="div"
-            >
-              {"Create Job throgh Aglint"}
-            </_Builtin.Block>
-            <_Builtin.Block tag="div">
-              {
-                "Craft your job listing effortlessly in just three simple steps with Aglint."
-              }
-            </_Builtin.Block>
+            <Text
+              content="Create Job throgh Aglint"
+              color="accent"
+              weight="medium"
+            />
+            <Text content="Craft your job listing effortlessly in just three simple steps with Aglint." />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
@@ -69,12 +58,7 @@ export function NewJobSelect({
         className={_utils.cx(_styles, "cj-imports-wrapper")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-600")}
-          tag="div"
-        >
-          {"Or Import existing job"}
-        </_Builtin.Block>
+        <Text content="Or Import existing job" color="neutral" />
         <_Builtin.Block
           className={_utils.cx(_styles, "cj-imports-options-drawer")}
           tag="div"

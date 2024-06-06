@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./KeywordCard.module.css";
 
@@ -27,9 +28,11 @@ export function KeywordCard({
         className={_utils.cx(_styles, "slot_suggestion_pill")}
         tag="div"
       >
-        {slotSuggestPill}
+        {slotSuggestPill ?? <SlotComp componentName="Input" />}
       </_Builtin.Block>
-      <_Builtin.Block tag="div">{slotInput}</_Builtin.Block>
+      <_Builtin.Block tag="div">
+        {slotInput ?? <SlotComp componentName="Input" />}
+      </_Builtin.Block>
     </_Component>
   );
 }

@@ -4,8 +4,6 @@
   height: 30px;
   justify-content: center;
   align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
 
   border-radius: var(--radius-4);
 

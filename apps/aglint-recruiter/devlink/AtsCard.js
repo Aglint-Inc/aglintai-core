@@ -12,7 +12,7 @@ export function AtsCard({
   textWorktypeLocation = "On-site, Full Time, San Jose, CA",
   propsTextColor = {},
   onClickCheck = {},
-  isChecked = true,
+  isChecked = false,
 }) {
   return (
     <_Component
@@ -44,7 +44,7 @@ export function AtsCard({
           className={_utils.cx(_styles, "flex-horizontal", "center", "gap-2")}
           tag="div"
         >
-          <Text content={textRole} weight="bold" />
+          <Text content={textRole} weight="medium" />
           <_Builtin.Block tag="div" {...propsTextColor}>
             <Text content={textStatus} size="1" color="" />
           </_Builtin.Block>

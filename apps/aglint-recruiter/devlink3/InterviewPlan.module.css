@@ -1,14 +1,17 @@
 .interviewplan {
   display: flex;
   overflow: auto;
-  padding-top: 20px;
-  padding-right: 20px;
-  padding-bottom: 20px;
-  padding-left: 20px;
+  padding-top: var(--space-4);
+  padding-right: var(--space-4);
+  padding-bottom: var(--space-4);
+  padding-left: var(--space-4);
   flex-direction: column;
   align-items: stretch;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
+
+  background-color: var(--neutral-2);
+
   height: calc(100vh - 60px);
 }
 
@@ -111,6 +114,8 @@
   width: 100%;
   max-width: 700px;
   flex-direction: column;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
 }
 
 .buttons_wrap {
@@ -211,11 +216,6 @@
   background-color: var(--accent-9);
 }
 
-.button_primary.large_btn {
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
 .button_primary.large_btn-copy {
   position: relative;
   overflow: hidden;
@@ -226,7 +226,9 @@
 
 .embed_flex {
   display: flex;
+  overflow: hidden;
   align-items: center;
+  cursor: pointer;
 }
 
 .embed_flex.hide {

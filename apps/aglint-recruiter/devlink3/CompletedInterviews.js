@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./CompletedInterviews.module.css";
 
@@ -27,15 +28,13 @@ export function CompletedInterviews({
         className={_utils.cx(_styles, "div-block-1784")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Completed Interviews"}
-        </_Builtin.Block>
+        <Text content="Completed Interviews" weight="medium" />
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1783")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1788")}
+            className={_utils.cx(_styles, "normal_menulink")}
             tag="div"
           >
             <_Builtin.Block
@@ -47,7 +46,7 @@ export function CompletedInterviews({
             </_Builtin.Block>
             {isLastMonthsActive ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1789")}
+                className={_utils.cx(_styles, "active-menulink")}
                 tag="div"
               >
                 <_Builtin.Block
@@ -61,7 +60,7 @@ export function CompletedInterviews({
             ) : null}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1788")}
+            className={_utils.cx(_styles, "normal_menulink")}
             tag="div"
           >
             <_Builtin.Block
@@ -73,7 +72,7 @@ export function CompletedInterviews({
             </_Builtin.Block>
             {isLastDaysActive ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1789")}
+                className={_utils.cx(_styles, "active-menulink")}
                 tag="div"
               >
                 <_Builtin.Block
@@ -88,7 +87,17 @@ export function CompletedInterviews({
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block tag="div">{slotGraph}</_Builtin.Block>
+      <_Builtin.Block tag="div">
+        {slotGraph ?? (
+          <_Builtin.Image
+            loading="lazy"
+            width="auto"
+            height="auto"
+            alt=""
+            src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/666047b45fd85df292036c8c_Chart.png"
+          />
+        )}
+      </_Builtin.Block>
     </_Component>
   );
 }
