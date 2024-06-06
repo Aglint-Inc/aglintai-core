@@ -18,6 +18,10 @@ export async function interviewReminder(req: Request, res: Response) {
         .eq('session_id', session_id)
     );
 
+    if (!data) {
+      throw new Error('failed to fetch a meeting details');
+    }
+
     const {
       id: meeting_id,
       session_name,
@@ -36,6 +40,9 @@ export async function interviewReminder(req: Request, res: Response) {
         .select('applications(public_jobs(job_title), candidates(*))')
         .eq('id', interview_schedule_id)
     );
+    if (!can_app) {
+      throw new Error('failed to fetch a candidate and application details');
+    }
 
     const interviewer_emails = supabaseWrap(
       await supabaseAdmin
@@ -44,12 +51,19 @@ export async function interviewReminder(req: Request, res: Response) {
         .eq('session_id', session_id)
     );
 
+    if (!interviewer_emails) {
+      throw new Error('failed to fetch a interviewers detail');
+    }
+
     const [organizer_email] = supabaseWrap(
       await supabaseAdmin
         .from('recruiter_user')
         .select('email')
         .eq('user_id', organizer_id)
     );
+    if (!organizer_email) {
+      throw new Error('failed to fetch a recruiter detail');
+    }
     const emails = [
       ...new Set([organizer_email, ...interviewer_emails].map(e => e.email)),
     ];
@@ -85,7 +99,7 @@ export async function interviewReminder(req: Request, res: Response) {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `*Meeting Place :* ${schedule_type}\n*Meeting Time :* ${dayjs(start_time).format('MMMM DD hh:mm A')} - ${dayjs(end_time).format('hh:mm A')} IST\n *Duration :* ${session_duration} Minutes\n`,
+              text: `*Meeting Place :* ${meetingPlatform(schedule_type)}\n*Meeting Time :* ${dayjs(start_time).format('MMMM DD hh:mm A')} - ${dayjs(end_time).format('hh:mm A')} IST\n *Duration :* ${session_duration} Minutes\n`,
             },
             accessory: {
               type: 'image',
@@ -103,6 +117,13 @@ export async function interviewReminder(req: Request, res: Response) {
     res.status(500).json({error: 'Failed to start group discussion'});
   }
 }
+
+const meetingPlatform = (schedule_type: string) => {
+  if (schedule_type === 'google_meet') return 'Google Meet';
+  else if (schedule_type === 'in_person_meeting') return 'In Person Meeting';
+  else if (schedule_type === 'phone_call') return 'Phone Call';
+  else if (schedule_type === 'zoom') return 'Zoom';
+};
 
 // {
 //   "session_id":"d232ef5b-0002-4813-82f7-b8246bb696f7",

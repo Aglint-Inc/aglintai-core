@@ -44,6 +44,6 @@ export async function groupMessage(req: Request, res: Response) {
 }
 
 // {
-//  "emails": ["ravi@aglinthq.com", "chandra@aglinthq.com", "dileep@aglinthq.com"],
-//  "text": "Hello, this is a group discussion between ravi & chandra & dileep"
-// }
+//   "emails": ["chandra@aglinthq.com", "dileep@aglinthq.com"],
+//   "text": "Hello, this message from group-message endpoint "
+//  }
