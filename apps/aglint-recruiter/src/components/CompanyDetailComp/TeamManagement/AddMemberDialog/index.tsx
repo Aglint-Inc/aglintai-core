@@ -6,6 +6,7 @@ import {
 } from '@aglint/shared-types';
 import {
   Autocomplete,
+  Button,
   Drawer,
   Stack,
   TextField,
@@ -16,6 +17,8 @@ import converter from 'number-to-words';
 import { useState } from 'react';
 
 import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { InviteTeamCard } from '@/devlink/InviteTeamCard';
 import { TeamInvite } from '@/devlink/TeamInvite';
 import { TeamInvitesBlock } from '@/devlink/TeamInvitesBlock';
@@ -542,8 +545,11 @@ const AddMember = ({
               }
               slotButtons={
                 <Stack width={'100%'} marginTop={'16px'}>
-                  <AUIButton
-                    disabled={
+                  <ButtonSolid
+                    isLeftIcon={false}
+                    isRightIcon={false}
+                    size='2'
+                    isDisabled={
                       form.email &&
                       form.first_name &&
                       form.designation &&
@@ -553,6 +559,18 @@ const AddMember = ({
                         ? false
                         : true
                     }
+                    onClickButton={{
+                      onClick:()=>{
+                          setIsDisable(true);
+                          if (checkValidation()) {
+                            inviteUser();
+                          }
+                      }
+                    }} 
+                    textButton={'Invite'}
+                  />
+                  {/* <AUIButton
+                    disabled=
                     size='medium'
                     onClick={() => {
                       setIsDisable(true);
@@ -562,7 +580,7 @@ const AddMember = ({
                     }}
                   >
                     Invite
-                  </AUIButton>
+                  </AUIButton> */}
                 </Stack>
               }
               onClickClose={{
@@ -600,24 +618,24 @@ const AddMember = ({
                   />
                 }
                 slotButton={
-                  <AUIButton
-                    disabled={isResendDisable === member.user_id}
-                    size='small'
-                    onClick={() => {
-                      setResendDisable(member.user_id);
-                      reinviteUser(member.email, userDetails.user.id).then(
-                        ({ error, emailSend }) => {
-                          setResendDisable(null);
-                          if (!error && emailSend) {
-                            return toast.success('Invite sent successfully.');
-                          }
-                          return toast.error(error);
-                        },
-                      );
-                    }}
-                  >
-                    Resend
-                  </AUIButton>
+                  <ButtonSoft textButton={"Resend"} 
+                    isLeftIcon={false}
+                    isRightIcon={false}
+                    size='2' 
+                    onClickButton={{
+                      onClick: () => {
+                        setResendDisable(member.user_id);
+                        reinviteUser(member.email, userDetails.user.id).then(
+                          ({ error, emailSend }) => {
+                            setResendDisable(null);
+                            if (!error && emailSend) {
+                              return toast.success('Invite sent successfully.');
+                            }
+                            return toast.error(error);
+                          },
+                        );
+                      }}} isDisabled={isResendDisable === member.user_id}></ButtonSoft>
+                  
                 }
               />
             ))}
