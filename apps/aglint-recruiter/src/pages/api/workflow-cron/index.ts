@@ -26,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       case 'self_schedule_request_reminder': {
         if (meta.application_id) {
           axios.post('/api/emails/upcoming_interview_reminder_candidate', {
-            recipient_email: 'vivek@aglinthq.com',
+            recipient_email: 'ravi@aglinthq.com',
           });
         }
       }
