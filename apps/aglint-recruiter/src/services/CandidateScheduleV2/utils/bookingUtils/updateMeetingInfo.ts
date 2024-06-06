@@ -4,21 +4,16 @@ import dayjs from 'dayjs';
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-export const update_meetings_info = async ({
-  meeting_events,
-  meetings_info,
-}: {
-  meeting_events: {
-    session_id: string;
-    cal_event: CalendarEvent;
-  }[];
-  meetings_info: { id: string; session_id }[];
-}) => {
-  const updateMeetingInfo = async ({
+import { BookedMeetingDetails } from './types';
+
+export const updateMeetingEventDetails = async (
+  booked_meeting_details: BookedMeetingDetails,
+) => {
+  const updateMeetingEvent = async ({
     cal_event,
-    session_id,
+    meeting_id,
   }: {
-    session_id: string;
+    meeting_id: string;
     cal_event: CalendarEvent;
   }) => {
     let meeting_link = '';
@@ -27,7 +22,6 @@ export const update_meetings_info = async ({
     } else {
       meeting_link = cal_event.hangoutLink;
     }
-    const meeting = meetings_info.find((m) => m.session_id === session_id);
     return supabaseWrap(
       await supabaseAdmin
         .from('interview_meeting')
@@ -40,16 +34,15 @@ export const update_meetings_info = async ({
           status: 'confirmed',
           confirmed_date: dayjs().toISOString(),
         })
-        .eq('id', meeting.id)
+        .eq('id', meeting_id)
         .select(),
     );
   };
-
-  const meetdb_promises = meeting_events.map(
+  const meetdb_promises = booked_meeting_details.map(
     async (m) =>
-      await updateMeetingInfo({
-        session_id: m.session_id,
-        cal_event: m.cal_event,
+      await updateMeetingEvent({
+        cal_event: m.booked_meeting.cal_event,
+        meeting_id: m.booked_meeting.meeting_id,
       }),
   );
   return await Promise.all(meetdb_promises);

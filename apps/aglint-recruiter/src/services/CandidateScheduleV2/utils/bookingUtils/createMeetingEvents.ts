@@ -1,6 +1,5 @@
 import { SessionCombinationRespType } from '@aglint/shared-types';
 
-import { fetchScheduleDetails } from '@/src/utils/emailTemplate/fetchCompEmailTemplate';
 import {
   bookSession,
   CalEventAttendeesAuthDetails,
@@ -9,18 +8,15 @@ import { fetchMeetingsInfo } from '@/src/utils/event_book/fetchMeetingsInfo';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { CandidatesSchedulingV2 } from '../../CandidatesSchedulingV2';
-import { ConfirmInt, FilterJsonData } from './types';
+import { ConfirmInt, FetchDBScheduleDetails } from './types';
 
 export const createMeetingEvents = async (
   cand_schedule: CandidatesSchedulingV2,
   sesn_slots: SessionCombinationRespType[],
-  interview_filter_json: FilterJsonData,
+  schedule_db_details: FetchDBScheduleDetails,
 ) => {
   const meetings_info = await fetchMeetingsInfo(
     sesn_slots.map((s) => s.meeting_id),
-  );
-  const schedule_details = await fetchScheduleDetails(
-    interview_filter_json.schedule_id,
   );
 
   const meeting_promises = sesn_slots.map(async (session) => {
@@ -50,13 +46,13 @@ export const createMeetingEvents = async (
     const training_ints = session.trainingIntervs;
     const booked_meeting = await bookSession(
       session,
-      interview_filter_json.interview_schedule.recruiter_id,
+      schedule_db_details.company.id,
       meeting_info.meeting_id,
       getFullName(
-        schedule_details.candidate.first_name,
-        schedule_details.candidate.first_name,
+        schedule_db_details.candidate.first_name,
+        schedule_db_details.candidate.last_name,
       ),
-      schedule_details.job_title,
+      schedule_db_details.job.job_title,
       meeting_organizer_auth,
       meeting_attendees_auth,
       cand_schedule.db_details.company_cred,

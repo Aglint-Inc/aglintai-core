@@ -10,7 +10,9 @@ import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/Candi
 
 import { confirmInterviewers } from './confirmInterviewers';
 import { createMeetingEvents } from './createMeetingEvents';
-import { FilterJsonData } from './types';
+import { sendMailsToOrganizer } from './sendMailsToOrganizer';
+import { FetchDBScheduleDetails } from './types';
+import { updateMeetingEventDetails } from './updateMeetingInfo';
 import { updateTrainingStatus } from './updateTrainingStatus';
 
 // type ConfirmInt = Pick<
@@ -20,18 +22,19 @@ import { updateTrainingStatus } from './updateTrainingStatus';
 export const bookInterviewPlan = async (
   cand_schedule: CandidatesSchedulingV2,
   verified_slot: PlanCombinationRespType,
-  interview_filter_json: FilterJsonData,
+  schedule_db_details: FetchDBScheduleDetails,
 ) => {
-  //  verify requested plan
-  // create events for all sessions
+  // create calender events for all sessions
   const booked_meeting_details = await createMeetingEvents(
     cand_schedule,
     verified_slot.sessions,
-    interview_filter_json,
+    schedule_db_details,
   );
 
   await updateTrainingStatus(booked_meeting_details);
   await confirmInterviewers(booked_meeting_details, false);
+  await updateMeetingEventDetails(booked_meeting_details);
+  await sendMailsToOrganizer(schedule_db_details, booked_meeting_details);
   // db updates
   // emails
   return booked_meeting_details;

@@ -17,9 +17,10 @@ export const updateTrainingStatus = async (
       );
       training_ints = [...training_ints, ...curr_train_ints];
     });
+    if (training_ints.length === 0) return;
     const payload: {
       training_ints: AssignTrainingInt[];
-    } = { training_ints: [] };
+    } = { training_ints };
     await axios.post(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/assign-interviewer-training-type`,
       payload,

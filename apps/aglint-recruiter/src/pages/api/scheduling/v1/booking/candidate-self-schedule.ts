@@ -7,12 +7,11 @@ import { ScheduleUtils } from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
 
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { bookInterviewPlan } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/bookInterviewPlan';
+import { fetchDBScheduleDetails } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/fetchDBScheduleDetails';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { scheduling_options_schema } from '@/src/types/scheduling/schema_find_availability_payload';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 const slot_time = v.object({
   start_time: v.string(),
   end_time: v.string(),
@@ -31,7 +30,7 @@ type CandidateDirectBookingType = v.InferOutput<
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const parsed = v.parse(schema_candidate_direct_booking, req.body);
-    const { filter_json_data } = await fetch_details(parsed.filter_id);
+    const { filter_json_data } = await fetchDBScheduleDetails(parsed.filter_id);
 
     const interviewer_selected_options =
       filter_json_data.selected_options as PlanCombinationRespType[];
@@ -75,21 +74,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 export default handler;
-
-const fetch_details = async (filter_id: string) => {
-  const [filter_json_data] = supabaseWrap(
-    await supabaseAdmin
-      .from('interview_filter_json')
-      .select('*,interview_schedule(recruiter_id, id)')
-      .eq('id', filter_id),
-  );
-  if (!filter_json_data) {
-    throw new Error('invalid filter id');
-  }
-  return {
-    filter_json_data,
-  };
-};
 
 const getCandFilteredSlots = (
   interviewer_selected_options: PlanCombinationRespType[],
