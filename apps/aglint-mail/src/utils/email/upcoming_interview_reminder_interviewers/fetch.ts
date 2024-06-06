@@ -50,7 +50,6 @@ export default async function confiramtionMailToOrganizer(
   }
 
   const { first_name: recruiter_name, email } = recruiter_user;
-  console.log(email);
 
   const {
     candidates: {
