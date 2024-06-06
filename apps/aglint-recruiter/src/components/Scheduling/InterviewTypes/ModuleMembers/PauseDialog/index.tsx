@@ -7,7 +7,6 @@ import { useMemo, useState } from 'react';
 
 import { Checkbox } from '@/devlink/Checkbox';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
-import { palette } from '@/src/context/Theme/Theme';
 
 import { DateIcon } from '../../../Settings/Components/DateSelector';
 import { usePauseHandler } from '../../queries/hooks';
@@ -69,7 +68,7 @@ function PauseDialog() {
               sx={{ cursor: 'pointer' }}
             >
               <Checkbox isChecked={selectedType === 'isManual'} />
-              <Typography variant='body1' color={palette.grey[800]}>
+              <Typography variant='body1' color={'var(--neutral-12)'}>
                 Indefinitely
               </Typography>
               <Typography variant='body1'>Until you manually resume</Typography>
@@ -89,7 +88,7 @@ function PauseDialog() {
               }}
             >
               <Checkbox isChecked={selectedType === 'twoWeek'} />
-              <Typography variant='body1' color={palette.grey[800]}>
+              <Typography variant='body1' color={'var(--neutral-12)'}>
                 2 Weeks
               </Typography>
               <Typography variant='body1'>
@@ -111,7 +110,7 @@ function PauseDialog() {
               }}
             >
               <Checkbox isChecked={selectedType === 'oneMonth'} />
-              <Typography variant='body1' color={palette.grey[800]}>
+              <Typography variant='body1' color={'var(--neutral-12)'}>
                 1 Month
               </Typography>
               <Typography variant='body1'>
@@ -133,7 +132,7 @@ function PauseDialog() {
               }}
             >
               <Checkbox isChecked={selectedType === 'threeMonth'} />
-              <Typography variant='body1' color={palette.grey[800]}>
+              <Typography variant='body1' color={'var(--neutral-12)'}>
                 3 Months
               </Typography>
               <Typography variant='body1'>
@@ -155,7 +154,7 @@ function PauseDialog() {
               }}
             >
               <Checkbox isChecked={selectedType === 'custom'} />
-              <Typography variant='body1' color={palette.grey[800]}>
+              <Typography variant='body1' color={'var(--neutral-12)'}>
                 Custom date
               </Typography>
             </Stack>

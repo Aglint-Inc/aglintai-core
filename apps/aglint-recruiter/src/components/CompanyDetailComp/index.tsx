@@ -8,7 +8,6 @@ import { NavSublink } from '@/devlink/NavSublink';
 import { SavedChanges } from '@/devlink/SavedChanges';
 import LoaderGrey from '@/public/lottie/LoaderGrey';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 
 import CompanyInfoComp from './CompanyInfoComp';
 import {
@@ -123,7 +122,7 @@ const CompanyDetailComp = () => {
                 <CircularProgress
                   color='inherit'
                   size={'16px'}
-                  sx={{ color: palette.grey[400] }}
+                  sx={{ color: 'var(--neutral-6)' }}
                 />
               </>
             }

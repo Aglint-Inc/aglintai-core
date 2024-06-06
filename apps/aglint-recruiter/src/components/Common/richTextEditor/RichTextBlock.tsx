@@ -1,6 +1,5 @@
 // import { Color } from '@tiptap/extension-color';
 import Icon from '@components/Common/Icons/Icon';
-import { palette } from '@context/Theme/Theme';
 import {
   IconButton,
   IconButtonProps,
@@ -32,7 +31,7 @@ const RichTextDividerLine = styled(Stack)({
   // borderRadius: '4px',
   height: '24px',
   width: '1px',
-  background: palette.grey[200],
+  backgroundColor:'var(--neutral-3)',
   margin: '2px 4px',
 });
 
@@ -91,8 +90,8 @@ const MenuBar = ({
     <Stack
       direction={'row'}
       border={'1px solid'}
-      borderRadius={'5px'}
-      borderColor={palette.grey[400]}
+      borderRadius={'4px'}
+      borderColor={'var(--neutral-6)'}
       sx={{
         flexWrap: 'wrap',
         justifyContent: 'space-between',
@@ -388,7 +387,7 @@ const TipTapEditor = ({
         },
         position: 'relative',
       }}
-      borderColor={palette.grey[400]}
+      borderColor={'var(--neutral-6)'}
       padding={padding}
     >
       <div

@@ -8,7 +8,6 @@ import { CompanyListing } from '@/devlink/CompanyListing';
 import { CompanyListingLinks } from '@/devlink/CompanyListingLinks';
 import { OfficeLocationCard } from '@/devlink/OfficeLocationCard';
 import { OpenJobListingCard } from '@/devlink/OpenJobListingCard';
-import { palette } from '@/src/context/Theme/Theme';
 import ROUTES from '@/src/utils/routing/routes';
 
 import Icon from '../Common/Icons/Icon';
@@ -37,7 +36,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
               },
               height: '100%',
               width: '100%',
-              background: palette.grey[100],
+              background: 'var(--neutral-1)',
             }}
           >
             <Icon variant='CompanyOutlinedBig' height='100%' width='100%' />

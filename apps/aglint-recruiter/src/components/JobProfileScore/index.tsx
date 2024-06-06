@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { ChangeEventHandler, FC, useEffect, useRef, useState } from 'react';
 
 import { AddButton } from '@/devlink/AddButton';
-import { ButtonPrimarySmall } from '@/devlink/ButtonPrimarySmall';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { Checkbox } from '@/devlink/Checkbox';
 import { ScoreCard } from '@/devlink/ScoreCard';
 import { ScoreCardEdit } from '@/devlink/ScoreCardEdit';
@@ -473,7 +473,7 @@ const Pill: FC<{
                 width: type === 'experience' ? '500px' : '250px',
                 outline: 'none',
                 border: 'none',
-                backgroundColor: '#f8f9f9',
+                backgroundColor: 'transparent',
                 resize: 'none',
               }}
               // eslint-disable-next-line jsx-a11y/no-autofocus
@@ -487,13 +487,16 @@ const Pill: FC<{
           isCancelVisible={false}
           onClickDelete={{ onClick: () => onDelete() }}
           slotButtonUpdate={
-            <ButtonPrimarySmall
-              isDisabled={value === ''}
-              textLabel={'Submit'}
-              onClickButton={{
-                onClick: () => onSubmit(),
-              }}
-            />
+            <ButtonSolid size={'2'} isLeftIcon={false} isRightIcon={false} onClickButton={{
+              onClick: () => onSubmit(),
+            }} textButton="Submit" />
+            // <ButtonPrimarySmall
+            //   isDisabled={value === ''}
+            //   textLabel={'Submit'}
+            //   onClickButton={{
+            //     onClick: () => onSubmit(),
+            //   }}
+            // />
           }
         />
       </Popover>
@@ -569,13 +572,16 @@ const AddOption: FC<{
           isCancelVisible={true}
           onClickCancel={{ onClick: () => handleClose() }}
           slotButtonUpdate={
-            <ButtonPrimarySmall
-              isDisabled={value === ''}
-              textLabel={'Submit'}
-              onClickButton={{
-                onClick: () => onSubmit(),
-              }}
-            />
+            <ButtonSolid size={'2'} isLeftIcon={false} isRightIcon={false} onClickButton={{
+                  onClick: () => onSubmit(),
+                }} textButton="Submit" />
+            // <ButtonPrimarySmall
+            //   isDisabled={value === ''}
+            //   textLabel={'Submit'}
+            //   onClickButton={{
+            //     onClick: () => onSubmit(),
+            //   }}
+            // />
           }
         />
       </Popover>
