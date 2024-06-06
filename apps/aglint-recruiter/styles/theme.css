@@ -399,6 +399,63 @@
     --color-skill:#886BD8;
     --color-exp:#30AABC;
     --color-edu:#5D7DF5;
+
+    --donut-blue: #005cc5;
+    --donut-green: #28a745;
+    --donut-red: #d73a49;
+    --donut-yellow: #ffd33d;
+    --donut-purple: #6f42c1;
+    --donut-cyan: #79b8ff;
+    --donut-gray: #959da5;
+
+    --chart-color-1: #005cc5; /* Blue */
+    --chart-color-2: #28a745; /* Green */
+    --chart-color-3: #d73a49; /* Red */
+    --chart-color-4: #ffd33d; /* Yellow */
+    --chart-color-5: #6f42c1; /* Purple */
+    --chart-color-6: #79b8ff; /* Cyan */
+    --chart-color-7: #959da5; /* Gray */
+    --chart-color-8: #ff7f0e; /* Orange */
+    --chart-color-9: #2ca02c; /* Dark Green */
+    --chart-color-10: #1f77b4; /* Dark Blue */
+
+    /* Doughnut Chart */
+    --segment-1-color: var(--chart-color-1);
+    --segment-2-color: var(--chart-color-2);
+    --segment-3-color: var(--chart-color-3);
+    --segment-4-color: var(--chart-color-4);
+    --segment-5-color: var(--chart-color-5);
+    --segment-6-color: var(--chart-color-6);
+    --segment-7-color: var(--chart-color-7);
+
+    /* Bar Graph */
+    --bar-1-color: var(--chart-color-1);
+    --bar-2-color: var(--chart-color-2);
+    --bar-3-color: var(--chart-color-3);
+    --bar-4-color: var(--chart-color-4);
+    --bar-5-color: var(--chart-color-5);
+    --bar-6-color: var(--chart-color-6);
+    --bar-7-color: var(--chart-color-7);
+
+    /* Chart */
+    --chart-element-1: var(--chart-color-1);
+    --chart-element-2: var(--chart-color-2);
+    --chart-element-3: var(--chart-color-3);
+    --chart-element-4: var(--chart-color-4);
+    --chart-element-5: var(--chart-color-5);
+    --chart-element-6: var(--chart-color-6);
+    --chart-element-7: var(--chart-color-7);
+    --chart-element-8: var(--chart-color-8);
+    --chart-element-9: var(--chart-color-9);
+    --chart-element-10: var(--chart-color-10);
+    
+
+    /* Interview progres colors */
+    --status-waiting: #FFB057;
+    --status-confirmed: #5293C7;
+    --status-completed: #5EAE91;
+    --status-cancelled: #E35B66;
+    --status-default: #D8DCDE;
   }
   
   body {

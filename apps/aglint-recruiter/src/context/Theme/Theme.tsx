@@ -34,6 +34,7 @@ declare module '@mui/material/Avatar' {
     'square-small': true;
     'square-medium': true;
     'square-large': true;
+    'rounded-xs': true;
   }
 }
 

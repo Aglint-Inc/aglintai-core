@@ -17,7 +17,6 @@ import { WelcomeMatTalentDirectory } from '@/devlink2/WelcomeMatTalentDirectory'
 import { WelcomeMatTalentRediscovery } from '@/devlink2/WelcomeMatTalentRediscovery';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { getTimeDifference } from '@/src/utils/jsonResume';
 import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
@@ -378,7 +377,7 @@ function CandidateSearchHistory() {
                         <CircularProgress
                           color='inherit'
                           size={'15px'}
-                          sx={{ color: palette.grey[400] }}
+                          sx={{ color: 'var(--neutral-6)' }}
                         />
                       }
                       isLoading={isQrySearching}
@@ -400,7 +399,7 @@ function CandidateSearchHistory() {
                         <CircularProgress
                           color='inherit'
                           size={'15px'}
-                          sx={{ color: palette.grey[400] }}
+                          sx={{ color: 'var(--neutral-6)' }}
                         />
                       }
                       onclickSearch={{
@@ -707,7 +706,7 @@ function CandidateSearchHistory() {
                             <CircularProgress
                               color='inherit'
                               size={'15px'}
-                              sx={{ color: palette.grey[400] }}
+                              sx={{ color: 'var(--neutral-6)' }}
                             />
                           </>
                         )

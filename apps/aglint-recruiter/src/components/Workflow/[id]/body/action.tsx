@@ -13,7 +13,6 @@ import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
 import { useWorkflowStore } from '@/src/context/Workflows/store';
 
@@ -176,7 +175,7 @@ const EmailSubject: React.FC<FormsType> = memo(
         onChange={null}
         minRows={1}
         multiline
-        defaultLabelColor={palette.grey[800]}
+        defaultLabelColor={'var(--neutral-6)'}
       />
     );
   },
@@ -192,7 +191,7 @@ const EmailBody: React.FC<FormsType> = memo(
           sx={{
             mt: '8px',
             border: '1px solid',
-            borderColor: palette.grey[400],
+            borderColor: 'var(--neutral-6)',
             borderRadius: '4px',
           }}
         >
@@ -233,6 +232,10 @@ const ACTION_TRIGGER_MAP: {
     {
       value: 'upcoming_interview_reminder_interviewers',
       name: 'Send emails to interviewers',
+    },
+    {
+      value: 'slack-interviewer-confirmation',
+      name: 'Send slack messages to interviewers',
     },
   ],
 };

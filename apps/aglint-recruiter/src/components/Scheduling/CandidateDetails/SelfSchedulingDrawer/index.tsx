@@ -1,6 +1,6 @@
 import { Drawer, Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
@@ -19,15 +19,14 @@ import {
 } from './store';
 
 function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
-  const [saving, setSaving] = useState(false);
   const currentDate = dayjs();
   const initialEndDate = currentDate.add(7, 'day');
-  const { initialSessions, selectedSessionIds } = useSchedulingApplicationStore(
-    (state) => ({
+  const { initialSessions, selectedSessionIds, isSendingToCandidate } =
+    useSchedulingApplicationStore((state) => ({
       initialSessions: state.initialSessions,
       selectedSessionIds: state.selectedSessionIds,
-    }),
-  );
+      isSendingToCandidate: state.isSendingToCandidate,
+    }));
 
   const { isScheduleNowOpen, scheduleFlow, stepScheduling, fetchingPlan } =
     useSchedulingFlowStore((state) => ({
@@ -52,9 +51,10 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
     .filter((ses) => selectedSessionIds.includes(ses.id))
     .some((ses) => ses.session_type === 'debrief');
 
-  const { resetStateSelfScheduling, sendToCandidate } = useSelfSchedulingDrawer(
-    { saving, setSaving, isDebrief, refetch },
-  );
+  const { resetStateSelfScheduling, onClickPrimary } = useSelfSchedulingDrawer({
+    isDebrief,
+    refetch,
+  });
 
   return (
     <>
@@ -66,11 +66,17 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
         }}
       >
         <SideDrawerLarge
+          isLoading={isSendingToCandidate}
           onClickBack={{
             onClick: () => {
-              stepScheduling === 'preference'
-                ? setStepScheduling('pick_date')
-                : setStepScheduling('preference');
+              if (stepScheduling === 'preference') {
+                setStepScheduling('pick_date');
+              } else if (
+                stepScheduling === 'reschedule' &&
+                !isSendingToCandidate
+              ) {
+                setStepScheduling('preference');
+              }
             },
           }}
           textDrawertitle={
@@ -84,7 +90,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
           }
           onClickPrimary={{
             onClick: () => {
-              sendToCandidate();
+              onClickPrimary();
             },
           }}
           onClickCancel={{

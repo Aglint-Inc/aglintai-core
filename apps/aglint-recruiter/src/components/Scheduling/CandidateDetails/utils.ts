@@ -663,7 +663,6 @@ export const scheduleWithAgent = async ({
             type === 'email_agent' ? 'email agent' : 'phone agent'
           }`,
           logged_by: 'user',
-
           application_id,
           task_id,
           supabase,
@@ -672,7 +671,12 @@ export const scheduleWithAgent = async ({
 
         await agentTrigger({
           type,
-          sessionsWithPlan,
+          candidate: {
+            timezone: sessionsWithPlan.application.candidates.timezone,
+            city: sessionsWithPlan.application.candidates.city,
+            state: sessionsWithPlan.application.candidates.state,
+            id: sessionsWithPlan.application.candidates.id,
+          },
           filterJsonId: filterJson.id,
           task_id,
           recruiter_user_name,
@@ -761,7 +765,12 @@ export const scheduleWithAgent = async ({
 
         await agentTrigger({
           type,
-          sessionsWithPlan,
+          candidate: {
+            timezone: sessionsWithPlan.application.candidates.timezone,
+            city: sessionsWithPlan.application.candidates.city,
+            state: sessionsWithPlan.application.candidates.state,
+            id: sessionsWithPlan.application.candidates.id,
+          },
           filterJsonId: filterJson.id,
           task_id,
           recruiter_user_name,
@@ -902,7 +911,12 @@ export const scheduleWithAgentWithoutTaskId = async ({
 
         await agentTrigger({
           type,
-          sessionsWithPlan,
+          candidate: {
+            timezone: sessionsWithPlan.application.candidates.timezone,
+            city: sessionsWithPlan.application.candidates.city,
+            state: sessionsWithPlan.application.candidates.state,
+            id: sessionsWithPlan.application.candidates.id,
+          },
           filterJsonId: filterJson.id,
           task_id: task.id,
           recruiter_user_name,
@@ -980,7 +994,12 @@ export const scheduleWithAgentWithoutTaskId = async ({
 
         await agentTrigger({
           type,
-          sessionsWithPlan,
+          candidate: {
+            timezone: sessionsWithPlan.application.candidates.timezone,
+            city: sessionsWithPlan.application.candidates.city,
+            state: sessionsWithPlan.application.candidates.state,
+            id: sessionsWithPlan.application.candidates.id,
+          },
           filterJsonId: filterJson.id,
           task_id: task.id,
           recruiter_user_name,
@@ -1115,7 +1134,6 @@ export const fetchInterviewSessionTask = async ({
 
 export const agentTrigger = async ({
   type,
-  sessionsWithPlan,
   filterJsonId,
   task_id,
   recruiter_user_name,
@@ -1127,9 +1145,9 @@ export const agentTrigger = async ({
   dateRange,
   recruiter_id,
   session_ids,
+  candidate,
 }: {
   type: 'email_agent' | 'phone_agent';
-  sessionsWithPlan: Awaited<ReturnType<typeof fetchInterviewDataSchedule>>;
   filterJsonId: string;
   task_id: string;
   recruiter_user_name: string;
@@ -1144,6 +1162,12 @@ export const agentTrigger = async ({
   };
   session_ids: string[];
   recruiter_id: string;
+  candidate: {
+    timezone: string;
+    city: string;
+    state: string;
+    id: string;
+  };
 }) => {
   console.log({
     type,
@@ -1152,11 +1176,10 @@ export const agentTrigger = async ({
     rec_user_phone: formatPhoneNumber(rec_user_phone),
   });
 
-  const candidate = sessionsWithPlan.application.candidates;
   let timezone = null;
   if (!candidate.timezone && (candidate.city || candidate.state)) {
     timezone = await getCandidateTimezone(
-      `${sessionsWithPlan.application.candidates.city} ${sessionsWithPlan.application.candidates.state}`,
+      `${candidate.city} ${candidate.state}`,
       candidate.id,
     );
   }

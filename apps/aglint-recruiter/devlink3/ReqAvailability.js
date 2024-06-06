@@ -25,6 +25,7 @@ export function ReqAvailability({
   onClickCancel = {},
   onClickReqAvailability = {},
   isCheckingSlotsVisible = true,
+  isCheckbox = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "req_vailibility")} tag="div">
@@ -55,7 +56,7 @@ export function ReqAvailability({
                 {"Request availability between"}
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-blue-500", "fw-semibold")}
+                className={_utils.cx(_styles, "accent-text", "fw-semibold")}
                 tag="div"
               >
                 {textDateAvailability}
@@ -184,20 +185,24 @@ export function ReqAvailability({
           >
             {slotAvailabilityCriteria ?? <SlotComp componentNeme="Prefernce" />}
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1748")}
-            tag="div"
-          >
-            <_Builtin.Block tag="div">
-              {slotCheckboxAvailability ?? <SlotComp componentNeme="Ceckbox" />}
-            </_Builtin.Block>
+          {isCheckbox ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
+              className={_utils.cx(_styles, "div-block-1748")}
               tag="div"
             >
-              {"Create task for availability request"}
+              <_Builtin.Block tag="div">
+                {slotCheckboxAvailability ?? (
+                  <SlotComp componentNeme="Ceckbox" />
+                )}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold")}
+                tag="div"
+              >
+                {"Create task for availability request"}
+              </_Builtin.Block>
             </_Builtin.Block>
-          </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

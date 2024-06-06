@@ -1,6 +1,5 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
-import React from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
@@ -9,6 +8,7 @@ import toast from '@/src/utils/toast';
 
 import { useGetScheduleApplication } from '../hooks';
 import {
+  setIsSendingToCandidate,
   setSelectedApplicationLog,
   setSelectedSessionIds,
   useSchedulingApplicationStore,
@@ -23,13 +23,9 @@ import {
 } from './store';
 
 export const useSelfSchedulingDrawer = ({
-  saving,
-  setSaving,
   isDebrief,
   refetch,
 }: {
-  saving: boolean;
-  setSaving: React.Dispatch<React.SetStateAction<boolean>>;
   isDebrief: boolean;
   refetch: () => void;
 }) => {
@@ -39,11 +35,13 @@ export const useSelfSchedulingDrawer = ({
     initialSessions,
     selectedSessionIds,
     selectedApplicationLog,
+    isSendingToCandidate,
   } = useSchedulingApplicationStore((state) => ({
     selectedApplication: state.selectedApplication,
     initialSessions: state.initialSessions,
     selectedSessionIds: state.selectedSessionIds,
     selectedApplicationLog: state.selectedApplicationLog,
+    isSendingToCandidate: state.isSendingToCandidate,
   }));
 
   const {
@@ -53,6 +51,7 @@ export const useSelfSchedulingDrawer = ({
     selectedCombIds,
     filters,
     schedulingOptions,
+    fetchingPlan,
   } = useSchedulingFlowStore((state) => ({
     dateRange: state.dateRange,
     filteredSchedulingOptions: state.filteredSchedulingOptions,
@@ -60,50 +59,54 @@ export const useSelfSchedulingDrawer = ({
     filters: state.filters,
     selectedCombIds: state.selectedCombIds,
     schedulingOptions: state.schedulingOptions,
+    fetchingPlan: state.fetchingPlan,
   }));
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
 
-  const sendToCandidate = () => {
+  const onClickPrimary = () => {
     if (stepScheduling === 'preference') {
-      const { allFilteredOptions } = filterSchedulingOptionsArray({
-        filters,
-        schedulingOptions,
-      });
-
-      const combs = createCombsForMultiDaySlots(allFilteredOptions).flatMap(
-        (comb) => comb,
-      );
-
-      if (combs.length === 0) {
-        toast.warning('No combinations found for the selected preferences.');
-      } else if (combs.length > 5000) {
-        toast.warning(
-          'Too many combinations found. Please filter it further by adding prefered date ranges and conflict resolution.',
-        );
-      } else {
-        setFilteredSchedulingOptions(combs);
-        setStepScheduling('slot_options');
-      }
+      generateCombinations();
     } else if (stepScheduling === 'slot_options') {
-      if (!saving) {
+      if (!isSendingToCandidate) {
         onClickSendToCandidate();
       }
     }
   };
 
+  const generateCombinations = () => {
+    const { allFilteredOptions } = filterSchedulingOptionsArray({
+      filters,
+      schedulingOptions,
+    });
+    const combs = createCombsForMultiDaySlots(allFilteredOptions).flatMap(
+      (comb) => comb,
+    );
+    if (combs.length === 0) {
+      toast.warning('No combinations found for the selected preferences.');
+    } else if (combs.length > 5000) {
+      toast.warning(
+        'Too many combinations found. Please filter it further by adding prefered date ranges and conflict resolution.',
+      );
+    } else {
+      setFilteredSchedulingOptions(combs);
+      setStepScheduling('slot_options');
+    }
+  };
+
   const resetStateSelfScheduling = () => {
-    setIsScheduleNowOpen(false);
-    setSchedulingOptions([]);
-    setSelectedSessionIds([]);
-    setStepScheduling('pick_date');
-    setSelectedApplicationLog(null);
+    if (!isSendingToCandidate && !fetchingPlan) {
+      setIsScheduleNowOpen(false);
+      setSchedulingOptions([]);
+      setSelectedSessionIds([]);
+      setStepScheduling('pick_date');
+      setSelectedApplicationLog(null);
+    }
   };
 
   const onClickSendToCandidate = async () => {
     try {
-      setSaving(true);
-
+      setIsSendingToCandidate(true);
       if (isDebrief && selectedCombIds.length === 0) {
         toast.warning('Please select a time slot to schedule.');
         return;
@@ -146,11 +149,11 @@ export const useSelfSchedulingDrawer = ({
     } catch (e) {
       toast.error('Error sending to candidate.');
     } finally {
-      setSaving(false);
+      setIsSendingToCandidate(false);
       refetch();
       fetchInterviewDataByApplication();
     }
   };
 
-  return { sendToCandidate, resetStateSelfScheduling };
+  return { onClickPrimary, resetStateSelfScheduling };
 };
