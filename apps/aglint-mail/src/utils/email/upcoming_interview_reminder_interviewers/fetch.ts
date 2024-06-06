@@ -10,18 +10,19 @@ import type { ConfiramtionMailToOrganizerType } from '../../types/supabase-fetch
 import type { MeetingDetails } from '../../types/apiTypes';
 
 export default async function confiramtionMailToOrganizerRemainder(
-  session_ids: string[],
   application_id: string,
   meeting_id: string,
   recruiter_user_id: string,
 ) {
+  console.log('meeting_id', meeting_id);
+
   const sessions = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
       .select(
-        'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
+        'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time,organizer_id,recruiter_user(first_name,email))',
       )
-      .in('id', session_ids),
+      .eq('meeting_id', meeting_id),
   );
 
   if (!sessions) {
@@ -50,8 +51,6 @@ export default async function confiramtionMailToOrganizerRemainder(
     throw new Error('cancel session details not available');
   }
 
-  const { first_name: recruiter_name, email } = recruiter_user;
-
   const {
     candidates: {
       recruiter_id,
@@ -79,10 +78,9 @@ export default async function confiramtionMailToOrganizerRemainder(
       meetingIcon: scheduleTypeIcon(schedule_type),
     };
   });
-  console.log(email);
 
   const body: ConfiramtionMailToOrganizerType = {
-    recipient_email: email,
+    recipient_email: '231324',
     mail_type: 'upcoming_interview_reminder_interviewers',
     recruiter_id,
     companyLogo: logo,
@@ -90,11 +88,12 @@ export default async function confiramtionMailToOrganizerRemainder(
       '[companyName]': company,
       '[firstName]': first_name,
       '[jobTitle]': job_title,
-      '[recruiterName]': recruiter_name,
+      '[recruiterName]': 'dafdgBF',
       'meetingLink': `https://dev.aglinthq.com/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
       'meetingDetails': [...Sessions],
     },
   };
+  console.log('rodun');
 
   return body;
 }
