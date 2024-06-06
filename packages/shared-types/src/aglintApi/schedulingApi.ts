@@ -111,7 +111,6 @@ export type CandReqAvailableSlots = {
   date_range_end: string;
   candidate_tz: string;
   current_interview_day: number; // starts from 1
-  previously_selected_dates: string[];
   options?: APIOptions;
 };
 
@@ -123,4 +122,18 @@ export type APIVerifyRecruiterSelectedSlots = {
   candidate_tz: string;
   api_options?: APIOptions;
   filter_json_id: string;
+};
+
+export type AssignTrainingInt = {
+  interviewer_module_relation_id: string;
+  session_id: string;
+};
+export type APIAssignTrainingInterviewerType = {
+  training_ints: AssignTrainingInt[];
+};
+
+export type APIConfirmRecruiterSelectedOption = {
+  selectedOption: PlanCombinationRespType;
+  availability_req_id: string;
+  user_tz: string;
 };
