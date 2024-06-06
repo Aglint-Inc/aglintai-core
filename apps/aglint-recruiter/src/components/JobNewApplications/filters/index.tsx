@@ -49,14 +49,6 @@ const Filters = () => {
 
 export default Filters;
 
-// type FilterOptions = {
-//   // eslint-disable-next-line no-unused-vars
-//   [id in keyof ApplicationsStore['filters']]: {
-//     id: string;
-//     label: string | React.ReactNode;
-//   }[];
-// };
-
 const badgesTypes: ApplicationsStore['filters']['badges'] = [
   'careerGrowth',
   'jobStability',

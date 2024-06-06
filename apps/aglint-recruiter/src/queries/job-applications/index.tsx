@@ -44,20 +44,6 @@ export const applicationsQueries = {
     }),
 };
 
-/*
-{
-  const len  = lastPage?.lenght ?? 0;
-  if(!len) return undefined;
-  const index = lastPage[len-1].index + 1;
-  if(index>count) return undefined;
-  return {
-    index,
-    job_id,
-    ...filters
-  }
-}
-*/
-
 type ApplicationAllQueryPrerequistes = {
   job_id: DatabaseTable['public_jobs']['id'];
   count?: number;
@@ -81,10 +67,7 @@ const getApplications = async ({
     .eq('status', status);
 
   if (search.length) {
-    query.textSearch('name', search.trim(), {
-      type: 'plain',
-      config: 'english',
-    });
+    query.ilike('name', `%${search}%`);
   }
 
   if (resume_score.length) {
