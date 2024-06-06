@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React from 'react';
+import type React from 'react';
 
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';

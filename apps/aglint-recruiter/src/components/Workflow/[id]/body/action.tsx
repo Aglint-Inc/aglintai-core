@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
-import type { DatabaseTable, DatabaseView } from '@aglint/shared-types';
+import type { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 
 import { WorkflowAdd } from '@/devlink3/WorkflowAdd';
 import { WorkflowConnector } from '@/devlink3/WorkflowConnector';
@@ -15,24 +15,23 @@ import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loa
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
-import { useWorkflowStore } from '@/src/context/Workflows/store';
+
+import { useActions } from './context';
 
 const Actions = () => {
   const {
-    emailTemplates: { data: all_company_email_template },
-  } = useAuthDetails();
-  const actionsLoad = useWorkflowStore(({ actionsLoad }) => actionsLoad);
-  const {
     actions: { data, status },
     actionMutations: mutations,
-    handleCreateAction,
-    workflow: { trigger },
   } = useWorkflow();
+  const { createAction, globalOptions } = useActions();
+  const canCreateAction = useMemo(
+    () => !!globalOptions.length,
+    [globalOptions],
+  );
   if (status === 'error') return <>Error</>;
   if (status === 'pending') return <Loader />;
   const actions = data.map((action) => {
-    const loading =
-      actionsLoad || !!mutations.find((mutation) => mutation.id === action.id);
+    const loading = !!mutations.find((mutation) => mutation.id === action.id);
     return (
       <OptimisticWrapper key={action.id} loading={loading}>
         <Action key={action.id} action={action} />
@@ -40,27 +39,16 @@ const Actions = () => {
       </OptimisticWrapper>
     );
   });
-  const emailTemplate = all_company_email_template.find(
-    ({ type }) => type === ACTION_TRIGGER_MAP[trigger][0].value,
-  );
   return (
     <>
       {actions}
-      {
+      {canCreateAction && (
         <WorkflowAdd
           onClickAdd={{
-            onClick: () =>
-              handleCreateAction({
-                order: data.length ? data[data.length - 1].order + 1 : 1,
-                email_template_id: emailTemplate.id,
-                payload: {
-                  body: emailTemplate.body,
-                  subject: emailTemplate.subject,
-                },
-              }),
+            onClick: () => createAction(),
           }}
         />
-      }
+      )}
     </>
   );
 };
@@ -105,15 +93,17 @@ const ActionForm = ({
   const {
     emailTemplates: { data: all_company_email_template },
   } = useAuthDetails();
-  const {
-    handleUpdateAction,
-    workflow: { trigger },
-  } = useWorkflow();
+  const { handleUpdateAction } = useWorkflow();
+  const { globalOptions, getCurrentOption } = useActions();
+  const options = useMemo(
+    () => [...globalOptions, getCurrentOption(type)],
+    [globalOptions, type],
+  );
   return (
     <UISelect
       label='Do this'
       value={type}
-      menuOptions={ACTION_TRIGGER_MAP[trigger]}
+      menuOptions={options}
       onChange={(e) => {
         const {
           body,
@@ -209,39 +199,7 @@ const EmailBody: React.FC<FormsType> = memo(
 );
 EmailBody.displayName = 'EmailBody';
 
-const ACTION_TRIGGER_MAP: {
-  // eslint-disable-next-line no-unused-vars
-  [trigger in DatabaseView['workflow_view']['trigger']]: {
-    name: string;
-    value: DatabaseTable['company_email_template']['type'];
-  }[];
-} = {
-  availability_request_reminder: [
-    { value: 'availability_request_reminder', name: 'Send email to applicant' },
-  ],
-  self_schedule_request_reminder: [
-    {
-      value: 'self_schedule_request_reminder',
-      name: 'Send email to applicant',
-    },
-  ],
-  upcoming_interview_reminder: [
-    {
-      value: 'upcoming_interview_reminder_candidate',
-      name: 'Send email to applicant',
-    },
-    {
-      value: 'upcoming_interview_reminder_interviewers',
-      name: 'Send emails to interviewers',
-    },
-    {
-      value: 'slack-interviewer-confirmation',
-      name: 'Send slack messages to interviewers',
-    },
-  ],
-};
-
-const ActionIcon = () => {
+const ActionIcon = memo(() => {
   return (
     <svg
       width='20'
@@ -257,4 +215,5 @@ const ActionIcon = () => {
       />
     </svg>
   );
-};
+});
+ActionIcon.displayName = 'ActionIcon';
