@@ -379,281 +379,299 @@ function SideDrawerEdit() {
             textPrimaryButton='Save'
             textTitle='Edit Session'
             slotSidedrawerBody={
-              editSession.session_type !== 'debrief' ? (
-                <SidedrawerBodySession
-                  slotSessionNameInput={
-                    <UITextField
-                      name={'name'}
-                      placeholder={'Session name'}
-                      value={editSession.name}
-                      onChange={(e) =>
-                        setEditSession({
-                          name: e.target.value,
-                        })
-                      }
-                    />
-                  }
-                  slotDurationDropdown={
-                    <TextField
-                      fullWidth
-                      select
-                      value={editSession.session_duration}
-                    >
-                      {[30, 45, 60, 120]?.map((ses) => (
-                        <MenuItem
-                          value={ses}
-                          key={ses}
-                          onClick={() =>
-                            setEditSession({
-                              session_duration: ses,
-                            })
-                          }
-                        >
-                          {getBreakLabel(ses)}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  }
-                  slotModuleDropdown={
-                    <TextField fullWidth select value={editSession.module_id}>
-                      {interviewModules?.data?.map((module) => (
-                        <MenuItem
-                          value={module.id}
-                          key={module.id}
-                          onClick={() => {
-                            setEditSession({
-                              module_id: module.id,
-                            });
-                            setSelectedInterviewers([]);
-                            setTrainingInterviewers([]);
-                            setTrainingToggle(false);
-                          }}
-                        >
-                          {capitalize(module.name)}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  }
-                  slotScheduleTypeDropdown={
-                    <TextField
-                      fullWidth
-                      select
-                      value={editSession.schedule_type}
-                      onChange={(e) => {
-                        setEditSession({
-                          schedule_type: e.target
-                            .value as InterviewSession['schedule_type'],
-                        });
-                      }}
-                    >
-                      <MenuItem value='google_meet'>
-                        <Stack direction={'row'} spacing={2}>
-                          <IconScheduleType type='google_meet' />
-                          <Typography variant='body1' color={palette.grey[800]}>
-                            Google Meet
-                          </Typography>
-                        </Stack>
-                      </MenuItem>
-                      <MenuItem value='zoom'>
-                        <Stack direction={'row'} spacing={2}>
-                          <IconScheduleType type='zoom' />
-                          <Typography variant='body1' color={palette.grey[800]}>
-                            Zoom
-                          </Typography>
-                        </Stack>
-                      </MenuItem>
-                      <MenuItem value='phone_call'>
-                        <Stack direction={'row'} spacing={2}>
-                          <IconScheduleType type='phone_call' />
-                          <Typography variant='body1' color={palette.grey[800]}>
-                            Phone Call
-                          </Typography>
-                        </Stack>
-                      </MenuItem>
-                      <MenuItem value='in_person_meeting'>
-                        <Stack direction={'row'} spacing={2}>
-                          <IconScheduleType type='in_person_meeting' />
-                          <Typography variant='body1' color={palette.grey[800]}>
-                            In Person Meeting
-                          </Typography>
-                        </Stack>
-                      </MenuItem>
-                    </TextField>
-                  }
-                  slotInterviewMode={
-                    <InterviewMode
-                      isIndividual={editSession.session_type === 'individual'}
-                      isPanel={editSession.session_type === 'panel'}
-                      isTraining={true}
-                      textToggleLabel={`Training ${trainingToggle ? 'On' : 'Off'}`}
-                      slotToggle={
-                        <AntSwitch
-                          checked={trainingToggle}
-                          onClick={() => {
-                            setTrainingToggle(!trainingToggle);
-                            setTrainingInterviewers([]);
-                          }}
-                        />
-                      }
-                      slotInterviewModePill={
-                        <>
-                          <InterviewModePill
-                            isActive={editSession.session_type === 'panel'}
-                            textModeName={'Panel'}
-                            slotModeIcon={
-                              <Stack style={{ transform: 'translateY(1px)' }}>
-                                <PanelIcon />
-                              </Stack>
-                            }
-                            onClickPill={{
-                              onClick: () => {
-                                setEditSession({
-                                  session_type: 'panel',
-                                });
-                              },
-                            }}
-                          />
-                          <InterviewModePill
-                            isActive={editSession.session_type === 'individual'}
-                            textModeName={'Individual'}
-                            slotModeIcon={
-                              <Stack style={{ transform: 'translateY(1px)' }}>
-                                <IndividualIcon />
-                              </Stack>
-                            }
-                            onClickPill={{
-                              onClick: () => {
-                                setEditSession({
-                                  session_type: 'individual',
-                                });
-                              },
-                            }}
-                          />
-                        </>
-                      }
-                      isInterviewerDropVisible={
-                        moduleCurrent?.members.filter(
-                          (user) => user.training_status == 'qualified',
-                        ).length > Number(selectedInterviewers?.length)
-                      }
-                      slotMemberCountDropdown={
-                        selectedInterviewers?.length > 0 && (
-                          <TextField
-                            name={'interviewer_cnt'}
-                            type='number'
-                            sx={{ width: '60px' }}
-                            value={editSession.interviewer_cnt || 1}
-                            onChange={(e) => {
+              <Stack p={2}>
+                {editSession.session_type !== 'debrief' ? (
+                  <SidedrawerBodySession
+                    slotSessionNameInput={
+                      <UITextField
+                        name={'name'}
+                        placeholder={'Session name'}
+                        value={editSession.name}
+                        onChange={(e) =>
+                          setEditSession({
+                            name: e.target.value,
+                          })
+                        }
+                      />
+                    }
+                    slotDurationDropdown={
+                      <TextField
+                        fullWidth
+                        select
+                        value={editSession.session_duration}
+                      >
+                        {[30, 45, 60, 120]?.map((ses) => (
+                          <MenuItem
+                            value={ses}
+                            key={ses}
+                            onClick={() =>
                               setEditSession({
-                                interviewer_cnt: Number(e.target.value),
-                              });
-                            }}
-                            select
+                                session_duration: ses,
+                              })
+                            }
                           >
-                            {Array.from(
-                              { length: selectedInterviewers.length },
-                              (_, i) => i + 1,
-                            ).map((num) => (
-                              <MenuItem value={num} key={num}>
-                                {num}
-                              </MenuItem>
-                            ))}
-                          </TextField>
-                        )
-                      }
-                      slotInterviewersDropdown={
-                        <DropDown
-                          placeholder='Select Interviewers'
-                          onChange={(e) => onChange(e, 'interviewer')}
-                          options={optionsInterviewers}
-                          value=''
-                        />
-                      }
-                      isTrainingVisible={optionTrainees.length > 0}
-                      slotInterviewersAvatarSelectionPill={
-                        <>
-                          {selectedInterviewers?.map((interviewer) => {
-                            return (
-                              <SelectedMemberPill
-                                key={interviewer.value}
-                                onClickRemove={{
-                                  onClick: () => {
-                                    setSelectedInterviewers(
-                                      selectedInterviewers.filter(
-                                        (selected) =>
-                                          selected.value !== interviewer.value,
-                                      ),
-                                    );
-                                    setEditSession({
-                                      interviewer_cnt: 1,
-                                    });
-                                  },
-                                }}
-                                textMemberName={interviewer.name}
-                                slotMemberAvatar={
-                                  <MuiAvatar
-                                    src={interviewer.start_icon_url}
-                                    level={getFullName(interviewer.name, '')}
-                                    variant='rounded-small'
-                                  />
-                                }
-                              />
-                            );
-                          })}
-                        </>
-                      }
-                      slotTraineeAvatarSelectionPill={
-                        <>
-                          {trainingInterviewers?.map((interviewer) => {
-                            return (
-                              <SelectedMemberPill
-                                key={interviewer.value}
-                                onClickRemove={{
-                                  onClick: () => {
-                                    setTrainingInterviewers(
-                                      trainingInterviewers.filter(
-                                        (selected) =>
-                                          selected.value !== interviewer.value,
-                                      ),
-                                    );
-                                  },
-                                }}
-                                textMemberName={interviewer.name}
-                                slotMemberAvatar={
-                                  <MuiAvatar
-                                    src={interviewer.start_icon_url}
-                                    level={getFullName(interviewer.name, '')}
-                                    variant='rounded-small'
-                                  />
-                                }
-                              />
-                            );
-                          })}
-                        </>
-                      }
-                      isTraineesDropVisible={
-                        isTraineesDropVisible &&
-                        trainingToggle &&
-                        optionTrainees?.length > trainingInterviewers?.length
-                      }
-                      slotTraineesDropdown={
-                        <DropDown
-                          placeholder='Select Interviewers'
-                          onChange={(e) => onChange(e, 'trainee')}
-                          options={optionTrainees}
-                          value=''
-                        />
-                      }
-                    />
-                  }
-                />
-              ) : (
-                <DebriedForm
-                  debriefMembers={debriefMembers}
-                  optionMembers={optionMembers}
-                  setDebriefMembers={setDebriefMembers}
-                />
-              )
+                            {getBreakLabel(ses)}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    }
+                    slotModuleDropdown={
+                      <TextField fullWidth select value={editSession.module_id}>
+                        {interviewModules?.data?.map((module) => (
+                          <MenuItem
+                            value={module.id}
+                            key={module.id}
+                            onClick={() => {
+                              setEditSession({
+                                module_id: module.id,
+                              });
+                              setSelectedInterviewers([]);
+                              setTrainingInterviewers([]);
+                              setTrainingToggle(false);
+                            }}
+                          >
+                            {capitalize(module.name)}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    }
+                    slotScheduleTypeDropdown={
+                      <TextField
+                        fullWidth
+                        select
+                        value={editSession.schedule_type}
+                        onChange={(e) => {
+                          setEditSession({
+                            schedule_type: e.target
+                              .value as InterviewSession['schedule_type'],
+                          });
+                        }}
+                      >
+                        <MenuItem value='google_meet'>
+                          <Stack direction={'row'} spacing={2}>
+                            <IconScheduleType type='google_meet' />
+                            <Typography
+                              variant='body1'
+                              color={palette.grey[800]}
+                            >
+                              Google Meet
+                            </Typography>
+                          </Stack>
+                        </MenuItem>
+                        <MenuItem value='zoom'>
+                          <Stack direction={'row'} spacing={2}>
+                            <IconScheduleType type='zoom' />
+                            <Typography
+                              variant='body1'
+                              color={palette.grey[800]}
+                            >
+                              Zoom
+                            </Typography>
+                          </Stack>
+                        </MenuItem>
+                        <MenuItem value='phone_call'>
+                          <Stack direction={'row'} spacing={2}>
+                            <IconScheduleType type='phone_call' />
+                            <Typography
+                              variant='body1'
+                              color={palette.grey[800]}
+                            >
+                              Phone Call
+                            </Typography>
+                          </Stack>
+                        </MenuItem>
+                        <MenuItem value='in_person_meeting'>
+                          <Stack direction={'row'} spacing={2}>
+                            <IconScheduleType type='in_person_meeting' />
+                            <Typography
+                              variant='body1'
+                              color={palette.grey[800]}
+                            >
+                              In Person Meeting
+                            </Typography>
+                          </Stack>
+                        </MenuItem>
+                      </TextField>
+                    }
+                    slotInterviewMode={
+                      <InterviewMode
+                        isIndividual={editSession.session_type === 'individual'}
+                        isPanel={editSession.session_type === 'panel'}
+                        isTraining={true}
+                        textToggleLabel={`Training ${trainingToggle ? 'On' : 'Off'}`}
+                        slotToggle={
+                          <AntSwitch
+                            checked={trainingToggle}
+                            onClick={() => {
+                              setTrainingToggle(!trainingToggle);
+                              setTrainingInterviewers([]);
+                            }}
+                          />
+                        }
+                        slotInterviewModePill={
+                          <>
+                            <InterviewModePill
+                              isActive={editSession.session_type === 'panel'}
+                              textModeName={'Panel'}
+                              slotModeIcon={
+                                <Stack style={{ transform: 'translateY(1px)' }}>
+                                  <PanelIcon />
+                                </Stack>
+                              }
+                              onClickPill={{
+                                onClick: () => {
+                                  setEditSession({
+                                    session_type: 'panel',
+                                  });
+                                },
+                              }}
+                            />
+                            <InterviewModePill
+                              isActive={
+                                editSession.session_type === 'individual'
+                              }
+                              textModeName={'Individual'}
+                              slotModeIcon={
+                                <Stack style={{ transform: 'translateY(1px)' }}>
+                                  <IndividualIcon />
+                                </Stack>
+                              }
+                              onClickPill={{
+                                onClick: () => {
+                                  setEditSession({
+                                    session_type: 'individual',
+                                  });
+                                },
+                              }}
+                            />
+                          </>
+                        }
+                        isInterviewerDropVisible={
+                          moduleCurrent?.members.filter(
+                            (user) => user.training_status == 'qualified',
+                          ).length > Number(selectedInterviewers?.length)
+                        }
+                        slotMemberCountDropdown={
+                          selectedInterviewers?.length > 0 && (
+                            <TextField
+                              name={'interviewer_cnt'}
+                              type='number'
+                              sx={{ width: '60px' }}
+                              value={editSession.interviewer_cnt || 1}
+                              onChange={(e) => {
+                                setEditSession({
+                                  interviewer_cnt: Number(e.target.value),
+                                });
+                              }}
+                              select
+                            >
+                              {Array.from(
+                                { length: selectedInterviewers.length },
+                                (_, i) => i + 1,
+                              ).map((num) => (
+                                <MenuItem value={num} key={num}>
+                                  {num}
+                                </MenuItem>
+                              ))}
+                            </TextField>
+                          )
+                        }
+                        slotInterviewersDropdown={
+                          <DropDown
+                            placeholder='Select Interviewers'
+                            onChange={(e) => onChange(e, 'interviewer')}
+                            options={optionsInterviewers}
+                            value=''
+                          />
+                        }
+                        isTrainingVisible={optionTrainees.length > 0}
+                        slotInterviewersAvatarSelectionPill={
+                          <>
+                            {selectedInterviewers?.map((interviewer) => {
+                              return (
+                                <SelectedMemberPill
+                                  key={interviewer.value}
+                                  onClickRemove={{
+                                    onClick: () => {
+                                      setSelectedInterviewers(
+                                        selectedInterviewers.filter(
+                                          (selected) =>
+                                            selected.value !==
+                                            interviewer.value,
+                                        ),
+                                      );
+                                      setEditSession({
+                                        interviewer_cnt: 1,
+                                      });
+                                    },
+                                  }}
+                                  textMemberName={interviewer.name}
+                                  slotMemberAvatar={
+                                    <MuiAvatar
+                                      src={interviewer.start_icon_url}
+                                      level={getFullName(interviewer.name, '')}
+                                      variant='rounded-small'
+                                    />
+                                  }
+                                />
+                              );
+                            })}
+                          </>
+                        }
+                        slotTraineeAvatarSelectionPill={
+                          <>
+                            {trainingInterviewers?.map((interviewer) => {
+                              return (
+                                <SelectedMemberPill
+                                  key={interviewer.value}
+                                  onClickRemove={{
+                                    onClick: () => {
+                                      setTrainingInterviewers(
+                                        trainingInterviewers.filter(
+                                          (selected) =>
+                                            selected.value !==
+                                            interviewer.value,
+                                        ),
+                                      );
+                                    },
+                                  }}
+                                  textMemberName={interviewer.name}
+                                  slotMemberAvatar={
+                                    <MuiAvatar
+                                      src={interviewer.start_icon_url}
+                                      level={getFullName(interviewer.name, '')}
+                                      variant='rounded-small'
+                                    />
+                                  }
+                                />
+                              );
+                            })}
+                          </>
+                        }
+                        isTraineesDropVisible={
+                          isTraineesDropVisible &&
+                          trainingToggle &&
+                          optionTrainees?.length > trainingInterviewers?.length
+                        }
+                        slotTraineesDropdown={
+                          <DropDown
+                            placeholder='Select Interviewers'
+                            onChange={(e) => onChange(e, 'trainee')}
+                            options={optionTrainees}
+                            value=''
+                          />
+                        }
+                      />
+                    }
+                  />
+                ) : (
+                  <DebriedForm
+                    debriefMembers={debriefMembers}
+                    optionMembers={optionMembers}
+                    setDebriefMembers={setDebriefMembers}
+                  />
+                )}
+              </Stack>
             }
             onClickPrimaryButton={{
               onClick: () => {

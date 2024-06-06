@@ -52,6 +52,7 @@ function ScheduleIndividualCard({
 
   return (
     <NewInterviewPlanCard
+      isScheduleNowButtonVisible={false}
       isCheckboxVisible={true}
       onClickCard={{
         onClick: (e) => {

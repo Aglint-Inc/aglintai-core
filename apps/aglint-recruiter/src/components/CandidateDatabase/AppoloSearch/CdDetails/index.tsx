@@ -8,7 +8,6 @@ import { CandidateExperience } from '@/devlink/CandidateExperience';
 import { CdExperienceCard } from '@/devlink/CdExperienceCard';
 import { EmailOutReach } from '@/devlink/EmailOutReach';
 import LoaderGrey from '@/public/lottie/LoaderGrey';
-import { palette } from '@/src/context/Theme/Theme';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -123,7 +122,7 @@ function CandidateDetail() {
   return (
     <Stack
       sx={{
-        borderLeft: `1px solid ${palette.grey[200]}`,
+        borderLeft: `1px solid var(--neutral-6)`,
       }}
     >
       <Collapse in={Boolean(selectedCandidate)} orientation='horizontal'>

@@ -7,6 +7,7 @@ import { InterviewPlanEmpty } from '@/devlink2/InterviewPlanEmpty';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { CandidateSchedule } from '@/devlink3/CandidateSchedule';
 import Loader from '@/src/components/Common/Loader';
+import ROUTES from '@/src/utils/routing/routes';
 
 import ScheduleProgress from '../Common/ScheduleProgress';
 import CandidateInfo from '../ScheduleDetails/CandidateDetails';
@@ -73,7 +74,7 @@ function SchedulingApplication() {
       <PageLayout
         onClickBack={{
           onClick: () => {
-            router.back();
+            router.push(ROUTES['/scheduling']() + '?tab=candidates');
           },
         }}
         isBackButton={true}

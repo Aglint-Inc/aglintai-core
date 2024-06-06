@@ -81,6 +81,9 @@ export const useWorkflowUpdate = (args: WorkflowKeys) => {
     mutationFn: updateWorkflow,
     mutationKey,
     onMutate: (variables) => {
+      let triggerChange = false;
+      const { queryKey: actionQueryKey } =
+        workflowActionQueryKeys.workflowAction({ workflow_id: variables.id });
       const previousWorkflows = queryClient.getQueryData<Workflow[]>(queryKey);
       let previousWorkflow: Workflow = null;
       const newWorkflows = structuredClone(previousWorkflows).reduce(
@@ -93,10 +96,24 @@ export const useWorkflowUpdate = (args: WorkflowKeys) => {
         },
         [] as Workflow[],
       );
+      const previousWorkflowActions =
+        queryClient.getQueryData<WorkflowAction[]>(actionQueryKey);
       queryClient.setQueryData<Workflow[]>(queryKey, newWorkflows);
-      return { previousWorkflow };
+      if (
+        variables.payload.trigger &&
+        previousWorkflow.trigger !== variables.payload.trigger
+      ) {
+        triggerChange = true;
+        queryClient.setQueryData<WorkflowAction[]>(actionQueryKey, []);
+      }
+      return {
+        previousWorkflow,
+        actionQueryKey,
+        previousWorkflowActions,
+        triggerChange,
+      };
     },
-    onError: (_error, variables) => {
+    onError: (_error, variables, context) => {
       toast.error('Unable to update workflow');
       const previousWorkflows = queryClient.getQueryData<Workflow[]>(queryKey);
       const newWorkflows = structuredClone(previousWorkflows).reduce(
@@ -107,15 +124,12 @@ export const useWorkflowUpdate = (args: WorkflowKeys) => {
         [] as Workflow[],
       );
       queryClient.setQueryData<Workflow[]>(queryKey, newWorkflows);
-    },
-    onSuccess: (data, variables, context) => {
-      const { queryKey: actionQueryKey } =
-        workflowActionQueryKeys.workflowAction({ workflow_id: data.id });
-      if (
-        variables.payload.trigger &&
-        context.previousWorkflow.trigger !== data.trigger
-      )
-        queryClient.setQueryData<WorkflowAction[]>(actionQueryKey, []);
+      if (context.triggerChange) {
+        queryClient.setQueryData<WorkflowAction[]>(
+          context.actionQueryKey,
+          context.previousWorkflowActions,
+        );
+      }
     },
   });
 };

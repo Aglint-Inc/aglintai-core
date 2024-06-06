@@ -10,7 +10,6 @@ import { useEffect, useState } from 'react';
 import { RcInfoStep1 } from '@/devlink2/RcInfoStep1';
 import { RecCompanyDetails } from '@/devlink2/RecCompanyDetails';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { addHttps } from '@/src/utils/fetchCompDetails';
 import { supabase } from '@/src/utils/supabase/client';
 
@@ -218,7 +217,7 @@ export function FetchCompanyDetails() {
                   <CircularProgress
                     color='inherit'
                     size={'15px'}
-                    sx={{ color: palette.grey[400] }}
+                    sx={{ color: 'var(--neutral-6)' }}
                   />
                 )
               }

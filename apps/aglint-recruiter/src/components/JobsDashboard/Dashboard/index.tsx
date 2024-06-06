@@ -34,7 +34,6 @@ import { JobApplicationSections } from '@/src/context/JobApplicationsContext/typ
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 import { useJobs } from '@/src/context/JobsContext';
-import { palette } from '@/src/context/Theme/Theme';
 import NotFoundPage from '@/src/pages/404';
 import { useCompanyMembers } from '@/src/queries/company-members';
 import { Job } from '@/src/queries/job/types';
@@ -443,7 +442,7 @@ const Preview = () => {
       mx={1}
       gap={'2px'}
       direction={'row'}
-      style={{ color: palette.blue['400'], cursor: 'pointer' }}
+      style={{ color: 'var(--accent-11)', cursor: 'pointer' }}
       onClick={() => handlePreview()}
     >
       <Stack>Preview</Stack>
@@ -681,7 +680,7 @@ const useBanners = ({
           <CircularProgress
             color='inherit'
             size={'100%'}
-            sx={{ color: palette.grey[400] }}
+            sx={{ color: 'var(--neutral-6)' }}
           />
         }
       />,
@@ -760,7 +759,9 @@ const JobClose = ({
         sx={{
           '& .MuiPaper-root': {
             border: 'none !important',
+            background: 'transparent',
             overflow: 'visible !important',
+            boxShadow: 'none',
             top: '62px !important',
           },
         }}
@@ -1062,7 +1063,7 @@ const ProfileScoreModule = () => {
             <CircularProgress
               color='inherit'
               size={'15px'}
-              sx={{ color: palette.grey[400] }}
+              sx={{ color: 'var(--neutral-6)' }}
             />
           )}
         </>

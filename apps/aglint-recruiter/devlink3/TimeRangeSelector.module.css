@@ -13,9 +13,7 @@
 }
 
 .slot_inputs {
-  display: grid;
   width: 100%;
-  max-width: 480px;
   grid-auto-columns: 1fr;
   grid-column-gap: 16px;
   grid-row-gap: 16px;
@@ -49,7 +47,9 @@
 
 .embed_flex {
   display: flex;
+  overflow: hidden;
   align-items: center;
+  cursor: pointer;
 }
 
 .embed_flex.hide {

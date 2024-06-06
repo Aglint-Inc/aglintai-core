@@ -26,7 +26,9 @@
 
 .embed_flex {
   display: flex;
+  overflow: hidden;
   align-items: center;
+  cursor: pointer;
 }
 
 .embed_flex.hide {
@@ -175,33 +177,10 @@
   background-color: var(--accent-9);
 }
 
-.button_primary.large_btn {
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
 .button_primary.large_btn-copy {
   position: relative;
   overflow: hidden;
   width: 300px;
   padding-top: 10px;
   padding-bottom: 10px;
-}
-
-.isloading_continue {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  background-color: #e9ebed;
-
-  color: #c2c8cc;
-
-  cursor: progress;
 }

@@ -4,7 +4,6 @@ import { Stack } from '@mui/material';
 import { FC, memo } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 
 import TipTapAIEditor from '../Common/TipTapAIEditor';
 import UITextField from '../Common/UITextField';
@@ -112,9 +111,9 @@ const EmailBody: FC<MetaForms> = memo(
             mt: '8px',
             border: '1px solid',
             borderColor: value.error.value
-              ? palette.red[500]
-              : palette.grey[300],
-            borderRadius: '4px',
+              ? 'var(--success-6)'
+              : 'var(--neutral-6)',
+            borderRadius: 'var(--radius-2)',
           }}
         >
           <TipTapAIEditor
@@ -128,7 +127,7 @@ const EmailBody: FC<MetaForms> = memo(
           <Stack
             alignItems={'center'}
             direction={'row'}
-            color={palette.red[500]}
+            color={'var(--error-11)'}
           >
             <WarningSvg />
             {value.error.helper}

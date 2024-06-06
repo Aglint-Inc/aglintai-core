@@ -48,6 +48,7 @@ export * from "./ChatBlockUser";
 export * from "./ChatNotification";
 export * from "./ChatWindow";
 export * from "./Checkbox";
+export * from "./CloseButton";
 export * from "./CompletedInterviews";
 export * from "./ConfirmScheduleList";
 export * from "./ConfirmScheduleListCard";

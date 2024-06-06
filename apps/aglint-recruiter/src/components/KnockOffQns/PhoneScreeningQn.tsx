@@ -5,7 +5,6 @@ import { useState } from 'react';
 
 import { Checkbox } from '@/devlink/Checkbox';
 import { PhoneScreeningQ } from '@/devlink/PhoneScreeningQ';
-import { palette } from '@/src/context/Theme/Theme';
 import toast from '@/src/utils/toast';
 
 import UITypography from '../Common/UITypography';
@@ -211,7 +210,7 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
 
           {errorMsg && (
             <Stack mt={2}>
-              {<UITypography color={palette.red[400]}>{errorMsg}</UITypography>}
+              {<UITypography color={'var(--error-11)'}>{errorMsg}</UITypography>}
             </Stack>
           )}
         </>

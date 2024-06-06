@@ -1,13 +1,9 @@
 .scheduleoptions {
   display: flex;
-  overflow: auto;
   width: 100%;
   flex-direction: column;
   flex-wrap: nowrap;
-
   background-color: white;
-
-  height: calc(100vh - 130px);
 }
 
 .schedule_option_hint {

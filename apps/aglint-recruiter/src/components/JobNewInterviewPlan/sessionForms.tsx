@@ -15,7 +15,6 @@ import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
 import { SidedrawerBodySession } from '@/devlink2/SidedrawerBodySession';
 import { validateString } from '@/src/context/JobDashboard/hooks';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { CompanyMember } from '@/src/queries/company-members';
 import { CreateInterviewSession } from '@/src/queries/interview-plans';
 import { InterviewSessionType } from '@/src/queries/interview-plans/types';
@@ -800,7 +799,7 @@ export const DropDown = ({
         <Stack
           position={'absolute'}
           zIndex={1}
-          style={{ color: palette.grey['500'], pointerEvents: 'none' }}
+          style={{ color: 'var(--neutral-11)', pointerEvents: 'none' }}
           ml={2}
         >
           {placeholder}
