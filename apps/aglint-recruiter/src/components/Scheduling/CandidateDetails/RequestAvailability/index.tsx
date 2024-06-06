@@ -141,7 +141,7 @@ function RequestAvailability() {
           id: String(router.query?.candidate_request_availability),
           data: {
             availability: availability,
-            date_range: [...selectedDate],
+            date_range: selectedDate.map((ele) => ele.format('DD/MM/YYYY')),
             number_of_days: selectedDays.value,
             number_of_slots: selectedSlots.value,
             slots: null,
@@ -205,7 +205,7 @@ function RequestAvailability() {
           application_id: selectedApplication.id,
           recruiter_id: recruiter.id,
           availability: availability,
-          date_range: [...selectedDate],
+          date_range: selectedDate.map((ele) => ele.format('DD/MM/YYYY')),
           is_task_created: markCreateTicket,
           number_of_days: selectedDays.value,
           number_of_slots: selectedSlots.value,
