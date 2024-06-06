@@ -1,5 +1,4 @@
 import Icon from '@components/Common/Icons/Icon';
-import { palette } from '@context/Theme/Theme';
 import {
   FilledInputProps,
   InputProps,
@@ -86,17 +85,17 @@ const UITextField = React.forwardRef(
     ref?: React.Ref<HTMLInputElement>,
   ) => {
     const [contentExceeded, setContentExceeded] = useState(false);
-    let labelColor = defaultLabelColor ? defaultLabelColor : palette.grey[800];
+    let labelColor = defaultLabelColor ? defaultLabelColor : 'var(--neutral-12)';
 
     if (disabled) {
-      labelColor = defaultLabelColor ? defaultLabelColor : palette.grey[600];
+      labelColor = defaultLabelColor ? defaultLabelColor : 'var(--neutral-11)';
     }
 
     return (
       <Stack
         width={fullWidth ? '100%' : 'inherit'}
         direction={'column'}
-        gap={'5px'}
+        gap={'4px'}
       >
         {label && (
           <Stack direction={'row'}>
@@ -109,7 +108,7 @@ const UITextField = React.forwardRef(
             </UITypography>
             {required && (
               <Typography
-                sx={{ fontWeight: 600, color: palette.red[400], pl: 0.5 }}
+                sx={{color: 'var(--error-9)', pl: 0.5 }}
               >
                 <sup>*</sup>
               </Typography>
@@ -162,8 +161,8 @@ const UITextField = React.forwardRef(
             alignItems={'center'}
             justifyContent={'start'}
           >
-            <Icon height='13px' color={palette.red[400]} variant='AlertIcon' />
-            <UITypography type='small' color={palette.red[400]}>
+            <Icon height='12px' color={'var(--error-9)'} variant='AlertIcon' />
+            <UITypography type='small' color={'var(--error-11)'}>
               {error
                 ? helperText
                 : contentExceeded

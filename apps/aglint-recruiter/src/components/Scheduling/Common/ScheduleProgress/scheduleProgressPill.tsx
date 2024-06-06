@@ -252,15 +252,15 @@ const DebriefSessionIcon = () => {
 export const statusToColor = (status: ScheduleProgressPillProps['status']) => {
   switch (status) {
     case 'waiting':
-      return '#FFB057';
+      return 'var(--status-waiting)';
     case 'confirmed':
-      return '#5293C7';
+      return 'var(--status-confirmed)';
     case 'completed':
-      return '#5EAE91';
+      return 'var(--status-completed)';
     case 'cancelled':
-      return '#E35B66';
+      return 'var(--status-cancelled)';
     default:
-      return '#D8DCDE';
+      return 'var(--status-default)';
   }
 };
 

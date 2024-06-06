@@ -32,7 +32,6 @@ import {
   JobApplication,
   ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
-import { palette } from '@/src/context/Theme/Theme';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -283,7 +282,7 @@ function InterviewFeedbackPage() {
                 },
                 height: '40px',
                 width: '40px',
-                background: palette.grey[100],
+                background: 'var(--neutral-3)',
               }}
             >
               <Icon variant='CompanyOutlinedBig' height='100%' width='100%' />

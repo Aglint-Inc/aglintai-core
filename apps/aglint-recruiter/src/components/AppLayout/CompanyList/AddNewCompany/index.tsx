@@ -23,7 +23,6 @@ import UITypography from '@/src/components/Common/UITypography';
 import { sizes } from '@/src/components/CompanyDetailComp/CompanyInfoComp';
 import { Error1 } from '@/src/components/SignUpComp/SlideDetailsOne';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { addHttps } from '@/src/utils/fetchCompDetails';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { supabase } from '@/src/utils/supabase/client';
@@ -334,7 +333,7 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
                             <CircularProgress
                               color='inherit'
                               size={'15px'}
-                              sx={{ color: palette.grey[400] }}
+                              sx={{ color: 'var(--neutral-6)' }}
                             />
                           )
                         }

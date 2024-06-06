@@ -43,7 +43,6 @@ import { WorkingHourDay } from '@/devlink2/WorkingHourDay';
 import { WorkingHours } from '@/devlink2/WorkingHours';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
@@ -1071,7 +1070,7 @@ export const TimezoneSelector = ({
         renderOption={(props, option) => {
           return (
             <li {...props}>
-              <Typography variant='body1' color={palette.grey[800]}>
+              <Typography variant='body1' color={'var(--neutral-12)'}>
                 {option.label}
               </Typography>
             </li>
