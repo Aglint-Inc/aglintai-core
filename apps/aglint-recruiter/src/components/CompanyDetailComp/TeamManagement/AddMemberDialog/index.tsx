@@ -6,7 +6,6 @@ import {
 } from '@aglint/shared-types';
 import {
   Autocomplete,
-  Button,
   Drawer,
   Stack,
   TextField,
@@ -23,7 +22,6 @@ import { InviteTeamCard } from '@/devlink/InviteTeamCard';
 import { TeamInvite } from '@/devlink/TeamInvite';
 import { TeamInvitesBlock } from '@/devlink/TeamInvitesBlock';
 import { TeamPendingInvites } from '@/devlink/TeamPendingInvites';
-import AUIButton from '@/src/components/Common/AUIButton';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
