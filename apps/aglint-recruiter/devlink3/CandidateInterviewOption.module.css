@@ -9,7 +9,6 @@
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 
-  border: 1px solid var(--neutral-a6);
   border-radius: var(--radius-4);
 
   background-color: var(--white-a12);

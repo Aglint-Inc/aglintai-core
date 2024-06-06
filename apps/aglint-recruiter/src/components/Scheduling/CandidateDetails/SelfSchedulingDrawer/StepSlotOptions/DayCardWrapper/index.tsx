@@ -50,10 +50,24 @@ function DayCardWrapper({
     setDisplayedSlots((prevCount) => prevCount + NUMBER_OF_SLOTS_TO_DISPLAY);
   };
 
-  const memoSlots = useMemo(
-    () => slots.slice(0, displayedSlots),
-    [displayedSlots],
-  );
+  const slotsWithDaySessions = useMemo(() => {
+    return slots.map((slot) => {
+      const daySessions = dates.map((date) => {
+        return {
+          date: date,
+          sessions: slot.sessions.filter(
+            (session) =>
+              dayjs(session.start_time).format('MMMM DD') ===
+              dayjs(date).format('MMMM DD'),
+          ),
+        };
+      });
+      return {
+        daySessions,
+        plan_comb_id: slot.plan_comb_id,
+      };
+    });
+  }, [slots, dates]);
 
   return (
     <>
@@ -77,18 +91,7 @@ function DayCardWrapper({
           !isDisabled && (
             <Collapse in={isDayCollapseNeeded ? collapse : true}>
               <Stack spacing={1} pt={'10px'}>
-                {memoSlots?.map((slot) => {
-                  const daySessions = dates.map((date) => {
-                    return {
-                      date: date,
-                      sessions: slot.sessions.filter(
-                        (session) =>
-                          dayjs(session.start_time).format('MMMM DD') ===
-                          dayjs(date).format('MMMM DD'),
-                      ),
-                    };
-                  });
-
+                {slotsWithDaySessions.slice(0, displayedSlots)?.map((slot) => {
                   return (
                     <ScheduleOption
                       isCheckboxAndRadio={isCheckboxAndRadio}
@@ -101,17 +104,19 @@ function DayCardWrapper({
                         },
                       }}
                       isRadio={isDebrief}
-                      slotSingleDaySchedule={daySessions?.map((item, ind) => {
-                        return (
-                          <SingleDayCard
-                            key={ind}
-                            item={item}
-                            ind={ind}
-                            isMultiDay={isMultiDay}
-                            isCollapseNeeded={isSlotCollapseNeeded}
-                          />
-                        );
-                      })}
+                      slotSingleDaySchedule={slot.daySessions?.map(
+                        (item, ind) => {
+                          return (
+                            <SingleDayCard
+                              key={ind}
+                              item={item}
+                              ind={ind}
+                              isMultiDay={isMultiDay}
+                              isCollapseNeeded={isSlotCollapseNeeded}
+                            />
+                          );
+                        },
+                      )}
                     />
                   );
                 })}

@@ -1,8 +1,9 @@
-import { Drawer } from '@mui/material';
+import { Drawer, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
+import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 
 import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
 import { useSelfSchedulingDrawer } from './hooks';
@@ -28,11 +29,12 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
     }),
   );
 
-  const { isScheduleNowOpen, scheduleFlow, stepScheduling } =
+  const { isScheduleNowOpen, scheduleFlow, stepScheduling, fetchingPlan } =
     useSchedulingFlowStore((state) => ({
       isScheduleNowOpen: state.isScheduleNowOpen,
       scheduleFlow: state.scheduleFlow,
       stepScheduling: state.stepScheduling,
+      fetchingPlan: state.fetchingPlan,
     }));
 
   useEffect(() => {
@@ -99,17 +101,30 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
           }
           isSelectedNumber={false}
           slotSideDrawerbody={
-            <>
-              {stepScheduling === 'pick_date' ? (
-                <SelectDateRange />
-              ) : stepScheduling === 'reschedule' ? (
-                <RescheduleSlot />
-              ) : stepScheduling === 'preference' ? (
-                <StepScheduleFilter />
-              ) : (
-                <StepSlotOptions isDebrief={isDebrief} />
-              )}
-            </>
+            !fetchingPlan ? (
+              <>
+                {stepScheduling === 'pick_date' ? (
+                  <SelectDateRange />
+                ) : stepScheduling === 'reschedule' ? (
+                  <RescheduleSlot />
+                ) : stepScheduling === 'preference' ? (
+                  <StepScheduleFilter />
+                ) : (
+                  <StepSlotOptions isDebrief={isDebrief} />
+                )}
+              </>
+            ) : (
+              <Stack
+                direction={'row'}
+                justifyContent={'center'}
+                height={'100%'}
+                alignItems={'center'}
+              >
+                <Stack height={'150px'} width={'150px'}>
+                  <CandidateSlotLoad />
+                </Stack>
+              </Stack>
+            )
           }
           isBottomBar={
             stepScheduling === 'slot_options' || stepScheduling === 'preference'

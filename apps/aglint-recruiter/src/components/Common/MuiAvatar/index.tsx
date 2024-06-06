@@ -1,4 +1,4 @@
-import Avatar from '@mui/material/Avatar';
+import Avatar, { AvatarProps } from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import React from 'react';
 
@@ -6,14 +6,7 @@ interface MuiAvatarProps {
   level: string;
   width?: string;
   height?: string;
-  variant:
-    | 'circular'
-    | 'rounded'
-    | 'square'
-    | 'rounded-xs'
-    | 'rounded-small'
-    | 'rounded-medium'
-    | 'rounded-large';
+  variant: AvatarProps['variant'];
   src?: string;
   fontSize?: string;
   dynamicSizing?: boolean;

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { createTheme, TextField } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { TypographyOptions } from '@mui/material/styles/createTypography';
@@ -7,7 +8,6 @@ import React, { useState } from 'react';
 import AppContext from './context';
 
 declare module '@mui/material/Typography' {
-  // eslint-disable-next-line no-unused-vars
   interface TypographyPropsVariantOverrides {
     body1medium: true;
     body1bold: true;
@@ -21,6 +21,20 @@ interface ExtendedTypographyOptions extends TypographyOptions {
   body1bold: React.CSSProperties;
   body2medium: React.CSSProperties;
   body2bold: React.CSSProperties;
+}
+
+declare module '@mui/material/Avatar' {
+  interface AvatarPropsVariantOverrides {
+    'rounded-small': true;
+    'rounded-medium': true;
+    'rounded-large': true;
+    'circular-small': true;
+    'circular-medium': true;
+    'circular-large': true;
+    'square-small': true;
+    'square-medium': true;
+    'square-large': true;
+  }
 }
 
 function Theme({ children }) {
@@ -559,6 +573,11 @@ function Theme({ children }) {
         defaultProps: {
           disableRipple: true, // No more ripple, on the whole application
         },
+        styleOverrides: {
+          root: {
+            padding: '0px',
+          },
+        },
       },
       MuiRadio: {
         defaultProps: {
@@ -619,8 +638,9 @@ function Theme({ children }) {
             objectFit: 'cover',
             '&.MuiAvatar-circular-small': {
               fontSize: 'var(--font-size-2)',
-              width: 'var(--space-5)',
-              height: 'var(--space-5)',
+              width: 'var(--space-6)',
+              height: 'var(--space-6)',
+              borderRadius: 'var(--radius-full)',
             },
             '&.MuiAvatar-circular-medium': {
               fontSize: 'var(--font-size-4)',
@@ -648,31 +668,31 @@ function Theme({ children }) {
               fontSize: 'var(--font-size-4)',
               width: 'var(--space-7)',
               height: 'var(--space-7)',
-              borderRadius: 'var(--radius-full)',
+              borderRadius: 'var(--radius-2)',
             },
             '&.MuiAvatar-rounded-large': {
               fontSize: 'var(--font-size-6)',
               width: 'var(--space-9)',
               height: 'var(--space-9)',
-              borderRadius: 'var(--radius-full)',
+              borderRadius: 'var(--radius-3)',
             },
             '&.MuiAvatar-square-small': {
               fontSize: 'var(--font-size-2)',
               width: 'var(--space-5)',
               height: 'var(--space-5)',
-              borderRadius: 'var(--radius-2)',
+              borderRadius: 'var(--radius-0)',
             },
             '&.MuiAvatar-square-medium': {
               fontSize: 'var(--font-size-4)',
               width: 'var(--space-7)',
               height: 'var(--space-7)',
-              borderRadius: 'var(--radius-2)',
+              borderRadius: 'var(--radius-0)',
             },
             '&.MuiAvatar-square-large': {
               fontSize: 'var(--font-size-6)',
               width: 'var(--space-9)',
               height: 'var(--space-9)',
-              borderRadius: 'var(--radius-2)',
+              borderRadius: 'var(--radius-0)',
             },
           },
         },

@@ -6,8 +6,6 @@ import { setSelectedCombIds, useSchedulingFlowStore } from '../store';
 import DayCardWrapper from './DayCardWrapper';
 import { extractPlanData, groupByDateRange } from './utils';
 
-
-
 export type GroupByDateRange = ReturnType<typeof groupByDateRange>;
 
 function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
@@ -57,7 +55,8 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
                 selectedCombIds={selectedCombIds}
                 isDisabled={false}
                 isCheckboxAndRadio={true}
-                isDayCollapseNeeded={false}
+                isDayCollapseNeeded={true}
+                isSlotCollapseNeeded={true}
               />
             );
           })}

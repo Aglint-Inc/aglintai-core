@@ -1,4 +1,3 @@
-/* eslint-disable security/detect-object-injection */
 import { AccountCircle } from '@mui/icons-material';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
@@ -11,75 +10,74 @@ import MailIcon from '@mui/icons-material/Mail';
 import SaveIcon from '@mui/icons-material/Save';
 import WarningIcon from '@mui/icons-material/Warning';
 import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
-    Alert,
-    Autocomplete,
-    Avatar,
-    AvatarGroup,
-    Badge,
-    Box,
-    Breadcrumbs,
-    Button,
-    ButtonGroup,
-    Card,
-    CardActions,
-    CardContent,
-    CardMedia,
-    Checkbox,
-    Chip,
-    CircularProgress,
-    Container,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    Divider,
-    Drawer,
-    FormControl,
-    FormControlLabel,
-    Grid,
-    IconButton,
-    InputAdornment,
-    InputLabel,
-    Link,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    Menu,
-    MenuItem,
-    Pagination,
-    Paper,
-    Popover,
-    Radio,
-    RadioGroup,
-    Rating,
-    Select,
-    Snackbar,
-    Stack,
-    Step,
-    StepLabel,
-    Stepper,
-    Switch,
-    Tab,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Tabs,
-    TextField,
-    ToggleButton,
-    ToggleButtonGroup,
-    Tooltip,
-    Typography,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Alert,
+  Autocomplete,
+  Avatar,
+  AvatarGroup,
+  Badge,
+  Box,
+  Breadcrumbs,
+  Button,
+  ButtonGroup,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Checkbox,
+  Chip,
+  CircularProgress,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
+  Drawer,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  Link,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  Pagination,
+  Paper,
+  Popover,
+  Radio,
+  RadioGroup,
+  Rating,
+  Select,
+  Snackbar,
+  Stack,
+  Step,
+  StepLabel,
+  Stepper,
+  Switch,
+  Tab,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Tabs,
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+  Tooltip,
+  Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
-
 
 const CardExample = () => {
   return (
@@ -530,39 +528,82 @@ const AccordionExample = () => {
 };
 
 const AvatarExample = () => {
-    return (
-        <div>
-            <Avatar alt="Remy Sharp" variant= "rounded-small" src="/images/logo/aglint.svg" />
-            <Avatar alt="Travis Howard" variant= "rounded-medium" src="/static/images/avatar/2.jpg" />
-            <Avatar alt="Cindy Baker" variant= "rounded-large" src="/static/images/avatar/3.jpg" />
-            
-            <Avatar alt="Remy Sharp" variant= "square-small" src="/static/images/avatar/1.jpg" />
-            <Avatar alt="Remy Sharp" variant= "square-medium" src="/static/images/avatar/1.jpg" />
-            <Avatar alt="Remy Sharp" variant= "square-large" src="/static/images/avatar/1.jpg" />
-            
-            <Avatar alt="Travis Howard" variant= "circular-small" src="/static/images/avatar/2.jpg" />
-            <Avatar alt="Travis Howard" variant= "circular-medium" src="/static/images/avatar/2.jpg" />
-            <Avatar alt="Travis Howard" variant= "circular-large" src="/static/images/avatar/2.jpg" />
-            <Avatar alt="Cindy Baker" variant= "string" src="/static/images/avatar/3.jpg" />
-        </div>
-    );
+  return (
+    <div>
+      <Avatar
+        alt='Remy Sharp'
+        variant='rounded-small'
+        src='/static/images/avatar/2.jpg'
+      />
+      <Avatar
+        alt='Travis Howard'
+        variant='rounded-medium'
+        src='/static/images/avatar/2.jpg'
+      />
+      <Avatar
+        alt='Cindy Baker'
+        variant='rounded-large'
+        src='/static/images/avatar/3.jpg'
+      />
+
+      <Avatar
+        alt='Remy Sharp'
+        variant='square-small'
+        src='/static/images/avatar/1.jpg'
+      />
+      <Avatar
+        alt='Remy Sharp'
+        variant='square-medium'
+        src='/static/images/avatar/1.jpg'
+      />
+      <Avatar
+        alt='Remy Sharp'
+        variant='square-large'
+        src='/static/images/avatar/1.jpg'
+      />
+
+      <Avatar
+        alt='Travis Howard'
+        variant='circular-small'
+        src='/static/images/avatar/2.jpg'
+      />
+      <Avatar
+        alt='Travis Howard'
+        variant='circular-medium'
+        src='/static/images/avatar/2.jpg'
+      />
+      <Avatar
+        alt='Travis Howard'
+        variant='circular-large'
+        src='/static/images/avatar/2.jpg'
+      />
+    </div>
+  );
 };
 
 const AvatarGroupExample = () => {
-    return (
-        <Container>
-            <Typography variant="h2" gutterBottom>
-                Avatar Group
-            </Typography>
-            <AvatarGroup max={4}>
-                <Avatar alt="Remy Sharp" size='1' src="/static/images/avatar/1.jpg" />
-                <Avatar alt="Travis Howard" size='2' src="/static/images/avatar/2.jpg" />
-                <Avatar alt="Cindy Baker"  size='3' src="/static/images/avatar/3.jpg" />
-                <Avatar alt="Agnes Walker"  size='4' src="/static/images/avatar/4.jpg" />
-                <Avatar alt="Trevor Henderson"  size='5' src="/static/images/avatar/5.jpg" />
-            </AvatarGroup>
-        </Container>
-    );
+  return (
+    <Container>
+      <Typography variant='h2' gutterBottom>
+        Avatar Group
+      </Typography>
+      <AvatarGroup max={4}>
+        <Avatar alt='Remy Sharp' size='1' src='/static/images/avatar/1.jpg' />
+        <Avatar
+          alt='Travis Howard'
+          size='2'
+          src='/static/images/avatar/2.jpg'
+        />
+        <Avatar alt='Cindy Baker' size='3' src='/static/images/avatar/3.jpg' />
+        <Avatar alt='Agnes Walker' size='4' src='/static/images/avatar/4.jpg' />
+        <Avatar
+          alt='Trevor Henderson'
+          size='5'
+          src='/static/images/avatar/5.jpg'
+        />
+      </AvatarGroup>
+    </Container>
+  );
 };
 
 const BadgeExample = () => {

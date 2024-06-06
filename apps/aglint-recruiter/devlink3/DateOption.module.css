@@ -10,7 +10,7 @@
   padding: var(--space-2) var(--space-3);
   justify-content: space-between;
 
-  border-radius: var(--radius-3);
+  border-radius: var(--radius-4);
 
   background-color: var(--neutral-2);
 
@@ -38,7 +38,9 @@
 
 .embed_flex {
   display: flex;
+  overflow: hidden;
   align-items: center;
+  cursor: pointer;
 }
 
 .embed_flex.hide {
@@ -134,7 +136,7 @@
   padding: var(--space-2) var(--space-3);
   justify-content: space-between;
 
-  border-radius: var(--radius-3);
+  border-radius: var(--radius-4);
 
   background-color: var(--neutral-2);
 
