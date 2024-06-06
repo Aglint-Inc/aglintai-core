@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { SlotComp } from "./SlotComp";
 import { AddFilter } from "./AddFilter";
 import { AllInterviewCard } from "./AllInterviewCard";
 import * as _utils from "./utils";
@@ -37,7 +38,9 @@ export function AllInterview({
               className={_utils.cx(_styles, "div-block-922")}
               tag="div"
             >
-              {slotFilterButton}
+              {slotFilterButton ?? (
+                <SlotComp componentName="slotForFilterButton" />
+              )}
             </_Builtin.Block>
             <_Builtin.Block tag="div">
               {slotAddFilter ?? <AddFilter />}
@@ -198,10 +201,6 @@ export function AllInterview({
           {slotPagination}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.HtmlEmbed
-        className={_utils.cx(_styles, "embed_css")}
-        value="%3Cstyle%3E%0A%5Bclass*%3D%22AllInterview_all-interview-table__%22%5D%7B%0A%20%20%20%20height%3A%20max-content%3B%0A%09%09min-width%3A%20calc(100vw%20-%20300px)%20!important%3B%0A%7D%0A%0A%5Bclass*%3D%22AllInterview_interview_table_wrap__%22%5D%7B%0Aheight%3A%20calc(100vh%20-%20166px)%20!important%3B%0A%7D%0A.hide_scrollbar%3A%3A-webkit-scrollbar%7B%0Adisplay%3A%20none%3B%2F*%20Hide%20scrollbar%20for%20Chrome%2C%20Safari%20and%20Opera%20*%2F%0A%7D%0A.hide_scrollbar%7B%0A%09-ms-overflow-style%3A%20none%3B%20%20%2F*%20IE%20and%20Edge%20*%2F%0A%20%20scrollbar-width%3A%20none%3B%20%20%2F*%20Firefox%20*%2F%0A%7D%0A%2F*%0A%5Bclass*%3D%22AllInterview_slot_candidaterow__%22%5D%7B%0Aheight%3A%20calc(100vh%20-%20160px)%20!important%3B%0Aoverflow%3Aauto%3B%0A%7D*%2F%0A%3C%2Fstyle%3E"
-      />
     </_Component>
   );
 }
