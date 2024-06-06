@@ -1,7 +1,7 @@
 import { PlanCombinationRespType } from '@aglint/shared-types';
 import { Collapse, Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { ButtonTextSmall } from '@/devlink/ButtonTextSmall';
 import { DateOption } from '@/devlink3/DateOption';
@@ -9,7 +9,7 @@ import { ScheduleOption } from '@/devlink3/ScheduleOption';
 
 import SingleDayCard from '../SingleDayCard';
 
-const NUMBER_OF_SLOTS_TO_DISPLAY = 20;
+const NUMBER_OF_SLOTS_TO_DISPLAY = 10;
 
 function DayCardWrapper({
   isDebrief,
@@ -50,6 +50,11 @@ function DayCardWrapper({
     setDisplayedSlots((prevCount) => prevCount + NUMBER_OF_SLOTS_TO_DISPLAY);
   };
 
+  const memoSlots = useMemo(
+    () => slots.slice(0, displayedSlots),
+    [displayedSlots],
+  );
+
   return (
     <>
       <DateOption
@@ -72,7 +77,7 @@ function DayCardWrapper({
           !isDisabled && (
             <Collapse in={isDayCollapseNeeded ? collapse : true}>
               <Stack spacing={1} pt={'10px'}>
-                {slots.slice(0, displayedSlots)?.map((slot) => {
+                {memoSlots?.map((slot) => {
                   const daySessions = dates.map((date) => {
                     return {
                       date: date,

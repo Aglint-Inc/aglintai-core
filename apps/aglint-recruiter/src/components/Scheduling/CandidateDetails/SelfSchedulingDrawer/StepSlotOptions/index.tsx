@@ -1,8 +1,12 @@
+import { useMemo } from 'react';
+
 import { ScheduleOptionsList } from '@/devlink3/ScheduleOptionsList';
 
 import { setSelectedCombIds, useSchedulingFlowStore } from '../store';
 import DayCardWrapper from './DayCardWrapper';
 import { extractPlanData, groupByDateRange } from './utils';
+
+
 
 export type GroupByDateRange = ReturnType<typeof groupByDateRange>;
 
@@ -31,6 +35,11 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
     }
   };
 
+  const memoGruopedData = useMemo(
+    () => groupedData,
+    [filteredSchedulingOptions],
+  );
+
   return (
     <ScheduleOptionsList
       textDescription={
@@ -38,7 +47,7 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
       }
       slotDateOption={
         <>
-          {groupedData?.map((item) => {
+          {memoGruopedData?.map((item) => {
             return (
               <DayCardWrapper
                 key={item.dateArray.join(', ')}
