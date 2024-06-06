@@ -1,5 +1,10 @@
-import { PlanCombinationRespType } from '@aglint/shared-types';
+import {
+  PlanCombinationRespType,
+  SessionInterviewerType,
+} from '@aglint/shared-types';
 import { FilterJSON } from '@aglint/shared-types/src/db/tables/interview_filter_json';
+
+import { createMeetingEvents } from './createMeetingEvents';
 
 export type FilterJsonData = {
   created_at: string;
@@ -14,3 +19,12 @@ export type FilterJsonData = {
     id: string;
   };
 };
+
+export type BookedMeetingDetails = Awaited<
+  ReturnType<typeof createMeetingEvents>
+>;
+
+export type ConfirmInt = Pick<
+  SessionInterviewerType,
+  'session_id' | 'user_id' | 'interview_module_relation_id'
+>;

@@ -20,7 +20,6 @@ import { scheduling_options_schema } from '@/src/types/scheduling/schema_find_av
 import { EmailTemplateFiller } from '../emailTemplate/EmailTemplateFiller';
 import { fetchScheduleDetails } from '../emailTemplate/fetchCompEmailTemplate';
 import { assignCandidateSlot } from '../scheduling_v2/assignCandidateSlot';
-import { updateTrainingStatus } from '../scheduling_v2/update_training_status';
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 import { bookSession, CalEventAttendeesAuthDetails } from './book_session';
 import { fetchMeetingsInfo } from './fetchMeetingsInfo';

@@ -124,3 +124,11 @@ export type APIVerifyRecruiterSelectedSlots = {
   api_options?: APIOptions;
   filter_json_id: string;
 };
+
+export type AssignTrainingInt = {
+  interviewer_module_relation_id: string;
+  session_id: string;
+};
+export type APIAssignTrainingInterviewerType = {
+  training_ints: AssignTrainingInt[];
+};
