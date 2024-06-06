@@ -5,7 +5,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { bookInterviewPlan } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/bookInterviewPlan';
-import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { scheduling_options_schema } from '@/src/types/scheduling/schema_find_availability_payload';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
@@ -91,12 +90,8 @@ export const fetchCandidateAvailability = async (
   return {
     session_ids: avail_details.session_ids,
     application: avail_details.applications,
-    start_date_str: userTzDayjs(avail_details.date_range[0])
-      .tz(req_body.user_tz)
-      .format('DD/MM/YYYY'),
-    end_date_str: userTzDayjs(avail_details.date_range[1])
-      .tz(req_body.user_tz)
-      .format('DD/MM/YYYY'),
+    start_date_str: avail_details.date_range[0],
+    end_date_str: avail_details.date_range[1],
     recruiter_id: avail_details.recruiter_id,
     company: avail_details.recruiter,
     job: avail_details.applications.public_jobs,

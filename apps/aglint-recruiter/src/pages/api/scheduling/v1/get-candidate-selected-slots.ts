@@ -16,10 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       start_date_str,
       end_date_str,
       recruiter_id,
-    } = await fetchCandidateAvailability(
-      parsedData.cand_availability_id,
-      parsedData.user_tz,
-    );
+    } = await fetchCandidateAvailability(parsedData.cand_availability_id);
     const cand_schedule = new CandidatesSchedulingV2(
       {
         recruiter_id: recruiter_id,

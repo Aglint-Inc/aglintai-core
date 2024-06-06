@@ -111,7 +111,6 @@ export type CandReqAvailableSlots = {
   date_range_end: string;
   candidate_tz: string;
   current_interview_day: number; // starts from 1
-  previously_selected_dates: string[];
   options?: APIOptions;
 };
 

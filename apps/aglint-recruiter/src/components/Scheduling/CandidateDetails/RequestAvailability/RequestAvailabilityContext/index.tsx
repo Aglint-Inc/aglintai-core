@@ -288,16 +288,9 @@ export async function getDateSlots({
       candidate_tz: userTzDayjs.tz.guess(),
       recruiter_id: requestAvailability.recruiter_id,
       session_ids: requestAvailability.session_ids.map((ele) => ele.id),
-      date_range_start: dayjs(requestAvailability.date_range[0]).format(
-        'DD/MM/YYYY',
-      ),
-      date_range_end: dayjs(requestAvailability.date_range[1]).format(
-        'DD/MM/YYYY',
-      ),
+      date_range_start: requestAvailability.date_range[0],
+      date_range_end: requestAvailability.date_range[1],
       current_interview_day: day,
-      previously_selected_dates: prev_dates.map((ele) =>
-        dayjs(ele).format('DD/MM/YYYY'),
-      ),
     } as CandReqAvailableSlots,
   );
   return dateSlots;
