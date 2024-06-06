@@ -1,9 +1,10 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { SidedrawerBodySession } from "./SidedrawerBodySession";
-import { SidedrawerBodyDebrief } from "./SidedrawerBodyDebrief";
-import { SidedrawerBodyBreak } from "./SidedrawerBodyBreak";
+import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
+import { ButtonSoft } from "./ButtonSoft";
+import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./SideDrawerBlock.module.css";
 
@@ -21,12 +22,7 @@ export function SideDrawerBlock({
         className={_utils.cx(_styles, "sidedrawer_topbar")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-gray-600")}
-          tag="div"
-        >
-          {textTitle}
-        </_Builtin.Block>
+        <Text content={textTitle} />
         <_Builtin.Block
           className={_utils.cx(_styles, "side_close")}
           tag="div"
@@ -42,40 +38,27 @@ export function SideDrawerBlock({
         className={_utils.cx(_styles, "sidedrawer_body")}
         tag="div"
       >
-        {slotSidedrawerBody ?? (
-          <>
-            <SidedrawerBodySession />
-            <SidedrawerBodyDebrief />
-            <SidedrawerBodyBreak />
-          </>
-        )}
+        {slotSidedrawerBody ?? <SlotComp componentName="Body" />}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "sidedrawer_bottom")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "button_new", "grey_button")}
-          id={_utils.cx(
-            _styles,
-            "w-node-a59f45c7-8181-74b7-fd34-a71c746daf69-746daf5e"
-          )}
-          tag="div"
-          {...onClickClose}
-        >
-          <_Builtin.Block tag="div">{"Cancel"}</_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "button_new", "blue_button")}
-          id={_utils.cx(
-            _styles,
-            "w-node-a59f45c7-8181-74b7-fd34-a71c746daf6c-746daf5e"
-          )}
-          tag="div"
-          {...onClickPrimaryButton}
-        >
-          <_Builtin.Block tag="div">{textPrimaryButton}</_Builtin.Block>
-        </_Builtin.Block>
+        <ButtonSoft
+          onClickButton={onClickClose}
+          textButton="Cancel"
+          color="neutral"
+          isRightIcon={false}
+          isLeftIcon={false}
+          size="2"
+        />
+        <ButtonSolid
+          textButton={textPrimaryButton}
+          onClickButton={onClickPrimaryButton}
+          isRightIcon={false}
+          isLeftIcon={false}
+          size="2"
+        />
       </_Builtin.Block>
     </_Component>
   );

@@ -43,7 +43,7 @@
     "src/components/Feedback/Session/index.jsx",
     "src/pages/api/getJobsPublic.js",
     ".next/types/**/*.ts"
-    // ".next/types/**/*.ts"
+, "src/context/Theme/theme.d.tsx"    // ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

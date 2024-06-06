@@ -35,6 +35,7 @@ export interface SchedulingApplication {
   isIndividualCancelOpen: boolean;
   isMultipleCancelOpen: boolean;
   isMultipleRescheduleOpen: boolean;
+  isSendingToCandidate: boolean;
   isIndividualRescheduleOpen: boolean;
   selectedApplicationLog: DatabaseTable['application_logs'];
 }
@@ -61,6 +62,7 @@ const initialState: SchedulingApplication = {
   selCoordinator: null,
   isEditOpen: false,
   isEditBreakOpen: false,
+  isSendingToCandidate: false,
   editSession: null,
   selectedApplicationLog: null,
 };
@@ -73,6 +75,9 @@ export const useSchedulingApplicationStore = create<SchedulingApplication>()(
 
 export const setInitalLoading = (initialLoading: boolean) =>
   useSchedulingApplicationStore.setState({ initialLoading });
+
+export const setIsSendingToCandidate = (isSendingToCandidate: boolean) =>
+  useSchedulingApplicationStore.setState({ isSendingToCandidate });
 
 export const setRequestSessionIds = (requestSessionIds: string[]) =>
   useSchedulingApplicationStore.setState({ requestSessionIds });

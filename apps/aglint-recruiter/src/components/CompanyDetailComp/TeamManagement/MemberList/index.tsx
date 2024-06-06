@@ -1,5 +1,4 @@
 import { RecruiterUserType } from '@aglint/shared-types';
-import { BorderClear, BorderColor } from '@mui/icons-material';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';

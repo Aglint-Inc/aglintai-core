@@ -1,32 +1,19 @@
-import { Drawer } from '@mui/material';
-import axios from 'axios';
+import { Drawer, Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { ApiBodyParamsSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
-import { createCombsForMultiDaySlots } from '@/src/services/CandidateScheduleV2/utils/createCombsForMultiDaySlots';
-import toast from '@/src/utils/toast';
+import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 
-import { useGetScheduleApplication } from '../hooks';
-import {
-  setinitialSessions,
-  setSelectedApplicationLog,
-  setSelectedSessionIds,
-  useSchedulingApplicationStore,
-} from '../store';
+import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
+import { useSelfSchedulingDrawer } from './hooks';
 import RescheduleSlot from './RescheduleSlot';
 import StepScheduleFilter from './StepScheduleFilter';
-import { filterSchedulingOptionsArray } from './StepScheduleFilter/utils';
 import SelectDateRange from './StepSelectDate';
 import StepSlotOptions from './StepSlotOptions';
 import {
   resetFilterStore,
   setDateRange,
-  setFilteredSchedulingOptions,
-  setIsScheduleNowOpen,
-  setSchedulingOptions,
   setStepScheduling,
   useSchedulingFlowStore,
 } from './store';
@@ -34,43 +21,20 @@ import {
 function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
   const currentDate = dayjs();
   const initialEndDate = currentDate.add(7, 'day');
-  const { recruiter, recruiterUser } = useAuthDetails();
-  const {
-    selectedApplication,
-    initialSessions,
-    selectedSessionIds,
+  const { initialSessions, selectedSessionIds, isSendingToCandidate } =
+    useSchedulingApplicationStore((state) => ({
+      initialSessions: state.initialSessions,
+      selectedSessionIds: state.selectedSessionIds,
+      isSendingToCandidate: state.isSendingToCandidate,
+    }));
 
-    selectedApplicationLog,
-  } = useSchedulingApplicationStore((state) => ({
-    selectedApplication: state.selectedApplication,
-    initialSessions: state.initialSessions,
-    selectedSessionIds: state.selectedSessionIds,
-
-    selectedApplicationLog: state.selectedApplicationLog,
-  }));
-
-  const {
-    dateRange,
-    filteredSchedulingOptions,
-    isScheduleNowOpen,
-    scheduleFlow,
-    stepScheduling,
-    selectedCombIds,
-    filters,
-    schedulingOptions,
-  } = useSchedulingFlowStore((state) => ({
-    dateRange: state.dateRange,
-    filteredSchedulingOptions: state.filteredSchedulingOptions,
-    isScheduleNowOpen: state.isScheduleNowOpen,
-    scheduleFlow: state.scheduleFlow,
-    stepScheduling: state.stepScheduling,
-    filters: state.filters,
-    selectedCombIds: state.selectedCombIds,
-    schedulingOptions: state.schedulingOptions,
-  }));
-
-  const { fetchInterviewDataByApplication } = useGetScheduleApplication();
-  const [saving, setSaving] = useState(false);
+  const { isScheduleNowOpen, scheduleFlow, stepScheduling, fetchingPlan } =
+    useSchedulingFlowStore((state) => ({
+      isScheduleNowOpen: state.isScheduleNowOpen,
+      scheduleFlow: state.scheduleFlow,
+      stepScheduling: state.stepScheduling,
+      fetchingPlan: state.fetchingPlan,
+    }));
 
   useEffect(() => {
     setDateRange({
@@ -87,77 +51,10 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
     .filter((ses) => selectedSessionIds.includes(ses.id))
     .some((ses) => ses.session_type === 'debrief');
 
-  const onClickSendToCandidate = async () => {
-    try {
-      setSaving(true);
-
-      if (isDebrief && selectedCombIds.length === 0) {
-        toast.warning('Please select a time slot to schedule.');
-        return;
-      }
-      if (!isDebrief && selectedCombIds.length < 5) {
-        toast.warning('Please select at least 5 time slots to schedule.');
-        return;
-      }
-
-      const bodyParams: ApiBodyParamsSendToCandidate = {
-        dateRange,
-        initialSessions,
-        is_mail: true,
-        is_debrief: isDebrief,
-        recruiter_id: recruiter.id,
-        recruiterUser,
-        selCoordinator: null,
-        selectedApplication,
-        selectedSessionIds,
-        selectedDebrief: filteredSchedulingOptions.find(
-          (opt) => opt.plan_comb_id === selectedCombIds[0],
-        ),
-        user_tz: dayjs.tz.guess(),
-        selectedApplicationLog,
-        selectedSlots: filteredSchedulingOptions.filter((opt) =>
-          selectedCombIds.includes(opt.plan_comb_id),
-        ),
-      };
-      const res = await axios.post(
-        '/api/scheduling/application/sendtocandidate',
-        bodyParams,
-      );
-
-      if (res.status === 200 && res.data) {
-        setinitialSessions(
-          initialSessions.map((session) => ({
-            ...session,
-            interview_meeting: selectedSessionIds.includes(session.id)
-              ? session.interview_meeting
-                ? {
-                    ...session.interview_meeting,
-                    status: 'waiting',
-                  }
-                : { status: 'waiting', interview_schedule_id: null }
-              : session.interview_meeting
-                ? { ...session.interview_meeting }
-                : null,
-          })),
-        );
-      }
-      resetState();
-    } catch (e) {
-      toast.error('Error sending to candidate.');
-    } finally {
-      setSaving(false);
-      refetch();
-      fetchInterviewDataByApplication();
-    }
-  };
-
-  const resetState = () => {
-    setIsScheduleNowOpen(false);
-    setSchedulingOptions([]);
-    setSelectedSessionIds([]);
-    setStepScheduling('pick_date');
-    setSelectedApplicationLog(null);
-  };
+  const { resetStateSelfScheduling, onClickPrimary } = useSelfSchedulingDrawer({
+    isDebrief,
+    refetch,
+  });
 
   return (
     <>
@@ -165,15 +62,21 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
         anchor={'right'}
         open={isScheduleNowOpen}
         onClose={() => {
-          resetState();
+          resetStateSelfScheduling();
         }}
       >
         <SideDrawerLarge
+          isLoading={isSendingToCandidate}
           onClickBack={{
             onClick: () => {
-              stepScheduling === 'preference'
-                ? setStepScheduling('pick_date')
-                : setStepScheduling('preference');
+              if (stepScheduling === 'preference') {
+                setStepScheduling('pick_date');
+              } else if (
+                stepScheduling === 'reschedule' &&
+                !isSendingToCandidate
+              ) {
+                setStepScheduling('preference');
+              }
             },
           }}
           textDrawertitle={
@@ -187,32 +90,12 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
           }
           onClickPrimary={{
             onClick: () => {
-              if (stepScheduling === 'preference') {
-                const { allFilteredOptions } = filterSchedulingOptionsArray({
-                  filters,
-                  schedulingOptions,
-                });
-                const combs = createCombsForMultiDaySlots(
-                  allFilteredOptions,
-                ).flatMap((comb) => comb);
-                if (combs.length === 0) {
-                  toast.warning(
-                    'No available slots found for the selected preferences.',
-                  );
-                } else {
-                  setFilteredSchedulingOptions(combs);
-                  setStepScheduling('slot_options');
-                }
-              } else if (stepScheduling === 'slot_options') {
-                if (!saving) {
-                  onClickSendToCandidate();
-                }
-              }
+              onClickPrimary();
             },
           }}
           onClickCancel={{
             onClick: () => {
-              resetState();
+              resetStateSelfScheduling();
             },
           }}
           textPrimaryButton={
@@ -224,17 +107,30 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
           }
           isSelectedNumber={false}
           slotSideDrawerbody={
-            <>
-              {stepScheduling === 'pick_date' ? (
-                <SelectDateRange />
-              ) : stepScheduling === 'reschedule' ? (
-                <RescheduleSlot />
-              ) : stepScheduling === 'preference' ? (
-                <StepScheduleFilter />
-              ) : (
-                <StepSlotOptions isDebrief={isDebrief} />
-              )}
-            </>
+            !fetchingPlan ? (
+              <>
+                {stepScheduling === 'pick_date' ? (
+                  <SelectDateRange />
+                ) : stepScheduling === 'reschedule' ? (
+                  <RescheduleSlot />
+                ) : stepScheduling === 'preference' ? (
+                  <StepScheduleFilter />
+                ) : (
+                  <StepSlotOptions isDebrief={isDebrief} />
+                )}
+              </>
+            ) : (
+              <Stack
+                direction={'row'}
+                justifyContent={'center'}
+                height={'100%'}
+                alignItems={'center'}
+              >
+                <Stack height={'150px'} width={'150px'}>
+                  <CandidateSlotLoad />
+                </Stack>
+              </Stack>
+            )
           }
           isBottomBar={
             stepScheduling === 'slot_options' || stepScheduling === 'preference'

@@ -67,7 +67,7 @@ function DateRangeField() {
                   openPickerIcon: ClockIcon,
                 }}
                 sx={{
-                  width: '150px',
+                  width: '100%',
                   '& input': {
                     fontSize: '14px',
                   },
@@ -88,7 +88,7 @@ function DateRangeField() {
                   openPickerIcon: ClockIcon,
                 }}
                 sx={{
-                  width: '150px',
+                  width: '100%',
                   '& input': {
                     fontSize: '14px',
                   },
