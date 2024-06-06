@@ -1,4 +1,4 @@
-import { Box, Collapse, Stack, Tooltip, Typography } from '@mui/material';
+import { Collapse, Stack, Tooltip, Typography } from '@mui/material';
 import { IconCaretDownFilled, IconCaretRightFilled } from '@tabler/icons-react';
 import { useState } from 'react';
 
