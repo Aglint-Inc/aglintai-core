@@ -11,7 +11,7 @@ import initEmailAgentRemainder from '../../../utils/email/self-scheduling-remind
 import sendMail from '../../../config/sendgrid';
 
 interface ReqPayload {
-  meeting_id: string;
+  schedule_id: string;
   filter_id: string;
 }
 interface Meta {
@@ -41,12 +41,12 @@ export async function POST(req: Request) {
     if (!meta.filter_id) {
       throw new ClientError('filter_id attribute missing', 400);
     }
-    if (!meta.meeting_id) {
+    if (!meta.schedule_id) {
       throw new ClientError('meeting_id attribute missing', 400);
     }
     const data: DataPayload = await initEmailAgentRemainder(
       meta.filter_id,
-      meta.meeting_id,
+      meta.schedule_id,
     );
     const filled_body: FilledPayload = await fetchTemplate(
       data.recruiter_id,
