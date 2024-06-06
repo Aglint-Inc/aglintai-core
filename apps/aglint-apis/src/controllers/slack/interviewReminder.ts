@@ -37,12 +37,12 @@ export async function interviewReminder(req: Request, res: Response) {
         .eq('id', interview_schedule_id)
     );
 
-    // const interviewer_emails = supabaseWrap(
-    //   await supabaseAdmin
-    //     .from('meeting_interviewers')
-    //     .select('email')
-    //     .eq('session_id', session_id)
-    // );
+    const interviewer_emails = supabaseWrap(
+      await supabaseAdmin
+        .from('meeting_interviewers')
+        .select('email')
+        .eq('session_id', session_id)
+    );
 
     const [organizer_email] = supabaseWrap(
       await supabaseAdmin
@@ -50,11 +50,6 @@ export async function interviewReminder(req: Request, res: Response) {
         .select('email')
         .eq('user_id', organizer_id)
     );
-    // Unique emails
-    const interviewer_emails = [
-      {email: 'chandra@aglinthq.com'},
-      // {email: 'dileep@aglinthq.com'},
-    ];
     const emails = [
       ...new Set([organizer_email, ...interviewer_emails].map(e => e.email)),
     ];
