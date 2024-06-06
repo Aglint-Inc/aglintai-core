@@ -49,13 +49,14 @@ type ApplicationAllQueryPrerequistes = {
   count?: number;
 };
 
-type PageParams = ApplicationAllQueryPrerequistes &
-  ApplicationsStore['filters'] & {
-    status: DatabaseView['application_view']['status'];
-  };
+type PageParams = ApplicationAllQueryPrerequistes & {
+  filters: ApplicationsStore['filters'];
+  sort: ApplicationsStore['sort'];
+  status: DatabaseView['application_view']['status'];
+};
 
 const getApplications = async ({
-  pageParam: { job_id, index, status, resume_score, badges, search },
+  pageParam: { job_id, index, status, filters, sort },
 }: {
   pageParam: PageParams & { index: number };
 }) => {
@@ -66,13 +67,13 @@ const getApplications = async ({
     .eq('job_id', job_id)
     .eq('status', status);
 
-  if (search.length) {
-    query.ilike('name', `%${search}%`);
+  if (filters?.search?.length) {
+    query.ilike('name', `%${filters.search}%`);
   }
 
-  if (resume_score.length) {
+  if (filters?.resume_score?.length) {
     query.or(
-      resume_score
+      filters.resume_score
         .map((score) => {
           const { max, min } = resumeScoreRange(score);
           return `and(resume_score.gte.${min},resume_score.lte.${max})`;
@@ -81,12 +82,16 @@ const getApplications = async ({
     );
   }
 
-  if (badges.length) {
+  if (filters?.badges?.length) {
     query.or(
-      badges
+      filters.badges
         .map((badge) => `badges->${badge}.gt.${BADGE_CONSTANTS[badge]}`)
         .join(','),
     );
+  }
+
+  if (sort) {
+    query.order(sort.type, { ascending: sort.order === 'asc' });
   }
 
   const applications = (await query.throwOnError()).data.map(

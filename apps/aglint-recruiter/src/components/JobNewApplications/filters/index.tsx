@@ -12,32 +12,57 @@ const Filters = () => {
   const {
     filters: { search, ...filters },
     setFilters,
-  } = useApplicationsStore(({ filters, setFilters }) => ({
+    sort,
+    setSort,
+  } = useApplicationsStore(({ filters, setFilters, sort, setSort }) => ({
     filters,
     setFilters,
+    sort,
+    setSort,
   }));
-  const options = { badges, resume_score };
+  const filterOptions = { badges, resume_score };
   const safeFilters: Parameters<typeof FilterHeader>[0]['filters'] = useMemo(
     () =>
-      Object.entries(filters).map(([key, value]) => ({
-        active: value.length,
-        name: key,
-        value: value ?? [],
-        type: 'filter',
-        icon: <></>,
-        setValue: (newValue) =>
-          setFilters({ [key]: structuredClone(newValue) }),
-        options: options[key] ?? [],
-      })),
+      Object.entries(filters).map(
+        ([key, value]) =>
+          ({
+            active: value.length,
+            name: key,
+            value: value ?? [],
+            type: 'filter',
+            icon: <></>,
+            setValue: (newValue: typeof value) =>
+              setFilters({ [key]: structuredClone(newValue) }),
+            options: filterOptions[key] ?? [],
+          }) as (typeof safeFilters)[number],
+      ),
     [filters],
+  );
+
+  const safeSort: Parameters<typeof FilterHeader>[0]['sort'] = useMemo(
+    () =>
+      ({
+        sortOptions: {
+          order: ['asc', 'desc'],
+          type: sortTypes,
+        },
+        selected: {
+          order: sort.order,
+          type: sort.type,
+        },
+        setOrder: (payload) => setSort(payload as ApplicationsStore['sort']),
+      }) as typeof safeSort,
+    [sort],
   );
   const component = useMemo(
     () => (
       <FilterHeader
         filters={safeFilters}
+        sort={safeSort}
         search={{
           value: search,
-          setValue: (newValue) => setFilters({ search: newValue }),
+          setValue: (newValue: typeof search) =>
+            setFilters({ search: newValue }),
           placeholder: 'Search in workflows',
         }}
       />
@@ -90,9 +115,13 @@ const resumeScoreTypes: ApplicationsStore['filters']['resume_score'] = [
   'Not a match',
 ];
 
-const resume_score = resumeScoreTypes.map((id) => {
-  return {
-    id,
-    label: id,
-  };
-});
+const resume_score = resumeScoreTypes.map((id) => ({
+  id,
+  label: id,
+}));
+
+const sortTypes: ApplicationsStore['sort']['type'][] = [
+  'applied_at',
+  'name',
+  'resume_score',
+];

@@ -276,7 +276,7 @@ const useJobFilterAndSort = (jobs: Job[]) => {
   const { members } = useAuthDetails();
   const sortOptions = {
     type: ['published_date', 'name'] as const,
-    order: ['desc', 'asce'] as const,
+    order: ['desc', 'asc'] as const,
   };
   const [sort, setSort] = useState<{
     type: (typeof sortOptions.type)[number];
@@ -435,7 +435,7 @@ const useJobFilterAndSort = (jobs: Job[]) => {
       if (sort.type === 'name') {
         return (
           a.job_title.localeCompare(b.job_title) *
-          (sort.order === 'asce' ? 1 : -1)
+          (sort.order === 'asc' ? 1 : -1)
         );
       } else {
         return (

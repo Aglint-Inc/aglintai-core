@@ -3,7 +3,7 @@ import { DatabaseView } from '@aglint/shared-types';
 import { CreateSlice } from '.';
 
 type Sort = {
-  sortBy: keyof Pick<
+  type: keyof Pick<
     DatabaseView['application_view'],
     'resume_score' | 'applied_at' | 'name'
   >;
@@ -56,7 +56,7 @@ const initialFilters: Filters = {
 };
 
 const initialSort: Sort = {
-  sortBy: 'resume_score',
+  type: 'resume_score',
   order: 'desc',
 };
 

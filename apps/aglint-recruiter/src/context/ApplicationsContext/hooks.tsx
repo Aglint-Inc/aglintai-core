@@ -9,9 +9,12 @@ import { useApplicationsStore } from './store';
 
 export const useApplicationsActions = () => {
   const { jobLoad, job, job_id } = useJob();
-  const storeFilters = useApplicationsStore(({ filters }) => filters);
+  const { filters, sort } = useApplicationsStore(({ filters, sort }) => ({
+    filters,
+    sort,
+  }));
 
-  const [filters, setFilters] = useState(storeFilters);
+  const [params, setParams] = useState({ filters, sort });
   const ref = useRef(true);
 
   useDeepCompareEffect(() => {
@@ -19,16 +22,16 @@ export const useApplicationsActions = () => {
       ref.current = false;
       return;
     }
-    const timeout = setTimeout(() => setFilters(storeFilters), 800);
+    const timeout = setTimeout(() => setParams({ filters, sort }), 800);
     return () => clearTimeout(timeout);
-  }, [storeFilters]);
+  }, [filters, sort]);
 
   const newApplications = useInfiniteQuery(
     applicationsQueries.applications({
       job_id,
       status: 'new',
       count: job?.count?.new ?? 0,
-      ...filters,
+      ...params,
     }),
   );
   const screeningApplications = useInfiniteQuery(
@@ -36,7 +39,7 @@ export const useApplicationsActions = () => {
       job_id,
       status: 'screening',
       count: job?.count?.screening ?? 0,
-      ...filters,
+      ...params,
     }),
   );
   const assessmentApplications = useInfiniteQuery(
@@ -44,7 +47,7 @@ export const useApplicationsActions = () => {
       job_id,
       status: 'assessment',
       count: job?.count?.assessment ?? 0,
-      ...filters,
+      ...params,
     }),
   );
   const interviewApplications = useInfiniteQuery(
@@ -52,7 +55,7 @@ export const useApplicationsActions = () => {
       job_id,
       status: 'interview',
       count: job?.count?.interview ?? 0,
-      ...filters,
+      ...params,
     }),
   );
   const qualifiedApplications = useInfiniteQuery(
@@ -60,7 +63,7 @@ export const useApplicationsActions = () => {
       job_id,
       status: 'qualified',
       count: job?.count?.qualified ?? 0,
-      ...filters,
+      ...params,
     }),
   );
   const disqualifiedApplications = useInfiniteQuery(
@@ -68,7 +71,7 @@ export const useApplicationsActions = () => {
       job_id,
       status: 'disqualified',
       count: job?.count?.disqualified ?? 0,
-      ...filters,
+      ...params,
     }),
   );
   return {

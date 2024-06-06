@@ -654,11 +654,11 @@ const SortDropDown = ({
               </svg>
             }
             itemList={sortOptions.order.map((item) =>
-              item == 'asce' ? 'ascending' : 'descending',
+              item == 'asc' ? 'ascending' : 'descending',
             )}
-            selectedItem={selected.order == 'asce' ? 'ascending' : 'descending'}
+            selectedItem={selected.order == 'asc' ? 'ascending' : 'descending'}
             setSelectedItem={(values) => {
-              setOrder({ order: values == 'ascending' ? 'asce' : 'desc' });
+              setOrder({ order: values == 'ascending' ? 'asc' : 'desc' });
             }}
           />
         </Stack>
