@@ -1,5 +1,6 @@
 import JobWorkflowDashboard from '@/src/components/JobWorkflows';
-import JobApplicationProvider from '@/src/context/JobApplicationsContext';
+import { ApplicationProvider } from '@/src/context/ApplicationsContext';
+import { JobProvider } from '@/src/context/JobContext';
 import JobDashboardProvider from '@/src/context/JobDashboard';
 import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
 
@@ -11,10 +12,12 @@ export default JobWorkflowsPage;
 
 JobWorkflowsPage.privateProvider = (page) => {
   return (
-    <JobDashboardProvider>
-      <JobInterviewPlanProvider>
-        <JobApplicationProvider>{page}</JobApplicationProvider>
-      </JobInterviewPlanProvider>
-    </JobDashboardProvider>
+    <JobProvider>
+      <JobDashboardProvider>
+        <JobInterviewPlanProvider>
+          <ApplicationProvider>{page}</ApplicationProvider>
+        </JobInterviewPlanProvider>
+      </JobDashboardProvider>
+    </JobProvider>
   );
 };

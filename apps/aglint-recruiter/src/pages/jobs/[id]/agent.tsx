@@ -7,6 +7,7 @@ import JobAgent from '@/src/components/Agent/JobAgent';
 import Seo from '@/src/components/Common/Seo';
 import { ApplicationProvider } from '@/src/context/ApplicationsContext';
 import { JobAssistantProvider } from '@/src/context/JobAssistant';
+import { JobProvider } from '@/src/context/JobContext';
 import JobDashboardProvider, {
   useJobDetails,
 } from '@/src/context/JobDashboard';
@@ -27,11 +28,13 @@ export default JobAgentPage;
 
 JobAgentPage.privateProvider = function privateProvider(page) {
   return (
-    <JobDashboardProvider>
-      <JobInterviewPlanProvider>
-        <ApplicationProvider>{page}</ApplicationProvider>
-      </JobInterviewPlanProvider>
-    </JobDashboardProvider>
+    <JobProvider>
+      <JobDashboardProvider>
+        <JobInterviewPlanProvider>
+          <ApplicationProvider>{page}</ApplicationProvider>
+        </JobInterviewPlanProvider>
+      </JobDashboardProvider>
+    </JobProvider>
   );
 };
 

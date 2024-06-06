@@ -17,8 +17,8 @@ import { BreadCrumbs } from './layout';
 import { Table } from './table';
 
 const ApplicationsDashboard = () => {
-  const { job, initialJobLoad } = useApplications();
-  return initialJobLoad ? (
+  const { job, jobLoad } = useApplications();
+  return jobLoad ? (
     job !== undefined ? (
       <ApplicationsComponent />
     ) : (
