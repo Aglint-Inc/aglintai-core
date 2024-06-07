@@ -1,7 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import {
-  APICandScheduleMailThankYou,
-  DatabaseTable,
+  APICandScheduleMailThankYou
 } from '@aglint/shared-types';
 import axios from 'axios';
 import { has } from 'lodash';
@@ -51,8 +50,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       task_id,
       metadata: {
         type: 'booking_confirmation',
-        sessions:
-          session_details as DatabaseTable['application_logs']['metadata']['sessions'],
+        sessions: session_details,
         filter_id,
         availability_request_id,
         action: 'waiting',
@@ -95,7 +93,9 @@ export const fetchSessionDetails = async (session_ids: string[]) => {
   const data = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
-      .select()
+      .select(
+        '*,interview_meeting(id,start_time,end_time,status,cal_event_id,meeting_link),interview_session_relation(*,interview_module_relation(id,recruiter_user(user_id,email,first_name,last_name,profile_image)))',
+      )
       .in('id', session_ids),
   );
   return data;
