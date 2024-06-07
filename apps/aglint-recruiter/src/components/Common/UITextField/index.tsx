@@ -15,6 +15,7 @@ type Props = {
   value?: string | number;
   type?: React.HTMLInputTypeAttribute;
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+
   error?: boolean;
   label?: string;
   labelSize?: 'small' | 'medium' | 'large' | 'xLarge' | 'xxLarge' | 'xxxLarge';
@@ -59,6 +60,7 @@ const UITextField = React.forwardRef(
       label,
       labelSize = 'small',
       onChange,
+      onFocus,
       onSelect,
       type = 'text',
       placeholder = '',
@@ -81,11 +83,14 @@ const UITextField = React.forwardRef(
       secondaryText,
       labelBold = 'default',
       defaultLabelColor = null,
+      ...props
     }: Props,
     ref?: React.Ref<HTMLInputElement>,
   ) => {
     const [contentExceeded, setContentExceeded] = useState(false);
-    let labelColor = defaultLabelColor ? defaultLabelColor : 'var(--neutral-12)';
+    let labelColor = defaultLabelColor
+      ? defaultLabelColor
+      : 'var(--neutral-12)';
 
     if (disabled) {
       labelColor = defaultLabelColor ? defaultLabelColor : 'var(--neutral-11)';
@@ -107,10 +112,8 @@ const UITextField = React.forwardRef(
               {label}
             </UITypography>
             {required && (
-              <Typography
-                sx={{color: 'var(--error-9)', pl: 0.5 }}
-              >
-                <sup>*</sup>
+              <Typography sx={{ color: 'var(--error-9)', pl: 0.5 }}>
+                *
               </Typography>
             )}
           </Stack>
@@ -119,11 +122,13 @@ const UITextField = React.forwardRef(
           <Typography variant='body1'>{secondaryText}</Typography>
         )}
         <MuiTextField
+          {...props}
           name={name}
           margin='none'
           select={select}
           fullWidth={fullWidth}
           value={value}
+          onFocus={onFocus}
           defaultValue={defaultValue}
           onChange={onChange}
           onKeyDown={onKeyDown}

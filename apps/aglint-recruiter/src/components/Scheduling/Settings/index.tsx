@@ -564,7 +564,7 @@ function SchedulingSettings({
                   }
                   slotTimeZoneToggle={
                     <ToggleBtn
-                      handleChange={(e:any) => { 
+                      handleChange={(e: any) => {
                         setIsTimeZone(e);
                         if (e) {
                           setSelectedTimeZone(
@@ -629,7 +629,15 @@ function SchedulingSettings({
                           textPopupTitle='Add Holiday'
                           textPopupDescription={
                             <Stack gap={1}>
-                              <Typography variant='body1'>Day off</Typography>
+                              {/* <Typography variant='body1'>Day off</Typography> */}
+                              <Stack direction={'row'}>
+                                <Typography>Day off</Typography>
+                                <Typography
+                                  sx={{ color: 'var(--error-9)', pl: 0.5 }}
+                                >
+                                  *
+                                </Typography>
+                              </Stack>
                               <Stack>
                                 <UITextField
                                   placeholder='Enter the name of the holiday'
@@ -637,7 +645,15 @@ function SchedulingSettings({
                                   ref={eventRef}
                                 />
                               </Stack>
-                              <Typography variant='body1'>Date</Typography>
+                              {/* <Typography variant='body1'>Date</Typography> */}
+                              <Stack direction={'row'}>
+                                <Typography>Date</Typography>
+                                <Typography
+                                  sx={{ color: 'var(--error-9)', pl: 0.5 }}
+                                >
+                                  *
+                                </Typography>
+                              </Stack>
                               <DateSelect
                                 selectedDates={daysOff}
                                 dateRef={dateRef}
@@ -851,9 +867,7 @@ function SchedulingSettings({
                               }}
                               deleteIcon={
                                 <IconButton>
-                                  <Icon
-                                    variant='CloseThinIcon'
-                                  />
+                                  <Icon variant='CloseThinIcon' />
                                 </IconButton>
                               }
                               label={item}
@@ -899,9 +913,7 @@ function SchedulingSettings({
                               }}
                               deleteIcon={
                                 <IconButton>
-                                  <Icon
-                                    variant='CloseThinIcon'
-                                  />
+                                  <Icon variant='CloseThinIcon' />
                                 </IconButton>
                               }
                               label={item}
@@ -947,9 +959,7 @@ function SchedulingSettings({
                               }}
                               deleteIcon={
                                 <IconButton>
-                                  <Icon
-                                    variant='CloseThinIcon'
-                                  />
+                                  <Icon variant='CloseThinIcon' />
                                 </IconButton>
                               }
                               label={item}
@@ -995,9 +1005,7 @@ function SchedulingSettings({
                               }}
                               deleteIcon={
                                 <IconButton>
-                                  <Icon
-                                    variant='CloseThinIcon'
-                                  />
+                                  <Icon variant='CloseThinIcon' />
                                 </IconButton>
                               }
                               label={item}
