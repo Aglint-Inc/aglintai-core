@@ -8,27 +8,6 @@ export type ApiCancelScheduledInterview = {
   cand_email: string;
 };
 
-export type APICandidateConfirmSlot = {
-  candidate_plan: {
-    sessions: {
-      session_id: string;
-      start_time: string;
-      end_time: string;
-    }[];
-  }[];
-  recruiter_id: string;
-  user_tz: string;
-  schedule_id: string;
-  filter_id?: string;
-  //  if tasks id is present
-  agent_type: 'email' | 'phone' | 'self';
-  task_id: string | null;
-  candidate_email?: string;
-  candidate_name?: string;
-  candidate_id?: string;
-  is_debreif?: boolean;
-};
-
 export type APIEventAttendeeStatus = {
   event_id: string;
   attendee_interv_id: string;
