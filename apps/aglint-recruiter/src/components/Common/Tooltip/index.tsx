@@ -2,7 +2,7 @@ import { styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
 
 export const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
-))({
+))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
     maxWidth: 'none',
     background: 'var(--white)',
@@ -14,4 +14,11 @@ export const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
     fontSize: 'var(--font-size-1)',
     fontWeight: 400,
   },
-});
+  [theme.breakpoints.up('sm')]: {
+    '& .MuiTooltip-tooltip': {
+      fontSize: 'inherit',
+      fontWeight: 'inherit',
+      color: 'inherit',
+    },
+  },
+}));

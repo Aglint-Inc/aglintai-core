@@ -1,9 +1,12 @@
+import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { EmptyGeneral } from '@/devlink2/EmptyGeneral';
 import { MemberListCard } from '@/devlink2/MemberListCard';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import IconPlusFilter from '@/src/components/Scheduling/Schedules/Filters/FilterChip/IconPlusFilter';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
@@ -11,10 +14,12 @@ import ROUTES from '@/src/utils/routing/routes';
 import { useGetMeetingsByModuleId } from '../../../queries/hooks';
 import { getHours } from '../../../queries/utils';
 import {
+  setIsAddMemberDialogOpen,
   setIsDeleteMemberDialogOpen,
   setIsPauseDialogOpen,
   setIsResumeDialogOpen,
   setSelUser,
+  setTrainingStatus,
 } from '../../../store';
 import { ModuleType } from '../../../types';
 
@@ -63,13 +68,29 @@ function SlotQualifiedMembers({
   return (
     <>
       {allQualified.length === 0 && (
-        <EmptyGeneral textEmpt={'No members yet'} />
+        <EmptyGeneral
+          textEmpt={'No members yet'}
+          slotButton={
+            <ButtonGhost
+              size={2}
+              isRightIcon={false}
+              slotIcon={<IconPlusFilter />}
+              textButton={'Add'}
+              onClickButton={{
+                onClick: () => {
+                  setIsAddMemberDialogOpen(true);
+                  setTrainingStatus('qualified');
+                },
+              }}
+            />
+          }
+        />
       )}
       {allQualified.map((user) => {
         const member = members.filter(
           (member) => member.user_id === user.user_id,
         )[0];
-        if (!member) return null; //this line added temporarily becasue of data inconsistency
+        if (!member) return null;
 
         const userSettings = user.recruiter_user.scheduling_settings;
         return (
@@ -131,6 +152,22 @@ function SlotQualifiedMembers({
           />
         );
       })}
+      {allQualified.length !== 0 && (
+        <Stack direction={'row'} pt={'var(--space-2)'}>
+          <ButtonGhost
+            size={2}
+            isRightIcon={false}
+            slotIcon={<IconPlusFilter />}
+            textButton={'Add'}
+            onClickButton={{
+              onClick: () => {
+                setIsAddMemberDialogOpen(true);
+                setTrainingStatus('qualified');
+              },
+            }}
+          />
+        </Stack>
+      )}
     </>
   );
 }

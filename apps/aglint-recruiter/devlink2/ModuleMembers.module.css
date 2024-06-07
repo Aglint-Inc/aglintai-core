@@ -4,8 +4,8 @@
   padding: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: var(--space-6);
-  grid-row-gap: var(--space-6);
+  grid-column-gap: var(--space-8);
+  grid-row-gap: var(--space-8);
 }
 
 .mm-header-wrap {

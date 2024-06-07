@@ -29,7 +29,7 @@ export function ModuleSetting({
   return (
     <_Component className={_utils.cx(_styles, "module-setting-wrap")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1318")}
+        className={_utils.cx(_styles, "modulesettingtoggle")}
         tag="div"
       >
         <_Builtin.Block
@@ -51,7 +51,7 @@ export function ModuleSetting({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1712")}
+        className={_utils.cx(_styles, "modulesettings")}
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "gap-10")} tag="div">
@@ -120,7 +120,7 @@ export function ModuleSetting({
           ) : null}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1182")}
+          className={_utils.cx(_styles, "modulesettingactions")}
           tag="div"
         >
           <_Builtin.Block

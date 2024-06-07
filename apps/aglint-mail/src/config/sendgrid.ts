@@ -3,8 +3,7 @@ import type { APISendgridPayload } from '@aglint/shared-types';
 import { MailSenderError } from '../utils/apiUtils/customErrors';
 import { getOutboundEmail } from './get-outbound-email';
 
-const SENDGRID_API_KEY =
-  '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';
+const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
 sgMail.setApiKey(SENDGRID_API_KEY);
 
 export default async function sendMail(data: APISendgridPayload) {

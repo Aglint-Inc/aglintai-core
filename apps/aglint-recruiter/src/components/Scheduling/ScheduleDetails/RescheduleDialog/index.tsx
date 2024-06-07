@@ -18,12 +18,12 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import SchedulingOptionComp from '../../../CandidateDetails/Common/ScheduleOption';
-import { addScheduleActivity } from '../../../Candidates/queries/utils';
-import { mailHandler } from '../../../Candidates/utils';
-import { DateIcon } from '../../../Settings/Components/DateSelector';
-import { useScheduleDetails } from '../../hooks';
-import { ScheduleMeeting } from '../../types';
+import SchedulingOptionComp from '../../CandidateDetails/Common/ScheduleOption';
+import { addScheduleActivity } from '../../Candidates/queries/utils';
+import { mailHandler } from '../../Candidates/utils';
+import { DateIcon } from '../../Settings/Components/DateSelector';
+import { useScheduleDetails } from '../hooks';
+import { ScheduleMeeting } from '../types';
 
 function RescheduleDialog({
   isRescheduleOpen,

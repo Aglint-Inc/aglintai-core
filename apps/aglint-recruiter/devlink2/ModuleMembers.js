@@ -2,7 +2,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { ButtonSurface } from "./ButtonSurface";
 import { MemberListCard } from "./MemberListCard";
 import * as _utils from "./utils";
 import _styles from "./ModuleMembers.module.css";
@@ -22,20 +21,19 @@ export function ModuleMembers({
           className={_utils.cx(_styles, "mm-header-wrap")}
           tag="div"
         >
-          <Text content="Qualified" />
-          <ButtonSurface
-            onClickButton={onClickAddMember}
-            size="2"
-            textButton="Add"
-            isRightIcon={false}
-            isLeftIcon={false}
-          />
+          <Text content="Qualified Members" />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "mm-slot-list-card")}
           tag="div"
         >
-          {slotQualifiedMemberList ?? <MemberListCard />}
+          {slotQualifiedMemberList ?? (
+            <>
+              <MemberListCard />
+              <MemberListCard />
+              <MemberListCard />
+            </>
+          )}
         </_Builtin.Block>
       </_Builtin.Block>
       {isMembersTrainingVisible ? (
@@ -45,19 +43,18 @@ export function ModuleMembers({
             tag="div"
           >
             <Text content="Members in training" />
-            <ButtonSurface
-              onClickButton={onClickAddTrainee}
-              size="2"
-              textButton="Add"
-              isRightIcon={false}
-              isLeftIcon={false}
-            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "mm-slot-list-card")}
             tag="div"
           >
-            {slotMembersInTraining ?? <MemberListCard />}
+            {slotMembersInTraining ?? (
+              <>
+                <MemberListCard />
+                <MemberListCard />
+                <MemberListCard />
+              </>
+            )}
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}
