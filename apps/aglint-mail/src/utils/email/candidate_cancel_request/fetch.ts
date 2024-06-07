@@ -104,7 +104,7 @@ export default async function candidateCancelRequest(
       '[recruiterName]': recruiter_user.first_name,
       '[companyName]': company,
       '[additionalRescheduleNotes]': note,
-      'meetingLink': `https://dev.aglinthq.com/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
+      'meetingLink': `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
       'meetingDetails': [...Sessions],
     },
   };

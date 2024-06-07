@@ -115,7 +115,7 @@ export default async function candidateRescheduleRequest(
       '[jobTitle]': job_title,
       '[additionalRescheduleNotes]': note,
       '[dateRange]': `${dayjs(start).format('DD MMMM YYYY')} to ${dayjs(end).format('DD MMMM YYYY')}`,
-      '[pickYourSlotLink]': `https://dev.aglinthq.com/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
+      '[pickYourSlotLink]': `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
       'meetingDetails': [...Sessions],
     },
   };
