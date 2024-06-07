@@ -21,7 +21,7 @@ BEGIN
           JOIN company_email_template c_e_t ON c_e_t.id = wa.email_template_id
           JOIN workflow w ON war.workflow_id = w.id
           WHERE i_s.id = NEW.schedule_id
-            AND w.trigger::text = 'self_schedule_request_reminder'
+            AND w.trigger::text = 'sendSelfScheduleRequest'
       LOOP
           PERFORM create_new_workflow_action_log(wa_record.workflow_id, wa_record.workflow_action_id, wa_record.interval_minutes, wa_record.phase::text, wa_record.meta);
       END LOOP;
@@ -30,3 +30,7 @@ BEGIN
 END;
 $function$
 ;
+
+CREATE TRIGGER after_insert_interview_filter_json AFTER INSERT ON public.interview_filter_json FOR EACH ROW EXECUTE FUNCTION workflow_log_on_insert_interview_filter_json();
+
+
