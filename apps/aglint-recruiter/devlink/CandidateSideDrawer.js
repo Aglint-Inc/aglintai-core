@@ -12,6 +12,7 @@ export function CandidateSideDrawer({
   slotTabContent,
   slotBasicInfo,
   slotTopBar,
+  isTabs = true,
 }) {
   return (
     <_Component
@@ -32,12 +33,14 @@ export function CandidateSideDrawer({
       >
         {slotBasicInfo ?? <SlotComp componentName="CandidateBasicInfo" />}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "slot_newtab_pill")}
-        tag="div"
-      >
-        {slotNewTabPill ?? <SlotComp componentName="Newtab_pill" />}
-      </_Builtin.Block>
+      {isTabs ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "slot_newtab_pill")}
+          tag="div"
+        >
+          {slotNewTabPill ?? <SlotComp componentName="Newtab_pill" />}
+        </_Builtin.Block>
+      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "slot_tabcontents")}
         tag="div"

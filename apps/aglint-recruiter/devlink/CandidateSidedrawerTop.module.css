@@ -125,6 +125,46 @@
   display: flex;
 }
 
+.cancel_arrowtask {
+  position: relative;
+
+  display: flex;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-radius: var(--radius-1);
+
+  transition: all 200ms ease;
+
+  color: var(--neutral-3);
+
+  cursor: pointer;
+}
+
+.cancel_arrowtask:hover {
+  color: var(--neutral-5);
+}
+
+.cancel_arrowtask.disable {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 1;
+
+  color: #f9f9f8;
+
+  cursor: not-allowed;
+}
+
+.cancel_arrowtask.disable:hover {
+  opacity: 1;
+}
+
 .icons {
   display: flex;
   flex-direction: column;

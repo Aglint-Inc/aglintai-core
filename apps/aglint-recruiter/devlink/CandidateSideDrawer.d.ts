@@ -7,4 +7,5 @@ declare function CandidateSideDrawer(props: {
   slotTabContent?: Types.Devlink.Slot;
   slotBasicInfo?: Types.Devlink.Slot;
   slotTopBar?: Types.Devlink.Slot;
+  isTabs?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

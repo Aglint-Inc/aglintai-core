@@ -1,7 +1,9 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { SelectActionsDropdown } from "./SelectActionsDropdown";
+import { ButtonSoft } from "./ButtonSoft";
 import * as _utils from "./utils";
 import _styles from "./SelectActionBar.module.css";
 
@@ -28,20 +30,15 @@ export function SelectActionBar({
         className={_utils.cx(_styles, "select-action-left-block")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "selection-clear-btn")}
-          tag="div"
+        <_Builtin.HtmlEmbed
+          className={_utils.cx(_styles, "close-button")}
+          value="%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22currentColor%22%2F%3E%0A%3Cpath%20d%3D%22M0.5%203C0.5%201.61929%201.61929%200.5%203%200.5H21C22.3807%200.5%2023.5%201.61929%2023.5%203V21C23.5%2022.3807%2022.3807%2023.5%2021%2023.5H3C1.61929%2023.5%200.5%2022.3807%200.5%2021V3Z%22%20stroke%3D%22%23191400%22%20stroke-opacity%3D%220.207843%22%2F%3E%0A%3Cpath%20d%3D%22M14.6172%2015.1328L11.5%2012.0391L8.40625%2015.1328C8.21875%2015.2734%208.03906%2015.2734%207.86719%2015.1328C7.72656%2014.9609%207.72656%2014.7891%207.86719%2014.6172L10.9609%2011.5L7.86719%208.40625C7.72656%208.21875%207.72656%208.03906%207.86719%207.86719C8.03906%207.72656%208.21875%207.72656%208.40625%207.86719L11.5%2010.9609L14.6172%207.86719C14.7891%207.72656%2014.9609%207.72656%2015.1328%207.86719C15.2734%208.03906%2015.2734%208.21875%2015.1328%208.40625L12.0391%2011.5L15.1328%2014.6172C15.2734%2014.7891%2015.2734%2014.9609%2015.1328%2015.1328C14.9609%2015.2734%2014.7891%2015.2734%2014.6172%2015.1328Z%22%20fill%3D%22%2321201C%22%2F%3E%0A%3C%2Fsvg%3E"
           {...onClickClear}
-        >
-          <_Builtin.HtmlEmbed
-            className={_utils.cx(_styles, "svg-icon")}
-            value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewbox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%224%22%20fill%3D%22%23D93F4C%22%2F%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M5%209C4.44772%209%204%208.55228%204%208C4%207.44772%204.44772%207%205%207H11C11.5523%207%2012%207.44772%2012%208C12%208.55228%2011.5523%209%2011%209H5Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
-          />
-        </_Builtin.Block>
-        <_Builtin.Block tag="div">{textSelected}</_Builtin.Block>
+        />
+        <Text content={textSelected} weight="" />
         {isSelectAllVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-blue-500", "text-underline")}
+            className={_utils.cx(_styles, "accent-link-with-underline")}
             tag="div"
             {...onclickSelectAll}
           >
@@ -139,27 +136,14 @@ export function SelectActionBar({
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}
-      <_Builtin.Block
-        className={_utils.cx(_styles, "delet_candidate", "clickable")}
-        tag="div"
-        {...onClickDelete}
-      >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "icon-block", "_20x20")}
-          tag="div"
-        >
-          <_Builtin.HtmlEmbed
-            className={_utils.cx(_styles, "svg-icon")}
-            value="%3Csvg%20width%3D%2218%22%20height%3D%2218%22%20viewbox%3D%220%200%2018%2018%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M7.89844%204.125C7.83594%204.125%207.78906%204.15625%207.75781%204.21875L7.3125%204.875H10.7109L10.2656%204.21875C10.2188%204.15625%2010.1641%204.125%2010.1016%204.125H7.89844ZM12.0469%204.875H12.375H13.5H13.6875C14.0312%204.90625%2014.2188%205.09375%2014.25%205.4375C14.2188%205.78125%2014.0312%205.96875%2013.6875%206H13.4062L12.8438%2013.6172C12.8125%2014.0078%2012.6562%2014.3359%2012.375%2014.6016C12.0938%2014.8516%2011.7578%2014.9844%2011.3672%2015H6.63281C6.24219%2014.9844%205.90625%2014.8516%205.625%2014.6016C5.34375%2014.3359%205.1875%2014.0078%205.15625%2013.6172L4.59375%206H4.3125C3.96875%205.96875%203.78125%205.78125%203.75%205.4375C3.78125%205.09375%203.96875%204.90625%204.3125%204.875H4.5H5.625H5.95312L6.82031%203.58594C7.08594%203.21094%207.44531%203.01563%207.89844%203H10.1016C10.5547%203.01563%2010.9219%203.21094%2011.2031%203.58594L12.0469%204.875ZM12.2812%206H5.71875L6.25781%2013.5234C6.30469%2013.7422%206.42969%2013.8594%206.63281%2013.875H11.3672C11.5703%2013.8594%2011.6953%2013.7422%2011.7422%2013.5234L12.2812%206Z%22%20fill%3D%22%23D93F4C%22%2F%3E%0A%3C%2Fsvg%3E"
-          />
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-sm", "text-red-500")}
-          tag="div"
-        >
-          {"Delete Application"}
-        </_Builtin.Block>
-      </_Builtin.Block>
+      <ButtonSoft
+        onClickButton={onClickDelete}
+        size="1"
+        color="error"
+        textButton="Delete Application"
+        isLeftIcon={false}
+        isRightIcon={false}
+      />
     </_Component>
   );
 }

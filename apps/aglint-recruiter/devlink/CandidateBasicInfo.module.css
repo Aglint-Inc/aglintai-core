@@ -1,7 +1,6 @@
 .sd_basic_info {
   display: grid;
   height: 64px;
-  max-width: 600px;
   grid-auto-columns: 1fr;
   grid-column-gap: var(--space-1);
   grid-row-gap: var(--space-1);

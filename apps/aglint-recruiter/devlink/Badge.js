@@ -9,6 +9,8 @@ export function Badge({
   as: _Component = _Builtin.Block,
   colorProps = {},
   text = "⚒️ Skilled",
+  slotIcon,
+  isIcon = false,
 }) {
   return (
     <_Component
@@ -16,6 +18,11 @@ export function Badge({
       tag="div"
       {...colorProps}
     >
+      {isIcon ? (
+        <_Builtin.Block className={_utils.cx(_styles, "badge_icon")} tag="div">
+          {slotIcon}
+        </_Builtin.Block>
+      ) : null}
       <Text content={text} size="1" />
     </_Component>
   );
