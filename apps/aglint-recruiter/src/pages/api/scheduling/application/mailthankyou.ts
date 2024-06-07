@@ -63,12 +63,48 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     if (task_id) {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/save_meeting_to_task`,
-        {
-          session_ids: session_ids,
-          task_id: task_id,
-        },
+      const meeting_details = supabaseWrap(
+        await supabaseAdmin
+          .from('meeting_details')
+          .select(
+            'id,session_name,start_time,end_time,meeting_link,session_id,session_order',
+          )
+          .in('session_id', session_ids),
+      );
+      let meeting_users = supabaseWrap(
+        await supabaseAdmin
+          .from('meeting_interviewers')
+          .select('*')
+          .in('session_id', session_ids),
+      );
+
+      const meetings = meeting_details
+        .sort((m1, m2) => m1.session_order - m2.session_order)
+        .map((m) => {
+          return {
+            id: m.session_id,
+            name: m.session_name,
+            interview_meeting: {
+              id: m.id,
+              start_time: m.start_time,
+              end_time: m.end_time,
+              meeting_link: m.meeting_link,
+            },
+            session_order: m.session_order,
+            users: meeting_users.filter(
+              (u) => u.session_id === m.session_id && u.is_confirmed,
+            ),
+          };
+        });
+      supabaseWrap(
+        await supabaseAdmin
+          .from('new_tasks')
+          .update({
+            status: 'completed',
+            session_ids: meetings,
+          })
+          .eq('id', task_id)
+          .select(),
       );
       const candLogger = getCandidateLogger(
         task_id,
@@ -91,15 +127,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
         'candidate',
         'interview_schedule',
-      );
-      supabaseWrap(
-        await supabaseAdmin
-          .from('new_tasks')
-          .update({
-            status: 'completed',
-          })
-          .eq('id', task_id)
-          .select(),
       );
     }
 
