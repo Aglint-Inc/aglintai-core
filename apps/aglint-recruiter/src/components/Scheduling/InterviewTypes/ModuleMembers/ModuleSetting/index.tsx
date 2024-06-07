@@ -164,7 +164,7 @@ function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
               renderUsers={dropDownMembers}
               setSelectedUsers={setSelectedUsers}
               selectedUsers={selectedUsers}
-              pillColor='#fff'
+              pillColor='var(--neutral-3)'
               maxWidth='430px'
               setError={setErrorApproval}
             />

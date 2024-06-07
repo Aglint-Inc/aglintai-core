@@ -3,6 +3,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
+import { MembersList } from "./MembersList";
 import * as _utils from "./utils";
 import _styles from "./ScheduleTabOverview.module.css";
 
@@ -258,7 +259,8 @@ export function ScheduleTabOverview({
                 _styles,
                 "flex-horizontal",
                 "center",
-                "gap-2"
+                "gap-2",
+                "hide"
               )}
               tag="div"
             >
@@ -336,7 +338,12 @@ export function ScheduleTabOverview({
                   className={_utils.cx(_styles, "div-block-1425")}
                   tag="div"
                 >
-                  {slotMembers ?? <SlotComp componentNeme="Member List" />}
+                  {slotMembers ?? (
+                    <>
+                      <SlotComp componentNeme="Member List" />
+                      <MembersList />
+                    </>
+                  )}
                 </_Builtin.Block>
               </_Builtin.Block>
             ) : null}
