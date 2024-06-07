@@ -1,5 +1,5 @@
 import { ScheduleUtils } from '@aglint/shared-utils';
-import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
+import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
 import type { InitEmailAgentRemainderType } from '../../types/supabase-fetch';
 
 interface FilterJson {
