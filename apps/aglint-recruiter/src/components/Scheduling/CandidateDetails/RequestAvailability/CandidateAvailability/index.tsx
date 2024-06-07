@@ -43,7 +43,7 @@ function CandidateAvailability() {
       data: { slots: daySlots, user_timezone: userTzDayjs.tz.guess() },
       id: String(router.query?.request_id),
     });
-    insertTaskProgress({
+    await insertTaskProgress({
       request_availability_id: candidateRequestAvailability?.id,
       taskData: {
         created_by: {

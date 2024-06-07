@@ -211,7 +211,7 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
       id: String(router.query?.request_id),
     });
 
-    insertTaskProgress({
+    await insertTaskProgress({
       request_availability_id: candidateRequestAvailability?.id,
       taskData: {
         created_by: {
