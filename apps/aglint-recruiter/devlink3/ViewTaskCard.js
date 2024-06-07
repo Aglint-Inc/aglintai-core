@@ -42,14 +42,14 @@ export function ViewTaskCard({
   isPriorityVisible = true,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1340")} tag="div">
+    <_Component className={_utils.cx(_styles, "task_informations")} tag="div">
       {isTypeVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1455")}
+          className={_utils.cx(_styles, "task_detail_row")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1454")}
+            className={_utils.cx(_styles, "task_detail_type")}
             tag="div"
           >
             <_Builtin.HtmlEmbed
@@ -64,7 +64,7 @@ export function ViewTaskCard({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1456")}
+            className={_utils.cx(_styles, "task_detail_current")}
             tag="div"
           >
             {slotType}
@@ -73,11 +73,11 @@ export function ViewTaskCard({
       ) : null}
       {isJobVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1455")}
+          className={_utils.cx(_styles, "task_detail_row")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1454")}
+            className={_utils.cx(_styles, "task_detail_type")}
             tag="div"
           >
             <_Builtin.Block
@@ -97,7 +97,7 @@ export function ViewTaskCard({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1456", "gap-8")}
+            className={_utils.cx(_styles, "task_detail_current", "gap-8")}
             tag="div"
             {...onClickJob}
           >
@@ -107,11 +107,11 @@ export function ViewTaskCard({
       ) : null}
       {isCandidateVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1455")}
+          className={_utils.cx(_styles, "task_detail_row")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1454")}
+            className={_utils.cx(_styles, "task_detail_type")}
             tag="div"
           >
             <_Builtin.Block
@@ -131,7 +131,7 @@ export function ViewTaskCard({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1456", "gap-8")}
+            className={_utils.cx(_styles, "task_detail_current", "gap-8")}
             tag="div"
             {...onClickCandidate}
           >
@@ -141,11 +141,11 @@ export function ViewTaskCard({
       ) : null}
       {isInterviewVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1455")}
+          className={_utils.cx(_styles, "task_detail_row")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1454")}
+            className={_utils.cx(_styles, "task_detail_type")}
             tag="div"
           >
             <_Builtin.HtmlEmbed
@@ -162,7 +162,7 @@ export function ViewTaskCard({
           <_Builtin.Block
             className={_utils.cx(
               _styles,
-              "div-block-1456",
+              "task_detail_current",
               "gap-8",
               "interview"
             )}
@@ -175,11 +175,11 @@ export function ViewTaskCard({
       ) : null}
       {isInterviewDateVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1455")}
+          className={_utils.cx(_styles, "task_detail_row")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1454")}
+            className={_utils.cx(_styles, "task_detail_type")}
             tag="div"
           >
             <_Builtin.HtmlEmbed
@@ -194,7 +194,7 @@ export function ViewTaskCard({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1456")}
+            className={_utils.cx(_styles, "task_detail_current")}
             tag="div"
             {...onClickInterviewDate}
           >
@@ -204,11 +204,11 @@ export function ViewTaskCard({
       ) : null}
       {isCreatedByVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1455")}
+          className={_utils.cx(_styles, "task_detail_row")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1454")}
+            className={_utils.cx(_styles, "task_detail_type")}
             tag="div"
           >
             <_Builtin.Block
@@ -228,7 +228,7 @@ export function ViewTaskCard({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1456", "gap-8")}
+            className={_utils.cx(_styles, "task_detail_current", "gap-8")}
             tag="div"
           >
             {slotCreatedBy}
@@ -237,11 +237,11 @@ export function ViewTaskCard({
       ) : null}
       {isDueDateVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1455")}
+          className={_utils.cx(_styles, "task_detail_row")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1454")}
+            className={_utils.cx(_styles, "task_detail_type")}
             tag="div"
           >
             <_Builtin.Block
@@ -261,7 +261,7 @@ export function ViewTaskCard({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1456", "gap-8")}
+            className={_utils.cx(_styles, "task_detail_current", "gap-8")}
             tag="div"
             {...onClickDueDate}
           >
@@ -271,11 +271,11 @@ export function ViewTaskCard({
       ) : null}
       {isAssignedToVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1455")}
+          className={_utils.cx(_styles, "task_detail_row")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1454")}
+            className={_utils.cx(_styles, "task_detail_type")}
             tag="div"
           >
             <_Builtin.HtmlEmbed
@@ -290,7 +290,7 @@ export function ViewTaskCard({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1456")}
+            className={_utils.cx(_styles, "task_detail_current")}
             tag="div"
             {...onClickAssignedTo}
           >
@@ -300,14 +300,19 @@ export function ViewTaskCard({
       ) : null}
       {isWhenToCallVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1455")}
+          className={_utils.cx(_styles, "task_detail_row")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1454")}
+            className={_utils.cx(_styles, "task_detail_type")}
             tag="div"
           >
-            <_Builtin.Block tag="div">{slotWhentoCallIcon}</_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "slot_for_icon")}
+              tag="div"
+            >
+              {slotWhentoCallIcon}
+            </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "text-grey_600")}
               tag="div"
@@ -316,7 +321,7 @@ export function ViewTaskCard({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1456")}
+            className={_utils.cx(_styles, "task_detail_current")}
             tag="div"
             {...onClickWhenToCall}
           >
@@ -326,11 +331,11 @@ export function ViewTaskCard({
       ) : null}
       {isPriorityVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1455")}
+          className={_utils.cx(_styles, "task_detail_row")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1454")}
+            className={_utils.cx(_styles, "task_detail_type")}
             tag="div"
           >
             <_Builtin.Block tag="div">
@@ -347,7 +352,7 @@ export function ViewTaskCard({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1456")}
+            className={_utils.cx(_styles, "task_detail_current")}
             tag="div"
             {...onClickPriority}
           >
@@ -357,11 +362,11 @@ export function ViewTaskCard({
       ) : null}
       {isStatusVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1455")}
+          className={_utils.cx(_styles, "task_detail_row")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1454")}
+            className={_utils.cx(_styles, "task_detail_type")}
             tag="div"
           >
             <_Builtin.Block
@@ -381,7 +386,7 @@ export function ViewTaskCard({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1456", "gap-8")}
+            className={_utils.cx(_styles, "task_detail_current", "gap-8")}
             tag="div"
           >
             {slotStatus}

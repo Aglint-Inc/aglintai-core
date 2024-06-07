@@ -30,13 +30,12 @@ export function TaskSwitchButton({
           {...onClickJobCand}
         >
           <_Builtin.Block className={_utils.cx(_styles, "text_wrap")} tag="div">
-            <Text content={textFirst} weight="medium" color="" />
+            <Text content={textFirst} weight="medium" color="" size="1" />
           </_Builtin.Block>
           {isJobCandActive ? (
             <_Builtin.Block
               className={_utils.cx(_styles, "active_wrap")}
               tag="div"
-              box-shadow="1"
             />
           ) : null}
         </_Builtin.Block>
@@ -46,13 +45,12 @@ export function TaskSwitchButton({
           {...onClickList}
         >
           <_Builtin.Block className={_utils.cx(_styles, "text_wrap")} tag="div">
-            <Text content={textSecond} weight="medium" color="" />
+            <Text content={textSecond} weight="medium" color="" size="1" />
           </_Builtin.Block>
           {isListActive ? (
             <_Builtin.Block
               className={_utils.cx(_styles, "active_wrap")}
               tag="div"
-              box-shadow="1"
             />
           ) : null}
         </_Builtin.Block>

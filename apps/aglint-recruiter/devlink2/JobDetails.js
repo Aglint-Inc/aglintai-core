@@ -8,7 +8,7 @@ import { ShowFilterButton } from "./ShowFilterButton";
 import { SelectActionBar } from "./SelectActionBar";
 import { JobDetailsFilterBlock } from "./JobDetailsFilterBlock";
 import { ApplicantsTable } from "./ApplicantsTable";
-import { AllApplicantsTable } from "./AllApplicantsTable";
+import { CandidateListItem } from "./CandidateListItem";
 import * as _utils from "./utils";
 import _styles from "./JobDetails.module.css";
 
@@ -151,7 +151,7 @@ export function JobDetails({
                 {slotTable ?? (
                   <>
                     <ApplicantsTable />
-                    <AllApplicantsTable />
+                    <CandidateListItem />
                   </>
                 )}
               </_Builtin.Block>

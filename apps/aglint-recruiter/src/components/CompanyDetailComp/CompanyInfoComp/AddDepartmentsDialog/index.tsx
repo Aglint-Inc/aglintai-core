@@ -6,7 +6,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { AddDepartmentPop } from '@/devlink/AddDepartmentPop';
 import { RolesPill } from '@/devlink/RolesPill';
@@ -28,6 +28,7 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState([]);
   const [departmentState, setDepartmentState] = useState<string[]>([]);
+  const iniDepartments = useRef([]);
 
   const handleInputChange = (event, newInputValue) => {
     setInputValue(newInputValue);
@@ -46,6 +47,7 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
     if (recruiter?.departments && open) {
       setDepartmentState(recruiter?.departments);
       setOptions(initialDepartments);
+      iniDepartments.current = recruiter?.departments;
     }
   }, [recruiter?.departments, open]);
 
@@ -68,6 +70,15 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
       }, 10);
     }
   };
+
+  function compareChanges() {
+    const set1 = new Set(departmentState);
+    const set2 = new Set(iniDepartments.current);
+    if (set1.size !== set2.size) {
+      return false;
+    }
+    return [...set1].every((element) => set2.has(element));
+  }
 
   return (
     <Dialog onClose={handleClose} open={open} maxWidth={'xl'}>
@@ -168,11 +179,13 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
         }}
         onClickDone={{
           onClick: () => {
-            handleChange({
-              ...recruiter,
-              departments: departmentState,
-            });
-            handleClose();
+            if (!compareChanges()) {
+              handleChange({
+                ...recruiter,
+                departments: departmentState,
+              });
+              handleClose();
+            }
           },
         }}
       />

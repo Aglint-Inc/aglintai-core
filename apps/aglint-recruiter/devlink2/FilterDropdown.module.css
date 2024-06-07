@@ -50,6 +50,13 @@
   grid-row-gap: 6px;
 }
 
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -57,13 +64,6 @@
 
 .cursor-pointer:hover {
   opacity: 0.7;
-}
-
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .icons.cursor-pointer.no-trans {

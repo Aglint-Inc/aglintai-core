@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { Attendee } from "./Attendee";
-import { SelectedMemberPill } from "./SelectedMemberPill";
+import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./SidedrawerBodyDebrief.module.css";
 
@@ -24,9 +24,7 @@ export function SidedrawerBodyDebrief({
         className={_utils.cx(_styles, "input_and_label")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Debrief Session Name"}
-        </_Builtin.Block>
+        <Text content="Debrief Session Name" weight="" />
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_input_field")}
           tag="div"
@@ -45,9 +43,7 @@ export function SidedrawerBodyDebrief({
         className={_utils.cx(_styles, "input_and_label")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Duration"}
-        </_Builtin.Block>
+        <Text content="Duration" weight="" />
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_input_field")}
           tag="div"
@@ -66,9 +62,7 @@ export function SidedrawerBodyDebrief({
         className={_utils.cx(_styles, "input_and_label")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Schedule Type"}
-        </_Builtin.Block>
+        <Text content="Schedule Type" weight="" />
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_input_field")}
           tag="div"
@@ -88,22 +82,16 @@ export function SidedrawerBodyDebrief({
           className={_utils.cx(_styles, "input_and_label")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Attendees"}
-          </_Builtin.Block>
+          <Text content="Attendees" weight="" />
           <_Builtin.Block
             className={_utils.cx(_styles, "slot_attendee")}
             tag="div"
           >
             {slotAttendee ?? (
               <>
-                <Attendee />
-                <Attendee />
-                <Attendee />
-                <Attendee />
+                <SlotComp componentName="Attendee" />
+                <SlotComp componentName="Attendee" />
+                <SlotComp componentName="Attendee" />
               </>
             )}
           </_Builtin.Block>
@@ -139,19 +127,17 @@ export function SidedrawerBodyDebrief({
         className={_utils.cx(_styles, "input_and_label")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Add Additional Members"}
-        </_Builtin.Block>
+        <Text content="Add Additional Members" weight="" />
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_avatarselectionpill")}
           tag="div"
         >
           {slotMemberAvatarSelectionPill ?? (
             <>
-              <SelectedMemberPill />
-              <SelectedMemberPill textMemberName="Ogyen Thoga" />
-              <SelectedMemberPill textMemberName="Punith G" />
-              <SelectedMemberPill textMemberName="Dheeraj Kumar Sah" />
+              <SlotComp componentName="Selected AvatarPill" />
+              <SlotComp componentName="Selected AvatarPill" />
+              <SlotComp componentName="Selected AvatarPill" />
+              <SlotComp componentName="Selected AvatarPill" />
             </>
           )}
         </_Builtin.Block>

@@ -14,22 +14,17 @@ export function TrainingProgress({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "div-block-1487", "height-430")}
+      className={_utils.cx(_styles, "dashboard_widget_wrap")}
       tag="div"
     >
       <_Builtin.Block
         className={_utils.cx(_styles, "dashboard-widget-header")}
         tag="div"
       >
-        <Text content="Training Progress" />
+        <Text content="Training Progress" weight="medium" />
         {isViewAllVisible ? (
           <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "text-blue-500",
-              "text-underline",
-              "cursor-pointer"
-            )}
+            className={_utils.cx(_styles, "text-link-accent")}
             tag="div"
             {...onClickViewAllInterviewers}
           >
@@ -37,46 +32,33 @@ export function TrainingProgress({
           </_Builtin.Block>
         ) : null}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1514")}
-        tag="div"
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "sd_table")} tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1507", "progress")}
+          className={_utils.cx(_styles, "module_row", "progress")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1508")}
+            className={_utils.cx(_styles, "sd_table_header_cell")}
             id={_utils.cx(
               _styles,
               "w-node-f51aea9e-3a98-2b3d-2e1f-0f944d5a854c-4d5a8544"
             )}
             tag="div"
           >
-            <Text
-              weight="medium"
-              size="2"
-              color="neutral"
-              content="Interviewer"
-            />
+            <Text weight="" size="1" color="neutral" content="Interviewer" />
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1508")}
+            className={_utils.cx(_styles, "sd_table_header_cell")}
             id={_utils.cx(
               _styles,
               "w-node-f51aea9e-3a98-2b3d-2e1f-0f944d5a854f-4d5a8544"
             )}
             tag="div"
           >
-            <Text
-              weight="medium"
-              size="2"
-              color="neutral"
-              content="Interview Type"
-            />
+            <Text weight="" size="1" color="neutral" content="Interview Type" />
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1508")}
+            className={_utils.cx(_styles, "sd_table_header_cell")}
             id={_utils.cx(
               _styles,
               "w-node-f51aea9e-3a98-2b3d-2e1f-0f944d5a8552-4d5a8544"
@@ -84,14 +66,17 @@ export function TrainingProgress({
             tag="div"
           >
             <Text
-              weight="medium"
-              size="2"
+              weight=""
+              size="1"
               color="neutral"
               content="Training History"
             />
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "sd_table_body")}
+          tag="div"
+        >
           {slotTrainingProgressList ?? (
             <>
               <SlotComp componentNeme="TrainingProgressList" />

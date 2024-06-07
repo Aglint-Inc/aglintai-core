@@ -1,14 +1,14 @@
 /* eslint-disable no-console */
 import {
-  APICandidateConfirmSlot,
   APIFindAvailability,
+  APIScheduleDebreif,
   DatabaseTable,
   DB,
   InterviewMeetingTypeDb,
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
   JobApplcationDB,
-  SupabaseType,
+  SupabaseType
 } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { createServerClient } from '@supabase/ssr';
@@ -495,6 +495,15 @@ const scheduleDebrief = async ({
   candidate_id,
   candidate_name,
   filter_id,
+}: {
+  selectedDebrief: SchedulingFlow['filteredSchedulingOptions'][number];
+  recruiter_id: string;
+  user_tz: string;
+  schedule_id: string;
+  candidate_email: string;
+  candidate_id: string;
+  candidate_name: string;
+  filter_id: string;
 }) => {
   console.log({
     selectedDebrief,
@@ -507,32 +516,15 @@ const scheduleDebrief = async ({
     filter_id,
   });
 
-  const bodyParams: APICandidateConfirmSlot = {
-    candidate_plan: [
-      {
-        sessions: selectedDebrief.sessions.map((ses) => {
-          return {
-            session_id: ses.session_id,
-            start_time: ses.start_time,
-            end_time: ses.end_time,
-          };
-        }),
-      },
-    ],
-    recruiter_id: recruiter_id,
-    user_tz: user_tz,
-    schedule_id: schedule_id,
-    is_debreif: true,
-    agent_type: 'self',
-    task_id: null,
-    candidate_email,
-    candidate_id,
-    candidate_name,
-    filter_id,
+  const bodyParams: APIScheduleDebreif = {
+    session_id: selectedDebrief.sessions[0].session_id,
+    schedule_id,
+    user_tz,
+    selectedOption: selectedDebrief,
   };
 
   const res = await axios.post(
-    `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/confirm_interview_slot`,
+    `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/booking/schedule-debreif`,
     bodyParams,
   );
 

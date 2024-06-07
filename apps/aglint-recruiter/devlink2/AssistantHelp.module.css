@@ -121,10 +121,6 @@
   color: #49545c;
 }
 
-.text-align-center {
-  text-align: center;
-}
-
 .text-grey-600 {
   color: #68737d;
 }
@@ -168,10 +164,6 @@
 .text-sm {
   font-size: 12px;
   line-height: 16px;
-}
-
-.text-yellow-700 {
-  color: hsla(26.174496644295296, 75.63%, 38.63%, 1.00);
 }
 
 .text-gray-500 {
@@ -235,10 +227,6 @@
   text-transform: capitalize;
 }
 
-.text-yellow-800 {
-  color: hsla(23.07692307692308, 68.42%, 26.08%, 1.00);
-}
-
 .text-kale-800 {
   color: var(--kale-800\<deleted\|variable-f2fd7071-1c51-e4c0-2aa9-ed4d60cbbee9\>);
 }
@@ -257,10 +245,6 @@
 
 .text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
-.text-yellow-600 {
-  color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
 }
 
 .div-block-936 {

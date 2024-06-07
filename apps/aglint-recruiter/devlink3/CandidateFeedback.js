@@ -71,7 +71,7 @@ export function CandidateFeedback({
           <_Builtin.Block
             className={_utils.cx(
               _styles,
-              "text-blue-500",
+              "accent-text",
               "text-underline",
               "cursor-pointer"
             )}

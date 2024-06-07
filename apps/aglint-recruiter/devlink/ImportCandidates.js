@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { UploadedResume } from "./UploadedResume";
-import { ImportCsv } from "./ImportCsv";
+import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./ImportCandidates.module.css";
 
@@ -54,12 +54,7 @@ export function ImportCandidates({
             block="inline"
             {...onClickImportCsv}
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Upload Resume"}
-            </_Builtin.Block>
+            <Text content="Upload Resume" weight="medium" />
           </_Builtin.TabsLink>
           <_Builtin.TabsLink
             className={_utils.cx(_styles, "ic-tab-link-block")}
@@ -67,12 +62,7 @@ export function ImportCandidates({
             block="inline"
             {...onClickImportResume}
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Import CSV"}
-            </_Builtin.Block>
+            <Text content="Import CSV" weight="medium" />
           </_Builtin.TabsLink>
           <_Builtin.TabsLink
             className={_utils.cx(_styles, "ic-tab-link-block")}
@@ -80,12 +70,7 @@ export function ImportCandidates({
             block="inline"
             {...onClickAddManually}
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Add Manually"}
-            </_Builtin.Block>
+            <Text content="Add Manually" weight="medium" />
           </_Builtin.TabsLink>
         </_Builtin.TabsMenu>
         <_Builtin.TabsContent
@@ -97,12 +82,12 @@ export function ImportCandidates({
               className={_utils.cx(_styles, "slot-import")}
               tag="div"
             >
-              {slotImportResume ?? <UploadedResume />}
+              {slotImportResume ?? <SlotComp componentName="UploadedResume" />}
             </_Builtin.Block>
           </_Builtin.TabsPane>
           <_Builtin.TabsPane tag="div" data-w-tab="Tab 2">
             <_Builtin.Block tag="div">
-              {slotImportCsv ?? <ImportCsv />}
+              {slotImportCsv ?? <SlotComp componentName="ImportCsv" />}
             </_Builtin.Block>
           </_Builtin.TabsPane>
           <_Builtin.TabsPane tag="div" data-w-tab="Tab 3">
@@ -110,10 +95,6 @@ export function ImportCandidates({
           </_Builtin.TabsPane>
         </_Builtin.TabsContent>
       </_Builtin.TabsWrapper>
-      <_Builtin.HtmlEmbed
-        className={_utils.cx(_styles, "hide")}
-        value="%3Cstyle%3E%0A%5Bclass*%3D%22ImportCandidates_ic-tab-link-block__%22%5D%7B%0Abackground-color%3A%23f8f9f9%20!important%3B%0A%7D%0A%3C%2Fstyle%3E"
-      />
     </_Component>
   );
 }

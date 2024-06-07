@@ -1,14 +1,17 @@
 .interviewplan {
   display: flex;
   overflow: auto;
-  padding-top: 20px;
-  padding-right: 20px;
-  padding-bottom: 20px;
-  padding-left: 20px;
+  padding-top: var(--space-4);
+  padding-right: var(--space-4);
+  padding-bottom: var(--space-4);
+  padding-left: var(--space-4);
   flex-direction: column;
   align-items: stretch;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
+
+  background-color: var(--neutral-2);
+
   height: calc(100vh - 60px);
 }
 
@@ -23,7 +26,7 @@
   grid-row-gap: 4px;
 }
 
-.div-block-1311 {
+.ip-empty-wrap {
   display: flex;
   width: 700px;
   min-height: 240px;
@@ -32,19 +35,19 @@
   flex-wrap: nowrap;
   align-items: center;
 
-  border-radius: 10px;
+  border-radius: var(--radius-4);
 
-  background-color: #f7f9fb;
+  background-color: var(--neutral-3);
 }
 
-.div-block-1312 {
+.ip-center-wrap {
   display: flex;
   flex-direction: column;
   justify-content: center;
   flex-wrap: nowrap;
   align-items: center;
-  grid-column-gap: 12px;
-  grid-row-gap: 12px;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
 }
 
 .icons {
@@ -79,178 +82,11 @@
   cursor: pointer;
 }
 
-.text-grey-600 {
-  color: #68737d;
-}
-
-.text-sm {
-  font-size: var(--font-size-1);
-  line-height: var(--line-height-1);
-  letter-spacing: var(--letter-spacing-1);
-}
-
-.text-grey-600.text-underline {
-  text-decoration: underline;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
-.text-grey-600.text-underline.cursor-pointer {
-  transition: opacity 250ms ease;
-  cursor: pointer;
-}
-
-.text-grey-600.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
 .slotinterviewplancard {
   display: flex;
   width: 100%;
   max-width: 700px;
   flex-direction: column;
-}
-
-.buttons_wrap {
-  display: flex;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-}
-
-.width-700 {
-  width: 700px;
-}
-
-.hide {
-  display: none;
-}
-
-.button_primary {
-  display: flex;
-  padding: 8px 16px;
-  justify-content: center;
-  align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-
-  border-radius: 6px;
-
-  background-color: #1f73b7;
-
-  transition: all 200ms ease;
-
-  color: white;
-
-  cursor: pointer;
-}
-
-.button_primary:hover {
-  background-color: #144a75;
-}
-
-.button_primary.danger {
-  width: 100%;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  background-color: #d93f4c;
-}
-
-.button_primary.danger:hover {
-  background-color: #cc3340;
-}
-
-.button_primary.greay_btn {
-  width: 100%;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  background-color: #e9ebed;
-  color: #2f3941;
-}
-
-.button_primary.greay_btn:hover {
-  background-color: #d8dcde;
-}
-
-.button_primary.greay_btn.width-auto-copy {
-  width: auto;
-  background-color: var(--accent-3);
-  color: var(--accent-11);
-}
-
-.button_primary.greay_btn.width-auto-copy:hover {
-  background-color: var(--accent-4);
-}
-
-.button_primary.is_outline {
-  border: 1px solid #1f73b7;
-  background-color: white;
-  color: #1f73b7;
-}
-
-.button_primary.is_outline.width-100 {
-  width: 100%;
-}
-
-.button_primary.greay_btn-copy-copy {
-  height: 36px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  background-color: #e9ebed;
-  color: #2f3941;
-}
-
-.button_primary.greay_btn-copy-copy:hover {
-  background-color: #d8dcde;
-}
-
-.button_primary.green-btn {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  background-color: var(--accent-9);
-}
-
-.button_primary.large_btn {
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.button_primary.large_btn-copy {
-  position: relative;
-  overflow: hidden;
-  width: 300px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.embed_flex {
-  display: flex;
-  align-items: center;
-}
-
-.embed_flex.hide {
-  display: none;
-}
-
-.embed_flex.custom_top {
-  margin-top: 2px;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.embed_flex.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.embed_flex.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.embed_flex.fixedd {
-  width: 23px;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
 }

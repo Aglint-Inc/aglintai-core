@@ -31,11 +31,6 @@
   background-color: var(--white);
 }
 
-.sl-logo-block.margin-v {
-  margin-top: 18px;
-  margin-bottom: 80px;
-}
-
 .sl-logo-block.margin-b-50 {
   margin-top: 18px;
   margin-bottom: 50px;
@@ -151,21 +146,6 @@
 
 .text-gray-500 {
   color: var(--neutral-11);
-}
-
-.text-gray-500.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
 }
 
 .div-block-385 {

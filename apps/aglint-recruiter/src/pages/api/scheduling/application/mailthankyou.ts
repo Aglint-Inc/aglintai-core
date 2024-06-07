@@ -34,6 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       filter_id,
       availability_request_id,
       schedule_id,
+      is_debreif,
     } = req.body as APICandScheduleMailThankYou;
     required_fields.forEach((field) => {
       if (!has(req.body, field)) {
@@ -130,18 +131,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       );
     }
 
-    const payload: TemplateApiPayload = {
-      application_id,
-      availability_request_id,
-      filter_id,
-      schedule_id,
-      session_ids,
-      cand_tz,
-    };
-    await axios.post(
-      `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/candidate-invite-confirmation`,
-      payload,
-    );
+    if (!is_debreif) {
+      const payload: TemplateApiPayload = {
+        application_id,
+        availability_request_id,
+        filter_id,
+        schedule_id,
+        session_ids,
+        cand_tz,
+      };
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/candidate-invite-confirmation`,
+        payload,
+      );
+    }
 
     return res.status(200).send('ok');
   } catch (error) {

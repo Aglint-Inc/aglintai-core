@@ -50,7 +50,7 @@ export function JobDashboardEmpty({
               <_Builtin.Block tag="div">
                 <Text
                   content="Select an option to continue with"
-                  weight="bold"
+                  weight="medium"
                 />
               </_Builtin.Block>
             ) : null}
@@ -69,7 +69,7 @@ export function JobDashboardEmpty({
                 />
               </_Builtin.Block>
               <_Builtin.Block tag="div">
-                <Text content="Add Job" weight="bold" />
+                <Text content="Add Job" weight="medium" />
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
@@ -80,7 +80,7 @@ export function JobDashboardEmpty({
             <_Builtin.Block tag="div">
               <Text
                 content="Or Connect with your Applicant Tracking System (ATS)"
-                weight="bold"
+                weight="medium"
               />
             </_Builtin.Block>
             {isAtsOptionVisible ? (

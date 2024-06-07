@@ -11,7 +11,7 @@ export function TextWithBg({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "textpill")} tag="div">
-      <Text content={text} weight="" />
+      <Text content={text} weight="medium" size="1" />
     </_Component>
   );
 }

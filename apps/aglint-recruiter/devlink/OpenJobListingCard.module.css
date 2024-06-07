@@ -176,6 +176,15 @@
   align-items: flex-start;
 }
 
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
 .text-grey-600 {
   color: var(--grey600-d5bebe21);
 }
@@ -227,10 +236,6 @@
   margin-top: 10px;
 }
 
-.text-grey-600.mt-4 {
-  margin-top: 4px;
-}
-
 @media screen and (max-width: 479px) {
   .text-grey-600.mob {
     font-size: 12px;
@@ -262,6 +267,7 @@
 
 .text-underline {
   transition: all 250ms ease;
+  color: var(--accent-11);
   text-decoration: underline;
   cursor: pointer;
 }

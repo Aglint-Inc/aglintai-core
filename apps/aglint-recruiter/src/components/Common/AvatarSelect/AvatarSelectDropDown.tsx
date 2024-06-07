@@ -1,8 +1,9 @@
-import { MenuItem, Stack, TextField } from '@mui/material';
+import { MenuItem, Stack, TextField, Typography } from '@mui/material';
 import React from 'react';
 
 import { WarningSvg } from '../../JobCreate/form';
 import MuiAvatar from '../MuiAvatar';
+import UITypography from '../UITypography';
 
 type MenuOption = {
   name: string;
@@ -24,11 +25,17 @@ type Props = {
   value: string | number;
   menuOptions: MenuOption[];
   showMenuIcons: boolean;
+  labelSize?: 'small' | 'medium' | 'large' | 'xLarge' | 'xxLarge' | 'xxxLarge';
+
+  labelBold?: 'default' | 'normal';
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   label?: string;
   defaultValue?: string;
   error?: boolean;
   helperText?: string;
+  required?: boolean;
+  disabled?: boolean;
+  defaultLabelColor?: string;
 };
 
 const AvatarSelectDropDown = ({
@@ -37,13 +44,40 @@ const AvatarSelectDropDown = ({
   value,
   onChange,
   label = null,
+
+  labelBold = 'default',
+  labelSize = 'small',
   defaultValue = null,
   error = false,
   helperText = null,
+  disabled,
+  required,
+  defaultLabelColor = null,
 }: Props) => {
+  let labelColor = defaultLabelColor ? defaultLabelColor : 'var(--neutral-12)';
+
+  if (disabled) {
+    labelColor = defaultLabelColor ? defaultLabelColor : 'var(--neutral-11)';
+  }
   return (
     <Stack gap={'var(--space-1)'} width={'100%'}>
-      {label && <Stack>{label}</Stack>}
+      {/* {label && <Stack>{label}</Stack>} */}
+      {label && (
+        <Stack direction={'row'}>
+          <UITypography
+            type={labelSize}
+            color={labelColor}
+            fontBold={labelBold}
+          >
+            {label}
+          </UITypography>
+          {required && (
+            <Typography sx={{ color: 'var(--error-9)', pl: 0.5 }}>
+              *{/* <sup>*</sup> */}
+            </Typography>
+          )}
+        </Stack>
+      )}
       <TextField
         select
         onChange={onChange}

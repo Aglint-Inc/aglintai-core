@@ -1,19 +1,15 @@
-.div-block-584 {
+.job-pills-wrap {
   display: flex;
-  padding: 2px 8px;
+  padding: var(--space-1) var(--space-2);
   align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 
-  border-radius: 4px;
+  border-radius: var(--radius-2);
 
-  background-color: #edf7ff;
+  background-color: var(--sky-a3);
 
   cursor: pointer;
-}
-
-.text-blue-800 {
-  color: var(--blue800-09c1dfbf);
 }
 
 .icons {
@@ -134,4 +130,13 @@
 .icons.start {
   justify-content: center;
   align-items: flex-start;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
 }

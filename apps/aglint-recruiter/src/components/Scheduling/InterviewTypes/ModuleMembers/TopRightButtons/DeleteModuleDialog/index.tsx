@@ -89,6 +89,13 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
             placeholder={moduleName}
             value={value}
             onChange={(e) => setValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                if (value === moduleName) {
+                  if (editModule.id) deleteModule();
+                }
+              }
+            }}
           />
         }
       />

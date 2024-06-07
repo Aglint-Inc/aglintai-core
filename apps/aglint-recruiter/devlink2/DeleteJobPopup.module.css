@@ -32,8 +32,6 @@
   border-radius: 10px;
 
   background-color: hsla(206.66666666666666, 0.00%, 100.00%, 1.00);
-
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.2);
 }
 
 .clj-popup-close-btn {
@@ -71,31 +69,6 @@
   bottom: 0%;
 }
 
-.text-lg {
-  font-size: 18px;
-  line-height: 1.33;
-}
-
-@media screen and (max-width: 991px) {
-  .text-lg {
-    font-size: 16px;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .text-lg {
-    font-size: 16px;
-  }
-}
-
-.fw-semibold {
-  font-weight: 600;
-}
-
-.text-color-black {
-  color: var(--black-9b0fc3fc);
-}
-
 .div-block-332 {
   display: flex;
   flex-direction: column;
@@ -115,8 +88,15 @@
   background-color: var(--grey100-ce28dc20);
 }
 
-.text-grey-600 {
-  color: #68737d;
+.div-block-331 {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.text-color-black {
+  color: var(--black-9b0fc3fc);
 }
 
 .inline-block {
@@ -125,100 +105,16 @@
   margin-left: 2px;
 }
 
-.text-kale-600 {
-  color: var(--kale-600\<deleted\|variable-fc9c3cf7-09bb-7364-ed8d-95d89e6d8422\>);
-}
-
-.text-sm {
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.text-yellow-700 {
-  color: hsla(26.174496644295296, 75.63%, 38.63%, 1.00);
-}
-
-.text-gray-500 {
-  color: var(--neutral-11);
-}
-
-.fw-semibold.text-gray-500.max_width_custom {
-  position: relative;
-  z-index: 3;
-  max-width: 414px;
-  color: var(--gray-400\<deleted\|variable-d09dda5a-1cff-8aa4-d166-1ff89c9f1684\>);
-}
-
-.text-first-cap {
-  text-transform: capitalize;
-}
-
-.fw-semibold.text-grey-400 {
-  color: #c2c8cc;
-}
-
-.text-blue-500 {
-  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
-}
-
-.fw-semibold.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.text-red-600 {
-  color: hsla(354.90196078431376, 60.00%, 50.00%, 1.00);
-}
-
-.fw-semibold.text-width-100 {
-  width: 100px;
-}
-
-.text-capitalize-word {
-  text-transform: capitalize;
-}
-
-.text-sm.fw-semibold.text_camel {
-  text-transform: capitalize;
-}
-
-.text-yellow-800 {
-  color: hsla(23.07692307692308, 68.42%, 26.08%, 1.00);
-}
-
-.text-kale-800 {
-  color: var(--kale-800\<deleted\|variable-f2fd7071-1c51-e4c0-2aa9-ed4d60cbbee9\>);
-}
-
-.text-sm.text-blue-600 {
-  display: flex;
-}
-
-.text-blue-600 {
-  color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
+.text-color-black.inline-block.text-red-500 {
+  color: var(--red500-5e487426);
 }
 
 .text-red-500 {
   color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
 }
 
-.text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
-.text-yellow-600 {
-  color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
-}
-
-.div-block-331 {
-  display: flex;
-  flex-direction: column;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-}
-
-.text-color-black.inline-block.text-red-500 {
-  color: var(--red500-5e487426);
+.fw-semibold {
+  font-weight: 600;
 }
 
 .link-block-3 {
@@ -236,73 +132,4 @@
   padding: 3px;
   border-radius: 4px;
   transition: all 300ms ease;
-}
-
-.button-block {
-  position: relative;
-  z-index: 5;
-
-  display: flex;
-  padding: 8px 12px;
-  align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-
-  border: 1px solid transparent;
-  border-radius: 4px;
-
-  background-color: hsla(0, 0.00%, 100.00%, 1.00);
-
-  transition: all 300ms ease;
-
-  font-size: 14px;
-
-  cursor: pointer;
-}
-
-.button-block.primary {
-  color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
-}
-
-.button-block.primary:hover {
-  background-color: hsla(206.8421052631579, 71.03%, 41.96%, 0.08);
-  color: hsla(206.59793814432987, 70.80%, 26.86%, 1.00);
-}
-
-.button-block.primary.outlined {
-  border-color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
-}
-
-.button-block.primary.outlined:hover {
-  border-color: hsla(206.59793814432987, 70.80%, 26.86%, 1.00);
-}
-
-.button-block.disabled {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-  z-index: 6;
-
-  margin: 3px;
-
-  background-color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
-
-  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
-
-  cursor: default;
-}
-
-.button-block.danger {
-  background-color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
-  color: var(--white-c31c6fe9);
-}
-
-.button-block.danger:hover {
-  background-color: hsla(354.93506493506493, 58.45%, 41.88%, 1.00);
-}
-
-.button-text {
-  font-size: 1em;
 }

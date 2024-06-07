@@ -4,14 +4,7 @@ import {
   RecruiterUserType,
   schedulingSettingType,
 } from '@aglint/shared-types';
-import {
-  Autocomplete,
-  Drawer,
-  Stack,
-  TextField,
-  TextFieldProps,
-  Typography,
-} from '@mui/material';
+import { Autocomplete, Drawer, Stack } from '@mui/material';
 import converter from 'number-to-words';
 import { useState } from 'react';
 
@@ -23,6 +16,7 @@ import { TeamInvite } from '@/devlink/TeamInvite';
 import { TeamInvitesBlock } from '@/devlink/TeamInvitesBlock';
 import { TeamPendingInvites } from '@/devlink/TeamPendingInvites';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import UITextField from '@/src/components/Common/UITextField';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -277,11 +271,12 @@ const AddMember = ({
               slotForm={
                 <Stack spacing={2} component={'form'} autoComplete='on'>
                   <Stack direction={'row'} gap={2} width={'100%'}>
-                    <CustomTextField
+                    <UITextField
                       value={form.first_name ? form.first_name : ''}
                       name='first_name'
                       placeholder='First Name'
-                      label='First Name *'
+                      label='First Name'
+                      required
                       error={formError.first_name}
                       helperText={
                         formError.first_name ? 'First name must required' : ''
@@ -306,7 +301,7 @@ const AddMember = ({
                       setForm({ ...form, first_name: e.target.value });
                     }}
                   /> */}
-                    <CustomTextField
+                    <UITextField
                       value={form.last_name ? form.last_name : ''}
                       name='last_name'
                       placeholder='Last Name'
@@ -317,11 +312,12 @@ const AddMember = ({
                     />
                   </Stack>
 
-                  <CustomTextField
+                  <UITextField
                     value={form.email ? form.email : ''}
                     name='email'
                     placeholder='Email'
-                    label='Email *'
+                    label='Email'
+                    required
                     error={formError.email}
                     helperText={
                       formError.email ? 'Please enter valid email' : ''
@@ -333,7 +329,7 @@ const AddMember = ({
                       setForm({ ...form, email: e.target.value.trim() });
                     }}
                   />
-                  <CustomTextField
+                  <UITextField
                     value={form.linked_in ? form.linked_in : ''}
                     name='LinkedIn'
                     placeholder='Enter linkedin URL'
@@ -347,11 +343,13 @@ const AddMember = ({
                     }}
                   />
                   <Stack direction={'row'} gap={2}>
-                    <CustomTextField
+                    <UITextField
+                      fullWidth
                       value={form.designation ? form.designation : ''}
                       name='title'
                       placeholder='Enter title'
-                      label='Title *'
+                      label='Title'
+                      required
                       error={formError.designation}
                       helperText={
                         formError.designation ? 'Title must required' : ''
@@ -382,7 +380,7 @@ const AddMember = ({
                       }
                       getOptionLabel={(option) => capitalizeFirstLetter(option)}
                       renderInput={(params) => (
-                        <CustomTextField
+                        <UITextField
                           {...params}
                           error={formError.employment}
                           onFocus={() => {
@@ -415,7 +413,7 @@ const AddMember = ({
                         },
                       )}
                       renderInput={(params) => (
-                        <CustomTextField
+                        <UITextField
                           {...params}
                           error={formError.interview_location}
                           onFocus={() => {
@@ -443,7 +441,7 @@ const AddMember = ({
                         capitalizeFirstLetter(departments),
                       )}
                       renderInput={(params) => (
-                        <CustomTextField
+                        <UITextField
                           {...params}
                           error={formError.department}
                           onFocus={() => {
@@ -451,7 +449,8 @@ const AddMember = ({
                           }}
                           name='Department'
                           placeholder='Select Department'
-                          label='Department *'
+                          label='Department'
+                          required
                           helperText={
                             formError.department
                               ? 'Department is must required'
@@ -491,11 +490,12 @@ const AddMember = ({
                         <li {...props}>{capitalizeFirstLetter(op)}</li>
                       )}
                       renderInput={(params) => (
-                        <CustomTextField
+                        <UITextField
                           {...params}
                           name='Role'
                           placeholder='Choose Role'
-                          label='Role *'
+                          label='Role'
+                          required
                           error={formError.role}
                           helperText={
                             formError.role ? 'Role must required' : ''
@@ -523,11 +523,12 @@ const AddMember = ({
                         );
                       }}
                       renderInput={(params) => (
-                        <CustomTextField
+                        <UITextField
                           {...params}
                           name='manager'
                           placeholder='Select Manager'
-                          label='Manager *'
+                          label='Manager'
+                          required
                           error={formError.manager}
                           onFocus={() => {
                             setFormError({ ...formError, manager: false });
@@ -651,16 +652,17 @@ const AddMember = ({
 
 export default AddMember;
 
-const CustomTextField = (props: TextFieldProps) => {
-  const label = props.label;
-  return (
-    <Stack width={'100%'}>
-      {Boolean(label) && (
-        <Typography fontSize={'14px'} marginBottom={'3px'}>
-          {label}
-        </Typography>
-      )}
-      <TextField {...{ ...props, label: undefined }} />
-    </Stack>
-  );
-};
+// const CustomTextField = (props: TextFieldProps) => {
+//   const label = props.label;
+//   return (
+//     <Stack width={'100%'}>
+//       {Boolean(label) && (
+//         <Typography fontSize={'14px'} marginBottom={'3px'}>
+//           {label}
+//           {props.required && <Typography />}
+//         </Typography>
+//       )}
+//       <TextField {...{ ...props, label: undefined }} />
+//     </Stack>
+//   );
+// };

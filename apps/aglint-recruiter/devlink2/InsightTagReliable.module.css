@@ -18,9 +18,9 @@
   grid-column-gap: 6px;
   grid-row-gap: 6px;
 
-  border-radius: 6px;
+  border-radius: var(--radius-2);
 
-  background-color: #f8f9f9;
+  background-color: var(--neutral-3);
 
   cursor: default;
 }
@@ -87,10 +87,6 @@
 .text-sm {
   font-size: 12px;
   line-height: 16px;
-}
-
-.text-yellow-700 {
-  color: hsla(26.174496644295296, 75.63%, 38.63%, 1.00);
 }
 
 .text-gray-500 {

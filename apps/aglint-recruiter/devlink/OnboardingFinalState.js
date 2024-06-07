@@ -62,7 +62,7 @@ export function OnboardingFinalState({
           <Text
             content="Create or Import Your Job"
             size="4"
-            weight="bold"
+            weight="medium"
             align=""
             highContrast=""
           />
@@ -102,7 +102,7 @@ export function OnboardingFinalState({
             <Text
               content="Source Candidates"
               size="4"
-              weight="bold"
+              weight="medium"
               align=""
               highContrast=""
             />
@@ -142,7 +142,7 @@ export function OnboardingFinalState({
           <Text
             content="Schedule Interview"
             size="4"
-            weight="bold"
+            weight="medium"
             align=""
             highContrast=""
           />

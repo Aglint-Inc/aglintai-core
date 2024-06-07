@@ -23,6 +23,7 @@ export const fetchDBScheduleDetails = async (filter_id: string) => {
   return {
     filter_json_data,
     candidate: filter_json_data.interview_schedule.applications.candidates,
+    application: filter_json_data.interview_schedule.applications,
     email_templates,
     company: filter_json_data.interview_schedule.recruiter,
     job: filter_json_data.interview_schedule.applications.public_jobs,

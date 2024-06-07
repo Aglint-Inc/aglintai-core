@@ -109,7 +109,7 @@ export function AddCompanyDetails({
         className={_utils.cx(_styles, "cs-sidebar-company-form")}
         tag="div"
       >
-        {slotCompanyDetails}
+        {slotCompanyDetails ?? <SlotComp componentName="slot for form" />}
       </_Builtin.Block>
     </_Component>
   );

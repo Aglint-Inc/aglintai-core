@@ -1,14 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import * as _interactions from "./interactions";
-import { HistoryTrainingCard } from "./HistoryTrainingCard";
 import * as _utils from "./utils";
 import _styles from "./HistoryPill.module.css";
-
-const _interactionsData = JSON.parse(
-  '{"events":{"e-49":{"id":"e-49","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-27","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-50"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"405f0cb4-c513-d2ad-8607-c9f502edf686","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"405f0cb4-c513-d2ad-8607-c9f502edf686","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1713765164992},"e-50":{"id":"e-50","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-28","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-49"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"405f0cb4-c513-d2ad-8607-c9f502edf686","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"405f0cb4-c513-d2ad-8607-c9f502edf686","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1713765164992}},"actionLists":{"a-27":{"id":"a-27","title":"History PillCard Hover in","actionItemGroups":[{"actionItems":[{"id":"a-27-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".slot-training-card","selectorGuids":["3d29bc5f-fec6-b736-5c1b-5d451adcb201"]},"value":0,"unit":""}},{"id":"a-27-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".slot-training-card","selectorGuids":["3d29bc5f-fec6-b736-5c1b-5d451adcb201"]},"value":"none"}}]},{"actionItems":[{"id":"a-27-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".slot-training-card","selectorGuids":["3d29bc5f-fec6-b736-5c1b-5d451adcb201"]},"value":"block"}},{"id":"a-27-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".slot-training-card","selectorGuids":["3d29bc5f-fec6-b736-5c1b-5d451adcb201"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":true,"createdOn":1713765169490},"a-28":{"id":"a-28","title":"History PillCard Hover Out","actionItemGroups":[{"actionItems":[{"id":"a-28-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".slot-training-card","selectorGuids":["3d29bc5f-fec6-b736-5c1b-5d451adcb201"]},"value":0,"unit":""}},{"id":"a-28-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":200,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".slot-training-card","selectorGuids":["3d29bc5f-fec6-b736-5c1b-5d451adcb201"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1713765169490}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
-);
 
 export function HistoryPill({
   as: _Component = _Builtin.Block,
@@ -24,14 +18,8 @@ export function HistoryPill({
   slotHistoryTrainingCard,
   isHistoryTrainingCardVisible = true,
 }) {
-  _interactions.useInteractions(_interactionsData, _styles);
-
   return (
-    <_Component
-      className={_utils.cx(_styles, "div-block-1524")}
-      data-w-id="405f0cb4-c513-d2ad-8607-c9f502edf686"
-      tag="div"
-    >
+    <_Component className={_utils.cx(_styles, "div-block-1524")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1523")}
         tag="div"
@@ -66,14 +54,6 @@ export function HistoryPill({
               value="%3Csvg%20width%3D%2218%22%20height%3D%2218%22%20viewbox%3D%220%200%2018%2018%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%221.26667%22%20y%3D%221.26667%22%20width%3D%2215.4667%22%20height%3D%2215.4667%22%20rx%3D%227.73333%22%20stroke%3D%22%23467B7C%22%20stroke-width%3D%220.533333%22%2F%3E%0A%3Crect%20x%3D%220.714286%22%20y%3D%220.714286%22%20width%3D%2216.5714%22%20height%3D%2216.5714%22%20rx%3D%228.28571%22%20fill%3D%22%23467B7C%22%2F%3E%0A%3Crect%20x%3D%220.714286%22%20y%3D%220.714286%22%20width%3D%2216.5714%22%20height%3D%2216.5714%22%20rx%3D%228.28571%22%20stroke%3D%22white%22%20stroke-width%3D%220.571429%22%20stroke-miterlimit%3D%221.30541%22%2F%3E%0A%3Cpath%20d%3D%22M6.04688%2013.0503V4.95312H9.13874C10.6987%204.95312%2011.72%205.90706%2011.72%207.3604V7.37163C11.72%208.4939%2011.1083%209.36928%2010.0927%209.68912L11.9669%2013.0503H10.7829L9.04896%209.84624H7.05692V13.0503H6.04688ZM7.05692%208.94842H9.04896C10.0871%208.94842%2010.6763%208.3929%2010.6763%207.4053V7.39407C10.6763%206.42892%2010.0478%205.85094%209.00407%205.85094H7.05692V8.94842Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
             />
           ) : null}
-        </_Builtin.Block>
-      ) : null}
-      {isHistoryTrainingCardVisible ? (
-        <_Builtin.Block
-          className={_utils.cx(_styles, "slot-training-card")}
-          tag="div"
-        >
-          {slotHistoryTrainingCard ?? <HistoryTrainingCard />}
         </_Builtin.Block>
       ) : null}
       {isStartActive ? (

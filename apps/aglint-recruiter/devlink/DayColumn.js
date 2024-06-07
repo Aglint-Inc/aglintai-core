@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { AvailableTimeRange } from "./AvailableTimeRange";
 import * as _utils from "./utils";
 import _styles from "./DayColumn.module.css";
@@ -21,24 +22,8 @@ export function DayColumn({
       tag="div"
     >
       <_Builtin.Block className={_utils.cx(_styles, "day_title")} tag="div">
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-lg", "fw-semibold")}
-          tag="div"
-        >
-          {textDate}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "text-lg",
-            "fw-light",
-            "text-grey-600",
-            "text-capitalize"
-          )}
-          tag="div"
-        >
-          {textDay}
-        </_Builtin.Block>
+        <Text content={textDate} size="4" weight="medium" />
+        <Text content={textDay} size="4" color="neutral" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "slotavailabletmerage", "hide_scrollbar")}

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./InterviewScreenCard.module.css";
 
@@ -96,7 +97,9 @@ export function InterviewScreenCard({
             className={_utils.cx(_styles, "div-block-913")}
             tag="div"
           >
-            <_Builtin.Block tag="div">{slotMeetingIcon}</_Builtin.Block>
+            <_Builtin.Block tag="div">
+              {slotMeetingIcon ?? <SlotComp componentName="Meeting Icon" />}
+            </_Builtin.Block>
             <_Builtin.Block tag="div">{textMeetingPlatform}</_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
@@ -107,7 +110,9 @@ export function InterviewScreenCard({
               className={_utils.cx(_styles, "div-block-914")}
               tag="div"
             >
-              <_Builtin.Block tag="div">{slotMemberImage}</_Builtin.Block>
+              <_Builtin.Block tag="div">
+                {slotMemberImage ?? <SlotComp componentName="Member Image" />}
+              </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

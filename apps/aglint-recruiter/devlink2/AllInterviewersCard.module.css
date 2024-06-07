@@ -1,25 +1,27 @@
 .all-interviewers-card-wrap {
   display: grid;
-  height: 80px;
   grid-auto-columns: 1fr;
   grid-template-columns: 25% 12% 12% 25% 26%;
   grid-template-rows: auto;
 
   border-bottom: 1px solid var(--neutral-6);
+
+  transition: all 200ms ease;
+
+  cursor: pointer;
 }
 
-.all-interviewers-card-wrap.dec-width {
-  grid-template-columns: 25% 12% 12% 25% 26%;
+.all-interviewers-card-wrap:hover {
+  background-color: var(--neutral-2);
 }
 
 .all-interviewers-card-item {
   display: flex;
-  padding-right: var(--space-4);
-  padding-left: var(--space-4);
+  padding: var(--space-2) var(--space-4);
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: var(--space-1);
-  grid-row-gap: var(--space-1);
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .all-interviewers-card-item.center {
@@ -27,25 +29,24 @@
   align-items: center;
 }
 
-.interviewers-profile-wrap {
+.avatar_40 {
+  overflow: hidden;
   width: 40px;
   height: 40px;
-  flex: 0 0 auto;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-2);
 }
 
-.interviewers-profile-wrap.width-24 {
-  width: 40px;
-  height: 40px;
-  flex: 0 0 auto;
+.cover_image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .interviewers-detail-wrap {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 3px;
-  grid-row-gap: 3px;
 }
 
 .interviewer-name-wrap {
@@ -162,14 +163,6 @@
   width: 230px;
 }
 
-.interviewer-calender-connected.connected {
-  left: -21px;
-  top: auto;
-  right: auto;
-  bottom: -41px;
-  display: none;
-}
-
 .tooltippos {
   position: absolute;
   left: 0%;
@@ -197,8 +190,7 @@
 .slot-interview-module {
   display: flex;
   overflow: hidden;
-  padding-right: var(--space-4);
-  padding-left: var(--space-4);
+  padding: var(--space-2) var(--space-4);
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: nowrap;

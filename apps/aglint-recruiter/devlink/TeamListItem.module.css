@@ -17,36 +17,6 @@
   align-items: flex-start;
 }
 
-.tu-list-item.user {
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-}
-
-.tu-list-item.user.invite-mem {
-  padding-top: 0px;
-  padding-right: 0px;
-  padding-bottom: 0px;
-}
-
-.tu-list-item.center {
-  justify-content: center;
-  align-items: center;
-}
-
-.tu-list-item.actions-copy {
-  position: relative;
-  padding-left: 48px;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.tu-list-item.actions-copy.center {
-  padding-right: 0px;
-  padding-left: 0px;
-  justify-content: center;
-  align-items: center;
-}
-
 .team-name-wrap {
   display: flex;
   justify-content: flex-start;
@@ -215,6 +185,15 @@
 .icons.start {
   justify-content: center;
   align-items: flex-start;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
 }
 
 .team-action-list-wrap {

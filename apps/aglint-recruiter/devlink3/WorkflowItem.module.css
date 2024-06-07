@@ -41,6 +41,10 @@
   z-index: 2;
 }
 
+.flex_hr_10.disabled_text {
+  color: var(--neutral-9);
+}
+
 .wi_icon {
   width: 20px;
   height: 20px;
@@ -48,7 +52,21 @@
 
 .embed_flex {
   display: flex;
+  overflow: hidden;
+  width: var(--space-5);
+  height: var(--space-5);
   align-items: center;
+
+  border-radius: var(--radius-2);
+
+  color: var(--neutral-a11);
+
+  cursor: pointer;
+}
+
+.embed_flex:hover {
+  background-color: var(--neutral-a3);
+  color: var(--neutral-a12);
 }
 
 .embed_flex.hide {

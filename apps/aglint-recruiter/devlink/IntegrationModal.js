@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { LoadingJobsAts } from "./LoadingJobsAts";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./IntegrationModal.module.css";
 
@@ -44,8 +44,11 @@ export function IntegrationModal({
           />
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-536")} tag="div">
-        {slotApiKey ?? <LoadingJobsAts />}
+      <_Builtin.Block
+        className={_utils.cx(_styles, "im-slot-ats-job")}
+        tag="div"
+      >
+        {slotApiKey ?? <SlotComp componentName="LoadingJobAts" />}
       </_Builtin.Block>
     </_Component>
   );

@@ -190,7 +190,13 @@ const ImportManualCandidates = ({
       >
         <FormBody applicant={applicant} setApplicant={setApplicant} />
         <Stack direction={'row'} justifyContent={'flex-end'}>
-          <ButtonSolid size={'2'} isLeftIcon={false} isRightIcon={false} onClickButton={async () => await handleSubmit()} textButton="Add Candidate" />
+          <ButtonSolid
+            size={'2'}
+            isLeftIcon={false}
+            isRightIcon={false}
+            onClickButton={async () => await handleSubmit()}
+            textButton='Add Candidate'
+          />
         </Stack>
       </Stack>
       <Stack
@@ -324,15 +330,13 @@ const FormBody = ({
         onChange={(e) => handleChange(e, 'linkedin')}
       />
       <Stack spacing={1}>
-        <Stack
-          fontWeight={600}
-          fontSize={'14px'}
-          flexDirection={'row'}
-          gap={'4px'}
-        >
-          Upload Resume
-          <Stack style={{ color: 'red' }}>*</Stack>
+        <Stack fontSize={'14px'} flexDirection={'row'}>
+          <Stack fontSize={'14px'} flexDirection={'row'} fontWeight={600}>
+            Upload Resume
+          </Stack>
+          <Typography sx={{ color: 'var(--error-9)', pl: 0.5 }}>*</Typography>
         </Stack>
+
         <Stack pb={2}>
           <FileUploader
             handleChange={(e) => handleChange(e, 'resume')}
