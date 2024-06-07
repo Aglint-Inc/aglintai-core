@@ -11,7 +11,7 @@ export const fetchCandAvailForBooking = async (
     await supabaseAdmin
       .from('candidate_request_availability')
       .select(
-        'session_ids,slots,availability,date_range,recruiter_id,recruiter(id,name),applications(id,candidates(first_name,last_name,timezone),public_jobs(job_title))',
+        'session_ids,user_timezone,slots,availability,date_range,recruiter_id,recruiter(id,name),applications(id,candidates(first_name,last_name,timezone),public_jobs(job_title))',
       )
       .eq('id', req_body.availability_req_id),
   );
@@ -44,5 +44,6 @@ export const fetchCandAvailForBooking = async (
     company: avail_details.recruiter,
     job: avail_details.applications.public_jobs,
     zod_options,
+    cand_tz: avail_details.user_timezone,
   };
 };

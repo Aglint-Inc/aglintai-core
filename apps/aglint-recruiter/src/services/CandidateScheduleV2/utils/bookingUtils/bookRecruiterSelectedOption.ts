@@ -54,7 +54,7 @@ export const bookRecruiterSelectedOption = async (
   await updateMeetingEventDetails(booked_meeting_details);
   await sendMailsToOrganizer(db_details, booked_meeting_details);
   const payload: APICandScheduleMailThankYou = {
-    cand_tz: fetched_cand_details.candidate.timezone,
+    cand_tz: fetched_cand_details.cand_tz,
     filter_id: null,
     task_id: req_body.task_id,
     application_id: fetched_cand_details.application.id,
