@@ -1,13 +1,15 @@
 /* eslint-disable security/detect-object-injection */
-import {
-  APICandScheduleMailThankYou
-} from '@aglint/shared-types';
+import { APICandScheduleMailThankYou } from '@aglint/shared-types';
 import axios from 'axios';
 import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
+import { getFullName } from '@/src/utils/jsonResume';
+import { agent_activities } from '@/src/utils/scheduling_v2/agents_activity';
+import { getCandidateLogger } from '@/src/utils/scheduling_v2/getCandidateLogger';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 const required_fields: (keyof APICandScheduleMailThankYou)[] = [
   'cand_tz',
@@ -39,10 +41,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     });
 
-    const session_details = await fetchSessionDetails(session_ids);
+    const { candidate, meeting_data } = await fetchSessionDetails(
+      session_ids,
+      application_id,
+    );
 
     addScheduleActivity({
-      title: `Booked ${session_details.map((ses) => ses.name).join(' , ')}`,
+      title: `Booked ${meeting_data.map((ses) => ses.name).join(' , ')}`,
       application_id: application_id,
       logged_by: 'candidate',
       supabase: supabaseAdmin,
@@ -50,7 +55,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       task_id,
       metadata: {
         type: 'booking_confirmation',
-        sessions: session_details,
+        sessions: meeting_data,
         filter_id,
         availability_request_id,
         action: 'waiting',
@@ -64,6 +69,37 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           session_ids: session_ids,
           task_id: task_id,
         },
+      );
+      const candLogger = getCandidateLogger(
+        task_id,
+        getFullName(candidate.first_name, candidate.last_name),
+        candidate.id,
+        'candidate',
+      );
+      const meeging_start_time = meeting_data.sort(
+        (m1, m2) => m1.session_order - m2.session_order,
+      )[0].interview_meeting.start_time;
+
+      await candLogger(
+        agent_activities['email_agent'].tools['book-interview-slot']
+          .scheduled_sucess,
+        {
+          '{candidate}': getFullName(candidate.first_name, candidate.last_name),
+          '{time_format}': userTzDayjs(meeging_start_time)
+            .tz(cand_tz)
+            .toISOString(),
+        },
+        'candidate',
+        'interview_schedule',
+      );
+      supabaseWrap(
+        await supabaseAdmin
+          .from('new_tasks')
+          .update({
+            status: 'completed',
+          })
+          .eq('id', task_id)
+          .select(),
       );
     }
 
@@ -89,8 +125,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export default handler;
 
-export const fetchSessionDetails = async (session_ids: string[]) => {
-  const data = supabaseWrap(
+export const fetchSessionDetails = async (
+  session_ids: string[],
+  application_id: string,
+) => {
+  const meeting_data = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
       .select(
@@ -98,5 +137,11 @@ export const fetchSessionDetails = async (session_ids: string[]) => {
       )
       .in('id', session_ids),
   );
-  return data;
+  const [application] = supabaseWrap(
+    await supabaseAdmin
+      .from('applications')
+      .select('id,candidates(id,first_name,last_name,email)')
+      .eq('id', application_id),
+  );
+  return { meeting_data, candidate: application.candidates };
 };
