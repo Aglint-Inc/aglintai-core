@@ -6,6 +6,14 @@
   grid-row-gap: 10px;
 }
 
+.div-block-1423.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
 .div-block-1426 {
   display: flex;
   flex-direction: column;

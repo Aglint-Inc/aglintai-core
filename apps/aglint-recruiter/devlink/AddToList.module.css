@@ -104,21 +104,6 @@
   width: 49.91667175292969px;
 }
 
-.color-blue-600 {
-  color: var(--blue600-aad8d97e);
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
-}
-
 .text-capitalize {
   text-transform: uppercase;
 }
@@ -194,6 +179,17 @@
   display: none;
 }
 
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .icons.mb-9 {
   margin-bottom: var(--space-9);
 }
@@ -229,4 +225,13 @@
 .icons.start {
   justify-content: center;
   align-items: flex-start;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
 }

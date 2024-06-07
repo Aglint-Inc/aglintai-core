@@ -12,11 +12,11 @@ export function NewInterviewModuleCard({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "div-block-1065", "grid-2fr")}
+      className={_utils.cx(_styles, "interview_type_row", "grid-2fr")}
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1066")}
+        className={_utils.cx(_styles, "interview_type_cell")}
         tag="div"
       >
         <_Builtin.Block
@@ -37,7 +37,7 @@ export function NewInterviewModuleCard({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1066", "gap-20")}
+        className={_utils.cx(_styles, "interview_type_cell", "gap-20")}
         id={_utils.cx(
           _styles,
           "w-node-_929ec257-fb69-5130-a07c-eafa261358ca-261358c4"

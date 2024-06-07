@@ -145,7 +145,7 @@ export function CreateNewJob({
                   tag="div"
                 >
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "div-block-558")}
+                    className={_utils.cx(_styles, "jud-right-text")}
                     tag="div"
                   >
                     <_Builtin.Block

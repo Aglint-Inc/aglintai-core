@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./InterviewLoad.module.css";
 
@@ -25,27 +26,33 @@ export function InterviewLoad({
           />
         </_Builtin.Block>
         <_Builtin.Grid className={_utils.cx(_styles, "load_grid")} tag="div">
-          <Text content="Daily Limit" weight="" />
           <_Builtin.Block
-            className={_utils.cx(_styles, "slot_hr_input")}
-            id={_utils.cx(
-              _styles,
-              "w-node-_55b24612-1348-951b-c98a-0357678cca02-678cc9f8"
-            )}
+            className={_utils.cx(_styles, "flex-h", "align-center")}
             tag="div"
           >
-            {slotDailyLimit}
+            <Text content="Daily Limit" weight="" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "slot_hr_input")}
+              id={_utils.cx(
+                _styles,
+                "w-node-_55b24612-1348-951b-c98a-0357678cca02-678cc9f8"
+              )}
+              tag="div"
+            >
+              {slotDailyLimit ?? <SlotComp componentName="Input" />}
+            </_Builtin.Block>
           </_Builtin.Block>
-          <Text content="Weekly Limit" weight="" />
           <_Builtin.Block
-            className={_utils.cx(_styles, "slot_hr_input")}
-            id={_utils.cx(
-              _styles,
-              "w-node-_55b24612-1348-951b-c98a-0357678cca05-678cc9f8"
-            )}
+            className={_utils.cx(_styles, "flex-h", "align-center")}
             tag="div"
           >
-            {slotWeeklyLimit}
+            <Text content="Weekly Limit" weight="" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "slot_hr_input")}
+              tag="div"
+            >
+              {slotWeeklyLimit ?? <SlotComp componentName="Input" />}
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Grid>
       </_Builtin.Block>

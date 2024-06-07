@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { IntegrationCard } from "./IntegrationCard";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./Integration.module.css";
 
@@ -38,7 +38,7 @@ export function Integration({
           className={_utils.cx(_styles, "intagrations-list")}
           tag="div"
         >
-          {slotHrTools ?? <IntegrationCard />}
+          {slotHrTools ?? <SlotComp componentName="IntegrationCard" />}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
@@ -61,7 +61,7 @@ export function Integration({
           className={_utils.cx(_styles, "intagrations-list")}
           tag="div"
         >
-          {slotScheduling}
+          {slotScheduling ?? <SlotComp componentName="IntegrationCard" />}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
@@ -84,7 +84,7 @@ export function Integration({
           className={_utils.cx(_styles, "intagrations-list")}
           tag="div"
         >
-          {slotMessaging}
+          {slotMessaging ?? <SlotComp componentName="IntegrationCard" />}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

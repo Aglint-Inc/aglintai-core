@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./ScheduleOptions.module.css";
 
@@ -137,7 +138,9 @@ export function ScheduleOptions({
           >
             {"Pick a start and end date where you have to conduct interview."}
           </_Builtin.Block>
-          <_Builtin.Block tag="div">{slotDateRangeInput}</_Builtin.Block>
+          <_Builtin.Block tag="div">
+            {slotDateRangeInput ?? <SlotComp componentName="DateRange" />}
+          </_Builtin.Block>
         </_Builtin.Block>
       ) : null}
       {isBasicDetailsVisible ? (
@@ -145,7 +148,7 @@ export function ScheduleOptions({
           className={_utils.cx(_styles, "div-block-1289")}
           tag="div"
         >
-          {slotPrimaryButton}
+          {slotPrimaryButton ?? <SlotComp componentName="Slot Button" />}
         </_Builtin.Block>
       ) : null}
       {isMultipleOptionVisible ? (

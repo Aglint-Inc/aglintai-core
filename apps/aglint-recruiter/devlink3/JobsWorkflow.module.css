@@ -53,11 +53,11 @@
   cursor: pointer;
 }
 
-.text-blue-500 {
-  color: #337fbd;
+.accent-text {
+  color: var(--accent-9);
 }
 
-.text-blue-500.text-underline {
+.accent-text.text-underline {
   text-decoration: underline;
 }
 
@@ -65,12 +65,12 @@
   text-decoration: underline;
 }
 
-.text-blue-500.text-underline.cursor-pointer {
+.accent-text.text-underline.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
 }
 
-.text-blue-500.text-underline.cursor-pointer:hover {
+.accent-text.text-underline.cursor-pointer:hover {
   opacity: 0.8;
 }
 
@@ -80,16 +80,16 @@
   letter-spacing: var(--letter-spacing-1);
 }
 
-.text-blue-500.cursor-pointer {
+.accent-text.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
 }
 
-.text-blue-500.cursor-pointer:hover {
+.accent-text.cursor-pointer:hover {
   opacity: 0.8;
 }
 
-.text-blue-500.text-capital {
+.accent-text.text-capital {
   text-transform: uppercase;
 }
 

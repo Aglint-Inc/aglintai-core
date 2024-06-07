@@ -39,14 +39,23 @@ export function AllInterviewersCard({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "interviewers-profile-wrap")}
+          className={_utils.cx(_styles, "avatar_40")}
           id={_utils.cx(
             _styles,
             "w-node-_23fa5a49-b85f-659d-e893-4735fbc243b6-fbc243b4"
           )}
           tag="div"
         >
-          {slotProfileImage}
+          {slotProfileImage ?? (
+            <_Builtin.Image
+              className={_utils.cx(_styles, "cover_image")}
+              loading="lazy"
+              width="auto"
+              height="auto"
+              alt=""
+              src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg"
+            />
+          )}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "interviewers-detail-wrap")}
@@ -60,7 +69,7 @@ export function AllInterviewersCard({
               className={_utils.cx(_styles, "text-first-cap")}
               tag="div"
             >
-              <Text content={textName} weight="bold" />
+              <Text content={textName} weight="medium" />
             </_Builtin.Block>
             <_Builtin.Block tag="div">
               {isConnectedCalenderVisible ? (
@@ -133,7 +142,7 @@ export function AllInterviewersCard({
               ) : null}
             </_Builtin.Block>
           </_Builtin.Block>
-          <Text content={textRole} color="neutral" />
+          <Text content={textRole} color="neutral" size="1" weight="" />
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

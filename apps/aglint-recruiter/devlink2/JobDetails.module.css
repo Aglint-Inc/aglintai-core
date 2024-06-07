@@ -97,20 +97,16 @@
   font-weight: 600;
 }
 
-.text-grey-600 {
-  color: #68737d;
-}
-
 .text-sm.fw-semibold.text_camel {
   text-transform: capitalize;
 }
 
-.text-kale-600 {
-  color: var(--kale-600\<deleted\|variable-fc9c3cf7-09bb-7364-ed8d-95d89e6d8422\>);
+.text-grey-600 {
+  color: #68737d;
 }
 
-.text-yellow-800 {
-  color: hsla(23.07692307692308, 68.42%, 26.08%, 1.00);
+.text-kale-600 {
+  color: var(--kale-600\<deleted\|variable-fc9c3cf7-09bb-7364-ed8d-95d89e6d8422\>);
 }
 
 .text-kale-800 {
@@ -131,10 +127,6 @@
 
 .text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
-.text-yellow-600 {
-  color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
 }
 
 .jdet-main-action-menu {
@@ -251,9 +243,12 @@
 
 .jdet-tabs {
   position: relative;
+
   display: flex;
+  min-height: 36px;
   justify-content: space-between;
   align-items: center;
+
   border-bottom: 1px none hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
 }
 
@@ -296,11 +291,9 @@
 
 .jdet-actions-bar {
   display: flex;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  height: 42px;
   flex-direction: column;
   justify-content: center;
-
   border-top: 1px solid #e9ebed;
 }
 
@@ -313,7 +306,7 @@
 .jdet-table {
   position: relative;
   height: 100%;
-  border-top: 1px solid #e9ebed;
+  border-top: 1px solid var(--neutral-6);
 }
 
 @media screen and (max-width: 991px) {

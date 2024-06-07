@@ -1,4 +1,4 @@
-.div-block-749 {
+.sac-empty-wrap {
   display: flex;
   width: 100%;
   height: 100%;
@@ -7,24 +7,24 @@
   align-items: center;
 }
 
-.div-block-751 {
+.sac-empty {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.div-block-750 {
+.sac-empty-lottie {
   width: 100px;
   height: 100px;
 }
 
-.div-block-748 {
+.sac-empty-desc-wrap {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 
   text-align: center;
 }
@@ -91,14 +91,6 @@
 
 .mt-10 {
   margin-top: 10px;
-}
-
-.text-grey-600.mt-4 {
-  margin-top: 4px;
-}
-
-.mt-4 {
-  margin-top: 4px;
 }
 
 @media screen and (max-width: 479px) {

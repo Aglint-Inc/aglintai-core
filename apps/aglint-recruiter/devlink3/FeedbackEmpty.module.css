@@ -1,9 +1,9 @@
-.div-block-1292 {
+.add_feedback {
   padding: var(--space-4);
   background-color: var(--sky-1);
 }
 
-.div-block-1293 {
+.add_feedback_wrap {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

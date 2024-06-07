@@ -154,6 +154,15 @@
   align-items: flex-start;
 }
 
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
 ._wf-radio-range-wrapper {
   display: flex;
   margin-left: 20px;

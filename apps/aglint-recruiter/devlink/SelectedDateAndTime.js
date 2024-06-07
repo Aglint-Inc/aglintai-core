@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { SessionAndTime } from "./SessionAndTime";
 import * as _utils from "./utils";
 import _styles from "./SelectedDateAndTime.module.css";
@@ -15,18 +16,9 @@ export function SelectedDateAndTime({
   return (
     <_Component className={_utils.cx(_styles, "selected_date")} tag="div">
       <_Builtin.Block className={_utils.cx(_styles, "date_block")} tag="div">
-        <_Builtin.Block className={_utils.cx(_styles, "text-sm")} tag="div">
-          {textMonth}
-        </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "text_date")} tag="div">
-          {textDate}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-sm", "text-capitalize")}
-          tag="div"
-        >
-          {textDay}
-        </_Builtin.Block>
+        <Text content={textMonth} size="1" />
+        <Text content={textDate} size="4" weight="bold" />
+        <Text content={textDay} size="1" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "sessionandtime_wrap")}

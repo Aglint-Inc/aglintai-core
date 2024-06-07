@@ -40,7 +40,7 @@ export function SoundTask({
           ) : null}
           {isHideVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-blue-500")}
+              className={_utils.cx(_styles, "accent-text")}
               tag="div"
               {...onClickHide}
             >

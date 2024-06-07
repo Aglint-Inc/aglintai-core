@@ -153,6 +153,15 @@
   align-items: flex-start;
 }
 
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
 .text-grey-600 {
   color: var(--grey600-d5bebe21);
 }
@@ -206,10 +215,6 @@
 
 .mt-10 {
   margin-top: 10px;
-}
-
-.text-grey-600.mt-4 {
-  margin-top: 4px;
 }
 
 @media screen and (max-width: 479px) {

@@ -17,6 +17,7 @@ export function PwResetForm({
   onclickReset = {},
   onclickBack = {},
   isDisable = false,
+  logo,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "sl-main-wrapper")} tag="div">
@@ -42,7 +43,7 @@ export function PwResetForm({
             tag="div"
           >
             <Text
-              size="6"
+              size="4"
               weight="medium"
               color=""
               content="Forgot Password"

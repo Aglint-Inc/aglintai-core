@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { AddJobList } from "./AddJobList";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./AddJob.module.css";
 
@@ -28,32 +29,18 @@ export function AddJob({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-603")}
+          className={_utils.cx(_styles, "add-job-bottom-left")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "color-grey-600")}
-            tag="div"
-          >
-            {textJobSelected}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "color-grey-600")}
-            tag="div"
-          >
-            {"job selected"}
-          </_Builtin.Block>
+          <Text content={textJobSelected} color="neutral" />
+          <Text color="neutral" content="job selected" />
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-602")}
+          className={_utils.cx(_styles, "add-job-bottom-right")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-sm", "cursor-pointer")}
-            tag="div"
-            {...onClickCancel}
-          >
-            {"Cancel"}
+          <_Builtin.Block tag="div" {...onClickCancel}>
+            <Text content="Cancel" size="1" color="neutral" />
           </_Builtin.Block>
           <_Builtin.Block tag="div">{slotAddButton}</_Builtin.Block>
         </_Builtin.Block>

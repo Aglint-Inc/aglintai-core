@@ -1,29 +1,32 @@
 .reschedule-req {
   display: flex;
+  overflow: hidden;
+  height: 450px;
   padding: 0px;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
 
   border: 1px solid var(--neutral-6);
-  border-radius: 16px;
+  border-radius: var(--radius-4);
 
   background-color: var(--white);
 }
 
-.reschedule-req-header {
+.dashboard-widget-header {
   display: flex;
-  padding-top: 20px;
-  padding-right: 20px;
-  padding-left: 20px;
+  height: 40px;
+  padding: var(--space-2) var(--space-4);
   justify-content: space-between;
   align-items: center;
+
+  border-bottom: 1px solid #eaf1f3;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
-.div-block-1782 {
-  height: 430px;
-  padding-bottom: 10px;
+.slot_recent {
+  overflow: auto;
+  height: 410px;
 }
 
 #w-node-_08e9c8a0-50e0-f49b-8fab-98bbc719eb69-c719eb69 {

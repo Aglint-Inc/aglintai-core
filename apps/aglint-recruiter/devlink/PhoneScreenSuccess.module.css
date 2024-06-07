@@ -93,14 +93,6 @@
   margin-top: 10px;
 }
 
-.text-grey-600.mt-4 {
-  margin-top: 4px;
-}
-
-.mt-4 {
-  margin-top: 4px;
-}
-
 @media screen and (max-width: 479px) {
   .text-grey-600.mob {
     font-size: 12px;
@@ -113,6 +105,7 @@
 
 .text-underline {
   transition: all 250ms ease;
+  color: var(--accent-11);
   text-decoration: underline;
   cursor: pointer;
 }

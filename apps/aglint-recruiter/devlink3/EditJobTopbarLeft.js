@@ -26,7 +26,7 @@ export function EditJobTopbarLeft({
             {...onClickPreview}
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-blue-500")}
+              className={_utils.cx(_styles, "accent-text")}
               tag="div"
             >
               {"Preview"}

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./AvailableTimeRange.module.css";
 
@@ -18,7 +19,7 @@ export function AvailableTimeRange({
       {...onClickTime}
     >
       <_Builtin.Block className={_utils.cx(_styles, "relative_2")} tag="div">
-        {textTime}
+        <Text content={textTime} align="center" />
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "default_bg")} tag="div" />
       {isActive ? (
@@ -27,7 +28,7 @@ export function AvailableTimeRange({
             className={_utils.cx(_styles, "relative_2")}
             tag="div"
           >
-            {textTime}
+            <Text content={textTime} />
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}
@@ -40,7 +41,7 @@ export function AvailableTimeRange({
             className={_utils.cx(_styles, "relative_2")}
             tag="div"
           >
-            {textTime}
+            <Text content={textTime} color="" />
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}

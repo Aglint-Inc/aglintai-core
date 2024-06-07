@@ -81,11 +81,6 @@
   background-color: var(--red500-2e806c7d);
 }
 
-.job-link-tag.not_active {
-  background-color: transparent;
-  color: var(--white);
-}
-
 .job-link-tag.active-tage {
   background-color: var(--accent-9);
   color: var(--white);

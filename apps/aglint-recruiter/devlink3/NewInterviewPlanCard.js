@@ -50,16 +50,10 @@ export function NewInterviewPlanCard({
       className={_utils.cx(_styles, "newinterviewplancard")}
       tag="div"
     >
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1394")}
-        tag="div"
-      >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1402")}
-          tag="div"
-        >
+      <_Builtin.Block className={_utils.cx(_styles, "nmsc-wrapper")} tag="div">
+        <_Builtin.Block className={_utils.cx(_styles, "mssc-wrap")} tag="div">
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1385")}
+            className={_utils.cx(_styles, "mssc-wrapper")}
             tag="div"
           >
             <_Builtin.Block
@@ -68,16 +62,16 @@ export function NewInterviewPlanCard({
               {...propsBgColorStatus}
             />
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1399", "hide")}
+              className={_utils.cx(_styles, "nmsc-date-sub-wrap", "hide")}
               tag="div"
               {...onClickCard}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1393")}
+                className={_utils.cx(_styles, "nmsc-date")}
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-1395")}
+                  className={_utils.cx(_styles, "nmsc-date-center")}
                   tag="div"
                 >
                   <_Builtin.Block
@@ -104,13 +98,13 @@ export function NewInterviewPlanCard({
                 <_Builtin.Block
                   className={_utils.cx(
                     _styles,
-                    "div-block-1393",
+                    "nmsc-date",
                     "empty-schedule-date"
                   )}
                   tag="div"
                 >
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "div-block-1395")}
+                    className={_utils.cx(_styles, "nmsc-date-center")}
                     tag="div"
                   >
                     <_Builtin.HtmlEmbed
@@ -122,12 +116,12 @@ export function NewInterviewPlanCard({
               ) : null}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1388")}
+              className={_utils.cx(_styles, "mssc")}
               tag="div"
               {...onClickCard}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1387")}
+                className={_utils.cx(_styles, "mssc-top-wrap")}
                 tag="div"
               >
                 {isCheckboxVisible ? (
@@ -136,12 +130,12 @@ export function NewInterviewPlanCard({
                   </_Builtin.Block>
                 ) : null}
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-1386")}
+                  className={_utils.cx(_styles, "mssc-top-left-wrap")}
                   tag="div"
                   {...onClickCard}
                 >
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "div-block-1398")}
+                    className={_utils.cx(_styles, "mssc-left-item")}
                     tag="div"
                   >
                     {isDateVisible ? (
@@ -275,7 +269,7 @@ export function NewInterviewPlanCard({
           </_Builtin.Block>
           {isSelected ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1401")}
+              className={_utils.cx(_styles, "mssc-acitve-wrap")}
               tag="div"
             />
           ) : null}

@@ -20,7 +20,10 @@ export function CreateTask({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "create-task")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "dtawer-tittle")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "task_drawer_title")}
+        tag="div"
+      >
         <Text content="Create Task" />
         <_Builtin.HtmlEmbed
           className={_utils.cx(_styles, "icons", "cursor-pointer")}
@@ -36,10 +39,7 @@ export function CreateTask({
           color="neutral"
         />
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1344")}
-        tag="div"
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "task_detail")} tag="div">
         {slotViewTaskCard ?? <ViewTaskCard />}
       </_Builtin.Block>
       <_Builtin.Block
