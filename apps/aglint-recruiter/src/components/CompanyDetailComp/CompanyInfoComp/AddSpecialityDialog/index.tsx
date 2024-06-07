@@ -6,7 +6,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { AddTechStack } from '@/devlink/AddTechStack';
 import { RolesPill } from '@/devlink/RolesPill';
@@ -28,6 +28,7 @@ const AddSpecialityDialog: React.FC<StacksProps> = ({
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState([]);
   const [stacks, setStacks] = useState<string[]>([]);
+  const iniSpeciality = useRef([]);
 
   const handleInputChange = (event, newInputValue) => {
     setInputValue(newInputValue);
@@ -43,6 +44,7 @@ const AddSpecialityDialog: React.FC<StacksProps> = ({
     if (recruiter?.technology_score && open) {
       setStacks(recruiter?.technology_score);
       setOptions(initialStacks);
+      iniSpeciality.current = recruiter?.technology_score;
     }
   }, [recruiter?.technology_score, open]);
 
@@ -65,6 +67,17 @@ const AddSpecialityDialog: React.FC<StacksProps> = ({
       }, 10);
     }
   };
+
+  function campareChanges() {
+    const set1 = new Set(stacks);
+    const set2 = new Set(iniSpeciality.current);
+
+    if (set1.size !== set2.size) {
+      return false;
+    }
+
+    return [...set1].every((element) => set2.has(element));
+  }
 
   return (
     <Dialog onClose={handleClose} open={open} maxWidth={'xl'}>
@@ -159,11 +172,13 @@ const AddSpecialityDialog: React.FC<StacksProps> = ({
         }}
         onClickDone={{
           onClick: () => {
-            handleChange({
-              ...recruiter,
-              technology_score: stacks,
-            });
-            handleClose();
+            if (!campareChanges()) {
+              handleChange({
+                ...recruiter,
+                technology_score: stacks,
+              });
+              handleClose();
+            }
           },
         }}
       />
