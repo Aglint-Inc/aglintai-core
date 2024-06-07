@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { InterviewSessionTypeDB } from '@aglint/shared-types';
 import {
   ClientError,
   MailArgValidationError,
@@ -14,10 +16,9 @@ import candidateAvailabilityRequestReminder from '../../../utils/email/sendAvail
 import sendMail from '../../../config/sendgrid';
 
 interface ReqPayload {
-  session_id: string[];
+  sessions: InterviewSessionTypeDB[];
   application_id: string;
-  schedule_id: string;
-  filter_id: string;
+  availability_req_id: string;
 }
 interface Meta {
   meta: ReqPayload;
@@ -43,26 +44,14 @@ export async function POST(req: Request) {
     // if(!api_key)  throw new ClientError("api_key not found",401)
     // if( api_key !== API_KEY)  throw new ClientError("invalid api Key",401)
 
-    if (!meta.session_id) {
-      throw new ClientError('session_id attribute missing', 400);
-    }
-
     if (!meta.application_id) {
       throw new ClientError('application_id attribute missing', 400);
     }
-    if (!meta.filter_id) {
-      throw new ClientError('filter_id is missing', 400);
-    }
-
-    if (!meta.schedule_id) {
-      throw new ClientError('schedule_id is missing', 400);
-    }
 
     const data: DataPayload = await candidateAvailabilityRequestReminder(
-      meta.session_id,
+      meta.sessions,
       meta.application_id,
-      meta.schedule_id,
-      meta.filter_id,
+      meta.availability_req_id,
     );
     const filled_body: FilledPayload = await fetchTemplate(
       data.recruiter_id,

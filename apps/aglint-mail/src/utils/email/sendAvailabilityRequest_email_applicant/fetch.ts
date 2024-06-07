@@ -1,3 +1,4 @@
+import type { InterviewSessionTypeDB } from '@aglint/shared-types';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   durationCalculator,
@@ -9,16 +10,18 @@ import type { CandidateAvailabilityRequestType } from '../../types/supabase-fetc
 import type { MeetingDetails } from '../../types/apiTypes';
 
 export default async function candidateAvailabilityRequestReminder(
-  session_ids: string[],
+  sessions_data: InterviewSessionTypeDB[],
   application_id: string,
-  schedule_id: string,
-  filter_id: string,
+  availability_req_id: string,
 ) {
   const sessions = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
       .select('session_type,session_duration,schedule_type,name')
-      .in('id', session_ids),
+      .in(
+        'id',
+        sessions_data.map((s) => s.id),
+      ),
   );
 
   if (!sessions) {
@@ -57,6 +60,8 @@ export default async function candidateAvailabilityRequestReminder(
     public_jobs: { company },
   } = candidateJob;
 
+  const candidate_link = `https://dev.aglinthq.com/scheduling/request-availability/${availability_req_id}`;
+
   const body: CandidateAvailabilityRequestType = {
     recipient_email: email,
     mail_type: 'sendAvailabilityRequest_email_applicant',
@@ -65,7 +70,7 @@ export default async function candidateAvailabilityRequestReminder(
     payload: {
       '[companyName]': company,
       '[firstName]': first_name,
-      'pickYourSlot': `https://dev.aglinthq.com/scheduling/invite/${schedule_id}?filter_id=${filter_id}`,
+      'pickYourSlot': candidate_link,
       'meetingDetails': [...Sessions],
     },
   };
