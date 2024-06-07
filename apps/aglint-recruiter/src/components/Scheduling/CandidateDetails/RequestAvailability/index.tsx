@@ -191,7 +191,7 @@ function RequestAvailability() {
             },
           });
         }
-        addScheduleActivity({
+        await addScheduleActivity({
           application_id: selectedApplication.id,
           created_by: recruiterUser.user_id,
           logged_by: 'user',
@@ -300,7 +300,7 @@ function RequestAvailability() {
             },
           });
         }
-        addScheduleActivity({
+        await addScheduleActivity({
           application_id: selectedApplication.id,
           created_by: recruiterUser.user_id,
           logged_by: 'user',
