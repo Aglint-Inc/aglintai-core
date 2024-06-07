@@ -89,6 +89,7 @@ export type ModuleDashboard = {
   users: MemberType[];
   upcoming_meeting_count: number;
   completed_meeting_count: number;
+  canceled_meeting_count: number;
 };
 
 export type MemberType = {

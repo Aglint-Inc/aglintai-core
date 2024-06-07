@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
@@ -38,7 +37,7 @@ function MySchedule() {
   });
 
   return (
-    <Stack paddingRight={'0px'}>
+    <>
       <ShowCode>
         <ShowCode.When
           isTrue={
@@ -66,7 +65,7 @@ function MySchedule() {
           />
         </ShowCode.When>
       </ShowCode>
-    </Stack>
+    </>
   );
 }
 

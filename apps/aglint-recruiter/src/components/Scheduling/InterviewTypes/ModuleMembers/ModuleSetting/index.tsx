@@ -1,11 +1,9 @@
-import { MenuItem, TextField } from '@mui/material';
+import { Checkbox, MenuItem, Stack, Switch, TextField } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 
 import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
-import { Checkbox } from '@/devlink/Checkbox';
 import { ModuleSetting } from '@/devlink2/ModuleSetting';
-import { ToggleButton } from '@/devlink2/ToggleButton';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -84,7 +82,7 @@ function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
   );
 
   return (
-    <>
+    <Stack p={'var(--space-4)'}>
       {localModule && (
         <ModuleSetting
           onClickClose={{
@@ -92,32 +90,16 @@ function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
           }}
           isDisable={!localModule?.settings?.require_training}
           slotRequiresTrainingToggle={
-            <ToggleButton
-              isActive={localModule?.settings?.require_training}
-              isInactive={!localModule?.settings?.require_training}
-              onclickToggle={{
-                onClick: () => {
-                  if (
-                    localModule.relations.filter(
-                      (relation) => relation.training_status === 'training',
-                    ).length == 0
-                  ) {
-                    {
-                      setEditLocalModule((prev) => ({
-                        ...prev,
-                        settings: {
-                          ...prev.settings,
-                          require_training: !prev.settings.require_training,
-                        },
-                      }));
-                    }
-                  } else if (
-                    localModule.settings.require_training === false &&
-                    localModule.relations.filter(
-                      (relation) => relation.training_status === 'training',
-                    ).length > 0
-                  ) {
-                    //this condition is not needed actually just temporary
+            <Switch
+              size='small'
+              checked={localModule?.settings?.require_training}
+              onChange={() => {
+                if (
+                  localModule.relations.filter(
+                    (relation) => relation.training_status === 'training',
+                  ).length == 0
+                ) {
+                  {
                     setEditLocalModule((prev) => ({
                       ...prev,
                       settings: {
@@ -125,12 +107,26 @@ function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
                         require_training: !prev.settings.require_training,
                       },
                     }));
-                  } else {
-                    toast.warning(
-                      'Cannot disable training while members are still in training.',
-                    );
                   }
-                },
+                } else if (
+                  localModule.settings.require_training === false &&
+                  localModule.relations.filter(
+                    (relation) => relation.training_status === 'training',
+                  ).length > 0
+                ) {
+                  //this condition is not needed actually just temporary
+                  setEditLocalModule((prev) => ({
+                    ...prev,
+                    settings: {
+                      ...prev.settings,
+                      require_training: !prev.settings.require_training,
+                    },
+                  }));
+                } else {
+                  toast.warning(
+                    'Cannot disable training while members are still in training.',
+                  );
+                }
               }}
             />
           }
@@ -138,17 +134,15 @@ function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
           isApprovalDoneVisible={localModule?.settings?.reqruire_approval}
           slotCheckbox={
             <Checkbox
-              isChecked={localModule?.settings?.reqruire_approval}
-              onClickCheck={{
-                onClick: () => {
-                  setEditLocalModule((prev) => ({
-                    ...prev,
-                    settings: {
-                      ...prev.settings,
-                      reqruire_approval: !prev.settings.reqruire_approval,
-                    },
-                  }));
-                },
+              checked={localModule?.settings?.reqruire_approval}
+              onChange={() => {
+                setEditLocalModule((prev) => ({
+                  ...prev,
+                  settings: {
+                    ...prev.settings,
+                    reqruire_approval: !prev.settings.reqruire_approval,
+                  },
+                }));
               }}
             />
           }
@@ -221,7 +215,7 @@ function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
           }
         />
       )}
-    </>
+    </Stack>
   );
 }
 

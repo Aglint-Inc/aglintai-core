@@ -140,6 +140,7 @@ export function Modules() {
                               ? `${mod.users.length} Members`
                               : ''
                           }
+                          textCancelledSchedules={mod.canceled_meeting_count}
                           textCompletedSchedules={mod.completed_meeting_count}
                           textUpcomingSchedules={mod.upcoming_meeting_count}
                           isCompletedScheduleEmpty={

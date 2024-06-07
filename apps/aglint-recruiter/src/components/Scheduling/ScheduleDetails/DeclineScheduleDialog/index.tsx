@@ -9,8 +9,8 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { addScheduleActivity } from '../../../Candidates/queries/utils';
-import { ScheduleMeeting } from '../../types';
+import { addScheduleActivity } from '../../Candidates/queries/utils';
+import { ScheduleMeeting } from '../types';
 
 function DeclineScheduleDialog({
   isDeclineOpen,

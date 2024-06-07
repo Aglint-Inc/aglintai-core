@@ -59,8 +59,7 @@ function ScheduleMeetingCard({
           slotMembersList={
             <>
               <Collapse in={collapseOpen}>
-                <Stack direction={'column'} gap={'10px'}>
-                  {/* candidate profile */}
+                <Stack direction={'column'} spacing={'10px'}>
                   <MembersList
                     isCorrectVisible={false}
                     slotImage={<CandidateDefaultIcon size={40} />}

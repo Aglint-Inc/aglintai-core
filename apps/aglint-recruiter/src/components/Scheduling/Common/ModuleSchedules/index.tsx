@@ -84,9 +84,7 @@ function ModuleSchedules({
             <AllInterviewEmpty textDynamic='No schedule found' />
           </ShowCode.When>
           <ShowCode.When isTrue={isFetched}>
-            <Stack height={'calc(100vh - 154px)'}>
-              <ScheduleMeetingList filterSchedules={newFilterSchedules()} />
-            </Stack>
+            <ScheduleMeetingList filterSchedules={newFilterSchedules()} />
           </ShowCode.When>
         </ShowCode>
       }

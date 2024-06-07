@@ -306,6 +306,9 @@ export const sendToCandidate = async ({
                 session_id: createCloneRes.refSessions.find(
                   (s) => s.id === ses.session_id,
                 ).newId,
+                meeting_id: createCloneRes.refSessions.find(
+                  (s) => s.id === ses.session_id,
+                ).interview_meeting.id,
               })),
             };
           }),
