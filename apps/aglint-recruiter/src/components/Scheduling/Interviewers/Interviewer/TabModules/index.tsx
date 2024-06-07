@@ -1,6 +1,7 @@
 import { Typography } from '@mui/material';
 import React, { Dispatch } from 'react';
 
+import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview';
 
 import { DetailsWithCount, PauseDialog } from '../../type';
@@ -45,9 +46,7 @@ function TabInterviewModules({
               );
             })
           ) : (
-            <Typography variant='body1'>
-              No Interview Types Added Yet
-            </Typography>
+            <AllInterviewEmpty textDynamic='No Interview Types Added Yet' />
           )
         }
         slotTrainingModules={
