@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import { IconCategory } from '@tabler/icons-react';
 import { useState } from 'react';
 

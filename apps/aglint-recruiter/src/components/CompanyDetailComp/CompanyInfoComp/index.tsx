@@ -105,7 +105,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
           <>
             <CompanyInfo
               slotLocation={
-                <Stack p={'4px'}>
+                <>
                   {recruiter?.office_locations &&
                     recruiter?.office_locations.map((loc: any, i) => {
                       const location = [loc.city, loc.region, loc.country]
@@ -174,7 +174,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                         </>
                       );
                     })}
-                </Stack>
+                </>
               }
               slotRolesPills={recruiter?.available_roles?.map((rol, ind) => {
                 return (
