@@ -19,26 +19,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         401,
       );
     switch (meta.email_type) {
-      // case 'sendSelfScheduleRequest_email_applicant': {
-      //   await axios.post(
-      //     process.env.NEXT_PUBLIC_MAIL_HOST +
-      //       getPath('sendSelfScheduleRequest_email_applicant'),
-      //     {
-      //       meta: meta,
-      //     },
-      //   );
-      //   break;
-      // }
-      // case 'sendAvailabilityRequest_email_applicant': {
-      //   await axios.post(
-      //     process.env.NEXT_PUBLIC_MAIL_HOST +
-      //       getPath('sendAvailabilityRequest_email_applicant'),
-      //     {
-      //       meta: meta,
-      //     },
-      //   );
-      //   break;
-      // }
+      case 'sendSelfScheduleRequest_email_applicant': {
+        await axios.post(
+          process.env.NEXT_PUBLIC_MAIL_HOST +
+            getPath('sendSelfScheduleRequest_email_applicant'),
+          {
+            meta: meta,
+          },
+        );
+        break;
+      }
+      case 'sendAvailabilityRequest_email_applicant': {
+        await axios.post(
+          process.env.NEXT_PUBLIC_MAIL_HOST +
+            getPath('sendAvailabilityRequest_email_applicant'),
+          {
+            meta: meta,
+          },
+        );
+        break;
+      }
       case 'interviewStart_email_applicant': {
         await axios.post(
           process.env.NEXT_PUBLIC_MAIL_HOST +
