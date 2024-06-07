@@ -6,7 +6,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 import {
   APICandScheduleMailThankYou,
-  APIConfirmRecruiterSelectedOption,
+  APIScheduleDebreif,
   PlanCombinationRespType,
 } from '@aglint/shared-types';
 import axios from 'axios';
@@ -16,15 +16,15 @@ import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/Candi
 import { confirmInterviewers } from './confirmInterviewers';
 import { createMeetingEvents } from './createMeetingEvents';
 import { sendMailsToOrganizer } from './sendMailsToOrganizer';
-import { FetchedCandAvailType, ScheduleDBDetails } from './types';
+import { FetchedDebreifType, ScheduleDBDetails } from './types';
 import { updateMeetingEventDetails } from './updateMeetingInfo';
 import { updateTrainingStatus } from './updateTrainingStatus';
 
-export const bookRecruiterSelectedOption = async (
-  req_body: APIConfirmRecruiterSelectedOption,
+export const bookRecruiterSelectedDebreif = async (
+  req_body: APIScheduleDebreif,
   cand_schedule: CandidatesSchedulingV2,
   verified_slot: PlanCombinationRespType,
-  fetched_cand_details: FetchedCandAvailType,
+  fetched_cand_details: FetchedDebreifType,
 ) => {
   const db_details: ScheduleDBDetails = {
     application: {
@@ -50,7 +50,7 @@ export const bookRecruiterSelectedOption = async (
   );
 
   await updateTrainingStatus(booked_meeting_details);
-  await confirmInterviewers(booked_meeting_details, false);
+  await confirmInterviewers(booked_meeting_details, true);
   await updateMeetingEventDetails(booked_meeting_details);
   await sendMailsToOrganizer(db_details, booked_meeting_details);
   const payload: APICandScheduleMailThankYou = {
@@ -58,9 +58,9 @@ export const bookRecruiterSelectedOption = async (
     filter_id: null,
     task_id: req_body.task_id,
     application_id: fetched_cand_details.application.id,
-    session_ids: fetched_cand_details.session_ids.map((s) => s.id),
-    availability_request_id: req_body.availability_req_id,
-    is_debreif: false,
+    session_ids: [req_body.session_id],
+    availability_request_id: null,
+    is_debreif: true,
   };
   axios.post(
     `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,

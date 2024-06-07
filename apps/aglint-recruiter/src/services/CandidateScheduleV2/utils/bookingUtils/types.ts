@@ -6,6 +6,7 @@ import {
 } from '@aglint/shared-types';
 
 import { createMeetingEvents } from './createMeetingEvents';
+import { fetchCandDetailsForDebreifBooking } from './dbFetch/fetchCandDetailsForDebreifBooking';
 import { fetchCandAvailForBooking } from './dbFetch/fetchCandidateAvailability';
 import { fetchDBScheduleDetails } from './dbFetch/fetchDBScheduleDetails';
 
@@ -18,6 +19,10 @@ export type FetchDBScheduleDetails = Awaited<
 
 export type FetchedCandAvailType = Awaited<
   ReturnType<typeof fetchCandAvailForBooking>
+>;
+
+export type FetchedDebreifType = Awaited<
+  ReturnType<typeof fetchCandDetailsForDebreifBooking>
 >;
 
 export type ConfirmInt = Pick<
