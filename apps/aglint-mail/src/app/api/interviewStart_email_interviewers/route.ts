@@ -10,7 +10,7 @@ import type {
   FilledPayload,
   MeetingDetails,
 } from '../../../utils/types/apiTypes';
-import confiramtionMailToOrganizerRemainder from '../../../utils/email/upcoming_interview_reminder_interviewers/fetch';
+import confiramtionMailToOrganizerRemainder from '../../../utils/email/interviewStart_email_interviewers/fetch';
 import sendMail from '../../../config/sendgrid';
 
 interface ReqPayload {

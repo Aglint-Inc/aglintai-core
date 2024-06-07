@@ -22,7 +22,7 @@ const Create = () => {
     handleCreateWorkflow({
       title,
       phase: 'now',
-      trigger: 'availability_request_reminder',
+      trigger: 'sendAvailabilityRequest',
     });
     resetPopup();
   }, [title]);
@@ -47,7 +47,9 @@ const Create = () => {
           textPopupTitle={'Create Workflow'}
           textPopupButton={'Create Workflow'}
           slotWidget={<Form />}
-          textPopupDescription={'Enter the name for workflow. Next, you will be able to add steps to the workflow.'}
+          textPopupDescription={
+            'Enter the name for workflow. Next, you will be able to add steps to the workflow.'
+          }
         />
       </Dialog>
     </>

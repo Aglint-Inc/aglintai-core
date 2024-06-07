@@ -82,27 +82,32 @@ const ACTION_TRIGGER_MAP: {
     value: DatabaseTable['company_email_template']['type'];
   }[];
 } = {
-  availability_request_reminder: [
-    { value: 'availability_request_reminder', name: 'Send email to applicant' },
-  ],
-  self_schedule_request_reminder: [
+  sendAvailabilityRequest: [
     {
-      value: 'self_schedule_request_reminder',
+      value: 'sendAvailabilityRequest_email_applicant',
       name: 'Send email to applicant',
     },
   ],
-  upcoming_interview_reminder: [
+  sendSelfScheduleRequest: [
     {
-      value: 'upcoming_interview_reminder_candidate',
+      value: 'sendSelfScheduleRequest_email_applicant',
+      name: 'Send email to applicant',
+    },
+  ],
+  interviewStart: [
+    {
+      value: 'interviewStart_email_applicant',
       name: 'Send email to applicant',
     },
     {
-      value: 'upcoming_interview_reminder_interviewers',
+      value: 'interviewStart_email_interviewers',
       name: 'Send emails to interviewers',
     },
     {
-      value: 'slack_interviewer_confirmation',
+      value: 'interviewStart_slack_interviewers',
       name: 'Send slack messages to interviewers',
     },
   ],
+  interviewerConfirmation: [],
+  interviewEnd: [],
 };
