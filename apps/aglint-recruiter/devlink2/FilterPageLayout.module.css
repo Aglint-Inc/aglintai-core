@@ -1,0 +1,16 @@
+.filter-page-layout-wrap {
+  height: 100%;
+}
+
+.fpl-top-wrap {
+  display: flex;
+  height: 48px;
+  padding: var(--space-2) var(--space-4);
+  justify-content: space-between;
+  border-bottom: 1px solid var(--neutral-6);
+}
+
+.fpl-body-wrap {
+  overflow: auto;
+  height: calc(100vh - 96px);
+}

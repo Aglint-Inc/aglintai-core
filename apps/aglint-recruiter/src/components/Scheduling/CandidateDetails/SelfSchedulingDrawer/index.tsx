@@ -72,7 +72,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
               if (stepScheduling === 'preference') {
                 setStepScheduling('pick_date');
               } else if (
-                stepScheduling === 'reschedule' &&
+                stepScheduling === 'slot_options' &&
                 !isSendingToCandidate
               ) {
                 setStepScheduling('preference');

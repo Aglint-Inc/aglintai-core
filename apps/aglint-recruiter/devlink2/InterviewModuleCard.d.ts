@@ -16,4 +16,6 @@ declare function InterviewModuleCard(props: {
   textObjective?: React.ReactNode;
   isObjectiveVisible?: Types.Visibility.VisibilityConditions;
   isArchivedIconVisible?: Types.Visibility.VisibilityConditions;
+  textCancelledSchedules?: React.ReactNode;
+  textDepartment?: React.ReactNode;
 }): React.JSX.Element;

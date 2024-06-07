@@ -379,7 +379,7 @@ function SideDrawerEdit() {
             textPrimaryButton='Save'
             textTitle='Edit Session'
             slotSidedrawerBody={
-              <Stack p={2}>
+              <Stack p={'var(--space-4)'}>
                 {editSession.session_type !== 'debrief' ? (
                   <SidedrawerBodySession
                     slotSessionNameInput={

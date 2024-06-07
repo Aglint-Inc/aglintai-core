@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { SlotComp } from "./SlotComp";
+import { ScheduleTabOverview } from "./ScheduleTabOverview";
 import * as _utils from "./utils";
 import _styles from "./ScheduleDetailTabs.module.css";
 
@@ -17,32 +18,40 @@ export function ScheduleDetailTabs({
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "schedule-tab-overview-wraper")}
-        tag="div"
-      >
-        {slotScheduleTabOverview ?? (
-          <SlotComp componentNeme="ScheduleTabOverview" />
-        )}
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "schedule_detail_block")}
+        className={_utils.cx(_styles, "schedule-detail-wrap")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "schedule_tabs", "gap-0")}
+          className={_utils.cx(_styles, "schedule-tab-overview-wraper")}
           tag="div"
         >
-          {slotDarkPills ?? <SlotComp componentNeme="Tab" />}
+          {slotScheduleTabOverview ?? (
+            <>
+              <SlotComp componentNeme="ScheduleTabOverview" />
+              <ScheduleTabOverview />
+            </>
+          )}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "scheduletab_content")}
+          className={_utils.cx(_styles, "schedule_detail_block")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1365")}
+            className={_utils.cx(_styles, "schedule_tabs", "gap-0")}
             tag="div"
           >
-            {slotTabContent ?? <SlotComp componentNeme="Tab Content" />}
+            {slotDarkPills ?? <SlotComp componentNeme="Tab" />}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "scheduletab_content")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1365")}
+              tag="div"
+            >
+              {slotTabContent ?? <SlotComp componentNeme="Tab Content" />}
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

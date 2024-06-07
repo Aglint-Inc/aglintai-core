@@ -67,7 +67,8 @@ function ScheduleIndividualCard({
               );
             } else if (
               session.interview_meeting?.status === 'not_scheduled' ||
-              !session.interview_meeting
+              !session.interview_meeting ||
+              session.interview_meeting?.status === 'cancelled'
             ) {
               onClickCheckBox({ session });
             }
