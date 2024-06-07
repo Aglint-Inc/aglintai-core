@@ -176,9 +176,9 @@ export const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(() => ({
   [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor:' var(--white)',
+    backgroundColor:'var(--white)',
     color: 'var(--black-a7)',
-    boxShadow: 'var(--shadow-1)',
+    boxShadow: 'var(--shadow-2)',
     fontSize: 12,
   },
   [`& .${tooltipClasses.tooltipPlacementBottom}`]: {

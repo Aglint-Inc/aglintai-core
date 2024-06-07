@@ -877,6 +877,12 @@ function Theme({ children }) {
             borderRadius: 'var(--radius-2)',
             boxShadow: 'var(--shadow-3)', // Level 3 shadow
           },
+          arrow: {
+            '::before': {
+              boxShadow: 'var(--shadow-2)', // Level 3 shadow
+              backgroundColor: 'var(--white)',
+            },
+          },
         },
       },
 
