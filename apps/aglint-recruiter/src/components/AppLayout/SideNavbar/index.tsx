@@ -75,7 +75,7 @@ function SideNavbar() {
     {
       text: 'Jobs',
       SubComponents: null,
-      route: ROUTES['/jobs'](),
+      route: ROUTES['/jobs']() + '?status=published',
       comingsoon: false,
       isvisible: true,
       roles: [
@@ -89,15 +89,23 @@ function SideNavbar() {
     {
       text: 'Scheduler',
       SubComponents: null,
-      route: ROUTES['/scheduling'](),
+      route: ROUTES['/scheduling']() + '?tab=dashboard',
       comingsoon: false,
       isvisible: isSchedulingEnabled,
       roles: ['admin', 'recruiter', 'recruiting_coordinator', 'interviewer'],
     },
     {
+      text: 'Workflows',
+      SubComponents: null,
+      route: ROUTES['/workflows'](),
+      comingsoon: false,
+      isvisible: true,
+      roles: ['admin', 'recruiter'],
+    },
+    {
       text: 'Sourcing Hub',
       SubComponents: null,
-      route: ROUTES['/candidates/history'](),
+      route: ROUTES['/candidates/history']() + '?currentTab=discover%20talent',
       comingsoon: false,
       isvisible: isSourcingEnabled,
       roles: ['admin', 'recruiter'],
@@ -118,7 +126,6 @@ function SideNavbar() {
       isvisible: isAssistantEnabled,
       roles: ['admin'],
     },
-
     {
       text: 'Phone Screening',
       SubComponents: null,
@@ -151,14 +158,6 @@ function SideNavbar() {
       comingsoon: false,
       isvisible: true,
       roles: ['admin'],
-    },
-    {
-      text: 'Workflows',
-      SubComponents: null,
-      route: ROUTES['/workflows'](),
-      comingsoon: false,
-      isvisible: true,
-      roles: ['admin', 'recruiter'],
     },
   ];
 
@@ -285,7 +284,10 @@ const LinkComp = ({
 
   return (
     <Stack onClick={() => push(path)}>
-      <LinkIcon module={module} active={path.includes(pathname)} />
+      <LinkIcon
+        module={module}
+        active={pathname.includes(path) || path.includes(pathname)}
+      />
     </Stack>
   );
 };

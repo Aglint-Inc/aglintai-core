@@ -223,14 +223,13 @@ export class CandidatesSchedulingV2 {
           curr_round_sess,
           cached_free_time,
         );
-        if (verifyCurrDaySlot(curr_round_sess)) {
+        if (!verifyCurrDaySlot(curr_round_sess)) {
           is_option_verified = false;
           break;
         }
       }
-      verified_slots.push(comb);
       if (is_option_verified) {
-        //
+        verified_slots.push(comb);
       }
     }
     return verified_slots;

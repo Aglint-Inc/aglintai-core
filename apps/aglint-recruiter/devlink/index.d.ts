@@ -1,9 +1,5 @@
 "use client";
 
-console.warn(
-  "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
-);
-
 export * as _Builtin from "./_Builtin";
 export * from "./devlinkContext";
 export * from "./interactions";
@@ -32,6 +28,12 @@ export * from "./AllInterview";
 export * from "./AshbyApiKey";
 export * from "./AshbyAtsJob";
 export * from "./AssesmentSetting";
+export * from "./AssessmentEpilogue";
+export * from "./AssessmentInvite";
+export * from "./AssessmentQuestion";
+export * from "./AssessmentQuestions";
+export * from "./AssessmentSetting";
+export * from "./AssessmentSide";
 export * from "./Assignee";
 export * from "./AssisstantSettings";
 export * from "./AssistantCandidateDetails";
@@ -272,6 +274,8 @@ export * from "./ScorePillMust";
 export * from "./ScorePillNice";
 export * from "./ScoreSetting";
 export * from "./ScoreWeightage";
+export * from "./ScreeningLink";
+export * from "./ScreeningQuestion";
 export * from "./SearchAglintCd";
 export * from "./SectionHeader";
 export * from "./SelectButton";

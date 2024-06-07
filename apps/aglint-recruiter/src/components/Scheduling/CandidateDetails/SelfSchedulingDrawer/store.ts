@@ -61,8 +61,8 @@ const initialState: SchedulingFlow = {
   filters: {
     isNoConflicts: true,
     isSoftConflicts: true,
-    isHardConflicts: true,
-    isOutSideWorkHours: true,
+    isHardConflicts: false,
+    isOutSideWorkHours: false,
     preferredInterviewers: [],
     preferredDateRanges: [],
     isWorkLoad: true,

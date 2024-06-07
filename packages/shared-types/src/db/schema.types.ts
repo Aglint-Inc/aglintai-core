@@ -186,6 +186,13 @@ export type Database = {
             foreignKeyName: "public_application_logs_application_id_fkey"
             columns: ["application_id"]
             isOneToOne: false
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_application_logs_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
             referencedRelation: "applications"
             referencedColumns: ["id"]
           },
@@ -333,7 +340,7 @@ export type Database = {
             columns: ["candidate_id"]
             isOneToOne: false
             referencedRelation: "application_view"
-            referencedColumns: ["id"]
+            referencedColumns: ["candidate_id"]
           },
           {
             foreignKeyName: "applications_candidate_id_fkey"
@@ -524,6 +531,13 @@ export type Database = {
             foreignKeyName: "assessment_results_application_id_fkey"
             columns: ["application_id"]
             isOneToOne: false
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assessment_results_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
             referencedRelation: "applications"
             referencedColumns: ["id"]
           },
@@ -627,7 +641,7 @@ export type Database = {
             columns: ["candidate_id"]
             isOneToOne: false
             referencedRelation: "application_view"
-            referencedColumns: ["id"]
+            referencedColumns: ["candidate_id"]
           },
           {
             foreignKeyName: "candidate_files_candidate_id_fkey"
@@ -720,6 +734,13 @@ export type Database = {
           user_timezone?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "candidate_request_availability_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "candidate_request_availability_application_id_fkey"
             columns: ["application_id"]
@@ -1339,6 +1360,13 @@ export type Database = {
             foreignKeyName: "interview_schedule_application_id_fkey"
             columns: ["application_id"]
             isOneToOne: true
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_schedule_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: true
             referencedRelation: "applications"
             referencedColumns: ["id"]
           },
@@ -1953,6 +1981,13 @@ export type Database = {
             columns: ["request_availability_id"]
             isOneToOne: false
             referencedRelation: "candidate_request_availability"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_new_tasks_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_view"
             referencedColumns: ["id"]
           },
           {
@@ -2980,6 +3015,13 @@ export type Database = {
             foreignKeyName: "public_scheduling-agent-chat-history_application_id_fkey"
             columns: ["application_id"]
             isOneToOne: false
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_scheduling-agent-chat-history_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
             referencedRelation: "applications"
             referencedColumns: ["id"]
           },
@@ -3030,6 +3072,13 @@ export type Database = {
           screening_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "public_screening_answers_screening_id_fkey"
+            columns: ["screening_id"]
+            isOneToOne: true
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "public_screening_answers_screening_id_fkey"
             columns: ["screening_id"]
@@ -3369,6 +3418,7 @@ export type Database = {
         Row: {
           completed_at: string | null
           created_at: string
+          execute_at: string
           id: number
           meta: Json | null
           started_at: string | null
@@ -3380,6 +3430,7 @@ export type Database = {
         Insert: {
           completed_at?: string | null
           created_at?: string
+          execute_at: string
           id?: number
           meta?: Json | null
           started_at?: string | null
@@ -3391,6 +3442,7 @@ export type Database = {
         Update: {
           completed_at?: string | null
           created_at?: string
+          execute_at?: string
           id?: number
           meta?: Json | null
           started_at?: string | null
@@ -3473,6 +3525,7 @@ export type Database = {
           applied_at: string | null
           badges: Json | null
           bookmarked: boolean | null
+          candidate_id: string | null
           city: string | null
           country: string | null
           created_at: string | null
@@ -3599,6 +3652,13 @@ export type Database = {
             columns: ["application_id"]
             isOneToOne: true
             referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_schedule_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: true
+            referencedRelation: "application_view"
             referencedColumns: ["id"]
           },
           {
@@ -3823,6 +3883,16 @@ export type Database = {
         Returns: {
           total_records: number
         }[]
+      }
+      create_new_workflow_action_log: {
+        Args: {
+          workflow_id: string
+          workflow_action_id: string
+          interval_minutes: number
+          phase: string
+          meta: Json
+        }
+        Returns: undefined
       }
       createrecuriterrelation:
         | {
@@ -4793,6 +4863,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      workflow_action_log_cron: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
     }
     Enums: {
       activity_type: "aglint" | "user" | "candidate"
@@ -4850,6 +4924,9 @@ export type Database = {
         | "upcoming_interview_reminder_candidate"
         | "availability_request_reminder"
         | "upcoming_interview_reminder_interviewers"
+        | "slack_interview_reminder"
+        | "slack_interviewer_feedback"
+        | "slack_interviewer_confirmation"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"

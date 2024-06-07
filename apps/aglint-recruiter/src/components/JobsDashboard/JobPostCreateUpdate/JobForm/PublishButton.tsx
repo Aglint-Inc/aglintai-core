@@ -6,7 +6,6 @@ import { useState } from 'react';
 
 import AUIButton from '@/src/components/Common/AUIButton';
 import { useJobs } from '@/src/context/JobsContext';
-import { palette } from '@/src/context/Theme/Theme';
 // import { PublicJobsType } from '@aglint/shared-types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -99,7 +98,7 @@ const JobPublishButton = () => {
             <CircularProgress
               color='inherit'
               size={'15px'}
-              sx={{ color: palette.grey[400] }}
+              sx={{ color: 'var(--neutral-6)' }}
             />
           )
         }

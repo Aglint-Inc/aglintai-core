@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { AddJob } from '@/devlink/AddJob';
 import { AddJobButton } from '@/devlink/AddJobButton';
 import { AddJobList } from '@/devlink/AddJobList';
-import { palette } from '@/src/context/Theme/Theme';
 
 import AUIButton from '../../Common/AUIButton';
 
@@ -121,7 +120,7 @@ const AddToJobOptions = ({
                     <CircularProgress
                       color='inherit'
                       size={'15px'}
-                      sx={{ color: palette.grey[400] }}
+                      sx={{ color: 'var(--neutral-6)' }}
                     />
                   )
                 }

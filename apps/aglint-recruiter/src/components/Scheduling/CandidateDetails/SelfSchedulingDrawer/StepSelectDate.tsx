@@ -167,7 +167,7 @@ function SelectDateRange() {
   return (
     <>
       <DatePickerBody
-        isLoading={fetchingPlan}
+        isLoading={false}
         slotMuiDatePicker={
           <DateRange
             onChange={(val) => {

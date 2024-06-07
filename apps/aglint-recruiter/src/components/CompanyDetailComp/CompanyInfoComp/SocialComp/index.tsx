@@ -11,7 +11,6 @@ import { NewSocialLinkPop } from '@/devlink/NewSocialLinkPop';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 
 import { debouncedSave } from '../../utils';
 
@@ -257,7 +256,7 @@ const SocialComp = ({ setIsSaving }) => {
 
   return (
     <Stack gap={'10px'}>
-      <UITypography type={'small'} color={palette.grey[800]} fontBold='default'>
+      <UITypography type={'small'} color={'var(--neutral-12)'} fontBold='default'>
         Social Links
       </UITypography>
       <Stack gap={'20px'}>
@@ -271,7 +270,7 @@ const SocialComp = ({ setIsSaving }) => {
             >
               <Stack
                 style={{
-                  border: `1px solid ${palette.grey[200]}`,
+                  border: `1px solid var(--neutral-6)`,
                   padding: '9px',
                   borderRadius: '4px',
                 }}
@@ -326,8 +325,8 @@ const SocialComp = ({ setIsSaving }) => {
             >
               <Stack
                 style={{
-                  border: `1px solid ${palette.grey[200]}`,
-                  padding: '9px',
+                  border: `1px solid var(--neutral-6)`,
+                  padding: '8px',
                   borderRadius: '4px',
                   alignItems: 'start',
                 }}

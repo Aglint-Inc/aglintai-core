@@ -4,6 +4,7 @@ import { nanoid } from 'nanoid';
 import { useEffect, useState } from 'react';
 
 import { AddButton } from '@/devlink/AddButton';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { Checkbox } from '@/devlink/Checkbox';
 import { ScoreCard } from '@/devlink/ScoreCard';
 import { ScoreCardEdit } from '@/devlink/ScoreCardEdit';
@@ -11,7 +12,6 @@ import { ScorePillMust } from '@/devlink/ScorePillMust';
 import { ScorePillNice } from '@/devlink/ScorePillNice';
 import { ScoreSetting } from '@/devlink/ScoreSetting';
 import { SettingSkeleton } from '@/devlink/SettingSkeleton';
-import AUIButton from '@/src/components/Common/AUIButton';
 import UITypography from '@/src/components/Common/UITypography';
 import { generatejdToScoreJson } from '@/src/utils/prompts/addNewJob/jd_scoreJson';
 import toast from '@/src/utils/toast';
@@ -344,14 +344,15 @@ ${jobForm.formFields.jobDescription}
                                   isDeleteVisible={false}
                                   slotButtonUpdate={
                                     <>
-                                      <AUIButton
+                                    <ButtonSolid size={'2'} isLeftIcon={false} isRightIcon={false} onClickButton={async () => await handleAddFeild(p.paramKey)} textButton="Add" />
+                                      {/* <AUIButton
                                         size='small'
                                         onClick={() => {
                                           handleAddFeild(p.paramKey);
                                         }}
                                       >
                                         Add
-                                      </AUIButton>
+                                      </AUIButton> */}
                                     </>
                                   }
                                   slotTextEdit={
@@ -514,14 +515,17 @@ ${jobForm.formFields.jobDescription}
                 }}
                 slotButtonUpdate={
                   <>
-                    <AUIButton
+                  <ButtonSolid size={'2'} isLeftIcon={false} isRightIcon={false} onClickButton={() => {
+                        handleEdit();
+                      }} textButton="Update" />
+                    {/* <AUIButton
                       size='small'
                       onClick={() => {
                         handleEdit();
                       }}
                     >
                       Update
-                    </AUIButton>
+                    </AUIButton> */}
                   </>
                 }
                 slotTextEdit={
@@ -531,7 +535,7 @@ ${jobForm.formFields.jobDescription}
                         width: '100%',
                         outline: 'none',
                         border: '0px',
-                        backgroundColor: '#f8f9f9',
+                        backgroundColor: 'transparent',
                         resize: 'none'
                       }}
                       // eslint-disable-next-line jsx-a11y/no-autofocus

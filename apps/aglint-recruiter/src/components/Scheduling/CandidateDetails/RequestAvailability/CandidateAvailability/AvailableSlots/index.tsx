@@ -13,6 +13,7 @@ import { PickSlotDay } from '@/devlink2/PickSlotDay';
 import { TimePick } from '@/devlink2/TimePick';
 import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
@@ -203,7 +204,10 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
   };
   async function submitData() {
     await updateCandidateRequestAvailability({
-      data: { slots: [{ round: 1, dates: selectedSlots[0].dates }] },
+      data: {
+        slots: [{ round: 1, dates: selectedSlots[0].dates }],
+        user_timezone: userTzDayjs.tz.guess(),
+      },
       id: String(router.query?.request_id),
     });
 
@@ -382,7 +386,6 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
                           dateSlot.curr_day.split('T')[0],
                         )
                       ) {
-                      
                         enable = false;
                       }
 

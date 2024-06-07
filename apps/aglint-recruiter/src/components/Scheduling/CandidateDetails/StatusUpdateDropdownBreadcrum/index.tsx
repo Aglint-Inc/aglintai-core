@@ -1,9 +1,8 @@
 import { capitalize, Popover } from '@mui/material';
 import React from 'react';
 
-import { CandidateInterviewButton } from '@/devlink3/CandidateInterviewButton';
+import { ButtonSoft } from '@/devlink3/ButtonSoft';
 import { CandidateInterviewOption } from '@/devlink3/CandidateInterviewOption';
-import SectionIcons from '@/src/components/JobApplicationsDashboard/Common/SectionIcons';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -83,10 +82,6 @@ function StatusUpdateDropdownBreadcrum() {
         }}
         sx={{
           mt: 1,
-          '& .MuiPaper-root': {
-            border: 'none !important',
-            overflow: 'visible !important',
-          },
         }}
       >
         <CandidateInterviewOption
@@ -109,9 +104,10 @@ function StatusUpdateDropdownBreadcrum() {
           textCurrentStats={`Candidate currently in ${capitalize(selectedApplication?.status || '')} stage`}
         />
       </Popover>
-      <CandidateInterviewButton
-        slotIcon={<SectionIcons section={selectedApplication.status as any} />}
-        textButton={capitalize(selectedApplication.status)}
+      <ButtonSoft
+        textButton={capitalize(selectedApplication.status || '')}
+        color={'accent'}
+        size={'1'}
         onClickButton={{
           onClick: handleClick,
         }}
