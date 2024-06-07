@@ -7,6 +7,7 @@ import _styles from "./EmptyGeneral.module.css";
 export function EmptyGeneral({
   as: _Component = _Builtin.Block,
   textEmpt = "No interview modules ",
+  slotButton,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "genealempty")} tag="div">
@@ -16,6 +17,12 @@ export function EmptyGeneral({
       />
       <_Builtin.Block className={_utils.cx(_styles, "text-gray-600")} tag="div">
         {textEmpt}
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "empty-general-btn")}
+        tag="div"
+      >
+        {slotButton}
       </_Builtin.Block>
     </_Component>
   );

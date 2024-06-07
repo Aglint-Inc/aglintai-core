@@ -25,7 +25,7 @@ import AllSchedules from './Candidates';
 import SchedulingDashboard from './Dashboard';
 import AllInterviewersComp from './Interviewers';
 import InterviewerLevelSettings from './Interviewers/Interviewer/InterviewerLevelSettings';
-import { Modules } from './InterviewTypes/Modules';
+import { Modules } from './InterviewTypes';
 import { fetchInterviewModules } from './InterviewTypes/queries/utils';
 import { setIsCreateDialogOpen } from './InterviewTypes/store';
 import MySchedule from './MySchedules';
@@ -108,8 +108,7 @@ function SchedulingMainComp() {
                 <Stack direction={'row'} alignItems={'center'} spacing={2}>
                   <ButtonSolid
                     isRightIcon={false}
-                    size={2}
-                    slotIcon= {
+                    slotIcon={
                       <Icon
                         variant='PlusThin'
                         height='20'
@@ -117,8 +116,9 @@ function SchedulingMainComp() {
                         color='var(--white)'
                       />
                     }
+                    size={2}
                     textButton={'New Interview Type'}
-                    onClickButton ={{
+                    onClickButton={{
                       onClick: () => {
                         setIsCreateDialogOpen(true);
                       },
@@ -287,9 +287,7 @@ const InterviewerModule = ({
                     textObjective={mod.interview_modules.description}
                     textModuleName={mod.interview_modules.name}
                     slotMemberPic={
-                      <AvatarGroup
-                        total={mod.users.length}
-                      >
+                      <AvatarGroup total={mod.users.length}>
                         {mod.users.slice(0, 5).map((user) => {
                           return (
                             <MuiAvatar

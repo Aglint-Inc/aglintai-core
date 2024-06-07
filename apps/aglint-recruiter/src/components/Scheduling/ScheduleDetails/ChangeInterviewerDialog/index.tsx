@@ -18,8 +18,8 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { convertTimeZoneToAbbreviation } from '../../../utils';
-import { ScheduleMeeting } from '../../types';
+import { convertTimeZoneToAbbreviation } from '../../utils';
+import { ScheduleMeeting } from '../types';
 
 function ChangeInterviewerDialog({
   isChangeInterviewerOpen,

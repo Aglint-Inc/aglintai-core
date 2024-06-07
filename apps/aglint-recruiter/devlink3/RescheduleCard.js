@@ -3,6 +3,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
 import { ButtonSolid } from "./ButtonSolid";
+import { ButtonSoft } from "./ButtonSoft";
 import { ButtonSurface } from "./ButtonSurface";
 import * as _utils from "./utils";
 import _styles from "./RescheduleCard.module.css";
@@ -25,40 +26,45 @@ export function RescheduleCard({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "div-block-1639")}
+      className={_utils.cx(_styles, "requested_reschedule")}
       tag="div"
       {...bgColorProps}
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1641")}
+        className={_utils.cx(_styles, "reschedule_request_name")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1640")}
-          tag="div"
-        >
-          {slotProfileImage}
+        <_Builtin.Block className={_utils.cx(_styles, "avatar-24")} tag="div">
+          {slotProfileImage ?? (
+            <_Builtin.Image
+              loading="lazy"
+              width="auto"
+              height="auto"
+              alt=""
+              src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d8b0e9a0e9f0451bc3536c_user2.png"
+            />
+          )}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1684")}
           tag="div"
         >
-          <Text content={textName} weight="bold" color="neutral-12" />
+          <Text content={textName} weight="medium" color="neutral-12" />
           <_Builtin.Block tag="div" {...textColorProps}>
-            <Text content={textReschedule} weight="bold" color="warning" />
+            <Text content={textReschedule} weight="" />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1642")}
+        className={_utils.cx(_styles, "request-reason")}
         tag="div"
       >
-        <_Builtin.Block tag="div">{"Reason :"}</_Builtin.Block>
-        <_Builtin.Block tag="div">{textReason}</_Builtin.Block>
+        <Text content="Reason :" weight="" color="neutral" />
+        <Text content={textReason} weight="" />
       </_Builtin.Block>
       {isButtonVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1643")}
+          className={_utils.cx(_styles, "action_buttons")}
           tag="div"
         >
           {isRescheduleBtnVisible ? (
@@ -66,18 +72,16 @@ export function RescheduleCard({
               <ButtonSolid
                 onClickButton={onClickRescheduleNow}
                 size="1"
-                textButton=""
+                textButton="Reschedule Now"
               />
             </_Builtin.Block>
           ) : null}
           {isChangeInterviewerVisible ? (
             <_Builtin.Block tag="div">
-              <ButtonSurface
+              <ButtonSoft
                 onClickButton={onClickChangeInterviewer}
                 size="1"
-                isLeftIcon={false}
-                isRightIcon={false}
-                textButton=""
+                textButton="Change Interviewer"
               />
             </_Builtin.Block>
           ) : null}
@@ -89,7 +93,7 @@ export function RescheduleCard({
                 color="neutal"
                 isRightIcon={false}
                 isLeftIcon={false}
-                textButton="Cancel"
+                textButton="Ignore"
               />
             </_Builtin.Block>
           ) : null}

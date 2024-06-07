@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./AvatarWithName.module.css";
 
@@ -26,17 +27,17 @@ export function AvatarWithName({
       ) : null}
       {isAvatarVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-757")}
+          className={_utils.cx(_styles, "avatar-slot-wrap")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "slot_useravatr", "small")}
+            className={_utils.cx(_styles, "avatar-slot-image")}
             tag="div"
           >
             {slotAvatar}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-758")}
+            className={_utils.cx(_styles, "avatar-badge-wrap")}
             tag="div"
           >
             {isShadowVisible ? (
@@ -54,20 +55,22 @@ export function AvatarWithName({
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}
-      <_Builtin.Block
-        className={_utils.cx(_styles, "one-line-clamp")}
-        tag="div"
-      >
-        {textName}
-      </_Builtin.Block>
-      {isRoleVisible ? (
+      <_Builtin.Block tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-500")}
+          className={_utils.cx(_styles, "one-line-clamp")}
           tag="div"
         >
-          {textRole}
+          <Text content={textName} weight="medium" />
         </_Builtin.Block>
-      ) : null}
+        {isRoleVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "one-line-clamp")}
+            tag="div"
+          >
+            <Text content={textRole} weight="" color="neutral" size="1" />
+          </_Builtin.Block>
+        ) : null}
+      </_Builtin.Block>
       {isTickVisible ? (
         <_Builtin.HtmlEmbed
           className={_utils.cx(_styles, "icons")}

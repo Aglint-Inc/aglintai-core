@@ -1,42 +1,14 @@
 /* eslint-disable no-unused-vars */
 import { createTheme, TextField } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-import { TypographyOptions } from '@mui/material/styles/createTypography';
 import * as radixColors from '@radix-ui/colors';
-import React, { useState } from 'react';
+import { useState } from 'react';
+
+import CheckboxIcon from '@/src/components/Common/Icons/CheckboxIcon';
+import RadioButtonIcon from '@/src/components/Common/Icons/RadioButtonIcon';
 
 import AppContext from './context';
-
-declare module '@mui/material/Typography' {
-  interface TypographyPropsVariantOverrides {
-    body1medium: true;
-    body1bold: true;
-    body2medium: true;
-    body2bold: true;
-  }
-}
-
-interface ExtendedTypographyOptions extends TypographyOptions {
-  body1medium: React.CSSProperties;
-  body1bold: React.CSSProperties;
-  body2medium: React.CSSProperties;
-  body2bold: React.CSSProperties;
-}
-
-declare module '@mui/material/Avatar' {
-  interface AvatarPropsVariantOverrides {
-    'rounded-small': true;
-    'rounded-medium': true;
-    'rounded-large': true;
-    'circular-small': true;
-    'circular-medium': true;
-    'circular-large': true;
-    'square-small': true;
-    'square-medium': true;
-    'square-large': true;
-    'rounded-xs': true;
-  }
-}
+import { ExtendedTypographyOptions } from './types';
 
 function Theme({ children }) {
   const [color, setColor] = useState('#1976d2');
@@ -448,76 +420,7 @@ function Theme({ children }) {
             '& fieldset legend': {
               display: 'none',
             },
-            // padding: 'var(--space-1) var(--space-2)',
-            // fontFamily: 'var(--text)',
           },
-          // inputRoot: {
-          //   '&[class*="MuiInput-root"] .MuiAutocomplete-input': {
-          //     padding: 'var(--space-2) !important',
-          //     fontSize: 'var(--font-size-2)',
-          //     lineHeight: 'var(--line-height-2)',
-          //     letterSpacing: 'var(--letter-spacing-2)',
-          //     fontFamily: 'var(--text)',
-          //   },
-          //   '& .MuiOutlinedInput-root': {
-          //     padding: 'var(--space-2)',
-          //     '& fieldset': {
-          //       borderColor: 'var(--color-border)',
-          //     },
-          //     '&:hover fieldset': {
-          //       borderColor: 'var(--color-border-hover)',
-          //     },
-          //     '&.Mui-focused fieldset': {
-          //       borderColor: 'var(--color-border-focus)',
-          //       boxShadow: 'var(--shadow-1)', // Level 1 shadow
-          //     },
-          //   },
-          // },
-          input: {
-            // padding: 'var(--space-1) !important',
-            // fontSize: 'var(--font-size-2)',
-            // lineHeight: 'var(--line-height-2)',
-            // letterSpacing: 'var(--letter-spacing-2)',
-            // fontFamily: 'var(--text)',
-          },
-          // paper: {
-          //   boxShadow: 'var(--shadow-3)', // Level 3 shadow
-          //   borderRadius: 'var(--radius-3)',
-          //   fontFamily: 'var(--text)',
-          // },
-          // option: {
-          //   padding: 'var(--space-2) var(--space-3)',
-          //   fontSize: 'var(--font-size-2)',
-          //   lineHeight: 'var(--line-height-2)',
-          //   letterSpacing: 'var(--letter-spacing-2)',
-          //   fontFamily: 'var(--text)',
-          //   '&[aria-selected="true"]': {
-          //     backgroundColor: 'var(--color-background-selected)',
-          //   },
-          //   '&[data-focus="true"]': {
-          //     backgroundColor: 'var(--color-background-focus)',
-          //   },
-          // },
-          // clearIndicator: {
-          //   color: 'var(--color-icon)',
-          //   '&:hover': {
-          //     color: 'var(--color-icon-hover)',
-          //   },
-          // },
-          // popupIndicator: {
-          //   color: 'var(--color-icon)',
-          //   '&:hover': {
-          //     color: 'var(--color-icon-hover)',
-          //   },
-          // },
-          // endAdornment: {
-          //   right: 'var(--space-1)',
-          // },
-          // groupLabel: {
-          //   backgroundColor: 'var(--neutral-2)',
-          //   padding: 'var(--space-1) var(--space-2)',
-          //   fontFamily: 'var(--text)',
-          // },
         },
       },
       MuiInputAdornment: {
@@ -572,21 +475,41 @@ function Theme({ children }) {
       },
       MuiCheckbox: {
         defaultProps: {
-          disableRipple: true, // No more ripple, on the whole application
+          disableRipple: true,
+          icon: <CheckboxIcon variant='unchecked' size={'16px'} />,
+          checkedIcon: <CheckboxIcon variant='checked' size={'16px'} />,
         },
         styleOverrides: {
-          root: {
-            padding: '0px',
-          },
+          root: ({ size }) => ({
+            padding: 0,
+            width: size,
+            height: size,
+            '& .MuiSvgIcon-root': {
+              borderRadius: '4px',
+            },
+            '&.Mui-disabled': {
+              color: 'rgba(0, 0, 0, 0.38)',
+              '& .MuiSvgIcon-root': {
+                fill: 'rgba(0, 0, 0, 0.38)',
+              },
+            },
+          }),
         },
       },
       MuiRadio: {
         defaultProps: {
-          disableRipple: true, // No more ripple, on the whole application
+          disableRipple: true,
+          icon: <RadioButtonIcon variant='unchecked' />,
+          checkedIcon: <RadioButtonIcon variant='checked' />,
         },
         styleOverrides: {
           root: {
-            padding: 'var(--space-1)',
+            padding: 'var(--space-0)',
+            '&.Mui-disabled': {
+              '& .MuiSvgIcon-root': {
+                fill: '#19130029',
+              },
+            },
           },
         },
       },

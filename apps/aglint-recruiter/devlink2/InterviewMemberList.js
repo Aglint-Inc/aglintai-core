@@ -4,6 +4,7 @@ import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
+import { ModuleMembers } from "./ModuleMembers";
 import * as _utils from "./utils";
 import _styles from "./InterviewMemberList.module.css";
 
@@ -99,10 +100,21 @@ export function InterviewMemberList({
               {...onClickEdit}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "max-width-700")}
+                className={_utils.cx(_styles, "type_description")}
                 tag="div"
               >
-                <Text content={textObjective} weight="" />
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "clamp-three-lines")}
+                  tag="div"
+                  text-align="left"
+                  fontSize="2"
+                  fontWeight=""
+                  font-color="neutral-12"
+                  high-contrast="false"
+                >
+                  {textObjective}
+                </_Builtin.Block>
+                <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A.clamp-three-lines%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20display%3A%20-webkit-box%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20-webkit-box-orient%3A%20vertical%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20-webkit-line-clamp%3A%202%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20overflow%3A%20hidden%3B%0A%20%20%20%20%20%20%20%20%7D%0A%3C%2Fstyle%3E" />
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "edit_flex_margin")}
@@ -121,7 +133,10 @@ export function InterviewMemberList({
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "slot_newtab_pill")}
+          tag="div"
+        >
           {slotNewTabPill ?? <SlotComp componentName="NewTabPill" />}
         </_Builtin.Block>
       </_Builtin.Block>
@@ -129,7 +144,7 @@ export function InterviewMemberList({
         className={_utils.cx(_styles, "im-slot-tab-content")}
         tag="div"
       >
-        {slotModuleContent ?? <SlotComp componentName="ModuleMembers" />}
+        {slotModuleContent ?? <ModuleMembers />}
       </_Builtin.Block>
     </_Component>
   );

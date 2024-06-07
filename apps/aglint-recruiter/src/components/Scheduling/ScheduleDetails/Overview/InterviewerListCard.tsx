@@ -84,7 +84,7 @@ function InterviewerListCard({
                   <MuiAvatar
                     level={fullName}
                     src={item.profile_image}
-                    variant={'rounded-small'}
+                    variant={'circular-medium'}
                   />
                 }
                 textJobTitle={item.department}
@@ -126,7 +126,7 @@ function InterviewerListCard({
             isCorrectVisible={isAccepted}
             isWrongVisible={isDeclined}
             isDetailVisible={true}
-            isDesignationVisible={recruiterUser.user_id !== item.id}
+            isDesignationVisible={true}
             isButtonVisible={false}
             isAcceptDeclineVisibe={recruiterUser.user_id === item.id}
             isAcceptVisible={isAcceptVisible}
@@ -140,9 +140,7 @@ function InterviewerListCard({
               <MuiAvatar
                 level={fullName}
                 src={item.profile_image}
-                variant={'circular'}
-                width={'100%'}
-                height={'100%'}
+                variant={'rounded-medium'}
                 fontSize={'14px'}
               />
             }

@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as Types from "./types";
 
-declare function EmptyGeneral(props: {
+declare function FilterPageLayout(props: {
   as?: React.ElementType;
-  textEmpt?: React.ReactNode;
-  slotButton?: Types.Devlink.Slot;
+  slotFilter?: Types.Devlink.Slot;
+  slotBody?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -7,9 +7,11 @@
 
 .sidedrawer_top_bar {
   display: flex;
-  height: 41px;
+  height: 48px;
   padding: var(--space-2) var(--space-4);
   justify-content: space-between;
+  align-items: center;
+
   border-bottom: 1px solid #e9ebed;
 }
 
@@ -34,15 +36,13 @@
 
 .sidedrawer_body {
   overflow: auto;
-  height: calc(100vh - 90px);
+  height: calc(100vh - 96px);
 }
 
 .sidedrawer_bottom_bar {
   display: flex;
-  height: 49px;
   padding: var(--space-2) var(--space-4);
   justify-content: space-between;
-
   border-top: 1px solid #e9ebed;
   border-bottom: 0px none #e9ebed;
 }
@@ -50,8 +50,8 @@
 .button-pop-wrap {
   display: flex;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .button-pop-wrap.stretch-vertical {
@@ -78,6 +78,7 @@
 .wide_button {
   position: relative;
   z-index: 1;
+  width: 100%;
 }
 
 .wide_button.width-100 {

@@ -7,7 +7,7 @@
 .interview-sub-table-card {
   display: flex;
   width: 100%;
-  height: 93px;
+  height: 70px;
   padding-right: var(--space-4);
   padding-left: var(--space-4);
   justify-content: space-between;
@@ -38,10 +38,18 @@
   cursor: pointer;
 }
 
-.mlc-pic-wrap {
+.avatar_40 {
+  overflow: hidden;
   width: 40px;
   height: 40px;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-2);
+}
+
+.cover_image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .mlc-name {
@@ -169,10 +177,6 @@
   grid-row-gap: var(--space-1);
 }
 
-.mlc-training-complete.hide {
-  display: none;
-}
-
 .accent-link {
   display: flex;
   grid-column-gap: var(--space-1);
@@ -188,8 +192,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  grid-column-gap: var(--space-6);
-  grid-row-gap: var(--space-6);
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
 }
 
 .mlc-interview-count-wrap {
@@ -202,17 +206,14 @@
 
 .mlc-interview-count-block {
   display: flex;
+  width: 130px;
   padding: var(--space-1) var(--space-2);
   flex-direction: column;
   flex-wrap: nowrap;
 
   border-radius: var(--radius-3);
 
-  background-color: var(--neutral-3);
-}
-
-.mlc-interview-count-block.no-width {
-  width: auto;
+  background-color: var(--neutral-2);
 }
 
 .mlc-count-head {
@@ -251,7 +252,7 @@
   z-index: 2;
 
   display: none;
-  width: 180px;
+  width: 200px;
 
   border: 1px solid var(--neutral-6);
   border-radius: var(--radius-4);
@@ -278,7 +279,7 @@
   border-bottom-left-radius: var(--radius-4);
   border-bottom-right-radius: var(--radius-4);
 
-  background-color: var(--orange-3);
+  background-color: var(--accent-2);
 }
 
 .pause-resume-text {
