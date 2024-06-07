@@ -1,23 +1,23 @@
-.div-block-1673 {
+.schedule_reason {
   display: flex;
   height: 49px;
-  padding: 10px 16px;
+  padding: var(--space-2) var(--space-3);
   justify-content: space-between;
   align-items: center;
 
-  border: 1px solid #e9ebed;
-  border-radius: 10px;
+  border: 1px solid var(--neutral-a6);
+  border-radius: var(--radius-2);
 
   transition: box-shadow 250ms ease;
 
   cursor: pointer;
 }
 
-.div-block-1673:hover {
-  box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
+.schedule_reason:hover {
+  background-color: var(--neutral-2);
 }
 
-.div-block-1675 {
+.edit_delete_button {
   display: none;
   justify-content: flex-start;
   align-items: center;
@@ -49,6 +49,10 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .icons {
   display: flex;
   flex-direction: column;
@@ -63,16 +67,6 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
-}
-
-.icons.cursor-pointer.mr-20 {
-  margin-right: 20px;
-  transition-property: none;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
 }
 
 .icons.task-hover {

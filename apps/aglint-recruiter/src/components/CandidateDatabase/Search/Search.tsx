@@ -21,12 +21,12 @@ import {
   useCandidateSearchCtx,
 } from '../../../context/CandidateSearchProvider/CandidateSearchProvider';
 import Loader from '../../Common/Loader';
+import InCompleteLottie from '../../Common/Lotties/CandidateDatabase_IncompleteLottie';
 import MuiAvatar from '../../Common/MuiAvatar';
 import { supabaseWrap } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 import AddToJobOptions from '../Database/CandAddToJobMenu';
 import EmailOutReach from '../Database/EmailOutReach/EmailOutReach';
 import { OutReachCtxProvider } from '../Database/EmailOutReach/OutReachCtx';
-import InCompleteLottie from '../IncompleteLottie';
 import { joinSearchResultWithBookMarkAndJobApplied } from '../utils';
 // import { similarSkills } from '@/src/utils/prompts/candidateDb/similarSkills';
 import SearchFilter from './SearchFilter';
@@ -448,10 +448,7 @@ const CandidateDetailCard = ({
         <MuiAvatar
           level={getFullName(candidate.first_name, candidate.last_name)}
           src={candidate.profile_image}
-          variant={'rounded'}
-          width={'100%'}
-          height={'100%'}
-          fontSize={'12px'}
+          variant={'rounded-small'}
         />
       }
       isChecked={isChecked}

@@ -16,11 +16,12 @@ import converter from 'number-to-words';
 import { useState } from 'react';
 
 import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { InviteTeamCard } from '@/devlink/InviteTeamCard';
 import { TeamInvite } from '@/devlink/TeamInvite';
 import { TeamInvitesBlock } from '@/devlink/TeamInvitesBlock';
 import { TeamPendingInvites } from '@/devlink/TeamPendingInvites';
-import AUIButton from '@/src/components/Common/AUIButton';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -129,10 +130,10 @@ const AddMember = ({
     }
     if (
       !form.email ||
-      form.email.trim() === '' ||
-      form.email.split('@')[1] !== recruiter.email.split('@')[1]
+      form?.email?.trim() === '' ||
+      form?.email?.split('@')[1] !== recruiter?.email?.split('@')[1]
     ) {
-      if (form.email.split('@')[1] !== recruiter.email.split('@')[1]) {
+      if (form?.email?.split('@')[1] !== recruiter?.email?.split('@')[1]) {
         toast.error(`Email domain doesn't match organization.`);
       }
       temp = { ...temp, email: true };
@@ -266,10 +267,7 @@ const AddMember = ({
                         <MuiAvatar
                           // src={data.}
                           level={getFullName(data.first_name, data.last_name)}
-                          variant='circular'
-                          height='50px'
-                          width='50px'
-                          fontSize='16px'
+                          variant='rounded-medium'
                         />
                       }
                     />
@@ -283,8 +281,11 @@ const AddMember = ({
                       value={form.first_name ? form.first_name : ''}
                       name='first_name'
                       placeholder='First Name'
-                      label='First Name'
+                      label='First Name *'
                       error={formError.first_name}
+                      helperText={
+                        formError.first_name ? 'First name must required' : ''
+                      }
                       onFocus={() => {
                         setFormError({ ...formError, first_name: false });
                       }}
@@ -320,8 +321,11 @@ const AddMember = ({
                     value={form.email ? form.email : ''}
                     name='email'
                     placeholder='Email'
-                    label='Email'
+                    label='Email *'
                     error={formError.email}
+                    helperText={
+                      formError.email ? 'Please enter valid email' : ''
+                    }
                     onFocus={() => {
                       setFormError({ ...formError, email: false });
                     }}
@@ -347,8 +351,11 @@ const AddMember = ({
                       value={form.designation ? form.designation : ''}
                       name='title'
                       placeholder='Enter title'
-                      label='Title'
+                      label='Title *'
                       error={formError.designation}
+                      helperText={
+                        formError.designation ? 'Title must required' : ''
+                      }
                       onFocus={() => {
                         setFormError({ ...formError, designation: false });
                       }}
@@ -444,7 +451,12 @@ const AddMember = ({
                           }}
                           name='Department'
                           placeholder='Select Department'
-                          label='Department'
+                          label='Department *'
+                          helperText={
+                            formError.department
+                              ? 'Department is must required'
+                              : ''
+                          }
                         />
                       )}
                     />
@@ -483,8 +495,11 @@ const AddMember = ({
                           {...params}
                           name='Role'
                           placeholder='Choose Role'
-                          label='Role'
+                          label='Role *'
                           error={formError.role}
+                          helperText={
+                            formError.role ? 'Role must required' : ''
+                          }
                           onFocus={() => {
                             setFormError({ ...formError, role: false });
                           }}
@@ -512,11 +527,14 @@ const AddMember = ({
                           {...params}
                           name='manager'
                           placeholder='Select Manager'
-                          label='Manager'
+                          label='Manager *'
                           error={formError.manager}
                           onFocus={() => {
                             setFormError({ ...formError, manager: false });
                           }}
+                          helperText={
+                            formError.manager ? 'Manager must required' : ''
+                          }
                         />
                       )}
                     />
@@ -525,8 +543,32 @@ const AddMember = ({
               }
               slotButtons={
                 <Stack width={'100%'} marginTop={'16px'}>
-                  <AUIButton
-                    disabled={isDisable}
+                  <ButtonSolid
+                    isLeftIcon={false}
+                    isRightIcon={false}
+                    size='2'
+                    isDisabled={
+                      form.email &&
+                      form.first_name &&
+                      form.designation &&
+                      form.department &&
+                      form.role &&
+                      form.manager_id
+                        ? false
+                        : true
+                    }
+                    onClickButton={{
+                      onClick:()=>{
+                          setIsDisable(true);
+                          if (checkValidation()) {
+                            inviteUser();
+                          }
+                      }
+                    }} 
+                    textButton={'Invite'}
+                  />
+                  {/* <AUIButton
+                    disabled=
                     size='medium'
                     onClick={() => {
                       setIsDisable(true);
@@ -536,7 +578,7 @@ const AddMember = ({
                     }}
                   >
                     Invite
-                  </AUIButton>
+                  </AUIButton> */}
                 </Stack>
               }
               onClickClose={{
@@ -570,31 +612,28 @@ const AddMember = ({
                   <MuiAvatar
                     src={member.profile_image}
                     level={getFullName(member.first_name, member.last_name)}
-                    variant='circular'
-                    height='100%'
-                    width='100%'
-                    fontSize='16px'
+                    variant='rounded-small'
                   />
                 }
                 slotButton={
-                  <AUIButton
-                    disabled={isResendDisable === member.user_id}
-                    size='small'
-                    onClick={() => {
-                      setResendDisable(member.user_id);
-                      reinviteUser(member.email, userDetails.user.id).then(
-                        ({ error, emailSend }) => {
-                          setResendDisable(null);
-                          if (!error && emailSend) {
-                            return toast.success('Invite sent successfully.');
-                          }
-                          return toast.error(error);
-                        },
-                      );
-                    }}
-                  >
-                    Resend
-                  </AUIButton>
+                  <ButtonSoft textButton={"Resend"} 
+                    isLeftIcon={false}
+                    isRightIcon={false}
+                    size='2' 
+                    onClickButton={{
+                      onClick: () => {
+                        setResendDisable(member.user_id);
+                        reinviteUser(member.email, userDetails.user.id).then(
+                          ({ error, emailSend }) => {
+                            setResendDisable(null);
+                            if (!error && emailSend) {
+                              return toast.success('Invite sent successfully.');
+                            }
+                            return toast.error(error);
+                          },
+                        );
+                      }}} isDisabled={isResendDisable === member.user_id}></ButtonSoft>
+                  
                 }
               />
             ))}

@@ -47,6 +47,6 @@ export const reschedule = async (req: Request, res: Response) => {
 };
 
 // {
-//     "email": "chandra@aglinthq.com",
+//     "email": "[chandra@aglinthq.com]",
 //     "message":"hi I am slack bot"
 // }

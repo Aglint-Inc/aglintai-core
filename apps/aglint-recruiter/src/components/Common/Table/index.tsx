@@ -34,7 +34,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead
       className='header-row'
-      sx={{ bgcolor: palette.grey[100], borderRadius: '4px' }}
+      sx={{ bgcolor: 'var(--neutral-1)', borderRadius: '4px' }}
     >
       <TableRow>
         <EnhancedCheckBoxCell>
@@ -56,7 +56,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                 visibility: 'false',
                 position: 'absolute',
                 '&.Mui-checked': {
-                  color: palette.blue[600],
+                  color: 'var(--accent-9)',
                 },
                 '& .MuiSvgIcon-root': {
                   fontSize: 14,
@@ -86,7 +86,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                 width='16px'
                 color='#555555'
               />
-              <Typography variant='body2' color={palette.grey[800]}>
+              <Typography variant='body1' color={'var(--neutral-12)'}>
                 {headCell.label}
               </Typography>
             </Stack>
@@ -233,8 +233,8 @@ export const EnhancedCell = ({ children, sx = {} }) => (
   >
     <Typography
       className='one-line-clamp'
-      variant='body2'
-      color={palette.grey[800]}
+      variant='body1'
+      color={'var(--neutral-12)'}
     >
       {children}
     </Typography>

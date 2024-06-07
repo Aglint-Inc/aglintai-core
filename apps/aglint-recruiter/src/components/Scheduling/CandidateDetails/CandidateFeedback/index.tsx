@@ -3,7 +3,6 @@ import { Box, Stack, Typography } from '@mui/material';
 import React from 'react';
 
 import { CandidateFeedback as CandidateFeedbackDev } from '@/devlink3/CandidateFeedback';
-import { palette } from '@/src/context/Theme/Theme';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { setApplicationCandidateFeedback } from '../store';
@@ -46,12 +45,10 @@ const CandidateFeedback = ({
         })()
       ) : (
         <Stack gap={2}>
-          <Typography fontSize={'14px'} color={palette.grey[500]}>
+          <Typography variant='body1'>
             {"Candidate haven't submitted any feedback"}
           </Typography>
-          <Typography
-            fontSize={'14px'}
-            color={palette.blue[500]}
+          <Typography variant='body1'
             sx={{
               cursor: 'pointer',
               textDecoration: 'underline',

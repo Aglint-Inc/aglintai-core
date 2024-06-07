@@ -6,7 +6,7 @@ import { MemberListCard } from '@/devlink2/MemberListCard';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { getFullName } from '@/src/utils/jsonResume';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 
 import { useGetMeetingsByModuleId } from '../../../queries/hooks';
 import { getHours } from '../../../queries/utils';
@@ -79,7 +79,9 @@ function SlotQualifiedMembers({
             onClickCard={{
               onClick: () => {
                 router.push(
-                  `${pageRoutes.SCHEDULINGINTERVIEWER}/${user.user_id}`,
+                  ROUTES['/scheduling/interviewer/[member_id]']({
+                    member_id: user.user_id,
+                  }),
                 );
               },
             }}
@@ -121,10 +123,7 @@ function SlotQualifiedMembers({
               <MuiAvatar
                 src={member.profile_image}
                 level={getFullName(member.first_name, member.last_name) || ''}
-                variant='circular'
-                height='40px'
-                width='40px'
-                fontSize='16px'
+                variant='rounded-medium'
               />
             }
             textName={getFullName(member.first_name, member.last_name) || ''}

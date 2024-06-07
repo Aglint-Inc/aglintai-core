@@ -15,7 +15,7 @@ import { PriorityPill } from '@/devlink3/PriorityPill';
 import { TaskTableCard } from '@/devlink3/TaskTableCard';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import {
   capitalizeAll,
   capitalizeFirstLetter,
@@ -34,12 +34,12 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
   let dueDateTime = dayjs(task.due_date);
   const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
-  ))(({ theme }) => ({
+  ))(() => ({
     [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: theme.palette.common.black,
-      color: 'rgba(255, 255, 255, 0.87)',
-      boxShadow: theme.shadows[1],
-      fontSize: 11,
+      backgroundColor: 'var(--black)',
+      color: 'var(--black-a7)',
+      boxShadow: 'var(--shadow-1)',
+      fontSize: 'var(--font-size-1)',
     },
   }));
   return (
@@ -99,7 +99,7 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
         }
         onClickCard={{
           onClick: () => {
-            route.push(pageRoutes.TASKS + '?task_id=' + task.id);
+            route.push(ROUTES['/tasks']() + '?task_id=' + task.id);
             setTaskId(task.id);
           },
         }}

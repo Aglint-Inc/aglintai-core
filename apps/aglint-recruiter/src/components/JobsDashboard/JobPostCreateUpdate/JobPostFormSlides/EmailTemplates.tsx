@@ -20,7 +20,6 @@ import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import { templateObj } from '@/src/components/CompanyDetailComp/EmailTemplate';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { Job } from '@/src/queries/job/types';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 import toast from '@/src/utils/toast';
@@ -254,7 +253,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
                     sx={{
                       mt: '8px',
                       border: '1px solid',
-                      borderColor: palette.grey[300],
+                      borderColor: 'var(neutral-6)',
                       borderRadius: '4px',
                     }}
                   >
@@ -278,7 +277,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
             slotBottom={
               <Stack
                 sx={{
-                  bgcolor: palette.grey[100],
+                  bgcolor: 'var(--neutral-1)',
                   p: 2,
                   borderRadius: '8px',
                 }}
@@ -369,7 +368,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
                   justifyContent={!openTest ? 'space-between' : 'flex-end'}
                 >
                   {!openTest && (
-                    <Typography variant='body2'>
+                    <Typography variant='body1'>
                       See it in Action: Request a Test Mail Input the name and
                       job title, then use your email to see the feature
                       firsthand.

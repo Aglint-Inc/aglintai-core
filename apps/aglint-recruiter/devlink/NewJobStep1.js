@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -23,7 +24,10 @@ export function NewJobStep1({
       )}
       tag="div"
     >
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-507")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "email-template-left-head")}
+        tag="div"
+      >
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {"Job Details"}
         </_Builtin.Block>

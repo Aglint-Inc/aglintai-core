@@ -23,24 +23,9 @@
   background-color: #f8f9f9;
 }
 
-.time_range_available.fixed_loader {
-  width: 100%;
-}
-
 .relative_2 {
   position: relative;
   z-index: 2;
-}
-
-.text-sm {
-  font-size: 12px;
-  line-height: 1.4;
-}
-
-.relative_2.ehfeiruytfivrtf {
-  z-index: 1;
-  opacity: 0;
-  pointer-events: none;
 }
 
 .default_bg {
@@ -50,7 +35,7 @@
   right: 0%;
   bottom: 0%;
 
-  border: 1px solid #e9ebed;
+  border: 1px dashed #68737d;
   border-radius: 10px;
 }
 
@@ -70,6 +55,26 @@
   border-radius: 10px;
 
   background-color: #edf7ff;
+
+  color: #337fbd;
+}
+
+.semi-active-bg {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  display: flex;
+  padding: 4px 16px;
+  justify-content: center;
+  align-items: center;
+
+  border: 1px dashed #5293c7;
+  border-radius: 10px;
+
+  background-color: white;
 
   color: #337fbd;
 }

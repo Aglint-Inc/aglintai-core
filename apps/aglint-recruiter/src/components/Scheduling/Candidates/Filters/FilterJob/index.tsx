@@ -1,5 +1,5 @@
 import { Popover, Stack, Typography } from '@mui/material';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import { Checkbox } from '@/devlink/Checkbox';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
@@ -7,11 +7,11 @@ import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import { useJobs } from '@/src/context/JobsContext';
 
 import {
+  FilterType,
   setFilter,
   setFilterVisible,
   useFilterCandidateStore,
 } from '../../filter-store';
-import { FilterType } from '../../store';
 
 function FilterJob() {
   const { jobs } = useJobs();
@@ -39,12 +39,6 @@ function FilterJob() {
       setFilter({ job_ids: [...filter.job_ids, job_id] });
     }
   };
-
-  useEffect(() => {
-    return () => {
-      setFilter({ job_ids: [] });
-    };
-  }, []);
 
   const allJobs = useMemo(() => {
     return jobs?.data?.filter((job) => job.status === 'published');

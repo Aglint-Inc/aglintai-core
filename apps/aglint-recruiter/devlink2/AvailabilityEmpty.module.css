@@ -1,0 +1,54 @@
+.div-block-1717 {
+  display: flex;
+  width: 994px;
+  height: 410px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 10px;
+
+  background-color: #f7f9fb;
+}
+
+.text-grey-600 {
+  color: #68737d;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-grey-600.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
+}
+
+@media screen and (max-width: 479px) {
+  .text-grey-600.mob {
+    font-size: 12px;
+  }
+}
+
+.max-width-700 {
+  max-width: 700px;
+}
+
+.text-align-center {
+  text-align: center;
+}

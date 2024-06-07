@@ -4,11 +4,11 @@ import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
-import { SubLinkSubMenu } from '@/devlink2/SubLinkSubMenu';
+import { SublinkSubMenu } from '@/devlink2/SublinkSubMenu';
 import { SublinkTab } from '@/devlink2/SublinkTab';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { featureFlag } from '@/src/utils/Constants';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 // import toast from '@/src/utils/toast';
 
 const tabs: {
@@ -73,7 +73,7 @@ function SubNav() {
                 if (item === 'settings') {
                   if (!router.query.subtab) {
                     router.push(
-                      `${pageRoutes.SCHEDULING}?tab=${item.replace(' ', '')}` +
+                      `${ROUTES['/scheduling']()}?tab=${item.replace(' ', '')}` +
                         (isAllowed(['interviewer'])
                           ? ''
                           : `&subtab=${settingsItems[0].value}`),
@@ -81,7 +81,7 @@ function SubNav() {
                   }
                 } else {
                   router.push(
-                    `${pageRoutes.SCHEDULING}?tab=${item.replace(' ', '')}`,
+                    `${ROUTES['/scheduling']()}?tab=${item.replace(' ', '')}`,
                   );
                 }
               },
@@ -114,15 +114,15 @@ function SettingsSubNabItem({ tab }: { tab: string }) {
     <>
       {settingsItems.map((item, i) => {
         return (
-          <SubLinkSubMenu
+          <SublinkSubMenu
             key={i}
-            textSubMenu={item.label}
+            textLink={item.label}
             isActive={router.query.subtab === item.value}
-            onClickSubMenu={{
+            onClickLink={{
               onClick: (e: any) => {
                 e.stopPropagation();
                 router.push(
-                  `${pageRoutes.SCHEDULING}?tab=${tab.replace(
+                  `${ROUTES['/scheduling']()}?tab=${tab.replace(
                     ' ',
                     '',
                   )}&subtab=${item.value}`,

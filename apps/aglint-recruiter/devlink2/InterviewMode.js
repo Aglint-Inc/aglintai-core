@@ -1,8 +1,8 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { InterviewModePill } from "./InterviewModePill";
 import { SelectedMemberPill } from "./SelectedMemberPill";
-import { InlineEmptyBlock } from "./InlineEmptyBlock";
 import * as _utils from "./utils";
 import _styles from "./InterviewMode.module.css";
 
@@ -11,7 +11,7 @@ export function InterviewMode({
   slotInterviewModePill,
   slotInterviewersAvatarSelectionPill,
   slotInterviewersDropdown,
-  isPanel = true,
+  isPanel = false,
   slotMemberCountDropdown,
   isIndividual = false,
   slotToggle,
@@ -61,7 +61,6 @@ export function InterviewMode({
               <SelectedMemberPill textMemberName="Ogyen Thoga" />
               <SelectedMemberPill textMemberName="Punith G" />
               <SelectedMemberPill textMemberName="Dheeraj Kumar Sah" />
-              <InlineEmptyBlock />
             </>
           )}
         </_Builtin.Block>
@@ -151,7 +150,6 @@ export function InterviewMode({
                       textMemberName="Ravi K"
                       isShadow={true}
                     />
-                    <InlineEmptyBlock textEmptyMessage="No Trainee Selected " />
                   </>
                 )}
               </_Builtin.Block>

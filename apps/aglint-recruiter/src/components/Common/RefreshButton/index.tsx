@@ -2,7 +2,7 @@ import { RefreshButton } from '@/devlink2/RefreshButton';
 
 const RefreshBtn = ({ text, isDisabled, onClick, animatedDisable = true }) => {
   const style = {
-    color: isDisabled ? 'grey' : '#5293c7',
+    color: isDisabled ? 'var(--neutral-3)' : 'var(--neutral-4)',
   };
   return (
     <RefreshButton

@@ -1,5 +1,5 @@
 import { Popover, Stack, Typography } from '@mui/material';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { Checkbox } from '@/devlink/Checkbox';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
@@ -7,11 +7,11 @@ import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 
 import {
+  FilterType,
   setFilter,
   setFilterVisible,
   useFilterCandidateStore,
 } from '../../filter-store';
-import { FilterType } from '../../store';
 
 function FilterInterviewModule() {
   const { allModules } = useSchedulingContext();
@@ -42,12 +42,6 @@ function FilterInterviewModule() {
       setFilter({ module_ids: [...filter.module_ids, panel_id] });
     }
   };
-
-  useEffect(() => {
-    return () => {
-      setFilter({ job_ids: [] });
-    };
-  }, []);
 
   return (
     <>

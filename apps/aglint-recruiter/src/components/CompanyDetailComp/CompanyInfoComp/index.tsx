@@ -76,7 +76,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   const [isError, setError] = useState(false);
   return (
     <Stack
-      sx={{ overflowY: 'auto', height: 'calc(100vh - 60px)' }}
+      // sx={{ overflowY: 'auto', height: 'calc(100vh - 60px)' }}
       width={'100%'}
     >
       <YTransform uniqueKey={router.query.tab}>
@@ -105,22 +105,24 @@ const CompanyInfoComp = ({ setIsSaving }) => {
           <>
             <CompanyInfo
               slotLocation={
-                <Stack p={'4px'}>
+                <>
                   {recruiter?.office_locations &&
                     recruiter?.office_locations.map((loc: any, i) => {
-
                       const location = [loc.city, loc.region, loc.country]
                         .filter(Boolean)
                         .join(', ');
                       const address = [loc.full_address];
                       const timeZone = [loc.timezone];
-                      const isHeadQuaterVisible = [loc.is_headquarter];
+                      const isHeadQuaterVisible = loc?.is_headquarter
+                        ? loc.is_headquarterue
+                        : false;
 
                       return (
                         <>
-                          <Stack p={'4px'}>
+                          <Stack p={'var(--space-1)'}>
                             <CompanyLocation
-                              isHeadQuaterVisible={isHeadQuaterVisible[0]}
+                              // isHeadQuaterVisible={isHeadQuaterVisible[0]}
+                              isHeadQuaterVisible={isHeadQuaterVisible}
                               onClickEdit={{
                                 onClick: () => {
                                   setDialog({
@@ -172,7 +174,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                         </>
                       );
                     })}
-                </Stack>
+                </>
               }
               slotRolesPills={recruiter?.available_roles?.map((rol, ind) => {
                 return (

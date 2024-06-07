@@ -1,0 +1,91 @@
+.conflict_div {
+  display: flex;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.conflict {
+  position: relative;
+
+  display: flex;
+  padding: 4px 10px;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+
+  border-radius: 100px;
+
+  background-color: hsla(0, 40.40%, 68.68%, 1.00);
+}
+
+.conflict.is_outsideworkhours {
+  background-color: #edf7ff;
+  color: #1371d6;
+}
+
+.tooltip_on_bottom {
+  position: relative;
+  cursor: pointer;
+}
+
+.conflict.is_onvacation {
+  background-color: #edf7ff;
+  color: #5eae91;
+}
+
+.conflict.is_hard {
+  background-color: #fff0f1;
+  color: #d93f4c;
+}
+
+.conflict.issoft {
+  background-color: #fff7ed;
+  color: #ed8f1c;
+}
+
+.conflict.is_no {
+  background-color: #f5fcfc;
+  color: #467b7c;
+}
+
+.embed_flex {
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+  cursor: pointer;
+}
+
+.embed_flex.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+.embed_flex.custom_top {
+  margin-top: 2px;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.embed_flex.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.embed_flex.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.embed_flex.fixedd {
+  width: 23px;
+}

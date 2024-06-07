@@ -6,7 +6,7 @@ import { JobsDashboard } from '@/devlink/JobsDashboard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { Job } from '@/src/queries/job/types';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 
 import SubNavBar from '../AppLayout/SubNavbar';
 import Icon from '../Common/Icons/Icon';
@@ -14,6 +14,7 @@ import Loader from '../Common/Loader';
 import UITextField from '../Common/UITextField';
 import { stepObj } from '../SignUpComp/SlideSignup/utils';
 import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
+import FilterJobDashboard, { useJobFilterAndSort } from './Filters';
 import JobsList from './JobsList';
 import { searchJobs, sortJobs } from './utils';
 
@@ -77,6 +78,16 @@ const DashboardComp = () => {
     }
   };
 
+  const {
+    jobs,
+    filterOptions,
+    filterValues,
+    setFilterValues,
+    setSort,
+    sortOptions,
+    sortValue,
+  } = useJobFilterAndSort(filteredJobs);
+
   return (
     <Stack height={'100%'} width={'100%'}>
       {!initialLoad ? (
@@ -86,7 +97,7 @@ const DashboardComp = () => {
           {data?.length == 0 ? (
             <EmptyJobDashboard
               handleClickAddJob={() => {
-                router.push(pageRoutes.CREATEJOB);
+                router.push(ROUTES['/jobs/create']());
               }}
               heading={'Jobs'}
             />
@@ -94,7 +105,17 @@ const DashboardComp = () => {
             <Stack height={'100%'} direction={'row'}>
               <SubNavBar />
               <JobsDashboard
-                slotAllJobs={<JobsList jobs={filteredJobs} />}
+                slotFilters={
+                  <FilterJobDashboard
+                    filterOptions={filterOptions}
+                    filterValues={filterValues}
+                    setFilterValues={setFilterValues}
+                    setSort={setSort}
+                    sortOptions={sortOptions}
+                    sortValue={sortValue}
+                  />
+                }
+                slotAllJobs={<JobsList jobs={jobs} />}
                 slotSearchInputJob={
                   <Stack maxWidth={'260px'} width={'312px'}>
                     <UITextField
@@ -110,13 +131,9 @@ const DashboardComp = () => {
                           </InputAdornment>
                         ),
                       }}
-                      borderRadius={10}
-                      height={42}
                     />
                   </Stack>
                 }
-                // isJobCountTagVisible={filteredJobs?.length > 0}
-                // jobCount={filteredJobs?.length}
                 textJobsHeader={
                   router.query.status == 'published'
                     ? 'Published Jobs'

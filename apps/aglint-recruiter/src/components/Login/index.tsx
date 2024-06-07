@@ -6,12 +6,13 @@ import {
   Typography,
 } from '@mui/material';
 import { IconExclamationCircle } from '@tabler/icons-react';
+import LoaderGrey from 'aglint-recruiter/public/lottie/LoaderGrey';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { RecLoginPage } from '@/devlink2/RecLoginPage';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -24,6 +25,8 @@ interface loginFormInputs {
 
 function Login() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
   // const [errorCheck, setErrorCheck] = useState({
   //   email: {
   //     error: false,
@@ -132,7 +135,7 @@ function Login() {
   //       password: details.password
   //     });
   //     if (!authData.error) {
-  //       router.push(pageRoutes.LOADING);
+  //       //
   //     } else {
   //       setErrorCheck({
   //         ...errorCheck,
@@ -151,8 +154,9 @@ function Login() {
       password: '',
     },
   });
-  const onSubmit: SubmitHandler<loginFormInputs> = (data) => {
-    supabase.auth
+  const onSubmit: SubmitHandler<loginFormInputs> = async (data) => {
+    setIsLoading(true);
+    await supabase.auth
       .signInWithPassword({
         email: data.email,
         password: data.password,
@@ -162,8 +166,9 @@ function Login() {
           // console.log(error);
           setLoginError(error.message);
           toast.error(error.message);
-        } else router.push(pageRoutes.LOADING);
+        } else router.push(ROUTES['/loading']());
       });
+    setIsLoading(false);
   };
   const {
     register,
@@ -213,9 +218,17 @@ function Login() {
   return (
     <>
       <RecLoginPage
+        isLoginButtonDisable={isLoading}
+        textLogin={isLoading ? '' : 'Login'}
+        slotLottie={
+          <Stack width={'100%'}>
+            <LoaderGrey />
+          </Stack>
+        }
+        isLottieVisible={isLoading}
         onclickForgotPassword={{
           onClick: () => {
-            router.push(pageRoutes.FORGOT_PASSWORD);
+            router.push(ROUTES['/forgot-password']());
           },
         }}
         contactLink={{
@@ -228,7 +241,7 @@ function Login() {
         }}
         onclickSignup={{
           onClick: () => {
-            router.push(`${pageRoutes.SIGNUP}`);
+            router.push(`${ROUTES['/signup']()}`);
           },
         }}
         slotForm={
@@ -242,6 +255,11 @@ function Login() {
               onFocus={() => setLoginError(null)}
               error={errors.email && Boolean(errors.email.message)}
               helperText={String(errors?.email?.message || '')}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  if (!isLoading) handleSubmit(onSubmit)();
+                }
+              }}
             />
 
             <TextField
@@ -252,6 +270,11 @@ function Login() {
               onFocus={() => setLoginError(null)}
               error={errors.password && Boolean(errors.password.message)}
               helperText={String(errors?.password?.message || '')}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  if (!isLoading) handleSubmit(onSubmit)();
+                }
+              }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position='end'>
@@ -400,7 +423,9 @@ function Login() {
             /> */}
           </Stack>
         }
-        onclickLogin={{ onClick: handleSubmit(onSubmit) }}
+        onclickLogin={{
+          onClick: handleSubmit(onSubmit),
+        }}
       />
     </>
   );

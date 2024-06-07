@@ -3,7 +3,6 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Attendee } from "./Attendee";
 import { SelectedMemberPill } from "./SelectedMemberPill";
-import { InlineEmptyBlock } from "./InlineEmptyBlock";
 import * as _utils from "./utils";
 import _styles from "./SidedrawerBodyDebrief.module.css";
 
@@ -17,6 +16,7 @@ export function SidedrawerBodyDebrief({
   slotMemberAvatarSelectionPill,
   slotMembersDropdown,
   slotAttendee,
+  isAttendeeVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "sidedrawer_session")} tag="div">
@@ -83,27 +83,32 @@ export function SidedrawerBodyDebrief({
           )}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "input_and_label")}
-        tag="div"
-      >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Attendees"}
-        </_Builtin.Block>
+      {isAttendeeVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "slot_attendee")}
+          className={_utils.cx(_styles, "input_and_label")}
           tag="div"
         >
-          {slotAttendee ?? (
-            <>
-              <Attendee />
-              <Attendee />
-              <Attendee />
-              <Attendee />
-            </>
-          )}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Attendees"}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "slot_attendee")}
+            tag="div"
+          >
+            {slotAttendee ?? (
+              <>
+                <Attendee />
+                <Attendee />
+                <Attendee />
+                <Attendee />
+              </>
+            )}
+          </_Builtin.Block>
         </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
       {isLocation ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "input_and_label")}
@@ -147,7 +152,6 @@ export function SidedrawerBodyDebrief({
               <SelectedMemberPill textMemberName="Ogyen Thoga" />
               <SelectedMemberPill textMemberName="Punith G" />
               <SelectedMemberPill textMemberName="Dheeraj Kumar Sah" />
-              <InlineEmptyBlock textEmptyMessage="No Member Selected " />
             </>
           )}
         </_Builtin.Block>

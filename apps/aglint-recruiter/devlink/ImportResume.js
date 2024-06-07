@@ -1,6 +1,8 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ButtonPrimaryLarge } from "./ButtonPrimaryLarge";
+import { Text } from "./Text";
+import { ButtonOutlined } from "./ButtonOutlined";
 import * as _utils from "./utils";
 import _styles from "./ImportResume.module.css";
 
@@ -21,20 +23,11 @@ export function ImportResume({
           className={_utils.cx(_styles, "ic-text-content")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold", "text-blue-800")}
-            tag="div"
-          >
-            {"Drag and drop candidates resume"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey-600-3", "regular")}
-            tag="div"
-          >
-            {
-              "Resumes should be in PDF/DOCX format and maximum file size of each should be less than 5 MB"
-            }
-          </_Builtin.Block>
+          <Text weight="bold" content="Drag and drop candidates resume" />
+          <Text
+            content="Resumes should be in PDF/DOCX format and maximum file size of each should be less than 5 MB"
+            color="neutral"
+          />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "ic-divider-block")}
@@ -60,7 +53,12 @@ export function ImportResume({
           tag="div"
           {...onClickBrowse}
         >
-          <ButtonPrimaryLarge textLabel="Browse" />
+          <ButtonOutlined
+            size="2"
+            textButton="Browse"
+            isLeftIcon={false}
+            isRightIcon={false}
+          />
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

@@ -7,7 +7,6 @@ import {
   TextFieldProps,
   Typography,
 } from '@mui/material';
-import axios from 'axios';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AddLocationPop } from '@/devlink/AddLocationPop';
@@ -16,7 +15,20 @@ import timeZone from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
 
 import { debouncedSave } from '../../utils';
+import { debounce, geoCodeLocation, handleValidate } from './until';
 
+type initialValueType = {
+  line1: string;
+  line2: string;
+  city: string;
+  region: string;
+  country: string;
+  zipcode: string;
+  is_headquarter: boolean;
+  timezone: string;
+  full_address?: string;
+  location_header?: string;
+};
 interface LocationProps {
   handleClose: () => void;
   open: boolean;
@@ -48,23 +60,15 @@ const AddLocationDialog: React.FC<LocationProps> = ({
   const timezoneRef = useRef<HTMLInputElement>(null);
 
   const [timeValue, setTimeZoneValue] = useState(null);
-
-  type initialValueType = {
-    line1: string;
-    line2: string;
-    city: string;
-    region: string;
-    country: string;
-    zipcode: string;
-    is_headquarter: boolean;
-    timezone: string;
-    full_address?: string;
-    location_header?: string;
-  };
+  const [isRequired, setIsRequired] = useState(false);
 
   const initialValue = (
     edit > -1 ? recruiter.office_locations[edit] : (undefined as any)
   ) as initialValueType;
+
+  const hasHeadquarter = (
+    recruiter.office_locations as initialValueType[]
+  ).some((location) => location.is_headquarter === true);
 
   const [isHeadQ, setHeadQ] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -76,7 +80,13 @@ const AddLocationDialog: React.FC<LocationProps> = ({
     if (!error) {
       setRecruiter((recruiter) => {
         const textLocationHeader = `${cityRef.current.value},${regionRef.current.value},${countryRef.current.value}`;
-        const fullAddress = `${address1Ref.current.value},${address2Ref.current.value},${zipRef.current.value}`;
+        const addressParts = [
+          address1Ref.current.value,
+          address2Ref.current.value,
+          zipRef.current.value,
+        ];
+        const fullAddress = addressParts.filter((part) => part).join(', ');
+
         const newLocation = {
           full_address: fullAddress,
           location_header: textLocationHeader,
@@ -108,111 +118,60 @@ const AddLocationDialog: React.FC<LocationProps> = ({
     setLoading(false);
   };
 
-  const handleValidate = () => {
-    return Object.entries(location).reduce(
-      (acc, [key, curr]) => {
-        let value = curr.value as any;
-        let error = false;
-        switch (curr.validation) {
-          case 'string':
-            {
-              if (curr.required && value.trim().length === 0) {
-                error = true;
-              } else {
-                value = value.trim();
-              }
-            }
-            break;
-          case 'boolean': {
-            if (typeof value !== 'boolean') {
-              error = true;
-            }
-          }
-        }
-        return {
-          newLocation: {
-            ...acc.newLocation,
-            [key]: { ...acc.newLocation[key], value, error },
-          },
-          error: error && !acc.error ? true : acc.error,
-        };
-      },
-      { newLocation: location, error: false },
-    );
-  };
-
   const handleChange = (value: string, key: string) => {
     if (key === 'city') {
       if (value.length > 3) {
         geoCodeLocation(value).then((data) => {
           if (data) {
             const responseData = data as any as Geolocation;
-            regionRef.current.value = responseData.add.region;
-            countryRef.current.value = responseData.add.country;
+            regionRef.current.value = responseData.add?.region;
+            countryRef.current.value = responseData.add?.country;
             if (responseData?.timeZoneId) {
               setTimeZoneValue(
                 timeZone.find((ele) => ele.tzCode === responseData?.timeZoneId)
                   .label,
               );
             }
+            if (
+              cityRef.current.value &&
+              regionRef.current.value &&
+              countryRef.current.value
+            ) {
+              setIsRequired(true);
+            } else {
+              setIsRequired(false);
+            }
           }
         });
       }
     }
   };
-  const geoCodeLocation = async (address: string) => {
-    if (address.length > 3) {
-      const apiKey = 'AIzaSyDO-310g2JDNPmN3miVdhXl2gJtsBRYUrI';
-      let locationData = null;
-      try {
-        locationData = await axios.get(
-          `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`,
-        );
-      } catch (error) {
-        toast.message('Please give proper location');
-      }
-      const result = (locationData as any)?.data?.results[0];
 
-      const add = {
-        region: result?.address_components[3]?.long_name ?? '',
-        country: result?.address_components[4]?.long_name ?? '',
-      };
-      const geo = {
-        lat: result?.geometry.location.lat ?? '',
-        lang: result?.geometry.location.lng ?? '',
-      };
-      let timezone = null;
-      try {
-        timezone = await axios.get(
-          `https://maps.googleapis.com/maps/api/timezone/json?location=${geo.lat},${geo.lang}&timestamp=1331161200&key=${apiKey}`,
-        );
-      } catch (error) {
-        toast.message('Failed to fetch timezone');
-      }
-
-      const timeZoneId = timezone && timezone?.data.timeZoneId;
-      return { add, timeZoneId };
+  const handleSearch = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    key: string,
+  ) => {
+    if (key === 'city') {
+      debouncedSearch(e.target.value);
+    }
+    if (
+      cityRef.current.value &&
+      regionRef.current.value &&
+      countryRef.current.value
+    ) {
+      setIsRequired(true);
+    } else {
+      setIsRequired(false);
     }
   };
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    debouncedSearch(e.target.value);
-  };
   const debouncedSearch = useCallback(
     debounce((text: string) => {
       handleChange(text, 'city');
     }, 500),
     [],
   );
-  function debounce(func: Function, delay: number) {
-    let timeoutId: ReturnType<typeof setTimeout>;
-    return (...args: any[]) => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        func(...args);
-      }, delay);
-    };
-  }
+
   useEffect(() => {
     if (recruiter) {
       setHeadQ(initialValue?.is_headquarter);
@@ -224,18 +183,21 @@ const AddLocationDialog: React.FC<LocationProps> = ({
     <Dialog onClose={handleClose} open={open}>
       <Stack style={{ pointerEvents: loading ? 'none' : 'auto' }}>
         <AddLocationPop
+          isLocationDescVisible={false}
+          isAddDisable={edit === -1 ? !isRequired : false}
           headerText={edit === -1 ? 'Add Location' : 'Edit location'}
+          textButtonLabel={edit === -1 ? 'Add' : 'Save'}
           slotForm={
             <Stack spacing={2}>
               <CustomTextField
                 inputRef={address1Ref}
-                placeholder='Address Line 1'
-                label='Address Line 1'
+                placeholder='123 Example St'
+                label='Street Address'
                 defaultValue={initialValue?.line1}
               />
               <CustomTextField
                 inputRef={address2Ref}
-                placeholder='Address Line 2'
+                placeholder='Suite 456 (Optional)'
                 label='Address Line 2'
                 defaultValue={initialValue?.line2}
               />
@@ -244,17 +206,18 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   sx={{ width: '225px' }}
                   inputRef={cityRef}
                   name='city'
-                  placeholder='Enter City'
-                  label='City'
-                  onChange={handleSearch}
+                  placeholder='San Francisco'
+                  label='City *'
+                  onChange={(e) => handleSearch(e, 'city')}
                   defaultValue={initialValue?.city}
                 />
                 <CustomTextField
                   sx={{ width: '225px' }}
                   inputRef={regionRef}
                   name='region'
-                  placeholder='Enter Region'
-                  label='Region'
+                  placeholder='CA'
+                  label='State/Province/Region *'
+                  onChange={(e) => handleSearch(e, 'region')}
                   defaultValue={initialValue?.region}
                 />
               </Stack>
@@ -264,15 +227,16 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   inputRef={countryRef}
                   required={true}
                   name='country'
+                  onChange={(e) => handleSearch(e, 'country')}
                   // defaultValue={address1Ref.current?.value || ''}
-                  placeholder='Enter Country'
-                  label='Country'
+                  placeholder='Please enter country name'
+                  label='Country *'
                   defaultValue={initialValue?.country}
                 />
                 <CustomTextField
                   sx={{ width: '225px' }}
                   inputRef={zipRef}
-                  placeholder='Zip Code'
+                  placeholder='Please enter the zip code or postal code'
                   label='Zip Code'
                   defaultValue={initialValue?.zipcode}
                 />
@@ -292,8 +256,8 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                     {...params}
                     inputRef={timezoneRef}
                     name='timezone'
-                    placeholder='Asia Calcutta (GMT +05:30)'
-                    label='Timezone is fetched automatically based on entered city.'
+                    placeholder='e.g., America/New_York'
+                    label='Timezone'
                   />
                 )}
               />
@@ -306,10 +270,23 @@ const AddLocationDialog: React.FC<LocationProps> = ({
           }}
           onClickAdd={{
             onClick: () => {
-              handleAddLocation();
+              if (edit === -1) {
+                handleAddLocation();
+              } else {
+                cityRef.current.value &&
+                regionRef.current.value &&
+                countryRef.current.value
+                  ? handleAddLocation()
+                  : toast.message('Please Enter the required fields');
+              }
             },
           }}
-          isChecked={isHeadQ}
+          isCheckboxVisible={
+            hasHeadquarter && initialValue?.is_headquarter
+              ? true
+              : !hasHeadquarter
+          }
+          isChecked={initialValue?.is_headquarter ? true : isHeadQ}
           onClickCheck={{
             onClick: () => {
               setHeadQ(!isHeadQ);

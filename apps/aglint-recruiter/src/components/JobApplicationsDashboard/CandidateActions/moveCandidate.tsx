@@ -15,7 +15,6 @@ import { JobApplicationEmails } from '@/src/pages/api/job/jobApplications/candid
 
 import AUIButton from '../../Common/AUIButton';
 import { TaskStatesProvider } from '../../Tasks/TaskStatesContext';
-// import { pageRoutes } from '@/src/utils/pageRouting';
 import { capitalize } from '../utils';
 import CreateTask, { TaskType } from './CreateTask';
 

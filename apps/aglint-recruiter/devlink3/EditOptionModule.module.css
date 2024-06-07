@@ -19,8 +19,6 @@
   border-radius: 10px;
 
   background-color: white;
-
-  box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
 }
 
 .div-block-1329.static {
@@ -58,6 +56,10 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .icons {
   display: flex;
   flex-direction: column;
@@ -74,9 +76,16 @@
   opacity: 0.8;
 }
 
-.relative_2 {
-  position: relative;
-  z-index: 2;
+.icons.task-hover {
+  position: absolute;
+  left: 50px;
+  top: -10px;
+  right: auto;
+  bottom: auto;
+}
+
+.icons.pointer {
+  cursor: pointer;
 }
 
 .text-red-600 {

@@ -1,10 +1,9 @@
 /* eslint-disable security/detect-object-injection */
-import { EmailTemplateFields } from '@aglint/shared-types';
+import { EmailTemplateFields, EmailTempPath } from '@aglint/shared-types';
 
 import {
   CompanyEmailsTypeDB,
   EmailDynamicParams,
-  EmailTempPath,
 } from '@/src/types/companyEmailTypes';
 
 export class EmailTemplateFiller {

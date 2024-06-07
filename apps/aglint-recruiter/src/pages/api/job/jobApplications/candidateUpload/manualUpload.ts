@@ -94,6 +94,7 @@ const handler = async (
                 job_id,
                 candidate_id,
                 candidate_file_id,
+                'manual_upload',
               )
                 .then((): ManualUploadApi['response'] => ({
                   confirmation: true,

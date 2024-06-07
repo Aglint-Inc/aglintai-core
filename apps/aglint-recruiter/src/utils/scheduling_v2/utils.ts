@@ -83,6 +83,8 @@ export const convertIntToResp = (inters: SessionInterviewerType[]) => {
     interviewer_type: i.interviewer_type,
     interview_module_relation_id: i.interview_module_relation_id,
     user_id: i.user_id,
+    int_tz: i.int_tz,
+    position: i.position,
   }));
 
   return r;

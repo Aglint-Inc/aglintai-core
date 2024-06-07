@@ -55,20 +55,20 @@
   grid-row-gap: 16px;
 }
 
-.link-copy {
+.feedback-link-wrap {
   display: flex;
   justify-content: center;
   align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 
-  color: #337fbd;
+  color: var(--accent-11);
 
   cursor: pointer;
 }
 
-.link-copy.red {
-  color: #d93f4c;
+.feedback-link-wrap.no-color {
+  color: transparent;
 }
 
 .embed_flex {
@@ -100,6 +100,10 @@
 
 .embed_flex.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .embed_flex.fixedd {

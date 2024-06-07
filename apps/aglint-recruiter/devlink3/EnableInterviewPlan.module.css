@@ -13,11 +13,6 @@
   font-weight: 600;
 }
 
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
 .fw-semibold.relative_2 {
   position: relative;
   z-index: 2;
@@ -60,23 +55,9 @@
   color: #d93f4c;
 }
 
-.fw-semibold.plr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
-.plr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
 .text-lg {
   font-size: 18px;
   line-height: 24px;
-}
-
-.fw-semibold.text-yellow-700 {
-  color: #ad5918;
 }
 
 .fw-semibold.p-lr-16 {
@@ -84,28 +65,16 @@
   padding-left: 16px;
 }
 
-.text-grey-500 {
-  color: #87929d;
-}
-
-.text-grey_400 {
-  color: #c2c8cc;
-}
-
 .text-grey_600 {
-  color: #68737d;
-}
-
-.text-grey_600.hide {
-  display: none;
+  color: var(--sand-11);
 }
 
 .hide {
   display: none;
 }
 
-.text-grey_600.text-underline {
-  text-decoration: underline;
+.text-grey_600.hide {
+  display: none;
 }
 
 .text-grey_600.width-80px {
@@ -113,8 +82,14 @@
 }
 
 .text-sm {
-  font-size: 12px;
-  line-height: 16px;
+  font-size: var(--font-size-1);
+  line-height: var(--line-height-1);
+  letter-spacing: var(--letter-spacing-1);
+}
+
+.text-grey_600.text-underline-copy {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .mt-10 {

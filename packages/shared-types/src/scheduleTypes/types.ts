@@ -14,6 +14,7 @@ import {
   InterviewMeetingTypeDb,
 } from '../data.types';
 import { schedulingSettingType } from './scheduleSetting';
+import { CalConflictType, ConflictReason } from './apiResp.types';
 
 export type PauseJson = {
   start_date: string;
@@ -30,6 +31,7 @@ export type SessionInterviewerType = Pick<
   | 'schedule_auth'
   | 'scheduling_settings'
   | 'user_id'
+  | 'position'
 > &
   Pick<
     InterviewerSessionRelation,
@@ -39,6 +41,8 @@ export type SessionInterviewerType = Pick<
     | 'interview_module_relation_id'
   > & {
     pause_json: PauseJson;
+  } & {
+    int_tz: string;
   };
 
 export type InterviewSessionApiType = {
@@ -92,19 +96,38 @@ export type InterviewerMeetingScheduled = {
   meeting_duration: InterviewSession['session_duration'];
   interv_user_id: string;
 };
-
+export type MinCalEventDetailTypes = Pick<
+  CalendarEvent,
+  'id' | 'start' | 'end' | 'organizer' | 'attendees' | 'summary'
+> & {
+  cal_type: CalConflictType;
+};
 export type InterDetailsType = {
   tokens: ScheduleAuthType | null;
   interviewer_id: string;
   email: string;
-  events: CalendarEvent[];
-  freeTimes: InterviewFreeTime[];
+  all_events: CalendarEvent[];
+  cal_date_events: {
+    [cal_date_str: string]: MinCalEventDetailTypes[];
+  };
+  freeTimes: InterDayFreeTime;
+  work_hours: InterDayWorkHr;
   isCalenderConnected: boolean;
   int_schedule_setting: schedulingSettingType;
+  day_off: InterDayHolidayOff;
+  holiday: InterDayHolidayOff;
 };
 
-export type InterviewFreeTime = TimeDurationType & {
-  // priority: number;
+export type InterDayFreeTime = {
+  [curr_date: string]: TimeDurationType[];
+};
+
+export type InterDayWorkHr = {
+  [curr_date: string]: TimeDurationType[];
+};
+
+export type InterDayHolidayOff = {
+  [date: string]: TimeDurationType[];
 };
 
 export type CompServiceKeyCred = {
@@ -155,13 +178,4 @@ export type SessionIntDetails = {
   interviewers: {
     [user_id: string]: SessionInterviewerType;
   };
-};
-
-export type APIOverrideConfig = {
-  holiday: boolean;
-  dayoff: boolean; // sat and sunday
-  out_of_office: boolean;
-  interviewer_pause: boolean;
-  interviewer_load: boolean;
-  calender_not_connected: boolean;
 };

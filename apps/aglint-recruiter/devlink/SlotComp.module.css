@@ -1,0 +1,16 @@
+.slot-comp {
+  display: flex;
+  padding: var(--space-2);
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+
+  border-radius: 3px;
+
+  background-color: #ffefd6;
+}
+
+.component-icon {
+  display: flex;
+}

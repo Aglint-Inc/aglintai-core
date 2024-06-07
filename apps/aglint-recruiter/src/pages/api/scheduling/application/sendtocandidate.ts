@@ -1,17 +1,17 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
-import { RecruiterUserType } from '@aglint/shared-types';
+import { DatabaseTable, RecruiterUserType } from '@aglint/shared-types';
 import { DB } from '@aglint/shared-types';
 import { CookieOptions, createServerClient, serialize } from '@supabase/ssr';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { SchedulingFlow } from '@/src/components/Scheduling/CandidateDetails/SelfSchedulingDrawer/store';
 import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
 import { sendToCandidate } from '@/src/components/Scheduling/CandidateDetails/utils';
 
 export interface ApiBodyParamsSendToCandidate {
   is_mail: boolean;
   is_debrief?: boolean;
-  selected_comb_id: string;
   selectedApplication: SchedulingApplication['selectedApplication'];
   initialSessions: SchedulingApplication['initialSessions'];
   selectedSessionIds: SchedulingApplication['selectedSessionIds'];
@@ -21,9 +21,11 @@ export interface ApiBodyParamsSendToCandidate {
     start_date: string;
     end_date: string;
   };
-  schedulingOptions: SchedulingApplication['schedulingOptions'];
+  selectedSlots?: SchedulingFlow['filteredSchedulingOptions'];
+  selectedDebrief: SchedulingFlow['filteredSchedulingOptions'][number];
   recruiterUser: RecruiterUserType;
   user_tz: string;
+  selectedApplicationLog: DatabaseTable['application_logs'];
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -44,9 +46,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           },
         },
       },
-    );
+    ) as any;
 
-    const resSendToCandidate = await sendToCandidate({ ...req.body, supabase });
+    const bodyParams: ApiBodyParamsSendToCandidate = req.body;
+
+    const resSendToCandidate = await sendToCandidate({
+      dateRange: bodyParams.dateRange,
+      initialSessions: bodyParams.initialSessions,
+      is_mail: bodyParams.is_mail,
+      recruiter_id: bodyParams.recruiter_id,
+      recruiterUser: bodyParams.recruiterUser,
+      selectedDebrief: bodyParams.selectedDebrief,
+      selCoordinator: bodyParams.selCoordinator,
+      selectedApplication: bodyParams.selectedApplication,
+      selectedSessionIds: bodyParams.selectedSessionIds,
+      user_tz: bodyParams.user_tz,
+      supabase: supabase,
+      is_debrief: bodyParams.is_debrief,
+      selectedApplicationLog: bodyParams.selectedApplicationLog,
+      selectedSlots: bodyParams.selectedSlots,
+    });
 
     if (resSendToCandidate) {
       res.status(200).send(true);

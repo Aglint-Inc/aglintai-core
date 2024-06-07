@@ -119,7 +119,7 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
                       alignItems={'center'}
                       spacing={'4px'}
                     >
-                      <Typography variant='body2'>{option}</Typography>
+                      <Typography variant='body1'>{option}</Typography>
                       <Typography variant='caption'>
                         - Add Department
                       </Typography>

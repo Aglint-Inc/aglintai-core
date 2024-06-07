@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { GreenhouseType } from '@aglint/shared-types';
+import { DatabaseTableInsert, GreenhouseType } from '@aglint/shared-types';
 import { DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
@@ -14,10 +14,10 @@ import {
 
 const crypto = require('crypto');
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
-
-const supabase = createClient<DB>(supabaseUrl, supabaseAnonKey);
+const supabase = createClient<DB>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY,
+);
 
 export default async function handler(req, res) {
   const jobId = req.body.job_id;
@@ -188,7 +188,8 @@ export default async function handler(req, res) {
                 job_id: jobId,
                 id: ref.application_id,
                 is_resume_fetching: true,
-              };
+                source: 'greenhouse',
+              } as DatabaseTableInsert['applications'];
             } else {
               return null;
             }

@@ -4,17 +4,17 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { BodyWithSublink } from '@/devlink2/BodyWithSublink';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { EmptyState } from '@/devlink2/EmptyState';
 import { InterviewModuleCard } from '@/devlink2/InterviewModuleCard';
 import { InterviewModuleTable } from '@/devlink2/InterviewModuleTable';
 import { PageLayout } from '@/devlink2/PageLayout';
-import { ButtonPrimaryDefaultRegular } from '@/devlink3/ButtonPrimaryDefaultRegular';
 import { TaskSwitchButton } from '@/devlink3/TaskSwitchButton';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 
 import Icon from '../Common/Icons/Icon';
@@ -42,7 +42,7 @@ function SchedulingMainComp() {
   useEffect(() => {
     if (router.isReady && !router.query.tab) {
       router.push(
-        `${pageRoutes.SCHEDULING}?tab=${'dashboard' as SchedulingTab}`,
+        `${ROUTES['/scheduling']()}?tab=${'dashboard' as SchedulingTab}`,
         undefined,
         {
           shallow: true,
@@ -70,7 +70,7 @@ function SchedulingMainComp() {
                 isLink={true}
                 onClickLink={{
                   onClick: () => {
-                    router.push(`${pageRoutes.SCHEDULING}?tab=dashboard`);
+                    router.push(`${ROUTES['/scheduling']()}?tab=dashboard`);
                   },
                 }}
               />
@@ -106,17 +106,19 @@ function SchedulingMainComp() {
             {tab === 'interviewtypes' &&
               isAllowed(['admin', 'recruiter', 'recruiting_coordinator']) && (
                 <Stack direction={'row'} alignItems={'center'} spacing={2}>
-                  <ButtonPrimaryDefaultRegular
-                    startIconSlot={
+                  <ButtonSolid
+                    isRightIcon={false}
+                    size={2}
+                    slotIcon= {
                       <Icon
                         variant='PlusThin'
-                        height='12'
-                        width='12'
-                        color='#fff'
+                        height='20'
+                        width='20'
+                        color='var(--white)'
                       />
                     }
-                    buttonText={'New Interview Type'}
-                    buttonProps={{
+                    textButton={'New Interview Type'}
+                    onClickButton ={{
                       onClick: () => {
                         setIsCreateDialogOpen(true);
                       },
@@ -131,12 +133,12 @@ function SchedulingMainComp() {
                 isListActive={tab === 'myschedules'}
                 onClickJobCand={{
                   onClick: () => {
-                    router.push(`${pageRoutes.SCHEDULING}?tab=schedules`);
+                    router.push(`${ROUTES['/scheduling']()}?tab=schedules`);
                   },
                 }}
                 onClickList={{
                   onClick: () => {
-                    router.push(`${pageRoutes.SCHEDULING}?tab=myschedules`);
+                    router.push(`${ROUTES['/scheduling']()}?tab=myschedules`);
                   },
                 }}
                 textFirst={'All Schedules'}
@@ -276,8 +278,9 @@ const InterviewerModule = ({
                     onClickCard={{
                       onClick: () => {
                         router.push(
-                          pageRoutes.INTERVIEWMODULE +
-                            `/${mod.interview_modules.id}`,
+                          ROUTES['/scheduling/module/[module_id]']({
+                            module_id: mod.interview_modules.id,
+                          }),
                         );
                       },
                     }}
@@ -286,13 +289,6 @@ const InterviewerModule = ({
                     slotMemberPic={
                       <AvatarGroup
                         total={mod.users.length}
-                        sx={{
-                          '& .MuiAvatar-root': {
-                            width: '26px',
-                            height: '26px',
-                            fontSize: '12px',
-                          },
-                        }}
                       >
                         {mod.users.slice(0, 5).map((user) => {
                           return (
@@ -303,10 +299,7 @@ const InterviewerModule = ({
                                 user.first_name,
                                 user.last_name,
                               )}
-                              variant='circular'
-                              height='26px'
-                              width='26px'
-                              fontSize='12px'
+                              variant='rounded-small'
                             />
                           );
                         })}

@@ -7,7 +7,7 @@ import { InterviewModuleCard } from '@/devlink2/InterviewModuleCard';
 import { InterviewModuleTable } from '@/devlink2/InterviewModuleTable';
 import { ArchivedButton } from '@/devlink3/ArchivedButton';
 import { getFullName } from '@/src/utils/jsonResume';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 
 import Icon from '../../Common/Icons/Icon';
 import Loader from '../../Common/Loader';
@@ -78,8 +78,6 @@ export function Modules() {
                     setTextSearch(e.target.value);
                   }}
                   value={textSearch}
-                  borderRadius={10}
-                  height={42}
                   width={'250px'}
                 />
                 <FilterDepartment />
@@ -103,9 +101,9 @@ export function Modules() {
                           onClickCard={{
                             onClick: () => {
                               router.push(
-                                pageRoutes.INTERVIEWMODULE +
-                                  '/members' +
-                                  `/${mod.interview_modules.id}`,
+                                ROUTES[
+                                  '/scheduling/module/members/[module_id]'
+                                ]({ module_id: mod.interview_modules.id }),
                               );
                             },
                           }}
@@ -114,13 +112,6 @@ export function Modules() {
                           slotMemberPic={
                             <AvatarGroup
                               total={mod.users.length}
-                              sx={{
-                                '& .MuiAvatar-root': {
-                                  width: '26px',
-                                  height: '26px',
-                                  fontSize: '12px',
-                                },
-                              }}
                             >
                               {mod.users.slice(0, 5).map((user) => {
                                 return (
@@ -131,10 +122,7 @@ export function Modules() {
                                       user.first_name,
                                       user.last_name,
                                     )}
-                                    variant='circular'
-                                    height='26px'
-                                    width='26px'
-                                    fontSize='12px'
+                                    variant='rounded-small'
                                   />
                                 );
                               })}

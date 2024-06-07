@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-non-literal-regexp */
 /* eslint-disable security/detect-object-injection */
 
+import { EmailTempPath } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
@@ -9,11 +10,7 @@ import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
-import {
-  CompanyEmailsType,
-  EmailTempPath,
-} from '@/src/types/companyEmailTypes';
+import { CompanyEmailsType } from '@/src/types/companyEmailTypes';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import TipTapAIEditor from '../../../Common/TipTapAIEditor';
@@ -143,7 +140,7 @@ function SchedulingEmailTemplates() {
                             sx={{
                               mt: '8px',
                               border: '1px solid',
-                              borderColor: palette.grey[300],
+                              borderColor: 'var(--neutral-6)',
                               borderRadius: '4px',
                             }}
                           >

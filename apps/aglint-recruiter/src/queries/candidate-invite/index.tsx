@@ -1,7 +1,9 @@
-import { APICandidateConfirmSlot } from '@aglint/shared-types';
+import {
+  APICandidateConfirmSlot,
+  APIVerifyRecruiterSelectedSlots,
+} from '@aglint/shared-types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import dayjs from 'dayjs';
 
 import { useInviteParams } from '@/src/context/CandidateInviteContext/hooks';
 import {
@@ -79,23 +81,22 @@ export type InviteMetaParams = {
 };
 
 export type InviteSlotsParams = {
-  filter_json: ApiResponseCandidateInvite['filter_json'];
-  recruiter: ApiResponseCandidateInvite['recruiter'];
+  filter_json_id: string;
   user_tz: string;
 };
-const getInviteSlots = async ({ filter_json, user_tz }: InviteSlotsParams) => {
+const getInviteSlots = async ({
+  filter_json_id,
+  user_tz,
+}: InviteSlotsParams) => {
   try {
+    const paylod: APIVerifyRecruiterSelectedSlots = {
+      filter_json_id,
+      candidate_tz: user_tz,
+    };
     const resSchOpt = await axios.post(
-      '/api/scheduling/v1/find_slots_date_range',
+      '/api/scheduling/v1/verify-recruiter-selected-slots',
       {
-        session_ids: filter_json.session_ids,
-        recruiter_id: filter_json.recruiter_id,
-        date_range_start:
-          filter_json.start_date > dayjs().format('DD/MM/YYYY')
-            ? filter_json.start_date
-            : dayjs().format('DD/MM/YYYY'),
-        date_range_end: filter_json.end_date,
-        user_tz: user_tz,
+        ...paylod,
       },
     );
     if (resSchOpt.status !== 200) {

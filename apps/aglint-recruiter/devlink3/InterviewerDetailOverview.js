@@ -1,6 +1,9 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
+import { ButtonSurface } from "./ButtonSurface";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./InterviewerDetailOverview.module.css";
 
@@ -25,25 +28,20 @@ export function InterviewerDetailOverview({
           className={_utils.cx(_styles, "div-block-1700")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {textHeader1}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-blue-500", "cursor-pointer")}
-            tag="div"
-            {...onClickViewAllSchedule}
-          >
-            {textButton1}
-          </_Builtin.Block>
+          <Text content={textHeader1} weight="medium" />
+          <ButtonSurface
+            textButton={textButton1}
+            onClickButton={onClickViewAllSchedule}
+            size="1"
+            isLeftIcon={false}
+            isRightIcon={false}
+          />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1702")}
           tag="div"
         >
-          {slotUpcomingSchedule}
+          {slotUpcomingSchedule ?? <SlotComp componentNeme="" />}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
@@ -54,25 +52,20 @@ export function InterviewerDetailOverview({
           className={_utils.cx(_styles, "div-block-1700")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {textHeader2}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-blue-500", "cursor-pointer")}
-            tag="div"
-            {...onClickViewAllModule}
-          >
-            {textButton2}
-          </_Builtin.Block>
+          <Text content={textHeader2} weight="medium" />
+          <ButtonSurface
+            textButton={textButton2}
+            onClickButton={onClickViewAllModule}
+            size="1"
+            isLeftIcon={false}
+            isRightIcon={false}
+          />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1703")}
           tag="div"
         >
-          {slotTrainingModules}
+          {slotTrainingModules ?? <SlotComp componentNeme="Schedules" />}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

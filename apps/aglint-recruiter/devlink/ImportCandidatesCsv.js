@@ -1,6 +1,8 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ButtonPrimaryLarge } from "./ButtonPrimaryLarge";
+import { Text } from "./Text";
+import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./ImportCandidatesCsv.module.css";
 
@@ -22,12 +24,10 @@ export function ImportCandidatesCsv({
           className={_utils.cx(_styles, "ic-text-content", "gap-5")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold", "text-blue-800")}
-            tag="div"
-          >
-            {"Drag and drop CSV file to start importing"}
-          </_Builtin.Block>
+          <Text
+            content="Drag and drop CSV file to start importing"
+            weight="medium"
+          />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "ic-divider-block", "_2")}
@@ -48,13 +48,13 @@ export function ImportCandidatesCsv({
             tag="div"
           />
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "ic-import-button-wrapper")}
-          tag="div"
-          {...onClickBrowse}
-        >
-          <ButtonPrimaryLarge textLabel="Browse" />
-        </_Builtin.Block>
+        <ButtonSolid
+          onClickButton={onClickBrowse}
+          isLeftIcon={false}
+          isRightIcon={false}
+          textButton="Browse"
+          size="2"
+        />
       </_Builtin.Block>
     </_Component>
   );

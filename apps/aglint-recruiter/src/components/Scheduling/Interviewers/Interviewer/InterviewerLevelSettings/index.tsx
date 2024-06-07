@@ -5,6 +5,7 @@ import {
   WeeklyLimitType,
 } from '@aglint/shared-types';
 import {
+  Alert,
   Autocomplete,
   Chip,
   IconButton,
@@ -269,7 +270,7 @@ function InterviewerLevelSettings({
                 renderOption={(props, option) => {
                   return (
                     <li {...props}>
-                      <Typography variant='body2' color={'#000'}>
+                      <Typography variant='body1' color={'var(--neutral-12)'}>
                         {option.label}
                       </Typography>
                     </li>
@@ -460,35 +461,32 @@ function InterviewerLevelSettings({
                     type='string'
                   />
                 }
-                slotSuggestPill={freeKeyWords.map((item) => {
-                  return (
+                slotSuggestPill={
+                  freeKeyWords.length === 0 ? (
+                    <Alert severity='info'>
+                      <Typography>No free keywords added.</Typography>
+                    </Alert>
+                  ) : (
                     <>
-                      <Chip
-                        clickable
-                        onDelete={() => {
-                          setFreeKeywords((pre) => {
-                            return pre.filter((ele) => ele !== item);
-                          });
-                        }}
-                        sx={{
-                          p: '5px',
-                        }}
-                        deleteIcon={
-                          <IconButton>
-                            <Icon
-                              width='14'
-                              height='14'
-                              color='grey'
-                              variant='CloseThinIcon'
-                            />
-                          </IconButton>
-                        }
-                        label={item}
-                      />
+                      {freeKeyWords.map((item) => (
+                        <Chip
+                          key={item} // Add a unique key prop for each item
+                          clickable
+                          onDelete={() => {
+                            setFreeKeywords((prev) => prev.filter((ele) => ele !== item));
+                          }}
+                          deleteIcon={
+                            <IconButton>
+                              <Icon variant='CloseThinIcon' />
+                            </IconButton>
+                          }
+                          label={item}
+                        />
+                      ))}
                     </>
-                  );
-                })}
-              />
+                  )
+                }
+              />                
               <KeywordCard
                 textTitle={'Soft Conflicts'}
                 textWarning={
@@ -511,34 +509,31 @@ function InterviewerLevelSettings({
                     type='string'
                   />
                 }
-                slotSuggestPill={softConflictsKeyWords.map((item) => {
-                  return (
+                slotSuggestPill={
+                  softConflictsKeyWords.length === 0 ? (
+                    <Alert severity='info' icon={false}>
+                      <Typography>No soft conflict keyword added.</Typography>
+                    </Alert>
+                  ) : (
                     <>
-                      <Chip
-                        clickable
-                        onDelete={() => {
-                          setSoftConflictsKeyWords((pre) => {
-                            return pre.filter((ele) => ele !== item);
-                          });
-                        }}
-                        sx={{
-                          p: '5px',
-                        }}
-                        deleteIcon={
-                          <IconButton>
-                            <Icon
-                              width='14'
-                              height='14'
-                              color='grey'
-                              variant='CloseThinIcon'
-                            />
-                          </IconButton>
-                        }
-                        label={item}
-                      />
+                      {softConflictsKeyWords.map((item) => (
+                        <Chip
+                          key={item} // Add a unique key prop for each item
+                          clickable
+                          onDelete={() => {
+                            setSoftConflictsKeyWords((prev) => prev.filter((ele) => ele !== item));
+                          }}
+                          deleteIcon={
+                            <IconButton>
+                              <Icon variant='CloseThinIcon' />
+                            </IconButton>
+                          }
+                          label={item}
+                        />
+                      ))}
                     </>
-                  );
-                })}
+                  )
+                }
               />
               <KeywordCard
                 textTitle={'Out of Office'}
@@ -565,34 +560,31 @@ function InterviewerLevelSettings({
                     type='string'
                   />
                 }
-                slotSuggestPill={outOfOffice.map((item) => {
-                  return (
+                slotSuggestPill={
+                  outOfOffice.length === 0 ? (
+                    <Alert severity='info' icon={false}>
+                      <Typography>No out of office keywords added.</Typography>
+                    </Alert>
+                  ) : (
                     <>
-                      <Chip
-                        clickable
-                        onDelete={() => {
-                          setOutOfOffice((pre) => {
-                            return pre.filter((ele) => ele !== item);
-                          });
-                        }}
-                        sx={{
-                          p: '5px',
-                        }}
-                        deleteIcon={
-                          <IconButton>
-                            <Icon
-                              width='14'
-                              height='14'
-                              color='grey'
-                              variant='CloseThinIcon'
-                            />
-                          </IconButton>
-                        }
-                        label={item}
-                      />
+                      {outOfOffice.map((item) => (
+                        <Chip
+                          key={item} // Add a unique key prop for each item
+                          clickable
+                          onDelete={() => {
+                            setOutOfOffice((prev) => prev.filter((ele) => ele !== item));
+                          }}
+                          deleteIcon={
+                            <IconButton>
+                              <Icon variant='CloseThinIcon' />
+                            </IconButton>
+                          }
+                          label={item}
+                        />
+                      ))}
                     </>
-                  );
-                })}
+                  )
+                }
               />
               <KeywordCard
                 textTitle={'Recruiting Blocks'}
@@ -619,34 +611,31 @@ function InterviewerLevelSettings({
                     type='string'
                   />
                 }
-                slotSuggestPill={recruitingBlocks.map((item) => {
-                  return (
+                slotSuggestPill={
+                  recruitingBlocks.length === 0 ? (
+                    <Alert severity='info' variant='outlined' icon={false}>
+                      <Typography>No recruiting blocks added.</Typography>
+                    </Alert>
+                  ) : (
                     <>
-                      <Chip
-                        clickable
-                        onDelete={() => {
-                          setRecruitingBlocks((pre) => {
-                            return pre.filter((ele) => ele !== item);
-                          });
-                        }}
-                        sx={{
-                          p: '5px',
-                        }}
-                        deleteIcon={
-                          <IconButton>
-                            <Icon
-                              width='14'
-                              height='14'
-                              color='grey'
-                              variant='CloseThinIcon'
-                            />
-                          </IconButton>
-                        }
-                        label={item}
-                      />
+                      {recruitingBlocks.map((item) => (
+                        <Chip
+                          key={item} // Add a unique key prop for each item
+                          clickable
+                          onDelete={() => {
+                            setRecruitingBlocks((prev) => prev.filter((ele) => ele !== item));
+                          }}
+                          deleteIcon={
+                            <IconButton>
+                              <Icon variant='CloseThinIcon' />
+                            </IconButton>
+                          }
+                          label={item}
+                        />
+                      ))}
                     </>
-                  );
-                })}
+                  )
+                }
               />
             </>
           }

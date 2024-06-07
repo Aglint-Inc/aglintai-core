@@ -38,11 +38,6 @@
   font-weight: 600;
 }
 
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
 .fw-semibold.relative_2 {
   position: relative;
   z-index: 2;
@@ -85,9 +80,22 @@
   color: #d93f4c;
 }
 
-.fw-semibold.plr-16 {
+.text-lg {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.fw-semibold.p-lr-16 {
   padding-right: 16px;
   padding-left: 16px;
+}
+
+.text-grey_600 {
+  color: var(--sand-11);
+}
+
+.hide {
+  display: none;
 }
 
 .interview_module_duration {
@@ -106,10 +114,6 @@
   display: none;
 }
 
-.hide {
-  display: none;
-}
-
 .embed_flex.custom_top {
   margin-top: 2px;
 }
@@ -121,6 +125,10 @@
 
 .embed_flex.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .embed_flex.fixedd {
@@ -153,6 +161,18 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.icons.task-hover {
+  position: absolute;
+  left: 50px;
+  top: -10px;
+  right: auto;
+  bottom: auto;
+}
+
+.icons.pointer {
+  cursor: pointer;
 }
 
 .sloteditoptions {

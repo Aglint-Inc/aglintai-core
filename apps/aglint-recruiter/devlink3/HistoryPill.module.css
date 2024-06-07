@@ -39,14 +39,8 @@
   opacity: 0.8;
 }
 
-.icons.cursor-pointer.mr-20 {
-  margin-right: 20px;
-  transition-property: none;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .icons.task-hover {
@@ -55,6 +49,10 @@
   top: -10px;
   right: auto;
   bottom: auto;
+}
+
+.icons.pointer {
+  cursor: pointer;
 }
 
 .slot-training-card {

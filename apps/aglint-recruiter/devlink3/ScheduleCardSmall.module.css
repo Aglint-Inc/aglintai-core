@@ -26,12 +26,13 @@
 }
 
 .text-sm {
-  font-size: 12px;
-  line-height: 16px;
+  font-size: var(--font-size-1);
+  line-height: var(--line-height-1);
+  letter-spacing: var(--letter-spacing-1);
 }
 
 .text-sm.color-grey-600 {
-  color: #68737d;
+  color: var(--sand-11);
 }
 
 .color-grey-600 {
@@ -46,45 +47,20 @@
   text-transform: uppercase;
 }
 
-.text-grey_400 {
-  color: #c2c8cc;
-}
-
 .text-grey_600 {
-  color: #68737d;
-}
-
-.text-sm.text-grey_600.text-underline.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.text-sm.text-grey_600.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
+  color: var(--sand-11);
 }
 
 .text-blue-500 {
   color: #337fbd;
 }
 
-.text-sm.badge {
-  color: #228f67;
+.text-underline {
+  text-decoration: underline;
 }
 
-.text-sm.done {
-  color: #228f67;
-}
-
-.text-sm.in-progress {
-  color: #337fbd;
-}
-
-.text-sm.progress {
-  color: #68737d;
-}
-
-.text-sm.justnow-text {
-  color: rgba(28, 28, 28, 0.4);
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .text-sm.text-underline {
@@ -102,6 +78,16 @@
 
 .text-sm.text-underline.text-grey-600.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.text-sm.text-underline.text-blue-500.view-req {
+  position: absolute;
+  left: auto;
+  top: 10px;
+  right: 16px;
+  bottom: auto;
+
+  cursor: pointer;
 }
 
 .relative-1 {
@@ -168,23 +154,9 @@
   color: #d93f4c;
 }
 
-.fw-semibold.plr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
-.plr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
 .text-lg {
   font-size: 18px;
   line-height: 24px;
-}
-
-.fw-semibold.text-yellow-700 {
-  color: #ad5918;
 }
 
 .fw-semibold.p-lr-16 {
@@ -192,8 +164,8 @@
   padding-left: 16px;
 }
 
-.text-grey-500 {
-  color: #87929d;
+.hide {
+  display: none;
 }
 
 .timer_flex {
@@ -214,10 +186,6 @@
   grid-row-gap: 4px;
 }
 
-.hide {
-  display: none;
-}
-
 .icons {
   display: flex;
   flex-direction: column;
@@ -234,15 +202,14 @@
   opacity: 0.8;
 }
 
-.icons.cursor-pointer.mr-20 {
-  margin-right: 20px;
-  transition-property: none;
-}
-
 .icons.task-hover {
   position: absolute;
   left: 50px;
   top: -10px;
   right: auto;
   bottom: auto;
+}
+
+.icons.pointer {
+  cursor: pointer;
 }

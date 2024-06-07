@@ -23,9 +23,8 @@
   opacity: 0.8;
 }
 
-.relative_2 {
-  position: relative;
-  z-index: 2;
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .icons.task-hover {
@@ -36,10 +35,10 @@
   bottom: auto;
 }
 
-.text-yellow-800 {
-  color: #703815;
+.icons.pointer {
+  cursor: pointer;
 }
 
-.fw-semibold {
-  font-weight: 600;
+.text-yellow-800 {
+  color: var(--warning-11);
 }

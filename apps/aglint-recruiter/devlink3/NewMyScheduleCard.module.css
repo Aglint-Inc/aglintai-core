@@ -1,8 +1,8 @@
-.div-block-1400 {
+.newinterviewplancard {
   position: relative;
 }
 
-.div-block-1400.my-schedule {
+.newinterviewplancard.my-schedule {
   padding: 16px 16px 16px 0px;
 }
 
@@ -95,19 +95,15 @@
   line-height: 32px;
 }
 
-.fw-semibold {
-  font-weight: 600;
-}
-
-.text-40.fw-semibold.text-kale-600 {
-  color: #17494d;
-}
-
 .text-blue-500 {
   color: #337fbd;
 }
 
 .text-blue-500.text-underline {
+  text-decoration: underline;
+}
+
+.text-underline {
   text-decoration: underline;
 }
 
@@ -120,9 +116,14 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .text-sm {
-  font-size: 12px;
-  line-height: 16px;
+  font-size: var(--font-size-1);
+  line-height: var(--line-height-1);
+  letter-spacing: var(--letter-spacing-1);
 }
 
 .text-blue-500.cursor-pointer {
@@ -136,6 +137,10 @@
 
 .text-blue-500.text-capital {
   text-transform: uppercase;
+}
+
+.fw-semibold {
+  font-weight: 600;
 }
 
 .icons {
@@ -152,16 +157,6 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
-}
-
-.icons.cursor-pointer.mr-20 {
-  margin-right: 20px;
-  transition-property: none;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
 }
 
 .icons.task-hover {

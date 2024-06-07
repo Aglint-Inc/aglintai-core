@@ -1,7 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
-import { AllCandidateListItem } from "./AllCandidateListItem";
 import * as _utils from "./utils";
 import _styles from "./AllApplicantsTable.module.css";
 
@@ -239,7 +239,7 @@ export function AllApplicantsTable({
           className={_utils.cx(_styles, "cv-list-body")}
           tag="div"
         >
-          {slotCandidatesList ?? <AllCandidateListItem />}
+          {slotCandidatesList}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

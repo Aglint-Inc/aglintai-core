@@ -25,8 +25,6 @@ function FilterSearchField() {
         onChange={(e) => {
           setFilter({ textSearch: e.target.value });
         }}
-        borderRadius={10}
-        height={42}
         width='250px'
       />
     </>

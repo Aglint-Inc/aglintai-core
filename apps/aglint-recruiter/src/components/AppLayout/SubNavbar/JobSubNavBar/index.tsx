@@ -16,7 +16,7 @@ import {
   STATE_LEVER_DIALOG,
 } from '@/src/context/IntegrationProvider/utils';
 import { useJobs } from '@/src/context/JobsContext';
-import { pageRoutes, pages } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 
 function JobSubNavbar() {
   const router = useRouter();
@@ -34,16 +34,16 @@ function JobSubNavbar() {
       <AddJob />
       <NavJobSubLink
         onClickJobAll={{
-          onClick: () => router.push(`${pageRoutes.JOBS}?status=all`),
+          onClick: () => router.push(`${ROUTES['/jobs']()}?status=all`),
         }}
         onClickJobActive={{
-          onClick: () => router.push(`${pageRoutes.JOBS}?status=published`),
+          onClick: () => router.push(`${ROUTES['/jobs']()}?status=published`),
         }}
         onClickJobInactive={{
-          onClick: () => router.push(`${pageRoutes.JOBS}?status=draft`),
+          onClick: () => router.push(`${ROUTES['/jobs']()}?status=draft`),
         }}
         onClickJobClosed={{
-          onClick: () => router.push(`${pageRoutes.JOBS}?status=closed`),
+          onClick: () => router.push(`${ROUTES['/jobs']()}?status=closed`),
         }}
         isJobAll={router.query.status === 'all'}
         activeCount={
@@ -97,9 +97,8 @@ function AddJob() {
           paper: {
             style: {
               border: 'none',
-              borderRadius: '10px',
               overflow: 'visible !important',
-              background: 'transparent',
+              boxShadow: 'none',
             },
           },
         }}
@@ -117,7 +116,7 @@ function AddJob() {
           }
           onClickLinktoIntegration={{
             onClick: () => {
-              router.push(pages['/intergrations']());
+              router.push(ROUTES['/integrations']());
             },
           }}
           onClickAshby={{
@@ -164,7 +163,7 @@ function AddJob() {
           }}
           onClickCreateNewJob={{
             onClick: () => {
-              router.push(pageRoutes.CREATEJOB);
+              router.push(ROUTES['/jobs/create']());
             },
           }}
           onClickLeverImport={{

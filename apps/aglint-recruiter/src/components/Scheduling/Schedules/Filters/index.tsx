@@ -202,8 +202,6 @@ function Filters() {
             setFilterSchedule(allSchedules);
           }
         }}
-        borderRadius={10}
-        height={42}
       />
       {selectedFilters.map((filterType, i) => {
         let itemList: { label: string; id: string }[] =

@@ -60,7 +60,7 @@ function TableHeader() {
             spacing={'5px'}
           >
             {icon}
-            <Typography variant='body2'>{heading}</Typography>
+            <Typography variant='body1'>{heading}</Typography>
           </Stack>
         );
       })}
@@ -95,26 +95,23 @@ function TableRow({ name, email, phone, profile_image, index }) {
         spacing={'5px'}
       >
         <MuiAvatar
-          width={'20px'}
-          height={'20px'}
           src={profile_image}
-          fontSize={'12px'}
           level={name}
-          variant={'circular'}
+          variant={'rounded-small'}
         />
-        <Typography variant='body2' className='one-line-clamp'>
+        <Typography variant='body1' className='one-line-clamp'>
           {name}
         </Typography>
       </Stack>
       <Typography
-        variant='body2'
+        variant='body1'
         className='one-line-clamp'
         width={`${100 / 3}%`}
       >
         {email}
       </Typography>
       <Typography
-        variant='body2'
+        variant='body1'
         className='one-line-clamp'
         width={`${100 / 3}%`}
         pl={'10px'}

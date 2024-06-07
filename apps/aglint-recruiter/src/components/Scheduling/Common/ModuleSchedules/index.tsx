@@ -44,55 +44,57 @@ function ModuleSchedules({
   };
 
   return (
-    <InterviewMemberSide
-      slotInterview={
-        <Stack>
-          <UITextField
-            width='400px'
-            value={changeText}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position='end'>
-                  <Icon variant='JobSearch' height='14' />
-                </InputAdornment>
-              ),
-            }}
-            placeholder={'Search by session name'}
-            onChange={(e) => {
-              setChangeText(e.target.value);
-            }}
-            borderRadius={10}
-            height={42}
-          />
-        </Stack>
-      }
-      isUpcomingActive={filter === 'confirmed'}
-      isCancelActive={filter === 'cancelled'}
-      isCompletedActive={filter === 'completed'}
-      onClickUpcoming={{
-        onClick: () => setFilter('confirmed'),
-      }}
-      onClickCancelled={{
-        onClick: () => setFilter('cancelled'),
-      }}
-      onClickCompleted={{
-        onClick: () => setFilter('completed'),
-      }}
-      slotInterviewCard={
-        <ShowCode>
-          <ShowCode.When
-            isTrue={isFetched && newFilterSchedules()?.length === 0}
-          >
-            <AllInterviewEmpty textDynamic='No schedule found' />
-          </ShowCode.When>
-          <ShowCode.When isTrue={isFetched}>
-            <Stack height={'calc(100vh - 154px)'}>
-              <ScheduleMeetingList filterSchedules={newFilterSchedules()} />
-            </Stack>
-          </ShowCode.When>
-        </ShowCode>
-      }
-    />
+    isFetched && newFilterSchedules()?.length === 0 ? (
+      <AllInterviewEmpty textDynamic='No schedule found' />
+    ) : (
+      <InterviewMemberSide
+        slotInterview={
+          <Stack>
+            <UITextField
+              width='400px'
+              value={changeText}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <Icon variant='JobSearch' height='14' />
+                  </InputAdornment>
+                ),
+              }}
+              placeholder={'Search by session name'}
+              onChange={(e) => {
+                setChangeText(e.target.value);
+              }}
+            />
+          </Stack>
+        }
+        isUpcomingActive={filter === 'confirmed'}
+        isCancelActive={filter === 'cancelled'}
+        isCompletedActive={filter === 'completed'}
+        onClickUpcoming={{
+          onClick: () => setFilter('confirmed'),
+        }}
+        onClickCancelled={{
+          onClick: () => setFilter('cancelled'),
+        }}
+        onClickCompleted={{
+          onClick: () => setFilter('completed'),
+        }}
+        slotInterviewCard={
+          <ShowCode>
+            <ShowCode.When
+              isTrue={isFetched && newFilterSchedules()?.length === 0}
+            >
+              <AllInterviewEmpty textDynamic='No schedule found' />
+            </ShowCode.When>
+            <ShowCode.When isTrue={isFetched}>
+              <Stack height={'calc(100vh - 154px)'}>
+                <ScheduleMeetingList filterSchedules={newFilterSchedules()} />
+              </Stack>
+            </ShowCode.When>
+          </ShowCode>
+        }
+      />
+    )
   );
 }
 

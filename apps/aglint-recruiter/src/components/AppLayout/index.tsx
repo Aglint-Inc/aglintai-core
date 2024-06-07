@@ -1,22 +1,22 @@
 //import ResizeWindowContext from '@context/resizeWindow/context';
 import { Avatar, Drawer, LinearProgress, Stack } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { pageRoutes } from '@utils/pageRouting';
 import { LottieComponentProps } from 'lottie-react';
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { NavBottom } from '@/devlink/NavBottom';
 import { CompanyProfileHeader } from '@/devlink2/CompanyProfileHeader';
 import { NavProfileBlock } from '@/devlink2/NavProfileBlock';
 import { ResponsiveBanner } from '@/devlink2/ResponsiveBanner';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import ResizeWindowContext from '@/src/context/ResizeWindow/context';
+import { useResizeWindow } from '@/src/context/ResizeWindow/ResizeWindow';
+import ROUTES from '@/src/utils/routing/routes';
 
 import Icon from '../Common/Icons/Icon';
+import MenuLottie from '../Common/Lotties/MenuLottie';
 import { isEnvProd } from '../JobsDashboard/JobPostCreateUpdate/utils';
 import CompanyList from './CompanyList';
-import MenuLottie from './MenuLottie';
 import SideNavbar from './SideNavbar';
 
 export default function AppLayout({ children }) {
@@ -25,7 +25,7 @@ export default function AppLayout({ children }) {
   const { recruiter, recruiterUser, userDetails } = useAuthDetails();
   const queryClient = useQueryClient();
   const router = useRouter();
-  const { windowSize } = useContext(ResizeWindowContext);
+  const { windowSize } = useResizeWindow();
   const [expand, setExpand] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(false);
   const companyName = recruiter?.name;
@@ -41,12 +41,11 @@ export default function AppLayout({ children }) {
   useEffect(() => {
     if (process.env.NODE_ENV === 'production' && windowSize.innerWidth > 991) {
       if (
-        router.pathname === pageRoutes.JOBS ||
-        router.pathname === pageRoutes.COMPANY ||
-        router.pathname === pageRoutes.CANDIDATES ||
-        router.pathname === pageRoutes.NOTIFICATIONS ||
-        router.pathname === pageRoutes.SETTINGS ||
-        router.pathname === pageRoutes.PROFILE
+        router.pathname === ROUTES['/jobs']() ||
+        router.pathname === ROUTES['/company']() ||
+        router.pathname === ROUTES['/candidates/history']() ||
+        router.pathname === ROUTES['/notifications']() ||
+        router.pathname === ROUTES['/profile']()
       ) {
         setExpand(true);
       } else {
@@ -58,15 +57,15 @@ export default function AppLayout({ children }) {
   }, []);
 
   useEffect(() => {
-    if (windowSize.innerWidth < 991) {
+    if (windowSize?.innerWidth < 991) {
       const status = router.query.status;
       if (status) {
         setExpand(false);
       }
       if (
-        router.pathname === pageRoutes.CANDIDATES ||
-        router.pathname === pageRoutes.NOTIFICATIONS ||
-        router.pathname === pageRoutes.COMPANY
+        router.pathname === ROUTES['/candidates/history']() ||
+        router.pathname === ROUTES['/notifications']() ||
+        router.pathname === ROUTES['/company']()
       ) {
         setExpand(false);
       }
@@ -137,7 +136,7 @@ export default function AppLayout({ children }) {
             </Stack>
             <NavBottom
               onClickProfile={{
-                onClick: () => router.push(pageRoutes.PROFILE),
+                onClick: () => router.push(ROUTES['/profile']()),
               }}
               onClickLogout={{
                 onClick: () => {
@@ -230,7 +229,7 @@ export default function AppLayout({ children }) {
             >
               <CompanyProfileHeader
                 onclickCompany={{
-                  onClick: () => router.push(pageRoutes.COMPANY),
+                  onClick: () => router.push(ROUTES['/company']()),
                 }}
                 companyName={companyName}
                 slotLogo={
@@ -278,7 +277,7 @@ export default function AppLayout({ children }) {
               </Stack>
               <NavProfileBlock
                 onclickProfile={{
-                  onClick: () => router.push(pageRoutes.PROFILE),
+                  onClick: () => router.push(ROUTES['/profile']()),
                 }}
                 onclickLogout={{
                   onClick: () => {

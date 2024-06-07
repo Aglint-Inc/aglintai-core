@@ -1,12 +1,13 @@
 import { Stack } from '@mui/material';
 
 import { InterviewCompleted } from '@/devlink/InterviewCompleted';
+import Loader from '@/src/components/Common/Loader';
+import CompleteLottie from '@/src/components/Common/Lotties/CompletedLottie';
+import InCompleteLottie from '@/src/components/Common/Lotties/IncompleteLottie';
 import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
 
-import Loader from '../../Common/Loader';
+// import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
-import CompleteLottie from './CompletedLottie';
-import InCompleteLottie from './IncompleteLottie';
 
 function InterviewThanks() {
   const { jobDetails, candidateDetails, initialLoading } =
@@ -39,8 +40,7 @@ function InterviewThanks() {
           slotCompanyLogo={
             jobDetails?.logo ? (
               <MuiAvatar
-                width={'60px'}
-                height={'60px'}
+                variant='rounded-medium'
                 src={jobDetails?.logo}
               />
             ) : null

@@ -17,7 +17,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { FilterType } from '../../../Candidates/store';
+import { FilterType } from '../../../Candidates/filter-store';
 import { setCreatedBy, useFilterModuleStore } from '../../filter-store';
 
 type UserType = {
@@ -185,10 +185,7 @@ function FilterCreatedBy() {
                       <MuiAvatar
                         src={item.profile_image}
                         level={getFullName(item.first_name, item.last_name)}
-                        variant='circular'
-                        height='20px'
-                        width='20px'
-                        fontSize='10px'
+                        variant='rounded-small'
                       />
                       <Typography variant='body1'>
                         {capitalize(item.first_name)}
@@ -223,10 +220,7 @@ function FilterCreatedBy() {
                     <MuiAvatar
                       src={item.profile_image}
                       level={getFullName(item.first_name, item.last_name)}
-                      variant='circular'
-                      height='20px'
-                      width='20px'
-                      fontSize='10px'
+                      variant='rounded-small'
                     />
                     <Typography variant='body1'>
                       {capitalize(item.first_name)}

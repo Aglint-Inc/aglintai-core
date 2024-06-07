@@ -1,16 +1,18 @@
-.div-block-1338 {
+.create-task {
   position: relative;
 
   display: flex;
   width: 600px;
   height: 100vh;
-  padding: 0px;
+  padding: var(--space-4);
   flex-direction: column;
   justify-content: flex-start;
   flex-wrap: nowrap;
+
+  background-color: var(--white);
 }
 
-.div-block-1339 {
+.dtawer-tittle {
   display: flex;
   height: 62px;
   padding-top: 16px;
@@ -18,7 +20,7 @@
   align-items: center;
 }
 
-.div-block-1339.plr-16 {
+.dtawer-tittle.plr-16 {
   padding-right: 16px;
   padding-bottom: 8px;
   padding-left: 16px;
@@ -33,16 +35,17 @@
   color: #68737d;
 }
 
-.hide {
-  display: none;
-}
-
 .text-sm {
-  font-size: 12px;
-  line-height: 16px;
+  font-size: var(--font-size-1);
+  line-height: var(--line-height-1);
+  letter-spacing: var(--letter-spacing-1);
 }
 
 .text-grey-600.text-underline {
+  text-decoration: underline;
+}
+
+.text-underline {
   text-decoration: underline;
 }
 
@@ -53,6 +56,10 @@
 
 .text-grey-600.text-underline.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .div-block-1570 {
@@ -127,16 +134,6 @@
   opacity: 0.8;
 }
 
-.icons.cursor-pointer.mr-20 {
-  margin-right: 20px;
-  transition-property: none;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
 .icons.task-hover {
   position: absolute;
   left: 50px;
@@ -174,7 +171,7 @@
 }
 
 .arrow-tooltips-drawer.grey-600 {
-  background-color: var(--grey-600);
+  background-color: var(--grey-600\<deleted\|variable-440e5aa6\>);
 }
 
 .arrow-tooltips-drawer.grey-600.task {
@@ -229,24 +226,24 @@
 }
 
 .text-grey_600 {
-  color: #68737d;
+  color: var(--sand-11);
 }
 
 .text-grey_600.hide {
   display: none;
 }
 
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
-.text-grey_600.text-underline {
-  text-decoration: underline;
+.hide {
+  display: none;
 }
 
 .text-grey_600.width-80px {
   width: 80px;
+}
+
+.text-grey_600.text-underline-copy {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .div-block-1545 {
@@ -279,11 +276,6 @@
 
 .div-block-1546.cursor-pointer:hover {
   background-color: hsla(356, 56.31%, 92.37%, 1.00);
-}
-
-.div-block-1546.cursor-pointer.blue {
-  background-color: #edf7ff;
-  color: #337fbd;
 }
 
 .div-block-1546.cursor-pointer.green {

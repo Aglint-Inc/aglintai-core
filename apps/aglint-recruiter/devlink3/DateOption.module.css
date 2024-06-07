@@ -1,0 +1,160 @@
+.date_option {
+  width: 100%;
+  background-color: white;
+}
+
+.date_wrap {
+  position: relative;
+
+  display: flex;
+  padding: var(--space-2) var(--space-3);
+  justify-content: space-between;
+
+  border-radius: var(--radius-4);
+
+  background-color: var(--neutral-2);
+
+  cursor: pointer;
+}
+
+.flex_hr_10 {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.flex_hr_10.disabled_text {
+  color: var(--neutral-9);
+}
+
+.embed_flex {
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+  cursor: pointer;
+}
+
+.embed_flex.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+.embed_flex.custom_top {
+  margin-top: 2px;
+}
+
+.embed_flex.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.embed_flex.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.embed_flex.fixedd {
+  width: 23px;
+}
+
+.flex_hr_4 {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
+.flex_hr_20 {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+
+.expand_arrow_date_option {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+
+  border: 1px solid #e9ebed;
+  border-radius: 100px;
+
+  background-color: white;
+
+  transition: all 200ms ease;
+}
+
+.expand_arrow_date_option:hover {
+  background-color: #e9ebed;
+}
+
+.is_selected_bg-copy {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 1;
+
+  border-radius: 10px;
+
+  background-color: #edf7ff;
+}
+
+.date_wrap-_disabled {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 3;
+
+  display: flex;
+  padding: var(--space-2) var(--space-3);
+  justify-content: space-between;
+
+  border-radius: var(--radius-4);
+
+  background-color: var(--neutral-2);
+
+  cursor: not-allowed;
+}
+
+.italic {
+  color: var(--neutral-11);
+  font-size: var(--font-size-1);
+  font-style: italic;
+}
+
+.slot_schedule_option {
+  display: flex;
+  overflow: hidden;
+  padding-bottom: 0px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
+}

@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { RcCheckbox } from "./RcCheckbox";
 import * as _utils from "./utils";
 import _styles from "./RcGoalsBlock.module.css";
@@ -17,9 +19,7 @@ export function RcGoalsBlock({
         className={_utils.cx(_styles, "sl-goal-title-block")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"What's your main goal for using Aglint?"}
-        </_Builtin.Block>
+        <Text content="" align="" weight="bold" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "sl-goal-check-wrapper")}

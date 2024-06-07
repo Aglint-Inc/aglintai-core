@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
 
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 
 import { appKey } from '..';
 import { type Assessment } from './types';
@@ -55,7 +55,7 @@ export const assessmentQueryKeys = {
 export const useAssessmentId = () => {
   const router = useRouter();
   const assessment_id = (
-    (router?.pathname ?? null).startsWith(pageRoutes.ASSESSMENTS)
+    (router?.pathname ?? null).startsWith(ROUTES['/assessment-new']())
       ? router?.query?.id ?? null
       : null
   ) as string;

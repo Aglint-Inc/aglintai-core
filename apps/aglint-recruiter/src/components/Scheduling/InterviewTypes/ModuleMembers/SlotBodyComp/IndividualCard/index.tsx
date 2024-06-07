@@ -13,7 +13,7 @@ import { SessionIcon } from '@/src/components/Scheduling/Common/ScheduleProgress
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { numberToOrdinalText } from '@/src/utils/numberToText/numberToOrdinalText';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 
 import { useProgressModuleUsers } from '../../../queries/hooks';
 import {
@@ -73,7 +73,11 @@ function IndividualCard({
         textTodayInterview={`${user.daily} / ${userSettings.interviewLoad.dailyLimit.value} ${userSettings.interviewLoad.dailyLimit.type} per day`}
         onClickCard={{
           onClick: () => {
-            router.push(`${pageRoutes.SCHEDULINGINTERVIEWER}/${user.user_id}`);
+            router.push(
+              ROUTES['/scheduling/interviewer/[member_id]']({
+                member_id: user.user_id,
+              }),
+            );
           },
         }}
         slotTrainingProgressDetail={
@@ -237,10 +241,7 @@ function IndividualCard({
           <MuiAvatar
             src={member.profile_image}
             level={getFullName(member.first_name, member.last_name) || ''}
-            variant='circular'
-            height='40px'
-            width='40px'
-            fontSize='16px'
+            variant='rounded-medium'
           />
         }
         textName={getFullName(member.first_name, member.last_name) || ''}

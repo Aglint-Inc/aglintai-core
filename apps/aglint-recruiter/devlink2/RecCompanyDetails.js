@@ -1,8 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { RcInfoStep1 } from "./RcInfoStep1";
-import { RcLoading } from "./RcLoading";
-import { RcInfoForm } from "./RcInfoForm";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./RecCompanyDetails.module.css";
 
@@ -28,19 +27,13 @@ export function RecCompanyDetails({
           className={_utils.cx(_styles, "sl-info-input-wrapper")}
           tag="div"
         >
-          {slotMain ?? (
-            <>
-              <RcInfoStep1 />
-              <RcLoading />
-              <RcInfoForm />
-            </>
-          )}
+          {slotMain ?? <SlotComp componentName="slot Main" />}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "sl-nav-buttons")}
           tag="div"
         >
-          {slotButtons}
+          {slotButtons ?? <SlotComp componentName="slot for Navigation" />}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

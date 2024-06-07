@@ -12,11 +12,6 @@
   font-weight: 600;
 }
 
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
 .fw-semibold.relative_2 {
   position: relative;
   z-index: 2;
@@ -33,6 +28,10 @@
 
 .fw-semibold.capitalize {
   text-transform: capitalize;
+}
+
+.text-red-600 {
+  color: #cc3340;
 }
 
 .fw-semibold.text-purple {
@@ -53,6 +52,24 @@
 
 .fw-semibold.text-red {
   color: #d93f4c;
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.text-grey_600 {
+  color: var(--sand-11);
+}
+
+.hide {
+  display: none;
 }
 
 .div-block-1233 {
@@ -93,10 +110,14 @@
   color: #337fbd;
 }
 
-.text-grey-600 {
-  color: #68737d;
+.text-underline {
+  text-decoration: underline;
 }
 
-.text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.text-grey-600 {
+  color: #68737d;
 }

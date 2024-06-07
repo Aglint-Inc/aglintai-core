@@ -1,4 +1,4 @@
-import { InterviewSession } from '@aglint/shared-types';
+import { DatabaseTable, InterviewSession } from '@aglint/shared-types';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
@@ -6,7 +6,7 @@ import { UserType } from './Filters/FilterCordinator';
 
 export interface FilterCandidateState {
   filter: {
-    status?: ('not_scheduled' | 'ongoing' | 'completed')[];
+    status?: DatabaseTable['interview_meeting']['status'][];
     job_ids?: string[];
     module_ids?: string[];
     dateRange?: string;

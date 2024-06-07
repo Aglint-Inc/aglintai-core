@@ -1,6 +1,9 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
+import { ButtonSolid } from "./ButtonSolid";
+import { ButtonSurface } from "./ButtonSurface";
 import * as _utils from "./utils";
 import _styles from "./RescheduleCard.module.css";
 
@@ -16,6 +19,9 @@ export function RescheduleCard({
   bgColorProps = {},
   textColorProps = {},
   textName = "Robert fox",
+  isRescheduleBtnVisible = true,
+  isCancelVisible = true,
+  onClickCancel = {},
 }) {
   return (
     <_Component
@@ -37,18 +43,9 @@ export function RescheduleCard({
           className={_utils.cx(_styles, "div-block-1684")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold", "name-text")}
-            tag="div"
-          >
-            {textName}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-            {...textColorProps}
-          >
-            {textReschedule}
+          <Text content={textName} weight="bold" color="neutral-12" />
+          <_Builtin.Block tag="div" {...textColorProps}>
+            <Text content={textReschedule} weight="bold" color="warning" />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
@@ -64,30 +61,36 @@ export function RescheduleCard({
           className={_utils.cx(_styles, "div-block-1643")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "text-blue-500",
-              "text-underline",
-              "cursor-pointer"
-            )}
-            tag="div"
-            {...onClickRescheduleNow}
-          >
-            {"Reschedule Now"}
-          </_Builtin.Block>
+          {isRescheduleBtnVisible ? (
+            <_Builtin.Block tag="div">
+              <ButtonSolid
+                onClickButton={onClickRescheduleNow}
+                size="1"
+                textButton=""
+              />
+            </_Builtin.Block>
+          ) : null}
           {isChangeInterviewerVisible ? (
-            <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "text-grey-600",
-                "text-underline",
-                "cursor-pointer"
-              )}
-              tag="div"
-              {...onClickChangeInterviewer}
-            >
-              {"Change interviewer"}
+            <_Builtin.Block tag="div">
+              <ButtonSurface
+                onClickButton={onClickChangeInterviewer}
+                size="1"
+                isLeftIcon={false}
+                isRightIcon={false}
+                textButton=""
+              />
+            </_Builtin.Block>
+          ) : null}
+          {isCancelVisible ? (
+            <_Builtin.Block tag="div">
+              <ButtonSurface
+                onClickButton={onClickCancel}
+                size="1"
+                color="neutal"
+                isRightIcon={false}
+                isLeftIcon={false}
+                textButton="Cancel"
+              />
             </_Builtin.Block>
           ) : null}
         </_Builtin.Block>

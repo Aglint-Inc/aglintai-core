@@ -3,7 +3,6 @@ import Stack from '@mui/material/Stack';
 import React, { useEffect, useState } from 'react';
 
 import { SavedChanges } from '@/devlink/SavedChanges';
-import { palette } from '@/src/context/Theme/Theme';
 
 import { JobFormState } from '../JobPostFormProvider';
 
@@ -29,7 +28,7 @@ const SyncStatus = ({ status }: { status: JobFormState['syncStatus'] }) => {
               <CircularProgress
                 color='inherit'
                 size={'15px'}
-                sx={{ color: palette.grey[400] }}
+                sx={{ color: 'var(--neutral-6)' }}
               />
             </>
           }
@@ -48,7 +47,7 @@ const SyncStatus = ({ status }: { status: JobFormState['syncStatus'] }) => {
         isSaving={status !== 'saved'}
       />
       // <Stack direction={'row'} gap={0.5} alignItems={'center'}>
-      //   <UITypography color={palette.green[600]} type='small' fontBold='normal'>
+      //   <UITypography color={'var(--success-11)'} type='small' fontBold='normal'>
       //     Saved to draft
       //   </UITypography>
       //   <Image

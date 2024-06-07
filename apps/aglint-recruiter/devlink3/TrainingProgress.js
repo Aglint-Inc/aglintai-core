@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { TrainingProgressList } from "./TrainingProgressList";
-import { TrainingProgressLoader } from "./TrainingProgressLoader";
+import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./TrainingProgress.module.css";
 
@@ -18,12 +18,10 @@ export function TrainingProgress({
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1488")}
+        className={_utils.cx(_styles, "dashboard-widget-header")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Training Progress"}
-        </_Builtin.Block>
+        <Text content="Training Progress" />
         {isViewAllVisible ? (
           <_Builtin.Block
             className={_utils.cx(
@@ -55,12 +53,12 @@ export function TrainingProgress({
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500")}
-              tag="div"
-            >
-              {"Interviewer"}
-            </_Builtin.Block>
+            <Text
+              weight="medium"
+              size="2"
+              color="neutral"
+              content="Interviewer"
+            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1508")}
@@ -70,12 +68,12 @@ export function TrainingProgress({
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500")}
-              tag="div"
-            >
-              {"Interview Type"}
-            </_Builtin.Block>
+            <Text
+              weight="medium"
+              size="2"
+              color="neutral"
+              content="Interview Type"
+            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1508")}
@@ -85,19 +83,19 @@ export function TrainingProgress({
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500")}
-              tag="div"
-            >
-              {"Training History"}
-            </_Builtin.Block>
+            <Text
+              weight="medium"
+              size="2"
+              color="neutral"
+              content="Training History"
+            />
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block tag="div">
           {slotTrainingProgressList ?? (
             <>
-              <TrainingProgressList />
-              <TrainingProgressLoader />
+              <SlotComp componentNeme="TrainingProgressList" />
+              <SlotComp componentNeme="TrainingProgressLoader" />
             </>
           )}
         </_Builtin.Block>

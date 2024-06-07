@@ -3,7 +3,7 @@
 /* eslint-disable no-console */
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
 import {
   MeetingLimitsConfig,

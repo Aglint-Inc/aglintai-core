@@ -1,0 +1,30 @@
+.reschedule-req {
+  display: flex;
+  padding: 0px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+
+  border: 1px solid var(--neutral-6);
+  border-radius: 16px;
+
+  background-color: var(--white);
+}
+
+.reschedule-req-header {
+  display: flex;
+  padding-top: 20px;
+  padding-right: 20px;
+  padding-left: 20px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.div-block-1782 {
+  height: 430px;
+  padding-bottom: 10px;
+}
+
+#w-node-_08e9c8a0-50e0-f49b-8fab-98bbc719eb69-c719eb69 {
+}

@@ -64,10 +64,7 @@ function AllRolesMeetings({ schedule }: { schedule: ScheduleMeeting }) {
                       item.details.last_name,
                     )}
                     src={item.details.profile_image}
-                    variant={'circular'}
-                    width={'100%'}
-                    height={'100%'}
-                    fontSize={'14px'}
+                    variant={'rounded-small'}
                   />
                 }
               />

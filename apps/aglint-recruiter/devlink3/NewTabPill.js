@@ -16,12 +16,12 @@ export function NewTabPill({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "div-block-1681")}
+      className={_utils.cx(_styles, "tab_pill")}
       tag="div"
       {...onClickPill}
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1680")}
+        className={_utils.cx(_styles, "tab_pill_default")}
         tag="div"
       >
         {isStartIconVisible ? (
@@ -34,7 +34,7 @@ export function NewTabPill({
       </_Builtin.Block>
       {isPillActive ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1682")}
+          className={_utils.cx(_styles, "tab_pill_active")}
           tag="div"
         >
           {isStartIconVisible ? (
@@ -45,7 +45,7 @@ export function NewTabPill({
             <_Builtin.Block tag="div">{slotEndIcon}</_Builtin.Block>
           ) : null}
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1736")}
+            className={_utils.cx(_styles, "active_pill_underline")}
             tag="div"
           />
         </_Builtin.Block>

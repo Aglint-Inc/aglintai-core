@@ -1,0 +1,64 @@
+.schedule_button {
+  position: relative;
+
+  display: flex;
+  padding: 6px 12px;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  border-radius: 4px;
+
+  background-color: var(--neutral-3);
+
+  transition: all 200ms ease;
+
+  color: var(--neutral-11);
+
+  cursor: pointer;
+}
+
+.schedule_button:hover {
+  background-color: var(--neutral-4);
+  color: var(--neutral-12);
+}
+
+.embed_flex {
+  display: flex;
+  align-items: center;
+}
+
+.embed_flex.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+.embed_flex.custom_top {
+  margin-top: 2px;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.embed_flex.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.embed_flex.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.embed_flex.fixedd {
+  width: 23px;
+}

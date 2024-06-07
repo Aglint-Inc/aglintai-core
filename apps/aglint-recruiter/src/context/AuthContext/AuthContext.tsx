@@ -1,5 +1,9 @@
 /* eslint-disable no-unused-vars */
-import { DatabaseEnums, DatabaseTableUpdate } from '@aglint/shared-types';
+import {
+  DatabaseEnums,
+  DatabaseTable,
+  DatabaseTableUpdate,
+} from '@aglint/shared-types';
 import {
   RecruiterRelationsType,
   RecruiterType,
@@ -7,7 +11,7 @@ import {
   SocialsType,
 } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
-import { pageRoutes } from '@utils/pageRouting';
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
@@ -25,7 +29,9 @@ import {
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { API_getMembersWithRole } from '@/src/pages/api/getMembersWithRole/type';
 import { API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
+import { emailTemplateQueries } from '@/src/queries/email-templates';
 import { featureFlag } from '@/src/utils/Constants';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -67,6 +73,17 @@ export interface ContextValue {
   isAssessmentEnabled: boolean;
   isScreeningEnabled: boolean;
   isSchedulingEnabled: boolean;
+  emailTemplates: UseQueryResult<
+    {
+      created_at: string;
+      id: string;
+      recruiter_id: string;
+      subject: string;
+      body: string;
+      type: DatabaseTable['company_email_template']['type'];
+    }[],
+    Error
+  >;
 }
 
 const defaultProvider = {
@@ -94,6 +111,7 @@ const defaultProvider = {
   isAssessmentEnabled: false,
   isScreeningEnabled: false,
   isSchedulingEnabled: false,
+  emailTemplates: undefined,
 };
 
 export const useAuthDetails = () => useContext(AuthContext);
@@ -132,11 +150,11 @@ const AuthProvider = ({ children }) => {
       } else {
         setUserDetails(data.session);
       }
-      if (router.route !== pageRoutes.LOADING && data?.session?.user?.id) {
+      if (router.route !== ROUTES['/loading']() && data?.session?.user?.id) {
         await getRecruiterDetails(data.session);
       }
     } catch (err) {
-      router.push(pageRoutes.LOGIN);
+      router.push(ROUTES['/login']());
       handleLogout();
     }
   }
@@ -145,7 +163,7 @@ const AuthProvider = ({ children }) => {
     const { data: recruiterRel, error: errorRel } = await supabase
       .from('recruiter_relation')
       .select(
-        '*, recruiter(*),recruiter_user!public_recruiter_relation_user_id_fkey(*)',
+        '*, recruiter(*), recruiter_user!public_recruiter_relation_user_id_fkey(*)',
       )
       .match({ user_id: userDetails.user.id, is_active: true })
       .single();
@@ -189,7 +207,7 @@ const AuthProvider = ({ children }) => {
     });
     posthog.reset();
     if (!error) {
-      router.push(pageRoutes.LOGIN);
+      router.push(ROUTES['/login']());
     }
   };
 
@@ -327,10 +345,14 @@ const AuthProvider = ({ children }) => {
       if (feature && !posthog.isFeatureEnabled(feature)) {
         // eslint-disable-next-line no-console
         console.log('Feature not enabled');
-        router.push(pageRoutes.JOBS);
+        router.push(ROUTES['/jobs']());
       }
     }
   }, [router.pathname, userDetails]);
+
+  const emailTemplates = useQuery(
+    emailTemplateQueries.emailTemplates(recruiter_id),
+  );
 
   return (
     <AuthContext.Provider
@@ -358,6 +380,7 @@ const AuthProvider = ({ children }) => {
         isAssessmentEnabled,
         isScreeningEnabled,
         isSchedulingEnabled,
+        emailTemplates,
       }}
     >
       {loading ? <AuthLoader /> : children}
@@ -377,11 +400,10 @@ const AuthLoader = () => {
 
 const isRoutePublic = (path = '') => {
   const whiteListedRoutes = [
-    pageRoutes.LOGIN,
-    pageRoutes.SIGNUP,
-    pageRoutes.MOCKTEST,
-    pageRoutes.PHONESCREEN,
-    pageRoutes.CONFIRM_SCHEDULE,
+    ROUTES['/login'](),
+    ROUTES['/signup'](),
+    ROUTES['/assessment-new'](),
+    ROUTES['/candidate-phone-screening'](),
   ];
   for (const route of whiteListedRoutes) {
     if (path.startsWith(route)) {
@@ -391,12 +413,12 @@ const isRoutePublic = (path = '') => {
 };
 
 const pageFeatureMapper = {
-  [pageRoutes.ASSISTANT]: 'isAssistantEnabled',
-  [pageRoutes.ASSESSMENTS]: 'isNewAssessmentEnabled',
-  [pageRoutes.AGENT]: 'isAgentEnabled',
-  [pageRoutes.SCREENING]: 'isPhoneScreeningEnabled',
-  [pageRoutes.SUPPORT]: 'isSupportEnabled',
-  [pageRoutes.CANDIDATES]: 'isSourcingEnabled',
+  [ROUTES['/assisstant']()]: 'isAssistantEnabled',
+  [ROUTES['/assessment-new']()]: 'isNewAssessmentEnabled',
+  [ROUTES['/agent']()]: 'isAgentEnabled',
+  [ROUTES['/screening']()]: 'isPhoneScreeningEnabled',
+  [ROUTES['/support']()]: 'isSupportEnabled',
+  [ROUTES['/candidates/history']()]: 'isSourcingEnabled',
 };
 
 const updateMember = ({

@@ -237,10 +237,7 @@ const TrainingDetails = ({
               progressUser.user.first_name,
               progressUser.user.last_name,
             )}
-            variant='circular'
-            height='24px'
-            width='24px'
-            fontSize='12px'
+            variant='rounded-small'
           />
         )
       }
@@ -576,10 +573,7 @@ function SlotQualifiedMembers({
                 <MuiAvatar
                   src={member.profile_image}
                   level={getFullName(member.first_name, member.last_name) || ''}
-                  variant='circular'
-                  height='40px'
-                  width='40px'
-                  fontSize='16px'
+                  variant='rounded-medium'
                 />
               }
               textName={getFullName(member.first_name, member.last_name) || ''}

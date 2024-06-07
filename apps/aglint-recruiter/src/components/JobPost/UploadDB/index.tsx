@@ -13,13 +13,12 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
 import { Checkbox } from '@/devlink/Checkbox';
-import { palette } from '@/src/context/Theme/Theme';
+import LoaderGrey from '@/public/lottie/LoaderGrey';
 import { errorMessages } from '@/src/utils/errorMessages';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Icon from '../../Common/Icons/Icon';
-import LoaderGrey from '../../Common/LoaderGrey';
 import UITextField from '../../Common/UITextField';
 
 const initialError = () => {
@@ -222,7 +221,7 @@ function UploadDB({
     <Stack
       id='scrollTarget'
       sx={{
-        background: palette.grey[100],
+        background: 'var(--neutral-1)',
         p: { xs: '10px', mm: '30px' },
         borderRadius: '10px',
       }}
@@ -315,12 +314,12 @@ function UploadDB({
               <Stack
                 sx={{
                   border: '1px dashed',
-                  borderColor: palette.grey[600],
+                  borderColor: 'var(--neutral-6)',
                   borderRadius: 1,
                   py: '40px',
                   px: '20px',
                   cursor: 'pointer',
-                  background: '#fff',
+                  background: 'var(--white)',
                 }}
                 direction='row'
                 spacing={2}
@@ -341,7 +340,7 @@ function UploadDB({
                     />
                   </svg>
                 )}
-                <Typography variant='body2' sx={{ textAlgin: 'center' }}>
+                <Typography variant='body1' sx={{ textAlgin: 'center' }}>
                   {file
                     ? `Uploaded File: ${file?.name}`
                     : 'Please upload your resume in PDF or DOC format.'}

@@ -13,10 +13,9 @@ import {
   validateString,
 } from '@/src/context/JobDashboard/hooks';
 import { useJobs } from '@/src/context/JobsContext';
-import { palette } from '@/src/context/Theme/Theme';
 import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/job/types';
-import { pages } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 
 import Loader from '../Common/Loader';
 import { capitalize } from '../JobApplicationsDashboard/utils';
@@ -151,7 +150,7 @@ const JobEdit = () => {
               <CircularProgress
                 color='inherit'
                 size={'15px'}
-                sx={{ color: palette.grey[400] }}
+                sx={{ color: 'var(--neutral-6)' }}
               />
             }
           />
@@ -170,7 +169,7 @@ const BreadCrumbs = ({ job }: { job: Job }) => {
         textName={`${capitalize(job?.status ?? 'all')} jobs`}
         onClickLink={{
           onClick: () => {
-            push(`${pages['/jobs']()}?status=${job?.status ?? 'all'}`);
+            push(`${ROUTES['/jobs']()}?status=${job?.status ?? 'all'}`);
           },
           style: { cursor: 'pointer' },
         }}
@@ -180,7 +179,7 @@ const BreadCrumbs = ({ job }: { job: Job }) => {
         textName={capitalize(job?.job_title ?? 'Job')}
         onClickLink={{
           onClick: () => {
-            push(pages['/jobs/[id]']({ id: job?.id }));
+            push(ROUTES['/jobs/[id]']({ id: job?.id }));
           },
           style: { cursor: 'pointer' },
         }}
@@ -296,8 +295,8 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
       styleBorder={{
         style: {
           borderColor: fields.description.error.value
-            ? palette.red['500']
-            : palette.grey['300'],
+            ? 'var(--error-a6)'
+            : 'var(--neutral-a6)',
         },
       }}
       slotRichtextWarning={
@@ -305,7 +304,7 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
           <Stack
             alignItems={'center'}
             direction={'row'}
-            color={palette.red[500]}
+            color={'var(--error-a11)'}
           >
             <WarningSvg />
             {fields.description.error.helper}

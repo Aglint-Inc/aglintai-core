@@ -51,10 +51,11 @@ import { DangerMessage } from '@/devlink3/DangerMessage';
 import { NewInterviewPlanCard } from '@/devlink3/NewInterviewPlanCard';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ResumeWrap } from '@/devlink3/ResumeWrap';
+import NoApplicants from '@/public/lottie/NoApplicants';
+import ResumeWait from '@/public/lottie/ResumeWait';
 import { getSafeAssessmentResult } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
 import AUIButton from '@/src/components/Common/AUIButton';
 import Loader from '@/src/components/Common/Loader';
-import ResumeWait from '@/src/components/Common/Lotties/ResumeWait';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import ScoreWheel, {
@@ -85,11 +86,10 @@ import {
   ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
 import { useJobDetails } from '@/src/context/JobDashboard';
-import { palette } from '@/src/context/Theme/Theme';
 import { Job } from '@/src/queries/job/types';
 import { getFullName } from '@/src/utils/jsonResume';
 // import interviewerList from '@/src/utils/interviewer_list';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
 // import CandidateAvatar from '../../Common/CandidateAvatar';
@@ -109,7 +109,6 @@ import { useKeyPress } from '../../hooks';
 // import RedirectWrapper from '../../Common/Wrappers/redirectWrapper';
 import { CheckIcon, FileIcon, UploadIcon } from '../../ImportManualCandidates';
 import useUploadCandidate from '../../ImportManualCandidates/hooks';
-import NoApplicants from '../../Lotties/NoApplicants';
 import {
   capitalize,
   formatTimeStamp,
@@ -775,10 +774,7 @@ const TaskMemeber = ({ task }: { task: JobApplication['tasks'][number] }) => {
     <MuiAvatar
       level={name}
       src={member?.profile_image ?? null}
-      variant='circular'
-      width='24px'
-      height='24px'
-      fontSize='12px'
+      variant='rounded-small'
     />
   );
 };
@@ -1045,7 +1041,7 @@ const NewInterviewStatus = ({
                   onClick: () => {
                     navigator.clipboard
                       .writeText(
-                        `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.CANDIDATE_ASSESSMENT}/${application.id}`,
+                        `${process.env.NEXT_PUBLIC_HOST_NAME}${ROUTES['/candidate-assessment/']()}/${application.id}`,
                       )
                       .then(() => {
                         toast.success('Interview link copied.');
@@ -1232,7 +1228,7 @@ const ResumeUpload: React.FC<{
             <Stack
               sx={{
                 border: '1px dashed',
-                borderColor: palette.blue[300],
+                borderColor: 'var(--accent-6)',
                 borderRadius: 1,
                 py: '34px',
                 px: '20px',
@@ -1246,7 +1242,7 @@ const ResumeUpload: React.FC<{
             >
               {resume ? <FileIcon /> : <UploadIcon />}
               <Typography
-                variant='body2'
+                variant='body1'
                 sx={{ textAlgin: 'center', fontSize: '14px' }}
                 style={{
                   fontWeight: resume ? 600 : 400,

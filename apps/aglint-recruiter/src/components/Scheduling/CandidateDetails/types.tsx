@@ -1,12 +1,14 @@
-import { Candidate, PlanCombinationRespType } from '@aglint/shared-types';
 import {
+  Candidate,
+  DatabaseTable,
   InterviewMeetingTypeDb,
   InterviewModuleRelationType,
   InterviewModuleType,
   InterviewSessionRelationTypeDB,
-  InterviewSessionTypeDB,
   JobApplcationDB,
+  PlanCombinationRespType,
 } from '@aglint/shared-types';
+import { CustomMembersMeta } from '@aglint/shared-types/src/db/common.types';
 
 import { ResumeJson } from '@/src/apiUtils/resumeScoring/types';
 import { supabase } from '@/src/utils/supabase/client';
@@ -64,7 +66,9 @@ export type ApplicationDataResponseType = {
 
 export type InterviewDataResponseType = {
   interview_module: InterviewModuleType | null;
-  interview_session: InterviewSessionTypeDB;
+  interview_session: DatabaseTable['interview_session'] & {
+    members_meta: CustomMembersMeta;
+  };
   interview_meeting: InterviewMeetingTypeDb | null;
   interview_session_relations: {
     session_id: string;
@@ -91,7 +95,4 @@ export type InterviewDataResponseType = {
   };
 };
 
-export type ApiResponseFindAvailability = {
-  plan_combs: PlanCombinationRespType[];
-  total: number;
-};
+export type ApiResponseFindAvailability = PlanCombinationRespType[][][];

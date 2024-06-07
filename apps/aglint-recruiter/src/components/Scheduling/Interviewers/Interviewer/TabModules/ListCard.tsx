@@ -8,7 +8,7 @@ import { StatusBadge } from '@/devlink2/StatusBadge';
 import { HistoryPill } from '@/devlink3/HistoryPill';
 import { HistoryTrainingCard } from '@/devlink3/HistoryTrainingCard';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
-import { pages } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 
 import IconScheduleType from '../../../Candidates/ListCard/Icon';
 import { getScheduleType } from '../../../Candidates/utils';
@@ -54,7 +54,7 @@ function ListCardInterviewerModules({
         slotTrainingProgressDetail={
           <Collapse in={collapseOpen}>
             <Stack px={'20px'} pb={'20px'}>
-              <Typography variant='body2'>
+              <Typography variant='body1'>
                 {interview_module.description}
               </Typography>
             </Stack>
@@ -123,7 +123,7 @@ function ListCardInterviewerModules({
         onClickCard={{
           onClick: () => {
             router.push(
-              pages['/scheduling/module/members/[module_id]']({
+              ROUTES['/scheduling/module/members/[module_id]']({
                 module_id: module.module_id,
               }),
             );
@@ -266,7 +266,7 @@ function ListCardInterviewerModules({
         slotTrainingProgressDetail={
           <Collapse in={collapseOpen}>
             <Stack px={'20px'} pb={'20px'}>
-              <Typography variant='body2'>
+              <Typography variant='body1'>
                 {interview_module.description}
               </Typography>
             </Stack>
@@ -343,7 +343,7 @@ function ListCardInterviewerModules({
         onClickCard={{
           onClick: () => {
             router.push(
-              pages['/scheduling/module/members/[module_id]']({
+              ROUTES['/scheduling/module/members/[module_id]']({
                 module_id: module.module_id,
               }),
             );

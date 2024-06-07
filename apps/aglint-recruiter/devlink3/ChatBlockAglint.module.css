@@ -54,6 +54,14 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.embed_flex.fixedd {
+  width: 23px;
+}
+
 .chat_content {
   display: flex;
   width: 100%;
@@ -80,11 +88,6 @@
   font-weight: 600;
 }
 
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
 .fw-semibold.relative_2 {
   position: relative;
   z-index: 2;
@@ -96,6 +99,10 @@
 
 .fw-semibold.capitalize {
   text-transform: capitalize;
+}
+
+.text-red-600 {
+  color: #cc3340;
 }
 
 .fw-semibold.text-purple {
@@ -116,6 +123,20 @@
 
 .fw-semibold.text-red {
   color: #d93f4c;
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.text-grey_600 {
+  color: var(--sand-11);
 }
 
 .text-grey_400 {

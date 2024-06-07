@@ -1,4 +1,4 @@
-import { JsonResume } from '@aglint/shared-types';
+import { DatabaseTable, JsonResume } from '@aglint/shared-types';
 import { isArray } from 'lodash';
 import cloneDeep from 'lodash/cloneDeep';
 import set from 'lodash/set';
@@ -221,12 +221,14 @@ const CandidateSearchProvider = ({ children }) => {
         candidate_id: string;
         job_id: string;
         candidate_file_id: string;
+        source: DatabaseTable['applications']['source'];
       }[] = [];
       for (const candJobApp of candsjobApps) {
-        let newCandApps = job_ids.map((j) => ({
+        let newCandApps: typeof newJobApps = job_ids.map((j) => ({
           candidate_id: candJobApp.candidate_id,
           job_id: j.job_id,
           candidate_file_id: candJobApp.candidate_file_id,
+          source: 'candidate_database',
         }));
         newJobApps = [...newJobApps, ...newCandApps];
         updaCandState = updaCandState.map((cand) => {

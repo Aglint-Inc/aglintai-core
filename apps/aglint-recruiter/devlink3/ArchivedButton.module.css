@@ -34,9 +34,20 @@
   opacity: 0.8;
 }
 
-.relative_2 {
-  position: relative;
-  z-index: 2;
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.icons.task-hover {
+  position: absolute;
+  left: 50px;
+  top: -10px;
+  right: auto;
+  bottom: auto;
+}
+
+.icons.pointer {
+  cursor: pointer;
 }
 
 .text-blue-500 {
@@ -47,6 +58,10 @@
   text-decoration: underline;
 }
 
+.text-underline {
+  text-decoration: underline;
+}
+
 .text-blue-500.text-underline.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -54,6 +69,12 @@
 
 .text-blue-500.text-underline.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.text-sm {
+  font-size: var(--font-size-1);
+  line-height: var(--line-height-1);
+  letter-spacing: var(--letter-spacing-1);
 }
 
 .text-blue-500.cursor-pointer {
@@ -67,4 +88,8 @@
 
 .text-blue-500.text-capital {
   text-transform: uppercase;
+}
+
+.fw-semibold {
+  font-weight: 600;
 }

@@ -6,15 +6,6 @@
   flex-direction: column;
 }
 
-.job-sidebar-main-block.step-1 {
-  display: none;
-}
-
-.step-1 {
-  position: relative;
-  z-index: 1;
-}
-
 .job-sidebar-main-block.cj-step-2 {
   display: block;
 }
@@ -56,23 +47,6 @@
   padding-top: 20px;
 }
 
-.job-sidebar-main-block.cj-step-3 {
-  display: block;
-  background-color: var(--white-80449ce7);
-}
-
-@media screen and (min-width: 1440px) {
-  .job-sidebar-main-block.cj-step-3 {
-    display: flex;
-  }
-}
-
-@media screen and (min-width: 1440px) {
-  .job-sidebar-main-block.cj-step-4 {
-    display: flex;
-  }
-}
-
 .job-sidebar-main-block.cj-step-5 {
   display: flex;
   padding-top: 20px;
@@ -88,14 +62,6 @@
   grid-row-gap: 30px;
 }
 
-.job-sidebar-main-block.cj-step-0 {
-  display: none;
-}
-
-.job-sidebar-main-block.cj-step-green-1 {
-  display: none;
-}
-
 .cj-main-wrapper {
   position: relative;
 
@@ -106,10 +72,6 @@
   flex: 1;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-}
-
-.cj-main-wrapper.pb-200 {
-  padding-bottom: 200px;
 }
 
 .auth-header-block {
@@ -130,45 +92,6 @@
     align-items: center;
     text-align: center;
   }
-}
-
-.auth-header-block.join-us {
-  display: flex;
-}
-
-.join-us {
-  flex-direction: column;
-}
-
-.auth-header-block.sign-up {
-  display: none;
-}
-
-.sign-up {
-  flex-direction: column;
-}
-
-.auth-header-block.su-step-one {
-  display: none;
-}
-
-.su-step-one {
-  flex-direction: column;
-}
-
-.auth-header-block.su-step-two {
-  display: flex;
-}
-
-.auth-header-block.su-finish {
-  display: none;
-  grid-column-gap: 32px;
-  grid-row-gap: 32px;
-}
-
-.auth-header-block.gap-0 {
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
 }
 
 .auth-header-block.create-job {
@@ -238,42 +161,6 @@
   font-weight: 600;
 }
 
-.text-align-center {
-  text-align: center;
-}
-
-.text-lg.fw-semibold.no-wrap-company {
-  flex: 0 0 auto;
-}
-
-@media screen and (max-width: 767px) {
-  .mobile-landscape-hide {
-    display: none;
-  }
-}
-
-.text-lg.fw-semibold.is-profile {
-  color: var(--grey700-7fbe857b);
-}
-
-@media screen and (max-width: 479px) {
-  .text-lg.fw-semibold.is-profile {
-    align-self: flex-end;
-  }
-}
-
-.text-grey-800 {
-  color: var(--grey800-e42b2e06);
-}
-
-.text-capitalize-word {
-  text-transform: capitalize;
-}
-
-.text-yellow-800 {
-  color: var(--yellow800-b1e3bc9b);
-}
-
 .color-black {
   color: var(--black-0fdbd865);
 }
@@ -297,14 +184,6 @@
   color: var(--grey500-0d508ad8);
 }
 
-.text-color-black {
-  color: hsla(0, 0.00%, 0.00%, 1.00);
-}
-
-.text-kale-800 {
-  color: var(--kale800-682c1482);
-}
-
 .text-lg.fw-semibold.inline-block {
   display: inline;
 }
@@ -313,10 +192,6 @@
   display: inline;
   margin-right: 2px;
   margin-left: 2px;
-}
-
-.text-lg.fw-semibold.inline-block.ml-4 {
-  margin-left: 6px;
 }
 
 .inline-text {
@@ -335,50 +210,10 @@
   color: var(--green600-40a2ee5f);
 }
 
-.text-red-500 {
-  color: var(--red500-2e806c7d);
-}
-
-.text-blue-800 {
-  color: var(--blue800-09c1dfbf);
-}
-
-.text-lg.text-align-center.no-wrap-company {
-  flex: 0 0 auto;
-}
-
-@media screen and (max-width: 479px) {
-  .text-lg.text-align-center.no-wrap-company {
-    flex: 0 auto;
+@media screen and (max-width: 767px) {
+  .text-lg.fw-semibold.responsive-text {
+    font-size: 14px;
   }
-}
-
-.text-lg.no-wrap-company {
-  flex: 0 0 auto;
-}
-
-.text-lg.color-kale-600 {
-  color: var(--kale600-c60cbc05);
-}
-
-.text-lg.color-kale-600 {
-  color: hsla(184.44444444444443, 54.00%, 19.61%, 1.00);
-}
-
-.text-lg.color-kale-600 {
-  color: hsla(184.44444444444443, 54.00%, 19.61%, 1.00);
-}
-
-.text-lg.color-kale-600 {
-  color: hsla(184.44444444444443, 54.00%, 19.61%, 1.00);
-}
-
-.text-lg.color-kale-600 {
-  color: hsla(184.44444444444443, 54.00%, 19.61%, 1.00);
-}
-
-.text-lg.margin-bottom-10 {
-  margin-bottom: 10px;
 }
 
 .text-grey-700 {
@@ -389,12 +224,35 @@
   letter-spacing: -0.45px;
 }
 
-.text-kale-700 {
-  color: var(--kale700-f5e4c087);
+@media screen and (max-width: 767px) {
+  .text-lg.text-grey-700.responsive-text {
+    font-size: 14px;
+  }
 }
 
 .text-lg.text-gray-400 {
   color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+}
+
+.text-blue-500 {
+  color: var(--blue500-72579298);
+}
+
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.fw-light {
+  font-weight: 300;
+}
+
+.text-capitalize {
+  text-transform: uppercase;
 }
 
 .success-para-wrappers {
@@ -422,8 +280,8 @@
   text-align: center;
 }
 
-.ju-header-description.mt-12 {
-  margin-top: 12px;
+.text-align-center {
+  text-align: center;
 }
 
 .button-view-job-wrappers {

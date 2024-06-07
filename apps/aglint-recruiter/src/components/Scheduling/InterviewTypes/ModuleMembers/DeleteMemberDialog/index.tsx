@@ -15,13 +15,6 @@ function DeleteMemberDialog() {
 
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isDeleteMemberDialogOpen}
       onClose={() => {
         setIsDeleteMemberDialogOpen(false);

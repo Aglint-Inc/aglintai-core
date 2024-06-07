@@ -1,0 +1,16 @@
+.timeblock {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+.timeblock.is_link {
+  cursor: pointer;
+}
+
+.embed_flex-3 {
+  display: flex;
+  align-items: center;
+}

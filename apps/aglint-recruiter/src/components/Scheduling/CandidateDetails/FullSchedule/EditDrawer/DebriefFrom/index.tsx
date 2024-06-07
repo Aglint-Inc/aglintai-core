@@ -19,13 +19,16 @@ import {
   setMembers,
   useSchedulingApplicationStore,
 } from '../../../store';
+import { Interviewer } from '..';
 
 function DebriedForm({
   debriefMembers,
-  trainingInterviewers,
-  setTrainingInterviewers,
   optionMembers,
   setDebriefMembers,
+}: {
+  debriefMembers: Interviewer[];
+  optionMembers: Interviewer[];
+  setDebriefMembers: React.Dispatch<React.SetStateAction<Interviewer[]>>;
 }) {
   const { recruiter } = useAuthDetails();
   const editSession = useSchedulingApplicationStore(
@@ -67,123 +70,131 @@ function DebriedForm({
     }
   };
 
+  const selectedUserIds = debriefMembers.map((member) => member.value);
+
+  const filterDebriefMembers = optionMembers?.filter(
+    (member) => !selectedUserIds.includes(member.value),
+  );
+
   return (
-    <SidedrawerBodyDebrief
-      slotSessionNameInput={
-        <UITextField
-          name={'name'}
-          placeholder={'Session name'}
-          value={editSession.name}
-          onChange={(e) =>
-            setEditSession({
-              name: e.target.value,
-            })
-          }
-        />
-      }
-      slotDurationDropdown={
-        <TextField fullWidth select value={editSession.session_duration}>
-          {[30, 45, 60, 120]?.map((ses) => (
-            <MenuItem
-              value={ses}
-              key={ses}
-              onClick={() =>
-                setEditSession({
-                  session_duration: ses,
-                })
-              }
-            >
-              {getBreakLabel(ses)}
-            </MenuItem>
-          ))}
-        </TextField>
-      }
-      slotMemberAvatarSelectionPill={
-        <>
-          {debriefMembers?.map((member) => {
-            return (
-              <SelectedMemberPill
-                key={member.value}
-                onClickRemove={{
-                  onClick: () => {
-                    setTrainingInterviewers(
-                      trainingInterviewers.filter(
-                        (selected) => selected.value !== member.value,
-                      ),
-                    );
-                  },
-                }}
-                textMemberName={member.name}
-                slotMemberAvatar={
-                  <MuiAvatar
-                    src={member.start_icon_url}
-                    level={getFullName(member.name, '')}
-                    variant='circular'
-                    fontSize='10px'
-                    height='100%'
-                    width='100%'
-                  />
+    <>
+      <SidedrawerBodyDebrief
+        isAttendeeVisible={false}
+        slotSessionNameInput={
+          <UITextField
+            name={'name'}
+            placeholder={'Session name'}
+            value={editSession.name}
+            onChange={(e) =>
+              setEditSession({
+                name: e.target.value,
+              })
+            }
+          />
+        }
+        slotDurationDropdown={
+          <TextField fullWidth select value={editSession.session_duration}>
+            {[30, 45, 60, 120]?.map((ses) => (
+              <MenuItem
+                value={ses}
+                key={ses}
+                onClick={() =>
+                  setEditSession({
+                    session_duration: ses,
+                  })
                 }
-              />
-            );
-          })}
-        </>
-      }
-      slotScheduleTypeDropdown={
-        <TextField
-          fullWidth
-          select
-          value={editSession.schedule_type}
-          onChange={(e) => {
-            setEditSession({
-              schedule_type: e.target
-                .value as InterviewSession['schedule_type'],
-            });
-          }}
-        >
-          <MenuItem value='google_meet'>
-            <Stack direction={'row'} spacing={2}>
-              <IconScheduleType type='google_meet' />
-              <Typography variant='body2' color={'#000'}>
-                Google Meet
-              </Typography>
-            </Stack>
-          </MenuItem>
-          <MenuItem value='zoom'>
-            <Stack direction={'row'} spacing={2}>
-              <IconScheduleType type='zoom' />
-              <Typography variant='body2' color={'#000'}>
-                Zoom
-              </Typography>
-            </Stack>
-          </MenuItem>
-          <MenuItem value='phone_call'>
-            <Stack direction={'row'} spacing={2}>
-              <IconScheduleType type='phone_call' />
-              <Typography variant='body2' color={'#000'}>
-                Phone Call
-              </Typography>
-            </Stack>
-          </MenuItem>
-          <MenuItem value='in_person_meeting'>
-            <Stack direction={'row'} spacing={2}>
-              <IconScheduleType type='in_person_meeting' />
-              <Typography variant='body2' color={'#000'}>
-                In Person Meeting
-              </Typography>
-            </Stack>
-          </MenuItem>
-        </TextField>
-      }
-      slotMembersDropdown={
-        <DropDown
-          placeholder='Select Members'
-          onChange={(e) => onChange(e)}
-          options={optionMembers}
-          value=''
-        />
-      }
-    />
+              >
+                {getBreakLabel(ses)}
+              </MenuItem>
+            ))}
+          </TextField>
+        }
+        slotMemberAvatarSelectionPill={
+          <>
+            {debriefMembers?.map((member) => {
+              return (
+                <SelectedMemberPill
+                  key={member.value}
+                  onClickRemove={{
+                    onClick: () => {
+                      setDebriefMembers(
+                        debriefMembers.filter(
+                          (selected) => selected.value !== member.value,
+                        ),
+                      );
+                    },
+                  }}
+                  textMemberName={member.name}
+                  slotMemberAvatar={
+                    <MuiAvatar
+                      src={member.start_icon_url}
+                      level={getFullName(member.name, '')}
+                      variant='rounded-small'
+                    />
+                  }
+                />
+              );
+            })}
+          </>
+        }
+        slotScheduleTypeDropdown={
+          <TextField
+            fullWidth
+            select
+            value={editSession.schedule_type}
+            onChange={(e) => {
+              setEditSession({
+                schedule_type: e.target
+                  .value as InterviewSession['schedule_type'],
+              });
+            }}
+          >
+            <MenuItem value='google_meet'>
+              <Stack direction={'row'} spacing={2}>
+                <IconScheduleType type='google_meet' />
+                <Typography variant='body1' color={'var(--neutral-12)'}>
+                  Google Meet
+                </Typography>
+              </Stack>
+            </MenuItem>
+            <MenuItem value='zoom'>
+              <Stack direction={'row'} spacing={2}>
+                <IconScheduleType type='zoom' />
+                <Typography variant='body1' color={'var(--neutral-12)'}>
+                  Zoom
+                </Typography>
+              </Stack>
+            </MenuItem>
+            <MenuItem value='phone_call'>
+              <Stack direction={'row'} spacing={2}>
+                <IconScheduleType type='phone_call' />
+                <Typography variant='body1' color={'var(--neutral-12)'}>
+                  Phone Call
+                </Typography>
+              </Stack>
+            </MenuItem>
+            <MenuItem value='in_person_meeting'>
+              <Stack direction={'row'} spacing={2}>
+                <IconScheduleType type='in_person_meeting' />
+                <Typography variant='body1' color={'var(--neutral-12)'}>
+                  In Person Meeting
+                </Typography>
+              </Stack>
+            </MenuItem>
+          </TextField>
+        }
+        slotMembersDropdown={
+          filterDebriefMembers.length > 0 && (
+            <DropDown
+              placeholder='Select Members'
+              onChange={(e) => onChange(e)}
+              options={filterDebriefMembers}
+              value={''}
+            />
+          )
+        }
+      />
+    </>
   );
 }
 

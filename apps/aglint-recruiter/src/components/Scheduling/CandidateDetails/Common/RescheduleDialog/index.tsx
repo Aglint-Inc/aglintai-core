@@ -7,21 +7,16 @@ import toast from '@/src/utils/toast';
 
 import { addScheduleActivity } from '../../../Candidates/queries/utils';
 import {
-  setIsCancelOpen,
-  setIsRescheduleOpen,
-  useInterviewSchedulingStore,
-} from '../../../Candidates/store';
-import { useAllActivities } from '../../hooks';
-import {
+  setIndividualRescheduleOpen,
   setinitialSessions,
   setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../../store';
 
-function RescheduleDialog() {
+function RescheduleDialog({ refetch }: { refetch: () => void }) {
   const { recruiterUser } = useAuthDetails();
-  const isRescheduleOpen = useInterviewSchedulingStore(
-    (state) => state.isRescheduleOpen,
+  const isRescheduleOpen = useSchedulingApplicationStore(
+    (state) => state.isIndividualRescheduleOpen,
   );
   const selectedSession = useSchedulingApplicationStore(
     (state) => state.selectedSession,
@@ -32,9 +27,6 @@ function RescheduleDialog() {
   const selectedApplication = useSchedulingApplicationStore(
     (state) => state.selectedApplication,
   );
-  const { refetch } = useAllActivities({
-    application_id: selectedApplication?.id,
-  });
 
   const onClickReschedule = async () => {
     try {
@@ -75,8 +67,7 @@ function RescheduleDialog() {
         await addScheduleActivity({
           title: `Cancelled session ${selectedSession.name}`,
           application_id: selectedApplication.id,
-          logger: recruiterUser.user_id,
-          type: 'schedule',
+          logged_by: 'user',
           supabase,
           created_by: recruiterUser.user_id,
         });
@@ -96,8 +87,7 @@ function RescheduleDialog() {
             }
           }),
         );
-        setIsCancelOpen(false);
-        setIsRescheduleOpen(false);
+        setIndividualRescheduleOpen(false);
         setSelectedSessionIds([selectedSession.id]);
       }
     } catch (e) {
@@ -109,16 +99,9 @@ function RescheduleDialog() {
 
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isRescheduleOpen}
       onClose={() => {
-        setIsRescheduleOpen(false);
+        setIndividualRescheduleOpen(false);
       }}
     >
       <ConfirmationPopup
@@ -129,7 +112,7 @@ function RescheduleDialog() {
         isIcon={false}
         onClickCancel={{
           onClick: () => {
-            setIsRescheduleOpen(false);
+            setIndividualRescheduleOpen(false);
           },
         }}
         onClickAction={{

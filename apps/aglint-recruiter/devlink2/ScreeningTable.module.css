@@ -114,28 +114,10 @@
 
 .allinterview_header_cell {
   display: flex;
-  padding: 10px 20px;
+  padding: var(--space-1) 20px;
   align-items: center;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
-}
-
-.allinterview_header_cell.width-300 {
-  width: 300px;
-}
-
-.allinterview_header_cell.width-138 {
-  width: 138px;
-}
-
-.allinterview_header_cell.width-217 {
-  width: 217px;
-}
-
-@media screen and (min-width: 1440px) {
-  .allinterview_header_cell.sfesrf {
-    display: none;
-  }
 }
 
 .allinterview_header_cell.hide {

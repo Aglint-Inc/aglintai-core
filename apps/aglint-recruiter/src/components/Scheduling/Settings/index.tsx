@@ -43,19 +43,19 @@ import { WorkingHourDay } from '@/devlink2/WorkingHourDay';
 import { WorkingHours } from '@/devlink2/WorkingHours';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
 import FilterInput from '../../CandidateDatabase/Search/FilterInput';
 import Icon from '../../Common/Icons/Icon';
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
+import ToggleBtn from '../../Common/UIToggle';
 import { interviewLocationType } from '../../CompanyDetailComp/TeamManagement/AddMemberDialog';
 import DateSelect from './Components/DateSelector';
 import MuiNumberfield from './Components/MuiNumberfield';
 import MuiSelect from './Components/MuiSelect';
 import SelectTime from './Components/SelectTime';
-import ToggleBtn from './Components/ToggleBtn';
 import DebriefDefaults from './DebriefDefaults';
 import SchedulingEmailTemplates from './SchedulingEmailTemplates';
 import SchedulingRegions from './SchedulingReason';
@@ -397,7 +397,7 @@ function SchedulingSettings({
                           <Typography variant='body1' fontSize={'15px'}>
                             Default Break Times
                           </Typography>
-                          <Typography variant='body2'>
+                          <Typography variant='body1'>
                             Define standard break times for the company.
                           </Typography>
                         </Stack>
@@ -564,7 +564,7 @@ function SchedulingSettings({
                   }
                   slotTimeZoneToggle={
                     <ToggleBtn
-                      handleCheck={(e) => {
+                      handleChange={(e:any) => { 
                         setIsTimeZone(e);
                         if (e) {
                           setSelectedTimeZone(
@@ -574,7 +574,7 @@ function SchedulingSettings({
                           );
                         }
                       }}
-                      isActive={isTimeZone}
+                      isChecked={isTimeZone}
                     />
                   }
                 />
@@ -618,13 +618,6 @@ function SchedulingSettings({
                         );
                       })}
                       <Dialog
-                        sx={{
-                          '& .MuiDialog-paper': {
-                            background: 'transparent',
-                            border: 'none',
-                            borderRadius: '10px',
-                          },
-                        }}
                         open={open}
                         onClose={() => {
                           // resetState();
@@ -636,7 +629,7 @@ function SchedulingSettings({
                           textPopupTitle='Add Holiday'
                           textPopupDescription={
                             <Stack gap={1}>
-                              <Typography variant='body2'>Day off</Typography>
+                              <Typography variant='body1'>Day off</Typography>
                               <Stack>
                                 <UITextField
                                   placeholder='Enter the name of the holiday'
@@ -644,14 +637,14 @@ function SchedulingSettings({
                                   ref={eventRef}
                                 />
                               </Stack>
-                              <Typography variant='body2'>Date</Typography>
+                              <Typography variant='body1'>Date</Typography>
                               <DateSelect
                                 selectedDates={daysOff}
                                 dateRef={dateRef}
                                 getDate={getDate}
                               />
 
-                              <Typography variant='body2'>Location</Typography>
+                              <Typography variant='body1'>Location</Typography>
                               <Stack
                                 fontSize={'12px'}
                                 direction={'row'}
@@ -699,7 +692,7 @@ function SchedulingSettings({
                                     specificLocationOn === 'specific_locations'
                                   }
                                 >
-                                  <Typography variant='body2'>
+                                  <Typography variant='body1'>
                                     Pick locations
                                   </Typography>
 
@@ -856,15 +849,9 @@ function SchedulingSettings({
                                   return pre.filter((ele) => ele !== item);
                                 });
                               }}
-                              sx={{
-                                p: '5px',
-                              }}
                               deleteIcon={
                                 <IconButton>
                                   <Icon
-                                    width='14'
-                                    height='14'
-                                    color='grey'
                                     variant='CloseThinIcon'
                                   />
                                 </IconButton>
@@ -910,15 +897,9 @@ function SchedulingSettings({
                                   return pre.filter((ele) => ele !== item);
                                 });
                               }}
-                              sx={{
-                                p: '5px',
-                              }}
                               deleteIcon={
                                 <IconButton>
                                   <Icon
-                                    width='14'
-                                    height='14'
-                                    color='grey'
                                     variant='CloseThinIcon'
                                   />
                                 </IconButton>
@@ -964,15 +945,9 @@ function SchedulingSettings({
                                   return pre.filter((ele) => ele !== item);
                                 });
                               }}
-                              sx={{
-                                p: '5px',
-                              }}
                               deleteIcon={
                                 <IconButton>
                                   <Icon
-                                    width='14'
-                                    height='14'
-                                    color='grey'
                                     variant='CloseThinIcon'
                                   />
                                 </IconButton>
@@ -1018,15 +993,9 @@ function SchedulingSettings({
                                   return pre.filter((ele) => ele !== item);
                                 });
                               }}
-                              sx={{
-                                p: '5px',
-                              }}
                               deleteIcon={
                                 <IconButton>
                                   <Icon
-                                    width='14'
-                                    height='14'
-                                    color='grey'
                                     variant='CloseThinIcon'
                                   />
                                 </IconButton>
@@ -1101,7 +1070,7 @@ export const TimezoneSelector = ({
         renderOption={(props, option) => {
           return (
             <li {...props}>
-              <Typography variant='body2' color={'#000'}>
+              <Typography variant='body1' color={'var(--neutral-12)'}>
                 {option.label}
               </Typography>
             </li>
@@ -1152,7 +1121,7 @@ function SettingsSubNabItem() {
               onClick: (e: any) => {
                 e.stopPropagation();
                 router.push(
-                  `${pageRoutes.SCHEDULING}?tab=settings&subtab=${item.value}`,
+                  `${ROUTES['/scheduling']()}?tab=settings&subtab=${item.value}`,
                 );
               },
             }}

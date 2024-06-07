@@ -52,10 +52,7 @@ export default function IProgressDrawer({
                 progressUser.user.first_name,
                 progressUser.user.last_name,
               )}
-              variant='circular'
-              height='24px'
-              width='24px'
-              fontSize='12px'
+              variant='rounded-small'
             />
           )
         }

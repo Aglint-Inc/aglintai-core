@@ -19,11 +19,23 @@
   top: 0px;
   z-index: 2;
   grid-template-columns: 25% 25% 50%;
-  background-color: white;
+  background-color: var(--white);
 }
 
 .div-block-1507.height-56 {
   height: 56px;
+}
+
+.div-block-1507.height-56.interviewers {
+  grid-template-columns: 40% 20% 20% 20%;
+}
+
+.div-block-1507.height-56.interviewers.height-auto {
+  height: auto;
+}
+
+.div-block-1507.interviewers {
+  grid-template-columns: 40% 20% 20% 20%;
 }
 
 .div-block-1508 {
@@ -42,6 +54,11 @@
   align-items: center;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
+}
+
+.div-block-1508.padd-10 {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 #w-node-d9f49c54-5ee8-46e0-b97b-44884a74100b-4a741007 {

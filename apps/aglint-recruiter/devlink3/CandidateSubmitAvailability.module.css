@@ -1,0 +1,19 @@
+.div-block-1768 {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.div-block-1771 {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.div-block-1770 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}

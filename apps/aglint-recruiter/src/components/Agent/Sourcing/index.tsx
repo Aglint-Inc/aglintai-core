@@ -42,11 +42,11 @@ import * as AuthContext from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
-import ChatMessageLoader from '../../AssistantChat/ChatMessageLoader';
 import { calculateTotalExperience } from '../../CandidateDatabase/AppoloSearch/utils';
+import ChatMessageLoader from '../../Common/Lotties/ChatMessageLoader';
+import LottieAnimations from '../../Common/Lotties/LottieIcons';
 import MuiAvatar from '../../Common/MuiAvatar';
 import CompanyLogo from '../../JobApplicationsDashboard/Common/CompanyLogo';
-import LottieAnimations from '../../lottie/LottieIcons';
 import { processing_sourcing } from './util';
 
 export type messageType = {
@@ -525,10 +525,7 @@ function SourcingAgent() {
                                                       ? null
                                                       : item.photo_url
                                                   }
-                                                  variant={'rounded'}
-                                                  width={'80px'}
-                                                  height={'80px'}
-                                                  fontSize={'30px'}
+                                                  variant={'rounded-large'}
                                                 />
                                               }
                                               textName={getFullName(

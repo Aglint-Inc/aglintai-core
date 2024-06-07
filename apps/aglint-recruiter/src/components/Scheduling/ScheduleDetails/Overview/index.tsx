@@ -19,7 +19,7 @@ import CandidateDefaultIcon from '@/src/components/Common/Icons/CandidateDefault
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -188,10 +188,7 @@ function Overview({
                             item.recruiter_user.last_name,
                           )}
                           src={item.recruiter_user.profile_image}
-                          variant={'circular'}
-                          width={'100%'}
-                          height={'100%'}
-                          fontSize={'14px'}
+                          variant={'rounded-small'}
                         />
                       ) : (
                         <svg
@@ -244,9 +241,13 @@ function Overview({
                       },
                     }}
                     textReschedule={
-                      item.interview_session_cancel.type === 'reschedule'
-                        ? 'requested for reschedule'
-                        : 'declined this schedule'
+                      item.interview_session_cancel.schedule_id
+                        ? item.interview_session_cancel.type === 'reschedule'
+                          ? 'requested for reschedule'
+                          : 'cancelled this schedule'
+                        : item.interview_session_cancel.type === 'reschedule'
+                          ? 'requested for reschedule'
+                          : 'declined this schedule'
                     }
                     isChangeInterviewerVisible={
                       item.interview_session_cancel.session_relation_id &&
@@ -258,6 +259,19 @@ function Overview({
                       onClick: () => {
                         setCancelUserId(item.recruiter_user.id);
                         setIsChangeInterviewerOpen(true);
+                      },
+                    }}
+                    isRescheduleBtnVisible={
+                      !item.interview_session_cancel.schedule_id
+                    }
+                    isCancelVisible={
+                      item.interview_session_cancel.schedule_id &&
+                      item.interview_session_cancel.type === 'declined'
+                    }
+                    onClickCancel={{
+                      onClick: () => {
+                        setCancelUserId(item.recruiter_user.id);
+                        setIsCancelOpen(true);
                       },
                     }}
                   />

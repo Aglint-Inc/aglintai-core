@@ -9,9 +9,8 @@
     "pull": "git pull origin development --no-rebase"
   },
   "version": "0.0.1",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "dependencies": {},
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "devDependencies": {
     "@aglint/typescript-config": "*",
     "@supabase/ssr": "latest",

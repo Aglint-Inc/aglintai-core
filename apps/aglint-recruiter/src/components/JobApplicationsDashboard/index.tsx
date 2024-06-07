@@ -28,12 +28,14 @@ import { ApplicantsListEmpty } from '@/devlink2/ApplicantsListEmpty';
 import { ApplicantsTable } from '@/devlink2/ApplicantsTable';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { CandidatesListPagination } from '@/devlink2/CandidatesListPagination';
+// import { CandidatesListPagination } from '@/devlink2/CandidatesListPagination';
 import { JobDetails } from '@/devlink2/JobDetails';
 import { JobDetailsFilterBlock } from '@/devlink2/JobDetailsFilterBlock';
 import { RcCheckbox } from '@/devlink2/RcCheckbox';
 import { SelectActionBar } from '@/devlink2/SelectActionBar';
 import { TopApplicantsTable } from '@/devlink2/TopApplicantsTable';
 import { NewTabPill } from '@/devlink3/NewTabPill';
+import NoApplicants from '@/public/lottie/NoApplicants';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
@@ -59,7 +61,6 @@ import ResumeUpload from './FileUpload';
 import { getBoundingStatus, useKeyPress, useMouseClick } from './hooks';
 import ImportCandidatesCSV from './ImportCandidatesCsv';
 import ImportManualCandidates from './ImportManualCandidates';
-import NoApplicants from './Lotties/NoApplicants';
 import SearchField from './SearchField';
 import { capitalize, handleOngoingWarning } from './utils';
 
@@ -150,12 +151,6 @@ const JobApplicationComponent = () => {
     <>
       <DNDLayerSwitcher applicationLimit={applicationLimit}>
         <JobDetails
-          isEditJob={false}
-          isWarningVisible={
-            job.status == 'published' && (!job.jd_json || !job.description)
-              ? true
-              : false
-          }
           isFilterVisible={
             !!((sectionApplications ?? []).length + job.count[section])
           }
@@ -186,20 +181,6 @@ const JobApplicationComponent = () => {
               posthog.capture('Import Candidates Clicked');
             },
           }}
-          slotSidebar={
-            <ApplicationDetails
-              open={currentApplication !== -1}
-              onClose={() => handleSelectCurrentApplication(-1)}
-              handleSelectNextApplication={() => handleSelectNextApplication()}
-              handleSelectPrevApplication={() => handleSelectPrevApplication()}
-              application={
-                sectionApplications[
-                  currentApplication === -1 ? 0 : currentApplication
-                ]
-              }
-              hideNextPrev={false}
-            />
-          }
           slotTabs={<NewJobDetailsTabs />}
           slotFilters={
             <NewJobFilterBlock
@@ -217,17 +198,23 @@ const JobApplicationComponent = () => {
               currentApplication={currentApplication}
             />
           }
-          slotPagination={
-            <ApplicationPagination
-              size={sectionApplications.length}
-              limits={applicationLimit}
-            />
-          }
         />
       </DNDLayerSwitcher>
       <AddCandidates
         openImportCandidates={openImportCandidates}
         setOpenImportCandidates={setOpenImportCandidates}
+      />
+      <ApplicationDetails
+        open={currentApplication !== -1}
+        onClose={() => handleSelectCurrentApplication(-1)}
+        handleSelectNextApplication={() => handleSelectNextApplication()}
+        handleSelectPrevApplication={() => handleSelectPrevApplication()}
+        application={
+          sectionApplications[
+            currentApplication === -1 ? 0 : currentApplication
+          ]
+        }
+        hideNextPrev={false}
       />
     </>
   );
@@ -414,14 +401,23 @@ const ApplicationTable = ({
         }
       />
     ) : (
-      <ApplicantsTable
-        onClickSelectAll={{ onClick: () => handleSelectAllMin() }}
-        isAllChecked={isAllChecked}
-        isInterviewVisible={views.assessment}
-        slotCandidatesList={applicantsList}
-        isDisqualifiedVisible={views.disqualified}
-        isScreeningVisible={views.screening}
-      />
+      <>
+        <ApplicantsTable
+          onClickSelectAll={{ onClick: () => handleSelectAllMin() }}
+          isAllChecked={isAllChecked}
+          isInterviewVisible={views.assessment}
+          isDisqualifiedVisible={views.disqualified}
+          isScreeningVisible={views.screening}
+        />
+        <Stack style={{ height: 'calc(100vh - 250px)', overflow: 'scroll' }}>
+          {applicantsList}
+        </Stack>
+
+        <ApplicationPagination
+          size={sectionApplications.length}
+          limits={job.count}
+        />
+      </>
     )
   ) : (
     <TopApplicantsTable

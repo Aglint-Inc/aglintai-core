@@ -1,12 +1,11 @@
 /* eslint-disable security/detect-object-injection */
 import { Popover, Stack } from '@mui/material';
-import { capitalize } from 'lodash';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import { ChangeEventHandler, FC, useEffect, useRef, useState } from 'react';
 
 import { AddButton } from '@/devlink/AddButton';
-import { ButtonPrimarySmall } from '@/devlink/ButtonPrimarySmall';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { Checkbox } from '@/devlink/Checkbox';
 import { ScoreCard } from '@/devlink/ScoreCard';
 import { ScoreCardEdit } from '@/devlink/ScoreCardEdit';
@@ -32,6 +31,7 @@ import { Job } from '@/src/queries/job/types';
 import Loader from '../Common/Loader';
 import ScoreWheel, { ScoreWheelParams } from '../Common/ScoreWheel';
 import UITextField from '../Common/UITextField';
+import { capitalize } from '../JobApplicationsDashboard/utils';
 import { JdJsonType } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 
 type Sections = 'experience' | 'education' | 'skills';
@@ -177,7 +177,7 @@ const ProfileScoreControls = () => {
                   <UITextField
                     name='experience'
                     type='number'
-                    width='60px'
+                    width='70px'
                     value={weights.experience}
                     onChange={(e) => handleChange(e)}
                     disabled={disabled.experience}
@@ -197,7 +197,7 @@ const ProfileScoreControls = () => {
                   <UITextField
                     name='skills'
                     type='number'
-                    width='60px'
+                    width='70px'
                     value={weights.skills}
                     onChange={(e) => handleChange(e)}
                     disabled={disabled.skills}
@@ -217,7 +217,7 @@ const ProfileScoreControls = () => {
                   <UITextField
                     name='education'
                     type='number'
-                    width='60px'
+                    width='70px'
                     value={weights.education}
                     onChange={(e) => handleChange(e)}
                     disabled={disabled.education}
@@ -473,7 +473,7 @@ const Pill: FC<{
                 width: type === 'experience' ? '500px' : '250px',
                 outline: 'none',
                 border: 'none',
-                backgroundColor: '#f8f9f9',
+                backgroundColor: 'transparent',
                 resize: 'none',
               }}
               // eslint-disable-next-line jsx-a11y/no-autofocus
@@ -487,13 +487,16 @@ const Pill: FC<{
           isCancelVisible={false}
           onClickDelete={{ onClick: () => onDelete() }}
           slotButtonUpdate={
-            <ButtonPrimarySmall
-              isDisabled={value === ''}
-              textLabel={'Submit'}
-              onClickButton={{
-                onClick: () => onSubmit(),
-              }}
-            />
+            <ButtonSolid size={'2'} isLeftIcon={false} isRightIcon={false} onClickButton={{
+              onClick: () => onSubmit(),
+            }} textButton="Submit" />
+            // <ButtonPrimarySmall
+            //   isDisabled={value === ''}
+            //   textLabel={'Submit'}
+            //   onClickButton={{
+            //     onClick: () => onSubmit(),
+            //   }}
+            // />
           }
         />
       </Popover>
@@ -569,13 +572,16 @@ const AddOption: FC<{
           isCancelVisible={true}
           onClickCancel={{ onClick: () => handleClose() }}
           slotButtonUpdate={
-            <ButtonPrimarySmall
-              isDisabled={value === ''}
-              textLabel={'Submit'}
-              onClickButton={{
-                onClick: () => onSubmit(),
-              }}
-            />
+            <ButtonSolid size={'2'} isLeftIcon={false} isRightIcon={false} onClickButton={{
+                  onClick: () => onSubmit(),
+                }} textButton="Submit" />
+            // <ButtonPrimarySmall
+            //   isDisabled={value === ''}
+            //   textLabel={'Submit'}
+            //   onClickButton={{
+            //     onClick: () => onSubmit(),
+            //   }}
+            // />
           }
         />
       </Popover>

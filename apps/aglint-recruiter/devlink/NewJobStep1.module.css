@@ -6,15 +6,6 @@
   flex-direction: column;
 }
 
-.job-sidebar-main-block.step-1 {
-  display: none;
-}
-
-.step-1 {
-  position: relative;
-  z-index: 1;
-}
-
 .job-sidebar-main-block.cj-step-2 {
   display: block;
 }
@@ -56,23 +47,6 @@
   padding-top: 20px;
 }
 
-.job-sidebar-main-block.cj-step-3 {
-  display: block;
-  background-color: var(--white-80449ce7);
-}
-
-@media screen and (min-width: 1440px) {
-  .job-sidebar-main-block.cj-step-3 {
-    display: flex;
-  }
-}
-
-@media screen and (min-width: 1440px) {
-  .job-sidebar-main-block.cj-step-4 {
-    display: flex;
-  }
-}
-
 .job-sidebar-main-block.cj-step-5 {
   display: flex;
   padding-top: 20px;
@@ -88,32 +62,20 @@
   grid-row-gap: 30px;
 }
 
-.job-sidebar-main-block.cj-step-0 {
-  display: none;
-}
-
-.job-sidebar-main-block.cj-step-green-1 {
-  display: none;
-}
-
-.div-block-507 {
+.email-template-left-head {
   display: flex;
-  margin-bottom: 26px;
+  margin-bottom: var(--space-5);
   flex-direction: column;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
-.div-block-507.remove-bottom {
+.email-template-left-head.remove-bottom {
   margin-bottom: 10px;
 }
 
 .fw-semibold {
   font-weight: 600;
-}
-
-.text-capitalize-word {
-  text-transform: capitalize;
 }
 
 .fw-semibold.one-line-clamp.mx-width-662 {
@@ -137,20 +99,8 @@
   opacity: 0.7;
 }
 
-.fw-semibold.cursor-pointer.capitialize {
-  text-transform: capitalize;
-}
-
 .color-grey-600 {
   color: #68737d;
-}
-
-.fw-semibold.color-grey-600.margin-top-10 {
-  margin-top: 10px;
-}
-
-.text-align-center {
-  text-align: center;
 }
 
 .hide {
@@ -168,14 +118,6 @@
   color: var(--blue800-09c1dfbf);
 }
 
-.text-grey-800 {
-  color: var(--grey800-e42b2e06);
-}
-
-.fw-semibold.margin-right-5 {
-  margin-right: 5px;
-}
-
 .fw-semibold.text-kale-800 {
   color: #012b30;
 }
@@ -190,14 +132,6 @@
 
 .text-grey-700 {
   color: var(--grey700-7fbe857b);
-}
-
-.text-grey-100 {
-  color: var(--gray100-3a86b552);
-}
-
-.text-red-800 {
-  color: var(--red800-2e6a9098);
 }
 
 .color-black {
@@ -218,30 +152,6 @@
 
 .color-grey-500 {
   color: var(--grey500-0d508ad8);
-}
-
-.fw-semibold.indeed {
-  display: none;
-}
-
-.fw-semibold.lever {
-  display: none;
-}
-
-.fw-semibold.workday {
-  display: none;
-}
-
-.fw-semibold.indeed-text {
-  display: none;
-}
-
-.fw-semibold.lever-text {
-  display: none;
-}
-
-.fw-semibold.workday-text {
-  display: none;
 }
 
 .text-grey-500 {
@@ -296,15 +206,6 @@
   color: var(--grey400-863ed4b5);
 }
 
-.fw-semibold.grow-line {
-  flex: 0 0 auto;
-}
-
-.fw-semibold.z-index-5 {
-  position: relative;
-  z-index: 5;
-}
-
 .fw-semibold.text-lg.text-yellow-600.mobile-14 {
   color: #ed8f1c;
   -webkit-text-stroke-color: #ed8f1c;
@@ -314,26 +215,6 @@
   .fw-semibold.text-lg.text-yellow-600.mobile-14 {
     font-size: 14px;
   }
-}
-
-.fw-semibold.mb-14 {
-  margin-bottom: 14px;
-}
-
-.color-blue-600 {
-  color: var(--blue600-aad8d97e);
-}
-
-.fw-semibold.mb-15 {
-  margin-bottom: 15px;
-}
-
-.fw-semibold.text-kale-700 {
-  color: #03363d;
-}
-
-.text-kale-700 {
-  color: var(--kale700-f5e4c087);
 }
 
 .fw-semibold.new-greenhouse {
@@ -352,16 +233,12 @@
   color: var(--red500-2e806c7d);
 }
 
-.text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+.text-align-center {
+  text-align: center;
 }
 
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
-}
-
-.fw-semibold.text-blue-600.no-underline {
-  text-decoration: none;
 }
 
 .text-no-wrap {
@@ -369,12 +246,8 @@
   overflow-wrap: anywhere;
 }
 
-.color-grey-600.max-width-350 {
-  max-width: 350px;
-}
-
-.color-grey-600.growth-stretch {
-  flex: 0 0 auto;
+.mt-20 {
+  margin-top: 20px;
 }
 
 .color-grey-600.mt-8 {
@@ -385,15 +258,6 @@
   margin-top: 10px;
 }
 
-.color-grey-600.cursor-pointer.delete-button-screeing:hover {
-  opacity: 1;
-  color: #d93f4c;
-}
-
-.color-grey-600.ml-20 {
-  margin-left: 20px;
-}
-
 .color-grey-600.mt-12 {
   margin-top: 12px;
 }
@@ -402,16 +266,8 @@
   max-width: 588px;
 }
 
-.mt-5 {
-  margin-top: 5px;
-}
-
 .color-grey-600.mt-6 {
   margin-top: 6px;
-}
-
-.mt-4 {
-  margin-top: 4px;
 }
 
 .div-block-816 {
@@ -428,10 +284,6 @@
   flex: 1;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-}
-
-.cj-main-wrapper.pb-200 {
-  padding-bottom: 200px;
 }
 
 .slot-job-form-step-2 {

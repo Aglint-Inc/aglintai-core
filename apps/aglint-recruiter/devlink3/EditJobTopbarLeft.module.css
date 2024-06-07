@@ -21,11 +21,6 @@
   font-weight: 600;
 }
 
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
 .fw-semibold.relative_2 {
   position: relative;
   z-index: 2;
@@ -42,6 +37,10 @@
 
 .fw-semibold.capitalize {
   text-transform: capitalize;
+}
+
+.text-red-600 {
+  color: #cc3340;
 }
 
 .fw-semibold.text-purple {
@@ -64,6 +63,24 @@
   color: #d93f4c;
 }
 
+.text-lg {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.text-grey_600 {
+  color: var(--sand-11);
+}
+
+.hide {
+  display: none;
+}
+
 .div-block-716 {
   display: flex;
   align-items: center;
@@ -71,8 +88,48 @@
   grid-row-gap: 4px;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .text-blue-500 {
   color: #337fbd;
+}
+
+.text-blue-500.text-underline {
+  text-decoration: underline;
+}
+
+.text-underline {
+  text-decoration: underline;
+}
+
+.text-blue-500.text-underline.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-blue-500.text-underline.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.text-sm {
+  font-size: var(--font-size-1);
+  line-height: var(--line-height-1);
+  letter-spacing: var(--letter-spacing-1);
+}
+
+.text-blue-500.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-blue-500.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.text-blue-500.text-capital {
+  text-transform: uppercase;
 }
 
 .icons {
@@ -83,5 +140,22 @@
 }
 
 .icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.task-hover {
+  position: absolute;
+  left: 50px;
+  top: -10px;
+  right: auto;
+  bottom: auto;
+}
+
+.icons.pointer {
   cursor: pointer;
 }

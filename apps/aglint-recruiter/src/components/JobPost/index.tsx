@@ -27,13 +27,12 @@ import { InterviewCompleted } from '@/devlink/InterviewCompleted';
 import { JobListing } from '@/devlink/JobListing';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { OpenJobListingCard } from '@/devlink/OpenJobListingCard';
-import { palette } from '@/src/context/Theme/Theme';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ThankYou from '@/public/lottie/ThankYouLottie';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Icon from '../Common/Icons/Icon';
-import ThankYou from './ThankYouLottie';
 import UploadDB from './UploadDB';
 
 interface JobsListProps {
@@ -136,7 +135,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({
                     height: '78px',
                     width: '78px',
                     borderRadius: '8px',
-                    // background: palette.grey[100],
+                    // background={'var(--neutral-1)'},
                   }}
                 >
                   <Icon
@@ -148,7 +147,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({
                 <Typography variant='h3'>
                   {(recruiter as { name: string })?.name}
                 </Typography>
-                <Typography variant='body2'>
+                <Typography variant='body1'>
                   {[
                     (
                       recruiter as {
@@ -307,7 +306,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({
                 },
                 height: '58px',
                 width: '58px',
-                background: palette.grey[200],
+                background: 'var(--neutral-3)',
               }}
             >
               <Icon variant='Person' />
@@ -348,10 +347,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({
             onClick: () => {
               router.push(
                 process.env.NEXT_PUBLIC_WEBSITE +
-                  '/' +
-                  pageRoutes.COMPANYPOSTINGS +
-                  '/' +
-                  recruiter.id,
+                  ROUTES['/company-postings/[id]']({ id: recruiter.id }),
               );
             },
           }}

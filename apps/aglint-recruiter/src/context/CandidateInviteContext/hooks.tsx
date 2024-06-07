@@ -30,8 +30,7 @@ const useInviteActions = () => {
   const [timezone, setTimezone] = useState<TimezoneObj>(initialTimezone);
 
   const params: Parameters<typeof useInviteSlots>[0] = {
-    filter_json: meta?.data?.filter_json ?? null,
-    recruiter: meta?.data?.recruiter ?? null,
+    filter_json_id: meta?.data?.filter_json.id ?? null,
     user_tz: timezone?.tzCode ?? null,
   };
 

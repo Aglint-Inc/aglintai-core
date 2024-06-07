@@ -6,12 +6,11 @@ import posthog from 'posthog-js';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
-import { palette } from '@/src/context/Theme/Theme';
 
-import AUIButton from '../../Common/AUIButton';
 import Loader from '../../Common/Loader';
 import UIPhoneInput from '../../Common/UIPhoneInput';
 import UITextField from '../../Common/UITextField';
@@ -191,9 +190,7 @@ const ImportManualCandidates = ({
       >
         <FormBody applicant={applicant} setApplicant={setApplicant} />
         <Stack direction={'row'} justifyContent={'flex-end'}>
-          <AUIButton size='small' onClick={async () => await handleSubmit()}>
-            Add Candidate
-          </AUIButton>
+          <ButtonSolid size={'2'} isLeftIcon={false} isRightIcon={false} onClickButton={async () => await handleSubmit()} textButton="Add Candidate" />
         </Stack>
       </Stack>
       <Stack
@@ -275,7 +272,7 @@ const FormBody = ({
           labelSize='small'
           fullWidth
           label='Email'
-          placeholder='email'
+          placeholder='Email'
           required
           value={applicant.email.value}
           error={applicant.email.error}
@@ -319,7 +316,7 @@ const FormBody = ({
         labelSize='small'
         label='LinkedIn URL'
         fullWidth
-        placeholder='linkedin'
+        placeholder='Linkedin'
         required
         value={applicant.linkedin.value}
         error={applicant.linkedin.error}
@@ -344,7 +341,7 @@ const FormBody = ({
             <Stack
               sx={{
                 border: '1px dashed',
-                borderColor: palette.blue[300],
+                borderColor: 'var(--accent-6)',
                 borderRadius: 1,
                 py: '34px',
                 px: '20px',
@@ -358,7 +355,7 @@ const FormBody = ({
             >
               {applicant.resume.value ? <FileIcon /> : <UploadIcon />}
               <Typography
-                variant='body2'
+                variant='body1'
                 sx={{ textAlgin: 'center', fontSize: '14px' }}
                 style={{
                   color: applicant.resume.error ? 'red' : 'inherit',

@@ -81,7 +81,13 @@ const handler = async (
           file.contentType,
         )
           .then(() =>
-            createApplication(supabase, job_id, candidate_id, candidate_file_id)
+            createApplication(
+              supabase,
+              job_id,
+              candidate_id,
+              candidate_file_id,
+              'resume_upload',
+            )
               .then((): ResumeUploadApi['response'][number] => ({
                 confirmation: true,
                 error: null as string,

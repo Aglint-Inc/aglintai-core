@@ -50,7 +50,7 @@ function PopUps({
               <ShowCode>
                 <ShowCode.When isTrue={reason === 'close_tasks'}>
                   <Stack direction={'column'} spacing={'5px'}>
-                    <Typography variant='body2'>
+                    <Typography variant='body1'>
                       {`You've selected ${selectedTasksIds.length} tasks.`}
                     </Typography>
                     <Typography fontSize={'14px'} variant='caption'>
@@ -112,7 +112,7 @@ function PopUps({
               <ShowCode>
                 <ShowCode.When isTrue={reason === 'change_status'}>
                   <Stack direction={'column'} spacing={'5px'}>
-                    <Typography variant='body2'>
+                    <Typography variant='body1'>
                       {`You've selected ${selectedTasksIds.length} tasks.`}
                     </Typography>
                     <Typography fontSize={'14px'} variant='caption'>
@@ -122,7 +122,7 @@ function PopUps({
                 </ShowCode.When>
                 <ShowCode.When isTrue={reason === 'change_assignee'}>
                   <Stack direction={'column'} spacing={'5px'}>
-                    <Typography variant='body2'>
+                    <Typography variant='body1'>
                       {`You are reassigning ${selectedTasksIds.length} selected tasks. `}
                     </Typography>
                     <Typography fontSize={'14px'} variant='caption'>
@@ -133,7 +133,7 @@ function PopUps({
                 </ShowCode.When>
                 <ShowCode.When isTrue={reason === 'update_priority'}>
                   <Stack direction={'column'} spacing={'5px'}>
-                    <Typography variant='body2'>
+                    <Typography variant='body1'>
                       {`You've selected ${selectedTasksIds.length} tasks.`}
                     </Typography>
                     <Typography fontSize={'14px'} variant='caption'>

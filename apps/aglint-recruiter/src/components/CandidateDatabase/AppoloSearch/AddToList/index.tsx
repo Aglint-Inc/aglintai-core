@@ -9,10 +9,10 @@ import { ButtonPrimarySmall } from '@/devlink/ButtonPrimarySmall';
 import { CdSavedList } from '@/devlink/CdSavedList';
 import { SavedList } from '@/devlink/SavedList';
 import { SavedListMenu } from '@/devlink/SavedListMenu';
-import LoaderGrey from '@/src/components/Common/LoaderGrey';
+import LoaderGrey from '@/public/lottie/LoaderGrey';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -118,7 +118,9 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
             text: 'View',
             callback(toast) {
               setSelectedCandidate(null);
-              router.push(pageRoutes.AGLINTDB + `?list=${data[0].id}`);
+              router.push(
+                ROUTES['/candidates/aglintdb']() + `?list=${data[0].id}`,
+              );
               toast.destroy();
             },
           },

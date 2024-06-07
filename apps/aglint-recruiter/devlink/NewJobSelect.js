@@ -1,6 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ImportJobCard } from "./ImportJobCard";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./NewJobSelect.module.css";
 
@@ -10,88 +11,75 @@ export function NewJobSelect({
   slotImportJobCard,
 }) {
   return (
-    <_Component
-      className={_utils.cx(_styles, "job-sidebar-main-block", "options")}
-      tag="div"
-    >
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-274")} tag="div">
+    <_Component className={_utils.cx(_styles, "new-job-select-wrap")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "cj-option-wrapper")}
+        tag="div"
+      >
+        <Text content="Select an option to continue with" weight="bold" />
         <_Builtin.Block
-          className={_utils.cx(_styles, "cj-option-wrapper")}
+          className={_utils.cx(
+            _styles,
+            "cj-option-block",
+            "yellow-100",
+            "small-card-add-job"
+          )}
           tag="div"
+          {...onClickCreateJobAglint}
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
+            className={_utils.cx(_styles, "frame-1036")}
             tag="div"
           >
-            {"Select an option to continue with"}
+            <_Builtin.Block className={_utils.cx(_styles, "text-6")} tag="div">
+              {"Recommended"}
+            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "cj-option-block",
-              "yellow-100",
-              "small-card-add-job"
-            )}
+            className={_utils.cx(_styles, "cj-option-icon-block")}
             tag="div"
-            {...onClickCreateJobAglint}
+          >
+            <_Builtin.Image
+              className={_utils.cx(_styles, "vectors-wrapper-29")}
+              loading="lazy"
+              width="23.75"
+              height="23.75"
+              src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/650369589a66f64187642eb1_Vectors-Wrapper.svg"
+            />
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "cj-option-info")}
+            tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "frame-1036")}
+              className={_utils.cx(_styles, "medium-bold-5")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-6")}
-                tag="div"
-              >
-                {"Recommended"}
-              </_Builtin.Block>
+              {"Create Job throgh Aglint"}
             </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "cj-option-icon-block")}
-              tag="div"
-            >
-              <_Builtin.Image
-                className={_utils.cx(_styles, "vectors-wrapper-29")}
-                loading="lazy"
-                width="23.75"
-                height="23.75"
-                src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/650369589a66f64187642eb1_Vectors-Wrapper.svg"
-              />
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "cj-option-info")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "medium-bold-5")}
-                tag="div"
-              >
-                {"Create Job throgh Aglint"}
-              </_Builtin.Block>
-              <_Builtin.Block tag="div">
-                {
-                  "Craft your job listing effortlessly in just three simple steps with Aglint."
-                }
-              </_Builtin.Block>
+            <_Builtin.Block tag="div">
+              {
+                "Craft your job listing effortlessly in just three simple steps with Aglint."
+              }
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "cj-imports-wrapper")}
+        tag="div"
+      >
         <_Builtin.Block
-          className={_utils.cx(_styles, "cj-imports-wrapper")}
+          className={_utils.cx(_styles, "text-grey-600")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey-600")}
-            tag="div"
-          >
-            {"Or Import existing job"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cj-imports-options-drawer")}
-            tag="div"
-          >
-            {slotImportJobCard ?? <ImportJobCard />}
-          </_Builtin.Block>
+          {"Or Import existing job"}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "cj-imports-options-drawer")}
+          tag="div"
+        >
+          {slotImportJobCard}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

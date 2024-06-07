@@ -1,28 +1,48 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./DangerMessage.module.css";
 
 export function DangerMessage({ as: _Component = _Builtin.Block }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "discard-btn-score", "red-copy")}
+      className={_utils.cx(_styles, "discard-btn-score", "red-copy-copy")}
       tag="div"
     >
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-699")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "bannner_wrap", "is_danger")}
+        tag="div"
+      >
         <_Builtin.HtmlEmbed
-          className={_utils.cx(_styles, "icons")}
-          value="%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M12%205C12.4792%205.02083%2012.8438%205.22917%2013.0938%205.625L19.8438%2017.125C20.0521%2017.5417%2020.0521%2017.9583%2019.8438%2018.375C19.5938%2018.7708%2019.2292%2018.9792%2018.75%2019H5.25C4.77083%2018.9792%204.40625%2018.7708%204.15625%2018.375C3.94792%2017.9583%203.94792%2017.5417%204.15625%2017.125L10.9375%205.625C11.1875%205.22917%2011.5417%205.02083%2012%205ZM12%209C11.5417%209.04167%2011.2917%209.29167%2011.25%209.75V13.25C11.2917%2013.7083%2011.5417%2013.9583%2012%2014C12.4583%2013.9583%2012.7083%2013.7083%2012.75%2013.25V9.75C12.7083%209.29167%2012.4583%209.04167%2012%209ZM13%2016C13%2015.7083%2012.9062%2015.4688%2012.7188%2015.2812C12.5312%2015.0938%2012.2917%2015%2012%2015C11.7083%2015%2011.4688%2015.0938%2011.2812%2015.2812C11.0938%2015.4688%2011%2015.7083%2011%2016C11%2016.2917%2011.0938%2016.5312%2011.2812%2016.7188C11.4688%2016.9062%2011.7083%2017%2012%2017C12.2917%2017%2012.5312%2016.9062%2012.7188%2016.7188C12.9062%2016.5312%2013%2016.2917%2013%2016Z%22%20fill%3D%22%23D93F4C%22%2F%3E%0A%3C%2Fsvg%3E"
+          className={_utils.cx(_styles, "embed_flex")}
+          id={_utils.cx(
+            _styles,
+            "w-node-_97b38481-eb88-5f12-fe3f-d625ff1a3637-59dfb041"
+          )}
+          value="%3Csvg%20width%3D%2248%22%20height%3D%2248%22%20viewbox%3D%220%200%2048%2048%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M24%2010C24.9583%2010.0417%2025.6875%2010.4583%2026.1875%2011.25L39.6875%2034.25C40.1042%2035.0833%2040.1042%2035.9167%2039.6875%2036.75C39.1875%2037.5417%2038.4583%2037.9583%2037.5%2038H10.5C9.54167%2037.9583%208.8125%2037.5417%208.3125%2036.75C7.89583%2035.9167%207.89583%2035.0833%208.3125%2034.25L21.875%2011.25C22.375%2010.4583%2023.0833%2010.0417%2024%2010ZM24%2018C23.0833%2018.0833%2022.5833%2018.5833%2022.5%2019.5V26.5C22.5833%2027.4167%2023.0833%2027.9167%2024%2028C24.9167%2027.9167%2025.4167%2027.4167%2025.5%2026.5V19.5C25.4167%2018.5833%2024.9167%2018.0833%2024%2018ZM26%2032C26%2031.4167%2025.8125%2030.9375%2025.4375%2030.5625C25.0625%2030.1875%2024.5833%2030%2024%2030C23.4167%2030%2022.9375%2030.1875%2022.5625%2030.5625C22.1875%2030.9375%2022%2031.4167%2022%2032C22%2032.5833%2022.1875%2033.0625%2022.5625%2033.4375C22.9375%2033.8125%2023.4167%2034%2024%2034C24.5833%2034%2025.0625%2033.8125%2025.4375%2033.4375C25.8125%2033.0625%2026%2032.5833%2026%2032Z%22%20fill%3D%22%23D93F4C%22%2F%3E%0A%3C%2Fsvg%3E"
         />
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-yellow-800", "fw-semibold")}
+          className={_utils.cx(_styles, "banner_text_wrapper")}
+          id={_utils.cx(
+            _styles,
+            "w-node-_97b38481-eb88-5f12-fe3f-d625ff1a3638-59dfb041"
+          )}
           tag="div"
         >
-          {"Unable to score candidate"}
+          <Text weight="medium" content="Unable to score candidate" />
+          <Text
+            size="1"
+            weight=""
+            color="neutral"
+            content="Publish this job to find score for candidates"
+          />
         </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block tag="div">
-        {"Publish this job to find score for candidates"}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "right_buttons")}
+          tag="div"
+        />
       </_Builtin.Block>
     </_Component>
   );

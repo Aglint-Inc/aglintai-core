@@ -125,7 +125,11 @@ export const bookSession = async (
     }
   });
   await Promise.all(attendees_promises);
-  return { session_id: session.session_id, cal_event };
+  return {
+    session_id: session.session_id,
+    cal_event,
+    meeting_id: session.meeting_id,
+  };
 };
 
 export const getUserCalAuth = async ({

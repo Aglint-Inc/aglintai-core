@@ -11,7 +11,7 @@ import {
   FilterParameter,
   SortParameter,
 } from '@/src/components/JobApplicationsDashboard/utils';
-import { ApplicationList } from '@/src/components/Scheduling/Candidates/store';
+import { ApplicationList } from '@/src/components/Scheduling/Candidates/utils';
 import { ReadJobApplicationApi } from '@/src/pages/api/job/jobApplications/read';
 import { AssessmentResult } from '@/src/queries/assessment/types';
 import { Job } from '@/src/queries/job/types';

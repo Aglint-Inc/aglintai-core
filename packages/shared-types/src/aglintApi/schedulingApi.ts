@@ -1,14 +1,5 @@
 import { RecruiterUserType } from '../data.types';
-
-export interface ApiFindAvailability {
-  session_ids: string[];
-  plan_id: string;
-  recruiter_id: string;
-  start_date: string;
-  end_date: string;
-  user_tz: string;
-  is_debreif: boolean;
-}
+import { PlanCombinationRespType } from '../scheduleTypes';
 
 export type ApiCancelScheduledInterview = {
   session_ids: string[];
@@ -41,21 +32,6 @@ export type APIEventAttendeeStatus = {
   attendee_interv_id: string;
 };
 
-export type APIFindInterviewSlot = {
-  session_ids: string[];
-  recruiter_id: string;
-  start_date: string;
-  user_tz: string;
-};
-
-export type APIFindSlotsDateRange = {
-  session_ids: string[];
-  recruiter_id: string;
-  date_range_start: string;
-  date_range_end: string;
-  user_tz: string;
-};
-
 export type APIFindAltenativeTimeSlot = {
   session_id: string;
   recruiter_id: string;
@@ -76,6 +52,93 @@ export type APIFindAltenativeTimeSlotResponse = {
 }[];
 
 export type APICandScheduleMailThankYou = {
-  filter_id: string;
+  availability_request_id?: string;
   cand_tz: string;
+  task_id: string;
+  session_ids: string[];
+  application_id: string;
+  schedule_id?: string;
+  filter_id?: string;
+};
+
+export type APIOptions = {
+  use_recruiting_blocks?: boolean;
+  include_free_time?: boolean;
+  check_next_minutes?: number;
+  make_training_optional?: boolean;
+  cand_start_time?: number;
+  cand_end_time?: number;
+  include_conflicting_slots?: {
+    show_soft_conflicts?: boolean;
+    show_conflicts_events?: boolean;
+    interviewers_load?: boolean;
+    interviewer_pause?: boolean;
+    out_of_office?: boolean;
+    calender_not_connected?: boolean;
+    day_off?: boolean;
+    holiday?: boolean;
+    out_of_working_hrs?: boolean;
+    day_passed?: boolean;
+  };
+};
+
+export type APIFindAvailability = {
+  session_ids: string[];
+  recruiter_id: string;
+  start_date_str: string;
+  end_date_str: string;
+  candidate_tz: string;
+  options?: APIOptions;
+};
+
+export type APIFindInterviewSlot = {
+  session_ids: string[];
+  recruiter_id: string;
+  schedule_date: string;
+  candidate_tz: string;
+  options?: APIOptions;
+};
+
+export type APIFindSlotsDateRange = {
+  session_ids: string[];
+  recruiter_id: string;
+  start_date_str: string;
+  end_date_str: string;
+  candidate_tz: string;
+  options?: APIOptions;
+};
+
+export type CandReqAvailableSlots = {
+  session_ids: string[];
+  recruiter_id: string;
+  date_range_start: string;
+  date_range_end: string;
+  candidate_tz: string;
+  current_interview_day: number; // starts from 1
+  options?: APIOptions;
+};
+
+export type APIGetCandidateSelectedSlots = {
+  cand_availability_id: string;
+};
+
+export type APIVerifyRecruiterSelectedSlots = {
+  candidate_tz: string;
+  api_options?: APIOptions;
+  filter_json_id: string;
+};
+
+export type AssignTrainingInt = {
+  interviewer_module_relation_id: string;
+  session_id: string;
+};
+export type APIAssignTrainingInterviewerType = {
+  training_ints: AssignTrainingInt[];
+};
+
+export type APIConfirmRecruiterSelectedOption = {
+  selectedOption: PlanCombinationRespType;
+  availability_req_id: string;
+  user_tz: string;
+  task_id?: string;
 };

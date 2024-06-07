@@ -11,4 +11,5 @@ declare function SidedrawerBodyDebrief(props: {
   slotMemberAvatarSelectionPill?: Types.Devlink.Slot;
   slotMembersDropdown?: Types.Devlink.Slot;
   slotAttendee?: Types.Devlink.Slot;
+  isAttendeeVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

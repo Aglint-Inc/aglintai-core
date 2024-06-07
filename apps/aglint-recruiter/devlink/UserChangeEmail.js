@@ -1,7 +1,9 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ButtonPrimaryRegular } from "./ButtonPrimaryRegular";
+import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
+import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./UserChangeEmail.module.css";
 
@@ -12,39 +14,37 @@ export function UserChangeEmail({
   texDesc = "Your current email is raimon@aglinthq.com. To update your email, enter the new email address. We will send a verification link to the new email; please confirm it to complete the email change.",
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "profile-block")} tag="div">
+    <_Component className={_utils.cx(_styles, "change-email-wrap")} tag="div">
+      <_Builtin.Block tag="div">
+        <Text content="Change Email" weight="medium" />
+      </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "profile-header-wrappers")}
+        className={_utils.cx(_styles, "text-desc-wrap-mail")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Change Email"}
-        </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-802")} tag="div">
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-600")}
-          tag="div"
-        >
-          {texDesc}
-        </_Builtin.Block>
+        <Text content={texDesc} color="neutral" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "profile-inputs-wrapper")}
         tag="div"
       >
-        {slotEmail}
+        {slotEmail ?? <SlotComp componentName="Slot for Email field." />}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "flex-hor-left", "emial")}
+        className={_utils.cx(_styles, "flex-horizontal")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-387")}
+          className={_utils.cx(_styles, "slot-button-edit-profile")}
           tag="div"
           {...onClickEmailChange}
         >
-          <ButtonPrimaryRegular textLabel="Change Email" />
+          <ButtonSolid
+            isLeftIcon={false}
+            isRightIcon={false}
+            textButton="Change Email"
+            size="2"
+          />
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

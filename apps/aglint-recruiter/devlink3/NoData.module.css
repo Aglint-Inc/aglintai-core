@@ -41,3 +41,11 @@
 .embed_flex.cursor-pointer:hover {
   opacity: 0.8;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.embed_flex.fixedd {
+  width: 23px;
+}

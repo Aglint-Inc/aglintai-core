@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { ScoreCard } from "./ScoreCard";
 import * as _utils from "./utils";
 import _styles from "./ScoreSetting.module.css";
@@ -15,17 +17,8 @@ export function ScoreSetting({
       tag="div"
     >
       <_Builtin.Block className={_utils.cx(_styles, "div-block-713")} tag="div">
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Profile Score"}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-600")}
-          tag="div"
-        >
-          {
-            "Setup scoring criteria encompassing experience, skills, and education. Specify necessary criteria in each section, and our system will generate a candidate score by comparing it with the details provided in their resume."
-          }
-        </_Builtin.Block>
+        <Text content="Profile Score" weight="bold" />
+        <Text content="Setup scoring criteria encompassing experience, skills, and education. Specify necessary criteria in each section, and our system will generate a candidate score by comparing it with the details provided in their resume." />
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "div-block-934")} tag="div">
         {slotBanner}
@@ -36,10 +29,10 @@ export function ScoreSetting({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "indicator-box", "blue-200")}
+            className={_utils.cx(_styles, "indicator-box", "must-have")}
             tag="div"
           />
-          <_Builtin.Block tag="div">{"Must have"}</_Builtin.Block>
+          <Text content="Must have" />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "indicate-wrap")}
@@ -49,7 +42,7 @@ export function ScoreSetting({
             className={_utils.cx(_styles, "indicator-box", "grey-200")}
             tag="div"
           />
-          <_Builtin.Block tag="div">{"Nice to have"}</_Builtin.Block>
+          <Text content="Nice to have" />
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
