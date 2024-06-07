@@ -16,5 +16,8 @@
     "@supabase/ssr": "latest",
     "tsup": "^8.0.2",
     "typescript": "latest"
+  },
+  "dependencies": {
+    "valibot": "^0.31.0"
   }
 }

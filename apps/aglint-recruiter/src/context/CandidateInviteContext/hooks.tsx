@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { APICandidateConfirmSlot } from '@aglint/shared-types';
+import { CandidateDirectBookingType } from '@aglint/shared-types';
 import dayjs from '@utils/dayjs';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo, useState } from 'react';
@@ -11,7 +11,6 @@ import {
   useInviteMeta,
   useInviteSlots,
 } from '@/src/queries/candidate-invite';
-import { getFullName } from '@/src/utils/jsonResume';
 import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
 
@@ -54,21 +53,17 @@ const useInviteActions = () => {
   );
 
   const handleSubmit = async () => {
-    const bodyParams = {
-      candidate_plan: selectedSlots,
-      recruiter_id: meta.data.recruiter.id,
-      user_tz: timezone.tzCode,
-      candidate_email: meta.data.candidate.email,
-      schedule_id: meta.data.schedule.id,
-      filter_id: router.query.filter_id,
-      task_id: router.query?.task_id,
-      agent_type: 'self',
-      candidate_id: meta.data.candidate.id,
-      candidate_name: getFullName(
-        meta.data.candidate.first_name,
-        meta.data.candidate.last_name,
-      ),
-    } as APICandidateConfirmSlot;
+    const candSelectedSlots = selectedSlots.map((s) => s.sessions).flat();
+
+    const bodyParams: CandidateDirectBookingType = {
+      cand_tz: timezone.tzCode,
+      filter_id: router.query.filter_id as string,
+      task_id: router.query?.task_id as string,
+      selected_plan: candSelectedSlots.map((slot) => ({
+        start_time: slot.start_time,
+        end_time: slot.end_time,
+      })),
+    };
     try {
       if (!isPending) {
         await mutateAsync(bodyParams);
