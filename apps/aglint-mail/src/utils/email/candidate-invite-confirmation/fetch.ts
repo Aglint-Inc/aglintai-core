@@ -45,9 +45,9 @@ export default async function candidateInviteConfirmation(
 
   let meeting_link = '';
   if (availability_req_id) {
-    meeting_link = `https://dev.aglinthq.com/scheduling/request-availability/${availability_req_id}`;
+    meeting_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${availability_req_id}`;
   } else {
-    meeting_link = `https://dev.aglinthq.com/scheduling/invite/${schedule_id}?filter_id=${filter_id}`;
+    meeting_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${schedule_id}?filter_id=${filter_id}`;
   }
 
   const mail_attachments = sessions.map((s) => {

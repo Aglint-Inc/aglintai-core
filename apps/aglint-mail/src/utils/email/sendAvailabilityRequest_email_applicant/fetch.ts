@@ -60,7 +60,7 @@ export default async function candidateAvailabilityRequestReminder(
     public_jobs: { company },
   } = candidateJob;
 
-  const candidate_link = `https://dev.aglinthq.com/scheduling/request-availability/${availability_req_id}`;
+  const candidate_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${availability_req_id}`;
 
   const body: CandidateAvailabilityRequestType = {
     recipient_email: email,
