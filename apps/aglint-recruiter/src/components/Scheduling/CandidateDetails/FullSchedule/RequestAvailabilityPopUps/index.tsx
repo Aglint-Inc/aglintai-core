@@ -1,4 +1,5 @@
 import { Stack } from '@mui/material';
+import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -65,6 +66,12 @@ function RequestAvailabilityPopUps() {
       <Stack direction={'column'} gap={1}>
         {availabilities &&
           availabilities.map((item) => {
+            const dates =
+              item.slots &&
+              item.slots
+                .map((ele) => ele.dates)
+                .flat()
+                .map((ele) => `<b>${dayjs(ele.curr_day).format('DD MMM')}</b>`);
             return (
               <>
                 <ShowCode>
@@ -154,7 +161,11 @@ function RequestAvailabilityPopUps() {
                       }}
                       textHeading={'Candidate submitted availability'}
                       textDesc={
-                        'These are the options that selected by the candidate. Click schedule to view and pick one schedule for the interview.'
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: `Candidate submitted availability on ${dates} for ${item.session_ids.map((ele) => `<b>${ele.name}</b>`)} Interviews.`,
+                          }}
+                        ></div>
                       }
                       slotHeadingIcon={
                         <Icon height={'16'} width={'20'} variant='Check' />

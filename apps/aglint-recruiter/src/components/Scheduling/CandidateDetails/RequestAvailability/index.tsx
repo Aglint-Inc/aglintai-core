@@ -95,7 +95,7 @@ function RequestAvailability() {
     dayjs(),
     dayjs().add(10, 'day'),
   ]);
-  const [markCreateTicket, setMarkCreateTicket] = useState(false);
+  const [markCreateTicket, setMarkCreateTicket] = useState(true);
 
   // handle submit
 
@@ -191,7 +191,7 @@ function RequestAvailability() {
             },
           });
         }
-        addScheduleActivity({
+        await addScheduleActivity({
           application_id: selectedApplication.id,
           created_by: recruiterUser.user_id,
           logged_by: 'user',
@@ -234,7 +234,6 @@ function RequestAvailability() {
             };
           });
         await supabase.from('interview_meeting').upsert(updateMeetings);
-        fetchInterviewDataByApplication();
 
         // send request availability email to candidate
 
@@ -301,7 +300,7 @@ function RequestAvailability() {
             },
           });
         }
-        addScheduleActivity({
+        await addScheduleActivity({
           application_id: selectedApplication.id,
           created_by: recruiterUser.user_id,
           logged_by: 'user',
@@ -316,8 +315,9 @@ function RequestAvailability() {
       }
 
       refetch(); // refetching activities
-      getDrawerClose();
-      setSelectedSessionIds([]);
+      fetchInterviewDataByApplication(); // refetching interview data
+      getDrawerClose(); // closing drawer
+      setSelectedSessionIds([]); // resetting selected sessions
     } catch {
       toast.error('Unable to send');
     }
@@ -464,6 +464,7 @@ function RequestAvailability() {
         isCheckbox={router.query.candidate_request_availability === 'true'}
         slotCheckboxAvailability={
           <Checkbox
+            defaultChecked={markCreateTicket}
             onChange={(e) => {
               setMarkCreateTicket(e.target.checked);
             }}

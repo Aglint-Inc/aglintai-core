@@ -1,4 +1,3 @@
-import { Typography } from '@mui/material';
 import React, { Dispatch } from 'react';
 
 import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';

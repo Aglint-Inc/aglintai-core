@@ -133,20 +133,20 @@ function ViewTaskDrawer() {
     }
   }
   const { pressed: shift } = useKeyPress('Shift');
-  const { pressed: right } = useKeyPress('ArrowRight');
-  const { pressed: left } = useKeyPress('ArrowLeft');
+  const { pressed: up } = useKeyPress('ArrowUp');
+  const { pressed: down } = useKeyPress('ArrowDown');
 
-  const leftShift = shift && left;
-  const rightShift = shift && right;
+  const upShift = shift && up;
+  const downShift = shift && down;
 
   useEffect(() => {
-    if (leftShift) {
+    if (upShift) {
       prevTask();
     }
-    if (rightShift) {
+    if (downShift) {
       nextTask();
     }
-  }, [leftShift, rightShift]);
+  }, [upShift, downShift]);
   return (
     <Drawer
       anchor={'right'}
