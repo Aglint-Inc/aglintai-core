@@ -221,6 +221,9 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
           ),
           id: candidateRequestAvailability.applications.candidates.id,
         },
+        jsonb_data: {
+          dates: selectedSlots[0].dates.map((ele) => ele.curr_day),
+        },
       },
     });
 

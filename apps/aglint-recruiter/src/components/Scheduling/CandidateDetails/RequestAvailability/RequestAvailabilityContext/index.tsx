@@ -247,6 +247,9 @@ export const createTask = async (data: DatabaseTableInsert['new_tasks']) => {
 export async function insertTaskProgress({
   request_availability_id,
   taskData,
+}: {
+  request_availability_id: string;
+  taskData: any;
 }) {
   const { data: task } = await axios.post(
     `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,

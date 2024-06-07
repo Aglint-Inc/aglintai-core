@@ -12,11 +12,8 @@ import { useEffect, useState } from 'react';
 
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
-import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { useAllActivities, useGetScheduleApplication } from '../../../hooks';
@@ -36,7 +33,6 @@ function RequestAvailabilityDrawer() {
     setSelectedIndex,
     setSelectedDateSlots,
   } = useAvailabilityContext();
-  const { recruiterUser } = useAuthDetails();
   const { selectedApplication } = useSchedulingApplicationStore();
   const [loading, setLoading] = useState(false);
   const {
@@ -72,16 +68,16 @@ function RequestAvailabilityDrawer() {
   }, [availableSlots, selectedIndex, router.query?.request_availability_id]);
 
   async function handleContinue() {
-    const { data: requestData } = await axios.post(
-      `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,
-      {
-        request_id: router.query?.request_availability_id,
-      },
-    );
-    const task_id = requestData.id;
     if (selectedIndex !== availableSlots.length) {
       setSelectedIndex((pre) => pre + 1);
     } else {
+      const { data: requestData } = await axios.post(
+        `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,
+        {
+          request_id: router.query?.request_availability_id,
+        },
+      );
+      const task_id = requestData.id;
       setLoading(true);
       const allSessions: SessionCombinationRespType[] = selectedDateSlots
         .map((ele) => ele.dateSlots)
@@ -96,6 +92,7 @@ function RequestAvailabilityDrawer() {
           sessions: allSessions,
         },
         user_tz: userTzDayjs.tz.guess(),
+        task_id,
       };
 
       try {
@@ -111,18 +108,9 @@ function RequestAvailabilityDrawer() {
               booking_confirmed: true,
             },
           });
-          await addScheduleActivity({
-            application_id: selectedApplication.id,
-            created_by: recruiterUser.user_id,
-            logged_by: 'user',
-            supabase: supabase,
-            title: `Meeting has been booked successfully!`,
-            module: 'scheduler',
-            task_id: task_id,
-          });
-          refetch();
           toast.success('Booked sessions');
           fetchInterviewDataByApplication();
+          refetch();
           closeDrawer();
         } else {
           throw new Error('Booking failed');
