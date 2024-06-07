@@ -45,7 +45,7 @@ module.exports = {
     'import/no-extraneous-dependencies': 'off',
     'turbo/no-undeclared-env-vars': 'off',
     'eslint-comments/require-description': 'off',
-    'no-console': ['off', { "allow": "error" }],
+    'no-console': ['error', { "allow": "error" }],
     "@typescript-eslint/no-unsafe-call": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-unnecessary-condition": "off",

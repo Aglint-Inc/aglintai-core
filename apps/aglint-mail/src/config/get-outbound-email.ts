@@ -9,6 +9,6 @@ export const getOutboundEmail = async (email: string) => {
   if (allowed_outbound_emails.includes(email.toLowerCase())) {
     return email;
   }
-  const sudo_cand_email = await get('sudo-candidate');
+  const sudo_cand_email = (await get('sudo-candidate')) as string;
   return sudo_cand_email;
 };
