@@ -16,8 +16,7 @@ import sendMail from '../../../config/sendgrid';
 interface ReqPayload {
   session_id: string[];
   application_id: string;
-  schedule_id: string;
-  filter_id: string;
+  availability_req_id: string;
 }
 interface Meta {
   meta: ReqPayload;
@@ -50,19 +49,11 @@ export async function POST(req: Request) {
     if (!meta.application_id) {
       throw new ClientError('application_id attribute missing', 400);
     }
-    if (!meta.filter_id) {
-      throw new ClientError('filter_id is missing', 400);
-    }
-
-    if (!meta.schedule_id) {
-      throw new ClientError('schedule_id is missing', 400);
-    }
 
     const data: DataPayload = await candidateAvailabilityRequestReminder(
       meta.session_id,
       meta.application_id,
-      meta.schedule_id,
-      meta.filter_id,
+      meta.availability_req_id,
     );
     const filled_body: FilledPayload = await fetchTemplate(
       data.recruiter_id,

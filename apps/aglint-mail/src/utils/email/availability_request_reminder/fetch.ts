@@ -11,8 +11,7 @@ import type { MeetingDetails } from '../../types/apiTypes';
 export default async function candidateAvailabilityRequestReminder(
   session_ids: string[],
   application_id: string,
-  schedule_id: string,
-  filter_id: string,
+  availability_req_id: string,
 ) {
   const sessions = supabaseWrap(
     await supabaseAdmin
@@ -57,6 +56,8 @@ export default async function candidateAvailabilityRequestReminder(
     public_jobs: { company },
   } = candidateJob;
 
+  const candidate_link = `https://dev.aglinthq.com/scheduling/request-availability/${availability_req_id}`;
+
   const body: CandidateAvailabilityRequestType = {
     recipient_email: email,
     mail_type: 'availability_request_reminder',
@@ -65,7 +66,7 @@ export default async function candidateAvailabilityRequestReminder(
     payload: {
       '[companyName]': company,
       '[firstName]': first_name,
-      'pickYourSlot': `https://dev.aglinthq.com/scheduling/invite/${schedule_id}?filter_id=${filter_id}`,
+      'pickYourSlot': candidate_link,
       'meetingDetails': [...Sessions],
     },
   };
