@@ -65,7 +65,7 @@ export default async function candidateAvailabilityRequest(
     payload: {
       '[companyName]': company,
       '[firstName]': first_name,
-      'pickYourSlot': `https://dev.aglinthq.com/scheduling/invite/${schedule_id}?filter_id=${filter_id}`,
+      'pickYourSlot': `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${schedule_id}?filter_id=${filter_id}`,
       'meetingDetails': [...Sessions],
     },
   };

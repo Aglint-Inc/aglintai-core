@@ -1,42 +1,41 @@
 // import Feedback from './Feedback';
-import { InterviewSessionRelationTypeDB } from '@aglint/shared-types';
+import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { NewTabPill } from '@/devlink3/NewTabPill';
-import { ScheduleButton } from '@/devlink3/ScheduleButton';
 import { ScheduleDetailTabs } from '@/devlink3/ScheduleDetailTabs';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';
-import CancelScheduleDialog from './CancelScheduleDialog';
+import CancelReasonCards from './CancelReasonCards';
 import CandidateInfo from './CandidateDetails';
+import ChangeInterviewerDialog from './ChangeInterviewerDialog';
 import FeedbackWindow from './Feedback';
 import { useScheduleDetails } from './hooks';
-import IconCancelSchedule from './Icons/IconCancelSchedule';
 import Instructions from './Instructions';
 import JobDetails from './JobDetails';
 import Overview from './Overview';
-import DeclineScheduleDialog from './Overview/DeclineScheduleDialog';
-import RequestRescheduleDialog from './RequestRescheduleDialog';
+import RescheduleDialog from './RescheduleDialog';
 
 function SchedulingViewComp() {
   const router = useRouter();
-  const { recruiterUser } = useAuthDetails();
-  const [isRequestRescheduleOpen, setIsRequestRescheduleOpen] = useState(false);
-  const [isCancelOpen, setIsCancelOpen] = useState(false);
-  const [isDeclineOpen, setIsDeclineOpen] = useState(false);
   const { data, isLoading } = useScheduleDetails();
+  const [isChangeInterviewerOpen, setIsChangeInterviewerOpen] = useState(false);
+  const [isRescheduleOpen, setIsRescheduleOpen] = useState(false);
+  const [isCancelOpen, setIsCancelOpen] = useState(false);
+  const [cancelUserId, setCancelUserId] = useState('');
+  const [range, setRange] = useState<{
+    start_date: string;
+    end_date: string;
+  }>();
+
   const schedule = data?.schedule_data;
   const cancelReasons = data?.cancel_data?.filter(
     (item) => !item.interview_session_cancel.cancel_user_id,
   );
-
-  const [sessionRelation, setSessionRelation] =
-    useState<InterviewSessionRelationTypeDB>();
 
   const viewScheduleTabs = [
     { name: 'Candidate Details', tab: 'candidate_details', hide: false },
@@ -49,65 +48,27 @@ function SchedulingViewComp() {
     },
   ];
 
-  const isRescheduleButtonVisible =
-    schedule?.users?.find(
-      (user) =>
-        user.interview_session_relation.is_confirmed &&
-        user.email === recruiterUser.email &&
-        user.interview_session_relation.training_type === 'qualified',
-    ) &&
-    !cancelReasons?.some(
-      (item) =>
-        item.recruiter_user.id === recruiterUser.user_id &&
-        !item.interview_session_cancel.is_resolved,
-    ) &&
-    schedule?.interview_meeting?.status === 'confirmed';
-
-  const isCancelButtonVisible =
-    (recruiterUser.role === 'admin' ||
-      recruiterUser.role === 'recruiter' ||
-      recruiterUser.role === 'hiring_manager' ||
-      recruiterUser.role === 'recruiting_coordinator' ||
-      recruiterUser.user_id === schedule?.interview_coordinator?.id) &&
-    schedule?.interview_meeting?.status === 'confirmed';
-
-  useEffect(() => {
-    if (schedule?.users) {
-      setSessionRelation(
-        schedule?.users?.find((user) => user.email === recruiterUser.email)
-          ?.interview_session_relation,
-      );
-    }
-  }, [schedule?.users]);
-
   return (
     <ShowCode>
       <ShowCode.When isTrue={isLoading}>
         <Loader />
       </ShowCode.When>
       <ShowCode.Else>
-        {schedule && (
-          <>
-            <DeclineScheduleDialog
-              sessionRelation={sessionRelation}
-              isDeclineOpen={isDeclineOpen}
-              setIsDeclineOpen={setIsDeclineOpen}
-              schedule={schedule}
-            />
-            <CancelScheduleDialog
-              sessionRelation={sessionRelation}
-              isDeclineOpen={isCancelOpen}
-              setIsDeclineOpen={setIsCancelOpen}
-              schedule={schedule}
-            />
-            <RequestRescheduleDialog
-              isRequestRescheduleOpen={isRequestRescheduleOpen}
-              setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
-              sessionRelation={sessionRelation}
-              schedule={schedule}
-            />
-          </>
-        )}
+        <RescheduleDialog
+          schedule={schedule}
+          isRescheduleOpen={isRescheduleOpen}
+          setIsRescheduleOpen={setIsRescheduleOpen}
+          cancelReasons={cancelReasons}
+          dateRange={range}
+          setDateRange={setRange}
+        />
+        <ChangeInterviewerDialog
+          isChangeInterviewerOpen={isChangeInterviewerOpen}
+          setIsChangeInterviewerOpen={setIsChangeInterviewerOpen}
+          schedule={schedule}
+          cancelUserId={cancelUserId}
+          setCancelUserId={setCancelUserId}
+        />
         <PageLayout
           onClickBack={{
             onClick: () => {
@@ -115,38 +76,6 @@ function SchedulingViewComp() {
             },
           }}
           isBackButton={true}
-          slotTopbarRight={
-            <>
-              {isRescheduleButtonVisible && (
-                <ScheduleButton
-                  textLabel={'Request Reschedule'}
-                  slotIcon={<IconCancelSchedule />}
-                  onClickProps={{
-                    onClick: () => {
-                      setIsRequestRescheduleOpen(true);
-                    },
-                  }}
-                />
-              )}
-              {isCancelButtonVisible && (
-                <ScheduleButton
-                  textLabel={'Cancel Schedule'}
-                  slotIcon={<IconCancelSchedule />}
-                  textColorProps={{
-                    style: {
-                      color: '#D93F4C',
-                    },
-                  }}
-                  onClickProps={{
-                    style: { background: '#FFF0F1' },
-                    onClick: () => {
-                      setIsCancelOpen(true);
-                    },
-                  }}
-                />
-              )}
-            </>
-          }
           slotTopbarLeft={
             <>
               <Breadcrum textName={schedule?.schedule.schedule_name} />
@@ -155,12 +84,25 @@ function SchedulingViewComp() {
           slotBody={
             <ScheduleDetailTabs
               slotScheduleTabOverview={
-                <Overview
-                  cancelReasons={cancelReasons}
-                  schedule={schedule}
-                  setIsCancelOpen={setIsCancelOpen}
-                  setIsDeclineOpen={setIsDeclineOpen}
-                />
+                <Stack spacing={'var(--space-4)'}>
+                  <CancelReasonCards
+                    cancelReasons={cancelReasons}
+                    schedule={schedule}
+                    setCancelUserId={setCancelUserId}
+                    setIsCancelOpen={setIsCancelOpen}
+                    setIsRescheduleOpen={setIsRescheduleOpen}
+                    cancelUserId={cancelUserId}
+                    setIsChangeInterviewerOpen={setIsChangeInterviewerOpen}
+                    setRange={setRange}
+                  />
+                  <Overview
+                    cancelReasons={cancelReasons}
+                    schedule={schedule}
+                    isCancelOpen={isCancelOpen}
+                    setIsCancelOpen={setIsCancelOpen}
+                    setIsRescheduleOpen={setIsRescheduleOpen}
+                  />
+                </Stack>
               }
               slotDarkPills={viewScheduleTabs
                 .filter(

@@ -1,38 +1,33 @@
 .schedule-details-page {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  background-color: var(--sand-2);
+}
+
+.schedule-detail-wrap {
   display: flex;
-  background-color: var(--white);
+  width: 900px;
+  padding: var(--space-4);
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-6);
+  grid-row-gap: var(--space-6);
 }
 
 .schedule-tab-overview-wraper {
-  overflow: auto;
-  width: 480px;
-  flex-grow: 0;
-  flex-shrink: 0;
-  flex-basis: auto;
-
-  border-right-style: solid;
-  border-right-width: 1px;
-  border-right-color: #e9ebed;
-
-  height: calc(100vh - 60px);
+  flex: 0 0 auto;
 }
 
 .schedule_detail_block {
   display: flex;
-  overflow: hidden;
   width: 100%;
-  padding-top: 0px;
-  padding-right: 0px;
-  padding-bottom: 0px;
-  padding-left: 0px;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
+
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
 
   background-color: white;
-
-  height: calc(100vh - 60px);
 }
 
 .schedule_tabs {
@@ -63,9 +58,6 @@
   flex-wrap: nowrap;
   grid-column-gap: 30px;
   grid-row-gap: 30px;
-
-  background-color: var(--neutral-2);
-
   height: calc(100vh - 109px);
 }
 

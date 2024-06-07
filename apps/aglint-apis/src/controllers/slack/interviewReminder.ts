@@ -78,7 +78,7 @@ export async function interviewReminder(req: Request, res: Response) {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `* ${session_name} sheduled with candidate :*\n*<https://dev.aglinthq.com/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details|${candidate_name} - ${job_title}>*`,
+              text: `* ${session_name} sheduled with candidate :*\n*<${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details|${candidate_name} - ${job_title}>*`,
             },
           },
           {
