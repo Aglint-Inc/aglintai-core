@@ -23,19 +23,18 @@ function IntegrationsPage() {
       <PageLayout
         slotTopbarLeft={'Integrations'}
         slotTopbarRight={
-          <Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
-            <ButtonGhost
-              size='2'
-              isRightIcon={false}
-              onClickButton={{
-                onClick: () => {
-                  setIsOpen(true);
-                },
-              }}
-              slotIcon={<IconCategory width='16' height='16' />}
-              textButton={'Request Integration'}
-            />
-          </Stack>
+          <ButtonGhost
+            size='2'
+            isRightIcon={false}
+            onClickButton={{
+              onClick: () => {
+                setIsOpen(true);
+              }
+            }}
+            
+            slotIcon={<IconCategory width='16' height='16' />}
+            textButton={'Request Integration'}
+          />
         }
         slotBody={<Integrations />}
       />
