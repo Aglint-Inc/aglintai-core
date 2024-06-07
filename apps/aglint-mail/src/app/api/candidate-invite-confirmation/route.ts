@@ -49,6 +49,7 @@ export async function POST(req: Request) {
     const { details, mail_attachments } = await CandidateInviteConfirmation(
       session_ids,
       application_id,
+      cand_tz,
       filter_id,
       schedule_id,
       availability_request_id,
@@ -81,6 +82,7 @@ export async function POST(req: Request) {
       html,
       subject,
       text: html,
+      attachments: mail_attachments,
     });
     return NextResponse.json('success', {
       status: 200,

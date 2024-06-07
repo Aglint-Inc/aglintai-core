@@ -8,8 +8,16 @@ const SENDGRID_API_KEY =
 sgMail.setApiKey(SENDGRID_API_KEY);
 
 export default async function sendMail(data: APISendgridPayload) {
-  let { email, fromEmail, fromName, headers, subject, text, attachments } =
-    data as APISendgridPayload;
+  let {
+    email,
+    fromEmail,
+    fromName,
+    headers,
+    subject,
+    text,
+    attachments,
+    html,
+  } = data as APISendgridPayload;
   try {
     const msg: any = {
       to: email, // Change to your recipient
@@ -18,7 +26,8 @@ export default async function sendMail(data: APISendgridPayload) {
         name: fromName ?? 'Aglint Admin',
       }, // Change to your verified sender
       subject: subject,
-      html: text,
+      html: html,
+      text: text,
       headers: headers,
       attachments: attachments,
     };
@@ -31,7 +40,7 @@ export default async function sendMail(data: APISendgridPayload) {
     }
     throw new MailSenderError(`mail failed to send`);
   } catch (error) {
-    console.error(error);
+    console.error(error.response.body);
     throw new MailSenderError(`mail failed to send`);
   }
 }

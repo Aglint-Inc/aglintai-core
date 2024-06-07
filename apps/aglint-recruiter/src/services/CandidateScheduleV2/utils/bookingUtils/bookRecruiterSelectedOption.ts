@@ -61,7 +61,7 @@ export const bookRecruiterSelectedOption = async (
     session_ids: fetched_cand_details.session_ids.map((s) => s.id),
     availability_request_id: req_body.availability_req_id,
   };
-  axios.post(
+  await axios.post(
     `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,
     payload,
   );

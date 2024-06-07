@@ -53,7 +53,7 @@ export async function POST(req: Request) {
       emails[emailIdx],
       payload,
     );
-    await sendMail({ email: recipient_email, html, subject });
+    await sendMail({ email: recipient_email, html, subject, text: html });
     return NextResponse.json('success', {
       status: 200,
     });
