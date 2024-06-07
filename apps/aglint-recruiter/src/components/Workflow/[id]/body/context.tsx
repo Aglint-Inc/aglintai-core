@@ -108,6 +108,16 @@ const ACTION_TRIGGER_MAP: {
       name: 'Send slack messages to interviewers',
     },
   ],
-  interviewerConfirmation: [],
-  interviewEnd: [],
+  interviewerConfirmation: [
+    {
+      value: 'interviewerConfirmation_slack_interviewers',
+      name: 'Send slack messages to interviewers',
+    },
+  ],
+  interviewEnd: [
+    {
+      value: 'interviewEnd_slack_interviewers',
+      name: 'Send feedback messages to interviewers on slack',
+    },
+  ],
 };
