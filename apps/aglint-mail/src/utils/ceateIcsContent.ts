@@ -1,7 +1,6 @@
 import { CalendarEvent } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/userTzDayjs';
 import { uniqueId } from 'lodash';
-
-import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 
 export const createICSAttachment = (
   event: CalendarEvent,
@@ -17,9 +16,9 @@ VERSION:2.0
 PRODID:-//Aglint Ai.//CalDAV Client//EN
 BEGIN:VEVENT
 UID:${uniqueId()}
-DTSTART;TZID=${cand_time_zone}:${userTzDayjs(event.start.dateTime).format('YYYYMMDDTHHmmss')}
-DTEND;TZID=${cand_time_zone}:${userTzDayjs(event.end.dateTime).format('YYYYMMDDTHHmmss')}
-DTEND:${userTzDayjs(event.end.dateTime).tz(cand_time_zone).format('YYYYMMDDTHHmmss')}
+DTSTART;TZID=${cand_time_zone}:${dayjsLocal(event.start.dateTime).format('YYYYMMDDTHHmmss')}
+DTEND;TZID=${cand_time_zone}:${dayjsLocal(event.end.dateTime).format('YYYYMMDDTHHmmss')}
+DTEND:${dayjsLocal(event.end.dateTime).tz(cand_time_zone).format('YYYYMMDDTHHmmss')}
 SUMMARY:${cal_event_name}
 DESCRIPTION:${cand_event_desc}
 LOCATION:${meeting_link}

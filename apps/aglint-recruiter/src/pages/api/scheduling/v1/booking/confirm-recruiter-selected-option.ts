@@ -2,16 +2,14 @@
 import { APIConfirmRecruiterSelectedOption } from '@aglint/shared-types';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
-import { bookInterviewPlan } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/bookInterviewPlan';
-import { scheduling_options_schema } from '@/src/types/scheduling/schema_find_availability_payload';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { bookRecruiterSelectedOption } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/bookRecruiterSelectedOption';
+import { fetchCandAvailForBooking } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchCandidateAvailability';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const body = req.body as APIConfirmRecruiterSelectedOption;
-    const fetched_details = await fetchCandidateAvailability(body);
+    const fetched_details = await fetchCandAvailForBooking(body);
 
     const cand_schedule = new CandidatesSchedulingV2(
       {
@@ -33,68 +31,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (verified_plans.length === 0) {
       throw new Error('Requested plan does not exist');
     }
-    const details = await bookInterviewPlan(cand_schedule, verified_plans[0], {
-      application: {
-        id: fetched_details.application.id,
-      },
-      candidate: {
-        first_name: fetched_details.application.candidates.first_name,
-        last_name: fetched_details.application.candidates.last_name,
-      },
-      company: {
-        id: fetched_details.company.id,
-        name: fetched_details.company.name,
-      },
-      job: {
-        job_title: fetched_details.job.job_title,
-      },
-    });
-    return res.status(200).json(details);
+    await bookRecruiterSelectedOption(
+      body,
+      cand_schedule,
+      verified_plans[0],
+      fetched_details,
+    );
+
+    return res.status(200).send('OK');
   } catch (err) {
     console.error(err);
-    return res.status(200).send(err.message);
+    return res.status(500).send(err.message);
   }
 };
 export default handler;
-
-export const fetchCandidateAvailability = async (
-  req_body: APIConfirmRecruiterSelectedOption,
-) => {
-  const [avail_details] = supabaseWrap(
-    await supabaseAdmin
-      .from('candidate_request_availability')
-      .select(
-        'session_ids,slots,availability,date_range,recruiter_id,recruiter(id,name),applications(id,candidates(first_name,last_name,timezone),public_jobs(job_title))',
-      )
-      .eq('id', req_body.availability_req_id),
-  );
-  if (!avail_details) {
-    throw new Error('Availabiluty does not exist');
-  }
-  const zod_options = scheduling_options_schema.parse({
-    include_conflicting_slots: {
-      day_off: true,
-      day_passed: true,
-      holiday: true,
-      interviewer_pause: true,
-      interviewers_load: true,
-      out_of_office: true,
-      out_of_working_hrs: true,
-      show_conflicts_events: true,
-      show_soft_conflicts: true,
-    },
-    include_free_time: avail_details.availability.free_keywords,
-    use_recruiting_blocks: avail_details.availability.recruiting_block_keywords,
-  });
-
-  return {
-    session_ids: avail_details.session_ids,
-    application: avail_details.applications,
-    start_date_str: avail_details.date_range[0],
-    end_date_str: avail_details.date_range[1],
-    recruiter_id: avail_details.recruiter_id,
-    company: avail_details.recruiter,
-    job: avail_details.applications.public_jobs,
-    zod_options,
-  };
-};

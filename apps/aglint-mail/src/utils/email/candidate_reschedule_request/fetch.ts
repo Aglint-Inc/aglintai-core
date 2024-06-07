@@ -68,7 +68,6 @@ export default async function candidateRescheduleRequest(
       .eq('id', interview_cancel_id),
   );
 
-  console.log(session_cancel);
   const {
     other_details: {
       note,

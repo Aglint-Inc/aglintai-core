@@ -86,7 +86,7 @@ export async function POST(req: Request) {
       emails[emailIdx],
       filled_body,
     );
-    await sendMail({ email: data.recipient_email, html, subject });
+    await sendMail({ email: data.recipient_email, html, subject, text: html });
     return NextResponse.json('success', {
       status: 200,
     });
