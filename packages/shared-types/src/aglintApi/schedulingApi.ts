@@ -1,5 +1,7 @@
+import * as v from 'valibot';
 import { RecruiterUserType } from '../data.types';
 import { PlanCombinationRespType } from '../scheduleTypes';
+import { schema_candidate_direct_booking } from './valibotSchema/candidate-self-schedule';
 
 export type ApiCancelScheduledInterview = {
   session_ids: string[];
@@ -142,3 +144,7 @@ export type APIConfirmRecruiterSelectedOption = {
   user_tz: string;
   task_id?: string;
 };
+
+export type CandidateDirectBookingType = v.InferOutput<
+  typeof schema_candidate_direct_booking
+>;

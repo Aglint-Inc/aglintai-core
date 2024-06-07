@@ -1,30 +1,19 @@
 /* eslint-disable security/detect-object-injection */
 import {
+  CandidateDirectBookingType,
   PlanCombinationRespType,
   SessionCombinationRespType,
 } from '@aglint/shared-types';
+import { schema_candidate_direct_booking } from '@aglint/shared-types/src/aglintApi/valibotSchema/candidate-self-schedule';
 import { ScheduleUtils } from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
-import { fetchDBScheduleDetails } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/fetchDBScheduleDetails';
+import { bookCandidateSelectedOption } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/bookCandidateSelectedOption';
+import { fetchDBScheduleDetails } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchDBScheduleDetails';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { scheduling_options_schema } from '@/src/types/scheduling/schema_find_availability_payload';
-const slot_time = v.object({
-  start_time: v.string(),
-  end_time: v.string(),
-});
-const schema_candidate_direct_booking = v.object({
-  filter_id: v.pipe(v.string(), v.nonEmpty('required filter_id')),
-  cand_tz: v.pipe(v.string(), v.nonEmpty('required cand_tz')),
-  task_id: v.nullish(v.string()),
-  selected_plan: v.array(slot_time),
-});
-
-type CandidateDirectBookingType = v.InferOutput<
-  typeof schema_candidate_direct_booking
->;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -64,15 +53,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (verified_plans.length === 0) {
       throw new Error('Requested plan does not exist');
     }
-    // const details = await bookInterviewPlan(
-    //   cand_schedule,
-    //   verified_plans[0],
-    //   schedule_db_details,
-    // );
+    await bookCandidateSelectedOption(
+      parsed,
+      cand_schedule,
+      verified_plans[0],
+      schedule_db_details,
+    );
     return res.status(200).json('ok');
   } catch (err) {
     console.error(err);
-    return res.status(200).send(err.message);
+    return res.status(500).send(err.message);
   }
 };
 export default handler;

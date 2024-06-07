@@ -7,7 +7,7 @@ import {
 
 import { createMeetingEvents } from './createMeetingEvents';
 import { fetchCandAvailForBooking } from './dbFetch/fetchCandidateAvailability';
-import { fetchDBScheduleDetails } from './fetchDBScheduleDetails';
+import { fetchDBScheduleDetails } from './dbFetch/fetchDBScheduleDetails';
 
 export type BookedMeetingDetails = Awaited<
   ReturnType<typeof createMeetingEvents>
