@@ -31,7 +31,6 @@ export async function POST(req: Request) {
   const { application_id }: ReqPayload = await req.json();
 
   try {
-
     if (!application_id) {
       throw new ClientError('attribute application_id missing', 400);
     }
@@ -56,7 +55,7 @@ export async function POST(req: Request) {
       emails[emailIdx],
       filled_body,
     );
-    await sendMail({ email: data.recipient_email, html, subject });
+    await sendMail({ email: data.recipient_email, html, subject, text: html });
     return NextResponse.json('success', {
       status: 200,
     });

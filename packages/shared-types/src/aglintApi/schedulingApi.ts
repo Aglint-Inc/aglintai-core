@@ -52,9 +52,13 @@ export type APIFindAltenativeTimeSlotResponse = {
 }[];
 
 export type APICandScheduleMailThankYou = {
-  filter_id: string;
+  availability_request_id?: string;
   cand_tz: string;
   task_id: string;
+  session_ids: string[];
+  application_id: string;
+  schedule_id?: string;
+  filter_id?: string;
 };
 
 export type APIOptions = {
@@ -136,4 +140,5 @@ export type APIConfirmRecruiterSelectedOption = {
   selectedOption: PlanCombinationRespType;
   availability_req_id: string;
   user_tz: string;
+  task_id?: string;
 };

@@ -13,6 +13,11 @@ import sendMail from '../../../config/sendgrid';
 interface ReqPayload {
   application_id: string;
 }
+
+interface Meta {
+  meta: ReqPayload;
+}
+
 interface DataPayload {
   recipient_email: string;
   mail_type: string;
@@ -28,13 +33,13 @@ interface DataPayload {
 }
 
 export async function POST(req: Request) {
-  const { application_id }: ReqPayload = await req.json();
+  const { meta }: Meta = await req.json();
 
   try {
-    if (!application_id) {
+    if (!meta.application_id) {
       throw new ClientError('attribute application_id missing', 400);
     }
-    const data: DataPayload = await interviewReaminder(application_id);
+    const data: DataPayload = await interviewReaminder(meta.application_id);
     const filled_body: FilledPayload = await fetchTemplate(
       data.recruiter_id,
       data.mail_type,
@@ -55,7 +60,7 @@ export async function POST(req: Request) {
       emails[emailIdx],
       filled_body,
     );
-    await sendMail({ email: data.recipient_email, html, subject });
+    await sendMail({ email: data.recipient_email, html, subject, text: html });
     return NextResponse.json('success', {
       status: 200,
     });

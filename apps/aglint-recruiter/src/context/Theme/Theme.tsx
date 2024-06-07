@@ -597,39 +597,47 @@ function Theme({ children }) {
           },
         },
       },
-      MuiSwitch: {
-        styleOverrides: {
-          root: {
-            width: '40px', // adjusted width
-            height: '24px', // adjusted height
-            padding: '2px', // adjusted padding
-          },
-          switchBase: {
-            padding: '2px', // adjusted padding
-            '&.Mui-checked': {
-              transform: 'translateX(16px)', // adjust the position when checked
-            },
-          },
-          thumb: {
-            width: '20px', // adjusted width
-            height: '20px', // adjusted height
-          },
-          track: {
-            borderRadius: '12px', // adjusted borderRadius
-          },
-        },
-      },
+      // MuiSwitch: {
+      //   styleOverrides: {
+      //     root: {
+      //       width: '40px', // adjusted width
+      //       height: '24px', // adjusted height
+      //       padding: '2px', // adjusted padding
+      //     },
+      //     switchBase: {
+      //       padding: '2px', // adjusted padding
+      //       '&.Mui-checked': {
+      //         transform: 'translateX(16px)', // adjust the position when checked
+      //       },
+      //     },
+      //     thumb: {
+      //       width: '20px', // adjusted width
+      //       height: '20px', // adjusted height
+      //     },
+      //     track: {
+      //       borderRadius: '12px', // adjusted borderRadius
+      //     },
+      //   },
+      // },
 
       MuiAlert: {
         styleOverrides: {
           root: {
-            padding: 'var(--space-2) var(--space-3)',
-            borderRadius: 'var(--radius-2)',
-            boxShadow: 'var(--shadow-2)', // Level 2 shadow
+            padding: '0 var(--space-2)',
+            borderRadius: 'var(--radius-1)',
+            boxShadow: 'none', // Level 2 shadow
             fontFamily: 'var(--text)',
-            fontSize: 'var(--font-size-2)',
-            lineHeight: 'var(--line-height-2)',
-            letterSpacing: 'var(--letter-spacing-2)',
+            fontSize: 'var(--font-size-1)',
+            lineHeight: 'var(--line-height-1)',
+            letterSpacing: 'var(--letter-spacing-1)',
+            backgroundColor: 'var(--info-1)',
+            border: '1px solid var(--info-6)',
+            '& .MuiAlert-message': {
+              padding: 'var(--space-1)',
+            },
+            '& .MuiAlert-message p': {
+              color: 'var(--info-a11)',
+            },
           },
         },
       },
@@ -663,7 +671,7 @@ function Theme({ children }) {
               fontSize: 'var(--font-size-2)',
               width: 'var(--space-5)',
               height: 'var(--space-5)',
-              borderRadius: 'var(--radius-1)',
+              borderRadius: 'var(--radius-2)',
             },
             '&.MuiAvatar-rounded-medium': {
               fontSize: 'var(--font-size-4)',

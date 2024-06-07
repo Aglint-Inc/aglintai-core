@@ -112,13 +112,6 @@ export function Modules() {
                           slotMemberPic={
                             <AvatarGroup
                               total={mod.users.length}
-                              sx={{
-                                '& .MuiAvatar-root': {
-                                  width: '26px',
-                                  height: '26px',
-                                  fontSize: '12px',
-                                },
-                              }}
                             >
                               {mod.users.slice(0, 5).map((user) => {
                                 return (

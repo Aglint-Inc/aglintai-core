@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
 import { Checkbox } from '@/devlink/Checkbox';
 import { ModuleSetting } from '@/devlink2/ModuleSetting';
-import { ToggleButton } from '@/devlink2/ToggleButton';
+import ToggleBtn from '@/src/components/Common/UIToggle';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -92,32 +92,15 @@ function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
           }}
           isDisable={!localModule?.settings?.require_training}
           slotRequiresTrainingToggle={
-            <ToggleButton
-              isActive={localModule?.settings?.require_training}
-              isInactive={!localModule?.settings?.require_training}
-              onclickToggle={{
-                onClick: () => {
-                  if (
-                    localModule.relations.filter(
-                      (relation) => relation.training_status === 'training',
-                    ).length == 0
-                  ) {
-                    {
-                      setEditLocalModule((prev) => ({
-                        ...prev,
-                        settings: {
-                          ...prev.settings,
-                          require_training: !prev.settings.require_training,
-                        },
-                      }));
-                    }
-                  } else if (
-                    localModule.settings.require_training === false &&
-                    localModule.relations.filter(
-                      (relation) => relation.training_status === 'training',
-                    ).length > 0
-                  ) {
-                    //this condition is not needed actually just temporary
+            <ToggleBtn
+              isChecked={localModule?.settings?.require_training ? true : false}
+              handleChange={() => {
+                if (
+                  localModule.relations.filter(
+                    (relation) => relation.training_status === 'training',
+                  ).length == 0
+                ) {
+                  {
                     setEditLocalModule((prev) => ({
                       ...prev,
                       settings: {
@@ -125,14 +108,69 @@ function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
                         require_training: !prev.settings.require_training,
                       },
                     }));
-                  } else {
-                    toast.warning(
-                      'Cannot disable training while members are still in training.',
-                    );
                   }
-                },
+                } else if (
+                  localModule.settings.require_training === false &&
+                  localModule.relations.filter(
+                    (relation) => relation.training_status === 'training',
+                  ).length > 0
+                ) {
+                  //this condition is not needed actually just temporary
+                  setEditLocalModule((prev) => ({
+                    ...prev,
+                    settings: {
+                      ...prev.settings,
+                      require_training: !prev.settings.require_training,
+                    },
+                  }));
+                } else {
+                  toast.warning(
+                    'Cannot disable training while members are still in training.',
+                  );
+                }
               }}
-            />
+            ></ToggleBtn>
+            // <ToggleButton
+            //   isActive={localModule?.settings?.require_training}
+            //   isInactive={!localModule?.settings?.require_training}
+            //   onclickToggle={{
+            //     onClick: () => {
+            //       if (
+            //         localModule.relations.filter(
+            //           (relation) => relation.training_status === 'training',
+            //         ).length == 0
+            //       ) {
+            //         {
+            //           setEditLocalModule((prev) => ({
+            //             ...prev,
+            //             settings: {
+            //               ...prev.settings,
+            //               require_training: !prev.settings.require_training,
+            //             },
+            //           }));
+            //         }
+            //       } else if (
+            //         localModule.settings.require_training === false &&
+            //         localModule.relations.filter(
+            //           (relation) => relation.training_status === 'training',
+            //         ).length > 0
+            //       ) {
+            //         //this condition is not needed actually just temporary
+            //         setEditLocalModule((prev) => ({
+            //           ...prev,
+            //           settings: {
+            //             ...prev.settings,
+            //             require_training: !prev.settings.require_training,
+            //           },
+            //         }));
+            //       } else {
+            //         toast.warning(
+            //           'Cannot disable training while members are still in training.',
+            //         );
+            //       }
+            //     },
+            //   }}
+            // />
           }
           isRequireTrainingVisible={true}
           isApprovalDoneVisible={localModule?.settings?.reqruire_approval}

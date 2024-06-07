@@ -142,7 +142,7 @@ const Member = ({
             member.join_status === 'invited'
               ? {
                   backgroundColor: 'var(--warning-a2)',
-                  border: '1px sloid var(--warning-a6)',
+                  border: '1px solid var(--warning-6)',
                   color: 'var(--warning-a11)',
                   padding: 'var(--space-1) var(--space-2)',
                   fontWeight: '500',
@@ -150,7 +150,7 @@ const Member = ({
               : member.is_suspended === true
                 ? {
                     backgroundColor: 'var(--error-a2)',
-                    border: '1px sloid var(--error-a6)',
+                    border: '1px solid var(--error-6)',
                     color: 'var(--error-a11)',
                     padding: 'var(--space-1) var(--space-2)',
                     fontWeight: '500',
