@@ -7,15 +7,12 @@
   border-top: 1px solid var(--neutral-6);
   border-bottom: 1px solid var(--neutral-6);
 
-  background-color: var(--neutral-2);
+  background-color: var(--neutral-3);
 }
 
 .all-interviewers-header-wrap.decrease-grid {
+  height: 38px;
   grid-template-columns: 25% 12% 12% 25% 26%;
-}
-
-.all-interviewers-header-wrap.decrease-grid.pb-1 {
-  height: 52px;
 }
 
 .all-interviewer-header-item {
@@ -30,14 +27,9 @@
   align-items: center;
 }
 
-.all-interviewer-header-item.gap-5 {
-  grid-column-gap: 5px;
-  grid-row-gap: 5px;
-}
-
 .all-interviewers-body {
   overflow: auto;
-  height: calc(100vh - 112px);
+  height: calc(100vh - 134px);
 }
 
 #w-node-_51c09859-0c9a-df83-83a4-a6e076826a5d-76826a5b {

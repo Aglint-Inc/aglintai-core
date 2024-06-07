@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { ButtonOutlined } from "./ButtonOutlined";
+import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./ImportResume.module.css";
 
@@ -23,9 +23,14 @@ export function ImportResume({
           className={_utils.cx(_styles, "ic-text-content")}
           tag="div"
         >
-          <Text weight="bold" content="Drag and drop candidates resume" />
+          <Text
+            content="Drag and drop candidates resume"
+            weight="medium"
+            size="2"
+          />
           <Text
             content="Resumes should be in PDF/DOCX format and maximum file size of each should be less than 5 MB"
+            align="center"
             color="neutral"
           />
         </_Builtin.Block>
@@ -37,12 +42,7 @@ export function ImportResume({
             className={_utils.cx(_styles, "ic-hr-line")}
             tag="div"
           />
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-blue-700-2")}
-            tag="div"
-          >
-            {"OR"}
-          </_Builtin.Block>
+          <Text content="OR" color="neutral" />
           <_Builtin.Block
             className={_utils.cx(_styles, "ic-hr-line")}
             tag="div"
@@ -53,11 +53,11 @@ export function ImportResume({
           tag="div"
           {...onClickBrowse}
         >
-          <ButtonOutlined
-            size="2"
-            textButton="Browse"
-            isLeftIcon={false}
+          <ButtonSolid
             isRightIcon={false}
+            isLeftIcon={false}
+            textButton="Browse"
+            size="3"
           />
         </_Builtin.Block>
       </_Builtin.Block>

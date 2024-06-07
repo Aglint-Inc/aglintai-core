@@ -21,7 +21,7 @@ export function SavedListMenu({
     <_Component className={_utils.cx(_styles, "saved-list-menu")} tag="div">
       <_Builtin.Block className={_utils.cx(_styles, "div-block-735")} tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-734")}
+          className={_utils.cx(_styles, "save-list-slot-item")}
           tag="div"
         >
           {slotSavedList ?? <SavedList />}
@@ -29,7 +29,7 @@ export function SavedListMenu({
       </_Builtin.Block>
       {isInputVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-728", "plr-16")}
+          className={_utils.cx(_styles, "save-list-input-wrap", "plr-16")}
           tag="div"
         >
           <_Builtin.Block tag="div">{slotInput}</_Builtin.Block>

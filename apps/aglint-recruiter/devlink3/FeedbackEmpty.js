@@ -11,12 +11,12 @@ export function FeedbackEmpty({
   onClickSubmit = {},
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1292")} tag="div">
+    <_Component className={_utils.cx(_styles, "add_feedback")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1293")}
+        className={_utils.cx(_styles, "add_feedback_wrap")}
         tag="div"
       >
-        <Text content="??" weight="" color="neutral" />
+        <Text content="No feedback submitted" weight="" color="neutral" />
         <_Builtin.Block tag="div">
           <ButtonSoft
             onClickButton={onClickSubmit}

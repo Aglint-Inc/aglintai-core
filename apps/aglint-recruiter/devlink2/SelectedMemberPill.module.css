@@ -28,13 +28,6 @@
   border-radius: 100px;
 }
 
-.cover_image {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .shadow_embed {
   position: absolute;
   left: auto;

@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./WelcomeMatDiscoverTalent.module.css";
 
@@ -55,7 +56,7 @@ export function WelcomeMatDiscoverTalent({
             className={_utils.cx(_styles, "input_slot")}
             tag="div"
           >
-            {slotSearch}
+            {slotSearch ?? <SlotComp componentName="Search Input" />}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "search_icon_block")}

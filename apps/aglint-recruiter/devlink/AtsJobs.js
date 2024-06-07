@@ -3,6 +3,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { Text } from "./Text";
+import { ButtonSolid } from "./ButtonSolid";
 import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./AtsJobs.module.css";
@@ -46,22 +47,26 @@ export function AtsJobs({
           tag="div"
           tabIndex="0"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "aui-button", "is-button-bg-blue")}
-            tag="div"
-            tabIndex="0"
-            {...onClickImport}
-          >
-            <_Builtin.Block className={_utils.cx(_styles, "text-md")} tag="div">
-              {"Import"}
-            </_Builtin.Block>
+          <_Builtin.Block tag="div" tabIndex="0" {...onClickImport}>
+            <ButtonSolid
+              isRightIcon={false}
+              isLeftIcon={false}
+              textButton="Import"
+              size="2"
+            />
           </_Builtin.Block>
           {isImportDisable ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "is-button-disabled")}
+              className={_utils.cx(_styles, "import-disable-btn")}
               tag="div"
             >
-              <_Builtin.Block tag="div">{"Import"}</_Builtin.Block>
+              <ButtonSolid
+                isRightIcon={false}
+                isLeftIcon={false}
+                textButton="Import"
+                size="2"
+                isDisabled={true}
+              />
             </_Builtin.Block>
           ) : null}
         </_Builtin.Block>

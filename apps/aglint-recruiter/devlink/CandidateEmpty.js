@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./CandidateEmpty.module.css";
 
@@ -21,10 +20,9 @@ export function CandidateEmpty({
         >
           {slotLottie}
         </_Builtin.Block>
-        <Text
-          content="No Matching Candidate found. Try modifying filter."
-          color="neutral"
-        />
+        <_Builtin.Block tag="div">
+          {"No Matching Candidate found. Try modifying filter."}
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

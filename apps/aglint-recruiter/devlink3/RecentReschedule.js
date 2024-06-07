@@ -3,6 +3,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
+import { RecentRescheduleList } from "./RecentRescheduleList";
 import * as _utils from "./utils";
 import _styles from "./RecentReschedule.module.css";
 
@@ -21,18 +22,27 @@ export function RecentReschedule({
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "reschedule-req-header")}
+        className={_utils.cx(_styles, "dashboard-widget-header")}
         tag="div"
       >
-        <Text content="RecentReschedule" />
-        <_Builtin.Block tag="div">{slotDropdown}</_Builtin.Block>
+        <Text content="Recent Reschedules" weight="medium" />
+        <_Builtin.Block tag="div">
+          {slotDropdown ?? <SlotComp componentNeme="dropdown" />}
+        </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1782")}
-        tag="div"
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "slot_recent")} tag="div">
         {slotRecentRescheduleList ?? (
-          <SlotComp componentNeme="RecentResceduleList" />
+          <>
+            <RecentRescheduleList />
+            <RecentRescheduleList />
+            <RecentRescheduleList />
+            <RecentRescheduleList />
+            <RecentRescheduleList />
+            <RecentRescheduleList />
+            <RecentRescheduleList />
+            <RecentRescheduleList />
+            <RecentRescheduleList />
+          </>
         )}
       </_Builtin.Block>
     </_Component>

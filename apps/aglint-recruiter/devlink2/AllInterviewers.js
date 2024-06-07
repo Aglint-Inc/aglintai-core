@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { SlotComp } from "./SlotComp";
+import { AllInterviewersCard } from "./AllInterviewersCard";
 import * as _utils from "./utils";
 import _styles from "./AllInterviewers.module.css";
 
@@ -31,7 +31,7 @@ export function AllInterviewers({
           )}
           tag="div"
         >
-          <Text content="Interviewer" weight="bold" />
+          <Text content="Interviewer" weight="medium" />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(
@@ -45,7 +45,7 @@ export function AllInterviewers({
           )}
           tag="div"
         >
-          <Text content="Upcoming" weight="bold" />
+          <Text content="Upcoming" weight="medium" />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(
@@ -55,19 +55,19 @@ export function AllInterviewers({
           )}
           tag="div"
         >
-          <Text content="Completed" weight="bold" />
+          <Text content="Completed" weight="medium" />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "all-interviewer-header-item")}
           tag="div"
         >
-          <Text content="Qualified" weight="bold" />
+          <Text content="Qualified" weight="medium" />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "all-interviewer-header-item")}
           tag="div"
         >
-          <Text content="Training" weight="bold" />
+          <Text content="Training" weight="medium" />
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
@@ -75,7 +75,24 @@ export function AllInterviewers({
         tag="div"
       >
         {slotAllInterviewesCard ?? (
-          <SlotComp componentName="AllInterviewersCard" />
+          <>
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+          </>
         )}
       </_Builtin.Block>
     </_Component>

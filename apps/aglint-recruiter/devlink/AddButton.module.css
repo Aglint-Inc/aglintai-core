@@ -1,8 +1,11 @@
 .add-button-wrap {
   display: flex;
   align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+
+  color: var(--accent-11);
+
   cursor: pointer;
 }
 
@@ -126,20 +129,11 @@
   align-items: flex-start;
 }
 
-.text-blue-500 {
-  color: var(--blue500-72579298);
-}
-
-.text-underline {
+.icons.cursor-pointer {
   transition: all 250ms ease;
-  text-decoration: underline;
   cursor: pointer;
 }
 
-.text-underline:hover {
-  opacity: 0.7;
-}
-
-.fw-semibold {
-  font-weight: 600;
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
 }

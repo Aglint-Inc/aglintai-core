@@ -234,6 +234,15 @@
   align-items: flex-start;
 }
 
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
 .cj-imports-wrapper {
   display: flex;
   max-width: 750px;
@@ -554,10 +563,6 @@
 
 .text-sm.text-grey-500.width-ticket-d {
   width: 49.91667175292969px;
-}
-
-.color-blue-600 {
-  color: var(--blue600-aad8d97e);
 }
 
 .text-capitalize {

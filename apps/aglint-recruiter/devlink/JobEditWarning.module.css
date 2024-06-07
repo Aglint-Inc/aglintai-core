@@ -1,13 +1,13 @@
 .warnig-point-wrap-job {
   display: inline-block;
-  padding: 10px 20px;
+  padding: var(--space-2) var(--space-4);
   flex-direction: column;
   align-items: flex-start;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
 
-  border: 1px solid #ffeedb;
-  border-radius: 10px;
+  border: 1px solid var(--accent-6);
+  border-radius: var(--radius-4);
 
-  background-color: #fff7ed;
+  background-color: var(--accent-2);
 }

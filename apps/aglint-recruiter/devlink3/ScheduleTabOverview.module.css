@@ -274,6 +274,7 @@
 
 .sto-column-wrap {
   display: flex;
+  justify-content: space-between;
   grid-column-gap: var(--space-6);
   grid-row-gap: var(--space-6);
 }
@@ -306,7 +307,7 @@
 
 .sto-column-right-wrap {
   display: flex;
-  width: 350px;
+  width: 250px;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: var(--space-4);

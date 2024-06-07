@@ -51,19 +51,11 @@
   color: var(--sand-11);
 }
 
-.text-blue-500 {
-  color: #337fbd;
-}
-
-.text-underline {
+.text-sm.text-underline {
   text-decoration: underline;
 }
 
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.text-sm.text-underline {
+.text-underline {
   text-decoration: underline;
 }
 
@@ -80,13 +72,7 @@
   opacity: 0.8;
 }
 
-.text-sm.text-underline.text-blue-500.view-req {
-  position: absolute;
-  left: auto;
-  top: 10px;
-  right: 16px;
-  bottom: auto;
-
+.cursor-pointer {
   cursor: pointer;
 }
 
@@ -157,11 +143,6 @@
 .text-lg {
   font-size: 18px;
   line-height: 24px;
-}
-
-.fw-semibold.p-lr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
 }
 
 .hide {

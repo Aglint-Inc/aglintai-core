@@ -18,7 +18,7 @@ export function AddCompany({
         className={_utils.cx(_styles, "cs-sidebar-header")}
         tag="div"
       >
-        <Text content="" />
+        <Text content="??" />
         <_Builtin.Block
           className={_utils.cx(_styles, "icon-block", "clickable")}
           tag="div"

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./SuggestedSkillPill.module.css";
 
@@ -15,8 +16,8 @@ export function SuggestedSkillPill({
       tag="div"
       {...onClickAdd}
     >
-      <_Builtin.Block tag="div">{textSkill}</_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "frame-1091")} tag="div">
+      <Text content={textSkill} />
+      <_Builtin.Block tag="div">
         <_Builtin.Image
           className={_utils.cx(_styles, "vectors-wrapper-37")}
           loading="lazy"

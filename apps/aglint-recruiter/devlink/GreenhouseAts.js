@@ -2,6 +2,8 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { Text } from "./Text";
+import { ButtonSolid } from "./ButtonSolid";
 import { AtsCard } from "./AtsCard";
 import * as _utils from "./utils";
 import _styles from "./GreenhouseAts.module.css";
@@ -32,15 +34,16 @@ export function GreenhouseAts({
 
   return (
     <_Component className={_utils.cx(_styles, "ats-wrappers-outer")} tag="div">
-      <_Builtin.Block tag="div">
-        {"Select a job from Greenhouse for import."}
-      </_Builtin.Block>
+      <Text
+        content="Select a job from Greenhouse for import."
+        weight="medium"
+      />
       <_Builtin.Block
         className={_utils.cx(_styles, "ats-import-wrappers")}
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "relative-1")} tag="div">
-          {textNumberofJobs}
+          <Text content={textNumberofJobs} color="neutral" />
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "relative-1")} tag="div">
           <_Builtin.Block
@@ -49,34 +52,34 @@ export function GreenhouseAts({
             tabIndex="0"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "aui-button", "is-button-bg-blue")}
+              className={_utils.cx(_styles, "relative")}
               tag="div"
               tabIndex="0"
               {...onClickImport}
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-md")}
-                tag="div"
-              >
-                {"Import"}
-              </_Builtin.Block>
+              <ButtonSolid
+                isRightIcon={false}
+                isLeftIcon={false}
+                size="2"
+                textButton="Import"
+              />
             </_Builtin.Block>
             {isImportDisable ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "is-button-disabled")}
+                className={_utils.cx(_styles, "ats-btn-disable")}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{"Import"}</_Builtin.Block>
+                <ButtonSolid
+                  isRightIcon={false}
+                  isLeftIcon={false}
+                  size="2"
+                  textButton="Import"
+                  isDisabled={true}
+                />
               </_Builtin.Block>
             ) : null}
           </_Builtin.Block>
         </_Builtin.Block>
-        {isSelected ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "selected-div-wrap")}
-            tag="div"
-          />
-        ) : null}
       </_Builtin.Block>
       {isAtsMenuVisible ? (
         <_Builtin.Block
@@ -92,12 +95,7 @@ export function GreenhouseAts({
               tag="div"
               {...onClickAll}
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-relative", "zindex-1")}
-                tag="div"
-              >
-                {"All"}
-              </_Builtin.Block>
+              <Text content="All" />
               {isAllActive ? (
                 <_Builtin.Block
                   className={_utils.cx(_styles, "ats-tab-menu-active")}
@@ -110,12 +108,7 @@ export function GreenhouseAts({
               tag="div"
               {...onClickActive}
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-relative", "zindex-1")}
-                tag="div"
-              >
-                {"Active"}
-              </_Builtin.Block>
+              <Text content="Active" />
               {isActiveActive ? (
                 <_Builtin.Block
                   className={_utils.cx(_styles, "ats-tab-menu-active")}
@@ -128,12 +121,7 @@ export function GreenhouseAts({
               tag="div"
               {...onClickLive}
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-relative", "zindex-1")}
-                tag="div"
-              >
-                {"Live"}
-              </_Builtin.Block>
+              <Text content="Live" />
               {isLiveActive ? (
                 <_Builtin.Block
                   className={_utils.cx(_styles, "ats-tab-menu-active")}
@@ -146,12 +134,7 @@ export function GreenhouseAts({
               tag="div"
               {...onClickClosed}
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-relative", "zindex-1")}
-                tag="div"
-              >
-                {"Closed"}
-              </_Builtin.Block>
+              <Text content="Closed" />
               {isClosedActive ? (
                 <_Builtin.Block
                   className={_utils.cx(_styles, "ats-tab-menu-active")}
@@ -169,10 +152,6 @@ export function GreenhouseAts({
       >
         {slotAtsCard ?? <AtsCard />}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "pagination-wrappers", "hide")}
-        tag="div"
-      />
     </_Component>
   );
 }

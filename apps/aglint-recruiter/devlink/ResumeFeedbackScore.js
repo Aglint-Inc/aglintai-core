@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./ResumeFeedbackScore.module.css";
 
@@ -14,14 +15,12 @@ export function ResumeFeedbackScore({
       className={_utils.cx(_styles, "cvs-score-details-block")}
       tag="div"
     >
-      <_Builtin.Block tag="div">{textFeedback}</_Builtin.Block>
+      <Text content={textFeedback} />
       <_Builtin.Block
         className={_utils.cx(_styles, "cvs-score-detail-count-block")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {textScoreState}
-        </_Builtin.Block>
+        <Text content={textScoreState} weight="medium" />
       </_Builtin.Block>
     </_Component>
   );

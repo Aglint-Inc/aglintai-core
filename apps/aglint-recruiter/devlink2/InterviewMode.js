@@ -1,7 +1,9 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { InterviewModePill } from "./InterviewModePill";
+import { SlotComp } from "./SlotComp";
 import { SelectedMemberPill } from "./SelectedMemberPill";
 import * as _utils from "./utils";
 import _styles from "./InterviewMode.module.css";
@@ -24,22 +26,25 @@ export function InterviewMode({
   isTraineesDropVisible = true,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1307")} tag="div">
+    <_Component className={_utils.cx(_styles, "interview_mode")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "input_and_label")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Interview Mode"}
-        </_Builtin.Block>
+        <Text content="Interview Mode" weight="" />
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_interview_mode")}
           tag="div"
         >
           {slotInterviewModePill ?? (
             <>
-              <InterviewModePill isActive={true} />
-              <InterviewModePill textModeName="Individual" />
+              <InterviewModePill />
+              <InterviewModePill
+                id={_utils.cx(
+                  _styles,
+                  "w-node-a81abb2b-af7e-1ea6-c5f0-fcbc99c60717-0ddb1b7b"
+                )}
+              />
             </>
           )}
         </_Builtin.Block>
@@ -48,19 +53,16 @@ export function InterviewMode({
         className={_utils.cx(_styles, "input_and_label")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Interviewers"}
-        </_Builtin.Block>
+        <Text content="Interviewers" weight="" />
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_avatarselectionpill")}
           tag="div"
         >
           {slotInterviewersAvatarSelectionPill ?? (
             <>
-              <SelectedMemberPill />
-              <SelectedMemberPill textMemberName="Ogyen Thoga" />
-              <SelectedMemberPill textMemberName="Punith G" />
-              <SelectedMemberPill textMemberName="Dheeraj Kumar Sah" />
+              <SlotComp componentName="SelectedMemberPill" />
+              <SlotComp componentName="SelectedMemberPill" />
+              <SlotComp componentName="SelectedMemberPill" />
             </>
           )}
         </_Builtin.Block>
@@ -123,13 +125,10 @@ export function InterviewMode({
             className={_utils.cx(_styles, "input_block_flex")}
             tag="div"
           >
-            <_Builtin.Block tag="div">{slotToggle}</_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {textToggleLabel}
+            <_Builtin.Block tag="div">
+              {slotToggle ?? <SlotComp componentName="Slot for Toggle" />}
             </_Builtin.Block>
+            <Text content={textToggleLabel} weight="" />
           </_Builtin.Block>
           {isTraining ? (
             <_Builtin.Block

@@ -9,9 +9,9 @@ export function LeaderBoardLoader({
   slotSkeleton,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1476")} tag="div">
+    <_Component className={_utils.cx(_styles, "leaderboard_row")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1480")}
+        className={_utils.cx(_styles, "leaderboard_row_left")}
         tag="div"
       >
         <_Builtin.Block
@@ -21,7 +21,7 @@ export function LeaderBoardLoader({
           {slotSkeleton}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1477")}
+          className={_utils.cx(_styles, "interviewer_info_wrap")}
           tag="div"
         >
           <_Builtin.Block
@@ -30,10 +30,7 @@ export function LeaderBoardLoader({
           >
             {slotSkeleton}
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1479")}
-            tag="div"
-          >
+          <_Builtin.Block className={_utils.cx(_styles, "flex_v4")} tag="div">
             <_Builtin.Block
               className={_utils.cx(_styles, "div-block-1599", "loder")}
               tag="div"
@@ -50,17 +47,17 @@ export function LeaderBoardLoader({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1482", "loader")}
+        className={_utils.cx(_styles, "leaderboard_row_right", "loader")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1481", "loader")}
+          className={_utils.cx(_styles, "hours", "loader")}
           tag="div"
         >
           {slotSkeleton}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1481", "loder")}
+          className={_utils.cx(_styles, "hours", "loder")}
           tag="div"
         >
           {slotSkeleton}

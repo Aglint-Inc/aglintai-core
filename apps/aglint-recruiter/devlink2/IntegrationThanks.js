@@ -3,6 +3,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./IntegrationThanks.module.css";
 
@@ -38,7 +39,9 @@ export function IntegrationThanks({
             color="neutral"
           />
         </_Builtin.Block>
-        <_Builtin.Block tag="div">{slotButtonClose}</_Builtin.Block>
+        <_Builtin.Block tag="div">
+          {slotButtonClose ?? <SlotComp componentName="Close Button" />}
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

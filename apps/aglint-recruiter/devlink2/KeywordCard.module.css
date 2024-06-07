@@ -8,11 +8,6 @@
   border-radius: 10px;
 }
 
-.keyword_wrap.no-border {
-  padding-left: 0px;
-  border-style: none;
-}
-
 .header_desc {
   display: flex;
   flex-direction: column;

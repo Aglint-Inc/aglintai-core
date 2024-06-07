@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./InputText.module.css";
 
@@ -11,13 +12,11 @@ export function InputText({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "frame-977")}
+      className={_utils.cx(_styles, "input-text-wrap")}
       tag="div"
       {...onClickInput}
     >
-      <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-        {textInput}
-      </_Builtin.Block>
+      <Text content={textInput} weight="medium" />
     </_Component>
   );
 }
