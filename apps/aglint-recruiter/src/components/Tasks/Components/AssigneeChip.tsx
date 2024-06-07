@@ -4,7 +4,7 @@ import {
   PhoneAgentId,
   SystemAgentId,
 } from '@aglint/shared-utils';
-import { Stack, Typography } from '@mui/material';
+import { Stack, Typography, Zoom } from '@mui/material';
 import { IconSettingsAutomation } from '@tabler/icons-react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -53,7 +53,9 @@ function AssigneeChip({
         <AvatarWithName
           isAvatarVisible={true}
           isCandidateIconVisible={false}
-          slotAvatar={<IconSettingsAutomation color='grey' stroke={2} size={30} />}
+          slotAvatar={
+            <IconSettingsAutomation color='grey' stroke={2} size={30} />
+          }
           textName={'System'}
         />
       </ShowCode.When>
@@ -61,14 +63,9 @@ function AssigneeChip({
         <LightTooltip
           // open={true}
           disableHoverListener={disableHoverListener}
-          // TransitionComponent={Zoom}
+          TransitionComponent={Zoom}
           title={<AssigneeDetailsCard assigneeDetails={assigneeDetails} />}
-          sx={{
-            '& .MuiTooltip-tooltip': {
-              p: '0px !important',
-              fontWeight: 400,
-            },
-          }}
+          arrow={true}
         >
           <Stack sx={{ cursor: 'pointer' }}>
             <ListCard

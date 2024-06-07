@@ -111,9 +111,9 @@ function SchedulingMainComp() {
                     slotIcon={
                       <Icon
                         variant='PlusThin'
-                        height='12'
-                        width='12'
-                        color='#fff'
+                        height='20'
+                        width='20'
+                        color='var(--white)'
                       />
                     }
                     size={2}

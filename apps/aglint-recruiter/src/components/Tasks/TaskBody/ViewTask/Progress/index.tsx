@@ -59,6 +59,12 @@ function SubTaskProgress() {
                   },
                   -1,
                 );
+                const lastEmailRequestAvailabilityListIndex =
+                  progressList.reduce((lastIndex, item, i) => {
+                    return item.progress_type === 'request_availability_list'
+                      ? i
+                      : lastIndex;
+                  }, -1);
                 let CandidateCreator = tasks
                   .map((ele) => ele.applications.candidates)
                   .find((ele) => ele.id === (item.created_by as any).id);
@@ -290,7 +296,12 @@ function SubTaskProgress() {
                             item.progress_type === 'request_availability_list'
                           }
                         >
-                          <RequestAvailabilityList />
+                          <RequestAvailabilityList
+                            item={item}
+                            disable={
+                              lastEmailRequestAvailabilityListIndex !== i
+                            }
+                          />
                         </ShowCode.When>
                       </ShowCode>
                     }

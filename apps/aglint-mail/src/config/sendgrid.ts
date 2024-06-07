@@ -1,4 +1,5 @@
 import sgMail from '@sendgrid/mail';
+import type { APISendgridPayload } from '@aglint/shared-types';
 import { MailSenderError } from '../utils/apiUtils/customErrors';
 import { getOutboundEmail } from './get-outbound-email';
 
@@ -6,39 +7,40 @@ const SENDGRID_API_KEY =
   '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';
 sgMail.setApiKey(SENDGRID_API_KEY);
 
-export default async function sendMail(data) {
-  console.log('data', data.email);
-
+export default async function sendMail(data: APISendgridPayload) {
+  const {
+    email,
+    fromEmail,
+    fromName,
+    headers,
+    subject,
+    text,
+    attachments,
+    html,
+  } = data;
   try {
     const msg: any = {
-      to: data.email, // Change to your recipient
+      to: email, // Change to your recipient
       from: {
-        email: 'admin@aglinthq.com',
-        name: 'Aglint Admin',
+        email: fromEmail ?? 'admin@aglinthq.com',
+        name: fromName ?? 'Aglint Admin',
       }, // Change to your verified sender
-      subject: data.subject,
-      html: data.html,
+      subject,
+      html,
+      text,
+      headers,
+      attachments,
     };
-
-    console.log(msg.to);
     msg.to = await getOutboundEmail(msg.to);
-    console.log(msg.to);
-    try {
-      const resp = await sgMail.send(msg);
-      const Response = resp[0];
+    const resp = await sgMail.send(msg);
+    const Response = resp[0];
 
-      if (Response.statusCode >= 200 && Response.statusCode < 300) {
-        return 'ok';
-      }
-      throw new MailSenderError(`mail failed to send`);
-    } catch (e: any) {
-      console.log(e);
-      throw new MailSenderError(e.message);
+    if (Response.statusCode >= 200 && Response.statusCode < 300) {
+      return 'ok';
     }
+    throw new MailSenderError(`mail failed to send`);
   } catch (error) {
-    console.log('error1', error);
-    console.log('error2', error.response.body);
-
+    console.error(error.response.body);
     throw new MailSenderError(`mail failed to send`);
   }
 }

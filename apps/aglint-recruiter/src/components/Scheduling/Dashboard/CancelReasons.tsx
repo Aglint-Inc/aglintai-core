@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { DatabaseTable } from '@aglint/shared-types';
 import { Popover, Stack, Typography } from '@mui/material';
 import React, { ReactNode, useState } from 'react';

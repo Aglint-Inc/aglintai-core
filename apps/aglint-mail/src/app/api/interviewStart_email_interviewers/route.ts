@@ -6,14 +6,18 @@ import {
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
-import type { FilledPayload } from '../../../utils/types/apiTypes';
-import interviewReaminder from '../../../utils/email/upcoming_interview_reminder_candidate/fetch';
+import type {
+  FilledPayload,
+  MeetingDetails,
+} from '../../../utils/types/apiTypes';
+import confiramtionMailToOrganizerRemainder from '../../../utils/email/interviewStart_email_interviewers/fetch';
 import sendMail from '../../../config/sendgrid';
 
 interface ReqPayload {
   application_id: string;
+  meeting_id: string;
+  recruiter_user_id: string;
 }
-
 interface Meta {
   meta: ReqPayload;
 }
@@ -24,11 +28,12 @@ interface DataPayload {
   recruiter_id: string;
   companyLogo: string;
   payload: {
+    '[companyName]': string;
     '[firstName]': string;
     '[jobTitle]': string;
-    '[companyName]': string;
-    '[supportLink]': string;
-    '[interviewLink]': string;
+    '[recruiterName]': string;
+    'meetingLink': string;
+    'meetingDetails': MeetingDetails[];
   };
 }
 
@@ -37,14 +42,28 @@ export async function POST(req: Request) {
 
   try {
     if (!meta.application_id) {
-      throw new ClientError('attribute application_id missing', 400);
+      throw new ClientError('application_id attribute missing', 400);
     }
-    const data: DataPayload = await interviewReaminder(meta.application_id);
+    if (!meta.meeting_id) {
+      throw new ClientError('meeting_id is missing', 400);
+    }
+    if (!meta.recruiter_user_id) {
+      throw new ClientError('recruiter_user_id is missing', 400);
+    }
+
+    const data: DataPayload = await confiramtionMailToOrganizerRemainder(
+      meta.application_id,
+      meta.meeting_id,
+      meta.recruiter_user_id,
+    );
+
     const filled_body: FilledPayload = await fetchTemplate(
       data.recruiter_id,
       data.mail_type,
       data.payload,
     );
+    filled_body.meetingLink = data.payload.meetingLink;
+    filled_body.meetingDetails = data.payload.meetingDetails;
     filled_body.companyLogo = data.companyLogo;
     const { emails } = await getEmails();
 
@@ -60,7 +79,8 @@ export async function POST(req: Request) {
       emails[emailIdx],
       filled_body,
     );
-    await sendMail({ email: data.recipient_email, html, subject });
+    await sendMail({ email: data.recipient_email, html, subject, text: html });
+
     return NextResponse.json('success', {
       status: 200,
     });
@@ -79,7 +99,7 @@ export async function POST(req: Request) {
     if (e instanceof MailArgValidationError) {
       return NextResponse.json(
         {
-          error: `${e.name}: mail_type:interview reminder candidate,  ${e.message}`,
+          error: `${e.name}: mail_type:confirmation_mail_to_organizer_remainder,  ${e.message}`,
         },
         {
           status: 400,
@@ -89,7 +109,7 @@ export async function POST(req: Request) {
     if (e) {
       return NextResponse.json(
         {
-          error: `${e.name}: mail_type:interview reminder candidate,  ${e.message}`,
+          error: `${e.name}: mail_type:confirmation_mail_to_organizer_remainder,  ${e.message}`,
         },
         {
           status: 500,
@@ -100,5 +120,11 @@ export async function POST(req: Request) {
 }
 
 // {
-//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637"
+//   "session_id": [
+//       "5e7953c5-3e56-4d89-9857-29c34b55ce9d",
+//       "f5053399-1998-4b43-8ba5-801db1018e27"
+//   ],
+//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637",
+//   "meeting_id": "8daab34c-9c19-445b-aa96-3b4735307414",
+//   "recruiter_user_id": "7f6c4cae-78b6-4eb6-86fd-9a0e0310147b"
 // }

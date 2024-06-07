@@ -1,7 +1,7 @@
-import { Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { Dispatch } from 'react';
 
+import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview';
 
 import { ScheduleListType } from '../../../Common/ModuleSchedules/hooks';
@@ -54,7 +54,7 @@ function Overview({
               );
             })
           ) : (
-            <Typography variant='body1'>No Schedules</Typography>
+            <AllInterviewEmpty textDynamic='No upcoming schedules found.' />
           )
         }
         slotTrainingModules={

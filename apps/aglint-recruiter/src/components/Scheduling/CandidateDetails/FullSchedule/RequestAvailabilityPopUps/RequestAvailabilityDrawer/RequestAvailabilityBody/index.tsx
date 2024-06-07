@@ -53,7 +53,7 @@ function RequestAvailabilityBody() {
         )?.dateSlots[0].sessions[0].start_time;
         const isPastDate = dayjs().isAfter(dayjs(date), 'day');
         const isPrevSelectedDate =
-          date.split('T')[0] !== prevSelectedDate?.split('T')[0];
+          date?.split('T')[0] !== prevSelectedDate?.split('T')[0];
 
         return (
           <DayCardWrapper

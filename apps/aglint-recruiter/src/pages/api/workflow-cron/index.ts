@@ -1,4 +1,4 @@
-import { APIWorkFlowCron } from '@aglint/shared-types';
+import { APIWorkFlowCron, DatabaseEnums } from '@aglint/shared-types';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -19,47 +19,47 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         401,
       );
     switch (meta.email_type) {
-      case 'self_schedule_request_reminder': {
+      case 'sendSelfScheduleRequest_email_applicant': {
         await axios.post(
           process.env.NEXT_PUBLIC_MAIL_HOST +
-            '/api/self_schedule_request_reminder',
+            getPath('sendSelfScheduleRequest_email_applicant'),
           {
             meta: meta,
           },
         );
         break;
       }
-      case 'availability_request_reminder': {
+      case 'sendAvailabilityRequest_email_applicant': {
         await axios.post(
           process.env.NEXT_PUBLIC_MAIL_HOST +
-            '/api/availability_request_reminder',
+            getPath('sendAvailabilityRequest_email_applicant'),
           {
             meta: meta,
           },
         );
         break;
       }
-      case 'upcoming_interview_reminder_candidate': {
+      case 'interviewStart_email_applicant': {
         await axios.post(
           process.env.NEXT_PUBLIC_MAIL_HOST +
-            '/api/upcoming_interview_reminder_candidate',
+            getPath('interviewEnd_slack_interviewers'),
           {
             meta: meta,
           },
         );
         break;
       }
-      case 'upcoming_interview_reminder_interviewers': {
+      case 'interviewStart_email_interviewers': {
         await axios.post(
           process.env.NEXT_PUBLIC_MAIL_HOST +
-            '/api/upcoming_interview_reminder_interviewers',
+            getPath('interviewStart_email_interviewers'),
           {
             meta: meta,
           },
         );
         break;
       }
-      case 'slack_interview_reminder': {
+      case 'interviewStart_slack_interviewers': {
         await axios.post(
           'https://apis-ta7r36xoza-wl.a.run.app/api/slack/interview-reminder',
           {
@@ -68,7 +68,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         );
         break;
       }
-      case 'slack_interviewer_confirmation': {
+      case 'interviewerConfirmation_slack_interviewers': {
         await axios.post(
           'https://apis-ta7r36xoza-wl.a.run.app/api/slack/notify-interview-confirmation',
           {
@@ -77,7 +77,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         );
         break;
       }
-      case 'slack_interviewer_feedback': {
+      case 'interviewEnd_slack_interviewers': {
         await axios.post(
           'https://apis-ta7r36xoza-wl.a.run.app/api/slack/feedback',
           {
@@ -103,3 +103,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default handler;
+
+const getPath = <T extends DatabaseEnums['email_types']>(
+  path: T,
+): `/api/${T}` => {
+  return `/api/${path}`;
+};

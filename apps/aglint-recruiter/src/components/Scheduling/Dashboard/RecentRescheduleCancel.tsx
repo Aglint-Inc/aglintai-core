@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { Avatar, Skeleton } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';

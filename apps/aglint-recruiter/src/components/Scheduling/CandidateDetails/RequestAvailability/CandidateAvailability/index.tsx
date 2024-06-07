@@ -40,10 +40,10 @@ function CandidateAvailability() {
     }
 
     await updateCandidateRequestAvailability({
-      data: { slots: daySlots, user_timezone: userTzDayjs.tz.guess(),  },
+      data: { slots: daySlots, user_timezone: userTzDayjs.tz.guess() },
       id: String(router.query?.request_id),
     });
-    insertTaskProgress({
+    await insertTaskProgress({
       request_availability_id: candidateRequestAvailability?.id,
       taskData: {
         created_by: {
@@ -52,6 +52,16 @@ function CandidateAvailability() {
             candidateRequestAvailability.applications.candidates.last_name,
           ),
           id: candidateRequestAvailability.applications.candidates.id,
+        },
+        jsonb_data: {
+          dates: [
+            ...new Set(
+              daySlots
+                .map((ele) => ele.dates)
+                .flat()
+                .map((ele) => ele.curr_day),
+            ),
+          ],
         },
       },
     });

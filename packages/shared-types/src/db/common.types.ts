@@ -11,9 +11,11 @@ export type CustomMembersMeta = {
 
 export type CustomEmailTypes = Extract<
   Database["public"]["Enums"]["email_types"],
-  | "self_schedule_request_reminder"
-  | "upcoming_interview_reminder_candidate"
-  | "upcoming_interview_reminder_interviewers"
-  | "availability_request_reminder"
-  | "slack_interviewer_confirmation"
+  | "sendSelfScheduleRequest_email_applicant"
+  | "interviewStart_email_applicant"
+  | "interviewStart_email_interviewers"
+  | "interviewStart_slack_interviewers"
+  | "sendAvailabilityRequest_email_applicant"
+  | "interviewerConfirmation_slack_interviewers"
+  | "interviewEnd_slack_interviewers"
 >;

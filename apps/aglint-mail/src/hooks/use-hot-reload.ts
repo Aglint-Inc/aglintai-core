@@ -23,6 +23,7 @@ export const useHotreload = (
     const socket = socketRef.current;
 
     socket.on('reload', (changes: HotReloadChange[]) => {
+      // eslint-disable-next-line no-console
       console.debug('Reloading...');
       void onShouldReload(changes);
     });

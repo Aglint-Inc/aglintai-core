@@ -1,12 +1,8 @@
-export interface EmailPayloads {
+import { DatabaseEnums } from "..";
+
+type Payloads = {
   application_received: {
     application_id: string;
-  };
-  availability_request_reminder: {
-    session_id: string;
-    application_id: string;
-    schedule_id: string;
-    filter_id: string;
   };
   cancel_interview_session: {
     application_id: string;
@@ -44,14 +40,12 @@ export interface EmailPayloads {
     meeting_id: string;
     recruiter_user_id: string;
   };
-
   debrief_calendar_invite: {
     session_id: string[];
     application_id: string;
     meeting_id: string;
     recruiter_user_id: string;
   };
-
   init_email_agent: {
     meeting_id: string;
     filter_id: string;
@@ -62,7 +56,6 @@ export interface EmailPayloads {
   interview_resend: {
     application_id: string;
   };
-
   phone_screening: {
     application_id: string;
   };
@@ -82,16 +75,29 @@ export interface EmailPayloads {
     application_id: string;
     request_id: string;
   };
-  self_schedule_request_reminder: {
+  sendSelfScheduleRequest_email_applicant: {
     meeting_id: string;
     filter_id: string;
   };
-  upcoming_interview_reminder_candidate: {
+  interviewStart_email_applicant: {
     application_id: string;
   };
-  upcoming_interview_reminder_interviewers: {
+  sendAvailabilityRequest_email_applicant: {
+    session_id: string;
+    application_id: string;
+    schedule_id: string;
+    filter_id: string;
+  };
+  interviewStart_email_interviewers: {
     application_id: string;
     meeting_id: string;
     recruiter_user_id: string;
   };
-}
+  interviewStart_slack_interviewers: never;
+  interviewEnd_slack_interviewers: never;
+  interviewerConfirmation_slack_interviewers: never;
+};
+
+export type EmailPayloads = {
+  [id in DatabaseEnums["email_types"]]: Payloads[id];
+};
