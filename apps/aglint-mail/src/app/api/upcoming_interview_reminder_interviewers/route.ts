@@ -18,6 +18,10 @@ interface ReqPayload {
   meeting_id: string;
   recruiter_user_id: string;
 }
+interface Meta {
+  meta: ReqPayload;
+}
+
 interface DataPayload {
   recipient_email: string;
   mail_type: string;
@@ -34,24 +38,23 @@ interface DataPayload {
 }
 
 export async function POST(req: Request) {
-  const { application_id, meeting_id, recruiter_user_id }: ReqPayload =
-    await req.json();
+  const { meta }: Meta = await req.json();
 
   try {
-    if (!application_id) {
+    if (!meta.application_id) {
       throw new ClientError('application_id attribute missing', 400);
     }
-    if (!meeting_id) {
+    if (!meta.meeting_id) {
       throw new ClientError('meeting_id is missing', 400);
     }
-    if (!recruiter_user_id) {
+    if (!meta.recruiter_user_id) {
       throw new ClientError('recruiter_user_id is missing', 400);
     }
 
     const data: DataPayload = await confiramtionMailToOrganizerRemainder(
-      application_id,
-      meeting_id,
-      recruiter_user_id,
+      meta.application_id,
+      meta.meeting_id,
+      meta.recruiter_user_id,
     );
 
     const filled_body: FilledPayload = await fetchTemplate(

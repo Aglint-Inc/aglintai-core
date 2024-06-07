@@ -15,5 +15,5 @@ export type CustomEmailTypes = Extract<
   | "upcoming_interview_reminder_candidate"
   | "upcoming_interview_reminder_interviewers"
   | "availability_request_reminder"
-  | "slack-interviewer-confirmation"
+  | "slack_interviewer_confirmation"
 >;

@@ -1,5 +1,5 @@
 import { ScheduleUtils } from '@aglint/shared-utils';
-import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
+import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
 import type { InitEmailAgentRemainderType } from '../../types/supabase-fetch';
 
 interface FilterJson {
@@ -9,17 +9,16 @@ interface FilterJson {
 }
 export default async function initEmailAgentRemainder(
   filter_id: string,
-  meeting_id: string,
+  schedule_id: string,
 ) {
-  const [filterJson] = supabaseWrap(
-    await supabaseAdmin
-      .from('interview_filter_json')
-      .select(
-        'filter_json,interview_schedule(applications(public_jobs(job_title,company),candidates(first_name,email,recruiter_id,recruiter(logo))))',
-      )
-      .eq('id', filter_id),
-  );
-
+  const { data: filterJson } = await supabaseAdmin
+    .from('interview_filter_json')
+    .select(
+      'filter_json,interview_schedule(applications(public_jobs(job_title,recruiter_id,company),candidates(first_name,email,recruiter(logo))))',
+    )
+    .eq('id', filter_id)
+    .single()
+    .throwOnError();
   const { end_date, start_date, user_tz } =
     filterJson.filter_json as unknown as FilterJson;
   const {
@@ -27,18 +26,17 @@ export default async function initEmailAgentRemainder(
       applications: {
         candidates: {
           email,
-          recruiter_id,
           first_name,
           recruiter: { logo },
         },
-        public_jobs: { company, job_title },
+        public_jobs: { company, recruiter_id, job_title },
       },
     },
   } = filterJson;
 
   const body: InitEmailAgentRemainderType = {
     recipient_email: email,
-    mail_type: 'init_email_agent',
+    mail_type: 'self_schedule_request_reminder',
     recruiter_id,
     companyLogo: logo,
     payload: {
@@ -54,7 +52,7 @@ export default async function initEmailAgentRemainder(
         user_tz,
       ).format('MMM DD, YYYY'),
       '[companyTimeZone]': '',
-      '[selfScheduleLink]': `${process.env.BASE_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
+      '[selfScheduleLink]': `${process.env.BASE_URL}/scheduling/invite/${schedule_id}?filter_id=${filter_id}`,
     },
   };
 
