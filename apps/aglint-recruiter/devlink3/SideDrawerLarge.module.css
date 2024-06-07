@@ -32,23 +32,15 @@
   color: var(--neutral-9);
 }
 
-.flex_hr_10.disabled_text {
-  color: var(--neutral-9);
-}
-
 .sidedrawer_body {
   overflow: auto;
   height: calc(100vh - 90px);
-  overflow: hidden;
-  height: calc(100vh - 121px);
 }
 
 .sidedrawer_bottom_bar {
   display: flex;
   height: 49px;
   padding: var(--space-2) var(--space-4);
-  height: 65px;
-  padding: 16px;
   justify-content: space-between;
 
   border-top: 1px solid #e9ebed;
