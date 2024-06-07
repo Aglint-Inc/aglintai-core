@@ -10,7 +10,7 @@ import ApplicationCard from './card';
 const ApplicantsList = ({
   applications,
 }: {
-  applications: ReturnType<typeof useApplications>['assessmentApplications'];
+  applications: ReturnType<typeof useApplications>['sectionApplication'];
 }) => {
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage } = applications;
 

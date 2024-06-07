@@ -1,20 +1,29 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { queryOptions } from '@tanstack/react-query';
 
-import { jobQueryKeys } from '../job/keys';
 import { supabase } from '@/src/utils/supabase/client';
+
+import { jobQueryKeys } from '../job/keys';
+
+const SELECT_QUERY =
+  '*, candidates(* , candidate_files(created_at, candidate_id, file_url, resume_json, type))';
 
 export const applicationQuery = {
   all: ({ job_id }: ApplicationAllQueryPrerequistes) => ({
-    queryKey: [...jobQueryKeys.job({ id: job_id }).queryKey, 'application'] as const,
+    queryKey: [
+      ...jobQueryKeys.job({ id: job_id }).queryKey,
+      'application',
+    ] as const,
   }),
-  application: ({ application_id, job_id }: PageParams) =>
+  application: ({ application_id, job_id }: Params) =>
     queryOptions({
+      enabled: !!application_id && !!job_id,
+      gcTime: application_id ? 5 * 60_000 : 0,
       queryKey: [
         ...applicationQuery.all({ job_id }).queryKey,
         { application_id },
       ] as const,
-      queryFn: 
+      queryFn: () => getApplication({ application_id }),
     }),
 };
 
@@ -26,19 +35,19 @@ type Params = ApplicationAllQueryPrerequistes & {
   application_id: DatabaseTable['applications']['id'];
 };
 
-
 const getApplication = async ({
-  params: {application_id},
-}: {
-  params: Params
-}) => {
-  return supabase
-    .from('applications')
-    .select()
-    .eq('id', application_id);
-
-  const applications = (await query.throwOnError()).data.map(
-    (application, i) => ({ ...application, index: index + i }),
-  );
-  return applications;
+  application_id,
+}: Pick<Params, 'application_id'>) => {
+  const { candidates, ...application } = (
+    await supabase
+      .from('applications')
+      .select(SELECT_QUERY)
+      .eq('id', application_id)
+      .single()
+      .throwOnError()
+  ).data;
+  if (!candidates) return { ...application, candidate: null, resume: null };
+  const { candidate_files, ...candidate } = candidates;
+  const resume = (candidate_files ?? []).find(({ type }) => type === 'resume');
+  return { ...application, candidate, resume };
 };

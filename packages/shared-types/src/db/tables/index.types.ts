@@ -2,6 +2,7 @@ import type { Database } from "../schema.types";
 import type { Type } from "../utils.types";
 import type { CustomApplicationLogs } from "./application_logs.types";
 import type { CustomApplications } from "./applications.types";
+import { CustomCandidateFiles } from "./candidate_files";
 import type { CandidateRequestAvailability } from "./candidate_request_availability.type";
 import type { CustomInterviewSessionCancel } from "./interview_session_cancel.types";
 import type { CustomInterviewSessionRelation } from "./interview_session_relation.types";
@@ -41,5 +42,6 @@ export type Tables = Type<
     interview_session: CustomInterviewSession;
     workflow_action: CustomWorkflowAction;
     application_logs: CustomApplicationLogs;
+    candidate_files: CustomCandidateFiles;
   }
 >;

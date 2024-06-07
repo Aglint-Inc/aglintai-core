@@ -3,9 +3,10 @@ import { Stack } from '@mui/material';
 import { memo, useCallback, useMemo } from 'react';
 
 import { CandidateListItem } from '@/devlink2/CandidateListItem';
+import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 
-import ResumeScore from '../resumeScore';
+import ResumeScore from '../ui/resumeScore';
 import { formatTimeStamp } from '../utils';
 
 const ApplicationCard = memo(
@@ -19,6 +20,7 @@ const ApplicationCard = memo(
         }),
       );
 
+    const handleOpen = useApplicationStore(({ handleOpen }) => handleOpen);
     const isChecked = useMemo(
       () => checklist.includes(application.id),
       [application, checklist],
@@ -51,6 +53,9 @@ const ApplicationCard = memo(
 
     return (
       <CandidateListItem
+        onClickCandidate={{
+          onClick: () => handleOpen({ application_id: application.id }),
+        }}
         slotBookmark={<Banners application={application} />}
         isDragVisible={isChecked}
         onClickSelect={{ onClick: handleCheck }}

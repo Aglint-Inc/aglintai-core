@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
 import { applicationsQueries } from '@/src/queries/job-applications';
@@ -9,10 +9,13 @@ import { useApplicationsStore } from './store';
 
 export const useApplicationsActions = () => {
   const { jobLoad, job, job_id } = useJob();
-  const { filters, sort } = useApplicationsStore(({ filters, sort }) => ({
-    filters,
-    sort,
-  }));
+  const { filters, sort, section } = useApplicationsStore(
+    ({ filters, sort, section }) => ({
+      filters,
+      sort,
+      section,
+    }),
+  );
 
   const [params, setParams] = useState({ filters, sort });
   const ref = useRef(true);
@@ -74,14 +77,34 @@ export const useApplicationsActions = () => {
       ...params,
     }),
   );
-  return {
-    job,
-    jobLoad,
+  const sectionApplication = useMemo(() => {
+    switch (section) {
+      case 'assessment':
+        return assessmentApplications;
+      case 'new':
+        return newApplications;
+      case 'qualified':
+        return qualifiedApplications;
+      case 'disqualified':
+        return disqualifiedApplications;
+      case 'screening':
+        return screeningApplications;
+      case 'interview':
+        return interviewApplications;
+    }
+  }, [
     newApplications,
     screeningApplications,
     assessmentApplications,
     interviewApplications,
     qualifiedApplications,
     disqualifiedApplications,
+    section,
+  ]);
+  return {
+    job,
+    jobLoad,
+    section,
+    sectionApplication,
   };
 };

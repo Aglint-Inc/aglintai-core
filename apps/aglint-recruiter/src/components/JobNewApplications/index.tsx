@@ -12,6 +12,7 @@ import NotFoundPage from '@/src/pages/404';
 import Loader from '../Common/Loader';
 import SectionIcons from '../JobApplicationsDashboard/Common/SectionIcons';
 import { capitalize } from '../JobApplicationsDashboard/utils';
+import Drawer from './drawer';
 import Filters from './filters';
 import { BreadCrumbs } from './layout';
 import { Table } from './table';
@@ -36,27 +37,30 @@ export default ApplicationsDashboard;
 const ApplicationsComponent = () => {
   const { job } = useJobDetails();
   return (
-    <JobDetails
-      isImportCandidates={job.status === 'published'}
-      onclickAddCandidates={() => {}}
-      isFetchingPillVisible={true}
-      slotRefresh={<></>}
-      slotShowFilterButton={<>KKKK</>}
-      slotLoadingLottie={
-        <CircularProgress
-          style={{
-            color: '#17494D',
-            width: '12px',
-            height: '12px',
-          }}
-        />
-      }
-      slotBreadcrumb={<BreadCrumbs />}
-      slotTabs={<NewJobDetailsTabs />}
-      slotTable={<Table />}
-      isFilterVisible={true}
-      slotFilters={<Filters />}
-    />
+    <>
+      <JobDetails
+        isImportCandidates={job.status === 'published'}
+        onclickAddCandidates={() => {}}
+        isFetchingPillVisible={true}
+        slotRefresh={<></>}
+        slotShowFilterButton={<>KKKK</>}
+        slotLoadingLottie={
+          <CircularProgress
+            style={{
+              color: '#17494D',
+              width: '12px',
+              height: '12px',
+            }}
+          />
+        }
+        slotBreadcrumb={<BreadCrumbs />}
+        slotTabs={<NewJobDetailsTabs />}
+        slotTable={<Table />}
+        isFilterVisible={true}
+        slotFilters={<Filters />}
+      />
+      <Drawer />
+    </>
   );
 };
 

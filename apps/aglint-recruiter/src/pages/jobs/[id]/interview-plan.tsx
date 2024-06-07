@@ -1,6 +1,6 @@
 import Seo from '@/src/components/Common/Seo';
 import JobNewInterviewPlanDashboard from '@/src/components/JobNewInterviewPlan';
-import { ApplicationProvider } from '@/src/context/ApplicationsContext';
+import { ApplicationsProvider } from '@/src/context/ApplicationsContext';
 import { JobProvider } from '@/src/context/JobContext';
 import JobDashboardProvider from '@/src/context/JobDashboard';
 import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
@@ -21,7 +21,7 @@ InterviewPlanJobPage.privateProvider = function privateProvider(page) {
     <JobProvider>
       <JobDashboardProvider>
         <JobInterviewPlanProvider>
-          <ApplicationProvider>{page}</ApplicationProvider>
+          <ApplicationsProvider>{page}</ApplicationsProvider>
         </JobInterviewPlanProvider>
       </JobDashboardProvider>
     </JobProvider>

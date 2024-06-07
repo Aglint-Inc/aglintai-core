@@ -5,7 +5,7 @@ import { useApplicationsActions } from './hooks';
 const ApplicationsContext =
   createContext<ReturnType<typeof useApplicationsActions>>(undefined);
 
-const ApplicationProvider = (props: React.PropsWithChildren) => {
+const ApplicationsProvider = (props: React.PropsWithChildren) => {
   const value = useApplicationsActions();
   return (
     <ApplicationsContext.Provider value={value}>
@@ -16,8 +16,8 @@ const ApplicationProvider = (props: React.PropsWithChildren) => {
 
 const useApplications = () => {
   const value = useContext(ApplicationsContext);
-  if (!value) throw Error('ApplicationsProvider not found');
+  if (value === undefined) throw Error('ApplicationsProvider not found');
   return value;
 };
 
-export { ApplicationProvider, useApplications };
+export { ApplicationsProvider, useApplications };

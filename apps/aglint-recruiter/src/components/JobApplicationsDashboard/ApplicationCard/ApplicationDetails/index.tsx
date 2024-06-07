@@ -878,6 +878,7 @@ const InterviewSessionCard = ({
       isScheduleNowButtonVisible={false}
       isCheckboxVisible={false}
       isSelected={false}
+      x
       isThreeDotVisible={false}
       onClickCard={null}
       onClickDots={null}

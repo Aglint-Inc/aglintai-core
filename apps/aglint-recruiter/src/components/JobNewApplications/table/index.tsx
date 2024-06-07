@@ -1,5 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseEnums } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import { memo } from 'react';
 
@@ -30,13 +29,13 @@ Table.displayName = 'Table';
 const List = memo(() => {
   const {
     job: { count },
+    section,
+    sectionApplication,
   } = useApplications();
-  const section = useApplicationsStore(({ section }) => section);
-  const applications = useSectionApplication(section);
   if ((count[section] ?? 0) === 0) return <EmptyList />;
-  if (applications.status === 'error') return <>Error</>;
-  if (applications.status === 'pending') return <>Loading...</>;
-  return <ApplicantsList key={section} applications={applications} />;
+  if (sectionApplication.status === 'error') return <>Error</>;
+  if (sectionApplication.status === 'pending') return <>Loading...</>;
+  return <ApplicantsList key={section} applications={sectionApplication} />;
 });
 List.displayName = 'List';
 
@@ -54,31 +53,3 @@ const EmptyList = memo(() => {
   );
 });
 EmptyList.displayName = 'EmptyList';
-
-const useSectionApplication = (
-  section: DatabaseEnums['application_status'],
-) => {
-  const {
-    assessmentApplications,
-    disqualifiedApplications,
-    interviewApplications,
-    newApplications,
-    qualifiedApplications,
-    screeningApplications,
-  } = useApplications();
-
-  switch (section) {
-    case 'assessment':
-      return assessmentApplications;
-    case 'new':
-      return newApplications;
-    case 'qualified':
-      return qualifiedApplications;
-    case 'disqualified':
-      return disqualifiedApplications;
-    case 'screening':
-      return screeningApplications;
-    case 'interview':
-      return interviewApplications;
-  }
-};

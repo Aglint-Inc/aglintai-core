@@ -1,7 +1,7 @@
 import Seo from '@components/Common/Seo';
 
 import JobDetailsDashboard from '@/src/components/JobDetails';
-import { ApplicationProvider } from '@/src/context/ApplicationsContext';
+import { ApplicationsProvider } from '@/src/context/ApplicationsContext';
 import { JobProvider } from '@/src/context/JobContext';
 import JobDashboardProvider from '@/src/context/JobDashboard';
 import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
@@ -23,7 +23,7 @@ JobDetailsPage.privateProvider = (page) => {
     <JobProvider>
       <JobDashboardProvider>
         <JobInterviewPlanProvider>
-          <ApplicationProvider>{page}</ApplicationProvider>
+          <ApplicationsProvider>{page}</ApplicationsProvider>
         </JobInterviewPlanProvider>
       </JobDashboardProvider>
     </JobProvider>
