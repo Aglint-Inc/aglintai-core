@@ -97,16 +97,24 @@ const TRIGGER_PAYLOAD: {
   phase: DatabaseEnums['workflow_phase'][];
 }[] = [
   {
-    trigger: 'availability_request_reminder',
+    trigger: 'sendAvailabilityRequest',
     phase: ['now', 'after'],
   },
   {
-    trigger: 'self_schedule_request_reminder',
+    trigger: 'sendSelfScheduleRequest',
     phase: ['now', 'after'],
   },
   {
-    trigger: 'upcoming_interview_reminder',
+    trigger: 'interviewStart',
     phase: ['before', 'now'],
+  },
+  {
+    trigger: 'interviewerConfirmation',
+    phase: ['now', 'after'],
+  },
+  {
+    trigger: 'interviewEnd',
+    phase: ['now', 'after'],
   },
 ];
 
@@ -138,15 +146,20 @@ export function getTriggerOption(
 ): string {
   let message = '';
   switch (trigger) {
-    case 'availability_request_reminder':
+    case 'sendAvailabilityRequest':
       message = 'sending an availability request';
       break;
-    case 'self_schedule_request_reminder':
+    case 'sendSelfScheduleRequest':
       message = 'sending an self schedule request';
       break;
-    case 'upcoming_interview_reminder':
+    case 'interviewStart':
       message = 'starting an interview';
       break;
+    case 'interviewerConfirmation':
+      message = 'interview confirmation by interviewer';
+      break;
+    case 'interviewEnd':
+      message = 'ending an interview';
   }
   let preMessage = '';
   switch (phase) {

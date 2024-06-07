@@ -60,7 +60,7 @@ export default async function candidateAvailabilityRequestReminder(
 
   const body: CandidateAvailabilityRequestType = {
     recipient_email: email,
-    mail_type: 'availability_request_reminder',
+    mail_type: 'sendAvailabilityRequest_email_applicant',
     recruiter_id,
     companyLogo: logo,
     payload: {

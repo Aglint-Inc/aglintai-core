@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { AccountCircle } from '@mui/icons-material';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';

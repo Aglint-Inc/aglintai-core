@@ -27,7 +27,7 @@ export default async function interviewReaminder(application_id: string) {
 
   const body: InterviewType = {
     recipient_email: email,
-    mail_type: 'upcoming_interview_reminder_candidate',
+    mail_type: 'interviewStart_email_applicant',
     recruiter_id,
     companyLogo: logo,
     payload: {

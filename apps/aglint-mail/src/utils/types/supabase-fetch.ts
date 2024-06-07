@@ -1,9 +1,10 @@
+import { DatabaseEnums } from '@aglint/shared-types';
 import type { MeetingDetails } from './apiTypes';
 
 // ----------------------------------------- common types
 interface Common {
   recipient_email: string;
-  mail_type: string;
+  mail_type: DatabaseEnums['email_types'];
   recruiter_id: string;
   companyLogo: string;
 }
