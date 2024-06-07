@@ -34,7 +34,6 @@ export async function POST(req: Request) {
     //     `${data.mail_type} does not match any mail_type`,
     //     400,
     //   );
-    console.log(emails[emailIdx]);
 
     const { html } = await renderEmailTemplates(emails[emailIdx], body);
     return NextResponse.json(html, {

@@ -7,10 +7,7 @@ import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
 import CandidateInviteConfirmation from '../../../utils/email/candidate-invite-confirmation/fetch';
-import type {
-  FilledPayload,
-  MeetingDetails,
-} from '../../../utils/types/apiTypes';
+import type { FilledPayload } from '../../../utils/types/apiTypes';
 import sendMail from '../../../config/sendgrid';
 
 interface ReqPayload {
@@ -21,19 +18,19 @@ interface ReqPayload {
   availability_request_id: string;
   cand_tz: string;
 }
-interface DataPayload {
-  recipient_email: string;
-  mail_type: string;
-  recruiter_id: string;
-  companyLogo: string;
-  payload: {
-    '[companyName]': string;
-    '[firstName]': string;
-    '[jobTitle]': string;
-    'meetingLink': string;
-    'meetingDetails': MeetingDetails[];
-  };
-}
+// interface DataPayload {
+//   recipient_email: string;
+//   mail_type: string;
+//   recruiter_id: string;
+//   companyLogo: string;
+//   payload: {
+//     '[companyName]': string;
+//     '[firstName]': string;
+//     '[jobTitle]': string;
+//     'meetingLink': string;
+//     'meetingDetails': MeetingDetails[];
+//   };
+// }
 
 export async function POST(req: Request) {
   const {

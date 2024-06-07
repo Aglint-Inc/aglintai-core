@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 import { get } from '@vercel/edge-config';
 
 export const getOutboundEmail = async (email: string) => {
