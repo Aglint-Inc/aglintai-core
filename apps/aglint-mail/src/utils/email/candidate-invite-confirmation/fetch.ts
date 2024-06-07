@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import type { CalendarEvent } from '@aglint/shared-types';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   durationCalculator,
@@ -8,7 +9,6 @@ import {
 } from '../common/functions';
 import type { CandidateInviteConfirmationType } from '../../types/supabase-fetch';
 import type { MeetingDetails } from '../../types/apiTypes';
-import { CalendarEvent } from '@aglint/shared-types';
 import { createICSAttachment } from '../../ceateIcsContent';
 
 export default async function candidateInviteConfirmation(
@@ -39,7 +39,7 @@ export default async function candidateInviteConfirmation(
   if (!candidateJob) {
     throw new Error('candidateJob not available');
   }
-  if (sessions.length == 0) {
+  if (sessions.length === 0) {
     throw new Error('sessions are not available');
   }
 

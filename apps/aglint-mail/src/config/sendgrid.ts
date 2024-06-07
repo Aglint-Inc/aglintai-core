@@ -1,14 +1,14 @@
 import sgMail from '@sendgrid/mail';
+import type { APISendgridPayload } from '@aglint/shared-types';
 import { MailSenderError } from '../utils/apiUtils/customErrors';
 import { getOutboundEmail } from './get-outbound-email';
-import { APISendgridPayload } from '@aglint/shared-types';
 
 const SENDGRID_API_KEY =
   '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';
 sgMail.setApiKey(SENDGRID_API_KEY);
 
 export default async function sendMail(data: APISendgridPayload) {
-  let {
+  const {
     email,
     fromEmail,
     fromName,
@@ -17,7 +17,7 @@ export default async function sendMail(data: APISendgridPayload) {
     text,
     attachments,
     html,
-  } = data as APISendgridPayload;
+  } = data;
   try {
     const msg: any = {
       to: email, // Change to your recipient
@@ -25,11 +25,11 @@ export default async function sendMail(data: APISendgridPayload) {
         email: fromEmail ?? 'admin@aglinthq.com',
         name: fromName ?? 'Aglint Admin',
       }, // Change to your verified sender
-      subject: subject,
-      html: html,
-      text: text,
-      headers: headers,
-      attachments: attachments,
+      subject,
+      html,
+      text,
+      headers,
+      attachments,
     };
     msg.to = await getOutboundEmail(msg.to);
     const resp = await sgMail.send(msg);
