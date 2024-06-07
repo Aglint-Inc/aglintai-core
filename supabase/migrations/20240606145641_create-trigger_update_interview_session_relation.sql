@@ -10,8 +10,8 @@ DECLARE
 BEGIN
     if NEW.is_confirmed then
         FOR wa_record IN
-            SELECT wa.workflow_id as workflow_id, wa.id as workflow_action_id, w.interval as interval_minutes, w.phase as phase, json_build_object( 'schedule_id', i_s.id, 'application_id', i_s.application_id, 'meeting_id', i_m.id, 'start_time', i_m.start_time, 'recruiter_user_id', m_i.user_id, 'email_type', c_e_t.type) as meta
-            , m_i.session_id
+            SELECT wa.workflow_id as workflow_id, wa.id as workflow_action_id, w.interval as interval_minutes, w.phase as phase, i_m.start_time as start_time,
+            json_build_object( 'schedule_id', i_s.id, 'application_id', i_s.application_id, 'meeting_id', i_m.id, 'start_time', i_m.start_time, 'recruiter_user_id', m_i.user_id, 'email_type', c_e_t.type, 'session_id', NEW.session_id) as meta
             FROM 
             interview_schedule i_s 
             JOIN interview_meeting i_m ON i_m.interview_schedule_id = i_s.id
@@ -22,9 +22,9 @@ BEGIN
             JOIN workflow_action wa ON wa.workflow_id = war.workflow_id
             JOIN company_email_template c_e_t ON c_e_t.id = wa.email_template_id
             WHERE m_i.session_id = NEW.session_id
-            AND c_e_t.type = 'upcoming_interview_reminder_interviewers' and w.trigger::text = 'upcoming_interview_reminder' 
+            AND c_e_t.type <> 'upcoming_interview_reminder_candidate' and w.trigger::text = 'upcoming_interview_reminder' 
         LOOP
-            PERFORM create_new_workflow_action_log(wa_record.workflow_id, wa_record.workflow_action_id, wa_record.interval_minutes, wa_record.phase::text, wa_record.meta, i_m.start_time);
+            PERFORM create_new_workflow_action_log(wa_record.workflow_id, wa_record.workflow_action_id, wa_record.interval_minutes, wa_record.phase::text, wa_record.meta, wa_record.start_time);
         END LOOP;
     END if;
   RETURN NEW;
