@@ -7,13 +7,13 @@ import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
 import type { FilledPayload } from '../../../utils/types/apiTypes';
-import interviewReaminder from '../../../utils/email/upcoming_interview_reminder_candidate/fetch';
+import initEmailAgentRemainder from '../../../utils/email/sendSelfScheduleRequest_email_applicant/fetch';
 import sendMail from '../../../config/sendgrid';
 
 interface ReqPayload {
-  application_id: string;
+  schedule_id: string;
+  filter_id: string;
 }
-
 interface Meta {
   meta: ReqPayload;
 }
@@ -24,11 +24,13 @@ interface DataPayload {
   recruiter_id: string;
   companyLogo: string;
   payload: {
-    '[firstName]': string;
-    '[jobTitle]': string;
-    '[companyName]': string;
-    '[supportLink]': string;
-    '[interviewLink]': string;
+    '[candidateFirstName]': string;
+    '[Company Name]': string;
+    '[Job Title]': string;
+    '[startDate]': string;
+    '[endDate]': string;
+    '[companyTimeZone]': string;
+    '[selfScheduleLink]': string;
   };
 }
 
@@ -36,10 +38,16 @@ export async function POST(req: Request) {
   const { meta }: Meta = await req.json();
 
   try {
-    if (!meta.application_id) {
-      throw new ClientError('attribute application_id missing', 400);
+    if (!meta.filter_id) {
+      throw new ClientError('filter_id attribute missing', 400);
     }
-    const data: DataPayload = await interviewReaminder(meta.application_id);
+    if (!meta.schedule_id) {
+      throw new ClientError('meeting_id attribute missing', 400);
+    }
+    const data: DataPayload = await initEmailAgentRemainder(
+      meta.filter_id,
+      meta.schedule_id,
+    );
     const filled_body: FilledPayload = await fetchTemplate(
       data.recruiter_id,
       data.mail_type,
@@ -79,7 +87,7 @@ export async function POST(req: Request) {
     if (e instanceof MailArgValidationError) {
       return NextResponse.json(
         {
-          error: `${e.name}: mail_type:interview reminder candidate,  ${e.message}`,
+          error: `${e.name}: mail_type:self_scheduling_request_remainder,  ${e.message}`,
         },
         {
           status: 400,
@@ -89,7 +97,7 @@ export async function POST(req: Request) {
     if (e) {
       return NextResponse.json(
         {
-          error: `${e.name}: mail_type:interview reminder candidate,  ${e.message}`,
+          error: `${e.name}: mail_type:self_scheduling_request_remainder,  ${e.message}`,
         },
         {
           status: 500,
@@ -100,5 +108,6 @@ export async function POST(req: Request) {
 }
 
 // {
-//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637"
+//     "meeting_id": "8daab34c-9c19-445b-aa96-3b4735307414",
+//     "filter_id": "71b8859d-b6c6-425e-8b1a-e97ae8bb9498"
 // }

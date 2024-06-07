@@ -10,7 +10,7 @@ import type {
   FilledPayload,
   MeetingDetails,
 } from '../../../utils/types/apiTypes';
-import candidateAvailabilityRequestReminder from '../../../utils/email/availability_request_reminder/fetch';
+import candidateAvailabilityRequestReminder from '../../../utils/email/sendAvailabilityRequest_email_applicant/fetch';
 import sendMail from '../../../config/sendgrid';
 
 interface ReqPayload {
