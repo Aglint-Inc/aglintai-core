@@ -4,7 +4,14 @@ import { Badges } from './badges';
 import { Overview } from './overview';
 
 const Insights = (props: PropsWithChildren) => {
-  return <>{props.children ?? <></>}</>;
+  return (
+    props.children ?? (
+      <>
+        <Badges />
+        <Overview />
+      </>
+    )
+  );
 };
 Insights.Badges = Badges;
 Insights.Overview = Overview;

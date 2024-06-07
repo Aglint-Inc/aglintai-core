@@ -31,9 +31,9 @@ const createApplicationSlice: StateCreator<
   },
 });
 
-export type ApplicationsStore = SlicesType & ApplicationCustomSlice;
+export type ApplicationStore = SlicesType & ApplicationCustomSlice;
 
-export const useApplicationStore = create<ApplicationsStore>()((...a) => ({
+export const useApplicationStore = create<ApplicationStore>()((...a) => ({
   ...Object.assign(
     {},
     ...Object.values(Slices).map((f) => ({

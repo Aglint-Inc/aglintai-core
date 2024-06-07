@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import { CandidateSideDrawer } from '@/devlink/CandidateSideDrawer';
 import { useApplicationStore } from '@/src/context/ApplicationContext/store';
@@ -11,38 +11,25 @@ import { TopBar } from './topBar';
 type Props = {
   topBar: ReactNode;
   meta: ReactNode;
-  tabs?: ReactNode;
-  content?: ReactNode;
+  details: ReactNode;
+  tabs: ReactNode;
 };
 
-const Body = (props: Props) => {
+const Body = (props: Partial<Props>) => {
+  const tab = useApplicationStore(({ tab }) => tab);
   return (
     <CandidateSideDrawer
-      slotTopBar={props.topBar ?? <></>}
-      slotBasicInfo={props.meta ?? <></>}
-      slotNewTabPill={props.tabs ?? <></>}
-      slotTabContent={props.content ?? <></>}
+      slotTopBar={props.topBar ?? <TopBar />}
+      slotBasicInfo={props.meta ?? <Meta />}
+      slotNewTabPill={props.tabs ?? <Tabs />}
+      slotTabContent={tab === 'Details' && (props.details ?? <Details />)}
     />
   );
-};
-
-const Content = () => {
-  const tab = useApplicationStore(({ tab }) => tab);
-  switch (tab) {
-    case 'Details':
-      return <Details />;
-    case 'Screening':
-    case 'Assessment':
-    case 'Interview':
-    case 'Tasks':
-    case 'Activity':
-      return <></>;
-  }
 };
 
 Body.TopBar = TopBar;
 Body.Meta = Meta;
 Body.Tabs = Tabs;
-Body.Content = Content;
+Body.Details = Details;
 
 export { Body };

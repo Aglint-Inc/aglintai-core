@@ -55,7 +55,12 @@ const TopBar = (props: PropsWithChildren) => {
         height: '100%',
       }}
     >
-      {props?.children ?? null}
+      {props.children ?? (
+        <>
+          <Info />
+          <Actions />
+        </>
+      )}
     </Stack>
   );
 };

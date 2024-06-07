@@ -2,11 +2,11 @@ import { memo, useMemo } from 'react';
 
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import {
-  ApplicationsStore,
+  ApplicationStore,
   useApplicationStore,
 } from '@/src/context/ApplicationContext/store';
 
-const tabs: ApplicationsStore['tab'][] = [
+const tabs: ApplicationStore['tab'][] = [
   'Details',
   'Screening',
   'Assessment',

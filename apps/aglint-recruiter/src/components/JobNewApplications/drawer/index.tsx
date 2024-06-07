@@ -26,7 +26,14 @@ const Drawer = () => {
             }
             meta={<Application.Body.Meta />}
             tabs={<Application.Body.Tabs />}
-            content={<Application.Body.Content />}
+            details={
+              <Application.Body.Details>
+                <Application.Body.Details.Insights>
+                  <Application.Body.Details.Insights.Badges />
+                  <Application.Body.Details.Insights.Overview />
+                </Application.Body.Details.Insights>
+              </Application.Body.Details>
+            }
           />
         </Application>
       )}

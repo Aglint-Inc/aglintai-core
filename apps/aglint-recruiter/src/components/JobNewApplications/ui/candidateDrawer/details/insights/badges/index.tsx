@@ -1,5 +1,5 @@
 const Badges = () => {
-  return <></>;
+  return <>Badges</>;
 };
 
 export { Badges };
