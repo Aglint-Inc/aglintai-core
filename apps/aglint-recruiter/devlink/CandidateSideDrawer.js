@@ -2,7 +2,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { SlotComp } from "./SlotComp";
-import { CandidateDetail } from "./CandidateDetail";
 import * as _utils from "./utils";
 import _styles from "./CandidateSideDrawer.module.css";
 
@@ -68,8 +67,10 @@ export function CandidateSideDrawer({
               className={_utils.cx(_styles, "other_details")}
               tag="div"
             >
-              <CandidateDetail />
-              <CandidateDetail />
+              <SlotComp componentName="CandidateDetail (analysis)" />
+              <SlotComp componentName="CandidateDetail (experience)" />
+              <SlotComp componentName="CandidateDetail (education)" />
+              <SlotComp componentName="CandidateDetail (skills)" />
             </_Builtin.Block>
           </_Builtin.Block>
         )}

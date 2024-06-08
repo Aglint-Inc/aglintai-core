@@ -8,11 +8,11 @@ import {
 
 const tabs: ApplicationStore['tab'][] = [
   'Details',
-  'Screening',
-  'Assessment',
-  'Interview',
-  'Tasks',
-  'Activity',
+  // 'Screening',
+  // 'Assessment',
+  // 'Interview',
+  // 'Tasks',
+  // 'Activity',
 ];
 
 const Tabs = memo(() => {

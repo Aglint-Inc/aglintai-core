@@ -117,7 +117,7 @@ const resumeScoreRange = (
   }
 };
 
-const BADGE_CONSTANTS: {
+export const BADGE_CONSTANTS: {
   // eslint-disable-next-line no-unused-vars
   [id in ApplicationsStore['filters']['badges'][number]]: number;
 } = {

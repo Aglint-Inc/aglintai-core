@@ -14,7 +14,7 @@ const Info = () => {
   return (
     <CandidateName
       isLinedin={false}
-      isResume={!!data?.resume?.file_url}
+      isResume={false}
       onClickLinkedin={{ onClick: () => {} }}
       onClickResume={{ onClick: () => {} }}
       textName={getFullName(
@@ -32,7 +32,7 @@ const Actions = () => {
   if (status === 'pending') return <Stack>Loading...</Stack>;
   return (
     <CandidateSidedrawerTop
-      isBookmarked={data?.bookmarked}
+      isBookmarked={data.bookmarked}
       isDownArrowEnable={true}
       isUpArrowEnable={true}
       onClickBookMark={{ onClick: () => {} }}

@@ -28,10 +28,20 @@ const Drawer = () => {
             tabs={<Application.Body.Tabs />}
             details={
               <Application.Body.Details>
-                <Application.Body.Details.Insights>
-                  <Application.Body.Details.Insights.Badges />
-                  <Application.Body.Details.Insights.Overview />
-                </Application.Body.Details.Insights>
+                <Application.Body.Details.Analysis
+                  score={<Application.Body.Details.Analysis.Badge />}
+                >
+                  <Application.Body.Details.Insights>
+                    <Application.Body.Details.Insights.Badges />
+                    <Application.Body.Details.Insights.Overview />
+                  </Application.Body.Details.Insights>
+                  <Application.Body.Details.Analysis.Education />
+                  <Application.Body.Details.Analysis.Experience />
+                  <Application.Body.Details.Analysis.Skills />
+                </Application.Body.Details.Analysis>
+                <Application.Body.Details.Experience />
+                <Application.Body.Details.Education />
+                <Application.Body.Details.Skills />
               </Application.Body.Details>
             }
           />
