@@ -43,7 +43,7 @@ const UISelect = ({
       borderColor={focus && borderColor}
       borderRadius={'7px'}
       padding={0}
-      gap={'5px'}
+      gap={'var(--space-1)'}
     >
       {label && (
         <UITypography type={'small'} fontBold='default'>

@@ -132,7 +132,7 @@ const Template = ({ action: { payload } }: ActionProps) => {
   const email_body = <EmailBody name='body' value={payload} />;
 
   const forms = (
-    <Stack spacing={'20px'}>
+    <Stack spacing={'var(--space-5)'}>
       {email_subject}
       {email_body}
     </Stack>
@@ -182,7 +182,7 @@ const EmailBody: React.FC<FormsType> = memo(
             mt: '8px',
             border: '1px solid',
             borderColor: 'var(--neutral-6)',
-            borderRadius: '4px',
+            borderRadius: 'var(--radius-2)',
           }}
         >
           <TipTapAIEditor

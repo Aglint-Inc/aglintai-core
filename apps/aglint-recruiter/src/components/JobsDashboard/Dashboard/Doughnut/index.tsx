@@ -132,7 +132,7 @@ const DashboardDoughnutChart: FC<{
                       bgcolor: color,
                       width: '10px',
                       aspectRatio: 1,
-                      borderRadius: '100%',
+                      borderRadius: 'var(--radius-full)',
                     }}
                   />
                   <Typography

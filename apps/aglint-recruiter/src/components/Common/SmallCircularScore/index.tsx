@@ -31,7 +31,7 @@ export const SmallCircularScore = ({
   return (
     <Stack flexDirection={'row'} alignItems={'center'}>
       <Stack
-        width={'30px'}
+        width={'var(--space-6)'}
         display={'flex'}
         alignItems={'center'}
         justifyContent={'center'}
@@ -89,7 +89,7 @@ export const SmallCircularScore2 = ({ score }: { score: number }) => {
   return (
     <Stack>
       <Stack
-        width={'30px'}
+        width={'var(--space-6)'}
         display={'flex'}
         alignItems={'center'}
         justifyContent={'center'}

@@ -68,11 +68,11 @@ function SelectStatus({
         sx={{
           '& .MuiPaper-outlined': {
             // border: 'none',
-            borderRadius: '10px',
+            borderRadius: 'var(--radius-4)',
           },
         }}
       >
-        <Stack width={150} spacing={'10px'} p={'10px'}>
+        <Stack width={150} spacing={'var(--space-2)'} p={'var(--space-2)'}>
           {statusList
             .filter((ele) => !['failed'].includes(ele.id))
             .map(

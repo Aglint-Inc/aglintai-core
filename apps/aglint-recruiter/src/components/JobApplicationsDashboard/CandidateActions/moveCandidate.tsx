@@ -201,8 +201,8 @@ const MoveCandidateDialog = ({
           onclickClose={{ onClick: () => onClose() }}
           slotButtons={
             <Stack
-              spacing={'10px'}
-              mt={'10px'}
+              spacing={'var(--space-2)'}
+              mt={'var(--space-2)'}
               direction={'row'}
               alignItems={'center'}
             >

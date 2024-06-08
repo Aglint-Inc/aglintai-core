@@ -57,8 +57,8 @@ function Timer({ maxTime, nextClick }) {
       </style>
       <Chip
         sx={{
-          borderColor: 'grey.200',
-          color: 'black.700',
+          borderColor: 'var(--neutral-6)',
+          color: 'var(--neutral-11)',
           height: '25px',
           bgcolor: 'white.700',
         }}

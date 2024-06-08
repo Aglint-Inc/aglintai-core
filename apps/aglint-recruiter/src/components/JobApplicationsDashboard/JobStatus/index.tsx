@@ -387,7 +387,7 @@ const JobScheduleBody = ({
   return (
     <>
       <Collapse in={isStart}>
-        <Stack style={{ color: 'grey' }}>
+        <Stack style={{ color: 'var(--neutral-11)' }}>
           {`Proceeding will allow candidates to ${
             flow === 'sourcing' ? 'apply' : 'take interviews'
           }
@@ -396,7 +396,7 @@ const JobScheduleBody = ({
       </Collapse>
       <Collapse in={!isStart}>
         <Stack gap={2}>
-          <Stack style={{ color: 'grey' }}>
+          <Stack style={{ color: 'var(--neutral-11)' }}>
             {` Pick date and time and aglint will start ${flow} automatically on
             that time`}
           </Stack>

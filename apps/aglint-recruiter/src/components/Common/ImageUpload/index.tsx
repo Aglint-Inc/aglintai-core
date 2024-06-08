@@ -88,7 +88,7 @@ function ImageUpload({
               sx={{
                 width: dynamic ? '100%' : size,
                 height: dynamic ? '100%' : size,
-                borderRadius: '10px',
+                borderRadius: 'var(--radius-4)',
                 '& .MuiAvatar-img ': {
                   objectFit: 'cover',
                 },
@@ -189,7 +189,7 @@ function ImageUpload({
                   background: isStackHovered
                     ? 'var(--nutral-5)'
                     : 'transparent',
-                  borderRadius: '10px',
+                  borderRadius: 'var(--radius-4)',
                 }}
               >
                 {image && (

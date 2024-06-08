@@ -281,7 +281,7 @@ function Filters() {
               return (
                 <Stack
                   direction={'row'}
-                  spacing={'10px'}
+                  spacing={'var(--space-2)'}
                   alignItems={'center'}
                   key={i}
                 >

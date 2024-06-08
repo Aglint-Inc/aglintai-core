@@ -64,7 +64,7 @@ function GroupSections({
         slotAvatarWithName={
           <ShowCode>
             <ShowCode.When isTrue={selectedGroupBy.label === 'job'}>
-              <Stack alignItems={'center'} direction={'row'} spacing={'10px'}>
+              <Stack alignItems={'center'} direction={'row'} spacing={'var(--space-2)'}>
                 
                 <Typography
                   sx={{
@@ -97,7 +97,7 @@ function GroupSections({
               </Stack>
             </ShowCode.When>
             <ShowCode.When isTrue={selectedGroupBy.label === 'candidate'}>
-              <Stack alignItems={'center'} direction={'row'} spacing={'10px'}>
+              <Stack alignItems={'center'} direction={'row'} spacing={'var(--space-2)'}>
                 <AvatarWithName
                   isAvatarVisible={false}
                   isCandidateIconVisible={true}

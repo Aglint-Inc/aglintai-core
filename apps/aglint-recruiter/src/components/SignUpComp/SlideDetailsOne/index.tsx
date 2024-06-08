@@ -187,7 +187,7 @@ export function FetchCompanyDetails() {
     <RcInfoStep1
       textheader={`Let's create your ${Agency} profile.`}
       slotInput={
-        <Stack width={'100%'} spacing={'10px'}>
+        <Stack width={'100%'} spacing={'var(--space-2)'}>
           <TextField
             margin='none'
             required

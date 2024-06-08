@@ -292,7 +292,7 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
                         // direction={'row'}
                         justifyContent={'center'}
                         alignItems={'start'}
-                        spacing={'20px'}
+                        spacing={'var(--space-5)'}
                       >
                         <TextField
                           margin='none'

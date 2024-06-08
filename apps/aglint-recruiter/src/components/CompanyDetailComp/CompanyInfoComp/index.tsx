@@ -314,7 +314,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                 },
               }}
               slotBasicForm={
-                <Stack spacing={2} p={'4px'}>
+                <Stack spacing={2} p={'var(--space-1)'}>
                   <UITextField
                     labelBold='default'
                     labelSize='small'

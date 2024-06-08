@@ -85,7 +85,7 @@ ${jdText}
             <textarea
               style={{
                 resize: 'none',
-                borderRadius: '5px',
+                borderRadius: 'var(--radius-2)',
                 width: '100%',
                 height: '200px',
                 padding: '12px',

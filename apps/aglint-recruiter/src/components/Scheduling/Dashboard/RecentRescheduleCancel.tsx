@@ -179,9 +179,9 @@ const RecentRescheduleListItem = ({
         slotImage={
           <Skeleton variant='circular' width={'100%'} height={'100%'} />
         }
-        textName={<Skeleton variant='text' width={'100px'} height={'30px'} />}
-        textTime={<Skeleton variant='text' width={'50px'} height={'30px'} />}
-        textDesc={<Skeleton variant='text' width={'200px'} height={'30px'} />}
+        textName={<Skeleton variant='text' width={'100px'} height={'var(--space-6)'} />}
+        textTime={<Skeleton variant='text' width={'50px'} height={'var(--space-6)'} />}
+        textDesc={<Skeleton variant='text' width={'200px'} height={'var(--space-6)'} />}
       />
     );
   return (
@@ -222,9 +222,9 @@ const RecentDeclineListItem = ({
         slotImage={
           <Skeleton variant='circular' width={'100%'} height={'100%'} />
         }
-        textName={<Skeleton variant='text' width={'100px'} height={'30px'} />}
-        textTime={<Skeleton variant='text' width={'50px'} height={'30px'} />}
-        textDesc={<Skeleton variant='text' width={'200px'} height={'30px'} />}
+        textName={<Skeleton variant='text' width={'100px'} height={'var(--space-6)'} />}
+        textTime={<Skeleton variant='text' width={'50px'} height={'var(--space-6)'} />}
+        textDesc={<Skeleton variant='text' width={'200px'} height={'var(--space-6)'} />}
       />
     );
   return (

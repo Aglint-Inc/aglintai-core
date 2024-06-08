@@ -66,7 +66,7 @@ function MembersAutoComplete({
         <Stack gap={1} direction={'row'} sx={{ flexWrap: 'wrap' }}>
           {selectedUsers.map((user) => {
             return (
-              <Stack key={user.user_id} marginBottom={'10px'}>
+              <Stack key={user.user_id} marginBottom={'var(--space-2)'}>
                 <PanelMemberPill
                   key={user.user_id}
                   propsBgColor={{
@@ -116,7 +116,7 @@ function MembersAutoComplete({
           maxWidth: maxWidth,
           '& .MuiSelect-select span::before': {
             content: `"${placeholder}"`,
-            color: 'grey.500',
+            color: 'var(--neutral-11)',
           },
           '& .MuiList-root-MuiMenu-list': {
             padding: '0px !important',

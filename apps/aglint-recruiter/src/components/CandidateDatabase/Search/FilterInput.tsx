@@ -56,8 +56,8 @@ const FilterInput = ({
             paper: {
               style: {
                 border: 'none',
-                borderRadius: '10px',
-                boxShadow: '0px 4px 8px 0px rgba(4, 68, 77, 0.15)',
+                borderRadius: 'var(--radius-4)',
+                boxShadow: 'var(--shadow-3)',
               },
             },
           }}

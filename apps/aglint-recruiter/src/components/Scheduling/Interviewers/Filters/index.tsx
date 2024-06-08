@@ -95,9 +95,9 @@ function Filters({ setFilteredInterviewer }) {
     <div>
       <Stack
         direction={'row'}
-        p={'10px'}
+        p={'var(--space-2)'}
         alignItems={'center'}
-        spacing={'10px'}
+        spacing={'var(--space-2)'}
         marginRight={5}
       >
         <UITextField

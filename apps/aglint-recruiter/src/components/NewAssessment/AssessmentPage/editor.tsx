@@ -358,9 +358,9 @@ const TypeInput: FC<{
           alignItems={'start'}
           pl={'12px'}
           style={{
-            backgroundColor: 'white',
+            backgroundColor:  'var(--white)',
             border: '1px solid #cbcbcb',
-            borderRadius: '4px',
+            borderRadius: 'var(--radius-2)',
           }}
         >
           <QuestionTags type={question.type} />
@@ -399,7 +399,7 @@ const TypeSwitch: FC<{
   return (
     <Stack
       width={'200px'}
-      style={{ backgroundColor: 'white', borderRadius: '10px' }}
+      style={{ backgroundColor:  'var(--white)', borderRadius: 'var(--radius-4)' }}
     >
       <SelectionComp
         onChange={(e) => handleTypeUpdate(e.target.value)}
@@ -481,7 +481,7 @@ export const AntSwitch = styled(Switch)(({ theme }) => ({
     padding: 2,
     '&.Mui-checked': {
       transform: 'translateX(16px)',
-      color: '#fff',
+      color: 'var(--white)',
       '& + .MuiSwitch-track': {
         opacity: 1,
         backgroundColor: 'var(--accent-9)',

@@ -52,7 +52,7 @@ export const JobEmailTemplateForms: FC<MetaFormProps> = ({
   );
 
   const forms = (
-    <Stack spacing={'20px'}>
+    <Stack spacing={'var(--space-5)'}>
       {sender_name}
       {email_subject}
       {email_body}
@@ -108,7 +108,7 @@ const EmailBody: FC<MetaForms> = memo(
         <UITypography type='small'>Email Body</UITypography>
         <Stack
           sx={{
-            mt: '8px',
+            mt: 'var(--space-2)',
             border: '1px solid',
             borderColor: value.error.value
               ? 'var(--success-6)'

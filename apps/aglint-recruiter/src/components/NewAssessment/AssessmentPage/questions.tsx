@@ -82,7 +82,7 @@ const DroppableWrapper: FC<{
 
 const DropppableCard = () => {
   return (
-    <Stack height={'10px'}>
+    <Stack height={'var(--space-2)'}>
       <QuestionCardDev isDropping={true} />
     </Stack>
   );

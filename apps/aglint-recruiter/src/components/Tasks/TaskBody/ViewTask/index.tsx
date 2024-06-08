@@ -226,12 +226,12 @@ function ViewTaskDrawer() {
                 sx={{
                   '& .MuiInputBase-root': {
                     border: 'none',
-                    fontSize: '18px',
-                    lineHeight: '24px',
-                    fontWeight: 400,
-                    padding: '10px',
-                    bgcolor: '#F7F9FB',
-                    borderRadius: '10px',
+                    fontSize: 'var(--font-size-3)',
+                    lineHeight: 'var(--line-height-3)',
+                    fontWeight: 500,
+                    padding: 'var(--space-2)',
+                    bgcolor: 'var(--neutral-2)',
+                    borderRadius: 'var(--radius-4)',
                   },
                 }}
               />

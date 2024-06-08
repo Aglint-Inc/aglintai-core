@@ -93,8 +93,8 @@ function DateRangeFilterComp() {
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
-            borderRadius: '10px',
-            borderColor: '#E9EBED',
+            borderRadius: 'var(--radius-4)',
+            borderColor: 'var(--neutral-6)',
           },
         }}
       >

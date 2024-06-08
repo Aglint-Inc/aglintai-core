@@ -245,7 +245,7 @@ function Login() {
           },
         }}
         slotForm={
-          <Stack spacing={'20px'} p={'4px'}>
+          <Stack spacing={'var(--space-5)'} p={'var(--space-1)'}>
             <TextField
               {...email}
               id='email'

@@ -100,7 +100,7 @@ const UITextField = React.forwardRef(
       <Stack
         width={fullWidth ? '100%' : 'inherit'}
         direction={'column'}
-        gap={'4px'}
+        gap={'var(--space-1)'}
       >
         {label && (
           <Stack direction={'row'}>
@@ -112,7 +112,7 @@ const UITextField = React.forwardRef(
               {label}
             </UITypography>
             {required && (
-              <Typography sx={{ color: 'var(--error-9)', pl: 0.5 }}>
+              <Typography sx={{ color: 'var(--error-9)'}}>
                 *
               </Typography>
             )}

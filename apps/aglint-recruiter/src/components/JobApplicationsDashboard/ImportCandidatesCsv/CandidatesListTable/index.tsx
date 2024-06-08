@@ -9,7 +9,7 @@ function CandidatesListTable({ importedCandidate }) {
   console.log('importedCandidate', importedCandidate);
   return (
     <Stack
-      borderRadius={'10px'}
+      borderRadius={'var(-radius-4)'}
       border={'1px solid '}
       borderColor={'grey.200'}
       height={'100%'}
@@ -39,12 +39,12 @@ function TableHeader() {
   return (
     <Stack
       bgcolor={'grey.100'}
-      py={'10px'}
-      px={'20px'}
+      py={'var(--space-2)'}
+      px={'var(--space-5)'}
       justifyContent={'left'}
       direction={'row'}
       alignItems={'center'}
-      spacing={'5px'}
+      spacing={'var(--space-1)'}
       position={'sticky'}
       top={0}
       zIndex={2}
@@ -57,7 +57,7 @@ function TableHeader() {
             width={`${100 / 3}%`}
             direction={'row'}
             alignItems={'center'}
-            spacing={'5px'}
+            spacing={'var(--space-1)'}
           >
             {icon}
             <Typography variant='body1'>{heading}</Typography>
@@ -81,8 +81,8 @@ function TableRow({ name, email, phone, profile_image, index }) {
   return (
     <Stack
       key={index}
-      py={'4px'}
-      px={'20px'}
+      py={'var(--space-1)'}
+      px={'var(--space-5)'}
       justifyContent={'left'}
       direction={'row'}
       alignItems={'center'}
@@ -92,7 +92,7 @@ function TableRow({ name, email, phone, profile_image, index }) {
         width={`${100 / 3}%`}
         direction={'row'}
         alignItems={'center'}
-        spacing={'5px'}
+        spacing={'var(--space-1)'}
       >
         <MuiAvatar
           src={profile_image}
@@ -114,7 +114,7 @@ function TableRow({ name, email, phone, profile_image, index }) {
         variant='body1'
         className='one-line-clamp'
         width={`${100 / 3}%`}
-        pl={'10px'}
+        pl={'var(--space-2)'}
       >
         {phone}
       </Typography>

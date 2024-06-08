@@ -167,7 +167,7 @@ function ModuleMembersComp() {
                     </>
                   ) : subTab === 'instructions' ? (
                     <>
-                      <Stack p={'20px'} maxWidth={'1000px'}>
+                      <Stack p={'var(--space-5)'} maxWidth={'1000px'}>
                         <Typography
                           fontSize={'14px'}
                           dangerouslySetInnerHTML={{
@@ -321,7 +321,7 @@ const ModuleMembersX = ({
 }) => {
   return (
     <>
-      <Stack gap={1} p={'20px'} maxWidth={'1000px'}>
+      <Stack gap={1} p={'var(--space-5)'} maxWidth={'1000px'}>
         <SlotQualifiedMembers
           members={members}
           editModule={module}

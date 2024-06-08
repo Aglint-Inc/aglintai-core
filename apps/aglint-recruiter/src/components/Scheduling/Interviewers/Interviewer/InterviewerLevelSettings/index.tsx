@@ -227,10 +227,10 @@ function InterviewerLevelSettings({
           isTimeZoneToggleVisible={false}
           slotTimeZoneInput={
             <Stack
-              spacing={'10px'}
+              spacing={'var(--space-2)'}
               width={420}
               flexDirection={'column-reverse'}
-              gap={'10px'}
+              gap={'var(--space-2)'}
             >
               {/* <Stack
                 alignItems={'center'}

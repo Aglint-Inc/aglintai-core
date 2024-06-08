@@ -25,7 +25,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
   };
 
   return (
-    <Stack p={'4px'} width={'500px'} spacing={'20px'} pt={'20px'}>
+    <Stack p={'var(--space-1)'} width={'500px'} spacing={'var(--space-5)'} pt={'var(--space-5)'}>
       <ShowCode.When isTrue={isJobMarketingEnabled}>
         <UITextField
           labelSize='small'
@@ -135,21 +135,21 @@ const CompanyJdComp = ({ setIsSaving }) => {
           Employment Type
         </UITypography>
         <Stack
-          pt={'10px'}
+          pt={'var(--space-2)'}
           direction='row'
           flexWrap='wrap'
           justifyContent='flex-start'
           alignItems='flex-start'
-          gap={'10px'}
+          gap={'var(--space-2)'}
         >
           {Object.entries(recruiter?.employment_type).map((type, ind) => {
             return (
               <Stack
                 key={ind}
                 direction={'row'}
-                p={'4px'}
+                p={'var(--space-1)'}
                 alignItems={'center'}
-                spacing={'8px'}
+                spacing={'var(--space-2)'}
               >
                 <Checkbox
                   isChecked={Boolean(type[1])}
@@ -180,21 +180,21 @@ const CompanyJdComp = ({ setIsSaving }) => {
           Workplace Type
         </UITypography>
         <Stack
-          pt={'10px'}
+          pt={'var(--space-2)'}
           direction='row'
           flexWrap='wrap'
           justifyContent='flex-start'
           alignItems='flex-start'
-          gap={'10px'}
+          gap={'var(--space-2)'}
         >
           {Object.entries(recruiter?.workplace_type).map((type, ind) => {
             return (
               <Stack
                 key={ind}
                 direction={'row'}
-                p={'4px'}
+                p={'var(--space-1)'}
                 alignItems={'center'}
-                spacing={'8px'}
+                spacing={'var(--space-2)'}
               >
                 <Checkbox
                   isChecked={Boolean(type[1])}
@@ -205,7 +205,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
                     },
                   }}
                 />
-                <Stack direction={'row'} spacing={'4px'}>
+                <Stack direction={'row'} spacing={'var(--space-1)'}>
                   <Typography
                     variant='body1'
                     sx={{ cursor: 'pointer', color: 'var(--neutral-12)' }}

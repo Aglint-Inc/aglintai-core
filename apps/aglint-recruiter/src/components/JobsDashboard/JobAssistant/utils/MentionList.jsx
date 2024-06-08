@@ -72,13 +72,13 @@ export default forwardRef((props, ref) => {
     },
   }));
   return (
-    <Stack spacing={'10px'} id='list-popup' className='items'>
+    <Stack spacing={'var(--space-2)'} id='list-popup' className='items'>
       {listOfUsers.length ? (
         listOfUsers.map((item, index) => (
           <Stack
             className={`item ${index === selectedIndex ? 'is-selected' : ''}`}
             direction={'row'}
-            spacing={'8px'}
+            spacing={'var(--space-2)'}
             key={index}
             onClick={() => {
               selectItem(index);

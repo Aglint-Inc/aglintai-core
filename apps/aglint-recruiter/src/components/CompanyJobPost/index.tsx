@@ -29,7 +29,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
             variant='rounded'
             src={recruiter.logo}
             sx={{
-              p: '4px',
+              p: 'var(--space-1)',
               color: 'common.black',
               '& .MuiAvatar-img ': {
                 objectFit: 'contain',
@@ -79,7 +79,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
                   <Image
                     style={{
                       background: soc[0] == 'twitter' ? '#fff' : '',
-                      borderRadius: '4px',
+                      borderRadius: 'var(--radius-2)',
                       padding: soc[0] == 'twitter' ? '2px ' : '',
                     }}
                     src={`/images/logo/${soc[0]}.svg`}

@@ -23,7 +23,7 @@ const CompanyLogo = ({
           borderRadius: `${borderRadius}px`,
         },
       }}
-      style={{ color: 'black' }}
+      style={{ color: 'var(--neutral-12)' }}
       src={
         companyLogo ||
         `https://logo.clearbit.com/${name.replaceAll(' ', '')}.com `
@@ -43,7 +43,7 @@ const CompanyLogo = ({
           objectFit: 'contain',
         },
       }}
-      style={{ color: 'black' }}
+      style={{ color: 'var(--neutral-12)' }}
     >
       <UnknownCompany />
     </Avatar>

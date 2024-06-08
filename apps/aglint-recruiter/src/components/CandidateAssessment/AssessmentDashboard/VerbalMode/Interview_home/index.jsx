@@ -86,7 +86,7 @@ function Interview_home() {
         slotInterviewLogo={
           <MuiAvatar
             src={assessmentDetails?.public_jobs?.logo}
-            fontSize={'20px'}
+            fontSize={'var(--space-5)'}
             variant={'rounded-medium'}
           />
         }

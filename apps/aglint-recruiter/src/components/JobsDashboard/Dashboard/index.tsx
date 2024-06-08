@@ -193,7 +193,7 @@ const Dashboard = () => {
         <CircularProgress
           color='inherit'
           size={'100%'}
-          sx={{ color: 'white' }}
+          sx={{ color: 'var(--white)' }}
         />
       </Stack>
     ),

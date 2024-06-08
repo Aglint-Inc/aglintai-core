@@ -205,7 +205,7 @@ function CandidateDetail() {
                   (exp, ind) => {
                     return (
                       <>
-                        {ind === 0 && <Stack pt={'10px'}></Stack>}
+                        {ind === 0 && <Stack pt={'var(--space-2)'}></Stack>}
                         <CdExperienceCard
                           key={exp.id}
                           textRole={exp.organization_name}

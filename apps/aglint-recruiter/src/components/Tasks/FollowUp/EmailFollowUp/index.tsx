@@ -116,7 +116,7 @@ function EmailFollowUp() {
         '& .MuiDialog-paper': {
           background: 'transparent',
           border: 'none',
-          borderRadius: '10px',
+          borderRadius: 'var(--radius-4)',
         },
       }}
       open={openEmailFollowUp}

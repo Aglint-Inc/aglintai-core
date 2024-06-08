@@ -13,7 +13,7 @@ const ProfilePicture = ({ name, url }: { name: string; url?: string }) => {
       src={url}
       variant='rounded'
     >
-      <Typography color={'white.700'} fontSize={'20px'} variant='body1'>
+      <Typography color={'white.700'} fontSize={'var(--space-5)'} variant='body1'>
         {name.charAt(0)}
       </Typography>
     </Avatar>

@@ -135,8 +135,8 @@ const ImportCandidatesCSV = ({
   return (
     <Stack
       sx={{
-        bgcolor: 'white',
-        borderRadius: '10px',
+        bgcolor: 'var(--white)',
+        borderRadius: 'var(--radius-4)',
         height: '100%',
       }}
     >

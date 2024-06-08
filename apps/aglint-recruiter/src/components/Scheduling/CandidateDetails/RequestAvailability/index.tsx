@@ -394,7 +394,7 @@ function RequestAvailability() {
         ))}
         slotAvailabilityCriteria={
           <>
-            <Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
+            <Stack direction={'row'} alignItems={'center'} spacing={'var(--space-2)'}>
               <Typography variant='body1' width={'450px'}>
                 Minimum number of days should be selected.
               </Typography>
@@ -418,7 +418,7 @@ function RequestAvailability() {
               />
             </Stack>
 
-            <Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
+            <Stack direction={'row'} alignItems={'center'} spacing={'var(--space-2)'}>
               <Typography variant='body1' width={'450px'}>
                 Minimum number of slots selected per each day.
               </Typography>

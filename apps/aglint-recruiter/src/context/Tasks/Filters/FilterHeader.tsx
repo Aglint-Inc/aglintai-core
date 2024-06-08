@@ -235,7 +235,7 @@ export const FilterHeader = ({
                         width={'100%'}
                         direction={'row'}
                         alignItems={'center'}
-                        spacing={'10px'}
+                        spacing={'var(--space-2)'}
                         justifyContent={'space-between'}
                       >
                         <Button
@@ -251,7 +251,7 @@ export const FilterHeader = ({
                         </Button>
                         <Stack
                           direction={'row'}
-                          spacing={'10px'}
+                          spacing={'var(--space-2)'}
                           alignItems={'center'}
                         >
                           <Button
@@ -377,7 +377,7 @@ function FilterDropDown({
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
-            borderRadius: '4px',
+            borderRadius: 'var(--radius-2)',
             borderColor: 'var(--neutral-6)',
             minWidth: '176px',
             // maxHeight: '400px',
@@ -387,7 +387,7 @@ function FilterDropDown({
       >
         <ShowCode>
           <ShowCode.When isTrue={title === 'Candidate'}>
-            <Stack px={'10px'} pt={'5px'}>
+            <Stack px={'var(--space-2)'} pt={'var(--space-1)'}>
               <TextField
                 // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={true}
@@ -591,7 +591,7 @@ const SortDropDown = ({
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
-            borderRadius: '4px',
+            borderRadius: 'var(--radius-2)',
             borderColor: 'var(--neutral-6)',
             minWidth: '176px',
             // maxHeight: '400px',
@@ -711,7 +711,7 @@ const SortOptionsDropDown = ({
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
-            borderRadius: '4px',
+            borderRadius: 'var(--radius-2)',
             borderColor: 'var(--neutral-6)',
             minWidth: '176px',
           },

@@ -56,7 +56,7 @@ const EmailTemplateEditor = ({
       <Stack
         sx={{
           border: `1px solid var(--neutral-6)`,
-          borderRadius: '5px',
+          borderRadius: 'var(--radius-2)',
           '& .ProseMirror': {
             minHeight: '250px',
             width: '100%',
@@ -65,7 +65,7 @@ const EmailTemplateEditor = ({
             py: '12px',
           },
           '.tiptap p.is-editor-empty:first-child::before ': {
-            color: '#adb5bd',
+            color: 'var(--neutral-11)',
             content: 'attr(data-placeholder)',
             float: 'left',
             height: 0,
@@ -76,7 +76,7 @@ const EmailTemplateEditor = ({
           },
           '&  span .mention': {
             backgroundColor: 'red',
-            color: 'red',
+            color: 'var(--error-11)',
           },
         }}
       >

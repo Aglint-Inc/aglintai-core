@@ -84,7 +84,7 @@ const BasicStepOne = () => {
                       <InputAdornment position='start'>
                         <Image
                           style={{
-                            borderRadius: '4px',
+                            borderRadius: 'var(--radius-2)',
                             objectFit: 'contain',
                           }}
                           alt='building'
