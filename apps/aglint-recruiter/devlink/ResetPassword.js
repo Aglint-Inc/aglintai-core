@@ -1,7 +1,9 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Logo } from "./Logo";
 import { Text } from "./Text";
+import { ButtonGhost } from "./ButtonGhost";
 import * as _utils from "./utils";
 import _styles from "./ResetPassword.module.css";
 
@@ -10,60 +12,55 @@ export function ResetPassword({
   slotResetPasswordForm,
 }) {
   return (
-    <_Component
-      className={_utils.cx(_styles, "forgot-password-page")}
-      tag="div"
-    >
+    <_Component className={_utils.cx(_styles, "block")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "reset-password-wrap")}
+        className={_utils.cx(_styles, "forgot-password-wrapper")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "forgot-password-wrapper")}
+          className={_utils.cx(_styles, "forgot-password-header-wrapper")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "forgot-password-header-wrapper")}
-            tag="div"
-          >
-            <Text
-              content="Reset Password"
-              size="4"
-              weight="bold"
-              align=""
-              highContrast=""
-            />
-            <Text
-              content="Enter new password to reset your password for your account."
-              size="2"
-              weight=""
-              align=""
-              highContrast=""
-              color="neutral"
-            />
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "forgot-password-slot")}
-            tag="div"
-          >
-            {slotResetPasswordForm}
-          </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Link
-          className={_utils.cx(_styles, "back-link")}
-          button={false}
-          block="inline"
-          options={{
-            href: "/login",
-          }}
-        >
-          <_Builtin.HtmlEmbed
-            className={_utils.cx(_styles, "back-arrow-icon")}
-            value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewbox%3D%220%200%2010%207%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0.146447%203.85355C-0.0488155%203.65828%20-0.0488155%203.3417%200.146447%203.14644L3.14645%200.146446C3.34171%20-0.0488157%203.65829%20-0.0488151%203.85355%200.146447C4.04881%200.341709%204.04881%200.658292%203.85355%200.853554L1.70711%202.99999L9.5%203C9.77614%203%2010%203.22386%2010%203.5C10%203.77614%209.77614%204%209.5%204L1.70711%203.99999L3.85355%206.14644C4.04882%206.3417%204.04882%206.65828%203.85355%206.85354C3.65829%207.04881%203.34171%207.04881%203.14645%206.85354L0.146447%203.85355Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
+          <Logo />
+          <Text
+            content="Reset Password"
+            size="4"
+            weight="bold"
+            align=""
+            highContrast=""
           />
-          <Text content="Back to Login" />
-        </_Builtin.Link>
+          <Text
+            content="Enter a new password to reset your account password."
+            size="1"
+            weight=""
+            align=""
+            highContrast=""
+            color="neutral-11"
+          />
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "forgot-password-slot")}
+          tag="div"
+        >
+          {slotResetPasswordForm}
+        </_Builtin.Block>
       </_Builtin.Block>
+      <_Builtin.Link
+        className={_utils.cx(_styles, "back-link")}
+        button={false}
+        block="inline"
+        options={{
+          href: "/login",
+        }}
+      >
+        <ButtonGhost
+          isRightIcon={false}
+          isLeftIcon={false}
+          textButton="Back to login"
+          size="1"
+          color="neutral"
+        />
+      </_Builtin.Link>
     </_Component>
   );
 }
