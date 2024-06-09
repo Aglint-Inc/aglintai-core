@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
@@ -19,8 +20,7 @@ import toast from '@/src/utils/toast';
 
 import {
   insertTaskProgress,
-  updateCandidateRequestAvailability,
-  useRequestAvailabilityContext,
+  useRequestAvailabilityContext
 } from '../../RequestAvailabilityContext';
 import SlotColumn from './SlotColumn';
 
@@ -203,13 +203,16 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
     setOpenDaySlotPopup(null);
   };
   async function submitData() {
-    await updateCandidateRequestAvailability({
-      data: {
-        slots: [{ round: 1, dates: selectedSlots[0].dates }],
-        user_timezone: userTzDayjs.tz.guess(),
+    await axios.post(
+      `/api/scheduling/request_availability/updateRequestAvailability`,
+      {
+        data: {
+          slots: [{ round: 1, dates: selectedSlots[0].dates }],
+          user_timezone: userTzDayjs.tz.guess(),
+        },
+        id: String(router.query?.request_id),
       },
-      id: String(router.query?.request_id),
-    });
+    );
 
     await insertTaskProgress({
       request_availability_id: candidateRequestAvailability?.id,

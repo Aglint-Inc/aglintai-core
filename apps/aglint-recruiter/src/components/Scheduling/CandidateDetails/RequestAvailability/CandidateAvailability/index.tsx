@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -15,8 +16,7 @@ import toast from '@/src/utils/toast';
 
 import {
   insertTaskProgress,
-  updateCandidateRequestAvailability,
-  useRequestAvailabilityContext,
+  useRequestAvailabilityContext
 } from '../RequestAvailabilityContext';
 import { convertMinutesToHoursAndMinutes } from '../utils';
 import AvailableSlots from './AvailableSlots';
@@ -39,10 +39,13 @@ function CandidateAvailability() {
       return;
     }
 
-    await updateCandidateRequestAvailability({
-      data: { slots: daySlots, user_timezone: userTzDayjs.tz.guess() },
-      id: String(router.query?.request_id),
-    });
+    await axios.post(
+      `/api/scheduling/request_availability/updateRequestAvailability`,
+      {
+        id: String(router.query?.request_id),
+        data: { slots: daySlots, user_timezone: userTzDayjs.tz.guess() },
+      },
+    );
     await insertTaskProgress({
       request_availability_id: candidateRequestAvailability?.id,
       taskData: {
