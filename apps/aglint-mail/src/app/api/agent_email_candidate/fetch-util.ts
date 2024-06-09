@@ -7,10 +7,7 @@ interface FilterJson {
   end_date: string;
   user_tz: string;
 }
-export default async function initEmailAgent(
-  filter_id: string,
-  meeting_id: string,
-) {
+export async function initEmailAgent(filter_id: string, meeting_id: string) {
   const [filterJson] = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')

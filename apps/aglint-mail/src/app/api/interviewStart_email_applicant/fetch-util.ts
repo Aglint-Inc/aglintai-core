@@ -1,14 +1,18 @@
+import { DatabaseEnums, EmailTemplateAPi } from '@aglint/shared-types';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import type { InterviewType } from '../../../utils/types/supabase-fetch';
+import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
+import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 
-export default async function interviewReaminder(application_id: string) {
+export async function dbFetch(
+  req_body: EmailTemplateAPi<'interviewStart_email_applicant'>['api_payload'],
+) {
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin
       .from('applications')
       .select(
         'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
       )
-      .eq('id', application_id),
+      .eq('id', req_body.application_id),
   );
 
   if (!candidateJob) {
@@ -25,19 +29,34 @@ export default async function interviewReaminder(application_id: string) {
     public_jobs: { company, job_title },
   } = candidateJob;
 
-  const body: InterviewType = {
-    recipient_email: email,
-    mail_type: 'interviewStart_email_applicant',
+  const comp_email_temp = await fetchCompEmailTemp(
     recruiter_id,
-    companyLogo: logo,
-    payload: {
+    'interviewStart_email_applicant',
+  );
+
+  const comp_email_placeholder: EmailTemplateAPi<'interviewStart_email_applicant'>['comp_email_placeholders'] =
+    {
       '[firstName]': first_name,
       '[jobTitle]': job_title,
       '[companyName]': company,
       '[supportLink]': '',
       '[interviewLink]': ``,
-    },
-  };
+    };
+  const filled_comp_template = fillCompEmailTemplate(
+    comp_email_placeholder,
+    comp_email_temp,
+  );
 
-  return body;
+  const react_email_placeholders: EmailTemplateAPi<'interviewStart_email_applicant'>['react_email_placeholders'] =
+    {
+      companyLogo: '',
+      emailBody: filled_comp_template.body,
+      subject: filled_comp_template.subject,
+    };
+
+  return {
+    filled_comp_template,
+    react_email_placeholders,
+    recipient_email: email,
+  };
 }

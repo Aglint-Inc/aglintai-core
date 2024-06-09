@@ -1,103 +1,129 @@
-import { DatabaseEnums } from "..";
+import v from 'valibot';
+import { DatabaseEnums } from '..';
+import {
+  agentEmailCandidateSchema,
+  applicantRejectEmailApplicantSchema,
+  applicationRecievedEmailApplicantSchema,
+  confInterviewEmailOrganizerSchema,
+  confirmInterviewEmailApplicantSchema,
+  debriefEmailInterviewerSchema,
+  interReschedReqEmailRecruiterSchema,
+  interviewCancelReqEmailRecruiterSchema,
+  interviewReminderEmailApplicantSchema,
+  interviewRescheduleEmailApplicantSchema,
+  interviewStartEmailApplicantSchema,
+  phoneScreenEmailCandidateSchema,
+  phoneScreenRemindEmailApplicantSchema,
+} from './api_schema';
 
 type Payloads = {
-  application_received: {
-    application_id: string;
+  debrief_email_interviewer: {
+    api_payload: v.InferInput<typeof debriefEmailInterviewerSchema>;
+    comp_email_placeholders: {};
+    react_email_placeholders: {
+      subject: string;
+    };
   };
-  cancel_interview_session: {
-    application_id: string;
-    session_id: string;
+  applicationRecieved_email_applicant: {
+    api_payload: v.InferInput<typeof applicationRecievedEmailApplicantSchema>;
+    comp_email_placeholders: {};
+    react_email_placeholders: {
+      subject: string;
+    };
   };
-  candidate_availability_request: {
-    session_id: string[];
-    application_id: string;
-    schedule_id: string;
-    filter_id: string;
+  interviewCancel_email_applicant: {
+    api_payload: v.InferInput<typeof applicationRecievedEmailApplicantSchema>;
+    comp_email_placeholders: {};
+    react_email_placeholders: {
+      subject: string;
+    };
   };
-  candidate_cancel_request: {
-    session_id: string[];
-    application_id: string;
-    meeting_id: string;
-    interview_cancel_id: string;
-    recruiter_user_id: string;
+  agent_email_candidate: {
+    api_payload: v.InferInput<typeof agentEmailCandidateSchema>;
+    comp_email_placeholders: {};
+    react_email_placeholders: {
+      subject: string;
+    };
   };
-  candidate_invite_confirmation: {
-    session_id: string[];
-    application_id: string;
-    schedule_id: string;
-    filter_id: string;
+  confInterview_email_organizer: {
+    api_payload: v.InferInput<typeof confInterviewEmailOrganizerSchema>;
+    comp_email_placeholders: {};
+    react_email_placeholders: {
+      subject: string;
+    };
   };
-  candidate_reschedule_request: {
-    session_id: string[];
-    application_id: string;
-    meeting_id: string;
-    interview_cancel_id: string;
-    recruiter_user_id: string;
+  confirmInterview_email_applicant: {
+    api_payload: v.InferInput<typeof confirmInterviewEmailApplicantSchema>;
+    comp_email_placeholders: {};
+    react_email_placeholders: {
+      subject: string;
+    };
   };
-  confirmation_mail_to_organizer: {
-    session_id: string[];
-    application_id: string;
-    meeting_id: string;
-    recruiter_user_id: string;
+  applicantReject_email_applicant: {
+    api_payload: v.InferInput<typeof applicantRejectEmailApplicantSchema>;
+    comp_email_placeholders: {};
+    react_email_placeholders: {
+      subject: string;
+    };
   };
-  debrief_calendar_invite: {
-    session_id: string[];
-    application_id: string;
-    meeting_id: string;
-    recruiter_user_id: string;
+  phoneScreen_email_candidate: {
+    api_payload: v.InferInput<typeof phoneScreenEmailCandidateSchema>;
+    comp_email_placeholders: {};
+    react_email_placeholders: {
+      subject: string;
+    };
   };
-  init_email_agent: {
-    meeting_id: string;
-    filter_id: string;
+  interviewReminder_email_applicant: {
+    api_payload: v.InferInput<typeof interviewReminderEmailApplicantSchema>;
+    comp_email_placeholders: {};
+    react_email_placeholders: {
+      subject: string;
+    };
   };
-  interview: {
-    application_id: string;
+  phoneScreenRemind_email_applicant: {
+    api_payload: v.InferInput<typeof phoneScreenRemindEmailApplicantSchema>;
+    comp_email_placeholders: {};
+    react_email_placeholders: {
+      subject: string;
+    };
   };
-  interview_resend: {
-    application_id: string;
+  InterviewCancelReq_email_recruiter: {
+    api_payload: v.InferInput<typeof interviewCancelReqEmailRecruiterSchema>;
+    comp_email_placeholders: {};
+    react_email_placeholders: {
+      subject: string;
+    };
   };
-  phone_screening: {
-    application_id: string;
+  interReschedReq_email_recruiter: {
+    api_payload: v.InferInput<typeof interReschedReqEmailRecruiterSchema>;
+    comp_email_placeholders: {};
+    react_email_placeholders: {
+      subject: string;
+    };
   };
-  phone_screening_resend: {
-    application_id: string;
-  };
-  recruiter_rescheduling_email: {
-    session_ids: string[];
-    application_id: string;
-    meeting_id: string;
-    interview_cancel_id: string;
-  };
-  rejection: {
-    application_id: string;
-  };
-  request_candidate_slot: {
-    application_id: string;
-    request_id: string;
-  };
-  sendSelfScheduleRequest_email_applicant: {
-    meeting_id: string;
-    filter_id: string;
+  interviewReschedule_email_applicant: {
+    api_payload: v.InferInput<typeof interviewRescheduleEmailApplicantSchema>;
+    comp_email_placeholders: {};
+    react_email_placeholders: {
+      subject: string;
+    };
   };
   interviewStart_email_applicant: {
-    application_id: string;
+    api_payload: v.InferInput<typeof interviewStartEmailApplicantSchema>;
+    comp_email_placeholders: {
+      '[firstName]': string;
+      '[jobTitle]': string;
+      '[companyName]': string;
+      '[supportLink]': string;
+      '[interviewLink]': string;
+    };
+    react_email_placeholders: {
+      emailBody: string;
+      subject: string;
+      companyLogo: string;
+    };
   };
-  sendAvailabilityRequest_email_applicant: {
-    session_id: string;
-    application_id: string;
-    schedule_id: string;
-    filter_id: string;
-  };
-  interviewStart_email_interviewers: {
-    application_id: string;
-    meeting_id: string;
-    recruiter_user_id: string;
-  };
-  interviewStart_slack_interviewers: never;
-  interviewEnd_slack_interviewers: never;
-  interviewerConfirmation_slack_interviewers: never;
 };
 
-export type EmailPayloads = {
-  [id in DatabaseEnums["email_types"]]: Payloads[id];
-};
+export type EmailTemplateAPi<T extends DatabaseEnums['email_types']> =
+  T extends keyof Payloads ? Payloads[T] : never;

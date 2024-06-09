@@ -5,7 +5,7 @@ import {
 } from '../../../utils/apiUtils/customErrors';
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
-import fetchTemplate from '../../../utils/apiUtils/get-template';
+import fetchTemplate from '../../../utils/apiUtils/fillCompEmailTemplate';
 import Rejection from '../../../utils/email/rejection/fetch';
 import type { FilledPayload } from '../../../utils/types/apiTypes';
 import sendMail from '../../../config/sendgrid';
