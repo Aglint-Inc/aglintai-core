@@ -6,12 +6,12 @@ import {
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
-import Confirmation_mail_to_organizer from '../../../utils/email/confirmation_mail_to_organizer/fetch';
 import type {
   FilledPayload,
   MeetingDetails,
 } from '../../../utils/types/apiTypes';
 import sendMail from '../../../config/sendgrid';
+import { confiramtionMailToOrganizer } from './fetch-util';
 
 interface ReqPayload {
   session_id: string[];
@@ -56,7 +56,7 @@ export async function POST(req: Request) {
     if (!recruiter_user_id) {
       throw new ClientError('recruiter_user_id is missing', 400);
     }
-    const data: DataPayload = await Confirmation_mail_to_organizer(
+    const data: DataPayload = await confiramtionMailToOrganizer(
       session_id,
       application_id,
       meeting_id,

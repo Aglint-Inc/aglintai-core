@@ -1,13 +1,13 @@
 import dayjs from 'dayjs';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
-  durationCalculator,
   platformRemoveUnderscore,
-  scheduleTypeIcon,
+  durationCalculator,
   sessionTypeIcon,
-} from '../common/functions';
-import type { CandidateCancelRequestType } from '../../types/supabase-fetch';
-import type { MeetingDetails } from '../../types/apiTypes';
+  scheduleTypeIcon,
+} from '../../../utils/email/common/functions';
+import type { MeetingDetails } from '../../../utils/types/apiTypes';
+import type { CandidateCancelRequestType } from '../../../utils/types/supabase-fetch';
 
 interface SessionCancel {
   note: string;

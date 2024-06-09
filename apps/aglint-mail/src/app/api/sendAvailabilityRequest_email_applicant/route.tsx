@@ -12,8 +12,8 @@ import type {
   FilledPayload,
   MeetingDetails,
 } from '../../../utils/types/apiTypes';
-import candidateAvailabilityRequestReminder from '../../../utils/email/sendAvailabilityRequest_email_applicant/fetch';
 import sendMail from '../../../config/sendgrid';
+import candidateAvailabilityRequestReminder from './fetch-util';
 
 interface ReqPayload {
   sessions: InterviewSessionTypeDB[];

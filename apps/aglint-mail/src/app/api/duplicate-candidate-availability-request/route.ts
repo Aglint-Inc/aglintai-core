@@ -6,12 +6,12 @@ import {
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
-import CandidateAvailabilityRequest from '../../../utils/email/candidate-availability-request/fetch';
 import type {
   FilledPayload,
   MeetingDetails,
 } from '../../../utils/types/apiTypes';
 import sendMail from '../../../config/sendgrid';
+import candidateAvailabilityRequest from './fetch-util';
 
 interface ReqPayload {
   session_id: string[];
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
       throw new ClientError('schedule_id is missing', 400);
     }
 
-    const data: DataPayload = await CandidateAvailabilityRequest(
+    const data: DataPayload = await candidateAvailabilityRequest(
       session_id,
       application_id,
       schedule_id,

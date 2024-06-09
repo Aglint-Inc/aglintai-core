@@ -1,15 +1,15 @@
 import dayjs from 'dayjs';
 import type { CalendarEvent } from '@aglint/shared-types';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
+import { createICSAttachment } from '../../../utils/ceateIcsContent';
 import {
-  durationCalculator,
   platformRemoveUnderscore,
-  scheduleTypeIcon,
+  durationCalculator,
   sessionTypeIcon,
-} from '../common/functions';
-import type { CandidateInviteConfirmationType } from '../../types/supabase-fetch';
-import type { MeetingDetails } from '../../types/apiTypes';
-import { createICSAttachment } from '../../ceateIcsContent';
+  scheduleTypeIcon,
+} from '../../../utils/email/common/functions';
+import type { MeetingDetails } from '../../../utils/types/apiTypes';
+import type { CandidateInviteConfirmationType } from '../../../utils/types/supabase-fetch';
 
 export default async function candidateInviteConfirmation(
   session_ids: string[],

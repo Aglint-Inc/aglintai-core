@@ -1,7 +1,7 @@
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import type { PhoneScreeningType } from '../../types/supabase-fetch';
+import type { PhoneScreeningResendType } from '../../../utils/types/supabase-fetch';
 
-export default async function phoneScreening(application_id: string) {
+export default async function phoneScreeningResend(application_id: string) {
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin
       .from('applications')
@@ -23,10 +23,9 @@ export default async function phoneScreening(application_id: string) {
     },
     public_jobs: { id: job_id, company, job_title },
   } = candidateJob;
-
-  const body: PhoneScreeningType = {
+  const body: PhoneScreeningResendType = {
     recipient_email: email,
-    mail_type: 'phone_screening',
+    mail_type: 'phone_screening_resend',
     recruiter_id,
     companyLogo: logo,
     payload: {
@@ -36,6 +35,5 @@ export default async function phoneScreening(application_id: string) {
       '[phoneScreeningLink]': `${process.env.BASE_URL}/candidate-phone-screening?job_post_id=${job_id}&application_id=${application_id}`,
     },
   };
-
   return body;
 }

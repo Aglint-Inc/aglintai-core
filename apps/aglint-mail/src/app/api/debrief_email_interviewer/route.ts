@@ -6,12 +6,12 @@ import {
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
-import DebriefCalenderInvite from '../../../utils/email/debrief_calendar_invite/fetch';
 import type {
   FilledPayload,
   MeetingDetails,
 } from '../../../utils/types/apiTypes';
 import sendMail from '../../../config/sendgrid';
+import { debriefCalenderInvite } from './fetch-util';
 
 interface ReqPayload {
   session_ids: string;
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
     if (!recruiter_user_id) {
       throw new ClientError('recruiter_user_id is missing', 400);
     }
-    const data: DataPayload = await DebriefCalenderInvite(
+    const data: DataPayload = await debriefCalenderInvite(
       session_ids,
       application_id,
       meeting_id,

@@ -1,15 +1,15 @@
 import dayjs from 'dayjs';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
-  durationCalculator,
   platformRemoveUnderscore,
-  scheduleTypeIcon,
+  durationCalculator,
   sessionTypeIcon,
-} from '../common/functions';
-import type { DebriefCalendarInviteBodyType } from '../../types/supabase-fetch';
-import type { MeetingDetails } from '../../types/apiTypes';
+  scheduleTypeIcon,
+} from '../../../utils/email/common/functions';
+import type { MeetingDetails } from '../../../utils/types/apiTypes';
+import type { DebriefCalendarInviteBodyType } from '../../../utils/types/supabase-fetch';
 
-export default async function debriefCalenderInvite(
+export async function debriefCalenderInvite(
   session_id: string,
   application_id: string,
   meeting_id: string,

@@ -6,12 +6,12 @@ import {
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
-import CandidateCancelRequest from '../../../utils/email/candidate_cancel_request/fetch';
 import type {
   FilledPayload,
   MeetingDetails,
 } from '../../../utils/types/apiTypes';
 import sendMail from '../../../config/sendgrid';
+import candidateCancelRequest from './fetch-util';
 
 interface ReqPayload {
   session_id: string[];
@@ -64,7 +64,7 @@ export async function POST(req: Request) {
     if (!recruiter_user_id) {
       throw new ClientError('interview_cancel_id is missing', 400);
     }
-    const data: DataPayload = await CandidateCancelRequest(
+    const data: DataPayload = await candidateCancelRequest(
       session_id,
       application_id,
       meeting_id,

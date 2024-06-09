@@ -1,24 +1,25 @@
 import { ScheduleUtils } from '@aglint/shared-utils';
-import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
-import type { InitEmailAgentRemainderType } from '../../types/supabase-fetch';
+import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
+import type { InitEmailAgentType } from '../../../utils/types/supabase-fetch';
 
 interface FilterJson {
   start_date: string;
   end_date: string;
   user_tz: string;
 }
-export default async function initEmailAgentRemainder(
+export default async function initEmailAgent(
   filter_id: string,
-  schedule_id: string,
+  meeting_id: string,
 ) {
-  const { data: filterJson } = await supabaseAdmin
-    .from('interview_filter_json')
-    .select(
-      'filter_json,interview_schedule(applications(public_jobs(job_title,recruiter_id,company),candidates(first_name,email,recruiter(logo))))',
-    )
-    .eq('id', filter_id)
-    .single()
-    .throwOnError();
+  const [filterJson] = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_filter_json')
+      .select(
+        'filter_json,interview_schedule(applications(public_jobs(job_title,company),candidates(first_name,email,recruiter_id,recruiter(logo))))',
+      )
+      .eq('id', filter_id),
+  );
+
   const { end_date, start_date, user_tz } =
     filterJson.filter_json as unknown as FilterJson;
   const {
@@ -26,23 +27,24 @@ export default async function initEmailAgentRemainder(
       applications: {
         candidates: {
           email,
+          recruiter_id,
           first_name,
           recruiter: { logo },
         },
-        public_jobs: { company, recruiter_id, job_title },
+        public_jobs: { company, job_title },
       },
     },
   } = filterJson;
 
-  const body: InitEmailAgentRemainderType = {
+  const body: InitEmailAgentType = {
     recipient_email: email,
-    mail_type: 'sendSelfScheduleRequest_email_applicant',
+    mail_type: 'init_email_agent',
     recruiter_id,
     companyLogo: logo,
     payload: {
       '[candidateFirstName]': first_name,
-      '[Company Name]': company,
-      '[Job Title]': job_title,
+      '[companyName]': company,
+      '[jobRole]': job_title,
       '[startDate]': ScheduleUtils.convertDateFormatToDayjs(
         start_date,
         user_tz,
@@ -52,7 +54,7 @@ export default async function initEmailAgentRemainder(
         user_tz,
       ).format('MMM DD, YYYY'),
       '[companyTimeZone]': '',
-      '[selfScheduleLink]': `${process.env.BASE_URL}/scheduling/invite/${schedule_id}?filter_id=${filter_id}`,
+      '[selfScheduleLink]': `${process.env.BASE_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
     },
   };
 

@@ -6,9 +6,9 @@ import {
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
-import RecruiterReschedulingEmail from '../../../utils/email/recruiter_rescheduling_email/fetch';
 import type { FilledPayload } from '../../../utils/types/apiTypes';
 import sendMail from '../../../config/sendgrid';
+import recruiterReschedulingEmail from './fetch-util';
 
 interface ReqPayload {
   session_ids: string[];
@@ -60,7 +60,7 @@ export async function POST(req: Request) {
     if (!meeting_id) {
       throw new ClientError('meeting_id is missing', 400);
     }
-    const data: DataPayload = await RecruiterReschedulingEmail(
+    const data: DataPayload = await recruiterReschedulingEmail(
       session_ids,
       application_id,
       meeting_id,

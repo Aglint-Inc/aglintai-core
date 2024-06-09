@@ -6,9 +6,9 @@ import {
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
-import CandidateInviteConfirmation from '../../../utils/email/candidate-invite-confirmation/fetch';
 import type { FilledPayload } from '../../../utils/types/apiTypes';
 import sendMail from '../../../config/sendgrid';
+import candidateInviteConfirmation from './fetch-util';
 
 interface ReqPayload {
   session_ids: string[];
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
   }: ReqPayload = await req.json();
 
   try {
-    const { details, mail_attachments } = await CandidateInviteConfirmation(
+    const { details, mail_attachments } = await candidateInviteConfirmation(
       session_ids,
       application_id,
       cand_tz,

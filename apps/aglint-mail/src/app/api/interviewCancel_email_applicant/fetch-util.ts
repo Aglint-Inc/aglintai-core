@@ -1,19 +1,17 @@
 import dayjs from 'dayjs';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
-  durationCalculator,
   platformRemoveUnderscore,
-  scheduleTypeIcon,
+  durationCalculator,
   sessionTypeIcon,
-} from '../common/functions';
-import type { ConfiramtionMailToOrganizerType } from '../../types/supabase-fetch';
-import type { MeetingDetails } from '../../types/apiTypes';
+  scheduleTypeIcon,
+} from '../../../utils/email/common/functions';
+import type { MeetingDetails } from '../../../utils/types/apiTypes';
+import type { CancelInterviewSessionType } from '../../../utils/types/supabase-fetch';
 
-export default async function confiramtionMailToOrganizer(
+export default async function cancelInterviewSession(
   session_ids: string[],
   application_id: string,
-  meeting_id: string,
-  recruiter_user_id: string,
 ) {
   const sessions = supabaseWrap(
     await supabaseAdmin
@@ -25,41 +23,22 @@ export default async function confiramtionMailToOrganizer(
   );
 
   if (!sessions) {
-    throw new Error('sessions are not available');
+    throw new Error('sessions detail not avalible');
   }
+
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+        'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
       )
       .eq('id', application_id),
   );
-
   if (!candidateJob) {
-    throw new Error('candidate and job details are not available');
+    throw new Error(
+      'candidate details and job details are details not avalible',
+    );
   }
-  const [recruiter_user] = supabaseWrap(
-    await supabaseAdmin
-      .from('recruiter_user')
-      .select('email,first_name')
-      .eq('user_id', recruiter_user_id),
-  );
-
-  if (!recruiter_user) {
-    throw new Error('cancel session details not available');
-  }
-
-  const { first_name: recruiter_name, email } = recruiter_user;
-
-  const {
-    candidates: {
-      recruiter_id,
-      first_name,
-      recruiter: { logo },
-    },
-    public_jobs: { company, job_title },
-  } = candidateJob;
 
   const Sessions: MeetingDetails[] = sessions.map((session) => {
     const {
@@ -80,17 +59,25 @@ export default async function confiramtionMailToOrganizer(
     };
   });
 
-  const body: ConfiramtionMailToOrganizerType = {
+  const {
+    candidates: {
+      email,
+      recruiter_id,
+      first_name,
+      recruiter: { logo },
+    },
+    public_jobs: { company, job_title },
+  } = candidateJob;
+
+  const body: CancelInterviewSessionType = {
     recipient_email: email,
-    mail_type: 'confirmation_mail_to_organizer',
+    mail_type: 'cancel_interview_session',
     recruiter_id,
     companyLogo: logo,
     payload: {
-      '[companyName]': company,
       '[firstName]': first_name,
+      '[companyName]': company,
       '[jobTitle]': job_title,
-      '[recruiterName]': recruiter_name,
-      'meetingLink': `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
       'meetingDetails': [...Sessions],
     },
   };

@@ -1,12 +1,12 @@
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
-  durationCalculator,
   platformRemoveUnderscore,
-  scheduleTypeIcon,
+  durationCalculator,
   sessionTypeIcon,
-} from '../common/functions';
-import type { RecruiterReschedulingEmailType } from '../../types/supabase-fetch';
-import type { MeetingDetails } from '../../types/apiTypes';
+  scheduleTypeIcon,
+} from '../../../utils/email/common/functions';
+import type { MeetingDetails } from '../../../utils/types/apiTypes';
+import type { RecruiterReschedulingEmailType } from '../../../utils/types/supabase-fetch';
 
 export default async function recruiterReschedulingEmail(
   session_ids: string[],

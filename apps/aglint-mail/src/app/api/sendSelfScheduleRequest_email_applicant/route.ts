@@ -7,8 +7,8 @@ import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
 import type { FilledPayload } from '../../../utils/types/apiTypes';
-import initEmailAgentRemainder from '../../../utils/email/sendSelfScheduleRequest_email_applicant/fetch';
 import sendMail from '../../../config/sendgrid';
+import initEmailAgentRemainder from './fetch-util';
 
 interface ReqPayload {
   schedule_id: string;

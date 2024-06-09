@@ -6,9 +6,9 @@ import {
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
-import Interview from '../../../utils/email/interview/fetch';
 import type { FilledPayload } from '../../../utils/types/apiTypes';
 import sendMail from '../../../config/sendgrid';
+import interview from './fetch-util';
 
 interface ReqPayload {
   application_id: string;
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
     if (!application_id) {
       throw new ClientError('attribute application_id missing', 400);
     }
-    const data: DataPayload = await Interview(application_id);
+    const data: DataPayload = await interview(application_id);
     const filled_body: FilledPayload = await fetchTemplate(
       data.recruiter_id,
       data.mail_type,

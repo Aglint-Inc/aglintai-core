@@ -6,12 +6,12 @@ import {
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
-import CancelInterviewSession from '../../../utils/email/cancel-interview-session/fetch';
 import type {
   FilledPayload,
   MeetingDetails,
 } from '../../../utils/types/apiTypes';
 import sendMail from '../../../config/sendgrid';
+import cancelInterviewSession from './fetch-util';
 
 interface ReqPayload {
   session_ids: string[];
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
       throw new ClientError('application_id attribute missing', 400);
     }
 
-    const data: DataPayload = await CancelInterviewSession(
+    const data: DataPayload = await cancelInterviewSession(
       session_ids,
       application_id,
     );

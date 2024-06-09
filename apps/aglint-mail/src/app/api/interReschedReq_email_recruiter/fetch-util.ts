@@ -1,30 +1,40 @@
 import dayjs from 'dayjs';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
-  durationCalculator,
   platformRemoveUnderscore,
-  scheduleTypeIcon,
+  durationCalculator,
   sessionTypeIcon,
-} from '../common/functions';
-import type { ConfiramtionMailToOrganizerType } from '../../types/supabase-fetch';
-import type { MeetingDetails } from '../../types/apiTypes';
+  scheduleTypeIcon,
+} from '../../../utils/email/common/functions';
+import type { MeetingDetails } from '../../../utils/types/apiTypes';
+import type { CandidateRescheduleRequestType } from '../../../utils/types/supabase-fetch';
 
-export default async function confiramtionMailToOrganizer(
+interface SessionCancel {
+  other_details: {
+    note: string;
+    dateRange: { start: string; end: string };
+  };
+  reason;
+}
+
+export default async function candidateRescheduleRequest(
+  session_ids: string[],
   application_id: string,
   meeting_id: string,
+  interview_cancel_id: string,
   recruiter_user_id: string,
 ) {
   const sessions = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
       .select(
-        'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time,organizer_id,recruiter_user(first_name,email))',
+        'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
       )
-      .eq('meeting_id', meeting_id),
+      .in('id', session_ids),
   );
 
   if (!sessions) {
-    throw new Error('sessions are not available');
+    throw new Error('sessions not available');
   }
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin
@@ -34,10 +44,10 @@ export default async function confiramtionMailToOrganizer(
       )
       .eq('id', application_id),
   );
-
   if (!candidateJob) {
     throw new Error('candidate and job details are not available');
   }
+
   const [recruiter_user] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
@@ -51,6 +61,21 @@ export default async function confiramtionMailToOrganizer(
 
   const { first_name: recruiter_name, email } = recruiter_user;
 
+  const [session_cancel] = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_session_cancel')
+      .select('other_details,reason')
+      .eq('id', interview_cancel_id),
+  );
+
+  const {
+    other_details: {
+      note,
+      dateRange: { start, end },
+    },
+    reason,
+  } = session_cancel as unknown as SessionCancel;
+
   const {
     candidates: {
       recruiter_id,
@@ -59,7 +84,6 @@ export default async function confiramtionMailToOrganizer(
     },
     public_jobs: { company, job_title },
   } = candidateJob;
-
   const Sessions: MeetingDetails[] = sessions.map((session) => {
     const {
       interview_meeting: { start_time, end_time },
@@ -78,27 +102,22 @@ export default async function confiramtionMailToOrganizer(
       meetingIcon: scheduleTypeIcon(schedule_type),
     };
   });
-
-  const body: ConfiramtionMailToOrganizerType = {
+  const body: CandidateRescheduleRequestType = {
     recipient_email: email,
-    mail_type: 'interviewStart_email_interviewers',
+    mail_type: 'candidate_reschedule_request',
     recruiter_id,
     companyLogo: logo,
     payload: {
-      '[companyName]': company,
       '[firstName]': first_name,
-      '[jobTitle]': job_title,
+      '[rescheduleReason]': reason,
       '[recruiterName]': recruiter_name,
-      'meetingLink': `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
+      '[companyName]': company,
+      '[jobTitle]': job_title,
+      '[additionalRescheduleNotes]': note,
+      '[dateRange]': `${dayjs(start).format('DD MMMM YYYY')} to ${dayjs(end).format('DD MMMM YYYY')}`,
+      '[pickYourSlotLink]': `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
       'meetingDetails': [...Sessions],
     },
   };
-
   return body;
 }
-
-// {
-//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637",
-//   "meeting_id": "8daab34c-9c19-445b-aa96-3b4735307414",
-//   "recruiter_user_ids": ["7f6c4cae-78b6-4eb6-86fd-9a0e0310147b", "a0e4d0db-7492-48c3-bbc9-a8f7d8340f7f"]
-// }

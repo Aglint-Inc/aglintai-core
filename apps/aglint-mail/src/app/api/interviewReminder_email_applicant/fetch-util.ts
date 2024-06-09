@@ -1,7 +1,7 @@
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import type { InterviewType } from '../../types/supabase-fetch';
+import type { InterviewResendType } from '../../../utils/types/supabase-fetch';
 
-export default async function interview(application_id: string) {
+export default async function interviewResend(application_id: string) {
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin
       .from('applications')
@@ -25,9 +25,9 @@ export default async function interview(application_id: string) {
     public_jobs: { company, job_title },
   } = candidateJob;
 
-  const body: InterviewType = {
+  const body: InterviewResendType = {
     recipient_email: email,
-    mail_type: 'interview',
+    mail_type: 'interview_resend',
     recruiter_id,
     companyLogo: logo,
     payload: {
@@ -41,9 +41,3 @@ export default async function interview(application_id: string) {
 
   return body;
 }
-
-// http://localhost:3100/api/interview
-
-// {
-//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637"
-// }

@@ -1,27 +1,18 @@
 import dayjs from 'dayjs';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
-  durationCalculator,
   platformRemoveUnderscore,
-  scheduleTypeIcon,
+  durationCalculator,
   sessionTypeIcon,
-} from '../common/functions';
-import type { CandidateRescheduleRequestType } from '../../types/supabase-fetch';
-import type { MeetingDetails } from '../../types/apiTypes';
+  scheduleTypeIcon,
+} from '../../../utils/email/common/functions';
+import type { MeetingDetails } from '../../../utils/types/apiTypes';
+import type { ConfiramtionMailToOrganizerType } from '../../../utils/types/supabase-fetch';
 
-interface SessionCancel {
-  other_details: {
-    note: string;
-    dateRange: { start: string; end: string };
-  };
-  reason;
-}
-
-export default async function candidateRescheduleRequest(
+export async function confiramtionMailToOrganizer(
   session_ids: string[],
   application_id: string,
   meeting_id: string,
-  interview_cancel_id: string,
   recruiter_user_id: string,
 ) {
   const sessions = supabaseWrap(
@@ -34,7 +25,7 @@ export default async function candidateRescheduleRequest(
   );
 
   if (!sessions) {
-    throw new Error('sessions not available');
+    throw new Error('sessions are not available');
   }
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin
@@ -44,10 +35,10 @@ export default async function candidateRescheduleRequest(
       )
       .eq('id', application_id),
   );
+
   if (!candidateJob) {
     throw new Error('candidate and job details are not available');
   }
-
   const [recruiter_user] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
@@ -61,21 +52,6 @@ export default async function candidateRescheduleRequest(
 
   const { first_name: recruiter_name, email } = recruiter_user;
 
-  const [session_cancel] = supabaseWrap(
-    await supabaseAdmin
-      .from('interview_session_cancel')
-      .select('other_details,reason')
-      .eq('id', interview_cancel_id),
-  );
-
-  const {
-    other_details: {
-      note,
-      dateRange: { start, end },
-    },
-    reason,
-  } = session_cancel as unknown as SessionCancel;
-
   const {
     candidates: {
       recruiter_id,
@@ -84,6 +60,7 @@ export default async function candidateRescheduleRequest(
     },
     public_jobs: { company, job_title },
   } = candidateJob;
+
   const Sessions: MeetingDetails[] = sessions.map((session) => {
     const {
       interview_meeting: { start_time, end_time },
@@ -102,22 +79,21 @@ export default async function candidateRescheduleRequest(
       meetingIcon: scheduleTypeIcon(schedule_type),
     };
   });
-  const body: CandidateRescheduleRequestType = {
+
+  const body: ConfiramtionMailToOrganizerType = {
     recipient_email: email,
-    mail_type: 'candidate_reschedule_request',
+    mail_type: 'confirmation_mail_to_organizer',
     recruiter_id,
     companyLogo: logo,
     payload: {
-      '[firstName]': first_name,
-      '[rescheduleReason]': reason,
-      '[recruiterName]': recruiter_name,
       '[companyName]': company,
+      '[firstName]': first_name,
       '[jobTitle]': job_title,
-      '[additionalRescheduleNotes]': note,
-      '[dateRange]': `${dayjs(start).format('DD MMMM YYYY')} to ${dayjs(end).format('DD MMMM YYYY')}`,
-      '[pickYourSlotLink]': `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
+      '[recruiterName]': recruiter_name,
+      'meetingLink': `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
       'meetingDetails': [...Sessions],
     },
   };
+
   return body;
 }

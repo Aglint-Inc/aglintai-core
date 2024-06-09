@@ -6,9 +6,9 @@ import {
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
-import InitEmailAgent from '../../../utils/email/init_email_agent/fetch';
 import type { FilledPayload } from '../../../utils/types/apiTypes';
 import sendMail from '../../../config/sendgrid';
+import initEmailAgent from './fetch-util';
 
 interface ReqPayload {
   meeting_id: string;
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     if (!filter_id) {
       throw new ClientError('filter_id is missing', 400);
     }
-    const data: DataPayload = await InitEmailAgent(filter_id, meeting_id);
+    const data: DataPayload = await initEmailAgent(filter_id, meeting_id);
     const filled_body: FilledPayload = await fetchTemplate(
       data.recruiter_id,
       data.mail_type,

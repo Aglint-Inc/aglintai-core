@@ -1,56 +1,44 @@
-import dayjs from 'dayjs';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import type { CancelInterviewSessionType } from '../../types/supabase-fetch';
 import {
-  durationCalculator,
   platformRemoveUnderscore,
-  scheduleTypeIcon,
+  durationCalculator,
   sessionTypeIcon,
-} from '../common/functions';
-import type { MeetingDetails } from '../../types/apiTypes';
+  scheduleTypeIcon,
+} from '../../../utils/email/common/functions';
+import type { MeetingDetails } from '../../../utils/types/apiTypes';
+import type { CandidateAvailabilityRequestType } from '../../../utils/types/supabase-fetch';
 
-export default async function cancelInterviewSession(
+export default async function candidateAvailabilityRequest(
   session_ids: string[],
   application_id: string,
+  schedule_id: string,
+  filter_id: string,
 ) {
   const sessions = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
-      .select(
-        'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
-      )
+      .select('session_type,session_duration,schedule_type,name')
       .in('id', session_ids),
   );
 
   if (!sessions) {
-    throw new Error('sessions detail not avalible');
+    throw new Error('sessions are not available');
   }
-
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+        'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(company)',
       )
       .eq('id', application_id),
   );
   if (!candidateJob) {
-    throw new Error(
-      'candidate details and job details are details not avalible',
-    );
+    throw new Error('candidate and job details are not available');
   }
 
   const Sessions: MeetingDetails[] = sessions.map((session) => {
-    const {
-      interview_meeting: { start_time, end_time },
-      name,
-      schedule_type,
-      session_duration,
-      session_type,
-    } = session;
+    const { name, schedule_type, session_duration, session_type } = session;
     return {
-      date: dayjs(start_time).format('ddd MMMM DD, YYYY'),
-      time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
       sessionType: name,
       platform: platformRemoveUnderscore(schedule_type),
       duration: durationCalculator(session_duration),
@@ -66,18 +54,18 @@ export default async function cancelInterviewSession(
       first_name,
       recruiter: { logo },
     },
-    public_jobs: { company, job_title },
+    public_jobs: { company },
   } = candidateJob;
 
-  const body: CancelInterviewSessionType = {
+  const body: CandidateAvailabilityRequestType = {
     recipient_email: email,
-    mail_type: 'cancel_interview_session',
+    mail_type: 'candidate_availability_request',
     recruiter_id,
     companyLogo: logo,
     payload: {
-      '[firstName]': first_name,
       '[companyName]': company,
-      '[jobTitle]': job_title,
+      '[firstName]': first_name,
+      'pickYourSlot': `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${schedule_id}?filter_id=${filter_id}`,
       'meetingDetails': [...Sessions],
     },
   };

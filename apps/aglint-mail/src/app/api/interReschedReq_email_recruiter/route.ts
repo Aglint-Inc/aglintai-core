@@ -10,8 +10,8 @@ import type {
   FilledPayload,
   MeetingDetails,
 } from '../../../utils/types/apiTypes';
-import candidateRescheduleRequest from '../../../utils/email/candidate_reschedule_request/fetch';
 import sendMail from '../../../config/sendgrid';
+import candidateRescheduleRequest from './fetch-util';
 
 interface ReqPayload {
   session_ids: string[];

@@ -1,24 +1,27 @@
+import type { InterviewSessionTypeDB } from '@aglint/shared-types';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
-  durationCalculator,
   platformRemoveUnderscore,
-  scheduleTypeIcon,
+  durationCalculator,
   sessionTypeIcon,
-} from '../common/functions';
-import type { CandidateAvailabilityRequestType } from '../../types/supabase-fetch';
-import type { MeetingDetails } from '../../types/apiTypes';
+  scheduleTypeIcon,
+} from '../../../utils/email/common/functions';
+import type { MeetingDetails } from '../../../utils/types/apiTypes';
+import type { CandidateAvailabilityRequestType } from '../../../utils/types/supabase-fetch';
 
-export default async function candidateAvailabilityRequest(
-  session_ids: string[],
+export default async function candidateAvailabilityRequestReminder(
+  sessions_data: InterviewSessionTypeDB[],
   application_id: string,
-  schedule_id: string,
-  filter_id: string,
+  availability_req_id: string,
 ) {
   const sessions = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
       .select('session_type,session_duration,schedule_type,name')
-      .in('id', session_ids),
+      .in(
+        'id',
+        sessions_data.map((s) => s.id),
+      ),
   );
 
   if (!sessions) {
@@ -57,15 +60,17 @@ export default async function candidateAvailabilityRequest(
     public_jobs: { company },
   } = candidateJob;
 
+  const candidate_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${availability_req_id}`;
+
   const body: CandidateAvailabilityRequestType = {
     recipient_email: email,
-    mail_type: 'candidate_availability_request',
+    mail_type: 'sendAvailabilityRequest_email_applicant',
     recruiter_id,
     companyLogo: logo,
     payload: {
       '[companyName]': company,
       '[firstName]': first_name,
-      'pickYourSlot': `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${schedule_id}?filter_id=${filter_id}`,
+      'pickYourSlot': candidate_link,
       'meetingDetails': [...Sessions],
     },
   };

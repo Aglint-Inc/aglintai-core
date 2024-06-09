@@ -7,8 +7,8 @@ import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
 import type { FilledPayload } from '../../../utils/types/apiTypes';
-import interviewReaminder from '../../../utils/email/interviewStart_email_applicant/fetch';
 import sendMail from '../../../config/sendgrid';
+import interviewReaminder from './fetch-util';
 
 interface ReqPayload {
   application_id: string;
