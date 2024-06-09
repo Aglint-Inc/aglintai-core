@@ -113,7 +113,7 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                     />
                   </Stack>
                   {session.break_duration > 0 && (
-                    <Stack pt={'10px'}>
+                    <Stack pt={'var(--space-2)'}>
                       <InterviewBreakCard
                         textDuration={getBreakLabel(session.break_duration)}
                         isThreeDotVisible={true}

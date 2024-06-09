@@ -78,7 +78,7 @@ function InterviewerListCard({
         key={item.id + ' member'}
         title={
           <React.Fragment>
-            <Stack bgcolor={'#fff'} borderRadius={'10px'}>
+            <Stack bgcolor={'#fff'} borderRadius={'var(--space-2)'}>
               <MemberDetail
                 slotImage={
                   <MuiAvatar

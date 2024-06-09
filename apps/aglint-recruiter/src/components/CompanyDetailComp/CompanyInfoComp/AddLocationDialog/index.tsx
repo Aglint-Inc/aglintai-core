@@ -197,7 +197,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                 label='Address Line 2'
                 defaultValue={initialValue?.line2}
               />
-              <Stack direction={'row'} spacing={'10px'}>
+              <Stack direction={'row'} spacing={'var(--space-2)'}>
                 <UITextField
                   width='225px'
                   ref={cityRef}
@@ -219,7 +219,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   defaultValue={initialValue?.region}
                 />
               </Stack>
-              <Stack direction={'row'} spacing={'10px'}>
+              <Stack direction={'row'} spacing={'var(--space-2)'}>
                 <UITextField
                   width='225px'
                   ref={countryRef}

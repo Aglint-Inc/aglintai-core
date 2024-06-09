@@ -103,7 +103,7 @@ const EmailTemplate = ({ setIsSaving }) => {
                     isSaveChangesButtonVisible={false}
                     textEmailName={templateObj[selectedTemplate]?.heading}
                     slotForm={
-                      <Stack spacing={'20px'}>
+                      <Stack spacing={'var(--space-5)'}>
                         <UITextField
                           labelSize='small'
                           fullWidth
@@ -158,10 +158,10 @@ const EmailTemplate = ({ setIsSaving }) => {
                           <UITypography type='small'>Email Body</UITypography>
                           <Stack
                             sx={{
-                              mt: '8px',
+                              mt: 'var(--space-2)',
                               border: '1px solid',
                               borderColor: 'var(neutral-6)',
-                              borderRadius: '4px',
+                              borderRadius: 'var(--radius-2)',
                             }}
                           >
                             <TipTapAIEditor

@@ -62,7 +62,7 @@ const PublishButton = ({
           width: '120px',
           transition: 'all 1s ease !important',
           overflow: 'hidden',
-          borderRadius: '4px',
+          borderRadius: 'var(--radius-2)',
           '&:hover': {
             backgroundColor: publishing === 2 ? 'var(--success-9)' : 'var(--accent-10)',
           },
@@ -97,7 +97,7 @@ const PublishButton = ({
               {
                 <CircularProgress
                   color='inherit'
-                  size={'10px'}
+                  size={'var(--space-2)'}
                   sx={{
                     color: 'var(--white)',
                     opacity: publishing === 1 ? 1 : 0,

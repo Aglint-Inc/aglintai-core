@@ -170,13 +170,13 @@ function ToggleBtn({ isVideoAssessment, handleCheck }) {
         <Switch
           sx={{
             '& .MuiSwitch-thumb': {
-              color: 'white.700', // Color of the switching ball
+              color: 'var(--white)', // Color of the switching ball
               height: '13px',
               width: '13px',
               opacity: 1,
             },
             '& .MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
-              backgroundColor: '#1F73B7',
+              backgroundColor: 'var(--neutral-3)',
               opacity: 1,
             },
             '& .MuiSwitch-switchBase': {

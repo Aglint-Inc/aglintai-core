@@ -194,7 +194,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
   return (
     <>
       {Boolean(templatePath) && (
-        <Stack mb={'10px'}>
+        <Stack mb={'var(--space-2)'}>
           <EditEmail
             editEmailDescription={
               templateObj[String(templatePath)]?.descriptionInJob
@@ -211,7 +211,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
             }}
             textEmailName={templateObj[String(templatePath)]?.heading}
             slotForm={
-              <Stack spacing={'20px'}>
+              <Stack spacing={'var(--space-5)'}>
                 <UITextField
                   labelSize='small'
                   fullWidth
@@ -254,7 +254,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
                       mt: '8px',
                       border: '1px solid',
                       borderColor: 'var(neutral-6)',
-                      borderRadius: '4px',
+                      borderRadius: 'var(--radius-2)',
                     }}
                   >
                     <TipTapAIEditor
@@ -279,7 +279,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
                 sx={{
                   bgcolor: 'var(--neutral-1)',
                   p: 2,
-                  borderRadius: '8px',
+                  borderRadius: 'var(--radius-4)',
                 }}
                 spacing={2}
               >

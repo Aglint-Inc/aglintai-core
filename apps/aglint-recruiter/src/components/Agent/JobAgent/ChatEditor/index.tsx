@@ -102,7 +102,7 @@ function ChatEditor({
   return (
     <Stack
       border={`1px solid`}
-      borderRadius={'8px'}
+      borderRadius={'var(--space-2)'}
       sx={{
         '& div': {
           width: '100%',

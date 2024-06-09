@@ -255,11 +255,11 @@ const SocialComp = ({ setIsSaving }) => {
   }
 
   return (
-    <Stack gap={'10px'}>
+    <Stack gap={'var(--space-2)'}>
       <UITypography type={'small'} color={'var(--neutral-12)'} fontBold='default'>
         Social Links
       </UITypography>
-      <Stack gap={'20px'}>
+      <Stack gap={'var(--space-5)'}>
         {socials?.map((socialName) => {
           return (
             <Stack
@@ -271,8 +271,8 @@ const SocialComp = ({ setIsSaving }) => {
               <Stack
                 style={{
                   border: `1px solid var(--neutral-6)`,
-                  padding: '9px',
-                  borderRadius: '4px',
+                  padding: 'var(--space-2)',
+                  borderRadius: 'var(--radius-2)',
                 }}
               >
                 <Image
@@ -326,8 +326,8 @@ const SocialComp = ({ setIsSaving }) => {
               <Stack
                 style={{
                   border: `1px solid var(--neutral-6)`,
-                  padding: '8px',
-                  borderRadius: '4px',
+                  padding: 'var(--space-2)',
+                  borderRadius: 'var(--radius-2)',
                   alignItems: 'start',
                 }}
               >

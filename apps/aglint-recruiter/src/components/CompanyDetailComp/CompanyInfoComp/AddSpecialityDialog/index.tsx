@@ -97,7 +97,7 @@ const AddSpecialityDialog: React.FC<StacksProps> = ({
         })}
         slotInput={
           <Autocomplete
-            sx={{ mt: stacks.length > 0 ? '8px' : '0px' }}
+            sx={{ mt: stacks.length > 0 ? 'var(--space-2)' : '0px' }}
             fullWidth
             freeSolo
             id='free-solo-2-demo'
@@ -123,7 +123,7 @@ const AddSpecialityDialog: React.FC<StacksProps> = ({
                         }, 10);
                       }}
                       alignItems={'center'}
-                      spacing={'4px'}
+                      spacing={'var(--space-1)'}
                     >
                       <Typography variant='body1'>{option}</Typography>
                       <Typography variant='caption'>

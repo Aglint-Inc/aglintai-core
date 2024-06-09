@@ -18,11 +18,11 @@ function DateSelect({
         '& .MuiDayCalendar-weekContainer .Mui-disabled': {
           bgcolor: '#f56600aa',
           content: '"✦"',
-          color: '#000',
+          color: 'var(--accent-12)',
         },
         '& .MuiDayCalendar-weekContainer .Mui-disabled:after': {
           content: '"✦"',
-          color: '#f56600',
+          color: 'var(--accent-11)',
           fontSize: '10px',
         },
       }}

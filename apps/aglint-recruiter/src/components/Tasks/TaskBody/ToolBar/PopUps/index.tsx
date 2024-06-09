@@ -32,7 +32,7 @@ function PopUps({
         '& .MuiDialog-paper': {
           background: 'transparent',
           border: 'none',
-          borderRadius: '10px',
+          borderRadius: 'var(--radius-4)',
         },
       }}
       open={isOpen}
@@ -49,7 +49,7 @@ function PopUps({
             textDescription={
               <ShowCode>
                 <ShowCode.When isTrue={reason === 'close_tasks'}>
-                  <Stack direction={'column'} spacing={'5px'}>
+                  <Stack direction={'column'} spacing={'var(--space-1)'}>
                     <Typography variant='body1'>
                       {`You've selected ${selectedTasksIds.length} tasks.`}
                     </Typography>
@@ -111,7 +111,7 @@ function PopUps({
             textPopupDescription={
               <ShowCode>
                 <ShowCode.When isTrue={reason === 'change_status'}>
-                  <Stack direction={'column'} spacing={'5px'}>
+                  <Stack direction={'column'} spacing={'var(--space-1)'}>
                     <Typography variant='body1'>
                       {`You've selected ${selectedTasksIds.length} tasks.`}
                     </Typography>
@@ -121,7 +121,7 @@ function PopUps({
                   </Stack>
                 </ShowCode.When>
                 <ShowCode.When isTrue={reason === 'change_assignee'}>
-                  <Stack direction={'column'} spacing={'5px'}>
+                  <Stack direction={'column'} spacing={'var(--space-1)'}>
                     <Typography variant='body1'>
                       {`You are reassigning ${selectedTasksIds.length} selected tasks. `}
                     </Typography>
@@ -132,7 +132,7 @@ function PopUps({
                   </Stack>
                 </ShowCode.When>
                 <ShowCode.When isTrue={reason === 'update_priority'}>
-                  <Stack direction={'column'} spacing={'5px'}>
+                  <Stack direction={'column'} spacing={'var(--space-1)'}>
                     <Typography variant='body1'>
                       {`You've selected ${selectedTasksIds.length} tasks.`}
                     </Typography>

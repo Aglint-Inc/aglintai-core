@@ -244,7 +244,7 @@ const FormBody = ({
     });
   };
   return (
-    <Stack gap={3} p={'4px'}>
+    <Stack gap={3} p={'var(--space-1)'}>
       <Stack flexDirection={'row'} gap={3}>
         <UITextField
           labelBold='normal'
@@ -353,7 +353,7 @@ const FormBody = ({
                 background: 'hsla(206.66666666666666, 100.00%, 96.47%, 0.50);',
               }}
               direction='row'
-              spacing={'8px'}
+              spacing={'var(--space-2)'}
               alignItems={'center'}
               justifyContent={'center'}
             >
@@ -374,7 +374,7 @@ const FormBody = ({
             </Stack>
           </FileUploader>
           {applicant.resume.error && (
-            <Stack fontSize={'0.75rem'} style={{ color: 'red' }}>
+            <Stack fontSize={'0.75rem'} style={{ color: 'var(--error-11)' }}>
               Please upload the candidate resume
             </Stack>
           )}

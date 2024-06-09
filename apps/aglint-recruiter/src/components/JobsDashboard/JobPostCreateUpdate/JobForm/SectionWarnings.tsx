@@ -57,7 +57,7 @@ const SectionWarning = ({
           zIndex: 1,
         }}
       >
-        <Paper sx={{ p: 1, mt: 4.5, width: '320px', borderRadius: '10px' }}>
+        <Paper sx={{ p: 1, mt: 4.5, width: '320px', borderRadius: 'var(--radius-4)' }}>
           <Stack gap={2} borderRadius={4}>
             <Stack direction={'row'} gap={0.5} alignItems={'center'}>
               <Image

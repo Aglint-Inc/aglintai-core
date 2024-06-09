@@ -120,7 +120,7 @@ function TextArea({
   return (
     <Stack
       border={`1px solid`}
-      borderRadius={'4px'}
+      borderRadius={'var(--space-1)'}
       sx={{
         '& div': {
           width: '100%',
@@ -154,7 +154,7 @@ function TextArea({
       direction={'row'}
       alignItems={'center'}
       maxHeight={`${3}rem`}
-      px={'5px'}
+      px={'var(--space-1)'}
     >
       <EditorContent
         inputMode='text'

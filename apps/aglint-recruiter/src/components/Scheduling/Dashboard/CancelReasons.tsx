@@ -76,7 +76,7 @@ const CancelReasons = () => {
                           bgcolor: color,
                           width: '10px',
                           aspectRatio: 1,
-                          borderRadius: '100%',
+                          borderRadius: 'var(--radius-full)',
                         }}
                       />
 
@@ -173,8 +173,8 @@ export const DropdownSelectButton = <T,>({
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
-            borderRadius: '10px',
-            borderColor: '#E9EBED',
+            borderRadius: 'var(--radius-4)',
+            borderColor: 'var(--neutral-6)',
             minWidth: '176px',
           },
         }}

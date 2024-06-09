@@ -121,7 +121,7 @@ function JobAgent() {
               slotChatBlocks={
                 fetching ? (
                   <>
-                    <Stack gap={'20px'} alignItems={'center'} mt={'40px'}>
+                    <Stack gap={'var(--space-5)'} alignItems={'center'} mt={'40px'}>
                       <Loader />
                       <YTransform uniqueKey={loadingMessage}>
                         <Typography>{loadingMessage}</Typography>
@@ -172,7 +172,7 @@ function JobAgent() {
                                     <Stack
                                       position={'relative'}
                                       height={'100px'}
-                                      width={'30px'}
+                                      width={'var(--space-6)'}
                                     >
                                       <Stack
                                         top={'-32px'}

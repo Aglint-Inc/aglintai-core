@@ -71,7 +71,7 @@ function TranscriptPlayer({ src }: { src: string }) {
       width={'100%'}
       alignItems={'center'}
       direction={'row'}
-      spacing={'20px'}
+      spacing={'var(--space-5)'}
     >
       <ShowCode>
         <ShowCode.When isTrue={!playing}>

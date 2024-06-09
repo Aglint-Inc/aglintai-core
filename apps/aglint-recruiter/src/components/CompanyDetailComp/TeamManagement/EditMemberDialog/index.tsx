@@ -362,7 +362,7 @@ const EditMember = ({
             </Stack>
           }
           slotButtons={
-            <Stack width={'100%'} marginTop={'10px'}>
+            <Stack width={'100%'} marginTop={'var(--space-2)'}>
               <AUIButton
                 disabled={isDisable}
                 size='medium'

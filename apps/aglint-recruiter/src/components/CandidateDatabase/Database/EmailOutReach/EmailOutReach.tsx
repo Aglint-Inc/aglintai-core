@@ -227,7 +227,7 @@ const EmailOutReach = ({
               <div
                 style={{
                   border: `1px solid var(--neutral-6)`,
-                  borderRadius: '4px',
+                  borderRadius: 'var(--radius-2)',
                 }}
               >
                 <TipTapAIEditor

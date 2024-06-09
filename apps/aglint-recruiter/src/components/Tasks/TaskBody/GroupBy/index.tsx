@@ -80,7 +80,7 @@ function GroupBy() {
                 key={item.label}
                 direction={'row'}
                 alignItems={'center'}
-                spacing={'10px'}
+                spacing={'var(--space-2)'}
               >
                 <Stack>{item.icon}</Stack>
                 <FilterPill

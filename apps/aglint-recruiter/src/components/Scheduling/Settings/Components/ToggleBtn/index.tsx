@@ -19,7 +19,7 @@ const AntSwitch = styled(Switch)(() => ({
     padding: 2,
     '&.Mui-checked': {
       transform: 'translateX(16px)',
-      color: '#fff',
+      color: 'var(--white)',
       '& + .MuiSwitch-track': {
         opacity: 1,
         backgroundColor: 'var(--accent-9)',

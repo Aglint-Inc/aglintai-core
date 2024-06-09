@@ -223,16 +223,16 @@ function UploadDB({
       sx={{
         background: 'var(--neutral-1)',
         p: { xs: '10px', mm: '30px' },
-        borderRadius: '10px',
+        borderRadius: 'var(--radius-4)',
       }}
     >
       <Stack direction={'row'} spacing={2} justifyContent={'space-between'}>
         <Typography variant='h3'>Apply for this job.</Typography>
         <Typography variant='caption' color={'#000'}>
-          <span style={{ color: 'red' }}>*</span> Required
+          <span style={{ color: 'var(--error-11)' }}>*</span> Required
         </Typography>
       </Stack>
-      <Grid container spacing={'20px'} pt={'20px'}>
+      <Grid container spacing={'var(--space-5)'} pt={'var(--space-5)'}>
         <Grid item xs={12} sm={6} md={6}>
           <UITextField
             required
@@ -302,7 +302,7 @@ function UploadDB({
 
         <Grid item xs={12}>
           <Stack position={'relative'}>
-            {/* <Stack direction={'row'} justifyContent={'flex-end'} pb={'8px'}>
+            {/* <Stack direction={'row'} justifyContent={'flex-end'} pb={'var(--space-2)'}>
               <Typography variant='caption'>* Optional</Typography>
             </Stack> */}
 
@@ -384,7 +384,7 @@ function UploadDB({
               }}
             />
 
-            <Stack direction={'row'} spacing={'4px'} sx={{ flexWrap: 'wrap' }}>
+            <Stack direction={'row'} spacing={'var(--space-1)'} sx={{ flexWrap: 'wrap' }}>
               <Typography
                 variant='caption'
                 color={!checked && 'error.main'}

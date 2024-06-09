@@ -28,12 +28,12 @@ function InstructionsComp({ editModule }: { editModule: ModuleType }) {
 
   return (
     <>
-      <Stack maxWidth={'800px'} p={'20px'}>
+      <Stack maxWidth={'800px'} p={'var(--space-5)'}>
         <Stack
           sx={{
             border: '1px solid',
             borderColor: 'var(neutral-6)',
-            borderRadius: '4px',
+            borderRadius: 'var(--radius-2)',
           }}
         >
           <TipTapAIEditor

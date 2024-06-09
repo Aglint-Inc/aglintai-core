@@ -84,7 +84,7 @@ function JobList({
                   return (
                     <Stack
                       key={i}
-                      p={'4px'}
+                      p={'var(--space-1)'}
                       width={'100%'}
                       sx={{
                         cursor: 'pointer',

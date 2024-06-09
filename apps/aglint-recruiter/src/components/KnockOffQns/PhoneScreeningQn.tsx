@@ -183,7 +183,7 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
       textQuestion={
         <>
           {qn.question}
-          <span style={{ color: 'red' }}> *</span>
+          <span style={{ color: 'var(--error-11)' }}> *</span>
         </>
       }
       totalQuestionNo={state.phoneScreen.length}

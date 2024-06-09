@@ -145,15 +145,15 @@ function FilterCordinator() {
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
-            borderRadius: '10px',
-            borderColor: '#E9EBED',
+            borderRadius: 'var(--radius-4)',
+            borderColor: 'var(--neutral-6)',
             minWidth: '176px',
           },
         }}
       >
         <FilterDropdown
           slotOption={
-            <Stack width={'450px'} p={'4px'}>
+            <Stack width={'450px'} p={'var(--space-1)'}>
               <Autocomplete
                 multiple
                 id='tags-standard'
@@ -208,13 +208,13 @@ function FilterCordinator() {
                         width={'100%'}
                         justifyContent={'space-between'}
                         alignItems={'center'}
-                        spacing={'4px'}
+                        spacing={'var(--space-1)'}
                       >
                         <Stack
                           direction={'row'}
                           justifyContent={'space-between'}
                           alignItems={'center'}
-                          spacing={'4px'}
+                          spacing={'var(--space-1)'}
                         >
                           <MuiAvatar
                             level={getFullName(
@@ -247,9 +247,9 @@ function FilterCordinator() {
                     }
                     InputProps={{
                       ...params.InputProps,
-                      style: {
-                        minHeight: '50px',
-                      },
+                      // style: {
+                      //   minHeight: '50px',
+                      // },
                     }}
                     onChange={(e) => {
                       setText(e.target.value);

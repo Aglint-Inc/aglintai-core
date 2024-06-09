@@ -40,12 +40,12 @@ const RedirectWrapper: React.FC<{
         >
           <Stack
             position={'fixed'}
-            py={'4px'}
-            px={'8px'}
+            py={'var(--space-1)'}
+            px={'var(--space-2)'}
             sx={{
               borderRadius: '100vh',
-              color: '#fff',
-              backgroundColor: '#49545c',
+              color: 'var(--white)',
+              backgroundColor:  'var(--neutral-4)',
               opacity: hover ? 1 : 0,
               transition: '0.25s',
               fontSize: '10px',

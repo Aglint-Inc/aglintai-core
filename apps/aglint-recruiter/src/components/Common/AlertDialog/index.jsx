@@ -66,7 +66,7 @@ export default function AlertDialog({
                 severity='warning'
                 sx={{
                   bgcolor: 'card.main.hover.background',
-                  borderColor: 'card.main.hover.border',
+                  borderColor: 'var(--neutral-6)',
                   color: 'nav.background',
                 }}
               >

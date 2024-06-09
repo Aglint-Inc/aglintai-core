@@ -49,7 +49,7 @@ function GroupTaskCard({
   return (
     <Stack
       sx={{
-        bgcolor: 'white',
+        bgcolor: 'var(--white)',
         '&:hover': {
           bgcolor: 'grey.100',
           '& div:first-child div .checkboxClass': {

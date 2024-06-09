@@ -100,7 +100,7 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
         })}
         slotInput={
           <Autocomplete
-            sx={{ mt: departmentState.length > 0 ? '8px' : '0px' }}
+            sx={{ mt: departmentState.length > 0 ? 'var(--space-2)' : '0px' }}
             fullWidth
             freeSolo
             id='free-solo-2-demo'
@@ -128,7 +128,7 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
                         }, 10);
                       }}
                       alignItems={'center'}
-                      spacing={'4px'}
+                      spacing={'var(--space-1)'}
                     >
                       <Typography variant='body1'>{option}</Typography>
                       <Typography variant='caption'>

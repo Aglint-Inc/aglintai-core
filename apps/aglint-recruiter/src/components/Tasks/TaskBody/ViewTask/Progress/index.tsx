@@ -178,8 +178,8 @@ function SubTaskProgress() {
                           }
                         >
                           <Stack
-                            p={'10px'}
-                            borderRadius={'10px'}
+                            p={'var(--space-2)'}
+                            borderRadius={'var(--space-2)'}
                             border={'1px solid'}
                             borderColor={'grey.200'}
                           >
@@ -227,8 +227,8 @@ function SubTaskProgress() {
                             </ShowCode.When>
                             <ShowCode.Else>
                               <Stack
-                                p={'10px'}
-                                borderRadius={'10px'}
+                                p={'var(--space-2)'}
+                                borderRadius={'var(--space-2)'}
                                 border={'1px solid'}
                                 borderColor={'grey.200'}
                               >

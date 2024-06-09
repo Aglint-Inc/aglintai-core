@@ -176,7 +176,7 @@ function ToolBar() {
   }
 
   return (
-    <Stack py={'20px'} px={'40px'} direction={'row'} spacing={'20px'}>
+    <Stack py={'var(--space-5)'} px={'40px'} direction={'row'} spacing={'var(--space-5)'}>
       <TaskUpdateButton
         textTaskSelected={`${selectedTasksIds.length} tasks selected`}
         onClickCloseTask={{

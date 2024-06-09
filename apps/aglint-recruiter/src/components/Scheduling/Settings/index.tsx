@@ -391,7 +391,7 @@ function SchedulingSettings({
                       <Stack
                         direction={'column'}
                         spacing={1}
-                        marginTop={'20px'}
+                        marginTop={'var(--space-5)'}
                       >
                         <Stack direction={'column'} spacing={0.5}>
                           <Typography variant='body1' fontSize={'15px'}>
@@ -601,7 +601,7 @@ function SchedulingSettings({
                                 })
                               ) : (
                                 <Typography
-                                  px={'10px'}
+                                  px={'var(--space-2)'}
                                   variant='caption'
                                   fontSize={'14px'}
                                 >
@@ -664,7 +664,7 @@ function SchedulingSettings({
                               <Stack
                                 fontSize={'12px'}
                                 direction={'row'}
-                                spacing={'10px'}
+                                spacing={'var(--space-2)'}
                               >
                                 <FormControl>
                                   <RadioGroup
@@ -1062,7 +1062,7 @@ export const TimezoneSelector = ({
   value,
 }: TimezoneSelectorProps) => {
   return (
-    <Stack spacing={'10px'} width={420}>
+    <Stack spacing={'var(--space-2)'} width={420}>
       <Autocomplete
         disabled={disabled}
         disableClearable

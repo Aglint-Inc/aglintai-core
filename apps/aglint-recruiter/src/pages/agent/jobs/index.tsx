@@ -35,7 +35,7 @@ function AgentPage() {
       />
       <JobAssistantProvider>
         <Stack
-          p={'20px'}
+          p={'var(--space-5)'}
           mt={10}
           height={'100%'}
           width={'100%'}

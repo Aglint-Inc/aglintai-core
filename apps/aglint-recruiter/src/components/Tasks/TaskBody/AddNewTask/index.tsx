@@ -333,7 +333,7 @@ function AddNewTask() {
                       },
                     }}
                     position={'absolute'}
-                    right={'10px'}
+                    right={'var(--space-2)'}
                   >
                     <Loader />
                   </Stack>
@@ -374,12 +374,12 @@ function AddNewTask() {
               sx={{
                 '& .MuiInputBase-root': {
                   border: 'none',
-                  fontSize: '18px',
-                  lineHeight: '24px',
-                  fontWeight: 600,
-                  padding: '10px',
-                  bgcolor: '#F7F9FB',
-                  borderRadius: '10px',
+                  fontSize: 'var(--font-size-3)',
+                  lineHeight: 'var(--line-height-3)',
+                  fontWeight: 500,
+                  padding: 'var(--space-2)',
+                  bgcolor: 'var(--neutral-2)',
+                  borderRadius: 'var(--radius-4)',
                 },
               }}
             />
@@ -402,7 +402,7 @@ function AddNewTask() {
                         return (
                           <Stack
                             key={i}
-                            p={'4px'}
+                            p={'var(--space-1)'}
                             onClick={() => {
                               //   @ts-ignore
                               setSelectedSession((pre: any[]) => {

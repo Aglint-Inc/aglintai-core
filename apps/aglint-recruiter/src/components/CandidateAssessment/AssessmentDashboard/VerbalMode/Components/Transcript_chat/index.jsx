@@ -46,7 +46,7 @@ function Transcript_chat() {
                       justifyContent: 'space-between',
                       p: '10px',
                       pr: 0,
-                      borderRadius: '8px',
+                      borderRadius: 'var(--radius-4)',
                       bgcolor: 'grey.600',
                     }}
                   />

@@ -60,7 +60,7 @@ function TypeList({
               <Stack
                 key={i}
                 width={'100%'}
-                p={'4px'}
+                p={'var(--space-1)'}
                 sx={{
                   cursor: 'pointer',
                   '&:hover': {

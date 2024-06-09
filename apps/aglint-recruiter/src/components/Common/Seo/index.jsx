@@ -3,11 +3,11 @@ import { useRouter } from 'next/router';
 import React from 'react';
 const defaultMeta = {
   title: 'Aglint AI – Accelerate Your Recruitment Process with Advanced AI',
-  site_name: 'Aglint Inc',
+  site_name: 'Aglint AI',
   description:
     'Discover Aglint AI, the intelligent solution designed to enhance recruitment efficiency. Source, screen, rank, and schedule interviews with candidates faster than ever. Transform your hiring strategy with our AI-driven tools.',
   url: process.env.NEXT_PUBLIC_HOST_NAME,
-  icon: '/images/favicon.ico',
+  icon: '/favicon.png',
   image:
     'https://ftyioiysswsjxamofooi.supabase.co/storage/v1/object/public/images/aglinthq.jpg',
   type: 'website',

@@ -276,8 +276,8 @@ const SlideTwoSignUp = () => {
                 },
               }}
               slotSignUpForm={
-                <Stack spacing={'20px'} p={'4px'}>
-                  <Stack direction={'row'} spacing={'10px'}>
+                <Stack spacing={'var(--space-5)'} p={'var(--space-1)'}>
+                  <Stack direction={'row'} spacing={'var(--space-2)'}>
                     <TextField
                       margin='none'
                       required

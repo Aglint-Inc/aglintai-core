@@ -90,7 +90,7 @@ function DayCardWrapper({
         slotScheduleOption={
           !isDisabled && (
             <Collapse in={isDayCollapseNeeded ? collapse : true}>
-              <Stack spacing={1} pt={'10px'}>
+              <Stack spacing={1} pt={'var(--space-2)'}>
                 {slotsWithDaySessions.slice(0, displayedSlots)?.map((slot) => {
                   return (
                     <ScheduleOption

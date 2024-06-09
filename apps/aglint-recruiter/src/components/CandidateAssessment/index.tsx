@@ -118,7 +118,7 @@ function CandidateAssessment() {
 
                 p: 2,
                 '& img': {
-                  borderRadius: '10px',
+                  borderRadius: 'var(--radius-4)',
                   backgroundBlendMode: 'color-burn',
                 },
               }}

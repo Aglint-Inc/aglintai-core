@@ -76,7 +76,7 @@ function AssigneeList({
             return (
               <Stack
                 width={'100%'}
-                p={'4px'}
+                p={'var(--space-1)'}
                 key={i}
                 sx={{
                   cursor: 'pointer',

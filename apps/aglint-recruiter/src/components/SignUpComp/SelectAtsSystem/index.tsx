@@ -71,7 +71,7 @@ function SelectAtsSystem() {
     <Stack>
       <RecCompanyDetails
         slotMain={
-          <Stack direction={'column'} spacing={'20px'}>
+          <Stack direction={'column'} spacing={'var(--space-5)'}>
             <LoginAtsInfo
               slotRadioButtons={
                 <>
@@ -195,7 +195,7 @@ function SelectAtsSystem() {
                 }}
               />
 
-              <Stack direction={'row'} alignItems={'center'} gap={'8px'}>
+              <Stack direction={'row'} alignItems={'center'} gap={'var(--space-2)'}>
                 <AUIButton
                   onClick={() => {
                     router.push(`?step=${stepObj.allSet}`, undefined, {

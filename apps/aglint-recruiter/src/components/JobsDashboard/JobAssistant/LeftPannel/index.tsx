@@ -28,9 +28,9 @@ function LeftPanel() {
       width={'20%'}
       border={'1px solid'}
       borderColor={'grey.200'}
-      p={'10px'}
+      p={'var(--space-2)'}
     >
-      <Stack width={'100%'} mb={'10px'}>
+      <Stack width={'100%'} mb={'var(--space-2)'}>
         <AUIButton
           variant='outlined'
           onClick={() => {
@@ -48,11 +48,11 @@ function LeftPanel() {
       </Stack>
 
       <Stack
-        spacing={'10px'}
+        spacing={'var(--space-2)'}
         alignItems={'center'}
         width={'100%'}
         direction={'row'}
-        mb={'10px'}
+        mb={'var(--space-2)'}
         justifyContent={'space-between'}
       >
         <Typography width={'70px'} variant='body1'>
@@ -65,7 +65,7 @@ function LeftPanel() {
           }}
         />
       </Stack>
-      <Stack spacing={'10px'} overflow={'auto'}>
+      <Stack spacing={'var(--space-2)'} overflow={'auto'}>
         {jobAssistantChats.map((ele, i) => {
           const time = dayjs(ele.created_at).fromNow();
 
@@ -73,9 +73,9 @@ function LeftPanel() {
             <Stack
               key={i}
               bgcolor={currentChat.id === ele.id ? 'grey.200' : 'grey.100'}
-              p={'10px'}
-              borderRadius={'5px'}
-              spacing={'10px'}
+              p={'var(--space-2)'}
+              borderRadius={'var(--space-1)'}
+              spacing={'var(--space-2)'}
               sx={{
                 cursor: !resLoading && currentChat.id !== ele.id && 'pointer',
                 '&:hover': {
@@ -94,7 +94,7 @@ function LeftPanel() {
                 direction={'row'}
                 alignItems={'center'}
               >
-                <Stack color={'red.300'} width={'40px'} height={'20px'}>
+                <Stack color={'red.300'} width={'40px'} height={'var(--space-5)'}>
                   <ChatIcon />
                 </Stack>
                 <Typography

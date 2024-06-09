@@ -34,7 +34,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead
       className='header-row'
-      sx={{ bgcolor: 'var(--neutral-1)', borderRadius: '4px' }}
+      sx={{ bgcolor: 'var(--neutral-1)', borderRadius: 'var(--radius-2)' }}
     >
       <TableRow>
         <EnhancedCheckBoxCell>
@@ -111,7 +111,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       direction={'row'}
       alignItems={'center'}
       justifyContent={'space-between'}
-      p={'4px'}
+      p={'var(--space-1)'}
       sx={{
         ...(numSelected > 0 && {
           bgcolor: palette['grey'][100],
@@ -119,7 +119,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         '.MuiToolbar-root': {
           minHeight: '10px!important',
         },
-        borderRadius: '4px',
+        borderRadius: 'var(--radius-2)',
         minHeight: '40px',
         px: '30px',
         mt: '4px',

@@ -55,7 +55,7 @@
 //               openChat ? '0.4s' : '0.2s'
 //             }, opacity ${openChat ? '0.4s' : '0.2s'} `,
 //           }}
-//           pr={'30px'}
+//           pr={'var(--space-6)'}
 //         >
 //           <ChatBox
 //             onClickScroll={{
@@ -197,7 +197,7 @@
 //                   />
 //                 )}
 //                 {message.role === 'user' && message?.metadata?.file_name && (
-//                   <Stack mt={'10px'} direction={'row'} justifyContent={'end'}>
+//                   <Stack mt={'var(--space-2)'} direction={'row'} justifyContent={'end'}>
 //                     <UserChatIcon textChat={message?.metadata?.file_name} />
 //                   </Stack>
 //                 )}

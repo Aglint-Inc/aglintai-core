@@ -167,7 +167,7 @@ const JobApplicationComponent = () => {
           slotLoadingLottie={
             <CircularProgress
               style={{
-                color: '#17494D',
+                color: 'var(--success-9)',
                 width: '12px',
                 height: '12px',
               }}
@@ -469,7 +469,7 @@ const ApplicationPagination = ({
     }
   };
   return totalCandidatesCount !== 0 ? (
-    <Stack style={{ backgroundColor: 'white' }}>
+    <Stack style={{ backgroundColor:  'var(--white)' }}>
       <Stack
         style={{
           opacity: disable ? 0.5 : 1,
@@ -611,7 +611,7 @@ const NewJobFilterBlock = ({
     <Stack style={{ display: job.count[section] === 0 ? 'none' : 'flex' }}>
       <>
         {list.size > 0 ? (
-          <Stack style={{ backgroundColor: 'white' }}>
+          <Stack style={{ backgroundColor:  'var(--white)' }}>
             <Stack
               style={{
                 opacity: disabled ? 0.5 : 1,
@@ -797,9 +797,9 @@ const SectionCard = forwardRef(
                   normalize && !isOver
                     ? 'inherit'
                     : canDrop
-                      ? '#edf7ff'
+                      ? 'var(--sky-2)'
                       : 'inherit',
-                border: isOver ? '1px solid #1f73b7' : '1px solid transparent',
+                border: isOver ? '1px solid var(--sky-6)' : '1px solid transparent',
                 transition: '0.5s',
               },
             }}

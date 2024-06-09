@@ -11,7 +11,7 @@ function JobDetails({ schedule }: { schedule: ScheduleMeeting }) {
     extensions: [StarterKit],
   });
   return (
-    <Stack p={'20px'} maxWidth={'800px'}>
+    <Stack p={'var(--space-5)'} maxWidth={'800px'}>
       <EditorContent editor={editor} />
     </Stack>
   );

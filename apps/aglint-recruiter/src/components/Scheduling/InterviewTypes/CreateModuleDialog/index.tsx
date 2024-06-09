@@ -98,7 +98,7 @@ function CreateModuleDialog() {
                 }
               }}
             />
-            <Stack gap={'5px'}>
+            <Stack gap={'var(--space-1)'}>
               <UITypography type={'small'} fontBold={'default'}>
                 Department
               </UITypography>

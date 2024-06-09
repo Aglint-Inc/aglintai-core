@@ -246,9 +246,9 @@ const WorkflowBrowser = () => {
                 display: count ? 'flex' : 'none',
                 alignItems: 'center',
 
-                backgroundColor: 'white',
+                backgroundColor:  'var(--white)',
                 color: '#2596be',
-                borderRadius: '50%',
+                borderRadius: 'var(--radius-4)',
                 width: '20px',
               }}
             >

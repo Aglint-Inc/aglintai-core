@@ -83,7 +83,7 @@ function SchedulingEmailTemplates() {
                     isSaveChangesButtonVisible={false}
                     textEmailName={tempObj[selectedTemplate]?.heading}
                     slotForm={
-                      <Stack spacing={'20px'}>
+                      <Stack spacing={'var(--space-5)'}>
                         <UITextField
                           labelSize='small'
                           fullWidth
@@ -141,7 +141,7 @@ function SchedulingEmailTemplates() {
                               mt: '8px',
                               border: '1px solid',
                               borderColor: 'var(--neutral-6)',
-                              borderRadius: '4px',
+                              borderRadius: 'var(--radius-2)',
                             }}
                           >
                             <TipTapAIEditor

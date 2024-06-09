@@ -150,12 +150,12 @@ const ButtonExamples = () => {
       </Typography>
       <Grid container spacing={2}>
         {[
-          { color: 'primary', label: 'Save', icon: <SaveIcon /> },
-          { color: 'secondary', label: 'Delete', icon: <DeleteIcon /> },
-          { color: 'success', label: 'Success', icon: <CheckIcon /> },
-          { color: 'error', label: 'Error', icon: <ErrorIcon /> },
-          { color: 'warning', label: 'Warning', icon: <WarningIcon /> },
-          { color: 'info', label: 'Info', icon: <InfoIcon /> },
+          { color: 'var(--accent-11)', label: 'Save', icon: <SaveIcon /> },
+          { color: 'var(--error-11)', label: 'Delete', icon: <DeleteIcon /> },
+          { color: 'var(--success-11)', label: 'Success', icon: <CheckIcon /> },
+          { color: 'var(--error-11)', label: 'Error', icon: <ErrorIcon /> },
+          { color: 'var(--warning-11)', label: 'Warning', icon: <WarningIcon /> },
+          { color: 'var(--info-11)', label: 'Info', icon: <InfoIcon /> },
         ].map(({ color, label, icon }) => (
           <Grid item key={color}>
             <Button variant='contained' color={color} startIcon={icon}>
@@ -197,12 +197,12 @@ const ButtonExamples = () => {
       </Typography>
       <Grid container spacing={2}>
         {[
-          { color: 'primary', label: 'Save', icon: <SaveIcon /> },
-          { color: 'secondary', label: 'Delete', icon: <DeleteIcon /> },
-          { color: 'success', label: 'Success', icon: <CheckIcon /> },
-          { color: 'error', label: 'Error', icon: <ErrorIcon /> },
-          { color: 'warning', label: 'Warning', icon: <WarningIcon /> },
-          { color: 'info', label: 'Info', icon: <InfoIcon /> },
+          { color: 'var(--accent-11)', label: 'Save', icon: <SaveIcon /> },
+          { color: 'var(--error-11)', label: 'Delete', icon: <DeleteIcon /> },
+          { color: 'var(--success-11)', label: 'Success', icon: <CheckIcon /> },
+          { color: 'var(--error-11)', label: 'Error', icon: <ErrorIcon /> },
+          { color: 'var(--warning-11)', label: 'Warning', icon: <WarningIcon /> },
+          { color: 'var(--info-11)', label: 'Info', icon: <InfoIcon /> },
         ].map(({ color, label, icon }) => (
           <Grid item key={color}>
             <Button
