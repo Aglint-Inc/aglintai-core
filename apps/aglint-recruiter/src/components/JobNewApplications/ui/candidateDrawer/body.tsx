@@ -3,6 +3,10 @@ import type { ReactNode } from 'react';
 
 import { CandidateSideDrawer } from '@/devlink/CandidateSideDrawer';
 import { GeneralError } from '@/devlink/GeneralError';
+import { ResumeNotFound } from '@/devlink/ResumeNotFound';
+import { ResumeNotParsable } from '@/devlink/ResumeNotParsable';
+import { ResumeErrorBlock } from '@/devlink2/ResumeErrorBlock';
+import ResumeWait from '@/public/lottie/ResumeWait';
 import { useApplication } from '@/src/context/ApplicationContext';
 import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 
@@ -19,15 +23,17 @@ type Props = {
 };
 
 const Body = (props: Partial<Props>) => {
-  const {
-    details: { status, refetch },
-  } = useApplication();
   const tab = useApplicationStore(({ tab }) => tab);
-  if (status === 'error')
+  const blocker = useBlocker();
+  if (blocker)
     return (
-      <Stack width={'700px'} height={'100%'}>
-        <GeneralError onClickRetry={{ onClick: () => refetch() }} />
-      </Stack>
+      <CandidateSideDrawer
+        slotTopBar={props.topBar ?? <TopBar />}
+        slotBasicInfo={blocker}
+        isTabs={false}
+        slotNewTabPill={<></>}
+        slotTabContent={<></>}
+      />
     );
   return (
     <CandidateSideDrawer
@@ -45,3 +51,31 @@ Body.Tabs = Tabs;
 Body.Details = Details;
 
 export { Body };
+
+const useBlocker = () => {
+  const { details, meta } = useApplication();
+  if (details.status === 'error' || meta.status === 'error')
+    return (
+      <Stack width={'700px'}>
+        <GeneralError
+          onClickRetry={{
+            onClick: () => {
+              details.refetch();
+              meta.refetch();
+            },
+          }}
+        />
+      </Stack>
+    );
+  switch (meta?.data?.resume_processing_state) {
+    case 'fetching':
+      return <ResumeErrorBlock slotLottie={<ResumeWait />} />;
+    case 'processing':
+      return <ResumeErrorBlock slotLottie={<ResumeWait />} />;
+    case 'unavailable':
+      return <ResumeNotFound />;
+    case 'unparsable':
+      return <ResumeNotParsable />;
+  }
+  return undefined;
+};

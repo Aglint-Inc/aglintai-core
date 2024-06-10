@@ -270,6 +270,8 @@ export * from "./ProfileShare";
 export * from "./RadioButton";
 export * from "./ResetPassword";
 export * from "./ResumeFeedbackScore";
+export * from "./ResumeNotFound";
+export * from "./ResumeNotParsable";
 export * from "./RolesPill";
 export * from "./SavedChanges";
 export * from "./SavedList";
