@@ -30,6 +30,12 @@ export function InterviewMemberSide({
           tag="div"
         >
           <_Builtin.Block
+            className={_utils.cx(_styles, "slot-interview-mod")}
+            tag="div"
+          >
+            {slotInterview}
+          </_Builtin.Block>
+          <_Builtin.Block
             className={_utils.cx(_styles, "all-wrap-navi")}
             tag="div"
           >
@@ -93,12 +99,6 @@ export function InterviewMemberSide({
             className={_utils.cx(_styles, "all-wrap-navi")}
             tag="div"
           />
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "slot-interview-mod")}
-          tag="div"
-        >
-          {slotInterview}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

@@ -63,14 +63,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     console.log(isAllPreviousMeetingsBooked, 'isAllPreviousMeetingsBooked');
 
-    if (isAllPreviousMeetingsBooked) {
-      const bodyParams: ApiBodyParamTaskCreate = {
-        application_id: filterJson.interview_schedule.application_id,
-        schedule_id: filterJson.interview_schedule.id,
-      };
-      axios.post(`${debrief_task_create_url}`, bodyParams);
-    }
-
     const allUserIds = [...(sessionRelations?.user_ids || [])];
 
     const members_meta = debriefSession.interview_session[0]
@@ -144,6 +136,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .select();
 
     if (errDebSes) throw new Error(errDebSes.message);
+
+    const { error: errorDebriefSes } = await supabaseAdmin
+      .from('interview_session')
+      .update({ interviewer_cnt: eligibleUserIds.length })
+      .eq('id', debriefSessionId);
+
+    if (errorDebriefSes) throw new Error(errorDebriefSes.message);
+
+    if (isAllPreviousMeetingsBooked) {
+      const bodyParams: ApiBodyParamTaskCreate = {
+        application_id: filterJson.interview_schedule.application_id,
+        schedule_id: filterJson.interview_schedule.id,
+      };
+      axios.post(`${debrief_task_create_url}`, bodyParams);
+    }
 
     return res.status(200).send({
       debriefSessionInsert,
