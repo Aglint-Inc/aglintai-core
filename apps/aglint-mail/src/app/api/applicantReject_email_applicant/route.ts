@@ -5,7 +5,6 @@ import {
 } from '../../../utils/apiUtils/customErrors';
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
-import Rejection from '../../../utils/email/rejection/fetch';
 import sendMail from '../../../config/sendgrid';
 import { fetchUtil } from './fetch-util';
 import * as v from 'valibot';
@@ -38,7 +37,6 @@ export async function POST(req: Request) {
 
     await sendMail({ email: recipient_email, html, subject, text: html });
 
-    // await sendMail({ email: data.recipient_email, html, subject, text: html });
     return NextResponse.json('success', {
       status: 200,
     });

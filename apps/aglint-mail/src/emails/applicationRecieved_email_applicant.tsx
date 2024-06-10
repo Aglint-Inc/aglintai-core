@@ -11,25 +11,28 @@ import {
 import { Parser } from 'html-to-react';
 import * as React from 'react';
 import { aglintLogo } from '../utils/assets/common';
-
+import { EmailTemplateAPi } from '@aglint/shared-types';
+type EmailType = EmailTemplateAPi<'applicationRecieved_email_applicant'>;
 interface ApplicationReceivedType {
   body?: string;
   companyLogo?: string;
 }
 
 // export dummy
-export const dummy: ApplicationReceivedType = {
-  body: '<p>Hi [firstName],</p><p>You have successfully submitted your application for this position:</p><p>[jobTitle]</p><p>We will review your application shortly. If your profile match our requirements, we will be in touch to schedule the next steps in the process.</p><p>Thank you for your interest in [companyName].</p><p>If you have any queries about this job</p><p>[supportLink]</p><p>Sincerely,</p><p>[companyName]</p>',
+export const dummy: EmailType['react_email_placeholders'] = {
+  emailBody:
+    '<p>Hi [firstName],</p><p>You have successfully submitted your application for this position:</p><p>[jobTitle]</p><p>We will review your application shortly. If your profile match our requirements, we will be in touch to schedule the next steps in the process.</p><p>Thank you for your interest in [companyName].</p><p>If you have any queries about this job</p><p>[supportLink]</p><p>Sincerely,</p><p>[companyName]</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
+  subject: '',
 };
 
 export const getSubject = (companyName: any) => `${companyName}`;
 
 export const ApplicationReceived = ({
-  body = dummy.body,
+  emailBody = dummy.emailBody,
   companyLogo = dummy.companyLogo,
-}: ApplicationReceivedType) => {
+}: EmailType['react_email_placeholders']) => {
   const htmlParser = Parser();
   return (
     <Html>
@@ -44,7 +47,7 @@ export const ApplicationReceived = ({
                 className="w-[80px] mb-[10px]"
                 src={companyLogo}
               />
-              <Text className="">{htmlParser.parse(body)}</Text>
+              <Text className="">{htmlParser.parse(emailBody)}</Text>
             </Container>
             <Text className="flex items-center text-[10px] mx-auto w-fit text-gray-500">
               Powered By

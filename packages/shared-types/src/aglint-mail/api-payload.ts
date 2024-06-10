@@ -28,9 +28,16 @@ type Payloads = {
   };
   applicationRecieved_email_applicant: {
     api_payload: v.InferInput<typeof applicationRecievedEmailApplicantSchema>;
-    comp_email_placeholders: {};
+    comp_email_placeholders: {
+      '{{ candidateFirstName }}': string;
+      '{{ jobTitle }}': string;
+      '{{ companyName }}': string;
+      '{{ supportLink }}': string;
+    };
     react_email_placeholders: {
       subject: string;
+      emailBody: string;
+      companyLogo: string;
     };
   };
   interviewCancel_email_applicant: {
