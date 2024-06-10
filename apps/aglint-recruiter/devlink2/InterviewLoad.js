@@ -30,7 +30,12 @@ export function InterviewLoad({
             className={_utils.cx(_styles, "flex-h", "align-center")}
             tag="div"
           >
-            <Text content="Daily Limit" weight="" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "interviewload-lable")}
+              tag="div"
+            >
+              <Text content="Daily Limit" weight="" />
+            </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "slot_hr_input")}
               id={_utils.cx(
@@ -46,7 +51,12 @@ export function InterviewLoad({
             className={_utils.cx(_styles, "flex-h", "align-center")}
             tag="div"
           >
-            <Text content="Weekly Limit" weight="" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "interviewload-lable")}
+              tag="div"
+            >
+              <Text content="Weekly Limit" weight="" />
+            </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "slot_hr_input")}
               tag="div"

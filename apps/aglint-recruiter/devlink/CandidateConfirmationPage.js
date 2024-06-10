@@ -25,13 +25,19 @@ export function CandidateConfirmationPage({
             />
           )}
         </_Builtin.Block>
-        <Text content={textTitle} size="3" weight="bold" />
+        <Text content={textTitle} size="4" weight="medium" />
         <Text
           content="Available slots are organized by day. Each slot includes the total time required for your interview, including breaks."
           color="neutral"
           align="center"
         />
-        <Text content="View Schedule details" color="accent" />
+        <_Builtin.Block
+          className={_utils.cx(_styles, "ccp-btn-wrap")}
+          tag="div"
+          {...onClickView}
+        >
+          <Text content="View Schedule details" />
+        </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block tag="div">
         <_Builtin.Block

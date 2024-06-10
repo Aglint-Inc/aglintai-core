@@ -83,7 +83,7 @@ function DayCardWrapper({
         textOptionCount={`${slots.length} options`}
         rotateArrow={{
           style: {
-            display: isDayCollapseNeeded ? 'block' : 'none',
+            display: isDayCollapseNeeded ? 'flex' : 'none',
             transform: collapse ? 'rotate(180deg)' : '',
           },
         }}

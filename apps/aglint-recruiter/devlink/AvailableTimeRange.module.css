@@ -51,12 +51,12 @@
   justify-content: center;
   align-items: center;
 
-  border: 1px solid var(--sky-11);
+  border: 1px solid var(--accent-6);
   border-radius: var(--radius-4);
 
-  background-color: var(--sky-a3);
+  background-color: var(--accent-2);
 
-  color: var(--sky-11);
+  color: var(--accent-11);
 }
 
 .semi-active-bg {
@@ -71,10 +71,10 @@
   justify-content: center;
   align-items: center;
 
-  border: 1px dashed var(--sky-a11);
+  border: 1px dashed var(--accent-6);
   border-radius: var(--radius-4);
 
   background-color: var(--white);
 
-  color: var(--sky-11);
+  color: var(--accent-11);
 }

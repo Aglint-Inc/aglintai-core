@@ -15,12 +15,17 @@ export function EmailTemplateCards({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "email-temp-card-wrap")}
+      className={_utils.cx(_styles, "etc-wrapper")}
       tag="div"
       {...onClickApplicationRecieved}
     >
-      <_Builtin.Block className={_utils.cx(_styles, "relative-1")} tag="div">
-        <Text content={textTitle} />
+      <_Builtin.Block
+        className={_utils.cx(_styles, "email-temp-card-wrap")}
+        tag="div"
+      >
+        <_Builtin.Block className={_utils.cx(_styles, "relative-1")} tag="div">
+          <Text content={textTitle} />
+        </_Builtin.Block>
       </_Builtin.Block>
       {isActive ? (
         <_Builtin.Block

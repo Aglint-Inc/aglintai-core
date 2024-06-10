@@ -1,13 +1,13 @@
+/* eslint-disable no-unused-vars */
 import { Stack } from '@mui/material';
-import axios from 'axios';
-import dayjs from 'dayjs';
-import React, { useEffect, useState } from 'react';
+// import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
 
-import { CandidateSideDrawer } from '@/devlink/CandidateSideDrawer';
-import { InvitedCards } from '@/devlink2/InvitedCards';
-import { InviteStatus } from '@/devlink2/InviteStatus';
-import { ResponseCard } from '@/devlink2/ResponseCard';
-import { SubmittedCard } from '@/devlink2/SubmittedCard';
+// import { CandidateSideDrawer } from '@/devlink/CandidateSideDrawer';
+// import { InvitedCards } from '@/devlink2/InvitedCards';
+// import { InviteStatus } from '@/devlink2/InviteStatus';
+// import { ResponseCard } from '@/devlink2/ResponseCard';
+// import { SubmittedCard } from '@/devlink2/SubmittedCard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -17,18 +17,18 @@ const SideBar = ({ appId, openDrawer }) => {
   const [details, setDetails] = useState([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [id, setId] = useState('');
-  const handleClickNext = () => {
-    const currentIndex = details.findIndex((candidate) => candidate.id === id);
-    if (currentIndex !== -1 && currentIndex < details.length - 1) {
-      setId(details[currentIndex + 1].id);
-    }
-  };
-  const handleClickPrev = () => {
-    const currentIndex = details.findIndex((candidate) => candidate.id === id);
-    if (currentIndex !== -1 && currentIndex > 0) {
-      setId(details[currentIndex - 1].id);
-    }
-  };
+  // const handleClickNext = () => {
+  //   const currentIndex = details.findIndex((candidate) => candidate.id === id);
+  //   if (currentIndex !== -1 && currentIndex < details.length - 1) {
+  //     setId(details[currentIndex + 1].id);
+  //   }
+  // };
+  // const handleClickPrev = () => {
+  //   const currentIndex = details.findIndex((candidate) => candidate.id === id);
+  //   if (currentIndex !== -1 && currentIndex > 0) {
+  //     setId(details[currentIndex - 1].id);
+  //   }
+  // };
   const fetchApplicantsId = async () => {
     const { data, error } = await supabase.rpc('get_screening_candidates', {
       p_recruiter_id: recruiter_id,
@@ -43,50 +43,50 @@ const SideBar = ({ appId, openDrawer }) => {
     return data;
   };
 
-  const sendInvite = async (
-    public_job_id: string,
-    company: string,
-    job_title: string,
-    firstname: string,
-    last_name: string,
-    application_id: string,
-    status_email_sent: Record<string, any>,
-    candidate_id: string,
-    email_template: Record<string, any>,
-    email: string,
-    assessment_result: Record<string, any>,
-    result_created_at: string,
-    purposes: string,
-  ) => {
-    if (application_id) {
-      const { data } = await axios.post('/api/phone-screening/invite', {
-        job: {
-          id: public_job_id,
-          company: company,
-          job_title: job_title,
-          email_template: email_template,
-        },
-        purposes: [purposes],
-        candidates: [
-          {
-            first_name: firstname,
-            last_name: last_name,
-            application_id: application_id,
-            status_email_sent: status_email_sent,
-            candidate_id: candidate_id,
-            email: email,
-            assessment_results: [
-              { result: assessment_result, created_at: result_created_at },
-            ],
-          },
-        ],
-        applicationIds: [application_id],
-      });
-      if (data) {
-        // do something
-      }
-    }
-  };
+  // const sendInvite = async (
+  //   public_job_id: string,
+  //   company: string,
+  //   job_title: string,
+  //   firstname: string,
+  //   last_name: string,
+  //   application_id: string,
+  //   status_email_sent: Record<string, any>,
+  //   candidate_id: string,
+  //   email_template: Record<string, any>,
+  //   email: string,
+  //   assessment_result: Record<string, any>,
+  //   result_created_at: string,
+  //   purposes: string,
+  // ) => {
+  //   if (application_id) {
+  //     const { data } = await axios.post('/api/phone-screening/invite', {
+  //       job: {
+  //         id: public_job_id,
+  //         company: company,
+  //         job_title: job_title,
+  //         email_template: email_template,
+  //       },
+  //       purposes: [purposes],
+  //       candidates: [
+  //         {
+  //           first_name: firstname,
+  //           last_name: last_name,
+  //           application_id: application_id,
+  //           status_email_sent: status_email_sent,
+  //           candidate_id: candidate_id,
+  //           email: email,
+  //           assessment_results: [
+  //             { result: assessment_result, created_at: result_created_at },
+  //           ],
+  //         },
+  //       ],
+  //       applicationIds: [application_id],
+  //     });
+  //     if (data) {
+  //       // do something
+  //     }
+  //   }
+  // };
 
   useEffect(() => {
     fetchApplicantsId();
@@ -104,7 +104,7 @@ const SideBar = ({ appId, openDrawer }) => {
         overflow: drawerOpen ? 'visible' : 'auto',
       }}
     >
-      <CandidateSideDrawer
+      {/* <CandidateSideDrawer
         textName={details
           .filter((data) => data.id === id)
           .map((data) => {
@@ -289,7 +289,7 @@ const SideBar = ({ appId, openDrawer }) => {
           })}
         slotOverview={<></>}
         slotSocialLink={<></>}
-      />
+      /> */}
     </Stack>
   );
 };

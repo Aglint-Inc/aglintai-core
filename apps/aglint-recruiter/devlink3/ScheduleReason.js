@@ -17,7 +17,7 @@ export function ScheduleReason({
   isMainHeadingVisible = true,
 }) {
   return (
-    <_Component tag="div">
+    <_Component className={_utils.cx(_styles, "sr-wrapper")} tag="div">
       <_Builtin.Block className={_utils.cx(_styles, "tab_wrapper")} tag="div">
         {sloNewTabPill ?? <NewTabPill isPillActive={true} />}
       </_Builtin.Block>

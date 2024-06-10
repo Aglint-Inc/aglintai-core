@@ -1,15 +1,11 @@
 .edit-email-wrap {
   overflow: auto;
   width: 100%;
-  padding: var(--space-4);
 }
 
 .company-email-edit {
   width: 100%;
   padding: var(--space-4);
-  border: 1px solid var(--neutral-6);
-  border-radius: var(--radius-4);
-  background-color: var(--neutral-2);
 }
 
 .company-email-header {
