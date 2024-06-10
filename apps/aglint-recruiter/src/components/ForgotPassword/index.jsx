@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
+import Footer from '../Common/Footer';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -173,9 +174,7 @@ export default function ForgotPasswordComponent() {
           textAlign: 'center',
         }}
       >
-        <Typography variant="body2" color="var(--neutral-11)">
-          &copy; {new Date().getFullYear()} Aglint Inc. All rights reserved.
-        </Typography>
+        <Footer />
       </Box>
       </Container>
   );
