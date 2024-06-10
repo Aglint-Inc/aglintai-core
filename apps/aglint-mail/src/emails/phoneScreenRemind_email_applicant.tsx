@@ -10,26 +10,26 @@ import {
 } from '@react-email/components';
 import { Parser } from 'html-to-react';
 import * as React from 'react';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { aglintLogo } from '../utils/assets/common';
 
-export interface PhoneScreeningResendType {
-  body?: string;
-  companyLogo?: string;
-}
+type EmailType = EmailTemplateAPi<'phoneScreenRemind_email_applicant'>;
 
 // export dummy
-export const dummy: PhoneScreeningResendType = {
-  body: '<p>Dear [firstName],</p><p>We hope this message finds you well. We wanted to bring to your attention that we have not yet received your screening form submission for the [jobTitle] position at [companyName]. We would not want you to miss out on this exciting opportunity!</p><p>Please click on the link below to initiate the phone screening process:</p><p>[phoneScreeningLink]</p><p>We looking forward to hearing from you soon!</p><p>Warm regards,</p><p>[companyName]</p>',
+export const dummy: EmailType['react_email_placeholders'] = {
+  emailBody:
+    '<p>Dear {{ candidateFirstName }},</p><p>We hope this message finds you well. We wanted to bring to your attention that we have not yet received your screening form submission for the {{ jobTitle }} position at {{ companyName }}. We would not want you to miss out on this exciting opportunity!</p><p>Please click on the link below to initiate the phone screening process:</p><p>{{ phoneScreeningLink }}</p><p>We look forward to hearing from you soon!</p><p>Warm regards,</p><p>{{ companyName }}</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
+  subject: '',
 };
 
 export const getSubject = (companyName: any) => `${companyName}`;
 
 const PhoneScreeningResend = ({
-  body = dummy.body,
+  emailBody = dummy.emailBody,
   companyLogo = dummy.companyLogo,
-}: PhoneScreeningResendType) => {
+}: EmailType['react_email_placeholders']) => {
   const htmlParser = Parser();
   return (
     <Html>
@@ -45,7 +45,7 @@ const PhoneScreeningResend = ({
                 src={companyLogo}
               />
 
-              <Text>{htmlParser.parse(body)}</Text>
+              <Text>{htmlParser.parse(emailBody)}</Text>
             </Container>
             <Text className="flex items-center text-[10px] mx-auto w-fit text-gray-500">
               Powered By

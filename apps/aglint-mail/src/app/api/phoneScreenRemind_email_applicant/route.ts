@@ -8,7 +8,6 @@ import sendMail from '../../../config/sendgrid';
 import { fetchUtil } from './fetch-util';
 
 export async function POST(req: Request) {
-  await req.json();
   const { meta } = await req.json();
 
   try {
@@ -25,7 +24,6 @@ export async function POST(req: Request) {
         `${filled_comp_template.type} does not match any mail_type`,
         400,
       );
-
     const { html, subject } = await renderEmailTemplate(
       filled_comp_template.type,
       react_email_placeholders,
@@ -47,7 +45,3 @@ export async function POST(req: Request) {
     );
   }
 }
-
-// {
-//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637"
-// }

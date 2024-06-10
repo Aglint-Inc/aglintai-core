@@ -24,12 +24,13 @@ export async function fetchUtil(
     'phoneScreenRemind_email_applicant',
   );
 
+  const phone_screen_link = `${process.env.NEXT_PUBLIC_APP_URL}/candidate-phone-screening?job_post_id=${candidateJob.public_jobs.job_title}&application_id=${req_body.application_id}`;
   const comp_email_placeholder: EmailTemplateAPi<'phoneScreenRemind_email_applicant'>['comp_email_placeholders'] =
     {
       '{{ candidateFirstName }}': candidateJob.candidates.first_name,
       '{{ jobTitle }}': candidateJob.public_jobs.job_title,
       '{{ companyName }}': candidateJob.public_jobs.company,
-      '{{ phoneScreeningLink }}': `${process.env.BASE_URL}/candidate-phone-screening?job_post_id=${candidateJob.public_jobs.job_title}&application_id=${req_body.application_id}`,
+      '{{ phoneScreeningLink }}': `<a href="${phone_screen_link}">click here</a>`,
     };
   const filled_comp_template = fillCompEmailTemplate(
     comp_email_placeholder,
@@ -42,7 +43,6 @@ export async function fetchUtil(
       emailBody: filled_comp_template.body,
       subject: filled_comp_template.subject,
     };
-
   return {
     filled_comp_template,
     react_email_placeholders,
