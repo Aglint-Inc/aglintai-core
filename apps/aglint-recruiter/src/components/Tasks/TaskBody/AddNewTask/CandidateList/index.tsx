@@ -129,7 +129,7 @@ function CandidateList({
                           sx={{
                             cursor: 'pointer',
                             '&:hover': {
-                              bgcolor: 'grey.100',
+                              bgcolor: 'var(--neutral-2)'
                             },
                           }}
                           onClick={() => {

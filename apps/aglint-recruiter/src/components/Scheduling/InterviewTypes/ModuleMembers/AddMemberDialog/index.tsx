@@ -61,7 +61,7 @@ function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
         isIcon={false}
         slotWidget={
           <MembersAutoComplete
-            pillColor='grey.200'
+            pillColor='var(--neutral-2)'
             disabled={loading}
             renderUsers={allMembers}
             selectedUsers={selectedUsers}

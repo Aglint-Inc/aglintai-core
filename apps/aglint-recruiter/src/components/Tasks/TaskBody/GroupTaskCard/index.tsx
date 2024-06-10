@@ -51,7 +51,7 @@ function GroupTaskCard({
       sx={{
         bgcolor: 'var(--white)',
         '&:hover': {
-          bgcolor: 'grey.100',
+          bgcolor: 'var(--neutral-2)',
           '& div:first-child div .checkboxClass': {
             opacity: 1,
           },

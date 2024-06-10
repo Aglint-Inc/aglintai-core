@@ -29,7 +29,7 @@ function JobSubNavbar() {
       p={'12px 10px'}
       width={200}
       borderRight={'1px solid'}
-      borderColor={'grey.200'}
+       borderColor='var(--neutral-6)'
     >
       <AddJob />
       <NavJobSubLink

@@ -28,7 +28,7 @@ function Timer({ introStep, getminutes, getSecound, timeOut }) {
             {introStep !== 2 && (
               <Stack
                 className={timeOut ? '' : 'timmer'}
-                bgcolor={timeOut ? 'red.500' : 'lime.400'}
+                bgcolor={timeOut ? 'var(--error-4)' : 'var(--warning-11)'}
                 borderRadius={'50%'}
                 width={'6px'}
                 height={'6px'}
@@ -36,7 +36,7 @@ function Timer({ introStep, getminutes, getSecound, timeOut }) {
             )}
             <Typography
               className={timeOut ? 'timmer' : ''}
-              color={timeOut ? 'red.500' : 'white.600'}
+              color={timeOut ? 'var(--error-11)' : 'var(--white-a7)'}
               variant='body1'
             >
               {getminutes < 10 && '0'}

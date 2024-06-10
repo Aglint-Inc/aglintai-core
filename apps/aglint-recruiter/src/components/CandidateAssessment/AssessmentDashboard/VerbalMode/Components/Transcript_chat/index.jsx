@@ -44,10 +44,10 @@ function Transcript_chat() {
                     wrapperStyle={{
                       direction: 'row',
                       justifyContent: 'space-between',
-                      p: '10px',
+                      p: 'var(--space-2)',
                       pr: 0,
                       borderRadius: 'var(--radius-4)',
-                      bgcolor: 'grey.600',
+                      bgcolor:  'var(--neutral-2)',
                     }}
                   />
                 )}

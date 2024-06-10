@@ -118,7 +118,7 @@ function SubTaskProgress() {
                         >
                           <Stack
                             border={'1px solid'}
-                            borderColor={'grey.300'}
+                            borderColor={'var(--neutral-6)'}
                             borderRadius={'100%'}
                             direction={'row'}
                             alignItems={'center'}
@@ -134,7 +134,7 @@ function SubTaskProgress() {
                         >
                           <Stack
                             border={'1px solid'}
-                            borderColor={'grey.300'}
+                            borderColor={'var(--neutral-6)'}
                             borderRadius={'100%'}
                             direction={'row'}
                             alignItems={'center'}
@@ -181,7 +181,7 @@ function SubTaskProgress() {
                             p={'var(--space-2)'}
                             borderRadius={'var(--space-2)'}
                             border={'1px solid'}
-                            borderColor={'grey.200'}
+                            borderColor={'var(--neutral-6)'}
                           >
                             <Typography variant='body1'>
                               <span
@@ -230,7 +230,7 @@ function SubTaskProgress() {
                                 p={'var(--space-2)'}
                                 borderRadius={'var(--space-2)'}
                                 border={'1px solid'}
-                                borderColor={'grey.200'}
+                                borderColor={'var(--neutral-6)'}
                               >
                                 <Stack
                                   direction={'column'}

@@ -205,9 +205,9 @@ function Login() {
                   alignItems="center"
                   component={Typography}
                   direction="row"
-                  color="red.500"
+                  color="var(--error-11)"
                   gap={0.5}
-                  fontSize="14px"
+                  fontSize="12px"
                 >
                   <IconExclamationCircle size="1.2em" />
                   {loginError}

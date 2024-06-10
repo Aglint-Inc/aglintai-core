@@ -167,14 +167,14 @@ function CompanyList() {
                     px={'var(--space-1)'}
                     borderRadius={'var(-radius-4)'}
                     key={i}
-                    bgcolor={ele.recName === recruiter?.name && 'grey.100'}
+                    bgcolor={ele.recName === recruiter?.name && 'var(--neutral-1)'}
                     onClick={() => {
                       updateStatus(ele.recId);
                     }}
                     sx={{
                       cursor: 'pointer',
                       // '&:hover': {
-                      //   bgcolor: 'grey.100',
+                      //   bgcolor:  'var(--neutral-1)',
                       // },
                     }}
                   >

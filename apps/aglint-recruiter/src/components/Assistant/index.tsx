@@ -236,7 +236,7 @@
 //       >
 //         <Stack
 //           border={'1px solid'}
-//           borderColor={'grey.300'}
+//           borderColor={'var(--neutral-6)'}
 //           borderRadius={'100px'}
 //           color={'grey.800'}
 //           py={'var(--space-2)'}
@@ -254,7 +254,7 @@
 //         <Stack
 //           bgcolor={status === 'applied' && 'grey.200'}
 //           border={'1px solid'}
-//           borderColor={'grey.300'}
+//           borderColor={'var(--neutral-6)'}
 //           borderRadius={'100px'}
 //           color={'grey.800'}
 //           py={'var(--space-2)'}
