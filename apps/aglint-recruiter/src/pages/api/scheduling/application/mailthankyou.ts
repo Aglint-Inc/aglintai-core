@@ -11,6 +11,8 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { agent_activities } from '@/src/utils/scheduling_v2/agents_activity';
 import { getCandidateLogger } from '@/src/utils/scheduling_v2/getCandidateLogger';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+
+import { ApiDebriefAddUsers } from './debrief-add-users';
 const required_fields: (keyof APICandScheduleMailThankYou)[] = [
   'cand_tz',
   'session_ids',
@@ -144,6 +146,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/candidate-invite-confirmation`,
         payload,
       );
+
+      if (filter_id) {
+        const payloadDebriefAddUsers: ApiDebriefAddUsers = {
+          filter_id,
+        };
+        axios.post(
+          `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/debrief-add-users`,
+          payloadDebriefAddUsers,
+        );
+      }
     }
 
     return res.status(200).send('ok');

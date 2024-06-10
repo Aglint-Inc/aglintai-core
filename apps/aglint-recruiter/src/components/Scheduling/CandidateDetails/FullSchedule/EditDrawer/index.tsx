@@ -51,7 +51,6 @@ function SideDrawerEdit() {
   const {
     editSession,
     allSessions,
-    selCoordinator,
     selectedApplication,
     selectedSchedule,
     isEditOpen,
@@ -59,7 +58,6 @@ function SideDrawerEdit() {
   } = useSchedulingApplicationStore((state) => ({
     editSession: state.editSession,
     selectedSchedule: state.selectedSchedule,
-    selCoordinator: state.selCoordinator,
     allSessions: state.initialSessions,
     selectedApplication: state.selectedApplication,
     isEditOpen: state.isEditOpen,
@@ -242,7 +240,6 @@ function SideDrawerEdit() {
         {
           allSessions,
           application_id: selectedApplication.id,
-          coordinator_id: selCoordinator,
           is_get_more_option: false,
           scheduleName: `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`,
           session_ids: [],

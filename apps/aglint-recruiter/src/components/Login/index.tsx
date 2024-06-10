@@ -10,7 +10,7 @@ import {
 import { IconExclamationCircle } from '@tabler/icons-react';
 import LoaderGrey from 'aglint-recruiter/public/lottie/LoaderGrey';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { RecLoginPage } from '@/devlink2/RecLoginPage';
@@ -29,7 +29,9 @@ function Login() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginError, setLoginError] = useState<string | null>(null);
 
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
     event.preventDefault();
   };
 
@@ -70,6 +72,7 @@ function Login() {
   const email = register('email', {
     required: 'Email is required',
     pattern: {
+      // eslint-disable-next-line security/detect-unsafe-regex, no-useless-escape
       value: /^[\w.\+-]+@([\w-]+\.)+[\w-]{2,4}$/,
       message: 'Invalid email',
     },
@@ -85,7 +88,7 @@ function Login() {
     },
   });
 
-  const oauthHandler = async (provider: string) => {
+  const oauthHandler = async (provider) => {
     const redirectURL = router?.query?.redirect as string;
     if (redirectURL) {
       localStorage.setItem('redirectURL', redirectURL);
@@ -109,7 +112,6 @@ function Login() {
 
   return (
     <Container
-      maxWidth="false"
       sx={{
         height: '100vh',
         display: 'flex',
@@ -117,7 +119,8 @@ function Login() {
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'var(--neutral-2)',
-      }}>
+      }}
+    >
       <Box
         sx={{
           flex: 1,
@@ -125,8 +128,8 @@ function Login() {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-        }}>
-      
+        }}
+      >
         <RecLoginPage
           isLoginButtonDisable={isLoading}
           textLogin={isLoading ? '' : 'Login'}
@@ -158,9 +161,9 @@ function Login() {
             <Stack spacing={'var(--space-3)'}>
               <TextField
                 {...email}
-                id="email"
-                placeholder="Email"
-                type="email"
+                id='email'
+                placeholder='Email'
+                type='email'
                 onBlur={email.onBlur}
                 onFocus={() => setLoginError(null)}
                 error={errors.email && Boolean(errors.email.message)}
@@ -174,8 +177,8 @@ function Login() {
 
               <TextField
                 {...password}
-                id="password"
-                placeholder="Password"
+                id='password'
+                placeholder='Password'
                 type={showPassword ? 'text' : 'password'}
                 onFocus={() => setLoginError(null)}
                 error={errors.password && Boolean(errors.password.message)}
@@ -187,14 +190,16 @@ function Login() {
                 }}
                 InputProps={{
                   endAdornment: (
-                    <InputAdornment position="end">
+                    <InputAdornment position='end'>
                       <IconButton
-                        aria-label="toggle password visibility"
+                        aria-label='toggle password visibility'
                         onClick={handleClickShowPassword}
                         onMouseDown={handleMouseDownPassword}
-                        edge="end"
+                        edge='end'
                       >
-                        <span icon-size="sm">{showPassword ? 'visibility' : 'visibility_off'}</span>
+                        <span icon-size='sm'>
+                          {showPassword ? 'visibility' : 'visibility_off'}
+                        </span>
                       </IconButton>
                     </InputAdornment>
                   ),
@@ -202,14 +207,14 @@ function Login() {
               />
               {loginError && (
                 <Stack
-                  alignItems="center"
+                  alignItems='center'
                   component={Typography}
                   direction="row"
-                  color="red.500"
+                  color="var(--error-11)"
                   gap={0.5}
-                  fontSize="14px"
+                  fontSize="12px"
                 >
-                  <IconExclamationCircle size="1.2em" />
+                  <IconExclamationCircle size='1.2em' />
                   {loginError}
                 </Stack>
               )}
@@ -219,17 +224,17 @@ function Login() {
             onClick: handleSubmit(onSubmit),
           }}
         />
-    </Box>
-    <Box
-      sx={{
-        width: '100%',
-        textAlign: 'center',
-      }}
-    >
-      <Typography variant="body2" color="var(--neutral-11)">
-        &copy; {new Date().getFullYear()} Aglint Inc. All rights reserved.
-      </Typography>
-    </Box>
+      </Box>
+      <Box
+        sx={{
+          width: '100%',
+          textAlign: 'center',
+        }}
+      >
+        <Typography variant='body2' color='var(--neutral-11)'>
+          &copy; {new Date().getFullYear()} Aglint Inc. All rights reserved.
+        </Typography>
+      </Box>
     </Container>
   );
 }

@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
 /* eslint-disable security/detect-object-injection */
 import {
-  APICandidateConfirmSlot,
   APIFindAvailability,
+  APIScheduleDebreif,
   DatabaseTableInsert,
+  PlanCombinationRespType
 } from '@aglint/shared-types';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -98,18 +99,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const firstSlot = availabilities[0][0].filter(
       (item) => !item.sessions[0].is_conflict,
-    )[0].sessions[0];
-    const candidate_email = jobData.candidates.email;
+    )[0];
 
     await confirmSlot({
-      candidate_email,
-      start_time: firstSlot.start_time,
-      end_time: firstSlot.end_time,
-      recruiter_id,
       schedule_id,
-      session_id,
       task_id,
       user_tz,
+      selectedDebrief: firstSlot,
     });
 
     return res.status(200).send({
@@ -126,52 +122,31 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 export default handler;
 
 const confirmSlot = async ({
-  session_id,
-  start_time,
-  end_time,
-  recruiter_id,
-  candidate_email,
-  task_id,
   user_tz,
   schedule_id,
+  task_id,
+  selectedDebrief,
 }: {
-  session_id: string;
-  start_time: string;
-  end_time: string;
-  recruiter_id: string;
-  candidate_email: string;
   task_id: string;
   user_tz: string;
   schedule_id: string;
+  selectedDebrief: PlanCombinationRespType;
 }) => {
-  const bodyParams: APICandidateConfirmSlot = {
-    candidate_plan: [
-      {
-        sessions: [
-          {
-            session_id: session_id,
-            start_time: start_time,
-            end_time: end_time,
-          },
-        ],
-      },
-    ],
-    recruiter_id,
-    user_tz,
-    candidate_email,
-    is_debreif: true,
-    task_id,
-    agent_type: 'self',
+  const bodyParams: APIScheduleDebreif = {
+    session_id: selectedDebrief.sessions[0].session_id,
     schedule_id,
+    user_tz,
+    selectedOption: selectedDebrief,
+    task_id,
   };
 
   const resConfirmSlot = await axios.post(
-    `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/confirm_interview_slot`,
+    `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/booking/schedule-debreif`,
     bodyParams,
   );
 
   if (resConfirmSlot.status === 200) {
-    console.log(`confirmed slot ad  ${start_time}`);
+    console.log(`confirmed slot`);
     return true;
   } else {
     throw new Error('error in confirm_interview_slot api');

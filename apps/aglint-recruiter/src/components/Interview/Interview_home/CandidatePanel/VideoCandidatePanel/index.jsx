@@ -129,7 +129,7 @@ function VideoCandidatePanel() {
               <Stack
                 display={edit ? 'block' : 'none'}
                 width={'100%'}
-                // bgcolor={'grey.100'}
+                // bgcolor:  'var(--neutral-1)',
 
                 direction={'row'}
                 alignItems={'center'}

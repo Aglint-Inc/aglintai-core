@@ -1,7 +1,20 @@
-import { Box, Container, IconButton, InputAdornment,Stack, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Container,
+  IconButton,
+  InputAdornment,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { FieldError, SubmitHandler, useForm, UseFormRegisterReturn } from 'react-hook-form';
+import {
+  FieldError,
+  SubmitHandler,
+  useForm,
+  UseFormRegisterReturn,
+} from 'react-hook-form';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ResetPassword } from '@/devlink/ResetPassword';
@@ -17,7 +30,12 @@ interface ResetFormInputs {
 export default function ResetPasswordComponent() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<ResetFormInputs>({
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<ResetFormInputs>({
     defaultValues: {
       password: '',
       confirmPassword: '',
@@ -28,7 +46,9 @@ export default function ResetPasswordComponent() {
     setShowPassword(!showPassword);
   };
 
-  const onSubmit: SubmitHandler<ResetFormInputs> = async ({ confirmPassword }) => {
+  const onSubmit: SubmitHandler<ResetFormInputs> = async ({
+    confirmPassword,
+  }) => {
     const { error } = await supabase.auth.updateUser({
       password: confirmPassword,
       data: { is_invite: 'false' },
@@ -44,10 +64,12 @@ export default function ResetPasswordComponent() {
 
   useEffect(() => {
     try {
-      const tempObj = router.asPath.slice(router.asPath.indexOf('#'))
-        .replaceAll('=', '":"')
-        .replaceAll('&', '","')
-        .replaceAll('#', '{"') + '"}';
+      const tempObj =
+        router.asPath
+          .slice(router.asPath.indexOf('#'))
+          .replaceAll('=', '":"')
+          .replaceAll('&', '","')
+          .replaceAll('#', '{"') + '"}';
       const tempCreds = JSON.parse(tempObj);
 
       if (tempCreds.access_token) {
@@ -65,19 +87,21 @@ export default function ResetPasswordComponent() {
     password: register('password', {
       required: 'Password is required',
       pattern: {
-        value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-        message: 'Password must contain at least 8 characters, including UPPER/lowercase, one number and special characters',
+        value:
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+        message:
+          'Password must contain at least 8 characters, including UPPER/lowercase, one number and special characters',
       },
     }),
     confirmPassword: register('confirmPassword', {
       required: 'Confirm Password is required',
-      validate: (value) => value === watch('password') || 'The passwords are not matching.',
+      validate: (value) =>
+        value === watch('password') || 'The passwords are not matching.',
     }),
   };
 
   return (
     <Container
-      maxWidth="false"
       sx={{
         height: '100vh',
         display: 'flex',
@@ -85,7 +109,8 @@ export default function ResetPasswordComponent() {
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'var(--neutral-2)',
-      }}>
+      }}
+    >
       <Box
         sx={{
           flex: 1,
@@ -93,40 +118,45 @@ export default function ResetPasswordComponent() {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-        }}>
-      <ResetPassword
-        slotResetPasswordForm={
-          <Stack component='form' onSubmit={handleSubmit(onSubmit)} spacing={2}>
-            <Stack spacing={1}>
-              <CustomFormField
-                field={form.password}
-                placeholder='Password'
-                type={showPassword ? 'text' : 'password'}
-                error={errors.password}
-                showPassword={showPassword}
-                handleClickShowPassword={handleClickShowPassword}
-              />
-              <CustomFormField
-                field={form.confirmPassword}
-                placeholder='Confirm Password'
-                type={showPassword ? 'text' : 'password'}
-                error={errors.confirmPassword}
-                showPassword={showPassword}
-                handleClickShowPassword={handleClickShowPassword}
+        }}
+      >
+        <ResetPassword
+          slotResetPasswordForm={
+            <Stack
+              component='form'
+              onSubmit={handleSubmit(onSubmit)}
+              spacing={2}
+            >
+              <Stack spacing={1}>
+                <CustomFormField
+                  field={form.password}
+                  placeholder='Password'
+                  type={showPassword ? 'text' : 'password'}
+                  error={errors.password}
+                  showPassword={showPassword}
+                  handleClickShowPassword={handleClickShowPassword}
+                />
+                <CustomFormField
+                  field={form.confirmPassword}
+                  placeholder='Confirm Password'
+                  type={showPassword ? 'text' : 'password'}
+                  error={errors.confirmPassword}
+                  showPassword={showPassword}
+                  handleClickShowPassword={handleClickShowPassword}
+                />
+              </Stack>
+              <ButtonSolid
+                isLeftIcon={false}
+                isRightIcon={false}
+                onClickButton={{
+                  onClick: () => handleSubmit(onSubmit)(),
+                }}
+                textButton='Reset'
+                size='2'
               />
             </Stack>
-            <ButtonSolid
-              isLeftIcon={false}
-              isRightIcon={false}
-              onClickButton={{ 
-                onClick: () => handleSubmit(onSubmit)()
-              }}
-              textButton='Reset'
-              size='2'
-            />
-          </Stack>
-        }
-      />
+          }
+        />
       </Box>
       <Box
         sx={{
@@ -134,11 +164,11 @@ export default function ResetPasswordComponent() {
           textAlign: 'center',
         }}
       >
-        <Typography variant="body2" color="var(--neutral-11)">
+        <Typography variant='body2' color='var(--neutral-11)'>
           &copy; {new Date().getFullYear()} Aglint Inc. All rights reserved.
         </Typography>
       </Box>
-      </Container>
+    </Container>
   );
 }
 
@@ -180,7 +210,7 @@ const CustomFormField = ({
               edge='end'
             >
               <span icon-size='sm'>
-                {showPassword ? ( 'visibility' ) : ( 'visibility_off' )}
+                {showPassword ? 'visibility' : 'visibility_off'}
               </span>
             </IconButton>
           </InputAdornment>

@@ -1,3 +1,7 @@
+/* Fonts */
+
+@import url('https://fonts.googleapis.com/css?family=Material+Symbols Rounded:100,200,300,regular,500,600,700&subset=latin');
+
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Set default font family to sans-serif.
@@ -2568,8 +2572,6 @@ textarea.w-select {
   --neutral-1: var(--sand-1);
   --text: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   --spacing\<deleted\|variable-6272ca72-0103-9b5c-18bd-925d9826d467\>: 2px;
-  --grey-600\<deleted\|variable-440e5aa6\>: #68737d;
-  --yellow-prime\<deleted\|variable-5734b54f\>: #ecff58;
 }
 
 body {

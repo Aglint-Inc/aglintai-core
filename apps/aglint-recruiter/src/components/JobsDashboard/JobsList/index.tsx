@@ -60,8 +60,8 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                       slotLogo={
                         <Avatar
                           variant='square'
-                          src='/images/ats/lever.png'
-                          sx={{ width: '100%', height: '14px' }}
+                          src='/images/ats/lever-job-badge.png'
+                          sx={{ width: '100%', height: '20px'}}
                         />
                       }
                     />
@@ -70,8 +70,8 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                       slotLogo={
                         <Avatar
                           variant='square'
-                          src='/images/ats/greenhouse.svg'
-                          sx={{ width: '100%', height: '16px', pt: '4px' }}
+                          src='/images/ats/greenhouse-job-badge.svg'
+                          sx={{ width: '100%', height: '20px'}}
                         />
                       }
                     />
@@ -80,8 +80,8 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                       slotLogo={
                         <Avatar
                           variant='square'
-                          src='/images/ats/ashby.svg'
-                          sx={{ width: '100%', height: '14px', p: '2px' }}
+                          src='/images/ats/ashby-job-badge.svg'
+                          sx={{ width: '100%', height: '20px'}}
                         />
                       }
                     />

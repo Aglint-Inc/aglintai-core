@@ -124,12 +124,12 @@ function SessionList({
                         sx={{
                           cursor: 'pointer',
                           '&:hover': {
-                            bgcolor: 'grey.100',
+                            bgcolor: 'var(--neutral-2)'
                           },
                           bgcolor:
                             selectedSession
                               .map((ele) => ele.id)
-                              .includes(item.id) && 'grey.100',
+                              .includes(item.id) && 'var(--neutral-1)',
                         }}
                         onClick={() => {
                           //   @ts-ignore

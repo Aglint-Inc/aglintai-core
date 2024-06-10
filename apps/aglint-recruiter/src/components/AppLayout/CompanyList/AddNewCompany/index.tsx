@@ -369,7 +369,7 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
                         flexDirection={'column'}
                       >
                         <Loader />
-                        <UITypography color='grey.600'>
+                        <UITypography color='var(--neutral-11)'>
                           Hold on, Fetching company info from the website.
                         </UITypography>
                       </Stack>

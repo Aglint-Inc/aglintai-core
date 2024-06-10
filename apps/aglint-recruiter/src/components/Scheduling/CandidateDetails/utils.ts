@@ -8,7 +8,7 @@ import {
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
   JobApplcationDB,
-  SupabaseType
+  SupabaseType,
 } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { createServerClient } from '@supabase/ssr';
@@ -95,7 +95,6 @@ export const createCloneSession = async ({
   allSessions,
   session_ids,
   scheduleName,
-  coordinator_id,
   supabase,
   recruiter_id,
   rec_user_id,
@@ -105,11 +104,11 @@ export const createCloneSession = async ({
   allSessions: SchedulingApplication['initialSessions'];
   session_ids: string[];
   scheduleName: string;
-  coordinator_id: string;
   recruiter_id: string;
   supabase: ReturnType<typeof createServerClient<DB>>;
   rec_user_id: string;
 }) => {
+  // create schedule first then create sessions and meetings and then create session relation
   let new_schedule_id = uuidv4();
   try {
     const { data, error } = await supabase
@@ -118,7 +117,6 @@ export const createCloneSession = async ({
         is_get_more_option: is_get_more_option,
         application_id: application_id,
         schedule_name: scheduleName,
-        coordinator_id: coordinator_id,
         id: new_schedule_id,
         recruiter_id: recruiter_id,
         created_by: rec_user_id,
@@ -229,7 +227,6 @@ export const sendToCandidate = async ({
   selectedApplication,
   initialSessions,
   selectedSessionIds,
-  selCoordinator,
   recruiter_id,
   dateRange,
   selectedSlots,
@@ -244,7 +241,6 @@ export const sendToCandidate = async ({
   selectedApplication: SchedulingApplication['selectedApplication'];
   initialSessions: SchedulingApplication['initialSessions'];
   selectedSessionIds: SchedulingApplication['selectedSessionIds'];
-  selCoordinator: SchedulingApplication['selCoordinator'];
   recruiter_id: string;
   dateRange: {
     start_date: string;
@@ -275,14 +271,15 @@ export const sendToCandidate = async ({
 
     if (errorCheckSch) throw new Error(errorCheckSch.message);
 
+    // check if schedule is already created (if yes then sessions are cached on candidate level)
     if (checkSch.length === 0) {
+      // if not then cache all the sessions on candidate level
       const createCloneRes = await createCloneSession({
         is_get_more_option: false,
         application_id: selectedApplication.id,
         allSessions: initialSessions,
         session_ids: selectedSessionIds,
         scheduleName: scheduleName,
-        coordinator_id: selCoordinator,
         recruiter_id: recruiter_id,
         supabase: supabase,
         rec_user_id: recruiterUser.user_id,
@@ -598,7 +595,6 @@ export const scheduleWithAgent = async ({
           allSessions: sessionsWithPlan.sessions,
           session_ids,
           scheduleName,
-          coordinator_id: null,
           supabase,
           recruiter_id: recruiter_id,
           rec_user_id,
@@ -850,7 +846,6 @@ export const scheduleWithAgentWithoutTaskId = async ({
           allSessions: sessionsWithPlan.sessions,
           session_ids,
           scheduleName,
-          coordinator_id: null,
           supabase,
           recruiter_id: recruiter_id,
           rec_user_id,
@@ -1061,6 +1056,7 @@ export const fetchInterviewSessionTask = async ({
   application_id: string;
   supabase: SupabaseType;
 }) => {
+  // used for fetching the sessions for the task
   try {
     const { data: schedule, error } = await supabase
       .from('interview_schedule')
@@ -1173,10 +1169,10 @@ export const agentTrigger = async ({
 
   let timezone = null;
   if (!candidate.timezone && (candidate.city || candidate.state)) {
-    timezone = await getCandidateTimezone(
-      `${candidate.city} ${candidate.state}`,
-      candidate.id,
-    );
+    timezone = await getCandidateTimezone({
+      location: `${candidate.city} ${candidate.state}`,
+      candidate_id: candidate.id,
+    });
   }
 
   if (
@@ -1233,6 +1229,8 @@ export const agentTrigger = async ({
       }
       return res.status;
     }
+  } else {
+    console.log('No slots for selected date range');
   }
 };
 
@@ -1335,7 +1333,13 @@ function formatPhoneNumber(phoneNumber) {
   return numericPhoneNumber;
 }
 
-const getCandidateTimezone = async (location, candidate_id) => {
+const getCandidateTimezone = async ({
+  location,
+  candidate_id,
+}: {
+  location: string;
+  candidate_id: string;
+}) => {
   const resGeoCode = await geoCodeLocation(location);
   let timeZone = null;
   if (resGeoCode) {
@@ -1362,6 +1366,16 @@ const checkAvailibility = async ({
   timezone,
   task_id,
   type,
+}: {
+  session_ids: string[];
+  recruiter_id: string;
+  dateRange: {
+    start_date: string;
+    end_date: string;
+  };
+  timezone: string;
+  task_id: string;
+  type: 'phone_agent' | 'email_agent';
 }) => {
   const assignee = type == 'email_agent' ? EmailAgentId : PhoneAgentId;
   const resAllOptions = await axios.post(
@@ -1396,7 +1410,7 @@ const checkAvailibility = async ({
         progress_type: 'standard',
         created_by: {
           id: assignee,
-          name: type === 'email_agent ' ? 'Email Agent' : 'Phone Agent',
+          name: type === 'email_agent' ? 'Email Agent' : 'Phone Agent',
         },
         task_id: task_id,
       },

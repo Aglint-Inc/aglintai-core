@@ -27,7 +27,7 @@ function LeftPanel() {
     <Stack
       width={'20%'}
       border={'1px solid'}
-      borderColor={'grey.200'}
+       borderColor='var(--neutral-6)'
       p={'var(--space-2)'}
     >
       <Stack width={'100%'} mb={'var(--space-2)'}>
@@ -72,7 +72,7 @@ function LeftPanel() {
           return (
             <Stack
               key={i}
-              bgcolor={currentChat.id === ele.id ? 'grey.200' : 'grey.100'}
+              bgcolor={currentChat.id === ele.id ? 'var(--neutral-2)' : 'var(--neutral-1)'}
               p={'var(--space-2)'}
               borderRadius={'var(--space-1)'}
               spacing={'var(--space-2)'}
@@ -80,7 +80,7 @@ function LeftPanel() {
                 cursor: !resLoading && currentChat.id !== ele.id && 'pointer',
                 '&:hover': {
                   bgcolor:
-                    !resLoading && currentChat.id !== ele.id && 'grey.100',
+                    !resLoading && currentChat.id !== ele.id && 'var(--neutral-1)',
                 },
               }}
               onClick={() => {
@@ -94,7 +94,7 @@ function LeftPanel() {
                 direction={'row'}
                 alignItems={'center'}
               >
-                <Stack color={'red.300'} width={'40px'} height={'var(--space-5)'}>
+                <Stack color={'var(--error-11)'} width={'var(--space-7)'} height={'var(--space-5)'}>
                   <ChatIcon />
                 </Stack>
                 <Typography

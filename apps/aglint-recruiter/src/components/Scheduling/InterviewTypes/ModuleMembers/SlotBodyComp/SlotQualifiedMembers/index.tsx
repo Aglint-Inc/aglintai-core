@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
-import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { EmptyGeneral } from '@/devlink2/EmptyGeneral';
 import { MemberListCard } from '@/devlink2/MemberListCard';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
@@ -71,8 +71,8 @@ function SlotQualifiedMembers({
         <EmptyGeneral
           textEmpt={'No members yet'}
           slotButton={
-            <ButtonGhost
-              size={2}
+            <ButtonSurface
+              size={1}
               isRightIcon={false}
               slotIcon={<IconPlusFilter />}
               textButton={'Add'}
@@ -154,8 +154,8 @@ function SlotQualifiedMembers({
       })}
       {allQualified.length !== 0 && (
         <Stack direction={'row'} pt={'var(--space-2)'}>
-          <ButtonGhost
-            size={2}
+          <ButtonSurface
+            size={1}
             isRightIcon={false}
             slotIcon={<IconPlusFilter />}
             textButton={'Add'}
