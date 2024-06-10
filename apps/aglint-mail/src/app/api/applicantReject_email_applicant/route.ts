@@ -7,50 +7,37 @@ import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import Rejection from '../../../utils/email/rejection/fetch';
 import sendMail from '../../../config/sendgrid';
-
-interface ReqPayload {
-  application_id: string;
-}
-interface DataPayload {
-  recipient_email: string;
-  mail_type: string;
-  recruiter_id: string;
-  companyLogo: string;
-  payload: {
-    '[firstName]': string;
-    '[jobTitle]': string;
-    '[companyName]': string;
-  };
-}
+import { fetchUtil } from './fetch-util';
+import * as v from 'valibot';
+import { applicantRejectEmailApplicantSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
 
 export async function POST(req: Request) {
-  const { application_id }: ReqPayload = await req.json();
+  const req_body = await req.json();
 
   try {
-    // if (!application_id) {
-    //   throw new ClientError('application_id attribute missing', 400);
-    // }
-    // const data: DataPayload = await Rejection(application_id);
-    // const filled_body: FilledPayload = await fetchTemplate(
-    //   data.recruiter_id,
-    //   data.mail_type,
-    //   data.payload,
-    // );
-    // filled_body.companyLogo = data.companyLogo;
-    // const { emails } = await getEmails();
+    const parsed_body = v.parse(
+      applicantRejectEmailApplicantSchema,
+      req_body.meta,
+    );
+    const { filled_comp_template, react_email_placeholders, recipient_email } =
+      await fetchUtil(parsed_body);
 
-    // const emailIdx = emails.findIndex((e) => e === data.mail_type);
+    const { emails } = await getEmails();
+    const emailIdx = emails.findIndex((e) => e === filled_comp_template.type);
 
-    // if (emailIdx === -1)
-    //   throw new ClientError(
-    //     `${data.mail_type} does not match any mail_type`,
-    //     400,
-    //   );
+    if (emailIdx === -1)
+      throw new ClientError(
+        `${filled_comp_template.type} does not match any mail_type`,
+        400,
+      );
 
-    // const { html, subject } = await renderEmailTemplate(
-    //   emails[emailIdx],
-    //   filled_body,
-    // );
+    const { html, subject } = await renderEmailTemplate(
+      filled_comp_template.type,
+      react_email_placeholders,
+    );
+
+    await sendMail({ email: recipient_email, html, subject, text: html });
+
     // await sendMail({ email: data.recipient_email, html, subject, text: html });
     return NextResponse.json('success', {
       status: 200,

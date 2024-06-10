@@ -73,9 +73,15 @@ type Payloads = {
   };
   applicantReject_email_applicant: {
     api_payload: v.InferInput<typeof applicantRejectEmailApplicantSchema>;
-    comp_email_placeholders: {};
+    comp_email_placeholders: {
+      '{{ candidateFirstName }}': string;
+      '{{ jobTitle }}': string;
+      '{{ companyName }}': string;
+    };
     react_email_placeholders: {
       subject: string;
+      emailBody: string;
+      companyLogo: string;
     };
   };
   phoneScreen_email_candidate: {
