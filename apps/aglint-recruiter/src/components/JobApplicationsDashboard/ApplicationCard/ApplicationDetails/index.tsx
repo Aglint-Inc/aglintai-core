@@ -1233,7 +1233,7 @@ const ResumeUpload: React.FC<{
                 py: '34px',
                 px: '20px',
                 cursor: 'pointer',
-                background: 'hsla(206.66666666666666, 100.00%, 96.47%, 0.50);',
+                background: 'var(--neutral-2)',
               }}
               direction='row'
               spacing={'8px'}
