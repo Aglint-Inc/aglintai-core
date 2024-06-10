@@ -55,8 +55,8 @@ import ScreeningIcon from '../../Common/ModuleIcons/screeningIcon';
 import WorkflowIcon from '../../Common/ModuleIcons/workflowIcon';
 import MuiAvatar from '../../Common/MuiAvatar';
 import UITextField from '../../Common/UITextField';
-import { AddCandidates } from '../../JobApplicationsDashboard';
 import { capitalize } from '../../JobApplicationsDashboard/utils';
+import { UploadApplications } from '../../JobNewApplications/ui/uploadApplications';
 import PublishButton from '../../publishButton';
 import IconScheduleType from '../../Scheduling/Candidates/ListCard/Icon';
 import { getScheduleType } from '../../Scheduling/Candidates/utils';
@@ -124,9 +124,11 @@ const Dashboard = () => {
     handleJobApplicationFilter,
   } = useJobApplications();
 
-  const score_matches = getMatches(counts);
+  const setImportPopup = useApplicationsStore(
+    ({ setImportPopup }) => setImportPopup,
+  );
 
-  const [openImportCandidates, setOpenImportCandidates] = useState(false);
+  const score_matches = getMatches(counts);
   const [popover, setPopover] = useState(false);
 
   const canPublish =
@@ -222,10 +224,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <AddCandidates
-        openImportCandidates={openImportCandidates}
-        setOpenImportCandidates={setOpenImportCandidates}
-      />
+      <UploadApplications />
       <PageLayout
         slotBody={
           <JobDashboardDev
@@ -308,7 +307,7 @@ const Dashboard = () => {
                 <AddCandidateButton
                   isImport={job?.status !== 'closed'}
                   onClickImport={{
-                    onClick: () => setOpenImportCandidates(true),
+                    onClick: () => setImportPopup(true),
                   }}
                 />
               </>
