@@ -123,7 +123,6 @@ export const useSelfSchedulingDrawer = ({
         is_debrief: isDebrief,
         recruiter_id: recruiter.id,
         recruiterUser,
-        selCoordinator: null,
         selectedApplication,
         selectedSessionIds,
         selectedDebrief: filteredSchedulingOptions.find(

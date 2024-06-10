@@ -4,6 +4,7 @@ import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import {
   Alert,
   Box,
+  Container,
   Dialog,
   FormControlLabel,
   InputAdornment,
@@ -24,6 +25,7 @@ import React, {
 } from 'react';
 
 import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateConfirmationPage } from '@/devlink/CandidateConfirmationPage';
 import { CandidateScheduleCard } from '@/devlink/CandidateScheduleCard';
 import { ChangeButton } from '@/devlink/ChangeButton';
@@ -137,7 +139,11 @@ const CandidateInvitePlanPage = () => {
               setSelectedSlots([]);
             }}
           />
-          <Invite rounds={rounds} />
+          <Container maxWidth='sm'>
+            <Stack spacing={'var(--space-4)'}>
+              <Invite rounds={rounds} />
+            </Stack>
+          </Container>
         </>
       }
     />
@@ -900,14 +906,19 @@ const MultiDaySuccess = (props: ScheduleCardsProps) => {
   return (
     <>
       <ScheduleCards rounds={props.rounds} />
-      <Stack sx={{ width: '350px' }}>
-        <AUIButton
-          size='large'
-          onClick={() => setOpen(true)}
-          disabled={!enabled}
-        >
-          Proceed
-        </AUIButton>
+      <Stack direction={'row'} justifyContent={'center'}>
+        <ButtonSolid
+          isLeftIcon={false}
+          isRightIcon={false}
+          textButton='Proceed'
+          size={3}
+          onClickButton={{
+            onClick: () => {
+              setOpen(true);
+            },
+          }}
+          isDisabled={!enabled}
+        />
       </Stack>
       <MultiDayConfirmation open={open} setOpen={setOpen} />
     </>

@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { Box, Container, Stack, TextField, Typography } from '@mui/material';
+import { Box, Container, Stack, TextField } from '@mui/material';
 import { createClient } from '@supabase/supabase-js';
 import { errorMessages } from '@utils/errorMessages';
 import posthog from 'posthog-js';
@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
+
 import Footer from '../Common/Footer';
 
 const supabase = createClient(

@@ -44,7 +44,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const {
       allSessions,
       application_id,
-      coordinator_id,
       is_get_more_option,
       scheduleName,
       session_ids,
@@ -55,7 +54,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const resClone = await createCloneSession({
       allSessions,
       application_id,
-      coordinator_id,
       is_get_more_option,
       scheduleName,
       session_ids,

@@ -17,6 +17,7 @@ import { RecLoginPage } from '@/devlink2/RecLoginPage';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
+
 import Footer from '../Common/Footer';
 
 interface LoginFormInputs {

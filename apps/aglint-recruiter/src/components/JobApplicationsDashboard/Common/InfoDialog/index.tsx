@@ -46,8 +46,8 @@ function InfoDialog({
               bgcolor={'var(--warning-3)'}
               direction={'row'}
               alignItems={'center'}
-              py={'21px'}
-              px={'16px'}
+              py={'var(--space-5)'}
+              px={'var(--space-4)'}
               spacing={'var(--space-5)'}
               borderRadius={'var(--radius-4)'}
             >

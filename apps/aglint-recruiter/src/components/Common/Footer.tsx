@@ -1,7 +1,7 @@
-import React from 'react';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import SvgIcon from '@mui/material/SvgIcon';
+import Typography from '@mui/material/Typography';
+import React from 'react';
 
 interface FooterProps {
   brand?: boolean;
