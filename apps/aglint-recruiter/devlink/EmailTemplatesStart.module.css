@@ -1,8 +1,32 @@
 .email-template-wrap {
   display: flex;
   overflow: hidden;
-  height: 100%;
+  margin-top: var(--space-4);
+  margin-right: var(--space-4);
+  margin-bottom: var(--space-4);
+  margin-left: var(--space-4);
   justify-content: flex-start;
+
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: var(--neutral-6);
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: var(--neutral-6);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: var(--neutral-6);
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-left-color: var(--neutral-6);
+  border-top-left-radius: var(--radius-4);
+  border-top-right-radius: var(--radius-4);
+  border-bottom-left-radius: var(--radius-4);
+  border-bottom-right-radius: var(--radius-4);
+
+  background-color: var(--white);
+
+  height: calc(100vh - 80px);
 }
 
 .email-template-left-wrap {
@@ -11,6 +35,7 @@
   padding-top: var(--space-4);
   padding-right: var(--space-4);
   padding-bottom: var(--space-4);
+  padding-left: var(--space-4);
   flex-grow: 0;
   flex-shrink: 0;
   flex-basis: auto;
@@ -46,7 +71,7 @@
 .email-template-right-wrap {
   overflow: auto;
   width: 100%;
-  height: calc(100vh - 48px);
+  height: calc(100vh - 80px);
 }
 
 #w-node-_7a13e008-ea54-7273-6b2d-06ecde60cc59-adb6be91 {

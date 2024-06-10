@@ -1,3 +1,11 @@
+.sr-wrapper {
+  overflow: hidden;
+  margin: var(--space-4);
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+  background-color: var(--white);
+}
+
 .tab_wrapper {
   display: flex;
   justify-content: flex-start;

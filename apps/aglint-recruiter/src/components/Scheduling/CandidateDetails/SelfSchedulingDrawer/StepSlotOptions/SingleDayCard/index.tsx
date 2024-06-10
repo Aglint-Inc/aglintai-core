@@ -76,7 +76,7 @@ function SingleDayCard({
       }}
       rotateArrow={{
         style: {
-          display: isCollapseNeeded ? 'block' : 'none',
+          display: isCollapseNeeded ? 'flex' : 'none',
           transform: collapse ? 'rotate(180deg)' : '',
         },
       }}

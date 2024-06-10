@@ -1,6 +1,8 @@
-.email-temp-card-wrap {
+.etc-wrapper {
   position: relative;
+}
 
+.email-temp-card-wrap {
   display: flex;
   overflow: hidden;
   padding: var(--space-4);
@@ -35,5 +37,23 @@
   right: 0%;
   bottom: 0%;
 
-  background-color: var(--neutral-3);
+  border: 1px solid var(--accent-6);
+  border-radius: var(--radius-4);
+
+  background-color: var(--accent-3);
+}
+
+.active-state-email.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
