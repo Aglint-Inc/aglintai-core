@@ -11,15 +11,8 @@ import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import ApplicantsList from './list';
 
 export const Table = memo(() => {
-  const section = useApplicationsStore(({ section }) => section);
   return (
     <>
-      <ApplicantsTable
-        isAllChecked={false}
-        isScreeningVisible={section === 'screening'}
-        isInterviewVisible={section === 'assessment'}
-        isDisqualifiedVisible={section === 'disqualified'}
-      />
       <List />
     </>
   );
@@ -35,7 +28,20 @@ const List = memo(() => {
   if ((count[section] ?? 0) === 0) return <EmptyList />;
   if (sectionApplication.status === 'error') return <>Error</>;
   if (sectionApplication.status === 'pending') return <>Loading...</>;
-  return <ApplicantsList key={section} applications={sectionApplication} />;
+  return (
+    <ApplicantsList
+      key={section}
+      applications={sectionApplication}
+      header={
+        <ApplicantsTable
+          isAllChecked={false}
+          isScreeningVisible={section === 'screening'}
+          isInterviewVisible={section === 'assessment'}
+          isDisqualifiedVisible={section === 'disqualified'}
+        />
+      }
+    />
+  );
 });
 List.displayName = 'List';
 

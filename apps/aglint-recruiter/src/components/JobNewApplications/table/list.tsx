@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { AssessmentListCardLoader } from '@/devlink2/AssessmentListCardLoader';
 import { useApplications } from '@/src/context/ApplicationsContext';
@@ -9,8 +9,10 @@ import ApplicationCard from './card';
 
 const ApplicantsList = ({
   applications,
+  header,
 }: {
   applications: ReturnType<typeof useApplications>['sectionApplication'];
+  header: React.JSX.Element;
 }) => {
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage } = applications;
 
@@ -51,11 +53,12 @@ const ApplicantsList = ({
     <Stack
       ref={parentRef}
       style={{
-        height: `calc(100vh - 168px)`,
-        width: `100%`,
-        overflow: 'auto',
+        height: 'calc(100vh - 132px)',
+        width: 'calc(100vw - 64px)',
+        overflowY: 'auto',
       }}
     >
+      {header}
       <Stack
         style={{
           height: `${rowVirtualizer.getTotalSize()}px`,
