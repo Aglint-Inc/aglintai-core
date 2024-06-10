@@ -5,87 +5,59 @@ import {
 } from '../../../utils/apiUtils/customErrors';
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
-import fetchTemplate from '../../../utils/apiUtils/fillCompEmailTemplate';
-import type {
-  FilledPayload,
-  MeetingDetails,
-} from '../../../utils/types/apiTypes';
-import sendMail from '../../../config/sendgrid';
-import { confiramtionMailToOrganizer } from './fetch-util';
-
-interface ReqPayload {
-  session_id: string[];
-  application_id: string;
-  meeting_id: string;
-  recruiter_user_id: string;
-}
-interface DataPayload {
-  recipient_email: string;
-  mail_type: string;
-  recruiter_id: string;
-  companyLogo: string;
-  payload: {
-    '[companyName]': string;
-    '[firstName]': string;
-    '[jobTitle]': string;
-    '[recruiterName]': string;
-    'meetingLink': string;
-    'meetingDetails': MeetingDetails[];
-  };
-}
+// import fetchTemplate from '../../../utils/apiUtils/fillCompEmailTemplate';
+// import type {
+//   FilledPayload,
+//   MeetingDetails,
+// } from '../../../utils/types/apiTypes';
+// import sendMail from '../../../config/sendgrid';
+// import { confiramtionMailToOrganizer } from './fetch-util';
 
 export async function POST(req: Request) {
-  const {
-    session_id,
-    application_id,
-    meeting_id,
-    recruiter_user_id,
-  }: ReqPayload = await req.json();
-
   try {
-    if (!session_id) {
-      throw new ClientError('session_id attribute missing', 400);
-    }
+    // if (!session_id) {
+    //   throw new ClientError('session_id attribute missing', 400);
+    // }
 
-    if (!application_id) {
-      throw new ClientError('application_id attribute missing', 400);
-    }
-    if (!meeting_id) {
-      throw new ClientError('meeting_id is missing', 400);
-    }
-    if (!recruiter_user_id) {
-      throw new ClientError('recruiter_user_id is missing', 400);
-    }
-    const data: DataPayload = await confiramtionMailToOrganizer(
-      session_id,
-      application_id,
-      meeting_id,
-      recruiter_user_id,
-    );
+    // if (!application_id) {
+    //   throw new ClientError('application_id attribute missing', 400);
+    // }
+    // if (!meeting_id) {
+    //   throw new ClientError('meeting_id is missing', 400);
+    // }
+    // if (!recruiter_user_id) {
+    //   throw new ClientError('recruiter_user_id is missing', 400);
+    // }
+    // const data: DataPayload = await confiramtionMailToOrganizer(
+    //   session_id,
+    //   application_id,
+    //   meeting_id,
+    //   recruiter_user_id,
+    // );
 
-    const filled_body: FilledPayload = await fetchTemplate(
-      data.recruiter_id,
-      data.mail_type,
-      data.payload,
-    );
-    filled_body.meetingLink = data.payload.meetingLink;
-    filled_body.meetingDetails = data.payload.meetingDetails;
-    filled_body.companyLogo = data.companyLogo;
-    const { emails } = await getEmails();
+    // const filled_body: FilledPayload = await fetchTemplate(
+    //   data.recruiter_id,
+    //   data.mail_type,
+    //   data.payload,
+    // );
+    // filled_body.meetingLink = data.payload.meetingLink;
+    // filled_body.meetingDetails = data.payload.meetingDetails;
+    // filled_body.companyLogo = data.companyLogo;
+    // const { emails } = await getEmails();
 
-    const emailIdx = emails.findIndex((e) => e === data.mail_type);
+    // const emailIdx = emails.findIndex((e) => e === data.mail_type);
 
-    if (emailIdx === -1)
-      throw new ClientError(
-        `${data.mail_type} does not match any mail_type`,
-        400,
-      );
+    // if (emailIdx === -1)
+    //   throw new ClientError(
+    //     `${data.mail_type} does not match any mail_type`,
+    //     400,
+    //   );
 
-    const { html, subject } = await renderEmailTemplate(
-      emails[emailIdx],
-      filled_body,
-    );
-    await sendMail({ email: data.recipient_email, html, subject, text: html });
+    // const { html, subject } = await renderEmailTemplate(
+    //   emails[emailIdx],
+    //   filled_body,
+    // );
+    // await sendMail({ email: data.recipient_email, html, subject, text: html });
     return NextResponse.json('success', {
       status: 200,
     });

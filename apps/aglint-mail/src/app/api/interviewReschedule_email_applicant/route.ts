@@ -5,10 +5,10 @@ import {
 } from '../../../utils/apiUtils/customErrors';
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
-import fetchTemplate from '../../../utils/apiUtils/fillCompEmailTemplate';
-import type { FilledPayload } from '../../../utils/types/apiTypes';
-import sendMail from '../../../config/sendgrid';
-import recruiterReschedulingEmail from './fetch-util';
+// import fetchTemplate from '../../../utils/apiUtils/fillCompEmailTemplate';
+// import type { FilledPayload } from '../../../utils/types/apiTypes';
+// import sendMail from '../../../config/sendgrid';
+// import recruiterReschedulingEmail from './fetch-util';
 
 interface ReqPayload {
   session_ids: string[];
@@ -39,55 +39,55 @@ interface DataPayload {
 }
 
 export async function POST(req: Request) {
-  const {
-    session_ids,
-    application_id,
-    meeting_id,
-    interview_cancel_id,
-  }: ReqPayload = await req.json();
+  // const {
+  //   session_ids,
+  //   application_id,
+  //   meeting_id,
+  //   interview_cancel_id,
+  // }: ReqPayload = await req.json();
 
   try {
-    if (!session_ids) {
-      throw new ClientError('attribute session_ids missing', 400);
-    }
-    if (!interview_cancel_id) {
-      throw new ClientError('attribute interview_cancel_id missing', 400);
-    }
+    // if (!session_ids) {
+    //   throw new ClientError('attribute session_ids missing', 400);
+    // }
+    // if (!interview_cancel_id) {
+    //   throw new ClientError('attribute interview_cancel_id missing', 400);
+    // }
 
-    if (!application_id) {
-      throw new ClientError('application_id attribute missing', 400);
-    }
-    if (!meeting_id) {
-      throw new ClientError('meeting_id is missing', 400);
-    }
-    const data: DataPayload = await recruiterReschedulingEmail(
-      session_ids,
-      application_id,
-      meeting_id,
-      interview_cancel_id,
-    );
-    const filled_body: FilledPayload = await fetchTemplate(
-      data.recruiter_id,
-      data.mail_type,
-      data.payload,
-    );
-    filled_body.companyLogo = data.companyLogo;
-    filled_body.meetingDetails = data.payload.meetingDetails;
-    const { emails } = await getEmails();
+    // if (!application_id) {
+    //   throw new ClientError('application_id attribute missing', 400);
+    // }
+    // if (!meeting_id) {
+    //   throw new ClientError('meeting_id is missing', 400);
+    // }
+    // const data: DataPayload = await recruiterReschedulingEmail(
+    //   session_ids,
+    //   application_id,
+    //   meeting_id,
+    //   interview_cancel_id,
+    // );
+    // const filled_body: FilledPayload = await fetchTemplate(
+    //   data.recruiter_id,
+    //   data.mail_type,
+    //   data.payload,
+    // );
+    // filled_body.companyLogo = data.companyLogo;
+    // filled_body.meetingDetails = data.payload.meetingDetails;
+    // const { emails } = await getEmails();
 
-    const emailIdx = emails.findIndex((e) => e === data.mail_type);
+    // const emailIdx = emails.findIndex((e) => e === data.mail_type);
 
-    if (emailIdx === -1)
-      throw new ClientError(
-        `${data.mail_type} does not match any mail_type`,
-        400,
-      );
+    // if (emailIdx === -1)
+    //   throw new ClientError(
+    //     `${data.mail_type} does not match any mail_type`,
+    //     400,
+    //   );
 
-    const { html, subject } = await renderEmailTemplate(
-      emails[emailIdx],
-      filled_body,
-    );
-    await sendMail({ email: data.recipient_email, html, subject, text: html });
+    // const { html, subject } = await renderEmailTemplate(
+    //   emails[emailIdx],
+    //   filled_body,
+    // );
+    // await sendMail({ email: data.recipient_email, html, subject, text: html });
     return NextResponse.json('success', {
       status: 200,
     });

@@ -1,6 +1,6 @@
 import { ScheduleUtils } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import type { InitEmailAgentType } from '../../../utils/types/supabase-fetch';
+// import type { InitEmailAgentType } from '../../../utils/types/supabase-fetch';
 
 interface FilterJson {
   start_date: string;
@@ -33,29 +33,29 @@ export async function initEmailAgent(filter_id: string, meeting_id: string) {
     },
   } = filterJson;
 
-  const body: InitEmailAgentType = {
-    recipient_email: email,
-    mail_type: 'init_email_agent',
-    recruiter_id,
-    companyLogo: logo,
-    payload: {
-      '[candidateFirstName]': first_name,
-      '[companyName]': company,
-      '[jobRole]': job_title,
-      '[startDate]': ScheduleUtils.convertDateFormatToDayjs(
-        start_date,
-        user_tz,
-      ).format('MMM DD, YYYY'),
-      '[endDate]': ScheduleUtils.convertDateFormatToDayjs(
-        end_date,
-        user_tz,
-      ).format('MMM DD, YYYY'),
-      '[companyTimeZone]': '',
-      '[selfScheduleLink]': `${process.env.BASE_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
-    },
-  };
+  // const body: InitEmailAgentType = {
+  //   recipient_email: email,
+  //   mail_type: 'init_email_agent',
+  //   recruiter_id,
+  //   companyLogo: logo,
+  //   payload: {
+  //     '[candidateFirstName]': first_name,
+  //     '[companyName]': company,
+  //     '[jobRole]': job_title,
+  //     '[startDate]': ScheduleUtils.convertDateFormatToDayjs(
+  //       start_date,
+  //       user_tz,
+  //     ).format('MMM DD, YYYY'),
+  //     '[endDate]': ScheduleUtils.convertDateFormatToDayjs(
+  //       end_date,
+  //       user_tz,
+  //     ).format('MMM DD, YYYY'),
+  //     '[companyTimeZone]': '',
+  //     '[selfScheduleLink]': `${process.env.BASE_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
+  //   },
+  // };
 
-  return body;
+  // return body;
 }
 
 // http://localhost:3100/api/init-email-agent
