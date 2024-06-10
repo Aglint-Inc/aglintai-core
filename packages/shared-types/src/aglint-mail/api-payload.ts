@@ -111,11 +111,12 @@ type Payloads = {
   interviewStart_email_applicant: {
     api_payload: v.InferInput<typeof interviewStartEmailApplicantSchema>;
     comp_email_placeholders: {
-      '[firstName]': string;
-      '[jobTitle]': string;
-      '[companyName]': string;
-      '[supportLink]': string;
-      '[interviewLink]': string;
+      '{{ candidateName }}': string;
+      '{{ companyName }}': string;
+      '{{ jobTitle }}': string;
+      '{{ date }}': string;
+      '{{ time }}': string;
+      '{{ candidateLink }}': string;
     };
     react_email_placeholders: {
       emailBody: string;

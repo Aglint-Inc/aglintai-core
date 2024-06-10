@@ -2,6 +2,7 @@ import { DatabaseEnums, EmailTemplateAPi } from '@aglint/shared-types';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/userTzDayjs';
 
 export async function dbFetch(
   req_body: EmailTemplateAPi<'interviewStart_email_applicant'>['api_payload'],
@@ -10,12 +11,18 @@ export async function dbFetch(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+        'candidates(first_name,email,recruiter_id,recruiter(logo),timezone),public_jobs(job_title,company)',
       )
       .eq('id', req_body.application_id),
   );
+  const [meeting] = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_meeting')
+      .select()
+      .eq('id', req_body.meeting_id),
+  );
 
-  if (!candidateJob) {
+  if (!candidateJob || !meeting) {
     throw new Error('candidate and jobs details are not available');
   }
 
@@ -34,13 +41,20 @@ export async function dbFetch(
     'interviewStart_email_applicant',
   );
 
+  const cand_tz = candidateJob.candidates.timezone ?? 'America/Los_angeles';
+
   const comp_email_placeholder: EmailTemplateAPi<'interviewStart_email_applicant'>['comp_email_placeholders'] =
     {
-      '[firstName]': first_name,
-      '[jobTitle]': job_title,
-      '[companyName]': company,
-      '[supportLink]': '',
-      '[interviewLink]': ``,
+      '{{ candidateName }}': first_name,
+      '{{ jobTitle }}': job_title,
+      '{{ companyName }}': company,
+      '{{ candidateLink }}': '',
+      '{{ date }}': dayjsLocal(meeting.start_time)
+        .tz(cand_tz)
+        .format('MMMM dddd YYYY'),
+      '{{ time }}':
+        dayjsLocal(meeting.start_time).tz(cand_tz).format('hh:mm') +
+        ` (${cand_tz})`,
     };
   const filled_comp_template = fillCompEmailTemplate(
     comp_email_placeholder,
@@ -49,7 +63,7 @@ export async function dbFetch(
 
   const react_email_placeholders: EmailTemplateAPi<'interviewStart_email_applicant'>['react_email_placeholders'] =
     {
-      companyLogo: '',
+      companyLogo: logo,
       emailBody: filled_comp_template.body,
       subject: filled_comp_template.subject,
     };

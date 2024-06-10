@@ -4,7 +4,7 @@ import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import sendMail from '../../../config/sendgrid';
 import { dbFetch } from './fetch-util';
-import v from 'valibot';
+import * as v from 'valibot';
 import { interviewStartEmailApplicantSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
 
 export async function POST(req: Request) {
