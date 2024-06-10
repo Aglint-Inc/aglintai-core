@@ -76,8 +76,8 @@ const CandidateInviteNew = () => {
       justifyContent={'center'}
     >
       {load === undefined ? (
-        <Stack width={'120px'} style={{ transform: 'translateY(-50%)' }}>
-          <CandidateSlotLoad />
+        <Stack width={'100%'} height={'100%'}>
+          <Loader />
         </Stack>
       ) : load === null ? (
         <Stack style={{ transform: 'translateY(-50%)' }}>
@@ -104,7 +104,7 @@ const CandidateInvitePlanPage = () => {
     setSelectedSlots,
     setTimezone,
   } = useCandidateInvite();
-  const waiting = !!meetings.find(
+  const waiting = meetings.some(
     ({ interview_meeting: { status } }) => status === 'waiting',
   );
   const { rounds } = meetings.reduce(
@@ -125,11 +125,15 @@ const CandidateInvitePlanPage = () => {
     },
     { rounds: [] as ScheduleCardProps['round'][] },
   );
-  if (waiting) return <ConfirmedPage rounds={rounds} />;
+  if (!waiting) return <ConfirmedPage rounds={rounds} />;
   return (
     <CandidateConfirmationPage
       slotCompanyLogo={<Logo />}
-      onClickView={{ onClick: () => setDetailsPop(true) }}
+      onClickView={{
+        onClick: () => {
+          setDetailsPop(true);
+        },
+      }}
       slotCandidateCalender={
         <>
           <TimezoneSelector
@@ -652,7 +656,13 @@ const SingleDayError = () => {
 };
 
 const SingleDayLoading = () => {
-  return <Loader />;
+  return (
+    <Stack direction={'row'} justifyContent={'center'}>
+      <Stack width={'120px'}>
+        <CandidateSlotLoad />
+      </Stack>
+    </Stack>
+  );
 };
 
 const SingleDaySuccess = () => {
@@ -897,7 +907,13 @@ const MultiDayError = () => {
 };
 
 const MultiDayLoading = () => {
-  return <Loader />;
+  return (
+    <Stack direction={'row'} justifyContent={'center'}>
+      <Stack width={'120px'}>
+        <CandidateSlotLoad />
+      </Stack>
+    </Stack>
+  );
 };
 
 const MultiDaySuccess = (props: ScheduleCardsProps) => {
