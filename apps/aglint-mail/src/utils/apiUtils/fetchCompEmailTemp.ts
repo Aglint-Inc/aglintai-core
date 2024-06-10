@@ -1,9 +1,9 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap, supabaseAdmin } from '../../supabase/supabaseAdmin';
 
 export const fetchCompEmailTemp = async (
   recruiter_id: string,
-  mail_type: string,
+  mail_type: DatabaseEnums['email_types'],
 ) => {
   const [template] = supabaseWrap(
     await supabaseAdmin

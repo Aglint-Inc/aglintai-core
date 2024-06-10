@@ -4946,6 +4946,7 @@ export type Database = {
         | "InterviewCancelReq_email_recruiter"
         | "interReschedReq_email_recruiter"
         | "interviewReschedule_email_applicant"
+        | "interviewReminder_email_interviewer"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"

@@ -5,12 +5,13 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getResponseFactory } from '@/src/utils/apiUtils/responseFactory';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-// tested email types
+//
 // interviewStart_email_applicant
 // interviewStart_email_interviewer
 // interviewReminder_email_applicant
 // interviewReminder_email_interviewer
 // phoneScreenRemind_email_applicant
+//
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const getResponse = getResponseFactory<APIWorkFlowCron['response']>(res);

@@ -4,7 +4,7 @@ export type APISendgridPayload = {
   subject: string;
   text: string;
   html?: string;
-  email: string;
+  email: string | string[];
   headers?: Record<string, any>;
   attachments?: MailAttachment[];
 };

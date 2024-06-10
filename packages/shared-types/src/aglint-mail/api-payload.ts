@@ -10,6 +10,7 @@ import {
   interReschedReqEmailRecruiterSchema,
   interviewCancelReqEmailRecruiterSchema,
   interviewReminderEmailApplicantSchema,
+  interviewReminderEmailInterviewerSchema,
   interviewRescheduleEmailApplicantSchema,
   interviewStartEmailApplicantSchema,
   interviewStartEmailInterviewersSchema,
@@ -76,9 +77,37 @@ type Payloads = {
   };
   interviewReminder_email_applicant: {
     api_payload: v.InferInput<typeof interviewReminderEmailApplicantSchema>;
-    comp_email_placeholders: {};
+    comp_email_placeholders: {
+      '{{ candidateName }}': string;
+      '{{ jobTitle }}': string;
+      '{{ recruiterName }}': string;
+      '{{ companyName }}': string;
+      '{{ sessionName }}': string;
+      '{{ date }}': string;
+      '{{ time }}': string;
+    };
     react_email_placeholders: {
       subject: string;
+      emailBody: string;
+      companyLogo: string;
+    };
+  };
+  interviewReminder_email_interviewer: {
+    api_payload: v.InferInput<typeof interviewReminderEmailInterviewerSchema>;
+    comp_email_placeholders: {
+      '{{ candidateName }}': string;
+      '{{ jobTitle }}': string;
+      '{{ jobRecruiter }}': string;
+      '{{ companyName }}': string;
+      '{{ sessionName }}': string;
+      '{{ date }}': string;
+      '{{ time }}': string;
+      '{{ interviewerFirstName }}': string;
+    };
+    react_email_placeholders: {
+      subject: string;
+      emailBody: string;
+      companyLogo: string;
     };
   };
   phoneScreenRemind_email_applicant: {

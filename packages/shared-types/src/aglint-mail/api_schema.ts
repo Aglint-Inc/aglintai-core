@@ -41,6 +41,12 @@ export const phoneScreenEmailCandidateSchema = v.object({
 
 export const interviewReminderEmailApplicantSchema = v.object({
   application_id: v.string(),
+  session_id: v.string(),
+});
+
+export const interviewReminderEmailInterviewerSchema = v.object({
+  application_id: v.string(),
+  session_id: v.string(),
 });
 
 export const phoneScreenRemindEmailApplicantSchema = v.object({

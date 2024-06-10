@@ -30,7 +30,17 @@ export default async function sendMail(data: APISendgridPayload) {
       headers,
       attachments,
     };
-    msg.to = await getOutboundEmail(msg.to);
+
+    if (Array.isArray(msg.to)) {
+      let updated_emails: string[] = msg.to;
+
+      const email_promises = updated_emails.map(async (email) => {
+        return await getOutboundEmail(email);
+      });
+
+      msg.to = await Promise.all(email_promises);
+    }
+    console.log(msg.to);
     const resp = await sgMail.send(msg);
     const Response = resp[0];
 
@@ -39,7 +49,7 @@ export default async function sendMail(data: APISendgridPayload) {
     }
     throw new MailSenderError(`mail failed to send`);
   } catch (error) {
-    console.error(error.response.body);
+    console.error(error);
     throw new MailSenderError(`mail failed to send`);
   }
 }

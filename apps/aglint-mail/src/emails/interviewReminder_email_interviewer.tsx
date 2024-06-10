@@ -12,7 +12,7 @@ import { Parser } from 'html-to-react';
 import * as React from 'react';
 import { aglintLogo } from '../utils/assets/common';
 import { EmailTemplateAPi } from '@aglint/shared-types';
-type EmailType = EmailTemplateAPi<'interviewReminder_email_applicant'>;
+type EmailType = EmailTemplateAPi<'interviewReminder_email_interviewer'>;
 
 // export dummy
 export const dummy: EmailType['react_email_placeholders'] = {
@@ -42,7 +42,6 @@ export const InterviewResent = ({
                 className="w-[80px] mb-[10px]"
                 src={companyLogo}
               />
-
               <Text className="">{htmlParser.parse(emailBody)}</Text>
             </Container>
             <Text className="flex items-center text-[10px] mx-auto w-fit text-gray-500">
