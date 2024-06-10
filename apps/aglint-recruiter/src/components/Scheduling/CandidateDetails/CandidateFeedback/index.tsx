@@ -1,7 +1,8 @@
 import { DatabaseTable } from '@aglint/shared-types';
-import { Box, Stack, Typography } from '@mui/material';
+import { Alert, AlertTitle, Box, Stack, Typography } from '@mui/material';
 import React from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { CandidateFeedback as CandidateFeedbackDev } from '@/devlink3/CandidateFeedback';
 import { supabase } from '@/src/utils/supabase/client';
 
@@ -45,9 +46,37 @@ const CandidateFeedback = ({
         })()
       ) : (
         <Stack gap={2}>
-          <Typography variant='body1'>
+          <Alert
+            severity="info"
+            icon={false}
+            action={
+              <ButtonSoft 
+              onClickButton={{onClick: handleRequestFeedback}}
+              isLeftIcon={false}
+              isRightIcon={false}
+              size={2}
+              color={'neutral'}
+              textButton={
+                feedback ? 
+                  'Ask Again' : 
+                  'Request Feedback'
+              }
+              />
+            }
+          >
+            {/* <AlertTitle>Info</AlertTitle> */}
+            <Typography variant='body1'>
+            {
+              feedback ? 
+                "You have requested feedback. The candidate hasn't submitted any yet. Would you like to ask again?" : 
+                "The candidate hasn't submitted any feedback"}
+              
+            </Typography>
+          </Alert>
+          {/* <Typography variant='body1'>
             {"Candidate haven't submitted any feedback"}
           </Typography>
+
           <Typography variant='body1'
             sx={{
               cursor: 'pointer',
@@ -56,7 +85,7 @@ const CandidateFeedback = ({
             onClick={handleRequestFeedback}
           >
             {feedback ? 'Request Feedback Again' : 'Request Feedback'}
-          </Typography>
+          </Typography> */}
         </Stack>
       )}
     </Stack>
