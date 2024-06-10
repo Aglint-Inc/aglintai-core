@@ -12,41 +12,31 @@ import {
 import { Parser } from 'html-to-react';
 import * as React from 'react';
 import { aglintLogo } from '../utils/assets/common';
-
-interface ConfirmMailToOrganizerType {
-  body?: string;
-  companyLogo?: string;
-  meetingLink?: string;
-  meetingDetails: {
-    date?: string;
-    time?: string;
-    sessionType?: string;
-    platform?: string;
-    duration?: string;
-    sessionTypeIcon?: string;
-    meetingIcon?: string;
-  }[];
-}
+import { EmailTemplateAPi } from '@aglint/shared-types';
 
 // export dummy
-export const dummy: ConfirmMailToOrganizerType = {
-  body: '<p>Dear [recruiterName] ,</p><p>This is a friendly reminder about the interview with [firstName] .</p<p>Please find the details for the interview below candidate name : [firstName] </p><p>Thank you</p>',
-  companyLogo:
-    'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
-  meetingDetails: [
-    {
-      date: 'Fri, May 12, 2024',
-      time: '09:00 AM - 09:30 PM PST',
-      sessionType: 'Personality and cultural fit',
-      platform: 'Google meet',
-      duration: '45 minutes',
-      sessionTypeIcon:
-        'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/debrief.png',
-      meetingIcon:
-        'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/google_meet.png',
-    },
-  ],
-};
+export const dummy: EmailTemplateAPi<'interviewStart_email_interviewers'>['react_email_placeholders'] =
+  {
+    emailBody:
+      '<p>Dear [recruiterName] ,</p><p>This is a friendly reminder about the interview with [firstName] .</p<p>Please find the details for the interview below candidate name : [firstName] </p><p>Thank you</p>',
+    companyLogo:
+      'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
+    meetingDetails: [
+      {
+        date: 'Fri, May 12, 2024',
+        time: '09:00 AM - 09:30 PM PST',
+        sessionType: 'Personality and cultural fit',
+        platform: 'Google meet',
+        duration: '45 minutes',
+        sessionTypeIcon:
+          'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/debrief.png',
+        meetingIcon:
+          'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/google_meet.png',
+      },
+    ],
+    candidateLink: '',
+    subject: '',
+  };
 
 // export get subject
 export const getSubject = (companyName: any) => `${companyName}`;
@@ -82,17 +72,17 @@ const Sessions = ({ meetingDetail }) => {
 };
 
 export const ConfirmMailToOrganizerRemainder = ({
-  body = dummy.body,
+  emailBody = dummy.emailBody,
   meetingDetails = dummy.meetingDetails,
-  meetingLink = dummy.meetingLink,
+  candidateLink = dummy.candidateLink,
   companyLogo = dummy.companyLogo,
-}: ConfirmMailToOrganizerType) => {
+}: EmailTemplateAPi<'interviewStart_email_interviewers'>['react_email_placeholders']) => {
   const htmlParser = Parser();
   return (
     <Html>
       <Head />
       <Tailwind>
-        <Preview>Interview Booking Confirmation</Preview>
+        <Preview>Interview reminder</Preview>
         <Body className="bg-[#f0f0f0] font-sans  p-[20px]">
           <Container className="px-[3px] mx-auto">
             <Container className="p-[50px] bg-white">
@@ -102,15 +92,15 @@ export const ConfirmMailToOrganizerRemainder = ({
                 src={companyLogo}
               />
 
-              <Text className="">{htmlParser.parse(body)}</Text>
+              <Text className="">{htmlParser.parse(emailBody)}</Text>
               {meetingDetails.map((meetingDetail, i) => (
                 <Sessions key={i} meetingDetail={meetingDetail} />
               ))}
               <Button
                 className="px-3 py-2 bg-[#337FBD] text-white br rounded-md text-[14px]"
-                href={meetingLink}
+                href={candidateLink}
               >
-                Join Now
+                Candidate details
               </Button>
             </Container>
             <Text className="flex items-center text-[10px]  mx-auto w-fit text-gray-500">

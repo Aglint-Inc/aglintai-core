@@ -1,5 +1,4 @@
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import type { RequestCandidateSlotType } from '../../types/supabase-fetch';
 
 export default async function requestCandidateSlot(
   application_id: string,
@@ -27,7 +26,7 @@ export default async function requestCandidateSlot(
     public_jobs: { company, job_title },
   } = candidateJob;
 
-  const body: RequestCandidateSlotType = {
+  const body = {
     recipient_email: email,
     mail_type: 'request_candidate_slot',
     recruiter_id,

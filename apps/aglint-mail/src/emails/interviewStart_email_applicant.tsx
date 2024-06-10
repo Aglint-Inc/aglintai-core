@@ -11,31 +11,29 @@ import {
 import { Parser } from 'html-to-react';
 import * as React from 'react';
 import { aglintLogo } from '../utils/assets/common';
-
-interface InterviewResentType {
-  body?: string;
-  companyLogo?: string;
-}
+import { EmailTemplateAPi } from '@aglint/shared-types';
 
 // export dummy
-export const dummy: InterviewResentType = {
-  body: '<p>Dear [firstName],</p><p>This is a friendly reminder to choose an assessment time that suits your schedule for the [jobTitle] at [companyName].</p><p>[interviewLink]</p><p>If you have any queries about this job</p><p>[supportLink]</p><p>We wish you the best of luck and are eager to hear your insights!</p><p>Warm regards,</p><p>[companyName]</p>',
-  companyLogo:
-    'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
-};
+export const dummy: EmailTemplateAPi<'interviewStart_email_applicant'>['react_email_placeholders'] =
+  {
+    subject: '',
+    emailBody: `<p>Dear {{ candidateName }},</p><p style="text-align: start">This is a friendly reminder of your upcoming interview for the {{ jobTitle }} position at {{ companyName }} scheduled for <strong>{{ date }} at {{ time }}</strong>.</p><p style="text-align: start">We look forward to a successful interview!</p><p style="text-align: start">Warm regards,</p><p style="text-align: start">The {{ companyName }} Team</p>`,
+    companyLogo:
+      'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
+  };
 
 export const getSubject = (companyName: any) => `${companyName}`;
 
 export const InterviewResentRemainder = ({
-  body = dummy.body,
+  emailBody = dummy.emailBody,
   companyLogo = dummy.companyLogo,
-}: InterviewResentType) => {
+}: EmailTemplateAPi<'interviewStart_email_applicant'>['react_email_placeholders']) => {
   const htmlParser = Parser();
   return (
     <Html>
       <Head />
       <Tailwind>
-        <Preview>Interview Confirmation</Preview>
+        <Preview>Interview reminder</Preview>
         <Body className="bg-[#f0f0f0] font-sans  p-[20px]">
           <Container className="px-[3px] mx-auto">
             <Container className="p-[50px]  bg-white">
@@ -45,7 +43,7 @@ export const InterviewResentRemainder = ({
                 src={companyLogo}
               />
 
-              <Text className="">{htmlParser.parse(body)}</Text>
+              <Text className="">{htmlParser.parse(emailBody)}</Text>
             </Container>
             <Text className="flex items-center text-[10px] mx-auto w-fit text-gray-500">
               Powered By

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import sgMail from '@sendgrid/mail';
 import type { APISendgridPayload } from '@aglint/shared-types';
 import { MailSenderError } from '../utils/apiUtils/customErrors';
@@ -30,16 +31,28 @@ export default async function sendMail(data: APISendgridPayload) {
       headers,
       attachments,
     };
-    msg.to = await getOutboundEmail(msg.to);
+
+    if (Array.isArray(msg.to)) {
+      const updated_emails: string[] = msg.to;
+
+      const email_promises = updated_emails.map(async (to_email) => {
+        return getOutboundEmail(to_email);
+      });
+
+      msg.to = await Promise.all(email_promises);
+    } else {
+      msg.to = await getOutboundEmail(msg.to);
+    }
     const resp = await sgMail.send(msg);
     const Response = resp[0];
 
+    console.log(msg.to);
     if (Response.statusCode >= 200 && Response.statusCode < 300) {
       return 'ok';
     }
     throw new MailSenderError(`mail failed to send`);
   } catch (error) {
-    console.error(error.response.body);
+    console.error(error);
     throw new MailSenderError(`mail failed to send`);
   }
 }
