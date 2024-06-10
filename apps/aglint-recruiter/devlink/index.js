@@ -171,6 +171,7 @@ export * from "./FeedbackScore";
 export * from "./FetchingAshbyLoader";
 export * from "./Filter";
 export * from "./FilterButton";
+export * from "./GeneralError";
 export * from "./GenerateJobDescAi";
 export * from "./GenerateQuestion";
 export * from "./GreenhouseApiKey";

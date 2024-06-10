@@ -13,7 +13,7 @@ const Experience = () => {
   if (status === 'pending') return <>Loading experience ...</>;
   if (
     !(
-      (data?.resume?.resume_json?.positions ?? []).length &&
+      (data?.candidate_files?.resume_json?.positions ?? []).length &&
       data?.score_json?.relevance?.positions
     )
   )
@@ -33,7 +33,7 @@ const Experiences = () => {
   const {
     application: {
       data: {
-        resume: {
+        candidate_files: {
           resume_json: { positions },
         },
         score_json: {
@@ -70,11 +70,9 @@ const Experiences = () => {
 const CompanyLogo = ({
   companyLogo,
   companyName,
-  borderRadius = 0,
 }: {
   companyLogo?: string;
   companyName: string;
-  borderRadius?: number;
 }) => {
   const name =
     typeof companyName === 'string' ? companyName.toLowerCase().trim() : '';
@@ -85,9 +83,10 @@ const CompanyLogo = ({
         bgcolor: 'white.700',
         width: '100%',
         height: '100%',
+        borderRadius: '10px',
         '& .MuiAvatar-img ': {
           objectFit: 'contain',
-          borderRadius: `${borderRadius}px`,
+          borderRadius: `10px`,
         },
       }}
       style={{ color: 'black' }}
@@ -106,8 +105,10 @@ const CompanyLogo = ({
         bgcolor: 'white.700',
         width: '100%',
         height: '100%',
+        borderRadius: '10px',
         '& .MuiAvatar-img ': {
           objectFit: 'contain',
+          borderRadius: '10px',
         },
       }}
       style={{ color: 'black' }}

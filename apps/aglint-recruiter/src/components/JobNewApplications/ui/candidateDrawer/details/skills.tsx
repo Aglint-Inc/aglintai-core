@@ -12,7 +12,7 @@ const Skills = () => {
   if (status === 'pending') return <>Loading skills ...</>;
   if (
     !(
-      (data?.resume?.resume_json?.skills ?? []).length &&
+      (data?.candidate_files?.resume_json?.skills ?? []).length &&
       data?.score_json?.relevance?.skills
     )
   )
@@ -32,7 +32,7 @@ const Skill = () => {
   const {
     application: {
       data: {
-        resume: {
+        candidate_files: {
           resume_json: { skills },
         },
         score_json: {

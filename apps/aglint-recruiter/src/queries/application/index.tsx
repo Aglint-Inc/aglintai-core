@@ -6,7 +6,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import { jobQueryKeys } from '../job/keys';
 
 const SELECT_QUERY =
-  '*, candidates(* , candidate_files(created_at, candidate_id, file_url, resume_json, type))';
+  '*, candidates(*), candidate_files(created_at, candidate_id, file_url, resume_json, type)';
 
 export const applicationQuery = {
   all: ({ job_id }: ApplicationAllQueryPrerequistes) => ({
@@ -38,7 +38,7 @@ type Params = ApplicationAllQueryPrerequistes & {
 const getApplication = async ({
   application_id,
 }: Pick<Params, 'application_id'>) => {
-  const { candidates, ...application } = (
+  return (
     await supabase
       .from('applications')
       .select(SELECT_QUERY)
@@ -46,8 +46,4 @@ const getApplication = async ({
       .single()
       .throwOnError()
   ).data;
-  if (!candidates) return { ...application, candidate: null, resume: null };
-  const { candidate_files, ...candidate } = candidates;
-  const resume = (candidate_files ?? []).find(({ type }) => type === 'resume');
-  return { ...application, candidate, resume };
 };

@@ -6,9 +6,11 @@ const Overview = () => {
     application: { data, status },
   } = useApplication();
   if (status === 'pending') return <>Overview Loading...</>;
-  if (data?.resume?.resume_json?.overview)
+  if (data?.candidate_files?.resume_json?.overview)
     return (
-      <CandidateOverview textOverview={data.resume.resume_json.overview} />
+      <CandidateOverview
+        textOverview={data.candidate_files.resume_json.overview}
+      />
     );
   return <></>;
 };

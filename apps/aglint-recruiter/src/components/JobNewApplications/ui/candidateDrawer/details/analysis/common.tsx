@@ -2,6 +2,7 @@
 import { JdAnalysisItem } from '@/devlink/JdAnalysisItem';
 import { useApplication } from '@/src/context/ApplicationContext';
 import { Application } from '@/src/context/ApplicationContext/type';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 const AnalysisItem = ({
   type,
@@ -14,10 +15,25 @@ const AnalysisItem = ({
   if (status === 'pending') return <>Loading...</>;
   const scores = data?.score_json?.scores;
   const reasoning = data?.score_json?.reasoning;
-  if (!(scores && reasoning && scores[type] && reasoning[type])) return <></>;
+  if (
+    !(
+      scores &&
+      reasoning &&
+      scores[type] &&
+      reasoning[
+        type === 'education'
+          ? 'schools'
+          : type === 'experience'
+            ? 'positions'
+            : 'skills'
+      ]
+    )
+  )
+    return <></>;
   const tier = getScoreTier(scores[type]);
   return (
     <JdAnalysisItem
+      textTitle={capitalizeAll(type)}
       textAnalysis={reasoning[type]}
       textBadge={`${tier} -  ${scores[type]}`}
       isHigh={tier === 'High'}

@@ -18,8 +18,8 @@ const Info = () => {
       onClickLinkedin={{ onClick: () => {} }}
       onClickResume={{ onClick: () => {} }}
       textName={getFullName(
-        data?.candidate?.first_name,
-        data?.candidate?.last_name,
+        data?.candidates?.first_name,
+        data?.candidates?.last_name,
       )}
     />
   );
@@ -33,12 +33,12 @@ const Actions = () => {
   return (
     <CandidateSidedrawerTop
       isBookmarked={data.bookmarked}
-      isDownArrowEnable={true}
-      isUpArrowEnable={true}
+      isDownArrowEnable={false}
+      isUpArrowEnable={false}
       onClickBookMark={{ onClick: () => {} }}
       onClickClose={{ onClick: () => {} }}
-      onClickDown={{ onClick: () => {} }}
-      onClickUp={{ onClick: () => {} }}
+      onClickDown={{ onClick: () => {}, style: { display: 'none' } }}
+      onClickUp={{ onClick: () => {}, style: { display: 'none' } }}
     />
   );
 };

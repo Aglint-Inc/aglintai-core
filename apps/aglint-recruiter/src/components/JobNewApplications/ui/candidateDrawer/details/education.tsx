@@ -1,4 +1,6 @@
 /* eslint-disable security/detect-object-injection */
+import Image from 'next/image';
+
 import { CandidateDetail } from '@/devlink/CandidateDetail';
 import { EducationItem } from '@/devlink/EducationItem';
 import { useApplication } from '@/src/context/ApplicationContext';
@@ -10,7 +12,7 @@ const Education = () => {
   if (status === 'pending') return <>Loading experience ...</>;
   if (
     !(
-      (data?.resume?.resume_json?.schools ?? []).length &&
+      (data?.candidate_files?.resume_json?.schools ?? []).length &&
       data?.score_json?.relevance?.schools
     )
   )
@@ -30,33 +32,33 @@ const Schools = () => {
   const {
     application: {
       data: {
-        resume: {
+        candidate_files: {
           resume_json: { schools },
         },
-        // score_json: {
-        //   relevance: { schools: relevance },
-        // },
+        score_json: {
+          relevance: { schools: relevance },
+        },
       },
     },
   } = useApplication();
   return schools.map(({ institution, start, end, degree }, i) => (
     <EducationItem
       key={i}
-      slotSchoolIcon={<></>}
+      slotSchoolIcon={null}
       textEducation={degree}
       textSchool={institution}
-      //   slotBadge={
-      //     relevance && relevance[i] === 'high' ? (
-      //       <Image
-      //         src={'/images/badges/experienced.svg'}
-      //         width={16}
-      //         height={16}
-      //         alt=''
-      //       />
-      //     ) : (
-      //       <></>
-      //     )
-      //   }
+      slotBadge={
+        relevance && relevance[i] === 'high' ? (
+          <Image
+            src={'/images/badges/knowledgable.svg'}
+            width={16}
+            height={16}
+            alt=''
+          />
+        ) : (
+          <></>
+        )
+      }
       textDate={timeRange(timeFormat(start), timeFormat(end))}
     />
   ));

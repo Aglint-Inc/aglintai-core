@@ -1,3 +1,7 @@
+/* Fonts */
+
+@import url('https://fonts.googleapis.com/css?family=Material+Symbols Rounded:100,200,300,regular,500,600,700&subset=latin');
+
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Set default font family to sans-serif.
@@ -2250,6 +2254,7 @@ textarea.w-select {
   --bgGrey100-ce47127d: hsla(180, 7.69%, 97.45%, 1.00);
   --skeletonGrey-4e9a134f: hsla(199.9999999999999, 8.33%, 85.88%, 1.00);
   --bgGrey200-4f66792c: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
+  --icon: 'Material Symbols Rounded', sans-serif;
   --quote: 'Times New Roman', TimesNewRoman, Times, Baskerville, Georgia, serif;
   --emphasis: 'Times New Roman', TimesNewRoman, Times, Baskerville, Georgia, serif;
   --white: white;

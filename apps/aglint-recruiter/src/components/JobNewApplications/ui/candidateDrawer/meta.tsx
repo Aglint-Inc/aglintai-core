@@ -10,10 +10,10 @@ const Meta = () => {
   if (status === 'pending') return <Stack>Loading...</Stack>;
   return (
     <CandidateBasicInfo
-      textLocation={data.candidate?.city ?? '---'}
-      textMail={data.candidate?.email ?? '---'}
-      textPhone={data.candidate?.phone ?? '---'}
-      textRole={data.candidate?.current_job_title ?? '---'}
+      textLocation={data.candidates?.city ?? '---'}
+      textMail={data.candidates?.email ?? '---'}
+      textPhone={data.candidates?.phone ?? '---'}
+      textRole={data.candidates?.current_job_title ?? '---'}
     />
   );
 };
