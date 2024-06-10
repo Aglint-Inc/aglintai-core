@@ -15,7 +15,6 @@ export interface ApiBodyParamsSendToCandidate {
   selectedApplication: SchedulingApplication['selectedApplication'];
   initialSessions: SchedulingApplication['initialSessions'];
   selectedSessionIds: SchedulingApplication['selectedSessionIds'];
-  selCoordinator: SchedulingApplication['selCoordinator'];
   recruiter_id: string;
   dateRange: {
     start_date: string;
@@ -57,7 +56,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       recruiter_id: bodyParams.recruiter_id,
       recruiterUser: bodyParams.recruiterUser,
       selectedDebrief: bodyParams.selectedDebrief,
-      selCoordinator: bodyParams.selCoordinator,
       selectedApplication: bodyParams.selectedApplication,
       selectedSessionIds: bodyParams.selectedSessionIds,
       user_tz: bodyParams.user_tz,
