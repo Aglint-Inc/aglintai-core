@@ -97,6 +97,7 @@ export * from "./FeedbackTableRow";
 export * from "./FeedbackViewPopup";
 export * from "./GeneralPopupLarge";
 export * from "./GeneralScheduleCard";
+export * from "./GlobalIcon";
 export * from "./GraphBlock";
 export * from "./GraphButtonOption";
 export * from "./GroupFeedback";

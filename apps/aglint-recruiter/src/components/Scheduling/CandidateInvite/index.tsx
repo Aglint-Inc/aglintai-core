@@ -29,17 +29,18 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateConfirmationPage } from '@/devlink/CandidateConfirmationPage';
 import { CandidateScheduleCard } from '@/devlink/CandidateScheduleCard';
 import { ChangeButton } from '@/devlink/ChangeButton';
-import { SelectButton } from '@/devlink/SelectButton';
 import { SelectedDateAndTime } from '@/devlink/SelectedDateAndTime';
 import { SessionAndTime } from '@/devlink/SessionAndTime';
 import { SessionInfo } from '@/devlink/SessionInfo';
 import { ButtonDanger } from '@/devlink2/ButtonDanger';
 import { ButtonPrimary } from '@/devlink2/ButtonPrimary';
+import { ButtonSurface } from '@/devlink2/ButtonSurface';
 import { CancelButton } from '@/devlink2/CancelButton';
 import { InterviewConfirmed } from '@/devlink2/InterviewConfirmed';
 import { InterviewConfirmedCard } from '@/devlink2/InterviewConfirmedCard';
 import { RequestReschedule } from '@/devlink2/RequestReschedule';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
+import { GlobalIcon } from '@/devlink3/GlobalIcon';
 import { ScheduleButton } from '@/devlink3/ScheduleButton';
 import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
@@ -124,7 +125,7 @@ const CandidateInvitePlanPage = () => {
     },
     { rounds: [] as ScheduleCardProps['round'][] },
   );
-  if (!waiting) return <ConfirmedPage rounds={rounds} />;
+  if (waiting) return <ConfirmedPage rounds={rounds} />;
   return (
     <CandidateConfirmationPage
       slotCompanyLogo={<Logo />}
@@ -1045,7 +1046,14 @@ const ScheduleCard = (props: ScheduleCardProps) => {
             isSelected ? (
               <ChangeButton onClickButton={{ onClick: () => setOpen(true) }} />
             ) : (
-              <SelectButton onClickButton={{ onClick: () => setOpen(true) }} />
+              <ButtonSurface
+                slotIcon={<GlobalIcon iconName='add' size={'sm'} />}
+                isLeftIcon={true}
+                isRightIcon={false}
+                size={1}
+                onClickButton={{ onClick: () => setOpen(true) }}
+                textButton='Select Option'
+              />
             )
           ) : (
             <></>

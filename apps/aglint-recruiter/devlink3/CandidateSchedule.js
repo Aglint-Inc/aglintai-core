@@ -34,15 +34,20 @@ export function CandidateSchedule({
           {slotDarkPill}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "new-schedule-cd-card-wrap")}
+          className={_utils.cx(_styles, "cs-slot-wrap")}
           tag="div"
         >
-          {slotFullScheduleCard ?? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "dummydiv")}
-              tag="div"
-            />
-          )}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "new-schedule-cd-card-wrap")}
+            tag="div"
+          >
+            {slotFullScheduleCard ?? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "dummydiv")}
+                tag="div"
+              />
+            )}
+          </_Builtin.Block>
         </_Builtin.Block>
         {isScheduleNowVisible ? (
           <_Builtin.Block
