@@ -27,7 +27,6 @@ import {
   setFetchingSchedule,
   setinitialSessions,
   setScheduleName,
-  setSelCoordinator,
   setSelectedApplication,
   setSelectedSchedule,
 } from './store';
@@ -132,10 +131,6 @@ export const useGetScheduleApplication = () => {
                   itemA['session_order'] - itemB['session_order'],
               ),
             );
-
-            if (schedule[0].coordinator_id) {
-              setSelCoordinator(schedule[0].coordinator_id);
-            }
           }
         }
       }
