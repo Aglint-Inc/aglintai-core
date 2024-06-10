@@ -31,7 +31,13 @@ export function CandidateConfirmationPage({
           color="neutral"
           align="center"
         />
-        <Text content="View Schedule details" color="accent" />
+        <_Builtin.Block
+          className={_utils.cx(_styles, "ccp-btn-wrap")}
+          tag="div"
+          {...onClickView}
+        >
+          <Text content="View Schedule details" />
+        </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block tag="div">
         <_Builtin.Block

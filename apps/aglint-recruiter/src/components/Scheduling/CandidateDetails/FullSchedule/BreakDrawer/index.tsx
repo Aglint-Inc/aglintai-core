@@ -115,7 +115,7 @@ function BreakDrawerEdit() {
             textPrimaryButton='Save'
             textTitle='Edit break duration'
             slotSidedrawerBody={
-              <Stack spacing={'var(--space-4)'}>
+              <Stack p={'var(--space-4)'}>
                 <DropDown
                   placeholder='Select break duration'
                   showIcons={false}
