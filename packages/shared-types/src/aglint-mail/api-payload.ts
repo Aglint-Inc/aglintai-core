@@ -17,8 +17,7 @@ import {
   phoneScreenEmailCandidateSchema,
   phoneScreenRemindEmailApplicantSchema,
 } from './api_schema';
-
-type MeetingDetailCardType = {
+export type MeetingDetailCardType = {
   date: string;
   time: string;
   sessionType: string;
@@ -30,9 +29,18 @@ type MeetingDetailCardType = {
 type Payloads = {
   debrief_email_interviewer: {
     api_payload: v.InferInput<typeof debriefEmailInterviewerSchema>;
-    comp_email_placeholders: {};
+    comp_email_placeholders: {
+      '{{ interviewerFirstName }}': string;
+      '{{ companyName }}': string;
+      '{{ candidateFirstName }}': string;
+      '{{ jobTitle }}': string;
+    };
     react_email_placeholders: {
       subject: string;
+      emailBody: string;
+      meetingDetails: MeetingDetailCardType;
+      companyLogo: string;
+      candidateLink: string;
     };
   };
   applicationRecieved_email_applicant: {
