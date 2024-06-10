@@ -32,10 +32,10 @@ export default async function sendMail(data: APISendgridPayload) {
     };
 
     if (Array.isArray(msg.to)) {
-      let updated_emails: string[] = msg.to;
+      const updated_emails: string[] = msg.to;
 
-      const email_promises = updated_emails.map(async (email) => {
-        return await getOutboundEmail(email);
+      const email_promises = updated_emails.map(async (to_email) => {
+        return await getOutboundEmail(to_email);
       });
 
       msg.to = await Promise.all(email_promises);

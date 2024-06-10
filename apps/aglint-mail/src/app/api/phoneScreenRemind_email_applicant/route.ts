@@ -3,8 +3,6 @@ import {
   ClientError,
   MailArgValidationError,
 } from '../../../utils/apiUtils/customErrors';
-import { getEmails } from '../../../utils/apiUtils/get-emails';
-import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 // import fetchTemplate from '../../../utils/apiUtils/fillCompEmailTemplate';
 // import type { FilledPayload } from '../../../utils/types/apiTypes';
 // import sendMail from '../../../config/sendgrid';
@@ -13,18 +11,18 @@ import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate
 interface ReqPayload {
   application_id: string;
 }
-interface DataPayload {
-  recipient_email: string;
-  mail_type: string;
-  recruiter_id: string;
-  companyLogo: string;
-  payload: {
-    '[firstName]': string;
-    '[jobTitle]': string;
-    '[companyName]': string;
-    '[phoneScreeningLink]': string;
-  };
-}
+// interface DataPayload {
+//   recipient_email: string;
+//   mail_type: string;
+//   recruiter_id: string;
+//   companyLogo: string;
+//   payload: {
+//     '[firstName]': string;
+//     '[jobTitle]': string;
+//     '[companyName]': string;
+//     '[phoneScreeningLink]': string;
+//   };
+// }
 
 export async function POST(req: Request) {
   const { application_id }: ReqPayload = await req.json();

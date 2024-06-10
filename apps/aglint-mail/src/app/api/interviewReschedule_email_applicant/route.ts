@@ -3,40 +3,38 @@ import {
   ClientError,
   MailArgValidationError,
 } from '../../../utils/apiUtils/customErrors';
-import { getEmails } from '../../../utils/apiUtils/get-emails';
-import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 // import fetchTemplate from '../../../utils/apiUtils/fillCompEmailTemplate';
 // import type { FilledPayload } from '../../../utils/types/apiTypes';
 // import sendMail from '../../../config/sendgrid';
 // import recruiterReschedulingEmail from './fetch-util';
 
-interface ReqPayload {
-  session_ids: string[];
-  application_id: string;
-  meeting_id: string;
-  interview_cancel_id: string;
-}
-interface DataPayload {
-  recipient_email: string;
-  mail_type: string;
-  recruiter_id: string;
-  companyLogo: string;
-  payload: {
-    '[firstName]': string;
-    '[recruiterRescheduleReason]': string;
-    '[scheduleName]': string;
-    '[companyName]': string;
-    '[pickYourSlotLink]': string;
-    '[jobTitle]': string;
-    'meetingDetails': {
-      sessionType: string;
-      platform: any;
-      duration: string;
-      sessionTypeIcon: any;
-      meetingIcon: string;
-    }[];
-  };
-}
+// interface ReqPayload {
+//   session_ids: string[];
+//   application_id: string;
+//   meeting_id: string;
+//   interview_cancel_id: string;
+// }
+// interface DataPayload {
+//   recipient_email: string;
+//   mail_type: string;
+//   recruiter_id: string;
+//   companyLogo: string;
+//   payload: {
+//     '[firstName]': string;
+//     '[recruiterRescheduleReason]': string;
+//     '[scheduleName]': string;
+//     '[companyName]': string;
+//     '[pickYourSlotLink]': string;
+//     '[jobTitle]': string;
+//     'meetingDetails': {
+//       sessionType: string;
+//       platform: any;
+//       duration: string;
+//       sessionTypeIcon: any;
+//       meetingIcon: string;
+//     }[];
+//   };
+// }
 
 export async function POST(req: Request) {
   // const {

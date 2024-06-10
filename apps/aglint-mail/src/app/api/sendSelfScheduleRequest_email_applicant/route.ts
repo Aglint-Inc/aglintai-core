@@ -10,32 +10,32 @@ import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate
 // import sendMail from '../../../config/sendgrid';
 // import initEmailAgentRemainder from './fetch-util';
 
-interface ReqPayload {
-  schedule_id: string;
-  filter_id: string;
-}
-interface Meta {
-  meta: ReqPayload;
-}
+// interface ReqPayload {
+//   schedule_id: string;
+//   filter_id: string;
+// }
+// interface Meta {
+//   meta: ReqPayload;
+// }
 
-interface DataPayload {
-  recipient_email: string;
-  mail_type: string;
-  recruiter_id: string;
-  companyLogo: string;
-  payload: {
-    '[candidateFirstName]': string;
-    '[Company Name]': string;
-    '[Job Title]': string;
-    '[startDate]': string;
-    '[endDate]': string;
-    '[companyTimeZone]': string;
-    '[selfScheduleLink]': string;
-  };
-}
+// interface DataPayload {
+//   recipient_email: string;
+//   mail_type: string;
+//   recruiter_id: string;
+//   companyLogo: string;
+//   payload: {
+//     '[candidateFirstName]': string;
+//     '[Company Name]': string;
+//     '[Job Title]': string;
+//     '[startDate]': string;
+//     '[endDate]': string;
+//     '[companyTimeZone]': string;
+//     '[selfScheduleLink]': string;
+//   };
+// }
 
 export async function POST(req: Request) {
-  const { meta }: Meta = await req.json();
+  // const { meta }: Meta = await req.json();
 
   try {
     // if (!meta.filter_id) {

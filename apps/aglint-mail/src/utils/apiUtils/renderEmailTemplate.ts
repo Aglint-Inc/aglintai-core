@@ -1,11 +1,7 @@
 import { render } from '@react-email/render';
 import { createElement } from 'react'; // Import React to use React.createElement
 import { ServerError } from './customErrors';
-import {
-  DatabaseEnums,
-  EmailTemplateAPi,
-  DatabaseTable,
-} from '@aglint/shared-types';
+import { DatabaseEnums, EmailTemplateAPi } from '@aglint/shared-types';
 
 export const renderEmailTemplate = async <
   T extends DatabaseEnums['email_types'],
