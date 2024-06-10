@@ -5,6 +5,9 @@ import useDeepCompareEffect from 'use-deep-compare-effect';
 import {
   applicationsQueries,
   useUpdateApplication,
+  useUploadApplication,
+  useUploadCsv,
+  useUploadResume,
 } from '@/src/queries/job-applications';
 
 import { useJob } from '../JobContext';
@@ -89,6 +92,20 @@ export const useApplicationsActions = () => {
       ...params,
     }),
   );
+
+  const { mutate: handleUploadApplication } = useUploadApplication({
+    job_id,
+    ...params,
+  });
+  const { mutate: handleUploadResume } = useUploadResume({
+    job_id,
+    ...params,
+  });
+  const { mutate: handleUploadCsv } = useUploadCsv({
+    job_id,
+    ...params,
+  });
+
   const sectionApplication = useMemo(() => {
     switch (section) {
       case 'assessment':
@@ -121,5 +138,8 @@ export const useApplicationsActions = () => {
     sectionApplication,
     handleUpdateApplication,
     handleAsyncUpdateApplication,
+    handleUploadApplication,
+    handleUploadResume,
+    handleUploadCsv,
   };
 };

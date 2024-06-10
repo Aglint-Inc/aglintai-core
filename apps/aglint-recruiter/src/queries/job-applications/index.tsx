@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import {
   DatabaseTable,
+  DatabaseTableInsert,
   DatabaseTableUpdate,
   DatabaseView,
 } from '@aglint/shared-types';
@@ -11,7 +12,11 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
+import { createBatches } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
+import { UploadApiFormData } from '@/src/apiUtils/job/jobApplications/candidateUpload/types';
+import { handleJobApplicationApi } from '@/src/apiUtils/job/jobApplications/utils';
 import { ApplicationsStore } from '@/src/context/ApplicationsContext/store';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -224,4 +229,144 @@ export const diffApplication = (
     },
     {} as Partial<DatabaseView['application_view']>,
   );
+};
+
+export const useUploadApplication = (params: Omit<Params, 'status'>) => {
+  const { recruiter_id } = useAuthDetails();
+  const queryClient = useQueryClient();
+  const { queryKey } = applicationsQueries.applications({
+    ...params,
+    status: 'new',
+  });
+  return useMutation({
+    mutationFn: (
+      payload: Omit<HandleUploadApplication, 'job_id' | 'recruiter_id'>,
+    ) =>
+      handleUploadApplication({
+        job_id: params.job_id,
+        recruiter_id,
+        ...payload,
+      }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey }),
+  });
+};
+type HandleUploadApplication = {
+  job_id: string;
+  recruiter_id: string;
+  candidate: Omit<DatabaseTableInsert['candidates'], 'recruiter_id'>;
+  file: File;
+};
+const handleUploadApplication = async (payload: HandleUploadApplication) => {
+  const formData = new FormData();
+  formData.append(UploadApiFormData.FILES, payload.file);
+  const request = {
+    params: {
+      email: payload.candidate.email,
+      first_name: payload.candidate.first_name,
+      job_id: payload.job_id,
+      last_name: payload.candidate.last_name,
+      phone: payload.candidate.phone || null,
+      linkedin: payload.candidate.linkedin || null,
+      recruiter_id: payload.recruiter_id,
+    },
+    files: formData,
+  };
+  const response = await handleJobApplicationApi(
+    'candidateUpload/manualUpload',
+    request,
+  );
+  if (!response.confirmation) throw new Error(response.error);
+};
+
+export const useUploadResume = (params: Omit<Params, 'status'>) => {
+  const { recruiter_id } = useAuthDetails();
+  const queryClient = useQueryClient();
+  const { queryKey } = applicationsQueries.applications({
+    ...params,
+    status: 'new',
+  });
+  return useMutation({
+    mutationFn: (
+      payload: Omit<HandleUploadResume, 'job_id' | 'recruiter_id'>,
+    ) =>
+      handleBulkResumeUpload({
+        job_id: params.job_id,
+        recruiter_id,
+        ...payload,
+      }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey }),
+  });
+};
+type HandleUploadResume = {
+  job_id: string;
+  recruiter_id: string;
+  files: File[];
+};
+const handleResumeUpload = async (payload: HandleUploadResume) => {
+  const formData = new FormData();
+  payload.files.forEach((file) =>
+    formData.append(UploadApiFormData.FILES, file),
+  );
+  const request = {
+    params: {
+      job_id: payload.job_id,
+      recruiter_id: payload.recruiter_id,
+    },
+    files: formData,
+  };
+  const response = await handleJobApplicationApi(
+    'candidateUpload/resumeUpload',
+    request,
+  );
+  return response;
+};
+const handleBulkResumeUpload = async (payload: HandleUploadResume) => {
+  const batches = createBatches(payload.files, 5);
+  const promises = batches
+    .filter((batch) => batch.length !== 0)
+    .map((batch) =>
+      handleResumeUpload({
+        job_id: payload.job_id,
+        recruiter_id: payload.recruiter_id,
+        files: batch,
+      }),
+    );
+  await Promise.allSettled(promises);
+};
+
+export const useUploadCsv = (params: Omit<Params, 'status'>) => {
+  const { recruiter_id } = useAuthDetails();
+  const queryClient = useQueryClient();
+  const { queryKey } = applicationsQueries.applications({
+    ...params,
+    status: 'new',
+  });
+  return useMutation({
+    mutationFn: (payload: Omit<HandleUploadCsv, 'job_id' | 'recruiter_id'>) =>
+      handleBulkCsvUpload({
+        job_id: params.job_id,
+        recruiter_id,
+        ...payload,
+      }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey }),
+  });
+};
+type HandleUploadCsv = {
+  candidates: Parameters<
+    typeof handleJobApplicationApi<'candidateUpload/csvUpload'>
+  >['1']['candidates'];
+  job_id: string;
+  recruiter_id: string;
+};
+const handleBulkCsvUpload = async (payload: HandleUploadCsv) => {
+  const formData = {
+    job_id: payload.job_id,
+    recruiter_id: payload.recruiter_id,
+    candidates: payload.candidates,
+  };
+  const response = await handleJobApplicationApi(
+    'candidateUpload/csvUpload',
+    formData,
+  );
+  if (!response.confirmation) throw new Error(response.error);
 };

@@ -27,7 +27,7 @@ export const applicationQuery = {
     queryOptions({
       placeholderData,
       enabled: !!application_id && !!job_id,
-      gcTime: application_id ? 5 * 60_000 : 0,
+      gcTime: application_id ? 1 * 60_000 : 0,
       queryKey: [
         ...applicationQuery.application({ application_id, job_id }).queryKey,
         'meta',
@@ -37,7 +37,7 @@ export const applicationQuery = {
   details: ({ application_id, job_id }: Params) =>
     queryOptions({
       enabled: !!application_id && !!job_id,
-      gcTime: application_id ? 5 * 60_000 : 0,
+      gcTime: application_id ? 1 * 60_000 : 0,
       queryKey: [
         ...applicationQuery.application({ application_id, job_id }).queryKey,
         'details',

@@ -16,6 +16,7 @@ import Drawer from './drawer';
 import Filters from './filters';
 import { BreadCrumbs } from './layout';
 import { Table } from './table';
+import { UploadApplications } from './ui/uploadApplications';
 
 const ApplicationsDashboard = () => {
   const { job, jobLoad } = useApplications();
@@ -36,11 +37,14 @@ export default ApplicationsDashboard;
 
 const ApplicationsComponent = () => {
   const { job } = useJobDetails();
+  const setImportPopup = useApplicationsStore(
+    ({ setImportPopup }) => setImportPopup,
+  );
   return (
     <>
       <JobDetails
         isImportCandidates={job.status === 'published'}
-        onclickAddCandidates={() => {}}
+        onclickAddCandidates={{ onClick: () => setImportPopup(true) }}
         isFetchingPillVisible={true}
         slotRefresh={<></>}
         slotShowFilterButton={<>KKKK</>}
@@ -60,6 +64,7 @@ const ApplicationsComponent = () => {
         slotFilters={<Filters />}
       />
       <Drawer />
+      <UploadApplications />
     </>
   );
 };
