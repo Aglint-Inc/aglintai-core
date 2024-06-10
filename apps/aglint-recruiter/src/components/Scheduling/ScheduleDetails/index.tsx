@@ -130,7 +130,10 @@ function SchedulingViewComp() {
               slotTabContent={
                 <ShowCode>
                   <ShowCode.When
-                    isTrue={router.query.tab === 'candidate_details'}
+                    isTrue={
+                      router.query.tab === 'candidate_details' ||
+                      !router.query.tab
+                    }
                   >
                     <CandidateInfo
                       applications={schedule?.applications}

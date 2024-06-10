@@ -101,7 +101,8 @@ function Filters({ setFilteredInterviewer }) {
         marginRight={5}
       >
         <UITextField
-          width='400px'
+          height={32}
+          width='300px'
           InputProps={{
             endAdornment: (
               <InputAdornment position='end'>

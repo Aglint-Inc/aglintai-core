@@ -17,6 +17,7 @@ export function InterviewerDetailOverview({
   textHeader2 = "Training",
   textButton1 = "View all",
   textButton2 = "View all",
+  isViewButtonVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1704")} tag="div">
@@ -29,13 +30,17 @@ export function InterviewerDetailOverview({
           tag="div"
         >
           <Text content={textHeader1} weight="medium" />
-          <ButtonSurface
-            textButton={textButton1}
-            onClickButton={onClickViewAllSchedule}
-            size="1"
-            isLeftIcon={false}
-            isRightIcon={false}
-          />
+          {isViewButtonVisible ? (
+            <_Builtin.Block tag="div">
+              <ButtonSurface
+                textButton={textButton1}
+                onClickButton={onClickViewAllSchedule}
+                size="1"
+                isLeftIcon={false}
+                isRightIcon={false}
+              />
+            </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1702")}
@@ -53,13 +58,17 @@ export function InterviewerDetailOverview({
           tag="div"
         >
           <Text content={textHeader2} weight="medium" />
-          <ButtonSurface
-            textButton={textButton2}
-            onClickButton={onClickViewAllModule}
-            size="1"
-            isLeftIcon={false}
-            isRightIcon={false}
-          />
+          {isViewButtonVisible ? (
+            <_Builtin.Block tag="div">
+              <ButtonSurface
+                textButton={textButton2}
+                onClickButton={onClickViewAllModule}
+                size="1"
+                isLeftIcon={false}
+                isRightIcon={false}
+              />
+            </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1703")}

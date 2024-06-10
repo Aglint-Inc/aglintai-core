@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 
-import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { EmptyGeneral } from '@/devlink2/EmptyGeneral';
 import IconPlusFilter from '@/src/components/Scheduling/Schedules/Filters/FilterChip/IconPlusFilter';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
@@ -83,8 +83,8 @@ function SlotTrainingMembers({
         <EmptyGeneral
           textEmpt={'No members yet'}
           slotButton={
-            <ButtonGhost
-              size={2}
+            <ButtonSurface
+              size={1}
               isRightIcon={false}
               slotIcon={<IconPlusFilter />}
               textButton={'Add'}
@@ -124,8 +124,8 @@ function SlotTrainingMembers({
 
       {allTrainees.length !== 0 && (
         <Stack direction={'row'} pt={'var(--space-2)'}>
-          <ButtonGhost
-            size={2}
+          <ButtonSurface
+            size={1}
             isRightIcon={false}
             slotIcon={<IconPlusFilter />}
             textButton={'Add'}

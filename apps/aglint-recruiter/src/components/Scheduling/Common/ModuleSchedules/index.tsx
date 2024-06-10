@@ -48,7 +48,8 @@ function ModuleSchedules({
       slotInterview={
         <Stack>
           <UITextField
-            width='400px'
+            height={32}
+            width='300px'
             value={changeText}
             InputProps={{
               endAdornment: (
