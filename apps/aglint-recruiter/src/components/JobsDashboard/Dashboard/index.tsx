@@ -28,6 +28,7 @@ import { PipeLine } from '@/devlink3/PipeLine';
 import { RoleList } from '@/devlink3/RoleList';
 import { ScheduleCardSmall } from '@/devlink3/ScheduleCardSmall';
 import { ScoreSetting } from '@/devlink3/ScoreSetting';
+import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
@@ -458,7 +459,7 @@ const Preview = () => {
 const Pipeline = () => {
   const { job } = useJobDetails();
   const { push } = useRouter();
-  const setSection = useJobDashboardStore(({ setSection }) => setSection);
+  const setSection = useApplicationsStore(({ setSection }) => setSection);
   const newSections = Object.entries(job.count).reduce(
     (acc, [key, value]) => {
       acc[key] = { count: value, label: getPlural(value, 'candidate') };
