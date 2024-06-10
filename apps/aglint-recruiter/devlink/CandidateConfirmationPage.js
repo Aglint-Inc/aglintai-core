@@ -25,7 +25,7 @@ export function CandidateConfirmationPage({
             />
           )}
         </_Builtin.Block>
-        <Text content={textTitle} size="3" weight="bold" />
+        <Text content={textTitle} size="4" weight="medium" />
         <Text
           content="Available slots are organized by day. Each slot includes the total time required for your interview, including breaks."
           color="neutral"
