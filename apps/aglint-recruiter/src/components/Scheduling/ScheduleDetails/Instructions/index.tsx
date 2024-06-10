@@ -7,7 +7,6 @@ import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -58,8 +57,8 @@ function Instructions({ schedule }: { schedule: ScheduleMeeting }) {
                 margin: '20px',
                 maxWidth: '800px',
                 border: '1px solid',
-                borderColor: palette.grey[300],
-                borderRadius: '4px',
+                borderColor: 'var(neutral-6)',
+                borderRadius: 'var(--radius-2)',
               }}
             >
               <TipTapAIEditor

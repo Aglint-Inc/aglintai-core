@@ -73,8 +73,8 @@ function SessionList({
         onClick={handleClick}
         direction={'row'}
         // spacing={4}
-        minHeight={'30px'}
-        gap={'8px'}
+        minHeight={'var(--space-6)'}
+        gap={'var(--space-2)'}
         alignItems={'center'}
       >
         <ShowCode>
@@ -120,16 +120,16 @@ function SessionList({
                       <Stack
                         key={i}
                         width={'100%'}
-                        p={'4px'}
+                        p={'var(--space-1)'}
                         sx={{
                           cursor: 'pointer',
                           '&:hover': {
-                            bgcolor: 'grey.100',
+                            bgcolor: 'var(--neutral-2)'
                           },
                           bgcolor:
                             selectedSession
                               .map((ele) => ele.id)
-                              .includes(item.id) && 'grey.100',
+                              .includes(item.id) && 'var(--neutral-1)',
                         }}
                         onClick={() => {
                           //   @ts-ignore

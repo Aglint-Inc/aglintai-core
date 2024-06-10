@@ -174,11 +174,11 @@ async function getMeetingDetails(user_id: string) {
 
 export const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
+))(() => ({
   [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: theme.palette.common.white,
-    color: 'rgba(0, 0, 0, 0.87)',
-    boxShadow: theme.shadows[1],
+    backgroundColor:'var(--white)',
+    color: 'var(--black-a7)',
+    boxShadow: 'var(--shadow-2)',
     fontSize: 12,
   },
   [`& .${tooltipClasses.tooltipPlacementBottom}`]: {

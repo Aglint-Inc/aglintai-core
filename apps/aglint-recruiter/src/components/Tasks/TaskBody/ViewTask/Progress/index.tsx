@@ -1,4 +1,3 @@
-import { DatabaseTable } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Stack, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -39,11 +38,7 @@ function SubTaskProgress() {
   const today = dayjs();
   const selectedTask = tasks.find((ele) => ele.id === router.query?.task_id);
   const { data: sessionList } = useSessionsList();
-  const dateSlots = (
-    selectedTask.candidate_request_availability?.slots
-      ? selectedTask.candidate_request_availability?.slots
-      : []
-  ) as DatabaseTable['candidate_request_availability']['slots'];
+ 
   return (
     <>
       <FollowUp />
@@ -64,6 +59,12 @@ function SubTaskProgress() {
                   },
                   -1,
                 );
+                const lastEmailRequestAvailabilityListIndex =
+                  progressList.reduce((lastIndex, item, i) => {
+                    return item.progress_type === 'request_availability_list'
+                      ? i
+                      : lastIndex;
+                  }, -1);
                 let CandidateCreator = tasks
                   .map((ele) => ele.applications.candidates)
                   .find((ele) => ele.id === (item.created_by as any).id);
@@ -117,7 +118,7 @@ function SubTaskProgress() {
                         >
                           <Stack
                             border={'1px solid'}
-                            borderColor={'grey.300'}
+                            borderColor={'var(--neutral-6)'}
                             borderRadius={'100%'}
                             direction={'row'}
                             alignItems={'center'}
@@ -133,7 +134,7 @@ function SubTaskProgress() {
                         >
                           <Stack
                             border={'1px solid'}
-                            borderColor={'grey.300'}
+                            borderColor={'var(--neutral-6)'}
                             borderRadius={'100%'}
                             direction={'row'}
                             alignItems={'center'}
@@ -177,10 +178,10 @@ function SubTaskProgress() {
                           }
                         >
                           <Stack
-                            p={'10px'}
-                            borderRadius={'10px'}
+                            p={'var(--space-2)'}
+                            borderRadius={'var(--space-2)'}
                             border={'1px solid'}
-                            borderColor={'grey.200'}
+                            borderColor={'var(--neutral-6)'}
                           >
                             <Typography variant='body1'>
                               <span
@@ -226,10 +227,10 @@ function SubTaskProgress() {
                             </ShowCode.When>
                             <ShowCode.Else>
                               <Stack
-                                p={'10px'}
-                                borderRadius={'10px'}
+                                p={'var(--space-2)'}
+                                borderRadius={'var(--space-2)'}
                                 border={'1px solid'}
-                                borderColor={'grey.200'}
+                                borderColor={'var(--neutral-6)'}
                               >
                                 <Stack
                                   direction={'column'}
@@ -295,14 +296,12 @@ function SubTaskProgress() {
                             item.progress_type === 'request_availability_list'
                           }
                         >
-                          {dateSlots.map((dateSlot, i) => {
-                            return (
-                              <RequestAvailabilityList
-                                key={i}
-                                dateSlots={dateSlot}
-                              />
-                            );
-                          })}
+                          <RequestAvailabilityList
+                            item={item}
+                            disable={
+                              lastEmailRequestAvailabilityListIndex !== i
+                            }
+                          />
                         </ShowCode.When>
                       </ShowCode>
                     }

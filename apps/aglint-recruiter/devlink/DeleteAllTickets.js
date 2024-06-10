@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { InboxTickets } from "./InboxTickets";
 import * as _utils from "./utils";
 import _styles from "./DeleteAllTickets.module.css";
@@ -32,21 +33,11 @@ export function DeleteAllTickets({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-513")}
+          className={_utils.cx(_styles, "ticket-header-left")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Tickets -"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {textHeaderStatus}
-          </_Builtin.Block>
+          <Text content="Tickets -" weight="medium" />
+          <Text content={textHeaderStatus} weight="medium" />
         </_Builtin.Block>
         <_Builtin.Block tag="div">{slotSearch}</_Builtin.Block>
       </_Builtin.Block>

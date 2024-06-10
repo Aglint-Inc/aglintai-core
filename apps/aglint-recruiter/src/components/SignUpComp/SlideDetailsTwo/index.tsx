@@ -7,7 +7,6 @@ import { BackButton } from '@/devlink2/BackButton';
 import { RcInfoForm } from '@/devlink2/RcInfoForm';
 import { RecCompanyDetails } from '@/devlink2/RecCompanyDetails';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { industries } from '@/src/utils/industries';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
@@ -299,7 +298,7 @@ export function CompanyDetails() {
             renderOption={(props, option) => {
               return (
                 <li {...props}>
-                  <Typography variant='body1' color={palette.grey[800]}>
+                  <Typography variant='body1' color={'var(--neutral-12)'}>
                     {option}
                   </Typography>
                 </li>
@@ -341,7 +340,7 @@ export function CompanyDetails() {
             renderOption={(props, option) => {
               return (
                 <li {...props}>
-                  <Typography variant='body1' color={palette.grey[800]}>
+                  <Typography variant='body1' color={'var(--neutral-12)'}>
                     {option}
                   </Typography>
                 </li>

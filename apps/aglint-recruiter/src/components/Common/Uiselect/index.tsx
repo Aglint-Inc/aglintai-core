@@ -1,4 +1,3 @@
-import { palette } from '@context/Theme/Theme';
 import { Stack } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -44,7 +43,7 @@ const UISelect = ({
       borderColor={focus && borderColor}
       borderRadius={'7px'}
       padding={0}
-      gap={'5px'}
+      gap={'var(--space-1)'}
     >
       {label && (
         <UITypography type={'small'} fontBold='default'>
@@ -90,7 +89,7 @@ const UISelect = ({
             px={1}
             style={{
               fontStyle: 'italic',
-              color: palette.grey[400],
+              color: 'var(--neutral-9)',
               cursor: 'default',
             }}
           >
@@ -98,8 +97,8 @@ const UISelect = ({
           </Stack>
         ) : (
           menuOptions.map((menu, idx) => (
-            <MenuItem key={idx} value={menu.value}>
-              {menu.name}
+            <MenuItem key={idx} value={menu?.value}>
+              {menu?.name}
             </MenuItem>
           ))
         )}

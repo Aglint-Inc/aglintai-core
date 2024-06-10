@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./AddCompanyWebsite.module.css";
 
@@ -30,13 +31,13 @@ export function AddCompanyWebsite({
         className={_utils.cx(_styles, "cs-sidebar-website-input")}
         tag="div"
       >
-        {slotWebsiteInput}
+        {slotWebsiteInput ?? <SlotComp componentName="Website" />}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "cs-buttons-wrapper")}
         tag="div"
       >
-        {slotButtons}
+        {slotButtons ?? <SlotComp componentName="Buttons" />}
       </_Builtin.Block>
     </_Component>
   );

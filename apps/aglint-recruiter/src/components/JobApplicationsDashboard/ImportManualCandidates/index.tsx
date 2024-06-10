@@ -6,12 +6,11 @@ import posthog from 'posthog-js';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
-import { palette } from '@/src/context/Theme/Theme';
 
-import AUIButton from '../../Common/AUIButton';
 import Loader from '../../Common/Loader';
 import UIPhoneInput from '../../Common/UIPhoneInput';
 import UITextField from '../../Common/UITextField';
@@ -191,9 +190,13 @@ const ImportManualCandidates = ({
       >
         <FormBody applicant={applicant} setApplicant={setApplicant} />
         <Stack direction={'row'} justifyContent={'flex-end'}>
-          <AUIButton size='small' onClick={async () => await handleSubmit()}>
-            Add Candidate
-          </AUIButton>
+          <ButtonSolid
+            size={'2'}
+            isLeftIcon={false}
+            isRightIcon={false}
+            onClickButton={async () => await handleSubmit()}
+            textButton='Add Candidate'
+          />
         </Stack>
       </Stack>
       <Stack
@@ -241,7 +244,7 @@ const FormBody = ({
     });
   };
   return (
-    <Stack gap={3} p={'4px'}>
+    <Stack gap={3} p={'var(--space-1)'}>
       <Stack flexDirection={'row'} gap={3}>
         <UITextField
           labelBold='normal'
@@ -275,7 +278,7 @@ const FormBody = ({
           labelSize='small'
           fullWidth
           label='Email'
-          placeholder='email'
+          placeholder='Email'
           required
           value={applicant.email.value}
           error={applicant.email.error}
@@ -319,7 +322,7 @@ const FormBody = ({
         labelSize='small'
         label='LinkedIn URL'
         fullWidth
-        placeholder='linkedin'
+        placeholder='Linkedin'
         required
         value={applicant.linkedin.value}
         error={applicant.linkedin.error}
@@ -327,15 +330,13 @@ const FormBody = ({
         onChange={(e) => handleChange(e, 'linkedin')}
       />
       <Stack spacing={1}>
-        <Stack
-          fontWeight={600}
-          fontSize={'14px'}
-          flexDirection={'row'}
-          gap={'4px'}
-        >
-          Upload Resume
-          <Stack style={{ color: 'red' }}>*</Stack>
+        <Stack fontSize={'14px'} flexDirection={'row'}>
+          <Stack fontSize={'14px'} flexDirection={'row'} fontWeight={600}>
+            Upload Resume
+          </Stack>
+          <Typography sx={{ color: 'var(--error-9)', pl: 0.5 }}>*</Typography>
         </Stack>
+
         <Stack pb={2}>
           <FileUploader
             handleChange={(e) => handleChange(e, 'resume')}
@@ -344,15 +345,15 @@ const FormBody = ({
             <Stack
               sx={{
                 border: '1px dashed',
-                borderColor: palette.blue[300],
+                borderColor: 'var(--accent-6)',
                 borderRadius: 1,
                 py: '34px',
                 px: '20px',
                 cursor: 'pointer',
-                background: 'hsla(206.66666666666666, 100.00%, 96.47%, 0.50);',
+                background: 'var(--neutral-2)',
               }}
               direction='row'
-              spacing={'8px'}
+              spacing={'var(--space-2)'}
               alignItems={'center'}
               justifyContent={'center'}
             >
@@ -373,7 +374,7 @@ const FormBody = ({
             </Stack>
           </FileUploader>
           {applicant.resume.error && (
-            <Stack fontSize={'0.75rem'} style={{ color: 'red' }}>
+            <Stack fontSize={'0.75rem'} style={{ color: 'var(--error-11)' }}>
               Please upload the candidate resume
             </Stack>
           )}

@@ -4,17 +4,20 @@
   flex-direction: column;
 }
 
-.div-block-1280 {
+.tab_switch_wrappper {
   display: flex;
-  padding: var(--space-2) 16px;
+  height: 47px;
+  padding: var(--space-2) var(--space-4);
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #e9ebed;
+
+  border-bottom: 1px solid var(--neutral-6);
+
+  background-color: var(--white);
 }
 
-.div-block-1077 {
+.membership_pill_wrapper {
   display: flex;
-  padding-right: 16px;
   justify-content: flex-start;
   align-items: center;
   grid-column-gap: 10px;
@@ -25,33 +28,38 @@
   position: relative;
 }
 
-.div-block-1076 {
-  padding: 6px 16px;
+.memberside-pill {
+  height: 30px;
+  padding: var(--space-1) var(--space-3);
+
   border: 1px solid var(--neutral-5);
-  border-radius: 6px;
+  border-radius: var(--radius-3);
+
   color: var(--neutral-10);
+
   cursor: pointer;
 }
 
-.div-block-1076.active {
+.memberside-pill.active {
   position: absolute;
   left: 0%;
   top: 0%;
   right: 0%;
   bottom: 0%;
 
-  border-style: none;
+  border-style: solid;
+  border-color: var(--accent-8);
 
   background-color: var(--accent-3);
 
   color: var(--accent-11);
 }
 
-.div-block-1079 {
+.interview_screen_card {
   display: flex;
   overflow: auto;
   height: 100%;
-  padding: 16px 0px 0px 16px;
+  padding: var(--space-4);
   flex-direction: column;
   grid-column-gap: 10px;
   grid-row-gap: 10px;

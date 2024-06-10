@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { Stack, TextField } from '@mui/material';
-import { Box } from '@mui/system';
+import { Box, Container, Stack, TextField, Typography } from '@mui/material';
 import { createClient } from '@supabase/supabase-js';
 import { errorMessages } from '@utils/errorMessages';
 import posthog from 'posthog-js';
@@ -89,7 +88,24 @@ export default function ForgotPasswordComponent() {
 
   const router = useRouter();
   return (
-    <>
+    <Container
+      maxWidth="false"
+      sx={{
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'var(--neutral-2)',
+      }}>
+      <Box
+        sx={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
       {changetext == 'Send' && (
         <YTransform uniqueKey={changetext}>
           <PwResetForm
@@ -110,7 +126,7 @@ export default function ForgotPasswordComponent() {
                     onBlur={handleEmail}
                     error={error.valid.error}
                     helperText={error.valid.error ? error.valid.msg : ''}
-                    placeholder='Enter Email'
+                    placeholder='Enter email'
                     id='Email'
                     required
                   />
@@ -150,6 +166,17 @@ export default function ForgotPasswordComponent() {
           />
         </YTransform>
       )}
-    </>
+    </Box>
+      <Box
+        sx={{
+          width: '100%',
+          textAlign: 'center',
+        }}
+      >
+        <Typography variant="body2" color="var(--neutral-11)">
+          &copy; {new Date().getFullYear()} Aglint Inc. All rights reserved.
+        </Typography>
+      </Box>
+      </Container>
   );
 }

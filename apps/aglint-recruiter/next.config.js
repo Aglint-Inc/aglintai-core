@@ -16,7 +16,7 @@ const nextConfig = {
     return [
       {
         source: '/api/emails/:path',
-        destination: `/${process.env.NEXT_PUBLIC_MAIL_HOST}/api/:path`, // proxy to mail api
+        destination: `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/:path`, // proxy to mail api
       },
     ];
   },
@@ -46,7 +46,7 @@ const nextConfig = {
       },
     ],
   },
-  transpilePackages: ['@aglint/shared-utils'],
+  transpilePackages: ['@aglint/shared-utils', '@aglint/shared-types'],
 };
 
 module.exports = withBundleAnalyzer(nextConfig);

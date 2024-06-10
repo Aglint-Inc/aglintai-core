@@ -86,7 +86,6 @@ import {
   ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
 import { useJobDetails } from '@/src/context/JobDashboard';
-import { palette } from '@/src/context/Theme/Theme';
 import { Job } from '@/src/queries/job/types';
 import { getFullName } from '@/src/utils/jsonResume';
 // import interviewerList from '@/src/utils/interviewer_list';
@@ -732,7 +731,7 @@ const TaskIcon = ({ task }: { task: JobApplication['tasks'][number] }) => {
     return (
       <Stack
         border={'1px solid'}
-        borderColor={'grey.300'}
+        borderColor={'var(--neutral-6)'}
         borderRadius={'100%'}
         direction={'row'}
         alignItems={'center'}
@@ -747,7 +746,7 @@ const TaskIcon = ({ task }: { task: JobApplication['tasks'][number] }) => {
     return (
       <Stack
         border={'1px solid'}
-        borderColor={'grey.300'}
+        borderColor={'var(--neutral-6)'}
         borderRadius={'100%'}
         direction={'row'}
         alignItems={'center'}
@@ -1229,12 +1228,12 @@ const ResumeUpload: React.FC<{
             <Stack
               sx={{
                 border: '1px dashed',
-                borderColor: palette.blue[300],
+                borderColor: 'var(--accent-6)',
                 borderRadius: 1,
                 py: '34px',
                 px: '20px',
                 cursor: 'pointer',
-                background: 'hsla(206.66666666666666, 100.00%, 96.47%, 0.50);',
+                background: 'var(--neutral-2)',
               }}
               direction='row'
               spacing={'8px'}

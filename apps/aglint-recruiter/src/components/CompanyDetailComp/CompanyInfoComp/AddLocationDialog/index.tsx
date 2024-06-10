@@ -1,15 +1,9 @@
 /* eslint-disable security/detect-object-injection */
-import {
-  Autocomplete,
-  Dialog,
-  Stack,
-  TextField,
-  TextFieldProps,
-  Typography,
-} from '@mui/material';
+import { Autocomplete, Dialog, Stack } from '@mui/material';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AddLocationPop } from '@/devlink/AddLocationPop';
+import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import timeZone from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
@@ -70,7 +64,9 @@ const AddLocationDialog: React.FC<LocationProps> = ({
     recruiter.office_locations as initialValueType[]
   ).some((location) => location.is_headquarter === true);
 
-  const [isHeadQ, setHeadQ] = useState(false);
+  const [isHeadQ, setHeadQ] = useState(
+    initialValue?.is_headquarter ? true : false,
+  );
   const [loading, setLoading] = useState(false);
 
   const handleAddLocation = () => {
@@ -189,53 +185,55 @@ const AddLocationDialog: React.FC<LocationProps> = ({
           textButtonLabel={edit === -1 ? 'Add' : 'Save'}
           slotForm={
             <Stack spacing={2}>
-              <CustomTextField
-                inputRef={address1Ref}
+              <UITextField
+                ref={address1Ref}
                 placeholder='123 Example St'
                 label='Street Address'
                 defaultValue={initialValue?.line1}
               />
-              <CustomTextField
-                inputRef={address2Ref}
+              <UITextField
+                ref={address2Ref}
                 placeholder='Suite 456 (Optional)'
                 label='Address Line 2'
                 defaultValue={initialValue?.line2}
               />
-              <Stack direction={'row'} spacing={'10px'}>
-                <CustomTextField
-                  sx={{ width: '225px' }}
-                  inputRef={cityRef}
+              <Stack direction={'row'} spacing={'var(--space-2)'}>
+                <UITextField
+                  width='225px'
+                  ref={cityRef}
                   name='city'
                   placeholder='San Francisco'
-                  label='City *'
+                  label='City'
+                  required
                   onChange={(e) => handleSearch(e, 'city')}
                   defaultValue={initialValue?.city}
                 />
-                <CustomTextField
-                  sx={{ width: '225px' }}
-                  inputRef={regionRef}
+                <UITextField
+                  width='225px'
+                  ref={regionRef}
                   name='region'
                   placeholder='CA'
-                  label='State/Province/Region *'
+                  label='State/Province/Region'
+                  required
                   onChange={(e) => handleSearch(e, 'region')}
                   defaultValue={initialValue?.region}
                 />
               </Stack>
-              <Stack direction={'row'} spacing={'10px'}>
-                <CustomTextField
-                  sx={{ width: '225px' }}
-                  inputRef={countryRef}
+              <Stack direction={'row'} spacing={'var(--space-2)'}>
+                <UITextField
+                  width='225px'
+                  ref={countryRef}
                   required={true}
                   name='country'
                   onChange={(e) => handleSearch(e, 'country')}
                   // defaultValue={address1Ref.current?.value || ''}
                   placeholder='Please enter country name'
-                  label='Country *'
+                  label='Country'
                   defaultValue={initialValue?.country}
                 />
-                <CustomTextField
-                  sx={{ width: '225px' }}
-                  inputRef={zipRef}
+                <UITextField
+                  width='225px'
+                  ref={zipRef}
                   placeholder='Please enter the zip code or postal code'
                   label='Zip Code'
                   defaultValue={initialValue?.zipcode}
@@ -252,9 +250,9 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   setTimeZoneValue(value);
                 }}
                 renderInput={(params) => (
-                  <CustomTextField
+                  <UITextField
                     {...params}
-                    inputRef={timezoneRef}
+                    ref={timezoneRef}
                     name='timezone'
                     placeholder='e.g., America/New_York'
                     label='Timezone'
@@ -286,7 +284,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
               ? true
               : !hasHeadquarter
           }
-          isChecked={initialValue?.is_headquarter ? true : isHeadQ}
+          isChecked={isHeadQ}
           onClickCheck={{
             onClick: () => {
               setHeadQ(!isHeadQ);
@@ -300,16 +298,16 @@ const AddLocationDialog: React.FC<LocationProps> = ({
 
 export default AddLocationDialog;
 
-const CustomTextField = (props: TextFieldProps) => {
-  const label = props.label;
-  return (
-    <Stack>
-      {Boolean(label) && (
-        <Typography fontSize={'14px'} marginBottom={'3px'}>
-          {label}
-        </Typography>
-      )}
-      <TextField {...{ ...props, label: undefined }} />
-    </Stack>
-  );
-};
+// const CustomTextField = (props: TextFieldProps) => {
+//   const label = props.label;
+//   return (
+//     <Stack>
+//       {Boolean(label) && (
+//         <Typography fontSize={'14px'} marginBottom={'3px'}>
+//           {label}
+//         </Typography>
+//       )}
+//       <TextField {...{ ...props, label: undefined }} />
+//     </Stack>
+//   );
+// };

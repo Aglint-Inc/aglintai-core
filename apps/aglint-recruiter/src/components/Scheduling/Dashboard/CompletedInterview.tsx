@@ -20,7 +20,7 @@ const CompletedInterviewBarChart = () => {
         <Stack height={'330px'}>
           <BarChart
             skills={Object.entries(completedInterviewsData || {}).map(
-              ([key, value]) => ({ name: key, count: value, color: '#5EAE91' }),
+              ([key, value]) => ({ name: key, count: value, color: '#009A5753' }),
             )}
           />
         </Stack>
@@ -102,7 +102,7 @@ export const BarChart: React.FC<{
             },
             grid: {
               display: true,
-              color: 'rgba(0,0,0,0.05)',
+              color: 'rgba(0, 0, 0, 0.05)',
             },
           },
         },

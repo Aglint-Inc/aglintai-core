@@ -69,10 +69,7 @@ const TrainingProgressComponent = () => {
             <Avatar
               src={profile_image}
               alt={capitalizeAll(getFullName(first_name, last_name))}
-              sx={{
-                width: '100%',
-                height: '100%',
-              }}
+              variant='rounded-medium'
             />
           }
           textInterviewModule={module.name}

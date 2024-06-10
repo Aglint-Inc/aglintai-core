@@ -104,9 +104,9 @@ export function DateOption({
         {slotScheduleOption ?? (
           <>
             <ScheduleOption
-              isSelected={false}
               isCheckbox={true}
               isRadio={false}
+              isSelected={false}
             />
             <ScheduleOption
               isSelected={false}

@@ -34,7 +34,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead
       className='header-row'
-      sx={{ bgcolor: palette.grey[100], borderRadius: '4px' }}
+      sx={{ bgcolor: 'var(--neutral-1)', borderRadius: 'var(--radius-2)' }}
     >
       <TableRow>
         <EnhancedCheckBoxCell>
@@ -56,7 +56,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                 visibility: 'false',
                 position: 'absolute',
                 '&.Mui-checked': {
-                  color: palette.blue[600],
+                  color: 'var(--accent-9)',
                 },
                 '& .MuiSvgIcon-root': {
                   fontSize: 14,
@@ -86,7 +86,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                 width='16px'
                 color='#555555'
               />
-              <Typography variant='body1' color={palette.grey[800]}>
+              <Typography variant='body1' color={'var(--neutral-12)'}>
                 {headCell.label}
               </Typography>
             </Stack>
@@ -111,7 +111,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       direction={'row'}
       alignItems={'center'}
       justifyContent={'space-between'}
-      p={'4px'}
+      p={'var(--space-1)'}
       sx={{
         ...(numSelected > 0 && {
           bgcolor: palette['grey'][100],
@@ -119,7 +119,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         '.MuiToolbar-root': {
           minHeight: '10px!important',
         },
-        borderRadius: '4px',
+        borderRadius: 'var(--radius-2)',
         minHeight: '40px',
         px: '30px',
         mt: '4px',
@@ -234,7 +234,7 @@ export const EnhancedCell = ({ children, sx = {} }) => (
     <Typography
       className='one-line-clamp'
       variant='body1'
-      color={palette.grey[800]}
+      color={'var(--neutral-12)'}
     >
       {children}
     </Typography>

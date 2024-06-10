@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { DatabaseTable } from '@aglint/shared-types';
 import { Popover, Stack, Typography } from '@mui/material';
 import React, { ReactNode, useState } from 'react';
@@ -50,21 +51,15 @@ const CancelReasons = () => {
         />
       }
       slotReasonGraph={
-        <Stack
-          p={1}
-          sx={{
-            bgcolor: '#F7F9FB',
-            borderRadius: '16px',
-          }}
-        >
+        <Stack>
           <Stack alignItems={'center'} justifyContent={'space-around'} gap={3}>
-            <Stack height={'225px'}>
+            <Stack height={'224px'}>
               <DoughnutChart locations={chartData} fixedHeight={true} />
             </Stack>
             <Stack
               gap={1}
               width={'100%'}
-              maxHeight={'50px'}
+              maxHeight={'48px'}
               overflow={'scroll'}
             >
               {chartData.map(({ color, count, name }, i) => {
@@ -81,7 +76,7 @@ const CancelReasons = () => {
                           bgcolor: color,
                           width: '10px',
                           aspectRatio: 1,
-                          borderRadius: '100%',
+                          borderRadius: 'var(--radius-full)',
                         }}
                       />
 
@@ -89,10 +84,10 @@ const CancelReasons = () => {
                         variant='body1'
                         sx={{
                           textWrap: 'nowrap',
-                          textTransform: 'capitalize',
+                          // textTransform: 'capitalize',
                         }}
                       >
-                        {capitalizeFirstLetter(name)}
+                        {name}
                       </Typography>
                     </Stack>
                     <Typography variant='body1'>
@@ -178,8 +173,8 @@ export const DropdownSelectButton = <T,>({
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
-            borderRadius: '10px',
-            borderColor: '#E9EBED',
+            borderRadius: 'var(--radius-4)',
+            borderColor: 'var(--neutral-6)',
             minWidth: '176px',
           },
         }}

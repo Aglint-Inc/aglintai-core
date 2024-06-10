@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./UploadedResumeList.module.css";
 
@@ -14,7 +15,10 @@ export function UploadedResumeList({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "upload-resume-card")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-610")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "upload-resume-left")}
+        tag="div"
+      >
         {isDocVisible ? (
           <_Builtin.HtmlEmbed
             className={_utils.cx(_styles, "icons")}
@@ -28,16 +32,11 @@ export function UploadedResumeList({
           />
         ) : null}
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-609")}
+          className={_utils.cx(_styles, "upload-resume-left-text")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{textName}</_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "color-grey-600")}
-            tag="div"
-          >
-            {textSize}
-          </_Builtin.Block>
+          <Text content={textName} />
+          <Text content={textSize} color="neutral" />
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.HtmlEmbed

@@ -1,27 +1,14 @@
+/* eslint-disable no-unused-vars */
 import { createTheme, TextField } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-import { TypographyOptions } from '@mui/material/styles/createTypography';
 import * as radixColors from '@radix-ui/colors';
-import React, { useState } from 'react';
+import { useState } from 'react';
+
+import CheckboxIcon from '@/src/components/Common/Icons/CheckboxIcon';
+import RadioButtonIcon from '@/src/components/Common/Icons/RadioButtonIcon';
 
 import AppContext from './context';
-
-declare module '@mui/material/Typography' {
-  // eslint-disable-next-line no-unused-vars
-  interface TypographyPropsVariantOverrides {
-    body1medium: true;
-    body1bold: true;
-    body2medium: true;
-    body2bold: true;
-  }
-}
-
-interface ExtendedTypographyOptions extends TypographyOptions {
-  body1medium: React.CSSProperties;
-  body1bold: React.CSSProperties;
-  body2medium: React.CSSProperties;
-  body2bold: React.CSSProperties;
-}
+import { ExtendedTypographyOptions } from './types';
 
 function Theme({ children }) {
   const [color, setColor] = useState('#1976d2');
@@ -131,19 +118,19 @@ function Theme({ children }) {
       },
       subtitle1: {
         fontFamily: 'var(--text)',
-        fontWeight: 'var(--font-weight-normal)',
-        fontSize: 'var(--font-size-4)',
-        lineHeight: 'var(--line-height-4)',
-        letterSpacing: 'var(--letter-spacing-3)',
-        color: 'var(--neutral-11)',
+        fontWeight: '500',
+        fontSize: 'var(--font-size-2)',
+        lineHeight: 'var(--line-height-2)',
+        letterSpacing: 'var(--letter-spacing-2)',
+        color: 'var(--neutral-12)',
       },
       subtitle2: {
         fontFamily: 'var(--text)',
-        fontWeight: 'var(--font-weight-bold)',
-        fontSize: 'var(--font-size-3)',
-        lineHeight: 'var(--line-height-3)',
-        letterSpacing: 'var(--letter-spacing-3)',
-        color: 'var(--neutral-11)',
+        fontWeight: '500',
+        fontSize: 'var(--font-size-1)',
+        lineHeight: 'var(--line-height-1)',
+        letterSpacing: 'var(--letter-spacing-1)',
+        color: 'var(--neutral-12)',
       },
       body1: {
         fontFamily: 'var(--text)',
@@ -433,76 +420,7 @@ function Theme({ children }) {
             '& fieldset legend': {
               display: 'none',
             },
-            // padding: 'var(--space-1) var(--space-2)',
-            // fontFamily: 'var(--text)',
           },
-          // inputRoot: {
-          //   '&[class*="MuiInput-root"] .MuiAutocomplete-input': {
-          //     padding: 'var(--space-2) !important',
-          //     fontSize: 'var(--font-size-2)',
-          //     lineHeight: 'var(--line-height-2)',
-          //     letterSpacing: 'var(--letter-spacing-2)',
-          //     fontFamily: 'var(--text)',
-          //   },
-          //   '& .MuiOutlinedInput-root': {
-          //     padding: 'var(--space-2)',
-          //     '& fieldset': {
-          //       borderColor: 'var(--color-border)',
-          //     },
-          //     '&:hover fieldset': {
-          //       borderColor: 'var(--color-border-hover)',
-          //     },
-          //     '&.Mui-focused fieldset': {
-          //       borderColor: 'var(--color-border-focus)',
-          //       boxShadow: 'var(--shadow-1)', // Level 1 shadow
-          //     },
-          //   },
-          // },
-          input: {
-            // padding: 'var(--space-1) !important',
-            // fontSize: 'var(--font-size-2)',
-            // lineHeight: 'var(--line-height-2)',
-            // letterSpacing: 'var(--letter-spacing-2)',
-            // fontFamily: 'var(--text)',
-          },
-          // paper: {
-          //   boxShadow: 'var(--shadow-3)', // Level 3 shadow
-          //   borderRadius: 'var(--radius-3)',
-          //   fontFamily: 'var(--text)',
-          // },
-          // option: {
-          //   padding: 'var(--space-2) var(--space-3)',
-          //   fontSize: 'var(--font-size-2)',
-          //   lineHeight: 'var(--line-height-2)',
-          //   letterSpacing: 'var(--letter-spacing-2)',
-          //   fontFamily: 'var(--text)',
-          //   '&[aria-selected="true"]': {
-          //     backgroundColor: 'var(--color-background-selected)',
-          //   },
-          //   '&[data-focus="true"]': {
-          //     backgroundColor: 'var(--color-background-focus)',
-          //   },
-          // },
-          // clearIndicator: {
-          //   color: 'var(--color-icon)',
-          //   '&:hover': {
-          //     color: 'var(--color-icon-hover)',
-          //   },
-          // },
-          // popupIndicator: {
-          //   color: 'var(--color-icon)',
-          //   '&:hover': {
-          //     color: 'var(--color-icon-hover)',
-          //   },
-          // },
-          // endAdornment: {
-          //   right: 'var(--space-1)',
-          // },
-          // groupLabel: {
-          //   backgroundColor: 'var(--neutral-2)',
-          //   padding: 'var(--space-1) var(--space-2)',
-          //   fontFamily: 'var(--text)',
-          // },
         },
       },
       MuiInputAdornment: {
@@ -557,16 +475,41 @@ function Theme({ children }) {
       },
       MuiCheckbox: {
         defaultProps: {
-          disableRipple: true, // No more ripple, on the whole application
+          disableRipple: true,
+          icon: <CheckboxIcon variant='unchecked' size={'16px'} />,
+          checkedIcon: <CheckboxIcon variant='checked' size={'16px'} />,
+        },
+        styleOverrides: {
+          root: ({ size }) => ({
+            padding: 0,
+            width: size,
+            height: size,
+            '& .MuiSvgIcon-root': {
+              borderRadius: '4px',
+            },
+            '&.Mui-disabled': {
+              color: 'rgba(0, 0, 0, 0.38)',
+              '& .MuiSvgIcon-root': {
+                fill: 'rgba(0, 0, 0, 0.38)',
+              },
+            },
+          }),
         },
       },
       MuiRadio: {
         defaultProps: {
-          disableRipple: true, // No more ripple, on the whole application
+          disableRipple: true,
+          icon: <RadioButtonIcon variant='unchecked' />,
+          checkedIcon: <RadioButtonIcon variant='checked' />,
         },
         styleOverrides: {
           root: {
-            padding: 'var(--space-1)',
+            padding: 'var(--space-0)',
+            '&.Mui-disabled': {
+              '& .MuiSvgIcon-root': {
+                fill: '#19130029',
+              },
+            },
           },
         },
       },
@@ -577,39 +520,47 @@ function Theme({ children }) {
           },
         },
       },
-      MuiSwitch: {
-        styleOverrides: {
-          root: {
-            width: '40px', // adjusted width
-            height: '24px', // adjusted height
-            padding: '2px', // adjusted padding
-          },
-          switchBase: {
-            padding: '2px', // adjusted padding
-            '&.Mui-checked': {
-              transform: 'translateX(16px)', // adjust the position when checked
-            },
-          },
-          thumb: {
-            width: '20px', // adjusted width
-            height: '20px', // adjusted height
-          },
-          track: {
-            borderRadius: '12px', // adjusted borderRadius
-          },
-        },
-      },
+      // MuiSwitch: {
+      //   styleOverrides: {
+      //     root: {
+      //       width: '40px', // adjusted width
+      //       height: '24px', // adjusted height
+      //       padding: '2px', // adjusted padding
+      //     },
+      //     switchBase: {
+      //       padding: '2px', // adjusted padding
+      //       '&.Mui-checked': {
+      //         transform: 'translateX(16px)', // adjust the position when checked
+      //       },
+      //     },
+      //     thumb: {
+      //       width: '20px', // adjusted width
+      //       height: '20px', // adjusted height
+      //     },
+      //     track: {
+      //       borderRadius: '12px', // adjusted borderRadius
+      //     },
+      //   },
+      // },
 
       MuiAlert: {
         styleOverrides: {
           root: {
-            padding: 'var(--space-2) var(--space-3)',
-            borderRadius: 'var(--radius-2)',
-            boxShadow: 'var(--shadow-2)', // Level 2 shadow
+            padding: '0 var(--space-2)',
+            borderRadius: 'var(--radius-1)',
+            boxShadow: 'none', // Level 2 shadow
             fontFamily: 'var(--text)',
-            fontSize: 'var(--font-size-2)',
-            lineHeight: 'var(--line-height-2)',
-            letterSpacing: 'var(--letter-spacing-2)',
+            fontSize: 'var(--font-size-1)',
+            lineHeight: 'var(--line-height-1)',
+            letterSpacing: 'var(--letter-spacing-1)',
+            backgroundColor: 'var(--info-1)',
+            border: '1px solid var(--info-6)',
+            '& .MuiAlert-message': {
+              padding: 'var(--space-1)',
+            },
+            '& .MuiAlert-message p': {
+              color: 'var(--info-a11)',
+            },
           },
         },
       },
@@ -619,8 +570,9 @@ function Theme({ children }) {
             objectFit: 'cover',
             '&.MuiAvatar-circular-small': {
               fontSize: 'var(--font-size-2)',
-              width: 'var(--space-5)',
-              height: 'var(--space-5)',
+              width: 'var(--space-6)',
+              height: 'var(--space-6)',
+              borderRadius: 'var(--radius-full)',
             },
             '&.MuiAvatar-circular-medium': {
               fontSize: 'var(--font-size-4)',
@@ -642,37 +594,37 @@ function Theme({ children }) {
               fontSize: 'var(--font-size-2)',
               width: 'var(--space-5)',
               height: 'var(--space-5)',
-              borderRadius: 'var(--radius-1)',
+              borderRadius: 'var(--radius-2)',
             },
             '&.MuiAvatar-rounded-medium': {
               fontSize: 'var(--font-size-4)',
               width: 'var(--space-7)',
               height: 'var(--space-7)',
-              borderRadius: 'var(--radius-full)',
+              borderRadius: 'var(--radius-2)',
             },
             '&.MuiAvatar-rounded-large': {
               fontSize: 'var(--font-size-6)',
               width: 'var(--space-9)',
               height: 'var(--space-9)',
-              borderRadius: 'var(--radius-full)',
+              borderRadius: 'var(--radius-3)',
             },
             '&.MuiAvatar-square-small': {
               fontSize: 'var(--font-size-2)',
               width: 'var(--space-5)',
               height: 'var(--space-5)',
-              borderRadius: 'var(--radius-2)',
+              borderRadius: 'var(--radius-0)',
             },
             '&.MuiAvatar-square-medium': {
               fontSize: 'var(--font-size-4)',
               width: 'var(--space-7)',
               height: 'var(--space-7)',
-              borderRadius: 'var(--radius-2)',
+              borderRadius: 'var(--radius-0)',
             },
             '&.MuiAvatar-square-large': {
               fontSize: 'var(--font-size-6)',
               width: 'var(--space-9)',
               height: 'var(--space-9)',
-              borderRadius: 'var(--radius-2)',
+              borderRadius: 'var(--radius-0)',
             },
           },
         },
@@ -847,6 +799,12 @@ function Theme({ children }) {
             fontSize: 'var(--font-size-2)',
             borderRadius: 'var(--radius-2)',
             boxShadow: 'var(--shadow-3)', // Level 3 shadow
+          },
+          arrow: {
+            '::before': {
+              boxShadow: 'var(--shadow-2)', // Level 3 shadow
+              backgroundColor: 'var(--white)',
+            },
           },
         },
       },

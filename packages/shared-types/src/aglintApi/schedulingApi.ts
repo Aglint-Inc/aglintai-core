@@ -1,30 +1,11 @@
+import * as v from 'valibot';
 import { RecruiterUserType } from '../data.types';
 import { PlanCombinationRespType } from '../scheduleTypes';
+import { schema_candidate_direct_booking } from './valibotSchema/candidate-self-schedule';
 
 export type ApiCancelScheduledInterview = {
   session_ids: string[];
   cand_email: string;
-};
-
-export type APICandidateConfirmSlot = {
-  candidate_plan: {
-    sessions: {
-      session_id: string;
-      start_time: string;
-      end_time: string;
-    }[];
-  }[];
-  recruiter_id: string;
-  user_tz: string;
-  schedule_id: string;
-  filter_id?: string;
-  //  if tasks id is present
-  agent_type: 'email' | 'phone' | 'self';
-  task_id: string | null;
-  candidate_email?: string;
-  candidate_name?: string;
-  candidate_id?: string;
-  is_debreif?: boolean;
 };
 
 export type APIEventAttendeeStatus = {
@@ -52,9 +33,14 @@ export type APIFindAltenativeTimeSlotResponse = {
 }[];
 
 export type APICandScheduleMailThankYou = {
-  filter_id: string;
+  availability_request_id?: string;
   cand_tz: string;
   task_id: string;
+  session_ids: string[];
+  application_id: string;
+  is_debreif: boolean;
+  schedule_id?: string;
+  filter_id?: string;
 };
 
 export type APIOptions = {
@@ -111,7 +97,6 @@ export type CandReqAvailableSlots = {
   date_range_end: string;
   candidate_tz: string;
   current_interview_day: number; // starts from 1
-  previously_selected_dates: string[];
   options?: APIOptions;
 };
 
@@ -123,4 +108,53 @@ export type APIVerifyRecruiterSelectedSlots = {
   candidate_tz: string;
   api_options?: APIOptions;
   filter_json_id: string;
+};
+
+export type AssignTrainingInt = {
+  interviewer_module_relation_id: string;
+  session_id: string;
+};
+export type APIAssignTrainingInterviewerType = {
+  training_ints: AssignTrainingInt[];
+};
+
+export type APIConfirmRecruiterSelectedOption = {
+  selectedOption: PlanCombinationRespType;
+  availability_req_id: string;
+  user_tz: string;
+  task_id?: string;
+};
+
+export type CandidateDirectBookingType = v.InferOutput<
+  typeof schema_candidate_direct_booking
+>;
+
+export type APIScheduleDebreif = {
+  selectedOption: PlanCombinationRespType;
+  schedule_id: string;
+  user_tz: string;
+  session_id: string;
+  task_id?: string;
+  options?: APIOptions;
+};
+
+export type APICandidateConfirmSlot = {
+  candidate_plan: {
+    sessions: {
+      session_id: string;
+      start_time: string;
+      end_time: string;
+    }[];
+  }[];
+  recruiter_id: string;
+  user_tz: string;
+  schedule_id: string;
+  filter_id?: string;
+  //  if tasks id is present
+  agent_type: 'email' | 'phone' | 'self';
+  task_id: string | null;
+  candidate_email?: string;
+  candidate_name?: string;
+  candidate_id?: string;
+  is_debreif?: boolean;
 };

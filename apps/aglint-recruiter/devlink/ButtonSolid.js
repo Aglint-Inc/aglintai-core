@@ -27,7 +27,10 @@ export function ButtonSolid({
       {...onClickButton}
     >
       {isLeftIcon ? (
-        <_Builtin.Block tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "align-items-center")}
+          tag="div"
+        >
           {slotIcon ?? (
             <_Builtin.HtmlEmbed
               className={_utils.cx(_styles, "icon_placeholder")}
@@ -38,7 +41,10 @@ export function ButtonSolid({
       ) : null}
       <_Builtin.Block tag="div">{textButton}</_Builtin.Block>
       {isRightIcon ? (
-        <_Builtin.Block tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "align-items-center")}
+          tag="div"
+        >
           {slotIcon ?? (
             <_Builtin.HtmlEmbed
               className={_utils.cx(_styles, "icon_placeholder")}

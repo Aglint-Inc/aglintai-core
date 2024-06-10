@@ -123,8 +123,8 @@
 //               )
 //             }
 //             slotSearch={
-//               <Stack p={'20px'}>
-//                 <Stack spacing={'20px'}>
+//               <Stack p={'var(--space-5)'}>
+//                 <Stack spacing={'var(--space-5)'}>
 //                   <UITypography>Candidates</UITypography>
 //                   {!viewSeach ? (
 //                     <Stack
@@ -170,7 +170,7 @@
 //                   justifyContent={'center'}
 //                   alignItems={'center'}
 //                   flexDirection={'column'}
-//                   spacing={'10px'}
+//                   spacing={'var(--space-2)'}
 //                 >
 //                   <ChatIcon />
 
@@ -206,7 +206,7 @@
 //                   justifyContent={'center'}
 //                   alignItems={'center'}
 //                   flexDirection={'column'}
-//                   spacing={'10px'}
+//                   spacing={'var(--space-2)'}
 //                 >
 //                   <ChatIcon />
 //                   <UITypography color={'grey.600'}>
@@ -230,16 +230,16 @@
 //     <>
 //       <Stack
 //         direction={'row'}
-//         spacing={'10px'}
+//         spacing={'var(--space-2)'}
 //         justifyContent={'center'}
 //         alignItems={'center'}
 //       >
 //         <Stack
 //           border={'1px solid'}
-//           borderColor={'grey.300'}
+//           borderColor={'var(--neutral-6)'}
 //           borderRadius={'100px'}
 //           color={'grey.800'}
-//           py={'8px'}
+//           py={'var(--space-2)'}
 //           px={'19px'}
 //           bgcolor={status !== 'applied' && 'grey.200'}
 //           sx={{
@@ -254,10 +254,10 @@
 //         <Stack
 //           bgcolor={status === 'applied' && 'grey.200'}
 //           border={'1px solid'}
-//           borderColor={'grey.300'}
+//           borderColor={'var(--neutral-6)'}
 //           borderRadius={'100px'}
 //           color={'grey.800'}
-//           py={'8px'}
+//           py={'var(--space-2)'}
 //           px={'19px'}
 //           sx={{
 //             cursor: 'pointer',
@@ -294,7 +294,7 @@
 //                 />
 //               )}
 //               {message.role === 'user' && message?.metadata?.file_name && (
-//                 <Stack mt={'10px'} direction={'row'} justifyContent={'end'}>
+//                 <Stack mt={'var(--space-2)'} direction={'row'} justifyContent={'end'}>
 //                   <UserChatIcon
 //                     isViewResumeVisible={true}
 //                     onClickViewResume={{

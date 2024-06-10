@@ -2,7 +2,6 @@
 import 'react-phone-input-2/lib/style.css';
 
 import Icon from '@components/Common/Icons/Icon';
-import { palette } from '@context/Theme/Theme';
 import { Stack } from '@mui/material';
 // import countries from '@utils/CountryUtils';
 import React from 'react';
@@ -52,13 +51,13 @@ const UIPhoneInput = ({
   defaultCountry,
   setDefaultCountry = () => {}
 }: Props) => {
-  let labelColor = palette.grey[800];
+  let labelColor = 'var(--neutral-12)';
   if (disabled) {
-    labelColor = palette.grey[600];
+    labelColor = 'var(--neutral-11)';
   }
 
   return (
-    <Stack direction={'column'} gap={'4px'} sx={customPhoneStyle} p={'0px'}>
+    <Stack direction={'column'} gap={'var(--space-1)'} sx={customPhoneStyle} p={'0px'}>
       {label && (
         <UITypography type={labelSize} color={labelColor} fontBold={labelBold}>
           {label}
@@ -116,10 +115,10 @@ const UIPhoneInput = ({
           spacing={'2px'}
         >
           <Stack className='placeholder-icon'>
-            <Icon height='12px' color={palette.red[400]} variant='AlertIcon' />
+            <Icon height='12px' color={'var(--error-9)'} variant='AlertIcon' />
           </Stack>
           <Stack className='placeholder'>
-            <UITypography type='small' color={palette.red[400]}>
+            <UITypography type='small' color={'var(--error-11)'}>
               {error ? helperText : ''}
             </UITypography>
           </Stack>
@@ -153,7 +152,6 @@ export const customPhoneStyle = {
     {
       outline: '3px solid',
       outlineColor: 'var(--accent-a9)'
-      // borderColor: palette.blue[400],
     },
   '& .react-tel-input .form-control': {
     width: '100%',

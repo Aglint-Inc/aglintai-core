@@ -147,6 +147,15 @@
   align-items: flex-start;
 }
 
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
 .im-form-block {
   display: flex;
   padding: var(--space-4) var(--space-4) var(--space-2);

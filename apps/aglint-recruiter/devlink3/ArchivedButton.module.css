@@ -15,6 +15,8 @@
   grid-column-gap: 4px;
   grid-row-gap: 4px;
 
+  color: var(--accent-9);
+
   cursor: pointer;
 }
 
@@ -48,48 +50,4 @@
 
 .icons.pointer {
   cursor: pointer;
-}
-
-.text-blue-500 {
-  color: #337fbd;
-}
-
-.text-blue-500.text-underline {
-  text-decoration: underline;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
-.text-blue-500.text-underline.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.text-blue-500.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.text-sm {
-  font-size: var(--font-size-1);
-  line-height: var(--line-height-1);
-  letter-spacing: var(--letter-spacing-1);
-}
-
-.text-blue-500.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.text-blue-500.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.text-blue-500.text-capital {
-  text-transform: uppercase;
-}
-
-.fw-semibold {
-  font-weight: 600;
 }

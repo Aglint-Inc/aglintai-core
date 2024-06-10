@@ -4,6 +4,7 @@ import { useWorkflow } from '@/src/context/Workflows/[id]';
 import NotFoundPage from '@/src/pages/404';
 
 import Actions from './action';
+import { ActionsProvider } from './context';
 import Trigger from './trigger';
 
 const Body = () => {
@@ -15,7 +16,9 @@ const Body = () => {
       slotWorkflowItem={
         <>
           <Trigger />
-          <Actions />
+          <ActionsProvider>
+            <Actions />
+          </ActionsProvider>
         </>
       }
     />

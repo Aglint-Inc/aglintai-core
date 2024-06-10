@@ -36,6 +36,7 @@ export function CandidateSubmitAvailability({
           onClickButton={onClickReReq}
           size="1"
           textButton="Request Availability Again"
+          color="neutral"
         />
       </_Builtin.Block>
     </_Component>

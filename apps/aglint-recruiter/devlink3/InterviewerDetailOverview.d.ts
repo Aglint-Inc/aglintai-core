@@ -11,4 +11,5 @@ declare function InterviewerDetailOverview(props: {
   textHeader2?: React.ReactNode;
   textButton1?: React.ReactNode;
   textButton2?: React.ReactNode;
+  isViewButtonVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -175,7 +175,7 @@ const TeamManagement = () => {
                 onChange={handleSearchInputChange}
               />
             </Stack>
-            <Stack display={'flex'} flexDirection={'row'} gap={'10px'}>
+            <Stack display={'flex'} flexDirection={'row'} gap={'var(--space-2)'}>
               <FilterDropDown
                 icon={<StatusIcon />}
                 title={'Status'}

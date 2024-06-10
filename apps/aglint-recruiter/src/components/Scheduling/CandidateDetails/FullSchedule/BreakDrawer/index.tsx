@@ -18,14 +18,12 @@ function BreakDrawerEdit() {
   const {
     editSession,
     allSessions,
-    selCoordinator,
     selectedApplication,
     selectedSchedule,
     isEditBreakOpen,
   } = useSchedulingApplicationStore((state) => ({
     editSession: state.editSession,
     selectedSchedule: state.selectedSchedule,
-    selCoordinator: state.selCoordinator,
     allSessions: state.initialSessions,
     selectedApplication: state.selectedApplication,
     isEditBreakOpen: state.isEditBreakOpen,
@@ -52,7 +50,6 @@ function BreakDrawerEdit() {
         {
           allSessions: allSessions,
           application_id: selectedApplication.id,
-          coordinator_id: selCoordinator,
           is_get_more_option: false,
           scheduleName: `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`,
           session_ids: [],
@@ -118,7 +115,7 @@ function BreakDrawerEdit() {
             textPrimaryButton='Save'
             textTitle='Edit break duration'
             slotSidedrawerBody={
-              <Stack p={'4px'}>
+              <Stack spacing={'var(--space-4)'}>
                 <DropDown
                   placeholder='Select break duration'
                   showIcons={false}

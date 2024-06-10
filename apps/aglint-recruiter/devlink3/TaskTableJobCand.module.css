@@ -72,6 +72,8 @@
   grid-column-gap: 4px;
   grid-row-gap: 4px;
 
+  color: var(--accent-9);
+
   cursor: pointer;
 }
 

@@ -47,13 +47,10 @@ export function CandidateDatabaseDetail({
         value="%3Cstyle%3E%0A.cvs-info-content-main%20%7B%0Aheight%3A%20calc(100%25%20-%20320px)%3B%0A%7D%0A%3C%2Fstyle%3E"
       />
       <_Builtin.Block
-        className={_utils.cx(_styles, "cdb-header-wrapper")}
+        className={_utils.cx(_styles, "cdd-header-wrap")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "cdb-header-block")}
-          tag="div"
-        >
+        <_Builtin.Block tag="div">
           <_Builtin.Block
             className={_utils.cx(_styles, "cdb-header-info-block")}
             tag="div"

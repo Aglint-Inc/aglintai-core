@@ -121,7 +121,7 @@ const StackedBar = ({
             },
             grid: {
               display: true,
-              color: 'rgba(0,0,0,0.05)',
+              color: 'rgba(0, 0, 0, 0.05',
             },
           },
         },

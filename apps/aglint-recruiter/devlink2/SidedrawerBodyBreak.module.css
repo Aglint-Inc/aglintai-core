@@ -1,105 +1,25 @@
 .sidedrawer_session {
   display: flex;
+  padding-top: var(--space-4);
+  padding-right: var(--space-4);
+  padding-bottom: var(--space-4);
+  padding-left: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
+
+  background-color: var(--white);
+
+  min-height: calc(100vh - 93px);
 }
 
 .input_and_label {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-}
-
-.fw-semibold {
-  font-weight: 600;
-}
-
-.text-grey-600 {
-  color: #68737d;
-}
-
-.inline-block {
-  display: inline;
-  margin-right: 2px;
-  margin-left: 2px;
-}
-
-.text-color-black {
-  color: var(--black-9b0fc3fc);
-}
-
-.text-kale-600 {
-  color: var(--kale-600\<deleted\|variable-fc9c3cf7-09bb-7364-ed8d-95d89e6d8422\>);
-}
-
-.text-sm {
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.text-yellow-700 {
-  color: hsla(26.174496644295296, 75.63%, 38.63%, 1.00);
-}
-
-.text-gray-500 {
-  color: var(--neutral-11);
-}
-
-.fw-semibold.text-gray-500.max_width_custom {
-  position: relative;
-  z-index: 3;
-  max-width: 414px;
-  color: var(--gray-400\<deleted\|variable-d09dda5a-1cff-8aa4-d166-1ff89c9f1684\>);
-}
-
-.text-first-cap {
-  text-transform: capitalize;
-}
-
-.text-lg {
-  font-size: 18px;
-  line-height: 1.33;
-}
-
-@media screen and (max-width: 991px) {
-  .text-lg {
-    font-size: 16px;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .text-lg {
-    font-size: 16px;
-  }
-}
-
-.fw-semibold.text-grey-400 {
-  color: #c2c8cc;
-}
-
-.text-blue-500 {
-  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
-}
-
-.fw-semibold.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.text-red-600 {
-  color: hsla(354.90196078431376, 60.00%, 50.00%, 1.00);
-}
-
-.fw-semibold.text-width-100 {
-  width: 100px;
-}
-
-.text-capitalize-word {
-  text-transform: capitalize;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
 }
 
 .slot_input_field {
@@ -117,6 +37,8 @@
 
   border: 1px solid #d8dcde;
   border-radius: 4px;
+
+  background-color: white;
 
   color: hsla(208.57142857142856, 0.00%, 72.24%, 1.00);
 }

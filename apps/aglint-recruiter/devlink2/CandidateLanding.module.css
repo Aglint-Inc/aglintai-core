@@ -52,10 +52,6 @@
   font-weight: 600;
 }
 
-.text-align-center {
-  text-align: center;
-}
-
 .text-grey-600 {
   color: #68737d;
 }
@@ -110,10 +106,6 @@
 .text-sm {
   font-size: 12px;
   line-height: 16px;
-}
-
-.text-yellow-700 {
-  color: hsla(26.174496644295296, 75.63%, 38.63%, 1.00);
 }
 
 .text-gray-500 {
@@ -197,10 +189,6 @@
   .text-grey-600.mob {
     font-size: 12px;
   }
-}
-
-.max-width-700 {
-  max-width: 700px;
 }
 
 .list {
@@ -307,8 +295,4 @@
 
 .mt-30 {
   margin-top: 30px;
-}
-
-.powered-footer-wrap.mt-0 {
-  margin-top: 0px;
 }

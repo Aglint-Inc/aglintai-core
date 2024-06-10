@@ -1,4 +1,3 @@
-import { palette } from '@context/Theme/Theme';
 import { Alert, IconButton, Stack, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 
@@ -49,7 +48,7 @@ export default function AlertDialog({
               {title && (
                 <Typography
                   variant='h4'
-                  color={palette.red[600]}
+                  color={'var(--error-11)'}
                   sx={{ textTransform: 'capitalize' }}
                 >
                   {title}
@@ -67,7 +66,7 @@ export default function AlertDialog({
                 severity='warning'
                 sx={{
                   bgcolor: 'card.main.hover.background',
-                  borderColor: 'card.main.hover.border',
+                  borderColor: 'var(--neutral-6)',
                   color: 'nav.background',
                 }}
               >

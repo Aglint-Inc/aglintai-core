@@ -3,40 +3,43 @@
 }
 
 .newinterviewplancard.my-schedule {
-  padding: 16px 16px 16px 0px;
+  max-width: 1000px;
 }
 
-.div-block-1394 {
+.nmsc-wrapper {
   display: flex;
   height: 100%;
   justify-content: flex-start;
-  align-items: center;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  align-items: stretch;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
 }
 
-.div-block-1394.gap-20 {
+.nmsc-wrapper.gap-20 {
   grid-column-gap: 20px;
   grid-row-gap: 20px;
 }
 
-.div-block-1394.gap-20.all-schedule {
+.nmsc-wrapper.gap-20.all-schedule {
   position: relative;
   justify-content: flex-start;
   align-items: stretch;
 }
 
-.div-block-1402 {
+.mssc-wrap {
   position: relative;
   width: 100%;
   height: 100%;
 }
 
-.div-block-1385 {
+.mssc-wrapper {
   display: flex;
   width: 100%;
   height: 100%;
+  padding: var(--space-4);
+  flex-direction: column;
   justify-content: flex-start;
+  flex-wrap: nowrap;
   align-items: stretch;
 
   border: 1px solid var(--neutral-6);
@@ -55,7 +58,7 @@
   border-bottom-left-radius: var(--radius-4);
 }
 
-.div-block-1399 {
+.nmsc-date-sub-wrap {
   position: relative;
   height: 100%;
 }
@@ -64,20 +67,24 @@
   display: none;
 }
 
-.div-block-1393 {
+.nmsc-date {
   display: flex;
-  width: 84px;
-  height: 96px;
-  justify-content: center;
+  width: 120px;
+  height: 100%;
+  padding: var(--space-3) var(--space-5);
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
   align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
+  border-radius: var(--radius-4);
 
-  background-color: #f7f9fb;
+  background-color: var(--neutral-a3);
 }
 
-.div-block-1393.empty-schedule-date {
+.nmsc-date.empty-schedule-date {
   position: absolute;
   left: 0%;
   top: 0%;
@@ -86,11 +93,11 @@
   z-index: 1;
 }
 
-.div-block-1393.radius-10 {
+.nmsc-date.radius-10 {
   border-radius: 10px;
 }
 
-.div-block-1393.radius-10.height-100 {
+.nmsc-date.radius-10.height-100 {
   width: 120px;
   height: 100%;
   padding-top: 20px;
@@ -100,7 +107,18 @@
   background-color: #f7f9fb;
 }
 
-.div-block-1395 {
+.nmsc-date.not-schedule {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 1;
+
+  background-color: var(--neutral-5);
+}
+
+.nmsc-date-center {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -136,19 +154,11 @@
   color: var(--sand-11);
 }
 
-.text-blue-500 {
-  color: #337fbd;
-}
-
-.text-underline {
+.text-sm.text-underline {
   text-decoration: underline;
 }
 
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.text-sm.text-underline {
+.text-underline {
   text-decoration: underline;
 }
 
@@ -165,13 +175,7 @@
   opacity: 0.8;
 }
 
-.text-sm.text-underline.text-blue-500.view-req {
-  position: absolute;
-  left: auto;
-  top: 10px;
-  right: 16px;
-  bottom: auto;
-
+.cursor-pointer {
   cursor: pointer;
 }
 
@@ -222,12 +226,12 @@
   cursor: pointer;
 }
 
-.div-block-1388 {
+.mssc {
   width: 100%;
   padding: var(--space-3);
 }
 
-.div-block-1388.padding-26-l {
+.mssc.padding-26-l {
   display: flex;
   padding-left: 26px;
   flex-direction: column;
@@ -236,30 +240,30 @@
   grid-row-gap: 20px;
 }
 
-.div-block-1387 {
+.mssc-top-wrap {
   position: relative;
   z-index: 1;
 
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: flex-start;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
-.div-block-1387.space-between {
+.mssc-top-wrap.space-between {
   justify-content: space-between;
 }
 
-.div-block-1386 {
+.mssc-top-left-wrap {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  grid-column-gap: 40px;
-  grid-row-gap: 40px;
+  grid-column-gap: var(--space-5);
+  grid-row-gap: var(--space-5);
 }
 
-.div-block-1398 {
+.mssc-left-item {
   display: flex;
   width: 200px;
   flex-direction: column;
@@ -309,13 +313,13 @@
   display: none;
 }
 
-.div-block-1401 {
+.mssc-acitve-wrap {
   position: absolute;
   left: 0%;
   top: 0%;
   right: 0%;
   bottom: 0%;
 
-  border: 1px solid #5293c7;
-  border-radius: 10px;
+  border: 1px solid var(--accent-11);
+  border-radius: var(--radius-4);
 }

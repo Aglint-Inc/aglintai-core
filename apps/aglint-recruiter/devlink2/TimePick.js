@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
-import { SlotPicker } from "./SlotPicker";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./TimePick.module.css";
 
@@ -38,9 +38,9 @@ export function TimePick({
       >
         {slotSlotPicker ?? (
           <>
-            <SlotPicker />
-            <SlotPicker />
-            <SlotPicker />
+            <SlotComp componentName="slotPicker" />
+            <SlotComp componentName="slotPicker" />
+            <SlotComp componentName="slotPicker" />
           </>
         )}
       </_Builtin.Block>

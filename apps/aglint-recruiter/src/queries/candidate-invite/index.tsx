@@ -1,6 +1,6 @@
 import {
-  APICandidateConfirmSlot,
   APIVerifyRecruiterSelectedSlots,
+  CandidateDirectBookingType,
 } from '@aglint/shared-types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
@@ -42,7 +42,7 @@ export const useConfirmSlots = () => {
   const { enabled, ...params } = useInviteParams();
   const { queryKey } = candidateInviteKeys.inviteMetaWithFilter(params);
   const mutation = useMutation({
-    mutationFn: async (bodyParams: APICandidateConfirmSlot) => {
+    mutationFn: async (bodyParams: CandidateDirectBookingType) => {
       await confirmSlots(bodyParams);
       await queryClient.invalidateQueries({ queryKey });
     },
@@ -60,10 +60,10 @@ const getInviteMeta = async (
   return res.data as ApiResponseCandidateInvite;
 };
 
-const confirmSlots = async (bodyParams: APICandidateConfirmSlot) => {
+const confirmSlots = async (bodyParams: CandidateDirectBookingType) => {
   try {
     const res = await axios.post(
-      '/api/scheduling/v1/confirm_interview_slot',
+      '/api/scheduling/v1/booking/candidate-self-schedule',
       bodyParams,
     );
     if (res.status !== 200) throw new Error('Internal server error');

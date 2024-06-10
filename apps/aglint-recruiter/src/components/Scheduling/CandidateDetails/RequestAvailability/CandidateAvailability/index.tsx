@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -9,12 +10,12 @@ import { AvailabilityReq } from '@/devlink2/AvailabilityReq';
 import { ButtonPrimary } from '@/devlink2/ButtonPrimary';
 import { MultiDaySelect } from '@/devlink2/MultiDaySelect';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import {
   insertTaskProgress,
-  updateCandidateRequestAvailability,
   useRequestAvailabilityContext
 } from '../RequestAvailabilityContext';
 import { convertMinutesToHoursAndMinutes } from '../utils';
@@ -32,17 +33,20 @@ function CandidateAvailability() {
   const handleOpen = async (day: number) => {
     setOpenDaySlotPopup(day);
   };
-
   async function handleSubmit() {
     if (multiDaySessions.length !== daySlots.length) {
       toast.message('Please select slots from each day');
       return;
     }
-    await updateCandidateRequestAvailability({
-      data: { slots: daySlots },
-      id: String(router.query?.request_id),
-    });
-    insertTaskProgress({
+
+    await axios.post(
+      `/api/scheduling/request_availability/updateRequestAvailability`,
+      {
+        id: String(router.query?.request_id),
+        data: { slots: daySlots, user_timezone: userTzDayjs.tz.guess() },
+      },
+    );
+    await insertTaskProgress({
       request_availability_id: candidateRequestAvailability?.id,
       taskData: {
         created_by: {
@@ -51,6 +55,16 @@ function CandidateAvailability() {
             candidateRequestAvailability.applications.candidates.last_name,
           ),
           id: candidateRequestAvailability.applications.candidates.id,
+        },
+        jsonb_data: {
+          dates: [
+            ...new Set(
+              daySlots
+                .map((ele) => ele.dates)
+                .flat()
+                .map((ele) => ele.curr_day),
+            ),
+          ],
         },
       },
     });

@@ -1,11 +1,10 @@
-import { palette } from '@context/Theme/Theme';
 import PropTypes from 'prop-types';
 
 function CustomProgress({
   size = 10,
   strokeWidth,
   fillColor,
-  bgFill = palette.grey[200],
+  bgFill = 'var(--neutral-1)',
   bgColor,
   fontSize,
   label,
@@ -17,7 +16,7 @@ function CustomProgress({
   let filled = progress < 1 ? progress : progress / 100;
   // filled = filled * 0.75;
   strokeWidth = strokeWidth ? strokeWidth : (size * 2) / 10;
-  fillColor = fillColor ? fillColor : palette.blue[500];
+  fillColor = fillColor ? fillColor : 'var(--accent-9)';
   fontSize = fontSize ? fontSize : `${size / 3}px`;
   return (
     <div
@@ -28,7 +27,7 @@ function CustomProgress({
         justifyContent: 'center',
         alignItems: 'center',
         height: '100%',
-        borderRadius: '4px',
+        borderRadius: 'var(--radius-2)',
         // labelAlign: 'center',
         overflow: 'hidden',
         transition: '0.5s',
@@ -41,7 +40,7 @@ function CustomProgress({
             position: 'relative',
             width: `${size * 2 + strokeWidth}px`,
             height: `${size * 2 + strokeWidth}px`,
-            borderRadius: '50%',
+            borderRadius: 'var(--radius-4)',
             //   boxShadow: 'inset 0 0 50px #000',
             background: bgColor ? bgColor : '',
             zIndex: 0,
@@ -106,7 +105,7 @@ function CustomProgress({
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                borderRadius: '50%',
+                borderRadius: 'var(--radius-4)',
                 fontSize,
                 zIndex: 9999,
               }}

@@ -1,10 +1,10 @@
 import { DatabaseEnums, DatabaseView } from '@aglint/shared-types';
+import { memo } from 'react';
 
 import { WorkflowConnector } from '@/devlink3/WorkflowConnector';
 import { WorkflowItem } from '@/devlink3/WorkflowItem';
 import UISelect from '@/src/components/Common/Uiselect';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
-import { useWorkflowStore } from '@/src/context/Workflows/store';
 
 const Trigger = () => {
   return (
@@ -38,26 +38,21 @@ const Forms = () => {
 const TriggerForm = () => {
   const {
     workflow: { trigger, phase, interval },
-    handleAsyncUpdateWorkflow,
+    handleUpdateWorkflow,
   } = useWorkflow();
-  const setActionsLoad = useWorkflowStore(
-    ({ setActionsLoad }) => setActionsLoad,
-  );
   const payload = { trigger, phase };
   return (
     <UISelect
       label='When will the event trigger?'
       value={JSON.stringify(payload)}
       menuOptions={TRIGGER_OPTIONS}
-      onChange={async (e) => {
+      onChange={(e) => {
         const { phase, trigger } = JSON.parse(e.target.value) as typeof payload;
-        if (trigger !== payload.trigger) setActionsLoad(true);
-        await handleAsyncUpdateWorkflow({
+        handleUpdateWorkflow({
           phase,
           trigger,
           interval: phase === 'now' ? 0 : interval === 0 ? 30 : interval,
         });
-        setActionsLoad(false);
       }}
     />
   );
@@ -102,16 +97,24 @@ const TRIGGER_PAYLOAD: {
   phase: DatabaseEnums['workflow_phase'][];
 }[] = [
   {
-    trigger: 'availability_request_reminder',
+    trigger: 'sendAvailabilityRequest',
     phase: ['now', 'after'],
   },
   {
-    trigger: 'self_schedule_request_reminder',
+    trigger: 'sendSelfScheduleRequest',
     phase: ['now', 'after'],
   },
   {
-    trigger: 'upcoming_interview_reminder',
+    trigger: 'interviewStart',
     phase: ['before', 'now'],
+  },
+  {
+    trigger: 'interviewerConfirmation',
+    phase: ['now', 'after'],
+  },
+  {
+    trigger: 'interviewEnd',
+    phase: ['now', 'after'],
   },
 ];
 
@@ -143,15 +146,20 @@ export function getTriggerOption(
 ): string {
   let message = '';
   switch (trigger) {
-    case 'availability_request_reminder':
+    case 'sendAvailabilityRequest':
       message = 'sending an availability request';
       break;
-    case 'self_schedule_request_reminder':
+    case 'sendSelfScheduleRequest':
       message = 'sending an self schedule request';
       break;
-    case 'upcoming_interview_reminder':
+    case 'interviewStart':
       message = 'starting an interview';
       break;
+    case 'interviewerConfirmation':
+      message = 'interview confirmation by interviewer';
+      break;
+    case 'interviewEnd':
+      message = 'ending an interview';
   }
   let preMessage = '';
   switch (phase) {
@@ -168,7 +176,7 @@ export function getTriggerOption(
   return `${preMessage} ${message}`;
 }
 
-const TriggerIcon = () => {
+const TriggerIcon = memo(() => {
   return (
     <svg
       width='20'
@@ -184,4 +192,5 @@ const TriggerIcon = () => {
       />
     </svg>
   );
-};
+});
+TriggerIcon.displayName = 'TriggerIcon';

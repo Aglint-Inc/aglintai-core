@@ -5,7 +5,6 @@ import React, { useRef } from 'react';
 import { PanelMemberPill } from '@/devlink2/PanelMemberPill';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { InterviewScheduleContextType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
-import { palette } from '@/src/context/Theme/Theme';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { MemberType } from '../../InterviewTypes/types';
@@ -67,12 +66,12 @@ function MembersAutoComplete({
         <Stack gap={1} direction={'row'} sx={{ flexWrap: 'wrap' }}>
           {selectedUsers.map((user) => {
             return (
-              <Stack key={user.user_id} marginBottom={'10px'}>
+              <Stack key={user.user_id} marginBottom={'var(--space-2)'}>
                 <PanelMemberPill
                   key={user.user_id}
                   propsBgColor={{
                     style: {
-                      background: pillColor ? pillColor : palette.grey[100],
+                      background: pillColor ? pillColor : 'var(--neutral-3)',
                       textTransform: 'capitalize',
                     },
                   }}
@@ -117,7 +116,7 @@ function MembersAutoComplete({
           maxWidth: maxWidth,
           '& .MuiSelect-select span::before': {
             content: `"${placeholder}"`,
-            color: 'grey.500',
+            color: 'var(--neutral-11)',
           },
           '& .MuiList-root-MuiMenu-list': {
             padding: '0px !important',

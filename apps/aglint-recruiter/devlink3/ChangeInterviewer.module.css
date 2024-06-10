@@ -43,8 +43,8 @@
 .popup_title {
   display: flex;
   align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .popup_close {
@@ -74,8 +74,8 @@
 .popup_body {
   display: flex;
   flex-direction: column;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .slot_widget {
@@ -83,8 +83,8 @@
   height: 100%;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .div-block-1685 {
@@ -144,15 +144,11 @@
   color: var(--sand-11);
 }
 
-.text-blue-500 {
-  color: #337fbd;
-}
-
-.text-underline {
+.text-sm.text-underline {
   text-decoration: underline;
 }
 
-.text-sm.text-underline {
+.text-underline {
   text-decoration: underline;
 }
 
@@ -167,16 +163,6 @@
 
 .text-sm.text-underline.text-grey-600.cursor-pointer:hover {
   opacity: 0.8;
-}
-
-.text-sm.text-underline.text-blue-500.view-req {
-  position: absolute;
-  left: auto;
-  top: 10px;
-  right: 16px;
-  bottom: auto;
-
-  cursor: pointer;
 }
 
 .relative-1 {
@@ -230,8 +216,8 @@
 .button-pop-wrap {
   display: flex;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .button-pop-wrap.stretch-vertical {
@@ -258,6 +244,7 @@
 .wide_button {
   position: relative;
   z-index: 1;
+  width: 100%;
 }
 
 .wide_button.width-100 {

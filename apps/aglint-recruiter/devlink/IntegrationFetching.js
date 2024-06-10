@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./IntegrationFetching.module.css";
 
@@ -36,36 +37,16 @@ export function IntegrationFetching({
           src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/653a4f0772ec5dfeaf85b44a_Frame%201717.svg"
         />
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-578")} tag="div">
+      <_Builtin.Block className={_utils.cx(_styles, "if-desc-wrap")} tag="div">
+        <Text content="Fetching jobs from " color="neutral" />
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-600")}
+          className={_utils.cx(_styles, "flex-horizontal")}
           tag="div"
         >
-          {"Fetching jobs from "}
+          <Text content={textCompany} color="neutral" />
+          <Text content="." color="neutral" />
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-579")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey-600")}
-            tag="div"
-          >
-            {textCompany}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey-600")}
-            tag="div"
-          >
-            {"."}
-          </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-600")}
-          tag="div"
-        >
-          {"This won’t take long."}
-        </_Builtin.Block>
+        <Text content="This won’t take long." color="neutral" />
       </_Builtin.Block>
     </_Component>
   );

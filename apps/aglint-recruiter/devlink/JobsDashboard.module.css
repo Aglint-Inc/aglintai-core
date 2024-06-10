@@ -42,11 +42,6 @@
   }
 }
 
-.job-dashboard-header.bottom_border {
-  height: 40px;
-  border-bottom: 1px solid var(--neutral-6);
-}
-
 .job-dashboard-header.bottom_border-copy {
   height: 48px;
   padding-top: 0px;
@@ -94,9 +89,9 @@
 .all-job-list {
   display: flex;
   overflow: auto;
-  padding-top: var(--space-3);
+  padding-top: var(--space-4);
   padding-right: var(--space-4);
-  padding-bottom: var(--space-6);
+  padding-bottom: var(--space-4);
   padding-left: var(--space-4);
   flex-direction: column;
   grid-column-gap: var(--space-3);

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./Reason.module.css";
 
@@ -25,9 +26,21 @@ export function Reason({
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {"Reasons"}
         </_Builtin.Block>
-        <_Builtin.Block tag="div">{slotReasonDropdown}</_Builtin.Block>
+        <_Builtin.Block tag="div">
+          {slotReasonDropdown ?? <SlotComp componentNeme="dropdown" />}
+        </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block tag="div">{slotReasonGraph}</_Builtin.Block>
+      <_Builtin.Block className={_utils.cx(_styles, "lot_graph")} tag="div">
+        {slotReasonGraph ?? (
+          <_Builtin.Image
+            loading="lazy"
+            width="auto"
+            height="auto"
+            alt=""
+            src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/6660397895ca29e654ada47b_Frame.png"
+          />
+        )}
+      </_Builtin.Block>
     </_Component>
   );
 }

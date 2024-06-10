@@ -25,7 +25,7 @@ export function Feedback({
         className={_utils.cx(_styles, "div-block-1291")}
         tag="div"
       >
-        <Text content="Feedback" />
+        <Text content="Feedback" weight="medium" />
         <Text content={textFeedback} weight="" color="neutral" />
       </_Builtin.Block>
       <_Builtin.Block tag="div">

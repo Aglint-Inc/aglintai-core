@@ -60,8 +60,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         selectedDebrief.interview_session.session_order - 2
       ];
 
-    const today = dayjs(previousMeeting.end_time).format();
-    const endDay = dayjs(today).add(2, 'day').format();
+    const today = dayjs(previousMeeting.end_time).add(1, 'day').format(); // trying to book debrief the next day of the previous confirmed meeting
+    const endDay = dayjs(today).add(9, 'day').format();
 
     const dateRange = {
       start_date: today,
@@ -85,6 +85,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const filter_id = filterJson.id;
 
+    // create task for scheduling debrief which picks and hit shcedule_individual api
     const task = await createTask({
       application_id,
       dateRange,

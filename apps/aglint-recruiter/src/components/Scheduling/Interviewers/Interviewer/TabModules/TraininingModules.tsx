@@ -1,5 +1,6 @@
-import { Typography } from '@mui/material';
 import React, { Dispatch } from 'react';
+
+import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 
 import { PauseDialog } from '../../type';
 import ListCardInterviewerModules from './ListCard';
@@ -28,7 +29,7 @@ function TraininingModules({
           );
         })
       ) : (
-        <Typography variant='body1'>No Interview Types Added Yet</Typography>
+        <AllInterviewEmpty textDynamic='No Interview Types Found' />
       )}
     </>
   );

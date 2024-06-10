@@ -18,6 +18,7 @@ export interface SchedulingApplication {
     | 'candidate_feedback';
   initialSessions: SessionsType;
   selectedSessionIds: string[];
+  requestSessionIds: string[];
   selectedApplication: SelectedApplicationTypeDB;
   selectedSession: SessionsType[0] | null;
   selectedSchedule: InterviewScheduleTypeDB;
@@ -26,40 +27,42 @@ export interface SchedulingApplication {
   members: InterviewScheduleContextType['members'];
   isViewProfileOpen: boolean;
   fetchingSchedule: boolean;
-  selCoordinator: string | null;
   isEditOpen: boolean;
   isEditBreakOpen: boolean;
   editSession: SessionsType[0];
-
+  availabilities: DatabaseTable['candidate_request_availability'][];
   isIndividualCancelOpen: boolean;
   isMultipleCancelOpen: boolean;
   isMultipleRescheduleOpen: boolean;
+  isSendingToCandidate: boolean;
   isIndividualRescheduleOpen: boolean;
   selectedApplicationLog: DatabaseTable['application_logs'];
 }
 
 const initialState: SchedulingApplication = {
   initialLoading: true,
-  selectedApplication: null,
-  selectedSessionIds: [],
+  selectedApplication: null, // selected application details
+  selectedSessionIds: [], // selected session ids
+  requestSessionIds: [], // selected session ids in request candidate availability
+  availabilities: [], // candidate availabilities sent to candidate for showing banner
   tab: 'interview_plan',
   selectedSession: null,
-  initialSessions: [],
-  selectedSchedule: null,
-  interviewModules: [],
-  scheduleName: '',
-  members: [],
-  isIndividualCancelOpen: false,
-  isMultipleCancelOpen: false,
-  isMultipleRescheduleOpen: false,
-  isIndividualRescheduleOpen: false,
+  initialSessions: [], // sessions with meeting details based on this plan in getting rendered in candidate details
+  selectedSchedule: null, // selected schedule details (interview_schedule table) used to find session is cached or not (if schedule exits then session is cached or else sessions are fetched from job plan)
+  interviewModules: [], // all the interview modules for showing in the dropdown in edit session drawer
+  scheduleName: '', // schedule name for the schedule
+  members: [], // all the members in the organization for showing in the dropdown in edit session drawer
+  isIndividualCancelOpen: false, // individual cancel dialog open state from interview plan
+  isMultipleCancelOpen: false, // multiple cancel dialog open state from activity panel
+  isMultipleRescheduleOpen: false, // multiple reschedule dialog open state from activity panel
+  isIndividualRescheduleOpen: false, // individual reschedule dialog open state from interview plan
   isViewProfileOpen: false,
   fetchingSchedule: true,
-  selCoordinator: null,
-  isEditOpen: false,
-  isEditBreakOpen: false,
-  editSession: null,
-  selectedApplicationLog: null,
+  isEditOpen: false, // edit session drawer open state from interview plan
+  isEditBreakOpen: false, // edit break drawer open state from interview plan
+  isSendingToCandidate: false, // sending to candidate loader state for api call
+  editSession: null, // session details for editing
+  selectedApplicationLog: null, // selected application log details while cancelling or rescheduling from activity panel
 };
 
 export const useSchedulingApplicationStore = create<SchedulingApplication>()(
@@ -70,6 +73,16 @@ export const useSchedulingApplicationStore = create<SchedulingApplication>()(
 
 export const setInitalLoading = (initialLoading: boolean) =>
   useSchedulingApplicationStore.setState({ initialLoading });
+
+export const setIsSendingToCandidate = (isSendingToCandidate: boolean) =>
+  useSchedulingApplicationStore.setState({ isSendingToCandidate });
+
+export const setRequestSessionIds = (requestSessionIds: string[]) =>
+  useSchedulingApplicationStore.setState({ requestSessionIds });
+
+export const setAvailabilities = (
+  availabilities: DatabaseTable['candidate_request_availability'][],
+) => useSchedulingApplicationStore.setState({ availabilities });
 
 export const setSelectedApplicationLog = (
   selectedApplicationLog: DatabaseTable['application_logs'],
@@ -124,9 +137,6 @@ export const setInterviewModules = (interviewModules: InterviewModuleType[]) =>
 
 export const setScheduleName = (scheduleName: string) =>
   useSchedulingApplicationStore.setState({ scheduleName });
-
-export const setSelCoordinator = (selCoordinator: string | null) =>
-  useSchedulingApplicationStore.setState({ selCoordinator });
 
 export const setIsViewProfileOpen = (isViewProfileOpen: boolean) =>
   useSchedulingApplicationStore.setState({ isViewProfileOpen });

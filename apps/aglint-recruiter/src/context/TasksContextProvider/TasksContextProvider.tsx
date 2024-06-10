@@ -598,7 +598,7 @@ const getTasks = ({
       ? supabase
           .from('new_tasks')
           .select(
-            '*, applications(* , candidates( * ), public_jobs( * )), candidate_request_availability ( id,slots )',
+            '*, applications(* , candidates( * ), public_jobs( * )), candidate_request_availability ( id,slots,booking_confirmed )',
             getCount ? { count: 'exact' } : {},
           )
           .or(
@@ -607,7 +607,7 @@ const getTasks = ({
       : supabase
           .from('new_tasks')
           .select(
-            '*, applications(* , candidates( * ), public_jobs( * )), candidate_request_availability ( id,slots )',
+            '*, applications(* , candidates( * ), public_jobs( * )), candidate_request_availability ( id,slots,booking_confirmed )',
             getCount ? { count: 'exact' } : {},
           )
   )
@@ -640,7 +640,7 @@ export const updateTask = ({
       : supabase.from('new_tasks').insert(task)
   )
     .select(
-      '*, applications(* , candidates( * ), public_jobs( * )), candidate_request_availability ( id,slots )',
+      '*, applications(* , candidates( * ), public_jobs( * )), candidate_request_availability ( id,slots,booking_confirmed )',
     )
     .single()
     .then(({ data, error }) => {

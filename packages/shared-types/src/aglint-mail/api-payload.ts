@@ -1,93 +1,256 @@
-export interface EmailPayloads {
-  application_received: {
-    application_id: string;
+import v from 'valibot';
+import { DatabaseEnums } from '..';
+import {
+  agentEmailCandidateSchema,
+  applicantRejectEmailApplicantSchema,
+  applicationRecievedEmailApplicantSchema,
+  confInterviewEmailOrganizerSchema,
+  confirmInterviewEmailApplicantSchema,
+  debriefEmailInterviewerSchema,
+  interReschedReqEmailRecruiterSchema,
+  interviewCancelReqEmailRecruiterSchema,
+  interviewReminderEmailApplicantSchema,
+  interviewReminderEmailInterviewerSchema,
+  interviewRescheduleEmailApplicantSchema,
+  interviewStartEmailApplicantSchema,
+  interviewStartEmailInterviewersSchema,
+  phoneScreenEmailCandidateSchema,
+  phoneScreenRemindEmailApplicantSchema,
+  sendSelfScheduleRequest_email_applicant,
+} from './api_schema';
+export type MeetingDetailCardType = {
+  date: string;
+  time: string;
+  sessionType: string;
+  platform: string;
+  duration: string;
+  sessionTypeIcon: string;
+  meetingIcon: string;
+};
+type Payloads = {
+  debrief_email_interviewer: {
+    api_payload: v.InferInput<typeof debriefEmailInterviewerSchema>;
+    comp_email_placeholders: {
+      '{{ interviewerFirstName }}': string;
+      '{{ companyName }}': string;
+      '{{ candidateFirstName }}': string;
+      '{{ jobTitle }}': string;
+    };
+    react_email_placeholders: {
+      subject: string;
+      emailBody: string;
+      meetingDetails: MeetingDetailCardType;
+      companyLogo: string;
+      candidateLink: string;
+    };
   };
-  cancel_interview_session: {
-    application_id: string;
-    session_id: string;
+  applicationRecieved_email_applicant: {
+    api_payload: v.InferInput<typeof applicationRecievedEmailApplicantSchema>;
+    comp_email_placeholders: {
+      '{{ candidateFirstName }}': string;
+      '{{ jobTitle }}': string;
+      '{{ companyName }}': string;
+      '{{ supportLink }}': string;
+    };
+    react_email_placeholders: {
+      subject: string;
+      emailBody: string;
+      companyLogo: string;
+    };
   };
-  candidate_availability_request: {
-    session_id: string[];
-    application_id: string;
-    schedule_id: string;
-    filter_id: string;
+  interviewCancel_email_applicant: {
+    api_payload: v.InferInput<typeof applicationRecievedEmailApplicantSchema>;
+    comp_email_placeholders: {};
+    react_email_placeholders: {
+      subject: string;
+    };
   };
-  candidate_cancel_request: {
-    session_id: string[];
-    application_id: string;
-    meeting_id: string;
-    interview_cancel_id: string;
+  agent_email_candidate: {
+    api_payload: v.InferInput<typeof agentEmailCandidateSchema>;
+    comp_email_placeholders: {
+      '{{ candidateFirstName }}': string;
+      '{{ companyName }}': string;
+      '{{ jobRole }}': string;
+      '{{ startDate }}': string;
+      '{{ endDate }}': string;
+      '{{ companyTimeZone }}': string;
+      '{{ selfScheduleLink }}': string;
+    };
+    react_email_placeholders: {
+      subject: string;
+      emailBody: string;
+      companyLogo: string;
+    };
   };
-  candidate_invite_confirmation: {
-    session_id: string[];
-    application_id: string;
-    schedule_id: string;
-    filter_id: string;
+  confInterview_email_organizer: {
+    api_payload: v.InferInput<typeof confInterviewEmailOrganizerSchema>;
+    comp_email_placeholders: {
+      '{{ recruiterFirstName }}': string;
+      '{{ candidateFirstName }}': string;
+    };
+    react_email_placeholders: {
+      companyLogo: string;
+      emailBody: string;
+      subject: string;
+      meetingDetails: MeetingDetailCardType;
+      candidateDetails: string;
+    };
   };
-  candidate_reschedule_request: {
-    session_id: string[];
-    application_id: string;
-    meeting_id: string;
-    interview_cancel_id: string;
+  confirmInterview_email_applicant: {
+    api_payload: v.InferInput<typeof confirmInterviewEmailApplicantSchema>;
+    comp_email_placeholders: {
+      '{{ candidateFirstName }}': string;
+      '{{ jobTitle }}': string;
+      '{{ companyName }}': string;
+      '{{ supportLink }}': string;
+    };
+    react_email_placeholders: {
+      subject: string;
+      emailBody: string;
+      companyLogo: string;
+      meetingDetails: MeetingDetailCardType[];
+      candidateLink: string;
+    };
   };
-  confirmation_mail_to_organizer: {
-    session_id: string[];
-    application_id: string;
-    meeting_id: string;
+  applicantReject_email_applicant: {
+    api_payload: v.InferInput<typeof applicantRejectEmailApplicantSchema>;
+    comp_email_placeholders: {
+      '{{ candidateFirstName }}': string;
+      '{{ jobTitle }}': string;
+      '{{ companyName }}': string;
+    };
+    react_email_placeholders: {
+      subject: string;
+      emailBody: string;
+      companyLogo: string;
+    };
   };
+  phoneScreen_email_candidate: {
+    api_payload: v.InferInput<typeof phoneScreenEmailCandidateSchema>;
+    comp_email_placeholders: {};
+    react_email_placeholders: {
+      subject: string;
+    };
+  };
+  interviewReminder_email_applicant: {
+    api_payload: v.InferInput<typeof interviewReminderEmailApplicantSchema>;
+    comp_email_placeholders: {
+      '{{ candidateName }}': string;
+      '{{ jobTitle }}': string;
+      '{{ recruiterName }}': string;
+      '{{ companyName }}': string;
+      '{{ sessionName }}': string;
+      '{{ date }}': string;
+      '{{ time }}': string;
+    };
+    react_email_placeholders: {
+      subject: string;
+      emailBody: string;
+      companyLogo: string;
+    };
+  };
+  interviewReminder_email_interviewer: {
+    api_payload: v.InferInput<typeof interviewReminderEmailInterviewerSchema>;
+    comp_email_placeholders: {
+      '{{ candidateName }}': string;
+      '{{ jobTitle }}': string;
+      '{{ jobRecruiter }}': string;
+      '{{ companyName }}': string;
+      '{{ sessionName }}': string;
+      '{{ date }}': string;
+      '{{ time }}': string;
+      '{{ interviewerFirstName }}': string;
+    };
+    react_email_placeholders: {
+      subject: string;
+      emailBody: string;
+      companyLogo: string;
+    };
+  };
+  phoneScreenRemind_email_applicant: {
+    api_payload: v.InferInput<typeof phoneScreenRemindEmailApplicantSchema>;
+    comp_email_placeholders: {};
+    react_email_placeholders: {
+      subject: string;
+    };
+  };
+  InterviewCancelReq_email_recruiter: {
+    api_payload: v.InferInput<typeof interviewCancelReqEmailRecruiterSchema>;
+    comp_email_placeholders: {};
+    react_email_placeholders: {
+      subject: string;
+    };
+  };
+  interReschedReq_email_recruiter: {
+    api_payload: v.InferInput<typeof interReschedReqEmailRecruiterSchema>;
+    comp_email_placeholders: {};
+    react_email_placeholders: {
+      subject: string;
+    };
+  };
+  interviewReschedule_email_applicant: {
+    api_payload: v.InferInput<typeof interviewRescheduleEmailApplicantSchema>;
+    comp_email_placeholders: {};
+    react_email_placeholders: {
+      subject: string;
+    };
+  };
+  interviewStart_email_applicant: {
+    api_payload: v.InferInput<typeof interviewStartEmailApplicantSchema>;
+    comp_email_placeholders: {
+      '{{ candidateName }}': string;
+      '{{ companyName }}': string;
+      '{{ jobTitle }}': string;
+      '{{ date }}': string;
+      '{{ time }}': string;
+      '{{ candidateLink }}': string;
+    };
+    react_email_placeholders: {
+      emailBody: string;
+      subject: string;
+      companyLogo: string;
+    };
+  };
+  interviewStart_email_interviewers: {
+    api_payload: v.InferInput<typeof interviewStartEmailInterviewersSchema>;
+    comp_email_placeholders: {
+      '{{ companyName }}': string;
+      '{{ candidateName }}': string;
+      '{{ jobTitle }}': string;
+      '{{ recruiterName }}': string;
+    };
+    react_email_placeholders: {
+      emailBody: string;
+      subject: string;
+      companyLogo: string;
+      candidateLink: string;
+      meetingDetails: {
+        date: string;
+        time: string;
+        sessionType: string;
+        platform: string;
+        duration: string;
+        sessionTypeIcon: string;
+        meetingIcon: string;
+      }[];
+    };
+  };
+  sendSelfScheduleRequest_email_applicant: {
+    api_payload: v.InferInput<typeof sendSelfScheduleRequest_email_applicant>;
+    comp_email_placeholders: {
+      '{{ candidateFirstName }}': string;
+      '{{ companyName }}': string;
+      '{{ jobTitle }}': string;
+      '{{ selfScheduleLink }}': string;
+      '{{ supportLink }}': string;
+    };
+    react_email_placeholders: {
+      emailBody: string;
+      subject: string;
+      companyLogo: string;
+    };
+  };
+};
 
-  debrief_calendar_invite: {
-    session_id: string[];
-    application_id: string;
-    meeting_id: string;
-    recruiter_user_id: string;
-  };
-
-  // init_email_agent: {
-  //   recipient_email: string;
-  //   mail_type: string;
-  //   recruiter_id: string;
-  //   payload: {
-  //     "[companyName]": string;
-  //     "[candidateFirstName]": string;
-  //     "[jobRole]": string;
-  //     "[companyTimeZone]": string;
-  //     "[startDate]": string;
-  //     "[endDate]": string;
-  //     "[selfScheduleLink]": string;
-  //     meetingDetails: {
-  //       dateTime: string;
-  //       type: string;
-  //       platform: string;
-  //       duration: string;
-  //       link: string;
-  //     };
-  //   };
-  // };
-  interview: {
-    application_id: string;
-  };
-  interview_resend: {
-    application_id: string;
-  };
-
-  phone_screening: {
-    application_id: string;
-  };
-  phone_screening_resend: {
-    application_id: string;
-  };
-  recruiter_rescheduling_email: {
-    session_id: string[];
-    application_id: string;
-    meeting_id: string;
-    interview_cancel_id: string;
-  };
-  rejection: {
-    application_id: string;
-  };
-  request_candidate_slot: {
-    application_id: string;
-    request_id: string;
-  };
-}
+export type EmailTemplateAPi<T extends DatabaseEnums['email_types']> =
+  T extends keyof Payloads ? Payloads[T] : never;

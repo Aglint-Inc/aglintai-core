@@ -105,7 +105,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
           <>
             <CompanyInfo
               slotLocation={
-                <Stack p={'4px'}>
+                <>
                   {recruiter?.office_locations &&
                     recruiter?.office_locations.map((loc: any, i) => {
                       const location = [loc.city, loc.region, loc.country]
@@ -174,7 +174,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                         </>
                       );
                     })}
-                </Stack>
+                </>
               }
               slotRolesPills={recruiter?.available_roles?.map((rol, ind) => {
                 return (
@@ -314,7 +314,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                 },
               }}
               slotBasicForm={
-                <Stack spacing={2} p={'4px'}>
+                <Stack spacing={2} p={'var(--space-1)'}>
                   <UITextField
                     labelBold='default'
                     labelSize='small'

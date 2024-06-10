@@ -14,7 +14,6 @@ import { useEffect, useState } from 'react';
 import { CdEditQuerry } from '@/devlink/CdEditQuerry';
 import { JobPills } from '@/devlink/JobPills';
 import AUIButton from '@/src/components/Common/AUIButton';
-import { palette } from '@/src/context/Theme/Theme';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -325,7 +324,7 @@ function EditFilter() {
                     <CircularProgress
                       color='inherit'
                       size={'15px'}
-                      sx={{ color: palette.grey[400] }}
+                      sx={{ color: 'var(--neutral-6)' }}
                     />
                   ) : (
                     <Stack alignItems={'center'} justifyContent={'center'}>

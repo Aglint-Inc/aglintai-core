@@ -29,7 +29,7 @@ export function CandidateScheduleCard({
     >
       {isTitle ? (
         <_Builtin.Block className={_utils.cx(_styles, "day_row")} tag="div">
-          <Text content={textDay} weight="bold" color="" />
+          <Text content={textDay} weight="medium" color="" />
         </_Builtin.Block>
       ) : null}
       <_Builtin.Block className={_utils.cx(_styles, "duration_row")} tag="div">

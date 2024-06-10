@@ -58,11 +58,11 @@ const Label = (props) => {
       <span
         style={{
           display: 'inline',
-          backgroundColor: '#467B7C',
-          color: '#fff',
+          backgroundColor: 'var(--neutral-3)',
+          color: 'var(--white)',
           padding: '4px 10px',
           margin: '2px',
-          borderRadius: '4px',
+          borderRadius: 'var(--radius-2)',
           flexDirection: 'row',
           alignItems: 'center',
           gap: 5,

@@ -57,7 +57,7 @@ const ErrorIcon = () => {
       display={'flex'}
       flexDirection={'row'}
       alignItems={'center'}
-      gap={'4px'}
+      gap={'var(--space-1)'}
     >
       <svg
         width='13'
@@ -82,7 +82,7 @@ const WarningIcon = () => {
       display={'flex'}
       flexDirection={'row'}
       alignItems={'center'}
-      gap={'4px'}
+      gap={'var(--space-1)'}
     >
       <svg
         width='12'

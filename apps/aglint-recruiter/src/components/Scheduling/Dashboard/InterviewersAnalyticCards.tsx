@@ -47,16 +47,16 @@ const InterviewersAnalyticCards = () => {
             <InterviewersCardList
               key={index}
               textName={
-                <Skeleton variant='text' width={'100px'} height={'30px'} />
+                <Skeleton variant='text' width={'100px'} height={'var(--space-6)'} />
               }
               textCompleted={
-                <Skeleton variant='text' width={'20px'} height={'30px'} />
+                <Skeleton variant='text' width={'var(--space-5)'} height={'var(--space-6)'} />
               }
               textUpcoming={
-                <Skeleton variant='text' width={'20px'} height={'30px'} />
+                <Skeleton variant='text' width={'var(--space-5)'} height={'var(--space-6)'} />
               }
               textDeclined={
-                <Skeleton variant='text' width={'20px'} height={'30px'} />
+                <Skeleton variant='text' width={'var(--space-5)'} height={'var(--space-6)'} />
               }
             />
           ))

@@ -13,6 +13,7 @@ function FilterSearchField() {
   return (
     <>
       <UITextField
+        height={32}
         InputProps={{
           endAdornment: (
             <InputAdornment position='end'>

@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
@@ -13,13 +14,13 @@ import { PickSlotDay } from '@/devlink2/PickSlotDay';
 import { TimePick } from '@/devlink2/TimePick';
 import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import {
   insertTaskProgress,
-  updateCandidateRequestAvailability,
-  useRequestAvailabilityContext,
+  useRequestAvailabilityContext
 } from '../../RequestAvailabilityContext';
 import SlotColumn from './SlotColumn';
 
@@ -202,12 +203,18 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
     setOpenDaySlotPopup(null);
   };
   async function submitData() {
-    await updateCandidateRequestAvailability({
-      data: { slots: [{ round: 1, dates: selectedSlots[0].dates }] },
-      id: String(router.query?.request_id),
-    });
+    await axios.post(
+      `/api/scheduling/request_availability/updateRequestAvailability`,
+      {
+        data: {
+          slots: [{ round: 1, dates: selectedSlots[0].dates }],
+          user_timezone: userTzDayjs.tz.guess(),
+        },
+        id: String(router.query?.request_id),
+      },
+    );
 
-    insertTaskProgress({
+    await insertTaskProgress({
       request_availability_id: candidateRequestAvailability?.id,
       taskData: {
         created_by: {
@@ -216,6 +223,9 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
             candidateRequestAvailability.applications.candidates.last_name,
           ),
           id: candidateRequestAvailability.applications.candidates.id,
+        },
+        jsonb_data: {
+          dates: selectedSlots[0].dates.map((ele) => ele.curr_day),
         },
       },
     });
@@ -382,7 +392,6 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
                           dateSlot.curr_day.split('T')[0],
                         )
                       ) {
-                      
                         enable = false;
                       }
 

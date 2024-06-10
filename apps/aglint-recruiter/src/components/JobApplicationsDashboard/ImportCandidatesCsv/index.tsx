@@ -135,8 +135,8 @@ const ImportCandidatesCSV = ({
   return (
     <Stack
       sx={{
-        bgcolor: 'white',
-        borderRadius: '10px',
+        bgcolor: 'var(--white)',
+        borderRadius: 'var(--radius-4)',
         height: '100%',
       }}
     >
@@ -184,7 +184,7 @@ const ImportCandidatesCSV = ({
                       </Typography>
                     </CSVLink>
                   </Stack>
-                  <Stack {...getRootProps()} sx={{ height: '320px' }}>
+                  <Stack {...getRootProps()}>
                     <input id='uploadCsv' {...getInputProps()} />
                     <ImportCandidatesCsv />
                   </Stack>

@@ -43,7 +43,6 @@ import { WorkingHourDay } from '@/devlink2/WorkingHourDay';
 import { WorkingHours } from '@/devlink2/WorkingHours';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
@@ -392,7 +391,7 @@ function SchedulingSettings({
                       <Stack
                         direction={'column'}
                         spacing={1}
-                        marginTop={'20px'}
+                        marginTop={'var(--space-5)'}
                       >
                         <Stack direction={'column'} spacing={0.5}>
                           <Typography variant='body1' fontSize={'15px'}>
@@ -565,7 +564,7 @@ function SchedulingSettings({
                   }
                   slotTimeZoneToggle={
                     <ToggleBtn
-                      handleChange={(e:any) => { 
+                      handleChange={(e: any) => {
                         setIsTimeZone(e);
                         if (e) {
                           setSelectedTimeZone(
@@ -602,7 +601,7 @@ function SchedulingSettings({
                                 })
                               ) : (
                                 <Typography
-                                  px={'10px'}
+                                  px={'var(--space-2)'}
                                   variant='caption'
                                   fontSize={'14px'}
                                 >
@@ -630,7 +629,15 @@ function SchedulingSettings({
                           textPopupTitle='Add Holiday'
                           textPopupDescription={
                             <Stack gap={1}>
-                              <Typography variant='body1'>Day off</Typography>
+                              {/* <Typography variant='body1'>Day off</Typography> */}
+                              <Stack direction={'row'}>
+                                <Typography>Day off</Typography>
+                                <Typography
+                                  sx={{ color: 'var(--error-9)', pl: 0.5 }}
+                                >
+                                  *
+                                </Typography>
+                              </Stack>
                               <Stack>
                                 <UITextField
                                   placeholder='Enter the name of the holiday'
@@ -638,7 +645,15 @@ function SchedulingSettings({
                                   ref={eventRef}
                                 />
                               </Stack>
-                              <Typography variant='body1'>Date</Typography>
+                              {/* <Typography variant='body1'>Date</Typography> */}
+                              <Stack direction={'row'}>
+                                <Typography>Date</Typography>
+                                <Typography
+                                  sx={{ color: 'var(--error-9)', pl: 0.5 }}
+                                >
+                                  *
+                                </Typography>
+                              </Stack>
                               <DateSelect
                                 selectedDates={daysOff}
                                 dateRef={dateRef}
@@ -649,7 +664,7 @@ function SchedulingSettings({
                               <Stack
                                 fontSize={'12px'}
                                 direction={'row'}
-                                spacing={'10px'}
+                                spacing={'var(--space-2)'}
                               >
                                 <FormControl>
                                   <RadioGroup
@@ -852,9 +867,7 @@ function SchedulingSettings({
                               }}
                               deleteIcon={
                                 <IconButton>
-                                  <Icon
-                                    variant='CloseThinIcon'
-                                  />
+                                  <Icon variant='CloseThinIcon' />
                                 </IconButton>
                               }
                               label={item}
@@ -900,9 +913,7 @@ function SchedulingSettings({
                               }}
                               deleteIcon={
                                 <IconButton>
-                                  <Icon
-                                    variant='CloseThinIcon'
-                                  />
+                                  <Icon variant='CloseThinIcon' />
                                 </IconButton>
                               }
                               label={item}
@@ -948,9 +959,7 @@ function SchedulingSettings({
                               }}
                               deleteIcon={
                                 <IconButton>
-                                  <Icon
-                                    variant='CloseThinIcon'
-                                  />
+                                  <Icon variant='CloseThinIcon' />
                                 </IconButton>
                               }
                               label={item}
@@ -996,9 +1005,7 @@ function SchedulingSettings({
                               }}
                               deleteIcon={
                                 <IconButton>
-                                  <Icon
-                                    variant='CloseThinIcon'
-                                  />
+                                  <Icon variant='CloseThinIcon' />
                                 </IconButton>
                               }
                               label={item}
@@ -1055,7 +1062,7 @@ export const TimezoneSelector = ({
   value,
 }: TimezoneSelectorProps) => {
   return (
-    <Stack spacing={'10px'} width={420}>
+    <Stack spacing={'var(--space-2)'} width={420}>
       <Autocomplete
         disabled={disabled}
         disableClearable
@@ -1071,7 +1078,7 @@ export const TimezoneSelector = ({
         renderOption={(props, option) => {
           return (
             <li {...props}>
-              <Typography variant='body1' color={palette.grey[800]}>
+              <Typography variant='body1' color={'var(--neutral-12)'}>
                 {option.label}
               </Typography>
             </li>

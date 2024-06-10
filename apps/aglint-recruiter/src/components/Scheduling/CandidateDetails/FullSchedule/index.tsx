@@ -18,6 +18,8 @@ import {
 } from '../store';
 import BreakDrawerEdit from './BreakDrawer';
 import SideDrawerEdit from './EditDrawer';
+import RequestAvailabilityPopUps from './RequestAvailabilityPopUps';
+import { AvailabilityProvider } from './RequestAvailabilityPopUps/RequestAvailabilityContext';
 import ScheduleIndividualCard from './ScheduleIndividual';
 
 function FullSchedule({ refetch }: { refetch: () => void }) {
@@ -65,71 +67,80 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
       <RescheduleDialog refetch={refetch} />
       <SelfSchedulingDrawer refetch={refetch} />
       <NewInterviewPlan
-        slotNewInterviewPlanCard={initialSessions?.map((session, ind) => {
-          return (
-            <Stack
-              key={ind}
-              style={{
-                opacity:
-                  isNormalSession && session.session_type === 'debrief'
-                    ? 0.5
-                    : isDebrief &&
-                        (session.session_type !== 'debrief' ||
-                          !selectedSessionIds.includes(session.id))
-                      ? 0.5
-                      : 1,
-                pointerEvents:
-                  isNormalSession && session.session_type === 'debrief'
-                    ? 'none'
-                    : isDebrief &&
-                        (session.session_type !== 'debrief' ||
-                          !selectedSessionIds.includes(session.id))
-                      ? 'none'
-                      : 'auto',
-              }}
-            >
-              <Stack
-                sx={{
-                  cursor:
-                    session.interview_meeting?.status === 'completed' ||
-                    session.interview_meeting?.status === 'confirmed'
-                      ? 'pointer'
-                      : 'auto',
-                }}
-              >
-                <ScheduleIndividualCard
-                  session={session}
-                  onClickCheckBox={selectSession}
-                  selectedSessionIds={selectedSessionIds}
-                />
-              </Stack>
-              {session.break_duration > 0 && (
-                <Stack pt={'10px'}>
-                  <InterviewBreakCard
-                    textDuration={getBreakLabel(session.break_duration)}
-                    isThreeDotVisible={true}
-                    isEditDeleteVisible={false}
-                    slotEditOptionModule={
-                      <EditOptionModule
-                        isResendInviteVisible={false}
-                        isEditVisible={true}
-                        isViewScheduleVisible={false}
-                        isCancelScheduleVisible={false}
-                        isRescheduleVisible={false}
-                        onClickEdit={{
-                          onClick: () => {
-                            setEditSession(session);
-                            setIsEditBreakOpen(true);
-                          },
-                        }}
+
+        slotNewInterviewPlanCard={
+
+          <>
+            <AvailabilityProvider>
+              <RequestAvailabilityPopUps />
+            </AvailabilityProvider>
+            {initialSessions?.map((session, ind) => {
+              return (
+                <Stack
+                  key={ind}
+                  style={{
+                    opacity:
+                      isNormalSession && session.session_type === 'debrief'
+                        ? 0.5
+                        : isDebrief &&
+                            (session.session_type !== 'debrief' ||
+                              !selectedSessionIds.includes(session.id))
+                          ? 0.5
+                          : 1,
+                    pointerEvents:
+                      isNormalSession && session.session_type === 'debrief'
+                        ? 'none'
+                        : isDebrief &&
+                            (session.session_type !== 'debrief' ||
+                              !selectedSessionIds.includes(session.id))
+                          ? 'none'
+                          : 'auto',
+                  }}
+                >
+                  <Stack
+                    sx={{
+                      cursor:
+                        session.interview_meeting?.status === 'completed' ||
+                        session.interview_meeting?.status === 'confirmed'
+                          ? 'pointer'
+                          : 'auto',
+                    }}
+                  >
+                    <ScheduleIndividualCard
+                      session={session}
+                      onClickCheckBox={selectSession}
+                      selectedSessionIds={selectedSessionIds}
+                    />
+                  </Stack>
+                  {session.break_duration > 0 && (
+                    <Stack pt={'var(--space-2)'}>
+                      <InterviewBreakCard
+                        textDuration={getBreakLabel(session.break_duration)}
+                        isThreeDotVisible={true}
+                        isEditDeleteVisible={false}
+                        slotEditOptionModule={
+                          <EditOptionModule
+                            isResendInviteVisible={false}
+                            isEditVisible={true}
+                            isViewScheduleVisible={false}
+                            isCancelScheduleVisible={false}
+                            isRescheduleVisible={false}
+                            onClickEdit={{
+                              onClick: () => {
+                                setEditSession(session);
+                                setIsEditBreakOpen(true);
+                              },
+                            }}
+                          />
+                        }
                       />
-                    }
-                  />
+                    </Stack>
+                  )}
                 </Stack>
-              )}
-            </Stack>
-          );
-        })}
+              );
+            })}
+          </>
+        }
       />
     </>
   );

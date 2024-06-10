@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { InterviewModuleCard } from "./InterviewModuleCard";
 import * as _utils from "./utils";
 import _styles from "./InterviewModuleTable.module.css";
@@ -12,10 +13,13 @@ export function InterviewModuleTable({
   isFilterVisible = true,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1064")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "interview_type_detail")}
+      tag="div"
+    >
       {isFilterVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1317")}
+          className={_utils.cx(_styles, "slot_filters")}
           tag="div"
         >
           {slotFilter}
@@ -26,49 +30,46 @@ export function InterviewModuleTable({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "header-col")} tag="div">
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Interview Type"}
-          </_Builtin.Block>
+          <Text content="Name" />
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "header-col")} tag="div">
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Members"}
-          </_Builtin.Block>
+          <Text content="Department" />
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "header-col", "center")}
+          className={_utils.cx(_styles, "header-col")}
+          id={_utils.cx(
+            _styles,
+            "w-node-b5f4b2a5-2799-e778-c903-c1a46487a198-7ad50c41"
+          )}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Upcoming"}
-          </_Builtin.Block>
+          <Text content="Schedules" />
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "header-col", "center")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Completed"}
-          </_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "header-col")} tag="div">
+          <Text content="Members" />
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1068")}
+        className={_utils.cx(_styles, "slot_intervoew_module_card")}
         tag="div"
       >
-        {slotInterviewModuleCard ?? <InterviewModuleCard />}
+        {slotInterviewModuleCard ?? (
+          <>
+            <InterviewModuleCard />
+            <InterviewModuleCard />
+            <InterviewModuleCard />
+            <InterviewModuleCard />
+            <InterviewModuleCard />
+            <InterviewModuleCard />
+            <InterviewModuleCard />
+            <InterviewModuleCard />
+            <InterviewModuleCard />
+            <InterviewModuleCard />
+            <InterviewModuleCard />
+            <InterviewModuleCard />
+            <InterviewModuleCard />
+          </>
+        )}
       </_Builtin.Block>
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "hide")}
