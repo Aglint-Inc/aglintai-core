@@ -6,90 +6,47 @@ import {
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import sendMail from '../../../config/sendgrid';
-import { initEmailAgent } from './fetch-util';
-
-interface ReqPayload {
-  meeting_id: string;
-  filter_id: string;
-}
-interface DataPayload {
-  recipient_email: string;
-  mail_type: string;
-  recruiter_id: string;
-  companyLogo: string;
-  payload: {
-    '[candidateFirstName]': string;
-    '[companyName]': string;
-    '[jobRole]': string;
-    '[startDate]': string;
-    '[endDate]': string;
-    '[companyTimeZone]': string;
-    '[selfScheduleLink]': string;
-  };
-}
+import * as v from 'valibot';
+import { agentEmailCandidateSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
+import { fetchUtil } from './fetch-util';
 
 export async function POST(req: Request) {
   const req_body = await req.json();
 
   try {
-    // const parsed_body = await
-    // const data: DataPayload = await initEmailAgent(filter_id, meeting_id);
-    // const filled_body: FilledPayload = await fetchTemplate(
-    //   data.recruiter_id,
-    //   data.mail_type,
-    //   data.payload,
-    // );
-    // filled_body.companyLogo = data.companyLogo;
-    // const { emails } = await getEmails();
+    const parsed_body = v.parse(agentEmailCandidateSchema, req_body.meta);
+    const { filled_comp_template, react_email_placeholders, recipient_email } =
+      await fetchUtil(parsed_body);
 
-    // const emailIdx = emails.findIndex((e) => e === data.mail_type);
+    const { emails } = await getEmails();
+    const emailIdx = emails.findIndex((e) => e === filled_comp_template.type);
 
-    // if (emailIdx === -1)
-    //   throw new ClientError(
-    //     `${data.mail_type} does not match any mail_type`,
-    //     400,
-    //   );
+    if (emailIdx === -1)
+      throw new ClientError(
+        `${filled_comp_template.type} does not match any mail_type`,
+        400,
+      );
 
-    // const { html, subject } = await renderEmailTemplate(
-    //   emails[emailIdx],
-    //   filled_body,
-    // );
-    // await sendMail({ email: data.recipient_email, html, subject, text: html });
+    const { html, subject } = await renderEmailTemplate(
+      filled_comp_template.type,
+      react_email_placeholders,
+    );
+
+    await sendMail({ email: recipient_email, html, subject, text: html });
     return NextResponse.json('success', {
       status: 200,
     });
   } catch (e: any) {
     console.error(e);
-    if (e instanceof ClientError) {
-      return NextResponse.json(
-        {
-          error: `${e.name} : ${e.message}`,
-        },
-        {
-          status: e.status,
-        },
-      );
-    }
-    if (e instanceof MailArgValidationError) {
-      return NextResponse.json(
-        {
-          error: `${e.name}: mail_type:init_email_agent,  ${e.message}`,
-        },
-        {
-          status: 400,
-        },
-      );
-    }
-    if (e) {
-      return NextResponse.json(
-        {
-          error: `${e.name}: mail_type:init_email_agent,  ${e.message}`,
-        },
-        {
-          status: 500,
-        },
-      );
-    }
+
+    return NextResponse.json(
+      {
+        error: `${e.name}:  ${e.message}`,
+      },
+      {
+        status: 500,
+      },
+    );
   }
 }
 

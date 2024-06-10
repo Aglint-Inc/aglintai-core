@@ -11,25 +11,23 @@ import {
 import { Parser } from 'html-to-react';
 import * as React from 'react';
 import { aglintLogo } from '../utils/assets/common';
-
-interface InitEmailAgentType {
-  body?: string;
-  companyLogo?: string;
-}
+import { EmailTemplateAPi } from '@aglint/shared-types';
+type EmailType = EmailTemplateAPi<'agent_email_candidate'>;
 
 // export dummy
-export const dummy: InitEmailAgentType = {
-  body: '<p>Hi [candidateFirstName],</p><p>Congratulations! You have been selected for an interview at [companyName] for the [jobRole] position. Your qualifications are impressive, and we are excited to meet you and discuss them further.</p><p>Please let me know your availability within the following date range: [startDate] - [endDate] ([companyTimeZone]).</p><p>Also, to make sure we find an interview time that works well for you, could you tell us your general location.</p><p>Or use the following link to schedule your interview: [selfScheduleLink]</p><p>Looking forward to connecting with you!</p><p>Best regards,<br>[companyName] Recruitment Team</p>',
+export const dummy: EmailType['react_email_placeholders'] = {
+  emailBody: `<p>Hi {{ candidateFirstName }},</p><p>Congratulations! You have been selected for an interview at {{ companyName }} for the {{ jobRole }} position. Your qualifications are impressive, and we are excited to meet you and discuss them further.</p><p>Please let me know your availability within the following date range: {{ startDate }} - {{ endDate }} ({{ jobRecruiterTimeZone }}).</p><p>Also, to make sure we find an interview time that works well for you, could you tell us your general location.</p><p>Or use the following link to schedule your interview: {{ selfScheduleLink }}</p><p>Looking forward to connecting with you!</p><p>Best regards,<br>{{ companyName }} Recruitment Team</p>`,
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
+  subject: '',
 };
 
 export const getSubject = (companyName: any) => `${companyName}`;
 
 export const InitEmailAgent = ({
-  body = dummy.body,
+  emailBody = dummy.emailBody,
   companyLogo = dummy.companyLogo,
-}: InitEmailAgentType) => {
+}: EmailType['react_email_placeholders']) => {
   const htmlParser = Parser();
   return (
     <Html>
@@ -45,7 +43,7 @@ export const InitEmailAgent = ({
                 src={companyLogo}
               />
 
-              <Text className="">{htmlParser.parse(body)}</Text>
+              <Text className="">{htmlParser.parse(emailBody)}</Text>
             </Container>
             <Text className="flex items-center text-[10px] mx-auto w-fit text-gray-500">
               Powered By

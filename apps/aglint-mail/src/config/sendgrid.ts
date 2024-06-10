@@ -39,11 +39,13 @@ export default async function sendMail(data: APISendgridPayload) {
       });
 
       msg.to = await Promise.all(email_promises);
+    } else {
+      msg.to = await getOutboundEmail(msg.to);
     }
-    console.log(msg.to);
     const resp = await sgMail.send(msg);
     const Response = resp[0];
 
+    console.log(msg.to);
     if (Response.statusCode >= 200 && Response.statusCode < 300) {
       return 'ok';
     }

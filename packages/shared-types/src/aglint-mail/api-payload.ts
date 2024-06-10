@@ -42,9 +42,19 @@ type Payloads = {
   };
   agent_email_candidate: {
     api_payload: v.InferInput<typeof agentEmailCandidateSchema>;
-    comp_email_placeholders: {};
+    comp_email_placeholders: {
+      '{{ candidateFirstName }}': string;
+      '{{ companyName }}': string;
+      '{{ jobRole }}': string;
+      '{{ startDate }}': string;
+      '{{ endDate }}': string;
+      '{{ companyTimeZone }}': string;
+      '{{ selfScheduleLink }}': string;
+    };
     react_email_placeholders: {
       subject: string;
+      emailBody: string;
+      companyLogo: string;
     };
   };
   confInterview_email_organizer: {

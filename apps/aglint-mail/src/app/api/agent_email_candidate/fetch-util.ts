@@ -1,20 +1,24 @@
 import { ScheduleUtils } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-// import type { InitEmailAgentType } from '../../../utils/types/supabase-fetch';
+import { EmailTemplateAPi } from '@aglint/shared-types';
+import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
+import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 
 interface FilterJson {
   start_date: string;
   end_date: string;
   user_tz: string;
 }
-export async function initEmailAgent(filter_id: string, meeting_id: string) {
+export async function fetchUtil(
+  req_body: EmailTemplateAPi<'agent_email_candidate'>['api_payload'],
+) {
   const [filterJson] = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        'filter_json,interview_schedule(applications(public_jobs(job_title,company),candidates(first_name,email,recruiter_id,recruiter(logo))))',
+        'filter_json,interview_schedule(id,applications(public_jobs(job_title,company),candidates(first_name,email,recruiter_id,recruiter(logo,id))))',
       )
-      .eq('id', filter_id),
+      .eq('id', req_body.filter_id),
   );
 
   const { end_date, start_date, user_tz } =
@@ -23,7 +27,7 @@ export async function initEmailAgent(filter_id: string, meeting_id: string) {
     interview_schedule: {
       applications: {
         candidates: {
-          email,
+          email: cand_email,
           recruiter_id,
           first_name,
           recruiter: { logo },
@@ -33,27 +37,47 @@ export async function initEmailAgent(filter_id: string, meeting_id: string) {
     },
   } = filterJson;
 
-  // const body: InitEmailAgentType = {
-  //   recipient_email: email,
-  //   mail_type: 'init_email_agent',
-  //   recruiter_id,
-  //   companyLogo: logo,
-  //   payload: {
-  //     '[candidateFirstName]': first_name,
-  //     '[companyName]': company,
-  //     '[jobRole]': job_title,
-  //     '[startDate]': ScheduleUtils.convertDateFormatToDayjs(
-  //       start_date,
-  //       user_tz,
-  //     ).format('MMM DD, YYYY'),
-  //     '[endDate]': ScheduleUtils.convertDateFormatToDayjs(
-  //       end_date,
-  //       user_tz,
-  //     ).format('MMM DD, YYYY'),
-  //     '[companyTimeZone]': '',
-  //     '[selfScheduleLink]': `${process.env.BASE_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
-  //   },
-  // };
+  const comp_email_temp = await fetchCompEmailTemp(
+    recruiter_id,
+    'agent_email_candidate',
+  );
+
+  const scheduleLink = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.interview_schedule.id}?filter_id=${req_body.filter_id}`;
+
+  const comp_email_placeholder: EmailTemplateAPi<'agent_email_candidate'>['comp_email_placeholders'] =
+    {
+      '{{ candidateFirstName }}': first_name,
+      '{{ companyName }}': company,
+      '{{ jobRole }}': job_title,
+      '{{ startDate }}': ScheduleUtils.convertDateFormatToDayjs(
+        start_date,
+        user_tz,
+      ).format('MMM DD, YYYY'),
+      '{{ endDate }}': ScheduleUtils.convertDateFormatToDayjs(
+        end_date,
+        user_tz,
+      ).format('MMM DD, YYYY'),
+      '{{ companyTimeZone }}': '',
+      '{{ selfScheduleLink }}': `<a href="${scheduleLink}">here</a>`,
+    };
+
+  const filled_comp_template = fillCompEmailTemplate(
+    comp_email_placeholder,
+    comp_email_temp,
+  );
+
+  const react_email_placeholders: EmailTemplateAPi<'agent_email_candidate'>['react_email_placeholders'] =
+    {
+      companyLogo: logo,
+      emailBody: filled_comp_template.body,
+      subject: filled_comp_template.subject,
+    };
+
+  return {
+    filled_comp_template,
+    react_email_placeholders,
+    recipient_email: cand_email,
+  };
 
   // return body;
 }
