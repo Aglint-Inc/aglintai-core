@@ -1,14 +1,11 @@
 import { NextResponse } from 'next/server';
-import {
-  ClientError,
-  MailArgValidationError,
-} from '../../../utils/apiUtils/customErrors';
 import * as v from 'valibot';
 import { sendSelfScheduleRequest_email_applicant } from '@aglint/shared-types/src/aglint-mail/api_schema';
-import { dbUtil } from './fetch-util';
+import { ClientError } from '../../../utils/apiUtils/customErrors';
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import sendMail from '../../../config/sendgrid';
+import { dbUtil } from './fetch-util';
 
 export async function POST(req: Request) {
   const { meta } = await req.json();

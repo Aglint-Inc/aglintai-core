@@ -3,10 +3,7 @@ import {
   ClientError,
   MailArgValidationError,
 } from '../../../utils/apiUtils/customErrors';
-import { getEmails } from '../../../utils/apiUtils/get-emails';
-import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 
-import sendMail from '../../../config/sendgrid';
 // import cancelInterviewSession from './fetch-util';
 
 // interface ReqPayload {
@@ -27,7 +24,7 @@ import sendMail from '../../../config/sendgrid';
 // }
 
 export async function POST(req: Request) {
-  // const { session_ids, application_id }: ReqPayload = await req.json();
+  await req.json();
 
   try {
     // if (!session_ids) {

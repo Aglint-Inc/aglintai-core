@@ -25,7 +25,7 @@ import {
 //   };
 // }
 
-export async function POST(req: Request) {
+export function POST() {
   // const { application_id }: ReqPayload = await req.json();
 
   try {

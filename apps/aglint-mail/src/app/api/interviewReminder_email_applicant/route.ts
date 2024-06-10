@@ -1,12 +1,10 @@
 import { NextResponse } from 'next/server';
+import * as v from 'valibot';
+import { interviewReminderEmailApplicantSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
 import { ClientError } from '../../../utils/apiUtils/customErrors';
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import sendMail from '../../../config/sendgrid';
-import { EmailTemplateAPi } from '@aglint/shared-types';
-type EmailType = EmailTemplateAPi<'interviewReminder_email_applicant'>;
-import * as v from 'valibot';
-import { interviewReminderEmailApplicantSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
 import { fetchUtil } from './fetch-util';
 
 export async function POST(req: Request) {

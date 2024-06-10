@@ -1,14 +1,12 @@
+/* eslint-disable no-await-in-loop */
 import { NextResponse } from 'next/server';
-import {
-  ClientError,
-  MailArgValidationError,
-} from '../../../utils/apiUtils/customErrors';
 import { confInterviewEmailOrganizerSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
 import * as v from 'valibot';
-import { fetchUtil } from './fetch-util';
+import { ClientError } from '../../../utils/apiUtils/customErrors';
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import sendMail from '../../../config/sendgrid';
+import { fetchUtil } from './fetch-util';
 
 export async function POST(req: Request) {
   const req_body = await req.json();
@@ -31,7 +29,7 @@ export async function POST(req: Request) {
         400,
       );
 
-    for (let {
+    for (const {
       filled_comp_template,
       react_email_placeholders,
       recipient_email,
@@ -40,7 +38,6 @@ export async function POST(req: Request) {
         filled_comp_template.type,
         react_email_placeholders,
       );
-      recipient_email = 'mailcatcher.aglintai@gmail.com';
       await sendMail({ email: recipient_email, html, subject, text: html });
     }
     return NextResponse.json('success', {

@@ -3,8 +3,6 @@ import {
   ClientError,
   MailArgValidationError,
 } from '../../../utils/apiUtils/customErrors';
-import { getEmails } from '../../../utils/apiUtils/get-emails';
-import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 // import fetchTemplate from '../../../utils/apiUtils/fillCompEmailTemplate';
 // import type {
 //   FilledPayload,
@@ -14,13 +12,7 @@ import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate
 // import candidateRescheduleRequest from './fetch-util';
 
 export async function POST(req: Request) {
-  // const {
-  //   session_ids,
-  //   application_id,
-  //   meeting_id,
-  //   interview_cancel_id,
-  //   recruiter_user_id,
-  // } = await req.json();
+  await req.json();
 
   try {
     // if(!api_key)  throw new ClientError("api_key not found",401)

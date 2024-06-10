@@ -1,10 +1,11 @@
+/* eslint-disable no-await-in-loop */
 import { NextResponse } from 'next/server';
+import * as v from 'valibot';
+import { interviewReminderEmailApplicantSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
 import { ClientError } from '../../../utils/apiUtils/customErrors';
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import sendMail from '../../../config/sendgrid';
-import * as v from 'valibot';
-import { interviewReminderEmailApplicantSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
 import { fetchUtil } from './fetch-util';
 
 export async function POST(req: Request) {
@@ -29,7 +30,7 @@ export async function POST(req: Request) {
         400,
       );
 
-    for (let inter of inter_mail_details) {
+    for (const inter of inter_mail_details) {
       const { html, subject } = await renderEmailTemplate(
         inter.filled_comp_template.type,
         inter.react_email_placeholders,
@@ -47,7 +48,7 @@ export async function POST(req: Request) {
       status: 200,
     });
   } catch (e: any) {
-    console.log(e);
+    console.error(e);
     return NextResponse.json(
       {
         error: `${e.name} ${e.message}`,

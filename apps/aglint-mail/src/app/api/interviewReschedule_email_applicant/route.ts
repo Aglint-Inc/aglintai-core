@@ -36,7 +36,7 @@ import {
 //   };
 // }
 
-export async function POST(req: Request) {
+export function POST() {
   // const {
   //   session_ids,
   //   application_id,

@@ -3,8 +3,6 @@ import {
   ClientError,
   MailArgValidationError,
 } from '../../../utils/apiUtils/customErrors';
-import { getEmails } from '../../../utils/apiUtils/get-emails';
-import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 // import fetchTemplate from '../../../utils/apiUtils/fillCompEmailTemplate';
 // import type {
 //   FilledPayload,
@@ -13,36 +11,30 @@ import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate
 // import sendMail from '../../../config/sendgrid';
 // import candidateCancelRequest from './fetch-util';
 
-interface ReqPayload {
-  session_id: string[];
-  application_id: string;
-  meeting_id: string;
-  interview_cancel_id: string;
-  recruiter_user_id: string;
-}
-interface DataPayload {
-  recipient_email: string;
-  mail_type: string;
-  recruiter_id: string;
-  companyLogo: string;
-  payload: {
-    '[firstName]': string;
-    '[rescheduleReason]': string;
-    '[recruiterName]': string;
-    '[companyName]': string;
-    'meetingLink': string;
-    // 'meetingDetails': MeetingDetails[];
-  };
-}
+// interface ReqPayload {
+//   session_id: string[];
+//   application_id: string;
+//   meeting_id: string;
+//   interview_cancel_id: string;
+//   recruiter_user_id: string;
+// }
+// interface DataPayload {
+//   recipient_email: string;
+//   mail_type: string;
+//   recruiter_id: string;
+//   companyLogo: string;
+//   payload: {
+//     '[firstName]': string;
+//     '[rescheduleReason]': string;
+//     '[recruiterName]': string;
+//     '[companyName]': string;
+//     'meetingLink': string;
+//     // 'meetingDetails': MeetingDetails[];
+//   };
+// }
 
 export async function POST(req: Request) {
-  // const {
-  //   session_id,
-  //   application_id,
-  //   meeting_id,
-  //   interview_cancel_id,
-  //   recruiter_user_id,
-  // }: ReqPayload = await req.json();
+  await req.json();
 
   try {
     // if(!api_key)  throw new ClientError("api_key not found",401)

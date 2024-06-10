@@ -1,14 +1,12 @@
+/* eslint-disable no-await-in-loop */
 import { NextResponse } from 'next/server';
-import {
-  ClientError,
-  MailArgValidationError,
-} from '../../../utils/apiUtils/customErrors';
-import { getEmails } from '../../../utils/apiUtils/get-emails';
 import * as v from 'valibot';
 import { debriefEmailInterviewerSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
-import { fetchUtil } from './fetch-util';
+import { getEmails } from '../../../utils/apiUtils/get-emails';
+import { ClientError } from '../../../utils/apiUtils/customErrors';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import sendMail from '../../../config/sendgrid';
+import { fetchUtil } from './fetch-util';
 
 export async function POST(req: Request) {
   const req_body = await req.json();
@@ -28,7 +26,7 @@ export async function POST(req: Request) {
         400,
       );
 
-    for (let {
+    for (const {
       react_email_placeholders,
       recipient_email,
     } of interviewers_mail_data) {

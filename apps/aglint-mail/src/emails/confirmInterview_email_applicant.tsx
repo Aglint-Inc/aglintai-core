@@ -11,24 +11,10 @@ import {
 } from '@react-email/components';
 import { Parser } from 'html-to-react';
 import * as React from 'react';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { aglintLogo } from '../utils/assets/common';
-import { EmailTemplateAPi } from '@aglint/shared-types';
-type EmailType = EmailTemplateAPi<'confirmInterview_email_applicant'>;
 
-interface InterviewBookingConfirmationType {
-  body?: string;
-  companyLogo?: string;
-  meetingLink?: string;
-  meetingDetails: {
-    date?: string;
-    time?: string;
-    sessionType?: string;
-    platform?: string;
-    duration?: string;
-    sessionTypeIcon?: string;
-    meetingIcon?: string;
-  }[];
-}
+type EmailType = EmailTemplateAPi<'confirmInterview_email_applicant'>;
 
 // export dummy
 export const dummy: EmailType['react_email_placeholders'] = {

@@ -10,13 +10,10 @@ import {
 } from '@react-email/components';
 import { Parser } from 'html-to-react';
 import * as React from 'react';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { aglintLogo } from '../utils/assets/common';
-import { EmailTemplateAPi } from '@aglint/shared-types';
+
 type EmailType = EmailTemplateAPi<'applicationRecieved_email_applicant'>;
-interface ApplicationReceivedType {
-  body?: string;
-  companyLogo?: string;
-}
 
 // export dummy
 export const dummy: EmailType['react_email_placeholders'] = {

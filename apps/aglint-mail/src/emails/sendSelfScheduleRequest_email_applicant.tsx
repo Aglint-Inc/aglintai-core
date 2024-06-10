@@ -4,14 +4,14 @@ import {
   Head,
   Html,
   Img,
-  Preview,
   Tailwind,
   Text,
 } from '@react-email/components';
 import { Parser } from 'html-to-react';
 import * as React from 'react';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { aglintLogo } from '../utils/assets/common';
-import { EmailTemplateAPi } from '@aglint/shared-types';
+
 type EmailType = EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>;
 export const dummy: EmailType['react_email_placeholders'] = {
   emailBody:

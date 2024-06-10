@@ -1,12 +1,8 @@
 import { NextResponse } from 'next/server';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { InterviewSessionTypeDB } from '@aglint/shared-types';
 import {
   ClientError,
   MailArgValidationError,
 } from '../../../utils/apiUtils/customErrors';
-import { getEmails } from '../../../utils/apiUtils/get-emails';
-import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 // import fetchTemplate from '../../../utils/apiUtils/fillCompEmailTemplate';
 // import type {
 //   FilledPayload,
@@ -37,7 +33,7 @@ import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate
 //   };
 // }
 
-export async function POST(req: Request) {
+export function POST() {
   // const { meta }: Meta = await req.json();
 
   try {

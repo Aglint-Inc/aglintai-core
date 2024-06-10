@@ -8,9 +8,6 @@ import {
 // import sendMail from '../../../config/sendgrid';
 // import phoneScreeningResend from './fetch-util';
 
-interface ReqPayload {
-  application_id: string;
-}
 // interface DataPayload {
 //   recipient_email: string;
 //   mail_type: string;
@@ -25,7 +22,7 @@ interface ReqPayload {
 // }
 
 export async function POST(req: Request) {
-  const { application_id }: ReqPayload = await req.json();
+  await req.json();
 
   try {
     // if (!application_id) {

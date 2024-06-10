@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import sgMail from '@sendgrid/mail';
 import type { APISendgridPayload } from '@aglint/shared-types';
 import { MailSenderError } from '../utils/apiUtils/customErrors';
@@ -35,7 +36,7 @@ export default async function sendMail(data: APISendgridPayload) {
       const updated_emails: string[] = msg.to;
 
       const email_promises = updated_emails.map(async (to_email) => {
-        return await getOutboundEmail(to_email);
+        return getOutboundEmail(to_email);
       });
 
       msg.to = await Promise.all(email_promises);
