@@ -10,8 +10,8 @@ import {
 } from '@react-email/components';
 import { Parser } from 'html-to-react';
 import * as React from 'react';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { aglintLogo } from '../utils/assets/common';
-import { EmailTemplateAPi } from '@aglint/shared-types';
 
 // export dummy
 export const dummy: EmailTemplateAPi<'interviewStart_email_applicant'>['react_email_placeholders'] =
