@@ -1,5 +1,5 @@
 import { DatabaseTable } from '@aglint/shared-types';
-import { Alert, AlertTitle, Box, Stack, Typography } from '@mui/material';
+import { Alert, Box, Stack, Typography } from '@mui/material';
 import React from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';

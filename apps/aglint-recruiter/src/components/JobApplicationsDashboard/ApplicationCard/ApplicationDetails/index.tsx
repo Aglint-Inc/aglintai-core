@@ -731,7 +731,7 @@ const TaskIcon = ({ task }: { task: JobApplication['tasks'][number] }) => {
     return (
       <Stack
         border={'1px solid'}
-        borderColor={'grey.300'}
+        borderColor={'var(--neutral-6)'}
         borderRadius={'100%'}
         direction={'row'}
         alignItems={'center'}
@@ -746,7 +746,7 @@ const TaskIcon = ({ task }: { task: JobApplication['tasks'][number] }) => {
     return (
       <Stack
         border={'1px solid'}
-        borderColor={'grey.300'}
+        borderColor={'var(--neutral-6)'}
         borderRadius={'100%'}
         direction={'row'}
         alignItems={'center'}

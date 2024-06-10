@@ -11,7 +11,7 @@ function CandidatesListTable({ importedCandidate }) {
     <Stack
       borderRadius={'var(-radius-4)'}
       border={'1px solid '}
-      borderColor={'grey.200'}
+       borderColor='var(--neutral-6)'
       height={'100%'}
       overflow={'scroll'}
     >
@@ -38,7 +38,7 @@ export default CandidatesListTable;
 function TableHeader() {
   return (
     <Stack
-      bgcolor={'grey.100'}
+      bgcolor= {'var(--neutral-1)'}
       py={'var(--space-2)'}
       px={'var(--space-5)'}
       justifyContent={'left'}
