@@ -345,7 +345,7 @@ export function AudioAvatar({ selectedAvatar, isActive }) {
               '& img': {
                 objectFit: 'contain',
               },
-              bgcolor: 'grey.100',
+              bgcolor:  'var(--neutral-1)',
             }}
             variant='rounded'
             src={selectedAvatar?.image}

@@ -209,10 +209,10 @@ function Login() {
                 <Stack
                   alignItems='center'
                   component={Typography}
-                  direction='row'
-                  color='red.500'
+                  direction="row"
+                  color="var(--error-11)"
                   gap={0.5}
-                  fontSize='14px'
+                  fontSize="12px"
                 >
                   <IconExclamationCircle size='1.2em' />
                   {loginError}

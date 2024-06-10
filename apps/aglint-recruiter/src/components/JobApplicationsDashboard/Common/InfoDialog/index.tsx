@@ -43,7 +43,7 @@ function InfoDialog({
           )}
           {warningMessage && (
             <Stack
-              bgcolor={'yellow.100'}
+              bgcolor={'var(--warning-3)'}
               direction={'row'}
               alignItems={'center'}
               py={'21px'}

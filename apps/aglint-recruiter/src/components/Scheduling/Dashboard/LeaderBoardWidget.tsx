@@ -65,10 +65,7 @@ const LeaderBoardWidgetComponent = ({
             <Avatar
               src={item.profile_image}
               alt={getFullName(item.first_name, item.last_name)}
-              sx={{
-                width: '100%',
-                height: '100%',
-              }}
+              variant='rounded-medium'
             />
           }
           noInterview={item.interviews}

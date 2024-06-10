@@ -132,21 +132,17 @@ function ViewTaskDrawer() {
       setDisablePrev(true);
     }
   }
-  const { pressed: shift } = useKeyPress('Shift');
   const { pressed: up } = useKeyPress('ArrowUp');
   const { pressed: down } = useKeyPress('ArrowDown');
-
-  const upShift = shift && up;
-  const downShift = shift && down;
-
+  
   useEffect(() => {
-    if (upShift) {
+    if (up) {
       prevTask();
     }
-    if (downShift) {
+    if (down) {
       nextTask();
     }
-  }, [upShift, downShift]);
+  }, [up, down]);
   return (
     <Drawer
       anchor={'right'}

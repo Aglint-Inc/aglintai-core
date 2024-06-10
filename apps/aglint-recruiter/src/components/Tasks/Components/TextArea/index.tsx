@@ -149,7 +149,7 @@ function TextArea({
           whiteSpace: 'nowrap !important',
         },
       }}
-      borderColor={'grey.400'}
+      borderColor='var(--neutral-6)'
       padding={'1px'}
       direction={'row'}
       alignItems={'center'}

@@ -45,9 +45,9 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
   return (
     <Stack
       sx={{
-        bgcolor: selectedTasksIds.includes(task.id) && 'grey.100',
+        bgcolor: selectedTasksIds.includes(task.id) ? 'var(--neutral-1)' : undefined,
         '&:hover': {
-          bgcolor: 'grey.100',
+          bgcolor: 'var(--neutral-2)',
           '& div:first-child div .checkboxClass': {
             opacity: 1,
           },

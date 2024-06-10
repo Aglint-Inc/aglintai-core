@@ -146,6 +146,22 @@
   display: none;
 }
 
+.icon-small {
+  display: flex;
+  width: var(--space-5);
+  height: var(--space-5);
+  justify-content: center;
+  align-items: center;
+
+  border-radius: var(--radius-1);
+
+  background-color: var(--sand-4);
+}
+
+.icon-small:hover {
+  background-color: var(--sand-5);
+}
+
 .embed_arrow {
   display: flex;
 }
