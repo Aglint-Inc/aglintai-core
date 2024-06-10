@@ -1,99 +1,93 @@
-// import dayjs from 'dayjs';
-// import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-// import {
-//   platformRemoveUnderscore,
-//   durationCalculator,
-//   sessionTypeIcon,
-//   scheduleTypeIcon,
-// } from '../../../utils/email/common/functions';
-// import type { MeetingDetails } from '../../../utils/types/apiTypes';
-// import type { ConfiramtionMailToOrganizerType } from '../../../utils/types/supabase-fetch';
+import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
+import {
+  platformRemoveUnderscore,
+  durationCalculator,
+  sessionTypeIcon,
+  scheduleTypeIcon,
+} from '../../../utils/email/common/functions';
 
-// export async function confiramtionMailToOrganizer(
-//   session_ids: string[],
-//   application_id: string,
-//   meeting_id: string,
-//   recruiter_user_id: string,
-// ) {
-//   const sessions = supabaseWrap(
-//     await supabaseAdmin
-//       .from('interview_session')
-//       .select(
-//         'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
-//       )
-//       .in('id', session_ids),
-//   );
+import { EmailTemplateAPi } from '@aglint/shared-types';
+import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
+import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/userTzDayjs';
 
-//   if (!sessions) {
-//     throw new Error('sessions are not available');
-//   }
-//   const [candidateJob] = supabaseWrap(
-//     await supabaseAdmin
-//       .from('applications')
-//       .select(
-//         'candidates(first_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
-//       )
-//       .eq('id', application_id),
-//   );
+export async function fetchUtil(
+  req_body: EmailTemplateAPi<'confInterview_email_organizer'>['api_payload'],
+) {
+  const int_sessions = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_session')
+      .select(
+        'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time, recruiter_user(first_name,email))',
+      )
+      .in('id', req_body.session_ids),
+  );
 
-//   if (!candidateJob) {
-//     throw new Error('candidate and job details are not available');
-//   }
-//   const [recruiter_user] = supabaseWrap(
-//     await supabaseAdmin
-//       .from('recruiter_user')
-//       .select('email,first_name')
-//       .eq('user_id', recruiter_user_id),
-//   );
+  if (!int_sessions) {
+    throw new Error('sessions are not available');
+  }
+  const [candidateJob] = supabaseWrap(
+    await supabaseAdmin
+      .from('applications')
+      .select(
+        'candidates(first_name,recruiter_id,timezone,recruiter(logo)),public_jobs(job_title,company)',
+      )
+      .eq('id', req_body.application_id),
+  );
 
-//   if (!recruiter_user) {
-//     throw new Error('cancel session details not available');
-//   }
+  if (!candidateJob) {
+    throw new Error('candidate and job details are not available');
+  }
 
-//   const { first_name: recruiter_name, email } = recruiter_user;
+  const {
+    candidates: {
+      recruiter_id,
+      first_name,
+      recruiter: { logo },
+    },
+  } = candidateJob;
 
-//   const {
-//     candidates: {
-//       recruiter_id,
-//       first_name,
-//       recruiter: { logo },
-//     },
-//     public_jobs: { company, job_title },
-//   } = candidateJob;
+  const cand_tz = candidateJob.candidates.timezone ?? 'America/Los_Angeles';
 
-//   const Sessions: MeetingDetails[] = sessions.map((session) => {
-//     const {
-//       interview_meeting: { start_time, end_time },
-//       name,
-//       schedule_type,
-//       session_duration,
-//       session_type,
-//     } = session;
-//     return {
-//       date: dayjs(start_time).format('ddd MMMM DD, YYYY'),
-//       time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
-//       sessionType: name,
-//       platform: platformRemoveUnderscore(schedule_type),
-//       duration: durationCalculator(session_duration),
-//       sessionTypeIcon: sessionTypeIcon(session_type),
-//       meetingIcon: scheduleTypeIcon(schedule_type),
-//     };
-//   });
+  const comp_email_temp = await fetchCompEmailTemp(
+    recruiter_id,
+    'confInterview_email_organizer',
+  );
 
-//   const body: ConfiramtionMailToOrganizerType = {
-//     recipient_email: email,
-//     mail_type: 'confirmation_mail_to_organizer',
-//     recruiter_id,
-//     companyLogo: logo,
-//     payload: {
-//       '[companyName]': company,
-//       '[firstName]': first_name,
-//       '[jobTitle]': job_title,
-//       '[recruiterName]': recruiter_name,
-//       'meetingLink': `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`,
-//       'meetingDetails': [...Sessions],
-//     },
-//   };
+  return int_sessions.map((int_session) => {
+    const comp_email_placeholder: EmailTemplateAPi<'confInterview_email_organizer'>['comp_email_placeholders'] =
+      {
+        '{{ candidateFirstName }}': first_name,
+        '{{ recruiterFirstName }}':
+          int_session.interview_meeting.recruiter_user.first_name,
+      };
 
-//   return body;
-// }
+    const filled_comp_template = fillCompEmailTemplate(
+      comp_email_placeholder,
+      comp_email_temp,
+    );
+    const react_email_placeholders: EmailTemplateAPi<'confInterview_email_organizer'>['react_email_placeholders'] =
+      {
+        companyLogo: logo,
+        emailBody: filled_comp_template.body,
+        subject: filled_comp_template.subject,
+        meetingDetails: {
+          date: dayjsLocal(int_session.interview_meeting.start_time)
+            .tz(cand_tz)
+            .format('ddd MMMM DD, YYYY'),
+          time: `${dayjsLocal(int_session.interview_meeting.start_time).tz(cand_tz).format('hh:mm A')} - ${dayjsLocal(int_session.interview_meeting.end_time).tz(cand_tz).format('hh:mm A')}`,
+          sessionType: int_session.name,
+          platform: platformRemoveUnderscore(int_session.schedule_type),
+          duration: durationCalculator(int_session.session_duration),
+          sessionTypeIcon: sessionTypeIcon(int_session.session_type),
+          meetingIcon: scheduleTypeIcon(int_session.schedule_type),
+        },
+        candidateDetails: '',
+      };
+    return {
+      filled_comp_template,
+      react_email_placeholders,
+      recipient_email: int_session.interview_meeting.recruiter_user.email,
+    };
+  });
+}

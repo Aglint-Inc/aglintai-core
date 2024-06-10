@@ -21,10 +21,8 @@ export const agentEmailCandidateSchema = v.object({
 });
 
 export const confInterviewEmailOrganizerSchema = v.object({
-  session_id: v.array(v.string()),
+  session_ids: v.array(v.string()),
   application_id: v.string(),
-  meeting_id: v.string(),
-  recruiter_user_id: v.string(),
 });
 
 export const confirmInterviewEmailApplicantSchema = v.object({

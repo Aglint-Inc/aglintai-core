@@ -18,6 +18,15 @@ import {
   phoneScreenRemindEmailApplicantSchema,
 } from './api_schema';
 
+type MeetingDetailCardType = {
+  date: string;
+  time: string;
+  sessionType: string;
+  platform: string;
+  duration: string;
+  sessionTypeIcon: string;
+  meetingIcon: string;
+};
 type Payloads = {
   debrief_email_interviewer: {
     api_payload: v.InferInput<typeof debriefEmailInterviewerSchema>;
@@ -66,9 +75,16 @@ type Payloads = {
   };
   confInterview_email_organizer: {
     api_payload: v.InferInput<typeof confInterviewEmailOrganizerSchema>;
-    comp_email_placeholders: {};
+    comp_email_placeholders: {
+      '{{ recruiterFirstName }}': string;
+      '{{ candidateFirstName }}': string;
+    };
     react_email_placeholders: {
+      companyLogo: string;
+      emailBody: string;
       subject: string;
+      meetingDetails: MeetingDetailCardType;
+      candidateDetails: string;
     };
   };
   confirmInterview_email_applicant: {
