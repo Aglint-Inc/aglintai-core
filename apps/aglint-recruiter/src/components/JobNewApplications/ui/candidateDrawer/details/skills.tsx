@@ -7,12 +7,12 @@ import { useApplication } from '@/src/context/ApplicationContext';
 
 const Skills = () => {
   const {
-    application: { data, status },
+    details: { data, status },
   } = useApplication();
   if (status === 'pending') return <>Loading skills ...</>;
   if (
     !(
-      (data?.candidate_files?.resume_json?.skills ?? []).length &&
+      (data?.resume_json?.skills ?? []).length &&
       data?.score_json?.relevance?.skills
     )
   )
@@ -30,11 +30,9 @@ export { Skills };
 
 const Skill = () => {
   const {
-    application: {
+    details: {
       data: {
-        candidate_files: {
-          resume_json: { skills },
-        },
+        resume_json: { skills },
         score_json: {
           relevance: { skills: relevance },
         },

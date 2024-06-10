@@ -3,15 +3,11 @@ import { useApplication } from '@/src/context/ApplicationContext';
 
 const Overview = () => {
   const {
-    application: { data, status },
+    details: { data, status },
   } = useApplication();
   if (status === 'pending') return <>Overview Loading...</>;
-  if (data?.candidate_files?.resume_json?.overview)
-    return (
-      <CandidateOverview
-        textOverview={data.candidate_files.resume_json.overview}
-      />
-    );
+  if (data?.resume_json?.overview)
+    return <CandidateOverview textOverview={data.resume_json.overview} />;
   return <></>;
 };
 

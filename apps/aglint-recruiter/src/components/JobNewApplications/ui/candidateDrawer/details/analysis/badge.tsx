@@ -4,14 +4,14 @@ import ResumeScore from '../../../resumeScore';
 
 const Badge = () => {
   const {
-    application: { data, status },
+    meta: { data, status },
   } = useApplication();
   if (status === 'pending') return <>Loading score...</>;
   if (data?.processing_status !== 'success') return <></>;
   return (
     <ResumeScore
       resume_processing_state='processed'
-      resume_score={data.overall_score}
+      resume_score={data.resume_score}
     />
   );
 };

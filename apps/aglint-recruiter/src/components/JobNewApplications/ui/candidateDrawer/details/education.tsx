@@ -7,12 +7,12 @@ import { useApplication } from '@/src/context/ApplicationContext';
 
 const Education = () => {
   const {
-    application: { data, status },
+    details: { data, status },
   } = useApplication();
   if (status === 'pending') return <>Loading experience ...</>;
   if (
     !(
-      (data?.candidate_files?.resume_json?.schools ?? []).length &&
+      (data?.resume_json?.schools ?? []).length &&
       data?.score_json?.relevance?.schools
     )
   )
@@ -30,11 +30,9 @@ export { Education };
 
 const Schools = () => {
   const {
-    application: {
+    details: {
       data: {
-        candidate_files: {
-          resume_json: { schools },
-        },
+        resume_json: { schools },
         score_json: {
           relevance: { schools: relevance },
         },

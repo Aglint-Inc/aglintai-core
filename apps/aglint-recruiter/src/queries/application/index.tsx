@@ -5,9 +5,6 @@ import { supabase } from '@/src/utils/supabase/client';
 
 import { jobQueryKeys } from '../job/keys';
 
-const SELECT_QUERY =
-  '*, candidates(*), candidate_files(created_at, candidate_id, file_url, resume_json, type)';
-
 export const applicationQuery = {
   all: ({ job_id }: ApplicationAllQueryPrerequistes) => ({
     queryKey: [
@@ -15,15 +12,32 @@ export const applicationQuery = {
       'application',
     ] as const,
   }),
-  application: ({ application_id, job_id }: Params) =>
+  application: ({ application_id, job_id }: Params) => ({
+    queryKey: [
+      ...applicationQuery.all({ job_id }).queryKey,
+      { application_id },
+    ] as const,
+  }),
+  meta: ({ application_id, job_id, placeholderData }: Params) =>
+    queryOptions({
+      placeholderData,
+      enabled: !!application_id && !!job_id,
+      gcTime: application_id ? 5 * 60_000 : 0,
+      queryKey: [
+        ...applicationQuery.application({ application_id, job_id }).queryKey,
+        'meta',
+      ],
+      queryFn: () => getApplicationMeta({ application_id }),
+    }),
+  details: ({ application_id, job_id }: Params) =>
     queryOptions({
       enabled: !!application_id && !!job_id,
       gcTime: application_id ? 5 * 60_000 : 0,
       queryKey: [
-        ...applicationQuery.all({ job_id }).queryKey,
-        { application_id },
-      ] as const,
-      queryFn: () => getApplication({ application_id }),
+        ...applicationQuery.application({ application_id, job_id }).queryKey,
+        'details',
+      ],
+      queryFn: () => getApplicationDetails({ application_id }),
     }),
 };
 
@@ -33,17 +47,36 @@ type ApplicationAllQueryPrerequistes = {
 
 type Params = ApplicationAllQueryPrerequistes & {
   application_id: DatabaseTable['applications']['id'];
+  placeholderData?: Awaited<ReturnType<typeof getApplicationMeta>>;
 };
 
-const getApplication = async ({
+const getApplicationMeta = async ({
   application_id,
 }: Pick<Params, 'application_id'>) => {
   return (
     await supabase
-      .from('applications')
-      .select(SELECT_QUERY)
+      .from('application_view')
+      .select()
       .eq('id', application_id)
       .single()
       .throwOnError()
   ).data;
+};
+
+const getApplicationDetails = async ({
+  application_id,
+}: Pick<Params, 'application_id'>) => {
+  const { candidate_files, score_json } = (
+    await supabase
+      .from('applications')
+      .select('score_json, candidate_files(resume_json)')
+      .eq('id', application_id)
+      .not('candidate_files.resume_json', 'is', null)
+      .single()
+      .throwOnError()
+  ).data;
+  return {
+    score_json,
+    resume_json: candidate_files?.resume_json,
+  };
 };

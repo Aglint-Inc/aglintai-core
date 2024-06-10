@@ -1,5 +1,7 @@
 import { useApplication } from '.';
 
-export type Application = ReturnType<
-  typeof useApplication
->['application']['data'];
+type UseApplication = typeof useApplication;
+
+export type ApplicationDetails<
+  T extends keyof Pick<ReturnType<UseApplication>, 'details' | 'meta'>,
+> = ReturnType<UseApplication>[T]['data'];

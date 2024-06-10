@@ -1,16 +1,16 @@
 /* eslint-disable security/detect-object-injection */
 import { JdAnalysisItem } from '@/devlink/JdAnalysisItem';
 import { useApplication } from '@/src/context/ApplicationContext';
-import { Application } from '@/src/context/ApplicationContext/type';
+import { ApplicationDetails } from '@/src/context/ApplicationContext/type';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 const AnalysisItem = ({
   type,
 }: {
-  type: keyof Application['score_json']['scores'];
+  type: keyof ApplicationDetails<'details'>['score_json']['scores'];
 }) => {
   const {
-    application: { data, status },
+    details: { data, status },
   } = useApplication();
   if (status === 'pending') return <>Loading...</>;
   const scores = data?.score_json?.scores;

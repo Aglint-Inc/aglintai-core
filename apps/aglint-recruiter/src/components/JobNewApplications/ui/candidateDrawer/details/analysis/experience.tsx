@@ -4,7 +4,7 @@ import { AnalysisItem } from './common';
 
 const Experience = () => {
   const {
-    application: { status },
+    details: { status },
   } = useApplication();
   if (status === 'pending') return <>Loading...</>;
   return <AnalysisItem type='experience' />;

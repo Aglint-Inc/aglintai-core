@@ -10,16 +10,13 @@ import { BADGE_CONSTANTS } from '@/src/queries/job-applications';
 
 const Badges = () => {
   const {
-    application: { data, status },
+    meta: { data, status },
   } = useApplication();
   if (status === 'pending') return <>Loading...</>;
-  const badges = Object.entries(data.score_json.badges).reduce(
-    (acc, [key, value]) => {
-      if (value > BADGE_CONSTANTS[key]) acc.push(BADGE_ICONS[key]);
-      return acc;
-    },
-    [] as ReactNode[],
-  );
+  const badges = Object.entries(data.badges).reduce((acc, [key, value]) => {
+    if (value > BADGE_CONSTANTS[key]) acc.push(BADGE_ICONS[key]);
+    return acc;
+  }, [] as ReactNode[]);
   return (
     <Stack style={{ display: 'flex', flexDirection: 'row', gap: '8px' }}>
       {badges}

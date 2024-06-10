@@ -1,11 +1,12 @@
 import { Drawer as DrawerDev } from '@mui/material';
+import { useMemo } from 'react';
 
 import { Application } from '@/src/context/ApplicationContext';
 import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 import { useApplications } from '@/src/context/ApplicationsContext';
 
 const Drawer = () => {
-  const { job } = useApplications();
+  const { job, sectionApplication } = useApplications();
   const {
     drawer: { open, application_id },
     handlClose,
@@ -13,10 +14,21 @@ const Drawer = () => {
     drawer,
     handlClose,
   }));
+  const placeholderData = useMemo(
+    () =>
+      (sectionApplication?.data?.pages ?? [])
+        .flatMap((page) => page)
+        .find(({ id }) => id === application_id),
+    [sectionApplication, application_id],
+  );
   return (
     <DrawerDev open={open} onClose={() => handlClose()} anchor='right'>
       {!!application_id && (
-        <Application application_id={application_id} job_id={job?.id}>
+        <Application
+          application_id={application_id}
+          job_id={job?.id}
+          placeholderData={placeholderData}
+        >
           <Application.Body
             topBar={
               <Application.Body.TopBar>

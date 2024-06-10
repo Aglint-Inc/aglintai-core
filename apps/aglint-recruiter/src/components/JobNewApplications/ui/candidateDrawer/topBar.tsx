@@ -4,38 +4,36 @@ import { PropsWithChildren } from 'react';
 import { CandidateName } from '@/devlink/CandidateName';
 import { CandidateSidedrawerTop } from '@/devlink/CandidateSidedrawerTop';
 import { useApplication } from '@/src/context/ApplicationContext';
-import { getFullName } from '@/src/utils/jsonResume';
 
 const Info = () => {
   const {
-    application: { data, status },
+    meta: { data },
   } = useApplication();
-  if (status === 'pending') return <Stack>Loading...</Stack>;
   return (
     <CandidateName
       isLinedin={false}
       isResume={false}
       onClickLinkedin={{ onClick: () => {} }}
       onClickResume={{ onClick: () => {} }}
-      textName={getFullName(
-        data?.candidates?.first_name,
-        data?.candidates?.last_name,
-      )}
+      textName={data?.name ?? '---'}
     />
   );
 };
 
 const Actions = () => {
   const {
-    application: { data, status },
+    meta: { data },
+    handleUpdateApplication,
   } = useApplication();
-  if (status === 'pending') return <Stack>Loading...</Stack>;
   return (
     <CandidateSidedrawerTop
       isBookmarked={data.bookmarked}
       isDownArrowEnable={false}
       isUpArrowEnable={false}
-      onClickBookMark={{ onClick: () => {} }}
+      onClickBookMark={{
+        onClick: () =>
+          handleUpdateApplication({ bookmarked: !data.bookmarked }),
+      }}
       onClickClose={{ onClick: () => {} }}
       onClickDown={{ onClick: () => {}, style: { display: 'none' } }}
       onClickUp={{ onClick: () => {}, style: { display: 'none' } }}

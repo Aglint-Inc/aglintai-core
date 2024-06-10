@@ -1,9 +1,19 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTable, DatabaseView } from '@aglint/shared-types';
-import { infiniteQueryOptions, keepPreviousData } from '@tanstack/react-query';
+import {
+  DatabaseTable,
+  DatabaseTableUpdate,
+  DatabaseView,
+} from '@aglint/shared-types';
+import {
+  infiniteQueryOptions,
+  keepPreviousData,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 import { ApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import { jobQueryKeys } from '../job/keys';
 
@@ -128,4 +138,90 @@ export const BADGE_CONSTANTS: {
   positions: 0,
   schools: 0,
   skills: 0,
+};
+
+export const useUpdateApplication = (params: Params) => {
+  const queryClient = useQueryClient();
+  const queryKey = applicationsQueries.applications(params).queryKey;
+  return useMutation({
+    mutationFn: updateApplication,
+    onMutate: (variables) => {
+      const oldApplications = queryClient.getQueryData(queryKey);
+      const diffedApplication = diffApplication(variables.application);
+      if (Object.keys(diffedApplication).length)
+        queryClient.setQueryData(queryKey, {
+          ...oldApplications,
+          pages: oldApplications.pages.reduce(
+            (acc, curr) => {
+              acc.push(
+                curr.reduce(
+                  (acc, curr) => {
+                    if (curr.id === variables.application_id)
+                      acc.push({ ...curr, ...diffedApplication });
+                    else acc.push(curr);
+                    return acc;
+                  },
+                  [] as (typeof oldApplications)['pages'][number],
+                ),
+              );
+              return acc;
+            },
+            [] as (typeof oldApplications)['pages'],
+          ),
+        });
+      return { oldApplications, diffedApplication };
+    },
+    onError: (_, __, { oldApplications }) => {
+      toast.error('Unable to update application');
+      queryClient.setQueryData(queryKey, oldApplications);
+    },
+  });
+};
+
+type UpdateParams = {
+  application: DatabaseTableUpdate['applications'];
+  application_id: string;
+};
+const updateApplication = async ({
+  application_id,
+  application,
+}: UpdateParams) =>
+  await supabase
+    .from('applications')
+    .update(application)
+    .eq('id', application_id)
+    .single()
+    .throwOnError();
+
+const sampleApplicationView: {
+  // eslint-disable-next-line no-unused-vars
+  [key in keyof Partial<
+    DatabaseTable['applications']
+  >]: keyof DatabaseView['application_view'];
+} = {
+  applied_at: 'applied_at',
+  bookmarked: 'bookmarked',
+  candidate_file_id: 'candidate_file_id',
+  candidate_id: 'candidate_id',
+  created_at: 'created_at',
+  id: 'id',
+  overall_interview_score: 'interview_score',
+  overall_score: 'resume_score',
+  status: 'status',
+  processing_status: 'processing_status',
+  is_new: 'is_new',
+} as const;
+
+export const diffApplication = (
+  application: UpdateParams['application'],
+): Partial<DatabaseView['application_view']> => {
+  return Object.entries(application).reduce(
+    (acc, [key, value]) => {
+      const mappedColumn =
+        sampleApplicationView[key as keyof typeof application];
+      if (mappedColumn) acc[mappedColumn] = value as never;
+      return acc;
+    },
+    {} as Partial<DatabaseView['application_view']>,
+  );
 };

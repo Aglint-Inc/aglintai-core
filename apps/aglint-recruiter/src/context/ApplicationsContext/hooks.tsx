@@ -2,7 +2,10 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useMemo, useRef, useState } from 'react';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
-import { applicationsQueries } from '@/src/queries/job-applications';
+import {
+  applicationsQueries,
+  useUpdateApplication,
+} from '@/src/queries/job-applications';
 
 import { useJob } from '../JobContext';
 import { useApplicationsStore } from './store';
@@ -28,6 +31,15 @@ export const useApplicationsActions = () => {
     const timeout = setTimeout(() => setParams({ filters, sort }), 800);
     return () => clearTimeout(timeout);
   }, [filters, sort]);
+
+  const {
+    mutate: handleUpdateApplication,
+    mutateAsync: handleAsyncUpdateApplication,
+  } = useUpdateApplication({
+    job_id,
+    status: section,
+    ...params,
+  });
 
   const newApplications = useInfiniteQuery(
     applicationsQueries.applications({
@@ -101,10 +113,13 @@ export const useApplicationsActions = () => {
     disqualifiedApplications,
     section,
   ]);
+
   return {
     job,
     jobLoad,
     section,
     sectionApplication,
+    handleUpdateApplication,
+    handleAsyncUpdateApplication,
   };
 };

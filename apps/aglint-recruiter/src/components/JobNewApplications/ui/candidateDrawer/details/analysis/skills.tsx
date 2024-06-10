@@ -4,7 +4,7 @@ import { AnalysisItem } from './common';
 
 const Skills = () => {
   const {
-    application: { status },
+    details: { status },
   } = useApplication();
   if (status === 'pending') return <>Loading...</>;
   return <AnalysisItem type='skills' />;
