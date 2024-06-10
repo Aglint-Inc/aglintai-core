@@ -143,7 +143,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         cand_tz,
       };
       await axios.post(
-        `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/candidate-invite-confirmation`,
+        `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/confirmInterview_email_applicant`,
         payload,
       );
 
