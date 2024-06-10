@@ -46,7 +46,7 @@ const nextConfig = {
       },
     ],
   },
-  transpilePackages: ['@aglint/shared-utils'],
+  transpilePackages: ['@aglint/shared-utils', '@aglint/shared-types'],
 };
 
 module.exports = withBundleAnalyzer(nextConfig);

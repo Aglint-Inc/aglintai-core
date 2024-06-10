@@ -74,3 +74,9 @@ export const interviewStartEmailApplicantSchema = v.object({
   application_id: v.string(),
   meeting_id: v.string(),
 });
+
+export const interviewStartEmailInterviewersSchema = v.object({
+  application_id: v.string(),
+  meeting_id: v.string(),
+  recruiter_user_id: v.string(),
+});

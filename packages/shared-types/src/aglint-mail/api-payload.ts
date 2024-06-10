@@ -12,6 +12,7 @@ import {
   interviewReminderEmailApplicantSchema,
   interviewRescheduleEmailApplicantSchema,
   interviewStartEmailApplicantSchema,
+  interviewStartEmailInterviewersSchema,
   phoneScreenEmailCandidateSchema,
   phoneScreenRemindEmailApplicantSchema,
 } from './api_schema';
@@ -122,6 +123,30 @@ type Payloads = {
       emailBody: string;
       subject: string;
       companyLogo: string;
+    };
+  };
+  interviewStart_email_interviewers: {
+    api_payload: v.InferInput<typeof interviewStartEmailInterviewersSchema>;
+    comp_email_placeholders: {
+      '{{ companyName }}': string;
+      '{{ candidateName }}': string;
+      '{{ jobTitle }}': string;
+      '{{ recruiterName }}': string;
+    };
+    react_email_placeholders: {
+      emailBody: string;
+      subject: string;
+      companyLogo: string;
+      candidateLink: string;
+      meetingDetails: {
+        date: string;
+        time: string;
+        sessionType: string;
+        platform: string;
+        duration: string;
+        sessionTypeIcon: string;
+        meetingIcon: string;
+      }[];
     };
   };
 };
