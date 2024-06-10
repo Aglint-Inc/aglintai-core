@@ -108,16 +108,10 @@ function SchedulingMainComp() {
                 <Stack direction={'row'} alignItems={'center'} spacing={2}>
                   <ButtonSolid
                     isRightIcon={false}
-                    slotIcon={
-                      <Icon
-                        variant='PlusThin'
-                        height='20'
-                        width='20'
-                        color='var(--white)'
-                      />
-                    }
+                    isLeftIcon={true}
+                    iconName={'add'}
                     size={2}
-                    textButton={'New Interview Type'}
+                    textButton={'Interview Type'}
                     onClickButton={{
                       onClick: () => {
                         setIsCreateDialogOpen(true);
