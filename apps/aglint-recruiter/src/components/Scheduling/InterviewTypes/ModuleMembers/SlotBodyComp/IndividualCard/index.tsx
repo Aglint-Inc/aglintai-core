@@ -194,6 +194,7 @@ function IndividualCard({
             />
           </Collapse>
         }
+        isDropdownIconVisible={true}
         onClickDropdownIcon={{
           onClick: () => {
             setIsCollapseOpen((pre) => !pre);

@@ -1,4 +1,4 @@
-.schedule_settings {
+.cdo-wrap {
   display: flex;
   padding: var(--space-4);
   flex-direction: column;
@@ -18,10 +18,16 @@
   padding-bottom: var(--space-8);
 }
 
-.div-block-1682 {
+.cdo-top-wrap {
   display: flex;
+  padding: var(--space-3);
   justify-content: space-between;
   align-items: center;
+
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+
+  background-color: var(--white);
 }
 
 .setting_title {
@@ -174,7 +180,7 @@
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 
-  background-color: var(--neutral-2);
+  background-color: var(--neutral-3);
 }
 
 .div-block-1686 {
