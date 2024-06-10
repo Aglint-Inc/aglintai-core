@@ -1230,20 +1230,20 @@ const ResumeUpload: React.FC<{
                 border: '1px dashed',
                 borderColor: 'var(--accent-6)',
                 borderRadius: 1,
-                py: '34px',
-                px: '20px',
+                py: 'var(--space-6)',
+                px: 'var(--space-5)',
                 cursor: 'pointer',
                 background: 'var(--neutral-2)',
               }}
               direction='row'
-              spacing={'8px'}
+              spacing={'var(--space-2)'}
               alignItems={'center'}
               justifyContent={'center'}
             >
               {resume ? <FileIcon /> : <UploadIcon />}
               <Typography
                 variant='body1'
-                sx={{ textAlgin: 'center', fontSize: '14px' }}
+                sx={{ textAlgin: 'center'}}
                 style={{
                   fontWeight: resume ? 600 : 400,
                 }}

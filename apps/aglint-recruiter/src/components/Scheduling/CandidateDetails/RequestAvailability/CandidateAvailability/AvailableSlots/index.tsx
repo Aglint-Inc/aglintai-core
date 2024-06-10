@@ -250,7 +250,7 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
   }
   if (candidateRequestAvailability) {
     return (
-      <Stack bgcolor={'white.700'}>
+      <Stack bgcolor={'var(--white-a7'}>
         <PickSlotDay
           isPickedCalendarActive={markAsAllDateSelected}
           textPickDays={`Pick at least ${candidateRequestAvailability.number_of_days} days.`}

@@ -57,7 +57,7 @@ function InterviewerDetailsCard({
     <CustomTooltip
       title={
         <React.Fragment>
-          <Stack bgcolor={'#fff'} borderRadius={'var(-radius-4)'}>
+          <Stack bgcolor={'#fff'} borderRadius={'var(--radius-4)'}>
             <MemberDetail
               slotImage={
                 <MuiAvatar

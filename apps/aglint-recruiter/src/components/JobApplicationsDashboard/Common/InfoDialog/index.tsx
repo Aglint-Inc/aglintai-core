@@ -26,7 +26,7 @@ function InfoDialog({
           onClose: onClose,
         }}
       >
-        <Stack spacing={'18px'} p={'28px'} bgcolor={'white.700'}>
+        <Stack spacing={'18px'} p={'28px'} bgcolor={'var(--white-a7'}>
           <Typography variant='body1'>{heading}</Typography>
           {subHeading && (
             <Stack direction={'row'} alignItems={'center'} spacing={'var(--space-2)'}>
@@ -49,7 +49,7 @@ function InfoDialog({
               py={'21px'}
               px={'16px'}
               spacing={'var(--space-5)'}
-              borderRadius={'var(-radius-4)'}
+              borderRadius={'var(--radius-4)'}
             >
               <svg
                 xmlns='http://www.w3.org/2000/svg'

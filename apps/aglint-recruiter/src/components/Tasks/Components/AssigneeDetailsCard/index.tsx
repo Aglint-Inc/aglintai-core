@@ -32,7 +32,7 @@ function AssigneeDetailsCard({
   } = useMeetingDetails(assigneeDetails.user_id);
   if (isLoading && !isFetched) {
     return (
-      <Stack bgcolor={'white.700'}>
+      <Stack bgcolor={'var(--white-a7'}>
         <DynamicLoader height='200px' />
       </Stack>
     );

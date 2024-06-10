@@ -5,7 +5,7 @@ function InterviewScoreCard({ overAllScore }) {
   return (
     <>
       <Stack
-        borderRadius={'var(-radius-4)'}
+        borderRadius={'var(--radius-4)'}
         bgcolor={
           overAllScore >= 90
             ? '#edf8f4'
