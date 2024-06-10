@@ -62,9 +62,8 @@ export function CompanyDayOff({
               <ButtonSolid
                 size="2"
                 textButton="Add day off"
-                isLeftIcon={true}
+                isLeftIcon={false}
                 isRightIcon={false}
-                iconName="add"
               />
             </_Builtin.Block>
           </_Builtin.Block>
