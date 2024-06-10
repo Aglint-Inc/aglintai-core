@@ -10,7 +10,7 @@ import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 // interviewStart_email_interviewer
 // interviewReminder_email_applicant
 // interviewReminder_email_interviewer
-// phoneScreenRemind_email_applicant
+// phoneScreenRemind_email_applicant --WIP
 //
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
