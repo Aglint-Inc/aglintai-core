@@ -1,8 +1,8 @@
-import { EmailTemplateAPi } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/userTzDayjs';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/userTzDayjs';
 import {
   platformRemoveUnderscore,
   durationCalculator,
