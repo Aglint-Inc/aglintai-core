@@ -14,4 +14,8 @@ declare function ButtonGhost(props: {
   color?: Types.Builtin.Text;
   highContrast?: Types.Builtin.Text;
   size?: Types.Builtin.Text;
+  iconSize?: Types.Builtin.Text;
+  iconWeight?: Types.Builtin.Text;
+  iconColor?: Types.Builtin.Text;
+  iconName?: React.ReactNode;
 }): React.JSX.Element;

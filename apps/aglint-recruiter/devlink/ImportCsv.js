@@ -29,7 +29,6 @@ export function ImportCsv({
           tag="div"
         >
           <Text content={textListingCount} color="neutral" />
-          <_Builtin.Block tag="div">{slotReuploadButton}</_Builtin.Block>
         </_Builtin.Block>
       ) : null}
       {isImportDescVisible ? (
@@ -43,10 +42,7 @@ export function ImportCsv({
           />
         </_Builtin.Block>
       ) : null}
-      <_Builtin.Block
-        className={_utils.cx(_styles, "ic-slot-import")}
-        tag="div"
-      >
+      <_Builtin.Block tag="div">
         {slotImportCandidatesCsv ?? (
           <SlotComp componentName="ImportCandidatesCsv" />
         )}
@@ -68,12 +64,19 @@ export function ImportCsv({
               <Text content={textCountExistinJob} color="accent" />
             </_Builtin.Block>
           ) : null}
-          <_Builtin.Block tag="div" {...onClickImportRemaining}>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "flex-horizontal", "gap-space-2")}
+            tag="div"
+            {...onClickImportRemaining}
+          >
+            <_Builtin.Block tag="div">
+              {slotReuploadButton ?? <SlotComp componentName="Button" />}
+            </_Builtin.Block>
             <ButtonSolid
               isRightIcon={false}
               isLeftIcon={false}
               size="2"
-              textButton="Import Remaining"
+              textButton="Import"
             />
           </_Builtin.Block>
         </_Builtin.Block>

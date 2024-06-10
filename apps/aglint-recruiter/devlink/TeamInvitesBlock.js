@@ -18,12 +18,7 @@ export function TeamInvitesBlock({
         className={_utils.cx(_styles, "invite-user-block")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "pi-user-image")}
-          tag="div"
-        >
-          {slotImage}
-        </_Builtin.Block>
+        <_Builtin.Block tag="div">{slotImage}</_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "pi-user-info")}
           tag="div"

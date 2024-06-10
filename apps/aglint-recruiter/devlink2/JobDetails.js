@@ -42,7 +42,21 @@ export function JobDetails({
               className={_utils.cx(_styles, "slot_breadcrum")}
               tag="div"
             >
-              {slotBreadcrumb ?? <Breadcrum />}
+              {slotBreadcrumb ?? (
+                <>
+                  <Breadcrum textName="Published Jobs" isLink={true} />
+                  <Breadcrum
+                    textName="Senior Software Engineer"
+                    showArrow={true}
+                    isLink={true}
+                  />
+                  <Breadcrum
+                    textName="Candidates"
+                    showArrow={true}
+                    isLink={false}
+                  />
+                </>
+              )}
             </_Builtin.Block>
             {isFetchingPillVisible ? (
               <_Builtin.Block
@@ -103,7 +117,7 @@ export function JobDetails({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-426")}
+          className={_utils.cx(_styles, "candidate_list_and_filter")}
           tag="div"
         >
           <_Builtin.Block className={_utils.cx(_styles, "jdet-tabs")} tag="div">
@@ -150,8 +164,141 @@ export function JobDetails({
               >
                 {slotTable ?? (
                   <>
-                    <ApplicantsTable />
-                    <CandidateListItem />
+                    <ApplicantsTable
+                      isScreeningVisible={false}
+                      isInterviewVisible={false}
+                      isDisqualifiedVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
+                    <CandidateListItem
+                      isDisqualifiedVisible={false}
+                      isInterviewVisible={false}
+                      isScreeningVisible={false}
+                    />
                   </>
                 )}
               </_Builtin.Block>

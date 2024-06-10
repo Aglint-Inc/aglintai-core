@@ -84,11 +84,6 @@
   cursor: pointer;
 }
 
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
 .slotavatar_group {
   display: flex;
   height: 30px;

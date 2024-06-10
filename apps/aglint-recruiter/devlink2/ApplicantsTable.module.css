@@ -3,6 +3,7 @@
   top: 0px;
   z-index: 10;
   width: max-content;
+  min-width: calc(100vw - 73px);
 }
 
 .embed_css {
@@ -25,6 +26,7 @@
   border-bottom-color: var(--neutral-6);
 
   width: max-content;
+  min-width: calc(100vw - 73px);
 }
 
 .candidate-list-wrapper.no-sticky {

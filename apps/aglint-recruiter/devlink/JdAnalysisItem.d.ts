@@ -8,4 +8,5 @@ declare function JdAnalysisItem(props: {
   isHigh?: Types.Visibility.VisibilityConditions;
   isPoor?: Types.Visibility.VisibilityConditions;
   isMedium?: Types.Visibility.VisibilityConditions;
+  textTitle?: React.ReactNode;
 }): React.JSX.Element;

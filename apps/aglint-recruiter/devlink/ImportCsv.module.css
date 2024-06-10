@@ -11,10 +11,6 @@
   margin-bottom: var(--space-3);
 }
 
-.ic-slot-import {
-  height: 350px;
-}
-
 .ic-bottom-wrap {
   display: flex;
   margin-top: var(--space-3);
@@ -156,4 +152,43 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.flex-horizontal {
+  display: flex;
+}
+
+.flex-horizontal.center {
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.flex-horizontal.center.gap-3 {
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
+}
+
+.flex-horizontal.center.gap-2 {
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.flex-horizontal.center.gap-1 {
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.flex-horizontal.top {
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.flex-horizontal.top.gap-2 {
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.flex-horizontal.gap-space-2 {
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }

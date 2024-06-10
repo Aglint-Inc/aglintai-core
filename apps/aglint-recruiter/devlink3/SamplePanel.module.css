@@ -91,11 +91,6 @@
   cursor: pointer;
 }
 
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
 .avatar_group_30 {
   height: 30px;
 }

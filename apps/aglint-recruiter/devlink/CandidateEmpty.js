@@ -21,7 +21,7 @@ export function CandidateEmpty({
           {slotLottie}
         </_Builtin.Block>
         <_Builtin.Block tag="div">
-          {"No Matching Candidate found. Try modifying filter."}
+          {"No matching candidates found. Try modifying the filter."}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

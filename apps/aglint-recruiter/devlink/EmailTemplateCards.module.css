@@ -42,18 +42,3 @@
 
   background-color: var(--accent-3);
 }
-
-.active-state-email.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
-}

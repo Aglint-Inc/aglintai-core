@@ -14,10 +14,6 @@
   cursor: pointer;
 }
 
-.icon_placeholder {
-  display: flex;
-}
-
 .disabled_state {
   position: absolute;
   left: 0%;
@@ -39,6 +35,10 @@
   color: #bcbbb5;
 
   cursor: not-allowed;
+}
+
+.icon_placeholder {
+  display: flex;
 }
 
 .loading_state {

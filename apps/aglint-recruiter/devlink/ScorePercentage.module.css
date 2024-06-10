@@ -31,6 +31,10 @@
   background-color: #886bd8;
 }
 
+.indicator-box.must-have {
+  background-color: var(--sky-3);
+}
+
 .skill-score-wrap {
   display: flex;
   align-items: center;

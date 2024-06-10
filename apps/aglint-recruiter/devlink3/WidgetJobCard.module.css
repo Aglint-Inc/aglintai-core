@@ -94,8 +94,3 @@
 .cursor-pointer {
   cursor: pointer;
 }
-
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}

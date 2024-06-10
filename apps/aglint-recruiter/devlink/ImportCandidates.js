@@ -78,10 +78,7 @@ export function ImportCandidates({
           tag="div"
         >
           <_Builtin.TabsPane tag="div" data-w-tab="Tab 1">
-            <_Builtin.Block
-              className={_utils.cx(_styles, "slot-import")}
-              tag="div"
-            >
+            <_Builtin.Block tag="div">
               {slotImportResume ?? <SlotComp componentName="UploadedResume" />}
             </_Builtin.Block>
           </_Builtin.TabsPane>
