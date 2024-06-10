@@ -170,7 +170,6 @@ const EmailTemplate = ({ setIsSaving }) => {
                                 templateObj[selectedTemplate]?.bodyPlaceHolder
                               }
                               handleChange={(html) => {
-                                console.log(html);
                                 recruiter.email_template[selectedTemplate] = {
                                   body: html,
                                   default:
