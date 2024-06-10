@@ -1,7 +1,10 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect } from 'react';
 
-import { applicationQuery } from '@/src/queries/application';
+import {
+  applicationQuery,
+  useUpdateApplication,
+} from '@/src/queries/application';
 import { diffApplication } from '@/src/queries/job-applications';
 
 import { useApplications } from '../ApplicationsContext';
@@ -18,13 +21,14 @@ export const useApplicationContext = (
 
   const meta = useQuery(applicationQuery.meta(props));
   const details = useQuery(applicationQuery.details(props));
+  const { mutate } = useUpdateApplication(props);
 
   const handleUpdateApplication = useCallback(
     async (
       application: Parameters<typeof updateApplication>[0]['application'],
     ) => {
       const diffedApplication = diffApplication(application);
-      if (props.placeholderData && Object.keys(diffedApplication).length) {
+      if (updateApplication && Object.keys(diffedApplication).length) {
         try {
           queryClient.setQueryData(applicationQuery.meta(props).queryKey, {
             ...meta.data,
@@ -40,6 +44,8 @@ export const useApplicationContext = (
             meta.data,
           );
         }
+      } else {
+        mutate({ application, application_id: props.application_id });
       }
     },
     [

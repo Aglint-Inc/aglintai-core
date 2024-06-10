@@ -182,7 +182,7 @@ type UpdateParams = {
   application: DatabaseTableUpdate['applications'];
   application_id: string;
 };
-const updateApplication = async ({
+export const updateApplication = async ({
   application_id,
   application,
 }: UpdateParams) =>

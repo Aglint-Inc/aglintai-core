@@ -1,9 +1,14 @@
 import { DatabaseTable } from '@aglint/shared-types';
-import { queryOptions } from '@tanstack/react-query';
+import {
+  queryOptions,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 import { supabase } from '@/src/utils/supabase/client';
 
 import { jobQueryKeys } from '../job/keys';
+import { diffApplication, updateApplication } from '../job-applications';
 
 export const applicationQuery = {
   all: ({ job_id }: ApplicationAllQueryPrerequistes) => ({
@@ -39,6 +44,30 @@ export const applicationQuery = {
       ],
       queryFn: () => getApplicationDetails({ application_id }),
     }),
+};
+
+export const useUpdateApplication = (params: Params) => {
+  const queryClient = useQueryClient();
+  const { queryKey } = applicationQuery.meta(params);
+  return useMutation({
+    mutationFn: updateApplication,
+    onMutate: (variables) => {
+      const diffedApplication = diffApplication(variables.application);
+      const oldApplication = queryClient.getQueryData(queryKey);
+      if (Object.keys(diffedApplication).length)
+        queryClient.setQueryData(
+          queryKey,
+          structuredClone({ ...oldApplication, ...diffedApplication }),
+        );
+      return { oldApplication };
+    },
+    onError: (_, __, context) => {
+      queryClient.setQueryData(
+        queryKey,
+        structuredClone(context.oldApplication),
+      );
+    },
+  });
 };
 
 type ApplicationAllQueryPrerequistes = {
