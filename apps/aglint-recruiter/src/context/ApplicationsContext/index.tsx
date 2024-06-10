@@ -16,7 +16,6 @@ const ApplicationsProvider = (props: React.PropsWithChildren) => {
 
 const useApplications = () => {
   const value = useContext(ApplicationsContext);
-  if (value === undefined) throw Error('ApplicationsProvider not found');
   return value;
 };
 
