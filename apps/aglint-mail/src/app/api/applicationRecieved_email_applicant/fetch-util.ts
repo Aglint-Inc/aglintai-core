@@ -58,9 +58,3 @@ export async function fetchUtil(
     recipient_email: cand_email,
   };
 }
-
-// http://localhost:3100/api/application-received
-
-// {
-//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637"
-// }

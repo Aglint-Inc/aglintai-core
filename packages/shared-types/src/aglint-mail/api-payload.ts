@@ -89,9 +89,18 @@ type Payloads = {
   };
   confirmInterview_email_applicant: {
     api_payload: v.InferInput<typeof confirmInterviewEmailApplicantSchema>;
-    comp_email_placeholders: {};
+    comp_email_placeholders: {
+      '{{ candidateFirstName }}': string;
+      '{{ jobTitle }}': string;
+      '{{ companyName }}': string;
+      '{{ supportLink }}': string;
+    };
     react_email_placeholders: {
       subject: string;
+      emailBody: string;
+      companyLogo: string;
+      meetingDetails: MeetingDetailCardType[];
+      candidateLink: string;
     };
   };
   applicantReject_email_applicant: {

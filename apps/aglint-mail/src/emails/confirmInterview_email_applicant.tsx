@@ -12,6 +12,8 @@ import {
 import { Parser } from 'html-to-react';
 import * as React from 'react';
 import { aglintLogo } from '../utils/assets/common';
+import { EmailTemplateAPi } from '@aglint/shared-types';
+type EmailType = EmailTemplateAPi<'confirmInterview_email_applicant'>;
 
 interface InterviewBookingConfirmationType {
   body?: string;
@@ -29,8 +31,9 @@ interface InterviewBookingConfirmationType {
 }
 
 // export dummy
-export const dummy: InterviewBookingConfirmationType = {
-  body: '<p>Dear [firstName],</p><p>We are pleased to confirm your interview for the [jobTitle] position . Please find the details of your interview below.</p><p>[viewDetailsLink]<p/><p>Regards,</p><p>[companyName] Team</p>',
+export const dummy: EmailType['react_email_placeholders'] = {
+  emailBody:
+    '<p>Dear [firstName],</p><p>We are pleased to confirm your interview for the [jobTitle] position . Please find the details of your interview below.</p><p>[viewDetailsLink]<p/><p>Regards,</p><p>[companyName] Team</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   meetingDetails: [
@@ -46,6 +49,8 @@ export const dummy: InterviewBookingConfirmationType = {
         'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/google_meet.png',
     },
   ],
+  subject: '',
+  candidateLink: '',
 };
 
 // export get subject
@@ -82,11 +87,11 @@ const Sessions = ({ meetingDetail }) => {
 };
 
 export const InterviewBookingConfirmation = ({
-  body = dummy.body,
+  emailBody = dummy.emailBody,
   meetingDetails = dummy.meetingDetails,
-  meetingLink = dummy.meetingLink,
   companyLogo = dummy.companyLogo,
-}: InterviewBookingConfirmationType) => {
+  candidateLink = dummy.candidateLink,
+}: EmailType['react_email_placeholders']) => {
   const htmlParser = Parser();
   return (
     <Html>
@@ -102,13 +107,13 @@ export const InterviewBookingConfirmation = ({
                 src={companyLogo}
               />
 
-              <Text className="">{htmlParser.parse(body)}</Text>
+              <Text className="">{htmlParser.parse(emailBody)}</Text>
               {meetingDetails.map((meetingDetail, i) => (
                 <Sessions key={i} meetingDetail={meetingDetail} />
               ))}
               <Button
                 className="px-3 py-2 bg-[#337FBD] text-white br rounded-md text-[14px]"
-                href={meetingLink}
+                href={candidateLink}
               >
                 View Details
               </Button>
