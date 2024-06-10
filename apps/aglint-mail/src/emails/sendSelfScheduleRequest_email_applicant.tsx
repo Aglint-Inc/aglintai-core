@@ -11,31 +11,28 @@ import {
 import { Parser } from 'html-to-react';
 import * as React from 'react';
 import { aglintLogo } from '../utils/assets/common';
-
-interface InterviewResentType {
-  body?: string;
-  companyLogo?: string;
-}
-
-// export dummy
-export const dummy: InterviewResentType = {
-  body: '<p>Dear [firstName],</p><p>Thank you for submitting your application for the [jobTitle] at [companyName]. We pleased to announce that you been selected for an assessment.</p><p>You welcome to choose an assessment time that suits your schedule.</p><p>[interviewLink]</p><p>If you have any queries about this job</p><p>[supportLink]</p><p>We wish you the best of luck and are eager to hear your insights!</p><p>Warm regards,</p><p>[companyName]</p>',
+import { EmailTemplateAPi } from '@aglint/shared-types';
+type EmailType = EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>;
+export const dummy: EmailType['react_email_placeholders'] = {
+  emailBody:
+    '<p>Dear {{ candidateFirstName }},</p><p>Thank you for submitting your application for the {{ jobTitle }} at {{ companyName }}. We are pleased to announce that you have been selected for an assessment.</p><p>You are welcome to choose an assessment time that suits your schedule.</p><p>{{ selfScheduleLink}}</p><p>If you have any queries about this job, please visit the following link: {{ supportLink }}</p><p>We wish you the best of luck and are eager to hear your insights!</p><p>Warm regards,</p><p>{{ companyName }}</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
+  subject: '',
 };
 
 export const getSubject = (companyName: any) => `${companyName}`;
 
 export const InterviewResent = ({
-  body = dummy.body,
+  emailBody = dummy.emailBody,
   companyLogo = dummy.companyLogo,
-}: InterviewResentType) => {
+}: EmailType['react_email_placeholders']) => {
   const htmlParser = Parser();
   return (
     <Html>
       <Head />
       <Tailwind>
-        <Preview>Interview Confirmation</Preview>
+        {/* <Preview>Interview Confirmation</Preview> */}
         <Body className="bg-[#f0f0f0] font-sans  p-[20px]">
           <Container className="px-[3px] mx-auto">
             <Container className="p-[50px]  bg-white">
@@ -45,7 +42,7 @@ export const InterviewResent = ({
                 src={companyLogo}
               />
 
-              <Text className="">{htmlParser.parse(body)}</Text>
+              <Text className="">{htmlParser.parse(emailBody)}</Text>
             </Container>
             <Text className="flex items-center text-[10px] mx-auto w-fit text-gray-500">
               Powered By

@@ -16,6 +16,7 @@ import {
   interviewStartEmailInterviewersSchema,
   phoneScreenEmailCandidateSchema,
   phoneScreenRemindEmailApplicantSchema,
+  sendSelfScheduleRequest_email_applicant,
 } from './api_schema';
 export type MeetingDetailCardType = {
   date: string;
@@ -232,6 +233,21 @@ type Payloads = {
         sessionTypeIcon: string;
         meetingIcon: string;
       }[];
+    };
+  };
+  sendSelfScheduleRequest_email_applicant: {
+    api_payload: v.InferInput<typeof sendSelfScheduleRequest_email_applicant>;
+    comp_email_placeholders: {
+      '{{ candidateFirstName }}': string;
+      '{{ companyName }}': string;
+      '{{ jobTitle }}': string;
+      '{{ selfScheduleLink }}': string;
+      '{{ supportLink }}': string;
+    };
+    react_email_placeholders: {
+      emailBody: string;
+      subject: string;
+      companyLogo: string;
     };
   };
 };

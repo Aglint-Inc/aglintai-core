@@ -1,67 +1,58 @@
-// import { ScheduleUtils } from '@aglint/shared-utils';
-// import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
-// import { InitEmailAgentRemainderType } from '../../../utils/types/supabase-fetch';
+import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
+import { EmailTemplateAPi } from '@aglint/shared-types';
+import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
+import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 
-// interface FilterJson {
-//   start_date: string;
-//   end_date: string;
-//   user_tz: string;
-// }
-// export default async function initEmailAgentRemainder(
-//   filter_id: string,
-//   schedule_id: string,
-// ) {
-//   const { data: filterJson } = await supabaseAdmin
-//     .from('interview_filter_json')
-//     .select(
-//       'filter_json,interview_schedule(applications(public_jobs(job_title,recruiter_id,company),candidates(first_name,email,recruiter(logo))))',
-//     )
-//     .eq('id', filter_id)
-//     .single()
-//     .throwOnError();
-//   const { end_date, start_date, user_tz } =
-//     filterJson.filter_json as unknown as FilterJson;
-//   const {
-//     interview_schedule: {
-//       applications: {
-//         candidates: {
-//           email,
-//           first_name,
-//           recruiter: { logo },
-//         },
-//         public_jobs: { company, recruiter_id, job_title },
-//       },
-//     },
-//   } = filterJson;
+export async function dbUtil(
+  req_body: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['api_payload'],
+) {
+  const { data: filterJson } = await supabaseAdmin
+    .from('interview_filter_json')
+    .select(
+      'filter_json,interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company),candidates(first_name,email,recruiter(logo))))',
+    )
+    .eq('id', req_body.filter_json_id)
+    .single()
+    .throwOnError();
 
-//   const body: InitEmailAgentRemainderType = {
-//     recipient_email: email,
-//     mail_type: 'sendSelfScheduleRequest_email_applicant',
-//     recruiter_id,
-//     companyLogo: logo,
-//     payload: {
-//       '[candidateFirstName]': first_name,
-//       '[Company Name]': company,
-//       '[Job Title]': job_title,
-//       '[startDate]': ScheduleUtils.convertDateFormatToDayjs(
-//         start_date,
-//         user_tz,
-//       ).format('MMM DD, YYYY'),
-//       '[endDate]': ScheduleUtils.convertDateFormatToDayjs(
-//         end_date,
-//         user_tz,
-//       ).format('MMM DD, YYYY'),
-//       '[companyTimeZone]': '',
-//       '[selfScheduleLink]': `${process.env.BASE_URL}/scheduling/invite/${schedule_id}?filter_id=${filter_id}`,
-//     },
-//   };
+  const {
+    interview_schedule: {
+      applications: {
+        candidates: { email: cand_email, first_name, recruiter },
+        public_jobs: { company, recruiter_id, job_title },
+      },
+    },
+  } = filterJson;
 
-//   return body;
-// }
+  const comp_email_temp = await fetchCompEmailTemp(
+    recruiter_id,
+    'sendSelfScheduleRequest_email_applicant',
+  );
+  const scheduleLink = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.interview_schedule.id}?filter_id=${req_body.filter_json_id}`;
+  const comp_email_placeholder: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['comp_email_placeholders'] =
+    {
+      '{{ candidateFirstName }}': first_name,
+      '{{ companyName }}': company,
+      '{{ jobTitle }}': job_title,
+      '{{ selfScheduleLink }}': `<a href="${scheduleLink}">here</a>`,
+      '{{ supportLink }}': '',
+    };
 
-// // http://localhost:3100/api/init-email-agent
+  const filled_comp_template = fillCompEmailTemplate(
+    comp_email_placeholder,
+    comp_email_temp,
+  );
 
-// // {
-// //   "filter_id":"71b8859d-b6c6-425e-8b1a-e97ae8bb9498",
-// //   "meeting_id":"6c42550f-5d59-4179-aa3a-0c0ae060db88"
-// // }
+  const react_email_placeholders: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['react_email_placeholders'] =
+    {
+      emailBody: filled_comp_template.body,
+      companyLogo: recruiter.logo,
+      subject: filled_comp_template.subject,
+    };
+
+  return {
+    filled_comp_template,
+    react_email_placeholders,
+    recipient_email: cand_email,
+  };
+}

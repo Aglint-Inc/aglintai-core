@@ -86,3 +86,7 @@ export const interviewStartEmailInterviewersSchema = v.object({
   meeting_id: v.string(),
   recruiter_user_id: v.string(),
 });
+
+export const sendSelfScheduleRequest_email_applicant = v.object({
+  filter_json_id: v.string(),
+});

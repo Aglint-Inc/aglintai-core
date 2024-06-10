@@ -92,7 +92,6 @@ export async function fetchUtil(
         meetingDetails: meeting_detail,
         candidateLink: '',
       };
-    inter.email = `mailcatcher.aglintai@gmail.com`;
 
     return {
       filled_comp_template,

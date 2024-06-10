@@ -1,4 +1,7 @@
-// import type { InterviewSessionTypeDB } from '@aglint/shared-types';
+// import type {
+//   EmailTemplateAPi,
+//   InterviewSessionTypeDB,
+// } from '@aglint/shared-types';
 // import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 // import {
 //   platformRemoveUnderscore,
@@ -6,13 +9,9 @@
 //   sessionTypeIcon,
 //   scheduleTypeIcon,
 // } from '../../../utils/email/common/functions';
-// import type { MeetingDetails } from '../../../utils/types/apiTypes';
-// import type { CandidateAvailabilityRequestType } from '../../../utils/types/supabase-fetch';
 
 // export default async function candidateAvailabilityRequestReminder(
-//   sessions_data: InterviewSessionTypeDB[],
-//   application_id: string,
-//   availability_req_id: string,
+//   req_body: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'],
 // ) {
 //   const sessions = supabaseWrap(
 //     await supabaseAdmin
