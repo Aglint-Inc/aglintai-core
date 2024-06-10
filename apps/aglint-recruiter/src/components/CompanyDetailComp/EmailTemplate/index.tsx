@@ -160,7 +160,7 @@ const EmailTemplate = ({ setIsSaving }) => {
                             sx={{
                               mt: 'var(--space-2)',
                               border: '1px solid',
-                              borderColor: 'var(neutral-6)',
+                              borderColor: 'var(--neutral-6)',
                               borderRadius: 'var(--radius-2)',
                             }}
                           >

@@ -57,7 +57,7 @@ function Instructions({ schedule }: { schedule: ScheduleMeeting }) {
                 margin: '20px',
                 maxWidth: '800px',
                 border: '1px solid',
-                borderColor: 'var(neutral-6)',
+                borderColor: 'var(--neutral-6)',
                 borderRadius: 'var(--radius-2)',
               }}
             >
