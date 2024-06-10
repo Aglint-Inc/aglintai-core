@@ -1,5 +1,4 @@
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import type { RejectionType } from '../../types/supabase-fetch';
 
 export default async function rejection(application_id: string) {
   const [candidateJob] = supabaseWrap(
@@ -25,7 +24,7 @@ export default async function rejection(application_id: string) {
     public_jobs: { company, job_title },
   } = candidateJob;
 
-  const body: RejectionType = {
+  const body = {
     recipient_email: email,
     mail_type: 'rejection',
     recruiter_id,
