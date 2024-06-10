@@ -14,6 +14,10 @@ import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { aglintLogo } from '../utils/assets/common';
 
 type EmailType = EmailTemplateAPi<'phoneScreenRemind_email_applicant'>;
+export interface PhoneScreeningResendType {
+  body?: string;
+  companyLogo?: string;
+}
 
 // export dummy
 export const dummy: EmailType['react_email_placeholders'] = {

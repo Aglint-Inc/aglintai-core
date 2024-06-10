@@ -30,7 +30,7 @@ interface CandidateRescheduleRequestType {
 
 // export dummy
 export const dummy: CandidateRescheduleRequestType = {
-  body: '<p>Dear [recruiterName],</p><p>[firstName] is requesting to reschedule betweeen [dateRange] stating reason [rescheduleReason]</p><p>Additional notes from [firstName] : [additionalRescheduleNotes]</p>',
+  body: '<p>Dear {{ recruiterName }},</p><p>{{ candidateFirstName }} is requesting to reschedule between {{ dateRange }} stating reason: "{{ rescheduleReason }}."</p><p>Additional notes from {{ candidateFirstName }}: "{{ additionalRescheduleNotes }}."</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   meetingDetails: [

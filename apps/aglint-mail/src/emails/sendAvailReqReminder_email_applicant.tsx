@@ -28,7 +28,7 @@ interface CandidateAvailabilityRequestType {
 
 // export dummy
 export const dummy: CandidateAvailabilityRequestType = {
-  body: '<p>You have selected for the Interview at [companyName]</p><p>Hi [firstName],</p> <p>This is a friendly reminder to choose a time slot that suits you best and take the first step towards joining our team. We look forward to meeting you!</p><h4>[scheduleName]</h4><p></p><p>Best regards,</p><p>[companyName] Recruitment Team</p>',
+  body: '<p>Dear {{ recruiterName }},</p><p>This is a friendly reminder about the interview with {{ firstName }}. Please find the details for the interview below:</p><p>Candidate name: {{ firstName }}</p><p>Thank you</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   bookingLink: 'sdf',
