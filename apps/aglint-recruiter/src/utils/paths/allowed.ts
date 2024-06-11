@@ -66,7 +66,7 @@ export const allowedPaths = new Set([
   '/api/scheduling/v1/cancel_interview_scheduling',
   '/api/scheduling/v1/assign-interviewer-training-type',
   '/api/scheduling/v1/cand_req_available_slots',
-  'api/scheduling/v1/booking/confirm-slot-no-conflicts',
+  '/api/scheduling/v1/booking/confirm-slot-no-conflicts',
   '/api/scheduling/debrief/auto_debrief_handler',
   '/api/scheduling/debrief/task_create',
   '/api/scheduling/debrief/schedule_individual',
