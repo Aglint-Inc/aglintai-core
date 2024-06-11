@@ -199,7 +199,7 @@ function Login() {
                         onMouseDown={handleMouseDownPassword}
                         edge='end'
                       >
-                        showPassword ?  <GlobalIcon iconName='visibility' /> : <GlobalIcon iconName='visibility_off' />
+                        {showPassword ?  <GlobalIcon iconName='visibility' /> : <GlobalIcon iconName='visibility_off' />}
                       </IconButton>
                     </InputAdornment>
                   ),

@@ -6,7 +6,7 @@ import { GlobalIcon } from '@/devlink/GlobalIcon';
 function CompanySettingsIcon() {
   return (
     <Stack direction={'row'}>
-      <GlobalIcon iconName='corporate_fare' />
+      <GlobalIcon iconName='corporate_fare' size={6} weight={'thin'} />
       
       {/* <svg
         width='24'

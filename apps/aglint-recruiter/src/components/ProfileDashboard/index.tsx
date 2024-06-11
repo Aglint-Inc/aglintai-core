@@ -825,7 +825,7 @@ const ProfileForm = ({
                   edge='end'
                   style={{ opacity: value.value ? 1 : 0.5 }}
                 >
-                  showPassword ? <GlobalIcon iconName='visibility' />: <GlobalIcon iconName='visibility_off' />
+                  {showPassword ? <GlobalIcon iconName='visibility' />: <GlobalIcon iconName='visibility_off' />}
                 </IconButton>
               </InputAdornment>
             ),

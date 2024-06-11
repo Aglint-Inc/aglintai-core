@@ -6,7 +6,7 @@ import { GlobalIcon } from '@/devlink/GlobalIcon';
 function TaskIcon() {
   return (
     <Stack direction={'row'}>
-      <GlobalIcon iconName='format_list_bulleted' />
+      <GlobalIcon iconName='format_list_bulleted' size={6} weight={'thin'} />
       {/* <svg
         width='24'
         height='24'

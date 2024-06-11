@@ -179,6 +179,7 @@ const CustomFormField = ({
   placeholder,
   field,
   error,
+  showPassword,
   handleClickShowPassword,
 }: {
   type?: HTMLInputElement['type'];
@@ -209,7 +210,7 @@ const CustomFormField = ({
               onClick={handleClickShowPassword}
               edge='end'
             >
-              showPassword ? <GlobalIcon iconName='visibility' /> : <GlobalIcon iconName='visibility_off' />
+              {showPassword ? <GlobalIcon iconName='visibility' /> : <GlobalIcon iconName='visibility_off' />}
               
             </IconButton>
           </InputAdornment>

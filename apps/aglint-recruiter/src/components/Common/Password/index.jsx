@@ -49,7 +49,7 @@ const Password = ({ passwordRef, label, error, onChange }) => {
               onMouseDown={handleMouseDownPassword}
               edge='end'
             >
-              showPassword ? <GlobalIcon icon='visibility' /> : <GlobalIcon icon='visibility_off' />
+              {showPassword ? <GlobalIcon icon='visibility' /> : <GlobalIcon icon='visibility_off' />}
             </IconButton>
           </InputAdornment>
         ),
