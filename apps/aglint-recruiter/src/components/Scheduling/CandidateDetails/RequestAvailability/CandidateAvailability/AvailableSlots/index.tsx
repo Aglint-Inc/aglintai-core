@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTable } from '@aglint/shared-types';
+import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -213,24 +213,48 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
         id: String(router.query?.request_id),
       },
     );
-
-    await insertTaskProgress({
-      request_availability_id: candidateRequestAvailability?.id,
-      taskData: {
-        created_by: {
-          name: getFullName(
-            candidateRequestAvailability.applications.candidates.first_name,
-            candidateRequestAvailability.applications.candidates.last_name,
-          ),
-          id: candidateRequestAvailability.applications.candidates.id,
-        },
-        jsonb_data: {
-          dates: selectedSlots[0].dates.map((ele) => ele.curr_day),
-        },
+    const { data: task } = await axios.post(
+      `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,
+      {
+        request_id: candidateRequestAvailability?.id,
       },
-    });
-    setCandidateRequestAvailability(requestData);
+    );
 
+    if (task.id) {
+      await insertTaskProgress({
+        taskData: {
+          task_id: task.id,
+          created_by: {
+            name: getFullName(
+              candidateRequestAvailability.applications.candidates.first_name,
+              candidateRequestAvailability.applications.candidates.last_name,
+            ),
+            id: candidateRequestAvailability.applications.candidates.id,
+          },
+          jsonb_data: {
+            dates: selectedSlots[0].dates.map((ele) => ele.curr_day),
+          },
+        },
+      });
+    }
+    const dates = selectedSlots
+      .map((ele) => ele.dates)
+      .flat()
+      .map((ele) => `${dayjs(ele.curr_day).format('DD MMM')}`);
+    await axios.post(
+      `/api/scheduling/request_availability/insertScheduleActivities`,
+      {
+        data: {
+          title: `Candidate submitted availability`,
+          description: `Candidate submitted availability on ${dates} for Coding Interview (Round 2) Interviews.`,
+          module: 'scheduler',
+          task_id: task.id,
+          logged_by: 'candidate',
+          application_id: candidateRequestAvailability.application_id,
+        } as DatabaseTableInsert['application_logs'],
+      },
+    );
+    setCandidateRequestAvailability(requestData);
     setIsSubmitted(true);
   }
 

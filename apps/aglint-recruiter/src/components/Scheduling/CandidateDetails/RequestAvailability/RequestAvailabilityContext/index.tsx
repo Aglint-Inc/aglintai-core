@@ -134,17 +134,11 @@ function RequestAvailabilityProvider({ children }) {
     ) as unknown as InterviewSessionTypeDB[][];
     setMultiDaySessions(meetingsRound);
 
-    const allDates = getDatesBetween(
-      requestAvailability?.date_range[0],
-      requestAvailability?.date_range[1],
-    );
-
     try {
       for (let i = 0; i < meetingsRound.length; i++) {
         const dateSlots = await getDateSlots({
           requestAvailability,
           day: i + 1,
-          prev_dates: allDates,
         });
         setDateSlots((prev) => [
           ...prev,
@@ -252,45 +246,26 @@ export const createTask = async (data: DatabaseTableInsert['new_tasks']) => {
   }
 };
 
-export async function insertTaskProgress({
-  request_availability_id,
-  taskData,
-}: {
-  request_availability_id: string;
-  taskData: any;
-}) {
-  const { data: task } = await axios.post(
-    `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,
+export async function insertTaskProgress({ taskData }: { taskData: any }) {
+  const { data: progress } = await axios.post(
+    `/api/scheduling/request_availability/insertTaskProgress`,
     {
-      request_id: request_availability_id,
+      data: {
+        ...taskData,
+        title: 'Candidate submitted the availability',
+        progress_type: 'request_availability_list',
+      } as DatabaseTableInsert['new_tasks_progress'],
     },
   );
-  if (!task) return null;
-
-  if (task.id) {
-    const { data: progress } = await axios.post(
-      `/api/scheduling/request_availability/insertTaskProgress`,
-      {
-        data: {
-          ...taskData,
-          title: 'Candidate submitted the availability',
-          progress_type: 'request_availability_list',
-          task_id: task.id,
-        } as DatabaseTableInsert['new_tasks_progress'],
-      },
-    );
-    return progress;
-  }
+  return progress;
 }
 
 export async function getDateSlots({
   requestAvailability,
   day,
-  prev_dates = [dayjs().add(-1, 'day').format('DD/MM/YYYY')],
 }: {
   requestAvailability: candidateRequestAvailabilityType;
   day: number;
-  prev_dates?: string[];
 }) {
   const { data: dateSlots } = await axios.post(
     '/api/scheduling/v1/cand_req_available_slots',
