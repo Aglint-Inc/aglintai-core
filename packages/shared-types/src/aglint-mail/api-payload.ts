@@ -157,9 +157,19 @@ type Payloads = {
   };
   interReschedReq_email_recruiter: {
     api_payload: v.InferInput<typeof interReschedReqEmailRecruiterSchema>;
-    comp_email_placeholders: {};
+    comp_email_placeholders: {
+      '{{ recruiterName }}': string;
+      '{{ candidateFirstName }}': string;
+      '{{ rescheduleReason }}': string;
+      '{{ additionalRescheduleNotes }}': string;
+      '{{ dateRange }}': string;
+    };
     react_email_placeholders: {
       subject: string;
+      emailBody: string;
+      companyLogo: string;
+      meetingDetails: MeetingDetailCardType[];
+      resheduleLink: string;
     };
   };
   interviewReschedule_email_applicant: {
