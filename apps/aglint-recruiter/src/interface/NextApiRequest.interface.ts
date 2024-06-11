@@ -12,3 +12,8 @@ export interface NextApiRequest extends nextApiRequest {
 }
 
 export interface NextApiResponse extends nextApiResponse {}
+
+export interface ApiInterface {
+  request: unknown;
+  response: unknown;
+}

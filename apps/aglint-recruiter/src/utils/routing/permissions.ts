@@ -33,6 +33,7 @@ const PERMISSIONS: Permissions = {
   '/company': 'company_setting_enabled',
 
   '/api/job/jobApplications/read': 'jobs_read',
+  '/api/getMembersWithRole': 'jobs_read', //change to correct permission
 };
 
 export default PERMISSIONS;

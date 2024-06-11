@@ -5,6 +5,7 @@ import {
   NextApiRequest,
   NextApiResponse,
 } from '@/src/interface/NextApiRequest.interface';
+import { apiRequestResponseFactory } from '@/src/utils/apiUtils/responseFactory';
 
 import { API_getMembersWithRole } from './type';
 
@@ -17,37 +18,19 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const getResponse = (
-    {
-      data,
-      error,
-    }: { data?: Partial<API_getMembersWithRole['response']>; error?: string },
-    status?: number,
-  ) => {
-    status = status || (error ? 500 : 200);
-    return res.status(status).send(status == 200 ? data : { error });
-  };
-
-  if (req.method === 'GET') {
-    const rec_id = req.headers['x-requester-rec_id'] as string;
-
-    // console.log('api_role', role, rec_id);
-
+  const apiMethod = apiRequestResponseFactory<API_getMembersWithRole>(req, res);
+  return apiMethod('GET', async ({ requesterDetails }) => {
+    const rec_id = requesterDetails.recruiter_id;
     if (!rec_id) {
-      return getResponse(
-        {
-          error: rec_id
-            ? 'Failed to load detect recruiter'
-            : 'Invalid request. Required props missing.',
-        },
-        400,
-      );
+      return {
+        error: rec_id
+          ? 'Failed to load recruiter'
+          : 'Invalid request. Required props missing.',
+        status: 400,
+      };
     }
-
-    return getResponse({ data: await getMembers(rec_id) }, 200);
-  }
-  res.setHeader('Allow', 'GET');
-  res.status(405).end('Method Not Allowed!');
+    return getMembers(rec_id);
+  });
 }
 
 const getMembers = (id: string) => {
