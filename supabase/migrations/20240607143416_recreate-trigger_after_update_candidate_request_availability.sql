@@ -1,6 +1,6 @@
 set check_function_bodies = off;
 
-CREATE OR REPLACE FUNCTION public.workflow_log_on_update_interview_session_relation()
+CREATE OR REPLACE FUNCTION public.workflow_log_on_update_candidate_request_availability()
  RETURNS trigger
  LANGUAGE plpgsql
  SECURITY DEFINER
@@ -31,6 +31,6 @@ END;
 $function$
 ;
 
-CREATE TRIGGER after_update_candidate_request_availability AFTER UPDATE OF slots ON public.candidate_request_availability FOR EACH ROW EXECUTE FUNCTION workflow_log_on_update_interview_session_relation();
+CREATE TRIGGER after_update_candidate_request_availability AFTER UPDATE OF slots ON public.candidate_request_availability FOR EACH ROW EXECUTE FUNCTION workflow_log_on_update_candidate_request_availability();
 
 
