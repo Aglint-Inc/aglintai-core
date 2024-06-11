@@ -11,4 +11,7 @@ export const jobQueryKeys = {
   scoring_param: (args: JobRequisite) => ({
     queryKey: [...jobQueryKeys.job(args).queryKey, 'scoring_param'],
   }),
+  count: (args: JobRequisite) => ({
+    queryKey: [...jobQueryKeys.job(args).queryKey, 'count'],
+  }),
 } as const;

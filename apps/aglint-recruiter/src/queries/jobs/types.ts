@@ -1,9 +1,8 @@
-import { StatusJobs } from '@aglint/shared-types';
+import { DatabaseEnums, StatusJobs } from '@aglint/shared-types';
 import { DB } from '@aglint/shared-types';
 
 import { ScoreWheelParams } from '@/src/components/Common/ScoreWheel';
 import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
-import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { CountJobs, InterviewPlan } from '@/src/context/JobsContext/types';
 
 type JobTableRPC = DB['public']['Functions']['getjob']['Returns'][number];
@@ -59,7 +58,7 @@ type CustomJobType = {
   jd_json: JdJsonType;
   active_status: StatusJobs | null;
   count: CountJobs;
-  activeSections: JobApplicationSections[];
+  activeSections: DatabaseEnums['application_status'][];
   // eslint-disable-next-line no-unused-vars
   email_template: { [key in EmailTemplateTypes]: EmailTemplate };
   processing_count: {

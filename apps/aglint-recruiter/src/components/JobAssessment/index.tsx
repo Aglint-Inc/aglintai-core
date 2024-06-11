@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { EnableAssessment as EnableAssessmentDev } from '@/devlink/EnableAssessment';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
-import { useJobApplications } from '@/src/context/JobApplicationsContext';
+import { useJob } from '@/src/context/JobContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { useCurrentJob } from '@/src/queries/job-assessment/keys';
 
@@ -16,7 +16,7 @@ import JobAssessment from './list';
 
 const JobAssessmentDashboard = () => {
   const { initialLoad } = useJobs();
-  const { job } = useJobApplications();
+  const { job } = useJob();
   return (
     <Stack height={'100%'} width={'100%'}>
       {!initialLoad ? (

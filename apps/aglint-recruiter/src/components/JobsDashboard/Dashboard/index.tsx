@@ -30,7 +30,6 @@ import { ScheduleCardSmall } from '@/devlink3/ScheduleCardSmall';
 import { ScoreSetting } from '@/devlink3/ScoreSetting';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
@@ -118,14 +117,9 @@ const Dashboard = () => {
   } = useJobDetails();
   const { push } = useRouter();
   const { handleJobAsyncUpdate, handleJobDelete, handleJobPublish } = useJobs();
-  const {
-    handleJobApplicationRescore,
-    searchParameters,
-    handleJobApplicationFilter,
-  } = useJobApplications();
 
-  const setImportPopup = useApplicationsStore(
-    ({ setImportPopup }) => setImportPopup,
+  const { setImportPopup, setFilters } = useApplicationsStore(
+    ({ setImportPopup, setFilters }) => ({ setImportPopup, setFilters }),
   );
 
   const score_matches = getMatches(counts);
@@ -161,8 +155,9 @@ const Dashboard = () => {
   const handlePublish = async () => {
     if (publishable) {
       const response = await handleJobPublish(job);
-      if (response && scoring_criteria_changed)
-        await handleJobApplicationRescore();
+      if (response && scoring_criteria_changed) {
+        //await handleJobApplicationRescore();
+      }
       return response;
     } else {
       if (loading)
@@ -205,18 +200,9 @@ const Dashboard = () => {
   );
 
   const handleFilter = (
-    overall_score: Omit<
-      (typeof searchParameters)['filter']['overall_score'],
-      'active'
-    >,
+    resume_score: Parameters<typeof setFilters>[0]['resume_score'][number],
   ) => {
-    handleJobApplicationFilter({
-      ...searchParameters,
-      filter: {
-        ...searchParameters.filter,
-        overall_score: { ...overall_score, active: true },
-      },
-    });
+    setFilters({ resume_score: [resume_score] });
     push(`/jobs/${job.id}/candidate-list`);
   };
 
@@ -238,31 +224,31 @@ const Dashboard = () => {
             }
             onClickTopMatch={{
               style: { cursor: 'pointer' },
-              onClick: () => handleFilter({ max: 100, min: 80 }),
+              onClick: () => handleFilter('Top match'),
             }}
             textTopMatchPercentage={score_matches.topMatch.percentage}
             textTopMatchCount={score_matches.topMatch.count}
             onClickGoodMatch={{
               style: { cursor: 'pointer' },
-              onClick: () => handleFilter({ max: 79, min: 60 }),
+              onClick: () => handleFilter('Good match'),
             }}
             textGoodMatchPercentage={score_matches.goodMatch.percentage}
             textGoodMatchCount={score_matches.goodMatch.count}
             onClickAverageMatch={{
               style: { cursor: 'pointer' },
-              onClick: () => handleFilter({ max: 59, min: 40 }),
+              onClick: () => handleFilter('Average match'),
             }}
             textAverageMatchPercentage={score_matches.averageMatch.percentage}
             textAveageMatchCount={score_matches.averageMatch.count}
             onClickBelowAverage={{
               style: { cursor: 'pointer' },
-              onClick: () => handleFilter({ max: 39, min: 20 }),
+              onClick: () => handleFilter('Poor match'),
             }}
             textBelowAveragePercentage={score_matches.poorMatch.percentage}
             textBelowAverageCount={score_matches.poorMatch.count}
             onClickNotaMatch={{
               style: { cursor: 'pointer' },
-              onClick: () => handleFilter({ max: 19, min: 0 }),
+              onClick: () => handleFilter('Not a match'),
             }}
             textNotAMatchPercentage={score_matches.noMatch.percentage}
             textNotAMatchCount={score_matches.noMatch.count}

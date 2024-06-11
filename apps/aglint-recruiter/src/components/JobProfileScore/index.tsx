@@ -22,6 +22,7 @@ import { BannerWarning } from '@/devlink3/BannerWarning';
 import { BodyWithSidePanel } from '@/devlink3/BodyWithSidePanel';
 import { ProfileScoreSkeleton } from '@/devlink3/ProfileScoreSkeleton';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
+import { useJob } from '@/src/context/JobContext';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 import { useJobs } from '@/src/context/JobsContext';
@@ -37,9 +38,9 @@ import { JdJsonType } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormProv
 type Sections = 'experience' | 'education' | 'skills';
 
 const JobProfileScoreDashboard = () => {
-  const { initialLoad, job } = useJobDetails();
+  const { jobLoad, job } = useJob();
 
-  return initialLoad ? (
+  return jobLoad ? (
     job !== undefined && job.status !== 'closed' ? (
       <ProfileScorePage />
     ) : (
@@ -71,7 +72,7 @@ const ProfileScorePage = () => {
 const ProfileScoreControls = () => {
   const { handleJobAsyncUpdate } = useJobs();
   const { handleJobApplicationRecalculate } = useJobApplications();
-  const { job } = useJobDetails();
+  const { job } = useJob();
   const initialRef = useRef(false);
   const initialSubmitRef = useRef(false);
   const jd_json = job.draft.jd_json;
@@ -266,7 +267,7 @@ export const distributeScoreWeights = (jd_json: Job['draft']['jd_json']) => {
 };
 
 const ProfileScore = () => {
-  const { job } = useJobDetails();
+  const { job } = useJob();
   return (
     <ScoreSetting
       slotBanner={<Banners />}
@@ -288,7 +289,8 @@ const ProfileScore = () => {
 const Banners = () => {
   const { push } = useRouter();
   const { experimental_handleRegenerateJd } = useJobs();
-  const { status, job } = useJobDetails();
+  const { status } = useJobDetails();
+  const { job } = useJob();
   const { dismissWarnings, setDismissWarnings } = useJobDashboardStore(
     ({ dismissWarnings, setDismissWarnings }) => ({
       dismissWarnings,
@@ -338,7 +340,7 @@ const Section: FC<{ type: Sections }> = ({ type }) => {
   const { handleJobUpdate } = useJobs();
   const {
     job: { draft, id },
-  } = useJobDetails();
+  } = useJob();
   const { jd_json } = draft;
   const section: keyof typeof jd_json =
     type === 'experience'
@@ -587,7 +589,7 @@ const AddOption: FC<{
 
 const BreadCrumbs = () => {
   const { push } = useRouter();
-  const { job } = useJobDetails();
+  const { job } = useJob();
   return (
     <>
       <Breadcrum

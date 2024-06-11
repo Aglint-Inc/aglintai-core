@@ -35,9 +35,12 @@ const List = memo(() => {
       header={
         <ApplicantsTable
           isAllChecked={false}
-          isScreeningVisible={section === 'screening'}
-          isInterviewVisible={section === 'assessment'}
-          isDisqualifiedVisible={section === 'disqualified'}
+          isScreeningVisible={false}
+          isInterviewVisible={false}
+          isDisqualifiedVisible={false}
+          isDragVisible={false}
+          propsDrag={null}
+          onClickSelectAll={{ style: { display: 'none' } }}
         />
       }
     />

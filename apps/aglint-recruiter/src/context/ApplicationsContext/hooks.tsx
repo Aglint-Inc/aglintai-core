@@ -4,6 +4,7 @@ import useDeepCompareEffect from 'use-deep-compare-effect';
 
 import {
   applicationsQueries,
+  useMoveApplications,
   useUpdateApplication,
   useUploadApplication,
   useUploadCsv,
@@ -15,13 +16,16 @@ import { useApplicationsStore } from './store';
 
 export const useApplicationsActions = () => {
   const { jobLoad, job, job_id } = useJob();
-  const { filters, sort, section } = useApplicationsStore(
-    ({ filters, sort, section }) => ({
-      filters,
-      sort,
-      section,
-    }),
-  );
+  const { filters, sort, section, checklist, resetChecklist } =
+    useApplicationsStore(
+      ({ filters, sort, section, checklist, resetChecklist }) => ({
+        filters,
+        sort,
+        section,
+        checklist,
+        resetChecklist,
+      }),
+    );
 
   const [params, setParams] = useState({ filters, sort });
   const ref = useRef(true);
@@ -106,6 +110,25 @@ export const useApplicationsActions = () => {
     ...params,
   });
 
+  const { mutateAsync: moveApplications } = useMoveApplications(
+    {
+      job_id,
+    },
+    section,
+    checklist,
+  );
+
+  const handleMoveApplications = async (
+    payload: Parameters<typeof moveApplications>[0],
+  ) => {
+    try {
+      await moveApplications(payload);
+      resetChecklist();
+    } catch {
+      //
+    }
+  };
+
   const sectionApplication = useMemo(() => {
     switch (section) {
       case 'assessment':
@@ -141,5 +164,6 @@ export const useApplicationsActions = () => {
     handleUploadApplication,
     handleUploadResume,
     handleUploadCsv,
+    handleMoveApplications,
   };
 };

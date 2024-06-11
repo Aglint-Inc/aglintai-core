@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import {
+  DatabaseEnums,
   DatabaseTable,
   DatabaseTableInsert,
   DatabaseTableUpdate,
@@ -28,11 +29,16 @@ export const applicationsQueries = {
   all: ({ job_id }: ApplicationsAllQueryPrerequistes) => ({
     queryKey: [...jobQueryKeys.job({ id: job_id }).queryKey, 'applications'],
   }),
-  applications: ({ job_id, count, ...filters }: Params) =>
+  applications: ({ job_id, count, status, ...filters }: Params) =>
     infiniteQueryOptions({
-      queryKey: [...applicationsQueries.all({ job_id }).queryKey, filters],
-      initialPageParam: { index: 0, job_id, ...filters },
-      enabled: !!job_id && !!count,
+      queryKey: [
+        ...applicationsQueries.all({ job_id }).queryKey,
+        { status },
+        filters,
+      ],
+      initialPageParam: { index: 0, job_id, status, ...filters },
+      enabled: !!job_id,
+      refetchOnMount: false,
       refetchOnWindowFocus: false,
       maxPages: Math.trunc(count / ROWS) + (count % ROWS ? 1 : 0) + 1,
       placeholderData: keepPreviousData,
@@ -41,6 +47,7 @@ export const applicationsQueries = {
           ? {
               index: firstPage[0].index,
               job_id,
+              status,
               ...filters,
             }
           : undefined,
@@ -52,6 +59,7 @@ export const applicationsQueries = {
         return {
           index,
           job_id,
+          status,
           ...filters,
         };
       },
@@ -250,8 +258,7 @@ export const useUploadApplication = (params: Omit<Params, 'status'>) => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey }),
   });
 };
-type HandleUploadApplication = {
-  job_id: string;
+type HandleUploadApplication = ApplicationsAllQueryPrerequistes & {
   recruiter_id: string;
   candidate: Omit<DatabaseTableInsert['candidates'], 'recruiter_id'>;
   file: File;
@@ -297,8 +304,7 @@ export const useUploadResume = (params: Omit<Params, 'status'>) => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey }),
   });
 };
-type HandleUploadResume = {
-  job_id: string;
+type HandleUploadResume = ApplicationsAllQueryPrerequistes & {
   recruiter_id: string;
   files: File[];
 };
@@ -351,11 +357,10 @@ export const useUploadCsv = (params: Omit<Params, 'status'>) => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey }),
   });
 };
-type HandleUploadCsv = {
+type HandleUploadCsv = ApplicationsAllQueryPrerequistes & {
   candidates: Parameters<
     typeof handleJobApplicationApi<'candidateUpload/csvUpload'>
   >['1']['candidates'];
-  job_id: string;
   recruiter_id: string;
 };
 const handleBulkCsvUpload = async (payload: HandleUploadCsv) => {
@@ -369,4 +374,84 @@ const handleBulkCsvUpload = async (payload: HandleUploadCsv) => {
     formData,
   );
   if (!response.confirmation) throw new Error(response.error);
+};
+
+export const useMoveApplications = (
+  payload: ApplicationsAllQueryPrerequistes,
+  source: ApplicationsStore['section'],
+  applications: ApplicationsStore['checklist'],
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (
+      args: Omit<
+        Parameters<typeof moveApplications>[0],
+        'job_id' | 'applications'
+      >,
+    ) => {
+      await moveApplications({ job_id: payload.job_id, applications, ...args });
+      const sourceQueryKey = [
+        ...applicationsQueries.all({ job_id: payload.job_id }).queryKey,
+        { status: source },
+      ];
+      const destinationQueryKey = [
+        ...applicationsQueries.all({ job_id: payload.job_id }).queryKey,
+        { status: args.status },
+      ];
+      const jobCountQueryKey = jobQueryKeys.count({
+        id: payload.job_id,
+      }).queryKey;
+      await Promise.allSettled([
+        queryClient.invalidateQueries({ queryKey: destinationQueryKey }),
+        queryClient.invalidateQueries({ queryKey: sourceQueryKey }),
+        queryClient.invalidateQueries({ queryKey: jobCountQueryKey }),
+      ]);
+      return undefined;
+    },
+  });
+};
+type MoveApplications = ApplicationsAllQueryPrerequistes & {
+  applications: DatabaseTable['applications']['id'][];
+  status: keyof SectionToEmailGuard;
+  email: SectionToEmailGuard[keyof SectionToEmailGuard];
+};
+type SectionToEmail = {
+  interview: null;
+  assessment: Extract<
+    DatabaseEnums['email_types'],
+    'interview' | 'interview_resend'
+  > | null;
+  qualified: null;
+  new: null;
+  disqualified: Extract<DatabaseEnums['email_types'], 'rejection'> | null;
+  screening: Extract<
+    DatabaseEnums['email_types'],
+    'phone_screening' | 'phone_screening_resend'
+  > | null;
+};
+type SectionToEmailGuard = {
+  [id in DatabaseEnums['application_status']]: SectionToEmail[id];
+};
+const moveApplications = async ({
+  job_id,
+  applications,
+  status,
+  email,
+}: MoveApplications) => {
+  const safeApplications = applications.map((id) => ({ id, status, job_id }));
+  await Promise.allSettled([
+    supabase.from('applications').upsert(safeApplications).throwOnError(),
+    (async () => {
+      if (email) {
+        const safeStatus = applications.map((application_id) => ({
+          application_id,
+          email,
+        }));
+        await supabase
+          .from('application_email_status')
+          .insert(safeStatus)
+          .throwOnError();
+      }
+    })(),
+  ]);
 };

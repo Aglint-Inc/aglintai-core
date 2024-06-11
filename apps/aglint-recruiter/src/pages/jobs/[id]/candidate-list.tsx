@@ -3,8 +3,6 @@ import Seo from '@components/Common/Seo';
 import ApplicationsDashboard from '@/src/components/JobNewApplications';
 import { ApplicationsProvider } from '@/src/context/ApplicationsContext';
 import { JobProvider } from '@/src/context/JobContext';
-import JobDashboardProvider from '@/src/context/JobDashboard';
-import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
 
 const JobCandidateListPage = () => {
   return (
@@ -21,11 +19,7 @@ const JobCandidateListPage = () => {
 JobCandidateListPage.privateProvider = function privateProvider(page) {
   return (
     <JobProvider>
-      <JobDashboardProvider>
-        <JobInterviewPlanProvider>
-          <ApplicationsProvider>{page}</ApplicationsProvider>
-        </JobInterviewPlanProvider>
-      </JobDashboardProvider>
+      <ApplicationsProvider>{page}</ApplicationsProvider>
     </JobProvider>
   );
 };

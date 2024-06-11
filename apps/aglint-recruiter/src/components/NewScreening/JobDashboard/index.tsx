@@ -15,7 +15,7 @@ import { PageLayout } from '@/devlink2/PageLayout';
 import { PhoneScreening } from '@/devlink2/PhoneScreening';
 import { ScreeningLandingCard } from '@/devlink2/ScreeningLandingCard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useJobDetails } from '@/src/context/JobDashboard';
+import { useJob } from '@/src/context/JobContext';
 import { useCurrentJob } from '@/src/queries/job-assessment/keys';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -24,7 +24,7 @@ import MuiPopup from '../../Common/MuiPopup';
 
 const ScreeningDashboardComp = () => {
   const { recruiter_id, recruiterUser } = useAuthDetails();
-  const { job } = useJobDetails();
+  const { job } = useJob();
   const [phoneScreening, setPhoneScreening] = useState({
     phone_screen_enabled: false,
     recruiter_id: '',

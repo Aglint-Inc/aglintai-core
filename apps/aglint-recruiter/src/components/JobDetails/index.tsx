@@ -7,7 +7,7 @@ import { SavedChanges } from '@/devlink/SavedChanges';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { JobDetailBlock } from '@/devlink3/JobDetailBlock';
-import { useJobDetails } from '@/src/context/JobDashboard';
+import { useJob } from '@/src/context/JobContext';
 import {
   validateDescription,
   validateString,
@@ -29,9 +29,9 @@ import {
 } from '../JobCreate/form';
 
 const JobDetailsDashboard = () => {
-  const { initialLoad, job } = useJobDetails();
+  const { jobLoad, job } = useJob();
 
-  return initialLoad ? (
+  return jobLoad ? (
     job !== undefined && job.status !== 'closed' ? (
       <JobEdit />
     ) : (
@@ -45,7 +45,7 @@ const JobDetailsDashboard = () => {
 };
 
 const JobEdit = () => {
-  const { job } = useJobDetails();
+  const { job } = useJob();
   //TODO: HACK FOR BACKWARDS COMPATABILITY, DELETE THIS LATER
   const {
     job_title,
@@ -223,7 +223,7 @@ const JobEditForm = ({
   setSaving: Dispatch<SetStateAction<boolean>>;
 }) => {
   const initialRef = useRef(false);
-  const { job } = useJobDetails();
+  const { job } = useJob();
   const { handleJobAsyncUpdate } = useJobs();
 
   const newJob = Object.entries(fields).reduce((acc, [key, { value }]) => {

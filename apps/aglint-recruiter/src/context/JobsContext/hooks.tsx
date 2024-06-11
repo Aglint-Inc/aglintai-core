@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { DatabaseEnums } from '@aglint/shared-types';
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import { useMemo } from 'react';
 
@@ -13,8 +14,16 @@ import {
 } from '@/src/queries/jobs';
 import { Job } from '@/src/queries/jobs/types';
 
-import { JobApplicationSections } from '../JobApplicationsContext/types';
 import { hashCode } from '../JobDashboard/hooks';
+
+const JOB_SECTIONS: DatabaseEnums['application_status'][] = [
+  'new',
+  'screening',
+  'assessment',
+  'interview',
+  'qualified',
+  'disqualified',
+];
 
 const useJobActions = () => {
   const {
@@ -29,26 +38,22 @@ const useJobActions = () => {
     () => ({
       ...jobs,
       data: (jobs?.data ?? []).map((job) => {
-        const activeSections = Object.values(JobApplicationSections).filter(
-          (section) => {
-            switch (section) {
-              case JobApplicationSections.NEW:
-                return true;
-              case JobApplicationSections.SCREENING:
-                return (
-                  (job?.phone_screen_enabled ?? false) && isScreeningEnabled
-                );
-              case JobApplicationSections.ASSESSMENT:
-                return (job?.assessment ?? false) && isAssessmentEnabled;
-              case JobApplicationSections.INTERVIEW:
-                return isSchedulingEnabled;
-              case JobApplicationSections.QUALIFIED:
-                return true;
-              case JobApplicationSections.DISQUALIFIED:
-                return true;
-            }
-          },
-        );
+        const activeSections = JOB_SECTIONS.filter((section) => {
+          switch (section) {
+            case 'new':
+              return true;
+            case 'screening':
+              return (job?.phone_screen_enabled ?? false) && isScreeningEnabled;
+            case 'assessment':
+              return (job?.assessment ?? false) && isAssessmentEnabled;
+            case 'interview':
+              return isSchedulingEnabled;
+            case 'qualified':
+              return true;
+            case 'disqualified':
+              return true;
+          }
+        });
         return { ...job, activeSections };
       }),
     }),

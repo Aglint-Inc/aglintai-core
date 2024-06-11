@@ -6,12 +6,13 @@ import { JobDetails } from '@/devlink2/JobDetails';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
-import { useJobDetails } from '@/src/context/JobDashboard';
+import { useJob } from '@/src/context/JobContext';
 import NotFoundPage from '@/src/pages/404';
 
 import Loader from '../Common/Loader';
 import SectionIcons from '../JobApplicationsDashboard/Common/SectionIcons';
 import { capitalize } from '../JobApplicationsDashboard/utils';
+import { Actions } from './actions';
 import Drawer from './drawer';
 import Filters from './filters';
 import { BreadCrumbs } from './layout';
@@ -36,18 +37,18 @@ const ApplicationsDashboard = () => {
 export default ApplicationsDashboard;
 
 const ApplicationsComponent = () => {
-  const { job } = useJobDetails();
-  const setImportPopup = useApplicationsStore(
-    ({ setImportPopup }) => setImportPopup,
+  const { job } = useJob();
+  const { setImportPopup, checklist } = useApplicationsStore(
+    ({ setImportPopup, checklist }) => ({ setImportPopup, checklist }),
   );
   return (
     <>
       <JobDetails
         isImportCandidates={job.status === 'published'}
         onclickAddCandidates={{ onClick: () => setImportPopup(true) }}
-        isFetchingPillVisible={true}
+        isFetchingPillVisible={false}
         slotRefresh={<></>}
-        slotShowFilterButton={<>KKKK</>}
+        slotShowFilterButton={<></>}
         slotLoadingLottie={
           <CircularProgress
             style={{
@@ -61,7 +62,7 @@ const ApplicationsComponent = () => {
         slotTabs={<NewJobDetailsTabs />}
         slotTable={<Table />}
         isFilterVisible={true}
-        slotFilters={<Filters />}
+        slotFilters={checklist.length === 0 ? <Filters /> : <Actions />}
       />
       <Drawer />
       <UploadApplications />
@@ -70,7 +71,7 @@ const ApplicationsComponent = () => {
 };
 
 const NewJobDetailsTabs = () => {
-  const { job } = useJobDetails();
+  const { job } = useJob();
   return (
     <>
       {job.activeSections.map((section) => (
@@ -85,7 +86,7 @@ const SectionCard = ({
 }: {
   status: DatabaseView['application_view']['status'];
 }) => {
-  const { job } = useJobDetails();
+  const { job } = useJob();
   const { section, setSection } = useApplicationsStore(
     ({ section, setSection }) => ({
       section,

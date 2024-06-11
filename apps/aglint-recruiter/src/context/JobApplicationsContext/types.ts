@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-import { Applications } from '@aglint/shared-types';
+import { Applications, DatabaseEnums } from '@aglint/shared-types';
 import { CandidateFiles } from '@aglint/shared-types';
 import { InterviewScheduleTypeDB } from '@aglint/shared-types';
 import { Candidate } from '@aglint/shared-types';

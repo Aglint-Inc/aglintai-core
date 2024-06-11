@@ -7,12 +7,16 @@ import ROUTES from '../utils/routing/routes';
 
 export const GC_TIME = 5 * 60 * 1000;
 export const STALE_TIME = 0;
+export const REFETCH_ON_MOUNT = false;
+export const REFETCH_ON_WINDOW_FOCUS = false;
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       gcTime: GC_TIME,
       staleTime: STALE_TIME,
+      refetchOnMount: REFETCH_ON_MOUNT,
+      refetchOnWindowFocus: REFETCH_ON_WINDOW_FOCUS,
     },
   },
 });
