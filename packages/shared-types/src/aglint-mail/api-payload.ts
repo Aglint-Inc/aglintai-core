@@ -9,8 +9,6 @@ import {
   debriefEmailInterviewerSchema,
   interReschedReqEmailRecruiterSchema,
   interviewCancelReqEmailRecruiterSchema,
-  interviewReminderEmailApplicantSchema,
-  interviewReminderEmailInterviewerSchema,
   interviewRescheduleEmailApplicantSchema,
   interviewStartEmailApplicantSchema,
   interviewStartEmailInterviewersSchema,
@@ -277,5 +275,5 @@ type Payloads = {
   };
 };
 
-export type EmailTemplateAPi<T extends DatabaseEnums['email_types']> =
+export type EmailTemplateAPi<T extends DatabaseEnums['email_slack_types']> =
   T extends keyof Payloads ? Payloads[T] : never;

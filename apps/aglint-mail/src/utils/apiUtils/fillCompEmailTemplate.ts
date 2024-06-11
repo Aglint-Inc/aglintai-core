@@ -5,7 +5,9 @@ import {
 } from '@aglint/shared-types';
 
 // TODO: fix this
-export const fillCompEmailTemplate = <T extends DatabaseEnums['email_types']>(
+export const fillCompEmailTemplate = <
+  T extends DatabaseEnums['email_slack_types'],
+>(
   dynamic_fields: EmailTemplateAPi<T>['comp_email_placeholders'],
   email_template: DatabaseTable['company_email_template'],
 ) => {
