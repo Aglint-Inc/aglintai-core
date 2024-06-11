@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
 
 import type { JobRequisite } from '../job';
-import { jobQueryKeys } from '../job/keys';
+import { jobQueries } from '../job';
 
 export const jobDashboardQueryKeys = {
   dashboard: (args: JobRequisite) => ({
-    queryKey: [...jobQueryKeys.job(args).queryKey, 'dashboard'] as string[],
+    queryKey: [...jobQueries.job(args).queryKey, 'dashboard'] as string[],
   }),
   matches: (args: JobRequisite) => ({
     queryKey: [...jobDashboardQueryKeys.dashboard(args).queryKey, 'matches'],

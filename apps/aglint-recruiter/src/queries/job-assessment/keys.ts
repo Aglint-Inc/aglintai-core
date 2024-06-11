@@ -4,11 +4,11 @@ import { useJobs } from '@/src/context/JobsContext';
 import ROUTES from '@/src/utils/routing/routes';
 
 import { JobRequisite } from '../job';
-import { jobQueryKeys } from '../job/keys';
+import { jobQueries } from '../job';
 
 export const jobAssessmentQueryKeys = {
   assessments: (args: JobRequisite) => ({
-    queryKey: [...jobQueryKeys.job(args).queryKey, 'assessments'],
+    queryKey: [...jobQueries.job(args).queryKey, 'assessments'],
   }),
 } as const;
 

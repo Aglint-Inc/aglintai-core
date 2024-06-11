@@ -21,7 +21,6 @@ import {
   useJobSkills,
   useJobTenureAndExperience,
 } from '@/src/queries/job-dashboard';
-import { useJobScoringPoll } from '@/src/queries/job-scoring';
 import { useJobWorkflow } from '@/src/queries/job-workflow';
 import { Job } from '@/src/queries/jobs/types';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
@@ -60,7 +59,6 @@ const useProviderJobDashboardActions = () => {
   const schedules = useJobSchedules(job);
   const interviewPlanEnabled = useJobInterviewPlanEnabled(job);
   const interviewPlans = useInterviewPlans();
-  const scoringPoll = useJobScoringPoll(job);
   const workflows = useJobWorkflow({ id: job?.id });
 
   const refreshDashboard = useJobDashboardRefresh();
@@ -92,12 +90,6 @@ const useProviderJobDashboardActions = () => {
     dismissWarnings,
   }));
 
-  const jobPolling =
-    !!job &&
-    job?.status === 'published' &&
-    (job?.processing_count?.['not started'] !== 0 ||
-      job?.processing_count?.processing !== 0);
-
   const status = job &&
     jobLoad && {
       loading: job.scoring_criteria_loading,
@@ -125,7 +117,6 @@ const useProviderJobDashboardActions = () => {
     !schedules.isPending &&
     !interviewPlanEnabled.isPending &&
     !interviewPlans.isPending &&
-    !scoringPoll.isPending &&
     !workflows.isPending
   );
 
@@ -149,14 +140,12 @@ const useProviderJobDashboardActions = () => {
     job,
     jobLoad,
     loadStatus,
-    jobPolling,
     emailTemplateValidity,
     interviewPlanEnabled,
     workflows,
     handleJobRefresh,
     isInterviewPlanDisabled,
     isInterviewSessionEmpty,
-    scoringPoll,
     schedules,
     status,
     publishStatus,

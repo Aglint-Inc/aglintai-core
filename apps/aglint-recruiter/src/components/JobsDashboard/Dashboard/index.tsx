@@ -31,6 +31,7 @@ import { ScoreSetting } from '@/devlink3/ScoreSetting';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
+import { useJob } from '@/src/context/JobContext';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 import { useJobs } from '@/src/context/JobsContext';
@@ -102,8 +103,8 @@ const getMatches = (
 };
 
 const Dashboard = () => {
+  const { job, scoreParameterPollEnabled } = useJob();
   const {
-    job,
     matches: { data: counts },
     schedules: { data: schedule },
     status: { description_changed, scoring_criteria_changed },
@@ -113,7 +114,6 @@ const Dashboard = () => {
       detailsValidity,
       hiringTeamValidity,
     },
-    jobPolling,
   } = useJobDetails();
   const { push } = useRouter();
   const { handleJobAsyncUpdate, handleJobDelete, handleJobPublish } = useJobs();
@@ -282,7 +282,7 @@ const Dashboard = () => {
             }
             slotAddCandidateButton={
               <>
-                {jobPolling && (
+                {scoreParameterPollEnabled && (
                   <ScoreSetting
                     textScoreCount={`${
                       job?.processing_count?.success ?? '---'

@@ -7,13 +7,13 @@ import {
 
 import { supabase } from '@/src/utils/supabase/client';
 
-import { jobQueryKeys } from '../job/keys';
+import { jobQueries } from '../job';
 import { diffApplication, updateApplication } from '../job-applications';
 
 export const applicationQuery = {
   all: ({ job_id }: ApplicationAllQueryPrerequistes) => ({
     queryKey: [
-      ...jobQueryKeys.job({ id: job_id }).queryKey,
+      ...jobQueries.job({ id: job_id }).queryKey,
       'application',
     ] as const,
   }),
@@ -28,6 +28,7 @@ export const applicationQuery = {
       placeholderData,
       enabled: !!application_id && !!job_id,
       gcTime: application_id ? 1 * 60_000 : 0,
+      refetchOnMount: true,
       queryKey: [
         ...applicationQuery.application({ application_id, job_id }).queryKey,
         'meta',
@@ -38,6 +39,7 @@ export const applicationQuery = {
     queryOptions({
       enabled: !!application_id && !!job_id,
       gcTime: application_id ? 1 * 60_000 : 0,
+      refetchOnMount: true,
       queryKey: [
         ...applicationQuery.application({ application_id, job_id }).queryKey,
         'details',

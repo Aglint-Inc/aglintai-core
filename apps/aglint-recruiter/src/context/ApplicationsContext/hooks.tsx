@@ -15,7 +15,7 @@ import { useJob } from '../JobContext';
 import { useApplicationsStore } from './store';
 
 export const useApplicationsActions = () => {
-  const { jobLoad, job, job_id } = useJob();
+  const { jobLoad, job, job_id, applicationScoringPollEnabled } = useJob();
   const { filters, sort, section, checklist, resetChecklist } =
     useApplicationsStore(
       ({ filters, sort, section, checklist, resetChecklist }) => ({
@@ -44,6 +44,7 @@ export const useApplicationsActions = () => {
     mutateAsync: handleAsyncUpdateApplication,
   } = useUpdateApplication({
     job_id,
+    polling: applicationScoringPollEnabled,
     status: section,
     ...params,
   });
@@ -51,6 +52,7 @@ export const useApplicationsActions = () => {
   const newApplications = useInfiniteQuery(
     applicationsQueries.applications({
       job_id,
+      polling: applicationScoringPollEnabled,
       status: 'new',
       count: job?.count?.new ?? 0,
       ...params,
@@ -59,6 +61,7 @@ export const useApplicationsActions = () => {
   const screeningApplications = useInfiniteQuery(
     applicationsQueries.applications({
       job_id,
+      polling: applicationScoringPollEnabled,
       status: 'screening',
       count: job?.count?.screening ?? 0,
       ...params,
@@ -67,6 +70,7 @@ export const useApplicationsActions = () => {
   const assessmentApplications = useInfiniteQuery(
     applicationsQueries.applications({
       job_id,
+      polling: applicationScoringPollEnabled,
       status: 'assessment',
       count: job?.count?.assessment ?? 0,
       ...params,
@@ -75,6 +79,7 @@ export const useApplicationsActions = () => {
   const interviewApplications = useInfiniteQuery(
     applicationsQueries.applications({
       job_id,
+      polling: applicationScoringPollEnabled,
       status: 'interview',
       count: job?.count?.interview ?? 0,
       ...params,
@@ -83,6 +88,7 @@ export const useApplicationsActions = () => {
   const qualifiedApplications = useInfiniteQuery(
     applicationsQueries.applications({
       job_id,
+      polling: applicationScoringPollEnabled,
       status: 'qualified',
       count: job?.count?.qualified ?? 0,
       ...params,
@@ -91,6 +97,7 @@ export const useApplicationsActions = () => {
   const disqualifiedApplications = useInfiniteQuery(
     applicationsQueries.applications({
       job_id,
+      polling: applicationScoringPollEnabled,
       status: 'disqualified',
       count: job?.count?.disqualified ?? 0,
       ...params,

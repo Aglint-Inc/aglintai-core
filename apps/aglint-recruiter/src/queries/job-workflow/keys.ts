@@ -1,10 +1,10 @@
 import { appKey } from '..';
 import type { JobRequisite } from '../job';
-import { jobQueryKeys } from '../job/keys';
+import { jobQueries } from '../job';
 
 export const jobWorkflowQueryKeys = {
   workflow: (args: JobRequisite) => ({
-    queryKey: [...jobQueryKeys.job(args).queryKey, 'workflow'],
+    queryKey: [...jobQueries.job(args).queryKey, 'workflow'],
   }),
 } as const;
 

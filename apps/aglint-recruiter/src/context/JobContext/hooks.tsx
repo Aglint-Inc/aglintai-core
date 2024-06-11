@@ -1,10 +1,8 @@
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueries, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 
-import { useJobCount } from '@/src/queries/job';
-import { jobsQueryKeys } from '@/src/queries/jobs/keys';
-import { Job } from '@/src/queries/jobs/types';
+import { jobQueries } from '@/src/queries/job';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 import { useJobs } from '../JobsContext';
@@ -30,20 +28,48 @@ const useJobContext = () => {
         : undefined,
     [jobs.data, job_id, jobs.status, jobLoad],
   );
-  const { data: count, invalidate: handleRefreshApplicationCount } =
-    useJobCount(job);
-  useEffect(() => {
-    if (count) {
-      queryClient.setQueryData<Job[]>(jobsQueryKeys.jobs().queryKey, (prev) =>
-        prev.reduce((acc, curr) => {
-          if (curr.id === job_id) acc.push({ ...curr, count });
-          else acc.push(curr);
-          return acc;
-        }, [] as Job[]),
-      );
-    }
-  }, [count]);
-  return { job, job_id, jobLoad, handleRefreshApplicationCount };
+
+  const scoreParameterPollEnabled =
+    !!job && (job?.scoring_criteria_loading ?? false);
+
+  const applicationScoringPollEnabled =
+    !!job &&
+    job?.status === 'published' &&
+    ((job?.processing_count?.['not started'] ?? 0) !== 0 ||
+      (job?.processing_count?.processing ?? 0) !== 0);
+
+  useQueries({
+    queries: [
+      jobQueries.job_application_count({
+        id: job_id,
+        enabled: !!job,
+        queryClient,
+      }),
+      jobQueries.job_processing_count({
+        id: job_id,
+        enabled: !!job,
+        queryClient,
+      }),
+      jobQueries.application_scoring({
+        id: job_id,
+        enabled: applicationScoringPollEnabled,
+        queryClient,
+      }),
+      jobQueries.scoring_param({
+        id: job_id,
+        enabled: scoreParameterPollEnabled,
+        queryClient,
+      }),
+    ],
+  });
+
+  return {
+    job,
+    job_id,
+    jobLoad,
+    scoreParameterPollEnabled,
+    applicationScoringPollEnabled,
+  };
 };
 
 export { useJobContext };

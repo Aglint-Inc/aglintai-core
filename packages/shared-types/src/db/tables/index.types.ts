@@ -9,6 +9,7 @@ import type { CustomInterviewSessionRelation } from "./interview_session_relatio
 import type { CustomInterviewSession } from "./interview_sessions.types";
 import type { CustomNewTasks } from "./new_tasks.types";
 import type { CustomNewTaskProgress } from "./new_tasks_progress.types";
+import { CustomPublicJobs } from "./public_jobs.types";
 import type { CustomRecruiter } from "./recruiter.types";
 import type { CustomRecruiterUser } from "./recruiter_user.types";
 import type { CustomWorkflowAction } from "./workflow_action.types";
@@ -43,5 +44,6 @@ export type Tables = Type<
     workflow_action: CustomWorkflowAction;
     application_logs: CustomApplicationLogs;
     candidate_files: CustomCandidateFiles;
+    public_jobs: CustomPublicJobs;
   }
 >;

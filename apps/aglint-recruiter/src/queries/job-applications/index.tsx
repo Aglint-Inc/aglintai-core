@@ -21,15 +21,21 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { jobQueryKeys } from '../job/keys';
+import { jobQueries } from '../job';
 
 const ROWS = 30;
 
 export const applicationsQueries = {
   all: ({ job_id }: ApplicationsAllQueryPrerequistes) => ({
-    queryKey: [...jobQueryKeys.job({ id: job_id }).queryKey, 'applications'],
+    queryKey: [...jobQueries.job({ id: job_id }).queryKey, 'applications'],
   }),
-  applications: ({ job_id, count, status, ...filters }: Params) =>
+  applications: ({
+    job_id,
+    count,
+    polling = false,
+    status,
+    ...filters
+  }: Params) =>
     infiniteQueryOptions({
       queryKey: [
         ...applicationsQueries.all({ job_id }).queryKey,
@@ -38,7 +44,7 @@ export const applicationsQueries = {
       ],
       initialPageParam: { index: 0, job_id, status, ...filters },
       enabled: !!job_id,
-      refetchOnMount: false,
+      refetchOnMount: polling,
       refetchOnWindowFocus: false,
       maxPages: Math.trunc(count / ROWS) + (count % ROWS ? 1 : 0) + 1,
       placeholderData: keepPreviousData,
@@ -70,6 +76,7 @@ export const applicationsQueries = {
 type ApplicationsAllQueryPrerequistes = {
   job_id: DatabaseTable['public_jobs']['id'];
   count?: number;
+  polling?: boolean;
 };
 
 type Params = ApplicationsAllQueryPrerequistes & {
@@ -255,7 +262,13 @@ export const useUploadApplication = (params: Omit<Params, 'status'>) => {
         recruiter_id,
         ...payload,
       }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey }),
+    onSuccess: () =>
+      Promise.allSettled([
+        queryClient.invalidateQueries({ queryKey }),
+        queryClient.invalidateQueries(
+          jobQueries.job_processing_count({ id: params.job_id }),
+        ),
+      ]),
   });
 };
 type HandleUploadApplication = ApplicationsAllQueryPrerequistes & {
@@ -301,7 +314,13 @@ export const useUploadResume = (params: Omit<Params, 'status'>) => {
         recruiter_id,
         ...payload,
       }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey }),
+    onSuccess: () =>
+      Promise.allSettled([
+        queryClient.invalidateQueries({ queryKey }),
+        queryClient.invalidateQueries(
+          jobQueries.job_processing_count({ id: params.job_id }),
+        ),
+      ]),
   });
 };
 type HandleUploadResume = ApplicationsAllQueryPrerequistes & {
@@ -354,7 +373,13 @@ export const useUploadCsv = (params: Omit<Params, 'status'>) => {
         recruiter_id,
         ...payload,
       }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey }),
+    onSuccess: () =>
+      Promise.allSettled([
+        queryClient.invalidateQueries({ queryKey }),
+        queryClient.invalidateQueries(
+          jobQueries.job_processing_count({ id: params.job_id }),
+        ),
+      ]),
   });
 };
 type HandleUploadCsv = ApplicationsAllQueryPrerequistes & {
@@ -398,7 +423,7 @@ export const useMoveApplications = (
         ...applicationsQueries.all({ job_id: payload.job_id }).queryKey,
         { status: args.status },
       ];
-      const jobCountQueryKey = jobQueryKeys.count({
+      const jobCountQueryKey = jobQueries.job_application_count({
         id: payload.job_id,
       }).queryKey;
       await Promise.allSettled([

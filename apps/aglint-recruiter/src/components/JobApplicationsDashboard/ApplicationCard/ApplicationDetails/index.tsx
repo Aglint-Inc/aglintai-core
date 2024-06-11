@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable security/detect-object-injection */
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Collapse, Dialog, Drawer, Stack, Typography } from '@mui/material';
@@ -285,12 +286,12 @@ const NewJobApplicationSideDrawer = ({
     );
     toast.success('Call initiated successfully.');
   };
-  const isPhoneScreeningPhoneCallEnabled = useFeatureFlagEnabled(
-    'isPhoneScreeningPhoneCallEnabled',
-  );
-  const isPhoneScreeningEnabled = job.activeSections.includes(
-    JobApplicationSections.SCREENING,
-  );
+  // const isPhoneScreeningPhoneCallEnabled = useFeatureFlagEnabled(
+  //   'isPhoneScreeningPhoneCallEnabled',
+  // );
+  // const isPhoneScreeningEnabled = job.activeSections.includes(
+  //   JobApplicationSections.SCREENING,
+  // );
 
   const { pressed: right } = useKeyPress('ArrowRight');
   const { pressed: left } = useKeyPress('ArrowLeft');
@@ -358,67 +359,67 @@ const NewJobApplicationSideDrawer = ({
   return (
     <>
       <CandidateSideDrawer
-        isLinkedInVisible={linkedin.valid}
-        onClickLinkedin={{
-          style: { cursor: 'pointer' },
-          onClick: () => {
-            navigator.clipboard.writeText(linkedin.value);
-            toast.success('LinkedIn URL copied');
-          },
-        }}
-        isPhoneScreeningVisible={
-          isPhoneScreeningEnabled && isPhoneScreeningPhoneCallEnabled
-        }
-        onClickPhoneScreening={{
-          onClick: () => {
-            setPhonePopUp(true);
-          },
-        }}
-        textMail={email.value}
-        textPhone={phone.value}
-        slotCandidateImage={candidateImage}
-        textName={name}
-        onClickPrev={{
-          onClick: () => handleSelectPrevApplication(),
-          style: {
-            display: hideNextPrev ? 'none' : 'block',
-          },
-        }}
-        onClickNext={{
-          onClick: () => handleSelectNextApplication(),
-          style: {
-            display: hideNextPrev ? 'none' : 'block',
-          },
-        }}
-        onClickClose={{
-          onClick: () => onClose(),
-        }}
-        slotSocialLink={<SocialsBlock application={application} />}
-        // isOverviewVisible={overview.valid}
-        // isLocationRoleVisible={jobTitle.valid || location.valid}
-        // isRoleVisible={jobTitle.valid}
-        textRole={jobTitle.value}
-        // isLocationVisible={location.valid}
-        textLocation={location.value}
-        isResumeVisible={
-          processState !== 'unavailable' && processState !== 'fetching'
-        }
-        onClickResume={{ onClick: () => setOpenResume((prev) => !prev) }}
-        slotBookmark={<Bookmark application={application} />}
-        slotOverview={<></>}
-        slotCandidateDetails={
-          <Sections
-            application={application}
-            openResume={openResume}
-            setOpenResume={setOpenResume}
-            tab={tab}
-            handleSelectNextApplication={handleSelectNextApplication}
-            handleSelectPrevApplication={handleSelectPrevApplication}
-          />
-        }
-        isAppliedOnVisible={true}
-        textAppliedOn={creationDate}
-        slotNewTabPill={tabs}
+      // isLinkedInVisible={linkedin.valid}
+      // onClickLinkedin={{
+      //   style: { cursor: 'pointer' },
+      //   onClick: () => {
+      //     navigator.clipboard.writeText(linkedin.value);
+      //     toast.success('LinkedIn URL copied');
+      //   },
+      // }}
+      // isPhoneScreeningVisible={
+      //   isPhoneScreeningEnabled && isPhoneScreeningPhoneCallEnabled
+      // }
+      // onClickPhoneScreening={{
+      //   onClick: () => {
+      //     setPhonePopUp(true);
+      //   },
+      // }}
+      // textMail={email.value}
+      // textPhone={phone.value}
+      // slotCandidateImage={candidateImage}
+      // textName={name}
+      // onClickPrev={{
+      //   onClick: () => handleSelectPrevApplication(),
+      //   style: {
+      //     display: hideNextPrev ? 'none' : 'block',
+      //   },
+      // }}
+      // onClickNext={{
+      //   onClick: () => handleSelectNextApplication(),
+      //   style: {
+      //     display: hideNextPrev ? 'none' : 'block',
+      //   },
+      // }}
+      // onClickClose={{
+      //   onClick: () => onClose(),
+      // }}
+      // slotSocialLink={<SocialsBlock application={application} />}
+      // isOverviewVisible={overview.valid}
+      // isLocationRoleVisible={jobTitle.valid || location.valid}
+      // isRoleVisible={jobTitle.valid}
+      // textRole={jobTitle.value}
+      //  isLocationVisible={location.valid}
+      // textLocation={location.value}
+      // isResumeVisible={
+      //   processState !== 'unavailable' && processState !== 'fetching'
+      // }
+      // onClickResume={{ onClick: () => setOpenResume((prev) => !prev) }}
+      // slotBookmark={<Bookmark application={application} />}
+      // slotOverview={<></>}
+      // slotCandidateDetails={
+      //   <Sections
+      //     application={application}
+      //     openResume={openResume}
+      //     setOpenResume={setOpenResume}
+      //     tab={tab}
+      //     handleSelectNextApplication={handleSelectNextApplication}
+      //     handleSelectPrevApplication={handleSelectPrevApplication}
+      //   />
+      // }
+      // isAppliedOnVisible={true}
+      // textAppliedOn={creationDate}
+      // slotNewTabPill={tabs}
       />
       <MuiPopup
         props={{
@@ -926,7 +927,7 @@ export const AnalysisBlockSection: React.FC<{
           padding: noCollapse ? '0px' : '16px',
         },
       }}
-      slotPill={<ResumeScore application={application} />}
+      // slotPill={<ResumeScore application={application} />}
       onclickArrow={{
         onClick: () => setCollapse((prev) => !prev),
         style: {
