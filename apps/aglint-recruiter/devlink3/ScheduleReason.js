@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { NewTabPill } from "./NewTabPill";
+import { Text } from "./Text";
 import { ScheduleReasonSection } from "./ScheduleReasonSection";
 import * as _utils from "./utils";
 import _styles from "./ScheduleReason.module.css";
@@ -16,34 +17,21 @@ export function ScheduleReason({
   isMainHeadingVisible = true,
 }) {
   return (
-    <_Component tag="div">
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1719")}
-        tag="div"
-      >
-        {sloNewTabPill ?? <NewTabPill />}
+    <_Component className={_utils.cx(_styles, "sr-wrapper")} tag="div">
+      <_Builtin.Block className={_utils.cx(_styles, "tab_wrapper")} tag="div">
+        {sloNewTabPill ?? <NewTabPill isPillActive={true} />}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1669")}
+        className={_utils.cx(_styles, "schedule_reasons")}
         tag="div"
       >
         {isMainHeadingVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1725")}
+            className={_utils.cx(_styles, "scheduling_reason_header")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {textMainHeading}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-600")}
-              tag="div"
-            >
-              {textMainHelperText}
-            </_Builtin.Block>
+            <Text content={textMainHeading} weight="medium" />
+            <Text content={textMainHelperText} weight="" color="neutral" />
           </_Builtin.Block>
         ) : null}
         <_Builtin.Block

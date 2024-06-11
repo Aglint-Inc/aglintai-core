@@ -8,8 +8,9 @@ import { ScheduleTypeButton } from '@/devlink3/ScheduleTypeButton';
 import {
   setIsScheduleNowOpen,
   setScheduleFlow,
-  useSchedulingApplicationStore,
-} from '../store';
+  setStepScheduling,
+} from '../SelfSchedulingDrawer/store';
+import { setRequestSessionIds, useSchedulingApplicationStore } from '../store';
 
 function TopBarButtons() {
   const router = useRouter();
@@ -49,6 +50,7 @@ function TopBarButtons() {
           onClickButton={{
             onClick: () => {
               setScheduleFlow('self_scheduling');
+              setStepScheduling('pick_date');
               setIsScheduleNowOpen(true);
             },
           }}
@@ -64,6 +66,7 @@ function TopBarButtons() {
           onClickButton={{
             onClick: () => {
               setScheduleFlow('request_availibility');
+              setRequestSessionIds(selectedSessionIds);
               const currentPath = router.pathname; // '/scheduling/application/[application_id]'
               const currentQuery = router.query; // { application_id: '84caebfb-8db6-4881-a88f-400726884504' }
               const updatedQuery = {
@@ -122,8 +125,8 @@ function TopBarButtons() {
           paper: {
             style: {
               border: 'none',
-              borderRadius: '10px',
-              boxShadow: '0px 4px 8px 0px rgba(4, 68, 77, 0.15)',
+              borderRadius: 'var(--radius-4)',
+              boxShadow: 'var(--shadow-3)',
             },
           },
         }}

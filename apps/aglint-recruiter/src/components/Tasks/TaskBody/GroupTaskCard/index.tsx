@@ -37,21 +37,21 @@ function GroupTaskCard({
 
   const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
-  ))(({ theme }) => ({
+  ))(() => ({
     [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: theme.palette.common.black,
-      color: 'rgba(255, 255, 255, 0.87)',
-      boxShadow: theme.shadows[1],
-      fontSize: 11,
+      backgroundColor: 'var(--black)',
+      color: 'var(--black-a7)',
+      boxShadow: 'var(--shadow-1)',
+      fontSize: 'var(--font-size-1)',
     },
   }));
 
   return (
     <Stack
       sx={{
-        bgcolor: 'white',
+        bgcolor: 'var(--white)',
         '&:hover': {
-          bgcolor: 'grey.100',
+          bgcolor: 'var(--neutral-2)',
           '& div:first-child div .checkboxClass': {
             opacity: 1,
           },

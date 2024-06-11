@@ -10,13 +10,13 @@ import { CdLoadMore } from '@/devlink/CdLoadMore';
 import { CdTableAglint } from '@/devlink/CdTableAglint';
 import { CdTableLoader } from '@/devlink/CdTableLoader';
 import { Checkbox } from '@/devlink/Checkbox';
+import { EmptyStateCandidateSearchAglint } from '@/public/lottie/EmptyLottie';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import CompanyLogo from '@/src/components/JobApplicationsDashboard/Common/CompanyLogo';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { EmptyStateCandidateSearchAglint } from '../EmptyLottie';
 import {
   setCandidateHistory,
   setCandidates,
@@ -186,7 +186,7 @@ function CdTableRecords({ loading }) {
                     </Stack>
                   );
                 })}
-                <Typography variant='body2' sx={{ textWrap: 'nowrap' }}>
+                <Typography variant='body1' sx={{ textWrap: 'nowrap' }}>
                   {candidate.employment_history.length > 3 &&
                     `+ ${candidate.employment_history.length - 3} more`}
                 </Typography>
@@ -201,10 +201,7 @@ function CdTableRecords({ loading }) {
                       ? null
                       : candidate.photo_url
                   }
-                  variant={'rounded'}
-                  width={'24px'}
-                  height={'24px'}
-                  fontSize={'14px'}
+                  variant={'rounded-small'}
                 />
               </>
             }

@@ -11,7 +11,6 @@ import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { Job } from '@/src/queries/job/types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
@@ -104,7 +103,7 @@ const EmailTemplate = ({ setIsSaving }) => {
                     isSaveChangesButtonVisible={false}
                     textEmailName={templateObj[selectedTemplate]?.heading}
                     slotForm={
-                      <Stack spacing={'20px'}>
+                      <Stack spacing={'var(--space-5)'}>
                         <UITextField
                           labelSize='small'
                           fullWidth
@@ -159,10 +158,10 @@ const EmailTemplate = ({ setIsSaving }) => {
                           <UITypography type='small'>Email Body</UITypography>
                           <Stack
                             sx={{
-                              mt: '8px',
+                              mt: 'var(--space-2)',
                               border: '1px solid',
-                              borderColor: palette.grey[300],
-                              borderRadius: '4px',
+                              borderColor: 'var(--neutral-6)',
+                              borderRadius: 'var(--radius-2)',
                             }}
                           >
                             <TipTapAIEditor

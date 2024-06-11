@@ -8,7 +8,6 @@ import { CandidateChat } from '@/devlink/CandidateChat';
 import { TicketChatBubble } from '@/devlink/TicketChatBubble';
 import { TicketStatusDivider } from '@/devlink/TicketStatusDivider';
 import { TicketTimeDivider } from '@/devlink/TicketTimeDivider';
-import { palette } from '@/src/context/Theme/Theme';
 import { getDayFormate } from '@/src/utils/dayUtils/dayUtils';
 import { getCompanyIcon } from '@/src/utils/icon/iconUtils';
 import { supabase } from '@/src/utils/supabase/client';
@@ -235,7 +234,7 @@ const AddNewMessage = ({ sendMessage }) => {
             </IconButton>
           </Stack>
         }
-        borderColor={palette.grey[100]}
+        borderColor={'var(--neutral-6)'}
         padding={1.5}
       />
     </Stack>

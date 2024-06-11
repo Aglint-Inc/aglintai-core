@@ -14,7 +14,6 @@ import { ScrShortTextIcon } from '@/devlink2/ScrShortTextIcon';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import { usePhoneScreening } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
-import { palette } from '@/src/context/Theme/Theme';
 
 import { PhoneScreenQuestion } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import KnowOffQn from './KnowOffQn';
@@ -88,8 +87,8 @@ const ScreeningComp = () => {
                     >
                       <Stack
                         p={1.5}
-                        bgcolor={palette.grey[100]}
-                        borderRadius={'10px'}
+                        bgcolor={'var(--neutral-1)'}
+                        borderRadius={'var(--radius-4)'}
                       >
                         <UITypography type='small' fontBold='normal'>
                           {phoneScreening.startMessage}
@@ -236,8 +235,8 @@ const ScreeningComp = () => {
                     >
                       <Stack
                         p={1.5}
-                        bgcolor={palette.grey[100]}
-                        borderRadius={'10px'}
+                        bgcolor={'var(--neutral-1)'}
+                        borderRadius={'var(--space-2)'}
                       >
                         <UITypography type='small' fontBold='normal'>
                           {phoneScreening.endMessage}

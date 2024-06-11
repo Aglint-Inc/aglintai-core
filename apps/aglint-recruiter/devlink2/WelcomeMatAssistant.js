@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./WelcomeMatAssistant.module.css";
 
@@ -7,12 +9,7 @@ export function WelcomeMatAssistant({ as: _Component = _Builtin.Block }) {
   return (
     <_Component className={_utils.cx(_styles, "welcome_mat")} tag="div">
       <_Builtin.Block className={_utils.cx(_styles, "top_bar")} tag="div">
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-md", "fw-semibold")}
-          tag="div"
-        >
-          {"Assistant"}
-        </_Builtin.Block>
+        <Text align="" weight="bold" color="neutral-12" content="Assistant" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "welcome_mat_wm")}
@@ -35,20 +32,19 @@ export function WelcomeMatAssistant({ as: _Component = _Builtin.Block }) {
           className={_utils.cx(_styles, "wm_header_wrapper", "max_width_800")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "welcome_mat_header")}
-            tag="div"
-          >
-            {"Welcome to AI-Assisted Hiring!"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-md", "text-gray-600")}
-            tag="div"
-          >
-            {
-              "Revolutionize your hiring process with an AI assistant guiding candidates through interactive chats, offering a personalized and efficient experience. Say goodbye to forms and levate your hiring game with cutting-edge technology."
-            }
-          </_Builtin.Block>
+          <Text
+            size="6"
+            weight="bold"
+            content="Welcome to AI-Assisted Hiring!"
+          />
+          <Text
+            size=""
+            weight=""
+            content="Revolutionize your hiring process with an AI assistant guiding candidates through interactive chats, offering a personalized and efficient experience. Say goodbye to forms and levate your hiring game with cutting-edge technology."
+            align=""
+            color="neutral"
+            highContrast=""
+          />
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "wm_cards")} tag="div">
           <_Builtin.Block
@@ -59,20 +55,22 @@ export function WelcomeMatAssistant({ as: _Component = _Builtin.Block }) {
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"AI-Powered Assistant"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-gray-600")}
-              tag="div"
-            >
-              {
-                "Integrate an intelligent assistant on your website for dynamic candidate interactions, revolutionizing engagement by guiding applicants through a personalized application process."
-              }
-            </_Builtin.Block>
+            <Text
+              size="2"
+              weight="bold"
+              content="AI-Powered Assistant"
+              align=""
+              color="neutral-12"
+              highContrast=""
+            />
+            <Text
+              size=""
+              weight=""
+              content="Integrate an intelligent assistant on your website for dynamic candidate interactions, revolutionizing engagement by guiding applicants through a personalized application process."
+              align=""
+              color="neutral"
+              highContrast=""
+            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "wm_card")}
@@ -82,20 +80,22 @@ export function WelcomeMatAssistant({ as: _Component = _Builtin.Block }) {
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Form-Free Applications"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-gray-600")}
-              tag="div"
-            >
-              {
-                "Say goodbye to tedious forms. Candidates can effortlessly apply through the chat interface, providing necessary details in a conversational manner. Redefine user experience and increase application rates."
-              }
-            </_Builtin.Block>
+            <Text
+              size="2"
+              weight="bold"
+              content="Form-Free Applications"
+              align=""
+              color="neutral-12"
+              highContrast=""
+            />
+            <Text
+              size=""
+              weight=""
+              content="Say goodbye to tedious forms. Candidates can effortlessly apply through the chat interface, providing necessary details in a conversational manner. Redefine user experience and increase application rates."
+              align=""
+              color="neutral"
+              highContrast=""
+            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "wm_card")}
@@ -105,20 +105,22 @@ export function WelcomeMatAssistant({ as: _Component = _Builtin.Block }) {
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Real-time Insights for HR"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-gray-600")}
-              tag="div"
-            >
-              {
-                "Equip HR with a real-time table displaying ongoing candidate conversations, application statuses, and applied positions. Make data-driven decisions and streamline hiring tasks with ease."
-              }
-            </_Builtin.Block>
+            <Text
+              size="2"
+              weight="bold"
+              content="Real-time Insights for HR"
+              align=""
+              color="neutral-12"
+              highContrast=""
+            />
+            <Text
+              size=""
+              weight=""
+              content="Equip HR with a real-time table displaying ongoing candidate conversations, application statuses, and applied positions. Make data-driven decisions and streamline hiring tasks with ease."
+              align=""
+              color="neutral"
+              highContrast=""
+            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "wm_card")}
@@ -128,20 +130,22 @@ export function WelcomeMatAssistant({ as: _Component = _Builtin.Block }) {
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Setup Assistant Behavior"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-gray-600")}
-              tag="div"
-            >
-              {
-                "Tailor the AI assistant's behavior to align with your company's unique needs. Personalize the candidate interaction journey and further streamline your hiring tasks with unparalleled customization."
-              }
-            </_Builtin.Block>
+            <Text
+              size="2"
+              weight="bold"
+              content="Setup Assistant Behavior"
+              align=""
+              color="neutral-12"
+              highContrast=""
+            />
+            <Text
+              size=""
+              weight=""
+              content="Tailor the AI assistant's behavior to align with your company's unique needs. Personalize the candidate interaction journey and further streamline your hiring tasks with unparalleled customization."
+              align=""
+              color="neutral"
+              highContrast=""
+            />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

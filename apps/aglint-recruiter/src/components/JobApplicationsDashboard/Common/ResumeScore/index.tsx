@@ -1,7 +1,7 @@
 import { Stack, Tooltip } from '@mui/material';
 
 import { ResumeTag } from '@/devlink2/ResumeTag';
-import { CalculatingResumeScore } from '@/src/components/Common/Lotties/Calculating';
+import { CalculatingResumeScore } from '@/public/lottie/CalculatingResumeScore';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 
 import { ResumeScoreTag } from '../../ResumeScoreTag';
@@ -57,7 +57,7 @@ const ErrorIcon = () => {
       display={'flex'}
       flexDirection={'row'}
       alignItems={'center'}
-      gap={'4px'}
+      gap={'var(--space-1)'}
     >
       <svg
         width='13'
@@ -82,7 +82,7 @@ const WarningIcon = () => {
       display={'flex'}
       flexDirection={'row'}
       alignItems={'center'}
-      gap={'4px'}
+      gap={'var(--space-1)'}
     >
       <svg
         width='12'

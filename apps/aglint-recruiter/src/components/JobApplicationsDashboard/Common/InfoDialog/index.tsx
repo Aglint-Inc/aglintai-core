@@ -26,10 +26,10 @@ function InfoDialog({
           onClose: onClose,
         }}
       >
-        <Stack spacing={'18px'} p={'28px'} bgcolor={'white.700'}>
+        <Stack spacing={'18px'} p={'28px'} bgcolor={'var(--white-a7'}>
           <Typography variant='body1'>{heading}</Typography>
           {subHeading && (
-            <Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
+            <Stack direction={'row'} alignItems={'center'} spacing={'var(--space-2)'}>
               <Checkbox
                 isChecked={checkEmail}
                 onClickCheck={{
@@ -43,13 +43,13 @@ function InfoDialog({
           )}
           {warningMessage && (
             <Stack
-              bgcolor={'yellow.100'}
+              bgcolor={'var(--warning-3)'}
               direction={'row'}
               alignItems={'center'}
-              py={'21px'}
-              px={'16px'}
-              spacing={'20px'}
-              borderRadius={'10px'}
+              py={'var(--space-5)'}
+              px={'var(--space-4)'}
+              spacing={'var(--space-5)'}
+              borderRadius={'var(--radius-4)'}
             >
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -70,8 +70,8 @@ function InfoDialog({
           )}
           <Stack direction={'row'} justifyContent={'end'}>
             <Stack
-              spacing={'10px'}
-              mt={'10px'}
+              spacing={'var(--space-2)'}
+              mt={'var(--space-2)'}
               direction={'row'}
               alignItems={'center'}
             >

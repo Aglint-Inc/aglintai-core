@@ -3,22 +3,23 @@ import { Stack } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
-import { ReactNode, useEffect } from 'react';
+import { useEffect } from 'react';
 
-import { NavAssessment } from '@/devlink/NavAssessment';
-import { NavAssistant } from '@/devlink/NavAssistant';
-import { NavCd } from '@/devlink/NavCd';
-import { NavCompanySetting } from '@/devlink/NavCompanySetting';
-import { NavIntegration } from '@/devlink/NavIntegration';
-import { NavJobs } from '@/devlink/NavJobs';
-import { NavPhoneScreening } from '@/devlink/NavPhoneScreening';
-import { NavScheduler } from '@/devlink/NavScheduler';
-import { NavTask } from '@/devlink/NavTask';
-import { NavTickets } from '@/devlink/NavTickets';
+import { NavLink } from '@/devlink/NavLink';
 import { AssistantLogo } from '@/devlink2/AssistantLogo';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
+
+import AssessmentIcon from '../IconsSideBar/AssessmentIcon';
+import CompanySettingsIcon from '../IconsSideBar/CompanySettingsIcon';
+import IntegrationIcon from '../IconsSideBar/IntegrationIcon';
+import JobsIcon from '../IconsSideBar/JobsIcon';
+import PhoneScreeningIcon from '../IconsSideBar/PhoneScreeningIcon';
+import SchedulerIcon from '../IconsSideBar/SchedulerIcon';
+import SourcingHubIcon from '../IconsSideBar/SourcingHubIcon';
+import TaskIcon from '../IconsSideBar/TaskIcon';
+import WorkFlowIcon from '../IconsSideBar/WorkFlowIcon';
 
 function SideNavbar() {
   const router = useRouter();
@@ -38,8 +39,7 @@ function SideNavbar() {
   const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
 
   const navList: {
-    icon: ReactNode;
-    text: string;
+    text: LinkProps['module'];
     SubComponents: any;
     route: string;
     comingSoon: boolean;
@@ -47,7 +47,6 @@ function SideNavbar() {
     permission?: DatabaseEnums['permissions_type'];
   }[] = [
     {
-      icon: <AssistantLogo />,
       text: 'Agent',
       SubComponents: null,
       route: ROUTES['/agent'](),
@@ -55,7 +54,6 @@ function SideNavbar() {
       isVisible: isAgentEnabled,
     },
     {
-      icon: <NavTask isActive={false} />,
       text: 'Tasks',
       SubComponents: null,
       route: ROUTES['/tasks']() + '?myTasks',
@@ -64,35 +62,39 @@ function SideNavbar() {
       permission: 'tasks_enabled',
     },
     {
-      icon: <NavJobs isActive={false} />,
       text: 'Jobs',
       SubComponents: null,
-      route: ROUTES['/jobs'](),
+      route: ROUTES['/jobs']() + '?status=published',
       comingSoon: false,
       isVisible: true,
       permission: 'jobs_enabled',
     },
     {
-      icon: <NavScheduler isActive={false} />,
       text: 'Scheduler',
       SubComponents: null,
-      route: ROUTES['/scheduling'](),
+      route: ROUTES['/scheduling']() + '?tab=dashboard',
       comingSoon: false,
       isVisible: isSchedulingEnabled,
       permission: 'scheduler_enabled',
     },
     {
-      icon: <NavCd isActive={false} />,
-      text: 'Candidates',
+      text: 'Workflows',
       SubComponents: null,
-      route: ROUTES['/candidates/history'](),
+      route: ROUTES['/workflows'](),
+      comingSoon: false,
+      isVisible: true,
+      // permission: 'workflows_enabled',
+    },
+    {
+      text: 'Sourcing Hub',
+      SubComponents: null,
+      route: ROUTES['/candidates/history']() + '?currentTab=discover%20talent',
       comingSoon: false,
       isVisible: isSourcingEnabled,
       // permission: '',
     },
     {
-      icon: <NavTickets isActive={false} />,
-      text: 'Tickets',
+      text: 'Support',
       SubComponents: null,
       route: ROUTES['/support'](),
       comingSoon: false,
@@ -100,16 +102,13 @@ function SideNavbar() {
       // permission: ,
     },
     {
-      icon: <NavAssistant isActive={false} />,
-      text: 'Assistant',
+      text: 'Agent',
       SubComponents: null,
       route: ROUTES['/assistant'](),
       comingSoon: false,
       isVisible: isAssistantEnabled,
     },
-
     {
-      icon: <NavPhoneScreening isActive={false} />,
       text: 'Phone Screening',
       SubComponents: null,
       route: ROUTES['/screening'](),
@@ -119,7 +118,6 @@ function SideNavbar() {
     },
 
     {
-      icon: <NavAssessment isActive={false} />,
       text: 'Assessment',
       SubComponents: null,
       route: ROUTES['/assessment-new'](),
@@ -128,7 +126,6 @@ function SideNavbar() {
       permission: 'assessment_enabled',
     },
     {
-      icon: <NavIntegration isActive={false} />,
       text: 'Integrations',
       SubComponents: null,
       route: ROUTES['/integrations'](),
@@ -137,7 +134,6 @@ function SideNavbar() {
       permission: 'integrations_enabled',
     },
     {
-      icon: <NavCompanySetting isActive={false} />,
       text: 'Company Settings',
       SubComponents: null,
       route: ROUTES['/company'](),
@@ -164,34 +160,9 @@ function SideNavbar() {
           item.permission ? checkPermissions(item.permission) : true,
         )
         .filter((item) => item.isVisible)
-        .map((item, i) => {
+        .map((item) => {
           return (
-            <Stack
-              key={i}
-              onClick={() => {
-                if (router.pathname !== item.route) {
-                  router.push(item.route);
-                }
-              }}
-              direction={'row'}
-              alignItems={'center'}
-              color={'white.700'}
-              borderRadius={'10px'}
-              bgcolor={
-                router.pathname.includes(
-                  item.route
-                    ?.replace('/history', '')
-                    .replaceAll('?myTasks', ''),
-                ) && 'rgba(233, 235, 237, 0.5)'
-              }
-              sx={{
-                '&:hover': {
-                  bgcolor: 'rgba(233, 235, 237, 0.5)',
-                },
-              }}
-            >
-              {item.icon}
-            </Stack>
+            <LinkComp module={item.text} key={item.text} path={item.route} />
           );
         })}
     </>
@@ -199,3 +170,155 @@ function SideNavbar() {
 }
 
 export default SideNavbar;
+
+const LinkIcon = ({
+  module,
+  active,
+}: {
+  module: LinkProps['module'];
+  active: boolean;
+}) => {
+  switch (module) {
+    case 'Agent':
+      return <AssistantLogo />;
+    case 'Jobs':
+      return (
+        <NavLink
+          isActive={active}
+          texttooltip={module}
+          slotIcon={<JobsIcon />}
+        />
+      );
+    case 'Scheduler':
+      return (
+        <NavLink
+          isActive={active}
+          texttooltip={module}
+          slotIcon={<SchedulerIcon />}
+        />
+      );
+    case 'Sourcing Hub':
+      return (
+        <NavLink
+          isActive={active}
+          texttooltip={module}
+          slotIcon={<SourcingHubIcon />}
+        />
+      );
+    case 'Phone Screening':
+      return (
+        <NavLink
+          isActive={active}
+          texttooltip={module}
+          slotIcon={<PhoneScreeningIcon />}
+        />
+      );
+    case 'Assessment':
+      return (
+        <NavLink
+          isActive={active}
+          texttooltip={module}
+          slotIcon={<AssessmentIcon />}
+        />
+      );
+    case 'Integrations':
+      return (
+        <NavLink
+          isActive={active}
+          texttooltip={module}
+          slotIcon={<IntegrationIcon />}
+        />
+      );
+    case 'Company Settings':
+      return (
+        <NavLink
+          isActive={active}
+          texttooltip={module}
+          slotIcon={<CompanySettingsIcon />}
+        />
+      );
+    case 'Workflows':
+      return (
+        <NavLink
+          isActive={active}
+          texttooltip={module}
+          slotIcon={<WorkFlowIcon />}
+        />
+      );
+    case 'Tasks':
+      return (
+        <NavLink
+          isActive={active}
+          texttooltip={module}
+          slotIcon={<TaskIcon />}
+        />
+      );
+  }
+};
+
+const LinkComp = ({
+  module,
+  path,
+}: {
+  module: LinkProps['module'];
+  path: LinkProps['path'] | string;
+}) => {
+  const { pathname, push } = useRouter();
+
+  return (
+    <Stack onClick={() => push(path)}>
+      <LinkIcon
+        module={module}
+        active={pathname.includes(path) || path.includes(pathname)}
+      />
+    </Stack>
+  );
+};
+
+type Path<T extends keyof typeof ROUTES> = keyof Pick<typeof ROUTES, T>;
+
+type LinkProps =
+  | {
+      module: 'Agent';
+      path: Path<'/agent'>;
+    }
+  | {
+      module: 'Jobs';
+      path: Path<'/jobs'>;
+    }
+  | {
+      module: 'Scheduler';
+      path: Path<'/scheduling'>;
+    }
+  | {
+      module: 'Sourcing Hub';
+      path: Path<'/candidates/history'>;
+    }
+  | {
+      module: 'Phone Screening';
+      path: Path<'/screening'>;
+    }
+  | {
+      module: 'Assessment';
+      path: Path<'/assessment-new'>;
+    }
+  | {
+      module: 'Integrations';
+      path: Path<'/integrations'>;
+    }
+  | {
+      module: 'Workflows';
+      path: Path<'/workflows'>;
+    }
+  | {
+      module: 'Company Settings';
+      path: Path<'/company'>;
+    }
+  | {
+      module: 'Support';
+      path: Path<'/support'>;
+    }
+  | {
+      module: 'Tasks';
+      path: Path<'/tasks'>;
+    };

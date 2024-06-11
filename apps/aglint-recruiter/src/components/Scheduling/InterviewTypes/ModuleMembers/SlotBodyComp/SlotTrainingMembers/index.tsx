@@ -1,6 +1,9 @@
+import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 
+import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { EmptyGeneral } from '@/devlink2/EmptyGeneral';
+import IconPlusFilter from '@/src/components/Scheduling/Schedules/Filters/FilterChip/IconPlusFilter';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 
 import {
@@ -8,7 +11,11 @@ import {
   useProgressModuleUsers,
 } from '../../../queries/hooks';
 import { getHours } from '../../../queries/utils';
-import { useModulesStore } from '../../../store';
+import {
+  setIsAddMemberDialogOpen,
+  setTrainingStatus,
+  useModulesStore,
+} from '../../../store';
 import { MemberType, ModuleType } from '../../../types';
 import MoveToQualifiedDialog from '../../MoveToQualified';
 import IndividualCard from '../IndividualCard';
@@ -72,7 +79,25 @@ function SlotTrainingMembers({
     <>
       {selUser?.user_id && <MoveToQualifiedDialog editModule={editModule} />}
 
-      {allTrainees.length === 0 && <EmptyGeneral textEmpt={'No members yet'} />}
+      {allTrainees.length === 0 && (
+        <EmptyGeneral
+          textEmpt={'No members yet'}
+          slotButton={
+            <ButtonSurface
+              size={1}
+              isRightIcon={false}
+              slotIcon={<IconPlusFilter />}
+              textButton={'Add'}
+              onClickButton={{
+                onClick: () => {
+                  setIsAddMemberDialogOpen(true);
+                  setTrainingStatus('training');
+                },
+              }}
+            />
+          }
+        />
+      )}
       {allTrainees.map((user) => {
         const member = members.find(
           (member) => member.user_id === user.user_id,
@@ -96,6 +121,23 @@ function SlotTrainingMembers({
           />
         );
       })}
+
+      {allTrainees.length !== 0 && (
+        <Stack direction={'row'} pt={'var(--space-2)'}>
+          <ButtonSurface
+            size={1}
+            isRightIcon={false}
+            slotIcon={<IconPlusFilter />}
+            textButton={'Add'}
+            onClickButton={{
+              onClick: () => {
+                setIsAddMemberDialogOpen(true);
+                setTrainingStatus('training');
+              },
+            }}
+          />
+        </Stack>
+      )}
     </>
   );
 }

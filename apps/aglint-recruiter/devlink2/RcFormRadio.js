@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -35,7 +36,7 @@ export function RcFormRadio({
           className={_utils.cx(_styles, "sl-radio-image-block")}
           tag="div"
         >
-          {slotLogo}
+          {slotLogo ?? "ATS name OR Other"}
         </_Builtin.Block>
       ) : null}
       {isTextVisible ? <_Builtin.Block tag="div">{text}</_Builtin.Block> : null}

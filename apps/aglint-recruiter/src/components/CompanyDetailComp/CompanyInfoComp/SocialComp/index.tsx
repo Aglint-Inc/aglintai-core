@@ -11,7 +11,6 @@ import { NewSocialLinkPop } from '@/devlink/NewSocialLinkPop';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 
 import { debouncedSave } from '../../utils';
 
@@ -256,11 +255,11 @@ const SocialComp = ({ setIsSaving }) => {
   }
 
   return (
-    <Stack gap={'10px'}>
-      <UITypography type={'small'} color={palette.grey[800]} fontBold='default'>
+    <Stack gap={'var(--space-2)'}>
+      <UITypography type={'small'} color={'var(--neutral-12)'} fontBold='default'>
         Social Links
       </UITypography>
-      <Stack gap={'20px'}>
+      <Stack gap={'var(--space-5)'}>
         {socials?.map((socialName) => {
           return (
             <Stack
@@ -271,9 +270,9 @@ const SocialComp = ({ setIsSaving }) => {
             >
               <Stack
                 style={{
-                  border: `1px solid ${palette.grey[200]}`,
-                  padding: '9px',
-                  borderRadius: '4px',
+                  border: `1px solid var(--neutral-6)`,
+                  padding: 'var(--space-2)',
+                  borderRadius: 'var(--radius-2)',
                 }}
               >
                 <Image
@@ -326,9 +325,9 @@ const SocialComp = ({ setIsSaving }) => {
             >
               <Stack
                 style={{
-                  border: `1px solid ${palette.grey[200]}`,
-                  padding: '9px',
-                  borderRadius: '4px',
+                  border: `1px solid var(--neutral-6)`,
+                  padding: 'var(--space-2)',
+                  borderRadius: 'var(--radius-2)',
                   alignItems: 'start',
                 }}
               >

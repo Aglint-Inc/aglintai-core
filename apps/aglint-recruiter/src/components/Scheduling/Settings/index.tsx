@@ -50,12 +50,12 @@ import FilterInput from '../../CandidateDatabase/Search/FilterInput';
 import Icon from '../../Common/Icons/Icon';
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
+import ToggleBtn from '../../Common/UIToggle';
 import { interviewLocationType } from '../../CompanyDetailComp/TeamManagement/AddMemberDialog';
 import DateSelect from './Components/DateSelector';
 import MuiNumberfield from './Components/MuiNumberfield';
 import MuiSelect from './Components/MuiSelect';
 import SelectTime from './Components/SelectTime';
-import ToggleBtn from './Components/ToggleBtn';
 import DebriefDefaults from './DebriefDefaults';
 import SchedulingEmailTemplates from './SchedulingEmailTemplates';
 import SchedulingRegions from './SchedulingReason';
@@ -391,13 +391,13 @@ function SchedulingSettings({
                       <Stack
                         direction={'column'}
                         spacing={1}
-                        marginTop={'20px'}
+                        marginTop={'var(--space-5)'}
                       >
                         <Stack direction={'column'} spacing={0.5}>
                           <Typography variant='body1' fontSize={'15px'}>
                             Default Break Times
                           </Typography>
-                          <Typography variant='body2'>
+                          <Typography variant='body1'>
                             Define standard break times for the company.
                           </Typography>
                         </Stack>
@@ -564,7 +564,7 @@ function SchedulingSettings({
                   }
                   slotTimeZoneToggle={
                     <ToggleBtn
-                      handleCheck={(e) => {
+                      handleChange={(e: any) => {
                         setIsTimeZone(e);
                         if (e) {
                           setSelectedTimeZone(
@@ -574,7 +574,7 @@ function SchedulingSettings({
                           );
                         }
                       }}
-                      isActive={isTimeZone}
+                      isChecked={isTimeZone}
                     />
                   }
                 />
@@ -601,7 +601,7 @@ function SchedulingSettings({
                                 })
                               ) : (
                                 <Typography
-                                  px={'10px'}
+                                  px={'var(--space-2)'}
                                   variant='caption'
                                   fontSize={'14px'}
                                 >
@@ -618,13 +618,6 @@ function SchedulingSettings({
                         );
                       })}
                       <Dialog
-                        sx={{
-                          '& .MuiDialog-paper': {
-                            background: 'transparent',
-                            border: 'none',
-                            borderRadius: '10px',
-                          },
-                        }}
                         open={open}
                         onClose={() => {
                           // resetState();
@@ -636,7 +629,15 @@ function SchedulingSettings({
                           textPopupTitle='Add Holiday'
                           textPopupDescription={
                             <Stack gap={1}>
-                              <Typography variant='body2'>Day off</Typography>
+                              {/* <Typography variant='body1'>Day off</Typography> */}
+                              <Stack direction={'row'}>
+                                <Typography>Day off</Typography>
+                                <Typography
+                                  sx={{ color: 'var(--error-9)', pl: 0.5 }}
+                                >
+                                  *
+                                </Typography>
+                              </Stack>
                               <Stack>
                                 <UITextField
                                   placeholder='Enter the name of the holiday'
@@ -644,18 +645,26 @@ function SchedulingSettings({
                                   ref={eventRef}
                                 />
                               </Stack>
-                              <Typography variant='body2'>Date</Typography>
+                              {/* <Typography variant='body1'>Date</Typography> */}
+                              <Stack direction={'row'}>
+                                <Typography>Date</Typography>
+                                <Typography
+                                  sx={{ color: 'var(--error-9)', pl: 0.5 }}
+                                >
+                                  *
+                                </Typography>
+                              </Stack>
                               <DateSelect
                                 selectedDates={daysOff}
                                 dateRef={dateRef}
                                 getDate={getDate}
                               />
 
-                              <Typography variant='body2'>Location</Typography>
+                              <Typography variant='body1'>Location</Typography>
                               <Stack
                                 fontSize={'12px'}
                                 direction={'row'}
-                                spacing={'10px'}
+                                spacing={'var(--space-2)'}
                               >
                                 <FormControl>
                                   <RadioGroup
@@ -699,7 +708,7 @@ function SchedulingSettings({
                                     specificLocationOn === 'specific_locations'
                                   }
                                 >
-                                  <Typography variant='body2'>
+                                  <Typography variant='body1'>
                                     Pick locations
                                   </Typography>
 
@@ -856,17 +865,9 @@ function SchedulingSettings({
                                   return pre.filter((ele) => ele !== item);
                                 });
                               }}
-                              sx={{
-                                p: '5px',
-                              }}
                               deleteIcon={
                                 <IconButton>
-                                  <Icon
-                                    width='14'
-                                    height='14'
-                                    color='grey'
-                                    variant='CloseThinIcon'
-                                  />
+                                  <Icon variant='CloseThinIcon' />
                                 </IconButton>
                               }
                               label={item}
@@ -910,17 +911,9 @@ function SchedulingSettings({
                                   return pre.filter((ele) => ele !== item);
                                 });
                               }}
-                              sx={{
-                                p: '5px',
-                              }}
                               deleteIcon={
                                 <IconButton>
-                                  <Icon
-                                    width='14'
-                                    height='14'
-                                    color='grey'
-                                    variant='CloseThinIcon'
-                                  />
+                                  <Icon variant='CloseThinIcon' />
                                 </IconButton>
                               }
                               label={item}
@@ -964,17 +957,9 @@ function SchedulingSettings({
                                   return pre.filter((ele) => ele !== item);
                                 });
                               }}
-                              sx={{
-                                p: '5px',
-                              }}
                               deleteIcon={
                                 <IconButton>
-                                  <Icon
-                                    width='14'
-                                    height='14'
-                                    color='grey'
-                                    variant='CloseThinIcon'
-                                  />
+                                  <Icon variant='CloseThinIcon' />
                                 </IconButton>
                               }
                               label={item}
@@ -1018,17 +1003,9 @@ function SchedulingSettings({
                                   return pre.filter((ele) => ele !== item);
                                 });
                               }}
-                              sx={{
-                                p: '5px',
-                              }}
                               deleteIcon={
                                 <IconButton>
-                                  <Icon
-                                    width='14'
-                                    height='14'
-                                    color='grey'
-                                    variant='CloseThinIcon'
-                                  />
+                                  <Icon variant='CloseThinIcon' />
                                 </IconButton>
                               }
                               label={item}
@@ -1085,7 +1062,7 @@ export const TimezoneSelector = ({
   value,
 }: TimezoneSelectorProps) => {
   return (
-    <Stack spacing={'10px'} width={420}>
+    <Stack spacing={'var(--space-2)'} width={420}>
       <Autocomplete
         disabled={disabled}
         disableClearable
@@ -1101,7 +1078,7 @@ export const TimezoneSelector = ({
         renderOption={(props, option) => {
           return (
             <li {...props}>
-              <Typography variant='body2' color={'#000'}>
+              <Typography variant='body1' color={'var(--neutral-12)'}>
                 {option.label}
               </Typography>
             </li>

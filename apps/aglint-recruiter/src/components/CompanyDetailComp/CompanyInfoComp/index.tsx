@@ -76,7 +76,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   const [isError, setError] = useState(false);
   return (
     <Stack
-      sx={{ overflowY: 'auto', height: 'calc(100vh - 60px)' }}
+      // sx={{ overflowY: 'auto', height: 'calc(100vh - 60px)' }}
       width={'100%'}
     >
       <YTransform uniqueKey={router.query.tab}>
@@ -105,7 +105,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
           <>
             <CompanyInfo
               slotLocation={
-                <Stack p={'4px'}>
+                <>
                   {recruiter?.office_locations &&
                     recruiter?.office_locations.map((loc: any, i) => {
                       const location = [loc.city, loc.region, loc.country]
@@ -119,7 +119,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
 
                       return (
                         <>
-                          <Stack p={'4px'}>
+                          <Stack p={'var(--space-1)'}>
                             <CompanyLocation
                               // isHeadQuaterVisible={isHeadQuaterVisible[0]}
                               isHeadQuaterVisible={isHeadQuaterVisible}
@@ -174,7 +174,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                         </>
                       );
                     })}
-                </Stack>
+                </>
               }
               slotRolesPills={recruiter?.available_roles?.map((rol, ind) => {
                 return (
@@ -314,7 +314,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                 },
               }}
               slotBasicForm={
-                <Stack spacing={2} p={'4px'}>
+                <Stack spacing={2} p={'var(--space-1)'}>
                   <UITextField
                     labelBold='default'
                     labelSize='small'

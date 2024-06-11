@@ -21,11 +21,6 @@
   font-weight: 600;
 }
 
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
 .fw-semibold.relative_2 {
   position: relative;
   z-index: 2;
@@ -42,6 +37,10 @@
 
 .fw-semibold.capitalize {
   text-transform: capitalize;
+}
+
+.text-red-600 {
+  color: #cc3340;
 }
 
 .fw-semibold.text-purple {
@@ -64,6 +63,19 @@
   color: #d93f4c;
 }
 
+.text-lg {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.text-grey_600 {
+  color: var(--sand-11);
+}
+
+.hide {
+  display: none;
+}
+
 .div-block-716 {
   display: flex;
   align-items: center;
@@ -71,8 +83,48 @@
   grid-row-gap: 4px;
 }
 
-.text-blue-500 {
-  color: #337fbd;
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.accent-text {
+  color: var(--accent-9);
+}
+
+.accent-text.text-underline {
+  text-decoration: underline;
+}
+
+.text-underline {
+  text-decoration: underline;
+}
+
+.accent-text.text-underline.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.accent-text.text-underline.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.text-sm {
+  font-size: var(--font-size-1);
+  line-height: var(--line-height-1);
+  letter-spacing: var(--letter-spacing-1);
+}
+
+.accent-text.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.accent-text.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.accent-text.text-capital {
+  text-transform: uppercase;
 }
 
 .icons {
@@ -83,5 +135,22 @@
 }
 
 .icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.task-hover {
+  position: absolute;
+  left: 50px;
+  top: -10px;
+  right: auto;
+  bottom: auto;
+}
+
+.icons.pointer {
   cursor: pointer;
 }

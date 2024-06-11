@@ -4,114 +4,6 @@
   transition: all 300ms ease;
 }
 
-.button-wrapper.primary {
-  color: var(--blue600-cb1b4518);
-}
-
-.button-wrapper.primary:hover {
-  background-color: hsla(206.8421052631579, 71.03%, 41.96%, 0.08);
-  color: var(--blue700-4fdeafcf);
-}
-
-.button-wrapper.primary.outlined {
-  border: 1px solid var(--blue600-cb1b4518);
-}
-
-.button-wrapper.primary.outlined:hover {
-  border-color: var(--blue700-4fdeafcf);
-}
-
-.button-wrapper.primary.default {
-  background-color: var(--blue600-cb1b4518);
-  color: var(--white-9747b35e);
-}
-
-.button-wrapper.primary.default:hover {
-  background-color: var(--blue700-4fdeafcf);
-}
-
-.button-wrapper.danger {
-  color: var(--red600-937b9595);
-}
-
-.button-wrapper.danger:hover {
-  background-color: hsla(354.90196078431376, 60.00%, 50.00%, 0.08);
-  color: var(--red700-eef2bc62);
-}
-
-.button-wrapper.danger.outlined {
-  border: 1px solid var(--red600-937b9595);
-}
-
-.button-wrapper.danger.outlined:hover {
-  border-color: var(--red700-eef2bc62);
-}
-
-.button-wrapper.danger.default {
-  background-color: var(--red600-937b9595);
-  color: var(--white-9747b35e);
-}
-
-.button-wrapper.danger.default:hover {
-  background-color: var(--red700-eef2bc62);
-}
-
-.button-wrapper.ai {
-  color: var(--kale600-0961d49d);
-}
-
-.button-wrapper.ai:hover {
-  background-color: hsla(175.71428571428572, 26.92%, 79.61%, 0.08);
-  color: var(--kale700-f9fc674d);
-}
-
-.button-wrapper.ai.outlined {
-  border: 1px solid var(--kale600-0961d49d);
-}
-
-.button-wrapper.ai.outlined:hover {
-  border-color: var(--kale700-f9fc674d);
-}
-
-.button-wrapper.ai.default {
-  background-color: var(--kale300-6bb63e75);
-  color: var(--kale800-a17a7b36);
-}
-
-.button-wrapper.ai.default:hover {
-  background-color: var(--kale400-d4602035);
-}
-
-.button-wrapper.dark {
-  color: var(--grey800-e8c7a768);
-}
-
-.button-wrapper.dark:hover {
-  background-color: hsla(206.66666666666666, 16.07%, 21.96%, 0.08);
-  color: var(--kale700-f9fc674d);
-}
-
-.button-wrapper.dark.outlined {
-  border: 1px solid var(--grey800-e8c7a768);
-}
-
-.button-wrapper.dark.outlined:hover {
-  border-color: var(--kale700-f9fc674d);
-}
-
-.button-wrapper.dark.default {
-  background-color: var(--grey700-5753ca4f);
-  color: var(--white-9747b35e);
-}
-
-.button-wrapper.dark.default:hover {
-  background-color: var(--grey600-440e5aa6);
-}
-
-.button-wrapper.dark.default.white-bg {
-  background-color: white;
-}
-
 .button-block {
   position: relative;
   z-index: 5;
@@ -132,11 +24,6 @@
   font-size: 14px;
 
   cursor: pointer;
-}
-
-.button-block.large {
-  padding: 10px 16px;
-  font-size: 16px;
 }
 
 .button-block.primary {
@@ -208,61 +95,6 @@
   border-color: var(--red700-eef2bc62);
 }
 
-.button-block.danger.default {
-  background-color: var(--red600-937b9595);
-  color: var(--white-9747b35e);
-}
-
-.button-block.danger.default:hover {
-  background-color: var(--red700-eef2bc62);
-}
-
-.button-block.ai {
-  color: var(--kale600-0961d49d);
-}
-
-.button-block.ai:hover {
-  background-color: hsla(184.44444444444443, 54.00%, 19.61%, 0.08);
-  color: var(--kale700-f9fc674d);
-}
-
-.button-block.ai.outlined {
-  border-color: var(--kale600-0961d49d);
-}
-
-.button-block.ai.outlined:hover {
-  border-color: var(--kale700-f9fc674d);
-}
-
-.button-block.ai.default {
-  background-color: var(--kale300-6bb63e75);
-}
-
-.button-block.ai.default:hover {
-  background-color: var(--kale400-d4602035);
-}
-
-.button-block.dark {
-  color: var(--grey800-e8c7a768);
-}
-
-.button-block.dark:hover {
-  background-color: hsla(208.57142857142856, 9.17%, 44.90%, 0.08);
-}
-
-.button-block.dark.outlined {
-  border-color: var(--grey800-e8c7a768);
-}
-
-.button-block.dark.default {
-  background-color: var(--grey700-5753ca4f);
-  color: var(--white-9747b35e);
-}
-
-.button-block.dark.default:hover {
-  background-color: var(--grey600-440e5aa6);
-}
-
 .button-focused {
   position: absolute;
   left: 0%;
@@ -279,12 +111,4 @@
 
 .button-focused.danger {
   background-color: hsla(354.90196078431376, 60.00%, 50.00%, 0.35);
-}
-
-.button-focused.ai {
-  background-color: hsla(184.44444444444443, 54.00%, 19.61%, 0.35);
-}
-
-.button-focused.dark {
-  background-color: hsla(208.57142857142856, 9.17%, 44.90%, 0.35);
 }

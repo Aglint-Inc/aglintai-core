@@ -29,7 +29,7 @@ function JobSubNavbar() {
       p={'12px 10px'}
       width={200}
       borderRight={'1px solid'}
-      borderColor={'grey.200'}
+       borderColor='var(--neutral-6)'
     >
       {userPermissions?.permissions['jobs_create'] && <AddJob />}
       <NavJobSubLink
@@ -97,9 +97,8 @@ function AddJob() {
           paper: {
             style: {
               border: 'none',
-              borderRadius: '10px',
               overflow: 'visible !important',
-              background: 'transparent',
+              boxShadow: 'none',
             },
           },
         }}

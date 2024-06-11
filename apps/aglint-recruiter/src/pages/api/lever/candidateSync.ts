@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { DatabaseTableInsert } from '@aglint/shared-types';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -139,7 +140,8 @@ export default async function handler(req, res) {
               )[0].id,
               job_id: jobId,
               id: ref.application_id,
-            };
+              source: 'lever',
+            } as DatabaseTableInsert['applications'];
           });
 
           const { error } = await supabaseAdmin

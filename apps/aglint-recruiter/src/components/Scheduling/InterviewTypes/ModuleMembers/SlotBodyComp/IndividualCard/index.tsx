@@ -69,8 +69,8 @@ function IndividualCard({
   return (
     <>
       <MemberListCard
-        textWeekInterview={`${user.weekly} / ${userSettings.interviewLoad.dailyLimit.value} ${userSettings.interviewLoad.dailyLimit.type} per week`}
-        textTodayInterview={`${user.daily} / ${userSettings.interviewLoad.dailyLimit.value} ${userSettings.interviewLoad.dailyLimit.type} per day`}
+        textWeekInterview={`${user.weekly} / ${userSettings.interviewLoad.dailyLimit.value} ${userSettings.interviewLoad.dailyLimit.type}`}
+        textTodayInterview={`${user.daily} / ${userSettings.interviewLoad.dailyLimit.value} ${userSettings.interviewLoad.dailyLimit.type}`}
         onClickCard={{
           onClick: () => {
             router.push(
@@ -194,6 +194,7 @@ function IndividualCard({
             />
           </Collapse>
         }
+        isDropdownIconVisible={true}
         onClickDropdownIcon={{
           onClick: () => {
             setIsCollapseOpen((pre) => !pre);
@@ -241,10 +242,7 @@ function IndividualCard({
           <MuiAvatar
             src={member.profile_image}
             level={getFullName(member.first_name, member.last_name) || ''}
-            variant='circular'
-            height='40px'
-            width='40px'
-            fontSize='16px'
+            variant='rounded-medium'
           />
         }
         textName={getFullName(member.first_name, member.last_name) || ''}

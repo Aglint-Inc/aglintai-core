@@ -10,17 +10,16 @@ import {
   InterviewSessionTypeDB,
   TimeDurationType,
 } from '@aglint/shared-types';
-import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
+import { ScheduleUtils, SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
 import {
   CHECK_NEXT_MINUTES,
   DEFAULT_CANDIDATE_REQ_END_HOUR,
   DEFAULT_CANDIDATE_REQ_START_HOUR,
-} from '@/src/services/CandidateSchedule/utils/constants';
-import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
+} from '@/src/services/CandidateScheduleV2/utils/constants';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let { session_ids } = req.body as CandReqAvailableSlots;
@@ -42,7 +41,7 @@ export default handler;
 const candReqAvailability = (payload: CandReqAvailableSlots) => {
   let session_details: InterviewSessionTypeDB[];
   const curr_cand_date = userTzDayjs().tz(payload.candidate_tz).startOf('day');
-  let cand_start_date = CandidatesScheduling.convertDateFormatToDayjs(
+  let cand_start_date = ScheduleUtils.convertDateFormatToDayjs(
     payload.date_range_start,
     payload.candidate_tz,
     true,
@@ -50,17 +49,19 @@ const candReqAvailability = (payload: CandReqAvailableSlots) => {
   if (cand_start_date.isSameOrAfter(curr_cand_date, 'day')) {
     cand_start_date = curr_cand_date.add(1, 'day');
   }
-  let cand_end_date = CandidatesScheduling.convertDateFormatToDayjs(
+  let cand_end_date = ScheduleUtils.convertDateFormatToDayjs(
     payload.date_range_end,
     payload.candidate_tz,
     false,
   );
   const slot_start_hr =
-    payload.options?.cand_start_hour ?? DEFAULT_CANDIDATE_REQ_START_HOUR;
+    payload.options?.cand_start_time ?? DEFAULT_CANDIDATE_REQ_START_HOUR;
   const slot_end_hr =
-    payload.options?.cand_end_hour ?? DEFAULT_CANDIDATE_REQ_END_HOUR;
-  const show_slots_saturday = payload.options?.show_slots_saturday ?? false;
-  const show_slots_sunday = payload.options?.show_slots_sunday ?? false;
+    payload.options?.cand_end_time ?? DEFAULT_CANDIDATE_REQ_END_HOUR;
+  const show_slots_saturday =
+    payload.options?.include_conflicting_slots.holiday ?? false;
+  const show_slots_sunday =
+    payload.options?.include_conflicting_slots.holiday ?? false;
   const DaysOfWeek = Object.freeze({
     SUNDAY: 'Sunday',
     MONDAY: 'Monday',
@@ -141,37 +142,40 @@ const candReqAvailability = (payload: CandReqAvailableSlots) => {
     const cand_selected_dates: Dayjs[] = [];
     const session_rounds = getSessionRounds();
 
-    if (payload.current_interview_day == 1) {
-      let curr_day = cand_start_date;
-      while (curr_day.isSameOrBefore(cand_end_date, 'date')) {
-        cand_selected_dates.push(curr_day);
-        curr_day = curr_day.add(1, 'day');
-      }
-    } else {
-      const prev_day_sessions =
-        session_rounds[payload.current_interview_day - 2];
-      const prev_day_break =
-        prev_day_sessions[prev_day_sessions.length - 1].break_duration /
-        SINGLE_DAY_TIME;
-
-      const prev_cand_selected_days: Dayjs[] =
-        payload.previously_selected_dates.map((sel_day) =>
-          CandidatesScheduling.convertDateFormatToDayjs(
-            sel_day,
-            payload.candidate_tz,
-          ),
-        );
-
-      prev_cand_selected_days.forEach((sel_day) => {
-        let next_int_day = sel_day.add(prev_day_break, 'day');
-        if (next_int_day.format('dddd') === DaysOfWeek.SATURDAY) {
-          next_int_day = next_int_day.add(2, 'day');
-        } else if (next_int_day.format('dddd') === DaysOfWeek.SUNDAY) {
-          next_int_day = next_int_day.add(1, 'day');
-        }
-        cand_selected_dates.push(next_int_day);
-      });
+    let curr_day = cand_start_date;
+    while (curr_day.isSameOrBefore(cand_end_date, 'date')) {
+      cand_selected_dates.push(curr_day);
+      curr_day = curr_day.add(1, 'day');
     }
+
+    // if (payload.current_interview_day == 1) {
+    //   let curr_day = cand_start_date;
+    //   while (curr_day.isSameOrBefore(cand_end_date, 'date')) {
+    //     cand_selected_dates.push(curr_day);
+    //     curr_day = curr_day.add(1, 'day');
+    //   }
+    // } else {
+    //   const prev_day_sessions =
+    //     session_rounds[payload.current_interview_day - 2];
+    //   const prev_day_break =
+    //     prev_day_sessions[prev_day_sessions.length - 1].break_duration /
+    //     SINGLE_DAY_TIME;
+
+    //   const prev_cand_selected_days: Dayjs[] =
+    //     payload.previously_selected_dates.map((sel_day) =>
+    //       ScheduleUtils.convertDateFormatToDayjs(sel_day, payload.candidate_tz),
+    //     );
+
+    //   prev_cand_selected_days.forEach((sel_day) => {
+    //     let next_int_day = sel_day.add(prev_day_break, 'day');
+    //     if (next_int_day.format('dddd') === DaysOfWeek.SATURDAY) {
+    //       next_int_day = next_int_day.add(2, 'day');
+    //     } else if (next_int_day.format('dddd') === DaysOfWeek.SUNDAY) {
+    //       next_int_day = next_int_day.add(1, 'day');
+    //     }
+    //     cand_selected_dates.push(next_int_day);
+    //   });
+    // }
 
     const isCalcSlotsForWeekEnd = (curr_day: Dayjs) => {
       if (

@@ -149,8 +149,6 @@ function CompanyList() {
           vertical: 'bottom',
         }}
         sx={{
-          mt: 0.5,
-          ml: -1,
           '& .MuiPaper-root': {
             border: 'none !important',
             overflow: 'visible !important',
@@ -166,17 +164,17 @@ function CompanyList() {
                     direction={'row'}
                     alignItems={'center'}
                     justifyContent={'space-between'}
-                    px={'5px'}
-                    borderRadius={'10px'}
+                    px={'var(--space-1)'}
+                    borderRadius={'var(--radius-4)'}
                     key={i}
-                    bgcolor={ele.recName === recruiter?.name && 'grey.100'}
+                    bgcolor={ele.recName === recruiter?.name && 'var(--neutral-1)'}
                     onClick={() => {
                       updateStatus(ele.recId);
                     }}
                     sx={{
                       cursor: 'pointer',
                       // '&:hover': {
-                      //   bgcolor: 'grey.100',
+                      //   bgcolor:  'var(--neutral-1)',
                       // },
                     }}
                   >
@@ -209,7 +207,7 @@ function CompanyList() {
                             width: '24px',
                             height: '24px',
                           },
-                          px: '10px',
+                          px: '12px',
                         }}
                       >
                         <LoaderSvg />

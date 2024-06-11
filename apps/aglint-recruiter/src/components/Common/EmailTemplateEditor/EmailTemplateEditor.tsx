@@ -3,8 +3,6 @@ import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { useEffect } from 'react';
 
-import { palette } from '@/src/context/Theme/Theme';
-
 import Commands from './Commands';
 import { AiPromptNodeSchema } from './CustomNodes/AiPromptNodeSchema';
 import { CandName } from './CustomNodes/CandName';
@@ -57,8 +55,8 @@ const EmailTemplateEditor = ({
     <>
       <Stack
         sx={{
-          border: `1px solid ${palette.grey[300]}`,
-          borderRadius: '5px',
+          border: `1px solid var(--neutral-6)`,
+          borderRadius: 'var(--radius-2)',
           '& .ProseMirror': {
             minHeight: '250px',
             width: '100%',
@@ -67,7 +65,7 @@ const EmailTemplateEditor = ({
             py: '12px',
           },
           '.tiptap p.is-editor-empty:first-child::before ': {
-            color: '#adb5bd',
+            color: 'var(--neutral-11)',
             content: 'attr(data-placeholder)',
             float: 'left',
             height: 0,
@@ -78,7 +76,7 @@ const EmailTemplateEditor = ({
           },
           '&  span .mention': {
             backgroundColor: 'red',
-            color: 'red',
+            color: 'var(--error-11)',
           },
         }}
       >

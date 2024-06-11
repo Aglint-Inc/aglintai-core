@@ -82,7 +82,7 @@ const ResumeUpload = ({
             name='file'
             types={fileTypes}
           >
-            <Stack height={'398px'}>
+            <Stack>
               <ImportResume />
             </Stack>
           </FileUploader>

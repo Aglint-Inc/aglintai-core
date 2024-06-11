@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { SublinkTab } from "./SublinkTab";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./BodyWithSublink.module.css";
 
@@ -25,8 +26,8 @@ export function BodyWithSublink({
             <SublinkTab />
             <SublinkTab />
             <SublinkTab />
-            <SublinkTab />
-            <SublinkTab />
+            <SublinkTab isActtive={false} />
+            <SublinkTab isActtive={true} />
           </>
         )}
       </_Builtin.Block>
@@ -38,7 +39,7 @@ export function BodyWithSublink({
         )}
         tag="div"
       >
-        {slotTabContent}
+        {slotTabContent ?? <SlotComp componentName="tab components" />}
       </_Builtin.Block>
     </_Component>
   );

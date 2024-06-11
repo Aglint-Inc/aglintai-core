@@ -6,7 +6,7 @@
 
 .div-block-1628 {
   padding: 16px 12px;
-  background-color: #f8f9f9;
+  background-color: var(--neutral-2);
 }
 
 .div-block-1629 {
@@ -27,39 +27,52 @@
   opacity: 0.8;
 }
 
-.text-blue-500 {
-  color: #337fbd;
+.accent-text {
+  color: var(--accent-9);
 }
 
-.text-blue-500.text-underline {
+.accent-text.text-underline {
   text-decoration: underline;
 }
 
-.text-blue-500.text-underline.cursor-pointer {
+.text-underline {
+  text-decoration: underline;
+}
+
+.accent-text.text-underline.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
 }
 
-.text-blue-500.text-underline.cursor-pointer:hover {
+.accent-text.text-underline.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .text-sm {
-  font-size: 12px;
-  line-height: 16px;
+  font-size: var(--font-size-1);
+  line-height: var(--line-height-1);
+  letter-spacing: var(--letter-spacing-1);
 }
 
-.text-blue-500.cursor-pointer {
+.accent-text.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
 }
 
-.text-blue-500.cursor-pointer:hover {
+.accent-text.cursor-pointer:hover {
   opacity: 0.8;
 }
 
-.text-blue-500.text-capital {
+.accent-text.text-capital {
   text-transform: uppercase;
+}
+
+.fw-semibold {
+  font-weight: 600;
 }
 
 .div-block-1708 {

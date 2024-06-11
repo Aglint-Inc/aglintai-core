@@ -15,7 +15,7 @@ import { PauseJson } from '@aglint/shared-types';
 
 import { ScoreJson } from '@/src/context/JobApplicationsContext/types';
 
-import { ApplicationList } from '../Candidates/store';
+import { ApplicationList } from '../Candidates/utils';
 
 export type SchedulingSlice = {
   isCreateDialogOpen: boolean;
@@ -89,6 +89,7 @@ export type ModuleDashboard = {
   users: MemberType[];
   upcoming_meeting_count: number;
   completed_meeting_count: number;
+  canceled_meeting_count: number;
 };
 
 export type MemberType = {
@@ -98,8 +99,8 @@ export type MemberType = {
   email: string;
   profile_image: string;
   position: string;
-  schedule_auth: JSON | null;
-  role: RecruiterUserType['role'];
+  schedule_auth?: JSON | null;
+  role: RecruiterUserType['role'] | null;
 };
 
 export type TransformSchedule = ScheduleType & {

@@ -50,13 +50,6 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
 
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isOpen}
       onClose={close}
       maxWidth={'md'}
@@ -84,7 +77,7 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
           textPopupTitle={'Request Integration'}
           textPopupDescription={
             <Stack direction={'column'} spacing={'16px'}>
-              <Stack direction={'column'} spacing={'10px'}>
+              <Stack direction={'column'} spacing={'var(--space-2)'}>
                 <Typography fontSize={'14px'} variant='body1'>
                   Integration Name
                 </Typography>
@@ -93,7 +86,7 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
                   placeholder='Enter the name of the integration'
                 />
               </Stack>
-              <Stack direction={'column'} spacing={'10px'}>
+              <Stack direction={'column'} spacing={'var(--space-2)'}>
                 <Typography fontSize={'14px'} variant='body1'>
                   Description (Optional)
                 </Typography>

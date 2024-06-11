@@ -102,7 +102,7 @@ function ChatEditor({
   return (
     <Stack
       border={`1px solid`}
-      borderRadius={'8px'}
+      borderRadius={'var(--space-2)'}
       sx={{
         '& div': {
           width: '100%',
@@ -131,7 +131,7 @@ function ChatEditor({
           whiteSpace: 'nowrap !important',
         },
       }}
-      borderColor={'grey.400'}
+      borderColor='var(--neutral-6)'
       padding={'1px'}
       direction={'row'}
       alignItems={'center'}

@@ -6,7 +6,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { AddRolesPop } from '@/devlink/AddRolesPop';
 import { RolesPill } from '@/devlink/RolesPill';
@@ -28,6 +28,7 @@ const AddRolesDialog: React.FC<RolesProps> = ({
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState([]);
   const [roles, setRoles] = useState<string[]>([]);
+  const iniRoles = useRef([]);
 
   const handleInputChange = (event, newInputValue) => {
     setInputValue(newInputValue);
@@ -43,6 +44,7 @@ const AddRolesDialog: React.FC<RolesProps> = ({
     if (recruiter?.available_roles && open) {
       setRoles(recruiter?.available_roles);
       setOptions(initialRoles);
+      iniRoles.current = recruiter?.available_roles;
     }
   }, [recruiter?.available_roles, open]);
 
@@ -66,6 +68,16 @@ const AddRolesDialog: React.FC<RolesProps> = ({
     }
   };
 
+  function compareChanges() {
+    const set1 = new Set(roles);
+    const set2 = new Set(iniRoles.current);
+
+    if (set1.size !== set2.size) {
+      return false;
+    }
+    return [...set1].every((element) => set2.has(element));
+  }
+
   return (
     <Dialog onClose={handleClose} open={open} maxWidth={'xl'}>
       <AddRolesPop
@@ -84,7 +96,7 @@ const AddRolesDialog: React.FC<RolesProps> = ({
         })}
         slotInput={
           <Autocomplete
-            sx={{ mt: roles.length > 0 ? '8px' : '0px' }}
+            sx={{ mt: roles.length > 0 ? 'var(--space-2)' : '0px' }}
             fullWidth
             freeSolo
             id='free-solo-2-demo'
@@ -97,7 +109,7 @@ const AddRolesDialog: React.FC<RolesProps> = ({
                 return (
                   <li
                     {...props}
-                    style={{ background: '#d8dcde50', margin: '1px' }}
+                    // style={{ background: '#d8dcde50', margin: '1px' }}
                   >
                     <Stack
                       direction={'row'}
@@ -110,7 +122,7 @@ const AddRolesDialog: React.FC<RolesProps> = ({
                         }, 50);
                       }}
                       alignItems={'center'}
-                      spacing={'4px'}
+                      spacing={'var(--space-1)'}
                     >
                       <Typography variant='body1'>{option}</Typography>
                       <Typography variant='caption'>- Add Role</Typography>
@@ -157,11 +169,13 @@ const AddRolesDialog: React.FC<RolesProps> = ({
         }}
         onClickDone={{
           onClick: () => {
-            handleChange({
-              ...recruiter,
-              available_roles: roles,
-            });
-            handleClose();
+            if (!compareChanges()) {
+              handleChange({
+                ...recruiter,
+                available_roles: roles,
+              });
+              handleClose();
+            }
           },
         }}
       />

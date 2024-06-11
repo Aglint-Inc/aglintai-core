@@ -19,6 +19,7 @@ export async function middleware(request: NextRequest) {
 
   const { isAllowed, id, rec_id, role } = await server_check_permissions({
     getVal: (name) => request.cookies.get(name)?.value,
+    // eslint-disable-next-line security/detect-object-injection
     permission: PERMISSIONS[requestUrl],
   });
 

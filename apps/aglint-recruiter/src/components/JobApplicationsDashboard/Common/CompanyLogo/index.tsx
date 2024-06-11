@@ -15,7 +15,7 @@ const CompanyLogo = ({
     <Avatar
       variant='square'
       sx={{
-        bgcolor: 'white.700',
+        bgcolor: 'var(--white-a7)',
         width: '100%',
         height: '100%',
         '& .MuiAvatar-img ': {
@@ -23,7 +23,7 @@ const CompanyLogo = ({
           borderRadius: `${borderRadius}px`,
         },
       }}
-      style={{ color: 'black' }}
+      style={{ color: 'var(--neutral-12)' }}
       src={
         companyLogo ||
         `https://logo.clearbit.com/${name.replaceAll(' ', '')}.com `
@@ -36,14 +36,14 @@ const CompanyLogo = ({
     <Avatar
       variant='square'
       sx={{
-        bgcolor: 'white.700',
+        bgcolor: 'var(--white-a7)',
         width: '100%',
         height: '100%',
         '& .MuiAvatar-img ': {
           objectFit: 'contain',
         },
       }}
-      style={{ color: 'black' }}
+      style={{ color: 'var(--neutral-12)' }}
     >
       <UnknownCompany />
     </Avatar>

@@ -27,10 +27,10 @@ function LeftPanel() {
     <Stack
       width={'20%'}
       border={'1px solid'}
-      borderColor={'grey.200'}
-      p={'10px'}
+       borderColor='var(--neutral-6)'
+      p={'var(--space-2)'}
     >
-      <Stack width={'100%'} mb={'10px'}>
+      <Stack width={'100%'} mb={'var(--space-2)'}>
         <AUIButton
           variant='outlined'
           onClick={() => {
@@ -48,14 +48,14 @@ function LeftPanel() {
       </Stack>
 
       <Stack
-        spacing={'10px'}
+        spacing={'var(--space-2)'}
         alignItems={'center'}
         width={'100%'}
         direction={'row'}
-        mb={'10px'}
+        mb={'var(--space-2)'}
         justifyContent={'space-between'}
       >
-        <Typography width={'70px'} variant='body2'>
+        <Typography width={'70px'} variant='body1'>
           Chat List
         </Typography>
 
@@ -65,22 +65,22 @@ function LeftPanel() {
           }}
         />
       </Stack>
-      <Stack spacing={'10px'} overflow={'auto'}>
+      <Stack spacing={'var(--space-2)'} overflow={'auto'}>
         {jobAssistantChats.map((ele, i) => {
           const time = dayjs(ele.created_at).fromNow();
 
           return (
             <Stack
               key={i}
-              bgcolor={currentChat.id === ele.id ? 'grey.200' : 'grey.100'}
-              p={'10px'}
-              borderRadius={'5px'}
-              spacing={'10px'}
+              bgcolor={currentChat.id === ele.id ? 'var(--neutral-2)' : 'var(--neutral-1)'}
+              p={'var(--space-2)'}
+              borderRadius={'var(--space-1)'}
+              spacing={'var(--space-2)'}
               sx={{
                 cursor: !resLoading && currentChat.id !== ele.id && 'pointer',
                 '&:hover': {
                   bgcolor:
-                    !resLoading && currentChat.id !== ele.id && 'grey.100',
+                    !resLoading && currentChat.id !== ele.id && 'var(--neutral-1)',
                 },
               }}
               onClick={() => {
@@ -94,7 +94,7 @@ function LeftPanel() {
                 direction={'row'}
                 alignItems={'center'}
               >
-                <Stack color={'red.300'} width={'40px'} height={'20px'}>
+                <Stack color={'var(--error-11)'} width={'var(--space-7)'} height={'var(--space-5)'}>
                   <ChatIcon />
                 </Stack>
                 <Typography
@@ -110,7 +110,7 @@ function LeftPanel() {
                 <Typography
                   className='one-one-line-clamp'
                   // width={'100%'}
-                  variant='body2'
+                  variant='body1'
                 >
                   {time}
                 </Typography>

@@ -37,11 +37,6 @@ function SelectTime({
           openPickerIcon: ClockIcon,
         }}
         ampm={false}
-        sx={{
-          '& input': {
-            fontSize: '14px',
-          },
-        }}
       />
     </LocalizationProvider>
   );

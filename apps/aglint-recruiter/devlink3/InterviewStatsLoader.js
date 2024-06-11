@@ -9,9 +9,9 @@ export function InterviewStatsLoader({
   slotSkeleton,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1507")} tag="div">
+    <_Component className={_utils.cx(_styles, "module_row")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1508")}
+        className={_utils.cx(_styles, "sd_table_header_cell")}
         id={_utils.cx(
           _styles,
           "w-node-_8c809f8b-a051-93b7-5121-5291b6b58147-b6b58146"
@@ -26,7 +26,7 @@ export function InterviewStatsLoader({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1508")}
+        className={_utils.cx(_styles, "sd_table_header_cell")}
         id={_utils.cx(
           _styles,
           "w-node-_8c809f8b-a051-93b7-5121-5291b6b58149-b6b58146"
@@ -41,7 +41,7 @@ export function InterviewStatsLoader({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1508")}
+        className={_utils.cx(_styles, "sd_table_header_cell")}
         id={_utils.cx(
           _styles,
           "w-node-_8c809f8b-a051-93b7-5121-5291b6b5814b-b6b58146"

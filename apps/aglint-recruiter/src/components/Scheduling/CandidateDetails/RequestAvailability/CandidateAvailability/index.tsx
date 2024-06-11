@@ -1,195 +1,167 @@
-/* eslint-disable security/detect-object-injection */
-import { Stack } from '@mui/material';
-import dayjs from 'dayjs';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { Page404 } from '@/devlink/Page404';
-import { AvailabilityEmpty } from '@/devlink2/AvailabilityEmpty';
+import { CandidateScheduleCard } from '@/devlink/CandidateScheduleCard';
+import { ChangeButton } from '@/devlink/ChangeButton';
+import { SelectButton } from '@/devlink/SelectButton';
+import { SessionInfo } from '@/devlink/SessionInfo';
 import { AvailabilityReq } from '@/devlink2/AvailabilityReq';
 import { ButtonPrimary } from '@/devlink2/ButtonPrimary';
-import { CalendarPick } from '@/devlink2/CalendarPick';
-import { DatePicker } from '@/devlink2/DatePicker';
-import { TimePick } from '@/devlink2/TimePick';
-import CandidateSlotLoad from '@/src/components/Common/Lotties/CandidateSlotLoad';
+import { MultiDaySelect } from '@/devlink2/MultiDaySelect';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
+import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import {
-  dateSlotsType,
-  updateCandidateRequestAvailability,
-  useRequestAvailabilityContext,
+  insertTaskProgress,
+  useRequestAvailabilityContext
 } from '../RequestAvailabilityContext';
-import SlotColumn from './SlotColumn';
+import { convertMinutesToHoursAndMinutes } from '../utils';
+import AvailableSlots from './AvailableSlots';
+import DateSlotsPoPup from './DateSlotsPopUp';
 
 function CandidateAvailability() {
   const router = useRouter();
   const {
-    dateSlots,
+    setOpenDaySlotPopup,
+    multiDaySessions,
     candidateRequestAvailability,
-    loading,
-    setSelectedDateSlots,
-    selectedDateSlots,
-    selectedSlots,
+    daySlots,
   } = useRequestAvailabilityContext();
-
-  const handleClickDate = (ele: dateSlotsType) => {
-    //@ts-ignore
-    setSelectedDateSlots((pre: dateSlotsType[]) => {
-      if (pre.map((ele) => ele.curr_day).includes(ele.curr_day)) {
-        return pre.filter((date) => date.curr_day !== ele.curr_day);
-      } else {
-        return [...pre, ele];
-      }
-    });
+  const handleOpen = async (day: number) => {
+    setOpenDaySlotPopup(day);
   };
+  async function handleSubmit() {
+    if (multiDaySessions.length !== daySlots.length) {
+      toast.message('Please select slots from each day');
+      return;
+    }
 
-  const handleSubmit = async () => {
-    const eventsByDate = selectedSlots.reduce((acc, event) => {
-      const date = event.startTime.split('T')[0];
-      if (!acc[date]) {
-        acc[date] = [];
-      }
-      acc[date].push(event);
-      return acc;
-    }, {});
-    const checkMinimumSlotsSelected = Object.keys(eventsByDate).filter(
-      (date) =>
-        eventsByDate[date].length <
-        candidateRequestAvailability.number_of_slots,
+    await axios.post(
+      `/api/scheduling/request_availability/updateRequestAvailability`,
+      {
+        id: String(router.query?.request_id),
+        data: { slots: daySlots, user_timezone: userTzDayjs.tz.guess() },
+      },
     );
-
-    const checkSlotsSelectedForDates = selectedDateSlots
-      .map((ele) => ele.curr_day.split('T')[0])
-      .filter((date) => !Object.keys(eventsByDate).includes(date));
-
-    if (
-      selectedDateSlots.length < candidateRequestAvailability.number_of_days
-    ) {
-      toast.message(
-        `Please Select minimum ${candidateRequestAvailability.number_of_days} days`,
-      );
-      return;
-    }
-    if (checkSlotsSelectedForDates.length) {
-      toast.message(
-        `You have not selected any slots for ${checkSlotsSelectedForDates.map((date) => dayjs(date).format('MMM DD')).join(',')}`,
-      );
-      return;
-    }
-    if (checkMinimumSlotsSelected.length) {
-      toast.message(
-        `You have to select minimum ${candidateRequestAvailability.number_of_slots} slots on ${checkMinimumSlotsSelected.map((date) => dayjs(date).format('MMM DD')).join(',')} `,
-      );
-      return;
-    }
-    router.push('/scheduling/request-availability/submitted');
-    await updateCandidateRequestAvailability({
-      data: { slots: selectedSlots },
-      id: String(router.query?.request_id),
+    await insertTaskProgress({
+      request_availability_id: candidateRequestAvailability?.id,
+      taskData: {
+        created_by: {
+          name: getFullName(
+            candidateRequestAvailability.applications.candidates.first_name,
+            candidateRequestAvailability.applications.candidates.last_name,
+          ),
+          id: candidateRequestAvailability.applications.candidates.id,
+        },
+        jsonb_data: {
+          dates: [
+            ...new Set(
+              daySlots
+                .map((ele) => ele.dates)
+                .flat()
+                .map((ele) => ele.curr_day),
+            ),
+          ],
+        },
+      },
     });
-  };
+
+    router.push('/scheduling/request-availability/submitted');
+  }
 
   useEffect(() => {
     if (candidateRequestAvailability?.slots) {
       router.push('/scheduling/request-availability/submitted');
     }
   }, [candidateRequestAvailability]);
-
-  if (loading) {
-    return (
-      <Stack
-        width={'100%'}
-        height={'100%'}
-        direction={'row'}
-        justifyContent={'center'}
-        alignItems={'center'}
-      >
-        <Stack width={'120px'} style={{ transform: 'translateY(-50%)' }}>
-          <CandidateSlotLoad />
-        </Stack>
-      </Stack>
-    );
-  }
-  if (candidateRequestAvailability) {
-    return (
+  return (
+    <div>
+      <DateSlotsPoPup />
       <AvailabilityReq
-        isPickedCalendarActive={
-          selectedDateSlots.length >=
-          candidateRequestAvailability.number_of_days
-        }
-        textPickDays={`Pick at least ${candidateRequestAvailability.number_of_days} days.`}
-        isPickSlotIconActive={
-          candidateRequestAvailability.number_of_slots < selectedSlots.length
-        }
-        textPickSlots={`Pick at least  ${candidateRequestAvailability.number_of_slots} slots from each day.`}
-        slotPrimaryButton={
-          <ButtonPrimary
-            onClickButton={{
-              onClick: handleSubmit,
-            }}
-            textLabel={'Submit Availability'}
-          />
-        }
-        slotCalenderPick={
-          <CalendarPick
-            slotDatePicker={dateSlots
-              .filter((ele) => ele.slots.length)
-              .map((dateSlot) => {
-                return (
-                  <DatePicker
-                    // isDisable={}
-                    isActive={selectedDateSlots
-                      .map((ele) => ele.curr_day)
-                      .includes(dateSlot.curr_day)}
-                    key={dateSlot.curr_day}
-                    textDate={dayjs(dateSlot.curr_day).format('DD')}
-                    textDay={dayjs(dateSlot.curr_day).format('dddd')}
-                    textMonth={dayjs(dateSlot.curr_day).format('MMM')}
-                    onClickDate={{
-                      onClick: () => handleClickDate(dateSlot),
-                    }}
+        slotPickSlotDay={
+          <ShowCode>
+            <ShowCode.When isTrue={multiDaySessions.length > 1}>
+              <MultiDaySelect
+                slotPrimaryButton={
+                  <ButtonPrimary
+                    onClickButton={{ onClick: handleSubmit }}
+                    textLabel={'Submit Availability'}
                   />
-                );
-              })}
-          />
-        }
-        slotTimePick={
-          <TimePick
-            slotSlotPicker={
-              <ShowCode>
-                <ShowCode.When isTrue={selectedDateSlots.length === 0}>
-                  <AvailabilityEmpty />
-                </ShowCode.When>
-                <ShowCode.Else>
-                  {selectedDateSlots
-                    .sort((a, b) =>
-                      dayjs(a.curr_day).isAfter(dayjs(b.curr_day)) ? 1 : -1,
-                    )
-                    .map((dateSlot, i) => {
-                      return (
-                        <SlotColumn
-                          onClose={() => handleClickDate(dateSlot)}
+                }
+                slotCandidateScheduleCard={multiDaySessions.map(
+                  (sessions, i) => {
+                    const totalSessionMinutes = sessions.reduce(
+                      (accumulator, session) =>
+                        accumulator + session.session_duration,
+                      0,
+                    );
+                    return (
+                      <>
+                        <CandidateScheduleCard
+                          isSlotButtonVisible={
+                            daySlots.map((ele) => ele.round).includes(i) ||
+                            i < 1
+                          }
                           key={i}
-                          date={dateSlot}
+                          slotSessionInfo={sessions.map((session, i) => {
+                            return (
+                              <SessionInfo
+                                textSessionName={session.name}
+                                textSessionDuration={convertMinutesToHoursAndMinutes(
+                                  session.session_duration,
+                                )}
+                                key={i}
+                              />
+                            );
+                          })}
+                          textDay={`Day ${i + 1}`}
+                          textDuration={convertMinutesToHoursAndMinutes(
+                            totalSessionMinutes,
+                          )}
+                          isSelected={false}
+                          slotButton={
+                            <ShowCode>
+                              <ShowCode.When
+                                isTrue={
+                                  daySlots.length &&
+                                  daySlots
+                                    .map((ele) => ele.round)
+                                    .includes(i + 1)
+                                }
+                              >
+                                <ChangeButton
+                                  onClickButton={{
+                                    onClick: () => handleOpen(i + 1),
+                                  }}
+                                />
+                              </ShowCode.When>
+                              <ShowCode.Else>
+                                <SelectButton
+                                  onClickButton={{
+                                    onClick: () => handleOpen(i + 1),
+                                  }}
+                                />
+                              </ShowCode.Else>
+                            </ShowCode>
+                          }
                         />
-                      );
-                    })}
-                </ShowCode.Else>
-              </ShowCode>
-            }
-          />
+                      </>
+                    );
+                  },
+                )}
+              />
+            </ShowCode.When>
+            <ShowCode.Else>
+              <AvailableSlots singleDay={true} />
+            </ShowCode.Else>
+          </ShowCode>
         }
       />
-    );
-  }
-  if (!candidateRequestAvailability) {
-    return (
-      <Stack>
-        <Page404 />
-      </Stack>
-    );
-  }
+    </div>
+  );
 }
 
 export default CandidateAvailability;

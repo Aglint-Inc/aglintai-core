@@ -78,7 +78,7 @@ const ApplicationCard = ({
   const handleCheck = () => {
     handleSelect(index);
   };
-  const profile = <CandidateAvatar application={application} fontSize={12} />;
+  const profile = <CandidateAvatar application={application} />;
   const resumeScore =
     job.status === 'draft' ? '---' : <ResumeScore application={application} />;
   const interviewScore = <InterviewScore application={application} />;

@@ -23,7 +23,7 @@ import axios from 'axios';
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { addHttps, getUrlHost } from '@/src/utils/fetchCompDetails';
 
-export const supabaseAdmin = createClient<DB>(
+const supabaseAdmin = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL || '',
   process.env.SUPABASE_SERVICE_KEY || '',
 );

@@ -1,6 +1,5 @@
 // import { Color } from '@tiptap/extension-color';
 import Icon from '@components/Common/Icons/Icon';
-import { palette } from '@context/Theme/Theme';
 import {
   IconButton,
   IconButtonProps,
@@ -22,17 +21,17 @@ import React, { ReactNode, useCallback, useEffect } from 'react';
 export type ToolboxPosition = 'top' | 'bottom';
 
 const RichTextIconButton = styled(IconButton)({
-  borderRadius: '4px',
+  borderRadius: 'var(--radius-2)',
   padding: '1px',
   '&.is-active': {
-    color: '#000000',
+    color: 'var(---neutral-12)',
   },
 });
 const RichTextDividerLine = styled(Stack)({
-  // borderRadius: '4px',
+  // borderRadius: 'var(--radius-2)',
   height: '24px',
   width: '1px',
-  background: palette.grey[200],
+  backgroundColor:'var(--neutral-3)',
   margin: '2px 4px',
 });
 
@@ -91,8 +90,8 @@ const MenuBar = ({
     <Stack
       direction={'row'}
       border={'1px solid'}
-      borderRadius={'5px'}
-      borderColor={palette.grey[400]}
+      borderRadius={'var(--space-1)'}
+      borderColor={'var(--neutral-6)'}
       sx={{
         flexWrap: 'wrap',
         justifyContent: 'space-between',
@@ -364,7 +363,7 @@ const TipTapEditor = ({
   return (
     <Stack
       border={`1px solid ${borderColor}`}
-      borderRadius={'8px'}
+      borderRadius={'var(--space-2)'}
       sx={{
         '& .ProseMirror': {
           minHeight: `${minRows}em`,
@@ -377,7 +376,7 @@ const TipTapEditor = ({
           background: '#b100af30',
         },
         '.tiptap p.is-editor-empty:first-child::before ': {
-          color: '#adb5bd',
+          color: 'var(--neutral-11)',
           content: 'attr(data-placeholder)',
           float: 'left',
           height: 0,
@@ -388,7 +387,7 @@ const TipTapEditor = ({
         },
         position: 'relative',
       }}
-      borderColor={palette.grey[400]}
+      borderColor={'var(--neutral-6)'}
       padding={padding}
     >
       <div

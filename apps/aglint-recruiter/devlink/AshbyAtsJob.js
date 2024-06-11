@@ -1,6 +1,9 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { Text } from "./Text";
+import { ButtonSolid } from "./ButtonSolid";
 import { AtsCard } from "./AtsCard";
 import * as _utils from "./utils";
 import _styles from "./AshbyAtsJob.module.css";
@@ -12,7 +15,7 @@ const _interactionsData = JSON.parse(
 export function AshbyAtsJob({
   as: _Component = _Builtin.Block,
   textNumberOfJobs = "This is some text inside of a div block.",
-  isImportDisable = true,
+  isImportDisable = false,
   onClickImport = {},
   onClickAll = {},
   onClickPublished = {},
@@ -23,18 +26,13 @@ export function AshbyAtsJob({
 
   return (
     <_Component className={_utils.cx(_styles, "ats-wrappers-outer")} tag="div">
-      <_Builtin.Block tag="div">
-        {"Select a job from Ashby to import."}
-      </_Builtin.Block>
+      <Text content="Select a job from Ashby to import." />
       <_Builtin.Block
         className={_utils.cx(_styles, "ats-import-wrappers")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "relative-1", "text-color-grey-600")}
-          tag="div"
-        >
-          {textNumberOfJobs}
+        <_Builtin.Block className={_utils.cx(_styles, "relative-1")} tag="div">
+          <Text content={textNumberOfJobs} color="neutral" />
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "relative-1")} tag="div">
           <_Builtin.Block
@@ -43,97 +41,41 @@ export function AshbyAtsJob({
             tabIndex="0"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "aui-button", "is-button-bg-blue")}
+              className={_utils.cx(_styles, "relative")}
               tag="div"
               tabIndex="0"
               {...onClickImport}
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-md")}
-                tag="div"
-              >
-                {"Import"}
-              </_Builtin.Block>
+              <ButtonSolid
+                isRightIcon={false}
+                isLeftIcon={false}
+                size="2"
+                textButton="Import"
+              />
             </_Builtin.Block>
             {isImportDisable ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "is-button-disabled")}
+                className={_utils.cx(_styles, "ats-btn-disable")}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{"Import"}</_Builtin.Block>
+                <ButtonSolid
+                  isRightIcon={false}
+                  isLeftIcon={false}
+                  size="2"
+                  textButton="Import"
+                  isDisabled={true}
+                />
               </_Builtin.Block>
             ) : null}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "ats-search-wrappers", "hide")}
-        tag="div"
-      >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "ats-tab-wappers")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "ats-tab-menu")}
-            tag="div"
-            {...onClickAll}
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-relative", "zindex-1")}
-              tag="div"
-            >
-              {"All"}
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "ats-tab-menu")}
-            tag="div"
-            {...onClickPublished}
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-relative", "zindex-1")}
-              tag="div"
-            >
-              {"Published"}
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "ats-tab-menu", "hide")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-relative", "zindex-1")}
-              tag="div"
-            >
-              {"Internal"}
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "ats-tab-menu")}
-            tag="div"
-            {...onClickClosed}
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-relative", "zindex-1")}
-              tag="div"
-            >
-              {"Closed"}
-            </_Builtin.Block>
-          </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block tag="div" />
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "slot-ats-cards-wrappers", "height-480")}
+        className={_utils.cx(_styles, "slot-ats-cards-wrappers")}
         tag="div"
       >
         {slotAtsCard ?? <AtsCard />}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "pagination-wrappers", "hide")}
-        tag="div"
-      />
     </_Component>
   );
 }

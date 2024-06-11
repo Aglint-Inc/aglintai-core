@@ -1,6 +1,8 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./InsightTagEmpty.module.css";
 
@@ -17,9 +19,7 @@ export function InsightTagEmpty({ as: _Component = _Builtin.Block }) {
       data-w-id="96be9bee-b5fd-8c1a-c6b5-52b7d2075bb8"
       tag="div"
     >
-      <_Builtin.Block className={_utils.cx(_styles, "text-gray-400")} tag="div">
-        {"No insights"}
-      </_Builtin.Block>
+      <Text weight="regular" content="No insights" color="neutral" />
     </_Component>
   );
 }

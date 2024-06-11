@@ -5,8 +5,8 @@ import { ReactNode } from 'react';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { DeletePopup } from '@/devlink3/DeletePopup';
 
+import Loader from '../../Common/Lotties/Integration_Loader';
 import { ShowCode } from '../../Common/ShowCode';
-import Loader from '../Loader';
 import { SchedulingReasonTypes } from '../types';
 
 function SchedulingPopUps({
@@ -26,13 +26,6 @@ function SchedulingPopUps({
 }) {
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isOpen}
       onClose={close}
       maxWidth={'md'}

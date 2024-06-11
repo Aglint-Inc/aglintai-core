@@ -7,11 +7,11 @@ import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import { useJobs } from '@/src/context/JobsContext';
 
 import {
+  FilterType,
   setFilter,
   setFilterVisible,
   useFilterCandidateStore,
 } from '../../filter-store';
-import { FilterType } from '../../store';
 
 function FilterJob() {
   const { jobs } = useJobs();
@@ -100,8 +100,8 @@ function FilterJob() {
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
-            borderRadius: '10px',
-            borderColor: '#E9EBED',
+            borderRadius: 'var(--radius-4)',
+            borderColor: 'var(--neutral-6)',
             minWidth: '176px',
           },
         }}

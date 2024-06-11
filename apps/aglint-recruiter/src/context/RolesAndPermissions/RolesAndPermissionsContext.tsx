@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 'use client';
 import { DatabaseEnums } from '@aglint/shared-types';
 import { createContext, ReactNode, useContext } from 'react';
@@ -25,11 +26,6 @@ export const RolesAndPermissionsProvider = ({
   const checkPermissions: RolesAndPermissionsContextType['checkPermissions'] = (
     permission,
   ) => {
-    // console.log(
-    //   'userPermissions',
-    //   permission,
-    //   userPermissions['permissions'][permission],
-    // );
     // eslint-disable-next-line security/detect-object-injection
     return (
       Boolean(permission) && Boolean(userPermissions['permissions'][permission])

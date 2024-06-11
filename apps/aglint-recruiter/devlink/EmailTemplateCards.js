@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./EmailTemplateCards.module.css";
 
@@ -13,25 +15,17 @@ export function EmailTemplateCards({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "email-temp-wrap")}
+      className={_utils.cx(_styles, "etc-wrapper")}
       tag="div"
       {...onClickApplicationRecieved}
     >
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-486")} tag="div">
-        <_Builtin.Block tag="div">{textTitle}</_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-sm", "color-blue-600", "hide")}
-          tag="div"
-          {...onClickEdit}
-        >
-          {"Edit"}
-        </_Builtin.Block>
-      </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "text-grey-500", "relative-1")}
+        className={_utils.cx(_styles, "email-temp-card-wrap")}
         tag="div"
       >
-        {textDescription}
+        <_Builtin.Block className={_utils.cx(_styles, "relative-1")} tag="div">
+          <Text content={textTitle} />
+        </_Builtin.Block>
       </_Builtin.Block>
       {isActive ? (
         <_Builtin.Block

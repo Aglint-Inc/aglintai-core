@@ -23,12 +23,6 @@ function Timer({ introStep, getminutes, getSecound, timeOut }) {
         `}
       </style>
       <Chip
-        sx={{
-          borderColor: 'grey.200',
-          color: 'black.700',
-          height: '25px',
-          bgcolor: 'white.700'
-        }}
         label={
           <Stack alignItems={'center'} spacing={0.5} direction={'row'}>
             {introStep !== 2 && (

@@ -111,7 +111,7 @@ const LineChart = ({ interviewConversion, type }: InterviewConversionProps) => {
           return gradientBg;
         },
         data: counts,
-        borderColor: '#87929d',
+        borderColor: 'var(--neutral-6)',
         pointBackgroundColor,
         tension: 0.3,
       },
@@ -160,7 +160,7 @@ const LineChart = ({ interviewConversion, type }: InterviewConversionProps) => {
             },
             grid: {
               display: true,
-              color: 'rgba(0,0,0,0.05)',
+              color: 'rgba(0, 0, 0, 0.05)',
             },
           },
         },

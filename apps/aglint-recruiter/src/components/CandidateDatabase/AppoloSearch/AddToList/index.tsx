@@ -9,7 +9,7 @@ import { ButtonPrimarySmall } from '@/devlink/ButtonPrimarySmall';
 import { CdSavedList } from '@/devlink/CdSavedList';
 import { SavedList } from '@/devlink/SavedList';
 import { SavedListMenu } from '@/devlink/SavedListMenu';
-import LoaderGrey from '@/src/components/Common/LoaderGrey';
+import LoaderGrey from '@/public/lottie/LoaderGrey';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ROUTES from '@/src/utils/routing/routes';
@@ -195,8 +195,8 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
           paper: {
             style: {
               border: 'none',
-              borderRadius: '10px',
-              boxShadow: '0px 4px 8px 0px rgba(4, 68, 77, 0.15)',
+              borderRadius: 'var(--radius-4)',
+              boxShadow: 'var(--shadow-3)',
             },
           },
         }}
@@ -261,7 +261,7 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
                     background: '#F7F9FB',
                     p: '30px 96px 30px 96px',
                     width: '100%',
-                    borderRadius: '10px',
+                    borderRadius: 'var(--radius-4)',
                     color: '#68737D',
                   }}
                 >

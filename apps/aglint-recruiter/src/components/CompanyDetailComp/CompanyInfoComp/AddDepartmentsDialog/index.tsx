@@ -6,7 +6,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { AddDepartmentPop } from '@/devlink/AddDepartmentPop';
 import { RolesPill } from '@/devlink/RolesPill';
@@ -28,6 +28,7 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState([]);
   const [departmentState, setDepartmentState] = useState<string[]>([]);
+  const iniDepartments = useRef([]);
 
   const handleInputChange = (event, newInputValue) => {
     setInputValue(newInputValue);
@@ -46,6 +47,7 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
     if (recruiter?.departments && open) {
       setDepartmentState(recruiter?.departments);
       setOptions(initialDepartments);
+      iniDepartments.current = recruiter?.departments;
     }
   }, [recruiter?.departments, open]);
 
@@ -69,6 +71,15 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
     }
   };
 
+  function compareChanges() {
+    const set1 = new Set(departmentState);
+    const set2 = new Set(iniDepartments.current);
+    if (set1.size !== set2.size) {
+      return false;
+    }
+    return [...set1].every((element) => set2.has(element));
+  }
+
   return (
     <Dialog onClose={handleClose} open={open} maxWidth={'xl'}>
       <AddDepartmentPop
@@ -89,7 +100,7 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
         })}
         slotInput={
           <Autocomplete
-            sx={{ mt: departmentState.length > 0 ? '8px' : '0px' }}
+            sx={{ mt: departmentState.length > 0 ? 'var(--space-2)' : '0px' }}
             fullWidth
             freeSolo
             id='free-solo-2-demo'
@@ -117,9 +128,9 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
                         }, 10);
                       }}
                       alignItems={'center'}
-                      spacing={'4px'}
+                      spacing={'var(--space-1)'}
                     >
-                      <Typography variant='body2'>{option}</Typography>
+                      <Typography variant='body1'>{option}</Typography>
                       <Typography variant='caption'>
                         - Add Department
                       </Typography>
@@ -168,11 +179,13 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
         }}
         onClickDone={{
           onClick: () => {
-            handleChange({
-              ...recruiter,
-              departments: departmentState,
-            });
-            handleClose();
+            if (!compareChanges()) {
+              handleChange({
+                ...recruiter,
+                departments: departmentState,
+              });
+              handleClose();
+            }
           },
         }}
       />

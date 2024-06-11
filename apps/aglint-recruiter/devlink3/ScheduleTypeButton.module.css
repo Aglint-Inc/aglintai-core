@@ -8,23 +8,39 @@
   grid-column-gap: 8px;
   grid-row-gap: 8px;
 
-  border: 1px solid #e9ebed;
   border-radius: 4px;
 
-  background-color: #f7f9fb;
+  background-color: var(--neutral-3);
 
   transition: all 200ms ease;
+
+  color: var(--neutral-11);
 
   cursor: pointer;
 }
 
 .schedule_button:hover {
-  background-color: #e9ebed;
+  background-color: var(--neutral-4);
+  color: var(--neutral-12);
 }
 
 .embed_flex {
   display: flex;
+  overflow: hidden;
+  width: var(--space-5);
+  height: var(--space-5);
   align-items: center;
+
+  border-radius: var(--radius-2);
+
+  color: var(--neutral-a11);
+
+  cursor: pointer;
+}
+
+.embed_flex:hover {
+  background-color: var(--neutral-a3);
+  color: var(--neutral-a12);
 }
 
 .embed_flex.hide {
@@ -54,12 +70,7 @@
 }
 
 .cursor-pointer {
-  transition: opacity 250ms ease;
   cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.8;
 }
 
 .embed_flex.fixedd {

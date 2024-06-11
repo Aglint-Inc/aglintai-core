@@ -48,7 +48,8 @@ function ModuleSchedules({
       slotInterview={
         <Stack>
           <UITextField
-            width='400px'
+            height={32}
+            width='300px'
             value={changeText}
             InputProps={{
               endAdornment: (
@@ -61,8 +62,6 @@ function ModuleSchedules({
             onChange={(e) => {
               setChangeText(e.target.value);
             }}
-            borderRadius={10}
-            height={42}
           />
         </Stack>
       }
@@ -86,9 +85,7 @@ function ModuleSchedules({
             <AllInterviewEmpty textDynamic='No schedule found' />
           </ShowCode.When>
           <ShowCode.When isTrue={isFetched}>
-            <Stack height={'calc(100vh - 154px)'}>
-              <ScheduleMeetingList filterSchedules={newFilterSchedules()} />
-            </Stack>
+            <ScheduleMeetingList filterSchedules={newFilterSchedules()} />
           </ShowCode.When>
         </ShowCode>
       }

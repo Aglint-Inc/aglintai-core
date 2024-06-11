@@ -6,10 +6,7 @@ export type CandidateRequestAvailability = TableType<
     availability: AvailabilityType;
     date_range: DateRange;
     session_ids: RequestSessions;
-    slots: {
-      startTime: string;
-      endTime: string;
-    }[];
+    slots: dateSlotsType[];
   }
 >;
 
@@ -27,3 +24,14 @@ type RequestSessions = {
   session_duration: number;
   break_duration: number;
 }[];
+
+type dateSlotsType = {
+  round: number;
+  dates: {
+    curr_day: string;
+    slots: {
+      startTime: string;
+      endTime: string;
+    }[];
+  }[];
+};

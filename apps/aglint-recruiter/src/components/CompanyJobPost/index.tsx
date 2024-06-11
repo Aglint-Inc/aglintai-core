@@ -8,7 +8,6 @@ import { CompanyListing } from '@/devlink/CompanyListing';
 import { CompanyListingLinks } from '@/devlink/CompanyListingLinks';
 import { OfficeLocationCard } from '@/devlink/OfficeLocationCard';
 import { OpenJobListingCard } from '@/devlink/OpenJobListingCard';
-import { palette } from '@/src/context/Theme/Theme';
 import ROUTES from '@/src/utils/routing/routes';
 
 import Icon from '../Common/Icons/Icon';
@@ -30,14 +29,14 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
             variant='rounded'
             src={recruiter.logo}
             sx={{
-              p: '4px',
+              p: 'var(--space-1)',
               color: 'common.black',
               '& .MuiAvatar-img ': {
                 objectFit: 'contain',
               },
               height: '100%',
               width: '100%',
-              background: palette.grey[100],
+              background: 'var(--neutral-1)',
             }}
           >
             <Icon variant='CompanyOutlinedBig' height='100%' width='100%' />
@@ -80,7 +79,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
                   <Image
                     style={{
                       background: soc[0] == 'twitter' ? '#fff' : '',
-                      borderRadius: '4px',
+                      borderRadius: 'var(--radius-2)',
                       padding: soc[0] == 'twitter' ? '2px ' : '',
                     }}
                     src={`/images/logo/${soc[0]}.svg`}

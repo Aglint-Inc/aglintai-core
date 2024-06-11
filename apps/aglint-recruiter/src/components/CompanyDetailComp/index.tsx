@@ -6,15 +6,15 @@ import { useEffect, useState } from 'react';
 import { CompanySetting } from '@/devlink/CompanySetting';
 import { NavSublink } from '@/devlink/NavSublink';
 import { SavedChanges } from '@/devlink/SavedChanges';
+import LoaderGrey from '@/public/lottie/LoaderGrey';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 
-import LoaderGrey from '../Common/LoaderGrey';
 import CompanyInfoComp from './CompanyInfoComp';
 import {
   generateDepartments,
   generateRoles,
-  generateSpecialities, tabs
+  generateSpecialities,
+  tabs,
 } from './utils';
 
 const CompanyDetailComp = () => {
@@ -121,8 +121,8 @@ const CompanyDetailComp = () => {
               <>
                 <CircularProgress
                   color='inherit'
-                  size={'15px'}
-                  sx={{ color: palette.grey[400] }}
+                  size={'16px'}
+                  sx={{ color: 'var(--neutral-6)' }}
                 />
               </>
             }

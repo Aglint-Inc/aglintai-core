@@ -112,13 +112,6 @@ function PhoneFollowUp() {
   }
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={openPhoneFollowUp}
       onClose={closePopUp}
       maxWidth={'md'}
@@ -163,15 +156,15 @@ function PhoneFollowUp() {
                     }}
                     sx={{
                       '&': {
-                        color: 'red.300 !important',
-                        bgcolor: 'red.400 !important',
+                        color: 'var(--error-11) !important',
+                        bgcolor: 'var(--error-3) !important',
                         width: '100%',
                       },
                     }}
                     slotProps={{
                       layout: {
                         sx: {
-                          bgcolor: 'red.400 !important',
+                          bgcolor: 'var(--error-3) !important',
                         },
                       },
                     }}

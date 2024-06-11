@@ -40,29 +40,6 @@
   margin-left: 2px;
 }
 
-@media screen and (max-width: 767px) {
-  .inline-block.ml-0-mobile {
-    margin-left: 0px;
-  }
-}
-
-.text-lg {
-  font-size: 18px;
-  line-height: 1.33;
-}
-
-@media screen and (max-width: 991px) {
-  .text-lg {
-    font-size: 16px;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .text-lg {
-    font-size: 16px;
-  }
-}
-
 .inline-block.ml-6 {
   margin-left: 6px;
 }
@@ -77,10 +54,6 @@
 
 .text-color-black {
   color: var(--black-9b0fc3fc);
-}
-
-.inline-block.text-decoration-none {
-  text-decoration: none;
 }
 
 .cb-candidate-status {
@@ -99,12 +72,6 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
-@media screen and (max-width: 767px) {
-  .text-gray-600.mobile-12 {
-    font-size: 12px;
-  }
-}
-
 .text-no-wrap {
   white-space: nowrap;
 }
@@ -113,26 +80,13 @@
   max-width: 500px;
 }
 
-.text-gray-600.margin_bottom_10 {
-  margin-bottom: 10px;
-}
-
 .text-gray-600.maxwidth-custom {
   max-width: 292px;
-}
-
-.text-gray-600.relative_2 {
-  position: relative;
-  z-index: 2;
 }
 
 .text-sm {
   font-size: 12px;
   line-height: 16px;
-}
-
-.text-xsm {
-  font-size: 10px;
 }
 
 .cb-cli-bg {

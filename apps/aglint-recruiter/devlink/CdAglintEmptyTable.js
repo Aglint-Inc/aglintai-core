@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -8,16 +9,16 @@ export function CdAglintEmptyTable({
   slotLottie,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-749")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-751")} tag="div">
+    <_Component className={_utils.cx(_styles, "sac-empty-wrap")} tag="div">
+      <_Builtin.Block className={_utils.cx(_styles, "sac-empty")} tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-750")}
+          className={_utils.cx(_styles, "sac-empty-lottie")}
           tag="div"
         >
           {slotLottie}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-748")}
+          className={_utils.cx(_styles, "sac-empty-desc-wrap")}
           tag="div"
         >
           <_Builtin.Block

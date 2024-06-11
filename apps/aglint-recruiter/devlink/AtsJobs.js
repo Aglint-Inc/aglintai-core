@@ -1,7 +1,10 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
-import { AtsCard } from "./AtsCard";
+import { Text } from "./Text";
+import { ButtonSolid } from "./ButtonSolid";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./AtsJobs.module.css";
 
@@ -31,45 +34,41 @@ export function AtsJobs({
 
   return (
     <_Component className={_utils.cx(_styles, "ats-wrappers-outer")} tag="div">
-      <_Builtin.Block tag="div">
-        {"Select a job from Lever to import."}
-        <br />
-      </_Builtin.Block>
+      <Text content="Select a job from Lever to import." />
       <_Builtin.Block
         className={_utils.cx(_styles, "ats-import-wrappers")}
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "relative-1")} tag="div">
-          {textNumberofJobs}
+          <Text content={textNumberofJobs} />
         </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "relative-1")} tag="div">
-          <_Builtin.Block
-            className={_utils.cx(_styles, "aui-button-wrap")}
-            tag="div"
-            tabIndex="0"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "aui-button", "is-button-bg-blue")}
-              tag="div"
-              tabIndex="0"
-              {...onClickImport}
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-md")}
-                tag="div"
-              >
-                {"Import"}
-              </_Builtin.Block>
-            </_Builtin.Block>
-            {isImportDisable ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "is-button-disabled")}
-                tag="div"
-              >
-                <_Builtin.Block tag="div">{"Import"}</_Builtin.Block>
-              </_Builtin.Block>
-            ) : null}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "aui-button-wrap")}
+          tag="div"
+          tabIndex="0"
+        >
+          <_Builtin.Block tag="div" tabIndex="0" {...onClickImport}>
+            <ButtonSolid
+              isRightIcon={false}
+              isLeftIcon={false}
+              textButton="Import"
+              size="2"
+            />
           </_Builtin.Block>
+          {isImportDisable ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "import-disable-btn")}
+              tag="div"
+            >
+              <ButtonSolid
+                isRightIcon={false}
+                isLeftIcon={false}
+                textButton="Import"
+                size="2"
+                isDisabled={true}
+              />
+            </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
         {isSelected ? (
           <_Builtin.Block
@@ -92,10 +91,10 @@ export function AtsJobs({
             {...onClickAll}
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-relative", "zindex-1")}
+              className={_utils.cx(_styles, "relative-1")}
               tag="div"
             >
-              {"All"}
+              <Text content="All" />
             </_Builtin.Block>
             {isAllActive ? (
               <_Builtin.Block
@@ -110,10 +109,10 @@ export function AtsJobs({
             {...onClickPublished}
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-relative", "zindex-1")}
+              className={_utils.cx(_styles, "relative-1")}
               tag="div"
             >
-              {"Published"}
+              <Text content="Published" />
             </_Builtin.Block>
             {isPublishedActive ? (
               <_Builtin.Block
@@ -128,10 +127,10 @@ export function AtsJobs({
             {...onClickInternal}
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-relative", "zindex-1")}
+              className={_utils.cx(_styles, "relative-1")}
               tag="div"
             >
-              {"Internal"}
+              <Text content="Internal" />
             </_Builtin.Block>
             {isInternalActive ? (
               <_Builtin.Block
@@ -146,10 +145,10 @@ export function AtsJobs({
             {...onClickClosed}
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-relative", "zindex-1")}
+              className={_utils.cx(_styles, "relative-1")}
               tag="div"
             >
-              {"Closed"}
+              <Text content="Closed" />
             </_Builtin.Block>
             {isClosedActive ? (
               <_Builtin.Block
@@ -165,12 +164,8 @@ export function AtsJobs({
         className={_utils.cx(_styles, "slot-ats-cards-wrappers")}
         tag="div"
       >
-        {slotAtsCard ?? <AtsCard />}
+        {slotAtsCard ?? <SlotComp componentName="AtsCard" />}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "pagination-wrappers", "hide")}
-        tag="div"
-      />
     </_Component>
   );
 }

@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import dayjs from 'dayjs';
 
-import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 
 export function getLastDayOfMonth(date: string) {

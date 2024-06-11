@@ -53,8 +53,8 @@ function ListCardInterviewerModules({
         isTrainingProgressDetailVisible={true}
         slotTrainingProgressDetail={
           <Collapse in={collapseOpen}>
-            <Stack px={'20px'} pb={'20px'}>
-              <Typography variant='body2'>
+            <Stack px={'var(--space-5)'} pb={'var(--space-5)'}>
+              <Typography variant='body1'>
                 {interview_module.description}
               </Typography>
             </Stack>
@@ -265,8 +265,8 @@ function ListCardInterviewerModules({
         isTrainingProgressDetailVisible={true}
         slotTrainingProgressDetail={
           <Collapse in={collapseOpen}>
-            <Stack px={'20px'} pb={'20px'}>
-              <Typography variant='body2'>
+            <Stack px={'var(--space-5)'} pb={'var(--space-5)'}>
+              <Typography variant='body1'>
                 {interview_module.description}
               </Typography>
             </Stack>

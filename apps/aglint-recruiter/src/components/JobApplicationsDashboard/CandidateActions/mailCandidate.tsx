@@ -105,8 +105,8 @@ const MailCandidateDialog: React.FC<{
         onclickClose={{ onClick: () => handleClose() }}
         slotButtons={
           <Stack
-            spacing={'10px'}
-            mt={'10px'}
+            spacing={'var(--space-2)'}
+            mt={'var(--space-2)'}
             direction={'row'}
             alignItems={'center'}
           >

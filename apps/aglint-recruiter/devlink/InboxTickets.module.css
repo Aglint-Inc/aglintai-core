@@ -9,7 +9,7 @@
 }
 
 .div-block-474:hover {
-  background-color: var(--gray-100);
+  background-color: var(--gray-100\<deleted\|variable-3a86b552\>);
 }
 
 .inbox-list-sl-block {
@@ -165,19 +165,6 @@
 }
 
 .il-job-info {
-  display: flex;
-  flex-direction: column;
-  grid-column-gap: 2px;
-  grid-row-gap: 2px;
-}
-
-.il-job-info.top {
-  color: hsla(0, 0.00%, 0.00%, 1.00);
-  font-size: 14px;
-  line-height: 1.4;
-}
-
-.il-job-info.content {
   display: flex;
   flex-direction: column;
   grid-column-gap: 2px;

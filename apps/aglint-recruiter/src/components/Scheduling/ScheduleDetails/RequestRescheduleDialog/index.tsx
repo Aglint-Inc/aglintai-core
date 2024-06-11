@@ -79,8 +79,7 @@ function RequestRescheduleDialog({
         addScheduleActivity({
           title: `Requested reschedule for ${schedule.interview_session.name}. Reason: ${reason} `,
           application_id: schedule.applications.id,
-          logger: recruiterUser.user_id,
-          type: 'schedule',
+          logged_by: 'user',
           supabase: supabase,
           created_by: recruiterUser.user_id,
         });
@@ -97,13 +96,6 @@ function RequestRescheduleDialog({
 
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isRequestRescheduleOpen}
       onClose={() => {
         setIsRequestRescheduleOpen(false);
@@ -124,7 +116,7 @@ function RequestRescheduleDialog({
         isWidget={true}
         slotWidget={
           <Stack spacing={2}>
-            <Typography variant='body2'>
+            <Typography variant='body1'>
               Choose a date range that you want to reschedule with
             </Typography>
             <Stack spacing={2} direction={'row'}>
@@ -186,7 +178,7 @@ function RequestRescheduleDialog({
               </LocalizationProvider>
             </Stack>
 
-            <Typography variant='body2'>
+            <Typography variant='body1'>
               Please provide a reason for reschedule.
             </Typography>
             <Stack spacing={1}>
@@ -202,7 +194,7 @@ function RequestRescheduleDialog({
                     spacing={1}
                   >
                     <Checkbox isChecked={rea === reason} />
-                    <Typography variant='body2' color={'#000'}>
+                    <Typography variant='body1' color={'var(--neutral-12)'}>
                       {rea}
                     </Typography>
                   </Stack>
@@ -210,7 +202,7 @@ function RequestRescheduleDialog({
               })}
             </Stack>
 
-            <Typography variant='body2'>Additional Notes</Typography>
+            <Typography variant='body1'>Additional Notes</Typography>
             <TextField
               multiline
               value={notes}

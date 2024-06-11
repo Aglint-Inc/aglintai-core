@@ -15,7 +15,7 @@ import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import Loader from '../../Common/Loader';
+import Loader from '../../Common/Lotties/Loader';
 import { Details, SignUpError } from './types';
 import { handleEmail, handlePassword, stepObj } from './utils';
 
@@ -276,8 +276,8 @@ const SlideTwoSignUp = () => {
                 },
               }}
               slotSignUpForm={
-                <Stack spacing={'20px'} p={'4px'}>
-                  <Stack direction={'row'} spacing={'10px'}>
+                <Stack spacing={'var(--space-5)'} p={'var(--space-1)'}>
+                  <Stack direction={'row'} spacing={'var(--space-2)'}>
                     <TextField
                       margin='none'
                       required

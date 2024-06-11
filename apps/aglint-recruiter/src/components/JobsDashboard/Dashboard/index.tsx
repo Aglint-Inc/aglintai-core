@@ -41,7 +41,6 @@ import { useJobDetails } from '@/src/context/JobDashboard';
 import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 import { useJobs } from '@/src/context/JobsContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { palette } from '@/src/context/Theme/Theme';
 import NotFoundPage from '@/src/pages/404';
 import { useCompanyMembers } from '@/src/queries/company-members';
 import { Job } from '@/src/queries/job/types';
@@ -56,9 +55,9 @@ import EmailTemplateIcon from '../../Common/ModuleIcons/emailTemplateIcon';
 import HiringTeamIcon from '../../Common/ModuleIcons/hiringTeamIcon';
 import JobDetailsIcon from '../../Common/ModuleIcons/jobDetailsIcon';
 import ProfileScoreIcon from '../../Common/ModuleIcons/profileScoreIcon';
-// import EmailTemplateIcon from '../../Common/ModuleIcons/emailTemplateIcon';
 import SchedulingIcon from '../../Common/ModuleIcons/schedulingIcon';
 import ScreeningIcon from '../../Common/ModuleIcons/screeningIcon';
+import WorkflowIcon from '../../Common/ModuleIcons/workflowIcon';
 import MuiAvatar from '../../Common/MuiAvatar';
 import UITextField from '../../Common/UITextField';
 import { AddCandidates } from '../../JobApplicationsDashboard';
@@ -201,7 +200,7 @@ const Dashboard = () => {
         <CircularProgress
           color='inherit'
           size={'100%'}
-          sx={{ color: 'white' }}
+          sx={{ color: 'var(--white)' }}
         />
       </Stack>
     ),
@@ -377,10 +376,7 @@ const Roles = () => {
                   <MuiAvatar
                     src={user?.profile_image ?? null}
                     level={name}
-                    variant='circular'
-                    fontSize='16px'
-                    width='42px'
-                    height='42px'
+                    variant='rounded-medium'
                   />
                 }
                 textDesignation={user?.position ?? '--'}
@@ -453,7 +449,7 @@ const Preview = () => {
       mx={1}
       gap={'2px'}
       direction={'row'}
-      style={{ color: palette.blue['400'], cursor: 'pointer' }}
+      style={{ color: 'var(--accent-11)', cursor: 'pointer' }}
       onClick={() => handlePreview()}
     >
       <Stack>Preview</Stack>
@@ -691,7 +687,7 @@ const useBanners = ({
           <CircularProgress
             color='inherit'
             size={'100%'}
-            sx={{ color: palette.grey[400] }}
+            sx={{ color: 'var(--neutral-6)' }}
           />
         }
       />,
@@ -770,7 +766,9 @@ const JobClose = ({
         sx={{
           '& .MuiPaper-root': {
             border: 'none !important',
+            background: 'transparent',
             overflow: 'visible !important',
+            boxShadow: 'none',
             top: '62px !important',
           },
         }}
@@ -827,7 +825,23 @@ const Modules = () => {
       {isScreeningEnabled && <ScreeningModule />}
       <HiringTeamModule />
       <EmailTemplatesModule />
+      <WorkflowModule />
     </>
+  );
+};
+
+const WorkflowModule = () => {
+  const { job } = useJobDetails();
+  const { push } = useRouter();
+  const handleClick = () => {
+    push(ROUTES['/jobs/[id]/workflows']({ id: job?.id }));
+  };
+  return (
+    <ModuleCard
+      onClickCard={{ onClick: () => handleClick() }}
+      textName={'Workflows'}
+      slotIcon={<WorkflowIcon />}
+    />
   );
 };
 
@@ -1063,7 +1077,7 @@ const ProfileScoreModule = () => {
             <CircularProgress
               color='inherit'
               size={'15px'}
-              sx={{ color: palette.grey[400] }}
+              sx={{ color: 'var(--neutral-6)' }}
             />
           )}
         </>

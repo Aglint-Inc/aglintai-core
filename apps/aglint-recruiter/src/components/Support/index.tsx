@@ -13,6 +13,8 @@
 // import React, { useState } from 'react';
 // import { useEffect } from 'react';
 
+// import SupportEmptyLottie from '@/public/lottie/supportEmptyLottie';
+
 // import { AllTickets } from '@/devlink/AllTickets';
 // import { Assignee } from '@/devlink/Assignee';
 // import { InboxTickets } from '@/devlink/InboxTickets';
@@ -36,7 +38,6 @@
 
 // import Loader from '../Common/Loader';
 // import { capitalize } from '../JobApplicationsDashboard/utils';
-// import SupportEmptyLottie from './EmptyLottie';
 // import SupportTicketDetails from './SupportTicket';
 // dayjs.extend(relativeTime);
 
@@ -250,7 +251,7 @@ export default Support;
 //       slotIssue={
 //         <LineText
 //           line='two'
-//           color={palette.grey[600]}
+//           color={'var(--neutral-11)'}
 //           text={
 //             ticket.content?.length
 //               ? // @ts-ignore
@@ -375,7 +376,7 @@ export default Support;
 //       textAssigneeName={
 //         <LineText
 //           line='one'
-//           color={palette.grey[600]}
+//           color={'var(--neutral-11)'}
 //           text={assign_to || 'Not Assigned'}
 //         />
 //       }

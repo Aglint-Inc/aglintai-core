@@ -7,4 +7,5 @@ declare function BannerAlert(props: {
   isDismiss?: Types.Visibility.VisibilityConditions;
   textButton?: React.ReactNode;
   onClickButton?: Types.Devlink.RuntimeProps;
+  isButton?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

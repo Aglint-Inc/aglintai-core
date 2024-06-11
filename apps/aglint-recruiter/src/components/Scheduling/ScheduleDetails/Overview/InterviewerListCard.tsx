@@ -9,7 +9,7 @@ import { MembersList } from '@/devlink3/MembersList';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { CustomTooltip } from '@/src/components/Common/Tooltip';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 
@@ -78,16 +78,13 @@ function InterviewerListCard({
         key={item.id + ' member'}
         title={
           <React.Fragment>
-            <Stack bgcolor={'#fff'} borderRadius={'10px'}>
+            <Stack bgcolor={'#fff'} borderRadius={'var(--space-2)'}>
               <MemberDetail
                 slotImage={
                   <MuiAvatar
                     level={fullName}
                     src={item.profile_image}
-                    variant={'circular'}
-                    width={'100%'}
-                    height={'100%'}
-                    fontSize={'14px'}
+                    variant={'circular-medium'}
                   />
                 }
                 textJobTitle={item.department}
@@ -129,7 +126,7 @@ function InterviewerListCard({
             isCorrectVisible={isAccepted}
             isWrongVisible={isDeclined}
             isDetailVisible={true}
-            isDesignationVisible={recruiterUser.user_id !== item.id}
+            isDesignationVisible={true}
             isButtonVisible={false}
             isAcceptDeclineVisibe={recruiterUser.user_id === item.id}
             isAcceptVisible={isAcceptVisible}
@@ -143,9 +140,7 @@ function InterviewerListCard({
               <MuiAvatar
                 level={fullName}
                 src={item.profile_image}
-                variant={'circular'}
-                width={'100%'}
-                height={'100%'}
+                variant={'rounded-medium'}
                 fontSize={'14px'}
               />
             }

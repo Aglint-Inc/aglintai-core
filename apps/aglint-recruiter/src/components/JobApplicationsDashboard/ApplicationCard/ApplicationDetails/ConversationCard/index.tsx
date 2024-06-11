@@ -5,9 +5,8 @@ import React, { useRef, useState } from 'react';
 import { AiTranscript } from '@/devlink/AiTranscript';
 import { InterviewTranscriptCard } from '@/devlink/InterviewTranscriptCard';
 import { UserTranscript } from '@/devlink/UserTranscript';
+import PlayStop from '@/src/components/Common/Lotties/playStopLottie';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-
-import PlayStop from '../../../Common/PlayStop';
 
 function ConversationCard({
   roleImage,
@@ -59,10 +58,7 @@ function ConversationCard({
                   <MuiAvatar
                     src={roleImage}
                     level={roleName}
-                    height={'24px'}
-                    width={'24px'}
-                    fontSize={'15px'}
-                    variant={'circular'}
+                    variant={'rounded-small'}
                   />
                 }
                 textAnswer={textForSpeech}
@@ -91,10 +87,7 @@ function ConversationCard({
                   <MuiAvatar
                     src={roleImage}
                     level={roleName}
-                    height={'24px'}
-                    width={'24px'}
-                    fontSize={'15px'}
-                    variant={'circular'}
+                    variant={'rounded-small'}
                   />
                 }
                 textQuestion={textForSpeech}

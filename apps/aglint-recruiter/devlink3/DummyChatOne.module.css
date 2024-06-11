@@ -40,7 +40,21 @@
 
 .embed_flex {
   display: flex;
+  overflow: hidden;
+  width: var(--space-5);
+  height: var(--space-5);
   align-items: center;
+
+  border-radius: var(--radius-2);
+
+  color: var(--neutral-a11);
+
+  cursor: pointer;
+}
+
+.embed_flex:hover {
+  background-color: var(--neutral-a3);
+  color: var(--neutral-a12);
 }
 
 .embed_flex.hide {
@@ -69,6 +83,14 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.embed_flex.fixedd {
+  width: 23px;
+}
+
 .chat_content {
   display: flex;
   width: 100%;
@@ -95,11 +117,6 @@
   font-weight: 600;
 }
 
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
 .fw-semibold.relative_2 {
   position: relative;
   z-index: 2;
@@ -111,6 +128,10 @@
 
 .fw-semibold.capitalize {
   text-transform: capitalize;
+}
+
+.text-red-600 {
+  color: #cc3340;
 }
 
 .fw-semibold.text-purple {
@@ -133,6 +154,15 @@
   color: #d93f4c;
 }
 
+.text-lg {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.text-grey_600 {
+  color: var(--sand-11);
+}
+
 .text-grey_400 {
   color: #c2c8cc;
 }
@@ -143,9 +173,21 @@
   object-fit: cover;
 }
 
+.image_cover.rounded {
+  border-radius: 100px;
+}
+
 .link {
   color: #337fbd;
   cursor: pointer;
+}
+
+.link.text-underline {
+  text-decoration: underline;
+}
+
+.text-underline {
+  text-decoration: underline;
 }
 
 .widget_flex {
@@ -191,12 +233,38 @@
 }
 
 .text-sm {
-  font-size: 12px;
-  line-height: 16px;
+  font-size: var(--font-size-1);
+  line-height: var(--line-height-1);
+  letter-spacing: var(--letter-spacing-1);
 }
 
 .text-sm.color-grey-600 {
+  color: var(--sand-11);
+}
+
+.color-grey-600 {
   color: #68737d;
+}
+
+.text-sm.text-capitalize {
+  text-transform: uppercase;
+}
+
+.text-sm.text-underline {
+  text-decoration: underline;
+}
+
+.text-grey-600 {
+  color: #68737d;
+}
+
+.text-sm.text-underline.text-grey-600.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-sm.text-underline.text-grey-600.cursor-pointer:hover {
+  opacity: 0.8;
 }
 
 .slotavatar_group {
@@ -237,12 +305,17 @@
   height: 12px;
 }
 
-.text-grey_600 {
-  color: #68737d;
-}
-
 .text-grey_600.hide {
   display: none;
+}
+
+.text-grey_600.width-80px {
+  width: 80px;
+}
+
+.text-grey_600.text-underline-copy {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .noti_avatar {

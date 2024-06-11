@@ -1,8 +1,6 @@
-import { Stack } from '@mui/material';
-import { IconCategory } from '@tabler/icons-react';
 import { useState } from 'react';
 
-import { ButtonTextRegular } from '@/devlink/ButtonTextRegular';
+import { ButtonSurface } from '@/devlink2/ButtonSurface';
 import { PageLayout } from '@/devlink2/PageLayout';
 import Seo from '@/src/components/Common/Seo';
 import Integrations from '@/src/components/Integrations';
@@ -23,18 +21,18 @@ function IntegrationsPage() {
       <PageLayout
         slotTopbarLeft={'Integrations'}
         slotTopbarRight={
-          <Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
-            <ButtonTextRegular
-              onClickButton={{
-                onClick: () => {
-                  setIsOpen(true);
-                },
-              }}
-              slotStartIcon={<IconCategory />}
-              isStartIcon={true}
-              textLabel={'Request Integration'}
-            />
-          </Stack>
+          <ButtonSurface
+            size='2'
+            isRightIcon={false}
+            onClickButton={{
+              onClick: () => {
+                setIsOpen(true);
+              }
+            }}
+            isLeftIcon={true}
+            iconName={'outgoing_mail'}
+            textButton={'Request Integration'}
+          />
         }
         slotBody={<Integrations />}
       />

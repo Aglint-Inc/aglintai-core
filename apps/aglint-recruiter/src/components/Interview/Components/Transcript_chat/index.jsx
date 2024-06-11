@@ -8,9 +8,8 @@ import { AiCardScript } from '@/Interview_devlink/AiCardScript';
 import { InterviewerCardScript } from '@/Interview_devlink/InterviewerCardScript';
 import { TranscriptBlock } from '@/Interview_devlink/TranscriptBlock';
 import { UserCardScript } from '@/Interview_devlink/UserCardScript';
+import PlayStop from '@/src/components/Common/Lotties/playStopLottie';
 import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
-
-import PlayStop from '../PlayStop';
 
 function Transcript_chat() {
   const { interviewerIndex, conversations } = useInterviewPrep();
@@ -45,10 +44,10 @@ function Transcript_chat() {
                     wrapperStyle={{
                       direction: 'row',
                       justifyContent: 'space-between',
-                      p: '10px',
+                      p: 'var(--space-2)',
                       pr: 0,
-                      borderRadius: '8px',
-                      bgcolor: 'grey.600',
+                      borderRadius: 'var(--radius-4)',
+                      bgcolor: 'var(--neutral-3)',
                     }}
                   />
                 )}

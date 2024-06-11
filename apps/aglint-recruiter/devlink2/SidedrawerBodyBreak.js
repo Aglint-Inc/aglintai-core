@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./SidedrawerBodyBreak.module.css";
 
@@ -13,9 +15,7 @@ export function SidedrawerBodyBreak({
         className={_utils.cx(_styles, "input_and_label")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Break Duration"}
-        </_Builtin.Block>
+        <Text content="Break Duration" weight="" />
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_input_field")}
           tag="div"

@@ -19,11 +19,11 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import {
+  FilterType,
   setFilter,
   setFilterVisible,
   useFilterCandidateStore,
 } from '../../filter-store';
-import { FilterType } from '../../store';
 
 export type UserType = {
   user_id: string;
@@ -145,15 +145,15 @@ function FilterCordinator() {
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
-            borderRadius: '10px',
-            borderColor: '#E9EBED',
+            borderRadius: 'var(--radius-4)',
+            borderColor: 'var(--neutral-6)',
             minWidth: '176px',
           },
         }}
       >
         <FilterDropdown
           slotOption={
-            <Stack width={'450px'} p={'4px'}>
+            <Stack width={'450px'} p={'var(--space-1)'}>
               <Autocomplete
                 multiple
                 id='tags-standard'
@@ -190,10 +190,7 @@ function FilterCordinator() {
                             option.last_name,
                           )}
                           src={option.profile_image}
-                          variant={'circular'}
-                          width={'20px'}
-                          height={'20px'}
-                          fontSize={'14px'}
+                          variant={'rounded-small'}
                         />
                       }
                       textMemberName={getFullName(
@@ -211,13 +208,13 @@ function FilterCordinator() {
                         width={'100%'}
                         justifyContent={'space-between'}
                         alignItems={'center'}
-                        spacing={'4px'}
+                        spacing={'var(--space-1)'}
                       >
                         <Stack
                           direction={'row'}
                           justifyContent={'space-between'}
                           alignItems={'center'}
-                          spacing={'4px'}
+                          spacing={'var(--space-1)'}
                         >
                           <MuiAvatar
                             level={getFullName(
@@ -225,12 +222,9 @@ function FilterCordinator() {
                               option.last_name,
                             )}
                             src={option.profile_image}
-                            variant={'circular'}
-                            width={'20px'}
-                            height={'20px'}
-                            fontSize={'14px'}
+                            variant={'rounded-small'}
                           />
-                          <Typography variant='body2'>
+                          <Typography variant='body1'>
                             {getFullName(option.first_name, option.last_name)}
                           </Typography>
                         </Stack>
@@ -253,9 +247,9 @@ function FilterCordinator() {
                     }
                     InputProps={{
                       ...params.InputProps,
-                      style: {
-                        minHeight: '50px',
-                      },
+                      // style: {
+                      //   minHeight: '50px',
+                      // },
                     }}
                     onChange={(e) => {
                       setText(e.target.value);

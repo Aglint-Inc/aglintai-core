@@ -2,7 +2,7 @@ import { DatabaseTable } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 
@@ -56,7 +56,7 @@ export const getCandidateLogger = (
       };
     }
     if (
-      title_attr['{candidate}'].length === 0 &&
+      title_attr['{candidate}'] &&
       Object.keys(title_attr).includes('{candidate}')
     ) {
       title_attr['{candidate}'] = candidate_name;

@@ -1,3 +1,4 @@
+import { DatabaseTable } from '@aglint/shared-types';
 import { Popover, Stack, Typography } from '@mui/material';
 import React from 'react';
 
@@ -7,11 +8,11 @@ import { FilterDropdown } from '@/devlink2/FilterDropdown';
 
 import {
   FilterCandidateState,
+  FilterType,
   setFilter,
   setFilterVisible,
   useFilterCandidateStore,
 } from '../../filter-store';
-import { FilterType } from '../../store';
 
 function FilterStatus() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -42,7 +43,7 @@ function FilterStatus() {
   };
 
   const renderStatus = (
-    status: FilterCandidateState['filter']['status'][0],
+    status: DatabaseTable['interview_meeting']['status'],
     label: string,
   ) => {
     return (
@@ -126,8 +127,8 @@ function FilterStatus() {
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
-            borderRadius: '10px',
-            borderColor: '#E9EBED',
+            borderRadius: 'var(--radius-4)',
+            borderColor: 'var(--neutral-6)',
             minWidth: '176px',
           },
         }}
@@ -135,9 +136,10 @@ function FilterStatus() {
         <FilterDropdown
           slotOption={
             <>
-              {renderStatus('ongoing', 'Ongoing')}
-              {renderStatus('not_scheduled', 'Not Scheduled')}
+              {renderStatus('waiting', 'Waiting')}
+              {renderStatus('confirmed', 'Confirmed')}
               {renderStatus('completed', 'Completed')}
+              {renderStatus('cancelled', 'Cancelled')}
             </>
           }
           onClickDelete={{

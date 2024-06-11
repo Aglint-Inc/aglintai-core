@@ -1,5 +1,9 @@
 /* eslint-disable no-unused-vars */
-import { DatabaseEnums, DatabaseTableUpdate } from '@aglint/shared-types';
+import {
+  DatabaseEnums,
+  DatabaseTable,
+  DatabaseTableUpdate,
+} from '@aglint/shared-types';
 import {
   RecruiterRelationsType,
   RecruiterType,
@@ -7,6 +11,7 @@ import {
   SocialsType,
 } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
@@ -24,6 +29,7 @@ import {
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { API_getMembersWithRole } from '@/src/pages/api/getMembersWithRole/type';
 import { API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
+import { emailTemplateQueries } from '@/src/queries/email-templates';
 import { featureFlag } from '@/src/utils/Constants';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
@@ -73,6 +79,10 @@ export interface ContextValue {
   isAssessmentEnabled: boolean;
   isScreeningEnabled: boolean;
   isSchedulingEnabled: boolean;
+  emailTemplates: UseQueryResult<
+    DatabaseTable['company_email_template'][],
+    Error
+  >;
 }
 
 const defaultProvider = {
@@ -101,6 +111,7 @@ const defaultProvider = {
   isAssessmentEnabled: false,
   isScreeningEnabled: false,
   isSchedulingEnabled: false,
+  emailTemplates: undefined,
 };
 
 export const useAuthDetails = () => useContext(AuthContext);
@@ -159,7 +170,7 @@ const AuthProvider = ({ children }) => {
     const { data: recruiterRel, error: errorRel } = await supabase
       .from('recruiter_relation')
       .select(
-        '*, recruiter(*),recruiter_user!public_recruiter_relation_user_id_fkey(*), roles(name,role_permissions(permissions(name)))',
+        '*, recruiter(*), recruiter_user!public_recruiter_relation_user_id_fkey(*), roles(name,role_permissions(permissions(name)))',
       )
       .match({ user_id: userDetails.user.id, is_active: true })
       .single();
@@ -362,6 +373,10 @@ const AuthProvider = ({ children }) => {
     }
   }, [router.pathname, userDetails]);
 
+  const emailTemplates = useQuery(
+    emailTemplateQueries.emailTemplates(recruiter_id),
+  );
+
   return (
     <AuthContext.Provider
       value={{
@@ -389,6 +404,7 @@ const AuthProvider = ({ children }) => {
         isAssessmentEnabled,
         isScreeningEnabled,
         isSchedulingEnabled,
+        emailTemplates,
       }}
     >
       {loading ? <AuthLoader /> : children}

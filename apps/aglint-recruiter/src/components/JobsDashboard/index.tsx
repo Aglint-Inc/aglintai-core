@@ -15,6 +15,7 @@ import Loader from '../Common/Loader';
 import UITextField from '../Common/UITextField';
 import { stepObj } from '../SignUpComp/SlideSignup/utils';
 import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
+import FilterJobDashboard, { useJobFilterAndSort } from './Filters';
 import JobsList from './JobsList';
 import { searchJobs, sortJobs } from './utils';
 
@@ -79,6 +80,16 @@ const DashboardComp = () => {
     }
   };
 
+  const {
+    jobs,
+    filterOptions,
+    filterValues,
+    setFilterValues,
+    setSort,
+    sortOptions,
+    sortValue,
+  } = useJobFilterAndSort(filteredJobs);
+
   return (
     <Stack height={'100%'} width={'100%'}>
       {!initialLoad ? (
@@ -101,7 +112,17 @@ const DashboardComp = () => {
             <Stack height={'100%'} direction={'row'}>
               <SubNavBar />
               <JobsDashboard
-                slotAllJobs={<JobsList jobs={filteredJobs} />}
+                slotFilters={
+                  <FilterJobDashboard
+                    filterOptions={filterOptions}
+                    filterValues={filterValues}
+                    setFilterValues={setFilterValues}
+                    setSort={setSort}
+                    sortOptions={sortOptions}
+                    sortValue={sortValue}
+                  />
+                }
+                slotAllJobs={<JobsList jobs={jobs} />}
                 slotSearchInputJob={
                   <Stack maxWidth={'260px'} width={'312px'}>
                     <UITextField
@@ -117,13 +138,9 @@ const DashboardComp = () => {
                           </InputAdornment>
                         ),
                       }}
-                      borderRadius={10}
-                      height={42}
                     />
                   </Stack>
                 }
-                // isJobCountTagVisible={filteredJobs?.length > 0}
-                // jobCount={filteredJobs?.length}
                 textJobsHeader={
                   router.query.status == 'published'
                     ? 'Published Jobs'

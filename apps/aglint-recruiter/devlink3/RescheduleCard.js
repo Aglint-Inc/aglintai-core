@@ -1,6 +1,10 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
+import { ButtonSolid } from "./ButtonSolid";
+import { ButtonSoft } from "./ButtonSoft";
+import { ButtonSurface } from "./ButtonSurface";
 import * as _utils from "./utils";
 import _styles from "./RescheduleCard.module.css";
 
@@ -22,91 +26,75 @@ export function RescheduleCard({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "div-block-1639")}
+      className={_utils.cx(_styles, "requested_reschedule")}
       tag="div"
       {...bgColorProps}
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1641")}
+        className={_utils.cx(_styles, "reschedule_request_name")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1640")}
-          tag="div"
-        >
-          {slotProfileImage}
+        <_Builtin.Block className={_utils.cx(_styles, "avatar-24")} tag="div">
+          {slotProfileImage ?? (
+            <_Builtin.Image
+              loading="lazy"
+              width="auto"
+              height="auto"
+              alt=""
+              src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d8b0e9a0e9f0451bc3536c_user2.png"
+            />
+          )}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1684")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold", "name-text")}
-            tag="div"
-          >
-            {textName}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-            {...textColorProps}
-          >
-            {textReschedule}
+          <Text content={textName} weight="medium" color="neutral-12" />
+          <_Builtin.Block tag="div" {...textColorProps}>
+            <Text content={textReschedule} weight="" />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1642")}
+        className={_utils.cx(_styles, "request-reason")}
         tag="div"
       >
-        <_Builtin.Block tag="div">{"Reason :"}</_Builtin.Block>
-        <_Builtin.Block tag="div">{textReason}</_Builtin.Block>
+        <Text content="Reason :" weight="" color="neutral" />
+        <Text content={textReason} weight="" />
       </_Builtin.Block>
       {isButtonVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1643")}
+          className={_utils.cx(_styles, "action_buttons")}
           tag="div"
         >
           {isRescheduleBtnVisible ? (
-            <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "text-blue-500",
-                "text-underline",
-                "cursor-pointer"
-              )}
-              tag="div"
-              {...onClickRescheduleNow}
-            >
-              {"Reschedule Now"}
+            <_Builtin.Block tag="div">
+              <ButtonSolid
+                onClickButton={onClickRescheduleNow}
+                size="1"
+                textButton="Reschedule Now"
+              />
             </_Builtin.Block>
           ) : null}
           {isChangeInterviewerVisible ? (
-            <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "text-grey-600",
-                "text-underline",
-                "cursor-pointer"
-              )}
-              tag="div"
-              {...onClickChangeInterviewer}
-            >
-              {"Change interviewer"}
+            <_Builtin.Block tag="div">
+              <ButtonSoft
+                onClickButton={onClickChangeInterviewer}
+                size="1"
+                textButton="Change Interviewer"
+              />
             </_Builtin.Block>
           ) : null}
           {isCancelVisible ? (
-            <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "text-grey-600",
-                "text-underline",
-                "cursor-pointer"
-              )}
-              tag="div"
-              {...onClickCancel}
-            >
-              {"Cancel"}
+            <_Builtin.Block tag="div">
+              <ButtonSurface
+                onClickButton={onClickCancel}
+                size="1"
+                color="neutal"
+                isRightIcon={false}
+                isLeftIcon={false}
+                textButton="Ignore"
+              />
             </_Builtin.Block>
           ) : null}
         </_Builtin.Block>

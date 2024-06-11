@@ -26,34 +26,6 @@
   z-index: 1;
 }
 
-.text-lg {
-  font-size: 18px;
-  line-height: 1.33;
-}
-
-@media screen and (max-width: 991px) {
-  .text-lg {
-    font-size: 16px;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .text-lg {
-    font-size: 16px;
-  }
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
-}
-
 .text-underline {
   transition: all 250ms ease;
   text-decoration: underline;
@@ -62,6 +34,12 @@
 
 .text-underline:hover {
   opacity: 0.7;
+}
+
+@media screen and (max-width: 479px) {
+  .text-grey-600.mob {
+    font-size: 12px;
+  }
 }
 
 .div-block-1668 {
@@ -83,6 +61,17 @@
 
 .div-block-1677.hide {
   display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .div-block-1676 {
@@ -109,6 +98,14 @@
   align-items: center;
 }
 
+.icons.cursor-pointer.no-trans {
+  transition-property: none;
+}
+
+.icons.cursor-pointer.no-transition {
+  transition-property: none;
+}
+
 .icons.ml-4 {
   margin-left: 4px;
 }
@@ -116,10 +113,6 @@
 .icons.relative-1 {
   position: relative;
   z-index: 1;
-}
-
-.icons.ml--6 {
-  margin-left: -6px;
 }
 
 .icons.hide {
@@ -130,14 +123,18 @@
   cursor: pointer;
 }
 
-.text-blue-500 {
-  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
+.icons.closediv {
+  position: absolute;
+  left: auto;
+  top: -7px;
+  right: -7px;
+  bottom: auto;
+
+  cursor: pointer;
 }
 
-.inline-block {
-  display: inline;
-  margin-right: 2px;
-  margin-left: 2px;
+.text-blue-500 {
+  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
 }
 
 .clickable {
@@ -151,8 +148,4 @@
 
 .text-blue-500.ml-12 {
   margin-left: 8px;
-}
-
-.text-no-wrap {
-  white-space: nowrap;
 }

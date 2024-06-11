@@ -6,6 +6,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 import {
+  DatabaseTable,
   DB,
   InterviewMeetingTypeDb,
   InterviewPlanTypeDB,
@@ -22,10 +23,10 @@ import toast from '@/src/utils/toast';
 import { getScheduleName } from '../utils';
 import {
   SchedulingApplication,
+  setAvailabilities,
   setFetchingSchedule,
   setinitialSessions,
   setScheduleName,
-  setSelCoordinator,
   setSelectedApplication,
   setSelectedSchedule,
 } from './store';
@@ -120,6 +121,7 @@ export const useGetScheduleApplication = () => {
             router.query.application_id as string,
             supabase,
           );
+          setAvailabilities(sessionsWithPlan.availabilities);
           setSelectedApplication(sessionsWithPlan.application);
           setScheduleName(schedule[0].schedule_name);
           if (sessionsWithPlan?.sessions?.length > 0) {
@@ -129,10 +131,6 @@ export const useGetScheduleApplication = () => {
                   itemA['session_order'] - itemB['session_order'],
               ),
             );
-
-            if (schedule[0].coordinator_id) {
-              setSelCoordinator(schedule[0].coordinator_id);
-            }
           }
         }
       }
@@ -211,6 +209,7 @@ export const fetchInterviewDataSchedule = async (
       data: {
         interview_data: InterviewDataResponseType[];
         application_data: ApplicationDataResponseType;
+        request_data: DatabaseTable['candidate_request_availability'][];
       };
       error: any;
     };
@@ -242,6 +241,7 @@ export const fetchInterviewDataSchedule = async (
         candidates: data.application_data?.candidate,
         public_jobs: data.application_data?.public_jobs,
       } as SchedulingApplication['selectedApplication'],
+      availabilities: data.request_data,
     };
   } catch (e) {
     toast.error(e.message);

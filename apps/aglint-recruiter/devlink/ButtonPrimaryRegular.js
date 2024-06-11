@@ -1,6 +1,8 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./ButtonPrimaryRegular.module.css";
 
@@ -30,7 +32,7 @@ export function ButtonPrimaryRegular({
       {...wrapperProps}
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "aui-button", "is-button-bg-blue")}
+        className={_utils.cx(_styles, "aui-button", "accent-10")}
         tag="div"
         tabIndex={tabIndex}
         {...onClickButton}
@@ -43,9 +45,7 @@ export function ButtonPrimaryRegular({
             {slotStartIcon}
           </_Builtin.Block>
         ) : null}
-        <_Builtin.Block className={_utils.cx(_styles, "text-md")} tag="div">
-          {textLabel}
-        </_Builtin.Block>
+        <Text content={textLabel} />
         {isEndIcon ? (
           <_Builtin.Block
             className={_utils.cx(_styles, "button-icon", "is-large")}
@@ -69,7 +69,7 @@ export function ButtonPrimaryRegular({
               {slotStartIcon}
             </_Builtin.Block>
           ) : null}
-          <_Builtin.Block tag="div">{textLabel}</_Builtin.Block>
+          <Text content={textLabel} />
           {isEndIcon ? (
             <_Builtin.Block
               className={_utils.cx(_styles, "button-icon")}

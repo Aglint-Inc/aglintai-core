@@ -10,7 +10,7 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import ScheduleProgress from '../../Common/ScheduleProgress';
-import { ApplicationList } from '../store';
+import { ApplicationList } from '../utils';
 
 function ListCardInterviewSchedule({
   app,
@@ -66,7 +66,7 @@ function ListCardInterviewSchedule({
       textName={getFullName(
         app.candidates.first_name,
         app.candidates.last_name,
-      ).toLowerCase()}
+      )}
       slotCandidateImage={
         <Stack
           width={'100%'}

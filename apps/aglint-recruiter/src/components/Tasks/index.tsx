@@ -12,7 +12,7 @@ function Tasks() {
       <PageLayout
         slotTopbarLeft={<Typography variant='body1'>Tasks</Typography>}
         slotTopbarRight={
-          <Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
+          <Stack direction={'row'} alignItems={'center'} spacing={'var(--space-2)'}>
             <Typography
               variant='caption'
               fontSize={'14px'}

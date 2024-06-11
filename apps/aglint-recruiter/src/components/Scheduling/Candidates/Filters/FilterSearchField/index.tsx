@@ -13,6 +13,7 @@ function FilterSearchField() {
   return (
     <>
       <UITextField
+        height={32}
         InputProps={{
           endAdornment: (
             <InputAdornment position='end'>
@@ -25,8 +26,6 @@ function FilterSearchField() {
         onChange={(e) => {
           setFilter({ textSearch: e.target.value });
         }}
-        borderRadius={10}
-        height={42}
         width='250px'
       />
     </>

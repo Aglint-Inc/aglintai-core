@@ -37,21 +37,6 @@
   display: flex;
 }
 
-.embed_flex.rotate_180 {
-  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
-  transform-style: preserve-3d;
-}
-
-.embed_flex.with_bg {
-  position: relative;
-  z-index: 2;
-}
-
-.embed_flex.with_bg.rotate-180 {
-  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
-  transform-style: preserve-3d;
-}
-
 .embed_flex.relative_3 {
   position: relative;
   z-index: 3;
@@ -103,6 +88,8 @@
 
   border: 1px solid #d8dcde;
   border-radius: 4px;
+
+  background-color: white;
 
   color: hsla(208.57142857142856, 0.00%, 72.24%, 1.00);
 }

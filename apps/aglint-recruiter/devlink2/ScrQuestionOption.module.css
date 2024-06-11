@@ -63,11 +63,11 @@
   right: 0%;
   bottom: 0%;
 
-  background-color: var(--white);
+  background-color: var(--white\<deleted\|variable-c31c6fe9\>);
 }
 
 .text-gray-700 {
-  color: var(--gray-700);
+  color: var(--gray-700\<deleted\|variable-2a684da2\>);
 }
 
 .scr-option-add-icon-wrapper {
@@ -92,33 +92,6 @@
   bottom: 0%;
 }
 
-.svg-icon.sort-filled {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-  z-index: 99;
-
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
-.text-red-500 {
-  color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
-}
-
-.text-blue-500 {
-  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
-}
-
-.text-green-500 {
-  color: hsla(157.9816513761468, 61.58%, 34.71%, 1.00);
-}
-
-.text-fuschia-600 {
-  color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
-}
-
 .scr-option-bg {
   position: absolute;
   left: 0%;
@@ -126,14 +99,14 @@
   right: 0%;
   bottom: 0%;
 
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--gray-200\<deleted\|variable-3840583c-89f0-f2aa-8e30-4c0dcd4dc1fb\>);
   border-radius: 6px;
 
-  background-color: var(--white);
+  background-color: var(--white\<deleted\|variable-c31c6fe9\>);
 }
 
 .scr-option-bg.acitve {
   z-index: 2;
-  border-color: var(--green-200);
-  background-color: var(--green-100);
+  border-color: var(--green-200\<deleted\|variable-251cde79-960d-7461-7113-60c4436f8538\>);
+  background-color: var(--green-100\<deleted\|variable-002b4df1\>);
 }

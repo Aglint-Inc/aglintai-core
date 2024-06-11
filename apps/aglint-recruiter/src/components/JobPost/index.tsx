@@ -27,13 +27,12 @@ import { InterviewCompleted } from '@/devlink/InterviewCompleted';
 import { JobListing } from '@/devlink/JobListing';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { OpenJobListingCard } from '@/devlink/OpenJobListingCard';
-import { palette } from '@/src/context/Theme/Theme';
+import ThankYou from '@/public/lottie/ThankYouLottie';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Icon from '../Common/Icons/Icon';
-import ThankYou from './ThankYouLottie';
 import UploadDB from './UploadDB';
 
 interface JobsListProps {
@@ -128,15 +127,15 @@ const JobPostPublic: React.FC<JobsListProps> = ({
                   variant='rounded'
                   src={recruiter?.logo}
                   sx={{
-                    p: '4px',
+                    p: 'var(--space-1)',
                     color: 'common.black',
                     '& .MuiAvatar-img ': {
                       objectFit: 'contain',
                     },
                     height: '78px',
                     width: '78px',
-                    borderRadius: '8px',
-                    // background: palette.grey[100],
+                    borderRadius: 'var(--radius-4)',
+                    // background={'var(--neutral-1)'},
                   }}
                 >
                   <Icon
@@ -148,7 +147,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({
                 <Typography variant='h3'>
                   {(recruiter as { name: string })?.name}
                 </Typography>
-                <Typography variant='body2'>
+                <Typography variant='body1'>
                   {[
                     (
                       recruiter as {
@@ -218,7 +217,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({
               variant='rounded'
               src={post?.logo || recruiter?.logo}
               sx={{
-                p: '4px',
+                p: 'var(--space-1)',
                 color: 'common.black',
                 '& .MuiAvatar-img ': {
                   objectFit: 'contain',
@@ -300,14 +299,14 @@ const JobPostPublic: React.FC<JobsListProps> = ({
               variant='rounded'
               src={''}
               sx={{
-                p: '4px',
+                p: 'var(--space-1)',
                 color: 'common.black',
                 '& .MuiAvatar-img ': {
                   objectFit: 'contain',
                 },
                 height: '58px',
                 width: '58px',
-                background: palette.grey[200],
+                background: 'var(--neutral-3)',
               }}
             >
               <Icon variant='Person' />
@@ -376,7 +375,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({
             },
           }}
           slotSocialLink={
-            <Stack direction={'row'} spacing={'10px'}>
+            <Stack direction={'row'} spacing={'var(--space-2)'}>
               <LinkedinShareButton
                 style={{ padding: 0, margin: 0 }}
                 title={`Job Post - ${post.job_title}`}

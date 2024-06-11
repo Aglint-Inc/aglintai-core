@@ -17,7 +17,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { FilterType } from '../../../Candidates/store';
+import { FilterType } from '../../../Candidates/filter-store';
 import { setCreatedBy, useFilterModuleStore } from '../../filter-store';
 
 type UserType = {
@@ -135,8 +135,8 @@ function FilterCreatedBy() {
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
-            borderRadius: '10px',
-            borderColor: '#E9EBED',
+            borderRadius: 'var(--radius-4)',
+            borderColor: 'var(--neutral-6)',
             minWidth: '176px',
           },
         }}
@@ -185,10 +185,7 @@ function FilterCreatedBy() {
                       <MuiAvatar
                         src={item.profile_image}
                         level={getFullName(item.first_name, item.last_name)}
-                        variant='circular'
-                        height='20px'
-                        width='20px'
-                        fontSize='10px'
+                        variant='rounded-small'
                       />
                       <Typography variant='body1'>
                         {capitalize(item.first_name)}
@@ -223,10 +220,7 @@ function FilterCreatedBy() {
                     <MuiAvatar
                       src={item.profile_image}
                       level={getFullName(item.first_name, item.last_name)}
-                      variant='circular'
-                      height='20px'
-                      width='20px'
-                      fontSize='10px'
+                      variant='rounded-small'
                     />
                     <Typography variant='body1'>
                       {capitalize(item.first_name)}

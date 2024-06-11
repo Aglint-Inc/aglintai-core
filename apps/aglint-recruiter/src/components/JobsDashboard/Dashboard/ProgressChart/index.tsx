@@ -12,7 +12,7 @@ function ProgressChart({ score_matches }) {
   return (
     <>
       <Stack
-        borderRadius={'20px'}
+        borderRadius={'var(--radius-4)'}
         // bgcolor={'grey.200'}
         direction={'row'}
         width={'100%'}
@@ -36,7 +36,7 @@ function ProgressChart({ score_matches }) {
               <Stack
                 width={`${widthvalue}%`}
                 bgcolor={bgColor}
-                height={'30px'}
+                height={'var(--space-6)'}
                 key={i}
                 sx={{
                   cursor: 'pointer',

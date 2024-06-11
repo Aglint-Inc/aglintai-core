@@ -11,16 +11,16 @@ export default function SubTaskCardSkeleton() {
       spacing={1}
     >
       <Grid item xs>
-        <Skeleton component={'h2'} sx={{ borderRadius: '10px' }} />
+        <Skeleton component={'h2'} sx={{ borderRadius: 'var(--radius-4)' }} />
       </Grid>
       <Grid item xs>
-        <Skeleton component={'h2'} sx={{ borderRadius: '10px' }} />
+        <Skeleton component={'h2'} sx={{ borderRadius: 'var(--radius-4)' }} />
       </Grid>
       <Grid item xs>
-        <Skeleton component={'h2'} sx={{ borderRadius: '10px' }} />
+        <Skeleton component={'h2'} sx={{ borderRadius: 'var(--radius-4)' }} />
       </Grid>
       <Grid item xs>
-        <Skeleton component={'h2'} sx={{ borderRadius: '10px' }} />
+        <Skeleton component={'h2'} sx={{ borderRadius: 'var(--radius-4)' }} />
       </Grid>
     </Grid>
   );

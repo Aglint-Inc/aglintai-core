@@ -251,10 +251,9 @@ function Interviewer() {
                       interviewerDetails.interviewer.first_name,
                       interviewerDetails.interviewer.last_name,
                     )}
-                    variant='circular'
+                    variant='rounded'
                     height='100%'
                     width='100%'
-                    fontSize='20px'
                   />
                 }
                 textTimeZone={

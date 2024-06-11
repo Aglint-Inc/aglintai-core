@@ -102,8 +102,6 @@ export const FilterHeader = ({
             onChange={(e) => {
               search.setValue(e.target.value);
             }}
-            borderRadius={10}
-            height={42}
           />
         </Stack>
       )}
@@ -223,7 +221,7 @@ export const FilterHeader = ({
                         <ShowCode.Else>
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DateCalendar
-                            views={['day']}
+                              views={['day']}
                               disablePast
                               value={dayjs(selectedDate[0])}
                               onChange={(e) => {
@@ -237,7 +235,7 @@ export const FilterHeader = ({
                         width={'100%'}
                         direction={'row'}
                         alignItems={'center'}
-                        spacing={'10px'}
+                        spacing={'var(--space-2)'}
                         justifyContent={'space-between'}
                       >
                         <Button
@@ -253,7 +251,7 @@ export const FilterHeader = ({
                         </Button>
                         <Stack
                           direction={'row'}
-                          spacing={'10px'}
+                          spacing={'var(--space-2)'}
                           alignItems={'center'}
                         >
                           <Button
@@ -379,8 +377,8 @@ function FilterDropDown({
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
-            borderRadius: '10px',
-            borderColor: '#E9EBED',
+            borderRadius: 'var(--radius-2)',
+            borderColor: 'var(--neutral-6)',
             minWidth: '176px',
             // maxHeight: '400px',
             // overflow: 'hidden',
@@ -389,7 +387,7 @@ function FilterDropDown({
       >
         <ShowCode>
           <ShowCode.When isTrue={title === 'Candidate'}>
-            <Stack px={'10px'} pt={'5px'}>
+            <Stack px={'var(--space-2)'} pt={'var(--space-1)'}>
               <TextField
                 // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={true}
@@ -593,8 +591,8 @@ const SortDropDown = ({
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
-            borderRadius: '10px',
-            borderColor: '#E9EBED',
+            borderRadius: 'var(--radius-2)',
+            borderColor: 'var(--neutral-6)',
             minWidth: '176px',
             // maxHeight: '400px',
             // overflow: 'hidden',
@@ -713,8 +711,8 @@ const SortOptionsDropDown = ({
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
-            borderRadius: '10px',
-            borderColor: '#E9EBED',
+            borderRadius: 'var(--radius-2)',
+            borderColor: 'var(--neutral-6)',
             minWidth: '176px',
           },
         }}
