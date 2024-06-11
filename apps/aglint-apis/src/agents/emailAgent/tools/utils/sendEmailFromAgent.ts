@@ -9,21 +9,14 @@ export type EmailSenderType = {
   headers: any;
   company_name: string;
   subject: string;
+  agent_email: string;
 };
 
 export const sendEmailFromAgent = async (
   payload: EmailSenderType
 ): Promise<void> => {
-  let agent_email;
-  if (envConfig.NODE_ENV === 'staging') {
-    agent_email = 'agent@ai.aglinthq.com';
-  } else if (envConfig.NODE_ENV === 'production') {
-    agent_email = 'scheduler@agent.aglint.ai';
-  } else if (envConfig.NODE_ENV === 'development') {
-    agent_email = 'agent@ai.aglinthq.com';
-  } else if (envConfig.NODE_ENV === 'development.local') {
-    agent_email = 'agent@parse.aglinthq.com';
-  }
+  const agent_email = payload.agent_email;
+
   if (!agent_email) {
     throw new Error('agent email not set');
   }

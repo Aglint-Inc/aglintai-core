@@ -32,5 +32,6 @@ export type EmailAgentPayload = {
     comp_scheduling_setting: schedulingSettingType;
     filter_id: string;
     email_subject: string;
+    agent_email: string;
   };
 };

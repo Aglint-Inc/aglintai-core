@@ -61,6 +61,7 @@ export const composeEmail = async (req: Request, res: Response) => {
       company_name: agent_payload.payload.company_name,
       headers: api_body.mail_header ?? undefined,
       subject: agent_payload.payload.email_subject,
+      agent_email: agent_payload.payload.agent_email,
     });
     return res.status(200).send('email sent');
   } catch (error: any) {

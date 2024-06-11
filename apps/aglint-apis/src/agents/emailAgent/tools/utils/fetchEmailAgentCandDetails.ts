@@ -5,6 +5,7 @@ import {getFullName} from '../../../../utils/getFullName';
 import {EmailAgentPayload} from '../../../../types/email_agent/apiPayload.types';
 import {EmailTemplateFields} from '@aglint/shared-types';
 import {supabaseWrap} from '@aglint/shared-utils';
+import {envConfig} from 'src/config';
 
 export const fetchEmailAgentCandDetails = async (
   thread_id: string,
@@ -18,14 +19,20 @@ export const fetchEmailAgentCandDetails = async (
       )
       .eq('thread_id', thread_id)
   );
+  const job =
+    cand_rec.interview_filter_json.interview_schedule.applications.public_jobs;
+  const [agent_data] = supabaseWrap(
+    await supabaseAdmin
+      .from('integrations')
+      .select()
+      .eq('recruiter_id', job.recruiter_id)
+  );
   if (!cand_rec) {
     // this email is not from candidate
     // handle this later
     return null;
   }
 
-  const job =
-    cand_rec.interview_filter_json.interview_schedule.applications.public_jobs;
   const candidate =
     cand_rec.interview_filter_json.interview_schedule.applications.candidates;
 
@@ -127,6 +134,8 @@ export const fetchEmailAgentCandDetails = async (
       comp_scheduling_setting: job.recruiter.scheduling_settings as any,
       filter_id: cand_rec.interview_filter_json.id,
       email_subject: email_details.subject,
+      agent_email:
+        envConfig.LOCAL_AGENT_EMAIL ?? agent_data.schedule_agent_email,
     },
   };
 
