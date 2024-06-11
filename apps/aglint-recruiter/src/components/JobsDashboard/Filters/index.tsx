@@ -2,8 +2,9 @@ import { Stack } from '@mui/material';
 import { useMemo, useState } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { FilterHeader } from '@/src/context/Tasks/Filters/FilterHeader';
 import { Job } from '@/src/queries/job/types';
+
+import FilterHeader from '../../Common/FilterHeader';
 
 function FilterJobDashboard({
   filterOptions,
@@ -11,14 +12,14 @@ function FilterJobDashboard({
   filterValues,
   setSort,
   sortValue,
-  sortOptions
+  sortOptions,
 }: {
   filterOptions: ReturnType<typeof useJobFilterAndSort>['filterOptions'];
   setFilterValues: ReturnType<typeof useJobFilterAndSort>['setFilterValues'];
   filterValues: ReturnType<typeof useJobFilterAndSort>['filterValues'];
   setSort: ReturnType<typeof useJobFilterAndSort>['setSort'];
   sortValue: ReturnType<typeof useJobFilterAndSort>['sortValue'];
-    sortOptions: ReturnType<typeof useJobFilterAndSort>['sortOptions'];
+  sortOptions: ReturnType<typeof useJobFilterAndSort>['sortOptions'];
 }) {
   return (
     <Stack width={'100%'}>
@@ -94,7 +95,7 @@ function FilterJobDashboard({
             });
           },
           sortOptions: sortOptions as unknown as {
-            type: string[];
+            options: string[];
             order: string[];
           },
         }}
@@ -108,14 +109,14 @@ export default FilterJobDashboard;
 export const useJobFilterAndSort = (jobs: Job[]) => {
   const { members } = useAuthDetails();
   const sortOptions = {
-    type: ['published_date', 'name'] as const,
+    options: ['published_date', 'name'] as const,
     order: ['desc', 'asce'] as const,
   };
   const [sort, setSort] = useState<{
-    type: (typeof sortOptions.type)[number];
+    option: (typeof sortOptions.options)[number];
     order: (typeof sortOptions.order)[number];
   }>({
-    type: 'published_date',
+    option: 'published_date',
     order: 'desc',
   });
   const [filterValues, setFilterValues] = useState({
@@ -265,7 +266,7 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
   ]);
   const sortedJobs = useMemo(() => {
     return filteredJobs.sort((a, b) => {
-      if (sort.type === 'name') {
+      if (sort.option === 'name') {
         return (
           a.job_title.localeCompare(b.job_title) *
           (sort.order === 'asce' ? 1 : -1)
@@ -278,7 +279,7 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
         );
       }
     });
-  }, [filteredJobs, sort.order, sort.type]);
+  }, [filteredJobs, sort.order, sort.option]);
   let filterOptions = getFilterOptions(jobs);
   return {
     sortOptions,
