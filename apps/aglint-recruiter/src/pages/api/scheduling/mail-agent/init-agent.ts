@@ -43,19 +43,16 @@ import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 import { getCandidateLogger } from '../../../../utils/scheduling_v2/getCandidateLogger';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let { cand_email, filter_json_id, interviewer_name, task_id } =
+  let { filter_json_id, task_id, recruiter_user_id } =
     req.body as InitAgentBodyParams;
   const candLogger = getCandidateLogger(task_id, '', '', 'email_agent');
   try {
-    if (!cand_email || !filter_json_id || !interviewer_name) {
+    if (!recruiter_user_id || !filter_json_id) {
       return res.status(400).send('missing fields');
     }
-    if (process.env.LOCAL_CAND_EMAIL) {
-      cand_email = process.env.LOCAL_CAND_EMAIL;
-    }
+
     const cand_details = await fetchCandDetails({
       filter_json_id,
-      candidate_email: cand_email,
     });
     if (!cand_details.email_template) {
       throw new Error('Email template not found.');
@@ -93,7 +90,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await supabaseAdmin.from('scheduling-agent-chat-history').insert({
         application_id: cand_details.application_id,
         job_id: cand_details.job_id,
-        candidate_email: cand_email,
         chat_history: [
           {
             type: 'assistant',
@@ -265,22 +261,3 @@ type CandidateScheduleDetails = InterviewFilterJsonType & {
     };
   };
 };
-
-// const fillEmailTemplate = (
-//   email_template: EmailTemplateFields,
-//   dynamic_fields: Record<string, string>,
-// ): EmailTemplateFields => {
-//   let updated_template = { ...email_template };
-//   for (let key of Object.keys(dynamic_fields)) {
-//     updated_template.subject = updated_template.subject.replaceAll(
-//       key,
-//       dynamic_fields[String(key)],
-//     );
-//     updated_template.body = updated_template.body.replaceAll(
-//       key,
-//       dynamic_fields[String(key)],
-//     );
-//   }
-
-//   return updated_template;
-// };

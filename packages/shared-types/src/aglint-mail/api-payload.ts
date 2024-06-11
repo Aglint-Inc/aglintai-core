@@ -76,7 +76,7 @@ type Payloads = {
       '{{ jobRole }}': string;
       '{{ startDate }}': string;
       '{{ endDate }}': string;
-      '{{ companyTimeZone }}': string;
+      '{{ recruiterTimeZone }}': string;
       '{{ selfScheduleLink }}': string;
     };
     react_email_placeholders: {
