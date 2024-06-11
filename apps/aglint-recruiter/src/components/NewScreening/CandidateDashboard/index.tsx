@@ -77,7 +77,7 @@ const CandidateDashboard = () => {
             },
             endAdornment: (
               <InputAdornment position='start'>
-                <GlobalIcon iconName='search' />
+                <GlobalIcon iconName='search' size='5'/>
               </InputAdornment>
             ),
           }}

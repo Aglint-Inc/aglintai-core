@@ -181,7 +181,7 @@ function Filters() {
         InputProps={{
           endAdornment: (
             <InputAdornment position='end'>
-              <GlobalIcon iconName='search' />
+              <GlobalIcon iconName='search' size='5'/>
             </InputAdornment>
           ),
         }}

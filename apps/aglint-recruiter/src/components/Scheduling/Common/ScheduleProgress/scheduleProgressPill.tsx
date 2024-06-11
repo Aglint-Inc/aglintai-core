@@ -191,7 +191,7 @@ const CancelledIcon = () => {
 const NotScheduledIcon = () => {
   return (
     // <> </>
-    <GlobalIcon iconName='calendar_today' />
+    <GlobalIcon iconName='calendar_today'  size={5} weight={'thin'}/>
     // <svg
     //   width='16'
     //   height='15'

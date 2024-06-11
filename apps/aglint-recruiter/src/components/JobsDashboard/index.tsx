@@ -125,9 +125,9 @@ const DashboardComp = () => {
                         handlerFilter(e);
                       }}
                       InputProps={{
-                        startAdornment: (
-                          <InputAdornment position='start'>
-                            <GlobalIcon iconName='search' />
+                        endAdornment: (
+                          <InputAdornment position='end'>
+                            <GlobalIcon iconName='search' size='5'/>
                           </InputAdornment>
                         ),
                       }}

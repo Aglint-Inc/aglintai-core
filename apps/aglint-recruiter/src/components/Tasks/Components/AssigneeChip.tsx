@@ -59,7 +59,7 @@ function AssigneeChip({
                 display: 'flex',
                 alignItems: 'center',
             }}>
-              <GlobalIcon iconName='computer'/>
+              <GlobalIcon iconName='computer' size={6}/>
             </Box>
           }
           textName={'System'}

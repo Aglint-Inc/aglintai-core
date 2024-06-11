@@ -54,6 +54,6 @@ export default DateSelect;
 
 export function DateIcon() {
   return (
-    <GlobalIcon iconName='calendar_today' />
+    <GlobalIcon iconName='calendar_today'  size={5} weight={'regular'}/>
   );
 }
