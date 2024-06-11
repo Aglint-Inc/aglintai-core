@@ -27,7 +27,7 @@ const JobNotFound = () => {
         Job not found
       </Typography>
       <Typography variant="body1">
-        Sorry, we couldn't find the job you're looking for. Please try searching again or contact support.
+        {`Sorry, we couldn't find the job you're looking for. Please try searching again or contact support.`}
       </Typography>
     </Container>
   );
