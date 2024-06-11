@@ -95,3 +95,6 @@ export const sendAvailabilityRequestEmailApplicantSchema = v.object({
   avail_req_id: v.string(),
   recruiter_user_id: v.string(),
 });
+export const sendAvailReqReminderEmailApplicant = v.object({
+  avail_req_id: v.string(),
+});
