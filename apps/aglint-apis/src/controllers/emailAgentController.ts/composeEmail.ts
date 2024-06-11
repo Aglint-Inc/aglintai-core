@@ -20,7 +20,6 @@ export const composeEmail = async (req: Request, res: Response) => {
   try {
     const api_body = req.body as z.infer<typeof email_agent_payload>;
     const agent_payload = await fetchEmailAgentCandDetails(
-      api_body.from_email,
       api_body.thread_id,
       api_body.email_body
     );

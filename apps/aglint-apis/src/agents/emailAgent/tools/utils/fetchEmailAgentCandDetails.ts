@@ -9,7 +9,6 @@ import {EmailAgentPayload} from '../../../../types/email_agent/apiPayload.types'
 import {EmailTemplateFields} from '@aglint/shared-types';
 
 export const fetchEmailAgentCandDetails = async (
-  cand_email: string,
   thread_id: string,
   cand_email_body: string
 ) => {
@@ -17,7 +16,7 @@ export const fetchEmailAgentCandDetails = async (
     await supabaseAdmin
       .from('scheduling-agent-chat-history')
       .select(
-        '*, interview_filter_json(* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,description,recruiter!public_jobs_recruiter_id_fkey(scheduling_settings,email_template)), candidates(email,first_name,last_name))))'
+        '*, interview_filter_json(* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,description,recruiter!public_jobs_recruiter_id_fkey(scheduling_settings,email_template)), candidates(email,first_name,last_name,timezone))))'
       )
       .eq('thread_id', thread_id)
   );
@@ -47,7 +46,7 @@ export const fetchEmailAgentCandDetails = async (
       .select('*,interview_meeting(*)')
       .in('id', filter_json.session_ids)
   );
-  console.log(sessions[0]);
+  console.log(sessions);
   if (!sessions[0].interview_meeting) {
     throw new Error('No meeting found');
   }
