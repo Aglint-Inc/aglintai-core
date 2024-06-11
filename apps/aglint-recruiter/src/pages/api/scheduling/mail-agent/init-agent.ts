@@ -94,7 +94,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         message: email_details.html,
       },
     );
-
     return res.status(200).send('ok');
   } catch (error) {
     console.error(error);

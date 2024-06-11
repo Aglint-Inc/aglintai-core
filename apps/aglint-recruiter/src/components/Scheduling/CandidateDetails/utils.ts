@@ -679,6 +679,7 @@ export const scheduleWithAgent = async ({
           dateRange,
           session_ids: createCloneRes.session_ids,
           recruiter_id,
+          rec_user_id: rec_user_id,
         });
       } else {
         console.log('fetchInterviewDataSchedule');
@@ -773,6 +774,7 @@ export const scheduleWithAgent = async ({
           dateRange,
           session_ids,
           recruiter_id,
+          rec_user_id: rec_user_id,
         });
       }
       return true;
@@ -918,6 +920,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
           dateRange,
           recruiter_id,
           session_ids: createCloneRes.session_ids,
+          rec_user_id: rec_user_id,
         });
       } else {
         console.log('fetchInterviewDataSchedule');
@@ -1001,6 +1004,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
           dateRange,
           recruiter_id,
           session_ids,
+          rec_user_id: rec_user_id,
         });
       }
       return true;
@@ -1137,6 +1141,7 @@ export const agentTrigger = async ({
   recruiter_id,
   session_ids,
   candidate,
+  rec_user_id,
 }: {
   type: 'email_agent' | 'phone_agent';
   filterJsonId: string;
@@ -1147,6 +1152,7 @@ export const agentTrigger = async ({
   jobRole: string;
   candidate_email: string;
   rec_user_phone: string;
+  rec_user_id: string;
   dateRange: {
     start_date: string;
     end_date: string;
@@ -1189,10 +1195,9 @@ export const agentTrigger = async ({
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/mail-agent/init-agent`,
         {
-          cand_email: candidate_email,
           filter_json_id: filterJsonId,
-          interviewer_name: recruiter_user_name,
           task_id: task_id,
+          recruiter_user_id: rec_user_id,
         } as InitAgentBodyParams,
       );
 
