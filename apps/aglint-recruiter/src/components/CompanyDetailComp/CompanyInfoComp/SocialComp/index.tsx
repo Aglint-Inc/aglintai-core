@@ -9,11 +9,9 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { AddSocialLink } from '@/devlink/AddSocialLink';
 import { NewSocialLinkPop } from '@/devlink/NewSocialLinkPop';
 import UITextField from '@/src/components/Common/UITextField';
-import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 import { debouncedSave } from '../../utils';
-import { Padding } from '@mui/icons-material';
 
 const SocialComp = ({ setIsSaving }) => {
   const { recruiter, setRecruiter } = useAuthDetails();
@@ -267,7 +265,7 @@ const SocialComp = ({ setIsSaving }) => {
               key={socialName}
               direction={'row'}
               alignItems={'start'}
-              justifyContent= {'center'}
+              justifyContent= {'left'}
               gap={1}
             >
               <Box

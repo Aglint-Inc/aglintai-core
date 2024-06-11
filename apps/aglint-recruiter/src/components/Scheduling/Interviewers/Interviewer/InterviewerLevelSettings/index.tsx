@@ -8,7 +8,6 @@ import {
   Alert,
   Autocomplete,
   Chip,
-  IconButton,
   Popover,
   Stack,
   Typography,
@@ -29,7 +28,6 @@ import { ScheduleSettings } from '@/devlink2/ScheduleSettings';
 import { TimeRangeInput } from '@/devlink2/TimeRangeInput';
 import { WorkingHourDay } from '@/devlink2/WorkingHourDay';
 import FilterInput from '@/src/components/CandidateDatabase/Search/FilterInput';
-import Icon from '@/src/components/Common/Icons/Icon';
 import UITextField from '@/src/components/Common/UITextField';
 import DateSelect from '@/src/components/Scheduling/Settings/Components/DateSelector';
 import MuiSelect from '@/src/components/Scheduling/Settings/Components/MuiSelect';
