@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 import { LoaderSvg } from '@/devlink/LoaderSvg';
-import Icon from '@/src/components/Common/Icons/Icon';
+import { GlobalIcon } from '@/devlink3/GlobalIcon';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
@@ -215,7 +215,7 @@ function ImageUpload({
                           transition: '',
                         }}
                       >
-                        <Icon variant='ReloadFilled' />
+                        <GlobalIcon iconName='restart_alt' size={4}/>
                       </Stack>
                     </FileUploader>
 
@@ -228,7 +228,7 @@ function ImageUpload({
                       }}
                       sx={{ color: 'var(--white)', cursor: 'pointer' }}
                     >
-                      <Icon variant='DeleteIcon' />
+                      <GlobalIcon iconName='delete' size={4}/>
                     </Stack>
                   </Stack>
                 )}
