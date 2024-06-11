@@ -1,8 +1,8 @@
 import { Dialog } from '@mui/material';
 import { useCallback } from 'react';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
-import { WorkflowLandingTopRIght } from '@/devlink3/WorkflowLandingTopRIght';
 import UITextField from '@/src/components/Common/UITextField';
 import { useWorkflows } from '@/src/context/Workflows';
 import { useWorkflowStore } from '@/src/context/Workflows/store';
@@ -31,8 +31,12 @@ const Create = () => {
   }, []);
   return (
     <>
-      <WorkflowLandingTopRIght
-        onClickNewWorkflow={{ onClick: () => setPopup({ open: true }) }}
+      <ButtonSolid 
+        size={'2'} 
+        iconName={'bolt'} 
+        isLeftIcon={true}
+        textButton={'New Workflow'} 
+        onClickButton={{ onClick: () => setPopup({ open: true }) }} 
       />
       <Dialog open={open} onClose={() => handleClose()}>
         <ConfirmationPopup

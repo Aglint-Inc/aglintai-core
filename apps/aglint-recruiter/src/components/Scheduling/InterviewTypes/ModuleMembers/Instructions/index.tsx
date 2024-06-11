@@ -32,13 +32,13 @@ function InstructionsComp({ editModule }: { editModule: ModuleType }) {
         <Stack
           sx={{
             border: '1px solid',
-            borderColor: 'var(neutral-6)',
+            borderColor: 'var(--neutral-6)',
             borderRadius: 'var(--radius-2)',
           }}
         >
           <TipTapAIEditor
             enablAI={false}
-            placeholder={'Instructions'}
+            placeholder={'Type interview instructions here.'}
             handleChange={(html) => {
               setTextValue(html);
             }}

@@ -39,27 +39,43 @@ const ImportCandidatesCSV = ({
     'file_url',
   ];
   const [isLoading, setIsLoading] = useState(false);
-
+  
   const csvData = [
     [...headers],
     [
-      'xyz',
-      'abc',
-      'xyzabc@gmail.com',
+      'John',
+      'Doe',
+      'johndoe@gmail.com',
       '1234567890',
-      'https://www.linkedin.com',
-      'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg',
+      'https://www.linkedin.com/in/johndoe',
+      'https://www.dropbox.com/s/abcd1234/resume-johndoe.pdf?dl=0',
     ],
-
     [
-      'abc',
-      'd',
-      'abcd@gmail.com',
+      'Jane',
+      'Smith',
+      'janesmith@gmail.com',
       '9876543210',
-      'https://www.linkedin.com',
-      'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg',
+      'https://www.linkedin.com/in/janesmith',
+      'https://www.dropbox.com/s/efgh5678/resume-janesmith.pdf?dl=0',
+    ],
+    [
+      'Michael',
+      'Johnson',
+      'michaeljohnson@gmail.com',
+      '4567891230',
+      'https://www.linkedin.com/in/michaeljohnson',
+      'https://www.dropbox.com/s/ijkl9101/resume-michaeljohnson.pdf?dl=0',
+    ],
+    [
+      'Emily',
+      'Davis',
+      'emilydavis@gmail.com',
+      '6543217890',
+      'https://www.linkedin.com/in/emilydavis',
+      'https://www.dropbox.com/s/mnop1121/resume-emilydavis.pdf?dl=0',
     ],
   ];
+  
 
   async function createCandidates(candidates: BulkImportCandidateCsv) {
     setbulkImportdata([]);
@@ -177,8 +193,6 @@ const ImportCandidatesCSV = ({
                         sx={{
                           textDecoration: 'underline',
                         }}
-                        color={'blue.600'}
-                        fontSize={'14px'}
                       >
                         Download our sample file here.
                       </Typography>

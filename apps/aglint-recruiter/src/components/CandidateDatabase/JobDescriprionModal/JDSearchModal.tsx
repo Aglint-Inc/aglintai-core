@@ -90,7 +90,7 @@ ${jdText}
                 height: '200px',
                 padding: '12px',
                 outline: 'none',
-                borderColor: 'var(neutral-6)',
+                borderColor: 'var(--neutral-6)',
               }}
               placeholder='Enter job description'
               value={jdText}

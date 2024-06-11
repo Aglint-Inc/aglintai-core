@@ -116,6 +116,11 @@
   margin-top: var(--space-2);
 }
 
+.flex-horizontal.gap-space-2 {
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
 .jp-nav-block {
   display: flex;
   align-items: center;

@@ -43,8 +43,8 @@ export function PwResetForm({
             <Text
               align="center"
               weight=""
-              color="neutral"
-              highContrast="fals"
+              color="neutral-11"
+              highContrast="false"
               content="Enter your email address associated with your account and we’ll send you a link to reset password"
               size="1"
             />
@@ -55,7 +55,7 @@ export function PwResetForm({
           tag="div"
         >
           <_Builtin.Block tag="div">
-            {slotForm ?? <SlotComp componentName="slot for MUI Form" />}
+            {slotForm ?? <SlotComp componentName="Slot for MUI Form" />}
           </_Builtin.Block>
           <_Builtin.Block tag="div">
             <ButtonSolid

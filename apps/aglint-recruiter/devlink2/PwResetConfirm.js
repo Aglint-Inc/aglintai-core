@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { GlobalIcon } from "./GlobalIcon";
 import { Text } from "./Text";
 import { ButtonSoft } from "./ButtonSoft";
 import * as _utils from "./utils";
@@ -29,14 +30,18 @@ export function PwResetConfirm({
             className={_utils.cx(_styles, "sl-login-header-block")}
             tag="div"
           >
+            <GlobalIcon
+              iconName="outgoing_mail"
+              size="8"
+              color="accent-8"
+              weight="thin"
+            />
             <_Builtin.Block
               tag="div"
               icon-size="xxl"
               icon-color="accent-11"
               icon-weight="thin"
-            >
-              {"outgoing_mail"}
-            </_Builtin.Block>
+            />
             <Text
               size="2"
               weight=""

@@ -63,12 +63,7 @@ export function JobsListingCard({
               >
                 <Text content={textCompanyLocation} color="neutral" />
               </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "slot-ats-badge")}
-                tag="div"
-              >
-                {slotAtsBadge}
-              </_Builtin.Block>
+              <_Builtin.Block tag="div">{slotAtsBadge}</_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

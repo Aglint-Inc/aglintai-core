@@ -57,7 +57,7 @@ export function ImportResume({
             isRightIcon={false}
             isLeftIcon={false}
             textButton="Browse"
-            size="3"
+            size="2"
           />
         </_Builtin.Block>
       </_Builtin.Block>

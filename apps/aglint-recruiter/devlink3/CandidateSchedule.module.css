@@ -36,10 +36,6 @@
   height: calc(100vh - 96px);
 }
 
-@media screen and (min-width: 1440px) {
-
-}
-
 .new-schedule-cd-card-wrap {
   position: relative;
   max-width: 900px;

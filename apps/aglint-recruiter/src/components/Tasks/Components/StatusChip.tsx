@@ -90,7 +90,7 @@ export const statusList = [
   },
   {
     id: 'failed' as DB['public']['Enums']['task_status'],
-    backgroundColor: 'var(--error-a11)',
+    backgroundColor: 'var(--error-a3)',
     label: 'Failed',
     color: 'var(--error-a11)',
   },

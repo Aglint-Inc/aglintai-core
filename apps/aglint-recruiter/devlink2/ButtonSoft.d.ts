@@ -14,4 +14,8 @@ declare function ButtonSoft(props: {
   size?: Types.Builtin.Text;
   isDisabled?: Types.Visibility.VisibilityConditions;
   onClickButton?: Types.Devlink.RuntimeProps;
+  iconName?: React.ReactNode;
+  iconSize?: Types.Builtin.Text;
+  iconWeight?: Types.Builtin.Text;
+  iconColor?: Types.Builtin.Text;
 }): React.JSX.Element;

@@ -165,7 +165,7 @@ function CompanyList() {
                     alignItems={'center'}
                     justifyContent={'space-between'}
                     px={'var(--space-1)'}
-                    borderRadius={'var(-radius-4)'}
+                    borderRadius={'var(--radius-4)'}
                     key={i}
                     bgcolor={ele.recName === recruiter?.name && 'var(--neutral-1)'}
                     onClick={() => {

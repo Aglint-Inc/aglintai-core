@@ -5,7 +5,6 @@ import {
   InputAdornment,
   Stack,
   TextField,
-  Typography,
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -21,6 +20,8 @@ import { ResetPassword } from '@/devlink/ResetPassword';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
+
+import Footer from '../Common/Footer';
 
 interface ResetFormInputs {
   password: string;
@@ -102,6 +103,7 @@ export default function ResetPasswordComponent() {
 
   return (
     <Container
+      maxWidth={false}
       sx={{
         height: '100vh',
         display: 'flex',
@@ -164,9 +166,7 @@ export default function ResetPasswordComponent() {
           textAlign: 'center',
         }}
       >
-        <Typography variant='body2' color='var(--neutral-11)'>
-          &copy; {new Date().getFullYear()} Aglint Inc. All rights reserved.
-        </Typography>
+        <Footer />
       </Box>
     </Container>
   );

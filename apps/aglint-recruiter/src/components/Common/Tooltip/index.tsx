@@ -8,7 +8,7 @@ export const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
     background: 'var(--white)',
     padding: '0px',
     boxShadow: 'var(--shadow-3)',
-    border: '1px solid --var(neutral-6)',
+    border: '1px solid var(--neutral-6)',
     borderRadius: 'var(--radius-1)',
     color: 'var(--neutral-12)',
     fontSize: 'var(--font-size-1)',

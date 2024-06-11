@@ -6,16 +6,12 @@
   overflow: visible;
   justify-content: center;
   align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 
   transition: all 200ms ease;
 
   cursor: pointer;
-}
-
-.icon_placeholder {
-  display: flex;
 }
 
 .disabled_state {
@@ -39,6 +35,10 @@
   color: #bcbbb5;
 
   cursor: not-allowed;
+}
+
+.icon_placeholder {
+  display: flex;
 }
 
 .loading_state {

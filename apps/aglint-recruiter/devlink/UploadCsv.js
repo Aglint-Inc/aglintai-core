@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { CsvIcon } from "./CsvIcon";
 import * as _utils from "./utils";
 import _styles from "./UploadCsv.module.css";
 
@@ -14,7 +13,9 @@ export function UploadCsv({
       className={_utils.cx(_styles, "cdd-upload-file-block")}
       tag="div"
     >
-      <CsvIcon />
+      <_Builtin.Block tag="div" icon-size="xxl" icon-color="neutral-9">
+        {"upload_file"}
+      </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "small-default-8", "text-align-center")}
         tag="div"

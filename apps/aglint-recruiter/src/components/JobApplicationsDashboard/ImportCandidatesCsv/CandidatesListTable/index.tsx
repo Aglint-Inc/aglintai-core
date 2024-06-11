@@ -1,6 +1,5 @@
 import { Stack, Typography } from '@mui/material';
 
-import Icon from '@/src/components/Common/Icons/Icon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
@@ -9,9 +8,9 @@ function CandidatesListTable({ importedCandidate }) {
   console.log('importedCandidate', importedCandidate);
   return (
     <Stack
-      borderRadius={'var(-radius-4)'}
-      border={'1px solid '}
-       borderColor='var(--neutral-6)'
+      borderRadius={'var(--radius-4)'}
+      border={'1px solid'}
+      borderColor='var(--neutral-6)'
       height={'100%'}
       overflow={'scroll'}
     >
@@ -38,7 +37,7 @@ export default CandidatesListTable;
 function TableHeader() {
   return (
     <Stack
-      bgcolor= {'var(--neutral-1)'}
+      bgcolor= {'var(--neutral-7)'}
       py={'var(--space-2)'}
       px={'var(--space-5)'}
       justifyContent={'left'}
@@ -71,10 +70,10 @@ function TableHeader() {
 const headerObject = [
   {
     heading: 'Candidate',
-    icon: <Icon variant='Person' width='14' height='14' />,
+    icon: <span icon-size='md' icon-color='neutral-9'>account_circle</span>,
   },
-  { heading: 'Email', icon: <Icon variant='Mail' width='14' height='14' /> },
-  { heading: 'Phone', icon: <Icon variant='phone' width='14' height='14' /> },
+  { heading: 'Email', icon: <span icon-size='md' icon-color='neutral-9'>email</span> },
+  { heading: 'Phone', icon: <span icon-size='md' icon-color='neutral-9'>phone</span> },
 ];
 
 function TableRow({ name, email, phone, profile_image, index }) {

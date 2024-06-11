@@ -14,7 +14,8 @@
 
 .job-details-header-block {
   display: flex;
-  padding: 20px;
+  padding-right: var(--space-4);
+  padding-left: var(--space-4);
   justify-content: space-between;
   align-items: center;
   align-self: stretch;
@@ -234,7 +235,7 @@
   }
 }
 
-.div-block-426 {
+.candidate_list_and_filter {
   display: flex;
   overflow: hidden;
   width: 100%;
@@ -245,7 +246,7 @@
   position: relative;
 
   display: flex;
-  min-height: 36px;
+  height: 36px;
   justify-content: space-between;
   align-items: center;
 
@@ -291,7 +292,7 @@
 
 .jdet-actions-bar {
   display: flex;
-  height: 42px;
+  height: 48px;
   flex-direction: column;
   justify-content: center;
   border-top: 1px solid #e9ebed;
@@ -305,7 +306,6 @@
 
 .jdet-table {
   position: relative;
-  height: 100%;
   border-top: 1px solid var(--neutral-6);
 }
 

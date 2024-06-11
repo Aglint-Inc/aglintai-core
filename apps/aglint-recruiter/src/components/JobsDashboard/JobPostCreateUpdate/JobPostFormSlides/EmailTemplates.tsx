@@ -253,7 +253,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
                     sx={{
                       mt: '8px',
                       border: '1px solid',
-                      borderColor: 'var(neutral-6)',
+                      borderColor: 'var(--neutral-6)',
                       borderRadius: 'var(--radius-2)',
                     }}
                   >

@@ -11,6 +11,7 @@ export function EducationItem({
   textDate = "May 2015 - May 2018",
   textSchool = "IIT Madras",
   slotSchoolIcon,
+  slotBadge,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "experience_item")} tag="div">
@@ -29,12 +30,14 @@ export function EducationItem({
         <_Builtin.Block className={_utils.cx(_styles, "role-title")} tag="div">
           <Text content={textEducation} />
           <_Builtin.Block tag="div">
-            <_Builtin.Block
-              className={_utils.cx(_styles, "current_badge")}
-              tag="div"
-            >
-              <Text size="1" content="Current" />
-            </_Builtin.Block>
+            {slotBadge ?? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "current_badge")}
+                tag="div"
+              >
+                <Text size="1" content="Current" />
+              </_Builtin.Block>
+            )}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "exp_details")} tag="div">

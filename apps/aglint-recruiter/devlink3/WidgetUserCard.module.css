@@ -106,11 +106,6 @@
   cursor: pointer;
 }
 
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
 .is_active_blue_100 {
   position: absolute;
   left: 0%;

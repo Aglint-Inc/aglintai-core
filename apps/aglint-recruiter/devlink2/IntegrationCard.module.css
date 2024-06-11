@@ -50,11 +50,12 @@
   grid-row-gap: 4px;
 }
 
-.icons {
+.intagration-link {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .cursor-pointer {
@@ -64,65 +65,6 @@
 
 .cursor-pointer:hover {
   opacity: 0.7;
-}
-
-.icons.cursor-pointer.no-trans {
-  transition-property: none;
-}
-
-.icons.cursor-pointer.no-transition {
-  transition-property: none;
-}
-
-.icons.ml-4 {
-  margin-left: 4px;
-}
-
-.icons.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
-.icons.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
-}
-
-.icons.pointer {
-  cursor: pointer;
-}
-
-.icons.closediv {
-  position: absolute;
-  left: auto;
-  top: -7px;
-  right: -7px;
-  bottom: auto;
-
-  cursor: pointer;
-}
-
-.intagration-link {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
 }
 
 .intagration_actions {
