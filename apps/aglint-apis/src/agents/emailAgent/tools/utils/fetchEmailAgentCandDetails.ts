@@ -137,6 +137,10 @@ export const fetchEmailAgentCandDetails = async (
       agent_email:
         envConfig.LOCAL_AGENT_EMAIL ?? agent_data.schedule_agent_email,
     },
+    schedule_chat_history: {
+      from_name: cand_rec.email_from_name,
+      subject: cand_rec.email_subject,
+    },
   };
 
   return agent_payload;

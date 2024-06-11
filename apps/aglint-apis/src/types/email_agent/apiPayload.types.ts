@@ -34,4 +34,8 @@ export type EmailAgentPayload = {
     email_subject: string;
     agent_email: string;
   };
+  schedule_chat_history: {
+    from_name: string;
+    subject: string;
+  };
 };

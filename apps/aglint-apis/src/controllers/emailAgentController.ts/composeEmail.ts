@@ -56,11 +56,11 @@ export const composeEmail = async (req: Request, res: Response) => {
     });
     await sendEmailFromAgent({
       candidate_email: agent_payload.payload.candidate_email,
-      from_name: agent_payload.payload.company_name,
+      from_name: agent_payload.schedule_chat_history.from_name,
       mail_body: new_history[new_history.length - 1].value as string,
       company_name: agent_payload.payload.company_name,
       headers: api_body.mail_header ?? undefined,
-      subject: agent_payload.payload.email_subject,
+      subject: agent_payload.schedule_chat_history.subject,
       agent_email: agent_payload.payload.agent_email,
     });
     return res.status(200).send('email sent');
