@@ -95,7 +95,7 @@ export default GroupBy;
 
 export function PriorityIcon() {
   return (
-    <GlobalIcon iconName='priority' />
+    <GlobalIcon iconName='flag' />
     // <svg
     //   width='15'
     //   height='16'
@@ -148,7 +148,7 @@ export function JobIcon() {
 }
 export function CandidateIcon() {
   return (
-    <GlobalIcon iconName='account_box' />
+    <GlobalIcon iconName='account_circle' />
     // <svg
     //   width='15'
     //   height='16'

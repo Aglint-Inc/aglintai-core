@@ -327,7 +327,7 @@ const ProfileDashboard = () => {
             slotUserImage={
               <ImageUpload
                 image={recruiterUser.profile_image}
-                size={80}
+                size={64}
                 table='recruiter-user'
                 handleUpdateProfile={handleUpdateProfile}
                 error={(e) => {

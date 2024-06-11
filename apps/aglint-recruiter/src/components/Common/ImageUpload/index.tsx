@@ -76,8 +76,8 @@ function ImageUpload({
         <Stack
           position={'relative'}
           sx={{
-            borderRadius: 'var(--radius-3)',
-            borderColor: 'var(--neutral-12)',
+            borderRadius: 'var(--radius-2)',
+            borderColor: 'var(--neutral-6)',
           }}
           onMouseEnter={() => setIsStackHovered(true)}
           onMouseLeave={() => setIsStackHovered(false)}
@@ -111,9 +111,9 @@ function ImageUpload({
                 />
               )}
             </Avatar>
-            {image && (
+            {/* {image && (
               <Stack position={'absolute'} bottom={-10} left={26}></Stack>
-            )}
+            )} */}
           </Stack>
           {loading && (
             <Stack
@@ -154,7 +154,7 @@ function ImageUpload({
                     cursor: 'pointer',
                     transition: 'all 0.5s ease',
                     opacity: isStackHovered ? 1 : 0,
-                    borderRadius: 'var(--radius-3)',
+                    borderRadius: 'var(--radius-2)',
                     mt: 'var(--space-1)',
                   }}
                   height={`${size}px`}
