@@ -9,8 +9,8 @@ export const debriefEmailInterviewerSchema = v.object({
 });
 
 export const interviewCancelEmailApplicantSchema = v.object({
-  meeting_id: v.string(),
-  filter_id: v.string(),
+  session_ids: v.array(v.string()),
+  application_id: v.string(),
 });
 
 export const agentEmailCandidateSchema = v.object({

@@ -8,6 +8,7 @@ import {
   confirmInterviewEmailApplicantSchema,
   debriefEmailInterviewerSchema,
   interReschedReqEmailRecruiterSchema,
+  interviewCancelEmailApplicantSchema,
   interviewCancelReqEmailRecruiterSchema,
   interviewRescheduleEmailApplicantSchema,
   interviewStartEmailApplicantSchema,
@@ -60,10 +61,17 @@ type Payloads = {
     };
   };
   interviewCancel_email_applicant: {
-    api_payload: v.InferInput<typeof applicationRecievedEmailApplicantSchema>;
-    comp_email_placeholders: {};
+    api_payload: v.InferInput<typeof interviewCancelEmailApplicantSchema>;
+    comp_email_placeholders: {
+      '{{ candidateFirstName }}': string;
+      '{{ companyName }}': string;
+      '{{ jobTitle }}': string;
+    };
     react_email_placeholders: {
       subject: string;
+      emailBody: string;
+      companyLogo: string;
+      meetingDetails: MeetingDetailCardType[];
     };
   };
   agent_email_candidate: {
@@ -153,6 +161,9 @@ type Payloads = {
     comp_email_placeholders: {};
     react_email_placeholders: {
       subject: string;
+      emailBody: string;
+      companyLogo: string;
+      meetingDetails: MeetingDetailCardType[];
     };
   };
   interReschedReq_email_recruiter: {

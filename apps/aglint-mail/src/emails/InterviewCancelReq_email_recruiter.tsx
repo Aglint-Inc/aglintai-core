@@ -112,8 +112,6 @@ export const CandidateCancelRequest = ({
               >
                 Cancel Schedule
               </Button>
-
-              <Text className="py-[10px] my-0">Thank You</Text>
             </Container>
             <Text className="flex items-center text-[10px]  mx-auto w-fit text-gray-500">
               Powered By
