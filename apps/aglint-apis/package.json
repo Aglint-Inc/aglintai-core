@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "tsup --watch --onSuccess \"console-ninja && node dist/index.js\"",
-    "build": "tsup",
+    "build": "tsc",
+    "tsxdev": "tsx --watch --conditions=development src/index.ts",
     "lint": "gts lint && npm run build",
     "start": "set NODE_ENV=development&& node dist/index.js",
     "start:production": "set NODE_ENV=production&& node dist/index.js",

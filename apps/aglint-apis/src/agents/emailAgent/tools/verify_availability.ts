@@ -10,13 +10,11 @@ import {dayjsLocal} from '../../../utils/dayjsLocal/dayjsLocal';
 import {isCurrDayHoliday} from '../../../utils/scheduling_utils/fetchCandDetails';
 import {findAvailableSlots} from './utils';
 import {findInterviewSlotOnThatDay} from '../../schedule_agent/tools/utils';
-import {
-  supabaseAdmin,
-  supabaseWrap,
-} from '../../../services/supabase/SupabaseAdmin';
+import {supabaseAdmin} from '../../../services/supabase/SupabaseAdmin';
 import {googleTimeZone} from '../../../utils/googleTimeZone';
 import {appLogger} from '../../../services/logger';
 import {agent_activities} from '../../../copies/agents_activity';
+import {supabaseWrap} from '@aglint/shared-utils';
 
 const utc = require('dayjs/plugin/utc');
 const timezone = require('dayjs/plugin/timezone');

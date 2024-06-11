@@ -1,12 +1,10 @@
 import dayjs from 'dayjs';
-import {
-  supabaseWrap,
-  supabaseAdmin,
-} from '../../../../services/supabase/SupabaseAdmin';
+import {supabaseAdmin} from '../../../../services/supabase/SupabaseAdmin';
 
 import {getFullName} from '../../../../utils/getFullName';
 import {EmailAgentPayload} from '../../../../types/email_agent/apiPayload.types';
 import {EmailTemplateFields} from '@aglint/shared-types';
+import {supabaseWrap} from '@aglint/shared-utils';
 
 export const fetchEmailAgentCandDetails = async (
   thread_id: string,
@@ -16,11 +14,10 @@ export const fetchEmailAgentCandDetails = async (
     await supabaseAdmin
       .from('scheduling-agent-chat-history')
       .select(
-        '*, interview_filter_json(* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,description,recruiter!public_jobs_recruiter_id_fkey(scheduling_settings,email_template)), candidates(email,first_name,last_name,timezone))))'
+        '*, interview_filter_json(* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,description,recruiter!public_jobs_recruiter_id_fkey(scheduling_settings,email_template)), candidates(id,email,first_name,last_name,timezone))))'
       )
       .eq('thread_id', thread_id)
   );
-
   if (!cand_rec) {
     // this email is not from candidate
     // handle this later
@@ -32,21 +29,14 @@ export const fetchEmailAgentCandDetails = async (
   const candidate =
     cand_rec.interview_filter_json.interview_schedule.applications.candidates;
 
-  const filter_json = cand_rec.interview_filter_json.filter_json as unknown as {
-    end_date: string;
-    start_date: string;
-    session_ids: string[];
-    recruiter_id: string;
-    organizer_name: string;
-  };
+  const filter_json = cand_rec.interview_filter_json.filter_json;
 
   const sessions = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
       .select('*,interview_meeting(*)')
-      .in('id', filter_json.session_ids)
+      .in('id', cand_rec.interview_filter_json.session_ids)
   );
-  console.log(sessions);
   if (!sessions[0].interview_meeting) {
     throw new Error('No meeting found');
   }
@@ -108,7 +98,9 @@ export const fetchEmailAgentCandDetails = async (
   const agent_payload: EmailAgentPayload = {
     history: cand_rec.chat_history,
     payload: {
-      candidate_email: cand_rec.candidate_email,
+      candidate_email:
+        cand_rec.interview_filter_json.interview_schedule.applications
+          .candidates.email,
       candidate_name: getFullName(candidate.first_name, candidate.last_name),
       company_name: job.company,
       start_date: getUsTime(filter_json.start_date),
