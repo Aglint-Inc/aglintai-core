@@ -2,7 +2,7 @@
   position: relative;
 
   display: flex;
-  width: 466px;
+  height: 100%;
   padding: var(--space-4);
   flex-direction: column;
   justify-content: flex-start;
@@ -63,9 +63,8 @@
 
 .success-badge {
   padding: var(--space-1) var(--space-3);
-  border: 1px solid var(--success-6);
   border-radius: var(--radius-2);
-  background-color: var(--success-a3);
+  background-color: var(--success-a11);
   color: var(--white);
 }
 
