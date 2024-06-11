@@ -158,11 +158,18 @@ type Payloads = {
   };
   InterviewCancelReq_email_recruiter: {
     api_payload: v.InferInput<typeof interviewCancelReqEmailRecruiterSchema>;
-    comp_email_placeholders: {};
+    comp_email_placeholders: {
+      '{{ recruiterName }}': string;
+      '{{ candidateFirstName }}': string;
+      '{{ cancelReason }}': string;
+      '{{ additionalRescheduleNotes }}': string;
+      '{{ companyName }}': string;
+    };
     react_email_placeholders: {
       subject: string;
       emailBody: string;
       companyLogo: string;
+      meetingLink: string;
       meetingDetails: MeetingDetailCardType[];
     };
   };
@@ -185,7 +192,10 @@ type Payloads = {
   };
   interviewReschedule_email_applicant: {
     api_payload: v.InferInput<typeof interviewRescheduleEmailApplicantSchema>;
-    comp_email_placeholders: {};
+    comp_email_placeholders: {
+      '{{ recruiterName }}': string;
+      '{{ candidateFirstName }}': string;
+    };
     react_email_placeholders: {
       subject: string;
     };

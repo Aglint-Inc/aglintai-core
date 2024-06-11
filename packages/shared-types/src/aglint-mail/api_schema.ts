@@ -59,11 +59,9 @@ export const phoneScreenRemindEmailApplicantSchema = v.object({
 });
 
 export const interviewCancelReqEmailRecruiterSchema = v.object({
-  session_id: v.array(v.string()),
+  session_ids: v.array(v.string()),
   application_id: v.string(),
-  meeting_id: v.string(),
   interview_cancel_id: v.string(),
-  recruiter_user_id: v.string(),
 });
 
 export const interReschedReqEmailRecruiterSchema = v.object({

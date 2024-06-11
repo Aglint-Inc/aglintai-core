@@ -11,26 +11,15 @@ import {
 } from '@react-email/components';
 import { Parser } from 'html-to-react';
 import * as React from 'react';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { aglintLogo } from '../utils/assets/common';
 
-interface CandidateCancelRequestType {
-  body?: string;
-  companyLogo?: string;
-  meetingLink?: string;
-  meetingDetails: {
-    date?: string;
-    time?: string;
-    sessionType?: string;
-    platform?: string;
-    duration?: string;
-    sessionTypeIcon?: string;
-    meetingIcon?: string;
-  }[];
-}
+type EmailType = EmailTemplateAPi<'InterviewCancelReq_email_recruiter'>;
 
 // export dummy
-export const dummy: CandidateCancelRequestType = {
-  body: '<p>Dear {{ recruiterName }},</p><p>{{ candidateFirstName }} is requesting to cancel the interview, stating reason: "{{ rescheduleReason }}."</p><p>Additional notes from {{ candidateFirstName }}: "{{ additionalRescheduleNotes }}."</p><p>Thank you.</p>',
+export const dummy: EmailType['react_email_placeholders'] = {
+  emailBody:
+    '<p>Dear {{ recruiterName }},</p><p>{{ candidateFirstName }} is requesting to cancel the interview, stating reason: "{{ cancelReason }}".</p><p>Additional notes from {{ candidateFirstName }}: "{{ additionalRescheduleNotes }}".</p><p>Thank you.</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   meetingDetails: [
@@ -46,6 +35,8 @@ export const dummy: CandidateCancelRequestType = {
         'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/google_meet.png',
     },
   ],
+  subject: '',
+  meetingLink: '',
 };
 
 // export get subject
@@ -82,11 +73,11 @@ const Sessions = ({ meetingDetail }) => {
 };
 
 export const CandidateCancelRequest = ({
-  body = dummy.body,
+  emailBody = dummy.emailBody,
   meetingDetails = dummy.meetingDetails,
   meetingLink = dummy.meetingLink,
   companyLogo = dummy.companyLogo,
-}: CandidateCancelRequestType) => {
+}: EmailType['react_email_placeholders']) => {
   const htmlParser = Parser();
   return (
     <Html>
@@ -102,7 +93,7 @@ export const CandidateCancelRequest = ({
                 src={companyLogo}
               />
 
-              <Text className="">{htmlParser.parse(body)}</Text>
+              <Text className="">{htmlParser.parse(emailBody)}</Text>
               {meetingDetails.map((meetingDetail, i) => (
                 <Sessions key={i} meetingDetail={meetingDetail} />
               ))}
