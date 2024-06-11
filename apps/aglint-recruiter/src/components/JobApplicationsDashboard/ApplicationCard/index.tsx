@@ -79,8 +79,8 @@ const ApplicationCard = ({
     handleSelect(index);
   };
   const profile = <CandidateAvatar application={application} />;
-  const resumeScore =
-    job.status === 'draft' ? '---' : <ResumeScore application={application} />;
+  // const resumeScore =
+  //   job.status === 'draft' ? '---' : <ResumeScore application={application} />;
   const interviewScore = <InterviewScore application={application} />;
   const isChecked = list.has(application.id);
   const overview =
@@ -117,7 +117,7 @@ const ApplicationCard = ({
           />
         }
         isChecked={isChecked}
-        slotResumeScore={<ResumeScore application={application} />}
+        // slotResumeScore={<ResumeScore application={application} />}
       />
     ) : (
       <CandidateListItem
@@ -130,7 +130,7 @@ const ApplicationCard = ({
         name={name.value}
         jobTitle={jobTitle.value}
         location={location.value}
-        slotResumeScore={resumeScore}
+        // slotResumeScore={resumeScore}
         isInterviewVisible={views.assessment}
         slotAssessmentScore={interviewScore}
         appliedDate={creationDate}
@@ -161,7 +161,7 @@ const ApplicationCard = ({
       isHighlighted={isSelected}
       slotScores={
         <>
-          {resumeScore}
+          {/* {resumeScore} */}
           {/* {interviewScore} */}
         </>
       }

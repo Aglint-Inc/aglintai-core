@@ -150,79 +150,79 @@ const JobApplicationComponent = () => {
     <>
       <DNDLayerSwitcher applicationLimit={applicationLimit}>
         <JobDetails
-          isEditJob={false}
-          isWarningVisible={
-            job.status == 'published' && (!job.jd_json || !job.description)
-              ? true
-              : false
-          }
-          isFilterVisible={
-            !!((sectionApplications ?? []).length + job.count[section])
-          }
-          slotRefresh={
-            job?.status === 'published' && (
-              <RefreshButton
-                isDisabled={allApplicationsDisabled}
-                text={'Refresh'}
-                onClick={async () => await handleManualRefresh()}
-              />
-            )
-          }
-          isImportCandidates={job?.status === 'published'}
-          slotLoadingLottie={
-            <CircularProgress
-              style={{
-                color: '#17494D',
-                width: '12px',
-                height: '12px',
-              }}
-            />
-          }
-          isFetchingPillVisible={atsSync}
-          slotBreadcrumb={<BreadCrumbs />}
-          onclickAddCandidates={{
-            onClick: () => {
-              setOpenImportCandidates(true);
-              posthog.capture('Import Candidates Clicked');
-            },
-          }}
-          slotSidebar={
-            <ApplicationDetails
-              open={currentApplication !== -1}
-              onClose={() => handleSelectCurrentApplication(-1)}
-              handleSelectNextApplication={() => handleSelectNextApplication()}
-              handleSelectPrevApplication={() => handleSelectPrevApplication()}
-              application={
-                sectionApplications[
-                  currentApplication === -1 ? 0 : currentApplication
-                ]
-              }
-              hideNextPrev={false}
-            />
-          }
-          slotTabs={<NewJobDetailsTabs />}
-          slotFilters={
-            <NewJobFilterBlock
-              detailedView={detailedView}
-              setDetailedView={setDetailedView}
-              applicationLimit={applicationLimit}
-              setApplicationLimit={setApplicationLimit}
-            />
-          }
-          slotTable={
-            <ApplicationTable
-              detailedView={detailedView}
-              sectionApplications={sectionApplications}
-              handleSelectCurrentApplication={handleSelectCurrentApplication}
-              currentApplication={currentApplication}
-            />
-          }
-          slotPagination={
-            <ApplicationPagination
-              size={sectionApplications.length}
-              limits={applicationLimit}
-            />
-          }
+        // isEditJob={false}
+        // isWarningVisible={
+        //   job.status == 'published' && (!job.jd_json || !job.description)
+        //     ? true
+        //     : false
+        // }
+        // isFilterVisible={
+        //   !!((sectionApplications ?? []).length + job.count[section])
+        // }
+        // slotRefresh={
+        //   job?.status === 'published' && (
+        //     <RefreshButton
+        //       isDisabled={allApplicationsDisabled}
+        //       text={'Refresh'}
+        //       onClick={async () => await handleManualRefresh()}
+        //     />
+        //   )
+        // }
+        // isImportCandidates={job?.status === 'published'}
+        // slotLoadingLottie={
+        //   <CircularProgress
+        //     style={{
+        //       color: '#17494D',
+        //       width: '12px',
+        //       height: '12px',
+        //     }}
+        //   />
+        // }
+        // isFetchingPillVisible={atsSync}
+        // slotBreadcrumb={<BreadCrumbs />}
+        // onclickAddCandidates={{
+        //   onClick: () => {
+        //     setOpenImportCandidates(true);
+        //     posthog.capture('Import Candidates Clicked');
+        //   },
+        // }}
+        // slotSidebar={
+        //   <ApplicationDetails
+        //     open={currentApplication !== -1}
+        //     onClose={() => handleSelectCurrentApplication(-1)}
+        //     handleSelectNextApplication={() => handleSelectNextApplication()}
+        //     handleSelectPrevApplication={() => handleSelectPrevApplication()}
+        //     application={
+        //       sectionApplications[
+        //         currentApplication === -1 ? 0 : currentApplication
+        //       ]
+        //     }
+        //     hideNextPrev={false}
+        //   />
+        // }
+        // slotTabs={<NewJobDetailsTabs />}
+        // slotFilters={
+        //   <NewJobFilterBlock
+        //     detailedView={detailedView}
+        //     setDetailedView={setDetailedView}
+        //     applicationLimit={applicationLimit}
+        //     setApplicationLimit={setApplicationLimit}
+        //   />
+        // }
+        // slotTable={
+        //   <ApplicationTable
+        //     detailedView={detailedView}
+        //     sectionApplications={sectionApplications}
+        //     handleSelectCurrentApplication={handleSelectCurrentApplication}
+        //     currentApplication={currentApplication}
+        //   />
+        // }
+        // slotPagination={
+        //   <ApplicationPagination
+        //     size={sectionApplications.length}
+        //     limits={applicationLimit}
+        //   />
+        // }
         />
       </DNDLayerSwitcher>
       <AddCandidates
@@ -418,7 +418,7 @@ const ApplicationTable = ({
         onClickSelectAll={{ onClick: () => handleSelectAllMin() }}
         isAllChecked={isAllChecked}
         isInterviewVisible={views.assessment}
-        slotCandidatesList={applicantsList}
+        // slotCandidatesList={applicantsList}
         isDisqualifiedVisible={views.disqualified}
         isScreeningVisible={views.screening}
       />
@@ -712,7 +712,8 @@ const NewJobDetailsTabs = () => {
   return (
     <>
       {job.activeSections.map((section) => (
-        <JobTab key={section} section={section} />
+        <></>
+        // <JobTab key={section} section={section} />
       ))}
     </>
   );
