@@ -125,6 +125,7 @@ export const useScheduleSessionsAnalytics = () => {
       return getAnalyticsData(recruiter.id);
     },
     enabled: Boolean(recruiter.id),
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -372,4 +373,3 @@ const getCompletedInterviewDetails = async ({
       return data.map((x) => ({ date: x.created_at }));
     });
 };
-

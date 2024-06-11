@@ -24,7 +24,7 @@ type processDataType = {
 };
 export default function ScheduleAnalyticsCards() {
   const groupingUnit: 'week' | 'month' | 'year' = 'month';
-  const { data: analyticData, isFetching: loading } =
+  const { data: analyticData, isPending: loading } =
     useScheduleSessionsAnalytics();
   const processedData = (analyticData || []).reduce(
     (acc, curr) => {
@@ -60,13 +60,13 @@ export default function ScheduleAnalyticsCards() {
           (processedData.grouping_unit_a.completed || []).length || 0
         )
       }
-      textIncreasedCompleted = {
+      textIncreasedCompleted={
         loading || false ? (
           <Skeleton variant='rounded' width={130} height={20} />
         ) : (
           `${Math.round(percentChange((processedData.grouping_unit_a.completed || []).length, (processedData.grouping_unit_b.completed || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
         )
-      }      
+      }
       textWaitingCount={
         loading ? (
           <Skeleton variant='rounded' width={20} height={28} />

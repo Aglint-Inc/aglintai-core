@@ -101,6 +101,7 @@ const HistoryPills = ({
         <HistoryPillDev
           key={index}
           isActive={isActive}
+          isStart={isStart}
           isStartActive={isStart && isActive}
           isMiddle={isMiddle}
           isMiddleActive={isMiddle && isActive}
@@ -116,16 +117,18 @@ const HistoryPills = ({
   );
   const reverseShadowPills = [
     ...new Array(module.settings.noReverseShadow),
-  ].reduce((acc, curr, index) => {
+  ].reduce((acc, curr, i) => {
+    const index = i+(shadowPills||[]).length
     const isActive = index < reverse_shadow;
     const isStart = module.settings.noShadow + index === 0;
     const isEnd =
-      index === module.settings.noShadow + module.settings.noReverseShadow - 1;
+      index === (module.settings.noShadow + module.settings.noReverseShadow - 1);
     const isMiddle = !(isStart || isEnd);
     acc.push(
       <HistoryPillDev
         key={index}
         isActive={isActive}
+        isStart={isStart}
         isStartActive={isStart && isActive}
         isMiddle={isMiddle}
         isMiddleActive={isMiddle && isActive}
