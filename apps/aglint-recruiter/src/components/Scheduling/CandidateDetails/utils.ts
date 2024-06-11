@@ -9,7 +9,6 @@ import {
   JobApplcationDB,
   SupabaseType,
 } from '@aglint/shared-types';
-import { BookingConfirmationMetadata } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
@@ -283,7 +282,8 @@ export const scheduleDebrief = async ({
 
     if (errorSes) throw new Error(errorSes.message);
 
-    const metadata: BookingConfirmationMetadata = {
+    // TODO: chinmai fix lint
+    const metadata: any = {
       action: 'waiting',
       filter_id,
       sessions: session,
@@ -450,7 +450,7 @@ export const scheduleWithAgent = async ({
           dateRange,
           session_ids: createCloneRes.session_ids,
           recruiter_id,
-          rec_user_id: rec_user_id,
+          recruiter_user_id: rec_user_id,
         });
       } else {
         console.log('fetchInterviewDataSchedule');
@@ -545,7 +545,7 @@ export const scheduleWithAgent = async ({
           dateRange,
           session_ids,
           recruiter_id,
-          rec_user_id: rec_user_id,
+          recruiter_user_id: rec_user_id,
         });
       }
       return true;
@@ -691,7 +691,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
           dateRange,
           recruiter_id,
           session_ids: createCloneRes.session_ids,
-          rec_user_id: rec_user_id,
+          recruiter_user_id: rec_user_id,
         });
       } else {
         console.log('fetchInterviewDataSchedule');
@@ -775,7 +775,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
           dateRange,
           recruiter_id,
           session_ids,
-          rec_user_id: rec_user_id,
+          recruiter_user_id: rec_user_id,
         });
       }
       return true;
@@ -912,7 +912,7 @@ export const agentTrigger = async ({
   recruiter_id,
   session_ids,
   candidate,
-  rec_user_id,
+  recruiter_user_id,
 }: {
   type: 'email_agent' | 'phone_agent';
   filterJsonId: string;
@@ -923,7 +923,6 @@ export const agentTrigger = async ({
   jobRole: string;
   candidate_email: string;
   rec_user_phone: string;
-  rec_user_id: string;
   dateRange: {
     start_date: string;
     end_date: string;
@@ -969,7 +968,7 @@ export const agentTrigger = async ({
         {
           filter_json_id: filterJsonId,
           task_id: task_id,
-          recruiter_user_id: rec_user_id,
+          recruiter_user_id: recruiter_user_id,
         } as InitAgentBodyParams,
       );
 
