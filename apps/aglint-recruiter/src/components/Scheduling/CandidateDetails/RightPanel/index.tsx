@@ -27,6 +27,7 @@ import { setMultipleCancelOpen, setSelectedApplicationLog } from '../store';
 import CancelMultipleScheduleDialog from './CancelMultipleScheduleDialog';
 import IconApplicationLogs from './IconApplicationLogs';
 import IconSessionType from './IconSessionType';
+import { ButtonSoft, ButtonSurface, GlobalIcon } from '@/devlink';
 
 function RightPanel({
   allActivities,
@@ -120,34 +121,53 @@ function RightPanel({
                         </Stack>
                         {act?.metadata?.filter_id &&
                           act?.metadata?.action === 'waiting' && (
-                            <Stack direction={'row'} spacing={2}>
-                              <ScheduleButton
-                                textLabel={'Request Reschedule'}
-                                slotIcon={<IconReschedule />}
-                                onClickProps={{
-                                  onClick: () => {
-                                    setStepScheduling('reschedule');
-                                    setSelectedApplicationLog(act);
-                                    setIsScheduleNowOpen(true);
-                                  },
-                                }}
+                            <Stack direction={'row'} spacing={1}>
+                             
+                              <Stack width={'50%'}>
+                              <ButtonSoft
+                              color={'neutral'}
+                              size={1}
+                              textButton={'Reschedule'}
+                              slotIcon={
+                              <Stack>
+                                <GlobalIcon
+                              iconName={'refresh'}/>
+                              </Stack>
+                              }
+                              isLeftIcon={true}
+                              onClickButton={{
+                                onClick: () => {
+                                  setStepScheduling('reschedule');
+                                  setSelectedApplicationLog(act);
+                                  setIsScheduleNowOpen(true);
+                                },
+                              }}/>
+                              </Stack>
+
+                              
+                              <Stack width={'50%'}>
+                              <ButtonSoft
+                               size={1}
+                               color={'error'}
+                               textButton={'Cancel'}
+                               onClickButton={{
+                                 style: { background: '#FFF0F1' },
+                                 onClick: () => {
+                                   setSelectedApplicationLog(act);
+                                   setMultipleCancelOpen(true);
+                                 },
+                               }}
+                               slotIcon={
+                               <Stack>
+                                 <GlobalIcon
+                               iconName={'event_busy'}/>
+                               </Stack>}
+                               isLeftIcon={true}
                               />
-                              <ScheduleButton
-                                textLabel={'Cancel Schedule'}
-                                slotIcon={<IconCancelSchedule />}
-                                textColorProps={{
-                                  style: {
-                                    color: '#D93F4C',
-                                  },
-                                }}
-                                onClickProps={{
-                                  style: { background: '#FFF0F1' },
-                                  onClick: () => {
-                                    setSelectedApplicationLog(act);
-                                    setMultipleCancelOpen(true);
-                                  },
-                                }}
-                              />
+                              </Stack>
+                              
+                             
+                             
                             </Stack>
                           )}
                       </Stack>
