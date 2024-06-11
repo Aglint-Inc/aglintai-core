@@ -5,7 +5,7 @@ import { GlobalIcon } from '@/devlink/GlobalIcon';
 function IntegrationIcon() {
   return (
     <Stack direction={'row'}>
-      <GlobalIcon iconName='category' size={6} weight={'thin'} />
+      <GlobalIcon iconName='category' size={6} weight={'regular'} />
       {/* <svg
         width='24'
         height='24'

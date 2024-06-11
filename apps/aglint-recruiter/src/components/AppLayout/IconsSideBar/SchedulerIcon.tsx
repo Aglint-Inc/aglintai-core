@@ -5,7 +5,7 @@ import { GlobalIcon } from '@/devlink/GlobalIcon';
 function SchedulerIcon() {
   return (
     <Stack direction={'row'}>
-      <GlobalIcon iconName='calendar_today' size={6} weight={'thin'} />
+      <GlobalIcon iconName='calendar_today' size={6} weight={'regular'} />
       {/* <svg
         width='24'
         height='24'

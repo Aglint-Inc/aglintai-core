@@ -6,7 +6,7 @@ import { GlobalIcon } from '@/devlink/GlobalIcon';
 function WorkFlowIcon() {
   return (
     <Stack direction={'row'}>
-      <GlobalIcon iconName='lan'  size={6} weight={'thin'}/>
+      <GlobalIcon iconName='lan'  size={6} weight={'regular'}/>
       {/* <svg
         width='24'
         height='24'

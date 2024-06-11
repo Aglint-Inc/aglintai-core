@@ -6,7 +6,7 @@ import { GlobalIcon } from '@/devlink/GlobalIcon';
 function SourcingHubIcon() {
   return (
     <Stack direction={'row'}>
-      <GlobalIcon iconName='data_table' size={6} weight={'thin'}/>
+      <GlobalIcon iconName='data_table' size={6} weight={'regular'}/>
       {/* <svg
         width='24'
         height='24'

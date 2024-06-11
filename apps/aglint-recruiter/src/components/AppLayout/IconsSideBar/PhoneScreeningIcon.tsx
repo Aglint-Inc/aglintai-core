@@ -6,7 +6,7 @@ import { GlobalIcon } from '@/devlink/GlobalIcon';
 function PhoneScreeningIcon() {
   return (
     <Stack direction={'row'}>
-      <GlobalIcon iconName='phone_in_talk' size={6} weight={'thin'}/>
+      <GlobalIcon iconName='phone_in_talk' size={6} weight={'regular'}/>
       {/* <svg
         width='24'
         height='24'
