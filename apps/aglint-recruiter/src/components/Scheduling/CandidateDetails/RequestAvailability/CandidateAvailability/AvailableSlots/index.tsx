@@ -219,7 +219,6 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
         request_id: candidateRequestAvailability?.id,
       },
     );
-
     if (task.id) {
       await insertTaskProgress({
         taskData: {
