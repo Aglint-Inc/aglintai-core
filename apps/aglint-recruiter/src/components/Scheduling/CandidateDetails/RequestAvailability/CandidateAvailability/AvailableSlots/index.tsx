@@ -12,7 +12,6 @@ import { CalendarPick } from '@/devlink2/CalendarPick';
 import { DatePicker } from '@/devlink2/DatePicker';
 import { PickSlotDay } from '@/devlink2/PickSlotDay';
 import { TimePick } from '@/devlink2/TimePick';
-import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -20,7 +19,7 @@ import toast from '@/src/utils/toast';
 
 import {
   insertTaskProgress,
-  useRequestAvailabilityContext
+  useRequestAvailabilityContext,
 } from '../../RequestAvailabilityContext';
 import SlotColumn from './SlotColumn';
 
@@ -29,7 +28,6 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
   const {
     dateSlots,
     candidateRequestAvailability,
-    loading,
     setSelectedDateSlots,
     setSelectedSlots,
     selectedDateSlots,
@@ -233,21 +231,6 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
     router.push('/scheduling/request-availability/submitted');
   }
 
-  if (loading) {
-    return (
-      <Stack
-        width={'100%'}
-        height={'70vh'}
-        direction={'row'}
-        justifyContent={'center'}
-        alignItems={'center'}
-      >
-        <Stack width={'120px'} style={{ transform: 'translateY(-50%)' }}>
-          <CandidateSlotLoad />
-        </Stack>
-      </Stack>
-    );
-  }
   if (candidateRequestAvailability) {
     return (
       <Stack bgcolor={'var(--white-a7'}>

@@ -1,6 +1,7 @@
+import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { CandidateScheduleCard } from '@/devlink/CandidateScheduleCard';
 import { ChangeButton } from '@/devlink/ChangeButton';
@@ -9,6 +10,7 @@ import { SessionInfo } from '@/devlink/SessionInfo';
 import { AvailabilityReq } from '@/devlink2/AvailabilityReq';
 import { ButtonPrimary } from '@/devlink2/ButtonPrimary';
 import { MultiDaySelect } from '@/devlink2/MultiDaySelect';
+import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -16,19 +18,22 @@ import toast from '@/src/utils/toast';
 
 import {
   insertTaskProgress,
-  useRequestAvailabilityContext
+  useRequestAvailabilityContext,
 } from '../RequestAvailabilityContext';
 import { convertMinutesToHoursAndMinutes } from '../utils';
+import AvailabilitySubmittedPage from './AvailabilitySubmittedPage';
 import AvailableSlots from './AvailableSlots';
 import DateSlotsPoPup from './DateSlotsPopUp';
 
 function CandidateAvailability() {
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const router = useRouter();
   const {
     setOpenDaySlotPopup,
     multiDaySessions,
     candidateRequestAvailability,
     daySlots,
+    loading,
   } = useRequestAvailabilityContext();
   const handleOpen = async (day: number) => {
     setOpenDaySlotPopup(day);
@@ -74,9 +79,28 @@ function CandidateAvailability() {
 
   useEffect(() => {
     if (candidateRequestAvailability?.slots) {
-      router.push('/scheduling/request-availability/submitted');
+      setIsSubmitted(true);
     }
   }, [candidateRequestAvailability]);
+
+  if (loading) {
+    return (
+      <Stack
+        width={'100%'}
+        height={'100vh'}
+        direction={'row'}
+        justifyContent={'center'}
+        alignItems={'center'}
+      >
+        <Stack width={'120px'} style={{ transform: 'translateY(-50%)' }}>
+          <CandidateSlotLoad />
+        </Stack>
+      </Stack>
+    );
+  }
+  if (isSubmitted) {
+    return <AvailabilitySubmittedPage />;
+  }
   return (
     <div>
       <DateSlotsPoPup />
