@@ -150,24 +150,18 @@ export type Database = {
           created_at: string
           email: Database["public"]["Enums"]["email_types"]
           id: string
-          sent_at: string | null
-          status: Database["public"]["Enums"]["application_processing_status"]
         }
         Insert: {
           application_id: string
           created_at?: string
           email: Database["public"]["Enums"]["email_types"]
           id?: string
-          sent_at?: string | null
-          status?: Database["public"]["Enums"]["application_processing_status"]
         }
         Update: {
           application_id?: string
           created_at?: string
           email?: Database["public"]["Enums"]["email_types"]
           id?: string
-          sent_at?: string | null
-          status?: Database["public"]["Enums"]["application_processing_status"]
         }
         Relationships: [
           {
@@ -742,6 +736,7 @@ export type Database = {
           slots: Json | null
           total_slots: number | null
           user_timezone: string | null
+          visited: boolean | null
         }
         Insert: {
           application_id: string
@@ -758,6 +753,7 @@ export type Database = {
           slots?: Json | null
           total_slots?: number | null
           user_timezone?: string | null
+          visited?: boolean | null
         }
         Update: {
           application_id?: string
@@ -774,6 +770,7 @@ export type Database = {
           slots?: Json | null
           total_slots?: number | null
           user_timezone?: string | null
+          visited?: boolean | null
         }
         Relationships: [
           {

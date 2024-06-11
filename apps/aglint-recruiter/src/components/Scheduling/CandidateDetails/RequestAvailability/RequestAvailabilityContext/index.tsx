@@ -251,9 +251,9 @@ export async function insertTaskProgress({ taskData }: { taskData: any }) {
     `/api/scheduling/request_availability/insertTaskProgress`,
     {
       data: {
-        ...taskData,
         title: 'Candidate submitted the availability',
         progress_type: 'request_availability_list',
+        ...taskData,
       } as DatabaseTableInsert['new_tasks_progress'],
     },
   );

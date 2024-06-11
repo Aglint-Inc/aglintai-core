@@ -107,9 +107,58 @@ function CandidateAvailability() {
     setIsSubmitted(true);
   }
 
-  useEffect(() => {
-    if (candidateRequestAvailability?.slots) {
+  const checkAndUpdate = async () => {
+    if (candidateRequestAvailability.slots) {
       setIsSubmitted(true);
+    } else {
+      if (!candidateRequestAvailability.visited) {
+        const { data: task } = await axios.post(
+          `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,
+          {
+            request_id: candidateRequestAvailability?.id,
+          },
+        );
+
+        const { data: requestData } = await axios.post(
+          `/api/scheduling/request_availability/updateRequestAvailability`,
+          {
+            id: String(router.query?.request_id),
+            data: { visited: true },
+          },
+        );
+        setCandidateRequestAvailability(requestData);
+        await axios.post(
+          `/api/scheduling/request_availability/insertScheduleActivities`,
+          {
+            data: {
+              title: `Candidate opened request availability link`,
+              module: 'scheduler',
+              logged_by: 'candidate',
+              application_id: candidateRequestAvailability.application_id,
+              task_id: task.id,
+            } as DatabaseTableInsert['application_logs'],
+          },
+        );
+        await insertTaskProgress({
+          taskData: {
+            task_id: task.id,
+            created_by: {
+              name: getFullName(
+                candidateRequestAvailability.applications.candidates.first_name,
+                candidateRequestAvailability.applications.candidates.last_name,
+              ),
+              id: candidateRequestAvailability.applications.candidates.id,
+            },
+            title: 'Candidate opened request availability link',
+            progress_type: 'standard',
+          } as DatabaseTableInsert['new_tasks_progress'],
+        });
+      }
+    }
+  };
+  useEffect(() => {
+    if (candidateRequestAvailability?.id) {
+      checkAndUpdate();
     }
   }, [candidateRequestAvailability]);
 
