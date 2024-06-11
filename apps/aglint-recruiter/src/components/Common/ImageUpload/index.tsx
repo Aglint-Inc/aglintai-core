@@ -98,17 +98,15 @@ function ImageUpload({
               variant='square'
             >
               {router.route.includes(ROUTES['/profile']()) ? (
-                <Icon
-                  variant='UserSolo'
-                  height='32'
-                  width='32'
+                <GlobalIcon
+                  iconName='UserSolo'
+                  size={6}
                   color='var(--neutral-11)'
                 />
               ) : (
-                <Icon
-                  variant='CompanyOutlinedBig'
-                  height='100%'
-                  width='100%'
+                <GlobalIcon
+                iconName='CompanyOutlinedBig'
+                  size={6}
                   color='var(--neutral-11)'
                 />
               )}

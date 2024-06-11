@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { RecruiterType } from '@aglint/shared-types';
 import PublicIcon from '@mui/icons-material/Public';
-import { Dialog, Stack, TextField } from '@mui/material';
+import { Box, Dialog, Stack, TextField, Typography } from '@mui/material';
 import { Avatar } from '@mui/material';
 import Image from 'next/image';
 import React, { Dispatch, SetStateAction, useState } from 'react';
@@ -13,6 +13,7 @@ import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 import { debouncedSave } from '../../utils';
+import { Padding } from '@mui/icons-material';
 
 const SocialComp = ({ setIsSaving }) => {
   const { recruiter, setRecruiter } = useAuthDetails();
@@ -256,32 +257,37 @@ const SocialComp = ({ setIsSaving }) => {
 
   return (
     <Stack gap={'var(--space-2)'}>
-      <UITypography type={'small'} color={'var(--neutral-12)'} fontBold='default'>
-        Social Links
-      </UITypography>
-      <Stack gap={'var(--space-5)'}>
+      <Typography color={'var(--neutral-12)'}>
+        Social
+      </Typography>
+      <Stack gap={'var(--space-4)'}>
         {socials?.map((socialName) => {
           return (
             <Stack
               key={socialName}
               direction={'row'}
               alignItems={'start'}
-              gap={2}
+              justifyContent= {'center'}
+              gap={1}
             >
-              <Stack
+              <Box
                 style={{
                   border: `1px solid var(--neutral-6)`,
-                  padding: 'var(--space-2)',
                   borderRadius: 'var(--radius-2)',
+                  display: 'flex',
+                  height: '36px',
+                  width: '36px',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
                 <Image
                   src={`/images/logo/${socialName}.svg`}
-                  height={20}
-                  width={20}
+                  height={16}
+                  width={16}
                   alt=''
                 />
-              </Stack>
+              </Box>
               <Stack width={'370px'}>
                 <UITextField
                   labelSize='small'

@@ -47,8 +47,8 @@ function IconApplicationLogs({
         //     fill='#68737D'
         //   />
         // </svg>
-        <GlobalIcon iconName='contact_page' />
-        
+
+        <GlobalIcon iconName='account_circle' size={6} color={'neutral-11'} weight={'thin'}/>
       ) : act.logged_by == 'user' ? (
         <MuiAvatar
           level={getFullName(
