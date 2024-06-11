@@ -33,6 +33,7 @@ export const dummy: EmailType['react_email_placeholders'] = {
     },
   ],
   subject: '',
+  meetingLink: '',
 };
 
 export const getSubject = (companyName: any) => `${companyName}`;
