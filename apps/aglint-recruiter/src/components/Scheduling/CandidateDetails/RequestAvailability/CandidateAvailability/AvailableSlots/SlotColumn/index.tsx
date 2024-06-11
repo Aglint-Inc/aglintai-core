@@ -110,7 +110,11 @@ function SlotColumn({
             <AvailableTimeRange
               onClickTime={{
                 onClick: () => {
-                  handleSlotClick({ curr_day: slotTime.curr_day, slot: slot });
+                  if (selectedSlots.length)
+                    handleSlotClick({
+                      curr_day: slotTime.curr_day,
+                      slot: slot,
+                    });
                 },
               }}
               isSemiActive={false}
