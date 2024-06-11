@@ -3,24 +3,21 @@ import {emailAgentHandler} from '../../agents/emailAgent/emailAgent';
 import {z} from 'zod';
 import {fetchEmailAgentCandDetails} from '../../agents/emailAgent/tools/utils/fetchEmailAgentCandDetails';
 import {getCandidateLogger} from '../../utils/scheduling_utils/getCandidateLogger';
-import {
-  supabaseWrap,
-  supabaseAdmin,
-} from '../../services/supabase/SupabaseAdmin';
+import {supabaseAdmin} from '../../services/supabase/SupabaseAdmin';
 import {sendEmailFromAgent} from '../../agents/emailAgent/tools/utils/sendEmailFromAgent';
+import {supabaseWrap} from '@aglint/shared-utils';
 
 const email_agent_payload = z.object({
   from_email: z.string(),
   email_body: z.string(),
   thread_id: z.string(),
-  mail_header: z.string(),
+  mail_header: z.any(),
 });
 
 export const composeEmail = async (req: Request, res: Response) => {
   try {
-    const api_body = req.body as z.infer<typeof email_agent_payload>;
+    const api_body = email_agent_payload.parse(req.body);
     const agent_payload = await fetchEmailAgentCandDetails(
-      api_body.from_email,
       api_body.thread_id,
       api_body.email_body
     );
@@ -52,18 +49,19 @@ export const composeEmail = async (req: Request, res: Response) => {
         .update({
           chat_history: new_history,
         })
-        .eq('candidate_email', agent_payload.payload.candidate_email)
+        .eq('thread_id', api_body.thread_id)
     );
     candLogger('Mail Agent : Reply', {}, 'email_agent', 'email_messages', {
       message: new_history[new_history.length - 1]?.value as string,
     });
     await sendEmailFromAgent({
       candidate_email: agent_payload.payload.candidate_email,
-      from_name: agent_payload.payload.company_name,
+      from_name: agent_payload.schedule_chat_history.from_name,
       mail_body: new_history[new_history.length - 1].value as string,
       company_name: agent_payload.payload.company_name,
       headers: api_body.mail_header ?? undefined,
-      subject: agent_payload.payload.email_subject,
+      subject: agent_payload.schedule_chat_history.subject,
+      agent_email: agent_payload.payload.agent_email,
     });
     return res.status(200).send('email sent');
   } catch (error: any) {

@@ -7,15 +7,11 @@ import {
   getTimeZoneOfGeo,
 } from '../../../utils/scheduling_utils/time_zone';
 import {googleTimeZone} from '../../../utils/googleTimeZone';
-import {CandidateInfoType} from '../../../types/app_types/scheduleAgentTypes';
 import {
   getCachedCandidateInfo,
   updateCandidateInfo,
 } from '../../../services/cache/cache-db';
-import {
-  supabaseAdmin,
-  supabaseWrap,
-} from '../../../services/supabase/SupabaseAdmin';
+import {supabaseAdmin} from '../../../services/supabase/SupabaseAdmin';
 import {agent_activities} from '../../../copies/agents_activity';
 export const findCandTimeZone = () => {
   const schema = z.object({

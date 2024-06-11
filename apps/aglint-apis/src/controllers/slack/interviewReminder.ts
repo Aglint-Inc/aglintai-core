@@ -1,7 +1,8 @@
+import {supabaseWrap} from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 import {Request, Response} from 'express';
 import {slackWeb} from 'src/services/slack/slackWeb';
-import {supabaseAdmin, supabaseWrap} from 'src/services/supabase/SupabaseAdmin';
+import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 
 export async function interviewReminder(req: Request, res: Response) {
   const {session_id} = req.body;
