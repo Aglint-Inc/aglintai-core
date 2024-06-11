@@ -20,6 +20,7 @@ import { capitalize, cloneDeep } from 'lodash';
 import { useRouter } from 'next/router';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { DayOff } from '@/devlink2/DayOff';
 import { KeywordCard } from '@/devlink2/KeywordCard';
 import { Keywords } from '@/devlink2/Keywords';
@@ -475,11 +476,7 @@ function InterviewerLevelSettings({
                           onDelete={() => {
                             setFreeKeywords((prev) => prev.filter((ele) => ele !== item));
                           }}
-                          deleteIcon={
-                            <IconButton>
-                              <Icon variant='CloseThinIcon' />
-                            </IconButton>
-                          }
+                          deleteIcon={<GlobalIcon iconName='close' size='4'/>}
                           label={item}
                         />
                       ))}
@@ -523,11 +520,7 @@ function InterviewerLevelSettings({
                           onDelete={() => {
                             setSoftConflictsKeyWords((prev) => prev.filter((ele) => ele !== item));
                           }}
-                          deleteIcon={
-                            <IconButton>
-                              <Icon variant='CloseThinIcon' />
-                            </IconButton>
-                          }
+                          deleteIcon={<GlobalIcon iconName='close' size='4'/>}
                           label={item}
                         />
                       ))}
@@ -574,11 +567,7 @@ function InterviewerLevelSettings({
                           onDelete={() => {
                             setOutOfOffice((prev) => prev.filter((ele) => ele !== item));
                           }}
-                          deleteIcon={
-                            <IconButton>
-                              <Icon variant='CloseThinIcon' />
-                            </IconButton>
-                          }
+                          deleteIcon={<GlobalIcon iconName='close' size='4'/>}
                           label={item}
                         />
                       ))}
@@ -625,11 +614,7 @@ function InterviewerLevelSettings({
                           onDelete={() => {
                             setRecruitingBlocks((prev) => prev.filter((ele) => ele !== item));
                           }}
-                          deleteIcon={
-                            <IconButton>
-                              <Icon variant='CloseThinIcon' />
-                            </IconButton>
-                          }
+                          deleteIcon={<GlobalIcon iconName='close' size='4'/>}
                           label={item}
                         />
                       ))}
