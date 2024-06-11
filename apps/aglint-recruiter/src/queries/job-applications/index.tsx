@@ -253,6 +253,9 @@ export const useUploadApplication = (params: Omit<Params, 'status'>) => {
     ...params,
     status: 'new',
   });
+  const jobCountQueryKey = jobQueries.job_application_count({
+    id: params.job_id,
+  }).queryKey;
   return useMutation({
     mutationFn: (
       payload: Omit<HandleUploadApplication, 'job_id' | 'recruiter_id'>,
@@ -268,6 +271,7 @@ export const useUploadApplication = (params: Omit<Params, 'status'>) => {
         queryClient.invalidateQueries(
           jobQueries.job_processing_count({ id: params.job_id }),
         ),
+        queryClient.invalidateQueries({ queryKey: jobCountQueryKey }),
       ]),
   });
 };
@@ -305,6 +309,9 @@ export const useUploadResume = (params: Omit<Params, 'status'>) => {
     ...params,
     status: 'new',
   });
+  const jobCountQueryKey = jobQueries.job_application_count({
+    id: params.job_id,
+  }).queryKey;
   return useMutation({
     mutationFn: (
       payload: Omit<HandleUploadResume, 'job_id' | 'recruiter_id'>,
@@ -320,6 +327,7 @@ export const useUploadResume = (params: Omit<Params, 'status'>) => {
         queryClient.invalidateQueries(
           jobQueries.job_processing_count({ id: params.job_id }),
         ),
+        queryClient.invalidateQueries({ queryKey: jobCountQueryKey }),
       ]),
   });
 };
@@ -366,6 +374,9 @@ export const useUploadCsv = (params: Omit<Params, 'status'>) => {
     ...params,
     status: 'new',
   });
+  const jobCountQueryKey = jobQueries.job_application_count({
+    id: params.job_id,
+  }).queryKey;
   return useMutation({
     mutationFn: (payload: Omit<HandleUploadCsv, 'job_id' | 'recruiter_id'>) =>
       handleBulkCsvUpload({
@@ -379,6 +390,7 @@ export const useUploadCsv = (params: Omit<Params, 'status'>) => {
         queryClient.invalidateQueries(
           jobQueries.job_processing_count({ id: params.job_id }),
         ),
+        queryClient.invalidateQueries({ queryKey: jobCountQueryKey }),
       ]),
   });
 };

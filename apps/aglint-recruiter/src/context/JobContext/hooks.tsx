@@ -44,11 +44,13 @@ const useJobContext = () => {
         id: job_id,
         enabled: !!job,
         queryClient,
+        initialData: job?.count,
       }),
       jobQueries.job_processing_count({
         id: job_id,
         enabled: !!job,
         queryClient,
+        initialData: job?.processing_count,
       }),
       jobQueries.application_scoring({
         id: job_id,
@@ -59,6 +61,18 @@ const useJobContext = () => {
         id: job_id,
         enabled: scoreParameterPollEnabled,
         queryClient,
+        initialData:
+          !!job?.description_hash &&
+          !!job?.draft &&
+          !!job?.parameter_weights &&
+          !!job?.scoring_criteria_loading
+            ? {
+                description_hash: job?.description_hash,
+                draft: job?.draft,
+                parameter_weights: job?.parameter_weights,
+                scoring_criteria_loading: job?.scoring_criteria_loading,
+              }
+            : undefined,
       }),
     ],
   });

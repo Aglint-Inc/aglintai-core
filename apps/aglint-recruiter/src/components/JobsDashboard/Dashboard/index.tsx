@@ -103,7 +103,7 @@ const getMatches = (
 };
 
 const Dashboard = () => {
-  const { job, scoreParameterPollEnabled } = useJob();
+  const { job, applicationScoringPollEnabled } = useJob();
   const {
     matches: { data: counts },
     schedules: { data: schedule },
@@ -282,7 +282,7 @@ const Dashboard = () => {
             }
             slotAddCandidateButton={
               <>
-                {scoreParameterPollEnabled && (
+                {applicationScoringPollEnabled && (
                   <ScoreSetting
                     textScoreCount={`${
                       job?.processing_count?.success ?? '---'

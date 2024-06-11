@@ -23,19 +23,21 @@ const jobQueries = {
             .throwOnError()
         ).data,
     }),
-  job_application_count: ({ id, enabled, queryClient }: Pollers) =>
+  job_application_count: ({
+    id,
+    enabled,
+    queryClient,
+    initialData,
+  }: Pollers & {
+    initialData?: Awaited<ReturnType<typeof getApplicationCount>>;
+  }) =>
     queryOptions({
+      initialData,
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryKey: [...jobQueries.job({ id }).queryKey, 'application_count'],
       queryFn: async () => {
-        const count = (
-          await supabase
-            .rpc('getsectioncounts', {
-              jobid: id,
-            })
-            .throwOnError()
-        ).data;
+        const count = await getApplicationCount(id);
         queryClient.setQueryData<Job[]>(jobsQueryKeys.jobs().queryKey, (prev) =>
           prev.reduce((acc, curr) => {
             if (curr.id === id) acc.push({ ...curr, count });
@@ -43,22 +45,24 @@ const jobQueries = {
             return acc;
           }, [] as Job[]),
         );
+        return count;
       },
     }),
-  job_processing_count: ({ id, enabled, queryClient }: Pollers) =>
+  job_processing_count: ({
+    id,
+    enabled,
+    queryClient,
+    initialData,
+  }: Pollers & {
+    initialData?: Awaited<ReturnType<typeof getProcessingCount>>;
+  }) =>
     queryOptions({
+      initialData,
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryKey: [...jobQueries.job({ id }).queryKey, 'processing_count'],
       queryFn: async () => {
-        const processing_count = (
-          await supabase
-            .rpc('getjob', {
-              jobid: id,
-            })
-            .single()
-            .throwOnError()
-        ).data.processing_count as Job['processing_count'];
+        const processing_count = await getProcessingCount(id);
         queryClient.setQueryData<Job[]>(jobsQueryKeys.jobs().queryKey, (prev) =>
           prev.reduce((acc, curr) => {
             if (curr.id === id) acc.push({ ...curr, processing_count });
@@ -66,25 +70,25 @@ const jobQueries = {
             return acc;
           }, [] as Job[]),
         );
+        return processing_count;
       },
     }),
-  scoring_param: ({ id, enabled, queryClient }: Pollers) =>
+  scoring_param: ({
+    id,
+    enabled,
+    queryClient,
+    initialData,
+  }: Pollers & {
+    initialData?: Awaited<ReturnType<typeof getScoringParam>>;
+  }) =>
     queryOptions({
+      initialData,
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       refetchInterval: enabled ? 5000 : false,
       queryKey: [...jobQueries.job({ id }).queryKey, 'scoring_parameters'],
       queryFn: async () => {
-        const polledData = (
-          await supabase
-            .from('public_jobs')
-            .select(
-              'scoring_criteria_loading, draft, parameter_weights, description_hash',
-            )
-            .eq('id', id)
-            .single()
-            .throwOnError()
-        ).data;
+        const polledData = await getScoringParam(id);
         queryClient.setQueryData<Job[]>(jobsQueryKeys.jobs().queryKey, (prev) =>
           prev.reduce((acc, curr) => {
             if (curr.id === id) acc.push({ ...curr, ...polledData });
@@ -92,6 +96,7 @@ const jobQueries = {
             return acc;
           }, [] as Job[]),
         );
+        return polledData;
       },
     }),
   application_scoring: ({ id, enabled, queryClient }: Pollers) =>
@@ -101,19 +106,35 @@ const jobQueries = {
       refetchInterval: enabled ? 5000 : false,
       queryKey: [...jobQueries.job({ id }).queryKey, 'application_scoring'],
       queryFn: async () => {
-        const { queryKey: dashboardQueryKey } = jobDashboardQueryKeys.dashboard(
-          { id },
-        );
-        const { queryKey: applicationsQueryKey } = applicationsQueries.all({
-          job_id: id,
+        const { queryKey: locationQueryKey } = jobDashboardQueryKeys.locations({
+          id,
         });
+        const { queryKey: matchesQueryKey } = jobDashboardQueryKeys.matches({
+          id,
+        });
+        const { queryKey: skillsQueryKey } = jobDashboardQueryKeys.skills({
+          id,
+        });
+        const { queryKey: tenureAndExperienceQueryKey } =
+          jobDashboardQueryKeys.tenureAndExperience({
+            id,
+          });
+        const newApplicationsQueryKey = [
+          ...applicationsQueries.all({
+            job_id: id,
+          }).queryKey,
+          { status: 'new' },
+        ];
         const { queryKey: processingCountQueryKey } =
           jobQueries.job_processing_count({
             id,
           });
         await Promise.allSettled([
-          queryClient.refetchQueries({ queryKey: dashboardQueryKey }),
-          queryClient.refetchQueries({ queryKey: applicationsQueryKey }),
+          queryClient.refetchQueries({ queryKey: locationQueryKey }),
+          queryClient.refetchQueries({ queryKey: matchesQueryKey }),
+          queryClient.refetchQueries({ queryKey: skillsQueryKey }),
+          queryClient.refetchQueries({ queryKey: tenureAndExperienceQueryKey }),
+          queryClient.refetchQueries({ queryKey: newApplicationsQueryKey }),
           queryClient.refetchQueries({ queryKey: processingCountQueryKey }),
         ]);
       },
@@ -126,3 +147,34 @@ type Pollers = JobRequisite &
 export type JobRequisite = Pick<DatabaseTable['public_jobs'], 'id'>;
 
 export { jobQueries };
+
+const getScoringParam = async (id: string) =>
+  (
+    await supabase
+      .from('public_jobs')
+      .select(
+        'scoring_criteria_loading, draft, parameter_weights, description_hash',
+      )
+      .eq('id', id)
+      .single()
+      .throwOnError()
+  ).data;
+
+const getProcessingCount = async (id: string) =>
+  (
+    await supabase
+      .rpc('getjob', {
+        jobid: id,
+      })
+      .single()
+      .throwOnError()
+  ).data.processing_count as Job['processing_count'];
+
+const getApplicationCount = async (id: string) =>
+  (
+    await supabase
+      .rpc('getsectioncounts', {
+        jobid: id,
+      })
+      .throwOnError()
+  ).data;
