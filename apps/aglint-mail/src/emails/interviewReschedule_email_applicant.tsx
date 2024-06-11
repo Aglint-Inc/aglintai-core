@@ -28,7 +28,7 @@ interface RecruiterReschedulingEmailType {
 
 // export dummy
 export const dummy: RecruiterReschedulingEmailType = {
-  body: '<p>Dear [firstName],</p><p>We have to reschedule the interview due to [recruiterRescheduleReason]. Choose a time slot that suits you best and take the first step towards joining our team.</p><p>We look forward to meeting you!</p><p>[scheduleName]</p><p>[pickYourSlotLink]</p><p>Best regards,</p><p>[companyName] Recruitment Team</p>',
+  body: '<p>Dear {{ recruiterName }},</p><p>This is a friendly reminder about the interview with {{ firstName }}. Please find the details for the interview below:</p><p>Candidate name: {{ firstName }}</p><p>Thank you</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   meetingDetails: [

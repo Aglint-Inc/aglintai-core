@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { ClientError } from '../../../utils/apiUtils/customErrors';
 import * as v from 'valibot';
-import { sendAvailabilityRequestEmailApplicantSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
+import { sendAvailReqReminderEmailApplicant } from '@aglint/shared-types/src/aglint-mail/api_schema';
 import { dbUtil } from './fetch-util';
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   const { meta } = await req.json();
 
   try {
-    const req_body = v.parse(sendAvailabilityRequestEmailApplicantSchema, meta);
+    const req_body = v.parse(sendAvailReqReminderEmailApplicant, meta);
     const { filled_comp_template, react_email_placeholders, recipient_email } =
       await dbUtil(req_body);
     const { emails } = await getEmails();

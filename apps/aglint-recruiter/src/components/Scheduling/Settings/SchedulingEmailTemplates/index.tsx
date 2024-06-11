@@ -150,6 +150,7 @@ function SchedulingEmailTemplates() {
                                 tempObj[selectedTemplate]?.bodyPlaceHolder
                               }
                               handleChange={(html) => {
+                                // TIPTAPTODO:
                                 recruiter.email_template[selectedTemplate] = {
                                   body: html,
                                   default:

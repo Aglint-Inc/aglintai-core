@@ -26,7 +26,7 @@ interface InterviewBookingConfirmationType {
   }[];
 }
 export const dummy = {
-  body: '<p>Dear [firstName],</p> <p>I regret to inform you that we need to cancel your scheduled interview session at [companyName].</p> <p>We apologize for any inconvenience caused and will be in touch soon to reschedule.</p> <p>Best regards,<br> [companyName]</p>  ',
+  body: '<p>Dear {{ candidateFirstName }},</p><p>I regret to inform you that we need to cancel your scheduled interview session at {{ companyName }}.</p><p>We apologize for any inconvenience caused and will be in touch soon to reschedule.</p><p>Best regards,<br>{{ companyName }}</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   meetingDetails: [

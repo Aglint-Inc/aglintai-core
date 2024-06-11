@@ -90,3 +90,15 @@ export const interviewStartEmailInterviewersSchema = v.object({
 export const sendSelfScheduleRequest_email_applicant = v.object({
   filter_json_id: v.string(),
 });
+
+export const sendAvailabilityRequestEmailApplicantSchema = v.object({
+  avail_req_id: v.string(),
+  recruiter_user_id: v.string(),
+});
+export const sendAvailReqReminderEmailApplicant = v.object({
+  avail_req_id: v.string(),
+});
+
+export const selfScheduleReminderEmailApplicantSchema = v.object({
+  filter_json_id: v.string(),
+});

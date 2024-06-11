@@ -30,7 +30,7 @@ interface CandidateCancelRequestType {
 
 // export dummy
 export const dummy: CandidateCancelRequestType = {
-  body: '<p>Dear [recruiterName],</p><p>[firstName] is requesting to cancle interview stating reason : [rescheduleReason]</p><p>Additional Notes from [firstName] : [additionalRescheduleNotes]</p><p>Thank you</p>',
+  body: '<p>Dear {{ recruiterName }},</p><p>{{ candidateFirstName }} is requesting to cancel the interview, stating reason: "{{ rescheduleReason }}."</p><p>Additional notes from {{ candidateFirstName }}: "{{ additionalRescheduleNotes }}."</p><p>Thank you.</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   meetingDetails: [

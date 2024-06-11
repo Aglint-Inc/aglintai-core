@@ -11,14 +11,13 @@ import {
 } from '@react-email/components';
 import { Parser } from 'html-to-react';
 import * as React from 'react';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { aglintLogo } from '../utils/assets/common';
-import { EmailTemplateAPi } from '@aglint/shared-types';
 
 // export dummy
 export const dummy: EmailTemplateAPi<'interviewStart_email_interviewers'>['react_email_placeholders'] =
   {
-    emailBody:
-      '<p>Dear [recruiterName] ,</p><p>This is a friendly reminder about the interview with [firstName] .</p<p>Please find the details for the interview below candidate name : [firstName] </p><p>Thank you</p>',
+    emailBody: `<p>Dear {{ recruiterName }},</p><p>This is a friendly reminder about the interview with {{ firstName }}. Please find the details for the interview below:</p><p>Candidate name: {{ firstName }}</p><p>Thank you</p>`,
     companyLogo:
       'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
     meetingDetails: [
