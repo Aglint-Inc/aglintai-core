@@ -82,5 +82,8 @@
   padding-right: 0px;
   padding-bottom: 0px;
   padding-left: 0px;
+
+  background-color: var(--sand-2);
+
   height: calc(100vh - 48px);
 }

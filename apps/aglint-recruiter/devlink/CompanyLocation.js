@@ -37,7 +37,7 @@ export function CompanyLocation({
             className={_utils.cx(_styles, "success-badge")}
             tag="div"
           >
-            <Text size="1" color="success" content="Headquaters" />
+            <Text size="1" color="white" content="Headquaters" />
           </_Builtin.Block>
         ) : null}
       </_Builtin.Block>
