@@ -4,6 +4,7 @@ import { PropsWithChildren } from 'react';
 import { CandidateName } from '@/devlink/CandidateName';
 import { CandidateSidedrawerTop } from '@/devlink/CandidateSidedrawerTop';
 import { useApplication } from '@/src/context/ApplicationContext';
+import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 
 const Info = () => {
   const {
@@ -21,6 +22,9 @@ const Info = () => {
 };
 
 const Actions = () => {
+  const { handlClose } = useApplicationStore(({ handlClose }) => ({
+    handlClose,
+  }));
   const {
     meta: { data },
     handleUpdateApplication,
@@ -34,7 +38,7 @@ const Actions = () => {
         onClick: () =>
           handleUpdateApplication({ bookmarked: !data.bookmarked }),
       }}
-      onClickClose={{ onClick: () => {} }}
+      onClickClose={{ onClick: () => handlClose() }}
       onClickDown={{ onClick: () => {}, style: { display: 'none' } }}
       onClickUp={{ onClick: () => {}, style: { display: 'none' } }}
     />
