@@ -7,7 +7,7 @@ import {
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
   JobApplcationDB,
-  SupabaseType
+  SupabaseType,
 } from '@aglint/shared-types';
 import { BookingConfirmationMetadata } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
@@ -450,7 +450,7 @@ export const scheduleWithAgent = async ({
           dateRange,
           session_ids: createCloneRes.session_ids,
           recruiter_id,
-          recruiter_user_id: rec_user_id,
+          rec_user_id: rec_user_id,
         });
       } else {
         console.log('fetchInterviewDataSchedule');
@@ -545,7 +545,7 @@ export const scheduleWithAgent = async ({
           dateRange,
           session_ids,
           recruiter_id,
-          recruiter_user_id: rec_user_id,
+          rec_user_id: rec_user_id,
         });
       }
       return true;
@@ -691,7 +691,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
           dateRange,
           recruiter_id,
           session_ids: createCloneRes.session_ids,
-          recruiter_user_id: rec_user_id,
+          rec_user_id: rec_user_id,
         });
       } else {
         console.log('fetchInterviewDataSchedule');
@@ -775,7 +775,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
           dateRange,
           recruiter_id,
           session_ids,
-          recruiter_user_id: rec_user_id,
+          rec_user_id: rec_user_id,
         });
       }
       return true;
@@ -912,7 +912,7 @@ export const agentTrigger = async ({
   recruiter_id,
   session_ids,
   candidate,
-  recruiter_user_id,
+  rec_user_id,
 }: {
   type: 'email_agent' | 'phone_agent';
   filterJsonId: string;
@@ -923,6 +923,7 @@ export const agentTrigger = async ({
   jobRole: string;
   candidate_email: string;
   rec_user_phone: string;
+  rec_user_id: string;
   dateRange: {
     start_date: string;
     end_date: string;
@@ -963,14 +964,13 @@ export const agentTrigger = async ({
     })
   ) {
     if (type === 'email_agent') {
-      const bodyParams: InitAgentBodyParams = {
-        filter_json_id: filterJsonId,
-        task_id: task_id,
-        recruiter_user_id,
-      };
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/mail-agent/init-agent`,
-        bodyParams,
+        {
+          filter_json_id: filterJsonId,
+          task_id: task_id,
+          recruiter_user_id: rec_user_id,
+        } as InitAgentBodyParams,
       );
 
       if (res?.status === 200) {

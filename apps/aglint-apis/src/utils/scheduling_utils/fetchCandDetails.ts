@@ -1,9 +1,6 @@
 import axios from 'axios';
 import dayjs, {Dayjs} from 'dayjs';
-import {
-  supabaseWrap,
-  supabaseAdmin,
-} from '../../services/supabase/SupabaseAdmin';
+import {supabaseAdmin} from '../../services/supabase/SupabaseAdmin';
 import {
   CandidateInfoType,
   schedule_req_body,
@@ -22,7 +19,7 @@ import {
   SessionsCombType,
   schedulingSettingType,
 } from '@aglint/shared-types';
-import {SINGLE_DAY_TIME} from '@aglint/shared-utils';
+import {SINGLE_DAY_TIME, supabaseWrap} from '@aglint/shared-utils';
 import {envConfig} from '../../config';
 const utc = require('dayjs/plugin/utc');
 const timezone = require('dayjs/plugin/timezone');
@@ -46,15 +43,16 @@ export const fetchCandidateDetails = async (
   }
   const cand_basic_info = cand_rec.interview_schedule.applications.candidates;
   const job = cand_rec.interview_schedule.applications.public_jobs;
-  const filter_json = cand_rec.filter_json as CandidateInfoType['filter_json'];
-
+  const filter_json = cand_rec.filter_json;
+  const company_id =
+    cand_rec.interview_schedule.applications.public_jobs.recruiter_id;
   const promises = [
     (async () => {
       const sessions = supabaseWrap(
         await supabaseAdmin
           .from('interview_session')
           .select('*, interview_meeting(*)')
-          .in('id', filter_json.session_ids)
+          .in('id', cand_rec.session_ids)
       );
       const meetings = sessions.map(r => r.interview_meeting);
       return [sessions, meetings];
@@ -63,10 +61,10 @@ export const fetchCandidateDetails = async (
       // TODO: need to adjust dates
       const all_slots = await getallSlotsInDateRange({
         candidate_tz: 'Asia/colombo', // default time zone
-        session_ids: filter_json.session_ids,
+        session_ids: cand_rec.session_ids,
         start_date_str: filter_json.end_date,
         end_date_str: filter_json.start_date,
-        recruiter_id: filter_json.recruiter_id,
+        recruiter_id: company_id,
       });
       return all_slots;
     })(),
@@ -105,7 +103,12 @@ export const fetchCandidateDetails = async (
     begin_message,
     application_id: cand_rec.interview_schedule.application_id,
     candidate_id: cand_rec.interview_schedule.applications.candidates.id,
-    filter_json: filter_json,
+    filter_json: {
+      end_date: cand_rec.filter_json.end_date,
+      start_date: cand_rec.filter_json.end_date,
+      session_ids: cand_rec.session_ids,
+      recruiter_id: company_id,
+    },
     schedule_id: cand_rec.interview_schedule.id,
     candidate_name: getFullName(
       cand_basic_info.first_name,
