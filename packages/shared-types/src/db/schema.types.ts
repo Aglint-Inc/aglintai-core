@@ -144,6 +144,48 @@ export type Database = {
         }
         Relationships: []
       }
+      application_email_status: {
+        Row: {
+          application_id: string
+          created_at: string
+          email: Database["public"]["Enums"]["email_types"]
+          id: string
+          sent_at: string | null
+          status: Database["public"]["Enums"]["application_processing_status"]
+        }
+        Insert: {
+          application_id: string
+          created_at?: string
+          email: Database["public"]["Enums"]["email_types"]
+          id?: string
+          sent_at?: string | null
+          status?: Database["public"]["Enums"]["application_processing_status"]
+        }
+        Update: {
+          application_id?: string
+          created_at?: string
+          email?: Database["public"]["Enums"]["email_types"]
+          id?: string
+          sent_at?: string | null
+          status?: Database["public"]["Enums"]["application_processing_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "application_email_status_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "application_email_status_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       application_logs: {
         Row: {
           application_id: string
@@ -882,26 +924,29 @@ export type Database = {
         Row: {
           body: string
           created_at: string
+          from_name: string | null
           id: string
           recruiter_id: string
           subject: string
-          type: Database["public"]["Enums"]["email_types"]
+          type: Database["public"]["Enums"]["email_slack_types"] | null
         }
         Insert: {
           body: string
           created_at?: string
+          from_name?: string | null
           id?: string
           recruiter_id?: string
           subject: string
-          type: Database["public"]["Enums"]["email_types"]
+          type?: Database["public"]["Enums"]["email_slack_types"] | null
         }
         Update: {
           body?: string
           created_at?: string
+          from_name?: string | null
           id?: string
           recruiter_id?: string
           subject?: string
-          type?: Database["public"]["Enums"]["email_types"]
+          type?: Database["public"]["Enums"]["email_slack_types"] | null
         }
         Relationships: [
           {
@@ -2977,7 +3022,6 @@ export type Database = {
         Row: {
           agent_processing: boolean
           application_id: string | null
-          candidate_email: string
           chat_history: Json[]
           company_id: string | null
           created_at: string
@@ -2989,7 +3033,6 @@ export type Database = {
         Insert: {
           agent_processing?: boolean
           application_id?: string | null
-          candidate_email: string
           chat_history?: Json[]
           company_id?: string | null
           created_at?: string
@@ -3001,7 +3044,6 @@ export type Database = {
         Update: {
           agent_processing?: boolean
           application_id?: string | null
-          candidate_email?: string
           chat_history?: Json[]
           company_id?: string | null
           created_at?: string
@@ -4920,6 +4962,28 @@ export type Database = {
       cancel_type: "reschedule" | "declined"
       db_search_type: "aglint" | "candidate"
       email_fetch_status: "not fetched" | "success" | "unable to fetch"
+      email_slack_types:
+        | "interviewEnd_slack_interviewers"
+        | "interviewerConfirmation_slack_interviewers"
+        | "interviewStart_slack_interviewers"
+        | "agent_email_candidate"
+        | "applicantReject_email_applicant"
+        | "applicationRecieved_email_applicant"
+        | "confInterview_email_organizer"
+        | "confirmInterview_email_applicant"
+        | "debrief_email_interviewer"
+        | "interReschedReq_email_recruiter"
+        | "interviewCancel_email_applicant"
+        | "InterviewCancelReq_email_recruiter"
+        | "interviewReschedule_email_applicant"
+        | "interviewStart_email_applicant"
+        | "interviewStart_email_interviewers"
+        | "phoneScreen_email_candidate"
+        | "phoneScreenRemind_email_applicant"
+        | "selfScheduleReminder_email_applicant"
+        | "sendAvailabilityRequest_email_applicant"
+        | "sendAvailReqReminder_email_applicant"
+        | "sendSelfScheduleRequest_email_applicant"
       email_types:
         | "debrief_calendar_invite"
         | "candidate_invite_confirmation"

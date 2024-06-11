@@ -1,14 +1,9 @@
-import { ScheduleUtils } from '@aglint/shared-utils';
+import { ScheduleUtils, getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { EmailTemplateAPi } from '@aglint/shared-types';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 
-interface FilterJson {
-  start_date: string;
-  end_date: string;
-  user_tz: string;
-}
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'agent_email_candidate'>['api_payload'],
 ) {
@@ -21,8 +16,15 @@ export async function fetchUtil(
       .eq('id', req_body.filter_id),
   );
 
-  const { end_date, start_date, user_tz } =
-    filterJson.filter_json as unknown as FilterJson;
+  const [recr] = supabaseWrap(
+    await supabaseAdmin
+      .from('recruiter_user')
+      .select('first_name, last_name, scheduling_settings')
+      .eq('user_id', req_body.recruiter_user_id),
+  );
+  const recruiter_tz = recr.scheduling_settings.timeZone.tzCode;
+
+  const { end_date, start_date } = filterJson.filter_json;
   const {
     interview_schedule: {
       applications: {
@@ -51,14 +53,15 @@ export async function fetchUtil(
       '{{ jobRole }}': job_title,
       '{{ startDate }}': ScheduleUtils.convertDateFormatToDayjs(
         start_date,
-        user_tz,
-      ).format('MMM DD, YYYY'),
+        recruiter_tz,
+      ).format('MMMM DD, YYYY'),
       '{{ endDate }}': ScheduleUtils.convertDateFormatToDayjs(
         end_date,
-        user_tz,
-      ).format('MMM DD, YYYY'),
-      '{{ companyTimeZone }}': '',
+        recruiter_tz,
+      ).format('MMMM DD, YYYY'),
+      '{{ recruiterTimeZone }}': recruiter_tz,
       '{{ selfScheduleLink }}': `<a href="${scheduleLink}">here</a>`,
+      '{{ recruiterFullName }}': getFullName(recr.first_name, recr.last_name),
     };
 
   const filled_comp_template = fillCompEmailTemplate(
@@ -78,13 +81,4 @@ export async function fetchUtil(
     react_email_placeholders,
     recipient_email: cand_email,
   };
-
-  // return body;
 }
-
-// http://localhost:3100/api/init-email-agent
-
-// {
-//   "filter_id":"71b8859d-b6c6-425e-8b1a-e97ae8bb9498",
-//   "meeting_id":"6c42550f-5d59-4179-aa3a-0c0ae060db88"
-// }
