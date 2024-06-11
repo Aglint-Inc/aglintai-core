@@ -4,6 +4,7 @@ import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 import { Page404 } from '@/devlink/Page404';
 import { AvailabilityEmpty } from '@/devlink2/AvailabilityEmpty';
@@ -36,8 +37,9 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
     openDaySlotPopup: day,
     setOpenDaySlotPopup,
     multiDaySessions,
+    setIsSubmitted,
+    setCandidateRequestAvailability,
   } = useRequestAvailabilityContext();
-
   const handleClickDate = ({
     selectedDate,
     day,
@@ -201,7 +203,7 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
     setOpenDaySlotPopup(null);
   };
   async function submitData() {
-    await axios.post(
+    const { data: requestData } = await axios.post(
       `/api/scheduling/request_availability/updateRequestAvailability`,
       {
         data: {
@@ -227,10 +229,16 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
         },
       },
     });
+    setCandidateRequestAvailability(requestData);
 
-    router.push('/scheduling/request-availability/submitted');
+    setIsSubmitted(true);
   }
 
+  useEffect(() => {
+    if (candidateRequestAvailability?.slots) {
+      setIsSubmitted(true);
+    }
+  }, [candidateRequestAvailability]);
   if (candidateRequestAvailability) {
     return (
       <Stack bgcolor={'var(--white-a7'}>

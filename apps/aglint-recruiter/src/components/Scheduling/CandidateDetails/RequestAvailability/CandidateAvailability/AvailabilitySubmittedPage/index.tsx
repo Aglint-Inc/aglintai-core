@@ -51,9 +51,7 @@ function AvailabilitySubmittedPage() {
               id: 'newTimePick',
             }}
             slotSlotPicker={
-              <ShowCode.When
-                isTrue={candidateRequestAvailability?.slots.length > 0}
-              >
+              <ShowCode.When isTrue={requestAvailabilitySlots?.length > 0}>
                 <Stack direction='row' gap={'10px'}>
                   {requestAvailabilitySlots &&
                     requestAvailabilitySlots.map((ele, i) => {

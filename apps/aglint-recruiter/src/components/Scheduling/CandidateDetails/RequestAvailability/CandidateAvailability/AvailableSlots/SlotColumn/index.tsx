@@ -19,6 +19,7 @@ function SlotColumn({
     setSelectedSlots,
     selectedSlots,
     openDaySlotPopup: day,
+    isSubmitted,
   } = useRequestAvailabilityContext();
   const handleSlotClick = ({
     curr_day,
@@ -110,7 +111,7 @@ function SlotColumn({
             <AvailableTimeRange
               onClickTime={{
                 onClick: () => {
-                  if (selectedSlots.length)
+                  if (!isSubmitted)
                     handleSlotClick({
                       curr_day: slotTime.curr_day,
                       slot: slot,
@@ -119,12 +120,13 @@ function SlotColumn({
               }}
               isSemiActive={false}
               isActive={
-                selectedSlots.length &&
-                selectedSlots
-                  .find((ele) => ele.round === day)
-                  .dates.find((ele) => ele.curr_day === slotTime.curr_day)
-                  .slots.map((ele) => ele.startTime)
-                  .includes(slot.startTime)
+                (!isSubmitted &&
+                  selectedSlots
+                    .find((ele) => ele.round === day)
+                    .dates.find((ele) => ele.curr_day === slotTime.curr_day)
+                    .slots.map((ele) => ele.startTime)
+                    .includes(slot.startTime)) ||
+                isSubmitted
               }
               key={ind}
               textTime={`${dayjs(slot.startTime).format('hh:mm')} - ${dayjs(slot.endTime).format('hh:mm')}`}

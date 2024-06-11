@@ -61,6 +61,9 @@ interface ContextValue {
 
   openDaySlotPopup: null | number;
   setOpenDaySlotPopup: (x: null | number) => void;
+
+  isSubmitted: boolean;
+  setIsSubmitted: (x: boolean) => void;
 }
 const defaultProvider: ContextValue = {
   dateSlots: [],
@@ -79,6 +82,8 @@ const defaultProvider: ContextValue = {
   setMultiDaySessions: () => {},
   openDaySlotPopup: null,
   setOpenDaySlotPopup: () => {},
+  isSubmitted: false,
+  setIsSubmitted: () => {},
 };
 const RequestAvailabilityContext = createContext<ContextValue>(defaultProvider);
 const useRequestAvailabilityContext = () =>
@@ -104,6 +109,7 @@ function RequestAvailabilityProvider({ children }) {
 
   const [openDaySlotPopup, setOpenDaySlotPopup] = useState<null | number>(null);
   const router = useRouter();
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   async function getRequestAvailabilityData({ request_id }) {
     const { data: requestAvailability } = await axios.post(
@@ -181,6 +187,8 @@ function RequestAvailabilityProvider({ children }) {
         setMultiDaySessions,
         openDaySlotPopup,
         setOpenDaySlotPopup,
+        isSubmitted,
+        setIsSubmitted,
       }}
     >
       {children}

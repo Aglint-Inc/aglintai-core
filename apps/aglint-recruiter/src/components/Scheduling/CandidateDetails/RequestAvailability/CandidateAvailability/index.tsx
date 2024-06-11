@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { CandidateScheduleCard } from '@/devlink/CandidateScheduleCard';
 import { ChangeButton } from '@/devlink/ChangeButton';
@@ -26,7 +26,6 @@ import AvailableSlots from './AvailableSlots';
 import DateSlotsPoPup from './DateSlotsPopUp';
 
 function CandidateAvailability() {
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const router = useRouter();
   const {
     setOpenDaySlotPopup,
@@ -34,6 +33,9 @@ function CandidateAvailability() {
     candidateRequestAvailability,
     daySlots,
     loading,
+    isSubmitted,
+    setIsSubmitted,
+    setCandidateRequestAvailability,
   } = useRequestAvailabilityContext();
   const handleOpen = async (day: number) => {
     setOpenDaySlotPopup(day);
@@ -44,7 +46,7 @@ function CandidateAvailability() {
       return;
     }
 
-    await axios.post(
+    const { data: requestData } = await axios.post(
       `/api/scheduling/request_availability/updateRequestAvailability`,
       {
         id: String(router.query?.request_id),
@@ -73,8 +75,8 @@ function CandidateAvailability() {
         },
       },
     });
-
-    router.push('/scheduling/request-availability/submitted');
+    setCandidateRequestAvailability(requestData);
+    setIsSubmitted(true);
   }
 
   useEffect(() => {
