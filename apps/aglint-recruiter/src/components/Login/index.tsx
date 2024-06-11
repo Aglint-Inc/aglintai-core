@@ -7,12 +7,12 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { IconExclamationCircle } from '@tabler/icons-react';
 import LoaderGrey from 'aglint-recruiter/public/lottie/LoaderGrey';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { RecLoginPage } from '@/devlink2/RecLoginPage';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
@@ -77,14 +77,13 @@ function Login() {
       message: 'Invalid email',
     },
   });
+  
 
   const password = register('password', {
     required: 'Password is required',
     pattern: {
-      value:
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      message:
-        'Password must contain at least 8 characters, including UPPER/lowercase, one number and special characters',
+      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      message: 'Password must contain at least 8 characters, including UPPER/lowercase, one number and special characters',
     },
   });
 
@@ -112,6 +111,7 @@ function Login() {
 
   return (
     <Container
+      maxWidth={false}
       sx={{
         height: '100vh',
         display: 'flex',
@@ -197,9 +197,7 @@ function Login() {
                         onMouseDown={handleMouseDownPassword}
                         edge='end'
                       >
-                        <span icon-size='sm'>
-                          {showPassword ? 'visibility' : 'visibility_off'}
-                        </span>
+                        showPassword ?  <GlobalIcon iconName='visibility' /> : <GlobalIcon iconName='visibility_off' />
                       </IconButton>
                     </InputAdornment>
                   ),
@@ -214,7 +212,7 @@ function Login() {
                   gap={0.5}
                   fontSize="12px"
                 >
-                  <IconExclamationCircle size='1.2em' />
+                  <GlobalIcon iconName='error' />
                   {loginError}
                 </Stack>
               )}

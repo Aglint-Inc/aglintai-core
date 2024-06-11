@@ -2,6 +2,7 @@ import { AvatarGroup, InputAdornment, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { EmptyState } from '@/devlink2/EmptyState';
 import { InterviewModuleCard } from '@/devlink2/InterviewModuleCard';
 import { InterviewModuleTable } from '@/devlink2/InterviewModuleTable';
@@ -69,7 +70,7 @@ export function Modules() {
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position='end'>
-                        <Icon variant='Search' width='14' height='14' />
+                        <GlobalIcon iconName='search' />
                       </InputAdornment>
                     ),
                   }}

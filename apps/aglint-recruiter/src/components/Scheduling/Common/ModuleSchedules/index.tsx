@@ -1,9 +1,9 @@
 import { InputAdornment, Stack } from '@mui/material';
 import React, { useState } from 'react';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 import { InterviewMemberSide } from '@/devlink2/InterviewMemberSide';
-import Icon from '@/src/components/Common/Icons/Icon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import UITextField from '@/src/components/Common/UITextField';
 
@@ -54,7 +54,7 @@ function ModuleSchedules({
             InputProps={{
               endAdornment: (
                 <InputAdornment position='end'>
-                  <Icon variant='JobSearch' height='14' />
+                  <GlobalIcon iconName='search' />
                 </InputAdornment>
               ),
             }}

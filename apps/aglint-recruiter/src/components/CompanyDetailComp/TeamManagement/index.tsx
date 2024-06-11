@@ -4,7 +4,8 @@ import axios from 'axios';
 import converter from 'number-to-words';
 import { useEffect, useState } from 'react';
 
-import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { TeamUsersList } from '@/devlink/TeamUsersList';
 import { TeamEmpty } from '@/devlink3/TeamEmpty';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -12,7 +13,6 @@ import { API_get_last_login } from '@/src/pages/api/get_last_login/types';
 import toast from '@/src/utils/toast';
 
 // import AUIButton from '../../Common/AUIButton';
-import Icon from '../../Common/Icons/Icon';
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
 import DynamicLoader from '../../Scheduling/Interviewers/DynamicLoader';
@@ -167,7 +167,7 @@ const TeamManagement = () => {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position='end'>
-                      <Icon variant='JobSearch' height='14' />
+                      <GlobalIcon iconName='search' />
                     </InputAdornment>
                   ),
                 }}
@@ -270,42 +270,18 @@ const TeamManagement = () => {
           </>
         }
         slotInviteBtn={
-          <>
-            <ButtonPrimaryRegular
-              isStartIcon={true}
-              slotStartIcon={
-                <>
-                  <svg
-                    width='15'
-                    height='16'
-                    viewBox='0 0 15 16'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path
-                      d='M3 4.25C2.78125 4.25 2.60156 4.32031 2.46094 4.46094C2.32031 4.60156 2.25 4.78125 2.25 5V5.9375L6.84375 9.28906C7.28125 9.58594 7.71875 9.58594 8.15625 9.28906L12.75 5.9375V5C12.75 4.78125 12.6797 4.60156 12.5391 4.46094C12.3984 4.32031 12.2188 4.25 12 4.25H3ZM2.25 6.875V11C2.25 11.2188 2.32031 11.3984 2.46094 11.5391C2.60156 11.6797 2.78125 11.75 3 11.75H12C12.2188 11.75 12.3984 11.6797 12.5391 11.5391C12.6797 11.3984 12.75 11.2188 12.75 11V6.875L8.60156 9.89844C8.27344 10.1484 7.90625 10.2734 7.5 10.2734C7.09375 10.2734 6.72656 10.1484 6.39844 9.89844L2.25 6.875ZM1.5 5C1.51562 4.57812 1.66406 4.22656 1.94531 3.94531C2.22656 3.66406 2.57812 3.51563 3 3.5H12C12.4219 3.51563 12.7734 3.66406 13.0547 3.94531C13.3359 4.22656 13.4844 4.57812 13.5 5V11C13.4844 11.4219 13.3359 11.7734 13.0547 12.0547C12.7734 12.3359 12.4219 12.4844 12 12.5H3C2.57812 12.4844 2.22656 12.3359 1.94531 12.0547C1.66406 11.7734 1.51562 11.4219 1.5 11V5Z'
-                      fill='white'
-                    />
-                  </svg>
-                </>
-              }
-              textLabel='Invite Member'
-              onClickButton={{
-                onClick: () => {
-                  setOpenDrawer({ open: true, window: 'addMember' });
-                },
-              }}
-            />
-
-            {/* <AUIButton
-              size='small'
-              onClick={() => {
+          <ButtonSolid
+            isRightIcon={false}
+            isLeftIcon={true}
+            size={'2'}
+            textButton ={'Invite'}
+            iconName = {'send'}
+            onClickButton={{
+              onClick: () => {
                 setOpenDrawer({ open: true, window: 'addMember' });
-              }}
-            >
-              Invite Member
-            </AUIButton> */}
-          </>
+              }
+            }}
+          />
         }
         pendInvitesVisibility={Boolean(inviteUser)}
         onClickViewPendingInvites={{

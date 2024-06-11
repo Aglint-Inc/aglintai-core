@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import { Checkbox } from '@/devlink/Checkbox';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { AddFilter } from '@/devlink2/AddFilter';
 import { AllInterviewFilter } from '@/devlink2/AllInterviewFilter';
@@ -20,7 +21,6 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import Icon from '../../Common/Icons/Icon';
 import MuiAvatar from '../../Common/MuiAvatar';
 import UITextField from '../../Common/UITextField';
 import SideBar from '../SideBar/SideBar';
@@ -76,8 +76,8 @@ const CandidateDashboard = () => {
               minWidth: '250px',
             },
             endAdornment: (
-              <InputAdornment position='end'>
-                <Icon variant='JobSearch' height='14' />
+              <InputAdornment position='start'>
+                <GlobalIcon iconName='search' />
               </InputAdornment>
             ),
           }}

@@ -1,7 +1,6 @@
-import { IconCategory } from '@tabler/icons-react';
 import { useState } from 'react';
 
-import { ButtonGhost } from '@/devlink2/ButtonGhost';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { PageLayout } from '@/devlink2/PageLayout';
 import Seo from '@/src/components/Common/Seo';
 import Integrations from '@/src/components/Integrations';
@@ -22,7 +21,7 @@ function IntegrationsPage() {
       <PageLayout
         slotTopbarLeft={'Integrations'}
         slotTopbarRight={
-          <ButtonGhost
+          <ButtonSolid
             size='2'
             isRightIcon={false}
             onClickButton={{
@@ -30,8 +29,7 @@ function IntegrationsPage() {
                 setIsOpen(true);
               }
             }}
-            
-            slotIcon={<IconCategory width='16' height='16' />}
+            iconName='mail'
             textButton={'Request Integration'}
           />
         }
