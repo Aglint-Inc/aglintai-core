@@ -1,9 +1,6 @@
 import { NextResponse } from 'next/server';
 import * as v from 'valibot';
 import { agentEmailCandidateSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
-import { ClientError } from '../../../utils/apiUtils/customErrors';
-import { getEmails } from '../../../utils/apiUtils/get-emails';
-import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import sendMail from '../../../config/sendgrid';
 import { fetchUtil } from './fetch-util';
 import { APISendgridPayload } from '@aglint/shared-types';

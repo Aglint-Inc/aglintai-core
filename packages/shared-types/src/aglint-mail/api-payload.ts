@@ -80,7 +80,11 @@ type Payloads = {
       '{{ selfScheduleLink }}': string;
       '{{ recruiterFullName }}': string;
     };
-    react_email_placeholders: {};
+    react_email_placeholders: {
+      subject: string;
+      emailBody: string;
+      companyLogo: string;
+    };
   };
   confInterview_email_organizer: {
     api_payload: v.InferInput<typeof confInterviewEmailOrganizerSchema>;
