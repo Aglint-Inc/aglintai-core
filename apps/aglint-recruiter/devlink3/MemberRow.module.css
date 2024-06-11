@@ -113,11 +113,6 @@
   cursor: pointer;
 }
 
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
 .timezone_block {
   width: 180px;
 }

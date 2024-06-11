@@ -15,21 +15,21 @@ export function ActiveVoice() {
       <Stack
         className='piece-0'
         borderRadius={'20px'}
-        bgcolor={'white.700'}
+        bgcolor={'var(--white-a7'}
         width={4}
         height={11.5}
       ></Stack>
       <Stack
         className='piece-1'
         borderRadius={'20px'}
-        bgcolor={'white.700'}
+        bgcolor={'var(--white-a7'}
         width={4.2}
         height={23}
       ></Stack>
       <Stack
         className='piece-2'
         borderRadius={'20px'}
-        bgcolor={'white.700'}
+        bgcolor={'var(--white-a7'}
         width={4.2}
         height={11.5}
       ></Stack>

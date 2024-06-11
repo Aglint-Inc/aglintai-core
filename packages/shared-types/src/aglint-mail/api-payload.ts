@@ -16,6 +16,9 @@ import {
   interviewStartEmailInterviewersSchema,
   phoneScreenEmailCandidateSchema,
   phoneScreenRemindEmailApplicantSchema,
+  selfScheduleReminderEmailApplicantSchema,
+  sendAvailReqReminderEmailApplicant,
+  sendAvailabilityRequestEmailApplicantSchema,
   sendSelfScheduleRequest_email_applicant,
 } from './api_schema';
 export type MeetingDetailCardType = {
@@ -209,6 +212,55 @@ type Payloads = {
   };
   sendSelfScheduleRequest_email_applicant: {
     api_payload: v.InferInput<typeof sendSelfScheduleRequest_email_applicant>;
+    comp_email_placeholders: {
+      '{{ candidateFirstName }}': string;
+      '{{ companyName }}': string;
+      '{{ jobTitle }}': string;
+      '{{ selfScheduleLink }}': string;
+      '{{ supportLink }}': string;
+    };
+    react_email_placeholders: {
+      emailBody: string;
+      subject: string;
+      companyLogo: string;
+    };
+  };
+  sendAvailabilityRequest_email_applicant: {
+    api_payload: v.InferInput<
+      typeof sendAvailabilityRequestEmailApplicantSchema
+    >;
+    comp_email_placeholders: {
+      '{{ candidateFirstName }}': string;
+      '{{ companyName }}': string;
+      '{{ jobTitle }}': string;
+      '{{ availabilityReqLink }}': string;
+      '{{ recruiterFullName }}': string;
+      '{{ supportLink }}': string;
+    };
+    react_email_placeholders: {
+      emailBody: string;
+      subject: string;
+      companyLogo: string;
+    };
+  };
+  sendAvailReqReminder_email_applicant: {
+    api_payload: v.InferInput<typeof sendAvailReqReminderEmailApplicant>;
+    comp_email_placeholders: {
+      '{{ candidateFirstName }}': string;
+      '{{ companyName }}': string;
+      '{{ jobTitle }}': string;
+      '{{ availabilityLink }}': string;
+      '{{ recruiterFullName }}': string;
+      '{{ supportLink }}': string;
+    };
+    react_email_placeholders: {
+      emailBody: string;
+      subject: string;
+      companyLogo: string;
+    };
+  };
+  selfScheduleReminder_email_applicant: {
+    api_payload: v.InferInput<typeof selfScheduleReminderEmailApplicantSchema>;
     comp_email_placeholders: {
       '{{ candidateFirstName }}': string;
       '{{ companyName }}': string;

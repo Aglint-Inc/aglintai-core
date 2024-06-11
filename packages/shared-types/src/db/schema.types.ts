@@ -3525,6 +3525,7 @@ export type Database = {
           applied_at: string | null
           badges: Json | null
           bookmarked: boolean | null
+          candidate_file_id: string | null
           candidate_id: string | null
           city: string | null
           country: string | null
@@ -3532,12 +3533,15 @@ export type Database = {
           current_job_title: string | null
           email: string | null
           email_status: Json | null
+          file_url: string | null
           id: string | null
           interview_score: number | null
           is_new: boolean | null
           job_id: string | null
+          linkedin: string | null
           meeting_details: Json | null
           name: string | null
+          phone: string | null
           processing_status:
             | Database["public"]["Enums"]["application_processing_status"]
             | null
@@ -3549,6 +3553,13 @@ export type Database = {
           status: Database["public"]["Enums"]["application_status"] | null
         }
         Relationships: [
+          {
+            foreignKeyName: "applications_candidate_file_id_fkey"
+            columns: ["candidate_file_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_files"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "applications_job_id_fkey"
             columns: ["job_id"]
@@ -4947,6 +4958,8 @@ export type Database = {
         | "interReschedReq_email_recruiter"
         | "interviewReschedule_email_applicant"
         | "interviewReminder_email_interviewer"
+        | "sendAvailReqReminder_email_applicant"
+        | "selfScheduleReminder_email_applicant"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"

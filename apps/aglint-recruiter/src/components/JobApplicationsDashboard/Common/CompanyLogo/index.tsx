@@ -17,7 +17,7 @@ const CompanyLogo = ({
     <Avatar
       variant='square'
       sx={{
-        bgcolor: 'white.700',
+        bgcolor: 'var(--white-a7)',
         width: '100%',
         height: '100%',
         '& .MuiAvatar-img ': {
@@ -38,7 +38,7 @@ const CompanyLogo = ({
     <Avatar
       variant='square'
       sx={{
-        bgcolor: 'white.700',
+        bgcolor: 'var(--white-a7)',
         width: '100%',
         height: '100%',
         '& .MuiAvatar-img ': {

@@ -12,6 +12,7 @@
   border-bottom-color: var(--neutral-6);
 
   width: max-content;
+  min-width: calc(100vw - 73px);
 }
 
 .candidate-list-wrapper.no-sticky {

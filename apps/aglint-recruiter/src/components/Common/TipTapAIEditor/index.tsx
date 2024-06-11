@@ -116,10 +116,9 @@ const TipTapAIEditor = ({
       <Stack
         sx={{
           ...(border && {
-            mt: 'var(--space-2)',
             border: '1px solid',
             borderColor: 'var(--neutral-6)',
-            borderRadius: borderRadius || 'var(--space-1)',
+            borderRadius: borderRadius || 'var(--radius-2)',
           }),
         }}
       >
@@ -132,7 +131,7 @@ const TipTapAIEditor = ({
                   opacity: disabled ? 0.5 : 1,
                 }}
               >
-                <MenuBtns borderRadius={(border && borderRadius) || 'var(--space-1)'} />
+                <MenuBtns borderRadius={(border && borderRadius) || 'var(--radius-2)'} />
               </Stack>
             </>
           )}
@@ -140,7 +139,7 @@ const TipTapAIEditor = ({
             position={'relative'}
             sx={{
               backgroundColor:'var(--white)',
-              borderRadius: borderRadius || 'var(--space-2)',
+              borderRadius: borderRadius || 'var(--radius-2)',
               '& .ProseMirror': {
                 minHeight: '250px',
                 width: '100%',
@@ -152,7 +151,7 @@ const TipTapAIEditor = ({
                 background: 'var(--accent-4)',
               },
               '.tiptap p.is-editor-empty:first-child::before ': {
-                color: 'var(--neutral-12)',
+                color: 'var(--neutral-9)',
                 content: 'attr(data-placeholder)',
                 float: 'left',
                 height: 0,
@@ -163,7 +162,7 @@ const TipTapAIEditor = ({
               },
             }}
           >
-            <Stack p={2}>
+            <Stack p={1}>
               {loader.isLoading ? (
                 <Stack gap={1}>
                   {[...Array(loader.count)].map((e, i) => (

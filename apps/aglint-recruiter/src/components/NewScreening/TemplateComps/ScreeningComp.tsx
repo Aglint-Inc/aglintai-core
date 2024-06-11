@@ -88,7 +88,7 @@ const ScreeningComp = () => {
                       <Stack
                         p={1.5}
                         bgcolor={'var(--neutral-1)'}
-                        borderRadius={'var(-radius-4)'}
+                        borderRadius={'var(--radius-4)'}
                       >
                         <UITypography type='small' fontBold='normal'>
                           {phoneScreening.startMessage}

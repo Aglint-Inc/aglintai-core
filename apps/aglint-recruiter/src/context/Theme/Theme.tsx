@@ -744,15 +744,15 @@ function Theme({ children }) {
           },
         },
       },
-      MuiPopover: {
-        styleOverrides: {
-          paper: {
-            padding: 0,
-            borderRadius: 'var(--radius-2)',
-            boxShadow: 'var(--shadow-3)', // Level 3 shadow
-          },
-        },
-      },
+      // MuiPopover: {
+      //   styleOverrides: {
+      //     paper: {
+      //       padding: 0,
+      //       borderRadius: 'var(--radius-2)',
+      //       boxShadow: 'var(--shadow-3)', // Level 3 shadow
+      //     },
+      //   },
+      // },
 
       MuiSkeleton: {
         styleOverrides: {
@@ -882,36 +882,31 @@ function Theme({ children }) {
         },
         styleOverrides: {
           paper: {
-            borderRadius: '4px',
-            marginTop: '4px',
+            // borderRadius: '4px',
+            // marginTop: '4px',
             // padding: 'var(--space-4)',
             boxShadow: 'var(--shadow-4)', // Level 4 shadow
-            fontFamily: 'var(--text)',
           },
           paperFullScreen: {
             borderRadius: '0',
             // padding: 'var(--space-4)',
             boxShadow: 'var(--shadow-4)', // Level 4 shadow
-            fontFamily: 'var(--text)',
           },
           paperFullWidth: {
             // padding: 'var(--space-4)',
             boxShadow: 'var(--shadow-4)', // Level 4 shadow
-            fontFamily: 'var(--text)',
           },
           paperScrollBody: {
             borderRadius: '4px',
             marginTop: '4px',
             // padding: 'var(--space-4)',
             boxShadow: 'var(--shadow-4)', // Level 4 shadow
-            fontFamily: 'var(--text)',
           },
           paperScrollPaper: {
             borderRadius: '4px',
             marginTop: '4px',
             // padding: 'var(--space-4)',
             boxShadow: 'var(--shadow-4)', // Level 4 shadow
-            fontFamily: 'var(--text)',
           },
         },
       },
@@ -922,26 +917,26 @@ function Theme({ children }) {
       //     },
       //   },
       // },
-      MuiStack: {
-        styleOverrides: {
-          root: {
-            '& .MuiStack-root': {
-              borderColor: 'var(--neutral-6)',
-            },
-            '& .react-tel-input .form-control:focus': {
-              borderColor: 'var(--accent-9)',
-              outline: 'none !important',
-            },
-            '& .react-tel-input .form-control:hover': {
-              borderColor: 'var(--neutral-9)',
-            },
-            '& .react-tel-input .flag-dropdown:focus': {
-              borderColor: 'var(--accent-9)',
-              outline: 'none !important',
-            },
-          },
-        },
-      },
+      // MuiStack: {
+      //   styleOverrides: {
+      //     root: {
+      //       '& .MuiStack-root': {
+      //         borderColor: 'var(--neutral-6)',
+      //       },
+      //       '& .react-tel-input .form-control:focus': {
+      //         borderColor: 'var(--accent-9)',
+      //         outline: 'none !important',
+      //       },
+      //       '& .react-tel-input .form-control:hover': {
+      //         borderColor: 'var(--neutral-9)',
+      //       },
+      //       '& .react-tel-input .flag-dropdown:focus': {
+      //         borderColor: 'var(--accent-9)',
+      //         outline: 'none !important',
+      //       },
+      //     },
+      //   },
+      // },
       MuiCard: {
         styleOverrides: {
           root: {

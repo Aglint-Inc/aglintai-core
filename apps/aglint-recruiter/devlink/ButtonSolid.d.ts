@@ -13,4 +13,8 @@ declare function ButtonSolid(props: {
   isRightIcon?: Types.Visibility.VisibilityConditions;
   isDisabled?: Types.Visibility.VisibilityConditions;
   isLoading?: Types.Visibility.VisibilityConditions;
+  iconName?: React.ReactNode;
+  iconSize?: Types.Builtin.Text;
+  iconColor?: Types.Builtin.Text;
+  iconWeight?: Types.Builtin.Text;
 }): React.JSX.Element;

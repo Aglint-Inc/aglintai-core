@@ -346,32 +346,37 @@ const FormBody = ({
             <Stack
               sx={{
                 border: '1px dashed',
-                borderColor: 'var(--accent-6)',
-                borderRadius: 1,
-                py: '34px',
-                px: '20px',
+                borderColor: 'var(--neutral-6)',
+                borderRadius: 'var(--radius-2)',
+                py: 'var(--space-6)',
+                px: 'var(--space-5)',
                 cursor: 'pointer',
                 background: 'var(--neutral-2)',
               }}
               direction='row'
-              spacing={'var(--space-2)'}
+              spacing={'var(--space-1)'}
               alignItems={'center'}
               justifyContent={'center'}
             >
-              {applicant.resume.value ? <FileIcon /> : <UploadIcon />}
+              {
+                applicant.resume.value ? 
+                  <span icon-size='xxl' icon-color='neutral-11' icon-wight='thin'>file_present</span> 
+                  :
+                  <span icon-size='xxl' icon-color='neutral-11' icon-wight='thin'>upload_file</span>
+              }
               <Typography
                 variant='body1'
-                sx={{ textAlgin: 'center', fontSize: '14px' }}
+                sx={{ textAlgin: 'center',}}
                 style={{
-                  color: applicant.resume.error ? 'red' : 'inherit',
-                  fontWeight: applicant.resume.value ? 600 : 400,
+                  color: applicant.resume.error ? 'var(--error-11)' : 'inherit',
+                  fontWeight: applicant.resume.value ? 500 : 400,
                 }}
               >
                 {applicant.resume.value
                   ? applicant.resume.value.name
                   : 'Upload candidate resume [PDF/DOCX]'}
               </Typography>
-              {applicant.resume.value && <CheckIcon />}
+              {applicant.resume.value && <span icon-size='lg' icon-color='success-11'>check_circle</span>}
             </Stack>
           </FileUploader>
           {applicant.resume.error && (
@@ -388,6 +393,7 @@ const FormBody = ({
 const getHelper = (title: string) => {
   return `Please provide a valid ${title}`;
 };
+
 
 export const FileIcon = () => {
   return (

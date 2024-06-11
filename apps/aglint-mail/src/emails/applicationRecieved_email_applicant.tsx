@@ -18,7 +18,7 @@ type EmailType = EmailTemplateAPi<'applicationRecieved_email_applicant'>;
 // export dummy
 export const dummy: EmailType['react_email_placeholders'] = {
   emailBody:
-    '<p>Hi [firstName],</p><p>You have successfully submitted your application for this position:</p><p>[jobTitle]</p><p>We will review your application shortly. If your profile match our requirements, we will be in touch to schedule the next steps in the process.</p><p>Thank you for your interest in [companyName].</p><p>If you have any queries about this job</p><p>[supportLink]</p><p>Sincerely,</p><p>[companyName]</p>',
+    '<p>Hi {{ candidateFirstName }},</p><p>You have successfully submitted your application for this position:</p><p>{{ jobTitle }}</p><p>We will review your application shortly. If your profile matches our requirements, we will be in touch to schedule the next steps in the process.</p><p>Thank you for your interest in {{ companyName }}.</p><p>If you have any queries about this job, please visit the following link: {{ supportLink }}</p><p>Sincerely,</p><p>{{ companyName }}</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   subject: '',

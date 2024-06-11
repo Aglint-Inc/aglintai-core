@@ -20,13 +20,6 @@
   grid-row-gap: var(--space-4);
 }
 
-.intrerview_module_breaks.break {
-  flex-direction: row;
-  flex-wrap: nowrap;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
-}
-
 .break {
   display: flex;
   align-items: center;

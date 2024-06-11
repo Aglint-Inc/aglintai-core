@@ -50,6 +50,10 @@
   background-color: #886bd8;
 }
 
+.indicator-box.must-have {
+  background-color: var(--sky-3);
+}
+
 .score-outer-wrap {
   width: 100%;
   margin-top: var(--space-4);

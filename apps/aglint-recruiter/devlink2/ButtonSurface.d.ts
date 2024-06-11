@@ -14,4 +14,8 @@ declare function ButtonSurface(props: {
   color?: Types.Builtin.Text;
   onClickButton?: Types.Devlink.RuntimeProps;
   isLoading?: Types.Visibility.VisibilityConditions;
+  iconSize?: Types.Builtin.Text;
+  iconName?: React.ReactNode;
+  iconWeight?: Types.Builtin.Text;
+  iconColor?: Types.Builtin.Text;
 }): React.JSX.Element;

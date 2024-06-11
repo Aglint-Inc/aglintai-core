@@ -18,6 +18,8 @@ import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import Footer from '../Common/Footer';
+
 interface LoginFormInputs {
   email: string;
   password: string;
@@ -222,17 +224,15 @@ function Login() {
             onClick: handleSubmit(onSubmit),
           }}
         />
-      </Box>
-      <Box
-        sx={{
-          width: '100%',
-          textAlign: 'center',
-        }}
-      >
-        <Typography variant='body2' color='var(--neutral-11)'>
-          &copy; {new Date().getFullYear()} Aglint Inc. All rights reserved.
-        </Typography>
-      </Box>
+    </Box>
+    <Box
+      sx={{
+        width: '100%',
+        textAlign: 'center',
+      }}
+    >
+      <Footer />
+    </Box>
     </Container>
   );
 }

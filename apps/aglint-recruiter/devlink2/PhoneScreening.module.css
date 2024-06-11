@@ -129,14 +129,6 @@
   grid-row-gap: 90px;
 }
 
-.flex-v.space-around {
-  justify-content: space-around;
-}
-
-.flex-v.align-center {
-  align-items: center;
-}
-
 .flex-v.gap-10 {
   grid-column-gap: 10px;
   grid-row-gap: 10px;

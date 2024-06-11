@@ -11,14 +11,14 @@ import {
 } from '@react-email/components';
 import { Parser } from 'html-to-react';
 import * as React from 'react';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { aglintLogo } from '../utils/assets/common';
-import { EmailTemplateAPi } from '@aglint/shared-types';
+
 type EmailType = EmailTemplateAPi<'debrief_email_interviewer'>;
 
 // export dummy
 export const dummy: EmailType['react_email_placeholders'] = {
-  emailBody:
-    '<p>Dear [teamMemberName],</p><p>Please join the debrief session to discuss [firstName] interview for [jobTitle]. Your insights are valuable to the selection process.</p><p>Cheers,</p><p>[companyName] Recruitment Team</p>',
+  emailBody: `<p>Dear {{ interviewerFirstName }},</p><p>Please join the debrief session to discuss {{ candidateFirstName }}'s interview for the {{ jobTitle }} position. Your insights are valuable to the selection process.</p><p>Cheers,</p><p>{{ companyName }} Recruitment Team</p>`,
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   meetingDetails: {

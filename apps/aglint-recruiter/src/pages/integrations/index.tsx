@@ -29,7 +29,8 @@ function IntegrationsPage() {
                 setIsOpen(true);
               }
             }}
-            iconName='mail'
+            isLeftIcon={true}
+            iconName={'outgoing_mail'}
             textButton={'Request Integration'}
           />
         }

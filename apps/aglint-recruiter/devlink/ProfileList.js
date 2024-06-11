@@ -164,7 +164,7 @@ export function ProfileList({
                 className={_utils.cx(_styles, "div-block-963")}
                 tag="div"
               >
-                <Text content="Role" />
+                <Text content="Role" color="neutral" />
                 <Text content={textRole} />
               </_Builtin.Block>
             </_Builtin.Block>

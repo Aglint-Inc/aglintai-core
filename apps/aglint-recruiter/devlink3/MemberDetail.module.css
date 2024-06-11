@@ -221,8 +221,3 @@
 .text-sm.text-underline.text-grey-600.cursor-pointer:hover {
   opacity: 0.8;
 }
-
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}

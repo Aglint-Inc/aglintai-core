@@ -79,11 +79,6 @@
   cursor: pointer;
 }
 
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
 .text-20 {
   font-size: 20px;
   line-height: 28px;

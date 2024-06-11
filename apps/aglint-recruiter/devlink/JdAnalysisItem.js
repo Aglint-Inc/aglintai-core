@@ -12,6 +12,7 @@ export function JdAnalysisItem({
   isHigh = false,
   isPoor = false,
   isMedium = false,
+  textTitle = "Experience",
 }) {
   return (
     <_Component
@@ -19,7 +20,7 @@ export function JdAnalysisItem({
       tag="div"
     >
       <_Builtin.Block className={_utils.cx(_styles, "cd_title")} tag="div">
-        <Text content="Experience" />
+        <Text content={textTitle} />
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_for_badge")}
           tag="div"

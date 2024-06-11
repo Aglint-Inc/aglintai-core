@@ -12,7 +12,7 @@ function ProgressChart({ score_matches }) {
   return (
     <>
       <Stack
-        borderRadius={'var(-radius-4)'}
+        borderRadius={'var(--radius-4)'}
         // bgcolor={'grey.200'}
         direction={'row'}
         width={'100%'}

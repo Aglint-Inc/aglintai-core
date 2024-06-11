@@ -6,6 +6,27 @@
   grid-row-gap: var(--space-2);
 }
 
+.avatar-slot-wrap {
+  position: relative;
+}
+
+.avatar-slot-image {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  border-radius: var(--radius-full);
+}
+
+.avatar-badge-wrap {
+  position: absolute;
+  left: auto;
+  top: auto;
+  right: -5px;
+  bottom: -5px;
+  z-index: 2;
+}
+
 .icons {
   display: flex;
   flex-direction: column;
@@ -36,35 +57,4 @@
 
 .icons.pointer {
   cursor: pointer;
-}
-
-.avatar-slot-wrap {
-  position: relative;
-}
-
-.avatar-slot-image {
-  position: relative;
-  z-index: 2;
-
-  display: flex;
-  width: 40px;
-  height: 40px;
-  justify-content: space-between;
-
-  border-radius: var(--radius-full);
-}
-
-.avatar-slot-image.small {
-  width: 24px;
-  height: 24px;
-  background-color: #f8f9f9;
-}
-
-.avatar-badge-wrap {
-  position: absolute;
-  left: auto;
-  top: auto;
-  right: -5px;
-  bottom: -5px;
-  z-index: 2;
 }

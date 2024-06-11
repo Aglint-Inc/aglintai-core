@@ -42,7 +42,7 @@ export function ScoreSetting({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "indicator-box", "blue-200")}
+            className={_utils.cx(_styles, "indicator-box", "must-have")}
             tag="div"
           />
           <Text content="Must have" />
@@ -52,7 +52,7 @@ export function ScoreSetting({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "indicator-box", "grey-200")}
+            className={_utils.cx(_styles, "indicator-box")}
             tag="div"
           />
           <Text content="Nice to have" />

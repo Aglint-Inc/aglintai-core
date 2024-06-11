@@ -1,12 +1,15 @@
 import { JobTypeDB, RecruiterDB } from '@aglint/shared-types';
 import Seo from '@components/Common/Seo';
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import Footer from '@/src/components/Common/Footer';
 import Loader from '@/src/components/Common/Loader';
 import CompanyJobPost from '@/src/components/CompanyJobPost';
+
+import JobNotFound from '../JobNotFound';
 
 function JobPost() {
   const router = useRouter();
@@ -45,16 +48,17 @@ function JobPost() {
         description='AI for People Products'
       />
       {loading ? (
-        <Stack height={'100vh'}>
+        <Stack height= "100vh" justifyContent="center" alignItems="center">
           <Loader />
         </Stack>
       ) : valid ? (
         <CompanyJobPost recruiter={recruiter} jobs={jobs} />
       ) : (
-        <Stack width={'100%'} alignItems={'center'} p={'100px'}>
-          <Typography variant='h3'>Invalid Job Post</Typography>
+        <Stack height="100vh" justifyContent="center" alignItems="center">
+          <JobNotFound />
         </Stack>
       )}
+      <Footer />
     </Stack>
   );
 }

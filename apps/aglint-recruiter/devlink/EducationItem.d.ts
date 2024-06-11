@@ -7,4 +7,5 @@ declare function EducationItem(props: {
   textDate?: React.ReactNode;
   textSchool?: React.ReactNode;
   slotSchoolIcon?: Types.Devlink.Slot;
+  slotBadge?: Types.Devlink.Slot;
 }): React.JSX.Element;

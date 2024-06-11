@@ -34,7 +34,7 @@ export function JobDetailBlock({
               className={_utils.cx(_styles, "div-block-507")}
               tag="div"
             >
-              <Text content="Job Details" />
+              <Text content="" />
               <Text content={textDescription} weight="" color="neutral" />
             </_Builtin.Block>
             {isCreate ? (

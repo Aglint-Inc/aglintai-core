@@ -47,19 +47,6 @@
   opacity: 0.8;
 }
 
-.eom-link-wrap.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.eom-link-wrap.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
 .icons {
   display: flex;
   flex-direction: column;
@@ -74,6 +61,10 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .icons.task-hover {
