@@ -30,12 +30,7 @@ export const InterviewMeetingStatus = () => {
   return (
     <NewInterviewDetail
       textHeading={'Declined Interviews'}
-      // slotDropdownButton={
-      //   <SchedulingDropdown
-      //     type={type}
-      //     onChange={(e) => setType(e.target.value as typeof type)}
-      //   />
-      // }
+      slotDropdownButton={<></>}
       slotInterviewDetailPill={
         <InterviewMeetingStatusComponent type={'month'} />
       }

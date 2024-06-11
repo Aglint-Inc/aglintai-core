@@ -25,18 +25,17 @@ export default async function handler(
 ) {
   try {
     if (req.method === 'POST') {
-      const { data, id } = req.body;
-      if (data) {
-        const { error, data: candidateAvailability } = await supabase
-          .from('candidate_request_availability')
-          .update({
+      const { data } = req.body;
+      if (data.application_id) {
+        const { error, data: logs } = await supabase
+          .from('application_logs')
+          .insert({
             ...data,
           })
-          .eq('id', id)
-          .select('*, applications ( candidate_id, candidates ( * ) )')
+          .select()
           .single();
         if (!error) {
-          return res.send(candidateAvailability);
+          return res.send(logs);
         }
       } else {
         return res.send({

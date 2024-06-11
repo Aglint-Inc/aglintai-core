@@ -25,9 +25,16 @@ function RescheduleSlot() {
   >([]);
 
   useEffect(() => {
-    if (selectedApplicationLog) {
+    if (selectedApplicationLog.metadata.type === 'booking_confirmation') {
       setLocalselectedLocalSessionIds(
         selectedApplicationLog.metadata.sessions.map((ses) => ses.id),
+      );
+    } else if (
+      selectedApplicationLog.metadata.type ===
+      'candidate_response_self_schedule'
+    ) {
+      setLocalselectedLocalSessionIds(
+        selectedApplicationLog.metadata.session_ids,
       );
     }
     return;
@@ -36,12 +43,18 @@ function RescheduleSlot() {
   let session_ids = [];
   let selectedSessions: SchedulingApplication['initialSessions'] = [];
 
-  if (selectedApplicationLog) {
-    session_ids = selectedApplicationLog?.metadata?.sessions?.map(
-      (ses) => ses.id,
-    );
+  if (selectedApplicationLog?.metadata?.type === 'booking_confirmation') {
+    session_ids = selectedApplicationLog.metadata.sessions.map((ses) => ses.id);
     selectedSessions = initialSessions.filter((ses) =>
       session_ids?.includes(ses.id),
+    );
+  } else if (
+    selectedApplicationLog?.metadata?.type ===
+    'candidate_response_self_schedule'
+  ) {
+    session_ids = selectedApplicationLog.metadata.session_ids;
+    selectedSessions = initialSessions.filter((ses) =>
+      session_ids.includes(ses.id),
     );
   }
 

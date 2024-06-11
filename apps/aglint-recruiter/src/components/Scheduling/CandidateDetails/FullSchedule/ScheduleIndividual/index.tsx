@@ -5,9 +5,7 @@ import { useRouter } from 'next/router';
 import { StatusBadge } from '@/devlink2/StatusBadge';
 import { EditOptionModule } from '@/devlink3/EditOptionModule';
 import { NewInterviewPlanCard } from '@/devlink3/NewInterviewPlanCard';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
-import { getFullName } from '@/src/utils/jsonResume';
 
 import IconScheduleType from '../../../Candidates/ListCard/Icon';
 import { getScheduleBgcolor, getScheduleType } from '../../../Candidates/utils';
@@ -18,10 +16,8 @@ import {
   setIndividualCancelOpen,
   setIndividualRescheduleOpen,
   setIsEditOpen,
-  setSelectedSession,
-  useSchedulingApplicationStore,
+  setSelectedSession
 } from '../../store';
-import { onClickResendInvite } from '../../utils';
 
 function ScheduleIndividualCard({
   session,
@@ -43,12 +39,7 @@ function ScheduleIndividualCard({
   selectedSessionIds: string[];
   isOnclickCard?: boolean;
 }) {
-  const { recruiterUser } = useAuthDetails();
   const router = useRouter();
-  const { selectedApplication } = useSchedulingApplicationStore((state) => ({
-    initialSessions: state.initialSessions,
-    selectedApplication: state.selectedApplication,
-  }));
 
   return (
     <NewInterviewPlanCard
@@ -163,23 +154,7 @@ function ScheduleIndividualCard({
       })}
       slotEditOptionModule={
         <EditOptionModule
-          isResendInviteVisible={
-            session.interview_meeting?.status === 'waiting'
-          }
-          onClickResendInvite={{
-            onClick: () => {
-              onClickResendInvite({
-                session_name: session.name,
-                session_id: session.id,
-                application_id: selectedApplication.id,
-                candidate_name: getFullName(
-                  selectedApplication.candidates.first_name,
-                  selectedApplication.candidates.first_name,
-                ),
-                rec_user_id: recruiterUser.user_id,
-              });
-            },
-          }}
+          isResendInviteVisible={false}
           isEditVisible={
             !session.interview_meeting ||
             session.interview_meeting?.status === 'not_scheduled' ||

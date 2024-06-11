@@ -1,4 +1,7 @@
+import { DatabaseTableInsert } from '@aglint/shared-types';
+import { Stack } from '@mui/material';
 import axios from 'axios';
+import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -9,6 +12,7 @@ import { SessionInfo } from '@/devlink/SessionInfo';
 import { AvailabilityReq } from '@/devlink2/AvailabilityReq';
 import { ButtonPrimary } from '@/devlink2/ButtonPrimary';
 import { MultiDaySelect } from '@/devlink2/MultiDaySelect';
+import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -16,9 +20,10 @@ import toast from '@/src/utils/toast';
 
 import {
   insertTaskProgress,
-  useRequestAvailabilityContext
+  useRequestAvailabilityContext,
 } from '../RequestAvailabilityContext';
 import { convertMinutesToHoursAndMinutes } from '../utils';
+import AvailabilitySubmittedPage from './AvailabilitySubmittedPage';
 import AvailableSlots from './AvailableSlots';
 import DateSlotsPoPup from './DateSlotsPopUp';
 
@@ -29,6 +34,11 @@ function CandidateAvailability() {
     multiDaySessions,
     candidateRequestAvailability,
     daySlots,
+    loading,
+    isSubmitted,
+    setIsSubmitted,
+    selectedSlots,
+    setCandidateRequestAvailability,
   } = useRequestAvailabilityContext();
   const handleOpen = async (day: number) => {
     setOpenDaySlotPopup(day);
@@ -39,44 +49,137 @@ function CandidateAvailability() {
       return;
     }
 
-    await axios.post(
+    const { data: task } = await axios.post(
+      `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,
+      {
+        request_id: candidateRequestAvailability?.id,
+      },
+    );
+    const { data: requestData } = await axios.post(
       `/api/scheduling/request_availability/updateRequestAvailability`,
       {
         id: String(router.query?.request_id),
         data: { slots: daySlots, user_timezone: userTzDayjs.tz.guess() },
       },
     );
-    await insertTaskProgress({
-      request_availability_id: candidateRequestAvailability?.id,
-      taskData: {
-        created_by: {
-          name: getFullName(
-            candidateRequestAvailability.applications.candidates.first_name,
-            candidateRequestAvailability.applications.candidates.last_name,
-          ),
-          id: candidateRequestAvailability.applications.candidates.id,
-        },
-        jsonb_data: {
-          dates: [
-            ...new Set(
-              daySlots
-                .map((ele) => ele.dates)
-                .flat()
-                .map((ele) => ele.curr_day),
+    if (task.id) {
+      await insertTaskProgress({
+        taskData: {
+          task_id: task.id,
+          created_by: {
+            name: getFullName(
+              candidateRequestAvailability.applications.candidates.first_name,
+              candidateRequestAvailability.applications.candidates.last_name,
             ),
-          ],
+            id: candidateRequestAvailability.applications.candidates.id,
+          },
+          jsonb_data: {
+            dates: [
+              ...new Set(
+                daySlots
+                  .map((ele) => ele.dates)
+                  .flat()
+                  .map((ele) => ele.curr_day),
+              ),
+            ],
+          },
         },
+      });
+    }
+    const dates = selectedSlots
+      .map((ele) => ele.dates)
+      .flat()
+      .map((ele) => `${dayjs(ele.curr_day).format('DD MMM')}`);
+    await axios.post(
+      `/api/scheduling/request_availability/insertScheduleActivities`,
+      {
+        data: {
+          title: `Candidate submitted availability`,
+          description: `Candidate submitted availability on ${dates} for Coding Interview (Round 2) Interviews.`,
+          module: 'scheduler',
+          task_id: task.id,
+          logged_by: 'candidate',
+          application_id: candidateRequestAvailability.application_id,
+        } as DatabaseTableInsert['application_logs'],
       },
-    });
-
-    router.push('/scheduling/request-availability/submitted');
+    );
+    setCandidateRequestAvailability(requestData);
+    setIsSubmitted(true);
   }
 
+  const checkAndUpdate = async () => {
+    if (candidateRequestAvailability.slots) {
+      setIsSubmitted(true);
+    } else {
+      if (!candidateRequestAvailability.visited) {
+        const { data: task } = await axios.post(
+          `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,
+          {
+            request_id: candidateRequestAvailability?.id,
+          },
+        );
+
+        const { data: requestData } = await axios.post(
+          `/api/scheduling/request_availability/updateRequestAvailability`,
+          {
+            id: String(router.query?.request_id),
+            data: { visited: true },
+          },
+        );
+        setCandidateRequestAvailability(requestData);
+        await axios.post(
+          `/api/scheduling/request_availability/insertScheduleActivities`,
+          {
+            data: {
+              title: `Candidate opened request availability link`,
+              module: 'scheduler',
+              logged_by: 'candidate',
+              application_id: candidateRequestAvailability.application_id,
+              task_id: task.id,
+            } as DatabaseTableInsert['application_logs'],
+          },
+        );
+        await insertTaskProgress({
+          taskData: {
+            task_id: task.id,
+            created_by: {
+              name: getFullName(
+                candidateRequestAvailability.applications.candidates.first_name,
+                candidateRequestAvailability.applications.candidates.last_name,
+              ),
+              id: candidateRequestAvailability.applications.candidates.id,
+            },
+            title: 'Candidate opened request availability link',
+            progress_type: 'standard',
+          } as DatabaseTableInsert['new_tasks_progress'],
+        });
+      }
+    }
+  };
   useEffect(() => {
-    if (candidateRequestAvailability?.slots) {
-      router.push('/scheduling/request-availability/submitted');
+    if (candidateRequestAvailability?.id) {
+      checkAndUpdate();
     }
   }, [candidateRequestAvailability]);
+
+  if (loading) {
+    return (
+      <Stack
+        width={'100%'}
+        height={'100vh'}
+        direction={'row'}
+        justifyContent={'center'}
+        alignItems={'center'}
+      >
+        <Stack width={'120px'} style={{ transform: 'translateY(-50%)' }}>
+          <CandidateSlotLoad />
+        </Stack>
+      </Stack>
+    );
+  }
+  if (isSubmitted) {
+    return <AvailabilitySubmittedPage />;
+  }
   return (
     <div>
       <DateSlotsPoPup />

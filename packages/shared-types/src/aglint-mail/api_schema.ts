@@ -14,8 +14,13 @@ export const interviewCancelEmailApplicantSchema = v.object({
 });
 
 export const agentEmailCandidateSchema = v.object({
-  meeting_id: v.string(),
+  agent_email: v.string(),
+  recruiter_user_id: v.string(),
   filter_id: v.string(),
+  mail_headers: v.object({
+    'Message-ID': v.string(),
+    'In-Reply-To': v.string(),
+  }),
 });
 
 export const confInterviewEmailOrganizerSchema = v.object({

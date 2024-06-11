@@ -6,17 +6,16 @@ import { useEffect } from 'react';
 import { DeletePopup } from '@/devlink3/DeletePopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import { addScheduleActivity } from '../../../Candidates/queries/utils';
 import { cancelMailHandler } from '../../../Candidates/utils';
 import { useGetScheduleApplication } from '../../hooks';
 import {
-  setinitialSessions,
   setMultipleCancelOpen,
   setSelectedApplicationLog,
   useSchedulingApplicationStore,
 } from '../../store';
-import toast from '@/src/utils/toast';
 
 function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
   const { recruiterUser, recruiter } = useAuthDetails();
@@ -43,10 +42,16 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
 
   const onClickCancel = async () => {
     try {
-      if (selectedApplicationLog.metadata?.filter_id) {
-        cancelSelfScheduledSessions(selectedApplicationLog.metadata?.filter_id);
-      } else if (selectedApplicationLog.metadata?.availability_request_id) {
-        // cancelRequestAvailibilitySession();
+      if (selectedApplicationLog.metadata?.type === 'booking_confirmation') {
+        if (selectedApplicationLog.metadata?.filter_id) {
+          cancelSelfScheduledSessions(
+            selectedApplicationLog.metadata?.filter_id,
+          );
+        } else if (selectedApplicationLog.metadata?.availability_request_id) {
+          cancelRequestAvailibilitySession(
+            selectedApplicationLog.metadata?.availability_request_id,
+          );
+        }
       }
     } catch {
       toast.error('Error cancelling schedule');
@@ -57,8 +62,43 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
     }
   };
 
-  const cancelRequestAvailibilitySession = async () => {
-    
+  const cancelRequestAvailibilitySession = async (req_id: string) => {
+    const {
+      data: [reqAva],
+      error: errReqAva,
+    } = await supabase
+      .from('candidate_request_availability')
+      .select('*')
+      .eq('id', req_id);
+
+    if (errReqAva) throw new Error(errReqAva.message);
+
+    const selectedSessions = reqAva.session_ids.map((reqses) => {
+      const session = initialSessions.find((ses) => ses.id === reqses.id);
+      return session;
+    });
+
+    const sessionsName = selectedSessions.map((ses) => ses.name).join(' , ');
+
+    const selectedMeetings: DatabaseTableInsert['interview_meeting'][] =
+      selectedSessions.map((ses) => ({
+        id: ses.interview_meeting.id,
+        status: 'cancelled',
+        interview_schedule_id: ses.interview_meeting.interview_schedule_id,
+      }));
+
+    const { error: errMeet } = await supabase
+      .from('interview_meeting')
+      .upsert(selectedMeetings)
+      .select();
+    if (errMeet) {
+      throw new Error(errMeet.message);
+    }
+
+    mailActivityCalenderHandler({
+      selectedSessions,
+      sessionsName,
+    });
   };
 
   const cancelSelfScheduledSessions = async (filter_id: string) => {

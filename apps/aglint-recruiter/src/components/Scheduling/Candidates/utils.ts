@@ -25,6 +25,7 @@ export type MailHandlerparam = {
   application_id: string;
   filter_id: string;
   supabase: ReturnType<typeof createServerClient<DB>>;
+  task_id: string;
 };
 
 export type ApplicationList = {
@@ -53,6 +54,7 @@ export const mailHandler = async ({
   application_id,
   filter_id,
   supabase,
+  task_id,
 }: MailHandlerparam) => {
   try {
     const { data, error } = await supabase
@@ -86,7 +88,7 @@ export const mailHandler = async ({
           first_name: first_name,
           last_name: last_name,
           job_title: position,
-          pick_your_slot_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}?filter_id=${filter_id}'>Pick Your Slot</a>`,
+          pick_your_slot_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}?filter_id=${filter_id}&task_id=${task_id}'>Pick Your Slot</a>`,
         },
       );
 
