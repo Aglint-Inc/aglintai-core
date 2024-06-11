@@ -317,7 +317,7 @@ export const sendToCandidate = async ({
 
       if (!is_debrief) {
         addScheduleActivity({
-          title: `Sent booking link to ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.first_name)} for ${createCloneRes.refSessions
+          title: `Sent booking link to ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.last_name)} for ${createCloneRes.refSessions
             .filter((ses) => ses.isSelected)
             .map((ses) => ses.name)
             .join(' , ')}`,

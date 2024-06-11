@@ -259,7 +259,6 @@ export const cancelMailHandler = async ({
   mail,
   job_title,
   supabase,
-  rec_mail,
 }) => {
   try {
     const { data, error } = await supabase
@@ -274,7 +273,7 @@ export const cancelMailHandler = async ({
         {
           fromEmail: `messenger@aglinthq.com`,
           fromName: 'Aglint',
-          email: rec_mail ?? mail,
+          email: mail,
           subject: fillEmailTemplate(
             data[0].email_template['cancel_interview_session'].subject,
             {

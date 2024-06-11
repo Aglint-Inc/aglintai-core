@@ -9,12 +9,14 @@ import { supabase } from '@/src/utils/supabase/client';
 
 import { addScheduleActivity } from '../../../Candidates/queries/utils';
 import { cancelMailHandler } from '../../../Candidates/utils';
+import { useGetScheduleApplication } from '../../hooks';
 import {
   setinitialSessions,
   setMultipleCancelOpen,
   setSelectedApplicationLog,
   useSchedulingApplicationStore,
 } from '../../store';
+import toast from '@/src/utils/toast';
 
 function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
   const { recruiterUser, recruiter } = useAuthDetails();
@@ -31,6 +33,8 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
     (state) => state.selectedApplication,
   );
 
+  const { fetchInterviewDataByApplication } = useGetScheduleApplication();
+
   useEffect(() => {
     return () => {
       onClickClose();
@@ -39,105 +43,107 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
 
   const onClickCancel = async () => {
     try {
-      const filter_id = selectedApplicationLog.metadata?.filter_id;
-      if (filter_id) {
-        const { data: checkFilterJson, error: errMeetFilterJson } =
-          await supabase
-            .from('interview_filter_json')
-            .select('*')
-            .eq('id', filter_id);
-
-        const selectedSessions = initialSessions.filter((ses) =>
-          checkFilterJson[0].session_ids.includes(ses.id),
-        );
-
-        const sessionsName = selectedSessions
-          .map((ses) => ses.name)
-          .join(' , ');
-
-        cancelMailHandler({
-          candidate_name: selectedApplication.candidates.first_name,
-          mail: recruiterUser.email,
-          job_title: selectedApplication.public_jobs.job_title,
-          rec_id: recruiter.id,
-          rec_mail: recruiterUser.email,
-          session_name: sessionsName,
-          supabase: supabase,
-        });
-
-        if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
-
-        if (checkFilterJson.length > 0) {
-          const { error: errFilterJson } = await supabase
-            .from('interview_filter_json')
-            .delete()
-            .eq('id', filter_id);
-
-          if (errFilterJson) throw new Error(errFilterJson.message);
-        }
-
-        const selectedMeetings: DatabaseTableInsert['interview_meeting'][] =
-          selectedSessions.map((ses) => ({
-            id: ses.interview_meeting.id,
-            status: 'cancelled',
-            interview_schedule_id: ses.interview_meeting.interview_schedule_id,
-          }));
-
-        const { error: errMeet } = await supabase
-          .from('interview_meeting')
-          .upsert(selectedMeetings)
-          .select();
-        if (errMeet) {
-          throw new Error(errMeet.message);
-        }
-
-        await addScheduleActivity({
-          title: `Cancelled session ${sessionsName}`,
-          application_id: selectedApplication.id,
-          logged_by: 'user',
-          supabase,
-          created_by: recruiterUser.user_id,
-        });
-
-        onClickClose();
-
-        setinitialSessions(
-          initialSessions.map((session) => {
-            if (selectedSessions.some((ses) => ses.id === session.id)) {
-              return {
-                ...session,
-                interview_meeting: {
-                  ...session.interview_meeting,
-                  status: 'cancelled',
-                },
-              };
-            } else {
-              return session;
-            }
-          }),
-        );
-
-        selectedSessions.forEach((ses) => {
-          axios.post('/api/scheduling/v1/cancel_calender_event', {
-            calender_event: ses.interview_meeting.meeting_json,
-          });
-        });
-
-        await supabase
-          .from('application_logs')
-          .update({
-            metadata: {
-              ...selectedApplicationLog.metadata,
-              action: 'canceled',
-            },
-          })
-          .eq('id', selectedApplicationLog.id);
+      if (selectedApplicationLog.metadata?.filter_id) {
+        cancelSelfScheduledSessions(selectedApplicationLog.metadata?.filter_id);
+      } else if (selectedApplicationLog.metadata?.availability_request_id) {
+        // cancelRequestAvailibilitySession();
       }
     } catch {
-      //
+      toast.error('Error cancelling schedule');
     } finally {
       refetch();
+      fetchInterviewDataByApplication();
+      onClickClose();
     }
+  };
+
+  const cancelRequestAvailibilitySession = async () => {
+    
+  };
+
+  const cancelSelfScheduledSessions = async (filter_id: string) => {
+    const { data: checkFilterJson, error: errMeetFilterJson } = await supabase
+      .from('interview_filter_json')
+      .select('*')
+      .eq('id', filter_id);
+
+    const selectedSessions = initialSessions.filter((ses) =>
+      checkFilterJson[0].session_ids.includes(ses.id),
+    );
+
+    const sessionsName = selectedSessions.map((ses) => ses.name).join(' , ');
+
+    if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
+
+    if (checkFilterJson.length > 0) {
+      const { error: errFilterJson } = await supabase
+        .from('interview_filter_json')
+        .delete()
+        .eq('id', filter_id);
+
+      if (errFilterJson) throw new Error(errFilterJson.message);
+    }
+
+    const selectedMeetings: DatabaseTableInsert['interview_meeting'][] =
+      selectedSessions.map((ses) => ({
+        id: ses.interview_meeting.id,
+        status: 'cancelled',
+        interview_schedule_id: ses.interview_meeting.interview_schedule_id,
+      }));
+
+    const { error: errMeet } = await supabase
+      .from('interview_meeting')
+      .upsert(selectedMeetings)
+      .select();
+    if (errMeet) {
+      throw new Error(errMeet.message);
+    }
+
+    mailActivityCalenderHandler({
+      selectedSessions,
+      sessionsName,
+    });
+  };
+
+  const mailActivityCalenderHandler = async ({
+    selectedSessions,
+    sessionsName,
+  }: {
+    selectedSessions: typeof initialSessions;
+    sessionsName: string;
+  }) => {
+    cancelMailHandler({
+      candidate_name: selectedApplication.candidates.first_name,
+      mail: recruiterUser.email,
+      job_title: selectedApplication.public_jobs.job_title,
+      rec_id: recruiter.id,
+      session_name: sessionsName,
+      supabase: supabase,
+    });
+
+    await addScheduleActivity({
+      title: `Cancelled session ${sessionsName}`,
+      application_id: selectedApplication.id,
+      logged_by: 'user',
+      supabase,
+      created_by: recruiterUser.user_id,
+    });
+
+    selectedSessions.forEach((ses) => {
+      axios.post('/api/scheduling/v1/cancel_calender_event', {
+        calender_event: ses.interview_meeting.meeting_json,
+      });
+    });
+
+    await supabase
+      .from('application_logs')
+      .update({
+        metadata: {
+          ...selectedApplicationLog.metadata,
+          action: 'canceled',
+        },
+      })
+      .eq('id', selectedApplicationLog.id);
   };
 
   const onClickClose = () => {

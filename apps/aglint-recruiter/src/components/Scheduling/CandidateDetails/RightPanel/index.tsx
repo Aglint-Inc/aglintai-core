@@ -23,7 +23,11 @@ import {
   setIsScheduleNowOpen,
   setStepScheduling,
 } from '../SelfSchedulingDrawer/store';
-import { setMultipleCancelOpen, setSelectedApplicationLog } from '../store';
+import {
+  setMultipleCancelOpen,
+  setRequestSessionIds,
+  setSelectedApplicationLog,
+} from '../store';
 import CancelMultipleScheduleDialog from './CancelMultipleScheduleDialog';
 import IconApplicationLogs from './IconApplicationLogs';
 import IconSessionType from './IconSessionType';
@@ -118,22 +122,43 @@ function RightPanel({
                             );
                           })}
                         </Stack>
-                        {act?.metadata?.filter_id &&
+                        {(act?.metadata?.filter_id ||
+                          act?.metadata?.availability_request_id) &&
                           act?.metadata?.action === 'waiting' && (
                             <Stack direction={'row'} spacing={2}>
                               <ScheduleButton
-                                textLabel={'Request Reschedule'}
+                                textLabel={'Reschedule'}
                                 slotIcon={<IconReschedule />}
                                 onClickProps={{
                                   onClick: () => {
-                                    setStepScheduling('reschedule');
-                                    setSelectedApplicationLog(act);
-                                    setIsScheduleNowOpen(true);
+                                    if (act?.metadata?.filter_id) {
+                                      setStepScheduling('reschedule');
+                                      setSelectedApplicationLog(act);
+                                      setIsScheduleNowOpen(true);
+                                    } else if (
+                                      act.metadata.availability_request_id
+                                    ) {
+                                      setRequestSessionIds(
+                                        act.metadata.sessions.map((s) => s.id),
+                                      );
+                                      setSelectedApplicationLog(act);
+                                      const currentPath = router.pathname;
+                                      const currentQuery = router.query;
+                                      const updatedQuery = {
+                                        ...currentQuery,
+                                        candidate_request_availability:
+                                          act.metadata.availability_request_id,
+                                      };
+                                      router.replace({
+                                        pathname: currentPath,
+                                        query: updatedQuery,
+                                      });
+                                    }
                                   },
                                 }}
                               />
                               <ScheduleButton
-                                textLabel={'Cancel Schedule'}
+                                textLabel={'Cancel'}
                                 slotIcon={<IconCancelSchedule />}
                                 textColorProps={{
                                   style: {

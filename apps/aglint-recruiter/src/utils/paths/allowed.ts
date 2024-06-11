@@ -73,6 +73,7 @@ export const allowedPaths = new Set([
   '/api/scheduling/application/schedulewithagent',
   '/api/scheduling/application/mailthankyou',
   '/api/scheduling/application/debrief-add-users',
+  '/api/scheduling/v1/verify-recruiter-selected-slots',
   '/api/scheduling/cron/trigger',
   '/api/workflow-cron',
   '/api/scheduling/request_availability/getCandidateRequestData',
