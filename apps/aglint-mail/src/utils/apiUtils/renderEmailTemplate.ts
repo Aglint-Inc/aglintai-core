@@ -4,7 +4,7 @@ import { ServerError } from './customErrors';
 import { DatabaseEnums, EmailTemplateAPi } from '@aglint/shared-types';
 
 export const renderEmailTemplate = async <
-  T extends DatabaseEnums['email_types'],
+  T extends DatabaseEnums['email_slack_types'],
 >(
   template: T,
   payload: EmailTemplateAPi<T>['react_email_placeholders'],

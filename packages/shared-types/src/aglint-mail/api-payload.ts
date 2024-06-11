@@ -9,8 +9,6 @@ import {
   debriefEmailInterviewerSchema,
   interReschedReqEmailRecruiterSchema,
   interviewCancelReqEmailRecruiterSchema,
-  interviewReminderEmailApplicantSchema,
-  interviewReminderEmailInterviewerSchema,
   interviewRescheduleEmailApplicantSchema,
   interviewStartEmailApplicantSchema,
   interviewStartEmailInterviewersSchema,
@@ -76,8 +74,9 @@ type Payloads = {
       '{{ jobRole }}': string;
       '{{ startDate }}': string;
       '{{ endDate }}': string;
-      '{{ companyTimeZone }}': string;
+      '{{ recruiterTimeZone }}': string;
       '{{ selfScheduleLink }}': string;
+      '{{ recruiterFullName }}': string;
     };
     react_email_placeholders: {
       subject: string;
@@ -276,5 +275,5 @@ type Payloads = {
   };
 };
 
-export type EmailTemplateAPi<T extends DatabaseEnums['email_types']> =
+export type EmailTemplateAPi<T extends DatabaseEnums['email_slack_types']> =
   T extends keyof Payloads ? Payloads[T] : never;
