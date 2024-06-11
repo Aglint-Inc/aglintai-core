@@ -613,7 +613,7 @@ const AddMember = ({
                   <MuiAvatar
                     src={member.profile_image}
                     level={getFullName(member.first_name, member.last_name)}
-                    variant='rounded-small'
+                    variant='rounded-medium'
                   />
                 }
                 slotButton={
