@@ -1,8 +1,5 @@
 import { NextResponse } from 'next/server';
-import {
-  ClientError,
-  MailArgValidationError,
-} from '../../../utils/apiUtils/customErrors';
+import { ClientError } from '../../../utils/apiUtils/customErrors';
 import * as v from 'valibot';
 import { sendAvailabilityRequestEmailApplicantSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
 import { dbUtil } from './fetch-util';
