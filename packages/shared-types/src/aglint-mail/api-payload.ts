@@ -16,6 +16,7 @@ import {
   interviewStartEmailInterviewersSchema,
   phoneScreenEmailCandidateSchema,
   phoneScreenRemindEmailApplicantSchema,
+  selfScheduleReminderEmailApplicantSchema,
   sendAvailReqReminderEmailApplicant,
   sendAvailabilityRequestEmailApplicantSchema,
   sendSelfScheduleRequest_email_applicant,
@@ -250,6 +251,21 @@ type Payloads = {
       '{{ jobTitle }}': string;
       '{{ availabilityLink }}': string;
       '{{ recruiterFullName }}': string;
+      '{{ supportLink }}': string;
+    };
+    react_email_placeholders: {
+      emailBody: string;
+      subject: string;
+      companyLogo: string;
+    };
+  };
+  selfScheduleReminder_email_applicant: {
+    api_payload: v.InferInput<typeof selfScheduleReminderEmailApplicantSchema>;
+    comp_email_placeholders: {
+      '{{ candidateFirstName }}': string;
+      '{{ companyName }}': string;
+      '{{ jobTitle }}': string;
+      '{{ selfScheduleLink }}': string;
       '{{ supportLink }}': string;
     };
     react_email_placeholders: {

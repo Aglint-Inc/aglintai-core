@@ -98,3 +98,7 @@ export const sendAvailabilityRequestEmailApplicantSchema = v.object({
 export const sendAvailReqReminderEmailApplicant = v.object({
   avail_req_id: v.string(),
 });
+
+export const selfScheduleReminderEmailApplicantSchema = v.object({
+  filter_json_id: v.string(),
+});

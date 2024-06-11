@@ -11,25 +11,24 @@ import {
 import { Parser } from 'html-to-react';
 import * as React from 'react';
 import { aglintLogo } from '../utils/assets/common';
-
-interface InitEmailAgentType {
-  body?: string;
-  companyLogo?: string;
-}
+import { EmailTemplateAPi } from '@aglint/shared-types';
+type EmailType = EmailTemplateAPi<'selfScheduleReminder_email_applicant'>;
 
 // export dummy
-export const dummy: InitEmailAgentType = {
-  body: '<p>Dear {{ candidateFirstName }},</p><p>This is a friendly reminder about the self-schedule interview request you received for the {{ jobTitle }} position at {{ companyName }}.</p><p>Please let me know your availability within the following date range: {{ startDate }} - {{ endDate }} ({{ companyTimeZone }}).</p><p>Also, to make sure we find an interview time that works well for you, could you tell us your general location?</p><p>Or use the following link to schedule your interview: {{ selfScheduleLink }}</p><p>Looking forward to connecting with you!</p><p>Best regards,<br>{{ companyName }} Recruitment Team</p>',
+export const dummy: EmailType['react_email_placeholders'] = {
+  emailBody:
+    '<p>Dear {{ candidateFirstName }},</p><p>This is a friendly reminder about the self-schedule interview request you received for the {{ jobTitle }} position at {{ companyName }}.</p><p>use the following link to schedule your interview: {{ selfScheduleLink }}</p><p>Looking forward to connecting with you!</p><p>Best regards,<br>{{ companyName }} Recruitment Team</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
+  subject: '',
 };
 
 export const getSubject = (companyName: any) => `${companyName}`;
 
 export const InitEmailAgentRemainder = ({
-  body = dummy.body,
+  emailBody = dummy.emailBody,
   companyLogo = dummy.companyLogo,
-}: InitEmailAgentType) => {
+}: EmailType['react_email_placeholders']) => {
   const htmlParser = Parser();
   return (
     <Html>
@@ -45,7 +44,7 @@ export const InitEmailAgentRemainder = ({
                 src={companyLogo}
               />
 
-              <Text className="">{htmlParser.parse(body)}</Text>
+              <Text className="">{htmlParser.parse(emailBody)}</Text>
             </Container>
             <Text className="flex items-center text-[10px] mx-auto w-fit text-gray-500">
               Powered By
