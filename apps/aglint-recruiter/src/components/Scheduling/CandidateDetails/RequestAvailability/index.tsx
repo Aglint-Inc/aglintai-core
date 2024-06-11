@@ -237,18 +237,15 @@ function RequestAvailability() {
 
         // send request availability email to candidate
 
-        sendEmailToCandidate({
-          email: selectedApplication.candidates.email,
-          emailBody: recruiter.email_template['request_candidate_slot'].body,
-          emailSubject:
-            recruiter.email_template['request_candidate_slot'].subject,
-          first_name: selectedApplication.candidates.first_name,
-          last_name: selectedApplication.candidates.last_name,
-          job_title: selectedApplication.public_jobs.job_title,
-          recruiter,
-          sessionNames: selectedSessions.map((ele) => ele.name),
-          request_id: result.id,
-        });
+        await axios.post(
+          `/api/emails/sendAvailabilityRequest_email_applicant`,
+          {
+            meta: {
+              avail_req_id: result.id,
+              recruiter_user_id: recruiterUser.user_id,
+            },
+          },
+        );
         toast.message('Request sent successfully!');
         // end
         let task = null as null | DatabaseTable['new_tasks'];
@@ -394,7 +391,11 @@ function RequestAvailability() {
         ))}
         slotAvailabilityCriteria={
           <>
-            <Stack direction={'row'} alignItems={'center'} spacing={'var(--space-2)'}>
+            <Stack
+              direction={'row'}
+              alignItems={'center'}
+              spacing={'var(--space-2)'}
+            >
               <Typography variant='body1' width={'450px'}>
                 Minimum number of days should be selected.
               </Typography>
@@ -418,7 +419,11 @@ function RequestAvailability() {
               />
             </Stack>
 
-            <Stack direction={'row'} alignItems={'center'} spacing={'var(--space-2)'}>
+            <Stack
+              direction={'row'}
+              alignItems={'center'}
+              spacing={'var(--space-2)'}
+            >
               <Typography variant='body1' width={'450px'}>
                 Minimum number of slots selected per each day.
               </Typography>
