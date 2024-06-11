@@ -5,17 +5,8 @@ import {
   type EmailsDirectory,
 } from '../actions/get-emails-directory-metadata';
 import { useHotreload } from '../hooks/use-hot-reload';
-import {
-  emailsDirRelativePath,
-  emailsDirectoryAbsolutePath,
-  normalizePath,
-  pathSeparator,
-} from '../utils/emails-directory-absolute-path';
-import {
-  renderEmailByPath,
-  type EmailRenderingResult,
-} from '../actions/render-email-by-path';
-import { getEmailPathFromSlug } from '../actions/get-email-path-from-slug';
+import { emailsDirectoryAbsolutePath } from '../utils/emails-directory-absolute-path';
+import { type EmailRenderingResult } from '../actions/render-email-by-path';
 
 const EmailsContext = createContext<
   | {
@@ -57,7 +48,7 @@ export const EmailsProvider = (props: {
     // this will not change on runtime so it doesn't violate
     // the rules of hooks
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    useHotreload(async (changes) => {
+    useHotreload(async () => {
       const metadata = await getEmailsDirectoryMetadata(
         emailsDirectoryAbsolutePath,
       );
@@ -67,34 +58,6 @@ export const EmailsProvider = (props: {
         throw new Error(
           'Hot reloading: unable to find the emails directory to update the sidebar',
         );
-      }
-
-      for await (const change of changes) {
-        const normalizedEmailsDirRelativePath = normalizePath(
-          emailsDirRelativePath,
-        );
-        const slugForChangedEmail =
-          // filename ex: emails/apple-receipt.tsx
-          // so we need to remove the "emails/" because it isn't used
-          // on the slug parameter for the preview page
-          change.filename
-            .replace(`${normalizedEmailsDirRelativePath}${pathSeparator}`, '')
-            .replace(normalizedEmailsDirRelativePath, '');
-
-        const pathForChangedEmail = await getEmailPathFromSlug(
-          slugForChangedEmail,
-        );
-
-        const lastResult = renderingResultPerEmailPath[pathForChangedEmail];
-
-        if (typeof lastResult !== 'undefined') {
-          const renderingResult = await renderEmailByPath(pathForChangedEmail);
-
-          setRenderingResultPerEmailPath((map) => ({
-            ...map,
-            [pathForChangedEmail]: renderingResult,
-          }));
-        }
       }
     });
   }
@@ -114,7 +77,6 @@ export const EmailsProvider = (props: {
           }, [serverEmailRenderedResult, emailPath]);
 
           if (typeof renderingResultPerEmailPath[emailPath] !== 'undefined') {
-             
             return renderingResultPerEmailPath[emailPath];
           }
 
