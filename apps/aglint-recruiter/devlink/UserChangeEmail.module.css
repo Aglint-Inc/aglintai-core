@@ -1,6 +1,12 @@
 .change-email-wrap {
   width: 450px;
+  padding: var(--space-4);
   flex-direction: column;
+
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+
+  background-color: var(--white);
 }
 
 .text-desc-wrap-mail {

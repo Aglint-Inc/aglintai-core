@@ -19,24 +19,19 @@ export function TaskTableJobCand({
   textJobHeader = "Job",
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1433")} tag="div">
+    <_Component className={_utils.cx(_styles, "task_table")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1436")}
+        className={_utils.cx(_styles, "task_table_filters")}
         tag="div"
       >
         {slotFilter}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1439")}
+        className={_utils.cx(_styles, "task_table_wrapper")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "div-block-1434",
-            "height-40",
-            "job-cand"
-          )}
+          className={_utils.cx(_styles, "task_row", "title-row", "job-cand")}
           tag="div"
           {...gridProps}
         >

@@ -7,7 +7,7 @@ import _styles from "./IconButtonGhost.module.css";
 
 export function IconButtonGhost({
   as: _Component = _Builtin.Block,
-  iconSize = "2",
+  iconSize = "4",
   iconWeight = "medium",
   iconColor = "inherit",
   iconName = "shapes",
