@@ -25,6 +25,7 @@ import {
   resetSchedulingApplicationState,
   setFetchingSchedule,
   setSelectedSessionIds,
+  TabSchedulingType,
   useSchedulingApplicationStore,
 } from './store';
 import TabsSchedulingApplication from './Tabs';
@@ -38,15 +39,15 @@ function SchedulingApplication() {
     selectedSessionIds,
     selectedApplication,
     scheduleName,
-    tab,
   } = useSchedulingApplicationStore((state) => ({
     fetchingSchedule: state.fetchingSchedule,
     initialSessions: state.initialSessions,
     selectedSessionIds: state.selectedSessionIds,
     selectedApplication: state.selectedApplication,
     scheduleName: state.scheduleName,
-    tab: state.tab,
   }));
+
+  const tab = router.query.tab as TabSchedulingType;
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
 
@@ -116,7 +117,7 @@ function SchedulingApplication() {
                       candidate={selectedApplication.candidates}
                       file={selectedApplication.candidate_files}
                     />
-                  ) : tab === 'interview_plan' ? (
+                  ) : tab === 'interview_plan' || !tab ? (
                     <FullSchedule refetch={allActivities.refetch} />
                   ) : tab === 'feedback' ? (
                     <FeedbackWindow

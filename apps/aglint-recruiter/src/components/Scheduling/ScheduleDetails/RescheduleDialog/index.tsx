@@ -19,6 +19,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import SchedulingOptionComp from '../../CandidateDetails/Common/ScheduleOption';
+import { createTask } from '../../CandidateDetails/utils';
 import { addScheduleActivity } from '../../Candidates/queries/utils';
 import { mailHandler } from '../../Candidates/utils';
 import { DateIcon } from '../../Settings/Components/DateSelector';
@@ -164,6 +165,29 @@ function RescheduleDialog({
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);
 
+        const resTask = await createTask({
+          application_id: schedule.applications.id,
+          candidate_name: getFullName(
+            schedule.candidates.first_name,
+            schedule.candidates.last_name,
+          ),
+          dateRange,
+          filter_id: filterJson[0].id,
+          recruiter_id: recruiter.id,
+          rec_user_id: recruiterUser.user_id,
+          recruiter_user_name: recruiterUser.first_name,
+          selectedSessions: [
+            {
+              ...schedule.interview_session,
+              interview_meeting: schedule.interview_meeting,
+              interview_module: schedule.interview_module,
+              users: [],
+            },
+          ],
+          supabase,
+          type: 'user',
+        });
+
         addScheduleActivity({
           title: `Rescheduled interview with new booking link for ${schedule.interview_session.name}`,
           logged_by: 'user',
@@ -176,6 +200,7 @@ function RescheduleDialog({
           filter_id: filterJson[0].id,
           application_id: schedule.applications.id,
           supabase,
+          task_id: resTask.id,
         });
 
         if (cancelReasons?.length > 0) {

@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
@@ -280,15 +280,15 @@ const LinkComp = ({
   module: LinkProps['module'];
   path: LinkProps['path'] | string;
 }) => {
-  const { pathname, push } = useRouter();
+  const { pathname } = useRouter();
 
   return (
-    <Stack onClick={() => push(path)}>
+    <Link href={path}>
       <LinkIcon
         module={module}
         active={pathname.includes(path) || path.includes(pathname)}
       />
-    </Stack>
+    </Link>
   );
 };
 

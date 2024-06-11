@@ -12,10 +12,10 @@ import StepScheduleFilter from './StepScheduleFilter';
 import SelectDateRange from './StepSelectDate';
 import StepSlotOptions from './StepSlotOptions';
 import {
-  resetFilterStore,
+  resetSchedulingFlowStore,
   setDateRange,
   setStepScheduling,
-  useSchedulingFlowStore,
+  useSchedulingFlowStore
 } from './store';
 
 function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
@@ -42,7 +42,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
       end_date: initialEndDate.toISOString(),
     });
     return () => {
-      resetFilterStore();
+      resetSchedulingFlowStore();
       setSelectedSessionIds([]);
     };
   }, []);
