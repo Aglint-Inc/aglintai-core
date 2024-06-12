@@ -1,4 +1,5 @@
 import { InputAdornment, Stack } from '@mui/material';
+import { Box } from '@mui/material';
 import React, { useState } from 'react';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
@@ -10,7 +11,6 @@ import UITextField from '@/src/components/Common/UITextField';
 import DynamicLoader from '../../Interviewers/DynamicLoader';
 import { ScheduleListType } from './hooks';
 import ScheduleMeetingList from './ScheduleMeetingList';
-import { Box } from '@mui/material';
 
 function ModuleSchedules({
   isFetched,

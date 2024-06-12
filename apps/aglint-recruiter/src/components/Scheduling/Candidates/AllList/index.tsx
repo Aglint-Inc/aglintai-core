@@ -63,22 +63,22 @@ function AllList({
       ) : (
         <>
           {!isPending && !isFetching && applicationList.length === 0 && (
-            <Box
-              sx={{
-                margin: 'var(--space-4)',
-                borderRadius: 'var(--radius-2)',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                minHeight: 'calc(100vh - 180px)',
-                backgroundColor: 'var(--neutral-2)', // replace with your desired background color
-              }}
-            >
-              <Box maxWidth="sm" width="300px">
-                <AllInterviewEmpty textDynamic="No candidate found" />
-              </Box>
-            </Box>
-          
+            <AllInterviewEmpty textDynamic="No candidate found" />
+            // <Box
+            //   sx={{
+            //     margin: 'var(--space-4)',
+            //     borderRadius: 'var(--radius-2)',
+            //     display: 'flex',
+            //     justifyContent: 'center',
+            //     alignItems: 'center',
+            //     minHeight: 'calc(100vh - 180px)',
+            //     backgroundColor: 'var(--neutral-2)', // replace with your desired background color
+            //   }}
+            // >
+            //   <Box maxWidth="sm" width="300px">
+            //     <AllInterviewEmpty textDynamic="No candidate found" />
+            //   </Box>
+            // </Box>
           )}
           {applicationList.map((app) => {
             return (
