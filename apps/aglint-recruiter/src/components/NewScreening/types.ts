@@ -1,4 +1,4 @@
-import { Job } from '@/src/queries/job/types';
+import { Job } from '@/src/queries/jobs/types';
 
 export type QuestionOption = {
   id: string;

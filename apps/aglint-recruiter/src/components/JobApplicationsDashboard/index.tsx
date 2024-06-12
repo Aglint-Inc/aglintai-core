@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable security/detect-object-injection */
 import {
   CircularProgress,
@@ -469,7 +470,7 @@ const ApplicationPagination = ({
     }
   };
   return totalCandidatesCount !== 0 ? (
-    <Stack style={{ backgroundColor:  'var(--white)' }}>
+    <Stack style={{ backgroundColor: 'var(--white)' }}>
       <Stack
         style={{
           opacity: disable ? 0.5 : 1,
@@ -611,7 +612,7 @@ const NewJobFilterBlock = ({
     <Stack style={{ display: job.count[section] === 0 ? 'none' : 'flex' }}>
       <>
         {list.size > 0 ? (
-          <Stack style={{ backgroundColor:  'var(--white)' }}>
+          <Stack style={{ backgroundColor: 'var(--white)' }}>
             <Stack
               style={{
                 opacity: disabled ? 0.5 : 1,
@@ -708,7 +709,8 @@ const NewJobDetailsTabs = () => {
   return (
     <>
       {job.activeSections.map((section) => (
-        <JobTab key={section} section={section} />
+        <></>
+        // <JobTab key={section} section={section} />
       ))}
     </>
   );
@@ -799,7 +801,9 @@ const SectionCard = forwardRef(
                     : canDrop
                       ? 'var(--sky-2)'
                       : 'inherit',
-                border: isOver ? '1px solid var(--sky-6)' : '1px solid transparent',
+                border: isOver
+                  ? '1px solid var(--sky-6)'
+                  : '1px solid transparent',
                 transition: '0.5s',
               },
             }}
