@@ -2,9 +2,9 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
-import { TrainingStatus } from "./TrainingStatus";
+import { GlobalBadge } from "./GlobalBadge";
 import { PanelBlock } from "./PanelBlock";
-import { GreyTextLink } from "./GreyTextLink";
+import { ButtonSoft } from "./ButtonSoft";
 import * as _utils from "./utils";
 import _styles from "./TrainingDetailList.module.css";
 
@@ -23,11 +23,8 @@ export function TrainingDetailList({
   _interactions.useInteractions(_interactionsData, _styles);
 
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1670")} tag="div">
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1669")}
-        tag="div"
-      >
+    <_Component className={_utils.cx(_styles, "training-details")} tag="div">
+      <_Builtin.Block className={_utils.cx(_styles, "shadow-name")} tag="div">
         <_Builtin.Block tag="div">
           {isShadow ? (
             <_Builtin.HtmlEmbed
@@ -49,20 +46,27 @@ export function TrainingDetailList({
           {textTraining}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1673")}
-        tag="div"
-      >
-        {slotTrainingStatus ?? <TrainingStatus />}
+      <_Builtin.Block className={_utils.cx(_styles, "badge-wrap")} tag="div">
+        {slotTrainingStatus ?? (
+          <GlobalBadge
+            color="success"
+            textBadge="Completed"
+            size="2"
+            variant="solid"
+            iconName=""
+            iconSize=""
+            iconWeight=""
+          />
+        )}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1675")}
+        className={_utils.cx(_styles, "slot-interview-type-block")}
         tag="div"
       >
         {slotPanelBlock ?? (
           <>
             <PanelBlock />
-            <GreyTextLink />
+            <ButtonSoft size="2" textButton="" />
           </>
         )}
       </_Builtin.Block>

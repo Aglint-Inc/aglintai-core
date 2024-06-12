@@ -17,7 +17,7 @@ export function PanelBlock({
   _interactions.useInteractions(_interactionsData, _styles);
 
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1674")} tag="div">
+    <_Component className={_utils.cx(_styles, "panel-block")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1689")}
         tag="div"

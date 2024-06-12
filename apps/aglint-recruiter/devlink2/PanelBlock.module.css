@@ -1,14 +1,14 @@
-.div-block-1674 {
+.panel-block {
   display: flex;
-  padding: 4px 10px;
+  padding: var(--space-1) var(--space-2);
   justify-content: flex-start;
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 
-  border-radius: 8px;
+  border-radius: var(--radius-2);
 
-  background-color: #f7f9fb;
+  background-color: var(--neutral-2);
 }
 
 .div-block-1689 {

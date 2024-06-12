@@ -20,10 +20,6 @@
   padding-top: 2px;
 }
 
-.relative-1.text-color-grey-600 {
-  color: #68737d;
-}
-
 .aui-button-wrap {
   position: relative;
   z-index: 1;
@@ -80,8 +76,4 @@
   max-height: 430px;
   margin-top: var(--space-6);
   flex-direction: column;
-}
-
-.slot-ats-cards-wrappers.height-480 {
-  max-height: 480px;
 }

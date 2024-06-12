@@ -167,25 +167,8 @@
   text-transform: capitalize;
 }
 
-.text-red-500 {
-  color: var(--red500-2e806c7d);
-}
-
-.text-align-center {
-  text-align: center;
-}
-
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
-}
-
-.text-no-wrap {
-  white-space: nowrap;
-  overflow-wrap: anywhere;
-}
-
-.mt-20 {
-  margin-top: 20px;
 }
 
 .div-block-639 {
@@ -270,10 +253,6 @@
   margin-top: 3px;
 }
 
-.icons.mr--10 {
-  margin-right: -8px;
-}
-
 .icons.mt-2 {
   margin-top: 2px;
 }
@@ -304,10 +283,6 @@
   opacity: 0.8;
 }
 
-.max-width-500 {
-  max-width: 500px;
-}
-
 .text-grey-600.mt-5 {
   margin-top: 5px;
 }
@@ -323,14 +298,6 @@
 .text-sm-2 {
   font-size: 12px;
   line-height: 16px;
-}
-
-.text-grey-600.mt-9 {
-  margin-top: 9px;
-}
-
-.mt-9 {
-  margin-top: 9px;
 }
 
 .text-grey-600.text-grow {
@@ -349,12 +316,6 @@
 
 .mt-10 {
   margin-top: 10px;
-}
-
-@media screen and (max-width: 479px) {
-  .text-grey-600.mob {
-    font-size: 12px;
-  }
 }
 
 .continuw-gmail-wrap {
@@ -393,23 +354,6 @@
   color: var(--blue500-72579298);
 }
 
-.text-kale-600 {
-  color: var(--kale600-c60cbc05);
-}
-
-.clickable {
-  transition: all 300ms ease;
-  cursor: pointer;
-}
-
-.clickable:hover {
-  opacity: 0.8;
-}
-
 .text-sm.text-grey-500.width-ticket-d {
   width: 49.91667175292969px;
-}
-
-.text-capitalize {
-  text-transform: uppercase;
 }

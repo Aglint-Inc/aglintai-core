@@ -80,9 +80,6 @@ export function MemberRow({
       >
         {slotConflicts ?? <SlotComp componentNeme="Conflicts" />}
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "text-gray-600")} tag="div">
-        {"??"}
-      </_Builtin.Block>
     </_Component>
   );
 }

@@ -21,8 +21,8 @@ export function RescheduleCard({
   textColorProps = {},
   textName = "Robert fox",
   isRescheduleBtnVisible = true,
-  isCancelVisible = true,
-  onClickCancel = {},
+  isIgnoreVisible = true,
+  onClickIgnore = {},
 }) {
   return (
     <_Component
@@ -85,15 +85,24 @@ export function RescheduleCard({
               />
             </_Builtin.Block>
           ) : null}
-          {isCancelVisible ? (
+          {isIgnoreVisible ? (
             <_Builtin.Block tag="div">
               <ButtonSurface
-                onClickButton={onClickCancel}
+                onClickButton={onClickIgnore}
                 size="1"
-                color="neutal"
+                color="accent"
                 isRightIcon={false}
                 isLeftIcon={false}
                 textButton="Ignore"
+              />
+            </_Builtin.Block>
+          ) : null}
+          {isRescheduleBtnVisible ? (
+            <_Builtin.Block tag="div">
+              <ButtonSolid
+                onClickButton={onClickRescheduleNow}
+                size="1"
+                textButton="Reschedule Now"
               />
             </_Builtin.Block>
           ) : null}

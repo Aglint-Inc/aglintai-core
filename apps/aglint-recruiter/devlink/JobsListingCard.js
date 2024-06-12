@@ -3,6 +3,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./JobsListingCard.module.css";
 
@@ -63,7 +64,9 @@ export function JobsListingCard({
               >
                 <Text content={textCompanyLocation} color="neutral" />
               </_Builtin.Block>
-              <_Builtin.Block tag="div">{slotAtsBadge}</_Builtin.Block>
+              <_Builtin.Block tag="div">
+                {slotAtsBadge ?? <SlotComp componentName="Greenhouse" />}
+              </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
@@ -127,21 +130,22 @@ export function JobsListingCard({
                 className={_utils.cx(_styles, "job-pill-text")}
                 tag="div"
               >
-                <Text content="New" />
-                <Text content={newCount} />
+                <Text content="New" size="1" color="neutral" />
+                <Text content={newCount} size="1" color="neutral" />
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(
                   _styles,
                   "is_end",
                   "change_on_hover",
-                  "starting"
+                  "starting",
+                  "bg_neutral-3"
                 )}
                 tag="div"
               />
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "arrow_right")}
+              className={_utils.cx(_styles, "arrow_right", "text_neutral_3")}
               tag="div"
             >
               <_Builtin.HtmlEmbed
@@ -160,7 +164,7 @@ export function JobsListingCard({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "arrow_left")}
+                className={_utils.cx(_styles, "arrow_left", "text_neutral_3")}
                 tag="div"
               >
                 <_Builtin.HtmlEmbed
@@ -181,21 +185,22 @@ export function JobsListingCard({
                   className={_utils.cx(_styles, "job-pill-text")}
                   tag="div"
                 >
-                  <Text content="Screening" />
-                  <Text content={screeningCount} />
+                  <Text content="Screening" size="1" color="neutral" />
+                  <Text content={screeningCount} size="1" color="neutral" />
                 </_Builtin.Block>
                 <_Builtin.Block
                   className={_utils.cx(
                     _styles,
                     "is_end",
                     "change_on_hover",
-                    "bg_change"
+                    "bg_change",
+                    "bg_neutral-3"
                   )}
                   tag="div"
                 />
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "arrow_right")}
+                className={_utils.cx(_styles, "arrow_right", "text_neutral_3")}
                 tag="div"
               >
                 <_Builtin.HtmlEmbed
@@ -215,7 +220,7 @@ export function JobsListingCard({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "arrow_left")}
+                className={_utils.cx(_styles, "arrow_left", "text_neutral_3")}
                 tag="div"
               >
                 <_Builtin.HtmlEmbed
@@ -236,16 +241,21 @@ export function JobsListingCard({
                   className={_utils.cx(_styles, "job-pill-text")}
                   tag="div"
                 >
-                  <Text content="Assessment" />
-                  <Text content={assessmentCount} />
+                  <Text content="Assessment" size="1" color="neutral" />
+                  <Text content={assessmentCount} size="1" color="neutral" />
                 </_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "is_end", "change_on_hover")}
+                  className={_utils.cx(
+                    _styles,
+                    "is_end",
+                    "change_on_hover",
+                    "bg_neutral-3"
+                  )}
                   tag="div"
                 />
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "arrow_right")}
+                className={_utils.cx(_styles, "arrow_right", "text_neutral_3")}
                 tag="div"
               >
                 <_Builtin.HtmlEmbed
@@ -265,7 +275,7 @@ export function JobsListingCard({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "arrow_left")}
+                className={_utils.cx(_styles, "arrow_left", "text_neutral_3")}
                 tag="div"
               >
                 <_Builtin.HtmlEmbed
@@ -286,16 +296,21 @@ export function JobsListingCard({
                   className={_utils.cx(_styles, "job-pill-text")}
                   tag="div"
                 >
-                  <Text content="Interview" />
-                  <Text content={interviewCount} />
+                  <Text content="Interview" size="1" color="neutral" />
+                  <Text content={interviewCount} size="1" color="neutral" />
                 </_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "is_end", "change_on_hover")}
+                  className={_utils.cx(
+                    _styles,
+                    "is_end",
+                    "change_on_hover",
+                    "bg_neutral-3"
+                  )}
                   tag="div"
                 />
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "arrow_right")}
+                className={_utils.cx(_styles, "arrow_right", "text_neutral_3")}
                 tag="div"
               >
                 <_Builtin.HtmlEmbed
@@ -314,12 +329,12 @@ export function JobsListingCard({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "arrow_left")}
+              className={_utils.cx(_styles, "arrow_left", "text_neutral_3")}
               tag="div"
             >
               <_Builtin.HtmlEmbed
                 className={_utils.cx(_styles, "embed_flex", "ml--1")}
-                value="%3Csvg%20width%3D%2224%22%20height%3D%2235%22%20viewbox%3D%220%200%2034%2089%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M34%200V89H0C0%2089%2034%2047%2034%2044.5C34%2042%200%200%200%200H34Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
+                value="%3Csvg%20width%3D%2224%22%20height%3D%2235%22%20viewBox%3D%220%200%2034%2089%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M34%200V89H0C0%2089%2034%2047%2034%2044.5C34%2042%200%200%200%200H34Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
               />
             </_Builtin.Block>
             <_Builtin.Block
@@ -335,16 +350,21 @@ export function JobsListingCard({
                 className={_utils.cx(_styles, "job-pill-text")}
                 tag="div"
               >
-                <Text content="Qualified" />
-                <Text content={qualifiedCount} />
+                <Text content="Qualified" size="1" color="neutral" />
+                <Text content={qualifiedCount} size="1" color="neutral" />
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "is_end", "change_on_hover")}
+                className={_utils.cx(
+                  _styles,
+                  "is_end",
+                  "change_on_hover",
+                  "bg_neutral-3"
+                )}
                 tag="div"
               />
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "arrow_right")}
+              className={_utils.cx(_styles, "arrow_right", "text_neutral_3")}
               tag="div"
             >
               <_Builtin.HtmlEmbed
@@ -362,7 +382,7 @@ export function JobsListingCard({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "arrow_left")}
+              className={_utils.cx(_styles, "arrow_left", "text_neutral_3")}
               tag="div"
             >
               <_Builtin.HtmlEmbed
@@ -383,11 +403,16 @@ export function JobsListingCard({
                 className={_utils.cx(_styles, "job-pill-text")}
                 tag="div"
               >
-                <Text content="Disqualified" />
-                <Text content={disqualifiedCount} />
+                <Text content="Disqualified" size="1" color="neutral" />
+                <Text content={disqualifiedCount} size="1" color="neutral" />
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "is_end", "change_on_hover")}
+                className={_utils.cx(
+                  _styles,
+                  "is_end",
+                  "change_on_hover",
+                  "bg_neutral-3"
+                )}
                 tag="div"
               />
             </_Builtin.Block>

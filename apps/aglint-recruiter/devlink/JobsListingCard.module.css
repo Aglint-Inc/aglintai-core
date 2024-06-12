@@ -11,7 +11,7 @@
   grid-template-columns: 1fr;
   grid-template-rows: auto;
 
-  border: 1px solid var(--neutral-4);
+  border: 1px solid var(--neutral-3);
   border-radius: var(--radius-4);
 
   background-color: var(--white);
@@ -238,10 +238,6 @@
   margin-top: 3px;
 }
 
-.icons.mr--10 {
-  margin-right: -8px;
-}
-
 .icons.mt-2 {
   margin-top: 2px;
 }
@@ -355,6 +351,10 @@
   flex-direction: row;
 }
 
+.text_neutral_3 {
+  color: var(--neutral-3);
+}
+
 .embed_flex {
   display: flex;
   align-items: center;
@@ -409,6 +409,10 @@
 
 .text_bloxk.change_on_hover.job-dash.first {
   margin-left: 1px;
+}
+
+.bg_neutral-3 {
+  background-color: var(--neutral-3);
 }
 
 .job-pill-text {

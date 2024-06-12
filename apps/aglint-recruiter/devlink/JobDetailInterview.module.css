@@ -38,6 +38,13 @@
   color: var(--sky-12);
 }
 
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .cursor-pointer {
   transition: opacity 200ms ease;
   cursor: pointer;
@@ -45,13 +52,6 @@
 
 .cursor-pointer:hover {
   opacity: 0.7;
-}
-
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .icons.cursor-pointer.three-dot {
@@ -131,10 +131,6 @@
 
 .icons.mt-3 {
   margin-top: 3px;
-}
-
-.icons.mr--10 {
-  margin-right: -8px;
 }
 
 .icons.mt-2 {
