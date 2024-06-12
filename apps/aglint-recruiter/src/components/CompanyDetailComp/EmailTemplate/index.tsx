@@ -11,7 +11,7 @@ import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { Job } from '@/src/queries/job/types';
+import { Job } from '@/src/queries/jobs/types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import TipTapAIEditor from '../../Common/TipTapAIEditor';

@@ -1,18 +1,20 @@
-import { Database } from "../schema.types";
-import { Type } from "../utils.types";
-import { CustomApplicationLogs } from "./application_logs.types";
-import { CustomApplications } from "./applications.types";
-import { CandidateRequestAvailability } from "./candidate_request_availability.type";
+import type { Database } from "../schema.types";
+import type { Type } from "../utils.types";
+import type { CustomApplicationLogs } from "./application_logs.types";
+import type { CustomApplications } from "./applications.types";
+import { CustomCandidateFiles } from "./candidate_files";
+import type { CandidateRequestAvailability } from "./candidate_request_availability.type";
 import { CustomInterviewFilterJson } from "./interview_filter_json";
 import { CustomCompanyEmailTemplate } from "./company_email_template.types";
-import { CustomInterviewSessionCancel } from "./interview_session_cancel.types";
-import { CustomInterviewSessionRelation } from "./interview_session_relation.types";
-import { CustomInterviewSession } from "./interview_sessions.types";
-import { CustomNewTasks } from "./new_tasks.types";
-import { CustomNewTaskProgress } from "./new_tasks_progress.types";
-import { CustomRecruiter } from "./recruiter.types";
-import { CustomRecruiterUser } from "./recruiter_user.types";
-import { CustomWorkflowAction } from "./workflow_action.types";
+import type { CustomInterviewSessionCancel } from "./interview_session_cancel.types";
+import type { CustomInterviewSessionRelation } from "./interview_session_relation.types";
+import type { CustomInterviewSession } from "./interview_sessions.types";
+import type { CustomNewTasks } from "./new_tasks.types";
+import type { CustomNewTaskProgress } from "./new_tasks_progress.types";
+import { CustomPublicJobs } from "./public_jobs.types";
+import type { CustomRecruiter } from "./recruiter.types";
+import type { CustomRecruiterUser } from "./recruiter_user.types";
+import type { CustomWorkflowAction } from "./workflow_action.types";
 
 type DatabaseTables = Database["public"]["Tables"];
 
@@ -43,6 +45,8 @@ export type Tables = Type<
     interview_session: CustomInterviewSession;
     workflow_action: CustomWorkflowAction;
     application_logs: CustomApplicationLogs;
+    candidate_files: CustomCandidateFiles;
+    public_jobs: CustomPublicJobs;
     interview_filter_json: CustomInterviewFilterJson;
     company_email_template: CustomCompanyEmailTemplate;
   }

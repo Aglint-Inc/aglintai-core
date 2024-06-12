@@ -1,5 +1,5 @@
-import { CustomMembersMeta } from "../common.types";
-import { FunctionType } from "./index.types";
+import type { CustomMembersMeta } from "../common.types";
+import type { FunctionType } from "./index.types";
 
 export type CustomInsertDebriefSession = FunctionType<
   "insert_debrief_session",

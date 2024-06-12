@@ -5,7 +5,21 @@ import type React from 'react';
 
 import ROUTES from '../utils/routing/routes';
 
-const queryClient = new QueryClient();
+export const GC_TIME = 5 * 60 * 1000;
+export const STALE_TIME = 0;
+export const REFETCH_ON_MOUNT = false;
+export const REFETCH_ON_WINDOW_FOCUS = false;
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      gcTime: GC_TIME,
+      staleTime: STALE_TIME,
+      refetchOnMount: REFETCH_ON_MOUNT,
+      refetchOnWindowFocus: REFETCH_ON_WINDOW_FOCUS,
+    },
+  },
+});
 
 type Pages = typeof ROUTES;
 
@@ -15,7 +29,9 @@ const reactQueryPageRoute: (keyof Pages)[] = [
   '/jobs/[id]/assessment',
   '/jobs',
   '/jobs/[id]',
+  '/jobs/[id]/test' as any,
   '/jobs/create',
+  '/jobs/[id]/candidate-list',
   '/jobs/[id]/job-details',
   '/jobs/[id]/profile-score',
   '/scheduling/interviewer/[member_id]',

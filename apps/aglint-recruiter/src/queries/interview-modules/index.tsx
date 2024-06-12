@@ -9,7 +9,7 @@ import { interviewModuleKeys } from './keys';
 export const useInterviewModules = () => {
   const { recruiter_id } = useAuthDetails();
   const queryClient = useQueryClient();
-  const { queryKey } = interviewModuleKeys.interview_module({ recruiter_id });
+  const { queryKey } = interviewModuleKeys.interview_module();
   const response = useQuery({
     queryKey,
     queryFn: () => getInterviewModulesAPI(recruiter_id),

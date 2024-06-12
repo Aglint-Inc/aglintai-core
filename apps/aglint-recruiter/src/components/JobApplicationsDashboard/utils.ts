@@ -8,7 +8,7 @@ import {
   JobApplication,
   ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
-import { Job } from '@/src/queries/job/types';
+import { Job } from '@/src/queries/jobs/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
