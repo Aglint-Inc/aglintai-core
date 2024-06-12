@@ -145,7 +145,7 @@ export function ReqAvailability({
       <_Builtin.Block className={_utils.cx(_styles, "button_grid")} tag="div">
         <ButtonSoft
           onClickButton={onClickCancel}
-          textButton="Cancel"
+          textButton="Back"
           size="2"
           color="neutral"
         />

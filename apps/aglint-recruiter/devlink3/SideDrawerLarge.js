@@ -23,6 +23,7 @@ export function SideDrawerLarge({
   onClickBack = {},
   isDisabled = false,
   isLoading = false,
+  dynamicHeight = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "large_sidedrawer")} tag="div">
@@ -38,6 +39,7 @@ export function SideDrawerLarge({
       <_Builtin.Block
         className={_utils.cx(_styles, "sidedrawer_body")}
         tag="div"
+        {...dynamicHeight}
       >
         {slotSideDrawerbody ?? <SlotComp componentNeme="ScheduleOptionList" />}
       </_Builtin.Block>

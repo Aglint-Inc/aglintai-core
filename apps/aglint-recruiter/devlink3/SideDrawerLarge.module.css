@@ -36,7 +36,6 @@
 
 .sidedrawer_body {
   overflow: auto;
-  height: calc(100vh - 96px);
 }
 
 .sidedrawer_bottom_bar {

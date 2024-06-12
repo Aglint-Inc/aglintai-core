@@ -78,6 +78,7 @@ function Overview({
       .from('interview_filter_json')
       .select('*')
       .contains('session_ids', [schedule.interview_session.id]);
+
     setFilterJson(data[0]);
   };
 
@@ -205,10 +206,9 @@ function Overview({
         }}
         onClickCopyCandidate={{
           onClick: async () => {
-            filterJson?.id &&
-              navigator.clipboard.writeText(
-                `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule.schedule.id}?filter_id=${filterJson.id}`,
-              );
+            navigator.clipboard.writeText(
+              `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule.schedule.id}?filter_id=${filterJson.id}`,
+            );
           },
         }}
         slotButton={
