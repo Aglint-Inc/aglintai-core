@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
-import { SublinkSubMenu } from '@/devlink2/SublinkSubMenu';
+import { SublinkSubMenu } from '@/devlink2/SubLinkSubMenu';
 import { SublinkTab } from '@/devlink2/SublinkTab';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { featureFlag } from '@/src/utils/Constants';
