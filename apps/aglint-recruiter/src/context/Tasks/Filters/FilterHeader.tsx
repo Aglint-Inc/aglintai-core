@@ -22,6 +22,8 @@ import UITextField from '@/src/components/Common/UITextField';
 import DateRange from '@/src/components/Tasks/Components/DateRange';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
+import { palette } from '../../Theme/Theme';
+
 // eslint-disable-next-line no-unused-vars
 type ArgumentsType<T extends (...args: any[]) => any> = Parameters<T>;
 

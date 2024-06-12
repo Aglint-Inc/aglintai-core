@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import { useMemo, useState } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { Job } from '@/src/queries/job/types';
+import { Job } from '@/src/queries/jobs/types';
 
 import FilterHeader from '../../Common/FilterHeader';
 
