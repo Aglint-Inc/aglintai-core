@@ -30,9 +30,9 @@ export const dummy: EmailType['react_email_placeholders'] = {
       platform: 'Google meet',
       duration: '45 minutes',
       sessionTypeIcon:
-        'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/debrief.png',
+        'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/personal.png?t=2024-06-12T05%3A11%3A22.771Z',
       meetingIcon:
-        'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/google_meet.png',
+        'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/online.png?t=2024-06-12T05%3A11%3A07.207Z',
     },
   ],
   subject: '',
@@ -46,29 +46,47 @@ const Sessions = ({ meetingDetail }) => {
   const htmlParser = Parser();
   return (
     <Container
-      className="my-3 rounded-md "
       style={{
         border: '1px solid #E9EBED',
         padding: '10px 20px',
+        borderRadius: '8px', // assuming 'rounded-md' means border-radius of 8px
+        marginTop: '1rem',
+        marginBottom: '1rem',
       }}
     >
-      <Text className="m-0">
-        <strong>{htmlParser.parse(meetingDetail.date)} </strong>
-        {htmlParser.parse(meetingDetail.time)}
+      <Text style={{ lineHeight: '24px', marginBottom: '5px', margin: 0, fontSize: '1rem' }}>
+        <strong>{htmlParser.parse(meetingDetail.date)}</strong> {htmlParser.parse(meetingDetail.time)}
       </Text>
-      <Text className="m-0 flex gap-1 item-center my-1">
-        <Img className="inline " src={meetingDetail.sessionTypeIcon} />
-        &nbsp;
-        {htmlParser.parse(meetingDetail.sessionType)}
+      <Text style={{ display: 'flex', alignItems: 'center', lineHeight: '24px', marginBottom: '5px', margin: 0, fontSize: '0.75rem' }}>
+        <span style={{ display: 'inline-flex', alignItems: 'center', lineHeight: '24px' }}>
+          <Img
+            src={meetingDetail.sessionTypeIcon}
+            style={{ width: '24px', height: '24px' }}
+          />
+          &nbsp;
+          {htmlParser.parse(meetingDetail.sessionType)}
+        </span>
       </Text>
-      <Text className="m-0 flex gap-1 items-center ">
-        <Img src={meetingDetail.meetingIcon} />
-        &nbsp;
-        {htmlParser.parse(meetingDetail.platform)}&nbsp;&nbsp;
-        <Img src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/duration.png" />
-        {htmlParser.parse(meetingDetail.duration)}
+      <Text style={{ display: 'flex', alignItems: 'center', lineHeight: '24px', marginBottom: '5px', margin: 0, fontSize: '0.75rem' }}>
+        <span style={{ display: 'inline-flex', alignItems: 'center', lineHeight: '24px' }}>
+          <Img
+            src={meetingDetail.meetingIcon}
+            style={{ width: '24px', height: '24px' }}
+          />
+          &nbsp;
+          {htmlParser.parse(meetingDetail.platform)}
+          &nbsp;&nbsp;
+          <Img
+            src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/duration.png?t=2024-06-12T05%3A03%3A30.582Z"
+            style={{ width: '24px', height: '24px' }}
+          />
+          &nbsp;
+          {htmlParser.parse(meetingDetail.duration)}
+        </span>
       </Text>
     </Container>
+
+
   );
 };
 
@@ -108,8 +126,9 @@ export const InterviewBookingConfirmation = ({
               Powered By
               <Img
                 alt="Aglint Logo"
-                className="w-[70px] mx-2 inline-block"
+                className="line-block"
                 src={aglintLogo}
+                style={{ width: '24px', height: '24px' }}
               />
               @ 2024 Aglint Inc. All Right Reserved
             </Text>

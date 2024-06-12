@@ -10,7 +10,7 @@ export function durationCalculator(min) {
 
 export function sessionTypeIcon(platform) {
   if (platform === 'individual')
-    return 'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/individual.png';
+    return 'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/personal.png?t=2024-06-12T05%3A11%3A22.771Z';
   if (platform === 'debrief')
     return 'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/debrief.png';
   if (platform === 'panel')
@@ -23,7 +23,7 @@ export function scheduleTypeIcon(platform) {
   if (platform === 'google_meet')
     return 'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/google_meet.png';
   if (platform === 'phone_call')
-    return 'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/google_meet.png';
+    return 'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/online.png?t=2024-06-12T05%3A11%3A07.207Z';
   if (platform === 'in_person_meeting')
     return 'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/in_person_meeting.png';
 }
