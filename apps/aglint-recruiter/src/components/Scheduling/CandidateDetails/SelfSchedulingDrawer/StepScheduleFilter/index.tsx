@@ -45,7 +45,7 @@ function StepScheduleFilter() {
     );
 
   return (
-    <>
+    <Stack height={'calc(100vh - 96px)'}>
       <SchedulerFilters
         textDateRange={`${dayjs(dateRange.start_date).format('MMMM DD')} - ${dayjs(dateRange.end_date).format('MMMM DD')}`}
         slotCheckbox={
@@ -156,7 +156,7 @@ function StepScheduleFilter() {
           </>
         }
       />
-    </>
+    </Stack>
   );
 }
 

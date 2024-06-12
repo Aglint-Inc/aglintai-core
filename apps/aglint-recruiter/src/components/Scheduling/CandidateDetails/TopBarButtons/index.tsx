@@ -1,5 +1,4 @@
 import { Popover } from '@mui/material';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import { AgentPopoverBlock } from '@/devlink3/AgentPopoverBlock';
@@ -13,7 +12,6 @@ import {
 import { setRequestSessionIds, useSchedulingApplicationStore } from '../store';
 
 function TopBarButtons() {
-  const router = useRouter();
   const { initialSessions, selectedSessionIds, selectedApplication } =
     useSchedulingApplicationStore((state) => ({
       initialSessions: state.initialSessions,
@@ -65,18 +63,10 @@ function TopBarButtons() {
           isRequestAvailabilityIcon={true}
           onClickButton={{
             onClick: () => {
-              setScheduleFlow('request_availibility');
+              setScheduleFlow('create_request_availibility');
+              setStepScheduling('pick_date');
               setRequestSessionIds(selectedSessionIds);
-              const currentPath = router.pathname; // '/scheduling/application/[application_id]'
-              const currentQuery = router.query; // { application_id: '84caebfb-8db6-4881-a88f-400726884504' }
-              const updatedQuery = {
-                ...currentQuery,
-                candidate_request_availability: 'true',
-              };
-              router.replace({
-                pathname: currentPath,
-                query: updatedQuery,
-              });
+              setIsScheduleNowOpen(true);
             },
           }}
           textButton={'Request Availability'}

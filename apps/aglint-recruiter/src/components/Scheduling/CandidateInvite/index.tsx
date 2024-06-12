@@ -105,7 +105,7 @@ const CandidateInvitePlanPage = () => {
     timezone,
     setSelectedSlots,
     setTimezone,
-    handleViewedOn
+    handleViewedOn,
   } = useCandidateInvite();
 
   useEffect(() => {

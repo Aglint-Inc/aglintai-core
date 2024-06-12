@@ -10,8 +10,8 @@ import { ScheduleDetailTabs } from '@/devlink3/ScheduleDetailTabs';
 
 import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';
+import CandidateInfo from '../Common/CandidateInfo';
 import CancelReasonCards from './CancelReasonCards';
-import CandidateInfo from './CandidateDetails';
 import ChangeInterviewerDialog from './ChangeInterviewerDialog';
 import FeedbackWindow from './Feedback';
 import { useScheduleDetails } from './hooks';
@@ -72,7 +72,7 @@ function SchedulingViewComp() {
         <PageLayout
           onClickBack={{
             onClick: () => {
-              window.history.back();
+              router.back();
             },
           }}
           isBackButton={true}

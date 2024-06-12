@@ -20,7 +20,7 @@ export function StatusBadge({
         <_Builtin.Block className={_utils.cx(_styles, "sb-wrapper")} tag="div">
           <GlobalBadge
             showIcon={true}
-            iconName=""
+            iconName="event_available"
             textBadge="Completed"
             color="success"
           />
