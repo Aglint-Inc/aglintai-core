@@ -145,6 +145,7 @@ function RequestAvailability() {
             number_of_days: selectedDays.value,
             number_of_slots: selectedSlots.value,
             slots: null,
+            booking_confirmed: false,
           },
         });
 
