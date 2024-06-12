@@ -1,5 +1,7 @@
 drop view if exists "public"."application_view";
 
+drop table if exists "public"."application_email_status";
+
 create table "public"."application_email_status" (
     "id" uuid not null default gen_random_uuid(),
     "created_at" timestamp with time zone not null default now(),
