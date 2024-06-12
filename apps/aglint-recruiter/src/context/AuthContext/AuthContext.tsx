@@ -81,6 +81,7 @@ export interface ContextValue {
       subject: string;
       body: string;
       type: DatabaseTable['company_email_template']['type'];
+      from_name: string;
     }[],
     Error
   >;
