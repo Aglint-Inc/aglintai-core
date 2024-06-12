@@ -1253,7 +1253,7 @@ background-color: var(--neutral-a3);
 background-color: transparent;
 color:  var(--error-a11);
 }
-[button-color-ghost="neutral"]:hover {
+[button-color-ghost="error"]:hover {
 background-color: var(--error-a3);
 }
 
