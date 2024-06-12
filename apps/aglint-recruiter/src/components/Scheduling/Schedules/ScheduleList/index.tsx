@@ -5,6 +5,7 @@ import Loader from '@/src/components/Common/Loader';
 
 import ScheduleMeetingList from '../../Common/ModuleSchedules/ScheduleMeetingList';
 import { useScheduleStatesContext } from '../ScheduleStatesContext';
+import { Box } from '@mui/material';
 
 function ScheduleList() {
   const { filterSchedules, loadingSchedules } = useScheduleStatesContext();
@@ -17,7 +18,20 @@ function ScheduleList() {
         </Stack>
       )}
       {!loadingSchedules && filterSchedules.length === 0 && (
-        <AllInterviewEmpty textDynamic='No schedule found' />
+        <Box
+          sx={{
+            display: 'flex',
+            borderRadius: 'var(--radius-2)',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: 'calc(100vh - 180px)',
+            backgroundColor: 'var(--neutral-2)', // replace with your desired background color
+          }}
+        >
+          <Box maxWidth="sm" width="300px" p={2}>
+          <AllInterviewEmpty textDynamic='No schedule found' />
+          </Box>
+        </Box>
       )}
       <ScheduleMeetingList filterSchedules={filterSchedules} />
     </Stack>

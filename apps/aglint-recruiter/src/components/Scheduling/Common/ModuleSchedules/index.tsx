@@ -10,6 +10,7 @@ import UITextField from '@/src/components/Common/UITextField';
 import DynamicLoader from '../../Interviewers/DynamicLoader';
 import { ScheduleListType } from './hooks';
 import ScheduleMeetingList from './ScheduleMeetingList';
+import { Box } from '@mui/material';
 
 function ModuleSchedules({
   isFetched,
@@ -82,7 +83,21 @@ function ModuleSchedules({
           <ShowCode.When
             isTrue={isFetched && newFilterSchedules()?.length === 0}
           >
-            <AllInterviewEmpty textDynamic='No schedule found' />
+            <Box
+              sx={{
+                padding: 'var(--space-4)',
+                borderRadius: 'var(--radius-2)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: 'calc(100vh - 180px)',
+                backgroundColor: 'var(--neutral-2)', // replace with your desired background color
+              }}
+            >
+              <Box maxWidth="sm" width="300px" p={2}>
+              <AllInterviewEmpty textDynamic='No schedule found' />
+              </Box>
+            </Box>
           </ShowCode.When>
           <ShowCode.When isTrue={isFetched}>
             <ScheduleMeetingList filterSchedules={newFilterSchedules()} />
