@@ -62,15 +62,14 @@ import {
   ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
 import { useJobDetails } from '@/src/context/JobDashboard';
-import { Job } from '@/src/queries/job/types';
+import { Job } from '@/src/queries/jobs/types';
+import { getFullName } from '@/src/utils/jsonResume';
 // import interviewerList from '@/src/utils/interviewer_list';
 import toast from '@/src/utils/toast';
 
 // import CandidateAvatar from '../../Common/CandidateAvatar';
 import CompanyLogo from '../../Common/CompanyLogo';
-import {
-  getInterviewScores,
-} from '../../Common/InterviewScore';
+import { getInterviewScores } from '../../Common/InterviewScore';
 // import InterviewScore, {
 //   getInterviewScores,
 // } from '../../Common/InterviewScore';
@@ -86,7 +85,7 @@ import {
   getCandidateDetails,
   getScreeningStatus,
   handleOngoingWarning,
-  mapScoreToAnalysis
+  mapScoreToAnalysis,
 } from '../../utils';
 // import ConversationCard from './ConversationCard';
 import { AnalysisPillComponent, Insights, ScreeningStatusComponent } from '..';
@@ -253,12 +252,12 @@ const NewJobApplicationSideDrawer = ({
     );
     toast.success('Call initiated successfully.');
   };
-  const isPhoneScreeningPhoneCallEnabled = useFeatureFlagEnabled(
-    'isPhoneScreeningPhoneCallEnabled',
-  );
-  const isPhoneScreeningEnabled = job.activeSections.includes(
-    JobApplicationSections.SCREENING,
-  );
+  // const isPhoneScreeningPhoneCallEnabled = useFeatureFlagEnabled(
+  //   'isPhoneScreeningPhoneCallEnabled',
+  // );
+  // const isPhoneScreeningEnabled = job.activeSections.includes(
+  //   JobApplicationSections.SCREENING,
+  // );
 
   const { pressed: right } = useKeyPress('ArrowRight');
   const { pressed: left } = useKeyPress('ArrowLeft');
@@ -894,7 +893,7 @@ export const AnalysisBlockSection: React.FC<{
           padding: noCollapse ? '0px' : '16px',
         },
       }}
-      slotPill={<ResumeScore application={application} />}
+      // slotPill={<ResumeScore application={application} />}
       onclickArrow={{
         onClick: () => setCollapse((prev) => !prev),
         style: {
@@ -1212,7 +1211,7 @@ const ResumeUpload: React.FC<{
               {resume ? <FileIcon /> : <UploadIcon />}
               <Typography
                 variant='body1'
-                sx={{ textAlgin: 'center'}}
+                sx={{ textAlgin: 'center' }}
                 style={{
                   fontWeight: resume ? 600 : 400,
                 }}
