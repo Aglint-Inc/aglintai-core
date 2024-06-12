@@ -2,11 +2,19 @@ drop view if exists "public"."application_view";
 
 drop table if exists "public"."application_email_status";
 
+alter type "public"."email_slack_types" rename to "email_slack_types__old_version_to_be_dropped";
+
+create type "public"."email_slack_types" as enum ('interviewEnd_slack_interviewers', 'interviewerConfirmation_slack_interviewers', 'interviewStart_slack_interviewers', 'agent_email_candidate', 'applicantReject_email_applicant', 'applicationRecieved_email_applicant', 'confInterview_email_organizer', 'confirmInterview_email_applicant', 'debrief_email_interviewer', 'interReschedReq_email_recruiter', 'interviewCancel_email_applicant', 'InterviewCancelReq_email_recruiter', 'interviewReschedule_email_applicant', 'interviewStart_email_applicant', 'interviewStart_email_interviewers', 'phoneScreen_email_candidate', 'phoneScreenRemind_email_applicant', 'selfScheduleReminder_email_applicant', 'sendAvailReqReminder_email_applicant', 'sendSelfScheduleRequest_email_applicant', 'sendAvailabilityRequest_email_applicant');
+
+alter table "public"."company_email_template" alter column type type "public"."email_slack_types" using type::text::"public"."email_slack_types";
+
+drop type "public"."email_slack_types__old_version_to_be_dropped";
+
 create table "public"."application_email_status" (
     "id" uuid not null default gen_random_uuid(),
     "created_at" timestamp with time zone not null default now(),
     "application_id" uuid not null,
-    "email" email_types not null
+    "email" email_slack_types not null
 );
 
 CREATE UNIQUE INDEX application_email_status_pkey ON public.application_email_status USING btree (id);

@@ -1,6 +1,4 @@
-create type "public"."email_slack_types" as enum ('interviewEnd_slack_interviewers', 'interviewerConfirmation_slack_interviewers', 'interviewStart_slack_interviewers', 'agent_email_candidate', 'applicantReject_email_applicant', 'applicationRecieved_email_applicant', 'confInterview_email_organizer', 'confirmInterview_email_applicant', 'debrief_email_interviewer', 'interReschedReq_email_recruiter', 'interviewCancel_email_applicant', 'InterviewCancelReq_email_recruiter', 'interviewReschedule_email_applicant', 'interviewStart_email_applicant', 'interviewStart_email_interviewers', 'phoneScreen_email_candidate', 'phoneScreenRemind_email_applicant', 'selfScheduleReminder_email_applicant', 'sendAvailReqReminder_email_applicant');
-
-alter table "public"."company_email_template" drop constraint "company_email_template_ukey";
+alter table "public"."company_email_template" drop constraint IF EXISTS "company_email_template_ukey";
 
 drop function if exists "public"."get_interview_modules"(rec_id uuid);
 
@@ -10,9 +8,13 @@ alter type "public"."email_types" rename to "email_types__old_version_to_be_drop
 
 drop view if exists "public"."application_view";
 
-alter table "public"."application_email_status" alter column email type "public"."email_slack_types" using email::text::"public"."email_slack_types";
+drop type if exists "public"."email_slack_types" CASCADE;
 
-alter table "public"."company_email_template" alter column "type" set data type email_slack_types using "type"::text::email_slack_types;
+create type "public"."email_slack_types" as enum ('interviewEnd_slack_interviewers', 'interviewerConfirmation_slack_interviewers', 'interviewStart_slack_interviewers', 'agent_email_candidate', 'applicantReject_email_applicant', 'applicationRecieved_email_applicant', 'confInterview_email_organizer', 'confirmInterview_email_applicant', 'debrief_email_interviewer', 'interReschedReq_email_recruiter', 'interviewCancel_email_applicant', 'InterviewCancelReq_email_recruiter', 'interviewReschedule_email_applicant', 'interviewStart_email_applicant', 'interviewStart_email_interviewers', 'phoneScreen_email_candidate', 'phoneScreenRemind_email_applicant', 'selfScheduleReminder_email_applicant', 'sendAvailReqReminder_email_applicant');
+
+alter table "public"."company_email_template" alter column type set data type email_slack_types using type::text::email_slack_types;
+
+alter table "public"."application_email_status" alter column email type "public"."email_slack_types" using email::text::"public"."email_slack_types";
 
 drop type "public"."email_types__old_version_to_be_dropped";
 
