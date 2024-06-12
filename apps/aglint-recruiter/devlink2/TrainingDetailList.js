@@ -50,7 +50,7 @@ export function TrainingDetailList({
         {slotTrainingStatus ?? (
           <GlobalBadge
             color="success"
-            textBadge="Completed"
+            textBadge=""
             size="2"
             variant="solid"
             iconName=""
@@ -66,7 +66,7 @@ export function TrainingDetailList({
         {slotPanelBlock ?? (
           <>
             <PanelBlock />
-            <ButtonSoft size="2" textButton="" />
+            <ButtonSoft size="2" textButton="Approve" />
           </>
         )}
       </_Builtin.Block>

@@ -20,6 +20,7 @@ export function NewInterviewDetail({
         "w-node-d536e2aa-02b2-ec82-0c9c-981b92ab7f22-92ab7f22"
       )}
       tag="div"
+      col-span="2"
     >
       <_Builtin.Block
         className={_utils.cx(_styles, "sd_widget_header")}

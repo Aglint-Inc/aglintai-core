@@ -28,6 +28,7 @@ export function ReqAvailability({
   onClickReqAvailability = {},
   isCheckingSlotsVisible = true,
   isCheckbox = true,
+  isLoading = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "req_vailibility")} tag="div">
@@ -180,6 +181,7 @@ export function ReqAvailability({
         />
         <ButtonSolid
           onClickButton={onClickReqAvailability}
+          isLoading={isLoading}
           textButton="Request Availability"
           size="2"
         />
