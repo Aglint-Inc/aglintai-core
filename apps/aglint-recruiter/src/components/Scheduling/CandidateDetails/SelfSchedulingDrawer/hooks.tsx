@@ -107,6 +107,10 @@ export const useSelfSchedulingDrawer = ({
   const onClickSendToCandidate = async () => {
     try {
       setIsSendingToCandidate(true);
+      if (selectedSessionIds.length === 0) {
+        throw new Error('Please select a session to schedule.');
+      }
+
       if (isDebrief && selectedCombIds.length === 0) {
         toast.warning('Please select a time slot to schedule.');
         return;

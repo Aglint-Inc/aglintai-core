@@ -22,7 +22,7 @@ import RescheduleDialog from './RescheduleDialog';
 
 function SchedulingViewComp() {
   const router = useRouter();
-  const { data, isLoading } = useScheduleDetails();
+  const { data, isLoading, refetch } = useScheduleDetails();
   const [isChangeInterviewerOpen, setIsChangeInterviewerOpen] = useState(false);
   const [isRescheduleOpen, setIsRescheduleOpen] = useState(false);
   const [isCancelOpen, setIsCancelOpen] = useState(false);
@@ -89,13 +89,13 @@ function SchedulingViewComp() {
                     cancelReasons={cancelReasons}
                     schedule={schedule}
                     setCancelUserId={setCancelUserId}
-                    setIsCancelOpen={setIsCancelOpen}
                     setIsRescheduleOpen={setIsRescheduleOpen}
                     cancelUserId={cancelUserId}
                     setIsChangeInterviewerOpen={setIsChangeInterviewerOpen}
                     setRange={setRange}
                   />
                   <Overview
+                    refetch={refetch}
                     cancelReasons={cancelReasons}
                     schedule={schedule}
                     isCancelOpen={isCancelOpen}
