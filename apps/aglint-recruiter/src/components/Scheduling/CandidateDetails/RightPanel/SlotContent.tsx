@@ -3,6 +3,9 @@ import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSurface } from '@/devlink/ButtonSurface';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ConfirmScheduleList } from '@/devlink3/ConfirmScheduleList';
 import { ConfirmScheduleListCard } from '@/devlink3/ConfirmScheduleListCard';
 import { RescheduleCard } from '@/devlink3/RescheduleCard';
@@ -10,6 +13,7 @@ import { ScheduleButton } from '@/devlink3/ScheduleButton';
 import CandidateDefaultIcon from '@/src/components/Common/Icons/CandidateDefaultIcon';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
+import ROUTES from '@/src/utils/routing/routes';
 
 import IconScheduleType from '../../Candidates/ListCard/Icon';
 import { getScheduleType } from '../../Candidates/utils';
@@ -22,7 +26,6 @@ import {
 } from '../SelfSchedulingDrawer/store';
 import {
   setMultipleCancelOpen,
-  setRequestSessionIds,
   setSelectedApplicationLog,
   useSchedulingApplicationStore,
 } from '../store';
@@ -77,48 +80,47 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
         {(filter_id || availability_request_id) &&
           act?.metadata?.action === 'waiting' && (
             <Stack direction={'row'} spacing={2}>
-              <ScheduleButton
-                textLabel={'Reschedule'}
-                slotIcon={<IconReschedule />}
-                onClickProps={{
-                  onClick: () => {
-                    if (filter_id) {
+              <Stack width={'50%'}>
+                <ButtonSoft
+                  color={'neutral'}
+                  size={1}
+                  textButton={'Reschedule'}
+                  slotIcon={
+                    <Stack>
+                      <GlobalIcon iconName={'refresh'} />
+                    </Stack>
+                  }
+                  isLeftIcon={true}
+                  onClickButton={{
+                    onClick: () => {
                       setStepScheduling('reschedule');
                       setSelectedApplicationLog(act);
                       setIsScheduleNowOpen(true);
-                    } else if (availability_request_id) {
-                      setRequestSessionIds(sessions.map((s) => s.id));
+                    },
+                  }}
+                />
+              </Stack>
+
+              <Stack width={'50%'}>
+                <ButtonSoft
+                  size={1}
+                  color={'error'}
+                  textButton={'Cancel'}
+                  onClickButton={{
+                    style: { background: '#FFF0F1' },
+                    onClick: () => {
                       setSelectedApplicationLog(act);
-                      const currentPath = router.pathname;
-                      const currentQuery = router.query;
-                      const updatedQuery = {
-                        ...currentQuery,
-                        candidate_request_availability: availability_request_id,
-                      };
-                      router.replace({
-                        pathname: currentPath,
-                        query: updatedQuery,
-                      });
-                    }
-                  },
-                }}
-              />
-              <ScheduleButton
-                textLabel={'Cancel Schedule'}
-                slotIcon={<IconCancelSchedule />}
-                textColorProps={{
-                  style: {
-                    color: '#D93F4C',
-                  },
-                }}
-                onClickProps={{
-                  style: { background: '#FFF0F1' },
-                  onClick: () => {
-                    setSelectedApplicationLog(act);
-                    setMultipleCancelOpen(true);
-                  },
-                }}
-              />
+                      setMultipleCancelOpen(true);
+                    },
+                  }}
+                  slotIcon={
+                    <Stack>
+                      <GlobalIcon iconName={'event_busy'} />
+                    </Stack>
+                  }
+                  isLeftIcon={true}
+                />
+              </Stack>
             </Stack>
           )}
       </Stack>
@@ -152,8 +154,7 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
           slotProfileImage={<CandidateDefaultIcon size={20} />}
           isChangeInterviewerVisible={false}
           textReason={rescheduleDetails.reason}
-          isRescheduleBtnVisible={true}
-          isCancelVisible={true}
+          isRescheduleBtnVisible={false}
         />
 
         {rescheduleDetails?.filter_id &&
@@ -192,6 +193,24 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
               )}
             </Stack>
           )}
+      </Stack>
+    );
+  } else if (act.metadata.type === 'interviewer_decline') {
+    const meeting_id = act.metadata.meeting_id;
+    return (
+      <Stack direction={'row'}>
+        <ButtonSurface
+          size={1}
+          textButton={'View details'}
+          onClickButton={{
+            onClick: () => {
+              router.push(
+                ROUTES['/scheduling/view']() +
+                  `?meeting_id=${meeting_id}&tab=candidate_details`,
+              );
+            },
+          }}
+        />
       </Stack>
     );
   } else {

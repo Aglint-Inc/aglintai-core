@@ -59,6 +59,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       verified_plans[0],
       schedule_db_details,
     );
+    
     return res.status(200).json('ok');
   } catch (err) {
     console.error(err);

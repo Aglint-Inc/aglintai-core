@@ -148,19 +148,19 @@ export type Database = {
         Row: {
           application_id: string
           created_at: string
-          email: Database["public"]["Enums"]["email_types"]
+          email: Database["public"]["Enums"]["email_slack_types"]
           id: string
         }
         Insert: {
           application_id: string
           created_at?: string
-          email: Database["public"]["Enums"]["email_types"]
+          email: Database["public"]["Enums"]["email_slack_types"]
           id?: string
         }
         Update: {
           application_id?: string
           created_at?: string
-          email?: Database["public"]["Enums"]["email_types"]
+          email?: Database["public"]["Enums"]["email_slack_types"]
           id?: string
         }
         Relationships: [
@@ -1073,6 +1073,7 @@ export type Database = {
       }
       interview_filter_json: {
         Row: {
+          confirmed_on: string | null
           created_at: string
           created_by: string | null
           filter_json: Json
@@ -1080,8 +1081,10 @@ export type Database = {
           schedule_id: string
           selected_options: Json[] | null
           session_ids: string[]
+          viewed_on: string | null
         }
         Insert: {
+          confirmed_on?: string | null
           created_at?: string
           created_by?: string | null
           filter_json: Json
@@ -1089,8 +1092,10 @@ export type Database = {
           schedule_id: string
           selected_options?: Json[] | null
           session_ids?: string[]
+          viewed_on?: string | null
         }
         Update: {
+          confirmed_on?: string | null
           created_at?: string
           created_by?: string | null
           filter_json?: Json
@@ -1098,6 +1103,7 @@ export type Database = {
           schedule_id?: string
           selected_options?: Json[] | null
           session_ids?: string[]
+          viewed_on?: string | null
         }
         Relationships: [
           {
@@ -1548,6 +1554,7 @@ export type Database = {
           cancel_user_id: string | null
           created_at: string
           id: string
+          is_ignored: boolean
           is_resolved: boolean
           other_details: Json | null
           reason: string
@@ -1560,6 +1567,7 @@ export type Database = {
           cancel_user_id?: string | null
           created_at?: string
           id?: string
+          is_ignored?: boolean
           is_resolved?: boolean
           other_details?: Json | null
           reason: string
@@ -1572,6 +1580,7 @@ export type Database = {
           cancel_user_id?: string | null
           created_at?: string
           id?: string
+          is_ignored?: boolean
           is_resolved?: boolean
           other_details?: Json | null
           reason?: string
@@ -4984,49 +4993,9 @@ export type Database = {
         | "phoneScreen_email_candidate"
         | "phoneScreenRemind_email_applicant"
         | "selfScheduleReminder_email_applicant"
-        | "sendAvailabilityRequest_email_applicant"
         | "sendAvailReqReminder_email_applicant"
         | "sendSelfScheduleRequest_email_applicant"
-      email_types:
-        | "debrief_calendar_invite"
-        | "candidate_invite_confirmation"
-        | "cancel_interview_session"
-        | "init_email_agent"
-        | "confirmation_mail_to_organizer"
-        | "interview"
-        | "rejection"
-        | "phone_screening"
-        | "interview_resend"
-        | "application_received"
-        | "phone_screening_resend"
-        | "request_candidate_slot"
-        | "candidate_cancel_request"
-        | "candidate_reschedule_request"
-        | "recruiter_rescheduling_email"
-        | "candidate_availability_request"
-        | "sendSelfScheduleRequest_email_applicant"
-        | "interviewStart_email_applicant"
         | "sendAvailabilityRequest_email_applicant"
-        | "interviewStart_email_interviewers"
-        | "interviewStart_slack_interviewers"
-        | "interviewEnd_slack_interviewers"
-        | "interviewerConfirmation_slack_interviewers"
-        | "debrief_email_interviewer"
-        | "applicationRecieved_email_applicant"
-        | "interviewCancel_email_applicant"
-        | "agent_email_candidate"
-        | "confInterview_email_organizer"
-        | "confirmInterview_email_applicant"
-        | "applicantReject_email_applicant"
-        | "phoneScreen_email_candidate"
-        | "interviewReminder_email_applicant"
-        | "phoneScreenRemind_email_applicant"
-        | "InterviewCancelReq_email_recruiter"
-        | "interReschedReq_email_recruiter"
-        | "interviewReschedule_email_applicant"
-        | "interviewReminder_email_interviewer"
-        | "sendAvailReqReminder_email_applicant"
-        | "selfScheduleReminder_email_applicant"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"
@@ -5166,9 +5135,9 @@ export type Database = {
         | "hiring_manager"
       workflow_phase: "before" | "after" | "now"
       workflow_trigger:
-        | "sendSelfScheduleRequest"
+        | "selfScheduleReminder"
         | "interviewStart"
-        | "sendAvailabilityRequest"
+        | "sendAvailReqReminder"
         | "interviewerConfirmation"
         | "interviewEnd"
     }

@@ -25,25 +25,23 @@ function ConflictWithHover({
       <CustomTooltip
         title={
           <React.Fragment>
-            <Stack bgcolor={'#fff'} borderRadius={'var(--radius-4)'}>
-              <ConflictPopover
-                isHardConflict={isHardConflict}
-                isOutsideWorkHours={isOutsideWorkHours}
-                isSoftConflict={isSoftConflict}
-                slotConflictReason={conflictReasons.map((item, ind) => {
-                  return (
-                    <ConflictReason
-                      key={ind}
-                      textConflictReason={
-                        item.conflict_type === 'out_of_working_hours'
-                          ? item.conflict_event || 'Out of working hours'
-                          : item.conflict_event
-                      }
-                    />
-                  );
-                })}
-              />
-            </Stack>
+            <ConflictPopover
+              isHardConflict={isHardConflict}
+              isOutsideWorkHours={isOutsideWorkHours}
+              isSoftConflict={isSoftConflict}
+              slotConflictReason={conflictReasons.map((item, ind) => {
+                return (
+                  <ConflictReason
+                    key={ind}
+                    textConflictReason={
+                      item.conflict_type === 'out_of_working_hours'
+                        ? item.conflict_event || 'Out of working hours'
+                        : item.conflict_event
+                    }
+                  />
+                );
+              })}
+            />
           </React.Fragment>
         }
       >

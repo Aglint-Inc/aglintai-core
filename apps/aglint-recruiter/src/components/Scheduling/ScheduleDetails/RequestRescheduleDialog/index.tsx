@@ -2,7 +2,6 @@ import { InterviewSessionRelationTypeDB } from '@aglint/shared-types';
 import { Dialog, Stack, TextField, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import React, { Dispatch, useEffect, useState } from 'react';
 
@@ -21,14 +20,15 @@ function RequestRescheduleDialog({
   setIsRequestRescheduleOpen,
   sessionRelation,
   schedule,
+  refetch,
 }: {
   isRequestRescheduleOpen: boolean;
   setIsRequestRescheduleOpen: Dispatch<React.SetStateAction<boolean>>;
   sessionRelation: InterviewSessionRelationTypeDB;
   schedule: ScheduleMeeting;
+  refetch: () => void;
 }) {
   const { recruiter, recruiterUser } = useAuthDetails();
-  const queryClient = useQueryClient();
   const currentDate = dayjs();
   const [reason, setReason] = useState('');
   const [notes, setNotes] = useState('');
@@ -59,6 +59,7 @@ function RequestRescheduleDialog({
           .from('interview_session_relation')
           .update({ accepted_status: 'request_reschedule' })
           .eq('id', sessionRelation.id);
+
         const { error } = await supabase
           .from('interview_session_cancel')
           .insert({
@@ -74,6 +75,7 @@ function RequestRescheduleDialog({
               note: notes,
             },
           });
+
         if (error) throw new Error();
 
         addScheduleActivity({
@@ -83,9 +85,8 @@ function RequestRescheduleDialog({
           supabase: supabase,
           created_by: recruiterUser.user_id,
         });
-        queryClient.invalidateQueries({
-          queryKey: ['schedule_details', schedule.interview_meeting.id],
-        });
+        
+        refetch();
       }
     } catch {
       toast.error('Unable to save cancel reason');

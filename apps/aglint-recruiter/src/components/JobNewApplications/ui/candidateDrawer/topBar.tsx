@@ -46,6 +46,10 @@ const Actions = () => {
 };
 
 const TopBar = (props: PropsWithChildren) => {
+  const {
+    meta: { status },
+  } = useApplication();
+  if (status === 'pending') return <>Loadin...</>;
   return (
     <Stack
       style={{

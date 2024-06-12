@@ -55,7 +55,7 @@ function processDirectory(
   // eslint-disable-next-line security/detect-non-literal-fs-filename
   fs.writeFileSync(
     outputFile,
-    `export const PATHS = [\n${result.map((item) => '"' + item + '"').join(',\n')}\n] as const`,
+    `export const PATHS = [\n${result.map((item) => "'" + item + "'").join(',\n')}\n] as const`,
     'utf-8',
   );
 }
