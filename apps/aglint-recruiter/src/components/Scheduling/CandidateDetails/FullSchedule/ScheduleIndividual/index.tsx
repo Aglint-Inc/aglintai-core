@@ -16,7 +16,7 @@ import {
   setIndividualCancelOpen,
   setIndividualRescheduleOpen,
   setIsEditOpen,
-  setSelectedSession
+  setSelectedSession,
 } from '../../store';
 
 function ScheduleIndividualCard({
@@ -51,7 +51,8 @@ function ScheduleIndividualCard({
           if (isOnclickCard) {
             if (
               session.interview_meeting?.status === 'completed' ||
-              session.interview_meeting?.status === 'confirmed'
+              session.interview_meeting?.status === 'confirmed' ||
+              session.interview_meeting?.status === 'waiting'
             ) {
               router.push(
                 `/scheduling/view?meeting_id=${session.interview_meeting.id}&tab=candidate_details`,

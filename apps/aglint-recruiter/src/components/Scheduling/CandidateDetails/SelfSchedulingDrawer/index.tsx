@@ -15,7 +15,7 @@ import {
   resetSchedulingFlowStore,
   setDateRange,
   setStepScheduling,
-  useSchedulingFlowStore
+  useSchedulingFlowStore,
 } from './store';
 
 function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
@@ -115,6 +115,8 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                   <RescheduleSlot />
                 ) : stepScheduling === 'preference' ? (
                   <StepScheduleFilter />
+                ) : stepScheduling === 'request_availibility' ? (
+                  'request_availibility'
                 ) : (
                   <StepSlotOptions isDebrief={isDebrief} />
                 )}

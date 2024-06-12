@@ -10,7 +10,12 @@ export interface SchedulingFlow {
     end_date: string;
   };
   schedulingOptions: ApiResponseFindAvailability;
-  stepScheduling: 'pick_date' | 'preference' | 'slot_options' | 'reschedule';
+  stepScheduling:
+    | 'pick_date'
+    | 'preference'
+    | 'slot_options'
+    | 'reschedule'
+    | 'request_availibility';
   noOptions: boolean;
   isSendToCandidateOpen: boolean;
   scheduleFlow:

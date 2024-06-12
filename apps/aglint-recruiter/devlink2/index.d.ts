@@ -111,6 +111,7 @@ export * from "./FilterItem";
 export * from "./FilterList";
 export * from "./FilterPageLayout";
 export * from "./FilterPill";
+export * from "./GlobalBadge";
 export * from "./GlobalIcon";
 export * from "./GreyTextLink";
 export * from "./IconButtonGhost";

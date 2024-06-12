@@ -1,18 +1,22 @@
 import { Popover, Stack } from '@mui/material';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import { AgentPopoverBlock } from '@/devlink3/AgentPopoverBlock';
 import { ScheduleTypeButton } from '@/devlink3/ScheduleTypeButton';
+import toast from '@/src/utils/toast';
 
 import ScheduleIndividualCard from '../FullSchedule/ScheduleIndividual';
 import {
   SchedulingApplication,
+  setRequestSessionIds,
   setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../store';
 import { setScheduleFlow, setStepScheduling } from './store';
 
 function RescheduleSlot() {
+  const router = useRouter();
   const { initialSessions, selectedApplicationLog, selectedApplication } =
     useSchedulingApplicationStore((state) => ({
       initialSessions: state.initialSessions,
@@ -77,6 +81,10 @@ function RescheduleSlot() {
     null,
   );
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (selectedLocalSessionIds.length === 0) {
+      toast.warning('Please select a session to schedule.');
+      return;
+    }
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -89,14 +97,14 @@ function RescheduleSlot() {
     <Stack position={'absolute'} width={'100%'} overflow={'hidden'}>
       <Stack
         position={'relative'}
-        height={'calc(100vh - 60px)'}
+        height={'calc(100vh - 48px)'}
         zIndex={10}
         width={'100%'}
       >
         <Stack
           spacing={2}
           p={2}
-          height={'calc(100vh - 126px)'}
+          height={'calc(100vh - 110px)'}
           width={'100%'}
           overflow={'scroll'}
         >
@@ -122,6 +130,10 @@ function RescheduleSlot() {
             isRequestAvailabilityIcon={false}
             onClickButton={{
               onClick: () => {
+                if (selectedLocalSessionIds.length === 0) {
+                  toast.warning('Please select a session to schedule.');
+                  return;
+                }
                 setSelectedSessionIds(selectedLocalSessionIds);
                 setScheduleFlow('self_scheduling');
                 setStepScheduling('pick_date');
@@ -129,18 +141,44 @@ function RescheduleSlot() {
             }}
             textButton={'Send Self Scheduling Link'}
           />
-          <>
-            <ScheduleTypeButton
-              isSelfScheduleIcon={false}
-              isAgentIcon={true}
-              isDebriefIcon={false}
-              isRequestAvailabilityIcon={false}
-              onClickButton={{
-                onClick: handleClick,
-              }}
-              textButton={'Schedule Via Agent'}
-            />
-          </>
+
+          <ScheduleTypeButton
+            isSelfScheduleIcon={false}
+            isAgentIcon={false}
+            isDebriefIcon={false}
+            isRequestAvailabilityIcon={true}
+            onClickButton={{
+              onClick: () => {
+                if (selectedLocalSessionIds.length === 0) {
+                  toast.warning('Please select a session to schedule.');
+                  return;
+                }
+                setScheduleFlow('request_availibility');
+                setRequestSessionIds(selectedLocalSessionIds);
+                const currentPath = router.pathname;
+                const currentQuery = router.query;
+                const updatedQuery = {
+                  ...currentQuery,
+                  candidate_request_availability: 'true',
+                };
+                router.replace({
+                  pathname: currentPath,
+                  query: updatedQuery,
+                });
+              },
+            }}
+            textButton={'Request Availability'}
+          />
+          <ScheduleTypeButton
+            isSelfScheduleIcon={false}
+            isAgentIcon={true}
+            isDebriefIcon={false}
+            isRequestAvailabilityIcon={false}
+            onClickButton={{
+              onClick: handleClick,
+            }}
+            textButton={'Schedule Via Agent'}
+          />
 
           <Popover
             id='popover-agent'

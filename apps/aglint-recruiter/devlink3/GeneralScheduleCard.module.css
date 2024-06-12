@@ -20,7 +20,7 @@
 }
 
 .gsc-header-space {
-  height: 46px;
+  height: 40px;
 }
 
 .gsc-header-wrap {
@@ -31,15 +31,14 @@
   bottom: auto;
 
   display: flex;
-  height: 56px;
+  height: 40px;
   padding: var(--space-4);
   justify-content: space-between;
   align-items: center;
 
+  border-bottom: 1px solid var(--neutral-6);
   border-top-left-radius: var(--radius-4);
   border-top-right-radius: var(--radius-4);
-
-  background-color: var(--neutral-2);
 }
 
 .gsc-header-title {

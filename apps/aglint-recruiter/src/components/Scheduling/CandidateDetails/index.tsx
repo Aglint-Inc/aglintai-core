@@ -9,8 +9,8 @@ import { CandidateSchedule } from '@/devlink3/CandidateSchedule';
 import Loader from '@/src/components/Common/Loader';
 import ROUTES from '@/src/utils/routing/routes';
 
+import CandidateInfo from '../Common/CandidateInfo';
 import ScheduleProgress from '../Common/ScheduleProgress';
-import CandidateInfo from '../ScheduleDetails/CandidateDetails';
 import FeedbackWindow from '../ScheduleDetails/Feedback';
 import CandidateFeedback from './CandidateFeedback';
 import DeleteScheduleDialog from './Common/CancelScheduleDialog';
@@ -101,6 +101,7 @@ function SchedulingApplication() {
               />
             ) : (
               <CandidateSchedule
+                textSelectedNumber={`${selectedSessionIds.length} selected`}
                 slotScheduleButton={<TopBarButtons />}
                 slotDarkPill={<TabsSchedulingApplication />}
                 onClickClose={{
@@ -112,34 +113,46 @@ function SchedulingApplication() {
                 slotCandidateCard={<RightPanel allActivities={allActivities} />}
                 slotFullScheduleCard={
                   tab === 'candidate_detail' ? (
-                    <CandidateInfo
-                      applications={selectedApplication}
-                      candidate={selectedApplication.candidates}
-                      file={selectedApplication.candidate_files}
-                    />
+                    <Stack p={'var(--space-4)'}>
+                      <Stack
+                        sx={{
+                          border: '1px solid var(--neutral-6)',
+                          borderRadius: 'var(--radius-4)',
+                          background: 'var(--white)',
+                        }}
+                      >
+                        <CandidateInfo
+                          applications={selectedApplication}
+                          candidate={selectedApplication.candidates}
+                          file={selectedApplication.candidate_files}
+                        />
+                      </Stack>
+                    </Stack>
                   ) : tab === 'interview_plan' || !tab ? (
                     <FullSchedule refetch={allActivities.refetch} />
                   ) : tab === 'feedback' ? (
-                    <FeedbackWindow
-                      interview_sessions={initialSessions.map((item) => ({
-                        id: item.id,
-                        title: item.name,
-                        created_at: item.created_at,
-                        status: item.interview_meeting?.status,
-                        time: {
-                          start: item.interview_meeting?.start_time,
-                          end: item.interview_meeting?.end_time,
-                        },
-                      }))}
-                      candidate={{
-                        email: selectedApplication?.candidates.email,
-                        name: `${selectedApplication?.candidates.first_name || ''} ${selectedApplication?.candidates.last_name || ''}`.trim(),
-                        job_id: selectedApplication?.job_id,
-                      }}
-                    />
+                    <Stack p={'var(--space-4)'}>
+                      <FeedbackWindow
+                        interview_sessions={initialSessions.map((item) => ({
+                          id: item.id,
+                          title: item.name,
+                          created_at: item.created_at,
+                          status: item.interview_meeting?.status,
+                          time: {
+                            start: item.interview_meeting?.start_time,
+                            end: item.interview_meeting?.end_time,
+                          },
+                        }))}
+                        candidate={{
+                          email: selectedApplication.candidates.email,
+                          name: `${selectedApplication.candidates.first_name || ''} ${selectedApplication?.candidates.last_name || ''}`.trim(),
+                          job_id: selectedApplication.job_id,
+                        }}
+                      />
+                    </Stack>
                   ) : tab === 'candidate_feedback' ? (
                     <CandidateFeedback
-                      feedback={selectedApplication?.feedback}
+                      feedback={selectedApplication.feedback}
                       id={selectedApplication.id}
                     />
                   ) : (
