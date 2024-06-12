@@ -14,7 +14,6 @@
     "fix": "gts fix"
   },
   "dependencies": {
-    "@aglint/shared-utils": "*",
     "@langchain/community": "^0.0.41",
     "@langchain/core": "^0.1.63",
     "@langchain/openai": "^0.0.29",
