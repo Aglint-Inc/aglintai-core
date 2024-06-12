@@ -454,16 +454,16 @@ type MoveApplications = ApplicationsAllQueryPrerequistes & {
 };
 type SectionToEmail = {
   interview: null;
-  assessment: Extract<
-    DatabaseEnums['email_types'],
-    'interview' | 'interview_resend'
-  > | null;
+  assessment: null;
   qualified: null;
   new: null;
-  disqualified: Extract<DatabaseEnums['email_types'], 'rejection'> | null;
+  disqualified: Extract<
+    DatabaseEnums['email_slack_types'],
+    'applicantReject_email_applicant'
+  > | null;
   screening: Extract<
-    DatabaseEnums['email_types'],
-    'phone_screening' | 'phone_screening_resend'
+    DatabaseEnums['email_slack_types'],
+    'phoneScreen_email_candidate' | 'phoneScreenRemind_email_applicant'
   > | null;
 };
 type SectionToEmailGuard = {
