@@ -105,7 +105,7 @@ const MoveCandidateScreening = () => {
   const { buttons, title, description, action } = useMeta(() => {
     handleMoveApplications({
       status: 'screening',
-      email: check ? 'phone_screening' : null,
+      email: check ? 'phoneScreen_email_candidate' : null,
     });
     resetActionPopup();
   });
@@ -131,11 +131,10 @@ const MoveCandidateAssessment = () => {
   const { resetActionPopup } = useApplicationsStore(({ resetActionPopup }) => ({
     resetActionPopup,
   }));
-  const [check, setCheck] = useState(false);
   const { buttons, title, description, action } = useMeta(() => {
     handleMoveApplications({
       status: 'assessment',
-      email: check ? 'interview' : null,
+      email: null,
     });
     resetActionPopup();
   });
@@ -145,11 +144,11 @@ const MoveCandidateAssessment = () => {
       textDescription={description}
       isCheckVisible={true}
       textCheck={action}
-      isChecked={check}
+      isChecked={false}
       isWarningVisible={false}
       textWarning={null}
       slotMoveAssessment={<></>}
-      onclickCheck={{ onClick: () => setCheck((prev) => !prev) }}
+      onclickCheck={null}
       onclickClose={{ onClick: () => resetActionPopup() }}
       slotButtons={buttons}
     />
@@ -223,7 +222,7 @@ const MoveCandidateDisqualified = () => {
   const { buttons, title, description, action } = useMeta(() => {
     handleMoveApplications({
       status: 'disqualified',
-      email: check ? 'rejection' : null,
+      email: check ? 'applicantReject_email_applicant' : null,
     });
     resetActionPopup();
   });

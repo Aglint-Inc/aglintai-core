@@ -82,15 +82,15 @@ const ACTION_TRIGGER_MAP: {
     value: DatabaseTable['company_email_template']['type'];
   }[];
 } = {
-  sendAvailabilityRequest: [
+  sendAvailReqReminder: [
     {
-      value: 'sendAvailabilityRequest_email_applicant',
+      value: 'sendAvailReqReminder_email_applicant',
       name: 'Send email to applicant',
     },
   ],
-  sendSelfScheduleRequest: [
+  selfScheduleReminder: [
     {
-      value: 'sendSelfScheduleRequest_email_applicant',
+      value: 'selfScheduleReminder_email_applicant',
       name: 'Send email to applicant',
     },
   ],
