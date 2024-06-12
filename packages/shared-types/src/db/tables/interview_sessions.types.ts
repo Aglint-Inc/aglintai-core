@@ -1,5 +1,5 @@
-import { CustomMembersMeta } from "../common.types";
-import { TableType } from "./index.types";
+import type { CustomMembersMeta } from "../common.types";
+import type { TableType } from "./index.types";
 
 export type CustomInterviewSession = TableType<
   "interview_session",

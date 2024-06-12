@@ -1,3 +1,5 @@
+import { DatabaseEnums } from '@aglint/shared-types';
+
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 
 const NewIcon = () => {
@@ -105,7 +107,7 @@ const DisqualifiedIcon = () => {
 export const SectionIcons = ({
   section,
 }: {
-  section: JobApplicationSections;
+  section: DatabaseEnums['application_status'];
 }) => {
   switch (section) {
     case JobApplicationSections.NEW:

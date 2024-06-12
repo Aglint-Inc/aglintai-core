@@ -1,6 +1,5 @@
 import { Stack } from '@mui/material';
 
-
 function CandidateInfo({ applications, candidate, file }) {
   // const application: JobApplication = useMemo(
   //   () =>
@@ -13,11 +12,7 @@ function CandidateInfo({ applications, candidate, file }) {
   // );
   // const resumeJson: any = file?.resume_json;
   if (applications && candidate && file)
-    return (
-      <Stack direction={'row'}>
-        
-      </Stack>
-    );
+    return <Stack direction={'row'}></Stack>;
 }
 
 export default CandidateInfo;

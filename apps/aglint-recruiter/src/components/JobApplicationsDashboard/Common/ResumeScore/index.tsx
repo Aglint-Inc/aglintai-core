@@ -1,15 +1,20 @@
+import { DatabaseView } from '@aglint/shared-types';
 import { Stack, Tooltip } from '@mui/material';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ResumeTag } from '@/devlink2/ResumeTag';
 import { CalculatingResumeScore } from '@/public/lottie/CalculatingResumeScore';
-import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 
 import { ResumeScoreTag } from '../../ResumeScoreTag';
-import { getApplicationProcessState } from '../../utils';
 
-const ResumeScore = ({ application }: { application: JobApplication }) => {
-  switch (getApplicationProcessState(application)) {
+const ResumeScore = ({
+  resume_processing_state,
+  resume_score,
+}: Pick<
+  DatabaseView['application_view'],
+  'resume_processing_state' | 'resume_score'
+>) => {
+  switch (resume_processing_state) {
     case 'unavailable':
       return (
         <Tooltip title='No resume available.' placement='right' arrow={true}>
@@ -47,7 +52,7 @@ const ResumeScore = ({ application }: { application: JobApplication }) => {
         </Tooltip>
       );
     case 'processed':
-      return <ResumeScoreTag score={application.overall_score} />;
+      return <ResumeScoreTag score={resume_score} />;
   }
 };
 

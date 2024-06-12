@@ -1,9 +1,8 @@
 import Seo from '@components/Common/Seo';
 
-import JobApplicationsDashboard from '@/src/components/JobApplicationsDashboard';
-import JobApplicationProvider from '@/src/context/JobApplicationsContext';
-import JobDashboardProvider from '@/src/context/JobDashboard';
-import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
+import ApplicationsDashboard from '@/src/components/JobNewApplications';
+import { ApplicationsProvider } from '@/src/context/ApplicationsContext';
+import { JobProvider } from '@/src/context/JobContext';
 
 const JobCandidateListPage = () => {
   return (
@@ -12,18 +11,16 @@ const JobCandidateListPage = () => {
         title='Candidate List - Job | Aglint AI'
         description='AI for People Products'
       />
-      <JobApplicationsDashboard />
+      <ApplicationsDashboard />
     </>
   );
 };
 
 JobCandidateListPage.privateProvider = function privateProvider(page) {
   return (
-    <JobDashboardProvider>
-      <JobInterviewPlanProvider>
-        <JobApplicationProvider>{page}</JobApplicationProvider>
-      </JobInterviewPlanProvider>
-    </JobDashboardProvider>
+    <JobProvider>
+      <ApplicationsProvider>{page}</ApplicationsProvider>
+    </JobProvider>
   );
 };
 

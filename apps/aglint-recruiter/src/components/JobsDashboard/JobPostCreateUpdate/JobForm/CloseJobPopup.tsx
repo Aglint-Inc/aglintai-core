@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { CloseJobModal } from '@/devlink/CloseJobModal';
 import { useJobs } from '@/src/context/JobsContext';
-import { Job } from '@/src/queries/job/types';
+import { Job } from '@/src/queries/jobs/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

@@ -1,9 +1,8 @@
 import Seo from '@components/Common/Seo';
 
 import JobEmailTemplatesDashboard from '@/src/components/JobEmailTemplates';
-import JobApplicationProvider from '@/src/context/JobApplicationsContext';
+import { JobProvider } from '@/src/context/JobContext';
 import JobDashboardProvider from '@/src/context/JobDashboard';
-import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
 
 const JobEmailTemplatesPage = () => {
   return (
@@ -19,11 +18,9 @@ const JobEmailTemplatesPage = () => {
 
 JobEmailTemplatesPage.privateProvider = function privateProvider(page) {
   return (
-    <JobDashboardProvider>
-      <JobInterviewPlanProvider>
-        <JobApplicationProvider>{page}</JobApplicationProvider>
-      </JobInterviewPlanProvider>
-    </JobDashboardProvider>
+    <JobProvider>
+      <JobDashboardProvider>{page}</JobDashboardProvider>
+    </JobProvider>
   );
 };
 

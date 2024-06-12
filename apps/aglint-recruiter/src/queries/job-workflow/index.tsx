@@ -9,31 +9,33 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { GC_TIME } from '..';
+import { JobRequisite } from '../job';
 import { Workflow } from '../workflow';
 import { workflowQueryKeys } from '../workflow/keys';
 import { jobWorkflowMutationKeys, jobWorkflowQueryKeys } from './keys';
 
-export const useJobWorkflow = (args: GetJobWorkflow) => {
+export const useJobWorkflow = (args: JobRequisite) => {
+  const { id } = args;
   const { queryKey } = jobWorkflowQueryKeys.workflow(args);
   return useQuery({
     queryKey,
+    enabled: !!id,
     queryFn: () => getJobWorkflow(args),
+    gcTime: id ? GC_TIME : 0,
   });
 };
 export type JobWorkflow = Awaited<ReturnType<typeof getJobWorkflow>>[number];
-export type GetJobWorkflow = {
-  job_id: string;
-};
-const getJobWorkflow = async ({ job_id }: GetJobWorkflow) => {
+const getJobWorkflow = async ({ id }: JobRequisite) => {
   const { data, error } = await supabase
     .from('workflow_job_relation')
     .select('workflow(*)')
-    .eq('job_id', job_id);
+    .eq('job_id', id);
   if (error) throw new Error(error.message);
   return (data ?? []).map(({ workflow }) => workflow);
 };
 
-export const useJobWorkflowUpdateMutations = (args: GetJobWorkflow) => {
+export const useJobWorkflowUpdateMutations = (args: JobRequisite) => {
   const { mutationKey } = jobWorkflowMutationKeys.update(args);
   return useMutationState({
     filters: { mutationKey, status: 'pending' },
@@ -41,7 +43,7 @@ export const useJobWorkflowUpdateMutations = (args: GetJobWorkflow) => {
   });
 };
 
-export const useJobWorkflowDeleteMutations = (args: GetJobWorkflow) => {
+export const useJobWorkflowDeleteMutations = (args: JobRequisite) => {
   const { mutationKey } = jobWorkflowMutationKeys.delete(args);
   return useMutationState({
     filters: { mutationKey, status: 'pending' },
@@ -49,7 +51,7 @@ export const useJobWorkflowDeleteMutations = (args: GetJobWorkflow) => {
   });
 };
 
-export const useJobWorkflowConnect = (args: GetJobWorkflow) => {
+export const useJobWorkflowConnect = (args: JobRequisite) => {
   const { recruiter_id } = useAuthDetails();
   const { mutationKey } = jobWorkflowMutationKeys.update(args);
   const { queryKey } = jobWorkflowQueryKeys.workflow(args);
@@ -106,7 +108,7 @@ const connectJobWorkflow = async ({
   if (error) throw new Error(error.message);
 };
 
-export const useJobWorkflowDisconnect = (args: GetJobWorkflow) => {
+export const useJobWorkflowDisconnect = (args: JobRequisite) => {
   const { recruiter_id } = useAuthDetails();
   const { mutationKey } = jobWorkflowMutationKeys.delete(args);
   const { queryKey } = jobWorkflowQueryKeys.workflow(args);
