@@ -3,14 +3,14 @@ import { createServerClient } from '@supabase/ssr';
 
 export const server_check_permissions = async ({
   getVal,
-  permission,
+  permissions,
 }: {
   // eslint-disable-next-line no-unused-vars
   getVal: (name: string) => string;
-  permission: DatabaseEnums['permissions_type'];
+  permissions: DatabaseEnums['permissions_type'][];
 }) => {
   try {
-    if (!permission) throw new Error('Permission not provided.');
+    if (!permissions?.length) throw new Error('Permission not provided.');
     const supabase = createServerClient<DB>(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -36,20 +36,23 @@ export const server_check_permissions = async ({
         return supabase
           .from('recruiter_relation')
           .select(
-            'recruiter_id, roles( name, role_permissions( permissions( name )))',
+            'recruiter_id, roles( name, role_permissions!inner(permissions!inner( name )))',
           )
           .eq('user_id', user.id)
           .eq('is_active', true)
-          .eq('roles.role_permissions.permissions.name', permission)
+          .in('roles.role_permissions.permissions.name', permissions)
+          .eq('roles.role_permissions.permissions.is_enable', true)
           .single()
           .then(({ data, error }) => {
             if (error) throw new Error(error.message);
-
             const role = data?.roles?.name;
             let is_allowed = false;
-            if (data.roles?.role_permissions) {
-              for (let item of data.roles.role_permissions) {
-                if (item.permissions?.name == permission) {
+            if (data?.roles?.role_permissions) {
+              const tempPermissions = data.roles.role_permissions.map(
+                (item) => item.permissions.name,
+              );
+              for (let permission of permissions) {
+                if (tempPermissions.includes(permission)) {
                   is_allowed = true;
                   break;
                 }
