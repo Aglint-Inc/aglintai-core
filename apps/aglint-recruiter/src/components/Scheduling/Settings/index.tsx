@@ -57,7 +57,7 @@ import MuiNumberfield from './Components/MuiNumberfield';
 import MuiSelect from './Components/MuiSelect';
 import SelectTime from './Components/SelectTime';
 import DebriefDefaults from './DebriefDefaults';
-import SchedulingEmailTemplates from './SchedulingEmailTemplates';
+import SchedulerEmailTemps from './SchedulingEmailTemplates/page';
 import SchedulingRegions from './SchedulingReason';
 import { settingSubNavItem } from './SubNav/utils';
 let schedulingSettingObj = {};
@@ -184,8 +184,6 @@ function SchedulingSettings({
       ) as schedulingSettingType;
 
       const workingHoursCopy = cloneDeep(schedulingSettingData.workingHours);
-      // eslint-disable-next-line no-console
-      console.log('local timeZones', dayjs.tz.guess());
 
       setSelectedTimeZone({ ...schedulingSettingData.timeZone } as TimezoneObj);
       setIsTimeZone(schedulingSettingData.isAutomaticTimezone);
@@ -1021,7 +1019,7 @@ function SchedulingSettings({
             <ShowCode.When
               isTrue={router.query.subtab == settingSubNavItem.EMAILTEMPLATE}
             >
-              <SchedulingEmailTemplates />
+              <SchedulerEmailTemps />
             </ShowCode.When>
             <ShowCode.When
               isTrue={router.query.subtab == settingSubNavItem.REASONS}
