@@ -17,7 +17,6 @@ import DeleteScheduleDialog from './Common/CancelScheduleDialog';
 import RescheduleDialog from './Common/RescheduleDialog';
 import FullSchedule from './FullSchedule';
 import { useAllActivities, useGetScheduleApplication } from './hooks';
-import RequestAvailabilityDrawer from './RequestAvailability/Components/RequestAvailabilityDrawer';
 import { RequestAvailabilityProvider } from './RequestAvailability/RequestAvailabilityContext';
 import RightPanel from './RightPanel';
 import StatusUpdateDropdownBreadcrum from './StatusUpdateDropdownBreadcrum';
@@ -67,11 +66,11 @@ function SchedulingApplication() {
 
   return (
     <>
-      <RequestAvailabilityProvider>
-        <RequestAvailabilityDrawer />
-      </RequestAvailabilityProvider>
+      {/* <RequestAvailabilityDrawer /> */}
+
       <DeleteScheduleDialog refetch={allActivities.refetch} />
       <RescheduleDialog refetch={allActivities.refetch} />
+
       <PageLayout
         onClickBack={{
           onClick: () => {
@@ -129,7 +128,9 @@ function SchedulingApplication() {
                       </Stack>
                     </Stack>
                   ) : tab === 'interview_plan' || !tab ? (
-                    <FullSchedule refetch={allActivities.refetch} />
+                    <RequestAvailabilityProvider>
+                      <FullSchedule refetch={allActivities.refetch} />
+                    </RequestAvailabilityProvider>
                   ) : tab === 'feedback' ? (
                     <Stack p={'var(--space-4)'}>
                       <FeedbackWindow

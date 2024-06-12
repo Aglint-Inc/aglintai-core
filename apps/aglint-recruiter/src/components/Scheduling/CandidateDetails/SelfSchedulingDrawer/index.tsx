@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 
+import RequestAvailability from '../RequestAvailability';
 import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
 import { useSelfSchedulingDrawer } from './hooks';
 import RescheduleSlot from './RescheduleSlot';
@@ -116,20 +117,22 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                 ) : stepScheduling === 'preference' ? (
                   <StepScheduleFilter />
                 ) : stepScheduling === 'request_availibility' ? (
-                  'request_availibility'
+                  <RequestAvailability />
                 ) : (
                   <StepSlotOptions isDebrief={isDebrief} />
                 )}
               </>
             ) : (
-              <Stack
-                direction={'row'}
-                justifyContent={'center'}
-                height={'100%'}
-                alignItems={'center'}
-              >
-                <Stack height={'150px'} width={'150px'}>
-                  <CandidateSlotLoad />
+              <Stack height={'calc(100vh - 96px)'}>
+                <Stack
+                  direction={'row'}
+                  justifyContent={'center'}
+                  height={'100%'}
+                  alignItems={'center'}
+                >
+                  <Stack height={'150px'} width={'150px'}>
+                    <CandidateSlotLoad />
+                  </Stack>
                 </Stack>
               </Stack>
             )

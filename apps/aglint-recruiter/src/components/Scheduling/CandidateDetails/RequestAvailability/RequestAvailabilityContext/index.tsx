@@ -72,7 +72,7 @@ interface ContextValue {
   isSubmitted: boolean;
   setIsSubmitted: (x: boolean) => void;
   selectedDate: null | Dayjs[];
-  setSelectedDate: Dispatch<SetStateAction<null | []>>;
+  setSelectedDate: Dispatch<SetStateAction<null | Dayjs[]>>;
 }
 const defaultProvider: ContextValue = {
   dateSlots: [],

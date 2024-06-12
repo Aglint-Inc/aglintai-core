@@ -1,3 +1,4 @@
+import { Stack } from '@mui/material';
 import { useMemo } from 'react';
 
 import { ScheduleOptionsList } from '@/devlink3/ScheduleOptionsList';
@@ -39,30 +40,32 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
   );
 
   return (
-    <ScheduleOptionsList
-      textDescription={
-        isDebrief ? 'Select a date and time for your interview.' : ''
-      }
-      slotDateOption={
-        <>
-          {memoGruopedData?.map((item) => {
-            return (
-              <DayCardWrapper
-                key={item.dateArray.join(', ')}
-                isDebrief={isDebrief}
-                item={item}
-                onClickSelect={onClickSelect}
-                selectedCombIds={selectedCombIds}
-                isDisabled={false}
-                isCheckboxAndRadio={true}
-                isDayCollapseNeeded={true}
-                isSlotCollapseNeeded={true}
-              />
-            );
-          })}
-        </>
-      }
-    />
+    <Stack height={'calc(100vh - 96px)'}>
+      <ScheduleOptionsList
+        textDescription={
+          isDebrief ? 'Select a date and time for your interview.' : ''
+        }
+        slotDateOption={
+          <>
+            {memoGruopedData?.map((item) => {
+              return (
+                <DayCardWrapper
+                  key={item.dateArray.join(', ')}
+                  isDebrief={isDebrief}
+                  item={item}
+                  onClickSelect={onClickSelect}
+                  selectedCombIds={selectedCombIds}
+                  isDisabled={false}
+                  isCheckboxAndRadio={true}
+                  isDayCollapseNeeded={true}
+                  isSlotCollapseNeeded={true}
+                />
+              );
+            })}
+          </>
+        }
+      />
+    </Stack>
   );
 }
 

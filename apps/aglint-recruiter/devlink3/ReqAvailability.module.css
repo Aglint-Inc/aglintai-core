@@ -116,7 +116,7 @@
   flex-wrap: nowrap;
   grid-column-gap: 30px;
   grid-row-gap: 30px;
-  height: calc(100vh - 90px);
+  height: calc(100vh - 96px);
 }
 
 .selected_schedule_wrapper {

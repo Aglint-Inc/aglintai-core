@@ -1,5 +1,4 @@
 import { Popover, Stack } from '@mui/material';
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import { AgentPopoverBlock } from '@/devlink3/AgentPopoverBlock';
@@ -16,7 +15,6 @@ import {
 import { setScheduleFlow, setStepScheduling } from './store';
 
 function RescheduleSlot() {
-  const router = useRouter();
   const { initialSessions, selectedApplicationLog, selectedApplication } =
     useSchedulingApplicationStore((state) => ({
       initialSessions: state.initialSessions,
@@ -153,18 +151,9 @@ function RescheduleSlot() {
                   toast.warning('Please select a session to schedule.');
                   return;
                 }
-                setScheduleFlow('request_availibility');
+                setScheduleFlow('create_request_availibility');
+                setStepScheduling('pick_date');
                 setRequestSessionIds(selectedLocalSessionIds);
-                const currentPath = router.pathname;
-                const currentQuery = router.query;
-                const updatedQuery = {
-                  ...currentQuery,
-                  candidate_request_availability: 'true',
-                };
-                router.replace({
-                  pathname: currentPath,
-                  query: updatedQuery,
-                });
               },
             }}
             textButton={'Request Availability'}

@@ -22,7 +22,8 @@ export interface SchedulingFlow {
     | 'self_scheduling'
     | 'email_agent'
     | 'phone_agent'
-    | 'request_availibility'
+    | 'create_request_availibility'
+    | 'update_request_availibility'
     | 'debrief';
   fetchingPlan: boolean;
   selectedSlots: PlanCombinationRespType[];
