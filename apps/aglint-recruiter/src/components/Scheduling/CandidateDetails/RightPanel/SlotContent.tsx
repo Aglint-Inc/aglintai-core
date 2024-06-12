@@ -1,3 +1,4 @@
+import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
@@ -27,11 +28,7 @@ import {
 } from '../store';
 import IconSessionType from './IconSessionType';
 
-function SlotContent({
-  act,
-}: {
-  act: any; //TODO: lint fix
-}) {
+function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
   const router = useRouter();
   const { selectedApplication } = useSchedulingApplicationStore((state) => ({
     selectedApplication: state.selectedApplication,

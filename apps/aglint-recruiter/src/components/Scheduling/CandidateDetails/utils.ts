@@ -7,8 +7,9 @@ import {
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
   JobApplcationDB,
-  SupabaseType,
+  SupabaseType
 } from '@aglint/shared-types';
+import { BookingConfirmationMetadata } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
@@ -282,8 +283,7 @@ export const scheduleDebrief = async ({
 
     if (errorSes) throw new Error(errorSes.message);
 
-    // TODO: chinmai fix lint
-    const metadata: any = {
+    const metadata: BookingConfirmationMetadata = {
       action: 'waiting',
       filter_id,
       sessions: session,
@@ -963,13 +963,14 @@ export const agentTrigger = async ({
     })
   ) {
     if (type === 'email_agent') {
+      const bodyParams: InitAgentBodyParams = {
+        filter_json_id: filterJsonId,
+        task_id: task_id,
+        recruiter_user_id,
+      };
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/mail-agent/init-agent`,
-        {
-          filter_json_id: filterJsonId,
-          task_id: task_id,
-          recruiter_user_id,
-        } as InitAgentBodyParams,
+        bodyParams,
       );
 
       if (res?.status === 200) {
