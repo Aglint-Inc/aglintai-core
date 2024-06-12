@@ -2,7 +2,6 @@ import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
 import {
   Autocomplete,
   Checkbox,
-  Popover,
   Stack,
   TextField,
   Typography,
@@ -18,7 +17,6 @@ import { ToggleWithText } from '@/devlink3/ToggleWithText';
 import GreenBgCheckedIcon from '@/src/components/Common/Icons/GreenBgCheckedIcon';
 import PopUpArrowIcon from '@/src/components/Common/Icons/PopUpArrowIcon';
 import ToggleBtn from '@/src/components/Common/UIToggle';
-import DateRange from '@/src/components/Tasks/Components/DateRange';
 import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
@@ -36,6 +34,7 @@ import {
   createTask,
   insertCandidateRequestAvailability,
   updateCandidateRequestAvailability,
+  useRequestAvailabilityContext,
 } from './RequestAvailabilityContext';
 import {
   availabilityArrayList,
@@ -56,6 +55,7 @@ function RequestAvailability() {
     selectedSchedule,
   } = useSchedulingApplicationStore();
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
+  const { selectedDate } = useRequestAvailabilityContext();
   const [loading, setLoading] = useState(false);
   const { refetch } = useAllActivities({
     application_id: selectedApplication?.id,
@@ -91,10 +91,7 @@ function RequestAvailability() {
   });
   const [selectedDays, setSelectedDays] = useState(requestDaysListOptions[3]);
   const [selectedSlots, setSelectedSlots] = useState(slotsListOptions[1]);
-  const [selectedDate, setSelectedDate] = useState([
-    dayjs(),
-    dayjs().add(10, 'day'),
-  ]);
+
   const [markCreateTicket, setMarkCreateTicket] = useState(true);
 
   // handle submit
@@ -319,53 +316,9 @@ function RequestAvailability() {
     setLoading(false);
   }
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
   return (
     <Stack>
       <ReqAvailability
-        textDateAvailability={
-          <Stack>
-            {`${selectedDate[0]?.format('MMMM DD')} - ${selectedDate[1]?.format('MMMM DD')}`}
-            <Popover
-              id={id}
-              open={open}
-              anchorEl={anchorEl}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              sx={{
-                '& .MuiPopover-paper': {
-                  // border: 'none',
-                  scale: 0.5,
-                },
-              }}
-            >
-              <DateRange
-                calendars={1}
-                onChange={(e) => {
-                  setSelectedDate(e);
-                }}
-                value={[dayjs(selectedDate[0]), dayjs(selectedDate[1])]}
-              />
-            </Popover>
-          </Stack>
-        }
-        onClickEditDate={{
-          onClick: (e) => {
-            setAnchorEl(e.target);
-          },
-        }}
         isCheckingSlotsVisible={false}
         isFoundSlots={false}
         textFoundSlots={`Found 126 slots for the sugeestion`}
@@ -480,6 +433,7 @@ function RequestAvailability() {
         }}
         onClickClose={{ onClick: getDrawerClose }}
         onClickCancel={{ onClick: getDrawerClose }}
+        
       />
     </Stack>
   );
