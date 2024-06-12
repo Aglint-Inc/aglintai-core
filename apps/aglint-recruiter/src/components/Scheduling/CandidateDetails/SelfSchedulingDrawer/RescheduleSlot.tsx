@@ -34,7 +34,7 @@ function RescheduleSlot() {
       'candidate_response_self_schedule'
     ) {
       setLocalselectedLocalSessionIds(
-        selectedApplicationLog.metadata.sessions.map((s) => s.id),
+        selectedApplicationLog.metadata.session_ids,
       );
     }
     return;
@@ -52,7 +52,7 @@ function RescheduleSlot() {
     selectedApplicationLog?.metadata?.type ===
     'candidate_response_self_schedule'
   ) {
-    session_ids = selectedApplicationLog.metadata.sessions.map((s) => s.id);
+    session_ids = selectedApplicationLog.metadata.session_ids;
     selectedSessions = initialSessions.filter((ses) =>
       session_ids.includes(ses.id),
     );
