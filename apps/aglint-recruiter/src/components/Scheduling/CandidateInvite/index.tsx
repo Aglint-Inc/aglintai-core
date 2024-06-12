@@ -158,7 +158,7 @@ const CandidateInvitePlanPage = () => {
 const ConfirmedPage = (props: ScheduleCardsProps) => {
   const {
     meta: {
-      data: { candidate, schedule, meetings },
+      data: { candidate, schedule, meetings, filter_json },
     },
   } = useCandidateInvite();
   const [cancelReschedule, setCancelReschedule] = useState<
@@ -213,15 +213,26 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
   ) => {
     // return true;
 
+    const metadata: any = {
+      action: 'waiting',
+      type: 'candidate_response_self_schedule',
+      reason: detail.reason,
+      other_details: detail.other_details,
+      response_type: detail.type === 'declined' ? 'cancel' : 'reschedule',
+      filter_id: filter_json.id,
+      session_ids: meetings.map((ses) => ses.interview_session.id),
+    };
+
     addScheduleActivity({
       title:
         detail.type === 'declined'
           ? `Canceled ${meetings?.map((ses) => ses.interview_session.name).join(' , ')}`
           : `Requested reschedule for ${meetings?.map((ses) => ses.interview_session.name).join(' , ')}`,
       application_id: schedule.application_id,
-      logged_by: 'user', // error logs
+      logged_by: 'candidate',
       supabase: supabase,
       created_by: null,
+      metadata,
     });
 
     const details = props.rounds
@@ -431,7 +442,7 @@ const CancelRescheduleDialog = ({
   }>({
     type,
     reason: options[0],
-    dateRange: [dayjs(), dayjs().add(1, 'day')],
+    dateRange: [dayjs(), dayjs().add(7, 'day')],
     additionalNote: null,
   });
   const open = Boolean(anchorEl);

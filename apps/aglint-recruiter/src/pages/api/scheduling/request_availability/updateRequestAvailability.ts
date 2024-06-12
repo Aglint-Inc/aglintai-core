@@ -33,7 +33,7 @@ export default async function handler(
             ...data,
           })
           .eq('id', id)
-          .select()
+          .select('*, applications ( candidate_id, candidates ( * ) )')
           .single();
         if (!error) {
           return res.send(candidateAvailability);

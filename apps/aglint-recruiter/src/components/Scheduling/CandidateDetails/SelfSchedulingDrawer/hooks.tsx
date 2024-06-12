@@ -119,7 +119,6 @@ export const useSelfSchedulingDrawer = ({
       const bodyParams: ApiBodyParamsSendToCandidate = {
         dateRange,
         initialSessions,
-        is_mail: true,
         is_debrief: isDebrief,
         recruiter_id: recruiter.id,
         recruiterUser,

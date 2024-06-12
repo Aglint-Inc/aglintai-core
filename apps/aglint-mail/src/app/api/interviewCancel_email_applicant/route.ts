@@ -1,103 +1,53 @@
 import { NextResponse } from 'next/server';
-import {
-  ClientError,
-  MailArgValidationError,
-} from '../../../utils/apiUtils/customErrors';
-
-// import cancelInterviewSession from './fetch-util';
-
-// interface ReqPayload {
-//   session_ids: string[];
-//   application_id: string;
-// }
-// interface DataPayload {
-//   recipient_email: string;
-//   mail_type: string;
-//   recruiter_id: string;
-//   companyLogo: string;
-//   payload: {
-//     '[firstName]': string;
-//     '[companyName]': string;
-//     '[jobTitle]': string;
-//     'meetingDetails': MeetingDetails[];
-//   };
-// }
+import * as v from 'valibot';
+import { interviewCancelEmailApplicantSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
+import { ClientError } from '../../../utils/apiUtils/customErrors';
+import sendMail from '../../../config/sendgrid';
+import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
+import { getEmails } from '../../../utils/apiUtils/get-emails';
+import { fetchUtil } from './fetch-util';
 
 export async function POST(req: Request) {
-  await req.json();
+  const req_body = await req.json();
 
   try {
-    // if (!session_ids) {
-    //   throw new ClientError('session_id attribute missing', 400);
-    // }
+    const parsed_body = v.parse(
+      interviewCancelEmailApplicantSchema,
+      req_body.meta,
+    );
+    const { filled_comp_template, react_email_placeholders, recipient_email } =
+      await fetchUtil(parsed_body);
+    const { emails } = await getEmails();
+    const emailIdx = emails.findIndex((e) => e === filled_comp_template.type);
 
-    // if (!application_id) {
-    //   throw new ClientError('application_id attribute missing', 400);
-    // }
+    if (emailIdx === -1)
+      throw new ClientError(
+        `${filled_comp_template.type} does not match any mail_type`,
+        400,
+      );
 
-    // const data: DataPayload = await cancelInterviewSession(
-    //   session_ids,
-    //   application_id,
-    // );
-    // const filled_body: FilledPayload = await fetchTemplate(
-    //   data.recruiter_id,
-    //   data.mail_type,
-    //   data.payload,
-    // );
-    // filled_body.companyLogo = data.companyLogo;
-    // const { emails } = await getEmails();
-
-    // const emailIdx = emails.findIndex((e) => e === data.mail_type);
-
-    // if (emailIdx === -1)
-    //   throw new ClientError(
-    //     `${data.mail_type} does not match any mail_type`,
-    //     400,
-    //   );
-    // const { html, subject } = await renderEmailTemplate(
-    //   emails[emailIdx],
-    //   filled_body,
-    // );
-    // await sendMail({ email: data.recipient_email, html, subject, text: html });
+    const { html, subject } = await renderEmailTemplate(
+      filled_comp_template.type,
+      react_email_placeholders,
+    );
+    await sendMail({
+      email: recipient_email,
+      html,
+      subject,
+      text: html,
+    });
     return NextResponse.json('success', {
       status: 200,
     });
   } catch (e: any) {
     console.error(e);
-    if (e instanceof ClientError) {
-      return NextResponse.json(
-        {
-          error: `${e.name} : ${e.message}`,
-        },
-        {
-          status: e.status,
-        },
-      );
-    }
-    if (e instanceof MailArgValidationError) {
-      return NextResponse.json(
-        {
-          error: `${e.name}: mail_type:Cancel-Interview-Session,  ${e.message}`,
-        },
-        {
-          status: 400,
-        },
-      );
-    }
-    if (e) {
-      return NextResponse.json(
-        {
-          error: `${e.name}: mail_type:Cancel-Interview-Session,  ${e.message}`,
-        },
-        {
-          status: 500,
-        },
-      );
-    }
+    return NextResponse.json(
+      {
+        error: `${e.name}: ${e.message}`,
+      },
+      {
+        status: 500,
+      },
+    );
   }
 }
-
-// {
-//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637",
-//   "session_id":"5e7953c5-3e56-4d89-9857-29c34b55ce9d"
-// }

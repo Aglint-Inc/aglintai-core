@@ -144,7 +144,9 @@ function CancelReasonCards({
                 setIsChangeInterviewerOpen(true);
               },
             }}
-            isRescheduleBtnVisible={!item.interview_session_cancel.schedule_id}
+            isRescheduleBtnVisible={
+              item.interview_session_cancel.type === 'reschedule'
+            }
             isCancelVisible={
               item.interview_session_cancel.schedule_id &&
               item.interview_session_cancel.type === 'declined'

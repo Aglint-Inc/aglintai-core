@@ -120,7 +120,7 @@ export const setDateRange = (dateRange: {
 export const setSelectedCombIds = (selectedCombIds: string[]) =>
   useSchedulingFlowStore.setState({ selectedCombIds });
 
-export const resetFilterStore = () =>
+export const resetSchedulingFlowStore = () =>
   useSchedulingFlowStore.setState({
     ...initialState,
   });

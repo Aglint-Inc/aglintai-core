@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
 import { Box, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import React from 'react';
@@ -27,8 +26,8 @@ const JobNotFound = () => {
         Job not found
       </Typography>
       <Typography variant='body1'>
-        Sorry, we couldn't find the job you're looking for. Please try searching
-        again or contact support.
+        {` Sorry, we couldn't find the job you're looking for. Please try searching
+        again or contact support.`}
       </Typography>
     </Container>
   );

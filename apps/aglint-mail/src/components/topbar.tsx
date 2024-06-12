@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import * as React from 'react';
 import { cn } from '../utils';
 import { tabTransition } from '../utils/constants';
-import { pathSeparator } from '../utils/emails-directory-absolute-path';
 import { Heading } from './heading';
 import { IconHideSidebar } from './icons/icon-hide-sidebar';
 import { IconMonitor } from './icons/icon-monitor';
@@ -50,7 +49,7 @@ export const Topbar: React.FC<Readonly<TopbarProps>> = ({
 
         <div className="items-center overflow-hidden hidden lg:flex text-center absolute left-1/2 transform -translate-x-1/2 top-1/2 -translate-y-1/2">
           <Heading as="h2" className="truncate" size="2" weight="medium">
-            {currentEmailOpenSlug.split(pathSeparator).pop()}
+            {currentEmailOpenSlug}
           </Heading>
         </div>
 

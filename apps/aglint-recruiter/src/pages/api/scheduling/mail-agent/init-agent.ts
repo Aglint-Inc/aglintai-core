@@ -70,6 +70,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         task_id: task_id ?? undefined,
         thread_id: thread_id,
         agent_processing: false,
+        email_from_name: email_details.fromName,
+        email_subject: email_details.subject,
       }),
     );
     if (task_id) {
@@ -94,7 +96,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         message: email_details.html,
       },
     );
-
     return res.status(200).send('ok');
   } catch (error) {
     console.error(error);

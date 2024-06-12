@@ -1,10 +1,12 @@
 {
   "extends": "@aglint/typescript-config/base.json",
   "compilerOptions": {
-    "lib": ["ES2015"],
     "outDir": "./dist",
     "types": ["node"],
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "lib": ["ES2015", "dom"]
   },
   "include": ["."],
   "exclude": ["node_modules", "dist"]
