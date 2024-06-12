@@ -6,7 +6,7 @@ import _styles from "./ConflictReason.module.css";
 
 export function ConflictReason({
   as: _Component = _Builtin.Block,
-  textConflictReason = "some reasons for the conflict wll appar here. i e committed to another schedule",
+  textConflictReason = "some reasons for t",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "conflict_reason")} tag="div">

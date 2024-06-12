@@ -41,12 +41,14 @@ function Overview({
   isCancelOpen,
   setIsCancelOpen,
   setIsRescheduleOpen,
+  refetch,
 }: {
   cancelReasons: ReturnType<typeof useScheduleDetails>['data']['cancel_data'];
   schedule: ScheduleMeeting;
   isCancelOpen: boolean;
   setIsCancelOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsRescheduleOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  refetch: () => void;
 }) {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
@@ -156,18 +158,21 @@ function Overview({
             isDeclineOpen={isDeclineOpen}
             setIsDeclineOpen={setIsDeclineOpen}
             schedule={schedule}
+            refetch={refetch}
           />
           <CancelScheduleDialog
             sessionRelation={sessionRelation}
             isDeclineOpen={isCancelOpen}
             setIsDeclineOpen={setIsCancelOpen}
             schedule={schedule}
+            refetch={refetch}
           />
           <RequestRescheduleDialog
             isRequestRescheduleOpen={isRequestRescheduleOpen}
             setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
             sessionRelation={sessionRelation}
             schedule={schedule}
+            refetch={refetch}
           />
         </>
       )}
@@ -330,6 +335,7 @@ function Overview({
                 item={item}
                 schedule={schedule}
                 setIsDeclineOpen={setIsDeclineOpen}
+                refetch={refetch}
               />
             </>
           );

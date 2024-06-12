@@ -1,5 +1,4 @@
 import { Stack } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React, { Dispatch } from 'react';
@@ -21,15 +20,16 @@ function InterviewerListCard({
   schedule,
   item,
   setIsDeclineOpen,
+  refetch,
 }: {
   schedule: ScheduleMeeting;
   item: ScheduleMeeting['users'][0];
   setIsDeclineOpen: Dispatch<React.SetStateAction<boolean>>;
+  refetch: () => void;
 }) {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
   const currentDay = dayjs();
-  const queryClient = useQueryClient();
 
   const onClickAccept = async (session_relation_id) => {
     if (schedule.interview_meeting.status === 'confirmed') {
@@ -37,9 +37,7 @@ function InterviewerListCard({
         .from('interview_session_relation')
         .update({ accepted_status: 'accepted' })
         .eq('id', session_relation_id);
-      queryClient.invalidateQueries({
-        queryKey: ['schedule_details', router?.query?.meeting_id],
-      });
+      refetch();
     }
   };
 

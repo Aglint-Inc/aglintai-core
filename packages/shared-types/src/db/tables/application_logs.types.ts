@@ -4,22 +4,34 @@ import type { TableType } from "./index.types";
 export type CustomApplicationLogs = TableType<
   "application_logs",
   {
-    metadata: BookingConfirmationMetadata | CandidateResponseSelfSchedule;
+    metadata:
+      | BookingConfirmationMetadata
+      | CandidateResponseSelfSchedule
+      | InterviewerDeclineMetadata;
   }
 >;
 
 export type BookingConfirmationMetadata = {
+  action: "waiting" | "canceled" | "rescheduled";
   type: "booking_confirmation";
   sessions: CustomMeta[];
   filter_id?: string;
   availability_request_id?: string;
+};
+
+export type InterviewerDeclineMetadata = {
   action: "waiting" | "canceled" | "rescheduled";
+  type: "interviewer_decline";
+  reason: string;
+  response_type: "reschedule" | "cancel";
+  other_details: DatabaseTable["interview_session_cancel"]["other_details"];
+  meeting_id: string;
 };
 
 export type CandidateResponseSelfSchedule = {
+  action: "waiting" | "canceled" | "rescheduled";
   type: "candidate_response_self_schedule";
   reason: string;
-  action: "waiting" | "canceled" | "rescheduled";
   response_type: "reschedule" | "cancel";
   other_details: DatabaseTable["interview_session_cancel"]["other_details"];
   filter_id: string;

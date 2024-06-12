@@ -1073,6 +1073,7 @@ export type Database = {
       }
       interview_filter_json: {
         Row: {
+          confirmed_on: string | null
           created_at: string
           created_by: string | null
           filter_json: Json
@@ -1080,8 +1081,10 @@ export type Database = {
           schedule_id: string
           selected_options: Json[] | null
           session_ids: string[]
+          viewed_on: string | null
         }
         Insert: {
+          confirmed_on?: string | null
           created_at?: string
           created_by?: string | null
           filter_json: Json
@@ -1089,8 +1092,10 @@ export type Database = {
           schedule_id: string
           selected_options?: Json[] | null
           session_ids?: string[]
+          viewed_on?: string | null
         }
         Update: {
+          confirmed_on?: string | null
           created_at?: string
           created_by?: string | null
           filter_json?: Json
@@ -1098,6 +1103,7 @@ export type Database = {
           schedule_id?: string
           selected_options?: Json[] | null
           session_ids?: string[]
+          viewed_on?: string | null
         }
         Relationships: [
           {
@@ -1548,6 +1554,7 @@ export type Database = {
           cancel_user_id: string | null
           created_at: string
           id: string
+          is_ignored: boolean
           is_resolved: boolean
           other_details: Json | null
           reason: string
@@ -1560,6 +1567,7 @@ export type Database = {
           cancel_user_id?: string | null
           created_at?: string
           id?: string
+          is_ignored?: boolean
           is_resolved?: boolean
           other_details?: Json | null
           reason: string
@@ -1572,6 +1580,7 @@ export type Database = {
           cancel_user_id?: string | null
           created_at?: string
           id?: string
+          is_ignored?: boolean
           is_resolved?: boolean
           other_details?: Json | null
           reason?: string
