@@ -17,11 +17,10 @@ const useWorkflowsContext = () => {
   const { mutate: createWorkflowMutation } = useWorkflowCreate({
     recruiter_id,
   });
-  const { mutate: handleUpdateWorkflow } = useWorkflowUpdate({ recruiter_id });
-  const { mutate: handleDeleteWorkflow } = useWorkflowDelete({
+  const { mutate: deleteWorkflowMutation } = useWorkflowDelete({
     recruiter_id,
   });
-
+  const workflowUpdate = useWorkflowUpdate({ recruiter_id });
   const workflowMutations = useWorkflowMutations({ recruiter_id });
 
   const handleCreateWorkflow = useCallback(
@@ -34,17 +33,25 @@ const useWorkflowsContext = () => {
       const id = uuidv4();
       createWorkflowMutation({
         id,
+        recruiter_id,
         payload,
       });
     },
     [workflows.data],
   );
 
+  const handleDeleteWorkflow = useCallback(
+    (payload: Parameters<typeof deleteWorkflowMutation>[0]) => {
+      deleteWorkflowMutation(payload);
+    },
+    [workflows.data],
+  );
+
   return {
     workflows,
+    workflowUpdate,
     workflowMutations,
     handleCreateWorkflow,
-    handleUpdateWorkflow,
     handleDeleteWorkflow,
   };
 };
