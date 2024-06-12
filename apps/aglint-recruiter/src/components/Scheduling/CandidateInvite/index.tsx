@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
+import { CandidateResponseSelfSchedule } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import {
   Alert,
@@ -213,7 +214,7 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
   ) => {
     // return true;
 
-    const metadata: any = {
+    const metadata: CandidateResponseSelfSchedule = {
       action: 'waiting',
       type: 'candidate_response_self_schedule',
       reason: detail.reason,
