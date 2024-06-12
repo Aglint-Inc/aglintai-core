@@ -1,8 +1,8 @@
-import { appKey } from '..';
+import { jobQueries, JobRequisite } from '../job';
 
 export const interviewPlanKeys = {
-  interview_plan: ({ job_id }: { job_id: string }) => ({
-    queryKey: [appKey, { job_id }, 'interview_plan'] as string[],
+  interview_plan: (args: JobRequisite) => ({
+    queryKey: [...jobQueries.job(args).queryKey, 'interview_plan'] as string[],
   }),
 } as const;
 

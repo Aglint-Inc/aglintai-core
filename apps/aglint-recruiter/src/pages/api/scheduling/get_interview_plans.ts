@@ -2,7 +2,7 @@ import { DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { JobCreate } from '@/src/queries/job/types';
+import { JobCreate } from '@/src/queries/jobs/types';
 import { CustomType } from '@/src/queries/scheduling-dashboard/types';
 import { interviewPlanRecruiterUserQuery } from '@/src/utils/Constants';
 

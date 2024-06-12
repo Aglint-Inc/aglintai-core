@@ -11,7 +11,6 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { addScheduleActivity } from '../../Candidates/queries/utils';
-import { useScheduleDetails } from '../hooks';
 import { ScheduleMeeting } from '../types';
 
 function CancelScheduleDialog({
@@ -19,17 +18,18 @@ function CancelScheduleDialog({
   setIsDeclineOpen,
   sessionRelation,
   schedule,
+  refetch
 }: {
   isDeclineOpen: boolean;
   setIsDeclineOpen: Dispatch<React.SetStateAction<boolean>>;
   sessionRelation: InterviewSessionRelationTypeDB;
   schedule: ScheduleMeeting;
+  refetch: () => void;
 }) {
   const { recruiter, recruiterUser } = useAuthDetails();
 
   const [reason, setReason] = useState('');
   const [notes, setNotes] = useState('');
-  const { refetch } = useScheduleDetails();
   const reasons = recruiter.scheduling_reason?.internal?.cancellation || [
     'Too Many Interviews',
     'Out of the office',

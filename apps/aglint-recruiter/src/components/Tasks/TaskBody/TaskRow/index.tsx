@@ -203,7 +203,7 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                 }
               }}
               size='small'
-              color='info'
+              sx={{color:'var(--accent-9)'}}
             />
           </Stack>
         }

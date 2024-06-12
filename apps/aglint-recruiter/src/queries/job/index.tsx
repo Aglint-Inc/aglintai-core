@@ -1,201 +1,180 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { DatabaseTable } from '@aglint/shared-types';
+import { QueryClient, queryOptions } from '@tanstack/react-query';
 
-import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
-import { jobQueryKeys } from './keys';
-import { Job, JobCreate, JobInsert } from './types';
+import { GC_TIME } from '..';
+import { applicationsQueries } from '../job-applications';
+import { jobDashboardQueryKeys } from '../job-dashboard/keys';
+import { jobsQueryKeys } from '../jobs/keys';
+import { Job } from '../jobs/types';
 
-export const useJobRead = () => {
-  const queryClient = useQueryClient();
-  const { recruiter_id } = useAuthDetails();
-  const { queryKey } = jobQueryKeys.jobs();
-  const response = useQuery({
-    queryKey,
-    queryFn: () => readJobs(recruiter_id),
-    enabled: !!recruiter_id,
-  });
-  const refetch = async () => {
-    await queryClient.invalidateQueries({ queryKey });
-  };
-  return { ...response, refetch };
+const jobQueries = {
+  job: ({ id }: JobRequisite) =>
+    queryOptions({
+      queryKey: [...jobsQueryKeys.jobs().queryKey, { id }],
+      queryFn: async () =>
+        (
+          await supabase
+            .from('public_jobs')
+            .select('*')
+            .eq('id', id)
+            .single()
+            .throwOnError()
+        ).data,
+    }),
+  job_application_count: ({
+    id,
+    enabled,
+    queryClient,
+    initialData,
+  }: Pollers & {
+    initialData?: Awaited<ReturnType<typeof getApplicationCount>>;
+  }) =>
+    queryOptions({
+      initialData,
+      enabled,
+      gcTime: enabled ? GC_TIME : 0,
+      queryKey: [...jobQueries.job({ id }).queryKey, 'application_count'],
+      queryFn: async () => {
+        const count = await getApplicationCount(id);
+        queryClient.setQueryData<Job[]>(jobsQueryKeys.jobs().queryKey, (prev) =>
+          prev.reduce((acc, curr) => {
+            if (curr.id === id) acc.push({ ...curr, count });
+            else acc.push(curr);
+            return acc;
+          }, [] as Job[]),
+        );
+        return count;
+      },
+    }),
+  job_processing_count: ({
+    id,
+    enabled,
+    queryClient,
+    initialData,
+  }: Pollers & {
+    initialData?: Awaited<ReturnType<typeof getProcessingCount>>;
+  }) =>
+    queryOptions({
+      initialData,
+      enabled,
+      gcTime: enabled ? GC_TIME : 0,
+      queryKey: [...jobQueries.job({ id }).queryKey, 'processing_count'],
+      queryFn: async () => {
+        const processing_count = await getProcessingCount(id);
+        queryClient.setQueryData<Job[]>(jobsQueryKeys.jobs().queryKey, (prev) =>
+          prev.reduce((acc, curr) => {
+            if (curr.id === id) acc.push({ ...curr, processing_count });
+            else acc.push(curr);
+            return acc;
+          }, [] as Job[]),
+        );
+        return processing_count;
+      },
+    }),
+  scoring_param: ({
+    id,
+    enabled,
+    queryClient,
+    initialData,
+  }: Pollers & {
+    initialData?: Awaited<ReturnType<typeof getScoringParam>>;
+  }) =>
+    queryOptions({
+      initialData,
+      enabled,
+      gcTime: enabled ? GC_TIME : 0,
+      refetchInterval: enabled ? 5000 : false,
+      queryKey: [...jobQueries.job({ id }).queryKey, 'scoring_parameters'],
+      queryFn: async () => {
+        const polledData = await getScoringParam(id);
+        queryClient.setQueryData<Job[]>(jobsQueryKeys.jobs().queryKey, (prev) =>
+          prev.reduce((acc, curr) => {
+            if (curr.id === id) acc.push({ ...curr, ...polledData });
+            else acc.push(curr);
+            return acc;
+          }, [] as Job[]),
+        );
+        return polledData;
+      },
+    }),
+  application_scoring: ({ id, enabled, queryClient }: Pollers) =>
+    queryOptions({
+      enabled,
+      gcTime: enabled ? GC_TIME : 0,
+      refetchInterval: enabled ? 5000 : false,
+      queryKey: [...jobQueries.job({ id }).queryKey, 'application_scoring'],
+      queryFn: async () => {
+        const { queryKey: locationQueryKey } = jobDashboardQueryKeys.locations({
+          id,
+        });
+        const { queryKey: matchesQueryKey } = jobDashboardQueryKeys.matches({
+          id,
+        });
+        const { queryKey: skillsQueryKey } = jobDashboardQueryKeys.skills({
+          id,
+        });
+        const { queryKey: tenureAndExperienceQueryKey } =
+          jobDashboardQueryKeys.tenureAndExperience({
+            id,
+          });
+        const newApplicationsQueryKey = [
+          ...applicationsQueries.all({
+            job_id: id,
+          }).queryKey,
+          { status: 'new' },
+        ];
+        const { queryKey: processingCountQueryKey } =
+          jobQueries.job_processing_count({
+            id,
+          });
+        await Promise.allSettled([
+          queryClient.refetchQueries({ queryKey: locationQueryKey }),
+          queryClient.refetchQueries({ queryKey: matchesQueryKey }),
+          queryClient.refetchQueries({ queryKey: skillsQueryKey }),
+          queryClient.refetchQueries({ queryKey: tenureAndExperienceQueryKey }),
+          queryClient.refetchQueries({ queryKey: newApplicationsQueryKey }),
+          queryClient.refetchQueries({ queryKey: processingCountQueryKey }),
+        ]);
+      },
+    }),
 };
 
-export const useJobCreate = () => {
-  const { recruiter_id } = useAuthDetails();
-  const { queryKey } = jobQueryKeys.jobs();
-  const queryClient = useQueryClient();
-  const mutation = useMutation({
-    mutationFn: (newJob: Omit<JobCreate, 'jd_json'>) => {
-      const {
-        hiring_manager,
-        recruiter,
-        recruiting_coordinator,
-        sourcer,
-        ...rest
-      } = newJob;
-      const job = {
-        ...rest,
-        jd_json: {
-          educations: [],
-          skills: [],
-          rolesResponsibilities: [],
-          title: '',
-          level: 'Mid-level',
-        } as JdJsonType,
-      };
+type Pollers = JobRequisite &
+  Partial<{ enabled: boolean; queryClient: QueryClient }>;
 
-      return createJob({
-        ...job,
-        draft: {
-          ...job,
-        },
-        recruiter_id,
-        scoring_criteria_loading: true,
-        hiring_manager,
-        recruiter,
-        recruiting_coordinator,
-        sourcer,
-      });
-    },
-    onError: () => {
-      toast.error('Unable to create job');
-    },
-    onSuccess: (data) => {
-      if (data)
-        queryClient.setQueryData<Job[]>(queryKey, (prev) => [data, ...prev]);
-      else queryClient.invalidateQueries({ queryKey });
-    },
-  });
-  return mutation;
-};
+export type JobRequisite = Pick<DatabaseTable['public_jobs'], 'id'>;
 
-export const useJobUpdate = () => {
-  const queryClient = useQueryClient();
-  const { queryKey } = jobQueryKeys.jobs();
-  const mutation = useMutation({
-    mutationFn: (job: Parameters<typeof updateJob>[0]) => updateJob(job),
-    onMutate: (job) => {
-      const previousJobs = queryClient.getQueryData<Job[]>(queryKey);
-      const newJobs = previousJobs.reduce((acc, curr) => {
-        if (curr.id === job.id) {
-          const safeJob = {
-            ...structuredClone(curr),
-            ...structuredClone(job),
-          };
-          acc.push(safeJob);
-        } else acc.push(curr);
-        return acc;
-      }, [] as Job[]);
-      queryClient.setQueryData<Job[]>(queryKey, newJobs);
-      return { previousJobs, newJobs };
-    },
-    onError: (_, __, context) => {
-      toast.error('Unable to update job');
-      queryClient.setQueryData<Job[]>(queryKey, context.previousJobs);
-    },
-  });
-  return mutation;
-};
+export { jobQueries };
 
-export const useJobUIUpdate = () => {
-  const queryClient = useQueryClient();
-  const { queryKey } = jobQueryKeys.jobs();
-  const mutate = (newJob: Partial<Job>) => {
-    const previousJobs = queryClient.getQueryData<Job[]>(queryKey);
-    const newJobs = previousJobs.reduce((acc, curr) => {
-      if (curr.id === newJob.id) acc.push({ ...curr, ...newJob });
-      else acc.push(curr);
-      return acc;
-    }, [] as Job[]);
-    queryClient.setQueryData<Job[]>(queryKey, newJobs);
-  };
-  return { mutate };
-};
+const getScoringParam = async (id: string) =>
+  (
+    await supabase
+      .from('public_jobs')
+      .select(
+        'scoring_criteria_loading, draft, parameter_weights, description_hash',
+      )
+      .eq('id', id)
+      .single()
+      .throwOnError()
+  ).data;
 
-export const useJobDelete = () => {
-  const queryClient = useQueryClient();
-  const { queryKey } = jobQueryKeys.jobs();
-  const mutation = useMutation({
-    mutationFn: (id: Job['id']) => deleteJob(id),
-    onMutate: (id) => {
-      const previousJobs = queryClient.getQueryData<Job[]>(queryKey);
-      const newJobs = previousJobs.filter((job) => job.id !== id);
-      queryClient.setQueryData<Job[]>(queryKey, newJobs);
-      return { previousJobs, newJobs };
-    },
-    onError: (_, __, context) => {
-      toast.error('Unable to delete job');
-      queryClient.setQueryData<Job[]>(queryKey, context.previousJobs);
-    },
-    onSuccess: () => {
-      toast.success('Job deleted successfully.');
-    },
-  });
-  return mutation;
-};
+const getProcessingCount = async (id: string) =>
+  (
+    await supabase
+      .rpc('getjob', {
+        jobid: id,
+      })
+      .single()
+      .throwOnError()
+  ).data.processing_count as Job['processing_count'];
 
-export const useJobRefresh = () => {
-  const queryClient = useQueryClient();
-  const { queryKey } = jobQueryKeys.jobs();
-  const mutation = useMutation({
-    mutationFn: (id: Job['id']) => readJob(id),
-    onSuccess: (data) => {
-      queryClient.setQueryData<Job[]>(queryKey, (prev) => {
-        return prev.reduce((acc, curr) => {
-          if (curr.id === data.id) acc.push(data);
-          else acc.push(curr);
-          return acc;
-        }, [] as Job[]);
-      });
-    },
-  });
-  return mutation;
-};
-
-export const readJobs = async (recruiter_id: string) => {
-  const { data, error } = await supabase.rpc('getjobsv2', {
-    recruiter_id,
-  });
-  if (error) throw new Error(error.message);
-  return data as unknown as Job[];
-};
-
-export const readJob = async (id: Job['id']) => {
-  const { data, error } = await supabase.rpc('getjob', {
-    jobid: id,
-  });
-  if (error) throw new Error(error.message);
-  return data[0] as unknown as Job;
-};
-
-const createJob = async (job: JobInsert) => {
-  const { data: d1, error: e1 } = await supabase
-    .from('public_jobs')
-    .insert(job)
-    .select('id');
-
-  if (e1) throw new Error(e1.message);
-
-  const { data: d2, error: e2 } = await supabase.rpc('getjob', {
-    jobid: d1[0].id,
-  });
-  if (e2) return null;
-  return d2[0] as unknown as Job;
-};
-
-const updateJob = async (job: JobInsert) => {
-  const { error: e1 } = await supabase
-    .from('public_jobs')
-    .update(job)
-    .eq('id', job.id);
-
-  if (e1) throw new Error(e1.message);
-};
-
-const deleteJob = async (id: Job['id']) => {
-  const { error } = await supabase.from('public_jobs').delete().eq('id', id);
-  if (error) throw new Error(error.message);
-};
+const getApplicationCount = async (id: string) =>
+  (
+    await supabase
+      .rpc('getsectioncounts', {
+        jobid: id,
+      })
+      .throwOnError()
+  ).data;

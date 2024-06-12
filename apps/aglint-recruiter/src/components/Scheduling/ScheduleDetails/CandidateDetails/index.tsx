@@ -1,21 +1,18 @@
 import { Stack } from '@mui/material';
 
+import { Application } from '@/src/context/ApplicationContext';
 
 function CandidateInfo({ applications, candidate, file }) {
-  // const application: JobApplication = useMemo(
-  //   () =>
-  //     ({
-  //       ...applications,
-  //       candidate: candidate,
-  //       candidate_files: file,
-  //     }) as unknown as JobApplication,
-  //   [applications, candidate, file],
-  // );
-  // const resumeJson: any = file?.resume_json;
   if (applications && candidate && file)
     return (
-      <Stack direction={'row'}>
-        
+      <Stack spacing={'var(--space-4)'} padding={'var(--space-4)'}>
+        <Application
+          application_id={applications.id}
+          job_id={applications.job_id}
+        >
+          <Application.Body.Meta />
+          <Application.Body.Details />
+        </Application>
       </Stack>
     );
 }

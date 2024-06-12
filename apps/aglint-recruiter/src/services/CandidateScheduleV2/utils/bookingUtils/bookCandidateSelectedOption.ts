@@ -17,6 +17,7 @@ import { confirmInterviewers } from './confirmInterviewers';
 import { createMeetingEvents } from './createMeetingEvents';
 import { sendMailsToOrganizer } from './sendMailsToOrganizer';
 import { FetchDBScheduleDetails, ScheduleDBDetails } from './types';
+import { updateConfirmTime } from './updateConfirmTime';
 import { updateMeetingEventDetails } from './updateMeetingInfo';
 import { updateTrainingStatus } from './updateTrainingStatus';
 
@@ -52,6 +53,7 @@ export const bookCandidateSelectedOption = async (
   await updateTrainingStatus(booked_meeting_details);
   await confirmInterviewers(booked_meeting_details, false);
   await updateMeetingEventDetails(booked_meeting_details);
+  await updateConfirmTime(parsed_body.filter_id);
   await sendMailsToOrganizer(db_details, booked_meeting_details);
   const payload: APICandScheduleMailThankYou = {
     cand_tz: parsed_body.cand_tz,

@@ -3,6 +3,7 @@ import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
+import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { ConfirmScheduleList } from '@/devlink3/ConfirmScheduleList';
 import { ConfirmScheduleListCard } from '@/devlink3/ConfirmScheduleListCard';
 import { RescheduleCard } from '@/devlink3/RescheduleCard';
@@ -10,6 +11,7 @@ import { ScheduleButton } from '@/devlink3/ScheduleButton';
 import CandidateDefaultIcon from '@/src/components/Common/Icons/CandidateDefaultIcon';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
+import ROUTES from '@/src/utils/routing/routes';
 
 import IconScheduleType from '../../Candidates/ListCard/Icon';
 import { getScheduleType } from '../../Candidates/utils';
@@ -191,6 +193,24 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
               )}
             </Stack>
           )}
+      </Stack>
+    );
+  } else if (act.metadata.type === 'interviewer_decline') {
+    const meeting_id = act.metadata.meeting_id;
+    return (
+      <Stack direction={'row'}>
+        <ButtonSurface
+          size={1}
+          textButton={'View details'}
+          onClickButton={{
+            onClick: () => {
+              router.push(
+                ROUTES['/scheduling/view']() +
+                  `?meeting_id=${meeting_id}&tab=candidate_details`,
+              );
+            },
+          }}
+        />
       </Stack>
     );
   } else {
