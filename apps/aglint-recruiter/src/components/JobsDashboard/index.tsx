@@ -105,7 +105,7 @@ const DashboardComp = () => {
                   }}
                   heading={'Jobs'}
                 />,
-                'jobs_create',
+                ['jobs_create'],
               )}
             </>
           ) : (

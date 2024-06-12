@@ -226,10 +226,10 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
 
   const forms = (
     <>
-      {ifAllowed(hiring_manager, 'jobs_assignHiringManager')}
-      {ifAllowed(recruiter, 'jobs_assignHiringManager')}
-      {ifAllowed(recruiting_coordinator, 'jobs_assignCoordinator')}
-      {ifAllowed(sourcer, 'jobs_assignSourcer')}
+      {ifAllowed(hiring_manager, ['jobs_assignHiringManager'])}
+      {ifAllowed(recruiter, ['jobs_assignHiringManager'])}
+      {ifAllowed(recruiting_coordinator, ['jobs_assignCoordinator'])}
+      {ifAllowed(sourcer, ['jobs_assignSourcer'])}
     </>
   );
 

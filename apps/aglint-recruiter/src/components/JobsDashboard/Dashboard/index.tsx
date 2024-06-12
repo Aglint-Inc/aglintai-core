@@ -795,7 +795,7 @@ const Modules = () => {
   const { checkPermissions } = useRolesAndPermissions();
   const { isAssessmentEnabled, isScreeningEnabled, isSchedulingEnabled } =
     useAuthDetails();
-  if (!checkPermissions('jobs_update'))
+  if (!checkPermissions(['jobs_update']))
     return (
       <Stack p={2}>
         <Typography fontSize={'14px'}> No settings Available.</Typography>
