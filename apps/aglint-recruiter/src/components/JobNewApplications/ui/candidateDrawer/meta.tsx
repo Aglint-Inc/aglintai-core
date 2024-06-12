@@ -3,8 +3,9 @@ import { useApplication } from '@/src/context/ApplicationContext';
 
 const Meta = () => {
   const {
-    meta: { data },
+    meta: { data, status },
   } = useApplication();
+  if(status === 'pending') return <></>;
   return (
     <CandidateBasicInfo
       textLocation={data.city ?? '---'}

@@ -42,13 +42,8 @@ function AllList({
         pointerEvents: isLoading ? 'none' : 'auto',
       }}
     >
-      {isFetching && applicationList.length === 0 && (
+      {isLoading || isPending ? (
         <Stack width={'100%'} height={'500px'}>
-          <Loader />
-        </Stack>
-      )}
-      {isPending ? (
-        <Stack width={'100%'} height={'100%'}>
           <Loader />
         </Stack>
       ) : isError ? (

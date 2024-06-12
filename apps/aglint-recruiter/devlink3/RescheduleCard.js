@@ -23,6 +23,8 @@ export function RescheduleCard({
   isRescheduleBtnVisible = true,
   isIgnoreVisible = true,
   onClickIgnore = {},
+  isTakeActionVisible = false,
+  onClickTakeAction = {},
 }) {
   return (
     <_Component
@@ -97,12 +99,12 @@ export function RescheduleCard({
               />
             </_Builtin.Block>
           ) : null}
-          {isRescheduleBtnVisible ? (
+          {isTakeActionVisible ? (
             <_Builtin.Block tag="div">
               <ButtonSolid
-                onClickButton={onClickRescheduleNow}
+                onClickButton={onClickTakeAction}
                 size="1"
-                textButton="Reschedule Now"
+                textButton="Take Action"
               />
             </_Builtin.Block>
           ) : null}

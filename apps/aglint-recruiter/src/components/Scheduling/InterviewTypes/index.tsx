@@ -32,7 +32,7 @@ export function Modules() {
   const [archives, setArchives] = useState(false);
 
   const filterModules = allModules
-    .filter((mod) => {
+    ?.filter((mod) => {
       !archives && setArchives(true);
       return (
         (departments.length === 0 ||
@@ -57,7 +57,7 @@ export function Modules() {
   return (
     <>
       <CreateModuleDialog />
-      {isLoading || (isFetching && allModules.length == 0) ? (
+      {isLoading || isFetching ? (
         <Stack sx={{ height: '100%' }}>
           <Loader />
         </Stack>
@@ -111,9 +111,7 @@ export function Modules() {
                           textObjective={mod.interview_modules.description}
                           textModuleName={mod.interview_modules.name}
                           slotMemberPic={
-                            <AvatarGroup
-                              total={mod.users.length}
-                            >
+                            <AvatarGroup total={mod.users.length}>
                               {mod.users.slice(0, 5).map((user) => {
                                 return (
                                   <MuiAvatar

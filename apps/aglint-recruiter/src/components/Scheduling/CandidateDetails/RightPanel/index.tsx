@@ -54,7 +54,7 @@ function RightPanel({
                         router.push(`/tasks?task_id=${act.task_id}`);
                       },
                     }}
-                    isRescheduleVisible={false}
+                    isActionVisible={false}
                     isContentVisible={Boolean(act.metadata)}
                     slotContent={<SlotContent act={act} />}
                     slotImage={<IconApplicationLogs act={act} />}
