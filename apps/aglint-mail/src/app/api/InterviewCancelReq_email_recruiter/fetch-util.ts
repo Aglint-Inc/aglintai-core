@@ -12,6 +12,7 @@ import {
 } from '../../../utils/email/common/functions';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
+import { getFullName } from '@aglint/shared-utils';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'InterviewCancelReq_email_recruiter'>['api_payload'],
@@ -43,7 +44,7 @@ export async function fetchUtil(
   const [recruiter_user] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
-      .select('email,first_name,scheduling_settings')
+      .select('email,first_name,last_name,scheduling_settings')
       .eq('user_id', candidateJob.public_jobs.recruiter),
   );
 
@@ -81,6 +82,10 @@ export async function fetchUtil(
       '{{ recruiterName }}': recruiter_user.first_name,
       '{{ candidateFirstName }}': candidates.first_name,
       '{{ companyName }}': public_jobs.company,
+      '{{ recruiterFullName }}': getFullName(
+        recruiter_user.first_name,
+        recruiter_user.last_name,
+      ),
     };
 
   const filled_comp_template = fillCompEmailTemplate(

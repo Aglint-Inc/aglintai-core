@@ -39,6 +39,7 @@ export async function POST(req: Request) {
         html,
         subject,
         text: html,
+        fromName: interviewers_mail_data[0].filled_comp_template.from_name,
       });
     }
 

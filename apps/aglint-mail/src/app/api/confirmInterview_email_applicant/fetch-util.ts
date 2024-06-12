@@ -9,6 +9,7 @@ import {
   sessionTypeIcon,
   scheduleTypeIcon,
 } from '../../../utils/email/common/functions';
+import { getFullName } from '@aglint/shared-utils';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'confirmInterview_email_applicant'>['api_payload'],
@@ -17,21 +18,22 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,email,recruiter_id,recruiter(logo),timezone),public_jobs(job_title,company)',
+        'candidates(first_name,email,recruiter_id,recruiter(logo),timezone),public_jobs(job_title,company,recruiter)',
       )
       .eq('id', req_body.application_id),
   );
-
+  const [recruiter_user] = supabaseWrap(
+    await supabaseAdmin
+      .from('recruiter_user')
+      .select('first_name,last_name')
+      .eq('user_id', candidateJob.public_jobs.recruiter),
+  );
   const int_sessions = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
       .select('*,interview_meeting(*)')
       .in('id', req_body.session_ids),
   );
-
-  if (!candidateJob) {
-    throw new Error('candidate and jobs details are not available');
-  }
 
   const {
     candidates: {
@@ -70,6 +72,10 @@ export async function fetchUtil(
       '{{ jobTitle }}': job_title,
       '{{ companyName }}': company,
       '{{ supportLink }}': '',
+      '{{ recruiterFullName }}': getFullName(
+        recruiter_user.first_name,
+        recruiter_user.last_name,
+      ),
     };
 
   const filled_comp_template = fillCompEmailTemplate(

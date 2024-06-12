@@ -2,6 +2,7 @@ import { EmailTemplateAPi } from '@aglint/shared-types';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
+import { getFullName } from '@aglint/shared-utils';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'applicationRecieved_email_applicant'>['api_payload'],
@@ -10,14 +11,17 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+        'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company,recruiter)',
       )
       .eq('id', req_body.application_id),
   );
 
-  if (!candidateJob) {
-    throw new Error('no data in Application'); // Re-throw the Supabase error for further handling
-  }
+  const [recruiter_user] = supabaseWrap(
+    await supabaseAdmin
+      .from('recruiter_user')
+      .select('email,first_name,last_name,scheduling_settings')
+      .eq('user_id', candidateJob.public_jobs.recruiter),
+  );
   const {
     candidates: {
       email: cand_email,
@@ -39,6 +43,10 @@ export async function fetchUtil(
       '{{ jobTitle }}': job_title,
       '{{ companyName }}': company,
       '{{ supportLink }}': '',
+      '{{ recruiterFullName }}': getFullName(
+        recruiter_user.first_name,
+        recruiter_user.last_name,
+      ),
     };
 
   const filled_comp_template = fillCompEmailTemplate(
