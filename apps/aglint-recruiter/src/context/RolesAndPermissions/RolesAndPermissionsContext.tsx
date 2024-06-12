@@ -7,10 +7,10 @@ import { useAuthDetails } from '../AuthContext/AuthContext';
 
 /* eslint-disable no-unused-vars */
 export type RolesAndPermissionsContextType = {
-  checkPermissions?: (x: DatabaseEnums['permissions_type']) => boolean;
+  checkPermissions?: (x: DatabaseEnums['permissions_type'][]) => boolean;
   ifAllowed: <T extends Function | ReactNode>(
     func: T,
-    permission: DatabaseEnums['permissions_type'],
+    permission: DatabaseEnums['permissions_type'][],
   ) => T;
 };
 
@@ -24,27 +24,34 @@ export const RolesAndPermissionsProvider = ({
 }) => {
   const { userPermissions } = useAuthDetails();
   const checkPermissions: RolesAndPermissionsContextType['checkPermissions'] = (
-    permission,
+    permissions,
   ) => {
-    // eslint-disable-next-line security/detect-object-injection
     return (
-      Boolean(permission) && Boolean(userPermissions['permissions'][permission])
+      Boolean(permissions?.length) &&
+      permissions.reduce(
+        (prev, curr) => prev && Boolean(userPermissions['permissions'][curr]),
+        true,
+      )
     );
   };
-  const ifAllowed: RolesAndPermissionsContextType['ifAllowed'] = <
-    T extends Function | ReactNode,
-  >(
+  const ifAllowed: RolesAndPermissionsContextType['ifAllowed'] = (
     func,
-    permission,
+    permissions,
   ) => {
     // eslint-disable-next-line security/detect-object-injection
-    if (Boolean(permission) && userPermissions.permissions[permission]) {
+    const allow =
+      Boolean(permissions.length) &&
+      permissions.reduce(
+        (prev, curr) => prev && Boolean(userPermissions['permissions'][curr]),
+        true,
+      );
+    if (allow) {
       return func;
     }
     if (typeof func === 'function') {
-      return (() => {}) as unknown as T; // Return an empty function if func is a function
+      return (() => {}) as unknown as typeof func; // Return an empty function if func is a function
     }
-    return (<></>) as T; // Return an empty fragment if func is a React node
+    return (<></>) as typeof func; // Return an empty fragment if func is a React node
   };
 
   return (
