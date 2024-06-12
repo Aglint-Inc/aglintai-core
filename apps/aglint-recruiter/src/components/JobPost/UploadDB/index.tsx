@@ -232,7 +232,7 @@ function UploadDB({
           <span style={{ color: 'var(--error-11)' }}>*</span> Required
         </Typography>
       </Stack>
-      <Grid container spacing={'var(--space-5)'} pt={'var(--space-5)'}>
+      <Grid container spacing={3} pt={'var(--space-5)'}>
         <Grid item xs={12} sm={6} md={6}>
           <UITextField
             required
@@ -384,7 +384,11 @@ function UploadDB({
               }}
             />
 
-            <Stack direction={'row'} spacing={'var(--space-1)'} sx={{ flexWrap: 'wrap' }}>
+            <Stack
+              direction={'row'}
+              spacing={'var(--space-1)'}
+              sx={{ flexWrap: 'wrap' }}
+            >
               <Typography
                 variant='caption'
                 color={!checked && 'error.main'}
