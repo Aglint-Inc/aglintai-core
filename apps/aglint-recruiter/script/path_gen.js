@@ -6,7 +6,7 @@ function processDirectory(rootDirs, outputFile) {
     var result = [];
     function walkDirectory(rootDir, dir, _a) {
         var _b = _a === void 0 ? {} : _a, _c = _b.base, base = _c === void 0 ? '' : _c, _d = _b.appRouter, appRouter = _d === void 0 ? false : _d;
-        console.log(rootDir, dir, base);
+        // eslint-disable-next-line security/detect-non-literal-fs-filename
         var entries = fs.readdirSync(dir, { withFileTypes: true });
         for (var _i = 0, entries_1 = entries; _i < entries_1.length; _i++) {
             var entry = entries_1[_i];
