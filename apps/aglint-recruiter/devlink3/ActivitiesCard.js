@@ -15,12 +15,13 @@ export function ActivitiesCard({
   textDesc = "This is some text inside of a div block.",
   isViewTaskVisible = true,
   slotContent,
-  onClickReschedule = {},
-  isRescheduleVisible = true,
+  onClickAction = {},
+  isActionVisible = true,
   isContentVisible = true,
+  textAction = "Reschedule",
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1404")} tag="div">
+    <_Component className={_utils.cx(_styles, "ac-wrapper")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "activity_card_image_divider")}
         tag="div"
@@ -54,13 +55,13 @@ export function ActivitiesCard({
           tag="div"
         >
           <Text content={textTime} size="1" weight="" color="neutral" />
-          {isRescheduleVisible ? (
+          {isActionVisible ? (
             <_Builtin.Block
               className={_utils.cx(_styles, "text-link")}
               tag="div"
-              {...onClickReschedule}
+              {...onClickAction}
             >
-              <Text size="1" weight="" color="neutral" content="Reschedule" />
+              <Text content={textAction} size="1" weight="" color="neutral" />
             </_Builtin.Block>
           ) : null}
           {isViewTaskVisible ? (

@@ -22,7 +22,7 @@ const Create = () => {
     handleCreateWorkflow({
       title,
       phase: 'now',
-      trigger: 'sendAvailabilityRequest',
+      trigger: 'sendAvailReqReminder',
     });
     resetPopup();
   }, [title]);
@@ -31,12 +31,12 @@ const Create = () => {
   }, []);
   return (
     <>
-      <ButtonSolid 
-        size={'2'} 
-        iconName={'bolt'} 
+      <ButtonSolid
+        size={'2'}
+        iconName={'bolt'}
         isLeftIcon={true}
-        textButton={'New Workflow'} 
-        onClickButton={{ onClick: () => setPopup({ open: true }) }} 
+        textButton={'New Workflow'}
+        onClickButton={{ onClick: () => setPopup({ open: true }) }}
       />
       <Dialog open={open} onClose={() => handleClose()}>
         <ConfirmationPopup

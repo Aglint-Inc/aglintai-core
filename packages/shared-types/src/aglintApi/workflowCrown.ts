@@ -13,7 +13,7 @@ export type APIWorkFlowCron = {
       schedule_id: string;
       start_time: string;
       application_id: string;
-      email_type: DatabaseEnums["email_types"];
+      email_type: DatabaseEnums["email_slack_types"];
     };
     payload: DatabaseTable["workflow_action"]["payload"];
     execution_time: string;
