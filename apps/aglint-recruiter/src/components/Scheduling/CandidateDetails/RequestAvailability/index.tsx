@@ -35,7 +35,6 @@ import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
 import {
   createTask,
   insertCandidateRequestAvailability,
-  sendEmailToCandidate,
   updateCandidateRequestAvailability,
 } from './RequestAvailabilityContext';
 import {
@@ -57,6 +56,7 @@ function RequestAvailability() {
     selectedSchedule,
   } = useSchedulingApplicationStore();
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
+  const [loading, setLoading] = useState(false);
   const { refetch } = useAllActivities({
     application_id: selectedApplication?.id,
   });
@@ -100,6 +100,11 @@ function RequestAvailability() {
   // handle submit
 
   async function handleSubmit() {
+    if (loading) {
+      return null;
+    }
+    setLoading(true);
+
     try {
       let localSessions = selectedSessions;
 
@@ -149,17 +154,11 @@ function RequestAvailability() {
           },
         });
 
-        sendEmailToCandidate({
-          email: selectedApplication.candidates.email,
-          emailBody: recruiter.email_template['request_candidate_slot'].body,
-          emailSubject:
-            recruiter.email_template['request_candidate_slot'].subject,
-          first_name: selectedApplication.candidates.first_name,
-          last_name: selectedApplication.candidates.last_name,
-          job_title: selectedApplication.public_jobs.job_title,
-          recruiter,
-          sessionNames: selectedSessions.map((ele) => ele.name),
-          request_id: result.id,
+        axios.post(`/api/emails/sendAvailabilityRequest_email_applicant`, {
+          meta: {
+            avail_req_id: result.id,
+            recruiter_user_id: recruiterUser.user_id,
+          },
         });
         toast.message('Request sent successfully!');
         const { data: requestData } = await axios.post(
@@ -238,15 +237,12 @@ function RequestAvailability() {
 
         // send request availability email to candidate
 
-        await axios.post(
-          `/api/emails/sendAvailabilityRequest_email_applicant`,
-          {
-            meta: {
-              avail_req_id: result.id,
-              recruiter_user_id: recruiterUser.user_id,
-            },
+        axios.post(`/api/emails/sendAvailabilityRequest_email_applicant`, {
+          meta: {
+            avail_req_id: result.id,
+            recruiter_user_id: recruiterUser.user_id,
           },
-        );
+        });
         toast.message('Request sent successfully!');
         // end
         let task = null as null | DatabaseTable['new_tasks'];
@@ -316,9 +312,11 @@ function RequestAvailability() {
       fetchInterviewDataByApplication(); // refetching interview data
       getDrawerClose(); // closing drawer
       setSelectedSessionIds([]); // resetting selected sessions
-    } catch {
-      toast.error('Unable to send');
+    } catch (error) {
+      toast.error(error.message);
     }
+
+    setLoading(false);
   }
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -476,6 +474,7 @@ function RequestAvailability() {
             }}
           />
         }
+        isLoading={loading}
         onClickReqAvailability={{
           onClick: handleSubmit,
         }}
