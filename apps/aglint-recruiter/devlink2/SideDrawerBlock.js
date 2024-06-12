@@ -15,6 +15,7 @@ export function SideDrawerBlock({
   onClickPrimaryButton = {},
   textPrimaryButton = "Add/Done",
   slotSidedrawerBody,
+  isLoading = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "schedule_edit-add")} tag="div">
@@ -55,6 +56,7 @@ export function SideDrawerBlock({
         <ButtonSolid
           textButton={textPrimaryButton}
           onClickButton={onClickPrimaryButton}
+          isLoading={isLoading}
           isRightIcon={false}
           isLeftIcon={false}
           size="2"

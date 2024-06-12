@@ -68,6 +68,8 @@ function SelectDateRange() {
         options: {
           include_conflicting_slots: {
             out_of_working_hrs: true,
+            show_soft_conflicts: true,
+            show_conflicts_events: true,
           },
         },
       };

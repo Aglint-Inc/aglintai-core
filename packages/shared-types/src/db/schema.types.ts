@@ -925,7 +925,7 @@ export type Database = {
           id: string
           recruiter_id: string
           subject: string
-          type: Database["public"]["Enums"]["email_slack_types"] | null
+          type: Database["public"]["Enums"]["email_slack_types"]
         }
         Insert: {
           body: string
@@ -934,7 +934,7 @@ export type Database = {
           id?: string
           recruiter_id?: string
           subject: string
-          type?: Database["public"]["Enums"]["email_slack_types"] | null
+          type: Database["public"]["Enums"]["email_slack_types"]
         }
         Update: {
           body?: string
@@ -943,7 +943,7 @@ export type Database = {
           id?: string
           recruiter_id?: string
           subject?: string
-          type?: Database["public"]["Enums"]["email_slack_types"] | null
+          type?: Database["public"]["Enums"]["email_slack_types"]
         }
         Relationships: [
           {
@@ -1548,6 +1548,7 @@ export type Database = {
           cancel_user_id: string | null
           created_at: string
           id: string
+          is_ignored: boolean
           is_resolved: boolean
           other_details: Json | null
           reason: string
@@ -1560,6 +1561,7 @@ export type Database = {
           cancel_user_id?: string | null
           created_at?: string
           id?: string
+          is_ignored?: boolean
           is_resolved?: boolean
           other_details?: Json | null
           reason: string
@@ -1572,6 +1574,7 @@ export type Database = {
           cancel_user_id?: string | null
           created_at?: string
           id?: string
+          is_ignored?: boolean
           is_resolved?: boolean
           other_details?: Json | null
           reason?: string

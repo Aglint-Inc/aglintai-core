@@ -152,8 +152,7 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
           slotProfileImage={<CandidateDefaultIcon size={20} />}
           isChangeInterviewerVisible={false}
           textReason={rescheduleDetails.reason}
-          isRescheduleBtnVisible={true}
-          isCancelVisible={true}
+          isRescheduleBtnVisible={false}
         />
 
         {rescheduleDetails?.filter_id &&
