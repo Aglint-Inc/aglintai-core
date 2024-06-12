@@ -34,6 +34,27 @@ const PERMISSIONS: Permissions = {
 
   '/api/job/jobApplications/read': 'jobs_read',
   '/api/getMembersWithRole': 'jobs_read', //change to correct permission
+  '/api/scheduling/fetchUserDetails': 'scheduler_enabled',
+  '/api/scheduling/fetch_interview_session_task': 'scheduler_enabled',
+  '/api/scheduling/fetch_activities': 'scheduler_enabled',
+  '/api/scheduling/get_interview_modules': 'scheduler_enabled',
+  '/api/scheduling/fetch_interview_module_by_id': 'scheduler_enabled',
+  // scheduling application apis
+  '/api/scheduling/application/sendtocandidate': 'scheduler_enabled',
+  '/scheduling/application/[application_id]': 'scheduler_enabled',
+  //v1 apis
+  '/api/scheduling/v1/get-candidate-selected-slots': 'scheduler_enabled',
+  // request availability apis
+  '/api/scheduling/request_availability/getCandidateRequestData':
+    'scheduler_enabled',
+  '/api/scheduling/request_availability/getTaskIdDetailsByRequestId':
+    'scheduler_enabled',
+  '/api/scheduling/request_availability/insertScheduleActivities':
+    'scheduler_enabled',
+  '/api/scheduling/request_availability/insertTaskProgress':
+    'scheduler_enabled',
+  '/api/scheduling/request_availability/updateRequestAvailability':
+    'scheduler_enabled',
 };
 
 export default PERMISSIONS;

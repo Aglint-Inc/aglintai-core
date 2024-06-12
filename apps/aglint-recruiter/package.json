@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": " next dev",
+    "dev": "npm run get-path && next dev",
     "build": "npm run get-path && next build",
     "start": "next start",
     "tslint": "npx tsc --noEmit",
@@ -14,7 +14,7 @@
     "supabase:local": "npx supabase gen types typescript --local > ../../packages/shared-types/src/db/schema.types.ts",
     "devlink": "npx webflow devlink sync",
     "pull": "git pull origin development --no-rebase",
-    "get-path": "npx tsc script/path_gen.ts && node script/path_gen.js src/pages"
+    "get-path": "node script/path_gen.js src/pages"
   },
   "dependencies": {
     "@aglint/shared-utils": "*",
