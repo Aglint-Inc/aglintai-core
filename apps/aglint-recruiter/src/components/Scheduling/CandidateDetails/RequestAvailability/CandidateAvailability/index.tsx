@@ -131,7 +131,7 @@ function CandidateAvailability() {
           `/api/scheduling/request_availability/insertScheduleActivities`,
           {
             data: {
-              title: `Candidate opened request availability link`,
+              title: `Candidate opened request availability link for ${candidateRequestAvailability.session_ids.map((ele) => ele.name).join(',')}.`,
               module: 'scheduler',
               logged_by: 'candidate',
               application_id: candidateRequestAvailability.application_id,
@@ -139,20 +139,23 @@ function CandidateAvailability() {
             } as DatabaseTableInsert['application_logs'],
           },
         );
-        await insertTaskProgress({
-          taskData: {
-            task_id: task.id,
-            created_by: {
-              name: getFullName(
-                candidateRequestAvailability.applications.candidates.first_name,
-                candidateRequestAvailability.applications.candidates.last_name,
-              ),
-              id: candidateRequestAvailability.applications.candidates.id,
-            },
-            title: 'Candidate opened request availability link',
-            progress_type: 'standard',
-          } as DatabaseTableInsert['new_tasks_progress'],
-        });
+        if (task.id)
+          await insertTaskProgress({
+            taskData: {
+              task_id: task.id,
+              created_by: {
+                name: getFullName(
+                  candidateRequestAvailability.applications.candidates
+                    .first_name,
+                  candidateRequestAvailability.applications.candidates
+                    .last_name,
+                ),
+                id: candidateRequestAvailability.applications.candidates.id,
+              },
+              title: `Candidate opened request availability link for ${candidateRequestAvailability.session_ids.map((ele) => ele.name).join(',')}.`,
+              progress_type: 'standard',
+            } as DatabaseTableInsert['new_tasks_progress'],
+          });
       }
     }
   };

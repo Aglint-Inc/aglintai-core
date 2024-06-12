@@ -37,7 +37,7 @@ export const cancelMailHandler = async ({
 }) => {
   try {
     const bodyParams: EmailTemplateAPi<'interviewCancel_email_applicant'>['api_payload'] =
-      { application_id };
+      { application_id, session_ids: [] };
 
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/api/emails/interviewCancel_email_applicant`,
