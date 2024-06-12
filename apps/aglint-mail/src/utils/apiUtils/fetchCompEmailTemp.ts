@@ -3,7 +3,7 @@ import { supabaseWrap, supabaseAdmin } from '../../supabase/supabaseAdmin';
 
 export const fetchCompEmailTemp = async (
   recruiter_id: string,
-  mail_type: DatabaseEnums['email_types'],
+  mail_type: DatabaseEnums['email_slack_types'],
 ) => {
   const [template] = supabaseWrap(
     await supabaseAdmin

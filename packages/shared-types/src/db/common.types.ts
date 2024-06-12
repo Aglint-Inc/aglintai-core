@@ -20,12 +20,12 @@ export type CustomApplicationBadges = {
 };
 
 export type CustomEmailTypes = Extract<
-  Database["public"]["Enums"]["email_types"],
-  | "sendSelfScheduleRequest_email_applicant"
+  Database["public"]["Enums"]["email_slack_types"],
+  | "selfScheduleReminder_email_applicant"
   | "interviewStart_email_applicant"
   | "interviewStart_email_interviewers"
   | "interviewStart_slack_interviewers"
-  | "sendAvailabilityRequest_email_applicant"
+  | "sendAvailReqReminder_email_applicant"
   | "interviewerConfirmation_slack_interviewers"
   | "interviewEnd_slack_interviewers"
 >;

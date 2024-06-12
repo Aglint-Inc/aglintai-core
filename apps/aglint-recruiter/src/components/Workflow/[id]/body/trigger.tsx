@@ -97,11 +97,11 @@ const TRIGGER_PAYLOAD: {
   phase: DatabaseEnums['workflow_phase'][];
 }[] = [
   {
-    trigger: 'sendAvailabilityRequest',
+    trigger: 'sendAvailReqReminder',
     phase: ['now', 'after'],
   },
   {
-    trigger: 'sendSelfScheduleRequest',
+    trigger: 'selfScheduleReminder',
     phase: ['now', 'after'],
   },
   {
@@ -146,10 +146,10 @@ export function getTriggerOption(
 ): string {
   let message = '';
   switch (trigger) {
-    case 'sendAvailabilityRequest':
+    case 'sendAvailReqReminder':
       message = 'sending an availability request';
       break;
-    case 'sendSelfScheduleRequest':
+    case 'selfScheduleReminder':
       message = 'sending an self schedule request';
       break;
     case 'interviewStart':
