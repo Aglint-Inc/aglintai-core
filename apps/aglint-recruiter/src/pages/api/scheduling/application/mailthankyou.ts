@@ -1,5 +1,8 @@
 /* eslint-disable security/detect-object-injection */
-import { APICandScheduleMailThankYou } from '@aglint/shared-types';
+import {
+  APICandScheduleMailThankYou,
+  EmailTemplateAPi,
+} from '@aglint/shared-types';
 import axios from 'axios';
 import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -18,14 +21,6 @@ const required_fields: (keyof APICandScheduleMailThankYou)[] = [
   'session_ids',
 ];
 
-interface TemplateApiPayload {
-  session_ids: string[];
-  application_id: string;
-  schedule_id?: string;
-  filter_id?: string;
-  availability_request_id?: string;
-  cand_tz: string;
-}
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const {
@@ -134,14 +129,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     if (!is_debreif) {
-      const payload: TemplateApiPayload = {
-        application_id,
-        availability_request_id,
-        filter_id,
-        schedule_id,
-        session_ids,
-        cand_tz,
-      };
+      const payload: EmailTemplateAPi<'confirmInterview_email_applicant'>['api_payload'] =
+        {
+          availability_req_id: availability_request_id,
+          application_id: application_id,
+          session_ids: session_ids,
+          filter_id: filter_id,
+          schedule_id: schedule_id,
+        };
       await axios.post(
         `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/confirmInterview_email_applicant`,
         { meta: payload },

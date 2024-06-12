@@ -1,4 +1,4 @@
-import {
+import type {
   DatabaseEnums,
   DatabaseTable,
   EmailTemplateAPi,

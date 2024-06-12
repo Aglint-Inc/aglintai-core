@@ -1,3 +1,5 @@
+const webpack = require("webpack");
+
 /** @type {import('next').NextConfig} */
 module.exports = {
   // this is needed so that the code for building emails works properly
@@ -9,6 +11,11 @@ module.exports = {
     if (isServer) {
       config.externals.push('esbuild');
     }
+    config.plugins.push(
+      new webpack.NormalModuleReplacementPlugin(/^node:/, (resource) => {
+        resource.request = resource.request.replace(/^node:/, "");
+      })
+    );
 
     return config;
   },

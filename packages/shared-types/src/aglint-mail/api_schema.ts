@@ -9,8 +9,8 @@ export const debriefEmailInterviewerSchema = v.object({
 });
 
 export const interviewCancelEmailApplicantSchema = v.object({
-  meeting_id: v.string(),
-  filter_id: v.string(),
+  session_ids: v.array(v.string()),
+  application_id: v.string(),
 });
 
 export const agentEmailCandidateSchema = v.object({
@@ -59,19 +59,15 @@ export const phoneScreenRemindEmailApplicantSchema = v.object({
 });
 
 export const interviewCancelReqEmailRecruiterSchema = v.object({
-  session_id: v.array(v.string()),
+  session_ids: v.array(v.string()),
   application_id: v.string(),
-  meeting_id: v.string(),
   interview_cancel_id: v.string(),
-  recruiter_user_id: v.string(),
 });
 
 export const interReschedReqEmailRecruiterSchema = v.object({
   session_ids: v.array(v.string()),
   application_id: v.string(),
-  meeting_id: v.string(),
   interview_cancel_id: v.string(),
-  recruiter_user_id: v.string(),
 });
 
 export const interviewRescheduleEmailApplicantSchema = v.object({

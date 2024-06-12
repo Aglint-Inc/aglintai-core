@@ -4,8 +4,9 @@
     "outDir": "./dist",
     "types": ["node"],
     "strictNullChecks": false,
-    "moduleResolution": "NodeNext",
-    "module": "NodeNext"
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "lib": ["ES2015", "dom"]
   },
   "include": ["."],
   "exclude": ["node_modules", "dist"]
