@@ -58,9 +58,9 @@ export const InterviewBookingConfirmation = ({
       <Head />
       <Tailwind config={config}>
         <Preview>Interview Booking Confirmation</Preview>
-        <Body className="bg-neutral-2 font-sans  p-[20px]">
+        <Body className="bg-neutral-3 font-sans  p-[20px]">
           <Container className="px-[3px] mx-auto">
-            <Container className="p-[50px] bg-neutral-1 rounded-[8px]">
+            <Container className="p-[50px] bg-white rounded-[8px]">
               <Img
                 alt="Company logo"
                 className="w-[80px] mb-[10px]"
