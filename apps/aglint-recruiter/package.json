@@ -14,7 +14,7 @@
     "supabase:local": "npx supabase gen types typescript --local > ../../packages/shared-types/src/db/schema.types.ts",
     "devlink": "npx webflow devlink sync",
     "pull": "git pull origin development --no-rebase",
-    "get-path": "node script/path_gen.js src/pages"
+    "get-path": "npx tsc script/path_gen.ts --skipLibCheck && node script/path_gen.js"
   },
   "dependencies": {
     "@aglint/shared-utils": "*",
