@@ -10,7 +10,6 @@ import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { CompanyEmailsType } from '@/src/types/companyEmailTypes';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
@@ -84,7 +83,7 @@ function SchedulingEmailTemplates() {
                     isSaveChangesButtonVisible={false}
                     textEmailName={tempObj[selectedTemplate]?.heading}
                     slotForm={
-                      <Stack spacing={'20px'}>
+                      <Stack spacing={'var(--space-5)'}>
                         <UITextField
                           labelSize='small'
                           fullWidth
@@ -141,8 +140,8 @@ function SchedulingEmailTemplates() {
                             sx={{
                               mt: '8px',
                               border: '1px solid',
-                              borderColor: palette.grey[300],
-                              borderRadius: '4px',
+                              borderColor: 'var(--neutral-6)',
+                              borderRadius: 'var(--radius-2)',
                             }}
                           >
                             <TipTapAIEditor
@@ -151,6 +150,7 @@ function SchedulingEmailTemplates() {
                                 tempObj[selectedTemplate]?.bodyPlaceHolder
                               }
                               handleChange={(html) => {
+                                // TIPTAPTODO:
                                 recruiter.email_template[selectedTemplate] = {
                                   body: html,
                                   default:

@@ -1,7 +1,8 @@
+import {supabaseWrap} from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 import {Request, Response} from 'express';
 import {slackWeb} from 'src/services/slack/slackWeb';
-import {supabaseAdmin, supabaseWrap} from 'src/services/supabase/SupabaseAdmin';
+import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 
 export async function feedback(req: Request, res: Response) {
   const {session_id} = req.body;
@@ -18,6 +19,9 @@ export async function feedback(req: Request, res: Response) {
         .eq('session_id', session_id)
     );
 
+    if (!data) {
+      throw new Error('failed to fetch a meeting details');
+    }
     const {
       session_name,
       start_time,
@@ -33,6 +37,9 @@ export async function feedback(req: Request, res: Response) {
         .select('applications(public_jobs(job_title), candidates(*))')
         .eq('id', interview_schedule_id)
     );
+    if (!can_app) {
+      throw new Error('failed to fetch a candidate and application details');
+    }
 
     const interviewers = supabaseWrap(
       await supabaseAdmin
@@ -40,7 +47,9 @@ export async function feedback(req: Request, res: Response) {
         .select('email,session_relation_id')
         .eq('session_id', session_id)
     );
-
+    if (!interviewers) {
+      throw new Error('failed to fetch a interviewers detail');
+    }
     const [organizer] = supabaseWrap(
       await supabaseAdmin
         .from('recruiter_user')
@@ -48,12 +57,13 @@ export async function feedback(req: Request, res: Response) {
         .eq('user_id', organizer_id)
     );
 
+    if (!organizer) {
+      throw new Error('failed to fetch a recruiter detail');
+    }
+
     const interviewersWithoutOrganizer = interviewers.filter(
       interviewer => interviewer.email !== organizer.email
     );
-    // interviewersWithoutOrganizer = [
-    //   {email: 'chandra@aglinthq.com', session_relation_id: 'dfdsfsd'},
-    // ];
 
     const job_title = can_app.applications.public_jobs.job_title;
     const candidate_name = `${can_app.applications.candidates.first_name} ${can_app.applications.candidates.first_name}`;
@@ -227,7 +237,14 @@ export async function feedback(req: Request, res: Response) {
 }
 
 // {
-//   "session_id":"d232ef5b-0002-4813-82f7-b8246bb696f7",
+//   "session_id":"5e7953c5-3e56-4d89-9857-29c34b55ce9d"
 // }
 
 // session_id -> got interview confirmation from interviewers and organizer
+
+// const interviewersWithoutOrganizer = [
+//   {
+//     email: 'chandra@aglinthq.com',
+//     session_relation_id: 'd232ef5b-0002-4813-82f7-b8246bb696f7',
+//   },
+// ];

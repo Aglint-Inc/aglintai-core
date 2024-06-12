@@ -61,15 +61,6 @@
   cursor: default;
 }
 
-.button-block.danger {
-  background-color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
-  color: var(--white-c31c6fe9);
-}
-
-.button-block.danger:hover {
-  background-color: hsla(354.93506493506493, 58.45%, 41.88%, 1.00);
-}
-
 .button-text {
   font-size: 1em;
 }

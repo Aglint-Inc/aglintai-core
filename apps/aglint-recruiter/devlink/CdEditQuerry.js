@@ -80,7 +80,7 @@ export function CdEditQuerry({
             >
               {slotLocationSuggestion ?? (
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-584")}
+                  className={_utils.cx(_styles, "job-pills-wrap")}
                   tag="div"
                 >
                   <_Builtin.Block

@@ -68,7 +68,7 @@ export function ScheduleCard({
             className={_utils.cx(_styles, "one-line-clamp")}
             tag="div"
           >
-            <Text content={textTitle} />
+            <Text content={textTitle} weight="medium" />
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

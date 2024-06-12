@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { AllInterviewersCard } from "./AllInterviewersCard";
 import * as _utils from "./utils";
 import _styles from "./AllInterviewers.module.css";
@@ -18,80 +19,81 @@ export function AllInterviewers({
         className={_utils.cx(
           _styles,
           "all-interviewers-header-wrap",
-          "decrease-grid",
-          "pb-1"
+          "decrease-grid"
         )}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1142", "gap-5")}
+          className={_utils.cx(_styles, "all-interviewer-header-item")}
           id={_utils.cx(
             _styles,
             "w-node-_51c09859-0c9a-df83-83a4-a6e076826a5d-76826a5b"
           )}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Interviewer"}
-          </_Builtin.Block>
+          <Text content="Interviewer" weight="medium" />
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1142", "center")}
+          className={_utils.cx(
+            _styles,
+            "all-interviewer-header-item",
+            "center"
+          )}
           id={_utils.cx(
             _styles,
             "w-node-_51c09859-0c9a-df83-83a4-a6e076826a60-76826a5b"
           )}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Upcoming"}
-          </_Builtin.Block>
+          <Text content="Upcoming" weight="medium" />
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1142", "center")}
+          className={_utils.cx(
+            _styles,
+            "all-interviewer-header-item",
+            "center"
+          )}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Completed"}
-          </_Builtin.Block>
+          <Text content="Completed" weight="medium" />
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1142")}
+          className={_utils.cx(_styles, "all-interviewer-header-item")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Qualified"}
-          </_Builtin.Block>
+          <Text content="Qualified" weight="medium" />
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1142")}
+          className={_utils.cx(_styles, "all-interviewer-header-item")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Training"}
-          </_Builtin.Block>
+          <Text content="Training" weight="medium" />
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1147")}
+        className={_utils.cx(_styles, "all-interviewers-body")}
         tag="div"
       >
-        {slotAllInterviewesCard ?? <AllInterviewersCard />}
+        {slotAllInterviewesCard ?? (
+          <>
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+            <AllInterviewersCard />
+          </>
+        )}
       </_Builtin.Block>
     </_Component>
   );

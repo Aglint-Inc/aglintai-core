@@ -1,6 +1,6 @@
 .rd-job-list-item {
   display: grid;
-  padding: var(--space-5);
+  padding: var(--space-4);
   justify-content: space-between;
   justify-items: stretch;
   align-items: center;
@@ -11,7 +11,7 @@
   grid-template-columns: 1fr;
   grid-template-rows: auto;
 
-  border: 1px solid var(--neutral-6);
+  border: 1px solid var(--neutral-4);
   border-radius: var(--radius-4);
 
   background-color: var(--white);
@@ -31,7 +31,7 @@
 }
 
 .rd-job-list-item:hover {
-  box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
+  border-color: var(--neutral-6);
 }
 
 @media screen and (max-width: 991px) {
@@ -96,14 +96,6 @@
   grid-row-gap: 16px;
 }
 
-.slot-ats-badge {
-  display: flex;
-  width: 80px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
 .flex-horizontal {
   display: flex;
 }
@@ -140,6 +132,11 @@
 
 .mt-2 {
   margin-top: var(--space-2);
+}
+
+.flex-horizontal.gap-space-2 {
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .warning-job-wrap {
@@ -262,6 +259,15 @@
   align-items: flex-start;
 }
 
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
 .job-desc-warn-wrap {
   position: absolute;
   left: -74px;
@@ -290,19 +296,12 @@
   grid-row-gap: var(--space-1);
 
   border: 1px none var(--success-3);
-  border-radius: var(--radius-full);
+  border-radius: var(--space-1);
 
-  background-color: var(--success-9);
+  background-color: var(--success-3);
 
-  color: var(--white);
-}
-
-.slot-status-icons {
-  display: flex;
-  width: 20px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  color: var(--success-11);
+  text-transform: capitalize;
 }
 
 .applicants-number-wrapper {

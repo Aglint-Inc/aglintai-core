@@ -24,7 +24,7 @@ type processDataType = {
 };
 export default function ScheduleAnalyticsCards() {
   const groupingUnit: 'week' | 'month' | 'year' = 'month';
-  const { data: analyticData, isFetching: loading } =
+  const { data: analyticData, isPending: loading } =
     useScheduleSessionsAnalytics();
   const processedData = (analyticData || []).reduce(
     (acc, curr) => {
@@ -64,7 +64,7 @@ export default function ScheduleAnalyticsCards() {
         loading || false ? (
           <Skeleton variant='rounded' width={130} height={20} />
         ) : (
-          `${percentChange((processedData.grouping_unit_a.completed || []).length, (processedData.grouping_unit_b.completed || []).length)}% from last ${capitalizeFirstLetter(groupingUnit)}`
+          `${Math.round(percentChange((processedData.grouping_unit_a.completed || []).length, (processedData.grouping_unit_b.completed || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
         )
       }
       textWaitingCount={
@@ -78,7 +78,7 @@ export default function ScheduleAnalyticsCards() {
         loading || false ? (
           <Skeleton variant='rounded' width={130} height={20} />
         ) : (
-          `${percentChange((processedData.grouping_unit_a.waiting || []).length, (processedData.grouping_unit_b.waiting || []).length)}% from last ${capitalizeFirstLetter(groupingUnit)}`
+          `${Math.round(percentChange((processedData.grouping_unit_a.waiting || []).length, (processedData.grouping_unit_b.waiting || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
         )
       }
       textConfirmedCount={
@@ -92,7 +92,7 @@ export default function ScheduleAnalyticsCards() {
         loading || false ? (
           <Skeleton variant='rounded' width={130} height={20} />
         ) : (
-          `${percentChange((processedData.grouping_unit_a.confirmed || []).length, (processedData.grouping_unit_b.confirmed || []).length)}% from last ${capitalizeFirstLetter(groupingUnit)}`
+          `${Math.round(percentChange((processedData.grouping_unit_a.confirmed || []).length, (processedData.grouping_unit_b.confirmed || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
         )
       }
       textNotScheduledCount={
@@ -106,7 +106,7 @@ export default function ScheduleAnalyticsCards() {
         loading || false ? (
           <Skeleton variant='rounded' width={130} height={20} />
         ) : (
-          `${percentChange((processedData.grouping_unit_a.not_scheduled || []).length, (processedData.grouping_unit_b.not_scheduled || []).length)}% from last ${capitalizeFirstLetter(groupingUnit)}`
+          `${Math.round(percentChange((processedData.grouping_unit_a.not_scheduled || []).length, (processedData.grouping_unit_b.not_scheduled || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
         )
       }
       textCancelledCount={
@@ -120,7 +120,7 @@ export default function ScheduleAnalyticsCards() {
         loading || false ? (
           <Skeleton variant='rounded' width={130} height={20} />
         ) : (
-          `${percentChange((processedData.grouping_unit_a.cancelled || []).length, (processedData.grouping_unit_b.cancelled || []).length)}% from last ${capitalizeFirstLetter(groupingUnit)}`
+          `${Math.round(percentChange((processedData.grouping_unit_a.cancelled || []).length, (processedData.grouping_unit_b.cancelled || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
         )
       }
     />

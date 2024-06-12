@@ -61,8 +61,8 @@ const initialState: SchedulingFlow = {
   filters: {
     isNoConflicts: true,
     isSoftConflicts: true,
-    isHardConflicts: true,
-    isOutSideWorkHours: true,
+    isHardConflicts: false,
+    isOutSideWorkHours: false,
     preferredInterviewers: [],
     preferredDateRanges: [],
     isWorkLoad: true,
@@ -120,7 +120,7 @@ export const setDateRange = (dateRange: {
 export const setSelectedCombIds = (selectedCombIds: string[]) =>
   useSchedulingFlowStore.setState({ selectedCombIds });
 
-export const resetFilterStore = () =>
+export const resetSchedulingFlowStore = () =>
   useSchedulingFlowStore.setState({
     ...initialState,
   });

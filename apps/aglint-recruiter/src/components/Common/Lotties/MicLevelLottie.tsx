@@ -54,7 +54,7 @@ function MicLevelLottie({ children }) {
         borderColor={'green.300'}
         position={'absolute'}
         zIndex={2}
-        bgcolor={'grey.100'}
+        bgcolor={'var(--neutral-1)'}
       ></Stack>
       <style>{`
       .blink-layer{

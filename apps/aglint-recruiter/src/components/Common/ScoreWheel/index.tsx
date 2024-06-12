@@ -17,7 +17,7 @@ export const scoreWheelDependencies = {
     experience: 34,
     education: 33,
   } as ScoreWheelParams,
-  wheelColors: ['#886BD8', '#30AABC', '#5D7DF5'],
+  wheelColors: ['var(--color-skill)', 'var(--color-exp)', 'var(--color-edu)'],
   parameterOrder: ['skills', 'experience', 'education'],
 };
 
@@ -102,7 +102,7 @@ const ScoreWheel = ({
           textAlign={'center'}
           sx={{
             aspectRatio: 1,
-            backgroundColor: '#FFF',
+            backgroundColor:  'var(--white)',
           }}
           style={{
             color:
@@ -155,9 +155,9 @@ const getStyles = (
   score: ScoreWheelParams,
   degree?: number,
 ) => {
-  const lightColors = ['#e7e1f7', '#d6eef2', '#dfe5fd'];
-  const disabledColor = '#e9ebed';
-  const unusedColor = '#ddd';
+  const lightColors = ['var(--color-skill)', 'var(--color-exp)', 'var(--color-edu)'];
+  const disabledColor = 'var(--nuetral-4)';
+  const unusedColor = 'var(--nuetral-3)';
   const count = Object.keys(weights).length;
   let hoverKey = null;
   const conicGradientObj = scoreWheelDependencies.parameterOrder.reduce(

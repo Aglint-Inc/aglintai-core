@@ -1,10 +1,10 @@
-import { MenuItem, Stack, TextField } from '@mui/material';
+import { MenuItem, Stack, TextField, Typography } from '@mui/material';
 import React from 'react';
-
-import { palette } from '@/src/context/Theme/Theme';
 
 import { WarningSvg } from '../../JobCreate/form';
 import MuiAvatar from '../MuiAvatar';
+import UITypography from '../UITypography';
+
 type MenuOption = {
   name: string;
   value: string | number;
@@ -25,11 +25,17 @@ type Props = {
   value: string | number;
   menuOptions: MenuOption[];
   showMenuIcons: boolean;
+  labelSize?: 'small' | 'medium' | 'large' | 'xLarge' | 'xxLarge' | 'xxxLarge';
+
+  labelBold?: 'default' | 'normal';
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   label?: string;
   defaultValue?: string;
   error?: boolean;
   helperText?: string;
+  required?: boolean;
+  disabled?: boolean;
+  defaultLabelColor?: string;
 };
 
 const AvatarSelectDropDown = ({
@@ -38,27 +44,55 @@ const AvatarSelectDropDown = ({
   value,
   onChange,
   label = null,
+
+  labelBold = 'default',
+  labelSize = 'small',
   defaultValue = null,
   error = false,
   helperText = null,
+  disabled,
+  required,
+  defaultLabelColor = null,
 }: Props) => {
+  let labelColor = defaultLabelColor ? defaultLabelColor : 'var(--neutral-12)';
+
+  if (disabled) {
+    labelColor = defaultLabelColor ? defaultLabelColor : 'var(--neutral-11)';
+  }
   return (
-    <Stack gap={'6px'} width={'100%'}>
-      {label && <Stack>{label}</Stack>}
+    <Stack gap={'var(--space-1)'} width={'100%'}>
+      {/* {label && <Stack>{label}</Stack>} */}
+      {label && (
+        <Stack direction={'row'}>
+          <UITypography
+            type={labelSize}
+            color={labelColor}
+            fontBold={labelBold}
+          >
+            {label}
+          </UITypography>
+          {required && (
+            <Typography sx={{ color: 'var(--error-9)', pl: 0.5 }}>
+              *{/* <sup>*</sup> */}
+            </Typography>
+          )}
+        </Stack>
+      )}
       <TextField
         select
         onChange={onChange}
         sx={{
           '.MuiOutlinedInput-root': {
-            border: `1px solid ${error ? palette.red[500] : palette.grey[300]}`,
+            // border: `1px solid ${error ? 'var(--error-6)' : 'var(--neutral-6)'}`,
             '&.Mui-focused': {
-              borderColor: ` ${error ? palette.red[500] : '#1f73b7'}`,
-              outline: `3px solid ${error ? palette.red[300] : '#adcce4'}`,
+              // borderColor: ` ${error ? 'var(--error-a6)' : 'var(--accent-a6)'}`,
+              // outline: 'none',
+              // shadow: 'none',
             },
           },
           '.MuiSelect-outlined': {
             display: showMenuIcons && 'flex',
-            gap: showMenuIcons && '5px',
+            gap: showMenuIcons && 'var(--space-1)',
             alignItems: showMenuIcons && 'center',
           },
         }}
@@ -69,7 +103,7 @@ const AvatarSelectDropDown = ({
           MenuProps: {
             PaperProps: {
               style: {
-                maxHeight: '250px',
+                maxHeight: '240px',
               },
             },
           },
@@ -80,7 +114,7 @@ const AvatarSelectDropDown = ({
             px={1}
             style={{
               fontStyle: 'italic',
-              color: palette.grey[400],
+              color: 'var(--neutral-12)',
               cursor: 'default',
             }}
           >
@@ -90,10 +124,10 @@ const AvatarSelectDropDown = ({
           menuOptions.map((menu, idx) => (
             <MenuItem
               sx={{
-                padding: '5px',
+                padding: 'var(--space-2)',
                 direction: 'ltr',
                 display: 'flex',
-                gap: '5px',
+                gap: 'var(--space-1)',
               }}
               key={idx}
               value={menu.value}
@@ -149,7 +183,7 @@ const AvatarSelectDropDown = ({
         )}
       </TextField>
       {error && helperText && (
-        <Stack alignItems={'center'} direction={'row'} color={palette.red[500]}>
+        <Stack alignItems={'center'} direction={'row'} color='var(--error-11)'>
           <WarningSvg />
           {helperText}
         </Stack>
@@ -172,8 +206,8 @@ const Meta = ({
       <Stack
         direction={'row'}
         minWidth={'120px'}
-        gap={'4px'}
-        style={{ fontSize: '12px', color: palette.grey['500'] }}
+        gap={'var(--space-1)'}
+        style={{ fontSize: 'var(--font-size-1)', color: 'var(--neutral-11)' }}
       >
         {icon}
         {title}

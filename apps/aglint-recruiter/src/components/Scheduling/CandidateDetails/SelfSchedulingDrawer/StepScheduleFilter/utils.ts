@@ -66,41 +66,38 @@ export function filterSchedulingOptions({
   let hardConflicts: PlanCombinationRespType[] = [];
   let outSideWorkHours: PlanCombinationRespType[] = [];
 
-  // Helper function to check if a session has preferred interviewers
-  const hasPreferredInterviewers = (session) => {
-    return (
-      filters.preferredInterviewers.length === 0 ||
-      filters.preferredInterviewers.some(
-        (interviewer) =>
-          session.qualifiedIntervs.some(
-            (interv) => interv.user_id === interviewer.user_id,
-          ) ||
-          session.trainingIntervs.some(
-            (interv) => interv.user_id === interviewer.user_id,
-          ),
+  if (filters.preferredInterviewers.length > 0) {
+    schedulingOptions.sort((a, b) => {
+      const aHasPreferred = a.sessions.some((session) =>
+        hasPreferredInterviewers({ session, filters }),
       )
-    );
-  };
+        ? 0
+        : 1;
+      const bHasPreferred = b.sessions.some((session) =>
+        hasPreferredInterviewers({ session, filters }),
+      )
+        ? 0
+        : 1;
+      return aHasPreferred - bHasPreferred;
+    });
+  }
 
   // Filter for no conflicts
   if (filters.isNoConflicts) {
-    noConflicts = schedulingOptions.filter(
-      (option) =>
-        option.sessions.every((session) => !session.is_conflict) &&
-        option.sessions.some((session) => hasPreferredInterviewers(session)),
+    noConflicts = schedulingOptions.filter((option) =>
+      option.sessions.every((session) => !session.is_conflict),
     );
   }
 
   // Filter for soft conflicts
   if (filters.isSoftConflicts) {
     softConflicts = schedulingOptions.filter((option) =>
-      option.sessions.some(
-        (session) =>
-          session.ints_conflicts.some((conflict) =>
-            conflict.conflict_reasons.some(
-              (reason) => reason.conflict_type === 'soft',
-            ),
-          ) && hasPreferredInterviewers(session),
+      option.sessions.some((session) =>
+        session.ints_conflicts.some((conflict) =>
+          conflict.conflict_reasons.some(
+            (reason) => reason.conflict_type === 'soft',
+          ),
+        ),
       ),
     );
   }
@@ -108,28 +105,26 @@ export function filterSchedulingOptions({
   // Filter for hard conflicts
   if (filters.isHardConflicts) {
     hardConflicts = schedulingOptions.filter((option) =>
-      option.sessions.some(
-        (session) =>
-          session.ints_conflicts.some((conflict) =>
-            conflict.conflict_reasons.some(
-              (reason) =>
-                reason.conflict_type !== 'soft' &&
-                reason.conflict_type !== 'out_of_working_hours',
-            ),
-          ) && hasPreferredInterviewers(session),
+      option.sessions.some((session) =>
+        session.ints_conflicts.some((conflict) =>
+          conflict.conflict_reasons.some(
+            (reason) =>
+              reason.conflict_type !== 'soft' &&
+              reason.conflict_type !== 'out_of_working_hours',
+          ),
+        ),
       ),
     );
   }
 
   if (filters.isOutSideWorkHours) {
     outSideWorkHours = schedulingOptions.filter((option) =>
-      option.sessions.some(
-        (session) =>
-          session.ints_conflicts.some((conflict) =>
-            conflict.conflict_reasons.some(
-              (reason) => reason.conflict_type === 'out_of_working_hours',
-            ),
-          ) && hasPreferredInterviewers(session),
+      option.sessions.some((session) =>
+        session.ints_conflicts.some((conflict) =>
+          conflict.conflict_reasons.some(
+            (reason) => reason.conflict_type === 'out_of_working_hours',
+          ),
+        ),
       ),
     );
   }
@@ -159,22 +154,6 @@ export function filterSchedulingOptionsArray({
   schedulingOptions: ApiResponseFindAvailability;
   filters: SchedulingFlow['filters'];
 }) {
-  // Helper function to check if a session has preferred interviewers
-  const hasPreferredInterviewers = (session) => {
-    return (
-      filters.preferredInterviewers.length === 0 ||
-      filters.preferredInterviewers.some(
-        (interviewer) =>
-          session.qualifiedIntervs.some(
-            (interv) => interv.user_id === interviewer.user_id,
-          ) ||
-          session.trainingIntervs.some(
-            (interv) => interv.user_id === interviewer.user_id,
-          ),
-      )
-    );
-  };
-
   const allFilteredOptions: ApiResponseFindAvailability = schedulingOptions.map(
     (option) =>
       option.map((items) => {
@@ -188,7 +167,7 @@ export function filterSchedulingOptionsArray({
         }
 
         if (filters.isWorkLoad) {
-          allOptions = allOptions
+          allOptions
             .map((option) => {
               const totalWorkload = option.sessions.reduce(
                 (acc, session) => acc + session.day_load_den,
@@ -202,6 +181,22 @@ export function filterSchedulingOptionsArray({
             .sort((a, b) => a.totalWorkload - b.totalWorkload);
         }
 
+        if (filters.preferredInterviewers.length > 0) {
+          allOptions.sort((a, b) => {
+            const aHasPreferred = a.sessions.some((session) =>
+              hasPreferredInterviewers({ session, filters }),
+            )
+              ? 0
+              : 1;
+            const bHasPreferred = b.sessions.some((session) =>
+              hasPreferredInterviewers({ session, filters }),
+            )
+              ? 0
+              : 1;
+            return aHasPreferred - bHasPreferred;
+          });
+        }
+
         let noConflicts: PlanCombinationRespType[] = [];
         let softConflicts: PlanCombinationRespType[] = [];
         let hardConflicts: PlanCombinationRespType[] = [];
@@ -209,25 +204,20 @@ export function filterSchedulingOptionsArray({
 
         // Filter for no conflicts
         if (filters.isNoConflicts) {
-          noConflicts = allOptions.filter(
-            (option) =>
-              option.sessions.every((session) => !session.is_conflict) &&
-              option.sessions.some((session) =>
-                hasPreferredInterviewers(session),
-              ),
+          noConflicts = allOptions.filter((option) =>
+            option.sessions.every((session) => !session.is_conflict),
           );
         }
 
         // Filter for soft conflicts
         if (filters.isSoftConflicts) {
           softConflicts = allOptions.filter((option) =>
-            option.sessions.some(
-              (session) =>
-                session.ints_conflicts.some((conflict) =>
-                  conflict.conflict_reasons.some(
-                    (reason) => reason.conflict_type === 'soft',
-                  ),
-                ) && hasPreferredInterviewers(session),
+            option.sessions.some((session) =>
+              session.ints_conflicts.some((conflict) =>
+                conflict.conflict_reasons.some(
+                  (reason) => reason.conflict_type === 'soft',
+                ),
+              ),
             ),
           );
         }
@@ -235,28 +225,26 @@ export function filterSchedulingOptionsArray({
         // Filter for hard conflicts
         if (filters.isHardConflicts) {
           hardConflicts = allOptions.filter((option) =>
-            option.sessions.some(
-              (session) =>
-                session.ints_conflicts.some((conflict) =>
-                  conflict.conflict_reasons.some(
-                    (reason) =>
-                      reason.conflict_type !== 'soft' &&
-                      reason.conflict_type !== 'out_of_working_hours',
-                  ),
-                ) && hasPreferredInterviewers(session),
+            option.sessions.some((session) =>
+              session.ints_conflicts.some((conflict) =>
+                conflict.conflict_reasons.some(
+                  (reason) =>
+                    reason.conflict_type !== 'soft' &&
+                    reason.conflict_type !== 'out_of_working_hours',
+                ),
+              ),
             ),
           );
         }
 
         if (filters.isOutSideWorkHours) {
           outSideWorkHours = allOptions.filter((option) =>
-            option.sessions.some(
-              (session) =>
-                session.ints_conflicts.some((conflict) =>
-                  conflict.conflict_reasons.some(
-                    (reason) => reason.conflict_type === 'out_of_working_hours',
-                  ),
-                ) && hasPreferredInterviewers(session),
+            option.sessions.some((session) =>
+              session.ints_conflicts.some((conflict) =>
+                conflict.conflict_reasons.some(
+                  (reason) => reason.conflict_type === 'out_of_working_hours',
+                ),
+              ),
             ),
           );
         }
@@ -274,3 +262,24 @@ export function filterSchedulingOptionsArray({
     allFilteredOptions,
   };
 }
+
+export const hasPreferredInterviewers = ({
+  session,
+  filters,
+}: {
+  session: PlanCombinationRespType['sessions'][0];
+  filters: SchedulingFlow['filters'];
+}) => {
+  return (
+    filters.preferredInterviewers.length === 0 ||
+    filters.preferredInterviewers.some(
+      (interviewer) =>
+        session.qualifiedIntervs.some(
+          (interv) => interv.user_id === interviewer.user_id,
+        ) ||
+        session.trainingIntervs.some(
+          (interv) => interv.user_id === interviewer.user_id,
+        ),
+    )
+  );
+};

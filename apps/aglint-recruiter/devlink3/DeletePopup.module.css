@@ -43,8 +43,8 @@
 .popup_title {
   display: flex;
   align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .fw-semibold {
@@ -98,17 +98,8 @@
   line-height: 24px;
 }
 
-.fw-semibold.p-lr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
 .text-grey_600 {
   color: var(--sand-11);
-}
-
-.fw-semibold.name-text {
-  color: #467b7c;
 }
 
 .hide {
@@ -142,8 +133,8 @@
 .popup_body {
   display: flex;
   flex-direction: column;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .text-gray-600 {
@@ -166,8 +157,8 @@
   height: 100%;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .buttn_flex {
@@ -182,6 +173,7 @@
 .wide_button {
   position: relative;
   z-index: 1;
+  width: 100%;
 }
 
 .wide_button.width-100 {
@@ -270,11 +262,6 @@
   padding-top: 8px;
   padding-bottom: 8px;
   background-color: var(--accent-9);
-}
-
-.button_primary.large_btn {
-  padding-top: 10px;
-  padding-bottom: 10px;
 }
 
 .button_primary.large_btn-copy {

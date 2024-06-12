@@ -293,7 +293,7 @@ function Scheduling() {
                 reason === 'update_google_workspace'
               }
             >
-              <Stack direction={'column'} spacing={'5px'}>
+              <Stack direction={'column'} spacing={'var(--space-1)'}>
                 <Typography mb={0.5} variant='body1'>
                   Domain Name
                 </Typography>

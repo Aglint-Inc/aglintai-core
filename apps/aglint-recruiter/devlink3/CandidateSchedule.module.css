@@ -29,14 +29,16 @@
   grid-row-gap: 0px;
 }
 
+.cs-slot-wrap {
+  overflow: auto;
+  padding-bottom: var(--space-9);
+  background-color: var(--sand-2);
+  height: calc(100vh - 96px);
+}
+
 .new-schedule-cd-card-wrap {
   position: relative;
-
-  overflow: auto;
-  padding-right: 0px;
-  padding-bottom: 60px;
-  padding-left: 0px;
-  height: calc(100vh - 112px);
+  max-width: 900px;
 }
 
 .dummydiv {
@@ -152,7 +154,7 @@
   border-left-width: 1px;
   border-left-color: #e9ebed;
 
-  height: calc(100vh - 60px);
+  height: calc(100vh - 48px);
 }
 
 #w-node-b4f8c833-3062-0810-c58b-254fa7da7af2-a7da7af1 {

@@ -86,7 +86,7 @@ export default function AppLayout({ children }) {
         <Stack
           paddingTop={'12px !important'}
           borderRight={'1px solid'}
-          borderColor={'grey.200'}
+           borderColor='var(--neutral-6)'
           position={'relative'}
           // p={'28px 20px 12px 16px'}
           // pt={'28px'}
@@ -103,7 +103,7 @@ export default function AppLayout({ children }) {
             <Stack
               height={'100%'}
               width={'100%'}
-              spacing={'10px'}
+              spacing={'var(--space-2)'}
               alignItems={'center'}
             >
               {userDetails?.user.user_metadata.role?.toLowerCase() ===
@@ -178,10 +178,10 @@ export default function AppLayout({ children }) {
             <LinearProgress
               sx={{
                 height: '1px',
-                borderRadius: '5px',
+                borderRadius: 'var(--radius-2)',
                 backgroundColor: '#3d1100',
                 '& span': {
-                  backgroundColor: 'orange.500',
+                  backgroundColor:  'var(--accent-4)',
                 },
               }}
             />
@@ -253,10 +253,8 @@ export default function AppLayout({ children }) {
             <Drawer
               sx={{
                 '& .MuiDrawer-paper': {
-                  border: 'none !important',
-                  bgcolor: '#25282a !important',
                   width: '100%',
-                  padding: '0 30px 10px 30px',
+                  padding: '0 var(--space-5) var(--space-2) var(--space-5)',
                 },
                 zIndex: 8,
               }}
@@ -271,7 +269,7 @@ export default function AppLayout({ children }) {
                 justifyContent={'space-between'}
                 pt={'88px'}
               >
-                <Stack spacing={'10px'}>
+                <Stack spacing={'var(--space-2)'}>
                   <SideNavbar />
                 </Stack>
               </Stack>

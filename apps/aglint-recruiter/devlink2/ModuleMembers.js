@@ -15,48 +15,46 @@ export function ModuleMembers({
   isMembersTrainingVisible = true,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1678")} tag="div">
+    <_Component className={_utils.cx(_styles, "module-member-wrap")} tag="div">
       <_Builtin.Block tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1501")}
+          className={_utils.cx(_styles, "mm-header-wrap")}
           tag="div"
         >
-          <Text content="" />
-          <_Builtin.Block
-            className={_utils.cx(_styles, "accent-link")}
-            tag="div"
-            {...onClickAddMember}
-          >
-            {"Add"}
-          </_Builtin.Block>
+          <Text content="Qualified Members" />
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1502")}
+          className={_utils.cx(_styles, "mm-slot-list-card")}
           tag="div"
         >
-          {slotQualifiedMemberList ?? <MemberListCard />}
+          {slotQualifiedMemberList ?? (
+            <>
+              <MemberListCard />
+              <MemberListCard />
+              <MemberListCard />
+            </>
+          )}
         </_Builtin.Block>
       </_Builtin.Block>
       {isMembersTrainingVisible ? (
         <_Builtin.Block tag="div">
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1501")}
+            className={_utils.cx(_styles, "mm-header-wrap")}
             tag="div"
           >
             <Text content="Members in training" />
-            <_Builtin.Block
-              className={_utils.cx(_styles, "accent-link")}
-              tag="div"
-              {...onClickAddTrainee}
-            >
-              {"Add"}
-            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1502")}
+            className={_utils.cx(_styles, "mm-slot-list-card")}
             tag="div"
           >
-            {slotMembersInTraining ?? <MemberListCard />}
+            {slotMembersInTraining ?? (
+              <>
+                <MemberListCard />
+                <MemberListCard />
+                <MemberListCard />
+              </>
+            )}
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}

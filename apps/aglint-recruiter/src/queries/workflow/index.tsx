@@ -9,6 +9,8 @@ import {
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { WorkflowAction } from '../workflow-action';
+import { workflowActionQueryKeys } from '../workflow-action/keys';
 import { workflowMutationKeys, workflowQueryKeys } from './keys';
 
 export const useWorkflowQuery = (args: GetWorkflow) => {
@@ -79,19 +81,39 @@ export const useWorkflowUpdate = (args: WorkflowKeys) => {
     mutationFn: updateWorkflow,
     mutationKey,
     onMutate: (variables) => {
+      let triggerChange = false;
+      const { queryKey: actionQueryKey } =
+        workflowActionQueryKeys.workflowAction({ workflow_id: variables.id });
       const previousWorkflows = queryClient.getQueryData<Workflow[]>(queryKey);
+      let previousWorkflow: Workflow = null;
       const newWorkflows = structuredClone(previousWorkflows).reduce(
         (acc, curr) => {
-          if (curr.id === variables.id)
+          if (curr.id === variables.id) {
+            previousWorkflow = structuredClone(curr);
             acc.push(structuredClone({ ...curr, ...variables.payload }));
-          else acc.push(curr);
+          } else acc.push(curr);
           return acc;
         },
         [] as Workflow[],
       );
+      const previousWorkflowActions =
+        queryClient.getQueryData<WorkflowAction[]>(actionQueryKey);
       queryClient.setQueryData<Workflow[]>(queryKey, newWorkflows);
+      if (
+        variables.payload.trigger &&
+        previousWorkflow.trigger !== variables.payload.trigger
+      ) {
+        triggerChange = true;
+        queryClient.setQueryData<WorkflowAction[]>(actionQueryKey, []);
+      }
+      return {
+        previousWorkflow,
+        actionQueryKey,
+        previousWorkflowActions,
+        triggerChange,
+      };
     },
-    onError: (_error, variables) => {
+    onError: (_error, variables, context) => {
       toast.error('Unable to update workflow');
       const previousWorkflows = queryClient.getQueryData<Workflow[]>(queryKey);
       const newWorkflows = structuredClone(previousWorkflows).reduce(
@@ -102,6 +124,12 @@ export const useWorkflowUpdate = (args: WorkflowKeys) => {
         [] as Workflow[],
       );
       queryClient.setQueryData<Workflow[]>(queryKey, newWorkflows);
+      if (context.triggerChange) {
+        queryClient.setQueryData<WorkflowAction[]>(
+          context.actionQueryKey,
+          context.previousWorkflowActions,
+        );
+      }
     },
   });
 };
@@ -114,7 +142,8 @@ const updateWorkflow = async ({ id, payload }: UpdateWorkflow) => {
     .from('workflow')
     .update(payload)
     .eq('id', id)
-    .select();
+    .select()
+    .single();
   if (error) throw new Error(error.message);
   return data;
 };

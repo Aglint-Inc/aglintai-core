@@ -4,14 +4,10 @@
   height: 30px;
   justify-content: center;
   align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
 
   border-radius: var(--radius-4);
 
-  background-color: var(--white);
-
-  color: var(--sky-11);
+  background-color: var(--neutral-3);
 
   cursor: pointer;
 }
@@ -134,4 +130,13 @@
 .icons.start {
   justify-content: center;
   align-items: flex-start;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
 }

@@ -257,6 +257,15 @@
   align-items: flex-start;
 }
 
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
 .avatar-play-puase-wrap {
   position: absolute;
   left: auto;

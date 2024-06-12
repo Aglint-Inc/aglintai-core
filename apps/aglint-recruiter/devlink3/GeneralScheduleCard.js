@@ -2,13 +2,15 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import { EditOptionModule } from "./EditOptionModule";
 import { AddScheduleCard } from "./AddScheduleCard";
 import * as _utils from "./utils";
 import _styles from "./GeneralScheduleCard.module.css";
 
 const _interactionsData = JSON.parse(
-  '{"events":{"e-35":{"id":"e-35","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-19","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-36"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"b6652d53-78c1-0f96-30a0-40aa8431d39a","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"b6652d53-78c1-0f96-30a0-40aa8431d39a","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1711953151594},"e-36":{"id":"e-36","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-20","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-35"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"b6652d53-78c1-0f96-30a0-40aa8431d39a","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"b6652d53-78c1-0f96-30a0-40aa8431d39a","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1711953151594},"e-41":{"id":"e-41","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-19","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-42"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"1203848f-846a-68b4-5b32-d1ae8200d234","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"1203848f-846a-68b4-5b32-d1ae8200d234","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1712829112157},"e-42":{"id":"e-42","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-20","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-41"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"1203848f-846a-68b4-5b32-d1ae8200d234","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"1203848f-846a-68b4-5b32-d1ae8200d234","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1712829112158},"e-45":{"id":"e-45","name":"","animationType":"preset","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-25","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-46"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"a3dd66ab-b625-b411-593b-d8d3a0dcaf83","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"a3dd66ab-b625-b411-593b-d8d3a0dcaf83","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1712832309435},"e-46":{"id":"e-46","name":"","animationType":"preset","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-26","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-45"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"a3dd66ab-b625-b411-593b-d8d3a0dcaf83","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"a3dd66ab-b625-b411-593b-d8d3a0dcaf83","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1712832309435},"e-47":{"id":"e-47","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-19","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-48"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"fa39f503-e285-8ca8-e1d3-b0b7549642dd","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"fa39f503-e285-8ca8-e1d3-b0b7549642dd","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1712915751014},"e-48":{"id":"e-48","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-20","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-47"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"fa39f503-e285-8ca8-e1d3-b0b7549642dd","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"fa39f503-e285-8ca8-e1d3-b0b7549642dd","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1712915751015}},"actionLists":{"a-19":{"id":"a-19","title":"option schedule hover in","actionItemGroups":[{"actionItems":[{"id":"a-19-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":"none"}},{"id":"a-19-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-19-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":"block"}},{"id":"a-19-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":true,"createdOn":1711953157238},"a-20":{"id":"a-20","title":"option schedule hover out","actionItemGroups":[{"actionItems":[{"id":"a-20-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":0,"unit":""}},{"id":"a-20-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":300,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1711953157238},"a-25":{"id":"a-25","title":"option schedule hover in 2","actionItemGroups":[{"actionItems":[{"id":"a-25-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":"none"}},{"id":"a-25-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-25-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":"block"}},{"id":"a-25-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":true,"createdOn":1711953157238},"a-26":{"id":"a-26","title":"option schedule hover out 2","actionItemGroups":[{"actionItems":[{"id":"a-26-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":0,"unit":""}},{"id":"a-26-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":300,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1711953157238}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+  '{"events":{"e-35":{"id":"e-35","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-19","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-36"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"b6652d53-78c1-0f96-30a0-40aa8431d39a","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"b6652d53-78c1-0f96-30a0-40aa8431d39a","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1711953151594},"e-36":{"id":"e-36","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-20","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-35"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"b6652d53-78c1-0f96-30a0-40aa8431d39a","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"b6652d53-78c1-0f96-30a0-40aa8431d39a","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1711953151594},"e-45":{"id":"e-45","name":"","animationType":"preset","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-25","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-46"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"a3dd66ab-b625-b411-593b-d8d3a0dcaf83","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"a3dd66ab-b625-b411-593b-d8d3a0dcaf83","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1712832309435},"e-46":{"id":"e-46","name":"","animationType":"preset","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-26","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-45"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"a3dd66ab-b625-b411-593b-d8d3a0dcaf83","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"a3dd66ab-b625-b411-593b-d8d3a0dcaf83","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1712832309435},"e-47":{"id":"e-47","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-19","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-48"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"fa39f503-e285-8ca8-e1d3-b0b7549642dd","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"fa39f503-e285-8ca8-e1d3-b0b7549642dd","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1712915751014},"e-48":{"id":"e-48","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-20","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-47"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"fa39f503-e285-8ca8-e1d3-b0b7549642dd","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"fa39f503-e285-8ca8-e1d3-b0b7549642dd","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1712915751015},"e-81":{"id":"e-81","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-19","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-82"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"81140247-8670-8afa-be02-2d78ca36a57e"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718027263031},"e-82":{"id":"e-82","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-20","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-81"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"81140247-8670-8afa-be02-2d78ca36a57e"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718027263032}},"actionLists":{"a-19":{"id":"a-19","title":"option schedule hover in","actionItemGroups":[{"actionItems":[{"id":"a-19-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":"none"}},{"id":"a-19-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-19-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":"block"}},{"id":"a-19-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":true,"createdOn":1711953157238},"a-20":{"id":"a-20","title":"option schedule hover out","actionItemGroups":[{"actionItems":[{"id":"a-20-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":0,"unit":""}},{"id":"a-20-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":300,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1711953157238},"a-25":{"id":"a-25","title":"option schedule hover in 2","actionItemGroups":[{"actionItems":[{"id":"a-25-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":"none"}},{"id":"a-25-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-25-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":"block"}},{"id":"a-25-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":true,"createdOn":1711953157238},"a-26":{"id":"a-26","title":"option schedule hover out 2","actionItemGroups":[{"actionItems":[{"id":"a-26-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":0,"unit":""}},{"id":"a-26-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":300,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".sloteditoptions","selectorGuids":["85d382d5-45c9-d0d9-26ad-438675b051ba"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1711953157238}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
 );
 
 export function GeneralScheduleCard({
@@ -40,7 +42,7 @@ export function GeneralScheduleCard({
   isTraineesVisible = true,
   isInterviewersVisible = true,
   isLinkVisilble = true,
-  isHeaderTitleVisible = false,
+  isHeaderTitleVisible = true,
   isCardSelected = false,
   slotAddScheduleCard,
   isAddCardVisible = false,
@@ -57,24 +59,21 @@ export function GeneralScheduleCard({
   _interactions.useInteractions(_interactionsData, _styles);
 
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1323")} tag="div">
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1297")}
-        tag="div"
-      >
+    <_Component className={_utils.cx(_styles, "gsc-wrapper")} tag="div">
+      <_Builtin.Block className={_utils.cx(_styles, "gsc-wrap")} tag="div">
         {isHeaderTitleVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1309")}
+            className={_utils.cx(_styles, "gsc-header-space")}
             tag="div"
           />
         ) : null}
         {isHeaderTitleVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1308")}
+            className={_utils.cx(_styles, "gsc-header-wrap")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1298")}
+              className={_utils.cx(_styles, "gsc-header-title")}
               tag="div"
             >
               <_Builtin.Block tag="div">
@@ -97,15 +96,10 @@ export function GeneralScheduleCard({
                   />
                 ) : null}
               </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                tag="div"
-              >
-                {textModuleName}
-              </_Builtin.Block>
+              <Text content={textModuleName} weight="medium" />
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1310")}
+              className={_utils.cx(_styles, "gsc-header-right")}
               tag="div"
             >
               <_Builtin.HtmlEmbed
@@ -123,11 +117,11 @@ export function GeneralScheduleCard({
         ) : null}
         {isSubHeaderVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1299")}
+            className={_utils.cx(_styles, "gsc-module-wrap")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1298")}
+              className={_utils.cx(_styles, "gsc-header-title")}
               tag="div"
             >
               <_Builtin.Block tag="div">
@@ -150,13 +144,10 @@ export function GeneralScheduleCard({
                   />
                 ) : null}
               </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                tag="div"
-              >
-                {textModuleName}
+              <Text content={textModuleName} weight="medium" />
+              <_Builtin.Block tag="div">
+                {slotStatusPill ?? <SlotComp componentNeme="Candiate" />}
               </_Builtin.Block>
-              <_Builtin.Block tag="div">{slotStatusPill}</_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "three-dot-wrap")}
@@ -180,50 +171,52 @@ export function GeneralScheduleCard({
           </_Builtin.Block>
         ) : null}
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1302")}
+          className={_utils.cx(_styles, "gsc-date-wrap")}
           tag="div"
         >
           {isTimingVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1300")}
+              className={_utils.cx(_styles, "gsc-time-wrap")}
               tag="div"
             >
               <_Builtin.HtmlEmbed
                 className={_utils.cx(_styles, "icons")}
                 value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M10.875%206C10.875%205.10938%2010.6562%204.29688%2010.2188%203.5625C9.79688%202.82813%209.20312%202.23437%208.4375%201.78125C7.67188%201.34375%206.85938%201.125%206%201.125C5.14062%201.125%204.32812%201.34375%203.5625%201.78125C2.79688%202.23437%202.20312%202.82813%201.78125%203.5625C1.34375%204.29688%201.125%205.10938%201.125%206C1.125%206.89062%201.34375%207.70312%201.78125%208.4375C2.20312%209.17188%202.79688%209.76562%203.5625%2010.2188C4.32812%2010.6562%205.14062%2010.875%206%2010.875C6.85938%2010.875%207.67188%2010.6562%208.4375%2010.2188C9.20312%209.76562%209.79688%209.17188%2010.2188%208.4375C10.6562%207.70312%2010.875%206.89062%2010.875%206ZM0%206C0.015625%204.90625%200.28125%203.90625%200.796875%203C1.32812%202.09375%202.0625%201.35938%203%200.796875C3.95312%200.265625%204.95312%200%206%200C7.04688%200%208.04688%200.265625%209%200.796875C9.9375%201.35938%2010.6719%202.09375%2011.2031%203C11.7188%203.90625%2011.9844%204.90625%2012%206C11.9844%207.09375%2011.7188%208.09375%2011.2031%209C10.6719%209.90625%209.9375%2010.6406%209%2011.2031C8.04688%2011.7344%207.04688%2012%206%2012C4.95312%2012%203.95312%2011.7344%203%2011.2031C2.0625%2010.6406%201.32812%209.90625%200.796875%209C0.28125%208.09375%200.015625%207.09375%200%206ZM5.4375%202.8125C5.46875%202.46875%205.65625%202.28125%206%202.25C6.34375%202.28125%206.53125%202.46875%206.5625%202.8125V5.69531L8.55469%207.03125C8.83594%207.25%208.89062%207.50781%208.71875%207.80469C8.5%208.08594%208.24219%208.14062%207.94531%207.96875L5.69531%206.46875C5.52344%206.35938%205.4375%206.20312%205.4375%206V2.8125Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
               />
-              <_Builtin.Block tag="div">{textTiming}</_Builtin.Block>
+              <Text content={textTiming} weight="" />
             </_Builtin.Block>
           ) : null}
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1300")}
+            className={_utils.cx(_styles, "gsc-time-wrap")}
             tag="div"
           >
             <_Builtin.HtmlEmbed
               className={_utils.cx(_styles, "icons")}
               value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M10.875%206C10.875%205.10938%2010.6562%204.29688%2010.2188%203.5625C9.79688%202.82813%209.20312%202.23437%208.4375%201.78125C7.67188%201.34375%206.85938%201.125%206%201.125C5.14062%201.125%204.32812%201.34375%203.5625%201.78125C2.79688%202.23437%202.20312%202.82813%201.78125%203.5625C1.34375%204.29688%201.125%205.10938%201.125%206C1.125%206.89062%201.34375%207.70312%201.78125%208.4375C2.20312%209.17188%202.79688%209.76562%203.5625%2010.2188C4.32812%2010.6562%205.14062%2010.875%206%2010.875C6.85938%2010.875%207.67188%2010.6562%208.4375%2010.2188C9.20312%209.76562%209.79688%209.17188%2010.2188%208.4375C10.6562%207.70312%2010.875%206.89062%2010.875%206ZM0%206C0.015625%204.90625%200.28125%203.90625%200.796875%203C1.32812%202.09375%202.0625%201.35938%203%200.796875C3.95312%200.265625%204.95312%200%206%200C7.04688%200%208.04688%200.265625%209%200.796875C9.9375%201.35938%2010.6719%202.09375%2011.2031%203C11.7188%203.90625%2011.9844%204.90625%2012%206C11.9844%207.09375%2011.7188%208.09375%2011.2031%209C10.6719%209.90625%209.9375%2010.6406%209%2011.2031C8.04688%2011.7344%207.04688%2012%206%2012C4.95312%2012%203.95312%2011.7344%203%2011.2031C2.0625%2010.6406%201.32812%209.90625%200.796875%209C0.28125%208.09375%200.015625%207.09375%200%206ZM5.4375%202.8125C5.46875%202.46875%205.65625%202.28125%206%202.25C6.34375%202.28125%206.53125%202.46875%206.5625%202.8125V5.69531L8.55469%207.03125C8.83594%207.25%208.89062%207.50781%208.71875%207.80469C8.5%208.08594%208.24219%208.14062%207.94531%207.96875L5.69531%206.46875C5.52344%206.35938%205.4375%206.20312%205.4375%206V2.8125Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
             />
-            <_Builtin.Block tag="div">{textDuration}</_Builtin.Block>
+            <Text content={textDuration} weight="" />
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1301")}
+            className={_utils.cx(_styles, "gsc-meeting-wrap")}
             tag="div"
           >
-            <_Builtin.Block tag="div">{slotPlatformIcon}</_Builtin.Block>
-            <_Builtin.Block tag="div">{textPlatformName}</_Builtin.Block>
+            <_Builtin.Block tag="div">
+              {slotPlatformIcon ?? <SlotComp componentNeme="Icon" />}
+            </_Builtin.Block>
+            <Text content={textPlatformName} weight="" />
           </_Builtin.Block>
         </_Builtin.Block>
         {isLinkVisilble ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1306")}
+            className={_utils.cx(_styles, "gsc-module-link-wrap")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1307", "cursor-pointer")}
+              className={_utils.cx(_styles, "gsc-module-link")}
               tag="div"
               {...onClickLink}
             >
-              <_Builtin.Block tag="div">{textLink}</_Builtin.Block>
+              <Text content={textLink} weight="" />
               <_Builtin.HtmlEmbed
                 className={_utils.cx(_styles, "icons")}
                 value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M7.875%200H11.625C11.8594%200.015625%2011.9844%200.140625%2012%200.375V4.125C11.9844%204.35938%2011.8594%204.48438%2011.625%204.5C11.3906%204.48438%2011.2656%204.35938%2011.25%204.125V1.28906L5.50781%207.00781C5.33594%207.16406%205.16406%207.16406%204.99219%207.00781C4.83594%206.83594%204.83594%206.66406%204.99219%206.49219L10.7109%200.75H7.875C7.64062%200.734375%207.51562%200.609375%207.5%200.375C7.51562%200.140625%207.64062%200.015625%207.875%200ZM1.5%200.75H4.875C5.10938%200.765625%205.23438%200.890625%205.25%201.125C5.23438%201.35938%205.10938%201.48437%204.875%201.5H1.5C1.28125%201.5%201.10156%201.57031%200.960938%201.71094C0.820312%201.85156%200.75%202.03125%200.75%202.25V10.5C0.75%2010.7188%200.820312%2010.8984%200.960938%2011.0391C1.10156%2011.1797%201.28125%2011.25%201.5%2011.25H9.75C9.96875%2011.25%2010.1484%2011.1797%2010.2891%2011.0391C10.4297%2010.8984%2010.5%2010.7188%2010.5%2010.5V7.125C10.5156%206.89062%2010.6406%206.76562%2010.875%206.75C11.1094%206.76562%2011.2344%206.89062%2011.25%207.125V10.5C11.2344%2010.9219%2011.0859%2011.2734%2010.8047%2011.5547C10.5234%2011.8359%2010.1719%2011.9844%209.75%2012H1.5C1.07812%2011.9844%200.726562%2011.8359%200.445312%2011.5547C0.164062%2011.2734%200.015625%2010.9219%200%2010.5V2.25C0.015625%201.82812%200.164062%201.47656%200.445312%201.19531C0.726562%200.914062%201.07812%200.765625%201.5%200.75Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
@@ -233,78 +226,60 @@ export function GeneralScheduleCard({
         ) : null}
         {isInterviewersVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1303")}
+            className={_utils.cx(_styles, "gsc-interviewer-wrap")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1305")}
+              className={_utils.cx(_styles, "gsc-interviewer-head")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                tag="div"
-              >
-                {textInterviewers}
-              </_Builtin.Block>
+              <Text content={textInterviewers} weight="medium" />
               {isTextSelectedVisible ? (
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-grey-600")}
-                  tag="div"
-                >
-                  {textSelected}
+                <_Builtin.Block tag="div">
+                  <Text content={textSelected} weight="" color="neutral" />
                 </_Builtin.Block>
               ) : null}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1304")}
+              className={_utils.cx(_styles, "gsc-slot-candidate")}
               tag="div"
             >
-              {slotInterviewers}
+              {slotInterviewers ?? <SlotComp componentNeme="Candiate" />}
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
         {isTraineesVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1303")}
+            className={_utils.cx(_styles, "gsc-interviewer-wrap")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1305")}
+              className={_utils.cx(_styles, "gsc-interviewer-head")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                tag="div"
-              >
-                {textTrainees}
-              </_Builtin.Block>
+              <Text content={textTrainees} weight="medium" />
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1304")}
+              className={_utils.cx(_styles, "gsc-slot-candidate")}
               tag="div"
             >
-              {slotTrainees}
+              {slotTrainees ?? <SlotComp componentNeme="Candiate" />}
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
         {isRolesvisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1303")}
+            className={_utils.cx(_styles, "gsc-interviewer-wrap")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1305")}
+              className={_utils.cx(_styles, "gsc-interviewer-head")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                tag="div"
-              >
-                {"Roles"}
-              </_Builtin.Block>
+              <Text weight="medium" content="Roles" />
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1304")}
+              className={_utils.cx(_styles, "gsc-slot-candidate")}
               tag="div"
             >
               {slotRoles}
@@ -313,59 +288,47 @@ export function GeneralScheduleCard({
         ) : null}
         {isMembersVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1303")}
+            className={_utils.cx(_styles, "gsc-interviewer-wrap")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1305")}
+              className={_utils.cx(_styles, "gsc-interviewer-head")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                tag="div"
-              >
-                {textMembers}
-              </_Builtin.Block>
+              <Text content={textMembers} weight="medium" />
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1304")}
+              className={_utils.cx(_styles, "gsc-slot-candidate")}
               tag="div"
             >
-              {slotMembers}
+              {slotMembers ?? <SlotComp componentNeme="Candiate" />}
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
         {isScheduleNowVisible ? (
-          <_Builtin.Block tag="div">
+          <_Builtin.Block
+            className={_utils.cx(_styles, "gsc-shedule-btn-wrap")}
+            tag="div"
+          >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1328")}
+              className={_utils.cx(_styles, "gsc-schedule-btn")}
               tag="div"
+              {...onClickScheduleNow}
             >
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "text-blue-500",
-                  "text-underline",
-                  "cursor-pointer"
-                )}
-                tag="div"
-                {...onClickScheduleNow}
-              >
-                {"Schedule Now"}
-              </_Builtin.Block>
+              <Text content="" weight="" color="accent" />
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
       </_Builtin.Block>
       {isCardSelected ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1322")}
+          className={_utils.cx(_styles, "gsc-atctive")}
           tag="div"
         />
       ) : null}
       {isBreakCardVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1352")}
+          className={_utils.cx(_styles, "gsc-break-wrapper")}
           tag="div"
         >
           {slotBreakCard}

@@ -13,19 +13,24 @@ export function RecentDeclineList({
   textName = "Kristin Watson",
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1779")} tag="div">
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1780")}
-        tag="div"
-      >
-        {slotImage}
+    <_Component className={_utils.cx(_styles, "decline_list")} tag="div">
+      <_Builtin.Block className={_utils.cx(_styles, "avatar_40")} tag="div">
+        {slotImage ?? (
+          <_Builtin.Image
+            loading="lazy"
+            width="auto"
+            height="auto"
+            alt=""
+            src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d8b0e9a0e9f0451bc3536c_user2.png"
+          />
+        )}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1781")}
+        className={_utils.cx(_styles, "decline_details")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1778")}
+          className={_utils.cx(_styles, "decline_user_details")}
           tag="div"
         >
           <_Builtin.Block
@@ -42,11 +47,16 @@ export function RecentDeclineList({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1777")}
+          className={_utils.cx(_styles, "decline_reason")}
           tag="div"
         >
           <_Builtin.Block tag="div">{textDesc}</_Builtin.Block>
-          <_Builtin.Block tag="div">{slotIcon}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "slot_for_icon")}
+            tag="div"
+          >
+            {slotIcon}
+          </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

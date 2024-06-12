@@ -145,24 +145,11 @@
   align-items: flex-start;
 }
 
-.text-blue-600 {
-  color: var(--blue600-aad8d97e);
-}
-
-.text-underline {
+.icons.cursor-pointer {
   transition: all 250ms ease;
-  text-decoration: underline;
   cursor: pointer;
 }
 
-.text-underline:hover {
-  opacity: 0.7;
-}
-
-.text-blue-600.ml-8 {
-  margin-left: 8px;
-}
-
-.fw-semibold {
-  font-weight: 600;
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
 }

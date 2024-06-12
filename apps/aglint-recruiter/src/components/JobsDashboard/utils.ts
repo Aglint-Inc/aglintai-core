@@ -1,4 +1,4 @@
-import { JobApplcationDB } from '@aglint/shared-types';
+import { DatabaseTable, JobApplcationDB } from '@aglint/shared-types';
 import dayjs from 'dayjs';
 
 import { selectJobApplicationQuery } from '@/src/apiUtils/job/jobApplications/read/utils';
@@ -56,10 +56,43 @@ export function filterApplicationsByStatus(
   }
 }
 
+export const getBgColorJobsList = (
+  status: DatabaseTable['public_jobs']['status'],
+) => {
+  if (status === 'draft') {
+    return StatusColor.draft.bgColor;
+  } else if (status === 'published') {
+    return StatusColor.published.bgColor;
+  } else if (status === 'closed') {
+    return StatusColor.closed.bgColor;
+  }
+};
+
+export const getTextColorJobsList = (
+  status: DatabaseTable['public_jobs']['status'],
+) => {
+  if (status === 'draft') {
+    return StatusColor.draft.textColor;
+  } else if (status === 'published') {
+    return StatusColor.published.textColor;
+  } else if (status === 'closed') {
+    return StatusColor.closed.textColor;
+  }
+};
+
 export const StatusColor = Object.freeze({
-  inactive: '#ED8F1C',
-  active: '#228F67',
-  closed: '#D93F4C',
+  draft: {
+    bgColor: 'var(--warning-3)',
+    textColor: 'var(--warning-11)',
+  },
+  published: {
+    bgColor: 'var(--success-3)',
+    textColor: 'var(--success-11)',
+  },
+  closed: {
+    bgColor: 'var(--error-3)',
+    textColor: 'var(--error-11)',
+  },
 });
 
 export function calculateTimeDifference(postedDate) {

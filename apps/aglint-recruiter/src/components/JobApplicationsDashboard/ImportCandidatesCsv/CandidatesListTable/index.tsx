@@ -1,6 +1,5 @@
 import { Stack, Typography } from '@mui/material';
 
-import Icon from '@/src/components/Common/Icons/Icon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
@@ -9,9 +8,9 @@ function CandidatesListTable({ importedCandidate }) {
   console.log('importedCandidate', importedCandidate);
   return (
     <Stack
-      borderRadius={'10px'}
-      border={'1px solid '}
-      borderColor={'grey.200'}
+      borderRadius={'var(--radius-4)'}
+      border={'1px solid'}
+      borderColor='var(--neutral-6)'
       height={'100%'}
       overflow={'scroll'}
     >
@@ -38,13 +37,13 @@ export default CandidatesListTable;
 function TableHeader() {
   return (
     <Stack
-      bgcolor={'grey.100'}
-      py={'10px'}
-      px={'20px'}
+      bgcolor= {'var(--neutral-7)'}
+      py={'var(--space-2)'}
+      px={'var(--space-5)'}
       justifyContent={'left'}
       direction={'row'}
       alignItems={'center'}
-      spacing={'5px'}
+      spacing={'var(--space-1)'}
       position={'sticky'}
       top={0}
       zIndex={2}
@@ -57,7 +56,7 @@ function TableHeader() {
             width={`${100 / 3}%`}
             direction={'row'}
             alignItems={'center'}
-            spacing={'5px'}
+            spacing={'var(--space-1)'}
           >
             {icon}
             <Typography variant='body1'>{heading}</Typography>
@@ -71,18 +70,18 @@ function TableHeader() {
 const headerObject = [
   {
     heading: 'Candidate',
-    icon: <Icon variant='Person' width='14' height='14' />,
+    icon: <span icon-size='md' icon-color='neutral-9'>account_circle</span>,
   },
-  { heading: 'Email', icon: <Icon variant='Mail' width='14' height='14' /> },
-  { heading: 'Phone', icon: <Icon variant='phone' width='14' height='14' /> },
+  { heading: 'Email', icon: <span icon-size='md' icon-color='neutral-9'>email</span> },
+  { heading: 'Phone', icon: <span icon-size='md' icon-color='neutral-9'>phone</span> },
 ];
 
 function TableRow({ name, email, phone, profile_image, index }) {
   return (
     <Stack
       key={index}
-      py={'4px'}
-      px={'20px'}
+      py={'var(--space-1)'}
+      px={'var(--space-5)'}
       justifyContent={'left'}
       direction={'row'}
       alignItems={'center'}
@@ -92,7 +91,7 @@ function TableRow({ name, email, phone, profile_image, index }) {
         width={`${100 / 3}%`}
         direction={'row'}
         alignItems={'center'}
-        spacing={'5px'}
+        spacing={'var(--space-1)'}
       >
         <MuiAvatar
           src={profile_image}
@@ -114,7 +113,7 @@ function TableRow({ name, email, phone, profile_image, index }) {
         variant='body1'
         className='one-line-clamp'
         width={`${100 / 3}%`}
-        pl={'10px'}
+        pl={'var(--space-2)'}
       >
         {phone}
       </Typography>

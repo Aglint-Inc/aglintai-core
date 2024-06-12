@@ -78,14 +78,14 @@ export default forwardRef((props: any, ref) => {
     },
   }));
   return (
-    <Stack spacing={'10px'} id='list-popup' className='items'>
+    <Stack spacing={'var(--space-2)'} id='list-popup' className='items'>
       {listOfUsers.length ? (
         listOfUsers.map((item, index) => {
           return (
             <Stack
               className={`item ${index === selectedIndex ? 'is-selected' : ''}`}
               direction={'row'}
-              spacing={'8px'}
+              spacing={'var(--space-2)'}
               key={index}
               onClick={() => {
                 selectItem(index);
@@ -97,7 +97,7 @@ export default forwardRef((props: any, ref) => {
             >
               <ShowCode>
                 <ShowCode.When isTrue={item.first_name === 'email'}>
-                  <Stack spacing={'5px'} direction={'column'}>
+                  <Stack spacing={'var(--space-1)'} direction={'column'}>
                     {/* <Typography variant='body1'>Agents</Typography> */}
                     <AgentPill
                       isEmailAgentVisible
@@ -106,7 +106,7 @@ export default forwardRef((props: any, ref) => {
                   </Stack>
                 </ShowCode.When>
                 <ShowCode.When isTrue={item.first_name === 'phone'}>
-                  <Stack spacing={'5px'} direction={'column'}>
+                  <Stack spacing={'var(--space-1)'} direction={'column'}>
                     <AgentPill
                       isPhoneAgentVisible
                       isEmailAgentVisible={false}
@@ -166,10 +166,10 @@ export default forwardRef((props: any, ref) => {
 //     sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
 //     {...props}
 //   >
-//     <Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
+//     <Stack direction={'row'} alignItems={'center'} spacing={'var(--space-2)'}>
 //       <MuiAvatar
-//         height={'30px'}
-//         width={'30px'}
+//         height={'var(--space-6)'}
+//         width={'var(--space-6)'}
 //         src={option.profile_image}
 //         variant='circular'
 //         fontSize='14px'

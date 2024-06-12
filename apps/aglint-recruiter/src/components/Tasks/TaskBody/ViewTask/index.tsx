@@ -132,21 +132,17 @@ function ViewTaskDrawer() {
       setDisablePrev(true);
     }
   }
-  const { pressed: shift } = useKeyPress('Shift');
-  const { pressed: right } = useKeyPress('ArrowRight');
-  const { pressed: left } = useKeyPress('ArrowLeft');
-
-  const leftShift = shift && left;
-  const rightShift = shift && right;
-
+  const { pressed: up } = useKeyPress('ArrowUp');
+  const { pressed: down } = useKeyPress('ArrowDown');
+  
   useEffect(() => {
-    if (leftShift) {
+    if (up) {
       prevTask();
     }
-    if (rightShift) {
+    if (down) {
       nextTask();
     }
-  }, [leftShift, rightShift]);
+  }, [up, down]);
   return (
     <Drawer
       anchor={'right'}
@@ -226,12 +222,12 @@ function ViewTaskDrawer() {
                 sx={{
                   '& .MuiInputBase-root': {
                     border: 'none',
-                    fontSize: '18px',
-                    lineHeight: '24px',
-                    fontWeight: 400,
-                    padding: '10px',
-                    bgcolor: '#F7F9FB',
-                    borderRadius: '10px',
+                    fontSize: 'var(--font-size-3)',
+                    lineHeight: 'var(--line-height-3)',
+                    fontWeight: 500,
+                    padding: 'var(--space-2)',
+                    bgcolor: 'var(--neutral-2)',
+                    borderRadius: 'var(--radius-4)',
                   },
                 }}
               />

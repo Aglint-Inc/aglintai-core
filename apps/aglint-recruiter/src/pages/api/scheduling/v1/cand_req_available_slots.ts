@@ -10,7 +10,7 @@ import {
   InterviewSessionTypeDB,
   TimeDurationType,
 } from '@aglint/shared-types';
-import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
+import { ScheduleUtils, SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
@@ -19,7 +19,6 @@ import {
   DEFAULT_CANDIDATE_REQ_END_HOUR,
   DEFAULT_CANDIDATE_REQ_START_HOUR,
 } from '@/src/services/CandidateScheduleV2/utils/constants';
-import { ScheduleUtils } from '@/src/services/CandidateScheduleV2/utils/ScheduleUtils';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -56,11 +55,13 @@ const candReqAvailability = (payload: CandReqAvailableSlots) => {
     false,
   );
   const slot_start_hr =
-    payload.options?.cand_start_hour ?? DEFAULT_CANDIDATE_REQ_START_HOUR;
+    payload.options?.cand_start_time ?? DEFAULT_CANDIDATE_REQ_START_HOUR;
   const slot_end_hr =
-    payload.options?.cand_end_hour ?? DEFAULT_CANDIDATE_REQ_END_HOUR;
-  const show_slots_saturday = payload.options?.show_slots_saturday ?? false;
-  const show_slots_sunday = payload.options?.show_slots_sunday ?? false;
+    payload.options?.cand_end_time ?? DEFAULT_CANDIDATE_REQ_END_HOUR;
+  const show_slots_saturday =
+    payload.options?.include_conflicting_slots.holiday ?? false;
+  const show_slots_sunday =
+    payload.options?.include_conflicting_slots.holiday ?? false;
   const DaysOfWeek = Object.freeze({
     SUNDAY: 'Sunday',
     MONDAY: 'Monday',

@@ -14,4 +14,8 @@ declare function ButtonGhost(props: {
   isDisabled?: Types.Visibility.VisibilityConditions;
   textButton?: React.ReactNode;
   isLoading?: Types.Visibility.VisibilityConditions;
+  iconName?: React.ReactNode;
+  iconSize?: Types.Builtin.Text;
+  iconWeight?: Types.Builtin.Text;
+  iconColor?: Types.Builtin.Text;
 }): React.JSX.Element;

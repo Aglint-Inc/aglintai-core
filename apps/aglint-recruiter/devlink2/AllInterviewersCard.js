@@ -2,12 +2,13 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { Text } from "./Text";
 import { TextWithBg } from "./TextWithBg";
 import * as _utils from "./utils";
 import _styles from "./AllInterviewersCard.module.css";
 
 const _interactionsData = JSON.parse(
-  '{"events":{"e-137":{"id":"e-137","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-85","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-138"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"d90102db-2448-6082-c083-bf89f27582aa","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"d90102db-2448-6082-c083-bf89f27582aa","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1710828779825},"e-138":{"id":"e-138","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-86","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-137"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"d90102db-2448-6082-c083-bf89f27582aa","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"d90102db-2448-6082-c083-bf89f27582aa","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1710828779826},"e-139":{"id":"e-139","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-87","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-140"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"6e3919c2-8523-8d3f-f680-865519ba947d","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"6e3919c2-8523-8d3f-f680-865519ba947d","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1710828944804},"e-140":{"id":"e-140","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-88","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-139"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"6e3919c2-8523-8d3f-f680-865519ba947d","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"6e3919c2-8523-8d3f-f680-865519ba947d","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1710828944805},"e-157":{"id":"e-157","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-102","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-158"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"c4667897-cb8f-9265-5bac-ed224495c8eb","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"c4667897-cb8f-9265-5bac-ed224495c8eb","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1715600282313},"e-158":{"id":"e-158","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-103","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-157"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"c4667897-cb8f-9265-5bac-ed224495c8eb","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"c4667897-cb8f-9265-5bac-ed224495c8eb","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1715600282314}},"actionLists":{"a-85":{"id":"a-85","title":"Calender Connected Hover in","actionItemGroups":[{"actionItems":[{"id":"a-85-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1257.connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831","5a39ddc8-62be-9d41-38a9-33681c32c3b3"]},"value":"none"}},{"id":"a-85-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1257.connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831","5a39ddc8-62be-9d41-38a9-33681c32c3b3"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-85-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1257.connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831","5a39ddc8-62be-9d41-38a9-33681c32c3b3"]},"value":1,"unit":""}},{"id":"a-85-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1257.connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831","5a39ddc8-62be-9d41-38a9-33681c32c3b3"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1710828784021},"a-86":{"id":"a-86","title":"Calender Connected Hover in 2","actionItemGroups":[{"actionItems":[{"id":"a-86-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1257.connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831","5a39ddc8-62be-9d41-38a9-33681c32c3b3"]},"value":0,"unit":""}},{"id":"a-86-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":300,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1257.connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831","5a39ddc8-62be-9d41-38a9-33681c32c3b3"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1710828784021},"a-87":{"id":"a-87","title":"Not Connected Hover in","actionItemGroups":[{"actionItems":[{"id":"a-87-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1257.not-connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831","df57ed77-d3cf-8631-c258-1b95891b4019"]},"value":"none"}},{"id":"a-87-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1257.not-connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831","df57ed77-d3cf-8631-c258-1b95891b4019"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-87-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1257.not-connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831","df57ed77-d3cf-8631-c258-1b95891b4019"]},"value":"flex"}},{"id":"a-87-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1257.not-connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831","df57ed77-d3cf-8631-c258-1b95891b4019"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":true,"createdOn":1710828949139},"a-88":{"id":"a-88","title":"Not Connected Hover out","actionItemGroups":[{"actionItems":[{"id":"a-88-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1257.not-connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831","df57ed77-d3cf-8631-c258-1b95891b4019"]},"value":0,"unit":""}},{"id":"a-88-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":300,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1257.not-connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831","df57ed77-d3cf-8631-c258-1b95891b4019"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1710828949139},"a-102":{"id":"a-102","title":"DayoffList Hover in","actionItemGroups":[{"actionItems":[{"id":"a-102-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".icons.cursor-pointer","selectorGuids":["5c1ff90f-c25e-3e90-5136-413a42443347","8e4a5d52-1f4a-3e53-b493-ac8867e2388c"]},"value":0,"unit":""}},{"id":"a-102-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".icons.cursor-pointer","selectorGuids":["5c1ff90f-c25e-3e90-5136-413a42443347","8e4a5d52-1f4a-3e53-b493-ac8867e2388c"]},"value":"none"}}]},{"actionItems":[{"id":"a-102-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".icons.cursor-pointer","selectorGuids":["5c1ff90f-c25e-3e90-5136-413a42443347","8e4a5d52-1f4a-3e53-b493-ac8867e2388c"]},"value":1,"unit":""}},{"id":"a-102-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".icons.cursor-pointer","selectorGuids":["5c1ff90f-c25e-3e90-5136-413a42443347","8e4a5d52-1f4a-3e53-b493-ac8867e2388c"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1715600286589},"a-103":{"id":"a-103","title":"DayoffList Hover out","actionItemGroups":[{"actionItems":[{"id":"a-103-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".icons.cursor-pointer","selectorGuids":["5c1ff90f-c25e-3e90-5136-413a42443347","8e4a5d52-1f4a-3e53-b493-ac8867e2388c"]},"value":0,"unit":""}},{"id":"a-103-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":200,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".icons.cursor-pointer","selectorGuids":["5c1ff90f-c25e-3e90-5136-413a42443347","8e4a5d52-1f4a-3e53-b493-ac8867e2388c"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1715600286589}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+  '{"events":{"e-139":{"id":"e-139","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-87","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-140"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"6e3919c2-8523-8d3f-f680-865519ba947d","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"6e3919c2-8523-8d3f-f680-865519ba947d","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1710828944804},"e-140":{"id":"e-140","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-88","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-139"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"6e3919c2-8523-8d3f-f680-865519ba947d","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"6e3919c2-8523-8d3f-f680-865519ba947d","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1710828944805},"e-157":{"id":"e-157","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-102","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-158"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"c4667897-cb8f-9265-5bac-ed224495c8eb","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"c4667897-cb8f-9265-5bac-ed224495c8eb","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1715600282313},"e-158":{"id":"e-158","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-103","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-157"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"c4667897-cb8f-9265-5bac-ed224495c8eb","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"c4667897-cb8f-9265-5bac-ed224495c8eb","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1715600282314},"e-165":{"id":"e-165","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-85","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-166"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"d90102db-2448-6082-c083-bf89f27582aa","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"d90102db-2448-6082-c083-bf89f27582aa","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1717506263962},"e-166":{"id":"e-166","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-86","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-165"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"d90102db-2448-6082-c083-bf89f27582aa","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"d90102db-2448-6082-c083-bf89f27582aa","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1717506263963}},"actionLists":{"a-87":{"id":"a-87","title":"Not Connected Hover in","actionItemGroups":[{"actionItems":[{"id":"a-87-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".interviewer-calender-connected.not-connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831","df57ed77-d3cf-8631-c258-1b95891b4019"]},"value":"none"}},{"id":"a-87-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".interviewer-calender-connected.not-connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831","df57ed77-d3cf-8631-c258-1b95891b4019"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-87-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".interviewer-calender-connected.not-connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831","df57ed77-d3cf-8631-c258-1b95891b4019"]},"value":"flex"}},{"id":"a-87-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".interviewer-calender-connected.not-connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831","df57ed77-d3cf-8631-c258-1b95891b4019"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":true,"createdOn":1710828949139},"a-88":{"id":"a-88","title":"Not Connected Hover out","actionItemGroups":[{"actionItems":[{"id":"a-88-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".interviewer-calender-connected.not-connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831","df57ed77-d3cf-8631-c258-1b95891b4019"]},"value":0,"unit":""}},{"id":"a-88-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":300,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".interviewer-calender-connected.not-connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831","df57ed77-d3cf-8631-c258-1b95891b4019"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1710828949139},"a-102":{"id":"a-102","title":"DayoffList Hover in","actionItemGroups":[{"actionItems":[{"id":"a-102-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".icons.cursor-pointer","selectorGuids":["5c1ff90f-c25e-3e90-5136-413a42443347","8e4a5d52-1f4a-3e53-b493-ac8867e2388c"]},"value":0,"unit":""}},{"id":"a-102-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".icons.cursor-pointer","selectorGuids":["5c1ff90f-c25e-3e90-5136-413a42443347","8e4a5d52-1f4a-3e53-b493-ac8867e2388c"]},"value":"none"}}]},{"actionItems":[{"id":"a-102-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".icons.cursor-pointer","selectorGuids":["5c1ff90f-c25e-3e90-5136-413a42443347","8e4a5d52-1f4a-3e53-b493-ac8867e2388c"]},"value":1,"unit":""}},{"id":"a-102-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".icons.cursor-pointer","selectorGuids":["5c1ff90f-c25e-3e90-5136-413a42443347","8e4a5d52-1f4a-3e53-b493-ac8867e2388c"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1715600286589},"a-103":{"id":"a-103","title":"DayoffList Hover out","actionItemGroups":[{"actionItems":[{"id":"a-103-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".icons.cursor-pointer","selectorGuids":["5c1ff90f-c25e-3e90-5136-413a42443347","8e4a5d52-1f4a-3e53-b493-ac8867e2388c"]},"value":0,"unit":""}},{"id":"a-103-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":200,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".icons.cursor-pointer","selectorGuids":["5c1ff90f-c25e-3e90-5136-413a42443347","8e4a5d52-1f4a-3e53-b493-ac8867e2388c"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1715600286589},"a-85":{"id":"a-85","title":"Calender Connected Hover in","actionItemGroups":[{"actionItems":[{"id":"a-85-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".interviewer-calender-connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831"]},"value":"none"}},{"id":"a-85-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".interviewer-calender-connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-85-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".interviewer-calender-connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831"]},"value":1,"unit":""}},{"id":"a-85-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".interviewer-calender-connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1710828784021},"a-86":{"id":"a-86","title":"Calender Connected Hover in 2","actionItemGroups":[{"actionItems":[{"id":"a-86-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".interviewer-calender-connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831"]},"value":0,"unit":""}},{"id":"a-86-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":300,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".interviewer-calender-connected","selectorGuids":["fc4a13d7-6f1d-f4a4-7df8-98e3e0a25831"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1710828784021}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
 );
 
 export function AllInterviewersCard({
@@ -26,11 +27,11 @@ export function AllInterviewersCard({
 
   return (
     <_Component
-      className={_utils.cx(_styles, "div-block-1143", "", "dec-width")}
+      className={_utils.cx(_styles, "", "all-interviewers-card-wrap")}
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1144")}
+        className={_utils.cx(_styles, "all-interviewers-card-item")}
         id={_utils.cx(
           _styles,
           "w-node-_23fa5a49-b85f-659d-e893-4735fbc243b5-fbc243b4"
@@ -38,36 +39,42 @@ export function AllInterviewersCard({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1145", "width-24")}
+          className={_utils.cx(_styles, "avatar_40")}
           id={_utils.cx(
             _styles,
             "w-node-_23fa5a49-b85f-659d-e893-4735fbc243b6-fbc243b4"
           )}
           tag="div"
         >
-          {slotProfileImage}
+          {slotProfileImage ?? (
+            <_Builtin.Image
+              className={_utils.cx(_styles, "cover_image")}
+              loading="lazy"
+              width="auto"
+              height="auto"
+              alt=""
+              src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg"
+            />
+          )}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1223")}
+          className={_utils.cx(_styles, "interviewers-detail-wrap")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1255")}
+            className={_utils.cx(_styles, "interviewer-name-wrap")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold", "text-first-cap")}
+              className={_utils.cx(_styles, "text-first-cap")}
               tag="div"
             >
-              {textName}
+              <Text content={textName} weight="medium" />
             </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1256")}
-              tag="div"
-            >
+            <_Builtin.Block tag="div">
               {isConnectedCalenderVisible ? (
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-1258")}
+                  className={_utils.cx(_styles, "interviewer-calender-wrap")}
                   data-w-id="d90102db-2448-6082-c083-bf89f27582aa"
                   tag="div"
                 >
@@ -78,18 +85,16 @@ export function AllInterviewersCard({
                   <_Builtin.Block
                     className={_utils.cx(
                       _styles,
-                      "div-block-1257",
-                      "connected"
+                      "interviewer-calender-connected"
                     )}
                     tag="div"
+                    box-shadow="6"
                   >
                     <_Builtin.HtmlEmbed
                       className={_utils.cx(_styles, "icons")}
                       value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6%2012C4.90625%2011.9844%203.90625%2011.7188%203%2011.2031C2.09375%2010.6719%201.35938%209.9375%200.796875%209C0.265625%208.04688%200%207.04688%200%206C0%204.95312%200.265625%203.95313%200.796875%203C1.35938%202.0625%202.09375%201.32813%203%200.796875C3.90625%200.28125%204.90625%200.015625%206%200C7.09375%200.015625%208.09375%200.28125%209%200.796875C9.90625%201.32813%2010.6406%202.0625%2011.2031%203C11.7344%203.95313%2012%204.95312%2012%206C12%207.04688%2011.7344%208.04688%2011.2031%209C10.6406%209.9375%209.90625%2010.6719%209%2011.2031C8.09375%2011.7188%207.09375%2011.9844%206%2012ZM8.64844%204.89844C8.86719%204.63281%208.86719%204.36719%208.64844%204.10156C8.38281%203.88281%208.11719%203.88281%207.85156%204.10156L5.25%206.70312L4.14844%205.60156C3.88281%205.38281%203.61719%205.38281%203.35156%205.60156C3.13281%205.86719%203.13281%206.13281%203.35156%206.39844L4.85156%207.89844C5.11719%208.11719%205.38281%208.11719%205.64844%207.89844L8.64844%204.89844Z%22%20fill%3D%22%23228F67%22%2F%3E%0A%3C%2Fsvg%3E"
                     />
-                    <_Builtin.Block tag="div">
-                      {"Connected to calender"}
-                    </_Builtin.Block>
+                    <Text content="Connected to calendar" weight="" />
                     <_Builtin.HtmlEmbed
                       className={_utils.cx(_styles, "tooltippos", "connected")}
                       value="%3Csvg%20width%3D%2213%22%20height%3D%2212%22%20viewbox%3D%220%200%2013%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6.07609%201.62065C6.27195%201.30751%206.72805%201.3075%206.92391%201.62065L10.7481%207.73486C10.9564%208.06788%2010.717%208.5%2010.3242%208.5H2.67579C2.283%208.5%202.04359%208.06788%202.25188%207.73486L6.07609%201.62065Z%22%20fill%3D%22white%22%20stroke%3D%22%23E9EBED%22%2F%3E%0A%3Crect%20x%3D%221%22%20y%3D%227%22%20width%3D%2211%22%20height%3D%223%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
@@ -99,7 +104,10 @@ export function AllInterviewersCard({
               ) : null}
               {isCalenderNotConnected ? (
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-1259")}
+                  className={_utils.cx(
+                    _styles,
+                    "interviewers-not-connect-wrap"
+                  )}
                   data-w-id="6e3919c2-8523-8d3f-f680-865519ba947d"
                   tag="div"
                 >
@@ -110,18 +118,17 @@ export function AllInterviewersCard({
                   <_Builtin.Block
                     className={_utils.cx(
                       _styles,
-                      "div-block-1257",
+                      "interviewer-calender-connected",
                       "not-connected"
                     )}
                     tag="div"
+                    box-shado="6"
                   >
                     <_Builtin.HtmlEmbed
                       className={_utils.cx(_styles, "icons")}
                       value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6%2012C4.90625%2011.9844%203.90625%2011.7188%203%2011.2031C2.09375%2010.6719%201.35938%209.9375%200.796875%209C0.265625%208.04688%200%207.04688%200%206C0%204.95312%200.265625%203.95313%200.796875%203C1.35938%202.0625%202.09375%201.32813%203%200.796875C3.90625%200.28125%204.90625%200.015625%206%200C7.09375%200.015625%208.09375%200.28125%209%200.796875C9.90625%201.32813%2010.6406%202.0625%2011.2031%203C11.7344%203.95313%2012%204.95312%2012%206C12%207.04688%2011.7344%208.04688%2011.2031%209C10.6406%209.9375%209.90625%2010.6719%209%2011.2031C8.09375%2011.7188%207.09375%2011.9844%206%2012ZM5.0625%207.875C4.71875%207.90625%204.53125%208.09375%204.5%208.4375C4.53125%208.78125%204.71875%208.96875%205.0625%209H6.9375C7.28125%208.96875%207.46875%208.78125%207.5%208.4375C7.46875%208.09375%207.28125%207.90625%206.9375%207.875H6.75V5.8125C6.71875%205.46875%206.53125%205.28125%206.1875%205.25H5.0625C4.71875%205.28125%204.53125%205.46875%204.5%205.8125C4.53125%206.15625%204.71875%206.34375%205.0625%206.375H5.625V7.875H5.0625ZM6%203C5.78125%203%205.60156%203.07031%205.46094%203.21094C5.32031%203.35156%205.25%203.53125%205.25%203.75C5.25%203.96875%205.32031%204.14844%205.46094%204.28906C5.60156%204.42969%205.78125%204.5%206%204.5C6.21875%204.5%206.39844%204.42969%206.53906%204.28906C6.67969%204.14844%206.75%203.96875%206.75%203.75C6.75%203.53125%206.67969%203.35156%206.53906%203.21094C6.39844%203.07031%206.21875%203%206%203Z%22%20fill%3D%22%23ED8F1C%22%2F%3E%0A%3C%2Fsvg%3E"
                     />
-                    <_Builtin.Block tag="div">
-                      {"Not connected to calender"}
-                    </_Builtin.Block>
+                    <Text content="Not connected to calender" />
                     <_Builtin.HtmlEmbed
                       className={_utils.cx(
                         _styles,
@@ -135,33 +142,28 @@ export function AllInterviewersCard({
               ) : null}
             </_Builtin.Block>
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-gray-600")}
-            tag="div"
-          >
-            {textRole}
-          </_Builtin.Block>
+          <Text content={textRole} color="neutral" size="1" weight="" />
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1144", "center")}
+        className={_utils.cx(_styles, "all-interviewers-card-item", "center")}
         id={_utils.cx(
           _styles,
           "w-node-_23fa5a49-b85f-659d-e893-4735fbc243b9-fbc243b4"
         )}
         tag="div"
       >
-        <_Builtin.Block tag="div">{textUpcomingInterviews}</_Builtin.Block>
+        <Text content={textUpcomingInterviews} />
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1144", "center")}
+        className={_utils.cx(_styles, "all-interviewers-card-item", "center")}
         id={_utils.cx(
           _styles,
           "w-node-_23fa5a49-b85f-659d-e893-4735fbc243bc-fbc243b4"
         )}
         tag="div"
       >
-        <_Builtin.Block tag="div">{textCompletedInterviews}</_Builtin.Block>
+        <Text content={textCompletedInterviews} />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "slot-interview-module")}

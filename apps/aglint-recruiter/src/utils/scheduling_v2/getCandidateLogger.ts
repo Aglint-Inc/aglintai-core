@@ -56,7 +56,7 @@ export const getCandidateLogger = (
       };
     }
     if (
-      title_attr['{candidate}'].length === 0 &&
+      title_attr['{candidate}'] &&
       Object.keys(title_attr).includes('{candidate}')
     ) {
       title_attr['{candidate}'] = candidate_name;

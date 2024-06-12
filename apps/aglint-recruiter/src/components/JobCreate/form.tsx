@@ -157,6 +157,7 @@ const JobTitle: FC<MetaForms> = memo(({ name, value, onChange }) => {
     <UITextField
       label={'Job Title'}
       name={name}
+      required
       placeholder={'Ex : Software developer'}
       value={value.value as string}
       error={value.error.value}
@@ -173,6 +174,7 @@ const JobCompany: FC<MetaForms> = memo(({ name, value, onChange }) => {
     <UITextField
       label={'Company'}
       name={name}
+      required
       placeholder={'Ex : Google'}
       value={value.value as string}
       error={value.error.value}
@@ -183,7 +185,7 @@ const JobCompany: FC<MetaForms> = memo(({ name, value, onChange }) => {
           <InputAdornment position='start'>
             <Image
               style={{
-                borderRadius: '4px',
+                borderRadius: 'var(--radius-2)',
                 objectFit: 'contain',
               }}
               alt='building'
@@ -219,6 +221,7 @@ const JobLocation: FC<MetaForms> = memo(({ name, value, onChange }) => {
           name={name}
           rest={{ ...params }}
           label='Job Location'
+          required
           placeholder='Ex. San Fransisco, United States'
           error={value.error.value}
           helperText={value.error.helper}
@@ -338,6 +341,7 @@ const JobCoordinator: FC<MetaForms> = memo(({ name, onChange, value }) => {
       onChange={handleChange}
       label={capitalizeAll(name)}
       menuOptions={options}
+      required={value.required}
       showMenuIcons
       value={value.value}
       error={value.error.value}

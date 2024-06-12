@@ -87,7 +87,7 @@ const Onboarding = ({
             <br />
             <Link
               style={{
-                color: '#337fbd',
+                color: 'var(--accent-11)',
                 textDecoration: 'underline',
               }}
               href='support@aglinthq.com'

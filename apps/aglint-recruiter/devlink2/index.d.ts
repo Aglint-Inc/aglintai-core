@@ -1,9 +1,5 @@
 "use client";
 
-console.warn(
-  "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
-);
-
 export * as _Builtin from "./_Builtin";
 export * from "./devlinkContext";
 export * from "./interactions";
@@ -109,8 +105,15 @@ export * from "./EmptyState";
 export * from "./FilterDropdown";
 export * from "./FilterItem";
 export * from "./FilterList";
+export * from "./FilterPageLayout";
 export * from "./FilterPill";
+export * from "./GlobalIcon";
 export * from "./GreyTextLink";
+export * from "./IconButtonGhost";
+export * from "./IconButtonOutlined";
+export * from "./IconButtonSoft";
+export * from "./IconButtonSolid";
+export * from "./IconButtonSurface";
 export * from "./InlineEmptyBlock";
 export * from "./InsightTagAmbitious";
 export * from "./InsightTagEmpty";

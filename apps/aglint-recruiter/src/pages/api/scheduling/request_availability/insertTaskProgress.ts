@@ -35,7 +35,7 @@ export default async function handler(
           .select()
           .single();
         if (!error) {
-          return progress;
+          return res.send(progress);
         }
       } else {
         return res.send({

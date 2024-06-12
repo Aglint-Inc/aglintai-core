@@ -4,6 +4,8 @@ import type { CustomApplicationLogs } from "./application_logs.types";
 import type { CustomApplications } from "./applications.types";
 import { CustomCandidateFiles } from "./candidate_files";
 import type { CandidateRequestAvailability } from "./candidate_request_availability.type";
+import { CustomInterviewFilterJson } from "./interview_filter_json";
+import { CustomCompanyEmailTemplate } from "./company_email_template.types";
 import type { CustomInterviewSessionCancel } from "./interview_session_cancel.types";
 import type { CustomInterviewSessionRelation } from "./interview_session_relation.types";
 import type { CustomInterviewSession } from "./interview_sessions.types";
@@ -45,5 +47,7 @@ export type Tables = Type<
     application_logs: CustomApplicationLogs;
     candidate_files: CustomCandidateFiles;
     public_jobs: CustomPublicJobs;
+    interview_filter_json: CustomInterviewFilterJson;
+    company_email_template: CustomCompanyEmailTemplate;
   }
 >;

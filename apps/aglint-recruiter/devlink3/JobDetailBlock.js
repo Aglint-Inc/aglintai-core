@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
+import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./JobDetailBlock.module.css";
 
@@ -32,26 +34,16 @@ export function JobDetailBlock({
               className={_utils.cx(_styles, "div-block-507")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                tag="div"
-              >
-                {"Job Details"}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "color-grey-600")}
-                tag="div"
-              >
-                {textDescription}
-              </_Builtin.Block>
+              <Text content="" />
+              <Text content={textDescription} weight="" color="neutral" />
             </_Builtin.Block>
             {isCreate ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "button_primary")}
-                tag="div"
-                {...onClickCreate}
-              >
-                <_Builtin.Block tag="div">{"Create Job"}</_Builtin.Block>
+              <_Builtin.Block tag="div" {...onClickCreate}>
+                <ButtonSolid
+                  onClickButton={onClickCreate}
+                  textButton="Create Job"
+                  size="2"
+                />
               </_Builtin.Block>
             ) : null}
           </_Builtin.Block>
@@ -74,7 +66,7 @@ export function JobDetailBlock({
             className={_utils.cx(_styles, "aeravgaergf", "mb-20")}
             tag="div"
           >
-            <_Builtin.Block tag="div">{"Job Description"}</_Builtin.Block>
+            <Text content="Job Description" />
             <_Builtin.Block
               className={_utils.cx(_styles, "cj-richtext-editor-wrapper")}
               tag="div"
@@ -99,20 +91,8 @@ export function JobDetailBlock({
               className={_utils.cx(_styles, "div-block-507")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                tag="div"
-              >
-                {"Hiring Team"}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "color-grey-600")}
-                tag="div"
-              >
-                {
-                  "Set up and manage roles like hiring managers, recruiters, sourcers, and interview coordinators."
-                }
-              </_Builtin.Block>
+              <Text content="Hiring Team" />
+              <Text content={textDescription} weight="" color="neutral" />
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}

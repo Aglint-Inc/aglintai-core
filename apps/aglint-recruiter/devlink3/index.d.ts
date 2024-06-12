@@ -1,9 +1,5 @@
 "use client";
 
-console.warn(
-  "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
-);
-
 export * as _Builtin from "./_Builtin";
 export * from "./devlinkContext";
 export * from "./interactions";
@@ -52,6 +48,7 @@ export * from "./ChatBlockUser";
 export * from "./ChatNotification";
 export * from "./ChatWindow";
 export * from "./Checkbox";
+export * from "./CloseButton";
 export * from "./CompletedInterviews";
 export * from "./ConfirmScheduleList";
 export * from "./ConfirmScheduleListCard";
@@ -94,8 +91,10 @@ export * from "./FeedbackEmpty";
 export * from "./FeedbackEnabled";
 export * from "./FeedbackTableRow";
 export * from "./FeedbackViewPopup";
+export * from "./FilterItem";
 export * from "./GeneralPopupLarge";
 export * from "./GeneralScheduleCard";
+export * from "./GlobalIcon";
 export * from "./GraphBlock";
 export * from "./GraphButtonOption";
 export * from "./GroupFeedback";
@@ -142,6 +141,7 @@ export * from "./MemberRow";
 export * from "./MembersList";
 export * from "./ModuleCard";
 export * from "./MoreButton";
+export * from "./MultiFilterLayout";
 export * from "./MyFeedbackPopup";
 export * from "./MyScheduleSubCard";
 export * from "./NewChat";

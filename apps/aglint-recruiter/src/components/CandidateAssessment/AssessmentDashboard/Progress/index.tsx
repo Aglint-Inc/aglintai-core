@@ -10,7 +10,7 @@ function Progress({assessmentQuestions,currentProgress}) {
         },
 
         bgcolor: 'blue.200',
-        borderRadius: '30px',
+        borderRadius: '32px',
         height: '6px',
       }}
       classes={{

@@ -23,7 +23,6 @@ import UITypography from '@/src/components/Common/UITypography';
 import { sizes } from '@/src/components/CompanyDetailComp/CompanyInfoComp';
 import { Error1 } from '@/src/components/SignUpComp/SlideDetailsOne';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { addHttps } from '@/src/utils/fetchCompDetails';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { supabase } from '@/src/utils/supabase/client';
@@ -293,7 +292,7 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
                         // direction={'row'}
                         justifyContent={'center'}
                         alignItems={'start'}
-                        spacing={'20px'}
+                        spacing={'var(--space-5)'}
                       >
                         <TextField
                           margin='none'
@@ -334,7 +333,7 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
                             <CircularProgress
                               color='inherit'
                               size={'15px'}
-                              sx={{ color: palette.grey[400] }}
+                              sx={{ color: 'var(--neutral-6)' }}
                             />
                           )
                         }
@@ -370,7 +369,7 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
                         flexDirection={'column'}
                       >
                         <Loader />
-                        <UITypography color='grey.600'>
+                        <UITypography color='var(--neutral-11)'>
                           Hold on, Fetching company info from the website.
                         </UITypography>
                       </Stack>

@@ -1,3 +1,5 @@
+const webpack = require("webpack");
+
 /** @type {import('next').NextConfig} */
 module.exports = {
   // this is needed so that the code for building emails works properly
@@ -9,6 +11,11 @@ module.exports = {
     if (isServer) {
       config.externals.push('esbuild');
     }
+    config.plugins.push(
+      new webpack.NormalModuleReplacementPlugin(/^node:/, (resource) => {
+        resource.request = resource.request.replace(/^node:/, "");
+      })
+    );
 
     return config;
   },
@@ -18,5 +25,5 @@ module.exports = {
   // What is probably happening is that it's noticing the files for the app are somewhere inside of a `node_modules` and automatically opt-outs of SWC's transpilation.
   //
   // TODO: Open an issue on Nextjs about this.
-  transpilePackages: ['react-email']
+  transpilePackages: ['react-email', '@aglint/shared-utils', '@aglint/shared-types'],
 };

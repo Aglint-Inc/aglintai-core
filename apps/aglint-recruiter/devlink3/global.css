@@ -1,3 +1,7 @@
+/* Fonts */
+
+@import url('https://fonts.googleapis.com/css?family=Material+Symbols Rounded:100,200,300,regular,500,600,700&subset=latin');
+
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Set default font family to sans-serif.
@@ -2215,18 +2219,18 @@ textarea.w-select {
   --white-a12: rgba(255, 255, 255, 0.95);
   --white-a11: rgba(255, 255, 255, 0.9);
   --white-a10: rgba(255, 255, 255, 0.8);
-  --white-a9: rgba(255, 255, 255, 0.7);
   --white-a8: rgba(255, 255, 255, 0.6);
+  --white-a3: rgba(255, 255, 255, 0.15);
   --white-a7: rgba(255, 255, 255, 0.5);
-  --white-a6: rgba(255, 255, 255, 0.4);
+  --white-a9: rgba(255, 255, 255, 0.7);
   --white-a5: rgba(255, 255, 255, 0.3);
   --white-a4: rgba(255, 255, 255, 0.2);
-  --white-a3: rgba(255, 255, 255, 0.15);
+  --white-a6: rgba(255, 255, 255, 0.4);
+  --tomato-a2: rgba(255, 32, 0, 0.03);
+  --error-a2: var(--tomato-a2);
   --black-a5: rgba(0, 0, 0, 0.3);
   --yellow-12: #473b1f;
   --warning-12: var(--yellow-12);
-  --tomato-a2: rgba(255, 32, 0, 0.03);
-  --error-a2: var(--tomato-a2);
   --black-a10: rgba(0, 0, 0, 0.8);
   --black-a11: rgba(0, 0, 0, 0.9);
   --white-a2: rgba(255, 255, 255, 0.1);
@@ -2284,36 +2288,60 @@ textarea.w-select {
   --yellow-a2: rgba(244, 221, 0, 0.09);
   --warning-a2: var(--yellow-a2);
   --sky-4: #d1f0fa;
+  --info-4: var(--sky-4);
   --yellow-a3: rgba(255, 238, 0, 0.28);
   --warning-a3: var(--yellow-a3);
   --sky-10: #74daf8;
+  --info-10: var(--sky-10);
   --sky-a12: rgba(0, 37, 64, 0.89);
+  --info-a12: var(--sky-a12);
   --yellow-a1: rgba(170, 170, 0, 0.02);
   --warning-a1: var(--yellow-a1);
   --sky-12: #1d3e56;
+  --info-12: var(--sky-12);
   --yellow-1: #fdfdf9;
   --sky-11: #00749e;
+  --info-11: var(--sky-11);
   --sky-a11: #00749e;
+  --info-a11: var(--sky-a11);
   --sky-a10: rgba(0, 188, 243, 0.55);
+  --info-a10: var(--sky-a10);
   --sky-a9: rgba(0, 199, 254, 0.51);
+  --info-a9: var(--sky-a9);
   --sky-a8: rgba(0, 133, 191, 0.62);
+  --info-a8: var(--sky-a8);
   --sky-9: #7ce2fe;
+  --info-9: var(--sky-9);
   --sky-8: #60b3d7;
+  --info-8: var(--sky-8);
   --sky-a7: rgba(0, 137, 193, 0.45);
+  --info-a7: var(--sky-a7);
   --sky-7: #8dcae3;
+  --info-7: var(--sky-7);
   --sky-a6: rgba(0, 146, 202, 0.34);
+  --info-a6: var(--sky-a6);
   --sky-6: #a9daed;
+  --info-6: var(--sky-6);
   --sky-a5: rgba(0, 161, 216, 0.25);
+  --info-a5: var(--sky-a5);
   --sky-5: #bee7f5;
+  --info-5: var(--sky-5);
   --sky-a4: rgba(0, 172, 228, 0.18);
+  --info-a4: var(--sky-a4);
   --sky-a3: rgba(0, 179, 238, 0.12);
+  --info-a3: var(--sky-a3);
   --sky-3: #e1f6fd;
+  --info-3: var(--sky-3);
   --sky-a2: rgba(0, 164, 219, 0.05);
+  --info-a2: var(--sky-a2);
   --sky-2: #f1fafd;
+  --info-2: var(--sky-2);
   --sky-a1: rgba(0, 213, 255, 0.02);
+  --info-a1: var(--sky-a1);
   --jade-a12: rgba(0, 34, 23, 0.89);
   --success-a12: var(--jade-a12);
   --sky-1: #f9feff;
+  --info-1: var(--sky-1);
   --jade-a11: rgba(0, 113, 82, 0.87);
   --success-a11: var(--jade-a11);
   --jade-a10: rgba(0, 135, 100, 0.85);
@@ -2545,7 +2573,6 @@ textarea.w-select {
   --text: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   --spacing\<deleted\|variable-6272ca72-0103-9b5c-18bd-925d9826d467\>: 2px;
   --grey-600\<deleted\|variable-440e5aa6\>: #68737d;
-  --blue-600\<deleted\|variable-cb1b4518\>: #1f73b7;
   --yellow-prime\<deleted\|variable-5734b54f\>: #ecff58;
 }
 

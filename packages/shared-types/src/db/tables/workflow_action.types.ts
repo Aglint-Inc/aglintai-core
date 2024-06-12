@@ -1,5 +1,5 @@
-import type { CustomEmailTemplate } from "./common.types";
-import type { TableType } from "./index.types";
+import { Database } from "../schema.types";
+import { TableType } from "./index.types";
 
 export type CustomWorkflowAction = TableType<
   "workflow_action",
@@ -8,7 +8,7 @@ export type CustomWorkflowAction = TableType<
   }
 >;
 
-type CustomPayload = {
-  key: keyof CustomEmailTemplate;
-  template: CustomEmailTemplate["application_received"];
-};
+type CustomPayload = Pick<
+  Database["public"]["Tables"]["company_email_template"]["Row"],
+  "subject" | "body"
+>;

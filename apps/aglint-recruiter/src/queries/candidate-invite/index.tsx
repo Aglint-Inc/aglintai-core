@@ -1,6 +1,6 @@
 import {
-  APICandidateConfirmSlot,
-  APIFindSlotsDateRange,
+  APIVerifyRecruiterSelectedSlots,
+  CandidateDirectBookingType,
 } from '@aglint/shared-types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
@@ -42,7 +42,7 @@ export const useConfirmSlots = () => {
   const { enabled, ...params } = useInviteParams();
   const { queryKey } = candidateInviteKeys.inviteMetaWithFilter(params);
   const mutation = useMutation({
-    mutationFn: async (bodyParams: APICandidateConfirmSlot) => {
+    mutationFn: async (bodyParams: CandidateDirectBookingType) => {
       await confirmSlots(bodyParams);
       await queryClient.invalidateQueries({ queryKey });
     },
@@ -60,10 +60,10 @@ const getInviteMeta = async (
   return res.data as ApiResponseCandidateInvite;
 };
 
-const confirmSlots = async (bodyParams: APICandidateConfirmSlot) => {
+const confirmSlots = async (bodyParams: CandidateDirectBookingType) => {
   try {
     const res = await axios.post(
-      '/api/scheduling/v1/confirm_interview_slot',
+      '/api/scheduling/v1/booking/candidate-self-schedule',
       bodyParams,
     );
     if (res.status !== 200) throw new Error('Internal server error');
@@ -81,21 +81,20 @@ export type InviteMetaParams = {
 };
 
 export type InviteSlotsParams = {
-  filter_json: ApiResponseCandidateInvite['filter_json'];
-  recruiter: ApiResponseCandidateInvite['recruiter'];
+  filter_json_id: string;
   user_tz: string;
 };
-const getInviteSlots = async ({ filter_json, user_tz }: InviteSlotsParams) => {
+const getInviteSlots = async ({
+  filter_json_id,
+  user_tz,
+}: InviteSlotsParams) => {
   try {
-    const paylod: APIFindSlotsDateRange = {
-      session_ids: filter_json.session_ids,
-      recruiter_id: filter_json.recruiter_id,
-      start_date_str: filter_json.start_date,
-      end_date_str: filter_json.end_date,
+    const paylod: APIVerifyRecruiterSelectedSlots = {
+      filter_json_id,
       candidate_tz: user_tz,
     };
     const resSchOpt = await axios.post(
-      '/api/scheduling/v1/find_slots_date_range',
+      '/api/scheduling/v1/verify-recruiter-selected-slots',
       {
         ...paylod,
       },

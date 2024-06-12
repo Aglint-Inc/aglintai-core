@@ -11,7 +11,6 @@ import { JobDetailBlock } from '@/devlink3/JobDetailBlock';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { hashCode } from '@/src/context/JobDashboard/hooks';
 import { useJobs } from '@/src/context/JobsContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { useCompanyMembers } from '@/src/queries/company-members';
 import ROUTES from '@/src/utils/routing/routes';
 
@@ -274,8 +273,8 @@ const JobForms = ({ fields, handleChange, handleCreate }: JobMetaFormProps) => {
       styleBorder={{
         style: {
           borderColor: fields.description.error.value
-            ? palette.red['500']
-            : palette.grey['300'],
+            ? 'var(--error-a6)'
+            : 'var(--neutral-a6)',
         },
       }}
       slotRichtextWarning={
@@ -283,7 +282,7 @@ const JobForms = ({ fields, handleChange, handleCreate }: JobMetaFormProps) => {
           <Stack
             alignItems={'center'}
             direction={'row'}
-            color={palette.red[500]}
+            color={'var(--error-11)'}
           >
             <WarningSvg />
             {fields.description.error.helper}

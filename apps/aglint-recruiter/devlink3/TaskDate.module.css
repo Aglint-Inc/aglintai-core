@@ -1,4 +1,4 @@
-.div-block-1509 {
+.date-range-widget {
   display: flex;
   width: 360px;
   padding: 12px;
@@ -15,14 +15,14 @@
   box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
 }
 
-.div-block-1517 {
+.date-range-switcher {
   display: flex;
   border: 1px solid #e9ebed;
   border-radius: 10px;
   cursor: pointer;
 }
 
-.div-block-1518 {
+.date-range-switcher-tab {
   position: relative;
 
   display: flex;
@@ -47,9 +47,4 @@
 
 .div-block-1519.right {
   border-radius: 0px 10px 10px 0px;
-}
-
-.relative-1 {
-  position: relative;
-  z-index: 1;
 }

@@ -18,9 +18,9 @@
   grid-column-gap: 6px;
   grid-row-gap: 6px;
 
-  border-radius: 6px;
+  border-radius: var(--radius-2);
 
-  background-color: #f8f9f9;
+  background-color: var(--neutral-3);
 
   cursor: default;
 }
@@ -89,10 +89,6 @@
   line-height: 16px;
 }
 
-.text-yellow-700 {
-  color: hsla(26.174496644295296, 75.63%, 38.63%, 1.00);
-}
-
 .text-gray-500 {
   color: var(--neutral-11);
 }
@@ -106,15 +102,6 @@
 
 .text-first-cap {
   text-transform: capitalize;
-}
-
-.fw-semibold.z-index-5 {
-  position: relative;
-  z-index: 5;
-}
-
-.text-blue-800 {
-  color: hsla(206.95652173913044, 69.70%, 19.41%, 1.00);
 }
 
 .text-lg {

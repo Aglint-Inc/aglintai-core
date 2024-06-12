@@ -1,4 +1,4 @@
-.schedule_settings {
+.cdo-wrap {
   display: flex;
   padding: var(--space-4);
   flex-direction: column;
@@ -10,25 +10,31 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  grid-column-gap: 12px;
-  grid-row-gap: 12px;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
 }
 
 .setting_wrap.p-b-40 {
   padding-bottom: var(--space-8);
 }
 
-.div-block-1682 {
+.cdo-top-wrap {
   display: flex;
+  padding: var(--space-3);
   justify-content: space-between;
   align-items: center;
+
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+
+  background-color: var(--white);
 }
 
 .setting_title {
   display: flex;
   flex-direction: column;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .div-block-1683 {
@@ -174,7 +180,7 @@
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 
-  background-color: var(--neutral-2);
+  background-color: var(--neutral-3);
 }
 
 .div-block-1686 {

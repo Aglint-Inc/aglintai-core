@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./KeywordCard.module.css";
 
@@ -18,10 +19,7 @@ export function KeywordCard({
       <_Builtin.Block className={_utils.cx(_styles, "header_desc")} tag="div">
         <Text content={textTitle} />
         {isTextWarningVisible ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1167", "no-border")}
-            tag="div"
-          >
+          <_Builtin.Block tag="div">
             <Text content={textWarning} weight="" color="neutral" />
           </_Builtin.Block>
         ) : null}
@@ -30,9 +28,11 @@ export function KeywordCard({
         className={_utils.cx(_styles, "slot_suggestion_pill")}
         tag="div"
       >
-        {slotSuggestPill}
+        {slotSuggestPill ?? <SlotComp componentName="Input" />}
       </_Builtin.Block>
-      <_Builtin.Block tag="div">{slotInput}</_Builtin.Block>
+      <_Builtin.Block tag="div">
+        {slotInput ?? <SlotComp componentName="Input" />}
+      </_Builtin.Block>
     </_Component>
   );
 }

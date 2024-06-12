@@ -1,62 +1,43 @@
-.interview-sub-table {
-  display: flex;
-  width: 100%;
-}
-
-.interview-sub-table-left {
+.interview-member-list-wrap {
   display: flex;
   overflow: auto;
   width: 100%;
   height: 100%;
-  padding: 20px;
   flex-direction: column;
-  grid-column-gap: 40px;
-  grid-row-gap: 40px;
-}
-
-.interview-sub-table-left.plr-0 {
-  padding-top: 0px;
-  padding-right: 0px;
-  padding-left: 0px;
-}
-
-.interview-sub-table-left.plr-0.gap-0 {
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
 }
 
 .header-interview-list-wrap {
-  padding-top: var(--space-4);
   padding-right: var(--space-4);
   padding-left: var(--space-4);
   border-bottom: 1px solid var(--neutral-6);
 }
 
-.div-block-1498 {
+.im-detail-wrap {
   display: flex;
-  padding-bottom: 20px;
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-2);
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
-.div-block-1497 {
+.im-detail-item {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  grid-column-gap: 14px;
-  grid-row-gap: 14px;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
 }
 
-.div-block-1496 {
+.im-detail-item-left {
   display: flex;
   width: 120px;
   justify-content: flex-start;
   align-items: center;
   flex: 0 0 auto;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .icons {
@@ -126,31 +107,38 @@
   cursor: pointer;
 }
 
-.edit_flex_block {
+.im-detail-item-right {
   display: flex;
   flex-direction: row;
   justify-content: center;
   flex-wrap: nowrap;
   align-items: flex-start;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 
   cursor: pointer;
 }
 
 .edit_flex_margin {
-  padding-top: 4px;
+  padding-top: var(--space-1);
 }
 
-.max-width-700 {
+.type_description {
   max-width: 700px;
 }
 
-.div-block-1500 {
+.slot_newtab_pill {
+  height: 36px;
+}
+
+.im-slot-tab-content {
   overflow: auto;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 30px;
   grid-row-gap: 30px;
-  height: calc(100vh - 190px);
+
+  background-color: var(--neutral-2);
+
+  height: calc(100vh - 129px);
 }

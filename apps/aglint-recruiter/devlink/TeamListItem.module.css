@@ -5,9 +5,6 @@
   grid-template-columns: 25% 15% 17% 20% 13% 10%;
   grid-template-rows: auto;
 
-  border-bottom-left-radius: var(--radius-2);
-  border-bottom-right-radius: var(--radius-2);
-
   background-color: var(--white);
 }
 
@@ -18,36 +15,6 @@
   justify-content: center;
   flex-wrap: nowrap;
   align-items: flex-start;
-}
-
-.tu-list-item.user {
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-}
-
-.tu-list-item.user.invite-mem {
-  padding-top: 0px;
-  padding-right: 0px;
-  padding-bottom: 0px;
-}
-
-.tu-list-item.center {
-  justify-content: center;
-  align-items: center;
-}
-
-.tu-list-item.actions-copy {
-  position: relative;
-  padding-left: 48px;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.tu-list-item.actions-copy.center {
-  padding-right: 0px;
-  padding-left: 0px;
-  justify-content: center;
-  align-items: center;
 }
 
 .team-name-wrap {
@@ -77,6 +44,13 @@
 
 .user-detail-wrap {
   margin-left: var(--space-6);
+}
+
+.three-dot-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .actions-team-card {
@@ -213,6 +187,15 @@
   align-items: flex-start;
 }
 
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
 .team-action-list-wrap {
   position: absolute;
   left: auto;
@@ -260,12 +243,6 @@
   grid-row-end: span 1;
 }
 #w-node-a60860aa-9493-87fc-f445-b3f1087efc98-087efc8b {
-  grid-column-start: span 1;
-  grid-column-end: span 1;
-  grid-row-start: span 1;
-  grid-row-end: span 1;
-}
-#w-node-a60860aa-9493-87fc-f445-b3f1087efc9b-087efc8b {
   grid-column-start: span 1;
   grid-column-end: span 1;
   grid-row-start: span 1;

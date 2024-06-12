@@ -1,3 +1,11 @@
+.sr-wrapper {
+  overflow: hidden;
+  margin: var(--space-4);
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+  background-color: var(--white);
+}
+
 .tab_wrapper {
   display: flex;
   justify-content: flex-start;
@@ -8,7 +16,6 @@
 .schedule_reasons {
   display: flex;
   overflow: auto;
-  max-width: 800px;
   padding-top: var(--space-4);
   padding-right: var(--space-4);
   padding-bottom: var(--space-4);
@@ -17,11 +24,12 @@
   flex-wrap: nowrap;
   grid-column-gap: var(--space-5);
   grid-row-gap: var(--space-5);
-  height: calc(100vh - 101px);
+  height: calc(100vh - 75px);
 }
 
-.div-block-1725 {
+.scheduling_reason_header {
   display: flex;
+  max-width: 800px;
   padding: 0px;
   flex-direction: column;
   flex-wrap: nowrap;

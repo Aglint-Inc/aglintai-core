@@ -30,12 +30,7 @@ export const InterviewMeetingStatus = () => {
   return (
     <NewInterviewDetail
       textHeading={'Declined Interviews'}
-      // slotDropdownButton={
-      //   <SchedulingDropdown
-      //     type={type}
-      //     onChange={(e) => setType(e.target.value as typeof type)}
-      //   />
-      // }
+      slotDropdownButton={<></>}
       slotInterviewDetailPill={
         <InterviewMeetingStatusComponent type={'month'} />
       }
@@ -121,7 +116,7 @@ const StackedBar = ({
             },
             grid: {
               display: true,
-              color: 'rgba(0,0,0,0.05)',
+              color: 'rgba(0, 0, 0, 0.05',
             },
           },
         },

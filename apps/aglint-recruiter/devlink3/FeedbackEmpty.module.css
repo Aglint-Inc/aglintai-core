@@ -1,8 +1,9 @@
-.div-block-1292 {
-  padding: 20px;
+.add_feedback {
+  padding: var(--space-4);
+  background-color: var(--sky-1);
 }
 
-.div-block-1293 {
+.add_feedback_wrap {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -10,69 +11,4 @@
   align-items: flex-start;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-}
-
-.text-grey-600 {
-  color: #68737d;
-}
-
-.text-sm {
-  font-size: var(--font-size-1);
-  line-height: var(--line-height-1);
-  letter-spacing: var(--letter-spacing-1);
-}
-
-.text-grey-600.text-underline {
-  text-decoration: underline;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
-.text-grey-600.text-underline.cursor-pointer {
-  transition: opacity 250ms ease;
-  cursor: pointer;
-}
-
-.text-grey-600.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.text-blue-500 {
-  color: #337fbd;
-}
-
-.text-blue-500.text-underline {
-  text-decoration: underline;
-}
-
-.text-blue-500.text-underline.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.text-blue-500.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.text-blue-500.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.text-blue-500.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.text-blue-500.text-capital {
-  text-transform: uppercase;
-}
-
-.fw-semibold {
-  font-weight: 600;
 }

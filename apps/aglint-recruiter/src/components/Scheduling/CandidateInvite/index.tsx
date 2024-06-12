@@ -1,9 +1,11 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
+import { CandidateResponseSelfSchedule } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import {
   Alert,
   Box,
+  Container,
   Dialog,
   FormControlLabel,
   InputAdornment,
@@ -24,20 +26,22 @@ import React, {
 } from 'react';
 
 import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateConfirmationPage } from '@/devlink/CandidateConfirmationPage';
 import { CandidateScheduleCard } from '@/devlink/CandidateScheduleCard';
 import { ChangeButton } from '@/devlink/ChangeButton';
-import { SelectButton } from '@/devlink/SelectButton';
 import { SelectedDateAndTime } from '@/devlink/SelectedDateAndTime';
 import { SessionAndTime } from '@/devlink/SessionAndTime';
 import { SessionInfo } from '@/devlink/SessionInfo';
 import { ButtonDanger } from '@/devlink2/ButtonDanger';
 import { ButtonPrimary } from '@/devlink2/ButtonPrimary';
+import { ButtonSurface } from '@/devlink2/ButtonSurface';
 import { CancelButton } from '@/devlink2/CancelButton';
 import { InterviewConfirmed } from '@/devlink2/InterviewConfirmed';
 import { InterviewConfirmedCard } from '@/devlink2/InterviewConfirmedCard';
 import { RequestReschedule } from '@/devlink2/RequestReschedule';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
+import { GlobalIcon } from '@/devlink3/GlobalIcon';
 import { ScheduleButton } from '@/devlink3/ScheduleButton';
 import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
@@ -73,8 +77,8 @@ const CandidateInviteNew = () => {
       justifyContent={'center'}
     >
       {load === undefined ? (
-        <Stack width={'120px'} style={{ transform: 'translateY(-50%)' }}>
-          <CandidateSlotLoad />
+        <Stack width={'100%'} height={'100%'}>
+          <Loader />
         </Stack>
       ) : load === null ? (
         <Stack style={{ transform: 'translateY(-50%)' }}>
@@ -101,7 +105,7 @@ const CandidateInvitePlanPage = () => {
     setSelectedSlots,
     setTimezone,
   } = useCandidateInvite();
-  const waiting = !!meetings.find(
+  const waiting = meetings.some(
     ({ interview_meeting: { status } }) => status === 'waiting',
   );
   const { rounds } = meetings.reduce(
@@ -126,7 +130,11 @@ const CandidateInvitePlanPage = () => {
   return (
     <CandidateConfirmationPage
       slotCompanyLogo={<Logo />}
-      onClickView={{ onClick: () => setDetailsPop(true) }}
+      onClickView={{
+        onClick: () => {
+          setDetailsPop(true);
+        },
+      }}
       slotCandidateCalender={
         <>
           <TimezoneSelector
@@ -137,7 +145,11 @@ const CandidateInvitePlanPage = () => {
               setSelectedSlots([]);
             }}
           />
-          <Invite rounds={rounds} />
+          <Container maxWidth='sm'>
+            <Stack spacing={'var(--space-4)'}>
+              <Invite rounds={rounds} />
+            </Stack>
+          </Container>
         </>
       }
     />
@@ -147,7 +159,7 @@ const CandidateInvitePlanPage = () => {
 const ConfirmedPage = (props: ScheduleCardsProps) => {
   const {
     meta: {
-      data: { candidate, schedule, meetings },
+      data: { candidate, schedule, meetings, filter_json },
     },
   } = useCandidateInvite();
   const [cancelReschedule, setCancelReschedule] = useState<
@@ -202,15 +214,26 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
   ) => {
     // return true;
 
+    const metadata: CandidateResponseSelfSchedule = {
+      action: 'waiting',
+      type: 'candidate_response_self_schedule',
+      reason: detail.reason,
+      other_details: detail.other_details,
+      response_type: detail.type === 'declined' ? 'cancel' : 'reschedule',
+      filter_id: filter_json.id,
+      session_ids: meetings.map((ses) => ses.interview_session.id),
+    };
+
     addScheduleActivity({
       title:
         detail.type === 'declined'
           ? `Canceled ${meetings?.map((ses) => ses.interview_session.name).join(' , ')}`
           : `Requested reschedule for ${meetings?.map((ses) => ses.interview_session.name).join(' , ')}`,
       application_id: schedule.application_id,
-      logged_by: 'user', // error logs
+      logged_by: 'candidate',
       supabase: supabase,
       created_by: null,
+      metadata,
     });
 
     const details = props.rounds
@@ -377,10 +400,13 @@ const DetailsPopup = () => {
       <CandidateScheduleCard
         isPopup={true}
         isSelected={false}
+        slotButton={''}
         textDuration={getDurationText(duration)}
         onClickClose={{ onClick: () => setDetailsPop(false) }}
         textPopupTitle={schedule_name}
         slotSessionInfo={<Sessions sessions={meetings} showBreak={true} />}
+        isSlotButtonVisible={false}
+        isTitle={false}
       />
     </Dialog>
   );
@@ -417,7 +443,7 @@ const CancelRescheduleDialog = ({
   }>({
     type,
     reason: options[0],
-    dateRange: [dayjs(), dayjs().add(1, 'day')],
+    dateRange: [dayjs(), dayjs().add(7, 'day')],
     additionalNote: null,
   });
   const open = Boolean(anchorEl);
@@ -642,7 +668,13 @@ const SingleDayError = () => {
 };
 
 const SingleDayLoading = () => {
-  return <Loader />;
+  return (
+    <Stack direction={'row'} justifyContent={'center'}>
+      <Stack width={'120px'}>
+        <CandidateSlotLoad />
+      </Stack>
+    </Stack>
+  );
 };
 
 const SingleDaySuccess = () => {
@@ -887,7 +919,13 @@ const MultiDayError = () => {
 };
 
 const MultiDayLoading = () => {
-  return <Loader />;
+  return (
+    <Stack direction={'row'} justifyContent={'center'}>
+      <Stack width={'120px'}>
+        <CandidateSlotLoad />
+      </Stack>
+    </Stack>
+  );
 };
 
 const MultiDaySuccess = (props: ScheduleCardsProps) => {
@@ -897,14 +935,19 @@ const MultiDaySuccess = (props: ScheduleCardsProps) => {
   return (
     <>
       <ScheduleCards rounds={props.rounds} />
-      <Stack sx={{ width: '350px' }}>
-        <AUIButton
-          size='large'
-          onClick={() => setOpen(true)}
-          disabled={!enabled}
-        >
-          Proceed
-        </AUIButton>
+      <Stack direction={'row'} justifyContent={'center'}>
+        <ButtonSolid
+          isLeftIcon={false}
+          isRightIcon={false}
+          textButton='Proceed'
+          size={3}
+          onClickButton={{
+            onClick: () => {
+              setOpen(true);
+            },
+          }}
+          isDisabled={!enabled}
+        />
       </Stack>
       <MultiDayConfirmation open={open} setOpen={setOpen} />
     </>
@@ -1027,7 +1070,22 @@ const ScheduleCard = (props: ScheduleCardProps) => {
         textDay={props.round.title}
         isSelected={isSelected}
         slotButton={
-          enabled ? isSelected ? <ChangeButton /> : <SelectButton /> : <></>
+          enabled ? (
+            isSelected ? (
+              <ChangeButton onClickButton={{ onClick: () => setOpen(true) }} />
+            ) : (
+              <ButtonSurface
+                slotIcon={<GlobalIcon iconName='add' size={'sm'} />}
+                isLeftIcon={true}
+                isRightIcon={false}
+                size={1}
+                onClickButton={{ onClick: () => setOpen(true) }}
+                textButton='Select Option'
+              />
+            )
+          ) : (
+            <></>
+          )
         }
         textDuration={getDurationText(duration)}
         slotSessionInfo={

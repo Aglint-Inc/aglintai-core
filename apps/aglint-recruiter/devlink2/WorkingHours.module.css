@@ -1,9 +1,16 @@
 .schedule_settings {
   display: flex;
+  width: 700px;
+  margin: var(--space-4);
   padding: var(--space-4);
   flex-direction: column;
   grid-column-gap: var(--space-5);
   grid-row-gap: var(--space-5);
+
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+
+  background-color: var(--white);
 }
 
 .div-block-1117 {
@@ -169,8 +176,8 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  grid-column-gap: 12px;
-  grid-row-gap: 12px;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
 }
 
 .setting_wrap.p-b-40 {
@@ -218,15 +225,11 @@
   color: var(--neutral-11);
 }
 
-.text-gray-500.hide {
-  display: none;
-}
-
 .setting_title {
   display: flex;
   flex-direction: column;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .week_days {

@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
+import { ButtonSoft } from "./ButtonSoft";
 import * as _utils from "./utils";
 import _styles from "./FeedbackEmpty.module.css";
 
@@ -9,30 +11,18 @@ export function FeedbackEmpty({
   onClickSubmit = {},
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1292")} tag="div">
+    <_Component className={_utils.cx(_styles, "add_feedback")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1293")}
+        className={_utils.cx(_styles, "add_feedback_wrap")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-600")}
-          tag="div"
-        >
-          {"You haven’t submitted any feedback"}
-        </_Builtin.Block>
+        <Text content="No feedback submitted" weight="" color="neutral" />
         <_Builtin.Block tag="div">
-          <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "text-blue-500",
-              "text-underline",
-              "cursor-pointer"
-            )}
-            tag="div"
-            {...onClickSubmit}
-          >
-            {"Submit Feedback"}
-          </_Builtin.Block>
+          <ButtonSoft
+            onClickButton={onClickSubmit}
+            size="2"
+            textButton="Add Feedback"
+          />
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

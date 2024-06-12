@@ -7,4 +7,5 @@ declare function JobsDashboard(props: {
   slotSearchInputJob?: Types.Devlink.Slot;
   textJobsHeader?: React.ReactNode;
   onClickAddJob?: Types.Devlink.RuntimeProps;
+  slotFilters?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./Instructions.module.css";
 
@@ -73,7 +74,7 @@ export function Instructions({
                 <_Builtin.Block
                   className={_utils.cx(
                     _styles,
-                    "text-blue-500",
+                    "accent-text",
                     "text-underline"
                   )}
                   tag="div"
@@ -84,7 +85,9 @@ export function Instructions({
               </_Builtin.Block>
             </_Builtin.Block>
           ) : null}
-          <_Builtin.Block tag="div">{slotInstructions}</_Builtin.Block>
+          <_Builtin.Block tag="div">
+            {slotInstructions ?? <SlotComp componentNeme="Instruction" />}
+          </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

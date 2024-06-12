@@ -152,27 +152,6 @@
   grid-row-gap: 6px;
 }
 
-.text-sm-4 {
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.text-blue-500 {
-  color: #337fbd;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
-.text-grey-600 {
-  color: #68737d;
-}
-
-.text-gray-600 {
-  color: var(--sand-11);
-}
-
 .tab_wrapper {
   display: flex;
   justify-content: flex-start;
@@ -190,5 +169,8 @@
   flex-wrap: nowrap;
   grid-column-gap: 30px;
   grid-row-gap: 30px;
-  height: calc(100vh - 190px);
+
+  background-color: var(--neutral-2);
+
+  height: calc(100vh - 177px);
 }

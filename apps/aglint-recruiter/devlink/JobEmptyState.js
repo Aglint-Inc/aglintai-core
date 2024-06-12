@@ -22,7 +22,7 @@ export function JobEmptyState({
           alt=""
           src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544fa5b6dd00169fa44e84b_%EF%A1%AD.svg"
         />
-        <Text content="No jobs found" weight="bold" color="neutral" />
+        <Text content="No jobs found" weight="" color="neutral-11" />
       </_Builtin.Block>
     </_Component>
   );

@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { SlotComp } from "./SlotComp";
+import { RecentDeclineList } from "./RecentDeclineList";
 import * as _utils from "./utils";
 import _styles from "./RecentDeclines.module.css";
 
@@ -20,17 +20,24 @@ export function RecentDeclines({
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "reschedule-req-header")}
+        className={_utils.cx(_styles, "dashboard-widget-header")}
         tag="div"
       >
-        <Text content="" />
+        <Text content="Recent Declines" weight="medium" />
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1782")}
-        tag="div"
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "slot_recent")} tag="div">
         {slotRecentDeclineList ?? (
-          <SlotComp componentNeme="RecentDeclineList" />
+          <>
+            <RecentDeclineList />
+            <RecentDeclineList />
+            <RecentDeclineList />
+            <RecentDeclineList />
+            <RecentDeclineList />
+            <RecentDeclineList />
+            <RecentDeclineList />
+            <RecentDeclineList />
+            <RecentDeclineList />
+          </>
         )}
       </_Builtin.Block>
     </_Component>

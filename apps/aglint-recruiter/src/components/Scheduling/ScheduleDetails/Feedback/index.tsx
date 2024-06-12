@@ -18,7 +18,6 @@ import Avatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { API_request_feedback } from '@/src/pages/api/request_feedback/type';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
@@ -423,7 +422,7 @@ const AdminFeedback = ({
                                   }}
                                   slotAvatar={
                                     <Avatar
-                                      variant='circular'
+                                      variant='rounded-xs'
                                       src={int.profile_image}
                                       level={getFullName(
                                         int.first_name,
@@ -453,7 +452,7 @@ const AdminFeedback = ({
                                       }}
                                       {...(!isFeedBackEnabled ||
                                       !int.feedback?.objective
-                                        ? { color: palette.grey[400] }
+                                        ? { color: 'var(--neutral-11)' }
                                         : {})}
                                     />
                                   }
@@ -558,7 +557,7 @@ const AdminFeedback = ({
                             // || 'Feedback not Submitted.',
                           }}
                           {...(!isFeedBackEnabled || !int.feedback?.objective
-                            ? { color: palette.grey[400] }
+                            ? { color: 'var(--neutral-11)' }
                             : {})}
                         />
                       }
@@ -715,7 +714,7 @@ const AdminFeedback = ({
                               ?.objective || 'Feedback not Submitted',
                         }}
                         {...(!selectedInterviewer.interviewer.feedback
-                          ? { color: palette.grey[400] }
+                          ? { color: 'var(--neutral-11)' }
                           : {})}
                       />
                     }
@@ -733,7 +732,7 @@ const AdminFeedback = ({
                         }}
                         {...(!selectedInterviewer.interviewer.feedback
                           ?.recommendation
-                          ? { color: palette.grey[400] }
+                          ? { color: 'var(--neutral-11)' }
                           : {})}
                       />
                     }
@@ -904,7 +903,7 @@ const InterviewerFeedback = ({
                                       }}
                                       {...(!isFeedBackEnabled ||
                                       !int.feedback?.objective
-                                        ? { color: palette.grey[400] }
+                                        ? { color: 'var(--neutral-11)' }
                                         : {})}
                                     />
                                   }
@@ -976,7 +975,7 @@ const InterviewerFeedback = ({
                                 'Feedback not Submitted.',
                           }}
                           {...(!isFeedBackEnabled || !int.feedback?.objective
-                            ? { color: palette.grey[400] }
+                            ? { color: 'var(--neutral-11)' }
                             : {})}
                         />
                       }
@@ -1081,7 +1080,7 @@ const InterviewerFeedback = ({
                               ?.objective || 'Feedback not Submitted',
                         }}
                         {...(!selectedInterviewer.interviewer.feedback
-                          ? { color: palette.grey[400] }
+                          ? { color: 'var(--neutral-11)' }
                           : {})}
                       />
                     }
@@ -1099,7 +1098,7 @@ const InterviewerFeedback = ({
                         }}
                         {...(!selectedInterviewer.interviewer.feedback
                           ?.recommendation
-                          ? { color: palette.grey[400] }
+                          ? { color: 'var(--neutral-11)' }
                           : {})}
                       />
                     }

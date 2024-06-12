@@ -1,34 +1,43 @@
-.div-block-1779 {
+.recentrechedule_list {
   position: relative;
 
   display: flex;
-  padding: 10px 16px;
-  justify-content: flex-start;
+  padding: var(--space-2) var(--space-4);
+  justify-content: space-between;
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 }
 
-.div-block-1780 {
-  width: 50px;
-  height: 50px;
-  border-radius: 100px;
-}
-
-.div-block-1781 {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
-}
-
-.div-block-1778 {
+.reson_rwap {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.avatar_40 {
+  width: var(--space-7);
+  height: var(--space-7);
+  flex: 0 0 auto;
+  border-radius: var(--radius-2);
+}
+
+.flex-v4 {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.decline_user_details {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .fw-semibold {
@@ -82,17 +91,8 @@
   line-height: 24px;
 }
 
-.fw-semibold.p-lr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
 .text-grey_600 {
   color: var(--sand-11);
-}
-
-.fw-semibold.name-text {
-  color: #467b7c;
 }
 
 .hide {
@@ -130,7 +130,7 @@
   cursor: pointer;
 }
 
-.div-block-1777 {
+.decline_reason {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -138,46 +138,18 @@
   grid-row-gap: 4px;
 }
 
-.text-sm.color-grey-600 {
-  color: var(--sand-11);
+.slot_for_icon {
+  width: auto;
+  height: auto;
 }
 
-.color-grey-600 {
-  color: #68737d;
-}
-
-.text-sm.text-capitalize {
-  text-transform: uppercase;
-}
-
-.text-blue-500 {
-  color: #337fbd;
-}
-
-.text-sm.text-underline {
+.text-link-accent {
+  transition: opacity 200ms ease;
+  color: var(--accent-11);
   text-decoration: underline;
-}
-
-.text-sm.text-underline.text-grey-600.cursor-pointer {
-  transition: all 250ms ease;
   cursor: pointer;
 }
 
-.text-sm.text-underline.text-grey-600.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.text-sm.text-underline.text-blue-500.view-req {
-  position: absolute;
-  left: auto;
-  top: 10px;
-  right: 16px;
-  bottom: auto;
-
-  cursor: pointer;
-}
-
-.relative-1 {
-  position: relative;
-  z-index: 1;
+.text-link-accent:hover {
+  opacity: 0.88;
 }

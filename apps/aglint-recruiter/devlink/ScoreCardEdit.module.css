@@ -1,8 +1,8 @@
 .score-edit-card {
   width: 100%;
   padding: 15px;
-  border: 1px solid #e9ebed;
-  border-radius: 4px;
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-2);
   background-color: white;
 }
 
@@ -147,6 +147,15 @@
 .icons.start {
   justify-content: center;
   align-items: flex-start;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
 }
 
 .cursor-pointer.discard-job {

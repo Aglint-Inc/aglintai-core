@@ -33,8 +33,12 @@ function CreateModuleDialog() {
   const [objective, setObjective] = useState('');
   const [department, setDepartment] = useState('');
   const [isTraining, setIsTraining] = useState(false);
+  const [nameError, setNameError] = useState(false);
 
   const createModuleHandler = async () => {
+    if (!name) {
+      setNameError(true);
+    }
     if (name && !loading) {
       try {
         setLoading(true);
@@ -71,16 +75,23 @@ function CreateModuleDialog() {
       <ConfirmationPopup
         isDescriptionVisible={false}
         textPopupTitle={'Create Interview Type'}
+        textPopupDescription={''}
         isIcon={false}
         slotWidget={
           <Stack spacing={2} width={'100%'}>
             <UITextField
               label='Name'
+              required
+              error={nameError}
+              helperText={`Name cannot be empty`}
               placeholder='Ex: Initial Screening'
               fullWidth
               value={name}
               onChange={(e) => {
                 setName(e.target.value);
+              }}
+              onFocus={() => {
+                setNameError(false);
               }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
@@ -88,7 +99,7 @@ function CreateModuleDialog() {
                 }
               }}
             />
-            <Stack gap={'5px'}>
+            <Stack gap={'var(--space-1)'}>
               <UITypography type={'small'} fontBold={'default'}>
                 Department
               </UITypography>

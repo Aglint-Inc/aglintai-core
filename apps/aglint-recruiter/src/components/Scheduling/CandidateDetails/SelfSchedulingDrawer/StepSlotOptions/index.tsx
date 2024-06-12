@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { ScheduleOptionsList } from '@/devlink3/ScheduleOptionsList';
 
 import { setSelectedCombIds, useSchedulingFlowStore } from '../store';
@@ -31,6 +33,11 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
     }
   };
 
+  const memoGruopedData = useMemo(
+    () => groupedData,
+    [filteredSchedulingOptions],
+  );
+
   return (
     <ScheduleOptionsList
       textDescription={
@@ -38,7 +45,7 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
       }
       slotDateOption={
         <>
-          {groupedData?.map((item) => {
+          {memoGruopedData?.map((item) => {
             return (
               <DayCardWrapper
                 key={item.dateArray.join(', ')}
@@ -46,6 +53,10 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
                 item={item}
                 onClickSelect={onClickSelect}
                 selectedCombIds={selectedCombIds}
+                isDisabled={false}
+                isCheckboxAndRadio={true}
+                isDayCollapseNeeded={true}
+                isSlotCollapseNeeded={true}
               />
             );
           })}

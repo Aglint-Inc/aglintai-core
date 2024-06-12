@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { FeedbackTableRow } from "./FeedbackTableRow";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./ScheduleTabFeedback.module.css";
 
@@ -71,7 +71,9 @@ export function ScheduleTabFeedback({
           className={_utils.cx(_styles, "slot_candidaterow")}
           tag="div"
         >
-          {slotFeedbackTableRow ?? <FeedbackTableRow />}
+          {slotFeedbackTableRow ?? (
+            <SlotComp componentNeme="Feedback Table Row" />
+          )}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

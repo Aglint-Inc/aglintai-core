@@ -8,8 +8,8 @@ export const scheduling_options_schema = z.object({
   cand_end_time: z.number().default(18),
   include_conflicting_slots: z
     .object({
-      show_soft_conflicts: z.boolean().default(true),
-      show_conflicts_events: z.boolean().default(true),
+      show_soft_conflicts: z.boolean().default(false),
+      show_conflicts_events: z.boolean().default(false),
       interviewers_load: z.boolean().default(false),
       interviewer_pause: z.boolean().default(false),
       out_of_office: z.boolean().default(false),
@@ -17,6 +17,7 @@ export const scheduling_options_schema = z.object({
       day_off: z.boolean().default(false),
       holiday: z.boolean().default(false),
       out_of_working_hrs: z.boolean().default(false),
+      day_passed: z.boolean().default(false),
     })
     .default({}), // Ensure defaults for nested object
 });
@@ -49,4 +50,5 @@ export const schema_find_slots_date_range = z.object({
 
 export const schema_verify_interviewer_selected_slots = z.object({
   cand_availability_id: z.string(),
+  user_tz: z.string(),
 });

@@ -33,7 +33,7 @@
 
 .header_interviewer {
   display: flex;
-  padding: 10px 20px;
+  padding: var(--space-2) 20px;
   align-items: center;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
@@ -113,17 +113,8 @@
   line-height: 24px;
 }
 
-.fw-semibold.p-lr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
 .text-grey_600 {
   color: var(--sand-11);
-}
-
-.fw-semibold.name-text {
-  color: #467b7c;
 }
 
 .hide {

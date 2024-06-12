@@ -75,7 +75,7 @@ function ProgressTitle({
     <Stack
       flexWrap={'wrap'}
       alignItems={'center'}
-      gap={'5px'}
+      gap={'var(--space-1)'}
       direction={'row'}
     >
       {String(title)

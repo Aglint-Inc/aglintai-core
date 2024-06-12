@@ -204,7 +204,7 @@ const AssessmentEditor = ({
   return (
     <Stack
       style={{
-        border: '1px solid #dcdcdc',
+        border: '1px solid var(--neutral-6)',
       }}
     >
       <TipTapAIEditor

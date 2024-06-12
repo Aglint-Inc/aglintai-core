@@ -31,7 +31,7 @@ function ModuleMembersComp() {
           </>
         }
         slotTopbarRight={
-          <Stack direction={'row'} justifyItems={'center'} gap={'10px'}>
+          <Stack direction={'row'} justifyItems={'center'} gap={'var(--space-2)'}>
             <TopRightButtons editModule={editModule} />
           </Stack>
         }

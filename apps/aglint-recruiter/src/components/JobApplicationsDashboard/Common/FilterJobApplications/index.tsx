@@ -265,7 +265,7 @@ const CandidateFilters = ({
             <Stack
               width={'400px'}
               style={{ transform: 'translateX(30px)' }}
-              mt={'10px'}
+              mt={'var(--space-2)'}
             >
               <CandidateFilterOptionBody
                 keyString={key as keyof FilterParameter}
@@ -304,7 +304,7 @@ const CandidateFilterCheckbox = ({
   // };
   return (
     <Stack>
-      <Stack flexDirection={'row'} alignItems={'center'} gap={'10px'}>
+      <Stack flexDirection={'row'} alignItems={'center'} gap={'var(--space-2)'}>
         {/* <Checkbox
           onClickCheck={{ onClick: () => handleCheck() }}
           isChecked={valObj.active}
@@ -429,7 +429,7 @@ const CandidateFilterDualSlider = ({
       valueLabelDisplay='on'
       disableSwap
       sx={{
-        color: '#1F73B7',
+        color: 'var(--accent-11)',
         '& .MuiSlider-valueLabelOpen': {
           backgroundColor: 'transparent !important',
         },
@@ -496,7 +496,7 @@ const CandidateLocationFilter = ({
         min={10}
         step={10}
         sx={{
-          color: '#1F73B7',
+          color: 'var(--accent-11)',
           '& .MuiSlider-valueLabelOpen': {
             backgroundColor: 'transparent !important',
           },

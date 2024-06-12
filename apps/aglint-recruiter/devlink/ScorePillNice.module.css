@@ -1,13 +1,13 @@
 .skills-wrapps {
   display: flex;
-  padding: 4px 10px;
+  padding: var(--space-1) var(--space-2);
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 
-  border-radius: 4px;
+  border-radius: var(--radius-2);
 
-  background-color: #f7f9fb;
+  background-color: var(--neutral-3);
 
   cursor: pointer;
 }
@@ -138,4 +138,13 @@
 .icons.start {
   justify-content: center;
   align-items: flex-start;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
 }

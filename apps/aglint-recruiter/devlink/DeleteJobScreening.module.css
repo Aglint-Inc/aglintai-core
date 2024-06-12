@@ -1,13 +1,9 @@
 .job-dashboard-layout {
   display: flex;
-  overflow: scroll;
   height: 100vh;
-  padding-bottom: var(--space-7);
   flex-direction: column;
   align-items: stretch;
   flex: 1;
-  grid-column-gap: var(--space-4);
-  grid-row-gap: var(--space-4);
 }
 
 @media screen and (max-width: 991px) {
@@ -24,7 +20,7 @@
 
   display: flex;
   width: 100%;
-  min-height: 48px;
+  height: var(--space-8);
   padding: var(--space-2) var(--space-4);
   justify-content: space-between;
   align-items: center;
@@ -298,10 +294,6 @@
 
 .text-sm.text-grey-500.width-ticket-d {
   width: 49.91667175292969px;
-}
-
-.color-blue-600 {
-  color: var(--blue600-aad8d97e);
 }
 
 .text-color-white {
@@ -1370,8 +1362,8 @@
 .cj-richtext-editor-wrapper {
   overflow: hidden;
   width: 100%;
-  border: 1px solid var(--grey300-03a46dba);
-  border-radius: 4px;
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-2);
 }
 
 .cj-richtext-cotrols {
@@ -1578,14 +1570,6 @@
   margin-top: 10px;
 }
 
-.text-grey-600.mt-4 {
-  margin-top: 4px;
-}
-
-.mt-4 {
-  margin-top: 4px;
-}
-
 @media screen and (max-width: 479px) {
   .text-grey-600.mob {
     font-size: 12px;
@@ -1626,6 +1610,7 @@
 
 .text-underline {
   transition: all 250ms ease;
+  color: var(--accent-11);
   text-decoration: underline;
   cursor: pointer;
 }

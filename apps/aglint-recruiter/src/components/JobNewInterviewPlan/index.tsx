@@ -16,7 +16,6 @@ import { GeneralScheduleCard } from '@/devlink3/GeneralScheduleCard';
 import { InterviewBreakCard } from '@/devlink3/InterviewBreakCard';
 import { InterviewPlan as InterviewPlanDev } from '@/devlink3/InterviewPlan';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
-import { palette } from '@/src/context/Theme/Theme';
 import NotFoundPage from '@/src/pages/404';
 import { CompanyMember } from '@/src/queries/company-members';
 import { DeleteInterviewSession } from '@/src/queries/interview-plans';
@@ -383,7 +382,7 @@ const InterviewSession = ({
   return (
     <Stack
       ref={ref}
-      style={{ backgroundColor: 'white', opacity: isDragging ? 0 : 1 }}
+      style={{opacity: isDragging ? 0 : 1 }}
       data-handler-id={handlerId}
     >
       <OptimisticWrapper loading={isLoading}>
@@ -398,8 +397,8 @@ const InterviewSession = ({
                 <>{session.name}</>
                 <Stack
                   style={{
-                    color: palette.grey[400],
-                    fontSize: '12px',
+                    color: 'var(--neutral-9)',
+                    fontSize: 'var(--font-size-1)',
                     fontWeight: 400,
                     fontStyle: 'italic',
                   }}

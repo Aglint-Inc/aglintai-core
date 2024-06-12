@@ -57,17 +57,8 @@
   line-height: 24px;
 }
 
-.fw-semibold.p-lr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
 .text-grey_600 {
   color: var(--sand-11);
-}
-
-.fw-semibold.name-text {
-  color: #467b7c;
 }
 
 .hide {
@@ -80,14 +71,6 @@
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-}
-
-.div-block-1713 {
-  width: 42px;
-  height: 42px;
-  flex: 0 0 auto;
-  border-radius: 100px;
-  box-shadow: 0 2px 5px 0 hsla(0, 0.00%, 0.00%, 0.07);
 }
 
 .div-block-1715 {

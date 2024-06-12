@@ -1,4 +1,4 @@
-.div-block-1440 {
+.new_task {
   display: flex;
   width: 100%;
   height: var(--space-8);
@@ -8,12 +8,12 @@
   border-bottom: 1px solid #eaf1f3;
 }
 
-.div-block-1440.job-cand {
+.new_task.job-cand {
   justify-content: space-between;
   align-items: center;
 }
 
-.div-block-1440.job-cand.height-40 {
+.new_task.job-cand.height-40 {
   height: 40px;
 }
 
@@ -133,33 +133,33 @@
   opacity: 0.8;
 }
 
-.text-blue-500 {
-  color: #337fbd;
+.accent-text {
+  color: var(--accent-9);
 }
 
-.text-blue-500.text-underline {
+.accent-text.text-underline {
   text-decoration: underline;
 }
 
-.text-blue-500.text-underline.cursor-pointer {
+.accent-text.text-underline.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
 }
 
-.text-blue-500.text-underline.cursor-pointer:hover {
+.accent-text.text-underline.cursor-pointer:hover {
   opacity: 0.8;
 }
 
-.text-blue-500.cursor-pointer {
+.accent-text.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
 }
 
-.text-blue-500.cursor-pointer:hover {
+.accent-text.cursor-pointer:hover {
   opacity: 0.8;
 }
 
-.text-blue-500.text-capital {
+.accent-text.text-capital {
   text-transform: uppercase;
 }
 

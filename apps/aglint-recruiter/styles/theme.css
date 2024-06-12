@@ -179,7 +179,80 @@
     --tomato-a11: rgba(205, 34, 0, 0.92);
     --tomato-a12: rgba(70, 9, 0, 0.88);
 
+    --amber-12: #4f3422;
+    --amber-11: #ab6400;
+    --amber-9: #ffc53d;
+    --pink-8: #dd93c2;
+    --amber-10: #ffba18;
+    --amber-2: #fefbe9;
+    --pink-11: #c2298a;
+    --pink-2: #fef7fb;
+    --pink-12: #651249;
+    --pink-9: #d6409f;
+    --amber-8: #e2a336;
+    --amber-7: #e9c162;
+    --amber-6: #f3d673;
+    --amber-3: #fff7c2;
+    --amber-4: #ffee9c;
+    --amber-5: #fbe577;
+    --amber-1: #fefdfb;
+    --pink-4: #fbdcef;
+    --pink-7: #e7acd0;
+    --pink-10: #cf3897;
+    --pink-5: #f6cee7;
+    --pink-6: #efbfdd;
+    --pink-3: #fee9f5;
+    --pink-1: #fffcfe;
+    --lime-12: #37401c;
+    --lime-11: #5c7c2f;
+    --lime-10: #b0e64c;
+    --lime-9: #bdee63;
+    --lime-1: #fcfdfa;
+    --lime-8: #8db654;
+    --lime-7: #abc978;
+    --lime-6: #c2da91;
+    --lime-4: #e2f0bd;
+    --lime-5: #d3e7a6;
+    --lime-3: #eef6d6;
+    --lime-2: #f8faf3;
+    --purple-12: #402060;
+    --purple-11: #8145b5;
+    --purple-10: #8347b9;
+    --purple-7: #d1afec;
+    --purple-9: #8e4ec6;
+    --purple-8: #be93e4;
+    --purple-6: #e0c4f4;
+    --purple-5: #ead5f9;
+    --purple-4: #f2e2fc;
+    --purple-3: #f7edfe;
+    --teal-12: #0d3d38;
+    --purple-2: #fbf7fe;
+    --purple-1: #fefcfe;
+    --teal-11: #008573;
+    --teal-9: #12a594;
+    --teal-10: #0d9b8a;
+    --teal-8: #53b9ab;
+    --teal-7: #83cdc1;
+    --teal-6: #a1ded2;
+    --teal-4: #ccf3ea;
+    --teal-5: #b8eae0;
+    --teal-3: #e0f8f3;
+    --teal-1: #fafefd;
+    --teal-2: #f3fbf9;
+    --blue-4: #d5efff;
+    --blue-8: #5eb1ef;
+    --blue-12: #113264;
+    --blue-11: #0d74ce;
+    --blue-7: #8ec8f6;
+    --blue-1: #fbfdff;
+    --blue-9: #0090ff;
+    --blue-5: #c2e5ff;
+    --blue-3: #e6f4fe;
+    --blue-2: #f4faff;
+    --blue-10: #0588f0;
+    --blue-6: #acd8fc;
 
+    
     --accent-1: var(--orange-1);
     --accent-2: var(--orange-2);
     --accent-3: var(--orange-3);
@@ -396,7 +469,66 @@
     --shadow-5: 0 0 0 1px var(--neutral-a3), 0 12px 60px var(--black-a3), 0 12px 32px -16px var(--neutral-a5);
     --shadow-6: 0 0 0 1px var(--neutral-a3), 0 12px 60px var(--black-a3), 0 16px 64px var(--neutral-a2), 0 16px 36px -20px var(--neutral-a7);
 
+    --color-skill:#886BD8;
+    --color-exp:#30AABC;
+    --color-edu:#5D7DF5;
+
+    --donut-blue: #005cc5;
+    --donut-green: #28a745;
+    --donut-red: #d73a49;
+    --donut-yellow: #ffd33d;
+    --donut-purple: #6f42c1;
+    --donut-cyan: #79b8ff;
+    --donut-gray: #959da5;
+
+    --chart-color-1: #005cc5; /* Blue */
+    --chart-color-2: #28a745; /* Green */
+    --chart-color-3: #d73a49; /* Red */
+    --chart-color-4: #ffd33d; /* Yellow */
+    --chart-color-5: #6f42c1; /* Purple */
+    --chart-color-6: #79b8ff; /* Cyan */
+    --chart-color-7: #959da5; /* Gray */
+    --chart-color-8: #ff7f0e; /* Orange */
+    --chart-color-9: #2ca02c; /* Dark Green */
+    --chart-color-10: #1f77b4; /* Dark Blue */
+
+    /* Doughnut Chart */
+    --segment-1-color: var(--chart-color-1);
+    --segment-2-color: var(--chart-color-2);
+    --segment-3-color: var(--chart-color-3);
+    --segment-4-color: var(--chart-color-4);
+    --segment-5-color: var(--chart-color-5);
+    --segment-6-color: var(--chart-color-6);
+    --segment-7-color: var(--chart-color-7);
+
+    /* Bar Graph */
+    --bar-1-color: var(--chart-color-1);
+    --bar-2-color: var(--chart-color-2);
+    --bar-3-color: var(--chart-color-3);
+    --bar-4-color: var(--chart-color-4);
+    --bar-5-color: var(--chart-color-5);
+    --bar-6-color: var(--chart-color-6);
+    --bar-7-color: var(--chart-color-7);
+
+    /* Chart */
+    --chart-element-1: var(--chart-color-1);
+    --chart-element-2: var(--chart-color-2);
+    --chart-element-3: var(--chart-color-3);
+    --chart-element-4: var(--chart-color-4);
+    --chart-element-5: var(--chart-color-5);
+    --chart-element-6: var(--chart-color-6);
+    --chart-element-7: var(--chart-color-7);
+    --chart-element-8: var(--chart-color-8);
+    --chart-element-9: var(--chart-color-9);
+    --chart-element-10: var(--chart-color-10);
     
+
+    /* Interview progres colors */
+    --status-waiting: #FFB057;
+    --status-confirmed: #5293C7;
+    --status-completed: #5EAE91;
+    --status-cancelled: #E35B66;
+    --status-default: #D8DCDE;
   }
   
   body {

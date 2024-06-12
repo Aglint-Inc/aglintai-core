@@ -10,7 +10,6 @@ import { JobDetailBlock } from '@/devlink3/JobDetailBlock';
 import { useJob } from '@/src/context/JobContext';
 import { validateString } from '@/src/context/JobDashboard/hooks';
 import { useJobs } from '@/src/context/JobsContext';
-import { palette } from '@/src/context/Theme/Theme';
 import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/jobs/types';
 import ROUTES from '@/src/utils/routing/routes';
@@ -110,7 +109,7 @@ const JobEdit = () => {
               <CircularProgress
                 color='inherit'
                 size={'15px'}
-                sx={{ color: palette.grey[400] }}
+                sx={{ color: 'var(--neutral-6)' }}
               />
             }
           />

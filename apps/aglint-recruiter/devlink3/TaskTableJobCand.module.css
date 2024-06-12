@@ -7,8 +7,8 @@
   position: relative;
 
   display: flex;
-  height: 60px;
-  padding: 10px 16px;
+  height: 48px;
+  padding: var(--space-2) 16px;
   justify-content: flex-start;
   align-items: center;
 
@@ -71,6 +71,8 @@
   align-items: center;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
+
+  color: var(--accent-9);
 
   cursor: pointer;
 }

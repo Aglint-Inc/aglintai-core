@@ -6,14 +6,15 @@ import {
   DatabaseTableUpdate,
   InterviewSessionTypeDB,
 } from '@aglint/shared-types';
+import { ScheduleUtils } from '@aglint/shared-utils';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { ScheduleUtils } from '@/src/services/CandidateScheduleV2/utils/ScheduleUtils';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { supabase } from '@/src/utils/supabase/client';
+import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 import toast from '@/src/utils/toast';
 
 export type candidateRequestAvailabilityType =
@@ -60,6 +61,9 @@ interface ContextValue {
 
   openDaySlotPopup: null | number;
   setOpenDaySlotPopup: (x: null | number) => void;
+
+  isSubmitted: boolean;
+  setIsSubmitted: (x: boolean) => void;
 }
 const defaultProvider: ContextValue = {
   dateSlots: [],
@@ -78,6 +82,8 @@ const defaultProvider: ContextValue = {
   setMultiDaySessions: () => {},
   openDaySlotPopup: null,
   setOpenDaySlotPopup: () => {},
+  isSubmitted: false,
+  setIsSubmitted: () => {},
 };
 const RequestAvailabilityContext = createContext<ContextValue>(defaultProvider);
 const useRequestAvailabilityContext = () =>
@@ -103,6 +109,7 @@ function RequestAvailabilityProvider({ children }) {
 
   const [openDaySlotPopup, setOpenDaySlotPopup] = useState<null | number>(null);
   const router = useRouter();
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   async function getRequestAvailabilityData({ request_id }) {
     const { data: requestAvailability } = await axios.post(
@@ -124,20 +131,14 @@ function RequestAvailabilityProvider({ children }) {
 
     const meetingsRound = ScheduleUtils.getSessionRounds(
       requestAvailability.session_ids as InterviewSessionTypeDB[],
-    );
+    ) as unknown as InterviewSessionTypeDB[][];
     setMultiDaySessions(meetingsRound);
-
-    const allDates = getDatesBetween(
-      requestAvailability?.date_range[0],
-      requestAvailability?.date_range[1],
-    );
 
     try {
       for (let i = 0; i < meetingsRound.length; i++) {
         const dateSlots = await getDateSlots({
           requestAvailability,
           day: i + 1,
-          prev_dates: allDates,
         });
         setDateSlots((prev) => [
           ...prev,
@@ -160,7 +161,7 @@ function RequestAvailabilityProvider({ children }) {
       });
     }
   }, [router.query?.request_id]);
- 
+
   return (
     <RequestAvailabilityContext.Provider
       value={{
@@ -180,6 +181,8 @@ function RequestAvailabilityProvider({ children }) {
         setMultiDaySessions,
         openDaySlotPopup,
         setOpenDaySlotPopup,
+        isSubmitted,
+        setIsSubmitted,
       }}
     >
       {children}
@@ -243,43 +246,26 @@ export const createTask = async (data: DatabaseTableInsert['new_tasks']) => {
   }
 };
 
-export async function insertTaskProgress({
-  request_availability_id,
-  taskData,
-}) {
-  const { data: task } = await axios.post(
-    `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,
+export async function insertTaskProgress({ taskData }: { taskData: any }) {
+  const { data: progress } = await axios.post(
+    `/api/scheduling/request_availability/insertTaskProgress`,
     {
-      request_id: request_availability_id,
+      data: {
+        title: 'Candidate submitted the availability',
+        progress_type: 'request_availability_list',
+        ...taskData,
+      } as DatabaseTableInsert['new_tasks_progress'],
     },
   );
-
-  if (task.id) {
-    const { data: progress } = await axios.post(
-      `/api/scheduling/request_availability/insertTaskProgress`,
-      {
-        data: {
-          ...taskData,
-          title: 'Candidate submitted the availability',
-          progress_type: 'request_availability_list',
-          task_id: task.id,
-        } as DatabaseTableInsert['new_tasks_progress'],
-      },
-    );
-
-    return progress;
-  }
-  return null;
+  return progress;
 }
 
 export async function getDateSlots({
   requestAvailability,
   day,
-  prev_dates = [dayjs().add(-1, 'day').format('DD/MM/YYYY')],
 }: {
   requestAvailability: candidateRequestAvailabilityType;
   day: number;
-  prev_dates?: string[];
 }) {
   const { data: dateSlots } = await axios.post(
     '/api/scheduling/v1/cand_req_available_slots',
@@ -287,16 +273,9 @@ export async function getDateSlots({
       candidate_tz: userTzDayjs.tz.guess(),
       recruiter_id: requestAvailability.recruiter_id,
       session_ids: requestAvailability.session_ids.map((ele) => ele.id),
-      date_range_start: dayjs(requestAvailability.date_range[0]).format(
-        'DD/MM/YYYY',
-      ),
-      date_range_end: dayjs(requestAvailability.date_range[1]).format(
-        'DD/MM/YYYY',
-      ),
+      date_range_start: requestAvailability.date_range[0],
+      date_range_end: requestAvailability.date_range[1],
       current_interview_day: day,
-      previously_selected_dates: prev_dates.map((ele) =>
-        dayjs(ele).format('DD/MM/YYYY'),
-      ),
     } as CandReqAvailableSlots,
   );
   return dateSlots;
@@ -314,4 +293,52 @@ export function getDatesBetween(startDate: string, endDate: string) {
   }
 
   return dateArray;
+}
+
+export async function sendEmailToCandidate({
+  recruiter,
+  first_name,
+  last_name,
+  job_title,
+  email,
+  request_id,
+  sessionNames,
+  emailBody,
+  emailSubject,
+}: {
+  recruiter: any;
+  first_name: string;
+  last_name: string;
+  job_title: string;
+  email: string;
+  request_id: string;
+  sessionNames: string[];
+  emailBody: string;
+  emailSubject: string;
+}) {
+  const body = fillEmailTemplate(emailBody, {
+    company_name: recruiter.name,
+    schedule_name: sessionNames.join(','),
+    first_name: first_name,
+    last_name: last_name,
+    job_title: job_title,
+    availability_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${request_id}'>Pick Your Slot</a>`,
+  });
+
+  const subject = fillEmailTemplate(emailSubject, {
+    company_name: recruiter.name,
+    schedule_name: sessionNames.join(','),
+    first_name: first_name,
+    last_name: last_name,
+    job_title: job_title,
+  });
+
+  await axios.post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
+    fromEmail: `messenger@aglinthq.com`,
+    fromName: 'Aglint',
+    email: email,
+    subject: subject,
+    text: body,
+  });
+  // end
 }

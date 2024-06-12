@@ -1,9 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { AgentPopoverBlock } from "./AgentPopoverBlock";
-import { ScheduleTypeButton } from "./ScheduleTypeButton";
-import { Activities } from "./Activities";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./CandidateSchedule.module.css";
 
@@ -36,15 +34,20 @@ export function CandidateSchedule({
           {slotDarkPill}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "new-schedule-cd-card-wrap")}
+          className={_utils.cx(_styles, "cs-slot-wrap")}
           tag="div"
         >
-          {slotFullScheduleCard ?? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "dummydiv")}
-              tag="div"
-            />
-          )}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "new-schedule-cd-card-wrap")}
+            tag="div"
+          >
+            {slotFullScheduleCard ?? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "dummydiv")}
+                tag="div"
+              />
+            )}
+          </_Builtin.Block>
         </_Builtin.Block>
         {isScheduleNowVisible ? (
           <_Builtin.Block
@@ -67,10 +70,7 @@ export function CandidateSchedule({
               tag="div"
             >
               {slotScheduleButton ?? (
-                <>
-                  <AgentPopoverBlock />
-                  <ScheduleTypeButton />
-                </>
+                <SlotComp componentNeme="SheduleTypeButton, Agent popoverBlock" />
               )}
             </_Builtin.Block>
           </_Builtin.Block>
@@ -80,7 +80,7 @@ export function CandidateSchedule({
         className={_utils.cx(_styles, "candidate-schedule-right-wrap")}
         tag="div"
       >
-        {slotCandidateCard ?? <Activities />}
+        {slotCandidateCard ?? <SlotComp componentNeme="Activities" />}
       </_Builtin.Block>
     </_Component>
   );

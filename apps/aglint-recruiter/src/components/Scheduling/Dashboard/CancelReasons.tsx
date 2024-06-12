@@ -5,6 +5,7 @@ import React, { ReactNode, useState } from 'react';
 
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
+import { NoData } from '@/devlink3/NoData';
 import { Reason } from '@/devlink3/Reason';
 import { useCancelRescheduleReasons } from '@/src/queries/scheduling-dashboard';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
@@ -35,7 +36,6 @@ const CancelReasons = () => {
   const chartData = getOrderedGraphValues(
     processedCancelReasonsData[reasonType],
   );
-
   return (
     <Reason
       slotReasonDropdown={
@@ -51,60 +51,67 @@ const CancelReasons = () => {
         />
       }
       slotReasonGraph={
-        <Stack
-          p={1}
-          sx={{
-            bgcolor: '#F7F9FB',
-            borderRadius: '16px',
-          }}
-        >
-          <Stack alignItems={'center'} justifyContent={'space-around'} gap={3}>
-            <Stack height={'225px'}>
-              <DoughnutChart locations={chartData} fixedHeight={true} />
-            </Stack>
+        !(
+          processedCancelReasonsData[reasonType] &&
+          Object.keys(processedCancelReasonsData[reasonType]).length
+        ) ? (
+          <Stack minHeight={'296px'}>
+            <NoData />
+          </Stack>
+        ) : (
+          <Stack>
             <Stack
-              gap={1}
-              width={'100%'}
-              maxHeight={'50px'}
-              overflow={'scroll'}
+              alignItems={'center'}
+              justifyContent={'space-around'}
+              gap={3}
             >
-              {chartData.map(({ color, count, name }, i) => {
-                return (
-                  <Stack
-                    direction={'row'}
-                    justifyContent={'space-between'}
-                    gap={2}
-                    key={i}
-                  >
-                    <Stack direction={'row'} gap={1} alignItems={'center'}>
-                      <Stack
-                        sx={{
-                          bgcolor: color,
-                          width: '10px',
-                          aspectRatio: 1,
-                          borderRadius: '100%',
-                        }}
-                      />
+              <Stack height={'224px'}>
+                <DoughnutChart locations={chartData} fixedHeight={true} />
+              </Stack>
+              <Stack
+                gap={1}
+                width={'100%'}
+                maxHeight={'48px'}
+                overflow={'scroll'}
+              >
+                {chartData.map(({ color, count, name }, i) => {
+                  return (
+                    <Stack
+                      direction={'row'}
+                      justifyContent={'space-between'}
+                      gap={2}
+                      key={i}
+                    >
+                      <Stack direction={'row'} gap={1} alignItems={'center'}>
+                        <Stack
+                          sx={{
+                            bgcolor: color,
+                            width: '10px',
+                            aspectRatio: 1,
+                            borderRadius: 'var(--radius-full)',
+                          }}
+                        />
 
-                      <Typography
-                        variant='body1'
-                        sx={{
-                          textWrap: 'nowrap',
-                          textTransform: 'capitalize',
-                        }}
-                      >
-                        {capitalizeFirstLetter(name)}
+                        <Typography
+                          variant='body1'
+                          sx={{
+                            textWrap: 'nowrap',
+                            // textTransform: 'capitalize',
+                          }}
+                        >
+                          {name}
+                        </Typography>
+                      </Stack>
+                      <Typography variant='body1'>
+                        {((count / totalCount) * 100).toFixed(0)}%
                       </Typography>
                     </Stack>
-                    <Typography variant='body1'>
-                      {((count / totalCount) * 100).toFixed(0)}%
-                    </Typography>
-                  </Stack>
-                );
-              })}
+                  );
+                })}
+              </Stack>
             </Stack>
           </Stack>
-        </Stack>
+        )
       }
     />
   );
@@ -179,8 +186,8 @@ export const DropdownSelectButton = <T,>({
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
-            borderRadius: '10px',
-            borderColor: '#E9EBED',
+            borderRadius: 'var(--radius-4)',
+            borderColor: 'var(--neutral-6)',
             minWidth: '176px',
           },
         }}

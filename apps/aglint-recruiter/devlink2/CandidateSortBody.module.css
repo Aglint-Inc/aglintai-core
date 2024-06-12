@@ -16,27 +16,6 @@
   grid-row-gap: 8px;
 }
 
-.text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
-.text-no-wrap {
-  white-space: nowrap;
-}
-
-.text-gray-600.max-width-500 {
-  max-width: 500px;
-}
-
-.text-gray-600.maxwidth-custom {
-  max-width: 292px;
-}
-
-.text-sm {
-  font-size: 12px;
-  line-height: 16px;
-}
-
 .cl-sort-option-wrapper {
   position: relative;
   overflow: hidden;

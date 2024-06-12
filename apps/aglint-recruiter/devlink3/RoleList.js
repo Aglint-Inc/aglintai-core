@@ -24,17 +24,17 @@ export function RoleList({
         className={_utils.cx(_styles, "div-block-1714")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1713")}
-          tag="div"
-        >
-          {slotImage}
-        </_Builtin.Block>
+        <_Builtin.Block tag="div">{slotImage}</_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1715")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{textName}</_Builtin.Block>
+          <Text
+            content={textName}
+            size="2"
+            color="neutral-12"
+            weight="medium"
+          />
           <Text content={textRoleHeader} size="1" color="neutral" weight="" />
         </_Builtin.Block>
       </_Builtin.Block>

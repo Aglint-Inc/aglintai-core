@@ -10,11 +10,11 @@ export function TrainingProgressLoader({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "div-block-1507", "progress")}
+      className={_utils.cx(_styles, "module_row", "progress")}
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1508", "progress")}
+        className={_utils.cx(_styles, "sd_table_header_cell", "progress")}
         id={_utils.cx(
           _styles,
           "w-node-_1afaeed1-885e-000a-4785-54489de70490-9de7048f"
@@ -46,7 +46,7 @@ export function TrainingProgressLoader({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1508", "progress")}
+        className={_utils.cx(_styles, "sd_table_header_cell", "progress")}
         id={_utils.cx(
           _styles,
           "w-node-_1afaeed1-885e-000a-4785-54489de70497-9de7048f"
@@ -61,7 +61,7 @@ export function TrainingProgressLoader({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1508", "progress")}
+        className={_utils.cx(_styles, "sd_table_header_cell", "progress")}
         id={_utils.cx(
           _styles,
           "w-node-_1afaeed1-885e-000a-4785-54489de7049a-9de7048f"

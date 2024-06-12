@@ -1,8 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { KeywordCard } from "./KeywordCard";
-import { WorkingHourDay } from "./WorkingHourDay";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./ScheduleSettings.module.css";
 
@@ -55,7 +54,7 @@ export function ScheduleSettings({
             className={_utils.cx(_styles, "div-block-1169")}
             tag="div"
           >
-            {slotKeywordCard ?? <KeywordCard />}
+            {slotKeywordCard ?? <SlotComp componentName="KeywordCard" />}
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}
@@ -108,7 +107,7 @@ export function ScheduleSettings({
           className={_utils.cx(_styles, "slot_timezoneinput", "reverse-order")}
           tag="div"
         >
-          {slotTimeZoneInput}
+          {slotTimeZoneInput ?? <SlotComp componentName="TimezoneSlot" />}
         </_Builtin.Block>
         {isTimeZoneToggleVisible ? (
           <_Builtin.Block
@@ -200,11 +199,8 @@ export function ScheduleSettings({
         <_Builtin.Block className={_utils.cx(_styles, "week_days")} tag="div">
           {slotWorkingHourDay ?? (
             <>
-              <WorkingHourDay />
-              <WorkingHourDay isApplytoAll={true} />
-              <WorkingHourDay isApplytoAll={true} />
-              <WorkingHourDay isApplytoAll={true} />
-              <WorkingHourDay isApplytoAll={true} />
+              <SlotComp componentName="WorkingHourDays" />
+              <SlotComp componentName="WorkingHourDays" />
             </>
           )}
         </_Builtin.Block>

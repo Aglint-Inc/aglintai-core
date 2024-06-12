@@ -19,7 +19,7 @@ export function BasicInfo({
     <_Component className={_utils.cx(_styles, "basic-info-wrap")} tag="div">
       <_Builtin.Block tag="div">
         <_Builtin.Block className={_utils.cx(_styles, "spacing-2")} tag="div">
-          <Text weight="bold" content="Basic Info" />
+          <Text weight="medium" content="Basic Info" />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "flex-horizontal", "center", "gap-3")}

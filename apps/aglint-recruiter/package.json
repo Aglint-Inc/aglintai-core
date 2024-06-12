@@ -94,6 +94,7 @@
     "tiptap": "^1.32.2",
     "use-deep-compare-effect": "^1.8.1",
     "uuid": "^9.0.1",
+    "valibot": "^0.31.0-rc.12",
     "vercel-toast": "^1.8.0",
     "xlsx": "^0.18.5",
     "zustand": "^4.4.7"

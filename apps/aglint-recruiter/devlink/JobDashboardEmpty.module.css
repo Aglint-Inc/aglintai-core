@@ -26,8 +26,15 @@
 .job-empty-landing-wrappers {
   display: flex;
   width: 100%;
-  padding: var(--space-7);
+  padding-top: var(--space-7);
+  padding-right: var(--space-7);
+  padding-bottom: var(--space-7);
+  padding-left: var(--space-7);
   flex-direction: column;
+
+  background-color: var(--neutral-2);
+
+  height: calc(100vh - 48px);
 }
 
 @media screen and (max-width: 991px) {
@@ -62,8 +69,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  grid-column-gap: 22px;
-  grid-row-gap: 22px;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
 }
 
 .cj-option-block-white {
@@ -79,6 +86,8 @@
 
   border: 1px solid var(--neutral-6);
   border-radius: var(--radius-4);
+
+  background-color: var(--white);
 
   transition: all 250ms ease;
 
@@ -234,6 +243,15 @@
   align-items: flex-start;
 }
 
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
 .cj-imports-wrapper {
   display: flex;
   max-width: 750px;
@@ -295,7 +313,8 @@
 }
 
 .cj-option-block.grey {
-  background-color: hsla(173.68421052631572, 76.00%, 95.10%, 1.00);
+  border: 1px solid var(--neutral-6);
+  background-color: var(--white);
 }
 
 .yellow-100 {
@@ -308,15 +327,13 @@
 }
 
 .cj-option-block.asley {
-  background-color: rgba(71, 59, 206, 0.08);
+  border: 1px solid var(--neutral-6);
+  background-color: var(--white);
 }
 
 .cj-option-block.neutral-2 {
-  background-color: var(--neutral-2);
-}
-
-.image-38 {
-  transform: scale(1.2);
+  border: 1px solid var(--neutral-6);
+  background-color: var(--white);
 }
 
 .cj-option-info {
@@ -358,6 +375,11 @@
 }
 
 .flex-horizontal.top.gap-2 {
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.flex-horizontal.gap-space-2 {
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
 }
@@ -556,17 +578,6 @@
   width: 49.91667175292969px;
 }
 
-.color-blue-600 {
-  color: var(--blue600-aad8d97e);
-}
-
 .text-capitalize {
   text-transform: uppercase;
-}
-
-.asby-image {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  transform: scale(1);
 }

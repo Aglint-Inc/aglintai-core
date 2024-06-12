@@ -55,10 +55,6 @@
   cursor: pointer;
 }
 
-.slot-training-card {
-  display: none;
-}
-
 .div-block-1552 {
   position: absolute;
   left: 0%;
@@ -71,7 +67,7 @@
   justify-content: center;
   align-items: center;
 
-  background-color: #467b7c;
+  background-color: var(--success-9);
 }
 
 .div-block-1552.start-active {
@@ -91,7 +87,7 @@
   right: 0%;
   bottom: 0%;
 
-  background-color: #f7f9fb;
+  background-color: var(--neutral-3);
 }
 
 .div-block-1553.start {

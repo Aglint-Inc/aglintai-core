@@ -3,6 +3,7 @@ import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import { CompletedInterviews } from '@/devlink3/CompletedInterviews';
+import { NoData } from '@/devlink3/NoData';
 import { useCompletedInterviewDetails } from '@/src/queries/scheduling-dashboard';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
@@ -18,11 +19,19 @@ const CompletedInterviewBarChart = () => {
     <CompletedInterviews
       slotGraph={
         <Stack height={'330px'}>
-          <BarChart
-            skills={Object.entries(completedInterviewsData || {}).map(
-              ([key, value]) => ({ name: key, count: value, color: '#5EAE91' }),
-            )}
-          />
+          {Object.keys(completedInterviewsData || {}).length ? (
+            <BarChart
+              skills={Object.entries(completedInterviewsData || {}).map(
+                ([key, value]) => ({
+                  name: key,
+                  count: value,
+                  color: '#009A5753',
+                }),
+              )}
+            />
+          ) : (
+            <NoData />
+          )}
         </Stack>
       }
       onClickLastDays={{
@@ -102,7 +111,7 @@ export const BarChart: React.FC<{
             },
             grid: {
               display: true,
-              color: 'rgba(0,0,0,0.05)',
+              color: 'rgba(0, 0, 0, 0.05)',
             },
           },
         },

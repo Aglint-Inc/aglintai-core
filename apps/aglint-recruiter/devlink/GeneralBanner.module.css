@@ -1,0 +1,29 @@
+.general-banner-wrap {
+  display: flex;
+  padding: var(--space-4);
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+
+  background-color: var(--white);
+}
+
+.general-banner-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.general-banner-button {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}

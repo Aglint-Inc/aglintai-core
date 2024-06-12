@@ -18,6 +18,7 @@ function SingleDayCard({
   item,
   ind,
   isMultiDay,
+  isCollapseNeeded = true,
 }: {
   item: {
     date: string;
@@ -25,6 +26,7 @@ function SingleDayCard({
   };
   ind: number;
   isMultiDay: boolean;
+  isCollapseNeeded?: boolean;
 }) {
   const day = item.date;
   const sessions = item.sessions;
@@ -74,6 +76,7 @@ function SingleDayCard({
       }}
       rotateArrow={{
         style: {
+          display: isCollapseNeeded ? 'flex' : 'none',
           transform: collapse ? 'rotate(180deg)' : '',
         },
       }}
@@ -111,7 +114,7 @@ function SingleDayCard({
         </>
       }
       slotSessionDetails={
-        <Collapse in={collapse}>
+        <Collapse in={isCollapseNeeded ? collapse : true}>
           {sessions.map((session) => {
             return (
               <SessionIndividual key={session.session_id} session={session} />

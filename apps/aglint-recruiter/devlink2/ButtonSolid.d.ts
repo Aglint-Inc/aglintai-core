@@ -14,4 +14,8 @@ declare function ButtonSolid(props: {
   size?: Types.Builtin.Text;
   color?: Types.Builtin.Text;
   highContrast?: Types.Builtin.Text;
+  iconName?: React.ReactNode;
+  iconSize?: Types.Builtin.Text;
+  iconWeight?: Types.Builtin.Text;
+  iconColor?: Types.Builtin.Text;
 }): React.JSX.Element;

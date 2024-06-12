@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { WorkingHourDay } from "./WorkingHourDay";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./WorkingHours.module.css";
 
@@ -53,7 +53,7 @@ export function WorkingHours({
           className={_utils.cx(_styles, "slot_timezoneinput")}
           tag="div"
         >
-          {slotTimeZoneInput}
+          {slotTimeZoneInput ?? <SlotComp componentName="Slot TieZone" />}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "setting_wrap")} tag="div">
@@ -71,11 +71,10 @@ export function WorkingHours({
         <_Builtin.Block className={_utils.cx(_styles, "week_days")} tag="div">
           {slotWorkingHourDay ?? (
             <>
-              <WorkingHourDay />
-              <WorkingHourDay isApplytoAll={true} />
-              <WorkingHourDay isApplytoAll={true} />
-              <WorkingHourDay isApplytoAll={true} />
-              <WorkingHourDay isApplytoAll={true} />
+              <SlotComp componentName="WorkingDays" />
+              <SlotComp componentName="WorkingDays" />
+              <SlotComp componentName="WorkingDays" />
+              <SlotComp componentName="WorkingDays" />
             </>
           )}
         </_Builtin.Block>

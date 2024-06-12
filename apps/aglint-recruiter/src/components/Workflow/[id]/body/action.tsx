@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
-import type { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import type { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 
 import { WorkflowAdd } from '@/devlink3/WorkflowAdd';
 import { WorkflowConnector } from '@/devlink3/WorkflowConnector';
@@ -13,19 +13,20 @@ import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
-import { emailTemplates } from '@/src/utils/emailTemplate';
+
+import { useActions } from './context';
 
 const Actions = () => {
   const {
-    recruiter: { email_template },
-  } = useAuthDetails();
-  const {
     actions: { data, status },
     actionMutations: mutations,
-    handleCreateAction,
   } = useWorkflow();
+  const { createAction, globalOptions } = useActions();
+  const canCreateAction = useMemo(
+    () => !!globalOptions.length,
+    [globalOptions],
+  );
   if (status === 'error') return <>Error</>;
   if (status === 'pending') return <Loader />;
   const actions = data.map((action) => {
@@ -40,22 +41,13 @@ const Actions = () => {
   return (
     <>
       {actions}
-      {
+      {canCreateAction && (
         <WorkflowAdd
           onClickAdd={{
-            onClick: () =>
-              handleCreateAction({
-                order: data.length ? data[data.length - 1].order + 1 : 1,
-                medium: 'email',
-                target: 'applicant',
-                payload: {
-                  key: 'application_received',
-                  template: email_template['application_received'],
-                },
-              }),
+            onClick: () => createAction(),
           }}
         />
-      }
+      )}
     </>
   );
 };
@@ -86,53 +78,46 @@ const Forms = (props: ActionProps) => {
   return (
     <>
       <ActionForm {...props} />
-      <TemplateForm {...props} />
-      <Template key={props.action.payload.key} {...props} />
+      <Template key={props.action.email_template_id} {...props} />
     </>
   );
 };
 
-const ActionForm = ({ action: { id, medium, target } }: ActionProps) => {
+const ActionForm = ({
+  action: {
+    id,
+    company_email_template: { type },
+  },
+}: ActionProps) => {
+  const {
+    emailTemplates: { data: all_company_email_template },
+  } = useAuthDetails();
   const { handleUpdateAction } = useWorkflow();
-  const payload = { medium, target };
+  const { globalOptions, getCurrentOption } = useActions();
+  const options = useMemo(
+    () => [...globalOptions, getCurrentOption(type)],
+    [globalOptions, type],
+  );
   return (
     <UISelect
       label='Do this'
-      value={JSON.stringify(payload)}
-      menuOptions={ACTION_OPTIONS}
+      value={type}
+      menuOptions={options}
       onChange={(e) => {
-        const { medium, target } = JSON.parse(e.target.value) as typeof payload;
+        const {
+          body,
+          id: email_template_id,
+          subject,
+        } = all_company_email_template.find(
+          ({ type }) => type === e.target.value,
+        );
         handleUpdateAction({
           id,
           payload: {
-            medium,
-            target,
-          },
-        });
-      }}
-    />
-  );
-};
-
-const TemplateForm = ({ action: { id, payload } }: ActionProps) => {
-  const {
-    recruiter: { email_template },
-  } = useAuthDetails();
-  const { handleUpdateAction } = useWorkflow();
-  return (
-    <UISelect
-      label='Template'
-      value={payload?.key}
-      menuOptions={TEMPLATE_OPTIONS}
-      onChange={(e) => {
-        const safeKey = e.target
-          .value as ActionProps['action']['payload']['key'];
-        handleUpdateAction({
-          id,
-          payload: {
+            email_template_id,
             payload: {
-              key: safeKey,
-              template: email_template?.[safeKey],
+              subject,
+              body,
             },
           },
         });
@@ -141,20 +126,13 @@ const TemplateForm = ({ action: { id, payload } }: ActionProps) => {
   );
 };
 
-const Template = ({
-  action: {
-    payload: { template },
-  },
-}: ActionProps) => {
-  const sender_name = <SenderName name='fromName' value={template} />;
+const Template = ({ action: { payload } }: ActionProps) => {
+  const email_subject = <EmailSubject name='subject' value={payload} />;
 
-  const email_subject = <EmailSubject name='subject' value={template} />;
-
-  const email_body = <EmailBody name='body' value={template} />;
+  const email_body = <EmailBody name='body' value={payload} />;
 
   const forms = (
-    <Stack spacing={'20px'}>
-      {sender_name}
+    <Stack spacing={'var(--space-5)'}>
       {email_subject}
       {email_body}
     </Stack>
@@ -167,28 +145,11 @@ type EmailTemplate = DatabaseTable['recruiter']['email_template'];
 
 type FormsType = {
   name: keyof Omit<EmailTemplate[keyof EmailTemplate], 'default'>;
-  value: EmailTemplate[keyof EmailTemplate];
+  value: {
+    [key in keyof DatabaseTable['workflow_action']['payload']]: DatabaseTable['workflow_action']['payload'][key];
+  };
   disabled?: boolean;
 };
-
-const SenderName: React.FC<FormsType> = memo(
-  ({ name, value, disabled = true }) => {
-    return (
-      <UITextField
-        label={'Sender Name'}
-        disabled={disabled}
-        name={name}
-        placeholder={'Sender Name'}
-        value={value[name]}
-        error={false}
-        helperText={null}
-        onChange={null}
-        defaultLabelColor={palette.grey[800]}
-      />
-    );
-  },
-);
-SenderName.displayName = 'SenderName';
 
 const EmailSubject: React.FC<FormsType> = memo(
   ({ name, value, disabled = true }) => {
@@ -204,7 +165,7 @@ const EmailSubject: React.FC<FormsType> = memo(
         onChange={null}
         minRows={1}
         multiline
-        defaultLabelColor={palette.grey[800]}
+        defaultLabelColor={'var(--neutral-6)'}
       />
     );
   },
@@ -220,8 +181,8 @@ const EmailBody: React.FC<FormsType> = memo(
           sx={{
             mt: '8px',
             border: '1px solid',
-            borderColor: palette.grey[400],
-            borderRadius: '4px',
+            borderColor: 'var(--neutral-6)',
+            borderRadius: 'var(--radius-2)',
           }}
         >
           <TipTapAIEditor
@@ -237,100 +198,7 @@ const EmailBody: React.FC<FormsType> = memo(
 );
 EmailBody.displayName = 'EmailBody';
 
-const TEMPLATE_OPTIONS: {
-  name: string;
-  value: ActionProps['action']['payload']['key'];
-}[] = Object.entries(emailTemplates).map(([key, { heading }]) => ({
-  name: heading,
-  value: key as ActionProps['action']['payload']['key'],
-}));
-
-const ACTION_PAYLOAD: {
-  medium: DatabaseEnums['workflow_action_medium'][];
-  target: DatabaseEnums['workflow_action_target'];
-}[] = [
-  {
-    medium: ['email'],
-    target: 'applicant',
-  },
-  {
-    medium: ['email'],
-    target: 'hiring_manager',
-  },
-  {
-    medium: ['email'],
-    target: 'interviewers',
-  },
-  {
-    medium: ['email'],
-    target: 'recruiter',
-  },
-  {
-    medium: ['email'],
-    target: 'recruiting_coordinator',
-  },
-];
-
-export const ACTION_OPTIONS = ACTION_PAYLOAD.reduce(
-  (acc, { target, medium: mediums }) => {
-    acc.push(
-      ...mediums.map((medium) => ({
-        name: getActionOption(medium, target),
-        value: JSON.stringify({
-          medium,
-          target,
-        }) as unknown as (typeof acc)[number]['value'],
-      })),
-    );
-    return acc;
-  },
-  [] as {
-    name: string;
-    value: {
-      medium: DatabaseEnums['workflow_action_medium'];
-      target: DatabaseEnums['workflow_action_target'];
-    };
-  }[],
-);
-
-function getActionOption(
-  medium: DatabaseEnums['workflow_action_medium'],
-  target: DatabaseEnums['workflow_action_target'],
-): string {
-  let message = '';
-  switch (target) {
-    case 'applicant':
-      message = 'the Applicant';
-      break;
-    case 'custom':
-      message = 'custom emails';
-      break;
-    case 'hiring_manager':
-      message = 'the Hiring Manager';
-      break;
-    case 'interviewers':
-      message = 'the Interviewers';
-      break;
-    case 'recruiter':
-      message = 'the Recruiter';
-      break;
-    case 'recruiting_coordinator':
-      message = 'the Recruiting coordinator';
-      break;
-  }
-  let preMessage = '';
-  switch (medium) {
-    case 'email':
-      preMessage = 'an email';
-      break;
-    case 'slack':
-      preMessage = 'a slack message';
-      break;
-  }
-  return `Send ${preMessage} to ${message}`;
-}
-
-const ActionIcon = () => {
+const ActionIcon = memo(() => {
   return (
     <svg
       width='20'
@@ -346,4 +214,5 @@ const ActionIcon = () => {
       />
     </svg>
   );
-};
+});
+ActionIcon.displayName = 'ActionIcon';

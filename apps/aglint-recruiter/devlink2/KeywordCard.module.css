@@ -8,28 +8,12 @@
   border-radius: 10px;
 }
 
-.keyword_wrap.no-border {
-  padding-left: 0px;
-  border-style: none;
-}
-
 .header_desc {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: var(--space-1);
   grid-row-gap: var(--space-1);
-}
-
-.div-block-1167 {
-  padding: 10px 16px;
-  border-radius: 10px;
-  background-color: #fff7ed;
-}
-
-.div-block-1167.no-border {
-  padding: 0px;
-  background-color: white;
 }
 
 .slot_suggestion_pill {

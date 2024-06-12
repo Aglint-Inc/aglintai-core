@@ -25,7 +25,7 @@ function ConflictWithHover({
       <CustomTooltip
         title={
           <React.Fragment>
-            <Stack bgcolor={'#fff'} borderRadius={'10px'}>
+            <Stack bgcolor={'#fff'} borderRadius={'var(--radius-4)'}>
               <ConflictPopover
                 isHardConflict={isHardConflict}
                 isOutsideWorkHours={isOutsideWorkHours}

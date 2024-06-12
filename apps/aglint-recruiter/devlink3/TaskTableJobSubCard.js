@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./TaskTableJobSubCard.module.css";
 
@@ -41,7 +42,7 @@ export function TaskTableJobSubCard({
           )}
           tag="div"
         >
-          {slotCheckbox}
+          {slotCheckbox ?? <SlotComp componentNeme="Checkbox" />}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

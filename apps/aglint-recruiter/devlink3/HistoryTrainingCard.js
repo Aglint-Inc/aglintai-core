@@ -114,10 +114,6 @@ export function HistoryTrainingCard({
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}
-      <_Builtin.HtmlEmbed
-        className={_utils.cx(_styles, "icons", "task-hover")}
-        value="%3Csvg%20width%3D%2219%22%20height%3D%2219%22%20viewbox%3D%220%200%2019%2019%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9.06699%201.75C9.25944%201.41667%209.74056%201.41667%209.93301%201.75L16.4282%2013C16.6207%2013.3333%2016.3801%2013.75%2015.9952%2013.75H3.00481C2.61991%2013.75%202.37935%2013.3333%202.5718%2013L9.06699%201.75Z%22%20fill%3D%22white%22%20stroke%3D%22%23E5E7EB%22%2F%3E%0A%3Crect%20x%3D%221%22%20y%3D%229%22%20width%3D%2218%22%20height%3D%226%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
-      />
       {isNotScheduleVisible ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1565")}

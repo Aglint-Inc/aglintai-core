@@ -358,9 +358,9 @@ const TypeInput: FC<{
           alignItems={'start'}
           pl={'12px'}
           style={{
-            backgroundColor: 'white',
+            backgroundColor:  'var(--white)',
             border: '1px solid #cbcbcb',
-            borderRadius: '4px',
+            borderRadius: 'var(--radius-2)',
           }}
         >
           <QuestionTags type={question.type} />
@@ -399,7 +399,7 @@ const TypeSwitch: FC<{
   return (
     <Stack
       width={'200px'}
-      style={{ backgroundColor: 'white', borderRadius: '10px' }}
+      style={{ backgroundColor:  'var(--white)', borderRadius: 'var(--radius-4)' }}
     >
       <SelectionComp
         onChange={(e) => handleTypeUpdate(e.target.value)}
@@ -465,7 +465,7 @@ const TextField: FC<{
 };
 
 export const AntSwitch = styled(Switch)(({ theme }) => ({
-  width: 28,
+  width: 32,
   height: 16,
   padding: 0,
   display: 'flex',
@@ -480,16 +480,16 @@ export const AntSwitch = styled(Switch)(({ theme }) => ({
   '& .MuiSwitch-switchBase': {
     padding: 2,
     '&.Mui-checked': {
-      transform: 'translateX(12px)',
-      color: '#fff',
+      transform: 'translateX(16px)',
+      color: 'var(--white)',
       '& + .MuiSwitch-track': {
         opacity: 1,
-        backgroundColor: '#1F73B7',
+        backgroundColor: 'var(--accent-9)',
       },
     },
   },
   '& .MuiSwitch-thumb': {
-    boxShadow: '0 2px 4px 0 rgb(0 35 11 / 20%)',
+    boxShadow: 'var(--shadow-3)',
     width: 12,
     height: 12,
     borderRadius: 6,
@@ -500,7 +500,7 @@ export const AntSwitch = styled(Switch)(({ theme }) => ({
   '& .MuiSwitch-track': {
     borderRadius: 16 / 2,
     opacity: 1,
-    backgroundColor: 'rgba(0,0,0,.25)',
+    backgroundColor: 'var(--neutral-7)',
     boxSizing: 'border-box',
   },
 }));

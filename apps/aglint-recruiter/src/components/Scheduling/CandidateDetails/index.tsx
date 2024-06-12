@@ -7,6 +7,7 @@ import { InterviewPlanEmpty } from '@/devlink2/InterviewPlanEmpty';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { CandidateSchedule } from '@/devlink3/CandidateSchedule';
 import Loader from '@/src/components/Common/Loader';
+import ROUTES from '@/src/utils/routing/routes';
 
 import ScheduleProgress from '../Common/ScheduleProgress';
 import CandidateInfo from '../ScheduleDetails/CandidateDetails';
@@ -24,6 +25,7 @@ import {
   resetSchedulingApplicationState,
   setFetchingSchedule,
   setSelectedSessionIds,
+  TabSchedulingType,
   useSchedulingApplicationStore,
 } from './store';
 import TabsSchedulingApplication from './Tabs';
@@ -37,15 +39,15 @@ function SchedulingApplication() {
     selectedSessionIds,
     selectedApplication,
     scheduleName,
-    tab,
   } = useSchedulingApplicationStore((state) => ({
     fetchingSchedule: state.fetchingSchedule,
     initialSessions: state.initialSessions,
     selectedSessionIds: state.selectedSessionIds,
     selectedApplication: state.selectedApplication,
     scheduleName: state.scheduleName,
-    tab: state.tab,
   }));
+
+  const tab = router.query.tab as TabSchedulingType;
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
 
@@ -73,7 +75,7 @@ function SchedulingApplication() {
       <PageLayout
         onClickBack={{
           onClick: () => {
-            router.back();
+            router.push(ROUTES['/scheduling']() + '?tab=candidates');
           },
         }}
         isBackButton={true}
@@ -115,7 +117,7 @@ function SchedulingApplication() {
                       candidate={selectedApplication.candidates}
                       file={selectedApplication.candidate_files}
                     />
-                  ) : tab === 'interview_plan' ? (
+                  ) : tab === 'interview_plan' || !tab ? (
                     <FullSchedule refetch={allActivities.refetch} />
                   ) : tab === 'feedback' ? (
                     <FeedbackWindow
