@@ -1,8 +1,9 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ConfirmScheduleList } from '@/devlink3/ConfirmScheduleList';
 import { ConfirmScheduleListCard } from '@/devlink3/ConfirmScheduleListCard';
 import { RescheduleCard } from '@/devlink3/RescheduleCard';
@@ -22,16 +23,12 @@ import {
 } from '../SelfSchedulingDrawer/store';
 import {
   setMultipleCancelOpen,
-  setRequestSessionIds,
   setSelectedApplicationLog,
   useSchedulingApplicationStore,
 } from '../store';
 import IconSessionType from './IconSessionType';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
 
 function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
-  const router = useRouter();
   const { selectedApplication } = useSchedulingApplicationStore((state) => ({
     selectedApplication: state.selectedApplication,
   }));
