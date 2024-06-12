@@ -15,8 +15,8 @@ import { PageLayout } from '@/devlink2/PageLayout';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { validateString } from '@/src/context/JobDashboard/hooks';
 import { useJobs } from '@/src/context/JobsContext';
-import { Job } from '@/src/queries/job/types';
 import { useCurrentJob } from '@/src/queries/job-assessment/keys';
+import { Job } from '@/src/queries/jobs/types';
 import { emailTemplates as emailTemplatesUtils } from '@/src/utils/emailTemplate';
 
 import Loader from '../Common/Loader';

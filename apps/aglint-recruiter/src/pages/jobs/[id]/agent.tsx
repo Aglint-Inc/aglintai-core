@@ -5,12 +5,8 @@ import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
 import JobAgent from '@/src/components/Agent/JobAgent';
 import Seo from '@/src/components/Common/Seo';
-import JobApplicationProvider from '@/src/context/JobApplicationsContext';
 import { JobAssistantProvider } from '@/src/context/JobAssistant';
-import JobDashboardProvider, {
-  useJobDetails,
-} from '@/src/context/JobDashboard';
-import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
+import { JobProvider, useJob } from '@/src/context/JobContext';
 
 const JobAgentPage = () => {
   return (
@@ -26,13 +22,7 @@ const JobAgentPage = () => {
 export default JobAgentPage;
 
 JobAgentPage.privateProvider = function privateProvider(page) {
-  return (
-    <JobDashboardProvider>
-      <JobInterviewPlanProvider>
-        <JobApplicationProvider>{page}</JobApplicationProvider>
-      </JobInterviewPlanProvider>
-    </JobDashboardProvider>
-  );
+  return <JobProvider>{page}</JobProvider>;
 };
 
 const AgentPage = () => {
@@ -43,7 +33,7 @@ const AgentPage = () => {
 
 const BreadCrumbs = () => {
   const router = useRouter();
-  const { job } = useJobDetails();
+  const { job } = useJob();
   return (
     <>
       <Breadcrum

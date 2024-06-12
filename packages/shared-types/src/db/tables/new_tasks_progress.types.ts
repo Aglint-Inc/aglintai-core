@@ -1,5 +1,5 @@
-import { Enums } from "../schema.types";
-import { TableType } from "./index.types";
+import type { Enums } from "../schema.types";
+import type { TableType } from "./index.types";
 
 export type CustomNewTaskProgress = TableType<
   "new_tasks_progress",

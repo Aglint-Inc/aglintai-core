@@ -328,7 +328,7 @@ const InterviewSession = ({
   );
   const isLoading = getLoadingState(session.id);
 
-  const { queryKey } = interviewPlanKeys.interview_plan({ job_id: job.id });
+  const { queryKey } = interviewPlanKeys.interview_plan({ id: job.id });
 
   const handleMoveCard = (dragIndex, hoverIndex) => {
     const sessions = structuredClone(data.interview_session);

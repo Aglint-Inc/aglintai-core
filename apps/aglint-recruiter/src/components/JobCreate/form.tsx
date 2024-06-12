@@ -6,7 +6,7 @@ import React, { FC, memo } from 'react';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { useCompanyMembers } from '@/src/queries/company-members';
-import { JobCreate } from '@/src/queries/job/types';
+import { JobCreate } from '@/src/queries/jobs/types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
