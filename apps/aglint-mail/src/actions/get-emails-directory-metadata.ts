@@ -1,5 +1,5 @@
 'use server';
- 
+
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -61,7 +61,7 @@ const mergeDirectoriesWithSubDirectories = (
 export const getEmailsDirectoryMetadata = async (
   absolutePathToEmailsDirectory: string,
 ): Promise<EmailsDirectory | undefined> => {
-  if (!fs.existsSync(absolutePathToEmailsDirectory)) return;
+  // if (!fs.existsSync(absolutePathToEmailsDirectory)) return;
 
   const dirents = await fs.promises.readdir(absolutePathToEmailsDirectory, {
     withFileTypes: true,
@@ -81,11 +81,10 @@ export const getEmailsDirectoryMetadata = async (
           !dirent.name.startsWith('_') &&
           dirent.name !== 'static',
       )
-      .map(
-        (dirent) =>
-          getEmailsDirectoryMetadata(
-            path.join(absolutePathToEmailsDirectory, dirent.name),
-          ),
+      .map((dirent) =>
+        getEmailsDirectoryMetadata(
+          path.join(absolutePathToEmailsDirectory, dirent.name),
+        ),
       ),
   );
 

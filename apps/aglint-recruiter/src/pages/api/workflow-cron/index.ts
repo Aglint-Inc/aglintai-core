@@ -37,7 +37,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       switch (meta.email_type) {
         case 'interviewStart_slack_interviewers': {
           await axios.post(
-            'https://apis-ta7r36xoza-wl.a.run.app/api/slack/interview-reminder',
+            `${process.env.AGENTS_API_HOST}/api/slack/interview-reminder`,
             {
               session_id: meta.session_id,
             },
@@ -46,7 +46,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
         case 'interviewerConfirmation_slack_interviewers': {
           await axios.post(
-            'https://apis-ta7r36xoza-wl.a.run.app/api/slack/notify-interview-confirmation',
+            `${process.env.AGENTS_API_HOST}/api/slack/notify-interview-confirmation`,
             {
               session_id: meta.session_id,
             },
@@ -55,7 +55,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
         case 'interviewEnd_slack_interviewers': {
           await axios.post(
-            'https://apis-ta7r36xoza-wl.a.run.app/api/slack/feedback',
+            `${process.env.AGENTS_API_HOST}/api/slack/feedback`,
             {
               session_id: meta.session_id,
             },

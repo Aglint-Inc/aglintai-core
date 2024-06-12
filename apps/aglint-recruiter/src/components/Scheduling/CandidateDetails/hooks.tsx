@@ -29,6 +29,7 @@ import {
   setScheduleName,
   setSelectedApplication,
   setSelectedSchedule,
+  setSelectedSessionIds,
 } from './store';
 import {
   ApplicationDataResponseType,
@@ -137,6 +138,7 @@ export const useGetScheduleApplication = () => {
     } catch (error) {
       toast.error(error.message);
     } finally {
+      setSelectedSessionIds([]);
       setFetchingSchedule(false);
     }
   };
