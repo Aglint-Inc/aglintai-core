@@ -8,11 +8,9 @@ drop index if exists "public"."company_email_template_ukey";
 
 alter type "public"."email_types" rename to "email_types__old_version_to_be_dropped";
 
-create type "public"."email_types" as enum ('debrief_calendar_invite', 'candidate_invite_confirmation', 'cancel_interview_session', 'init_email_agent', 'confirmation_mail_to_organizer', 'interview', 'rejection', 'phone_screening', 'interview_resend', 'application_received', 'phone_screening_resend', 'request_candidate_slot', 'candidate_cancel_request', 'candidate_reschedule_request', 'recruiter_rescheduling_email', 'candidate_availability_request', 'interviewStart_email_applicant', 'interviewStart_email_interviewers', 'interviewStart_slack_interviewers', 'interviewEnd_slack_interviewers', 'interviewerConfirmation_slack_interviewers', 'debrief_email_interviewer', 'applicationRecieved_email_applicant', 'interviewCancel_email_applicant', 'agent_email_candidate', 'confInterview_email_organizer', 'confirmInterview_email_applicant', 'applicantReject_email_applicant', 'phoneScreen_email_candidate', 'interviewReminder_email_applicant', 'phoneScreenRemind_email_applicant', 'InterviewCancelReq_email_recruiter', 'interReschedReq_email_recruiter', 'interviewReschedule_email_applicant', 'interviewReminder_email_interviewer', 'sendAvailReqReminder_email_applicant', 'selfScheduleReminder_email_applicant');
-
 drop view if exists "public"."application_view";
 
-alter table "public"."application_email_status" alter column email type "public"."email_types" using email::text::"public"."email_types";
+alter table "public"."application_email_status" alter column email type "public"."email_slack_types" using email::text::"public"."email_slack_types";
 
 alter table "public"."company_email_template" alter column "type" set data type email_slack_types using "type"::text::email_slack_types;
 
