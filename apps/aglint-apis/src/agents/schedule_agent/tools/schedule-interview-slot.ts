@@ -123,7 +123,7 @@ export const scheduleInterviewSlot = () => {
         };
 
         await axios.post(
-          `${envConfig.CLIENT_APP_URL}/api/scheduling/v1/confirm_interview_slot`,
+          `${envConfig.CLIENT_APP_URL}/api/scheduling/v1/booking/confirm-slot-no-conflicts`,
           payload
         );
         cand_info.cand_selected_slot = req_slot_time.format();
