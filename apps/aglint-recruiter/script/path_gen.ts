@@ -1,33 +1,56 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-function processDirectory(rootDir: string, outputFile: string) {
+function processDirectory(
+  rootDirs: { [key: string]: { basePath: string; appRouter: boolean } },
+  outputFile: string,
+) {
   const result: string[] = [];
 
-  function walkDirectory(dir: string) {
+  function walkDirectory(
+    rootDir: string,
+    dir: string,
+    {
+      base = '',
+      appRouter = false,
+    }: {
+      base?: string;
+      appRouter?: boolean;
+    } = {},
+  ) {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const entries = fs.readdirSync(dir, { withFileTypes: true });
 
     for (const entry of entries) {
       const fullPath = path.join(dir, entry.name);
 
       if (entry.isDirectory()) {
-        walkDirectory(fullPath);
+        walkDirectory(rootDir, fullPath, { base, appRouter });
       } else if (entry.isFile()) {
         if (entry.name.startsWith('type')) {
           continue;
-        } else if (entry.name.startsWith('index')) {
-          result.push(dir.replace(rootDir, ''));
-        } else {
+        } else if (
+          entry.name.startsWith('index') ||
+          entry.name.startsWith('route') ||
+          entry.name.startsWith('page')
+        ) {
+          result.push(dir.replace(rootDir, base));
+        } else if (!appRouter) {
           const filePath = fullPath
             .replace(/\.ts$|\.js$|\.jsx$|\.tsx$/, '')
-            .replace(rootDir, '');
+            .replace(rootDir, base);
           result.push(filePath);
         }
       }
     }
   }
 
-  walkDirectory(rootDir);
+  Object.keys(rootDirs).map((rootDir) =>
+    walkDirectory(rootDir, rootDir, {
+      base: rootDirs[String(rootDir)].basePath,
+      appRouter: rootDirs[String(rootDir)].appRouter,
+    }),
+  );
 
   // eslint-disable-next-line security/detect-non-literal-fs-filename
   fs.writeFileSync(
@@ -37,10 +60,21 @@ function processDirectory(rootDir: string, outputFile: string) {
   );
 }
 
-const args = process.argv.slice(2);
+// const args = process.argv.slice(2);
 
-const rootDirectory = args[0] || '.';
-const outputFile = args[1] || 'script/paths.ts';
+// const rootDirectory = args[0].split(',') || ['.'];
+// const outputFile = args[1] || 'script/paths.ts';
+const rootDirectory = {
+  'src/pages': {
+    basePath: '',
+    appRouter: false,
+  },
+  '../aglint-mail/src/app/api': {
+    basePath: 'api/emails',
+    appRouter: true,
+  },
+};
+const outputFile = 'script/paths.ts';
 
 processDirectory(rootDirectory, outputFile);
 
