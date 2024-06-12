@@ -35,7 +35,6 @@ import { CountJobs } from '@/src/context/JobsContext/types';
 import ListCardInterviewSchedule from '../../Scheduling/Candidates/ListCard';
 import CandidateAvatar from '../Common/CandidateAvatar';
 import InterviewScore from '../Common/InterviewScore';
-import ResumeScore from '../Common/ResumeScore';
 import {
   analysisRatings,
   capitalize,
@@ -67,7 +66,6 @@ const ApplicationCard = ({
   isSelected: boolean;
 }) => {
   const {
-    job,
     cardStates: {
       checkList: { list },
     },

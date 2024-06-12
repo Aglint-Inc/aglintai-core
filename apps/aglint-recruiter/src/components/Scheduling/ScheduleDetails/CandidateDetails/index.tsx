@@ -1,22 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { Stack } from '@mui/material';
-import dayjs from 'dayjs';
 import { useMemo } from 'react';
 
-import { CandidateDetails } from '@/devlink/CandidateDetails';
 import { CandidateSideDrawer } from '@/devlink/CandidateSideDrawer';
-import { SummaryBlock } from '@/devlink2/SummaryBlock';
-import {
-  AnalysisBlockSection,
-  NewEducationDetails,
-  NewExperienceDetails,
-  NewSkillDetails,
-} from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails';
-import EmailIcon from '@/src/components/JobApplicationsDashboard/Common/Icons/emailIcon';
-import LinkedInIcon from '@/src/components/JobApplicationsDashboard/Common/Icons/linkedinIcon';
-import PhoneIcon from '@/src/components/JobApplicationsDashboard/Common/Icons/phoneIcon';
-import CopyWrapper from '@/src/components/JobApplicationsDashboard/Common/Wrappers/copyWrapper';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
-import { getFullName } from '@/src/utils/jsonResume';
 
 function CandidateInfo({ applications, candidate, file }) {
   const application: JobApplication = useMemo(

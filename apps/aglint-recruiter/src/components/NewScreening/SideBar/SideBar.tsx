@@ -1,13 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { Stack } from '@mui/material';
 import axios from 'axios';
-import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 
 import { CandidateSideDrawer } from '@/devlink/CandidateSideDrawer';
-import { InvitedCards } from '@/devlink2/InvitedCards';
-import { InviteStatus } from '@/devlink2/InviteStatus';
-import { ResponseCard } from '@/devlink2/ResponseCard';
-import { SubmittedCard } from '@/devlink2/SubmittedCard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
