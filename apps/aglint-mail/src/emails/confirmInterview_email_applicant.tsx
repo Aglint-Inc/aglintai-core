@@ -57,7 +57,7 @@ const Sessions = ({ meetingDetail }) => {
       <Text style={{ lineHeight: '24px', marginBottom: '5px', margin: 0, fontSize: '1rem' }}>
         <strong>{htmlParser.parse(meetingDetail.date)}</strong> {htmlParser.parse(meetingDetail.time)}
       </Text>
-      <Text style={{ display: 'flex', alignItems: 'center', lineHeight: '24px', marginBottom: '5px', margin: 0, fontSize: '0.75rem' }}>
+      <Text style={{ display: 'flex', alignItems: 'center', lineHeight: '24px', marginBottom: '5px', margin: 0, fontSize: '1rem' }}>
         <span style={{ display: 'inline-flex', alignItems: 'center', lineHeight: '24px' }}>
           <Img
             src={meetingDetail.sessionTypeIcon}

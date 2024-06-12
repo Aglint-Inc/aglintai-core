@@ -2,6 +2,7 @@ const webpack = require("webpack");
 
 /** @type {import('next').NextConfig} */
 module.exports = {
+  swcMinify: false,
   // this is needed so that the code for building emails works properly
   webpack: (
     /** @type {import('webpack').Configuration & { externals: string[] }} */
