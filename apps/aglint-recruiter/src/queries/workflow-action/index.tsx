@@ -101,11 +101,11 @@ export const useWorkflowActionUpdate = (args: WorkflowActionKeys) => {
         if (curr.id === variables.id) {
           const newPayload = structuredClone({ ...curr, ...variables.payload });
           if (variables.payload.email_template_id)
-            newPayload['company_email_template'] =
+            (newPayload['company_email_template'] =
               all_company_email_template.find(
                 ({ id }) => id === variables.payload.email_template_id,
-              );
-          acc.push(newPayload);
+              ) as any), //TODO: punith fix this;
+              acc.push(newPayload);
         } else acc.push(curr);
         return acc;
       }, [] as WorkflowAction[]);
@@ -158,7 +158,7 @@ export const useWorkflowActionCreate = (args: WorkflowActionKeys) => {
         workflow_id,
         company_email_template: all_company_email_template.find(
           ({ id }) => id === payload.email_template_id,
-        ),
+        ) as any, //TODO: punith fix this
       });
       queryClient.setQueryData<WorkflowAction[]>(queryKey, newWorkflowActions);
     },

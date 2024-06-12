@@ -8,8 +8,8 @@ export const scheduling_options_schema = z.object({
   cand_end_time: z.number().default(18),
   include_conflicting_slots: z
     .object({
-      show_soft_conflicts: z.boolean().default(true),
-      show_conflicts_events: z.boolean().default(true),
+      show_soft_conflicts: z.boolean().default(false),
+      show_conflicts_events: z.boolean().default(false),
       interviewers_load: z.boolean().default(false),
       interviewer_pause: z.boolean().default(false),
       out_of_office: z.boolean().default(false),
