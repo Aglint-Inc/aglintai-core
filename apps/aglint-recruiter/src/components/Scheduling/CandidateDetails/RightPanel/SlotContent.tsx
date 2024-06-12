@@ -21,6 +21,7 @@ import IconCancelSchedule from '../../ScheduleDetails/Icons/IconCancelSchedule';
 import IconReschedule from '../../ScheduleDetails/Icons/IconReschedule';
 import { formatTimeWithTimeZone } from '../../utils';
 import {
+  setDateRange,
   setIsScheduleNowOpen,
   setStepScheduling,
 } from '../SelfSchedulingDrawer/store';
@@ -169,6 +170,11 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
                       setStepScheduling('reschedule');
                       setSelectedApplicationLog(act);
                       setIsScheduleNowOpen(true);
+                      setDateRange({
+                        start_date:
+                          rescheduleDetails.other_details.dateRange.start,
+                        end_date: rescheduleDetails.other_details.dateRange.end,
+                      });
                     },
                   }}
                 />
