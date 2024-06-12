@@ -44,7 +44,7 @@ function SideNavbar() {
     route: string;
     comingSoon: boolean;
     isVisible: boolean;
-    permission?: DatabaseEnums['permissions_type'];
+    permission?: DatabaseEnums['permissions_type'][];
   }[] = [
     {
       text: 'Agent',
@@ -59,7 +59,7 @@ function SideNavbar() {
       route: ROUTES['/tasks']() + '?myTasks',
       comingSoon: false,
       isVisible: isTasksEnabled,
-      permission: 'tasks_enabled',
+      permission: ['tasks_enabled'],
     },
     {
       text: 'Jobs',
@@ -67,7 +67,7 @@ function SideNavbar() {
       route: ROUTES['/jobs']() + '?status=published',
       comingSoon: false,
       isVisible: true,
-      permission: 'jobs_enabled',
+      permission: ['jobs_enabled'],
     },
     {
       text: 'Scheduler',
@@ -75,7 +75,7 @@ function SideNavbar() {
       route: ROUTES['/scheduling']() + '?tab=dashboard',
       comingSoon: false,
       isVisible: isSchedulingEnabled,
-      permission: 'scheduler_enabled',
+      permission: ['scheduler_enabled'],
     },
     {
       text: 'Workflows',
@@ -114,7 +114,7 @@ function SideNavbar() {
       route: ROUTES['/screening'](),
       comingSoon: false,
       isVisible: isPhoneScreeningEnabled,
-      permission: 'phone_screening_enabled',
+      permission: ['phone_screening_enabled'],
     },
 
     {
@@ -123,7 +123,7 @@ function SideNavbar() {
       route: ROUTES['/assessment-new'](),
       comingSoon: false,
       isVisible: isAssessmentEnabled,
-      permission: 'assessment_enabled',
+      permission: ['assessment_enabled'],
     },
     {
       text: 'Integrations',
@@ -131,7 +131,7 @@ function SideNavbar() {
       route: ROUTES['/integrations'](),
       comingSoon: false,
       isVisible: true,
-      permission: 'integrations_enabled',
+      permission: ['integrations_enabled'],
     },
     {
       text: 'Company Settings',
@@ -139,7 +139,7 @@ function SideNavbar() {
       route: ROUTES['/company'](),
       comingSoon: false,
       isVisible: true,
-      permission: 'company_setting_enabled',
+      permission: ['company_setting_enabled'],
     },
   ];
 
