@@ -92,6 +92,13 @@ const getInviteSlots = async ({
     const paylod: APIVerifyRecruiterSelectedSlots = {
       filter_json_id,
       candidate_tz: user_tz,
+      api_options: {
+        include_conflicting_slots: {
+          show_conflicts_events: true,
+          show_soft_conflicts: true,
+          out_of_working_hrs: true,
+        },
+      },
     };
     const resSchOpt = await axios.post(
       '/api/scheduling/v1/verify-recruiter-selected-slots',

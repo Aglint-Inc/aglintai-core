@@ -1,8 +1,10 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ConfirmScheduleList } from '@/devlink3/ConfirmScheduleList';
 import { ConfirmScheduleListCard } from '@/devlink3/ConfirmScheduleListCard';
@@ -11,6 +13,7 @@ import { ScheduleButton } from '@/devlink3/ScheduleButton';
 import CandidateDefaultIcon from '@/src/components/Common/Icons/CandidateDefaultIcon';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
+import ROUTES from '@/src/utils/routing/routes';
 
 import IconScheduleType from '../../Candidates/ListCard/Icon';
 import { getScheduleType } from '../../Candidates/utils';
@@ -29,6 +32,7 @@ import {
 import IconSessionType from './IconSessionType';
 
 function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
+  const router = useRouter();
   const { selectedApplication } = useSchedulingApplicationStore((state) => ({
     selectedApplication: state.selectedApplication,
   }));
@@ -83,8 +87,7 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
                   textButton={'Reschedule'}
                   slotIcon={
                     <Stack>
-                      <GlobalIcon
-                        iconName={'refresh'} />
+                      <GlobalIcon iconName={'refresh'} />
                     </Stack>
                   }
                   isLeftIcon={true}
@@ -94,9 +97,9 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
                       setSelectedApplicationLog(act);
                       setIsScheduleNowOpen(true);
                     },
-                  }} />
+                  }}
+                />
               </Stack>
-
 
               <Stack width={'50%'}>
                 <ButtonSoft
@@ -112,9 +115,9 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
                   }}
                   slotIcon={
                     <Stack>
-                      <GlobalIcon
-                        iconName={'event_busy'} />
-                    </Stack>}
+                      <GlobalIcon iconName={'event_busy'} />
+                    </Stack>
+                  }
                   isLeftIcon={true}
                 />
               </Stack>
@@ -151,8 +154,7 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
           slotProfileImage={<CandidateDefaultIcon size={20} />}
           isChangeInterviewerVisible={false}
           textReason={rescheduleDetails.reason}
-          isRescheduleBtnVisible={true}
-          isCancelVisible={true}
+          isRescheduleBtnVisible={false}
         />
 
         {rescheduleDetails?.filter_id &&
@@ -191,6 +193,24 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
               )}
             </Stack>
           )}
+      </Stack>
+    );
+  } else if (act.metadata.type === 'interviewer_decline') {
+    const meeting_id = act.metadata.meeting_id;
+    return (
+      <Stack direction={'row'}>
+        <ButtonSurface
+          size={1}
+          textButton={'View details'}
+          onClickButton={{
+            onClick: () => {
+              router.push(
+                ROUTES['/scheduling/view']() +
+                  `?meeting_id=${meeting_id}&tab=candidate_details`,
+              );
+            },
+          }}
+        />
       </Stack>
     );
   } else {

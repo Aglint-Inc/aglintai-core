@@ -1,6 +1,6 @@
 import { InterviewSessionRelationTypeDB } from '@aglint/shared-types';
+import { InterviewerDeclineMetadata } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { Dialog, Stack, TextField, Typography } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
 import React, { Dispatch, useEffect, useState } from 'react';
 
 import { Checkbox } from '@/devlink/Checkbox';
@@ -17,14 +17,15 @@ function DeclineScheduleDialog({
   setIsDeclineOpen,
   sessionRelation,
   schedule,
+  refetch,
 }: {
   isDeclineOpen: boolean;
   setIsDeclineOpen: Dispatch<React.SetStateAction<boolean>>;
   sessionRelation: InterviewSessionRelationTypeDB;
   schedule: ScheduleMeeting;
+  refetch: () => void;
 }) {
   const { recruiter, recruiterUser } = useAuthDetails();
-  const queryClient = useQueryClient();
 
   const [reason, setReason] = useState('');
   const [notes, setNotes] = useState('');
@@ -62,17 +63,28 @@ function DeclineScheduleDialog({
           });
         if (error) throw new Error();
 
+        const metadata: InterviewerDeclineMetadata = {
+          meeting_id: schedule.interview_meeting.id,
+          reason,
+          other_details: {
+            dateRange: null,
+            note: notes,
+          },
+          response_type: 'cancel',
+          type: 'interviewer_decline',
+          action: 'waiting',
+        };
+
         addScheduleActivity({
           title: `Declined ${schedule.interview_session.name}. Reason: ${reason} `,
           application_id: schedule.applications.id,
           logged_by: 'user',
           supabase: supabase,
           created_by: recruiterUser.user_id,
+          metadata,
         });
 
-        queryClient.invalidateQueries({
-          queryKey: ['schedule_details', schedule.interview_meeting.id],
-        });
+        refetch();
       }
     } catch {
       toast.error('Unable to save cancel reason');

@@ -5,6 +5,8 @@ import React from 'react';
 import { RescheduleCard } from '@/devlink3/RescheduleCard';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
+import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import { useScheduleDetails } from '../hooks';
 import { ScheduleMeeting } from '../types';
@@ -12,7 +14,6 @@ import { ScheduleMeeting } from '../types';
 function CancelReasonCards({
   cancelReasons,
   schedule,
-  setIsCancelOpen,
   setIsRescheduleOpen,
   setCancelUserId,
   cancelUserId,
@@ -21,7 +22,6 @@ function CancelReasonCards({
 }: {
   cancelReasons: ReturnType<typeof useScheduleDetails>['data']['cancel_data'];
   schedule: ScheduleMeeting;
-  setIsCancelOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsRescheduleOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setCancelUserId: React.Dispatch<React.SetStateAction<string>>;
   cancelUserId: string;
@@ -38,10 +38,31 @@ function CancelReasonCards({
     (user) =>
       user.id !== cancelUserId && !user.interview_session_relation.is_confirmed,
   );
+  const { refetch } = useScheduleDetails();
+
+  const onClickIgnore = async (id: string) => {
+    try {
+      await supabase
+        .from('interview_session_cancel')
+        .update({ is_ignored: true })
+        .eq('id', id);
+      refetch();
+    } catch {
+      toast.error('Error ignoring cancel request');
+    }
+  };
 
   return (
     <Stack spacing={'var(--space-4)'}>
       {cancelReasons?.map((item) => {
+        const isChangeInterviewerVisible =
+          item.interview_session_cancel.session_relation_id &&
+          schedule.interview_session.session_type != 'debrief' &&
+          possibleUsers.length > 0;
+
+        const isRescheduleVisible =
+          item.interview_session_cancel.type === 'reschedule';
+
         return (
           <RescheduleCard
             textColorProps={{
@@ -132,11 +153,20 @@ function CancelReasonCards({
                   ? 'requested for reschedule'
                   : 'declined this schedule'
             }
-            isChangeInterviewerVisible={
-              item.interview_session_cancel.session_relation_id &&
-              schedule.interview_session.session_type != 'debrief' &&
-              possibleUsers.length > 0
-            }
+            bgColorProps={{
+              style: {
+                backgroundColor:
+                  item.interview_session_cancel.type === 'declined'
+                    ? 'var(--error-3)'
+                    : 'var(--accent-3)',
+                borderColor:
+                  item.interview_session_cancel.type === 'declined'
+                    ? 'var(--error-6)'
+                    : 'var(--accent-6)',
+              },
+            }}
+            isButtonVisible={true}
+            isChangeInterviewerVisible={isChangeInterviewerVisible}
             textReason={item.interview_session_cancel.reason}
             onClickChangeInterviewer={{
               onClick: () => {
@@ -144,17 +174,11 @@ function CancelReasonCards({
                 setIsChangeInterviewerOpen(true);
               },
             }}
-            isRescheduleBtnVisible={
-              item.interview_session_cancel.type === 'reschedule'
-            }
-            isCancelVisible={
-              item.interview_session_cancel.schedule_id &&
-              item.interview_session_cancel.type === 'declined'
-            }
-            onClickCancel={{
+            isRescheduleBtnVisible={isRescheduleVisible}
+            isIgnoreVisible={true}
+            onClickIgnore={{
               onClick: () => {
-                setCancelUserId(item.recruiter_user.id);
-                setIsCancelOpen(true);
+                onClickIgnore(item.interview_session_cancel.id);
               },
             }}
           />

@@ -466,7 +466,7 @@ const AdminFeedback = ({
                     );
                   })
                   .filter((item) => Boolean(item))
-              : Object.values(sessions)[0].map((int, index) => {
+              : Object.values(sessions)[0]?.map((int, index) => {
                   const isFeedBackEnabled = int.session.status === 'completed';
                   return (
                     <FeedbackTableRow
