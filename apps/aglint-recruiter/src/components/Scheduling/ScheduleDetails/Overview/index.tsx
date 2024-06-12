@@ -179,16 +179,18 @@ function Overview({
               schedule.interview_meeting.status === 'waiting' ||
               schedule.interview_meeting.status === 'confirmed'
             ) {
-              onClickResendInvite({
-                session_name: schedule.interview_session.name,
-                application_id: schedule.applications.id,
-                candidate_name: getFullName(
-                  schedule.candidates.first_name,
-                  schedule.candidates.last_name,
-                ),
-                rec_user_id: recruiterUser.user_id,
-                session_id: schedule.interview_session.id,
-              });
+              if (filterJson?.id) {
+                onClickResendInvite({
+                  session_name: schedule.interview_session.name,
+                  application_id: schedule.applications.id,
+                  candidate_name: getFullName(
+                    schedule.candidates.first_name,
+                    schedule.candidates.last_name,
+                  ),
+                  rec_user_id: recruiterUser.user_id,
+                  filter_id: filterJson.id,
+                });
+              }
             } else {
               toast.warning(
                 'Email will be sent only if meeting status is waiting or confirmed',

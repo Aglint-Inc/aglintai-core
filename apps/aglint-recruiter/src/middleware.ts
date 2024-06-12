@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
     },
   });
   const requestUrl = request.nextUrl.pathname;
-  if (isAllowedPaths(requestUrl) || process.env.NODE_ENV === 'development') {
+  if (isAllowedPaths(requestUrl)) {
     return response;
   }
   const supabase = createServerClient(

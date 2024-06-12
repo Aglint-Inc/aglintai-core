@@ -35,7 +35,6 @@ import { CountJobs } from '@/src/context/JobsContext/types';
 import ListCardInterviewSchedule from '../../Scheduling/Candidates/ListCard';
 import CandidateAvatar from '../Common/CandidateAvatar';
 import InterviewScore from '../Common/InterviewScore';
-import ResumeScore from '../Common/ResumeScore';
 import {
   analysisRatings,
   capitalize,
@@ -67,7 +66,6 @@ const ApplicationCard = ({
   isSelected: boolean;
 }) => {
   const {
-    job,
     cardStates: {
       checkList: { list },
     },
@@ -79,8 +77,8 @@ const ApplicationCard = ({
     handleSelect(index);
   };
   const profile = <CandidateAvatar application={application} />;
-  const resumeScore =
-    job.status === 'draft' ? '---' : <ResumeScore application={application} />;
+  // const resumeScore =
+  //   job.status === 'draft' ? '---' : <ResumeScore application={application} />;
   const interviewScore = <InterviewScore application={application} />;
   const isChecked = list.has(application.id);
   const overview =
@@ -117,7 +115,7 @@ const ApplicationCard = ({
           />
         }
         isChecked={isChecked}
-        slotResumeScore={<ResumeScore application={application} />}
+        // slotResumeScore={<ResumeScore application={application} />}
       />
     ) : (
       <CandidateListItem
@@ -130,7 +128,7 @@ const ApplicationCard = ({
         name={name.value}
         jobTitle={jobTitle.value}
         location={location.value}
-        slotResumeScore={resumeScore}
+        // slotResumeScore={resumeScore}
         isInterviewVisible={views.assessment}
         slotAssessmentScore={interviewScore}
         appliedDate={creationDate}
@@ -161,7 +159,7 @@ const ApplicationCard = ({
       isHighlighted={isSelected}
       slotScores={
         <>
-          {resumeScore}
+          {/* {resumeScore} */}
           {/* {interviewScore} */}
         </>
       }
@@ -454,7 +452,7 @@ const getBadge = (key: string, count: number, pills: any) => {
     case 'jobStability':
       return count >= 90 ? <InsightTagReliable /> : null;
     case 'jobHopping':
-      return count >= 0 ? <JobHopper /> : null;
+      return count >= 10 ? <JobHopper /> : null;
     case 'careerGrowth':
       return count >= 90 ? <InsightTagAmbitious /> : null;
   }

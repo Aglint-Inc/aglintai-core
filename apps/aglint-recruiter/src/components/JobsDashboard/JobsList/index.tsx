@@ -7,7 +7,7 @@ import React from 'react';
 import { AtsBadge } from '@/devlink/AtsBadge';
 import { JobEmptyState } from '@/devlink/JobEmptyState';
 import { JobsListingCard } from '@/devlink/JobsListingCard';
-import { Job } from '@/src/queries/job/types';
+import { Job } from '@/src/queries/jobs/types';
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 import ROUTES from '@/src/utils/routing/routes';
 
@@ -15,7 +15,7 @@ import { POSTED_BY } from '../AddJobWithIntegrations/utils';
 import {
   calculateTimeDifference,
   getBgColorJobsList,
-  getTextColorJobsList
+  getTextColorJobsList,
 } from '../utils';
 
 interface JobsListProps {
@@ -61,7 +61,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                         <Avatar
                           variant='square'
                           src='/images/ats/lever-job-badge.png'
-                          sx={{ width: '100%', height: '20px'}}
+                          sx={{ width: '100%', height: '20px' }}
                         />
                       }
                     />
@@ -71,7 +71,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                         <Avatar
                           variant='square'
                           src='/images/ats/greenhouse-job-badge.svg'
-                          sx={{ width: '100%', height: '20px'}}
+                          sx={{ width: '100%', height: '20px' }}
                         />
                       }
                     />
@@ -81,7 +81,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                         <Avatar
                           variant='square'
                           src='/images/ats/ashby-job-badge.svg'
-                          sx={{ width: '100%', height: '20px'}}
+                          sx={{ width: '100%', height: '20px' }}
                         />
                       }
                     />

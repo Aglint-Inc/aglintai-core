@@ -2,10 +2,7 @@
 import * as Collapsible from '@radix-ui/react-collapsible';
 import * as React from 'react';
 import { cn } from '../../utils';
-import {
-  emailsDirectoryAbsolutePath,
-  pathSeparator,
-} from '../../utils/emails-directory-absolute-path';
+import { emailsDirectoryAbsolutePath } from '../../utils/emails-directory-absolute-path';
 import { type EmailsDirectory } from '../../actions/get-emails-directory-metadata';
 import { Heading } from '../heading';
 import { IconFolder } from '../icons/icon-folder';
@@ -28,14 +25,8 @@ export const SidebarDirectory = ({
 }: SidebarDirectoryProps) => {
   const isBaseEmailsDirectory =
     directoryMetadata.absolutePath === emailsDirectoryAbsolutePath;
-  const directoryPathRelativeToBaseEmailsDirectory =
-    directoryMetadata.absolutePath
-      .replace(`${emailsDirectoryAbsolutePath}${pathSeparator}`, '')
-      .replace(emailsDirectoryAbsolutePath, '')
-      .trim();
-  const doesDirectoryContainCurrentEmailOpen = currentEmailOpenSlug
-    ? currentEmailOpenSlug.includes(directoryPathRelativeToBaseEmailsDirectory)
-    : false;
+
+  const doesDirectoryContainCurrentEmailOpen = false;
 
   const isEmpty =
     directoryMetadata.emailFilenames.length > 0 ||

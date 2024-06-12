@@ -11,26 +11,15 @@ import {
 } from '@react-email/components';
 import { Parser } from 'html-to-react';
 import * as React from 'react';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { aglintLogo } from '../utils/assets/common';
 
-interface CandidateRescheduleRequestType {
-  body?: string;
-  companyLogo?: string;
-  meetingLink?: string;
-  meetingDetails: {
-    date?: string;
-    time?: string;
-    sessionType?: string;
-    platform?: string;
-    duration?: string;
-    sessionTypeIcon?: string;
-    meetingIcon?: string;
-  }[];
-}
+type EmailType = EmailTemplateAPi<'interReschedReq_email_recruiter'>;
 
 // export dummy
-export const dummy: CandidateRescheduleRequestType = {
-  body: '<p>Dear {{ recruiterName }},</p><p>{{ candidateFirstName }} is requesting to reschedule between {{ dateRange }} stating reason: "{{ rescheduleReason }}."</p><p>Additional notes from {{ candidateFirstName }}: "{{ additionalRescheduleNotes }}."</p>',
+export const dummy: EmailType['react_email_placeholders'] = {
+  emailBody:
+    '<p>Dear {{ recruiterName }},</p><p>{{ candidateFirstName }} is requesting to reschedule between {{ dateRange }} stating reason: "{{ rescheduleReason }}".</p><p>Additional notes from {{ candidateFirstName }}: "{{ additionalRescheduleNotes }}".</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   meetingDetails: [
@@ -46,6 +35,8 @@ export const dummy: CandidateRescheduleRequestType = {
         'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/google_meet.png',
     },
   ],
+  subject: '',
+  resheduleLink: '',
 };
 
 // export get subject
@@ -82,11 +73,11 @@ const Sessions = ({ meetingDetail }) => {
 };
 
 export const CandidateRescheduleRequest = ({
-  body = dummy.body,
+  emailBody = dummy.emailBody,
   meetingDetails = dummy.meetingDetails,
-  meetingLink = dummy.meetingLink,
   companyLogo = dummy.companyLogo,
-}: CandidateRescheduleRequestType) => {
+  resheduleLink = '',
+}: EmailType['react_email_placeholders']) => {
   const htmlParser = Parser();
   return (
     <Html>
@@ -102,7 +93,8 @@ export const CandidateRescheduleRequest = ({
                 src={companyLogo}
               />
 
-              <Text className="">{htmlParser.parse(body)}</Text>
+              <Text className="">{htmlParser.parse(emailBody)}</Text>
+              <Text className="py-[10px] my-0">Thank You</Text>
               <Text className="text-[12px] my-0">
                 Current Schedule{meetingDetails.length > 1 && 's'} :
               </Text>
@@ -111,11 +103,10 @@ export const CandidateRescheduleRequest = ({
               ))}
               <Button
                 className="px-3 py-2 bg-[#337FBD] text-white br rounded-md text-[14px]"
-                href={meetingLink}
+                href={resheduleLink}
               >
                 Rescheudle
               </Button>
-              <Text className="py-[10px] my-0">Thank You</Text>
             </Container>
             <Text className="flex items-center text-[10px]  mx-auto w-fit text-gray-500">
               Powered By

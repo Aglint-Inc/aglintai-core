@@ -925,7 +925,7 @@ export type Database = {
           id: string
           recruiter_id: string
           subject: string
-          type: Database["public"]["Enums"]["email_slack_types"] | null
+          type: Database["public"]["Enums"]["email_slack_types"]
         }
         Insert: {
           body: string
@@ -934,7 +934,7 @@ export type Database = {
           id?: string
           recruiter_id?: string
           subject: string
-          type?: Database["public"]["Enums"]["email_slack_types"] | null
+          type: Database["public"]["Enums"]["email_slack_types"]
         }
         Update: {
           body?: string
@@ -943,7 +943,7 @@ export type Database = {
           id?: string
           recruiter_id?: string
           subject?: string
-          type?: Database["public"]["Enums"]["email_slack_types"] | null
+          type?: Database["public"]["Enums"]["email_slack_types"]
         }
         Relationships: [
           {
@@ -3022,6 +3022,8 @@ export type Database = {
           chat_history: Json[]
           company_id: string | null
           created_at: string
+          email_from_name: string
+          email_subject: string
           filter_json_id: string
           job_id: string
           task_id: string | null
@@ -3033,6 +3035,8 @@ export type Database = {
           chat_history?: Json[]
           company_id?: string | null
           created_at?: string
+          email_from_name: string
+          email_subject: string
           filter_json_id: string
           job_id: string
           task_id?: string | null
@@ -3044,6 +3048,8 @@ export type Database = {
           chat_history?: Json[]
           company_id?: string | null
           created_at?: string
+          email_from_name?: string
+          email_subject?: string
           filter_json_id?: string
           job_id?: string
           task_id?: string | null

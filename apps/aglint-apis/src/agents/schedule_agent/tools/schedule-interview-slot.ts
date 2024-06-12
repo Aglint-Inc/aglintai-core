@@ -1,6 +1,5 @@
 import axios from 'axios';
 import {z} from 'zod';
-import {CandidateInfoType} from '../../../types/app_types/scheduleAgentTypes';
 import {dayjsLocal} from '../../../utils/dayjsLocal/dayjsLocal';
 import {LoggerType} from '../../../utils/scheduling_utils/getCandidateLogger';
 import {
@@ -9,7 +8,6 @@ import {
 } from '../../../utils/scheduling_utils/tool_utils';
 import {createOpenAiTool} from './utils';
 
-import {ConfirmApiBodyParams} from '../../emailAgent/tools/types';
 import {envConfig} from '../../../config';
 import {fromError} from 'zod-validation-error';
 import {
@@ -17,6 +15,7 @@ import {
   updateCandidateInfo,
 } from '../../../services/cache/cache-db';
 import {agent_activities} from '../../../copies/agents_activity';
+import {APICandidateConfirmSlotNoConflict} from '@aglint/shared-types';
 
 export const scheduleInterviewSlot = () => {
   const schema = z.object({
@@ -115,16 +114,11 @@ export const scheduleInterviewSlot = () => {
           return "Didn't find any slot on that time";
         }
 
-        const payload: ConfirmApiBodyParams = {
-          candidate_email: cand_info.req_payload.cand_email,
-          recruiter_id: cand_info.company_id,
-          schedule_id: cand_info.schedule_id,
-          candidate_plan: [curr_time_slots[0]],
-          user_tz: cand_info.candidate_tz.tz_code,
-          agent_type: 'phone',
-          candidate_id: cand_info.candidate_id,
-          candidate_name: cand_info.candidate_name,
-          task_id: cand_info.req_payload.task_id,
+        const payload: APICandidateConfirmSlotNoConflict = {
+          cand_tz: cand_info.candidate_tz.tz_code,
+          selected_slot: {
+            slot_start_time: req_slot_time.format(),
+          },
           filter_id: cand_info.req_payload.filter_json_id,
         };
 

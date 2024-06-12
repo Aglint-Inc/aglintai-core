@@ -1,5 +1,8 @@
-import { CustomEmailTemplate, CustomSchedulingSettings } from "./common.types";
-import { TableType } from "./index.types";
+import type {
+  CustomEmailTemplate,
+  CustomSchedulingSettings,
+} from "./common.types";
+import type { TableType } from "./index.types";
 
 export type CustomRecruiter = TableType<
   "recruiter",

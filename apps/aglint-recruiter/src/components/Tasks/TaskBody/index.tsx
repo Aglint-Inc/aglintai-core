@@ -48,7 +48,7 @@ function TaskBody() {
                   }
                 }}
                 size='small'
-                color='info'
+                sx={{color:'var(--accent-9)'}}
               />
             }
             slotFilter={

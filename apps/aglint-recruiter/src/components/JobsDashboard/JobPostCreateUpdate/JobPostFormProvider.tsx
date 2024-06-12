@@ -1,7 +1,7 @@
 // import { Job } from '@/src/context/JobsContext/types';
 import {
+  DatabaseTable,
   JobTypeDB,
-  PublicJobsType,
   RecruiterDB,
   RecruiterUserType,
 } from '@aglint/shared-types';
@@ -54,24 +54,11 @@ export type EmailDetails = {
   subject: string;
 };
 
-export type jsonItemType = {
-  field: string;
-  isMustHave: boolean;
-  id: string;
-};
+export type jsonItemType =
+  DatabaseTable['public_jobs']['jd_json']['educations'][number];
 
-export type JdJsonType = {
-  title: string;
-  level:
-    | 'Fresher-level'
-    | 'Associate-level'
-    | 'Mid-level'
-    | 'Senior-level'
-    | 'Executive-level';
-  rolesResponsibilities: jsonItemType[];
-  skills: jsonItemType[];
-  educations: jsonItemType[]; // Adjust this line based on the structure of the "education" property
-};
+export type JdJsonType = DatabaseTable['public_jobs']['jd_json'];
+
 export type PhoneScreenQuestion = {
   id: string;
   isRequired: boolean;
@@ -515,7 +502,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
           type: 'initForm',
           payload: {
             seedData: dbToClientjobPostForm(
-              isNull(job.draft) ? job : (job.draft as PublicJobsType),
+              isNull(job.draft) ? job : (job.draft as any),
               recruiter,
               job.status,
               recruiterUser,

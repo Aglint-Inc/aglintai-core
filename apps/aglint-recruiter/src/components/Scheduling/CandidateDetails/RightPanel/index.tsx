@@ -5,29 +5,13 @@ import { useRouter } from 'next/router';
 import { EmptyState } from '@/devlink2/EmptyState';
 import { Activities } from '@/devlink3/Activities';
 import { ActivitiesCard } from '@/devlink3/ActivitiesCard';
-import { ConfirmScheduleList } from '@/devlink3/ConfirmScheduleList';
-import { ConfirmScheduleListCard } from '@/devlink3/ConfirmScheduleListCard';
-import { ScheduleButton } from '@/devlink3/ScheduleButton';
 import Icon from '@/src/components/Common/Icons/Icon';
 import Loader from '@/src/components/Common/Loader';
-import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
-import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 
-import IconScheduleType from '../../Candidates/ListCard/Icon';
-import { getScheduleType } from '../../Candidates/utils';
-import IconCancelSchedule from '../../ScheduleDetails/Icons/IconCancelSchedule';
-import IconReschedule from '../../ScheduleDetails/Icons/IconReschedule';
-import { formatTimeWithTimeZone } from '../../utils';
 import { useAllActivities } from '../hooks';
-import {
-  setIsScheduleNowOpen,
-  setStepScheduling,
-} from '../SelfSchedulingDrawer/store';
-import { setMultipleCancelOpen, setSelectedApplicationLog } from '../store';
 import CancelMultipleScheduleDialog from './CancelMultipleScheduleDialog';
 import IconApplicationLogs from './IconApplicationLogs';
-import IconSessionType from './IconSessionType';
-import { ButtonSoft, ButtonSurface, GlobalIcon } from '@/devlink';
+import SlotContent from './SlotContent';
 
 function RightPanel({
   allActivities,
@@ -35,7 +19,6 @@ function RightPanel({
   allActivities: ReturnType<typeof useAllActivities>;
 }) {
   const router = useRouter();
-
   const { data: activities, isLoading, isFetched, refetch } = allActivities;
 
   return (
@@ -58,10 +41,6 @@ function RightPanel({
               </Stack>
             ) : (
               activities?.map((act, ind) => {
-                const sessions =
-                  act?.metadata?.sessions?.sort(
-                    (s1, s2) => s1.session_order - s2.session_order,
-                  ) || [];
                 return (
                   <ActivitiesCard
                     key={act.id}
@@ -76,102 +55,8 @@ function RightPanel({
                       },
                     }}
                     isRescheduleVisible={false}
-                    isContentVisible={Boolean(act.metadata?.sessions)}
-                    slotContent={
-                      <Stack spacing={2} width={'100%'}>
-                        <Stack spacing={1} width={'100%'}>
-                          {sessions.map((session) => {
-                            return (
-                              <ConfirmScheduleList
-                                key={session.id}
-                                textDate={dayjs(
-                                  session.interview_meeting.start_time,
-                                ).format('DD MMMM YYYY')}
-                                slotConfirmScheduleList={
-                                  <ConfirmScheduleListCard
-                                    textDuration={getBreakLabel(
-                                      session.session_duration,
-                                    )}
-                                    textPanelName={session.name}
-                                    textMeetingPlatformName={getScheduleType(
-                                      session.schedule_type,
-                                    )}
-                                    textTime={formatTimeWithTimeZone({
-                                      start_time:
-                                        session.interview_meeting.start_time,
-                                      end_time:
-                                        session.interview_meeting.end_time,
-                                      timeZone: userTzDayjs.tz.guess(),
-                                    })}
-                                    slotIconPanel={
-                                      <IconSessionType
-                                        type={session.session_type}
-                                      />
-                                    }
-                                    slotMeetingIcon={
-                                      <IconScheduleType
-                                        type={session.schedule_type}
-                                      />
-                                    }
-                                  />
-                                }
-                              />
-                            );
-                          })}
-                        </Stack>
-                        {act?.metadata?.filter_id &&
-                          act?.metadata?.action === 'waiting' && (
-                            <Stack direction={'row'} spacing={1}>
-                             
-                              <Stack width={'50%'}>
-                              <ButtonSoft
-                              color={'neutral'}
-                              size={1}
-                              textButton={'Reschedule'}
-                              slotIcon={
-                              <Stack>
-                                <GlobalIcon
-                              iconName={'refresh'}/>
-                              </Stack>
-                              }
-                              isLeftIcon={true}
-                              onClickButton={{
-                                onClick: () => {
-                                  setStepScheduling('reschedule');
-                                  setSelectedApplicationLog(act);
-                                  setIsScheduleNowOpen(true);
-                                },
-                              }}/>
-                              </Stack>
-
-                              
-                              <Stack width={'50%'}>
-                              <ButtonSoft
-                               size={1}
-                               color={'error'}
-                               textButton={'Cancel'}
-                               onClickButton={{
-                                 style: { background: '#FFF0F1' },
-                                 onClick: () => {
-                                   setSelectedApplicationLog(act);
-                                   setMultipleCancelOpen(true);
-                                 },
-                               }}
-                               slotIcon={
-                               <Stack>
-                                 <GlobalIcon
-                               iconName={'event_busy'}/>
-                               </Stack>}
-                               isLeftIcon={true}
-                              />
-                              </Stack>
-                              
-                             
-                             
-                            </Stack>
-                          )}
-                      </Stack>
-                    }
+                    isContentVisible={Boolean(act.metadata)}
+                    slotContent={<SlotContent act={act} />}
                     slotImage={<IconApplicationLogs act={act} />}
                   />
                 );

@@ -1,18 +1,30 @@
-import { DatabaseTable } from "../index.schema.types";
-import { TableType } from "./index.types";
+import type { DatabaseTable } from "../index.schema.types";
+import type { TableType } from "./index.types";
 
 export type CustomApplicationLogs = TableType<
   "application_logs",
   {
-    metadata: {
-      type: "booking_confirmation";
-      sessions: CustomMeta[];
-      filter_id?: string;
-      availability_request_id?: string;
-      action: "waiting" | "canceled" | "rescheduled";
-    };
+    metadata: BookingConfirmationMetadata | CandidateResponseSelfSchedule;
   }
 >;
+
+export type BookingConfirmationMetadata = {
+  type: "booking_confirmation";
+  sessions: CustomMeta[];
+  filter_id?: string;
+  availability_request_id?: string;
+  action: "waiting" | "canceled" | "rescheduled";
+};
+
+export type CandidateResponseSelfSchedule = {
+  type: "candidate_response_self_schedule";
+  reason: string;
+  action: "waiting" | "canceled" | "rescheduled";
+  response_type: "reschedule" | "cancel";
+  other_details: DatabaseTable["interview_session_cancel"]["other_details"];
+  filter_id: string;
+  session_ids: string[];
+};
 
 type CustomMeta = DatabaseTable["interview_session"] & {
   interview_meeting: Pick<

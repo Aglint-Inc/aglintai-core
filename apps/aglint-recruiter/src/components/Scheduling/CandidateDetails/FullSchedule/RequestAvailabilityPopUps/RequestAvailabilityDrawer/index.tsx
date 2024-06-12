@@ -71,14 +71,15 @@ function RequestAvailabilityDrawer() {
     if (selectedIndex !== availableSlots.length) {
       setSelectedIndex((pre) => pre + 1);
     } else {
-      const { data: requestData } = await axios.post(
+      setLoading(true);
+
+      const { data: task } = await axios.post(
         `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,
         {
           request_id: router.query?.request_availability_id,
         },
       );
-      const task_id = requestData.id;
-      setLoading(true);
+      const task_id = task.id;
       const allSessions: SessionCombinationRespType[] = selectedDateSlots
         .map((ele) => ele.dateSlots)
         .flat()

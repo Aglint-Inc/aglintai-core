@@ -9,13 +9,14 @@ import { InterviewScheduleContextType } from '@/src/context/SchedulingMain/Sched
 
 import { SelectedApplicationTypeDB, SessionsType } from './types';
 
+export type TabSchedulingType =
+  | 'interview_plan'
+  | 'candidate_detail'
+  | 'feedback'
+  | 'candidate_feedback';
+
 export interface SchedulingApplication {
   initialLoading: boolean;
-  tab:
-    | 'interview_plan'
-    | 'candidate_detail'
-    | 'feedback'
-    | 'candidate_feedback';
   initialSessions: SessionsType;
   selectedSessionIds: string[];
   requestSessionIds: string[];
@@ -25,7 +26,6 @@ export interface SchedulingApplication {
   interviewModules: InterviewModuleType[];
   scheduleName: string;
   members: InterviewScheduleContextType['members'];
-  isViewProfileOpen: boolean;
   fetchingSchedule: boolean;
   isEditOpen: boolean;
   isEditBreakOpen: boolean;
@@ -45,7 +45,6 @@ const initialState: SchedulingApplication = {
   selectedSessionIds: [], // selected session ids
   requestSessionIds: [], // selected session ids in request candidate availability
   availabilities: [], // candidate availabilities sent to candidate for showing banner
-  tab: 'interview_plan',
   selectedSession: null,
   initialSessions: [], // sessions with meeting details based on this plan in getting rendered in candidate details
   selectedSchedule: null, // selected schedule details (interview_schedule table) used to find session is cached or not (if schedule exits then session is cached or else sessions are fetched from job plan)
@@ -56,8 +55,7 @@ const initialState: SchedulingApplication = {
   isMultipleCancelOpen: false, // multiple cancel dialog open state from activity panel
   isMultipleRescheduleOpen: false, // multiple reschedule dialog open state from activity panel
   isIndividualRescheduleOpen: false, // individual reschedule dialog open state from interview plan
-  isViewProfileOpen: false,
-  fetchingSchedule: true,
+  fetchingSchedule: true, // plan fetching loader state
   isEditOpen: false, // edit session drawer open state from interview plan
   isEditBreakOpen: false, // edit break drawer open state from interview plan
   isSendingToCandidate: false, // sending to candidate loader state for api call
@@ -125,9 +123,6 @@ export const setinitialSessions = (initialSessions: SessionsType) =>
 export const setSelectedSessionIds = (selectedSessionIds: string[]) =>
   useSchedulingApplicationStore.setState({ selectedSessionIds });
 
-export const setTab = (tab: SchedulingApplication['tab']) =>
-  useSchedulingApplicationStore.setState({ tab });
-
 export const setSelectedApplication = (
   selectedApplication: SelectedApplicationTypeDB,
 ) => useSchedulingApplicationStore.setState({ selectedApplication });
@@ -137,9 +132,6 @@ export const setInterviewModules = (interviewModules: InterviewModuleType[]) =>
 
 export const setScheduleName = (scheduleName: string) =>
   useSchedulingApplicationStore.setState({ scheduleName });
-
-export const setIsViewProfileOpen = (isViewProfileOpen: boolean) =>
-  useSchedulingApplicationStore.setState({ isViewProfileOpen });
 
 export const setFetchingSchedule = (fetchingSchedule: boolean) =>
   useSchedulingApplicationStore.setState({ fetchingSchedule });
