@@ -251,15 +251,7 @@ function SchedulerEmailTemps() {
                     onClose={handleClose}
                   >
                     <PreviewEmail
-                      // slotContent={
-                      //   <iframe
-                      //     width={'900px'}
-                      //     height={'500px'}
-                      //     color='white'
-                      //     srcDoc={isHtml}
-                      //     title='qsds'
-                      //   />
-                      // }
+                    
                       slotContent={
                         popOverLoading ? (
                           <Stack
