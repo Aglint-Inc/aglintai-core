@@ -1,0 +1,41 @@
+{
+  "extends": [
+    "//"
+  ],
+  "globalDotEnv": [
+    ".env"
+  ],
+  "pipeline": {
+    "build": {
+      "dotEnv": [
+        ".env.production.local",
+        ".env.local",
+        ".env.production",
+        ".env"
+      ],
+      "dependsOn": [
+        "^build"
+      ]
+    },
+    "lint": {
+      "dependsOn": [
+        "^lint"
+      ]
+    },
+    "dev": {
+      "dotEnv": [
+        ".env.development.local",
+        ".env.development",
+        ".env.local",
+        ".env"
+      ]
+    },
+    "test": {
+      "dotEnv": [
+        ".env.test.local",
+        ".env.test",
+        ".env"
+      ]
+    }
+  }
+}
