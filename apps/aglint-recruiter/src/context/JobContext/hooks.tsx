@@ -1,4 +1,4 @@
-import { useQueries, useQueryClient } from '@tanstack/react-query';
+import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { useMemo } from 'react';
 
@@ -37,6 +37,8 @@ const useJobContext = () => {
     job?.status === 'published' &&
     ((job?.processing_count?.['not started'] ?? 0) !== 0 ||
       (job?.processing_count?.processing ?? 0) !== 0);
+
+  const interviewPlans = useQuery(jobQueries.interview_plans({ id: job_id }));
 
   useQueries({
     queries: [
@@ -83,6 +85,7 @@ const useJobContext = () => {
     jobLoad,
     scoreParameterPollEnabled,
     applicationScoringPollEnabled,
+    interviewPlans,
   };
 };
 

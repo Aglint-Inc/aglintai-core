@@ -4,7 +4,9 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
+import axios from 'axios';
 
+import { GetInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { jobQueries } from '../job';
@@ -25,7 +27,7 @@ export const applicationQuery = {
   }),
   meta: ({ application_id, job_id, placeholderData }: Params) =>
     queryOptions({
-      placeholderData,
+      placeholderData: placeholderData?.meta,
       enabled: !!application_id && !!job_id,
       gcTime: application_id ? 1 * 60_000 : 0,
       refetchOnMount: true,
@@ -35,8 +37,9 @@ export const applicationQuery = {
       ],
       queryFn: () => getApplicationMeta({ application_id }),
     }),
-  details: ({ application_id, job_id }: Params) =>
+  details: ({ application_id, job_id, placeholderData }: Params) =>
     queryOptions({
+      placeholderData: placeholderData?.details,
       enabled: !!application_id && !!job_id,
       gcTime: application_id ? 1 * 60_000 : 0,
       refetchOnMount: true,
@@ -46,7 +49,24 @@ export const applicationQuery = {
       ],
       queryFn: () => getApplicationDetails({ application_id }),
     }),
-};
+  interview: ({
+    application_id,
+    job_id,
+    placeholderData,
+    enabled,
+  }: Params & { enabled: boolean }) =>
+    queryOptions({
+      placeholderData: placeholderData?.interview,
+      enabled: enabled && !!application_id && !!job_id,
+      gcTime: application_id ? 1 * 60_000 : 0,
+      refetchOnMount: true,
+      queryKey: [
+        ...applicationQuery.application({ application_id, job_id }).queryKey,
+        'interview',
+      ],
+      queryFn: () => getApplicationInterview({ application_id, job_id }),
+    }),
+} as const;
 
 export const useUpdateApplication = (params: Params) => {
   const queryClient = useQueryClient();
@@ -78,7 +98,11 @@ type ApplicationAllQueryPrerequistes = {
 
 type Params = ApplicationAllQueryPrerequistes & {
   application_id: DatabaseTable['applications']['id'];
-  placeholderData?: Awaited<ReturnType<typeof getApplicationMeta>>;
+  placeholderData?: {
+    meta?: Awaited<ReturnType<typeof getApplicationMeta>>;
+    details?: Awaited<ReturnType<typeof getApplicationDetails>>;
+    interview?: Awaited<ReturnType<typeof getApplicationInterview>>;
+  };
 };
 
 const getApplicationMeta = async ({
@@ -87,7 +111,9 @@ const getApplicationMeta = async ({
   return (
     await supabase
       .from('application_view')
-      .select()
+      .select(
+        'name, city, email, phone, current_job_title, resume_processing_state, processing_status, resume_score, badges, bookmarked, file_url',
+      )
       .eq('id', application_id)
       .single()
       .throwOnError()
@@ -100,7 +126,9 @@ const getApplicationDetails = async ({
   const { candidate_files, score_json } = (
     await supabase
       .from('applications')
-      .select('score_json, candidate_files(resume_json)')
+      .select(
+        'score_json, overall_score, processing_status, candidate_files(resume_json)',
+      )
       .eq('id', application_id)
       .not('candidate_files.resume_json', 'is', null)
       .single()
@@ -110,4 +138,46 @@ const getApplicationDetails = async ({
     score_json,
     resume_json: candidate_files?.resume_json,
   };
+};
+
+const getApplicationInterview = async ({
+  application_id,
+  job_id,
+}: Pick<Params, 'application_id' | 'job_id'>) => {
+  const sessions = (
+    (
+      await supabase
+        .from('application_view')
+        .select('meeting_details')
+        .eq('id', application_id)
+        .single()
+        .throwOnError()
+    )?.data?.meeting_details ?? []
+  ).sort((a, z) => a.session_order - z.session_order);
+  if (sessions.length) return sessions;
+  const plans: typeof sessions = (
+    (
+      (await axios.get(`/api/scheduling/get_interview_plans?job_id=${job_id}`))
+        ?.data as GetInterviewPlansType['respone']
+    )?.interview_session ?? []
+  )
+    .sort((a, z) => a.session_order - z.session_order)
+    .map(
+      ({
+        session_duration,
+        name,
+        session_type,
+        schedule_type,
+        session_order,
+      }) => ({
+        session_duration,
+        session_name: name,
+        session_type,
+        schedule_type,
+        status: 'not_scheduled',
+        session_order,
+        date: null,
+      }),
+    );
+  return plans;
 };

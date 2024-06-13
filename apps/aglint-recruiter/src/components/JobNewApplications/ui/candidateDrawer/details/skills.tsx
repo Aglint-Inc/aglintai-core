@@ -3,6 +3,7 @@ import { Stack } from '@mui/material';
 
 import { CandidateDetail } from '@/devlink/CandidateDetail';
 import { CandidateSkillPills } from '@/devlink/CandidateSkillPills';
+import { GlobalIcon } from '@/devlink3/GlobalIcon';
 import { useApplication } from '@/src/context/ApplicationContext';
 
 const Skills = () => {
@@ -19,6 +20,7 @@ const Skills = () => {
     return <></>;
   return (
     <CandidateDetail
+      slotIcon={<GlobalIcon size={5} iconName={'handyman'} />}
       slotBody={<Skill />}
       textTitle={'Skills'}
       slotBadge={<></>}

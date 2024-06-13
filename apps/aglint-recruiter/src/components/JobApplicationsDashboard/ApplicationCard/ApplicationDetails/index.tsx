@@ -216,7 +216,7 @@ const NewJobApplicationSideDrawer = ({
   handleSelectPrevApplication: () => void;
   hideNextPrev: boolean;
 }) => {
-  const { job, interviewPlanEnabled } = useJobDetails();
+  const { job } = useJobDetails();
   const { views } = useJobApplications();
   const name = capitalize(
     application.candidates.first_name +
@@ -264,9 +264,7 @@ const NewJobApplicationSideDrawer = ({
   const { pressed: left } = useKeyPress('ArrowLeft');
 
   const [tab, setTab] = useState<TabType>('Details');
-  const interviewEnabled =
-    (interviewPlanEnabled?.data ?? false) &&
-    (application?.emailValidity?.isValidEmail ?? false);
+  const interviewEnabled = application?.emailValidity?.isValidEmail ?? false;
   const memoDependency = JSON.stringify(views);
   const tabsList = useMemo(
     () =>
