@@ -13,8 +13,8 @@ import {supabaseAdmin} from '../../../services/supabase/SupabaseAdmin';
 import {googleTimeZone} from '../../../utils/googleTimeZone';
 import {appLogger} from '../../../services/logger';
 import {agent_activities} from '../../../copies/agents_activity';
-import {supabaseWrap} from '@aglint/shared-utils';
 import {APIFindInterviewSlot} from '@aglint/shared-types';
+import {supabaseWrap} from 'src/utils/scheduling/supabaseWrap';
 
 const utc = require('dayjs/plugin/utc');
 const timezone = require('dayjs/plugin/timezone');

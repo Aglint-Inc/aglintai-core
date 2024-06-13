@@ -4,8 +4,8 @@ import {supabaseAdmin} from '../../../../services/supabase/SupabaseAdmin';
 import {getFullName} from '../../../../utils/getFullName';
 import {EmailAgentPayload} from '../../../../types/email_agent/apiPayload.types';
 import {EmailTemplateFields} from '@aglint/shared-types';
-import {supabaseWrap} from '@aglint/shared-utils';
 import {envConfig} from 'src/config';
+import {supabaseWrap} from 'src/utils/scheduling/supabaseWrap';
 
 export const fetchEmailAgentCandDetails = async (
   thread_id: string,

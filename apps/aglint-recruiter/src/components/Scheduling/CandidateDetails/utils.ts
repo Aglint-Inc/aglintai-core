@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import {
   APIFindAvailability,
@@ -7,7 +8,7 @@ import {
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
   JobApplcationDB,
-  SupabaseType
+  SupabaseType,
 } from '@aglint/shared-types';
 import { BookingConfirmationMetadata } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
@@ -944,24 +945,17 @@ export const agentTrigger = async ({
     rec_user_phone: formatPhoneNumber(rec_user_phone),
   });
 
-  let timezone = null;
-  if (!candidate.timezone && (candidate.city || candidate.state)) {
-    timezone = await getCandidateTimezone({
-      location: `${candidate.city} ${candidate.state}`,
-      candidate_id: candidate.id,
-    });
-  }
+  // let timezone = null;
+  // if (!candidate.timezone && (candidate.city || candidate.state)) {
+  //   timezone = await getCandidateTimezone({
+  //     location: `${candidate.city} ${candidate.state}`,
+  //     candidate_id: candidate.id,
+  //   });
+  // }
 
-  if (
-    await checkAvailibility({
-      dateRange,
-      recruiter_id,
-      session_ids,
-      task_id,
-      timezone,
-      type,
-    })
-  ) {
+  // TODO: chinmai fix
+  // eslint-disable-next-line no-constant-condition
+  if (1) {
     if (type === 'email_agent') {
       const bodyParams: InitAgentBodyParams = {
         filter_json_id: filterJsonId,

@@ -146,7 +146,7 @@ export class TwilioClient {
             sampleRate: 8000,
           });
           if (callResponse.callDetail) {
-            addCallerToCache(callResponse.callDetail.callId, req.body);
+            await addCallerToCache(callResponse.callDetail.callId, req.body);
             // Start phone call websocket
             const response = new VoiceResponse();
             const start = response.connect() as any;

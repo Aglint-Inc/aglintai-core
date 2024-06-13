@@ -412,40 +412,6 @@ function SchedulingSettings({
                             {selectedHourBreak?.start_time &&
                               workingHours[1]?.timeRange?.startTime && (
                                 <SelectTime
-                                  minTime={dayjs()
-                                    .set(
-                                      'hour',
-                                      parseInt(
-                                        workingHours[1]?.timeRange?.startTime.split(
-                                          ':',
-                                        )[0],
-                                      ),
-                                    )
-                                    .set(
-                                      'minute',
-                                      parseInt(
-                                        workingHours[1]?.timeRange?.startTime.split(
-                                          ':',
-                                        )[1],
-                                      ),
-                                    )}
-                                  maxTime={dayjs()
-                                    .set(
-                                      'hour',
-                                      parseInt(
-                                        workingHours[1]?.timeRange?.endTime.split(
-                                          ':',
-                                        )[0],
-                                      ),
-                                    )
-                                    .set(
-                                      'minute',
-                                      parseInt(
-                                        workingHours[1]?.timeRange?.endTime.split(
-                                          ':',
-                                        )[1],
-                                      ),
-                                    )}
                                   disableIgnoringDatePartForTimeValidation={
                                     true
                                   }
@@ -490,40 +456,6 @@ function SchedulingSettings({
                             {workingHours[1]?.timeRange?.endTime &&
                               selectedHourBreak?.end_time && (
                                 <SelectTime
-                                  minTime={dayjs()
-                                    .set(
-                                      'hour',
-                                      parseInt(
-                                        workingHours[1]?.timeRange?.startTime.split(
-                                          ':',
-                                        )[0],
-                                      ),
-                                    )
-                                    .set(
-                                      'minute',
-                                      parseInt(
-                                        workingHours[1]?.timeRange?.startTime.split(
-                                          ':',
-                                        )[1],
-                                      ),
-                                    )}
-                                  maxTime={dayjs()
-                                    .set(
-                                      'hour',
-                                      parseInt(
-                                        workingHours[1]?.timeRange?.endTime.split(
-                                          ':',
-                                        )[0],
-                                      ),
-                                    )
-                                    .set(
-                                      'minute',
-                                      parseInt(
-                                        workingHours[1]?.timeRange?.endTime.split(
-                                          ':',
-                                        )[1],
-                                      ),
-                                    )}
                                   disableIgnoringDatePartForTimeValidation={
                                     true
                                   }
