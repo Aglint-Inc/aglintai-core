@@ -13,16 +13,17 @@ type Sort = {
 type FilterKeys =
   | keyof Pick<
       DatabaseView['application_view'],
-      'resume_score' | 'current_job_title' | 'city' | 'country' | 'badges'
+      'resume_score' | 'city' | 'state' | 'country' | 'badges' | 'bookmarked'
     >
   | 'search';
 
 type FilterValues = {
+  bookmarked: boolean;
   search: DatabaseView['application_view']['name'];
   badges: (keyof DatabaseView['application_view']['badges'])[];
   city: DatabaseView['application_view']['city'][];
+  state: DatabaseView['application_view']['state'][];
   country: DatabaseView['application_view']['country'][];
-  current_job_title: DatabaseView['application_view']['current_job_title'][];
   resume_score: (
     | 'Top match'
     | 'Good match'
@@ -47,11 +48,12 @@ export type FilterSortSlice = {
 };
 
 const initialFilters: Filters = {
+  bookmarked: false,
   search: '',
   badges: [],
   city: [],
+  state: [],
   country: [],
-  current_job_title: [],
   resume_score: [],
 };
 

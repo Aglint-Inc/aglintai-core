@@ -32,8 +32,8 @@ function SortComponent({ selected, setOrder, sortOptions }: sortComponentType) {
 
   const orderOptionList = (
     typeof sortOptions.order[0] === 'object'
-      ? sortOptions.options
-      : sortOptions.options.map((item) => ({ id: item, label: item }))
+      ? sortOptions.order
+      : sortOptions.order.map((item) => ({ id: item, label: item }))
   ) as { id: string; label: string }[];
 
   function handleClose() {
@@ -133,7 +133,9 @@ function SortComponent({ selected, setOrder, sortOptions }: sortComponentType) {
               </svg>
             }
             itemList={orderOptionList}
-            selectedItem={selected.order}
+            selectedItem={
+              orderOptionList.find((item) => item.id == selected.order).label
+            }
             setSelectedItem={(values) => {
               setOrder({ order: values });
             }}
