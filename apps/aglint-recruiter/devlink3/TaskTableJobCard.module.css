@@ -1,7 +1,7 @@
 .new_task {
   display: flex;
   width: 100%;
-  height: var(--space-8);
+  height: var(--space-7);
   justify-content: flex-start;
   align-items: center;
 

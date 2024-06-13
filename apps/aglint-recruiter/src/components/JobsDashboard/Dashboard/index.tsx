@@ -1,11 +1,11 @@
 /* eslint-disable security/detect-object-injection */
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { CircularProgress, Dialog, Popover, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React, { Fragment, useCallback, useMemo, useState } from 'react';
 
 import { AssistStatus } from '@/devlink/AssistStatus';
+import {ButtonGhost  } from '@/devlink/ButtonGhost';
 import { CloseDeleteJob } from '@/devlink/CloseDeleteJob';
 import { CloseJobButton } from '@/devlink/CloseJobButton';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
@@ -424,19 +424,18 @@ const Preview = () => {
   };
   if (job?.status === 'closed') return <></>;
   return (
-    <Stack
-      mx={1}
-      gap={'2px'}
-      direction={'row'}
-      style={{ color: 'var(--accent-11)', cursor: 'pointer' }}
-      onClick={() => handlePreview()}
-    >
-      <Stack>Preview</Stack>
-      <OpenInNewIcon
-        fontSize='small'
-        style={{ aspectRatio: 1, width: '10px', transform: 'translateY(1px)' }}
-      />
-    </Stack>
+      <ButtonGhost
+        size={'2'}
+        iconColor={'var(--info-11)'}
+        iconSize={'4'}
+        isRightIcon={true}
+        isLeftIcon={false}
+        textButton={'Preview'}
+        iconName={'open_in_new'}
+        onClickButton={{
+          onClick: handlePreview,
+        }}
+        />
   );
 };
 

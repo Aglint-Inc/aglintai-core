@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { ButtonSurface } from '@/devlink2/ButtonSurface';
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { PageLayout } from '@/devlink2/PageLayout';
 import Seo from '@/src/components/Common/Seo';
 import Integrations from '@/src/components/Integrations';
@@ -21,7 +21,7 @@ function IntegrationsPage() {
       <PageLayout
         slotTopbarLeft={'Integrations'}
         slotTopbarRight={
-          <ButtonSurface
+          <ButtonGhost
             size='2'
             isRightIcon={false}
             onClickButton={{
@@ -30,7 +30,7 @@ function IntegrationsPage() {
               }
             }}
             isLeftIcon={true}
-            iconName={'outgoing_mail'}
+            iconName={'mail'}
             textButton={'Request Integration'}
           />
         }

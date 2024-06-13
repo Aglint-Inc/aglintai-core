@@ -3,6 +3,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
+
 const Password = ({ passwordRef, label, error, onChange }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -47,7 +49,7 @@ const Password = ({ passwordRef, label, error, onChange }) => {
               onMouseDown={handleMouseDownPassword}
               edge='end'
             >
-              {/* {showPassword ? <IconUnlock /> : <IconLock />} */}
+              {showPassword ? <GlobalIcon icon='visibility' /> : <GlobalIcon icon='visibility_off' />}
             </IconButton>
           </InputAdornment>
         ),

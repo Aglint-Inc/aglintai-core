@@ -28,6 +28,9 @@ export function scheduleTypeIcon(platform) {
     return 'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/in_person_meeting.png';
 }
 
+export const durationIcon =
+  'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/duration.png';
+
 export function platformRemoveUnderscore(name) {
   if (name === 'google_meet') return 'Google Meet';
   else if (name === 'in_person_meeting') return 'In Person Meeting';

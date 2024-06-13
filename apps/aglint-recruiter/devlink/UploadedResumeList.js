@@ -21,7 +21,7 @@ export function UploadedResumeList({
         tag="div"
       >
         <_Builtin.Block tag="div">
-          <GlobalIcon iconName="file_present" size="6" weight="thin" />
+          <GlobalIcon iconName="" size="6" weight="thin" />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "upload-resume-left-text")}

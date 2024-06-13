@@ -20,9 +20,7 @@
 }
 
 .cd-schedule-header.new-header {
-  padding-right: 10px;
-  padding-bottom: 0px;
-  padding-left: 10px;
+  padding: 0px 10px;
   justify-content: flex-start;
   align-items: center;
   grid-column-gap: 0px;
@@ -33,7 +31,7 @@
   overflow: auto;
   padding-bottom: var(--space-9);
   background-color: var(--sand-2);
-  height: calc(100vh - 96px);
+  height: calc(100vh - 85px);
 }
 
 .new-schedule-cd-card-wrap {
@@ -64,8 +62,8 @@
   z-index: 6;
 
   display: flex;
-  height: 52px;
-  padding: 16px;
+  height: 38px;
+  padding: var(--space-2) var(--space-4);
   justify-content: flex-start;
   align-items: center;
   grid-column-gap: 16px;
@@ -75,55 +73,6 @@
   border-bottom: 1px solid #e9ebed;
 
   background-color: white;
-}
-
-._30-30_iconbutton {
-  display: flex;
-  width: 30px;
-  height: 30px;
-  flex-direction: column;
-  justify-content: center;
-  flex-wrap: nowrap;
-  align-items: center;
-
-  border: 1px solid #e9ebed;
-  border-radius: 6px;
-
-  background-color: white;
-
-  cursor: pointer;
-}
-
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.icons.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
-}
-
-.icons.pointer {
-  cursor: pointer;
 }
 
 .schedule_button_options {

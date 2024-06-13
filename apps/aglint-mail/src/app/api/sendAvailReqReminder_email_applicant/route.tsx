@@ -32,6 +32,7 @@ export async function POST(req: Request) {
       html,
       subject,
       text: html,
+      fromName: filled_comp_template.from_name,
     });
     return NextResponse.json('success', {
       status: 200,

@@ -162,24 +162,12 @@
   opacity: 0.7;
 }
 
-.fw-light {
-  font-weight: 300;
-}
-
-.text-capitalize {
-  text-transform: uppercase;
-}
-
 .text-grey-600-3 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
 .text-grey-600-3.inline-block {
   display: inline;
-}
-
-.text-grey-600-3.regular {
-  font-weight: 400;
 }
 
 .text-grey-600-3.width-400 {

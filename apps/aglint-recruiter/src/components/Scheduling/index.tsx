@@ -280,6 +280,7 @@ const InterviewerModule = ({
                     }}
                     textObjective={mod.interview_modules.description}
                     textModuleName={mod.interview_modules.name}
+                    textDepartment={mod.interview_modules.department}
                     slotMemberPic={
                       <AvatarGroup total={mod.users.length}>
                         {mod.users.slice(0, 5).map((user) => {

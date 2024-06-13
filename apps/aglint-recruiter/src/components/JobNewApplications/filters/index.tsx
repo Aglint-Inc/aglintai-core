@@ -130,7 +130,7 @@ const Filters = () => {
           value: search,
           setValue: (newValue: typeof search) =>
             setFilters({ search: newValue }),
-          placeholder: 'Search in workflows',
+          placeholder: 'Search candidate',
         }}
       />
     ),

@@ -20,4 +20,5 @@ declare function ReqAvailability(props: {
   onClickReqAvailability?: Types.Devlink.RuntimeProps;
   isCheckingSlotsVisible?: Types.Visibility.VisibilityConditions;
   isCheckbox?: Types.Visibility.VisibilityConditions;
+  isLoading?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

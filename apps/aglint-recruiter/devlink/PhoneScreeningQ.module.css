@@ -160,18 +160,6 @@
   opacity: 0.7;
 }
 
-.fw-light {
-  font-weight: 300;
-}
-
-.text-capitalize {
-  text-transform: uppercase;
-}
-
-.max-width-500 {
-  max-width: 500px;
-}
-
 .text-grey-600.mt-5 {
   margin-top: 5px;
 }
@@ -183,14 +171,6 @@
 .text-sm-2 {
   font-size: 12px;
   line-height: 16px;
-}
-
-.text-grey-600.mt-9 {
-  margin-top: 9px;
-}
-
-.mt-9 {
-  margin-top: 9px;
 }
 
 .text-grey-600.text-grow {
@@ -209,12 +189,6 @@
 
 .mt-10 {
   margin-top: 10px;
-}
-
-@media screen and (max-width: 479px) {
-  .text-grey-600.mob {
-    font-size: 12px;
-  }
 }
 
 .slot-input-phone {
@@ -315,10 +289,6 @@
 
 .icons.mt-3 {
   margin-top: 3px;
-}
-
-.icons.mr--10 {
-  margin-right: -8px;
 }
 
 .icons.mt-2 {

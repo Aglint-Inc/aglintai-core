@@ -16,6 +16,7 @@ export function IconButtonOutlined({
   highContrast = "false",
   isLoading = false,
   isDisabled = false,
+  onClickButton = {},
 }) {
   return (
     <_Component
@@ -24,6 +25,7 @@ export function IconButtonOutlined({
       icon-button-size-outline={size}
       button-color-outline={color}
       button-high-contrast-outline={highContrast}
+      {...onClickButton}
     >
       <_Builtin.Block tag="div">
         <GlobalIcon

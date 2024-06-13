@@ -1,4 +1,4 @@
-import * as v from 'valibot';
+import * as v from "valibot";
 export const applicationRecievedEmailApplicantSchema = v.object({
   application_id: v.string(),
 });
@@ -18,8 +18,8 @@ export const agentEmailCandidateSchema = v.object({
   recruiter_user_id: v.string(),
   filter_id: v.string(),
   mail_headers: v.object({
-    'Message-ID': v.string(),
-    'In-Reply-To': v.string(),
+    "Message-ID": v.string(),
+    "In-Reply-To": v.string(),
   }),
 });
 
@@ -31,13 +31,17 @@ export const confInterviewEmailOrganizerSchema = v.object({
 export const confirmInterviewEmailApplicantSchema = v.object({
   application_id: v.string(),
   session_ids: v.array(v.string()),
-  schedule_id: v.optional(v.string()),
-  filter_id: v.optional(v.string()),
-  availability_req_id: v.optional(v.string()),
+  schedule_id: v.nullish(v.string()),
+  filter_id: v.nullish(v.string()),
+  availability_req_id: v.nullish(v.string()),
 });
 
 export const applicantRejectEmailApplicantSchema = v.object({
   application_id: v.string(),
+});
+export const availabilityReqResendEmailCandidateSchema = v.object({
+  avail_req_id: v.string(),
+  recruiter_user_id: v.string(),
 });
 
 export const phoneScreenEmailCandidateSchema = v.object({

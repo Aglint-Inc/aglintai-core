@@ -123,14 +123,6 @@
   opacity: 0.7;
 }
 
-.fw-light {
-  font-weight: 300;
-}
-
-.text-capitalize {
-  text-transform: uppercase;
-}
-
 .close-pop-email {
   position: static;
   left: auto;
@@ -224,10 +216,6 @@
 
 .icons.mt-3 {
   margin-top: 3px;
-}
-
-.icons.mr--10 {
-  margin-right: -8px;
 }
 
 .icons.mt-2 {

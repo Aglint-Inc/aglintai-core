@@ -1,7 +1,7 @@
-import { Collapse, Stack, Tooltip, Typography } from '@mui/material';
-import { IconCaretDownFilled, IconCaretRightFilled } from '@tabler/icons-react';
+import { Box, Collapse, Stack, Tooltip, Typography } from '@mui/material';
 import { useState } from 'react';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import { PriorityPill } from '@/devlink3/PriorityPill';
 import { TaskEmpty } from '@/devlink3/TaskEmpty';
@@ -36,28 +36,30 @@ function GroupSections({
         slotDropIcon={
           <ShowCode>
             <ShowCode.When isTrue={sectionIndex}>
-              <IconCaretDownFilled
-                style={{
+              <Box
+                sx={{
                   cursor: 'pointer',
-                  color: 'var(--neutral-9)',
+                  display: 'flex',
+                  alignItems: 'center',
                 }}
-                size={'16px'}
                 onClick={() => {
                   setSectionIndex(false);
-                }}
-              />
+                }}>
+                  <GlobalIcon iconName='arrow_drop_down'/>
+              </Box>
             </ShowCode.When>
             <ShowCode.Else>
-              <IconCaretRightFilled
-                style={{
-                  cursor: 'pointer',
-                  color: 'var(--neutral-9)'
-                }}
-                size={'16px'}
-                onClick={() => {
-                  setSectionIndex(true);
-                }}
-              />
+              <Box
+                  sx={{
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                  onClick={() => {
+                    setSectionIndex(true);
+                  }}>
+                    <GlobalIcon iconName='arrow_right'/>
+              </Box>
             </ShowCode.Else>
           </ShowCode>
         }

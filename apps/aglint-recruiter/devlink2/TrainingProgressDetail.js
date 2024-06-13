@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { Text } from "./Text";
 import { TrainingDetailList } from "./TrainingDetailList";
 import * as _utils from "./utils";
 import _styles from "./TrainingProgressDetail.module.css";
@@ -20,9 +21,7 @@ export function TrainingProgressDetail({
 
   return (
     <_Component className={_utils.cx(_styles, "div-block-1667")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "text-grey-600")} tag="div">
-        {"Training Progress"}
-      </_Builtin.Block>
+      <Text content="" />
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1668")}
         tag="div"

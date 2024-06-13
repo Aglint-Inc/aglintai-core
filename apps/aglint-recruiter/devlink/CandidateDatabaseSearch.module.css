@@ -10,14 +10,6 @@
   background-color: var(--white);
 }
 
-.job-header-empty.beta-flex {
-  position: relative;
-  display: flex;
-  align-items: center;
-  grid-column-gap: 5px;
-  grid-row-gap: 5px;
-}
-
 .candidate-empty-landing-wrappers {
   position: relative;
   display: flex;
