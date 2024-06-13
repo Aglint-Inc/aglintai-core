@@ -59,7 +59,7 @@ function RequestAvailabilityPopUps() {
   }
 
   function sendReminderEmail({ request_id }: { request_id: string }) {
-    axios.post(`/api/sendAvailReqReminder_email_applicant`, {
+    axios.post(`/api/emails/sendAvailReqReminder_email_applicant`, {
       meta: {
         avail_req_id: request_id,
       },
