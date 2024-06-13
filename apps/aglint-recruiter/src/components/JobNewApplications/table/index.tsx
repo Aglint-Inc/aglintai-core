@@ -35,16 +35,20 @@ const List = memo(() => {
       applications={sectionApplication}
       count={count[section]}
       header={
-        <ApplicantsTable
-          isAllChecked={false}
-          isScreeningVisible={cascadeVisibilites.screening}
-          isAssessmentVisible={cascadeVisibilites.assessment}
-          isInterviewVisible={cascadeVisibilites.interview}
-          isDisqualifiedVisible={cascadeVisibilites.disqualified}
-          isDragVisible={false}
-          propsDrag={null}
-          onClickSelectAll={{ style: { display: 'none' } }}
-        />
+        <Stack
+          style={{ zIndex: count[section] + 1, position: 'sticky', top: 0 }}
+        >
+          <ApplicantsTable
+            isAllChecked={false}
+            isScreeningVisible={cascadeVisibilites.screening}
+            isAssessmentVisible={cascadeVisibilites.assessment}
+            isInterviewVisible={cascadeVisibilites.interview}
+            isDisqualifiedVisible={cascadeVisibilites.disqualified}
+            isDragVisible={false}
+            propsDrag={null}
+            onClickSelectAll={{ style: { display: 'none' } }}
+          />
+        </Stack>
       }
     />
   );
