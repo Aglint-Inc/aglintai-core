@@ -419,7 +419,7 @@ function RequestAvailability() {
               })
             : null
         }
-        isCheckbox={router.query.candidate_request_availability === 'true'}
+        isCheckbox={scheduleFlow === 'create_request_availibility'}
         slotCheckboxAvailability={
           <Checkbox
             defaultChecked={markCreateTicket}
