@@ -145,25 +145,27 @@ function SchedulingViewComp() {
                     <Instructions schedule={schedule} />
                   </ShowCode.When>
                   <ShowCode.When isTrue={router.query.tab === 'feedback'}>
-                    <FeedbackWindow
-                      interview_sessions={[
-                        {
-                          id: schedule?.interview_session.id,
-                          title: schedule?.interview_session.name,
-                          created_at: schedule?.interview_session.created_at,
-                          time: {
-                            start: schedule?.interview_meeting.start_time,
-                            end: schedule?.interview_meeting.end_time,
+                    <Stack margin={'var(--space-4)'}>
+                      <FeedbackWindow
+                        interview_sessions={[
+                          {
+                            id: schedule?.interview_session.id,
+                            title: schedule?.interview_session.name,
+                            created_at: schedule?.interview_session.created_at,
+                            time: {
+                              start: schedule?.interview_meeting.start_time,
+                              end: schedule?.interview_meeting.end_time,
+                            },
+                            status: schedule?.interview_meeting.status,
                           },
-                          status: schedule?.interview_meeting.status,
-                        },
-                      ]}
-                      candidate={{
-                        email: schedule?.candidates.email,
-                        name: `${schedule?.candidates.first_name || ''} ${schedule?.candidates.last_name || ''}`.trim(),
-                        job_id: schedule?.applications?.job_id,
-                      }}
-                    />
+                        ]}
+                        candidate={{
+                          email: schedule?.candidates.email,
+                          name: `${schedule?.candidates.first_name || ''} ${schedule?.candidates.last_name || ''}`.trim(),
+                          job_id: schedule?.applications?.job_id,
+                        }}
+                      />
+                    </Stack>
                   </ShowCode.When>
                   <ShowCode.When isTrue={router.query.tab === 'job_details'}>
                     <JobDetails schedule={schedule} />

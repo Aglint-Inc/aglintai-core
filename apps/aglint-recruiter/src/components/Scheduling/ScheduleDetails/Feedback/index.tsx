@@ -286,7 +286,7 @@ const AdminFeedback = ({
     <>
       <ScheduleTabFeedback
         styleMinWidth={{
-          style: { minWidth: multiSession ? '1164px' : '900px' },
+          style: { minWidth: multiSession ? '1164px' : '600px' },
         }}
         isSessionVisible={multiSession}
         slotFeedbackTableRow={
@@ -780,7 +780,7 @@ const InterviewerFeedback = ({
     <>
       <ScheduleTabFeedback
         styleMinWidth={{
-          style: { minWidth: multiSession ? '1164px' : '900px' },
+          style: { minWidth: multiSession ? '1164px' : '600px' },
         }}
         isSessionVisible={multiSession}
         slotFeedbackTableRow={
