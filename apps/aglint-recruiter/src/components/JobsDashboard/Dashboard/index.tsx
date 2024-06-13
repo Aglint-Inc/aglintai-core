@@ -1,5 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { CircularProgress, Dialog, Popover, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
@@ -433,6 +432,9 @@ const Preview = () => {
         isLeftIcon={false}
         textButton={'Preview'}
         iconName={'open_in_new'}
+        onClickButton={{
+          onClick: handlePreview,
+        }}
         />
   );
 };

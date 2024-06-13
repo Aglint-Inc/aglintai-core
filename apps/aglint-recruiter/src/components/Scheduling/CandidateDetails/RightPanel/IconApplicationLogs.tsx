@@ -1,4 +1,3 @@
-import { GlobalIcon } from '@/devlink/GlobalIcon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { EmailAgentIcon } from '@/src/components/Tasks/Components/EmailAgentIcon';
 import { PhoneAgentIcon } from '@/src/components/Tasks/Components/PhoneAgentIcon';
