@@ -13,6 +13,11 @@ import toast from '@/src/utils/toast';
 
 import { sendEmailToCandidate } from '../../RequestAvailability/RequestAvailabilityContext';
 import {
+  setIsScheduleNowOpen,
+  setScheduleFlow,
+  setStepScheduling,
+} from '../../SelfSchedulingDrawer/store';
+import {
   setRequestSessionIds,
   useSchedulingApplicationStore,
 } from '../../store';
@@ -51,6 +56,9 @@ function RequestAvailabilityPopUps() {
       pathname: currentPath,
       query: updatedQuery,
     });
+    setIsScheduleNowOpen(true);
+    setStepScheduling('pick_date');
+    setScheduleFlow('update_request_availibility');
   }
 
   useEffect(() => {
