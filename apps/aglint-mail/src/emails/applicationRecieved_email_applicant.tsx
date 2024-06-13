@@ -4,15 +4,13 @@ import {
   Head,
   Html,
   Img,
-  Preview,
   Tailwind,
-  Text,
 } from '@react-email/components';
 import { Parser } from 'html-to-react';
 import * as React from 'react';
 import type { EmailTemplateAPi } from '@aglint/shared-types';
-import { aglintLogo } from '../utils/assets/common';
 import config from '../../tailwind.config';
+import { Footer } from '../components/template/Footer';
 
 type EmailType = EmailTemplateAPi<'applicationRecieved_email_applicant'>;
 
@@ -27,8 +25,6 @@ export const dummy: EmailType['react_email_placeholders'] = {
 
 export const getSubject = (companyName: any) => `${companyName}`;
 
-const currentYear = new Date().getFullYear();
-
 export const ApplicationReceived = ({
   emailBody = dummy.emailBody,
   companyLogo = dummy.companyLogo,
@@ -38,7 +34,7 @@ export const ApplicationReceived = ({
     <Html>
       <Head />
       <Tailwind config={config}>
-        <Preview>Application Received</Preview>
+        {/* <Preview></Preview> */}
         <Body className="bg-neutral-3 font-sans  p-[20px]">
           <Container className="px-[3px] mx-auto">
             <Container className="p-[50px] bg-white rounded-[8px]">
@@ -51,15 +47,7 @@ export const ApplicationReceived = ({
                 {htmlParser.parse(emailBody)}
               </Container>
             </Container>
-            <Text className="flex items-center text-[10px]  mx-auto w-fit text-neutral-11">
-              Powered By
-              <Img
-                alt="Aglint Logo"
-                className="line-block mx-2 w-[24px] h-[24px]"
-                src={aglintLogo}
-              />
-              @ {currentYear} Aglint Inc. All Right Reserved
-            </Text>
+            <Footer />
           </Container>
         </Body>
       </Tailwind>
@@ -67,7 +55,3 @@ export const ApplicationReceived = ({
   );
 };
 export default ApplicationReceived;
-
-// {
-//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637"
-// }

@@ -5,16 +5,14 @@ import {
   Head,
   Html,
   Img,
-  Preview,
   Tailwind,
-  Text,
 } from '@react-email/components';
 import { Parser } from 'html-to-react';
 import * as React from 'react';
 import type { EmailTemplateAPi } from '@aglint/shared-types';
-import { aglintLogo } from '../utils/assets/common';
 import config from '../../tailwind.config';
 import { Session } from '../components/template/Sessions';
+import { Footer } from '../components/template/Footer';
 
 type EmailType = EmailTemplateAPi<'confirmInterview_email_applicant'>;
 
@@ -44,8 +42,6 @@ export const dummy: EmailType['react_email_placeholders'] = {
 // export get subject
 export const getSubject = (companyName: any) => `${companyName}`;
 
-const currentYear = new Date().getFullYear();
-
 export const InterviewBookingConfirmation = ({
   emailBody = dummy.emailBody,
   meetingDetails = dummy.meetingDetails,
@@ -57,7 +53,7 @@ export const InterviewBookingConfirmation = ({
     <Html>
       <Head />
       <Tailwind config={config}>
-        <Preview>Interview Booking Confirmation</Preview>
+        {/* <Preview></Preview> */}
         <Body className="bg-neutral-3 font-sans  p-[20px]">
           <Container className="px-[3px] mx-auto">
             <Container className="p-[50px] bg-white rounded-[8px]">
@@ -80,15 +76,7 @@ export const InterviewBookingConfirmation = ({
                 View Details
               </Button>
             </Container>
-            <Text className="flex items-center text-[10px]  mx-auto w-fit text-neutral-11">
-              Powered By
-              <Img
-                alt="Aglint Logo"
-                className="line-block mx-2 w-[24px] h-[24px]"
-                src={aglintLogo}
-              />
-              @ {currentYear} Aglint Inc. All Right Reserved
-            </Text>
+            <Footer />
           </Container>
         </Body>
       </Tailwind>
