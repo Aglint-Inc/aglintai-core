@@ -92,6 +92,7 @@ export const FilterHeader = ({
           <UITextField
             width='400px'
             value={search.value}
+            height={32}
             InputProps={{
               endAdornment: (
                 <InputAdornment position='end'>
