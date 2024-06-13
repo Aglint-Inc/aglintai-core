@@ -22,7 +22,7 @@ export function TaskTableJobSubCard({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "div-block-1434", "height-53", "job-cand")}
+      className={_utils.cx(_styles, "task_row", "height-53", "job-cand")}
       tag="div"
       {...gridProps}
     >

@@ -11,7 +11,7 @@ export function PriorityPill({
   isMediumVisible = false,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1540")} tag="div">
+    <_Component className={_utils.cx(_styles, "priority_wrap")} tag="div">
       {isHighVisible ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "priority_individual")}

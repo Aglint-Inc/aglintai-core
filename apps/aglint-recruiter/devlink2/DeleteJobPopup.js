@@ -4,7 +4,7 @@ import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
 import { ButtonGhost } from "./ButtonGhost";
-import { ButtonSoft } from "./ButtonSoft";
+import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./DeleteJobPopup.module.css";
 
@@ -105,7 +105,7 @@ export function DeleteJobPopup({
             {...closeProps}
           >
             <ButtonGhost
-              textButton="Close"
+              textButton="Cancel"
               isRightIcon={false}
               isLeftIcon={false}
               size="2"
@@ -118,13 +118,11 @@ export function DeleteJobPopup({
             tag="div"
             {...onClickDelete}
           >
-            <ButtonSoft
-              isDisabled={isDeleteDisabled}
-              isLeftIcon={false}
-              isRightIcon={false}
-              size="2"
+            <ButtonSolid
+              onClickButton={onClickDelete}
               textButton="Close Job Permanently"
-              color="accent"
+              size="2"
+              color="error"
             />
           </_Builtin.Block>
         </_Builtin.Block>

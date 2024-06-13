@@ -3,9 +3,9 @@ import dayjs from 'dayjs';
 import { MouseEvent, useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { FilterList } from '@/devlink2/FilterList';
 import { FilterPill } from '@/devlink2/FilterPill';
-import Icon from '@/src/components/Common/Icons/Icon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import UITextField from '@/src/components/Common/UITextField';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
@@ -181,7 +181,7 @@ function Filters() {
         InputProps={{
           endAdornment: (
             <InputAdornment position='end'>
-              <Icon variant='JobSearch' height='14' />
+              <GlobalIcon iconName='search' size='5'/>
             </InputAdornment>
           ),
         }}

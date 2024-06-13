@@ -4,6 +4,7 @@ import { Placeholder } from '@tiptap/extension-placeholder';
 import { EditorContent, mergeAttributes, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { useJobAssistantContext } from '@/src/context/JobAssistant';
 
 import suggetion from '../utils/suggetions';
@@ -183,24 +184,25 @@ export default ChatEditor;
 
 export function SendIcon() {
   return (
-    <svg
-      xmlns='http://www.w3.org/2000/svg'
-      aria-hidden='true'
-      role='img'
-      className='iconify iconify--iconoir'
-      width='25'
-      height='25'
-      preserveAspectRatio='xMidYMid meet'
-      viewBox='0 0 24 24'
-    >
-      <path
-        fill='none'
-        stroke='currentColor'
-        stroke-linecap='round'
-        stroke-linejoin='round'
-        stroke-width='1.5'
-        d='M22 12L3 20l3.563-8L3 4zM6.5 12H22'
-      ></path>
-    </svg>
+      <GlobalIcon iconName='send' />
+    // <svg
+    //   xmlns='http://www.w3.org/2000/svg'
+    //   aria-hidden='true'
+    //   role='img'
+    //   className='iconify iconify--iconoir'
+    //   width='25'
+    //   height='25'
+    //   preserveAspectRatio='xMidYMid meet'
+    //   viewBox='0 0 24 24'
+    // >
+    //   <path
+    //     fill='none'
+    //     stroke='currentColor'
+    //     stroke-linecap='round'
+    //     stroke-linejoin='round'
+    //     stroke-width='1.5'
+    //     d='M22 12L3 20l3.563-8L3 4zM6.5 12H22'
+    //   ></path>
+    // </svg>
   );
 }

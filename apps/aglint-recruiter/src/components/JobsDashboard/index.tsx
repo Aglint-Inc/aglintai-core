@@ -2,6 +2,7 @@ import { InputAdornment, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { JobsDashboard } from '@/devlink/JobsDashboard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
@@ -9,7 +10,6 @@ import { Job } from '@/src/queries/jobs/types';
 import ROUTES from '@/src/utils/routing/routes';
 
 import SubNavBar from '../AppLayout/SubNavbar';
-import Icon from '../Common/Icons/Icon';
 import Loader from '../Common/Loader';
 import UITextField from '../Common/UITextField';
 import { stepObj } from '../SignUpComp/SlideSignup/utils';
@@ -125,9 +125,9 @@ const DashboardComp = () => {
                         handlerFilter(e);
                       }}
                       InputProps={{
-                        startAdornment: (
-                          <InputAdornment position='start'>
-                            <Icon variant='Search' width='14' height='14' />
+                        endAdornment: (
+                          <InputAdornment position='end'>
+                            <GlobalIcon iconName='search' size='5'/>
                           </InputAdornment>
                         ),
                       }}
