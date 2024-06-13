@@ -52,14 +52,8 @@ const CancelReasons = () => {
         />
       }
       slotReasonGraph={
-        !(
-          processedCancelReasonsData[reasonType] &&
-          Object.keys(processedCancelReasonsData[reasonType]).length
-        ) ? (
-          <Stack minHeight={'296px'}>
-            <NoData />
-          </Stack>
-        ) : (
+        processedCancelReasonsData[reasonType] &&
+        Object.keys(processedCancelReasonsData[reasonType]).length ? (
           <Stack>
             <Stack
               alignItems={'center'}
@@ -111,6 +105,10 @@ const CancelReasons = () => {
                 })}
               </Stack>
             </Stack>
+          </Stack>
+        ) : (
+          <Stack height={'296px'}>
+            <NoData />
           </Stack>
         )
       }

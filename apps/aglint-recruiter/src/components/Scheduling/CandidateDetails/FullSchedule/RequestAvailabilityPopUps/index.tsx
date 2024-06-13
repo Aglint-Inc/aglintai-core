@@ -1,4 +1,5 @@
 import { Stack } from '@mui/material';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -8,10 +9,13 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GeneralBanner } from '@/devlink/GeneralBanner';
 import Icon from '@/src/components/Common/Icons/Icon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
 
-import { sendEmailToCandidate } from '../../RequestAvailability/RequestAvailabilityContext';
+import {
+  setIsScheduleNowOpen,
+  setScheduleFlow,
+  setStepScheduling,
+} from '../../SelfSchedulingDrawer/store';
 import {
   setRequestSessionIds,
   useSchedulingApplicationStore,
@@ -21,9 +25,7 @@ import RequestAvailabilityDrawer from './RequestAvailabilityDrawer';
 
 function RequestAvailabilityPopUps() {
   const router = useRouter();
-  const { recruiter } = useAuthDetails();
-  const { availabilities, selectedApplication } =
-    useSchedulingApplicationStore();
+  const { availabilities } = useSchedulingApplicationStore();
 
   const { setSelectedRequestAvailability } = useAvailabilityContext();
 
@@ -50,6 +52,17 @@ function RequestAvailabilityPopUps() {
     router.replace({
       pathname: currentPath,
       query: updatedQuery,
+    });
+    setIsScheduleNowOpen(true);
+    setStepScheduling('pick_date');
+    setScheduleFlow('update_request_availibility');
+  }
+
+  function sendReminderEmail({ request_id }: { request_id: string }) {
+    axios.post(`/api/emails/sendAvailReqReminder_email_applicant`, {
+      meta: {
+        avail_req_id: request_id,
+      },
     });
   }
 
@@ -105,28 +118,8 @@ function RequestAvailabilityPopUps() {
                             size={1}
                             onClickButton={{
                               onClick: () => {
-                                sendEmailToCandidate({
-                                  email: selectedApplication.candidates.email,
-                                  emailBody:
-                                    recruiter.email_template[
-                                      'request_candidate_slot'
-                                    ].body,
-                                  emailSubject:
-                                    recruiter.email_template[
-                                      'request_candidate_slot'
-                                    ].subject,
-                                  first_name:
-                                    selectedApplication.candidates.first_name,
-                                  last_name:
-                                    selectedApplication.candidates.last_name,
-                                  job_title:
-                                    selectedApplication.public_jobs.job_title,
-                                  recruiter,
-                                  sessionNames: item.session_ids.map(
-                                    (ele) => ele.name,
-                                  ),
-                                  request_id: item.id,
-                                });
+                                sendReminderEmail({ request_id: item.id });
+
                                 toast.message(
                                   'Resend invited link sent successfully!',
                                 );

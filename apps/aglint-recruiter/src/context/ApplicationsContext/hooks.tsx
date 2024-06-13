@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useMemo, useRef, useState } from 'react';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
@@ -48,6 +48,10 @@ export const useApplicationsActions = () => {
     status: section,
     ...params,
   });
+
+  const locationFilterOptions = useQuery(
+    applicationsQueries.locationFilters({ job_id }),
+  );
 
   const newApplications = useInfiniteQuery(
     applicationsQueries.applications({
@@ -166,6 +170,7 @@ export const useApplicationsActions = () => {
     jobLoad,
     section,
     sectionApplication,
+    locationFilterOptions,
     handleUpdateApplication,
     handleAsyncUpdateApplication,
     handleUploadApplication,
