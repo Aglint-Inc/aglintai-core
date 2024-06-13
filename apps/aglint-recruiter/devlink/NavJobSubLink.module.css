@@ -61,26 +61,6 @@
   color: var(--neutral-10);
 }
 
-.job-link-tag.blue-500 {
-  background-color: #337fbd;
-}
-
-.blue-500 {
-  background-color: var(--blue500-72579298);
-}
-
-.green-500 {
-  background-color: var(--green500-287ff474);
-}
-
-.yellow-600 {
-  background-color: var(--yellow600-1478b5f5);
-}
-
-.red-500 {
-  background-color: var(--red500-2e806c7d);
-}
-
 .job-link-tag.active-tage {
   background-color: var(--accent-9);
   color: var(--white);

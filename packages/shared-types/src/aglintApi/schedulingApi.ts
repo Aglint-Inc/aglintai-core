@@ -22,6 +22,7 @@ export type APIFindAltenativeTimeSlot = {
   slot_start_time: string;
   user_tz: string;
   replacement_ints: string[];
+  api_options?: APIOptions;
 };
 
 export type APIUpdateMeetingInterviewers = {

@@ -735,6 +735,7 @@ const InterviewModePills = ({
 };
 
 export const PanelIcon = () => (
+  // <GlobalIcon iconName='groups' />
   <svg
     width='24'
     height='24'
@@ -750,6 +751,7 @@ export const PanelIcon = () => (
 );
 
 export const IndividualIcon = () => (
+  // <GlobalIcon iconName='person' />
   <svg
     width='24'
     height='24'

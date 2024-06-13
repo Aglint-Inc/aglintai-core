@@ -19,18 +19,6 @@
   background-color: var(--neutral-3);
 }
 
-.blue-200 {
-  background-color: var(--blue200-07311850);
-}
-
-.grey-200 {
-  background-color: var(--grey200-9ba653f1);
-}
-
-.indicator-box.purple {
-  background-color: #886bd8;
-}
-
 .indicator-box.must-have {
   background-color: var(--sky-3);
 }

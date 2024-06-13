@@ -41,10 +41,6 @@
   color: var(--grey600-d5bebe21);
 }
 
-.max-width-500 {
-  max-width: 500px;
-}
-
 .fw-semibold {
   font-weight: 600;
 }
@@ -75,14 +71,6 @@
   line-height: 16px;
 }
 
-.text-grey-600.mt-9 {
-  margin-top: 9px;
-}
-
-.mt-9 {
-  margin-top: 9px;
-}
-
 .text-grey-600.text-grow {
   white-space: nowrap;
 }
@@ -99,12 +87,6 @@
 
 .mt-10 {
   margin-top: 10px;
-}
-
-@media screen and (max-width: 479px) {
-  .text-grey-600.mob {
-    font-size: 12px;
-  }
 }
 
 .text-field-4 {

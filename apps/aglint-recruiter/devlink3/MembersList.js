@@ -178,12 +178,7 @@ export function MembersList({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block tag="div">
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-600")}
-          tag="div"
-        >
-          {textTime}
-        </_Builtin.Block>
+        <Text content={textTime} weight="" color="neutral" />
       </_Builtin.Block>
       {isDetailVisible ? (
         <_Builtin.Block

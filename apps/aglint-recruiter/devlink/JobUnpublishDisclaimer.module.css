@@ -112,10 +112,6 @@
   margin-top: 3px;
 }
 
-.icons.mr--10 {
-  margin-right: -8px;
-}
-
 .icons.mt-2 {
   margin-top: 2px;
 }
@@ -163,10 +159,6 @@
 
 .text-underline:hover {
   opacity: 0.7;
-}
-
-.text-underline.ml-5 {
-  margin-left: 5px;
 }
 
 .text-blue-500 {

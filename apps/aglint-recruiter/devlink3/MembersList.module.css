@@ -173,19 +173,6 @@
   grid-row-gap: 10px;
 }
 
-.text-grey-600.text-underline {
-  text-decoration: underline;
-}
-
-.text-grey-600.text-underline.cursor-pointer {
-  transition: opacity 250ms ease;
-  cursor: pointer;
-}
-
-.text-grey-600.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
 .div-block-1659 {
   position: absolute;
   left: 0%;
