@@ -4,6 +4,7 @@ import {
   agentEmailCandidateSchema,
   applicantRejectEmailApplicantSchema,
   applicationRecievedEmailApplicantSchema,
+  availabilityReqResendEmailCandidateSchema,
   confInterviewEmailOrganizerSchema,
   confirmInterviewEmailApplicantSchema,
   debriefEmailInterviewerSchema,
@@ -141,6 +142,21 @@ type Payloads = {
       companyLogo: string;
     };
   };
+  availabilityReqResend_email_candidate: {
+    api_payload: v.InferInput<typeof availabilityReqResendEmailCandidateSchema>;
+    comp_email_placeholders: {
+      "{{ candidateFirstName }}": string;
+      "{{ companyName }}": string;
+      "{{ availabilityReqLink }}": string;
+      "{{ recruiterFullName }}": string;
+    };
+    react_email_placeholders: {
+      emailBody: string;
+      subject: string;
+      companyLogo: string;
+    };
+  };
+
   phoneScreen_email_candidate: {
     api_payload: v.InferInput<typeof phoneScreenEmailCandidateSchema>;
     comp_email_placeholders: {};
