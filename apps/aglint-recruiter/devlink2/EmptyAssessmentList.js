@@ -23,7 +23,12 @@ export function EmptyAssessmentList({
       >
         <GlobalIcon iconName="" size="7" weight="thin" />
         <Text content="" color="neutral-11" weight="regular" />
-        <ButtonSolid size="2" textButton="" iconName="bolt" isLeftIcon={true} />
+        <ButtonSolid
+          size="2"
+          textButton="Add"
+          iconName="bolt"
+          isLeftIcon={true}
+        />
       </_Builtin.Block>
     </_Component>
   );

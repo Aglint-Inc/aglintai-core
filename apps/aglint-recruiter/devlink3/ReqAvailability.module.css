@@ -198,23 +198,6 @@
   background-color: #edf8f4;
 }
 
-.text-grey-600 {
-  color: #68737d;
-}
-
-.text-grey-600.text-underline {
-  text-decoration: underline;
-}
-
-.text-grey-600.text-underline.cursor-pointer {
-  transition: opacity 250ms ease;
-  cursor: pointer;
-}
-
-.text-grey-600.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
 .div-block-1750 {
   display: flex;
   flex-direction: column;

@@ -34,7 +34,7 @@ export function ImportCandidates({
       >
         <IconButtonGhost
           onClickButton={onClickClose}
-          iconName="close"
+          iconName=""
           color="neutral"
           size="1"
           iconSize="3"

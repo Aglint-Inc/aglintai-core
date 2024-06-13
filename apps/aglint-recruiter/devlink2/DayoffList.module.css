@@ -1,15 +1,12 @@
-.div-block-1687 {
+.dol-wrapper {
   display: grid;
   grid-auto-columns: 1fr;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
   grid-template-columns: 220px 200px 1fr 50px;
   grid-template-rows: auto;
-
   background-color: white;
 }
 
-.div-block-1686 {
+.dol-item-wrap {
   display: flex;
   padding: var(--space-2) 20px;
   justify-content: flex-start;
@@ -18,7 +15,7 @@
   grid-row-gap: 10px;
 }
 
-.div-block-1686.gap-10 {
+.dol-item-wrap.gap-10 {
   flex-direction: row;
   flex-wrap: wrap;
 }
@@ -31,7 +28,7 @@
   grid-row-gap: 10px;
 }
 
-.div-block-1686.center {
+.dol-item-wrap.center {
   padding: 0px;
   justify-content: center;
   align-items: center;

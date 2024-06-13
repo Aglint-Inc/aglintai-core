@@ -8,7 +8,7 @@ import * as _utils from "./utils";
 import _styles from "./JobsListingCard.module.css";
 
 const _interactionsData = JSON.parse(
-  '{"events":{"e-1500":{"id":"e-1500","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-554","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1501"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"d2a2d408-40b5-fcac-a4cc-8987465dcabd","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"d2a2d408-40b5-fcac-a4cc-8987465dcabd","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1704344326765},"e-1501":{"id":"e-1501","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-555","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1500"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"d2a2d408-40b5-fcac-a4cc-8987465dcabd","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"d2a2d408-40b5-fcac-a4cc-8987465dcabd","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1704344326769}},"actionLists":{"a-554":{"id":"a-554","title":"job-warn-hover in","actionItemGroups":[{"actionItems":[{"id":"a-554-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":"none"}},{"id":"a-554-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-554-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":"flex"}},{"id":"a-554-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":true,"createdOn":1704344343923},"a-555":{"id":"a-555","title":"job-warn-hover out","actionItemGroups":[{"actionItems":[{"id":"a-555-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":0,"unit":""}},{"id":"a-555-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":300,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1704344343923}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+  '{"events":{"e-1500":{"id":"e-1500","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-554","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1501"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"d2a2d408-40b5-fcac-a4cc-8987465dcabd","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"d2a2d408-40b5-fcac-a4cc-8987465dcabd","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1704344326765},"e-1501":{"id":"e-1501","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-555","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1500"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"d2a2d408-40b5-fcac-a4cc-8987465dcabd","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"d2a2d408-40b5-fcac-a4cc-8987465dcabd","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1704344326769},"e-1576":{"id":"e-1576","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-613","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1577"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"627f9dba-f186-82c1-a71f-5a95f8ccc427"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718275972142},"e-1577":{"id":"e-1577","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-614","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1576"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"627f9dba-f186-82c1-a71f-5a95f8ccc427"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718275972144},"e-1578":{"id":"e-1578","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-613","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1579"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"5bae7064-a4ab-5c07-f32d-92c0deb12e6f"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718276624481},"e-1579":{"id":"e-1579","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-614","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1578"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"5bae7064-a4ab-5c07-f32d-92c0deb12e6f"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718276624482}},"actionLists":{"a-554":{"id":"a-554","title":"job-warn-hover in","actionItemGroups":[{"actionItems":[{"id":"a-554-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":"none"}},{"id":"a-554-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-554-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":"flex"}},{"id":"a-554-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":true,"createdOn":1704344343923},"a-555":{"id":"a-555","title":"job-warn-hover out","actionItemGroups":[{"actionItems":[{"id":"a-555-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":0,"unit":""}},{"id":"a-555-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":300,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".job-desc-warn-wrap","selectorGuids":["2ddfb15d-af64-2f31-db95-76643c0c541e"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1704344343923},"a-613":{"id":"a-613","title":"score pill hover in","actionItemGroups":[{"actionItems":[{"id":"a-613-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".icons","selectorGuids":["c637f5c7-9613-2c22-7371-c11bf4042351"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-613-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".icons","selectorGuids":["c637f5c7-9613-2c22-7371-c11bf4042351"]},"value":1,"unit":""}}]}],"createdOn":1718275975402,"useFirstGroupAsInitialState":true},"a-614":{"id":"a-614","title":"score pill hover out","actionItemGroups":[{"actionItems":[{"id":"a-614-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".icons","selectorGuids":["c637f5c7-9613-2c22-7371-c11bf4042351"]},"value":0,"unit":""}}]}],"createdOn":1718275975402,"useFirstGroupAsInitialState":false}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
 );
 
 export function JobsListingCard({
@@ -109,321 +109,105 @@ export function JobsListingCard({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "jd_pipeline_pilll")}
+          className={_utils.cx(_styles, "job_card_pipeline")}
+          id={_utils.cx(
+            _styles,
+            "w-node-_386f3b7b-e9ac-d3e4-5660-9b25755cbcef-e4f6dd07"
+          )}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "pipeline", "modified_hright")}
+            className={_utils.cx(_styles, "pipline_item")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "text_bloxk",
-                "change_on_hover",
-                "job-dash",
-                "first"
-              )}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "job-pill-text")}
-                tag="div"
-              >
-                <Text content="New" size="1" color="neutral" />
-                <Text content={newCount} size="1" color="neutral" />
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "is_end",
-                  "change_on_hover",
-                  "starting",
-                  "bg_neutral-3"
-                )}
-                tag="div"
-              />
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "arrow_right", "text_neutral_3")}
-              tag="div"
-            >
-              <_Builtin.HtmlEmbed
-                className={_utils.cx(_styles, "embed_flex", "ml--1")}
-                value="%3Csvg%20width%3D%2220%22%20height%3D%2228%22%20viewBox%3D%220%200%2020%2028%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cg%20clip-path%3D%22url(%23clip0_3792_43064)%22%3E%0A%3Cpath%20d%3D%22M4.25195%200L14.9486%2013.8427L4.25195%2028.1573V0Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fg%3E%0A%3Cdefs%3E%0A%3CclipPath%20id%3D%22clip0_3792_43064%22%3E%0A%3Crect%20width%3D%2219.2%22%20height%3D%2228%22%20fill%3D%22white%22%2F%3E%0A%3C%2FclipPath%3E%0A%3C%2Fdefs%3E%0A%3C%2Fsvg%3E"
-              />
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "change_on_hover", "hide")}
-              tag="div"
-            />
+            <Text content="New" size="1" color="neutral" />
+            <Text content={newCount} size="1" color="neutral" />
           </_Builtin.Block>
           {isScreeningPillsVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "pipeline", "modified_hright")}
+              className={_utils.cx(_styles, "connector")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "arrow_left", "text_neutral_3")}
-                tag="div"
-              >
-                <_Builtin.HtmlEmbed
-                  className={_utils.cx(_styles, "embed_flex", "ml--1")}
-                  value="%3Csvg%20width%3D%2220%22%20height%3D%2228%22%20viewBox%3D%220%200%2020%2028%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M14.9486%200V28H4.25195C4.25195%2028%2014.9486%2014.7865%2014.9486%2014C14.9486%2013.2135%204.25195%200%204.25195%200H14.9486Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
-                />
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "text_bloxk",
-                  "change_on_hover",
-                  "job-dash"
-                )}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "job-pill-text")}
-                  tag="div"
-                >
-                  <Text content="Screening" size="1" color="neutral" />
-                  <Text content={screeningCount} size="1" color="neutral" />
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "is_end",
-                    "change_on_hover",
-                    "bg_change",
-                    "bg_neutral-3"
-                  )}
-                  tag="div"
-                />
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "arrow_right", "text_neutral_3")}
-                tag="div"
-              >
-                <_Builtin.HtmlEmbed
-                  className={_utils.cx(_styles, "embed_flex", "ml--1")}
-                  value="%3Csvg%20width%3D%2220%22%20height%3D%2228%22%20viewBox%3D%220%200%2020%2028%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cg%20clip-path%3D%22url(%23clip0_3792_43064)%22%3E%0A%3Cpath%20d%3D%22M4.25195%200L14.9486%2013.8427L4.25195%2028.1573V0Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fg%3E%0A%3Cdefs%3E%0A%3CclipPath%20id%3D%22clip0_3792_43064%22%3E%0A%3Crect%20width%3D%2219.2%22%20height%3D%2228%22%20fill%3D%22white%22%2F%3E%0A%3C%2FclipPath%3E%0A%3C%2Fdefs%3E%0A%3C%2Fsvg%3E"
-                />
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "change_on_hover", "hide")}
-                tag="div"
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "embed_flex")}
+                value="%3Csvg%20width%3D%2217%22%20height%3D%2228%22%20viewBox%3D%220%200%2017%2028%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M17%200V28H4C4%2028%2017%2014.7865%2017%2014C17%2013.2135%204%200%204%200H17Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3Cpath%20d%3D%22M0%200L14%2013.7654L0%2028V0Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
+              />
+            </_Builtin.Block>
+          ) : null}
+          {isScreeningPillsVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "pipline_item")}
+              tag="div"
+            >
+              <Text content="Screening" size="1" color="neutral" />
+              <Text content={screeningCount} size="1" color="neutral" />
+            </_Builtin.Block>
+          ) : null}
+          {isAssessmentPillVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "connector")}
+              tag="div"
+            >
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "embed_flex")}
+                value="%3Csvg%20width%3D%2217%22%20height%3D%2228%22%20viewBox%3D%220%200%2017%2028%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M17%200V28H4C4%2028%2017%2014.7865%2017%2014C17%2013.2135%204%200%204%200H17Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3Cpath%20d%3D%22M0%200L14%2013.7654L0%2028V0Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
               />
             </_Builtin.Block>
           ) : null}
           {isAssessmentPillVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "pipeline", "modified_hright")}
+              className={_utils.cx(_styles, "pipline_item")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "arrow_left", "text_neutral_3")}
-                tag="div"
-              >
-                <_Builtin.HtmlEmbed
-                  className={_utils.cx(_styles, "embed_flex", "ml--1")}
-                  value="%3Csvg%20width%3D%2220%22%20height%3D%2228%22%20viewBox%3D%220%200%2020%2028%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M14.9486%200V28H4.25195C4.25195%2028%2014.9486%2014.7865%2014.9486%2014C14.9486%2013.2135%204.25195%200%204.25195%200H14.9486Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
-                />
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "text_bloxk",
-                  "change_on_hover",
-                  "job-dash"
-                )}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "job-pill-text")}
-                  tag="div"
-                >
-                  <Text content="Assessment" size="1" color="neutral" />
-                  <Text content={assessmentCount} size="1" color="neutral" />
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "is_end",
-                    "change_on_hover",
-                    "bg_neutral-3"
-                  )}
-                  tag="div"
-                />
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "arrow_right", "text_neutral_3")}
-                tag="div"
-              >
-                <_Builtin.HtmlEmbed
-                  className={_utils.cx(_styles, "embed_flex", "ml--1")}
-                  value="%3Csvg%20width%3D%2220%22%20height%3D%2228%22%20viewBox%3D%220%200%2020%2028%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cg%20clip-path%3D%22url(%23clip0_3792_43064)%22%3E%0A%3Cpath%20d%3D%22M4.25195%200L14.9486%2013.8427L4.25195%2028.1573V0Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fg%3E%0A%3Cdefs%3E%0A%3CclipPath%20id%3D%22clip0_3792_43064%22%3E%0A%3Crect%20width%3D%2219.2%22%20height%3D%2228%22%20fill%3D%22white%22%2F%3E%0A%3C%2FclipPath%3E%0A%3C%2Fdefs%3E%0A%3C%2Fsvg%3E"
-                />
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "change_on_hover", "hide")}
-                tag="div"
+              <Text content="Assessment" size="1" color="neutral" />
+              <Text content={assessmentCount} size="1" color="neutral" />
+            </_Builtin.Block>
+          ) : null}
+          {isInterviewPillVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "connector")}
+              tag="div"
+            >
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "embed_flex")}
+                value="%3Csvg%20width%3D%2217%22%20height%3D%2228%22%20viewBox%3D%220%200%2017%2028%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M17%200V28H4C4%2028%2017%2014.7865%2017%2014C17%2013.2135%204%200%204%200H17Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3Cpath%20d%3D%22M0%200L14%2013.7654L0%2028V0Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
               />
             </_Builtin.Block>
           ) : null}
           {isInterviewPillVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "pipeline", "modified_hright")}
+              className={_utils.cx(_styles, "pipline_item")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "arrow_left", "text_neutral_3")}
-                tag="div"
-              >
-                <_Builtin.HtmlEmbed
-                  className={_utils.cx(_styles, "embed_flex", "ml--1")}
-                  value="%3Csvg%20width%3D%2220%22%20height%3D%2228%22%20viewBox%3D%220%200%2020%2028%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M14.9486%200V28H4.25195C4.25195%2028%2014.9486%2014.7865%2014.9486%2014C14.9486%2013.2135%204.25195%200%204.25195%200H14.9486Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
-                />
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "text_bloxk",
-                  "change_on_hover",
-                  "job-dash"
-                )}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "job-pill-text")}
-                  tag="div"
-                >
-                  <Text content="Interview" size="1" color="neutral" />
-                  <Text content={interviewCount} size="1" color="neutral" />
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "is_end",
-                    "change_on_hover",
-                    "bg_neutral-3"
-                  )}
-                  tag="div"
-                />
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "arrow_right", "text_neutral_3")}
-                tag="div"
-              >
-                <_Builtin.HtmlEmbed
-                  className={_utils.cx(_styles, "embed_flex", "ml--1")}
-                  value="%3Csvg%20width%3D%2220%22%20height%3D%2228%22%20viewBox%3D%220%200%2020%2028%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cg%20clip-path%3D%22url(%23clip0_3792_43064)%22%3E%0A%3Cpath%20d%3D%22M4.25195%200L14.9486%2013.8427L4.25195%2028.1573V0Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fg%3E%0A%3Cdefs%3E%0A%3CclipPath%20id%3D%22clip0_3792_43064%22%3E%0A%3Crect%20width%3D%2219.2%22%20height%3D%2228%22%20fill%3D%22white%22%2F%3E%0A%3C%2FclipPath%3E%0A%3C%2Fdefs%3E%0A%3C%2Fsvg%3E"
-                />
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "change_on_hover", "hide")}
-                tag="div"
-              />
+              <Text content="Interview" size="1" color="neutral" />
+              <Text content={interviewCount} size="1" color="neutral" />
             </_Builtin.Block>
           ) : null}
-          <_Builtin.Block
-            className={_utils.cx(_styles, "pipeline", "modified_hright")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "arrow_left", "text_neutral_3")}
-              tag="div"
-            >
-              <_Builtin.HtmlEmbed
-                className={_utils.cx(_styles, "embed_flex", "ml--1")}
-                value="%3Csvg%20width%3D%2220%22%20height%3D%2228%22%20viewBox%3D%220%200%2020%2028%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M14.9486%200V28H4.25195C4.25195%2028%2014.9486%2014.7865%2014.9486%2014C14.9486%2013.2135%204.25195%200%204.25195%200H14.9486Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
-              />
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "text_bloxk",
-                "change_on_hover",
-                "job-dash"
-              )}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "job-pill-text")}
-                tag="div"
-              >
-                <Text content="Qualified" size="1" color="neutral" />
-                <Text content={qualifiedCount} size="1" color="neutral" />
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "is_start", "change_on_hover")}
-                tag="div"
-              />
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "is_end",
-                  "change_on_hover",
-                  "bg_neutral-3"
-                )}
-                tag="div"
-              />
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "arrow_right", "text_neutral_3")}
-              tag="div"
-            >
-              <_Builtin.HtmlEmbed
-                className={_utils.cx(_styles, "embed_flex", "ml--1")}
-                value="%3Csvg%20width%3D%2220%22%20height%3D%2228%22%20viewBox%3D%220%200%2020%2028%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cg%20clip-path%3D%22url(%23clip0_3792_43064)%22%3E%0A%3Cpath%20d%3D%22M4.25195%200L14.9486%2013.8427L4.25195%2028.1573V0Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fg%3E%0A%3Cdefs%3E%0A%3CclipPath%20id%3D%22clip0_3792_43064%22%3E%0A%3Crect%20width%3D%2219.2%22%20height%3D%2228%22%20fill%3D%22white%22%2F%3E%0A%3C%2FclipPath%3E%0A%3C%2Fdefs%3E%0A%3C%2Fsvg%3E"
-              />
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "change_on_hover", "hide")}
-              tag="div"
+          <_Builtin.Block className={_utils.cx(_styles, "connector")} tag="div">
+            <_Builtin.HtmlEmbed
+              className={_utils.cx(_styles, "embed_flex")}
+              value="%3Csvg%20width%3D%2217%22%20height%3D%2228%22%20viewBox%3D%220%200%2017%2028%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M17%200V28H4C4%2028%2017%2014.7865%2017%2014C17%2013.2135%204%200%204%200H17Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3Cpath%20d%3D%22M0%200L14%2013.7654L0%2028V0Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
             />
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "pipeline", "modified_hright")}
+            className={_utils.cx(_styles, "pipline_item")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "arrow_left", "text_neutral_3")}
-              tag="div"
-            >
-              <_Builtin.HtmlEmbed
-                className={_utils.cx(_styles, "embed_flex", "ml--1")}
-                value="%3Csvg%20width%3D%2220%22%20height%3D%2228%22%20viewBox%3D%220%200%2020%2028%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M14.9486%200V28H4.25195C4.25195%2028%2014.9486%2014.7865%2014.9486%2014C14.9486%2013.2135%204.25195%200%204.25195%200H14.9486Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
-              />
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "text_bloxk",
-                "change_on_hover",
-                "job-dash-copy"
-              )}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "job-pill-text")}
-                tag="div"
-              >
-                <Text content="Disqualified" size="1" color="neutral" />
-                <Text content={disqualifiedCount} size="1" color="neutral" />
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "is_end",
-                  "change_on_hover",
-                  "bg_neutral-3"
-                )}
-                tag="div"
-              />
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "change_on_hover", "hide")}
-              tag="div"
+            <Text content="Qualified" size="1" color="neutral" />
+            <Text content={qualifiedCount} size="1" color="neutral" />
+          </_Builtin.Block>
+          <_Builtin.Block className={_utils.cx(_styles, "connector")} tag="div">
+            <_Builtin.HtmlEmbed
+              className={_utils.cx(_styles, "embed_flex")}
+              value="%3Csvg%20width%3D%2217%22%20height%3D%2228%22%20viewBox%3D%220%200%2017%2028%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M17%200V28H4C4%2028%2017%2014.7865%2017%2014C17%2013.2135%204%200%204%200H17Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3Cpath%20d%3D%22M0%200L14%2013.7654L0%2028V0Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
             />
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "pipline_item")}
+            tag="div"
+          >
+            <Text content="Disqualified" size="1" color="neutral" />
+            <Text content={disqualifiedCount} size="1" color="neutral" />
           </_Builtin.Block>
         </_Builtin.Block>
         <Text content={textPostedDate} color="neutral" size="1" />

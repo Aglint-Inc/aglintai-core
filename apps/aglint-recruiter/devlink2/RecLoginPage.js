@@ -90,7 +90,7 @@ export function RecLoginPage({
             <ButtonSolid
               onClickButton={onclickLogin}
               isDisabled={isLoginButtonDisable}
-              textButton=""
+              textButton="Login"
               isRightIcon={false}
               isLeftIcon={false}
               size="2"

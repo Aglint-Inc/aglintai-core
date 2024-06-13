@@ -58,7 +58,7 @@
   flex-wrap: nowrap;
   grid-column-gap: 30px;
   grid-row-gap: 30px;
-  height: calc(100vh - 109px);
+  height: auto !important;
 }
 
 .div-block-1365 {

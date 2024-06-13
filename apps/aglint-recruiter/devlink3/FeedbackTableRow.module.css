@@ -202,6 +202,13 @@
   grid-row-gap: var(--space-4);
 }
 
+.flex-horizontal.gap-2 {
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
 .candidate_cell {
   position: relative;
   z-index: 2;
