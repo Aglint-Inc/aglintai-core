@@ -13,7 +13,7 @@ export async function middleware(request: NextRequest) {
   const requestUrl = request.nextUrl.pathname;
   const isRouteApi = requestUrl.startsWith('/api');
   // is public route
-  if (process.env.NODE_ENV === 'development' || isAllowedPaths(requestUrl)) {
+  if (isAllowedPaths(requestUrl)) {
     return response;
   }
   const supabase = createServerClient(
