@@ -110,14 +110,14 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
   const { members } = useAuthDetails();
   const sortOptions = {
     options: ['published_date', 'name'] as const,
-    order: ['description', 'ascending'] as const,
+    order: ['descending', 'ascending'] as const,
   };
   const [sort, setSort] = useState<{
     option: (typeof sortOptions.options)[number];
     order: (typeof sortOptions.order)[number];
   }>({
     option: 'published_date',
-    order: 'description',
+    order: 'descending',
   });
   const [filterValues, setFilterValues] = useState({
     status: [] as string[],
@@ -275,7 +275,7 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
         return (
           (new Date(b.created_at).getTime() -
             new Date(a.created_at).getTime()) *
-          (sort.order === 'description' ? 1 : -1)
+          (sort.order === 'descending' ? 1 : -1)
         );
       }
     });
