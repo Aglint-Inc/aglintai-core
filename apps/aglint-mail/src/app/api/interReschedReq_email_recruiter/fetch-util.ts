@@ -14,6 +14,7 @@ import {
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { CAND_DATE_FORMAT } from '../../../utils/types/constants';
+import { getFullName } from '@aglint/shared-utils';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'interReschedReq_email_recruiter'>['api_payload'],
@@ -39,10 +40,9 @@ export async function fetchUtil(
   const [recruiter_user] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
-      .select('email,first_name,scheduling_settings')
+      .select('email,first_name,last_name,scheduling_settings')
       .eq('user_id', candidateJob.public_jobs.recruiter),
   );
-
   const [session_cancel] = supabaseWrap(
     await supabaseAdmin
       .from('interview_session_cancel')
@@ -83,6 +83,10 @@ export async function fetchUtil(
       '{{ additionalRescheduleNotes }}': session_cancel.other_details.note,
       '{{ recruiterName }}': recruiter_user.first_name,
       '{{ rescheduleReason }}': session_cancel.reason,
+      '{{ recruiterFullName }}': getFullName(
+        recruiter_user.first_name,
+        recruiter_user.last_name,
+      ),
       '{{ dateRange }}': req_start_date
         ? `${dayjsLocal(req_start_date).tz(int_tz).format(CAND_DATE_FORMAT)} - ${dayjsLocal(req_end_date).tz(int_tz).format(CAND_DATE_FORMAT)} `
         : '',

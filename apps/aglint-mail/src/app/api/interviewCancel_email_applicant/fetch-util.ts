@@ -12,6 +12,7 @@ import {
 } from '../../../utils/email/common/functions';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
+import { getFullName } from '@aglint/shared-utils';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'interviewCancel_email_applicant'>['api_payload'],
@@ -29,9 +30,15 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+        'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company,recruiter)',
       )
       .eq('id', req_body.application_id),
+  );
+  const [recruiter_user] = supabaseWrap(
+    await supabaseAdmin
+      .from('recruiter_user')
+      .select('first_name,last_name')
+      .eq('user_id', candidateJob.public_jobs.recruiter),
   );
 
   const meeting_details: MeetingDetailCardType[] = sessions.map((session) => {
@@ -65,6 +72,10 @@ export async function fetchUtil(
       '{{ candidateFirstName }}': candidates.first_name,
       '{{ companyName }}': public_jobs.company,
       '{{ jobTitle }}': public_jobs.job_title,
+      '{{ recruiterFullName }}': getFullName(
+        recruiter_user.first_name,
+        recruiter_user.last_name,
+      ),
     };
 
   const filled_comp_template = fillCompEmailTemplate(
