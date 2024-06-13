@@ -31,6 +31,7 @@
     "langchain": "^0.1.28",
     "openai": "^4.26.0",
     "prettier": "^3.2.5",
+    "redis": "^4.6.14",
     "retell-client-js-sdk": "^1.3.2",
     "retell-sdk": "2.4.0",
     "supabase": "^1.150.0",
