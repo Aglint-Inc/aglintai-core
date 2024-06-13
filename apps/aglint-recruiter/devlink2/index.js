@@ -1,5 +1,9 @@
 "use client";
 
+console.warn(
+  "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
+);
+
 export * as _Builtin from "./_Builtin";
 export * from "./devlinkContext";
 export * from "./interactions";
@@ -16,7 +20,6 @@ export * from "./AllCandidateListItem";
 export * from "./AllInterview";
 export * from "./AllInterviewCard";
 export * from "./AllInterviewEmpty";
-export * from "./AllInterviewFilter";
 export * from "./AllInterviewFilter";
 export * from "./AllInterviewers";
 export * from "./AllInterviewersCard";
@@ -182,27 +185,7 @@ export * from "./ResumeTag";
 export * from "./ScheduleOptions";
 export * from "./ScheduleSettings";
 export * from "./ScheduleWithAgent";
-export * from "./SchedulerDashboard";
-export * from "./SchedulingFlow";
 export * from "./SchedulingSetting";
-export * from "./ScrCheckmarkIcon";
-export * from "./ScrDropdown";
-export * from "./ScrQuestion";
-export * from "./ScrQuestionDefault";
-export * from "./ScrQuestionEdit";
-export * from "./ScrQuestionListItem";
-export * from "./ScrQuestionOption";
-export * from "./ScrQuestionOptionEdit";
-export * from "./ScrQuestionsWrapper";
-export * from "./ScrRadioIcon";
-export * from "./ScrShortTextIcon";
-export * from "./ScreeningCards";
-export * from "./ScreeningLanding";
-export * from "./ScreeningLandingCard";
-export * from "./ScreeningLandingPop";
-export * from "./ScreeningStatus";
-export * from "./ScreeningTable";
-export * from "./ScreeningWelcome";
 export * from "./SelectActionBar";
 export * from "./SelectActionsDropdown";
 export * from "./SelectAllblock";
@@ -226,8 +209,6 @@ export * from "./Slot";
 export * from "./SlotComp";
 export * from "./SlotPicker";
 export * from "./StatusBadge";
-export * from "./SubMenu";
-export * from "./SublinkSubMenu";
 export * from "./SublinkTab";
 export * from "./SubmittedCard";
 export * from "./SummaryBlock";

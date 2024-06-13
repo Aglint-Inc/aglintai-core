@@ -2,6 +2,8 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { Text } from "./Text";
+import { ButtonSoft } from "./ButtonSoft";
 import * as _utils from "./utils";
 import _styles from "./InterviewPlanEmpty.module.css";
 
@@ -29,27 +31,17 @@ export function InterviewPlanEmpty({
           className={_utils.cx(_styles, "div-block-1226")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Interview Plan not found"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-gray-600")}
-            tag="div"
-          >
-            {
-              "Setup an interview plan in the corresponding job settings to schedule interview."
-            }
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1225", "cursor-pointer")}
-            tag="div"
-            {...onClickCreateInterviewPlan}
-          >
-            <_Builtin.Block tag="div">{"Create Interview Plan"}</_Builtin.Block>
-          </_Builtin.Block>
+          <Text weight="bold" content="" />
+          <Text
+            weight=""
+            content="Setup an interview plan in the corresponding job settings to schedule interview."
+            color="neutral"
+          />
+          <ButtonSoft
+            onClickButton={onClickCreateInterviewPlan}
+            textButton=""
+            size="2"
+          />
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

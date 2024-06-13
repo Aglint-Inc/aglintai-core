@@ -1,5 +1,9 @@
 "use client";
 
+console.warn(
+  "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
+);
+
 export * as _Builtin from "./_Builtin";
 export * from "./devlinkContext";
 export * from "./interactions";
@@ -40,7 +44,6 @@ export * from "./CandidateInterviewOption";
 export * from "./CandidateSchedule";
 export * from "./CandidateSubmitAvailability";
 export * from "./CandidatesCard";
-export * from "./CandidatesCard";
 export * from "./CardWithNumber";
 export * from "./ChangeInterviewer";
 export * from "./ChatBlock";
@@ -53,7 +56,6 @@ export * from "./CloseButton";
 export * from "./CompletedInterviews";
 export * from "./ConfirmScheduleList";
 export * from "./ConfirmScheduleListCard";
-export * from "./ConfirmationPopup";
 export * from "./ConfirmationPopup";
 export * from "./ConflictChip";
 export * from "./ConflictHard";

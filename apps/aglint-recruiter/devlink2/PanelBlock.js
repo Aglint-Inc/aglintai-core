@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./PanelBlock.module.css";
 
@@ -18,10 +19,7 @@ export function PanelBlock({
 
   return (
     <_Component className={_utils.cx(_styles, "panel-block")} tag="div">
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1689")}
-        tag="div"
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "panel-icon")} tag="div">
         {slotPanelIcon ?? (
           <_Builtin.HtmlEmbed
             className={_utils.cx(_styles, "icons")}
@@ -29,9 +27,7 @@ export function PanelBlock({
           />
         )}
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-        {textPanelName}
-      </_Builtin.Block>
+      <Text content={textPanelName} weight="bold" />
     </_Component>
   );
 }

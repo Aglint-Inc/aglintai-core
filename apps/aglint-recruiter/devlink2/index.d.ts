@@ -1,5 +1,9 @@
 "use client";
 
+console.warn(
+  "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
+);
+
 export * as _Builtin from "./_Builtin";
 export * from "./devlinkContext";
 export * from "./interactions";
@@ -16,7 +20,6 @@ export * from "./AllCandidateListItem";
 export * from "./AllInterview";
 export * from "./AllInterviewCard";
 export * from "./AllInterviewEmpty";
-export * from "./AllInterviewFilter";
 export * from "./AllInterviewFilter";
 export * from "./AllInterviewers";
 export * from "./AllInterviewersCard";
@@ -182,8 +185,6 @@ export * from "./ResumeTag";
 export * from "./ScheduleOptions";
 export * from "./ScheduleSettings";
 export * from "./ScheduleWithAgent";
-export * from "./SchedulerDashboard";
-export * from "./SchedulingFlow";
 export * from "./SchedulingSetting";
 export * from "./SelectActionBar";
 export * from "./SelectActionsDropdown";
@@ -197,7 +198,6 @@ export * from "./ShadowSessionCard";
 export * from "./ShortAnswerQuestion";
 export * from "./ShowFilterButton";
 export * from "./SideDrawerBlock";
-export * from "./SideDrawerBlock";
 export * from "./SidebarAnalysisBlock";
 export * from "./SidebarScreening";
 export * from "./SidedrawerBodyBreak";
@@ -209,8 +209,6 @@ export * from "./Slot";
 export * from "./SlotComp";
 export * from "./SlotPicker";
 export * from "./StatusBadge";
-export * from "./SubMenu";
-export * from "./SublinkSubMenu";
 export * from "./SublinkTab";
 export * from "./SubmittedCard";
 export * from "./SummaryBlock";
