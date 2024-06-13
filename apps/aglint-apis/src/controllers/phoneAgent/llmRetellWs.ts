@@ -13,7 +13,7 @@ import {appLogger} from '../../services/logger';
 
 export const llmRetellWs = async (ws: WebSocket, req: Request) => {
   const call_id = req.params.call_id;
-  const caller_info = getCallerFromCache(call_id);
+  const caller_info = await getCallerFromCache(call_id);
   const caller_phone = caller_info.To;
   const cand = getCachedCandidateInfo(caller_phone);
   if (!cand) {
