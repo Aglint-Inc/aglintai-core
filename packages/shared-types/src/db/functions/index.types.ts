@@ -35,6 +35,7 @@ export type FunctionType<
     Returns: Type<
       //@ts-ignore
       DatabaseFunctionReturns<T>,
+      //@ts-ignore
       Partial<V>
     >;
   }

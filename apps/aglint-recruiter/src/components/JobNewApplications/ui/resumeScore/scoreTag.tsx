@@ -1,5 +1,4 @@
 import { ResumeTag } from '@/devlink2/ResumeTag';
-import { ApplicationsStore } from '@/src/context/ApplicationsContext/store';
 export const ScoreTag = ({ score }: { score: number }) => {
   const props = getResumeScore(score);
   return (
