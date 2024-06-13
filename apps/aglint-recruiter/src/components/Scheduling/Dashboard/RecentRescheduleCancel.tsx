@@ -35,7 +35,7 @@ const RecentRescheduleCancel = () => {
           const detail_id = tempAD.interview_schedule.application_id;
           const meet_id = tempAD.interview_meeting.id;
           const temp_user = userDetails?.[type];
-          const user = temp_user[detail_id];
+          const user = temp_user?.[detail_id];
           if (user) {
             const tempItem = {
               id: user.id,
@@ -55,7 +55,7 @@ const RecentRescheduleCancel = () => {
             (item) => item.interview_session.id == curr.session_id,
           ).interview_meeting.id;
           const temp_user = userDetails?.[type];
-          const user = temp_user[detail_id];
+          const user = temp_user?.[detail_id];
           if (user) {
             const tempItem = {
               id: user.id,
