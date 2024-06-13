@@ -1,13 +1,15 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseTableInsert } from '@aglint/shared-types';
-import { Stack } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Popover, Stack } from '@mui/material';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { EditEmail } from '@/devlink/EditEmail';
 import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
+import { PreviewEmail } from '@/devlink2/PreviewEmail';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
@@ -26,10 +28,20 @@ function SchedulerEmailTemps() {
     useState<DatabaseTableInsert['company_email_template']>(null);
   const [isEditorLoad, setIsEditorLoad] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null,
+  );
+  const open = Boolean(anchorEl);
+  const handleClose = () => {
+    setAnchorEl(null);
+    setHtml(null);
+  };
+  const [isHtml, setHtml] = useState(null);
+  const [popOverLoading, setPopOverLoading] = useState(false);
   useEffect(() => {
     if (emailTemplates.data) {
       setEmailTemplate([...emailTemplates.data]);
-      setSelectedTemplate(emailTemplates.data[13]);
+      setSelectedTemplate(emailTemplates.data[11]);
     }
 
     setTimeout(() => {
@@ -52,6 +64,23 @@ function SchedulerEmailTemps() {
     setSaving(false);
     toast.message('Saved Successfully!');
   }
+  const preview = async () => {
+    setPopOverLoading(true);
+    try {
+      const { data } = await axios.post(`/api/emails/preview`, {
+        mail_type: selectedTemplate.type,
+        body: selectedTemplate.body,
+      });
+      setHtml(data);
+      setPopOverLoading(false);
+      return data;
+    } catch (error) {
+      setPopOverLoading(false);
+      toast.error(`Error fetching preview: ${error}`);
+      throw error;
+    }
+  };
+
   return (
     <Stack sx={{ paddingLeft: '20px' }}>
       {emailTemplate && (
@@ -95,6 +124,15 @@ function SchedulerEmailTemps() {
               {!isEditorLoad && (
                 <YTransform uniqueKey={selectedTemplate}>
                   <EditEmail
+                    onClickPreview={{
+                      onClick: (e) => {
+                        preview();
+                        setAnchorEl(e.currentTarget);
+                      },
+                    }}
+                    isPreviewVisible={
+                      selectedTemplate.type == emailTempKeys[0] ? false : true
+                    }
                     textTipsMessage={
                       tempObj[selectedTemplate?.type]?.dynamicContent
                     }
@@ -201,6 +239,54 @@ function SchedulerEmailTemps() {
                       </Stack>
                     }
                   />
+                  <Popover
+                    id='popover-agent'
+                    open={open}
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'left',
+                    }}
+                    transformOrigin={{ vertical: -6, horizontal: 0 }}
+                    onClose={handleClose}
+                  >
+                    <PreviewEmail
+                      // slotContent={
+                      //   <iframe
+                      //     width={'900px'}
+                      //     height={'500px'}
+                      //     color='white'
+                      //     srcDoc={isHtml}
+                      //     title='qsds'
+                      //   />
+                      // }
+                      slotContent={
+                        popOverLoading ? (
+                          <Stack
+                            alignItems={'center'}
+                            height={'400px'}
+                            justifyContent={'center'}
+                          >
+                            <LoaderSvg />
+                          </Stack>
+                        ) : (
+                          <iframe
+                            width={'900px'}
+                            height={'500px'}
+                            color='white'
+                            srcDoc={isHtml}
+                            title='qsds'
+                          />
+                        )
+                      }
+                      onClickClose={{
+                        onClick: () => {
+                          setAnchorEl(null);
+                          setHtml(null);
+                        },
+                      }}
+                    />
+                  </Popover>
                 </YTransform>
               )}
             </>
