@@ -285,7 +285,15 @@ export class CandidatesSchedulingV2 {
     this.db_details.all_inters = this.db_details.all_inters.filter(
       (i) => i.interviewer_type !== 'training',
     );
-    //
+  }
+  public async ignoreInterviewer(inter_id: string) {
+    this.db_details.ses_with_ints = this.db_details.ses_with_ints.map((s) => ({
+      ...s,
+      trainingIntervs: [],
+    }));
+    this.db_details.all_inters = this.db_details.all_inters.filter(
+      (i) => i.user_id !== inter_id,
+    );
   }
 
   //NOTE: private funcs
