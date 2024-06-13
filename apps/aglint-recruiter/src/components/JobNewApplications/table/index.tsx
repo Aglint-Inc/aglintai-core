@@ -33,6 +33,7 @@ const List = memo(() => {
     <ApplicantsList
       key={section}
       applications={sectionApplication}
+      count={count[section]}
       header={
         <ApplicantsTable
           isAllChecked={false}

@@ -185,7 +185,8 @@ export function CandidateListItem({
           className={_utils.cx(
             _styles,
             "cv-list-column-wrapper",
-            "items-v-center"
+            "items-v-center",
+            "z_index"
           )}
           tag="div"
           table-column="interview"

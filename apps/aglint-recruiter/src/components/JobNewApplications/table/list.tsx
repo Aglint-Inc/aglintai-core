@@ -10,9 +10,11 @@ import ApplicationCard from './card';
 const ApplicantsList = ({
   applications,
   header,
+  count,
 }: {
   applications: ReturnType<typeof useApplications>['sectionApplication'];
   header: React.JSX.Element;
+  count: number;
 }) => {
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage } = applications;
 
@@ -79,6 +81,7 @@ const ApplicantsList = ({
                 width: '100%',
                 height: `${virtualRow.size}px`,
                 transform: `translateY(${virtualRow.start}px)`,
+                zIndex: count - virtualRow.index,
               }}
             >
               <>

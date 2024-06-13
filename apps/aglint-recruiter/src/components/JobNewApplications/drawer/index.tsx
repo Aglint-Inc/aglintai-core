@@ -41,7 +41,7 @@ const Drawer = () => {
           processing_status: placeholderData?.processing_status,
           resume_score: placeholderData?.resume_score,
           badges: placeholderData?.badges,
-          bookmarked: placeholderData?.bookmarked
+          bookmarked: placeholderData?.bookmarked,
         }
       : undefined;
 
