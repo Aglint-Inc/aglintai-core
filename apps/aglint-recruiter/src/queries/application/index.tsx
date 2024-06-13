@@ -46,6 +46,21 @@ export const applicationQuery = {
       ],
       queryFn: () => getApplicationDetails({ application_id }),
     }),
+  interview: ({
+    application_id,
+    job_id,
+    enabled,
+  }: Params & { enabled: boolean }) =>
+    queryOptions({
+      enabled: enabled && !!application_id && !!job_id,
+      gcTime: application_id ? 1 * 60_000 : 0,
+      refetchOnMount: true,
+      queryKey: [
+        ...applicationQuery.application({ application_id, job_id }).queryKey,
+        'interview',
+      ],
+      queryFn: () => getApplicationInterview({ application_id }),
+    }),
 };
 
 export const useUpdateApplication = (params: Params) => {
@@ -110,4 +125,17 @@ const getApplicationDetails = async ({
     score_json,
     resume_json: candidate_files?.resume_json,
   };
+};
+
+const getApplicationInterview = async ({
+  application_id,
+}: Pick<Params, 'application_id'>) => {
+  return (
+    await supabase
+      .from('application_view')
+      .select('meeting_details')
+      .eq('id', application_id)
+      .single()
+      .throwOnError()
+  ).data;
 };

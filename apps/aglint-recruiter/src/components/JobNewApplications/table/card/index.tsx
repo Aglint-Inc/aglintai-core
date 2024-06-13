@@ -6,8 +6,9 @@ import { CandidateListItem } from '@/devlink2/CandidateListItem';
 import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 
-import ResumeScore from '../ui/resumeScore';
-import { formatTimeStamp } from '../utils';
+import ResumeScore from '../../ui/resumeScore';
+import { formatTimeStamp } from '../../utils';
+import { ScheduleProgress } from './scheduleProgress';
 
 const ApplicationCard = memo(
   ({ application }: { application: DatabaseView['application_view'] }) => {
@@ -74,8 +75,10 @@ const ApplicationCard = memo(
         slotAssessmentScore={application.interview_score}
         appliedDate={appliedDate}
         isHighlighted={isSelected}
-        isScreeningVisible={false}
-        slotScreening={<></>}
+        isScreeningVisible={true}
+        slotScreening={
+          <ScheduleProgress meeting_details={application.meeting_details} />
+        }
         isDisqualifiedVisible={false}
         slotDisqualified={<></>}
       />

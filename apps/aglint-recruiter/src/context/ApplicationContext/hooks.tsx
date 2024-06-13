@@ -15,12 +15,16 @@ export const useApplicationContext = (
 ) => {
   const queryClient = useQueryClient();
   const updateApplication = useApplications()?.handleAsyncUpdateApplication;
-  const { resetTab } = useApplicationStore(({ resetTab }) => ({
+  const { resetTab, tab } = useApplicationStore(({ resetTab, tab }) => ({
     resetTab,
+    tab,
   }));
 
   const meta = useQuery(applicationQuery.meta(props));
   const details = useQuery(applicationQuery.details(props));
+  const interview = useQuery(
+    applicationQuery.interview({ ...props, enabled: tab === 'Interview' }),
+  );
   const { mutate } = useUpdateApplication(props);
 
   const handleUpdateApplication = useCallback(
@@ -61,5 +65,5 @@ export const useApplicationContext = (
     resetTab();
     return () => resetTab();
   }, []);
-  return { meta, details, handleUpdateApplication };
+  return { meta, details, interview, handleUpdateApplication };
 };

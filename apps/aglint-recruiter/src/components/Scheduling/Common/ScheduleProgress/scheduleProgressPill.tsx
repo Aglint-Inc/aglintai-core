@@ -14,15 +14,15 @@ import { getScheduleType } from '../../Candidates/utils';
 type Enums = DB['public']['Enums'];
 
 export type ScheduleProgressPillProps = {
-  name: string;
-  duration: number;
+  session_name: string;
+  session_duration: number;
   status: Enums['interview_schedule_status'];
-  sessionType: Enums['session_type'];
-  scheduleType: Enums['interview_schedule_type'];
+  session_type: Enums['session_type'];
+  schedule_type: Enums['interview_schedule_type'];
   position?: 'starting' | 'ending' | 'middle' | 'lone';
   date?: {
-    startTime: string;
-    endTime: string;
+    start_time: string;
+    end_time: string;
   };
 };
 
@@ -39,8 +39,8 @@ const ScheduleProgressPill = memo(
         !!date;
       const scheduleDate = getScheduleDate(date);
       const backgroundColor = statusToColor(props.status);
-      const scheduleType = getScheduleType(props.scheduleType);
-      const duration = getBreakLabel(props.duration);
+      const scheduleType = getScheduleType(props.schedule_type);
+      const duration = getBreakLabel(props.session_duration);
       return (
         <Stack ref={ref}>
           <ScheduleProgressPillDev
@@ -49,12 +49,14 @@ const ScheduleProgressPill = memo(
             isScheduleDate={isScheduleDate}
             textScheduleDate={scheduleDate}
             slotInterviewTypeIcon={
-              <SessionIcon sessionType={props.sessionType} />
+              <SessionIcon session_type={props.session_type} />
             }
-            slotMeetingTypeIcon={<IconScheduleType type={props.scheduleType} />}
+            slotMeetingTypeIcon={
+              <IconScheduleType type={props.schedule_type} />
+            }
             styleBgColor={{ style: { backgroundColor } }}
             textMeetingType={scheduleType}
-            textScheduleName={props.name}
+            textScheduleName={props.session_name}
             textDuration={duration}
             slotScheduleStatus={<ScheduleStatus status={props.status} />}
             slotProgressIcon={<ProgressIcon status={props.status} />}
@@ -101,9 +103,9 @@ export const ProgressIcon = ({
 ProgressIcon.displayName = 'ProgressIcon';
 
 export const SessionIcon = ({
-  sessionType,
-}: Pick<ScheduleProgressPillProps, 'sessionType'>) => {
-  switch (sessionType) {
+  session_type,
+}: Pick<ScheduleProgressPillProps, 'session_type'>) => {
+  switch (session_type) {
     case 'debrief':
       return <DebriefSessionIcon />;
     case 'individual':
@@ -191,7 +193,7 @@ const CancelledIcon = () => {
 const NotScheduledIcon = () => {
   return (
     // <> </>
-    <GlobalIcon iconName='calendar_today'  size={5} weight={'thin'}/>
+    <GlobalIcon iconName='calendar_today' size={5} weight={'thin'} />
     // <svg
     //   width='16'
     //   height='15'
@@ -278,17 +280,17 @@ export const statusToColor = (status: ScheduleProgressPillProps['status']) => {
 
 export const getScheduleDate = (date: ScheduleProgressPillProps['date']) => {
   if (!date) return '---';
-  const startTime = `${dayjs(date.startTime).format('MMM')} ${dayjs(
-    date.startTime,
-  ).format('DD')}, ${dayjs(date.startTime).format('YYYY')}, ${dayjs(
-    date.startTime,
+  const start_time = `${dayjs(date.start_time).format('MMM')} ${dayjs(
+    date.start_time,
+  ).format('DD')}, ${dayjs(date.start_time).format('YYYY')}, ${dayjs(
+    date.start_time,
   ).format('hh:mm A')}`;
-  const endTime = `${dayjs(date.endTime).format('MMM')} ${dayjs(
-    date.endTime,
-  ).format('DD')}, ${dayjs(date.endTime).format('YYYY')}, ${dayjs(
-    date.endTime,
+  const end_time = `${dayjs(date.end_time).format('MMM')} ${dayjs(
+    date.end_time,
+  ).format('DD')}, ${dayjs(date.end_time).format('YYYY')}, ${dayjs(
+    date.end_time,
   ).format('hh:mm A')}`;
-  return `${startTime} - ${endTime}`;
+  return `${start_time} - ${end_time}`;
 };
 
 // const InProgressIcon = () => {
