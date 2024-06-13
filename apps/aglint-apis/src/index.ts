@@ -5,7 +5,7 @@ import phoneAgentRoutes, {mountScheduleAgentWs} from './routes/scheduleAgent';
 import screenignAgentRouter from './routes/screeningAgent';
 
 import slackRoutes from './routes/slack';
-import errorHandler from './middlewares/middleware';
+import errorHandler from './middlewares/errorHandler';
 import emailAgentRouter from './routes/emailAgent';
 import retellRoutes from './routes/retell';
 import twilioRouter from './routes/twilio';
@@ -13,6 +13,7 @@ import twilioRouter from './routes/twilio';
 import {envConfig} from './config';
 import {twilioClient} from './services/twilio/index';
 import {appLogger} from './services/logger/index';
+import {redisClient} from './services/cache/redis-cache';
 
 const PORT = envConfig.PORT;
 
@@ -37,6 +38,7 @@ app.get('/health', (req, res) => {
 app.use('/api/schedule-agent', phoneAgentRoutes);
 app.use('/api/screening-agent', screenignAgentRouter);
 app.use('/api/email-agent', emailAgentRouter);
+
 app.use('/api/twilio', twilioRouter);
 app.use('/api/retell', retellRoutes);
 app.use('/api/slack', slackRoutes);
