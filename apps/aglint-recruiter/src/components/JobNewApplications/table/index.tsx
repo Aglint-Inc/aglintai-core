@@ -22,6 +22,7 @@ Table.displayName = 'Table';
 const List = memo(() => {
   const {
     job: { count },
+    cascadeVisibilites,
     section,
     sectionApplication,
   } = useApplications();
@@ -35,9 +36,10 @@ const List = memo(() => {
       header={
         <ApplicantsTable
           isAllChecked={false}
-          isScreeningVisible={false}
-          isInterviewVisible={false}
-          isDisqualifiedVisible={false}
+          isScreeningVisible={cascadeVisibilites.screening}
+          isAssessmentVisible={cascadeVisibilites.assessment}
+          isInterviewVisible={cascadeVisibilites.interview}
+          isDisqualifiedVisible={cascadeVisibilites.disqualified}
           isDragVisible={false}
           propsDrag={null}
           onClickSelectAll={{ style: { display: 'none' } }}
