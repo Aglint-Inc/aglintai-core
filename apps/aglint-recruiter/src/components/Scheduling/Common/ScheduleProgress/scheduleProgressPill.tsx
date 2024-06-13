@@ -89,15 +89,35 @@ export const ProgressIcon = ({
 }: Pick<ScheduleProgressPillProps, 'status'>) => {
   switch (status) {
     case 'waiting':
-      return <WaitingIcon />;
+      return (
+        <Stack style={{ color: 'var(--warning-11)' }}>
+          <WaitingIcon />
+        </Stack>
+      );
     case 'confirmed':
-      return <ConfirmedIcon />;
+      return (
+        <Stack style={{ color: 'var(--blue-11)' }}>
+          <ConfirmedIcon />
+        </Stack>
+      );
     case 'completed':
-      return <CompletedIcon />;
+      return (
+        <Stack style={{ color: 'var(--success-11)' }}>
+          <CompletedIcon />
+        </Stack>
+      );
     case 'cancelled':
-      return <CancelledIcon />;
+      return (
+        <Stack style={{ color: 'var(--error-11)' }}>
+          <CancelledIcon />
+        </Stack>
+      );
     default:
-      return <NotScheduledIcon />;
+      return (
+        <Stack style={{ color: 'var(--neutral-9)' }}>
+          <NotScheduledIcon />
+        </Stack>
+      );
   }
 };
 ProgressIcon.displayName = 'ProgressIcon';
@@ -119,7 +139,7 @@ SessionIcon.displayName = 'SessionIcon';
 const CompletedIcon = () => {
   return (
     // <> </>
-    <GlobalIcon iconName='done_all' />
+    <GlobalIcon iconName='event_available' weight={'medium'} />
     // <svg
     //   width='16'
     //   height='15'
@@ -138,7 +158,7 @@ const CompletedIcon = () => {
 const WaitingIcon = () => {
   return (
     // <> </>
-    <GlobalIcon iconName='timer' />
+    <GlobalIcon iconName='calendar_clock' weight={'medium'} />
     // <svg
     //   width='19'
     //   height='19'
@@ -156,7 +176,7 @@ const WaitingIcon = () => {
 
 const ConfirmedIcon = () => {
   return (
-    <GlobalIcon iconName='done' />
+    <GlobalIcon iconName='event_upcoming' weight={'medium'} />
     // <svg
     //   width='16'
     //   height='15'
@@ -174,7 +194,7 @@ const ConfirmedIcon = () => {
 
 const CancelledIcon = () => {
   return (
-    <GlobalIcon iconName='block' />
+    <GlobalIcon iconName='event_busy' weight={'medium'} />
     // <svg
     //   width='16'
     //   height='15'
@@ -193,7 +213,7 @@ const CancelledIcon = () => {
 const NotScheduledIcon = () => {
   return (
     // <> </>
-    <GlobalIcon iconName='calendar_today' size={5} weight={'thin'} />
+    <GlobalIcon iconName='hourglass_empty' weight={'medium'} />
     // <svg
     //   width='16'
     //   height='15'
@@ -266,15 +286,15 @@ const DebriefSessionIcon = () => {
 export const statusToColor = (status: ScheduleProgressPillProps['status']) => {
   switch (status) {
     case 'waiting':
-      return 'var(--status-waiting)';
+      return 'var(--warning-4)';
     case 'confirmed':
-      return 'var(--status-confirmed)';
+      return 'var(--blue-4)';
     case 'completed':
-      return 'var(--status-completed)';
+      return 'var(--success-4)';
     case 'cancelled':
-      return 'var(--status-cancelled)';
+      return 'var(--error-4)';
     default:
-      return 'var(--status-default)';
+      return 'var(--neutral-4)';
   }
 };
 

@@ -1,6 +1,7 @@
 import type { PropsWithChildren, ReactNode } from 'react';
 
 import { CandidateDetail } from '@/devlink/CandidateDetail';
+import { GlobalIcon } from '@/devlink3/GlobalIcon';
 
 import { Badge } from './badge';
 import { Education } from './education';
@@ -20,7 +21,7 @@ const Analysis = (props: PropsWithChildren<{ score?: ReactNode }>) => {
           </>
         )
       }
-      slotIcon={<></>}
+      slotIcon={<GlobalIcon size={5} iconName={'equalizer'} />}
       textTitle={'Analysis'}
     />
   );
