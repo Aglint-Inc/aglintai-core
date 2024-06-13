@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./NewInterviewModuleCard.module.css";
 
@@ -19,22 +20,8 @@ export function NewInterviewModuleCard({
         className={_utils.cx(_styles, "interview_type_cell")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "fw-semibold", "text-capitalize-word")}
-          id={_utils.cx(
-            _styles,
-            "w-node-_929ec257-fb69-5130-a07c-eafa261358c6-261358c4"
-          )}
-          tag="div"
-        >
-          {textModuleName}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-600", "two-line-clamp")}
-          tag="div"
-        >
-          {textObjective}
-        </_Builtin.Block>
+        <Text content={textModuleName} color="neutral-12" weight="bold" />
+        <Text content={textObjective} color="neutral" weight="" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "interview_type_cell", "gap-20")}

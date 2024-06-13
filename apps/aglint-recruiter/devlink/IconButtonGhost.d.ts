@@ -12,4 +12,5 @@ declare function IconButtonGhost(props: {
   isDisabled?: Types.Visibility.VisibilityConditions;
   color?: Types.Builtin.Text;
   highContrast?: Types.Builtin.Text;
+  onClickButton?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

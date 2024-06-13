@@ -11,7 +11,7 @@
   grid-template-columns: 1fr;
   grid-template-rows: auto;
 
-  border: 1px solid var(--neutral-4);
+  border: 1px solid var(--neutral-3);
   border-radius: var(--radius-4);
 
   background-color: var(--white);
@@ -24,10 +24,7 @@
 }
 
 @media screen and (min-width: 1280px) {
-  .rd-job-list-item {
-    padding-right: 30px;
-    padding-left: 30px;
-  }
+
 }
 
 .rd-job-list-item:hover {
@@ -238,10 +235,6 @@
   margin-top: 3px;
 }
 
-.icons.mr--10 {
-  margin-right: -8px;
-}
-
 .icons.mt-2 {
   margin-top: 2px;
 }
@@ -321,10 +314,13 @@
 
 .jd_pipeline_pilll {
   display: flex;
-  width: 825px;
+  overflow: hidden;
+  width: 750px;
   align-items: stretch;
   grid-column-gap: var(--space-1);
   grid-row-gap: var(--space-1);
+
+  border-radius: var(--radius-3);
 }
 
 .pipeline {
@@ -349,10 +345,20 @@
   align-items: stretch;
 }
 
+.pipeline.modified_hright {
+  height: 28px;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
 .arrow_left {
   z-index: 2;
   display: flex;
   flex-direction: row;
+}
+
+.text_neutral_3 {
+  color: var(--neutral-3);
 }
 
 .embed_flex {
@@ -400,6 +406,7 @@
 }
 
 .text_bloxk.change_on_hover.job-dash {
+  width: 95%;
   margin-left: -6px;
   flex-direction: row;
   justify-content: flex-start;
@@ -408,6 +415,27 @@
 }
 
 .text_bloxk.change_on_hover.job-dash.first {
+  width: 98%;
+  margin-left: 1px;
+}
+
+.bg_neutral-3 {
+  background-color: var(--neutral-3);
+}
+
+.text_bloxk.change_on_hover.job-dash-copy {
+  width: 95%;
+  margin-left: -6px;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
+
+  border-radius: 0px;
+}
+
+.text_bloxk.change_on_hover.job-dash-copy.first {
+  width: 98%;
   margin-left: 1px;
 }
 
@@ -433,6 +461,11 @@
   border-radius: 10px 0px 0px 10px;
 }
 
+.is_start.bg_neutral-3 {
+  border-top-left-radius: var(--radius-1);
+  border-bottom-left-radius: var(--radius-3);
+}
+
 .is_end {
   position: absolute;
   left: 0%;
@@ -447,6 +480,17 @@
 .is_end.change_on_hover.starting {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
+}
+
+.is_end.change_on_hover.starting.bg_neutral-3 {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.is_end.change_on_hover.bg_neutral-3 {
+  width: 97%;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
 }
 
 .arrow_right {

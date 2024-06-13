@@ -21,7 +21,7 @@ export function CandidateSideDrawer({
       <_Builtin.Block className={_utils.cx(_styles, "slot_topbar")} tag="div">
         {slotTopBar ?? (
           <>
-            <SlotComp componentName="CandidateName" />
+            <SlotComp componentName="" />
             <SlotComp componentName="CandidateSidedrawerTop" />
           </>
         )}

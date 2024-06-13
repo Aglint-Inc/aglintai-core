@@ -178,10 +178,11 @@ function SubTaskProgress() {
                           }
                         >
                           <Stack
-                            p={'var(--space-2)'}
+                            p={'var(--space-3)'}
                             borderRadius={'var(--space-2)'}
                             border={'1px solid'}
                             borderColor={'var(--neutral-6)'}
+                            bgcolor={'var(--white)'}
                           >
                             <Typography variant='body1'>
                               <span
@@ -227,10 +228,11 @@ function SubTaskProgress() {
                             </ShowCode.When>
                             <ShowCode.Else>
                               <Stack
-                                p={'var(--space-2)'}
-                                borderRadius={'var(--space-2)'}
                                 border={'1px solid'}
+                                bgcolor={'var(--white)'}
+                                borderRadius={'var(--radius-2)'}
                                 borderColor={'var(--neutral-6)'}
+                                p={'var(--space-3)'}
                               >
                                 <Stack
                                   direction={'column'}

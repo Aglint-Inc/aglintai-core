@@ -14,15 +14,6 @@
   text-decoration: none;
 }
 
-.clickable {
-  transition: all 300ms ease;
-  cursor: pointer;
-}
-
-.clickable:hover {
-  opacity: 0.8;
-}
-
 .add-icon {
   display: flex;
   flex-direction: column;

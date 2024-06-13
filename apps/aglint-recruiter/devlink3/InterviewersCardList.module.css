@@ -40,12 +40,6 @@
   padding: var(--space-2) var(--space-4);
 }
 
-@media screen and (min-width: 1440px) {
-  .sd_table_header_cell {
-    padding: 16px;
-  }
-}
-
 .sd_table_header_cell.progress {
   display: flex;
   justify-content: flex-start;

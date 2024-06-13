@@ -15,6 +15,10 @@ export function FilterDropdown({
   onClickReset = {},
   onClickDelete = {},
   isRemoveVisible = true,
+
+  link = {
+    href: "#",
+  },
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 

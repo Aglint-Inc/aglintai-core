@@ -1,15 +1,8 @@
 /* eslint-disable no-console */
-import dayjs from 'dayjs';
-
-import { schema_find_availability_payload } from '@/src/types/scheduling/schema_find_availability_payload';
-
-const utc = require('dayjs/plugin/utc');
-const timezone = require('dayjs/plugin/timezone');
-dayjs.extend(utc);
-dayjs.extend(timezone);
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import { schema_find_availability_payload } from '@/src/types/scheduling/schema_find_availability_payload';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

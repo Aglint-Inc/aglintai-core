@@ -23,11 +23,11 @@ export function TaskTableCard({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "div-block-1434", "height-53", "pointer")}
+      className={_utils.cx(_styles, "task_row", "height-53", "pointer")}
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1535")}
+        className={_utils.cx(_styles, "task_selection_checkbox")}
         id={_utils.cx(
           _styles,
           "w-node-_64cd7013-b477-21b7-5d99-36b360482539-f9aebf0d"
