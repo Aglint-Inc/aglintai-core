@@ -150,7 +150,7 @@ function RequestAvailability() {
           },
         });
 
-        axios.post(`/api/emails/sendAvailabilityRequest_email_applicant`, {
+        axios.post(`/api/emails/availabilityReqResend_email_candidate`, {
           meta: {
             avail_req_id: result.id,
             recruiter_user_id: recruiterUser.user_id,
