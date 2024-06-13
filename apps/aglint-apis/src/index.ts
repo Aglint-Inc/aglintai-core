@@ -23,7 +23,7 @@ app.use(
   cors({
     origin: [
       'http://localhost:3000',
-      'https://preprod.aglinthq.com',
+      'https://dev.aglinthq.com',
       'https://app.aglinthq.com',
     ],
   })
