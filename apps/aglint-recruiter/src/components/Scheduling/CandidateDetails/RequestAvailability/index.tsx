@@ -29,6 +29,11 @@ import toast from '@/src/utils/toast';
 
 import { addScheduleActivity } from '../../Candidates/queries/utils';
 import { useAllActivities, useGetScheduleApplication } from '../hooks';
+import {
+  setIsScheduleNowOpen,
+  setStepScheduling,
+  useSchedulingFlowStore,
+} from '../SelfSchedulingDrawer/store';
 import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
 import {
   createTask,
@@ -54,6 +59,8 @@ function RequestAvailability() {
     selectedApplication,
     selectedSchedule,
   } = useSchedulingApplicationStore();
+
+  const { scheduleFlow } = useSchedulingFlowStore();
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
   const { selectedDate } = useRequestAvailabilityContext();
   const [loading, setLoading] = useState(false);
@@ -70,15 +77,7 @@ function RequestAvailability() {
     0,
   );
   function getDrawerClose() {
-    const currentPath = router.pathname; // Get current path
-    const currentQuery = { ...router.query }; // Get current query parameters
-
-    delete currentQuery.candidate_request_availability; // Remove the specific query parameter
-
-    router.replace({
-      pathname: currentPath,
-      query: currentQuery,
-    });
+    setIsScheduleNowOpen(false);
   }
 
   const [availability, setAvailability] = useState<
@@ -138,7 +137,7 @@ function RequestAvailability() {
         }
       }
 
-      if (router.query?.candidate_request_availability !== 'true') {
+      if (scheduleFlow === 'update_request_availibility') {
         const result = await updateCandidateRequestAvailability({
           id: String(router.query?.candidate_request_availability),
           data: {
@@ -197,7 +196,9 @@ function RequestAvailability() {
           module: 'scheduler',
           task_id: task_id,
         });
-      } else {
+      }
+
+      if (scheduleFlow === 'create_request_availibility') {
         const result = await insertCandidateRequestAvailability({
           application_id: selectedApplication.id,
           recruiter_id: recruiter.id,
@@ -432,8 +433,11 @@ function RequestAvailability() {
           onClick: handleSubmit,
         }}
         onClickClose={{ onClick: getDrawerClose }}
-        onClickCancel={{ onClick: getDrawerClose }}
-        
+        onClickCancel={{
+          onClick: () => {
+            setStepScheduling('pick_date');
+          },
+        }}
       />
     </Stack>
   );

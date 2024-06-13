@@ -86,7 +86,7 @@ const useInviteActions = () => {
         .throwOnError();
 
       addScheduleActivity({
-        title: `Candidate opened self scheduling link on ${dayjs().format('YYYY-MM-DD HH:mm:ss')}`,
+        title: `Candidate opened self scheduling link`,
         application_id: meta.data.schedule.application_id,
         created_by: null,
         logged_by: 'candidate',

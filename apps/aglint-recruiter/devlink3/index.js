@@ -101,6 +101,7 @@ export * from "./GroupFeedback";
 export * from "./HeaderWithSlot";
 export * from "./HistoryPill";
 export * from "./HistoryTrainingCard";
+export * from "./IconButtonGhost";
 export * from "./InlineEditField";
 export * from "./InputWithLabel";
 export * from "./InstructionBlock";

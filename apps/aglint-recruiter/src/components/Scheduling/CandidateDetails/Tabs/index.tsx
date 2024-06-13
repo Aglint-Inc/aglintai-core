@@ -72,7 +72,7 @@ function TabsSchedulingApplication() {
               },
             }}
           />
-          <NewTabPill
+          {/* <NewTabPill
             textLabel={'Candidate Feedback'}
             isPillActive={tab === 'candidate_feedback'}
             onClickPill={{
@@ -88,7 +88,7 @@ function TabsSchedulingApplication() {
                 );
               },
             }}
-          />
+          /> */}
         </>
       )}
     </>

@@ -1,9 +1,10 @@
-import v from 'valibot';
-import { DatabaseEnums } from '..';
+import v from "valibot";
+import { DatabaseEnums } from "..";
 import {
   agentEmailCandidateSchema,
   applicantRejectEmailApplicantSchema,
   applicationRecievedEmailApplicantSchema,
+  availabilityReqResendEmailCandidateSchema,
   confInterviewEmailOrganizerSchema,
   confirmInterviewEmailApplicantSchema,
   debriefEmailInterviewerSchema,
@@ -19,7 +20,7 @@ import {
   sendAvailReqReminderEmailApplicant,
   sendAvailabilityRequestEmailApplicantSchema,
   sendSelfScheduleRequest_email_applicant,
-} from './api_schema';
+} from "./api_schema";
 export type MeetingDetailCardType = {
   date: string;
   time: string;
@@ -33,10 +34,11 @@ type Payloads = {
   debrief_email_interviewer: {
     api_payload: v.InferInput<typeof debriefEmailInterviewerSchema>;
     comp_email_placeholders: {
-      '{{ interviewerFirstName }}': string;
-      '{{ companyName }}': string;
-      '{{ candidateFirstName }}': string;
-      '{{ jobTitle }}': string;
+      "{{ interviewerFirstName }}": string;
+      "{{ companyName }}": string;
+      "{{ candidateFirstName }}": string;
+      "{{ jobTitle }}": string;
+      "{{recruiterFirstName }}": string;
     };
     react_email_placeholders: {
       subject: string;
@@ -49,10 +51,11 @@ type Payloads = {
   applicationRecieved_email_applicant: {
     api_payload: v.InferInput<typeof applicationRecievedEmailApplicantSchema>;
     comp_email_placeholders: {
-      '{{ candidateFirstName }}': string;
-      '{{ jobTitle }}': string;
-      '{{ companyName }}': string;
-      '{{ supportLink }}': string;
+      "{{ candidateFirstName }}": string;
+      "{{ jobTitle }}": string;
+      "{{ companyName }}": string;
+      "{{ supportLink }}": string;
+      "{{ recruiterFullName }}": string;
     };
     react_email_placeholders: {
       subject: string;
@@ -63,9 +66,10 @@ type Payloads = {
   interviewCancel_email_applicant: {
     api_payload: v.InferInput<typeof interviewCancelEmailApplicantSchema>;
     comp_email_placeholders: {
-      '{{ candidateFirstName }}': string;
-      '{{ companyName }}': string;
-      '{{ jobTitle }}': string;
+      "{{ candidateFirstName }}": string;
+      "{{ companyName }}": string;
+      "{{ jobTitle }}": string;
+      "{{ recruiterFullName }}": string;
     };
     react_email_placeholders: {
       subject: string;
@@ -77,14 +81,14 @@ type Payloads = {
   agent_email_candidate: {
     api_payload: v.InferInput<typeof agentEmailCandidateSchema>;
     comp_email_placeholders: {
-      '{{ candidateFirstName }}': string;
-      '{{ companyName }}': string;
-      '{{ jobRole }}': string;
-      '{{ startDate }}': string;
-      '{{ endDate }}': string;
-      '{{ recruiterTimeZone }}': string;
-      '{{ selfScheduleLink }}': string;
-      '{{ recruiterFullName }}': string;
+      "{{ candidateFirstName }}": string;
+      "{{ companyName }}": string;
+      "{{ jobRole }}": string;
+      "{{ startDate }}": string;
+      "{{ endDate }}": string;
+      "{{ recruiterTimeZone }}": string;
+      "{{ selfScheduleLink }}": string;
+      "{{ recruiterFullName }}": string;
     };
     react_email_placeholders: {
       subject: string;
@@ -95,8 +99,9 @@ type Payloads = {
   confInterview_email_organizer: {
     api_payload: v.InferInput<typeof confInterviewEmailOrganizerSchema>;
     comp_email_placeholders: {
-      '{{ recruiterFirstName }}': string;
-      '{{ candidateFirstName }}': string;
+      "{{ recruiterFirstName }}": string;
+      "{{ candidateFirstName }}": string;
+      "{{ recruiterFullName }}": string;
     };
     react_email_placeholders: {
       companyLogo: string;
@@ -109,10 +114,11 @@ type Payloads = {
   confirmInterview_email_applicant: {
     api_payload: v.InferInput<typeof confirmInterviewEmailApplicantSchema>;
     comp_email_placeholders: {
-      '{{ candidateFirstName }}': string;
-      '{{ jobTitle }}': string;
-      '{{ companyName }}': string;
-      '{{ supportLink }}': string;
+      "{{ candidateFirstName }}": string;
+      "{{ jobTitle }}": string;
+      "{{ companyName }}": string;
+      "{{ supportLink }}": string;
+      "{{ recruiterFullName }}": string;
     };
     react_email_placeholders: {
       subject: string;
@@ -125,9 +131,10 @@ type Payloads = {
   applicantReject_email_applicant: {
     api_payload: v.InferInput<typeof applicantRejectEmailApplicantSchema>;
     comp_email_placeholders: {
-      '{{ candidateFirstName }}': string;
-      '{{ jobTitle }}': string;
-      '{{ companyName }}': string;
+      "{{ candidateFirstName }}": string;
+      "{{ jobTitle }}": string;
+      "{{ companyName }}": string;
+      "{{ recruiterFullName }}": string;
     };
     react_email_placeholders: {
       subject: string;
@@ -135,6 +142,21 @@ type Payloads = {
       companyLogo: string;
     };
   };
+  availabilityReqResend_email_candidate: {
+    api_payload: v.InferInput<typeof availabilityReqResendEmailCandidateSchema>;
+    comp_email_placeholders: {
+      "{{ candidateFirstName }}": string;
+      "{{ companyName }}": string;
+      "{{ availabilityReqLink }}": string;
+      "{{ recruiterFullName }}": string;
+    };
+    react_email_placeholders: {
+      emailBody: string;
+      subject: string;
+      companyLogo: string;
+    };
+  };
+
   phoneScreen_email_candidate: {
     api_payload: v.InferInput<typeof phoneScreenEmailCandidateSchema>;
     comp_email_placeholders: {};
@@ -145,10 +167,11 @@ type Payloads = {
   phoneScreenRemind_email_applicant: {
     api_payload: v.InferInput<typeof phoneScreenRemindEmailApplicantSchema>;
     comp_email_placeholders: {
-      '{{ candidateFirstName }}': string;
-      '{{ jobTitle }}': string;
-      '{{ companyName }}': string;
-      '{{ phoneScreeningLink }}': string;
+      "{{ candidateFirstName }}": string;
+      "{{ jobTitle }}": string;
+      "{{ companyName }}": string;
+      "{{ phoneScreeningLink }}": string;
+      "{{ recruiterFullName }}": string;
     };
     react_email_placeholders: {
       subject: string;
@@ -159,11 +182,12 @@ type Payloads = {
   InterviewCancelReq_email_recruiter: {
     api_payload: v.InferInput<typeof interviewCancelReqEmailRecruiterSchema>;
     comp_email_placeholders: {
-      '{{ recruiterName }}': string;
-      '{{ candidateFirstName }}': string;
-      '{{ cancelReason }}': string;
-      '{{ additionalRescheduleNotes }}': string;
-      '{{ companyName }}': string;
+      "{{ recruiterName }}": string;
+      "{{ candidateFirstName }}": string;
+      "{{ cancelReason }}": string;
+      "{{ additionalRescheduleNotes }}": string;
+      "{{ companyName }}": string;
+      "{{ recruiterFullName }}": string;
     };
     react_email_placeholders: {
       subject: string;
@@ -176,11 +200,12 @@ type Payloads = {
   interReschedReq_email_recruiter: {
     api_payload: v.InferInput<typeof interReschedReqEmailRecruiterSchema>;
     comp_email_placeholders: {
-      '{{ recruiterName }}': string;
-      '{{ candidateFirstName }}': string;
-      '{{ rescheduleReason }}': string;
-      '{{ additionalRescheduleNotes }}': string;
-      '{{ dateRange }}': string;
+      "{{ recruiterName }}": string;
+      "{{ candidateFirstName }}": string;
+      "{{ rescheduleReason }}": string;
+      "{{ additionalRescheduleNotes }}": string;
+      "{{ dateRange }}": string;
+      "{{ recruiterFullName }}": string;
     };
     react_email_placeholders: {
       subject: string;
@@ -193,8 +218,8 @@ type Payloads = {
   interviewReschedule_email_applicant: {
     api_payload: v.InferInput<typeof interviewRescheduleEmailApplicantSchema>;
     comp_email_placeholders: {
-      '{{ recruiterName }}': string;
-      '{{ candidateFirstName }}': string;
+      "{{ recruiterName }}": string;
+      "{{ candidateFirstName }}": string;
     };
     react_email_placeholders: {
       subject: string;
@@ -203,12 +228,13 @@ type Payloads = {
   interviewStart_email_applicant: {
     api_payload: v.InferInput<typeof interviewStartEmailApplicantSchema>;
     comp_email_placeholders: {
-      '{{ candidateName }}': string;
-      '{{ companyName }}': string;
-      '{{ jobTitle }}': string;
-      '{{ date }}': string;
-      '{{ time }}': string;
-      '{{ candidateLink }}': string;
+      "{{ candidateName }}": string;
+      "{{ companyName }}": string;
+      "{{ jobTitle }}": string;
+      "{{ date }}": string;
+      "{{ time }}": string;
+      "{{ candidateLink }}": string;
+      "{{ recruiterFullName }}": string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -219,10 +245,11 @@ type Payloads = {
   interviewStart_email_interviewers: {
     api_payload: v.InferInput<typeof interviewStartEmailInterviewersSchema>;
     comp_email_placeholders: {
-      '{{ companyName }}': string;
-      '{{ candidateName }}': string;
-      '{{ jobTitle }}': string;
-      '{{ recruiterName }}': string;
+      "{{ companyName }}": string;
+      "{{ candidateName }}": string;
+      "{{ jobTitle }}": string;
+      "{{ recruiterName }}": string;
+      "{{ recruiterFullName }}": string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -243,11 +270,12 @@ type Payloads = {
   sendSelfScheduleRequest_email_applicant: {
     api_payload: v.InferInput<typeof sendSelfScheduleRequest_email_applicant>;
     comp_email_placeholders: {
-      '{{ candidateFirstName }}': string;
-      '{{ companyName }}': string;
-      '{{ jobTitle }}': string;
-      '{{ selfScheduleLink }}': string;
-      '{{ supportLink }}': string;
+      "{{ candidateFirstName }}": string;
+      "{{ companyName }}": string;
+      "{{ jobTitle }}": string;
+      "{{ selfScheduleLink }}": string;
+      "{{ supportLink }}": string;
+      "{{ recruiterFullName }}": string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -260,12 +288,12 @@ type Payloads = {
       typeof sendAvailabilityRequestEmailApplicantSchema
     >;
     comp_email_placeholders: {
-      '{{ candidateFirstName }}': string;
-      '{{ companyName }}': string;
-      '{{ jobTitle }}': string;
-      '{{ availabilityReqLink }}': string;
-      '{{ recruiterFullName }}': string;
-      '{{ supportLink }}': string;
+      "{{ candidateFirstName }}": string;
+      "{{ companyName }}": string;
+      "{{ jobTitle }}": string;
+      "{{ availabilityReqLink }}": string;
+      "{{ recruiterFullName }}": string;
+      "{{ supportLink }}": string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -276,12 +304,12 @@ type Payloads = {
   sendAvailReqReminder_email_applicant: {
     api_payload: v.InferInput<typeof sendAvailReqReminderEmailApplicant>;
     comp_email_placeholders: {
-      '{{ candidateFirstName }}': string;
-      '{{ companyName }}': string;
-      '{{ jobTitle }}': string;
-      '{{ availabilityLink }}': string;
-      '{{ recruiterFullName }}': string;
-      '{{ supportLink }}': string;
+      "{{ candidateFirstName }}": string;
+      "{{ companyName }}": string;
+      "{{ jobTitle }}": string;
+      "{{ availabilityLink }}": string;
+      "{{ recruiterFullName }}": string;
+      "{{ supportLink }}": string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -292,11 +320,12 @@ type Payloads = {
   selfScheduleReminder_email_applicant: {
     api_payload: v.InferInput<typeof selfScheduleReminderEmailApplicantSchema>;
     comp_email_placeholders: {
-      '{{ candidateFirstName }}': string;
-      '{{ companyName }}': string;
-      '{{ jobTitle }}': string;
-      '{{ selfScheduleLink }}': string;
-      '{{ supportLink }}': string;
+      "{{ candidateFirstName }}": string;
+      "{{ companyName }}": string;
+      "{{ jobTitle }}": string;
+      "{{ selfScheduleLink }}": string;
+      "{{ supportLink }}": string;
+      "{{ recruiterFullName }}": string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -306,5 +335,5 @@ type Payloads = {
   };
 };
 
-export type EmailTemplateAPi<T extends DatabaseEnums['email_slack_types']> =
+export type EmailTemplateAPi<T extends DatabaseEnums["email_slack_types"]> =
   T extends keyof Payloads ? Payloads[T] : never;
