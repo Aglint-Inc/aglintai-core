@@ -215,16 +215,25 @@ type Payloads = {
       resheduleLink: string;
     };
   };
+
   interviewReschedule_email_applicant: {
     api_payload: v.InferInput<typeof interviewRescheduleEmailApplicantSchema>;
     comp_email_placeholders: {
-      "{{ recruiterName }}": string;
       "{{ candidateFirstName }}": string;
+      "{{ jobRole }}": string;
+      "{{ companyName }}": string;
+      "{{ selfScheduleLink }}": string;
+      "{{ recruiterFullName }}": string;
     };
     react_email_placeholders: {
+      emailBody: string;
       subject: string;
+      companyLogo: string;
+      resheduleLink: string;
+      meetingDetails: MeetingDetailCardType[];
     };
   };
+
   interviewStart_email_applicant: {
     api_payload: v.InferInput<typeof interviewStartEmailApplicantSchema>;
     comp_email_placeholders: {
