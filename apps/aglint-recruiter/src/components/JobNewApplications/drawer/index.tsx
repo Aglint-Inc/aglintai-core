@@ -42,6 +42,7 @@ const Drawer = () => {
           resume_score: placeholderData?.resume_score,
           badges: placeholderData?.badges,
           bookmarked: placeholderData?.bookmarked,
+          file_url: placeholderData?.file_url,
         }
       : undefined;
 

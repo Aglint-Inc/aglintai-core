@@ -55,7 +55,7 @@ const ApplicantsList = ({
     <Stack
       ref={parentRef}
       style={{
-        height: 'calc(100vh - 132px)',
+        height: 'calc(100vh - 134px)',
         width: 'calc(100vw - 64px)',
         overflowY: 'auto',
       }}
