@@ -1,4 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 
 import { supabase } from '@/src/utils/supabase/client';
 
@@ -24,15 +25,13 @@ export const getInterviewersRelations = async ({
 }: {
   session_ids: string[];
 }) => {
-  return await supabase
-    .from('interview_session_relation')
-    .select(' session_id, feedback, interview_module_relation(id,user_id)')
-    .eq('is_confirmed', true)
-    .in('session_id', session_ids)
-    .then(({ data, error }) => {
-      if (error) throw new Error(error.message);
-      return data;
-    });
+  const res = await axios.post(
+    '/api/scheduling/application/fetchfeedbackdetails',
+    {
+      session_ids,
+    },
+  );
+  return res.data;
 };
 
 export const saveInterviewerFeedback = async ({

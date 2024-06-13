@@ -2,7 +2,6 @@ import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
 import {
   Autocomplete,
   Checkbox,
-  Popover,
   Stack,
   TextField,
   Typography,
@@ -18,7 +17,6 @@ import { ToggleWithText } from '@/devlink3/ToggleWithText';
 import GreenBgCheckedIcon from '@/src/components/Common/Icons/GreenBgCheckedIcon';
 import PopUpArrowIcon from '@/src/components/Common/Icons/PopUpArrowIcon';
 import ToggleBtn from '@/src/components/Common/UIToggle';
-import DateRange from '@/src/components/Tasks/Components/DateRange';
 import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
@@ -31,12 +29,17 @@ import toast from '@/src/utils/toast';
 
 import { addScheduleActivity } from '../../Candidates/queries/utils';
 import { useAllActivities, useGetScheduleApplication } from '../hooks';
+import {
+  setIsScheduleNowOpen,
+  setStepScheduling,
+  useSchedulingFlowStore,
+} from '../SelfSchedulingDrawer/store';
 import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
 import {
   createTask,
   insertCandidateRequestAvailability,
-  sendEmailToCandidate,
   updateCandidateRequestAvailability,
+  useRequestAvailabilityContext,
 } from './RequestAvailabilityContext';
 import {
   availabilityArrayList,
@@ -56,7 +59,11 @@ function RequestAvailability() {
     selectedApplication,
     selectedSchedule,
   } = useSchedulingApplicationStore();
+
+  const { scheduleFlow } = useSchedulingFlowStore();
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
+  const { selectedDate } = useRequestAvailabilityContext();
+  const [loading, setLoading] = useState(false);
   const { refetch } = useAllActivities({
     application_id: selectedApplication?.id,
   });
@@ -70,15 +77,7 @@ function RequestAvailability() {
     0,
   );
   function getDrawerClose() {
-    const currentPath = router.pathname; // Get current path
-    const currentQuery = { ...router.query }; // Get current query parameters
-
-    delete currentQuery.candidate_request_availability; // Remove the specific query parameter
-
-    router.replace({
-      pathname: currentPath,
-      query: currentQuery,
-    });
+    setIsScheduleNowOpen(false);
   }
 
   const [availability, setAvailability] = useState<
@@ -91,15 +90,17 @@ function RequestAvailability() {
   });
   const [selectedDays, setSelectedDays] = useState(requestDaysListOptions[3]);
   const [selectedSlots, setSelectedSlots] = useState(slotsListOptions[1]);
-  const [selectedDate, setSelectedDate] = useState([
-    dayjs(),
-    dayjs().add(10, 'day'),
-  ]);
+
   const [markCreateTicket, setMarkCreateTicket] = useState(true);
 
   // handle submit
 
   async function handleSubmit() {
+    if (loading) {
+      return null;
+    }
+    setLoading(true);
+
     try {
       let localSessions = selectedSessions;
 
@@ -136,7 +137,7 @@ function RequestAvailability() {
         }
       }
 
-      if (router.query?.candidate_request_availability !== 'true') {
+      if (scheduleFlow === 'update_request_availibility') {
         const result = await updateCandidateRequestAvailability({
           id: String(router.query?.candidate_request_availability),
           data: {
@@ -145,20 +146,15 @@ function RequestAvailability() {
             number_of_days: selectedDays.value,
             number_of_slots: selectedSlots.value,
             slots: null,
+            booking_confirmed: false,
           },
         });
 
-        sendEmailToCandidate({
-          email: selectedApplication.candidates.email,
-          emailBody: recruiter.email_template['request_candidate_slot'].body,
-          emailSubject:
-            recruiter.email_template['request_candidate_slot'].subject,
-          first_name: selectedApplication.candidates.first_name,
-          last_name: selectedApplication.candidates.last_name,
-          job_title: selectedApplication.public_jobs.job_title,
-          recruiter,
-          sessionNames: selectedSessions.map((ele) => ele.name),
-          request_id: result.id,
+        axios.post(`/api/emails/sendAvailabilityRequest_email_applicant`, {
+          meta: {
+            avail_req_id: result.id,
+            recruiter_user_id: recruiterUser.user_id,
+          },
         });
         toast.message('Request sent successfully!');
         const { data: requestData } = await axios.post(
@@ -200,7 +196,9 @@ function RequestAvailability() {
           module: 'scheduler',
           task_id: task_id,
         });
-      } else {
+      }
+
+      if (scheduleFlow === 'create_request_availibility') {
         const result = await insertCandidateRequestAvailability({
           application_id: selectedApplication.id,
           recruiter_id: recruiter.id,
@@ -237,15 +235,12 @@ function RequestAvailability() {
 
         // send request availability email to candidate
 
-        await axios.post(
-          `/api/emails/sendAvailabilityRequest_email_applicant`,
-          {
-            meta: {
-              avail_req_id: result.id,
-              recruiter_user_id: recruiterUser.user_id,
-            },
+        axios.post(`/api/emails/sendAvailabilityRequest_email_applicant`, {
+          meta: {
+            avail_req_id: result.id,
+            recruiter_user_id: recruiterUser.user_id,
           },
-        );
+        });
         toast.message('Request sent successfully!');
         // end
         let task = null as null | DatabaseTable['new_tasks'];
@@ -315,58 +310,16 @@ function RequestAvailability() {
       fetchInterviewDataByApplication(); // refetching interview data
       getDrawerClose(); // closing drawer
       setSelectedSessionIds([]); // resetting selected sessions
-    } catch {
-      toast.error('Unable to send');
+    } catch (error) {
+      toast.error(error.message);
     }
+
+    setLoading(false);
   }
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
   return (
     <Stack>
       <ReqAvailability
-        textDateAvailability={
-          <Stack>
-            {`${selectedDate[0]?.format('MMMM DD')} - ${selectedDate[1]?.format('MMMM DD')}`}
-            <Popover
-              id={id}
-              open={open}
-              anchorEl={anchorEl}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              sx={{
-                '& .MuiPopover-paper': {
-                  // border: 'none',
-                  scale: 0.5,
-                },
-              }}
-            >
-              <DateRange
-                calendars={1}
-                onChange={(e) => {
-                  setSelectedDate(e);
-                }}
-                value={[dayjs(selectedDate[0]), dayjs(selectedDate[1])]}
-              />
-            </Popover>
-          </Stack>
-        }
-        onClickEditDate={{
-          onClick: (e) => {
-            setAnchorEl(e.target);
-          },
-        }}
         isCheckingSlotsVisible={false}
         isFoundSlots={false}
         textFoundSlots={`Found 126 slots for the sugeestion`}
@@ -475,11 +428,16 @@ function RequestAvailability() {
             }}
           />
         }
+        isLoading={loading}
         onClickReqAvailability={{
           onClick: handleSubmit,
         }}
         onClickClose={{ onClick: getDrawerClose }}
-        onClickCancel={{ onClick: getDrawerClose }}
+        onClickCancel={{
+          onClick: () => {
+            setStepScheduling('pick_date');
+          },
+        }}
       />
     </Stack>
   );

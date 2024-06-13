@@ -41,12 +41,14 @@ function Overview({
   isCancelOpen,
   setIsCancelOpen,
   setIsRescheduleOpen,
+  refetch,
 }: {
   cancelReasons: ReturnType<typeof useScheduleDetails>['data']['cancel_data'];
   schedule: ScheduleMeeting;
   isCancelOpen: boolean;
   setIsCancelOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsRescheduleOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  refetch: () => void;
 }) {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
@@ -76,6 +78,7 @@ function Overview({
       .from('interview_filter_json')
       .select('*')
       .contains('session_ids', [schedule.interview_session.id]);
+
     setFilterJson(data[0]);
   };
 
@@ -156,18 +159,21 @@ function Overview({
             isDeclineOpen={isDeclineOpen}
             setIsDeclineOpen={setIsDeclineOpen}
             schedule={schedule}
+            refetch={refetch}
           />
           <CancelScheduleDialog
             sessionRelation={sessionRelation}
             isDeclineOpen={isCancelOpen}
             setIsDeclineOpen={setIsCancelOpen}
             schedule={schedule}
+            refetch={refetch}
           />
           <RequestRescheduleDialog
             isRequestRescheduleOpen={isRequestRescheduleOpen}
             setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
             sessionRelation={sessionRelation}
             schedule={schedule}
+            refetch={refetch}
           />
         </>
       )}
@@ -200,10 +206,9 @@ function Overview({
         }}
         onClickCopyCandidate={{
           onClick: async () => {
-            filterJson?.id &&
-              navigator.clipboard.writeText(
-                `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule.schedule.id}?filter_id=${filterJson.id}`,
-              );
+            navigator.clipboard.writeText(
+              `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule.schedule.id}?filter_id=${filterJson.id}`,
+            );
           },
         }}
         slotButton={
@@ -330,6 +335,7 @@ function Overview({
                 item={item}
                 schedule={schedule}
                 setIsDeclineOpen={setIsDeclineOpen}
+                refetch={refetch}
               />
             </>
           );

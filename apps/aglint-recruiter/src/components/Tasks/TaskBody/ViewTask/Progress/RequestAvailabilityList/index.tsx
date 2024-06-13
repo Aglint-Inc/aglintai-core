@@ -6,6 +6,11 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GeneralBanner } from '@/devlink/GeneralBanner';
 import Icon from '@/src/components/Common/Icons/Icon';
+import {
+  setIsScheduleNowOpen,
+  setScheduleFlow,
+  setStepScheduling,
+} from '@/src/components/Scheduling/CandidateDetails/SelfSchedulingDrawer/store';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 
 function RequestAvailabilityList({
@@ -78,6 +83,9 @@ function RequestAvailabilityList({
             size={1}
             onClickButton={{
               onClick: () => {
+                setIsScheduleNowOpen(true);
+                setStepScheduling('pick_date');
+                setScheduleFlow('update_request_availibility');
                 router.push(
                   `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/application/${selectedTask.application_id}?candidate_request_availability=${selectedTask.candidate_request_availability.id}`,
                 );

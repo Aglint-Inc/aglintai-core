@@ -69,6 +69,7 @@ import { dayJS, getCalenderEventUrl, getDurationText } from './utils';
 
 const CandidateInviteNew = () => {
   const load = useCandidateInvite();
+
   return (
     <Stack
       height={'100%'}
@@ -99,12 +100,20 @@ const CandidateInvitePlanPage = () => {
   const {
     setDetailsPop,
     meta: {
-      data: { meetings },
+      data: { meetings, filter_json },
     },
     timezone,
     setSelectedSlots,
     setTimezone,
+    handleViewedOn,
   } = useCandidateInvite();
+
+  useEffect(() => {
+    if (filter_json?.id && !filter_json.viewed_on) {
+      handleViewedOn();
+    }
+  }, [filter_json]);
+
   const waiting = meetings.some(
     ({ interview_meeting: { status } }) => status === 'waiting',
   );
@@ -126,6 +135,9 @@ const CandidateInvitePlanPage = () => {
     },
     { rounds: [] as ScheduleCardProps['round'][] },
   );
+
+  if (meetings.length === 0) return <NotFoundPage />;
+
   if (!waiting) return <ConfirmedPage rounds={rounds} />;
   return (
     <CandidateConfirmationPage

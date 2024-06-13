@@ -5,7 +5,6 @@ import { Text } from "./Text";
 import { InterviewModuleCard } from "./InterviewModuleCard";
 import { InterviewBreakCard } from "./InterviewBreakCard";
 import { AddScheduleCard } from "./AddScheduleCard";
-import { GeneralScheduleCard } from "./GeneralScheduleCard";
 import * as _utils from "./utils";
 import _styles from "./InterviewPlan.module.css";
 
@@ -64,7 +63,6 @@ export function InterviewPlan({
           </>
         )}
       </_Builtin.Block>
-      <GeneralScheduleCard />
     </_Component>
   );
 }

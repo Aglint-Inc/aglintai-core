@@ -4,6 +4,7 @@ import dayjs from '@utils/dayjs';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo, useState } from 'react';
 
+import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 import { TimezoneObj } from '@/src/components/Scheduling/Settings';
 import { BodyParamsCandidateInvite } from '@/src/pages/api/scheduling/invite';
 import {
@@ -11,6 +12,7 @@ import {
   useInviteMeta,
   useInviteSlots,
 } from '@/src/queries/candidate-invite';
+import { supabase } from '@/src/utils/supabase/client';
 import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
 
@@ -75,6 +77,26 @@ const useInviteActions = () => {
     }
   };
 
+  const handleViewedOn = async () => {
+    try {
+      await supabase
+        .from('interview_filter_json')
+        .update({ viewed_on: new Date().toISOString() })
+        .eq('id', meta.data.filter_json.id)
+        .throwOnError();
+
+      addScheduleActivity({
+        title: `Candidate opened self scheduling link`,
+        application_id: meta.data.schedule.application_id,
+        created_by: null,
+        logged_by: 'candidate',
+        supabase,
+      });
+    } catch {
+      //
+    }
+  };
+
   if (!initialLoad || isPending) return undefined;
   if (!meta.data) return null;
 
@@ -90,6 +112,7 @@ const useInviteActions = () => {
     setDetailsPop,
     handleSelectSlot,
     handleSubmit,
+    handleViewedOn,
   };
 };
 

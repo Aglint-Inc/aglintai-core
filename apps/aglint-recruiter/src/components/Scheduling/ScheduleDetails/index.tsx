@@ -10,8 +10,8 @@ import { ScheduleDetailTabs } from '@/devlink3/ScheduleDetailTabs';
 
 import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';
+import CandidateInfo from '../Common/CandidateInfo';
 import CancelReasonCards from './CancelReasonCards';
-import CandidateInfo from './CandidateDetails';
 import ChangeInterviewerDialog from './ChangeInterviewerDialog';
 import FeedbackWindow from './Feedback';
 import { useScheduleDetails } from './hooks';
@@ -22,7 +22,7 @@ import RescheduleDialog from './RescheduleDialog';
 
 function SchedulingViewComp() {
   const router = useRouter();
-  const { data, isLoading } = useScheduleDetails();
+  const { data, isLoading, refetch } = useScheduleDetails();
   const [isChangeInterviewerOpen, setIsChangeInterviewerOpen] = useState(false);
   const [isRescheduleOpen, setIsRescheduleOpen] = useState(false);
   const [isCancelOpen, setIsCancelOpen] = useState(false);
@@ -72,7 +72,7 @@ function SchedulingViewComp() {
         <PageLayout
           onClickBack={{
             onClick: () => {
-              window.history.back();
+              router.back();
             },
           }}
           isBackButton={true}
@@ -89,13 +89,13 @@ function SchedulingViewComp() {
                     cancelReasons={cancelReasons}
                     schedule={schedule}
                     setCancelUserId={setCancelUserId}
-                    setIsCancelOpen={setIsCancelOpen}
                     setIsRescheduleOpen={setIsRescheduleOpen}
                     cancelUserId={cancelUserId}
                     setIsChangeInterviewerOpen={setIsChangeInterviewerOpen}
                     setRange={setRange}
                   />
                   <Overview
+                    refetch={refetch}
                     cancelReasons={cancelReasons}
                     schedule={schedule}
                     isCancelOpen={isCancelOpen}

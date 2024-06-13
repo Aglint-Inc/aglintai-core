@@ -32,6 +32,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       include_conflicting_slots: {},
     });
 
+    zod_options.include_conflicting_slots.show_conflicts_events = true;
+    zod_options.include_conflicting_slots.show_soft_conflicts = true;
+
     const cand_schedule = new CandidatesSchedulingV2(
       {
         candidate_tz: parsed.cand_tz,
@@ -59,6 +62,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       verified_plans[0],
       schedule_db_details,
     );
+
     return res.status(200).json('ok');
   } catch (err) {
     console.error(err);

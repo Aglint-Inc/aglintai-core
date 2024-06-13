@@ -14,6 +14,8 @@ declare function RescheduleCard(props: {
   textColorProps?: Types.Devlink.RuntimeProps;
   textName?: React.ReactNode;
   isRescheduleBtnVisible?: Types.Visibility.VisibilityConditions;
-  isCancelVisible?: Types.Visibility.VisibilityConditions;
-  onClickCancel?: Types.Devlink.RuntimeProps;
+  isIgnoreVisible?: Types.Visibility.VisibilityConditions;
+  onClickIgnore?: Types.Devlink.RuntimeProps;
+  isTakeActionVisible?: Types.Visibility.VisibilityConditions;
+  onClickTakeAction?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

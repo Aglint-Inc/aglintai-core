@@ -77,6 +77,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       selectedSlots: bodyParams.selectedSlots,
     });
 
+    console.log('resSendToCandidate', resSendToCandidate);
+
     if (resSendToCandidate) {
       res.status(200).send(true);
     } else {
@@ -337,7 +339,7 @@ const sendToCandidate = async ({
       }
     }
 
-    if (selectedApplicationLog.metadata.type === 'booking_confirmation') {
+    if (selectedApplicationLog?.metadata?.type === 'booking_confirmation') {
       await supabase
         .from('application_logs')
         .update({

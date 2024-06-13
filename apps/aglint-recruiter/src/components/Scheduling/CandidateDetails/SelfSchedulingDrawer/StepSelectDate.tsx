@@ -10,6 +10,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import { useAllActivities, useGetScheduleApplication } from '../hooks';
+import { useRequestAvailabilityContext } from '../RequestAvailability/RequestAvailabilityContext';
 import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
 import { ApiResponseFindAvailability } from '../types';
 import {
@@ -68,6 +69,8 @@ function SelectDateRange() {
         options: {
           include_conflicting_slots: {
             out_of_working_hrs: true,
+            show_soft_conflicts: true,
+            show_conflicts_events: true,
           },
         },
       };
@@ -164,6 +167,8 @@ function SelectDateRange() {
     setStepScheduling('pick_date');
   };
 
+  const { setSelectedDate } = useRequestAvailabilityContext();
+
   return (
     <>
       <DatePickerBody
@@ -183,9 +188,7 @@ function SelectDateRange() {
         isEmailAgent={scheduleFlow === 'email_agent'}
         isPhoneAgent={scheduleFlow === 'phone_agent'}
         isRequestAvailability={false}
-        isContinueButton={
-          scheduleFlow === 'self_scheduling' || scheduleFlow === 'debrief'
-        }
+        isContinueButton={true}
         isSelfScheduling={scheduleFlow === 'self_scheduling'}
         onClickButton={{
           onClick: async () => {
@@ -204,6 +207,15 @@ function SelectDateRange() {
                 scheduleFlow === 'email_agent'
               ) {
                 await onClickScheduleAgent(scheduleFlow);
+              } else if (
+                scheduleFlow === 'create_request_availibility' ||
+                scheduleFlow === 'update_request_availibility'
+              ) {
+                setSelectedDate([
+                  dayjs(dateRange.start_date),
+                  dayjs(dateRange.end_date),
+                ]);
+                setStepScheduling('request_availibility');
               }
             }
           },

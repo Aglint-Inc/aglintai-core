@@ -12,6 +12,7 @@ import {
 } from '../../../utils/email/common/functions';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
+import { getFullName } from '@aglint/shared-utils';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'debrief_email_interviewer'>['api_payload'],
@@ -32,14 +33,10 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+        'candidates(first_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company,recruiter)',
       )
       .eq('id', req_body.application_id),
   );
-
-  if (!candidateJob) {
-    throw new Error('candidate and job details are not available');
-  }
 
   const { candidates, public_jobs } = candidateJob;
 
@@ -50,6 +47,12 @@ export async function fetchUtil(
       .eq('session_id', req_body.session_id),
   );
 
+  const [recruiter_user] = supabaseWrap(
+    await supabaseAdmin
+      .from('recruiter_user')
+      .select('first_name,last_name')
+      .eq('user_id', candidateJob.public_jobs.recruiter),
+  );
   const {
     interview_meeting,
     name,
@@ -79,6 +82,10 @@ export async function fetchUtil(
         '{{ jobTitle }}': public_jobs.job_title,
         '{{ companyName }}': public_jobs.company,
         '{{ interviewerFirstName }}': inter.first_name,
+        '{{recruiterFirstName }}': getFullName(
+          recruiter_user.first_name,
+          recruiter_user.last_name,
+        ),
       };
 
     const filled_comp_template = fillCompEmailTemplate(

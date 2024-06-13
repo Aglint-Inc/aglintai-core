@@ -9,6 +9,7 @@ import {
 } from '../../../utils/email/common/functions';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
+import { getFullName } from '@aglint/shared-utils';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'interviewStart_email_interviewers'>['api_payload'],
@@ -40,7 +41,7 @@ export async function fetchUtil(
   const [recruiter_user] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
-      .select('email,first_name')
+      .select('email,first_name,last_name')
       .eq('user_id', req_body.recruiter_user_id),
   );
 
@@ -78,6 +79,10 @@ export async function fetchUtil(
       '{{ jobTitle }}': candidateJob.public_jobs.job_title,
       '{{ companyName }}': candidateJob.public_jobs.company,
       '{{ recruiterName }}': recruiter_user.first_name,
+      '{{ recruiterFullName }}': getFullName(
+        recruiter_user.first_name,
+        recruiter_user.last_name,
+      ),
     };
 
   const filled_comp_template = fillCompEmailTemplate(
