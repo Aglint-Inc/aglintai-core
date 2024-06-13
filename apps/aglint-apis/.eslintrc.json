@@ -1,6 +1,6 @@
 {
   "extends": "../../node_modules/gts",
-  "plugins": ["no-relative-import-paths"],
+  "plugins": ["no-relative-import-paths", "promise"],
   "rules": {
     // "@typescript-eslint/no-explicit-any": "off",
     "prefer-template": 1,

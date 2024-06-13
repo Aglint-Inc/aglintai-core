@@ -44,7 +44,7 @@ export const scheduleInterviewSlot = () => {
     cand_phone: string,
     candLogger: LoggerType
   ) => {
-    const cand_info = getCachedCandidateInfo(cand_phone);
+    const cand_info = await getCachedCandidateInfo(cand_phone);
 
     if (cand_info.schedule_status === 'confirmed') {
       return `interview already scheduled at ${cand_info.cand_selected_slot}`;

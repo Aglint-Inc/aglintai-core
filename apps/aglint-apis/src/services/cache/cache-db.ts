@@ -2,29 +2,35 @@ import {CandidateInfoType} from '../../types/app_types/scheduleAgentTypes';
 import {TwilioCallDetails} from '../../types/twilio.types';
 import {Redis_KV, redisClient} from './redis-cache';
 
-type CandidateInfoMap = Map<string, CandidateInfoType>;
+// const candidates_cache: CandidateInfoMap = new Map();
 
-const candidates_cache: CandidateInfoMap = new Map();
-// const caller_cache: Map<string, TwilioCallDetails> = new Map();
-
-export const addCandInfoToCache = (
+export const addCandInfoToCache = async (
   cand_phone: string,
   cand_info: CandidateInfoType
 ) => {
-  candidates_cache.set(cand_phone, cand_info);
+  await redisClient.hset(
+    Redis_KV.CAND_INFO,
+    cand_phone,
+    JSON.stringify(cand_info)
+  );
 };
 
-export const getCachedCandidateInfo = (cand_phone: string) => {
-  const cand_info = candidates_cache.get(cand_phone);
-  return cand_info;
+export const getCachedCandidateInfo = async (cand_phone: string) => {
+  const data = await redisClient.hget(Redis_KV.CAND_INFO, cand_phone);
+  if (!data) return null;
+  return JSON.parse(data) as CandidateInfoType;
 };
 
-export const updateCandidateInfo = (cand_info: CandidateInfoType) => {
-  candidates_cache.set(cand_info.req_payload.to_phone_no, cand_info);
+export const updateCandidateInfo = async (cand_info: CandidateInfoType) => {
+  await redisClient.hset(
+    Redis_KV.CAND_INFO,
+    cand_info.req_payload.to_phone_no,
+    JSON.stringify(cand_info)
+  );
 };
 
-export const removeCandInfoCache = (cand_phone: string) => {
-  return candidates_cache.delete(cand_phone);
+export const removeCandInfoCache = async (cand_phone: string) => {
+  await redisClient.hdel(Redis_KV.CAND_INFO, cand_phone);
 };
 
 export const addCallerToCache = async (
