@@ -42,7 +42,7 @@ function RequestAvailabilityBody() {
     <Stack
       p={2}
       overflow={'auto'}
-      height={'100%'}
+      height={'calc(100vh - 96px)'}
       direction={'column'}
       gap={'var(--space-2)'}
     >
