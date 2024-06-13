@@ -51,7 +51,6 @@
 
 .cv-list-column-wrapper {
   position: relative;
-  z-index: 5;
 
   display: flex;
   width: 100%;
@@ -136,6 +135,10 @@
   align-items: center;
 }
 
+.cv-list-column-wrapper.items-v-center.z_index {
+  z-index: 100;
+}
+
 .cv-list-column-wrapper.chackbox_column {
   padding-top: 8px;
   padding-bottom: 8px;
@@ -154,7 +157,6 @@
   z-index: 5;
 
   display: flex;
-  overflow: hidden;
   padding-right: 0px;
   padding-left: 0px;
   align-items: center;
@@ -305,6 +307,10 @@
 .cv-list-column.screening.width-100 {
   width: 100%;
   min-width: 100%;
+}
+
+.cv-list-column.screening.width-100.z_index {
+  z-index: 100;
 }
 
 .cv-list-column.disqualified {

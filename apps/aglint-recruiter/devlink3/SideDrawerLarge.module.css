@@ -25,6 +25,11 @@
   grid-row-gap: 10px;
 }
 
+.flex_hr_10.relative_2 {
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
 .relative_2 {
   position: relative;
   z-index: 2;

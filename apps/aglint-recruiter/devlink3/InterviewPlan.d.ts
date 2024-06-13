@@ -10,4 +10,5 @@ declare function InterviewPlan(props: {
   slotInterviewCoordinator?: Types.Devlink.Slot;
   slotPrimaryButton?: Types.Devlink.Slot;
   isEmptyVisible?: Types.Visibility.VisibilityConditions;
+  isCoordinatorVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

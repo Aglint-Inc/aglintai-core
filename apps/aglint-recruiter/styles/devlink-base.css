@@ -150,6 +150,9 @@
   .w-embed:after {
     clear: both;
   }
+  iframe {
+    border: 0;
+  }
   /* .w-video {
     width: 100%;
     position: relative;

@@ -8,9 +8,14 @@
   justify-content: center;
   align-items: center;
 
-  border-radius: var(--radius-3);
+  border-top-left-radius: var(--radius-3);
+  border-top-right-radius: var(--radius-3);
+  border-bottom-left-radius: var(--radius-3);
+  border-bottom-right-radius: var(--radius-3);
 
   cursor: pointer;
+
+  user-select: none;
 }
 
 .navlink:hover {
