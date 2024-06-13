@@ -286,7 +286,7 @@ const SocialComp = ({ setIsSaving }) => {
                   alt=''
                 />
               </Box>
-              <Stack width={'370px'}>
+              <Stack width={'380px'}>
                 <UITextField
                   labelSize='small'
                   fullWidth

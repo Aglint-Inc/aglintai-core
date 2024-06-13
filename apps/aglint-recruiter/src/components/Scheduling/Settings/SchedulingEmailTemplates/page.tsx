@@ -222,7 +222,7 @@ function SchedulerEmailTemps() {
                           justifyContent={'start'}
                         >
                           <ButtonSolid
-                            size={1}
+                            size={2}
                             isLoading={saving}
                             textButton={'Save'}
                             onClickButton={{
