@@ -75,10 +75,9 @@ export const interReschedReqEmailRecruiterSchema = v.object({
 });
 
 export const interviewRescheduleEmailApplicantSchema = v.object({
-  session_ids: v.array(v.string()),
   application_id: v.string(),
-  meeting_id: v.string(),
-  interview_cancel_id: v.string(),
+  session_ids: v.array(v.string()),
+  self_schedule_link: v.string(),
 });
 
 export const interviewStartEmailApplicantSchema = v.object({
