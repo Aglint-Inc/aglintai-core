@@ -16,7 +16,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Loader from '../../Common/Lotties/Loader';
-import { Details, SignUpError } from './types';
+import * as types from './types';
 import { handleEmail, handlePassword, stepObj } from './utils';
 
 const SlideTwoSignUp = () => {
@@ -32,7 +32,7 @@ const SlideTwoSignUp = () => {
     userDetails,
   } = useSignupDetails();
 
-  const [details, setDetails] = useState<Details>({
+  const [details, setDetails] = useState<types.Details>({
     first_name: '',
     last_name: '',
     email: '',
@@ -40,7 +40,7 @@ const SlideTwoSignUp = () => {
   });
 
   const [checked, setChecked] = useState<boolean>(true);
-  const [signUpError, setSignUpError] = useState<SignUpError>({
+  const [signUpError, setSignUpError] = useState<types.SignUpError>({
     first_name: {
       error: false,
       msg: '',
