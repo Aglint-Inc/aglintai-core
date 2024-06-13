@@ -167,7 +167,6 @@ export function JobDetails({
                     <ApplicantsTable
                       isScreeningVisible={false}
                       isInterviewVisible={false}
-                      isDisqualifiedVisible={false}
                     />
                     <CandidateListItem
                       isDisqualifiedVisible={false}

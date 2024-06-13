@@ -76,28 +76,6 @@ export const useJobSchedules = (job: Job) => {
   return response;
 };
 
-export const useJobInterviewPlanEnabled = (job: Job) => {
-  const id = job?.id;
-  const { queryKey } = jobDashboardQueryKeys.interviewPlanEnabled({ id });
-  const response = useQuery({
-    queryKey,
-    enabled: !!job,
-    queryFn: () => getInterviewPlanEnabled(id),
-    gcTime: job ? GC_TIME : 0,
-  });
-  return response;
-};
-
-const getInterviewPlanEnabled = async (job_id: string) => {
-  const { data, error } = await supabase
-    .from('interview_plan')
-    .select('interview_session(id)')
-    .eq('job_id', job_id);
-  if (error) throw new Error(error.message);
-  if (data.length === 0) return false;
-  return data[0].interview_session.length > 0;
-};
-
 const getTenureAndExperience = async (job_id: string) => {
   const { data, error } = await supabase.rpc('getexperienceandtenure', {
     jobid: job_id,

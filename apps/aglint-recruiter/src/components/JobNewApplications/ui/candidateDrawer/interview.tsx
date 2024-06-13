@@ -1,0 +1,117 @@
+import { Stack } from '@mui/material';
+import { useRouter } from 'next/router';
+import type React from 'react';
+
+import { JobDetailInterview } from '@/devlink/JobDetailInterview';
+import { StatusBadge } from '@/devlink2/StatusBadge';
+import { NewInterviewPlanCard } from '@/devlink3/NewInterviewPlanCard';
+import NoApplicants from '@/public/lottie/NoApplicants';
+import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
+import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon';
+import {
+  getScheduleBgcolor,
+  getScheduleType,
+} from '@/src/components/Scheduling/Candidates/utils';
+import {
+  getScheduleDate,
+  ScheduleProgressPillProps,
+} from '@/src/components/Scheduling/Common/ScheduleProgress/scheduleProgressPill';
+import { useApplication } from '@/src/context/ApplicationContext';
+import { ApplicationStore } from '@/src/context/ApplicationContext/store';
+
+const Interview = () => {
+  const {
+    application_id,
+    interview: { data: sessions, status },
+  } = useApplication();
+
+  const { push } = useRouter();
+
+  if (status === 'pending') return <>Loading Interview...</>;
+
+  if (sessions.length === 0) return <EmptyState tab='Interview' />;
+
+  const sessionCards = sessions.map((session, i) => (
+    <InterviewSessionCard key={i} session={session} />
+  ));
+
+  return (
+    <JobDetailInterview
+      slotNewInterviewPlanCard={sessionCards}
+      onClickViewScheduler={{
+        onClick: () =>
+          push(`/scheduling/application/${application_id ?? null}`),
+      }}
+    />
+  );
+};
+
+export { Interview };
+
+const InterviewSessionCard = ({
+  session: { date = null, ...props },
+}: {
+  session: Omit<ScheduleProgressPillProps, 'position'> & { location?: string };
+}) => {
+  const isScheduleDate =
+    (props.status === 'completed' || props.status === 'confirmed') && !!date;
+  const scheduleDate = getScheduleDate(date);
+  const backgroundColor = getScheduleBgcolor(props.status);
+  const schedule_type = getScheduleType(props.schedule_type);
+  const session_duration = getBreakLabel(props.session_duration);
+  return (
+    <NewInterviewPlanCard
+      slotPlatformIcon={<IconScheduleType type={props.schedule_type} />}
+      isTimeVisible={isScheduleDate}
+      textMeetingPlatform={schedule_type}
+      textLocation={props.location ?? '---'}
+      textMeetingTitle={props.session_name}
+      textTime={session_duration}
+      textDate={scheduleDate}
+      propsBgColorStatus={{
+        style: {
+          backgroundColor,
+        },
+      }}
+      slotStatus={
+        <StatusBadge
+          isCancelledVisible={props.status === 'cancelled'}
+          isConfirmedVisible={props.status === 'confirmed'}
+          isWaitingVisible={props.status === 'waiting'}
+          isCompletedVisible={props.status === 'completed'}
+          isNotScheduledVisible={props.status === 'not_scheduled' || false}
+        />
+      }
+      isPanelIconVisible={props.session_type === 'panel'}
+      isOnetoOneIconVisible={props.session_type === 'individual'}
+      isDebriefIconVisible={props.session_type === 'debrief'}
+      isLocationVisible={props.schedule_type === 'in_person_meeting'}
+      isDurationVisible={!!session_duration}
+      textDuration={session_duration}
+      isNotScheduledIconVisible={false}
+      isDateVisible={false}
+      isScheduleNowButtonVisible={false}
+      isCheckboxVisible={false}
+      isSelected={false}
+      isThreeDotVisible={false}
+      onClickCard={null}
+      onClickDots={null}
+      textDay={null}
+      textMonth={null}
+      slotCheckbox={<></>}
+      slotEditOptionModule={<></>}
+      slotScheduleNowButton={<></>}
+    />
+  );
+};
+
+const EmptyState = ({ tab }: { tab: ApplicationStore['tab'] }) => {
+  return (
+    <Stack width={'100%'} alignItems={'center'} justifyContent={'center'}>
+      <Stack width={'100px'}>
+        <NoApplicants />
+      </Stack>
+      <Stack>No {tab} data found</Stack>
+    </Stack>
+  );
+};

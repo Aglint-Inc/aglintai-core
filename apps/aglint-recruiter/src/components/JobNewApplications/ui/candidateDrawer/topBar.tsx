@@ -10,12 +10,13 @@ const Info = () => {
   const {
     meta: { data },
   } = useApplication();
+  const setPreview = useApplicationStore(({ setPreview }) => setPreview);
   return (
     <CandidateName
       isLinedin={false}
-      isResume={false}
+      isResume={!!data?.file_url}
       onClickLinkedin={{ onClick: () => {} }}
-      onClickResume={{ onClick: () => {} }}
+      onClickResume={{ onClick: () => setPreview(true) }}
       textName={data?.name ?? '---'}
     />
   );

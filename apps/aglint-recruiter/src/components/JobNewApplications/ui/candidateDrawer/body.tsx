@@ -11,6 +11,7 @@ import { useApplication } from '@/src/context/ApplicationContext';
 import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 
 import { Details } from './details';
+import { Interview } from './interview';
 import { Meta } from './meta';
 import { Tabs } from './tabs';
 import { TopBar } from './topBar';
@@ -19,11 +20,11 @@ type Props = {
   topBar: ReactNode;
   meta: ReactNode;
   details: ReactNode;
+  interview: ReactNode;
   tabs: ReactNode;
 };
 
 const Body = (props: Partial<Props>) => {
-  const tab = useApplicationStore(({ tab }) => tab);
   const blocker = useBlocker();
   if (blocker)
     return (
@@ -40,7 +41,9 @@ const Body = (props: Partial<Props>) => {
       slotTopBar={props.topBar ?? <TopBar />}
       slotBasicInfo={props.meta ?? <Meta />}
       slotNewTabPill={props.tabs ?? <Tabs />}
-      slotTabContent={tab === 'Details' && (props.details ?? <Details />)}
+      slotTabContent={
+        <TabContent interview={props.interview} details={props.details} />
+      }
     />
   );
 };
@@ -49,8 +52,24 @@ Body.TopBar = TopBar;
 Body.Meta = Meta;
 Body.Tabs = Tabs;
 Body.Details = Details;
+Body.Interview = Interview;
 
 export { Body };
+
+const TabContent = (props: Partial<Pick<Props, 'details' | 'interview'>>) => {
+  const tab = useApplicationStore(({ tab }) => tab);
+  switch (tab) {
+    case 'Details':
+      return props.details ?? <Details />;
+    case 'Screening':
+    case 'Assessment':
+    case 'Interview':
+      return props.interview ?? <Interview />;
+    case 'Tasks':
+    case 'Activity':
+      return <></>;
+  }
+};
 
 const useBlocker = () => {
   const { details, meta } = useApplication();
