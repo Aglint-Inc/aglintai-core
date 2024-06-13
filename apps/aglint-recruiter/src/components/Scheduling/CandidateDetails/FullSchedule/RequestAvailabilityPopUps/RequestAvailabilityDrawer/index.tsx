@@ -3,7 +3,7 @@ import {
   PlanCombinationRespType,
   SessionCombinationRespType,
 } from '@aglint/shared-types';
-import { Drawer } from '@mui/material';
+import { Drawer, Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { nanoid } from 'nanoid';
@@ -158,7 +158,9 @@ function RequestAvailabilityDrawer() {
         slotSideDrawerbody={
           <ShowCode>
             <ShowCode.When isTrue={isLoading && !isFetched}>
-              <DynamicLoader />
+              <Stack height={'calc(100vh - 96px)'}>
+                <DynamicLoader />
+              </Stack>
             </ShowCode.When>
             <ShowCode.When isTrue={selectedIndex === availableSlots?.length}>
               <FinalScreen />
