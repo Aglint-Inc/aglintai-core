@@ -4096,6 +4096,14 @@ export type Database = {
         }
         Returns: Json
       }
+      get_applicant_locations: {
+        Args: {
+          job_id: string
+        }
+        Returns: {
+          locations: Json
+        }[]
+      }
       get_candidate_info: {
         Args: {
           rec_id: string
@@ -4996,6 +5004,7 @@ export type Database = {
         | "sendAvailReqReminder_email_applicant"
         | "sendSelfScheduleRequest_email_applicant"
         | "sendAvailabilityRequest_email_applicant"
+        | "availabilityReqResend_email_candidate"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"
