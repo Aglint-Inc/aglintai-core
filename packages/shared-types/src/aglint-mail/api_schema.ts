@@ -39,6 +39,10 @@ export const confirmInterviewEmailApplicantSchema = v.object({
 export const applicantRejectEmailApplicantSchema = v.object({
   application_id: v.string(),
 });
+export const availabilityReqResendEmailCandidateSchema = v.object({
+  avail_req_id: v.string(),
+  recruiter_user_id: v.string(),
+});
 
 export const phoneScreenEmailCandidateSchema = v.object({
   application_id: v.string(),
