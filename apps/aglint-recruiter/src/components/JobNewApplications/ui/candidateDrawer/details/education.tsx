@@ -3,6 +3,7 @@ import Image from 'next/image';
 
 import { CandidateDetail } from '@/devlink/CandidateDetail';
 import { EducationItem } from '@/devlink/EducationItem';
+import { GlobalIcon } from '@/devlink3/GlobalIcon';
 import { useApplication } from '@/src/context/ApplicationContext';
 
 const Education = () => {
@@ -19,6 +20,7 @@ const Education = () => {
     return <></>;
   return (
     <CandidateDetail
+      slotIcon={<GlobalIcon size={5} iconName={'school'} />}
       slotBody={<Schools />}
       textTitle={'Education'}
       slotBadge={<></>}

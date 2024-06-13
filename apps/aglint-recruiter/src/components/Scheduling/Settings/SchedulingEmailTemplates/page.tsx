@@ -1,13 +1,15 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseTableInsert } from '@aglint/shared-types';
-import { Stack } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Popover, Stack } from '@mui/material';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { EditEmail } from '@/devlink/EditEmail';
 import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
+import { PreviewEmail } from '@/devlink2/PreviewEmail';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
@@ -26,10 +28,20 @@ function SchedulerEmailTemps() {
     useState<DatabaseTableInsert['company_email_template']>(null);
   const [isEditorLoad, setIsEditorLoad] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null,
+  );
+  const open = Boolean(anchorEl);
+  const handleClose = () => {
+    setAnchorEl(null);
+    setHtml(null);
+  };
+  const [isHtml, setHtml] = useState(null);
+  const [popOverLoading, setPopOverLoading] = useState(false);
   useEffect(() => {
     if (emailTemplates.data) {
       setEmailTemplate([...emailTemplates.data]);
-      setSelectedTemplate(emailTemplates.data[13]);
+      setSelectedTemplate(emailTemplates.data[11]);
     }
 
     setTimeout(() => {
@@ -52,6 +64,23 @@ function SchedulerEmailTemps() {
     setSaving(false);
     toast.message('Saved Successfully!');
   }
+  const preview = async () => {
+    setPopOverLoading(true);
+    try {
+      const { data } = await axios.post(`/api/emails/preview`, {
+        mail_type: selectedTemplate.type,
+        body: selectedTemplate.body,
+      });
+      setHtml(data);
+      setPopOverLoading(false);
+      return data;
+    } catch (error) {
+      setPopOverLoading(false);
+      toast.error(`Error fetching preview: ${error}`);
+      throw error;
+    }
+  };
+
   return (
     <Stack sx={{ paddingLeft: '20px' }}>
       {emailTemplate && (
@@ -95,6 +124,15 @@ function SchedulerEmailTemps() {
               {!isEditorLoad && (
                 <YTransform uniqueKey={selectedTemplate}>
                   <EditEmail
+                    onClickPreview={{
+                      onClick: (e) => {
+                        preview();
+                        setAnchorEl(e.currentTarget);
+                      },
+                    }}
+                    isPreviewVisible={
+                      selectedTemplate.type == emailTempKeys[0] ? false : true
+                    }
                     textTipsMessage={
                       tempObj[selectedTemplate?.type]?.dynamicContent
                     }
@@ -201,6 +239,45 @@ function SchedulerEmailTemps() {
                       </Stack>
                     }
                   />
+                  <Popover
+                    id='popover-agent'
+                    open={open}
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'left',
+                    }}
+                    transformOrigin={{ vertical: -6, horizontal: 0 }}
+                    onClose={handleClose}
+                  >
+                    <PreviewEmail
+                      slotContent={
+                        popOverLoading ? (
+                          <Stack
+                            alignItems={'center'}
+                            height={'400px'}
+                            justifyContent={'center'}
+                          >
+                            <LoaderSvg />
+                          </Stack>
+                        ) : (
+                          <iframe
+                            width={'900px'}
+                            height={'500px'}
+                            color='white'
+                            srcDoc={isHtml}
+                            title='qsds'
+                          />
+                        )
+                      }
+                      onClickClose={{
+                        onClick: () => {
+                          setAnchorEl(null);
+                          setHtml(null);
+                        },
+                      }}
+                    />
+                  </Popover>
                 </YTransform>
               )}
             </>
@@ -251,7 +328,7 @@ export const emailTempKeys = [
 export const tempObj: CompanyEmailType = {
   agent_email_candidate: {
     listing: 'Email Agent',
-    heading: 'Assign Email Agent',
+    heading: 'Email Agent',
     dynamicContent: `For dynamic content, utilize placeholders like
     {{ companyName }}, {{ candidateFirstName }}, {{ jobRole }}, {{ startDate }}, {{ endDate }}, {{ recruiterTimeZone }}
     and {{ selfScheduleLink }}.`,
@@ -264,8 +341,8 @@ export const tempObj: CompanyEmailType = {
     trigger: 'Manually Sending Candidate Booking Link',
   },
   confInterview_email_organizer: {
-    listing: 'Interview Booking Confirmation To Organizer',
-    heading: 'Interview Booking Confirmation To Organizer',
+    listing: 'Booking Confirmation To Organizer',
+    heading: 'Booking Confirmation To Organizer',
     dynamicContent: `For dynamic content, utilize placeholders like{{ recruiterFirstName }},and {{ candidateFirstName }}.`,
     triggerInfo: 'Sending mail to organizer about interview',
     description:
@@ -275,8 +352,8 @@ export const tempObj: CompanyEmailType = {
     trigger: 'Manually Sending Candidate Booking Link',
   },
   confirmInterview_email_applicant: {
-    listing: 'Interview Booking Confirmation',
-    heading: 'Interview Booking Confirmation',
+    listing: 'Booking Confirmation To Candidate',
+    heading: 'Booking Confirmation To Candidate',
     dynamicContent: `For dynamic content, utilize placeholders like{{ recruiterFirstName }},and {{ candidateFirstName }}.`,
     triggerInfo: 'Sent immediately after candidate booking is confirmed',
     description:
@@ -286,8 +363,8 @@ export const tempObj: CompanyEmailType = {
     trigger: 'Sent immediately after candidate booking is confirmed',
   },
   debrief_email_interviewer: {
-    listing: 'Debrief Invite',
-    heading: 'Debrief Session Confirmation Email Template',
+    listing: 'Debrief Invitation',
+    heading: 'Debrief Invitation',
     dynamicContent: `For dynamic content, utilize placeholders like{{ recruiterFirstName }},and {{ candidateFirstName }}.`,
     triggerInfo: 'Triggered when the candidate selected for assessment',
     description:
@@ -297,8 +374,8 @@ export const tempObj: CompanyEmailType = {
     trigger: '',
   },
   interReschedReq_email_recruiter: {
-    listing: 'Reschedule Request Notification to Organizer',
-    heading: 'Reschedule Request Notification to Organizer',
+    listing: 'Reschedule Request to Organizer',
+    heading: 'Reschedule Request to Organizer',
     dynamicContent: `For dynamic content, utilize placeholders like{{ recruiterFirstName }},and {{ candidateFirstName }}.`,
     triggerInfo:
       'Sent to the interview organizer when a candidate requests to reschedule their interview.',
@@ -320,8 +397,8 @@ export const tempObj: CompanyEmailType = {
     trigger: 'Triggerd when interview session get cancelled',
   },
   InterviewCancelReq_email_recruiter: {
-    listing: 'Interview Cancellation Notification to Organizer',
-    heading: 'Interview Cancellation Notification to Organizer',
+    listing: 'Interview Cancellation to Organizer',
+    heading: 'Interview Cancellation to Organizer',
     dynamicContent: `For dynamic content, utilize placeholders like{{ recruiterFirstName }},and {{ candidateFirstName }}.`,
     triggerInfo:
       'Sent to the interview organizer when a candidate cancels their interview.',
@@ -332,8 +409,8 @@ export const tempObj: CompanyEmailType = {
     trigger: '',
   },
   interviewReschedule_email_applicant: {
-    listing: 'Recruiter Reschedule Email Template',
-    heading: 'Recruiter Reschedule Email Template',
+    listing: 'Recruiter Reschedule',
+    heading: 'Recruiter Reschedule',
     dynamicContent: `For dynamic content, utilize placeholders like{{ recruiterFirstName }},and {{ candidateFirstName }}.`,
     triggerInfo: 'Recruiter sending mail to candidate for rescheduling',
     description:
@@ -343,8 +420,8 @@ export const tempObj: CompanyEmailType = {
     trigger: '',
   },
   interviewStart_email_applicant: {
-    listing: 'Interview Start Mail To Applicant',
-    heading: 'Interview Start Mail To Applicant',
+    listing: 'Interview Reminder To Candidate',
+    heading: 'Interview Reminder To Candidate',
     dynamicContent: `For dynamic content, utilize placeholders like{{ recruiterFirstName }},and {{ candidateFirstName }}.`,
     triggerInfo: '',
     description:
@@ -354,8 +431,8 @@ export const tempObj: CompanyEmailType = {
     trigger: '',
   },
   interviewStart_email_interviewers: {
-    listing: 'Interview Start Mail To Interviewer',
-    heading: 'Interview Start Mail To Interviewer',
+    listing: 'Interview Reminder To Interviewer',
+    heading: 'Interview Reminder To Interviewer',
     dynamicContent: `For dynamic content, utilize placeholders like{{ recruiterFirstName }},and {{ candidateFirstName }}.`,
     triggerInfo: '',
     description:
@@ -365,8 +442,8 @@ export const tempObj: CompanyEmailType = {
     trigger: '',
   },
   selfScheduleReminder_email_applicant: {
-    listing: 'Schedule Interview Remainder',
-    heading: 'Schedule Interview Remainder',
+    listing: 'Self Schedule Remainder',
+    heading: 'Self Schedule Remainder',
     dynamicContent: `For dynamic content, utilize placeholders like{{ recruiterFirstName }},and {{ candidateFirstName }}.`,
     triggerInfo: '',
     description: 'This email is used to send remainder to book the interview ',
@@ -376,8 +453,8 @@ export const tempObj: CompanyEmailType = {
     trigger: '',
   },
   sendAvailabilityRequest_email_applicant: {
-    listing: 'Candidate Booking Link Email Template',
-    heading: 'Candidate Booking Link Email Template',
+    listing: 'Candidate Booking Link',
+    heading: 'Candidate Booking Link',
     dynamicContent: `For dynamic content, utilize placeholders like{{ recruiterFirstName }},and {{ candidateFirstName }}.`,
     triggerInfo: 'Manually Sending Candidate Booking Link',
     description:
@@ -388,8 +465,8 @@ export const tempObj: CompanyEmailType = {
     trigger: '',
   },
   sendAvailReqReminder_email_applicant: {
-    listing: 'Applicant Availability Email Template',
-    heading: 'Applicant Availability Email Template',
+    listing: 'Candidate Interview Availibility Request Follow Up',
+    heading: 'Candidate Interview Availibility Request Follow Up',
     dynamicContent: `For dynamic content, utilize placeholders like{{ recruiterFirstName }},and {{ candidateFirstName }}.`,
     triggerInfo: '',
     description:
@@ -399,8 +476,8 @@ export const tempObj: CompanyEmailType = {
     trigger: '',
   },
   sendSelfScheduleRequest_email_applicant: {
-    listing: 'Self Scheduling Email Template',
-    heading: 'Self Scheduling Email Template',
+    listing: 'Self Scheduling',
+    heading: 'Self Scheduling',
     dynamicContent: `For dynamic content, utilize placeholders like{{ recruiterFirstName }},and {{ candidateFirstName }}.`,
     triggerInfo: '',
     description:
@@ -411,8 +488,8 @@ export const tempObj: CompanyEmailType = {
     trigger: '',
   },
   availabilityReqResend_email_candidate: {
-    listing: 'Availibity Request Resend',
-    heading: 'Availibity Request Resend',
+    listing: 'Candidate Availibity Request Resend',
+    heading: 'Candidate Availibity Request Resend',
     dynamicContent: `For dynamic content, utilize placeholders like{{ recruiterFirstName }},and {{ candidateFirstName }}.`,
     triggerInfo: '',
     description:

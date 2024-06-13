@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useMemo, useRef, useState } from 'react';
 import useDeepCompareEffect from 'use-deep-compare-effect';
@@ -12,7 +13,7 @@ import {
 } from '@/src/queries/job-applications';
 
 import { useJob } from '../JobContext';
-import { useApplicationsStore } from './store';
+import { ApplicationsStore, useApplicationsStore } from './store';
 
 export const useApplicationsActions = () => {
   const { jobLoad, job, job_id, applicationScoringPollEnabled } = useJob();
@@ -108,6 +109,38 @@ export const useApplicationsActions = () => {
     }),
   );
 
+  const emailVisibilities = useMemo(
+    () =>
+      Object.entries(EMAIL_VISIBILITIES ?? {}).reduce(
+        (acc, [key, value]) => {
+          acc[key] =
+            (job?.activeSections ?? []).includes(
+              key as keyof typeof EMAIL_VISIBILITIES,
+            ) && value.includes(section);
+          return acc;
+        },
+        // eslint-disable-next-line no-unused-vars
+        {} as { [id in keyof typeof EMAIL_VISIBILITIES]: boolean },
+      ),
+    [EMAIL_VISIBILITIES, job?.activeSections, section],
+  );
+
+  const cascadeVisibilites = useMemo(
+    () =>
+      Object.entries(CASCADE_VISIBILITIES ?? {}).reduce(
+        (acc, [key, value]) => {
+          acc[key] =
+            (job?.activeSections ?? []).includes(
+              key as keyof typeof CASCADE_VISIBILITIES,
+            ) && value.includes(section);
+          return acc;
+        },
+        // eslint-disable-next-line no-unused-vars
+        {} as { [id in keyof typeof CASCADE_VISIBILITIES]: boolean },
+      ),
+    [CASCADE_VISIBILITIES, job?.activeSections, section],
+  );
+
   const { mutate: handleUploadApplication } = useUploadApplication({
     job_id,
     ...params,
@@ -169,6 +202,8 @@ export const useApplicationsActions = () => {
     job,
     jobLoad,
     section,
+    emailVisibilities,
+    cascadeVisibilites,
     sectionApplication,
     locationFilterOptions,
     handleUpdateApplication,
@@ -179,3 +214,40 @@ export const useApplicationsActions = () => {
     handleMoveApplications,
   };
 };
+
+const EMAIL_VISIBILITIES: {
+  // eslint-disable-next-line no-unused-vars
+  [id in ApplicationsStore['section']]: ApplicationsStore['section'][];
+} = {
+  new: ['disqualified'],
+  screening: ['new'],
+  assessment: ['new', 'screening'],
+  interview: ['new', 'screening', 'assessment'],
+  qualified: ['new', 'screening', 'assessment', 'interview'],
+  disqualified: ['new', 'screening', 'assessment', 'interview', 'qualified'],
+} as const;
+
+const CASCADE_VISIBILITIES: {
+  // eslint-disable-next-line no-unused-vars
+  [id in ApplicationsStore['section']]: ApplicationsStore['section'][];
+} = {
+  new: [
+    'new',
+    'screening',
+    'assessment',
+    'interview',
+    'qualified',
+    'disqualified',
+  ],
+  screening: [
+    'screening',
+    'assessment',
+    'interview',
+    'qualified',
+    'disqualified',
+  ],
+  assessment: ['assessment', 'interview', 'qualified', 'disqualified'],
+  interview: ['interview', 'qualified', 'disqualified'],
+  qualified: ['qualified', 'disqualified'],
+  disqualified: ['disqualified'],
+} as const;

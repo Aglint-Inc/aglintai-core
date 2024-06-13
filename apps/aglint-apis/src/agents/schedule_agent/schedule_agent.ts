@@ -71,7 +71,10 @@ export class ScheduleAgent {
     return result;
   }
 
-  private PreparePrompt(request: CustomLlmRequest, funcResult?: FunctionCall) {
+  private async PreparePrompt(
+    request: CustomLlmRequest,
+    funcResult?: FunctionCall
+  ) {
     const transcript = this.ConversationToChatRequestMessages(
       request.transcript
     );
@@ -80,7 +83,7 @@ export class ScheduleAgent {
       [
         {
           role: 'system',
-          content: agentPrompt(this.candidate_phone),
+          content: await agentPrompt(this.candidate_phone),
         },
       ];
     for (const message of transcript) {
@@ -136,7 +139,7 @@ export class ScheduleAgent {
     if (this.is_drafting_stopped) return;
     // If there are function call results, add it to prompt here.
     const requestMessages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] =
-      this.PreparePrompt(request, funcResult);
+      await this.PreparePrompt(request, funcResult);
 
     let funcCall: FunctionCall | undefined;
     let funcArguments = '';
@@ -273,6 +276,6 @@ export class ScheduleAgent {
       appLogger.info('result', funcCall.result);
       this.DraftResponse(ws, request, funcCall);
     }
-    removeToolInvocFromCandCache(this.candidate_phone, func_name);
+    await removeToolInvocFromCandCache(this.candidate_phone, func_name);
   }
 }

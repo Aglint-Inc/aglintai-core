@@ -1,12 +1,9 @@
 import express from 'express';
-import channelMessage from 'src/controllers/slack/channelMessage';
 import {feedback} from 'src/controllers/slack/feedBack';
 import {groupMessage} from 'src/controllers/slack/groupMessage';
 import {interviewReminder} from 'src/controllers/slack/interviewReminder';
 import {listForInteractions} from 'src/controllers/slack/listForInteractions';
 import {notifyInterviewConfirmation} from 'src/controllers/slack/notifyInterviewConfirmation';
-import {reschedule} from 'src/controllers/slack/reschedule';
-import {rsvpCapture} from 'src/controllers/slack/rsvpCapture';
 import {sendDirectMessage} from 'src/controllers/slack/sendDirectMessage';
 
 const slackRoutes = express.Router();

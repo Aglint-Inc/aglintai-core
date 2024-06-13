@@ -25,7 +25,7 @@ export function ResumeTag({
         />
       ) : null}
       <_Builtin.Block tag="div" fontSize="1">
-        {slotText ?? <Text content="Top Match" size="" />}
+        {slotText ?? <Text content="Top Match" size="1" />}
       </_Builtin.Block>
       {isLoading ? (
         <_Builtin.Block
