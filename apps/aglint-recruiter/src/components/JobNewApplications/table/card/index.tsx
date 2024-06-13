@@ -4,13 +4,17 @@ import { memo, useCallback, useMemo } from 'react';
 
 import { CandidateListItem } from '@/devlink2/CandidateListItem';
 import { useApplicationStore } from '@/src/context/ApplicationContext/store';
+import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 
-import ResumeScore from '../ui/resumeScore';
-import { formatTimeStamp } from '../utils';
+import ResumeScore from '../../ui/resumeScore';
+import { formatTimeStamp } from '../../utils';
+import { ScheduleProgress } from './scheduleProgress';
 
 const ApplicationCard = memo(
   ({ application }: { application: DatabaseView['application_view'] }) => {
+    const { cascadeVisibilites } = useApplications();
+
     const { checklist, setChecklist, currentApplication } =
       useApplicationsStore(
         ({ checklist, setChecklist, currentApplication }) => ({
@@ -56,6 +60,7 @@ const ApplicationCard = memo(
         onClickCandidate={{
           onClick: () => handleOpen({ application_id: application.id }),
         }}
+        isHighlighted={isSelected}
         slotBookmark={<Banners application={application} />}
         isDragVisible={isChecked}
         onClickSelect={{ onClick: handleCheck }}
@@ -70,14 +75,17 @@ const ApplicationCard = memo(
             resume_score={application.resume_score}
           />
         }
-        isInterviewVisible={false}
-        slotAssessmentScore={application.interview_score}
+        isScreeningVisible={cascadeVisibilites.screening}
+        isAssessmentVisible={cascadeVisibilites.assessment}
+        isInterviewVisible={cascadeVisibilites.interview}
+        isDisqualifiedVisible={cascadeVisibilites.disqualified}
+        slotScreening={<>---</>}
+        slotAssessmentScore={<>---</>}
+        slotInterviewPipline={
+          <ScheduleProgress meeting_details={application.meeting_details} />
+        }
+        slotDisqualified={<>---</>}
         appliedDate={appliedDate}
-        isHighlighted={isSelected}
-        isScreeningVisible={false}
-        slotScreening={<></>}
-        isDisqualifiedVisible={false}
-        slotDisqualified={<></>}
       />
     );
   },

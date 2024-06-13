@@ -5,32 +5,31 @@ import { useState } from 'react';
 import { CandidateSelectionPopup } from '@/devlink2/CandidateSelectionPopup';
 import { SelectActionsDropdown } from '@/devlink2/SelectActionsDropdown';
 import { useApplications } from '@/src/context/ApplicationsContext';
-import {
-  ApplicationsStore,
-  useApplicationsStore,
-} from '@/src/context/ApplicationsContext/store';
+import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 
 import AUIButton from '../../Common/AUIButton';
 
 const MoveCandidate = () => {
-  const { actionPopup, setActionPopup, resetActionPopup } =
+  const { emailVisibilities } = useApplications();
+  const { actionPopup, checklist, setActionPopup, resetActionPopup } =
     useApplicationsStore(
-      ({ actionPopup, setActionPopup, resetActionPopup }) => ({
+      ({ actionPopup, checklist, setActionPopup, resetActionPopup }) => ({
         actionPopup,
+        checklist,
         setActionPopup,
         resetActionPopup,
       }),
     );
-  const visibilities = useVisibility();
+  const enabled = checklist.length !== 0;
   return (
     <>
       <SelectActionsDropdown
-        isAssessment={visibilities.assessment}
-        isDisqualified={visibilities.disqualified}
-        isInterview={visibilities.interview}
-        isMoveNew={visibilities.new}
-        isQualified={visibilities.qualified}
-        isScreening={visibilities.screening}
+        isAssessment={enabled && emailVisibilities.assessment}
+        isDisqualified={enabled && emailVisibilities.disqualified}
+        isInterview={enabled && emailVisibilities.interview}
+        isMoveNew={enabled && emailVisibilities.new}
+        isQualified={enabled && emailVisibilities.qualified}
+        isScreening={enabled && emailVisibilities.screening}
         onClickAssessment={{ onClick: () => setActionPopup('assessment') }}
         onClickDisqualified={{ onClick: () => setActionPopup('disqualified') }}
         onClickInterview={{ onClick: () => setActionPopup('interview') }}
@@ -242,38 +241,6 @@ const MoveCandidateDisqualified = () => {
     />
   );
 };
-
-const VISIBILITIES: {
-  // eslint-disable-next-line no-unused-vars
-  [id in ApplicationsStore['section']]: ApplicationsStore['section'][];
-} = {
-  new: ['disqualified'],
-  screening: ['new'],
-  assessment: ['new', 'screening'],
-  interview: ['new', 'screening', 'assessment'],
-  qualified: ['new', 'screening', 'assessment', 'interview'],
-  disqualified: ['new', 'screening', 'assessment', 'interview', 'qualified'],
-} as const;
-
-function useVisibility() {
-  const {
-    job: { activeSections },
-  } = useApplications();
-  const { checklist, section: currentSection } = useApplicationsStore(
-    ({ checklist, section }) => ({ checklist, section }),
-  );
-  return Object.entries(VISIBILITIES).reduce(
-    (acc, [key, value]) => {
-      acc[key] =
-        checklist.length !== 0 &&
-        activeSections.includes(key as keyof typeof VISIBILITIES) &&
-        value.includes(currentSection);
-      return acc;
-    },
-    // eslint-disable-next-line no-unused-vars
-    {} as { [id in keyof typeof VISIBILITIES]: boolean },
-  );
-}
 
 function useMeta(onSubmit: () => void) {
   const { resetActionPopup, actionPopup, checklist } = useApplicationsStore(

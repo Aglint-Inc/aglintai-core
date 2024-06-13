@@ -172,15 +172,15 @@ function SchedulingApplication() {
           >
             <ScheduleProgress
               sessions={initialSessions.map((item) => ({
-                duration: item.session_duration,
-                name: item.name,
-                scheduleType: item.schedule_type,
-                sessionType: item.session_type,
+                session_duration: item.session_duration,
+                session_name: item.name,
+                schedule_type: item.schedule_type,
+                session_type: item.session_type,
                 status: item.interview_meeting?.status || 'not_scheduled',
                 date: item.interview_meeting?.start_time
                   ? {
-                      startTime: item.interview_meeting?.start_time,
-                      endTime: item.interview_meeting?.end_time,
+                      start_time: item.interview_meeting?.start_time,
+                      end_time: item.interview_meeting?.end_time,
                     }
                   : null,
               }))}

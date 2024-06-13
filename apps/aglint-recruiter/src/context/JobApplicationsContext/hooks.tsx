@@ -142,12 +142,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
 
   const { handleUIJobUpdate } = useJobs();
 
-  const {
-    job,
-    initialLoad: jobLoad,
-    handleJobRefresh,
-    interviewPlanEnabled: { data: interviewPlanEnabled },
-  } = useJobDetails();
+  const { job, initialLoad: jobLoad, handleJobRefresh } = useJobDetails();
 
   const interviewPlans = useJobInterviewPlan();
 
@@ -822,9 +817,8 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   };
 
   const canCreateTask =
-    interviewPlanEnabled &&
     (interviewPlans?.interviewPlans?.data?.interview_session ?? []).length !==
-      0;
+    0;
 
   usePolling(async () => await handleAutoRefresh(), longPolling, [
     ...Object.values(pageNumber),
