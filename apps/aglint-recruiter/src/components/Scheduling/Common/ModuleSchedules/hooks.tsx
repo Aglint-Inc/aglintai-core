@@ -13,13 +13,6 @@ export const useScheduleList = ({ user_id }) => {
   const query = useQuery({
     queryKey: ['get_scheduleList', user_id],
     queryFn: () => getScheduleList(user_id),
-    initialData: {
-      schedules: [],
-      totalHoursToday: 0,
-      totalHoursThisWeek: 0,
-      totalInterviewsToday: 0,
-      totalInterviewsThisWeek: 0,
-    },
     enabled: !!user_id,
   });
   const refetch = () =>

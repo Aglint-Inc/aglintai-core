@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
-import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { StatusBadge } from '@/devlink2/StatusBadge';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import { ScheduleButton } from '@/devlink3/ScheduleButton';
@@ -33,6 +33,8 @@ import IconReschedule from '../Icons/IconReschedule';
 import RequestRescheduleDialog from '../RequestRescheduleDialog';
 import { ScheduleMeeting } from '../types';
 import AllRolesMeetings from './AllRolesMeetings';
+import IconAccept from './IconAccept';
+import IconDecline from './IconDecline';
 import InterviewerListCard from './InterviewerListCard';
 
 function Overview({
@@ -179,6 +181,24 @@ function Overview({
       )}
 
       <ScheduleTabOverview
+        isResendLinkVisible={
+          schedule.interview_meeting.status === 'waiting' ||
+          schedule.interview_meeting.status === 'confirmed'
+        }
+        isCopyLinkVisible={
+          schedule.interview_meeting.status === 'confirmed' ||
+          schedule.interview_meeting.status === 'waiting'
+        }
+        slotAttendeesIcon={schedule.users.map((item) => {
+          return item.interview_session_relation.accepted_status ===
+            'accepted' ? (
+            <IconAccept />
+          ) : item.interview_session_relation.accepted_status === 'declined' ? (
+            <IconDecline />
+          ) : (
+            ''
+          );
+        })}
         onClickResendLink={{
           onClick: () => {
             if (
@@ -246,7 +266,10 @@ function Overview({
         isScheduleCardVisible={
           isRescheduleCardVisible && cancelReasons?.length > 0
         }
-        isMeetingLinkVisible={schedule.interview_meeting.status == 'confirmed'}
+        isMeetingLinkVisible={
+          schedule.interview_meeting.status == 'confirmed' &&
+          Boolean(schedule.interview_meeting.meeting_link)
+        }
         onClickInterviewModuleLink={{
           onClick: () => {
             router.push(
@@ -310,7 +333,7 @@ function Overview({
         slotJoinMeetingButton={
           schedule?.interview_meeting?.status === 'confirmed' &&
           schedule?.interview_meeting?.meeting_link && (
-            <ButtonGhost
+            <ButtonSurface
               size={1}
               textButton={'Join Meeting'}
               isLeftIcon={false}

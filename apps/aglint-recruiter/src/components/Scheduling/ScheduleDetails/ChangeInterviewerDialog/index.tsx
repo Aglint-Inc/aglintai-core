@@ -59,15 +59,17 @@ function ChangeInterviewerDialog({
   const fetchInterviewers = async () => {
     try {
       const alt_user_ids = possibleUsers.map((user) => user.id);
+      const bodyParams: APIFindAltenativeTimeSlot = {
+        recruiter_id: recruiter.id,
+        session_id: schedule.interview_session.id,
+        replacement_ints: alt_user_ids,
+        slot_start_time: schedule.interview_meeting.start_time,
+        user_tz: dayjs.tz.guess(),
+      };
+
       const res = await axios.post(
         '/api/scheduling/v1/find-alternative-time-slots',
-        {
-          recruiter_id: recruiter.id,
-          session_id: schedule.interview_session.id,
-          replacement_ints: alt_user_ids,
-          slot_start_time: schedule.interview_meeting.start_time,
-          user_tz: dayjs.tz.guess(),
-        } as APIFindAltenativeTimeSlot,
+        bodyParams,
       );
       if (res.status === 200) {
         setAvailableUsers(res.data);
@@ -106,18 +108,20 @@ function ChangeInterviewerDialog({
       const allPossibleUsers = [selectedUser, ...restUsers];
 
       if (selectedUser) {
+        const bodyParams: APIUpdateMeetingInterviewers = {
+          candidate_email: schedule.candidates.email,
+          meeting_id: schedule.interview_meeting.id,
+          replaced_inters: allPossibleUsers.map((user) => {
+            return {
+              email: user.email,
+              user_id: user.id,
+            };
+          }),
+        };
+
         const res = await axios.post(
           '/api/scheduling/v1/update_meeting_interviewers',
-          {
-            candidate_email: schedule.candidates.email,
-            meeting_id: schedule.interview_meeting.id,
-            replaced_inters: allPossibleUsers.map((user) => {
-              return {
-                email: user.email,
-                user_id: user.id,
-              };
-            }),
-          } as APIUpdateMeetingInterviewers,
+          bodyParams,
         );
 
         if (res.status) {

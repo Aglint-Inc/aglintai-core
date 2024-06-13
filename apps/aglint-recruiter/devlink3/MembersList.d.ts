@@ -9,8 +9,6 @@ declare function MembersList(props: {
   textName?: React.ReactNode;
   textDesignation?: React.ReactNode;
   textTime?: React.ReactNode;
-  isWrongVisible?: Types.Visibility.VisibilityConditions;
-  isCorrectVisible?: Types.Visibility.VisibilityConditions;
   isButtonVisible?: Types.Visibility.VisibilityConditions;
   onClickResendInvite?: Types.Devlink.RuntimeProps;
   onClickCopyInvite?: Types.Devlink.RuntimeProps;
@@ -22,4 +20,5 @@ declare function MembersList(props: {
   isDeclineVisible?: Types.Visibility.VisibilityConditions;
   isAcceptDeclineVisibe?: Types.Visibility.VisibilityConditions;
   slotMemberDetail?: Types.Devlink.Slot;
+  slotIcon?: Types.Devlink.Slot;
 }): React.JSX.Element;
