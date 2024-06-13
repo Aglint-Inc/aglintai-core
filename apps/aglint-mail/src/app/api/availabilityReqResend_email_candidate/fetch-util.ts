@@ -23,10 +23,6 @@ export async function dbUtil(
       .eq('user_id', req_body.recruiter_user_id),
   );
 
-  if (!avail_req_data || !recruiter_user) {
-    throw new Error('Record not found');
-  }
-
   const {
     candidates: {
       email: cand_email,
