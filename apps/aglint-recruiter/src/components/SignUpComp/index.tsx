@@ -1,5 +1,6 @@
 'use client';
 
+import { Box, Container } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 
@@ -14,6 +15,7 @@ import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import { companyType } from '@/src/utils/userRoles';
 
+import Footer from '../Common/Footer';
 import SelectAtsSystem from './SelectAtsSystem';
 import SlideDetailsOne from './SlideDetailsOne';
 import SlideDetailsTwo from './SlideDetailsTwo';
@@ -49,100 +51,130 @@ const SignUpComp = () => {
 
   return (
     <>
-      {router.asPath === ROUTES['/signup']() && (
-        <YTransform uniqueKey={step}>
-          <SlideTwoSignUp />
-        </YTransform>
-      )}
-      {step === stepObj.type && (
-        <SignupSlider
-          slotRightSlider={
-            <YTransform uniqueKey={step}>
-              <WelcomeSlider1
-                onClickAgency={{
-                  onClick: () => {
-                    setFlow(companyType.AGENCY);
-                    localStorage.setItem('flow', companyType.AGENCY);
-                    setStep(stepObj.detailsOne);
-                    updateAuthDetails(companyType.AGENCY);
-                    router.push(`?step=${stepObj.detailsOne}`, undefined, {
-                      shallow: true,
-                    });
-                  },
-                }}
-                onClickCompany={{
-                  onClick: () => {
-                    setFlow(companyType.COMPANY);
-                    localStorage.setItem('flow', companyType.COMPANY);
-                    setStep(stepObj.detailsOne);
-                    updateAuthDetails(companyType.COMPANY);
-                    router.push(`?step=${stepObj.detailsOne}`, undefined, {
-                      shallow: true,
-                    });
-                  },
-                }}
-                onClickConsultant={{
-                  onClick: () => {
-                    setFlow(companyType.CONSULTANT);
-                    localStorage.setItem('flow', companyType.CONSULTANT);
-                    setStep(stepObj.detailsOne);
-                    updateAuthDetails(companyType.CONSULTANT);
-                    router.push(
-                      `?step=${stepObj.detailsOne}&category=consultant`,
-                      undefined,
-                      {
-                        shallow: true,
-                      },
-                    );
-                  },
-                }}
-              />
-            </YTransform>
-          }
-        />
-      )}
-      {step == stepObj.detailsOne && (
-        <YTransform uniqueKey={step}>
-          <SlideDetailsOne />
-        </YTransform>
-      )}
-      {step == stepObj.detailsTwo && (
-        <YTransform uniqueKey={step}>
-          <SlideDetailsTwo />
-        </YTransform>
-      )}
-      {step == stepObj.atsSystem && (
-        <YTransform uniqueKey={step}>
+    <Container
+      maxWidth={false}
+      sx={{
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'var(--neutral-2)',
+      }}
+    >
+      <Box
+        sx={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        {router.asPath === ROUTES['/signup']() && (
           <YTransform uniqueKey={step}>
-            <SelectAtsSystem />
+            <SlideTwoSignUp />
           </YTransform>
-        </YTransform>
-      )}
-      {step == stepObj.allSet && (
-        <YTransform uniqueKey={step}>
-          <OnboardingFinalState
-            onClickImportJob={{
-              onClick: () => {
-                router.push(ROUTES['/jobs']());
-                sendOnboardingMail(emailPayload);
-              },
-            }}
-            isSourcingVisible={isSourcingEnabled}
-            onClickSourceCandidates={{
-              onClick: () => {
-                router.push(ROUTES['/candidates/history']());
-                sendOnboardingMail(emailPayload);
-              },
-            }}
-            onClickScheduleInterview={{
-              onClick: () => {
-                router.push(ROUTES['/scheduling']());
-                sendOnboardingMail(emailPayload);
-              },
-            }}
+        )}
+        {step === stepObj.type && (
+          <SignupSlider
+            slotRightSlider={
+              <YTransform uniqueKey={step}>
+                <WelcomeSlider1
+                  onClickAgency={{
+                    onClick: () => {
+                      setFlow(companyType.AGENCY);
+                      localStorage.setItem('flow', companyType.AGENCY);
+                      setStep(stepObj.detailsOne);
+                      updateAuthDetails(companyType.AGENCY);
+                      router.push(`?step=${stepObj.detailsOne}`, undefined, {
+                        shallow: true,
+                      });
+                    },
+                  }}
+                  onClickCompany={{
+                    onClick: () => {
+                      setFlow(companyType.COMPANY);
+                      localStorage.setItem('flow', companyType.COMPANY);
+                      setStep(stepObj.detailsOne);
+                      updateAuthDetails(companyType.COMPANY);
+                      router.push(`?step=${stepObj.detailsOne}`, undefined, {
+                        shallow: true,
+                      });
+                    },
+                  }}
+                  onClickConsultant={{
+                    onClick: () => {
+                      setFlow(companyType.CONSULTANT);
+                      localStorage.setItem('flow', companyType.CONSULTANT);
+                      setStep(stepObj.detailsOne);
+                      updateAuthDetails(companyType.CONSULTANT);
+                      router.push(
+                        `?step=${stepObj.detailsOne}&category=consultant`,
+                        undefined,
+                        {
+                          shallow: true,
+                        },
+                      );
+                    },
+                  }}
+                />
+              </YTransform>
+            }
           />
-        </YTransform>
-      )}
+        )}
+        {step == stepObj.detailsOne && (
+          <YTransform uniqueKey={step}>
+            <SlideDetailsOne />
+          </YTransform>
+        )}
+        {step == stepObj.detailsTwo && (
+          <YTransform uniqueKey={step}>
+            <SlideDetailsTwo />
+          </YTransform>
+        )}
+        {step == stepObj.atsSystem && (
+          <YTransform uniqueKey={step}>
+            <YTransform uniqueKey={step}>
+              <SelectAtsSystem />
+            </YTransform>
+          </YTransform>
+        )}
+        {step == stepObj.allSet && (
+          <YTransform uniqueKey={step}>
+            <OnboardingFinalState
+              onClickImportJob={{
+                onClick: () => {
+                  router.push(ROUTES['/jobs']());
+                  sendOnboardingMail(emailPayload);
+                },
+              }}
+              isSourcingVisible={isSourcingEnabled}
+              onClickSourceCandidates={{
+                onClick: () => {
+                  router.push(ROUTES['/candidates/history']());
+                  sendOnboardingMail(emailPayload);
+                },
+              }}
+              onClickScheduleInterview={{
+                onClick: () => {
+                  router.push(ROUTES['/scheduling']());
+                  sendOnboardingMail(emailPayload);
+                },
+              }}
+            />
+          </YTransform>
+        )}
+      </Box>
+      <Box
+        sx={{
+          width: '100%',
+          textAlign: 'center',
+        }}
+      >
+        <Footer />
+      </Box>
+    </Container>
     </>
   );
 };
