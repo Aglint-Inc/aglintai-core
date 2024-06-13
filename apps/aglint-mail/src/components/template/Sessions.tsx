@@ -10,7 +10,7 @@ export const Session = ({ meetingDetail }) => {
         <strong>{htmlParser.parse(meetingDetail.date)}</strong>{' '}
         {htmlParser.parse(meetingDetail.time)}
       </Text>
-      <Text className="m-0 my-[5px] flex items-center leading-[24px] text-text-xs text-neutral-12">
+      <Text className="m-0 mt-[5px] flex items-center leading-[24px] text-text-xs text-neutral-12">
         <span className="inline-flex items-center leading-[24px]">
           <Img
             src={meetingDetail.sessionTypeIcon}

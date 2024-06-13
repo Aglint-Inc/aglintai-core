@@ -11,6 +11,7 @@ import { Parser } from 'html-to-react';
 import * as React from 'react';
 import { aglintLogo } from '../utils/assets/common';
 import { EmailTemplateAPi } from '@aglint/shared-types';
+import config from '../../tailwind.config';
 type EmailType = EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>;
 
 export const dummy: EmailType['react_email_placeholders'] = {
@@ -25,6 +26,8 @@ export const dummy: EmailType['react_email_placeholders'] = {
 // export get subject
 export const getSubject = (companyName: any) => `${companyName}`;
 
+const currentYear = new Date().getFullYear();
+
 export const CandidateAvailabilityRequest = ({
   emailBody = dummy.emailBody,
   companyLogo = dummy.companyLogo,
@@ -33,27 +36,29 @@ export const CandidateAvailabilityRequest = ({
   return (
     <Html>
       <Head />
-      <Tailwind>
+      <Tailwind config={config}>
         {/* <Preview></Preview> */}
-        <Body className="bg-[#f0f0f0] font-sans  p-[20px]">
+        <Body className="bg-neutral-3 font-sans  p-[20px]">
           <Container className="px-[3px] mx-auto">
-            <Container className="p-[50px] bg-white">
+            <Container className="p-[50px] bg-white rounded-[8px]">
               <Img
                 alt="Company logo"
                 className="w-[80px] mb-[10px]"
                 src={companyLogo}
               />
 
-              <Text className="">{htmlParser.parse(emailBody)}</Text>
+              <Container className="text-text-sm text-neutral-12">
+                {htmlParser.parse(emailBody)}
+              </Container>
             </Container>
-            <Text className="flex items-center text-[10px]  mx-auto w-fit text-gray-500">
+            <Text className="flex items-center text-[10px]  mx-auto w-fit text-neutral-11">
               Powered By
               <Img
                 alt="Aglint Logo"
-                className="w-[70px] mx-2 inline-block"
+                className="line-block mx-2 w-[24px] h-[24px]"
                 src={aglintLogo}
               />
-              @ 2024 Aglint Inc. All Right Reserved
+              @ {currentYear} Aglint Inc. All Right Reserved
             </Text>
           </Container>
         </Body>
