@@ -9,6 +9,7 @@ import {
 import {
   infiniteQueryOptions,
   keepPreviousData,
+  queryOptions,
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
@@ -21,6 +22,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { GC_TIME } from '..';
 import { jobQueries } from '../job';
 
 const ROWS = 30;
@@ -29,6 +31,18 @@ export const applicationsQueries = {
   all: ({ job_id }: ApplicationsAllQueryPrerequistes) => ({
     queryKey: [...jobQueries.job({ id: job_id }).queryKey, 'applications'],
   }),
+  locationFilters: ({ job_id }: ApplicationsAllQueryPrerequistes) =>
+    queryOptions({
+      enabled: !!job_id,
+      gcTime: job_id ? GC_TIME : 0,
+      queryKey: [
+        ...applicationsQueries.all({ job_id }).queryKey,
+        'location_filters',
+      ],
+      queryFn: async () =>
+        (await supabase.rpc('get_applicant_locations', { job_id }).single())
+          .data.locations,
+    }),
   applications: ({
     job_id,
     count,
@@ -97,6 +111,10 @@ const getApplications = async ({
     .eq('job_id', job_id)
     .eq('status', status);
 
+  if (filters?.bookmarked) {
+    query.eq('bookmarked', true);
+  }
+
   if (filters?.search?.length) {
     query.ilike('name', `%${filters.search}%`);
   }
@@ -119,6 +137,29 @@ const getApplications = async ({
         .join(','),
     );
   }
+
+  if (
+    [
+      ...(filters?.country ?? []),
+      ...(filters?.state ?? []),
+      ...(filters?.city ?? []),
+    ].length
+  )
+    query.or(
+      [
+        (filters?.country ?? []).length
+          ? `country.in.(${filters.country.map((country) => country).join(',')})`
+          : null,
+        (filters?.state ?? []).length
+          ? `state.in.(${(filters?.state ?? []).map((state) => state).join(',')})`
+          : null,
+        (filters?.city ?? []).length
+          ? `city.in.(${(filters?.city ?? []).map((city) => city).join(',')})`
+          : null,
+      ]
+        .filter(Boolean)
+        .join(','),
+    );
 
   if (sort) {
     query.order(sort.type, { ascending: sort.order === 'asc' });

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import * as v from 'valibot';
 export const scheduling_options_schema = z.object({
   include_free_time: z.boolean().default(true),
   make_training_optional: z.boolean().default(true),
@@ -51,4 +52,13 @@ export const schema_find_slots_date_range = z.object({
 export const schema_verify_interviewer_selected_slots = z.object({
   cand_availability_id: z.string(),
   user_tz: z.string(),
+});
+
+export const schema_find_alternative_slots = z.object({
+  session_id: z.string(),
+  recruiter_id: z.string(),
+  slot_start_time: z.string(),
+  user_tz: z.string(),
+  ignore_interviewer: z.string(),
+  api_options: scheduling_options_schema.default({}),
 });

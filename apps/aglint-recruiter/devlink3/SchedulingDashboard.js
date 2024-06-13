@@ -120,27 +120,39 @@ export function SchedulingDashboard({
       >
         {slotScheduleCount ?? <ScheduleCountStats />}
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "sd_row_1")} tag="div">
-        <_Builtin.Block className={_utils.cx(_styles, "sd_row_4")} tag="div">
-          {slotFirstGrid ?? (
-            <>
-              <Reason
-                id={_utils.cx(
-                  _styles,
-                  "w-node-_264f518c-51e6-a35b-f2b8-119aca2eb616-aa8c5b1c"
-                )}
-              />
-              <LeaderBoard
-                id={_utils.cx(
-                  _styles,
-                  "w-node-_9280fb4c-9281-432f-025b-632adcf968ec-aa8c5b1c"
-                )}
-              />
-            </>
+      <_Builtin.Block className={_utils.cx(_styles, "sd_row_6")} tag="div">
+        <_Builtin.Block
+          id={_utils.cx(
+            _styles,
+            "w-node-_86c7a60b-b65d-b86a-08cc-187f561d6b8c-aa8c5b1c"
           )}
+          tag="div"
+        >
+          <_Builtin.Block className={_utils.cx(_styles, "sd_row_4")} tag="div">
+            {slotFirstGrid ?? (
+              <>
+                <Reason
+                  id={_utils.cx(
+                    _styles,
+                    "w-node-_6c284abd-2308-8491-5078-d25cce0684e6-aa8c5b1c"
+                  )}
+                />
+                <LeaderBoard
+                  id={_utils.cx(
+                    _styles,
+                    "w-node-_6c284abd-2308-8491-5078-d25cce0684e7-aa8c5b1c"
+                  )}
+                />
+              </>
+            )}
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "sd_card_with_number")}
+          id={_utils.cx(
+            _styles,
+            "w-node-_339a57db-5c0d-724d-c085-cf060b322c4d-aa8c5b1c"
+          )}
           tag="div"
         >
           {slotsCradsWithNumber ?? (
@@ -155,10 +167,10 @@ export function SchedulingDashboard({
         {slotTrainingProgress ?? <TrainingProgress />}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "sd_row_3")}
+        className={_utils.cx(_styles, "sd_row_9")}
         id={_utils.cx(
           _styles,
-          "w-node-_9a38964b-1caa-4833-f8b2-1e68d00de106-aa8c5b1c"
+          "w-node-_39a54981-40f7-c272-1ba4-739d34937bae-aa8c5b1c"
         )}
         tag="div"
       >
@@ -167,13 +179,13 @@ export function SchedulingDashboard({
             <NewInterviewDetail
               id={_utils.cx(
                 _styles,
-                "w-node-e1550802-0067-e43f-2dbb-c6693c179aa2-aa8c5b1c"
+                "w-node-fe29ed78-1e58-1d63-6be3-7cfde257adce-aa8c5b1c"
               )}
             />
             <InterviewModuleStats
               id={_utils.cx(
                 _styles,
-                "w-node-_6e589bf2-8566-94bc-e82d-dee296ce8259-aa8c5b1c"
+                "w-node-cc4f4f89-4ccc-de5a-20c4-b973179142a8-aa8c5b1c"
               )}
             />
           </>
@@ -213,6 +225,7 @@ export function SchedulingDashboard({
           </>
         )}
       </_Builtin.Block>
+      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%5Bcol-span%3D%222%22%5D%20%7B%0A%20%20%20%20grid-row-start%3A%20span%201%3B%0A%20%20%20%20grid-row-end%3A%20span%201%3B%0A%20%20%20%20grid-column-start%3A%20span%202%3B%0A%20%20%20%20grid-column-end%3A%20span%202%3B%0A%20%20%7D%0A%0A%20%20%5Bcol-span%3D%223%22%5D%7B%0A%20%20%20%20grid-row-start%3A%20span%201%3B%0A%20%20%20%20grid-row-end%3A%20span%201%3B%0A%20%20%20%20grid-column-start%3A%20span%203%3B%0A%20%20%20%20grid-column-end%3A%20span%203%3B%0A%20%20%7D%0A%3C%2Fstyle%3E" />
     </_Component>
   );
 }

@@ -119,7 +119,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
 
                       return (
                         <>
-                          <Stack p={'var(--space-1)'}>
+                          <Stack>
                             <CompanyLocation
                               // isHeadQuaterVisible={isHeadQuaterVisible[0]}
                               isHeadQuaterVisible={isHeadQuaterVisible}
@@ -287,7 +287,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                         } as RecruiterType);
                       }
                     }}
-                    size={70}
+                    size={64}
                     table='company-logo'
                     error={(e) => {
                       if (e) {

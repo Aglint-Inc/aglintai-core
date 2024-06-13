@@ -2,15 +2,18 @@
 import type React from 'react';
 import { useMemo } from 'react';
 
+import { useApplications } from '@/src/context/ApplicationsContext';
 import {
   ApplicationsStore,
   useApplicationsStore,
 } from '@/src/context/ApplicationsContext/store';
-import { FilterHeader } from '@/src/context/Tasks/Filters/FilterHeader';
+
+import FilterHeader from '../../Common/FilterHeader';
 
 const Filters = () => {
+  const { locationFilterOptions } = useApplications();
   const {
-    filters: { search, ...filters },
+    filters: { search, bookmarked, city, state, country, ...filters },
     setFilters,
     sort,
     setSort,
@@ -39,16 +42,80 @@ const Filters = () => {
     [filters],
   );
 
+  const multiSectionFilter: Parameters<
+    typeof FilterHeader
+  >[0]['filters'][number] = useMemo(
+    () => ({
+      type: 'multiSectionFilter',
+      name: 'Locations',
+      options: {
+        country: Object.keys(locationFilterOptions?.data ?? {}).map(
+          (country) => country,
+        ),
+        state: Object.entries(locationFilterOptions?.data ?? {}).map(
+          ([country, states]) => ({
+            header: country,
+            options: Object.keys(states).map((state) => ({
+              id: state,
+              label: state,
+            })),
+          }),
+        ),
+        city: Object.entries(locationFilterOptions?.data ?? {})
+          .map(([country, states]) =>
+            Object.entries(states).map(([state, cities]) => ({
+              header: `${country}, ${state}`,
+              options: cities.map((city) => ({
+                id: city,
+                label: city,
+              })),
+            })),
+          )
+          .flatMap((location) => location),
+      },
+      setValue: ({ country, state, city }) =>
+        setFilters({ country, state, city }),
+      value: {
+        country,
+        state,
+        city,
+      },
+    }),
+    [locationFilterOptions?.data, country, state, city, setFilters],
+  );
+
+  const bookmarkedButton: Parameters<
+    typeof FilterHeader
+  >[0]['filters'][number] = useMemo(
+    () => ({
+      type: 'button',
+      isActive: bookmarked,
+      isVisible: true,
+      name: 'Bookmarked',
+      onClick: () => setFilters({ bookmarked: !bookmarked }),
+    }),
+    [bookmarked, safeFilters],
+  );
+
   const safeSort: Parameters<typeof FilterHeader>[0]['sort'] = useMemo(
     () =>
       ({
         sortOptions: {
-          order: ['asc', 'desc'],
-          type: sortTypes,
+          options: sortTypes,
+          order: [
+            {
+              id: 'asc',
+              label: 'Ascending',
+            },
+            {
+              id: 'desc',
+              label: 'Descending',
+            },
+          ],
         },
         selected: {
+          option: sort.type,
           order: sort.order,
-          type: sort.type,
         },
         setOrder: (payload) => setSort(payload as ApplicationsStore['sort']),
       }) as typeof safeSort,
@@ -57,17 +124,17 @@ const Filters = () => {
   const component = useMemo(
     () => (
       <FilterHeader
-        filters={safeFilters}
+        filters={[...safeFilters, multiSectionFilter, bookmarkedButton]}
         sort={safeSort}
         search={{
           value: search,
           setValue: (newValue: typeof search) =>
             setFilters({ search: newValue }),
-          placeholder: 'Search in workflows',
+          placeholder: 'Search candidate',
         }}
       />
     ),
-    [safeFilters, search],
+    [safeFilters, search, multiSectionFilter, bookmarkedButton, safeSort],
   );
   return component;
 };

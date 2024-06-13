@@ -71,19 +71,6 @@
   color: var(--sky-12);
 }
 
-.cvs-view-res-btn.clickable:hover {
-  background-color: #f8f9f9;
-}
-
-.clickable {
-  transition: all 300ms ease;
-  cursor: pointer;
-}
-
-.clickable:hover {
-  opacity: 0.8;
-}
-
 .icons {
   display: flex;
   flex-direction: column;
@@ -177,10 +164,6 @@
 
 .icons.mt-3 {
   margin-top: 3px;
-}
-
-.icons.mr--10 {
-  margin-right: -8px;
 }
 
 .icons.mt-2 {

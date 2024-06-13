@@ -1,5 +1,5 @@
 import type { Database } from "../schema.types";
-import type { Type } from "../utils.types";
+import type { CustomizableTypes, Type } from "../utils.types";
 import type { CustomApplicationLogs } from "./application_logs.types";
 import type { CustomApplications } from "./applications.types";
 import { CustomCandidateFiles } from "./candidate_files";
@@ -17,17 +17,39 @@ import type { CustomRecruiterUser } from "./recruiter_user.types";
 import type { CustomWorkflowAction } from "./workflow_action.types";
 
 type DatabaseTables = Database["public"]["Tables"];
+type DatabaseTableInsert<T extends keyof DatabaseTables> =
+  DatabaseTables[T]["Insert"];
+type DatabaseTableRow<T extends keyof DatabaseTables> =
+  DatabaseTables[T]["Row"];
+type DatabaseTableUpdate<T extends keyof DatabaseTables> =
+  DatabaseTables[T]["Update"];
 
 export type TableType<
   T extends keyof DatabaseTables,
-  U extends { [id in keyof Partial<DatabaseTables[T]["Row"]>]: any },
+  U extends DatabaseTableRow<T> extends CustomizableTypes<"Array">
+    ? { [id in keyof Partial<DatabaseTableRow<T>[number]>]: any }
+    : DatabaseTableRow<T> extends CustomizableTypes<"Object">
+      ? { [id in keyof Partial<DatabaseTableRow<T>>]: any }
+      : never,
 > = Type<
   DatabaseTables[T],
   //@ts-ignore
   {
-    Insert: Type<DatabaseTables[T]["Insert"], Partial<U>>;
-    Row: Type<DatabaseTables[T]["Row"], U>;
-    Update: Type<DatabaseTables[T]["Update"], Partial<U>>;
+    Insert: Type<
+      DatabaseTableInsert<T>,
+      //@ts-ignore
+      Partial<U>
+    >;
+    Row: Type<
+      DatabaseTableRow<T>,
+      //@ts-ignore
+      U
+    >;
+    Update: Type<
+      DatabaseTableUpdate<T>,
+      //@ts-ignore
+      Partial<U>
+    >;
   }
 >;
 

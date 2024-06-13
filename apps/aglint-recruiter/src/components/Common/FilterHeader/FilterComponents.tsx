@@ -1,5 +1,4 @@
 import {
-  Button,
   List,
   ListItemButton,
   Popover,
@@ -9,6 +8,7 @@ import {
 import React, { ReactNode } from 'react';
 
 import { Checkbox } from '@/devlink/Checkbox';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { AddFilter } from '@/devlink2/AddFilter';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
@@ -23,7 +23,7 @@ import UITextField from '../UITextField';
 type dynamicOptionsTypes =
   | string[]
   | { id: string; label: string }[]
-  | { header: string; options: { id: string; label: string } }[];
+  | { header: string; options: { id: string; label: string }[] }[];
 
 type FilterMultiSectionFilterType = {
   name: string;
@@ -61,10 +61,9 @@ export type FilterTypes =
   | {
       type: 'button';
       name: string;
-      active: boolean;
       onClick: () => void;
-      isActive?: boolean;
-      isVisible: boolean;
+      isActive: boolean;
+      isVisible?: boolean;
     };
 
 type showFilterMapperType<T> = T extends { name: infer N } ? N : never;
@@ -150,9 +149,13 @@ function FilterSwitcher(filter: FilterTypes, index: number) {
     }
     case 'button':
       return (
-        <Button key={index} variant='outlined' onClick={filter.onClick}>
-          {capitalizeFirstLetter(filter.name || '')}
-        </Button>
+        <ButtonFilter
+          key={index}
+          isActive={filter.isActive}
+          isDotVisible={filter.isActive}
+          textLabel={capitalizeFirstLetter(filter.name || '')}
+          onClickStatus={{ onClick: () => filter.onClick() }}
+        />
       );
   }
 }
@@ -190,7 +193,8 @@ export function FilterComponent({
         textLabel={title}
         slotRightIcon={
           <Stack>
-            <svg
+            <GlobalIcon iconName='keyboard_arrow_down' />
+            {/* <svg
               width='15'
               height='16'
               viewBox='0 0 15 16'
@@ -201,7 +205,7 @@ export function FilterComponent({
                 d='M7.75781 11.2578C7.58594 11.4141 7.41406 11.4141 7.24219 11.2578L2.74219 6.75781C2.58594 6.58594 2.58594 6.41406 2.74219 6.24219C2.91406 6.08594 3.08594 6.08594 3.25781 6.24219L7.5 10.4609L11.7422 6.24219C11.9141 6.08594 12.0859 6.08594 12.2578 6.24219C12.4141 6.41406 12.4141 6.58594 12.2578 6.75781L7.75781 11.2578Z'
                 fill='#0F3554'
               />
-            </svg>
+            </svg> */}
           </Stack>
         }
       />
@@ -304,7 +308,8 @@ function MultiSectionFilterComponent({
         textLabel={title}
         slotRightIcon={
           <Stack>
-            <svg
+            <GlobalIcon iconName='keyboard_arrow_down' />
+            {/* <svg
               width='15'
               height='16'
               viewBox='0 0 15 16'
@@ -315,7 +320,7 @@ function MultiSectionFilterComponent({
                 d='M7.75781 11.2578C7.58594 11.4141 7.41406 11.4141 7.24219 11.2578L2.74219 6.75781C2.58594 6.58594 2.58594 6.41406 2.74219 6.24219C2.91406 6.08594 3.08594 6.08594 3.25781 6.24219L7.5 10.4609L11.7422 6.24219C11.9141 6.08594 12.0859 6.08594 12.2578 6.24219C12.4141 6.41406 12.4141 6.58594 12.2578 6.75781L7.75781 11.2578Z'
                 fill='#0F3554'
               />
-            </svg>
+            </svg> */}
           </Stack>
         }
       />
@@ -343,10 +348,10 @@ function MultiSectionFilterComponent({
             return (
               <FilterItem
                 key={section}
-                textFilterHeading={section}
-                textCount={selectedItems?.[String(section)].length}
+                textFilterHeading={capitalizeFirstLetter(section)}
+                textCount={(selectedItems?.[String(section)] || []).length}
                 isCountVisible={Boolean(
-                  selectedItems?.[String(section)].length,
+                  (selectedItems?.[String(section)] || []).length,
                 )}
                 onClickSearch={{
                   onClick: () => {
@@ -446,54 +451,62 @@ function FilterOptionsList({
           onChange={(e) => setSearch(e.target.value)}
         />
       )}
-      {filteredOptions?.map((optionList) => {
-        let filteredOp = optionList.options;
-        if (searchFilter) {
-          filteredOp = optionList.options.filter((item) =>
-            item.label.toLowerCase().includes(search.toLowerCase()),
-          );
-        }
-        return (
-          <>
-            {optionList.header && <Typography>{optionList.header}</Typography>}
-            {filteredOp.map(({ id, label }) => {
-              return (
-                <Stack
-                  key={id}
-                  direction={'row'}
-                  sx={{ alignItems: 'center' }}
-                  spacing={1}
-                  onClick={() => {
-                    let temp: string[] = [];
-                    if (selectedItems.includes(id)) {
-                      temp = selectedItems.filter(
-                        (innerEle) => innerEle !== id,
-                      );
-                    } else {
-                      temp = [...selectedItems, id];
-                    }
-                    setSelectedItems(temp);
-                  }}
-                >
-                  <Checkbox
-                    isChecked={selectedItems.includes(id)}
-                    onClickCheck={{}}
-                  />
-                  <Typography
-                    sx={{
-                      fontSize: '14px',
-                      fontWeight: 600,
-                      cursor: 'pointer',
+      {filteredOptions
+        ?.map((optionList) => {
+          let filteredOp = optionList.options;
+          if (searchFilter) {
+            filteredOp = optionList.options.filter((item) =>
+              item.label.toLowerCase().includes(search.toLowerCase()),
+            );
+          }
+          return { ...optionList, options: filteredOp };
+        })
+        .filter((item) => item.options?.length)
+        .map((optionList) => {
+          let filteredOp = optionList.options;
+          return (
+            <>
+              {optionList.header && (
+                <Typography>{optionList.header}</Typography>
+              )}
+              {filteredOp.map(({ id, label }) => {
+                return (
+                  <Stack
+                    key={id}
+                    direction={'row'}
+                    sx={{ alignItems: 'center' }}
+                    spacing={1}
+                    onClick={() => {
+                      let temp: string[] = [];
+                      if (selectedItems.includes(id)) {
+                        temp = selectedItems.filter(
+                          (innerEle) => innerEle !== id,
+                        );
+                      } else {
+                        temp = [...selectedItems, id];
+                      }
+                      setSelectedItems(temp);
                     }}
                   >
-                    {label}
-                  </Typography>
-                </Stack>
-              );
-            })}
-          </>
-        );
-      })}
+                    <Checkbox
+                      isChecked={selectedItems.includes(id)}
+                      onClickCheck={{}}
+                    />
+                    <Typography
+                      sx={{
+                        fontSize: '14px',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {label}
+                    </Typography>
+                  </Stack>
+                );
+              })}
+            </>
+          );
+        })}
     </>
   );
 }

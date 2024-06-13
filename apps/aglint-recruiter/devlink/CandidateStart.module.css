@@ -133,11 +133,3 @@
 .cursor-pointer:hover {
   opacity: 0.7;
 }
-
-.fw-light {
-  font-weight: 300;
-}
-
-.text-capitalize {
-  text-transform: uppercase;
-}

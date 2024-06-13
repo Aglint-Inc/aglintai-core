@@ -9,7 +9,7 @@ import { Skills } from './skills';
 
 const Details = (props: PropsWithChildren) => {
   return (
-    <Stack sx={{ display: 'flex', gap: 2 }}>
+    <Stack sx={{ display: 'flex', gap: 4 }}>
       {props.children ?? (
         <>
           <Insights />

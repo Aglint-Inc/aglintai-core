@@ -14,14 +14,6 @@
   cursor: pointer;
 }
 
-.cj-suggested-skill-block.green-100 {
-  background-color: var(--success-3);
-}
-
-.green-100 {
-  background-color: var(--green100-8db28f70);
-}
-
 .cj-suggested-skill-block.success-3 {
   background-color: var(--success-3);
 }

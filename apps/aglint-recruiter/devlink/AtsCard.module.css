@@ -24,10 +24,6 @@
   padding-top: 2px;
 }
 
-.relative-1.text-color-grey-600 {
-  color: #68737d;
-}
-
 .final-check-box {
   display: flex;
   width: 17px;
@@ -132,10 +128,6 @@
 
 .icons.mt-3 {
   margin-top: 3px;
-}
-
-.icons.mr--10 {
-  margin-right: -8px;
 }
 
 .icons.mt-2 {

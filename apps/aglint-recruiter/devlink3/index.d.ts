@@ -1,5 +1,9 @@
 "use client";
 
+console.warn(
+  "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
+);
+
 export * as _Builtin from "./_Builtin";
 export * from "./devlinkContext";
 export * from "./interactions";
@@ -94,7 +98,9 @@ export * from "./FeedbackViewPopup";
 export * from "./FilterItem";
 export * from "./GeneralPopupLarge";
 export * from "./GeneralScheduleCard";
+export * from "./GlobalBadge";
 export * from "./GlobalIcon";
+export * from "./GlobalStyles";
 export * from "./GraphBlock";
 export * from "./GraphButtonOption";
 export * from "./GroupFeedback";
@@ -102,6 +108,10 @@ export * from "./HeaderWithSlot";
 export * from "./HistoryPill";
 export * from "./HistoryTrainingCard";
 export * from "./IconButtonGhost";
+export * from "./IconButtonOutlined";
+export * from "./IconButtonSoft";
+export * from "./IconButtonSolid";
+export * from "./IconButtonSurface";
 export * from "./InlineEditField";
 export * from "./InputWithLabel";
 export * from "./InstructionBlock";

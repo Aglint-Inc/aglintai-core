@@ -30,11 +30,6 @@
   opacity: 0.6;
 }
 
-.email-outreach-button.p-4 {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
 .text-email-out {
   color: #b8009c;
   font-size: 12px;
@@ -137,10 +132,6 @@
 
 .icons.mt-3 {
   margin-top: 3px;
-}
-
-.icons.mr--10 {
-  margin-right: -8px;
 }
 
 .icons.mt-2 {
