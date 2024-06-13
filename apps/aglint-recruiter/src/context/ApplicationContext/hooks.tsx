@@ -65,5 +65,11 @@ export const useApplicationContext = (
     resetTab();
     return () => resetTab();
   }, []);
-  return { meta, details, interview, handleUpdateApplication };
+  return {
+    application_id: props.application_id,
+    meta,
+    details,
+    interview,
+    handleUpdateApplication,
+  };
 };
