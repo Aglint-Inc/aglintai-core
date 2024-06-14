@@ -170,15 +170,11 @@ const ImportManual = () => {
   return (
     <Stack style={{ background: 'white' }}>
       <FormBody applicant={applicant} setApplicant={setApplicant} />
-      <Stack direction={'row'} justifyContent={'flex-end'} px={'16px'}>
+      <Stack direction={'row'} justifyContent={'flex-end'}>
         <ButtonSolid
-          textButton = 'Add Candidate'
-          isLeftIcon={false}
-          isRightIcon={false}
-          size= '2'
-          onClickButton={{
-            onClick: () => { async () => await handleSubmit() }
-          }}
+          size={2}
+          onClickButton={{ onClick: async () => await handleSubmit() }}
+          textButton={'Add Candidate'}
         />
       </Stack>
     </Stack>

@@ -4,10 +4,12 @@ import { memo } from 'react';
 
 import { ApplicantsListEmpty } from '@/devlink2/ApplicantsListEmpty';
 import { ApplicantsTable } from '@/devlink2/ApplicantsTable';
+import { SkeletonCandidateListItem } from '@/devlink2/SkeletonCandidateListItem';
 import NoApplicants from '@/public/lottie/NoApplicants';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 
+import { Loader } from '../ui/candidateDrawer/common';
 import ApplicantsList from './list';
 
 export const Table = memo(() => {
@@ -34,6 +36,16 @@ const List = memo(() => {
       key={section}
       applications={sectionApplication}
       count={count[section]}
+      loader={
+        <Loader count={5}>
+          <SkeletonCandidateListItem
+            isScreeningVisible={cascadeVisibilites.screening}
+            isAssessmentVisible={cascadeVisibilites.assessment}
+            isInterviewVisible={cascadeVisibilites.interview}
+            isDisqualifiedVisible={cascadeVisibilites.disqualified}
+          />
+        </Loader>
+      }
       header={
         <Stack
           style={{ zIndex: count[section] + 1, position: 'sticky', top: 0 }}
