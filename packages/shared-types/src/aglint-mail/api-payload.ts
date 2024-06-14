@@ -36,7 +36,7 @@ type Payloads = {
     comp_email_placeholders: {
       "{{ interviewerFirstName }}": string;
       "{{ companyName }}": string;
-      "{{ candidateFirstName }}": string;
+      "{{ candidateName }}": string;
       "{{ jobTitle }}": string;
       "{{ recruiterFirstName }}": string;
     };
@@ -100,7 +100,7 @@ type Payloads = {
     api_payload: v.InferInput<typeof confInterviewEmailOrganizerSchema>;
     comp_email_placeholders: {
       "{{ recruiterFirstName }}": string;
-      "{{ candidateFirstName }}": string;
+      "{{ candidateName }}": string;
       "{{ recruiterFullName }}": string;
     };
     react_email_placeholders: {

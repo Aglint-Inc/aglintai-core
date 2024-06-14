@@ -18,7 +18,7 @@ function FilterSearchField() {
         InputProps={{
           endAdornment: (
             <InputAdornment position='end'>
-              <GlobalIcon iconName='search' size='5'/>
+              <GlobalIcon iconName='search' size='5' />
             </InputAdornment>
           ),
         }}
@@ -27,7 +27,6 @@ function FilterSearchField() {
         onChange={(e) => {
           setFilter({ textSearch: e.target.value });
         }}
-        width='250px'
       />
     </>
   );

@@ -1,9 +1,8 @@
-import dayjs from 'dayjs';
 import type {
   EmailTemplateAPi,
   MeetingDetailCardType,
 } from '@aglint/shared-types';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/userTzDayjs';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   platformRemoveUnderscore,
@@ -13,8 +12,7 @@ import {
 } from '../../../utils/email/common/functions';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
-import { CAND_DATE_FORMAT } from '../../../utils/types/constants';
-import { getFullName } from '@aglint/shared-utils';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'interReschedReq_email_recruiter'>['api_payload'],
@@ -55,6 +53,8 @@ export async function fetchUtil(
     candidateJob.candidates.recruiter_id,
     'interReschedReq_email_recruiter',
   );
+  const int_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
+
   const meeting_details: MeetingDetailCardType[] = sessions.map((session) => {
     const {
       interview_meeting: { start_time, end_time },
@@ -64,8 +64,8 @@ export async function fetchUtil(
       session_type,
     } = session;
     return {
-      date: dayjs(start_time).format('ddd MMMM DD, YYYY'),
-      time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
+      date: dayjsLocal(start_time).format(DAYJS_FORMATS.DATE_FORMAT),
+      time: `${dayjsLocal(start_time).tz(int_tz).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(end_time).tz(int_tz).format(DAYJS_FORMATS.END_TIME_FORMAT)}`,
       sessionType: name,
       platform: platformRemoveUnderscore(schedule_type),
       duration: durationCalculator(session_duration),
@@ -74,7 +74,6 @@ export async function fetchUtil(
     };
   });
 
-  const int_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
   const req_start_date = session_cancel.other_details.dateRange.start;
   const req_end_date = session_cancel.other_details.dateRange.start;
   const comp_email_placeholder: EmailTemplateAPi<'interReschedReq_email_recruiter'>['comp_email_placeholders'] =
@@ -90,7 +89,7 @@ export async function fetchUtil(
         recruiter_user.last_name,
       ),
       '{{ dateRange }}': req_start_date
-        ? `${dayjsLocal(req_start_date).tz(int_tz).format(CAND_DATE_FORMAT)} - ${dayjsLocal(req_end_date).tz(int_tz).format(CAND_DATE_FORMAT)} `
+        ? `${dayjsLocal(req_start_date).tz(int_tz).format(DAYJS_FORMATS.DATE_FORMAT)} - ${dayjsLocal(req_end_date).tz(int_tz).format(DAYJS_FORMATS.DATE_FORMATZ)} `
         : '',
     };
 
@@ -99,7 +98,7 @@ export async function fetchUtil(
     comp_email_temp,
   );
 
-  const candidateLink = `${process.env.NEXT_PUBLIC_APP_URL}/application/${req_body.application_id}`;
+  const candidateLink = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}`;
   const react_email_placeholders: EmailTemplateAPi<'interReschedReq_email_recruiter'>['react_email_placeholders'] =
     {
       companyLogo: candidateJob.candidates.recruiter.logo,
