@@ -51,7 +51,7 @@ export default async function handler(
     };
 
     const { status } = await axios.post(
-      `${process.env.AGENTS_API_HOST}/api/email-agent/compose-email`,
+      `${process.env.NEXT_PUBLIC_AGENT_API}/api/email-agent/compose-email`,
       {
         ...api_payload,
       },
