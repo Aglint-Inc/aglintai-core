@@ -157,6 +157,7 @@ function CandidateSearchHistory() {
     try {
       if (searchQuery.length === 0 || isQrySearching) return;
       setIsQrySearching(true);
+
       const res = await axios.post('/api/candidatedb/query', {
         query: searchQuery,
       });
@@ -280,16 +281,20 @@ function CandidateSearchHistory() {
   };
 
   const submitHandler = async () => {
-    const { data, error } = await supabase
-      .from('candidate_list')
-      .insert({ name: text, recruiter_id: recruiter.id })
-      .select();
-    if (!error) {
-      setList([...list, data[0]]);
-      setText('');
-      setIsInputVisible(false);
+    if (text) {
+      const { data, error } = await supabase
+        .from('candidate_list')
+        .insert({ name: text, recruiter_id: recruiter.id })
+        .select();
+      if (!error) {
+        setList([...list, data[0]]);
+        setText('');
+        setIsInputVisible(false);
+      } else {
+        toast.error('Something went wrong. Please try again.');
+      }
     } else {
-      toast.error('Something went wrong. Please try again.');
+      toast.error('Please enter the list name then submit');
     }
   };
 
@@ -485,6 +490,11 @@ function CandidateSearchHistory() {
                           value={text}
                           onChange={(e) => {
                             setText(e.target.value);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              submitHandler();
+                            }
                           }}
                         />
                       }
