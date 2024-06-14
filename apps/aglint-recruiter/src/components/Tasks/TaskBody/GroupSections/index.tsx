@@ -226,9 +226,9 @@ function GroupSections({
                 item.tasklist.filter((ele) => ele.type !== 'empty').length === 0
               }
             >
-              <Stack height={100}>
-                <TaskEmpty />
-              </Stack>
+              <Stack height={'calc(100vh - 136px)'} style={{ backgroundColor: 'var(--neutral-2)' }}>
+                    <TaskEmpty />
+                  </Stack>
             </ShowCode.When>
           </>
         }
