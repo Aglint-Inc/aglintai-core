@@ -56,7 +56,6 @@ function SlotBodyComp({
   });
 
   const currentTab = router.query.tab as TabsModuleMembers['queryParams'];
-
   return (
     <>
       <SettingsDialog editModule={editModule} />

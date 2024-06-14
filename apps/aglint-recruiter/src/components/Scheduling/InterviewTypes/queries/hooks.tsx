@@ -39,9 +39,9 @@ export const useAllSchedulesByModuleId = () => {
       moduleId: router.query.module_id as string,
     }),
     queryFn: () => fetchModules(router.query.module_id as string),
-    enabled: !!router.query.module_id,
-    initialData: [],
-    refetchOnWindowFocus: false,
+    // enabled: !!router.query.module_id,
+    // initialData: [],
+    // refetchOnWindowFocus: false,
   });
   return query;
 };

@@ -44,7 +44,7 @@ export function SelectedMemberPill({
           tag="div"
           {...onClickRemove}
         >
-          <GlobalIcon iconName="" size="4" weight="thin" />
+          <GlobalIcon iconName="close" size="3" weight="medium" />
         </_Builtin.Block>
       ) : null}
     </_Component>
