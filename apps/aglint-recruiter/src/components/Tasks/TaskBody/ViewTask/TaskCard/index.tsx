@@ -2,7 +2,6 @@ import { DatabaseEnums, DatabaseTableUpdate, DB } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
@@ -89,7 +88,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
     <>
       <ViewTaskCard
         slotType={
-          <InterviewTaskPill textInterviewName={capitalize(task.type)} />
+          <InterviewTaskPill textInterviewName={capitalizeFirstLetter(task.type)} />
         }
         slotJob={capitalizeFirstLetter(
           task?.applications?.public_jobs?.job_title,

@@ -267,7 +267,7 @@ function RequestAvailability() {
               } as DatabaseTableInsert['new_tasks']['session_ids'][number];
             }),
             status: 'in_progress',
-            type: 'schedule',
+            type: 'availability',
             request_availability_id: result.id,
           });
           await createTaskProgress({
