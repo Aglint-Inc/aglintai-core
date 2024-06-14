@@ -49,7 +49,6 @@ export function AssessmentPopup({
           tag="div"
         >
           <_Builtin.Block className={_utils.cx(_styles, "ps_row")} tag="div">
-            <_Builtin.Block tag="div">{"Assessment Name"}</_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "ps_input_slot")}
               tag="div"
@@ -76,7 +75,6 @@ export function AssessmentPopup({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block className={_utils.cx(_styles, "ps_row")} tag="div">
-            <_Builtin.Block tag="div">{"Description"}</_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "ps_input_slot")}
               tag="div"

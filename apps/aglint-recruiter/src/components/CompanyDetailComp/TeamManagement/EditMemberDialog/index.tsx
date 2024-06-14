@@ -1,13 +1,6 @@
 import { employmentTypeEnum, RecruiterUserType } from '@aglint/shared-types';
 import { DB } from '@aglint/shared-types';
-import {
-  Autocomplete,
-  Drawer,
-  Stack,
-  TextField,
-  TextFieldProps,
-  Typography,
-} from '@mui/material';
+import { Autocomplete, Drawer, Stack } from '@mui/material';
 import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -15,6 +8,7 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { InviteTeamCard } from '@/devlink/InviteTeamCard';
 import { TeamInvite } from '@/devlink/TeamInvite';
 import Icon from '@/src/components/Common/Icons/Icon';
+import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
@@ -143,11 +137,15 @@ const EditMember = ({
           slotForm={
             <Stack spacing={2}>
               <Stack flexDirection={'row'} gap={2} width={'100%'}>
-                <CustomTextField
+                <UITextField
                   // sx={{ width: '50% !important' }}
                   value={form.first_name ? form.first_name : ''}
                   placeholder='First Name'
                   label='First Name'
+                  helperText={
+                    formError.first_name ? 'First name must required' : ''
+                  }
+                  required
                   error={formError.first_name}
                   onFocus={() => {
                     setFormError({ ...formError, first_name: false });
@@ -156,7 +154,7 @@ const EditMember = ({
                     setForm({ ...form, first_name: e.target.value });
                   }}
                 />
-                <CustomTextField
+                <UITextField
                   // sx={{ width: '50% !important' }}
                   value={form.last_name ? form.last_name : ''}
                   placeholder='Last Name'
@@ -166,7 +164,7 @@ const EditMember = ({
                   }}
                 />
               </Stack>
-              <CustomTextField
+              <UITextField
                 value={form.linked_in ? form.linked_in : ''}
                 name='LinkedIn'
                 placeholder='URL'
@@ -180,10 +178,14 @@ const EditMember = ({
                 }}
               />
               <Stack flexDirection={'row'} gap={2} width={'100%'}>
-                <CustomTextField
+                <UITextField
                   value={form.designation ? form.designation : ''}
                   placeholder='Enter Title'
                   label='Title'
+                  required
+                  helperText={
+                    formError.designation ? 'Title must required' : ''
+                  }
                   error={formError.designation}
                   onFocus={() => {
                     setFormError({ ...formError, designation: false });
@@ -213,7 +215,7 @@ const EditMember = ({
                   }
                   getOptionLabel={(option) => capitalizeFirstLetter(option)}
                   renderInput={(params) => (
-                    <CustomTextField
+                    <UITextField
                       {...params}
                       error={formError.employment}
                       onFocus={() => {
@@ -246,7 +248,7 @@ const EditMember = ({
                     },
                   )}
                   renderInput={(params) => (
-                    <CustomTextField
+                    <UITextField
                       {...params}
                       error={formError.interview_location}
                       onFocus={() => {
@@ -274,12 +276,18 @@ const EditMember = ({
                     capitalizeFirstLetter(departments),
                   )}
                   renderInput={(params) => (
-                    <CustomTextField
+                    <UITextField
                       {...params}
                       error={formError.department}
                       onFocus={() => {
                         setFormError({ ...formError, department: false });
                       }}
+                      required
+                      helperText={
+                        formError.department
+                          ? 'Department is must required'
+                          : ''
+                      }
                       name='Department'
                       placeholder='Select Department'
                       label='Department'
@@ -318,11 +326,13 @@ const EditMember = ({
                       <li {...props}>{capitalizeFirstLetter(op)}</li>
                     )}
                     renderInput={(params) => (
-                      <CustomTextField
+                      <UITextField
                         {...params}
                         name='Role'
                         placeholder='Choose Role'
                         label='Role'
+                        required
+                        helperText={formError.role ? 'Role must required' : ''}
                         error={formError.role}
                         onFocus={() => {
                           setFormError({ ...formError, role: false });
@@ -347,15 +357,19 @@ const EditMember = ({
                       );
                     }}
                     renderInput={(params) => (
-                      <CustomTextField
+                      <UITextField
                         {...params}
                         name='manager'
                         placeholder='Select Manager'
                         label='Manager'
+                        required
                         error={formError.manager}
                         onFocus={() => {
                           setFormError({ ...formError, manager: false });
                         }}
+                        helperText={
+                          formError.manager ? 'Manager must required' : ''
+                        }
                       />
                     )}
                   />
@@ -487,17 +501,3 @@ const EditMember = ({
 };
 
 export default EditMember;
-
-const CustomTextField = (props: TextFieldProps) => {
-  const label = props.label;
-  return (
-    <Stack width={'100%'}>
-      {Boolean(label) && (
-        <Typography fontSize={'14px'} marginBottom={'3px'}>
-          {label}
-        </Typography>
-      )}
-      <TextField {...{ ...props, label: undefined }} />
-    </Stack>
-  );
-};
