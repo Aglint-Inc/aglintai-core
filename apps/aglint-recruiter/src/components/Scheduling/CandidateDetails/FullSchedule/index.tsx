@@ -107,7 +107,8 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                       sx={{
                         cursor:
                           session.interview_meeting?.status === 'completed' ||
-                          session.interview_meeting?.status === 'confirmed'
+                          session.interview_meeting?.status === 'confirmed' ||
+                          session.interview_meeting?.status === 'waiting'
                             ? 'pointer'
                             : 'auto',
                       }}

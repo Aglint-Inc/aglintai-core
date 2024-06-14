@@ -58,13 +58,19 @@ function ChangeInterviewerDialog({
 
   const fetchInterviewers = async () => {
     try {
-      const alt_user_ids = possibleUsers.map((user) => user.id);
       const bodyParams: APIFindAltenativeTimeSlot = {
         recruiter_id: recruiter.id,
         session_id: schedule.interview_session.id,
-        replacement_ints: alt_user_ids,
+        ignore_interviewer: cancelInterviewer.id,
         slot_start_time: schedule.interview_meeting.start_time,
         user_tz: dayjs.tz.guess(),
+        api_options: {
+          include_conflicting_slots: {
+            show_soft_conflicts: true,
+            show_conflicts_events: true,
+            out_of_working_hrs: true,
+          },
+        },
       };
 
       const res = await axios.post(
@@ -72,7 +78,14 @@ function ChangeInterviewerDialog({
         bodyParams,
       );
       if (res.status === 200) {
-        setAvailableUsers(res.data);
+        setAvailableUsers(
+          (res.data as APIFindAltenativeTimeSlotResponse).filter((item) =>
+            item.sessions.some(
+              (session) =>
+                session.qualifiedIntervs[0].user_id !== cancelInterviewer.id,
+            ),
+          ),
+        );
       }
     } catch {
       //
@@ -210,9 +223,13 @@ function ChangeInterviewerDialog({
                   </Stack>
                 )}
                 {possibleUsers.map((user) => {
-                  const isAvailable = avaialableUsers?.find(
-                    (u) => u.user_id === user.id,
-                  )?.is_exist;
+                  const isAvailable =
+                    avaialableUsers?.find((item) =>
+                      item.sessions.find(
+                        (session) =>
+                          session.qualifiedIntervs[0].user_id === user.id,
+                      ),
+                    ).sessions[0].is_conflict === false;
                   return (
                     <Stack
                       key={user.id}

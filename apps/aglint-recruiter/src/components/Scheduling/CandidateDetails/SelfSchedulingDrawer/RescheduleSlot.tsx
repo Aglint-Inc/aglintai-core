@@ -15,11 +15,11 @@ import {
 import { setScheduleFlow, setStepScheduling } from './store';
 
 function RescheduleSlot() {
-  const { initialSessions, selectedApplicationLog, selectedApplication } =
+  const { initialSessions, selectedApplication, rescheduleSessionIds } =
     useSchedulingApplicationStore((state) => ({
       initialSessions: state.initialSessions,
-      selectedApplicationLog: state.selectedApplicationLog,
       selectedApplication: state.selectedApplication,
+      rescheduleSessionIds: state.rescheduleSessionIds,
     }));
 
   const [selectedLocalSessionIds, setLocalselectedLocalSessionIds] = useState<
@@ -27,38 +27,14 @@ function RescheduleSlot() {
   >([]);
 
   useEffect(() => {
-    if (selectedApplicationLog.metadata.type === 'booking_confirmation') {
-      setLocalselectedLocalSessionIds(
-        selectedApplicationLog.metadata.sessions.map((ses) => ses.id),
-      );
-    } else if (
-      selectedApplicationLog.metadata.type ===
-      'candidate_response_self_schedule'
-    ) {
-      setLocalselectedLocalSessionIds(
-        selectedApplicationLog.metadata.session_ids,
-      );
-    }
-    return;
-  }, [selectedApplicationLog]);
+    setLocalselectedLocalSessionIds(rescheduleSessionIds);
+  }, [rescheduleSessionIds]);
 
-  let session_ids = [];
   let selectedSessions: SchedulingApplication['initialSessions'] = [];
 
-  if (selectedApplicationLog?.metadata?.type === 'booking_confirmation') {
-    session_ids = selectedApplicationLog.metadata.sessions.map((ses) => ses.id);
-    selectedSessions = initialSessions.filter((ses) =>
-      session_ids?.includes(ses.id),
-    );
-  } else if (
-    selectedApplicationLog?.metadata?.type ===
-    'candidate_response_self_schedule'
-  ) {
-    session_ids = selectedApplicationLog.metadata.session_ids;
-    selectedSessions = initialSessions.filter((ses) =>
-      session_ids.includes(ses.id),
-    );
-  }
+  selectedSessions = initialSessions.filter((ses) =>
+    rescheduleSessionIds?.includes(ses.id),
+  );
 
   const selectSession = ({
     session,

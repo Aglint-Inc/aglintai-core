@@ -14,6 +14,13 @@ export const useScheduleList = ({ user_id }) => {
     queryKey: ['get_scheduleList', user_id],
     queryFn: () => getScheduleList(user_id),
     enabled: !!user_id,
+    placeholderData: {
+      schedules: [],
+      totalHoursToday: 0,
+      totalHoursThisWeek: 0,
+      totalInterviewsToday: 0,
+      totalInterviewsThisWeek: 0,
+    },
   });
   const refetch = () =>
     queryClient.invalidateQueries({ queryKey: ['get_scheduleList', user_id] });
