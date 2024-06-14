@@ -65,16 +65,9 @@ const CandidateDashboard = () => {
     return (
       <>
         <UITextField
-          rest={{
-            style: {
-              borderRadius: '40px',
-            },
-          }}
+          width='250px'
+          height={32}
           InputProps={{
-            sx: {
-              borderRadius: 'var(--radius-4)',
-              minWidth: '250px',
-            },
             endAdornment: (
               <InputAdornment position='start'>
                 <GlobalIcon iconName='search' size='5'/>

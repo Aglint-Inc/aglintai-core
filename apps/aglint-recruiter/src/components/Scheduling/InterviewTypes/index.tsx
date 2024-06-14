@@ -67,6 +67,8 @@ export function Modules() {
             slotFilter={
               <Stack direction={'row'} gap={2}>
                 <UITextField
+                  width={'250px'}
+                  height={32}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position='end'>
@@ -79,7 +81,6 @@ export function Modules() {
                     setTextSearch(e.target.value);
                   }}
                   value={textSearch}
-                  width={'250px'}
                 />
                 <FilterDepartment />
                 <FilterCreatedBy />

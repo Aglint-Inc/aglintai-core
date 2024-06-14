@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { GlobalIcon } from "./GlobalIcon";
 import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./ScheduleCountStats.module.css";
@@ -8,15 +9,20 @@ import _styles from "./ScheduleCountStats.module.css";
 export function ScheduleCountStats({
   as: _Component = _Builtin.Block,
   textCompletedCount = "5",
-  textIncreasedCompleted = "+1,2% from yesterday",
-  textNotScheduledCount = "5",
-  textIncreasedNotScheduled = "+1,2% from yesterday",
-  textWaitingCount = "5",
-  textIncreasedWaiting = "+1,2% from yesterday",
-  textConfirmedCount = "5",
-  textIncreasedConfirmed = "+1,2% from yesterday",
-  textCancelledCount = "5",
-  textIncreasedCancelled = "+1,2% from yesterday",
+  textIncreasedCompleted = "+1% from yesterday",
+  textNotScheduledCount = (
+    <>
+      {"10"}
+      <br />
+    </>
+  ),
+  textIncreasedNotScheduled = "+2% from yesterday",
+  textWaitingCount = "15",
+  textIncreasedWaiting = "+3% from yesterday",
+  textConfirmedCount = "20",
+  textIncreasedConfirmed = "+4% from yesterday",
+  textCancelledCount = "25",
+  textIncreasedCancelled = "+5% from yesterday",
 }) {
   return (
     <_Component
@@ -27,21 +33,25 @@ export function ScheduleCountStats({
         className={_utils.cx(_styles, "scheduling-menu")}
         tag="div"
       >
-        <_Builtin.HtmlEmbed
-          className={_utils.cx(_styles, "icons")}
-          value="%3Csvg%20width%3D%2228%22%20height%3D%2232%22%20viewBox%3D%220%200%2028%2032%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M8%201V4H20V1C20.0417%200.375%2020.375%200.0416667%2021%200C21.625%200.0416667%2021.9583%200.375%2022%201V4H24C25.125%204.04167%2026.0625%204.4375%2026.8125%205.1875C27.5625%205.9375%2027.9583%206.875%2028%208V10V12V28C27.9583%2029.125%2027.5625%2030.0625%2026.8125%2030.8125C26.0625%2031.5625%2025.125%2031.9583%2024%2032H4C2.875%2031.9583%201.9375%2031.5625%201.1875%2030.8125C0.4375%2030.0625%200.0416667%2029.125%200%2028V12V10V8C0.0416667%206.875%200.4375%205.9375%201.1875%205.1875C1.9375%204.4375%202.875%204.04167%204%204H6V1C6.04167%200.375%206.375%200.0416667%207%200C7.625%200.0416667%207.95833%200.375%208%201ZM2%2012V28C2%2028.5833%202.1875%2029.0625%202.5625%2029.4375C2.9375%2029.8125%203.41667%2030%204%2030H24C24.5833%2030%2025.0625%2029.8125%2025.4375%2029.4375C25.8125%2029.0625%2026%2028.5833%2026%2028V12H2ZM4%206C3.41667%206%202.9375%206.1875%202.5625%206.5625C2.1875%206.9375%202%207.41667%202%208V10H26V8C26%207.41667%2025.8125%206.9375%2025.4375%206.5625C25.0625%206.1875%2024.5833%206%2024%206H4ZM20.6875%2017.6875L13.6875%2024.6875C13.2292%2025.1042%2012.7708%2025.1042%2012.3125%2024.6875L8.3125%2020.6875C7.89583%2020.2292%207.89583%2019.7708%208.3125%2019.3125C8.77083%2018.8958%209.22917%2018.8958%209.6875%2019.3125L13%2022.5625L19.3125%2016.3125C19.7708%2015.8958%2020.2292%2015.8958%2020.6875%2016.3125C21.1042%2016.7708%2021.1042%2017.2292%2020.6875%2017.6875Z%22%20fill%3D%22%2329A383%22%2F%3E%0A%3C%2Fsvg%3E"
-        />
-        <Text content={textCompletedCount} size="6" weight="medium" />
         <_Builtin.Block
-          className={_utils.cx(_styles, "schedule-count-wrap")}
+          className={_utils.cx(_styles, "event_available")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Completed"}</_Builtin.Block>
+          <GlobalIcon size="8" iconName="event_available" weight="thin" />
+        </_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "count_info")} tag="div">
+          <Text content={textCompletedCount} size="6" weight="medium" />
           <_Builtin.Block
-            className={_utils.cx(_styles, "accent-text")}
+            className={_utils.cx(_styles, "schedule-count-wrap")}
             tag="div"
           >
-            {textIncreasedCompleted}
+            <Text content="Completed" weight="medium" color="neutral" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "accent-text")}
+              tag="div"
+            >
+              {textIncreasedCompleted}
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
@@ -49,26 +59,25 @@ export function ScheduleCountStats({
         className={_utils.cx(_styles, "scheduling-menu")}
         tag="div"
       >
-        <_Builtin.HtmlEmbed
-          className={_utils.cx(_styles, "icons")}
-          value="%3Csvg%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M1.1875%2014.5C0.520833%2014.4167%200.1875%2014.0417%200.1875%2013.375C0.645833%2010.875%201.58333%208.64583%203%206.6875C3.45833%206.1875%203.9375%206.14583%204.4375%206.5625C4.8125%206.97917%204.85417%207.4375%204.5625%207.9375C3.35417%209.60417%202.5625%2011.5%202.1875%2013.625C2.0625%2014.1667%201.72917%2014.4583%201.1875%2014.5ZM7.9375%204.5625C7.4375%204.85417%206.97917%204.8125%206.5625%204.4375C6.14583%203.9375%206.1875%203.45833%206.6875%203C8.64583%201.58333%2010.8958%200.645833%2013.4375%200.1875C14.0625%200.1875%2014.4167%200.520833%2014.5%201.1875C14.4583%201.72917%2014.1667%202.0625%2013.625%202.1875C11.5%202.5625%209.60417%203.35417%207.9375%204.5625ZM17.5%2030.8125C17.5417%2030.2708%2017.8333%2029.9375%2018.375%2029.8125C20.5%2029.4375%2022.3958%2028.6458%2024.0625%2027.4375C24.5208%2027.1458%2024.9792%2027.1875%2025.4375%2027.5625C25.8542%2028.0625%2025.8125%2028.5417%2025.3125%2029C23.3542%2030.4167%2021.125%2031.3542%2018.625%2031.8125C17.9583%2031.8125%2017.5833%2031.4792%2017.5%2030.8125ZM27.4375%2024.0625C28.6458%2022.3958%2029.4375%2020.5%2029.8125%2018.375C29.9375%2017.8333%2030.2708%2017.5417%2030.8125%2017.5C31.4792%2017.5833%2031.8125%2017.9583%2031.8125%2018.625C31.3542%2021.125%2030.4167%2023.3542%2029%2025.3125C28.5417%2025.8125%2028.0625%2025.8542%2027.5625%2025.4375C27.1875%2025.0208%2027.1458%2024.5625%2027.4375%2024.0625ZM6.5625%2027.5625C6.97917%2027.1875%207.4375%2027.1458%207.9375%2027.4375C9.60417%2028.6458%2011.5%2029.4375%2013.625%2029.8125C14.1667%2029.9375%2014.4583%2030.2708%2014.5%2030.8125C14.4167%2031.4792%2014.0417%2031.8125%2013.375%2031.8125C10.875%2031.3542%208.64583%2030.4167%206.6875%2029C6.1875%2028.5417%206.14583%2028.0625%206.5625%2027.5625ZM3%2025.3125C1.58333%2023.3542%200.645833%2021.125%200.1875%2018.625C0.1875%2017.9583%200.520833%2017.5833%201.1875%2017.5C1.72917%2017.5417%202.0625%2017.8333%202.1875%2018.375C2.5625%2020.5%203.35417%2022.3958%204.5625%2024.0625C4.85417%2024.5625%204.8125%2025.0208%204.4375%2025.4375C3.9375%2025.8542%203.45833%2025.8125%203%2025.3125ZM25.4375%204.4375C25.0208%204.8125%2024.5625%204.85417%2024.0625%204.5625C22.3958%203.35417%2020.5%202.5625%2018.375%202.1875C17.8333%202.0625%2017.5417%201.72917%2017.5%201.1875C17.5833%200.520833%2017.9583%200.1875%2018.625%200.1875C21.125%200.645833%2023.3542%201.58333%2025.3125%203C25.8125%203.45833%2025.8542%203.9375%2025.4375%204.4375ZM27.4375%207.9375C27.1458%207.4375%2027.1875%206.97917%2027.5625%206.5625C28.0625%206.14583%2028.5417%206.1875%2029%206.6875C30.4167%208.64583%2031.3542%2010.875%2031.8125%2013.375C31.8125%2014.0417%2031.4792%2014.4167%2030.8125%2014.5C30.2708%2014.4583%2029.9375%2014.1667%2029.8125%2013.625C29.4375%2011.5%2028.6458%209.60417%2027.4375%207.9375Z%22%20fill%3D%22%238D8D86%22%2F%3E%0A%3C%2Fsvg%3E"
-        />
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-xl", "text-count-schedule")}
+          className={_utils.cx(_styles, "hourglass_empty")}
           tag="div"
         >
-          {textNotScheduledCount}
+          <GlobalIcon size="8" iconName="hourglass_empty" weight="thin" />
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "schedule-count-wrap")}
-          tag="div"
-        >
-          <_Builtin.Block tag="div">{"Not Scheduled"}</_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "count_info")} tag="div">
+          <Text content={textNotScheduledCount} size="6" weight="medium" />
           <_Builtin.Block
-            className={_utils.cx(_styles, "accent-text")}
+            className={_utils.cx(_styles, "schedule-count-wrap")}
             tag="div"
           >
-            {textIncreasedNotScheduled}
+            <Text content="Not Scheduled" weight="medium" color="neutral" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "accent-text")}
+              tag="div"
+            >
+              {textIncreasedNotScheduled}
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
@@ -76,26 +85,25 @@ export function ScheduleCountStats({
         className={_utils.cx(_styles, "scheduling-menu")}
         tag="div"
       >
-        <_Builtin.HtmlEmbed
-          className={_utils.cx(_styles, "icons")}
-          value="%3Csvg%20width%3D%2236%22%20height%3D%2232%22%20viewBox%3D%220%200%2036%2032%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M7%200C7.625%200.0416667%207.95833%200.375%208%201V4H20V1C20.0417%200.375%2020.375%200.0416667%2021%200C21.625%200.0416667%2021.9583%200.375%2022%201V4H24C25.125%204.04167%2026.0625%204.4375%2026.8125%205.1875C27.5625%205.9375%2027.9583%206.875%2028%208V10V12V12.0625C27.6667%2012.0208%2027.3333%2012%2027%2012C26.6667%2012%2026.3333%2012.0208%2026%2012.0625V12H2V28C2%2028.5833%202.1875%2029.0625%202.5625%2029.4375C2.9375%2029.8125%203.41667%2030%204%2030H18.5C19.125%2030.75%2019.8542%2031.4167%2020.6875%2032H4C2.875%2031.9583%201.9375%2031.5625%201.1875%2030.8125C0.4375%2030.0625%200.0416667%2029.125%200%2028V12V10V8C0.0416667%206.875%200.4375%205.9375%201.1875%205.1875C1.9375%204.4375%202.875%204.04167%204%204H6V1C6.04167%200.375%206.375%200.0416667%207%200ZM24%206H4C3.41667%206%202.9375%206.1875%202.5625%206.5625C2.1875%206.9375%202%207.41667%202%208V10H26V8C26%207.41667%2025.8125%206.9375%2025.4375%206.5625C25.0625%206.1875%2024.5833%206%2024%206ZM27%2030C28.25%2030%2029.4167%2029.6875%2030.5%2029.0625C31.5833%2028.4375%2032.4375%2027.5833%2033.0625%2026.5C33.6875%2025.4167%2034%2024.25%2034%2023C34%2021.75%2033.6875%2020.5833%2033.0625%2019.5C32.4375%2018.4167%2031.5833%2017.5625%2030.5%2016.9375C29.4167%2016.3125%2028.25%2016%2027%2016C25.75%2016%2024.5833%2016.3125%2023.5%2016.9375C22.4167%2017.5625%2021.5625%2018.4167%2020.9375%2019.5C20.3125%2020.5833%2020%2021.75%2020%2023C20%2024.25%2020.3125%2025.4167%2020.9375%2026.5C21.5625%2027.5833%2022.4167%2028.4375%2023.5%2029.0625C24.5833%2029.6875%2025.75%2030%2027%2030ZM27%2014C28.625%2014%2030.125%2014.3958%2031.5%2015.1875C32.875%2015.9792%2033.9792%2017.0833%2034.8125%2018.5C35.6042%2019.9167%2036%2021.4167%2036%2023C36%2024.5833%2035.6042%2026.0833%2034.8125%2027.5C33.9792%2028.9167%2032.875%2030.0208%2031.5%2030.8125C30.125%2031.6042%2028.625%2032%2027%2032C25.375%2032%2023.875%2031.6042%2022.5%2030.8125C21.125%2030.0208%2020.0208%2028.9167%2019.1875%2027.5C18.3958%2026.0833%2018%2024.5833%2018%2023C18%2021.4167%2018.3958%2019.9167%2019.1875%2018.5C20.0208%2017.0833%2021.125%2015.9792%2022.5%2015.1875C23.875%2014.3958%2025.375%2014%2027%2014ZM27%2018C27.625%2018.0417%2027.9583%2018.375%2028%2019V22H30C30.625%2022.0417%2030.9583%2022.375%2031%2023C30.9583%2023.625%2030.625%2023.9583%2030%2024H27C26.375%2023.9583%2026.0417%2023.625%2026%2023V19C26.0417%2018.375%2026.375%2018.0417%2027%2018Z%22%20fill%3D%22%23FFB300%22%20fill-opacity%3D%220.760784%22%2F%3E%0A%3C%2Fsvg%3E"
-        />
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-xl", "text-count-schedule")}
+          className={_utils.cx(_styles, "calendar_clock")}
           tag="div"
         >
-          {textWaitingCount}
+          <GlobalIcon size="8" iconName="calendar_clock" weight="thin" />
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "schedule-count-wrap")}
-          tag="div"
-        >
-          <_Builtin.Block tag="div">{"Waiting"}</_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "count_info")} tag="div">
+          <Text content={textWaitingCount} size="6" weight="medium" />
           <_Builtin.Block
-            className={_utils.cx(_styles, "accent-text")}
+            className={_utils.cx(_styles, "schedule-count-wrap")}
             tag="div"
           >
-            {textIncreasedWaiting}
+            <Text content="Waiting" weight="medium" color="neutral" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "accent-text")}
+              tag="div"
+            >
+              {textIncreasedWaiting}
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
@@ -103,26 +111,25 @@ export function ScheduleCountStats({
         className={_utils.cx(_styles, "scheduling-menu")}
         tag="div"
       >
-        <_Builtin.HtmlEmbed
-          className={_utils.cx(_styles, "icons")}
-          value="%3Csvg%20width%3D%2228%22%20height%3D%2232%22%20viewBox%3D%220%200%2028%2032%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M7%200C7.625%200.0416667%207.95833%200.375%208%201V4H20V1C20.0417%200.375%2020.375%200.0416667%2021%200C21.625%200.0416667%2021.9583%200.375%2022%201V4H24C25.125%204.04167%2026.0625%204.4375%2026.8125%205.1875C27.5625%205.9375%2027.9583%206.875%2028%208V10V12V28C27.9583%2029.125%2027.5625%2030.0625%2026.8125%2030.8125C26.0625%2031.5625%2025.125%2031.9583%2024%2032H4C2.875%2031.9583%201.9375%2031.5625%201.1875%2030.8125C0.4375%2030.0625%200.0416667%2029.125%200%2028V12V10V8C0.0416667%206.875%200.4375%205.9375%201.1875%205.1875C1.9375%204.4375%202.875%204.04167%204%204H6V1C6.04167%200.375%206.375%200.0416667%207%200ZM26%2012H2V28C2%2028.5833%202.1875%2029.0625%202.5625%2029.4375C2.9375%2029.8125%203.41667%2030%204%2030H24C24.5833%2030%2025.0625%2029.8125%2025.4375%2029.4375C25.8125%2029.0625%2026%2028.5833%2026%2028V12ZM24%206H4C3.41667%206%202.9375%206.1875%202.5625%206.5625C2.1875%206.9375%202%207.41667%202%208V10H26V8C26%207.41667%2025.8125%206.9375%2025.4375%206.5625C25.0625%206.1875%2024.5833%206%2024%206Z%22%20fill%3D%22%235B5BD6%22%2F%3E%0A%3C%2Fsvg%3E"
-        />
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-xl", "text-count-schedule")}
+          className={_utils.cx(_styles, "event_upcoming")}
           tag="div"
         >
-          {textConfirmedCount}
+          <GlobalIcon size="8" iconName="event_upcoming" weight="thin" />
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "schedule-count-wrap")}
-          tag="div"
-        >
-          <_Builtin.Block tag="div">{"Confirmed"}</_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "count_info")} tag="div">
+          <Text content={textConfirmedCount} size="6" weight="medium" />
           <_Builtin.Block
-            className={_utils.cx(_styles, "accent-text")}
+            className={_utils.cx(_styles, "schedule-count-wrap")}
             tag="div"
           >
-            {textIncreasedConfirmed}
+            <Text content="Confirmed" weight="medium" color="neutral" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "accent-text")}
+              tag="div"
+            >
+              {textIncreasedConfirmed}
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
@@ -130,26 +137,22 @@ export function ScheduleCountStats({
         className={_utils.cx(_styles, "scheduling-menu")}
         tag="div"
       >
-        <_Builtin.HtmlEmbed
-          className={_utils.cx(_styles, "icons")}
-          value="%3Csvg%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M10%201V4H22V1C22.0417%200.375%2022.375%200.0416667%2023%200C23.625%200.0416667%2023.9583%200.375%2024%201V4H26C27.125%204.04167%2028.0625%204.4375%2028.8125%205.1875C29.5625%205.9375%2029.9583%206.875%2030%208V10V12V28C29.9583%2029.125%2029.5625%2030.0625%2028.8125%2030.8125C28.0625%2031.5625%2027.125%2031.9583%2026%2032H6C4.875%2031.9583%203.9375%2031.5625%203.1875%2030.8125C2.4375%2030.0625%202.04167%2029.125%202%2028V12V10V8C2.04167%206.875%202.4375%205.9375%203.1875%205.1875C3.9375%204.4375%204.875%204.04167%206%204H8V1C8.04167%200.375%208.375%200.0416667%209%200C9.625%200.0416667%209.95833%200.375%2010%201ZM4%2012V28C4%2028.5833%204.1875%2029.0625%204.5625%2029.4375C4.9375%2029.8125%205.41667%2030%206%2030H26C26.5833%2030%2027.0625%2029.8125%2027.4375%2029.4375C27.8125%2029.0625%2028%2028.5833%2028%2028V12H4ZM6%206C5.41667%206%204.9375%206.1875%204.5625%206.5625C4.1875%206.9375%204%207.41667%204%208V10H28V8C28%207.41667%2027.8125%206.9375%2027.4375%206.5625C27.0625%206.1875%2026.5833%206%2026%206H6ZM20.6875%2017.6875L17.4375%2021L20.6875%2024.3125C21.1042%2024.7708%2021.1042%2025.2292%2020.6875%2025.6875C20.2292%2026.1042%2019.7708%2026.1042%2019.3125%2025.6875L16%2022.4375L12.6875%2025.6875C12.2292%2026.1042%2011.7708%2026.1042%2011.3125%2025.6875C10.8958%2025.2292%2010.8958%2024.7708%2011.3125%2024.3125L14.5625%2021L11.3125%2017.6875C10.8958%2017.2292%2010.8958%2016.7708%2011.3125%2016.3125C11.7708%2015.8958%2012.2292%2015.8958%2012.6875%2016.3125L16%2019.5625L19.3125%2016.3125C19.7708%2015.8958%2020.2292%2015.8958%2020.6875%2016.3125C21.1042%2016.7708%2021.1042%2017.2292%2020.6875%2017.6875Z%22%20fill%3D%22%23E54D2E%22%2F%3E%0A%3C%2Fsvg%3E"
-        />
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-xl", "text-count-schedule")}
-          tag="div"
-        >
-          {textCancelledCount}
+        <_Builtin.Block className={_utils.cx(_styles, "event_busy")} tag="div">
+          <GlobalIcon size="8" iconName="event_busy" weight="thin" />
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "schedule-count-wrap")}
-          tag="div"
-        >
-          <_Builtin.Block tag="div">{"Cancelled"}</_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "count_info")} tag="div">
+          <Text content={textCancelledCount} size="6" weight="medium" />
           <_Builtin.Block
-            className={_utils.cx(_styles, "accent-text")}
+            className={_utils.cx(_styles, "schedule-count-wrap")}
             tag="div"
           >
-            {textIncreasedCancelled}
+            <Text content="Cancelled" weight="medium" color="neutral" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "accent-text")}
+              tag="div"
+            >
+              {textIncreasedCancelled}
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

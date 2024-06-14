@@ -22,7 +22,7 @@ export function AvailabilityReq({
           align="center"
           color="neutral-12"
           size="4"
-          weight="bold"
+          weight="medium"
         />
         <Text content={textDesc} align="center" color="neutral" />
       </_Builtin.Block>

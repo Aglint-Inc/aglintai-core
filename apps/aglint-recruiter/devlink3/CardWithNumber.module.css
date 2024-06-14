@@ -51,7 +51,5 @@
   grid-column-gap: 20px;
   grid-row-gap: 20px;
 
-  border-radius: 10px;
-
-  background-color: #f7f9fb;
+  background-color: var(--neutral-2);
 }

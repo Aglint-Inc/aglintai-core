@@ -163,7 +163,8 @@ const TeamManagement = () => {
           <>
             <Stack marginRight={5}>
               <UITextField
-                width='400px'
+                width='250px'
+                height={32}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position='end'>
@@ -171,7 +172,7 @@ const TeamManagement = () => {
                     </InputAdornment>
                   ),
                 }}
-                placeholder='Search by Name, Email or Title'
+                placeholder='Search Interviewer'
                 onChange={handleSearchInputChange}
               />
             </Stack>

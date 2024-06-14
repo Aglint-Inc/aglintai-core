@@ -86,12 +86,12 @@ export default function AppLayout({ children }) {
         <Stack
           paddingTop={'12px !important'}
           borderRight={'1px solid'}
-           borderColor='var(--neutral-6)'
+          borderColor='var(--neutral-6)'
           position={'relative'}
           // p={'28px 20px 12px 16px'}
           // pt={'28px'}
           // bgcolor={'#25282A'}
-          width={'70px'}
+          width={'68px'}
           p={'12px 10px'}
         >
           <Stack

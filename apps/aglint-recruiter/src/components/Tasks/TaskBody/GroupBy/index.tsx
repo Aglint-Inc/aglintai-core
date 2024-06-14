@@ -60,6 +60,8 @@ function GroupBy() {
         sx={{
           '& .MuiPopover-paper': {
             border: 'none',
+            marginTop: 'var(--space-4)',
+            padding: 'var(--space-1) var(--space-2)',
           },
         }}
       >
@@ -71,6 +73,7 @@ function GroupBy() {
                 direction={'row'}
                 alignItems={'center'}
                 spacing={'var(--space-2)'}
+                padding={'var(--space-1) 0'}
               >
                 <Stack>{item.icon}</Stack>
                 <FilterPill

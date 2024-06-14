@@ -258,7 +258,7 @@ const WorkflowBrowser = () => {
         }
         isDescriptionVisibe={true}
         slotPopup={
-          <Stack style={{ height: '600px', gap: '8px', overflow: 'scroll' }}>
+          <Stack style={{ height: 'calc(100vh - 120px)', gap: '8px', overflow: 'scroll' }}>
             {cards.length ? cards : <WorkflowEmpty />}
           </Stack>
         }
