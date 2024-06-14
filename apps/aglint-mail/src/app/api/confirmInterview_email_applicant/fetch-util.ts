@@ -47,7 +47,6 @@ export async function fetchUtil(
       recruiter_id,
       first_name,
       recruiter: { logo },
-      timezone,
     },
     public_jobs: { company, job_title },
   } = candidateJob;
@@ -56,7 +55,7 @@ export async function fetchUtil(
     recruiter_id,
     'confirmInterview_email_applicant',
   );
-  const cand_tz = timezone ?? 'America/Los_Angeles';
+  const cand_tz = 'America/Los_Angeles';
 
   const meeting_details = int_sessions.map((int_session) => {
     return {

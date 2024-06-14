@@ -45,7 +45,7 @@ export async function dbFetch(
     'interviewStart_email_applicant',
   );
 
-  const cand_tz = candidateJob.candidates.timezone ?? 'America/Los_angeles';
+  const cand_tz = 'America/Los_angeles';
 
   const comp_email_placeholder: EmailTemplateAPi<'interviewStart_email_applicant'>['comp_email_placeholders'] =
     {

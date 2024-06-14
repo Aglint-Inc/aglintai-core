@@ -41,7 +41,7 @@ export async function fetchUtil(
       .eq('user_id', candidateJob.public_jobs.recruiter),
   );
 
-  const cand_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
+  const cand_tz = 'America/Los_Angeles';
 
   const meeting_details: MeetingDetailCardType[] = sessions.map((session) => {
     const {
