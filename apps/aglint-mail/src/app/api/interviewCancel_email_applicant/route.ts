@@ -52,3 +52,12 @@ export async function POST(req: Request) {
     );
   }
 }
+
+// {
+//   "meta": {
+//       "application_id": "e8218fdc-524c-4f05-8786-23399370777b",
+//       "session_ids": [
+//           "edab9d72-53f1-4a34-91e2-934f50bcea0e"
+//       ]
+//   }
+// }

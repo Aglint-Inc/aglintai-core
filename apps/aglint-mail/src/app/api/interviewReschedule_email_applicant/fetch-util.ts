@@ -68,7 +68,7 @@ export async function fetchUtil(
     } = session;
     return {
       date: dayjsLocal(start_time).tz(cand_tz).format('ddd MMMM DD, YYYY'),
-      time: `${dayjsLocal(start_time).format('hh:mm A')} - ${dayjsLocal(end_time).format('hh:mm A')}`,
+      time: `${dayjsLocal(start_time).tz(cand_tz).format('hh:mm A')} - ${dayjsLocal(end_time).tz(cand_tz).format('hh:mm A')}`,
       sessionType: name,
       platform: platformRemoveUnderscore(schedule_type),
       duration: durationCalculator(session_duration),
@@ -83,6 +83,7 @@ export async function fetchUtil(
     {
       '{{ candidateFirstName }}': first_name,
       '{{ jobRole }}': job_title,
+      '{{ jobTitle }}': job_title,
       '{{ companyName }}': company,
       '{{ selfScheduleLink }}': scheduleLink,
       '{{ recruiterFullName }}': getFullName(

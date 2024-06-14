@@ -80,6 +80,7 @@ export async function fetchUtil(
       '{{ additionalRescheduleNotes }}': session_cancel.other_details.note,
       '{{ cancelReason }}': session_cancel.reason,
       '{{ recruiterName }}': recruiter_user.first_name,
+      '{{ jobTitle }}': candidateJob.public_jobs.job_title,
       '{{ candidateFirstName }}': candidates.first_name,
       '{{ companyName }}': public_jobs.company,
       '{{ recruiterFullName }}': getFullName(
