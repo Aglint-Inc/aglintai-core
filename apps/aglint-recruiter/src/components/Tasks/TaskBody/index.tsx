@@ -79,7 +79,7 @@ function TaskBody() {
                     );
                   })}
                 <ShowCode.When isTrue={!loadingTasks && tasks.length === 0}>
-                  <Stack height={'40vh'}>
+                  <Stack height={'calc(100vh - 176px)'} style={{ backgroundColor: 'var(--neutral-2)' }}>
                     <TaskEmpty />
                   </Stack>
                 </ShowCode.When>
