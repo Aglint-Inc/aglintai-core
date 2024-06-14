@@ -1,10 +1,10 @@
 import { Dialog } from '@mui/material';
 
 import { ImportCandidates } from '@/devlink/ImportCandidates';
-import { ImportCsv } from '@/devlink/ImportCsv';
 import { ImportResume } from '@/devlink/ImportResume';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 
+import { ImportCsv } from './importCsv';
 import { ImportManual } from './importManual';
 
 const UploadApplications = () => {
