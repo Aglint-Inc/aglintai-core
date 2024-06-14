@@ -51,6 +51,11 @@
   grid-row-gap: var(--space-1);
 }
 
+.flex-horizontal.align-center {
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .sto-link-wrap {
   display: flex;
   justify-content: flex-start;

@@ -66,7 +66,7 @@ export function JobDetailBlock({
             className={_utils.cx(_styles, "aeravgaergf", "mb-20")}
             tag="div"
           >
-            <Text content="Job Description" />
+            <Text content="Job Description" weight="medium" />
             <_Builtin.Block
               className={_utils.cx(_styles, "cj-richtext-editor-wrapper")}
               tag="div"
@@ -91,7 +91,7 @@ export function JobDetailBlock({
               className={_utils.cx(_styles, "div-block-507")}
               tag="div"
             >
-              <Text content="Hiring Team" />
+              <Text content="Hiring Team" weight="medium" />
               <Text content={textDescription} weight="" color="neutral" />
             </_Builtin.Block>
           </_Builtin.Block>

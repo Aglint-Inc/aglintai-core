@@ -21,6 +21,7 @@
 }
 
 .avatar_40 {
+  overflow: hidden;
   width: var(--space-7);
   height: var(--space-7);
   flex: 0 0 auto;

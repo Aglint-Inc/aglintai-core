@@ -17,10 +17,10 @@
   flex-wrap: nowrap;
   align-items: center;
 
-  border: 1px dashed var(--accent-6);
+  border: 1px dashed var(--neutral-6);
   border-radius: 4px;
 
-  background-color: var(--accent-3);
+  background-color: var(--neutral-2);
 
   cursor: pointer;
 }

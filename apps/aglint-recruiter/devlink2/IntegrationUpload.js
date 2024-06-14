@@ -18,11 +18,7 @@ export function IntegrationUpload({
         tag="div"
         {...onClickDragUpload}
       >
-        <Text
-          color="accent"
-          content="Drag file here or click to upload"
-          weight=""
-        />
+        <Text color="a" content="Drag file here or click to upload" weight="" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(

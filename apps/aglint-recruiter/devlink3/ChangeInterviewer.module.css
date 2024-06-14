@@ -48,7 +48,14 @@
 }
 
 .popup_close {
+  padding: var(--space-1);
+  border-radius: var(--radius-2);
+  transition: all 200ms ease;
   cursor: pointer;
+}
+
+.popup_close:hover {
+  background-color: var(--neutral-3);
 }
 
 .popup_close.cursor-pointer {
