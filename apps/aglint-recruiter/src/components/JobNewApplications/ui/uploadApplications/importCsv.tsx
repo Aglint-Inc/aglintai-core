@@ -179,7 +179,7 @@ const ImportCsv = () => {
                       </Typography>
                     </CSVLink>
                   </Stack>
-                  <Stack {...getRootProps()} sx={{ height: '320px' }}>
+                  <Stack {...getRootProps()}>
                     <input id='uploadCsv' {...getInputProps()} />
                     <ImportCandidatesCsv />
                   </Stack>

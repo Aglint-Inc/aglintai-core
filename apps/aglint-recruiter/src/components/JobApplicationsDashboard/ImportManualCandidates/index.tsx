@@ -246,7 +246,7 @@ const FormBody = ({
   };
   return (
     <Stack gap={3} p={'var(--space-1)'}>
-      <Stack flexDirection={'row'} gap={3}>
+      <Stack flexDirection={'row'} gap={1}>
         <UITextField
           labelBold='normal'
           labelSize='small'
