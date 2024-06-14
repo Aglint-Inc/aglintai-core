@@ -43,10 +43,10 @@ function InterviewerListCard({
     }
   };
 
-  // const isAccepted =
-  //   item.interview_session_relation.accepted_status === 'accepted';
-  // const isDeclined =
-  //   item.interview_session_relation.accepted_status === 'declined';
+  const isAccepted =
+    item.interview_session_relation.accepted_status === 'accepted';
+  const isDeclined =
+    item.interview_session_relation.accepted_status === 'declined';
   const isAcceptVisible =
     item.interview_session_relation.accepted_status === 'waiting' &&
     schedule.interview_meeting.status === 'confirmed' &&

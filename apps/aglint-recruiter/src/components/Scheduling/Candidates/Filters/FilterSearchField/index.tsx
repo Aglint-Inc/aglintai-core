@@ -27,7 +27,6 @@ function FilterSearchField() {
         onChange={(e) => {
           setFilter({ textSearch: e.target.value });
         }}
-        width='250px'
       />
     </>
   );
