@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import {CandidateInfoType} from '../../types/app_types/scheduleAgentTypes';
 import {TwilioCallDetails} from '../../types/twilio.types';
 import {Redis_KV, redisClient} from './redis-cache';
@@ -17,9 +16,7 @@ export const addCandInfoToCache = async (
 };
 
 export const getCachedCandidateInfo = async (cand_phone: string) => {
-  console.time('redisGET');
   const data = await redisClient.hget(Redis_KV.CAND_INFO, cand_phone);
-  console.timeEnd('redisGET');
   if (!data) throw new Error('Error candidate cache get');
   return JSON.parse(data) as CandidateInfoType;
 };
