@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
@@ -56,8 +55,8 @@ export async function fetchUtil(
         session_type,
       } = session;
       return {
-        date: dayjs(start_time).format('ddd MMMM DD, YYYY'),
-        time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
+        date: dayjsLocal(start_time).tz(cand_tz).format('ddd MMMM DD, YYYY'),
+        time: `${dayjsLocal(start_time).tz(cand_tz).format('hh:mm A')} - ${dayjsLocal(end_time).tz(cand_tz).format('hh:mm A')}`,
         sessionType: name,
         platform: platformRemoveUnderscore(schedule_type),
         duration: durationCalculator(session_duration),
