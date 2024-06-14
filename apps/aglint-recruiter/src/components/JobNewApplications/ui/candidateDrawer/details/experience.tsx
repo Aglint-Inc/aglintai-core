@@ -4,25 +4,18 @@ import Image from 'next/image';
 
 import { CandidateDetail } from '@/devlink/CandidateDetail';
 import { ExperienceItem } from '@/devlink/ExperienceItem';
+import { ExperienceSkeleton } from '@/devlink/ExperienceSkeleton';
+import { Skeleton } from '@/devlink2/Skeleton';
 import { GlobalIcon } from '@/devlink3/GlobalIcon';
 import { useApplication } from '@/src/context/ApplicationContext';
 
+import { Loader } from '../common';
+
 const Experience = () => {
-  const {
-    details: { data, status },
-  } = useApplication();
-  if (status === 'pending') return <>Loading experience ...</>;
-  if (
-    !(
-      (data?.resume_json?.positions ?? []).length &&
-      data?.score_json?.relevance?.positions
-    )
-  )
-    return <></>;
   return (
     <CandidateDetail
       slotIcon={<GlobalIcon size={5} iconName={'work'} />}
-      slotBody={<Experiences />}
+      slotBody={<Content />}
       textTitle={'Experience'}
       slotBadge={<></>}
     />
@@ -30,6 +23,26 @@ const Experience = () => {
 };
 
 export { Experience };
+
+const Content = () => {
+  const {
+    details: { data, status },
+  } = useApplication();
+  if (status === 'pending')
+    return (
+      <Loader count={3}>
+        <ExperienceSkeleton slotLoader={<Skeleton />} />
+      </Loader>
+    );
+  if (
+    !(
+      (data?.resume_json?.positions ?? []).length &&
+      data?.score_json?.relevance?.positions
+    )
+  )
+    return <>No schools found</>;
+  return <Experiences />;
+};
 
 const Experiences = () => {
   const {

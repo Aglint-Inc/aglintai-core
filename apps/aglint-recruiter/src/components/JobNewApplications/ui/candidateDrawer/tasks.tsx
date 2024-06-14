@@ -3,7 +3,9 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import { JobDetailInterview } from '@/devlink/JobDetailInterview';
+import { SkeletonTaskDetailBlock } from '@/devlink/SkeletonTaskDetailBlock';
 import { TaskDetailBlock } from '@/devlink/TaskDetailBlock';
+import { Skeleton } from '@/devlink2/Skeleton';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { EmailAgentIcon } from '@/src/components/Tasks/Components/EmailAgentIcon';
 import { PhoneAgentIcon } from '@/src/components/Tasks/Components/PhoneAgentIcon';
@@ -11,7 +13,7 @@ import StatusChip from '@/src/components/Tasks/Components/StatusChip';
 import { useApplication } from '@/src/context/ApplicationContext';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
-import { EmptyState } from './common';
+import { EmptyState, Loader } from './common';
 
 const Tasks = () => {
   const {
@@ -20,13 +22,38 @@ const Tasks = () => {
   } = useApplication();
   const { push } = useRouter();
 
-  if (status === 'pending') return <>Loading...</>;
+  if (status === 'success' && (data ?? []).length === 0)
+    return <EmptyState tab='Tasks' />;
 
   if (status === 'error') return <>Something went wrong</>;
 
-  if (data.length === 0) return <EmptyState tab='Tasks' />;
+  return (
+    <JobDetailInterview
+      slotNewInterviewPlanCard={<Content />}
+      textButton={'View in tasks'}
+      onClickViewScheduler={{
+        style: { display: status === 'success' ? 'flex' : 'none' },
+        onClick: () => push(`/tasks?application_id=${application_id ?? null}`),
+      }}
+    />
+  );
+};
 
-  const taskCards = (data ?? []).map((task) => (
+export { Tasks };
+
+const Content = () => {
+  const {
+    tasks: { data, status },
+  } = useApplication();
+
+  if (status === 'pending')
+    return (
+      <Loader count={3}>
+        <SkeletonTaskDetailBlock slotSkeleton={<Skeleton />} />
+      </Loader>
+    );
+
+  return (data ?? []).map((task) => (
     <TaskDetailBlock
       key={task.id}
       slotIcon={<TaskIcon created_by={task.created_by} />}
@@ -35,19 +62,7 @@ const Tasks = () => {
       textName={<TaskName created_by={task.created_by} />}
     />
   ));
-  if (taskCards.length === 0) return <></>;
-  return (
-    <JobDetailInterview
-      slotNewInterviewPlanCard={taskCards}
-      textButton={'View in tasks'}
-      onClickViewScheduler={{
-        onClick: () => push(`/tasks?application_id=${application_id ?? null}`),
-      }}
-    />
-  );
 };
-
-export { Tasks };
 
 const TaskName = ({ created_by }: { created_by: string }) => {
   const member = useTaskMember(created_by);

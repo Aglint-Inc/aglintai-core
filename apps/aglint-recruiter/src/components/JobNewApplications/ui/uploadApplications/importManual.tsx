@@ -5,7 +5,7 @@ import { Stack, Typography } from '@mui/material';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
-import AUIButton from '@/src/components/Common/AUIButton';
+import { ButtonSolid } from '@/devlink3/ButtonSolid';
 import UIPhoneInput from '@/src/components/Common/UIPhoneInput';
 import UITextField from '@/src/components/Common/UITextField';
 import { useApplications } from '@/src/context/ApplicationsContext';
@@ -171,9 +171,11 @@ const ImportManual = () => {
     <Stack style={{ background: 'white' }}>
       <FormBody applicant={applicant} setApplicant={setApplicant} />
       <Stack direction={'row'} justifyContent={'flex-end'}>
-        <AUIButton size='small' onClick={async () => await handleSubmit()}>
-          Add Candidate
-        </AUIButton>
+        <ButtonSolid
+          size={2}
+          onClickButton={{ onClick: async () => await handleSubmit() }}
+          textButton={'Add Candidate'}
+        />
       </Stack>
     </Stack>
   );
