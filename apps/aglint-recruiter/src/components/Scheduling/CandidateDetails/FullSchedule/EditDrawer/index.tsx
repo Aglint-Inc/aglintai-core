@@ -588,6 +588,7 @@ function SideDrawerEdit() {
                             {selectedInterviewers?.map((interviewer) => {
                               return (
                                 <SelectedMemberPill
+                                  isCloseButton={true}
                                   key={interviewer.value}
                                   onClickRemove={{
                                     onClick: () => {
@@ -622,6 +623,7 @@ function SideDrawerEdit() {
                               return (
                                 <SelectedMemberPill
                                   key={interviewer.value}
+                                  isCloseButton={true}
                                   onClickRemove={{
                                     onClick: () => {
                                       setTrainingInterviewers(

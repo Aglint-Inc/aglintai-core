@@ -573,6 +573,7 @@ const InterviewerPills = ({
     return (
       <SelectedMemberPill
         key={interviewer.user_id}
+        isCloseButton={true}
         onClickRemove={{ onClick: () => onChange(interviewer.user_id) }}
         textMemberName={name}
         slotMemberAvatar={
