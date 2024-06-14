@@ -58,6 +58,13 @@
   grid-row-gap: var(--space-4);
 }
 
+.flex-horizontal.gap-2 {
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
 .icons {
   display: flex;
   flex-direction: column;

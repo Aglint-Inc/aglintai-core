@@ -5,6 +5,7 @@ import { Text } from "./Text";
 import { InterviewModuleCard } from "./InterviewModuleCard";
 import { InterviewBreakCard } from "./InterviewBreakCard";
 import { AddScheduleCard } from "./AddScheduleCard";
+import { GeneralScheduleCard } from "./GeneralScheduleCard";
 import * as _utils from "./utils";
 import _styles from "./InterviewPlan.module.css";
 
@@ -17,15 +18,18 @@ export function InterviewPlan({
   slotInterviewCoordinator,
   slotPrimaryButton,
   isEmptyVisible = false,
+  isCoordinatorVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "interviewplan")} tag="div">
-      <_Builtin.Block
-        className={_utils.cx(_styles, "slot-interview-coordinator")}
-        tag="div"
-      >
-        {slotInterviewCoordinator}
-      </_Builtin.Block>
+      {isCoordinatorVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "slot-interview-coordinator")}
+          tag="div"
+        >
+          {slotInterviewCoordinator}
+        </_Builtin.Block>
+      ) : null}
       <_Builtin.Block className={_utils.cx(_styles, "title_wrap")} tag="div">
         <Text content="Interview plan for this job" weight="medium" />
         <Text
@@ -60,6 +64,7 @@ export function InterviewPlan({
             <InterviewModuleCard />
             <InterviewBreakCard />
             <AddScheduleCard isAddSessionOptionVisible={false} />
+            <GeneralScheduleCard />
           </>
         )}
       </_Builtin.Block>

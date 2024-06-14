@@ -1157,7 +1157,7 @@ const SessionCard = ({ session: { interview_session } }: SessionCardProps) => {
         <IconScheduleType type={interview_session.schedule_type} />
       }
       slotInterviewtypeIcon={
-        <SessionIcon sessionType={interview_session.session_type} />
+        <SessionIcon session_type={interview_session.session_type} />
       }
     />
   );

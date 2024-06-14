@@ -161,9 +161,13 @@
   grid-column-gap: 4px;
   grid-row-gap: 4px;
 
-  transition: all 200ms ease;
+  transition-property: all;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
 
   cursor: pointer;
+
+  user-select: none;
 }
 
 .icon_placeholder {
@@ -246,7 +250,7 @@
   position: relative;
 
   display: flex;
-  height: 36px;
+  height: 38px;
   justify-content: space-between;
   align-items: center;
 
@@ -293,8 +297,11 @@
 .jdet-actions-bar {
   display: flex;
   height: 48px;
+  padding-right: var(--space-2);
+  padding-left: var(--space-4);
   flex-direction: column;
   justify-content: center;
+
   border-top: 1px solid #e9ebed;
 }
 

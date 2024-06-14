@@ -95,12 +95,7 @@ export function ReqAvailability({
                 <_Builtin.Block tag="div">
                   {slotCheckingIcon ?? <SlotComp componentNeme="Prefernce" />}
                 </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-grey-600")}
-                  tag="div"
-                >
-                  {"Checking avaialable slots"}
-                </_Builtin.Block>
+                <Text weight="" content="Checking available slots" />
               </_Builtin.Block>
               {isFoundSlots ? (
                 <_Builtin.Block
@@ -138,7 +133,7 @@ export function ReqAvailability({
             <_Builtin.Block tag="div">
               {slotCheckboxAvailability ?? <SlotComp componentNeme="Ceckbox" />}
             </_Builtin.Block>
-            <Text weight="" content="Create task for availability request" />
+            <Text weight="" content="Create task for availability request." />
           </_Builtin.Block>
         ) : null}
       </_Builtin.Block>

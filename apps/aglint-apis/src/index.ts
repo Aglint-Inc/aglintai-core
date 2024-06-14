@@ -5,7 +5,7 @@ import phoneAgentRoutes, {mountScheduleAgentWs} from './routes/scheduleAgent';
 import screenignAgentRouter from './routes/screeningAgent';
 
 import slackRoutes from './routes/slack';
-import errorHandler from './middlewares/middleware';
+import errorHandler from './middlewares/errorHandler';
 import emailAgentRouter from './routes/emailAgent';
 import retellRoutes from './routes/retell';
 import twilioRouter from './routes/twilio';
@@ -13,6 +13,7 @@ import twilioRouter from './routes/twilio';
 import {envConfig} from './config';
 import {twilioClient} from './services/twilio/index';
 import {appLogger} from './services/logger/index';
+import {redisClient} from './services/cache/redis-cache';
 
 const PORT = envConfig.PORT;
 
@@ -22,7 +23,7 @@ app.use(
   cors({
     origin: [
       'http://localhost:3000',
-      'https://preprod.aglinthq.com',
+      'https://dev.aglinthq.com',
       'https://app.aglinthq.com',
     ],
   })

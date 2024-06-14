@@ -14,7 +14,6 @@ import { Assessment } from '@/src/queries/assessment/types';
 import { useInterviewPlans } from '@/src/queries/interview-plans';
 import {
   useJobDashboardRefresh,
-  useJobInterviewPlanEnabled,
   useJobLocations,
   useJobMatches,
   useJobSchedules,
@@ -57,7 +56,6 @@ const useProviderJobDashboardActions = () => {
   const matches = useJobMatches(job);
   const tenureAndExperience = useJobTenureAndExperience(job);
   const schedules = useJobSchedules(job);
-  const interviewPlanEnabled = useJobInterviewPlanEnabled(job);
   const interviewPlans = useInterviewPlans();
   const workflows = useJobWorkflow({ id: job?.id });
 
@@ -115,7 +113,6 @@ const useProviderJobDashboardActions = () => {
     !matches.isPending &&
     !tenureAndExperience.isPending &&
     !schedules.isPending &&
-    !interviewPlanEnabled.isPending &&
     !interviewPlans.isPending &&
     !workflows.isPending
   );
@@ -141,7 +138,6 @@ const useProviderJobDashboardActions = () => {
     jobLoad,
     loadStatus,
     emailTemplateValidity,
-    interviewPlanEnabled,
     workflows,
     handleJobRefresh,
     isInterviewPlanDisabled,

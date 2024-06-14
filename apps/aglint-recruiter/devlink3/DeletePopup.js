@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { GlobalIcon } from "./GlobalIcon";
 import { ButtonSoft } from "./ButtonSoft";
 import { ButtonSolid } from "./ButtonSolid";
@@ -26,12 +27,7 @@ export function DeletePopup({
     >
       <_Builtin.Block className={_utils.cx(_styles, "popup_header")} tag="div">
         <_Builtin.Block className={_utils.cx(_styles, "popup_title")} tag="div">
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {textTitle}
-          </_Builtin.Block>
+          <Text content={textTitle} />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "popup_close")}

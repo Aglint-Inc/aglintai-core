@@ -228,6 +228,7 @@ const InterviewPlan = () => {
   return (
     <>
       <InterviewPlanDev
+      isCoordinatorVisible={false}
         slotInterviewCoordinator={<></>}
         isEmptyVisible={sessions.length === 0}
         slotPrimaryButton={
@@ -393,6 +394,7 @@ const InterviewSession = ({
           mb={hover ? 1 : 4}
         >
           <GeneralScheduleCard
+          
             textModuleName={
               <Stack style={{ flexDirection: 'row', gap: '12px' }}>
                 <>{session.name}</>

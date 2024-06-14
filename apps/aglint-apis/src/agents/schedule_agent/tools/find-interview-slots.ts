@@ -39,7 +39,7 @@ export const findInterviewSlots = () => {
         return fromError(error).toString();
       }
       const {date} = parsedData;
-      const cand_info = getCachedCandidateInfo(cand_phone);
+      const cand_info = await getCachedCandidateInfo(cand_phone);
       const cand_time_zone = cand_info.candidate_tz.tz_code;
       const slot_date = convertDateFormatToDayjs(
         `${String(date.day)}/${String(date.month).padStart(2, '0')}/${dayjsLocal().get('year')}`,

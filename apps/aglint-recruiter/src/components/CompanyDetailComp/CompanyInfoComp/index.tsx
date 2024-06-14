@@ -314,11 +314,11 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                 },
               }}
               slotBasicForm={
-                <Stack spacing={2} p={'var(--space-1)'}>
+                <Stack spacing={2} p={'var(--space-1)'} sx={{width:'380px'}}>
                   <UITextField
                     labelBold='default'
                     labelSize='small'
-                    fullWidth
+                    
                     label='Company Name'
                     placeholder='Ex. Acme Inc.'
                     value={recruiter?.name}

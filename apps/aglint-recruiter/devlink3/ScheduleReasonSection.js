@@ -20,7 +20,7 @@ export function ScheduleReasonSection({
         className={_utils.cx(_styles, "section_header_desc")}
         tag="div"
       >
-        <Text content={textHeading} weight="medium" />
+        <Text content={textHeading} weight="bold" />
         <Text content={textDesc} weight="" color="neutral" />
       </_Builtin.Block>
       <_Builtin.Block
