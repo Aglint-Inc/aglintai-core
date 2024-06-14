@@ -50,3 +50,10 @@ export async function POST(req: Request) {
     );
   }
 }
+
+// {
+//   "meta": {
+//       "avail_req_id":"eb718192-9610-4d4c-988b-6e84fc914c08",
+//       "recruiter_user_id":"7f6c4cae-78b6-4eb6-86fd-9a0e0310147b"
+//   }
+// }
