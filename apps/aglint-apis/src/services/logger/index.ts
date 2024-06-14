@@ -10,28 +10,8 @@ const devlopmentLogger = () => {
       format.timestamp(), // Add timestamp
       format.json() // Log format as JSON
     ),
-    transports: [
-      new transports.Console(),
-      new transports.File({
-        filename: 'app.log',
-      }),
-    ],
+    transports: [new transports.Console()],
   });
 };
-// const winston = require('winston')
-// const productionLogger = () => {
-//   return createLogger({
-//     level: 'info',
-//     // format: winston.format.simple(),
-//     format: combine(timestamp(), json()),
-//     defaultMeta: {service: 'schedule-agents'},
-//     transports: [
-//       new transports.Console(),
-//       new transports.File({
-//         filename: 'errors.log',
-//       }),
-//     ],
-//   });
-// };
 
 export const appLogger = devlopmentLogger();
