@@ -88,7 +88,7 @@ const TaskIcon = ({ created_by }: { created_by: string }) => {
         <PhoneAgentIcon />
       </Stack>
     );
-  return <TaskMemeber created_by={created_by} />;
+  return <TaskMember created_by={created_by} />;
 };
 
 const useTaskMember = (id: string) => {
@@ -97,7 +97,7 @@ const useTaskMember = (id: string) => {
   return member ?? null;
 };
 
-const TaskMemeber = ({ created_by }: { created_by: string }) => {
+const TaskMember = ({ created_by }: { created_by: string }) => {
   const member = useTaskMember(created_by);
   const name = getFullName(member?.first_name, member?.last_name) ?? '---';
 

@@ -77,6 +77,17 @@ export const applicationQuery = {
       ],
       queryFn: () => getApplicationTasks({ application_id }),
     }),
+  activity: ({ application_id, job_id, enabled }: ToggleParams) =>
+    queryOptions({
+      enabled: enabled && !!application_id && !!job_id,
+      gcTime: application_id ? 1 * 60_000 : 0,
+      refetchOnMount: true,
+      queryKey: [
+        ...applicationQuery.application({ application_id, job_id }).queryKey,
+        'activity',
+      ],
+      queryFn: () => getApplicationActivity({ application_id }),
+    }),
 } as const;
 
 export const useUpdateApplication = (params: Params) => {
@@ -202,6 +213,18 @@ const getApplicationTasks = async ({
     await supabase
       .from('new_tasks')
       .select('id, name, created_by, status')
+      .eq('application_id', application_id)
+      .order('created_at', { ascending: false })
+      .throwOnError()
+  ).data;
+
+const getApplicationActivity = async ({
+  application_id,
+}: Pick<Params, 'application_id'>) =>
+  (
+    await supabase
+      .from('application_logs')
+      .select('*, recruiter_user(first_name, last_name, profile_image)')
       .eq('application_id', application_id)
       .order('created_at', { ascending: false })
       .throwOnError()

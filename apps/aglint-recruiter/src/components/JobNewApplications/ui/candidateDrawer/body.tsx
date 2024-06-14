@@ -10,6 +10,7 @@ import ResumeWait from '@/public/lottie/ResumeWait';
 import { useApplication } from '@/src/context/ApplicationContext';
 import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 
+import { Activity } from './activity';
 import { Details } from './details';
 import { Interview } from './interview';
 import { Meta } from './meta';
@@ -24,6 +25,7 @@ type Props = {
   interview: ReactNode;
   tabs: ReactNode;
   tasks: ReactNode;
+  activity: ReactNode;
 };
 
 const Body = (props: Partial<Props>) => {
@@ -56,11 +58,12 @@ Body.Tabs = Tabs;
 Body.Details = Details;
 Body.Interview = Interview;
 Body.Tasks = Tasks;
+Body.Activity = Activity;
 
 export { Body };
 
 const TabContent = (
-  props: Partial<Pick<Props, 'details' | 'interview' | 'tasks'>>,
+  props: Partial<Pick<Props, 'details' | 'interview' | 'tasks' | 'activity'>>,
 ) => {
   const tab = useApplicationStore(({ tab }) => tab);
   switch (tab) {
@@ -73,7 +76,7 @@ const TabContent = (
     case 'Tasks':
       return props.tasks ?? <Tasks />;
     case 'Activity':
-      return <></>;
+      return props.activity ?? <Activity />;
   }
 };
 
