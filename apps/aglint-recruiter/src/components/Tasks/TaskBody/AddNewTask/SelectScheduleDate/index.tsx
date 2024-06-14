@@ -121,7 +121,7 @@ function SelectScheduleDate({
                   </LocalizationProvider>
                 </ShowCode.Else>
               </ShowCode>
-              <Stack justifyContent={'end'} direction={'row'} spacing={'10px'}>
+              <Stack justifyContent={'end'} direction={'row'} spacing={'var(--space-2)'}>
                 <Button
                   onClick={() => {
                     setAnchorEl(null);

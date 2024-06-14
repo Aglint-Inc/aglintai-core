@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./ScorePercentage.module.css";
 
@@ -13,17 +15,18 @@ export function ScorePercentage({
     <_Component className={_utils.cx(_styles, "skill-wrap-score")} tag="div">
       <_Builtin.Block className={_utils.cx(_styles, "indicate-wrap")} tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "indicator-box", "purple")}
+          className={_utils.cx(_styles, "indicator-box")}
           tag="div"
           {...colorPropsBg}
         />
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {textTitle}
-        </_Builtin.Block>
+        <Text content={textTitle} weight="medium" />
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-695")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "skill-score-wrap")}
+        tag="div"
+      >
         <_Builtin.Block tag="div">{slotInputPercent}</_Builtin.Block>
-        <_Builtin.Block tag="div">{"%"}</_Builtin.Block>
+        <Text content="%" />
       </_Builtin.Block>
     </_Component>
   );

@@ -1,4 +1,5 @@
 import { Stack } from '@mui/material';
+import { Box } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
@@ -6,7 +7,7 @@ import Loader from '@/src/components/Common/Loader';
 import ROUTES from '@/src/utils/routing/routes';
 
 import ListCardInterviewSchedule from '../ListCard';
-import { ApplicationList } from '../store';
+import { ApplicationList } from '../utils';
 
 function AllList({
   isPending,
@@ -41,13 +42,8 @@ function AllList({
         pointerEvents: isLoading ? 'none' : 'auto',
       }}
     >
-      {isFetching && applicationList.length === 0 && (
+      {isLoading || isPending ? (
         <Stack width={'100%'} height={'500px'}>
-          <Loader />
-        </Stack>
-      )}
-      {isPending ? (
-        <Stack width={'100%'} height={'100%'}>
           <Loader />
         </Stack>
       ) : isError ? (
@@ -62,7 +58,21 @@ function AllList({
       ) : (
         <>
           {!isPending && !isFetching && applicationList.length === 0 && (
-            <AllInterviewEmpty textDynamic='No candidate found' />
+            <Box
+              sx={{
+                margin: 'var(--space-4)',
+                borderRadius: 'var(--radius-2)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: 'calc(100vh - 180px)',
+                backgroundColor: 'var(--neutral-2)', // replace with your desired background color
+              }}
+            >
+              <Box maxWidth="sm" width="300px">
+                <AllInterviewEmpty textDynamic="No candidate found." />
+              </Box>
+            </Box>
           )}
           {applicationList.map((app) => {
             return (

@@ -11,8 +11,8 @@ import { LearnHowLever } from '@/devlink3/LearnHowLever';
 import toast from '@/src/utils/toast';
 
 import Icon from '../../Common/Icons/Icon';
+import Loader from '../../Common/Lotties/Integration_Loader';
 import { ShowCode } from '../../Common/ShowCode';
-import Loader from '../Loader';
 import { PopUpReasonTypes } from '../types';
 
 function ATSPopUps({
@@ -34,13 +34,6 @@ function ATSPopUps({
 }) {
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isOpen}
       onClose={close}
       maxWidth={'md'}
@@ -205,17 +198,6 @@ function ATSPopUps({
                         }
                       >
                         <Stack
-                          sx={{
-                            border: '1px solid',
-                            cursor: 'pointer',
-                            height: '36px',
-                            width: '38px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            borderRadius: 1,
-                            borderColor: 'grey.200',
-                          }}
                           onClick={() => {
                             navigator.clipboard
                               .writeText(inputValue)
@@ -236,11 +218,12 @@ function ATSPopUps({
                 </ShowCode>
               </Stack>
             }
-            isGreyButtonVisible={
-              reason !== 'connect_greenhouse' &&
-              reason !== 'connect_ashby' &&
-              reason !== 'connect_lever'
-            }
+            isGreyButtonVisible = {true}
+            // isGreyButtonVisible={
+            //   reason !== 'connect_greenhouse' &&
+            //   reason !== 'connect_ashby' &&
+            //   reason !== 'connect_lever'
+            // }
             textPopupButton={
               <ShowCode>
                 <ShowCode.When
@@ -263,6 +246,7 @@ function ATSPopUps({
                 </ShowCode.When>
               </ShowCode>
             }
+            
             // isBlueButtonVisible={false}
 
             onClickCancel={{ onClick: close }}

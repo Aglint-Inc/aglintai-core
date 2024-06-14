@@ -1,7 +1,5 @@
 import { Stack } from '@mui/material';
 
-import { palette } from '@/src/context/Theme/Theme';
-
 export const SmallCircularScore = ({
   score,
   scale = 1,
@@ -20,7 +18,7 @@ export const SmallCircularScore = ({
   };
   const yellow = {
     score: '#703815',
-    border: palette.yellow[700],
+    border: 'var(--warning-6)',
     background: '#FFF7ED',
   };
   const red = {
@@ -33,7 +31,7 @@ export const SmallCircularScore = ({
   return (
     <Stack flexDirection={'row'} alignItems={'center'}>
       <Stack
-        width={'30px'}
+        width={'var(--space-6)'}
         display={'flex'}
         alignItems={'center'}
         justifyContent={'center'}
@@ -91,7 +89,7 @@ export const SmallCircularScore2 = ({ score }: { score: number }) => {
   return (
     <Stack>
       <Stack
-        width={'30px'}
+        width={'var(--space-6)'}
         display={'flex'}
         alignItems={'center'}
         justifyContent={'center'}

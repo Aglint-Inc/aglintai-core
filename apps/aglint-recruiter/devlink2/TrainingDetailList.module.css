@@ -1,4 +1,4 @@
-.div-block-1670 {
+.training-details {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -6,7 +6,7 @@
   grid-row-gap: 10px;
 }
 
-.div-block-1669 {
+.shadow-name {
   display: flex;
   width: 300px;
   justify-content: flex-start;
@@ -31,6 +31,14 @@
   opacity: 0.7;
 }
 
+.icons.cursor-pointer.no-trans {
+  transition-property: none;
+}
+
+.icons.cursor-pointer.no-transition {
+  transition-property: none;
+}
+
 .icons.ml-4 {
   margin-left: 4px;
 }
@@ -43,10 +51,6 @@
 .relative-1 {
   position: relative;
   z-index: 1;
-}
-
-.icons.ml--6 {
-  margin-left: -6px;
 }
 
 .icons.hide {
@@ -68,15 +72,25 @@
   cursor: pointer;
 }
 
+.icons.closediv {
+  position: absolute;
+  left: auto;
+  top: -7px;
+  right: -7px;
+  bottom: auto;
+
+  cursor: pointer;
+}
+
 .text-first-cap {
   text-transform: capitalize;
 }
 
-.div-block-1673 {
+.badge-wrap {
   width: 150px;
 }
 
-.div-block-1675 {
+.slot-interview-type-block {
   display: flex;
   justify-content: flex-start;
   align-items: center;

@@ -1,3 +1,4 @@
+import { supabaseWrap } from '@aglint/shared-utils';
 import { CircularProgress, Stack } from '@mui/material';
 import { isEmpty } from 'lodash';
 import router from 'next/router';
@@ -6,17 +7,13 @@ import React, { useState } from 'react';
 import { JobDescriptionModal } from '@/devlink/JobDescriptionModal';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import AUIButton from '../../Common/AUIButton';
 import UITextField from '../../Common/UITextField';
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 import { getRelevantCndidates } from '../utils';
 
 export const JDSearchModal = ({ setJdPopup }) => {
@@ -86,12 +83,12 @@ ${jdText}
             <textarea
               style={{
                 resize: 'none',
-                borderRadius: '5px',
+                borderRadius: 'var(--radius-2)',
                 width: '100%',
                 height: '200px',
                 padding: '12px',
                 outline: 'none',
-                borderColor: palette.grey[300],
+                borderColor: 'var(--neutral-6)',
               }}
               placeholder='Enter job description'
               value={jdText}
@@ -120,7 +117,7 @@ ${jdText}
               <CircularProgress
                 color='inherit'
                 size={'15px'}
-                sx={{ color: palette.grey[400] }}
+                sx={{ color: 'var(--neutral-6)' }}
               />
             )
           }

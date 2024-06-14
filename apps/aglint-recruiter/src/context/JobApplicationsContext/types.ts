@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-import { Applications } from '@aglint/shared-types';
+import { Applications, DatabaseEnums } from '@aglint/shared-types';
 import { CandidateFiles } from '@aglint/shared-types';
 import { InterviewScheduleTypeDB } from '@aglint/shared-types';
 import { Candidate } from '@aglint/shared-types';
@@ -11,10 +11,10 @@ import {
   FilterParameter,
   SortParameter,
 } from '@/src/components/JobApplicationsDashboard/utils';
-import { ApplicationList } from '@/src/components/Scheduling/Candidates/store';
+import { ApplicationList } from '@/src/components/Scheduling/Candidates/utils';
 import { ReadJobApplicationApi } from '@/src/pages/api/job/jobApplications/read';
 import { AssessmentResult } from '@/src/queries/assessment/types';
-import { Job } from '@/src/queries/job/types';
+import { Job } from '@/src/queries/jobs/types';
 
 import { TasksAgentContextType } from '../TasksContextProvider/TasksContextProvider';
 import useProviderJobApplicationActions from './hooks';

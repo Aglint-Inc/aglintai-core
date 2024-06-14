@@ -1,4 +1,3 @@
-import { palette } from '@context/Theme/Theme';
 import UploadIcon from '@mui/icons-material/Upload';
 import { Avatar, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -6,7 +5,7 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 import { LoaderSvg } from '@/devlink/LoaderSvg';
-import Icon from '@/src/components/Common/Icons/Icon';
+import { GlobalIcon } from '@/devlink3/GlobalIcon';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
@@ -47,29 +46,22 @@ function ImageUpload({
       .from(table)
       .upload(`public/${userDetails?.user?.id}`, file, {
         cacheControl: '3600',
-        // Overwrite file if it exis
         upsert: true,
       });
     if (data?.path) {
       error && error(false);
       if (setImage)
         setImage(
-          `${
-            process.env.NEXT_PUBLIC_SUPABASE_URL
-          }/storage/v1/object/public/${table}/${data?.path}?t=${new Date().toISOString()}`,
+          `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${table}/${data?.path}?t=${new Date().toISOString()}`,
         );
       changeCallback &&
         changeCallback(
-          `${
-            process.env.NEXT_PUBLIC_SUPABASE_URL
-          }/storage/v1/object/public/${table}/${data?.path}?t=${new Date().toISOString()}`,
+          `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${table}/${data?.path}?t=${new Date().toISOString()}`,
         );
 
       if (handleUpdateProfile) {
         await handleUpdateProfile({
-          profile_image: `${
-            process.env.NEXT_PUBLIC_SUPABASE_URL
-          }/storage/v1/object/public/${table}/${data?.path}?t=${new Date().toISOString()}`,
+          profile_image: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${table}/${data?.path}?t=${new Date().toISOString()}`,
         });
       }
       setTimeout(() => {
@@ -84,8 +76,8 @@ function ImageUpload({
         <Stack
           position={'relative'}
           sx={{
-            borderRadius: '10px',
-            borderColor: palette.grey[400],
+            borderRadius: 'var(--radius-2)',
+            borderColor: 'var(--neutral-6)',
           }}
           onMouseEnter={() => setIsStackHovered(true)}
           onMouseLeave={() => setIsStackHovered(false)}
@@ -96,7 +88,7 @@ function ImageUpload({
               sx={{
                 width: dynamic ? '100%' : size,
                 height: dynamic ? '100%' : size,
-                borderRadius: '10px',
+                borderRadius: 'var(--radius-4)',
                 '& .MuiAvatar-img ': {
                   objectFit: 'cover',
                 },
@@ -106,24 +98,22 @@ function ImageUpload({
               variant='square'
             >
               {router.route.includes(ROUTES['/profile']()) ? (
-                <Icon
-                  variant='UserSolo'
-                  height='32'
-                  width='32'
-                  color='#87929D'
+                <GlobalIcon
+                  iconName='UserSolo'
+                  size={6}
+                  color='var(--neutral-11)'
                 />
               ) : (
-                <Icon
-                  variant='CompanyOutlinedBig'
-                  height='100%'
-                  width='100%'
-                  color='#87929D'
+                <GlobalIcon
+                iconName='CompanyOutlinedBig'
+                  size={6}
+                  color='var(--neutral-11)'
                 />
               )}
             </Avatar>
-            {image && (
+            {/* {image && (
               <Stack position={'absolute'} bottom={-10} left={26}></Stack>
-            )}
+            )} */}
           </Stack>
           {loading && (
             <Stack
@@ -162,10 +152,10 @@ function ImageUpload({
                   sx={{
                     position: 'relative',
                     cursor: 'pointer',
-                    transition: 'all 0.5s ease', // Adjust the duration and easing as needed
-                    opacity: isStackHovered ? 100 : 0,
-                    borderRadius: '10px',
-                    mt: '4px',
+                    transition: 'all 0.5s ease',
+                    opacity: isStackHovered ? 1 : 0,
+                    borderRadius: 'var(--radius-2)',
+                    mt: 'var(--space-1)',
                   }}
                   height={`${size}px`}
                   width={`${size}px`}
@@ -177,7 +167,7 @@ function ImageUpload({
                     fontSize='medium'
                     sx={{
                       position: 'absolute',
-                      color: palette.grey[500],
+                      color: 'var(--neutral-12)',
                       top: 0,
                       right: 0,
                     }}
@@ -192,10 +182,12 @@ function ImageUpload({
                 justifyContent={'center'}
                 alignItems={'center'}
                 sx={{
-                  transition: 'all 0.5s ease', // Adjust the duration and easing as needed
-                  opacity: isStackHovered ? 100 : 0,
-                  background: isStackHovered ? '#2F3941B2' : 'transparent',
-                  borderRadius: '10px',
+                  transition: 'all 0.5s ease',
+                  opacity: isStackHovered ? 1 : 0,
+                  background: isStackHovered
+                    ? 'var(--nutral-5)'
+                    : 'transparent',
+                  borderRadius: 'var(--radius-4)',
                 }}
               >
                 {image && (
@@ -203,7 +195,7 @@ function ImageUpload({
                     direction={'row'}
                     spacing={1}
                     sx={{
-                      transition: 'all 0.5s ease', // Adjust the duration and easing as needed
+                      transition: 'all 0.5s ease',
                       visibility: isStackHovered ? 'visible' : 'hidden',
                       opacity: isStackHovered ? 1 : 0,
                     }}
@@ -217,11 +209,11 @@ function ImageUpload({
                         id={'image-upload'}
                         sx={{
                           cursor: 'pointer',
-                          color: '#fff',
+                          color: 'var(--white)',
                           transition: '',
                         }}
                       >
-                        <Icon variant='ReloadFilled' />
+                        <GlobalIcon iconName='restart_alt' size={4}/>
                       </Stack>
                     </FileUploader>
 
@@ -232,9 +224,9 @@ function ImageUpload({
                         if (handleUpdateProfile)
                           await handleUpdateProfile({ profile_image: null });
                       }}
-                      sx={{ color: '#fff', cursor: 'pointer' }}
+                      sx={{ color: 'var(--white)', cursor: 'pointer' }}
                     >
-                      <Icon variant='DeleteIcon' />
+                      <GlobalIcon iconName='delete' size={4}/>
                     </Stack>
                   </Stack>
                 )}

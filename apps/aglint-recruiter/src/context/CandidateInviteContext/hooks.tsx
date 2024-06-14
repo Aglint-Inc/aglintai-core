@@ -1,9 +1,10 @@
 /* eslint-disable security/detect-object-injection */
-import { APICandidateConfirmSlot } from '@aglint/shared-types';
+import { CandidateDirectBookingType } from '@aglint/shared-types';
 import dayjs from '@utils/dayjs';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo, useState } from 'react';
 
+import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 import { TimezoneObj } from '@/src/components/Scheduling/Settings';
 import { BodyParamsCandidateInvite } from '@/src/pages/api/scheduling/invite';
 import {
@@ -11,7 +12,7 @@ import {
   useInviteMeta,
   useInviteSlots,
 } from '@/src/queries/candidate-invite';
-import { getFullName } from '@/src/utils/jsonResume';
+import { supabase } from '@/src/utils/supabase/client';
 import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
 
@@ -30,8 +31,7 @@ const useInviteActions = () => {
   const [timezone, setTimezone] = useState<TimezoneObj>(initialTimezone);
 
   const params: Parameters<typeof useInviteSlots>[0] = {
-    filter_json: meta?.data?.filter_json ?? null,
-    recruiter: meta?.data?.recruiter ?? null,
+    filter_json_id: meta?.data?.filter_json.id ?? null,
     user_tz: timezone?.tzCode ?? null,
   };
 
@@ -55,21 +55,17 @@ const useInviteActions = () => {
   );
 
   const handleSubmit = async () => {
-    const bodyParams = {
-      candidate_plan: selectedSlots,
-      recruiter_id: meta.data.recruiter.id,
-      user_tz: timezone.tzCode,
-      candidate_email: meta.data.candidate.email,
-      schedule_id: meta.data.schedule.id,
-      filter_id: router.query.filter_id,
-      task_id: router.query?.task_id,
-      agent_type: 'self',
-      candidate_id: meta.data.candidate.id,
-      candidate_name: getFullName(
-        meta.data.candidate.first_name,
-        meta.data.candidate.last_name,
-      ),
-    } as APICandidateConfirmSlot;
+    const candSelectedSlots = selectedSlots.map((s) => s.sessions).flat();
+
+    const bodyParams: CandidateDirectBookingType = {
+      cand_tz: timezone.tzCode,
+      filter_id: router.query.filter_id as string,
+      task_id: router.query?.task_id as string,
+      selected_plan: candSelectedSlots.map((slot) => ({
+        start_time: slot.start_time,
+        end_time: slot.end_time,
+      })),
+    };
     try {
       if (!isPending) {
         await mutateAsync(bodyParams);
@@ -78,6 +74,26 @@ const useInviteActions = () => {
       }
     } catch {
       toast.error('Unable to book slots.');
+    }
+  };
+
+  const handleViewedOn = async () => {
+    try {
+      await supabase
+        .from('interview_filter_json')
+        .update({ viewed_on: new Date().toISOString() })
+        .eq('id', meta.data.filter_json.id)
+        .throwOnError();
+
+      addScheduleActivity({
+        title: `Candidate opened self scheduling link`,
+        application_id: meta.data.schedule.application_id,
+        created_by: null,
+        logged_by: 'candidate',
+        supabase,
+      });
+    } catch {
+      //
     }
   };
 
@@ -96,6 +112,7 @@ const useInviteActions = () => {
     setDetailsPop,
     handleSelectSlot,
     handleSubmit,
+    handleViewedOn,
   };
 };
 

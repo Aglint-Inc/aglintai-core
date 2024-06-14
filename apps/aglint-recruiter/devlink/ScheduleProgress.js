@@ -13,7 +13,7 @@ export function ScheduleProgress({
     <_Component className={_utils.cx(_styles, "sampleflex")} tag="div">
       {slotScheduleProgressPill ?? (
         <>
-          <ScheduleProgressPill isStarting={false} isEnding={false} />
+          <ScheduleProgressPill isStarting={true} />
           <ScheduleProgressPill isEnding={true} isStarting={true} />
           <ScheduleProgressPill isEnding={true} isStarting={true} />
           <ScheduleProgressPill isStarting={true} isEnding={true} />

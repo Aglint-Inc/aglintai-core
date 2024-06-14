@@ -23,13 +23,6 @@ function DeleteMemberDialog({
 }) {
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={openForDelete || openForCancel}
       onClose={() => {
         // resetState();
@@ -40,20 +33,20 @@ function DeleteMemberDialog({
         <ShowCode.When isTrue={openForDelete}>
           <DeletePopup
             textTitle={
-              <Typography variant='subtitle1' fontWeight={500}>
+              <Typography variant='body1bold'>
                 Delete the member:{' '}
-                <span style={{ fontWeight: 700 }}>{name}</span>
+                <span style={{ color: 'var(--error-11)' }}>{name}</span>
               </Typography>
             }
             textDescription={
               <>
-                <Typography variant='body2'>
+                <Typography variant='body1'>
                   By clicking delete the member will be permanently deleted.
                 </Typography>
                 {warning && (
                   <>
                     <br />
-                    <Typography variant='subtitle2' color={'yellow.500'}>
+                    <Typography variant='body1' color={'var(--error-11)'}>
                       Warning: {warning}
                     </Typography>
                   </>
@@ -72,13 +65,13 @@ function DeleteMemberDialog({
         <ShowCode.When isTrue={openForCancel}>
           <DeletePopup
             textTitle={
-              <Typography variant='subtitle1' fontWeight={500}>
+              <Typography variant='body1bold'>
                 Cancel invitation to:{' '}
-                <span style={{ fontWeight: 700 }}>{name}</span>
+                <span style={{ color: 'var(--warning-11)' }}>{name}</span>
               </Typography>
             }
             textDescription={
-              <Typography variant='body2'>
+              <Typography variant='body1'>
                 By clicking cancel invitation will be cancelled and removed from
                 the members list.
               </Typography>

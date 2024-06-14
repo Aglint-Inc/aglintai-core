@@ -1,8 +1,8 @@
 .add-job-list {
   display: flex;
   align-items: center;
-  grid-column-gap: 12px;
-  grid-row-gap: 12px;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
 }
 
 .final-check-box {
@@ -13,10 +13,10 @@
   justify-content: center;
   align-items: center;
 
-  border: 1px solid var(--grey300-03a46dba);
-  border-radius: 4px;
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-2);
 
-  background-color: white;
+  background-color: var(--white);
 
   cursor: pointer;
 }
@@ -37,18 +37,6 @@
   opacity: 0.7;
 }
 
-.icons.cursor-pointer.width-28 {
-  width: 28px;
-}
-
-.icons.cursor-pointer.height-28 {
-  height: 28px;
-}
-
-.icons.cursor-pointer.p-4 {
-  padding: 4px;
-}
-
 .icons.cursor-pointer.three-dot {
   width: 20px;
   height: 20px;
@@ -66,10 +54,6 @@
 
 .icons.rotate-180 {
   transform: rotate(180deg);
-}
-
-.icons.pause {
-  display: none;
 }
 
 .icons.avatar-play {
@@ -105,10 +89,6 @@
   color: var(--white-80449ce7);
 }
 
-.relative {
-  position: relative;
-}
-
 .icons.hide {
   display: none;
 }
@@ -124,8 +104,8 @@
   }
 }
 
-.icons.mb-63 {
-  margin-bottom: 63px;
+.icons.mb-9 {
+  margin-bottom: var(--space-9);
 }
 
 .mt-4 {
@@ -136,6 +116,32 @@
   margin-top: 3px;
 }
 
-.icons.mr--10 {
-  margin-right: -8px;
+.icons.mt-2 {
+  margin-top: 2px;
+}
+
+.mt-2 {
+  margin-top: var(--space-2);
+}
+
+.icons.bookmarked {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
+.icons.start {
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
 }

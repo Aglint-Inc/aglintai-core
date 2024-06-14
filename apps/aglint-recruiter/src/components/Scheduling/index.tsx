@@ -4,13 +4,13 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { BodyWithSublink } from '@/devlink2/BodyWithSublink';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { EmptyState } from '@/devlink2/EmptyState';
 import { InterviewModuleCard } from '@/devlink2/InterviewModuleCard';
 import { InterviewModuleTable } from '@/devlink2/InterviewModuleTable';
 import { PageLayout } from '@/devlink2/PageLayout';
-import { ButtonPrimaryDefaultRegular } from '@/devlink3/ButtonPrimaryDefaultRegular';
 import { TaskSwitchButton } from '@/devlink3/TaskSwitchButton';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -25,7 +25,7 @@ import AllSchedules from './Candidates';
 import SchedulingDashboard from './Dashboard';
 import AllInterviewersComp from './Interviewers';
 import InterviewerLevelSettings from './Interviewers/Interviewer/InterviewerLevelSettings';
-import { Modules } from './InterviewTypes/Modules';
+import { Modules } from './InterviewTypes';
 import { fetchInterviewModules } from './InterviewTypes/queries/utils';
 import { setIsCreateDialogOpen } from './InterviewTypes/store';
 import MySchedule from './MySchedules';
@@ -106,17 +106,13 @@ function SchedulingMainComp() {
             {tab === 'interviewtypes' &&
               isAllowed(['admin', 'recruiter', 'recruiting_coordinator']) && (
                 <Stack direction={'row'} alignItems={'center'} spacing={2}>
-                  <ButtonPrimaryDefaultRegular
-                    startIconSlot={
-                      <Icon
-                        variant='PlusThin'
-                        height='12'
-                        width='12'
-                        color='#fff'
-                      />
-                    }
-                    buttonText={'New Interview Type'}
-                    buttonProps={{
+                  <ButtonSolid
+                    isRightIcon={false}
+                    isLeftIcon={true}
+                    iconName={'add'}
+                    size={2}
+                    textButton={'Interview Type'}
+                    onClickButton={{
                       onClick: () => {
                         setIsCreateDialogOpen(true);
                       },
@@ -124,25 +120,26 @@ function SchedulingMainComp() {
                   />
                 </Stack>
               )}
-            {(tab === 'schedules' || tab === 'myschedules') && (
-              <TaskSwitchButton
-                isIconVisible={false}
-                isJobCandActive={tab === 'schedules'}
-                isListActive={tab === 'myschedules'}
-                onClickJobCand={{
-                  onClick: () => {
-                    router.push(`${ROUTES['/scheduling']()}?tab=schedules`);
-                  },
-                }}
-                onClickList={{
-                  onClick: () => {
-                    router.push(`${ROUTES['/scheduling']()}?tab=myschedules`);
-                  },
-                }}
-                textFirst={'All Schedules'}
-                textSecond={'My Schedules'}
-              />
-            )}
+            {(tab === 'schedules' || tab === 'myschedules') &&
+              isAllowed(['admin', 'recruiter', 'recruiting_coordinator']) && (
+                <TaskSwitchButton
+                  isIconVisible={false}
+                  isJobCandActive={tab === 'schedules'}
+                  isListActive={tab === 'myschedules'}
+                  onClickJobCand={{
+                    onClick: () => {
+                      router.push(`${ROUTES['/scheduling']()}?tab=schedules`);
+                    },
+                  }}
+                  onClickList={{
+                    onClick: () => {
+                      router.push(`${ROUTES['/scheduling']()}?tab=myschedules`);
+                    },
+                  }}
+                  textFirst={'All Schedules'}
+                  textSecond={'My Schedules'}
+                />
+              )}
           </>
         }
         slotBody={
@@ -252,8 +249,9 @@ const InterviewerModule = ({
   user_id: string;
 }) => {
   const router = useRouter();
-  const { data } = useInterviewModules({ recruiter_id, user_id });
-  const filteredData = data.filter(
+  const { data, isPending } = useInterviewModules({ recruiter_id, user_id });
+
+  const filteredData = data?.filter(
     (item) => !item.interview_modules.is_archived,
   );
 
@@ -261,82 +259,79 @@ const InterviewerModule = ({
     <InterviewModuleTable
       isFilterVisible={false}
       slotInterviewModuleCard={
-        <Stack width={'100%'} height={'calc(100vh - 112px)'}>
-          {filteredData.length > 0 ? (
-            filteredData.map((mod) => {
-              return (
-                <Stack
-                  key={mod.interview_modules.id}
-                  sx={{ pointerEvents: 'fill' }}
-                >
-                  <InterviewModuleCard
-                    isObjectiveVisible={Boolean(
-                      mod.interview_modules.description,
-                    )}
-                    onClickCard={{
-                      onClick: () => {
-                        router.push(
-                          ROUTES['/scheduling/module/[module_id]']({
-                            module_id: mod.interview_modules.id,
-                          }),
-                        );
-                      },
-                    }}
-                    textObjective={mod.interview_modules.description}
-                    textModuleName={mod.interview_modules.name}
-                    slotMemberPic={
-                      <AvatarGroup
-                        total={mod.users.length}
-                        sx={{
-                          '& .MuiAvatar-root': {
-                            width: '26px',
-                            height: '26px',
-                            fontSize: '12px',
-                          },
-                        }}
-                      >
-                        {mod.users.slice(0, 5).map((user) => {
-                          return (
-                            <MuiAvatar
-                              key={user.user_id}
-                              src={user.profile_image}
-                              level={getFullName(
-                                user.first_name,
-                                user.last_name,
-                              )}
-                              variant='circular'
-                              height='26px'
-                              width='26px'
-                              fontSize='12px'
-                            />
+        !isPending && (
+          <Stack width={'100%'} height={'calc(100vh - 112px)'}>
+            {filteredData.length > 0 ? (
+              filteredData.map((mod) => {
+                return (
+                  <Stack
+                    key={mod.interview_modules.id}
+                    sx={{ pointerEvents: 'fill' }}
+                  >
+                    <InterviewModuleCard
+                      isObjectiveVisible={Boolean(
+                        mod.interview_modules.description,
+                      )}
+                      onClickCard={{
+                        onClick: () => {
+                          router.push(
+                            ROUTES['/scheduling/module/[module_id]']({
+                              module_id: mod.interview_modules.id,
+                            }),
                           );
-                        })}
-                      </AvatarGroup>
-                    }
-                    textMembersCount={
-                      mod.users.length !== 0
-                        ? `${mod.users.length} Members`
-                        : ''
-                    }
-                    textCompletedSchedules={mod.completed_meeting_count}
-                    textUpcomingSchedules={mod.upcoming_meeting_count}
-                    isCompletedScheduleEmpty={mod.completed_meeting_count === 0}
-                    isCompletedScheduleVisible={mod.completed_meeting_count > 0}
-                    isUpcomingScheduleEmpty={mod.upcoming_meeting_count === 0}
-                    isUpcomingScheduleVisible={mod.upcoming_meeting_count > 0}
-                  />
-                </Stack>
-              );
-            })
-          ) : (
-            <Stack>
-              <EmptyState
-                slotIcons={<Icon height='60' width='80' variant='EmptyState' />}
-                textDescription={'No interview types found.'}
-              />
-            </Stack>
-          )}
-        </Stack>
+                        },
+                      }}
+                      textObjective={mod.interview_modules.description}
+                      textModuleName={mod.interview_modules.name}
+                      textDepartment={mod.interview_modules.department}
+                      slotMemberPic={
+                        <AvatarGroup total={mod.users.length}>
+                          {mod.users.slice(0, 5).map((user) => {
+                            return (
+                              <MuiAvatar
+                                key={user.user_id}
+                                src={user.profile_image}
+                                level={getFullName(
+                                  user.first_name,
+                                  user.last_name,
+                                )}
+                                variant='rounded-small'
+                              />
+                            );
+                          })}
+                        </AvatarGroup>
+                      }
+                      textMembersCount={
+                        mod.users.length !== 0
+                          ? `${mod.users.length} Members`
+                          : ''
+                      }
+                      textCompletedSchedules={mod.completed_meeting_count}
+                      textUpcomingSchedules={mod.upcoming_meeting_count}
+                      isCompletedScheduleEmpty={
+                        mod.completed_meeting_count === 0
+                      }
+                      isCompletedScheduleVisible={
+                        mod.completed_meeting_count > 0
+                      }
+                      isUpcomingScheduleEmpty={mod.upcoming_meeting_count === 0}
+                      isUpcomingScheduleVisible={mod.upcoming_meeting_count > 0}
+                    />
+                  </Stack>
+                );
+              })
+            ) : (
+              <Stack>
+                <EmptyState
+                  slotIcons={
+                    <Icon height='60' width='80' variant='EmptyState' />
+                  }
+                  textDescription={'No interview types found.'}
+                />
+              </Stack>
+            )}
+          </Stack>
+        )
       }
     />
   );
@@ -359,7 +354,6 @@ export const useInterviewModules = ({
         ),
       ),
     enabled: !!recruiter.id,
-    initialData: [],
     refetchOnWindowFocus: false,
   });
   return query;

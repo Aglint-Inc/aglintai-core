@@ -1,49 +1,31 @@
 /* eslint-disable no-console */
-import { APIFindInterviewSlot } from '@aglint/shared-types';
-import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
+import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import { schema_find_interview_slot } from '@/src/types/scheduling/schema_find_availability_payload';
 import { combineSlots } from '@/src/utils/scheduling_v2/utils';
-
-const required_fields = ['recruiter_id', 'start_date', 'user_tz'];
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    let { session_ids, recruiter_id, start_date, user_tz } =
-      req.body as APIFindInterviewSlot;
-
-    required_fields.forEach((field) => {
-      if (!has(req.body, field)) {
-        throw new Error(`missing Field ${field}`);
-      }
+    const parsedData = schema_find_interview_slot.parse({
+      ...req.body,
+      options: req.body.options || {
+        include_conflicting_slots: {},
+      },
     });
-
-    const start_date_js = CandidatesScheduling.convertDateFormatToDayjs(
-      start_date,
-      user_tz,
-      true,
-    );
-    const end_date_js = CandidatesScheduling.convertDateFormatToDayjs(
-      start_date,
-      user_tz,
-      false,
-    );
-
-    const cand_schedule = new CandidatesScheduling(
+    const cand_schedule = new CandidatesSchedulingV2(
       {
-        company_id: recruiter_id,
-        session_ids,
-        user_tz,
+        recruiter_id: parsedData.recruiter_id,
+        session_ids: parsedData.session_ids,
+        candidate_tz: parsedData.candidate_tz,
+        start_date_str: parsedData.schedule_date,
+        end_date_str: parsedData.schedule_date,
       },
-      {
-        end_date_js: end_date_js,
-        start_date_js: start_date_js,
-      },
+      parsedData.options,
     );
 
     await cand_schedule.fetchDetails();
-    await cand_schedule.fetchInterviewrsCalEvents();
+    await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
     const plan_combs = cand_schedule.findCandSlotForTheDay();
 
     const session_combs = combineSlots(plan_combs);

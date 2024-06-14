@@ -1,8 +1,16 @@
 /* eslint-disable security/detect-object-injection */
-import { DB, InterviewMeetingTypeDb } from '@aglint/shared-types';
+import {
+  CandidateType,
+  DB,
+  InterviewMeetingTypeDb,
+  InterviewScheduleTypeDB,
+  InterviewSession,
+  JobApplcationDB,
+} from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
 
+import { ResumeJson } from '@/src/apiUtils/resumeScoring/types';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 import toast from '@/src/utils/toast';
 
@@ -17,12 +25,36 @@ export type MailHandlerparam = {
   application_id: string;
   filter_id: string;
   supabase: ReturnType<typeof createServerClient<DB>>;
+  task_id: string;
+};
+
+export type ApplicationList = {
+  applications: JobApplcationDB;
+  candidates: CandidateType;
+  file: {
+    id: string;
+    created_at: string;
+    file_url: string;
+    candidate_id: string;
+    resume_json: ResumeJson;
+    type: string;
+  };
+  schedule: InterviewScheduleTypeDB | null;
+  public_jobs: {
+    id: string;
+    job_title: string;
+  };
+  interview_session_meetings: {
+    interview_meeting: null | InterviewMeetingTypeDb;
+    interview_session: InterviewSession;
+  }[];
 };
 
 export const mailHandler = async ({
   application_id,
   filter_id,
   supabase,
+  task_id,
 }: MailHandlerparam) => {
   try {
     const { data, error } = await supabase
@@ -56,7 +88,7 @@ export const mailHandler = async ({
           first_name: first_name,
           last_name: last_name,
           job_title: position,
-          pick_your_slot_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}?filter_id=${filter_id}'>Pick Your Slot</a>`,
+          pick_your_slot_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}?filter_id=${filter_id}&task_id=${task_id}'>Pick Your Slot</a>`,
         },
       );
 
@@ -229,7 +261,6 @@ export const cancelMailHandler = async ({
   mail,
   job_title,
   supabase,
-  rec_mail,
 }) => {
   try {
     const { data, error } = await supabase
@@ -244,7 +275,7 @@ export const cancelMailHandler = async ({
         {
           fromEmail: `messenger@aglinthq.com`,
           fromName: 'Aglint',
-          email: rec_mail ?? mail,
+          email: mail,
           subject: fillEmailTemplate(
             data[0].email_template['cancel_interview_session'].subject,
             {

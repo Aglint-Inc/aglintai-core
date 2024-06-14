@@ -2,24 +2,27 @@
   position: relative;
 
   display: flex;
+  height: 30px;
   padding: 6px 12px;
   justify-content: flex-start;
   align-items: center;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
 
-  border: 1px solid #e9ebed;
   border-radius: 4px;
 
-  background-color: #f7f9fb;
+  background-color: var(--neutral-3);
 
   transition: all 200ms ease;
+
+  color: var(--neutral-11);
 
   cursor: pointer;
 }
 
 .schedule_button:hover {
-  background-color: #e9ebed;
+  background-color: var(--neutral-4);
+  color: var(--neutral-12);
 }
 
 .embed_flex {
@@ -54,12 +57,7 @@
 }
 
 .cursor-pointer {
-  transition: opacity 250ms ease;
   cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.8;
 }
 
 .embed_flex.fixedd {

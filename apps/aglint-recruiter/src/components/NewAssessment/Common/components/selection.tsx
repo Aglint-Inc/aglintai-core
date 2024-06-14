@@ -17,12 +17,12 @@ const SelectionComp: FC<{
           height: `${height}px`,
           '&:hover': {
             '&& fieldset': {
-              border: '1px solid #d0cccc',
+              border: '1px solid (var(--neutral--6)',
             },
           },
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            border: '1px solid #1F73B7 !important',
-            boxShadow: '0 0 0 2.5px #b4cce4',
+            border: '1px solid (var(--neutral--11)) !important',
+            // boxShadow: '0 0 0 2.5px #b4cce4',
           },
         }}
       >

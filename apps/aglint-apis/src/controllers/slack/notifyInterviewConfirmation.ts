@@ -1,7 +1,9 @@
 import dayjs from 'dayjs';
 import {Request, Response} from 'express';
+import {envConfig} from 'src/config';
 import {slackWeb} from 'src/services/slack/slackWeb';
-import {supabaseAdmin, supabaseWrap} from 'src/services/supabase/SupabaseAdmin';
+import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
+import {supabaseWrap} from 'src/utils/scheduling/supabaseWrap';
 
 export async function notifyInterviewConfirmation(req: Request, res: Response) {
   const {session_id} = req.body;
@@ -37,12 +39,19 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
         .eq('id', interview_schedule_id)
     );
 
+    if (!can_app)
+      throw new Error(
+        'failed to fetching the candidate and application details'
+      );
+
     const interviewers = supabaseWrap(
       await supabaseAdmin
         .from('meeting_interviewers')
         .select('email,session_relation_id')
         .eq('session_id', session_id)
     );
+    if (!interviewers)
+      throw new Error('failed to fetching the interviewers detail');
 
     const [organizer] = supabaseWrap(
       await supabaseAdmin
@@ -51,12 +60,11 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
         .eq('user_id', organizer_id)
     );
 
+    if (!organizer) throw new Error('failed to fetching the organizer details');
+
     const interviewersWithoutOrganizer = interviewers.filter(
       interviewer => interviewer.email !== organizer.email
     );
-    // interviewersWithoutOrganizer = [
-    //   {email: 'chandra@aglinthq.com', session_relation_id: 'dfdsfsd'},
-    // ];
 
     const job_title = can_app.applications.public_jobs.job_title;
     const candidate_name = `${can_app.applications.candidates.first_name} ${can_app.applications.candidates.first_name}`;
@@ -82,7 +90,7 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `* ${session_name} sheduled with candidate :*\n*<https://dev.aglinthq.com/scheduling/view?meeting_id=${metting_id}&tab=candidate_details|${candidate_name} - ${job_title}>*`,
+              text: `* ${session_name} sheduled with candidate :*\n*<${envConfig.CLIENT_APP_URL}/scheduling/view?meeting_id=${metting_id}&tab=candidate_details|${candidate_name} - ${job_title}>*`,
             },
           },
           {
@@ -134,9 +142,3 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
     res.status(500).json({error: 'Failed to start group discussion'});
   }
 }
-
-// {
-//   "session_id":"d232ef5b-0002-4813-82f7-b8246bb696f7",
-// }
-
-// session_id -> got interview confirmation from interviewers and organizer

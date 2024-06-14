@@ -5,7 +5,6 @@ import posthog from 'posthog-js';
 
 import { Checkbox } from '@/devlink/Checkbox';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
@@ -26,7 +25,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
   };
 
   return (
-    <Stack p={'4px'} width={'500px'} spacing={'20px'} pt={'20px'}>
+    <Stack p={'var(--space-1)'} width={'500px'} spacing={'var(--space-5)'} pt={'var(--space-5)'}>
       <ShowCode.When isTrue={isJobMarketingEnabled}>
         <UITextField
           labelSize='small'
@@ -130,27 +129,27 @@ const CompanyJdComp = ({ setIsSaving }) => {
       <Stack>
         <UITypography
           type={'small'}
-          color={palette.grey[800]}
+          color={'var(--neutral-12)'}
           fontBold='default'
         >
           Employment Type
         </UITypography>
         <Stack
-          pt={'10px'}
+          pt={'var(--space-2)'}
           direction='row'
           flexWrap='wrap'
           justifyContent='flex-start'
           alignItems='flex-start'
-          gap={'10px'}
+          gap={'var(--space-2)'}
         >
           {Object.entries(recruiter?.employment_type).map((type, ind) => {
             return (
               <Stack
                 key={ind}
                 direction={'row'}
-                p={'4px'}
+                p={'var(--space-1)'}
                 alignItems={'center'}
-                spacing={'8px'}
+                spacing={'var(--space-2)'}
               >
                 <Checkbox
                   isChecked={Boolean(type[1])}
@@ -162,7 +161,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
                   }}
                 />
                 <Typography
-                  variant='body2'
+                  variant='body1'
                   sx={{ cursor: 'pointer' }}
                   onClick={() => {
                     recruiter.employment_type[type[0]] = !type[1];
@@ -177,29 +176,25 @@ const CompanyJdComp = ({ setIsSaving }) => {
         </Stack>
       </Stack>
       <Stack>
-        <UITypography
-          type={'small'}
-          color={palette.grey[800]}
-          fontBold='default'
-        >
+        <UITypography>
           Workplace Type
         </UITypography>
         <Stack
-          pt={'10px'}
+          pt={'var(--space-2)'}
           direction='row'
           flexWrap='wrap'
           justifyContent='flex-start'
           alignItems='flex-start'
-          gap={'10px'}
+          gap={'var(--space-2)'}
         >
           {Object.entries(recruiter?.workplace_type).map((type, ind) => {
             return (
               <Stack
                 key={ind}
                 direction={'row'}
-                p={'4px'}
+                p={'var(--space-1)'}
                 alignItems={'center'}
-                spacing={'8px'}
+                spacing={'var(--space-2)'}
               >
                 <Checkbox
                   isChecked={Boolean(type[1])}
@@ -210,10 +205,10 @@ const CompanyJdComp = ({ setIsSaving }) => {
                     },
                   }}
                 />
-                <Stack direction={'row'} spacing={'4px'}>
+                <Stack direction={'row'} spacing={'var(--space-1)'}>
                   <Typography
-                    variant='body2'
-                    sx={{ cursor: 'pointer', color: palette.grey[800] }}
+                    variant='body1'
+                    sx={{ cursor: 'pointer', color: 'var(--neutral-12)' }}
                     onClick={() => {
                       recruiter.workplace_type[type[0]] = !type[1];
                       handleChange({ ...recruiter });
@@ -222,7 +217,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
                     {capitalize(workplaceType[type[0]][0]).replaceAll(' ', '-')}
                   </Typography>
                   <Typography
-                    variant='body2'
+                    variant='body1'
                     sx={{ cursor: 'pointer' }}
                     onClick={() => {
                       recruiter.workplace_type[type[0]] = !type[1];

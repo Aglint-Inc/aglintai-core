@@ -204,7 +204,7 @@ const AssessmentEditor = ({
   return (
     <Stack
       style={{
-        border: '1px solid #dcdcdc',
+        border: '1px solid var(--neutral-6)',
       }}
     >
       <TipTapAIEditor
@@ -403,10 +403,10 @@ const AssessmentPreview = () => {
     },
   } = useJobDetails();
   const { handleJobAsyncUpdate } = useJobs();
-  const { job_id } = useCurrentJob();
+  const { id } = useCurrentJob();
   const handlePreview = () => {
     window.open(
-      `${process.env.NEXT_PUBLIC_HOST_NAME}/preview-assessment/${job_id}`,
+      `${process.env.NEXT_PUBLIC_HOST_NAME}/preview-assessment/${id}`,
       '_blank',
     );
   };
@@ -415,7 +415,7 @@ const AssessmentPreview = () => {
   const handleDisable = async () => {
     if (!disable) {
       setDisable(true);
-      await handleJobAsyncUpdate(job_id, { assessment: false });
+      await handleJobAsyncUpdate(id, { assessment: false });
       setDisable(false);
     }
   };

@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import {DynamicStructuredTool} from 'langchain/tools';
 import {z} from 'zod';
 
-import {FindSlots} from './types';
 import {EmailAgentPayload} from '../../../types/email_agent/apiPayload.types';
 import {LoggerType} from '../../../utils/scheduling_utils/getCandidateLogger';
 import {convertDateFormatToDayjs} from '../../../utils/scheduling_utils/tool_utils';
@@ -10,13 +9,12 @@ import {dayjsLocal} from '../../../utils/dayjsLocal/dayjsLocal';
 import {isCurrDayHoliday} from '../../../utils/scheduling_utils/fetchCandDetails';
 import {findAvailableSlots} from './utils';
 import {findInterviewSlotOnThatDay} from '../../schedule_agent/tools/utils';
-import {
-  supabaseAdmin,
-  supabaseWrap,
-} from '../../../services/supabase/SupabaseAdmin';
+import {supabaseAdmin} from '../../../services/supabase/SupabaseAdmin';
 import {googleTimeZone} from '../../../utils/googleTimeZone';
 import {appLogger} from '../../../services/logger';
 import {agent_activities} from '../../../copies/agents_activity';
+import {APIFindInterviewSlot} from '@aglint/shared-types';
+import {supabaseWrap} from 'src/utils/scheduling/supabaseWrap';
 
 const utc = require('dayjs/plugin/utc');
 const timezone = require('dayjs/plugin/timezone');
@@ -69,11 +67,11 @@ export const verifyAvailability = (
         return 'this day is holiday';
       }
       try {
-        const find_slot_payload: FindSlots = {
+        const find_slot_payload: APIFindInterviewSlot = {
           session_ids: cand_info.interview_sessions.map(s => s.id),
-          start_date: slot_date.format('DD/MM/YYYY'),
+          schedule_date: slot_date.format('DD/MM/YYYY'),
           recruiter_id: cand_info.company_id,
-          user_tz: cand_time_zone,
+          candidate_tz: cand_time_zone,
         };
 
         const current_plan = await findAvailableSlots(find_slot_payload);

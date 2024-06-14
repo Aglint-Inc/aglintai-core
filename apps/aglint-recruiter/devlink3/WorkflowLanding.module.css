@@ -1,0 +1,35 @@
+.workflow_listing {
+  overflow: auto;
+  background-color: var(--neutral-2);
+  height: calc(100vh - 60px);
+}
+
+.slot_search_and-_filter {
+  display: flex;
+  height: 60px;
+  padding-right: 20px;
+  padding-left: 20px;
+  justify-content: flex-start;
+  align-items: center;
+
+  border-bottom: 1px solid #e9ebed;
+
+  background-color: var(--white);
+}
+
+.slot_workflow_card {
+  display: flex;
+  overflow: auto;
+  padding-top: var(--space-4);
+  padding-right: var(--space-4);
+  padding-bottom: var(--space-4);
+  padding-left: var(--space-4);
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
+
+  background-color: var(--neutral-2);
+
+  height: calc(100vh - 108px);
+}

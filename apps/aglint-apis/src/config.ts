@@ -25,4 +25,6 @@ export const envConfig = {
   TWILIO_NUMBER: process.env.TWILIO_NUMBER ?? '',
   RETELL_AGENT_ID: process.env.RETELL_AGENT_ID ?? '',
   SLACK_BOT_TOKEN: process.env.SLACK_BOT_TOKEN,
+  LOCAL_AGENT_EMAIL: process.env.LOCAL_AGENT_EMAIL,
+  REDIS_URL: process.env.REDIS_URL,
 };

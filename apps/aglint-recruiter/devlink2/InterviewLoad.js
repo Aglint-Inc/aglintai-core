@@ -1,5 +1,8 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./InterviewLoad.module.css";
 
@@ -15,57 +18,51 @@ export function InterviewLoad({
           className={_utils.cx(_styles, "setting_title")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Interview Load"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-gray-500")}
-            tag="div"
-          >
-            {"Setup maximum interviews per day and week."}
-          </_Builtin.Block>
+          <Text content="Interview Load" weight="bold" />
+          <Text
+            content="Setup maximum interviews per day and week."
+            weight=""
+            color="neutral"
+          />
         </_Builtin.Block>
         <_Builtin.Grid className={_utils.cx(_styles, "load_grid")} tag="div">
           <_Builtin.Block
-            id={_utils.cx(
-              _styles,
-              "w-node-_55b24612-1348-951b-c98a-0357678cca00-678cc9f8"
-            )}
+            className={_utils.cx(_styles, "flex-h", "align-center")}
             tag="div"
           >
-            {"Daily Limit"}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "interviewload-lable")}
+              tag="div"
+            >
+              <Text content="Daily Limit" weight="" />
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "slot_hr_input")}
+              id={_utils.cx(
+                _styles,
+                "w-node-_55b24612-1348-951b-c98a-0357678cca02-678cc9f8"
+              )}
+              tag="div"
+            >
+              {slotDailyLimit ?? <SlotComp componentName="Input" />}
+            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "slot_hr_input")}
-            id={_utils.cx(
-              _styles,
-              "w-node-_55b24612-1348-951b-c98a-0357678cca02-678cc9f8"
-            )}
+            className={_utils.cx(_styles, "flex-h", "align-center")}
             tag="div"
           >
-            {slotDailyLimit}
-          </_Builtin.Block>
-          <_Builtin.Block
-            id={_utils.cx(
-              _styles,
-              "w-node-_55b24612-1348-951b-c98a-0357678cca03-678cc9f8"
-            )}
-            tag="div"
-          >
-            {"Weekly Limit"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "slot_hr_input")}
-            id={_utils.cx(
-              _styles,
-              "w-node-_55b24612-1348-951b-c98a-0357678cca05-678cc9f8"
-            )}
-            tag="div"
-          >
-            {slotWeeklyLimit}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "interviewload-lable")}
+              tag="div"
+            >
+              <Text content="Weekly Limit" weight="" />
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "slot_hr_input")}
+              tag="div"
+            >
+              {slotWeeklyLimit ?? <SlotComp componentName="Input" />}
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Grid>
       </_Builtin.Block>

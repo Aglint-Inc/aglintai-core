@@ -27,6 +27,7 @@ import { useTaskStatesContext } from '../../../TaskStatesContext';
 import AgentFollowUpCard from './AgentFolllowUpCard';
 import PhoneTranscript from './PhoneTrancript';
 import ProgressTitle from './ProgressTitle';
+import RequestAvailabilityList from './RequestAvailabilityList';
 import SessionCard, { meetingCardType } from './SessionCard';
 
 function SubTaskProgress() {
@@ -37,7 +38,7 @@ function SubTaskProgress() {
   const today = dayjs();
   const selectedTask = tasks.find((ele) => ele.id === router.query?.task_id);
   const { data: sessionList } = useSessionsList();
-
+ 
   return (
     <>
       <FollowUp />
@@ -58,6 +59,12 @@ function SubTaskProgress() {
                   },
                   -1,
                 );
+                const lastEmailRequestAvailabilityListIndex =
+                  progressList.reduce((lastIndex, item, i) => {
+                    return item.progress_type === 'request_availability_list'
+                      ? i
+                      : lastIndex;
+                  }, -1);
                 let CandidateCreator = tasks
                   .map((ele) => ele.applications.candidates)
                   .find((ele) => ele.id === (item.created_by as any).id);
@@ -92,7 +99,6 @@ function SubTaskProgress() {
                     },
                   );
                 }
-
                 return (
                   <TaskProgress
                     isLineVisible={progressList.length !== i + 1}
@@ -112,8 +118,9 @@ function SubTaskProgress() {
                         >
                           <Stack
                             border={'1px solid'}
-                            borderColor={'grey.300'}
-                            borderRadius={'100%'}
+                            borderColor={'var(--accent-6)'}
+                            bgcolor={'var(--white)'}
+                            borderRadius={'var(--radius-2)'}
                             direction={'row'}
                             alignItems={'center'}
                             justifyContent={'center'}
@@ -128,8 +135,9 @@ function SubTaskProgress() {
                         >
                           <Stack
                             border={'1px solid'}
-                            borderColor={'grey.300'}
-                            borderRadius={'100%'}
+                            borderColor={'var(--accent-6)'}
+                            bgcolor={'var(--white)'}
+                            borderRadius={'var(--radius-2)'}
                             direction={'row'}
                             alignItems={'center'}
                             justifyContent={'center'}
@@ -155,10 +163,7 @@ function SubTaskProgress() {
                           <MuiAvatar
                             level={InterviewerCreator?.first_name}
                             src={InterviewerCreator?.profile_image}
-                            variant='circular'
-                            width='24px'
-                            height='24px'
-                            fontSize='12px'
+                            variant='rounded-small'
                           />
                         </ShowCode.When>
                       </ShowCode>
@@ -175,12 +180,13 @@ function SubTaskProgress() {
                           }
                         >
                           <Stack
-                            p={'10px'}
-                            borderRadius={'10px'}
+                            p={'var(--space-3)'}
+                            borderRadius={'var(--space-2)'}
                             border={'1px solid'}
-                            borderColor={'grey.200'}
+                            borderColor={'var(--neutral-6)'}
+                            bgcolor={'var(--white)'}
                           >
-                            <Typography variant='body2'>
+                            <Typography variant='body1'>
                               <span
                                 dangerouslySetInnerHTML={{
                                   __html: marked(
@@ -224,10 +230,11 @@ function SubTaskProgress() {
                             </ShowCode.When>
                             <ShowCode.Else>
                               <Stack
-                                p={'10px'}
-                                borderRadius={'10px'}
                                 border={'1px solid'}
-                                borderColor={'grey.200'}
+                                bgcolor={'var(--white)'}
+                                borderRadius={'var(--radius-2)'}
+                                borderColor={'var(--neutral-6)'}
+                                p={'var(--space-3)'}
                               >
                                 <Stack
                                   direction={'column'}
@@ -286,6 +293,18 @@ function SubTaskProgress() {
                         >
                           <AgentFollowUpCard
                             progress_created_at={item.created_at}
+                          />
+                        </ShowCode.When>
+                        <ShowCode.When
+                          isTrue={
+                            item.progress_type === 'request_availability_list'
+                          }
+                        >
+                          <RequestAvailabilityList
+                            item={item}
+                            disable={
+                              lastEmailRequestAvailabilityListIndex !== i
+                            }
                           />
                         </ShowCode.When>
                       </ShowCode>

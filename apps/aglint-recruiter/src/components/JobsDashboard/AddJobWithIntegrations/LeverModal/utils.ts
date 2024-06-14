@@ -1,8 +1,9 @@
+import { DatabaseTableInsert } from '@aglint/shared-types';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
 import { hashCode } from '@/src/context/JobDashboard/hooks';
-import { JobInsert } from '@/src/queries/job/types';
+import { JobInsert } from '@/src/queries/jobs/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -85,7 +86,8 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
             job_id: post.job_id,
             id: ref.application_id,
             is_resume_fetching: true,
-          };
+            source: 'lever',
+          } as DatabaseTableInsert['applications'];
         });
 
         const { error } = await supabase

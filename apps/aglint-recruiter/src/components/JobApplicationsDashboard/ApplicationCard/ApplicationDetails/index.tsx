@@ -1,8 +1,7 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable security/detect-object-injection */
-import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Collapse, Dialog, Drawer, Stack, Typography } from '@mui/material';
 import axios from 'axios';
-import { useRouter } from 'next/router';
 // import dayjs from 'dayjs';
 import posthog from 'posthog-js';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
@@ -22,17 +21,13 @@ import { CandidateEducation } from '@/devlink/CandidateEducation';
 import { CandidateEducationCard } from '@/devlink/CandidateEducationCard';
 import { CandidateExperience } from '@/devlink/CandidateExperience';
 import { CandidateExperienceCard } from '@/devlink/CandidateExperienceCard';
-import { CandidateInterviewScore } from '@/devlink/CandidateInterviewScore';
 import { CandidateResumeScore } from '@/devlink/CandidateResumeScore';
-import { CandidateSideDrawer } from '@/devlink/CandidateSideDrawer';
 import { CandidateSkill } from '@/devlink/CandidateSkill';
 import { CandidateSkillPills } from '@/devlink/CandidateSkillPills';
 import { DetailedFeedbackCardSmall } from '@/devlink/DetailedFeedbackCardSmall';
 import { FeedbackScore } from '@/devlink/FeedbackScore';
-import { InterviewResultStatus } from '@/devlink/InterviewResultStatus';
-import { JobDetailInterview } from '@/devlink/JobDetailInterview';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ResumeFeedbackScore } from '@/devlink/ResumeFeedbackScore';
-import { TaskDetailBlock } from '@/devlink/TaskDetailBlock';
 import { UnableFetchResume } from '@/devlink/UnableFetchResume';
 import { AnalysisBlock } from '@/devlink2/AnalysisBlock';
 import { BookmarkDark } from '@/devlink2/BookmarkDark';
@@ -43,19 +38,15 @@ import { ScreeningLandingPop } from '@/devlink2/ScreeningLandingPop';
 import { ScrQuestionListItem } from '@/devlink2/ScrQuestionListItem';
 import { SidebarAnalysisBlock } from '@/devlink2/SidebarAnalysisBlock';
 import { SidebarScreening } from '@/devlink2/SidebarScreening';
-import { StatusBadge } from '@/devlink2/StatusBadge';
 import { SummaryBlock } from '@/devlink2/SummaryBlock';
 import { UploadCandidateResume } from '@/devlink2/UploadCandidateResume';
 import { ButtonPrimaryOutlinedRegular } from '@/devlink3/ButtonPrimaryOutlinedRegular';
 import { DangerMessage } from '@/devlink3/DangerMessage';
-import { NewInterviewPlanCard } from '@/devlink3/NewInterviewPlanCard';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ResumeWrap } from '@/devlink3/ResumeWrap';
-import { getSafeAssessmentResult } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
+import ResumeWait from '@/public/lottie/ResumeWait';
 import AUIButton from '@/src/components/Common/AUIButton';
 import Loader from '@/src/components/Common/Loader';
-import ResumeWait from '@/src/components/Common/Lotties/ResumeWait';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import ScoreWheel, {
   scoreWheelDependencies,
@@ -63,20 +54,7 @@ import ScoreWheel, {
 } from '@/src/components/Common/ScoreWheel';
 import { SmallCircularScore2 } from '@/src/components/Common/SmallCircularScore';
 import UITextField from '@/src/components/Common/UITextField';
-import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { PhoneScreeningResponseType } from '@/src/components/KnockOffQns/ScreeningCtxProvider';
-import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon';
-import {
-  getScheduleBgcolor,
-  getScheduleType,
-} from '@/src/components/Scheduling/Candidates/utils';
-import {
-  getScheduleDate,
-  ScheduleProgressPillProps,
-} from '@/src/components/Scheduling/Common/ScheduleProgress/scheduleProgressPill';
-import { EmailAgentIcon } from '@/src/components/Tasks/Components/EmailAgentIcon';
-import { PhoneAgentIcon } from '@/src/components/Tasks/Components/PhoneAgentIcon';
-import StatusChip from '@/src/components/Tasks/Components/StatusChip';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
@@ -85,36 +63,26 @@ import {
   ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
 import { useJobDetails } from '@/src/context/JobDashboard';
-import { palette } from '@/src/context/Theme/Theme';
-import { Job } from '@/src/queries/job/types';
+import { Job } from '@/src/queries/jobs/types';
 import { getFullName } from '@/src/utils/jsonResume';
 // import interviewerList from '@/src/utils/interviewer_list';
-import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
 // import CandidateAvatar from '../../Common/CandidateAvatar';
 import CompanyLogo from '../../Common/CompanyLogo';
-import EmailIcon from '../../Common/Icons/emailIcon';
-import LinkedInIcon from '../../Common/Icons/linkedinIcon';
-import PhoneIcon from '../../Common/Icons/phoneIcon';
-import InterviewScore, {
-  getInterviewScores,
-} from '../../Common/InterviewScore';
+import { getInterviewScores } from '../../Common/InterviewScore';
 // import InterviewScore, {
 //   getInterviewScores,
 // } from '../../Common/InterviewScore';
 import ResumeScore from '../../Common/ResumeScore';
-import CopyWrapper from '../../Common/Wrappers/copyWrapper';
 import { useKeyPress } from '../../hooks';
 // import RedirectWrapper from '../../Common/Wrappers/redirectWrapper';
 import { CheckIcon, FileIcon, UploadIcon } from '../../ImportManualCandidates';
 import useUploadCandidate from '../../ImportManualCandidates/hooks';
-import NoApplicants from '../../Lotties/NoApplicants';
 import {
   capitalize,
   formatTimeStamp,
   getApplicationProcessState,
-  getAssessmentStatus,
   getCandidateDetails,
   getScreeningStatus,
   handleOngoingWarning,
@@ -248,7 +216,7 @@ const NewJobApplicationSideDrawer = ({
   handleSelectPrevApplication: () => void;
   hideNextPrev: boolean;
 }) => {
-  const { job, interviewPlanEnabled } = useJobDetails();
+  const { job } = useJobDetails();
   const { views } = useJobApplications();
   const name = capitalize(
     application.candidates.first_name +
@@ -285,20 +253,18 @@ const NewJobApplicationSideDrawer = ({
     );
     toast.success('Call initiated successfully.');
   };
-  const isPhoneScreeningPhoneCallEnabled = useFeatureFlagEnabled(
-    'isPhoneScreeningPhoneCallEnabled',
-  );
-  const isPhoneScreeningEnabled = job.activeSections.includes(
-    JobApplicationSections.SCREENING,
-  );
+  // const isPhoneScreeningPhoneCallEnabled = useFeatureFlagEnabled(
+  //   'isPhoneScreeningPhoneCallEnabled',
+  // );
+  // const isPhoneScreeningEnabled = job.activeSections.includes(
+  //   JobApplicationSections.SCREENING,
+  // );
 
   const { pressed: right } = useKeyPress('ArrowRight');
   const { pressed: left } = useKeyPress('ArrowLeft');
 
   const [tab, setTab] = useState<TabType>('Details');
-  const interviewEnabled =
-    (interviewPlanEnabled?.data ?? false) &&
-    (application?.emailValidity?.isValidEmail ?? false);
+  const interviewEnabled = application?.emailValidity?.isValidEmail ?? false;
   const memoDependency = JSON.stringify(views);
   const tabsList = useMemo(
     () =>
@@ -357,7 +323,7 @@ const NewJobApplicationSideDrawer = ({
   }, [left, right]);
   return (
     <>
-      <CandidateSideDrawer
+      {/* <CandidateSideDrawer
         isLinkedInVisible={linkedin.valid}
         onClickLinkedin={{
           style: { cursor: 'pointer' },
@@ -419,7 +385,7 @@ const NewJobApplicationSideDrawer = ({
         isAppliedOnVisible={true}
         textAppliedOn={creationDate}
         slotNewTabPill={tabs}
-      />
+      /> */}
       <MuiPopup
         props={{
           open: isPhonePopUp,
@@ -541,33 +507,33 @@ const Bookmark = ({
   );
 };
 
-const SocialsBlock: React.FC<{ application: JobApplication }> = ({
-  application,
-}) => {
-  const linkedin = getCandidateDetails(application, 'linkedin');
-  const phone = getCandidateDetails(application, 'phone');
-  return (
-    <>
-      {linkedin.valid && (
-        <CopyWrapper content={linkedin.value}>
-          <LinkedInIcon />
-        </CopyWrapper>
-      )}
-      {phone.valid && (
-        <CopyWrapper content={phone.value}>
-          <PhoneIcon />
-        </CopyWrapper>
-      )}
-      {((application.emailValidity.isValidEmail &&
-        application?.candidates?.email) ??
-        null) && (
-        <CopyWrapper content={application.candidates.email}>
-          <EmailIcon />
-        </CopyWrapper>
-      )}
-    </>
-  );
-};
+// const SocialsBlock: React.FC<{ application: JobApplication }> = ({
+//   application,
+// }) => {
+//   const linkedin = getCandidateDetails(application, 'linkedin');
+//   const phone = getCandidateDetails(application, 'phone');
+//   return (
+//     <>
+//       {linkedin.valid && (
+//         <CopyWrapper content={linkedin.value}>
+//           <LinkedInIcon />
+//         </CopyWrapper>
+//       )}
+//       {phone.valid && (
+//         <CopyWrapper content={phone.value}>
+//           <PhoneIcon />
+//         </CopyWrapper>
+//       )}
+//       {((application.emailValidity.isValidEmail &&
+//         application?.candidates?.email) ??
+//         null) && (
+//         <CopyWrapper content={application.candidates.email}>
+//           <EmailIcon />
+//         </CopyWrapper>
+//       )}
+//     </>
+//   );
+// };
 
 type TabType =
   | 'Details'
@@ -577,44 +543,44 @@ type TabType =
   | 'Tasks'
   | 'Activity';
 
-const Sections: React.FC<{
-  application: JobApplication;
-  openResume: boolean;
-  setOpenResume: Dispatch<SetStateAction<boolean>>;
-  handleSelectNextApplication?: () => void;
-  handleSelectPrevApplication?: () => void;
-  tab: TabType;
-}> = ({
-  application,
-  openResume,
-  setOpenResume,
-  tab,
-  handleSelectNextApplication,
-  handleSelectPrevApplication,
-}) => {
-  switch (tab) {
-    case 'Details':
-      return (
-        <NewCandidateDetails
-          application={application}
-          openResume={openResume}
-          setOpenResume={setOpenResume}
-          handleSelectNextApplication={handleSelectNextApplication}
-          handleSelectPrevApplication={handleSelectPrevApplication}
-        />
-      );
-    case 'Screening':
-      return <PhoneScreening application={application} />;
-    case 'Assessment':
-      return <AssessmentSection application={application} />;
-    case 'Interview':
-      return <IntreviewSection application={application} />;
-    case 'Tasks':
-      return <Tasks application={application} />;
-    case 'Activity':
-      return <></>;
-  }
-};
+// const Sections: React.FC<{
+//   application: JobApplication;
+//   openResume: boolean;
+//   setOpenResume: Dispatch<SetStateAction<boolean>>;
+//   handleSelectNextApplication?: () => void;
+//   handleSelectPrevApplication?: () => void;
+//   tab: TabType;
+// }> = ({
+//   application,
+//   openResume,
+//   setOpenResume,
+//   tab,
+//   handleSelectNextApplication,
+//   handleSelectPrevApplication,
+// }) => {
+//   switch (tab) {
+//     case 'Details':
+//       return (
+//         <NewCandidateDetails
+//           application={application}
+//           openResume={openResume}
+//           setOpenResume={setOpenResume}
+//           handleSelectNextApplication={handleSelectNextApplication}
+//           handleSelectPrevApplication={handleSelectPrevApplication}
+//         />
+//       );
+//     case 'Screening':
+//       return <PhoneScreening application={application} />;
+//     case 'Assessment':
+//       return <AssessmentSection application={application} />;
+//     case 'Interview':
+//       return <IntreviewSection application={application} />;
+//     case 'Tasks':
+//       return <Tasks application={application} />;
+//     case 'Activity':
+//       return <></>;
+//   }
+// };
 
 export const NewCandidateDetails: React.FC<{
   application: JobApplication;
@@ -685,213 +651,210 @@ const InsightsBlock = ({ application }: { application: JobApplication }) => {
   );
 };
 
-const Tasks = ({ application }: { application: JobApplication }) => {
-  const { push } = useRouter();
-  const taskCards = (application?.tasks ?? []).map((task, i) => (
-    <TaskDetailBlock
-      key={task?.id ?? i}
-      slotIcon={<TaskIcon task={task} />}
-      slotStatus={<StatusChip status={task?.status} />}
-      textDesc={task?.name}
-      textName={<TaskName task={task} />}
-    />
-  ));
-  if (taskCards.length === 0) return <EmptyState type='Tasks' />;
-  return (
-    <JobDetailInterview
-      slotNewInterviewPlanCard={taskCards}
-      textButton={'View in tasks'}
-      onClickViewScheduler={{
-        onClick: () => push(`/tasks?application_id=${application?.id ?? null}`),
-      }}
-    />
-  );
-};
+// const Tasks = ({ application }: { application: JobApplication }) => {
+//   const { push } = useRouter();
+//   const taskCards = (application?.tasks ?? []).map((task, i) => (
+//     <TaskDetailBlock
+//       key={task?.id ?? i}
+//       slotIcon={<TaskIcon task={task} />}
+//       slotStatus={<StatusChip status={task?.status} />}
+//       textDesc={task?.name}
+//       textName={<TaskName task={task} />}
+//     />
+//   ));
+//   if (taskCards.length === 0) return <EmptyState type='Tasks' />;
+//   return (
+//     <JobDetailInterview
+//       slotNewInterviewPlanCard={taskCards}
+//       textButton={'View in tasks'}
+//       onClickViewScheduler={{
+//         onClick: () => push(`/tasks?application_id=${application?.id ?? null}`),
+//       }}
+//     />
+//   );
+// };
 
-const EmptyState = ({ type }: { type: TabType }) => {
-  return (
-    <Stack width={'100%'} alignItems={'center'} justifyContent={'center'}>
-      <Stack width={'100px'}>
-        <NoApplicants />
-      </Stack>
-      <Stack>No {type} data found</Stack>
-    </Stack>
-  );
-};
+// const EmptyState = ({ type }: { type: TabType }) => {
+//   return (
+//     <Stack width={'100%'} alignItems={'center'} justifyContent={'center'}>
+//       <Stack width={'100px'}>
+//         <NoApplicants />
+//       </Stack>
+//       <Stack>No {type} data found</Stack>
+//     </Stack>
+//   );
+// };
 
-const TaskName = ({ task }: { task: JobApplication['tasks'][number] }) => {
-  const member = useTaskMember(task?.created_by);
-  const name = getFullName(member?.first_name, member?.last_name) ?? '---';
-  if (task.created_by === EmailAgentId) return <>Email Agent</>;
-  if (task.created_by === PhoneAgentId) return <>Phone Agent</>;
-  return <>{name}</>;
-};
+// const TaskName = ({ task }: { task: JobApplication['tasks'][number] }) => {
+//   const member = useTaskMember(task?.created_by);
+//   const name = getFullName(member?.first_name, member?.last_name) ?? '---';
+//   if (task.created_by === EmailAgentId) return <>Email Agent</>;
+//   if (task.created_by === PhoneAgentId) return <>Phone Agent</>;
+//   return <>{name}</>;
+// };
 
-const TaskIcon = ({ task }: { task: JobApplication['tasks'][number] }) => {
-  if (task.created_by === EmailAgentId)
-    return (
-      <Stack
-        border={'1px solid'}
-        borderColor={'grey.300'}
-        borderRadius={'100%'}
-        direction={'row'}
-        alignItems={'center'}
-        justifyContent={'center'}
-        width={'24px'}
-        height={'24px'}
-      >
-        <EmailAgentIcon />
-      </Stack>
-    );
-  if (task.created_by === PhoneAgentId)
-    return (
-      <Stack
-        border={'1px solid'}
-        borderColor={'grey.300'}
-        borderRadius={'100%'}
-        direction={'row'}
-        alignItems={'center'}
-        justifyContent={'center'}
-        width={'24px'}
-        height={'24px'}
-      >
-        <PhoneAgentIcon />
-      </Stack>
-    );
-  return <TaskMemeber task={task} />;
-};
+// const TaskIcon = ({ task }: { task: JobApplication['tasks'][number] }) => {
+//   if (task.created_by === EmailAgentId)
+//     return (
+//       <Stack
+//         border={'1px solid'}
+//         borderColor={'var(--neutral-6)'}
+//         borderRadius={'100%'}
+//         direction={'row'}
+//         alignItems={'center'}
+//         justifyContent={'center'}
+//         width={'24px'}
+//         height={'24px'}
+//       >
+//         <EmailAgentIcon />
+//       </Stack>
+//     );
+//   if (task.created_by === PhoneAgentId)
+//     return (
+//       <Stack
+//         border={'1px solid'}
+//         borderColor={'var(--neutral-6)'}
+//         borderRadius={'100%'}
+//         direction={'row'}
+//         alignItems={'center'}
+//         justifyContent={'center'}
+//         width={'24px'}
+//         height={'24px'}
+//       >
+//         <PhoneAgentIcon />
+//       </Stack>
+//     );
+//   return <TaskMemeber task={task} />;
+// };
 
-const useTaskMember = (id: string) => {
-  const { members } = useAuthDetails();
-  const member = members.find(({ user_id }) => user_id === id);
-  return member ?? null;
-};
+// const useTaskMember = (id: string) => {
+//   const { members } = useAuthDetails();
+//   const member = members.find(({ user_id }) => user_id === id);
+//   return member ?? null;
+// };
 
-const TaskMemeber = ({ task }: { task: JobApplication['tasks'][number] }) => {
-  const member = useTaskMember(task?.created_by);
-  const name = getFullName(member?.first_name, member?.last_name) ?? '---';
+// const TaskMemeber = ({ task }: { task: JobApplication['tasks'][number] }) => {
+//   const member = useTaskMember(task?.created_by);
+//   const name = getFullName(member?.first_name, member?.last_name) ?? '---';
 
-  return (
-    <MuiAvatar
-      level={name}
-      src={member?.profile_image ?? null}
-      variant='circular'
-      width='24px'
-      height='24px'
-      fontSize='12px'
-    />
-  );
-};
+//   return (
+//     <MuiAvatar
+//       level={name}
+//       src={member?.profile_image ?? null}
+//       variant='rounded-small'
+//     />
+//   );
+// };
 
-const IntreviewSection: React.FC<{
-  application: JobApplication;
-}> = ({ application }) => {
-  const { push } = useRouter();
-  const sessions: Parameters<typeof InterviewSessionCard>[0]['session'][] = (
-    application?.interview_session_meetings ?? []
-  ).map(
-    ({
-      interview_meeting,
-      interview_session: {
-        session_duration,
-        name,
-        schedule_type,
-        session_type,
-        location,
-      },
-    }) => {
-      const response: (typeof sessions)[number] = {
-        duration: session_duration,
-        name,
-        location,
-        scheduleType: schedule_type,
-        sessionType: session_type,
-        status: 'not_scheduled',
-        date: null,
-      };
-      if (interview_meeting) {
-        response.status = interview_meeting.status;
-        response.date = {
-          startTime: interview_meeting.start_time,
-          endTime: interview_meeting.end_time,
-        };
-      }
-      return response;
-    },
-  );
+// const IntreviewSection: React.FC<{
+//   application: JobApplication;
+// }> = ({ application }) => {
+//   const { push } = useRouter();
+//   const sessions: Parameters<typeof InterviewSessionCard>[0]['session'][] = (
+//     application?.interview_session_meetings ?? []
+//   ).map(
+//     ({
+//       interview_meeting,
+//       interview_session: {
+//         session_duration,
+//         name,
+//         schedule_type,
+//         session_type,
+//         location,
+//       },
+//     }) => {
+//       const response: (typeof sessions)[number] = {
+//         duration: session_duration,
+//         name,
+//         location,
+//         scheduleType: schedule_type,
+//         sessionType: session_type,
+//         status: 'not_scheduled',
+//         date: null,
+//       };
+//       if (interview_meeting) {
+//         response.status = interview_meeting.status;
+//         response.date = {
+//           startTime: interview_meeting.start_time,
+//           endTime: interview_meeting.end_time,
+//         };
+//       }
+//       return response;
+//     },
+//   );
 
-  if (sessions.length === 0) return <EmptyState type='Interview' />;
+//   if (sessions.length === 0) return <EmptyState type='Interview' />;
 
-  const sessionCards = sessions.map((session, i) => (
-    <InterviewSessionCard key={i} session={session} />
-  ));
-  return (
-    <JobDetailInterview
-      slotNewInterviewPlanCard={sessionCards}
-      onClickViewScheduler={{
-        onClick: () =>
-          push(`/scheduling/application/${application?.id ?? null}`),
-      }}
-    />
-  );
-};
+//   const sessionCards = sessions.map((session, i) => (
+//     <InterviewSessionCard key={i} session={session} />
+//   ));
+//   return (
+//     <JobDetailInterview
+//       slotNewInterviewPlanCard={sessionCards}
+//       onClickViewScheduler={{
+//         onClick: () =>
+//           push(`/scheduling/application/${application?.id ?? null}`),
+//       }}
+//     />
+//   );
+// };
 
-const InterviewSessionCard = ({
-  session: { date = null, ...props },
-}: {
-  session: Omit<ScheduleProgressPillProps, 'position'> & { location: string };
-}) => {
-  const isScheduleDate =
-    (props.status === 'completed' || props.status === 'confirmed') && !!date;
-  const scheduleDate = getScheduleDate(date);
-  const backgroundColor = getScheduleBgcolor(props.status);
-  const scheduleType = getScheduleType(props.scheduleType);
-  const duration = getBreakLabel(props.duration);
-  return (
-    <NewInterviewPlanCard
-      slotPlatformIcon={<IconScheduleType type={props.scheduleType} />}
-      isTimeVisible={isScheduleDate}
-      textMeetingPlatform={scheduleType}
-      textLocation={props.location ?? '---'}
-      textMeetingTitle={props.name}
-      textTime={duration}
-      textDate={scheduleDate}
-      propsBgColorStatus={{
-        style: {
-          backgroundColor,
-        },
-      }}
-      slotStatus={
-        <StatusBadge
-          isCancelledVisible={props.status === 'cancelled'}
-          isConfirmedVisible={props.status === 'confirmed'}
-          isWaitingVisible={props.status === 'waiting'}
-          isCompletedVisible={props.status === 'completed'}
-          isNotScheduledVisible={props.status === 'not_scheduled' || false}
-        />
-      }
-      isPanelIconVisible={props.sessionType === 'panel'}
-      isOnetoOneIconVisible={props.sessionType === 'individual'}
-      isDebriefIconVisible={props.sessionType === 'debrief'}
-      isLocationVisible={props.scheduleType === 'in_person_meeting'}
-      isDurationVisible={!!duration}
-      textDuration={duration}
-      isNotScheduledIconVisible={false}
-      isDateVisible={false}
-      isScheduleNowButtonVisible={false}
-      isCheckboxVisible={false}
-      isSelected={false}
-      isThreeDotVisible={false}
-      onClickCard={null}
-      onClickDots={null}
-      textDay={null}
-      textMonth={null}
-      slotCheckbox={<></>}
-      slotEditOptionModule={<></>}
-      slotScheduleNowButton={<></>}
-    />
-  );
-};
+// const InterviewSessionCard = ({
+//   session: { date = null, ...props },
+// }: {
+//   session: Omit<ScheduleProgressPillProps, 'position'> & { location: string };
+// }) => {
+//   const isScheduleDate =
+//     (props.status === 'completed' || props.status === 'confirmed') && !!date;
+//   const scheduleDate = getScheduleDate(date);
+//   const backgroundColor = getScheduleBgcolor(props.status);
+//   const scheduleType = getScheduleType(props.scheduleType);
+//   const duration = getBreakLabel(props.duration);
+//   return (
+//     <NewInterviewPlanCard
+//       slotPlatformIcon={<IconScheduleType type={props.scheduleType} />}
+//       isTimeVisible={isScheduleDate}
+//       textMeetingPlatform={scheduleType}
+//       textLocation={props.location ?? '---'}
+//       textMeetingTitle={props.name}
+//       textTime={duration}
+//       textDate={scheduleDate}
+//       propsBgColorStatus={{
+//         style: {
+//           backgroundColor,
+//         },
+//       }}
+//       slotStatus={
+//         <StatusBadge
+//           isCancelledVisible={props.status === 'cancelled'}
+//           isConfirmedVisible={props.status === 'confirmed'}
+//           isWaitingVisible={props.status === 'waiting'}
+//           isCompletedVisible={props.status === 'completed'}
+//           isNotScheduledVisible={props.status === 'not_scheduled' || false}
+//         />
+//       }
+//       isPanelIconVisible={props.sessionType === 'panel'}
+//       isOnetoOneIconVisible={props.sessionType === 'individual'}
+//       isDebriefIconVisible={props.sessionType === 'debrief'}
+//       isLocationVisible={props.scheduleType === 'in_person_meeting'}
+//       isDurationVisible={!!duration}
+//       textDuration={duration}
+//       isNotScheduledIconVisible={false}
+//       isDateVisible={false}
+//       isScheduleNowButtonVisible={false}
+//       isCheckboxVisible={false}
+//       isSelected={false}
+//       isThreeDotVisible={false}
+//       onClickCard={null}
+//       onClickDots={null}
+//       textDay={null}
+//       textMonth={null}
+//       slotCheckbox={<></>}
+//       slotEditOptionModule={<></>}
+//       slotScheduleNowButton={<></>}
+//     />
+//   );
+// };
 
 export const AnalysisBlockSection: React.FC<{
   application: JobApplication;
@@ -929,7 +892,7 @@ export const AnalysisBlockSection: React.FC<{
           padding: noCollapse ? '0px' : '16px',
         },
       }}
-      slotPill={<ResumeScore application={application} />}
+      // slotPill={<ResumeScore application={application} />}
       onclickArrow={{
         onClick: () => setCollapse((prev) => !prev),
         style: {
@@ -955,158 +918,158 @@ export const AnalysisBlockSection: React.FC<{
   );
 };
 
-const AssessmentSection: React.FC<{
-  application: JobApplication;
-}> = ({ application }) => {
-  const { isNotInvited, isPending, isSubmitted } = getAssessmentStatus(
-    application.status_emails_sent,
-    getSafeAssessmentResult(application?.assessment_results),
-  );
-  if (isNotInvited)
-    return <NewInterviewStatus application={application} pending={false} />;
-  if (isPending)
-    return <NewInterviewStatus application={application} pending={true} />;
-  if (isSubmitted) return <InterviewScoreDetails application={application} />;
-};
+// const AssessmentSection: React.FC<{
+//   application: JobApplication;
+// }> = ({ application }) => {
+//   const { isNotInvited, isPending, isSubmitted } = getAssessmentStatus(
+//     application.status_emails_sent,
+//     getSafeAssessmentResult(application?.assessment_results),
+//   );
+//   if (isNotInvited)
+//     return <NewInterviewStatus application={application} pending={false} />;
+//   if (isPending)
+//     return <NewInterviewStatus application={application} pending={true} />;
+//   if (isSubmitted) return <InterviewScoreDetails application={application} />;
+// };
 
-const NewInterviewStatus = ({
-  application,
-  pending,
-}: {
-  application: JobApplication;
-  pending: boolean;
-}) => {
-  const {
-    section,
-    handleJobApplicationSectionUpdate,
-    setCardStates,
-    cardStates: {
-      checkList: { disabled, list },
-      disabledList,
-    },
-  } = useJobApplications();
-  const [collapse, setCollapse] = useState(false);
-  const status = {
-    text: pending ? 'Invited' : 'Pending Invite',
-    description: pending
-      ? 'The candidate has received an assessment invitation but has not yet taken the assessment.'
-      : 'The candidate has not been invited for assesment yet. ',
-    btnText: pending ? 'Resend link' : 'Invite now',
-  };
-  const disable =
-    disabledList.has(application.id) || (disabled && list.has(application.id));
-  const handleInvite = async () => {
-    if (!disable) {
-      const purpose = pending ? 'interview_resend' : 'interview';
-      setCardStates((prev) => ({
-        ...prev,
-        disabledList: new Set([...prev.disabledList, application.id]),
-      }));
-      await handleJobApplicationSectionUpdate(
-        {
-          source: section,
-          destination: null,
-        },
-        null,
-        [purpose],
-        new Set([application.id]),
-      );
-      setCardStates((prev) => {
-        return {
-          ...prev,
-          disabledList: new Set(
-            [...prev.disabledList].filter((e) => e === application.id),
-          ),
-        };
-      });
-    } else {
-      handleOngoingWarning();
-    }
-  };
-  return (
-    <Stack
-      key={application.id}
-      style={{
-        opacity: disable ? 0.4 : 1,
-        transition: '0.5s',
-        pointerEvents: disable ? 'none' : 'auto',
-      }}
-    >
-      <InterviewResultStatus
-        slotAssessmentScore={
-          <InterviewScore key={application.id} application={application} />
-        }
-        slotAssessmentInvite={
-          <Collapse in={collapse}>
-            <Stack marginTop={'10px'}>
-              <AssessmentInvite
-                textDescription={status.description}
-                onClickCopyInterviewLink={{
-                  onClick: () => {
-                    navigator.clipboard
-                      .writeText(
-                        `${process.env.NEXT_PUBLIC_HOST_NAME}${ROUTES['/candidate-assessment/']()}/${application.id}`,
-                      )
-                      .then(() => {
-                        toast.success('Interview link copied.');
-                      });
-                  },
-                }}
-                slotResendButton={
-                  <ButtonPrimaryOutlinedRegular
-                    buttonText={status.btnText}
-                    buttonProps={{ onClick: async () => await handleInvite() }}
-                  />
-                }
-              />
-            </Stack>
-          </Collapse>
-        }
-        onClickIcons={{
-          onClick: () => setCollapse((prev) => !prev),
-          style: {
-            cursor: 'pointer',
-            transform: `rotate(${collapse ? '0deg' : '180deg'})`,
-          },
-        }}
-      />
-    </Stack>
-  );
-};
+// const NewInterviewStatus = ({
+//   application,
+//   pending,
+// }: {
+//   application: JobApplication;
+//   pending: boolean;
+// }) => {
+//   const {
+//     section,
+//     handleJobApplicationSectionUpdate,
+//     setCardStates,
+//     cardStates: {
+//       checkList: { disabled, list },
+//       disabledList,
+//     },
+//   } = useJobApplications();
+//   const [collapse, setCollapse] = useState(false);
+//   const status = {
+//     text: pending ? 'Invited' : 'Pending Invite',
+//     description: pending
+//       ? 'The candidate has received an assessment invitation but has not yet taken the assessment.'
+//       : 'The candidate has not been invited for assesment yet. ',
+//     btnText: pending ? 'Resend link' : 'Invite now',
+//   };
+//   const disable =
+//     disabledList.has(application.id) || (disabled && list.has(application.id));
+//   const handleInvite = async () => {
+//     if (!disable) {
+//       const purpose = pending ? 'interview_resend' : 'interview';
+//       setCardStates((prev) => ({
+//         ...prev,
+//         disabledList: new Set([...prev.disabledList, application.id]),
+//       }));
+//       await handleJobApplicationSectionUpdate(
+//         {
+//           source: section,
+//           destination: null,
+//         },
+//         null,
+//         [purpose],
+//         new Set([application.id]),
+//       );
+//       setCardStates((prev) => {
+//         return {
+//           ...prev,
+//           disabledList: new Set(
+//             [...prev.disabledList].filter((e) => e === application.id),
+//           ),
+//         };
+//       });
+//     } else {
+//       handleOngoingWarning();
+//     }
+//   };
+//   return (
+//     <Stack
+//       key={application.id}
+//       style={{
+//         opacity: disable ? 0.4 : 1,
+//         transition: '0.5s',
+//         pointerEvents: disable ? 'none' : 'auto',
+//       }}
+//     >
+//       <InterviewResultStatus
+//         slotAssessmentScore={
+//           <InterviewScore key={application.id} application={application} />
+//         }
+//         slotAssessmentInvite={
+//           <Collapse in={collapse}>
+//             <Stack marginTop={'10px'}>
+//               <AssessmentInvite
+//                 textDescription={status.description}
+//                 onClickCopyInterviewLink={{
+//                   onClick: () => {
+//                     navigator.clipboard
+//                       .writeText(
+//                         `${process.env.NEXT_PUBLIC_HOST_NAME}${ROUTES['/candidate-assessment/']()}/${application.id}`,
+//                       )
+//                       .then(() => {
+//                         toast.success('Interview link copied.');
+//                       });
+//                   },
+//                 }}
+//                 slotResendButton={
+//                   <ButtonPrimaryOutlinedRegular
+//                     buttonText={status.btnText}
+//                     buttonProps={{ onClick: async () => await handleInvite() }}
+//                   />
+//                 }
+//               />
+//             </Stack>
+//           </Collapse>
+//         }
+//         onClickIcons={{
+//           onClick: () => setCollapse((prev) => !prev),
+//           style: {
+//             cursor: 'pointer',
+//             transform: `rotate(${collapse ? '0deg' : '180deg'})`,
+//           },
+//         }}
+//       />
+//     </Stack>
+//   );
+// };
 
-const InterviewScoreDetails: React.FC<{ application: JobApplication }> = ({
-  application,
-}) => {
-  const {
-    assessments: {
-      data: { jobAssessments },
-    },
-  } = useJobDetails();
-  const result = getInterviewScores(application, jobAssessments);
-  const [collapse, setCollapse] = useState(false);
-  const interviewScore = <InterviewScore application={application} />;
-  return (
-    <CandidateInterviewScore
-      slotAssessmentScore={interviewScore}
-      onClickIcons={{
-        onClick: () => setCollapse((prev) => !prev),
-        style: {
-          cursor: 'pointer',
-          transform: `rotate(${collapse ? '0deg' : '180deg'})`,
-        },
-      }}
-      slotInterviewFeedbackScore={
-        result && (
-          <Collapse in={collapse}>
-            <Stack gap={'12px'} marginTop={'12px'}>
-              <InterviewResultParams resultParamsObj={result} />
-            </Stack>
-          </Collapse>
-        )
-      }
-    />
-  );
-};
+// const InterviewScoreDetails: React.FC<{ application: JobApplication }> = ({
+//   application,
+// }) => {
+//   const {
+//     assessments: {
+//       data: { jobAssessments },
+//     },
+//   } = useJobDetails();
+//   const result = getInterviewScores(application, jobAssessments);
+//   const [collapse, setCollapse] = useState(false);
+//   const interviewScore = <InterviewScore application={application} />;
+//   return (
+//     <CandidateInterviewScore
+//       slotAssessmentScore={interviewScore}
+//       onClickIcons={{
+//         onClick: () => setCollapse((prev) => !prev),
+//         style: {
+//           cursor: 'pointer',
+//           transform: `rotate(${collapse ? '0deg' : '180deg'})`,
+//         },
+//       }}
+//       slotInterviewFeedbackScore={
+//         result && (
+//           <Collapse in={collapse}>
+//             <Stack gap={'12px'} marginTop={'12px'}>
+//               <InterviewResultParams resultParamsObj={result} />
+//             </Stack>
+//           </Collapse>
+//         )
+//       }
+//     />
+//   );
+// };
 
 export const OverviewBlock = ({
   title,
@@ -1232,22 +1195,22 @@ const ResumeUpload: React.FC<{
             <Stack
               sx={{
                 border: '1px dashed',
-                borderColor: palette.blue[300],
+                borderColor: 'var(--accent-6)',
                 borderRadius: 1,
-                py: '34px',
-                px: '20px',
+                py: 'var(--space-6)',
+                px: 'var(--space-5)',
                 cursor: 'pointer',
-                background: 'hsla(206.66666666666666, 100.00%, 96.47%, 0.50);',
+                background: 'var(--neutral-2)',
               }}
               direction='row'
-              spacing={'8px'}
+              spacing={'var(--space-2)'}
               alignItems={'center'}
               justifyContent={'center'}
             >
               {resume ? <FileIcon /> : <UploadIcon />}
               <Typography
-                variant='body2'
-                sx={{ textAlgin: 'center', fontSize: '14px' }}
+                variant='body1'
+                sx={{ textAlgin: 'center' }}
                 style={{
                   fontWeight: resume ? 600 : 400,
                 }}
@@ -2043,34 +2006,35 @@ export function giveColorForInterviewScore(rating) {
 
 const UserImage = () => {
   return (
-    <svg
-      width='20'
-      height='20'
-      viewBox='0 0 24 24'
-      fill='none'
-      xmlns='http://www.w3.org/2000/svg'
-    >
-      <rect
-        x='0.25'
-        y='0.25'
-        width='23.5'
-        height='23.5'
-        rx='11.75'
-        fill='#F8F9F9'
-      ></rect>
-      <rect
-        x='0.25'
-        y='0.25'
-        width='23.5'
-        height='23.5'
-        rx='11.75'
-        stroke='#D8DCDE'
-        stroke-width='0.5'
-      ></rect>
-      <path
-        d='M12 12C11.4531 12 10.9531 11.8672 10.5 11.6016C10.0469 11.3359 9.67969 10.9688 9.39844 10.5C9.13281 10.0312 9 9.53125 9 9C9 8.46875 9.13281 7.96875 9.39844 7.5C9.67969 7.03125 10.0469 6.66406 10.5 6.39844C10.9531 6.13281 11.4531 6 12 6C12.5469 6 13.0469 6.13281 13.5 6.39844C13.9531 6.66406 14.3203 7.03125 14.6016 7.5C14.8672 7.96875 15 8.46875 15 9C15 9.53125 14.8672 10.0312 14.6016 10.5C14.3203 10.9688 13.9531 11.3359 13.5 11.6016C13.0469 11.8672 12.5469 12 12 12ZM10.9219 13.125H13.0781C14.25 13.1562 15.2344 13.5625 16.0312 14.3438C16.8125 15.1406 17.2188 16.125 17.25 17.2969C17.25 17.5 17.1797 17.6641 17.0391 17.7891C16.9141 17.9297 16.75 18 16.5469 18H7.45312C7.25 18 7.08594 17.9297 6.96094 17.7891C6.82031 17.6641 6.75 17.5 6.75 17.2969C6.78125 16.125 7.1875 15.1406 7.96875 14.3438C8.76562 13.5625 9.75 13.1562 10.9219 13.125Z'
-        fill='#68737D'
-      ></path>
-    </svg>
+    <GlobalIcon iconName='account_circle' />
+    // <svg
+    //   width='20'
+    //   height='20'
+    //   viewBox='0 0 24 24'
+    //   fill='none'
+    //   xmlns='http://www.w3.org/2000/svg'
+    // >
+    //   <rect
+    //     x='0.25'
+    //     y='0.25'
+    //     width='23.5'
+    //     height='23.5'
+    //     rx='11.75'
+    //     fill='#F8F9F9'
+    //   ></rect>
+    //   <rect
+    //     x='0.25'
+    //     y='0.25'
+    //     width='23.5'
+    //     height='23.5'
+    //     rx='11.75'
+    //     stroke='#D8DCDE'
+    //     stroke-width='0.5'
+    //   ></rect>
+    //   <path
+    //     d='M12 12C11.4531 12 10.9531 11.8672 10.5 11.6016C10.0469 11.3359 9.67969 10.9688 9.39844 10.5C9.13281 10.0312 9 9.53125 9 9C9 8.46875 9.13281 7.96875 9.39844 7.5C9.67969 7.03125 10.0469 6.66406 10.5 6.39844C10.9531 6.13281 11.4531 6 12 6C12.5469 6 13.0469 6.13281 13.5 6.39844C13.9531 6.66406 14.3203 7.03125 14.6016 7.5C14.8672 7.96875 15 8.46875 15 9C15 9.53125 14.8672 10.0312 14.6016 10.5C14.3203 10.9688 13.9531 11.3359 13.5 11.6016C13.0469 11.8672 12.5469 12 12 12ZM10.9219 13.125H13.0781C14.25 13.1562 15.2344 13.5625 16.0312 14.3438C16.8125 15.1406 17.2188 16.125 17.25 17.2969C17.25 17.5 17.1797 17.6641 17.0391 17.7891C16.9141 17.9297 16.75 18 16.5469 18H7.45312C7.25 18 7.08594 17.9297 6.96094 17.7891C6.82031 17.6641 6.75 17.5 6.75 17.2969C6.78125 16.125 7.1875 15.1406 7.96875 14.3438C8.76562 13.5625 9.75 13.1562 10.9219 13.125Z'
+    //     fill='#68737D'
+    //   ></path>
+    // </svg>
   );
 };

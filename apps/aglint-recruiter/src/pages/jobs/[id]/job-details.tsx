@@ -1,9 +1,7 @@
 import Seo from '@components/Common/Seo';
 
 import JobDetailsDashboard from '@/src/components/JobDetails';
-import JobApplicationProvider from '@/src/context/JobApplicationsContext';
-import JobDashboardProvider from '@/src/context/JobDashboard';
-import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
+import { JobProvider } from '@/src/context/JobContext';
 
 const JobDetailsPage = () => {
   return (
@@ -18,13 +16,7 @@ const JobDetailsPage = () => {
 };
 
 JobDetailsPage.privateProvider = (page) => {
-  return (
-    <JobDashboardProvider>
-      <JobInterviewPlanProvider>
-        <JobApplicationProvider>{page}</JobApplicationProvider>
-      </JobInterviewPlanProvider>
-    </JobDashboardProvider>
-  );
+  return <JobProvider>{page}</JobProvider>;
 };
 
 export default JobDetailsPage;

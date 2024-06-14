@@ -1,16 +1,49 @@
 .resume-match-tag {
+  position: relative;
+
   display: flex;
-  height: 30px;
-  padding-right: 16px;
-  padding-left: 16px;
+  height: var(--space-5);
+  min-width: 60px;
+  padding-right: var(--space-2);
+  padding-left: var(--space-2);
   align-items: center;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
 
-  border-style: solid;
-  border-width: 1px;
-  border-color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
-  border-radius: 100px;
+  border-radius: var(--radius-2);
 
-  background-color: #f8f9f9;
+  background-color: var(--neutral-3);
+}
+
+.embed_flex {
+  display: flex;
+}
+
+.embed_flex.relative_3 {
+  position: relative;
+  z-index: 3;
+}
+
+.embed_flex.is_cursor {
+  cursor: pointer;
+}
+
+.loading_score {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: var(--radius-2);
+
+  background-color: var(--neutral-3);
+}
+
+.apple_loader {
+  width: 16px;
 }

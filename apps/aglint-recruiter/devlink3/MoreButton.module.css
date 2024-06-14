@@ -28,10 +28,6 @@
   text-decoration: none;
 }
 
-.more-menu-copy.ihiuygh {
-  display: none;
-}
-
 .more-menu {
   display: flex;
   overflow: hidden;
@@ -50,10 +46,6 @@
   box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
 
   text-decoration: none;
-}
-
-.more-menu.auto_width {
-  width: 280px;
 }
 
 .menu_drop {
@@ -103,10 +95,6 @@
   font-weight: 400;
   letter-spacing: -0.15399999916553497px;
   text-decoration: none;
-}
-
-.text.orange {
-  color: #ed8f1c;
 }
 
 .text-2 {

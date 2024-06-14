@@ -1,7 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { ScoreJson } from '@/src/context/JobApplicationsContext/types';
-import { palette } from '@/src/context/Theme/Theme';
-import { Job } from '@/src/queries/job/types';
+import { Job } from '@/src/queries/jobs/types';
 
 const Priority = {
   low: '#467B7C',
@@ -82,7 +81,8 @@ export function fillEmailTemplate(
     date_range?: string;
     reschedule_reason?: string;
     additional_reschedule_notes?: string;
-    cancle_reason?:string;
+    cancle_reason?: string;
+    availability_link?: string;
   },
 ) {
   let filledTemplate = template;
@@ -104,7 +104,8 @@ export function fillEmailTemplate(
     '[dateRange]': email.date_range,
     '[rescheduleReason]': email.reschedule_reason,
     '[additionalRescheduleNotes]': email.additional_reschedule_notes,
-    '[cancleReason]':email.cancle_reason
+    '[cancleReason]': email.cancle_reason,
+    '[availabilityLink]': email.availability_link,
   };
 
   for (const [placeholder, value] of Object.entries(placeholders)) {
@@ -118,39 +119,39 @@ export function fillEmailTemplate(
 
 const allCandidateStatusColor = {
   'invitation not sent': {
-    color: palette.red[500],
-    backgroundColor: palette.red[100],
+    color: 'var(--error-11)',
+    backgroundColor: 'var(--error-3)',
   },
   'invitation sent': {
-    color: palette.yellow[600],
-    backgroundColor: palette.red[100],
+    color: 'var(--warning-11)',
+    backgroundColor: 'var(--warning-2',
   },
   'invitation accepted': {
-    color: palette.kale[600],
-    backgroundColor: palette.kale[200],
+    color: 'var(--success-11)',
+    backgroundColor: 'var(--success-3)',
   },
   'invitation rejected': {
-    color: '#8B008B',
-    backgroundColor: 'rgba(139, 0, 139, 0.10)',
+    color: 'var(--error-11)',
+    backgroundColor: 'var(--error-3)',
   },
   'invitation expired': {
-    color: palette.red[500],
-    backgroundColor: palette.red[500],
+    color: 'var(--error-11)',
+    backgroundColor: 'var(--error-3)',
   },
   'invitation completed': {
-    color: palette.blue[600],
-    backgroundColor: palette.blue[100],
+    color: 'var(--accent-11)',
+    backgroundColor: 'var(--accent-2)',
   },
   'invitation incomplete': {
-    color: palette.grey[700],
-    backgroundColor: palette.grey[200],
+    color: 'var(--neutral-11)',
+    backgroundColor: 'var(--neutral-3)',
   },
 };
 export const getCandidateStatusColor = (key: string) => {
   return (
     allCandidateStatusColor[String(key).toLocaleLowerCase()] || {
-      color: palette.grey[700],
-      backgroundColor: palette.grey[200],
+      color: 'var(--neutral-11)',
+      backgroundColor: 'var(--neutral-3)',
     }
   );
 };

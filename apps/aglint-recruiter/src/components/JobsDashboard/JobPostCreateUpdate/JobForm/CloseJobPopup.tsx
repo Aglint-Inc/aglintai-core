@@ -1,16 +1,16 @@
+import { supabaseWrap } from '@aglint/shared-utils';
 import { set } from 'lodash';
 import { useRouter } from 'next/dist/client/router';
 import { useState } from 'react';
 
 import { CloseJobModal } from '@/devlink/CloseJobModal';
 import { useJobs } from '@/src/context/JobsContext';
-import { Job } from '@/src/queries/job/types';
+import { Job } from '@/src/queries/jobs/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import UITextField from '../../../Common/UITextField';
 import { useJobForm } from '../JobPostFormProvider';
-import { supabaseWrap } from '../utils';
 
 const CloseJobPopup = ({ onClose }) => {
   const { handleUIJobUpdate } = useJobs();

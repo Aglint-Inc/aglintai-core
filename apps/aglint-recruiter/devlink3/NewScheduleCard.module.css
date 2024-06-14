@@ -1,4 +1,4 @@
-.div-block-1490 {
+.my-schedule-card {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -15,7 +15,7 @@
 
   border-radius: 10px;
 
-  background-color: #f7f9fb;
+  background-color: var(--neutral-3);
 }
 
 .div-block-1492 {
@@ -26,78 +26,6 @@
   align-items: center;
   grid-column-gap: 2px;
   grid-row-gap: 2px;
-}
-
-.text-sm {
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.text-sm.color-grey-600 {
-  color: #68737d;
-}
-
-.color-grey-600 {
-  color: #68737d;
-}
-
-.fw-semibold {
-  font-weight: 600;
-}
-
-.text-sm.text-capitalize {
-  text-transform: uppercase;
-}
-
-.text-grey_400 {
-  color: #c2c8cc;
-}
-
-.text-grey_600 {
-  color: #68737d;
-}
-
-.text-sm.text-grey_600.text-underline.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.text-sm.text-grey_600.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.text-blue-500 {
-  color: #337fbd;
-}
-
-.text-sm.badge {
-  color: #228f67;
-}
-
-.text-sm.done {
-  color: #228f67;
-}
-
-.text-sm.in-progress {
-  color: #337fbd;
-}
-
-.text-sm.progress {
-  color: #68737d;
-}
-
-.text-sm.justnow-text {
-  color: rgba(28, 28, 28, 0.4);
-}
-
-.text-20 {
-  font-size: 20px;
-  line-height: 28px;
-}
-
-.text-xsm {
-  font-size: 10px;
-  line-height: 12px;
 }
 
 .div-block-1495 {

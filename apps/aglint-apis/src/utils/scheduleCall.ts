@@ -1,4 +1,5 @@
-import {supabaseAdmin, supabaseWrap} from '../services/supabase/SupabaseAdmin';
+import {supabaseAdmin} from '../services/supabase/SupabaseAdmin';
+import {supabaseWrap} from './scheduling/supabaseWrap';
 
 export const scheduleCallUtil = async (task_id: string, new_time: string) => {
   if (!task_id) return;

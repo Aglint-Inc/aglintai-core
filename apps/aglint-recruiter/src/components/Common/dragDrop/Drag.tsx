@@ -21,14 +21,14 @@ export const Drag = ({ id, index, ...props }) => {
             {...provided.draggableProps}
             {...props}
           >
-            <Stack position={'relative'} px={'10px'} my={2}>
+            <Stack position={'relative'} px={'var(--space-3)'} my={2}>
               <div
                 className='drag-handle'
                 {...provided.dragHandleProps}
                 style={{
-                  marginTop: '15px',
+                  marginTop: 'var(--space-4)',
                   position: 'absolute',
-                  left: '-5px',
+                  left: '-4px',
                   zIndex: 2,
                   display: onHovered || snapshot.isDragging ? 'block' : 'none'
                 }}
@@ -36,8 +36,8 @@ export const Drag = ({ id, index, ...props }) => {
                 <Image
                   src='/images/svg/drag.svg'
                   alt='drag'
-                  width={10}
-                  height={20}
+                  width={12}
+                  height={24}
                 />
               </div>
               {props.children}

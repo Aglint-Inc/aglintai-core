@@ -15,7 +15,7 @@ import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { CompanyMember } from '@/src/queries/company-members';
 import { CreateDebriefSession } from '@/src/queries/interview-plans';
 import { InterviewSessionType } from '@/src/queries/interview-plans/types';
-import { Job } from '@/src/queries/job/types';
+import { Job } from '@/src/queries/jobs/types';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import MuiAvatar from '../Common/MuiAvatar';
@@ -308,10 +308,7 @@ const Member = ({
             <MuiAvatar
               src={member.profile_image}
               level={name}
-              variant='circular'
-              fontSize='10px'
-              height='100%'
-              width='100%'
+              variant='rounded-small'
             />
           }
         />
@@ -388,16 +385,14 @@ const InterviewerPills = ({
     return (
       <SelectedMemberPill
         key={interviewer.user_id}
+        isCloseButton={true}
         onClickRemove={{ onClick: () => onChange(interviewer.user_id) }}
         textMemberName={name}
         slotMemberAvatar={
           <MuiAvatar
             src={interviewer.profile_image}
             level={name}
-            variant='circular'
-            fontSize='10px'
-            height='100%'
-            width='100%'
+            variant='rounded-small'
           />
         }
       />

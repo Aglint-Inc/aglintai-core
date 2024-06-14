@@ -7,7 +7,7 @@
 }
 
 .text-grey_600 {
-  color: #68737d;
+  color: var(--sand-11);
 }
 
 .text-grey_600.hide {
@@ -18,21 +18,19 @@
   display: none;
 }
 
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
-.text-grey_600.text-underline {
-  text-decoration: underline;
-}
-
 .text-grey_600.width-80px {
   width: 80px;
 }
 
-@media screen and (min-width: 1440px) {
+.text-sm {
+  font-size: var(--font-size-1);
+  line-height: var(--line-height-1);
+  letter-spacing: var(--letter-spacing-1);
+}
 
+.text-grey_600.text-underline-copy {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .div-block-1502 {

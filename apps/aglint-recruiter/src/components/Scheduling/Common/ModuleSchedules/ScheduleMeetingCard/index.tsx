@@ -59,10 +59,8 @@ function ScheduleMeetingCard({
           slotMembersList={
             <>
               <Collapse in={collapseOpen}>
-                <Stack direction={'column'} gap={'10px'}>
-                  {/* candidate profile */}
+                <Stack direction={'column'} spacing={'var(--space-2)'}>
                   <MembersList
-                    isCorrectVisible={false}
                     slotImage={<CandidateDefaultIcon size={40} />}
                     textName={getFullName(
                       meetingDetails.candidate?.first_name,
@@ -133,7 +131,11 @@ function ScheduleMeetingCard({
             meetingDetails.interview_meeting.session_duration,
           )}
           textJob={
-            <Stack direction={'row'} alignItems={'center'} spacing={'20px'}>
+            <Stack
+              direction={'row'}
+              alignItems={'center'}
+              spacing={'var(--space-5)'}
+            >
               <span>{meetingDetails?.interview_meeting?.job_title}</span>
               <AvatarWithName
                 isAvatarVisible={false}

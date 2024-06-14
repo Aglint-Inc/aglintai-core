@@ -10,15 +10,17 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { InviteTeamCard } from '@/devlink/InviteTeamCard';
 import { TeamInvite } from '@/devlink/TeamInvite';
-import AUIButton from '@/src/components/Common/AUIButton';
 import Icon from '@/src/components/Common/Icons/Icon';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import { interviewLocationType } from '../AddMemberDialog';
+
 
 const EditMember = ({
   open,
@@ -122,7 +124,7 @@ const EditMember = ({
 
   return (
     <Drawer open={open} onClose={onClose} anchor='right'>
-      <Stack sx={{ width: '600px' }}>
+      <Stack sx={{ width: '600px', height:'100%' }}>
         <TeamInvite
           textTitle={'Update Details'}
           isInviteSentVisible={false}
@@ -362,10 +364,34 @@ const EditMember = ({
             </Stack>
           }
           slotButtons={
-            <Stack width={'100%'} marginTop={'10px'}>
-              <AUIButton
+            <Stack width={'100%'} display={'flex'} flexDirection={'row'} gap={'8px'}>
+               <Stack  width={'100%'} marginTop={'var(--space-2)'}>
+              <ButtonSoft
+              color={'neutral'}
+              size={2}
+              textButton='Cancel'
+              onClickButton={{
+                onClick: () => {
+                  onClose(),
+                    setInviteData([]),
+                    setForm({
+                      first_name: null,
+                      last_name: null,
+                      department: null,
+                      employment: null,
+                      linked_in: null,
+                      interview_location: null,
+                      designation: null,
+                      role: 'recruiter',
+                      manager_id: null,
+                    });
+                },
+              }}/>
+              </Stack>
+            <Stack width={'100%'} marginTop={'var(--space-2)'}>
+              {/* <AUIButton
                 disabled={isDisable}
-                size='medium'
+                size='large'
                 onClick={() => {
                   setIsDisable(true);
                   if (checkValidation()) {
@@ -396,7 +422,45 @@ const EditMember = ({
                 }}
               >
                 Update
-              </AUIButton>
+              </AUIButton> */}
+              <ButtonSolid
+              size={2}
+              textButton='Update'
+              color={'accent'}
+              isDisabled={isDisable}
+              onClickButton={{
+                onclick:() => {
+                  setIsDisable(true);
+                  if (checkValidation()) {
+                    // inviteUser();
+                    handelMemberUpdate({
+                      user_id: member.user_id,
+                      data: {
+                        first_name: form.first_name,
+                        last_name: form.last_name,
+                        interview_location: form.interview_location,
+                        linked_in: form.linked_in,
+                        employment: form.employment,
+                        department: form.department,
+                        position: form.designation,
+                        role: form.role.toLowerCase() as typeof form.role,
+                        manager_id: form.manager_id,
+                      },
+                    })
+                      .then(() => {
+                        onClose();
+                        toast.success('Member updated successfully.');
+                      })
+                      .catch(() => {
+                        toast.error('Error updating member.');
+                        setIsDisable(false);
+                      });
+                  }
+                }}
+              }
+              />
+            </Stack>
+           
             </Stack>
           }
           onClickClose={{

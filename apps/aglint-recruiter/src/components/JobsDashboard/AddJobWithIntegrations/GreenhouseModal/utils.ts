@@ -1,5 +1,6 @@
 import {
   CandidateType,
+  DatabaseTableInsert,
   GreenhouseRefDbType,
   GreenhouseType,
   NewCandidateType,
@@ -9,7 +10,7 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
 import { hashCode } from '@/src/context/JobDashboard/hooks';
-import { JobInsert } from '@/src/queries/job/types';
+import { JobInsert } from '@/src/queries/jobs/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -127,7 +128,8 @@ export const createJobApplications = async (
                 job_id: post.public_job_id,
                 id: ref.application_id,
                 is_resume_fetching: true,
-              };
+                source: 'greenhouse',
+              } as DatabaseTableInsert['applications'];
             } else {
               return null;
             }

@@ -1,0 +1,64 @@
+.add_actionbutton {
+  display: flex;
+  height: var(--space-6);
+  margin-top: 10px;
+  padding-right: var(--space-3);
+  padding-left: var(--space-3);
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
+  border-radius: 8px;
+
+  background-color: var(--accent-a3);
+
+  transition: all 200ms ease;
+
+  color: var(--accent-11);
+
+  cursor: pointer;
+}
+
+.add_actionbutton:hover {
+  background-color: var(--accent-4);
+}
+
+.embed_flex {
+  display: flex;
+  align-items: center;
+}
+
+.embed_flex.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+.embed_flex.custom_top {
+  margin-top: 2px;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.embed_flex.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.embed_flex.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.embed_flex.fixedd {
+  width: 23px;
+}

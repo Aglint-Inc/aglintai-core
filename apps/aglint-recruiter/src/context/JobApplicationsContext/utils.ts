@@ -2,14 +2,10 @@
 // import { FilterParameter } from '@/src/components/JobApplicationsDashboard/utils';
 
 import { DB } from '@aglint/shared-types';
-import {
-  Applications,
-  ApplicationsInsert,
-  ApplicationsUpdate,
-} from '@aglint/shared-types';
+import { Applications, ApplicationsUpdate } from '@aglint/shared-types';
 
 import { selectJobApplicationQuery } from '@/src/apiUtils/job/jobApplications/read/utils';
-import { Job } from '@/src/queries/job/types';
+import { Job } from '@/src/queries/jobs/types';
 import { supabase } from '@/src/utils/supabase/client';
 
 import {
@@ -89,25 +85,6 @@ export const deleteCandidateDbAction = async (
     .abortSignal(timerSignal.signal);
   clearTimeout(timeout);
   return { data: error ? false : true, error };
-};
-
-export const bulkCreateJobApplicationDbAction = async (
-  job_id: string,
-  inputData: ApplicationsInsert[],
-  signal?: AbortSignal,
-) => {
-  const timerSignal = new AbortController();
-  const timeout = setTimeout(() => timerSignal.abort(), 60000);
-  const applications = inputData.map((data) => {
-    return { ...data, job_id };
-  });
-  const { data, error } = await supabase
-    .from('applications')
-    .insert(applications)
-    .select(`${selectJobApplicationQuery}`)
-    .abortSignal(signal);
-  clearTimeout(timeout);
-  return { data, error };
 };
 
 export const readJobApplicationDbAction = async (

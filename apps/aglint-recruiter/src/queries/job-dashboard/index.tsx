@@ -3,92 +3,77 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { supabase } from '@/src/utils/supabase/client';
 
-import { Job } from '../job/types';
+import { GC_TIME } from '..';
+import { Job } from '../jobs/types';
 import { jobDashboardQueryKeys } from './keys';
 import { DashboardTypes } from './types';
 
 export const useJobSkills = (job: Job) => {
-  const job_id = job?.id;
-  const { queryKey } = jobDashboardQueryKeys.skills({ job_id });
+  const id = job?.id;
+  const { queryKey } = jobDashboardQueryKeys.skills({ id });
   const response = useQuery({
     queryKey,
     enabled: !!job,
-    queryFn: () => getSkillsPool(job_id),
+    queryFn: () => getSkillsPool(id),
+    gcTime: job ? GC_TIME : 0,
   });
   return response;
 };
 
 export const useJobDashboardRefresh = () => {
   const queryClient = useQueryClient();
-  return (job_id: string) => {
-    const { queryKey } = jobDashboardQueryKeys.job({ job_id });
+  return (id: string) => {
+    const { queryKey } = jobDashboardQueryKeys.dashboard({ id });
     queryClient.invalidateQueries({ queryKey });
   };
 };
 
 export const useJobLocations = (job: Job) => {
-  const job_id = job?.id;
-  const { queryKey } = jobDashboardQueryKeys.locations({ job_id });
+  const id = job?.id;
+  const { queryKey } = jobDashboardQueryKeys.locations({ id });
   const response = useQuery({
     queryKey,
     enabled: !!job,
-    queryFn: () => getLocationPool(job_id),
+    queryFn: () => getLocationPool(id),
+    gcTime: job ? GC_TIME : 0,
   });
   return response;
 };
 
 export const useJobMatches = (job: Job) => {
-  const job_id = job?.id;
-  const { queryKey } = jobDashboardQueryKeys.matches({ job_id });
+  const id = job?.id;
+  const { queryKey } = jobDashboardQueryKeys.matches({ id });
   const response = useQuery({
     queryKey,
     enabled: !!job,
-    queryFn: () => getResumeMatch(job_id),
+    queryFn: () => getResumeMatch(id),
+    gcTime: job ? GC_TIME : 0,
   });
   return response;
 };
 
 export const useJobTenureAndExperience = (job: Job) => {
-  const job_id = job?.id;
-  const { queryKey } = jobDashboardQueryKeys.tenureAndExperience({ job_id });
+  const id = job?.id;
+  const { queryKey } = jobDashboardQueryKeys.tenureAndExperience({ id });
   const response = useQuery({
     queryKey,
     enabled: !!job,
-    queryFn: () => getTenureAndExperience(job_id),
+    queryFn: () => getTenureAndExperience(id),
+    gcTime: job ? GC_TIME : 0,
   });
   return response;
 };
 
 export const useJobSchedules = (job: Job) => {
-  const job_id = job?.id;
-  const { queryKey } = jobDashboardQueryKeys.schedules({ job_id });
+  const id = job?.id;
+  const { queryKey } = jobDashboardQueryKeys.schedules({ id });
   const response = useQuery({
     queryKey,
     enabled: !!job,
-    queryFn: () => getScheduleData(job_id),
+    queryFn: () => getScheduleData(id),
+    gcTime: job ? GC_TIME : 0,
   });
   return response;
-};
-
-export const useJobInterviewPlanEnabled = (job: Job) => {
-  const job_id = job?.id;
-  const { queryKey } = jobDashboardQueryKeys.interviewPlanEnabled({ job_id });
-  const response = useQuery({
-    queryKey,
-    enabled: !!job,
-    queryFn: () => getInterviewPlanEnabled(job_id),
-  });
-  return response;
-};
-
-const getInterviewPlanEnabled = async (job_id: string) => {
-  const { data, error } = await supabase
-    .from('interview_plan')
-    .select('interview_session(id)')
-    .eq('job_id', job_id);
-  if (error) throw new Error(error.message);
-  if (data.length === 0) return false;
-  return data[0].interview_session.length > 0;
 };
 
 const getTenureAndExperience = async (job_id: string) => {

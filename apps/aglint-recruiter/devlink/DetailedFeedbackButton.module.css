@@ -1,35 +1,22 @@
 .cvs-score-detail-btn {
   display: flex;
-  padding: 8px 12px 8px 0px;
+  padding-top: var(--space-2);
+  padding-right: var(--space-3);
+  padding-bottom: var(--space-2);
   align-items: center;
   align-self: flex-start;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 
-  border-radius: 4px;
-}
+  transition: all 200ms ease;
 
-.clickable {
-  transition: all 300ms ease;
+  color: var(--accent-11);
+
   cursor: pointer;
 }
 
-.clickable:hover {
-  opacity: 0.8;
-}
-
-.text-blue-600-2 {
-  color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
-}
-
-.text-underline {
-  transition: all 250ms ease;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.text-underline:hover {
-  opacity: 0.7;
+.cvs-score-detail-btn:hover {
+  color: var(--accent-12);
 }
 
 .icon-embed {
@@ -46,13 +33,4 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
-}
-
-.cursor-pointer {
-  transition: opacity 200ms ease;
-  cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.7;
 }

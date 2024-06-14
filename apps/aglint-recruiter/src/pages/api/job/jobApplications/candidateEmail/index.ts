@@ -13,7 +13,6 @@ import { capitalize } from '@/src/components/JobApplicationsDashboard/utils';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 
 import {
-  createTasks,
   readCandidates,
   readSomeCandidates,
   sendMails,
@@ -44,7 +43,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         },
       },
     );
-    const { job, purposes, applicationIds, sections, parameter, task } =
+    const { job, purposes, applicationIds, sections, parameter } =
       req.body as JobApplicationEmails['request'];
     const errorMessages = purposes.reduce((acc, curr) => {
       if (!job?.email_template[curr])
@@ -69,7 +68,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         job,
         parameter,
       );
-      if (task) await createTasks(supabase, job, candidates, task);
       res.status(200).send(results as ReadJobApplicationApi['response']);
       try {
         sendMails(supabase, job, purposes, candidates, sgMail);
@@ -84,7 +82,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         job,
         parameter,
       );
-      if (task) await createTasks(supabase, job, candidates, task);
       res.status(200).send(results as ReadJobApplicationApi['response']);
       try {
         sendMails(supabase, job, purposes, candidates, sgMail);

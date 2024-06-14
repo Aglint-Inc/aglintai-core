@@ -107,10 +107,7 @@ function SchedulingOptionComp({
                                             int.last_name,
                                           )}
                                           src={int?.profile_image}
-                                          variant={'circular'}
-                                          width={'24px'}
-                                          height={'24px'}
-                                          fontSize={'12px'}
+                                          variant={'rounded-small'}
                                         />
                                       }
                                     />
@@ -133,10 +130,7 @@ function SchedulingOptionComp({
                                             int.last_name,
                                           )}
                                           src={int?.profile_image}
-                                          variant={'circular'}
-                                          width={'24px'}
-                                          height={'24px'}
-                                          fontSize={'12px'}
+                                          variant={'rounded-small'}
                                         />
                                       }
                                     />

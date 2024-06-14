@@ -76,12 +76,12 @@ function AssigneeList({
             return (
               <Stack
                 width={'100%'}
-                p={'4px'}
+                p={'var(--space-1)'}
                 key={i}
                 sx={{
                   cursor: 'pointer',
                   '&:hover': {
-                    bgcolor: 'grey.100',
+                    bgcolor: 'var(--neutral-2)'
                   },
                 }}
                 onClick={() => {

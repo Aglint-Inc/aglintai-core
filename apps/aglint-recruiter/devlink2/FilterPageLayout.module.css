@@ -1,0 +1,20 @@
+.filter-page-layout-wrap {
+  height: 100%;
+}
+
+.fpl-top-wrap {
+  display: flex;
+  height: 48px;
+  padding: var(--space-2) var(--space-4);
+  justify-content: space-between;
+  align-items: center;
+
+  border-bottom: 1px solid var(--neutral-6);
+
+  background-color: var(--white);
+}
+
+.fpl-body-wrap {
+  overflow: auto;
+  height: calc(100vh - 96px);
+}

@@ -41,12 +41,12 @@ function JobsPopOver({ currecntJob }) {
         sx={{
           '& .MuiPopover-paper': {
             border: 'none',
-            boxShadow: '3px 3px 20px 0px #0000001a',
-            borderRadius: '10px',
+            boxShadow: 'var(--shadow-3)',
+            borderRadius: 'var(--radius-4)',
           },
         }}
       >
-        <Stack direction={'column'} p={'20px'} spacing={'8px'}>
+        <Stack direction={'column'} p={'var(--space-5)'} spacing={'var(--space-2)'}>
           {jobs.data.length &&
             jobs.data.map((job, i) => {
               return (
@@ -57,7 +57,7 @@ function JobsPopOver({ currecntJob }) {
                       justifyContent: 'start',
                       cursor: 'pointer',
                       bgcolor: '#F7F9FB',
-                      borderRadius: '10px',
+                      borderRadius: 'var(--radius-4)',
                     }}
                     key={i}
                     onClick={async () => {
@@ -66,13 +66,13 @@ function JobsPopOver({ currecntJob }) {
                       setAnchorEl(null);
                     }}
                     direction={'row'}
-                    spacing={'10px'}
+                    spacing={'var(--space-2)'}
                   >
                     <Typography>{capitalize(job.job_title)}</Typography>
-                    <Typography variant='body2'>
+                    <Typography variant='body1'>
                       {capitalize(job.job_type)}
                     </Typography>
-                    <Typography variant='body2'>
+                    <Typography variant='body1'>
                       {capitalize(job.location)}
                     </Typography>
                   </Stack>

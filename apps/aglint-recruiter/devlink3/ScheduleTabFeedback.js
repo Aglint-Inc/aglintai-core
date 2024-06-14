@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { FeedbackTableRow } from "./FeedbackTableRow";
+import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./ScheduleTabFeedback.module.css";
 
@@ -18,23 +19,18 @@ export function ScheduleTabFeedback({
       {...styleMinWidth}
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "all-interview-table-copy")}
+        className={_utils.cx(_styles, "feedbaack-layout-table")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "allinterview_row")}
+          className={_utils.cx(_styles, "feedback-table-header")}
           tag="div"
         >
           <_Builtin.Block
             className={_utils.cx(_styles, "header_interviewer")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Interviewer"}
-            </_Builtin.Block>
+            <Text content="Interviewer" weight="medium" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "header_session", "width-324-copy")}
@@ -62,30 +58,22 @@ export function ScheduleTabFeedback({
             className={_utils.cx(_styles, "header_recommendation")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Recommendation"}
-            </_Builtin.Block>
+            <Text content="Recommendation" weight="medium" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "header_feedback")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Feedback"}
-            </_Builtin.Block>
+            <Text content="Feedback" weight="medium" />
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_candidaterow")}
           tag="div"
         >
-          {slotFeedbackTableRow ?? <FeedbackTableRow />}
+          {slotFeedbackTableRow ?? (
+            <SlotComp componentNeme="Feedback Table Row" />
+          )}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

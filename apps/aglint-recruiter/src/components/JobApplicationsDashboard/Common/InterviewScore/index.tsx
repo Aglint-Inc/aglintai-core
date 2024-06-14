@@ -41,7 +41,7 @@ const InterviewScore = ({ application }: { application: JobApplication }) => {
             textDuration={null}
             isScoreVisible={false}
             isError={true}
-            props={{ style: { color: 'grey', borderColor: 'grey' } }}
+            props={{ style: { color: 'var(--neutral-11)', borderColor: 'var(--neutral-6)' } }}
           />
         </Stack>
       </Tooltip>
@@ -73,7 +73,7 @@ const InterviewScore = ({ application }: { application: JobApplication }) => {
             textScore={null}
             textDuration={null}
             isError={true}
-            props={{ style: { color: 'grey', borderColor: 'grey' } }}
+            props={{ style: { color: 'var(--neutral-11)', borderColor: 'var(--neutral-6)' } }}
           />
         </Stack>
       </Tooltip>

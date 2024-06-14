@@ -63,13 +63,6 @@ function SettingsDialog({ editModule }: { editModule: ModuleType }) {
 
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isSettingDialogOpen}
       onClose={() => {
         setIsSettingsDialogOpen(false);
@@ -92,7 +85,7 @@ function SettingsDialog({ editModule }: { editModule: ModuleType }) {
                 }))
               }
             />
-            <Stack gap={'5px'}>
+            <Stack gap={'var(--space-1)'}>
               <UITypography type={'small'} fontBold={'default'}>
                 Department
               </UITypography>

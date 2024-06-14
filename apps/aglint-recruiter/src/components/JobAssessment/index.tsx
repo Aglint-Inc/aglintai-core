@@ -1,22 +1,22 @@
 import { Stack } from '@mui/material';
-import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { EnableAssessment as EnableAssessmentDev } from '@/devlink/EnableAssessment';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
-import { useJobApplications } from '@/src/context/JobApplicationsContext';
+import { useJob } from '@/src/context/JobContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { useCurrentJob } from '@/src/queries/job-assessment/keys';
 
 import Loader from '../Common/Loader';
+import { capitalize } from '../JobApplicationsDashboard/utils';
 import AssessmentResetWrapper from '../NewAssessment/Common/wrapper/resetWrapper';
 import JobAssessment from './list';
 
 const JobAssessmentDashboard = () => {
   const { initialLoad } = useJobs();
-  const { job } = useJobApplications();
+  const { job } = useJob();
   return (
     <Stack height={'100%'} width={'100%'}>
       {!initialLoad ? (
@@ -71,12 +71,12 @@ const JobAssessmentDashboardBreadCrumbs = () => {
 
 const EnableAssessment = () => {
   const { handleJobAsyncUpdate } = useJobs();
-  const { job_id } = useCurrentJob();
+  const { id } = useCurrentJob();
   const [disable, setDisable] = useState(false);
   const handelEnable = async () => {
     if (!disable) {
       setDisable(true);
-      await handleJobAsyncUpdate(job_id, { assessment: true });
+      await handleJobAsyncUpdate(id, { assessment: true });
       setDisable(false);
     }
   };

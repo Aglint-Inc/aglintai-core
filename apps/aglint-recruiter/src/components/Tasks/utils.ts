@@ -79,7 +79,9 @@ type ProgressType =
   | 'create_debrief_task'
   | 'interview_scheduled'
   | 'debrief_scheduled'
-  | 'email_followUp_reminder';
+  | 'email_followUp_reminder'
+  | 'request_availability'
+  | 're_request_availability';
 
 type optionDataType = {
   assignerId?: string;
@@ -190,6 +192,10 @@ export async function createTaskProgress({
         return `Debrief scheduled at {time_format}`;
       case 'email_followUp_reminder':
         return `{assigneeName} sent a follow-up email on {time_format}`;
+      case 'request_availability':
+        return `Request Availability from {candidate} to Schedule Interviews for {selectedSessions}`;
+      case 're_request_availability':
+        return `Resend request availability`;
       default:
         return '';
     }

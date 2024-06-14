@@ -1,6 +1,6 @@
+import { supabaseWrap } from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { ModuleType } from '@/src/components/Scheduling/InterviewTypes/types';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
@@ -14,7 +14,7 @@ type BodyParams = {
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let { training_ints } = req.body as BodyParams;
   try {
-    if (!training_ints.length) res.status(400).send('missing field');
+    if (!training_ints) res.status(400).send('missing field');
     const [module_relation] = supabaseWrap(
       await supabaseAdmin
         .from('interview_module_relation')
@@ -66,6 +66,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.status(200).send('ok');
   } catch (error) {
+    console.error(error);
     res.status(500).send(error.message);
   }
 };

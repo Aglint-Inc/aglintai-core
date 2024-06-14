@@ -3,8 +3,6 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseEnums } from '@aglint/shared-types';
 import { RecruiterUserType } from '@aglint/shared-types';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { Autocomplete, Avatar, Dialog, Stack, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -12,6 +10,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import { EmailChangePop } from '@/devlink/EmailChangePop';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { NavSublink } from '@/devlink/NavSublink';
 import { PasswordUpdated } from '@/devlink/PasswordUpdated';
 import { ProfileList } from '@/devlink/ProfileList';
@@ -328,7 +327,7 @@ const ProfileDashboard = () => {
             slotUserImage={
               <ImageUpload
                 image={recruiterUser.profile_image}
-                size={80}
+                size={64}
                 table='recruiter-user'
                 handleUpdateProfile={handleUpdateProfile}
                 error={(e) => {
@@ -473,7 +472,7 @@ const ProfileDashboard = () => {
                       textDesc={
                         <>
                           <>A confirmation link has been sent to </>
-                          <span style={{ color: '#ED8F1C', fontWeight: 400 }}>
+                          <span style={{ color: 'var(--accent-11)', fontWeight: 400 }}>
                             {email.email.value}
                           </span>
                           <>. Please confirm it to update your email ID.</>
@@ -488,7 +487,7 @@ const ProfileDashboard = () => {
                     texDesc={
                       <>
                         <>Your registered email is </>
-                        <span style={{ color: '#ED8F1C', fontWeight: 400 }}>
+                        <span style={{ color: 'var(--accent-11)', fontWeight: 400 }}>
                           {userMail}
                         </span>
                         <>
@@ -826,7 +825,7 @@ const ProfileForm = ({
                   edge='end'
                   style={{ opacity: value.value ? 1 : 0.5 }}
                 >
-                  {!showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                  {showPassword ? <GlobalIcon iconName='visibility' />: <GlobalIcon iconName='visibility_off' />}
                 </IconButton>
               </InputAdornment>
             ),

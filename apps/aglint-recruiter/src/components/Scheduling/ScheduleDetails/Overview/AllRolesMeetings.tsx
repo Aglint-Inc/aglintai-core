@@ -1,7 +1,4 @@
-import React from 'react';
-
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
-import { HeaderWithSlot } from '@/devlink3/HeaderWithSlot';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
 
@@ -9,11 +6,6 @@ import { ScheduleMeeting } from '../types';
 
 function AllRolesMeetings({ schedule }: { schedule: ScheduleMeeting }) {
   const allRoles = [
-    {
-      type: 'organizer',
-      details: schedule.organizer,
-      label: 'Organizer',
-    },
     {
       type: 'interview_coordinator',
       details: schedule.interview_coordinator,
@@ -47,29 +39,23 @@ function AllRolesMeetings({ schedule }: { schedule: ScheduleMeeting }) {
     <>
       {filteredRoles.map((item) => {
         return (
-          <HeaderWithSlot
+          <AvatarWithName
             key={item.type}
-            textHeading={item.label}
-            slotCoordinators={
-              <AvatarWithName
-                isRoleVisible={false}
-                textName={getFullName(
+            textRole={item.label}
+            isRoleVisible={true}
+            textName={getFullName(
+              item.details.first_name,
+              item.details.last_name,
+            )}
+            slotAvatar={
+              <MuiAvatar
+                level={getFullName(
                   item.details.first_name,
                   item.details.last_name,
                 )}
-                slotAvatar={
-                  <MuiAvatar
-                    level={getFullName(
-                      item.details.first_name,
-                      item.details.last_name,
-                    )}
-                    src={item.details.profile_image}
-                    variant={'circular'}
-                    width={'100%'}
-                    height={'100%'}
-                    fontSize={'14px'}
-                  />
-                }
+                src={item.details.profile_image}
+                variant={'rounded-medium'}
+                fontSize='20px'
               />
             }
           />

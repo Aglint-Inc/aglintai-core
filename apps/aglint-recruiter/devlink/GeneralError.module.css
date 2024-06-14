@@ -1,0 +1,28 @@
+.general_error {
+  display: flex;
+  width: 100%;
+  padding: var(--space-9);
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
+}
+
+.embed_flex {
+  display: flex;
+  align-items: center;
+}
+
+.embed_flex.ml--1 {
+  margin-left: -9px;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+#w-node-_56303234-7c2f-585c-ea35-639e61bcb498-61bcb498 {
+}

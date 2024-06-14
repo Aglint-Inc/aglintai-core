@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { MemberListCard } from "./MemberListCard";
 import * as _utils from "./utils";
 import _styles from "./ModuleMembers.module.css";
@@ -14,58 +15,46 @@ export function ModuleMembers({
   isMembersTrainingVisible = true,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1678")} tag="div">
+    <_Component className={_utils.cx(_styles, "module-member-wrap")} tag="div">
       <_Builtin.Block tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1501")}
+          className={_utils.cx(_styles, "mm-header-wrap")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Qualified Members"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-blue-500", "cursor-pointer")}
-            tag="div"
-            {...onClickAddMember}
-          >
-            {"Add"}
-          </_Builtin.Block>
+          <Text content="Qualified Members" />
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1502")}
+          className={_utils.cx(_styles, "mm-slot-list-card")}
           tag="div"
         >
-          {slotQualifiedMemberList ?? <MemberListCard />}
+          {slotQualifiedMemberList ?? (
+            <>
+              <MemberListCard />
+              <MemberListCard />
+              <MemberListCard />
+            </>
+          )}
         </_Builtin.Block>
       </_Builtin.Block>
       {isMembersTrainingVisible ? (
         <_Builtin.Block tag="div">
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1501")}
+            className={_utils.cx(_styles, "mm-header-wrap")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Members in training"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-blue-500", "cursor-pointer")}
-              tag="div"
-              {...onClickAddTrainee}
-            >
-              {"Add"}
-            </_Builtin.Block>
+            <Text content="Members in training" />
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1502")}
+            className={_utils.cx(_styles, "mm-slot-list-card")}
             tag="div"
           >
-            {slotMembersInTraining ?? <MemberListCard />}
+            {slotMembersInTraining ?? (
+              <>
+                <MemberListCard />
+                <MemberListCard />
+                <MemberListCard />
+              </>
+            )}
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}

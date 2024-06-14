@@ -2,7 +2,6 @@ import { DB } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 
 import { TaskStatus } from '@/devlink3/TaskStatus';
-import { palette } from '@/src/context/Theme/Theme';
 
 function StatusChip({
   status,
@@ -54,45 +53,45 @@ export default StatusChip;
 export const statusList = [
   {
     id: 'not_started' as DB['public']['Enums']['task_status'],
-    backgroundColor: '#e9ebed',
+    backgroundColor: 'var(--neutral-a3)',
     label: 'Not Started',
-    color: '#49545c',
+    color: 'var(--neutral-a11)',
   },
   {
     id: 'scheduled' as DB['public']['Enums']['task_status'],
-    backgroundColor: palette.yellow[400] + '55',
+    backgroundColor: 'var(--warning-a3)',
     label: 'Scheduled',
-    color: palette.yellow[700],
+    color: 'var(--warning-a11)',
   },
 
   {
     id: 'in_progress' as DB['public']['Enums']['task_status'],
-    backgroundColor: '#CEE2F2',
+    backgroundColor: 'var(--info-a3)',
     label: 'In Progress',
-    color: '#337FBD',
+    color: 'var(--info-a11)',
   },
   {
     id: 'completed' as DB['public']['Enums']['task_status'],
-    backgroundColor: '#D1E8DF',
+    backgroundColor: 'var(--success-a3)',
     label: 'Completed',
-    color: '#228F67',
+    color: 'var(--success-a11)',
   },
   {
     id: 'cancelled' as DB['public']['Enums']['task_status'],
-    backgroundColor: '#f5d5d8',
+    backgroundColor: 'var(--error-a3)',
     label: 'Cancelled',
-    color: '#CC3340',
+    color: 'var(--error-a11)',
   },
   {
     id: 'closed' as DB['public']['Enums']['task_status'],
-    backgroundColor: palette.grey[500] + 'aa',
+    backgroundColor: 'var(--error-a3)',
     label: 'Closed',
-    color: '#000',
+    color: 'var(--error-a11)',
   },
   {
     id: 'failed' as DB['public']['Enums']['task_status'],
-    backgroundColor: '#f5d5d8' + 'aa',
+    backgroundColor: 'var(--error-a3)',
     label: 'Failed',
-    color: '#CC3340',
+    color: 'var(--error-a11)',
   },
 ];

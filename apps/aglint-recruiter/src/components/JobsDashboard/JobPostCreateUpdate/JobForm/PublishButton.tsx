@@ -1,3 +1,4 @@
+import { supabaseWrap } from '@aglint/shared-utils';
 import { CircularProgress } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -6,7 +7,6 @@ import { useState } from 'react';
 
 import AUIButton from '@/src/components/Common/AUIButton';
 import { useJobs } from '@/src/context/JobsContext';
-import { palette } from '@/src/context/Theme/Theme';
 // import { PublicJobsType } from '@aglint/shared-types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -16,7 +16,6 @@ import {
   API_FAIL_MSG,
   getjobformToDbcolumns,
   isWarningsCleared,
-  supabaseWrap,
 } from '../utils';
 
 const JobPublishButton = () => {
@@ -99,7 +98,7 @@ const JobPublishButton = () => {
             <CircularProgress
               color='inherit'
               size={'15px'}
-              sx={{ color: palette.grey[400] }}
+              sx={{ color: 'var(--neutral-6)' }}
             />
           )
         }

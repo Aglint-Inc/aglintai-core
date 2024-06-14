@@ -32,5 +32,26 @@
 }
 
 .icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.icons.task-hover {
+  position: absolute;
+  left: 50px;
+  top: -10px;
+  right: auto;
+  bottom: auto;
+}
+
+.icons.pointer {
   cursor: pointer;
 }

@@ -1,3 +1,4 @@
+import { supabaseWrap } from '@aglint/shared-utils';
 import { Slider, Stack } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { cloneDeep, set } from 'lodash';
@@ -12,7 +13,6 @@ import { CandidateFilter } from '@/devlink/CandidateFilter';
 import { JobPills } from '@/devlink/JobPills';
 import { SkillsGenerate } from '@/devlink/SkillsGenerate';
 import { useJobs } from '@/src/context/JobsContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { similarJobs } from '@/src/utils/prompts/candidateDb/similarJobs';
 import { similarSkills } from '@/src/utils/prompts/candidateDb/similarSkills';
 import { supabase } from '@/src/utils/supabase/client';
@@ -26,10 +26,7 @@ import {
 import AUIButton from '../../Common/AUIButton';
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 import { dialogFormContent, getRelevantCndidates } from '../utils';
 import FilterInput from './FilterInput';
 
@@ -199,7 +196,7 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
                 <CircularProgress
                   color='inherit'
                   size={'15px'}
-                  sx={{ color: palette.grey[400] }}
+                  sx={{ color: 'var(--neutral-6)' }}
                 />
               )
             }
@@ -258,7 +255,7 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
           })}
           {filters.jobTitles.length === 0 && (
             <>
-              <UITypography type='small' color={palette.grey[500]}>
+              <UITypography type='small' color={'var(--neutral-11)'}>
                 {dialogFormContent.jobTitles.emptyMsg}
               </UITypography>
             </>
@@ -322,7 +319,7 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
           })}
           {filters.degrees.length === 0 && (
             <>
-              <UITypography type='small' color={palette.grey[500]}>
+              <UITypography type='small' color={'var(--neutral-11)'}>
                 {dialogFormContent.degrees.emptyMsg}
               </UITypography>
             </>
@@ -366,7 +363,7 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
           })}
           {filters.languages.length === 0 && (
             <>
-              <UITypography type='small' color={palette.grey[500]}>
+              <UITypography type='small' color={'var(--neutral-11)'}>
                 {dialogFormContent.languages.emptyMsg}
               </UITypography>
             </>
@@ -390,7 +387,7 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
           })}
           {filters.location.length === 0 && (
             <>
-              <UITypography type='small' color={palette.grey[500]}>
+              <UITypography type='small' color={'var(--neutral-11)'}>
                 {dialogFormContent.location.emptyMsg}
               </UITypography>
             </>
@@ -414,7 +411,7 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
           })}
           {filters.universities.length === 0 && (
             <>
-              <UITypography type='small' color={palette.grey[500]}>
+              <UITypography type='small' color={'var(--neutral-11)'}>
                 {dialogFormContent.universities.emptyMsg}
               </UITypography>
             </>
@@ -438,7 +435,7 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
           })}
           {filters.excludedCompanies.length === 0 && (
             <>
-              <UITypography type='small' color={palette.grey[500]}>
+              <UITypography type='small' color={'var(--neutral-11)'}>
                 {dialogFormContent.excludedCompanies.emptyMsg}
               </UITypography>
             </>
@@ -462,7 +459,7 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
           })}
           {filters.prefferedCompanies.length === 0 && (
             <>
-              <UITypography type='small' color={palette.grey[500]}>
+              <UITypography type='small' color={'var(--neutral-11)'}>
                 {dialogFormContent.prefferedCompanies.emptyMsg}
               </UITypography>
             </>
@@ -496,7 +493,7 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
           })}
           {filters.skills.length === 0 && (
             <>
-              <UITypography type='small' color={palette.grey[500]}>
+              <UITypography type='small' color={'var(--neutral-11)'}>
                 {dialogFormContent.skills.emptyMsg}
               </UITypography>
             </>
@@ -522,7 +519,7 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
                         <CircularProgress
                           color='inherit'
                           size={'15px'}
-                          sx={{ color: palette.grey[400] }}
+                          sx={{ color: 'var(--neutral-6)' }}
                         />
                       ) : (
                         <AiIcon />
@@ -574,7 +571,7 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
                           <CircularProgress
                             color='inherit'
                             size={'15px'}
-                            sx={{ color: palette.grey[400] }}
+                            sx={{ color: 'var(--neutral-6)' }}
                           />
                         ) : (
                           <AiIcon />

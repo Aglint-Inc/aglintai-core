@@ -2,7 +2,6 @@ import { InterviewSessionRelationTypeDB } from '@aglint/shared-types';
 import { Dialog, Stack, TextField, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import React, { Dispatch, useEffect, useState } from 'react';
 
@@ -21,14 +20,15 @@ function RequestRescheduleDialog({
   setIsRequestRescheduleOpen,
   sessionRelation,
   schedule,
+  refetch,
 }: {
   isRequestRescheduleOpen: boolean;
   setIsRequestRescheduleOpen: Dispatch<React.SetStateAction<boolean>>;
   sessionRelation: InterviewSessionRelationTypeDB;
   schedule: ScheduleMeeting;
+  refetch: () => void;
 }) {
   const { recruiter, recruiterUser } = useAuthDetails();
-  const queryClient = useQueryClient();
   const currentDate = dayjs();
   const [reason, setReason] = useState('');
   const [notes, setNotes] = useState('');
@@ -59,6 +59,7 @@ function RequestRescheduleDialog({
           .from('interview_session_relation')
           .update({ accepted_status: 'request_reschedule' })
           .eq('id', sessionRelation.id);
+
         const { error } = await supabase
           .from('interview_session_cancel')
           .insert({
@@ -74,19 +75,18 @@ function RequestRescheduleDialog({
               note: notes,
             },
           });
+
         if (error) throw new Error();
 
         addScheduleActivity({
           title: `Requested reschedule for ${schedule.interview_session.name}. Reason: ${reason} `,
-          application_id: schedule.applications.id,
-          logger: recruiterUser.user_id,
-          type: 'schedule',
+          application_id: schedule.schedule.application_id,
+          logged_by: 'user',
           supabase: supabase,
           created_by: recruiterUser.user_id,
         });
-        queryClient.invalidateQueries({
-          queryKey: ['schedule_details', schedule.interview_meeting.id],
-        });
+
+        refetch();
       }
     } catch {
       toast.error('Unable to save cancel reason');
@@ -97,13 +97,6 @@ function RequestRescheduleDialog({
 
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isRequestRescheduleOpen}
       onClose={() => {
         setIsRequestRescheduleOpen(false);
@@ -124,7 +117,7 @@ function RequestRescheduleDialog({
         isWidget={true}
         slotWidget={
           <Stack spacing={2}>
-            <Typography variant='body2'>
+            <Typography variant='body1'>
               Choose a date range that you want to reschedule with
             </Typography>
             <Stack spacing={2} direction={'row'}>
@@ -186,7 +179,7 @@ function RequestRescheduleDialog({
               </LocalizationProvider>
             </Stack>
 
-            <Typography variant='body2'>
+            <Typography variant='body1'>
               Please provide a reason for reschedule.
             </Typography>
             <Stack spacing={1}>
@@ -202,7 +195,7 @@ function RequestRescheduleDialog({
                     spacing={1}
                   >
                     <Checkbox isChecked={rea === reason} />
-                    <Typography variant='body2' color={'#000'}>
+                    <Typography variant='body1' color={'var(--neutral-12)'}>
                       {rea}
                     </Typography>
                   </Stack>
@@ -210,7 +203,7 @@ function RequestRescheduleDialog({
               })}
             </Stack>
 
-            <Typography variant='body2'>Additional Notes</Typography>
+            <Typography variant='body1'>Additional Notes</Typography>
             <TextField
               multiline
               value={notes}

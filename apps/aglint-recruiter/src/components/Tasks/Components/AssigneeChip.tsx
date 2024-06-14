@@ -4,10 +4,10 @@ import {
   PhoneAgentId,
   SystemAgentId,
 } from '@aglint/shared-utils';
-import { Stack, Typography } from '@mui/material';
-import { IconSettingsAutomation } from '@tabler/icons-react';
+import { Box, Stack, Typography, Zoom } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { AgentPill } from '@/devlink3/AgentPill';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import { ListCard } from '@/devlink3/ListCard';
@@ -53,7 +53,15 @@ function AssigneeChip({
         <AvatarWithName
           isAvatarVisible={true}
           isCandidateIconVisible={false}
-          slotAvatar={<IconSettingsAutomation color='grey' stroke={2} size={30} />}
+          slotAvatar={
+            <Box
+            sx={{
+                display: 'flex',
+                alignItems: 'center',
+            }}>
+              <GlobalIcon iconName='computer' size={6}/>
+            </Box>
+          }
           textName={'System'}
         />
       </ShowCode.When>
@@ -61,14 +69,9 @@ function AssigneeChip({
         <LightTooltip
           // open={true}
           disableHoverListener={disableHoverListener}
-          // TransitionComponent={Zoom}
+          TransitionComponent={Zoom}
           title={<AssigneeDetailsCard assigneeDetails={assigneeDetails} />}
-          sx={{
-            '& .MuiTooltip-tooltip': {
-              p: '0px !important',
-              fontWeight: 400,
-            },
-          }}
+          arrow={true}
         >
           <Stack sx={{ cursor: 'pointer' }}>
             <ListCard
@@ -87,11 +90,8 @@ function AssigneeChip({
                   <AvatarWithName
                     slotAvatar={
                       <MuiAvatar
-                        height={'25px'}
-                        width={'25px'}
                         src={assigneeDetails.profile_image}
-                        variant='circular'
-                        fontSize='14px'
+                        variant='rounded-small'
                         level={capitalizeAll(
                           assigneeDetails?.first_name +
                             ' ' +

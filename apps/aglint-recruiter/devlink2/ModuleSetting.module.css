@@ -1,10 +1,16 @@
 .module-setting-wrap {
   position: relative;
+
   width: 500px;
   padding: 20px;
+
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+
+  background-color: var(--white);
 }
 
-.div-block-1318 {
+.modulesettingtoggle {
   display: flex;
   margin-bottom: 10px;
   flex-direction: column;
@@ -33,7 +39,7 @@
   grid-row-gap: 6px;
 }
 
-.div-block-1712 {
+.modulesettings {
   position: relative;
 }
 
@@ -47,15 +53,10 @@
 
 .div-block-1184 {
   display: flex;
-  padding: 16px;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-
-  border-radius: 10px;
-
-  background-color: #f7f9fb;
 }
 
 .div-block-1186 {
@@ -111,10 +112,6 @@
   z-index: 1;
 }
 
-.icons.ml--6 {
-  margin-left: -6px;
-}
-
 .icons.hide {
   display: none;
 }
@@ -134,12 +131,23 @@
   cursor: pointer;
 }
 
+.icons.closediv {
+  position: absolute;
+  left: auto;
+  top: -7px;
+  right: -7px;
+  bottom: auto;
+
+  cursor: pointer;
+}
+
 .div-block-1187 {
   display: flex;
+  margin-top: var(--space-3);
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .div-block-1188 {
@@ -151,15 +159,12 @@
   grid-row-gap: 10px;
 }
 
-.div-block-1182 {
+.modulesettingactions {
   display: flex;
-  padding: 0px;
   flex-direction: column;
   justify-content: center;
   flex-wrap: nowrap;
   align-items: flex-end;
-
-  background-color: white;
 }
 
 .div-block-1703 {
@@ -175,5 +180,5 @@
   bottom: 0%;
   z-index: 2;
 
-  background-color: hsla(0, 0.00%, 100.00%, 0.69);
+  background-color: var(--white-a9);
 }

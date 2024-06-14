@@ -18,16 +18,10 @@ export function NewTaskCard({
       >
         {slotCheckbox}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1435")}
-        tag="div"
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "task_row_cell")} tag="div">
         {slotStatus}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1435")}
-        tag="div"
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "task_row_cell")} tag="div">
         {slotTaskInput}
       </_Builtin.Block>
       <_Builtin.Block

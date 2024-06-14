@@ -11,7 +11,6 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { addScheduleActivity } from '../../Candidates/queries/utils';
-import { useScheduleDetails } from '../hooks';
 import { ScheduleMeeting } from '../types';
 
 function CancelScheduleDialog({
@@ -19,17 +18,18 @@ function CancelScheduleDialog({
   setIsDeclineOpen,
   sessionRelation,
   schedule,
+  refetch
 }: {
   isDeclineOpen: boolean;
   setIsDeclineOpen: Dispatch<React.SetStateAction<boolean>>;
   sessionRelation: InterviewSessionRelationTypeDB;
   schedule: ScheduleMeeting;
+  refetch: () => void;
 }) {
   const { recruiter, recruiterUser } = useAuthDetails();
 
   const [reason, setReason] = useState('');
   const [notes, setNotes] = useState('');
-  const { refetch } = useScheduleDetails();
   const reasons = recruiter.scheduling_reason?.internal?.cancellation || [
     'Too Many Interviews',
     'Out of the office',
@@ -54,9 +54,8 @@ function CancelScheduleDialog({
 
         addScheduleActivity({
           title: `Canceled ${schedule.interview_session.name}. Reason: ${reason} `,
-          application_id: schedule.applications.id,
-          logger: recruiterUser.user_id,
-          type: 'schedule',
+          application_id: schedule.schedule.application_id,
+          logged_by: 'user',
           supabase: supabase,
           created_by: recruiterUser.user_id,
         });
@@ -75,13 +74,6 @@ function CancelScheduleDialog({
 
   return (
     <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
       open={isDeclineOpen}
       onClose={() => {
         setIsDeclineOpen(false);
@@ -93,7 +85,7 @@ function CancelScheduleDialog({
         isWidget={true}
         slotWidget={
           <Stack spacing={2} width={'100%'}>
-            <Typography variant='body2'>
+            <Typography variant='body1'>
               Please provide a reason for reschedule.
             </Typography>
             <Stack spacing={1}>
@@ -109,7 +101,7 @@ function CancelScheduleDialog({
                     spacing={1}
                   >
                     <Checkbox isChecked={rea === reason} />
-                    <Typography variant='body2' color={'#000'}>
+                    <Typography variant='body1' color={'var(--neutral-12)'}>
                       {rea}
                     </Typography>
                   </Stack>
@@ -117,7 +109,7 @@ function CancelScheduleDialog({
               })}
             </Stack>
 
-            <Typography variant='body2'>Additional Notes</Typography>
+            <Typography variant='body1'>Additional Notes</Typography>
             <TextField
               multiline
               value={notes}

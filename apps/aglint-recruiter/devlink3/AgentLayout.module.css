@@ -79,11 +79,6 @@
   font-weight: 600;
 }
 
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
 .fw-semibold.relative_2 {
   position: relative;
   z-index: 2;
@@ -126,40 +121,17 @@
   color: #d93f4c;
 }
 
-.fw-semibold.plr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
-.plr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
 .text-lg {
   font-size: 18px;
   line-height: 24px;
 }
 
-.fw-semibold.text-yellow-700 {
-  color: #ad5918;
-}
-
-.fw-semibold.p-lr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
-.text-grey-500 {
-  color: #87929d;
-}
-
-.text-grey_400 {
-  color: #c2c8cc;
-}
-
 .text-grey_600 {
-  color: #68737d;
+  color: var(--sand-11);
+}
+
+.hide {
+  display: none;
 }
 
 .icons {
@@ -178,9 +150,8 @@
   opacity: 0.8;
 }
 
-.icons.cursor-pointer.mr-20 {
-  margin-right: 20px;
-  transition-property: none;
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .icons.task-hover {
@@ -189,6 +160,10 @@
   top: -10px;
   right: auto;
   bottom: auto;
+}
+
+.icons.pointer {
+  cursor: pointer;
 }
 
 .inputfield_absolute {
@@ -232,10 +207,6 @@
   .task_list_switch.hide {
     display: none;
   }
-}
-
-.hide {
-  display: none;
 }
 
 .task_list_switch.no_hover {
@@ -396,13 +367,6 @@
   background-image: linear-gradient(180deg, hsla(0, 0.00%, 0.00%, 0.00), hsla(0, 0.00%, 100.00%, 0.80) 11%, white 30%);
 
   pointer-events: none;
-}
-
-.task_overlay_block.fullwidth {
-  z-index: 5;
-  border-top: 1px solid black;
-  background-color: white;
-  background-image: none;
 }
 
 .loader_wrap-copy {

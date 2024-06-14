@@ -105,7 +105,7 @@ function VideoCandidatePanel() {
               <Stack
                 display={edit ? 'block' : 'none'}
                 width={'100%'}
-                // bgcolor={'grey.100'}
+                // bgcolor:  'var(--neutral-1)',
 
                 direction={'row'}
                 alignItems={'center'}
@@ -116,7 +116,7 @@ function VideoCandidatePanel() {
                   },
                   '& .MuiInputBase-root': {
                     height: '100%',
-                    padding: { xs: '0px', sm: '34px' },
+                    padding: { xs: '0px', sm: 'var(--space-6)' },
                     background: 'white.700 !important'
                   }
                   // p: { xs: '12px 20px', md: '0px' },

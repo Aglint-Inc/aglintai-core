@@ -75,12 +75,7 @@
 }
 
 .cursor-pointer {
-  transition: opacity 250ms ease;
   cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.8;
 }
 
 .embed_flex.fixedd {
@@ -99,7 +94,6 @@
   width: 270px;
   padding: 12px;
 
-  border: 1px solid #e9ebed;
   border-radius: 10px;
 
   background-color: white;
@@ -112,13 +106,19 @@
   cursor: default;
 }
 
-.info_absolute.top_32.editingg {
-  display: flex;
-}
-
 .info_absolute.top_32.move_to_top {
   left: auto;
   top: auto;
   right: 0%;
   bottom: 30px;
+}
+
+.info_absolute.top_32.seperate_card {
+  position: static;
+  left: auto;
+  top: auto;
+  right: 0%;
+  bottom: 30px;
+
+  display: flex;
 }

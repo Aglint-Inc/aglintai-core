@@ -1,8 +1,11 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
+import { CandidateResponseSelfSchedule } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import {
+  Alert,
   Box,
+  Container,
   Dialog,
   FormControlLabel,
   InputAdornment,
@@ -23,23 +26,24 @@ import React, {
 } from 'react';
 
 import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
-// import { // AvailableTimerangeEmpty } from '@/devlink/// AvailableTimerangeEmpty';
-// import { // AvailableTimeRangeLoader } from '@/devlink/// AvailableTimeRangeLoader';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateConfirmationPage } from '@/devlink/CandidateConfirmationPage';
 import { CandidateScheduleCard } from '@/devlink/CandidateScheduleCard';
 import { ChangeButton } from '@/devlink/ChangeButton';
-import { SelectButton } from '@/devlink/SelectButton';
 import { SelectedDateAndTime } from '@/devlink/SelectedDateAndTime';
 import { SessionAndTime } from '@/devlink/SessionAndTime';
 import { SessionInfo } from '@/devlink/SessionInfo';
 import { ButtonDanger } from '@/devlink2/ButtonDanger';
 import { ButtonPrimary } from '@/devlink2/ButtonPrimary';
+import { ButtonSurface } from '@/devlink2/ButtonSurface';
 import { CancelButton } from '@/devlink2/CancelButton';
 import { InterviewConfirmed } from '@/devlink2/InterviewConfirmed';
 import { InterviewConfirmedCard } from '@/devlink2/InterviewConfirmedCard';
 import { RequestReschedule } from '@/devlink2/RequestReschedule';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
+import { GlobalIcon } from '@/devlink3/GlobalIcon';
 import { ScheduleButton } from '@/devlink3/ScheduleButton';
+import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
 import NotFoundPage from '@/src/pages/404';
 import { API_get_scheduling_reason } from '@/src/pages/api/get_scheduling_reason/types';
@@ -50,7 +54,6 @@ import toast from '@/src/utils/toast';
 
 import AUIButton from '../../Common/AUIButton';
 import Loader from '../../Common/Loader';
-import CandidateSlotLoad from '../../Common/Lotties/CandidateSlotLoad';
 import CompanyLogo from '../../JobApplicationsDashboard/Common/CompanyLogo';
 import { getBreakLabel } from '../../JobNewInterviewPlan/utils';
 import DateRange from '../../Tasks/Components/DateRange';
@@ -66,6 +69,7 @@ import { dayJS, getCalenderEventUrl, getDurationText } from './utils';
 
 const CandidateInviteNew = () => {
   const load = useCandidateInvite();
+
   return (
     <Stack
       height={'100%'}
@@ -74,8 +78,8 @@ const CandidateInviteNew = () => {
       justifyContent={'center'}
     >
       {load === undefined ? (
-        <Stack width={'120px'} style={{ transform: 'translateY(-50%)' }}>
-          <CandidateSlotLoad />
+        <Stack width={'100%'} height={'100%'}>
+          <Loader />
         </Stack>
       ) : load === null ? (
         <Stack style={{ transform: 'translateY(-50%)' }}>
@@ -96,13 +100,21 @@ const CandidateInvitePlanPage = () => {
   const {
     setDetailsPop,
     meta: {
-      data: { meetings },
+      data: { meetings, filter_json },
     },
     timezone,
     setSelectedSlots,
     setTimezone,
+    handleViewedOn,
   } = useCandidateInvite();
-  const waiting = !!meetings.find(
+
+  useEffect(() => {
+    if (filter_json?.id && !filter_json.viewed_on) {
+      handleViewedOn();
+    }
+  }, [filter_json]);
+
+  const waiting = meetings.some(
     ({ interview_meeting: { status } }) => status === 'waiting',
   );
   const { rounds } = meetings.reduce(
@@ -123,11 +135,18 @@ const CandidateInvitePlanPage = () => {
     },
     { rounds: [] as ScheduleCardProps['round'][] },
   );
+
+  if (meetings.length === 0) return <NotFoundPage />;
+
   if (!waiting) return <ConfirmedPage rounds={rounds} />;
   return (
     <CandidateConfirmationPage
       slotCompanyLogo={<Logo />}
-      onClickView={{ onClick: () => setDetailsPop(true) }}
+      onClickView={{
+        onClick: () => {
+          setDetailsPop(true);
+        },
+      }}
       slotCandidateCalender={
         <>
           <TimezoneSelector
@@ -138,7 +157,11 @@ const CandidateInvitePlanPage = () => {
               setSelectedSlots([]);
             }}
           />
-          <Invite rounds={rounds} />
+          <Container maxWidth='sm'>
+            <Stack spacing={'var(--space-4)'}>
+              <Invite rounds={rounds} />
+            </Stack>
+          </Container>
         </>
       }
     />
@@ -148,7 +171,7 @@ const CandidateInvitePlanPage = () => {
 const ConfirmedPage = (props: ScheduleCardsProps) => {
   const {
     meta: {
-      data: { candidate, schedule, meetings },
+      data: { candidate, schedule, meetings, filter_json },
     },
   } = useCandidateInvite();
   const [cancelReschedule, setCancelReschedule] = useState<
@@ -156,16 +179,62 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
   >(null);
   const [scheduling_reason, setSchedulingReason] =
     useState<DatabaseTable['recruiter']['scheduling_reason']>(null);
+  const [cancelReschedulingDetails, setCancelReschedulingDetails] = useState<{
+    all: boolean;
+    type: 'reschedule' | 'declined';
+    other_details: Awaited<
+      ReturnType<typeof getCancelRescheduleData>
+    >[number]['other_details'];
+    sessions: Awaited<ReturnType<typeof getCancelRescheduleData>>;
+  }>(null);
 
   useEffect(() => {
     get_scheduling_reason(candidate.recruiter_id).then((data) => {
       setSchedulingReason(data);
     });
-  }, []);
+    if (
+      props.rounds[0]?.sessions[0]?.interview_meeting?.interview_schedule_id
+    ) {
+      getCancelRescheduleData({
+        schedule_id:
+          props.rounds[0]?.sessions[0]?.interview_meeting
+            ?.interview_schedule_id,
+      }).then((data) => {
+        const temp = new Set(
+          props.rounds
+            .map((round) =>
+              round.sessions.map((ses) => ses.interview_session.id),
+            )
+            .flat(2),
+        );
+
+        data.length &&
+          setCancelReschedulingDetails({
+            all:
+              data.length == temp.size ||
+              data.every((item) => temp.has(item.session_id)),
+            type: data[0]?.type,
+            other_details: data[0]?.other_details,
+            sessions: data,
+          });
+      });
+    }
+  }, [props.rounds[0]?.sessions[0]?.interview_meeting?.interview_schedule_id]);
+
   const handleCancelReschedule = async (
     detail: Omit<DatabaseTableInsert['interview_session_cancel'], 'session_id'>,
   ) => {
     // return true;
+
+    const metadata: CandidateResponseSelfSchedule = {
+      action: 'waiting',
+      type: 'candidate_response_self_schedule',
+      reason: detail.reason,
+      other_details: detail.other_details,
+      response_type: detail.type === 'declined' ? 'cancel' : 'reschedule',
+      filter_id: filter_json.id,
+      session_ids: meetings.map((ses) => ses.interview_session.id),
+    };
 
     addScheduleActivity({
       title:
@@ -173,28 +242,69 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
           ? `Canceled ${meetings?.map((ses) => ses.interview_session.name).join(' , ')}`
           : `Requested reschedule for ${meetings?.map((ses) => ses.interview_session.name).join(' , ')}`,
       application_id: schedule.application_id,
-      logger: schedule.application_id,
-      type: 'schedule',
+      logged_by: 'candidate',
       supabase: supabase,
       created_by: null,
+      metadata,
     });
 
     const details = props.rounds
       .reduce(
         (prev, curr) => [...prev, ...curr.sessions],
-        [] as (typeof props.rounds)[0]['sessions'],
+        [] as (typeof props.rounds)[number]['sessions'],
       )
       .map((session) => ({
         ...detail,
         session_id: session.interview_session.id,
         schedule_id: session.interview_meeting.interview_schedule_id,
       }));
-    return saveCancelReschedule({ details });
+    return saveCancelReschedule({ details }).then(() => {
+      setCancelReschedulingDetails({
+        all: true,
+        type: detail.type,
+        other_details: detail.other_details,
+        sessions: details.map((item) => ({
+          session_id: item.session_id,
+          reason: item.reason,
+          other_details: item.other_details,
+          type: item.type,
+        })),
+      });
+      return true;
+    });
   };
 
   return (
     <>
       <InterviewConfirmed
+        slotBanner={
+          <>
+            {cancelReschedulingDetails?.all && (
+              <Alert
+                variant='outlined'
+                severity='warning'
+                sx={{
+                  '& .MuiAlert-icon, & .MuiAlert-action': {
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  },
+                }}
+              >
+                {'Request to '}
+                {capitalizeFirstLetter(
+                  cancelReschedulingDetails.type == 'declined'
+                    ? 'cancel'
+                    : 'reschedule',
+                )}
+                {' all Sessions'}
+                {cancelReschedulingDetails.type == 'reschedule' &&
+                  ` from ${dayjs(cancelReschedulingDetails.other_details.dateRange.start).format('MMMM DD')} to ${dayjs(cancelReschedulingDetails.other_details.dateRange.end).format('MMMM DD, YYYY')}`}
+                {' received.'}
+              </Alert>
+            )}
+          </>
+        }
         slotCompanyLogo={<Logo />}
         slotInterviewConfirmedCard={
           <ConfirmedScheduleCards rounds={props.rounds} />
@@ -205,43 +315,49 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
         textMailSent={candidate.email}
         slotButton={
           <Stack direction={'row'} gap={2}>
-            <ScheduleButton
-              textLabel={'Request Reschedule'}
-              onClickProps={{
-                onClick: () => setCancelReschedule('reschedule'),
-              }}
-            />
-            <ScheduleButton
-              textLabel={'Cancel Schedule'}
-              textColorProps={{
-                style: { color: '#D93F4C' },
-              }}
-              onClickProps={{
-                onClick: () => setCancelReschedule('cancel'),
-                style: { background: '#FFF0F1' },
-              }}
-              slotIcon={
-                <Box
-                  display={'flex'}
-                  height={'100%'}
-                  justifyContent={'center'}
-                  alignItems={'center'}
-                >
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    width='13'
-                    height='16'
-                    viewBox='0 0 13 13'
-                    fill='none'
-                  >
-                    <path
-                      d='M4 0.498047V1.62305H8.5V0.498047C8.51562 0.263672 8.64062 0.138672 8.875 0.123047C9.10938 0.138672 9.23438 0.263672 9.25 0.498047V1.62305H10C10.4219 1.63867 10.7734 1.78711 11.0547 2.06836C11.3359 2.34961 11.4844 2.70117 11.5 3.12305V3.87305V4.62305V10.623C11.4844 11.0449 11.3359 11.3965 11.0547 11.6777C10.7734 11.959 10.4219 12.1074 10 12.123H2.5C2.07812 12.1074 1.72656 11.959 1.44531 11.6777C1.16406 11.3965 1.01562 11.0449 1 10.623V4.62305V3.87305V3.12305C1.01562 2.70117 1.16406 2.34961 1.44531 2.06836C1.72656 1.78711 2.07812 1.63867 2.5 1.62305H3.25V0.498047C3.26562 0.263672 3.39062 0.138672 3.625 0.123047C3.85938 0.138672 3.98438 0.263672 4 0.498047ZM1.75 4.62305V10.623C1.75 10.8418 1.82031 11.0215 1.96094 11.1621C2.10156 11.3027 2.28125 11.373 2.5 11.373H10C10.2188 11.373 10.3984 11.3027 10.5391 11.1621C10.6797 11.0215 10.75 10.8418 10.75 10.623V4.62305H1.75ZM2.5 2.37305C2.28125 2.37305 2.10156 2.44336 1.96094 2.58398C1.82031 2.72461 1.75 2.9043 1.75 3.12305V3.87305H10.75V3.12305C10.75 2.9043 10.6797 2.72461 10.5391 2.58398C10.3984 2.44336 10.2188 2.37305 10 2.37305H2.5ZM8.00781 6.75586L6.78906 7.99805L8.00781 9.24023C8.16406 9.41211 8.16406 9.58398 8.00781 9.75586C7.83594 9.91211 7.66406 9.91211 7.49219 9.75586L6.25 8.53711L5.00781 9.75586C4.83594 9.91211 4.66406 9.91211 4.49219 9.75586C4.33594 9.58398 4.33594 9.41211 4.49219 9.24023L5.71094 7.99805L4.49219 6.75586C4.33594 6.58398 4.33594 6.41211 4.49219 6.24023C4.66406 6.08398 4.83594 6.08398 5.00781 6.24023L6.25 7.45898L7.49219 6.24023C7.66406 6.08398 7.83594 6.08398 8.00781 6.24023C8.16406 6.41211 8.16406 6.58398 8.00781 6.75586Z'
-                      fill='#D93F4C'
-                    />
-                  </svg>
-                </Box>
-              }
-            />
+            {(!cancelReschedulingDetails ||
+              cancelReschedulingDetails.all == false) && (
+              <>
+                <ScheduleButton
+                  textLabel={'Request Reschedule'}
+                  onClickProps={{
+                    onClick: () => setCancelReschedule('reschedule'),
+                  }}
+                />
+                <ScheduleButton
+                  textLabel={'Cancel Schedule'}
+                  textColorProps={{
+                    style: { color: '#D93F4C' },
+                  }}
+                  onClickProps={{
+                    onClick: () => setCancelReschedule('cancel'),
+                    style: { background: '#FFF0F1' },
+                  }}
+                  slotIcon={
+                    <Box
+                      display={'flex'}
+                      height={'100%'}
+                      justifyContent={'center'}
+                      alignItems={'center'}
+                    >
+                      <GlobalIcon iconName='event_busy' />
+                      {/* <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        width='13'
+                        height='16'
+                        viewBox='0 0 13 13'
+                        fill='none'
+                      >
+                        <path
+                          d='M4 0.498047V1.62305H8.5V0.498047C8.51562 0.263672 8.64062 0.138672 8.875 0.123047C9.10938 0.138672 9.23438 0.263672 9.25 0.498047V1.62305H10C10.4219 1.63867 10.7734 1.78711 11.0547 2.06836C11.3359 2.34961 11.4844 2.70117 11.5 3.12305V3.87305V4.62305V10.623C11.4844 11.0449 11.3359 11.3965 11.0547 11.6777C10.7734 11.959 10.4219 12.1074 10 12.123H2.5C2.07812 12.1074 1.72656 11.959 1.44531 11.6777C1.16406 11.3965 1.01562 11.0449 1 10.623V4.62305V3.87305V3.12305C1.01562 2.70117 1.16406 2.34961 1.44531 2.06836C1.72656 1.78711 2.07812 1.63867 2.5 1.62305H3.25V0.498047C3.26562 0.263672 3.39062 0.138672 3.625 0.123047C3.85938 0.138672 3.98438 0.263672 4 0.498047ZM1.75 4.62305V10.623C1.75 10.8418 1.82031 11.0215 1.96094 11.1621C2.10156 11.3027 2.28125 11.373 2.5 11.373H10C10.2188 11.373 10.3984 11.3027 10.5391 11.1621C10.6797 11.0215 10.75 10.8418 10.75 10.623V4.62305H1.75ZM2.5 2.37305C2.28125 2.37305 2.10156 2.44336 1.96094 2.58398C1.82031 2.72461 1.75 2.9043 1.75 3.12305V3.87305H10.75V3.12305C10.75 2.9043 10.6797 2.72461 10.5391 2.58398C10.3984 2.44336 10.2188 2.37305 10 2.37305H2.5ZM8.00781 6.75586L6.78906 7.99805L8.00781 9.24023C8.16406 9.41211 8.16406 9.58398 8.00781 9.75586C7.83594 9.91211 7.66406 9.91211 7.49219 9.75586L6.25 8.53711L5.00781 9.75586C4.83594 9.91211 4.66406 9.91211 4.49219 9.75586C4.33594 9.58398 4.33594 9.41211 4.49219 9.24023L5.71094 7.99805L4.49219 6.75586C4.33594 6.58398 4.33594 6.41211 4.49219 6.24023C4.66406 6.08398 4.83594 6.08398 5.00781 6.24023L6.25 7.45898L7.49219 6.24023C7.66406 6.08398 7.83594 6.08398 8.00781 6.24023C8.16406 6.41211 8.16406 6.58398 8.00781 6.75586Z'
+                          fill='#D93F4C'
+                        />
+                      </svg> */}
+                    </Box>
+                  }
+                />
+              </>
+            )}
           </Stack>
         }
       />
@@ -297,10 +413,13 @@ const DetailsPopup = () => {
       <CandidateScheduleCard
         isPopup={true}
         isSelected={false}
+        slotButton={''}
         textDuration={getDurationText(duration)}
         onClickClose={{ onClick: () => setDetailsPop(false) }}
         textPopupTitle={schedule_name}
         slotSessionInfo={<Sessions sessions={meetings} showBreak={true} />}
+        isSlotButtonVisible={false}
+        isTitle={false}
       />
     </Dialog>
   );
@@ -337,7 +456,7 @@ const CancelRescheduleDialog = ({
   }>({
     type,
     reason: options[0],
-    dateRange: [dayjs(), dayjs().add(1, 'day')],
+    dateRange: [dayjs(), dayjs().add(7, 'day')],
     additionalNote: null,
   });
   const open = Boolean(anchorEl);
@@ -423,18 +542,7 @@ const CancelRescheduleDialog = ({
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position='end'>
-                      <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        width='14'
-                        height='16'
-                        viewBox='0 0 14 16'
-                        fill='none'
-                      >
-                        <path
-                          d='M3.5 0C3.8125 0.0208333 3.97917 0.1875 4 0.5V2H10V0.5C10.0208 0.1875 10.1875 0.0208333 10.5 0C10.8125 0.0208333 10.9792 0.1875 11 0.5V2H12C12.5625 2.02083 13.0312 2.21875 13.4062 2.59375C13.7812 2.96875 13.9792 3.4375 14 4V5V6V14C13.9792 14.5625 13.7812 15.0312 13.4062 15.4062C13.0312 15.7812 12.5625 15.9792 12 16H2C1.4375 15.9792 0.96875 15.7812 0.59375 15.4062C0.21875 15.0312 0.0208333 14.5625 0 14V6V5V4C0.0208333 3.4375 0.21875 2.96875 0.59375 2.59375C0.96875 2.21875 1.4375 2.02083 2 2H3V0.5C3.02083 0.1875 3.1875 0.0208333 3.5 0ZM13 6H1V14C1 14.2917 1.09375 14.5312 1.28125 14.7188C1.46875 14.9062 1.70833 15 2 15H12C12.2917 15 12.5312 14.9062 12.7188 14.7188C12.9062 14.5312 13 14.2917 13 14V6ZM12 3H2C1.70833 3 1.46875 3.09375 1.28125 3.28125C1.09375 3.46875 1 3.70833 1 4V5H13V4C13 3.70833 12.9062 3.46875 12.7188 3.28125C12.5312 3.09375 12.2917 3 12 3Z'
-                          fill='#68737D'
-                        />
-                      </svg>
+                      <GlobalIcon iconName='calendar_month' />
                     </InputAdornment>
                   ),
                 }}
@@ -562,7 +670,13 @@ const SingleDayError = () => {
 };
 
 const SingleDayLoading = () => {
-  return <Loader />;
+  return (
+    <Stack direction={'row'} justifyContent={'center'}>
+      <Stack width={'120px'}>
+        <CandidateSlotLoad />
+      </Stack>
+    </Stack>
+  );
 };
 
 const SingleDaySuccess = () => {
@@ -807,7 +921,13 @@ const MultiDayError = () => {
 };
 
 const MultiDayLoading = () => {
-  return <Loader />;
+  return (
+    <Stack direction={'row'} justifyContent={'center'}>
+      <Stack width={'120px'}>
+        <CandidateSlotLoad />
+      </Stack>
+    </Stack>
+  );
 };
 
 const MultiDaySuccess = (props: ScheduleCardsProps) => {
@@ -817,14 +937,19 @@ const MultiDaySuccess = (props: ScheduleCardsProps) => {
   return (
     <>
       <ScheduleCards rounds={props.rounds} />
-      <Stack sx={{ width: '350px' }}>
-        <AUIButton
-          size='large'
-          onClick={() => setOpen(true)}
-          disabled={!enabled}
-        >
-          Proceed
-        </AUIButton>
+      <Stack direction={'row'} justifyContent={'center'}>
+        <ButtonSolid
+          isLeftIcon={false}
+          isRightIcon={false}
+          textButton='Proceed'
+          size={3}
+          onClickButton={{
+            onClick: () => {
+              setOpen(true);
+            },
+          }}
+          isDisabled={!enabled}
+        />
       </Stack>
       <MultiDayConfirmation open={open} setOpen={setOpen} />
     </>
@@ -947,7 +1072,22 @@ const ScheduleCard = (props: ScheduleCardProps) => {
         textDay={props.round.title}
         isSelected={isSelected}
         slotButton={
-          enabled ? isSelected ? <ChangeButton /> : <SelectButton /> : <></>
+          enabled ? (
+            isSelected ? (
+              <ChangeButton onClickButton={{ onClick: () => setOpen(true) }} />
+            ) : (
+              <ButtonSurface
+                slotIcon={<GlobalIcon iconName='add' size={'sm'} />}
+                isLeftIcon={true}
+                isRightIcon={false}
+                size={1}
+                onClickButton={{ onClick: () => setOpen(true) }}
+                textButton='Select Option'
+              />
+            )
+          ) : (
+            <></>
+          )
         }
         textDuration={getDurationText(duration)}
         slotSessionInfo={
@@ -1017,7 +1157,7 @@ const SessionCard = ({ session: { interview_session } }: SessionCardProps) => {
         <IconScheduleType type={interview_session.schedule_type} />
       }
       slotInterviewtypeIcon={
-        <SessionIcon sessionType={interview_session.session_type} />
+        <SessionIcon session_type={interview_session.session_type} />
       }
     />
   );
@@ -1051,18 +1191,19 @@ const Logo = () => {
 
 const BreakIcon = () => {
   return (
-    <svg
-      width='14'
-      height='14'
-      viewBox='0 0 12 12'
-      fill='none'
-      xmlns='http://www.w3.org/2000/svg'
-    >
-      <path
-        d='M2.0625 0C2.40625 0.03125 2.59375 0.21875 2.625 0.5625C2.625 0.75 2.67188 0.90625 2.76562 1.03125C2.85938 1.15625 3 1.29687 3.1875 1.45312L3.21094 1.47656C3.41406 1.63281 3.60938 1.84375 3.79688 2.10938C4 2.375 4.10938 2.73438 4.125 3.1875C4.09375 3.53125 3.90625 3.71875 3.5625 3.75C3.21875 3.71875 3.03125 3.53125 3 3.1875C3 3 2.95312 2.84375 2.85938 2.71875C2.76562 2.59375 2.625 2.45313 2.4375 2.29688L2.41406 2.27344C2.21094 2.11719 2.01562 1.90625 1.82812 1.64062C1.625 1.375 1.51562 1.01562 1.5 0.5625C1.53125 0.21875 1.71875 0.03125 2.0625 0ZM1.125 9.75C1.14062 10.0625 1.25 10.3281 1.45312 10.5469C1.67188 10.75 1.9375 10.8594 2.25 10.875H6.75C7.0625 10.8594 7.32812 10.75 7.54688 10.5469C7.75 10.3281 7.85938 10.0625 7.875 9.75V5.625H1.125V9.75ZM0 5.25C0 5.03125 0.0703125 4.85156 0.210938 4.71094C0.351562 4.57031 0.53125 4.5 0.75 4.5H8.25H9.375C10.125 4.51562 10.7422 4.77344 11.2266 5.27344C11.7266 5.75781 11.9844 6.375 12 7.125C11.9844 7.875 11.7266 8.49219 11.2266 8.97656C10.7422 9.47656 10.125 9.73438 9.375 9.75H9C8.98438 10.3906 8.76562 10.9219 8.34375 11.3438C7.92188 11.7656 7.39062 11.9844 6.75 12H2.25C1.60938 11.9844 1.07812 11.7656 0.65625 11.3438C0.234375 10.9219 0.015625 10.3906 0 9.75L0 5.25ZM9 8.625H9.375C9.79688 8.60938 10.1484 8.46094 10.4297 8.17969C10.7109 7.89844 10.8594 7.54688 10.875 7.125C10.8594 6.70312 10.7109 6.35156 10.4297 6.07031C10.1484 5.78906 9.79688 5.64062 9.375 5.625H9V8.625ZM5.25 0.5625C5.25 0.75 5.29688 0.90625 5.39062 1.03125C5.48438 1.15625 5.625 1.29687 5.8125 1.45312L5.83594 1.47656C6.03906 1.63281 6.23438 1.84375 6.42188 2.10938C6.625 2.375 6.73438 2.73438 6.75 3.1875C6.71875 3.53125 6.53125 3.71875 6.1875 3.75C5.84375 3.71875 5.65625 3.53125 5.625 3.1875C5.625 3 5.57812 2.84375 5.48438 2.71875C5.39062 2.59375 5.25 2.45313 5.0625 2.29688L5.03906 2.27344C4.83594 2.11719 4.64062 1.90625 4.45312 1.64062C4.25 1.375 4.14062 1.01562 4.125 0.5625C4.15625 0.21875 4.34375 0.03125 4.6875 0C5.03125 0.03125 5.21875 0.21875 5.25 0.5625Z'
-        fill='#49545C'
-      ></path>
-    </svg>
+    <GlobalIcon iconName='emoji_food_beverage' />
+    // <svg
+    //   width='14'
+    //   height='14'
+    //   viewBox='0 0 12 12'
+    //   fill='none'
+    //   xmlns='http://www.w3.org/2000/svg'
+    // >
+    //   <path
+    //     d='M2.0625 0C2.40625 0.03125 2.59375 0.21875 2.625 0.5625C2.625 0.75 2.67188 0.90625 2.76562 1.03125C2.85938 1.15625 3 1.29687 3.1875 1.45312L3.21094 1.47656C3.41406 1.63281 3.60938 1.84375 3.79688 2.10938C4 2.375 4.10938 2.73438 4.125 3.1875C4.09375 3.53125 3.90625 3.71875 3.5625 3.75C3.21875 3.71875 3.03125 3.53125 3 3.1875C3 3 2.95312 2.84375 2.85938 2.71875C2.76562 2.59375 2.625 2.45313 2.4375 2.29688L2.41406 2.27344C2.21094 2.11719 2.01562 1.90625 1.82812 1.64062C1.625 1.375 1.51562 1.01562 1.5 0.5625C1.53125 0.21875 1.71875 0.03125 2.0625 0ZM1.125 9.75C1.14062 10.0625 1.25 10.3281 1.45312 10.5469C1.67188 10.75 1.9375 10.8594 2.25 10.875H6.75C7.0625 10.8594 7.32812 10.75 7.54688 10.5469C7.75 10.3281 7.85938 10.0625 7.875 9.75V5.625H1.125V9.75ZM0 5.25C0 5.03125 0.0703125 4.85156 0.210938 4.71094C0.351562 4.57031 0.53125 4.5 0.75 4.5H8.25H9.375C10.125 4.51562 10.7422 4.77344 11.2266 5.27344C11.7266 5.75781 11.9844 6.375 12 7.125C11.9844 7.875 11.7266 8.49219 11.2266 8.97656C10.7422 9.47656 10.125 9.73438 9.375 9.75H9C8.98438 10.3906 8.76562 10.9219 8.34375 11.3438C7.92188 11.7656 7.39062 11.9844 6.75 12H2.25C1.60938 11.9844 1.07812 11.7656 0.65625 11.3438C0.234375 10.9219 0.015625 10.3906 0 9.75L0 5.25ZM9 8.625H9.375C9.79688 8.60938 10.1484 8.46094 10.4297 8.17969C10.7109 7.89844 10.8594 7.54688 10.875 7.125C10.8594 6.70312 10.7109 6.35156 10.4297 6.07031C10.1484 5.78906 9.79688 5.64062 9.375 5.625H9V8.625ZM5.25 0.5625C5.25 0.75 5.29688 0.90625 5.39062 1.03125C5.48438 1.15625 5.625 1.29687 5.8125 1.45312L5.83594 1.47656C6.03906 1.63281 6.23438 1.84375 6.42188 2.10938C6.625 2.375 6.73438 2.73438 6.75 3.1875C6.71875 3.53125 6.53125 3.71875 6.1875 3.75C5.84375 3.71875 5.65625 3.53125 5.625 3.1875C5.625 3 5.57812 2.84375 5.48438 2.71875C5.39062 2.59375 5.25 2.45313 5.0625 2.29688L5.03906 2.27344C4.83594 2.11719 4.64062 1.90625 4.45312 1.64062C4.25 1.375 4.14062 1.01562 4.125 0.5625C4.15625 0.21875 4.34375 0.03125 4.6875 0C5.03125 0.03125 5.21875 0.21875 5.25 0.5625Z'
+    //     fill='#49545C'
+    //   ></path>
+    // </svg>
   );
 };
 
@@ -1089,5 +1230,22 @@ const saveCancelReschedule = async ({
         throw new Error(error.message);
       }
       return true;
+    });
+};
+
+const getCancelRescheduleData = async ({
+  schedule_id,
+}: {
+  schedule_id: string;
+}) => {
+  return supabase
+    .from('interview_session_cancel')
+    .select('reason, session_id, type, other_details')
+    .eq('schedule_id', schedule_id)
+    .then(({ data, error }) => {
+      if (error) {
+        return [];
+      }
+      return data;
     });
 };

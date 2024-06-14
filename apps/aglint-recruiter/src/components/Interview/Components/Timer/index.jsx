@@ -23,18 +23,12 @@ function Timer({ introStep, getminutes, getSecound, timeOut }) {
         `}
       </style>
       <Chip
-        sx={{
-          borderColor: 'grey.200',
-          color: 'black.700',
-          height: '25px',
-          bgcolor: 'white.700'
-        }}
         label={
           <Stack alignItems={'center'} spacing={0.5} direction={'row'}>
             {introStep !== 2 && (
               <Stack
                 className={timeOut ? '' : 'timmer'}
-                bgcolor={timeOut ? 'red.500' : 'lime.400'}
+                bgcolor={timeOut ? 'var(--error-4)' : 'var(--warning-11)'}
                 borderRadius={'50%'}
                 width={'6px'}
                 height={'6px'}
@@ -42,7 +36,7 @@ function Timer({ introStep, getminutes, getSecound, timeOut }) {
             )}
             <Typography
               className={timeOut ? 'timmer' : ''}
-              color={timeOut ? 'red.500' : 'white.600'}
+              color={timeOut ? 'var(--error-11)' : 'var(--white-a7)'}
               variant='body1'
             >
               {getminutes < 10 && '0'}

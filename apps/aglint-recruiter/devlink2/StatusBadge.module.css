@@ -6,123 +6,40 @@
   align-items: flex-start;
 }
 
-.div-block-1272 {
-  display: flex;
-  padding: 0px;
+.sb-wrapper {
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
-
-  border-radius: 100px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+  border-radius: var(--radius-2);
 }
 
-.div-block-1272.blue {
-  background-color: #edf7ff;
-  color: #144a75;
+.sb-wrapper.confirmed {
+  background-color: var(--sky-a3);
+  color: var(--info-a11);
 }
 
-.div-block-1272.grey {
-  background-color: #f8f9f9;
-  color: #49545c;
+.sb-wrapper.not-schedule {
+  background-color: var(--neutral-a3);
+  color: var(--neutral-11);
 }
 
-.div-block-1272.kale {
-  background-color: #f5fcfc;
-  color: #17494d;
+.sb-wrapper.in-progress {
+  background-color: var(--warning-a3);
+  color: var(--warning-11);
 }
 
-.div-block-1272.red {
-  background-color: #fff0f1;
-  color: #8c232c;
+.sb-wrapper.cancelled {
+  background-color: var(--error-a3);
+  color: var(--error-11);
 }
 
-.div-block-1272.yellow {
-  background-color: #fff7ed;
-  color: #ad5918;
+.sb-wrapper.waiting {
+  background-color: var(--warning-a3);
+  color: var(--warning-11);
 }
 
-.div-block-1272.confirmed {
-  color: #337fbd;
-}
-
-.div-block-1272.not-schedule {
-  color: #87929d;
-}
-
-.div-block-1272.in-progress {
-  color: #17494d;
-}
-
-.div-block-1272.cancelled {
-  color: #d93f4c;
-}
-
-.div-block-1272.waiting {
-  color: #ed8f1c;
-}
-
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.7;
-}
-
-.icons.cursor-pointer.no-trans {
-  transition-property: none;
-}
-
-.icons.cursor-pointer.no-transition {
-  transition-property: none;
-}
-
-.icons.ml-4 {
-  margin-left: 4px;
-}
-
-.icons.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
-.icons.ml--6 {
-  margin-left: -6px;
-}
-
-.icons.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
-}
-
-.icons.pointer {
-  cursor: pointer;
-}
-
-.text-green-500 {
-  color: hsla(157.9816513761468, 61.58%, 34.71%, 1.00);
+.sb-wrapper.completed {
+  background-color: var(--success-a3);
+  color: var(--success-11);
 }

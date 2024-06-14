@@ -8,4 +8,5 @@ declare function SideDrawerBlock(props: {
   onClickPrimaryButton?: Types.Devlink.RuntimeProps;
   textPrimaryButton?: React.ReactNode;
   slotSidedrawerBody?: Types.Devlink.Slot;
+  isLoading?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

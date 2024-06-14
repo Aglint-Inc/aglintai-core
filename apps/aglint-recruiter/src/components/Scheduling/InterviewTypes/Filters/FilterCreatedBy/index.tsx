@@ -9,6 +9,7 @@ import { capitalize, debounce } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
 import { Checkbox } from '@/devlink/Checkbox';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
@@ -17,7 +18,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { FilterType } from '../../../Candidates/store';
+import { FilterType } from '../../../Candidates/filter-store';
 import { setCreatedBy, useFilterModuleStore } from '../../filter-store';
 
 type UserType = {
@@ -107,18 +108,7 @@ function FilterCreatedBy() {
         textLabel={'Created by'}
         slotRightIcon={
           <Stack>
-            <svg
-              width='15'
-              height='16'
-              viewBox='0 0 15 16'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path
-                d='M7.75781 11.2578C7.58594 11.4141 7.41406 11.4141 7.24219 11.2578L2.74219 6.75781C2.58594 6.58594 2.58594 6.41406 2.74219 6.24219C2.91406 6.08594 3.08594 6.08594 3.25781 6.24219L7.5 10.4609L11.7422 6.24219C11.9141 6.08594 12.0859 6.08594 12.2578 6.24219C12.4141 6.41406 12.4141 6.58594 12.2578 6.75781L7.75781 11.2578Z'
-                fill='#0F3554'
-              />
-            </svg>
+            <GlobalIcon iconName='keyboard_arrow_down' />
           </Stack>
         }
       />
@@ -135,8 +125,8 @@ function FilterCreatedBy() {
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
-            borderRadius: '10px',
-            borderColor: '#E9EBED',
+            borderRadius: 'var(--radius-4)',
+            borderColor: 'var(--neutral-6)',
             minWidth: '176px',
           },
         }}
@@ -185,10 +175,7 @@ function FilterCreatedBy() {
                       <MuiAvatar
                         src={item.profile_image}
                         level={getFullName(item.first_name, item.last_name)}
-                        variant='circular'
-                        height='20px'
-                        width='20px'
-                        fontSize='10px'
+                        variant='rounded-small'
                       />
                       <Typography variant='body1'>
                         {capitalize(item.first_name)}
@@ -223,10 +210,7 @@ function FilterCreatedBy() {
                     <MuiAvatar
                       src={item.profile_image}
                       level={getFullName(item.first_name, item.last_name)}
-                      variant='circular'
-                      height='20px'
-                      width='20px'
-                      fontSize='10px'
+                      variant='rounded-small'
                     />
                     <Typography variant='body1'>
                       {capitalize(item.first_name)}

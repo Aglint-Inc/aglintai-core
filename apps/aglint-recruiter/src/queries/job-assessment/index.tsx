@@ -11,20 +11,20 @@ import { type Assessment, AssessmentTemplate } from '../assessment/types';
 import { useCurrentJob } from './keys';
 
 export const useJobAssessmentsConnect = () => {
-  const { job_id, job } = useCurrentJob();
+  const { id, job } = useCurrentJob();
   const title = job?.job_title ?? null;
   const queryClient = useQueryClient();
   const { queryKey } = assessmentQueryKeys.assessments();
   return useMutation({
     mutationFn: (assessment_id: Assessment['id']) =>
-      connectJobAssessmentDbAction(job_id, assessment_id),
+      connectJobAssessmentDbAction(id, assessment_id),
     onMutate: async (assessment_id) => {
       await queryClient.cancelQueries({ queryKey });
       const prevAssessments = queryClient.getQueryData<Assessment[]>(queryKey);
       queryClient.setQueryData<Assessment[]>(queryKey, (prev) => {
         const newAssessments = prev.reduce((acc, curr) => {
           if (curr.id === assessment_id)
-            acc.push({ ...curr, jobs: [...curr.jobs, { title, id: job_id }] });
+            acc.push({ ...curr, jobs: [...curr.jobs, { title, id: id }] });
           else acc.push(curr);
           return acc;
         }, [] as Assessment[]);
@@ -48,21 +48,21 @@ type BulkConnectProps = {
 
 export const useJobAssessmentsBulkConnect = () => {
   const { recruiter_id } = useAuthDetails();
-  const { job_id, job } = useCurrentJob();
+  const { id, job } = useCurrentJob();
   const title = job?.job_title ?? null;
   const queryClient = useQueryClient();
   const { queryKey } = assessmentQueryKeys.assessments();
   const { queryKey: templateQueryKey } = assessmentQueryKeys.templates();
   return useMutation({
     mutationFn: (props: BulkConnectProps) =>
-      bulkConnectJobAssessmentDbAction(job_id, props, recruiter_id),
+      bulkConnectJobAssessmentDbAction(id, props, recruiter_id),
     onMutate: async ({ assessments, templates }) => {
       await queryClient.cancelQueries({ queryKey });
       const prevAssessments = queryClient.getQueryData<Assessment[]>(queryKey);
       queryClient.setQueryData<Assessment[]>(queryKey, (prev) => {
         const newAssessments = prev.reduce((acc, curr) => {
           if (assessments.find(({ id }) => id === curr.id))
-            acc.push({ ...curr, jobs: [...curr.jobs, { title, id: job_id }] });
+            acc.push({ ...curr, jobs: [...curr.jobs, { title, id: id }] });
           else acc.push(curr);
           return acc;
         }, [] as Assessment[]);
@@ -73,7 +73,7 @@ export const useJobAssessmentsBulkConnect = () => {
               ...rest,
               recruiter_id,
               id: assessment_id,
-              jobs: [{ id: job_id, title }],
+              jobs: [{ id: id, title }],
               created_at: null,
               loading: true,
             });
@@ -115,7 +115,7 @@ export const useJobAssessmentsBulkConnect = () => {
 
 export const useJobAssessmentTemplateConnect = () => {
   const { recruiter_id } = useAuthDetails();
-  const { job_id, job } = useCurrentJob();
+  const { id, job } = useCurrentJob();
   const title = job?.job_title ?? null;
   const assessment_id = generateUUID();
   const queryClient = useQueryClient();
@@ -125,7 +125,7 @@ export const useJobAssessmentTemplateConnect = () => {
     mutationFn: (template: AssessmentTemplate) =>
       connectJobAssessmentTemplateDbAction(
         assessment_id,
-        job_id,
+        id,
         template.id,
         recruiter_id,
       ),
@@ -138,7 +138,7 @@ export const useJobAssessmentTemplateConnect = () => {
           {
             ...template,
             recruiter_id,
-            jobs: [{ id: job_id, title }],
+            jobs: [{ id, title }],
             loading: true,
           },
           ...prev,
@@ -174,12 +174,12 @@ export const useJobAssessmentTemplateConnect = () => {
 };
 
 export const useJobAssessmentsDisconnect = () => {
-  const { job_id } = useCurrentJob();
+  const { id } = useCurrentJob();
   const queryClient = useQueryClient();
   const { queryKey } = assessmentQueryKeys.assessments();
   return useMutation({
     mutationFn: (assessment_id: Assessment['id']) =>
-      disconnectJobAssessmentDbAction(job_id, assessment_id),
+      disconnectJobAssessmentDbAction(id, assessment_id),
     onMutate: async (assessment_id) => {
       await queryClient.cancelQueries({ queryKey });
       const prevAssessments = queryClient.getQueryData<Assessment[]>(queryKey);
@@ -188,7 +188,7 @@ export const useJobAssessmentsDisconnect = () => {
           if (curr.id === assessment_id)
             acc.push({
               ...curr,
-              jobs: curr.jobs.filter(({ id }) => id !== job_id),
+              jobs: curr.jobs.filter(({ id }) => id !== id),
             });
           else acc.push(curr);
           return acc;

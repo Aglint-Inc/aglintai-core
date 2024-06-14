@@ -1,12 +1,11 @@
 /* eslint-disable security/detect-object-injection */
 import { Popover, Stack } from '@mui/material';
-import { capitalize } from 'lodash';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import { ChangeEventHandler, FC, useEffect, useRef, useState } from 'react';
 
 import { AddButton } from '@/devlink/AddButton';
-import { ButtonPrimarySmall } from '@/devlink/ButtonPrimarySmall';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { Checkbox } from '@/devlink/Checkbox';
 import { ScoreCard } from '@/devlink/ScoreCard';
 import { ScoreCardEdit } from '@/devlink/ScoreCardEdit';
@@ -23,23 +22,25 @@ import { BannerWarning } from '@/devlink3/BannerWarning';
 import { BodyWithSidePanel } from '@/devlink3/BodyWithSidePanel';
 import { ProfileScoreSkeleton } from '@/devlink3/ProfileScoreSkeleton';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
+import { useJob } from '@/src/context/JobContext';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 import { useJobs } from '@/src/context/JobsContext';
 import NotFoundPage from '@/src/pages/404';
-import { Job } from '@/src/queries/job/types';
+import { Job } from '@/src/queries/jobs/types';
 
 import Loader from '../Common/Loader';
 import ScoreWheel, { ScoreWheelParams } from '../Common/ScoreWheel';
 import UITextField from '../Common/UITextField';
+import { capitalize } from '../JobApplicationsDashboard/utils';
 import { JdJsonType } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 
 type Sections = 'experience' | 'education' | 'skills';
 
 const JobProfileScoreDashboard = () => {
-  const { initialLoad, job } = useJobDetails();
+  const { jobLoad, job } = useJob();
 
-  return initialLoad ? (
+  return jobLoad ? (
     job !== undefined && job.status !== 'closed' ? (
       <ProfileScorePage />
     ) : (
@@ -71,7 +72,7 @@ const ProfileScorePage = () => {
 const ProfileScoreControls = () => {
   const { handleJobAsyncUpdate } = useJobs();
   const { handleJobApplicationRecalculate } = useJobApplications();
-  const { job } = useJobDetails();
+  const { job } = useJob();
   const initialRef = useRef(false);
   const initialSubmitRef = useRef(false);
   const jd_json = job.draft.jd_json;
@@ -143,6 +144,15 @@ const ProfileScoreControls = () => {
       style={{
         opacity: job.scoring_criteria_loading ? 0.4 : 1,
         pointerEvents: job.scoring_criteria_loading ? 'none' : 'auto',
+      }}
+      sx={{
+        position: 'sticky',
+        top: 0,
+        right: 0,
+        minHeight: 'calc(100vh - 60px)',
+        boxShadow: 1,
+        padding: 2,
+        bgcolor: 'var(--neutral-2)',
       }}
     >
       <ScoreWeightage
@@ -266,7 +276,7 @@ export const distributeScoreWeights = (jd_json: Job['draft']['jd_json']) => {
 };
 
 const ProfileScore = () => {
-  const { job } = useJobDetails();
+  const { job } = useJob();
   return (
     <ScoreSetting
       slotBanner={<Banners />}
@@ -288,7 +298,8 @@ const ProfileScore = () => {
 const Banners = () => {
   const { push } = useRouter();
   const { experimental_handleRegenerateJd } = useJobs();
-  const { status, job } = useJobDetails();
+  const { status } = useJobDetails();
+  const { job } = useJob();
   const { dismissWarnings, setDismissWarnings } = useJobDashboardStore(
     ({ dismissWarnings, setDismissWarnings }) => ({
       dismissWarnings,
@@ -338,7 +349,7 @@ const Section: FC<{ type: Sections }> = ({ type }) => {
   const { handleJobUpdate } = useJobs();
   const {
     job: { draft, id },
-  } = useJobDetails();
+  } = useJob();
   const { jd_json } = draft;
   const section: keyof typeof jd_json =
     type === 'experience'
@@ -473,7 +484,7 @@ const Pill: FC<{
                 width: type === 'experience' ? '500px' : '250px',
                 outline: 'none',
                 border: 'none',
-                backgroundColor: '#f8f9f9',
+                backgroundColor: 'transparent',
                 resize: 'none',
               }}
               // eslint-disable-next-line jsx-a11y/no-autofocus
@@ -487,13 +498,16 @@ const Pill: FC<{
           isCancelVisible={false}
           onClickDelete={{ onClick: () => onDelete() }}
           slotButtonUpdate={
-            <ButtonPrimarySmall
-              isDisabled={value === ''}
-              textLabel={'Submit'}
-              onClickButton={{
-                onClick: () => onSubmit(),
-              }}
-            />
+            <ButtonSolid size={'2'} isLeftIcon={false} isRightIcon={false} onClickButton={{
+              onClick: () => onSubmit(),
+            }} textButton="Submit" />
+            // <ButtonPrimarySmall
+            //   isDisabled={value === ''}
+            //   textLabel={'Submit'}
+            //   onClickButton={{
+            //     onClick: () => onSubmit(),
+            //   }}
+            // />
           }
         />
       </Popover>
@@ -569,13 +583,16 @@ const AddOption: FC<{
           isCancelVisible={true}
           onClickCancel={{ onClick: () => handleClose() }}
           slotButtonUpdate={
-            <ButtonPrimarySmall
-              isDisabled={value === ''}
-              textLabel={'Submit'}
-              onClickButton={{
-                onClick: () => onSubmit(),
-              }}
-            />
+            <ButtonSolid size={'2'} isLeftIcon={false} isRightIcon={false} onClickButton={{
+                  onClick: () => onSubmit(),
+                }} textButton="Submit" />
+            // <ButtonPrimarySmall
+            //   isDisabled={value === ''}
+            //   textLabel={'Submit'}
+            //   onClickButton={{
+            //     onClick: () => onSubmit(),
+            //   }}
+            // />
           }
         />
       </Popover>
@@ -587,7 +604,7 @@ const AddOption: FC<{
 
 const BreadCrumbs = () => {
   const { push } = useRouter();
-  const { job } = useJobDetails();
+  const { job } = useJob();
   return (
     <>
       <Breadcrum

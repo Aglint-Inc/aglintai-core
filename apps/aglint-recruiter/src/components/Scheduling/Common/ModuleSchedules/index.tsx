@@ -1,9 +1,10 @@
 import { InputAdornment, Stack } from '@mui/material';
+import { Box } from '@mui/material';
 import React, { useState } from 'react';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 import { InterviewMemberSide } from '@/devlink2/InterviewMemberSide';
-import Icon from '@/src/components/Common/Icons/Icon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import UITextField from '@/src/components/Common/UITextField';
 
@@ -48,12 +49,13 @@ function ModuleSchedules({
       slotInterview={
         <Stack>
           <UITextField
-            width='400px'
+            height={32}
+            width='250px'
             value={changeText}
             InputProps={{
               endAdornment: (
                 <InputAdornment position='end'>
-                  <Icon variant='JobSearch' height='14' />
+                  <GlobalIcon iconName='search' size='5'/>
                 </InputAdornment>
               ),
             }}
@@ -61,8 +63,6 @@ function ModuleSchedules({
             onChange={(e) => {
               setChangeText(e.target.value);
             }}
-            borderRadius={10}
-            height={42}
           />
         </Stack>
       }
@@ -83,12 +83,24 @@ function ModuleSchedules({
           <ShowCode.When
             isTrue={isFetched && newFilterSchedules()?.length === 0}
           >
-            <AllInterviewEmpty textDynamic='No schedule found' />
+            <Box
+              sx={{
+                padding: 'var(--space-4)',
+                borderRadius: 'var(--radius-2)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: 'calc(100vh - 180px)',
+                backgroundColor: 'var(--neutral-2)', // replace with your desired background color
+              }}
+            >
+              <Box maxWidth="sm" width="300px" p={2}>
+              <AllInterviewEmpty textDynamic='No schedule found' />
+              </Box>
+            </Box>
           </ShowCode.When>
           <ShowCode.When isTrue={isFetched}>
-            <Stack height={'calc(100vh - 154px)'}>
-              <ScheduleMeetingList filterSchedules={newFilterSchedules()} />
-            </Stack>
+            <ScheduleMeetingList filterSchedules={newFilterSchedules()} />
           </ShowCode.When>
         </ShowCode>
       }

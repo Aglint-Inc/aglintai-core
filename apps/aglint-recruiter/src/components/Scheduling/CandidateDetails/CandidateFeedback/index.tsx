@@ -1,9 +1,9 @@
 import { DatabaseTable } from '@aglint/shared-types';
-import { Box, Stack, Typography } from '@mui/material';
+import { Alert, Box, Stack, Typography } from '@mui/material';
 import React from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { CandidateFeedback as CandidateFeedbackDev } from '@/devlink3/CandidateFeedback';
-import { palette } from '@/src/context/Theme/Theme';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { setApplicationCandidateFeedback } from '../store';
@@ -46,20 +46,26 @@ const CandidateFeedback = ({
         })()
       ) : (
         <Stack gap={2}>
-          <Typography fontSize={'14px'} color={palette.grey[500]}>
-            {"Candidate haven't submitted any feedback"}
-          </Typography>
-          <Typography
-            fontSize={'14px'}
-            color={palette.blue[500]}
-            sx={{
-              cursor: 'pointer',
-              textDecoration: 'underline',
-            }}
-            onClick={handleRequestFeedback}
+          <Alert
+            severity='info'
+            icon={false}
+            action={
+              <ButtonSoft
+                onClickButton={{ onClick: handleRequestFeedback }}
+                isLeftIcon={false}
+                isRightIcon={false}
+                size={1}
+                color={'neutral'}
+                textButton={feedback ? 'Ask Again' : 'Request Feedback'}
+              />
+            }
           >
-            {feedback ? 'Request Feedback Again' : 'Request Feedback'}
-          </Typography>
+            <Typography variant='body1'>
+              {feedback
+                ? "You have requested feedback. The candidate hasn't submitted any yet. Would you like to ask again?"
+                : "The candidate hasn't submitted any feedback"}
+            </Typography>
+          </Alert>
         </Stack>
       )}
     </Stack>

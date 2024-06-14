@@ -6,17 +6,17 @@
   cursor: pointer;
 }
 
-.text-regular {
-  font-size: 16px;
-  line-height: 1.4;
+@media screen and (max-width: 767px) {
+  .open-jobs-list-card {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
 }
 
-.fw-semibold {
-  font-weight: 600;
-}
-
-.text-kale-800 {
-  color: var(--kale800-682c1482);
+@media screen and (max-width: 479px) {
+  .open-jobs-list-card {
+    padding: 0px;
+  }
 }
 
 .open-job-info-list {
@@ -43,11 +43,27 @@
   grid-row-gap: 4px;
 }
 
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+.apply-button-icon {
+  position: absolute;
+  left: auto;
+  top: auto;
+  right: 27px;
+  bottom: 34px;
+
+  display: none;
   align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  cursor: pointer;
+}
+
+.apply-button-icon:hover {
+  opacity: 0.9;
+}
+
+.text-blue-600 {
+  color: var(--blue600-aad8d97e);
 }
 
 .cursor-pointer {
@@ -59,16 +75,19 @@
   opacity: 0.7;
 }
 
-.icons.cursor-pointer.width-28 {
-  width: 28px;
+.text-blue-600.ml-8 {
+  margin-left: 8px;
 }
 
-.icons.cursor-pointer.height-28 {
-  height: 28px;
+.fw-semibold {
+  font-weight: 600;
 }
 
-.icons.cursor-pointer.p-4 {
-  padding: 4px;
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .icons.cursor-pointer.three-dot {
@@ -88,10 +107,6 @@
 
 .icons.rotate-180 {
   transform: rotate(180deg);
-}
-
-.icons.pause {
-  display: none;
 }
 
 .icons.avatar-play {
@@ -127,10 +142,6 @@
   color: var(--white-80449ce7);
 }
 
-.relative {
-  position: relative;
-}
-
 .icons.hide {
   display: none;
 }
@@ -146,8 +157,8 @@
   }
 }
 
-.icons.mb-63 {
-  margin-bottom: 63px;
+.icons.mb-9 {
+  margin-bottom: var(--space-9);
 }
 
 .mt-4 {
@@ -158,126 +169,32 @@
   margin-top: 3px;
 }
 
-.icons.mr--10 {
-  margin-right: -8px;
+.icons.mt-2 {
+  margin-top: 2px;
 }
 
-.text-grey-600 {
-  color: var(--grey600-d5bebe21);
+.mt-2 {
+  margin-top: var(--space-2);
 }
 
-.max-width-500 {
-  max-width: 500px;
-}
-
-.text-grey-600.width-90 {
-  width: 90%;
-}
-
-@media screen and (max-width: 991px) {
-  .text-grey-600.max-width-600 {
-    max-width: 500px;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .text-grey-600.max-width-600 {
-    max-width: none;
-  }
-}
-
-.max-width-600 {
-  max-width: 600px;
-}
-
-.text-grey-600.mt-5 {
-  margin-top: 5px;
-}
-
-.mt-5 {
-  margin-top: 5px;
-}
-
-.text-grey-600.mt-17 {
-  margin-top: 17px;
-}
-
-.inline-text {
-  display: inline;
-}
-
-.text-sm-2 {
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.text-grey-600.mt-9 {
-  margin-top: 9px;
-}
-
-.mt-15 {
-  margin-top: 15px;
-}
-
-.text-grey-600.text-grow {
-  white-space: nowrap;
-}
-
-.text-grow {
-  flex: 0 0 auto;
-}
-
-.text-sm-default {
-  font-size: 12px;
-  line-height: 1.3333333333333333;
-  letter-spacing: 0px;
-}
-
-.mt-10 {
-  margin-top: 10px;
-}
-
-.text-grey-600.mt-4 {
-  margin-top: 4px;
-}
-
-.text-grey-600.mt-8 {
-  margin-top: 8px;
-}
-
-.apply-button-icon {
+.icons.bookmarked {
   position: absolute;
-  left: auto;
-  top: auto;
-  right: 27px;
-  bottom: 34px;
-
-  display: none;
-  align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-
-  cursor: pointer;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
 }
 
-.apply-button-icon:hover {
-  opacity: 0.9;
+.icons.start {
+  justify-content: center;
+  align-items: flex-start;
 }
 
-.text-blue-600 {
-  color: var(--blue600-aad8d97e);
-}
-
-.text-underline {
+.icons.cursor-pointer {
   transition: all 250ms ease;
-  text-decoration: underline;
   cursor: pointer;
 }
 
-.text-underline:hover {
-  opacity: 0.7;
-}
-
-.text-blue-600.ml-8 {
-  margin-left: 8px;
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
 }

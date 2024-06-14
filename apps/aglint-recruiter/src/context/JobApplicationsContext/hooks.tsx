@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable security/detect-object-injection */
 import { ApplicationsUpdate, EmailTemplateType } from '@aglint/shared-types';
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
@@ -141,13 +142,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
 
   const { handleUIJobUpdate } = useJobs();
 
-  const {
-    job,
-    initialLoad: jobLoad,
-    handleJobRefresh,
-    jobPolling,
-    interviewPlanEnabled: { data: interviewPlanEnabled },
-  } = useJobDetails();
+  const { job, initialLoad: jobLoad, handleJobRefresh } = useJobDetails();
 
   const interviewPlans = useJobInterviewPlan();
 
@@ -394,24 +389,24 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
 
   //SECONDARY
   const handleJobApplicationRefresh = async () => {
-    if (recruiter) {
-      const request = {
-        job_id: jobId,
-        ranges: ranges,
-        sections: job.activeSections,
-        ...searchParameters,
-      };
-      const responses = await Promise.allSettled([
-        handleJobRefresh(),
-        handleJobApplicationRead(request),
-      ]);
-      if (
-        responses[1].status === 'fulfilled' &&
-        responses[1].value.confirmation
-      )
-        return true;
-    }
-    return false;
+    // if (recruiter) {
+    //   const request = {
+    //     job_id: jobId,
+    //     ranges: ranges,
+    //     sections: job.activeSections,
+    //     ...searchParameters,
+    //   };
+    //   const responses = await Promise.allSettled([
+    //     handleJobRefresh(),
+    //     handleJobApplicationRead(request),
+    //   ]);
+    //   if (
+    //     responses[1].status === 'fulfilled' &&
+    //     responses[1].value.confirmation
+    //   )
+    //     return true;
+    // }
+    // return false;
   };
 
   //SECONDARY
@@ -608,32 +603,32 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   ) => {
     setSearchParameters(structuredClone(parameters));
     setAllApplicationsDisabled(true);
-    const { confirmation, filteredCount } = await handleJobApplicationRead(
-      {
-        job_id: jobId,
-        ranges: Object.values(JobApplicationSections)
-          .filter(
-            (section) => initialJobLoad && job.activeSections.includes(section),
-          )
-          .reduce((acc, curr) => {
-            return {
-              ...acc,
-              [curr]: getRange(
-                initialJobApplicationPageNumbers[curr],
-                paginationLimit,
-              ),
-            };
-          }, {}) as ReadJobApplicationApi['request']['ranges'],
-        sections: job.activeSections,
-        ...parameters,
-      },
-      signal,
-    );
+    // const { confirmation, filteredCount } = await handleJobApplicationRead(
+    //   {
+    //     job_id: jobId,
+    //     ranges: Object.values(JobApplicationSections)
+    //       .filter(
+    //         (section) => initialJobLoad && job.activeSections.includes(section),
+    //       )
+    //       .reduce((acc, curr) => {
+    //         return {
+    //           ...acc,
+    //           [curr]: getRange(
+    //             initialJobApplicationPageNumbers[curr],
+    //             paginationLimit,
+    //           ),
+    //         };
+    //       }, {}) as ReadJobApplicationApi['request']['ranges'],
+    //     sections: job.activeSections,
+    //     ...parameters,
+    //   },
+    //   signal,
+    // );
     setAllApplicationsDisabled(false);
-    if (confirmation) {
-      if (parameters.search) setPageNumber(initialJobApplicationPageNumbers);
-      return { confirmation: true, filteredCount };
-    }
+    // if (confirmation) {
+    //   if (parameters.search) setPageNumber(initialJobApplicationPageNumbers);
+    //   return { confirmation: true, filteredCount };
+    // }
     setSearchParameters(structuredClone(searchParameters));
     return {
       confirmation: false,
@@ -647,21 +642,21 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   };
 
   const handleSelectNextSection = () => {
-    setSection(
-      (prev) =>
-        job.activeSections[
-          (job.activeSections.indexOf(prev) + 1) % job.activeSections.length
-        ],
-    );
+    // setSection(
+    //   (prev) =>
+    //     job.activeSections[
+    //       (job.activeSections.indexOf(prev) + 1) % job.activeSections.length
+    //     ],
+    // );
   };
 
   const handleSelectPrevSection = () => {
-    setSection((prev) => {
-      const pos = job.activeSections.indexOf(prev) - 1;
-      return pos < 0
-        ? job.activeSections[job.activeSections.length - 1]
-        : job.activeSections[pos];
-    });
+    // setSection((prev) => {
+    //   const pos = job.activeSections.indexOf(prev) - 1;
+    //   return pos < 0
+    //     ? job.activeSections[job.activeSections.length - 1]
+    //     : job.activeSections[pos];
+    // });
   };
 
   //SECONDARY
@@ -681,31 +676,31 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
           })),
         ),
       );
-      const confirmation = await handleJobApplicationRead({
-        job_id: jobId,
-        ranges: ranges,
-        sections: job.activeSections,
-        ...searchParameters,
-      });
-      if (!confirmation) {
-        const action: Action = {
-          type: ActionType.READ,
-          payload: {
-            activeSections: job.activeSections,
-            applicationData: Object.assign(
-              {},
-              ...job.activeSections.map((section) => ({
-                [section]: [],
-              })),
-            ) as {
-              // eslint-disable-next-line no-unused-vars
-              [key in JobApplicationSections]: JobApplication[];
-            },
-          },
-        };
-        dispatch(action);
-        return false;
-      }
+      // const confirmation = await handleJobApplicationRead({
+      //   job_id: jobId,
+      //   ranges: ranges,
+      //   sections: job.activeSections,
+      //   ...searchParameters,
+      // });
+      // if (!confirmation) {
+      //   const action: Action = {
+      //     type: ActionType.READ,
+      //     payload: {
+      //       activeSections: job.activeSections,
+      //       applicationData: Object.assign(
+      //         {},
+      //         ...job.activeSections.map((section) => ({
+      //           [section]: [],
+      //         })),
+      //       ) as {
+      //         // eslint-disable-next-line no-unused-vars
+      //         [key in JobApplicationSections]: JobApplication[];
+      //       },
+      //     },
+      //   };
+      //   dispatch(action);
+      //   return false;
+      // }
       return true;
     } else {
       handleJobApplicationNotFound();
@@ -767,7 +762,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
         ...initialParameters,
       };
       setSearchParameters(structuredClone(initialParameters));
-      handleJobApplicationRead(request);
+      // handleJobApplicationRead(request);
     }
   };
 
@@ -807,7 +802,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   const refreshRef = useRef(true);
 
   const handleAutoRefresh = async () => {
-    if (jobPolling) await handleRefresh();
+    // if (jobPolling) await handleRefresh();
   };
 
   const handleManualRefresh = async () => {
@@ -822,9 +817,8 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   };
 
   const canCreateTask =
-    interviewPlanEnabled &&
     (interviewPlans?.interviewPlans?.data?.interview_session ?? []).length !==
-      0;
+    0;
 
   usePolling(async () => await handleAutoRefresh(), longPolling, [
     ...Object.values(pageNumber),
@@ -833,7 +827,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     searchParameters.search,
     searchParameters.sort.ascending,
     searchParameters.sort.parameter,
-    jobPolling,
+    // jobPolling,
   ]);
 
   useEffect(() => {

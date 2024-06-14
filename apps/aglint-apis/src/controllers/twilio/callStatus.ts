@@ -11,7 +11,7 @@ export const callStatus = async (req: Request, res: Response) => {
   try {
     const callStatus = body.CallStatus;
     if (callStatus === 'busy' || callStatus === 'no-answer') {
-      const cand_info = getCachedCandidateInfo(body.To);
+      const cand_info = await getCachedCandidateInfo(body.To);
       if (cand_info.req_payload.task_id) {
         const candLogger = getCandidateLogger(
           cand_info.req_payload.task_id,

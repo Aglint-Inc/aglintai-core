@@ -17,11 +17,12 @@ import {
 } from '@/src/queries/interview-plans';
 import { interviewSessionMutationKeys } from '@/src/queries/interview-plans/keys';
 
+import { useJob } from '../JobContext';
+
 // import toast from '@/src/utils/toast';
-import { useJobDetails } from '../JobDashboard';
 
 const useJobInterviewPlanActions = () => {
-  const { job } = useJobDetails();
+  const { job } = useJob();
   const companyMembers = useCompanyMembers();
   const interviewModules = useInterviewModules();
   const interviewPlans = useInterviewPlans();

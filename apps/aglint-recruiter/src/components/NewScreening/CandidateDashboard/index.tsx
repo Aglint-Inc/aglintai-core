@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import { Checkbox } from '@/devlink/Checkbox';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { AddFilter } from '@/devlink2/AddFilter';
 import { AllInterviewFilter } from '@/devlink2/AllInterviewFilter';
@@ -20,7 +21,6 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import Icon from '../../Common/Icons/Icon';
 import MuiAvatar from '../../Common/MuiAvatar';
 import UITextField from '../../Common/UITextField';
 import SideBar from '../SideBar/SideBar';
@@ -65,19 +65,12 @@ const CandidateDashboard = () => {
     return (
       <>
         <UITextField
-          rest={{
-            style: {
-              borderRadius: '41px',
-            },
-          }}
+          width='250px'
+          height={32}
           InputProps={{
-            sx: {
-              borderRadius: '10px',
-              minWidth: '250px',
-            },
             endAdornment: (
-              <InputAdornment position='end'>
-                <Icon variant='JobSearch' height='14' />
+              <InputAdornment position='start'>
+                <GlobalIcon iconName='search' size='5'/>
               </InputAdornment>
             ),
           }}
@@ -264,8 +257,8 @@ const CandidateDashboard = () => {
                           transformOrigin={{ vertical: -10, horizontal: 0 }}
                           sx={{
                             '& .MuiPopover-paper': {
-                              borderRadius: '10px',
-                              borderColor: '#E9EBED',
+                              borderRadius: 'var(--radius-4)',
+                              borderColor: 'var(--neutral-6)',
                               minWidth: '176px',
                             },
                           }}
@@ -440,10 +433,8 @@ const CandidateDashboard = () => {
                           slotImage={
                             <MuiAvatar
                               src={data.avatar}
-                              height='16.26px'
-                              width='16px'
                               level='avatar'
-                              variant='circular'
+                              variant='rounded-xs'
                             />
                           }
                           isCheckboxVisible={true}
@@ -567,7 +558,8 @@ const ScreeningDashboardBreadCrumbs = () => {
 const RightIcon = () => {
   return (
     <Stack>
-      <svg
+      <GlobalIcon iconName='keyboard_arrow_down' />
+      {/* <svg
         width='15'
         height='16'
         viewBox='0 0 15 16'
@@ -578,7 +570,7 @@ const RightIcon = () => {
           d='M7.75781 11.2578C7.58594 11.4141 7.41406 11.4141 7.24219 11.2578L2.74219 6.75781C2.58594 6.58594 2.58594 6.41406 2.74219 6.24219C2.91406 6.08594 3.08594 6.08594 3.25781 6.24219L7.5 10.4609L11.7422 6.24219C11.9141 6.08594 12.0859 6.08594 12.2578 6.24219C12.4141 6.41406 12.4141 6.58594 12.2578 6.75781L7.75781 11.2578Z'
           fill='#0F3554'
         />
-      </svg>
+      </svg> */}
     </Stack>
   );
 };

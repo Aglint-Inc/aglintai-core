@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
 import {slackWeb} from 'src/services/slack/slackWeb';
-import {supabaseAdmin, supabaseWrap} from 'src/services/supabase/SupabaseAdmin';
-import {SlackInteractionPayload} from 'src/types/slack/meetingConfirmationBlocks';
+import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
+import {supabaseWrap} from 'src/utils/scheduling/supabaseWrap';
 
 export const listForInteractions = async (req: Request, res: Response) => {
   try {

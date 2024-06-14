@@ -1,10 +1,11 @@
 /* eslint-disable security/detect-object-injection */
-import { Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
+import { EditEmail } from '@/devlink/EditEmail';
 import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
 import { JobEditWarning } from '@/devlink/JobEditWarning';
@@ -14,8 +15,9 @@ import { PageLayout } from '@/devlink2/PageLayout';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { validateString } from '@/src/context/JobDashboard/hooks';
 import { useJobs } from '@/src/context/JobsContext';
-import { Job } from '@/src/queries/job/types';
 import { useCurrentJob } from '@/src/queries/job-assessment/keys';
+import { Job } from '@/src/queries/jobs/types';
+import { emailTemplates as emailTemplatesUtils } from '@/src/utils/emailTemplate';
 
 import Loader from '../Common/Loader';
 import { capitalize } from '../JobApplicationsDashboard/utils';
@@ -33,9 +35,12 @@ const JobEmailTemplatesDashboard = () => {
           slotTopbarLeft={<JobEmailTemplatesDashboardBreadCrumbs />}
           slotTopbarRight={<></>}
           slotBody={
-            <Stack mx={2}>
+            <Box
+              padding={'24px'}
+              bgcolor={'var(--neutral-2)'}
+            >
               <JobEmailTemplates />
-            </Stack>
+            </Box>
           }
         />
       )}
@@ -88,7 +93,7 @@ const JobEmailTemplates = () => {
           acc[curr[0]] = {
             value: curr[1],
             error: {
-              value: validateString(curr[1]),
+              value: validateString(String(curr[1])),
               helper: getHelper(curr[0] as any),
             },
           };
@@ -155,11 +160,18 @@ const JobEmailTemplates = () => {
         <Sections selection={selection} setSelection={setSelection} />
       }
       slotEmailDetails={
-        <JobEmailTemplateForms
-          key={selection}
-          fields={fields[selection]}
-          selection={selection}
-          handleChange={handleChange}
+        <EditEmail
+          editEmailDescription={emailTemplatesUtils[selection].descriptionInJob}
+          textEmailName={emailTemplatesUtils[selection].heading}
+          slotForm={
+            <JobEmailTemplateForms
+              key={selection}
+              fields={fields[selection]}
+              selection={selection}
+              handleChange={handleChange}
+            />
+          }
+          isSaveChangesButtonVisible={false}
         />
       }
 
@@ -252,7 +264,7 @@ const validateForms = (fields: AllForms) => {
           value: value.value,
           error: {
             ...value.error,
-            value: validateString(value.value),
+            value: validateString(String(value.value)),
           },
         };
         return acc;

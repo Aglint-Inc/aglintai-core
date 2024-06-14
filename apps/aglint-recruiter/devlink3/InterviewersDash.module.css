@@ -1,0 +1,118 @@
+.dashboard_widget_wrap {
+  overflow: hidden;
+  height: 420px;
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+  background-color: var(--white);
+}
+
+.dashboard-widget-header {
+  display: flex;
+  height: 40px;
+  padding: var(--space-2) var(--space-4);
+  justify-content: space-between;
+  align-items: center;
+
+  border-bottom: 1px solid var(--neutral-5);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.div-block-1783 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+}
+
+.normal_menulink {
+  position: relative;
+  color: var(--neutral-9);
+}
+
+.active-menulink {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  color: var(--neutral-12);
+}
+
+.sd_table {
+  position: relative;
+}
+
+.module_row {
+  z-index: 2;
+
+  display: grid;
+  grid-auto-flow: row dense;
+  grid-auto-columns: 1fr;
+  grid-template-columns: 60% 20% 20%;
+  grid-template-rows: auto;
+
+  border-bottom: 1px solid #eaf1f3;
+
+  background-color: white;
+}
+
+.module_row.progress {
+  position: sticky;
+  top: 0px;
+  z-index: 2;
+  grid-template-columns: 25% 25% 50%;
+  background-color: var(--white);
+}
+
+.module_row.height-56 {
+  height: 56px;
+}
+
+.module_row.height-56.interviewers {
+  grid-template-columns: 40% 20% 20% 20%;
+}
+
+.module_row.height-56.interviewers.height-auto {
+  height: auto;
+}
+
+.module_row.interviewers {
+  grid-template-columns: 40% 20% 20% 20%;
+}
+
+.sd_table_header_cell {
+  padding: var(--space-2) var(--space-4);
+}
+
+.sd_table_header_cell.progress {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+.sd_table_body {
+  overflow: auto;
+  height: 347px;
+}
+
+#w-node-_78c91b2f-e9a0-e12f-c3da-df89e6bcfc3b-e6bcfc2d {
+}
+#w-node-_78c91b2f-e9a0-e12f-c3da-df89e6bcfc3e-e6bcfc2d {
+}
+#w-node-_78c91b2f-e9a0-e12f-c3da-df89e6bcfc41-e6bcfc2d {
+}
+@media screen and (min-width: 1440px) {
+  #w-node-_78c91b2f-e9a0-e12f-c3da-df89e6bcfc38-e6bcfc2d {
+  }
+  #w-node-_78c91b2f-e9a0-e12f-c3da-df89e6bcfc3b-e6bcfc2d {
+  }
+  #w-node-_78c91b2f-e9a0-e12f-c3da-df89e6bcfc3e-e6bcfc2d {
+  }
+  #w-node-_78c91b2f-e9a0-e12f-c3da-df89e6bcfc41-e6bcfc2d {
+  }
+}

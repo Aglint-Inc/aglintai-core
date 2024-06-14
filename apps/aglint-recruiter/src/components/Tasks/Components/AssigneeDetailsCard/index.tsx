@@ -32,7 +32,7 @@ function AssigneeDetailsCard({
   } = useMeetingDetails(assigneeDetails.user_id);
   if (isLoading && !isFetched) {
     return (
-      <Stack bgcolor={'white.700'}>
+      <Stack bgcolor={'var(--white-a7'}>
         <DynamicLoader height='200px' />
       </Stack>
     );
@@ -78,11 +78,8 @@ function AssigneeDetailsCard({
     <MemberDetail
       slotImage={
         <MuiAvatar
-          height={'40px'}
-          width={'40px'}
           src={assigneeDetails?.profile_image}
-          variant='circular'
-          fontSize='14px'
+          variant='rounded-medium'
           level={getFullName(
             assigneeDetails?.first_name,
             assigneeDetails?.last_name,
@@ -177,12 +174,13 @@ async function getMeetingDetails(user_id: string) {
 
 export const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
+))(() => ({
   [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: theme.palette.common.white,
-    color: 'rgba(0, 0, 0, 0.87)',
-    boxShadow: theme.shadows[1],
-    fontSize: 12,
+    backgroundColor:'var(--white)',
+    border:'1px solid var(--neutral-6)',
+    color: 'var(--neutral-12)',
+    boxShadow: 'none',
+    fontSize: 12
   },
   [`& .${tooltipClasses.tooltipPlacementBottom}`]: {
     minWidth: 360,

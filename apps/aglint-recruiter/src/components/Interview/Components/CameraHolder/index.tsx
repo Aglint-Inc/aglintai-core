@@ -56,7 +56,7 @@ function CameraHolder() {
             // height: '100%',
             // height: 'calc(100% - 245px)',
 
-            // borderRadius: '50%',
+            // borderRadius: 'var(--radius-4)',
             objectFit: 'cover',
             transform: 'scale(-1,1)',
           }}

@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
@@ -30,15 +29,14 @@ function MySchedule() {
     }
   };
 
-  const {
-    data: { schedules: scheduleList },
-    isFetched,
-  } = useScheduleList({
+  const { data, isFetched } = useScheduleList({
     user_id: recruiterUser.user_id,
   });
 
+  const scheduleList = data?.schedules || [];
+
   return (
-    <Stack paddingRight={'0px'}>
+    <>
       <ShowCode>
         <ShowCode.When
           isTrue={
@@ -66,7 +64,7 @@ function MySchedule() {
           />
         </ShowCode.When>
       </ShowCode>
-    </Stack>
+    </>
   );
 }
 

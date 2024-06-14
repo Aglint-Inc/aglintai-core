@@ -1,6 +1,5 @@
-import { Grid, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import React from 'react';
 
 import { NewMyScheduleCard } from '@/devlink3/NewMyScheduleCard';
 
@@ -14,32 +13,28 @@ function ScheduleMeetingList({
   filterSchedules: ScheduleListType;
 }) {
   return (
-    <Stack height={'calc(100vh - 120px)'}>
+    <Stack spacing={'var(--space-4)'}>
       {transformData(filterSchedules).map((sch, ind) => {
         const date = Object.keys(sch)[0];
         const schedules = sch[String(date)] as ScheduleListType;
         return (
-          <Grid item sm={12} md={12} lg={6} xl={4} key={ind}>
-            <NewMyScheduleCard
-              textDate={date != 'undefined' ? dayjs(date).format('DD') : null}
-              textDay={date != 'undefined' ? dayjs(date).format('ddd') : null}
-              textMonth={
-                date != 'undefined' ? (
-                  dayjs(date).format('MMM')
-                ) : (
-                  <DateIcon size={40} />
-                )
-              }
-              slotMyScheduleSubCard={schedules.map((meetingDetails, i) => {
-                return (
-                  <ScheduleMeetingCard
-                    key={i}
-                    meetingDetails={meetingDetails}
-                  />
-                );
-              })}
-            />
-          </Grid>
+          <NewMyScheduleCard
+            key={ind}
+            textDate={date != 'undefined' ? dayjs(date).format('DD') : null}
+            textDay={date != 'undefined' ? dayjs(date).format('ddd') : null}
+            textMonth={
+              date != 'undefined' ? (
+                dayjs(date).format('MMM')
+              ) : (
+                <DateIcon />
+              )
+            }
+            slotMyScheduleSubCard={schedules.map((meetingDetails, i) => {
+              return (
+                <ScheduleMeetingCard key={i} meetingDetails={meetingDetails} />
+              );
+            })}
+          />
         );
       })}
     </Stack>

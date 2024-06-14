@@ -10,23 +10,13 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 
-import { DB } from '@aglint/shared-types';
+import { DatabaseTable, DB } from '@aglint/shared-types';
 import { SessionsCombType } from '@aglint/shared-types';
-
-import { TFilterJSON } from './mail-agent/init-agent';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
 );
-
-type FilterJsonDateRangeCandidateInvite = {
-  user_tz: string;
-  start_date: string;
-  end_date: string;
-  session_ids: string[];
-  recruiter_id: string;
-};
 
 export type BodyParamsCandidateInvite = {
   schedule_id: string;
@@ -42,7 +32,7 @@ export type ApiResponseCandidateInvite = {
   candidate: Awaited<
     ReturnType<typeof getScheduleDetails>
   >['applications']['candidates'];
-  filter_json: TFilterJSON;
+  filter_json: DatabaseTable['interview_filter_json'];
   recruiter: Awaited<ReturnType<typeof getScheduleDetails>>['recruiter'];
   meetings: Awaited<
     ReturnType<typeof getInterviewSessionsMeetings>
@@ -62,8 +52,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const schedule = await getScheduleDetails(schedule_id, filter_id);
 
-    const filterJson = schedule.interview_filter_json[0]
-      .filter_json as unknown as FilterjsonType;
+    const filterJson = schedule.interview_filter_json[0];
 
     const application = schedule.applications;
 
@@ -94,14 +83,6 @@ export interface DateRangeCandidateInvite {
   start_date: dayjs.Dayjs;
   end_date: dayjs.Dayjs | null;
 }
-
-type FilterjsonType = {
-  created_at: string;
-  filter_json: FilterJsonDateRangeCandidateInvite;
-  id: string;
-  schedule_id: string;
-  session_ids: string[];
-};
 
 const getScheduleDetails = async (schedule_id: string, filter_id: string) => {
   const { data: sch, error: errSch } = await supabase

@@ -3,20 +3,20 @@ import { Avatar, Drawer, LinearProgress, Stack } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { LottieComponentProps } from 'lottie-react';
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { NavBottom } from '@/devlink/NavBottom';
 import { CompanyProfileHeader } from '@/devlink2/CompanyProfileHeader';
 import { NavProfileBlock } from '@/devlink2/NavProfileBlock';
 import { ResponsiveBanner } from '@/devlink2/ResponsiveBanner';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import ResizeWindowContext from '@/src/context/ResizeWindow/context';
+import { useResizeWindow } from '@/src/context/ResizeWindow/ResizeWindow';
 import ROUTES from '@/src/utils/routing/routes';
 
 import Icon from '../Common/Icons/Icon';
+import MenuLottie from '../Common/Lotties/MenuLottie';
 import { isEnvProd } from '../JobsDashboard/JobPostCreateUpdate/utils';
 import CompanyList from './CompanyList';
-import MenuLottie from './MenuLottie';
 import SideNavbar from './SideNavbar';
 
 export default function AppLayout({ children }) {
@@ -25,7 +25,7 @@ export default function AppLayout({ children }) {
   const { recruiter, recruiterUser, userDetails } = useAuthDetails();
   const queryClient = useQueryClient();
   const router = useRouter();
-  const { windowSize } = useContext(ResizeWindowContext);
+  const { windowSize } = useResizeWindow();
   const [expand, setExpand] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(false);
   const companyName = recruiter?.name;
@@ -57,7 +57,7 @@ export default function AppLayout({ children }) {
   }, []);
 
   useEffect(() => {
-    if (windowSize.innerWidth < 991) {
+    if (windowSize?.innerWidth < 991) {
       const status = router.query.status;
       if (status) {
         setExpand(false);
@@ -86,12 +86,12 @@ export default function AppLayout({ children }) {
         <Stack
           paddingTop={'12px !important'}
           borderRight={'1px solid'}
-          borderColor={'grey.200'}
+          borderColor='var(--neutral-6)'
           position={'relative'}
           // p={'28px 20px 12px 16px'}
           // pt={'28px'}
           // bgcolor={'#25282A'}
-          width={'70px'}
+          width={'68px'}
           p={'12px 10px'}
         >
           <Stack
@@ -103,7 +103,7 @@ export default function AppLayout({ children }) {
             <Stack
               height={'100%'}
               width={'100%'}
-              spacing={'10px'}
+              spacing={'var(--space-2)'}
               alignItems={'center'}
             >
               {userDetails?.user.user_metadata.role?.toLowerCase() ===
@@ -178,10 +178,10 @@ export default function AppLayout({ children }) {
             <LinearProgress
               sx={{
                 height: '1px',
-                borderRadius: '5px',
+                borderRadius: 'var(--radius-2)',
                 backgroundColor: '#3d1100',
                 '& span': {
-                  backgroundColor: 'orange.500',
+                  backgroundColor:  'var(--accent-4)',
                 },
               }}
             />
@@ -253,10 +253,8 @@ export default function AppLayout({ children }) {
             <Drawer
               sx={{
                 '& .MuiDrawer-paper': {
-                  border: 'none !important',
-                  bgcolor: '#25282a !important',
                   width: '100%',
-                  padding: '0 30px 10px 30px',
+                  padding: '0 var(--space-5) var(--space-2) var(--space-5)',
                 },
                 zIndex: 8,
               }}
@@ -271,7 +269,7 @@ export default function AppLayout({ children }) {
                 justifyContent={'space-between'}
                 pt={'88px'}
               >
-                <Stack spacing={'10px'}>
+                <Stack spacing={'var(--space-2)'}>
                   <SideNavbar />
                 </Stack>
               </Stack>

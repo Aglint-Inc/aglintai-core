@@ -1,0 +1,66 @@
+.recentrechedule_list {
+  position: relative;
+
+  display: flex;
+  padding: var(--space-2) var(--space-4);
+  justify-content: space-between;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.reson_rwap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.avatar_40 {
+  overflow: hidden;
+  width: var(--space-7);
+  height: var(--space-7);
+  flex: 0 0 auto;
+  border-radius: var(--radius-2);
+}
+
+.flex-v4 {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.decline_user_details {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.decline_reason {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
+.slot_for_icon {
+  width: auto;
+  height: auto;
+}
+
+.text-link-accent {
+  transition: opacity 200ms ease;
+  color: var(--accent-11);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-link-accent:hover {
+  opacity: 0.88;
+}

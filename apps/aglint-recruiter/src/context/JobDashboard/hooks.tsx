@@ -1,7 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import { useRouter } from 'next/router';
-import { useMemo } from 'react';
-
 import {
   JobDetailsForm,
   JobHiringTeamForm,
@@ -15,46 +12,32 @@ import {
 } from '@/src/queries/assessment';
 import { Assessment } from '@/src/queries/assessment/types';
 import { useInterviewPlans } from '@/src/queries/interview-plans';
-import { Job } from '@/src/queries/job/types';
 import {
   useJobDashboardRefresh,
-  useJobInterviewPlanEnabled,
   useJobLocations,
   useJobMatches,
   useJobSchedules,
   useJobSkills,
   useJobTenureAndExperience,
 } from '@/src/queries/job-dashboard';
-import { useJobScoringPoll } from '@/src/queries/job-scoring-param';
+import { useJobWorkflow } from '@/src/queries/job-workflow';
+import { Job } from '@/src/queries/jobs/types';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
-import { useAuthDetails } from '../AuthContext/AuthContext';
+import { useJob } from '../JobContext';
 import { useJobs } from '../JobsContext';
 import { useJobDashboardStore } from './store';
 
-const useProviderJobDashboardActions = (job_id: string = undefined) => {
-  const { recruiter } = useAuthDetails();
-  const router = useRouter();
-  const {
-    jobs,
-    initialLoad: jobLoad,
-    handleJobRefresh: jobRefresh,
-  } = useJobs();
-  const initialJobLoad = !!(recruiter?.id && jobLoad);
-  const jobId = job_id ?? (router.query?.id as string);
-  const job = useMemo(
-    () =>
-      initialJobLoad
-        ? jobs.data.find((job) => job.id === jobId) ?? null
-        : undefined,
-    [initialJobLoad, jobs.status, jobs.data, jobId],
-  );
+const useProviderJobDashboardActions = () => {
+  const { handleJobRefresh: jobRefresh } = useJobs();
+  const { jobLoad, job, job_id } = useJob();
+
   const assessments = useAllAssessments();
   const templates = useAllAssessmentTemplates();
   const assessmentData = assessments?.data
     ? assessments.data.reduce(
         (acc, curr) => {
-          if (curr.jobs.find(({ id }) => id === jobId))
+          if (curr.jobs.find(({ id }) => id === job_id))
             acc.jobAssessments.push(curr);
           else if (curr.duration) acc.otherAssessments.push(curr);
           return acc;
@@ -73,9 +56,8 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
   const matches = useJobMatches(job);
   const tenureAndExperience = useJobTenureAndExperience(job);
   const schedules = useJobSchedules(job);
-  const interviewPlanEnabled = useJobInterviewPlanEnabled(job);
   const interviewPlans = useInterviewPlans();
-  const scoringPoll = useJobScoringPoll(job);
+  const workflows = useJobWorkflow({ id: job?.id });
 
   const refreshDashboard = useJobDashboardRefresh();
 
@@ -106,12 +88,6 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
     dismissWarnings,
   }));
 
-  const jobPolling =
-    !!job &&
-    job?.status === 'published' &&
-    (job?.processing_count?.['not started'] !== 0 ||
-      job?.processing_count?.processing !== 0);
-
   const status = job &&
     jobLoad && {
       loading: job.scoring_criteria_loading,
@@ -137,9 +113,8 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
     !matches.isPending &&
     !tenureAndExperience.isPending &&
     !schedules.isPending &&
-    !interviewPlanEnabled.isPending &&
     !interviewPlans.isPending &&
-    !scoringPoll.isPending
+    !workflows.isPending
   );
 
   const handleJobRefresh = async () => {
@@ -162,13 +137,11 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
     job,
     jobLoad,
     loadStatus,
-    jobPolling,
     emailTemplateValidity,
-    interviewPlanEnabled,
+    workflows,
     handleJobRefresh,
     isInterviewPlanDisabled,
     isInterviewSessionEmpty,
-    scoringPoll,
     schedules,
     status,
     publishStatus,
@@ -347,7 +320,7 @@ export const validateEmailTemplates = (
     Object.entries(emailTemplates).reduce((acc, [key, value]) => {
       const label = templateObj[key]?.heading;
       Object.entries(value).forEach(([key, value]) => {
-        if (key !== 'default' && validateString(value))
+        if (key !== 'default' && validateString(String(value)))
           acc.push(`${getHelper(key as any)} in ${label}`);
       });
       return acc;

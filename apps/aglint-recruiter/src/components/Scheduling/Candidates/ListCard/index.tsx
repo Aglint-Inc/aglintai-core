@@ -10,7 +10,7 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import ScheduleProgress from '../../Common/ScheduleProgress';
-import { ApplicationList } from '../store';
+import { ApplicationList } from '../utils';
 
 function ListCardInterviewSchedule({
   app,
@@ -66,7 +66,7 @@ function ListCardInterviewSchedule({
       textName={getFullName(
         app.candidates.first_name,
         app.candidates.last_name,
-      ).toLowerCase()}
+      )}
       slotCandidateImage={
         <Stack
           width={'100%'}
@@ -111,18 +111,18 @@ const SessionProgressPipeline = ({ app }: { app: ApplicationList }) => {
       },
     }) => {
       const response: (typeof sessions)[number] = {
-        duration: session_duration,
-        name,
-        scheduleType: schedule_type,
-        sessionType: session_type,
+        session_duration,
+        session_name: name,
+        schedule_type,
+        session_type,
         status: 'not_scheduled',
         date: null,
       };
       if (interview_meeting) {
         response.status = interview_meeting.status;
         response.date = {
-          startTime: interview_meeting.start_time,
-          endTime: interview_meeting.end_time,
+          start_time: interview_meeting.start_time,
+          end_time: interview_meeting.end_time,
         };
       }
       return response;

@@ -1,3 +1,4 @@
+import { supabaseWrap } from '@aglint/shared-utils';
 import { Autocomplete, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -16,7 +17,6 @@ import ImageUpload from '../../Common/ImageUpload';
 import UIPhoneInput from '../../Common/UIPhoneInput';
 import UITextField from '../../Common/UITextField';
 import { sizes } from '../../CompanyDetailComp/CompanyInfoComp';
-import { supabaseWrap } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 import { stepObj } from '../SlideSignup/utils';
 type phone = {
   countryCode: string;
@@ -298,7 +298,7 @@ export function CompanyDetails() {
             renderOption={(props, option) => {
               return (
                 <li {...props}>
-                  <Typography variant='body2' color={'#000'}>
+                  <Typography variant='body1' color={'var(--neutral-12)'}>
                     {option}
                   </Typography>
                 </li>
@@ -340,7 +340,7 @@ export function CompanyDetails() {
             renderOption={(props, option) => {
               return (
                 <li {...props}>
-                  <Typography variant='body2' color={'#000'}>
+                  <Typography variant='body1' color={'var(--neutral-12)'}>
                     {option}
                   </Typography>
                 </li>

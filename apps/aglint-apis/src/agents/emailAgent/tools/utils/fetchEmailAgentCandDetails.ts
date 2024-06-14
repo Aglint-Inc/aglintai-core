@@ -1,24 +1,13 @@
 import dayjs from 'dayjs';
-import {
-  supabaseWrap,
-  supabaseAdmin,
-} from '../../../../services/supabase/SupabaseAdmin';
+import {supabaseAdmin} from '../../../../services/supabase/SupabaseAdmin';
 
 import {getFullName} from '../../../../utils/getFullName';
 import {EmailAgentPayload} from '../../../../types/email_agent/apiPayload.types';
-import {
-  CandidateType,
-  EmailTemplateFields,
-  InterviewFilterJsonType,
-  InterviewScheduleTypeDB,
-  JobApplcationDB,
-  PublicJobsType,
-  RecruiterType,
-  ScheduleAgentChatHistoryTypeDB,
-} from '@aglint/shared-types';
+import {EmailTemplateFields} from '@aglint/shared-types';
+import {envConfig} from 'src/config';
+import {supabaseWrap} from 'src/utils/scheduling/supabaseWrap';
 
 export const fetchEmailAgentCandDetails = async (
-  cand_email: string,
   thread_id: string,
   cand_email_body: string
 ) => {
@@ -26,35 +15,34 @@ export const fetchEmailAgentCandDetails = async (
     await supabaseAdmin
       .from('scheduling-agent-chat-history')
       .select(
-        '*, interview_filter_json(* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,description,recruiter!public_jobs_recruiter_id_fkey(scheduling_settings,email_template)), candidates(*))))'
+        '*, interview_filter_json(* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,description,recruiter!public_jobs_recruiter_id_fkey(scheduling_settings,email_template)), candidates(id,email,first_name,last_name,timezone))))'
       )
       .eq('thread_id', thread_id)
   );
-
+  const job =
+    cand_rec.interview_filter_json.interview_schedule.applications.public_jobs;
+  const [agent_data] = supabaseWrap(
+    await supabaseAdmin
+      .from('integrations')
+      .select()
+      .eq('recruiter_id', job.recruiter_id)
+  );
   if (!cand_rec) {
     // this email is not from candidate
     // handle this later
     return null;
   }
 
-  const job =
-    cand_rec.interview_filter_json.interview_schedule.applications.public_jobs;
   const candidate =
     cand_rec.interview_filter_json.interview_schedule.applications.candidates;
 
-  const filter_json = cand_rec.interview_filter_json.filter_json as unknown as {
-    end_date: string;
-    start_date: string;
-    session_ids: string[];
-    recruiter_id: string;
-    organizer_name: string;
-  };
+  const filter_json = cand_rec.interview_filter_json.filter_json;
 
   const sessions = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
       .select('*,interview_meeting(*)')
-      .in('id', filter_json.session_ids)
+      .in('id', cand_rec.interview_filter_json.session_ids)
   );
   if (!sessions[0].interview_meeting) {
     throw new Error('No meeting found');
@@ -117,7 +105,9 @@ export const fetchEmailAgentCandDetails = async (
   const agent_payload: EmailAgentPayload = {
     history: cand_rec.chat_history,
     payload: {
-      candidate_email: cand_rec.candidate_email,
+      candidate_email:
+        cand_rec.interview_filter_json.interview_schedule.applications
+          .candidates.email,
       candidate_name: getFullName(candidate.first_name, candidate.last_name),
       company_name: job.company,
       start_date: getUsTime(filter_json.start_date),
@@ -144,40 +134,16 @@ export const fetchEmailAgentCandDetails = async (
       comp_scheduling_setting: job.recruiter.scheduling_settings as any,
       filter_id: cand_rec.interview_filter_json.id,
       email_subject: email_details.subject,
+      agent_email:
+        envConfig.LOCAL_AGENT_EMAIL ?? agent_data.schedule_agent_email,
+    },
+    schedule_chat_history: {
+      from_name: cand_rec.email_from_name,
+      subject: cand_rec.email_subject,
     },
   };
 
   return agent_payload;
-};
-
-type CandidateScheduleDetails = ScheduleAgentChatHistoryTypeDB & {
-  interview_filter_json: InterviewFilterJsonType & {
-    interview_schedule: Pick<
-      InterviewScheduleTypeDB,
-      'id' | 'application_id'
-    > & {
-      applications: Pick<JobApplcationDB, 'id'> & {
-        candidates: Pick<
-          CandidateType,
-          'first_name' | 'last_name' | 'email' | 'id' | 'timezone'
-        >;
-        public_jobs: Pick<
-          PublicJobsType,
-          | 'recruiter_id'
-          | 'company'
-          | 'id'
-          | 'logo'
-          | 'job_title'
-          | 'description'
-        > & {
-          recruiter: Pick<
-            RecruiterType,
-            'scheduling_settings' | 'email_template'
-          >;
-        };
-      };
-    };
-  };
 };
 
 const fillEmailTemplate = (

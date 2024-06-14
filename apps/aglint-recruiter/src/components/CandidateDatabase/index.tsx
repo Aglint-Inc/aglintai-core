@@ -1,4 +1,5 @@
 import { CandidateListTypeDB, SearchHistoryType } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { CircularProgress, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/dist/client/router';
@@ -17,7 +18,6 @@ import { WelcomeMatTalentDirectory } from '@/devlink2/WelcomeMatTalentDirectory'
 import { WelcomeMatTalentRediscovery } from '@/devlink2/WelcomeMatTalentRediscovery';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { getTimeDifference } from '@/src/utils/jsonResume';
 import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
@@ -28,10 +28,7 @@ import { CandidateSearchState } from '../../context/CandidateSearchProvider/Cand
 import Loader from '../Common/Loader';
 import MuiPopup from '../Common/MuiPopup';
 import UITextField from '../Common/UITextField';
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '../JobsDashboard/JobPostCreateUpdate/utils';
+import { API_FAIL_MSG } from '../JobsDashboard/JobPostCreateUpdate/utils';
 import { Candidate } from './AppoloSearch/types';
 import { JDSearchModal } from './JobDescriprionModal/JDSearchModal';
 import EmptyState from './Search/EmptyState';
@@ -378,7 +375,7 @@ function CandidateSearchHistory() {
                         <CircularProgress
                           color='inherit'
                           size={'15px'}
-                          sx={{ color: palette.grey[400] }}
+                          sx={{ color: 'var(--neutral-6)' }}
                         />
                       }
                       isLoading={isQrySearching}
@@ -400,7 +397,7 @@ function CandidateSearchHistory() {
                         <CircularProgress
                           color='inherit'
                           size={'15px'}
-                          sx={{ color: palette.grey[400] }}
+                          sx={{ color: 'var(--neutral-6)' }}
                         />
                       }
                       onclickSearch={{
@@ -606,7 +603,7 @@ function CandidateSearchHistory() {
                                 pt={10}
                               >
                                 <EmptyState />
-                                <Typography variant='body2'>
+                                <Typography variant='body1'>
                                   No search history found.
                                 </Typography>
                               </Stack>
@@ -707,7 +704,7 @@ function CandidateSearchHistory() {
                             <CircularProgress
                               color='inherit'
                               size={'15px'}
-                              sx={{ color: palette.grey[400] }}
+                              sx={{ color: 'var(--neutral-6)' }}
                             />
                           </>
                         )

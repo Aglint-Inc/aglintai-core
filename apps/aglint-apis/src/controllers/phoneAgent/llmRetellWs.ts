@@ -1,6 +1,7 @@
 import {
   getCachedCandidateInfo,
   getCallerFromCache,
+  removeCallerInfoCache,
   removeCandInfoCache,
 } from '../../services/cache/cache-db';
 import {RawData, WebSocket} from 'ws';
@@ -13,9 +14,9 @@ import {appLogger} from '../../services/logger';
 
 export const llmRetellWs = async (ws: WebSocket, req: Request) => {
   const call_id = req.params.call_id;
-  const caller_info = getCallerFromCache(call_id);
+  const caller_info = await getCallerFromCache(call_id);
   const caller_phone = caller_info.To;
-  const cand = getCachedCandidateInfo(caller_phone);
+  const cand = await getCachedCandidateInfo(caller_phone);
   if (!cand) {
     console.error('didnt get cand-info');
     ws.close();
@@ -35,10 +36,11 @@ export const llmRetellWs = async (ws: WebSocket, req: Request) => {
     logger
   );
   schedule_agent.BeginMessage(ws, cand.begin_message);
-  ws.on('error', err => {
+  ws.on('error', async err => {
     logger('Unexpected Error while having conversation.', {});
     schedule_agent.stopAgentDrafting();
-    removeCandInfoCache(cand.req_payload.to_phone_no);
+    await removeCandInfoCache(cand.req_payload.to_phone_no);
+    await removeCallerInfoCache(call_id);
     setTimeout(() => {
       transcript_update(
         call_id,
@@ -51,7 +53,9 @@ export const llmRetellWs = async (ws: WebSocket, req: Request) => {
   });
   ws.on('close', async err => {
     schedule_agent.stopAgentDrafting();
-    removeCandInfoCache(cand.req_payload.to_phone_no);
+    await removeCandInfoCache(cand.req_payload.to_phone_no);
+    await removeCallerInfoCache(call_id);
+
     setTimeout(() => {
       transcript_update(
         call_id,
@@ -86,7 +90,9 @@ export const llmRetellWs = async (ws: WebSocket, req: Request) => {
         request.interaction_type === 'reminder_required' ||
         request.interaction_type === 'response_required'
       ) {
-        const cand_info = getCachedCandidateInfo(cand.req_payload.to_phone_no);
+        const cand_info = await getCachedCandidateInfo(
+          cand.req_payload.to_phone_no
+        );
         if (cand_info.tool_invocations.length === 0) {
           // eslint-disable-next-line no-console
           console.log(

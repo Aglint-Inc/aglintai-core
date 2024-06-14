@@ -15,7 +15,6 @@ import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
 import { SidedrawerBodySession } from '@/devlink2/SidedrawerBodySession';
 import { validateString } from '@/src/context/JobDashboard/hooks';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { CompanyMember } from '@/src/queries/company-members';
 import { CreateInterviewSession } from '@/src/queries/interview-plans';
 import { InterviewSessionType } from '@/src/queries/interview-plans/types';
@@ -574,16 +573,14 @@ const InterviewerPills = ({
     return (
       <SelectedMemberPill
         key={interviewer.user_id}
+        isCloseButton={true}
         onClickRemove={{ onClick: () => onChange(interviewer.user_id) }}
         textMemberName={name}
         slotMemberAvatar={
           <MuiAvatar
             src={interviewer.profile_image}
             level={name}
-            variant='circular'
-            fontSize='10px'
-            height='100%'
-            width='100%'
+            variant='rounded-small'
           />
         }
       />
@@ -739,6 +736,7 @@ const InterviewModePills = ({
 };
 
 export const PanelIcon = () => (
+  // <GlobalIcon iconName='groups' />
   <svg
     width='24'
     height='24'
@@ -754,6 +752,7 @@ export const PanelIcon = () => (
 );
 
 export const IndividualIcon = () => (
+  // <GlobalIcon iconName='person' />
   <svg
     width='24'
     height='24'
@@ -803,7 +802,7 @@ export const DropDown = ({
         <Stack
           position={'absolute'}
           zIndex={1}
-          style={{ color: palette.grey['500'], pointerEvents: 'none' }}
+          style={{ color: 'var(--neutral-11)', pointerEvents: 'none' }}
           ml={2}
         >
           {placeholder}

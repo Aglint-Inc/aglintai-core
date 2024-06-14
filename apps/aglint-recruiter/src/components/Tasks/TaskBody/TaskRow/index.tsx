@@ -34,20 +34,21 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
   let dueDateTime = dayjs(task.due_date);
   const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
-  ))(({ theme }) => ({
+  ))(() => ({
     [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: theme.palette.common.black,
-      color: 'rgba(255, 255, 255, 0.87)',
-      boxShadow: theme.shadows[1],
-      fontSize: 11,
+      backgroundColor: 'var(--neutral-12)',
+      border: '1px solid var(--neutral-6)',
+      color: 'var(--neutral-1)',
+      boxShadow: 'none',
+      fontSize: 'var(--font-size-2)',
     },
   }));
   return (
     <Stack
       sx={{
-        bgcolor: selectedTasksIds.includes(task.id) && 'grey.100',
+        bgcolor: selectedTasksIds.includes(task.id) ? 'var(--neutral-1)' : undefined,
         '&:hover': {
-          bgcolor: 'grey.100',
+          bgcolor: 'var(--neutral-2)',
           '& div:first-child div .checkboxClass': {
             opacity: 1,
           },
@@ -105,13 +106,13 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
         }}
         textTask={
           <LightTooltip
-            enterDelay={1000}
-            enterNextDelay={1000}
+            enterDelay={100}
+            enterNextDelay={100}
             title={
               <>
                 <span
                   style={{
-                    fontSize: '12px',
+                    fontSize: 'var(--font-size-1)',
                   }}
                   dangerouslySetInnerHTML={{
                     __html: task.name || 'Untitled',
@@ -203,7 +204,7 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                 }
               }}
               size='small'
-              color='info'
+              sx={{color:'var(--accent-9)'}}
             />
           </Stack>
         }

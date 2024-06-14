@@ -1,5 +1,4 @@
 import { Stack } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React, { Dispatch } from 'react';
@@ -9,27 +8,30 @@ import { MembersList } from '@/devlink3/MembersList';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { CustomTooltip } from '@/src/components/Common/Tooltip';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { calculateHourDifference } from '../../InterviewTypes/utils';
 import { formatTimeWithTimeZone } from '../../utils';
 import { ScheduleMeeting } from '../types';
+import IconAccept from './IconAccept';
+import IconDecline from './IconDecline';
 
 function InterviewerListCard({
   schedule,
   item,
   setIsDeclineOpen,
+  refetch,
 }: {
   schedule: ScheduleMeeting;
   item: ScheduleMeeting['users'][0];
   setIsDeclineOpen: Dispatch<React.SetStateAction<boolean>>;
+  refetch: () => void;
 }) {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
   const currentDay = dayjs();
-  const queryClient = useQueryClient();
 
   const onClickAccept = async (session_relation_id) => {
     if (schedule.interview_meeting.status === 'confirmed') {
@@ -37,9 +39,7 @@ function InterviewerListCard({
         .from('interview_session_relation')
         .update({ accepted_status: 'accepted' })
         .eq('id', session_relation_id);
-      queryClient.invalidateQueries({
-        queryKey: ['schedule_details', router?.query?.meeting_id],
-      });
+      refetch();
     }
   };
 
@@ -78,16 +78,13 @@ function InterviewerListCard({
         key={item.id + ' member'}
         title={
           <React.Fragment>
-            <Stack bgcolor={'#fff'} borderRadius={'10px'}>
+            <Stack bgcolor={'#fff'} borderRadius={'var(--space-2)'}>
               <MemberDetail
                 slotImage={
                   <MuiAvatar
                     level={fullName}
                     src={item.profile_image}
-                    variant={'circular'}
-                    width={'100%'}
-                    height={'100%'}
-                    fontSize={'14px'}
+                    variant={'circular-medium'}
                   />
                 }
                 textJobTitle={item.department}
@@ -126,10 +123,11 @@ function InterviewerListCard({
               },
             }}
             textDesignation={item.position || '--'}
-            isCorrectVisible={isAccepted}
-            isWrongVisible={isDeclined}
+            slotIcon={
+              isAccepted ? <IconAccept /> : isDeclined ? <IconDecline /> : ''
+            }
             isDetailVisible={true}
-            isDesignationVisible={recruiterUser.user_id !== item.id}
+            isDesignationVisible={true}
             isButtonVisible={false}
             isAcceptDeclineVisibe={recruiterUser.user_id === item.id}
             isAcceptVisible={isAcceptVisible}
@@ -143,9 +141,7 @@ function InterviewerListCard({
               <MuiAvatar
                 level={fullName}
                 src={item.profile_image}
-                variant={'circular'}
-                width={'100%'}
-                height={'100%'}
+                variant={'rounded-medium'}
                 fontSize={'14px'}
               />
             }

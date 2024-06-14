@@ -1,11 +1,10 @@
 import Icon from '@components/Common/Icons/Icon';
-import { palette } from '@context/Theme/Theme';
 import {
   FilledInputProps,
   InputProps,
   OutlinedInputProps,
   Stack,
-  Typography
+  Typography,
 } from '@mui/material';
 import MuiTextField from '@mui/material/TextField';
 import { errorMessages } from '@utils/errorMessages';
@@ -16,6 +15,7 @@ type Props = {
   value?: string | number;
   type?: React.HTMLInputTypeAttribute;
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+
   error?: boolean;
   label?: string;
   labelSize?: 'small' | 'medium' | 'large' | 'xLarge' | 'xxLarge' | 'xxxLarge';
@@ -44,10 +44,10 @@ type Props = {
   height?: number;
   noBorder?: boolean;
   width?: string;
-  borderRadius?: number;
   select?: boolean;
   secondaryText?: string;
   labelBold?: 'default' | 'normal';
+  defaultLabelColor?: string;
 };
 
 // eslint-disable-next-line react/display-name
@@ -60,6 +60,7 @@ const UITextField = React.forwardRef(
       label,
       labelSize = 'small',
       onChange,
+      onFocus,
       onSelect,
       type = 'text',
       placeholder = '',
@@ -76,27 +77,30 @@ const UITextField = React.forwardRef(
       InputProps,
       children,
       defaultValue,
-      borderRadius = 4,
       width,
       select,
       height,
       secondaryText,
-      labelBold = 'default'
+      labelBold = 'default',
+      defaultLabelColor = null,
+      ...props
     }: Props,
-    ref?: React.Ref<HTMLInputElement>
+    ref?: React.Ref<HTMLInputElement>,
   ) => {
     const [contentExceeded, setContentExceeded] = useState(false);
-    let labelColor = palette.grey[800];
+    let labelColor = defaultLabelColor
+      ? defaultLabelColor
+      : 'var(--neutral-12)';
 
     if (disabled) {
-      labelColor = palette.grey[600];
+      labelColor = defaultLabelColor ? defaultLabelColor : 'var(--neutral-11)';
     }
 
     return (
       <Stack
         width={fullWidth ? '100%' : 'inherit'}
         direction={'column'}
-        gap={'5px'}
+        gap={'var(--space-1)'}
       >
         {label && (
           <Stack direction={'row'}>
@@ -108,23 +112,23 @@ const UITextField = React.forwardRef(
               {label}
             </UITypography>
             {required && (
-              <Typography
-                sx={{ fontWeight: 600, color: palette.red[400], pl: 0.5 }}
-              >
-                <sup>*</sup>
+              <Typography sx={{ color: 'var(--error-9)'}}>
+                *
               </Typography>
             )}
           </Stack>
         )}
         {secondaryText && (
-          <Typography variant='body2'>{secondaryText}</Typography>
+          <Typography variant='body1'>{secondaryText}</Typography>
         )}
         <MuiTextField
+          {...props}
           name={name}
           margin='none'
           select={select}
           fullWidth={fullWidth}
           value={value}
+          onFocus={onFocus}
           defaultValue={defaultValue}
           onChange={onChange}
           onKeyDown={onKeyDown}
@@ -139,7 +143,7 @@ const UITextField = React.forwardRef(
           minRows={minRows}
           maxRows={maxRows}
           InputProps={{
-            ...InputProps
+            ...InputProps,
           }}
           onBlur={() => {
             onBlur();
@@ -149,9 +153,8 @@ const UITextField = React.forwardRef(
           sx={{
             '& .MuiOutlinedInput-root': {
               height: height ? `${height}px !important` : '100%',
-              borderRadius: `${borderRadius}px`
             },
-            width: width
+            width: width,
           }}
           {...rest}
         >
@@ -163,8 +166,8 @@ const UITextField = React.forwardRef(
             alignItems={'center'}
             justifyContent={'start'}
           >
-            <Icon height='13px' color={palette.red[400]} variant='AlertIcon' />
-            <UITypography type='small' color={palette.red[400]}>
+            <Icon height='12px' color={'var(--error-9)'} variant='AlertIcon' />
+            <UITypography type='small' color={'var(--error-11)'}>
               {error
                 ? helperText
                 : contentExceeded
@@ -175,7 +178,7 @@ const UITextField = React.forwardRef(
         )}
       </Stack>
     );
-  }
+  },
 );
 
 export default UITextField;

@@ -1,11 +1,15 @@
-import { CustomSchedulingSettings } from "./common.types";
-import { TableType } from "./index.types";
+import type {
+  CustomEmailTemplate,
+  CustomSchedulingSettings,
+} from "./common.types";
+import type { TableType } from "./index.types";
 
 export type CustomRecruiter = TableType<
   "recruiter",
   {
     scheduling_settings: CustomSchedulingSettings;
-    scheduling_reason?: CustomSchedulingReason;
+    scheduling_reason: CustomSchedulingReason;
+    email_template: CustomEmailTemplate;
   }
 >;
 

@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { RecruiterType } from '@aglint/shared-types';
 import PublicIcon from '@mui/icons-material/Public';
-import { Dialog, Stack, TextField } from '@mui/material';
+import { Box, Dialog, Stack, TextField, Typography } from '@mui/material';
 import { Avatar } from '@mui/material';
 import Image from 'next/image';
 import React, { Dispatch, SetStateAction, useState } from 'react';
@@ -9,9 +9,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { AddSocialLink } from '@/devlink/AddSocialLink';
 import { NewSocialLinkPop } from '@/devlink/NewSocialLinkPop';
 import UITextField from '@/src/components/Common/UITextField';
-import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 
 import { debouncedSave } from '../../utils';
 
@@ -256,34 +254,39 @@ const SocialComp = ({ setIsSaving }) => {
   }
 
   return (
-    <Stack gap={'10px'}>
-      <UITypography type={'small'} color={palette.grey[800]} fontBold='default'>
-        Social Links
-      </UITypography>
-      <Stack gap={'20px'}>
+    <Stack gap={'var(--space-2)'}>
+      <Typography color={'var(--neutral-12)'}>
+        Social
+      </Typography>
+      <Stack gap={'var(--space-4)'}>
         {socials?.map((socialName) => {
           return (
             <Stack
               key={socialName}
               direction={'row'}
               alignItems={'start'}
-              gap={2}
+              justifyContent= {'left'}
+              gap={1}
             >
-              <Stack
+              <Box
                 style={{
-                  border: `1px solid ${palette.grey[200]}`,
-                  padding: '9px',
-                  borderRadius: '4px',
+                  border: `1px solid var(--neutral-6)`,
+                  borderRadius: 'var(--radius-2)',
+                  display: 'flex',
+                  height: '36px',
+                  width: '36px',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
                 <Image
                   src={`/images/logo/${socialName}.svg`}
-                  height={20}
-                  width={20}
+                  height={16}
+                  width={16}
                   alt=''
                 />
-              </Stack>
-              <Stack width={'370px'}>
+              </Box>
+              <Stack width={'380px'}>
                 <UITextField
                   labelSize='small'
                   fullWidth
@@ -326,9 +329,9 @@ const SocialComp = ({ setIsSaving }) => {
             >
               <Stack
                 style={{
-                  border: `1px solid ${palette.grey[200]}`,
-                  padding: '9px',
-                  borderRadius: '4px',
+                  border: `1px solid var(--neutral-6)`,
+                  padding: 'var(--space-2)',
+                  borderRadius: 'var(--radius-2)',
                   alignItems: 'start',
                 }}
               >

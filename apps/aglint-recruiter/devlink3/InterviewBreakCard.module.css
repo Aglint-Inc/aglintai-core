@@ -1,100 +1,37 @@
 .break_duration {
   display: flex;
-  padding: 16px;
+  padding: var(--space-4);
   flex-direction: row;
   justify-content: space-between;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
 
-  border: 1px dashed #c2c8cc;
-  border-radius: 10px;
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
 
-  background-color: white;
+  background-color: var(--white);
 }
 
-.intrerview_module_members {
+.intrerview_module_breaks {
   display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
-}
-
-.intrerview_module_members.break {
   flex-direction: row;
   flex-wrap: nowrap;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
 }
 
 .break {
   display: flex;
   align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
-}
-
-.fw-semibold {
-  font-weight: 600;
-}
-
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
-.fw-semibold.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.fw-semibold.relative_2.two-line-clamp.capitalize {
-  text-transform: capitalize;
-}
-
-.fw-semibold.capitalize {
-  text-transform: capitalize;
-}
-
-.text-red-600 {
-  color: #cc3340;
-}
-
-.fw-semibold.text-purple {
-  color: #a81897;
-}
-
-.fw-semibold.text-green {
-  color: #228f67;
-}
-
-.fw-semibold.text-yellow {
-  color: #eac05b;
-}
-
-.fw-semibold.text-orange {
-  color: #ed942d;
-}
-
-.fw-semibold.text-red {
-  color: #d93f4c;
-}
-
-.fw-semibold.plr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .interview_module_duration {
   display: flex;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .embed_flex {
@@ -114,6 +51,11 @@
   margin-top: 2px;
 }
 
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
 .embed_flex.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -123,6 +65,10 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .embed_flex.fixedd {
   width: 23px;
 }
@@ -130,8 +76,17 @@
 .im_action {
   display: flex;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.ibc-icon-wrap {
+  padding: var(--space-1);
+  border-radius: var(--radius-2);
+}
+
+.ibc-icon-wrap:hover {
+  background-color: var(--neutral-3);
 }
 
 .three-dot-wrap {
@@ -153,6 +108,18 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.icons.task-hover {
+  position: absolute;
+  left: 50px;
+  top: -10px;
+  right: auto;
+  bottom: auto;
+}
+
+.icons.pointer {
+  cursor: pointer;
 }
 
 .sloteditoptions {

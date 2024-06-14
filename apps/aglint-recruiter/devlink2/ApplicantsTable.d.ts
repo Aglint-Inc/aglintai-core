@@ -5,10 +5,10 @@ declare function ApplicantsTable(props: {
   as?: React.ElementType;
   onClickSelectAll?: Types.Devlink.RuntimeProps;
   isAllChecked?: Types.Visibility.VisibilityConditions;
-  slotCandidatesList?: Types.Devlink.Slot;
   isScreeningVisible?: Types.Visibility.VisibilityConditions;
   isInterviewVisible?: Types.Visibility.VisibilityConditions;
   isDisqualifiedVisible?: Types.Visibility.VisibilityConditions;
   propsDrag?: Types.Devlink.RuntimeProps;
   isDragVisible?: Types.Visibility.VisibilityConditions;
+  isAssessmentVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

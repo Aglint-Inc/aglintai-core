@@ -1,32 +1,26 @@
 import axios from 'axios';
 import dayjs, {Dayjs} from 'dayjs';
-import {
-  supabaseWrap,
-  supabaseAdmin,
-} from '../../services/supabase/SupabaseAdmin';
+import {supabaseAdmin} from '../../services/supabase/SupabaseAdmin';
 import {
   CandidateInfoType,
   schedule_req_body,
 } from '../../types/app_types/scheduleAgentTypes';
 import {getFullName} from '../getFullName';
 import {
-  CandidateType,
-  InterviewFilterJsonType,
+  APIFindSlotsDateRange,
   InterviewMeetingTypeDb,
-  InterviewScheduleTypeDB,
   InterviewSessionTypeDB,
-  JobApplcationDB,
-  PublicJobsType,
-  RecruiterType,
   SessionsCombType,
   schedulingSettingType,
 } from '@aglint/shared-types';
-import {SINGLE_DAY_TIME} from '@aglint/shared-utils';
 import {envConfig} from '../../config';
+import {SINGLE_DAY_TIME} from '../scheduling/constants';
+import {supabaseWrap} from '../scheduling/supabaseWrap';
 const utc = require('dayjs/plugin/utc');
 const timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
+
 export const fetchCandidateDetails = async (
   req_body: unknown
 ): Promise<CandidateInfoType> => {
@@ -45,15 +39,16 @@ export const fetchCandidateDetails = async (
   }
   const cand_basic_info = cand_rec.interview_schedule.applications.candidates;
   const job = cand_rec.interview_schedule.applications.public_jobs;
-  const filter_json = cand_rec.filter_json as CandidateInfoType['filter_json'];
-
+  const filter_json = cand_rec.filter_json;
+  const company_id =
+    cand_rec.interview_schedule.applications.public_jobs.recruiter_id;
   const promises = [
     (async () => {
       const sessions = supabaseWrap(
         await supabaseAdmin
           .from('interview_session')
           .select('*, interview_meeting(*)')
-          .in('id', filter_json.session_ids)
+          .in('id', cand_rec.session_ids)
       );
       const meetings = sessions.map(r => r.interview_meeting);
       return [sessions, meetings];
@@ -61,11 +56,11 @@ export const fetchCandidateDetails = async (
     (async () => {
       // TODO: need to adjust dates
       const all_slots = await getallSlotsInDateRange({
-        user_tz: 'Asia/colombo', // default time zone
-        session_ids: filter_json.session_ids,
-        date_range_end: filter_json.end_date,
-        date_range_start: filter_json.start_date,
-        recruiter_id: filter_json.recruiter_id,
+        candidate_tz: 'Asia/colombo', // default time zone
+        session_ids: cand_rec.session_ids,
+        start_date_str: filter_json.start_date,
+        end_date_str: filter_json.end_date,
+        recruiter_id: company_id,
       });
       return all_slots;
     })(),
@@ -104,7 +99,12 @@ export const fetchCandidateDetails = async (
     begin_message,
     application_id: cand_rec.interview_schedule.application_id,
     candidate_id: cand_rec.interview_schedule.applications.candidates.id,
-    filter_json: filter_json,
+    filter_json: {
+      end_date: cand_rec.filter_json.end_date,
+      start_date: cand_rec.filter_json.end_date,
+      session_ids: cand_rec.session_ids,
+      recruiter_id: company_id,
+    },
     schedule_id: cand_rec.interview_schedule.id,
     candidate_name: getFullName(
       cand_basic_info.first_name,
@@ -135,43 +135,20 @@ export const fetchCandidateDetails = async (
   return cand_info;
 };
 
-type CandidateScheduleDetails = InterviewFilterJsonType & {
-  interview_schedule: Pick<InterviewScheduleTypeDB, 'id' | 'application_id'> & {
-    applications: Pick<JobApplcationDB, 'id'> & {
-      candidates: Pick<
-        CandidateType,
-        'first_name' | 'last_name' | 'email' | 'id'
-      >;
-      public_jobs: Pick<
-        PublicJobsType,
-        | 'recruiter_id'
-        | 'company'
-        | 'id'
-        | 'logo'
-        | 'job_title'
-        | 'description'
-        | 'overview'
-      > & {
-        recruiter: Pick<RecruiterType, 'scheduling_settings'>;
-      };
-    };
-  };
-};
-
 export const isCurrDayHoliday = (
-  comp_schedule_setting: any,
+  comp_schedule_setting: schedulingSettingType,
   curr_day: Dayjs
 ) => {
   // is curr day holiday
   if (
-    comp_schedule_setting.totalDaysOff.find((holiday: any) =>
+    comp_schedule_setting.totalDaysOff.find(holiday =>
       curr_day.isSame(dayjs(holiday.date, 'DD MMM YYYY'), 'day')
     )
   ) {
     return true;
   }
   const work_day = comp_schedule_setting.workingHours.find(
-    (day: any) => curr_day.format('dddd').toLowerCase() === day.day
+    day => curr_day.format('dddd').toLowerCase() === day.day
   );
   // is day week off
   if (!work_day.isWorkDay) {
@@ -195,14 +172,7 @@ const countInteviewDays = (sessions: InterviewSessionTypeDB[]) => {
   return count;
 };
 
-type api_payload = {
-  session_ids: string[];
-  recruiter_id: string;
-  date_range_start: string;
-  date_range_end: string;
-  user_tz: string;
-};
-const getallSlotsInDateRange = async (payload: api_payload) => {
+const getallSlotsInDateRange = async (payload: APIFindSlotsDateRange) => {
   // console.log(envConfig);
   const {data} = await axios.post(
     `${envConfig.CLIENT_APP_URL}/api/scheduling/v1/find_slots_date_range`,

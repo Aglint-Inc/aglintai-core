@@ -9,8 +9,11 @@ export async function middleware(request: NextRequest) {
       headers: request.headers,
     },
   });
+
   const requestUrl = request.nextUrl.pathname;
-  if (isAllowedPaths(requestUrl) || process.env.NODE_ENV === 'development') {
+  const isRouteApi = requestUrl.startsWith('/api');
+  // is public route
+  if (isAllowedPaths(requestUrl)) {
     return response;
   }
   const supabase = createServerClient(
@@ -52,17 +55,20 @@ export async function middleware(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  // if user is signed in and the current path is / redirect the user to /account
-  if (user && allowedPaths.has(request.nextUrl.pathname)) {
-    return NextResponse.redirect(new URL('/', request.url));
-  }
 
-  // if user is not signed in and the current path is not /login redirect the user to /
-  if (!user && !allowedPaths.has(request.nextUrl.pathname)) {
-    return NextResponse.redirect(new URL('/login', request.url));
+  if (isRouteApi) {
+    if (user) {
+      return response;
+    } else {
+      return NextResponse.json('Not Authenticated', { status: 401 });
+    }
+  } else {
+    if (user) {
+      return response;
+    } else {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
   }
-
-  return response;
 }
 
 export const config = {

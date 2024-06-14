@@ -53,8 +53,8 @@ function ListCardInterviewerModules({
         isTrainingProgressDetailVisible={true}
         slotTrainingProgressDetail={
           <Collapse in={collapseOpen}>
-            <Stack px={'20px'} pb={'20px'}>
-              <Typography variant='body2'>
+            <Stack px={'var(--space-5)'} pb={'var(--space-5)'}>
+              <Typography variant='body1'>
                 {interview_module.description}
               </Typography>
             </Stack>
@@ -204,6 +204,14 @@ function ListCardInterviewerModules({
                   key={index}
                   isStart={index === 0}
                   isStartActive={!!item.meeting}
+                  isMiddle={index > 0 && index < (trainingStatusArray.length-1)}
+                  isMiddleActive={
+                    index > 0 &&
+                    index < trainingStatusArray.length &&
+                    !!item.meeting
+                  }
+                  isShadow={item.text === 'shadow'}
+                  isReverseShadow={item.text === 'reverse shadow'}
                   isEnd={trainingStatusArray.length - 1 === index}
                   isEndActive={
                     trainingStatusArray.length - 1 === index && !!item.meeting
@@ -249,14 +257,7 @@ function ListCardInterviewerModules({
                       )}
                     />
                   }
-                  isMiddle={index > 0 && index < trainingStatusArray.length}
-                  isMiddleActive={
-                    index > 0 &&
-                    index < trainingStatusArray.length &&
-                    !!item.meeting
-                  }
-                  isShadow={item.text === 'shadow'}
-                  isReverseShadow={item.text === 'reverse shadow'}
+                  
                 />
               );
             })}
@@ -265,8 +266,8 @@ function ListCardInterviewerModules({
         isTrainingProgressDetailVisible={true}
         slotTrainingProgressDetail={
           <Collapse in={collapseOpen}>
-            <Stack px={'20px'} pb={'20px'}>
-              <Typography variant='body2'>
+            <Stack px={'var(--space-5)'} pb={'var(--space-5)'}>
+              <Typography variant='body1'>
                 {interview_module.description}
               </Typography>
             </Stack>

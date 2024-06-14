@@ -44,9 +44,9 @@ import { TimelineEmpty } from '@/devlink3/TimelineEmpty';
 import * as AuthContext from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
 
-import ChatMessageLoader from '../../AssistantChat/ChatMessageLoader';
+import ChatMessageLoader from '../../Common/Lotties/ChatMessageLoader';
+import LottieAnimations from '../../Common/Lotties/LottieIcons';
 import MuiAvatar from '../../Common/MuiAvatar';
-import LottieAnimations from '../../lottie/LottieIcons';
 
 export type messageType = {
   sender: string;
@@ -512,7 +512,7 @@ function SchedulerAgent() {
           )
           // <Stack
           //   direction={'row'}
-          //   rowGap={'20px'}
+          //   rowGap={'var(--space-5)'}
           //   flexDirection={'column'}
           //   overflow={'auto'}
           //   height={'calc(100%)'}
@@ -572,7 +572,7 @@ function SchedulerAgent() {
               '& .MuiOutlinedInput-root': {
                 height: 55,
                 fontSize: 15,
-                borderRadius: '10px',
+                borderRadius: 'var(--radius-4)',
               },
             }}
             placeholder='Type a message...'
@@ -650,7 +650,7 @@ function SchedulerAgent() {
   //             slotMessage={
   //               <Stack
   //                 direction={'row'}
-  //                 rowGap={'20px'}
+  //                 rowGap={'var(--space-5)'}
   //                 flexDirection={'column'}
   //                 overflow={'auto'}
   //                 height={'calc(100%)'}
@@ -711,7 +711,7 @@ function SchedulerAgent() {
   //         }
   //         isFilterVisible={true}
   //         slotTask={
-  //           <Stack direction={'row'} flexDirection={'column'} gap={'10px'}>
+  //           <Stack direction={'row'} flexDirection={'column'} gap={'var(--space-2)'}>
   //             <AssistantTaskEmpty />
   //           </Stack>
   //         }

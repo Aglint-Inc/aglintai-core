@@ -11,13 +11,12 @@ import { ConnectMailModal } from '@/devlink/ConnectMailModal';
 import { EmailSuccessCard } from '@/devlink/EmailSuccessCard';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { MailLink } from '@/devlink/MailLink';
-import EmailGenerating from '@/src/components/Common/Lotties/EmailGenerating';
+import EmailGenerating from '@/public/lottie/EmailGenerating';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UISelect from '@/src/components/Common/Uiselect';
 import UITextField from '@/src/components/Common/UITextField';
 import { API_FAIL_MSG } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { palette } from '@/src/context/Theme/Theme';
 import { getTimeDifference } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
@@ -68,7 +67,9 @@ const EmailOutReach = ({
     try {
       if (!candEmailData) return;
       if (email && !email.toEmail && !email.subject && !email.body) {
-        toast.error('Please enter a valid email address, subject, and message body.');
+        toast.error(
+          'Please enter a valid email address, subject, and message body.',
+        );
         return;
       }
       dispatch({
@@ -178,7 +179,7 @@ const EmailOutReach = ({
               <CircularProgress
                 color='inherit'
                 size={'15px'}
-                sx={{ color: palette.grey[400] }}
+                sx={{ color: 'var(--neutral-6)' }}
               />
             ) : (
               <>
@@ -225,8 +226,8 @@ const EmailOutReach = ({
             ) : (
               <div
                 style={{
-                  border: `1px solid ${palette.grey[300]}`,
-                  borderRadius: '4px',
+                  border: `1px solid var(--neutral-6)`,
+                  borderRadius: 'var(--radius-2)',
                 }}
               >
                 <TipTapAIEditor

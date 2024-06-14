@@ -4,15 +4,14 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { FilterCandidateState, setPagination } from '../filter-store';
-import { ApplicationList } from '../store';
+import { ApplicationList } from '../utils';
 import { getPaginationDB } from './utils';
 
 export const useAllInterviewSchedules = ({ page, filter, rec_id }) => {
   const query = useQuery({
-    queryKey: ['schedules', { page }, { filter }],
-    queryFn: () => fetchInterviewData({ page: page, filter, rec_id }),
+    queryKey: ['all_candidates_schedules', { page }, { filter }],
+    queryFn: () => fetchInterviewData({ page, filter, rec_id }),
     placeholderData: keepPreviousData,
-    initialData: [],
     refetchOnWindowFocus: false,
   });
   return query;

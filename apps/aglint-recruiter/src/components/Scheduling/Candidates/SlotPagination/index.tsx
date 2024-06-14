@@ -3,7 +3,7 @@ import { Stack } from '@mui/material';
 import { CandidatesListPagination } from '@/devlink2/CandidatesListPagination';
 
 import { setPagination, useFilterCandidateStore } from '../filter-store';
-import { ApplicationList } from '../store';
+import { ApplicationList } from '../utils';
 
 interface SlotPaginationProps {
   isPending: boolean;
@@ -32,31 +32,33 @@ function SlotPagination({
             zIndex: 3,
           }}
         >
-          <CandidatesListPagination
-            totalCandidatesCount={pagination.total}
-            currentCandidatesCount={
-              isFetching && applicationList.length == 0
-                ? '--'
-                : applicationList.length
-            }
-            totalPageCount={Math.ceil(pagination.total / ITEM_PAGE_LIMIT)}
-            onclickNext={{
-              onClick: () => {
-                if (
-                  pagination.page <
-                  Math.ceil(pagination.total / ITEM_PAGE_LIMIT)
-                )
-                  setPagination({ page: pagination.page + 1 });
-              },
-            }}
-            onclickPrevious={{
-              onClick: () => {
-                if (pagination.page > 1)
-                  setPagination({ page: pagination.page - 1 });
-              },
-            }}
-            slotPageNumber={pagination.page}
-          />
+          {pagination.total > 0 && (
+            <CandidatesListPagination
+              totalCandidatesCount={pagination.total}
+              currentCandidatesCount={
+                isFetching && applicationList.length == 0
+                  ? '--'
+                  : applicationList.length
+              }
+              totalPageCount={Math.ceil(pagination.total / ITEM_PAGE_LIMIT)}
+              onclickNext={{
+                onClick: () => {
+                  if (
+                    pagination.page <
+                    Math.ceil(pagination.total / ITEM_PAGE_LIMIT)
+                  )
+                    setPagination({ page: pagination.page + 1 });
+                },
+              }}
+              onclickPrevious={{
+                onClick: () => {
+                  if (pagination.page > 1)
+                    setPagination({ page: pagination.page - 1 });
+                },
+              }}
+              slotPageNumber={pagination.page}
+            />
+          )}
         </Stack>
       )}
     </>

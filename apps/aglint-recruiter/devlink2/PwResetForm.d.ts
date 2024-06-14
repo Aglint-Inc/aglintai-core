@@ -8,4 +8,5 @@ declare function PwResetForm(props: {
   onclickReset?: Types.Devlink.RuntimeProps;
   onclickBack?: Types.Devlink.RuntimeProps;
   isDisable?: Types.Visibility.VisibilityConditions;
+  logo?: Types.Asset.Image;
 }): React.JSX.Element;

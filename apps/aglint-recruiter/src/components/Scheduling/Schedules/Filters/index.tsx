@@ -2,10 +2,10 @@ import { InputAdornment, Popover, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { MouseEvent, useEffect, useState } from 'react';
 
-import { AddFilter } from '@/devlink2/AddFilter';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { FilterList } from '@/devlink2/FilterList';
 import { FilterPill } from '@/devlink2/FilterPill';
-import Icon from '@/src/components/Common/Icons/Icon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import UITextField from '@/src/components/Common/UITextField';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
@@ -14,6 +14,7 @@ import { useScheduleStatesContext } from '../ScheduleStatesContext';
 import { FilterOptionsType } from '../types';
 import { filterOptions, getListItems } from '../utils';
 import FilterChip from './FilterChip';
+import IconPlusFilter from './FilterChip/IconPlusFilter';
 
 function Filters() {
   const {
@@ -173,14 +174,14 @@ function Filters() {
   ]);
 
   return (
-    <Stack direction={'row'} spacing={'10px'}>
+    <Stack direction={'row'} spacing={'var(--space-3)'}>
       <UITextField
-        width='400px'
-        // value={'changeText'}
+        height={32}
+        width='250px'
         InputProps={{
           endAdornment: (
             <InputAdornment position='end'>
-              <Icon variant='JobSearch' height='14' />
+              <GlobalIcon iconName='search' size='5'/>
             </InputAdornment>
           ),
         }}
@@ -202,8 +203,6 @@ function Filters() {
             setFilterSchedule(allSchedules);
           }
         }}
-        borderRadius={10}
-        height={42}
       />
       {selectedFilters.map((filterType, i) => {
         let itemList: { label: string; id: string }[] =
@@ -242,10 +241,15 @@ function Filters() {
       })}
 
       <ShowCode.When isTrue={selectedFilters.length !== filterOptions.length}>
-        <AddFilter
-          onClickAddFilter={{
+        <ButtonSoft
+          size={'2'}
+          isLeftIcon={true}
+          isRightIcon={false}
+          onClickButton={{
             onClick: handleClick,
           }}
+          textButton={'Add Filter'}
+          slotIcon={<IconPlusFilter />}
         />
       </ShowCode.When>
       <Popover
@@ -277,7 +281,7 @@ function Filters() {
               return (
                 <Stack
                   direction={'row'}
-                  spacing={'10px'}
+                  spacing={'var(--space-2)'}
                   alignItems={'center'}
                   key={i}
                 >

@@ -1,58 +1,41 @@
-.div-block-972 {
+.jdi-wrap {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
-.div-block-973 {
+.jdi-slot {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
-.div-block-975 {
+.jdi-btn-wrap {
   display: flex;
   justify-content: flex-start;
   align-items: center;
 }
 
-.div-block-974 {
+.jdi-btn {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
-}
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 
-.cursor-pointer {
-  transition: opacity 200ms ease;
+  transition: all 200ms ease;
+
+  color: var(--sky-11);
+
   cursor: pointer;
 }
 
-.cursor-pointer:hover {
-  opacity: 0.7;
-}
-
-.text-blue-500 {
-  color: var(--blue500-72579298);
-}
-
-.text-underline {
-  transition: all 250ms ease;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.text-underline:hover {
-  opacity: 0.7;
-}
-
-.fw-semibold {
-  font-weight: 600;
+.jdi-btn:hover {
+  color: var(--sky-12);
 }
 
 .icons {
@@ -62,16 +45,13 @@
   align-items: center;
 }
 
-.icons.cursor-pointer.width-28 {
-  width: 28px;
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
 }
 
-.icons.cursor-pointer.height-28 {
-  height: 28px;
-}
-
-.icons.cursor-pointer.p-4 {
-  padding: 4px;
+.cursor-pointer:hover {
+  opacity: 0.7;
 }
 
 .icons.cursor-pointer.three-dot {
@@ -91,10 +71,6 @@
 
 .icons.rotate-180 {
   transform: rotate(180deg);
-}
-
-.icons.pause {
-  display: none;
 }
 
 .icons.avatar-play {
@@ -130,10 +106,6 @@
   color: var(--white-80449ce7);
 }
 
-.relative {
-  position: relative;
-}
-
 .icons.hide {
   display: none;
 }
@@ -149,8 +121,8 @@
   }
 }
 
-.icons.mb-63 {
-  margin-bottom: 63px;
+.icons.mb-9 {
+  margin-bottom: var(--space-9);
 }
 
 .mt-4 {
@@ -161,12 +133,12 @@
   margin-top: 3px;
 }
 
-.icons.mr--10 {
-  margin-right: -8px;
-}
-
 .icons.mt-2 {
   margin-top: 2px;
+}
+
+.mt-2 {
+  margin-top: var(--space-2);
 }
 
 .icons.bookmarked {
@@ -180,4 +152,13 @@
 .icons.start {
   justify-content: center;
   align-items: flex-start;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
 }

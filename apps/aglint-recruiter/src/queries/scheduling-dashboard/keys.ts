@@ -50,4 +50,42 @@ export const schedulingDashboardQueryKeys = {
       'interview_training_status',
     ] as string[],
   }),
+  sessionsAnalyticsData: (args: { recruiter_id: string }) => ({
+    queryKey: [
+      ...schedulingDashboardQueryKeys.all.queryKey,
+      ...argsToKeys(args),
+      'sessions_analytics_data',
+    ] as string[],
+  }),
+  CancelRescheduleReasons: (args: { recruiter_id: string }) => ({
+    queryKey: [
+      ...schedulingDashboardQueryKeys.all.queryKey,
+      ...argsToKeys(args),
+      'cancel_reschedule_reasons',
+    ] as string[],
+  }),
+  CancelRescheduleReasonsUser: (args: { recruiter_id: string }) => ({
+    queryKey: [
+      ...schedulingDashboardQueryKeys.all.queryKey,
+      ...argsToKeys(args),
+      'cancel_reschedule_reasons_user',
+    ] as string[],
+  }),
+  CompletedInterviewDetails: (args: { type: string }) => ({
+    queryKey: [
+      ...schedulingDashboardQueryKeys.all.queryKey,
+      ...argsToKeys(args),
+      'CompletedInterviewDetails',
+    ] as string[],
+  }),
+  InterviewersListAnalyticCards: (args: {
+    recruiter_id: string;
+    type: string;
+  }) => ({
+    queryKey: [
+      ...schedulingDashboardQueryKeys.all.queryKey,
+      ...argsToKeys(args),
+      'InterviewersListAnalyticCards',
+    ] as string[],
+  }),
 } as const;

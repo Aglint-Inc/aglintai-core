@@ -37,21 +37,22 @@ function GroupTaskCard({
 
   const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
-  ))(({ theme }) => ({
+  ))(() => ({
     [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: theme.palette.common.black,
-      color: 'rgba(255, 255, 255, 0.87)',
-      boxShadow: theme.shadows[1],
-      fontSize: 11,
+      backgroundColor: 'var(--neutral-12)',
+      border: '1px solid var(--neutral-6)',
+      color: 'var(--neutral-1)',
+      boxShadow: 'none',
+      fontSize: 'var(--font-size-2)',
     },
   }));
 
   return (
     <Stack
       sx={{
-        bgcolor: 'white',
+        bgcolor: 'var(--white)',
         '&:hover': {
-          bgcolor: 'grey.100',
+          bgcolor: 'var(--neutral-2)',
           '& div:first-child div .checkboxClass': {
             opacity: 1,
           },
@@ -146,8 +147,8 @@ function GroupTaskCard({
         }
         textTask={
           <LightTooltip
-            enterDelay={1000}
-            enterNextDelay={1000}
+            enterDelay={100}
+            enterNextDelay={100}
             title={
               <>
                 <span

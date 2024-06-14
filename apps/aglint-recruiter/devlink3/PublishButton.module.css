@@ -1,0 +1,131 @@
+.publish_button_block {
+  position: relative;
+}
+
+.button_primary-copy {
+  display: flex;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-radius: 6px;
+
+  background-color: #1f73b7;
+
+  transition: all 200ms ease-in-out;
+
+  color: white;
+}
+
+.button_primary-copy:hover {
+  background-color: #144a75;
+}
+
+.button_primary-copy.ispublishbutton-copy {
+  position: relative;
+  z-index: 1;
+
+  overflow: hidden;
+  width: 110px;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
+
+  background-color: transparent;
+
+  pointer-events: none;
+}
+
+.button_primary-copy.error {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 1;
+
+  overflow: hidden;
+  width: 110px;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
+
+  background-color: transparent;
+
+  pointer-events: none;
+}
+
+.publish_block {
+  position: relative;
+  left: 7%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 3;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+}
+
+.publish_block.rtbgt {
+  left: -10%;
+}
+
+.publishsequence {
+  position: absolute;
+  left: 13.5px;
+  z-index: 3;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.rocketicon {
+  display: flex;
+  align-items: center;
+}
+
+.loading_lottie {
+  width: 21px;
+  height: 23px;
+  background-color: hsla(0, 88.28%, 49.22%, 1.00);
+}
+
+.bg_color {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 2;
+
+  background-color: #1f73b7;
+}
+
+.fake_button {
+  position: absolute;
+  z-index: -10;
+  width: 0px;
+  height: 0px;
+}
+
+.bg_color-copy {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 2;
+
+  background-color: #1f73b7;
+}

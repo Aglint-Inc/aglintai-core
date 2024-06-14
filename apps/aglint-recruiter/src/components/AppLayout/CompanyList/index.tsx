@@ -1,4 +1,5 @@
 import { RecruiterType } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { Avatar, Popover, Stack } from '@mui/material';
 // import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -13,10 +14,7 @@ import { companyType } from '@/src/utils/userRoles';
 
 import Icon from '../../Common/Icons/Icon';
 import SidePanelDrawer from '../../Common/SidePanelDrawer';
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 import AddNewCompany from './AddNewCompany';
 
 type CompanyTYpe = {
@@ -149,8 +147,6 @@ function CompanyList() {
           vertical: 'bottom',
         }}
         sx={{
-          mt: 0.5,
-          ml: -1,
           '& .MuiPaper-root': {
             border: 'none !important',
             overflow: 'visible !important',
@@ -166,17 +162,19 @@ function CompanyList() {
                     direction={'row'}
                     alignItems={'center'}
                     justifyContent={'space-between'}
-                    px={'5px'}
-                    borderRadius={'10px'}
+                    px={'var(--space-1)'}
+                    borderRadius={'var(--radius-4)'}
                     key={i}
-                    bgcolor={ele.recName === recruiter?.name && 'grey.100'}
+                    bgcolor={
+                      ele.recName === recruiter?.name && 'var(--neutral-1)'
+                    }
                     onClick={() => {
                       updateStatus(ele.recId);
                     }}
                     sx={{
                       cursor: 'pointer',
                       // '&:hover': {
-                      //   bgcolor: 'grey.100',
+                      //   bgcolor:  'var(--neutral-1)',
                       // },
                     }}
                   >
@@ -209,7 +207,7 @@ function CompanyList() {
                             width: '24px',
                             height: '24px',
                           },
-                          px: '10px',
+                          px: '12px',
                         }}
                       >
                         <LoaderSvg />

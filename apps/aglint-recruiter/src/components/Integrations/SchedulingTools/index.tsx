@@ -1,23 +1,22 @@
 import { RecruiterType } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { capitalize } from 'lodash';
 import { useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
-import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+import { ButtonSoft } from '@/devlink2/ButtonSoft';
+import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { IntegrationCard } from '@/devlink2/IntegrationCard';
 import { IntegrationUpload } from '@/devlink2/IntegrationUpload';
 import { ToggleButton } from '@/devlink2/ToggleButton';
-import { ButtonGrey } from '@/devlink3/ButtonGrey';
-import { ButtonPrimaryOutlinedRegular } from '@/devlink3/ButtonPrimaryOutlinedRegular';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';
-import { supabaseWrap } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 import SchedulingPopUps from '../SchedulingToolPopUps';
 import { SchedulingReasonTypes, schedulingToolsType } from '../types';
 import { GooglLogo, updateRecruiter, ZoomLogo } from '../utils';
@@ -294,8 +293,8 @@ function Scheduling() {
                 reason === 'update_google_workspace'
               }
             >
-              <Stack direction={'column'} spacing={'5px'}>
-                <Typography mb={0.5} variant='body2'>
+              <Stack direction={'column'} spacing={'var(--space-1)'}>
+                <Typography mb={0.5} variant='body1'>
                   Domain Name
                 </Typography>
 
@@ -311,7 +310,7 @@ function Scheduling() {
                 <ShowCode>
                   <ShowCode.When isTrue={fileData}>
                     <>
-                      <Typography mb={0.5} variant='body2'>
+                      <Typography mb={0.5} variant='body1'>
                         Service Key
                       </Typography>
                       <TextField fullWidth disabled value={fileData} />
@@ -364,7 +363,7 @@ function Scheduling() {
                 direction={'row'}
                 spacing={2}
               >
-                <Typography variant='body2'>Show keys</Typography>
+                <Typography variant='body1'>Show keys</Typography>
                 <ToggleButton
                   onclickToggle={{
                     onClick: () => {
@@ -376,19 +375,19 @@ function Scheduling() {
                 />
               </Stack>
               <Stack direction={'column'} spacing={1}>
-                <Typography variant='body2'>Account Id</Typography>
+                <Typography variant='body1'>Account Id</Typography>
                 <TextField
                   type={hideApiKey ? 'password' : 'text'}
                   fullWidth
                   inputRef={accountIdRef}
                 />
-                <Typography variant='body2'>Client Id</Typography>
+                <Typography variant='body1'>Client Id</Typography>
                 <TextField
                   type={hideApiKey ? 'password' : 'text'}
                   fullWidth
                   inputRef={clientIdRef}
                 />
-                <Typography variant='body2'>Client Secrete</Typography>
+                <Typography variant='body1'>Client Secrete</Typography>
                 <TextField
                   type={hideApiKey ? 'password' : 'text'}
                   fullWidth
@@ -419,27 +418,37 @@ function CardButtons({
 }) {
   return (
     <>
-      <ButtonGrey
+      <ButtonSoft
+        size='2'
+        isLeftIcon={false}
+        isRightIcon={false}
+        color={'neutral'}
         onClickButton={{
           onClick: secondaryAction,
         }}
-        textLabel={secondaryText}
+        textButton={secondaryText}
       />
       {primaryText === 'Edit' ||
       primaryText === 'Re-Connect' ||
       primaryText === 'Re-Upload' ? (
-        <ButtonPrimaryOutlinedRegular
-          buttonProps={{
-            onClick: primaryAction,
-          }}
-          buttonText={primaryText}
-        />
-      ) : (
-        <ButtonPrimaryRegular
+        <ButtonSoft
+          size='2'
+          isLeftIcon={false}
+          isRightIcon={false}
           onClickButton={{
             onClick: primaryAction,
           }}
-          textLabel={primaryText}
+          textButton={primaryText}
+        />
+      ) : (
+        <ButtonSolid
+          size='2'
+          isLeftIcon={false}
+          isRightIcon={false}
+          onClickButton={{
+            onClick: primaryAction,
+          }}
+          textButton={primaryText}
         />
       )}
     </>

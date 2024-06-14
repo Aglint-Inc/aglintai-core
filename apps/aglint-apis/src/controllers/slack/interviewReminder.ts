@@ -1,7 +1,9 @@
 import dayjs from 'dayjs';
 import {Request, Response} from 'express';
+import {envConfig} from 'src/config';
 import {slackWeb} from 'src/services/slack/slackWeb';
-import {supabaseAdmin, supabaseWrap} from 'src/services/supabase/SupabaseAdmin';
+import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
+import {supabaseWrap} from 'src/utils/scheduling/supabaseWrap';
 
 export async function interviewReminder(req: Request, res: Response) {
   const {session_id} = req.body;
@@ -17,6 +19,10 @@ export async function interviewReminder(req: Request, res: Response) {
         .select()
         .eq('session_id', session_id)
     );
+
+    if (!data) {
+      throw new Error('failed to fetch a meeting details');
+    }
 
     const {
       id: meeting_id,
@@ -36,13 +42,20 @@ export async function interviewReminder(req: Request, res: Response) {
         .select('applications(public_jobs(job_title), candidates(*))')
         .eq('id', interview_schedule_id)
     );
+    if (!can_app) {
+      throw new Error('failed to fetch a candidate and application details');
+    }
 
-    // const interviewer_emails = supabaseWrap(
-    //   await supabaseAdmin
-    //     .from('meeting_interviewers')
-    //     .select('email')
-    //     .eq('session_id', session_id)
-    // );
+    const interviewer_emails = supabaseWrap(
+      await supabaseAdmin
+        .from('meeting_interviewers')
+        .select('email')
+        .eq('session_id', session_id)
+    );
+
+    if (!interviewer_emails) {
+      throw new Error('failed to fetch a interviewers detail');
+    }
 
     const [organizer_email] = supabaseWrap(
       await supabaseAdmin
@@ -50,11 +63,9 @@ export async function interviewReminder(req: Request, res: Response) {
         .select('email')
         .eq('user_id', organizer_id)
     );
-    // Unique emails
-    const interviewer_emails = [
-      {email: 'chandra@aglinthq.com'},
-      // {email: 'dileep@aglinthq.com'},
-    ];
+    if (!organizer_email) {
+      throw new Error('failed to fetch a recruiter detail');
+    }
     const emails = [
       ...new Set([organizer_email, ...interviewer_emails].map(e => e.email)),
     ];
@@ -83,14 +94,14 @@ export async function interviewReminder(req: Request, res: Response) {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `* ${session_name} sheduled with candidate :*\n*<https://dev.aglinthq.com/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details|${candidate_name} - ${job_title}>*`,
+              text: `* ${session_name} sheduled with candidate :*\n*<${envConfig.CLIENT_APP_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details|${candidate_name} - ${job_title}>*`,
             },
           },
           {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `*Meeting Place :* ${schedule_type}\n*Meeting Time :* ${dayjs(start_time).format('MMMM DD hh:mm A')} - ${dayjs(end_time).format('hh:mm A')} IST\n *Duration :* ${session_duration} Minutes\n`,
+              text: `*Meeting Place :* ${meetingPlatform(schedule_type)}\n*Meeting Time :* ${dayjs(start_time).format('MMMM DD hh:mm A')} - ${dayjs(end_time).format('hh:mm A')} IST\n *Duration :* ${session_duration} Minutes\n`,
             },
             accessory: {
               type: 'image',
@@ -108,6 +119,13 @@ export async function interviewReminder(req: Request, res: Response) {
     res.status(500).json({error: 'Failed to start group discussion'});
   }
 }
+
+const meetingPlatform = (schedule_type: string) => {
+  if (schedule_type === 'google_meet') return 'Google Meet';
+  else if (schedule_type === 'in_person_meeting') return 'In Person Meeting';
+  else if (schedule_type === 'phone_call') return 'Phone Call';
+  else if (schedule_type === 'zoom') return 'Zoom';
+};
 
 // {
 //   "session_id":"d232ef5b-0002-4813-82f7-b8246bb696f7",

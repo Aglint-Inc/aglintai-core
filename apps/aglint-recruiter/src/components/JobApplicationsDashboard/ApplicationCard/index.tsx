@@ -6,6 +6,7 @@ import { useDrag, useDragLayer, XYCoord } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { CandidateSkillPills } from '@/devlink/CandidateSkillPills';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 // import { // AllCandidateListItem } from '@/devlink2/// AllCandidateListItem';
 import { AnalysisBlock } from '@/devlink2/AnalysisBlock';
 import { AnalysisPill } from '@/devlink2/AnalysisPill';
@@ -35,7 +36,6 @@ import { CountJobs } from '@/src/context/JobsContext/types';
 import ListCardInterviewSchedule from '../../Scheduling/Candidates/ListCard';
 import CandidateAvatar from '../Common/CandidateAvatar';
 import InterviewScore from '../Common/InterviewScore';
-import ResumeScore from '../Common/ResumeScore';
 import {
   analysisRatings,
   capitalize,
@@ -67,7 +67,6 @@ const ApplicationCard = ({
   isSelected: boolean;
 }) => {
   const {
-    job,
     cardStates: {
       checkList: { list },
     },
@@ -78,9 +77,9 @@ const ApplicationCard = ({
   const handleCheck = () => {
     handleSelect(index);
   };
-  const profile = <CandidateAvatar application={application} fontSize={12} />;
-  const resumeScore =
-    job.status === 'draft' ? '---' : <ResumeScore application={application} />;
+  const profile = <CandidateAvatar application={application} />;
+  // const resumeScore =
+  //   job.status === 'draft' ? '---' : <ResumeScore application={application} />;
   const interviewScore = <InterviewScore application={application} />;
   const isChecked = list.has(application.id);
   const overview =
@@ -117,7 +116,7 @@ const ApplicationCard = ({
           />
         }
         isChecked={isChecked}
-        slotResumeScore={<ResumeScore application={application} />}
+        // slotResumeScore={<ResumeScore application={application} />}
       />
     ) : (
       <CandidateListItem
@@ -130,7 +129,7 @@ const ApplicationCard = ({
         name={name.value}
         jobTitle={jobTitle.value}
         location={location.value}
-        slotResumeScore={resumeScore}
+        // slotResumeScore={resumeScore}
         isInterviewVisible={views.assessment}
         slotAssessmentScore={interviewScore}
         appliedDate={creationDate}
@@ -161,7 +160,7 @@ const ApplicationCard = ({
       isHighlighted={isSelected}
       slotScores={
         <>
-          {resumeScore}
+          {/* {resumeScore} */}
           {/* {interviewScore} */}
         </>
       }
@@ -454,7 +453,7 @@ const getBadge = (key: string, count: number, pills: any) => {
     case 'jobStability':
       return count >= 90 ? <InsightTagReliable /> : null;
     case 'jobHopping':
-      return count >= 0 ? <JobHopper /> : null;
+      return count >= 10 ? <JobHopper /> : null;
     case 'careerGrowth':
       return count >= 90 ? <InsightTagAmbitious /> : null;
   }
@@ -615,23 +614,25 @@ const Banners = ({ application }: { application: JobApplication }) => {
 
 const BookmarkIcon = () => {
   return (
-    <svg
-      width='16'
-      height='16'
-      viewBox='0 0 16 16'
-      fill='none'
-      xmlns='http://www.w3.org/2000/svg'
-    >
-      <path
-        d='M4.30098 3.25C4.31556 2.95833 4.41764 2.71042 4.60723 2.50625C4.81139 2.31667 5.05931 2.21458 5.35098 2.2H11.651C11.9426 2.21458 12.1906 2.31667 12.3947 2.50625C12.5843 2.71042 12.6864 2.95833 12.701 3.25V12.875C12.6718 13.1958 12.4968 13.3708 12.176 13.4C12.0593 13.4 11.9572 13.3708 11.8697 13.3125L8.50098 10.95L5.13223 13.3125C5.04473 13.3708 4.94264 13.4 4.82598 13.4C4.50514 13.3708 4.33014 13.1958 4.30098 12.875V3.25Z'
-        fill='#F79A3E'
-      />
-    </svg>
+    <GlobalIcon iconName='bookmark' />
+    // <svg
+    //   width='16'
+    //   height='16'
+    //   viewBox='0 0 16 16'
+    //   fill='none'
+    //   xmlns='http://www.w3.org/2000/svg'
+    // >
+    //   <path
+    //     d='M4.30098 3.25C4.31556 2.95833 4.41764 2.71042 4.60723 2.50625C4.81139 2.31667 5.05931 2.21458 5.35098 2.2H11.651C11.9426 2.21458 12.1906 2.31667 12.3947 2.50625C12.5843 2.71042 12.6864 2.95833 12.701 3.25V12.875C12.6718 13.1958 12.4968 13.3708 12.176 13.4C12.0593 13.4 11.9572 13.3708 11.8697 13.3125L8.50098 10.95L5.13223 13.3125C5.04473 13.3708 4.94264 13.4 4.82598 13.4C4.50514 13.3708 4.33014 13.1958 4.30098 12.875V3.25Z'
+    //     fill='#F79A3E'
+    //   />
+    // </svg>
   );
 };
 
 const NewIcon = () => {
   return (
+    // <GlobalIcon iconName='bookmark' />
     <svg
       width='33'
       height='18'

@@ -1,8 +1,8 @@
 .jobs-wrap {
-  display: flex;
   align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+  cursor: pointer;
 }
 
 .cursor-pointer {
@@ -26,6 +26,14 @@
   align-items: center;
 }
 
+.icons.cursor-pointer.no-trans {
+  transition-property: none;
+}
+
+.icons.cursor-pointer.no-transition {
+  transition-property: none;
+}
+
 .icons.ml-4 {
   margin-left: 4px;
 }
@@ -40,6 +48,31 @@
   z-index: 1;
 }
 
-.icons.ml--6 {
-  margin-left: -6px;
+.icons.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
+.icons.pointer {
+  cursor: pointer;
+}
+
+.icons.closediv {
+  position: absolute;
+  left: auto;
+  top: -7px;
+  right: -7px;
+  bottom: auto;
+
+  cursor: pointer;
 }

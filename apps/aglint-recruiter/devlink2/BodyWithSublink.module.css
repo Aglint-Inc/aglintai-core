@@ -6,7 +6,7 @@
   grid-row-gap: 0px;
   grid-template-columns: 216px 1fr;
   grid-template-rows: auto;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 48px);
 }
 
 .slot_sidemenu_tabs {
@@ -16,7 +16,7 @@
   grid-column-gap: 4px;
   grid-row-gap: 4px;
 
-  border-right: 1px solid #e9ebed;
+  border-right: 1px solid var(--neutral-6);
 }
 
 .slot_tabcontent {
@@ -26,7 +26,10 @@
   justify-content: flex-start;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
-  height: calc(100vh - 60px);
+
+  background-color: var(--sand-2);
+
+  height: calc(100vh - 48px);
 }
 
 #w-node-c3ee8b68-e4f4-2b0d-c4c8-e3cf4daf9a46-4daf9a45 {

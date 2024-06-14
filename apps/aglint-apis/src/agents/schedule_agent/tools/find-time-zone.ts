@@ -7,15 +7,11 @@ import {
   getTimeZoneOfGeo,
 } from '../../../utils/scheduling_utils/time_zone';
 import {googleTimeZone} from '../../../utils/googleTimeZone';
-import {CandidateInfoType} from '../../../types/app_types/scheduleAgentTypes';
 import {
   getCachedCandidateInfo,
   updateCandidateInfo,
 } from '../../../services/cache/cache-db';
-import {
-  supabaseAdmin,
-  supabaseWrap,
-} from '../../../services/supabase/SupabaseAdmin';
+import {supabaseAdmin} from '../../../services/supabase/SupabaseAdmin';
 import {agent_activities} from '../../../copies/agents_activity';
 export const findCandTimeZone = () => {
   const schema = z.object({
@@ -37,7 +33,7 @@ export const findCandTimeZone = () => {
     args: z.infer<typeof schema>;
     candLogger: LoggerType;
   }) => {
-    const condidate_info = getCachedCandidateInfo(cand_phone);
+    const condidate_info = await getCachedCandidateInfo(cand_phone);
     let parsedData = null;
     try {
       parsedData = schema.parse(args);
@@ -66,7 +62,7 @@ export const findCandTimeZone = () => {
         tz_code: time_zone,
         tz_label: googleTimeZone[time_zone].split(')')[1],
       };
-      updateCandidateInfo(cand_info);
+      await updateCandidateInfo(cand_info);
       return `${googleTimeZone[time_zone].split(')')[1]} ${time_zone}`;
     } catch (error: any) {
       candLogger(

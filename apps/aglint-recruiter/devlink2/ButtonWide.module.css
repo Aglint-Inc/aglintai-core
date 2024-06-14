@@ -13,17 +13,17 @@
 
   border-radius: 6px;
 
-  background-color: #1f73b7;
+  background-color: var(--accent-9);
 
   transition: all 200ms ease-in-out;
 
-  color: white;
+  color: var(--white);
 
   cursor: pointer;
 }
 
 .button_primary:hover {
-  background-color: #144a75;
+  background-color: var(--accent-10);
 }
 
 .button_primary.is_disabled {
@@ -43,10 +43,6 @@
 
   padding-top: 8px;
   padding-bottom: 8px;
-}
-
-.button_primary.is_enabled.main {
-  position: static;
 }
 
 .button_primary.is_enabled.main-green {
@@ -76,16 +72,6 @@
   cursor: progress;
 }
 
-.button_primary.confirm_availability {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  background-color: #228f67;
-}
-
-.button_primary.confirm_availability:hover {
-  background-color: #038153;
-}
-
 .button_primary.is_grey {
   background-color: #e9ebed;
   color: #2f3941;
@@ -93,12 +79,6 @@
 
 .button_primary.is_grey:hover {
   background-color: hsla(210.00000000000023, 18.58%, 85.26%, 1.00);
-}
-
-.button_primary.is_primarruy {
-  width: 100%;
-  padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .button_primary.greay_btn {

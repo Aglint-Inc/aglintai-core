@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { WorkingHourDay } from "./WorkingHourDay";
+import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./WorkingHours.module.css";
 
@@ -21,20 +22,12 @@ export function WorkingHours({
           className={_utils.cx(_styles, "div-block-1115")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Working Hours"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey-600")}
-            tag="div"
-          >
-            {
-              "Set up your company's default time zone, working hours, and breaks."
-            }
-          </_Builtin.Block>
+          <Text content="Working Hours" weight="medium" />
+          <Text
+            content="Set up your company's default time zone, working hours, and breaks."
+            weight=""
+            color="neutral"
+          />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1116", "hide")}
@@ -55,12 +48,12 @@ export function WorkingHours({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "setting_wrap")} tag="div">
-        <_Builtin.Block tag="div">{"Time Zone"}</_Builtin.Block>
+        <Text content="Time Zone" weight="medium" />
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_timezoneinput")}
           tag="div"
         >
-          {slotTimeZoneInput}
+          {slotTimeZoneInput ?? <SlotComp componentName="Slot TieZone" />}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "setting_wrap")} tag="div">
@@ -68,22 +61,20 @@ export function WorkingHours({
           className={_utils.cx(_styles, "setting_title")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Default Working Hours"}</_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-gray-500")}
-            tag="div"
-          >
-            {"Set the standard working hours for the company."}
-          </_Builtin.Block>
+          <Text content="Default Working Hours" />
+          <Text
+            content="Set the standard working hours for the company."
+            color="neutral"
+            weight=""
+          />
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "week_days")} tag="div">
           {slotWorkingHourDay ?? (
             <>
-              <WorkingHourDay />
-              <WorkingHourDay isApplytoAll={true} />
-              <WorkingHourDay isApplytoAll={true} />
-              <WorkingHourDay isApplytoAll={true} />
-              <WorkingHourDay isApplytoAll={true} />
+              <SlotComp componentName="WorkingDays" />
+              <SlotComp componentName="WorkingDays" />
+              <SlotComp componentName="WorkingDays" />
+              <SlotComp componentName="WorkingDays" />
             </>
           )}
         </_Builtin.Block>

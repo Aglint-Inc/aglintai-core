@@ -66,13 +66,13 @@ function ModuleMembersComp() {
   const {
     data: selectedModule,
     isLoading: fetchingModule,
-    isFetching,
+    isPending,
   } = useModuleAndUsers();
   const { recruiterUser } = useAuthDetails();
   const [subTab, setSubTab] =
     useState<(typeof subTabs)[number]>('training history');
 
-  const { data: members, isFetching: loading } = useAllInterviewersDetails();
+  const { data: members, isPending: loading } = useAllInterviewersDetails();
 
   let { data: progress } = useProgressModuleUsers({
     trainer_ids: selectedModule?.relations.map((user) => user.id) || [],
@@ -125,7 +125,7 @@ function ModuleMembersComp() {
         }
         slotBody={
           <>
-            {fetchingModule || loading || (!module && isFetching) ? (
+            {fetchingModule || loading || (!module && isPending) ? (
               <Stack height={'100%'} width={'100%'}>
                 <Loader />
               </Stack>
@@ -153,7 +153,7 @@ function ModuleMembersComp() {
                           members={members}
                           module={module}
                           progress={
-                            progress.filter(
+                            progress?.filter(
                               (item) =>
                                 item.interview_module_relation_id ===
                                 selectedModule.relations.find(
@@ -167,7 +167,7 @@ function ModuleMembersComp() {
                     </>
                   ) : subTab === 'instructions' ? (
                     <>
-                      <Stack p={'20px'} maxWidth={'1000px'}>
+                      <Stack p={'var(--space-5)'} maxWidth={'1000px'}>
                         <Typography
                           fontSize={'14px'}
                           dangerouslySetInnerHTML={{
@@ -237,10 +237,7 @@ const TrainingDetails = ({
               progressUser.user.first_name,
               progressUser.user.last_name,
             )}
-            variant='circular'
-            height='24px'
-            width='24px'
-            fontSize='12px'
+            variant='rounded-small'
           />
         )
       }
@@ -324,7 +321,7 @@ const ModuleMembersX = ({
 }) => {
   return (
     <>
-      <Stack gap={1} p={'20px'} maxWidth={'1000px'}>
+      <Stack gap={1} p={'var(--space-5)'} maxWidth={'1000px'}>
         <SlotQualifiedMembers
           members={members}
           editModule={module}
@@ -356,7 +353,7 @@ function SlotQualifiedMembers({
   }) => void;
 }) {
   // const { members } = useSchedulingContext();
-  const allQualified = editModule.relations;
+  const allQualified = editModule?.relations;
 
   const [progressUser, setProgressUser] = useState<ProgressUser>({
     user: null,
@@ -576,10 +573,7 @@ function SlotQualifiedMembers({
                 <MuiAvatar
                   src={member.profile_image}
                   level={getFullName(member.first_name, member.last_name) || ''}
-                  variant='circular'
-                  height='40px'
-                  width='40px'
-                  fontSize='16px'
+                  variant='rounded-medium'
                 />
               }
               textName={getFullName(member.first_name, member.last_name) || ''}

@@ -1,10 +1,13 @@
+import { DatabaseTable } from '@aglint/shared-types';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { useState } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getInterviewTrainingProgressType } from '@/src/pages/api/scheduling/get_interview_training_progress';
 import { supabase } from '@/src/utils/supabase/client';
 
+import { getNthDateFromToday, groupDateBy } from '../utils';
 import { schedulingDashboardQueryKeys } from './keys';
 import {
   Functions,
@@ -111,6 +114,107 @@ const useDashboardEnabled = () => {
   };
 };
 
+export const useScheduleSessionsAnalytics = () => {
+  const { recruiter } = useAuthDetails();
+  const { queryKey } = schedulingDashboardQueryKeys.sessionsAnalyticsData({
+    recruiter_id: recruiter.id,
+  });
+  return useQuery({
+    queryKey,
+    queryFn: () => {
+      return getAnalyticsData(recruiter.id);
+    },
+    enabled: Boolean(recruiter.id),
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const useCancelRescheduleReasons = () => {
+  const { recruiter } = useAuthDetails();
+  const { data, isPending: loading } = useScheduleSessionsAnalytics();
+  const { queryKey } = schedulingDashboardQueryKeys.CancelRescheduleReasons({
+    recruiter_id: recruiter.id,
+  });
+  return useQuery({
+    queryKey,
+    queryFn: () =>
+      getCancelRescheduleReasons(data.map((item) => item.interview_session.id)),
+    enabled: !loading,
+  });
+};
+
+export const useCancelRescheduleReasonsUsers = () => {
+  const { recruiter } = useAuthDetails();
+  const { data } = useScheduleSessionsAnalytics();
+  const { data: CancelRescheduleReasons, isPending: loading } =
+    useCancelRescheduleReasons();
+  const users = CancelRescheduleReasons?.reduce(
+    (acc, curr) => {
+      const temp_item = data.find(
+        (item) => item.interview_session.id == curr.session_id,
+      );
+
+      if (
+        curr.session_relation_id == null &&
+        temp_item?.interview_schedule.application_id
+      ) {
+        acc['candidate'].add(temp_item.interview_schedule.application_id);
+      } else if (curr.session_relation_id) {
+        acc['interviewer'].add(curr.session_relation_id);
+      }
+      return acc;
+    },
+    { candidate: new Set(), interviewer: new Set() } as {
+      candidate: Set<string>;
+      interviewer: Set<string>;
+    },
+  );
+  const { queryKey } = schedulingDashboardQueryKeys.CancelRescheduleReasonsUser(
+    {
+      recruiter_id: recruiter.id,
+    },
+  );
+  return useQuery({
+    queryKey,
+    queryFn: async () => {
+      const candidate =
+        (await getCandidatesByAppId([...users.candidate])) || [];
+      const interviewer =
+        (await getInterviewerByRelationId([...users.interviewer])) || [];
+      return { candidate, interviewer };
+    },
+    enabled:
+      (loading && Boolean(users?.candidate.size)) ||
+      Boolean(users?.interviewer.size),
+  });
+};
+
+export const useCompletedInterviewDetails = () => {
+  const [filterDuration, setFilterDuration] = useState<8 | 1>(1);
+  const type = filterDuration == 1 ? 'week' : 'month';
+  const { queryKey } = schedulingDashboardQueryKeys.CompletedInterviewDetails({
+    type,
+  });
+  const query = useQuery({
+    queryKey,
+    queryFn: () =>
+      getCompletedInterviewDetails({
+        filterFromDate: getNthDateFromToday(
+          filterDuration == 1
+            ? { n: -30, unit: 'days' }
+            : { n: -8, unit: 'months' },
+        ),
+      }).then((data) => {
+        return groupDateBy(data, filterDuration == 1 ? 'week' : 'month');
+      }),
+  });
+  return {
+    ...query,
+    type,
+    setFilterDuration,
+  };
+};
+
 const getInterviewMeetingStatus = async (
   args: Args<'interviewMeetingStatus'>,
 ) => {
@@ -152,4 +256,120 @@ export const getInterviewTrainingProgressAPI = async ({
       `/api/scheduling/get_interview_training_progress?recruiter_id=${recruiter_id}`,
     )
   ).data as ReturnType<getInterviewTrainingProgressType>;
+};
+
+const getAnalyticsData = async (rec_id: string) => {
+  return (
+    supabase
+      .from('interview_schedule')
+      .select('*,interview_meeting(*,interview_session(*))')
+      // .eq('interview_schedule.recruiter_id', rec_id)
+      .match({ recruiter_id: rec_id })
+      .throwOnError()
+      .then(({ data }) =>
+        data.reduce(
+          (acc, curr) => {
+            curr.interview_meeting.map((item) => {
+              const temp: (typeof acc)[0] = {
+                interview_meeting: null,
+                interview_schedule: null,
+                interview_session: null,
+              };
+              temp['interview_session'] = item.interview_session[0];
+              delete item.interview_session;
+              temp['interview_meeting'] = item;
+              const interview_schedule = {
+                ...curr,
+                interview_meeting: undefined,
+              };
+              const temp_schedule = { ...interview_schedule };
+              delete temp_schedule.interview_meeting;
+              temp['interview_schedule'] = temp_schedule;
+
+              acc.push(temp);
+            });
+            return acc;
+          },
+          [] as {
+            interview_meeting: DatabaseTable['interview_meeting'];
+            interview_schedule: DatabaseTable['interview_schedule'];
+            interview_session: DatabaseTable['interview_session'];
+          }[],
+        ),
+      )
+  );
+};
+
+const getCancelRescheduleReasons = async (session_ids: string[]) => {
+  return supabase
+    .from('interview_session_cancel')
+    .select()
+    .in('session_id', session_ids)
+    .throwOnError()
+    .then(({ data }) => data);
+};
+
+const getCandidatesByAppId = async (application_ids: string[]) => {
+  return supabase
+    .from('applications')
+    .select('id, candidates(id, first_name, last_name)')
+    .in('id', application_ids)
+    .then(({ data }) => {
+      return data
+        .filter((item) => Boolean(item.candidates))
+        .reduce(
+          (acc, curr) => {
+            acc[curr.id] = {
+              id: curr.candidates.id,
+              name: `${curr.candidates.first_name} ${curr.candidates.last_name}`.trim(),
+              profile_image: null,
+            };
+            return acc;
+          },
+          {} as {
+            [key: string]: { id: string; name: string; profile_image: string };
+          },
+        );
+    });
+};
+
+const getInterviewerByRelationId = async (relation_ids: string[]) => {
+  return supabase
+    .from('interview_session_relation')
+    .select(
+      'id, recruiter_user( user_id, first_name, last_name, profile_image )',
+    )
+    .in('id', relation_ids)
+    .then(({ data }) => {
+      return data
+        .filter((item) => Boolean(item.recruiter_user))
+        .reduce(
+          (acc, curr) => {
+            acc[curr.id] = {
+              id: curr.recruiter_user.user_id,
+              name: `${curr.recruiter_user.first_name} ${curr.recruiter_user.last_name}`.trim(),
+              profile_image: curr.recruiter_user.profile_image,
+            };
+            return acc;
+          },
+          {} as {
+            [key: string]: { id: string; name: string; profile_image: string };
+          },
+        );
+    });
+};
+
+const getCompletedInterviewDetails = async ({
+  filterFromDate,
+}: {
+  filterFromDate: string;
+}) => {
+  return supabase
+    .from('interview_meeting')
+    .select('created_at')
+    .eq('status', 'completed')
+    .gt('created_at', filterFromDate)
+    .then(({ data }) => {
+      return data.map((x) => ({ date: x.created_at }));
+    });
 };

@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./JobEmptyState.module.css";
 
@@ -20,26 +22,7 @@ export function JobEmptyState({
           alt=""
           src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544fa5b6dd00169fa44e84b_%EF%A1%AD.svg"
         />
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-600", "fw-semibold")}
-          tag="div"
-        >
-          {"No jobs found"}
-        </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "hide")} tag="div">
-          {"Click here to "}
-          <_Builtin.Span
-            className={_utils.cx(
-              _styles,
-              "text-blue-500",
-              "text-underline",
-              "cursor-pointer"
-            )}
-            {...onClickHere}
-          >
-            {"Add Job"}
-          </_Builtin.Span>
-        </_Builtin.Block>
+        <Text content="No jobs found" weight="" color="neutral-11" />
       </_Builtin.Block>
     </_Component>
   );

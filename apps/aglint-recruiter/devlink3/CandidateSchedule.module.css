@@ -20,23 +20,23 @@
 }
 
 .cd-schedule-header.new-header {
-  padding-right: 10px;
-  padding-bottom: 0px;
-  padding-left: 10px;
+  padding: 0px 10px;
   justify-content: flex-start;
   align-items: center;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
 
+.cs-slot-wrap {
+  overflow: auto;
+  padding-bottom: var(--space-9);
+  background-color: var(--sand-2);
+  height: calc(100vh - 85px);
+}
+
 .new-schedule-cd-card-wrap {
   position: relative;
-
-  overflow: auto;
-  padding-right: 0px;
-  padding-bottom: 60px;
-  padding-left: 0px;
-  height: calc(100vh - 112px);
+  max-width: 900px;
 }
 
 .dummydiv {
@@ -54,26 +54,6 @@
   z-index: 2;
 }
 
-.schedule_now_bar.schedule-button-wrap {
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: auto;
-  z-index: 6;
-
-  display: flex;
-  height: 52px;
-  padding: 16px;
-  justify-content: space-between;
-  align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-
-  border-top: 1px solid #e9ebed;
-
-  background-color: #f8f9f9;
-}
-
 .schedule_now_bar.schedule_nbow {
   left: 0%;
   top: 0%;
@@ -82,8 +62,8 @@
   z-index: 6;
 
   display: flex;
-  height: 52px;
-  padding: 16px;
+  height: 38px;
+  padding: var(--space-2) var(--space-4);
   justify-content: flex-start;
   align-items: center;
   grid-column-gap: 16px;
@@ -95,81 +75,10 @@
   background-color: white;
 }
 
-._30-30_iconbutton {
-  display: flex;
-  width: 30px;
-  height: 30px;
-  flex-direction: column;
-  justify-content: center;
-  flex-wrap: nowrap;
-  align-items: center;
-
-  border: 1px solid #e9ebed;
-  border-radius: 6px;
-
-  background-color: white;
-
-  cursor: pointer;
-}
-
-._30-30_iconbutton.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-._30-30_iconbutton.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  transition: opacity 250ms ease;
-  cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.icons.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.icons.cursor-pointer.mr-20 {
-  margin-right: 20px;
-  transition-property: none;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
-}
-
-.icons.pointer {
-  cursor: pointer;
-}
-
 .schedule_button_options {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
 }
@@ -194,7 +103,7 @@
   border-left-width: 1px;
   border-left-color: #e9ebed;
 
-  height: calc(100vh - 60px);
+  height: calc(100vh - 48px);
 }
 
 #w-node-b4f8c833-3062-0810-c58b-254fa7da7af2-a7da7af1 {

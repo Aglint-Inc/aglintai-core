@@ -18,6 +18,9 @@ export interface ApiBodyParamsSessionCache {
   rec_user_id: string;
 }
 
+export type ApiResponseSessionCache = Awaited<
+  ReturnType<typeof createCloneSession>
+>;
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const supabase = createServerClient<DB>(
@@ -41,7 +44,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const {
       allSessions,
       application_id,
-      coordinator_id,
       is_get_more_option,
       scheduleName,
       session_ids,
@@ -52,7 +54,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const resClone = await createCloneSession({
       allSessions,
       application_id,
-      coordinator_id,
       is_get_more_option,
       scheduleName,
       session_ids,

@@ -1,37 +1,15 @@
 .debrief_company_settings {
   display: flex;
-  padding: 20px;
+  width: 600px;
+  margin: var(--space-4);
+  padding: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
+
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
 
   background-color: white;
-}
-
-.text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
-.text-gray-600.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.text-gray-600.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.text-gray-600.is_link {
-  color: #337fbd;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.hide {
-  display: none;
-}
-
-.fw-semibold {
-  font-weight: 600;
 }

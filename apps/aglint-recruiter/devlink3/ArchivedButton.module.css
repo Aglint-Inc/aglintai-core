@@ -15,6 +15,8 @@
   grid-column-gap: 4px;
   grid-row-gap: 4px;
 
+  color: var(--accent-9);
+
   cursor: pointer;
 }
 
@@ -34,37 +36,18 @@
   opacity: 0.8;
 }
 
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.text-blue-500 {
-  color: #337fbd;
-}
-
-.text-blue-500.text-underline {
-  text-decoration: underline;
-}
-
-.text-blue-500.text-underline.cursor-pointer {
-  transition: all 250ms ease;
+.cursor-pointer {
   cursor: pointer;
 }
 
-.text-blue-500.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
+.icons.task-hover {
+  position: absolute;
+  left: 50px;
+  top: -10px;
+  right: auto;
+  bottom: auto;
 }
 
-.text-blue-500.cursor-pointer {
-  transition: all 250ms ease;
+.icons.pointer {
   cursor: pointer;
-}
-
-.text-blue-500.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.text-blue-500.text-capital {
-  text-transform: uppercase;
 }

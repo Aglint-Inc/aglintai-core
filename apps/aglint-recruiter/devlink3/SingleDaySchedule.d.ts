@@ -9,4 +9,7 @@ declare function SingleDaySchedule(props: {
   textDayCount?: React.ReactNode;
   textDate?: React.ReactNode;
   isMultiDay?: Types.Visibility.VisibilityConditions;
+  onClickSingleDay?: Types.Devlink.RuntimeProps;
+  rotateArrow?: Types.Devlink.RuntimeProps;
+  isRotateArrowVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

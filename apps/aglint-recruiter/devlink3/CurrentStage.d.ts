@@ -8,4 +8,5 @@ declare function CurrentStage(props: {
   onClickMoveToDisqualified?: Types.Devlink.RuntimeProps;
   isDisqualifiedVisible?: Types.Visibility.VisibilityConditions;
   isQualifiedVisible?: Types.Visibility.VisibilityConditions;
+  slotIcon?: Types.Devlink.Slot;
 }): React.JSX.Element;

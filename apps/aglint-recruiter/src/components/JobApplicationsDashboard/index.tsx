@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable security/detect-object-injection */
 import {
   CircularProgress,
@@ -28,12 +29,14 @@ import { ApplicantsListEmpty } from '@/devlink2/ApplicantsListEmpty';
 import { ApplicantsTable } from '@/devlink2/ApplicantsTable';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { CandidatesListPagination } from '@/devlink2/CandidatesListPagination';
+// import { CandidatesListPagination } from '@/devlink2/CandidatesListPagination';
 import { JobDetails } from '@/devlink2/JobDetails';
 import { JobDetailsFilterBlock } from '@/devlink2/JobDetailsFilterBlock';
 import { RcCheckbox } from '@/devlink2/RcCheckbox';
 import { SelectActionBar } from '@/devlink2/SelectActionBar';
 import { TopApplicantsTable } from '@/devlink2/TopApplicantsTable';
 import { NewTabPill } from '@/devlink3/NewTabPill';
+import NoApplicants from '@/public/lottie/NoApplicants';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
@@ -59,7 +62,6 @@ import ResumeUpload from './FileUpload';
 import { getBoundingStatus, useKeyPress, useMouseClick } from './hooks';
 import ImportCandidatesCSV from './ImportCandidatesCsv';
 import ImportManualCandidates from './ImportManualCandidates';
-import NoApplicants from './Lotties/NoApplicants';
 import SearchField from './SearchField';
 import { capitalize, handleOngoingWarning } from './utils';
 
@@ -150,12 +152,6 @@ const JobApplicationComponent = () => {
     <>
       <DNDLayerSwitcher applicationLimit={applicationLimit}>
         <JobDetails
-          isEditJob={false}
-          isWarningVisible={
-            job.status == 'published' && (!job.jd_json || !job.description)
-              ? true
-              : false
-          }
           isFilterVisible={
             !!((sectionApplications ?? []).length + job.count[section])
           }
@@ -172,7 +168,7 @@ const JobApplicationComponent = () => {
           slotLoadingLottie={
             <CircularProgress
               style={{
-                color: '#17494D',
+                color: 'var(--success-9)',
                 width: '12px',
                 height: '12px',
               }}
@@ -186,20 +182,6 @@ const JobApplicationComponent = () => {
               posthog.capture('Import Candidates Clicked');
             },
           }}
-          slotSidebar={
-            <ApplicationDetails
-              open={currentApplication !== -1}
-              onClose={() => handleSelectCurrentApplication(-1)}
-              handleSelectNextApplication={() => handleSelectNextApplication()}
-              handleSelectPrevApplication={() => handleSelectPrevApplication()}
-              application={
-                sectionApplications[
-                  currentApplication === -1 ? 0 : currentApplication
-                ]
-              }
-              hideNextPrev={false}
-            />
-          }
           slotTabs={<NewJobDetailsTabs />}
           slotFilters={
             <NewJobFilterBlock
@@ -217,17 +199,23 @@ const JobApplicationComponent = () => {
               currentApplication={currentApplication}
             />
           }
-          slotPagination={
-            <ApplicationPagination
-              size={sectionApplications.length}
-              limits={applicationLimit}
-            />
-          }
         />
       </DNDLayerSwitcher>
       <AddCandidates
         openImportCandidates={openImportCandidates}
         setOpenImportCandidates={setOpenImportCandidates}
+      />
+      <ApplicationDetails
+        open={currentApplication !== -1}
+        onClose={() => handleSelectCurrentApplication(-1)}
+        handleSelectNextApplication={() => handleSelectNextApplication()}
+        handleSelectPrevApplication={() => handleSelectPrevApplication()}
+        application={
+          sectionApplications[
+            currentApplication === -1 ? 0 : currentApplication
+          ]
+        }
+        hideNextPrev={false}
       />
     </>
   );
@@ -414,14 +402,23 @@ const ApplicationTable = ({
         }
       />
     ) : (
-      <ApplicantsTable
-        onClickSelectAll={{ onClick: () => handleSelectAllMin() }}
-        isAllChecked={isAllChecked}
-        isInterviewVisible={views.assessment}
-        slotCandidatesList={applicantsList}
-        isDisqualifiedVisible={views.disqualified}
-        isScreeningVisible={views.screening}
-      />
+      <>
+        <ApplicantsTable
+          onClickSelectAll={{ onClick: () => handleSelectAllMin() }}
+          isAllChecked={isAllChecked}
+          isInterviewVisible={views.assessment}
+          isDisqualifiedVisible={views.disqualified}
+          isScreeningVisible={views.screening}
+        />
+        <Stack style={{ height: 'calc(100vh - 250px)', overflow: 'scroll' }}>
+          {applicantsList}
+        </Stack>
+
+        <ApplicationPagination
+          size={sectionApplications.length}
+          limits={job.count}
+        />
+      </>
     )
   ) : (
     <TopApplicantsTable
@@ -473,7 +470,7 @@ const ApplicationPagination = ({
     }
   };
   return totalCandidatesCount !== 0 ? (
-    <Stack style={{ backgroundColor: 'white' }}>
+    <Stack style={{ backgroundColor: 'var(--white)' }}>
       <Stack
         style={{
           opacity: disable ? 0.5 : 1,
@@ -615,7 +612,7 @@ const NewJobFilterBlock = ({
     <Stack style={{ display: job.count[section] === 0 ? 'none' : 'flex' }}>
       <>
         {list.size > 0 ? (
-          <Stack style={{ backgroundColor: 'white' }}>
+          <Stack style={{ backgroundColor: 'var(--white)' }}>
             <Stack
               style={{
                 opacity: disabled ? 0.5 : 1,
@@ -712,7 +709,8 @@ const NewJobDetailsTabs = () => {
   return (
     <>
       {job.activeSections.map((section) => (
-        <JobTab key={section} section={section} />
+        <></>
+        // <JobTab key={section} section={section} />
       ))}
     </>
   );
@@ -801,9 +799,11 @@ const SectionCard = forwardRef(
                   normalize && !isOver
                     ? 'inherit'
                     : canDrop
-                      ? '#edf7ff'
+                      ? 'var(--sky-2)'
                       : 'inherit',
-                border: isOver ? '1px solid #1f73b7' : '1px solid transparent',
+                border: isOver
+                  ? '1px solid var(--sky-6)'
+                  : '1px solid transparent',
                 transition: '0.5s',
               },
             }}

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./SessionAndTime.module.css";
 
@@ -11,12 +12,8 @@ export function SessionAndTime({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "session_and_time")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "text-grey-600")} tag="div">
-        {textTime}
-      </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-        {textSessionName}
-      </_Builtin.Block>
+      <Text content={textTime} color="neutral" />
+      <Text content={textSessionName} weight="medium" />
     </_Component>
   );
 }

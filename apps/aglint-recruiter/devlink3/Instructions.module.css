@@ -17,8 +17,8 @@
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
 }
 
 .div-block-1275 {
@@ -29,11 +29,6 @@
 
 .fw-semibold {
   font-weight: 600;
-}
-
-.relative-1 {
-  position: relative;
-  z-index: 1;
 }
 
 .fw-semibold.relative_2 {
@@ -78,14 +73,17 @@
   color: #d93f4c;
 }
 
-.fw-semibold.plr-16 {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
 .text-lg {
   font-size: 18px;
   line-height: 24px;
+}
+
+.text-grey_600 {
+  color: var(--sand-11);
+}
+
+.hide {
+  display: none;
 }
 
 .icons {
@@ -102,6 +100,22 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.icons.task-hover {
+  position: absolute;
+  left: 50px;
+  top: -10px;
+  right: auto;
+  bottom: auto;
+}
+
+.icons.pointer {
+  cursor: pointer;
 }
 
 .div-block-1278 {
@@ -131,10 +145,6 @@
   display: none;
 }
 
-.hide {
-  display: none;
-}
-
 .div-block-1277 {
   display: flex;
   justify-content: flex-start;
@@ -143,45 +153,56 @@
   grid-row-gap: 10px;
 }
 
-.text-grey_600 {
-  color: #68737d;
-}
-
 .text-grey_600.hide {
   display: none;
 }
 
-.text-grey_600.text-underline {
+.text-grey_600.width-80px {
+  width: 80px;
+}
+
+.text-sm {
+  font-size: var(--font-size-1);
+  line-height: var(--line-height-1);
+  letter-spacing: var(--letter-spacing-1);
+}
+
+.text-grey_600.text-underline-copy {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.accent-text {
+  color: var(--accent-9);
+}
+
+.accent-text.text-underline {
   text-decoration: underline;
 }
 
-.text-blue-500 {
-  color: #337fbd;
-}
-
-.text-blue-500.text-underline {
+.text-underline {
   text-decoration: underline;
 }
 
-.text-blue-500.text-underline.cursor-pointer {
+.accent-text.text-underline.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
 }
 
-.text-blue-500.text-underline.cursor-pointer:hover {
+.accent-text.text-underline.cursor-pointer:hover {
   opacity: 0.8;
 }
 
-.text-blue-500.cursor-pointer {
+.accent-text.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
 }
 
-.text-blue-500.cursor-pointer:hover {
+.accent-text.cursor-pointer:hover {
   opacity: 0.8;
 }
 
-.text-blue-500.text-capital {
+.accent-text.text-capital {
   text-transform: uppercase;
 }
 
@@ -203,13 +224,6 @@
   padding-right: 20px;
   padding-bottom: 20px;
   padding-left: 20px;
-}
-
-.div-block-1280.absolute-bottom {
-  left: 0%;
-  top: auto;
-  right: 0%;
-  bottom: 0%;
 }
 
 .div-block-1280.no-absolute {

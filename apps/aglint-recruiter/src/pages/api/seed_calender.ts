@@ -3,7 +3,7 @@
 /* eslint-disable no-console */
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
 import {
   MeetingLimitsConfig,
@@ -12,8 +12,8 @@ import {
 import { seedCalendersUtil } from '@/src/utils/seed_calender/util';
 // Define an enumeration for meeting types
 
-const cal_start_date = userTzDayjs('2024/05/01').startOf('day').format();
-const cal_end_date = userTzDayjs('2024/05/31').startOf('day').format();
+const cal_start_date = userTzDayjs('2024/06/14').startOf('day').format();
+const cal_end_date = userTzDayjs('2024/08/01').startOf('day').format();
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

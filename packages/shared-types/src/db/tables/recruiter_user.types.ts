@@ -1,5 +1,5 @@
-import { CustomSchedulingSettings } from "./common.types";
-import { TableType } from "./index.types";
+import type { CustomSchedulingSettings } from "./common.types";
+import type { TableType } from "./index.types";
 
 export type CustomRecruiterUser = TableType<
   "recruiter_user",

@@ -93,9 +93,7 @@ export const useAllInterviewersDetails = () => {
         });
     },
     enabled: Boolean(recruiter_id),
-    initialData: () => [] as unknown as MemberType[],
     refetchOnWindowFocus: false,
-    // refetchOnMount: false,
   });
   return query;
 };

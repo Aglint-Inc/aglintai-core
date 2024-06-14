@@ -5,7 +5,6 @@ import { type FC, type ReactNode } from 'react';
 import { QuestionCard as QuestionCardDev } from '@/devlink2/QuestionCard';
 import { QuestionCardLoader } from '@/devlink2/QuestionCardLoader';
 import { QuestionsEmpty } from '@/devlink2/QuestionsEmpty';
-import { palette } from '@/src/context/Theme/Theme';
 import { useAssessmentQuestionCreate } from '@/src/queries/assessment/questions';
 
 import { useRecommendationCardDrop } from '../hooks';
@@ -55,7 +54,7 @@ const Questions = () => {
         key={i}
         textQuestion={
           <Stack
-            style={{ color: empty ? palette.grey[400] : palette.grey[800] }}
+            style={{ color: empty ? 'var(--neutral-11)' : 'var(--neutral-12)' }}
           >
             {empty ? 'Type Question' : question.label}
           </Stack>
@@ -83,7 +82,7 @@ const DroppableWrapper: FC<{
 
 const DropppableCard = () => {
   return (
-    <Stack height={'10px'}>
+    <Stack height={'var(--space-2)'}>
       <QuestionCardDev isDropping={true} />
     </Stack>
   );

@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import { InterviewMode } from "./InterviewMode";
 import * as _utils from "./utils";
 import _styles from "./SidedrawerBodySession.module.css";
@@ -19,9 +21,7 @@ export function SidedrawerBodySession({
         className={_utils.cx(_styles, "input_and_label")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Stage Name"}
-        </_Builtin.Block>
+        <Text content="Stage Name" weight="" />
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_input_field")}
           tag="div"
@@ -40,9 +40,7 @@ export function SidedrawerBodySession({
         className={_utils.cx(_styles, "input_and_label")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Duration"}
-        </_Builtin.Block>
+        <Text content="Duration" weight="" />
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_input_field")}
           tag="div"
@@ -61,9 +59,7 @@ export function SidedrawerBodySession({
         className={_utils.cx(_styles, "input_and_label")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Schedule Type"}
-        </_Builtin.Block>
+        <Text content="Schedule Type" weight="" />
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_input_field")}
           tag="div"
@@ -82,9 +78,7 @@ export function SidedrawerBodySession({
         className={_utils.cx(_styles, "input_and_label")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Interview Type"}
-        </_Builtin.Block>
+        <Text content="Interview Type" weight="" />
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_input_field")}
           tag="div"
@@ -100,7 +94,12 @@ export function SidedrawerBodySession({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block tag="div">
-        {slotInterviewMode ?? <InterviewMode />}
+        {slotInterviewMode ?? (
+          <>
+            <SlotComp componentName="InterviewMode" />
+            <InterviewMode />
+          </>
+        )}
       </_Builtin.Block>
     </_Component>
   );

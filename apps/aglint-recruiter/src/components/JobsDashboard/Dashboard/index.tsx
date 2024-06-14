@@ -1,11 +1,11 @@
 /* eslint-disable security/detect-object-injection */
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { CircularProgress, Dialog, Popover, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React, { Fragment, useCallback, useMemo, useState } from 'react';
 
 import { AssistStatus } from '@/devlink/AssistStatus';
+import {ButtonGhost  } from '@/devlink/ButtonGhost';
 import { CloseDeleteJob } from '@/devlink/CloseDeleteJob';
 import { CloseJobButton } from '@/devlink/CloseJobButton';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
@@ -28,16 +28,16 @@ import { PipeLine } from '@/devlink3/PipeLine';
 import { RoleList } from '@/devlink3/RoleList';
 import { ScheduleCardSmall } from '@/devlink3/ScheduleCardSmall';
 import { ScoreSetting } from '@/devlink3/ScoreSetting';
+import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
+import { useJob } from '@/src/context/JobContext';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 import { useJobs } from '@/src/context/JobsContext';
-import { palette } from '@/src/context/Theme/Theme';
 import NotFoundPage from '@/src/pages/404';
 import { useCompanyMembers } from '@/src/queries/company-members';
-import { Job } from '@/src/queries/job/types';
+import { Job } from '@/src/queries/jobs/types';
 import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
@@ -49,13 +49,13 @@ import EmailTemplateIcon from '../../Common/ModuleIcons/emailTemplateIcon';
 import HiringTeamIcon from '../../Common/ModuleIcons/hiringTeamIcon';
 import JobDetailsIcon from '../../Common/ModuleIcons/jobDetailsIcon';
 import ProfileScoreIcon from '../../Common/ModuleIcons/profileScoreIcon';
-// import EmailTemplateIcon from '../../Common/ModuleIcons/emailTemplateIcon';
 import SchedulingIcon from '../../Common/ModuleIcons/schedulingIcon';
 import ScreeningIcon from '../../Common/ModuleIcons/screeningIcon';
+import WorkflowIcon from '../../Common/ModuleIcons/workflowIcon';
 import MuiAvatar from '../../Common/MuiAvatar';
 import UITextField from '../../Common/UITextField';
-import { AddCandidates } from '../../JobApplicationsDashboard';
 import { capitalize } from '../../JobApplicationsDashboard/utils';
+import { UploadApplications } from '../../JobNewApplications/ui/uploadApplications';
 import PublishButton from '../../publishButton';
 import IconScheduleType from '../../Scheduling/Candidates/ListCard/Icon';
 import { getScheduleType } from '../../Scheduling/Candidates/utils';
@@ -102,8 +102,8 @@ const getMatches = (
 };
 
 const Dashboard = () => {
+  const { job, applicationScoringPollEnabled } = useJob();
   const {
-    job,
     matches: { data: counts },
     schedules: { data: schedule },
     status: { description_changed, scoring_criteria_changed },
@@ -113,19 +113,15 @@ const Dashboard = () => {
       detailsValidity,
       hiringTeamValidity,
     },
-    jobPolling,
   } = useJobDetails();
   const { push } = useRouter();
   const { handleJobAsyncUpdate, handleJobDelete, handleJobPublish } = useJobs();
-  const {
-    handleJobApplicationRescore,
-    searchParameters,
-    handleJobApplicationFilter,
-  } = useJobApplications();
+
+  const { setImportPopup, setFilters } = useApplicationsStore(
+    ({ setImportPopup, setFilters }) => ({ setImportPopup, setFilters }),
+  );
 
   const score_matches = getMatches(counts);
-
-  const [openImportCandidates, setOpenImportCandidates] = useState(false);
   const [popover, setPopover] = useState(false);
 
   const canPublish =
@@ -158,8 +154,9 @@ const Dashboard = () => {
   const handlePublish = async () => {
     if (publishable) {
       const response = await handleJobPublish(job);
-      if (response && scoring_criteria_changed)
-        await handleJobApplicationRescore();
+      if (response && scoring_criteria_changed) {
+        //await handleJobApplicationRescore();
+      }
       return response;
     } else {
       if (loading)
@@ -194,7 +191,7 @@ const Dashboard = () => {
         <CircularProgress
           color='inherit'
           size={'100%'}
-          sx={{ color: 'white' }}
+          sx={{ color: 'var(--white)' }}
         />
       </Stack>
     ),
@@ -202,18 +199,9 @@ const Dashboard = () => {
   );
 
   const handleFilter = (
-    overall_score: Omit<
-      (typeof searchParameters)['filter']['overall_score'],
-      'active'
-    >,
+    resume_score: Parameters<typeof setFilters>[0]['resume_score'][number],
   ) => {
-    handleJobApplicationFilter({
-      ...searchParameters,
-      filter: {
-        ...searchParameters.filter,
-        overall_score: { ...overall_score, active: true },
-      },
-    });
+    setFilters({ resume_score: [resume_score] });
     push(`/jobs/${job.id}/candidate-list`);
   };
 
@@ -221,10 +209,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <AddCandidates
-        openImportCandidates={openImportCandidates}
-        setOpenImportCandidates={setOpenImportCandidates}
-      />
+      <UploadApplications />
       <PageLayout
         slotBody={
           <JobDashboardDev
@@ -238,31 +223,31 @@ const Dashboard = () => {
             }
             onClickTopMatch={{
               style: { cursor: 'pointer' },
-              onClick: () => handleFilter({ max: 100, min: 80 }),
+              onClick: () => handleFilter('Top match'),
             }}
             textTopMatchPercentage={score_matches.topMatch.percentage}
             textTopMatchCount={score_matches.topMatch.count}
             onClickGoodMatch={{
               style: { cursor: 'pointer' },
-              onClick: () => handleFilter({ max: 79, min: 60 }),
+              onClick: () => handleFilter('Good match'),
             }}
             textGoodMatchPercentage={score_matches.goodMatch.percentage}
             textGoodMatchCount={score_matches.goodMatch.count}
             onClickAverageMatch={{
               style: { cursor: 'pointer' },
-              onClick: () => handleFilter({ max: 59, min: 40 }),
+              onClick: () => handleFilter('Average match'),
             }}
             textAverageMatchPercentage={score_matches.averageMatch.percentage}
             textAveageMatchCount={score_matches.averageMatch.count}
             onClickBelowAverage={{
               style: { cursor: 'pointer' },
-              onClick: () => handleFilter({ max: 39, min: 20 }),
+              onClick: () => handleFilter('Poor match'),
             }}
             textBelowAveragePercentage={score_matches.poorMatch.percentage}
             textBelowAverageCount={score_matches.poorMatch.count}
             onClickNotaMatch={{
               style: { cursor: 'pointer' },
-              onClick: () => handleFilter({ max: 19, min: 0 }),
+              onClick: () => handleFilter('Not a match'),
             }}
             textNotAMatchPercentage={score_matches.noMatch.percentage}
             textNotAMatchCount={score_matches.noMatch.count}
@@ -296,7 +281,7 @@ const Dashboard = () => {
             }
             slotAddCandidateButton={
               <>
-                {jobPolling && (
+                {applicationScoringPollEnabled && (
                   <ScoreSetting
                     textScoreCount={`${
                       job?.processing_count?.success ?? '---'
@@ -307,7 +292,7 @@ const Dashboard = () => {
                 <AddCandidateButton
                   isImport={job?.status !== 'closed'}
                   onClickImport={{
-                    onClick: () => setOpenImportCandidates(true),
+                    onClick: () => setImportPopup(true),
                   }}
                 />
               </>
@@ -370,10 +355,7 @@ const Roles = () => {
                   <MuiAvatar
                     src={user?.profile_image ?? null}
                     level={name}
-                    variant='circular'
-                    fontSize='16px'
-                    width='42px'
-                    height='42px'
+                    variant='rounded-medium'
                   />
                 }
                 textDesignation={user?.position ?? '--'}
@@ -442,27 +424,25 @@ const Preview = () => {
   };
   if (job?.status === 'closed') return <></>;
   return (
-    <Stack
-      mx={1}
-      gap={'2px'}
-      direction={'row'}
-      style={{ color: palette.blue['400'], cursor: 'pointer' }}
-      onClick={() => handlePreview()}
-    >
-      <Stack>Preview</Stack>
-      <OpenInNewIcon
-        fontSize='small'
-        style={{ aspectRatio: 1, width: '10px', transform: 'translateY(1px)' }}
-      />
-    </Stack>
+      <ButtonGhost
+        size={'2'}
+        iconColor={'var(--info-11)'}
+        iconSize={'4'}
+        isRightIcon={true}
+        isLeftIcon={false}
+        textButton={'Preview'}
+        iconName={'open_in_new'}
+        onClickButton={{
+          onClick: handlePreview,
+        }}
+        />
   );
 };
 
 const Pipeline = () => {
   const { job } = useJobDetails();
-  const { setSection } = useJobApplications();
   const { push } = useRouter();
-
+  const setSection = useApplicationsStore(({ setSection }) => setSection);
   const newSections = Object.entries(job.count).reduce(
     (acc, [key, value]) => {
       acc[key] = { count: value, label: getPlural(value, 'candidate') };
@@ -684,7 +664,7 @@ const useBanners = ({
           <CircularProgress
             color='inherit'
             size={'100%'}
-            sx={{ color: palette.grey[400] }}
+            sx={{ color: 'var(--neutral-6)' }}
           />
         }
       />,
@@ -763,7 +743,9 @@ const JobClose = ({
         sx={{
           '& .MuiPaper-root': {
             border: 'none !important',
+            background: 'transparent',
             overflow: 'visible !important',
+            boxShadow: 'none',
             top: '62px !important',
           },
         }}
@@ -813,7 +795,23 @@ const Modules = () => {
       {isScreeningEnabled && <ScreeningModule />}
       <HiringTeamModule />
       <EmailTemplatesModule />
+      <WorkflowModule />
     </>
+  );
+};
+
+const WorkflowModule = () => {
+  const { job } = useJobDetails();
+  const { push } = useRouter();
+  const handleClick = () => {
+    push(ROUTES['/jobs/[id]/workflows']({ id: job?.id }));
+  };
+  return (
+    <ModuleCard
+      onClickCard={{ onClick: () => handleClick() }}
+      textName={'Workflows'}
+      slotIcon={<WorkflowIcon />}
+    />
   );
 };
 
@@ -1049,7 +1047,7 @@ const ProfileScoreModule = () => {
             <CircularProgress
               color='inherit'
               size={'15px'}
-              sx={{ color: palette.grey[400] }}
+              sx={{ color: 'var(--neutral-6)' }}
             />
           )}
         </>

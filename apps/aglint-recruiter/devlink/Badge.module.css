@@ -1,0 +1,22 @@
+.badge {
+  display: flex;
+  padding: 2px 6px;
+  justify-content: center;
+  align-items: center;
+  flex: 0 auto;
+  grid-column-gap: 6px;
+
+  border-radius: 3px;
+
+  background-color: var(--neutral-3);
+
+  text-decoration: none;
+}
+
+.badge_icon {
+  display: flex;
+  width: 16px;
+  height: 16px;
+  justify-content: flex-start;
+  align-items: center;
+}

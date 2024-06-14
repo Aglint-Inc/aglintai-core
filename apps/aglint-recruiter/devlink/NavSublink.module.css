@@ -1,15 +1,17 @@
 .nav-sub-link-menu {
   position: relative;
-  padding: 10px 16px;
-  border-radius: 10px;
-  transition: opacity 250ms ease;
-  cursor: pointer;
-}
 
-.nav-sub-link-menu.sub-menu {
-  padding-top: 0px;
-  padding-right: 0px;
-  padding-left: 0px;
+  display: flex;
+  height: var(--space-6);
+  padding: 0px var(--space-3);
+  justify-content: flex-start;
+  align-items: center;
+
+  border-radius: var(--radius-1);
+
+  transition: opacity 250ms ease;
+
+  cursor: pointer;
 }
 
 .bg-active-link {
@@ -18,36 +20,25 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
-
-  border-radius: 10px;
-
-  background-color: #f8f9f9;
-}
-
-.div-block-709 {
-  position: relative;
-  z-index: 1;
+  z-index: 2;
 
   display: flex;
-  padding-top: 10px;
-  padding-right: 16px;
-  padding-left: 16px;
+  padding-right: var(--space-3);
+  padding-left: var(--space-3);
+  justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+
+  border-radius: var(--radius-4);
+
+  background-color: var(--accent-3);
+
+  color: var(--accent-9);
 }
 
-.div-block-709.no-padding {
+.nav-sub-text {
   position: relative;
   z-index: 1;
-  padding-top: 0px;
-  padding-right: 0px;
-  padding-left: 0px;
-}
-
-.nav-sublink-text {
-  position: relative;
-  font-weight: 600;
+  color: var(--neutral-11);
 }
 
 .icons {
@@ -64,18 +55,6 @@
 
 .cursor-pointer:hover {
   opacity: 0.7;
-}
-
-.icons.cursor-pointer.width-28 {
-  width: 28px;
-}
-
-.icons.cursor-pointer.height-28 {
-  height: 28px;
-}
-
-.icons.cursor-pointer.p-4 {
-  padding: 4px;
 }
 
 .icons.cursor-pointer.three-dot {
@@ -95,10 +74,6 @@
 
 .icons.rotate-180 {
   transform: rotate(180deg);
-}
-
-.icons.pause {
-  display: none;
 }
 
 .icons.avatar-play {
@@ -134,10 +109,6 @@
   color: var(--white-80449ce7);
 }
 
-.relative {
-  position: relative;
-}
-
 .icons.hide {
   display: none;
 }
@@ -153,8 +124,8 @@
   }
 }
 
-.icons.mb-63 {
-  margin-bottom: 63px;
+.icons.mb-9 {
+  margin-bottom: var(--space-9);
 }
 
 .mt-4 {
@@ -165,11 +136,37 @@
   margin-top: 3px;
 }
 
-.icons.mr--10 {
-  margin-right: -8px;
+.icons.mt-2 {
+  margin-top: 2px;
 }
 
-.div-block-710 {
+.mt-2 {
+  margin-top: var(--space-2);
+}
+
+.icons.bookmarked {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
+.icons.start {
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.nav-link-muted {
   position: absolute;
   left: 0%;
   top: 0%;
@@ -177,5 +174,5 @@
   bottom: 0%;
   z-index: 2;
 
-  background-color: hsla(0, 0.00%, 100.00%, 0.70);
+  background-color: var(--white-a9);
 }

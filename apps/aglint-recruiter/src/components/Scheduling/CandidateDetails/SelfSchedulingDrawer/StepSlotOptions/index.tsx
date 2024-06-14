@@ -1,96 +1,71 @@
-import dayjs from 'dayjs';
+import { Stack } from '@mui/material';
+import { useMemo } from 'react';
 
-import { DateOption } from '@/devlink3/DateOption';
-import { ScheduleOption } from '@/devlink3/ScheduleOption';
 import { ScheduleOptionsList } from '@/devlink3/ScheduleOptionsList';
 
-import { setSelectedCombIds, useSchedulingApplicationStore } from '../../store';
-import SingleDayCard from './SingleDayCard';
+import { setSelectedCombIds, useSchedulingFlowStore } from '../store';
+import DayCardWrapper from './DayCardWrapper';
 import { extractPlanData, groupByDateRange } from './utils';
 
 export type GroupByDateRange = ReturnType<typeof groupByDateRange>;
 
 function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
-  const schedulingOptions = useSchedulingApplicationStore(
-    (state) => state.schedulingOptions,
+  const filteredSchedulingOptions = useSchedulingFlowStore(
+    (state) => state.filteredSchedulingOptions,
   );
-  const selectedCombIds = useSchedulingApplicationStore(
+
+  const selectedCombIds = useSchedulingFlowStore(
     (state) => state.selectedCombIds,
   );
 
   const groupedData: GroupByDateRange = groupByDateRange(
-    extractPlanData(schedulingOptions),
+    extractPlanData(filteredSchedulingOptions),
+  );
+
+  const onClickSelect = (comb_id: string) => {
+    if (isDebrief) {
+      setSelectedCombIds([comb_id]);
+    } else {
+      if (!selectedCombIds.includes(comb_id)) {
+        setSelectedCombIds([...selectedCombIds, comb_id]);
+      } else {
+        setSelectedCombIds(selectedCombIds.filter((id) => id !== comb_id));
+      }
+    }
+  };
+
+  const memoGruopedData = useMemo(
+    () => groupedData,
+    [filteredSchedulingOptions],
   );
 
   return (
-    <ScheduleOptionsList
-      slotDateOption={
-        <>
-          {groupedData?.map((item) => {
-            const dates = item?.dateArray || [];
-            const header = dates
-              .map((date) => dayjs(date).format('MMMM DD dddd'))
-              .join(' , ');
-            const slots = item?.plans || [];
-            const isMultiDay = dates.length > 1 ? true : false;
-
-            return (
-              <DateOption
-                key={header}
-                textdate={header}
-                textOptionCount={`${slots.length} options`}
-                slotScheduleOption={
-                  <>
-                    {slots?.map((slot) => {
-                      const daySessions = dates.map((date) => {
-                        return {
-                          date: date,
-                          sessions: slot.sessions.filter(
-                            (session) =>
-                              dayjs(session.start_time).format('MMMM DD') ===
-                              dayjs(date).format('MMMM DD'),
-                          ),
-                        };
-                      });
-
-                      return (
-                        <>
-                          <ScheduleOption
-                            isSelected={selectedCombIds.includes(
-                              slot.plan_comb_id,
-                            )}
-                            isCheckbox={false}
-                            onClickSelect={{
-                              onClick: () => {
-                                if (isDebrief)
-                                  setSelectedCombIds([slot.plan_comb_id]);
-                              },
-                            }}
-                            isRadio={isDebrief}
-                            slotSingleDaySchedule={daySessions?.map(
-                              (item, ind) => {
-                                return (
-                                  <SingleDayCard
-                                    key={ind}
-                                    item={item}
-                                    ind={ind}
-                                    isMultiDay={isMultiDay}
-                                  />
-                                );
-                              },
-                            )}
-                          />
-                        </>
-                      );
-                    })}
-                  </>
-                }
-              />
-            );
-          })}
-        </>
-      }
-    />
+    <Stack height={'calc(100vh - 96px)'}>
+      <ScheduleOptionsList
+        textDescription={
+          isDebrief ? 'Select a date and time for your interview.' : ''
+        }
+        slotDateOption={
+          <>
+            {memoGruopedData?.map((item) => {
+              return (
+                <DayCardWrapper
+                  key={item.dateArray.join(', ')}
+                  isDebrief={isDebrief}
+                  item={item}
+                  onClickSelect={onClickSelect}
+                  selectedCombIds={selectedCombIds}
+                  isDisabled={false}
+                  isCheckboxAndRadio={true}
+                  isDayCollapseNeeded={true}
+                  isSlotCollapseNeeded={true}
+                />
+              );
+            })}
+          </>
+        }
+      />
+    </Stack>
   );
 }
 

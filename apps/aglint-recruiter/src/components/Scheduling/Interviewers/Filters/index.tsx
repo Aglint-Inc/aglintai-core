@@ -1,9 +1,8 @@
 import { InputAdornment, Stack } from '@mui/material';
-// import { IconBox } from '@tabler/icons-react';
 import React, { useEffect, useState } from 'react';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { QualifiedIcons } from '@/devlink2/QualifiedIcons';
-import Icon from '@/src/components/Common/Icons/Icon';
 import UITextField from '@/src/components/Common/UITextField';
 import FilterDropDown from '@/src/components/CompanyDetailComp/TeamManagement/FilterDropDown';
 
@@ -95,24 +94,23 @@ function Filters({ setFilteredInterviewer }) {
     <div>
       <Stack
         direction={'row'}
-        p={'10px'}
+        p={'var(--space-2)'}
         alignItems={'center'}
-        spacing={'10px'}
+        spacing={'var(--space-2)'}
         marginRight={5}
       >
         <UITextField
-          width='400px'
+          width='250px'
+          height={32}
           InputProps={{
             endAdornment: (
               <InputAdornment position='end'>
-                <Icon variant='JobSearch' height='14' />
+                <GlobalIcon iconName='search' size='5'/>
               </InputAdornment>
             ),
           }}
-          placeholder='Search by Name, Email or Title'
+          placeholder='Search Interviewer'
           onChange={handleSearchInputChange}
-          borderRadius={10}
-          height={42}
         />
         <FilterDropDown
           title={'Qualified'}

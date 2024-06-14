@@ -1,0 +1,132 @@
+.assessment_duplicate_popup {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  overflow: hidden;
+  width: 425px;
+  padding: 16px;
+  flex-direction: column;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
+
+  border-radius: 10px;
+
+  background-color: white;
+}
+
+@media screen and (max-width: 479px) {
+  .assessment_duplicate_popup {
+    width: auto;
+  }
+}
+
+.assessment_duplicate_popup.width-463 {
+  width: 463px;
+}
+
+.assessment_duplicate_popup.width-550 {
+  width: 550px;
+  padding: 20px;
+}
+
+.assessment_duplicate_popup.width-100 {
+  width: 100%;
+}
+
+.popup_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.popup_title {
+  display: flex;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.popup_close {
+  padding: var(--space-1);
+  border-radius: var(--radius-2);
+  transition: all 200ms ease;
+  cursor: pointer;
+}
+
+.popup_close:hover {
+  background-color: var(--neutral-3);
+}
+
+.popup_close.cursor-pointer {
+  transition: all 250ms ease;
+}
+
+.popup_close.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.popup_body {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.slot_widget {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.button-pop-wrap {
+  display: flex;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.button-pop-wrap.stretch-vertical {
+  display: grid;
+  align-items: stretch;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+}
+
+.button-pop-wrap.streachfull {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+}
+
+.wide_button {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.wide_button.width-100 {
+  width: 100%;
+}
+
+#w-node-_7d09c510-6450-005f-37b2-48b80524524b-05245239 {
+  grid-column-end: 3;
+  grid-column-start: 2;
+  grid-row-end: 2;
+  grid-row-start: 1;
+}

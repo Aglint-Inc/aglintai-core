@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./CandidateEducationCard.module.css";
 
@@ -19,37 +21,17 @@ export function CandidateEducationCard({
         className={_utils.cx(_styles, "cvs-school-info-block")}
         tag="div"
       >
-        <_Builtin.Block tag="div">{textUniversityName}</_Builtin.Block>
+        <Text content={textUniversityName} />
         {isDegreeVisible ? (
           <_Builtin.Block
             className={_utils.cx(_styles, "degree-date-wrap")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-600")}
-              tag="div"
-            >
-              {textDegree}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-600")}
-              tag="div"
-            >
-              {textGpa}
-            </_Builtin.Block>
+            <Text content={textDegree} color="neutral" />
+            <Text content={textGpa} color="neutral" />
           </_Builtin.Block>
         ) : null}
-        <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "text-sm",
-            "text-grey-500",
-            "fw-semibold"
-          )}
-          tag="div"
-        >
-          {textDate}
-        </_Builtin.Block>
+        <Text content={textDate} color="neutral" size="1" weight="medium" />
       </_Builtin.Block>
       {isBadgeVisible ? (
         <_Builtin.Block className={_utils.cx(_styles, "book-badge")} tag="div">

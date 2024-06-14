@@ -1,15 +1,15 @@
-.div-block-1281 {
+.drag-pill {
   display: flex;
-  padding: 16px;
+  padding: var(--space-2);
   justify-content: flex-start;
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 
-  border: 1px solid #337fbd;
-  border-radius: 10px;
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-3);
 
-  background-color: #edf7ff;
+  background-color: var(--neutral-3);
 }
 
 .icons {
@@ -20,5 +20,26 @@
 }
 
 .icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.icons.task-hover {
+  position: absolute;
+  left: 50px;
+  top: -10px;
+  right: auto;
+  bottom: auto;
+}
+
+.icons.pointer {
   cursor: pointer;
 }

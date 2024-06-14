@@ -7,12 +7,11 @@ import { SavedChanges } from '@/devlink/SavedChanges';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { JobDetailBlock } from '@/devlink3/JobDetailBlock';
-import { useJobDetails } from '@/src/context/JobDashboard';
+import { useJob } from '@/src/context/JobContext';
 import { validateString } from '@/src/context/JobDashboard/hooks';
 import { useJobs } from '@/src/context/JobsContext';
-import { palette } from '@/src/context/Theme/Theme';
 import NotFoundPage from '@/src/pages/404';
-import { Job } from '@/src/queries/job/types';
+import { Job } from '@/src/queries/jobs/types';
 import ROUTES from '@/src/utils/routing/routes';
 
 import Loader from '../Common/Loader';
@@ -24,9 +23,9 @@ import {
 } from '../JobCreate/form';
 
 const JobHiringTeamDashboard = () => {
-  const { initialLoad, job } = useJobDetails();
+  const { jobLoad, job } = useJob();
 
-  return initialLoad ? (
+  return jobLoad ? (
     job !== undefined && job.status !== 'closed' ? (
       <JobEdit />
     ) : (
@@ -40,7 +39,7 @@ const JobHiringTeamDashboard = () => {
 };
 
 const JobEdit = () => {
-  const { job } = useJobDetails();
+  const { job } = useJob();
   //TODO: HACK FOR BACKWARDS COMPATABILITY, DELETE THIS LATER
   const { hiring_manager, recruiter, recruiting_coordinator, sourcer } = {
     hiring_manager: job.hiring_manager,
@@ -110,7 +109,7 @@ const JobEdit = () => {
               <CircularProgress
                 color='inherit'
                 size={'15px'}
-                sx={{ color: palette.grey[400] }}
+                sx={{ color: 'var(--neutral-6)' }}
               />
             }
           />
@@ -182,7 +181,7 @@ const JobEditForm = ({
   setSaving: Dispatch<SetStateAction<boolean>>;
 }) => {
   const initialRef = useRef(false);
-  const { job } = useJobDetails();
+  const { job } = useJob();
   const { handleJobAsyncUpdate } = useJobs();
 
   const newJob = Object.entries(fields).reduce((acc, [key, { value }]) => {

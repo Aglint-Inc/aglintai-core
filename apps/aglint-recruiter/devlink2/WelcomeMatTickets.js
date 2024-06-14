@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./WelcomeMatTickets.module.css";
 
@@ -7,12 +9,7 @@ export function WelcomeMatTickets({ as: _Component = _Builtin.Block }) {
   return (
     <_Component className={_utils.cx(_styles, "welcome_mat")} tag="div">
       <_Builtin.Block className={_utils.cx(_styles, "top_bar")} tag="div">
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-md", "fw-semibold")}
-          tag="div"
-        >
-          {"Tickets"}
-        </_Builtin.Block>
+        <Text align="" weight="bold" color="neutral-12" content="Tickets" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "welcome_mat_wm")}
@@ -35,12 +32,7 @@ export function WelcomeMatTickets({ as: _Component = _Builtin.Block }) {
           className={_utils.cx(_styles, "wm_header_wrapper")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "welcome_mat_header")}
-            tag="div"
-          >
-            {"Streamline Candidate Conversations"}
-          </_Builtin.Block>
+          <Text size="6" weight="bold" content="" />
           <_Builtin.Block
             className={_utils.cx(_styles, "text-md", "text-gray-600")}
             tag="div"
@@ -59,20 +51,18 @@ export function WelcomeMatTickets({ as: _Component = _Builtin.Block }) {
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Effortless Communication"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-gray-600")}
-              tag="div"
-            >
-              {
-                "Streamline candidate queries in one place. Send and receive messages effortlessly, ensuring every interaction is tracked and managed seamlessly."
-              }
-            </_Builtin.Block>
+            <Text
+              align=""
+              weight="bold"
+              color="neutral-12"
+              content="Effortless Communication"
+            />
+            <Text
+              align=""
+              weight=""
+              color="neutral"
+              content="Streamline candidate queries in one place. Send and receive messages effortlessly, ensuring every interaction is tracked and managed seamlessly."
+            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "wm_card")}
@@ -82,20 +72,18 @@ export function WelcomeMatTickets({ as: _Component = _Builtin.Block }) {
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Team Collaboration"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-gray-600")}
-              tag="div"
-            >
-              {
-                "Enhance teamwork by assigning tickets to your teammates. Collaborate in real-time, share insights, and collectively ensure a unified and effective response."
-              }
-            </_Builtin.Block>
+            <Text
+              align=""
+              weight="bold"
+              color="neutral-12"
+              content="Team Collaboration"
+            />
+            <Text
+              align=""
+              weight=""
+              color="neutral"
+              content="Enhance teamwork by assigning tickets to your teammates. Collaborate in real-time, share insights, and collectively ensure a unified and effective response."
+            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "wm_card")}
@@ -105,20 +93,18 @@ export function WelcomeMatTickets({ as: _Component = _Builtin.Block }) {
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Status Tracking"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-gray-600")}
-              tag="div"
-            >
-              {
-                "Keep tabs on every ticket's status – pending, resolved, or in progress. Stay organized and never miss a beat when managing candidate interactions."
-              }
-            </_Builtin.Block>
+            <Text
+              align=""
+              weight="bold"
+              color="neutral-12"
+              content="Status Tracking"
+            />
+            <Text
+              align=""
+              weight=""
+              color="neutral"
+              content="Keep tabs on every ticket's status – pending, resolved, or in progress. Stay organized and never miss a beat when managing candidate interactions."
+            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "wm_card")}
@@ -128,20 +114,18 @@ export function WelcomeMatTickets({ as: _Component = _Builtin.Block }) {
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Candidate Details at a Glance"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-gray-600")}
-              tag="div"
-            >
-              {
-                "View comprehensive candidate details alongside ticket conversations. Make informed decisions and provide personalized support."
-              }
-            </_Builtin.Block>
+            <Text
+              align=""
+              weight="bold"
+              color="neutral-12"
+              content="Candidate Details at a Glance"
+            />
+            <Text
+              align=""
+              weight=""
+              color="neutral"
+              content="View comprehensive candidate details alongside ticket conversations. Make informed decisions and provide personalized support."
+            />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

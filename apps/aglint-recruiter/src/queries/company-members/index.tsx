@@ -9,9 +9,7 @@ import { companyMembersKeys } from './keys';
 export const useCompanyMembers = () => {
   const queryClient = useQueryClient();
   const { recruiter_id } = useAuthDetails();
-  const { queryKey } = companyMembersKeys.filterWithRecruiterId({
-    recruiter_id,
-  });
+  const { queryKey } = companyMembersKeys.companyMembers();
   const response = useQuery({
     queryKey,
     queryFn: () => getCompanyMembers({ recruiter_id }),

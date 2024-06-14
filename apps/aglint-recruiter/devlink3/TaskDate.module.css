@@ -1,28 +1,26 @@
-.div-block-1509 {
+.date-range-widget {
   display: flex;
   width: 360px;
-  padding: 12px;
+  padding: var(--space-3);
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 
-  border: 1px solid #e9ebed;
-  border-radius: 10px;
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
 
-  background-color: white;
-
-  box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
+  background-color: var(--white);
 }
 
-.div-block-1517 {
+.date-range-switcher {
   display: flex;
   border: 1px solid #e9ebed;
   border-radius: 10px;
   cursor: pointer;
 }
 
-.div-block-1518 {
+.date-range-switcher-tab {
   position: relative;
 
   display: flex;
@@ -32,7 +30,7 @@
   align-items: center;
 }
 
-.div-block-1519 {
+.task-date-active {
   position: absolute;
   left: 0%;
   top: 0%;
@@ -45,7 +43,7 @@
   background-color: #e9ebed;
 }
 
-.div-block-1519.right {
+.task-date-active.right {
   border-radius: 0px 10px 10px 0px;
 }
 
