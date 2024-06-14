@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import type {
   EmailTemplateAPi,
   MeetingDetailCardType,
@@ -13,6 +12,7 @@ import {
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 import { getFullName } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/userTzDayjs';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'debrief_email_interviewer'>['api_payload'],
@@ -33,7 +33,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company,recruiter)',
+        'candidates(first_name,timezone,recruiter_id,recruiter(logo)),public_jobs(job_title,company,recruiter)',
       )
       .eq('id', req_body.application_id),
   );
@@ -53,6 +53,9 @@ export async function fetchUtil(
       .select('first_name,last_name')
       .eq('user_id', candidateJob.public_jobs.recruiter),
   );
+
+  const cand_tz = candidateJob.candidates.timezone ?? 'America/Los_Angeles';
+
   const {
     interview_meeting,
     name,
@@ -61,8 +64,10 @@ export async function fetchUtil(
     session_type,
   } = session;
   const meeting_detail: MeetingDetailCardType = {
-    date: dayjs(interview_meeting.start_time).format('ddd MMMM DD, YYYY'),
-    time: `${dayjs(interview_meeting.start_time).format('hh:mm A')} - ${dayjs(interview_meeting.end_time).format('hh:mm A')}`,
+    date: dayjsLocal(interview_meeting.start_time)
+      .tz(cand_tz)
+      .format('ddd MMMM DD, YYYY'),
+    time: `${dayjsLocal(interview_meeting.start_time).tz(cand_tz).format('hh:mm A')} - ${dayjsLocal(interview_meeting.end_time).tz(cand_tz).format('hh:mm A')}`,
     sessionType: name,
     platform: platformRemoveUnderscore(session.schedule_type),
     duration: durationCalculator(session_duration),
@@ -82,7 +87,7 @@ export async function fetchUtil(
         '{{ jobTitle }}': public_jobs.job_title,
         '{{ companyName }}': public_jobs.company,
         '{{ interviewerFirstName }}': inter.first_name,
-        '{{recruiterFirstName }}': getFullName(
+        '{{ recruiterFirstName }}': getFullName(
           recruiter_user.first_name,
           recruiter_user.last_name,
         ),
@@ -99,7 +104,7 @@ export async function fetchUtil(
         emailBody: filled_comp_template.body,
         subject: filled_comp_template.subject,
         meetingDetails: meeting_detail,
-        candidateLink: '',
+        candidateLink: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}`,
       };
 
     return {

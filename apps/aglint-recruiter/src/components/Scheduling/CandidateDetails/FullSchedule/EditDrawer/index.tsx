@@ -311,7 +311,6 @@ function SideDrawerEdit() {
       } else {
         toast.error('Error caching session.');
       }
-      await fetchInterviewDataByApplication();
       handleClose();
     } else {
       if (editSession.session_type !== 'debrief') {
@@ -361,9 +360,10 @@ function SideDrawerEdit() {
         };
         await updateDebriefSession(updateDebriefParams);
       }
-      await fetchInterviewDataByApplication();
+
       handleClose();
     }
+    await fetchInterviewDataByApplication();
     setSaving(false);
   };
 
@@ -372,6 +372,7 @@ function SideDrawerEdit() {
       <Stack overflow={'hidden'}>
         {editSession && (
           <SideDrawerBlock
+            isLoading={saving}
             onClickClose={{ onClick: () => handleClose() }}
             textPrimaryButton='Save'
             textTitle='Edit Session'

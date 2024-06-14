@@ -27,6 +27,11 @@
   grid-row-gap: 10px;
 }
 
+.flex_hr_10.relative_2 {
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
 .relative_2 {
   position: relative;
   z-index: 2;
@@ -34,40 +39,6 @@
 
 .flex_hr_10.disabled_text {
   color: var(--neutral-9);
-}
-
-.embed_flex {
-  display: flex;
-  align-items: center;
-}
-
-.embed_flex.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-}
-
-.embed_flex.custom_top {
-  margin-top: 2px;
-}
-
-.embed_flex.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.embed_flex.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.embed_flex.fixedd {
-  width: 23px;
 }
 
 .flex_hr_4 {
@@ -125,6 +96,10 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .icons.task-hover {
   position: absolute;
   left: 50px;
@@ -167,6 +142,36 @@
   background-color: var(--neutral-2);
 
   cursor: not-allowed;
+}
+
+.embed_flex {
+  display: flex;
+  align-items: center;
+}
+
+.embed_flex.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+.embed_flex.custom_top {
+  margin-top: 2px;
+}
+
+.embed_flex.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.embed_flex.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.embed_flex.fixedd {
+  width: 23px;
 }
 
 .italic {

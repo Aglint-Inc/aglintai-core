@@ -222,7 +222,7 @@ function SchedulerEmailTemps() {
                           justifyContent={'start'}
                         >
                           <ButtonSolid
-                            size={1}
+                            size={2}
                             isLoading={saving}
                             textButton={'Save'}
                             onClickButton={{
@@ -262,11 +262,11 @@ function SchedulerEmailTemps() {
                           </Stack>
                         ) : (
                           <iframe
-                            width={'900px'}
-                            height={'500px'}
+                            width={'790px'}
+                            height={'490px'}
                             color='white'
                             srcDoc={isHtml}
-                            title='qsds'
+                            title='Previw Email'
                           />
                         )
                       }

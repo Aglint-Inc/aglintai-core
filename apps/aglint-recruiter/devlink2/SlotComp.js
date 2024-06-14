@@ -12,7 +12,7 @@ export function SlotComp({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "slot-comp")} tag="div">
-      <GlobalIcon iconName="" size="4" weight="thin" color="accent-9" />
+      <GlobalIcon iconName="shapes" size="4" weight="thin" color="accent-9" />
       <Text content={componentName} color="accent" weight="" highContrast="" />
     </_Component>
   );

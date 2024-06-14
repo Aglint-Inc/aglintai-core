@@ -543,6 +543,29 @@ const AddMember = ({
                 </Stack>
               }
               slotButtons={
+                <Stack display={'flex'} flexDirection={'row'} gap={'8px'} width={'100%'}>
+                <Stack width={'100%'} marginTop={'16px'}>
+                  <ButtonSoft
+                    isLeftIcon={false}
+                    isRightIcon={false}
+                    size='2'
+                    color={'neutral'}
+                    textButton='Cancel'
+                    onClickButton={{
+                      onClick: () => {
+                        onClose(),
+                          setInviteData([]),
+                          setForm({
+                            ...form,
+                            first_name: null,
+                            last_name: null,
+                            email: null,
+                            department: null,
+                            designation: null,
+                          });
+                      },
+                    }}/>
+                </Stack>
                 <Stack width={'100%'} marginTop={'16px'}>
                   <ButtonSolid
                     isLeftIcon={false}
@@ -580,6 +603,9 @@ const AddMember = ({
                   >
                     Invite
                   </AUIButton> */}
+                </Stack>
+
+                
                 </Stack>
               }
               onClickClose={{

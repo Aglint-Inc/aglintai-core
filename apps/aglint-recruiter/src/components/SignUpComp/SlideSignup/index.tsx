@@ -7,7 +7,6 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { SignupSlider } from '@/devlink/SignupSlider';
 import { WelcomeSlider3 } from '@/devlink/WelcomeSlider3';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { ApiBodyParamsSignup } from '@/src/pages/api/signup';
@@ -17,7 +16,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Loader from '../../Common/Lotties/Loader';
-import { Details, SignUpError } from './types';
+import * as types from './types';
 import { handleEmail, handlePassword, stepObj } from './utils';
 
 const SlideTwoSignUp = () => {
@@ -33,7 +32,7 @@ const SlideTwoSignUp = () => {
     userDetails,
   } = useSignupDetails();
 
-  const [details, setDetails] = useState<Details>({
+  const [details, setDetails] = useState<types.Details>({
     first_name: '',
     last_name: '',
     email: '',
@@ -41,7 +40,7 @@ const SlideTwoSignUp = () => {
   });
 
   const [checked, setChecked] = useState<boolean>(true);
-  const [signUpError, setSignUpError] = useState<SignUpError>({
+  const [signUpError, setSignUpError] = useState<types.SignUpError>({
     first_name: {
       error: false,
       msg: '',
@@ -241,174 +240,168 @@ const SlideTwoSignUp = () => {
     );
   } else
     return (
-      <>
-        <SignupSlider
-          slotRightSlider={
-            <WelcomeSlider3
-              isSignUpButtonVisible={
-                !details.first_name || !details.email || !details.password
+      <WelcomeSlider3
+        isSignUpButtonVisible={
+          !details.first_name || !details.email || !details.password
+        }
+        onClickRegisterWithGoogle={{
+          onClick: () => {
+            oauthHandler('google');
+          },
+        }}
+        onClickBack={{
+          onClick: () => {
+            router.push(`${ROUTES['/signup']()}?step=${stepObj.type}`);
+            setStep(stepObj.type);
+          },
+        }}
+        onClickCheck={{
+          onClick: () => {
+            setChecked(!checked);
+          },
+        }}
+        onClickSignUp={{
+          onClick: () => {
+            handelSignUp();
+          },
+        }}
+        isTermsChecked={checked}
+        onClickSignIn={{
+          onClick: () => {
+            router.push(ROUTES['/login']());
+            setStep(stepObj.signin);
+          },
+        }}
+        slotSignUpForm={
+          <Stack spacing={'var(--space-3)'}>
+            <Stack direction={'row'} spacing={'var(--space-2)'}>
+              <TextField
+                margin='none'
+                required
+                fullWidth
+                id='name'
+                placeholder='First Name'
+                value={details.first_name}
+                onChange={(e) => {
+                  setDetails({ ...details, first_name: e.target.value });
+                }}
+                error={signUpError.first_name.error}
+                helperText={
+                  signUpError.first_name.error
+                    ? signUpError.first_name.msg
+                    : ''
+                }
+                inputProps={{
+                  autoCapitalize: 'true',
+                  style: {
+                    fontSize: '14px',
+                  },
+                }}
+              />
+              <TextField
+                margin='none'
+                fullWidth
+                id='name'
+                placeholder='Last Name'
+                value={details.last_name}
+                onChange={(e) => {
+                  setDetails({ ...details, last_name: e.target.value });
+                }}
+                inputProps={{
+                  autoCapitalize: 'true',
+                  style: {
+                    fontSize: '14px',
+                  },
+                }}
+              />
+            </Stack>
+            <TextField
+              margin='none'
+              required
+              fullWidth
+              id='email'
+              placeholder='Work Email'
+              name='email'
+              autoComplete='email'
+              value={details.email}
+              onChange={(e) => {
+                setDetails({ ...details, email: e.target.value });
+              }}
+              onBlur={() => {
+                const email = handleEmail(details.email);
+                setSignUpError((prevError) => ({
+                  ...prevError,
+                  email: email,
+                }));
+              }}
+              error={signUpError.email.error}
+              helperText={
+                signUpError.email.error ? signUpError.email.msg : ''
               }
-              onClickRegisterWithGoogle={{
-                onClick: () => {
-                  oauthHandler('google');
+              inputProps={{
+                autoCapitalize: 'true',
+                style: {
+                  fontSize: '14px',
                 },
               }}
-              onClickBack={{
-                onClick: () => {
-                  router.push(`${ROUTES['/signup']()}?step=${stepObj.type}`);
-                  setStep(stepObj.type);
-                },
-              }}
-              onClickCheck={{
-                onClick: () => {
-                  setChecked(!checked);
-                },
-              }}
-              onClickSignUp={{
-                onClick: () => {
-                  handelSignUp();
-                },
-              }}
-              isTermsChecked={checked}
-              onClickSignIn={{
-                onClick: () => {
-                  router.push(ROUTES['/login']());
-                  setStep(stepObj.signin);
-                },
-              }}
-              slotSignUpForm={
-                <Stack spacing={'var(--space-5)'} p={'var(--space-1)'}>
-                  <Stack direction={'row'} spacing={'var(--space-2)'}>
-                    <TextField
-                      margin='none'
-                      required
-                      fullWidth
-                      id='name'
-                      placeholder='First Name'
-                      value={details.first_name}
-                      onChange={(e) => {
-                        setDetails({ ...details, first_name: e.target.value });
-                      }}
-                      error={signUpError.first_name.error}
-                      helperText={
-                        signUpError.first_name.error
-                          ? signUpError.first_name.msg
-                          : ''
-                      }
-                      inputProps={{
-                        autoCapitalize: 'true',
-                        style: {
-                          fontSize: '14px',
-                        },
-                      }}
-                    />
-                    <TextField
-                      margin='none'
-                      fullWidth
-                      id='name'
-                      placeholder='Last Name'
-                      value={details.last_name}
-                      onChange={(e) => {
-                        setDetails({ ...details, last_name: e.target.value });
-                      }}
-                      inputProps={{
-                        autoCapitalize: 'true',
-                        style: {
-                          fontSize: '14px',
-                        },
-                      }}
-                    />
-                  </Stack>
-                  <TextField
-                    margin='none'
-                    required
-                    fullWidth
-                    id='email'
-                    placeholder='Work Email'
-                    name='email'
-                    autoComplete='email'
-                    value={details.email}
-                    onChange={(e) => {
-                      setDetails({ ...details, email: e.target.value });
-                    }}
-                    onBlur={() => {
-                      const email = handleEmail(details.email);
-                      setSignUpError((prevError) => ({
-                        ...prevError,
-                        email: email,
-                      }));
-                    }}
-                    error={signUpError.email.error}
-                    helperText={
-                      signUpError.email.error ? signUpError.email.msg : ''
-                    }
-                    inputProps={{
-                      autoCapitalize: 'true',
-                      style: {
-                        fontSize: '14px',
-                      },
-                    }}
-                  />
-                  <TextField
-                    required
-                    margin='none'
-                    fullWidth
-                    name='password'
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder={'Create Password'}
-                    autoComplete='current-password'
-                    id='password'
-                    error={
-                      signUpError?.password?.error
-                        ? signUpError?.password?.error
-                        : false
-                    }
-                    helperText={
-                      signUpError.password.error ? signUpError.password.msg : ''
-                    }
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position='end'>
-                          <IconButton
-                            aria-label='toggle password visibility'
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge='end'
-                          >
-                            <GlobalIcon iconName='visibility' />
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                    onKeyDown={(event) => {
-                      if (event.key === 'Enter') {
-                        handelSignUp();
-                      }
-                    }}
-                    onBlur={() => {
-                      const password = handlePassword(details.password);
-                      setSignUpError((prevError) => ({
-                        ...prevError,
-                        password: password,
-                      }));
-                    }}
-                    value={details.password}
-                    onChange={(e) => {
-                      setDetails({ ...details, password: e.target.value });
-                    }}
-                    inputProps={{
-                      autoCapitalize: 'true',
-                      style: {
-                        fontSize: '14px',
-                      },
-                    }}
-                  />
-                </Stack>
-              }
             />
-          }
-        />
-      </>
+            <TextField
+              required
+              margin='none'
+              fullWidth
+              name='password'
+              type={showPassword ? 'text' : 'password'}
+              placeholder={'Create Password'}
+              autoComplete='current-password'
+              id='password'
+              error={
+                signUpError?.password?.error
+                  ? signUpError?.password?.error
+                  : false
+              }
+              helperText={
+                signUpError.password.error ? signUpError.password.msg : ''
+              }
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <IconButton
+                      aria-label='toggle password visibility'
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge='end'
+                    >
+                      <GlobalIcon iconName='visibility' />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  handelSignUp();
+                }
+              }}
+              onBlur={() => {
+                const password = handlePassword(details.password);
+                setSignUpError((prevError) => ({
+                  ...prevError,
+                  password: password,
+                }));
+              }}
+              value={details.password}
+              onChange={(e) => {
+                setDetails({ ...details, password: e.target.value });
+              }}
+              inputProps={{
+                autoCapitalize: 'true',
+                style: {
+                  fontSize: '14px',
+                },
+              }}
+            />
+          </Stack>
+        }
+      />
     );
 };
 

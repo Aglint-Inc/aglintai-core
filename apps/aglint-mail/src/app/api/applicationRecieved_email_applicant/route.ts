@@ -55,6 +55,11 @@ export async function POST(req: Request) {
   }
 }
 
-//{
-//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637"
+// {
+//   "meta": {
+//       "application_id": "13c0fff9-5d10-41f8-b077-ea0884977ab2",
+//       "session_ids": [
+//           "b8c7b858-8101-4282-9d2c-49bb7c4cc1ad"
+//       ]
+//   }
 // }

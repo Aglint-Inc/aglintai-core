@@ -55,3 +55,11 @@ export async function POST(req: Request) {
     }
   }
 }
+
+// {
+//   "meta":{
+//       "application_id":"13c0fff9-5d10-41f8-b077-ea0884977ab2",
+//       "meeting_id":"5f5d9cfc-4b85-4d69-8d50-a334d342b4e8",
+//       "recruiter_user_id":"3521d240-eb11-4ae5-ac27-d4f4e2ac5ea5"
+//   }
+// }
