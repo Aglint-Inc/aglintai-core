@@ -41,10 +41,11 @@ function InterviewerListCard({
     }
   };
 
-  const isAccepted =
-    item.interview_session_relation.accepted_status === 'accepted';
-  const isDeclined =
-    item.interview_session_relation.accepted_status === 'declined';
+  // TODO:chinmai
+  // const isAccepted =
+  //   item.interview_session_relation.accepted_status === 'accepted';
+  // const isDeclined =
+  //   item.interview_session_relation.accepted_status === 'declined';
   const isAcceptVisible =
     item.interview_session_relation.accepted_status === 'waiting' &&
     schedule.interview_meeting.status === 'confirmed' &&
@@ -121,8 +122,8 @@ function InterviewerListCard({
               },
             }}
             textDesignation={item.position || '--'}
-            isCorrectVisible={isAccepted}
-            isWrongVisible={isDeclined}
+            // isCorrectVisible={isAccepted}
+            // isWrongVisible={isDeclined}
             isDetailVisible={true}
             isDesignationVisible={true}
             isButtonVisible={false}

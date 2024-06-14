@@ -27,7 +27,7 @@ export async function emailAgentHandler(
     // modelName: 'gpt-3.5-turbo-0125',
     modelName: 'gpt-4-turbo-preview',
     temperature: 0.7,
-    verbose: envConfig.NODE_ENV === 'development.local',
+    verbose: false,
     apiKey: envConfig.OPENAI_APIKEY,
   });
 
