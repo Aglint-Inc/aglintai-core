@@ -32,7 +32,7 @@ app.use(express.urlencoded({extended: true}));
 // routes
 twilioClient.ListenTwilioVoiceWebhook(app);
 app.get('/health', (req, res) => {
-  res.status(200).send('server running');
+  res.status(200).send('server running v1');
 });
 app.use('/api/schedule-agent', phoneAgentRoutes);
 app.use('/api/screening-agent', screenignAgentRouter);
