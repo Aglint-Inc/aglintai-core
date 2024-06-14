@@ -11,8 +11,8 @@ import {
 } from '../../../utils/email/common/functions';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
-import { getFullName } from '@aglint/shared-utils';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/userTzDayjs';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'debrief_email_interviewer'>['api_payload'],
@@ -33,7 +33,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,timezone,recruiter_id,recruiter(logo)),public_jobs(job_title,company,recruiter)',
+        'candidates(first_name,last_name,timezone,recruiter_id,recruiter(logo)),public_jobs(job_title,company,recruiter)',
       )
       .eq('id', req_body.application_id),
   );
@@ -50,11 +50,11 @@ export async function fetchUtil(
   const [recruiter_user] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
-      .select('first_name,last_name')
+      .select('first_name,last_name,scheduling_settings')
       .eq('user_id', candidateJob.public_jobs.recruiter),
   );
 
-  const cand_tz = candidateJob.candidates.timezone ?? 'America/Los_Angeles';
+  const org_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
 
   const {
     interview_meeting,
@@ -65,9 +65,9 @@ export async function fetchUtil(
   } = session;
   const meeting_detail: MeetingDetailCardType = {
     date: dayjsLocal(interview_meeting.start_time)
-      .tz(cand_tz)
-      .format('ddd MMMM DD, YYYY'),
-    time: `${dayjsLocal(interview_meeting.start_time).tz(cand_tz).format('hh:mm A')} - ${dayjsLocal(interview_meeting.end_time).tz(cand_tz).format('hh:mm A')}`,
+      .tz(org_tz)
+      .format(DAYJS_FORMATS.DATE_FORMAT),
+    time: `${dayjsLocal(interview_meeting.start_time).tz(org_tz).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(interview_meeting.end_time).tz(org_tz).format(DAYJS_FORMATS.END_TIME_FORMAT)}`,
     sessionType: name,
     platform: platformRemoveUnderscore(session.schedule_type),
     duration: durationCalculator(session_duration),
@@ -83,7 +83,10 @@ export async function fetchUtil(
   const interviewers_mail_data = debrief_email_interviewers.map((inter) => {
     const comp_email_placeholder: EmailTemplateAPi<'debrief_email_interviewer'>['comp_email_placeholders'] =
       {
-        '{{ candidateFirstName }}': candidates.first_name,
+        '{{ candidateName }}': getFullName(
+          candidates.first_name,
+          candidates.last_name,
+        ),
         '{{ jobTitle }}': public_jobs.job_title,
         '{{ companyName }}': public_jobs.company,
         '{{ interviewerFirstName }}': inter.first_name,

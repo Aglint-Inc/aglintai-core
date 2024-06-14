@@ -1,9 +1,9 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/userTzDayjs';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
-import { getFullName } from '@aglint/shared-utils';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 
 export async function dbFetch(
   req_body: EmailTemplateAPi<'interviewStart_email_applicant'>['api_payload'],
@@ -59,10 +59,10 @@ export async function dbFetch(
       ),
       '{{ date }}': dayjsLocal(meeting.start_time)
         .tz(cand_tz)
-        .format('MMMM dddd YYYY'),
-      '{{ time }}': `${dayjsLocal(meeting.start_time)
+        .format(DAYJS_FORMATS.DATE_FORMAT),
+      '{{ time }}': dayjsLocal(meeting.start_time)
         .tz(cand_tz)
-        .format('hh:mm')} (${cand_tz})`,
+        .format(DAYJS_FORMATS.END_TIME_FORMAT),
     };
   const filled_comp_template = fillCompEmailTemplate(
     comp_email_placeholder,

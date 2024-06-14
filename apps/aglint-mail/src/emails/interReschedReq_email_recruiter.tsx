@@ -37,7 +37,7 @@ export const dummy: EmailType['react_email_placeholders'] = {
     },
   ],
   subject: '',
-  resheduleLink: `${process.env.NEXT_PUBLIC_APP_URL}/application/e8218fdc-524c-4f05-8786-23399370777b`,
+  resheduleLink: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/e8218fdc-524c-4f05-8786-23399370777b`,
 };
 
 // export get subject
@@ -77,7 +77,7 @@ export const CandidateRescheduleRequest = ({
                 className="px-3 py-2 bg-accent-9 text-white br rounded-[4px] text-text-xs"
                 href={resheduleLink}
               >
-                Rescheudle
+                Reschedule
               </Button>
             </Container>
             <Footer />
