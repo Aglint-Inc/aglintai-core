@@ -388,11 +388,11 @@ function SchedulingSettings({
 
                       <Stack
                         direction={'column'}
-                        spacing={1}
+                        spacing={2}
                         marginTop={'var(--space-5)'}
                       >
-                        <Stack direction={'column'} spacing={0.5}>
-                          <Typography variant='body1' fontSize={'15px'}>
+                        <Stack direction={'column'}>
+                          <Typography variant='body1medium'>
                             Default Break Times
                           </Typography>
                           <Typography variant='body1'>

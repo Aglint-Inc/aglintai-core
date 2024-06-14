@@ -269,19 +269,44 @@
   align-items: center;
 }
 
-.text-gray-600 {
-  color: var(--sand-11);
+.flex-horizontal {
+  display: flex;
 }
 
-.text-gray-600.is_link {
-  color: #337fbd;
-  text-decoration: underline;
-  cursor: pointer;
+.flex-horizontal.center {
+  justify-content: flex-start;
+  align-items: center;
 }
 
-.text-gray-600.underline {
-  text-decoration: underline;
-  cursor: pointer;
+.flex-horizontal.center.gap-2 {
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.flex-horizontal.center.gap-2.hide {
+  display: none;
+}
+
+.flex-horizontal.center.gap-1 {
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.flex-horizontal.center.gap-4 {
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
+}
+
+.flex-horizontal.gap-2 {
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.flex-horizontal.align-center {
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .slot_schedulecards {
@@ -355,8 +380,8 @@
   justify-content: flex-start;
   flex-wrap: nowrap;
   align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .avatar_sample {

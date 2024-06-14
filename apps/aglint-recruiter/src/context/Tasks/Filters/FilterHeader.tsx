@@ -90,7 +90,7 @@ export const FilterHeader = ({
       {Boolean(search) && (
         <Stack>
           <UITextField
-            width='400px'
+            width='250px'
             value={search.value}
             height={32}
             InputProps={{

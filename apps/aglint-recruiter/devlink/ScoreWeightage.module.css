@@ -1,12 +1,6 @@
-.score-weightage-wrap {
-  padding: var(--space-4) var(--space-6);
-}
-
 .right-score-card {
   width: 100%;
   padding: var(--space-4);
-  border-radius: var(--radius-2);
-  background-color: var(--neutral-3);
 }
 
 .slot-score-wrap {

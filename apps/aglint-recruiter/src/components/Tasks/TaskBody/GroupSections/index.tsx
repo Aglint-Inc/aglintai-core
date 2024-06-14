@@ -31,7 +31,7 @@ function GroupSections({
   const [sectionIndex, setSectionIndex] = useState(false);
 
   return (
-    <Collapse in={index === sectionIndex || sectionIndex} collapsedSize={41}>
+    <Collapse in={index === sectionIndex || sectionIndex} collapsedSize={60}>
       <TaskTableJobCard
         slotDropIcon={
           <ShowCode>
@@ -45,7 +45,7 @@ function GroupSections({
                 onClick={() => {
                   setSectionIndex(false);
                 }}>
-                  <GlobalIcon iconName='arrow_drop_down'/>
+                  <GlobalIcon iconName='arrow_drop_down'  size={6} color='neutral-11'/>
               </Box>
             </ShowCode.When>
             <ShowCode.Else>
@@ -58,7 +58,7 @@ function GroupSections({
                   onClick={() => {
                     setSectionIndex(true);
                   }}>
-                    <GlobalIcon iconName='arrow_right'/>
+                    <GlobalIcon iconName='arrow_right' size={6} color='neutral-11'/>
               </Box>
             </ShowCode.Else>
           </ShowCode>
@@ -83,14 +83,14 @@ function GroupSections({
                     alignItems: 'center',
                     backgroundColor: 'var(--neutral-3)',
                     padding: 'var(--space-1)',
-                    borderRadius: 'var(--radius-full)',
+                    borderRadius: 'var(--radius-2)',
                     minWidth: 'var(--space-5)',
                   }}>
                   <Typography
                     sx={{
                       cursor: 'pointer',
                     }}
-                    variant='body2bold'
+                    variant='body2'
                   >
                     {item.tasklist.length}
                   </Typography>
@@ -120,14 +120,14 @@ function GroupSections({
                     alignItems: 'center',
                     backgroundColor: 'var(--neutral-3)',
                     padding: 'var(--space-1)',
-                    borderRadius: 'var(--radius-full)',
+                    borderRadius: 'var(--radius-2)',
                     minWidth: 'var(--space-5)',
                   }}>
                   <Typography
                     sx={{
                       cursor: 'pointer',
                     }}
-                    variant='body2bold'
+                    variant='body2'
                   >
                     {item.tasklist.length}
                   </Typography>
@@ -149,14 +149,14 @@ function GroupSections({
                     alignItems: 'center',
                     backgroundColor: 'var(--neutral-3)',
                     padding: 'var(--space-1)',
-                    borderRadius: 'var(--radius-full)',
+                    borderRadius: 'var(--radius-2)',
                     minWidth: 'var(--space-5)',
                   }}>
                 <Typography
                   sx={{
                     cursor: 'pointer',
                   }}
-                  variant='body2bold'
+                  variant='body2'
                 >
                   {item.tasklist.length}
                 </Typography>
@@ -173,14 +173,14 @@ function GroupSections({
                     alignItems: 'center',
                     backgroundColor: 'var(--neutral-3)',
                     padding: 'var(--space-1)',
-                    borderRadius: 'var(--radius-full)',
+                    borderRadius: 'var(--radius-2)',
                     minWidth: 'var(--space-5)',
                   }}>
                   <Typography
                     sx={{
                       cursor: 'pointer',
                     }}
-                    variant='body2bold'
+                    variant='body2'
                   >
                     {item.tasklist.length}
                   </Typography>
@@ -197,14 +197,14 @@ function GroupSections({
                     alignItems: 'center',
                     backgroundColor: 'var(--neutral-3)',
                     padding: 'var(--space-1)',
-                    borderRadius: 'var(--radius-full)',
+                    borderRadius: 'var(--radius-2)',
                     minWidth: 'var(--space-5)',
                   }}>
                   <Typography
                     sx={{
                       cursor: 'pointer',
                     }}
-                    variant='body2bold'
+                    variant='body2'
                   >
                     {item.tasklist.length}
                   </Typography>
@@ -226,9 +226,9 @@ function GroupSections({
                 item.tasklist.filter((ele) => ele.type !== 'empty').length === 0
               }
             >
-              <Stack height={100}>
-                <TaskEmpty />
-              </Stack>
+              <Stack height={'calc(100vh - 136px)'} style={{ backgroundColor: 'var(--neutral-2)' }}>
+                    <TaskEmpty />
+                  </Stack>
             </ShowCode.When>
           </>
         }

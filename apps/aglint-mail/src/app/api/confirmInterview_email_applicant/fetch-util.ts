@@ -1,4 +1,4 @@
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/userTzDayjs';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
@@ -9,7 +9,7 @@ import {
   sessionTypeIcon,
   scheduleTypeIcon,
 } from '../../../utils/email/common/functions';
-import { getFullName } from '@aglint/shared-utils';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'confirmInterview_email_applicant'>['api_payload'],
@@ -34,6 +34,12 @@ export async function fetchUtil(
       .select('*,interview_meeting(*)')
       .in('id', req_body.session_ids),
   );
+  let cand_link = '';
+  if (req_body.availability_req_id) {
+    cand_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.availability_req_id}`;
+  } else {
+    cand_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${req_body.schedule_id}?filter_id=${req_body.schedule_id}`;
+  }
 
   const {
     candidates: {
@@ -41,7 +47,6 @@ export async function fetchUtil(
       recruiter_id,
       first_name,
       recruiter: { logo },
-      timezone,
     },
     public_jobs: { company, job_title },
   } = candidateJob;
@@ -50,14 +55,14 @@ export async function fetchUtil(
     recruiter_id,
     'confirmInterview_email_applicant',
   );
-  const cand_tz = timezone ?? 'America/Los_Angeles';
+  const cand_tz = 'America/Los_Angeles';
 
   const meeting_details = int_sessions.map((int_session) => {
     return {
       date: dayjsLocal(int_session.interview_meeting.start_time)
         .tz(cand_tz)
-        .format('ddd MMMM DD, YYYY'),
-      time: `${dayjsLocal(int_session.interview_meeting.start_time).tz(cand_tz).format('hh:mm A')} - ${dayjsLocal(int_session.interview_meeting.end_time).tz(cand_tz).format('hh:mm A')}`,
+        .format(DAYJS_FORMATS.DATE_FORMAT),
+      time: `${dayjsLocal(int_session.interview_meeting.start_time).tz(cand_tz).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(int_session.interview_meeting.end_time).tz(cand_tz).format(DAYJS_FORMATS.END_TIME_FORMAT)} `,
       sessionType: int_session.name,
       platform: platformRemoveUnderscore(int_session.schedule_type),
       duration: durationCalculator(int_session.session_duration),
@@ -87,7 +92,7 @@ export async function fetchUtil(
       companyLogo: logo,
       emailBody: filled_comp_template.body,
       subject: filled_comp_template.subject,
-      candidateLink: '',
+      candidateLink: cand_link,
       meetingDetails: meeting_details,
     };
 

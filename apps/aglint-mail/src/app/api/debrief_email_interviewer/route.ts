@@ -60,10 +60,8 @@ export async function POST(req: Request) {
 }
 
 // {
-//   "session_ids": [
-//     "5e7953c5-3e56-4d89-9857-29c34b55ce9d"
-//   ],
-//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637",
-//   "meeting_id":"8daab34c-9c19-445b-aa96-3b4735307414",
-//   "recruiter_user_id": "7f6c4cae-78b6-4eb6-86fd-9a0e0310147b"
+//   "meta": {
+//       "application_id": "af9538ac-50e8-4941-91c5-39a678c60077",
+//       "session_id":"1605b4ad-c561-44e0-b471-ceb1923bb6eb"
+//   }
 // }

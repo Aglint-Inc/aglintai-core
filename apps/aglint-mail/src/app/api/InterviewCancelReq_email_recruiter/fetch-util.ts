@@ -2,7 +2,7 @@ import type {
   EmailTemplateAPi,
   MeetingDetailCardType,
 } from '@aglint/shared-types';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/userTzDayjs';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   platformRemoveUnderscore,
@@ -12,7 +12,7 @@ import {
 } from '../../../utils/email/common/functions';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
-import { getFullName } from '@aglint/shared-utils';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'InterviewCancelReq_email_recruiter'>['api_payload'],
@@ -60,8 +60,8 @@ export async function fetchUtil(
       session_type,
     } = session;
     return {
-      date: dayjsLocal(start_time).tz(int_tz).format('ddd MMMM DD, YYYY'),
-      time: `${dayjsLocal(start_time).tz(int_tz).format('hh:mm A')} - ${dayjsLocal(end_time).tz(int_tz).format('hh:mm A')}`,
+      date: dayjsLocal(start_time).tz(int_tz).format(DAYJS_FORMATS.DATE_FORMAT),
+      time: `${dayjsLocal(start_time).tz(int_tz).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(end_time).tz(int_tz).format(DAYJS_FORMATS.END_TIME_FORMAT)}`,
       sessionType: name,
       platform: platformRemoveUnderscore(schedule_type),
       duration: durationCalculator(session_duration),
@@ -80,6 +80,7 @@ export async function fetchUtil(
       '{{ additionalRescheduleNotes }}': session_cancel.other_details.note,
       '{{ cancelReason }}': session_cancel.reason,
       '{{ recruiterName }}': recruiter_user.first_name,
+      '{{ jobTitle }}': candidateJob.public_jobs.job_title,
       '{{ candidateFirstName }}': candidates.first_name,
       '{{ companyName }}': public_jobs.company,
       '{{ recruiterFullName }}': getFullName(

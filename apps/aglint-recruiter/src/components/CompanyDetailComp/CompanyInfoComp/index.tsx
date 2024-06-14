@@ -318,7 +318,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                   <UITextField
                     labelBold='default'
                     labelSize='small'
-                    
+                    fullWidth
                     label='Company Name'
                     placeholder='Ex. Acme Inc.'
                     value={recruiter?.name}

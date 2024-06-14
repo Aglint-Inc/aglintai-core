@@ -39,10 +39,11 @@ function GroupTaskCard({
     <Tooltip {...props} classes={{ popper: className }} />
   ))(() => ({
     [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: 'var(--black)',
-      color: 'var(--black-a7)',
-      boxShadow: 'var(--shadow-1)',
-      fontSize: 'var(--font-size-1)',
+      backgroundColor: 'var(--neutral-12)',
+      border: '1px solid var(--neutral-6)',
+      color: 'var(--neutral-1)',
+      boxShadow: 'none',
+      fontSize: 'var(--font-size-2)',
     },
   }));
 

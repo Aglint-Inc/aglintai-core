@@ -51,11 +51,7 @@ export async function POST(req: Request) {
 }
 
 // {
-//   "session_id": [
-//     "5e7953c5-3e56-4d89-9857-29c34b55ce9d",
-//     "f5053399-1998-4b43-8ba5-801db1018e27"
-//   ],
-//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637",
-//   "schedule_id":"74559de0-2bc8-4028-a748-a7eae2f68182",
-//   "filter_id":"6e76d21f-7b7f-49c9-9398-b74dde1cedf1"
+//   "meta": {
+//       "avail_req_id": "eb718192-9610-4d4c-988b-6e84fc914c08"
+//   }
 // }

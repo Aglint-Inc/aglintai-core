@@ -94,7 +94,6 @@ export const useAllInterviewersDetails = () => {
     },
     enabled: Boolean(recruiter_id),
     refetchOnWindowFocus: false,
-    // refetchOnMount: false,
   });
   return query;
 };

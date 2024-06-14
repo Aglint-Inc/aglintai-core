@@ -44,10 +44,12 @@ function DeclineScheduleDialog({
   const onClickConfirm = async () => {
     try {
       if (sessionRelation?.id) {
-        await supabase
+        const { error: errorSelRel } = await supabase
           .from('interview_session_relation')
           .update({ accepted_status: 'declined' })
           .eq('id', sessionRelation.id);
+
+        if (errorSelRel) throw new Error();
 
         const { error } = await supabase
           .from('interview_session_cancel')
@@ -77,7 +79,7 @@ function DeclineScheduleDialog({
 
         addScheduleActivity({
           title: `Declined ${schedule.interview_session.name}. Reason: ${reason} `,
-          application_id: schedule.applications.id,
+          application_id: schedule.schedule.application_id,
           logged_by: 'user',
           supabase: supabase,
           created_by: recruiterUser.user_id,

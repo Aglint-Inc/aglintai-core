@@ -19,7 +19,7 @@ type EmailType = EmailTemplateAPi<'confirmInterview_email_applicant'>;
 // export dummy
 export const dummy: EmailType['react_email_placeholders'] = {
   emailBody:
-    '<p>Dear {{ candidateFirstName }},</p><p>We are pleased to confirm your interview for the {{ jobTitle }} position. Please find the details of your interview below.</p><p>{{ viewDetailsLink }}</p><p>Regards,</p><p>{{ companyName }} Team</p>',
+    '<p>Hi {{ candidateFirstName }},</p><p></p><p>We are pleased to confirm your interview for the {{ jobTitle }} position. Please find the details of your interview below.</p><p></p><p>Regards,</p><p>{{ companyName }}  Recruitment Team</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   meetingDetails: [
@@ -36,7 +36,7 @@ export const dummy: EmailType['react_email_placeholders'] = {
     },
   ],
   subject: '',
-  candidateLink: '',
+  candidateLink: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/f17b307d-c8ed-4355-b597-3fc642fa5989`,
 };
 
 // export get subject

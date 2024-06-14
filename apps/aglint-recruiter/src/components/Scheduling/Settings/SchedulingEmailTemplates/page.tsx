@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseTableInsert } from '@aglint/shared-types';
-import { Popover, Stack } from '@mui/material';
+import { Box, Popover, Stack } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
@@ -82,208 +82,213 @@ function SchedulerEmailTemps() {
   };
 
   return (
-    <Stack sx={{ paddingLeft: '20px' }}>
-      {emailTemplate && (
-        <EmailTemplatesStart
-          slotEmailTemplateCards={emailTemplate
-            ?.filter((emailPath) => emailTempKeys.includes(emailPath.type))
-            .filter((v, i, a) => a.findIndex((v2) => v2.type === v.type) === i)
-            .sort((a, b) => a.type.localeCompare(b.type))
-            .map((emailPath) => (
-              <EmailTemplateCards
-                key={emailPath.id}
-                isActive={selectedTemplate.type === emailPath.type}
-                textDescription={tempObj[emailPath.type]?.trigger}
-                textTitle={tempObj[emailPath.type]?.listing}
-                onClickApplicationRecieved={{
-                  onClick: () => {
-                    setTipTapLoder(true);
-                    setSelectedTemplate(emailPath);
-                    setTimeout(() => {
-                      setTipTapLoder(false);
-                    }, 500);
-                  },
-                }}
-              />
-            ))}
-          slotEmailDetails={
-            <>
-              {isEditorLoad && (
-                <>
-                  <Stack
-                    direction={'row'}
-                    alignItems={'center'}
-                    justifyContent={'center'}
-                    width={'10px'}
-                    height={'10vh'}
-                  >
-                    <LoaderSvg />
-                  </Stack>
-                </>
-              )}
-              {!isEditorLoad && (
-                <YTransform uniqueKey={selectedTemplate}>
-                  <EditEmail
-                    onClickPreview={{
-                      onClick: (e) => {
-                        preview();
-                        setAnchorEl(e.currentTarget);
-                      },
-                    }}
-                    isPreviewVisible={
-                      selectedTemplate.type == emailTempKeys[0] ? false : true
-                    }
-                    textTipsMessage={
-                      tempObj[selectedTemplate?.type]?.dynamicContent
-                    }
-                    editEmailDescription={
-                      tempObj[selectedTemplate?.type]?.description
-                    }
-                    isSaveChangesButtonVisible={false}
-                    textEmailName={tempObj[selectedTemplate?.type]?.heading}
-                    slotForm={
-                      <Stack spacing={'var(--space-5)'}>
-                        <UITextField
-                          labelSize='small'
-                          fullWidth
-                          label='Sender Name'
-                          secondaryText={`This name appears as the "From" name in emails to candidates. Choose a representative name for your company or recruiter.`}
-                          value={selectedTemplate?.from_name}
-                          onChange={(e) => {
-                            const text = e.target.value;
-
-                            setSelectedTemplate((pre) => {
-                              pre.from_name = text;
-
-                              return { ...pre };
-                            });
-                          }}
-                        />
-                        <UITextField
-                          labelSize='small'
-                          fullWidth
-                          placeholder={
-                            tempObj[selectedTemplate?.type]?.subjectPlaceHolder
-                          }
-                          label='Email Subject'
-                          value={selectedTemplate?.subject}
-                          onChange={(e) => {
-                            const text = e.target.value;
-                            setSelectedTemplate((pre) => {
-                              pre.subject = text;
-
-                              return { ...pre };
-                            });
-                          }}
-                          minRows={1}
-                          multiline
-                        />
-                        <Stack>
-                          <UITypography type='small'>Email Body</UITypography>
-                          <Stack
-                            sx={{
-                              mt: '8px',
-                              border: '1px solid',
-                              borderColor: 'var(--neutral-6)',
-                              borderRadius: 'var(--radius-2)',
-                            }}
-                          >
-                            {tiptapLoader && (
-                              <>
-                                <Stack
-                                  alignItems={'center'}
-                                  height={'200px'}
-                                  justifyContent={'center'}
-                                >
-                                  <LoaderSvg />
-                                </Stack>
-                              </>
-                            )}
-                            {!tiptapLoader && (
-                              <TipTapAIEditor
-                                enablAI={false}
-                                placeholder={''}
-                                handleChange={(html) => {
-                                  // TIPTAPTODO:
-                                  const text = html;
-                                  setSelectedTemplate((pre) => {
-                                    pre.body = text;
-                                    return { ...pre };
-                                  });
-                                }}
-                                initialValue={selectedTemplate.body}
-                              />
-                            )}
-                          </Stack>
-                        </Stack>
-                        <Stack
-                          width={'100%'}
-                          direction={'row'}
-                          justifyContent={'start'}
-                        >
-                          <ButtonSolid
-                            size={2}
-                            isLoading={saving}
-                            textButton={'Save'}
-                            onClickButton={{
-                              onClick: () => {
-                                setSaving(true);
-                                updateEmail({
-                                  id: selectedTemplate.id,
-                                  data: selectedTemplate,
-                                });
-                              },
-                            }}
-                          />
-                        </Stack>
-                      </Stack>
-                    }
-                  />
-                  <Popover
-                    id='popover-agent'
-                    open={open}
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'left',
-                    }}
-                    transformOrigin={{ vertical: -6, horizontal: 0 }}
-                    onClose={handleClose}
-                  >
-                    <PreviewEmail
-                      slotContent={
-                        popOverLoading ? (
-                          <Stack
-                            alignItems={'center'}
-                            height={'400px'}
-                            justifyContent={'center'}
-                          >
-                            <LoaderSvg />
-                          </Stack>
-                        ) : (
-                          <iframe
-                            width={'790px'}
-                            height={'490px'}
-                            color='white'
-                            srcDoc={isHtml}
-                            title='Previw Email'
-                          />
-                        )
-                      }
-                      onClickClose={{
-                        onClick: () => {
-                          setAnchorEl(null);
-                          setHtml(null);
+    <Stack sx={{ padding: '24px' }}>
+      <Box sx={{ 
+        border: '1px solid var(--neutral-6)', 
+        borderRadius: 'var(--radius-4)'
+      }}>
+        {emailTemplate && (
+          <EmailTemplatesStart
+            slotEmailTemplateCards={emailTemplate
+              ?.filter((emailPath) => emailTempKeys.includes(emailPath.type))
+              .filter((v, i, a) => a.findIndex((v2) => v2.type === v.type) === i)
+              .sort((a, b) => a.type.localeCompare(b.type))
+              .map((emailPath) => (
+                <EmailTemplateCards
+                  key={emailPath.id}
+                  isActive={selectedTemplate.type === emailPath.type}
+                  textDescription={tempObj[emailPath.type]?.trigger}
+                  textTitle={tempObj[emailPath.type]?.listing}
+                  onClickApplicationRecieved={{
+                    onClick: () => {
+                      setTipTapLoder(true);
+                      setSelectedTemplate(emailPath);
+                      setTimeout(() => {
+                        setTipTapLoder(false);
+                      }, 500);
+                    },
+                  }}
+                />
+              ))}
+            slotEmailDetails={
+              <>
+                {isEditorLoad && (
+                  <>
+                    <Stack
+                      direction={'row'}
+                      alignItems={'center'}
+                      justifyContent={'center'}
+                      width={'10px'}
+                      height={'10vh'}
+                    >
+                      <LoaderSvg />
+                    </Stack>
+                  </>
+                )}
+                {!isEditorLoad && (
+                  <YTransform uniqueKey={selectedTemplate}>
+                    <EditEmail
+                      onClickPreview={{
+                        onClick: (e) => {
+                          preview();
+                          setAnchorEl(e.currentTarget);
                         },
                       }}
+                      isPreviewVisible={
+                        selectedTemplate.type == emailTempKeys[0] ? false : true
+                      }
+                      textTipsMessage={
+                        tempObj[selectedTemplate?.type]?.dynamicContent
+                      }
+                      editEmailDescription={
+                        tempObj[selectedTemplate?.type]?.description
+                      }
+                      isSaveChangesButtonVisible={false}
+                      textEmailName={tempObj[selectedTemplate?.type]?.heading}
+                      slotForm={
+                        <Stack spacing={'var(--space-5)'}>
+                          <UITextField
+                            labelSize='small'
+                            fullWidth
+                            label='Sender Name'
+                            secondaryText={`This name appears as the "From" name in emails to candidates. Choose a representative name for your company or recruiter.`}
+                            value={selectedTemplate?.from_name}
+                            onChange={(e) => {
+                              const text = e.target.value;
+
+                              setSelectedTemplate((pre) => {
+                                pre.from_name = text;
+
+                                return { ...pre };
+                              });
+                            }}
+                          />
+                          <UITextField
+                            labelSize='small'
+                            fullWidth
+                            placeholder={
+                              tempObj[selectedTemplate?.type]?.subjectPlaceHolder
+                            }
+                            label='Email Subject'
+                            value={selectedTemplate?.subject}
+                            onChange={(e) => {
+                              const text = e.target.value;
+                              setSelectedTemplate((pre) => {
+                                pre.subject = text;
+
+                                return { ...pre };
+                              });
+                            }}
+                            minRows={1}
+                            multiline
+                          />
+                          <Stack>
+                            <UITypography type='small'>Email Body</UITypography>
+                            <Stack
+                              sx={{
+                                mt: '8px',
+                                border: '1px solid',
+                                borderColor: 'var(--neutral-6)',
+                                borderRadius: 'var(--radius-2)',
+                              }}
+                            >
+                              {tiptapLoader && (
+                                <>
+                                  <Stack
+                                    alignItems={'center'}
+                                    height={'200px'}
+                                    justifyContent={'center'}
+                                  >
+                                    <LoaderSvg />
+                                  </Stack>
+                                </>
+                              )}
+                              {!tiptapLoader && (
+                                <TipTapAIEditor
+                                  enablAI={false}
+                                  placeholder={''}
+                                  handleChange={(html) => {
+                                    // TIPTAPTODO:
+                                    const text = html;
+                                    setSelectedTemplate((pre) => {
+                                      pre.body = text;
+                                      return { ...pre };
+                                    });
+                                  }}
+                                  initialValue={selectedTemplate.body}
+                                />
+                              )}
+                            </Stack>
+                          </Stack>
+                          <Stack
+                            width={'100%'}
+                            direction={'row'}
+                            justifyContent={'start'}
+                          >
+                            <ButtonSolid
+                              size={2}
+                              isLoading={saving}
+                              textButton={'Save'}
+                              onClickButton={{
+                                onClick: () => {
+                                  setSaving(true);
+                                  updateEmail({
+                                    id: selectedTemplate.id,
+                                    data: selectedTemplate,
+                                  });
+                                },
+                              }}
+                            />
+                          </Stack>
+                        </Stack>
+                      }
                     />
-                  </Popover>
-                </YTransform>
-              )}
-            </>
-          }
-        />
-      )}
+                    <Popover
+                      id='popover-agent'
+                      open={open}
+                      anchorEl={anchorEl}
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                      }}
+                      transformOrigin={{ vertical: -6, horizontal: 0 }}
+                      onClose={handleClose}
+                    >
+                      <PreviewEmail
+                        slotContent={
+                          popOverLoading ? (
+                            <Stack
+                              alignItems={'center'}
+                              height={'400px'}
+                              justifyContent={'center'}
+                            >
+                              <LoaderSvg />
+                            </Stack>
+                          ) : (
+                            <iframe
+                              width={'790px'}
+                              height={'490px'}
+                              color='white'
+                              srcDoc={isHtml}
+                              title='Previw Email'
+                            />
+                          )
+                        }
+                        onClickClose={{
+                          onClick: () => {
+                            setAnchorEl(null);
+                            setHtml(null);
+                          },
+                        }}
+                      />
+                    </Popover>
+                  </YTransform>
+                )}
+              </>
+            }
+          />
+        )}
+      </Box>
     </Stack>
   );
 }

@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import type {
   EmailTemplateAPi,
   MeetingDetailCardType,
@@ -12,7 +11,8 @@ import {
 } from '../../../utils/email/common/functions';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
-import { getFullName } from '@aglint/shared-utils';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'debrief_email_interviewer'>['api_payload'],
@@ -33,7 +33,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company,recruiter)',
+        'candidates(first_name,last_name,timezone,recruiter_id,recruiter(logo)),public_jobs(job_title,company,recruiter)',
       )
       .eq('id', req_body.application_id),
   );
@@ -50,9 +50,12 @@ export async function fetchUtil(
   const [recruiter_user] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
-      .select('first_name,last_name')
+      .select('first_name,last_name,scheduling_settings')
       .eq('user_id', candidateJob.public_jobs.recruiter),
   );
+
+  const org_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
+
   const {
     interview_meeting,
     name,
@@ -61,8 +64,10 @@ export async function fetchUtil(
     session_type,
   } = session;
   const meeting_detail: MeetingDetailCardType = {
-    date: dayjs(interview_meeting.start_time).format('ddd MMMM DD, YYYY'),
-    time: `${dayjs(interview_meeting.start_time).format('hh:mm A')} - ${dayjs(interview_meeting.end_time).format('hh:mm A')}`,
+    date: dayjsLocal(interview_meeting.start_time)
+      .tz(org_tz)
+      .format(DAYJS_FORMATS.DATE_FORMAT),
+    time: `${dayjsLocal(interview_meeting.start_time).tz(org_tz).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(interview_meeting.end_time).tz(org_tz).format(DAYJS_FORMATS.END_TIME_FORMAT)}`,
     sessionType: name,
     platform: platformRemoveUnderscore(session.schedule_type),
     duration: durationCalculator(session_duration),
@@ -78,11 +83,14 @@ export async function fetchUtil(
   const interviewers_mail_data = debrief_email_interviewers.map((inter) => {
     const comp_email_placeholder: EmailTemplateAPi<'debrief_email_interviewer'>['comp_email_placeholders'] =
       {
-        '{{ candidateFirstName }}': candidates.first_name,
+        '{{ candidateName }}': getFullName(
+          candidates.first_name,
+          candidates.last_name,
+        ),
         '{{ jobTitle }}': public_jobs.job_title,
         '{{ companyName }}': public_jobs.company,
         '{{ interviewerFirstName }}': inter.first_name,
-        '{{recruiterFirstName }}': getFullName(
+        '{{ recruiterFirstName }}': getFullName(
           recruiter_user.first_name,
           recruiter_user.last_name,
         ),
@@ -99,7 +107,7 @@ export async function fetchUtil(
         emailBody: filled_comp_template.body,
         subject: filled_comp_template.subject,
         meetingDetails: meeting_detail,
-        candidateLink: '',
+        candidateLink: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}`,
       };
 
     return {

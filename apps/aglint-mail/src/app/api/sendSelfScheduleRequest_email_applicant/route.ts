@@ -51,6 +51,7 @@ export async function POST(req: Request) {
 }
 
 // {
-//     "meeting_id": "8daab34c-9c19-445b-aa96-3b4735307414",
-//     "filter_id": "71b8859d-b6c6-425e-8b1a-e97ae8bb9498"
+//   "meta": {
+//       "filter_json_id":"1309e323-7fc1-46e3-a2e7-b0be582139fe"
+//   }
 // }

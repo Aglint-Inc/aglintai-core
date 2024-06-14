@@ -360,7 +360,7 @@ function ATSTools() {
                     setHideApiKey((pre) => !pre);
                   }}
                 > 
-                  hideApiKey ? <GlobalIcon iconName='visibility'/> : <GlobalIcon iconName='visibility_off'/>
+                  {hideApiKey ? <GlobalIcon iconName='visibility'/> : <GlobalIcon iconName='visibility_off'/>}
                 </IconButton>
               ),
             }}

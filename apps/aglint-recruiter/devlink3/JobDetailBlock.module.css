@@ -10,7 +10,7 @@
   padding-left: 20px;
   flex-direction: column;
 
-  background-color: white;
+  background-color: var(--neutral-2);
 
   height: calc(100vh - 60px);
 }
@@ -24,7 +24,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: white;
 }
 
 .div-block-507 {

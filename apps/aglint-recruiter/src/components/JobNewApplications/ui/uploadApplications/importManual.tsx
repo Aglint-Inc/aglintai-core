@@ -5,14 +5,14 @@ import { Stack, Typography } from '@mui/material';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
-import { ButtonSolid } from '@/devlink3/ButtonSolid';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import UIPhoneInput from '@/src/components/Common/UIPhoneInput';
 import UITextField from '@/src/components/Common/UITextField';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
-import { palette } from '@/src/context/Theme/Theme';
 
 type FormEntries = {
   first_name: FormField;
@@ -211,11 +211,9 @@ const FormBody = ({
     });
   };
   return (
-    <Stack gap={3} p={'4px'}>
-      <Stack flexDirection={'row'} gap={3}>
+    <Stack gap={2} p={'16px 16px 16px'}>
+      <Stack flexDirection={'row'} gap={2}>
         <UITextField
-          labelBold='normal'
-          labelSize='small'
           fullWidth
           label='First Name'
           placeholder={'First Name'}
@@ -227,8 +225,6 @@ const FormBody = ({
         />
 
         <UITextField
-          labelBold='normal'
-          labelSize='small'
           fullWidth
           label='Last Name'
           placeholder='Last Name'
@@ -239,13 +235,11 @@ const FormBody = ({
           onChange={(e) => handleChange(e, 'last_name')}
         />
       </Stack>
-      <Stack flexDirection={'row'} gap={3}>
+      <Stack flexDirection={'row'} gap={2}>
         <UITextField
-          labelBold='normal'
-          labelSize='small'
           fullWidth
           label='Email'
-          placeholder='email'
+          placeholder='Email'
           required
           value={applicant.email.value}
           error={applicant.email.error}
@@ -269,7 +263,6 @@ const FormBody = ({
         >
           <UIPhoneInput
             label='Phone Number'
-            labelBold='normal'
             labelSize='small'
             defaultCountry={userCountry}
             placeholder={'Phone Number'}
@@ -283,13 +276,10 @@ const FormBody = ({
           />
         </Stack>
       </Stack>
-
       <UITextField
-        labelBold='normal'
-        labelSize='small'
         label='LinkedIn URL'
         fullWidth
-        placeholder='linkedin'
+        placeholder='Linkedin'
         required
         value={applicant.linkedin.value}
         error={applicant.linkedin.error}
@@ -298,13 +288,11 @@ const FormBody = ({
       />
       <Stack spacing={1}>
         <Stack
-          fontWeight={600}
-          fontSize={'14px'}
           flexDirection={'row'}
           gap={'4px'}
         >
           Upload Resume
-          <Stack style={{ color: 'red' }}>*</Stack>
+          <Stack style={{ color: 'var(--error-11)' }}>*</Stack>
         </Stack>
         <Stack pb={2}>
           <FileUploader
@@ -314,12 +302,12 @@ const FormBody = ({
             <Stack
               sx={{
                 border: '1px dashed',
-                borderColor: palette.blue[300],
+                borderColor: 'var(--neutral-6)',
                 borderRadius: 1,
-                py: '34px',
-                px: '20px',
+                py: '32px',
+                px: '32px',
                 cursor: 'pointer',
-                background: 'hsla(206.66666666666666, 100.00%, 96.47%, 0.50);',
+                background: 'var(--neutral-2)',
               }}
               direction='row'
               spacing={'8px'}
@@ -331,8 +319,8 @@ const FormBody = ({
                 variant='body1'
                 sx={{ textAlgin: 'center', fontSize: '14px' }}
                 style={{
-                  color: applicant.resume.error ? 'red' : 'inherit',
-                  fontWeight: applicant.resume.value ? 600 : 400,
+                  color: applicant.resume.error ? 'var(--error-11)' : 'inherit',
+                  fontWeight: applicant.resume.value ? 500 : 400,
                 }}
               >
                 {applicant.resume.value
@@ -343,7 +331,7 @@ const FormBody = ({
             </Stack>
           </FileUploader>
           {applicant.resume.error && (
-            <Stack fontSize={'0.75rem'} style={{ color: 'red' }}>
+            <Stack fontSize={'0.75rem'} style={{ color: 'var(--error-11)' }}>
               Please upload the candidate resume
             </Stack>
           )}
@@ -378,18 +366,19 @@ export const FileIcon = () => {
 
 export const UploadIcon = () => {
   return (
-    <svg
-      xmlns='http://www.w3.org/2000/svg'
-      width='24'
-      height='24'
-      viewBox='0 0 24 24'
-      fill='none'
-    >
-      <path
-        d='M1 14.5C1 12.1716 2.22429 10.1291 4.06426 8.9812C4.56469 5.044 7.92686 2 12 2C16.0731 2 19.4353 5.044 19.9357 8.9812C21.7757 10.1291 23 12.1716 23 14.5C23 17.9216 20.3562 20.7257 17 20.9811L7 21C3.64378 20.7257 1 17.9216 1 14.5ZM16.8483 18.9868C19.1817 18.8093 21 16.8561 21 14.5C21 12.927 20.1884 11.4962 18.8771 10.6781L18.0714 10.1754L17.9517 9.23338C17.5735 6.25803 15.0288 4 12 4C8.97116 4 6.42647 6.25803 6.0483 9.23338L5.92856 10.1754L5.12288 10.6781C3.81156 11.4962 3 12.927 3 14.5C3 16.8561 4.81833 18.8093 7.1517 18.9868L7.325 19H16.675L16.8483 18.9868ZM13 13V17H11V13H8L12 8L16 13H13Z'
-        fill='#2F3941'
-      />
-    </svg>
+    <GlobalIcon iconName='cloud_upload' size={8} weight={'thin'}/>
+    // <svg
+    //   xmlns='http://www.w3.org/2000/svg'
+    //   width='24'
+    //   height='24'
+    //   viewBox='0 0 24 24'
+    //   fill='none'
+    // >
+    //   <path
+    //     d='M1 14.5C1 12.1716 2.22429 10.1291 4.06426 8.9812C4.56469 5.044 7.92686 2 12 2C16.0731 2 19.4353 5.044 19.9357 8.9812C21.7757 10.1291 23 12.1716 23 14.5C23 17.9216 20.3562 20.7257 17 20.9811L7 21C3.64378 20.7257 1 17.9216 1 14.5ZM16.8483 18.9868C19.1817 18.8093 21 16.8561 21 14.5C21 12.927 20.1884 11.4962 18.8771 10.6781L18.0714 10.1754L17.9517 9.23338C17.5735 6.25803 15.0288 4 12 4C8.97116 4 6.42647 6.25803 6.0483 9.23338L5.92856 10.1754L5.12288 10.6781C3.81156 11.4962 3 12.927 3 14.5C3 16.8561 4.81833 18.8093 7.1517 18.9868L7.325 19H16.675L16.8483 18.9868ZM13 13V17H11V13H8L12 8L16 13H13Z'
+    //     fill='#2F3941'
+    //   />
+    // </svg>
   );
 };
 

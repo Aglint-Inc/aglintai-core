@@ -50,7 +50,7 @@ function ModuleSchedules({
         <Stack>
           <UITextField
             height={32}
-            width='300px'
+            width='250px'
             value={changeText}
             InputProps={{
               endAdornment: (

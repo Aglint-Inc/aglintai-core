@@ -27,7 +27,7 @@ function IconScheduleType({
           </svg>
         </ShowCode.When>
         <ShowCode.When isTrue={type == 'phone_call'}>
-          <GlobalIcon iconName='phone_in_talk' />
+          <GlobalIcon iconName='phone_in_talk' color={'var(--neutral-11)'}/>
           {/* <svg
             width='18'
             height='18'

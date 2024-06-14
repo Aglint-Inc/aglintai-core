@@ -5124,7 +5124,12 @@ export type Database = {
         | "overdue"
         | "on_hold"
         | "failed"
-      task_type_enum: "schedule" | "training" | "empty"
+      task_type_enum:
+        | "schedule"
+        | "training"
+        | "empty"
+        | "availability"
+        | "self_schedule"
       template_type:
         | "cognitive"
         | "language"

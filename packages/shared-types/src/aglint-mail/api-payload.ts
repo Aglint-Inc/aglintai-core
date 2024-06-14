@@ -36,9 +36,9 @@ type Payloads = {
     comp_email_placeholders: {
       "{{ interviewerFirstName }}": string;
       "{{ companyName }}": string;
-      "{{ candidateFirstName }}": string;
+      "{{ candidateName }}": string;
       "{{ jobTitle }}": string;
-      "{{recruiterFirstName }}": string;
+      "{{ recruiterFirstName }}": string;
     };
     react_email_placeholders: {
       subject: string;
@@ -100,7 +100,7 @@ type Payloads = {
     api_payload: v.InferInput<typeof confInterviewEmailOrganizerSchema>;
     comp_email_placeholders: {
       "{{ recruiterFirstName }}": string;
-      "{{ candidateFirstName }}": string;
+      "{{ candidateName }}": string;
       "{{ recruiterFullName }}": string;
     };
     react_email_placeholders: {
@@ -185,6 +185,7 @@ type Payloads = {
       "{{ recruiterName }}": string;
       "{{ candidateFirstName }}": string;
       "{{ cancelReason }}": string;
+      "{{ jobTitle }}": string;
       "{{ additionalRescheduleNotes }}": string;
       "{{ companyName }}": string;
       "{{ recruiterFullName }}": string;
@@ -204,6 +205,8 @@ type Payloads = {
       "{{ candidateFirstName }}": string;
       "{{ rescheduleReason }}": string;
       "{{ additionalRescheduleNotes }}": string;
+      "{{ jobTitle }}": string;
+      "{{ companyName }}": string;
       "{{ dateRange }}": string;
       "{{ recruiterFullName }}": string;
     };
@@ -221,6 +224,7 @@ type Payloads = {
     comp_email_placeholders: {
       "{{ candidateFirstName }}": string;
       "{{ jobRole }}": string;
+      "{{ jobTitle }}": string;
       "{{ companyName }}": string;
       "{{ selfScheduleLink }}": string;
       "{{ recruiterFullName }}": string;
@@ -257,6 +261,8 @@ type Payloads = {
       "{{ companyName }}": string;
       "{{ candidateName }}": string;
       "{{ jobTitle }}": string;
+      "{{ date }}": string;
+      "{{ time }}": string;
       "{{ recruiterName }}": string;
       "{{ recruiterFullName }}": string;
     };

@@ -29,12 +29,11 @@ function MySchedule() {
     }
   };
 
-  const {
-    data: { schedules: scheduleList },
-    isFetched,
-  } = useScheduleList({
+  const { data, isFetched } = useScheduleList({
     user_id: recruiterUser.user_id,
   });
+
+  const scheduleList = data?.schedules || [];
 
   return (
     <>

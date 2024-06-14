@@ -120,25 +120,26 @@ function SchedulingMainComp() {
                   />
                 </Stack>
               )}
-            {(tab === 'schedules' || tab === 'myschedules') && (
-              <TaskSwitchButton
-                isIconVisible={false}
-                isJobCandActive={tab === 'schedules'}
-                isListActive={tab === 'myschedules'}
-                onClickJobCand={{
-                  onClick: () => {
-                    router.push(`${ROUTES['/scheduling']()}?tab=schedules`);
-                  },
-                }}
-                onClickList={{
-                  onClick: () => {
-                    router.push(`${ROUTES['/scheduling']()}?tab=myschedules`);
-                  },
-                }}
-                textFirst={'All Schedules'}
-                textSecond={'My Schedules'}
-              />
-            )}
+            {(tab === 'schedules' || tab === 'myschedules') &&
+              isAllowed(['admin', 'recruiter', 'recruiting_coordinator']) && (
+                <TaskSwitchButton
+                  isIconVisible={false}
+                  isJobCandActive={tab === 'schedules'}
+                  isListActive={tab === 'myschedules'}
+                  onClickJobCand={{
+                    onClick: () => {
+                      router.push(`${ROUTES['/scheduling']()}?tab=schedules`);
+                    },
+                  }}
+                  onClickList={{
+                    onClick: () => {
+                      router.push(`${ROUTES['/scheduling']()}?tab=myschedules`);
+                    },
+                  }}
+                  textFirst={'All Schedules'}
+                  textSecond={'My Schedules'}
+                />
+              )}
           </>
         }
         slotBody={
@@ -248,8 +249,9 @@ const InterviewerModule = ({
   user_id: string;
 }) => {
   const router = useRouter();
-  const { data } = useInterviewModules({ recruiter_id, user_id });
-  const filteredData = data.filter(
+  const { data, isPending } = useInterviewModules({ recruiter_id, user_id });
+
+  const filteredData = data?.filter(
     (item) => !item.interview_modules.is_archived,
   );
 
@@ -257,71 +259,79 @@ const InterviewerModule = ({
     <InterviewModuleTable
       isFilterVisible={false}
       slotInterviewModuleCard={
-        <Stack width={'100%'} height={'calc(100vh - 112px)'}>
-          {filteredData.length > 0 ? (
-            filteredData.map((mod) => {
-              return (
-                <Stack
-                  key={mod.interview_modules.id}
-                  sx={{ pointerEvents: 'fill' }}
-                >
-                  <InterviewModuleCard
-                    isObjectiveVisible={Boolean(
-                      mod.interview_modules.description,
-                    )}
-                    onClickCard={{
-                      onClick: () => {
-                        router.push(
-                          ROUTES['/scheduling/module/[module_id]']({
-                            module_id: mod.interview_modules.id,
-                          }),
-                        );
-                      },
-                    }}
-                    textObjective={mod.interview_modules.description}
-                    textModuleName={mod.interview_modules.name}
-                    textDepartment={mod.interview_modules.department}
-                    slotMemberPic={
-                      <AvatarGroup total={mod.users.length}>
-                        {mod.users.slice(0, 5).map((user) => {
-                          return (
-                            <MuiAvatar
-                              key={user.user_id}
-                              src={user.profile_image}
-                              level={getFullName(
-                                user.first_name,
-                                user.last_name,
-                              )}
-                              variant='rounded-small'
-                            />
+        !isPending && (
+          <Stack width={'100%'} height={'calc(100vh - 112px)'}>
+            {filteredData.length > 0 ? (
+              filteredData.map((mod) => {
+                return (
+                  <Stack
+                    key={mod.interview_modules.id}
+                    sx={{ pointerEvents: 'fill' }}
+                  >
+                    <InterviewModuleCard
+                      isObjectiveVisible={Boolean(
+                        mod.interview_modules.description,
+                      )}
+                      onClickCard={{
+                        onClick: () => {
+                          router.push(
+                            ROUTES['/scheduling/module/[module_id]']({
+                              module_id: mod.interview_modules.id,
+                            }),
                           );
-                        })}
-                      </AvatarGroup>
-                    }
-                    textMembersCount={
-                      mod.users.length !== 0
-                        ? `${mod.users.length} Members`
-                        : ''
-                    }
-                    textCompletedSchedules={mod.completed_meeting_count}
-                    textUpcomingSchedules={mod.upcoming_meeting_count}
-                    isCompletedScheduleEmpty={mod.completed_meeting_count === 0}
-                    isCompletedScheduleVisible={mod.completed_meeting_count > 0}
-                    isUpcomingScheduleEmpty={mod.upcoming_meeting_count === 0}
-                    isUpcomingScheduleVisible={mod.upcoming_meeting_count > 0}
-                  />
-                </Stack>
-              );
-            })
-          ) : (
-            <Stack>
-              <EmptyState
-                slotIcons={<Icon height='60' width='80' variant='EmptyState' />}
-                textDescription={'No interview types found.'}
-              />
-            </Stack>
-          )}
-        </Stack>
+                        },
+                      }}
+                      textObjective={mod.interview_modules.description}
+                      textModuleName={mod.interview_modules.name}
+                      textDepartment={mod.interview_modules.department}
+                      slotMemberPic={
+                        <AvatarGroup total={mod.users.length}>
+                          {mod.users.slice(0, 5).map((user) => {
+                            return (
+                              <MuiAvatar
+                                key={user.user_id}
+                                src={user.profile_image}
+                                level={getFullName(
+                                  user.first_name,
+                                  user.last_name,
+                                )}
+                                variant='rounded-small'
+                              />
+                            );
+                          })}
+                        </AvatarGroup>
+                      }
+                      textMembersCount={
+                        mod.users.length !== 0
+                          ? `${mod.users.length} Members`
+                          : ''
+                      }
+                      textCompletedSchedules={mod.completed_meeting_count}
+                      textUpcomingSchedules={mod.upcoming_meeting_count}
+                      isCompletedScheduleEmpty={
+                        mod.completed_meeting_count === 0
+                      }
+                      isCompletedScheduleVisible={
+                        mod.completed_meeting_count > 0
+                      }
+                      isUpcomingScheduleEmpty={mod.upcoming_meeting_count === 0}
+                      isUpcomingScheduleVisible={mod.upcoming_meeting_count > 0}
+                    />
+                  </Stack>
+                );
+              })
+            ) : (
+              <Stack>
+                <EmptyState
+                  slotIcons={
+                    <Icon height='60' width='80' variant='EmptyState' />
+                  }
+                  textDescription={'No interview types found.'}
+                />
+              </Stack>
+            )}
+          </Stack>
+        )
       }
     />
   );
@@ -344,7 +354,6 @@ export const useInterviewModules = ({
         ),
       ),
     enabled: !!recruiter.id,
-    initialData: [],
     refetchOnWindowFocus: false,
   });
   return query;
