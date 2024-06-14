@@ -1,3 +1,4 @@
+import { supabaseWrap } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import { cloneDeep, set } from 'lodash';
@@ -16,10 +17,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { PhoneScreenQuestion } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '../JobsDashboard/JobPostCreateUpdate/utils';
+import { API_FAIL_MSG } from '../JobsDashboard/JobPostCreateUpdate/utils';
 import { defaultLogo } from './utils';
 
 type PhoneScreenCandQnType = Omit<PhoneScreenQuestion, 'options'>;

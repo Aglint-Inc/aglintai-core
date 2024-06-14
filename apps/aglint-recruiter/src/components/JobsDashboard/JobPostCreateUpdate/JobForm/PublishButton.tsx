@@ -1,3 +1,4 @@
+import { supabaseWrap } from '@aglint/shared-utils';
 import { CircularProgress } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -15,7 +16,6 @@ import {
   API_FAIL_MSG,
   getjobformToDbcolumns,
   isWarningsCleared,
-  supabaseWrap,
 } from '../utils';
 
 const JobPublishButton = () => {

@@ -1,3 +1,4 @@
+import { supabaseWrap } from '@aglint/shared-utils';
 import { get } from 'lodash';
 
 import { JobUnpublishDisclaimer } from '@/devlink/JobUnpublishDisclaimer';
@@ -6,7 +7,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { useJobForm } from '../JobPostFormProvider';
-import { API_FAIL_MSG, supabaseWrap } from '../utils';
+import { API_FAIL_MSG } from '../utils';
 
 function PublishDesclaimer() {
   const { jobForm, handleInitializeForm, handleUpdateRevertStatus } =

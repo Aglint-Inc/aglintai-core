@@ -5,10 +5,10 @@ import {
   CompServiceKeyCred,
   ScheduleAuthType,
 } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
 import { CalEventAttendeesAuthDetails } from '@/src/utils/event_book/book_session';
 import { decrypt_string } from '@/src/utils/integrations/crypt-funcs';

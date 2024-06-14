@@ -1,6 +1,5 @@
 import { CalendarEvent, NewCalenderEvent } from '@aglint/shared-types';
-
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import { supabaseWrap } from '@aglint/shared-utils';
 
 import {
   GetAuthParams,

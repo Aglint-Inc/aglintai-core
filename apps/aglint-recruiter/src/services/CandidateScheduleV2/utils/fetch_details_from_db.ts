@@ -10,8 +10,8 @@ import {
   SessionInterviewerApiRespType,
   SessionInterviewerType,
 } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { decrypt_string } from '@/src/utils/integrations/crypt-funcs';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
