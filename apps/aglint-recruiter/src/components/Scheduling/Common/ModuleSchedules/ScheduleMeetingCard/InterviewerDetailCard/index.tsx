@@ -97,7 +97,7 @@ function InterviewerDetailsCard({
     >
       <Stack>
         <MembersList
-          isCorrectVisible={user.accepted_status === 'accepted'}
+          // isCorrectVisible={user.accepted_status === 'accepted'}
           slotImage={
             <MuiAvatar
               key={user.id}

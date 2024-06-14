@@ -45,7 +45,7 @@ function GroupSections({
                 onClick={() => {
                   setSectionIndex(false);
                 }}>
-                  <GlobalIcon iconName='arrow_drop_down'/>
+                  <GlobalIcon iconName='arrow_drop_down'  size={6} color='neutral-11'/>
               </Box>
             </ShowCode.When>
             <ShowCode.Else>
@@ -58,7 +58,7 @@ function GroupSections({
                   onClick={() => {
                     setSectionIndex(true);
                   }}>
-                    <GlobalIcon iconName='arrow_right'/>
+                    <GlobalIcon iconName='arrow_right' size={6} color='neutral-11'/>
               </Box>
             </ShowCode.Else>
           </ShowCode>

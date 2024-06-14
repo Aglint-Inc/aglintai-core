@@ -61,7 +61,7 @@ function ScheduleMeetingCard({
               <Collapse in={collapseOpen}>
                 <Stack direction={'column'} spacing={'var(--space-2)'}>
                   <MembersList
-                    isCorrectVisible={false}
+                    // isCorrectVisible={false}
                     slotImage={<CandidateDefaultIcon size={40} />}
                     textName={getFullName(
                       meetingDetails.candidate?.first_name,

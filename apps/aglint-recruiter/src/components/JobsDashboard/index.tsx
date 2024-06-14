@@ -117,9 +117,10 @@ const DashboardComp = () => {
                 }
                 slotAllJobs={<JobsList jobs={jobs} />}
                 slotSearchInputJob={
-                  <Stack maxWidth={'260px'} width={'312px'}>
+                  <Stack>
                     <UITextField
-                      fullWidth
+                      width='250px'
+                      height={32}
                       placeholder='Search'
                       onChange={(e) => {
                         handlerFilter(e);

@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { Dispatch, SetStateAction, useRef, useState } from 'react';
@@ -35,9 +35,12 @@ const JobEmailTemplatesDashboard = () => {
           slotTopbarLeft={<JobEmailTemplatesDashboardBreadCrumbs />}
           slotTopbarRight={<></>}
           slotBody={
-            <Stack mx={2}>
+            <Box
+              padding={'24px'}
+              bgcolor={'var(--neutral-2)'}
+            >
               <JobEmailTemplates />
-            </Stack>
+            </Box>
           }
         />
       )}
