@@ -27,6 +27,7 @@ import {
 } from '../SelfSchedulingDrawer/store';
 import {
   setMultipleCancelOpen,
+  setRescheduleSessionIds,
   setSelectedApplicationLog,
   useSchedulingApplicationStore,
 } from '../store';
@@ -94,6 +95,8 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
                   isLeftIcon={true}
                   onClickButton={{
                     onClick: () => {
+                      const session_ids = sessions.map((session) => session.id);
+                      setRescheduleSessionIds(session_ids);
                       setStepScheduling('reschedule');
                       setSelectedApplicationLog(act);
                       setIsScheduleNowOpen(true);
@@ -132,6 +135,7 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
       reason: act.metadata.reason,
       other_details: act.metadata.other_details,
       filter_id: act.metadata.filter_id,
+      session_ids: act.metadata.session_ids,
     };
 
     return (
@@ -169,6 +173,7 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
                     onClick: () => {
                       setStepScheduling('reschedule');
                       setSelectedApplicationLog(act);
+                      setRescheduleSessionIds(rescheduleDetails.session_ids);
                       setIsScheduleNowOpen(true);
                       setDateRange({
                         start_date:
