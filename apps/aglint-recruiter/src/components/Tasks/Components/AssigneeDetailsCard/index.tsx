@@ -8,7 +8,6 @@ import {
 } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
-import { pad } from 'lodash';
 import { useRouter } from 'next/router';
 
 import { MemberDetail } from '@/devlink3/MemberDetail';
