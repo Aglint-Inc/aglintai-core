@@ -74,7 +74,7 @@ export const CandidateCancelRequest = ({
                 className="px-3 py-2 bg-accent-9 text-white br rounded-[4px] text-text-xs"
                 href={meetingLink}
               >
-                Cancel Schedule
+                Candidate Details
               </Button>
             </Container>
             <Footer />
