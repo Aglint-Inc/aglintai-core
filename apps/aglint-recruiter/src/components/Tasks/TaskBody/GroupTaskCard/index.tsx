@@ -147,8 +147,8 @@ function GroupTaskCard({
         }
         textTask={
           <LightTooltip
-            enterDelay={1000}
-            enterNextDelay={1000}
+            enterDelay={100}
+            enterNextDelay={100}
             title={
               <>
                 <span

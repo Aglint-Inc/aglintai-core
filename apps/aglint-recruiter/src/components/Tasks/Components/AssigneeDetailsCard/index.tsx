@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
+import { pad } from 'lodash';
 import { useRouter } from 'next/router';
 
 import { MemberDetail } from '@/devlink3/MemberDetail';
@@ -177,9 +178,10 @@ export const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
 ))(() => ({
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor:'var(--white)',
-    color: 'var(--black-a7)',
+    border:'1px solid var(--neutral-6)',
+    color: 'var(--neutral-12)',
     boxShadow: 'none',
-    fontSize: 12,
+    fontSize: 12
   },
   [`& .${tooltipClasses.tooltipPlacementBottom}`]: {
     minWidth: 360,
