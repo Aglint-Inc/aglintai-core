@@ -1,11 +1,11 @@
-import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import type React from 'react';
 
 import { JobDetailInterview } from '@/devlink/JobDetailInterview';
+import { Skeleton } from '@/devlink2/Skeleton';
 import { StatusBadge } from '@/devlink2/StatusBadge';
 import { NewInterviewPlanCard } from '@/devlink3/NewInterviewPlanCard';
-import NoApplicants from '@/public/lottie/NoApplicants';
+import { SkeletonNewInterviewPlanCard } from '@/devlink3/SkeletonNewInterviewPlanCard';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon';
 import {
@@ -17,7 +17,8 @@ import {
   ScheduleProgressPillProps,
 } from '@/src/components/Scheduling/Common/ScheduleProgress/scheduleProgressPill';
 import { useApplication } from '@/src/context/ApplicationContext';
-import { ApplicationStore } from '@/src/context/ApplicationContext/store';
+
+import { EmptyState, Loader } from './common';
 
 const Interview = () => {
   const {
@@ -27,18 +28,18 @@ const Interview = () => {
 
   const { push } = useRouter();
 
-  if (status === 'pending') return <>Loading Interview...</>;
-
-  if (sessions.length === 0) return <EmptyState tab='Interview' />;
-
-  const sessionCards = sessions.map((session, i) => (
-    <InterviewSessionCard key={i} session={session} />
-  ));
+  if (status === 'success' && (sessions ?? []).length === 0)
+    return (
+      <Loader count={4}>
+        <SkeletonNewInterviewPlanCard slotLoader={<Skeleton />} />
+      </Loader>
+    );
 
   return (
     <JobDetailInterview
-      slotNewInterviewPlanCard={sessionCards}
+      slotNewInterviewPlanCard={<Content />}
       onClickViewScheduler={{
+        style: { display: status === 'success' ? 'flex' : 'none' },
         onClick: () =>
           push(`/scheduling/application/${application_id ?? null}`),
       }}
@@ -47,6 +48,27 @@ const Interview = () => {
 };
 
 export { Interview };
+
+const Content = () => {
+  const {
+    interview: { data: sessions, status },
+  } = useApplication();
+
+  if (status === 'pending')
+    return (
+      <Loader count={4}>
+        <SkeletonNewInterviewPlanCard slotLoader={<Skeleton />} />
+      </Loader>
+    );
+
+  if (status === 'error') return <>Something went wrong</>;
+
+  if (sessions.length === 0) return <EmptyState tab='Interview' />;
+
+  return sessions.map((session, i) => (
+    <InterviewSessionCard key={i} session={session} />
+  ));
+};
 
 const InterviewSessionCard = ({
   session: { date = null, ...props },
@@ -102,16 +124,5 @@ const InterviewSessionCard = ({
       slotEditOptionModule={<></>}
       slotScheduleNowButton={<></>}
     />
-  );
-};
-
-const EmptyState = ({ tab }: { tab: ApplicationStore['tab'] }) => {
-  return (
-    <Stack width={'100%'} alignItems={'center'} justifyContent={'center'}>
-      <Stack width={'100px'}>
-        <NoApplicants />
-      </Stack>
-      <Stack>No {tab} data found</Stack>
-    </Stack>
   );
 };

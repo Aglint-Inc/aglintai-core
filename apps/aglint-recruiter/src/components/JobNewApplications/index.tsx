@@ -87,14 +87,14 @@ const SectionCard = ({
   status: DatabaseView['application_view']['status'];
 }) => {
   const { job } = useJob();
-  const { section, setSection } = useApplicationsStore(
-    ({ section, setSection }) => ({
+  const { section, changeSection } = useApplicationsStore(
+    ({ section, changeSection }) => ({
       section,
-      setSection,
+      changeSection,
     }),
   );
   return (
-    <Stack onClick={() => setSection(status)}>
+    <Stack onClick={() => changeSection(status)}>
       <NewTabPill
         isPillActive={section === status}
         slotStartIcon={<SectionIcons section={status} />}

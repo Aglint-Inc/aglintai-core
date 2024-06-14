@@ -492,6 +492,7 @@ type MoveApplications = ApplicationsAllQueryPrerequistes & {
   applications: DatabaseTable['applications']['id'][];
   status: keyof SectionToEmailGuard;
   email: SectionToEmailGuard[keyof SectionToEmailGuard];
+  callBacks?: Promise<any>[];
 };
 type SectionToEmail = {
   interview: null;
@@ -515,9 +516,11 @@ const moveApplications = async ({
   applications,
   status,
   email,
+  callBacks = [],
 }: MoveApplications) => {
   const safeApplications = applications.map((id) => ({ id, status, job_id }));
   await Promise.allSettled([
+    ...callBacks,
     supabase.from('applications').upsert(safeApplications).throwOnError(),
     (async () => {
       if (email) {

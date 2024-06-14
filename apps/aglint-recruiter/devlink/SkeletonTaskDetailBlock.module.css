@@ -1,4 +1,43 @@
-.experience_item {
+.task-detail-wrap {
+  display: flex;
+  overflow: hidden;
+  padding-top: var(--space-2);
+  padding-right: var(--space-2);
+  padding-bottom: var(--space-2);
+  padding-left: var(--space-2);
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: var(--neutral-6);
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: var(--neutral-6);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: var(--neutral-6);
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-left-color: var(--neutral-6);
+  border-top-left-radius: var(--radius-2);
+  border-top-right-radius: var(--radius-2);
+  border-bottom-left-radius: var(--radius-2);
+  border-bottom-right-radius: var(--radius-2);
+  border-radius: 4px !important;
+}
+
+.task-detail-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
+}
+
+.td-header-left {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -6,17 +45,12 @@
   grid-row-gap: var(--space-2);
 }
 
-.slot_company_logo {
-  width: 48px;
-  height: 48px;
-}
-
-.ske_icon_block {
+.div-block-979 {
   position: relative;
   overflow: hidden;
-  width: 48px;
-  height: 48px;
-  border-radius: var(--space-1);
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-1);
 }
 
 .dummy_skeleton {
@@ -27,14 +61,6 @@
   bottom: 0%;
 
   background-color: var(--neutral-4);
-}
-
-.exp_info {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  grid-column-gap: var(--space-1);
-  grid-row-gap: var(--space-1);
 }
 
 .ske_text_regular {
@@ -73,28 +99,15 @@
   width: 500px;
 }
 
-.exp_details {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  grid-column-gap: var(--space-3);
-  grid-row-gap: var(--space-3);
-}
-
-.flex-h4 {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  grid-column-gap: var(--space-1);
-  grid-row-gap: var(--space-1);
-}
-
-.ske_icon_15 {
+.ske_badge {
   position: relative;
   overflow: hidden;
-  width: 15px;
-  height: 15px;
+  height: 20px;
   border-radius: var(--radius-1);
+}
+
+.ske_badge.width_60px {
+  width: 60px;
 }
 
 .ske_text_small {
