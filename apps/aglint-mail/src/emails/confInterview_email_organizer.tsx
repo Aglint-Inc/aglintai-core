@@ -33,7 +33,7 @@ export const dummy: EmailType['react_email_placeholders'] = {
       'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/google_meet.png',
   },
   subject: '',
-  candidateDetails: '',
+  candidateDetails: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/e8218fdc-524c-4f05-8786-23399370777b`,
 };
 
 // export get subject

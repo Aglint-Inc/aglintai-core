@@ -37,7 +37,7 @@ export const dummy: EmailType['react_email_placeholders'] = {
     },
   ],
   subject: '',
-  resheduleLink: '',
+  resheduleLink: 'http://www.google.in/',
 };
 
 // export get subject

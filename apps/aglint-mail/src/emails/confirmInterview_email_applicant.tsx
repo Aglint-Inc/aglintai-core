@@ -36,7 +36,7 @@ export const dummy: EmailType['react_email_placeholders'] = {
     },
   ],
   subject: '',
-  candidateLink: '',
+  candidateLink: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/f17b307d-c8ed-4355-b597-3fc642fa5989`,
 };
 
 // export get subject
