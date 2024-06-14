@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import express from 'express';
 import expressWs from 'express-ws';
 import cors from 'cors';
@@ -13,6 +14,7 @@ import twilioRouter from './routes/twilio';
 import {envConfig} from './config';
 import {twilioClient} from './services/twilio/index';
 import {appLogger} from './services/logger/index';
+import {redisClient} from './services/cache/redis-cache';
 
 const PORT = envConfig.PORT;
 
@@ -40,6 +42,13 @@ app.use('/api/email-agent', emailAgentRouter);
 app.use('/api/twilio', twilioRouter);
 app.use('/api/retell', retellRoutes);
 app.use('/api/slack', slackRoutes);
+app.get('/redis', async (req, res) => {
+  console.time('verify-redis');
+  await redisClient.set('foo', 'bar');
+  const d = await redisClient.get('foo');
+  console.timeEnd('verify-redis');
+  return res.status(200).send(d);
+});
 app.use(errorHandler);
 mountScheduleAgentWs();
 
