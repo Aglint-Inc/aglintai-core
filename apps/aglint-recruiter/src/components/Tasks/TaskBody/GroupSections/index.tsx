@@ -83,14 +83,14 @@ function GroupSections({
                     alignItems: 'center',
                     backgroundColor: 'var(--neutral-3)',
                     padding: 'var(--space-1)',
-                    borderRadius: 'var(--radius-full)',
+                    borderRadius: 'var(--radius-2)',
                     minWidth: 'var(--space-5)',
                   }}>
                   <Typography
                     sx={{
                       cursor: 'pointer',
                     }}
-                    variant='body2bold'
+                    variant='body2'
                   >
                     {item.tasklist.length}
                   </Typography>
@@ -120,14 +120,14 @@ function GroupSections({
                     alignItems: 'center',
                     backgroundColor: 'var(--neutral-3)',
                     padding: 'var(--space-1)',
-                    borderRadius: 'var(--radius-full)',
+                    borderRadius: 'var(--radius-2)',
                     minWidth: 'var(--space-5)',
                   }}>
                   <Typography
                     sx={{
                       cursor: 'pointer',
                     }}
-                    variant='body2bold'
+                    variant='body2'
                   >
                     {item.tasklist.length}
                   </Typography>
@@ -149,14 +149,14 @@ function GroupSections({
                     alignItems: 'center',
                     backgroundColor: 'var(--neutral-3)',
                     padding: 'var(--space-1)',
-                    borderRadius: 'var(--radius-full)',
+                    borderRadius: 'var(--radius-2)',
                     minWidth: 'var(--space-5)',
                   }}>
                 <Typography
                   sx={{
                     cursor: 'pointer',
                   }}
-                  variant='body2bold'
+                  variant='body2'
                 >
                   {item.tasklist.length}
                 </Typography>
@@ -173,14 +173,14 @@ function GroupSections({
                     alignItems: 'center',
                     backgroundColor: 'var(--neutral-3)',
                     padding: 'var(--space-1)',
-                    borderRadius: 'var(--radius-full)',
+                    borderRadius: 'var(--radius-2)',
                     minWidth: 'var(--space-5)',
                   }}>
                   <Typography
                     sx={{
                       cursor: 'pointer',
                     }}
-                    variant='body2bold'
+                    variant='body2'
                   >
                     {item.tasklist.length}
                   </Typography>
@@ -197,14 +197,14 @@ function GroupSections({
                     alignItems: 'center',
                     backgroundColor: 'var(--neutral-3)',
                     padding: 'var(--space-1)',
-                    borderRadius: 'var(--radius-full)',
+                    borderRadius: 'var(--radius-2)',
                     minWidth: 'var(--space-5)',
                   }}>
                   <Typography
                     sx={{
                       cursor: 'pointer',
                     }}
-                    variant='body2bold'
+                    variant='body2'
                   >
                     {item.tasklist.length}
                   </Typography>
