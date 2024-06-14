@@ -74,12 +74,7 @@ export function MembersList({
             tag="div"
           >
             <Text content={textName} weight="medium" />
-            <_Builtin.Block
-              className={_utils.cx(_styles, "slot_for_icon")}
-              tag="div"
-            >
-              {slotIcon}
-            </_Builtin.Block>
+            <_Builtin.Block tag="div">{slotIcon}</_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "ml-card-wrap")}

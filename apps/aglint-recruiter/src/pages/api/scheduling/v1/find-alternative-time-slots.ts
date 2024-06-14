@@ -34,7 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
     await cand_schedule.fetchDetails();
     cand_schedule.ignoreTrainee();
-    cand_schedule.ignoreInterviewer(parsed_body.ignore_interviewer);
+    // cand_schedule.ignoreInterviewer(parsed_body.ignore_interviewer);
     await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
 
     const [single_day_slots] = cand_schedule.findCandSlotForTheDay();
@@ -48,6 +48,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.status(200).json(time_filtered_slots);
   } catch (error) {
+    console.error(error);
     return res.status(500).send(error.message);
   }
 };

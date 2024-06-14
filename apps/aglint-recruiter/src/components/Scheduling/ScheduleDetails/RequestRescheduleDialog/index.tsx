@@ -80,12 +80,12 @@ function RequestRescheduleDialog({
 
         addScheduleActivity({
           title: `Requested reschedule for ${schedule.interview_session.name}. Reason: ${reason} `,
-          application_id: schedule.applications.id,
+          application_id: schedule.schedule.application_id,
           logged_by: 'user',
           supabase: supabase,
           created_by: recruiterUser.user_id,
         });
-        
+
         refetch();
       }
     } catch {

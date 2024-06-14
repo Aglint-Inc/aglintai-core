@@ -58,19 +58,34 @@ function ChangeInterviewerDialog({
 
   const fetchInterviewers = async () => {
     try {
-      const alt_user_ids = possibleUsers.map((user) => user.id);
+      const bodyParams: APIFindAltenativeTimeSlot = {
+        recruiter_id: recruiter.id,
+        session_id: schedule.interview_session.id,
+        ignore_interviewer: cancelInterviewer.id,
+        slot_start_time: schedule.interview_meeting.start_time,
+        user_tz: dayjs.tz.guess(),
+        api_options: {
+          include_conflicting_slots: {
+            show_soft_conflicts: true,
+            show_conflicts_events: true,
+            out_of_working_hrs: true,
+          },
+        },
+      };
+
       const res = await axios.post(
         '/api/scheduling/v1/find-alternative-time-slots',
-        {
-          recruiter_id: recruiter.id,
-          session_id: schedule.interview_session.id,
-          replacement_ints: alt_user_ids,
-          slot_start_time: schedule.interview_meeting.start_time,
-          user_tz: dayjs.tz.guess(),
-        } as APIFindAltenativeTimeSlot,
+        bodyParams,
       );
       if (res.status === 200) {
-        setAvailableUsers(res.data);
+        setAvailableUsers(
+          (res.data as APIFindAltenativeTimeSlotResponse).filter((item) =>
+            item.sessions.some(
+              (session) =>
+                session.qualifiedIntervs[0].user_id !== cancelInterviewer.id,
+            ),
+          ),
+        );
       }
     } catch {
       //
@@ -106,18 +121,20 @@ function ChangeInterviewerDialog({
       const allPossibleUsers = [selectedUser, ...restUsers];
 
       if (selectedUser) {
+        const bodyParams: APIUpdateMeetingInterviewers = {
+          candidate_email: schedule.candidates.email,
+          meeting_id: schedule.interview_meeting.id,
+          replaced_inters: allPossibleUsers.map((user) => {
+            return {
+              email: user.email,
+              user_id: user.id,
+            };
+          }),
+        };
+
         const res = await axios.post(
           '/api/scheduling/v1/update_meeting_interviewers',
-          {
-            candidate_email: schedule.candidates.email,
-            meeting_id: schedule.interview_meeting.id,
-            replaced_inters: allPossibleUsers.map((user) => {
-              return {
-                email: user.email,
-                user_id: user.id,
-              };
-            }),
-          } as APIUpdateMeetingInterviewers,
+          bodyParams,
         );
 
         if (res.status) {
@@ -206,9 +223,13 @@ function ChangeInterviewerDialog({
                   </Stack>
                 )}
                 {possibleUsers.map((user) => {
-                  const isAvailable = avaialableUsers?.find(
-                    (u) => u.user_id === user.id,
-                  )?.is_exist;
+                  const isAvailable =
+                    avaialableUsers?.find((item) =>
+                      item.sessions.find(
+                        (session) =>
+                          session.qualifiedIntervs[0].user_id === user.id,
+                      ),
+                    ).sessions[0].is_conflict === false;
                   return (
                     <Stack
                       key={user.id}

@@ -81,5 +81,9 @@ export async function POST(req: Request) {
 }
 
 // {
-//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637"
+//   "meta": {
+//       "session_ids":["032f8686-c7f7-468b-84f8-de597f766d4d"],
+//       "application_id": "af9538ac-50e8-4941-91c5-39a678c60077",
+//       "availability_req_id":"f17b307d-c8ed-4355-b597-3fc642fa5989"
+//   }
 // }

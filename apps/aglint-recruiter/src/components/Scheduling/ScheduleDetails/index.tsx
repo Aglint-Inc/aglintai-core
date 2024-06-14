@@ -7,6 +7,7 @@ import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ScheduleDetailTabs } from '@/devlink3/ScheduleDetailTabs';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';
@@ -18,19 +19,14 @@ import { useScheduleDetails } from './hooks';
 import Instructions from './Instructions';
 import JobDetails from './JobDetails';
 import Overview from './Overview';
-import RescheduleDialog from './RescheduleDialog';
 
 function SchedulingViewComp() {
   const router = useRouter();
-  const { data, isLoading, refetch } = useScheduleDetails();
+  const { isAllowed } = useAuthDetails();
+  const { data, isPending, refetch, isFetched } = useScheduleDetails();
   const [isChangeInterviewerOpen, setIsChangeInterviewerOpen] = useState(false);
-  const [isRescheduleOpen, setIsRescheduleOpen] = useState(false);
   const [isCancelOpen, setIsCancelOpen] = useState(false);
   const [cancelUserId, setCancelUserId] = useState('');
-  const [range, setRange] = useState<{
-    start_date: string;
-    end_date: string;
-  }>();
 
   const schedule = data?.schedule_data;
   const cancelReasons = data?.cancel_data?.filter(
@@ -50,18 +46,10 @@ function SchedulingViewComp() {
 
   return (
     <ShowCode>
-      <ShowCode.When isTrue={isLoading}>
+      <ShowCode.When isTrue={isPending || !isFetched}>
         <Loader />
       </ShowCode.When>
       <ShowCode.Else>
-        <RescheduleDialog
-          schedule={schedule}
-          isRescheduleOpen={isRescheduleOpen}
-          setIsRescheduleOpen={setIsRescheduleOpen}
-          cancelReasons={cancelReasons}
-          dateRange={range}
-          setDateRange={setRange}
-        />
         <ChangeInterviewerDialog
           isChangeInterviewerOpen={isChangeInterviewerOpen}
           setIsChangeInterviewerOpen={setIsChangeInterviewerOpen}
@@ -85,22 +73,27 @@ function SchedulingViewComp() {
             <ScheduleDetailTabs
               slotScheduleTabOverview={
                 <Stack spacing={'var(--space-4)'}>
-                  <CancelReasonCards
-                    cancelReasons={cancelReasons}
-                    schedule={schedule}
-                    setCancelUserId={setCancelUserId}
-                    setIsRescheduleOpen={setIsRescheduleOpen}
-                    cancelUserId={cancelUserId}
-                    setIsChangeInterviewerOpen={setIsChangeInterviewerOpen}
-                    setRange={setRange}
-                  />
+                  {isAllowed([
+                    'admin',
+                    'recruiting_coordinator',
+                    'hiring_manager',
+                    'recruiter',
+                  ]) && (
+                    <CancelReasonCards
+                      cancelReasons={cancelReasons}
+                      schedule={schedule}
+                      setCancelUserId={setCancelUserId}
+                      cancelUserId={cancelUserId}
+                      setIsChangeInterviewerOpen={setIsChangeInterviewerOpen}
+                    />
+                  )}
+
                   <Overview
                     refetch={refetch}
                     cancelReasons={cancelReasons}
                     schedule={schedule}
                     isCancelOpen={isCancelOpen}
                     setIsCancelOpen={setIsCancelOpen}
-                    setIsRescheduleOpen={setIsRescheduleOpen}
                   />
                 </Stack>
               }
@@ -135,11 +128,12 @@ function SchedulingViewComp() {
                       !router.query.tab
                     }
                   >
-                    <CandidateInfo
-                      applications={schedule?.applications}
-                      candidate={schedule?.candidates}
-                      file={schedule?.file}
-                    />
+                    {schedule && (
+                      <CandidateInfo
+                        application_id={schedule.schedule.application_id}
+                        job_id={schedule.job.id}
+                      />
+                    )}
                   </ShowCode.When>
                   <ShowCode.When isTrue={router.query.tab === 'instructions'}>
                     <Instructions schedule={schedule} />
@@ -162,7 +156,7 @@ function SchedulingViewComp() {
                         candidate={{
                           email: schedule?.candidates.email,
                           name: `${schedule?.candidates.first_name || ''} ${schedule?.candidates.last_name || ''}`.trim(),
-                          job_id: schedule?.applications?.job_id,
+                          job_id: schedule?.job?.id,
                         }}
                       />
                     </Stack>

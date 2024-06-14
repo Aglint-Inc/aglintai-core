@@ -66,13 +66,13 @@ function ModuleMembersComp() {
   const {
     data: selectedModule,
     isLoading: fetchingModule,
-    isFetching,
+    isPending,
   } = useModuleAndUsers();
   const { recruiterUser } = useAuthDetails();
   const [subTab, setSubTab] =
     useState<(typeof subTabs)[number]>('training history');
 
-  const { data: members, isFetching: loading } = useAllInterviewersDetails();
+  const { data: members, isPending: loading } = useAllInterviewersDetails();
 
   let { data: progress } = useProgressModuleUsers({
     trainer_ids: selectedModule?.relations.map((user) => user.id) || [],
@@ -125,7 +125,7 @@ function ModuleMembersComp() {
         }
         slotBody={
           <>
-            {fetchingModule || loading || (!module && isFetching) ? (
+            {fetchingModule || loading || (!module && isPending) ? (
               <Stack height={'100%'} width={'100%'}>
                 <Loader />
               </Stack>
@@ -153,7 +153,7 @@ function ModuleMembersComp() {
                           members={members}
                           module={module}
                           progress={
-                            progress.filter(
+                            progress?.filter(
                               (item) =>
                                 item.interview_module_relation_id ===
                                 selectedModule.relations.find(
@@ -353,7 +353,7 @@ function SlotQualifiedMembers({
   }) => void;
 }) {
   // const { members } = useSchedulingContext();
-  const allQualified = editModule.relations;
+  const allQualified = editModule?.relations;
 
   const [progressUser, setProgressUser] = useState<ProgressUser>({
     user: null,

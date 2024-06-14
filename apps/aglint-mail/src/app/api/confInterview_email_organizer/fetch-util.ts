@@ -24,9 +24,6 @@ export async function fetchUtil(
       .in('id', req_body.session_ids),
   );
 
-  if (!int_sessions) {
-    throw new Error('sessions are not available');
-  }
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin
       .from('applications')
@@ -89,7 +86,7 @@ export async function fetchUtil(
           sessionTypeIcon: sessionTypeIcon(int_session.session_type),
           meetingIcon: scheduleTypeIcon(int_session.schedule_type),
         },
-        candidateDetails: '',
+        candidateDetails: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}`,
       };
     return {
       filled_comp_template,

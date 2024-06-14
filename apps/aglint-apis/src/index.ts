@@ -23,7 +23,7 @@ app.use(
   cors({
     origin: [
       'http://localhost:3000',
-      'https://preprod.aglinthq.com',
+      'https://dev.aglinthq.com',
       'https://app.aglinthq.com',
     ],
   })
@@ -38,14 +38,6 @@ app.get('/health', (req, res) => {
 app.use('/api/schedule-agent', phoneAgentRoutes);
 app.use('/api/screening-agent', screenignAgentRouter);
 app.use('/api/email-agent', emailAgentRouter);
-// app.get('/redis', async (req, res) => {
-//   await redisClient.set('animal', 'cat');
-//   console.time();
-//   const val = await redisClient.get('animal');
-//   console.timeEnd();
-//   console.log(val);
-//   return res.status(200).send('');
-// });
 app.use('/api/twilio', twilioRouter);
 app.use('/api/retell', retellRoutes);
 app.use('/api/slack', slackRoutes);
