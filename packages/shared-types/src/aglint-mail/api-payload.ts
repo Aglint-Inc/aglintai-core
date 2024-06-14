@@ -38,7 +38,7 @@ type Payloads = {
       "{{ companyName }}": string;
       "{{ candidateFirstName }}": string;
       "{{ jobTitle }}": string;
-      "{{recruiterFirstName }}": string;
+      "{{ recruiterFirstName }}": string;
     };
     react_email_placeholders: {
       subject: string;
@@ -185,6 +185,7 @@ type Payloads = {
       "{{ recruiterName }}": string;
       "{{ candidateFirstName }}": string;
       "{{ cancelReason }}": string;
+      "{{ jobTitle }}": string;
       "{{ additionalRescheduleNotes }}": string;
       "{{ companyName }}": string;
       "{{ recruiterFullName }}": string;
@@ -204,6 +205,8 @@ type Payloads = {
       "{{ candidateFirstName }}": string;
       "{{ rescheduleReason }}": string;
       "{{ additionalRescheduleNotes }}": string;
+      "{{ jobTitle }}": string;
+      "{{ companyName }}": string;
       "{{ dateRange }}": string;
       "{{ recruiterFullName }}": string;
     };
@@ -221,6 +224,7 @@ type Payloads = {
     comp_email_placeholders: {
       "{{ candidateFirstName }}": string;
       "{{ jobRole }}": string;
+      "{{ jobTitle }}": string;
       "{{ companyName }}": string;
       "{{ selfScheduleLink }}": string;
       "{{ recruiterFullName }}": string;
@@ -257,6 +261,8 @@ type Payloads = {
       "{{ companyName }}": string;
       "{{ candidateName }}": string;
       "{{ jobTitle }}": string;
+      "{{ date }}": string;
+      "{{ time }}": string;
       "{{ recruiterName }}": string;
       "{{ recruiterFullName }}": string;
     };

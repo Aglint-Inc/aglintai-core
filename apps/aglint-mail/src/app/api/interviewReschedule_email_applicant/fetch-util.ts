@@ -83,6 +83,7 @@ export async function fetchUtil(
     {
       '{{ candidateFirstName }}': first_name,
       '{{ jobRole }}': job_title,
+      '{{ jobTitle }}': job_title,
       '{{ companyName }}': company,
       '{{ selfScheduleLink }}': scheduleLink,
       '{{ recruiterFullName }}': getFullName(

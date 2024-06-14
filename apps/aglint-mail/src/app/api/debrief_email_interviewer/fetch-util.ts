@@ -60,6 +60,7 @@ export async function fetchUtil(
     session_duration,
     session_type,
   } = session;
+  console.log(interview_meeting);
   const meeting_detail: MeetingDetailCardType = {
     date: dayjs(interview_meeting.start_time).format('ddd MMMM DD, YYYY'),
     time: `${dayjs(interview_meeting.start_time).format('hh:mm A')} - ${dayjs(interview_meeting.end_time).format('hh:mm A')}`,
@@ -82,7 +83,7 @@ export async function fetchUtil(
         '{{ jobTitle }}': public_jobs.job_title,
         '{{ companyName }}': public_jobs.company,
         '{{ interviewerFirstName }}': inter.first_name,
-        '{{recruiterFirstName }}': getFullName(
+        '{{ recruiterFirstName }}': getFullName(
           recruiter_user.first_name,
           recruiter_user.last_name,
         ),
@@ -99,7 +100,7 @@ export async function fetchUtil(
         emailBody: filled_comp_template.body,
         subject: filled_comp_template.subject,
         meetingDetails: meeting_detail,
-        candidateLink: '',
+        candidateLink: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}`,
       };
 
     return {

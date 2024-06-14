@@ -34,6 +34,12 @@ export async function fetchUtil(
       .select('*,interview_meeting(*)')
       .in('id', req_body.session_ids),
   );
+  let cand_link = '';
+  if (req_body.availability_req_id) {
+    cand_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.availability_req_id}`;
+  } else {
+    cand_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${req_body.schedule_id}?filter_id=${req_body.schedule_id}`;
+  }
 
   const {
     candidates: {
@@ -87,7 +93,7 @@ export async function fetchUtil(
       companyLogo: logo,
       emailBody: filled_comp_template.body,
       subject: filled_comp_template.subject,
-      candidateLink: '',
+      candidateLink: cand_link,
       meetingDetails: meeting_details,
     };
 

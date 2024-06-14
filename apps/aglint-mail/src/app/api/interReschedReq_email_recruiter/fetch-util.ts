@@ -73,6 +73,7 @@ export async function fetchUtil(
       meetingIcon: scheduleTypeIcon(schedule_type),
     };
   });
+  console.log('notes : ', session_cancel.other_details.note);
 
   const int_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
   const req_start_date = session_cancel.other_details.dateRange.start;
@@ -83,6 +84,8 @@ export async function fetchUtil(
       '{{ additionalRescheduleNotes }}': session_cancel.other_details.note,
       '{{ recruiterName }}': recruiter_user.first_name,
       '{{ rescheduleReason }}': session_cancel.reason,
+      '{{ jobTitle }}': candidateJob.public_jobs.job_title,
+      '{{ companyName }}': candidateJob.public_jobs.company,
       '{{ recruiterFullName }}': getFullName(
         recruiter_user.first_name,
         recruiter_user.last_name,

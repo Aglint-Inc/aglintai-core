@@ -20,7 +20,7 @@ type EmailType = EmailTemplateAPi<'interReschedReq_email_recruiter'>;
 // export dummy
 export const dummy: EmailType['react_email_placeholders'] = {
   emailBody:
-    '<p>Dear {{ recruiterName }},</p><p>{{ candidateFirstName }} is requesting to reschedule between {{ dateRange }} stating reason: "{{ rescheduleReason }}".</p><p>Additional notes from {{ candidateFirstName }}: "{{ additionalRescheduleNotes }}".</p>',
+    '<p>Dear {{ recruiterName }},</p><p></p><p>{{ candidateFirstName }} is requesting to reschedule their interview between {{ dateRange }} stating the reason: "{{ rescheduleReason }}".</p><p></p><p>Additional notes from {{ candidateFirstName }}: "{{ additionalRescheduleNotes }}".</p><p></p><p>Thank you,</p><p>{{ companyName }} Recruitment Team</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   meetingDetails: [
@@ -67,9 +67,6 @@ export const CandidateRescheduleRequest = ({
               <Container className="text-text-sm text-neutral-12">
                 {htmlParser.parse(emailBody)}
               </Container>
-              <Text className="py-[10px] my-0 text-text-sm text-neutral-12">
-                Thank You
-              </Text>
               <Text className="text-[12px] my-0  text-text-sm text-neutral-12">
                 Current Schedule{meetingDetails.length > 1 && 's'} :
               </Text>

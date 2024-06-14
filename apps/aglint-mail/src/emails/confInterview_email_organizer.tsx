@@ -18,7 +18,7 @@ type EmailType = EmailTemplateAPi<'confInterview_email_organizer'>;
 
 export const dummy: EmailType['react_email_placeholders'] = {
   emailBody:
-    '<p>Dear {{ recruiterName }},</p><p>Please find the details for the interview below:</p><p>Candidate name: {{ firstName }}<br>Meeting link: {{ meetingLink }}</p><p>Thank you</p>',
+    '<p>Dear {{ recruiterFirstName }},</p><p></p><p>Please find the details for the interview below:</p><p>Candidate name: {{ candidateFirstName }}<br></p><p>Thank you</p><p>Aglint Team</p><p></p><p></p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   meetingDetails: {

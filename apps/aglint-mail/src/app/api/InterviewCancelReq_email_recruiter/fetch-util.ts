@@ -48,6 +48,8 @@ export async function fetchUtil(
       .eq('user_id', candidateJob.public_jobs.recruiter),
   );
 
+  console.log(candidateJob.public_jobs.recruiter);
+
   const int_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
   const { candidates, public_jobs } = candidateJob;
 
@@ -80,6 +82,7 @@ export async function fetchUtil(
       '{{ additionalRescheduleNotes }}': session_cancel.other_details.note,
       '{{ cancelReason }}': session_cancel.reason,
       '{{ recruiterName }}': recruiter_user.first_name,
+      '{{ jobTitle }}': candidateJob.public_jobs.job_title,
       '{{ candidateFirstName }}': candidates.first_name,
       '{{ companyName }}': public_jobs.company,
       '{{ recruiterFullName }}': getFullName(

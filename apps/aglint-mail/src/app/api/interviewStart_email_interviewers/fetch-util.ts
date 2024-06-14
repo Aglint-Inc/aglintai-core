@@ -10,6 +10,7 @@ import {
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 import { getFullName } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/userTzDayjs';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'interviewStart_email_interviewers'>['api_payload'],
@@ -30,7 +31,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+        'candidates(first_name,timezone,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
       )
       .eq('id', req_body.application_id),
   );
@@ -45,9 +46,6 @@ export async function fetchUtil(
       .eq('user_id', req_body.recruiter_user_id),
   );
 
-  if (!recruiter_user) {
-    throw new Error('cancel session details not available');
-  }
   const meeting_details: EmailTemplateAPi<'interviewStart_email_interviewers'>['react_email_placeholders']['meetingDetails'] =
     sessions.map((session) => {
       const {
@@ -73,12 +71,21 @@ export async function fetchUtil(
     'interviewStart_email_interviewers',
   );
 
+  const cand_tz = candidateJob.candidates.timezone ?? 'America/Los_angeles';
+  console.log(candidateJob.candidates.timezone);
+
   const comp_email_placeholder: EmailTemplateAPi<'interviewStart_email_interviewers'>['comp_email_placeholders'] =
     {
+      '{{ recruiterName }}': recruiter_user.first_name,
       '{{ candidateName }}': candidateJob.candidates.first_name,
       '{{ jobTitle }}': candidateJob.public_jobs.job_title,
       '{{ companyName }}': candidateJob.public_jobs.company,
-      '{{ recruiterName }}': recruiter_user.first_name,
+      '{{ time }}': `${dayjsLocal(sessions[0].interview_meeting.start_time)
+        .tz(cand_tz)
+        .format('hh:mm')} (${cand_tz})`,
+      '{{ date }}': dayjsLocal(sessions[0].interview_meeting.start_time)
+        .tz(cand_tz)
+        .format('MMMM dddd YYYY'),
       '{{ recruiterFullName }}': getFullName(
         recruiter_user.first_name,
         recruiter_user.last_name,

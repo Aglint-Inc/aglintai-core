@@ -19,7 +19,7 @@ type EmailType = EmailTemplateAPi<'InterviewCancelReq_email_recruiter'>;
 // export dummy
 export const dummy: EmailType['react_email_placeholders'] = {
   emailBody:
-    '<p>Dear {{ recruiterName }},</p><p>{{ candidateFirstName }} is requesting to cancel the interview, stating reason: "{{ cancelReason }}".</p><p>Additional notes from {{ candidateFirstName }}: "{{ additionalRescheduleNotes }}".</p><p>Thank you.</p>',
+    '<p>Dear {{ recruiterName }},</p><p></p><p>{{ candidateFirstName }} is requesting to cancel the interview, stating the reason: "{{ cancelReason }}".</p><p>Additional notes from {{ candidateFirstName }}: "{{ additionalRescheduleNotes }}".</p><p></p><p>Thank you,</p><p>{{ companyName }} Recruitment Team</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   meetingDetails: [
