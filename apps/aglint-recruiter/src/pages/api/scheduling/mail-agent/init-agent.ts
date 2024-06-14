@@ -6,11 +6,11 @@ var timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
 import { APISendgridPayload, EmailTemplateAPi } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { v4 as uuidV4 } from 'uuid';
 
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { InitAgentBodyParams } from '@/src/components/ScheduleAgent/types';
 import { EmailWebHook } from '@/src/services/EmailWebhook/EmailWebhook';
 import { getFullName } from '@/src/utils/jsonResume';

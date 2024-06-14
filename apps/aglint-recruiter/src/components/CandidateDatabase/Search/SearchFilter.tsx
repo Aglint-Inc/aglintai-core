@@ -1,3 +1,4 @@
+import { supabaseWrap } from '@aglint/shared-utils';
 import { Slider, Stack } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { cloneDeep, set } from 'lodash';
@@ -25,10 +26,7 @@ import {
 import AUIButton from '../../Common/AUIButton';
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 import { dialogFormContent, getRelevantCndidates } from '../utils';
 import FilterInput from './FilterInput';
 

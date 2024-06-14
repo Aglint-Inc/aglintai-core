@@ -5,11 +5,10 @@ import {
   SessionCombinationRespType,
   SessionsCombType,
 } from '@aglint/shared-types';
-import { ScheduleUtils } from '@aglint/shared-utils';
+import { ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
 import { nanoid } from 'nanoid';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { planCombineSlots } from '@/src/services/CandidateScheduleV2/utils/planCombine';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';

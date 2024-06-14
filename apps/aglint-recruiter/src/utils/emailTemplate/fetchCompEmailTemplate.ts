@@ -1,4 +1,5 @@
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import { supabaseWrap } from '@aglint/shared-utils';
+
 import { CompanyEmailsTypeDB } from '@/src/types/companyEmailTypes';
 
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
