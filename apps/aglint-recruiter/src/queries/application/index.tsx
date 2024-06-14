@@ -54,7 +54,7 @@ export const applicationQuery = {
     job_id,
     placeholderData,
     enabled,
-  }: Params & { enabled: boolean }) =>
+  }: ToggleParams) =>
     queryOptions({
       placeholderData: placeholderData?.interview,
       enabled: enabled && !!application_id && !!job_id,
@@ -65,6 +65,17 @@ export const applicationQuery = {
         'interview',
       ],
       queryFn: () => getApplicationInterview({ application_id, job_id }),
+    }),
+  tasks: ({ application_id, job_id, enabled }: ToggleParams) =>
+    queryOptions({
+      enabled: enabled && !!application_id && !!job_id,
+      gcTime: application_id ? 1 * 60_000 : 0,
+      refetchOnMount: true,
+      queryKey: [
+        ...applicationQuery.application({ application_id, job_id }).queryKey,
+        'tasks',
+      ],
+      queryFn: () => getApplicationTasks({ application_id }),
     }),
 } as const;
 
@@ -104,6 +115,8 @@ type Params = ApplicationAllQueryPrerequistes & {
     interview?: Awaited<ReturnType<typeof getApplicationInterview>>;
   };
 };
+
+type ToggleParams = { enabled: boolean } & Params;
 
 const getApplicationMeta = async ({
   application_id,
@@ -181,3 +194,15 @@ const getApplicationInterview = async ({
     );
   return plans;
 };
+
+const getApplicationTasks = async ({
+  application_id,
+}: Pick<Params, 'application_id'>) =>
+  (
+    await supabase
+      .from('new_tasks')
+      .select('id, name, created_by, status')
+      .eq('application_id', application_id)
+      .order('created_at', { ascending: false })
+      .throwOnError()
+  ).data;

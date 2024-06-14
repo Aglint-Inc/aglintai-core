@@ -25,6 +25,9 @@ export const useApplicationContext = (
   const interview = useQuery(
     applicationQuery.interview({ ...props, enabled: tab === 'Interview' }),
   );
+  const tasks = useQuery(
+    applicationQuery.tasks({ ...props, enabled: tab === 'Tasks' }),
+  );
   const { mutate } = useUpdateApplication(props);
 
   const handleUpdateApplication = useCallback(
@@ -70,6 +73,7 @@ export const useApplicationContext = (
     meta,
     details,
     interview,
+    tasks,
     handleUpdateApplication,
   };
 };

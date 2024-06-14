@@ -14,6 +14,7 @@ import { Details } from './details';
 import { Interview } from './interview';
 import { Meta } from './meta';
 import { Tabs } from './tabs';
+import { Tasks } from './tasks';
 import { TopBar } from './topBar';
 
 type Props = {
@@ -22,6 +23,7 @@ type Props = {
   details: ReactNode;
   interview: ReactNode;
   tabs: ReactNode;
+  tasks: ReactNode;
 };
 
 const Body = (props: Partial<Props>) => {
@@ -53,10 +55,13 @@ Body.Meta = Meta;
 Body.Tabs = Tabs;
 Body.Details = Details;
 Body.Interview = Interview;
+Body.Tasks = Tasks;
 
 export { Body };
 
-const TabContent = (props: Partial<Pick<Props, 'details' | 'interview'>>) => {
+const TabContent = (
+  props: Partial<Pick<Props, 'details' | 'interview' | 'tasks'>>,
+) => {
   const tab = useApplicationStore(({ tab }) => tab);
   switch (tab) {
     case 'Details':
@@ -66,6 +71,7 @@ const TabContent = (props: Partial<Pick<Props, 'details' | 'interview'>>) => {
     case 'Interview':
       return props.interview ?? <Interview />;
     case 'Tasks':
+      return props.tasks ?? <Tasks />;
     case 'Activity':
       return <></>;
   }

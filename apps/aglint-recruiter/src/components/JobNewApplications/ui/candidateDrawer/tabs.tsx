@@ -11,7 +11,7 @@ const tabs: ApplicationStore['tab'][] = [
   // 'Screening',
   // 'Assessment',
   'Interview',
-  // 'Tasks',
+  'Tasks',
   // 'Activity',
 ];
 

@@ -1,11 +1,9 @@
-import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import type React from 'react';
 
 import { JobDetailInterview } from '@/devlink/JobDetailInterview';
 import { StatusBadge } from '@/devlink2/StatusBadge';
 import { NewInterviewPlanCard } from '@/devlink3/NewInterviewPlanCard';
-import NoApplicants from '@/public/lottie/NoApplicants';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon';
 import {
@@ -17,7 +15,8 @@ import {
   ScheduleProgressPillProps,
 } from '@/src/components/Scheduling/Common/ScheduleProgress/scheduleProgressPill';
 import { useApplication } from '@/src/context/ApplicationContext';
-import { ApplicationStore } from '@/src/context/ApplicationContext/store';
+
+import { EmptyState } from './common';
 
 const Interview = () => {
   const {
@@ -28,6 +27,8 @@ const Interview = () => {
   const { push } = useRouter();
 
   if (status === 'pending') return <>Loading Interview...</>;
+
+  if (status === 'error') return <>Something went wrong</>;
 
   if (sessions.length === 0) return <EmptyState tab='Interview' />;
 
@@ -102,16 +103,5 @@ const InterviewSessionCard = ({
       slotEditOptionModule={<></>}
       slotScheduleNowButton={<></>}
     />
-  );
-};
-
-const EmptyState = ({ tab }: { tab: ApplicationStore['tab'] }) => {
-  return (
-    <Stack width={'100%'} alignItems={'center'} justifyContent={'center'}>
-      <Stack width={'100px'}>
-        <NoApplicants />
-      </Stack>
-      <Stack>No {tab} data found</Stack>
-    </Stack>
   );
 };
