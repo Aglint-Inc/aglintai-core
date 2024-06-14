@@ -72,7 +72,6 @@ export async function fetchUtil(
   );
 
   const cand_tz = candidateJob.candidates.timezone ?? 'America/Los_angeles';
-  console.log(candidateJob.candidates.timezone);
 
   const comp_email_placeholder: EmailTemplateAPi<'interviewStart_email_interviewers'>['comp_email_placeholders'] =
     {

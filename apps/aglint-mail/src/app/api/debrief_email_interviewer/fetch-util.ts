@@ -60,7 +60,6 @@ export async function fetchUtil(
     session_duration,
     session_type,
   } = session;
-  console.log(interview_meeting);
   const meeting_detail: MeetingDetailCardType = {
     date: dayjs(interview_meeting.start_time).format('ddd MMMM DD, YYYY'),
     time: `${dayjs(interview_meeting.start_time).format('hh:mm A')} - ${dayjs(interview_meeting.end_time).format('hh:mm A')}`,

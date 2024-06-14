@@ -48,8 +48,6 @@ export async function fetchUtil(
       .eq('user_id', candidateJob.public_jobs.recruiter),
   );
 
-  console.log(candidateJob.public_jobs.recruiter);
-
   const int_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
   const { candidates, public_jobs } = candidateJob;
 

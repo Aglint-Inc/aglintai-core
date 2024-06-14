@@ -73,7 +73,6 @@ export async function fetchUtil(
       meetingIcon: scheduleTypeIcon(schedule_type),
     };
   });
-  console.log('notes : ', session_cancel.other_details.note);
 
   const int_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
   const req_start_date = session_cancel.other_details.dateRange.start;
