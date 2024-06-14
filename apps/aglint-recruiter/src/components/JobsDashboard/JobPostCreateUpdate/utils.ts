@@ -1,4 +1,5 @@
 import { JobTypeDB } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { get, isEmpty } from 'lodash';
 
 import { supabase } from '@/src/utils/supabase/client';
@@ -6,17 +7,6 @@ import { supabase } from '@/src/utils/supabase/client';
 import { templateObj } from '../../CompanyDetailComp/EmailTemplate';
 import { FormErrorParams } from './JobForm/JobForm';
 import { FormJobType, JobFormState } from './JobPostFormProvider';
-
-export const supabaseWrap = <T extends unknown, U extends unknown>({
-  data,
-  error,
-}: {
-  data: T;
-  error: U;
-}) => {
-  if (error) throw error;
-  return data;
-};
 
 export async function getVideo(videoId: any) {
   const { data, error } = await supabase

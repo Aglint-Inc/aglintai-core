@@ -1,4 +1,5 @@
 import { RecruiterType } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { capitalize } from 'lodash';
@@ -16,7 +17,6 @@ import toast from '@/src/utils/toast';
 
 import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';
-import { supabaseWrap } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 import SchedulingPopUps from '../SchedulingToolPopUps';
 import { SchedulingReasonTypes, schedulingToolsType } from '../types';
 import { GooglLogo, updateRecruiter, ZoomLogo } from '../utils';
