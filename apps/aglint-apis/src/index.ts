@@ -13,7 +13,6 @@ import twilioRouter from './routes/twilio';
 import {envConfig} from './config';
 import {twilioClient} from './services/twilio/index';
 import {appLogger} from './services/logger/index';
-import {redisClient} from './services/cache/redis-cache';
 
 const PORT = envConfig.PORT;
 
