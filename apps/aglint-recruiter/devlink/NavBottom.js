@@ -34,7 +34,7 @@ export function NavBottom({
             {"Logout"}
           </_Builtin.Block>
         </_Builtin.Block>
-        <GlobalIcon iconName="" size="6" color="neutral-11" />
+        <GlobalIcon iconName="logout" size="6" color="" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "user_profile")}

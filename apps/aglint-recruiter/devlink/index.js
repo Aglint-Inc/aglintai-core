@@ -305,7 +305,6 @@ export * from "./SessionInfo";
 export * from "./SettingSkeleton";
 export * from "./ShareVia";
 export * from "./SignupSlider";
-export * from "./SkeletionTextSmall";
 export * from "./SkeletonLoaderAtsCard";
 export * from "./SkillPill";
 export * from "./SkillsGenerate";

@@ -59,7 +59,7 @@
   background-color: var(--accent-3);
 }
 
-.cv-list-column-check-wrap {
+.cv-list-column-check-wrap-copy {
   position: relative;
   z-index: 6;
 
@@ -68,23 +68,22 @@
   justify-content: flex-start;
   align-items: center;
   align-self: stretch;
-  flex: 1;
   grid-column-gap: var(--space-3);
   grid-row-gap: var(--space-3);
 }
 
-.cv-list-column-check-wrap.header {
+.cv-list-column-check-wrap-copy.header {
   padding-top: 8px;
   padding-bottom: 8px;
   background-color: var(--neutral-3);
 }
 
-.cv-list-column-check-wrap.header.width-auto {
+.cv-list-column-check-wrap-copy.header.width-auto {
   width: auto;
   align-self: center;
 }
 
-.cv-list-column-check-wrap.header.width-auto.no_border {
+.cv-list-column-check-wrap-copy.header.width-auto.no_border {
   border-bottom-style: none;
 }
 
@@ -96,64 +95,64 @@
   grid-row-gap: 6px;
 }
 
-.cv-list-column-check-wrap.header.width-auto.no_border-copy {
+.cv-list-column-check-wrap-copy.header.width-auto.no_border-copy {
   border-bottom-style: none;
 }
 
-.cv-list-column-check-wrap.header.width-auto.no_border-copy.gap-12 {
+.cv-list-column-check-wrap-copy.header.width-auto.no_border-copy.gap-12 {
   grid-column-gap: 12px;
   grid-row-gap: 12px;
 }
 
-.cv-list-column-check-wrap.header.width-auto.no_border-copy.gap-12.z-index-6 {
+.cv-list-column-check-wrap-copy.header.width-auto.no_border-copy.gap-12.z-index-6 {
   z-index: 6;
 }
 
-.cv-list-column-check-wrap.width-auto {
+.cv-list-column-check-wrap-copy.width-auto {
   width: auto;
 }
 
-.cv-list-column-check-wrap.width-auto.items-v-center.gap-12 {
+.cv-list-column-check-wrap-copy.width-auto.items-v-center.gap-12 {
   grid-column-gap: 12px;
   grid-row-gap: 12px;
 }
 
-.cv-list-column-check-wrap.width-auto.items-v-center.gap-12.z-index-6 {
+.cv-list-column-check-wrap-copy.width-auto.items-v-center.gap-12.z-index-6 {
   z-index: 6;
 }
 
-.cv-list-column-check-wrap.width-auto.items-v-center.gap-12.z-index-6-copy {
+.cv-list-column-check-wrap-copy.width-auto.items-v-center.gap-12.z-index-6-copy {
   z-index: 6;
   padding-right: 0px;
   padding-left: var(--space-2);
   flex: 0 0 auto;
 }
 
-.cv-list-column-check-wrap.width-auto.gap-6 {
+.cv-list-column-check-wrap-copy.width-auto.gap-6 {
   grid-column-gap: 6px;
   grid-row-gap: 6px;
 }
 
-.cv-list-column-check-wrap.z-10 {
+.cv-list-column-check-wrap-copy.z-10 {
   z-index: 10;
 }
 
-.cv-list-column-check-wrap.name {
+.cv-list-column-check-wrap-copy.name {
   width: 380px;
   min-width: 380px;
   flex: 0 0 auto;
 }
 
-.cv-list-column-check-wrap.items-v-center {
+.cv-list-column-check-wrap-copy.items-v-center {
   display: flex;
   align-items: center;
 }
 
-.cv-list-column-check-wrap.items-v-center.z_index {
+.cv-list-column-check-wrap-copy.items-v-center.z_index {
   z-index: 100;
 }
 
-.cv-list-column-check-wrap.chackbox_column {
+.cv-list-column-check-wrap-copy.chackbox_column {
   padding-top: 8px;
   padding-bottom: 8px;
   flex: 0 0 auto;
@@ -399,23 +398,9 @@
   min-width: 100%;
 }
 
-.checkbox {
-  position: relative;
-  cursor: pointer;
-}
-
-.default_state {
-  display: flex;
-}
-
-.active_chechbox {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-
-  display: flex;
+.checkbox_skeleton {
+  width: 16px;
+  height: 16px;
 }
 
 .cv-list-column-wrapper {
@@ -534,8 +519,36 @@
   object-fit: cover;
 }
 
+.candidate_avatar {
+  position: relative;
+  overflow: hidden;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+}
+
 .text-no-wrap {
   white-space: nowrap;
+}
+
+.ske_text_regular {
+  position: relative;
+
+  display: flex;
+  overflow: hidden;
+  height: 20px;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  border-radius: 4px;
+}
+
+.ske_text_regular.width_200 {
+  width: 200px;
 }
 
 .bookmark_slot {
@@ -546,6 +559,31 @@
   grid-row-gap: 8px;
 }
 
-.text-titlecase {
-  text-transform: capitalize;
+.ske_badge-copy {
+  position: relative;
+  overflow: hidden;
+  width: 100px;
+  height: 24px;
+  border-radius: var(--radius-1);
+}
+
+.ske_schedule_progress {
+  display: flex;
+  overflow: hidden;
+  grid-column-gap: 2px;
+  grid-row-gap: 2px;
+  border-radius: 4px;
+}
+
+.schedule_progress_pills-copy {
+  position: relative;
+
+  display: flex;
+  overflow: hidden;
+  width: 60px;
+  height: 20px;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #f1f0ef;
 }
