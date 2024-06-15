@@ -287,7 +287,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                         } as RecruiterType);
                       }
                     }}
-                    size={64}
+                    size={48}
                     table='company-logo'
                     error={(e) => {
                       if (e) {

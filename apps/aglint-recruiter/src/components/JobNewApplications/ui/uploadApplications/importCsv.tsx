@@ -16,6 +16,7 @@ import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import toast from '@/src/utils/toast';
+import { GlobalIcon } from '@/devlink';
 
 export type BulkImportCandidateCsv = CsvUploadApi['request']['candidates'];
 
@@ -264,10 +265,10 @@ function TableHeader() {
 const headerObject = [
   {
     heading: 'Candidate',
-    icon: <Icon variant='Person' width='14' height='14' />,
+    icon: <GlobalIcon iconName='person' size='4' color='neutral-11'/>,
   },
-  { heading: 'Email', icon: <Icon variant='Mail' width='14' height='14' /> },
-  { heading: 'Phone', icon: <Icon variant='phone' width='14' height='14' /> },
+  { heading: 'Email', icon: <GlobalIcon iconName='mail'  size='4' color='neutral-11'/> },
+  { heading: 'Phone', icon: <GlobalIcon iconName='phone'  size='4' color='neutral-11'/>},
 ];
 
 function TableRow({ name, email, phone, profile_image, index }) {

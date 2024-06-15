@@ -97,9 +97,11 @@ const SectionCard = ({
     <Stack onClick={() => changeSection(status)}>
       <NewTabPill
         isPillActive={section === status}
-        slotStartIcon={<SectionIcons section={status} />}
-        isStartIconVisible={true}
-        textLabel={`${capitalize(status)} (${job.count[status]})`}
+        // slotStartIcon={<SectionIcons section={status} />}
+        // isStartIconVisible={true}
+        isTabCountVisible={true}
+        textLabel={`${capitalize(status)}`}
+        tabCount={`${job.count[status]}`}
       />
     </Stack>
   );
