@@ -83,45 +83,6 @@
   box-shadow: 0 0 0 1px #e9ebed;
 }
 
-.embed_flex {
-  display: flex;
-  align-items: center;
-}
-
-.embed_flex.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-}
-
-.embed_flex.custom_top {
-  margin-top: 2px;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.embed_flex.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.embed_flex.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.embed_flex.fixedd {
-  width: 23px;
-}
-
 .wc_bottom {
   display: flex;
   justify-content: space-between;
@@ -142,8 +103,6 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
 }
 
 .active-workflow-card {

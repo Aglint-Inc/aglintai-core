@@ -15,37 +15,15 @@ export function WorkingHours({
   return (
     <_Component className={_utils.cx(_styles, "schedule_settings")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1117")}
+        className={_utils.cx(_styles, "wh-top-wrapper")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1115")}
-          tag="div"
-        >
-          <Text content="Working Hours" weight="medium" />
-          <Text
-            content="Set up your company's default time zone, working hours, and breaks."
-            weight=""
-            color="neutral"
-          />
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1116", "hide")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-red-500", "cursor-pointer")}
-            tag="div"
-          >
-            {"Discard"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "button_primary")}
-            tag="div"
-          >
-            <_Builtin.Block tag="div">{"Update Changes"}</_Builtin.Block>
-          </_Builtin.Block>
-        </_Builtin.Block>
+        <Text content="Working Hours" weight="medium" />
+        <Text
+          content="Set up your company's default time zone, working hours, and breaks."
+          weight=""
+          color="neutral"
+        />
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "setting_wrap")} tag="div">
         <Text content="Time Zone" weight="medium" />

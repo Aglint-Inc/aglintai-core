@@ -33,36 +33,21 @@ export function TaskTableJobCard({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1568")}
+            className={_utils.cx(_styles, "tjc-wrapper")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1441", "header")}
+              className={_utils.cx(_styles, "tjc-space-div", "header")}
               tag="div"
             />
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1727")}
+              className={_utils.cx(_styles, "tjc-slot-drop-icon")}
               tag="div"
             >
               {slotDropIcon}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1451", "hide")}
-              tag="div"
-            >
-              <_Builtin.HtmlEmbed
-                className={_utils.cx(_styles, "icons")}
-                value="%3Csvg%20width%3D%2216%22%20height%3D%2215%22%20viewbox%3D%220%200%2016%2015%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M5.75%201.5C5.60417%201.52083%205.52083%201.60417%205.5%201.75V3H10.5V1.75C10.4792%201.60417%2010.3958%201.52083%2010.25%201.5H5.75ZM4%201.75C4.02083%201.25%204.1875%200.833333%204.5%200.5C4.83333%200.1875%205.25%200.0208333%205.75%200H10.25C10.75%200.0208333%2011.1667%200.1875%2011.5%200.5C11.8125%200.833333%2011.9792%201.25%2012%201.75V3H14C14.5625%203.02083%2015.0312%203.21875%2015.4062%203.59375C15.7812%203.96875%2015.9792%204.4375%2016%205V8H10H6H0V5C0.0208333%204.4375%200.21875%203.96875%200.59375%203.59375C0.96875%203.21875%201.4375%203.02083%202%203H4V1.75ZM16%209V13C15.9792%2013.5625%2015.7812%2014.0312%2015.4062%2014.4062C15.0312%2014.7812%2014.5625%2014.9792%2014%2015H2C1.4375%2014.9792%200.96875%2014.7812%200.59375%2014.4062C0.21875%2014.0312%200.0208333%2013.5625%200%2013V9H6V10C6%2010.2917%206.09375%2010.5312%206.28125%2010.7188C6.46875%2010.9062%206.70833%2011%207%2011H9C9.29167%2011%209.53125%2010.9062%209.71875%2010.7188C9.90625%2010.5312%2010%2010.2917%2010%2010V9H16Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
-              />
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-grey-600")}
-                tag="div"
-              >
-                {textRole}
-              </_Builtin.Block>
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1451")}
+              className={_utils.cx(_styles, "tjc-slot-avatar")}
               tag="div"
             >
               {slotAvatarWithName}

@@ -13,7 +13,10 @@ export function HeaderWithSlot({
   textHeading = "Co-ordinator",
 }) {
   return isCoordinatorVisible ? (
-    <_Component className={_utils.cx(_styles, "div-block-1423")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "sto-column-left-subwrap")}
+      tag="div"
+    >
       <Text content={textHeading} />
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1426")}

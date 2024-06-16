@@ -147,7 +147,7 @@
   display: flex;
   grid-column-gap: 2px;
   grid-row-gap: 2px;
-  border-radius: 10px;
+  border-radius: var(--radius-4);
 }
 
 .training-completed-wrap {
@@ -239,7 +239,7 @@
   justify-content: center;
   align-items: center;
 
-  border-radius: 4px;
+  border-radius: var(--radius-2);
 
   transition: all 200ms ease;
 

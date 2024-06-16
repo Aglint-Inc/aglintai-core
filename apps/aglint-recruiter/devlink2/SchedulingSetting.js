@@ -24,12 +24,9 @@ export function SchedulingSetting({
       className={_utils.cx(_styles, "scheduler-setting-wrap")}
       tag="div"
     >
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1117")}
-        tag="div"
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "wh-top-wrap")} tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1115")}
+          className={_utils.cx(_styles, "wh-top-wrapper")}
           tag="div"
         >
           <_Builtin.Block

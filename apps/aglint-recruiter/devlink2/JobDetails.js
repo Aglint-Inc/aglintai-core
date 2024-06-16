@@ -8,6 +8,7 @@ import { ShowFilterButton } from "./ShowFilterButton";
 import { SelectActionBar } from "./SelectActionBar";
 import { JobDetailsFilterBlock } from "./JobDetailsFilterBlock";
 import { ApplicantsTable } from "./ApplicantsTable";
+import { SkeletonCandidateListItem } from "./SkeletonCandidateListItem";
 import { CandidateListItem } from "./CandidateListItem";
 import * as _utils from "./utils";
 import _styles from "./JobDetails.module.css";
@@ -168,6 +169,7 @@ export function JobDetails({
                       isScreeningVisible={false}
                       isInterviewVisible={false}
                     />
+                    <SkeletonCandidateListItem />
                     <CandidateListItem
                       isDisqualifiedVisible={false}
                       isInterviewVisible={false}
@@ -298,6 +300,7 @@ export function JobDetails({
                       isInterviewVisible={false}
                       isScreeningVisible={false}
                     />
+                    <SkeletonCandidateListItem />
                   </>
                 )}
               </_Builtin.Block>
