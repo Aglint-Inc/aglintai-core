@@ -31,6 +31,7 @@ export function AddDepartmentPop({
           iconName="close"
           iconColor="neutral"
           iconWeight="thin"
+          color="neutral"
         />
       </_Builtin.Block>
       <Text

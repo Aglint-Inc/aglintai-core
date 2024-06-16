@@ -68,7 +68,6 @@
   justify-content: flex-start;
   align-items: center;
   align-self: stretch;
-  flex: 1;
   grid-column-gap: var(--space-3);
   grid-row-gap: var(--space-3);
 }

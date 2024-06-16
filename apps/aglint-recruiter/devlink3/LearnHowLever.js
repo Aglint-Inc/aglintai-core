@@ -25,9 +25,10 @@ export function LearnHowLever({
         />
         <IconButtonGhost
           onClickButton={onClickClose}
-          iconName=""
+          iconName="close"
           iconWeight="thin"
-          iconColor="neutral-11"
+          iconColor="neutral"
+          color="neutral"
         />
       </_Builtin.Block>
       <_Builtin.Block tag="div">

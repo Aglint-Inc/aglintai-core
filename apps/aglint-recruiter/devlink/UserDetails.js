@@ -31,7 +31,8 @@ export function UserDetails({
           onClickButton={onClickClose}
           iconName="close"
           iconWeight="thin"
-          iconColor="neutral-11"
+          iconColor="neutral"
+          color="neutral"
         />
       </_Builtin.Block>
       <_Builtin.Block tag="div">

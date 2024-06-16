@@ -41,6 +41,7 @@ export function NewTabPill({
               weight="regular"
               color="inherit"
               size="1"
+              align="center"
             />
           </_Builtin.Block>
         ) : null}
@@ -67,6 +68,7 @@ export function NewTabPill({
                 weight="regular"
                 color="inherit"
                 size="1"
+                align="center"
               />
             </_Builtin.Block>
           ) : null}

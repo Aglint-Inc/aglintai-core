@@ -43,7 +43,8 @@ export function AddLocationPop({
           onClickButton={onClickCancel}
           iconName="close"
           iconWeight="thin"
-          iconColor="neutral-11"
+          iconColor="neutral"
+          color="neutral"
         />
       </_Builtin.Block>
       {isLocationDescVisible ? (

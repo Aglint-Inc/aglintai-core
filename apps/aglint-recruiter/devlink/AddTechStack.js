@@ -28,9 +28,10 @@ export function AddTechStack({
         <Text content="Add Specialities" weight="medium" />
         <IconButtonGhost
           onClickButton={onClickCancel}
-          iconName=""
+          iconName="close"
           iconWeight="thin"
-          iconColor="neutral-11"
+          iconColor="neutral"
+          color="neutral"
         />
       </_Builtin.Block>
       <Text

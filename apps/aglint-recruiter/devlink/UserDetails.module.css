@@ -30,7 +30,7 @@
   align-items: center;
   flex: 0 0 auto;
 
-  border: 0.7px solid var(--neutral-6);
+  border: 1px solid var(--neutral-6);
   border-radius: var(--radius-4);
 
   object-fit: cover;
