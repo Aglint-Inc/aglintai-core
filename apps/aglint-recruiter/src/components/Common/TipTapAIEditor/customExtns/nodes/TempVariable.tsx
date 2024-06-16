@@ -75,7 +75,7 @@ export const MentionPluginKey = new PluginKey('mention');
  * This extension allows you to insert mentions into the editor.
  * @see https://www.tiptap.dev/api/extensions/mention
  */
-export const Mention = Node.create<MentionOptions>({
+export const TempVariable = Node.create<MentionOptions>({
   name: 'temp-variable',
 
   addOptions() {

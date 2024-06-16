@@ -1,20 +1,12 @@
 import { Stack } from '@mui/system';
-import Link from '@tiptap/extension-link';
-import Placeholder from '@tiptap/extension-placeholder';
-import TextAlign from '@tiptap/extension-text-align';
-import TextStyle from '@tiptap/extension-text-style';
-import Underline from '@tiptap/extension-underline';
-import { Plugin, PluginKey } from '@tiptap/pm/state';
-import { EditorContent, Extension, useEditor } from '@tiptap/react';
-import { Editor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
+import { Editor, EditorContent, useEditor } from '@tiptap/react';
 import React, { useEffect, useState } from 'react';
 
 import { SkeletonParagraph } from '@/devlink2/SkeletonParagraph';
 
 import { TipTapAIEditorCtxType, TipTapCtx } from './context';
-import { Mention } from './customExtns/Mention';
-import { getTempVariables } from './customExtns/suggestion';
+import { getEmailTemplateExtns } from './customExtns/extns/getEmailTemplateExtns';
+import { getRegularEditorConfigs } from './customExtns/extns/getRegularEditorConfigs';
 import MenuBtns from './MenuBtns';
 
 export type TipTapAIEditorParams = {
@@ -32,6 +24,7 @@ export type TipTapAIEditorParams = {
   disabled?: boolean;
   border?: boolean;
   borderRadius?: React.CSSProperties['borderRadius'];
+  editor_type?: 'email' | 'regular';
 };
 
 const TipTapAIEditor = ({
@@ -47,6 +40,7 @@ const TipTapAIEditor = ({
   disabled = false,
   border = false,
   borderRadius,
+  editor_type = 'regular',
 }: TipTapAIEditorParams) => {
   const [selectionRange, setSelectionRange] = useState<
     TipTapAIEditorCtxType['selectionRange']
@@ -56,29 +50,10 @@ const TipTapAIEditor = ({
     useState<TipTapAIEditorCtxType['selectedText']>('');
 
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      EventHandler,
-      Placeholder.configure({
-        placeholder: placeholder || '',
-      }),
-      Link.configure({
-        openOnClick: false,
-        validate: (href) => /^https?:\/\//.test(href),
-      }),
-      TextAlign.configure({
-        alignments: ['left', 'right', 'center'],
-        types: ['heading', 'paragraph'],
-      }),
-      Underline,
-      TextStyle.configure({}),
-      Mention.configure({
-        HTMLAttributes: {
-          class: 'temp-variable',
-        },
-        suggestion: getTempVariables('debrief_email_interviewer'),
-      }),
-    ],
+    extensions:
+      editor_type === 'regular'
+        ? getRegularEditorConfigs({ placeholder })
+        : getEmailTemplateExtns({ placeholder }),
     editable: !disabled,
     content: initialValue || '',
     onBlur() {},
@@ -197,76 +172,3 @@ const TipTapAIEditor = ({
 };
 
 export default TipTapAIEditor;
-
-export const EventHandler = Extension.create({
-  name: 'eventHandler',
-
-  addProseMirrorPlugins() {
-    return [
-      new Plugin({
-        key: new PluginKey('tiptapPaste'),
-        props: {
-          handlePaste(view, event) {
-            const pastedHTML = event.clipboardData.getData('text/html');
-
-            if (pastedHTML.includes('•')) {
-              const { state, dispatch } = view;
-              const json = convertTextToProseMirrorJSON(
-                event.clipboardData.getData('text/plain'),
-              );
-              const content = state.schema.nodeFromJSON(json);
-              const newState = state.tr.insert(
-                state.doc.content.size - 2,
-                content,
-              );
-
-              event.preventDefault();
-              dispatch(newState);
-              return true;
-            }
-          },
-        },
-      }),
-    ];
-  },
-});
-
-function convertTextToProseMirrorJSON(text) {
-  const lines = text.split('\n');
-  let isInBulletList = false;
-  let json = { type: 'doc', content: [] };
-  let currentListItem = null;
-
-  lines.forEach((line) => {
-    const trimmedLine = line.trim();
-
-    if (trimmedLine.startsWith('•') || trimmedLine.startsWith('●')) {
-      if (!isInBulletList) {
-        isInBulletList = true;
-        json.content.push({ type: 'bulletList', content: [] });
-      }
-
-      currentListItem = { type: 'listItem', content: [] };
-      json.content[json.content.length - 1].content.push(currentListItem);
-
-      const listItemContent = trimmedLine.slice(1).trim();
-      if (listItemContent.length > 0) {
-        currentListItem.content.push({
-          type: 'paragraph',
-          content: [{ type: 'text', text: listItemContent }],
-        });
-      }
-    } else {
-      isInBulletList = false;
-
-      if (trimmedLine.length > 0) {
-        json.content.push({
-          type: 'paragraph',
-          content: [{ type: 'text', text: trimmedLine }],
-        });
-      }
-    }
-  });
-
-  return json;
-}

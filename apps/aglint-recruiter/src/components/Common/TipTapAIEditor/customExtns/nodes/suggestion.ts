@@ -4,7 +4,7 @@ import { emailVariablePayloads } from '@aglint/shared-utils';
 import { ReactRenderer } from '@tiptap/react';
 import tippy from 'tippy.js';
 
-import MentionList from './MentionList.jsx';
+import TempVariableList from './TempVariableList';
 
 export const getTempVariables = (s: DatabaseEnums['email_slack_types']) => ({
   items: ({ query }) => {
@@ -19,7 +19,7 @@ export const getTempVariables = (s: DatabaseEnums['email_slack_types']) => ({
 
     return {
       onStart: (props) => {
-        component = new ReactRenderer(MentionList, {
+        component = new ReactRenderer(TempVariableList, {
           props,
           editor: props.editor,
         });
