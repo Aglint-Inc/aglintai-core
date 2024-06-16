@@ -10,7 +10,6 @@ import { useJob } from '@/src/context/JobContext';
 import NotFoundPage from '@/src/pages/404';
 
 import Loader from '../Common/Loader';
-import SectionIcons from '../JobApplicationsDashboard/Common/SectionIcons';
 import { capitalize } from '../JobApplicationsDashboard/utils';
 import { Actions } from './actions';
 import Drawer from './drawer';

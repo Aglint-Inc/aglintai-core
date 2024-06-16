@@ -5,18 +5,17 @@ import { CSVLink } from 'react-csv';
 import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ImportCandidatesCsv } from '@/devlink/ImportCandidatesCsv';
 import { ImportCsv as ImportCsvDev } from '@/devlink/ImportCsv';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { CsvUploadApi } from '@/src/apiUtils/job/jobApplications/candidateUpload/types';
 import AUIButton from '@/src/components/Common/AUIButton';
-import Icon from '@/src/components/Common/Icons/Icon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import toast from '@/src/utils/toast';
-import { GlobalIcon } from '@/devlink';
 
 export type BulkImportCandidateCsv = CsvUploadApi['request']['candidates'];
 
