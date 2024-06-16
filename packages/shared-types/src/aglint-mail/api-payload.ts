@@ -21,6 +21,7 @@ import {
   sendAvailabilityRequestEmailApplicantSchema,
   sendSelfScheduleRequest_email_applicant,
 } from './api_schema';
+import { emailVariablePayloads } from '@aglint/shared-utils';
 export type MeetingDetailCardType = {
   date: string;
   time: string;
@@ -34,11 +35,7 @@ type Payloads = {
   debrief_email_interviewer: {
     api_payload: v.InferInput<typeof debriefEmailInterviewerSchema>;
     comp_email_placeholders: {
-      '{{ interviewerFirstName }}': string;
-      '{{ companyName }}': string;
-      '{{ candidateName }}': string;
-      '{{ jobTitle }}': string;
-      '{{ recruiterFirstName }}': string;
+      [key in (typeof emailVariablePayloads)['debrief_email_interviewer'][number]]: string;
     };
     react_email_placeholders: {
       subject: string;
@@ -51,10 +48,7 @@ type Payloads = {
   applicationRecieved_email_applicant: {
     api_payload: v.InferInput<typeof applicationRecievedEmailApplicantSchema>;
     comp_email_placeholders: {
-      '{{ candidateFirstName }}': string;
-      '{{ jobTitle }}': string;
-      '{{ companyName }}': string;
-      '{{ recruiterFullName }}': string;
+      [key in (typeof emailVariablePayloads)['applicationRecieved_email_applicant'][number]]: string;
     };
     react_email_placeholders: {
       subject: string;
@@ -65,10 +59,7 @@ type Payloads = {
   interviewCancel_email_applicant: {
     api_payload: v.InferInput<typeof interviewCancelEmailApplicantSchema>;
     comp_email_placeholders: {
-      '{{ candidateFirstName }}': string;
-      '{{ companyName }}': string;
-      '{{ jobTitle }}': string;
-      '{{ recruiterFullName }}': string;
+      [key in (typeof emailVariablePayloads)['interviewCancel_email_applicant'][number]]: string;
     };
     react_email_placeholders: {
       subject: string;
