@@ -85,7 +85,6 @@ export const FilterHeader = ({
       width={'100%'}
       justifyContent={'space-between'}
       gap={2}
-      pr={1}
     >
       {Boolean(search) && (
         <Stack>

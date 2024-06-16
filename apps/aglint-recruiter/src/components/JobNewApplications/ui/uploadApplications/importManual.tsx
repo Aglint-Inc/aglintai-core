@@ -170,7 +170,7 @@ const ImportManual = () => {
   return (
     <Stack style={{ background: 'white' }}>
       <FormBody applicant={applicant} setApplicant={setApplicant} />
-      <Stack direction={'row'} justifyContent={'flex-end'}>
+      <Stack direction={'row'} justifyContent={'flex-end'} sx={{marginRight:'16px'}}>
         <ButtonSolid
           size={2}
           onClickButton={{ onClick: async () => await handleSubmit() }}
@@ -211,7 +211,7 @@ const FormBody = ({
     });
   };
   return (
-    <Stack gap={2} p={'16px 16px 16px'}>
+    <Stack gap={1.5} p={'16px 16px 16px'}>
       <Stack flexDirection={'row'} gap={2}>
         <UITextField
           fullWidth
@@ -247,12 +247,11 @@ const FormBody = ({
           onChange={(e) => handleChange(e, 'email')}
         />
         <Stack
-          width={'690px'}
-          height={'100%'}
+          width={'660px'}
           className='JobApplicationAddManuallyPhoneInput'
           sx={{
             '& .react-tel-input .form-control': {
-              height: '39px !important',
+              height: '36px !important',
               font: 'inherit',
               '&::placeholder': {
                 opacity: 0.6,
@@ -294,7 +293,7 @@ const FormBody = ({
           Upload Resume
           <Stack style={{ color: 'var(--error-11)' }}>*</Stack>
         </Stack>
-        <Stack pb={2}>
+        <Stack>
           <FileUploader
             handleChange={(e) => handleChange(e, 'resume')}
             types={fileTypes}
@@ -366,7 +365,7 @@ export const FileIcon = () => {
 
 export const UploadIcon = () => {
   return (
-    <GlobalIcon iconName='cloud_upload' size={8} weight={'thin'}/>
+    <GlobalIcon iconName='cloud_upload' size={8} weight={'thin'} color='neutral-11'/>
     // <svg
     //   xmlns='http://www.w3.org/2000/svg'
     //   width='24'

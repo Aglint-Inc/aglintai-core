@@ -559,10 +559,10 @@
   grid-row-gap: 8px;
 }
 
-.ske_badge {
+.ske_badge-copy {
   position: relative;
   overflow: hidden;
-  width: 76.8359375px;
+  width: 100px;
   height: 24px;
   border-radius: var(--radius-1);
 }

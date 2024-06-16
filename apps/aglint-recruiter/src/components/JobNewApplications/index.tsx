@@ -10,7 +10,6 @@ import { useJob } from '@/src/context/JobContext';
 import NotFoundPage from '@/src/pages/404';
 
 import Loader from '../Common/Loader';
-import SectionIcons from '../JobApplicationsDashboard/Common/SectionIcons';
 import { capitalize } from '../JobApplicationsDashboard/utils';
 import { Actions } from './actions';
 import Drawer from './drawer';
@@ -97,9 +96,11 @@ const SectionCard = ({
     <Stack onClick={() => changeSection(status)}>
       <NewTabPill
         isPillActive={section === status}
-        slotStartIcon={<SectionIcons section={status} />}
-        isStartIconVisible={true}
-        textLabel={`${capitalize(status)} (${job.count[status]})`}
+        // slotStartIcon={<SectionIcons section={status} />}
+        // isStartIconVisible={true}
+        isTabCountVisible={true}
+        textLabel={`${capitalize(status)}`}
+        tabCount={`${job.count[status]}`}
       />
     </Stack>
   );

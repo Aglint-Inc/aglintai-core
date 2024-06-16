@@ -15,131 +15,6 @@
   align-items: center;
 }
 
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.cursor-pointer {
-  transition: opacity 200ms ease;
-  cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.7;
-}
-
-.icons.cursor-pointer.three-dot {
-  width: 20px;
-  height: 20px;
-  padding: 0px;
-}
-
-.icons.curser-hover-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.curser-hover-pointer:hover {
-  opacity: 0.8;
-}
-
-.icons.rotate-180 {
-  transform: rotate(180deg);
-}
-
-.icons.avatar-play {
-  border-radius: 4px;
-}
-
-.icons.db-star-icons {
-  position: absolute;
-  left: auto;
-  top: -6px;
-  right: -6px;
-  bottom: auto;
-}
-
-.icons.ml-5 {
-  margin-left: 5px;
-}
-
-.pointer {
-  cursor: pointer;
-}
-
-.icons.ml-20 {
-  margin-left: 20px;
-}
-
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
-.color-white {
-  color: var(--white-80449ce7);
-}
-
-.icons.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
-}
-
-.icons.mb-9 {
-  margin-bottom: var(--space-9);
-}
-
-.mt-4 {
-  margin-top: 4px;
-}
-
-.icons.mt-3 {
-  margin-top: 3px;
-}
-
-.icons.mt-2 {
-  margin-top: 2px;
-}
-
-.mt-2 {
-  margin-top: var(--space-2);
-}
-
-.icons.bookmarked {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-}
-
-.icons.start {
-  justify-content: center;
-  align-items: flex-start;
-}
-
-.icons.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
 .profile-image-block {
   display: flex;
   align-items: center;
@@ -155,7 +30,7 @@
   align-items: center;
   flex: 0 0 auto;
 
-  border: 0.7px solid var(--neutral-6);
+  border: 1px solid var(--neutral-6);
   border-radius: var(--radius-4);
 
   object-fit: cover;
@@ -235,7 +110,13 @@
   grid-row-gap: var(--space-2);
 }
 
+.mt-2 {
+  margin-top: var(--space-2);
+}
+
 .flex-horizontal.gap-space-2 {
+  justify-content: flex-start;
+  align-items: center;
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
 }

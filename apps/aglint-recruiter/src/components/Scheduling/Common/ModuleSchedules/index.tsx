@@ -90,7 +90,7 @@ function ModuleSchedules({
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                minHeight: 'calc(100vh - 180px)',
+                minHeight: 'calc(100vh - 128px)',
                 backgroundColor: 'var(--neutral-2)', // replace with your desired background color
               }}
             >

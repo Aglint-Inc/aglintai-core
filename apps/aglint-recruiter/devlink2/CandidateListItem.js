@@ -42,14 +42,7 @@ export function CandidateListItem({
 
   return (
     <_Component
-      className={_utils.cx(
-        _styles,
-        "candidate-list-wrapper",
-        "no-sticky",
-        "relative-1",
-        "no-bg",
-        "pointer"
-      )}
+      className={_utils.cx(_styles, "candidate-list-item-wrap")}
       tag="div"
     >
       {isHighlighted ? (
@@ -59,14 +52,7 @@ export function CandidateListItem({
         />
       ) : null}
       <_Builtin.Block
-        className={_utils.cx(
-          _styles,
-          "cv-list-column-wrapper",
-          "width-auto",
-          "items-v-center",
-          "gap-12",
-          "z-index-6-copy"
-        )}
+        className={_utils.cx(_styles, "cv-list-column-check-wrap")}
         tag="div"
         table-column="checkbox"
       >

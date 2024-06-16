@@ -50,6 +50,7 @@
 .job-link-tag {
   display: flex;
   height: 20px;
+  min-width: 20px;
   padding-right: var(--space-1);
   padding-left: var(--space-1);
   flex-direction: column;
