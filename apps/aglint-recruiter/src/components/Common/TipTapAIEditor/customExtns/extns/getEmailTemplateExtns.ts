@@ -1,3 +1,4 @@
+import { DatabaseEnums } from '@aglint/shared-types';
 import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import TextAlign from '@tiptap/extension-text-align';
@@ -9,7 +10,13 @@ import { getTempVariables } from '../nodes/suggestion';
 import { TempVariable } from '../nodes/TempVariable';
 import { EventHandler } from './pasteEventHandler';
 
-export const getEmailTemplateExtns = ({ placeholder }) => {
+export const getEmailTemplateExtns = ({
+  placeholder,
+  template_type,
+}: {
+  placeholder: string;
+  template_type: DatabaseEnums['email_slack_types'];
+}) => {
   return [
     StarterKit,
     EventHandler,
@@ -30,7 +37,7 @@ export const getEmailTemplateExtns = ({ placeholder }) => {
       HTMLAttributes: {
         class: 'temp-variable',
       },
-      suggestion: getTempVariables('debrief_email_interviewer'),
+      suggestion: getTempVariables(template_type),
     }),
   ];
 };

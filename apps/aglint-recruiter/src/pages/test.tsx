@@ -16,6 +16,8 @@ const TEST = () => {
         <p>I have a meeting with <span data-type="temp-variable" data-id="Christina Applegate"></span> and don’t want to come late.</p>
         <p>– Thanks, your big boss</p>'
         placeholder=''
+        editor_type='email'
+        template_type='debrief_email_interviewer'
       />
     </Stack>
   );

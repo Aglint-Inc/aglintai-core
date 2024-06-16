@@ -1,3 +1,4 @@
+import { DatabaseEnums } from '@aglint/shared-types';
 import { Stack } from '@mui/system';
 import { Editor, EditorContent, useEditor } from '@tiptap/react';
 import React, { useEffect, useState } from 'react';
@@ -25,6 +26,7 @@ export type TipTapAIEditorParams = {
   border?: boolean;
   borderRadius?: React.CSSProperties['borderRadius'];
   editor_type?: 'email' | 'regular';
+  template_type?: DatabaseEnums['email_slack_types'];
 };
 
 const TipTapAIEditor = ({
@@ -41,6 +43,7 @@ const TipTapAIEditor = ({
   border = false,
   borderRadius,
   editor_type = 'regular',
+  template_type,
 }: TipTapAIEditorParams) => {
   const [selectionRange, setSelectionRange] = useState<
     TipTapAIEditorCtxType['selectionRange']
@@ -53,7 +56,7 @@ const TipTapAIEditor = ({
     extensions:
       editor_type === 'regular'
         ? getRegularEditorConfigs({ placeholder })
-        : getEmailTemplateExtns({ placeholder }),
+        : getEmailTemplateExtns({ placeholder, template_type }),
     editable: !disabled,
     content: initialValue || '',
     onBlur() {},
