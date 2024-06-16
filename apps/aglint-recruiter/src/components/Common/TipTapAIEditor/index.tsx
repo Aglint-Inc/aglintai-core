@@ -13,8 +13,9 @@ import React, { useEffect, useState } from 'react';
 import { SkeletonParagraph } from '@/devlink2/SkeletonParagraph';
 
 import { TipTapAIEditorCtxType, TipTapCtx } from './context';
+import { Mention } from './customExtns/Mention';
+import { getTempVariables } from './customExtns/suggestion';
 import MenuBtns from './MenuBtns';
-import styles from './TipTapAIEditor.module.scss';
 
 export type TipTapAIEditorParams = {
   placeholder: string;
@@ -71,6 +72,12 @@ const TipTapAIEditor = ({
       }),
       Underline,
       TextStyle.configure({}),
+      Mention.configure({
+        HTMLAttributes: {
+          class: 'temp-variable',
+        },
+        suggestion: getTempVariables('debrief_email_interviewer'),
+      }),
     ],
     editable: !disabled,
     content: initialValue || '',
@@ -122,7 +129,7 @@ const TipTapAIEditor = ({
           }),
         }}
       >
-        <div className={styles.tipTapEditorContainer}>
+        <div>
           {editor && (
             <>
               <Stack
@@ -131,14 +138,16 @@ const TipTapAIEditor = ({
                   opacity: disabled ? 0.5 : 1,
                 }}
               >
-                <MenuBtns borderRadius={(border && borderRadius) || 'var(--radius-2)'} />
+                <MenuBtns
+                  borderRadius={(border && borderRadius) || 'var(--radius-2)'}
+                />
               </Stack>
             </>
           )}
           <Stack
             position={'relative'}
             sx={{
-              backgroundColor:'var(--white)',
+              backgroundColor: 'var(--white)',
               borderRadius: borderRadius || 'var(--radius-2)',
               '& .ProseMirror': {
                 minHeight: '250px',
@@ -159,6 +168,13 @@ const TipTapAIEditor = ({
               },
               '& .ProseMirror-focused': {
                 outline: 0,
+              },
+              '& .ProseMirror .temp-variable': {
+                backgroundColor: 'var(--status-confirmed)',
+                paddingLeft: '3px',
+                paddingRight: '3px',
+                paddingBottom: '3px',
+                color: '#fff',
               },
             }}
           >
