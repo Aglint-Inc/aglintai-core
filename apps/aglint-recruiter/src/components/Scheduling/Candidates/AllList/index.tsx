@@ -40,6 +40,8 @@ function AllList({
       style={{
         opacity: isLoading ? 0.5 : 1,
         pointerEvents: isLoading ? 'none' : 'auto',
+        height: 'calc(100vh - 182px)',
+        overflowY: 'auto',
       }}
     >
       {isLoading || isPending ? (
