@@ -165,6 +165,8 @@ const getApplications = async ({
     query.order(sort.type, { ascending: sort.order === 'asc' });
   }
 
+  query.order('id');
+
   const applications = (await query.throwOnError()).data.map(
     (application, i) => ({ ...application, index: index + i }),
   );
