@@ -1,4 +1,4 @@
-import { CalendarEvent } from '@aglint/shared-types';
+import type { CalendarEvent } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { uniqueId } from 'lodash';
 
@@ -32,3 +32,5 @@ END:VCALENDAR
     disposition: 'attachment',
   };
 };
+
+export type ICSAttachment = ReturnType<typeof createICSAttachment>;
