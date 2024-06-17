@@ -10,10 +10,13 @@ import {
   InterviewSessionTypeDB,
   TimeDurationType,
 } from '@aglint/shared-types';
-import { ScheduleUtils, SINGLE_DAY_TIME } from '@aglint/shared-utils';
+import {
+  ScheduleUtils,
+  SINGLE_DAY_TIME,
+  supabaseWrap,
+} from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import {
   CHECK_NEXT_MINUTES,
   DEFAULT_CANDIDATE_REQ_END_HOUR,

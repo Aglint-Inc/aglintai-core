@@ -1,4 +1,5 @@
 import { DatabaseTable, JsonResume } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { isArray } from 'lodash';
 import cloneDeep from 'lodash/cloneDeep';
 import set from 'lodash/set';
@@ -8,10 +9,7 @@ import React, { createContext, useContext, useReducer } from 'react';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '../../components/JobsDashboard/JobPostCreateUpdate/utils';
+import { API_FAIL_MSG } from '../../components/JobsDashboard/JobPostCreateUpdate/utils';
 
 export interface CandidateSearchRes {
   application_id: string;

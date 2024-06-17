@@ -477,6 +477,9 @@ function Theme({ children }) {
         defaultProps: {
           disableRipple: true,
           icon: <CheckboxIcon variant='unchecked' size={'16px'} />,
+          indeterminateIcon: (
+            <CheckboxIcon variant='indeterminate' size={'16px'} />
+          ),
           checkedIcon: <CheckboxIcon variant='checked' size={'16px'} />,
         },
         styleOverrides: {

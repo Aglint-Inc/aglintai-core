@@ -1,3 +1,4 @@
+import { supabaseWrap } from '@aglint/shared-utils';
 import { CircularProgress } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
@@ -5,10 +6,7 @@ import { EmailTemplateModal } from '@/devlink/EmailTemplateModal';
 import EmailAiEditor from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditor';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import { API_FAIL_MSG } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

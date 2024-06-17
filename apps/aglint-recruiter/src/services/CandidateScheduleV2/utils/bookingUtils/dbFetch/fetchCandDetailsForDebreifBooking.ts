@@ -1,6 +1,6 @@
 import { APIScheduleDebreif } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { scheduling_options_schema } from '@/src/types/scheduling/schema_find_availability_payload';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 

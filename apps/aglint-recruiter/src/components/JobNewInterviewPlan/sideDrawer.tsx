@@ -136,6 +136,7 @@ const CreateSession = ({ handleClose, order }: DrawerProps) => {
     <SideDrawerBlock
       onClickClose={{ onClick: () => handleClose() }}
       onClickPrimaryButton={{ onClick: () => handleAdd() }}
+      isLoading={false}
       textPrimaryButton='Add'
       textTitle='Create Session'
       slotSidedrawerBody={
@@ -220,6 +221,7 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
     <SideDrawerBlock
       onClickClose={{ onClick: () => handleClose() }}
       onClickPrimaryButton={{ onClick: () => handleEdit() }}
+      isLoading={false}
       textPrimaryButton='Save'
       textTitle='Edit Session'
       slotSidedrawerBody={
@@ -265,6 +267,7 @@ const CreateDebrief = ({ handleClose, order }: DrawerProps) => {
     <SideDrawerBlock
       onClickClose={{ onClick: () => handleClose() }}
       onClickPrimaryButton={{ onClick: () => handleAdd() }}
+      isLoading={false}
       textPrimaryButton='Add'
       textTitle='Create Debrief'
       slotSidedrawerBody={
@@ -331,6 +334,7 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
     <SideDrawerBlock
       onClickClose={{ onClick: () => handleClose() }}
       onClickPrimaryButton={{ onClick: () => handleEdit() }}
+      isLoading={false}
       textPrimaryButton='Save'
       textTitle='Edit Debrief'
       slotSidedrawerBody={
@@ -372,6 +376,7 @@ const BreakSession = ({ handleClose, id }: DrawerProps) => {
     <SideDrawerBlock
       onClickClose={{ onClick: () => handleClose() }}
       onClickPrimaryButton={{ onClick: () => handleUpdate() }}
+      isLoading={false}
       textPrimaryButton={break_duration === 0 ? 'Add' : 'Save'}
       textTitle={break_duration === 0 ? 'Create Break' : 'Edit Break'}
       slotSidedrawerBody={<BreakForms fields={fields} setFields={setFields} />}

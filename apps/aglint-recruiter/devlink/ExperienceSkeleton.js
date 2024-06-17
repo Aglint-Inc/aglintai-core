@@ -52,7 +52,7 @@ export function ExperienceSkeleton({
               )}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "ske_text_small", "width_100")}
+              className={_utils.cx(_styles, "ske_text_small", "width_100px")}
               tag="div"
             >
               {slotLoader ?? (
@@ -76,7 +76,7 @@ export function ExperienceSkeleton({
               )}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "ske_text_small", "width_100")}
+              className={_utils.cx(_styles, "ske_text_small", "width_100px")}
               tag="div"
             >
               {slotLoader ?? (

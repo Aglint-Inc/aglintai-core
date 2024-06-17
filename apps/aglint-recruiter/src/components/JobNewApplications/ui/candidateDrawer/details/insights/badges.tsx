@@ -4,30 +4,40 @@ import Image from 'next/image';
 import { ReactNode } from 'react';
 
 import { Badge as BadgeDev } from '@/devlink/Badge';
+import { Skeleton } from '@/devlink2/Skeleton';
 import { useApplication } from '@/src/context/ApplicationContext';
 import { ApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { BADGE_CONSTANTS } from '@/src/queries/job-applications';
 
+import { Loader } from '../../common';
+
 const Badges = () => {
-  const {
-    meta: { data, status },
-  } = useApplication();
-  if (status === 'pending') return <>Loading...</>;
-  const badges = Object.entries(data?.badges ?? {}).reduce(
-    (acc, [key, value]) => {
-      if (value > BADGE_CONSTANTS[key]) acc.push(BADGE_ICONS[key]);
-      return acc;
-    },
-    [] as ReactNode[],
-  );
   return (
     <Stack style={{ display: 'flex', flexDirection: 'row', gap: '8px' }}>
-      {badges}
+      <Content />
     </Stack>
   );
 };
 
 export { Badges };
+
+const Content = () => {
+  const {
+    meta: { data, status },
+  } = useApplication();
+  if (status === 'pending')
+    return (
+      <Loader count={10}>
+        <Stack style={{ position: 'relative', width: '70px', height: '20px' }}>
+          <Skeleton />
+        </Stack>
+      </Loader>
+    );
+  return Object.entries(data?.badges ?? {}).reduce((acc, [key, value]) => {
+    if (value > BADGE_CONSTANTS[key]) acc.push(BADGE_ICONS[key]);
+    return acc;
+  }, [] as ReactNode[]);
+};
 
 const Leader = () => (
   <BadgeDev

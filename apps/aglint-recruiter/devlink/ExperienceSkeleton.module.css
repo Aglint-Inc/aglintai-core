@@ -61,8 +61,16 @@
   width: 100px;
 }
 
+.width_100 {
+  width: 100%;
+}
+
 .ske_text_regular.width_50 {
   width: 50px;
+}
+
+.ske_text_regular.width_500 {
+  width: 500px;
 }
 
 .exp_details {
@@ -111,4 +119,20 @@
 
 .ske_text_small.width_20 {
   width: 40%;
+}
+
+.ske_text_small.width_100 {
+  width: 90%;
+}
+
+.ske_text_small.width_100-copy {
+  width: 100px;
+}
+
+.ske_text_small.width_100-copy {
+  width: 100px;
+}
+
+.ske_text_small.width_100px {
+  width: 100px;
 }

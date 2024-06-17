@@ -1,13 +1,20 @@
 /* eslint-disable security/detect-object-injection */
-import { Dialog, Stack } from '@mui/material';
+import { DatabaseEnums } from '@aglint/shared-types';
+import { getFullName } from '@aglint/shared-utils';
+import { Collapse, Dialog, Stack } from '@mui/material';
 import { useState } from 'react';
 
 import { CandidateSelectionPopup } from '@/devlink2/CandidateSelectionPopup';
 import { SelectActionsDropdown } from '@/devlink2/SelectActionsDropdown';
+import { createTasks } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { supabase } from '@/src/utils/supabase/client';
 
 import AUIButton from '../../Common/AUIButton';
+import { TaskStatesProvider } from '../../Tasks/TaskStatesContext';
+import CreateTask from './createTask';
 
 const MoveCandidate = () => {
   const { emailVisibilities } = useApplications();
@@ -154,32 +161,81 @@ const MoveCandidateAssessment = () => {
   );
 };
 
+type TaskType = {
+  assignee: string[];
+  schedule_date_range: { start_date: string; end_date: string };
+  session_ids: any[];
+  task_owner: string;
+  status: DatabaseEnums['task_status'];
+  priority: DatabaseEnums['task_priority'];
+  type: DatabaseEnums['task_type_enum'];
+  due_date: string;
+  start_date: string;
+  name: string;
+};
+
 const MoveCandidateInterview = () => {
-  const { handleMoveApplications } = useApplications();
-  const { resetActionPopup } = useApplicationsStore(({ resetActionPopup }) => ({
-    resetActionPopup,
-  }));
+  const { recruiter_id, recruiterUser } = useAuthDetails();
+  const { handleMoveApplications, job, sectionApplication } = useApplications();
+  const { resetActionPopup, checklist } = useApplicationsStore(
+    ({ resetActionPopup, checklist }) => ({
+      checklist,
+      resetActionPopup,
+    }),
+  );
+
+  const [taskCheck, setTaskCheck] = useState(false);
+  const [task, setTask] = useState<TaskType>(null);
+
+  const createTask = async () =>
+    taskCheck &&
+    (await createTasks(
+      supabase,
+      recruiter_id,
+      {
+        id: recruiterUser.user_id,
+        name: getFullName(recruiterUser.first_name, recruiterUser.last_name),
+      },
+      (sectionApplication?.data?.pages ?? [])
+        .flatMap((page) => page)
+        .filter(({ id }) => checklist.includes(id))
+        .map(({ id, name }) => ({ id, name })),
+      task,
+    ));
+
   const { buttons, title, description } = useMeta(() => {
     handleMoveApplications({
       status: 'interview',
       email: null,
+      callBacks: [createTask()],
     });
     resetActionPopup();
   });
+
   return (
-    <CandidateSelectionPopup
-      textHeader={title}
-      textDescription={description}
-      isCheckVisible={true}
-      textCheck={null}
-      isChecked={false}
-      isWarningVisible={false}
-      textWarning={null}
-      slotMoveAssessment={<></>}
-      onclickCheck={null}
-      onclickClose={{ onClick: () => resetActionPopup() }}
-      slotButtons={buttons}
-    />
+    <TaskStatesProvider>
+      <CandidateSelectionPopup
+        textHeader={title}
+        textDescription={description}
+        isCheckVisible={true}
+        textCheck={'Create scheduling task'}
+        isChecked={taskCheck}
+        isWarningVisible={false}
+        textWarning={null}
+        slotMoveAssessment={
+          <Collapse in={taskCheck}>
+            <CreateTask
+              applications={checklist}
+              setTask={setTask}
+              job_id={job?.id}
+            />
+          </Collapse>
+        }
+        onclickCheck={{ onClick: () => setTaskCheck((prev) => !prev) }}
+        onclickClose={{ onClick: () => resetActionPopup() }}
+        slotButtons={buttons}
+      />
+    </TaskStatesProvider>
   );
 };
 

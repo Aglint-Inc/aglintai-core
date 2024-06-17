@@ -1,5 +1,5 @@
 import { schedulingSettingType, SocialsType } from '@aglint/shared-types';
-import { AvatarGroup, Stack } from '@mui/material';
+import { AvatarGroup, Box, Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -261,7 +261,7 @@ const InterviewerModule = ({
       slotInterviewModuleCard={
         !isPending && (
           <Stack width={'100%'} height={'calc(100vh - 112px)'}>
-            {filteredData.length > 0 ? (
+            {filteredData.length < 0 ? (
               filteredData.map((mod) => {
                 return (
                   <Stack
@@ -322,12 +322,24 @@ const InterviewerModule = ({
               })
             ) : (
               <Stack>
-                <EmptyState
-                  slotIcons={
-                    <Icon height='60' width='80' variant='EmptyState' />
-                  }
-                  textDescription={'No interview types found.'}
-                />
+                <Box
+                  sx={{
+                    padding: 'var(--space-4)',
+                    borderRadius: 'var(--radius-2)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    minHeight: 'calc(100vh - 166px)',
+                    backgroundColor: 'var(--neutral-2)', // replace with your desired background color
+                  }}
+                >
+                  <EmptyState
+                    slotIcons={
+                      <Icon height='60' width='80' variant='EmptyState' />
+                    }
+                    textDescription={'No interview types found.'}
+                  />
+                </Box>
               </Stack>
             )}
           </Stack>

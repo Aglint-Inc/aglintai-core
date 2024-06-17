@@ -86,7 +86,7 @@ function TranscriptPlayer({ src }: { src: string }) {
               audioRef.current?.play();
               setPlaying(true);
             }}>
-            <GlobalIcon iconName='play'/>
+            <GlobalIcon iconName='play_arrow'/>
           </Box>
         </ShowCode.When>
         <ShowCode.When isTrue={playing}>

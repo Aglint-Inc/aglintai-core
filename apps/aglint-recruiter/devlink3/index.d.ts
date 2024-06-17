@@ -1,5 +1,9 @@
 "use client";
 
+console.warn(
+  "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
+);
+
 export * as _Builtin from "./_Builtin";
 export * from "./devlinkContext";
 export * from "./interactions";
@@ -205,6 +209,8 @@ export * from "./ScoreSetting";
 export * from "./SessionDetails";
 export * from "./SideDrawerLarge";
 export * from "./SingleDaySchedule";
+export * from "./SkeletonActivitiesCard";
+export * from "./SkeletonNewInterviewPlanCard";
 export * from "./SlotComp";
 export * from "./SoundTask";
 export * from "./SuggetionCard";

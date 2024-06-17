@@ -46,7 +46,7 @@ const Filters = () => {
     typeof FilterHeader
   >[0]['filters'][number] = useMemo(
     () => ({
-      type: 'multiSectionFilter',
+      type: 'multi-section-filter',
       name: 'Locations',
       options: {
         country: Object.keys(locationFilterOptions?.data ?? {}).map(

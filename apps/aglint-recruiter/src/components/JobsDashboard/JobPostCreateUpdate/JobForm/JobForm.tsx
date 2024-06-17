@@ -1,3 +1,4 @@
+import { supabaseWrap } from '@aglint/shared-utils';
 import { Popover, Stack } from '@mui/material';
 import { get } from 'lodash';
 import { useRouter } from 'next/dist/client/router';
@@ -36,13 +37,7 @@ import ScoreSettings, {
   getBalancedScore,
 } from '../JobPostFormSlides/ScoreSettings';
 import SyncStatus from '../JobPostFormSlides/SyncStatus';
-import {
-  API_FAIL_MSG,
-  isShoWWarn,
-  jobSlides,
-  slidePathToNum,
-  supabaseWrap,
-} from '../utils';
+import { API_FAIL_MSG, isShoWWarn, jobSlides, slidePathToNum } from '../utils';
 import CloseJobPopup from './CloseJobPopup';
 import JobPublishButton from './PublishButton';
 

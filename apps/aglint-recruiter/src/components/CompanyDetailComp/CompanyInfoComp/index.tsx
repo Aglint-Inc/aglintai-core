@@ -301,7 +301,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                         } as RecruiterType);
                       }
                     }}
-                    size={70}
+                    size={48}
                     table='company-logo'
                     error={(e) => {
                       if (e) {
@@ -328,7 +328,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                 },
               }}
               slotBasicForm={
-                <Stack spacing={2} p={'var(--space-1)'} sx={{width:'380px'}}>
+                <Stack spacing={2} p={'var(--space-1)'} sx={{ width: '380px' }}>
                   <UITextField
                     labelBold='default'
                     labelSize='small'

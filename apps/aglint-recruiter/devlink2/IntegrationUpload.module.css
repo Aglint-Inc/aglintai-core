@@ -1,11 +1,11 @@
-.div-block-1263 {
+.integration-upload-wrap {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   flex-wrap: nowrap;
   align-items: flex-start;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .upload-area {
@@ -18,7 +18,7 @@
   align-items: center;
 
   border: 1px dashed var(--neutral-6);
-  border-radius: 4px;
+  border-radius: var(--radius-2);
 
   background-color: var(--neutral-2);
 

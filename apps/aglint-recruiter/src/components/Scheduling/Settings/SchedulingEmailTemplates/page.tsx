@@ -115,11 +115,11 @@ function SchedulerEmailTemps() {
                 {isEditorLoad && (
                   <>
                     <Stack
-                      direction={'row'}
-                      alignItems={'center'}
-                      justifyContent={'center'}
-                      width={'10px'}
-                      height={'10vh'}
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="center"
+                      bgcolor="var(--neutral-2)"
+                      sx={{ width: '100%', height: 'calc(100vh - 96px)' }}
                     >
                       <LoaderSvg />
                     </Stack>

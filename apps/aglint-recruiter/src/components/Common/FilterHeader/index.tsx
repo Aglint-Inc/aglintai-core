@@ -22,7 +22,6 @@ export default function FilterHeader({
       width={'100%'}
       justifyContent={'space-between'}
       gap={2}
-      pr={1}
     >
       {Boolean(search) && <SearchComponent {...search} />}
       <Stack direction={'row'} justifyContent={'space-between'} flexGrow={1}>

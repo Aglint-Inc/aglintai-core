@@ -90,6 +90,10 @@
   width: 100px;
 }
 
+.width_100 {
+  width: 100%;
+}
+
 .ske_text_small.width_90 {
   width: 90%;
 }
@@ -100,6 +104,22 @@
 
 .ske_text_small.width_20 {
   width: 40%;
+}
+
+.ske_text_small.width_100 {
+  width: 90%;
+}
+
+.ske_text_small.width_100-copy {
+  width: 100px;
+}
+
+.ske_text_small.width_100-copy {
+  width: 100px;
+}
+
+.ske_text_small.width_100px {
+  width: 100px;
 }
 
 .skeleton-loader_purple {

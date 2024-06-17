@@ -6,8 +6,8 @@ import {
   NewCalenderEvent,
   schedulingSettingType,
 } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
 

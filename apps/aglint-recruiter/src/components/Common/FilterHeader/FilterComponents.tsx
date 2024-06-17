@@ -1,4 +1,5 @@
 import {
+  Checkbox,
   List,
   ListItemButton,
   Popover,
@@ -7,7 +8,6 @@ import {
 } from '@mui/material';
 import React, { ReactNode } from 'react';
 
-import { Checkbox } from '@/devlink/Checkbox';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { AddFilter } from '@/devlink2/AddFilter';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
@@ -17,13 +17,23 @@ import { MultiFilterLayout } from '@/devlink3/MultiFilterLayout';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import UITextField from '../UITextField';
+import {
+  nestedOptionMapper,
+  nestedType,
+  setValueInNestedObject,
+} from './utils';
 
 /* eslint-disable no-unused-vars */
 
 type dynamicOptionsTypes =
   | string[]
   | { id: string; label: string }[]
-  | { header: string; options: { id: string; label: string }[] }[];
+  | { header: string; options: { id: string; label: string }[] }[]
+  | {
+      header: string;
+      path: string[];
+      options: { id: string; label: string }[];
+    }[];
 
 type FilterMultiSectionFilterType = {
   name: string;
@@ -31,6 +41,15 @@ type FilterMultiSectionFilterType = {
   options: { [section: string]: dynamicOptionsTypes };
   value: { [section: string]: string[] };
   setValue: (value: { [section: string]: string[] }) => void;
+  isVisible?: boolean;
+};
+type FilterNestedType = {
+  name: string;
+  icon?: ReactNode;
+  options: nestedType<string[]>;
+  value: nestedType<string[]>;
+  sectionHeaders: string[];
+  setValue: (value: nestedType<string[]>) => void;
   isVisible?: boolean;
 };
 
@@ -50,14 +69,11 @@ export type FilterTypes =
       type: 'filter';
     } & FilterComponentType)
   | ({
-      type: 'multiSectionFilter';
+      type: 'multi-section-filter';
     } & FilterMultiSectionFilterType)
-  // | {
-  //     type: 'customFilter';
-  //     name: string;
-  //     component: ReactNode;
-  //     isVisible?: boolean;
-  //   }
+  | ({
+      type: 'nested-filter';
+    } & FilterNestedType)
   | {
       type: 'button';
       name: string;
@@ -133,13 +149,28 @@ function FilterSwitcher(filter: FilterTypes, index: number) {
           icon={filter.icon}
         />
       );
-    case 'multiSectionFilter': {
+    case 'multi-section-filter': {
       return (
         <MultiSectionFilterComponent
           key={index}
           title={capitalizeFirstLetter(filter.name || '')}
           itemListSections={filter.options}
           selectedItems={filter.value}
+          setSelectedItems={(values) => {
+            filter.setValue(values);
+          }}
+          icon={filter.icon}
+        />
+      );
+    }
+    case 'nested-filter': {
+      return (
+        <NestedFilterComponent
+          key={index}
+          title={capitalizeFirstLetter(filter.name || '')}
+          nestedItems={filter.options}
+          selectedItems={filter.value}
+          sectionHeaders={filter.sectionHeaders}
           setSelectedItems={(values) => {
             filter.setValue(values);
           }}
@@ -235,7 +266,16 @@ export function FilterComponent({
               optionList={itemList}
               selectedItems={selectedItems}
               searchFilter={filterSearch}
-              setSelectedItems={setSelectedItems}
+              setSelectedItems={(val) => {
+                let temp = [...selectedItems];
+                if (temp.includes(val)) {
+                  temp = temp.filter((innerEle) => innerEle !== val);
+                } else {
+                  temp.push(val);
+                }
+                setSelectedItems(temp);
+              }}
+              nested={false}
             />
           }
           onClickReset={{
@@ -309,6 +349,159 @@ function MultiSectionFilterComponent({
         slotRightIcon={
           <Stack>
             <GlobalIcon iconName='keyboard_arrow_down' />
+          </Stack>
+        }
+      />
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{ vertical: -10, horizontal: 0 }}
+        sx={{
+          '& .MuiPopover-paper': {
+            borderRadius: 'var(--radius-2)',
+            borderColor: 'var(--neutral-6)',
+            minWidth: '176px',
+          },
+        }}
+      >
+        <MultiFilterLayout
+          slotFilterItem={sectionsArray?.map(([section, optionList], i) => {
+            const searchEnabled = search.includes(i);
+            return (
+              <FilterItem
+                key={section}
+                textFilterHeading={capitalizeFirstLetter(section)}
+                textCount={isSectionsActive[String(section)]}
+                isCountVisible={Boolean(isSectionsActive[String(section)])}
+                onClickSearch={{
+                  onClick: () => {
+                    if (searchEnabled) {
+                      setSearch(search.filter((item) => item !== i));
+                    } else setSearch([...search, i]);
+                  },
+                }}
+                onClickRefresh={{
+                  onClick: () => {
+                    setSelectedItems({
+                      ...selectedItems,
+                      [section]: [],
+                    });
+                  },
+                }}
+                slotItems={
+                  <Stack p={2} gap={2}>
+                    <FilterOptionsList
+                      optionList={optionList}
+                      selectedItems={selectedItems?.[String(section)] || []}
+                      searchFilter={searchEnabled}
+                      setSelectedItems={(val) => {
+                        let temp = [...selectedItems[String(section)]];
+                        if (temp.includes(val)) {
+                          temp = temp.filter((innerEle) => innerEle !== val);
+                        } else {
+                          temp.push(val);
+                        }
+                        setSelectedItems({
+                          ...selectedItems,
+                          [section]: temp,
+                        });
+                      }}
+                      nested={false}
+                    />
+                  </Stack>
+                }
+              />
+            );
+          })}
+          onClickReset={{
+            onClick: () => {
+              setSelectedItems(
+                sectionsArray.reduce(
+                  (acc, curr) => {
+                    acc[curr[0]] = [];
+                    return acc;
+                  },
+                  {} as typeof selectedItems,
+                ),
+              );
+            },
+          }}
+        />
+      </Popover>
+    </>
+  );
+}
+
+export type NestedFilterComponentType = {
+  title: string;
+  nestedItems: FilterNestedType['options'];
+  selectedItems: FilterNestedType['value'];
+  // eslint-disable-next-line no-unused-vars
+  setSelectedItems: FilterNestedType['setValue'];
+  sectionHeaders: string[];
+  icon: ReactNode;
+};
+
+function NestedFilterComponent({
+  title,
+  nestedItems,
+  setSelectedItems,
+  selectedItems,
+  sectionHeaders,
+  icon,
+}: NestedFilterComponentType) {
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null,
+  );
+  const open = Boolean(anchorEl);
+
+  const id = open ? 'jobs-filter' : undefined;
+  function handleClose() {
+    setAnchorEl(null);
+  }
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const sectionsArray = nestedOptionMapper(
+    sectionHeaders,
+    nestedItems,
+    selectedItems,
+  );
+
+  // const sectionsSelectedArray = Object.entries(selectedItems || {});
+
+  const isSectionsActive = sectionsArray.reduce((acc, curr) => {
+    const [key, , count] = curr;
+    acc[String(key)] = count;
+    return acc;
+  }, {} as isSectionsActive);
+
+  const isAnyActive =
+    (Object.values(isSectionsActive) as number[]).reduce((a, b) => a + b, 0) >
+    0;
+  const [search, setSearch] = React.useState<number[]>([]);
+  return (
+    <>
+      <ButtonFilter
+        isActive={isAnyActive}
+        isDotVisible={isAnyActive}
+        slotLeftIcon={<Stack>{icon}</Stack>}
+        // isDotVisible={filter.job_ids.length > 0}
+        onClickStatus={{
+          onClick: handleClick,
+        }}
+        textLabel={title}
+        slotRightIcon={
+          <Stack>
+            <GlobalIcon iconName='keyboard_arrow_down' />
             {/* <svg
               width='15'
               height='16'
@@ -349,10 +542,8 @@ function MultiSectionFilterComponent({
               <FilterItem
                 key={section}
                 textFilterHeading={capitalizeFirstLetter(section)}
-                textCount={(selectedItems?.[String(section)] || []).length}
-                isCountVisible={Boolean(
-                  (selectedItems?.[String(section)] || []).length,
-                )}
+                textCount={isSectionsActive[String(section)]}
+                isCountVisible={Boolean(isSectionsActive[String(section)])}
                 onClickSearch={{
                   onClick: () => {
                     if (searchEnabled) {
@@ -362,24 +553,33 @@ function MultiSectionFilterComponent({
                 }}
                 onClickRefresh={{
                   onClick: () => {
-                    setSelectedItems({
-                      ...selectedItems,
-                      [section]: [],
-                    });
+                    // setSelectedItems({
+                    //   ...selectedItems,
+                    //   [section]: [],
+                    // });
                   },
                 }}
                 slotItems={
                   <Stack p={2} gap={2}>
                     <FilterOptionsList
                       optionList={optionList}
-                      selectedItems={selectedItems?.[String(section)] || []}
+                      // selectedItems={selectedItems?.[String(section)] || []}
+                      selectedItems={[]}
                       searchFilter={searchEnabled}
-                      setSelectedItems={(val) => {
-                        setSelectedItems({
-                          ...selectedItems,
-                          [section]: val,
-                        });
+                      setSelectedItems={(val, path) => {
+                        // console.log(
+                        //   structuredClone(selectedItems),
+                        //   'selectedItems',
+                        // );
+                        const temp = setValueInNestedObject(
+                          structuredClone(selectedItems),
+                          path,
+                          val,
+                          nestedItems,
+                        );
+                        setSelectedItems(temp);
                       }}
+                      nested={true}
                     />
                   </Stack>
                 }
@@ -388,15 +588,15 @@ function MultiSectionFilterComponent({
           })}
           onClickReset={{
             onClick: () => {
-              setSelectedItems(
-                sectionsArray.reduce(
-                  (acc, curr) => {
-                    acc[curr[0]] = [];
-                    return acc;
-                  },
-                  {} as typeof selectedItems,
-                ),
-              );
+              // setSelectedItems(
+              //   sectionsArray.reduce(
+              //     (acc, curr) => {
+              //       acc[curr[0]] = [];
+              //       return acc;
+              //     },
+              //     {} as typeof selectedItems,
+              //   ),
+              // );
             },
           }}
         />
@@ -410,13 +610,32 @@ function FilterOptionsList({
   optionList,
   searchFilter,
   setSelectedItems,
+  nested = false,
 }: {
   selectedItems: string[];
-  optionList: dynamicOptionsTypes;
   searchFilter: boolean;
-  // eslint-disable-next-line no-unused-vars
-  setSelectedItems: (options: string[]) => void;
-}) {
+} & (
+  | {
+      // eslint-disable-next-line no-unused-vars
+      setSelectedItems: (options: string) => void;
+      nested: false;
+      optionList: dynamicOptionsTypes;
+    }
+  | {
+      // eslint-disable-next-line no-unused-vars
+      setSelectedItems: (options: string, path: string[]) => void;
+      nested: true;
+      optionList: {
+        header: string;
+        path: string[];
+        options: {
+          id: string;
+          status: 'active' | 'partial' | 'inactive';
+          label: string;
+        }[];
+      }[];
+    }
+)) {
   const [search, setSearch] = React.useState('');
   const filteredOptions = optionList?.[0]
     ? (
@@ -427,22 +646,29 @@ function FilterOptionsList({
           : [
               {
                 header: null,
-                options: optionList.map((item) => ({ id: item, label: item })),
+                options: optionList.map((item) => ({
+                  id: item,
+                  label: item,
+                })),
               },
             ]) as {
           header: string | null;
           options: { id: string; label: string }[];
         }[]
-      ).map(({ header, options }) => {
-        return {
-          header,
-          options: options.map(({ id, label }) => ({
-            id,
-            label: capitalizeFirstLetter(label),
-          })),
-        };
-      })
+      )
+        // @ts-ignore
+        .map(({ header, path, options }) => {
+          return {
+            header,
+            path: path || [],
+            options: options.map((item) => ({
+              ...item,
+              label: capitalizeFirstLetter(item.label),
+            })),
+          };
+        })
     : [];
+
   return (
     <>
       {Boolean(searchFilter) && (
@@ -469,28 +695,26 @@ function FilterOptionsList({
               {optionList.header && (
                 <Typography>{optionList.header}</Typography>
               )}
-              {filteredOp.map(({ id, label }) => {
+              {filteredOp.map((option) => {
                 return (
                   <Stack
-                    key={id}
+                    key={option.id}
                     direction={'row'}
                     sx={{ alignItems: 'center' }}
                     spacing={1}
                     onClick={() => {
-                      let temp: string[] = [];
-                      if (selectedItems.includes(id)) {
-                        temp = selectedItems.filter(
-                          (innerEle) => innerEle !== id,
-                        );
-                      } else {
-                        temp = [...selectedItems, id];
-                      }
-                      setSelectedItems(temp);
+                      setSelectedItems(option.id, optionList.path || []);
                     }}
                   >
                     <Checkbox
-                      isChecked={selectedItems.includes(id)}
-                      onClickCheck={{}}
+                      checked={
+                        nested
+                          ? // @ts-ignore
+                            option.status === 'active'
+                          : selectedItems.includes(option.id)
+                      }
+                      // @ts-ignore
+                      indeterminate={nested && option.status === 'partial'}
                     />
                     <Typography
                       sx={{
@@ -499,7 +723,7 @@ function FilterOptionsList({
                         cursor: 'pointer',
                       }}
                     >
-                      {label}
+                      {option.label}
                     </Typography>
                   </Stack>
                 );
