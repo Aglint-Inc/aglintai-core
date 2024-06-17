@@ -2,11 +2,8 @@
 import { NextResponse } from 'next/server';
 import * as v from 'valibot';
 import { debriefEmailInterviewerSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
-import { getEmails } from '../../../utils/apiUtils/get-emails';
-import { ClientError } from '../../../utils/apiUtils/customErrors';
-import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
-import sendMail from '../../../config/sendgrid';
 import { fetchUtil } from './fetch-util';
+import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 
 export async function POST(req: Request) {
   const req_body = await req.json();
@@ -15,32 +12,16 @@ export async function POST(req: Request) {
     const parsed_body = v.parse(debriefEmailInterviewerSchema, req_body.meta);
     const { interviewers_mail_data } = await fetchUtil(parsed_body);
 
-    const { emails } = await getEmails();
-    const emailIdx = emails.findIndex(
-      (e) => e === interviewers_mail_data[0].filled_comp_template.type,
-    );
-
-    if (emailIdx === -1)
-      throw new ClientError(
-        `${interviewers_mail_data[0].filled_comp_template.type} does not match any mail_type`,
-        400,
-      );
-
     for (const {
       react_email_placeholders,
       recipient_email,
+      filled_comp_template,
     } of interviewers_mail_data) {
-      const { html, subject } = await renderEmailTemplate(
-        interviewers_mail_data[0].filled_comp_template.type,
+      sendMailFun(
+        filled_comp_template,
         react_email_placeholders,
+        recipient_email,
       );
-      await sendMail({
-        email: recipient_email,
-        html,
-        subject,
-        text: html,
-        fromName: interviewers_mail_data[0].filled_comp_template.from_name,
-      });
     }
 
     return NextResponse.json('success', {
