@@ -23,6 +23,9 @@ module.exports = {
       typescript: {
         project: true,
       },
+      node: {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
     },
   },
   ignorePatterns: ['cli/', 'cli/index.mjs', "node_modules/", "dist/"],
