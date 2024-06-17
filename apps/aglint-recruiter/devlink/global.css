@@ -2885,3 +2885,8 @@ blockquote {
   display: flex;
   flex-direction: column;
 }
+.w-layout-hflex {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+}

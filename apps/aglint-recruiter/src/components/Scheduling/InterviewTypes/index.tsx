@@ -1,4 +1,4 @@
-import { AvatarGroup, InputAdornment, Stack } from '@mui/material';
+import { AvatarGroup, Box, InputAdornment, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -67,6 +67,8 @@ export function Modules() {
             slotFilter={
               <Stack direction={'row'} gap={2}>
                 <UITextField
+                  width={'250px'}
+                  height={32}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position='end'>
@@ -79,7 +81,6 @@ export function Modules() {
                     setTextSearch(e.target.value);
                   }}
                   value={textSearch}
-                  width={'250px'}
                 />
                 <FilterDepartment />
                 <FilterCreatedBy />
@@ -167,13 +168,25 @@ export function Modules() {
                     />
                   </>
                 ) : (
-                  <Stack>
-                    <EmptyState
-                      slotIcons={
-                        <Icon height='60' width='80' variant='EmptyState' />
-                      }
-                      textDescription={'No interview types found.'}
-                    />
+                  <Stack p={2}>
+                    <Box
+                      sx={{
+                        padding: 'var(--space-4)',
+                        borderRadius: 'var(--radius-2)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        minHeight: 'calc(100vh - 166px)',
+                        backgroundColor: 'var(--neutral-2)', // replace with your desired background color
+                      }}
+                    >
+                      <EmptyState
+                        slotIcons={
+                          <Icon height='60' width='80' variant='EmptyState' />
+                        }
+                        textDescription={'No interview types found.'}
+                      />
+                    </Box>
                   </Stack>
                 )}
               </Stack>

@@ -133,7 +133,7 @@ export function TaskTable({
             {...onClickNewTask}
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1441")}
+              className={_utils.cx(_styles, "tjc-space-div")}
               tag="div"
             />
             <_Builtin.Block

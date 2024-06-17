@@ -100,8 +100,8 @@ function Filters({ setFilteredInterviewer }) {
         marginRight={5}
       >
         <UITextField
+          width='250px'
           height={32}
-          width='300px'
           InputProps={{
             endAdornment: (
               <InputAdornment position='end'>
@@ -109,7 +109,7 @@ function Filters({ setFilteredInterviewer }) {
               </InputAdornment>
             ),
           }}
-          placeholder='Search by Name, Email or Title'
+          placeholder='Search Interviewer'
           onChange={handleSearchInputChange}
         />
         <FilterDropDown

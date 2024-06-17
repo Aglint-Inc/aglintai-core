@@ -218,11 +218,12 @@ function ATSPopUps({
                 </ShowCode>
               </Stack>
             }
-            isGreyButtonVisible={
-              reason !== 'connect_greenhouse' &&
-              reason !== 'connect_ashby' &&
-              reason !== 'connect_lever'
-            }
+            isGreyButtonVisible = {true}
+            // isGreyButtonVisible={
+            //   reason !== 'connect_greenhouse' &&
+            //   reason !== 'connect_ashby' &&
+            //   reason !== 'connect_lever'
+            // }
             textPopupButton={
               <ShowCode>
                 <ShowCode.When
@@ -245,6 +246,7 @@ function ATSPopUps({
                 </ShowCode.When>
               </ShowCode>
             }
+            
             // isBlueButtonVisible={false}
 
             onClickCancel={{ onClick: close }}

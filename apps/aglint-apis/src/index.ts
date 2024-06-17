@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import express from 'express';
 import expressWs from 'express-ws';
 import cors from 'cors';
@@ -23,7 +24,7 @@ app.use(
   cors({
     origin: [
       'http://localhost:3000',
-      'https://preprod.aglinthq.com',
+      'https://dev.aglinthq.com',
       'https://app.aglinthq.com',
     ],
   })
@@ -33,22 +34,21 @@ app.use(express.urlencoded({extended: true}));
 // routes
 twilioClient.ListenTwilioVoiceWebhook(app);
 app.get('/health', (req, res) => {
-  res.status(200).send('server running');
+  res.status(200).send('server running v 1.0.1');
 });
 app.use('/api/schedule-agent', phoneAgentRoutes);
 app.use('/api/screening-agent', screenignAgentRouter);
 app.use('/api/email-agent', emailAgentRouter);
-// app.get('/redis', async (req, res) => {
-//   await redisClient.set('animal', 'cat');
-//   console.time();
-//   const val = await redisClient.get('animal');
-//   console.timeEnd();
-//   console.log(val);
-//   return res.status(200).send('');
-// });
 app.use('/api/twilio', twilioRouter);
 app.use('/api/retell', retellRoutes);
 app.use('/api/slack', slackRoutes);
+app.get('/redis', async (req, res) => {
+  console.time('verify-redis');
+  await redisClient.set('foo', 'bar');
+  const d = await redisClient.get('foo');
+  console.timeEnd('verify-redis');
+  return res.status(200).send(d);
+});
 app.use(errorHandler);
 mountScheduleAgentWs();
 

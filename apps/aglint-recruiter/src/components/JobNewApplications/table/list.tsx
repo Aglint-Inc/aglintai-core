@@ -2,18 +2,20 @@ import { Stack } from '@mui/material';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import React, { useEffect, useRef } from 'react';
 
-import { AssessmentListCardLoader } from '@/devlink2/AssessmentListCardLoader';
 import { useApplications } from '@/src/context/ApplicationsContext';
 
 import ApplicationCard from './card';
+import { EmptyList } from './common';
 
 const ApplicantsList = ({
   applications,
   header,
+  loader,
   count,
 }: {
   applications: ReturnType<typeof useApplications>['sectionApplication'];
   header: React.JSX.Element;
+  loader: React.JSX.Element;
   count: number;
 }) => {
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage } = applications;
@@ -51,6 +53,8 @@ const ApplicantsList = ({
     rowVirtualizer.getVirtualItems(),
   ]);
 
+  if ((allRows ?? []).length === 0) return <EmptyList />;
+
   return (
     <Stack
       ref={parentRef}
@@ -87,9 +91,9 @@ const ApplicantsList = ({
               <>
                 {isLoaderRow ? (
                   hasNextPage ? (
-                    <AssessmentListCardLoader /> //'Loading more...'
+                    loader
                   ) : (
-                    <></> //'Nothing more to load'
+                    <></>
                   )
                 ) : (
                   <ApplicationCard application={application} />

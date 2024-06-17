@@ -20,10 +20,6 @@
   flex-direction: row;
 }
 
-.hide {
-  display: none;
-}
-
 .text_bloxk {
   position: relative;
   z-index: 1;
@@ -105,6 +101,10 @@
 
 .text-grey_600 {
   color: var(--sand-11);
+}
+
+.hide {
+  display: none;
 }
 
 .is_start {

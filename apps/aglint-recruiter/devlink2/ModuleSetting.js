@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./ModuleSetting.module.css";
 
@@ -25,21 +26,15 @@ export function ModuleSetting({
         className={_utils.cx(_styles, "modulesettingtoggle")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1183")}
-          tag="div"
-        >
+        <_Builtin.Block className={_utils.cx(_styles, "ms-top-wrap")} tag="div">
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1471")}
+            className={_utils.cx(_styles, "ms-slot-training")}
             tag="div"
           >
             {slotRequiresTrainingToggle}
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1470")}
-            tag="div"
-          >
-            <_Builtin.Block tag="div">{"Requires Training"}</_Builtin.Block>
+          <_Builtin.Block tag="div">
+            <Text weight="" content="" />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
@@ -47,7 +42,10 @@ export function ModuleSetting({
         className={_utils.cx(_styles, "modulesettings")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "gap-10")} tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "ms-slot-wrapper")}
+          tag="div"
+        >
           {isRequireTrainingVisible ? (
             <_Builtin.Block
               className={_utils.cx(_styles, "div-block-1184")}

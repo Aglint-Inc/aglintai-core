@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { IconButtonGhost } from "./IconButtonGhost";
+import { GlobalIcon } from "./GlobalIcon";
 import { RoundedNumber } from "./RoundedNumber";
 import * as _utils from "./utils";
 import _styles from "./MyFeedbackPopup.module.css";
@@ -32,7 +32,7 @@ export function MyFeedbackPopup({
           tag="div"
           {...onClickClose}
         >
-          <IconButtonGhost iconName="" iconWeight="light" color="neutral" />
+          <GlobalIcon iconName="close" size="5" />
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

@@ -10,10 +10,12 @@ import ResumeWait from '@/public/lottie/ResumeWait';
 import { useApplication } from '@/src/context/ApplicationContext';
 import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 
+import { Activity } from './activity';
 import { Details } from './details';
 import { Interview } from './interview';
 import { Meta } from './meta';
 import { Tabs } from './tabs';
+import { Tasks } from './tasks';
 import { TopBar } from './topBar';
 
 type Props = {
@@ -22,6 +24,8 @@ type Props = {
   details: ReactNode;
   interview: ReactNode;
   tabs: ReactNode;
+  tasks: ReactNode;
+  activity: ReactNode;
 };
 
 const Body = (props: Partial<Props>) => {
@@ -53,10 +57,14 @@ Body.Meta = Meta;
 Body.Tabs = Tabs;
 Body.Details = Details;
 Body.Interview = Interview;
+Body.Tasks = Tasks;
+Body.Activity = Activity;
 
 export { Body };
 
-const TabContent = (props: Partial<Pick<Props, 'details' | 'interview'>>) => {
+const TabContent = (
+  props: Partial<Pick<Props, 'details' | 'interview' | 'tasks' | 'activity'>>,
+) => {
   const tab = useApplicationStore(({ tab }) => tab);
   switch (tab) {
     case 'Details':
@@ -66,13 +74,15 @@ const TabContent = (props: Partial<Pick<Props, 'details' | 'interview'>>) => {
     case 'Interview':
       return props.interview ?? <Interview />;
     case 'Tasks':
+      return props.tasks ?? <Tasks />;
     case 'Activity':
-      return <></>;
+      return props.activity ?? <Activity />;
   }
 };
 
 const useBlocker = () => {
   const { details, meta } = useApplication();
+  const setPreview = useApplicationStore(({ setPreview }) => setPreview);
   if (details.status === 'error' || meta.status === 'error')
     return (
       <Stack width={'700px'}>
@@ -94,7 +104,11 @@ const useBlocker = () => {
     case 'unavailable':
       return <ResumeNotFound />;
     case 'unparsable':
-      return <ResumeNotParsable />;
+      return (
+        <ResumeNotParsable
+          onClickViewResume={{ onClick: () => setPreview(true) }}
+        />
+      );
   }
   return undefined;
 };

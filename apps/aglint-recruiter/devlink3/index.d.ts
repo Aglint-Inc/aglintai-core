@@ -209,6 +209,8 @@ export * from "./ScoreSetting";
 export * from "./SessionDetails";
 export * from "./SideDrawerLarge";
 export * from "./SingleDaySchedule";
+export * from "./SkeletonActivitiesCard";
+export * from "./SkeletonNewInterviewPlanCard";
 export * from "./SlotComp";
 export * from "./SoundTask";
 export * from "./SuggetionCard";

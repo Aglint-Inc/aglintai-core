@@ -6,7 +6,12 @@ function AssessmentIcon() {
   return (
     
     <Stack direction={'row'}>
-      <GlobalIcon iconName='computer' size={6} weight={'regular'}/>
+      <GlobalIcon 
+        iconName='computer' 
+        size={6} 
+        weight={'regular'} 
+        color={'neutral'}
+      />
     {/* //   <svg
     //     width='24'
     //     height='24'

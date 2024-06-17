@@ -118,7 +118,7 @@
   z-index: 1;
 
   display: flex;
-  padding: var(--space-1) 16px;
+  padding: var(--space-1) var(--space-4);
   justify-content: flex-start;
   align-items: center;
 }
@@ -163,12 +163,16 @@
   height: 40px;
 }
 
-.div-block-1441 {
+.new_task.job-cand.heigth-60 {
+  height: 60px;
+}
+
+.tjc-space-div {
   width: 3%;
   height: 100%;
 }
 
-.div-block-1441.header {
+.tjc-space-div.header {
   width: 20px;
 }
 

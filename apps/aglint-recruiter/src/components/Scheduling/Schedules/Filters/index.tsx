@@ -177,7 +177,7 @@ function Filters() {
     <Stack direction={'row'} spacing={'var(--space-3)'}>
       <UITextField
         height={32}
-        width='300px'
+        width='250px'
         InputProps={{
           endAdornment: (
             <InputAdornment position='end'>

@@ -1,5 +1,6 @@
-import dayjs from 'dayjs';
 import type { EmailTemplateAPi } from '@aglint/shared-types';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   platformRemoveUnderscore,
@@ -9,7 +10,6 @@ import {
 } from '../../../utils/email/common/functions';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
-import { getFullName } from '@aglint/shared-utils';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'interviewStart_email_interviewers'>['api_payload'],
@@ -23,31 +23,24 @@ export async function fetchUtil(
       .eq('meeting_id', req_body.meeting_id),
   );
 
-  if (!sessions) {
-    throw new Error('sessions are not available');
-  }
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+        'candidates(first_name,last_name,timezone,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
       )
       .eq('id', req_body.application_id),
   );
 
-  if (!candidateJob) {
-    throw new Error('candidate and job details are not available');
-  }
   const [recruiter_user] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
-      .select('email,first_name,last_name')
+      .select('email,first_name,last_name,scheduling_settings')
       .eq('user_id', req_body.recruiter_user_id),
   );
 
-  if (!recruiter_user) {
-    throw new Error('cancel session details not available');
-  }
+  const int_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
+
   const meeting_details: EmailTemplateAPi<'interviewStart_email_interviewers'>['react_email_placeholders']['meetingDetails'] =
     sessions.map((session) => {
       const {
@@ -58,8 +51,10 @@ export async function fetchUtil(
         session_type,
       } = session;
       return {
-        date: dayjs(start_time).format('ddd MMMM DD, YYYY'),
-        time: `${dayjs(start_time).format('hh:mm A')} - ${dayjs(end_time).format('hh:mm A')}`,
+        date: dayjsLocal(start_time)
+          .tz(int_tz)
+          .format(DAYJS_FORMATS.DATE_FORMAT),
+        time: `${dayjsLocal(start_time).tz(int_tz).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(end_time).tz(int_tz).format(DAYJS_FORMATS.END_TIME_FORMAT)}`,
         sessionType: name,
         platform: platformRemoveUnderscore(schedule_type),
         duration: durationCalculator(session_duration),
@@ -75,10 +70,19 @@ export async function fetchUtil(
 
   const comp_email_placeholder: EmailTemplateAPi<'interviewStart_email_interviewers'>['comp_email_placeholders'] =
     {
-      '{{ candidateName }}': candidateJob.candidates.first_name,
+      '{{ recruiterName }}': recruiter_user.first_name,
+      '{{ candidateName }}': getFullName(
+        candidateJob.candidates.first_name,
+        candidateJob.candidates.last_name,
+      ),
       '{{ jobTitle }}': candidateJob.public_jobs.job_title,
       '{{ companyName }}': candidateJob.public_jobs.company,
-      '{{ recruiterName }}': recruiter_user.first_name,
+      '{{ time }}': dayjsLocal(sessions[0].interview_meeting.start_time)
+        .tz(int_tz)
+        .format(DAYJS_FORMATS.END_TIME_FORMAT),
+      '{{ date }}': dayjsLocal(sessions[0].interview_meeting.start_time)
+        .tz(int_tz)
+        .format(DAYJS_FORMATS.DATE_FORMAT),
       '{{ recruiterFullName }}': getFullName(
         recruiter_user.first_name,
         recruiter_user.last_name,

@@ -165,6 +165,8 @@ const getApplications = async ({
     query.order(sort.type, { ascending: sort.order === 'asc' });
   }
 
+  query.order('id');
+
   const applications = (await query.throwOnError()).data.map(
     (application, i) => ({ ...application, index: index + i }),
   );
@@ -298,22 +300,27 @@ export const useUploadApplication = (params: Omit<Params, 'status'>) => {
     id: params.job_id,
   }).queryKey;
   return useMutation({
-    mutationFn: (
+    mutationFn: async (
       payload: Omit<HandleUploadApplication, 'job_id' | 'recruiter_id'>,
-    ) =>
-      handleUploadApplication({
+    ) => {
+      toast.message('Uploading application');
+      await handleUploadApplication({
         job_id: params.job_id,
         recruiter_id,
         ...payload,
-      }),
-    onSuccess: () =>
-      Promise.allSettled([
+      });
+    },
+    onError: (error) => toast.error(`Upload failed. (${error.message})`),
+    onSuccess: async () => {
+      await Promise.allSettled([
         queryClient.invalidateQueries({ queryKey }),
         queryClient.invalidateQueries(
           jobQueries.job_processing_count({ id: params.job_id }),
         ),
         queryClient.invalidateQueries({ queryKey: jobCountQueryKey }),
-      ]),
+      ]);
+      toast.success('Uploaded successfully');
+    },
   });
 };
 type HandleUploadApplication = ApplicationsAllQueryPrerequistes & {
@@ -354,22 +361,27 @@ export const useUploadResume = (params: Omit<Params, 'status'>) => {
     id: params.job_id,
   }).queryKey;
   return useMutation({
-    mutationFn: (
+    mutationFn: async (
       payload: Omit<HandleUploadResume, 'job_id' | 'recruiter_id'>,
-    ) =>
-      handleBulkResumeUpload({
+    ) => {
+      toast.message('Uploading applications');
+      await handleBulkResumeUpload({
         job_id: params.job_id,
         recruiter_id,
         ...payload,
-      }),
-    onSuccess: () =>
-      Promise.allSettled([
+      });
+    },
+    onError: (error) => toast.error(`Upload failed. (${error.message})`),
+    onSuccess: async () => {
+      await Promise.allSettled([
         queryClient.invalidateQueries({ queryKey }),
         queryClient.invalidateQueries(
           jobQueries.job_processing_count({ id: params.job_id }),
         ),
         queryClient.invalidateQueries({ queryKey: jobCountQueryKey }),
-      ]),
+      ]);
+      toast.success('Uploaded successfully');
+    },
   });
 };
 type HandleUploadResume = ApplicationsAllQueryPrerequistes & {
@@ -419,20 +431,27 @@ export const useUploadCsv = (params: Omit<Params, 'status'>) => {
     id: params.job_id,
   }).queryKey;
   return useMutation({
-    mutationFn: (payload: Omit<HandleUploadCsv, 'job_id' | 'recruiter_id'>) =>
-      handleBulkCsvUpload({
+    mutationFn: async (
+      payload: Omit<HandleUploadCsv, 'job_id' | 'recruiter_id'>,
+    ) => {
+      toast.message('Uploading applications');
+      await handleBulkCsvUpload({
         job_id: params.job_id,
         recruiter_id,
         ...payload,
-      }),
-    onSuccess: () =>
-      Promise.allSettled([
+      });
+    },
+    onError: (error) => toast.error(`Upload failed. (${error.message})`),
+    onSuccess: async () => {
+      await Promise.allSettled([
         queryClient.invalidateQueries({ queryKey }),
         queryClient.invalidateQueries(
           jobQueries.job_processing_count({ id: params.job_id }),
         ),
         queryClient.invalidateQueries({ queryKey: jobCountQueryKey }),
-      ]),
+      ]);
+      toast.success('Uploaded successfully');
+    },
   });
 };
 type HandleUploadCsv = ApplicationsAllQueryPrerequistes & {
@@ -492,6 +511,7 @@ type MoveApplications = ApplicationsAllQueryPrerequistes & {
   applications: DatabaseTable['applications']['id'][];
   status: keyof SectionToEmailGuard;
   email: SectionToEmailGuard[keyof SectionToEmailGuard];
+  callBacks?: Promise<any>[];
 };
 type SectionToEmail = {
   interview: null;
@@ -515,9 +535,11 @@ const moveApplications = async ({
   applications,
   status,
   email,
+  callBacks = [],
 }: MoveApplications) => {
   const safeApplications = applications.map((id) => ({ id, status, job_id }));
   await Promise.allSettled([
+    ...callBacks,
     supabase.from('applications').upsert(safeApplications).throwOnError(),
     (async () => {
       if (email) {

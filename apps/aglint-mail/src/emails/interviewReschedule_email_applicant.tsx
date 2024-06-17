@@ -37,7 +37,7 @@ export const dummy: EmailType['react_email_placeholders'] = {
     },
   ],
   subject: '',
-  resheduleLink: '',
+  resheduleLink: 'http://www.google.in/',
 };
 
 // export get subject
@@ -67,9 +67,6 @@ export const CandidateRescheduleRequest = ({
               <Container className="text-text-sm text-neutral-12">
                 {htmlParser.parse(emailBody)}
               </Container>
-              <Text className="py-[10px] my-0 text-text-sm text-neutral-12">
-                Thank You
-              </Text>
               <Text className="text-[12px] my-0  text-text-sm text-neutral-12">
                 Current Schedule{meetingDetails.length > 1 && 's'} :
               </Text>

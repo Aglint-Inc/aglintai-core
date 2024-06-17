@@ -19,7 +19,7 @@ type EmailType = EmailTemplateAPi<'InterviewCancelReq_email_recruiter'>;
 // export dummy
 export const dummy: EmailType['react_email_placeholders'] = {
   emailBody:
-    '<p>Dear {{ recruiterName }},</p><p>{{ candidateFirstName }} is requesting to cancel the interview, stating reason: "{{ cancelReason }}".</p><p>Additional notes from {{ candidateFirstName }}: "{{ additionalRescheduleNotes }}".</p><p>Thank you.</p>',
+    '<p>Dear {{ recruiterName }},</p><p></p><p>{{ candidateFirstName }} is requesting to cancel the interview, stating the reason: "{{ cancelReason }}".</p><p>Additional notes from {{ candidateFirstName }}: "{{ additionalRescheduleNotes }}".</p><p></p><p>Thank you,</p><p>{{ companyName }} Recruitment Team</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   meetingDetails: [
@@ -36,7 +36,7 @@ export const dummy: EmailType['react_email_placeholders'] = {
     },
   ],
   subject: '',
-  meetingLink: '',
+  meetingLink: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/84caebfb-8db6-4881-a88f-400726884504`,
 };
 
 // export get subject
@@ -74,7 +74,7 @@ export const CandidateCancelRequest = ({
                 className="px-3 py-2 bg-accent-9 text-white br rounded-[4px] text-text-xs"
                 href={meetingLink}
               >
-                Cancel Schedule
+                Candidate Details
               </Button>
             </Container>
             <Footer />

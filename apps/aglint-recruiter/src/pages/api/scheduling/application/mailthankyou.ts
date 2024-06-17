@@ -3,11 +3,11 @@ import {
   APICandScheduleMailThankYou,
   EmailTemplateAPi,
 } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -32,6 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       availability_request_id,
       schedule_id,
       is_debreif,
+      booking_request_from = 'candidate',
     } = req.body as APICandScheduleMailThankYou;
     required_fields.forEach((field) => {
       if (!has(req.body, field)) {
@@ -123,7 +124,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             .tz(cand_tz)
             .toISOString(),
         },
-        'candidate',
+        booking_request_from,
         'interview_schedule',
       );
     }

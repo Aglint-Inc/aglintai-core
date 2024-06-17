@@ -21,7 +21,7 @@ export function EmptyAssessmentList({
         className={_utils.cx(_styles, "job-workflow-setup-wraper")}
         tag="div"
       >
-        <GlobalIcon iconName="" size="7" weight="thin" />
+        <GlobalIcon iconName="lan" size="7" weight="thin" />
         <Text content="" color="neutral-11" weight="regular" />
         <ButtonSolid
           size="2"

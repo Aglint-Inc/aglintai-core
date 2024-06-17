@@ -21,7 +21,7 @@ export type APIFindAltenativeTimeSlot = {
   recruiter_id: string;
   slot_start_time: string;
   user_tz: string;
-  replacement_ints: string[];
+  ignore_interviewer: string;
   api_options?: APIOptions;
 };
 
@@ -31,10 +31,7 @@ export type APIUpdateMeetingInterviewers = {
   candidate_email: string;
 };
 
-export type APIFindAltenativeTimeSlotResponse = {
-  user_id: string;
-  is_exist: boolean;
-}[];
+export type APIFindAltenativeTimeSlotResponse = PlanCombinationRespType[];
 
 export type APICandScheduleMailThankYou = {
   availability_request_id?: string;
@@ -45,6 +42,7 @@ export type APICandScheduleMailThankYou = {
   is_debreif: boolean;
   schedule_id?: string;
   filter_id?: string;
+  booking_request_from?: 'phone_agent' | 'email_agent' | 'candidate';
 };
 
 export type APIOptions = {

@@ -1,4 +1,5 @@
 import { JsonResume } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 import { isArray } from 'lodash';
 
@@ -8,7 +9,6 @@ import {
   CandidateSearchRes,
   CandidateSearchState,
 } from '../../context/CandidateSearchProvider/CandidateSearchProvider';
-import { supabaseWrap } from '../JobsDashboard/JobPostCreateUpdate/utils';
 
 export const getRelevantCndidates = async (
   newQueryJson: CandidateSearchState['queryJson'],

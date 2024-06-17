@@ -1,4 +1,9 @@
-import { type PropsWithChildren, createContext, useContext } from 'react';
+import {
+  type PropsWithChildren,
+  createContext,
+  useContext,
+  useEffect,
+} from 'react';
 
 import { Body } from '@/src/components/JobNewApplications/ui/candidateDrawer/body';
 import { Details } from '@/src/components/JobNewApplications/ui/candidateDrawer/details';
@@ -25,12 +30,16 @@ const Application = ({
   Parameters<(typeof applicationQuery)['application']>[0]
 >) => {
   const value = useApplicationContext(props);
-  const { preview, resetPreview } = useApplicationStore(
-    ({ preview, resetPreview }) => ({
+  const { preview, resetPreview, resetAll } = useApplicationStore(
+    ({ preview, resetPreview, resetAll }) => ({
       preview,
       resetPreview,
+      resetAll,
     }),
   );
+  useEffect(() => {
+    return () => resetAll();
+  }, []);
   return (
     <ApplicationContext.Provider value={value}>
       <ResumePreviewer

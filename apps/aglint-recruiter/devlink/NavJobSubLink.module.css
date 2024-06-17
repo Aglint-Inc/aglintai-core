@@ -49,9 +49,10 @@
 
 .job-link-tag {
   display: flex;
-  width: 32px;
   height: 20px;
-  padding-top: 1px;
+  min-width: 20px;
+  padding-right: var(--space-1);
+  padding-left: var(--space-1);
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -62,7 +63,6 @@
 }
 
 .job-link-tag.active-tage {
-  height: 20px;
   border-radius: var(--radius-1);
   background-color: var(--accent-9);
   color: var(--white);

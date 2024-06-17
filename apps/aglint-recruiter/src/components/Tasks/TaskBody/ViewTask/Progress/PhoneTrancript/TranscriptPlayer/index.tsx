@@ -86,7 +86,12 @@ function TranscriptPlayer({ src }: { src: string }) {
               audioRef.current?.play();
               setPlaying(true);
             }}>
-            <GlobalIcon iconName='play'/>
+            <GlobalIcon
+             iconName='play_arrow' 
+             size={6} 
+             weight='thin'
+             color='neutral-8'
+            />
           </Box>
         </ShowCode.When>
         <ShowCode.When isTrue={playing}>
@@ -100,7 +105,12 @@ function TranscriptPlayer({ src }: { src: string }) {
               audioRef.current?.pause();
               setPlaying(false);
             }}>
-            <GlobalIcon iconName='pause'/>
+            <GlobalIcon
+              iconName='pause' 
+              size={6} 
+              weight='thin'
+              color='neutral-8'
+            />
           </Box>
         </ShowCode.When>
       </ShowCode>

@@ -17,7 +17,7 @@ export const addCandInfoToCache = async (
 
 export const getCachedCandidateInfo = async (cand_phone: string) => {
   const data = await redisClient.hget(Redis_KV.CAND_INFO, cand_phone);
-  if (!data) return null;
+  if (!data) throw new Error('Error candidate cache get');
   return JSON.parse(data) as CandidateInfoType;
 };
 
@@ -45,7 +45,7 @@ export const addCallerToCache = async (
 };
 export const getCallerFromCache = async (call_id: string) => {
   const data = await redisClient.hget(Redis_KV.CALLER_CACHE, call_id);
-  if (!data) return null;
+  if (!data) throw new Error('Error caller cache get');
   return JSON.parse(data) as TwilioCallDetails;
 };
 

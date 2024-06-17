@@ -1,3 +1,5 @@
+import { Type } from '@aglint/shared-types/src/db/utils.types';
+
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { EmailAgentIcon } from '@/src/components/Tasks/Components/EmailAgentIcon';
 import { PhoneAgentIcon } from '@/src/components/Tasks/Components/PhoneAgentIcon';
@@ -6,10 +8,18 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { useAllActivities } from '../hooks';
 import IconCandidate from './IconCandidate';
 
+type Activities = ReturnType<typeof useAllActivities>['data'][0];
+
 function IconApplicationLogs({
   act,
 }: {
-  act: ReturnType<typeof useAllActivities>['data'][0];
+  act: Type<
+    Activities,
+    {
+      recruiter_user: Partial<Activities['recruiter_user']>;
+      applications?: Activities['applications'];
+    }
+  >;
 }) {
   return (
     <>

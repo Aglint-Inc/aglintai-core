@@ -1,7 +1,6 @@
 import { DatabaseTable } from '@aglint/shared-types';
-import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
+import { EmailAgentId, PhoneAgentId, supabaseWrap } from '@aglint/shared-utils';
 
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 
 import { supabaseAdmin } from '../supabase/supabaseAdmin';

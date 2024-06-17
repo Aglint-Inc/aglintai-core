@@ -1,4 +1,5 @@
 import { CandidateListTypeDB, SearchHistoryType } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { CircularProgress, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/dist/client/router';
@@ -27,10 +28,7 @@ import { CandidateSearchState } from '../../context/CandidateSearchProvider/Cand
 import Loader from '../Common/Loader';
 import MuiPopup from '../Common/MuiPopup';
 import UITextField from '../Common/UITextField';
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '../JobsDashboard/JobPostCreateUpdate/utils';
+import { API_FAIL_MSG } from '../JobsDashboard/JobPostCreateUpdate/utils';
 import { Candidate } from './AppoloSearch/types';
 import { JDSearchModal } from './JobDescriprionModal/JDSearchModal';
 import EmptyState from './Search/EmptyState';
@@ -157,6 +155,7 @@ function CandidateSearchHistory() {
     try {
       if (searchQuery.length === 0 || isQrySearching) return;
       setIsQrySearching(true);
+
       const res = await axios.post('/api/candidatedb/query', {
         query: searchQuery,
       });
@@ -280,16 +279,20 @@ function CandidateSearchHistory() {
   };
 
   const submitHandler = async () => {
-    const { data, error } = await supabase
-      .from('candidate_list')
-      .insert({ name: text, recruiter_id: recruiter.id })
-      .select();
-    if (!error) {
-      setList([...list, data[0]]);
-      setText('');
-      setIsInputVisible(false);
+    if (text) {
+      const { data, error } = await supabase
+        .from('candidate_list')
+        .insert({ name: text, recruiter_id: recruiter.id })
+        .select();
+      if (!error) {
+        setList([...list, data[0]]);
+        setText('');
+        setIsInputVisible(false);
+      } else {
+        toast.error('Something went wrong. Please try again.');
+      }
     } else {
-      toast.error('Something went wrong. Please try again.');
+      toast.error('Please enter the list name then submit');
     }
   };
 
@@ -485,6 +488,11 @@ function CandidateSearchHistory() {
                           value={text}
                           onChange={(e) => {
                             setText(e.target.value);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              submitHandler();
+                            }
                           }}
                         />
                       }

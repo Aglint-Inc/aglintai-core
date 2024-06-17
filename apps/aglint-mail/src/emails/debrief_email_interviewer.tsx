@@ -18,7 +18,8 @@ type EmailType = EmailTemplateAPi<'debrief_email_interviewer'>;
 
 // export dummy
 export const dummy: EmailType['react_email_placeholders'] = {
-  emailBody: `<p>Dear {{ interviewerFirstName }},</p><p>Please join the debrief session to discuss {{ candidateFirstName }}'s interview for the {{ jobTitle }} position. Your insights are valuable to the selection process.</p><p>Cheers,</p><p>{{ companyName }} Recruitment Team</p>`,
+  emailBody: `<p>Dear {{ interviewerFirstName }},</p><p></p><p>Please join the debrief session to discuss {{ candidateFirstName }}'s interview for {{ jobTitle }}. Your insights are valuable to the selection process.</p><p></p><p>Thanks,</p><p>{{ companyName }} Recruitment Team</p>`,
+
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   meetingDetails: {
@@ -33,7 +34,7 @@ export const dummy: EmailType['react_email_placeholders'] = {
       'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/google_meet.png',
   },
   subject: '',
-  candidateLink: '',
+  candidateLink: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/af9538ac-50e8-4941-91c5-39a678c60077`,
 };
 
 // export get subject

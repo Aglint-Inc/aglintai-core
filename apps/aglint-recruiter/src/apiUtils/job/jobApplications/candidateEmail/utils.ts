@@ -17,7 +17,6 @@ import {
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
 import { AssessmentResult } from '@/src/queries/assessment/types';
-import { getFullName } from '@/src/utils/jsonResume';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 
 import { JobApplicationEmails } from '../../../../pages/api/job/jobApplications/candidateEmail';
@@ -135,18 +134,19 @@ export const sendMails = async (
 
 export const createTasks = async (
   supabase: ReturnType<typeof createServerClient<DB>>,
-  job: JobApplicationEmails['request']['job'],
-  candidates: Awaited<ReturnType<typeof readCandidates>>,
+  recruiter_id: string,
+  recruiterUser: {
+    name: string;
+    id: string;
+  },
+  candidates: { name: string; id: string }[],
   task: TaskType,
 ) => {
-  const safeData = filterEmails(candidates).map((candidate) => ({
-    name: `Schedule interview for ${getFullName(
-      candidate.first_name,
-      candidate.last_name,
-    )} - ${task.session_ids.map((ele) => ele.name).join(', ')}.`,
-    recruiter_id: job.recruiter_id,
-    application_id: candidate.application_id,
-    created_by: job.recruiterUser.id as string,
+  const safeData = candidates.map((candidate) => ({
+    name: `Schedule interview for ${candidate.name} - ${task.session_ids.map((ele) => ele.name).join(', ')}.`,
+    recruiter_id,
+    application_id: candidate.id,
+    created_by: recruiterUser.id,
     type: 'schedule',
     ...task,
   }));
@@ -158,19 +158,17 @@ export const createTasks = async (
   if (error) throw new Error(error.message);
   for (let eachTask of data) {
     const candidate = candidates.find(
-      (ele) => ele.application_id === eachTask.application_id,
+      (ele) => ele.id === eachTask.application_id,
     );
     await createTaskProgress({
       type: 'create_task',
       data: {
         task_id: eachTask.id as string,
-        created_by: {
-          ...job.recruiterUser,
-        },
+        created_by: recruiterUser,
         progress_type: 'standard',
       },
       optionData: {
-        candidateName: getFullName(candidate.first_name, candidate.last_name),
+        candidateName: candidate.name,
         sessions: eachTask.session_ids as any,
       },
     });

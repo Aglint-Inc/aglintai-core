@@ -5,9 +5,7 @@ import {
   ClientError,
   MailArgValidationError,
 } from '../../../utils/apiUtils/customErrors';
-import { getEmails } from '../../../utils/apiUtils/get-emails';
-import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
-import sendMail from '../../../config/sendgrid';
+import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { fetchUtil } from './fetch-util';
 
 export async function POST(req: Request) {
@@ -21,27 +19,11 @@ export async function POST(req: Request) {
     const { filled_comp_template, react_email_placeholders, recipient_email } =
       await fetchUtil(parsed_body);
 
-    const { emails } = await getEmails();
-    const emailIdx = emails.findIndex((e) => e === filled_comp_template.type);
-
-    if (emailIdx === -1)
-      throw new ClientError(
-        `${filled_comp_template.type} does not match any mail_type`,
-        400,
-      );
-
-    const { html, subject } = await renderEmailTemplate(
-      filled_comp_template.type,
+    await sendMailFun(
+      filled_comp_template,
       react_email_placeholders,
+      recipient_email,
     );
-
-    await sendMail({
-      email: recipient_email,
-      html,
-      subject,
-      text: html,
-      fromName: filled_comp_template.from_name,
-    });
     return NextResponse.json('success', {
       status: 200,
     });
@@ -81,5 +63,9 @@ export async function POST(req: Request) {
 }
 
 // {
-//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637"
+//   "meta": {
+//       "session_ids":["032f8686-c7f7-468b-84f8-de597f766d4d"],
+//       "application_id": "af9538ac-50e8-4941-91c5-39a678c60077",
+//       "availability_req_id":"f17b307d-c8ed-4355-b597-3fc642fa5989"
+//   }
 // }

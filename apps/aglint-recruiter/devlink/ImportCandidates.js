@@ -34,10 +34,11 @@ export function ImportCandidates({
       >
         <IconButtonGhost
           onClickButton={onClickClose}
-          iconName=""
+          iconName="close"
           color="neutral"
-          size="1"
-          iconSize="3"
+          size="2"
+          iconSize="5"
+          iconWeight="thin"
         />
       </_Builtin.Block>
       <_Builtin.TabsWrapper

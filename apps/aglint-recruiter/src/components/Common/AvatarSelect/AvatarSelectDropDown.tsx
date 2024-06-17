@@ -81,6 +81,7 @@ const AvatarSelectDropDown = ({
       <TextField
         select
         onChange={onChange}
+        error={error}
         sx={{
           '.MuiOutlinedInput-root': {
             // border: `1px solid ${error ? 'var(--error-6)' : 'var(--neutral-6)'}`,

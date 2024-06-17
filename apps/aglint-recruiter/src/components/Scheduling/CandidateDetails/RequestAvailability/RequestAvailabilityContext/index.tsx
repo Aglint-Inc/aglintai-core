@@ -28,6 +28,8 @@ export type candidateRequestAvailabilityType =
   DatabaseTable['candidate_request_availability'] & {
     applications: DatabaseTable['applications'] & {
       candidates: DatabaseTable['candidates'];
+      public_jobs: DatabaseTable['public_jobs'];
+
     };
   };
 

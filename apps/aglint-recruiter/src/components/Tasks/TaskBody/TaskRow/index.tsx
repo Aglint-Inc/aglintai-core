@@ -36,10 +36,11 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
     <Tooltip {...props} classes={{ popper: className }} />
   ))(() => ({
     [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: 'var(--black)',
-      color: 'var(--black-a7)',
-      boxShadow: 'var(--shadow-1)',
-      fontSize: 'var(--font-size-1)',
+      backgroundColor: 'var(--neutral-12)',
+      border: '1px solid var(--neutral-6)',
+      color: 'var(--neutral-1)',
+      boxShadow: 'none',
+      fontSize: 'var(--font-size-2)',
     },
   }));
   return (
@@ -105,13 +106,13 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
         }}
         textTask={
           <LightTooltip
-            enterDelay={1000}
-            enterNextDelay={1000}
+            enterDelay={100}
+            enterNextDelay={100}
             title={
               <>
                 <span
                   style={{
-                    fontSize: '12px',
+                    fontSize: 'var(--font-size-1)',
                   }}
                   dangerouslySetInnerHTML={{
                     __html: task.name || 'Untitled',

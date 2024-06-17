@@ -121,9 +121,8 @@ function SchedulingApplication() {
                         }}
                       >
                         <CandidateInfo
-                          applications={selectedApplication}
-                          candidate={selectedApplication.candidates}
-                          file={selectedApplication.candidate_files}
+                          application_id={selectedApplication.id}
+                          job_id={selectedApplication.job_id}
                         />
                       </Stack>
                     </Stack>
