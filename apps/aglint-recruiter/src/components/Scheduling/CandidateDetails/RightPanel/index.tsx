@@ -21,13 +21,7 @@ function RightPanel({
 }) {
   const router = useRouter();
   const { data: activities, isLoading, isFetched, refetch } = allActivities;
-  const lastWaitingState =
-    activities.length &&
-    activities
-      .filter((ele) => ele.metadata)
-      .reduce((lastIndex, item, i) => {
-        return item.metadata.action === 'waiting' ? i : lastIndex;
-      }, -1);
+
   return (
     <>
       <CancelMultipleScheduleDialog refetch={refetch} />
@@ -67,12 +61,7 @@ function RightPanel({
                     }}
                     isActionVisible={false}
                     isContentVisible={Boolean(act.metadata)}
-                    slotContent={
-                      <SlotContent
-                        isShowReScheduleBtn={lastWaitingState === ind}
-                        act={act}
-                      />
-                    }
+                    slotContent={<SlotContent act={act} />}
                     slotImage={<IconApplicationLogs act={act} />}
                   />
                 );

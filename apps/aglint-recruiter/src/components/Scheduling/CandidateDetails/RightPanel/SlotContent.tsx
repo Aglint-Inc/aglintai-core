@@ -33,13 +33,7 @@ import {
 } from '../store';
 import IconSessionType from './IconSessionType';
 
-function SlotContent({
-  isShowReScheduleBtn,
-  act,
-}: {
-  isShowReScheduleBtn: boolean;
-  act: DatabaseTable['application_logs'];
-}) {
+function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
   const router = useRouter();
   const { selectedApplication } = useSchedulingApplicationStore((state) => ({
     selectedApplication: state.selectedApplication,
@@ -85,8 +79,7 @@ function SlotContent({
           })}
         </Stack>
 
-        {isShowReScheduleBtn &&
-          (filter_id || availability_request_id) &&
+        {(filter_id || availability_request_id) &&
           act?.metadata?.action === 'waiting' && (
             <Stack direction={'row'} spacing={2}>
               <Stack width={'50%'}>
