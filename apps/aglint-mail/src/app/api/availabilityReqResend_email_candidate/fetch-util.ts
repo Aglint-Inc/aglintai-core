@@ -1,7 +1,7 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
+import { getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
-import { getFullName } from '@aglint/shared-utils';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 
 export async function dbUtil(
@@ -60,7 +60,6 @@ export async function dbUtil(
     comp_email_placeholder,
     comp_email_temp,
   );
-  console.log(filled_comp_template);
 
   const react_email_placeholders: EmailTemplateAPi<'availabilityReqResend_email_candidate'>['react_email_placeholders'] =
     {

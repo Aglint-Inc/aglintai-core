@@ -1,8 +1,8 @@
-import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import { EmailTemplateAPi } from '@aglint/shared-types';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
+import { getFullName } from '@aglint/shared-utils';
+import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
-import { getFullName } from '@aglint/shared-utils';
 
 export async function dbUtil(
   req_body: EmailTemplateAPi<'selfScheduleReminder_email_applicant'>['api_payload'],
@@ -16,15 +16,15 @@ export async function dbUtil(
     .single()
     .throwOnError();
 
-  const [recruiter_user] = supabaseWrap(
-    await supabaseAdmin
-      .from('recruiter_user')
-      .select('first_name,last_name')
-      .eq(
-        'user_id',
-        filterJson.interview_schedule.applications.public_jobs.recruiter,
-      ),
-  );
+  // const [recruiter_user] = supabaseWrap(
+  //   await supabaseAdmin
+  //     .from('recruiter_user')
+  //     .select('first_name,last_name')
+  //     .eq(
+  //       'user_id',
+  //       filterJson.interview_schedule.applications.public_jobs.recruiter,
+  //     ),
+  // );
 
   const {
     interview_schedule: {

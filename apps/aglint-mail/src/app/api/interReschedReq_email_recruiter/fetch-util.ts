@@ -3,6 +3,7 @@ import type {
   MeetingDetailCardType,
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   platformRemoveUnderscore,
@@ -12,7 +13,6 @@ import {
 } from '../../../utils/email/common/functions';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
-import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'interReschedReq_email_recruiter'>['api_payload'],
@@ -99,8 +99,12 @@ export async function fetchUtil(
       ),
       jobRole: candidateJob.public_jobs.job_title,
       companyName: candidateJob.public_jobs.company,
-      startDate: `${dayjsLocal(req_start_date).tz(int_tz).format(DAYJS_FORMATS.DATE_FORMAT)}`,
-      endDate: `${dayjsLocal(req_end_date).tz(int_tz).format(DAYJS_FORMATS.DATE_FORMATZ)}`,
+      startDate: dayjsLocal(req_start_date)
+        .tz(int_tz)
+        .format(DAYJS_FORMATS.DATE_FORMAT),
+      endDate: dayjsLocal(req_end_date)
+        .tz(int_tz)
+        .format(DAYJS_FORMATS.DATE_FORMATZ),
       candidateLastName: candidates.last_name,
       candidateName: getFullName(candidates.first_name, candidates.last_name),
       recruiterFirstName: recruiter_user.first_name,

@@ -1,8 +1,4 @@
-import {
-  DAYJS_FORMATS,
-  ScheduleUtils,
-  getFullName,
-} from '@aglint/shared-utils';
+import { ScheduleUtils, getFullName } from '@aglint/shared-utils';
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
