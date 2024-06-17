@@ -5,7 +5,6 @@ import { TableType } from './index.types';
 export type FilterJSON = {
   end_date: string;
   start_date: string;
-  organizer_name: string;
 };
 
 export type CustomInterviewFilterJson = TableType<

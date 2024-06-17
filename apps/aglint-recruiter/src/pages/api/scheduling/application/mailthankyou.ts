@@ -32,6 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       availability_request_id,
       schedule_id,
       is_debreif,
+      booking_request_from = 'candidate',
     } = req.body as APICandScheduleMailThankYou;
     required_fields.forEach((field) => {
       if (!has(req.body, field)) {
@@ -123,7 +124,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             .tz(cand_tz)
             .toISOString(),
         },
-        'candidate',
+        booking_request_from,
         'interview_schedule',
       );
     }
