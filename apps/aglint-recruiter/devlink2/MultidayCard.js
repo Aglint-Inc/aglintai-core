@@ -35,7 +35,7 @@ export function MultidayCard({
             tag="div"
           >
             <_Builtin.Block className={_utils.cx(_styles, "day_row")} tag="div">
-              <Text content={textDayCount} color="accent" />
+              <Text content={textDayCount} color="neutral-12" />
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "total_duration")}

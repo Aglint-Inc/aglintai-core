@@ -81,6 +81,7 @@ export const allowedPaths = new Set([
   '/api/scheduling/request_availability/insertTaskProgress',
   '/api/scheduling/request_availability/getTaskIdDetailsByRequestId',
   '/api/scheduling/request_availability/updateRequestAvailability',
+  '/api/scheduling/request_availability/insertScheduleActivities',
   '/api/getUserLocation',
   'https://aglint-phone-ngrok-app.ngrok.io/api/create-phone-call',
   ...cronPaths,

@@ -21,7 +21,7 @@ function DateSlotsPoPup() {
   return (
     <div>
       <Modal open={openDaySlotPopup !== null} onClose={handleClose}>
-        <Stack sx={{ ...style, width: 900 }}>
+        <Stack sx={{ ...style, width: 1000 }}>
           <AvailableSlots singleDay={false} />
         </Stack>
       </Modal>

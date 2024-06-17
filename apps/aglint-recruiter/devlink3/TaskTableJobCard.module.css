@@ -21,6 +21,10 @@
   height: 60px;
 }
 
+.new_task.job-cand.heigth-60 {
+  height: 60px;
+}
+
 .tjc-wrapper {
   display: flex;
   width: 100%;

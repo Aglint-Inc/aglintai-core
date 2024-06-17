@@ -45,7 +45,7 @@ export function SessionInfo({
         className={_utils.cx(_styles, "flex-horizontal", "center", "gap-2")}
         tag="div"
       >
-        <GlobalIcon iconName="" size="4" weight="light" />
+        <GlobalIcon iconName="timer" size="4" weight="light" />
         <Text content={textSessionDuration} />
       </_Builtin.Block>
       <_Builtin.Block
