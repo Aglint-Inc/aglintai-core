@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import {DynamicStructuredTool} from 'langchain/tools';
 import {z} from 'zod';
 
@@ -9,12 +8,10 @@ import {dayjsLocal} from '../../../utils/dayjsLocal/dayjsLocal';
 import {isCurrDayHoliday} from '../../../utils/scheduling_utils/fetchCandDetails';
 import {findAvailableSlots} from './utils';
 import {findInterviewSlotOnThatDay} from '../../schedule_agent/tools/utils';
-import {supabaseAdmin} from '../../../services/supabase/SupabaseAdmin';
 import {googleTimeZone} from '../../../utils/googleTimeZone';
 import {appLogger} from '../../../services/logger';
 import {agent_activities} from '../../../copies/agents_activity';
 import {APIFindInterviewSlot} from '@aglint/shared-types';
-import {supabaseWrap} from 'src/utils/scheduling/supabaseWrap';
 
 export const findSlots = (
   cand_info: EmailAgentPayload['payload'],

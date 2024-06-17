@@ -63,6 +63,7 @@ export const confirmSlotNoConflict = async (
     session_ids: fetched_cand_details.filter_json_data.session_ids,
     availability_request_id: null,
     is_debreif: false,
+    booking_request_from: parsed_body.agent_type,
   };
   await axios.post(
     `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,

@@ -69,6 +69,7 @@ export const bookInterviewSlot = (
             cand_tz: time_zone,
             filter_id: cand_info.filter_id,
             task_id: cand_info.task_id,
+            agent_type: 'email_agent',
             selected_slot: {
               slot_start_time: req_slot_time.format(),
             },
