@@ -10,9 +10,9 @@
   grid-column-gap: var(--space-4);
   grid-row-gap: var(--space-4);
 
-  border-radius: 10px;
+  border-radius: var(--radius-4);
 
-  background-color: white;
+  background-color: var(--white);
 }
 
 @media screen and (max-width: 479px) {
@@ -27,7 +27,7 @@
 
 .assessment_duplicate_popup.width-550 {
   width: 550px;
-  padding: 20px;
+  padding: var(--space-4);
 }
 
 .assessment_duplicate_popup.width-100 {
