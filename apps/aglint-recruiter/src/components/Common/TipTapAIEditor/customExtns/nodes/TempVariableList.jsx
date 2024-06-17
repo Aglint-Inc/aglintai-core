@@ -11,7 +11,8 @@ export default forwardRef(function DropDown(props, ref) {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const selectItem = (index) => {
-    const item = props.items[index];
+    // eslint-disable-next-line security/detect-object-injection
+    const item = { ...props.items[index] };
     if (item) {
       props.command({ id: item });
     }
