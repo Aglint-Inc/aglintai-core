@@ -70,23 +70,30 @@ export async function fetchUtil(
 
   const comp_email_placeholder: EmailTemplateAPi<'interviewStart_email_interviewers'>['comp_email_placeholders'] =
     {
-      '{{ recruiterName }}': recruiter_user.first_name,
-      '{{ candidateName }}': getFullName(
+      recruiterFirstName: recruiter_user.first_name,
+      candidateName: getFullName(
         candidateJob.candidates.first_name,
         candidateJob.candidates.last_name,
       ),
-      '{{ jobTitle }}': candidateJob.public_jobs.job_title,
-      '{{ companyName }}': candidateJob.public_jobs.company,
-      '{{ time }}': dayjsLocal(sessions[0].interview_meeting.start_time)
+      jobRole: candidateJob.public_jobs.job_title,
+      companyName: candidateJob.public_jobs.company,
+      time: dayjsLocal(sessions[0].interview_meeting.start_time)
         .tz(int_tz)
         .format(DAYJS_FORMATS.END_TIME_FORMAT),
-      '{{ date }}': dayjsLocal(sessions[0].interview_meeting.start_time)
+      startDate: dayjsLocal(sessions[0].interview_meeting.start_time)
         .tz(int_tz)
         .format(DAYJS_FORMATS.DATE_FORMAT),
-      '{{ recruiterFullName }}': getFullName(
+      endDate: dayjsLocal(sessions[0].interview_meeting.end_time)
+        .tz(int_tz)
+        .format(DAYJS_FORMATS.DATE_FORMAT),
+      recruiterName: getFullName(
         recruiter_user.first_name,
         recruiter_user.last_name,
       ),
+      candidateFirstName: candidateJob.candidates.first_name,
+      candidateLastName: candidateJob.candidates.last_name,
+      recruiterLastName: recruiter_user.last_name,
+      recruiterTimeZone: int_tz,
     };
 
   const filled_comp_template = fillCompEmailTemplate(

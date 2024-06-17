@@ -30,7 +30,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company,recruiter)',
+        'candidates(first_name,last_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company,recruiter)',
       )
       .eq('id', req_body.application_id),
   );
@@ -78,19 +78,35 @@ export async function fetchUtil(
   const req_end_date = session_cancel.other_details.dateRange.start;
   const comp_email_placeholder: EmailTemplateAPi<'interReschedReq_email_recruiter'>['comp_email_placeholders'] =
     {
-      '{{ candidateFirstName }}': candidates.first_name,
-      '{{ additionalRescheduleNotes }}': session_cancel.other_details.note,
-      '{{ recruiterName }}': recruiter_user.first_name,
-      '{{ rescheduleReason }}': session_cancel.reason,
-      '{{ jobTitle }}': candidateJob.public_jobs.job_title,
-      '{{ companyName }}': candidateJob.public_jobs.company,
-      '{{ recruiterFullName }}': getFullName(
+      // '{{ candidateFirstName }}': candidates.first_name,
+      // '{{ additionalRescheduleNotes }}': session_cancel.other_details.note,
+      // '{{ recruiterName }}': recruiter_user.first_name,
+      // '{{ rescheduleReason }}': session_cancel.reason,
+      // '{{ jobTitle }}': candidateJob.public_jobs.job_title,
+      // '{{ companyName }}': candidateJob.public_jobs.company,
+      // '{{ recruiterFullName }}': getFullName(
+      //   recruiter_user.first_name,
+      //   recruiter_user.last_name,
+      // ),
+      // '{{ dateRange }}': req_start_date
+      //   ? `${dayjsLocal(req_start_date).tz(int_tz).format(DAYJS_FORMATS.DATE_FORMAT)} - ${dayjsLocal(req_end_date).tz(int_tz).format(DAYJS_FORMATS.DATE_FORMATZ)} `
+      //   : '',
+      additionalRescheduleNotes: session_cancel.other_details.note,
+      candidateFirstName: candidates.first_name,
+      recruiterName: getFullName(
         recruiter_user.first_name,
         recruiter_user.last_name,
       ),
-      '{{ dateRange }}': req_start_date
-        ? `${dayjsLocal(req_start_date).tz(int_tz).format(DAYJS_FORMATS.DATE_FORMAT)} - ${dayjsLocal(req_end_date).tz(int_tz).format(DAYJS_FORMATS.DATE_FORMATZ)} `
-        : '',
+      jobRole: candidateJob.public_jobs.job_title,
+      companyName: candidateJob.public_jobs.company,
+      startDate: `${dayjsLocal(req_start_date).tz(int_tz).format(DAYJS_FORMATS.DATE_FORMAT)}`,
+      endDate: `${dayjsLocal(req_end_date).tz(int_tz).format(DAYJS_FORMATS.DATE_FORMATZ)}`,
+      candidateLastName: candidates.last_name,
+      candidateName: getFullName(candidates.first_name, candidates.last_name),
+      recruiterFirstName: recruiter_user.first_name,
+      recruiterLastName: recruiter_user.last_name,
+      recruiterTimeZone: int_tz,
+      rescheduleReason: session_cancel.reason,
     };
 
   const filled_comp_template = fillCompEmailTemplate(
