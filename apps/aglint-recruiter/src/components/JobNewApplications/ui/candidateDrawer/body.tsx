@@ -82,6 +82,7 @@ const TabContent = (
 
 const useBlocker = () => {
   const { details, meta } = useApplication();
+  const setPreview = useApplicationStore(({ setPreview }) => setPreview);
   if (details.status === 'error' || meta.status === 'error')
     return (
       <Stack width={'700px'}>
@@ -103,7 +104,11 @@ const useBlocker = () => {
     case 'unavailable':
       return <ResumeNotFound />;
     case 'unparsable':
-      return <ResumeNotParsable />;
+      return (
+        <ResumeNotParsable
+          onClickViewResume={{ onClick: () => setPreview(true) }}
+        />
+      );
   }
   return undefined;
 };
