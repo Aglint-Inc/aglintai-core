@@ -37,7 +37,7 @@ export function ImportCandidates({
           iconName="close"
           color="neutral"
           size="2"
-          iconSize="4"
+          iconSize="5"
           iconWeight="thin"
         />
       </_Builtin.Block>

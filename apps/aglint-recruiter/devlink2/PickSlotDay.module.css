@@ -1,5 +1,7 @@
 .pick-slot-day-wrap {
   display: flex;
+  padding-right: 40px;
+  padding-left: 40px;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: var(--space-6);
