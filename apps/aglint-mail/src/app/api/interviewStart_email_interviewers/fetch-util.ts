@@ -1,4 +1,6 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   platformRemoveUnderscore,
@@ -8,8 +10,6 @@ import {
 } from '../../../utils/email/common/functions';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
-import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'interviewStart_email_interviewers'>['api_payload'],
@@ -23,9 +23,6 @@ export async function fetchUtil(
       .eq('meeting_id', req_body.meeting_id),
   );
 
-  if (!sessions) {
-    throw new Error('sessions are not available');
-  }
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin
       .from('applications')
@@ -35,9 +32,6 @@ export async function fetchUtil(
       .eq('id', req_body.application_id),
   );
 
-  if (!candidateJob) {
-    throw new Error('candidate and job details are not available');
-  }
   const [recruiter_user] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')

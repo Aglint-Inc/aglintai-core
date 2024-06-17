@@ -105,7 +105,7 @@ function ImageUpload({
                 />
               ) : (
                 <GlobalIcon
-                iconName='CompanyOutlinedBig'
+                  iconName='CompanyOutlinedBig'
                   size={6}
                   color='var(--neutral-11)'
                 />

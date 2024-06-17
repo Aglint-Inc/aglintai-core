@@ -1,11 +1,7 @@
-/* eslint-disable no-await-in-loop */
 import { NextResponse } from 'next/server';
 import { confInterviewEmailOrganizerSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
 import * as v from 'valibot';
-import { ClientError } from '../../../utils/apiUtils/customErrors';
-import { getEmails } from '../../../utils/apiUtils/get-emails';
-import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
-import sendMail from '../../../config/sendgrid';
+import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { fetchUtil } from './fetch-util';
 
 export async function POST(req: Request) {
@@ -18,34 +14,17 @@ export async function POST(req: Request) {
     );
     const fetch_details = await fetchUtil(parsed_body);
 
-    const { emails } = await getEmails();
-    const emailIdx = emails.findIndex(
-      (e) => e === fetch_details[0].filled_comp_template.type,
-    );
-
-    if (emailIdx === -1)
-      throw new ClientError(
-        `${fetch_details[0].filled_comp_template.type} does not match any mail_type`,
-        400,
-      );
-
     for (const {
       filled_comp_template,
       react_email_placeholders,
       recipient_email,
     } of fetch_details) {
-      const { html, subject } = await renderEmailTemplate(
-        filled_comp_template.type,
+      // eslint-disable-next-line no-await-in-loop
+      await sendMailFun(
+        filled_comp_template,
         react_email_placeholders,
+        recipient_email,
       );
-
-      await sendMail({
-        email: recipient_email,
-        html,
-        subject,
-        text: html,
-        fromName: filled_comp_template.from_name,
-      });
     }
     return NextResponse.json('success', {
       status: 200,
