@@ -7,9 +7,9 @@ import _styles from "./TaskEmpty.module.css";
 
 export function TaskEmpty({ as: _Component = _Builtin.Block }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1558")} tag="div">
+    <_Component className={_utils.cx(_styles, "task-empty-wrap")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1559")}
+        className={_utils.cx(_styles, "task-empty-content")}
         tag="div"
       >
         <_Builtin.HtmlEmbed

@@ -5,15 +5,9 @@ import { ChecklistSlice, createChecklistSlice } from './checklist';
 import { createSectionSlice, SectionSlice } from './currentSection';
 import { createFiltersSlice, FilterSortSlice } from './filters';
 import { createImportPopupSlice, ImportPopupSlice } from './importPopup';
-import {
-  createCurrentApplicationSlice,
-  CurrentApplicationSlice,
-} from './selection';
-
 type SlicesType = ImportPopupSlice &
   SectionSlice &
   ChecklistSlice &
-  CurrentApplicationSlice &
   FilterSortSlice &
   ActionPopupSlice;
 
@@ -21,7 +15,6 @@ const Slices = {
   createChecklistSlice,
   createSectionSlice,
   createImportPopupSlice,
-  createCurrentApplicationSlice,
   createFiltersSlice,
   createActionPopupSlice,
 };
@@ -46,7 +39,6 @@ const createApplicationsSlice: StateCreator<
     get().resetImportPopup();
     get().resetSection();
     get().resetChecklist();
-    get().resetCurrentApplication();
     get().resetFilterSort();
     get().resetActionPopup();
   },
