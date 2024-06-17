@@ -282,6 +282,10 @@ function CandidateAvailability() {
                             <ShowCode>
                               <ShowCode.When
                                 isTrue={
+                                  (daySlots
+                                    .map((ele) => ele.round)
+                                    .includes(i) ||
+                                    i < 1) &&
                                   !daySlots
                                     .map((ele) => ele.round)
                                     .includes(i + 1)
@@ -336,7 +340,7 @@ function CandidateAvailability() {
                                           isSubmitted ? 'success' : 'warning'
                                         }
                                         key={i}
-                                        textBadge={`${dayjs(slot.startTime).format('hh:mm')} - ${dayjs(slot.endTime).format('hh:mm')}`}
+                                        textBadge={`${dayjs(slot.startTime).format('hh:mm A')} - ${dayjs(slot.endTime).format('hh:mm A')}`}
                                       />
                                     );
                                   })}
@@ -446,7 +450,7 @@ function CandidateAvailability() {
                                             isSubmitted ? 'success' : 'warning'
                                           }
                                           key={i}
-                                          textBadge={`${dayjs(slot.startTime).format('hh:mm')} - ${dayjs(slot.endTime).format('hh:mm')}`}
+                                          textBadge={`${dayjs(slot.startTime).format('hh:mm A')} - ${dayjs(slot.endTime).format('hh:mm A')}`}
                                         />
                                       );
                                     })}
