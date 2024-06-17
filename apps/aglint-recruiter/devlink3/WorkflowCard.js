@@ -3,6 +3,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { Text } from "./Text";
+import { IconButtonSoft } from "./IconButtonSoft";
 import { GlobalIcon } from "./GlobalIcon";
 import * as _utils from "./utils";
 import _styles from "./WorkflowCard.module.css";
@@ -68,7 +69,7 @@ export function WorkflowCard({
                   tag="div"
                   {...onClickEdit}
                 >
-                  <GlobalIcon iconName="edit_square" weight="thin" />
+                  <IconButtonSoft iconName="edit_square" color="neutral" />
                 </_Builtin.Block>
               ) : null}
               <_Builtin.Block
@@ -76,7 +77,7 @@ export function WorkflowCard({
                 tag="div"
                 {...onClickDelete}
               >
-                <GlobalIcon iconName="delete" weight="thin" color="error-11" />
+                <IconButtonSoft iconName="delete" color="error" />
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>

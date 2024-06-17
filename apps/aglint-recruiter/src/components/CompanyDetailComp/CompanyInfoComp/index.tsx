@@ -169,7 +169,6 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                                 },
                               }}
                             />
-                            ;
                           </MuiPopup>
                         </>
                       );
