@@ -616,9 +616,10 @@ function SchedulingSettings({
                                             );
                                           }}
                                           sx={{
-                                            '& span': {
-                                              fontSize: '14px !important',
-                                            },
+                                            marginLeft: '0px',
+                                            '& .MuiRadio-root' : {
+                                              marginRight: 'var(--space-1)',
+                                            }
                                           }}
                                           value={ele}
                                           control={<Radio />}

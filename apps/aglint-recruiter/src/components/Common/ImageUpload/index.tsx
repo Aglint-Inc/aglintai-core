@@ -1,15 +1,14 @@
-import UploadIcon from '@mui/icons-material/Upload';
 import { Avatar, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
+import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { GlobalIcon } from '@/devlink3/GlobalIcon';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
-import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 
 function ImageUpload({
   setImage,
@@ -106,7 +105,7 @@ function ImageUpload({
                 />
               ) : (
                 <GlobalIcon
-                iconName='CompanyOutlinedBig'
+                  iconName='CompanyOutlinedBig'
                   size={6}
                   color='var(--neutral-11)'
                 />

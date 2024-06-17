@@ -57,9 +57,9 @@ function AssigneeChip({
             <Box
             sx={{
                 display: 'flex',
-                alignItems: 'center',
+                alignItems: 'center'
             }}>
-              <GlobalIcon iconName='computer' size={6}/>
+              <GlobalIcon iconName='computer' size={6} weight={'regular'} color='neutral-9'/>
             </Box>
           }
           textName={'System'}
