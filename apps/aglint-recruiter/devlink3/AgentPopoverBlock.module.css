@@ -12,14 +12,14 @@
   grid-row-gap: 1px;
 
   border: 1px solid var(--neutral-6);
-  border-radius: 10px;
+  border-radius: var(--radius-4);
 
   background-color: var(--neutral-6);
 }
 
 .agent_item-copy {
-  padding: 10px;
-  background-color: white;
+  padding: var(--space-2);
+  background-color: var(--white);
   transition: all 200ms ease;
   cursor: pointer;
 }
@@ -32,8 +32,8 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 
   color: var(--accent-11);
 }

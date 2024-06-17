@@ -30,7 +30,7 @@ export function RequestReschedule({
         tag="div"
       >
         <Text content={textHeader} weight="bold" />
-        <IconButtonSoft iconWeight="thin" iconName="" color="neutral" />
+        <IconButtonSoft iconWeight="thin" iconName="close" color="neutral" />
       </_Builtin.Block>
       <_Builtin.Block tag="div">
         {isRangeVisible ? (

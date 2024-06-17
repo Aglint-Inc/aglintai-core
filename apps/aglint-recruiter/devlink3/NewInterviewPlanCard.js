@@ -72,7 +72,7 @@ export function NewInterviewPlanCard({
           </_Builtin.Block>
           <_Builtin.Block tag="div">
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1392")}
+              className={_utils.cx(_styles, "npc-interview-detail-wrap")}
               tag="div"
             >
               <_Builtin.Block
@@ -154,10 +154,7 @@ export function NewInterviewPlanCard({
           className={_utils.cx(_styles, "npc-right-wrap")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1389")}
-            tag="div"
-          >
+          <_Builtin.Block className={_utils.cx(_styles, "npc-right")} tag="div">
             {isScheduleNowButtonVisible ? (
               <_Builtin.Block tag="div">
                 {slotScheduleNowButton ?? (

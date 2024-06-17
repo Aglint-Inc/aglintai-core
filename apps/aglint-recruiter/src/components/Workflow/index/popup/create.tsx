@@ -1,5 +1,5 @@
 import { Dialog } from '@mui/material';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
@@ -18,13 +18,19 @@ const Create = () => {
     resetPopup,
   }));
   const { handleCreateWorkflow } = useWorkflows();
+  const [error, setError] = useState(false);
+
   const handleSubmit = useCallback(() => {
-    handleCreateWorkflow({
-      title,
-      phase: 'now',
-      trigger: 'sendAvailReqReminder',
-    });
-    resetPopup();
+    if (!title) {
+      setError(true);
+    } else {
+      handleCreateWorkflow({
+        title,
+        phase: 'now',
+        trigger: 'sendAvailReqReminder',
+      });
+      resetPopup();
+    }
   }, [title]);
   const handleClose = useCallback(() => {
     resetPopup();
@@ -50,7 +56,7 @@ const Create = () => {
           onClickCancel={{ onClick: () => handleClose() }}
           textPopupTitle={'Create Workflow'}
           textPopupButton={'Create Workflow'}
-          slotWidget={<Form />}
+          slotWidget={<Form error={error} setError={setError} />}
           textPopupDescription={
             'Enter the name for workflow. Next, you will be able to add steps to the workflow.'
           }
@@ -62,7 +68,7 @@ const Create = () => {
 
 export default Create;
 
-const Form = () => {
+const Form = ({ error, setError }) => {
   const {
     popup: { title },
     setPopup,
@@ -70,11 +76,18 @@ const Form = () => {
     popup,
     setPopup,
   }));
+
   return (
     <UITextField
       label='Workflow title'
       value={title}
-      onChange={(e) => setPopup({ title: e.target.value })}
+      helperText={`Workflow title can't be empty`}
+      error={error}
+      onFocus={() => setError(false)}
+      onChange={(e) => {
+        setPopup({ title: e.target.value });
+        if (!e.target.value) setError(true);
+      }}
     />
   );
 };

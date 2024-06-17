@@ -33,7 +33,7 @@ export function ScheduleTabFeedback({
             <Text content="Interviewer" weight="medium" />
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "header_session", "width-324-copy")}
+            className={_utils.cx(_styles, "header_session", "version")}
             id={_utils.cx(
               _styles,
               "w-node-_6b67c368-b168-fb6f-e0a0-4f34fed2f971-03362df7"

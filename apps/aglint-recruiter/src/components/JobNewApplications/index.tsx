@@ -1,10 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseView } from '@aglint/shared-types';
 import { CircularProgress, Stack } from '@mui/material';
+import { useCallback, useEffect, useMemo } from 'react';
 
 import { JobDetails } from '@/devlink2/JobDetails';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { useApplications } from '@/src/context/ApplicationsContext';
+import { useKeyPress } from '@/src/context/ApplicationsContext/hooks';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useJob } from '@/src/context/JobContext';
 import NotFoundPage from '@/src/pages/404';
@@ -71,6 +73,44 @@ const ApplicationsComponent = () => {
 
 const NewJobDetailsTabs = () => {
   const { job } = useJob();
+
+  const { section, changeSection } = useApplicationsStore(
+    ({ section, changeSection }) => ({
+      section,
+      changeSection,
+    }),
+  );
+
+  const count = useMemo(
+    () => (job?.activeSections ?? []).length,
+    [job?.activeSections],
+  );
+
+  const handleSelectNextSection = useCallback(() => {
+    if (job?.activeSections) {
+      const index = job.activeSections.indexOf(section);
+      changeSection(job.activeSections[(index + 1) % count]);
+    }
+  }, [job?.activeSections, section, count]);
+
+  const handleSelectPrevSection = useCallback(() => {
+    if (job?.activeSections) {
+      const index = job.activeSections.indexOf(section);
+      changeSection(job.activeSections[index - 1 < 0 ? count - 1 : index - 1]);
+    }
+  }, [job?.activeSections, section, count]);
+
+  const { pressed: shift } = useKeyPress('Shift');
+  const { pressed: right } = useKeyPress('ArrowRight');
+  const { pressed: left } = useKeyPress('ArrowLeft');
+
+  useEffect(() => {
+    if (shift) {
+      if (left) handleSelectPrevSection();
+      else if (right) handleSelectNextSection();
+    }
+  }, [shift, left, right]);
+
   return (
     <>
       {job.activeSections.map((section) => (
