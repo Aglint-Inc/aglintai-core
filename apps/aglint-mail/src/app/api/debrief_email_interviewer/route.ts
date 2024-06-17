@@ -2,8 +2,8 @@
 import { NextResponse } from 'next/server';
 import * as v from 'valibot';
 import { debriefEmailInterviewerSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
-import { fetchUtil } from './fetch-util';
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
+import { fetchUtil } from './fetch-util';
 
 export async function POST(req: Request) {
   const req_body = await req.json();
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
       recipient_email,
       filled_comp_template,
     } of interviewers_mail_data) {
-      sendMailFun(
+      await sendMailFun(
         filled_comp_template,
         react_email_placeholders,
         recipient_email,
