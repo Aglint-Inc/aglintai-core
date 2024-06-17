@@ -218,7 +218,11 @@ function CandidateAvailability() {
             </>
           )
         }
-        textDesc = 'Please confirm your availability for the upcoming interview by selecting a suitable time slot from the options provided.'
+        textDesc={
+          isSubmitted
+            ? 'Please wait as we finalize the schedule. One of the selected time slots from each day will be chosen, and you will receive a confirmation email shortly.'
+            : 'Please confirm your availability for the upcoming interview by selecting a suitable time slot from the options provided.'
+        }
         styleTextColor={{
           style: {
             color: isSubmitted ? 'var(--success-11)' : 'var(--neutral-12)',
