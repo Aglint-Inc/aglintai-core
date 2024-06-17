@@ -308,7 +308,7 @@ export const useUploadApplication = (params: Omit<Params, 'status'>) => {
         ...payload,
       });
     },
-    onError: () => toast.error('Upload failed'),
+    onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: async () => {
       await Promise.allSettled([
         queryClient.invalidateQueries({ queryKey }),
@@ -369,7 +369,7 @@ export const useUploadResume = (params: Omit<Params, 'status'>) => {
         ...payload,
       });
     },
-    onError: () => toast.error('Upload failed'),
+    onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: async () => {
       await Promise.allSettled([
         queryClient.invalidateQueries({ queryKey }),
@@ -439,7 +439,7 @@ export const useUploadCsv = (params: Omit<Params, 'status'>) => {
         ...payload,
       });
     },
-    onError: () => toast.error('Upload failed'),
+    onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: async () => {
       await Promise.allSettled([
         queryClient.invalidateQueries({ queryKey }),
