@@ -1,9 +1,5 @@
 "use client";
 
-console.warn(
-  "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
-);
-
 export * as _Builtin from "./_Builtin";
 export * from "./devlinkContext";
 export * from "./interactions";
@@ -164,6 +160,7 @@ export * from "./ModuleMembers";
 export * from "./ModuleSetting";
 export * from "./MoveAssessment";
 export * from "./MultiDaySelect";
+export * from "./MultidayCard";
 export * from "./MutedShadowSession";
 export * from "./NavProfileBlock";
 export * from "./NewInterviewModule";
@@ -230,6 +227,7 @@ export * from "./SelectActionsDropdown";
 export * from "./SelectAllblock";
 export * from "./SelectButton";
 export * from "./SelectedMemberPill";
+export * from "./SelectedSlot";
 export * from "./SelectionPill";
 export * from "./SessionList";
 export * from "./ShadowSession";

@@ -28,9 +28,11 @@
   bottom: 0%;
   z-index: 1;
 
-  border-color: #1f73b7;
+  border-color: var(--accent-6);
 
-  background-color: #edf7ff;
+  background-color: var(--accent-3);
+
+  color: var(--accent-11);
 }
 
 .text-30 {

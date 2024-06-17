@@ -3,6 +3,8 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
+import { CalendarPick } from "./CalendarPick";
+import { TimePick } from "./TimePick";
 import * as _utils from "./utils";
 import _styles from "./PickSlotDay.module.css";
 
@@ -51,7 +53,12 @@ export function PickSlotDay({
           className={_utils.cx(_styles, "slot-calender-pick")}
           tag="div"
         >
-          {slotCalenderPick ?? <SlotComp componentName="CalanderPick" />}
+          {slotCalenderPick ?? (
+            <>
+              <SlotComp componentName="CalanderPick" />
+              <CalendarPick />
+            </>
+          )}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
@@ -96,7 +103,12 @@ export function PickSlotDay({
           ) : null}
         </_Builtin.Block>
         <_Builtin.Block tag="div">
-          {slotTimePick ?? <SlotComp componentName="TimePick" />}
+          {slotTimePick ?? (
+            <>
+              <SlotComp componentName="TimePick" />
+              <TimePick />
+            </>
+          )}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
