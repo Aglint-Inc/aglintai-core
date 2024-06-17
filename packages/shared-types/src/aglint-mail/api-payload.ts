@@ -1,5 +1,5 @@
-import v from "valibot";
-import { DatabaseEnums } from "..";
+import v from 'valibot';
+import { DatabaseEnums } from '..';
 import {
   agentEmailCandidateSchema,
   applicantRejectEmailApplicantSchema,
@@ -138,11 +138,11 @@ type Payloads = {
   phoneScreenRemind_email_applicant: {
     api_payload: v.InferInput<typeof phoneScreenRemindEmailApplicantSchema>;
     comp_email_placeholders: {
-      "{{ candidateFirstName }}": string;
-      "{{ jobTitle }}": string;
-      "{{ companyName }}": string;
-      "{{ phoneScreeningLink }}": string;
-      "{{ recruiterFullName }}": string;
+      '{{ candidateFirstName }}': string;
+      '{{ jobTitle }}': string;
+      '{{ companyName }}': string;
+      '{{ phoneScreeningLink }}': string;
+      '{{ recruiterFullName }}': string;
     };
     react_email_placeholders: {
       subject: string;
@@ -271,5 +271,5 @@ type Payloads = {
   };
 };
 
-export type EmailTemplateAPi<T extends DatabaseEnums["email_slack_types"]> =
+export type EmailTemplateAPi<T extends DatabaseEnums['email_slack_types']> =
   T extends keyof Payloads ? Payloads[T] : never;

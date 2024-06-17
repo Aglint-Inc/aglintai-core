@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { TimePick } from "./TimePick";
 import * as _utils from "./utils";
 import _styles from "./AvailabilitySubmitted.module.css";
 
@@ -23,6 +24,13 @@ export function AvailabilitySubmitted({
           className={_utils.cx(_styles, "as-header-wrap")}
           tag="div"
         >
+          <Text
+            content="Availability Submitted Successfully"
+            color="success"
+            weight="medium"
+            align="center"
+            size="2"
+          />
           <Text content="" size="4" align="center" />
           <Text
             content={
@@ -41,7 +49,9 @@ export function AvailabilitySubmitted({
             align="center"
           />
         </_Builtin.Block>
-        <_Builtin.Block tag="div">{slotAvailbility}</_Builtin.Block>
+        <_Builtin.Block tag="div">
+          {slotAvailbility ?? <TimePick />}
+        </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "copyright_block", "no-height")}

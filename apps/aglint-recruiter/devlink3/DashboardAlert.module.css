@@ -2,19 +2,19 @@
   display: grid;
   padding: var(--space-3);
   grid-auto-columns: 1fr;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
   grid-template-columns: max-content 1fr;
   grid-template-rows: auto;
 
-  border-radius: 10px;
+  border-radius: var(--radius-4);
 
   background-color: white;
 }
 
 .bannner_wrap.is_danger {
   grid-template-columns: max-content 1fr max-content;
-  background-color: #fff0f1;
+  background-color: var(--error-3);
   cursor: pointer;
 }
 

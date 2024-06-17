@@ -129,7 +129,7 @@ function SlotColumn({
                 isSubmitted
               }
               key={ind}
-              textTime={`${dayjs(slot.startTime).format('hh:mm')} - ${dayjs(slot.endTime).format('hh:mm')}`}
+              textTime={`${dayjs(slot.startTime).format('hh:mm A')} - ${dayjs(slot.endTime).format('hh:mm A')}`}
             />
           </Stack>
         );

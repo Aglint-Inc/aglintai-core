@@ -8,8 +8,8 @@
 .ps_row {
   display: flex;
   flex-direction: column;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .ps_row.is_left_fles {

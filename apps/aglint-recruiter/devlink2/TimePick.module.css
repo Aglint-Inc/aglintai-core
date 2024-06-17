@@ -76,7 +76,8 @@
 .div-block-1721 {
   display: flex;
   overflow: auto;
-  max-width: 800px;
+  width: 100%;
+  max-width: 900px;
   padding-top: 10px;
   padding-bottom: 10px;
   justify-content: flex-start;

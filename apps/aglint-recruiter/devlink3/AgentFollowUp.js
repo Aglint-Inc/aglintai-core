@@ -32,7 +32,7 @@ export function AgentFollowUp({
             <ButtonSolid
               onClickButton={onClickMakeAPhoneCall}
               size="1"
-              textButton="Make A Phonecall"
+              textButton="Make a Followup Call"
             />
           </_Builtin.Block>
         ) : null}
@@ -52,7 +52,7 @@ export function AgentFollowUp({
             <ButtonSolid
               onClickButton={onClickContactViaEmail}
               size="1"
-              textButton="Contact Via Email"
+              textButton="Email the Link"
             />
           </_Builtin.Block>
         ) : null}

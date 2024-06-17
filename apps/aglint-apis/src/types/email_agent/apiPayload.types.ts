@@ -26,6 +26,7 @@ export type EmailAgentPayload = {
     task_id: string;
     candidate_id: string;
     organizer_name: string;
+    organizer_timezone: string;
     interview_meetings: InterviewMeetingTypeDb[];
     meeting_summary: string;
     job_description: string;

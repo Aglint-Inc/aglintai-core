@@ -22,7 +22,7 @@ export function CandidateInterviewButton({
         tag="div"
       >
         <_Builtin.Block tag="div">{slotIcon}</_Builtin.Block>
-        <Text content={textButton} color="accent" />
+        <Text content={textButton} color="accent" weight="medium" />
       </_Builtin.Block>
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "icons")}

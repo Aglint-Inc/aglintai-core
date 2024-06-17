@@ -32,8 +32,8 @@
   justify-content: flex-start;
   flex-wrap: nowrap;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .flex_hr_10.relative_2 {

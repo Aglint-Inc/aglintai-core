@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { IconButtonGhost } from "./IconButtonGhost";
+import { Text } from "./Text";
 import { ScheduleTypeButton } from "./ScheduleTypeButton";
 import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
@@ -64,7 +65,7 @@ export function CandidateSchedule({
               iconSize="3"
               color="neutral"
             />
-            <_Builtin.Block tag="div">{textSelectedNumber}</_Builtin.Block>
+            <Text content={textSelectedNumber} weight="" />
             <_Builtin.Block
               className={_utils.cx(_styles, "schedule_button_options")}
               tag="div"
