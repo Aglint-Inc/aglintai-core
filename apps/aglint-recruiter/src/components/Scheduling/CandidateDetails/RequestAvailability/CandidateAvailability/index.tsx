@@ -184,6 +184,7 @@ function CandidateAvailability() {
         direction={'row'}
         justifyContent={'center'}
         alignItems={'center'}
+        bgcolor={'var(--neutral-2)'}
       >
         <Stack width={'120px'} style={{ transform: 'translateY(-50%)' }}>
           <CandidateSlotLoad />
@@ -217,6 +218,7 @@ function CandidateAvailability() {
             </>
           )
         }
+        textDesc = 'Please confirm your availability for the upcoming interview by selecting a suitable time slot from the options provided.'
         styleTextColor={{
           style: {
             color: isSubmitted ? 'var(--success-11)' : 'var(--neutral-12)',
