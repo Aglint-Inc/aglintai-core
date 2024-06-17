@@ -36,10 +36,7 @@ export function ScheduleDetailTabs({
           className={_utils.cx(_styles, "schedule_detail_block")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "schedule_tabs", "gap-0")}
-            tag="div"
-          >
+          <_Builtin.Block className={_utils.cx(_styles, "sdt-tabs")} tag="div">
             {slotDarkPills ?? <SlotComp componentNeme="Tab" />}
           </_Builtin.Block>
           <_Builtin.Block
@@ -47,7 +44,7 @@ export function ScheduleDetailTabs({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1365")}
+              className={_utils.cx(_styles, "sdt-tab-content")}
               tag="div"
             >
               {slotTabContent ?? <SlotComp componentNeme="Tab Content" />}

@@ -8,4 +8,5 @@ declare function AvailabilityReq(props: {
   slotTtitle?: Types.Devlink.Slot;
   styleTextColor?: Types.Devlink.RuntimeProps;
   slotCompanyIcon?: Types.Devlink.Slot;
+  slotFooter?: Types.Devlink.Slot;
 }): React.JSX.Element;
