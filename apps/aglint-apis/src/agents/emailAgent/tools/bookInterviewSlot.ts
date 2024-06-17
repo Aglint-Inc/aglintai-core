@@ -37,14 +37,18 @@ export const bookInterviewSlot = (
           minutes: z.number().describe('Confirmed slot minutes').default(0),
         })
         .describe('Confirmed slot time'),
+      time_zone: z
+        .string()
+        .describe(
+          'candidate specified location timezone or organizer timezone'
+        ),
     }),
-    func: async ({booking_date, confirmed_slot_time}) => {
+    func: async ({booking_date, confirmed_slot_time, time_zone}) => {
       const bookSlot = async () => {
-        const cand_time_zone = cand_info.candidate_time_zone;
-
+        if (!time_zone) return 'time_zone field required';
         const slot_date = convertDateFormatToDayjs(
           `${booking_date.day}/${String(booking_date.month).padStart(2, '0')}/${dayjsLocal().get('year')}`,
-          cand_time_zone
+          time_zone
         );
         const req_slot_time = slot_date
           .set('hour', confirmed_slot_time.hour)
@@ -62,7 +66,7 @@ export const bookInterviewSlot = (
           );
 
           const payload: APICandidateConfirmSlotNoConflict = {
-            cand_tz: cand_time_zone,
+            cand_tz: time_zone,
             filter_id: cand_info.filter_id,
             task_id: cand_info.task_id,
             selected_slot: {
@@ -80,7 +84,7 @@ export const bookInterviewSlot = (
           appLogger.error('Failed to schedule the interview slots ', {
             error: error.message,
             task_id: cand_info.task_id,
-            cand_time_zone,
+            time_zone,
             slot_date: req_slot_time.toISOString(),
           });
           candLogger(

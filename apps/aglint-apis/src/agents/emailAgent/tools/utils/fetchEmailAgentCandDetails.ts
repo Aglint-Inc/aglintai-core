@@ -3,7 +3,7 @@ import {supabaseAdmin} from '../../../../services/supabase/SupabaseAdmin';
 
 import {getFullName} from '../../../../utils/getFullName';
 import {EmailAgentPayload} from '../../../../types/email_agent/apiPayload.types';
-import {EmailTemplateFields} from '@aglint/shared-types';
+import {DatabaseTable, EmailTemplateFields} from '@aglint/shared-types';
 import {envConfig} from 'src/config';
 import {supabaseWrap} from 'src/utils/scheduling/supabaseWrap';
 
@@ -41,7 +41,9 @@ export const fetchEmailAgentCandDetails = async (
   const sessions = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
-      .select('*,interview_meeting(*)')
+      .select(
+        '*,interview_meeting(*,recruiter_user(first_name,last_name,scheduling_settings))'
+      )
       .in('id', cand_rec.interview_filter_json.session_ids)
   );
   if (!sessions[0].interview_meeting) {
@@ -101,7 +103,7 @@ export const fetchEmailAgentCandDetails = async (
     const [date, month, year] = d.split('/');
     return [month, date, year].join('/');
   };
-
+  const meeting_organizer = sessions[0].interview_meeting.recruiter_user;
   const agent_payload: EmailAgentPayload = {
     history: cand_rec.chat_history,
     payload: {
@@ -127,8 +129,14 @@ export const fetchEmailAgentCandDetails = async (
       candidate_id:
         cand_rec.interview_filter_json.interview_schedule.applications
           .candidates.id,
-      organizer_name: filter_json.organizer_name ?? job.company,
-      interview_meetings: sessions.map(ses => ses.interview_meeting),
+      organizer_name: getFullName(
+        meeting_organizer.first_name,
+        meeting_organizer.last_name
+      ),
+      organizer_timezone: meeting_organizer.scheduling_settings.timeZone.tzCode,
+      interview_meetings: sessions.map(
+        ses => ses.interview_meeting as DatabaseTable['interview_meeting']
+      ),
       meeting_summary,
       job_description: job.description,
       comp_scheduling_setting: job.recruiter.scheduling_settings as any,
