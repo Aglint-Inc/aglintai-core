@@ -1,9 +1,8 @@
-/* eslint-disable no-await-in-loop */
 import { NextResponse } from 'next/server';
 import { confInterviewEmailOrganizerSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
 import * as v from 'valibot';
-import { fetchUtil } from './fetch-util';
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
+import { fetchUtil } from './fetch-util';
 
 export async function POST(req: Request) {
   const req_body = await req.json();
@@ -20,7 +19,8 @@ export async function POST(req: Request) {
       react_email_placeholders,
       recipient_email,
     } of fetch_details) {
-      sendMailFun(
+      // eslint-disable-next-line no-await-in-loop
+      await sendMailFun(
         filled_comp_template,
         react_email_placeholders,
         recipient_email,
