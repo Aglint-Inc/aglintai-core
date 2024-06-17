@@ -184,6 +184,7 @@ function CandidateAvailability() {
         direction={'row'}
         justifyContent={'center'}
         alignItems={'center'}
+        bgcolor={'var(--neutral-2)'}
       >
         <Stack width={'120px'} style={{ transform: 'translateY(-50%)' }}>
           <CandidateSlotLoad />

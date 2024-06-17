@@ -48,7 +48,7 @@ export function RescheduleCard({
           )}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1684")}
+          className={_utils.cx(_styles, "rc-title-wrap")}
           tag="div"
         >
           <Text content={textName} weight="medium" color="neutral-12" />

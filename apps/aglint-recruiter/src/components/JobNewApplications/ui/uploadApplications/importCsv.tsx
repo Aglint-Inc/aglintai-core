@@ -208,7 +208,7 @@ function CandidatesListTable({ importedCandidate }) {
       border={'1px solid '}
       borderColor={'grey.200'}
       height={'100%'}
-      overflow={'scroll'}
+      overflow={'auto'}
     >
       <TableHeader />
       {importedCandidate.map((ele, i) => {

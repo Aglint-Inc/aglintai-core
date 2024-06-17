@@ -27,11 +27,11 @@ export function MemberDetail({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1647")}
+          className={_utils.cx(_styles, "member-list-content")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1651")}
+            className={_utils.cx(_styles, "ml-profile-wrap")}
             tag="div"
           >
             <_Builtin.Block
@@ -41,7 +41,7 @@ export function MemberDetail({
               {slotImage}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1652")}
+              className={_utils.cx(_styles, "ml-badge-wrapper")}
               tag="div"
             >
               {isShadow ? (
@@ -63,7 +63,7 @@ export function MemberDetail({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1648")}
+              className={_utils.cx(_styles, "ml-name-wrap")}
               tag="div"
             >
               <_Builtin.Block

@@ -19,10 +19,7 @@ export function InterviewerList({
       >
         {slotProfileImage}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1687")}
-        tag="div"
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "ci-details")} tag="div">
         <_Builtin.Block tag="div">{textName}</_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "text-sm", "text-grey-600")}

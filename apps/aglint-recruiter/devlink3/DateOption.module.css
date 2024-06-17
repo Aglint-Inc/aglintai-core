@@ -183,7 +183,6 @@
 .slot_schedule_option {
   display: flex;
   overflow: hidden;
-  padding-bottom: 0px;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: var(--space-3);

@@ -315,10 +315,6 @@
   min-width: 100%;
 }
 
-.cv-list-column.screening.width-100.z_index {
-  z-index: 100;
-}
-
 .cv-list-column.disqualified {
   width: 220px;
   min-width: 220px;

@@ -56,7 +56,7 @@ export function JobUnpublishDisclaimer({
             tag="div"
             {...onClickDiscardChanges}
           >
-            <Text content="Discard Changes" color="" />
+            <Text content="Discard Changes" color="error" />
           </_Builtin.Block>
         ) : null}
       </_Builtin.Block>
