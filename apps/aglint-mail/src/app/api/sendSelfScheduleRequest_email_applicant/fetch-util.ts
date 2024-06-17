@@ -7,14 +7,14 @@ import { getFullName } from '@aglint/shared-utils';
 export async function dbUtil(
   req_body: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['api_payload'],
 ) {
-  const { data: filterJson } = await supabaseAdmin
-    .from('interview_filter_json')
-    .select(
-      'filter_json,interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company,recruiter),candidates(first_name,email,recruiter(logo))))',
-    )
-    .eq('id', req_body.filter_json_id)
-    .single()
-    .throwOnError();
+  const [filterJson] = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_filter_json')
+      .select(
+        'filter_json,interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company,recruiter),candidates(first_name,email,recruiter(logo))))',
+      )
+      .eq('id', req_body.filter_json_id),
+  );
 
   const {
     interview_schedule: {
