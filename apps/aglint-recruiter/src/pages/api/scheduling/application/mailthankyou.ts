@@ -3,11 +3,11 @@ import {
   APICandScheduleMailThankYou,
   EmailTemplateAPi,
 } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';

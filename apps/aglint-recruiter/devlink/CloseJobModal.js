@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { IconButtonGhost } from "./IconButtonGhost";
 import { ButtonGhost } from "./ButtonGhost";
 import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
@@ -22,7 +23,19 @@ export function CloseJobModal({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "close-job-modal-pop")} tag="div">
-      <Text content={textPopupTitle} weight="bold" />
+      <_Builtin.Block
+        className={_utils.cx(_styles, "close-job-modal-heading")}
+        tag="div"
+      >
+        <Text content={textPopupTitle} weight="bold" />
+        <IconButtonGhost
+          onClickButton={onClickCloseJob}
+          iconName="close"
+          iconWeight="thin"
+          iconColor="neutral"
+          color="neutral"
+        />
+      </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "close-data-wrap")}
         tag="div"
@@ -40,54 +53,23 @@ export function CloseJobModal({
         <Text content="below." />
       </_Builtin.Block>
       <_Builtin.Block tag="div">{slotInput}</_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "close-job-btn-modal")}
-        tag="div"
-        {...onClickCancel}
-      >
-        <_Builtin.Block
-          tag="div"
-          icon-size="md"
-          icon-color="neutral-a11"
-          icon-weight="regular"
-        >
-          {"close"}
-        </_Builtin.Block>
-      </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "buttn_flex")} tag="div">
-        <_Builtin.Block tag="div" {...onClickCancel}>
-          <ButtonGhost
-            isLeftIcon={false}
-            isRightIcon={false}
-            textButton="Cancel"
-            size="2"
-          />
-        </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "wide_button")} tag="div">
-          <_Builtin.Block tag="div" {...onClickCloseJob}>
-            <ButtonSolid
-              textButton={textButton}
-              color="error"
-              isLeftIcon={false}
-              isRightIcon={false}
-              size="2"
-            />
-          </_Builtin.Block>
-          {isDisabled ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "disable-wrap")}
-              tag="div"
-            >
-              <ButtonSolid
-                textButton={textButton}
-                color="error"
-                isLeftIcon={false}
-                isRightIcon={false}
-                isDisabled={true}
-              />
-            </_Builtin.Block>
-          ) : null}
-        </_Builtin.Block>
+        <ButtonGhost
+          onClickButton={onClickCancel}
+          isLeftIcon={false}
+          isRightIcon={false}
+          textButton="Cancel"
+          size="2"
+        />
+        <ButtonSolid
+          textButton={textButton}
+          isDisabled={isDisabled}
+          onClickButton={onClickCloseJob}
+          color="error"
+          isLeftIcon={false}
+          isRightIcon={false}
+          size="2"
+        />
       </_Builtin.Block>
     </_Component>
   );

@@ -1,11 +1,9 @@
+import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 import { cloneDeep, set } from 'lodash';
 import React, { Dispatch, useContext, useEffect } from 'react';
 
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import { API_FAIL_MSG } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { resolveAiCmd } from '@/src/utils/prompts/candidateDb/email';
 import { supabase } from '@/src/utils/supabase/client';

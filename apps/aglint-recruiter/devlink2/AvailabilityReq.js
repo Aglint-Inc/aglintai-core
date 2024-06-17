@@ -22,9 +22,9 @@ export function AvailabilityReq({
           align="center"
           color="neutral-12"
           size="4"
-          weight="bold"
+          weight="medium"
         />
-        <Text content={textDesc} align="center" color="neutral" />
+        <Text content={textDesc} align="center" color="neutral" weight="" />
       </_Builtin.Block>
       <_Builtin.Block tag="div">
         {slotPickSlotDay ?? (

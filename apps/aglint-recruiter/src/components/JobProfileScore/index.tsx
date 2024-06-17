@@ -145,6 +145,15 @@ const ProfileScoreControls = () => {
         opacity: job.scoring_criteria_loading ? 0.4 : 1,
         pointerEvents: job.scoring_criteria_loading ? 'none' : 'auto',
       }}
+      sx={{
+        position: 'sticky',
+        top: 0,
+        right: 0,
+        minHeight: 'calc(100vh - 60px)',
+        boxShadow: 1,
+        padding: 2,
+        bgcolor: 'var(--neutral-2)',
+      }}
     >
       <ScoreWeightage
         onClickEqualize={{ onClick: () => handleReset() }}

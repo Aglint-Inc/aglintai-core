@@ -85,12 +85,11 @@ export const FilterHeader = ({
       width={'100%'}
       justifyContent={'space-between'}
       gap={2}
-      pr={1}
     >
       {Boolean(search) && (
         <Stack>
           <UITextField
-            width='400px'
+            width='250px'
             value={search.value}
             height={32}
             InputProps={{

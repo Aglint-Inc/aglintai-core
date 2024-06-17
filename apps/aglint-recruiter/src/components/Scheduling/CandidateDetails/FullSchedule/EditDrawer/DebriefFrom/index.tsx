@@ -114,6 +114,7 @@ function DebriedForm({
             {debriefMembers?.map((member) => {
               return (
                 <SelectedMemberPill
+                  isCloseButton={true}
                   key={member.value}
                   onClickRemove={{
                     onClick: () => {

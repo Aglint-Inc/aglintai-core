@@ -1,3 +1,4 @@
+import { supabaseWrap } from '@aglint/shared-utils';
 import { CircularProgress, Stack } from '@mui/material';
 import { isEmpty } from 'lodash';
 import router from 'next/router';
@@ -12,10 +13,7 @@ import toast from '@/src/utils/toast';
 
 import AUIButton from '../../Common/AUIButton';
 import UITextField from '../../Common/UITextField';
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 import { getRelevantCndidates } from '../utils';
 
 export const JDSearchModal = ({ setJdPopup }) => {

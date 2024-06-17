@@ -11,8 +11,8 @@ const tabs: ApplicationStore['tab'][] = [
   // 'Screening',
   // 'Assessment',
   'Interview',
-  // 'Tasks',
-  // 'Activity',
+  'Tasks',
+  'Activity',
 ];
 
 const Tabs = memo(() => {

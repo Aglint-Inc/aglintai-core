@@ -32,14 +32,6 @@
   grid-row-gap: 10px;
 }
 
-.gap-10 {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-}
-
 .icon-block {
   display: flex;
   justify-content: center;

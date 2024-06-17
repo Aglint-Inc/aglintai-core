@@ -353,6 +353,7 @@ function ATSTools() {
             type={hideApiKey ? 'password' : 'text'}
             fullWidth
             inputRef={inputRef}
+            placeholder='Enter API Key'
             InputProps={{
               endAdornment: (
                 <IconButton
@@ -360,7 +361,7 @@ function ATSTools() {
                     setHideApiKey((pre) => !pre);
                   }}
                 > 
-                  hideApiKey ? <GlobalIcon iconName='visibility'/> : <GlobalIcon iconName='visibility_off'/>
+                  {hideApiKey ? <GlobalIcon iconName='visibility'/> : <GlobalIcon iconName='visibility_off'/>}
                 </IconButton>
               ),
             }}

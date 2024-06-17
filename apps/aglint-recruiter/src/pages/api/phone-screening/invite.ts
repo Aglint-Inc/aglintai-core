@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
+import { supabaseWrap } from '@aglint/shared-utils';
 import { createServerClient } from '@supabase/ssr';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { capitalize } from '@/src/components/JobApplicationsDashboard/utils';
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 

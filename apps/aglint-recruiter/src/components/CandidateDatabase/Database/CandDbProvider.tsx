@@ -1,14 +1,12 @@
 import { DatabaseEnums } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { cloneDeep, set } from 'lodash';
 import React, { createContext, useContext, useReducer } from 'react';
 
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 import {
   ActionType,
   candDbContextType,

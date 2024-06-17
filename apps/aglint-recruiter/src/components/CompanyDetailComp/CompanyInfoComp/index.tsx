@@ -287,7 +287,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                         } as RecruiterType);
                       }
                     }}
-                    size={64}
+                    size={48}
                     table='company-logo'
                     error={(e) => {
                       if (e) {
@@ -318,7 +318,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                   <UITextField
                     labelBold='default'
                     labelSize='small'
-                    
+                    fullWidth
                     label='Company Name'
                     placeholder='Ex. Acme Inc.'
                     value={recruiter?.name}

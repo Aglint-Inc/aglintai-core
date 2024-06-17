@@ -45,6 +45,11 @@
   grid-row-gap: var(--space-1);
 }
 
+.flex-horizontal.align-center {
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .embed_flex {
   display: flex;
   align-items: center;

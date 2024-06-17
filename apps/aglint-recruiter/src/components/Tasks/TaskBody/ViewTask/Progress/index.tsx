@@ -118,8 +118,9 @@ function SubTaskProgress() {
                         >
                           <Stack
                             border={'1px solid'}
-                            borderColor={'var(--neutral-6)'}
-                            borderRadius={'100%'}
+                            borderColor={'var(--accent-6)'}
+                            bgcolor={'var(--white)'}
+                            borderRadius={'var(--radius-2)'}
                             direction={'row'}
                             alignItems={'center'}
                             justifyContent={'center'}
@@ -134,8 +135,9 @@ function SubTaskProgress() {
                         >
                           <Stack
                             border={'1px solid'}
-                            borderColor={'var(--neutral-6)'}
-                            borderRadius={'100%'}
+                            borderColor={'var(--accent-6)'}
+                            bgcolor={'var(--white)'}
+                            borderRadius={'var(--radius-2)'}
                             direction={'row'}
                             alignItems={'center'}
                             justifyContent={'center'}
