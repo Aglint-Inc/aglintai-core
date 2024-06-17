@@ -2,7 +2,7 @@ import { GlobalIcon } from "@/devlink/GlobalIcon";
 
 const EmailIcon = () => {
   return (
-    <GlobalIcon iconName='mail' color={'var(--neutral-11)'}/>
+    <GlobalIcon iconName='mail' color={'neutral-8'}/>
     // <svg
     //   width='24'
     //   height='24'

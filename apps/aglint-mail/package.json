@@ -39,7 +39,6 @@
     "debounce": "2.0.0",
     "esbuild": "0.19.11",
     "eslint-config-prettier": "9.0.0",
-    "eslint-config-turbo": "1.10.12",
     "framer-motion": "10.17.4",
     "glob": "10.3.4",
     "html-to-react": "^1.7.0",
@@ -74,6 +73,7 @@
     "@types/shelljs": "0.8.15",
     "@types/webpack": "5.28.5",
     "eslint": "8.50.0",
+    "eslint-config-turbo": "^1.10.12",
     "tsup": "7.2.0",
     "tsx": "4.9.0",
     "vitest": "1.1.3"

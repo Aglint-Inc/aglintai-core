@@ -264,10 +264,10 @@ function TableHeader() {
 const headerObject = [
   {
     heading: 'Candidate',
-    icon: <GlobalIcon iconName='person' size='4' color='neutral-11'/>,
+    icon: <GlobalIcon iconName='person' size='4' color='neutral'/>,
   },
-  { heading: 'Email', icon: <GlobalIcon iconName='mail'  size='4' color='neutral-11'/> },
-  { heading: 'Phone', icon: <GlobalIcon iconName='phone'  size='4' color='neutral-11'/>},
+  { heading: 'Email', icon: <GlobalIcon iconName='mail'  size='4' color='neutral-8'/> },
+  { heading: 'Phone', icon: <GlobalIcon iconName='phone'  size='4' color='neutral-8'/>},
 ];
 
 function TableRow({ name, email, phone, profile_image, index }) {

@@ -2,16 +2,14 @@
 import { Stack } from '@mui/material';
 import { memo, useCallback, useEffect, useMemo } from 'react';
 
-import { ApplicantsListEmpty } from '@/devlink2/ApplicantsListEmpty';
 import { ApplicantsTable } from '@/devlink2/ApplicantsTable';
 import { SkeletonCandidateListItem } from '@/devlink2/SkeletonCandidateListItem';
-import NoApplicants from '@/public/lottie/NoApplicants';
 import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 import { useApplications } from '@/src/context/ApplicationsContext';
-import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 
 import { useKeyPress } from '../../JobApplicationsDashboard/hooks';
 import { Loader } from '../ui/candidateDrawer/common';
+import { EmptyList } from './common';
 import ApplicantsList from './list';
 
 export const Table = memo(() => {
@@ -124,18 +122,3 @@ const List = memo(() => {
   );
 });
 List.displayName = 'List';
-
-const EmptyList = memo(() => {
-  const section = useApplicationsStore(({ section }) => section);
-  return (
-    <Stack height={'50vh'} justifyContent={'center'}>
-      <Stack>
-        <ApplicantsListEmpty
-          textEmpty={section}
-          slotLottie={<NoApplicants />}
-        />
-      </Stack>
-    </Stack>
-  );
-});
-EmptyList.displayName = 'EmptyList';
