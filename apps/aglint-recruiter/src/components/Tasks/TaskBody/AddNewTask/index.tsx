@@ -585,9 +585,9 @@ function AddNewTask() {
                 }
                 slotWhentoCallIcon={
                   selectedAssignee?.user_id === EmailAgentId ? (
-                    <GlobalIcon iconName='mail' color={'var(--neutral-11)'}/>
+                    <GlobalIcon iconName='mail' color={'neutral-8'}/>
                   ) : (
-                    <GlobalIcon iconName='phone_in_talk' color={'var(--neutral-11)'}/>
+                    <GlobalIcon iconName='phone_in_talk' color={'neutral-8'}/>
                   )
                 }
               />
@@ -604,7 +604,7 @@ export default AddNewTask;
 export const CallIcon = () => {
   
   return (
-    <GlobalIcon iconName='phone_in_talk' color={'var(--neutral-11)'}/>
+    <GlobalIcon iconName='phone_in_talk' color={'neutral-8'}/>
     // <svg
     //   width='15'
     //   height='16'
@@ -623,7 +623,7 @@ export const CallIcon = () => {
 
 export const EmailIcon = () => {
   return (
-    <GlobalIcon iconName='mail'  color={'var(--neutral-11)'}/>
+    <GlobalIcon iconName='mail'  color={'neutral-8'}/>
     // <svg
     //   width='15'
     //   height='16'
