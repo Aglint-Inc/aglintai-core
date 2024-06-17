@@ -3,13 +3,13 @@
 
   display: flex;
   height: 30px;
-  padding: 6px 12px;
-  justify-content: flex-start;
+  padding: var(--space-2) var(--space-3);
+  justify-content: center;
   align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 
-  border-radius: 4px;
+  border-radius: var(--radius-2);
 
   background-color: var(--neutral-3);
 

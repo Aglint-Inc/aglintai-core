@@ -15,20 +15,20 @@ export function ScheduleReasonSection({
   onClickAdd = {},
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1671")} tag="div">
+    <_Component className={_utils.cx(_styles, "srs-wrap")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "section_header_desc")}
         tag="div"
       >
-        <Text content={textHeading} weight="bold" />
+        <Text content={textHeading} weight="medium" />
         <Text content={textDesc} weight="" color="neutral" />
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1676")}
+        className={_utils.cx(_styles, "srs-input-wrap")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1672")}
+          className={_utils.cx(_styles, "srs-input-item")}
           tag="div"
         >
           {slotReasonList ?? <ReasonList />}

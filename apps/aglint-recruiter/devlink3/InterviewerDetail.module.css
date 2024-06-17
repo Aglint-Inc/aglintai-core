@@ -66,28 +66,28 @@
   align-items: center;
 }
 
-.div-block-1696 {
+.id-details-wrap {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 40px;
-  grid-row-gap: 40px;
+  grid-column-gap: var(--space-7);
+  grid-row-gap: var(--space-7);
 }
 
-.div-block-1695 {
+.id-details-left {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
-.div-block-1694 {
+.id-detail--item {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .icons {
@@ -122,34 +122,25 @@
   cursor: pointer;
 }
 
-.div-block-1705 {
+.id-details-right {
   display: flex;
-  margin-right: 30px;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .interviewscount {
   display: flex;
-  padding: 6px 10px;
+  padding: var(--space-1) var(--space-2);
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 2px;
   grid-row-gap: 2px;
 
-  border-radius: 6px;
+  border-radius: var(--radius-3);
 
-  background-color: #f7f9fb;
-}
-
-.div-block-1707 {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
+  background-color: var(--neutral-3);
 }
 
 .tab_wrapper {
@@ -161,10 +152,7 @@
 
 .slot_interviewer_detail_overview {
   overflow: auto;
-  padding-top: 0px;
-  padding-right: 0px;
-  padding-bottom: 20px;
-  padding-left: 0px;
+  padding-bottom: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 30px;

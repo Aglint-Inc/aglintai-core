@@ -104,7 +104,7 @@ function CandidateAvailability() {
       {
         data: {
           title: `Candidate submitted availability`,
-          description: `Candidate submitted availability on ${dates} for Coding Interview (Round 2) Interviews.`,
+          description: `Candidate submitted availability on ${dates} for ${candidateRequestAvailability.session_ids.map((ele) => ele.name).join(',')} Interviews.`,
           module: 'scheduler',
           task_id: task.id,
           logged_by: 'candidate',
@@ -184,6 +184,7 @@ function CandidateAvailability() {
         direction={'row'}
         justifyContent={'center'}
         alignItems={'center'}
+        bgcolor={'var(--neutral-2)'}
       >
         <Stack width={'120px'} style={{ transform: 'translateY(-50%)' }}>
           <CandidateSlotLoad />
@@ -216,6 +217,11 @@ function CandidateAvailability() {
               />
             </>
           )
+        }
+        textDesc={
+          isSubmitted
+            ? 'Please wait as we finalize the schedule. One of the selected time slots from each day will be chosen, and you will receive a confirmation email shortly.'
+            : 'Please confirm your availability for the upcoming interview by selecting a suitable time slot from the options provided.'
         }
         styleTextColor={{
           style: {

@@ -96,7 +96,13 @@ function RescheduleSlot() {
             );
           })}
         </Stack>
-        <Stack spacing={2} direction={'row'} justifyContent={'flex-end'} p={2}>
+        <Stack
+          display={'grid'}
+          gridTemplateColumns={'1fr 1fr 1fr'}
+          spacing={2}
+          direction={'row'}
+          p={2}
+        >
           <ScheduleTypeButton
             isSelfScheduleIcon={true}
             isAgentIcon={false}

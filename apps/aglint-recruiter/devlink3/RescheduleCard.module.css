@@ -16,8 +16,8 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .avatar-24 {
@@ -27,7 +27,7 @@
   border-radius: var(--radius-2);
 }
 
-.div-block-1684 {
+.rc-title-wrap {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -37,14 +37,14 @@
 
 .request-reason {
   display: flex;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .action_buttons {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }

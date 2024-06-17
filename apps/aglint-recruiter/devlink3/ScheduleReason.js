@@ -30,14 +30,11 @@ export function ScheduleReason({
             className={_utils.cx(_styles, "scheduling_reason_header")}
             tag="div"
           >
-            <Text content={textMainHeading} weight="bold" size="2" />
+            <Text content={textMainHeading} weight="medium" size="2" />
             <Text content={textMainHelperText} weight="" color="neutral" />
           </_Builtin.Block>
         ) : null}
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1726")}
-          tag="div"
-        >
+        <_Builtin.Block className={_utils.cx(_styles, "rr-wrapper")} tag="div">
           {slotScheduleReasonSection ?? (
             <>
               <ScheduleReasonSection

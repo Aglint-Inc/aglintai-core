@@ -31,7 +31,7 @@ export function GeneralPopupLarge({
               <GlobalIcon iconName="notifications_active" weight="medium" />
             </_Builtin.Block>
           ) : null}
-          <Text content={textPopupTitle} color="neutral-11" weight="bold" />
+          <Text content={textPopupTitle} color="neutral-11" weight="medium" />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "popup_close")}

@@ -20,5 +20,5 @@
   grid-column-gap: var(--space-3);
   grid-row-gap: var(--space-3);
 
-  background-color: white;
+  background-color: var(--white);
 }

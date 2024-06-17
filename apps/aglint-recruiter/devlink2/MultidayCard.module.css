@@ -80,16 +80,6 @@
   grid-row-gap: var(--space-1);
 }
 
-.time_flex.center {
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.time_flex.center.gap-2 {
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-}
-
 .slot_session_info {
   position: relative;
   z-index: 5;
