@@ -145,7 +145,6 @@
   overflow: auto;
   width: 100%;
   flex-direction: column;
-  height: calc(100vh - 180px);
 }
 
 .slot_sidebar {

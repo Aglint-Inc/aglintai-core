@@ -1,15 +1,10 @@
 import { RecruiterType } from '@aglint/shared-types';
-import {
-  Autocomplete,
-  Dialog,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Autocomplete, Dialog, Stack, Typography } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { AddDepartmentPop } from '@/devlink/AddDepartmentPop';
 import { RolesPill } from '@/devlink/RolesPill';
+import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 interface DepartmentsProps {
@@ -28,6 +23,7 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState([]);
   const [departmentState, setDepartmentState] = useState<string[]>([]);
+  const [inputError, setInputError] = useState(false);
   const iniDepartments = useRef([]);
 
   const handleInputChange = (event, newInputValue) => {
@@ -160,13 +156,16 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
               );
             }}
             renderInput={(params) => (
-              <TextField
+              <UITextField
                 {...params}
                 placeholder='Type or Choose from the list and press enter'
                 InputProps={{
                   ...params.InputProps,
                   type: 'search',
                 }}
+                onFocus={() => setInputError(false)}
+                error={inputError}
+                helperText='Make any changes then add the Department'
                 onKeyDown={handleKeyDown}
               />
             )}
@@ -185,6 +184,8 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
                 departments: departmentState,
               });
               handleClose();
+            } else {
+              setInputError(true);
             }
           },
         }}

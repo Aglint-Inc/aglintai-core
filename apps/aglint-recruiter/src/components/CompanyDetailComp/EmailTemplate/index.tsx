@@ -84,11 +84,11 @@ const EmailTemplate = ({ setIsSaving }) => {
               {isEditorLoad && (
                 <>
                   <Stack
-                    direction={'row'}
-                    alignItems={'center'}
-                    justifyContent={'center'}
-                    width={'500px'}
-                    height={'100vh'}
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="center"
+                    bgcolor="var(--neutral-2)"
+                    sx={{ width: '100%', height: 'calc(100vh - 96px)' }}
                   >
                     <LoaderSvg />
                   </Stack>

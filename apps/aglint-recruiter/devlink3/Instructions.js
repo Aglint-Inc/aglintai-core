@@ -15,7 +15,10 @@ export function Instructions({
   isHowWorkVisible = false,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1274")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "intstruction-wrapper")}
+      tag="div"
+    >
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1364")}
         tag="div"

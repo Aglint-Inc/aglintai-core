@@ -1,9 +1,9 @@
-import UploadIcon from '@mui/icons-material/Upload';
 import { Avatar, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
+import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { GlobalIcon } from '@/devlink3/GlobalIcon';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -105,7 +105,7 @@ function ImageUpload({
                 />
               ) : (
                 <GlobalIcon
-                iconName='CompanyOutlinedBig'
+                  iconName='CompanyOutlinedBig'
                   size={6}
                   color='var(--neutral-11)'
                 />
@@ -163,14 +163,12 @@ function ImageUpload({
                   justifyContent={'center'}
                   alignItems={'center'}
                 >
-                  <UploadIcon
-                    fontSize='medium'
-                    sx={{
-                      position: 'absolute',
-                      color: 'var(--neutral-12)',
-                      top: 0,
-                      right: 0,
-                    }}
+                  <IconButtonSoft
+                    iconSize={6}
+                    color='neutral'
+                    iconWeight='thin'
+                    iconName='cloud_upload'
+                    iconColor='neutral'
                   />
                 </Stack>
               </FileUploader>
@@ -193,11 +191,14 @@ function ImageUpload({
                 {image && (
                   <Stack
                     direction={'row'}
-                    spacing={1}
                     sx={{
                       transition: 'all 0.5s ease',
                       visibility: isStackHovered ? 'visible' : 'hidden',
                       opacity: isStackHovered ? 1 : 0,
+                      background: 'var(--black)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      borderRadius: 'var(--radius-4)',
                     }}
                   >
                     <FileUploader
@@ -213,7 +214,12 @@ function ImageUpload({
                           transition: '',
                         }}
                       >
-                        <GlobalIcon iconName='restart_alt' size={4}/>
+                        <IconButtonSoft
+                          iconSize={4}
+                          color={'white'}
+                          iconName='restart_alt'
+                          iconColor='white'
+                        />
                       </Stack>
                     </FileUploader>
 
@@ -226,7 +232,11 @@ function ImageUpload({
                       }}
                       sx={{ color: 'var(--white)', cursor: 'pointer' }}
                     >
-                      <GlobalIcon iconName='delete' size={4}/>
+                      <IconButtonSoft
+                        iconSize={4}
+                        color={'error'}
+                        iconName='delete'
+                      />
                     </Stack>
                   </Stack>
                 )}
