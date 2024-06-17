@@ -1,0 +1,102 @@
+import {
+  additionalRescheduleNotes,
+  availabilityReqLink,
+  cancelReason,
+  candidates,
+  dates,
+  interviewer,
+  jobDetails,
+  recruiter,
+  rescheduleReason,
+  selfSchedulingLink,
+  time,
+} from "./variables";
+
+export const emailVariablePayloads = {
+  debrief_email_interviewer: [...interviewer, ...candidates, ...jobDetails],
+  applicationRecieved_email_applicant: [
+    ...recruiter,
+    ...candidates,
+    ...jobDetails,
+  ],
+  interviewCancel_email_applicant: [...recruiter, ...candidates, ...jobDetails],
+  agent_email_candidate: [
+    ...recruiter,
+    ...candidates,
+    ...jobDetails,
+    ...dates,
+    selfSchedulingLink,
+  ],
+  confInterview_email_organizer: [...recruiter, ...candidates],
+  confirmInterview_email_applicant: [
+    ...recruiter,
+    ...candidates,
+    ...jobDetails,
+  ],
+  applicantReject_email_applicant: [...candidates, ...jobDetails, ...recruiter],
+  availabilityReqResend_email_candidate: [
+    ...candidates,
+    ...jobDetails,
+    ...recruiter,
+    availabilityReqLink,
+  ],
+  InterviewCancelReq_email_recruiter: [
+    ...recruiter,
+    ...candidates,
+    cancelReason,
+    additionalRescheduleNotes,
+    ...jobDetails,
+  ],
+  interReschedReq_email_recruiter: [
+    ...recruiter,
+    ...candidates,
+    rescheduleReason,
+    additionalRescheduleNotes,
+    ...jobDetails,
+    ...dates,
+  ],
+  interviewReschedule_email_applicant: [
+    ...candidates,
+    ...jobDetails,
+    ...recruiter,
+    selfSchedulingLink,
+  ],
+  interviewStart_email_applicant: [
+    ...candidates,
+    ...jobDetails,
+    ...recruiter,
+    ...dates,
+    time,
+  ],
+  interviewStart_email_interviewers: [
+    ...jobDetails,
+    ...candidates,
+    ...recruiter,
+    ...dates,
+    time,
+  ],
+  sendSelfScheduleRequest_email_applicant: [
+    ...candidates,
+    ...jobDetails,
+    ...recruiter,
+    selfSchedulingLink,
+  ],
+  sendAvailReqReminder_email_applicant: [
+    ...candidates,
+    ...jobDetails,
+    ...recruiter,
+    availabilityReqLink,
+  ],
+  selfScheduleReminder_email_applicant: [
+    ...candidates,
+    ...jobDetails,
+    selfSchedulingLink,
+  ],
+  sendAvailabilityRequest_email_applicant: [
+    ...candidates,
+    ...jobDetails,
+    availabilityReqLink,
+
+    ...recruiter,
+  ],
+};

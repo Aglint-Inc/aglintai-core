@@ -3,6 +3,7 @@ import type {
   MeetingDetailCardType,
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   platformRemoveUnderscore,
@@ -12,7 +13,6 @@ import {
 } from '../../../utils/email/common/functions';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
-import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'InterviewCancelReq_email_recruiter'>['api_payload'],
@@ -29,7 +29,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company,recruiter)',
+        'candidates(first_name,last_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company,recruiter)',
       )
       .eq('id', req_body.application_id),
   );
@@ -77,16 +77,20 @@ export async function fetchUtil(
 
   const comp_email_placeholder: EmailTemplateAPi<'InterviewCancelReq_email_recruiter'>['comp_email_placeholders'] =
     {
-      '{{ additionalRescheduleNotes }}': session_cancel.other_details.note,
-      '{{ cancelReason }}': session_cancel.reason,
-      '{{ recruiterName }}': recruiter_user.first_name,
-      '{{ jobTitle }}': candidateJob.public_jobs.job_title,
-      '{{ candidateFirstName }}': candidates.first_name,
-      '{{ companyName }}': public_jobs.company,
-      '{{ recruiterFullName }}': getFullName(
+      additionalRescheduleNotes: session_cancel.other_details.note,
+      cancelReason: session_cancel.reason,
+      recruiterName: getFullName(
         recruiter_user.first_name,
         recruiter_user.last_name,
       ),
+      jobRole: candidateJob.public_jobs.job_title,
+      candidateFirstName: candidates.first_name,
+      candidateLastName: candidates.last_name,
+      candidateName: getFullName(candidates.first_name, candidates.last_name),
+      companyName: public_jobs.company,
+      recruiterFirstName: recruiter_user.first_name,
+      recruiterLastName: recruiter_user.last_name,
+      recruiterTimeZone: int_tz,
     };
 
   const filled_comp_template = fillCompEmailTemplate(

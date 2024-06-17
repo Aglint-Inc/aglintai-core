@@ -19,14 +19,14 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,email,recruiter_id,recruiter(logo),timezone),public_jobs(job_title,company,recruiter)',
+        'candidates(first_name,last_name,email,recruiter_id,recruiter(logo),timezone),public_jobs(job_title,company,recruiter)',
       )
       .eq('id', req_body.application_id),
   );
   const [recruiter_user] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
-      .select('first_name,last_name')
+      .select('first_name,last_name,scheduling_settings')
       .eq('user_id', candidateJob.public_jobs.recruiter),
   );
   const int_sessions = supabaseWrap(
@@ -41,12 +41,13 @@ export async function fetchUtil(
   } else {
     cand_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${req_body.schedule_id}?filter_id=${req_body.schedule_id}`;
   }
-
+  const recruiter_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
   const {
     candidates: {
       email: cand_email,
       recruiter_id,
       first_name,
+      last_name,
       recruiter: { logo },
     },
     public_jobs: { company, job_title },
@@ -93,13 +94,17 @@ export async function fetchUtil(
 
   const comp_email_placeholder: EmailTemplateAPi<'confirmInterview_email_applicant'>['comp_email_placeholders'] =
     {
-      '{{ candidateFirstName }}': first_name,
-      '{{ jobTitle }}': job_title,
-      '{{ companyName }}': company,
-      '{{ supportLink }}': '',
-      '{{ recruiterFullName }}': getFullName(
+      candidateFirstName: first_name,
+      candidateLastName: last_name,
+      candidateName: getFullName(first_name, last_name),
+      companyName: company,
+      jobRole: job_title,
+      recruiterFirstName: recruiter_user.first_name,
+      recruiterLastName: recruiter_user.last_name,
+      recruiterTimeZone: recruiter_tz,
+      recruiterName: getFullName(
         recruiter_user.first_name,
-        recruiter_user.last_name,
+        recruiter_user.first_name,
       ),
     };
 

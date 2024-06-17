@@ -1,20 +1,14 @@
+import { DatabaseEnums } from '@aglint/shared-types';
 import { Stack } from '@mui/system';
-import Link from '@tiptap/extension-link';
-import Placeholder from '@tiptap/extension-placeholder';
-import TextAlign from '@tiptap/extension-text-align';
-import TextStyle from '@tiptap/extension-text-style';
-import Underline from '@tiptap/extension-underline';
-import { Plugin, PluginKey } from '@tiptap/pm/state';
-import { EditorContent, Extension, useEditor } from '@tiptap/react';
-import { Editor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
+import { Editor, EditorContent, useEditor } from '@tiptap/react';
 import React, { useEffect, useState } from 'react';
 
 import { SkeletonParagraph } from '@/devlink2/SkeletonParagraph';
 
 import { TipTapAIEditorCtxType, TipTapCtx } from './context';
+import { getEmailTemplateExtns } from './customExtns/extns/getEmailTemplateExtns';
+import { getRegularEditorConfigs } from './customExtns/extns/getRegularEditorConfigs';
 import MenuBtns from './MenuBtns';
-import styles from './TipTapAIEditor.module.scss';
 
 export type TipTapAIEditorParams = {
   placeholder: string;
@@ -31,6 +25,8 @@ export type TipTapAIEditorParams = {
   disabled?: boolean;
   border?: boolean;
   borderRadius?: React.CSSProperties['borderRadius'];
+  editor_type?: 'email' | 'regular';
+  template_type?: DatabaseEnums['email_slack_types'];
 };
 
 const TipTapAIEditor = ({
@@ -46,6 +42,8 @@ const TipTapAIEditor = ({
   disabled = false,
   border = false,
   borderRadius,
+  editor_type = 'regular',
+  template_type,
 }: TipTapAIEditorParams) => {
   const [selectionRange, setSelectionRange] = useState<
     TipTapAIEditorCtxType['selectionRange']
@@ -55,23 +53,10 @@ const TipTapAIEditor = ({
     useState<TipTapAIEditorCtxType['selectedText']>('');
 
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      EventHandler,
-      Placeholder.configure({
-        placeholder: placeholder || '',
-      }),
-      Link.configure({
-        openOnClick: false,
-        validate: (href) => /^https?:\/\//.test(href),
-      }),
-      TextAlign.configure({
-        alignments: ['left', 'right', 'center'],
-        types: ['heading', 'paragraph'],
-      }),
-      Underline,
-      TextStyle.configure({}),
-    ],
+    extensions:
+      editor_type === 'regular'
+        ? getRegularEditorConfigs({ placeholder })
+        : getEmailTemplateExtns({ placeholder, template_type }),
     editable: !disabled,
     content: initialValue || '',
     onBlur() {},
@@ -122,7 +107,7 @@ const TipTapAIEditor = ({
           }),
         }}
       >
-        <div className={styles.tipTapEditorContainer}>
+        <div>
           {editor && (
             <>
               <Stack
@@ -131,14 +116,16 @@ const TipTapAIEditor = ({
                   opacity: disabled ? 0.5 : 1,
                 }}
               >
-                <MenuBtns borderRadius={(border && borderRadius) || 'var(--radius-2)'} />
+                <MenuBtns
+                  borderRadius={(border && borderRadius) || 'var(--radius-2)'}
+                />
               </Stack>
             </>
           )}
           <Stack
             position={'relative'}
             sx={{
-              backgroundColor:'var(--white)',
+              backgroundColor: 'var(--white)',
               borderRadius: borderRadius || 'var(--radius-2)',
               '& .ProseMirror': {
                 minHeight: '250px',
@@ -159,6 +146,13 @@ const TipTapAIEditor = ({
               },
               '& .ProseMirror-focused': {
                 outline: 0,
+              },
+              '& .ProseMirror .temp-variable': {
+                backgroundColor: 'var(--status-confirmed)',
+                paddingLeft: '3px',
+                paddingRight: '3px',
+                paddingBottom: '3px',
+                color: '#fff',
               },
             }}
           >
@@ -181,76 +175,3 @@ const TipTapAIEditor = ({
 };
 
 export default TipTapAIEditor;
-
-export const EventHandler = Extension.create({
-  name: 'eventHandler',
-
-  addProseMirrorPlugins() {
-    return [
-      new Plugin({
-        key: new PluginKey('tiptapPaste'),
-        props: {
-          handlePaste(view, event) {
-            const pastedHTML = event.clipboardData.getData('text/html');
-
-            if (pastedHTML.includes('•')) {
-              const { state, dispatch } = view;
-              const json = convertTextToProseMirrorJSON(
-                event.clipboardData.getData('text/plain'),
-              );
-              const content = state.schema.nodeFromJSON(json);
-              const newState = state.tr.insert(
-                state.doc.content.size - 2,
-                content,
-              );
-
-              event.preventDefault();
-              dispatch(newState);
-              return true;
-            }
-          },
-        },
-      }),
-    ];
-  },
-});
-
-function convertTextToProseMirrorJSON(text) {
-  const lines = text.split('\n');
-  let isInBulletList = false;
-  let json = { type: 'doc', content: [] };
-  let currentListItem = null;
-
-  lines.forEach((line) => {
-    const trimmedLine = line.trim();
-
-    if (trimmedLine.startsWith('•') || trimmedLine.startsWith('●')) {
-      if (!isInBulletList) {
-        isInBulletList = true;
-        json.content.push({ type: 'bulletList', content: [] });
-      }
-
-      currentListItem = { type: 'listItem', content: [] };
-      json.content[json.content.length - 1].content.push(currentListItem);
-
-      const listItemContent = trimmedLine.slice(1).trim();
-      if (listItemContent.length > 0) {
-        currentListItem.content.push({
-          type: 'paragraph',
-          content: [{ type: 'text', text: listItemContent }],
-        });
-      }
-    } else {
-      isInBulletList = false;
-
-      if (trimmedLine.length > 0) {
-        json.content.push({
-          type: 'paragraph',
-          content: [{ type: 'text', text: trimmedLine }],
-        });
-      }
-    }
-  });
-
-  return json;
-}
