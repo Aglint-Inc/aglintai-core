@@ -50,20 +50,6 @@ export async function dbFetch(
 
   const comp_email_placeholder: EmailTemplateAPi<'interviewStart_email_applicant'>['comp_email_placeholders'] =
     {
-      // '{{ candidateName }}': first_name,
-      // '{{ jobTitle }}': job_title,
-      // '{{ companyName }}': company,
-      // '{{ candidateLink }}': '',
-      // '{{ recruiterFullName }}': getFullName(
-      //   recruiter_user.first_name,
-      //   recruiter_user.last_name,
-      // ),
-      // '{{ date }}': dayjsLocal(meeting.start_time)
-      //   .tz(cand_tz)
-      //   .format(DAYJS_FORMATS.DATE_FORMAT),
-      // '{{ time }}': dayjsLocal(meeting.start_time)
-      //   .tz(cand_tz)
-      //   .format(DAYJS_FORMATS.END_TIME_FORMAT),
       candidateFirstName: first_name,
       candidateLastName: last_name,
       jobRole: job_title,

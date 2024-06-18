@@ -78,19 +78,6 @@ export async function fetchUtil(
   const req_end_date = session_cancel.other_details.dateRange.start;
   const comp_email_placeholder: EmailTemplateAPi<'interReschedReq_email_recruiter'>['comp_email_placeholders'] =
     {
-      // '{{ candidateFirstName }}': candidates.first_name,
-      // '{{ additionalRescheduleNotes }}': session_cancel.other_details.note,
-      // '{{ recruiterName }}': recruiter_user.first_name,
-      // '{{ rescheduleReason }}': session_cancel.reason,
-      // '{{ jobTitle }}': candidateJob.public_jobs.job_title,
-      // '{{ companyName }}': candidateJob.public_jobs.company,
-      // '{{ recruiterFullName }}': getFullName(
-      //   recruiter_user.first_name,
-      //   recruiter_user.last_name,
-      // ),
-      // '{{ dateRange }}': req_start_date
-      //   ? `${dayjsLocal(req_start_date).tz(int_tz).format(DAYJS_FORMATS.DATE_FORMAT)} - ${dayjsLocal(req_end_date).tz(int_tz).format(DAYJS_FORMATS.DATE_FORMATZ)} `
-      //   : '',
       additionalRescheduleNotes: session_cancel.other_details.note,
       candidateFirstName: candidates.first_name,
       recruiterName: getFullName(
