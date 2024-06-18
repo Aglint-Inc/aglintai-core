@@ -148,11 +148,12 @@ const TipTapAIEditor = ({
                 outline: 0,
               },
               '& .ProseMirror .temp-variable': {
-                backgroundColor: 'var(--status-confirmed)',
+                backgroundColor: '#f7ebfc',
                 paddingLeft: '3px',
                 paddingRight: '3px',
                 paddingBottom: '3px',
-                color: '#fff',
+                color: '#B552E2',
+                borderRadius: '2px',
               },
             }}
           >

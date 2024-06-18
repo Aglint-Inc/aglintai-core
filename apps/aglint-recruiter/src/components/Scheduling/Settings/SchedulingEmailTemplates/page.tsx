@@ -119,10 +119,10 @@ function SchedulerEmailTemps() {
                 {isEditorLoad && (
                   <>
                     <Stack
-                      direction="row"
-                      alignItems="center"
-                      justifyContent="center"
-                      bgcolor="var(--neutral-2)"
+                      direction='row'
+                      alignItems='center'
+                      justifyContent='center'
+                      bgcolor='var(--neutral-2)'
                       sx={{ width: '100%', height: 'calc(100vh - 96px)' }}
                     >
                       <LoaderSvg />
@@ -215,7 +215,6 @@ function SchedulerEmailTemps() {
                                   editor_type='email'
                                   template_type={selectedTemplate.type}
                                   handleChange={(html) => {
-                                    // TIPTAPTODO:
                                     const text = html;
                                     setSelectedTemplate((pre) => {
                                       pre.body = text;

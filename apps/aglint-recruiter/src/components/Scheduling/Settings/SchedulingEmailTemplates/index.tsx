@@ -43,10 +43,12 @@ function SchedulingEmailTemplates() {
 
   return (
     <Stack sx={{ padding: '24px' }}>
-      <Box sx={{ 
-        border: '1px solid var(--neutral-6)', 
-        borderRadius: 'var(--radius-4)'
-      }}>
+      <Box
+        sx={{
+          border: '1px solid var(--neutral-6)',
+          borderRadius: 'var(--radius-4)',
+        }}
+      >
         {recruiter?.id && (
           <EmailTemplatesStart
             slotEmailTemplateCards={templateEntries.map((emailPath) => (
@@ -67,10 +69,10 @@ function SchedulingEmailTemplates() {
                 {isEditorLoad && (
                   <>
                     <Stack
-                      direction="row"
-                      alignItems="center"
-                      justifyContent="center"
-                      bgcolor="var(--neutral-2)"
+                      direction='row'
+                      alignItems='center'
+                      justifyContent='center'
+                      bgcolor='var(--neutral-2)'
                       sx={{ width: '100%', height: 'calc(100vh - 96px)' }}
                     >
                       <LoaderSvg />
@@ -80,7 +82,9 @@ function SchedulingEmailTemplates() {
                 {!isEditorLoad && (
                   <YTransform uniqueKey={selectedTemplate}>
                     <EditEmail
-                      textTipsMessage={tempObj[selectedTemplate]?.dynamicContent}
+                      textTipsMessage={
+                        tempObj[selectedTemplate]?.dynamicContent
+                      }
                       editEmailDescription={
                         tempObj[selectedTemplate]?.description
                       }
@@ -94,7 +98,8 @@ function SchedulingEmailTemplates() {
                             label='Sender Name'
                             secondaryText={`This name appears as the "From" name in emails to candidates. Choose a representative name for your company or recruiter.`}
                             value={
-                              recruiter.email_template[selectedTemplate]?.fromName
+                              recruiter.email_template[selectedTemplate]
+                                ?.fromName
                             }
                             onChange={(e) => {
                               recruiter.email_template[selectedTemplate] = {
@@ -119,7 +124,8 @@ function SchedulingEmailTemplates() {
                             }
                             label='Email Subject'
                             value={
-                              recruiter.email_template[selectedTemplate]?.subject
+                              recruiter.email_template[selectedTemplate]
+                                ?.subject
                             }
                             onChange={(e) => {
                               recruiter.email_template[selectedTemplate] = {
@@ -154,7 +160,6 @@ function SchedulingEmailTemplates() {
                                   tempObj[selectedTemplate]?.bodyPlaceHolder
                                 }
                                 handleChange={(html) => {
-                                  // TIPTAPTODO:
                                   recruiter.email_template[selectedTemplate] = {
                                     body: html,
                                     default:
@@ -170,7 +175,8 @@ function SchedulingEmailTemplates() {
                                   handlerSave({ ...recruiter });
                                 }}
                                 initialValue={
-                                  recruiter.email_template[selectedTemplate]?.body
+                                  recruiter.email_template[selectedTemplate]
+                                    ?.body
                                 }
                               />
                             </Stack>
