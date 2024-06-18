@@ -353,6 +353,7 @@ function ATSTools() {
             type={hideApiKey ? 'password' : 'text'}
             fullWidth
             inputRef={inputRef}
+            placeholder='Enter API Key'
             InputProps={{
               endAdornment: (
                 <IconButton

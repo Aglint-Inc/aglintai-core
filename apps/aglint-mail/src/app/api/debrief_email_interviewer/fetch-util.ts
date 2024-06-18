@@ -43,7 +43,7 @@ export async function fetchUtil(
   const debrief_email_interviewers = supabaseWrap(
     await supabaseAdmin
       .from('debreif_meeting_interviewers')
-      .select('email,first_name')
+      .select('email,first_name,last_name')
       .eq('session_id', req_body.session_id),
   );
 
@@ -83,14 +83,14 @@ export async function fetchUtil(
   const interviewers_mail_data = debrief_email_interviewers.map((inter) => {
     const comp_email_placeholder: EmailTemplateAPi<'debrief_email_interviewer'>['comp_email_placeholders'] =
       {
-        '{{ candidateName }}': getFullName(
-          candidates.first_name,
-          candidates.last_name,
-        ),
-        '{{ jobTitle }}': public_jobs.job_title,
-        '{{ companyName }}': public_jobs.company,
-        '{{ interviewerFirstName }}': inter.first_name,
-        '{{ recruiterFirstName }}': getFullName(
+        candidateName: getFullName(candidates.first_name, candidates.last_name),
+        candidateLastName: candidates.last_name,
+        candidateFirstName: candidates.first_name,
+        jobRole: public_jobs.job_title,
+        companyName: public_jobs.company,
+        interviewerFirstName: inter.first_name,
+        interviewerLastName: inter.last_name,
+        interviewerName: getFullName(
           recruiter_user.first_name,
           recruiter_user.last_name,
         ),

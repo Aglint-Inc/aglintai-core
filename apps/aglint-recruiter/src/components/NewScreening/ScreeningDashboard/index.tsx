@@ -145,6 +145,8 @@ const Screening = () => {
                 <UITextField
                   placeholder='Enter Screening Name'
                   value={input}
+                  label='Screening Name'
+                  required
                   onChange={(e) => setInput(e.target.value)}
                 />
               }

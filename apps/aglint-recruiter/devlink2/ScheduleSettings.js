@@ -32,7 +32,7 @@ export function ScheduleSettings({
         >
           {isCompanyLevelVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1115", "keyword-head")}
+              className={_utils.cx(_styles, "wh-top-wrapper", "keyword-head")}
               tag="div"
             >
               <_Builtin.Block
@@ -60,12 +60,9 @@ export function ScheduleSettings({
         </_Builtin.Block>
       ) : null}
       {isCompanyLevelVisible ? (
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1117")}
-          tag="div"
-        >
+        <_Builtin.Block className={_utils.cx(_styles, "wh-top-wrap")} tag="div">
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1115")}
+            className={_utils.cx(_styles, "wh-top-wrapper")}
             tag="div"
           >
             <Text

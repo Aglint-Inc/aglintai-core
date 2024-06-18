@@ -13,19 +13,13 @@ export function ConfirmScheduleList({
   slotConfirmScheduleList,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1760")} tag="div">
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1761")}
-        tag="div"
-      >
+    <_Component className={_utils.cx(_styles, "csl-wrap")} tag="div">
+      <_Builtin.Block className={_utils.cx(_styles, "csl-top-wrap")} tag="div">
         <Text content={textDate} weight="" color="neutral-11" />
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1762")}
-        tag="div"
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "csl-body-wrap")} tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1763")}
+          className={_utils.cx(_styles, "csl-slot-confirm")}
           tag="div"
         >
           {slotConfirmScheduleList ?? (

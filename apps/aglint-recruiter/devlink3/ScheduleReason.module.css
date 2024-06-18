@@ -30,14 +30,13 @@
 .scheduling_reason_header {
   display: flex;
   max-width: 800px;
-  padding: 0px;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
-.div-block-1726 {
+.rr-wrapper {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;

@@ -5,12 +5,12 @@ import { CSVLink } from 'react-csv';
 import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ImportCandidatesCsv } from '@/devlink/ImportCandidatesCsv';
 import { ImportCsv as ImportCsvDev } from '@/devlink/ImportCsv';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { CsvUploadApi } from '@/src/apiUtils/job/jobApplications/candidateUpload/types';
 import AUIButton from '@/src/components/Common/AUIButton';
-import Icon from '@/src/components/Common/Icons/Icon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
@@ -208,7 +208,7 @@ function CandidatesListTable({ importedCandidate }) {
       border={'1px solid '}
       borderColor={'grey.200'}
       height={'100%'}
-      overflow={'scroll'}
+      overflow={'auto'}
     >
       <TableHeader />
       {importedCandidate.map((ele, i) => {
@@ -264,10 +264,10 @@ function TableHeader() {
 const headerObject = [
   {
     heading: 'Candidate',
-    icon: <Icon variant='Person' width='14' height='14' />,
+    icon: <GlobalIcon iconName='person' size='4' color='neutral'/>,
   },
-  { heading: 'Email', icon: <Icon variant='Mail' width='14' height='14' /> },
-  { heading: 'Phone', icon: <Icon variant='phone' width='14' height='14' /> },
+  { heading: 'Email', icon: <GlobalIcon iconName='mail'  size='4' color='neutral-8'/> },
+  { heading: 'Phone', icon: <GlobalIcon iconName='phone'  size='4' color='neutral-8'/>},
 ];
 
 function TableRow({ name, email, phone, profile_image, index }) {

@@ -11,7 +11,10 @@ export function IntegrationUpload({
   onClickGetJson = {},
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1263")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "integration-upload-wrap")}
+      tag="div"
+    >
       <Text weight="" content="" />
       <_Builtin.Block
         className={_utils.cx(_styles, "upload-area")}

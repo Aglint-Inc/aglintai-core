@@ -17,12 +17,12 @@ export function EmptyInterviewProgress({
         className={_utils.cx(_styles, "no-interview-plan-wrapper")}
         tag="div"
       >
-        <GlobalIcon iconName="" size="4" color="warning-11" />
-        <Text color="neutral" weight="" content="" />
+        <GlobalIcon iconName="warning" size="4" color="warning-11" />
+        <Text color="neutral" weight="" content="No Interview plan set." />
         <ButtonGhost
           onClickButton={onClickCreateInterviewPlan}
           size="1"
-          textButton=""
+          textButton="Create"
           isLeftIcon={true}
           iconName="add"
         />

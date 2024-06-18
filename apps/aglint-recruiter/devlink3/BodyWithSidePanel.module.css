@@ -2,8 +2,6 @@
   display: grid;
   width: 100%;
   grid-auto-columns: 1fr;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
   grid-template-columns: 1fr 400px;
   grid-template-rows: auto;
 
@@ -13,15 +11,11 @@
 .content_block {
   overflow: auto;
   width: 100%;
-  padding-top: 0px;
-  padding-right: 0px;
-  padding-bottom: 0px;
-  padding-left: 0px;
   height: calc(100vh - 60px);
 }
 
 .content_block.right {
-  border-left: 1px solid #e5e7eb;
+  border-left: 1px solid var(--neutral-6);
 }
 
 #w-node-eee9392c-208c-1edd-e093-14ad72e2dfc3-72e2dfc1 {

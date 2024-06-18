@@ -45,7 +45,7 @@ export function ReqAvailability({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1740")}
+              className={_utils.cx(_styles, "flex-horizontal", "gap-2")}
               tag="div"
             >
               <_Builtin.HtmlEmbed
@@ -55,7 +55,7 @@ export function ReqAvailability({
               <Text content={textScheduleSelected} weight="medium" />
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1740")}
+              className={_utils.cx(_styles, "flex-horizontal", "gap-2")}
               tag="div"
             >
               <_Builtin.HtmlEmbed
@@ -85,7 +85,7 @@ export function ReqAvailability({
           </_Builtin.Block>
           {isCheckingSlotsVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1749")}
+              className={_utils.cx(_styles, "ra-slot-prefernce")}
               tag="div"
             >
               <_Builtin.Block
@@ -122,7 +122,7 @@ export function ReqAvailability({
         >
           <Text content="" weight="medium" />
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1750")}
+            className={_utils.cx(_styles, "ra-slot-availability")}
             tag="div"
           >
             {slotAvailabilityCriteria ?? <SlotComp componentNeme="Prefernce" />}

@@ -1,6 +1,6 @@
 import { DB } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
-import { Collapse, Drawer, Stack, TextField, Typography } from '@mui/material';
+import { Box, Collapse, Drawer, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
@@ -470,126 +470,128 @@ function AddNewTask() {
                 </Stack>
               </ShowCode.When>
             </ShowCode> */}
-            <ViewTaskCard
-              isPriorityVisible={true}
-              slotPriorityPill={
-                <PriorityList
-                  selectedPriority={selectedPriority}
-                  setSelectedPriority={setSelectedPriority}
-                />
-              }
-              slotType={
-                <TypeList
-                  selectedType={selectedType}
-                  setSelectedType={setSelectedType}
-                />
-              }
-              slotJob={
-                <JobList
-                  selectedJob={selectedJob}
-                  setSelectedJob={setSelectedJob}
-                  isOptionList={
-                    selectedGroupBy.label !== 'candidate' &&
-                    selectedGroupBy.label !== 'job'
-                  }
-                />
-              }
-              isCandidateVisible={!!selectedJob?.id}
-              isInterviewVisible={!!selectedJob?.id}
-              slotCandidate={
-                <CandidateList
-                  selectedCandidate={selectedCandidate}
-                  setSelectedCandidate={setSelectedCandidate}
-                  candidates={candidates}
-                  isOptionList={selectedGroupBy.label !== 'candidate'}
-                />
-              }
-              slotInterviewTaskPill={
-                <SessionList
-                  selectedSession={selectedSession}
-                  setSelectedSession={setSelectedSession}
-                  application_id={selectedCandidate?.id}
-                  job_id={selectedJob?.id}
-                />
-              }
-              slotInterviewDate={
-                <SelectScheduleDate
-                  scheduleDate={scheduleDate}
-                  onChange={(e: any) => {
-                    if (e[1]) {
-                      setScheduleDate({ start_date: e[0], end_date: e[1] });
-                      setSelectedDueDate(e[0]);
-                    } else {
-                      setScheduleDate({ start_date: e[0], end_date: null });
-                      setSelectedDueDate(e[0]);
+            <Box sx={{ padding: '0 16px' }}>
+              <ViewTaskCard
+                isPriorityVisible={true}
+                slotPriorityPill={
+                  <PriorityList
+                    selectedPriority={selectedPriority}
+                    setSelectedPriority={setSelectedPriority}
+                  />
+                }
+                slotType={
+                  <TypeList
+                    selectedType={selectedType}
+                    setSelectedType={setSelectedType}
+                  />
+                }
+                slotJob={
+                  <JobList
+                    selectedJob={selectedJob}
+                    setSelectedJob={setSelectedJob}
+                    isOptionList={
+                      selectedGroupBy.label !== 'candidate' &&
+                      selectedGroupBy.label !== 'job'
                     }
-                  }}
-                />
-              }
-              slotCreatedBy={
-                <AssigneeChip
-                  disableHoverListener={false}
-                  assigneeId={recruiterUser.user_id}
-                />
-              }
-              slotDueDate={
-                <SelectDueDate
-                  selectedDueDate={selectedDueDate}
-                  setSelectedDueDate={setSelectedDueDate}
-                />
-              }
-              slotAssignedTo={
-                <Stack width={'100%'} direction={'column'}>
-                  <AssigneeList
-                    selectedAssignee={selectedAssignee}
-                    setSelectedAssignee={setSelectedAssignee}
-                    onChange={(assigner: any) => {
-                      if (
-                        assigner.user_id === EmailAgentId ||
-                        assigner.user_id === PhoneAgentId
-                      ) {
-                        setOpenTriggerTime(spanRef.current);
-                        setSelectedStatus('scheduled');
+                  />
+                }
+                isCandidateVisible={!!selectedJob?.id}
+                isInterviewVisible={!!selectedJob?.id}
+                slotCandidate={
+                  <CandidateList
+                    selectedCandidate={selectedCandidate}
+                    setSelectedCandidate={setSelectedCandidate}
+                    candidates={candidates}
+                    isOptionList={selectedGroupBy.label !== 'candidate'}
+                  />
+                }
+                slotInterviewTaskPill={
+                  <SessionList
+                    selectedSession={selectedSession}
+                    setSelectedSession={setSelectedSession}
+                    application_id={selectedCandidate?.id}
+                    job_id={selectedJob?.id}
+                  />
+                }
+                slotInterviewDate={
+                  <SelectScheduleDate
+                    scheduleDate={scheduleDate}
+                    onChange={(e: any) => {
+                      if (e[1]) {
+                        setScheduleDate({ start_date: e[0], end_date: e[1] });
+                        setSelectedDueDate(e[0]);
                       } else {
-                        setSelectedStatus('not_started');
+                        setScheduleDate({ start_date: e[0], end_date: null });
+                        setSelectedDueDate(e[0]);
                       }
                     }}
                   />
-                  <span ref={spanRef}></span>
-                </Stack>
-              }
-              slotWhenToCall={
-                <TriggerTime
-                  selectTriggerTime={selectTriggerTime}
-                  setSelectTriggerTime={setSelectTriggerTime}
-                  openTriggerTime={openTriggerTime}
-                  setOpenTriggerTime={setOpenTriggerTime}
-                />
-              }
-              slotStatus={
-                <SelectStatus
-                  setSelectedStatus={setSelectedStatus}
-                  status={selectedStatus}
-                  isOptionList={false}
-                />
-              }
-              isWhenToCallVisible={
-                selectedAssignee?.user_id === EmailAgentId ||
-                selectedAssignee?.user_id === PhoneAgentId
-              }
-              textWhenToCall={
-                selectedAssignee?.user_id === EmailAgentId
-                  ? 'When to mail'
-                  : 'When to call'
-              }
-              slotWhentoCallIcon={
-                selectedAssignee?.user_id === EmailAgentId ? (
-                  <GlobalIcon iconName='mail' color={'var(--neutral-11)'}/>
-                ) : (
-                  <GlobalIcon iconName='phone_in_talk' color={'var(--neutral-11)'}/>
-                )
-              }
-            />
+                }
+                slotCreatedBy={
+                  <AssigneeChip
+                    disableHoverListener={false}
+                    assigneeId={recruiterUser.user_id}
+                  />
+                }
+                slotDueDate={
+                  <SelectDueDate
+                    selectedDueDate={selectedDueDate}
+                    setSelectedDueDate={setSelectedDueDate}
+                  />
+                }
+                slotAssignedTo={
+                  <Stack width={'100%'} direction={'column'}>
+                    <AssigneeList
+                      selectedAssignee={selectedAssignee}
+                      setSelectedAssignee={setSelectedAssignee}
+                      onChange={(assigner: any) => {
+                        if (
+                          assigner.user_id === EmailAgentId ||
+                          assigner.user_id === PhoneAgentId
+                        ) {
+                          setOpenTriggerTime(spanRef.current);
+                          setSelectedStatus('scheduled');
+                        } else {
+                          setSelectedStatus('not_started');
+                        }
+                      }}
+                    />
+                    <span ref={spanRef}></span>
+                  </Stack>
+                }
+                slotWhenToCall={
+                  <TriggerTime
+                    selectTriggerTime={selectTriggerTime}
+                    setSelectTriggerTime={setSelectTriggerTime}
+                    openTriggerTime={openTriggerTime}
+                    setOpenTriggerTime={setOpenTriggerTime}
+                  />
+                }
+                slotStatus={
+                  <SelectStatus
+                    setSelectedStatus={setSelectedStatus}
+                    status={selectedStatus}
+                    isOptionList={false}
+                  />
+                }
+                isWhenToCallVisible={
+                  selectedAssignee?.user_id === EmailAgentId ||
+                  selectedAssignee?.user_id === PhoneAgentId
+                }
+                textWhenToCall={
+                  selectedAssignee?.user_id === EmailAgentId
+                    ? 'When to mail'
+                    : 'When to call'
+                }
+                slotWhentoCallIcon={
+                  selectedAssignee?.user_id === EmailAgentId ? (
+                    <GlobalIcon iconName='mail' color={'neutral-8'}/>
+                  ) : (
+                    <GlobalIcon iconName='phone_in_talk' color={'neutral-8'}/>
+                  )
+                }
+              />
+            </Box>
           </>
         }
       />
@@ -602,7 +604,7 @@ export default AddNewTask;
 export const CallIcon = () => {
   
   return (
-    <GlobalIcon iconName='phone_in_talk' color={'var(--neutral-11)'}/>
+    <GlobalIcon iconName='phone_in_talk' color={'neutral-8'}/>
     // <svg
     //   width='15'
     //   height='16'
@@ -621,7 +623,7 @@ export const CallIcon = () => {
 
 export const EmailIcon = () => {
   return (
-    <GlobalIcon iconName='mail'  color={'var(--neutral-11)'}/>
+    <GlobalIcon iconName='mail'  color={'neutral-8'}/>
     // <svg
     //   width='15'
     //   height='16'

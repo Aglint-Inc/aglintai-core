@@ -2,8 +2,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  grid-column-gap: 12px;
-  grid-row-gap: 12px;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
 }
 
 .text-gray-600 {

@@ -8,7 +8,6 @@ module.exports = {
     "@vercel/style-guide/eslint/typescript",
     "@vercel/style-guide/eslint/react",
     "@vercel/style-guide/eslint/next",
-    "eslint-config-turbo",
   ]
     .map(require.resolve)
     .concat(["eslint-config-prettier"]),
@@ -24,6 +23,9 @@ module.exports = {
       typescript: {
         project: true,
       },
+      node: {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
     },
   },
   ignorePatterns: ['cli/', 'cli/index.mjs', "node_modules/", "dist/"],

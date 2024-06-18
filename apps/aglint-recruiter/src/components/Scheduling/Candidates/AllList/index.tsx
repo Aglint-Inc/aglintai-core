@@ -40,6 +40,8 @@ function AllList({
       style={{
         opacity: isLoading ? 0.5 : 1,
         pointerEvents: isLoading ? 'none' : 'auto',
+        height: 'calc(100vh - 182px)',
+        overflowY: 'auto',
       }}
     >
       {isLoading || isPending ? (
@@ -65,7 +67,7 @@ function AllList({
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                minHeight: 'calc(100vh - 180px)',
+                minHeight: 'calc(100vh - 166px)',
                 backgroundColor: 'var(--neutral-2)', // replace with your desired background color
               }}
             >

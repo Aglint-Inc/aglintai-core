@@ -51,6 +51,8 @@
 
 .embed_flex {
   display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .embed_flex.relative_3 {

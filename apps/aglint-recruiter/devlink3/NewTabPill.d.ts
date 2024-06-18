@@ -10,4 +10,6 @@ declare function NewTabPill(props: {
   slotEndIcon?: Types.Devlink.Slot;
   isEndIconVisible?: Types.Visibility.VisibilityConditions;
   isStartIconVisible?: Types.Visibility.VisibilityConditions;
+  tabCount?: React.ReactNode;
+  isTabCountVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

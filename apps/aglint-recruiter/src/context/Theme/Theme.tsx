@@ -414,11 +414,14 @@ function Theme({ children }) {
         },
         styleOverrides: {
           root: {
+            '& fieldset legend': {
+              display: 'none',
+            },
             '& .MuiInputLabel-root': {
               display: 'none',
             },
-            '& fieldset legend': {
-              display: 'none',
+            '& .MuiInputBase-root .MuiButtonBase-root': {
+              paddingRight: 0, // Remove the right padding for ButtonBase in Autocomplete TextField
             },
           },
         },
@@ -477,6 +480,9 @@ function Theme({ children }) {
         defaultProps: {
           disableRipple: true,
           icon: <CheckboxIcon variant='unchecked' size={'16px'} />,
+          indeterminateIcon: (
+            <CheckboxIcon variant='indeterminate' size={'16px'} />
+          ),
           checkedIcon: <CheckboxIcon variant='checked' size={'16px'} />,
         },
         styleOverrides: {

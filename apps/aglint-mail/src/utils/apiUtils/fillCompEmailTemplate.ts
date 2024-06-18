@@ -17,15 +17,15 @@ export const fillCompEmailTemplate = <
   }
   for (const key of Object.keys(dynamic_fields)) {
     updated_template.subject = updated_template.subject.replaceAll(
-      key,
+      `{{${key}}}`,
       dynamic_fields[String(key)],
     );
     updated_template.body = updated_template.body.replaceAll(
-      key,
+      `{{${key}}}`,
       dynamic_fields[String(key)],
     );
     updated_template.from_name = updated_template.from_name.replaceAll(
-      key,
+      `{{${key}}}`,
       dynamic_fields[String(key)],
     );
   }

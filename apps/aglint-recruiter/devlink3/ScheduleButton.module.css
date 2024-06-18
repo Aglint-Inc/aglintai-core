@@ -1,21 +1,23 @@
-.div-block-1667 {
+.schedule-btn-wrap {
   display: flex;
-  padding: 4px 10px;
+  padding: var(--space-1) var(--space-2);
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 
-  border-radius: 6px;
+  border-radius: var(--radius-3);
 
-  background-color: #edf7ff;
+  background-color: var(--sky-a3);
 
   transition: opacity 200ms ease;
+
+  color: var(--sky-a11);
 
   cursor: pointer;
 }
 
-.div-block-1667:hover {
+.schedule-btn-wrap:hover {
   opacity: 0.8;
 }
 
@@ -49,8 +51,4 @@
 
 .icons.pointer {
   cursor: pointer;
-}
-
-.text-block-32 {
-  color: #337fbd;
 }

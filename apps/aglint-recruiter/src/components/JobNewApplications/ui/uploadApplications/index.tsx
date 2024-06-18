@@ -1,12 +1,12 @@
 import { Dialog } from '@mui/material';
 
 import { ImportCandidates } from '@/devlink/ImportCandidates';
-import { ImportResume } from '@/devlink/ImportResume';
 import { ApplicationsProvider } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 
 import { ImportCsv } from './importCsv';
 import { ImportManual } from './importManual';
+import { ImportResume } from './importResume';
 
 const UploadApplications = () => {
   const { importPopup, setImportPopup } = useApplicationsStore(

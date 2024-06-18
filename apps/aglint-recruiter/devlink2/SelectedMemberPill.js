@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { SlotComp } from "./SlotComp";
+import { Text } from "./Text";
 import { GlobalIcon } from "./GlobalIcon";
 import * as _utils from "./utils";
 import _styles from "./SelectedMemberPill.module.css";
@@ -37,7 +38,7 @@ export function SelectedMemberPill({
           />
         ) : null}
       </_Builtin.Block>
-      <_Builtin.Block tag="div">{textMemberName}</_Builtin.Block>
+      <Text content={textMemberName} weight="" />
       {isCloseButton ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "close_btn")}

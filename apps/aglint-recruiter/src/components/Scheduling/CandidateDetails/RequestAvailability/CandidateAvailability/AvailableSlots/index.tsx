@@ -247,7 +247,7 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
       {
         data: {
           title: `Candidate submitted availability`,
-          description: `Candidate submitted availability on ${dates} for Coding Interview (Round 2) Interviews.`,
+          description: `Candidate submitted availability on ${dates} for ${candidateRequestAvailability.session_ids.map((ele) => ele.name).join(',')} Interviews.`,
           module: 'scheduler',
           task_id: task.id,
           logged_by: 'candidate',

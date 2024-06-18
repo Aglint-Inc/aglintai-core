@@ -582,13 +582,13 @@ const AddMember = ({
                         : true
                     }
                     onClickButton={{
-                      onClick:()=>{
-                          setIsDisable(true);
-                          if (checkValidation()) {
-                            inviteUser();
-                          }
-                      }
-                    }} 
+                      onClick: () => {
+                        setIsDisable(true);
+                        if (checkValidation()) {
+                          inviteUser();
+                        }
+                      },
+                    }}
                     textButton={'Invite'}
                   />
                   {/* <AUIButton
@@ -643,10 +643,11 @@ const AddMember = ({
                   />
                 }
                 slotButton={
-                  <ButtonSoft textButton={"Resend"} 
+                  <ButtonSoft
+                    textButton={'Resend'}
                     isLeftIcon={false}
                     isRightIcon={false}
-                    size='2' 
+                    size='2'
                     onClickButton={{
                       onClick: () => {
                         setResendDisable(member.user_id);
@@ -659,8 +660,10 @@ const AddMember = ({
                             return toast.error(error);
                           },
                         );
-                      }}} isDisabled={isResendDisable === member.user_id}></ButtonSoft>
-                  
+                      },
+                    }}
+                    isDisabled={isResendDisable === member.user_id}
+                  ></ButtonSoft>
                 }
               />
             ))}

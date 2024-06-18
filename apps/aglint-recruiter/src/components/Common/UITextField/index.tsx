@@ -15,7 +15,6 @@ type Props = {
   value?: string | number;
   type?: React.HTMLInputTypeAttribute;
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-
   error?: boolean;
   label?: string;
   labelSize?: 'small' | 'medium' | 'large' | 'xLarge' | 'xxLarge' | 'xxxLarge';
@@ -32,7 +31,8 @@ type Props = {
   onSelect?: () => void;
   // eslint-disable-next-line no-unused-vars
   onFocus?: (e: any) => void;
-  onBlur?: () => void;
+  // eslint-disable-next-line no-unused-vars
+  onBlur?: (e: any) => void;
   // eslint-disable-next-line no-unused-vars
   onKeyDown?: (e: any) => void;
   InputProps?:
@@ -48,6 +48,7 @@ type Props = {
   secondaryText?: string;
   labelBold?: 'default' | 'normal';
   defaultLabelColor?: string;
+  id?: string;
 };
 
 // eslint-disable-next-line react/display-name
@@ -82,6 +83,7 @@ const UITextField = React.forwardRef(
       height,
       secondaryText,
       labelBold = 'default',
+      id,
       defaultLabelColor = null,
       ...props
     }: Props,
@@ -112,9 +114,7 @@ const UITextField = React.forwardRef(
               {label}
             </UITypography>
             {required && (
-              <Typography sx={{ color: 'var(--error-9)'}}>
-                *
-              </Typography>
+              <Typography sx={{ color: 'var(--error-9)' }}>&nbsp;*</Typography>
             )}
           </Stack>
         )}
@@ -133,6 +133,7 @@ const UITextField = React.forwardRef(
           onChange={onChange}
           onKeyDown={onKeyDown}
           onSelect={onSelect}
+          id={id}
           error={error || contentExceeded}
           disabled={disabled}
           required={required}
@@ -145,8 +146,8 @@ const UITextField = React.forwardRef(
           InputProps={{
             ...InputProps,
           }}
-          onBlur={() => {
-            onBlur();
+          onBlur={(e) => {
+            onBlur(e);
             setContentExceeded(false);
           }}
           type={type}
@@ -155,6 +156,14 @@ const UITextField = React.forwardRef(
               height: height ? `${height}px !important` : '100%',
             },
             width: width,
+            '& input:-webkit-autofill': {
+              WebkitBoxShadow: '0 0 0 30px white inset !important',
+              WebkitTextFillColor: 'black !important',
+            },
+            '& input:-moz-autofill': {
+              boxShadow: '0 0 0 30px white inset !important',
+              textFillColor: 'black !important',
+            },
           }}
           {...rest}
         >

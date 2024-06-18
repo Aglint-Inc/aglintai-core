@@ -1,4 +1,6 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   platformRemoveUnderscore,
@@ -8,8 +10,6 @@ import {
 } from '../../../utils/email/common/functions';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
-import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'interviewStart_email_interviewers'>['api_payload'],
@@ -23,9 +23,6 @@ export async function fetchUtil(
       .eq('meeting_id', req_body.meeting_id),
   );
 
-  if (!sessions) {
-    throw new Error('sessions are not available');
-  }
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin
       .from('applications')
@@ -35,9 +32,6 @@ export async function fetchUtil(
       .eq('id', req_body.application_id),
   );
 
-  if (!candidateJob) {
-    throw new Error('candidate and job details are not available');
-  }
   const [recruiter_user] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
@@ -76,23 +70,30 @@ export async function fetchUtil(
 
   const comp_email_placeholder: EmailTemplateAPi<'interviewStart_email_interviewers'>['comp_email_placeholders'] =
     {
-      '{{ recruiterName }}': recruiter_user.first_name,
-      '{{ candidateName }}': getFullName(
+      recruiterFirstName: recruiter_user.first_name,
+      candidateName: getFullName(
         candidateJob.candidates.first_name,
         candidateJob.candidates.last_name,
       ),
-      '{{ jobTitle }}': candidateJob.public_jobs.job_title,
-      '{{ companyName }}': candidateJob.public_jobs.company,
-      '{{ time }}': dayjsLocal(sessions[0].interview_meeting.start_time)
+      jobRole: candidateJob.public_jobs.job_title,
+      companyName: candidateJob.public_jobs.company,
+      time: dayjsLocal(sessions[0].interview_meeting.start_time)
         .tz(int_tz)
         .format(DAYJS_FORMATS.END_TIME_FORMAT),
-      '{{ date }}': dayjsLocal(sessions[0].interview_meeting.start_time)
+      startDate: dayjsLocal(sessions[0].interview_meeting.start_time)
         .tz(int_tz)
         .format(DAYJS_FORMATS.DATE_FORMAT),
-      '{{ recruiterFullName }}': getFullName(
+      endDate: dayjsLocal(sessions[0].interview_meeting.end_time)
+        .tz(int_tz)
+        .format(DAYJS_FORMATS.DATE_FORMAT),
+      recruiterName: getFullName(
         recruiter_user.first_name,
         recruiter_user.last_name,
       ),
+      candidateFirstName: candidateJob.candidates.first_name,
+      candidateLastName: candidateJob.candidates.last_name,
+      recruiterLastName: recruiter_user.last_name,
+      recruiterTimeZone: int_tz,
     };
 
   const filled_comp_template = fillCompEmailTemplate(

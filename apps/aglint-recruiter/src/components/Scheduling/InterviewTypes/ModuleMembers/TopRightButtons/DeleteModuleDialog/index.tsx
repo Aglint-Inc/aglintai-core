@@ -69,7 +69,7 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
   return (
     <Dialog open={isDeleteModuleDialogOpen} onClose={onClose}>
       <CloseJobModal
-        textPopupTitle={`Delete`}
+        textPopupTitle={`Delete Interview Type`}
         textWarning={`By clicking delete the module will be permanently deleted`}
         textButton={'Delete'}
         textJobTitle={moduleName}

@@ -157,7 +157,7 @@ const CandidateInvitePlanPage = () => {
               setSelectedSlots([]);
             }}
           />
-          <Container maxWidth='sm'>
+          <Container maxWidth='md'>
             <Stack spacing={'var(--space-4)'}>
               <Invite rounds={rounds} />
             </Stack>
@@ -340,7 +340,8 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
                       justifyContent={'center'}
                       alignItems={'center'}
                     >
-                      <GlobalIcon iconName='event_busy' />
+                      <GlobalIcon iconName='event_busy' 
+                      color={'inherit'}/>
                       {/* <svg
                         xmlns='http://www.w3.org/2000/svg'
                         width='13'

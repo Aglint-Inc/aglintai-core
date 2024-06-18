@@ -1,6 +1,6 @@
 import { create, StateCreator } from 'zustand';
 
-import { createDrawerSlice, DrawerSlice } from './currentApplication';
+import { createDrawerSlice, DrawerSlice } from './drawer';
 import { createResumePreviewSlice, ResumePreviewSlice } from './resumePreview';
 import { createTabSlice, TabSlice } from './tabs';
 

@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { RecruiterType } from '@aglint/shared-types';
 import PublicIcon from '@mui/icons-material/Public';
-import { Box, Dialog, Stack, TextField, Typography } from '@mui/material';
+import { Box, Dialog, Stack, Typography } from '@mui/material';
 import { Avatar } from '@mui/material';
 import Image from 'next/image';
 import React, { Dispatch, SetStateAction, useState } from 'react';
@@ -255,9 +255,7 @@ const SocialComp = ({ setIsSaving }) => {
 
   return (
     <Stack gap={'var(--space-2)'}>
-      <Typography color={'var(--neutral-12)'}>
-        Social
-      </Typography>
+      <Typography color={'var(--neutral-12)'}>Social</Typography>
       <Stack gap={'var(--space-4)'}>
         {socials?.map((socialName) => {
           return (
@@ -265,7 +263,7 @@ const SocialComp = ({ setIsSaving }) => {
               key={socialName}
               direction={'row'}
               alignItems={'start'}
-              justifyContent= {'left'}
+              justifyContent={'left'}
               gap={1}
             >
               <Box
@@ -420,6 +418,7 @@ const AddSocialLinkButton = ({
   };
   const [social, setSocial] = useState(initialSocial);
   const [loading, setLoading] = useState(false);
+
   const handleValidate = () => {
     return Object.entries(social).reduce(
       (acc, [key, curr]) => {
@@ -495,7 +494,8 @@ const AddSocialLinkButton = ({
   };
   const forms = (
     <Stack pt={2} spacing={2}>
-      <TextField
+      <UITextField
+        label='Platform Name'
         placeholder='Platform name'
         value={social.name.value}
         required
@@ -503,15 +503,37 @@ const AddSocialLinkButton = ({
         helperText={
           social.name.error && 'Please enter valid a social media name'
         }
+        onFocus={() =>
+          setSocial({
+            ...social,
+            name: {
+              error: false,
+              type: social.name.type,
+              value: social.name.value,
+            },
+          })
+        }
         onChange={(e) => handleChange(e, 'name')}
       />
-      <TextField
+      <UITextField
+        label='Platform URL'
         placeholder='Platform URL'
         value={social.url.value}
         required
         error={social.url.error}
         helperText={social.url.error && 'Please enter valid a social media url'}
         onChange={(e) => handleChange(e, 'url')}
+        onKeyDown={handleSubmit}
+        onFocus={() =>
+          setSocial({
+            ...social,
+            url: {
+              error: false,
+              type: social.url.type,
+              value: social.url.value,
+            },
+          })
+        }
       />
     </Stack>
   );

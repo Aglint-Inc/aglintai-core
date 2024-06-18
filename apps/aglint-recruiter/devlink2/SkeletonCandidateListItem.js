@@ -113,7 +113,10 @@ export function SkeletonCandidateListItem({
           )}
           tag="div"
         >
-          <_Builtin.Block className={_utils.cx(_styles, "ske_badge")} tag="div">
+          <_Builtin.Block
+            className={_utils.cx(_styles, "ske_badge-copy")}
+            tag="div"
+          >
             <Skeleton />
           </_Builtin.Block>
         </_Builtin.Block>

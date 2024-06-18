@@ -64,15 +64,15 @@ export function InterviewerDetail({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1696")}
+                className={_utils.cx(_styles, "id-details-wrap")}
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-1695")}
+                  className={_utils.cx(_styles, "id-details-left")}
                   tag="div"
                 >
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "div-block-1694")}
+                    className={_utils.cx(_styles, "id-detail--item")}
                     tag="div"
                   >
                     <_Builtin.HtmlEmbed
@@ -82,7 +82,7 @@ export function InterviewerDetail({
                     <Text content={textRole} weight="" />
                   </_Builtin.Block>
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "div-block-1694")}
+                    className={_utils.cx(_styles, "id-detail--item")}
                     tag="div"
                   >
                     <_Builtin.HtmlEmbed
@@ -93,11 +93,11 @@ export function InterviewerDetail({
                   </_Builtin.Block>
                 </_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-1695")}
+                  className={_utils.cx(_styles, "id-details-left")}
                   tag="div"
                 >
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "div-block-1694")}
+                    className={_utils.cx(_styles, "id-detail--item")}
                     tag="div"
                   >
                     <_Builtin.HtmlEmbed
@@ -107,7 +107,7 @@ export function InterviewerDetail({
                     <Text content={textLocation} weight="" />
                   </_Builtin.Block>
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "div-block-1694")}
+                    className={_utils.cx(_styles, "id-detail--item")}
                     tag="div"
                   >
                     <_Builtin.HtmlEmbed
@@ -120,17 +120,14 @@ export function InterviewerDetail({
               </_Builtin.Block>
               <_Builtin.Block tag="div">
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-1705")}
+                  className={_utils.cx(_styles, "id-details-right")}
                   tag="div"
                 >
                   <_Builtin.Block
                     className={_utils.cx(_styles, "interviewscount")}
                     tag="div"
                   >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "div-block-1707")}
-                      tag="div"
-                    >
+                    <_Builtin.Block tag="div">
                       <Text
                         content="Today"
                         weight=""
@@ -144,10 +141,7 @@ export function InterviewerDetail({
                     className={_utils.cx(_styles, "interviewscount")}
                     tag="div"
                   >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "div-block-1707")}
-                      tag="div"
-                    >
+                    <_Builtin.Block tag="div">
                       <Text
                         content="This Week"
                         weight=""

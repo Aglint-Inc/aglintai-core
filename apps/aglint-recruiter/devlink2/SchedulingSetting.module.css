@@ -6,7 +6,7 @@
   grid-row-gap: 30px;
 }
 
-.div-block-1117 {
+.wh-top-wrap {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -14,15 +14,15 @@
   align-items: center;
 }
 
-.div-block-1115 {
+.wh-top-wrapper {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
-.div-block-1115.keyword-head {
+.wh-top-wrapper.keyword-head {
   width: 620px;
 }
 

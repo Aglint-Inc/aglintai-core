@@ -62,7 +62,7 @@ export function TaskTableCard({
         </_Builtin.Block>
         {isOverdueVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1626")}
+            className={_utils.cx(_styles, "tjsc-overdue-wrap")}
             tag="div"
           >
             <_Builtin.HtmlEmbed

@@ -34,7 +34,7 @@
   grid-row-gap: var(--space-4);
 }
 
-.div-block-1392 {
+.npc-interview-detail-wrap {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -46,8 +46,8 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .card_flex.hide {
@@ -95,12 +95,12 @@
   z-index: 1;
 }
 
-.div-block-1389 {
+.npc-right {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .three-dot-wrap {

@@ -172,7 +172,7 @@ const TeamManagement = () => {
                     </InputAdornment>
                   ),
                 }}
-                placeholder='Search Interviewer'
+                placeholder='Search Member'
                 onChange={handleSearchInputChange}
               />
             </Stack>

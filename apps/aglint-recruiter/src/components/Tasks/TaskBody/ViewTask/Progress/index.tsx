@@ -7,13 +7,14 @@ import { marked } from 'marked';
 import { useRouter } from 'next/router';
 
 import { EmptyState } from '@/devlink2/EmptyState';
+import { Skeleton } from '@/devlink2/Skeleton';
 import { AgentFollowUp } from '@/devlink3/AgentFollowUp';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
+import { SkeletonActivitiesCard } from '@/devlink3/SkeletonActivitiesCard';
 import { TaskProgress } from '@/devlink3/TaskProgress';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { fetchInterviewMeetingProgresstask } from '@/src/components/Scheduling/CandidateDetails/utils';
-import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import {
   TasksAgentContextType,
   useTasksContext,
@@ -38,14 +39,16 @@ function SubTaskProgress() {
   const today = dayjs();
   const selectedTask = tasks.find((ele) => ele.id === router.query?.task_id);
   const { data: sessionList } = useSessionsList();
- 
+
   return (
     <>
       <FollowUp />
       <ShowCode>
         <ShowCode.When isTrue={!isFetchedAfterMount}>
           <Stack height='100vh' minWidth={600}>
-            <DynamicLoader height='200px' />
+            <SkeletonActivitiesCard slotSkeleton={<Skeleton />} />
+            <SkeletonActivitiesCard slotSkeleton={<Skeleton />} />
+            <SkeletonActivitiesCard slotSkeleton={<Skeleton />} />
           </Stack>
         </ShowCode.When>
         <ShowCode.When isTrue={progressList && Boolean(progressList.length)}>
@@ -238,7 +241,7 @@ function SubTaskProgress() {
                               >
                                 <Stack
                                   direction={'column'}
-                                  spacing={3}
+                                  spacing={'8px'}
                                   width={'100%'}
                                 >
                                   {sessionList &&

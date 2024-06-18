@@ -13,16 +13,16 @@ export function Feedback({
   onClickEditFeedback = {},
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1290")} tag="div">
+    <_Component className={_utils.cx(_styles, "feedback-wrap")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1291")}
+        className={_utils.cx(_styles, "feedback-header-wrap")}
         tag="div"
       >
         <Text content="" />
         <Text content={textRecommendLevel} weight="" />
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1291")}
+        className={_utils.cx(_styles, "feedback-header-wrap")}
         tag="div"
       >
         <Text content="Feedback" weight="medium" />

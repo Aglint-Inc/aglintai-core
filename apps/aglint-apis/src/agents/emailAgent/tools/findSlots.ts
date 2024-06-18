@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import {DynamicStructuredTool} from 'langchain/tools';
 import {z} from 'zod';
 
@@ -9,19 +8,12 @@ import {dayjsLocal} from '../../../utils/dayjsLocal/dayjsLocal';
 import {isCurrDayHoliday} from '../../../utils/scheduling_utils/fetchCandDetails';
 import {findAvailableSlots} from './utils';
 import {findInterviewSlotOnThatDay} from '../../schedule_agent/tools/utils';
-import {supabaseAdmin} from '../../../services/supabase/SupabaseAdmin';
 import {googleTimeZone} from '../../../utils/googleTimeZone';
 import {appLogger} from '../../../services/logger';
 import {agent_activities} from '../../../copies/agents_activity';
 import {APIFindInterviewSlot} from '@aglint/shared-types';
-import {supabaseWrap} from 'src/utils/scheduling/supabaseWrap';
 
-const utc = require('dayjs/plugin/utc');
-const timezone = require('dayjs/plugin/timezone');
-dayjs.extend(utc);
-dayjs.extend(timezone);
-
-export const verifyAvailability = (
+export const findSlots = (
   cand_info: EmailAgentPayload['payload'],
   candLogger: LoggerType
 ) => {
@@ -33,7 +25,11 @@ export const verifyAvailability = (
         month: z.number().describe('month in 1 indexed integer format.'),
         day: z.number().describe('date in a month eg. 12.'),
       }),
-      time_zone: z.string().describe("Candidate's time zone"),
+      time_zone: z
+        .string()
+        .describe(
+          'candidate specified location timezone or organizer timezone'
+        ),
     }),
     func: async ({date, time_zone}) => {
       if (!date) {
@@ -45,15 +41,10 @@ export const verifyAvailability = (
       if (!googleTimeZone[time_zone]) {
         return `invalid time zone format ${time_zone}`;
       }
-      let cand_time_zone = cand_info.candidate_time_zone;
-
-      if (time_zone !== cand_info.candidate_time_zone) {
-        cand_time_zone = time_zone;
-      }
 
       const slot_date = convertDateFormatToDayjs(
         `${String(date.day)}/${String(date.month).padStart(2, '0')}/${dayjsLocal().get('year')}`,
-        cand_time_zone
+        time_zone
       );
       candLogger(
         agent_activities.email_agent.tools['find-interview-slots']
@@ -71,28 +62,22 @@ export const verifyAvailability = (
           session_ids: cand_info.interview_sessions.map(s => s.id),
           schedule_date: slot_date.format('DD/MM/YYYY'),
           recruiter_id: cand_info.company_id,
-          candidate_tz: cand_time_zone,
+          candidate_tz: time_zone,
         };
 
         const current_plan = await findAvailableSlots(find_slot_payload);
         if (current_plan.length === 0) {
           return 'All Slots booked on that day try try diffrent day';
         }
-        supabaseWrap(
-          await supabaseAdmin
-            .from('candidates')
-            .update({timezone: cand_time_zone})
-            .eq('id', cand_info.candidate_id)
-        );
-        //considering only single day plan
+
         const [first_day] = current_plan;
 
-        return findInterviewSlotOnThatDay(first_day, cand_time_zone);
+        return findInterviewSlotOnThatDay(first_day, time_zone);
       } catch (error: any) {
         appLogger.error('Failed to find the interview slots ', {
           error: error.message,
           task_id: cand_info.task_id,
-          cand_time_zone,
+          time_zone,
           slot_date: slot_date.toISOString(),
         });
         candLogger(

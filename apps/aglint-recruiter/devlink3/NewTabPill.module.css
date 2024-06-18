@@ -26,6 +26,30 @@
   color: var(--neutral-11);
 }
 
+.tab-count {
+  height: 20px;
+  min-width: 20px;
+  padding-right: 4px;
+  padding-left: 4px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border: 1px solid var(--neutral-a6);
+  border-radius: var(--radius-1);
+
+  background-color: var(--neutral-3);
+
+  color: var(--neutral-11);
+  text-align: center;
+}
+
+.tab-count.active {
+  border: 1px solid var(--accent-6);
+  background-color: var(--accent-4);
+  color: var(--accent-11);
+}
+
 .tab_pill_active {
   position: absolute;
   left: 0%;
@@ -50,7 +74,7 @@
   left: 0%;
   top: auto;
   right: 0%;
-  bottom: -1px;
+  bottom: 0%;
 
   height: 2px;
 

@@ -57,6 +57,8 @@
 }
 
 .flex-horizontal.gap-space-2 {
+  justify-content: flex-start;
+  align-items: center;
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
 }
@@ -195,13 +197,8 @@
   grid-row-gap: var(--space-1);
 }
 
-.cl-icon-wrap {
-  padding: var(--space-1);
-  border-radius: var(--radius-2);
-}
-
-.cl-icon-wrap:hover {
-  background-color: var(--neutral-3);
+.location-delete-wrappers:hover {
+  display: flex;
 }
 
 .cl-badge-wrap {

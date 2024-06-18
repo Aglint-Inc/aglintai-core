@@ -40,7 +40,7 @@
   cursor: pointer;
 }
 
-.div-block-1536 {
+.tjsc-checkbox-wrap {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -58,7 +58,7 @@
   z-index: 1;
 
   display: flex;
-  padding: var(--space-1) 16px;
+  padding: var(--space-1) var(--space-4);
   justify-content: flex-start;
   align-items: center;
 }
@@ -84,13 +84,13 @@
   justify-content: space-between;
 }
 
-.div-block-1626 {
+.tjsc-overdue-wrap {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   flex: 0 0 auto;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .icons {
@@ -123,10 +123,6 @@
 
 .icons.pointer {
   cursor: pointer;
-}
-
-.text-block-31 {
-  color: #ff6224;
 }
 
 .div-block-1449 {

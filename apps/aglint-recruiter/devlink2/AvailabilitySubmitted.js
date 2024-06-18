@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
+import { TimePick } from "./TimePick";
 import * as _utils from "./utils";
 import _styles from "./AvailabilitySubmitted.module.css";
 
@@ -11,7 +13,7 @@ export function AvailabilitySubmitted({
   return (
     <_Component className={_utils.cx(_styles, "thanks-interview")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1728")}
+        className={_utils.cx(_styles, "as-content-wrap")}
         tag="div"
       >
         <_Builtin.HtmlEmbed
@@ -19,27 +21,37 @@ export function AvailabilitySubmitted({
           value="%3Csvg%20width%3D%2233%22%20height%3D%2232%22%20viewbox%3D%220%200%2033%2032%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M16.5%2032C13.5833%2031.9583%2010.9167%2031.25%208.5%2029.875C6.08333%2028.4583%204.125%2026.5%202.625%2024C1.20833%2021.4583%200.5%2018.7917%200.5%2016C0.5%2013.2083%201.20833%2010.5417%202.625%208C4.125%205.5%206.08333%203.54167%208.5%202.125C10.9167%200.75%2013.5833%200.0416667%2016.5%200C19.4167%200.0416667%2022.0833%200.75%2024.5%202.125C26.9167%203.54167%2028.875%205.5%2030.375%208C31.7917%2010.5417%2032.5%2013.2083%2032.5%2016C32.5%2018.7917%2031.7917%2021.4583%2030.375%2024C28.875%2026.5%2026.9167%2028.4583%2024.5%2029.875C22.0833%2031.25%2019.4167%2031.9583%2016.5%2032ZM23.5625%2013.0625C24.1458%2012.3542%2024.1458%2011.6458%2023.5625%2010.9375C22.8542%2010.3542%2022.1458%2010.3542%2021.4375%2010.9375L14.5%2017.875L11.5625%2014.9375C10.8542%2014.3542%2010.1458%2014.3542%209.4375%2014.9375C8.85417%2015.6458%208.85417%2016.3542%209.4375%2017.0625L13.4375%2021.0625C14.1458%2021.6458%2014.8542%2021.6458%2015.5625%2021.0625L23.5625%2013.0625Z%22%20fill%3D%22%23228F67%22%2F%3E%0A%3C%2Fsvg%3E"
         />
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1729")}
+          className={_utils.cx(_styles, "as-header-wrap")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-lg", "fw-semibold")}
-            tag="div"
-          >
-            {"Submitted availability successfully"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey-600")}
-            tag="div"
-          >
-            {
-              "One of the available slots will be selected by the recruiter for your interview. "
+          <Text
+            content="Availability Submitted Successfully"
+            color="success"
+            weight="medium"
+            align="center"
+            size="2"
+          />
+          <Text content="" size="4" align="center" />
+          <Text
+            content={
+              <>
+                {
+                  "One of the available slots will be selected by the recruiter for your interview. "
+                }
+                <br />
+                {
+                  "You will receive an email with the confirmed interview schedule."
+                }
+              </>
             }
-            <br />
-            {"You will receive an email with the confirmed interview schedule."}
-          </_Builtin.Block>
+            color="neutral"
+            weight=""
+            align="center"
+          />
         </_Builtin.Block>
-        <_Builtin.Block tag="div">{slotAvailbility}</_Builtin.Block>
+        <_Builtin.Block tag="div">
+          {slotAvailbility ?? <TimePick />}
+        </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "copyright_block", "no-height")}

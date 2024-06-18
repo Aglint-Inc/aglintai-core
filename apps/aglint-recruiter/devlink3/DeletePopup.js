@@ -65,9 +65,9 @@ export function DeletePopup({
         <_Builtin.Block className={_utils.cx(_styles, "wide_button")} tag="div">
           <ButtonSolid
             onClickButton={onClickDelete}
+            textButton={buttonText}
             color="error"
             size="2"
-            textButton="Delete"
           />
         </_Builtin.Block>
       </_Builtin.Block>

@@ -120,6 +120,8 @@ export const scheduleInterviewSlot = () => {
             slot_start_time: req_slot_time.format(),
           },
           filter_id: cand_info.req_payload.filter_json_id,
+          agent_type: 'phone_agent',
+          task_id: cand_info.req_payload.task_id,
         };
 
         await axios.post(

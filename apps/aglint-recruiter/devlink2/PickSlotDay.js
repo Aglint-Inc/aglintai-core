@@ -1,7 +1,10 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
+import { CalendarPick } from "./CalendarPick";
+import { TimePick } from "./TimePick";
 import * as _utils from "./utils";
 import _styles from "./PickSlotDay.module.css";
 
@@ -18,7 +21,7 @@ export function PickSlotDay({
   slotPrimaryButton,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1730")} tag="div">
+    <_Component className={_utils.cx(_styles, "pick-slot-day-wrap")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "available-req-date-pick")}
         tag="div"
@@ -44,13 +47,18 @@ export function PickSlotDay({
               </_Builtin.Block>
             ) : null}
           </_Builtin.Block>
-          <_Builtin.Block tag="div">{textPickDays}</_Builtin.Block>
+          <Text content={textPickDays} weight="" />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "slot-calender-pick")}
           tag="div"
         >
-          {slotCalenderPick ?? <SlotComp componentName="CalanderPick" />}
+          {slotCalenderPick ?? (
+            <>
+              <SlotComp componentName="CalanderPick" />
+              <CalendarPick />
+            </>
+          )}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
@@ -82,21 +90,25 @@ export function PickSlotDay({
                 </_Builtin.Block>
               ) : null}
             </_Builtin.Block>
-            <_Builtin.Block tag="div">{textPickSlots}</_Builtin.Block>
+            <Text content={textPickSlots} weight="" />
           </_Builtin.Block>
           {isPickTimeDescVisible ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-600")}
-              tag="div"
-            >
-              {
-                "Pick more than prefered slots to increase the flexibility of your interview"
-              }
+            <_Builtin.Block tag="div">
+              <Text
+                color="neutral"
+                weight=""
+                content="Pick more than prefered slots to increase the flexibility of your interview"
+              />
             </_Builtin.Block>
           ) : null}
         </_Builtin.Block>
         <_Builtin.Block tag="div">
-          {slotTimePick ?? <SlotComp componentName="TimePick" />}
+          {slotTimePick ?? (
+            <>
+              <SlotComp componentName="TimePick" />
+              <TimePick />
+            </>
+          )}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
@@ -104,7 +116,7 @@ export function PickSlotDay({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1716")}
+          className={_utils.cx(_styles, "psd-button-slot")}
           tag="div"
         >
           {slotPrimaryButton ?? <SlotComp componentName="PrimaryButton" />}

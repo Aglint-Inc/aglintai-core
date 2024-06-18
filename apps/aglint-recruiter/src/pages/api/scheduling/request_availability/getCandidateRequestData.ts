@@ -29,7 +29,9 @@ export default async function handler(
       if (request_id) {
         const { data } = await supabase
           .from('candidate_request_availability')
-          .select('*, applications ( candidate_id, candidates ( * ) )')
+          .select(
+            '*, applications ( candidate_id, candidates ( * ), public_jobs ( logo ) )',
+          )
           .eq('id', request_id)
           .single();
         return res.send(data);

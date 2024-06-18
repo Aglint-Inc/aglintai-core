@@ -29,8 +29,10 @@ export function RequestReschedule({
         className={_utils.cx(_styles, "div-block-1492")}
         tag="div"
       >
-        <Text content={textHeader} weight="bold" />
-        <IconButtonSoft iconWeight="thin" iconName="" color="neutral" />
+        <Text content={textHeader} weight="medium" />
+        <_Builtin.Block tag="div" {...onClickClose}>
+          <IconButtonSoft iconWeight="thin" iconName="close" color="neutral" />
+        </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block tag="div">
         {isRangeVisible ? (
@@ -38,7 +40,10 @@ export function RequestReschedule({
             className={_utils.cx(_styles, "div-block-1493")}
             tag="div"
           >
-            <Text color="neutral" content="??" />
+            <Text
+              color="neutral"
+              content="Please select new dates for your interview and provide a reason for the reschedule."
+            />
             <_Builtin.Block tag="div">
               {slotDateRangeInput ?? (
                 <SlotComp componentName="Date Range Input" />

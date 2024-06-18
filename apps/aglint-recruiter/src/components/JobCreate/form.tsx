@@ -380,8 +380,6 @@ const JobDescription: FC<MetaForms> = memo(({ name, value, onChange }) => {
         style={{
           opacity: job?.scoring_criteria_loading ? 0.4 : 1,
           pointerEvents: job?.scoring_criteria_loading ? 'none' : 'auto',
-          maxHeight: '400px',
-          overflow: 'scroll',
         }}
       >
         <TipTapAIEditor

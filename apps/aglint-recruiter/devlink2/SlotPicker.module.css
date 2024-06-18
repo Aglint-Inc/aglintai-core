@@ -1,7 +1,10 @@
 .div-block-1722 {
   position: relative;
+
   width: 237px;
   height: 412px;
+  flex: 1;
+
   border: 1px solid #e9ebed;
   border-radius: 10px;
 }

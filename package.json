@@ -17,14 +17,11 @@
   },
   "devDependencies": {
     "prettier": "^3.2.5",
-    "turbo": "^1.12.4"
+    "turbo": "^2.0.4"
   },
-  "packageManager": "npm@8.19.4",
+  "packageManager": "npm@10.5.2",
   "engines": {
     "node": "^18.18.0 || >=20.0.0"
   },
-  "dependencies": {
-    "@vercel/edge": "^1.1.1",
-    "dayjs": "^1.11.11"
-  }
+  "dependencies": {}
 }

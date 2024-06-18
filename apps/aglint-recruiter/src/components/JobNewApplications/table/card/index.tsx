@@ -15,14 +15,14 @@ const ApplicationCard = memo(
   ({ application }: { application: DatabaseView['application_view'] }) => {
     const { cascadeVisibilites } = useApplications();
 
-    const { checklist, setChecklist, currentApplication } =
-      useApplicationsStore(
-        ({ checklist, setChecklist, currentApplication }) => ({
-          checklist,
-          setChecklist,
-          currentApplication,
-        }),
-      );
+    const { checklist, setChecklist } = useApplicationsStore(
+      ({ checklist, setChecklist }) => ({
+        checklist,
+        setChecklist,
+      }),
+    );
+
+    const { application_id } = useApplicationStore(({ drawer }) => drawer);
 
     const handleOpen = useApplicationStore(({ handleOpen }) => handleOpen);
     const isChecked = useMemo(
@@ -31,8 +31,8 @@ const ApplicationCard = memo(
     );
 
     const isSelected = useMemo(
-      () => application.id === currentApplication,
-      [currentApplication, application],
+      () => application.id === application_id,
+      [application_id, application],
     );
 
     const handleCheck = useCallback(() => {

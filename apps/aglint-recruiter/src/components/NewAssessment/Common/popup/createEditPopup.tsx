@@ -80,6 +80,8 @@ const CreateEditPopup: React.FC<{
     <UITextField
       name='title'
       placeholder='Enter assessment name'
+      label='Assessment Name'
+      required
       value={fields.title}
       onChange={handleChange}
     />
@@ -88,6 +90,8 @@ const CreateEditPopup: React.FC<{
   const description = (
     <UITextField
       name='description'
+      label='Description'
+      required
       placeholder='Briefly describe about the assessment'
       value={fields.description}
       onChange={handleChange}

@@ -122,7 +122,11 @@ export function CreateJob({
             className={_utils.cx(_styles, "integration-wrap")}
             tag="div"
           >
-            <_Builtin.Block tag="div" {...onClickLinktoIntegration}>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cursor-pointer")}
+              tag="div"
+              {...onClickLinktoIntegration}
+            >
               <Text content="Integration" color="accent" />
             </_Builtin.Block>
             <Text content="app." />

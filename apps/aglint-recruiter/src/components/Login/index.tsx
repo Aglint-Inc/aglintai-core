@@ -4,7 +4,6 @@ import {
   IconButton,
   InputAdornment,
   Stack,
-  TextField,
   Typography,
 } from '@mui/material';
 import LoaderGrey from 'aglint-recruiter/public/lottie/LoaderGrey';
@@ -19,6 +18,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Footer from '../Common/Footer';
+import UITextField from '../Common/UITextField';
 
 interface LoginFormInputs {
   email: string;
@@ -79,13 +79,14 @@ function Login() {
       message: 'Invalid email',
     },
   });
-  
 
   const password = register('password', {
     required: 'Password is required',
     pattern: {
-      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      message: 'Password must contain at least 8 characters, including UPPER/lowercase, one number and special characters',
+      value:
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      message:
+        'Password must contain at least 8 characters, including UPPER/lowercase, one number and special characters',
     },
   });
 
@@ -161,7 +162,7 @@ function Login() {
           }}
           slotForm={
             <Stack spacing={'var(--space-3)'}>
-              <TextField
+              <UITextField
                 {...email}
                 id='email'
                 placeholder='Email'
@@ -177,7 +178,7 @@ function Login() {
                 }}
               />
 
-              <TextField
+              <UITextField
                 {...password}
                 id='password'
                 placeholder='Password'
@@ -199,7 +200,11 @@ function Login() {
                         onMouseDown={handleMouseDownPassword}
                         edge='end'
                       >
-                        {showPassword ?  <GlobalIcon iconName='visibility' /> : <GlobalIcon iconName='visibility_off' />}
+                        {showPassword ? (
+                          <GlobalIcon iconName='visibility' />
+                        ) : (
+                          <GlobalIcon iconName='visibility_off' />
+                        )}
                       </IconButton>
                     </InputAdornment>
                   ),
@@ -209,10 +214,10 @@ function Login() {
                 <Stack
                   alignItems='center'
                   component={Typography}
-                  direction="row"
-                  color="var(--error-11)"
+                  direction='row'
+                  color='var(--error-11)'
                   gap={0.5}
-                  fontSize="12px"
+                  fontSize='12px'
                 >
                   <GlobalIcon iconName='error' />
                   {loginError}
@@ -224,15 +229,15 @@ function Login() {
             onClick: handleSubmit(onSubmit),
           }}
         />
-    </Box>
-    <Box
-      sx={{
-        width: '100%',
-        textAlign: 'center',
-      }}
-    >
-      <Footer />
-    </Box>
+      </Box>
+      <Box
+        sx={{
+          width: '100%',
+          textAlign: 'center',
+        }}
+      >
+        <Footer />
+      </Box>
     </Container>
   );
 }

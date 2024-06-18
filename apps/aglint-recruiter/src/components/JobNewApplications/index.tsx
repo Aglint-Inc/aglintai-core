@@ -1,16 +1,18 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseView } from '@aglint/shared-types';
 import { CircularProgress, Stack } from '@mui/material';
+import { useCallback, useEffect, useMemo } from 'react';
 
 import { JobDetails } from '@/devlink2/JobDetails';
 import { NewTabPill } from '@/devlink3/NewTabPill';
+import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 import { useApplications } from '@/src/context/ApplicationsContext';
+import { useKeyPress } from '@/src/context/ApplicationsContext/hooks';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useJob } from '@/src/context/JobContext';
 import NotFoundPage from '@/src/pages/404';
 
 import Loader from '../Common/Loader';
-import SectionIcons from '../JobApplicationsDashboard/Common/SectionIcons';
 import { capitalize } from '../JobApplicationsDashboard/utils';
 import { Actions } from './actions';
 import Drawer from './drawer';
@@ -72,6 +74,44 @@ const ApplicationsComponent = () => {
 
 const NewJobDetailsTabs = () => {
   const { job } = useJob();
+
+  const { section, changeSection } = useApplicationsStore(
+    ({ section, changeSection }) => ({
+      section,
+      changeSection,
+    }),
+  );
+
+  const drawerOpen = useApplicationStore(({ drawer }) => drawer.open);
+
+  const count = useMemo(
+    () => (job?.activeSections ?? []).length,
+    [job?.activeSections],
+  );
+
+  const handleSelectNextSection = useCallback(() => {
+    if (job?.activeSections) {
+      const index = job.activeSections.indexOf(section);
+      changeSection(job.activeSections[(index + 1) % count]);
+    }
+  }, [job?.activeSections, section, count]);
+
+  const handleSelectPrevSection = useCallback(() => {
+    if (job?.activeSections) {
+      const index = job.activeSections.indexOf(section);
+      changeSection(job.activeSections[index - 1 < 0 ? count - 1 : index - 1]);
+    }
+  }, [job?.activeSections, section, count]);
+
+  const { pressed: right } = useKeyPress('ArrowRight');
+  const { pressed: left } = useKeyPress('ArrowLeft');
+
+  useEffect(() => {
+    if (!drawerOpen)
+      if (left) handleSelectPrevSection();
+      else if (right) handleSelectNextSection();
+  }, [drawerOpen, left, right]);
+
   return (
     <>
       {job.activeSections.map((section) => (
@@ -97,9 +137,11 @@ const SectionCard = ({
     <Stack onClick={() => changeSection(status)}>
       <NewTabPill
         isPillActive={section === status}
-        slotStartIcon={<SectionIcons section={status} />}
-        isStartIconVisible={true}
-        textLabel={`${capitalize(status)} (${job.count[status]})`}
+        // slotStartIcon={<SectionIcons section={status} />}
+        // isStartIconVisible={true}
+        isTabCountVisible={true}
+        textLabel={`${capitalize(status)}`}
+        tabCount={`${job.count[status]}`}
       />
     </Stack>
   );

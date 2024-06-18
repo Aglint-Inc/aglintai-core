@@ -273,7 +273,7 @@ const JobForms = ({ fields, handleChange, handleCreate }: JobMetaFormProps) => {
       styleBorder={{
         style: {
           borderColor: fields.description.error.value
-            ? 'var(--error-a6)'
+            ? 'var(--error-9)'
             : 'var(--neutral-a6)',
         },
       }}

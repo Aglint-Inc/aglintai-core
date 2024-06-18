@@ -5,6 +5,7 @@ import React, { useEffect, useRef } from 'react';
 import { useApplications } from '@/src/context/ApplicationsContext';
 
 import ApplicationCard from './card';
+import { EmptyList } from './common';
 
 const ApplicantsList = ({
   applications,
@@ -52,6 +53,8 @@ const ApplicantsList = ({
     rowVirtualizer.getVirtualItems(),
   ]);
 
+  if ((allRows ?? []).length === 0) return <EmptyList />;
+
   return (
     <Stack
       ref={parentRef}
@@ -90,7 +93,7 @@ const ApplicantsList = ({
                   hasNextPage ? (
                     loader
                   ) : (
-                    <></> //'Nothing more to load'
+                    <></>
                   )
                 ) : (
                   <ApplicationCard application={application} />

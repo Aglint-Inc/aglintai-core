@@ -74,6 +74,7 @@ export const agent_activities = {
         failed_cancel_interview:
           'Failed to cancel the scheduled interview. {err_msg}',
       },
+      'get-job-description': {},
     },
   },
 };

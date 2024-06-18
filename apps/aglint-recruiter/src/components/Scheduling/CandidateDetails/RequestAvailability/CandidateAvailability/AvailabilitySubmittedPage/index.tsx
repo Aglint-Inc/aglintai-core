@@ -1,5 +1,4 @@
 import { DatabaseTable } from '@aglint/shared-types';
-import { Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 import { AvailabilitySubmitted } from '@/devlink2/AvailabilitySubmitted';
@@ -33,34 +32,34 @@ function AvailabilitySubmittedPage() {
     <>
       <AvailabilitySubmitted
         slotAvailbility={
-          <TimePick
-            onClickNext={{
-              onClick: () => {
-                const TypoElement = document.getElementById('newTimePick');
+          <>
+            <TimePick
+              onClickNext={{
+                onClick: () => {
+                  const TypoElement = document.getElementById('newTimePick');
 
-                TypoElement.scrollLeft = TypoElement.scrollLeft + 400;
-              },
-            }}
-            onClickPrev={{
-              onClick: () => {
-                const TypoElement = document.getElementById('newTimePick');
-                TypoElement.scrollLeft = TypoElement.scrollLeft - 400;
-              },
-            }}
-            styleScrollProps={{
-              id: 'newTimePick',
-            }}
-            slotSlotPicker={
-              <ShowCode.When isTrue={requestAvailabilitySlots?.length > 0}>
-                <Stack direction='row' gap={'10px'}>
+                  TypoElement.scrollLeft = TypoElement.scrollLeft + 400;
+                },
+              }}
+              onClickPrev={{
+                onClick: () => {
+                  const TypoElement = document.getElementById('newTimePick');
+                  TypoElement.scrollLeft = TypoElement.scrollLeft - 400;
+                },
+              }}
+              styleScrollProps={{
+                id: 'newTimePick',
+              }}
+              slotSlotPicker={
+                <ShowCode.When isTrue={requestAvailabilitySlots?.length > 0}>
                   {requestAvailabilitySlots &&
                     requestAvailabilitySlots.map((ele, i) => {
                       return <SlotColumn slotTime={ele} key={i} />;
                     })}
-                </Stack>
-              </ShowCode.When>
-            }
-          />
+                </ShowCode.When>
+              }
+            />
+          </>
         }
       />
     </>

@@ -441,20 +441,20 @@ const ProfileDashboard = () => {
                       src={recruiterUser.profile_image}
                       alt={recruiterUser.first_name}
                       sx={{
-                        width: '50px',
-                        height: '50px',
+                        width: '40px',
+                        height: '40px',
                       }}
                     />
                   }
                   textName={`${recruiterUser?.first_name ?? ''} ${
                     recruiterUser?.last_name ?? ''
                   }`.trim()}
-                  textDepartment={recruiterUser.department}
-                  textEmail={recruiterUser.email}
-                  textJobTitle={recruiterUser.position}
-                  textLocation={recruiterUser.interview_location}
-                  textRole={capitalizeFirstLetter(recruiterUser.role)}
-                  textNumber={recruiterUser.phone}
+                  textDepartment={recruiterUser.department || "--"}
+                  textEmail={recruiterUser.email || "--"}
+                  textJobTitle={recruiterUser.position || "--"}
+                  textLocation={recruiterUser.interview_location || "--"}
+                  textRole={recruiterUser.role ? capitalizeFirstLetter(recruiterUser.role) : "--"}
+                  textNumber={recruiterUser.phone || "--"}
                   onClickEdit={{
                     onClick: () => {
                       setProfileForm(true);

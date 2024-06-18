@@ -216,7 +216,7 @@ export function ScheduleTabOverview({
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-1417")}
+                  className={_utils.cx(_styles, "sto-copy-link-wrap")}
                   tag="div"
                   {...onClickCopyLink}
                 >
@@ -237,7 +237,7 @@ export function ScheduleTabOverview({
                   />
                 </_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-1679")}
+                  className={_utils.cx(_styles, "sto-slot-join-btn")}
                   tag="div"
                 >
                   {slotJoinMeetingButton}
@@ -336,12 +336,12 @@ export function ScheduleTabOverview({
           >
             {isMembersVisible ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1423")}
+                className={_utils.cx(_styles, "sto-column-left-subwrap")}
                 tag="div"
               >
                 <Text content="Interviewers" weight="medium" color="neutral" />
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-1425")}
+                  className={_utils.cx(_styles, "sto-slot-member-list")}
                   tag="div"
                 >
                   {slotMembers ?? (
@@ -360,12 +360,12 @@ export function ScheduleTabOverview({
           >
             {isOrganizerVisible ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1423")}
+                className={_utils.cx(_styles, "sto-column-left-subwrap")}
                 tag="div"
               >
                 <Text content="Organizer" weight="medium" color="neutral" />
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-1425")}
+                  className={_utils.cx(_styles, "sto-slot-member-list")}
                   tag="div"
                 >
                   {slotOrganizer ?? <SlotComp componentNeme="Member List" />}
@@ -374,12 +374,12 @@ export function ScheduleTabOverview({
             ) : null}
             {isHiringTeamVisible ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1423")}
+                className={_utils.cx(_styles, "sto-column-left-subwrap")}
                 tag="div"
               >
                 <Text content="Hiring Team" weight="medium" color="neutral" />
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-1425")}
+                  className={_utils.cx(_styles, "sto-slot-member-list")}
                   tag="div"
                 >
                   {slotHiringTeam ?? <SlotComp componentNeme="Member List" />}
@@ -387,7 +387,7 @@ export function ScheduleTabOverview({
               </_Builtin.Block>
             ) : null}
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1422")}
+              className={_utils.cx(_styles, "sto-interview-module-wrap")}
               tag="div"
             >
               <Text
@@ -398,7 +398,7 @@ export function ScheduleTabOverview({
               <_Builtin.Block
                 className={_utils.cx(
                   _styles,
-                  "div-block-1421",
+                  "sto-company-intro",
                   "cursor-pointer"
                 )}
                 tag="div"

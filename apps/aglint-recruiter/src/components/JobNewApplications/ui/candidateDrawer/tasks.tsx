@@ -12,6 +12,7 @@ import { PhoneAgentIcon } from '@/src/components/Tasks/Components/PhoneAgentIcon
 import StatusChip from '@/src/components/Tasks/Components/StatusChip';
 import { useApplication } from '@/src/context/ApplicationContext';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import ROUTES from '@/src/utils/routing/routes';
 
 import { EmptyState, Loader } from './common';
 
@@ -33,7 +34,8 @@ const Tasks = () => {
       textButton={'View in tasks'}
       onClickViewScheduler={{
         style: { display: status === 'success' ? 'flex' : 'none' },
-        onClick: () => push(`/tasks?application_id=${application_id ?? null}`),
+        onClick: () =>
+          push(ROUTES['/tasks']() + `?application_id=${application_id}`),
       }}
     />
   );
@@ -42,7 +44,9 @@ const Tasks = () => {
 export { Tasks };
 
 const Content = () => {
+  const { push } = useRouter();
   const {
+    application_id,
     tasks: { data, status },
   } = useApplication();
 
@@ -54,13 +58,23 @@ const Content = () => {
     );
 
   return (data ?? []).map((task) => (
-    <TaskDetailBlock
+    <Stack
       key={task.id}
-      slotIcon={<TaskIcon created_by={task.created_by} />}
-      slotStatus={<StatusChip status={task.status} />}
-      textDesc={task.name}
-      textName={<TaskName created_by={task.created_by} />}
-    />
+      style={{ cursor: 'pointer' }}
+      onClick={() =>
+        push(
+          ROUTES['/tasks']() +
+            `?application_id=${application_id}&task_id=${task.id}`,
+        )
+      }
+    >
+      <TaskDetailBlock
+        slotIcon={<TaskIcon created_by={task.created_by} />}
+        slotStatus={<StatusChip status={task.status} />}
+        textDesc={task.name}
+        textName={<TaskName created_by={task.created_by} />}
+      />
+    </Stack>
   ));
 };
 
