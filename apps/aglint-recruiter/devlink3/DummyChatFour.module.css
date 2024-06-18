@@ -245,11 +245,6 @@
   letter-spacing: var(--letter-spacing-1);
 }
 
-.text-grey_600.text-underline-copy {
-  text-decoration: underline;
-  cursor: pointer;
-}
-
 #w-node-_60e9b28e-dd33-c12e-35d9-e4ce24cd65b0-24cd6572 {
   grid-column-start: span 1;
   grid-column-end: span 1;

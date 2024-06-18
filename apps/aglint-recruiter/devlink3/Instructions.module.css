@@ -47,14 +47,6 @@
   cursor: pointer;
 }
 
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
-}
-
 .icons.pointer {
   cursor: pointer;
 }
@@ -70,11 +62,4 @@
 .instruction-footer-wrap {
   padding-bottom: var(--space-4);
   background-color: var(--white);
-}
-
-.instruction-footer-wrap.no-absolute {
-  position: static;
-  padding-right: 0px;
-  padding-left: 0px;
-  background-color: white;
 }

@@ -45,11 +45,6 @@
   letter-spacing: var(--letter-spacing-1);
 }
 
-.text-grey_600.text-underline-copy {
-  text-decoration: underline;
-  cursor: pointer;
-}
-
 .div-block-1543 {
   position: absolute;
   background-color: whitesmoke;

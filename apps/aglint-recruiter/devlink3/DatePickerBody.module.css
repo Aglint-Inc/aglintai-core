@@ -124,16 +124,6 @@
   background-color: var(--accent-4);
 }
 
-.button_primary.is_outline {
-  border: 1px solid #1f73b7;
-  background-color: white;
-  color: #1f73b7;
-}
-
-.button_primary.is_outline.width-100 {
-  width: 100%;
-}
-
 .button_primary.greay_btn-copy-copy {
   height: 36px;
   padding-top: 8px;

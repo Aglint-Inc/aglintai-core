@@ -104,12 +104,13 @@ function DeclineScheduleDialog({
     >
       <DeletePopup
         textTitle={'Decline Schedule'}
+        textDescription=''
         isIcon={false}
         isWidget={true}
         slotWidget={
           <Stack spacing={2} width={'100%'}>
             <Typography variant='body1'>
-              Please provide a reason for reschedule.
+              Please provide a reason for declineing and any additional notes.
             </Typography>
             <Stack spacing={1}>
               {reasons.map((rea) => {

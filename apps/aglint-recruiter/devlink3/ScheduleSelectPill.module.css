@@ -33,27 +33,6 @@
   letter-spacing: var(--letter-spacing-1);
 }
 
-.text-grey-600.text-underline {
-  text-decoration: underline;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
-.text-grey-600.text-underline.cursor-pointer {
-  transition: opacity 250ms ease;
-  cursor: pointer;
-}
-
-.text-grey-600.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
 .div-block-1745 {
   position: absolute;
   left: auto;
@@ -73,6 +52,10 @@
   background-color: white;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .icons {
   display: flex;
   flex-direction: column;
@@ -87,14 +70,6 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
-}
-
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
 }
 
 .icons.pointer {

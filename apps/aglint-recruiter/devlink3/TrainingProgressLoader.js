@@ -22,13 +22,13 @@ export function TrainingProgressLoader({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1520", "loder")}
+          className={_utils.cx(_styles, "tpl-profile-wrap", "loder")}
           tag="div"
         >
           {slotSkeleton}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1521")}
+          className={_utils.cx(_styles, "tpl-name-wrap")}
           tag="div"
         >
           <_Builtin.Block
@@ -69,7 +69,7 @@ export function TrainingProgressLoader({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1522")}
+          className={_utils.cx(_styles, "tpl-history-pill-wrap")}
           tag="div"
         >
           <_Builtin.Block tag="div">

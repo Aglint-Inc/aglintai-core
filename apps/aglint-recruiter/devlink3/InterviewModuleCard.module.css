@@ -147,31 +147,12 @@
   grid-row-gap: var(--space-4);
 }
 
-.intrerview_module_members.break {
-  flex-direction: row;
-  flex-wrap: nowrap;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
-}
-
-.break {
-  display: flex;
-  align-items: center;
-  grid-column-gap: var(--space-1);
-  grid-row-gap: var(--space-1);
-}
-
 .text-gray-600 {
   color: var(--sand-11);
 }
 
 .text-gray-600.is_link {
   color: #337fbd;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.text-gray-600.underline {
   text-decoration: underline;
   cursor: pointer;
 }

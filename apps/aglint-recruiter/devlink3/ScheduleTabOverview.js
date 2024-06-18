@@ -117,7 +117,7 @@ export function ScheduleTabOverview({
                 _styles,
                 "flex-horizontal",
                 "center",
-                "gap-2"
+                "gap-1"
               )}
               tag="div"
             >

@@ -41,14 +41,6 @@
   opacity: 0.8;
 }
 
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
-}
-
 .icons.pointer {
   cursor: pointer;
 }
@@ -74,12 +66,6 @@
   opacity: 0.8;
 }
 
-.text-sm {
-  font-size: var(--font-size-1);
-  line-height: var(--line-height-1);
-  letter-spacing: var(--letter-spacing-1);
-}
-
 .accent-text.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -87,10 +73,6 @@
 
 .accent-text.cursor-pointer:hover {
   opacity: 0.8;
-}
-
-.accent-text.text-capital {
-  text-transform: uppercase;
 }
 
 .fw-semibold {
