@@ -2,7 +2,7 @@ import { Checkbox, MenuItem, Stack, Switch, TextField } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 
-import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ModuleSetting } from '@/devlink2/ModuleSetting';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/src/utils/supabase/client';
@@ -14,7 +14,6 @@ import MembersAutoComplete, {
 import { QueryKeysInteviewModules } from '../../queries/type';
 import { setIsModuleSettingsDialogOpen } from '../../store';
 import { ModuleType } from '../../types';
-import { ButtonSolid } from '@/devlink';
 
 function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
   const queryClient = useQueryClient();
