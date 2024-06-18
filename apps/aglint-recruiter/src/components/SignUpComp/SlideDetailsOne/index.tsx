@@ -1,19 +1,19 @@
 'use client';
 
 import { SocialsType } from '@aglint/shared-types';
-import { CircularProgress, Stack, TextField } from '@mui/material';
+import { Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { RcInfoStep1 } from '@/devlink2/RcInfoStep1';
 import { RecCompanyDetails } from '@/devlink2/RecCompanyDetails';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { addHttps } from '@/src/utils/fetchCompDetails';
 import { supabase } from '@/src/utils/supabase/client';
 
-import AUIButton from '../../Common/AUIButton';
 import { sizes } from '../../CompanyDetailComp/CompanyInfoComp';
 import { stepObj } from '../SlideSignup/utils';
 
@@ -208,22 +208,15 @@ export function FetchCompanyDetails() {
             }}
           />
           <Stack direction={'row'} justifyContent={'end'}>
-            <AUIButton
-              disabled={loading}
-              onClick={saveRecruiterDetails}
-              variant='primary'
-              endIcon={
-                loading && (
-                  <CircularProgress
-                    color='inherit'
-                    size={'15px'}
-                    sx={{ color: 'var(--neutral-6)' }}
-                  />
-                )
-              }
-            >
-              {loading ? 'Fetching...' : 'Continue'}
-            </AUIButton>
+            <ButtonSolid
+              size={2}
+              textButton={'Continue'}
+              isLoading={loading}
+              isDisabled={loading}
+              onClickButton={{
+                onClick: saveRecruiterDetails,
+              }}
+            />
           </Stack>
         </Stack>
       }

@@ -5,13 +5,13 @@ import { useFeatureFlagEnabled } from 'posthog-js/react';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { AddedJobList } from '@/devlink/AddedJobList';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateDialog } from '@/devlink/CandidateDialog';
 import { CandidateEducation } from '@/devlink/CandidateEducation';
 import { CandidateEducationCard } from '@/devlink/CandidateEducationCard';
 import { CandidateExperience } from '@/devlink/CandidateExperience';
 import { CandidateExperienceCard } from '@/devlink/CandidateExperienceCard';
 import { EmailOutReach } from '@/devlink/EmailOutReach';
-import { ButtonWide } from '@/devlink2/ButtonWide';
 import { ScreeningLandingPop } from '@/devlink2/ScreeningLandingPop';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getformatedDate, getFullName } from '@/src/utils/jsonResume';
@@ -388,9 +388,10 @@ const CandidateDrawer = ({
             />
           }
           slotButtonPrimaryRegular={
-            <ButtonWide
-              isEnabled={phoneInput !== ''}
-              textButton={'Submit'}
+            <ButtonSolid
+              size={2}
+              isDisabled={phoneInput === ''}
+              textButton='Submit'
               onClickButton={{
                 onClick: () => {
                   makePhoneCll();

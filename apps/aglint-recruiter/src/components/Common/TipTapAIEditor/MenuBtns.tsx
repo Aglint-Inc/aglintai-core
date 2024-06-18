@@ -1,16 +1,20 @@
 import styled from '@emotion/styled';
-import { Button, IconButton, Tooltip } from '@mui/material';
+import { IconButton, Tooltip } from '@mui/material';
 import Popover from '@mui/material/Popover';
 import Stack from '@mui/material/Stack';
 import Image from 'next/image';
 import React, { useState } from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { CreateJobCheckItem } from '@/devlink/CreateJobCheckItem';
 import { GenerateJobDescAi } from '@/devlink/GenerateJobDescAi';
 import { LoadingGenerate } from '@/devlink/LoadingGenerate';
 import DescGenerating from '@/public/lottie/DescGenerating';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { generateJobDescription, JDGenParams } from '@/src/utils/prompts/addNewJob/generateJobDescription';
+import {
+  generateJobDescription,
+  JDGenParams,
+} from '@/src/utils/prompts/addNewJob/generateJobDescription';
 import toast from '@/src/utils/toast';
 
 import { useJobForm } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
@@ -80,20 +84,15 @@ const TipTapMenus = () => {
       p={'var(--space-1)'}
       sx={{ position: 'sticky', top: '0', zIndex: '111' }}
     >
-      <Button
-        endIcon={
-          <Image
-            unoptimized
-            alt='down-arrow'
-            height={20}
-            width={10}
-            src={'/images/svg/arrowDown.svg'}
-          />
-        }
-        onClick={handleOpenMenu}
-      >
-        <UITypography type='small'>{typography}</UITypography>
-      </Button>
+      <ButtonGhost
+        color={'neutral'}
+        isRightIcon
+        iconName='keyboard_arrow_down'
+        size={2}
+        textButton={typography}
+        onClickButton={{ onClick: handleOpenMenu }}
+      />
+
       <Tooltip title={'regular'} placement='top-start'>
         <MenuBtn
           onClick={() => editor.chain().focus().toggleBold().run()}

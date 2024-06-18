@@ -2,13 +2,13 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import { Slider, Stack } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { cloneDeep, set } from 'lodash';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import { AddSkillPIll } from '@/devlink/AddSkillPIll';
 import { AiIcon } from '@/devlink/AiIcon';
 import { ButtonGenerate } from '@/devlink/ButtonGenerate';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateFilter } from '@/devlink/CandidateFilter';
 import { JobPills } from '@/devlink/JobPills';
 import { SkillsGenerate } from '@/devlink/SkillsGenerate';
@@ -23,7 +23,6 @@ import {
   initialState,
   useCandidateSearchCtx,
 } from '../../../context/CandidateSearchProvider/CandidateSearchProvider';
-import AUIButton from '../../Common/AUIButton';
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
 import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
@@ -185,33 +184,18 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
       }
       slotButtonPrimarySmall={
         <>
-          <AUIButton
-            variant='primary'
-            size='small'
-            onClick={() => {
-              !isFilterLoading && handleApplyFilters();
+          <ButtonSolid
+            textButton='Apply'
+            size={2}
+            iconName='trending_up'
+            isLeftIcon
+            isLoading={isFilterLoading}
+            onClickButton={{
+              onClick: () => {
+                !isFilterLoading && handleApplyFilters();
+              },
             }}
-            endIcon={
-              isFilterLoading && (
-                <CircularProgress
-                  color='inherit'
-                  size={'15px'}
-                  sx={{ color: 'var(--neutral-6)' }}
-                />
-              )
-            }
-          >
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Image
-                width={12}
-                height={12}
-                alt=''
-                src={'/images/svg/graphUp.svg'}
-                style={{ marginRight: '10px' }}
-              />
-              <p> Apply </p>
-            </div>
-          </AUIButton>
+          />
         </>
       }
       slotMinExperienceInput={

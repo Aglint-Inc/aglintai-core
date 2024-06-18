@@ -1,19 +1,12 @@
-import {
-  Autocomplete,
-  CircularProgress,
-  Dialog,
-  Stack,
-  TextField,
-} from '@mui/material';
+import { Autocomplete, Dialog, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import { cloneDeep, set } from 'lodash';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CdEditQuerry } from '@/devlink/CdEditQuerry';
 import { JobPills } from '@/devlink/JobPills';
-import AUIButton from '@/src/components/Common/AUIButton';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -313,33 +306,18 @@ function EditFilter() {
           )}
           slotApplyFilterButton={
             <>
-              <AUIButton
-                variant='primary'
-                size='small'
-                onClick={() => {
-                  !isFilterLoading && handleApplyFilters();
+              <ButtonSolid
+                textButton='Apply'
+                iconName='trending_up'
+                size={2}
+                isRightIcon
+                onClickButton={{
+                  onClick: () => {
+                    !isFilterLoading && handleApplyFilters();
+                  },
                 }}
-                endIcon={
-                  isFilterLoading ? (
-                    <CircularProgress
-                      color='inherit'
-                      size={'15px'}
-                      sx={{ color: 'var(--neutral-6)' }}
-                    />
-                  ) : (
-                    <Stack alignItems={'center'} justifyContent={'center'}>
-                      <Image
-                        width={12}
-                        height={12}
-                        alt=''
-                        src={'/images/svg/graphUp.svg'}
-                      />
-                    </Stack>
-                  )
-                }
-              >
-                Apply
-              </AUIButton>
+                isLoading={isFilterLoading}
+              />
             </>
           }
           slotPreferredCompaniesInput={

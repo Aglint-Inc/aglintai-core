@@ -1,20 +1,15 @@
 import { RecruiterType } from '@aglint/shared-types';
-import {
-  Autocomplete,
-  CircularProgress,
-  Stack,
-  TextField,
-} from '@mui/material';
+import { Autocomplete, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { AddCompany } from '@/devlink2/AddCompany';
 import { AddCompanyDetails } from '@/devlink2/AddCompanyDetails';
 import { AddCompanyWebsite } from '@/devlink2/AddCompanyWebsite';
-import { BackButton } from '@/devlink2/BackButton';
-import AUIButton from '@/src/components/Common/AUIButton';
 import ImageUpload from '@/src/components/Common/ImageUpload';
 import Loader from '@/src/components/Common/Lotties/Loader';
 import UIPhoneInput from '@/src/components/Common/UIPhoneInput';
@@ -324,22 +319,15 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
                   }
                   slotButtons={
                     <>
-                      <AUIButton
-                        disabled={loading}
-                        onClick={submitHandler}
-                        variant='outlined'
-                        endIcon={
-                          loading && (
-                            <CircularProgress
-                              color='inherit'
-                              size={'15px'}
-                              sx={{ color: 'var(--neutral-6)' }}
-                            />
-                          )
-                        }
-                      >
-                        {loading ? 'Fetching...' : 'Continue'}
-                      </AUIButton>
+                      <ButtonGhost
+                        textButton='Continue'
+                        color='neutral'
+                        onClickButton={{
+                          onClick: submitHandler,
+                        }}
+                        isDisabled={loading}
+                        isLoading={loading}
+                      />
                     </>
                   }
                 />
@@ -609,16 +597,24 @@ function CompanyDetails({
         alignItems={'center'}
         justifyContent={'space-between'}
       >
-        <BackButton
-          onclickProps={{
+        <ButtonGhost
+          textButton='Back'
+          color={'neutral'}
+          size={2}
+          onClickButton={{
             onClick: () => {
               onClickBack();
             },
           }}
         />
-        <AUIButton disabled={false} onClick={submitHandler}>
-          Add Company
-        </AUIButton>
+        <ButtonSolid
+          onClickButton={{
+            onClick: submitHandler,
+          }}
+          textButton='Add Company'
+          size={2}
+          isDisabled={false}
+        />
       </Stack>
     </Stack>
   );

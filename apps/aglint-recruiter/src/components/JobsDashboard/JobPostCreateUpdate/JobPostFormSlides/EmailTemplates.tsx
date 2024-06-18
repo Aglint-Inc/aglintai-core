@@ -8,13 +8,14 @@ import { get } from 'lodash';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { useState } from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonOutlined } from '@/devlink/ButtonOutlined';
 import { EditEmail } from '@/devlink/EditEmail';
 import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
 import { JobEditWarning } from '@/devlink/JobEditWarning';
 import { JobWarningList } from '@/devlink/JobWarningList';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
-import AUIButton from '@/src/components/Common/AUIButton';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
@@ -102,10 +103,10 @@ const Emails = () => {
             {isLoading && (
               <>
                 <Stack
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="center"
-                  bgcolor="var(--neutral-2)"
+                  direction='row'
+                  alignItems='center'
+                  justifyContent='center'
+                  bgcolor='var(--neutral-2)'
                   sx={{ width: '100%', height: 'calc(100vh - 96px)' }}
                 >
                   <LoaderSvg />
@@ -375,18 +376,33 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
                     </Typography>
                   )}
                   <Stack direction={'row'} justifyContent={'flex-end'}>
-                    <AUIButton
-                      size='small'
-                      variant={openTest ? 'outlined' : 'text'}
-                      onClick={() => {
-                        setOpenTest(true);
-                        if (openTest) {
-                          emailHandler();
-                        }
-                      }}
-                    >
-                      Request a Test Mail
-                    </AUIButton>
+                    {openTest ? (
+                      <ButtonOutlined
+                        textButton='Request a Test Mail'
+                        size={2}
+                        onClickButton={{
+                          onClick: () => {
+                            setOpenTest(true);
+                            if (openTest) {
+                              emailHandler();
+                            }
+                          },
+                        }}
+                      />
+                    ) : (
+                      <ButtonGhost
+                        textButton='Request a Test Mail'
+                        size={2}
+                        onClickButton={{
+                          onClick: () => {
+                            setOpenTest(true);
+                            if (openTest) {
+                              emailHandler();
+                            }
+                          },
+                        }}
+                      />
+                    )}
                   </Stack>
                 </Stack>
               </Stack>

@@ -2,7 +2,6 @@
 import { DatabaseTable, DatabaseTableUpdate } from '@aglint/shared-types';
 import {
   Box,
-  Button,
   capitalize,
   Dialog,
   Stack,
@@ -11,6 +10,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ReasonList } from '@/devlink3/ReasonList';
@@ -252,10 +252,7 @@ const AddEditReasonsDialogs = ({
 }) => {
   const [val, setVal] = useState<string>(item?.text || null);
   return (
-    <Dialog
-      open={true}
-      onClose={onClose}
-    >
+    <Dialog open={true} onClose={onClose}>
       <Stack p={3} gap={2} width={{ md: '500px' }}>
         <Stack
           direction={'row'}
@@ -290,19 +287,19 @@ const AddEditReasonsDialogs = ({
           multiline
           minRows={3}
         />
-        <Button
-          variant='contained'
-          size='large'
-          onClick={() => {
-            val?.trim().length &&
-              onSubmit({
-                text: val.trim(),
-                index: item?.index ?? null,
-              });
+        <ButtonSolid
+          size={2}
+          onClickButton={{
+            onClick: () => {
+              val?.trim().length &&
+                onSubmit({
+                  text: val.trim(),
+                  index: item?.index ?? null,
+                });
+            },
           }}
-        >
-          {capitalizeFirstLetter(type)}
-        </Button>
+          textButton={capitalizeFirstLetter(type)}
+        />
       </Stack>
     </Dialog>
   );

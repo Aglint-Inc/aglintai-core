@@ -5,10 +5,10 @@ import { useRouter } from 'next/router';
 import React, { Fragment, useCallback, useMemo, useState } from 'react';
 
 import { AssistStatus } from '@/devlink/AssistStatus';
-import {ButtonGhost  } from '@/devlink/ButtonGhost';
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { CloseDeleteJob } from '@/devlink/CloseDeleteJob';
-import { CloseJobButton } from '@/devlink/CloseJobButton';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
+import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { AddCandidateButton } from '@/devlink3/AddCandidateButton';
@@ -303,8 +303,11 @@ const Dashboard = () => {
             // onClickEdit={{ onClick: () => push(`/jobs/${job.id}/edit`) }}
             slotCloseJobButton={
               <>
-                <CloseJobButton
-                  onClickClose={{
+                <IconButtonGhost
+                  color={'neutral'}
+                  iconSize={4}
+                  iconName='more_vert'
+                  onClickButton={{
                     onClick: () => {
                       setPopover(true);
                     },
@@ -424,18 +427,18 @@ const Preview = () => {
   };
   if (job?.status === 'closed') return <></>;
   return (
-      <ButtonGhost
-        size={'2'}
-        iconColor={'var(--info-11)'}
-        iconSize={'4'}
-        isRightIcon={true}
-        isLeftIcon={false}
-        textButton={'Preview'}
-        iconName={'open_in_new'}
-        onClickButton={{
-          onClick: handlePreview,
-        }}
-        />
+    <ButtonGhost
+      size={'2'}
+      iconColor={'var(--info-11)'}
+      iconSize={'4'}
+      isRightIcon={true}
+      isLeftIcon={false}
+      textButton={'Preview'}
+      iconName={'open_in_new'}
+      onClickButton={{
+        onClick: handlePreview,
+      }}
+    />
   );
 };
 
