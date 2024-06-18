@@ -47,7 +47,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
 
         return (
           <>
-            <ScrollList uniqueKey={job.id}>
+            <ScrollList key = {ind} uniqueKey={job.id}>
               <JobsListingCard
                 isAssessmentPillVisible={isAssessmentEnabled && job.assessment}
                 isScreeningPillsVisible={

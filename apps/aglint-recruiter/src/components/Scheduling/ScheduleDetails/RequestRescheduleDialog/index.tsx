@@ -118,7 +118,7 @@ function RequestRescheduleDialog({
         slotWidget={
           <Stack spacing={2}>
             <Typography variant='body1'>
-              Choose a date range that you want to reschedule with
+              Please provide a reason for rescheduling and any additional notes.
             </Typography>
             <Stack spacing={2} direction={'row'}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -180,7 +180,7 @@ function RequestRescheduleDialog({
             </Stack>
 
             <Typography variant='body1'>
-              Please provide a reason for reschedule.
+              Please provide a reason for rescheduling and any additional notes.
             </Typography>
             <Stack spacing={1}>
               {reasons.map((rea) => {

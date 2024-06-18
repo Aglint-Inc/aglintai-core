@@ -60,7 +60,7 @@ function ScheduleMeetingCard({
             <>
               <Collapse in={collapseOpen}>
                 <Stack direction={'column'} spacing={'var(--space-2)'}>
-                  <MembersList
+                  {/* <MembersList
                     slotImage={<CandidateDefaultIcon size={40} />}
                     textName={getFullName(
                       meetingDetails.candidate?.first_name,
@@ -71,7 +71,7 @@ function ScheduleMeetingCard({
                       <Typography variant='caption'>{'Candidate'}</Typography>
                     }
                     textTime={null}
-                  />
+                  /> */}
                   {/* members profile */}
                   {interviewers.map((user, i) => {
                     return (
