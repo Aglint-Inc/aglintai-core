@@ -320,6 +320,7 @@ export * from "./TaskDetailBlock";
 export * from "./TeamInvite";
 export * from "./TeamInvitesBlock";
 export * from "./TeamListItem";
+export * from "./TeamOptionList";
 export * from "./TeamPendingInvites";
 export * from "./TeamUsersList";
 export * from "./TemplateAddSentence";
