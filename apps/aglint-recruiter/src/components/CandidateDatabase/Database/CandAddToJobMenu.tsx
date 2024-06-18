@@ -42,13 +42,6 @@ const AddToJobOptions = ({
     <>
       {selectedJobIds.length > 0 && (
         <>
-          {/* <AddJobButton
-            onClickAddJob={{
-              onClick: (e) => {
-                setAnchorEl(e.currentTarget);
-              },
-            }}
-          /> */}
           <ButtonSurface
             textButton='Add to Job'
             color={'neutral'}

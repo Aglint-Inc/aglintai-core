@@ -85,6 +85,7 @@ const TipTapMenus = () => {
       sx={{ position: 'sticky', top: '0', zIndex: '111' }}
     >
       <ButtonGhost
+        color={'neutral'}
         isRightIcon
         iconName='keyboard_arrow_down'
         size={2}
