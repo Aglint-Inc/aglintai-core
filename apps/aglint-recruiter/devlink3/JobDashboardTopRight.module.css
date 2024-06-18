@@ -29,13 +29,13 @@
 
 .button_primary {
   display: flex;
-  padding: 8px 16px;
+  padding: 8px var(--space-4);
   justify-content: center;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 
-  border-radius: 6px;
+  border-radius: var(--radius-3);
 
   background-color: #1f73b7;
 
@@ -65,12 +65,12 @@
   width: 100%;
   padding-top: 8px;
   padding-bottom: 8px;
-  background-color: #e9ebed;
+  background-color: var(--neutral-3);
   color: #2f3941;
 }
 
 .button_primary.greay_btn:hover {
-  background-color: #d8dcde;
+  background-color: var(--neutral-4);
 }
 
 .button_primary.greay_btn.width-auto-copy {

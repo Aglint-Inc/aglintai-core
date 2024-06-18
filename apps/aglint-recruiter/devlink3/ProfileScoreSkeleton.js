@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./ProfileScoreSkeleton.module.css";
 
@@ -15,19 +16,14 @@ export function ProfileScoreSkeleton({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-800")}
+          className={_utils.cx(_styles, "pss-header-wrap")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-801-copy-copy-copy")}
+            className={_utils.cx(_styles, "pss-indicator")}
             tag="div"
           />
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Experience"}
-          </_Builtin.Block>
+          <Text content="" weight="medium" />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "skills-wrap-details")}
@@ -65,7 +61,7 @@ export function ProfileScoreSkeleton({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-701")}
+          className={_utils.cx(_styles, "pss-btn-skeleton")}
           tag="div"
         >
           <_Builtin.Block
@@ -81,19 +77,14 @@ export function ProfileScoreSkeleton({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-800")}
+          className={_utils.cx(_styles, "pss-header-wrap")}
           tag="div"
         >
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-801-copy-copy")}
             tag="div"
           />
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Education"}
-          </_Builtin.Block>
+          <Text content="Education" weight="medium" />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "skills-wrap-details")}
@@ -137,7 +128,7 @@ export function ProfileScoreSkeleton({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-701")}
+          className={_utils.cx(_styles, "pss-btn-skeleton")}
           tag="div"
         >
           <_Builtin.Block
@@ -153,19 +144,14 @@ export function ProfileScoreSkeleton({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-800")}
+          className={_utils.cx(_styles, "pss-header-wrap")}
           tag="div"
         >
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-801-copy")}
             tag="div"
           />
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Skills"}
-          </_Builtin.Block>
+          <Text content="Skills" weight="medium" />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "skills-wrap-details")}
@@ -209,7 +195,7 @@ export function ProfileScoreSkeleton({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-701")}
+          className={_utils.cx(_styles, "pss-btn-skeleton")}
           tag="div"
         >
           <_Builtin.Block

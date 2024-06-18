@@ -24,4 +24,5 @@ declare function MyScheduleSubCard(props: {
   onClickDropdownIocn?: Types.Devlink.RuntimeProps;
   isMembersListVisible?: Types.Visibility.VisibilityConditions;
   slotThreeDot?: Types.Devlink.Slot;
+  isDropdownIconVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -1,4 +1,4 @@
-.div-block-1704 {
+.ido-wrap {
   display: flex;
   width: 900px;
   padding: var(--space-4);
@@ -8,7 +8,7 @@
   grid-row-gap: var(--space-6);
 }
 
-.div-block-1701 {
+.ido-upcoming-wrap {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -16,26 +16,26 @@
   grid-row-gap: var(--space-4);
 }
 
-.div-block-1700 {
+.ido-upcoming-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
-.div-block-1702 {
+.ido-upcoming-body {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
-.div-block-1703 {
+.ido-training-body {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
