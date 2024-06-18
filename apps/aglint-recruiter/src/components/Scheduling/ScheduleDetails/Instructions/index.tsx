@@ -32,6 +32,9 @@ function Instructions({
         onClose={closeModal}
         open={edit}
         maxWidth={'md'}
+        sx={{
+          minWidth: 800,
+        }}
       >
         <GeneralPopupLarge
           isDescriptionVisibe={false}
@@ -43,6 +46,7 @@ function Instructions({
               sx={{
                 // margin: '20px',
                 maxWidth: '800px',
+                minWidth: '800px',
                 border: '1px solid',
                 borderColor: 'var(--neutral-6)',
                 borderRadius: 'var(--radius-2)',
