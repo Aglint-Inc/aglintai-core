@@ -3,8 +3,9 @@ import { create, StateCreator } from 'zustand';
 import { ActionsLoadSlice, createActionsLoadSlice } from './actionLoader';
 import { type FiltersSlice, createFiltersSlice } from './filters';
 import { type PopupSlice, createPopupSlice } from './popup';
+import { type DeletionSlice, createDeletionSlice } from './delete';
 
-type Slices = FiltersSlice & PopupSlice & ActionsLoadSlice;
+type Slices = FiltersSlice & PopupSlice & ActionsLoadSlice & DeletionSlice;
 
 export type CreateSlice<
   // eslint-disable-next-line no-unused-vars
@@ -32,4 +33,5 @@ export const useWorkflowStore = create<WorkflowStore>()((...a) => ({
   ...createPopupSlice(...a),
   ...createActionsLoadSlice(...a),
   ...createWorkflowSlice(...a),
+  ...createDeletionSlice(...a),
 }));
