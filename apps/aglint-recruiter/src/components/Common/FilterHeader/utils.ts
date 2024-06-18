@@ -154,3 +154,93 @@ export function setValueInNestedObject(
   }
   return selectedObj;
 }
+
+export function nestedObjectToArray(
+  options: nestedOptionMapperType,
+  selectedOptions: nestedType<string[]>,
+) {
+  if (!options) return [];
+  const res: {
+    id: string;
+    status: 'active' | 'partial' | 'inactive';
+    label: string;
+  }[][] = [];
+
+  function mapOption({
+    optionList,
+    selectedOptions,
+    isArray = false,
+    path = [],
+    index,
+  }: {
+    optionList: nestedOptionMapperType;
+    selectedOptions: nestedType<string[]>;
+    isArray?: boolean;
+    path?: string[];
+    index: number;
+  }) {
+    const tempItem = res[Number(index)] || [];
+    let temp_options: {
+      status: 'active' | 'partial' | 'inactive';
+      label: string;
+    }[] = [];
+    if (isArray) {
+      temp_options = (optionList as string[]).map((item) => {
+        return {
+          status: (selectedOptions as string[]).includes(item)
+            ? 'active'
+            : 'inactive',
+          label: item,
+        };
+      });
+    } else {
+      const keys = Object.keys(optionList);
+      temp_options = keys
+        .map((key) => {
+          const tempIsArray = Array.isArray(optionList[String(key)]);
+          return mapOption({
+            optionList: optionList[String(key)],
+            selectedOptions:
+              selectedOptions[String(key)] || (tempIsArray ? [] : {}),
+            isArray: tempIsArray,
+            path: [...path, key],
+            index: index + 1,
+          });
+        })
+        .map(({ status, label }) => ({ status, label }));
+    }
+
+    tempItem.push(
+      ...temp_options.map(({ status, label: item }) => {
+        return {
+          id: item,
+          status: status,
+          label: item,
+        };
+      }),
+    );
+
+    res[Number(index)] = tempItem;
+    const status = temp_options
+      .map((item) => item.status)
+      .reduce((acc, curr) => {
+        if (acc != 'partial' && curr != acc) {
+          return 'partial';
+        }
+        return acc;
+      }, temp_options[0].status);
+    return {
+      status: status || 'inactive',
+      label: path.join('.'),
+    };
+  }
+
+  mapOption({
+    optionList: options,
+    index: 0,
+    selectedOptions,
+    isArray: false,
+  });
+
+  return res;
+}
