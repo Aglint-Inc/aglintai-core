@@ -145,8 +145,8 @@ export const useCancelRescheduleReasons = () => {
 
 export const useCancelRescheduleReasonsUsers = () => {
   const { recruiter } = useAuthDetails();
-  const { data } = useScheduleSessionsAnalytics();
-  const { data: CancelRescheduleReasons, isPending: loading } =
+  const { data, isPending: loading1 } = useScheduleSessionsAnalytics();
+  const { data: CancelRescheduleReasons, isPending: loading2 } =
     useCancelRescheduleReasons();
   const users = CancelRescheduleReasons?.reduce(
     (acc, curr) => {
@@ -174,19 +174,24 @@ export const useCancelRescheduleReasonsUsers = () => {
       recruiter_id: recruiter.id,
     },
   );
-  return useQuery({
-    queryKey,
-    queryFn: async () => {
-      const candidate =
-        (await getCandidatesByAppId([...users.candidate])) || [];
-      const interviewer =
-        (await getInterviewerByRelationId([...users.interviewer])) || [];
-      return { candidate, interviewer };
-    },
-    enabled:
-      (loading && Boolean(users?.candidate.size)) ||
-      Boolean(users?.interviewer.size),
-  });
+
+  return {
+    parentFetching: loading1 && loading2,
+    disabled: !(users?.candidate.size || users?.interviewer.size),
+    ...useQuery({
+      queryKey,
+      queryFn: async () => {
+        const candidate =
+          (await getCandidatesByAppId([...users.candidate])) || [];
+        const interviewer =
+          (await getInterviewerByRelationId([...users.interviewer])) || [];
+        return { candidate, interviewer };
+      },
+      enabled:
+        (loading1 && loading2 && Boolean(users?.candidate.size)) ||
+        Boolean(users?.interviewer.size),
+    }),
+  };
 };
 
 export const useCompletedInterviewDetails = () => {
