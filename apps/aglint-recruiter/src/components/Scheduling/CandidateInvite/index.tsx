@@ -319,7 +319,7 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
               cancelReschedulingDetails.all == false) && (
               <>
                 <ScheduleButton
-                  textLabel={'Request Reschedule'}
+                  textLabel={'Reschedule'}
                   onClickProps={{
                     onClick: () => setCancelReschedule('reschedule'),
                   }}
@@ -378,7 +378,7 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
           }
           title={
             cancelReschedule === 'reschedule'
-              ? 'Request Reschedule'
+              ? 'Reschedule'
               : 'Cancel Schedule'
           }
           type={cancelReschedule}
