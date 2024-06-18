@@ -1,10 +1,10 @@
-import { Button, Popover, Stack } from '@mui/material';
+import { Popover, Stack } from '@mui/material';
 import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
-import { IconReload } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
 import { TaskDate } from '@/devlink3/TaskDate';
@@ -127,37 +127,43 @@ function DateRangeSelector({ name, setValue }: DateRangeSelectorType) {
                 spacing={'var(--space-2)'}
                 justifyContent={'space-between'}
               >
-                <Button
-                  onClick={() => {
-                    setSelectedDate([]);
-                    setValue([]);
-                    setAnchorEl(null);
+                <ButtonGhost
+                  textButton='Reset'
+                  iconName='refresh'
+                  isLeftIcon
+                  size={2}
+                  onClickButton={{
+                    onClick: () => {
+                      setSelectedDate([]);
+                      setValue([]);
+                      setAnchorEl(null);
+                    },
                   }}
-                  startIcon={<IconReload size={'16px'} />}
-                  variant='text'
-                >
-                  Reset
-                </Button>
+                />
                 <Stack
                   direction={'row'}
                   spacing={'var(--space-2)'}
                   alignItems={'center'}
                 >
-                  <Button
-                    onClick={() => {
-                      setAnchorEl(null);
+                  <ButtonGhost
+                    size={2}
+                    textButton='Cancel'
+                    onClickButton={{
+                      onClick: () => {
+                        setAnchorEl(null);
+                      },
                     }}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setValue(selectedDate);
-                      setAnchorEl(null);
+                  />
+                  <ButtonGhost
+                    size={2}
+                    textButton='OK'
+                    onClickButton={{
+                      onClick: () => {
+                        setValue(selectedDate);
+                        setAnchorEl(null);
+                      },
                     }}
-                  >
-                    OK
-                  </Button>
+                  />
                 </Stack>
               </Stack>
             </>

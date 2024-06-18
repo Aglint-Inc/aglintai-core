@@ -2,6 +2,8 @@
 import { Collapse, Dialog, Stack } from '@mui/material';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 // import axios from 'axios';
 import { CandidateSelectionPopup } from '@/devlink2/CandidateSelectionPopup';
 import { SelectActionsDropdown } from '@/devlink2/SelectActionsDropdown';
@@ -13,7 +15,6 @@ import {
 import { CountJobs } from '@/src/context/JobsContext/types';
 import { JobApplicationEmails } from '@/src/pages/api/job/jobApplications/candidateEmail';
 
-import AUIButton from '../../Common/AUIButton';
 import { TaskStatesProvider } from '../../Tasks/TaskStatesContext';
 import { capitalize } from '../utils';
 import CreateTask, { TaskType } from './CreateTask';
@@ -206,12 +207,21 @@ const MoveCandidateDialog = ({
               direction={'row'}
               alignItems={'center'}
             >
-              <AUIButton onClick={() => onClose()} variant='text'>
-                Cancel
-              </AUIButton>
-              <AUIButton onClick={() => onSubmit()} variant={'primary'}>
-                {title}
-              </AUIButton>
+              <ButtonGhost
+                textButton='Cancel'
+                color={'neutral'}
+                size={2}
+                onClickButton={{
+                  onClick: () => onClose(),
+                }}
+              />
+              <ButtonSolid
+                textButton={title}
+                size={2}
+                onClickButton={{
+                  onClick: () => onSubmit(),
+                }}
+              />
             </Stack>
           }
           slotMoveAssessment={slotMoveAssessment}

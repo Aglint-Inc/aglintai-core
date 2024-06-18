@@ -2,10 +2,9 @@ import { Divider, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 
+import { ButtonOutlined } from '@/devlink/ButtonOutlined';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { useJobAssistantContext } from '@/src/context/JobAssistant';
-
-import AUIButton from '../../../Common/AUIButton';
 
 function LeftPanel() {
   const {
@@ -28,24 +27,26 @@ function LeftPanel() {
     <Stack
       width={'20%'}
       border={'1px solid'}
-       borderColor='var(--neutral-6)'
+      borderColor='var(--neutral-6)'
       p={'var(--space-2)'}
     >
       <Stack width={'100%'} mb={'var(--space-2)'}>
-        <AUIButton
-          variant='outlined'
-          onClick={() => {
-            if (jobAssistantChats[0]?.last_message) {
-              createNewChat();
-            } else {
-              switchChat(jobAssistantChats[0]?.id);
-            }
+        <ButtonOutlined
+          isDisabled={resLoading || fetching}
+          iconName='Add'
+          textButton='Create New Chat'
+          size={2}
+          isLeftIcon
+          onClickButton={{
+            onClick: () => {
+              if (jobAssistantChats[0]?.last_message) {
+                createNewChat();
+              } else {
+                switchChat(jobAssistantChats[0]?.id);
+              }
+            },
           }}
-          startIcon={<PlusIcon />}
-          disabled={resLoading || fetching}
-        >
-          Create New Chat
-        </AUIButton>
+        />
       </Stack>
 
       <Stack
@@ -73,7 +74,11 @@ function LeftPanel() {
           return (
             <Stack
               key={i}
-              bgcolor={currentChat.id === ele.id ? 'var(--neutral-2)' : 'var(--neutral-1)'}
+              bgcolor={
+                currentChat.id === ele.id
+                  ? 'var(--neutral-2)'
+                  : 'var(--neutral-1)'
+              }
               p={'var(--space-2)'}
               borderRadius={'var(--space-1)'}
               spacing={'var(--space-2)'}
@@ -81,7 +86,9 @@ function LeftPanel() {
                 cursor: !resLoading && currentChat.id !== ele.id && 'pointer',
                 '&:hover': {
                   bgcolor:
-                    !resLoading && currentChat.id !== ele.id && 'var(--neutral-1)',
+                    !resLoading &&
+                    currentChat.id !== ele.id &&
+                    'var(--neutral-1)',
                 },
               }}
               onClick={() => {
@@ -95,7 +102,11 @@ function LeftPanel() {
                 direction={'row'}
                 alignItems={'center'}
               >
-                <Stack color={'var(--error-11)'} width={'var(--space-7)'} height={'var(--space-5)'}>
+                <Stack
+                  color={'var(--error-11)'}
+                  width={'var(--space-7)'}
+                  height={'var(--space-5)'}
+                >
                   <ChatIcon />
                 </Stack>
                 <Typography
@@ -126,30 +137,30 @@ function LeftPanel() {
 
 export default LeftPanel;
 
-function PlusIcon() {
-  return (
-    <GlobalIcon iconName='add' />
-    // <svg
-    //   xmlns='http://www.w3.org/2000/svg'
-    //   aria-hidden='true'
-    //   role='img'
-    //   className='iconify iconify--iconoir'
-    //   width='16'
-    //   height='16'
-    //   preserveAspectRatio='xMidYMid meet'
-    //   viewBox='0 0 24 24'
-    // >
-    //   <path
-    //     fill='none'
-    //     stroke='currentColor'
-    //     stroke-linecap='round'
-    //     stroke-linejoin='round'
-    //     stroke-width='1.5'
-    //     d='M6 12h6m6 0h-6m0 0V6m0 6v6'
-    //   ></path>
-    // </svg>
-  );
-}
+// function PlusIcon() {
+//   return (
+//     <GlobalIcon iconName='add' />
+// <svg
+//   xmlns='http://www.w3.org/2000/svg'
+//   aria-hidden='true'
+//   role='img'
+//   className='iconify iconify--iconoir'
+//   width='16'
+//   height='16'
+//   preserveAspectRatio='xMidYMid meet'
+//   viewBox='0 0 24 24'
+// >
+//   <path
+//     fill='none'
+//     stroke='currentColor'
+//     stroke-linecap='round'
+//     stroke-linejoin='round'
+//     stroke-width='1.5'
+//     d='M6 12h6m6 0h-6m0 0V6m0 6v6'
+//   ></path>
+// </svg>
+//   );
+// }
 
 function ChatIcon() {
   return (

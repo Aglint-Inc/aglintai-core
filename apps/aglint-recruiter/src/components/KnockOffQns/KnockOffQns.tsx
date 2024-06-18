@@ -1,10 +1,10 @@
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateStart } from '@/devlink/CandidateStart';
 import { PhoneScreenings } from '@/devlink/PhoneScreenings';
 import { PhoneScreenSuccess } from '@/devlink/PhoneScreenSuccess';
 import PhoneScreeningFormSubmit from '@/public/lottie/PhoneScreeningFormSubmit';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
-import AUIButton from '../Common/AUIButton';
 import CompanyLogo from './CompanyLogo';
 import PhoneScreeningQn from './PhoneScreeningQn';
 import { useScreeningCtx } from './ScreeningCtxProvider';
@@ -51,20 +51,22 @@ const StartSlide = () => {
       }
       slotStartButton={
         <>
-          <AUIButton
-            onClick={() => {
-              updateState({
-                path: 'currentQn',
-                value: 1,
-              });
-              updateState({
-                path: 'showStartMessage',
-                value: false,
-              });
+          <ButtonSolid
+            textButton='Start'
+            size={2}
+            onClickButton={{
+              onClick: () => {
+                updateState({
+                  path: 'currentQn',
+                  value: 1,
+                });
+                updateState({
+                  path: 'showStartMessage',
+                  value: false,
+                });
+              },
             }}
-          >
-            Start
-          </AUIButton>
+          />
         </>
       }
       textWelcome={state.startMessage}

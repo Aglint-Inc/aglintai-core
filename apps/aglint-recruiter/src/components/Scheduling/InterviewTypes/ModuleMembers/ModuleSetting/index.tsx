@@ -14,6 +14,7 @@ import MembersAutoComplete, {
 import { QueryKeysInteviewModules } from '../../queries/type';
 import { setIsModuleSettingsDialogOpen } from '../../store';
 import { ModuleType } from '../../types';
+import { ButtonSolid } from '@/devlink';
 
 function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
   const queryClient = useQueryClient();
@@ -148,11 +149,10 @@ function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
           }
           slotButtonPrimary={
             localModule?.settings?.require_training && (
-              <ButtonPrimaryRegular
-                textLabel={'Update'}
-                onClickButton={{
-                  onClick: updateModule,
-                }}
+              <ButtonSolid
+                size={1}
+                textButton='Update'
+                onClickButton={{ onClick: updateModule }}
               />
             )
           }

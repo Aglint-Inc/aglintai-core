@@ -1,9 +1,9 @@
-import { Button, Popover, Stack, Typography } from '@mui/material';
+import { Popover, Stack, Typography } from '@mui/material';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { MouseEvent, useState } from 'react';
 
-import { IconChevronDown } from '@/devlink/IconChevronDown';
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { useJobs } from '@/src/context/JobsContext';
 
 function JobsPopOver({ currecntJob }) {
@@ -22,13 +22,15 @@ function JobsPopOver({ currecntJob }) {
   const id = open ? 'simple-popover' : undefined;
   return (
     <Stack>
-      <Button
-        endIcon={<IconChevronDown />}
-        variant='text'
-        onClick={handleClick}
-      >
-        {currecntJob}
-      </Button>
+      <ButtonGhost
+        size={2}
+        textButton={currecntJob}
+        iconName='stat_minus_1'
+        isRightIcon
+        onClickButton={{
+          onClick: handleClick,
+        }}
+      />
       <Popover
         id={id}
         open={open}
@@ -46,7 +48,11 @@ function JobsPopOver({ currecntJob }) {
           },
         }}
       >
-        <Stack direction={'column'} p={'var(--space-5)'} spacing={'var(--space-2)'}>
+        <Stack
+          direction={'column'}
+          p={'var(--space-5)'}
+          spacing={'var(--space-2)'}
+        >
           {jobs.data.length &&
             jobs.data.map((job, i) => {
               return (

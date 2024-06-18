@@ -11,10 +11,9 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import { v4 as uuidv4 } from 'uuid';
 
-import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { Checkbox } from '@/devlink/Checkbox';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
-import LoaderGrey from '@/public/lottie/LoaderGrey';
 import { errorMessages } from '@/src/utils/errorMessages';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -411,21 +410,17 @@ function UploadDB({
             </Stack>
           </Stack>
         </Grid>
-        <Grid item xs={12}>
-          <ButtonPrimaryRegular
-            isDisabled={Boolean(router.query.preview)}
-            slotEndIcon={
-              <Stack justifyContent={'center'} alignItems={'center'}>
-                <LoaderGrey />
-              </Stack>
-            }
-            isEndIcon={isDisabled}
+        <Grid item>
+          <ButtonSolid
+            textButton='Apply Now'
+            size={2}
+            isDisabled={isDisabled}
+            isLoading={isDisabled}
             onClickButton={{
               onClick: () => {
                 if (!isDisabled) submitHandler();
               },
             }}
-            textLabel='Apply Now'
           />
         </Grid>
       </Grid>

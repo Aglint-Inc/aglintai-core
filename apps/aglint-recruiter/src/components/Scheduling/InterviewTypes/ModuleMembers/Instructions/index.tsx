@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import { useState } from 'react';
 
-import AUIButton from '@/src/components/Common/AUIButton';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -51,13 +51,15 @@ function InstructionsComp({ editModule }: { editModule: ModuleType }) {
           justifyContent={'flex-end'}
           pt={2}
         >
-          <AUIButton
-            onClick={() => {
-              updateInstruction();
+          <ButtonSolid
+            textButton='Update'
+            size={2}
+            onClickButton={{
+              onClick: () => {
+                updateInstruction();
+              },
             }}
-          >
-            Update
-          </AUIButton>
+          />
         </Stack>
       </Stack>
     </>

@@ -5,12 +5,12 @@ import { CSVLink } from 'react-csv';
 import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ImportCandidatesCsv } from '@/devlink/ImportCandidatesCsv';
 import { ImportCsv as ImportCsvDev } from '@/devlink/ImportCsv';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { CsvUploadApi } from '@/src/apiUtils/job/jobApplications/candidateUpload/types';
-import AUIButton from '@/src/components/Common/AUIButton';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
@@ -152,7 +152,7 @@ const ImportCsv = () => {
             slotReuploadButton={
               <Stack {...getRootProps()} sx={{ height: '100%' }}>
                 <input id='uploadCsv' {...getInputProps()} />
-                <AUIButton variant='text'>Reupload</AUIButton>
+                <ButtonGhost textButton='Reupload' size={2} color={'neutral'} />
               </Stack>
             }
             textListingCount={`Listing ${bulkImportdata?.length} candidates`}
@@ -264,10 +264,16 @@ function TableHeader() {
 const headerObject = [
   {
     heading: 'Candidate',
-    icon: <GlobalIcon iconName='person' size='4' color='neutral'/>,
+    icon: <GlobalIcon iconName='person' size='4' color='neutral' />,
   },
-  { heading: 'Email', icon: <GlobalIcon iconName='mail'  size='4' color='neutral-8'/> },
-  { heading: 'Phone', icon: <GlobalIcon iconName='phone'  size='4' color='neutral-8'/>},
+  {
+    heading: 'Email',
+    icon: <GlobalIcon iconName='mail' size='4' color='neutral-8' />,
+  },
+  {
+    heading: 'Phone',
+    icon: <GlobalIcon iconName='phone' size='4' color='neutral-8' />,
+  },
 ];
 
 function TableRow({ name, email, phone, profile_image, index }) {

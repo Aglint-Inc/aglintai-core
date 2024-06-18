@@ -2,6 +2,8 @@
 import { Dialog, Stack } from '@mui/material';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 // import axios from 'axios';
 import { CandidateSelectionPopup } from '@/devlink2/CandidateSelectionPopup';
 import { getSafeAssessmentResult } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
@@ -12,7 +14,6 @@ import {
 } from '@/src/context/JobApplicationsContext/types';
 import { JobApplicationEmails } from '@/src/pages/api/job/jobApplications/candidateEmail';
 
-import AUIButton from '../../Common/AUIButton';
 import {
   getAssessmentStatus,
   getDisqualificationStatus,
@@ -110,15 +111,22 @@ const MailCandidateDialog: React.FC<{
             direction={'row'}
             alignItems={'center'}
           >
-            <AUIButton onClick={() => handleClose()} variant='text'>
-              Cancel
-            </AUIButton>
-            <AUIButton
-              onClick={async () => await handleMailCandidate()}
-              variant={'primary'}
-            >
-              {buttonText}
-            </AUIButton>
+            <ButtonGhost
+              textButton='Cancel'
+              onClickButton={{
+                onClick: () => handleClose(),
+              }}
+              size={2}
+              color={'neutral'}
+            />
+            <ButtonSolid
+              textButton={buttonText}
+              onClickButton={{
+                onClick: async () => await handleMailCandidate(),
+              }}
+              size={2}
+              color={'neutral'}
+            />
           </Stack>
         }
       />

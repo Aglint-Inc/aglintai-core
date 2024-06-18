@@ -1,11 +1,10 @@
-import { CircularProgress, Popover } from '@mui/material';
+import { Popover } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
 import { AddJob } from '@/devlink/AddJob';
-import { AddJobButton } from '@/devlink/AddJobButton';
 import { AddJobList } from '@/devlink/AddJobList';
-
-import AUIButton from '../../Common/AUIButton';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { ButtonSurface } from '@/devlink/ButtonSurface';
 
 type newCandJob = {
   title: string;
@@ -42,13 +41,27 @@ const AddToJobOptions = ({
   return (
     <>
       {selectedJobIds.length > 0 && (
-        <AddJobButton
-          onClickAddJob={{
-            onClick: (e) => {
-              setAnchorEl(e.currentTarget);
-            },
-          }}
-        />
+        <>
+          {/* <AddJobButton
+            onClickAddJob={{
+              onClick: (e) => {
+                setAnchorEl(e.currentTarget);
+              },
+            }}
+          /> */}
+          <ButtonSurface
+            textButton='Add to Job'
+            color={'neutral'}
+            iconName='keyboard_arrow_down'
+            isRightIcon={true}
+            size={1}
+            onClickButton={{
+              onClick: (e) => {
+                setAnchorEl(e.currentTarget);
+              },
+            }}
+          />
+        </>
       )}
       <Popover
         open={Boolean(anchorlEl)}
@@ -108,25 +121,19 @@ const AddToJobOptions = ({
           }
           slotAddButton={
             <>
-              <AUIButton
-                variant='outlined'
-                size='small'
-                onClick={async () => {
-                  await handleClickSubmit(checkBox.filter((ch) => ch.checked));
-                  setAnchorEl(null);
+              <ButtonSolid
+                textButton='Add'
+                size={2}
+                isLoading={isAdding}
+                onClickButton={{
+                  onClick: async () => {
+                    await handleClickSubmit(
+                      checkBox.filter((ch) => ch.checked),
+                    );
+                    setAnchorEl(null);
+                  },
                 }}
-                endIcon={
-                  isAdding && (
-                    <CircularProgress
-                      color='inherit'
-                      size={'15px'}
-                      sx={{ color: 'var(--neutral-6)' }}
-                    />
-                  )
-                }
-              >
-                Add
-              </AUIButton>
+              />
             </>
           }
           textJobSelected={checkBox.filter((s) => s.checked).length}

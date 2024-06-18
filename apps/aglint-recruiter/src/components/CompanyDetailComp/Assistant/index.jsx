@@ -3,11 +3,12 @@ import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 
 import { AssisstantSettings } from '@/devlink/AssisstantSettings';
+import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import AUIButton from '../../Common/AUIButton';
 import UITextField from '../../Common/UITextField';
 
 function Assistant({ setIsSaving }) {
@@ -100,17 +101,22 @@ function Assistant({ setIsSaving }) {
             direction={'row'}
             justifyContent={'space-between'}
           >
-            <AUIButton disabled={btnhide} onClick={handleClick}>
-              Save Changes
-            </AUIButton>
-            <AUIButton
-              onClick={() => {
-                window.open(`/job-assistant/${recruiter.id}`, 'blank');
+            <ButtonSolid
+              textButton='Save Changes'
+              size={2}
+              isDisabled={btnhide}
+              onClickButton={{ onClick: handleClick }}
+            />
+            <ButtonGhost
+              textButton={''}
+              color={'neutral'}
+              size={2}
+              onClickButton={{
+                onClick: () => {
+                  window.open(`/job-assistant/${recruiter.id}`, 'blank');
+                },
               }}
-              variant='text'
-            >
-              {''}
-            </AUIButton>
+            />
           </Stack>
         }
       />
