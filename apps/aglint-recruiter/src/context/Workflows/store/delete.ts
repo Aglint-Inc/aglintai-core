@@ -1,4 +1,5 @@
-import { DatabaseTable, DatabaseView } from '@aglint/shared-types';
+import { DatabaseView } from '@aglint/shared-types';
+
 import { CreateSlice } from '.';
 
 type Deletion = {
