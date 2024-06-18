@@ -22,19 +22,19 @@ const Actions = () => {
     actions: { data, status },
     actionMutations: mutations,
   } = useWorkflow();
-  const { createAction, globalOptions } = useActions();
+  const { createAction, globalOptions, allOptions } = useActions();
   const canCreateAction = useMemo(
     () => !!globalOptions.length,
     [globalOptions],
   );
   if (status === 'error') return <>Error</>;
   if (status === 'pending') return <Loader />;
-  const actions = data.map((action) => {
+  const actions = data.map((action, i) => {
     const loading = !!mutations.find((mutation) => mutation.id === action.id);
     return (
       <OptimisticWrapper key={action.id} loading={loading}>
         <Action key={action.id} action={action} />
-        <WorkflowConnector />
+        {i !== allOptions.length - 1 && <WorkflowConnector />}
       </OptimisticWrapper>
     );
   });
