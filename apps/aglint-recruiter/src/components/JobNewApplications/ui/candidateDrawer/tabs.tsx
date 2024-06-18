@@ -2,19 +2,24 @@ import { memo, useCallback, useEffect, useMemo } from 'react';
 
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { useKeyPress } from '@/src/components/JobApplicationsDashboard/hooks';
+import { useApplication } from '@/src/context/ApplicationContext';
 import {
   ApplicationStore,
   useApplicationStore,
 } from '@/src/context/ApplicationContext/store';
+import { ApplicationsStore } from '@/src/context/ApplicationsContext/store';
 
-const tabs: ApplicationStore['tab'][] = [
-  'Details',
-  // 'Screening',
-  // 'Assessment',
-  'Interview',
-  'Tasks',
-  'Activity',
-];
+const allTabs: {
+  // eslint-disable-next-line no-unused-vars
+  [id in ApplicationStore['tab']]: ApplicationsStore['section'] | null;
+} = {
+  Details: null,
+  Screening: 'screening',
+  Assessment: 'assessment',
+  Interview: 'interview',
+  Tasks: 'interview',
+  Activity: null,
+};
 
 const Tabs = memo(() => {
   const { tab, setTab, drawerOpen } = useApplicationStore(
@@ -23,6 +28,19 @@ const Tabs = memo(() => {
       setTab,
       drawerOpen: drawer.open,
     }),
+  );
+
+  const {
+    tabs: { data },
+  } = useApplication();
+
+  const tabs = Object.entries(allTabs).reduce(
+    (acc, [key, value]) => {
+      const safeKey = key as ApplicationStore['tab'];
+      if (!value || (data ?? []).includes(value)) acc.push(safeKey);
+      return acc;
+    },
+    [] as ApplicationStore['tab'][],
   );
 
   const count = useMemo(() => (tabs ?? []).length, [tabs]);
