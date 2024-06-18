@@ -62,14 +62,6 @@
   cursor: pointer;
 }
 
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
-}
-
 .icons.pointer {
   cursor: pointer;
 }
@@ -121,12 +113,6 @@
   opacity: 0.8;
 }
 
-.text-sm {
-  font-size: var(--font-size-1);
-  line-height: var(--line-height-1);
-  letter-spacing: var(--letter-spacing-1);
-}
-
 .accent-text.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -134,10 +120,6 @@
 
 .accent-text.cursor-pointer:hover {
   opacity: 0.8;
-}
-
-.accent-text.text-capital {
-  text-transform: uppercase;
 }
 
 .fw-semibold {
@@ -190,6 +172,12 @@
   grid-row-gap: 6px;
 }
 
+.text-sm {
+  font-size: var(--font-size-1);
+  line-height: var(--line-height-1);
+  letter-spacing: var(--letter-spacing-1);
+}
+
 .text-sm.color-grey-600 {
   color: var(--sand-11);
 }
@@ -206,19 +194,6 @@
   color: var(--sand-11);
 }
 
-.text-sm.text-underline {
-  text-decoration: underline;
-}
-
 .text-grey-600 {
   color: #68737d;
-}
-
-.text-sm.text-underline.text-grey-600.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.text-sm.text-underline.text-grey-600.cursor-pointer:hover {
-  opacity: 0.8;
 }

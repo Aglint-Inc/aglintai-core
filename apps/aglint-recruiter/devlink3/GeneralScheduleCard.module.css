@@ -71,14 +71,6 @@
   cursor: pointer;
 }
 
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
-}
-
 .icons.pointer {
   cursor: pointer;
 }
@@ -155,15 +147,6 @@
   border-radius: var(--radius-3);
 
   background-color: var(--neutral-3);
-}
-
-.gsc-module-link.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.gsc-module-link.cursor-pointer:hover {
-  opacity: 0.8;
 }
 
 .gsc-interviewer-wrap {

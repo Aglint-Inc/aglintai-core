@@ -40,12 +40,6 @@
   border-bottom: 1px solid var(--neutral-6);
 }
 
-.sdt-tabs.gap-0 {
-  padding: 0px 4px;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-}
-
 .scheduletab_content {
   display: flex;
   overflow: auto;

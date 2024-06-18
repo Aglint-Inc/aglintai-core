@@ -119,11 +119,6 @@
   letter-spacing: var(--letter-spacing-1);
 }
 
-.text-grey_600.text-underline-copy {
-  text-decoration: underline;
-  cursor: pointer;
-}
-
 .user_lastjob {
   position: relative;
   z-index: 2;

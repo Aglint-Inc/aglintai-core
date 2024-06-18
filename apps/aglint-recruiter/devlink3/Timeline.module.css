@@ -117,11 +117,6 @@
   letter-spacing: var(--letter-spacing-1);
 }
 
-.text-grey_600.text-underline-copy {
-  text-decoration: underline;
-  cursor: pointer;
-}
-
 .status_block {
   display: flex;
   width: 16px;

@@ -82,8 +82,3 @@
   line-height: var(--line-height-1);
   letter-spacing: var(--letter-spacing-1);
 }
-
-.text-grey_600.text-underline-copy {
-  text-decoration: underline;
-  cursor: pointer;
-}
