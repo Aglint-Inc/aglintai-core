@@ -83,15 +83,19 @@ function SchedulerEmailTemps() {
 
   return (
     <Stack sx={{ padding: '24px' }}>
-      <Box sx={{ 
-        border: '1px solid var(--neutral-6)', 
-        borderRadius: 'var(--radius-4)'
-      }}>
+      <Box
+        sx={{
+          border: '1px solid var(--neutral-6)',
+          borderRadius: 'var(--radius-4)',
+        }}
+      >
         {emailTemplate && (
           <EmailTemplatesStart
             slotEmailTemplateCards={emailTemplate
               ?.filter((emailPath) => emailTempKeys.includes(emailPath.type))
-              .filter((v, i, a) => a.findIndex((v2) => v2.type === v.type) === i)
+              .filter(
+                (v, i, a) => a.findIndex((v2) => v2.type === v.type) === i,
+              )
               .sort((a, b) => a.type.localeCompare(b.type))
               .map((emailPath) => (
                 <EmailTemplateCards
@@ -167,7 +171,8 @@ function SchedulerEmailTemps() {
                             labelSize='small'
                             fullWidth
                             placeholder={
-                              tempObj[selectedTemplate?.type]?.subjectPlaceHolder
+                              tempObj[selectedTemplate?.type]
+                                ?.subjectPlaceHolder
                             }
                             label='Email Subject'
                             value={selectedTemplate?.subject}
@@ -207,6 +212,8 @@ function SchedulerEmailTemps() {
                                 <TipTapAIEditor
                                   enablAI={false}
                                   placeholder={''}
+                                  editor_type='email'
+                                  template_type={selectedTemplate.type}
                                   handleChange={(html) => {
                                     // TIPTAPTODO:
                                     const text = html;

@@ -17,6 +17,8 @@
 
 .icon_text_grid.width_300 {
   width: 140px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .icon_fix_wrap {

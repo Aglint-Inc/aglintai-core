@@ -25,7 +25,7 @@ export function SessionInfo({
   return (
     <_Component className={_utils.cx(_styles, "session_info")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "flex-horizontal", "center", "gap-2")}
+        className={_utils.cx(_styles, "flex-horizontal", "center", "gap-1")}
         tag="div"
       >
         <_Builtin.Block
@@ -42,14 +42,14 @@ export function SessionInfo({
         <Text content={textSessionName} />
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "flex-horizontal", "center", "gap-2")}
+        className={_utils.cx(_styles, "flex-horizontal", "center", "gap-1")}
         tag="div"
       >
         <GlobalIcon iconName="timer" size="4" weight="light" />
         <Text content={textSessionDuration} />
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "flex-horizontal", "center", "gap-2")}
+        className={_utils.cx(_styles, "flex-horizontal", "center", "gap-1")}
         tag="div"
       >
         <GlobalIcon iconName={iconName} size="4" weight="light" />

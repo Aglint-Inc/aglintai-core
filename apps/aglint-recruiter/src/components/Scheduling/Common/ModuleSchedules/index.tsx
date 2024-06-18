@@ -59,7 +59,7 @@ function ModuleSchedules({
                 </InputAdornment>
               ),
             }}
-            placeholder={'Search by session name'}
+            placeholder={'Search by session.'}
             onChange={(e) => {
               setChangeText(e.target.value);
             }}

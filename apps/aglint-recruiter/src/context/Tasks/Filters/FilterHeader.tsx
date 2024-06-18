@@ -374,7 +374,7 @@ function FilterDropDown({
                 sx={{
                   p: '4px',
                 }}
-                placeholder='Search by name'
+                placeholder='Search by name.'
                 onChange={(e) => {
                   setSearchText(e.target.value);
                 }}

@@ -5,7 +5,6 @@ import {
 } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
-import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
@@ -16,10 +15,6 @@ import { getCandidateLogger } from '@/src/utils/scheduling_v2/getCandidateLogger
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import { ApiDebriefAddUsers } from './debrief-add-users';
-const required_fields: (keyof APICandScheduleMailThankYou)[] = [
-  'cand_tz',
-  'session_ids',
-];
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -34,11 +29,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       is_debreif,
       booking_request_from = 'candidate',
     } = req.body as APICandScheduleMailThankYou;
-    required_fields.forEach((field) => {
-      if (!has(req.body, field)) {
-        throw new Error(`missing Field ${field}`);
-      }
-    });
 
     const { candidate, meeting_data } = await fetchSessionDetails(
       session_ids,

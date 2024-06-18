@@ -57,13 +57,23 @@ export async function fetchUtil(
   return int_sessions.map((int_session) => {
     const comp_email_placeholder: EmailTemplateAPi<'confInterview_email_organizer'>['comp_email_placeholders'] =
       {
-        '{{ candidateName }}': getFullName(first_name, last_name),
-        '{{ recruiterFirstName }}':
-          int_session.interview_meeting.recruiter_user.first_name,
-        '{{ recruiterFullName }}': getFullName(
+        // '{{ candidateName }}': getFullName(first_name, last_name),
+        // '{{ recruiterFirstName }}':
+        //   int_session.interview_meeting.recruiter_user.first_name,
+        // '{{ recruiterFullName }}': getFullName(
+        //   recruiter_user.first_name,
+        //   recruiter_user.last_name,
+        // ),
+        candidateFirstName: first_name,
+        candidateLastName: last_name,
+        candidateName: getFullName(first_name, last_name),
+        recruiterFirstName: recruiter_user.first_name,
+        recruiterLastName: recruiter_user.last_name,
+        recruiterName: getFullName(
           recruiter_user.first_name,
           recruiter_user.last_name,
         ),
+        recruiterTimeZone: org_tz,
       };
 
     const filled_comp_template = fillCompEmailTemplate(

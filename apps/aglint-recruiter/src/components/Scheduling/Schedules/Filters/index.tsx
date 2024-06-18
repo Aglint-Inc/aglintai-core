@@ -185,7 +185,7 @@ function Filters() {
             </InputAdornment>
           ),
         }}
-        placeholder={'Search by session name'}
+        placeholder={'Search session.'}
         onChange={(e) => {
           if (e.target.value) {
             const filteredSchedules = filterSchedules.filter((ele) => {

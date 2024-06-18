@@ -1,5 +1,6 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import type { EmailTemplateAPi } from '@aglint/shared-types';
+import type { CalendarEvent, EmailTemplateAPi } from '@aglint/shared-types';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
@@ -9,7 +10,7 @@ import {
   sessionTypeIcon,
   scheduleTypeIcon,
 } from '../../../utils/email/common/functions';
-import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
+import { createICSAttachment } from '../../../utils/ceateIcsContent';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'confirmInterview_email_applicant'>['api_payload'],
@@ -18,14 +19,14 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,email,recruiter_id,recruiter(logo),timezone),public_jobs(job_title,company,recruiter)',
+        'candidates(first_name,last_name,email,recruiter_id,recruiter(logo),timezone),public_jobs(job_title,company,recruiter)',
       )
       .eq('id', req_body.application_id),
   );
   const [recruiter_user] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
-      .select('first_name,last_name')
+      .select('first_name,last_name,scheduling_settings')
       .eq('user_id', candidateJob.public_jobs.recruiter),
   );
   const int_sessions = supabaseWrap(
@@ -40,12 +41,13 @@ export async function fetchUtil(
   } else {
     cand_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${req_body.schedule_id}?filter_id=${req_body.schedule_id}`;
   }
-
+  const recruiter_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
   const {
     candidates: {
       email: cand_email,
       recruiter_id,
       first_name,
+      last_name,
       recruiter: { logo },
     },
     public_jobs: { company, job_title },
@@ -71,15 +73,38 @@ export async function fetchUtil(
     };
   });
 
+  const mail_attachments = int_sessions.map((s) => {
+    const cal_event = s.interview_meeting.meeting_json as CalendarEvent;
+    const cand_cal_event_name = `Interview Invite: ${job_title} at ${company}`;
+    const meeting_info =
+      `<h3>${s.name}</h3>` +
+      `<p> Duration ${s.session_duration} </p>` +
+      `<p> meeting place ${s.schedule_type} </p>` +
+      `<p> meeting link ${s.interview_meeting.meeting_link} </p>` +
+      `<p><a href=${cand_link}`;
+    return createICSAttachment(
+      cal_event,
+      cand_cal_event_name,
+      meeting_info,
+      s.interview_meeting.meeting_link,
+      s.name,
+      cand_tz,
+    );
+  });
+
   const comp_email_placeholder: EmailTemplateAPi<'confirmInterview_email_applicant'>['comp_email_placeholders'] =
     {
-      '{{ candidateFirstName }}': first_name,
-      '{{ jobTitle }}': job_title,
-      '{{ companyName }}': company,
-      '{{ supportLink }}': '',
-      '{{ recruiterFullName }}': getFullName(
+      candidateFirstName: first_name,
+      candidateLastName: last_name,
+      candidateName: getFullName(first_name, last_name),
+      companyName: company,
+      jobRole: job_title,
+      recruiterFirstName: recruiter_user.first_name,
+      recruiterLastName: recruiter_user.last_name,
+      recruiterTimeZone: recruiter_tz,
+      recruiterName: getFullName(
         recruiter_user.first_name,
-        recruiter_user.last_name,
+        recruiter_user.first_name,
       ),
     };
 
@@ -100,5 +125,6 @@ export async function fetchUtil(
     filled_comp_template,
     react_email_placeholders,
     recipient_email: cand_email,
+    mail_attachments,
   };
 }

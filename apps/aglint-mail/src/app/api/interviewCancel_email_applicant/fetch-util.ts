@@ -30,7 +30,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,email,timezone,recruiter_id,recruiter(logo)),public_jobs(job_title,company,recruiter)',
+        'candidates(first_name,last_name,email,timezone,recruiter_id,recruiter(logo)),public_jobs(job_title,company,recruiter)',
       )
       .eq('id', req_body.application_id),
   );
@@ -40,6 +40,7 @@ export async function fetchUtil(
       .select('first_name,last_name,scheduling_settings')
       .eq('user_id', candidateJob.public_jobs.recruiter),
   );
+  const recruiter_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
 
   const cand_tz = 'America/Los_Angeles';
 
@@ -73,13 +74,18 @@ export async function fetchUtil(
 
   const comp_email_placeholder: EmailTemplateAPi<'interviewCancel_email_applicant'>['comp_email_placeholders'] =
     {
-      '{{ candidateFirstName }}': candidates.first_name,
-      '{{ companyName }}': public_jobs.company,
-      '{{ jobTitle }}': public_jobs.job_title,
-      '{{ recruiterFullName }}': getFullName(
+      candidateFirstName: candidates.first_name,
+      companyName: public_jobs.company,
+      jobRole: public_jobs.job_title,
+      recruiterName: getFullName(
         recruiter_user.first_name,
         recruiter_user.last_name,
       ),
+      candidateLastName: candidates.last_name,
+      candidateName: getFullName(candidates.first_name, candidates.last_name),
+      recruiterFirstName: recruiter_user.first_name,
+      recruiterLastName: recruiter_user.last_name,
+      recruiterTimeZone: recruiter_tz,
     };
 
   const filled_comp_template = fillCompEmailTemplate(

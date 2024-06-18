@@ -25,10 +25,18 @@
   justify-content: flex-start;
   flex-wrap: nowrap;
   align-items: center;
-  grid-column-gap: var(--space-4);
-  grid-row-gap: var(--space-4);
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
 
   text-align: center;
+}
+
+.ic-tittle-wrap {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .slot-interview-confirmed-banner {
