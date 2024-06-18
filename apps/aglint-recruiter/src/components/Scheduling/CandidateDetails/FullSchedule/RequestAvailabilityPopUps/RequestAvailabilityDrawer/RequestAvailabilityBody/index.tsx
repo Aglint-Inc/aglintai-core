@@ -56,34 +56,35 @@ function RequestAvailabilityBody({
       // gap={'var(--space-2)'}
     >
       <Stack p={2} height={'80px'} direction={'row'}>
-        {[...availableSlots, [{}]]?.map(
-          (ele: PlanCombinationRespType[][], i) => {
-            const firstIndex = 0;
-            const lastIndex = [...availableSlots, {}].length - 1;
+        {availableSlots &&
+          [...availableSlots, [{}]]?.map(
+            (ele: PlanCombinationRespType[][], i) => {
+              const firstIndex = 0;
+              const lastIndex = [...availableSlots, {}].length - 1;
 
-            return (
-              <Stepper
-                key={i}
-                isLeftLine={i !== firstIndex}
-                isRightLine={i !== lastIndex}
-                textStepName={
-                  i === lastIndex
-                    ? 'Final Confirmation'
-                    : `Pick Slot For Day ${i + 1}`
-                }
-                isCurrent={selectedIndex === i}
-                isCompleted={i < selectedIndex}
-                onClickCompleted={{
-                  onClick: () => {
-                    if (i < lastIndex) {
-                      setSelectedIndex(i);
-                    }
-                  },
-                }}
-              />
-            );
-          },
-        )}
+              return (
+                <Stepper
+                  key={i}
+                  isLeftLine={i !== firstIndex}
+                  isRightLine={i !== lastIndex}
+                  textStepName={
+                    i === lastIndex
+                      ? 'Final Confirmation'
+                      : `Pick Slot For Day ${i + 1}`
+                  }
+                  isCurrent={selectedIndex === i}
+                  isCompleted={i < selectedIndex}
+                  onClickCompleted={{
+                    onClick: () => {
+                      if (i < lastIndex) {
+                        setSelectedIndex(i);
+                      }
+                    },
+                  }}
+                />
+              );
+            },
+          )}
       </Stack>
       <Divider
         sx={{
