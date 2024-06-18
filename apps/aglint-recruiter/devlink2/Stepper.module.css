@@ -1,0 +1,122 @@
+.stepper {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  width: 100%;
+  height: 60px;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+
+  background-color: white;
+}
+
+.stepper_upcoming {
+  z-index: 2;
+
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+
+  background-color: white;
+}
+
+.stepper_state {
+  display: grid;
+  width: 100%;
+  align-content: center;
+  grid-auto-columns: 1fr;
+  grid-template-columns: 1fr max-content 1fr;
+  grid-template-rows: auto auto;
+}
+
+.connector {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.connector_line {
+  width: 100%;
+  height: 2px;
+  background-color: var(--accent-9);
+}
+
+.connector_line.upcoming_step {
+  background-color: var(--neutral-4);
+}
+
+.embed_flex {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.embed_flex.relative_3 {
+  position: relative;
+  z-index: 3;
+}
+
+.embed_flex.is_cursor {
+  cursor: pointer;
+}
+
+.stepper_text {
+  padding-right: var(--space-3);
+  padding-left: var(--space-3);
+}
+
+.stepper_active {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 2;
+
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+
+  background-color: white;
+}
+
+.stepper_completed {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 3;
+
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+
+  background-color: white;
+}
+
+.completed_onclick {
+  cursor: pointer;
+}

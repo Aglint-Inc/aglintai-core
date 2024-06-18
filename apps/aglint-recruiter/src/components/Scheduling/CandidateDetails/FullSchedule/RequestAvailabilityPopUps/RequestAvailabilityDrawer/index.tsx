@@ -20,7 +20,6 @@ import { useAllActivities, useGetScheduleApplication } from '../../../hooks';
 import { updateCandidateRequestAvailability } from '../../../RequestAvailability/RequestAvailabilityContext';
 import { useSchedulingApplicationStore } from '../../../store';
 import { useAvailabilityContext } from '../RequestAvailabilityContext';
-import FinalScreen from './ FinalScreen';
 import RequestAvailabilityBody from './RequestAvailabilityBody';
 
 function RequestAvailabilityDrawer() {
@@ -162,11 +161,9 @@ function RequestAvailabilityDrawer() {
                 <DynamicLoader />
               </Stack>
             </ShowCode.When>
-            <ShowCode.When isTrue={selectedIndex === availableSlots?.length}>
-              <FinalScreen />
-            </ShowCode.When>
+
             <ShowCode.Else>
-              <RequestAvailabilityBody />
+              <RequestAvailabilityBody availableSlots={availableSlots} />
             </ShowCode.Else>
           </ShowCode>
         }
