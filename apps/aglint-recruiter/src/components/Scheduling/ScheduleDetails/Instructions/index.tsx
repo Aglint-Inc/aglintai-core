@@ -1,65 +1,54 @@
-import { Stack } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
+import { Dialog, Stack } from '@mui/material';
 import { marked } from 'marked';
 import { useState } from 'react';
 
-import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { GeneralPopupLarge } from '@/devlink3/GeneralPopupLarge';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
-import { ScheduleMeeting } from '../types';
+function Instructions({
+  instruction,
+  setTextValue,
+  updateInstruction,
+  showEditButton,
+}: {
+  instruction: string;
+  updateInstruction: any;
+  showEditButton: boolean;
+  setTextValue: any;
+}) {
+  const [edit, setEdit] = useState(false);
 
-function Instructions({ schedule }: { schedule: ScheduleMeeting }) {
-  const { recruiterUser } = useAuthDetails();
-  const [textValue, setTextValue] = useState(null);
-
-  const queryClient = useQueryClient();
-  const refetch = () => {
-    queryClient.invalidateQueries({
-      queryKey: ['schedule_details', schedule.interview_meeting.id],
-    });
-  };
-
-  async function updateInstruction() {
-    try {
-      if (textValue) {
-        const { error } = await supabase
-          .from('interview_meeting')
-          .update({ instructions: textValue })
-          .eq('id', schedule.interview_meeting.id);
-        if (error) throw Error(error.message);
-        refetch();
-        toast.success('Instruction updated successfully.');
-      } else {
-        toast.warning('Please provide instructions.');
-      }
-    } catch (error) {
-      toast.error(error.message);
-    }
+  function closeModal() {
+    setEdit(false);
   }
 
   return (
     <>
-      <ShowCode>
-        <ShowCode.When
-          isTrue={
-            recruiterUser.role === 'admin' ||
-            recruiterUser.role === 'recruiter' ||
-            schedule.schedule.coordinator_id === recruiterUser.user_id
-          }
-        >
-          <>
+      <Dialog
+        aria-labelledby='modal-modal-title'
+        aria-describedby='modal-modal-description'
+        onClose={closeModal}
+        open={edit}
+        maxWidth={'md'}
+      >
+        <GeneralPopupLarge
+          isDescriptionVisibe={false}
+          textPopupTitle={'Edit Instruction'}
+          isIcon={false}
+          textDescription={''}
+          slotPopup={
             <Stack
               sx={{
-                margin: '20px',
+                // margin: '20px',
                 maxWidth: '800px',
                 border: '1px solid',
                 borderColor: 'var(--neutral-6)',
                 borderRadius: 'var(--radius-2)',
               }}
+              height={'500px'}
+              overflow={'auto'}
             >
               <TipTapAIEditor
                 enablAI={false}
@@ -67,35 +56,44 @@ function Instructions({ schedule }: { schedule: ScheduleMeeting }) {
                 handleChange={(html) => {
                   setTextValue(html);
                 }}
-                initialValue={schedule.interview_meeting.instructions}
+                initialValue={instruction}
               />
             </Stack>
-            <Stack direction={'row'} justifyContent={'end'} maxWidth='820px'>
-              <ButtonPrimaryRegular
-                textLabel={'Save'}
+          }
+          textPopupButton={'Save'}
+          onClickAction={{
+            onClick: () => {
+              updateInstruction();
+              closeModal();
+            },
+          }}
+          onClickClose={{
+            onClick: closeModal,
+          }}
+        />
+      </Dialog>
+      <Stack gap={2} direction={'column'} p={'var(--space-5)'}>
+        <ShowCode>
+          <ShowCode.When isTrue={showEditButton}>
+            <Stack direction={'row'} justifyContent={'start'}>
+              <ButtonSoft
+                size={1}
+                textButton={'Edit Instruction'}
                 onClickButton={{
                   onClick: () => {
-                    updateInstruction();
+                    setEdit(true);
                   },
                 }}
               />
             </Stack>
-          </>
-        </ShowCode.When>
-        <ShowCode.Else>
-          <div
-            style={{
-              padding: '20px',
-            }}
-            dangerouslySetInnerHTML={{
-              __html: marked(
-                schedule.interview_meeting.instructions ||
-                  'Instructions not given',
-              ),
-            }}
-          ></div>
-        </ShowCode.Else>
-      </ShowCode>
+          </ShowCode.When>
+        </ShowCode>
+        <div
+          dangerouslySetInnerHTML={{
+            __html: marked(instruction || 'Instructions not given'),
+          }}
+        ></div>
+      </Stack>
     </>
   );
 }
