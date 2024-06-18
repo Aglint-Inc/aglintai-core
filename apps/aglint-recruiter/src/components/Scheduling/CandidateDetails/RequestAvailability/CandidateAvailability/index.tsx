@@ -5,17 +5,11 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GlobalBadge } from '@/devlink/GlobalBadge';
-import { SessionInfo } from '@/devlink/SessionInfo';
 import { Text } from '@/devlink/Text';
 import { AvailabilityReq } from '@/devlink2/AvailabilityReq';
 import { GlobalIcon } from '@/devlink2/GlobalIcon';
-import { MultidayCard } from '@/devlink2/MultidayCard';
 import { MultiDaySelect } from '@/devlink2/MultiDaySelect';
-import { SelectedSlot } from '@/devlink2/SelectedSlot';
 import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
@@ -27,14 +21,13 @@ import {
   insertTaskProgress,
   useRequestAvailabilityContext,
 } from '../RequestAvailabilityContext';
-import { convertMinutesToHoursAndMinutes } from '../utils';
 import AvailableSlots from './AvailableSlots';
 import DateSlotsPoPup from './DateSlotsPopUp';
+import DaySessionCard from './DaySessionCard';
 
 function CandidateAvailability() {
   const router = useRouter();
   const {
-    setOpenDaySlotPopup,
     multiDaySessions,
     candidateRequestAvailability,
     daySlots,
@@ -47,9 +40,6 @@ function CandidateAvailability() {
     setDaySlots,
   } = useRequestAvailabilityContext();
   const [submitLoading, setSubmitLoading] = useState(false);
-  const handleOpen = async (day: number) => {
-    setOpenDaySlotPopup(day);
-  };
 
   async function handleSubmit() {
     if (multiDaySessions.length !== daySlots.length) {
@@ -264,97 +254,11 @@ function CandidateAvailability() {
                       daySlots.find((ele) => ele.round === i + 1)?.dates || [];
                     return (
                       <>
-                        <MultidayCard
-                          textDayCount={`Day ${i + 1}`}
-                          isSelected={
-                            daySlots.length &&
-                            daySlots.map((ele) => ele.round).includes(i + 1)
-                          }
-                          textTotalDuration={convertMinutesToHoursAndMinutes(
-                            totalSessionMinutes,
-                          )}
-                          slotSessionInfo={sessions.map((session, i) => {
-                            return (
-                              <SessionInfo
-                                textSessionName={session.name}
-                                textSessionDuration={convertMinutesToHoursAndMinutes(
-                                  session.session_duration,
-                                )}
-                                key={i}
-                              />
-                            );
-                          })}
-                          slotPickDateButton={
-                            <ShowCode>
-                              <ShowCode.When
-                                isTrue={
-                                  (daySlots
-                                    .map((ele) => ele.round)
-                                    .includes(i) ||
-                                    i < 1) &&
-                                  !daySlots
-                                    .map((ele) => ele.round)
-                                    .includes(i + 1)
-                                }
-                              >
-                                <ButtonSoft
-                                  size={1}
-                                  textButton={'Pick Slots'}
-                                  onClickButton={{
-                                    onClick: () => handleOpen(i + 1),
-                                  }}
-                                />
-                              </ShowCode.When>
-                            </ShowCode>
-                          }
-                          slotChangeButton={
-                            <ShowCode>
-                              <ShowCode.When
-                                isTrue={
-                                  !isSubmitted &&
-                                  daySlots.length &&
-                                  daySlots
-                                    .map((ele) => ele.round)
-                                    .includes(i + 1)
-                                }
-                              >
-                                <ButtonGhost
-                                  size={1}
-                                  onClickButton={{
-                                    onClick: () => handleOpen(i + 1),
-                                  }}
-                                  textButton={'Change'}
-                                />
-                              </ShowCode.When>
-                            </ShowCode>
-                          }
-                          textSelectedSlots={`Selected ${dates.map((ele) => ele.slots).flat().length} slots across ${dates.length} days `}
-                          // date listing slots
-
-                          slotSelected={
-                            dates.length &&
-                            dates.map((ele, i) => {
-                              return (
-                                <SelectedSlot
-                                  textDate={dayjs(ele.curr_day).format(
-                                    'DD MMMM YYYY',
-                                  )}
-                                  slotBadge={ele.slots.map((slot, i) => {
-                                    return (
-                                      <GlobalBadge
-                                        color={
-                                          isSubmitted ? 'success' : 'warning'
-                                        }
-                                        key={i}
-                                        textBadge={`${dayjs(slot.startTime).format('hh:mm A')} - ${dayjs(slot.endTime).format('hh:mm A')}`}
-                                      />
-                                    );
-                                  })}
-                                  key={i}
-                                />
-                              );
-                            })
-                          }
+                        <DaySessionCard
+                          cardIndex={i}
+                          totalSessionMinutes={totalSessionMinutes}
+                          sessions={sessions}
+                          dates={dates}
                         />
                       </>
                     );
@@ -378,93 +282,12 @@ function CandidateAvailability() {
                         [];
                       return (
                         <>
-                          <MultidayCard
-                            textDayCount={``}
-                            isSelected={
-                              daySlots.length &&
-                              daySlots.map((ele) => ele.round).includes(i + 1)
-                            }
-                            textTotalDuration={convertMinutesToHoursAndMinutes(
-                              totalSessionMinutes,
-                            )}
-                            slotSessionInfo={sessions.map((session, i) => {
-                              return (
-                                <SessionInfo
-                                  textSessionName={session.name}
-                                  textSessionDuration={convertMinutesToHoursAndMinutes(
-                                    session.session_duration,
-                                  )}
-                                  key={i}
-                                />
-                              );
-                            })}
-                            slotPickDateButton={
-                              <ShowCode>
-                                <ShowCode.When
-                                  isTrue={
-                                    !daySlots
-                                      .map((ele) => ele.round)
-                                      .includes(i + 1)
-                                  }
-                                >
-                                  <ButtonSoft
-                                    size={1}
-                                    textButton={'Pick Slots'}
-                                    onClickButton={{
-                                      onClick: () => handleOpen(i + 1),
-                                    }}
-                                  />
-                                </ShowCode.When>
-                              </ShowCode>
-                            }
-                            slotChangeButton={
-                              <ShowCode>
-                                <ShowCode.When
-                                  isTrue={
-                                    !isSubmitted &&
-                                    daySlots.length &&
-                                    daySlots
-                                      .map((ele) => ele.round)
-                                      .includes(i + 1)
-                                  }
-                                >
-                                  <ButtonGhost
-                                    size={1}
-                                    onClickButton={{
-                                      onClick: () => handleOpen(i + 1),
-                                    }}
-                                    textButton={'Change'}
-                                  />
-                                </ShowCode.When>
-                              </ShowCode>
-                            }
-                            textSelectedSlots={`Selected ${dates.map((ele) => ele.slots).flat().length} slots across ${dates.length} days `}
-                            // date listing slots
-
-                            slotSelected={
-                              dates.length &&
-                              dates.map((ele, i) => {
-                                return (
-                                  <SelectedSlot
-                                    textDate={dayjs(ele.curr_day).format(
-                                      'DD MMMM YYYY',
-                                    )}
-                                    slotBadge={ele.slots.map((slot, i) => {
-                                      return (
-                                        <GlobalBadge
-                                          color={
-                                            isSubmitted ? 'success' : 'warning'
-                                          }
-                                          key={i}
-                                          textBadge={`${dayjs(slot.startTime).format('hh:mm A')} - ${dayjs(slot.endTime).format('hh:mm A')}`}
-                                        />
-                                      );
-                                    })}
-                                    key={i}
-                                  />
-                                );
-                              })
-                            }
+                          <DaySessionCard
+                            showDayCount={false}
+                            cardIndex={i}
+                            totalSessionMinutes={totalSessionMinutes}
+                            sessions={sessions}
+                            dates={dates}
                           />
                         </>
                       );
