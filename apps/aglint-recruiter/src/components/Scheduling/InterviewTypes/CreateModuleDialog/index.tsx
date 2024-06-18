@@ -75,7 +75,7 @@ function CreateModuleDialog() {
       <ConfirmationPopup
         isDescriptionVisible={false}
         textPopupTitle={'Create Interview Type'}
-        textPopupDescription={''}
+        textPopupDescription={'Create a new interview type by specifying the name, department, and objective, and indicate if training is required.'}
         isIcon={false}
         slotWidget={
           <Stack spacing={2} width={'100%'}>

@@ -13,7 +13,7 @@ function FilterTasks() {
         setValue: (e) => {
           handelSearch(e);
         },
-        placeholder: 'Search by candidate name or job title',
+        placeholder: 'Search candidates.',
       }}
       filters={[
         {

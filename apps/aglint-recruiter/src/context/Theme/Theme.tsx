@@ -414,11 +414,14 @@ function Theme({ children }) {
         },
         styleOverrides: {
           root: {
+            '& fieldset legend': {
+              display: 'none',
+            },
             '& .MuiInputLabel-root': {
               display: 'none',
             },
-            '& fieldset legend': {
-              display: 'none',
+            '& .MuiInputBase-root .MuiButtonBase-root': {
+              paddingRight: 0, // Remove the right padding for ButtonBase in Autocomplete TextField
             },
           },
         },

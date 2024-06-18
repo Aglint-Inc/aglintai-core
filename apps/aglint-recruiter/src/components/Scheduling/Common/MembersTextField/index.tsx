@@ -157,11 +157,11 @@ function MembersAutoComplete({
                 sx={{
                   width: '100%',
                   p: '6px 8px',
-                  borderTop: ind === 0 ? 'none' : '1px solid #F8F9F9',
+                  borderTop: ind === 0 ? 'none' : '1px solid var(--neutral-6)',
                   backgroundColor: selectedUsers.find(
                     (user) => user.user_id === option.user_id,
                   )
-                    ? '#F8F9F9'
+                    ? 'var(--neutral-3)'
                     : 'transparent',
                   cursor: 'pointer',
                 }}
@@ -196,7 +196,7 @@ function MembersAutoComplete({
                   width={'100%'}
                 >
                   <Typography
-                    variant='subtitle2'
+                    variant='body1'
                     className='one-line-clamp'
                     sx={{ textTransform: 'capitalize' }}
                   >
