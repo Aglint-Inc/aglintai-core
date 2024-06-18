@@ -116,9 +116,3 @@ export async function fetchUtil(
     recipient_email: recruiter_user.email,
   };
 }
-
-// {
-//   "application_id": "0ab5542d-ae98-4255-bb60-358a9c8e0637",
-//   "meeting_id": "8daab34c-9c19-445b-aa96-3b4735307414",
-//   "recruiter_user_ids": ["7f6c4cae-78b6-4eb6-86fd-9a0e0310147b", "a0e4d0db-7492-48c3-bbc9-a8f7d8340f7f"]
-// }
