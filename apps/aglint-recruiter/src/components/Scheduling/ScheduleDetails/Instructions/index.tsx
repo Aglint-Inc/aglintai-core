@@ -43,6 +43,7 @@ function Instructions({
               sx={{
                 // margin: '20px',
                 maxWidth: '800px',
+                minWidth: '800px',
                 border: '1px solid',
                 borderColor: 'var(--neutral-6)',
                 borderRadius: 'var(--radius-2)',
