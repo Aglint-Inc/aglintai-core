@@ -250,6 +250,7 @@ export * from "./StatusBadge";
 export * from "./Stepper";
 export * from "./SubMenu";
 export * from "./SublinkSubMenu";
+export * from "./Stepper";
 export * from "./SublinkTab";
 export * from "./SubmittedCard";
 export * from "./SummaryBlock";

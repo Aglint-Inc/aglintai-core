@@ -47,8 +47,8 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .icons {
@@ -87,8 +87,8 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: var(--space-4);
-  grid-row-gap: var(--space-4);
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .gsc-icon-wrap {
@@ -126,8 +126,8 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .gsc-meeting-wrap {
@@ -149,8 +149,8 @@
   padding: var(--space-2) var(--space-4);
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 
   border-radius: var(--radius-3);
 

@@ -32,7 +32,7 @@ export function CompanyLocation({
       <Text content={textLocationHeader} weight="medium" />
       <Text content={textFullAddress} />
       <_Builtin.Block
-        className={_utils.cx(_styles, "flex-horizontal", "center", "gap-2")}
+        className={_utils.cx(_styles, "flex-horizontal", "center", "gap-1")}
         tag="div"
       >
         <_Builtin.HtmlEmbed
@@ -63,7 +63,7 @@ export function CompanyLocation({
           className={_utils.cx(_styles, "cl-badge-wrap")}
           tag="div"
         >
-          <GlobalBadge textBadge="Headquaters" />
+          <GlobalBadge textBadge="Headquarters" />
         </_Builtin.Block>
       ) : null}
     </_Component>
