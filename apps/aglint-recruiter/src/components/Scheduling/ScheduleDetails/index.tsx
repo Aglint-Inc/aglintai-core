@@ -1,5 +1,6 @@
 // import Feedback from './Feedback';
 import { Stack } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -8,6 +9,8 @@ import { PageLayout } from '@/devlink2/PageLayout';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ScheduleDetailTabs } from '@/devlink3/ScheduleDetailTabs';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';
@@ -22,11 +25,12 @@ import Overview from './Overview';
 
 function SchedulingViewComp() {
   const router = useRouter();
-  const { isAllowed } = useAuthDetails();
+  const { isAllowed, recruiterUser } = useAuthDetails();
   const { data, isPending, refetch, isFetched } = useScheduleDetails();
   const [isChangeInterviewerOpen, setIsChangeInterviewerOpen] = useState(false);
   const [isCancelOpen, setIsCancelOpen] = useState(false);
   const [cancelUserId, setCancelUserId] = useState('');
+  const [textValue, setTextValue] = useState('');
 
   const schedule = data?.schedule_data;
   const cancelReasons = data?.cancel_data?.filter(
@@ -43,6 +47,31 @@ function SchedulingViewComp() {
       hide: false,
     },
   ];
+  const queryClient = useQueryClient();
+
+  const refetchInstruction = () => {
+    queryClient.invalidateQueries({
+      queryKey: ['schedule_details', schedule.interview_meeting.id],
+    });
+  };
+
+  async function updateInstruction() {
+    try {
+      if (textValue) {
+        const { error } = await supabase
+          .from('interview_meeting')
+          .update({ instructions: textValue })
+          .eq('id', schedule.interview_meeting.id);
+        if (error) throw Error(error.message);
+        refetchInstruction();
+        toast.success('Instruction updated successfully.');
+      } else {
+        toast.warning('Please provide instructions.');
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
 
   return (
     <ShowCode>
@@ -136,7 +165,19 @@ function SchedulingViewComp() {
                     )}
                   </ShowCode.When>
                   <ShowCode.When isTrue={router.query.tab === 'instructions'}>
-                    <Instructions schedule={schedule} />
+                    <Instructions
+                      instruction={
+                        schedule?.interview_meeting.instructions as string
+                      }
+                      setTextValue={setTextValue}
+                      showEditButton={
+                        recruiterUser.role === 'admin' ||
+                        recruiterUser.role === 'recruiter' ||
+                        schedule.schedule.coordinator_id ===
+                          recruiterUser.user_id
+                      }
+                      updateInstruction={updateInstruction}
+                    />
                   </ShowCode.When>
                   <ShowCode.When isTrue={router.query.tab === 'feedback'}>
                     <Stack margin={'var(--space-4)'}>
