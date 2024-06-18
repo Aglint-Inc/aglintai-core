@@ -213,6 +213,7 @@ export * from "./Slot";
 export * from "./SlotComp";
 export * from "./SlotPicker";
 export * from "./StatusBadge";
+export * from "./Stepper";
 export * from "./SublinkTab";
 export * from "./SubmittedCard";
 export * from "./SummaryBlock";
