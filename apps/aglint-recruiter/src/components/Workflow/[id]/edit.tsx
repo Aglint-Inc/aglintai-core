@@ -1,5 +1,5 @@
 import { Dialog } from '@mui/material';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
@@ -26,11 +26,14 @@ const Edit = () => {
       setPopup({ form: { ...popup.form, ...newForms } }),
   }));
 
-  const initialInput = {
-    title,
-    description,
-    auto_connect,
-  };
+  const initialInput = useMemo(
+    () => ({
+      title,
+      description,
+      auto_connect,
+    }),
+    [title, description, auto_connect],
+  );
 
   const handleClose = () => {
     closePopup(initialInput);
@@ -52,7 +55,7 @@ const Edit = () => {
 
   useEffect(() => {
     closePopup(initialInput);
-  }, []);
+  }, [initialInput]);
 
   return (
     <>
