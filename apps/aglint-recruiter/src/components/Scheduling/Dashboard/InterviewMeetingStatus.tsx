@@ -51,8 +51,7 @@ const InterviewMeetingStatusComponent = ({
 
   if (status === 'pending') return <Loader />;
 
-  if (!(!!data && !!Array.isArray(data) && data.length !== 0))
-    return <NoData />;
+  if (!data?.filter((item) => item.cancelled).length) return <NoData />;
 
   const safeData = interviewMeetingTimeFormat(type, data).reduce(
     (acc, curr) => {
@@ -64,7 +63,6 @@ const InterviewMeetingStatusComponent = ({
     },
     {} as InterviewMeetingStatusCountProps['interviewMeetingStatus'],
   );
-
   return (
     <Stack height={'100%'}>
       <StackedBar interviewMeetingStatus={safeData} />
