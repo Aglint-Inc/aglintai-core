@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo } from 'react';
 
 import { JobDetails } from '@/devlink2/JobDetails';
 import { NewTabPill } from '@/devlink3/NewTabPill';
+import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useKeyPress } from '@/src/context/ApplicationsContext/hooks';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
@@ -81,6 +82,8 @@ const NewJobDetailsTabs = () => {
     }),
   );
 
+  const drawerOpen = useApplicationStore(({ drawer }) => drawer.open);
+
   const count = useMemo(
     () => (job?.activeSections ?? []).length,
     [job?.activeSections],
@@ -100,16 +103,14 @@ const NewJobDetailsTabs = () => {
     }
   }, [job?.activeSections, section, count]);
 
-  const { pressed: shift } = useKeyPress('Shift');
   const { pressed: right } = useKeyPress('ArrowRight');
   const { pressed: left } = useKeyPress('ArrowLeft');
 
   useEffect(() => {
-    if (shift) {
+    if (!drawerOpen)
       if (left) handleSelectPrevSection();
       else if (right) handleSelectNextSection();
-    }
-  }, [shift, left, right]);
+  }, [drawerOpen, left, right]);
 
   return (
     <>

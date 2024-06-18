@@ -68,16 +68,13 @@ const List = memo(() => {
     });
   }, [sectionApplication, currentIndex, applicationsCount, handleOpen]);
 
-  const { pressed: shift } = useKeyPress('Shift');
   const { pressed: up } = useKeyPress('ArrowUp');
   const { pressed: down } = useKeyPress('ArrowDown');
 
   useEffect(() => {
-    if (shift) {
-      if (up) handleSelectPrevApplication();
-      else if (down) handleSelectNextApplication();
-    }
-  }, [shift, up, down]);
+    if (up) handleSelectPrevApplication();
+    else if (down) handleSelectNextApplication();
+  }, [up, down]);
 
   const skeleton = useMemo(
     () => (
