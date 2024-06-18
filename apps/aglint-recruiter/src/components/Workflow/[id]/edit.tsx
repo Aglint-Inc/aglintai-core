@@ -1,14 +1,18 @@
 import { Dialog } from '@mui/material';
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 
-import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
-import { useWorkflows } from '@/src/context/Workflows';
+import { useWorkflow } from '@/src/context/Workflows/[id]';
 import { useWorkflowStore } from '@/src/context/Workflows/store';
 
-import { Form, Forms, validate } from '../../common';
+import { Form, Forms, validate } from '../common';
 
-const Create = () => {
+const Edit = () => {
+  const {
+    workflow: { title, description, auto_connect },
+    handleUpdateWorkflow,
+  } = useWorkflow();
+
   const {
     popup: { open, form },
     setPopup,
@@ -22,7 +26,15 @@ const Create = () => {
       setPopup({ form: { ...popup.form, ...newForms } }),
   }));
 
-  const { handleCreateWorkflow } = useWorkflows();
+  const initialInput = {
+    title,
+    description,
+    auto_connect,
+  };
+
+  const handleClose = () => {
+    closePopup(initialInput);
+  };
 
   const handleSubmit = () => {
     const { error, newForms } = validate(form);
@@ -30,33 +42,20 @@ const Create = () => {
       setPopup({ form: newForms });
       return;
     }
-    handleCreateWorkflow({
+    handleUpdateWorkflow({
       title: form.title.value,
       description: form.description.value,
       auto_connect: form.auto_connect.value,
-      phase: 'now',
-      trigger: 'sendAvailReqReminder',
     });
-    closePopup();
+    handleClose();
   };
 
-  const handleClose = useCallback(() => {
-    closePopup();
-  }, []);
-
   useEffect(() => {
-    closePopup();
+    closePopup(initialInput);
   }, []);
 
   return (
     <>
-      <ButtonSolid
-        size={'2'}
-        iconName={'bolt'}
-        isLeftIcon={true}
-        textButton={'New Workflow'}
-        onClickButton={{ onClick: () => setPopup({ open: true }) }}
-      />
       <Dialog open={open} onClose={() => handleClose()}>
         <ConfirmationPopup
           isBlueButtonVisible={true}
@@ -67,8 +66,8 @@ const Create = () => {
           isYellowButtonVisible={false}
           onClickAction={{ onClick: () => handleSubmit() }}
           onClickCancel={{ onClick: () => handleClose() }}
-          textPopupTitle={'Create Workflow'}
-          textPopupButton={'Create Workflow'}
+          textPopupTitle={'Edit Workflow'}
+          textPopupButton={'Edit Workflow'}
           slotWidget={<Forms form={form} setForm={setForm} />}
           textPopupDescription={
             'Enter the name for workflow. Next, you will be able to add steps to the workflow.'
@@ -79,4 +78,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default Edit;

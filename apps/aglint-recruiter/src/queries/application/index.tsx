@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-query';
 import axios from 'axios';
 
+import { getActiveSection } from '@/src/context/JobsContext/hooks';
 import { GetInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
 import { supabase } from '@/src/utils/supabase/client';
 
@@ -25,6 +26,33 @@ export const applicationQuery = {
       { application_id },
     ] as const,
   }),
+  tabs: ({
+    job_id,
+    placeholderData,
+    isAssessmentEnabled,
+    isSchedulingEnabled,
+    isScreeningEnabled,
+  }: Omit<Params, 'application_id'> &
+    Partial<{
+      isAssessmentEnabled: boolean;
+      isSchedulingEnabled: boolean;
+      isScreeningEnabled: boolean;
+    }>) =>
+    queryOptions({
+      placeholderData: placeholderData?.tabs,
+      enabled: !!job_id,
+      gcTime: job_id ? 1 * 60_000 : 0,
+      queryKey: [...applicationQuery.all({ job_id }).queryKey, 'tabs'] as const,
+      queryFn: async () => {
+        const job = await getJobTabs({ job_id });
+        return getActiveSection({
+          isAssessmentEnabled,
+          isSchedulingEnabled,
+          isScreeningEnabled,
+          job,
+        });
+      },
+    }),
   meta: ({ application_id, job_id, placeholderData }: Params) =>
     queryOptions({
       placeholderData: placeholderData?.meta,
@@ -121,6 +149,7 @@ type ApplicationAllQueryPrerequistes = {
 type Params = ApplicationAllQueryPrerequistes & {
   application_id: DatabaseTable['applications']['id'];
   placeholderData?: {
+    tabs?: Awaited<ReturnType<typeof getActiveSection>>;
     meta?: Awaited<ReturnType<typeof getApplicationMeta>>;
     details?: Awaited<ReturnType<typeof getApplicationDetails>>;
     interview?: Awaited<ReturnType<typeof getApplicationInterview>>;
@@ -128,6 +157,16 @@ type Params = ApplicationAllQueryPrerequistes & {
 };
 
 type ToggleParams = { enabled: boolean } & Params;
+
+const getJobTabs = async ({ job_id }: Pick<Params, 'job_id'>) =>
+  (
+    await supabase
+      .from('public_jobs')
+      .select('phone_screen_enabled, assessment')
+      .eq('id', job_id)
+      .single()
+      .throwOnError()
+  ).data;
 
 const getApplicationMeta = async ({
   application_id,
