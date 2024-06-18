@@ -6,6 +6,7 @@ type Filters = {
 };
 
 export type FiltersSlice = {
+  initialFilters: Filters;
   filters: Filters;
   // eslint-disable-next-line no-unused-vars
   setFilters: (filters: Partial<Filters>) => void;
@@ -18,6 +19,7 @@ const initialFilters: Filters = {
 };
 
 export const createFiltersSlice: CreateSlice<FiltersSlice> = (set) => ({
+  initialFilters,
   filters: structuredClone(initialFilters),
   setFilters: (filters) =>
     set((state) => ({
