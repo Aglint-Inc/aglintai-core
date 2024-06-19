@@ -166,19 +166,23 @@ export function nestedObjectToArray(
     label: string;
   }[][] = [];
 
-  function mapOption({
-    optionList,
-    selectedOptions,
-    isArray = false,
-    path = [],
-    index,
-  }: {
-    optionList: nestedOptionMapperType;
-    selectedOptions: nestedType<string[]>;
-    isArray?: boolean;
-    path?: string[];
-    index: number;
-  }) {
+  function mapOption(
+    {
+      optionList,
+      selectedOptions,
+      isArray = false,
+      header = null,
+      index,
+    }: {
+      optionList: nestedOptionMapperType;
+      selectedOptions: nestedType<string[]>;
+      header?: string;
+      isArray?: boolean;
+      // path?: string[];
+      index: number;
+    },
+    pathArr: string[] = [],
+  ) {
     const tempItem = res[Number(index)] || [];
     let temp_options: {
       status: 'active' | 'partial' | 'inactive';
@@ -198,14 +202,17 @@ export function nestedObjectToArray(
       temp_options = keys
         .map((key) => {
           const tempIsArray = Array.isArray(optionList[String(key)]);
-          return mapOption({
-            optionList: optionList[String(key)],
-            selectedOptions:
-              selectedOptions[String(key)] || (tempIsArray ? [] : {}),
-            isArray: tempIsArray,
-            path: [...path, key],
-            index: index + 1,
-          });
+          return mapOption(
+            {
+              optionList: optionList[String(key)],
+              selectedOptions:
+                selectedOptions?.[String(key)] || (tempIsArray ? [] : {}),
+              isArray: tempIsArray,
+              header: key,
+              index: index + 1,
+            },
+            [...pathArr, key],
+          );
         })
         .map(({ status, label }) => ({ status, label }));
     }
@@ -213,7 +220,7 @@ export function nestedObjectToArray(
     tempItem.push(
       ...temp_options.map(({ status, label: item }) => {
         return {
-          id: item,
+          id: [...pathArr, item].join('.'),
           status: status,
           label: item,
         };
@@ -231,7 +238,7 @@ export function nestedObjectToArray(
       }, temp_options[0].status);
     return {
       status: status || 'inactive',
-      label: path.join('.'),
+      label: header,
     };
   }
 
@@ -243,4 +250,26 @@ export function nestedObjectToArray(
   });
 
   return res;
+}
+
+export function arrayToNestedObject(
+  res: {
+    id: string;
+    status: 'active' | 'partial' | 'inactive';
+    label: string;
+  }[],
+) {
+  let obj: nestedType<String[]> = {};
+  function setVal(object, path, value) {
+    if (path.length === 1) {
+      object[path[0]] = [...(object[path[0]] || []), value];
+      return object;
+    }
+    return setVal(object[path[0]] || {}, path?.slice(1) || [], value);
+  }
+  res.forEach((item) => {
+    if (!item.id?.length) return;
+    obj = setVal(obj, item.id?.split('.'), item.label);
+  });
+  return obj;
 }
