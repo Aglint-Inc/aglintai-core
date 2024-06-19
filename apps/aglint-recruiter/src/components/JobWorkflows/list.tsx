@@ -178,8 +178,8 @@ const WorkflowBrowser = () => {
           case 'job':
             return (
               filters.job.length === 0 ||
-              !!jobs.reduce((acc, curr: any) => {
-                if ((value as string[]).includes(curr)) acc.push(curr);
+              !!jobs.reduce((acc, curr) => {
+                if ((value as string[]).includes(curr.job_id)) acc.push(curr);
                 return acc;
               }, []).length
             );
