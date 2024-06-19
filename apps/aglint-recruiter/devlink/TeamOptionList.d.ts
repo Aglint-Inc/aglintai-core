@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as Types from "./types";
+import * as React from 'react';
+import * as Types from './types';
 
 declare function TeamOptionList(props: {
   as?: React.ElementType;
@@ -13,4 +13,6 @@ declare function TeamOptionList(props: {
   isSuspendVisible?: Types.Visibility.VisibilityConditions;
   isMarkActiveVisible?: Types.Visibility.VisibilityConditions;
   isDeleteVisible?: Types.Visibility.VisibilityConditions;
+  isResetPasswordVisible?: Types.Visibility.VisibilityConditions;
+  onClickResetPassword?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

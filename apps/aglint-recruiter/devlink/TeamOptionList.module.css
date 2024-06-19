@@ -11,12 +11,7 @@
   grid-column-gap: var(--space-4);
   grid-row-gap: var(--space-4);
 
-  border: 1px solid var(--neutral-6);
-  border-radius: var(--radius-4);
-
   background-color: var(--white);
-
-  box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
 }
 
 .team-action-item {
