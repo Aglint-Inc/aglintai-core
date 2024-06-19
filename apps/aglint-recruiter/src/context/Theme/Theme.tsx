@@ -750,15 +750,15 @@ function Theme({ children }) {
           },
         },
       },
-      // MuiPopover: {
-      //   styleOverrides: {
-      //     paper: {
-      //       padding: 0,
-      //       borderRadius: 'var(--radius-2)',
-      //       boxShadow: 'var(--shadow-3)', // Level 3 shadow
-      //     },
-      //   },
-      // },
+      MuiPopover: {
+        styleOverrides: {
+          paper: {
+            padding: 0,
+            borderRadius: 'var(--radius-2)',
+            boxShadow: 'var(--shadow-3)', // Level 3 shadow
+          },
+        },
+      },
 
       MuiSkeleton: {
         styleOverrides: {
