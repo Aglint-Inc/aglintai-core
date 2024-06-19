@@ -32,9 +32,6 @@ function Instructions({
         onClose={closeModal}
         open={edit}
         maxWidth={'md'}
-        sx={{
-          minWidth: 800,
-        }}
       >
         <GeneralPopupLarge
           isDescriptionVisibe={false}

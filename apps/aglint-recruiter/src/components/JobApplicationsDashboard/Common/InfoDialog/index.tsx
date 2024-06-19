@@ -1,6 +1,7 @@
 import { Stack, Typography } from '@mui/material';
 import React from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { Checkbox } from '@/devlink/Checkbox';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import AUIButton from '@/src/components/Common/AUIButton';
@@ -30,7 +31,11 @@ function InfoDialog({
         <Stack spacing={'18px'} p={'28px'} bgcolor={'var(--white-a7'}>
           <Typography variant='body1'>{heading}</Typography>
           {subHeading && (
-            <Stack direction={'row'} alignItems={'center'} spacing={'var(--space-2)'}>
+            <Stack
+              direction={'row'}
+              alignItems={'center'}
+              spacing={'var(--space-2)'}
+            >
               <Checkbox
                 isChecked={checkEmail}
                 onClickCheck={{
@@ -77,9 +82,14 @@ function InfoDialog({
               direction={'row'}
               alignItems={'center'}
             >
-              <AUIButton onClick={onClose} variant='text'>
-                {secondaryText}
-              </AUIButton>
+              <ButtonGhost
+                color={'neutral'}
+                textButton={secondaryText}
+                size={2}
+                onClickButton={{
+                  onClick: onClose,
+                }}
+              />
               <AUIButton
                 onClick={() => {
                   primaryAction(checkEmail);

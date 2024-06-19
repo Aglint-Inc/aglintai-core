@@ -57,7 +57,6 @@ export const getTempVariables = (s: DatabaseEnums['email_slack_types']) => ({
 
           return true;
         }
-
         return component.ref?.onKeyDown(props);
       },
 

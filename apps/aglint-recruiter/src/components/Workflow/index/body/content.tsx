@@ -28,7 +28,9 @@ const Cards = (props: {
   data: ReturnType<typeof useWorkflows>['workflows']['data'];
 }) => {
   const { push } = useRouter();
-  const filters = useWorkflowStore((state) => state.filters);
+  const { filters, setDeletion } = useWorkflowStore(
+    ({ filters, setDeletion }) => ({ filters, setDeletion }),
+  );
   const { handleDeleteWorkflow, workflowMutations: mutations } = useWorkflows();
   const cards = props.data
     .filter(({ title, jobs }) => {
@@ -43,7 +45,7 @@ const Cards = (props: {
             return (
               filters.job.length === 0 ||
               !!jobs.reduce((acc, curr) => {
-                if ((value as string[]).includes(curr)) acc.push(curr);
+                if ((value as string[]).includes(curr.job_id)) acc.push(curr);
                 return acc;
               }, []).length
             );
@@ -60,7 +62,12 @@ const Cards = (props: {
             textWorkflowName={title}
             textWorkflowTrigger={getTriggerOption(trigger, phase)}
             textJobs={`Used in ${jobCount} job${jobCount === 1 ? '' : 's'}`}
-            onClickDelete={{ onClick: () => handleDeleteWorkflow({ id }) }}
+            onClickDelete={{
+              onClick: () =>
+                jobCount === 0
+                  ? handleDeleteWorkflow({ id })
+                  : setDeletion({ open: true, workflow: { id, jobs } }),
+            }}
             onClickEdit={{
               onClick: () => push(ROUTES['/workflows/[id]']({ id })),
             }}

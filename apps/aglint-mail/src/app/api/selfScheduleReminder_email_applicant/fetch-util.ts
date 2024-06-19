@@ -16,16 +16,6 @@ export async function dbUtil(
     .single()
     .throwOnError();
 
-  // const [recruiter_user] = supabaseWrap(
-  //   await supabaseAdmin
-  //     .from('recruiter_user')
-  //     .select('first_name,last_name')
-  //     .eq(
-  //       'user_id',
-  //       filterJson.interview_schedule.applications.public_jobs.recruiter,
-  //     ),
-  // );
-
   const {
     interview_schedule: {
       applications: {

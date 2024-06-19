@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import './MentionList.scss';
 
 import React, {
@@ -7,12 +8,11 @@ import React, {
   useState,
 } from 'react';
 
-export default forwardRef(function DropDown(props, ref) {
+export default forwardRef(function DropDown(props: any, ref) {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const selectItem = (index) => {
-    // eslint-disable-next-line security/detect-object-injection
-    const item = { ...props.items[index] };
+    const item: string = props.items[index];
     if (item) {
       props.command({ id: item });
     }

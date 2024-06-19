@@ -4,6 +4,8 @@ import { getFullName } from '@aglint/shared-utils';
 import { Collapse, Dialog, Stack } from '@mui/material';
 import { useState } from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateSelectionPopup } from '@/devlink2/CandidateSelectionPopup';
 import { SelectActionsDropdown } from '@/devlink2/SelectActionsDropdown';
 import { createTasks } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
@@ -12,7 +14,6 @@ import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 
-import AUIButton from '../../Common/AUIButton';
 import { TaskStatesProvider } from '../../Tasks/TaskStatesContext';
 import CreateTask from './createTask';
 
@@ -308,12 +309,20 @@ function useMeta(onSubmit: () => void) {
   );
   const buttons = (
     <Stack spacing={'10px'} mt={'10px'} direction={'row'} alignItems={'center'}>
-      <AUIButton onClick={() => resetActionPopup()} variant='text'>
-        Cancel
-      </AUIButton>
-      <AUIButton onClick={() => onSubmit()} variant={'primary'}>
-        {`Move to ${actionPopup}`}
-      </AUIButton>
+      <ButtonGhost
+        textButton='Cancel'
+        color={'neutral'}
+        size={2}
+        onClickButton={{ onClick: () => resetActionPopup() }}
+      />
+
+      <ButtonSolid
+        textButton={`Move to ${actionPopup}`}
+        size={2}
+        onClickButton={{
+          onClick: () => onSubmit(),
+        }}
+      />
     </Stack>
   );
   const count = checklist.length;

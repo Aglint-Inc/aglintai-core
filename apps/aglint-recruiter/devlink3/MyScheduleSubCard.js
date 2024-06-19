@@ -30,6 +30,7 @@ export function MyScheduleSubCard({
   onClickDropdownIocn = {},
   isMembersListVisible = true,
   slotThreeDot,
+  isDropdownIconVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "mssc-wrap")} tag="div">
@@ -104,7 +105,7 @@ export function MyScheduleSubCard({
                   </_Builtin.Block>
                 ) : null}
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "card_flex")}
+                  className={_utils.cx(_styles, "card_flex", "gap-2")}
                   tag="div"
                 >
                   {isMeetingPlatformVisible ? (
@@ -160,16 +161,18 @@ export function MyScheduleSubCard({
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "mssc-drop-wraper")}
-            tag="div"
-            {...onClickDropdownIocn}
-          >
-            <_Builtin.HtmlEmbed
-              className={_utils.cx(_styles, "icons", "pointer")}
-              value="%3Csvg%20width%3D%2210%22%20height%3D%2212%22%20viewBox%3D%220%200%2010%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M1.11065%200.289517C0.902374%200.0812288%200.564689%200.0812288%200.356411%200.289517C0.148123%200.497794%200.148123%200.835479%200.356411%201.04376L4.62308%205.31042C4.83136%205.51871%205.16904%205.51871%205.37732%205.31042L9.64404%201.04376C9.85225%200.835479%209.85225%200.497794%209.64404%200.289517C9.43572%200.0812288%209.09801%200.0812288%208.88969%200.289517L5.0002%204.17905L1.11065%200.289517ZM1.11065%206.68952C0.902374%206.48123%200.564689%206.48123%200.356411%206.68952C0.148123%206.89779%200.148123%207.23548%200.356411%207.44376L4.62308%2011.7105C4.83136%2011.9187%205.16904%2011.9187%205.37732%2011.7105L9.64404%207.44376C9.85225%207.23548%209.85225%206.89779%209.64404%206.68952C9.43572%206.48123%209.09801%206.48123%208.88969%206.68952L5.0002%2010.5791L1.11065%206.68952Z%22%20fill%3D%22%23080800%22%20fill-opacity%3D%220.631373%22%2F%3E%0A%3C%2Fsvg%3E"
-            />
-          </_Builtin.Block>
+          {isDropdownIconVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "mssc-drop-wraper")}
+              tag="div"
+              {...onClickDropdownIocn}
+            >
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "icons", "pointer")}
+                value="%3Csvg%20width%3D%2210%22%20height%3D%2212%22%20viewBox%3D%220%200%2010%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M1.11065%200.289517C0.902374%200.0812288%200.564689%200.0812288%200.356411%200.289517C0.148123%200.497794%200.148123%200.835479%200.356411%201.04376L4.62308%205.31042C4.83136%205.51871%205.16904%205.51871%205.37732%205.31042L9.64404%201.04376C9.85225%200.835479%209.85225%200.497794%209.64404%200.289517C9.43572%200.0812288%209.09801%200.0812288%208.88969%200.289517L5.0002%204.17905L1.11065%200.289517ZM1.11065%206.68952C0.902374%206.48123%200.564689%206.48123%200.356411%206.68952C0.148123%206.89779%200.148123%207.23548%200.356411%207.44376L4.62308%2011.7105C4.83136%2011.9187%205.16904%2011.9187%205.37732%2011.7105L9.64404%207.44376C9.85225%207.23548%209.85225%206.89779%209.64404%206.68952C9.43572%206.48123%209.09801%206.48123%208.88969%206.68952L5.0002%2010.5791L1.11065%206.68952Z%22%20fill%3D%22%23080800%22%20fill-opacity%3D%220.631373%22%2F%3E%0A%3C%2Fsvg%3E"
+              />
+            </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
         {isMembersListVisible ? (
           <_Builtin.Block

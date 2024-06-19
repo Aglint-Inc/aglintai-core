@@ -245,7 +245,7 @@ function Overview({
           <>
             {isRescheduleButtonVisible && (
               <ScheduleButton
-                textLabel={'Request Reschedule'}
+                textLabel={'Reschedule'}
                 slotIcon={<IconReschedule />}
                 onClickProps={{
                   onClick: () => {

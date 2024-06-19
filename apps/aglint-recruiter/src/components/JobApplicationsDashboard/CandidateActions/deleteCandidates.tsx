@@ -2,11 +2,11 @@
 import { Dialog, Stack } from '@mui/material';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateSelectionPopup } from '@/devlink2/CandidateSelectionPopup';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { CountJobs } from '@/src/context/JobsContext/types';
-
-import AUIButton from '../../Common/AUIButton';
 
 const DeleteCandidate: React.FC<{
   open: boolean;
@@ -115,12 +115,20 @@ const DeleteCandidateDialog = ({
             direction={'row'}
             alignItems={'center'}
           >
-            <AUIButton onClick={() => onClose()} variant='text'>
-              Cancel
-            </AUIButton>
-            <AUIButton onClick={() => onSubmit()} variant={'error'}>
-              Delete
-            </AUIButton>
+            <ButtonGhost
+              textButton='Cancel'
+              size={2}
+              color={'neutral'}
+              highContrast={true}
+              onClickButton={{ onClick: () => onClose() }}
+            />
+            <ButtonSolid
+              textButton='Delete'
+              size={2}
+              color={'error'}
+              highContrast={true}
+              onClickButton={{ onClick: () => onSubmit() }}
+            />
           </Stack>
         }
       />

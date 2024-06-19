@@ -101,7 +101,6 @@ export const TempVariable = Node.create<MentionOptions>({
           // and starts with a space character
           const nodeAfter = editor.view.state.selection.$to.nodeAfter;
           const overrideSpace = nodeAfter?.text?.startsWith(' ');
-
           if (overrideSpace) {
             range.to += 1;
           }

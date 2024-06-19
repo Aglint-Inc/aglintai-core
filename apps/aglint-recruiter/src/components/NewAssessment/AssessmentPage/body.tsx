@@ -61,7 +61,7 @@ const AssessmentQuestionDetail = () => {
   if (!canDrop && data && currentQuestion !== -1) {
     return (
       <AssessmentQuestionEditor
-        key={data[currentQuestion].id}
+        key={data[currentQuestion]?.id}
         question={data[currentQuestion]}
         len={data.length}
       />

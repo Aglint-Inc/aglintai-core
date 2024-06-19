@@ -41,14 +41,6 @@ export async function fetchUtil(
 
   const comp_email_placeholder: EmailTemplateAPi<'applicationRecieved_email_applicant'>['comp_email_placeholders'] =
     {
-      // '{{ candidateFirstName }}': first_name,
-      // '{{ jobTitle }}': job_title,
-      // '{{ companyName }}': company,
-      // '{{ supportLink }}': '',
-      // '{{ recruiterFullName }}': getFullName(
-      //   recruiter_user.first_name,
-      //   recruiter_user.last_name,
-      // ),
       candidateFirstName: first_name,
       candidateLastName: last_name,
       jobRole: job_title,

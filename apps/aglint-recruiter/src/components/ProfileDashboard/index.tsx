@@ -9,6 +9,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { EmailChangePop } from '@/devlink/EmailChangePop';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { NavSublink } from '@/devlink/NavSublink';
@@ -23,7 +24,6 @@ import { handleUpdatePassword } from '@/src/context/AuthContext/utils';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
-import AUIButton from '../Common/AUIButton';
 import ImageUpload from '../Common/ImageUpload';
 import UIPhoneInput from '../Common/UIPhoneInput';
 import UITextField from '../Common/UITextField';
@@ -449,12 +449,16 @@ const ProfileDashboard = () => {
                   textName={`${recruiterUser?.first_name ?? ''} ${
                     recruiterUser?.last_name ?? ''
                   }`.trim()}
-                  textDepartment={recruiterUser.department || "--"}
-                  textEmail={recruiterUser.email || "--"}
-                  textJobTitle={recruiterUser.position || "--"}
-                  textLocation={recruiterUser.interview_location || "--"}
-                  textRole={recruiterUser.role ? capitalizeFirstLetter(recruiterUser.role) : "--"}
-                  textNumber={recruiterUser.phone || "--"}
+                  textDepartment={recruiterUser.department || '--'}
+                  textEmail={recruiterUser.email || '--'}
+                  textJobTitle={recruiterUser.position || '--'}
+                  textLocation={recruiterUser.interview_location || '--'}
+                  textRole={
+                    recruiterUser.role
+                      ? capitalizeFirstLetter(recruiterUser.role)
+                      : '--'
+                  }
+                  textNumber={recruiterUser.phone || '--'}
                   onClickEdit={{
                     onClick: () => {
                       setProfileForm(true);
@@ -472,7 +476,12 @@ const ProfileDashboard = () => {
                       textDesc={
                         <>
                           <>A confirmation link has been sent to </>
-                          <span style={{ color: 'var(--accent-11)', fontWeight: 400 }}>
+                          <span
+                            style={{
+                              color: 'var(--accent-11)',
+                              fontWeight: 400,
+                            }}
+                          >
                             {email.email.value}
                           </span>
                           <>. Please confirm it to update your email ID.</>
@@ -487,7 +496,9 @@ const ProfileDashboard = () => {
                     texDesc={
                       <>
                         <>Your registered email is </>
-                        <span style={{ color: 'var(--accent-11)', fontWeight: 400 }}>
+                        <span
+                          style={{ color: 'var(--accent-11)', fontWeight: 400 }}
+                        >
                           {userMail}
                         </span>
                         <>
@@ -545,24 +556,26 @@ const ProfileDashboard = () => {
                               zIndex: 0,
                             }}
                           >
-                            <AUIButton
-                              disabled={
+                            <ButtonSolid
+                              textButton='Update Password'
+                              size={2}
+                              isDisabled={
                                 !passwordChange ||
                                 password.password.value === '' ||
                                 password.confirmPassword.value === ''
                               }
-                              onClick={async () => {
-                                setLoading((prev) => {
-                                  return { ...prev, profile: true };
-                                });
-                                await handleSubmitPassword();
-                                setLoading((prev) => {
-                                  return { ...prev, password: false };
-                                });
+                              onClickButton={{
+                                onClick: async () => {
+                                  setLoading((prev) => {
+                                    return { ...prev, profile: true };
+                                  });
+                                  await handleSubmitPassword();
+                                  setLoading((prev) => {
+                                    return { ...prev, password: false };
+                                  });
+                                },
                               }}
-                            >
-                              Update Password
-                            </AUIButton>
+                            />
                           </Stack>
                         </>
                       }
@@ -825,7 +838,11 @@ const ProfileForm = ({
                   edge='end'
                   style={{ opacity: value.value ? 1 : 0.5 }}
                 >
-                  {showPassword ? <GlobalIcon iconName='visibility' />: <GlobalIcon iconName='visibility_off' />}
+                  {showPassword ? (
+                    <GlobalIcon iconName='visibility' />
+                  ) : (
+                    <GlobalIcon iconName='visibility_off' />
+                  )}
                 </IconButton>
               </InputAdornment>
             ),

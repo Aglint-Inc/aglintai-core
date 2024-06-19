@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import { ChangeEventHandler, FC, useEffect, useRef, useState } from 'react';
 
-import { AddButton } from '@/devlink/AddButton';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { Checkbox } from '@/devlink/Checkbox';
 import { ScoreCard } from '@/devlink/ScoreCard';
@@ -498,9 +498,15 @@ const Pill: FC<{
           isCancelVisible={false}
           onClickDelete={{ onClick: () => onDelete() }}
           slotButtonUpdate={
-            <ButtonSolid size={'2'} isLeftIcon={false} isRightIcon={false} onClickButton={{
-              onClick: () => onSubmit(),
-            }} textButton="Submit" />
+            <ButtonSolid
+              size={'2'}
+              isLeftIcon={false}
+              isRightIcon={false}
+              onClickButton={{
+                onClick: () => onSubmit(),
+              }}
+              textButton='Submit'
+            />
             // <ButtonPrimarySmall
             //   isDisabled={value === ''}
             //   textLabel={'Submit'}
@@ -537,9 +543,14 @@ const AddOption: FC<{
   };
   return (
     <Stack ref={ref}>
-      <AddButton
-        textAddButton={`Add ${type}`}
-        onClickAdd={{ onClick: () => setOpen(true) }}
+      <ButtonSoft
+        textButton={`Add ${type}`}
+        iconName='Add'
+        isLeftIcon
+        size={1}
+        onClickButton={{
+          onClick: () => setOpen(true),
+        }}
       />
       <Popover
         open={open}
@@ -583,9 +594,15 @@ const AddOption: FC<{
           isCancelVisible={true}
           onClickCancel={{ onClick: () => handleClose() }}
           slotButtonUpdate={
-            <ButtonSolid size={'2'} isLeftIcon={false} isRightIcon={false} onClickButton={{
-                  onClick: () => onSubmit(),
-                }} textButton="Submit" />
+            <ButtonSolid
+              size={'2'}
+              isLeftIcon={false}
+              isRightIcon={false}
+              onClickButton={{
+                onClick: () => onSubmit(),
+              }}
+              textButton='Submit'
+            />
             // <ButtonPrimarySmall
             //   isDisabled={value === ''}
             //   textLabel={'Submit'}

@@ -5,11 +5,11 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 import { AddMoreResumeButton } from '@/devlink/AddMoreResumeButton';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ImportResume } from '@/devlink/ImportResume';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { UploadedResume } from '@/devlink/UploadedResume';
 import { UploadedResumeList } from '@/devlink/UploadedResumeList';
-import AUIButton from '@/src/components/Common/AUIButton';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import toast from '@/src/utils/toast';
 
@@ -145,7 +145,9 @@ const ResumeUpload = ({
                       onSizeError={(file: any) =>
                         file.size > 5
                           ? null
-                          : toast.error('Please upload a resume that is less than 5 MB.')
+                          : toast.error(
+                              'Please upload a resume that is less than 5 MB.',
+                            )
                       }
                     >
                       <Stack style={{ fontWeight: '400' }}>
@@ -157,14 +159,16 @@ const ResumeUpload = ({
                   slotPrimaryButton={
                     selectedfile.length !== 0 && (
                       <Stack direction={'row'} justifyContent={'flex-end'}>
-                        <AUIButton
-                          disabled={loading}
-                          onClick={() => {
-                            FileUploadSubmit();
+                        <ButtonSolid
+                          size={2}
+                          textButton='Upload'
+                          isDisabled={loading}
+                          onClickButton={{
+                            onClick: () => {
+                              FileUploadSubmit();
+                            },
                           }}
-                        >
-                          Upload
-                        </AUIButton>
+                        />
                       </Stack>
                     )
                   }

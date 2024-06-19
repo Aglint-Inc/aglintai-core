@@ -6,6 +6,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { RolesPill } from '@/devlink/RolesPill';
 import { Breadcrum } from '@/devlink2/Breadcrum';
@@ -33,7 +34,6 @@ import {
 } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
-import AUIButton from '../Common/AUIButton';
 import Loader from '../Common/Loader';
 import MuiAvatar from '../Common/MuiAvatar';
 import { capitalize } from '../JobApplicationsDashboard/utils';
@@ -228,13 +228,15 @@ const InterviewPlan = () => {
   return (
     <>
       <InterviewPlanDev
-      isCoordinatorVisible={false}
+        isCoordinatorVisible={false}
         slotInterviewCoordinator={<></>}
         isEmptyVisible={sessions.length === 0}
         slotPrimaryButton={
-          <AUIButton onClick={() => handleCreate('session', 0)}>
-            Create Session
-          </AUIButton>
+          <ButtonSolid
+            size={2}
+            textButton='Create Session'
+            onClickButton={{ onClick: () => handleCreate('session', 0) }}
+          />
         }
         slotInterviewPlan={
           <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
@@ -384,7 +386,7 @@ const InterviewSession = ({
   return (
     <Stack
       ref={ref}
-      style={{opacity: isDragging ? 0 : 1 }}
+      style={{ opacity: isDragging ? 0 : 1 }}
       data-handler-id={handlerId}
     >
       <OptimisticWrapper loading={isLoading}>
@@ -394,7 +396,6 @@ const InterviewSession = ({
           mb={hover ? 1 : 4}
         >
           <GeneralScheduleCard
-          
             textModuleName={
               <Stack style={{ flexDirection: 'row', gap: '12px' }}>
                 <>{session.name}</>

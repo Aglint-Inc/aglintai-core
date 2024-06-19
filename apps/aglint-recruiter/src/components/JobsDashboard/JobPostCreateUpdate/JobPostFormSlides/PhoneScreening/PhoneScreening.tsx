@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { EnableAssessment } from '@/devlink/EnableAssessment';
 import { BrowseScreeningPop } from '@/devlink2/BrowseScreeningPop';
 import { ChooseScreeningCard } from '@/devlink2/ChooseScreeningCard';
@@ -27,7 +27,9 @@ const ScreeningComp = () => {
   );
   const filteredTitles = filteredTemplates.map((template) => template.title);
   const questionsCount = filteredTemplates.map((count) => {
-    return count.questions.questions === undefined ? '0' : count.questions.questions.length;
+    return count.questions.questions === undefined
+      ? '0'
+      : count.questions.questions.length;
   });
   const fetchTemplate = async () => {
     try {
@@ -126,8 +128,9 @@ const ScreeningComp = () => {
               }}
               isAddScreeenButtonVisible={selectedTemplate !== ''}
               slotAddScreeningButton={
-                <ButtonPrimaryRegular
-                  textLabel={'Add Screening'}
+                <ButtonSolid
+                  textButton='Add Screening'
+                  size={2}
                   onClickButton={{
                     onClick: () => {
                       submitTemplate();

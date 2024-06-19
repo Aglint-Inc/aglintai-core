@@ -2,6 +2,7 @@ import { Dialog, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { AssessmentDetailTopRight } from '@/devlink2/AssessmentDetailTopRight';
 import { DeleteAssessmentPopup } from '@/devlink2/DeleteAssessmentPopup';
 import { DuplicateAssessmentPopup } from '@/devlink2/DuplicateAssessmentPopup';
@@ -12,7 +13,6 @@ import {
 } from '@/src/queries/assessment';
 import { useAssessmentAllQuestionUpdate } from '@/src/queries/assessment/questions';
 
-import AUIButton from '../../Common/AUIButton';
 import UITextField from '../../Common/UITextField';
 import TypeIcon from '../Common/icons/types';
 import Duplicating from '../Common/lotties/duplicating';
@@ -132,9 +132,11 @@ const DuplicatePopup = () => {
           />
         }
         slotButton={
-          <AUIButton onClick={() => handleDuplicate()}>
-            Duplicate Assessment
-          </AUIButton>
+          <ButtonSolid
+            textButton='Duplicate Assessment'
+            size={2}
+            onClickButton={{ onClick: () => handleDuplicate() }}
+          />
         }
       />
     </Dialog>

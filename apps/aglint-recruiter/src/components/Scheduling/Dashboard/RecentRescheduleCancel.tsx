@@ -20,8 +20,12 @@ import { DropdownSelectButton } from './CancelReasons';
 const RecentRescheduleCancel = () => {
   const { data: analyticsData } = useScheduleSessionsAnalytics();
   const { data: CancelReasonsData } = useCancelRescheduleReasons();
-  const { data: userDetails, isPending: loading } =
-    useCancelRescheduleReasonsUsers();
+  const {
+    data: userDetails,
+    isPending,
+    parentFetching,
+    disabled,
+  } = useCancelRescheduleReasonsUsers();
   const [type, setType] = useState<'interviewer' | 'candidate'>('candidate');
   const processedRescheduleData = (CancelReasonsData || [])
     .filter((item) => item.type == 'reschedule')
@@ -111,7 +115,7 @@ const RecentRescheduleCancel = () => {
       );
     })
     .filter((item) => item);
-
+  const loading = (parentFetching && isPending) || !disabled;
   return (
     <>
       <RecentReschedule

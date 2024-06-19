@@ -3,11 +3,11 @@ import { Stack } from '@mui/material';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
-import { AddMoreResumeButton } from '@/devlink/AddMoreResumeButton';
+import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ImportResume as ImportResumeDev } from '@/devlink/ImportResume';
 import { UploadedResume } from '@/devlink/UploadedResume';
 import { UploadedResumeList } from '@/devlink/UploadedResumeList';
-import AUIButton from '@/src/components/Common/AUIButton';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import toast from '@/src/utils/toast';
@@ -118,7 +118,7 @@ const ImportResume = () => {
                       }
                     >
                       <Stack style={{ fontWeight: '400' }}>
-                        <AddMoreResumeButton />
+                        <ButtonGhost size={2} textButton='Add More Resume' />
                       </Stack>
                     </FileUploader>
                   }
@@ -126,13 +126,15 @@ const ImportResume = () => {
                   slotPrimaryButton={
                     selectedfile.length !== 0 && (
                       <Stack direction={'row'} justifyContent={'flex-end'}>
-                        <AUIButton
-                          onClick={() => {
-                            FileUploadSubmit();
+                        <ButtonSolid
+                          textButton='Upload'
+                          size={2}
+                          onClickButton={{
+                            onClick: () => {
+                              FileUploadSubmit();
+                            },
                           }}
-                        >
-                          Upload
-                        </AUIButton>
+                        />
                       </Stack>
                     )
                   }

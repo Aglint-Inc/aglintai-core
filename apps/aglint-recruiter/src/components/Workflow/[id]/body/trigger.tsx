@@ -31,6 +31,7 @@ const Forms = () => {
     <>
       <TriggerForm />
       {phase !== 'now' && <DurationForm />}
+      <TriggerInfo />
     </>
   );
 };
@@ -71,6 +72,13 @@ const DurationForm = () => {
       onChange={(e) => handleUpdateWorkflow({ interval: e.target.value })}
     />
   );
+};
+
+const TriggerInfo = () => {
+  const {
+    workflow: { interval, trigger, phase },
+  } = useWorkflow();
+  return `Any subsequent actions will be triggered ${phase ? DURATION_OPTIONS.find(({ value }) => value === interval)?.name ?? '' + ' ' : ''} ${getTriggerOption(trigger, phase).toLowerCase()}.`;
 };
 
 const DURATION_OPTIONS: { name: string; value: number }[] = [
