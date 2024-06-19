@@ -338,11 +338,11 @@ const ProfileDashboard = () => {
           setError(false);
           await handleUpdateProfile({
             profile_image: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/recruiter-user/${data?.path}?t=${new Date().toISOString()}`,
-          });
+          } as RecruiterUserType);
         } else {
           await handleUpdateProfile({
             profile_image: null,
-          });
+          } as RecruiterUserType);
         }
 
         setLoading((prev) => {
