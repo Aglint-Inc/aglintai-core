@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { Dialog, Stack } from '@mui/material';
+import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo } from 'react';
 
@@ -18,7 +19,6 @@ import {
   useJobDashboardStore,
 } from '@/src/context/JobDashboard/store';
 import { useJobs } from '@/src/context/JobsContext';
-import { FilterHeader } from '@/src/context/Tasks/Filters/FilterHeader';
 import {
   useJobWorkflowConnect,
   useJobWorkflowDeleteMutations,

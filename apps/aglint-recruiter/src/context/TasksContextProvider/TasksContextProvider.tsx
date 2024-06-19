@@ -35,6 +35,8 @@ export type taskFilterType = {
   Status: DatabaseEnums['task_status'][];
   Priority: DatabaseEnums['task_priority'][];
   Assignee: string[];
+  Type: DatabaseEnums['task_type_enum'][];
+  Candidate: string[];
 };
 
 type TasksReducerType = {
@@ -500,6 +502,8 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
           temp.filter.priority.values = preFilterData?.Priority || [];
           temp.filter.status.values = preFilterData?.Status || [];
           temp.filter.jobTitle.values = preFilterData?.Job || [];
+          temp.filter.type.values = preFilterData?.Type || [];
+          temp.filter.candidate.values = preFilterData?.Candidate || [];
         }
 
         temp.tasks = data.data;

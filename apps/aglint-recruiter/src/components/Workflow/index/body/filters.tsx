@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
+import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
 import { useMemo } from 'react';
 
 import { JobIcon } from '@/src/components/Tasks/TaskBody/GroupBy';
 import { useJobs } from '@/src/context/JobsContext';
-import { FilterHeader } from '@/src/context/Tasks/Filters/FilterHeader';
 
 import {
   useWorkflowStore,
