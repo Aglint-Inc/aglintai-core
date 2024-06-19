@@ -88,7 +88,7 @@ function TypeList({
 
 export default TypeList;
 
-const typeArray = [
+export const typeArray = [
   // 'training',
   'schedule',
   'self_schedule',
