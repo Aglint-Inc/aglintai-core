@@ -9,11 +9,15 @@ import {
 } from '@/src/context/ApplicationsContext/store';
 
 import FilterHeader from '../../Common/FilterHeader';
+import {
+  arrayToNestedObject,
+  nestedObjectToArray,
+} from '../../Common/FilterHeader/utils';
 
 const Filters = () => {
   const { locationFilterOptions } = useApplications();
   const {
-    filters: { search, bookmarked, city, state, country, ...filters },
+    filters: { search, bookmarked, locations, ...filters },
     setFilters,
     sort,
     setSort,
@@ -42,48 +46,6 @@ const Filters = () => {
     [filters],
   );
 
-  const multiSectionFilter: Parameters<
-    typeof FilterHeader
-  >[0]['filters'][number] = useMemo(
-    () => ({
-      type: 'multi-section-filter',
-      name: 'Locations',
-      options: {
-        country: Object.keys(locationFilterOptions?.data ?? {}).map(
-          (country) => country,
-        ),
-        state: Object.entries(locationFilterOptions?.data ?? {}).map(
-          ([country, states]) => ({
-            header: country,
-            options: Object.keys(states).map((state) => ({
-              id: state,
-              label: state,
-            })),
-          }),
-        ),
-        city: Object.entries(locationFilterOptions?.data ?? {})
-          .map(([country, states]) =>
-            Object.entries(states).map(([state, cities]) => ({
-              header: `${country}, ${state}`,
-              options: cities.map((city) => ({
-                id: city,
-                label: city,
-              })),
-            })),
-          )
-          .flatMap((location) => location),
-      },
-      setValue: ({ country, state, city }) =>
-        setFilters({ country, state, city }),
-      value: {
-        country,
-        state,
-        city,
-      },
-    }),
-    [locationFilterOptions?.data, country, state, city, setFilters],
-  );
-
   const bookmarkedButton: Parameters<
     typeof FilterHeader
   >[0]['filters'][number] = useMemo(
@@ -96,6 +58,25 @@ const Filters = () => {
     }),
     [bookmarked, safeFilters],
   );
+
+  const Locations: Parameters<typeof FilterHeader>[0]['filters'][number] = {
+    type: 'nested-filter',
+    name: 'Locations',
+    options: locationFilterOptions?.data ?? {},
+    sectionHeaders: ['Country', 'State', 'City'],
+    value: arrayToNestedObject(locations?.[locations.length - 1] ?? []),
+    setValue: (value) => {
+      const locations = nestedObjectToArray(
+        locationFilterOptions?.data ?? {},
+        value,
+      ).map((item) => item.filter(({ status }) => status !== 'inactive'));
+      setFilters({
+        locations: locations.flatMap((section) => section).length
+          ? locations
+          : [],
+      });
+    },
+  };
 
   const safeSort: Parameters<typeof FilterHeader>[0]['sort'] = useMemo(
     () =>
@@ -124,7 +105,7 @@ const Filters = () => {
   const component = useMemo(
     () => (
       <FilterHeader
-        filters={[...safeFilters, multiSectionFilter, bookmarkedButton]}
+        filters={[...safeFilters, Locations, bookmarkedButton]}
         sort={safeSort}
         search={{
           value: search,
@@ -134,7 +115,7 @@ const Filters = () => {
         }}
       />
     ),
-    [safeFilters, search, multiSectionFilter, bookmarkedButton, safeSort],
+    [safeFilters, search, Locations, bookmarkedButton, safeSort],
   );
   return component;
 };
