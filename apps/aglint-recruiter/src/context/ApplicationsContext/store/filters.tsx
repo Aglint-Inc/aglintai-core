@@ -1,5 +1,7 @@
 import { DatabaseView } from '@aglint/shared-types';
 
+import { nestedObjectToArray } from '@/src/components/Common/FilterHeader/utils';
+
 import { CreateSlice } from '.';
 
 type Sort = {
@@ -13,17 +15,19 @@ type Sort = {
 type FilterKeys =
   | keyof Pick<
       DatabaseView['application_view'],
-      'resume_score' | 'city' | 'state' | 'country' | 'badges' | 'bookmarked'
+      'resume_score' | 'badges' | 'bookmarked'
     >
-  | 'search';
+  | 'search'
+  | 'locations';
 
 type FilterValues = {
   bookmarked: boolean;
   search: DatabaseView['application_view']['name'];
   badges: (keyof DatabaseView['application_view']['badges'])[];
-  city: DatabaseView['application_view']['city'][];
-  state: DatabaseView['application_view']['state'][];
-  country: DatabaseView['application_view']['country'][];
+  // city: DatabaseView['application_view']['city'][];
+  // state: DatabaseView['application_view']['state'][];
+  // country: DatabaseView['application_view']['country'][];
+  locations: ReturnType<typeof nestedObjectToArray>;
   resume_score: (
     | 'Top match'
     | 'Good match'
@@ -51,9 +55,7 @@ const initialFilters: Filters = {
   bookmarked: false,
   search: '',
   badges: [],
-  city: [],
-  state: [],
-  country: [],
+  locations: [],
   resume_score: [],
 };
 

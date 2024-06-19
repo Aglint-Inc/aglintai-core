@@ -5,6 +5,7 @@ import { memo, useCallback, useMemo } from 'react';
 import { CandidateListItem } from '@/devlink2/CandidateListItem';
 import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 import { useApplications } from '@/src/context/ApplicationsContext';
+import { useKeyPress } from '@/src/context/ApplicationsContext/hooks';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 
 import ResumeScore from '../../ui/resumeScore';
@@ -13,7 +14,12 @@ import { ScheduleProgress } from './scheduleProgress';
 
 const ApplicationCard = memo(
   ({ application }: { application: DatabaseView['application_view'] }) => {
-    const { cascadeVisibilites } = useApplications();
+    const {
+      cascadeVisibilites,
+      sectionApplication: {
+        data: { pages },
+      },
+    } = useApplications();
 
     const { checklist, setChecklist } = useApplicationsStore(
       ({ checklist, setChecklist }) => ({
@@ -35,11 +41,31 @@ const ApplicationCard = memo(
       [application_id, application],
     );
 
+    const { pressed: shift } = useKeyPress('Shift');
+
     const handleCheck = useCallback(() => {
       if (isChecked)
         setChecklist(checklist.filter((id) => id !== application.id));
-      else setChecklist([...checklist, application.id]);
-    }, [checklist, isChecked, application]);
+      else {
+        if (shift && checklist.length) {
+          //
+          const list = pages.flatMap((page) => page);
+          let indexes = [list.findIndex(({ id }) => id === application.id)];
+          for (let i = 0; i < list.length && indexes.length !== 2; i++)
+            // eslint-disable-next-line security/detect-object-injection
+            if (checklist.includes(list[i].id)) indexes.push(i);
+          indexes.sort((a, b) => a - b);
+          setChecklist(
+            Array.from(
+              new Set([
+                ...checklist,
+                ...list.slice(indexes[0], indexes[1] + 1).map(({ id }) => id),
+              ]),
+            ),
+          );
+        } else setChecklist([...checklist, application.id]);
+      }
+    }, [checklist, isChecked, application, shift, pages, setChecklist]);
 
     const location = useMemo(
       () =>
