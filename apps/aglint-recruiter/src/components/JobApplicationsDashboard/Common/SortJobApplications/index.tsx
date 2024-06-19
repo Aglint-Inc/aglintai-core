@@ -1,9 +1,9 @@
 import { MenuItem, Select, Stack } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateSort } from '@/devlink2/CandidateSort';
 import { CandidateSortBody } from '@/devlink2/CandidateSortBody';
-import AUIButton from '@/src/components/Common/AUIButton';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { CountJobs } from '@/src/context/JobsContext/types';
 
@@ -91,12 +91,14 @@ const ApplicationSortBody = ({
     searchParameters.sort.ascending === sort.ascending;
   const sortButton = (
     <Stack>
-      <AUIButton
-        onClick={async () => await handleSubmit()}
-        disabled={disabled || allApplicationsDisabled}
-      >
-        Apply
-      </AUIButton>
+      <ButtonSolid
+        size={2}
+        textButton='Apply'
+        onClickButton={{
+          onClick: async () => await handleSubmit(),
+        }}
+        isDisabled={disabled || allApplicationsDisabled}
+      />
     </Stack>
   );
   const handleAsc = () => {

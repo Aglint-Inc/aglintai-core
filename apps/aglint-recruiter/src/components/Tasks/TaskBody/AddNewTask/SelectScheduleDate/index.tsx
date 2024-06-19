@@ -5,6 +5,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { TaskDate } from '@/devlink3/TaskDate';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 
@@ -121,24 +122,32 @@ function SelectScheduleDate({
                   </LocalizationProvider>
                 </ShowCode.Else>
               </ShowCode>
-              <Stack justifyContent={'end'} direction={'row'} spacing={'var(--space-2)'}>
-                <Button
-                  onClick={() => {
-                    setAnchorEl(null);
-                  }}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onClick={() => {
-                    if (onChange) {
-                      onChange(selectedDate);
+              <Stack
+                justifyContent={'end'}
+                direction={'row'}
+                spacing={'var(--space-2)'}
+              >
+                <ButtonGhost
+                  size={2}
+                  textButton='Cancel'
+                  onClickButton={{
+                    onClick: () => {
                       setAnchorEl(null);
-                    }
+                    },
                   }}
-                >
-                  OK
-                </Button>
+                />
+                <ButtonGhost
+                  size={2}
+                  textButton='OK'
+                  onClickButton={{
+                    onClick: () => {
+                      if (onChange) {
+                        onChange(selectedDate);
+                        setAnchorEl(null);
+                      }
+                    },
+                  }}
+                />
               </Stack>
             </>
           }

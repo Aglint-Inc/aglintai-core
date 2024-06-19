@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./ButtonGrey.module.css";
 
@@ -15,7 +16,7 @@ export function ButtonGrey({
       tag="div"
       {...onClickButton}
     >
-      <_Builtin.Block tag="div">{textLabel}</_Builtin.Block>
+      <Text content={textLabel} weight="" />
     </_Component>
   );
 }

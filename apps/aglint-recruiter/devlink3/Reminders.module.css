@@ -96,27 +96,6 @@
   letter-spacing: var(--letter-spacing-1);
 }
 
-.text-grey-600.text-underline {
-  text-decoration: underline;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
-.text-grey-600.text-underline.cursor-pointer {
-  transition: opacity 250ms ease;
-  cursor: pointer;
-}
-
-.text-grey-600.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
 .div-block-1619 {
   display: flex;
   width: 520px;
@@ -162,12 +141,8 @@
   opacity: 0.8;
 }
 
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .icons.pointer {
@@ -206,6 +181,10 @@
   text-decoration: underline;
 }
 
+.text-underline {
+  text-decoration: underline;
+}
+
 .accent-text.text-underline.cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -222,8 +201,4 @@
 
 .accent-text.cursor-pointer:hover {
   opacity: 0.8;
-}
-
-.accent-text.text-capital {
-  text-transform: uppercase;
 }

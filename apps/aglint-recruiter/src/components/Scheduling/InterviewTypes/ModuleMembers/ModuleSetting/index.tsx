@@ -2,7 +2,7 @@ import { Checkbox, MenuItem, Stack, Switch, TextField } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 
-import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ModuleSetting } from '@/devlink2/ModuleSetting';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/src/utils/supabase/client';
@@ -148,11 +148,10 @@ function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
           }
           slotButtonPrimary={
             localModule?.settings?.require_training && (
-              <ButtonPrimaryRegular
-                textLabel={'Update'}
-                onClickButton={{
-                  onClick: updateModule,
-                }}
+              <ButtonSolid
+                size={1}
+                textButton='Update'
+                onClickButton={{ onClick: updateModule }}
               />
             )
           }

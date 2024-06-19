@@ -21,6 +21,9 @@ const Drawer = () => {
     handlClose,
   }));
 
+  const tabs: Parameters<typeof Application>[0]['placeholderData']['tabs'] =
+    job?.activeSections;
+
   const placeholderData = useMemo(
     () =>
       (sectionApplication?.data?.pages ?? [])
@@ -89,6 +92,7 @@ const Drawer = () => {
           placeholderData={{
             interview: [...sessions, ...plans],
             meta,
+            tabs,
           }}
         >
           <Application.Body

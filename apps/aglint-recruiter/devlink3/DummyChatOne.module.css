@@ -168,14 +168,6 @@
   cursor: pointer;
 }
 
-.link.text-underline {
-  text-decoration: underline;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
 .widget_flex {
   display: flex;
   flex-direction: column;
@@ -236,21 +228,8 @@
   text-transform: uppercase;
 }
 
-.text-sm.text-underline {
-  text-decoration: underline;
-}
-
 .text-grey-600 {
   color: #68737d;
-}
-
-.text-sm.text-underline.text-grey-600.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.text-sm.text-underline.text-grey-600.cursor-pointer:hover {
-  opacity: 0.8;
 }
 
 .slotavatar_group {
@@ -297,11 +276,6 @@
 
 .text-grey_600.width-80px {
   width: 80px;
-}
-
-.text-grey_600.text-underline-copy {
-  text-decoration: underline;
-  cursor: pointer;
 }
 
 .noti_avatar {

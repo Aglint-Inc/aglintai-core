@@ -16,6 +16,8 @@ import { FileUploader } from 'react-drag-drop-files';
 
 import { AssessmentInvite } from '@/devlink/AssessmentInvite';
 import { BookMark } from '@/devlink/BookMark';
+import { ButtonOutlined } from '@/devlink/ButtonOutlined';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateDetails } from '@/devlink/CandidateDetails';
 import { CandidateEducation } from '@/devlink/CandidateEducation';
 import { CandidateEducationCard } from '@/devlink/CandidateEducationCard';
@@ -45,7 +47,6 @@ import { DangerMessage } from '@/devlink3/DangerMessage';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ResumeWrap } from '@/devlink3/ResumeWrap';
 import ResumeWait from '@/public/lottie/ResumeWait';
-import AUIButton from '@/src/components/Common/AUIButton';
 import Loader from '@/src/components/Common/Loader';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import ScoreWheel, {
@@ -1185,9 +1186,13 @@ const ResumeUpload: React.FC<{
       <UploadCandidateResume
         slotUploadButton={
           <Stack>
-            <AUIButton onClick={async () => await handleSubmit()}>
-              Upload
-            </AUIButton>
+            <ButtonSolid
+              textButton='Upload'
+              size={2}
+              onClickButton={{
+                onClick: async () => await handleSubmit(),
+              }}
+            />
           </Stack>
         }
         slotDrag={
@@ -1545,9 +1550,11 @@ const PhoneScreeningSection = ({
             onClick: () => handleCopy(),
           }}
           slotResendButton={
-            <ButtonPrimaryOutlinedRegular
-              buttonText={status.btnText}
-              buttonProps={{ onClick: async () => await handleInvite() }}
+            <ButtonOutlined
+              color={'neutral'}
+              size={2}
+              textButton={status.btnText}
+              onClickButton={{ onClick: async () => await handleInvite() }}
             />
           }
         />

@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { BackButton } from '@/devlink2/BackButton';
 import { RcInfoForm } from '@/devlink2/RcInfoForm';
 import { RecCompanyDetails } from '@/devlink2/RecCompanyDetails';
@@ -12,7 +14,6 @@ import { industries } from '@/src/utils/industries';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 
-import AUIButton from '../../Common/AUIButton';
 import ImageUpload from '../../Common/ImageUpload';
 import UIPhoneInput from '../../Common/UIPhoneInput';
 import UITextField from '../../Common/UITextField';
@@ -62,17 +63,18 @@ function SlideDetailsTwo() {
               direction={'row'}
               justifyContent={'center'}
             >
-              <AUIButton
-                variant='text'
-                onClick={() => {
-                  router.push(`?step=${stepObj.atsSystem}`, undefined, {
-                    shallow: true,
-                  });
-                  setStep(stepObj.atsSystem);
+              <ButtonGhost
+                textButton='Skip this step'
+                size={2}
+                onClickButton={{
+                  onClick: () => {
+                    router.push(`?step=${stepObj.atsSystem}`, undefined, {
+                      shallow: true,
+                    });
+                    setStep(stepObj.atsSystem);
+                  },
                 }}
-              >
-                Skip this step
-              </AUIButton>
+              />
             </Stack>
           ) : null}
         </>
@@ -401,9 +403,13 @@ export function CompanyDetails() {
                 },
               }}
             />
-            <AUIButton disabled={false} onClick={submitHandler}>
-              Continue
-            </AUIButton>
+            <ButtonSolid
+              size={2}
+              textButton='Continue'
+              onClickButton={{
+                onClick: submitHandler,
+              }}
+            />
           </Stack>
         </Stack>
       }

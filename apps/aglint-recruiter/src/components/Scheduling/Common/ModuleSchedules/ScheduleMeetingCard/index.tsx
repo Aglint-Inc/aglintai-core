@@ -56,6 +56,8 @@ function ScheduleMeetingCard({
               e.stopPropagation();
             },
           }}
+          isDropdownIconVisible={interviewers.length > 0}
+          isMembersListVisible={interviewers.length > 0}
           slotMembersList={
             <>
               <Collapse in={collapseOpen}>

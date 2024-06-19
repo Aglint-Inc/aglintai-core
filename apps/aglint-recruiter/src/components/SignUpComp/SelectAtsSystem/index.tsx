@@ -3,6 +3,8 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { BackButton } from '@/devlink2/BackButton';
 import { LoginAtsInfo } from '@/devlink2/LoginAtsInfo';
 import { RcCheckbox } from '@/devlink2/RcCheckbox';
@@ -13,7 +15,6 @@ import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { supabase } from '@/src/utils/supabase/client';
 
-import AUIButton from '../../Common/AUIButton';
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
 import { stepObj } from '../SlideSignup/utils';
@@ -195,24 +196,31 @@ function SelectAtsSystem() {
                 }}
               />
 
-              <Stack direction={'row'} alignItems={'center'} gap={'var(--space-2)'}>
-                <AUIButton
-                  onClick={() => {
-                    router.push(`?step=${stepObj.allSet}`, undefined, {
-                      shallow: true,
-                    });
-                    setStep(stepObj.allSet);
+              <Stack
+                direction={'row'}
+                alignItems={'center'}
+                gap={'var(--space-2)'}
+              >
+                <ButtonGhost
+                  size={2}
+                  textButton='Skip'
+                  onClickButton={{
+                    onClick: () => {
+                      router.push(`?step=${stepObj.allSet}`, undefined, {
+                        shallow: true,
+                      });
+                      setStep(stepObj.allSet);
+                    },
                   }}
-                  variant='text'
-                >
-                  Skip
-                </AUIButton>
-                <AUIButton
-                  disabled={selectedObject === null}
-                  onClick={() => handleContinue('continue')}
-                >
-                  Continue
-                </AUIButton>
+                />
+                <ButtonSolid
+                  textButton='Continue'
+                  size={2}
+                  isDisabled={selectedObject === null}
+                  onClickButton={{
+                    onClick: () => handleContinue('continue'),
+                  }}
+                />
               </Stack>
             </Stack>
           </Stack>

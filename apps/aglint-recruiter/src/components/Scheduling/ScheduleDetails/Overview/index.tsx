@@ -113,17 +113,17 @@ function Overview({
   );
 
   const isRescheduleButtonVisible =
-    schedule?.users?.find(
+    (schedule?.users?.find(
       (user) =>
         user.interview_session_relation.is_confirmed &&
         user.email === recruiterUser.email &&
         user.interview_session_relation.training_type === 'qualified',
     ) &&
-    !cancelReasons?.some(
-      (item) =>
-        item.recruiter_user.id === recruiterUser.user_id &&
-        !item.interview_session_cancel.is_resolved,
-    ) &&
+      !cancelReasons?.some(
+        (item) =>
+          item.recruiter_user.id === recruiterUser.user_id &&
+          !item.interview_session_cancel.is_resolved,
+      )) ||
     schedule?.interview_meeting?.status === 'confirmed';
 
   const isCancelButtonVisible =
@@ -237,7 +237,7 @@ function Overview({
         onClickCopyCandidate={{
           onClick: async () => {
             navigator.clipboard.writeText(
-              `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule.schedule.id}?filter_id=${filterJson.id}`,
+              `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule.schedule.id}?filter_id=${filterJson?.id}`,
             );
           },
         }}
@@ -245,7 +245,7 @@ function Overview({
           <>
             {isRescheduleButtonVisible && (
               <ScheduleButton
-                textLabel={'Request Reschedule'}
+                textLabel={'Reschedule'}
                 slotIcon={<IconReschedule />}
                 onClickProps={{
                   onClick: () => {

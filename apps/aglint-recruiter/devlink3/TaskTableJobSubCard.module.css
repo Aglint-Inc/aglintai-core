@@ -91,6 +91,8 @@
   flex: 0 0 auto;
   grid-column-gap: var(--space-1);
   grid-row-gap: var(--space-1);
+
+  color: var(--accent-9);
 }
 
 .icons {
@@ -111,14 +113,6 @@
 
 .cursor-pointer {
   cursor: pointer;
-}
-
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
 }
 
 .icons.pointer {

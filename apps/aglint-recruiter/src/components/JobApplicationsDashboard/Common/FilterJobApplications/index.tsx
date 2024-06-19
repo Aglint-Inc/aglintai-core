@@ -3,10 +3,10 @@ import { Slider, Stack } from '@mui/material';
 import { ValueOf } from 'next/dist/shared/lib/constants';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-import { ButtonOutlinedRegular } from '@/devlink/ButtonOutlinedRegular';
+import { ButtonOutlined } from '@/devlink/ButtonOutlined';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateFilter } from '@/devlink2/CandidateFilter';
 import { CandidateFilterBody } from '@/devlink2/CandidateFilterBody';
-import AUIButton from '@/src/components/Common/AUIButton';
 import RefreshBtn from '@/src/components/Common/RefreshButton';
 import UITextField from '@/src/components/Common/UITextField';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
@@ -147,24 +147,29 @@ const ApplicationFilterBody = ({
           animatedDisable={false}
         />
       </Stack>
-      <ButtonOutlinedRegular
+
+      <ButtonOutlined
+        color={'neutral'}
+        size={2}
+        textButton='Cancel'
+        isDisabled={!hasChanges || allApplicationsDisabled}
         onClickButton={{
           onClick: async () => {
             if (!(!hasChanges || allApplicationsDisabled)) await handleCancel();
           },
         }}
-        isDisabled={!hasChanges || allApplicationsDisabled}
-        textLabel={'Cancel'}
       />
-      <AUIButton
-        onClick={async () => {
-          if (!(!hasChanges || allApplicationsDisabled))
-            await handleSubmit({ ...filters });
+      <ButtonSolid
+        textButton='Apply filters'
+        size={2}
+        onClickButton={{
+          onClick: async () => {
+            if (!(!hasChanges || allApplicationsDisabled))
+              await handleSubmit({ ...filters });
+          },
         }}
-        disabled={!hasChanges || allApplicationsDisabled}
-      >
-        Apply filters
-      </AUIButton>
+        isDisabled={!hasChanges || allApplicationsDisabled}
+      />
     </Stack>
   );
   const clickData = useMouseClick();

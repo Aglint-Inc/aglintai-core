@@ -173,7 +173,7 @@ export default function ResetPasswordComponent() {
   );
 }
 
-const CustomFormField = ({
+export const CustomFormField = ({
   type,
   multiLine,
   placeholder,
@@ -210,8 +210,11 @@ const CustomFormField = ({
               onClick={handleClickShowPassword}
               edge='end'
             >
-              {showPassword ? <GlobalIcon iconName='visibility' /> : <GlobalIcon iconName='visibility_off' />}
-              
+              {showPassword ? (
+                <GlobalIcon iconName='visibility' />
+              ) : (
+                <GlobalIcon iconName='visibility_off' />
+              )}
             </IconButton>
           </InputAdornment>
         ),

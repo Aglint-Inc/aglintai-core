@@ -8,7 +8,6 @@ import { Autocomplete, Drawer, Stack } from '@mui/material';
 import converter from 'number-to-words';
 import { useState } from 'react';
 
-import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { InviteTeamCard } from '@/devlink/InviteTeamCard';
@@ -229,9 +228,10 @@ const AddMember = ({
             <TeamInvite
               isFixedButtonVisible
               slotPrimaryButton={
-                <ButtonPrimaryRegular
+                <ButtonSolid
+                  textButton='Done'
+                  size={2}
                   isDisabled={!inviteData?.length}
-                  textLabel={'Done'}
                   onClickButton={{
                     onClick: () => {
                       onClose(),
@@ -543,55 +543,61 @@ const AddMember = ({
                 </Stack>
               }
               slotButtons={
-                <Stack display={'flex'} flexDirection={'row'} gap={'8px'} width={'100%'}>
-                <Stack width={'100%'} marginTop={'16px'}>
-                  <ButtonSoft
-                    isLeftIcon={false}
-                    isRightIcon={false}
-                    size='2'
-                    color={'neutral'}
-                    textButton='Cancel'
-                    onClickButton={{
-                      onClick: () => {
-                        onClose(),
-                          setInviteData([]),
-                          setForm({
-                            ...form,
-                            first_name: null,
-                            last_name: null,
-                            email: null,
-                            department: null,
-                            designation: null,
-                          });
-                      },
-                    }}/>
-                </Stack>
-                <Stack width={'100%'} marginTop={'16px'}>
-                  <ButtonSolid
-                    isLeftIcon={false}
-                    isRightIcon={false}
-                    size='2'
-                    isDisabled={
-                      form.email &&
-                      form.first_name &&
-                      form.designation &&
-                      form.department &&
-                      form.role &&
-                      form.manager_id
-                        ? false
-                        : true
-                    }
-                    onClickButton={{
-                      onClick: () => {
-                        setIsDisable(true);
-                        if (checkValidation()) {
-                          inviteUser();
-                        }
-                      },
-                    }}
-                    textButton={'Invite'}
-                  />
-                  {/* <AUIButton
+                <Stack
+                  display={'flex'}
+                  flexDirection={'row'}
+                  gap={'8px'}
+                  width={'100%'}
+                >
+                  <Stack width={'100%'} marginTop={'16px'}>
+                    <ButtonSoft
+                      isLeftIcon={false}
+                      isRightIcon={false}
+                      size='2'
+                      color={'neutral'}
+                      textButton='Cancel'
+                      onClickButton={{
+                        onClick: () => {
+                          onClose(),
+                            setInviteData([]),
+                            setForm({
+                              ...form,
+                              first_name: null,
+                              last_name: null,
+                              email: null,
+                              department: null,
+                              designation: null,
+                            });
+                        },
+                      }}
+                    />
+                  </Stack>
+                  <Stack width={'100%'} marginTop={'16px'}>
+                    <ButtonSolid
+                      isLeftIcon={false}
+                      isRightIcon={false}
+                      size='2'
+                      isDisabled={
+                        form.email &&
+                        form.first_name &&
+                        form.designation &&
+                        form.department &&
+                        form.role &&
+                        form.manager_id
+                          ? false
+                          : true
+                      }
+                      onClickButton={{
+                        onClick: () => {
+                          setIsDisable(true);
+                          if (checkValidation()) {
+                            inviteUser();
+                          }
+                        },
+                      }}
+                      textButton={'Invite'}
+                    />
+                    {/* <AUIButton
                     disabled=
                     size='medium'
                     onClick={() => {
@@ -603,9 +609,7 @@ const AddMember = ({
                   >
                     Invite
                   </AUIButton> */}
-                </Stack>
-
-                
+                  </Stack>
                 </Stack>
               }
               onClickClose={{

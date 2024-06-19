@@ -91,11 +91,6 @@
   display: none;
 }
 
-.text-gray-600.underline {
-  text-decoration: underline;
-  cursor: pointer;
-}
-
 .slot_widget {
   display: flex;
   height: 100%;

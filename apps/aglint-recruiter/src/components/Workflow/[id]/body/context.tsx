@@ -29,6 +29,11 @@ const useActionsContext = () => {
     [ACTION_TRIGGER_MAP, trigger, actions],
   );
 
+  const allOptions = useMemo(
+    () => ACTION_TRIGGER_MAP[trigger],
+    [ACTION_TRIGGER_MAP, trigger],
+  );
+
   const createAction = useCallback(() => {
     const emailTemplate = (all_company_email_template ?? []).find(
       ({ type }) => type === globalOptions[0].value,
@@ -52,6 +57,7 @@ const useActionsContext = () => {
     createAction,
     getCurrentOption,
     globalOptions,
+    allOptions,
   };
 };
 

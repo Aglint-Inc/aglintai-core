@@ -179,7 +179,7 @@ const WorkflowBrowser = () => {
             return (
               filters.job.length === 0 ||
               !!jobs.reduce((acc, curr) => {
-                if ((value as string[]).includes(curr)) acc.push(curr);
+                if ((value as string[]).includes(curr.job_id)) acc.push(curr);
                 return acc;
               }, []).length
             );
@@ -246,7 +246,7 @@ const WorkflowBrowser = () => {
                 display: count ? 'flex' : 'none',
                 alignItems: 'center',
 
-                backgroundColor:  'var(--white)',
+                backgroundColor: 'var(--white)',
                 color: '#2596be',
                 borderRadius: 'var(--radius-4)',
                 width: '20px',
@@ -258,7 +258,13 @@ const WorkflowBrowser = () => {
         }
         isDescriptionVisibe={true}
         slotPopup={
-          <Stack style={{ height: 'calc(100vh - 120px)', gap: '8px', overflow: 'scroll' }}>
+          <Stack
+            style={{
+              height: 'calc(100vh - 120px)',
+              gap: '8px',
+              overflow: 'scroll',
+            }}
+          >
             {cards.length ? cards : <WorkflowEmpty />}
           </Stack>
         }

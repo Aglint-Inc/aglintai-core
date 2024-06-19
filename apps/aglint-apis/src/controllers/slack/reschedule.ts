@@ -26,7 +26,7 @@ export const reschedule = async (req: Request, res: Response) => {
               type: 'button',
               text: {
                 type: 'plain_text',
-                text: 'Request Reschedule',
+                text: 'Reschedule',
               },
               style: 'primary',
               value: 'request_reschedule',

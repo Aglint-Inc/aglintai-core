@@ -1,40 +1,53 @@
 import { Dialog } from '@mui/material';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
-import UITextField from '@/src/components/Common/UITextField';
 import { useWorkflows } from '@/src/context/Workflows';
 import { useWorkflowStore } from '@/src/context/Workflows/store';
 
+import { Form, Forms, validate } from '../../common';
+
 const Create = () => {
   const {
-    popup: { open, title },
+    popup: { open, form },
     setPopup,
-    resetPopup,
-  } = useWorkflowStore(({ popup, setPopup, resetPopup }) => ({
+    closePopup,
+    setForm,
+  } = useWorkflowStore(({ popup, setPopup, closePopup }) => ({
     popup,
     setPopup,
-    resetPopup,
+    closePopup,
+    setForm: (newForms: Partial<Form>) =>
+      setPopup({ form: { ...popup.form, ...newForms } }),
   }));
-  const { handleCreateWorkflow } = useWorkflows();
-  const [error, setError] = useState(false);
 
-  const handleSubmit = useCallback(() => {
-    if (!title) {
-      setError(true);
-    } else {
-      handleCreateWorkflow({
-        title,
-        phase: 'now',
-        trigger: 'sendAvailReqReminder',
-      });
-      resetPopup();
+  const { handleCreateWorkflow } = useWorkflows();
+
+  const handleSubmit = () => {
+    const { error, newForms } = validate(form);
+    if (error) {
+      setPopup({ form: newForms });
+      return;
     }
-  }, [title]);
+    handleCreateWorkflow({
+      title: form.title.value,
+      description: form.description.value,
+      auto_connect: form.auto_connect.value,
+      phase: 'now',
+      trigger: 'sendAvailReqReminder',
+    });
+    closePopup();
+  };
+
   const handleClose = useCallback(() => {
-    resetPopup();
+    closePopup();
   }, []);
+
+  useEffect(() => {
+    closePopup();
+  }, []);
+
   return (
     <>
       <ButtonSolid
@@ -56,7 +69,7 @@ const Create = () => {
           onClickCancel={{ onClick: () => handleClose() }}
           textPopupTitle={'Create Workflow'}
           textPopupButton={'Create Workflow'}
-          slotWidget={<Form error={error} setError={setError} />}
+          slotWidget={<Forms form={form} setForm={setForm} />}
           textPopupDescription={
             'Enter the name for workflow. Next, you will be able to add steps to the workflow.'
           }
@@ -67,27 +80,3 @@ const Create = () => {
 };
 
 export default Create;
-
-const Form = ({ error, setError }) => {
-  const {
-    popup: { title },
-    setPopup,
-  } = useWorkflowStore(({ popup, setPopup }) => ({
-    popup,
-    setPopup,
-  }));
-
-  return (
-    <UITextField
-      label='Workflow title'
-      value={title}
-      helperText={`Workflow title can't be empty`}
-      error={error}
-      onFocus={() => setError(false)}
-      onChange={(e) => {
-        setPopup({ title: e.target.value });
-        if (!e.target.value) setError(true);
-      }}
-    />
-  );
-};

@@ -57,7 +57,7 @@ function IconScheduleType({
           </svg>
         </ShowCode.When>
         <ShowCode.When isTrue={type === 'zoom'}>
-          <GlobalIcon iconName='filter_tilt_shift' />
+          {/* <GlobalIcon iconName='filter_tilt_shift' /> */}
           <svg
             width='24'
             height='20'

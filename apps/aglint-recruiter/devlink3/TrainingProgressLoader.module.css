@@ -48,23 +48,23 @@
   grid-row-gap: 8px;
 }
 
-.div-block-1520 {
+.tpl-profile-wrap {
   width: 52px;
   height: 52px;
   flex: 0 0 auto;
   border-radius: 100px;
 }
 
-.div-block-1520.loder {
+.tpl-profile-wrap.loder {
   position: relative;
 }
 
-.div-block-1521 {
+.tpl-name-wrap {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .div-block-1602 {
@@ -82,7 +82,7 @@
   height: 28px;
 }
 
-.div-block-1522 {
+.tpl-history-pill-wrap {
   display: flex;
   justify-content: flex-start;
   align-items: center;

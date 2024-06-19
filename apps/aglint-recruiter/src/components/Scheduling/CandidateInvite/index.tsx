@@ -25,11 +25,10 @@ import React, {
   useState,
 } from 'react';
 
-import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateConfirmationPage } from '@/devlink/CandidateConfirmationPage';
 import { CandidateScheduleCard } from '@/devlink/CandidateScheduleCard';
-import { ChangeButton } from '@/devlink/ChangeButton';
+import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { SelectedDateAndTime } from '@/devlink/SelectedDateAndTime';
 import { SessionAndTime } from '@/devlink/SessionAndTime';
 import { SessionInfo } from '@/devlink/SessionInfo';
@@ -52,7 +51,6 @@ import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
-import AUIButton from '../../Common/AUIButton';
 import Loader from '../../Common/Loader';
 import CompanyLogo from '../../JobApplicationsDashboard/Common/CompanyLogo';
 import { getBreakLabel } from '../../JobNewInterviewPlan/utils';
@@ -319,7 +317,7 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
               cancelReschedulingDetails.all == false) && (
               <>
                 <ScheduleButton
-                  textLabel={'Request Reschedule'}
+                  textLabel={'Reschedule'}
                   onClickProps={{
                     onClick: () => setCancelReschedule('reschedule'),
                   }}
@@ -340,8 +338,7 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
                       justifyContent={'center'}
                       alignItems={'center'}
                     >
-                      <GlobalIcon iconName='event_busy' 
-                      color={'inherit'}/>
+                      <GlobalIcon iconName='event_busy' color={'inherit'} />
                       {/* <svg
                         xmlns='http://www.w3.org/2000/svg'
                         width='13'
@@ -378,7 +375,7 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
           }
           title={
             cancelReschedule === 'reschedule'
-              ? 'Request Reschedule'
+              ? 'Reschedule'
               : 'Cancel Schedule'
           }
           type={cancelReschedule}
@@ -576,8 +573,9 @@ const CancelRescheduleDialog = ({
                 }}
               />
               <Stack px={1}>
-                <ButtonPrimaryRegular
-                  textLabel='Done'
+                <ButtonSolid
+                  textButton='Done'
+                  size={2}
                   onClickButton={{ onClick: handleClose }}
                 />
               </Stack>
@@ -667,7 +665,13 @@ const SingleDayError = () => {
   useEffect(() => {
     toast.error('Something went wrong. Please try again.');
   }, []);
-  return <AUIButton onClick={() => refetch()}>Try again</AUIButton>;
+  return (
+    <ButtonSolid
+      textButton='Try again'
+      size={2}
+      onClickButton={{ onClick: () => refetch() }}
+    />
+  );
 };
 
 const SingleDayLoading = () => {
@@ -918,7 +922,13 @@ const MultiDayError = () => {
   useEffect(() => {
     toast.error('Something went wrong. Please try again.');
   }, []);
-  return <AUIButton onClick={() => refetch()}>Try again</AUIButton>;
+  return (
+    <ButtonSolid
+      size={2}
+      textButton='Try again'
+      onClickButton={{ onClick: () => refetch() }}
+    />
+  );
 };
 
 const MultiDayLoading = () => {
@@ -1075,7 +1085,14 @@ const ScheduleCard = (props: ScheduleCardProps) => {
         slotButton={
           enabled ? (
             isSelected ? (
-              <ChangeButton onClickButton={{ onClick: () => setOpen(true) }} />
+              <IconButtonSoft
+                color={'neutral'}
+                onClickButton={{
+                  onClick: () => setOpen(true),
+                }}
+                iconName='repeat'
+                highContrast={true}
+              />
             ) : (
               <ButtonSurface
                 slotIcon={<GlobalIcon iconName='add' size={'sm'} />}

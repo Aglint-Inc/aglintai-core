@@ -1,11 +1,10 @@
 import { supabaseWrap } from '@aglint/shared-utils';
-import { CircularProgress } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
 import { useState } from 'react';
 
-import AUIButton from '@/src/components/Common/AUIButton';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { useJobs } from '@/src/context/JobsContext';
 // import { PublicJobsType } from '@aglint/shared-types';
 import { supabase } from '@/src/utils/supabase/client';
@@ -88,23 +87,17 @@ const JobPublishButton = () => {
 
   return (
     <>
-      <AUIButton
-        onClick={() => {
-          handlePublish();
+      <ButtonSolid
+        size={2}
+        textButton={isJobPublished ? 'Published' : 'Publish'}
+        isDisabled={isJobPublished || !isWarningsCleared(formWarnings)}
+        isLoading={isPublishing}
+        onClickButton={{
+          onClick: () => {
+            handlePublish();
+          },
         }}
-        disabled={isJobPublished || !isWarningsCleared(formWarnings)}
-        startIcon={
-          isPublishing && (
-            <CircularProgress
-              color='inherit'
-              size={'15px'}
-              sx={{ color: 'var(--neutral-6)' }}
-            />
-          )
-        }
-      >
-        {isJobPublished ? 'Published' : 'Publish'}
-      </AUIButton>
+      />
     </>
   );
 };

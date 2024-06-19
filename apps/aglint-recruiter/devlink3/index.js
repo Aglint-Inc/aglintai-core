@@ -257,6 +257,7 @@ export * from "./WorkflowCard";
 export * from "./WorkflowConnector";
 export * from "./WorkflowDetail";
 export * from "./WorkflowEmpty";
+export * from "./WorkflowInfo";
 export * from "./WorkflowItem";
 export * from "./WorkflowLanding";
 export * from "./WorkflowLandingTopRIght";

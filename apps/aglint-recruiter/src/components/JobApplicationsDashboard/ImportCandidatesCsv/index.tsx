@@ -12,7 +12,6 @@ import { CsvUploadApi } from '@/src/apiUtils/job/jobApplications/candidateUpload
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import toast from '@/src/utils/toast';
 
-import AUIButton from '../../Common/AUIButton';
 import useUploadCandidate from '../ImportManualCandidates/hooks';
 import CandidatesListTable from './CandidatesListTable';
 
@@ -39,7 +38,7 @@ const ImportCandidatesCSV = ({
     'file_url',
   ];
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const csvData = [
     [...headers],
     [
@@ -75,7 +74,6 @@ const ImportCandidatesCSV = ({
       'https://www.dropbox.com/s/mnop1121/resume-emilydavis.pdf?dl=0',
     ],
   ];
-  
 
   async function createCandidates(candidates: BulkImportCandidateCsv) {
     setbulkImportdata([]);
@@ -172,8 +170,9 @@ const ImportCandidatesCSV = ({
           <ImportCsv
             slotReuploadButton={
               <Stack {...getRootProps()} sx={{ height: '100%' }}>
-                <input id='uploadCsv' {...getInputProps()} />
-                <AUIButton variant='text'>Reupload</AUIButton>
+                {/* <input id='uploadCsv' {...getInputProps()} /> */}
+                {/* <AUIButton variant='text'>Reupload</AUIButton> */}
+                {/* <ButtonGhost textButton='Reupload' /> */}
               </Stack>
             }
             textListingCount={`Listing ${bulkImportdata?.length} candidates`}

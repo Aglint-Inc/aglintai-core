@@ -168,14 +168,6 @@
   cursor: pointer;
 }
 
-.link.text-underline {
-  text-decoration: underline;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
 .notification_block {
   display: flex;
   height: 32px;
@@ -216,11 +208,6 @@
   font-size: var(--font-size-1);
   line-height: var(--line-height-1);
   letter-spacing: var(--letter-spacing-1);
-}
-
-.text-grey_600.text-underline-copy {
-  text-decoration: underline;
-  cursor: pointer;
 }
 
 .noti_avatar {

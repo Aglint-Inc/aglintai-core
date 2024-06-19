@@ -57,7 +57,7 @@ import MuiNumberfield from './Components/MuiNumberfield';
 import MuiSelect from './Components/MuiSelect';
 import SelectTime from './Components/SelectTime';
 import DebriefDefaults from './DebriefDefaults';
-import SchedulerEmailTemps from './SchedulingEmailTemplates/page';
+import SchedulerEmailTemps from './SchedulingEmailTemplates';
 import SchedulingRegions from './SchedulingReason';
 import { settingSubNavItem } from './SubNav/utils';
 let schedulingSettingObj = {};
@@ -617,9 +617,9 @@ function SchedulingSettings({
                                           }}
                                           sx={{
                                             marginLeft: '0px',
-                                            '& .MuiRadio-root' : {
+                                            '& .MuiRadio-root': {
                                               marginRight: 'var(--space-1)',
-                                            }
+                                            },
                                           }}
                                           value={ele}
                                           control={<Radio />}

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import { AssessmentSide } from '@/devlink/AssessmentSide';
-import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CreateNewJob } from '@/devlink/CreateNewJob';
 import { EnableAssessment } from '@/devlink/EnableAssessment';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
@@ -217,8 +217,9 @@ const ScreeningDashboardComp = () => {
                             }}
                             isAddScreeenButtonVisible={selectedTemplate !== ''}
                             slotAddScreeningButton={
-                              <ButtonPrimaryRegular
-                                textLabel={'Add Screening'}
+                              <ButtonSolid
+                                size={2}
+                                textButton='Add Screening'
                                 onClickButton={{
                                   onClick: () => {
                                     submitTemplate();

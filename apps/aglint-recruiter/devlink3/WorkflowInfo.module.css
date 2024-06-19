@@ -1,0 +1,24 @@
+.workflow_info {
+  display: flex;
+  padding: var(--space-3);
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+
+  border-radius: var(--radius-3);
+
+  background-color: var(--info-3);
+
+  color: var(--info-11);
+}
+
+.info_title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+
+  color: var(--info-11);
+}

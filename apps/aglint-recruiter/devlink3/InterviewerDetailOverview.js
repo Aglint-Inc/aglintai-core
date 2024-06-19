@@ -20,13 +20,13 @@ export function InterviewerDetailOverview({
   isViewButtonVisible = true,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1704")} tag="div">
+    <_Component className={_utils.cx(_styles, "ido-wrap")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1701")}
+        className={_utils.cx(_styles, "ido-upcoming-wrap")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1700")}
+          className={_utils.cx(_styles, "ido-upcoming-header")}
           tag="div"
         >
           <Text content={textHeader1} weight="medium" />
@@ -43,18 +43,18 @@ export function InterviewerDetailOverview({
           ) : null}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1702")}
+          className={_utils.cx(_styles, "ido-upcoming-body")}
           tag="div"
         >
           {slotUpcomingSchedule ?? <SlotComp componentNeme="" />}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1701")}
+        className={_utils.cx(_styles, "ido-upcoming-wrap")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1700")}
+          className={_utils.cx(_styles, "ido-upcoming-header")}
           tag="div"
         >
           <Text content={textHeader2} weight="medium" />
@@ -71,7 +71,7 @@ export function InterviewerDetailOverview({
           ) : null}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1703")}
+          className={_utils.cx(_styles, "ido-training-body")}
           tag="div"
         >
           {slotTrainingModules ?? <SlotComp componentNeme="Schedules" />}
