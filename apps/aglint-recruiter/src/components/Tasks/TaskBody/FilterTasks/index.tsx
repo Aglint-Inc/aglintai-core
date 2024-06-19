@@ -80,6 +80,18 @@ function FilterTasks() {
           },
           value: filter.jobTitle.values,
         },
+        {
+          type: 'filter',
+          name: 'Type',
+          options: filter.type.options,
+          setValue: (val) => {
+            handelFilter({
+              ...filter,
+              type: { ...filter.type, values: val },
+            });
+          },
+          value: filter.type.values,
+        },
       ]}
       dateRangeSelector={{
         name: 'Interview Date',
