@@ -6,8 +6,7 @@ declare function Sort(props: {
   slotSortDrop?: Types.Devlink.Slot;
   onClickAscending?: Types.Devlink.RuntimeProps;
   onClickDescending?: Types.Devlink.RuntimeProps;
-  onClickApplySort?: Types.Devlink.RuntimeProps;
-  isApplySortDisable?: Types.Visibility.VisibilityConditions;
   isDescendingActive?: Types.Visibility.VisibilityConditions;
   isAscendingActive?: Types.Visibility.VisibilityConditions;
+  slotButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

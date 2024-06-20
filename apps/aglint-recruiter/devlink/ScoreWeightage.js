@@ -3,7 +3,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
 import { ScorePercentage } from "./ScorePercentage";
-import { ButtonSolid } from "./ButtonSolid";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./ScoreWeightage.module.css";
 
@@ -11,7 +11,7 @@ export function ScoreWeightage({
   as: _Component = _Builtin.Block,
   slotScoreWheel,
   slotScorePercent,
-  onClickEqualize = {},
+  slotResetButton,
 }) {
   return (
     <_Component
@@ -39,13 +39,8 @@ export function ScoreWeightage({
           className={_utils.cx(_styles, "sw-button-wrap")}
           tag="div"
         >
-          <_Builtin.Block tag="div" {...onClickEqualize}>
-            <ButtonSolid
-              isRightIcon={false}
-              isLeftIcon={false}
-              size="2"
-              textButton="Reset"
-            />
+          <_Builtin.Block tag="div">
+            {slotResetButton ?? <SlotComp componentName="ButtonSolid" />}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

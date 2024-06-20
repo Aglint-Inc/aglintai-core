@@ -1,4 +1,4 @@
-import {PhoneAgentId} from './scheduling';
+import {PhoneAgentId} from '@aglint/shared-utils';
 import {LoggerType} from './scheduling_utils/getCandidateLogger';
 import {fetchTranascript} from './scheduling_utils/retell_transcript';
 

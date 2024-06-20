@@ -13,20 +13,11 @@ export function RoleList({
   textDesignation = "HR Manager",
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1716")} tag="div">
-      <_Builtin.Block
-        className={_utils.cx(_styles, "fw-semibold", "hide")}
-        tag="div"
-      >
-        {textDesignation}
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1714")}
-        tag="div"
-      >
+    <_Component className={_utils.cx(_styles, "role-list-wrap")} tag="div">
+      <_Builtin.Block className={_utils.cx(_styles, "rl-wrap")} tag="div">
         <_Builtin.Block tag="div">{slotImage}</_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1715")}
+          className={_utils.cx(_styles, "rl-description")}
           tag="div"
         >
           <Text

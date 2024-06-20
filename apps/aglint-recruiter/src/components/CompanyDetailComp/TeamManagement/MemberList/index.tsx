@@ -90,7 +90,7 @@ const Member = ({
         openForDelete={openForDelete}
         openForCancel={openForCancel}
         warning={
-          openForDelete && membersDetails[member.user_id].allModules.length
+          openForDelete && membersDetails[member.user_id]?.allModules.length
             ? `User is part of scheduling Module- ${membersDetails[member.user_id].allModules}.`.replaceAll(
                 ',',
                 ', ',

@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./CloseDeleteJob.module.css";
@@ -16,6 +17,8 @@ export function CloseDeleteJob({
   textHeader = "This is some text inside of a div block.",
   slotIcon,
   textButtonLabel = "This is some text inside of a div block.",
+  slotCloseJobButton,
+  slotDeleteJobButton,
 }) {
   return (
     <_Component
@@ -86,24 +89,12 @@ export function CloseDeleteJob({
         <_Builtin.Block tag="div" {...onClickClose}>
           {isCloseJobVisible ? (
             <_Builtin.Block tag="div">
-              <ButtonSolid
-                isRightIcon={false}
-                isLeftIcon={false}
-                size="2"
-                textButton="Close job"
-                color="error"
-              />
+              {slotCloseJobButton ?? <SlotComp componentName="ButtonSolid" />}
             </_Builtin.Block>
           ) : null}
           {isDeleteJobVisible ? (
             <_Builtin.Block tag="div">
-              <ButtonSolid
-                isRightIcon={false}
-                isLeftIcon={false}
-                size="2"
-                textButton="Delete job"
-                color="error"
-              />
+              {slotDeleteJobButton ?? <SlotComp componentName="ButtonSolid" />}
             </_Builtin.Block>
           ) : null}
           {isDynamicDescVisible ? (
