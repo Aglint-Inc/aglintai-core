@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2015",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -13,43 +9,23 @@
     "noEmit": true,
     "incremental": true,
     "esModuleInterop": true,
-    "module": "esnext",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noErrorTruncation": true,
     "jsx": "preserve",
     "paths": {
-      "@/*": [
-        "./*"
-      ],
-      "@devlink": [
-        "./devlink/*"
-      ],
-      "@components/*": [
-        "./src/components/*"
-      ],
-      "@config/*": [
-        "./src/config/*"
-      ],
-      "@context/*": [
-        "./src/context/*"
-      ],
-      "@defaultData/*": [
-        "./src/defaultData/*"
-      ],
-      "@styles/*": [
-        "./styles/*"
-      ],
-      "@utils/*": [
-        "./src/utils/*"
-      ],
-      "@public/*": [
-        "./public/*"
-      ],
-      "@types/*": [
-        "./src/types/*"
-      ]
+      "@/*": ["./*"],
+      "@devlink": ["./devlink/*"],
+      "@components/*": ["./src/components/*"],
+      "@config/*": ["./src/config/*"],
+      "@context/*": ["./src/context/*"],
+      "@defaultData/*": ["./src/defaultData/*"],
+      "@styles/*": ["./styles/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@public/*": ["./public/*"],
+      "@types/*": ["./src/types/*"]
     },
     "plugins": [
       {
@@ -66,9 +42,7 @@
     "**/*.js",
     "src/components/Feedback/Session/index.jsx",
     "src/pages/api/getJobsPublic.js",
-    ".next/types/**/*.ts",
+    ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules",
-  ]
+  "exclude": ["node_modules"]
 }

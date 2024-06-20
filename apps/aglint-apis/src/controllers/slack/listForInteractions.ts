@@ -1,7 +1,7 @@
+import {supabaseWrap} from '@aglint/shared-utils';
 import {Request, Response} from 'express';
 import {slackWeb} from 'src/services/slack/slackWeb';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
-import {supabaseWrap} from 'src/utils/scheduling/supabaseWrap';
 
 export const listForInteractions = async (req: Request, res: Response) => {
   try {
