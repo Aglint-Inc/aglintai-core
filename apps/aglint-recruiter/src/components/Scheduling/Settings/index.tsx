@@ -29,6 +29,7 @@ import {
 } from '@aglint/shared-types';
 import { useRouter } from 'next/router';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { BodyWithSublink } from '@/devlink2/BodyWithSublink';
 import { CompanyDayOff } from '@/devlink2/CompanyDayOff';
 import { DayoffList } from '@/devlink2/DayoffList';
@@ -513,9 +514,17 @@ function SchedulingSettings({
                 isTrue={router.query.subtab == settingSubNavItem.DAYOFF}
               >
                 <CompanyDayOff
-                  onClickAddDayoff={{
-                    onClick: openAddCompany,
-                  }}
+                  slotAddButton={
+                    <ButtonSolid
+                      textButton='Add Day Off'
+                      size={2}
+                      iconName='add'
+                      isLeftIcon
+                      onClickButton={{
+                        onClick: openAddCompany,
+                      }}
+                    />
+                  }
                   slotDayoffList={
                     <>
                       {daysOff.sort(compareDates).map((item, i) => {

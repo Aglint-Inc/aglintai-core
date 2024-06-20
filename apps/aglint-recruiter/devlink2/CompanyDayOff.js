@@ -10,11 +10,8 @@ import _styles from "./CompanyDayOff.module.css";
 
 export function CompanyDayOff({
   as: _Component = _Builtin.Block,
-  slotDayOff,
-  onClickAddDate = {},
   slotDayoffList,
-  onClickImport = {},
-  onClickAddDayoff = {},
+  slotAddButton,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "cdo-wrap")} tag="div">
@@ -41,14 +38,16 @@ export function CompanyDayOff({
             className={_utils.cx(_styles, "cdo-top-btn")}
             tag="div"
           >
-            <_Builtin.Block tag="div" {...onClickAddDayoff}>
-              <ButtonSolid
-                size="2"
-                textButton="Add day off"
-                isLeftIcon={true}
-                isRightIcon={false}
-                iconName="add"
-              />
+            <_Builtin.Block tag="div">
+              {slotAddButton ?? (
+                <ButtonSolid
+                  size="2"
+                  textButton="Add day off"
+                  isLeftIcon={true}
+                  isRightIcon={false}
+                  iconName="add"
+                />
+              )}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
