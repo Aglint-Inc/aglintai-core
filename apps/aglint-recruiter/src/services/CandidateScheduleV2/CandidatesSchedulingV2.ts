@@ -1114,4 +1114,7 @@ export class CandidatesSchedulingV2 {
     };
     return { generateSlotsForCurrDay, verifyCurrDaySlot };
   };
+  static sum(a, b) {
+    return a + b;
+  }
 }
