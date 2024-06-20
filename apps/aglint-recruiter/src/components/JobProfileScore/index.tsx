@@ -4,6 +4,7 @@ import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import { ChangeEventHandler, FC, useEffect, useRef, useState } from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { Checkbox } from '@/devlink/Checkbox';
@@ -525,7 +526,15 @@ const Pill: FC<{
           }
           isDeleteVisible={true}
           isCancelVisible={false}
-          onClickDelete={{ onClick: () => onDelete() }}
+          slotButton={
+            <ButtonGhost
+              textButton='Delete'
+              size={2}
+              onClickButton={{ onClick: () => onDelete() }}
+              isLeftIcon
+              iconName='delete'
+            />
+          }
           slotButtonUpdate={
             <ButtonSolid
               size={'2'}
@@ -621,7 +630,13 @@ const AddOption: FC<{
           }
           isDeleteVisible={false}
           isCancelVisible={true}
-          onClickCancel={{ onClick: () => handleClose() }}
+          slotButton={
+            <ButtonGhost
+              textButton='Cancel'
+              size={2}
+              onClickButton={{ onClick: () => handleClose() }}
+            />
+          }
           slotButtonUpdate={
             <ButtonSolid
               size={'2'}
