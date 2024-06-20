@@ -19,4 +19,5 @@ declare function PhoneScreeningQ(props: {
   isOkDisable?: Types.Visibility.VisibilityConditions;
   isSubmitDisable?: Types.Visibility.VisibilityConditions;
   isBackVisible?: Types.Visibility.VisibilityConditions;
+  slotButton?: Types.Devlink.Slot;
 }): React.JSX.Element;
