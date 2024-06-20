@@ -5,7 +5,7 @@ import {getFullName} from '../../../../utils/getFullName';
 import {EmailAgentPayload} from '../../../../types/email_agent/apiPayload.types';
 import {DatabaseTable, EmailTemplateFields} from '@aglint/shared-types';
 import {envConfig} from 'src/config';
-import {supabaseWrap} from 'src/utils/scheduling/supabaseWrap';
+import {supabaseWrap} from '@aglint/shared-utils';
 
 export const fetchEmailAgentCandDetails = async (
   thread_id: string,
