@@ -6,6 +6,7 @@ import posthog from 'posthog-js';
 import { useEffect, useState } from 'react';
 
 import { AssessmentSide } from '@/devlink/AssessmentSide';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CloseDeleteJob } from '@/devlink/CloseDeleteJob';
 import { CloseJobButton } from '@/devlink/CloseJobButton';
 import { CreateNewJob } from '@/devlink/CreateNewJob';
@@ -746,19 +747,25 @@ const SideSection = () => {
                 />
               </>
             }
-            onClickEqualize={{
-              onClick: () => {
-                const jdJson = jobForm.formFields.jdJson;
-                handleUpdateFormFields({
-                  path: `resumeScoreSettings`,
-                  value: getBalancedScore(
-                    jdJson.rolesResponsibilities.length === 0,
-                    jdJson.educations.length === 0,
-                    jdJson.skills.length === 0,
-                  ),
-                });
-              },
-            }}
+            slotResetButton={
+              <ButtonSolid
+                textButton='Reset'
+                size={2}
+                onClickButton={{
+                  onClick: () => {
+                    const jdJson = jobForm.formFields.jdJson;
+                    handleUpdateFormFields({
+                      path: `resumeScoreSettings`,
+                      value: getBalancedScore(
+                        jdJson.rolesResponsibilities.length === 0,
+                        jdJson.educations.length === 0,
+                        jdJson.skills.length === 0,
+                      ),
+                    });
+                  },
+                }}
+              />
+            }
           />
         </Stack>
       </>

@@ -156,7 +156,15 @@ const ProfileScoreControls = () => {
       }}
     >
       <ScoreWeightage
-        onClickEqualize={{ onClick: () => handleReset() }}
+        slotResetButton={
+          <ButtonSolid
+            textButton='Reset'
+            size={2}
+            onClickButton={{
+              onClick: () => handleReset(),
+            }}
+          />
+        }
         slotScoreWheel={
           <>
             <Stack
