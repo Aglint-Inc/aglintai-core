@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { ButtonSolid } from "./ButtonSolid";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./DashboardAlert.module.css";
 
@@ -11,6 +11,7 @@ export function DashboardAlert({
   onClickBanner = {},
   textTitile = "Job details are incomplete",
   textShortDescription = "To proceed, please ensure that all job details are provided correctly",
+  slotViewButton,
 }) {
   return (
     <_Component
@@ -43,13 +44,7 @@ export function DashboardAlert({
         />
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "right_buttons")} tag="div">
-        <ButtonSolid
-          onClickButton={onClickBanner}
-          highContrast="true"
-          textButton="View"
-          size="2"
-          color="accent"
-        />
+        {slotViewButton ?? <SlotComp componentNeme="ButtonSolid" />}
       </_Builtin.Block>
     </_Component>
   );

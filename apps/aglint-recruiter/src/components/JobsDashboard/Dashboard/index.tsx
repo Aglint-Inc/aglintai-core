@@ -6,6 +6,7 @@ import React, { Fragment, useCallback, useMemo, useState } from 'react';
 
 import { AssistStatus } from '@/devlink/AssistStatus';
 import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CloseDeleteJob } from '@/devlink/CloseDeleteJob';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
@@ -643,6 +644,18 @@ const useBanners = ({
             onClick: () =>
               push(ROUTES['/jobs/[id]/job-details']({ id: job?.id })),
           }}
+          slotViewButton={
+            <ButtonSolid
+              size={2}
+              color={'accent'}
+              textButton='View'
+              highContrast='true'
+              onClickButton={{
+                onClick: () =>
+                  push(ROUTES['/jobs/[id]/job-details']({ id: job?.id })),
+              }}
+            />
+          }
         />,
       );
     }
@@ -657,6 +670,18 @@ const useBanners = ({
             onClick: () =>
               push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id })),
           }}
+          slotViewButton={
+            <ButtonSolid
+              size={2}
+              color={'accent'}
+              textButton='View'
+              highContrast='true'
+              onClickButton={{
+                onClick: () =>
+                  push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id })),
+              }}
+            />
+          }
         />,
       );
     }
@@ -682,6 +707,17 @@ const useBanners = ({
         onClickBanner={{
           onClick: () => push(`/jobs/${job.id}/profile-score`),
         }}
+        slotViewButton={
+          <ButtonSolid
+            size={2}
+            color={'accent'}
+            textButton='View'
+            highContrast='true'
+            onClickButton={{
+              onClick: () => push(`/jobs/${job.id}/profile-score`),
+            }}
+          />
+        }
       />,
     );
   else if (status.description_changed)
