@@ -2,19 +2,14 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { ButtonSoft } from "./ButtonSoft";
-import { ButtonSolid } from "./ButtonSolid";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./BannerWarning.module.css";
 
 export function BannerWarning({
   as: _Component = _Builtin.Block,
   textBanner = "Job descripion is changed. Click to regenerate.",
-  onClickDismiss = {},
-  textButton = "Regenerate",
-  onClickButton = {},
-  isDismiss = true,
-  isButton = true,
+  slotButton,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "discard-btn-score")} tag="div">
@@ -26,25 +21,12 @@ export function BannerWarning({
         <Text content={textBanner} weight="medium" />
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "right_buttons")} tag="div">
-        {isDismiss ? (
-          <_Builtin.Block tag="div">
-            <ButtonSoft
-              onClickButton={onClickDismiss}
-              size="2"
-              textButton="Ignore"
-            />
-          </_Builtin.Block>
-        ) : null}
-        {isButton ? (
-          <_Builtin.Block tag="div">
-            <ButtonSolid
-              textButton={textButton}
-              onClickButton={onClickButton}
-              size="2"
-              highContrast="true"
-            />
-          </_Builtin.Block>
-        ) : null}
+        {slotButton ?? (
+          <>
+            <SlotComp componentNeme="ButtonSoft" />
+            <SlotComp componentNeme="ButtonSolid" />
+          </>
+        )}
       </_Builtin.Block>
     </_Component>
   );

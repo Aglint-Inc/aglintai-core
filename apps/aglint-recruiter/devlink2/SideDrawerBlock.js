@@ -3,8 +3,6 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
-import { ButtonSoft } from "./ButtonSoft";
-import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./SideDrawerBlock.module.css";
 
@@ -12,10 +10,8 @@ export function SideDrawerBlock({
   as: _Component = _Builtin.Block,
   textTitle = "Add/Edit Session",
   onClickClose = {},
-  onClickPrimaryButton = {},
-  textPrimaryButton = "Add/Done",
   slotSidedrawerBody,
-  isLoading = true,
+  slotButton,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "schedule_edit-add")} tag="div">
@@ -45,22 +41,12 @@ export function SideDrawerBlock({
         className={_utils.cx(_styles, "sidedrawer_bottom")}
         tag="div"
       >
-        <ButtonSoft
-          onClickButton={onClickClose}
-          textButton="Cancel"
-          color="neutral"
-          isRightIcon={false}
-          isLeftIcon={false}
-          size="2"
-        />
-        <ButtonSolid
-          textButton={textPrimaryButton}
-          onClickButton={onClickPrimaryButton}
-          isLoading={isLoading}
-          isRightIcon={false}
-          isLeftIcon={false}
-          size="2"
-        />
+        {slotButton ?? (
+          <>
+            <SlotComp componentName="ButtonSoft" />
+            <SlotComp componentName="ButtonSolid" />
+          </>
+        )}
       </_Builtin.Block>
     </_Component>
   );

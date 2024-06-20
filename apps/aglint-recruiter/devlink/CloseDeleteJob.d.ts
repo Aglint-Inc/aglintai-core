@@ -11,4 +11,6 @@ declare function CloseDeleteJob(props: {
   textHeader?: React.ReactNode;
   slotIcon?: Types.Devlink.Slot;
   textButtonLabel?: React.ReactNode;
+  slotCloseJobButton?: Types.Devlink.Slot;
+  slotDeleteJobButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

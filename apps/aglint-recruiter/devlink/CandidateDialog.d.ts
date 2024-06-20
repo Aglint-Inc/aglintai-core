@@ -45,4 +45,5 @@ declare function CandidateDialog(props: {
   onClickPhoneScreening?: Types.Devlink.RuntimeProps;
   isPhoneScreeningVisible?: Types.Visibility.VisibilityConditions;
   textPhoneScreening?: React.ReactNode;
+  slotButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

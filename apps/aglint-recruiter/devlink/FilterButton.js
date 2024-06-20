@@ -18,7 +18,7 @@ export function FilterButton({
   _interactions.useInteractions(_interactionsData, _styles);
 
   return (
-    <_Component className={_utils.cx(_styles, "div-block-617")} tag="div">
+    <_Component className={_utils.cx(_styles, "sort-btn-wrap")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-618", "cursor-pointer")}
         tag="div"

@@ -2,9 +2,11 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { Text } from "./Text";
 import { EmailOutReach } from "./EmailOutReach";
 import { AddToList } from "./AddToList";
 import { AddJobButton } from "./AddJobButton";
+import { SlotComp } from "./SlotComp";
 import { CandidateDetails } from "./CandidateDetails";
 import { AddedJobList } from "./AddedJobList";
 import * as _utils from "./utils";
@@ -58,6 +60,7 @@ export function CandidateDialog({
   onClickPhoneScreening = {},
   isPhoneScreeningVisible = false,
   textPhoneScreening = "Phone Screening",
+  slotButton,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -76,7 +79,7 @@ export function CandidateDialog({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-819")}
+          className={_utils.cx(_styles, "cd-header-right-wrap")}
           tag="div"
         >
           <_Builtin.Block
@@ -91,15 +94,10 @@ export function CandidateDialog({
               value="%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewbox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.25%22%20y%3D%220.25%22%20width%3D%2223.5%22%20height%3D%2223.5%22%20rx%3D%2211.75%22%20fill%3D%22%23F8F9F9%22%2F%3E%0A%3Crect%20x%3D%220.25%22%20y%3D%220.25%22%20width%3D%2223.5%22%20height%3D%2223.5%22%20rx%3D%2211.75%22%20stroke%3D%22%23D8DCDE%22%20stroke-width%3D%220.5%22%2F%3E%0A%3Cpath%20d%3D%22M12%2012C11.4531%2012%2010.9531%2011.8672%2010.5%2011.6016C10.0469%2011.3359%209.67969%2010.9688%209.39844%2010.5C9.13281%2010.0312%209%209.53125%209%209C9%208.46875%209.13281%207.96875%209.39844%207.5C9.67969%207.03125%2010.0469%206.66406%2010.5%206.39844C10.9531%206.13281%2011.4531%206%2012%206C12.5469%206%2013.0469%206.13281%2013.5%206.39844C13.9531%206.66406%2014.3203%207.03125%2014.6016%207.5C14.8672%207.96875%2015%208.46875%2015%209C15%209.53125%2014.8672%2010.0312%2014.6016%2010.5C14.3203%2010.9688%2013.9531%2011.3359%2013.5%2011.6016C13.0469%2011.8672%2012.5469%2012%2012%2012ZM10.9219%2013.125H13.0781C14.25%2013.1562%2015.2344%2013.5625%2016.0312%2014.3438C16.8125%2015.1406%2017.2188%2016.125%2017.25%2017.2969C17.25%2017.5%2017.1797%2017.6641%2017.0391%2017.7891C16.9141%2017.9297%2016.75%2018%2016.5469%2018H7.45312C7.25%2018%207.08594%2017.9297%206.96094%2017.7891C6.82031%2017.6641%206.75%2017.5%206.75%2017.2969C6.78125%2016.125%207.1875%2015.1406%207.96875%2014.3438C8.76562%2013.5625%209.75%2013.1562%2010.9219%2013.125Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
             />
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold", "one-line-clamp")}
-            tag="div"
-          >
-            {textName}
-          </_Builtin.Block>
+          <Text content={textName} weight="medium" />
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-577")}
+          className={_utils.cx(_styles, "cd-header-left-wrap")}
           tag="div"
         >
           <_Builtin.Block
@@ -179,7 +177,7 @@ export function CandidateDialog({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-599")}
+              className={_utils.cx(_styles, "cd-details-wrap")}
               tag="div"
             >
               {isPhoneVisible ? (
@@ -201,7 +199,7 @@ export function CandidateDialog({
               ) : null}
               {isLocationVisible ? (
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "loc-wrap-detail", "mt-10")}
+                  className={_utils.cx(_styles, "loc-wrap-detail")}
                   tag="div"
                 >
                   <_Builtin.HtmlEmbed
@@ -212,7 +210,7 @@ export function CandidateDialog({
                 </_Builtin.Block>
               ) : null}
               <_Builtin.Block
-                className={_utils.cx(_styles, "loc-wrap-detail", "mt-10")}
+                className={_utils.cx(_styles, "loc-wrap-detail")}
                 tag="div"
               >
                 <_Builtin.HtmlEmbed
@@ -474,55 +472,12 @@ export function CandidateDialog({
                 className={_utils.cx(_styles, "div-block-642")}
                 tag="div"
               >
-                <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "cd-view-resume",
-                    "cursor-pointer",
-                    "mt-0",
-                    "p-2"
-                  )}
-                  tag="div"
-                  {...onClickViewResume}
-                >
-                  <_Builtin.Block tag="div">
-                    <_Builtin.HtmlEmbed
-                      className={_utils.cx(_styles, "icon-embed")}
-                      value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2213%22%20viewbox%3D%220%200%2012%2013%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M5.99986%2010.5022C3.49288%2010.5022%201.5331%209.05872%200.209412%207.16773C-0.0709987%206.76464%20-0.0709987%206.23204%200.208768%205.84759C1.51713%203.95774%203.48959%202.5022%205.99986%202.5022C8.50685%202.5022%2010.4666%203.94567%2011.7903%205.83666C12.0695%206.23794%2012.0707%206.76756%2011.7881%207.16095C10.4797%209.04879%208.5083%2010.5022%205.99986%2010.5022ZM10.9688%206.58759C11.009%206.53204%2011.009%206.46464%2010.9702%206.40893C9.81544%204.7592%208.10883%203.5022%205.99986%203.5022C3.88855%203.5022%202.17163%204.76916%201.02423%206.42628C0.990728%206.47235%200.990728%206.53976%201.02948%206.59547C2.18429%208.2452%203.89089%209.5022%205.99986%209.5022C8.11118%209.5022%209.8281%208.23523%2010.9688%206.58759ZM5.99986%208.5022C4.8953%208.5022%203.99986%207.60677%203.99986%206.5022C3.99986%205.39763%204.8953%204.5022%205.99986%204.5022C7.10443%204.5022%207.99986%205.39763%207.99986%206.5022C7.99986%207.60677%207.10443%208.5022%205.99986%208.5022ZM5.99986%207.5022C6.55215%207.5022%206.99986%207.05448%206.99986%206.5022C6.99986%205.94991%206.55215%205.5022%205.99986%205.5022C5.44758%205.5022%204.99986%205.94991%204.99986%206.5022C4.99986%207.05448%205.44758%207.5022%205.99986%207.5022Z%22%20fill%3D%22%231F73B7%22%2F%3E%0A%3C%2Fsvg%3E"
-                    />
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "text-blue-600-2")}
-                    tag="div"
-                  >
-                    {"View Resume"}
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block tag="div">
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "cd-download-resume",
-                      "cursor-pointer",
-                      "mt-0"
-                    )}
-                    tag="div"
-                    {...onClickDownloadResume}
-                  >
-                    <_Builtin.Block tag="div">
-                      <_Builtin.HtmlEmbed
-                        className={_utils.cx(_styles, "icon-embed")}
-                        value="%3Csvg%20width%3D%2212%22%20height%3D%2213%22%20viewbox%3D%220%200%2012%2013%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6.5%208.19509L9.04645%205.64864C9.24171%205.45338%209.55829%205.45338%209.75355%205.64864C9.94882%205.84391%209.94882%206.16049%209.75355%206.35575L6.65355%209.45575C6.25829%209.85101%205.64171%209.85101%205.24645%209.45575L2.14645%206.35575C1.95118%206.16049%201.95118%205.84391%202.14645%205.64864C2.34171%205.45338%202.65829%205.45338%202.85355%205.64864L5.5%208.29509V1.0022C5.5%200.726055%205.72386%200.502197%206%200.502197C6.27614%200.502197%206.5%200.726055%206.5%201.0022V8.19509ZM1.5%2012.5022C1.22386%2012.5022%201%2012.2783%201%2012.0022C1%2011.7261%201.22386%2011.5022%201.5%2011.5022H10.5C10.7761%2011.5022%2011%2011.7261%2011%2012.0022C11%2012.2783%2010.7761%2012.5022%2010.5%2012.5022H1.5Z%22%20fill%3D%22%231F73B7%22%2F%3E%0A%3C%2Fsvg%3E"
-                      />
-                    </_Builtin.Block>
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-blue-600-2")}
-                      tag="div"
-                    >
-                      {"Download Resume"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
+                {slotButton ?? (
+                  <>
+                    <SlotComp componentName="ButtonGhost" />
+                    <SlotComp componentName="ButtonGhost" />
+                  </>
+                )}
               </_Builtin.Block>
             ) : null}
           </_Builtin.Block>

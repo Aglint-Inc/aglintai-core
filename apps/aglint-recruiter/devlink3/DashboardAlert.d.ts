@@ -6,4 +6,5 @@ declare function DashboardAlert(props: {
   onClickBanner?: Types.Devlink.RuntimeProps;
   textTitile?: React.ReactNode;
   textShortDescription?: React.ReactNode;
+  slotViewButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

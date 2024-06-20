@@ -8,4 +8,5 @@ declare function Filter(props: {
   slotFilter?: Types.Devlink.Slot;
   isApplyFilterDisable?: Types.Visibility.VisibilityConditions;
   isFilterEmpty?: Types.Visibility.VisibilityConditions;
+  slotButton?: Types.Devlink.Slot;
 }): React.JSX.Element;
