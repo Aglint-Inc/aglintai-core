@@ -33,9 +33,7 @@ import BasicStepTwo from '../JobPostFormSlides/BasicStepTwo';
 import Emails from '../JobPostFormSlides/EmailTemplates';
 import ScreeningComp from '../JobPostFormSlides/PhoneScreening/PhoneScreening';
 import PublishDesclaimer from '../JobPostFormSlides/PublishDesclaimer';
-import ScoreSettings, {
-  getBalancedScore,
-} from '../JobPostFormSlides/ScoreSettings';
+import ScoreSettings from '../JobPostFormSlides/ScoreSettings';
 import SyncStatus from '../JobPostFormSlides/SyncStatus';
 import { API_FAIL_MSG, isShoWWarn, jobSlides, slidePathToNum } from '../utils';
 import CloseJobPopup from './CloseJobPopup';
@@ -451,14 +449,14 @@ function JobForm() {
         <CloseDeleteJob
           isCloseJobVisible={showCloseJob}
           isDeleteJobVisible={!showCloseJob}
-          onClickClose={{
-            onClick: () => {
-              setPopupEl(null);
-              showCloseJob
-                ? setIsDeletePopupOpen(true)
-                : setShowDraftPopup(true);
-            },
-          }}
+          // onClickClose={{
+          //   onClick: () => {
+          //     setPopupEl(null);
+          //     showCloseJob
+          //       ? setIsDeletePopupOpen(true)
+          //       : setShowDraftPopup(true);
+          //   },
+          // }}
         />
       </Popover>
       <MuiPopup
@@ -746,19 +744,19 @@ const SideSection = () => {
                 />
               </>
             }
-            onClickEqualize={{
-              onClick: () => {
-                const jdJson = jobForm.formFields.jdJson;
-                handleUpdateFormFields({
-                  path: `resumeScoreSettings`,
-                  value: getBalancedScore(
-                    jdJson.rolesResponsibilities.length === 0,
-                    jdJson.educations.length === 0,
-                    jdJson.skills.length === 0,
-                  ),
-                });
-              },
-            }}
+            // onClickEqualize={{
+            //   onClick: () => {
+            //     const jdJson = jobForm.formFields.jdJson;
+            //     handleUpdateFormFields({
+            //       path: `resumeScoreSettings`,
+            //       value: getBalancedScore(
+            //         jdJson.rolesResponsibilities.length === 0,
+            //         jdJson.educations.length === 0,
+            //         jdJson.skills.length === 0,
+            //       ),
+            //     });
+            //   },
+            // }}
           />
         </Stack>
       </>

@@ -4,6 +4,7 @@ import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { AssessmentError } from '@/devlink2/AssessmentError';
 import { AssessmentListCardLoader } from '@/devlink2/AssessmentListCardLoader';
 import { EmptyAssessmentList } from '@/devlink2/EmptyAssessmentList';
@@ -47,8 +48,16 @@ const JobWorkflowComp = () => {
       <JobsWorkflow
         onClickCreateWorkflow={{ onClick: () => push(ROUTES['/workflows']()) }}
         isVisible={(jobWorkflows ?? []).length !== 0}
-        onClickAddWorkflow={{ onClick: () => setPopup({ open: true }) }}
         slotWorflows={<JobWorkflows />}
+        slotButtonSoft={
+          <ButtonSoft
+            textButton='Add Workflow'
+            size={2}
+            iconName='add'
+            isLeftIcon
+            onClickButton={{ onClick: () => setPopup({ open: true }) }}
+          />
+        }
       />
       <WorkflowBrowser />
     </>

@@ -10,6 +10,8 @@ import { useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonOutlined } from '@/devlink/ButtonOutlined';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { EditEmail } from '@/devlink/EditEmail';
 import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
@@ -200,16 +202,22 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
             editEmailDescription={
               templateObj[String(templatePath)]?.descriptionInJob
             }
-            onClickSaveChanges={{
-              onClick: () => {
-                // handlerSave();
-              },
-            }}
-            onClickClose={{
-              onClick: () => {
-                handleDrawerClose();
-              },
-            }}
+            slotButton={
+              <>
+                <ButtonSoft
+                  textButton='Close'
+                  color={'neutral'}
+                  size={2}
+                  onClickButton={{ onClick: () => handleDrawerClose() }}
+                />
+                <ButtonSolid
+                  textButton='Save'
+                  color={'neutral'}
+                  size={2}
+                  // onClickButton={{ onClick: () => handlerSave() }}
+                />
+              </>
+            }
             textEmailName={templateObj[String(templatePath)]?.heading}
             slotForm={
               <Stack spacing={'var(--space-5)'}>

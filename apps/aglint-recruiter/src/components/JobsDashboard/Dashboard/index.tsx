@@ -6,6 +6,8 @@ import React, { Fragment, useCallback, useMemo, useState } from 'react';
 
 import { AssistStatus } from '@/devlink/AssistStatus';
 import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CloseDeleteJob } from '@/devlink/CloseDeleteJob';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
@@ -607,10 +609,29 @@ const useBanners = ({
         textDesc={
           'To use the scheduling module, please configure an interview plan for this job.'
         }
-        onClickDismiss={{
-          onClick: () => setDismissWarnings({ interview_plan: true }),
-        }}
-        onClickView={{ onClick: () => push(`/jobs/${job.id}/interview-plan`) }}
+        slotButton={
+          <>
+            <ButtonSoft
+              textButton='Ignore'
+              size={2}
+              color={'accent'}
+              highContrast={'true'}
+              onClickButton={{
+                onClick: () => setDismissWarnings({ interview_plan: true }),
+              }}
+            />
+
+            <ButtonSolid
+              textButton='View'
+              size={2}
+              color={'accent'}
+              highContrast={'true'}
+              onClickButton={{
+                onClick: () => push(`/jobs/${job.id}/interview-plan`),
+              }}
+            />
+          </>
+        }
       />,
     );
   if (isInterviewSessionEmpty && !dismissWarnings.interview_session)
@@ -620,12 +641,29 @@ const useBanners = ({
         textDesc={
           'To use the scheduling module, please create atleast one interview session for the plan.'
         }
-        onClickDismiss={{
-          onClick: () => setDismissWarnings({ interview_session: true }),
-        }}
-        onClickView={{
-          onClick: () => push(`/jobs/${job.id}/interview-plan`),
-        }}
+        slotButton={
+          <>
+            <ButtonSoft
+              textButton='Ignore'
+              size={2}
+              color={'accent'}
+              highContrast={'true'}
+              onClickButton={{
+                onClick: () => setDismissWarnings({ interview_session: true }),
+              }}
+            />
+
+            <ButtonSolid
+              textButton='View'
+              size={2}
+              color={'accent'}
+              highContrast={'true'}
+              onClickButton={{
+                onClick: () => push(`/jobs/${job.id}/interview-plan`),
+              }}
+            />
+          </>
+        }
       />,
     );
   if (
@@ -643,6 +681,18 @@ const useBanners = ({
             onClick: () =>
               push(ROUTES['/jobs/[id]/job-details']({ id: job?.id })),
           }}
+          slotViewButton={
+            <ButtonSolid
+              size={2}
+              color={'accent'}
+              textButton='View'
+              highContrast='true'
+              onClickButton={{
+                onClick: () =>
+                  push(ROUTES['/jobs/[id]/job-details']({ id: job?.id })),
+              }}
+            />
+          }
         />,
       );
     }
@@ -657,6 +707,18 @@ const useBanners = ({
             onClick: () =>
               push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id })),
           }}
+          slotViewButton={
+            <ButtonSolid
+              size={2}
+              color={'accent'}
+              textButton='View'
+              highContrast='true'
+              onClickButton={{
+                onClick: () =>
+                  push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id })),
+              }}
+            />
+          }
         />,
       );
     }
@@ -682,6 +744,17 @@ const useBanners = ({
         onClickBanner={{
           onClick: () => push(`/jobs/${job.id}/profile-score`),
         }}
+        slotViewButton={
+          <ButtonSolid
+            size={2}
+            color={'accent'}
+            textButton='View'
+            highContrast='true'
+            onClickButton={{
+              onClick: () => push(`/jobs/${job.id}/profile-score`),
+            }}
+          />
+        }
       />,
     );
   else if (status.description_changed)
@@ -689,12 +762,29 @@ const useBanners = ({
       <DashboardWarning
         textWarningTitle={'Job description has changed'}
         textDesc={'You may need to adjust the criteria for profile scoring.'}
-        onClickDismiss={{
-          onClick: () => setDismissWarnings({ job_description: true }),
-        }}
-        onClickView={{
-          onClick: () => push(`/jobs/${job.id}/profile-score`),
-        }}
+        slotButton={
+          <>
+            <ButtonSoft
+              textButton='Ignore'
+              size={2}
+              color={'accent'}
+              highContrast={'true'}
+              onClickButton={{
+                onClick: () => setDismissWarnings({ job_description: true }),
+              }}
+            />
+
+            <ButtonSolid
+              textButton='View'
+              size={2}
+              color={'accent'}
+              highContrast={'true'}
+              onClickButton={{
+                onClick: () => push(`/jobs/${job.id}/profile-score`),
+              }}
+            />
+          </>
+        }
       />,
     );
   // if (status.scoring_criteria_changed)
@@ -754,9 +844,15 @@ const JobClose = ({
         }}
       >
         <CloseDeleteJob
-          onClickClose={{ onClick: () => openModal() }}
           isCloseJobVisible={!isDelete}
           isDeleteJobVisible={isDelete}
+          slotButton={
+            <ButtonSolid
+              textButton={`${isDelete ? 'Delete' : 'Close'} Job`}
+              size={2}
+              onClickButton={{ onClick: () => openModal() }}
+            />
+          }
         />
       </Popover>
       <Dialog open={modal} onClose={() => handleClose()}>
