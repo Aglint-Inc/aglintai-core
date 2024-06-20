@@ -15,7 +15,7 @@ import ROUTES from '@/src/utils/routing/routes';
 
 import Icon from '../Common/Icons/Icon';
 import MenuLottie from '../Common/Lotties/MenuLottie';
-import { isEnvProd } from '../JobsDashboard/JobPostCreateUpdate/utils';
+import { isEnvProd } from '../Jobs/Dashboard/JobPostCreateUpdate/utils';
 import CompanyList from './CompanyList';
 import SideNavbar from './SideNavbar';
 
@@ -181,7 +181,7 @@ export default function AppLayout({ children }) {
                 borderRadius: 'var(--radius-2)',
                 backgroundColor: '#3d1100',
                 '& span': {
-                  backgroundColor:  'var(--accent-4)',
+                  backgroundColor: 'var(--accent-4)',
                 },
               }}
             />

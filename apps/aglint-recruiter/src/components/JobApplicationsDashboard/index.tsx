@@ -45,11 +45,13 @@ import {
 } from '@/src/context/JobApplicationsContext/types';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { CountJobs } from '@/src/context/JobsContext/types';
+import { useKeyPress } from '@/src/hooks/useKeyPress';
 import NotFoundPage from '@/src/pages/404';
 
 import Loader from '../Common/Loader';
 import RefreshButton from '../Common/RefreshButton';
-import { POSTED_BY } from '../JobsDashboard/AddJobWithIntegrations/utils';
+import SearchField from '../Common/SearchField';
+import { POSTED_BY } from '../Jobs/Dashboard/AddJobWithIntegrations/utils';
 import ApplicationCard, { CustomDragLayer } from './ApplicationCard';
 import ApplicationDetails from './ApplicationCard/ApplicationDetails';
 import DeleteCandidate from './CandidateActions/deleteCandidates';
@@ -59,10 +61,9 @@ import FilterJobApplications from './Common/FilterJobApplications';
 import SectionIcons from './Common/SectionIcons';
 import SortJobApplications from './Common/SortJobApplications';
 import ResumeUpload from './FileUpload';
-import { getBoundingStatus, useKeyPress, useMouseClick } from './hooks';
+import { getBoundingStatus, useMouseClick } from './hooks';
 import ImportCandidatesCSV from './ImportCandidatesCsv';
 import ImportManualCandidates from './ImportManualCandidates';
-import SearchField from './SearchField';
 import { capitalize, handleOngoingWarning } from './utils';
 
 const JobApplicationsDashboard = () => {

@@ -6,7 +6,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
 
 import { ShowCode } from '../../Common/ShowCode';
-import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import { API_FAIL_MSG } from '../../Jobs/Dashboard/JobPostCreateUpdate/utils';
 import ModuleSchedules from '../Common/ModuleSchedules';
 import { useScheduleList } from '../Common/ModuleSchedules/hooks';
 

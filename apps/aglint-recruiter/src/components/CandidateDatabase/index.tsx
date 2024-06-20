@@ -16,6 +16,7 @@ import { SearchAglintCd } from '@/devlink/SearchAglintCd';
 import { WelcomeMatDiscoverTalent } from '@/devlink2/WelcomeMatDiscoverTalent';
 import { WelcomeMatTalentDirectory } from '@/devlink2/WelcomeMatTalentDirectory';
 import { WelcomeMatTalentRediscovery } from '@/devlink2/WelcomeMatTalentRediscovery';
+import { API_FAIL_MSG } from '@/src/components/Jobs/Dashboard/JobPostCreateUpdate/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
@@ -28,7 +29,6 @@ import { CandidateSearchState } from '../../context/CandidateSearchProvider/Cand
 import Loader from '../Common/Loader';
 import MuiPopup from '../Common/MuiPopup';
 import UITextField from '../Common/UITextField';
-import { API_FAIL_MSG } from '../JobsDashboard/JobPostCreateUpdate/utils';
 import { Candidate } from './AppoloSearch/types';
 import { JDSearchModal } from './JobDescriprionModal/JDSearchModal';
 import EmptyState from './Search/EmptyState';

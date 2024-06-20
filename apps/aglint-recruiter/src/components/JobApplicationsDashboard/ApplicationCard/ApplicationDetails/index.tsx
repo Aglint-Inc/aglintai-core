@@ -64,6 +64,7 @@ import {
   ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
 import { useJobDetails } from '@/src/context/JobDashboard';
+import { useKeyPress } from '@/src/hooks/useKeyPress';
 import { Job } from '@/src/queries/jobs/types';
 import { getFullName } from '@/src/utils/jsonResume';
 // import interviewerList from '@/src/utils/interviewer_list';
@@ -75,8 +76,6 @@ import { getInterviewScores } from '../../Common/InterviewScore';
 // import InterviewScore, {
 //   getInterviewScores,
 // } from '../../Common/InterviewScore';
-import ResumeScore from '../../Common/ResumeScore';
-import { useKeyPress } from '../../hooks';
 // import RedirectWrapper from '../../Common/Wrappers/redirectWrapper';
 import { CheckIcon, FileIcon, UploadIcon } from '../../ImportManualCandidates';
 import useUploadCandidate from '../../ImportManualCandidates/hooks';

@@ -53,7 +53,7 @@ import toast from '@/src/utils/toast';
 
 import Loader from '../../Common/Loader';
 import CompanyLogo from '../../JobApplicationsDashboard/Common/CompanyLogo';
-import { getBreakLabel } from '../../JobNewInterviewPlan/utils';
+import { getBreakLabel } from '../../Jobs/Job/Interview-Plan/utils';
 import DateRange from '../../Tasks/Components/DateRange';
 import IconScheduleType from '../Candidates/ListCard/Icon';
 import { addScheduleActivity } from '../Candidates/queries/utils';
@@ -374,9 +374,7 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
               : scheduling_reason?.candidate?.rescheduling) || ['other']
           }
           title={
-            cancelReschedule === 'reschedule'
-              ? 'Reschedule'
-              : 'Cancel Schedule'
+            cancelReschedule === 'reschedule' ? 'Reschedule' : 'Cancel Schedule'
           }
           type={cancelReschedule}
         />

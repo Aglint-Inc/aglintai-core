@@ -16,7 +16,7 @@ import {
   getDisqualificationStatus,
   getScreeningStatus,
 } from '@/src/components/JobApplicationsDashboard/utils';
-import { POSTED_BY } from '@/src/components/JobsDashboard/AddJobWithIntegrations/utils';
+import { POSTED_BY } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/utils';
 import { JobApplicationDelete } from '@/src/pages/api/job/jobApplications/candidateDelete';
 import { JobApplicationEmails } from '@/src/pages/api/job/jobApplications/candidateEmail';
 import { ReadJobApplicationApi } from '@/src/pages/api/job/jobApplications/read';

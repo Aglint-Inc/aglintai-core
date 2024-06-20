@@ -1,4 +1,4 @@
-import { templateObj } from '@/src/components/JobEmailTemplates/utils';
+import { templateObj } from '@/src/components/Jobs/Job/Email-Templates/utils';
 import { tempObj } from '@/src/components/Scheduling/Settings/SchedulingEmailTemplates';
 
 export const emailTemplates: {

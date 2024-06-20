@@ -1,4 +1,4 @@
-import JobAssistant from '@/src/components/JobsDashboard/JobAssistant';
+import JobAssistant from '@/src/components/Dashboard/JobAssistant';
 import { JobAssistantProvider } from '@/src/context/JobAssistant';
 
 function JobAssistantPage() {

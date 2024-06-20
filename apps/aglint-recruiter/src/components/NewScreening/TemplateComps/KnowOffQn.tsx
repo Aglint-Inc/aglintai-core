@@ -7,7 +7,7 @@ import { ScrQuestionDefault } from '@/devlink2/ScrQuestionDefault';
 import UITypography from '@/src/components/Common/UITypography';
 import { usePhoneScreening } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
 
-import { PhoneScreenQuestion } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
+import { PhoneScreenQuestion } from '../../Jobs/Dashboard/JobPostCreateUpdate/JobPostFormProvider';
 import PhoneScreenNewQnForm from './PhoneScreenNewQnForm';
 import { qnTypeToIcon } from './ScreeningComp';
 import { qnTypeToLabel2 } from './utils';

@@ -3,7 +3,7 @@ import { cloneDeep, debounce, set } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { createContext, useContext, useEffect, useReducer } from 'react';
 
-import { API_FAIL_MSG } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import { API_FAIL_MSG } from '@/src/components/Jobs/Dashboard/JobPostCreateUpdate/utils';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

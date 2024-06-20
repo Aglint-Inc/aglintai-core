@@ -1,8 +1,7 @@
-import { DatabaseEnums, StatusJobs } from '@aglint/shared-types';
+import { DatabaseEnums, DatabaseTable, StatusJobs } from '@aglint/shared-types';
 import { DB } from '@aglint/shared-types';
 
 import { ScoreWheelParams } from '@/src/components/Common/ScoreWheel';
-import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import { CountJobs, InterviewPlan } from '@/src/context/JobsContext/types';
 
 type JobTableRPC = DB['public']['Functions']['getjob']['Returns'][number];
@@ -55,7 +54,7 @@ export type JobCreate = Required<
 };
 
 type CustomJobType = {
-  jd_json: JdJsonType;
+  jd_json: DatabaseTable['public_jobs']['jd_json'];
   active_status: StatusJobs | null;
   count: CountJobs;
   activeSections: DatabaseEnums['application_status'][];
@@ -77,7 +76,7 @@ type CustomJobType = {
     | 'workplace_type'
     | 'job_type'
     | 'location'
-  > & { jd_json: JdJsonType };
+  > & { jd_json: DatabaseTable['public_jobs']['jd_json'] };
 };
 
 type EmailTemplateTypes =

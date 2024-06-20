@@ -15,7 +15,7 @@ import interviewerList from '@/src/utils/interviewer_list';
 import { supabase } from '@/src/utils/supabase/client';
 
 import MuiPopup from '../../Common/MuiPopup';
-import { copyCompanySetting } from '../../JobsDashboard/JobPostCreateUpdate/copies/copyCompanySetting';
+import { copyCompanySetting } from '../../Jobs/Dashboard/JobPostCreateUpdate/copies/copyCompanySetting';
 
 let tempObj = avatar_list[0];
 function AssessmentSettings({
@@ -345,7 +345,7 @@ export function AudioAvatar({ selectedAvatar, isActive }) {
               '& img': {
                 objectFit: 'contain',
               },
-              bgcolor:  'var(--neutral-1)',
+              bgcolor: 'var(--neutral-1)',
             }}
             variant='rounded'
             src={selectedAvatar?.image}

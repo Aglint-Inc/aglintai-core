@@ -10,7 +10,7 @@ import { ToggleButton } from '@/devlink2/ToggleButton';
 import UITextField from '@/src/components/Common/UITextField';
 import { usePhoneScreening } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
 
-import { PhoneScreenQuestion } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
+import { PhoneScreenQuestion } from '../../Jobs/Dashboard/JobPostCreateUpdate/JobPostFormProvider';
 import { qnTypeToIcon } from './ScreeningComp';
 import { qnTypeToLabel2 } from './utils';
 

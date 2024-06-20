@@ -12,12 +12,12 @@ import React, {
 } from 'react';
 
 import { LoaderSvg } from '@/devlink/LoaderSvg';
+import { API_FAIL_MSG } from '@/src/components/Jobs/Dashboard/JobPostCreateUpdate/utils';
 import { FormJobType } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { PhoneScreenQuestion } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
-import { API_FAIL_MSG } from '../JobsDashboard/JobPostCreateUpdate/utils';
+import { PhoneScreenQuestion } from '../Jobs/Dashboard/JobPostCreateUpdate/JobPostFormProvider';
 import { defaultLogo } from './utils';
 
 type PhoneScreenCandQnType = Omit<PhoneScreenQuestion, 'options'>;

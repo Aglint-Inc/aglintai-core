@@ -17,7 +17,7 @@ import {
 } from '@/src/utils/prompts/addNewJob/generateJobDescription';
 import toast from '@/src/utils/toast';
 
-import { useJobForm } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
+import { useJobForm } from '../../Jobs/Dashboard/JobPostCreateUpdate/JobPostFormProvider';
 import Icon from '../Icons/Icon';
 import UITypography from '../UITypography';
 import { useTipTap } from './context';

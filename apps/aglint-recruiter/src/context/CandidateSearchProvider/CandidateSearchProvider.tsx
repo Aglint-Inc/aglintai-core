@@ -6,10 +6,9 @@ import set from 'lodash/set';
 import router from 'next/router';
 import React, { createContext, useContext, useReducer } from 'react';
 
+import { API_FAIL_MSG } from '@/src/components/Jobs/Dashboard/JobPostCreateUpdate/utils';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
-
-import { API_FAIL_MSG } from '../../components/JobsDashboard/JobPostCreateUpdate/utils';
 
 export interface CandidateSearchRes {
   application_id: string;

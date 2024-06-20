@@ -4,7 +4,7 @@ import { AssessmentSide } from '@/devlink/AssessmentSide';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { usePhoneScreening } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
 
-import { useJobForm } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
+import { useJobForm } from '../../Jobs/Dashboard/JobPostCreateUpdate/JobPostFormProvider';
 
 const ScreeningSideBar = () => {
   const { handleUpdateFormFields } = useJobForm();

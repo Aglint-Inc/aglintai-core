@@ -8,7 +8,7 @@ import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import { MembersList } from '@/devlink3/MembersList';
 import { MyScheduleSubCard } from '@/devlink3/MyScheduleSubCard';
 import CandidateDefaultIcon from '@/src/components/Common/Icons/CandidateDefaultIcon';
-import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
+import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import IconScheduleType from '../../../Candidates/ListCard/Icon';

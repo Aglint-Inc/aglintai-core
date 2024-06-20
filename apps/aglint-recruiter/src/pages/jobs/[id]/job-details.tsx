@@ -1,6 +1,6 @@
 import Seo from '@components/Common/Seo';
 
-import JobDetailsDashboard from '@/src/components/JobDetails';
+import JobDetailsDashboard from '@/src/components/Jobs/Job/Job-Details';
 import { JobProvider } from '@/src/context/JobContext';
 
 const JobDetailsPage = () => {

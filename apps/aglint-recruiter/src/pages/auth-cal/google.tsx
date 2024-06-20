@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { LoaderSvg } from '@/devlink/LoaderSvg';
-import { API_FAIL_MSG } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import { API_FAIL_MSG } from '@/src/components/Jobs/Dashboard/JobPostCreateUpdate/utils';
 import {
   AuthProvider,
   useAuthDetails,

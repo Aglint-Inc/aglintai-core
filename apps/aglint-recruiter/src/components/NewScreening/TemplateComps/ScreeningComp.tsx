@@ -15,7 +15,7 @@ import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import { usePhoneScreening } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
 
-import { PhoneScreenQuestion } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
+import { PhoneScreenQuestion } from '../../Jobs/Dashboard/JobPostCreateUpdate/JobPostFormProvider';
 import KnowOffQn from './KnowOffQn';
 import { seedQns } from './utils';
 

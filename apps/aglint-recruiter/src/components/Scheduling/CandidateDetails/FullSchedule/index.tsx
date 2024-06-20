@@ -3,7 +3,7 @@ import { Stack } from '@mui/material';
 import { EditOptionModule } from '@/devlink3/EditOptionModule';
 import { InterviewBreakCard } from '@/devlink3/InterviewBreakCard';
 import { NewInterviewPlan } from '@/devlink3/NewInterviewPlan';
-import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
+import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import toast from '@/src/utils/toast';
 
 import CancelScheduleDialog from '../Common/CancelScheduleDialog';

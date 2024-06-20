@@ -5,10 +5,10 @@ import {
   useEffect,
 } from 'react';
 
-import { Body } from '@/src/components/JobNewApplications/ui/candidateDrawer/body';
-import { Details } from '@/src/components/JobNewApplications/ui/candidateDrawer/details';
-import { Overview } from '@/src/components/JobNewApplications/ui/candidateDrawer/details/insights/overview';
-import { ResumePreviewer } from '@/src/components/JobNewApplications/ui/resumePreviewer';
+import { Body } from '@/src/components/Jobs/Job/Candidate-List/Common/candidateDrawer/body';
+import { Details } from '@/src/components/Jobs/Job/Candidate-List/Common/candidateDrawer/details';
+import { Overview } from '@/src/components/Jobs/Job/Candidate-List/Common/candidateDrawer/details/insights/overview';
+import { ResumePreviewer } from '@/src/components/Jobs/Job/Candidate-List/Common/resumePreviewer';
 import { applicationQuery } from '@/src/queries/application';
 
 import { useApplicationContext } from './hooks';

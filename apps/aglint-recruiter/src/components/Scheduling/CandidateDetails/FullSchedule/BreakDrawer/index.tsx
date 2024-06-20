@@ -3,8 +3,8 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 import { SideDrawerBlock } from '@/devlink2/SideDrawerBlock';
-import { DropDown } from '@/src/components/JobNewInterviewPlan/sessionForms';
-import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
+import { DropDown } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
+import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsSessionCache } from '@/src/pages/api/scheduling/application/candidatesessioncache';
 import { supabase } from '@/src/utils/supabase/client';

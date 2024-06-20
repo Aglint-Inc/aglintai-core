@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { JobDescriptionModal } from '@/devlink/JobDescriptionModal';
+import { API_FAIL_MSG } from '@/src/components/Jobs/Dashboard/JobPostCreateUpdate/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
@@ -13,7 +14,6 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import UITextField from '../../Common/UITextField';
-import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 import { getRelevantCndidates } from '../utils';
 
 export const JDSearchModal = ({ setJdPopup }) => {

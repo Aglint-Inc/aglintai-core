@@ -5,10 +5,10 @@ import { useState } from 'react';
 
 import { Checkbox } from '@/devlink/Checkbox';
 import { PhoneScreeningQ } from '@/devlink/PhoneScreeningQ';
+import { API_FAIL_MSG } from '@/src/components/Jobs/Dashboard/JobPostCreateUpdate/utils';
 import toast from '@/src/utils/toast';
 
 import UITypography from '../Common/UITypography';
-import { API_FAIL_MSG } from '../JobsDashboard/JobPostCreateUpdate/utils';
 import CompanyLogo from './CompanyLogo';
 import {
   PhoneScreeningResponseType,
@@ -210,7 +210,11 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
 
           {errorMsg && (
             <Stack mt={2}>
-              {<UITypography color={'var(--error-11)'}>{errorMsg}</UITypography>}
+              {
+                <UITypography color={'var(--error-11)'}>
+                  {errorMsg}
+                </UITypography>
+              }
             </Stack>
           )}
         </>

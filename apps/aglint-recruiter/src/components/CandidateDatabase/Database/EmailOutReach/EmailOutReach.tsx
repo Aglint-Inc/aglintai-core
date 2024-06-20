@@ -16,7 +16,7 @@ import MuiPopup from '@/src/components/Common/MuiPopup';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UISelect from '@/src/components/Common/Uiselect';
 import UITextField from '@/src/components/Common/UITextField';
-import { API_FAIL_MSG } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import { API_FAIL_MSG } from '@/src/components/Jobs/Dashboard/JobPostCreateUpdate/utils';
 import { getTimeDifference } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
