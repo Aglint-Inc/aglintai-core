@@ -17,7 +17,7 @@ import { YTransform } from '@/src/utils/framer-motions/Animation';
 import TipTapAIEditor from '../../Common/TipTapAIEditor';
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
-import { emailTempKeys } from '../../Jobs/Dashboard/JobPostCreateUpdate/JobPostFormSlides/EmailTemplates';
+import { emailTempKeys } from '../../Scheduling/Settings/SchedulingEmailTemplates';
 import { debouncedSave } from '../utils';
 
 const EmailTemplate = ({ setIsSaving }) => {

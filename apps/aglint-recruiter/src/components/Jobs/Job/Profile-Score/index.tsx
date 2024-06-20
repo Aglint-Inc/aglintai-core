@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { DatabaseTable } from '@aglint/shared-types';
 import { Popover, Stack } from '@mui/material';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
@@ -34,8 +35,6 @@ import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 import { useJobs } from '@/src/context/JobsContext';
 import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/jobs/types';
-
-import { JdJsonType } from '../../Dashboard/JobPostCreateUpdate/JobPostFormProvider';
 
 type Sections = 'experience' | 'education' | 'skills';
 
@@ -367,7 +366,7 @@ const Section: FC<{ type: Sections }> = ({ type }) => {
   };
   const handleEdit = (
     index: number,
-    item: JdJsonType['rolesResponsibilities'][number],
+    item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number],
   ) => {
     const newSection = jd_json[section].reduce(
       (acc, curr, i) => {
@@ -384,7 +383,9 @@ const Section: FC<{ type: Sections }> = ({ type }) => {
       },
     });
   };
-  const handleCreate = (item: JdJsonType['rolesResponsibilities'][number]) => {
+  const handleCreate = (
+    item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number],
+  ) => {
     handleJobUpdate(id, {
       draft: {
         ...draft,
@@ -424,9 +425,11 @@ const Section: FC<{ type: Sections }> = ({ type }) => {
 
 const Pill: FC<{
   type: Sections;
-  item: JdJsonType['rolesResponsibilities'][number];
-  // eslint-disable-next-line no-unused-vars
-  handleSubmit: (item: JdJsonType['rolesResponsibilities'][number]) => void;
+  item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number];
+  handleSubmit: (
+    // eslint-disable-next-line no-unused-vars
+    item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number],
+  ) => void;
   handleDelete: () => void;
 }> = ({ type, item, handleSubmit, handleDelete }) => {
   const ref = useRef();
@@ -525,8 +528,10 @@ const Pill: FC<{
 
 const AddOption: FC<{
   type: Sections;
-  // eslint-disable-next-line no-unused-vars
-  handleSubmit: (item: JdJsonType['rolesResponsibilities'][number]) => void;
+  handleSubmit: (
+    // eslint-disable-next-line no-unused-vars
+    item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number],
+  ) => void;
 }> = ({ type, handleSubmit }) => {
   const ref = useRef();
   const [open, setOpen] = useState(false);

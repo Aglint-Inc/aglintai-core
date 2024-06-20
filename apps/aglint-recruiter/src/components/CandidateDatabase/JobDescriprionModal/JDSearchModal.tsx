@@ -6,7 +6,6 @@ import React, { useState } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { JobDescriptionModal } from '@/devlink/JobDescriptionModal';
-import { API_FAIL_MSG } from '@/src/components/Jobs/Dashboard/JobPostCreateUpdate/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
@@ -58,7 +57,7 @@ ${jdText}
         `/candidates/search?searchQryId=${history.id}&search_title=${jobRole}`,
       );
     } catch (err) {
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
       //
     } finally {
       setJdPopup(false);

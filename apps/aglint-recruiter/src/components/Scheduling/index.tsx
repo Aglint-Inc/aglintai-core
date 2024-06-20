@@ -20,7 +20,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import Icon from '../Common/Icons/Icon';
 import MuiAvatar from '../Common/MuiAvatar';
 import { ShowCode } from '../Common/ShowCode';
-import SyncStatus from '../Jobs/Dashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
+import { SyncStatus } from '../NewScreening/PhoneScreenTemplate';
 import AllSchedules from './Candidates';
 import SchedulingDashboard from './Dashboard';
 import AllInterviewersComp from './Interviewers';

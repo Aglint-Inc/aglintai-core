@@ -16,7 +16,6 @@ import { SearchAglintCd } from '@/devlink/SearchAglintCd';
 import { WelcomeMatDiscoverTalent } from '@/devlink2/WelcomeMatDiscoverTalent';
 import { WelcomeMatTalentDirectory } from '@/devlink2/WelcomeMatTalentDirectory';
 import { WelcomeMatTalentRediscovery } from '@/devlink2/WelcomeMatTalentRediscovery';
-import { API_FAIL_MSG } from '@/src/components/Jobs/Dashboard/JobPostCreateUpdate/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
@@ -72,7 +71,7 @@ function CandidateSearchHistory() {
       await fetchList();
       setHistory(history);
     } catch (err) {
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setIsHistoryLoading(false);
     }
@@ -93,7 +92,7 @@ function CandidateSearchHistory() {
         setIsCandidates(true);
       }
     } catch (err) {
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     }
   };
 
@@ -108,7 +107,7 @@ function CandidateSearchHistory() {
       setHistory((p) => p.filter((p) => p.id !== deleteHistoryId));
     } catch (err) {
       setHistory((p) => p.filter((p) => p.id !== deleteHistoryId));
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setDeleteHistoryId(-1);
       setDeleteHistory(false);
@@ -144,7 +143,7 @@ function CandidateSearchHistory() {
       );
     } catch (err) {
       // console.log(err);
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setIsQrySearching(false);
     }
@@ -260,7 +259,7 @@ function CandidateSearchHistory() {
       router.push(`/candidates/aglintdb?id=${history.id}`);
     } catch (err) {
       // console.log(err);
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setIsQrySearching(false);
     }
@@ -325,7 +324,7 @@ function CandidateSearchHistory() {
       );
       setList((p) => p.filter((p) => p.id !== deleteList.id));
     } catch (err) {
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setDeleteList(null);
     }

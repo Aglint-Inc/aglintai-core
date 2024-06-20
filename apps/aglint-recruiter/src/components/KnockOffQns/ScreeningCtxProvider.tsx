@@ -12,12 +12,11 @@ import React, {
 } from 'react';
 
 import { LoaderSvg } from '@/devlink/LoaderSvg';
-import { API_FAIL_MSG } from '@/src/components/Jobs/Dashboard/JobPostCreateUpdate/utils';
 import { FormJobType } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { PhoneScreenQuestion } from '../Jobs/Dashboard/JobPostCreateUpdate/JobPostFormProvider';
+import { PhoneScreenQuestion } from '../NewScreening/types';
 import { defaultLogo } from './utils';
 
 type PhoneScreenCandQnType = Omit<PhoneScreenQuestion, 'options'>;
@@ -258,7 +257,7 @@ export const ScreeningCtxProvider = ({ children }) => {
           },
         });
       } catch (err) {
-        toast.error(API_FAIL_MSG);
+        toast.error('Something went wrong. Please try again.');
         router.push('/login');
       } finally {
         setIsLoading(false);
@@ -376,7 +375,7 @@ export const ScreeningCtxProvider = ({ children }) => {
           },
         });
       } catch (err) {
-        toast.error(API_FAIL_MSG);
+        toast.error('Something went wrong. Please try again.');
         router.push('/login');
       } finally {
         setIsLoading(false);

@@ -83,7 +83,7 @@ const CandidatesSearch = () => {
           queryJson: searchRec.query_json as any,
         });
       } catch (err) {
-        // toast.error(API_FAIL_MSG);
+        // toast.error('Something went wrong. Please try again.');
       } finally {
         setIsSearching(false);
       }

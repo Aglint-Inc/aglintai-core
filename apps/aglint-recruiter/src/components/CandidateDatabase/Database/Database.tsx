@@ -15,7 +15,6 @@ import Loader from '../../Common/Loader';
 import InCompleteLottie from '../../Common/Lotties/CandidateDatabase_IncompleteLottie';
 import MuiAvatar from '../../Common/MuiAvatar';
 import UITypography from '../../Common/UITypography';
-import { API_FAIL_MSG } from '../../Jobs/Dashboard/JobPostCreateUpdate/utils';
 import { newCandJob } from '../Search/Search';
 import AddToJobOptions from './CandAddToJobMenu';
 import { useCandFilter } from './CandDbProvider';
@@ -76,7 +75,7 @@ const CandDatabase = () => {
             value: filteredCands,
           });
         } catch (err) {
-          toast.error(API_FAIL_MSG);
+          toast.error('Something went wrong. Please try again.');
         } finally {
           setLoading(false);
         }

@@ -6,18 +6,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { CreateJobCheckItem } from '@/devlink/CreateJobCheckItem';
-import { GenerateJobDescAi } from '@/devlink/GenerateJobDescAi';
-import { LoadingGenerate } from '@/devlink/LoadingGenerate';
-import DescGenerating from '@/public/lottie/DescGenerating';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import {
-  generateJobDescription,
-  JDGenParams,
-} from '@/src/utils/prompts/addNewJob/generateJobDescription';
-import toast from '@/src/utils/toast';
 
-import { useJobForm } from '../../Jobs/Dashboard/JobPostCreateUpdate/JobPostFormProvider';
 import Icon from '../Icons/Icon';
 import UITypography from '../UITypography';
 import { useTipTap } from './context';
@@ -321,120 +310,5 @@ const TipTapUndoRedo = () => {
         </MenuBtn>
       </Tooltip>
     </Stack>
-  );
-};
-
-export const GenerateDescription = ({ isAiGenerating, setIsAiGenerating }) => {
-  const [checks, setChecks] = useState({
-    benifits: true,
-    company: true,
-    values: true,
-  });
-  const {
-    jobForm: { formFields, formType },
-  } = useJobForm();
-  const { editor } = useTipTap();
-  const { recruiter } = useAuthDetails();
-
-  if (!editor) return <></>;
-  if (formType === 'edit') return <></>;
-  const enableGenerate =
-    Boolean(checks.benifits) ||
-    Boolean(checks.company) ||
-    Boolean(checks.values);
-
-  const handlegenerate = async () => {
-    if (!enableGenerate) return;
-    try {
-      setIsAiGenerating(true);
-      const jdGenConfig: JDGenParams = {
-        workPlaceType: formFields.workPlaceType,
-        location: formFields.jobLocation,
-        jobType: formFields.jobType,
-        jobTitle: formFields.jobTitle,
-        company: formFields.company,
-      };
-
-      if (checks.benifits) {
-        jdGenConfig.benifits = recruiter.benefits;
-      }
-      if (checks.company) {
-        jdGenConfig.companyOverview = recruiter.company_overview;
-      }
-      if (checks.values) {
-        jdGenConfig.compnayValues = recruiter.m_v_statement;
-      }
-      const jd = await generateJobDescription(jdGenConfig);
-      editor.commands.setContent(jd, true, { preserveWhitespace: true });
-    } catch {
-      toast.error('Something went wrong. Please try again');
-    } finally {
-      setIsAiGenerating(false);
-    }
-  };
-
-  if (isAiGenerating)
-    return <LoadingGenerate slotLottie={<DescGenerating />} />;
-
-  return (
-    <>
-      <GenerateJobDescAi
-        onClickCompanyDdetailsCheck={{
-          onClick: () => {
-            setChecks((p) => ({ ...p, company: !p.company }));
-          },
-        }}
-        onClickGenerate={{
-          onClick: handlegenerate,
-        }}
-        isGenerateDisable={!enableGenerate || isAiGenerating}
-        textGenerateHeader={
-          editor.isEmpty
-            ? 'Generate job description with AI'
-            : 'Regenerate job description with AI'
-        }
-        isLoading={isAiGenerating}
-        slotCheckBoxes={
-          <>
-            {recruiter.company_overview && (
-              <CreateJobCheckItem
-                textLabel1={'Use Company details from company profile'}
-                isChecked={checks.company}
-                onClickCheck={{
-                  onClick: () => {
-                    setChecks((p) => ({ ...p, company: !p.company }));
-                  },
-                }}
-              />
-            )}
-            {recruiter.benefits && (
-              <CreateJobCheckItem
-                textLabel1={'Use benefits from company profile'}
-                isChecked={checks.benifits}
-                onClickCheck={{
-                  onClick: () => {
-                    setChecks((p) => ({
-                      ...p,
-                      benifits: !p.benifits,
-                    }));
-                  },
-                }}
-              />
-            )}
-            {recruiter.m_v_statement && (
-              <CreateJobCheckItem
-                textLabel1={'Use values from company profile'}
-                isChecked={checks.values}
-                onClickCheck={{
-                  onClick: () => {
-                    setChecks((p) => ({ ...p, values: !p.values }));
-                  },
-                }}
-              />
-            )}
-          </>
-        }
-      />
-    </>
   );
 };

@@ -5,7 +5,6 @@ import { useState } from 'react';
 
 import { Checkbox } from '@/devlink/Checkbox';
 import { PhoneScreeningQ } from '@/devlink/PhoneScreeningQ';
-import { API_FAIL_MSG } from '@/src/components/Jobs/Dashboard/JobPostCreateUpdate/utils';
 import toast from '@/src/utils/toast';
 
 import UITypography from '../Common/UITypography';
@@ -62,7 +61,7 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
         value: true,
       });
     } catch (err) {
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

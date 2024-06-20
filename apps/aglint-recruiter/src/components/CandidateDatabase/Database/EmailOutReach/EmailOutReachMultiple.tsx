@@ -14,7 +14,6 @@ import EmailTemplateEditor from '@/src/components/Common/EmailTemplateEditor/Ema
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import UISelect from '@/src/components/Common/Uiselect';
 import UITextField from '@/src/components/Common/UITextField';
-import { API_FAIL_MSG } from '@/src/components/Jobs/Dashboard/JobPostCreateUpdate/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getTimeDifference } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
@@ -81,7 +80,7 @@ const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
 
       return router.push(authUrl);
     } catch (error) {
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     }
   };
 

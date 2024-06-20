@@ -12,7 +12,6 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateFilter } from '@/devlink/CandidateFilter';
 import { JobPills } from '@/devlink/JobPills';
 import { SkillsGenerate } from '@/devlink/SkillsGenerate';
-import { API_FAIL_MSG } from '@/src/components/Jobs/Dashboard/JobPostCreateUpdate/utils';
 import { useJobs } from '@/src/context/JobsContext';
 import { similarJobs } from '@/src/utils/prompts/candidateDb/similarJobs';
 import { similarSkills } from '@/src/utils/prompts/candidateDb/similarSkills';
@@ -137,7 +136,7 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
       );
     } catch (err) {
       // console.log(err);
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setIsFilterLoading(false);
       handleDialogClose();
