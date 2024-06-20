@@ -4,6 +4,8 @@ import axios from 'axios';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { InterviewMode } from '@/devlink2/InterviewMode';
 import { InterviewModePill } from '@/devlink2/InterviewModePill';
 import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
@@ -372,9 +374,6 @@ function SideDrawerEdit() {
       <Stack overflow={'hidden'}>
         {editSession && (
           <SideDrawerBlock
-            isLoading={saving}
-            onClickClose={{ onClick: () => handleClose() }}
-            textPrimaryButton='Save'
             textTitle='Edit Session'
             slotSidedrawerBody={
               <Stack>
@@ -673,14 +672,28 @@ function SideDrawerEdit() {
                 )}
               </Stack>
             }
-            onClickPrimaryButton={{
-              onClick: () => {
-                if (!saving) {
-                  setSaving(true);
-                  handleSave();
-                }
-              },
-            }}
+            slotButton={
+              <>
+                <ButtonSoft
+                  textButton='Cancel'
+                  color={'neutral'}
+                  size={2}
+                  onClickButton={{ onClick: () => handleClose() }}
+                />
+                <ButtonSolid
+                  textButton='Save'
+                  size={2}
+                  onClickButton={{
+                    onClick: () => {
+                      if (!saving) {
+                        setSaving(true);
+                        handleSave();
+                      }
+                    },
+                  }}
+                />
+              </>
+            }
           />
         )}
       </Stack>
