@@ -7,11 +7,7 @@ declare function SearchAglintCd(props: {
   isSearchDbVisible?: Types.Visibility.VisibilityConditions;
   isSearchInAglintVisible?: Types.Visibility.VisibilityConditions;
   isSearchInAllVisible?: Types.Visibility.VisibilityConditions;
-  isViewAllCandidateVisible?: Types.Visibility.VisibilityConditions;
-  onClickViewAllCandidate?: Types.Devlink.RuntimeProps;
   slotInputSearch?: Types.Devlink.Slot;
-  onClickSearch?: Types.Devlink.RuntimeProps;
-  slotLottieSearch?: Types.Devlink.Slot;
   isSearchByJdVisible?: Types.Visibility.VisibilityConditions;
   onClickSearchJobDescription?: Types.Devlink.RuntimeProps;
   isSearchJdVisible?: Types.Visibility.VisibilityConditions;
@@ -25,7 +21,6 @@ declare function SearchAglintCd(props: {
   onClickSubmit?: Types.Devlink.RuntimeProps;
   onClickClose?: Types.Devlink.RuntimeProps;
   onClickCreateNewList?: Types.Devlink.RuntimeProps;
-  onClickClearHistory?: Types.Devlink.RuntimeProps;
-  isClearHistoryVisible?: Types.Visibility.VisibilityConditions;
   slotCandidateHistoryCard?: Types.Devlink.Slot;
+  slotSearchButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

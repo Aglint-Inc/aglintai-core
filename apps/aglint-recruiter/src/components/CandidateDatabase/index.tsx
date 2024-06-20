@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect, useRef, useState } from 'react';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateDatabaseSearch } from '@/devlink/CandidateDatabaseSearch';
 import { CandidateHistoryCard } from '@/devlink/CandidateHistoryCard';
 import { CdSearchHistoryLoader } from '@/devlink/CdSearchHistoryLoader';
@@ -450,7 +451,23 @@ function CandidateSearchHistory() {
                   currentTab === 'discover talent') &&
                   isWelMatVisible() && (
                     <SearchAglintCd
-                      isViewAllCandidateVisible={true}
+                      // isViewAllCandidateVisible={true}
+                      slotSearchButton={
+                        <ButtonSolid
+                          textButton='Search'
+                          size={3}
+                          isLoading={isQrySearching}
+                          onClickButton={{
+                            onClick: () => {
+                              if (currentTab === 'talent rediscovery') {
+                                getMatchingCandsFromQry();
+                              } else {
+                                getCandsFromApi();
+                              }
+                            },
+                          }}
+                        />
+                      }
                       isSearchByJdVisible={currentTab === 'talent rediscovery'}
                       isSearchInAglintVisible={currentTab === 'discover talent'}
                       isSearchInAllVisible={currentTab === 'talent rediscovery'}
@@ -693,32 +710,6 @@ function CandidateSearchHistory() {
                           setIsJdPopUPopOpen(true);
                         },
                       }}
-                      onClickViewAllCandidate={{
-                        onClick: () => {
-                          router.push('/candidates');
-                        },
-                      }}
-                      onClickSearch={{
-                        onClick: () => {
-                          if (currentTab === 'talent rediscovery') {
-                            getMatchingCandsFromQry();
-                          } else {
-                            getCandsFromApi();
-                          }
-                        },
-                      }}
-                      isClearHistoryVisible={history.length > 0}
-                      slotLottieSearch={
-                        isQrySearching && (
-                          <>
-                            <CircularProgress
-                              color='inherit'
-                              size={'15px'}
-                              sx={{ color: 'var(--neutral-6)' }}
-                            />
-                          </>
-                        )
-                      }
                     />
                   )}
               </YTransform>
