@@ -15,7 +15,8 @@
     "supabase:local": "npx supabase gen types typescript --local > ../../packages/shared-types/src/db/schema.types.ts",
     "devlink": "npx webflow devlink sync",
     "pull": "git pull origin development --no-rebase",
-    "test": " jest"
+    "test": "npm run dev:build && jest",
+    "test:watch": "npm run dev:build && jest --watch"
   },
   "dependencies": {
     "@aglint/shared-utils": "*",
