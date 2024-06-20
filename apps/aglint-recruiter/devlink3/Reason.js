@@ -24,7 +24,15 @@ export function Reason({
         className={_utils.cx(_styles, "reason-header-wrap")}
         tag="div"
       >
-        <Text content="" weight="medium" />
+        <Text
+          content={
+            <>
+              {"Reasons"}
+              <br />
+            </>
+          }
+          weight="medium"
+        />
         <_Builtin.Block tag="div">
           {slotReasonDropdown ?? <SlotComp componentNeme="dropdown" />}
         </_Builtin.Block>

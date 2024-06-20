@@ -10,7 +10,7 @@ export function NoData({ as: _Component = _Builtin.Block }) {
   return (
     <_Component className={_utils.cx(_styles, "empty")} tag="div">
       <GlobalIcon size="9" weight="thin" iconName="monitoring" />
-      <Text weight="" color="neutral-11" content="" />
+      <Text weight="" color="neutral-11" content="No Data Available" />
     </_Component>
   );
 }

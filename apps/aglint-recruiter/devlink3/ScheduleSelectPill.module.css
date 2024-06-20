@@ -1,39 +1,29 @@
-.div-block-1746 {
+.schedule-select-pill-wrap {
   position: relative;
 }
 
-.div-block-1743 {
+.ssp-content {
   display: flex;
-  padding: 10px 16px;
+  padding: var(--space-2) var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 
   border-radius: var(--radius-4);
 
-  background-color: var(--neutral-a4);
+  background-color: var(--neutral-3);
 }
 
-.div-block-1744 {
+.ssp-header-wrap {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
-.text-grey-600 {
-  color: #68737d;
-}
-
-.text-sm {
-  font-size: var(--font-size-1);
-  line-height: var(--line-height-1);
-  letter-spacing: var(--letter-spacing-1);
-}
-
-.div-block-1745 {
+.ssp-close-wrap {
   position: absolute;
   left: auto;
   top: -6px;
@@ -46,10 +36,10 @@
   justify-content: center;
   align-items: center;
 
-  border: 1px solid #e9ebed;
-  border-radius: 100px;
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-full);
 
-  background-color: white;
+  background-color: var(--white);
 }
 
 .cursor-pointer {
