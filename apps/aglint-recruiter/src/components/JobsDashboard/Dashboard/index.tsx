@@ -844,9 +844,15 @@ const JobClose = ({
         }}
       >
         <CloseDeleteJob
-          onClickClose={{ onClick: () => openModal() }}
           isCloseJobVisible={!isDelete}
           isDeleteJobVisible={isDelete}
+          slotButton={
+            <ButtonSolid
+              textButton={`${isDelete ? 'Delete' : 'Close'} Job`}
+              size={2}
+              onClickButton={{ onClick: () => openModal() }}
+            />
+          }
         />
       </Popover>
       <Dialog open={modal} onClose={() => handleClose()}>
