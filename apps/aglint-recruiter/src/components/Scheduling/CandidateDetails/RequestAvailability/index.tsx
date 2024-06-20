@@ -350,8 +350,9 @@ function RequestAvailability() {
               direction={'row'}
               alignItems={'center'}
               spacing={'var(--space-2)'}
+              width={'480px'}
             >
-              <Typography variant='body1' width={'450px'}>
+              <Typography variant='body1' width={'520px'}>
                 Minimum number of days should be selected.
               </Typography>
               <Autocomplete
@@ -360,7 +361,7 @@ function RequestAvailability() {
                 disablePortal
                 value={selectedDays}
                 options={requestDaysListOptions}
-                // sx={{ width: 200 }}
+               sx={{ width: 200 }}
                 renderOption={(props, option) => {
                   return <li {...props}>{option.label}</li>;
                 }}
@@ -378,8 +379,9 @@ function RequestAvailability() {
               direction={'row'}
               alignItems={'center'}
               spacing={'var(--space-2)'}
+              width={'480px'}
             >
-              <Typography variant='body1' width={'450px'}>
+              <Typography variant='body1' width={'520px'}>
                 Minimum number of slots selected per each day.
               </Typography>
               <Autocomplete
@@ -388,7 +390,7 @@ function RequestAvailability() {
                 disablePortal
                 value={selectedSlots}
                 options={slotsListOptions}
-                // sx={{ width: 200 }}
+                sx={{ width: 200 }}
                 renderOption={(props, option) => {
                   return <li {...props}>{option.label}</li>;
                 }}
