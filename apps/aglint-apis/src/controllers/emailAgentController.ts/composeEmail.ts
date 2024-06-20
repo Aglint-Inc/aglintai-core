@@ -5,7 +5,7 @@ import {fetchEmailAgentCandDetails} from '../../agents/emailAgent/tools/utils/fe
 import {getCandidateLogger} from '../../utils/scheduling_utils/getCandidateLogger';
 import {supabaseAdmin} from '../../services/supabase/SupabaseAdmin';
 import {sendEmailFromAgent} from '../../agents/emailAgent/tools/utils/sendEmailFromAgent';
-import {supabaseWrap} from 'src/utils/scheduling/supabaseWrap';
+import {supabaseWrap} from '@aglint/shared-utils';
 
 const email_agent_payload = z.object({
   from_email: z.string(),

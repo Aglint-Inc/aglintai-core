@@ -12,6 +12,7 @@ const nextConfig = {
   eslint: {
     dirs: ['src'],
   },
+
   async rewrites() {
     return [
       {
@@ -46,7 +47,6 @@ const nextConfig = {
       },
     ],
   },
-  transpilePackages: ['@aglint/shared-utils', '@aglint/shared-types'],
 };
 
 module.exports = withBundleAnalyzer(nextConfig);

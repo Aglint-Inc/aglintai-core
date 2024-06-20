@@ -14,8 +14,8 @@ import {
   schedulingSettingType,
 } from '@aglint/shared-types';
 import {envConfig} from '../../config';
-import {SINGLE_DAY_TIME} from '../scheduling/constants';
-import {supabaseWrap} from '../scheduling/supabaseWrap';
+import {SINGLE_DAY_TIME, supabaseWrap} from '@aglint/shared-utils';
+
 const utc = require('dayjs/plugin/utc');
 const timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);

@@ -231,7 +231,7 @@ export function JobDashboard({
               className={_utils.cx(_styles, "div-block-1606")}
               tag="div"
             >
-              <Text content="Upcoming Schedules" />
+              <Text content="" />
               {isViewScheduleVisible ? (
                 <_Builtin.Block
                   className={_utils.cx(
@@ -531,11 +531,11 @@ export function JobDashboard({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1710-copy")}
+            className={_utils.cx(_styles, "jd-setting-wrap")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1711-copy")}
+              className={_utils.cx(_styles, "jd-setting-header")}
               tag="div"
             >
               <Text content="Settings" color="neutral" size="1" weight="" />

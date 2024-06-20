@@ -3,7 +3,8 @@
   "type": "commonjs",
   "version": "1.0.0",
   "scripts": {
-    "dev": "tsup --watch --onSuccess \"console-ninja && node dist/index.js\"",
+    "dev:build": "npm run build --workspace=@aglint/shared-utils",
+    "dev": "npm run dev:build && tsup --watch --onSuccess \"console-ninja && node dist/index.js\"",
     "build": "tsup",
     "lint": "gts lint && npm run build",
     "start": "set NODE_ENV=development&& node dist/index.js",
@@ -14,6 +15,7 @@
     "fix": "gts fix"
   },
   "dependencies": {
+    "@aglint/shared-utils": "*",
     "@langchain/community": "^0.0.41",
     "@langchain/core": "^0.1.63",
     "@langchain/openai": "^0.0.29",

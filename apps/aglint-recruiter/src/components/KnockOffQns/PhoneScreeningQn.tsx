@@ -220,7 +220,7 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
       isDescriptionVisible={qn.showDescription}
       textDescription={qn.description || ''}
       currentQuestionNo={qnNo}
-      isQuestionImp={qn.isRequired}
+      // isQuestionImp={qn.isRequired}
       slotLogo={<CompanyLogo />}
       textQuestion={
         <>
@@ -231,9 +231,6 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
       totalQuestionNo={state.phoneScreen.length}
       isOkDisable={errorMsg.length > 0}
       isSubmitDisable={errorMsg.length > 0 || isSubmitting}
-      onClickSubmit={{
-        onClick: handleSubmit,
-      }}
       slotInputAndButton={
         <>
           {candRespComp}

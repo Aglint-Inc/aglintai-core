@@ -2,8 +2,7 @@ import {DatabaseEnums} from '@aglint/shared-types';
 import {supabaseAdmin} from '../../services/supabase/SupabaseAdmin';
 
 import {dayjsLocal} from '../dayjsLocal/dayjsLocal';
-import {PhoneAgentId, EmailAgentId} from '../scheduling/constants';
-import {supabaseWrap} from '../scheduling/supabaseWrap';
+import {EmailAgentId, PhoneAgentId, supabaseWrap} from '@aglint/shared-utils';
 
 type TitleAttrType = {
   '{candidate}'?: string | undefined;

@@ -24,19 +24,18 @@
 .enable-assessment-wrap {
   display: flex;
   max-width: 624px;
-  padding: 0px;
   flex-direction: column;
   align-items: flex-start;
 
-  border: 1px none #e9ebed;
-  border-radius: 10px;
+  border: 1px none var(--neutral-6);
+  border-radius: var(--radius-4);
 }
 
 .enable-header {
   display: flex;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .icons {
