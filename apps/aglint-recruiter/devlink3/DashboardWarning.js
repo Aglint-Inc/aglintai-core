@@ -2,17 +2,15 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { ButtonSoft } from "./ButtonSoft";
-import { ButtonSolid } from "./ButtonSolid";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./DashboardWarning.module.css";
 
 export function DashboardWarning({
   as: _Component = _Builtin.Block,
-  onClickDismiss = {},
-  onClickView = {},
   textWarningTitle = "Job description is changed",
   textDesc = "You may need to adjust the criteria for profile scoring.",
+  slotButton,
 }) {
   return (
     <_Component
@@ -50,17 +48,12 @@ export function DashboardWarning({
           className={_utils.cx(_styles, "right_buttons")}
           tag="div"
         >
-          <ButtonSoft
-            onClickButton={onClickDismiss}
-            size="2"
-            textButton="Ignore"
-          />
-          <ButtonSolid
-            onClickButton={onClickView}
-            size="2"
-            highContrast="true"
-            textButton="View"
-          />
+          {slotButton ?? (
+            <>
+              <SlotComp componentNeme="ButtonSoft" />
+              <SlotComp componentNeme="ButtonSolid" />
+            </>
+          )}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
