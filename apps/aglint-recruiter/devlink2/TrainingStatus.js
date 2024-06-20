@@ -14,12 +14,12 @@ export function TrainingStatus({
   isNotCompletedVisible = false,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1672")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "training-status-wrap")}
+      tag="div"
+    >
       {isCompletedVisible ? (
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1671")}
-          tag="div"
-        >
+        <_Builtin.Block className={_utils.cx(_styles, "ts-item")} tag="div">
           <_Builtin.Block tag="div">
             {isShadow ? (
               <_Builtin.HtmlEmbed
@@ -34,12 +34,12 @@ export function TrainingStatus({
               />
             ) : null}
           </_Builtin.Block>
-          <Text content="Completed" color="success-a11" />
+          <Text content="Completed" color="success" weight="" size="1" />
         </_Builtin.Block>
       ) : null}
       {isPendingApprovalVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1671", "pending")}
+          className={_utils.cx(_styles, "ts-item", "pending")}
           tag="div"
         >
           <_Builtin.Block tag="div">
@@ -56,12 +56,17 @@ export function TrainingStatus({
               />
             ) : null}
           </_Builtin.Block>
-          <_Builtin.Block tag="div">{"Pending Approval"}</_Builtin.Block>
+          <Text
+            content="Pending Approval"
+            color="accent-9"
+            weight=""
+            size="1"
+          />
         </_Builtin.Block>
       ) : null}
       {isNotCompletedVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1671", "not-schedule")}
+          className={_utils.cx(_styles, "ts-item", "not-schedule")}
           tag="div"
         >
           <_Builtin.Block tag="div">
@@ -78,7 +83,7 @@ export function TrainingStatus({
               />
             ) : null}
           </_Builtin.Block>
-          <_Builtin.Block tag="div">{"Not Completed"}</_Builtin.Block>
+          <Text content="Not Completed" color="neutral" weight="" size="1" />
         </_Builtin.Block>
       ) : null}
     </_Component>

@@ -7,8 +7,8 @@
   justify-content: center;
   flex-wrap: nowrap;
   align-items: center;
-  grid-column-gap: var(--space-4);
-  grid-row-gap: var(--space-4);
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 
   color: var(--neutral-11);
 }
