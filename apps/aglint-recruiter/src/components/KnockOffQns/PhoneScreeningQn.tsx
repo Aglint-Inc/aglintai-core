@@ -191,6 +191,7 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
             <ButtonSolid
               textButton='Next'
               size={3}
+              isDisabled={errorMsg.length > 0}
               iconName={'arrow_forward_ios'}
               isRightIcon
               iconSize={2}
@@ -209,6 +210,7 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
             <ButtonSolid
               textButton='Submit'
               size={3}
+              isDisabled={errorMsg.length > 0 > isSubmitting}
               onClickButton={{
                 onClick: handleSubmit,
               }}
@@ -228,8 +230,6 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
         </>
       }
       totalQuestionNo={state.phoneScreen.length}
-      isOkDisable={errorMsg.length > 0}
-      isSubmitDisable={errorMsg.length > 0 || isSubmitting}
       slotInputAndButton={
         <>
           {candRespComp}
