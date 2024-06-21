@@ -11,8 +11,8 @@ import { Reason } from '@/devlink3/Reason';
 import { useCancelRescheduleReasons } from '@/src/queries/scheduling-dashboard';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
-import { DoughnutChart } from '../../JobsDashboard/Dashboard/Doughnut';
-import { getOrderedGraphValues } from '../../JobsDashboard/Dashboard/utils';
+import { DoughnutChart } from '../../Jobs/Job/Dashboard/doughnut';
+import { getOrderedGraphValues } from '../../Jobs/Job/Dashboard/utils';
 
 const CancelReasons = () => {
   const [reasonType, setReasonType] =

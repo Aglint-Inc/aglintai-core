@@ -1,7 +1,7 @@
 import { MenuItem, Stack, TextField, Typography } from '@mui/material';
 import React from 'react';
 
-import { WarningSvg } from '../../JobCreate/form';
+import { WarningSvg } from '../../Jobs/Create/form';
 import MuiAvatar from '../MuiAvatar';
 import UITypography from '../UITypography';
 

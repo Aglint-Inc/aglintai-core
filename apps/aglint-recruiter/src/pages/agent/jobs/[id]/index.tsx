@@ -1,6 +1,5 @@
 import Agent from '@/src/components/Agent';
 import Seo from '@/src/components/Common/Seo';
-import JobApplicationProvider from '@/src/context/JobApplicationsContext';
 import { JobAssistantProvider } from '@/src/context/JobAssistant';
 import { JobProvider } from '@/src/context/JobContext';
 import JobDashboardProvider from '@/src/context/JobDashboard';
@@ -24,9 +23,7 @@ export default AgentPage;
 AgentPage.privateProvider = function privateProvider(page) {
   return (
     <JobProvider>
-      <JobDashboardProvider>
-        <JobApplicationProvider>{page}</JobApplicationProvider>
-      </JobDashboardProvider>
+      <JobDashboardProvider>{page}</JobDashboardProvider>
     </JobProvider>
   );
 };

@@ -16,18 +16,17 @@ import { SuggetionPill } from '@/devlink3/SuggetionPill';
 import { WidgetGrid3X3 } from '@/devlink3/WidgetGrid3X3';
 import { CalculatingResumeScore } from '@/public/lottie/CalculatingResumeScore';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { useJobAssistantContext } from '@/src/context/JobAssistant';
 import {
   chatusers,
   getSuggestedPrompts,
   suggestions,
 } from '@/src/context/JobAssistant/utils';
+import { Application } from '@/src/types/applications.types';
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
-import ApplicationDetails from '../../JobApplicationsDashboard/ApplicationCard/ApplicationDetails';
 import CandidateCard from './CandidateCard';
 import ChatEditor from './ChatEditor';
 import DynamicSuggestion from './DynanicSuggetions';
@@ -47,8 +46,6 @@ function JobAgent() {
     candidates,
     fetching,
     companyDetails,
-    applicationDetails,
-    setApplicationDetails,
     createNewChat,
     jobAssistantChats,
     switchChat,
@@ -60,7 +57,7 @@ function JobAgent() {
     .filter((item) => !item.isMustHave)
     .map((ele) => ele.field);
   let suggestionsPrompts = [];
-  let applicationList = [] as JobApplication[];
+  let applicationList = [] as Application[];
 
   let getEditorRef: () => Editor = null;
 
@@ -121,7 +118,11 @@ function JobAgent() {
               slotChatBlocks={
                 fetching ? (
                   <>
-                    <Stack gap={'var(--space-5)'} alignItems={'center'} mt={'40px'}>
+                    <Stack
+                      gap={'var(--space-5)'}
+                      alignItems={'center'}
+                      mt={'40px'}
+                    >
                       <Loader />
                       <YTransform uniqueKey={loadingMessage}>
                         <Typography>{loadingMessage}</Typography>
@@ -219,7 +220,7 @@ function JobAgent() {
                                   applicationList
                                     ?.sort(
                                       (a, b) =>
-                                        b?.overall_score - a?.overall_score,
+                                        b?.resume_score - a?.resume_score,
                                     )
                                     .filter((application) =>
                                       Boolean(application?.id),
@@ -228,9 +229,7 @@ function JobAgent() {
                                       return (
                                         <>
                                           <CandidateCard
-                                            application={
-                                              application as JobApplication
-                                            }
+                                            application={application}
                                             setOpen={setOpen}
                                           />
                                         </>
@@ -320,6 +319,7 @@ function JobAgent() {
             setOpen(false);
           }}
         >
+          {/* TODO: Migrate to new candidate details comp
           <ApplicationDetails
             open={true}
             onClose={() => {
@@ -328,7 +328,7 @@ function JobAgent() {
             }}
             application={applicationDetails}
             hideNextPrev={true}
-          />
+          /> */}
         </Drawer>
       </Stack>
     </>

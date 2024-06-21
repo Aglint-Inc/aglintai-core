@@ -1,6 +1,6 @@
 import Seo from '@components/Common/Seo';
 
-import ScreeningDashboardComp from '@/src/components/NewScreening/JobDashboard';
+import ScreeningDashboardComp from '@/src/components/Jobs/Job/Screening';
 import { JobProvider } from '@/src/context/JobContext';
 
 const ScreeningPage = () => {

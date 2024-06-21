@@ -9,7 +9,7 @@ import { OptionAvailableCard } from '@/devlink2/OptionAvailableCard';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
+import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { getFullName } from '@/src/utils/jsonResume';
 
 interface SchedulingOptionCompProps {

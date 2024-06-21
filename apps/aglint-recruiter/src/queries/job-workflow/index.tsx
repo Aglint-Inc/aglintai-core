@@ -6,12 +6,12 @@ import {
 } from '@tanstack/react-query';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { Workflow } from '@/src/types/workflow.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { GC_TIME } from '..';
 import { JobRequisite } from '../job';
-import { Workflow } from '../workflow';
 import { workflowQueryKeys } from '../workflow/keys';
 import { jobWorkflowMutationKeys, jobWorkflowQueryKeys } from './keys';
 

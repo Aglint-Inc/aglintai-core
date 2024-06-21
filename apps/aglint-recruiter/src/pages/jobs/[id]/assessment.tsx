@@ -1,6 +1,6 @@
 import Seo from '@components/Common/Seo';
 
-import JobAssessmentDashboard from '@/src/components/JobAssessment';
+import JobAssessmentDashboard from '@/src/components/Jobs/Job/Assessment';
 import { JobProvider } from '@/src/context/JobContext';
 import JobDashboardProvider from '@/src/context/JobDashboard';
 

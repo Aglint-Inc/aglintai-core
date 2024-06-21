@@ -25,7 +25,6 @@ import {
 } from '../../../context/CandidateSearchProvider/CandidateSearchProvider';
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
-import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 import { dialogFormContent, getRelevantCndidates } from '../utils';
 import FilterInput from './FilterInput';
 
@@ -137,7 +136,7 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
       );
     } catch (err) {
       // console.log(err);
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setIsFilterLoading(false);
       handleDialogClose();

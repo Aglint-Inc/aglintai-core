@@ -3,8 +3,12 @@ import { capitalize as cap } from 'lodash';
 import { palette } from '@/src/context/Theme/Theme';
 
 export const capitalize = (str: string) => {
-  return str.charAt(0).toUpperCase() + str.substring(1);
+  return (
+    (str ?? '').trim().replaceAll('_', ' ').charAt(0).toUpperCase() +
+    str.substring(1)
+  );
 };
+
 export const capitalizeAll = (str: string) => {
   if (!str) return '';
   return str

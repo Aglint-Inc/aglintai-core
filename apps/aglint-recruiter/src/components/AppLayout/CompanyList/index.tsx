@@ -14,7 +14,6 @@ import { companyType } from '@/src/utils/userRoles';
 
 import Icon from '../../Common/Icons/Icon';
 import SidePanelDrawer from '../../Common/SidePanelDrawer';
-import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 import AddNewCompany from './AddNewCompany';
 
 type CompanyTYpe = {
@@ -61,7 +60,7 @@ function CompanyList() {
         })),
       );
     } catch (error) {
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     }
   }
 

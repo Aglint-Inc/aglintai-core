@@ -17,8 +17,8 @@ import {
   DropDown,
   IndividualIcon,
   PanelIcon,
-} from '@/src/components/JobNewInterviewPlan/sessionForms';
-import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
+} from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
+import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';

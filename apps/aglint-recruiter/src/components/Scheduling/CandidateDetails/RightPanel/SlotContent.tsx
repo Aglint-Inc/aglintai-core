@@ -11,7 +11,7 @@ import { ConfirmScheduleListCard } from '@/devlink3/ConfirmScheduleListCard';
 import { RescheduleCard } from '@/devlink3/RescheduleCard';
 import { ScheduleButton } from '@/devlink3/ScheduleButton';
 import CandidateDefaultIcon from '@/src/components/Common/Icons/CandidateDefaultIcon';
-import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
+import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import ROUTES from '@/src/utils/routing/routes';
 
