@@ -8,9 +8,9 @@ import { useEffect, useState } from 'react';
 import { ViewTask } from '@/devlink3/ViewTask';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { useKeyPress } from '@/src/components/JobApplicationsDashboard/hooks';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { useKeyPress } from '@/src/hooks/useKeyPress';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
@@ -134,7 +134,7 @@ function ViewTaskDrawer() {
   }
   const { pressed: up } = useKeyPress('ArrowUp');
   const { pressed: down } = useKeyPress('ArrowDown');
-  
+
   useEffect(() => {
     if (up) {
       prevTask();

@@ -7,7 +7,7 @@ import { MemberListCard } from '@/devlink2/MemberListCard';
 import { StatusBadge } from '@/devlink2/StatusBadge';
 import { HistoryPill } from '@/devlink3/HistoryPill';
 import { HistoryTrainingCard } from '@/devlink3/HistoryTrainingCard';
-import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
+import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import ROUTES from '@/src/utils/routing/routes';
 
 import IconScheduleType from '../../../Candidates/ListCard/Icon';
@@ -204,7 +204,7 @@ function ListCardInterviewerModules({
                   key={index}
                   isStart={index === 0}
                   isStartActive={!!item.meeting}
-                  isMiddle={index > 0 && index < (trainingStatusArray.length-1)}
+                  isMiddle={index > 0 && index < trainingStatusArray.length - 1}
                   isMiddleActive={
                     index > 0 &&
                     index < trainingStatusArray.length &&
@@ -257,7 +257,6 @@ function ListCardInterviewerModules({
                       )}
                     />
                   }
-                  
                 />
               );
             })}

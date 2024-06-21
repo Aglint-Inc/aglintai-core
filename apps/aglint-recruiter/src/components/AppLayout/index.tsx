@@ -11,11 +11,11 @@ import { NavProfileBlock } from '@/devlink2/NavProfileBlock';
 import { ResponsiveBanner } from '@/devlink2/ResponsiveBanner';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useResizeWindow } from '@/src/context/ResizeWindow/ResizeWindow';
+import { isEnvProd } from '@/src/utils/isEnvProd';
 import ROUTES from '@/src/utils/routing/routes';
 
 import Icon from '../Common/Icons/Icon';
 import MenuLottie from '../Common/Lotties/MenuLottie';
-import { isEnvProd } from '../JobsDashboard/JobPostCreateUpdate/utils';
 import CompanyList from './CompanyList';
 import SideNavbar from './SideNavbar';
 
@@ -181,7 +181,7 @@ export default function AppLayout({ children }) {
                 borderRadius: 'var(--radius-2)',
                 backgroundColor: '#3d1100',
                 '& span': {
-                  backgroundColor:  'var(--accent-4)',
+                  backgroundColor: 'var(--accent-4)',
                 },
               }}
             />

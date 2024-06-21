@@ -472,16 +472,22 @@ function InterviewerLevelSettings({
                           key={item} // Add a unique key prop for each item
                           clickable
                           onDelete={() => {
-                            setFreeKeywords((prev) => prev.filter((ele) => ele !== item));
+                            setFreeKeywords((prev) =>
+                              prev.filter((ele) => ele !== item),
+                            );
                           }}
-                          deleteIcon={<GlobalIcon iconName='close' size='4'/>}
+                          deleteIcon={
+                            <Stack>
+                              <GlobalIcon iconName='close' size='4' />
+                            </Stack>
+                          }
                           label={item}
                         />
                       ))}
                     </>
                   )
                 }
-              />                
+              />
               <KeywordCard
                 textTitle={'Soft Conflicts'}
                 textWarning={
@@ -516,9 +522,15 @@ function InterviewerLevelSettings({
                           key={item} // Add a unique key prop for each item
                           clickable
                           onDelete={() => {
-                            setSoftConflictsKeyWords((prev) => prev.filter((ele) => ele !== item));
+                            setSoftConflictsKeyWords((prev) =>
+                              prev.filter((ele) => ele !== item),
+                            );
                           }}
-                          deleteIcon={<GlobalIcon iconName='close' size='4'/>}
+                          deleteIcon={
+                            <Stack>
+                              <GlobalIcon iconName='close' size='4' />{' '}
+                            </Stack>
+                          }
                           label={item}
                         />
                       ))}
@@ -563,9 +575,15 @@ function InterviewerLevelSettings({
                           key={item} // Add a unique key prop for each item
                           clickable
                           onDelete={() => {
-                            setOutOfOffice((prev) => prev.filter((ele) => ele !== item));
+                            setOutOfOffice((prev) =>
+                              prev.filter((ele) => ele !== item),
+                            );
                           }}
-                          deleteIcon={<GlobalIcon iconName='close' size='4'/>}
+                          deleteIcon={
+                            <Stack>
+                              <GlobalIcon iconName='close' size='4' />
+                            </Stack>
+                          }
                           label={item}
                         />
                       ))}
@@ -610,9 +628,15 @@ function InterviewerLevelSettings({
                           key={item} // Add a unique key prop for each item
                           clickable
                           onDelete={() => {
-                            setRecruitingBlocks((prev) => prev.filter((ele) => ele !== item));
+                            setRecruitingBlocks((prev) =>
+                              prev.filter((ele) => ele !== item),
+                            );
                           }}
-                          deleteIcon={<GlobalIcon iconName='close' size='4'/>}
+                          deleteIcon={
+                            <Stack>
+                              <GlobalIcon iconName='close' size='4' />
+                            </Stack>
+                          }
                           label={item}
                         />
                       ))}

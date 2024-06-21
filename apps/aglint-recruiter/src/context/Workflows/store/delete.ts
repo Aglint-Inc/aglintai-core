@@ -1,10 +1,10 @@
-import { DatabaseView } from '@aglint/shared-types';
+import { Workflow } from '@/src/types/workflow.types';
 
 import { CreateSlice } from '.';
 
 type Deletion = {
   open: boolean;
-  workflow: Pick<DatabaseView['workflow_view'], 'id' | 'jobs'>;
+  workflow: Pick<Workflow, 'id' | 'jobs'>;
 };
 
 export type DeletionSlice = {

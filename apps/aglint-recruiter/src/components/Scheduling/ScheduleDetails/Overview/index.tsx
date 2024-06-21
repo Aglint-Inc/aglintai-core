@@ -14,7 +14,7 @@ import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import { ScheduleButton } from '@/devlink3/ScheduleButton';
 import { ScheduleTabOverview } from '@/devlink3/ScheduleTabOverview';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
+import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';

@@ -29,7 +29,6 @@ import { CandidateSearchState } from '../../context/CandidateSearchProvider/Cand
 import Loader from '../Common/Loader';
 import MuiPopup from '../Common/MuiPopup';
 import UITextField from '../Common/UITextField';
-import { API_FAIL_MSG } from '../JobsDashboard/JobPostCreateUpdate/utils';
 import { Candidate } from './AppoloSearch/types';
 import { JDSearchModal } from './JobDescriprionModal/JDSearchModal';
 import EmptyState from './Search/EmptyState';
@@ -73,7 +72,7 @@ function CandidateSearchHistory() {
       await fetchList();
       setHistory(history);
     } catch (err) {
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setIsHistoryLoading(false);
     }
@@ -94,7 +93,7 @@ function CandidateSearchHistory() {
         setIsCandidates(true);
       }
     } catch (err) {
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     }
   };
 
@@ -109,7 +108,7 @@ function CandidateSearchHistory() {
       setHistory((p) => p.filter((p) => p.id !== deleteHistoryId));
     } catch (err) {
       setHistory((p) => p.filter((p) => p.id !== deleteHistoryId));
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setDeleteHistoryId(-1);
       setDeleteHistory(false);
@@ -145,7 +144,7 @@ function CandidateSearchHistory() {
       );
     } catch (err) {
       // console.log(err);
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setIsQrySearching(false);
     }
@@ -261,7 +260,7 @@ function CandidateSearchHistory() {
       router.push(`/candidates/aglintdb?id=${history.id}`);
     } catch (err) {
       // console.log(err);
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setIsQrySearching(false);
     }
@@ -326,7 +325,7 @@ function CandidateSearchHistory() {
       );
       setList((p) => p.filter((p) => p.id !== deleteList.id));
     } catch (err) {
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setDeleteList(null);
     }

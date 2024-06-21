@@ -1,11 +1,12 @@
 /* eslint-disable security/detect-object-injection */
+import { DatabaseTable } from '@aglint/shared-types';
+
 import {
   JobDetailsForm,
   JobHiringTeamForm,
-} from '@/src/components/JobCreate/form';
-import { getHelper } from '@/src/components/JobEmailTemplates';
-import { templateObj } from '@/src/components/JobEmailTemplates/utils';
-import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
+} from '@/src/components/Jobs/Create/form';
+import { getHelper } from '@/src/components/Jobs/Job/Email-Templates';
+import { templateObj } from '@/src/components/Jobs/Job/Email-Templates/utils';
 import {
   useAllAssessments,
   useAllAssessmentTemplates,
@@ -285,7 +286,9 @@ export const getHiringTeamValidity = (job: Job): HiringTeamValidity => {
   return result;
 };
 
-export const validateJd = (jd_json: JdJsonType) => {
+export const validateJd = (
+  jd_json: DatabaseTable['public_jobs']['jd_json'],
+) => {
   return (
     !jd_json ||
     Object.entries(jd_json).length === 0 ||

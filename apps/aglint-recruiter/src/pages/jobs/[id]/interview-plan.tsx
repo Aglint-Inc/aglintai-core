@@ -1,5 +1,5 @@
 import Seo from '@/src/components/Common/Seo';
-import JobNewInterviewPlanDashboard from '@/src/components/JobNewInterviewPlan';
+import JobNewInterviewPlanDashboard from '@/src/components/Jobs/Job/Interview-Plan';
 import { JobProvider } from '@/src/context/JobContext';
 import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
 

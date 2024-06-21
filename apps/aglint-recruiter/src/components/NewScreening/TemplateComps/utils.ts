@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 
-import { PhoneScreenQuestion } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
+import { PhoneScreenQuestion } from '../types';
 
 export const qnTypeToLabel2 = (type: PhoneScreenQuestion['type']) => {
   if (type === 'shortAnswer') return 'Short answer';
