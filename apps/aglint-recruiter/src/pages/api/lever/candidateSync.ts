@@ -3,11 +3,11 @@ import { DatabaseTableInsert } from '@aglint/shared-types';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-import { processEmailsInBatches } from '@/src/components/JobsDashboard/AddJobWithIntegrations/GreenhouseModal/utils';
+import { processEmailsInBatches } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/GreenhouseModal/utils';
 import {
   extractLinkedInURL,
   splitFullName,
-} from '@/src/components/JobsDashboard/AddJobWithIntegrations/utils';
+} from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/utils';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 const crypto = require('crypto');

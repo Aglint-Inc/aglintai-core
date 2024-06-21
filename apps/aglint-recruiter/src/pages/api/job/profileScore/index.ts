@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 
-import { DB } from '@aglint/shared-types';
+import { DatabaseTable, DB } from '@aglint/shared-types';
 import {
   type CookieOptions,
   createServerClient,
@@ -11,9 +11,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import OpenAI from 'openai';
 import { ChatCompletionMessageParam } from 'openai/resources';
 
-import { distributeScoreWeights } from '@/src/components/JobProfileScore';
-import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
-import { hashCode } from '@/src/context/JobDashboard/hooks';
+import { distributeScoreWeights } from '@/src/components/Jobs/Job/Profile-Score';
+import * as hooks from '@/src/context/JobDashboard/hooks';
 
 export const openai = new OpenAI({
   apiKey: process.env.OPENAI_KEY,
@@ -91,7 +90,7 @@ const handler = async (
 Job description: ${(job.draft as any).description}`,
     );
     const json = await Promise.race([jsonPromise, timeoutPromise]);
-    const j: JdJsonType = {
+    const j: DatabaseTable['public_jobs']['jd_json'] = {
       title: job.job_title,
       level: json.jobLevel,
       rolesResponsibilities: arrItemToReactArr([
@@ -101,7 +100,7 @@ Job description: ${(job.draft as any).description}`,
       skills: arrItemToReactArr([...json.skills]),
       educations: arrItemToReactArr([...json.educations]),
     };
-    const descriptionHash = hashCode((job.draft as any).description);
+    const descriptionHash = hooks.hashCode((job.draft as any).description);
     const weights = distributeScoreWeights(j);
     await supabase
       .from('public_jobs')

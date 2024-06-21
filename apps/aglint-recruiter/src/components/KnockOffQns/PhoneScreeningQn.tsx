@@ -10,7 +10,6 @@ import { PhoneScreeningQ } from '@/devlink/PhoneScreeningQ';
 import toast from '@/src/utils/toast';
 
 import UITypography from '../Common/UITypography';
-import { API_FAIL_MSG } from '../JobsDashboard/JobPostCreateUpdate/utils';
 import CompanyLogo from './CompanyLogo';
 import {
   PhoneScreeningResponseType,
@@ -64,7 +63,7 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
         value: true,
       });
     } catch (err) {
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

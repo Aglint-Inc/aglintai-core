@@ -15,7 +15,15 @@ import interviewerList from '@/src/utils/interviewer_list';
 import { supabase } from '@/src/utils/supabase/client';
 
 import MuiPopup from '../../Common/MuiPopup';
-import { copyCompanySetting } from '../../JobsDashboard/JobPostCreateUpdate/copies/copyCompanySetting';
+
+const copyCompanySetting = {
+  assesment: {
+    withVideoAssesmentDesc:
+      'Activate the toggle to enable the use of AI-generated videos for the assessment. You can also set this option at the job level. If configured here, it will serve as the default setting',
+    withoutVideoAssesmentDesc:
+      'Choose your avatar for the assessment process. You can also configure this setting at the job level, and if specified here, it becomes the default setting. Please note that for this setting, the avatar is audio-only.',
+  },
+};
 
 let tempObj = avatar_list[0];
 function AssessmentSettings({
@@ -345,7 +353,7 @@ export function AudioAvatar({ selectedAvatar, isActive }) {
               '& img': {
                 objectFit: 'contain',
               },
-              bgcolor:  'var(--neutral-1)',
+              bgcolor: 'var(--neutral-1)',
             }}
             variant='rounded'
             src={selectedAvatar?.image}

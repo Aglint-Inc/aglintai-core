@@ -5,7 +5,7 @@ import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { AshbyApplication } from '@/src/components/JobsDashboard/AddJobWithIntegrations/Ashby/types';
+import { AshbyApplication } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/Ashby/types';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,

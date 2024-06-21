@@ -1,32 +1,22 @@
-import { DatabaseView } from '@aglint/shared-types';
-
 import { nestedObjectToArray } from '@/src/components/Common/FilterHeader/utils';
+import { Application } from '@/src/types/applications.types';
 
 import { CreateSlice } from '.';
 
 type Sort = {
-  type: keyof Pick<
-    DatabaseView['application_view'],
-    'resume_score' | 'applied_at' | 'name'
-  >;
+  type: keyof Pick<Application, 'resume_score' | 'applied_at' | 'name'>;
   order: 'asc' | 'desc';
 };
 
 type FilterKeys =
-  | keyof Pick<
-      DatabaseView['application_view'],
-      'resume_score' | 'badges' | 'bookmarked'
-    >
+  | keyof Pick<Application, 'resume_score' | 'badges' | 'bookmarked'>
   | 'search'
   | 'locations';
 
 type FilterValues = {
   bookmarked: boolean;
-  search: DatabaseView['application_view']['name'];
-  badges: (keyof DatabaseView['application_view']['badges'])[];
-  // city: DatabaseView['application_view']['city'][];
-  // state: DatabaseView['application_view']['state'][];
-  // country: DatabaseView['application_view']['country'][];
+  search: Application['name'];
+  badges: (keyof Application['badges'])[];
   locations: ReturnType<typeof nestedObjectToArray>;
   resume_score: (
     | 'Top match'

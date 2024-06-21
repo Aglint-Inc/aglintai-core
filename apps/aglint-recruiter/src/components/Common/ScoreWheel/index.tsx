@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
+import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 
-import { ScoreJson } from '@/src/context/JobApplicationsContext/types';
 import { getOverallResumeScore } from '@/src/utils/support/supportUtils';
 
 export const scoreWheelDependencies = {
@@ -34,7 +34,7 @@ const ScoreWheel = ({
   fontSize = 14,
 }: {
   id: string;
-  scores?: ScoreJson['scores'];
+  scores?: DatabaseTable['applications']['score_json']['scores'];
   parameter_weights: ScoreWheelParams;
   fontSize?: number;
 }) => {
@@ -102,7 +102,7 @@ const ScoreWheel = ({
           textAlign={'center'}
           sx={{
             aspectRatio: 1,
-            backgroundColor:  'var(--white)',
+            backgroundColor: 'var(--white)',
           }}
           style={{
             color:
@@ -155,7 +155,11 @@ const getStyles = (
   score: ScoreWheelParams,
   degree?: number,
 ) => {
-  const lightColors = ['var(--color-skill)', 'var(--color-exp)', 'var(--color-edu)'];
+  const lightColors = [
+    'var(--color-skill)',
+    'var(--color-exp)',
+    'var(--color-edu)',
+  ];
   const disabledColor = 'var(--nuetral-4)';
   const unusedColor = 'var(--nuetral-3)';
   const count = Object.keys(weights).length;
