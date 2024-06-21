@@ -1,13 +1,14 @@
 /* eslint-disable no-console */
+import { schema_find_interview_slot } from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
+import * as v from 'valibot';
 
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
-import { schema_find_interview_slot } from '@/src/types/scheduling/schema_find_availability_payload';
 import { combineSlots } from '@/src/utils/scheduling_v2/utils';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const parsedData = schema_find_interview_slot.parse({
+    const parsedData = v.parse(schema_find_interview_slot, {
       ...req.body,
       options: req.body.options || {
         include_conflicting_slots: {},
