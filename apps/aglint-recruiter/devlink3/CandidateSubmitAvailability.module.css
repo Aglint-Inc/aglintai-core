@@ -1,16 +1,18 @@
-.div-block-1768 {
+.csa-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.csa-date-slots {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
 }
 
-.div-block-1771 {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-}
-
-.div-block-1770 {
+.csa-btn-slots {
   display: flex;
   justify-content: flex-start;
   align-items: center;

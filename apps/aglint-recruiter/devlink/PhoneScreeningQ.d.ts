@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Types from './types';
+import * as React from "react";
+import * as Types from "./types";
 
 declare function PhoneScreeningQ(props: {
   as?: React.ElementType;
@@ -11,8 +11,5 @@ declare function PhoneScreeningQ(props: {
   textDescription?: React.ReactNode;
   isDescriptionVisible?: Types.Visibility.VisibilityConditions;
   isSubmitButtonVisible?: Types.Visibility.VisibilityConditions;
-  isOkDisable?: Types.Visibility.VisibilityConditions;
-  isSubmitDisable?: Types.Visibility.VisibilityConditions;
-  isBackVisible?: Types.Visibility.VisibilityConditions;
   slotButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

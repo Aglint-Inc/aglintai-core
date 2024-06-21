@@ -113,12 +113,13 @@ function RequestRescheduleDialog({
         onClickAction={{
           onClick: onClickConfirm,
         }}
+        textPopupDescription=''
         isDescriptionVisible={false}
         isWidget={true}
         slotWidget={
           <Stack spacing={2}>
             <Typography variant='body1'>
-              Please provide a reason for rescheduling and any additional notes.
+              Please chose the new date range for the interview.
             </Typography>
             <Stack spacing={2} direction={'row'}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>

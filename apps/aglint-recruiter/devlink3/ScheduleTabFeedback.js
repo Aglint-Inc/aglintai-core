@@ -45,12 +45,7 @@ export function ScheduleTabFeedback({
                 className={_utils.cx(_styles, "session_colum_fixed_width")}
                 tag="div"
               >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "fw-semibold")}
-                  tag="div"
-                >
-                  {"Session"}
-                </_Builtin.Block>
+                <Text content="" weight="medium" />
               </_Builtin.Block>
             ) : null}
           </_Builtin.Block>
