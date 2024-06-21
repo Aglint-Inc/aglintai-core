@@ -14,8 +14,8 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { UploadApiFormData } from '@/src/apiUtils/job/jobApplications/candidateUpload/types';
-import { handleJobApplicationApi } from '@/src/apiUtils/job/jobApplications/utils';
+import { UploadApiFormData } from '@/src/apiUtils/job/candidateUpload/types';
+import { handleJobApi } from '@/src/apiUtils/job/utils';
 import { ApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { createBatches } from '@/src/utils/createBatches';
@@ -361,10 +361,7 @@ const handleUploadApplication = async (payload: HandleUploadApplication) => {
     },
     files: formData,
   };
-  const response = await handleJobApplicationApi(
-    'candidateUpload/manualUpload',
-    request,
-  );
+  const response = await handleJobApi('candidateUpload/manualUpload', request);
   if (!response.confirmation) throw new Error(response.error);
 };
 
@@ -418,10 +415,7 @@ const handleResumeUpload = async (payload: HandleUploadResume) => {
     },
     files: formData,
   };
-  const response = await handleJobApplicationApi(
-    'candidateUpload/resumeUpload',
-    request,
-  );
+  const response = await handleJobApi('candidateUpload/resumeUpload', request);
   return response;
 };
 const handleBulkResumeUpload = async (payload: HandleUploadResume) => {
@@ -474,7 +468,7 @@ export const useUploadCsv = (params: Omit<Params, 'status'>) => {
 };
 type HandleUploadCsv = ApplicationsAllQueryPrerequistes & {
   candidates: Parameters<
-    typeof handleJobApplicationApi<'candidateUpload/csvUpload'>
+    typeof handleJobApi<'candidateUpload/csvUpload'>
   >['1']['candidates'];
   recruiter_id: string;
 };
@@ -484,10 +478,7 @@ const handleBulkCsvUpload = async (payload: HandleUploadCsv) => {
     recruiter_id: payload.recruiter_id,
     candidates: payload.candidates,
   };
-  const response = await handleJobApplicationApi(
-    'candidateUpload/csvUpload',
-    formData,
-  );
+  const response = await handleJobApi('candidateUpload/csvUpload', formData);
   if (!response.confirmation) throw new Error(response.error);
 };
 

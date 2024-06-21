@@ -11,7 +11,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import {
   ResumeReuploadApi,
   Supabase,
-} from '../../../../../apiUtils/job/jobApplications/candidateUpload/types';
+} from '@/src/apiUtils/job/candidateUpload/types';
 import {
   deleteCandidate,
   deleteFile,
@@ -20,7 +20,7 @@ import {
   reCreateFile,
   reProcessApplication,
   uploadResume,
-} from '../../../../../apiUtils/job/jobApplications/candidateUpload/utils';
+} from '@/src/apiUtils/job/candidateUpload/utils';
 
 export const config = {
   api: {

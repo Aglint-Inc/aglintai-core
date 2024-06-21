@@ -9,17 +9,16 @@ import { PostgrestError } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
-import { CandidateFilesBulkCreateAction } from '@/src/context/CandidatesContext/types';
-
 import {
   CsvUploadApi,
   Supabase,
-} from '../../../../../apiUtils/job/jobApplications/candidateUpload/types';
+} from '@/src/apiUtils/job/candidateUpload/types';
 import {
   bulkCreateApplications,
   bulkCreateCandidate,
   bulkCreateFiles,
-} from '../../../../../apiUtils/job/jobApplications/candidateUpload/utils';
+} from '@/src/apiUtils/job/candidateUpload/utils';
+import { CandidateFilesBulkCreateAction } from '@/src/context/CandidatesContext/types';
 
 const handler = async (
   req: NextApiRequest,

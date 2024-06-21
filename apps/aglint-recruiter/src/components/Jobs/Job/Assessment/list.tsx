@@ -23,23 +23,16 @@ import { useJobs } from '@/src/context/JobsContext';
 import { Assessment, AssessmentTemplate } from '@/src/queries/assessment/types';
 import {
   useJobAssessmentsBulkConnect,
-  // useJobAssessmentsConnect,
   useJobAssessmentsDisconnect,
   useJobAssessmentTemplateConnect,
 } from '@/src/queries/job-assessment';
 import { useCurrentJob } from '@/src/queries/job-assessment/keys';
-
-// import TipTapAIEditor from '../Common/TipTapAIEditor';
-// import SearchField from '../JobApplicationsDashboard/SearchField';
-// import { AssessmentDetails } from '../NewAssessment/AssessmentDashboard/card';
-// import TypeIcon from '../NewAssessment/Common/icons/types';
 
 const JobAssessment = () => {
   const {
     assessments: {
       data: { jobAssessments },
     },
-    // templates: { status, data: templates }
   } = useJobDetails();
   const [open, setOpen] = useState(false);
   // const isRecommendedVisible =

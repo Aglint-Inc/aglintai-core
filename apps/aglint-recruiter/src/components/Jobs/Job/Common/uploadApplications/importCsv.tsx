@@ -10,7 +10,7 @@ import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ImportCandidatesCsv } from '@/devlink/ImportCandidatesCsv';
 import { ImportCsv as ImportCsvDev } from '@/devlink/ImportCsv';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
-import { CsvUploadApi } from '@/src/apiUtils/job/jobApplications/candidateUpload/types';
+import { CsvUploadApi } from '@/src/apiUtils/job/candidateUpload/types';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
