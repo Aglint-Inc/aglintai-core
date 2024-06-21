@@ -2,6 +2,7 @@ import React from 'react';
 
 import Seo from '@/src/components/Common/Seo';
 import CandidateDashboard from '@/src/components/NewScreening/CandidateDashboard';
+import { WithScreening } from '@/src/components/withScreening';
 
 const index = () => {
   return (
@@ -10,7 +11,9 @@ const index = () => {
         title='Screening Dashboard - Screening | Aglint AI'
         description='AI for People Products'
       />
-      <CandidateDashboard />
+      <WithScreening>
+        <CandidateDashboard />
+      </WithScreening>
     </>
   );
 };
