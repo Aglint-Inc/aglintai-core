@@ -16,6 +16,18 @@ export type WeeklyLimitType = {
   value: number;
   type: "Hours" | "Interviews";
 };
+export type InterviewLoadType = {
+  daily: {
+    type: "Hours" | "Interviews";
+    max: number;
+    value: number;
+  };
+  weekly: {
+    type: "Hours" | "Interviews";
+    max: number;
+    value: number;
+  };
+};
 export type WorkingDaysType = {
   day: string;
   isWorkDay: boolean;
