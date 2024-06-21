@@ -2,6 +2,8 @@ import { Drawer, Stack } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { SideDrawerBlock } from '@/devlink2/SideDrawerBlock';
 import { DropDown } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
@@ -111,8 +113,6 @@ function BreakDrawerEdit() {
       <Stack overflow={'hidden'}>
         {editSession && (
           <SideDrawerBlock
-            onClickClose={{ onClick: () => handleClose() }}
-            textPrimaryButton='Save'
             textTitle='Edit break duration'
             slotSidedrawerBody={
               <Stack p={'var(--space-4)'}>
@@ -125,14 +125,28 @@ function BreakDrawerEdit() {
                 />
               </Stack>
             }
-            onClickPrimaryButton={{
-              onClick: () => {
-                if (!saving) {
-                  setSaving(true);
-                  handleSave();
-                }
-              },
-            }}
+            slotButton={
+              <>
+                <ButtonSoft
+                  textButton='Cancel'
+                  color={'neutral'}
+                  size={2}
+                  onClickButton={{ onClick: () => handleClose() }}
+                />
+                <ButtonSolid
+                  textButton='Save'
+                  size={2}
+                  onClickButton={{
+                    onClick: () => {
+                      if (!saving) {
+                        setSaving(true);
+                        handleSave();
+                      }
+                    },
+                  }}
+                />
+              </>
+            }
           />
         )}
       </Stack>

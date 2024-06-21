@@ -5,6 +5,7 @@ import { useFeatureFlagEnabled } from 'posthog-js/react';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { AddedJobList } from '@/devlink/AddedJobList';
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateDialog } from '@/devlink/CandidateDialog';
 import { CandidateEducation } from '@/devlink/CandidateEducation';
@@ -162,6 +163,28 @@ const CandidateDrawer = ({
   return (
     <>
       <CandidateDialog
+        slotButton={
+          <>
+            <ButtonGhost
+              size={2}
+              textButton='View Resume'
+              isLeftIcon
+              iconName='visibility'
+              onClickButton={{
+                onClick: () => handleOpenResume(),
+              }}
+            />
+            <ButtonGhost
+              size={2}
+              textButton='Download Resume'
+              isLeftIcon
+              iconName='download'
+              onClickButton={{
+                onClick: () => fetchFile(candidate),
+              }}
+            />
+          </>
+        }
         isPhoneScreeningVisible={
           !isPhoneScreeningPhoneCallEnabled
             ? false
@@ -191,11 +214,6 @@ const CandidateDrawer = ({
           )
         }
         isCloseButtonVisible={!showClose}
-        onClickDownloadResume={{
-          onClick: () => {
-            fetchFile(candidate);
-          },
-        }}
         isBookmarkVisible={showBookmark}
         onClickLinkedin={{
           onClick: () => {
@@ -256,11 +274,6 @@ const CandidateDrawer = ({
         }}
         onClickPrev={{
           onClick: onClickPrev,
-        }}
-        onClickViewResume={{
-          onClick: () => {
-            handleOpenResume();
-          },
         }}
         slotAvatar={
           <>

@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import { AssessmentSide } from '@/devlink/AssessmentSide';
+import { ButtonOutlined } from '@/devlink/ButtonOutlined';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CreateNewJob } from '@/devlink/CreateNewJob';
 import { EnableAssessment } from '@/devlink/EnableAssessment';
@@ -252,13 +253,19 @@ const ScreeningDashboardComp = () => {
                     </>
                   ) : (
                     <EnableAssessment
-                      onClickEnablePhoneScreening={{
-                        onClick: () => {
-                          submitScreeningVisibility();
-                        },
-                      }}
                       isPhoneScreeningEnable
                       isEnableAssessmentVisible={false}
+                      slotPhoneScreenButton={
+                        <ButtonOutlined
+                          textButton='Enable Phone Screening'
+                          size={2}
+                          onClickButton={{
+                            onClick: () => {
+                              submitScreeningVisibility();
+                            },
+                          }}
+                        />
+                      }
                     />
                   )
                 }

@@ -3,6 +3,8 @@ import axios from 'axios';
 import { get } from 'lodash';
 import { useState } from 'react';
 
+import { ButtonOutlined } from '@/devlink/ButtonOutlined';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { Checkbox } from '@/devlink/Checkbox';
 import { PhoneScreeningQ } from '@/devlink/PhoneScreeningQ';
 import toast from '@/src/utils/toast';
@@ -166,18 +168,58 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
 
   return (
     <PhoneScreeningQ
-      onClickBack={{
-        onClick: () => {
-          updateState({
-            path: 'currentQn',
-            value: qnNo - 1,
-          });
-        },
-      }}
+      slotButton={
+        <>
+          {state.currentQn > 1 && (
+            <ButtonOutlined
+              textButton='Pre'
+              size={3}
+              iconName='arrow_back_ios'
+              isLeftIcon
+              iconSize={2}
+              onClickButton={{
+                onClick: () => {
+                  updateState({
+                    path: 'currentQn',
+                    value: qnNo - 1,
+                  });
+                },
+              }}
+            />
+          )}
+          {state.phoneScreen.length !== qnNo && (
+            <ButtonSolid
+              textButton='Next'
+              size={3}
+              iconName={'arrow_forward_ios'}
+              isRightIcon
+              iconSize={2}
+              onClickButton={{
+                onClick: () => {
+                  if (!isResponseValid()) return;
+                  updateState({
+                    path: 'currentQn',
+                    value: qnNo + 1,
+                  });
+                },
+              }}
+            />
+          )}
+          {state.phoneScreen.length === qnNo && (
+            <ButtonSolid
+              textButton='Submit'
+              size={3}
+              onClickButton={{
+                onClick: handleSubmit,
+              }}
+            />
+          )}
+        </>
+      }
       isDescriptionVisible={qn.showDescription}
       textDescription={qn.description || ''}
       currentQuestionNo={qnNo}
-      isQuestionImp={qn.isRequired}
+      // isQuestionImp={qn.isRequired}
       slotLogo={<CompanyLogo />}
       textQuestion={
         <>
@@ -186,23 +228,8 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
         </>
       }
       totalQuestionNo={state.phoneScreen.length}
-      isSubmitButtonVisible={state.phoneScreen.length === qnNo}
-      isOkButtonVisible={state.phoneScreen.length !== qnNo}
-      onClickOk={{
-        onClick: () => {
-          if (!isResponseValid()) return;
-          updateState({
-            path: 'currentQn',
-            value: qnNo + 1,
-          });
-        },
-      }}
-      isBackVisible={state.currentQn > 1}
       isOkDisable={errorMsg.length > 0}
       isSubmitDisable={errorMsg.length > 0 || isSubmitting}
-      onClickSubmit={{
-        onClick: handleSubmit,
-      }}
       slotInputAndButton={
         <>
           {candRespComp}

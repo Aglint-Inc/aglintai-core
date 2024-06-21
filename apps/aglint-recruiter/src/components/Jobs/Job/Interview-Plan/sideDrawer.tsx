@@ -3,6 +3,8 @@ import { Drawer } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { InterviewPlanEmpty } from '@/devlink2/InterviewPlanEmpty';
 import { SideDrawerBlock } from '@/devlink2/SideDrawerBlock';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -134,10 +136,21 @@ const CreateSession = ({ handleClose, order }: DrawerProps) => {
 
   return (
     <SideDrawerBlock
-      onClickClose={{ onClick: () => handleClose() }}
-      onClickPrimaryButton={{ onClick: () => handleAdd() }}
-      isLoading={false}
-      textPrimaryButton='Add'
+      slotButton={
+        <>
+          <ButtonSoft
+            textButton='Cancel'
+            color={'neutral'}
+            size={2}
+            onClickButton={{ onClick: () => handleClose() }}
+          />
+          <ButtonSolid
+            textButton='Add'
+            size={2}
+            onClickButton={{ onClick: () => handleAdd() }}
+          />
+        </>
+      }
       textTitle='Create Session'
       slotSidedrawerBody={
         <SessionForms fields={fields} setFields={setFields} />
@@ -219,13 +232,24 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
 
   return (
     <SideDrawerBlock
-      onClickClose={{ onClick: () => handleClose() }}
-      onClickPrimaryButton={{ onClick: () => handleEdit() }}
-      isLoading={false}
-      textPrimaryButton='Save'
       textTitle='Edit Session'
       slotSidedrawerBody={
         <SessionForms fields={fields} setFields={setFields} />
+      }
+      slotButton={
+        <>
+          <ButtonSoft
+            textButton='Cancel'
+            color={'neutral'}
+            size={2}
+            onClickButton={{ onClick: () => handleClose() }}
+          />
+          <ButtonSolid
+            textButton='Save'
+            size={2}
+            onClickButton={{ onClick: () => handleEdit() }}
+          />
+        </>
       }
     />
   );
@@ -265,13 +289,24 @@ const CreateDebrief = ({ handleClose, order }: DrawerProps) => {
   };
   return (
     <SideDrawerBlock
-      onClickClose={{ onClick: () => handleClose() }}
-      onClickPrimaryButton={{ onClick: () => handleAdd() }}
-      isLoading={false}
-      textPrimaryButton='Add'
       textTitle='Create Debrief'
       slotSidedrawerBody={
         <DebriefForms fields={fields} setFields={setFields} />
+      }
+      slotButton={
+        <>
+          <ButtonSoft
+            textButton='Cancel'
+            color={'neutral'}
+            size={2}
+            onClickButton={{ onClick: () => handleClose() }}
+          />
+          <ButtonSolid
+            textButton='Add'
+            size={2}
+            onClickButton={{ onClick: () => handleAdd() }}
+          />
+        </>
       }
     />
   );
@@ -332,13 +367,24 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
 
   return (
     <SideDrawerBlock
-      onClickClose={{ onClick: () => handleClose() }}
-      onClickPrimaryButton={{ onClick: () => handleEdit() }}
-      isLoading={false}
-      textPrimaryButton='Save'
       textTitle='Edit Debrief'
       slotSidedrawerBody={
         <DebriefForms fields={fields} setFields={setFields} />
+      }
+      slotButton={
+        <>
+          <ButtonSoft
+            textButton='Cancel'
+            color={'neutral'}
+            size={2}
+            onClickButton={{ onClick: () => handleClose() }}
+          />
+          <ButtonSolid
+            textButton='Save'
+            size={2}
+            onClickButton={{ onClick: () => handleEdit() }}
+          />
+        </>
       }
     />
   );
@@ -375,11 +421,23 @@ const BreakSession = ({ handleClose, id }: DrawerProps) => {
   return (
     <SideDrawerBlock
       onClickClose={{ onClick: () => handleClose() }}
-      onClickPrimaryButton={{ onClick: () => handleUpdate() }}
-      isLoading={false}
-      textPrimaryButton={break_duration === 0 ? 'Add' : 'Save'}
       textTitle={break_duration === 0 ? 'Create Break' : 'Edit Break'}
       slotSidedrawerBody={<BreakForms fields={fields} setFields={setFields} />}
+      slotButton={
+        <>
+          <ButtonSoft
+            textButton='Cancel'
+            color={'neutral'}
+            size={2}
+            onClickButton={{ onClick: () => handleClose() }}
+          />
+          <ButtonSolid
+            textButton={break_duration === 0 ? 'Add' : 'Save'}
+            size={2}
+            onClickButton={{ onClick: () => handleUpdate() }}
+          />
+        </>
+      }
     />
   );
 };

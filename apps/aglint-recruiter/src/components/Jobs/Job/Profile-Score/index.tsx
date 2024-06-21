@@ -5,6 +5,7 @@ import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import { ChangeEventHandler, FC, useEffect, useRef, useState } from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { Checkbox } from '@/devlink/Checkbox';
@@ -157,7 +158,15 @@ const ProfileScoreControls = () => {
       }}
     >
       <ScoreWeightage
-        onClickEqualize={{ onClick: () => handleReset() }}
+        slotResetButton={
+          <ButtonSolid
+            textButton='Reset'
+            size={2}
+            onClickButton={{
+              onClick: () => handleReset(),
+            }}
+          />
+        }
         slotScoreWheel={
           <>
             <Stack
@@ -311,10 +320,17 @@ const Banners = () => {
   if (status.description_error)
     return (
       <BannerWarning
-        isDismiss={false}
-        onClickButton={{ onClick: () => push(`/jobs/${job.id}/edit`) }}
-        textButton={'View'}
-        textBanner={'Job description is unavailable.'}
+        textBanner={'Job description is unavailable'}
+        slotButton={
+          <ButtonSolid
+            textButton='View'
+            size={2}
+            highContrast='true'
+            onClickButton={{
+              onClick: () => push(`/jobs/${job.id}/edit`),
+            }}
+          />
+        }
       />
     );
   if (status.jd_json_error)
@@ -335,12 +351,26 @@ const Banners = () => {
         textBanner={
           'Job description has changed. Regenerate for updated scoring criterias.'
         }
-        onClickDismiss={{
-          onClick: () => setDismissWarnings({ job_description: true }),
-        }}
-        onClickButton={{
-          onClick: () => experimental_handleRegenerateJd(job),
-        }}
+        slotButton={
+          <>
+            <ButtonSoft
+              textButton='Ignore'
+              size={2}
+              highContrast='true'
+              onClickButton={{
+                onClick: () => setDismissWarnings({ job_description: true }),
+              }}
+            />
+            <ButtonSolid
+              textButton='Regenerate'
+              size={2}
+              highContrast='true'
+              onClickButton={{
+                onClick: () => experimental_handleRegenerateJd(job),
+              }}
+            />
+          </>
+        }
       />
     );
   return <></>;
@@ -501,7 +531,15 @@ const Pill: FC<{
           }
           isDeleteVisible={true}
           isCancelVisible={false}
-          onClickDelete={{ onClick: () => onDelete() }}
+          slotButton={
+            <ButtonGhost
+              textButton='Delete'
+              size={2}
+              onClickButton={{ onClick: () => onDelete() }}
+              isLeftIcon
+              iconName='delete'
+            />
+          }
           slotButtonUpdate={
             <ButtonSolid
               size={'2'}
@@ -599,7 +637,13 @@ const AddOption: FC<{
           }
           isDeleteVisible={false}
           isCancelVisible={true}
-          onClickCancel={{ onClick: () => handleClose() }}
+          slotButton={
+            <ButtonGhost
+              textButton='Cancel'
+              size={2}
+              onClickButton={{ onClick: () => handleClose() }}
+            />
+          }
           slotButtonUpdate={
             <ButtonSolid
               size={'2'}

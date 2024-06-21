@@ -2,6 +2,7 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { ButtonOutlined } from '@/devlink/ButtonOutlined';
 import { EnableAssessment as EnableAssessmentDev } from '@/devlink/EnableAssessment';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
@@ -90,7 +91,15 @@ const EnableAssessment = () => {
       }}
     >
       <EnableAssessmentDev
-        onClickEnableAssessment={{ onClick: () => handelEnable() }}
+        slotAssessmentButton={
+          <ButtonOutlined
+            textButton='Enable Assessment'
+            size={2}
+            onClickButton={{
+              onClick: () => handelEnable(),
+            }}
+          />
+        }
       />
     </Stack>
   );
