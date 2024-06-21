@@ -1,25 +1,24 @@
-import express, { Application } from "express";
-import swaggerUi from "swagger-ui-express";
-import { specs } from "./swaggerConfig";
-import routes from "./routes";
-import example from "./routes/api/v1/exampleRoute";
-import dotenv from "dotenv";
-
-dotenv.config();
-
-const runtime_args = require("minimist")(process.argv.slice(2));
-
-const PORT = runtime_args["port"] || process.env.APP_PORT || 8000;
+import express, { Application } from 'express';
+import swaggerUi from 'swagger-ui-express';
+import { specs } from './config/swaggerConfig';
+import cors from 'cors';
+import routes from './routes';
+import { HOST, PORT } from './init';
 
 const app: Application = express();
+
+app.use(cors());
 
 app.use(express.json());
 
 app.use(routes);
 
 // app.use("/api/v1/exampleRoute", example);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  console.log(`for api docs use ${HOST}:${PORT}/api-docs`);
 });
+
+export { app };
