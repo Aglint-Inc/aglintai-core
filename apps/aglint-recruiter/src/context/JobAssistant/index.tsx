@@ -4,10 +4,9 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 
+import { Application } from '@/src/types/applications.types';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { useAuthDetails } from '../AuthContext/AuthContext';
-import { JobApplication } from '../JobApplicationsContext/types';
 import { AssistantMessageInterface, ChatInput } from './type';
 import { reasons } from './utils';
 
@@ -41,8 +40,8 @@ interface ContextValue {
   setFetching: (fetching: boolean) => void;
   isPopUpOpen: boolean;
   setIsPopUpOpen: (isPopUpOpen: boolean) => void;
-  applicationDetails: JobApplication;
-  setApplicationDetails: (x: JobApplication) => void;
+  applicationDetails: Application;
+  setApplicationDetails: (x: Application) => void;
 }
 
 const defaultProvider: ContextValue = {
@@ -86,14 +85,13 @@ const JobAssistantContext = createContext<ContextValue>(defaultProvider);
 const useJobAssistantContext = () => useContext(JobAssistantContext);
 function JobAssistantProvider({ children }) {
   const router = useRouter();
-  const { recruiter } = useAuthDetails();
   const [companyDetails, setCompanyDetails] = useState<JobTypeDB | null>(null);
   const [candidates, setCandidates] = useState([]);
   const [applications, setApplications] = useState<any[] | null>(null);
   const [candidatesFiles, setCandidatesFiles] = useState([]);
   const [jobAssistantChats, setJobAssistantChats] = useState([]);
   const [applicationDetails, setApplicationDetails] =
-    useState<JobApplication | null>(null);
+    useState<Application | null>(null);
   const [currentChat, setCurrentChat] = useState<JobAssistantChats | null>(
     null,
   );

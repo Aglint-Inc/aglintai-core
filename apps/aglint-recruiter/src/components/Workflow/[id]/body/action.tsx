@@ -14,6 +14,7 @@ import UITypography from '@/src/components/Common/UITypography';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
+import { WorkflowAction } from '@/src/types/workflow.types';
 
 import { useActions } from './context';
 
@@ -146,7 +147,7 @@ type EmailTemplate = DatabaseTable['recruiter']['email_template'];
 type FormsType = {
   name: keyof Omit<EmailTemplate[keyof EmailTemplate], 'default'>;
   value: {
-    [key in keyof DatabaseTable['workflow_action']['payload']]: DatabaseTable['workflow_action']['payload'][key];
+    [key in keyof WorkflowAction['payload']]: WorkflowAction['payload'][key];
   };
   disabled?: boolean;
 };

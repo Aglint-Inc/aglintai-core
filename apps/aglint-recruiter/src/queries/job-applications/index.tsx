@@ -4,7 +4,6 @@ import {
   DatabaseTable,
   DatabaseTableInsert,
   DatabaseTableUpdate,
-  DatabaseView,
 } from '@aglint/shared-types';
 import {
   infiniteQueryOptions,
@@ -14,11 +13,12 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { createBatches } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
-import { UploadApiFormData } from '@/src/apiUtils/job/jobApplications/candidateUpload/types';
-import { handleJobApplicationApi } from '@/src/apiUtils/job/jobApplications/utils';
+import { UploadApiFormData } from '@/src/apiUtils/job/candidateUpload/types';
+import { handleJobApi } from '@/src/apiUtils/job/utils';
 import { ApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { Application } from '@/src/types/applications.types';
+import { createBatches } from '@/src/utils/createBatches';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -96,7 +96,7 @@ type ApplicationsAllQueryPrerequistes = {
 type Params = ApplicationsAllQueryPrerequistes & {
   filters: ApplicationsStore['filters'];
   sort: ApplicationsStore['sort'];
-  status: DatabaseView['application_view']['status'];
+  status: Application['status'];
 };
 
 const getApplications = async ({
@@ -138,23 +138,41 @@ const getApplications = async ({
     );
   }
 
-  if (
-    [
-      ...(filters?.country ?? []),
-      ...(filters?.state ?? []),
-      ...(filters?.city ?? []),
-    ].length
-  )
+  const { country, state, city } = (filters?.locations ?? []).reduce(
+    (acc, curr, i) => {
+      let type: keyof typeof acc = null;
+      switch (i) {
+        case 0:
+          type = 'country';
+          break;
+        case 1:
+          type = 'state';
+          break;
+        case 2:
+          type = 'city';
+          break;
+      }
+      acc[type].push(
+        curr
+          .filter(({ status }) => status === 'active')
+          .map(({ label }) => label),
+      );
+      return acc;
+    },
+    { country: [], state: [], city: [] },
+  );
+
+  if ([...country, ...state, ...city].length)
     query.or(
       [
-        (filters?.country ?? []).length
-          ? `country.in.(${filters.country.map((country) => country).join(',')})`
+        country.length
+          ? `country.in.(${country.map((country) => country).join(',')})`
           : null,
-        (filters?.state ?? []).length
-          ? `state.in.(${(filters?.state ?? []).map((state) => state).join(',')})`
+        state.length
+          ? `state.in.(${(state ?? []).map((state) => state).join(',')})`
           : null,
-        (filters?.city ?? []).length
-          ? `city.in.(${(filters?.city ?? []).map((city) => city).join(',')})`
+        (city ?? []).length
+          ? `city.in.(${(city ?? []).map((city) => city).join(',')})`
           : null,
       ]
         .filter(Boolean)
@@ -258,9 +276,7 @@ export const updateApplication = async ({
 
 const sampleApplicationView: {
   // eslint-disable-next-line no-unused-vars
-  [key in keyof Partial<
-    DatabaseTable['applications']
-  >]: keyof DatabaseView['application_view'];
+  [key in keyof Partial<DatabaseTable['applications']>]: keyof Application;
 } = {
   applied_at: 'applied_at',
   bookmarked: 'bookmarked',
@@ -277,16 +293,12 @@ const sampleApplicationView: {
 
 export const diffApplication = (
   application: UpdateParams['application'],
-): Partial<DatabaseView['application_view']> => {
-  return Object.entries(application).reduce(
-    (acc, [key, value]) => {
-      const mappedColumn =
-        sampleApplicationView[key as keyof typeof application];
-      if (mappedColumn) acc[mappedColumn] = value as never;
-      return acc;
-    },
-    {} as Partial<DatabaseView['application_view']>,
-  );
+): Partial<Application> => {
+  return Object.entries(application).reduce((acc, [key, value]) => {
+    const mappedColumn = sampleApplicationView[key as keyof typeof application];
+    if (mappedColumn) acc[mappedColumn] = value as never;
+    return acc;
+  }, {} as Partial<Application>);
 };
 
 export const useUploadApplication = (params: Omit<Params, 'status'>) => {
@@ -343,10 +355,7 @@ const handleUploadApplication = async (payload: HandleUploadApplication) => {
     },
     files: formData,
   };
-  const response = await handleJobApplicationApi(
-    'candidateUpload/manualUpload',
-    request,
-  );
+  const response = await handleJobApi('candidateUpload/manualUpload', request);
   if (!response.confirmation) throw new Error(response.error);
 };
 
@@ -400,10 +409,7 @@ const handleResumeUpload = async (payload: HandleUploadResume) => {
     },
     files: formData,
   };
-  const response = await handleJobApplicationApi(
-    'candidateUpload/resumeUpload',
-    request,
-  );
+  const response = await handleJobApi('candidateUpload/resumeUpload', request);
   return response;
 };
 const handleBulkResumeUpload = async (payload: HandleUploadResume) => {
@@ -456,7 +462,7 @@ export const useUploadCsv = (params: Omit<Params, 'status'>) => {
 };
 type HandleUploadCsv = ApplicationsAllQueryPrerequistes & {
   candidates: Parameters<
-    typeof handleJobApplicationApi<'candidateUpload/csvUpload'>
+    typeof handleJobApi<'candidateUpload/csvUpload'>
   >['1']['candidates'];
   recruiter_id: string;
 };
@@ -466,10 +472,7 @@ const handleBulkCsvUpload = async (payload: HandleUploadCsv) => {
     recruiter_id: payload.recruiter_id,
     candidates: payload.candidates,
   };
-  const response = await handleJobApplicationApi(
-    'candidateUpload/csvUpload',
-    formData,
-  );
+  const response = await handleJobApi('candidateUpload/csvUpload', formData);
   if (!response.confirmation) throw new Error(response.error);
 };
 

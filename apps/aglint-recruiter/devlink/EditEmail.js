@@ -3,7 +3,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { Text } from "./Text";
-import { ButtonSolid } from "./ButtonSolid";
+import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./EditEmail.module.css";
 
@@ -14,8 +14,6 @@ const _interactionsData = JSON.parse(
 export function EditEmail({
   as: _Component = _Builtin.Block,
   textEmailName = "This is some text inside of a div block.",
-  onClickSaveChanges = {},
-  onClickClose = {},
   slotForm,
   editEmailDescription = "This is some text inside of a div block.",
   slotBottom,
@@ -24,6 +22,7 @@ export function EditEmail({
   textTipsMessage = "For dynamic content, utilize placeholders like [firstName], [lastName], [companyName], and [jobTitle].",
   onClickPreview = {},
   isPreviewVisible = true,
+  slotButton,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -82,13 +81,8 @@ export function EditEmail({
             className={_utils.cx(_styles, "edit-email-btn-wrap")}
             tag="div"
           >
-            <_Builtin.Block tag="div" {...onClickSaveChanges}>
-              <ButtonSolid
-                isLeftIcon={false}
-                isRightIcon={false}
-                textButton="Save Changes"
-                size="2"
-              />
+            <_Builtin.Block tag="div">
+              {slotButton ?? <SlotComp componentName="ButtonSolid" />}
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}

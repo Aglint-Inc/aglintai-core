@@ -4,7 +4,6 @@ import {
   Dialog,
   FormControl,
   FormControlLabel,
-  IconButton,
   Radio,
   RadioGroup,
   Stack,
@@ -22,13 +21,14 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 import {
-  DailyLimitType,
   holidayType,
+  InterviewLoadType,
   schedulingSettingType,
-  WeeklyLimitType,
 } from '@aglint/shared-types';
 import { useRouter } from 'next/router';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { BodyWithSublink } from '@/devlink2/BodyWithSublink';
 import { CompanyDayOff } from '@/devlink2/CompanyDayOff';
 import { DayoffList } from '@/devlink2/DayoffList';
@@ -47,7 +47,6 @@ import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
 import FilterInput from '../../CandidateDatabase/Search/FilterInput';
-import Icon from '../../Common/Icons/Icon';
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
 import ToggleBtn from '../../Common/UIToggle';
@@ -64,6 +63,13 @@ let schedulingSettingObj = {};
 let changeValue = null;
 type specificLocationType = 'all_locations' | 'specific_locations';
 
+const LoadMax = {
+  dailyHours: 8,
+  dailyInterviews: 10,
+  weeklyHours: 40,
+  weeklyInterviews: 50,
+};
+
 function SchedulingSettings({
   updateSettings,
   initialData,
@@ -72,15 +78,6 @@ function SchedulingSettings({
   const { recruiter } = useAuthDetails();
   const eventRef = useRef<HTMLInputElement>(null);
   const dateRef = useRef<HTMLInputElement>(null);
-  const [selectedDailyLimit, setSelectedDailyLimit] = useState<DailyLimitType>({
-    type: 'Interviews',
-    value: 2,
-  });
-  const [selectedWeeklyLimit, setSelectedWeeklyLimit] =
-    useState<DailyLimitType>({
-      type: 'Hours',
-      value: 16,
-    });
 
   const [workingHours, setWorkingHours] = useState([]);
   const [debriefDefaults, setDebriefDefaults] = useState<
@@ -110,33 +107,70 @@ function SchedulingSettings({
     end_time: string;
   } | null>({ start_time: '', end_time: '' });
 
-  const handleSelectWeeklyType = (value: any) => {
-    setSelectedWeeklyLimit((pre) => {
-      pre.type = value.target.value as any;
-      return { ...pre } as WeeklyLimitType;
-    });
-  };
-  const handleSelectWeeklyValue = (value: any) => {
-    setSelectedWeeklyLimit((pre) => {
-      pre.value = value as number;
-      // pre.value = value.target.value as number;
-      return { ...pre } as WeeklyLimitType;
-    });
-  };
-  const handleSelectDailyType = (value: any) => {
-    setSelectedDailyLimit((pre) => {
-      pre.type = value.target.value as any;
-      return { ...pre } as DailyLimitType;
-    });
-  };
+  const [interviewLoad, setInterviewLoad] = useState<InterviewLoadType>({
+    daily: {
+      type: 'Hours',
+      value: 20,
+      max: LoadMax.dailyHours,
+    },
+    weekly: {
+      type: 'Hours',
+      value: 10,
+      max: LoadMax.weeklyHours,
+    },
+  });
 
-  const handleSelectDailyValue = (value: any) => {
-    setSelectedDailyLimit((pre) => {
-      pre.value = value as number;
-      // pre.value = value.target.value as number;
-      return { ...pre } as DailyLimitType;
-    });
-  };
+  //value change handler
+  function loadChangeHandle(value, module, type) {
+    if (type === 'type') {
+      setInterviewLoad(
+        (prevState) =>
+          ({
+            ...prevState,
+            [module]: {
+              // eslint-disable-next-line security/detect-object-injection
+              ...prevState[module],
+              [type]: value,
+              value:
+                module === 'weekly'
+                  ? value === 'Hours'
+                    ? // eslint-disable-next-line security/detect-object-injection
+                      prevState[module].value > LoadMax.weeklyHours
+                      ? LoadMax.weeklyHours
+                      : // eslint-disable-next-line security/detect-object-injection
+                        prevState[module].value
+                    : // eslint-disable-next-line security/detect-object-injection
+                      prevState[module].value
+                  : value === 'Interviews'
+                    ? // eslint-disable-next-line security/detect-object-injection
+                      prevState[module].value
+                    : // eslint-disable-next-line security/detect-object-injection
+                      prevState[module].value > LoadMax.dailyHours
+                      ? LoadMax.dailyHours
+                      : // eslint-disable-next-line security/detect-object-injection
+                        prevState[module].value,
+              max:
+                module === 'weekly'
+                  ? value === 'Hours'
+                    ? LoadMax.weeklyHours
+                    : LoadMax.weeklyInterviews
+                  : value === 'Interviews'
+                    ? LoadMax.dailyInterviews
+                    : LoadMax.dailyHours,
+            },
+          }) as InterviewLoadType,
+      );
+    } else {
+      setInterviewLoad((prevState) => ({
+        ...prevState,
+        [module]: {
+          // eslint-disable-next-line security/detect-object-injection
+          ...prevState[module],
+          [type]: value,
+        },
+      }));
+    }
+  }
 
   const selectStartTime = (value: any, i: number) => {
     setWorkingHours((pre) => {
@@ -187,11 +221,24 @@ function SchedulingSettings({
 
       setSelectedTimeZone({ ...schedulingSettingData.timeZone } as TimezoneObj);
       setIsTimeZone(schedulingSettingData.isAutomaticTimezone);
-      setSelectedDailyLimit({
-        ...schedulingSettingData.interviewLoad.dailyLimit,
-      });
-      setSelectedWeeklyLimit({
-        ...schedulingSettingData.interviewLoad.weeklyLimit,
+
+      setInterviewLoad({
+        daily: {
+          type: schedulingSettingData.interviewLoad.dailyLimit.type,
+          value: schedulingSettingData.interviewLoad.dailyLimit.value,
+          max:
+            schedulingSettingData.interviewLoad.dailyLimit.type === 'Hours'
+              ? LoadMax.dailyHours
+              : LoadMax.dailyInterviews,
+        },
+        weekly: {
+          type: schedulingSettingData.interviewLoad.weeklyLimit.type,
+          value: schedulingSettingData.interviewLoad.weeklyLimit.value,
+          max:
+            schedulingSettingData.interviewLoad.dailyLimit.type === 'Hours'
+              ? LoadMax.weeklyHours
+              : LoadMax.weeklyInterviews,
+        },
       });
       setWorkingHours(workingHoursCopy);
       setDaysOff([...schedulingSettingData.totalDaysOff] as holidayType[]);
@@ -225,8 +272,14 @@ function SchedulingSettings({
     if (daysOff.length && workingHours.length) {
       schedulingSettingObj = {
         interviewLoad: {
-          dailyLimit: selectedDailyLimit,
-          weeklyLimit: selectedWeeklyLimit,
+          dailyLimit: {
+            type: interviewLoad.daily.type,
+            value: interviewLoad.daily.value,
+          },
+          weeklyLimit: {
+            type: interviewLoad.weekly.type,
+            value: interviewLoad.weekly.value,
+          },
         },
         timeZone: selectedTimeZone,
         workingHours: workingHours,
@@ -252,8 +305,7 @@ function SchedulingSettings({
       changeValue = 'updating';
     }
   }, [
-    selectedDailyLimit,
-    selectedWeeklyLimit,
+    interviewLoad,
     daysOff,
     workingHours,
     selectedTimeZone,
@@ -513,9 +565,17 @@ function SchedulingSettings({
                 isTrue={router.query.subtab == settingSubNavItem.DAYOFF}
               >
                 <CompanyDayOff
-                  onClickAddDayoff={{
-                    onClick: openAddCompany,
-                  }}
+                  slotAddButton={
+                    <ButtonSolid
+                      textButton='Add Day Off'
+                      size={2}
+                      iconName='add'
+                      isLeftIcon
+                      onClickButton={{
+                        onClick: openAddCompany,
+                      }}
+                    />
+                  }
                   slotDayoffList={
                     <>
                       {daysOff.sort(compareDates).map((item, i) => {
@@ -728,30 +788,38 @@ function SchedulingSettings({
                   slotDailyLimit={
                     <>
                       <MuiNumberfield
-                        handleSelect={handleSelectDailyValue}
-                        value={selectedDailyLimit.value}
-                        max={50}
+                        handleSelect={(e) =>
+                          loadChangeHandle(e, 'daily', 'value')
+                        }
+                        value={interviewLoad.daily.value}
+                        max={interviewLoad.daily.max}
                       />
                       <MuiSelect
                         width='150px'
                         dataset={['Interviews', 'Hours']}
-                        handleSelect={handleSelectDailyType}
-                        value={selectedDailyLimit.type}
+                        handleSelect={(e) =>
+                          loadChangeHandle(e.target.value, 'daily', 'type')
+                        }
+                        value={interviewLoad.daily.type}
                       />
                     </>
                   }
                   slotWeeklyLimit={
                     <>
                       <MuiNumberfield
-                        handleSelect={handleSelectWeeklyValue}
-                        value={selectedWeeklyLimit.value}
-                        max={50}
+                        handleSelect={(e) =>
+                          loadChangeHandle(e, 'weekly', 'value')
+                        }
+                        value={interviewLoad.weekly.value}
+                        max={interviewLoad.weekly.max}
                       />
                       <MuiSelect
                         width='150px'
                         dataset={['Interviews', 'Hours']}
-                        handleSelect={handleSelectWeeklyType}
-                        value={selectedWeeklyLimit.type}
+                        handleSelect={(e) =>
+                          loadChangeHandle(e.target.value, 'weekly', 'type')
+                        }
+                        value={interviewLoad.weekly.type}
                       />
                     </>
                   }
@@ -797,9 +865,9 @@ function SchedulingSettings({
                                 });
                               }}
                               deleteIcon={
-                                <IconButton>
-                                  <Icon variant='CloseThinIcon' />
-                                </IconButton>
+                                <Stack>
+                                  <GlobalIcon iconName='close' size='4' />
+                                </Stack>
                               }
                               label={item}
                             />
@@ -843,9 +911,9 @@ function SchedulingSettings({
                                 });
                               }}
                               deleteIcon={
-                                <IconButton>
-                                  <Icon variant='CloseThinIcon' />
-                                </IconButton>
+                                <Stack>
+                                  <GlobalIcon iconName='close' size='4' />
+                                </Stack>
                               }
                               label={item}
                             />
@@ -889,9 +957,9 @@ function SchedulingSettings({
                                 });
                               }}
                               deleteIcon={
-                                <IconButton>
-                                  <Icon variant='CloseThinIcon' />
-                                </IconButton>
+                                <Stack>
+                                  <GlobalIcon iconName='close' size='4' />
+                                </Stack>
                               }
                               label={item}
                             />
@@ -935,9 +1003,9 @@ function SchedulingSettings({
                                 });
                               }}
                               deleteIcon={
-                                <IconButton>
-                                  <Icon variant='CloseThinIcon' />
-                                </IconButton>
+                                <Stack>
+                                  <GlobalIcon iconName='close' size='4' />
+                                </Stack>
                               }
                               label={item}
                             />

@@ -7,7 +7,7 @@ import { Autocomplete, Avatar, Dialog, Stack, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { EmailChangePop } from '@/devlink/EmailChangePop';
@@ -21,13 +21,13 @@ import { UserPasswordChange } from '@/devlink/UserPasswordChange';
 import { UserProfile } from '@/devlink/UserProfile';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { handleUpdatePassword } from '@/src/context/AuthContext/utils';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import { supabase } from '@/src/utils/supabase/client';
+import { capitalize, capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
-import ImageUpload from '../Common/ImageUpload';
+import ImageUploadManual from '../Common/ImageUpload/ImageUploadManual';
 import UIPhoneInput from '../Common/UIPhoneInput';
 import UITextField from '../Common/UITextField';
-import { capitalize } from '../JobApplicationsDashboard/utils';
 type FormValues = {
   value: string;
   label: string;
@@ -306,6 +306,52 @@ const ProfileDashboard = () => {
   };
   const [isError, setError] = useState(false);
 
+  const imageFile = useRef(null);
+
+  const { userDetails: userDetail } = useAuthDetails();
+
+  async function onUpdateSubmit() {
+    if (profileChange) {
+      if (profile) {
+        setLoading((prev) => {
+          return { ...prev, password: true };
+        });
+        const confirmation = await handleSubmit(
+          profile,
+          setProfile,
+          handleUpdateProfile,
+          recruiterUser,
+        );
+        if (confirmation) {
+          setProfileChange(false);
+          setProfileForm(false);
+        }
+        const { data } = await supabase.storage
+          .from('recruiter-user')
+          .upload(`public/${userDetail?.user?.id}`, imageFile.current, {
+            cacheControl: '3600',
+            upsert: true,
+          });
+
+        if (data?.path && imageFile?.current?.size) {
+          setError(false);
+          await handleUpdateProfile({
+            profile_image: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/recruiter-user/${data?.path}?t=${new Date().toISOString()}`,
+          } as RecruiterUserType);
+        } else {
+          await handleUpdateProfile({
+            profile_image: null,
+          } as RecruiterUserType);
+        }
+
+        setLoading((prev) => {
+          return { ...prev, profile: false };
+        });
+      }
+    } else {
+      toast.error('No changes.');
+    }
+  }
   return (
     <>
       {profileForm && (
@@ -325,18 +371,11 @@ const ProfileDashboard = () => {
               </Typography>
             }
             slotUserImage={
-              <ImageUpload
+              <ImageUploadManual
                 image={recruiterUser.profile_image}
                 size={64}
-                table='recruiter-user'
-                handleUpdateProfile={handleUpdateProfile}
-                error={(e) => {
-                  if (e) {
-                    setError(true);
-                  } else {
-                    setError(false);
-                  }
-                }}
+                imageFile={imageFile}
+                setChanges={() => setProfileChange(true)}
               />
             }
             slotUserForm={
@@ -389,30 +428,7 @@ const ProfileDashboard = () => {
               },
             }}
             onClickUpdate={{
-              onClick: async () => {
-                if (profileChange) {
-                  if (profile) {
-                    setLoading((prev) => {
-                      return { ...prev, password: true };
-                    });
-                    const confirmation = await handleSubmit(
-                      profile,
-                      setProfile,
-                      handleUpdateProfile,
-                      recruiterUser,
-                    );
-                    if (confirmation) {
-                      setProfileChange(false);
-                      setProfileForm(false);
-                    }
-                    setLoading((prev) => {
-                      return { ...prev, profile: false };
-                    });
-                  }
-                } else {
-                  toast.error('No changes.');
-                }
-              },
+              onClick: onUpdateSubmit,
             }}
             onClickProfilePhotoChange={{
               onClick: () => {

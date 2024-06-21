@@ -16,4 +16,5 @@ declare function ScrQuestionEdit(props: {
   slotDescriptionToggle?: Types.Devlink.Slot;
   onclickClose?: Types.Devlink.RuntimeProps;
   slotDropdown?: Types.Devlink.Slot;
+  slotButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

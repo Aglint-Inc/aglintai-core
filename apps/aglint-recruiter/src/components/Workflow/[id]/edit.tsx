@@ -62,7 +62,7 @@ const Edit = () => {
       <Dialog open={open} onClose={() => handleClose()}>
         <ConfirmationPopup
           isBlueButtonVisible={true}
-          isDescriptionVisible={false}
+          isDescriptionVisible={true}
           isIcon={false}
           isGreyButtonVisible={true}
           isWidget={true}
@@ -72,9 +72,7 @@ const Edit = () => {
           textPopupTitle={'Edit Workflow'}
           textPopupButton={'Edit Workflow'}
           slotWidget={<Forms form={form} setForm={setForm} />}
-          textPopupDescription={
-            'Enter the name for workflow. Next, you will be able to add steps to the workflow.'
-          }
+          textPopupDescription={'Edit workflow details.'}
         />
       </Dialog>
     </>

@@ -10,4 +10,5 @@ declare function ScoreCardEdit(props: {
   isDeleteVisible?: Types.Visibility.VisibilityConditions;
   onClickCancel?: Types.Devlink.RuntimeProps;
   isCancelVisible?: Types.Visibility.VisibilityConditions;
+  slotButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

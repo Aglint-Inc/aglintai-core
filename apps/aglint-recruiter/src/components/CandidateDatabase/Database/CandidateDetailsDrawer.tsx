@@ -5,6 +5,7 @@ import { useFeatureFlagEnabled } from 'posthog-js/react';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { AddedJobList } from '@/devlink/AddedJobList';
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateDialog } from '@/devlink/CandidateDialog';
 import { CandidateEducation } from '@/devlink/CandidateEducation';
@@ -13,16 +14,15 @@ import { CandidateExperience } from '@/devlink/CandidateExperience';
 import { CandidateExperienceCard } from '@/devlink/CandidateExperienceCard';
 import { EmailOutReach } from '@/devlink/EmailOutReach';
 import { ScreeningLandingPop } from '@/devlink2/ScreeningLandingPop';
+import CompanyLogo from '@/src/components/Common/CompanyLogo';
+import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import MuiPopup from '@/src/components/Common/MuiPopup';
+import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { CandidateSearchRes } from '@/src/context/CandidateSearchProvider/CandidateSearchProvider';
 import { getformatedDate, getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
-import { CandidateSearchRes } from '../../../context/CandidateSearchProvider/CandidateSearchProvider';
-import MuiAvatar from '../../Common/MuiAvatar';
-import MuiPopup from '../../Common/MuiPopup';
-import UITextField from '../../Common/UITextField';
-import ResumePreviewer from '../../JobApplicationsDashboard/ApplicationCard/ApplicationDetails/ResumePreviewer';
-import CompanyLogo from '../../JobApplicationsDashboard/Common/CompanyLogo';
 import AddToJobOptions from './CandAddToJobMenu';
 
 const CandidateDrawer = ({
@@ -162,6 +162,28 @@ const CandidateDrawer = ({
   return (
     <>
       <CandidateDialog
+        slotButton={
+          <>
+            <ButtonGhost
+              size={2}
+              textButton='View Resume'
+              isLeftIcon
+              iconName='visibility'
+              onClickButton={{
+                onClick: () => handleOpenResume(),
+              }}
+            />
+            <ButtonGhost
+              size={2}
+              textButton='Download Resume'
+              isLeftIcon
+              iconName='download'
+              onClickButton={{
+                onClick: () => fetchFile(candidate),
+              }}
+            />
+          </>
+        }
         isPhoneScreeningVisible={
           !isPhoneScreeningPhoneCallEnabled
             ? false
@@ -191,11 +213,6 @@ const CandidateDrawer = ({
           )
         }
         isCloseButtonVisible={!showClose}
-        onClickDownloadResume={{
-          onClick: () => {
-            fetchFile(candidate);
-          },
-        }}
         isBookmarkVisible={showBookmark}
         onClickLinkedin={{
           onClick: () => {
@@ -256,11 +273,6 @@ const CandidateDrawer = ({
         }}
         onClickPrev={{
           onClick: onClickPrev,
-        }}
-        onClickViewResume={{
-          onClick: () => {
-            handleOpenResume();
-          },
         }}
         slotAvatar={
           <>
@@ -358,7 +370,8 @@ const CandidateDrawer = ({
         onClose={() => setResume(false)}
       >
         <Stack direction={'row'} justifyContent={'center'} height={'90vh'}>
-          <ResumePreviewer url={candidate.resume_link} />
+          {/* TODO: Implement a custom resume previewer
+          <ResumePreviewer url={candidate.resume_link} /> */}
         </Stack>
       </Dialog>
       <MuiPopup

@@ -25,7 +25,7 @@ function SelectTime({
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DesktopTimePicker
         defaultValue={value}
-        onAccept={(value) => {
+        onChange={(value) => {
           onSelect(value, i);
         }}
         format='hh:mm A'

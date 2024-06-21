@@ -16,21 +16,18 @@ export function SoundTask({
   isAudioPlayVisible = true,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1627")} tag="div">
+    <_Component className={_utils.cx(_styles, "sound-track-wrap")} tag="div">
       {isAudioPlayVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1628")}
+          className={_utils.cx(_styles, "st-header-wrap")}
           tag="div"
         >
           {slotAudioPlay}
         </_Builtin.Block>
       ) : null}
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1629")}
-        tag="div"
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "st-body-wrap")} tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1630")}
+          className={_utils.cx(_styles, "st-sub-body-wrap")}
           tag="div"
         >
           {isShowVisible ? (
@@ -40,16 +37,16 @@ export function SoundTask({
           ) : null}
           {isHideVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "accent-text")}
+              className={_utils.cx(_styles, "cursor-pointer")}
               tag="div"
               {...onClickHide}
             >
-              {"Hide Transcript"}
+              <Text content="" weight="" color="accent" />
             </_Builtin.Block>
           ) : null}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1708")}
+          className={_utils.cx(_styles, "st-transcript-wrap")}
           tag="div"
         >
           {slotTranscript}

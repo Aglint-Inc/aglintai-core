@@ -199,22 +199,20 @@ export function nestedObjectToArray(
       });
     } else {
       const keys = Object.keys(optionList);
-      temp_options = keys
-        .map((key) => {
-          const tempIsArray = Array.isArray(optionList[String(key)]);
-          return mapOption(
-            {
-              optionList: optionList[String(key)],
-              selectedOptions:
-                selectedOptions?.[String(key)] || (tempIsArray ? [] : {}),
-              isArray: tempIsArray,
-              header: key,
-              index: index + 1,
-            },
-            [...pathArr, key],
-          );
-        })
-        .map(({ status, label }) => ({ status, label }));
+      temp_options = keys.map((key) => {
+        const tempIsArray = Array.isArray(optionList[String(key)]);
+        return mapOption(
+          {
+            optionList: optionList[String(key)],
+            selectedOptions:
+              selectedOptions?.[String(key)] || (tempIsArray ? [] : {}),
+            isArray: tempIsArray,
+            header: key,
+            index: index + 1,
+          },
+          [...pathArr, key],
+        );
+      });
     }
 
     tempItem.push(
@@ -259,13 +257,18 @@ export function arrayToNestedObject(
     label: string;
   }[],
 ) {
-  let obj: nestedType<String[]> = {};
+  let obj: nestedType<string[]> = {};
   function setVal(object, path, value) {
-    if (path.length === 1) {
+    if (path.length === 2) {
       object[path[0]] = [...(object[path[0]] || []), value];
       return object;
     }
-    return setVal(object[path[0]] || {}, path?.slice(1) || [], value);
+    object[path[0]] = setVal(
+      object[path[0]] || {},
+      path?.slice(1) || [],
+      value,
+    );
+    return object;
   }
   res.forEach((item) => {
     if (!item.id?.length) return;

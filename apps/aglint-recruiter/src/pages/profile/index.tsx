@@ -15,8 +15,4 @@ const ProfilePage = () => {
   );
 };
 
-// JobPage.privateProvider = function privateProvider(page) {
-//   return <JobApplicationProvider>{page}</JobApplicationProvider>;
-// };
-
 export default ProfilePage;

@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { ButtonSolid } from "./ButtonSolid";
+import { SlotComp } from "./SlotComp";
 import { GlobalIcon } from "./GlobalIcon";
 import { DayoffList } from "./DayoffList";
 import * as _utils from "./utils";
@@ -10,11 +10,8 @@ import _styles from "./CompanyDayOff.module.css";
 
 export function CompanyDayOff({
   as: _Component = _Builtin.Block,
-  slotDayOff,
-  onClickAddDate = {},
   slotDayoffList,
-  onClickImport = {},
-  onClickAddDayoff = {},
+  slotAddButton,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "cdo-wrap")} tag="div">
@@ -41,14 +38,8 @@ export function CompanyDayOff({
             className={_utils.cx(_styles, "cdo-top-btn")}
             tag="div"
           >
-            <_Builtin.Block tag="div" {...onClickAddDayoff}>
-              <ButtonSolid
-                size="2"
-                textButton="Add day off"
-                isLeftIcon={true}
-                isRightIcon={false}
-                iconName="add"
-              />
+            <_Builtin.Block tag="div">
+              {slotAddButton ?? <SlotComp componentName="ButtonSolid" />}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

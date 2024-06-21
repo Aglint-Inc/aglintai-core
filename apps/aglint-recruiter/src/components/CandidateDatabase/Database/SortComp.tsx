@@ -2,6 +2,7 @@ import Popover from '@mui/material/Popover';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { Sort } from '@/devlink/Sort';
 import { SortButton } from '@/devlink/SortButton';
 
@@ -82,11 +83,6 @@ const SortComp = () => {
               }}
             />
           }
-          onClickApplySort={{
-            onClick: () => {
-              applySort();
-            },
-          }}
           onClickAscending={{
             onClick: () => {
               setSortActive(true);
@@ -97,7 +93,16 @@ const SortComp = () => {
               setSortActive(false);
             },
           }}
-          isApplySortDisable={isDisabled}
+          slotButton={
+            <ButtonSolid
+              textButton='Apply Sort'
+              size={2}
+              isDisabled={isDisabled}
+              onClickButton={{
+                onClick: () => applySort(),
+              }}
+            />
+          }
         />
       </Popover>
     </>

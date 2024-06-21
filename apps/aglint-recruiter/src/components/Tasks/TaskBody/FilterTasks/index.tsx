@@ -1,6 +1,6 @@
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 
-import { FilterHeader } from '@/src/context/Tasks/Filters/FilterHeader';
+import FilterHeader from '@/src/components/Common/FilterHeader';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 
 function FilterTasks() {
@@ -21,6 +21,10 @@ function FilterTasks() {
           name: 'Candidate',
           options: filter.candidate.options,
           setValue: (val) => {
+            const preData =
+              JSON.parse(localStorage.getItem('taskFilters')) || {};
+            preData.Candidate = [...val];
+            localStorage.setItem('taskFilters', JSON.stringify(preData));
             handelFilter({
               ...filter,
               candidate: { ...filter.candidate, values: val },
@@ -33,6 +37,10 @@ function FilterTasks() {
           name: 'Status',
           options: filter.status.options,
           setValue: (val) => {
+            const preData =
+              JSON.parse(localStorage.getItem('taskFilters')) || {};
+            preData.Status = [...val];
+            localStorage.setItem('taskFilters', JSON.stringify(preData));
             handelFilter({
               ...filter,
               status: { ...filter.status, values: val },
@@ -45,6 +53,10 @@ function FilterTasks() {
           name: 'Priority',
           options: filter.priority.options,
           setValue: (val) => {
+            const preData =
+              JSON.parse(localStorage.getItem('taskFilters')) || {};
+            preData.Priority = [...val];
+            localStorage.setItem('taskFilters', JSON.stringify(preData));
             handelFilter({
               ...filter,
               priority: { ...filter.priority, values: val },
@@ -61,6 +73,10 @@ function FilterTasks() {
             { header: 'Members', options: filter.assignee.options },
           ],
           setValue: (val) => {
+            const preData =
+              JSON.parse(localStorage.getItem('taskFilters')) || {};
+            preData.Assignee = [...val];
+            localStorage.setItem('taskFilters', JSON.stringify(preData));
             handelFilter({
               ...filter,
               assignee: { ...filter.assignee, values: val },
@@ -73,12 +89,32 @@ function FilterTasks() {
           name: 'Job',
           options: filter.jobTitle.options,
           setValue: (val) => {
+            const preData =
+              JSON.parse(localStorage.getItem('taskFilters')) || {};
+            preData.Job = [...val];
+            localStorage.setItem('taskFilters', JSON.stringify(preData));
             handelFilter({
               ...filter,
               jobTitle: { ...filter.jobTitle, values: val },
             });
           },
           value: filter.jobTitle.values,
+        },
+        {
+          type: 'filter',
+          name: 'Type',
+          options: filter.type.options,
+          setValue: (val) => {
+            const preData =
+              JSON.parse(localStorage.getItem('taskFilters')) || {};
+            preData.Type = [...val];
+            localStorage.setItem('taskFilters', JSON.stringify(preData));
+            handelFilter({
+              ...filter,
+              type: { ...filter.type, values: val },
+            });
+          },
+          value: filter.type.values,
         },
       ]}
       dateRangeSelector={{

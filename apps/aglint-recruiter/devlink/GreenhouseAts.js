@@ -95,7 +95,12 @@ export function GreenhouseAts({
               tag="div"
               {...onClickAll}
             >
-              <Text content="All" />
+              <_Builtin.Block
+                className={_utils.cx(_styles, "relative-1")}
+                tag="div"
+              >
+                <Text content="All" />
+              </_Builtin.Block>
               {isAllActive ? (
                 <_Builtin.Block
                   className={_utils.cx(_styles, "ats-tab-menu-active")}
@@ -108,7 +113,12 @@ export function GreenhouseAts({
               tag="div"
               {...onClickActive}
             >
-              <Text content="Active" />
+              <_Builtin.Block
+                className={_utils.cx(_styles, "relative-1")}
+                tag="div"
+              >
+                <Text content="Active" />
+              </_Builtin.Block>
               {isActiveActive ? (
                 <_Builtin.Block
                   className={_utils.cx(_styles, "ats-tab-menu-active")}
@@ -121,7 +131,12 @@ export function GreenhouseAts({
               tag="div"
               {...onClickLive}
             >
-              <Text content="Live" />
+              <_Builtin.Block
+                className={_utils.cx(_styles, "relative-1")}
+                tag="div"
+              >
+                <Text content="Live" />
+              </_Builtin.Block>
               {isLiveActive ? (
                 <_Builtin.Block
                   className={_utils.cx(_styles, "ats-tab-menu-active")}
@@ -134,7 +149,12 @@ export function GreenhouseAts({
               tag="div"
               {...onClickClosed}
             >
-              <Text content="Closed" />
+              <_Builtin.Block
+                className={_utils.cx(_styles, "relative-1")}
+                tag="div"
+              >
+                <Text content="Closed" />
+              </_Builtin.Block>
               {isClosedActive ? (
                 <_Builtin.Block
                   className={_utils.cx(_styles, "ats-tab-menu-active")}

@@ -1,6 +1,6 @@
 import { get } from '@vercel/edge-config';
 
-import { isEnvProd } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import { isEnvProd } from '../isEnvProd';
 
 export const getOutboundEmail = async (email: string) => {
   let allowed_outbound_emails = (await get('allowlist-candidates')) as string[];

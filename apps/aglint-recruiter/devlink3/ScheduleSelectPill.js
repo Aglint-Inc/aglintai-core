@@ -1,9 +1,15 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import * as _interactions from "./interactions";
 import { SlotComp } from "./SlotComp";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./ScheduleSelectPill.module.css";
+
+const _interactionsData = JSON.parse(
+  '{"events":{"e-83":{"id":"e-83","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-53","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-84"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"a3aaefc6-629c-4650-d639-cf91b2e7c689","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"a3aaefc6-629c-4650-d639-cf91b2e7c689","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718779039053},"e-84":{"id":"e-84","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-54","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-83"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"a3aaefc6-629c-4650-d639-cf91b2e7c689","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"a3aaefc6-629c-4650-d639-cf91b2e7c689","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718779039053}},"actionLists":{"a-53":{"id":"a-53","title":"Schedule Select Hover in","actionItemGroups":[{"actionItems":[{"id":"a-53-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".ssp-close-wrap.cursor-pointer","selectorGuids":["44d01e68-9010-851d-efd2-a558dfa90a18","403fc7d9-50ea-1734-8a8b-421c2101a733"]},"value":0,"unit":""}},{"id":"a-53-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".ssp-close-wrap.cursor-pointer","selectorGuids":["44d01e68-9010-851d-efd2-a558dfa90a18","403fc7d9-50ea-1734-8a8b-421c2101a733"]},"value":"none"}}]},{"actionItems":[{"id":"a-53-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".ssp-close-wrap.cursor-pointer","selectorGuids":["44d01e68-9010-851d-efd2-a558dfa90a18","403fc7d9-50ea-1734-8a8b-421c2101a733"]},"value":1,"unit":""}},{"id":"a-53-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".ssp-close-wrap.cursor-pointer","selectorGuids":["44d01e68-9010-851d-efd2-a558dfa90a18","403fc7d9-50ea-1734-8a8b-421c2101a733"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1718779061840},"a-54":{"id":"a-54","title":"Schedule Select Hover Out","actionItemGroups":[{"actionItems":[{"id":"a-54-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".ssp-close-wrap.cursor-pointer","selectorGuids":["44d01e68-9010-851d-efd2-a558dfa90a18","403fc7d9-50ea-1734-8a8b-421c2101a733"]},"value":0,"unit":""}},{"id":"a-54-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":200,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".ssp-close-wrap.cursor-pointer","selectorGuids":["44d01e68-9010-851d-efd2-a558dfa90a18","403fc7d9-50ea-1734-8a8b-421c2101a733"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1718779061840}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+);
 
 export function ScheduleSelectPill({
   as: _Component = _Builtin.Block,
@@ -12,30 +18,28 @@ export function ScheduleSelectPill({
   onClickClose = {},
   textTime = "1 Hour",
 }) {
+  _interactions.useInteractions(_interactionsData, _styles);
+
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1746")} tag="div">
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1743")}
-        tag="div"
-      >
+    <_Component
+      className={_utils.cx(_styles, "schedule-select-pill-wrap")}
+      data-w-id="a3aaefc6-629c-4650-d639-cf91b2e7c689"
+      tag="div"
+    >
+      <_Builtin.Block className={_utils.cx(_styles, "ssp-content")} tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1744")}
+          className={_utils.cx(_styles, "ssp-header-wrap")}
           tag="div"
         >
           <_Builtin.Block tag="div">
             {slotIcons ?? <SlotComp componentNeme="Icon" />}
           </_Builtin.Block>
-          <_Builtin.Block tag="div">{textScheduleName}</_Builtin.Block>
+          <Text content={textScheduleName} weight="" />
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-600", "text-sm")}
-          tag="div"
-        >
-          {textTime}
-        </_Builtin.Block>
+        <Text content={textTime} size="1" weight="" color="neutral" />
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1745", "cursor-pointer")}
+        className={_utils.cx(_styles, "ssp-close-wrap", "cursor-pointer")}
         tag="div"
         {...onClickClose}
       >
