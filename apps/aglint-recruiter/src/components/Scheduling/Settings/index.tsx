@@ -4,7 +4,6 @@ import {
   Dialog,
   FormControl,
   FormControlLabel,
-  IconButton,
   Radio,
   RadioGroup,
   Stack,
@@ -30,6 +29,7 @@ import {
 import { useRouter } from 'next/router';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { BodyWithSublink } from '@/devlink2/BodyWithSublink';
 import { CompanyDayOff } from '@/devlink2/CompanyDayOff';
 import { DayoffList } from '@/devlink2/DayoffList';
@@ -48,7 +48,6 @@ import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
 import FilterInput from '../../CandidateDatabase/Search/FilterInput';
-import Icon from '../../Common/Icons/Icon';
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
 import ToggleBtn from '../../Common/UIToggle';
@@ -806,9 +805,9 @@ function SchedulingSettings({
                                 });
                               }}
                               deleteIcon={
-                                <IconButton>
-                                  <Icon variant='CloseThinIcon' />
-                                </IconButton>
+                                <Stack>
+                                  <GlobalIcon iconName='close' size='4' />
+                                </Stack>
                               }
                               label={item}
                             />
@@ -852,9 +851,9 @@ function SchedulingSettings({
                                 });
                               }}
                               deleteIcon={
-                                <IconButton>
-                                  <Icon variant='CloseThinIcon' />
-                                </IconButton>
+                                <Stack>
+                                  <GlobalIcon iconName='close' size='4' />
+                                </Stack>
                               }
                               label={item}
                             />
@@ -898,9 +897,9 @@ function SchedulingSettings({
                                 });
                               }}
                               deleteIcon={
-                                <IconButton>
-                                  <Icon variant='CloseThinIcon' />
-                                </IconButton>
+                                <Stack>
+                                  <GlobalIcon iconName='close' size='4' />
+                                </Stack>
                               }
                               label={item}
                             />
@@ -944,9 +943,9 @@ function SchedulingSettings({
                                 });
                               }}
                               deleteIcon={
-                                <IconButton>
-                                  <Icon variant='CloseThinIcon' />
-                                </IconButton>
+                                <Stack>
+                                  <GlobalIcon iconName='close' size='4' />
+                                </Stack>
                               }
                               label={item}
                             />
