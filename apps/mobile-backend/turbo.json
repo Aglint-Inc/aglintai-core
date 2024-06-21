@@ -1,0 +1,31 @@
+{
+  "extends": ["//"],
+  "globalDependencies": [".env"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env.production.local",
+        ".env.local",
+        ".env.production",
+        ".env"
+      ]
+    },
+    "dev": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env.development.local",
+        ".env.local",
+        ".env.development",
+        ".env"
+      ]
+    },
+    "test": {
+      "inputs": ["$TURBO_DEFAULT$", ".env.test.local", ".env.test", ".env"]
+    },
+    "start:development": {
+      "inputs": ["$TURBO_DEFAULT$", ".env.test.local", ".env.test", ".env"]
+    }
+  }
+}

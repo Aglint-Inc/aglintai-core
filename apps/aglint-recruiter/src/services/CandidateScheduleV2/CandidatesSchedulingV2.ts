@@ -13,13 +13,15 @@ import {
   SessionsCombType,
   TimeDurationType,
 } from '@aglint/shared-types';
-import { ScheduleUtils, SINGLE_DAY_TIME } from '@aglint/shared-utils';
+import {
+  ScheduleUtils,
+  scheduling_options_schema,
+  SINGLE_DAY_TIME,
+} from '@aglint/shared-utils';
 import { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash';
 import { nanoid } from 'nanoid';
-import { z } from 'zod';
-
-import { scheduling_options_schema } from '@/src/types/scheduling/schema_find_availability_payload';
+import * as v from 'valibot';
 
 import {
   DBDetailsType,
@@ -53,7 +55,7 @@ export class CandidatesSchedulingV2 {
 
   constructor(
     _api_payload: Omit<APIFindAvailability, 'options'>,
-    _api_options: z.infer<typeof scheduling_options_schema>,
+    _api_options: v.InferInput<typeof scheduling_options_schema>,
   ) {
     this.api_payload = {
       candidate_tz: _api_payload.candidate_tz,

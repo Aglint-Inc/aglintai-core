@@ -1,12 +1,12 @@
+import { schema_verify_interviewer_selected_slots } from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
+import * as v from 'valibot';
 
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { fetchCandidateAvailability } from '@/src/services/CandidateScheduleV2/utils/fetchCandidateAvailability';
-import { schema_verify_interviewer_selected_slots } from '@/src/types/scheduling/schema_find_availability_payload';
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const parsedData = schema_verify_interviewer_selected_slots.parse({
+    const parsedData = v.parse(schema_verify_interviewer_selected_slots, {
       ...req.body,
     });
     const {

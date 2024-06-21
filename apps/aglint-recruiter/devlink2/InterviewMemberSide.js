@@ -64,14 +64,14 @@ export function InterviewMemberSide({
               tag="div"
               {...onClickCancelled}
             >
-              <_Builtin.Block tag="div">{"Cancelled"}</_Builtin.Block>
+              <_Builtin.Block tag="div">{"Canceled"}</_Builtin.Block>
             </_Builtin.Block>
             {isCancelActive ? (
               <_Builtin.Block
                 className={_utils.cx(_styles, "memberside-pill", "active")}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{"Cancelled"}</_Builtin.Block>
+                <_Builtin.Block tag="div">{"Canceled"}</_Builtin.Block>
               </_Builtin.Block>
             ) : null}
           </_Builtin.Block>
