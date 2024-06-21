@@ -13,9 +13,9 @@ import { useJobs } from '@/src/context/JobsContext';
 import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/jobs/types';
 import ROUTES from '@/src/utils/routing/routes';
+import { capitalize } from '@/src/utils/text/textUtils';
 
 import Loader from '../../../Common/Loader';
-import { capitalize } from '../../../JobApplicationsDashboard/utils';
 import {
   JobHiringTeamForm,
   JobMetaFormProps,

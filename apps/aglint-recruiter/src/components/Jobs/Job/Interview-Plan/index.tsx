@@ -19,7 +19,6 @@ import { InterviewBreakCard } from '@/devlink3/InterviewBreakCard';
 import { InterviewPlan as InterviewPlanDev } from '@/devlink3/InterviewPlan';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { capitalize } from '@/src/components/JobApplicationsDashboard/utils';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
@@ -34,6 +33,7 @@ import {
 import { useCurrentJob } from '@/src/queries/job-assessment/keys';
 import { getFullName } from '@/src/utils/jsonResume';
 import {
+  capitalize,
   capitalizeAll,
   capitalizeFirstLetter,
 } from '@/src/utils/text/textUtils';

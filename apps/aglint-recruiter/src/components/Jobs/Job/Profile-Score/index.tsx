@@ -28,14 +28,13 @@ import ScoreWheel, {
   ScoreWheelParams,
 } from '@/src/components/Common/ScoreWheel';
 import UITextField from '@/src/components/Common/UITextField';
-import { capitalize } from '@/src/components/JobApplicationsDashboard/utils';
-import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { useJob } from '@/src/context/JobContext';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 import { useJobs } from '@/src/context/JobsContext';
 import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/jobs/types';
+import { capitalize } from '@/src/utils/text/textUtils';
 
 type Sections = 'experience' | 'education' | 'skills';
 
@@ -73,7 +72,7 @@ const ProfileScorePage = () => {
 
 const ProfileScoreControls = () => {
   const { handleJobAsyncUpdate } = useJobs();
-  const { handleJobApplicationRecalculate } = useJobApplications();
+  // const { handleJobApplicationRecalculate } = useJobApplications();
   const { job } = useJob();
   const initialRef = useRef(false);
   const initialSubmitRef = useRef(false);
@@ -122,7 +121,7 @@ const ProfileScoreControls = () => {
   };
   const handleSubmit = async () => {
     await handleJobAsyncUpdate(job.id, { parameter_weights: safeWeights });
-    await handleJobApplicationRecalculate();
+    // await handleJobApplicationRecalculate();
   };
   useEffect(() => {
     if (!initialRef.current) {

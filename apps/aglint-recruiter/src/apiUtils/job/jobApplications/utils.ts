@@ -1,9 +1,5 @@
 import axios from 'axios';
 
-import { JobApplicationEmails } from '@/src/pages/api/job/jobApplications/candidateEmail';
-
-import { JobApplicationDelete } from '../../../pages/api/job/jobApplications/candidateDelete';
-import { type ReadJobApplicationApi } from '../../../pages/api/job/jobApplications/read';
 import {
   type CsvUploadApi,
   type ManualUploadApi,
@@ -13,13 +9,10 @@ import {
 } from './candidateUpload/types';
 
 type ApiRouteTypes = {
-  candidateEmail: JobApplicationEmails;
-  read: ReadJobApplicationApi;
   'candidateUpload/csvUpload': CsvUploadApi;
   'candidateUpload/manualUpload': ManualUploadApi;
   'candidateUpload/resumeUpload': ResumeUploadApi;
   'candidateUpload/resumeReupload': ResumeReuploadApi;
-  candidateDelete: JobApplicationDelete;
 };
 
 export const handleJobApplicationApi = async <T extends keyof ApiRouteTypes>(

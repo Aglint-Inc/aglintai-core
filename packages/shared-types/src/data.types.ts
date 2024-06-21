@@ -187,8 +187,6 @@ export type RoleType = {
   view_candidates_profile: boolean;
 };
 
-export type JobApplicationType = DatabaseTable["applications"];
-
 export type CandidateType = DatabaseTable["candidates"];
 
 export type CandidateFileTypeDB = DatabaseTable["candidate_files"];

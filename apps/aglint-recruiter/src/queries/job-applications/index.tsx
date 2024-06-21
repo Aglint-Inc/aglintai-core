@@ -14,11 +14,11 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { createBatches } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
 import { UploadApiFormData } from '@/src/apiUtils/job/jobApplications/candidateUpload/types';
 import { handleJobApplicationApi } from '@/src/apiUtils/job/jobApplications/utils';
 import { ApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { createBatches } from '@/src/utils/createBatches';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

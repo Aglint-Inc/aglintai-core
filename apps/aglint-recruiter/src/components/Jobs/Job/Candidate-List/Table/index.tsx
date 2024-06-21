@@ -8,7 +8,7 @@ import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useKeyPress } from '@/src/hooks/useKeyPress';
 
-import { Loader } from '../Common/candidateDrawer/common';
+import { Loader } from '../../Common/candidateDrawer/common';
 import { EmptyList } from './common';
 import ApplicantsList from './list';
 

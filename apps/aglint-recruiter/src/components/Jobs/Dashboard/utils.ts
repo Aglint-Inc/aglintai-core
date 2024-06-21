@@ -1,7 +1,6 @@
 import { DatabaseTable, JobApplcationDB } from '@aglint/shared-types';
 import dayjs from 'dayjs';
 
-import { selectJobApplicationQuery } from '@/src/apiUtils/job/jobApplications/read/utils';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { JobType, Status } from './types';
@@ -27,20 +26,6 @@ export function filterJobsByStatus(
 ): JobType[] {
   return jobs.filter((job) => job.status === statusToFilter);
 }
-
-export const fetchApplications = (jobIds) => {
-  return supabase
-    .from('applications')
-    .select(`${selectJobApplicationQuery}`)
-    .in('job_id', jobIds)
-    .then(({ data, error }) => {
-      if (!error) {
-        return data;
-      } else {
-        return [];
-      }
-    });
-};
 
 export function filterApplicationsByStatus(
   jobId: string,

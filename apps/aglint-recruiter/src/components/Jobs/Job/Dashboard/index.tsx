@@ -30,10 +30,22 @@ import { PipeLine } from '@/devlink3/PipeLine';
 import { RoleList } from '@/devlink3/RoleList';
 import { ScheduleCardSmall } from '@/devlink3/ScheduleCardSmall';
 import { ScoreSetting } from '@/devlink3/ScoreSetting';
+import Loader from '@/src/components/Common/Loader';
+import AssessmentIcon from '@/src/components/Common/ModuleIcons/assessmentIcon';
+import EmailTemplateIcon from '@/src/components/Common/ModuleIcons/emailTemplateIcon';
+import HiringTeamIcon from '@/src/components/Common/ModuleIcons/hiringTeamIcon';
+import JobDetailsIcon from '@/src/components/Common/ModuleIcons/jobDetailsIcon';
+import ProfileScoreIcon from '@/src/components/Common/ModuleIcons/profileScoreIcon';
+import SchedulingIcon from '@/src/components/Common/ModuleIcons/schedulingIcon';
+import ScreeningIcon from '@/src/components/Common/ModuleIcons/screeningIcon';
+import WorkflowIcon from '@/src/components/Common/ModuleIcons/workflowIcon';
+import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import PublishButton from '@/src/components/Common/PublishButton';
+import UITextField from '@/src/components/Common/UITextField';
+import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon';
+import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { useJob } from '@/src/context/JobContext';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
@@ -41,26 +53,13 @@ import { useJobs } from '@/src/context/JobsContext';
 import NotFoundPage from '@/src/pages/404';
 import { useCompanyMembers } from '@/src/queries/company-members';
 import { Job } from '@/src/queries/jobs/types';
+import { Application } from '@/src/types/applications.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { capitalize, capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
-import Loader from '../../../Common/Loader';
-import AssessmentIcon from '../../../Common/ModuleIcons/assessmentIcon';
-import EmailTemplateIcon from '../../../Common/ModuleIcons/emailTemplateIcon';
-import HiringTeamIcon from '../../../Common/ModuleIcons/hiringTeamIcon';
-import JobDetailsIcon from '../../../Common/ModuleIcons/jobDetailsIcon';
-import ProfileScoreIcon from '../../../Common/ModuleIcons/profileScoreIcon';
-import SchedulingIcon from '../../../Common/ModuleIcons/schedulingIcon';
-import ScreeningIcon from '../../../Common/ModuleIcons/screeningIcon';
-import WorkflowIcon from '../../../Common/ModuleIcons/workflowIcon';
-import MuiAvatar from '../../../Common/MuiAvatar';
-import UITextField from '../../../Common/UITextField';
-import { capitalize } from '../../../JobApplicationsDashboard/utils';
-import IconScheduleType from '../../../Scheduling/Candidates/ListCard/Icon';
-import { getScheduleType } from '../../../Scheduling/Candidates/utils';
-import { UploadApplications } from '../Candidate-List/Common/uploadApplications';
+import { UploadApplications } from '../Common/uploadApplications';
 import DashboardBarChart from './barChart';
 import DashboardDoughnutChart from './doughnut';
 import DashboardLineChart from './lineChart';
@@ -456,7 +455,7 @@ const Pipeline = () => {
     // eslint-disable-next-line no-unused-vars
     {} as { [id in keyof Job['count']]: { count: number; label: string } },
   );
-  const handlClick = (section: JobApplicationSections) => {
+  const handlClick = (section: Application['status']) => {
     setSection(section);
     push(`/jobs/${job.id}/candidate-list`);
   };
@@ -465,51 +464,51 @@ const Pipeline = () => {
       <PipeLine
         isLeft={false}
         textCandidateCount={newSections.new.label}
-        textName={capitalize(JobApplicationSections.NEW)}
+        textName={capitalize('new')}
         onClickPipeline={{
-          onClick: () => handlClick(JobApplicationSections.NEW),
+          onClick: () => handlClick('new'),
         }}
       />
-      {job.activeSections.includes(JobApplicationSections.SCREENING) && (
+      {job.activeSections.includes('screening') && (
         <PipeLine
           textCandidateCount={newSections.screening.label}
-          textName={capitalize(JobApplicationSections.SCREENING)}
+          textName={capitalize('screening')}
           onClickPipeline={{
-            onClick: () => handlClick(JobApplicationSections.SCREENING),
+            onClick: () => handlClick('screening'),
           }}
         />
       )}
-      {job.activeSections.includes(JobApplicationSections.ASSESSMENT) && (
+      {job.activeSections.includes('assessment') && (
         <PipeLine
           textCandidateCount={newSections.assessment.label}
-          textName={capitalize(JobApplicationSections.ASSESSMENT)}
+          textName={capitalize('assessment')}
           onClickPipeline={{
-            onClick: () => handlClick(JobApplicationSections.ASSESSMENT),
+            onClick: () => handlClick('assessment'),
           }}
         />
       )}
-      {job.activeSections.includes(JobApplicationSections.INTERVIEW) && (
+      {job.activeSections.includes('interview') && (
         <PipeLine
           textCandidateCount={newSections.interview.label}
-          textName={capitalize(JobApplicationSections.INTERVIEW)}
+          textName={capitalize('interview')}
           onClickPipeline={{
-            onClick: () => handlClick(JobApplicationSections.INTERVIEW),
+            onClick: () => handlClick('interview'),
           }}
         />
       )}
       <PipeLine
         textCandidateCount={newSections.qualified.label}
-        textName={capitalize(JobApplicationSections.QUALIFIED)}
+        textName={capitalize('qualified')}
         onClickPipeline={{
-          onClick: () => handlClick(JobApplicationSections.QUALIFIED),
+          onClick: () => handlClick('qualified'),
         }}
       />
       <PipeLine
         isRight={false}
         textCandidateCount={newSections.disqualified.label}
-        textName={capitalize(JobApplicationSections.DISQUALIFIED)}
+        textName={capitalize('disqualified')}
         onClickPipeline={{
-          onClick: () => handlClick(JobApplicationSections.DISQUALIFIED),
+          onClick: () => handlClick('disqualified'),
         }}
       />
     </>

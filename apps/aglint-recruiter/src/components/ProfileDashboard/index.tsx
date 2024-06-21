@@ -22,13 +22,12 @@ import { UserProfile } from '@/devlink/UserProfile';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { handleUpdatePassword } from '@/src/context/AuthContext/utils';
 import { supabase } from '@/src/utils/supabase/client';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import { capitalize, capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import ImageUploadManual from '../Common/ImageUpload/ImageUploadManual';
 import UIPhoneInput from '../Common/UIPhoneInput';
 import UITextField from '../Common/UITextField';
-import { capitalize } from '../JobApplicationsDashboard/utils';
 type FormValues = {
   value: string;
   label: string;

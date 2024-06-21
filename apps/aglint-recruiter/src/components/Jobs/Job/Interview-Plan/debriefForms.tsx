@@ -12,7 +12,6 @@ import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
 import { SidedrawerBodyDebrief } from '@/devlink2/SidedrawerBodyDebrief';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
-import { capitalize } from '@/src/components/JobApplicationsDashboard/utils';
 import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon';
 import { validateString } from '@/src/context/JobDashboard/hooks';
@@ -22,6 +21,7 @@ import { CreateDebriefSession } from '@/src/queries/interview-plans';
 import { InterviewSessionType } from '@/src/queries/interview-plans/types';
 import { Job } from '@/src/queries/jobs/types';
 import { getFullName } from '@/src/utils/jsonResume';
+import { capitalize } from '@/src/utils/text/textUtils';
 
 import { DepartmentIcon, RoleIcon } from '.';
 import { DropDown } from './sessionForms';

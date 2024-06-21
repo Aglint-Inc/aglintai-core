@@ -8,12 +8,11 @@ import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateSelectionPopup } from '@/devlink2/CandidateSelectionPopup';
 import { SelectActionsDropdown } from '@/devlink2/SelectActionsDropdown';
-import { createTasks } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
 import { TaskStatesProvider } from '@/src/components/Tasks/TaskStatesContext';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabase/client';
+import { createTasks } from '@/src/utils/createTasks';
 
 import CreateTask from './createTask';
 
@@ -191,7 +190,6 @@ const MoveCandidateInterview = () => {
   const createTask = async () =>
     taskCheck &&
     (await createTasks(
-      supabase,
       recruiter_id,
       {
         id: recruiterUser.user_id,

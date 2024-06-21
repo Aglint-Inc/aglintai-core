@@ -14,8 +14,8 @@ import { useJob } from '@/src/context/JobContext';
 import NotFoundPage from '@/src/pages/404';
 import { capitalize } from '@/src/utils/text/textUtils';
 
+import { UploadApplications } from '../Common/uploadApplications';
 import { Actions } from './Actions';
-import { UploadApplications } from './Common/uploadApplications';
 import Drawer from './Drawer';
 import Filters from './Filters';
 import { BreadCrumbs } from './layout';

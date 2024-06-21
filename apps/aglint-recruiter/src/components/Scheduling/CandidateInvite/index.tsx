@@ -51,8 +51,8 @@ import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
+import CompanyLogo from '../../Common/CompanyLogo';
 import Loader from '../../Common/Loader';
-import CompanyLogo from '../../JobApplicationsDashboard/Common/CompanyLogo';
 import { getBreakLabel } from '../../Jobs/Job/Interview-Plan/utils';
 import DateRange from '../../Tasks/Components/DateRange';
 import IconScheduleType from '../Candidates/ListCard/Icon';
