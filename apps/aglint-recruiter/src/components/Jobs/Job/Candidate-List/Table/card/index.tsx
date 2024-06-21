@@ -1,4 +1,3 @@
-import { DatabaseView } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import { memo, useCallback, useMemo } from 'react';
 
@@ -7,13 +6,14 @@ import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useKeyPress } from '@/src/context/ApplicationsContext/hooks';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
+import { Application } from '@/src/types/applications.types';
 
 import ResumeScore from '../../Common/resumeScore';
 import { formatTimeStamp } from '../../utils';
 import { ScheduleProgress } from './scheduleProgress';
 
 const ApplicationCard = memo(
-  ({ application }: { application: DatabaseView['application_view'] }) => {
+  ({ application }: { application: Application }) => {
     const {
       cascadeVisibilites,
       sectionApplication: {
@@ -120,11 +120,7 @@ ApplicationCard.displayName = 'ApplicationCard';
 
 export default ApplicationCard;
 
-const Banners = ({
-  application,
-}: {
-  application: DatabaseView['application_view'];
-}) => {
+const Banners = ({ application }: { application: Application }) => {
   return (
     <Stack flexDirection={'row'} alignItems={'center'} gap={1}>
       {application?.bookmarked && <BookmarkIcon />}

@@ -1,5 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseView } from '@aglint/shared-types';
 import { CircularProgress, Stack } from '@mui/material';
 import { useCallback, useEffect, useMemo } from 'react';
 
@@ -12,6 +11,7 @@ import { useKeyPress } from '@/src/context/ApplicationsContext/hooks';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useJob } from '@/src/context/JobContext';
 import NotFoundPage from '@/src/pages/404';
+import { Application } from '@/src/types/applications.types';
 import { capitalize } from '@/src/utils/text/textUtils';
 
 import { UploadApplications } from '../Common/uploadApplications';
@@ -121,11 +121,7 @@ const NewJobDetailsTabs = () => {
   );
 };
 
-const SectionCard = ({
-  status,
-}: {
-  status: DatabaseView['application_view']['status'];
-}) => {
+const SectionCard = ({ status }: { status: Application['status'] }) => {
   const { job } = useJob();
   const { section, changeSection } = useApplicationsStore(
     ({ section, changeSection }) => ({

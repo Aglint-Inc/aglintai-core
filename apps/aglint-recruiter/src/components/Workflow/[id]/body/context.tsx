@@ -1,11 +1,11 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTable, DatabaseView } from '@aglint/shared-types';
+import { DatabaseTable } from '@aglint/shared-types';
 import type React from 'react';
 import { createContext, useCallback, useContext, useMemo } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
-import { WorkflowAction } from '@/src/queries/workflow-action';
+import { Workflow, WorkflowAction } from '@/src/types/workflow.types';
 
 const useActionsContext = () => {
   const {
@@ -83,7 +83,7 @@ export { ACTION_TRIGGER_MAP, ActionsProvider, useActions };
 
 const ACTION_TRIGGER_MAP: {
   // eslint-disable-next-line no-unused-vars
-  [trigger in DatabaseView['workflow_view']['trigger']]: {
+  [trigger in Workflow['trigger']]: {
     name: string;
     value: DatabaseTable['company_email_template']['type'];
   }[];

@@ -4,7 +4,6 @@ import {
   DatabaseTable,
   DatabaseTableInsert,
   DatabaseTableUpdate,
-  DatabaseView,
 } from '@aglint/shared-types';
 import {
   infiniteQueryOptions,
@@ -18,6 +17,7 @@ import { UploadApiFormData } from '@/src/apiUtils/job/candidateUpload/types';
 import { handleJobApi } from '@/src/apiUtils/job/utils';
 import { ApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { Application } from '@/src/types/applications.types';
 import { createBatches } from '@/src/utils/createBatches';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -96,7 +96,7 @@ type ApplicationsAllQueryPrerequistes = {
 type Params = ApplicationsAllQueryPrerequistes & {
   filters: ApplicationsStore['filters'];
   sort: ApplicationsStore['sort'];
-  status: DatabaseView['application_view']['status'];
+  status: Application['status'];
 };
 
 const getApplications = async ({
@@ -276,9 +276,7 @@ export const updateApplication = async ({
 
 const sampleApplicationView: {
   // eslint-disable-next-line no-unused-vars
-  [key in keyof Partial<
-    DatabaseTable['applications']
-  >]: keyof DatabaseView['application_view'];
+  [key in keyof Partial<DatabaseTable['applications']>]: keyof Application;
 } = {
   applied_at: 'applied_at',
   bookmarked: 'bookmarked',
@@ -295,16 +293,12 @@ const sampleApplicationView: {
 
 export const diffApplication = (
   application: UpdateParams['application'],
-): Partial<DatabaseView['application_view']> => {
-  return Object.entries(application).reduce(
-    (acc, [key, value]) => {
-      const mappedColumn =
-        sampleApplicationView[key as keyof typeof application];
-      if (mappedColumn) acc[mappedColumn] = value as never;
-      return acc;
-    },
-    {} as Partial<DatabaseView['application_view']>,
-  );
+): Partial<Application> => {
+  return Object.entries(application).reduce((acc, [key, value]) => {
+    const mappedColumn = sampleApplicationView[key as keyof typeof application];
+    if (mappedColumn) acc[mappedColumn] = value as never;
+    return acc;
+  }, {} as Partial<Application>);
 };
 
 export const useUploadApplication = (params: Omit<Params, 'status'>) => {

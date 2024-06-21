@@ -1,15 +1,12 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTable } from '@aglint/shared-types';
 import { cloneDeep } from 'lodash';
 
 import { initialForm } from '@/src/components/Workflow/common';
+import { Workflow } from '@/src/types/workflow.types';
 
 import { CreateSlice } from '.';
 
-type Inputs = Pick<
-  DatabaseTable['workflow'],
-  'title' | 'auto_connect' | 'description'
->;
+type Inputs = Pick<Workflow, 'title' | 'auto_connect' | 'description'>;
 
 type Form<T extends keyof Inputs = keyof Inputs> = {
   [id in T]: {

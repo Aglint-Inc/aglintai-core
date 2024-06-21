@@ -1,13 +1,13 @@
-import { DatabaseView } from '@aglint/shared-types';
 import { useMemo } from 'react';
 
 import ScheduleProgressDev from '@/src/components/Scheduling/Common/ScheduleProgress';
 import { useJob } from '@/src/context/JobContext';
+import { Application } from '@/src/types/applications.types';
 
 export const ScheduleProgress = ({
   meeting_details,
 }: {
-  meeting_details: DatabaseView['application_view']['meeting_details'];
+  meeting_details: Application['meeting_details'];
 }) => {
   const {
     interviewPlans: { data },

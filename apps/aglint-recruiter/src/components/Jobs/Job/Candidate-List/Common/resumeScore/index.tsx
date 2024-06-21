@@ -1,18 +1,15 @@
-import { DatabaseView } from '@aglint/shared-types';
 import { Stack, Tooltip } from '@mui/material';
 
 import { ResumeTag } from '@/devlink2/ResumeTag';
 import { CalculatingResumeScore } from '@/public/lottie/CalculatingResumeScore';
+import { Application } from '@/src/types/applications.types';
 
 import { ScoreTag } from './scoreTag';
 
 const ResumeScore = ({
   resume_processing_state,
   resume_score,
-}: Pick<
-  DatabaseView['application_view'],
-  'resume_processing_state' | 'resume_score'
->) => {
+}: Pick<Application, 'resume_processing_state' | 'resume_score'>) => {
   switch (resume_processing_state) {
     case 'unavailable':
       return (

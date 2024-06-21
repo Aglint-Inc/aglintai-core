@@ -6,10 +6,10 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
+import { Workflow, WorkflowAction } from '@/src/types/workflow.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { WorkflowAction } from '../workflow-action';
 import { workflowActionQueryKeys } from '../workflow-action/keys';
 import { workflowMutationKeys, workflowQueryKeys } from './keys';
 
@@ -21,7 +21,7 @@ export const useWorkflowQuery = (args: GetWorkflow) => {
   });
 };
 export type GetWorkflow = {} & WorkflowKeys;
-export type Workflow = Awaited<ReturnType<typeof getWorkflow>>[number];
+
 const getWorkflow = async ({ recruiter_id }: GetWorkflow) => {
   const { data, error } = await supabase
     .from('workflow_view')

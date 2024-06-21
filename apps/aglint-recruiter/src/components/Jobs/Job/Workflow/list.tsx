@@ -30,7 +30,8 @@ import {
   useJobWorkflowDisconnect,
   useJobWorkflowUpdateMutations,
 } from '@/src/queries/job-workflow';
-import { useWorkflowQuery, Workflow } from '@/src/queries/workflow';
+import { useWorkflowQuery } from '@/src/queries/workflow';
+import { Workflow } from '@/src/types/workflow.types';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
