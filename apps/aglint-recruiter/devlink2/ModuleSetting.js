@@ -34,7 +34,15 @@ export function ModuleSetting({
             {slotRequiresTrainingToggle}
           </_Builtin.Block>
           <_Builtin.Block tag="div">
-            <Text weight="" content="" />
+            <Text
+              weight=""
+              content={
+                <>
+                  {"Requires Training"}
+                  <br />
+                </>
+              }
+            />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
