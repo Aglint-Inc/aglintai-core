@@ -128,20 +128,27 @@ function SchedulingSettings({
           ({
             ...prevState,
             [module]: {
+              // eslint-disable-next-line security/detect-object-injection
               ...prevState[module],
               [type]: value,
               value:
                 module === 'weekly'
                   ? value === 'Hours'
-                    ? prevState[module].value > LoadMax.weeklyHours
+                    ? // eslint-disable-next-line security/detect-object-injection
+                      prevState[module].value > LoadMax.weeklyHours
                       ? LoadMax.weeklyHours
-                      : prevState[module].value
-                    : prevState[module].value
+                      : // eslint-disable-next-line security/detect-object-injection
+                        prevState[module].value
+                    : // eslint-disable-next-line security/detect-object-injection
+                      prevState[module].value
                   : value === 'Interviews'
-                    ? prevState[module].value
-                    : prevState[module].value > LoadMax.dailyHours
+                    ? // eslint-disable-next-line security/detect-object-injection
+                      prevState[module].value
+                    : // eslint-disable-next-line security/detect-object-injection
+                      prevState[module].value > LoadMax.dailyHours
                       ? LoadMax.dailyHours
-                      : prevState[module].value,
+                      : // eslint-disable-next-line security/detect-object-injection
+                        prevState[module].value,
               max:
                 module === 'weekly'
                   ? value === 'Hours'
@@ -157,6 +164,7 @@ function SchedulingSettings({
       setInterviewLoad((prevState) => ({
         ...prevState,
         [module]: {
+          // eslint-disable-next-line security/detect-object-injection
           ...prevState[module],
           [type]: value,
         },
