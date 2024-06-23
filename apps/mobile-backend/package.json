@@ -9,7 +9,6 @@
     "dev": "tsup --watch --onSuccess 'node build/src/server.js --port 5050'",
     "mocha": "mocha build/test/**/*.js",
     "test": "npm run build && mocha 'build/test/**/*.js'",
-    "lint": "eslint 'src/**/*.{ts,tsx}'",
     "path-gen": "npx tsc scripts/RouteGen.ts --skipLibCheck && node scripts/RouteGen.js"
   },
   "keywords": [],

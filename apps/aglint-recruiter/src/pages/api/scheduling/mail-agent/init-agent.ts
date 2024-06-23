@@ -56,7 +56,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
     const email_details = data as APISendgridPayload;
     supabaseWrap(
-      await supabaseAdmin.from('scheduling-agent-chat-history').insert({
+      await supabaseAdmin.from('scheduling_agent_chat_history').insert({
         application_id: cand_details.application_id,
         job_id: cand_details.job_id,
         chat_history: [
