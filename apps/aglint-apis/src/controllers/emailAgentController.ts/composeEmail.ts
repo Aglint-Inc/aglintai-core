@@ -45,7 +45,7 @@ export const composeEmail = async (req: Request, res: Response) => {
     const {new_history} = await emailAgentHandler(agent_payload, candLogger);
     supabaseWrap(
       await supabaseAdmin
-        .from('scheduling-agent-chat-history')
+        .from('scheduling_agent_chat_history')
         .update({
           chat_history: new_history,
         })
