@@ -115,7 +115,7 @@ function SubTaskProgress() {
                     isTaskProgressVisible={true}
                     textTask={
                       <>
-                        {/* {item.progress_type} */}
+                        {item.progress_type}
                         <ProgressTitle
                           title={item.title}
                           titleMetaData={item.title_meta}

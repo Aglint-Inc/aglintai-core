@@ -28,11 +28,7 @@ function GetTaskStatusBadge({ indicator }: { indicator: indicatorType }) {
         <ShowCode.When
           isTrue={
             // info
-            indicator === 'REQUEST_AVAILABILITY' ||
-            indicator === 'SCHEDULE' ||
-            indicator === 'MAIL_SENT' ||
-            indicator === 'SCHEDULED' ||
-            indicator === 'BOOKED'
+            indicator === 'READY_TO_SCHEDULE' || indicator === 'BOOKED'
           }
         >
           <GlobalBadge
@@ -45,9 +41,7 @@ function GetTaskStatusBadge({ indicator }: { indicator: indicatorType }) {
         <ShowCode.When
           isTrue={
             // warning
-            indicator === 'AWAITING_RESPONSE' ||
-            indicator === 'NO_RESPONSE' ||
-            indicator === 'RESCHEDULE'
+            indicator === 'AWAITING_RESPONSE' || indicator === 'NO_RESPONSE'
           }
         >
           <GlobalBadge
@@ -60,7 +54,7 @@ function GetTaskStatusBadge({ indicator }: { indicator: indicatorType }) {
         <ShowCode.When
           isTrue={
             // important
-            indicator === 'REQUEST_SUBMITTED'
+            indicator === 'READY_TO_SCHEDULE'
           }
         >
           <GlobalBadge
@@ -73,7 +67,7 @@ function GetTaskStatusBadge({ indicator }: { indicator: indicatorType }) {
         <ShowCode.When
           isTrue={
             // error
-            indicator === 'ACTION_NEEDED_AGENT_FAIL'
+            indicator === 'ACTION_NEEDED'
           }
         >
           <GlobalBadge

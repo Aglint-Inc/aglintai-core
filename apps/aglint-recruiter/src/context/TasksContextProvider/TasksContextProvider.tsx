@@ -98,21 +98,19 @@ const reducerInitialState: TasksReducerType = {
     status: {
       options: [
         {
-          id: 'ACTION_NEEDED_AGENT_FAIL' as indicatorType,
-          label: 'ACTION_NEEDED_AGENT_FAIL',
+          id: 'ACTION_NEEDED' as indicatorType,
+          label: 'ACTION_NEEDED',
         },
         { id: 'BOOKED' as indicatorType, label: 'BOOKED' },
-        { id: 'MAIL_SENT' as indicatorType, label: 'MAIL_SENT' },
+        {
+          id: 'AWAITING_RESPONSE' as indicatorType,
+          label: 'AWAITING_RESPONSE',
+        },
         { id: 'NO_RESPONSE' as indicatorType, label: 'NO_RESPONSE' },
         {
-          id: 'REQUEST_AVAILABILITY' as indicatorType,
-          label: 'REQUEST_AVAILABILITY',
+          id: 'READY_TO_SCHEDULE' as indicatorType,
+          label: 'READY_TO_SCHEDULE',
         },
-        {
-          id: 'REQUEST_SUBMITTED' as indicatorType,
-          label: 'REQUEST_SUBMITTED',
-        },
-        { id: 'SCHEDULE' as indicatorType, label: 'SCHEDULE' },
         { id: 'UNKNOWN_STATUS' as indicatorType, label: 'UNKNOWN_STATUS' },
       ],
       values: [],
