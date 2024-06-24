@@ -12,7 +12,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import AssigneeChip from '../../Components/AssigneeChip';
-import StatusChip from '../../Components/StatusChip';
+import { GetTaskStatusBadge } from '../../Components/TaskStatusTag';
 import { useTaskStatesContext } from '../../TaskStatesContext';
 import GroupTaskCard from '../GroupTaskCard';
 
@@ -44,21 +44,31 @@ function GroupSections({
                 }}
                 onClick={() => {
                   setSectionIndex(false);
-                }}>
-                  <GlobalIcon iconName='arrow_drop_down'  size={6} color='neutral-11'/>
+                }}
+              >
+                <GlobalIcon
+                  iconName='arrow_drop_down'
+                  size={6}
+                  color='neutral-11'
+                />
               </Box>
             </ShowCode.When>
             <ShowCode.Else>
               <Box
-                  sx={{
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                  onClick={() => {
-                    setSectionIndex(true);
-                  }}>
-                    <GlobalIcon iconName='arrow_right' size={6} color='neutral-11'/>
+                sx={{
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+                onClick={() => {
+                  setSectionIndex(true);
+                }}
+              >
+                <GlobalIcon
+                  iconName='arrow_right'
+                  size={6}
+                  color='neutral-11'
+                />
               </Box>
             </ShowCode.Else>
           </ShowCode>
@@ -66,8 +76,11 @@ function GroupSections({
         slotAvatarWithName={
           <ShowCode>
             <ShowCode.When isTrue={selectedGroupBy.label === 'job'}>
-              <Stack alignItems={'center'} direction={'row'} spacing={'var(--space-2)'}>
-                
+              <Stack
+                alignItems={'center'}
+                direction={'row'}
+                spacing={'var(--space-2)'}
+              >
                 <Typography
                   sx={{
                     cursor: 'pointer',
@@ -77,29 +90,34 @@ function GroupSections({
                 </Typography>
 
                 <Tooltip title='Task count'>
-                <Stack 
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    backgroundColor: 'var(--neutral-3)',
-                    padding: 'var(--space-1)',
-                    borderRadius: 'var(--radius-2)',
-                    minWidth: 'var(--space-5)',
-                  }}>
-                  <Typography
+                  <Stack
                     sx={{
-                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      backgroundColor: 'var(--neutral-3)',
+                      padding: 'var(--space-1)',
+                      borderRadius: 'var(--radius-2)',
+                      minWidth: 'var(--space-5)',
                     }}
-                    variant='body2'
                   >
-                    {item.tasklist.length}
-                  </Typography>
+                    <Typography
+                      sx={{
+                        cursor: 'pointer',
+                      }}
+                      variant='body2'
+                    >
+                      {item.tasklist.length}
+                    </Typography>
                   </Stack>
                 </Tooltip>
               </Stack>
             </ShowCode.When>
             <ShowCode.When isTrue={selectedGroupBy.label === 'candidate'}>
-              <Stack alignItems={'center'} direction={'row'} spacing={'var(--space-2)'}>
+              <Stack
+                alignItems={'center'}
+                direction={'row'}
+                spacing={'var(--space-2)'}
+              >
                 <AvatarWithName
                   isAvatarVisible={false}
                   isCandidateIconVisible={true}
@@ -114,24 +132,25 @@ function GroupSections({
                 />
 
                 <Tooltip title='Task count'>
-                <Stack
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    backgroundColor: 'var(--neutral-3)',
-                    padding: 'var(--space-1)',
-                    borderRadius: 'var(--radius-2)',
-                    minWidth: 'var(--space-5)',
-                  }}>
-                  <Typography
+                  <Stack
                     sx={{
-                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      backgroundColor: 'var(--neutral-3)',
+                      padding: 'var(--space-1)',
+                      borderRadius: 'var(--radius-2)',
+                      minWidth: 'var(--space-5)',
                     }}
-                    variant='body2'
                   >
-                    {item.tasklist.length}
-                  </Typography>
-                </Stack>
+                    <Typography
+                      sx={{
+                        cursor: 'pointer',
+                      }}
+                      variant='body2'
+                    >
+                      {item.tasklist.length}
+                    </Typography>
+                  </Stack>
                 </Tooltip>
               </Stack>
             </ShowCode.When>
@@ -143,7 +162,7 @@ function GroupSections({
                 isLowVisible={item.priority === 'low'}
               />{' '}
               <Tooltip title='Task count'>
-              <Stack
+                <Stack
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
@@ -151,21 +170,22 @@ function GroupSections({
                     padding: 'var(--space-1)',
                     borderRadius: 'var(--radius-2)',
                     minWidth: 'var(--space-5)',
-                  }}>
-                <Typography
-                  sx={{
-                    cursor: 'pointer',
                   }}
-                  variant='body2'
                 >
-                  {item.tasklist.length}
-                </Typography>
-              </Stack>
+                  <Typography
+                    sx={{
+                      cursor: 'pointer',
+                    }}
+                    variant='body2'
+                  >
+                    {item.tasklist.length}
+                  </Typography>
+                </Stack>
               </Tooltip>
             </ShowCode.When>
             <ShowCode.When isTrue={selectedGroupBy.label === 'status'}>
               Status :
-              <StatusChip status={item.status} />
+              <GetTaskStatusBadge indicator={item.status} />
               <Tooltip title='Task count'>
                 <Stack
                   sx={{
@@ -175,7 +195,8 @@ function GroupSections({
                     padding: 'var(--space-1)',
                     borderRadius: 'var(--radius-2)',
                     minWidth: 'var(--space-5)',
-                  }}>
+                  }}
+                >
                   <Typography
                     sx={{
                       cursor: 'pointer',
@@ -191,7 +212,7 @@ function GroupSections({
               Assignee :
               <AssigneeChip assigneeId={item.assignee} />
               <Tooltip title='Task count'>
-              <Stack
+                <Stack
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
@@ -199,7 +220,8 @@ function GroupSections({
                     padding: 'var(--space-1)',
                     borderRadius: 'var(--radius-2)',
                     minWidth: 'var(--space-5)',
-                  }}>
+                  }}
+                >
                   <Typography
                     sx={{
                       cursor: 'pointer',
@@ -226,9 +248,12 @@ function GroupSections({
                 item.tasklist.filter((ele) => ele.type !== 'empty').length === 0
               }
             >
-              <Stack height={'calc(100vh - 136px)'} style={{ backgroundColor: 'var(--neutral-2)' }}>
-                    <TaskEmpty />
-                  </Stack>
+              <Stack
+                height={'calc(100vh - 136px)'}
+                style={{ backgroundColor: 'var(--neutral-2)' }}
+              >
+                <TaskEmpty />
+              </Stack>
             </ShowCode.When>
           </>
         }

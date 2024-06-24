@@ -21,7 +21,11 @@ function TaskStatusTag({ task }: { task: DatabaseView['tasks_view'] }) {
 
 export default TaskStatusTag;
 
-function GetTaskStatusBadge({ indicator }: { indicator: indicatorType }) {
+export function GetTaskStatusBadge({
+  indicator,
+}: {
+  indicator: indicatorType;
+}) {
   return (
     <>
       <ShowCode>
