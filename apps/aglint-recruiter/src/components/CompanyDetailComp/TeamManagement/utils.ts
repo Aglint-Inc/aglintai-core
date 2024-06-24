@@ -24,17 +24,7 @@ export const setMemberInDb = async (
 };
 
 export const inviteUserApi = async (
-  form: {
-    first_name: string;
-    last_name: string;
-    email: string;
-    designation: string;
-    employment: employmentTypeEnum;
-    department: string;
-    role: DatabaseEnums['user_roles'];
-    manager_id: string;
-    scheduling_settings: schedulingSettingType;
-  },
+  form: InviteUserAPIType['request']['users'][number],
   recruiter_id: string,
 ) => {
   return axios.call<InviteUserAPIType>('POST', '/api/invite_user', {
@@ -65,7 +55,7 @@ export type InviteUserAPIType = {
       last_name: string;
       email: string;
       designation: string;
-      // interview_location: string;
+      interview_location: string;
       employment: employmentTypeEnum;
       department: string;
       role: DatabaseEnums['user_roles'];

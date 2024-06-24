@@ -209,7 +209,7 @@ const AddMember = ({
         });
       }
     } catch (error) {
-      toast.error(String);
+      toast.error(String(error));
     } finally {
       setIsDisable(false);
     }

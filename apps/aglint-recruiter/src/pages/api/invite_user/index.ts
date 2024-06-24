@@ -82,6 +82,7 @@ async function registerMember(
       last_name: user.last_name,
       position: user.designation,
       employment: user.employment,
+      interview_location: user.interview_location,
       department: user.department,
       email: email,
       join_status: 'invited',
