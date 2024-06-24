@@ -20,7 +20,12 @@ export const createPhoneCall = async (req: Request, res: Response) => {
   } catch (error: any) {
     appLogger.error(error.message, error);
     const candLogger = getCandidateLogger(body.task_id, '', '', 'phone_agent');
-    candLogger(agent_activities.phone_agent.phone_call.failed, {});
+    candLogger(
+      agent_activities.phone_agent.phone_call.failed,
+      {},
+      'phone_agent',
+      'call_failed'
+    );
     return res.status(500).send(error.message);
   }
 };

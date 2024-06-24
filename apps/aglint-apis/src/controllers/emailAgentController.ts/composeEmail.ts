@@ -6,6 +6,7 @@ import {getCandidateLogger} from '../../utils/scheduling_utils/getCandidateLogge
 import {supabaseAdmin} from '../../services/supabase/SupabaseAdmin';
 import {sendEmailFromAgent} from '../../agents/emailAgent/tools/utils/sendEmailFromAgent';
 import {supabaseWrap} from '@aglint/shared-utils';
+import {agent_activities} from 'src/copies/agents_activity';
 
 const email_agent_payload = z.object({
   from_email: z.string(),
@@ -15,16 +16,22 @@ const email_agent_payload = z.object({
 });
 
 export const composeEmail = async (req: Request, res: Response) => {
+  const {data: api_body, error: parse_err} = email_agent_payload.safeParse(
+    req.body
+  );
+  let task_id = '';
   try {
-    const api_body = email_agent_payload.parse(req.body);
+    if (parse_err) {
+      throw new Error(parse_err.message);
+    }
     const agent_payload = await fetchEmailAgentCandDetails(
       api_body.thread_id,
       api_body.email_body
     );
-
     if (!agent_payload) {
       return res.status(204).send('invalid candidate');
     }
+    task_id = agent_payload.payload.task_id;
     const candLogger = getCandidateLogger(
       agent_payload.payload.task_id,
       agent_payload.payload.candidate_name,
@@ -51,7 +58,7 @@ export const composeEmail = async (req: Request, res: Response) => {
         })
         .eq('thread_id', api_body.thread_id)
     );
-    candLogger('Mail Agent : Reply', {}, 'email_agent', 'email_messages', {
+    candLogger('Mail Agent : Reply', {}, 'email_agent', 'send_email', {
       message: new_history[new_history.length - 1]?.value as string,
     });
     await sendEmailFromAgent({
@@ -66,6 +73,15 @@ export const composeEmail = async (req: Request, res: Response) => {
     return res.status(200).send('email sent');
   } catch (error: any) {
     console.error(error);
+    if (task_id) {
+      const candLogger = getCandidateLogger(task_id, '', '', 'email_agent');
+      await candLogger(
+        `${agent_activities.email_agent.repy.failed} ${error.message}`,
+        {},
+        'email_agent',
+        'email_failed'
+      );
+    }
     return res.status(500).send(error.message);
   }
 };
