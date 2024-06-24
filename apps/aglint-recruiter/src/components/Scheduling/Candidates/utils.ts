@@ -50,91 +50,91 @@ export type ApplicationList = {
   }[];
 };
 
-export const mailHandler = async ({
-  application_id,
-  filter_id,
-  supabase,
-  task_id,
-}: MailHandlerparam) => {
-  try {
-    const { data, error } = await supabase
-      .from('applications')
-      .select(
-        'id,candidates(*),public_jobs(id,job_title,recruiter!public_jobs_recruiter_id_fkey(id,email_template,name),recruiter_user!public_jobs_hiring_manager_fkey(user_id,first_name,last_name,email,profile_image)),interview_schedule(*)',
-      )
-      .eq('id', application_id)
-      .single();
+//TODO: Implement new mailHandler
+// export const mailHandler = async ({
+//   application_id,
+//   filter_id,
+//   supabase,
+//   task_id,
+// }: MailHandlerparam) => {
+//   try {
+//     const { data, error } = await supabase
+//       .from('applications')
+//       .select(
+//         'id,candidates(*),public_jobs(id,job_title,recruiter!public_jobs_recruiter_id_fkey(id,email_template,name),recruiter_user!public_jobs_hiring_manager_fkey(user_id,first_name,last_name,email,profile_image)),interview_schedule(*)',
+//       )
+//       .eq('id', application_id)
+//       .single();
 
-    if (error) throw new Error(error.message);
+//     if (error) throw new Error(error.message);
 
-    const candidate_email = data.candidates.email;
-    const first_name = data.candidates.first_name;
-    const last_name = data.candidates.last_name;
-    const position = data.public_jobs.job_title;
-    const schedule_name = data.interview_schedule.schedule_name;
-    const schedule_id = data.interview_schedule.id;
-    const company = data.public_jobs.recruiter;
-    const email_template = company.email_template;
+//     const candidate_email = data.candidates.email;
+//     const first_name = data.candidates.first_name;
+//     const last_name = data.candidates.last_name;
+//     const position = data.public_jobs.job_title;
+//     const schedule_name = data.interview_schedule.schedule_name;
+//     const schedule_id = data.interview_schedule.id;
+//     const company = data.public_jobs.recruiter;
 
-    let body = null;
-    let subject = null;
+//     let body = null;
+//     let subject = null;
 
-    if (email_template) {
-      body = fillEmailTemplate(
-        email_template['candidate_availability_request'].body,
-        {
-          company_name: company.name,
-          schedule_name: schedule_name,
-          first_name: first_name,
-          last_name: last_name,
-          job_title: position,
-          pick_your_slot_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}?filter_id=${filter_id}&task_id=${task_id}'>Pick Your Slot</a>`,
-        },
-      );
+//     if (email_template) {
+//       body = fillEmailTemplate(
+//         email_template['candidate_availability_request'].body,
+//         {
+//           company_name: company.name,
+//           schedule_name: schedule_name,
+//           first_name: first_name,
+//           last_name: last_name,
+//           job_title: position,
+//           pick_your_slot_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}?filter_id=${filter_id}&task_id=${task_id}'>Pick Your Slot</a>`,
+//         },
+//       );
 
-      subject = fillEmailTemplate(
-        email_template['candidate_availability_request'].subject,
-        {
-          company_name: company.name,
-          schedule_name: schedule_name,
-          first_name: first_name,
-          last_name: last_name,
-          job_title: position,
-        },
-      );
+//       subject = fillEmailTemplate(
+//         email_template['candidate_availability_request'].subject,
+//         {
+//           company_name: company.name,
+//           schedule_name: schedule_name,
+//           first_name: first_name,
+//           last_name: last_name,
+//           job_title: position,
+//         },
+//       );
 
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`,
-        {
-          fromEmail: `messenger@aglinthq.com`,
-          fromName: 'Aglint',
-          email: candidate_email,
-          subject: subject,
-          text: body,
-        },
-      );
+//       const res = await axios.post(
+//         `${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`,
+//         {
+//           fromEmail: `messenger@aglinthq.com`,
+//           fromName: 'Aglint',
+//           email: candidate_email,
+//           subject: subject,
+//           text: body,
+//         },
+//       );
 
-      if (res.status === 200 && res.data.data === 'Email sent') {
-        return {
-          sent: true,
-          body,
-          subject,
-          schedule_id,
-          schedule_name,
-        };
-      } else {
-        toast.error('Unable to send mail. Please try again later.');
-        return {
-          sent: false,
-          body,
-          subject,
-        };
-      }
-    }
-  } catch (e) {
-    toast.error('Unable to send mail. Please try again later.');
-  }
-};
+//       if (res.status === 200 && res.data.data === 'Email sent') {
+//         return {
+//           sent: true,
+//           body,
+//           subject,
+//           schedule_id,
+//           schedule_name,
+//         };
+//       } else {
+//         toast.error('Unable to send mail. Please try again later.');
+//         return {
+//           sent: false,
+//           body,
+//           subject,
+//         };
+//       }
+//     }
+//   } catch (e) {
+//     toast.error('Unable to send mail. Please try again later.');
+//   }
+// };
 
 const TYPE_LABELS = {
   google_meet: 'Google Meet',

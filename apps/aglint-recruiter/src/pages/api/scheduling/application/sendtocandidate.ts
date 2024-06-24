@@ -11,6 +11,7 @@ import { CookieOptions, createServerClient, serialize } from '@supabase/ssr';
 import dayjs from 'dayjs';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { selfScheduleMailToCandidate } from '@/src/components/Scheduling/CandidateDetails/mailUtils';
 import { SchedulingFlow } from '@/src/components/Scheduling/CandidateDetails/SelfSchedulingDrawer/store';
 import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
 import {
@@ -20,7 +21,7 @@ import {
   scheduleDebrief,
 } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
-import { mailHandler } from '@/src/components/Scheduling/Candidates/utils';
+// import { mailHandler } from '@/src/components/Scheduling/Candidates/utils';
 import { getScheduleName } from '@/src/components/Scheduling/utils';
 
 export interface ApiBodyParamsSendToCandidate {
@@ -115,7 +116,7 @@ const sendToCandidate = async ({
     start_date: string;
     end_date: string;
   };
-  selectedSlots?: SchedulingFlow['filteredSchedulingOptions'];
+  selectedSlots: SchedulingFlow['filteredSchedulingOptions'];
   selectedDebrief: SchedulingFlow['filteredSchedulingOptions'][number];
   recruiterUser: {
     email: string;
@@ -215,12 +216,16 @@ const sendToCandidate = async ({
           task_id: resTask.id,
         });
 
-        mailHandler({
+        selfScheduleMailToCandidate({
           filter_id: filterJson[0].id,
-          supabase,
-          application_id: selectedApplication.id,
-          task_id: resTask.id,
         });
+        //TODO: Implement new mailHandler
+        // mailHandler({
+        //   filter_id: filterJson[0].id,
+        //   supabase,
+        //   application_id: selectedApplication.id,
+        //   task_id: resTask.id,
+        // });
       }
 
       if (is_debrief && selectedDebrief) {
@@ -309,12 +314,17 @@ const sendToCandidate = async ({
           created_by: recruiterUser.user_id,
           task_id: resTask.id,
         });
-        mailHandler({
+
+        selfScheduleMailToCandidate({
           filter_id: filterJson[0].id,
-          supabase,
-          application_id: selectedApplication.id,
-          task_id: resTask.id,
         });
+        //TODO: Implement new mailHandler
+        // mailHandler({
+        //   filter_id: filterJson[0].id,
+        //   supabase,
+        //   application_id: selectedApplication.id,
+        //   task_id: resTask.id,
+        // });
       }
 
       if (is_debrief && selectedDebrief) {

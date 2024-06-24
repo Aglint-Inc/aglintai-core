@@ -32,7 +32,7 @@ import { ScheduleCardSmall } from '@/devlink3/ScheduleCardSmall';
 import { ScoreSetting } from '@/devlink3/ScoreSetting';
 import Loader from '@/src/components/Common/Loader';
 import AssessmentIcon from '@/src/components/Common/ModuleIcons/assessmentIcon';
-import EmailTemplateIcon from '@/src/components/Common/ModuleIcons/emailTemplateIcon';
+// import EmailTemplateIcon from '@/src/components/Common/ModuleIcons/emailTemplateIcon';
 import HiringTeamIcon from '@/src/components/Common/ModuleIcons/hiringTeamIcon';
 import JobDetailsIcon from '@/src/components/Common/ModuleIcons/jobDetailsIcon';
 import ProfileScoreIcon from '@/src/components/Common/ModuleIcons/profileScoreIcon';
@@ -892,7 +892,7 @@ const Modules = () => {
       {isAssessmentEnabled && <AssessmentModule />}
       {isScreeningEnabled && <ScreeningModule />}
       <HiringTeamModule />
-      <EmailTemplatesModule />
+      {/* <EmailTemplatesModule /> */}
       <WorkflowModule />
     </>
   );
@@ -971,21 +971,21 @@ const AssessmentModule = () => {
   );
 };
 
-const EmailTemplatesModule = () => {
-  const { job, emailTemplateValidity } = useJobDetails();
-  const { push } = useRouter();
-  const handleClick = () => {
-    push(`/jobs/${job.id}/email-templates`);
-  };
-  return (
-    <ModuleCard
-      onClickCard={{ onClick: () => handleClick() }}
-      textName={'Email Templates'}
-      slotIcon={<EmailTemplateIcon />}
-      isWarning={emailTemplateValidity?.length !== 0}
-    />
-  );
-};
+// const EmailTemplatesModule = () => {
+//   const { job /* emailTemplateValidity */ } = useJobDetails();
+//   const { push } = useRouter();
+//   const handleClick = () => {
+//     push(`/jobs/${job.id}/email-templates`);
+//   };
+//   return (
+//     <ModuleCard
+//       onClickCard={{ onClick: () => handleClick() }}
+//       textName={'Email Templates'}
+//       slotIcon={<EmailTemplateIcon />}
+//       // isWarning={emailTemplateValidity?.length !== 0}
+//     />
+//   );
+// };
 
 export type DashboardGraphOptions<
   T extends keyof Pick<
