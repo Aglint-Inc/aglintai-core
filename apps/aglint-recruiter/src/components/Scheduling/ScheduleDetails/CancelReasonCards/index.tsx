@@ -115,10 +115,10 @@ function CancelReasonCards({
             textReschedule={
               item.interview_session_cancel.schedule_id
                 ? item.interview_session_cancel.type === 'reschedule'
-                  ? 'requested for reschedule'
+                  ? 'requested a reschedule'
                   : 'cancelled this schedule'
                 : item.interview_session_cancel.type === 'reschedule'
-                  ? 'requested for reschedule'
+                  ? 'requested a reschedule'
                   : 'declined this schedule'
             }
             bgColorProps={{

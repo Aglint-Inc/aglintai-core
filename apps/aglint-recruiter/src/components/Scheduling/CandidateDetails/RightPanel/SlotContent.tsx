@@ -153,7 +153,7 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
           textName={selectedApplication.candidates.first_name}
           textReschedule={
             rescheduleDetails.response_type === 'reschedule'
-              ? 'requested for reschedule'
+              ? 'requested a reschedule'
               : 'cancelled this schedule'
           }
           slotProfileImage={<CandidateDefaultIcon size={20} />}
