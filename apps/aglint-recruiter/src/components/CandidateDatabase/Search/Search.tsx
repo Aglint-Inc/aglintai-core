@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { supabaseWrap } from '@aglint/shared-utils';
 import { Collapse, Dialog, Drawer, Stack } from '@mui/material';
 import { get } from 'lodash';
 import { useRouter } from 'next/dist/client/router';
@@ -23,7 +24,6 @@ import {
 import Loader from '../../Common/Loader';
 import InCompleteLottie from '../../Common/Lotties/CandidateDatabase_IncompleteLottie';
 import MuiAvatar from '../../Common/MuiAvatar';
-import { supabaseWrap } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 import AddToJobOptions from '../Database/CandAddToJobMenu';
 import EmailOutReach from '../Database/EmailOutReach/EmailOutReach';
 import { OutReachCtxProvider } from '../Database/EmailOutReach/OutReachCtx';
@@ -83,7 +83,7 @@ const CandidatesSearch = () => {
           queryJson: searchRec.query_json as any,
         });
       } catch (err) {
-        // toast.error(API_FAIL_MSG);
+        // toast.error('Something went wrong. Please try again.');
       } finally {
         setIsSearching(false);
       }

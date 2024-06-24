@@ -8,9 +8,16 @@ import {
 } from '@aglint/shared-types';
 import { ScheduleUtils } from '@aglint/shared-utils';
 import axios from 'axios';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { useRouter } from 'next/router';
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { supabase } from '@/src/utils/supabase/client';
@@ -21,6 +28,8 @@ export type candidateRequestAvailabilityType =
   DatabaseTable['candidate_request_availability'] & {
     applications: DatabaseTable['applications'] & {
       candidates: DatabaseTable['candidates'];
+      public_jobs: DatabaseTable['public_jobs'];
+
     };
   };
 
@@ -64,6 +73,8 @@ interface ContextValue {
 
   isSubmitted: boolean;
   setIsSubmitted: (x: boolean) => void;
+  selectedDate: null | Dayjs[];
+  setSelectedDate: Dispatch<SetStateAction<null | Dayjs[]>>;
 }
 const defaultProvider: ContextValue = {
   dateSlots: [],
@@ -84,6 +95,8 @@ const defaultProvider: ContextValue = {
   setOpenDaySlotPopup: () => {},
   isSubmitted: false,
   setIsSubmitted: () => {},
+  selectedDate: null,
+  setSelectedDate: () => {},
 };
 const RequestAvailabilityContext = createContext<ContextValue>(defaultProvider);
 const useRequestAvailabilityContext = () =>
@@ -102,6 +115,10 @@ function RequestAvailabilityProvider({ children }) {
   const [selectedSlots, setSelectedSlots] = useState<
     DatabaseTable['candidate_request_availability']['slots']
   >([]);
+  const [selectedDate, setSelectedDate] = useState([
+    dayjs(),
+    dayjs().add(10, 'day'),
+  ]);
   const [loading, setLoading] = useState(true);
   const [multiDaySessions, setMultiDaySessions] = useState<
     InterviewSessionTypeDB[][]
@@ -183,6 +200,8 @@ function RequestAvailabilityProvider({ children }) {
         setOpenDaySlotPopup,
         isSubmitted,
         setIsSubmitted,
+        selectedDate,
+        setSelectedDate,
       }}
     >
       {children}

@@ -2,7 +2,7 @@ import { RecruiterType } from '@aglint/shared-types';
 import { Autocomplete, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { BasicInfo } from '@/devlink/BasicInfo';
 import { CompanyInfo } from '@/devlink/CompanyInfo';
@@ -34,15 +34,28 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   const [dialog, setDialog] = useState(initialDialog());
   const [isVideoAssessment, setIsVideoAssessment] = useState(false);
   const [isDetele, setDeletPopup] = useState(false);
+  const [nameError, setNameError] = useState(false);
   let isJobMarketingEnabled = posthog.isFeatureEnabled('isJobMarketingEnabled');
+
+  const initialCompanyName = useRef(recruiter?.name);
 
   useEffect(() => {
     setLogo(recruiter?.logo);
   }, [recruiter]);
 
-  const handleChange = async (recruit: RecruiterType) => {
+  const handleChange = async (
+    recruit: RecruiterType,
+    isEmptyName?: boolean,
+  ) => {
     setIsSaving(true);
-    debouncedSave(recruit, recruiter.id);
+    if (isEmptyName) {
+      debouncedSave(
+        { ...recruit, name: String(initialCompanyName.current) },
+        recruiter.id,
+      );
+    } else {
+      debouncedSave(recruit, recruiter.id);
+    }
     setRecruiter(recruit);
     setTimeout(() => {
       setIsSaving(false);
@@ -74,6 +87,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
     if (recruiter) setIsVideoAssessment(recruiter?.video_assessment);
   }, [recruiter]);
   const [isError, setError] = useState(false);
+
   return (
     <Stack
       // sx={{ overflowY: 'auto', height: 'calc(100vh - 60px)' }}
@@ -169,7 +183,6 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                                 },
                               }}
                             />
-                            ;
                           </MuiPopup>
                         </>
                       );
@@ -287,7 +300,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                         } as RecruiterType);
                       }
                     }}
-                    size={70}
+                    size={48}
                     table='company-logo'
                     error={(e) => {
                       if (e) {
@@ -314,16 +327,37 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                 },
               }}
               slotBasicForm={
-                <Stack spacing={2} p={'var(--space-1)'}>
+                <Stack spacing={2} p={'var(--space-1)'} sx={{ width: '380px' }}>
                   <UITextField
                     labelBold='default'
                     labelSize='small'
                     fullWidth
                     label='Company Name'
+                    required
+                    error={nameError}
+                    onFocus={() => setNameError(false)}
+                    helperText={`Company name can't be empty`}
                     placeholder='Ex. Acme Inc.'
                     value={recruiter?.name}
                     onChange={(e) => {
-                      handleChange({ ...recruiter, name: e.target.value });
+                      e.target.value
+                        ? (() => {
+                            handleChange({
+                              ...recruiter,
+                              name: e.target.value,
+                            });
+                            setNameError(false);
+                          })()
+                        : (() => {
+                            handleChange(
+                              {
+                                ...recruiter,
+                                name: e.target.value,
+                              },
+                              true,
+                            );
+                            setNameError(true);
+                          })();
                     }}
                   />
                   <UITextField

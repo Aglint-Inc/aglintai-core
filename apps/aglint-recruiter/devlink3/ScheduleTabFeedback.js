@@ -33,7 +33,7 @@ export function ScheduleTabFeedback({
             <Text content="Interviewer" weight="medium" />
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "header_session", "width-324-copy")}
+            className={_utils.cx(_styles, "header_session", "version")}
             id={_utils.cx(
               _styles,
               "w-node-_6b67c368-b168-fb6f-e0a0-4f34fed2f971-03362df7"
@@ -45,12 +45,7 @@ export function ScheduleTabFeedback({
                 className={_utils.cx(_styles, "session_colum_fixed_width")}
                 tag="div"
               >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "fw-semibold")}
-                  tag="div"
-                >
-                  {"Session"}
-                </_Builtin.Block>
+                <Text content="" weight="medium" />
               </_Builtin.Block>
             ) : null}
           </_Builtin.Block>

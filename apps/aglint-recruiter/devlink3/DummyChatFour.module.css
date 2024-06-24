@@ -135,21 +135,7 @@
 
 .embed_flex {
   display: flex;
-  overflow: hidden;
-  width: var(--space-5);
-  height: var(--space-5);
   align-items: center;
-
-  border-radius: var(--radius-2);
-
-  color: var(--neutral-a11);
-
-  cursor: pointer;
-}
-
-.embed_flex:hover {
-  background-color: var(--neutral-a3);
-  color: var(--neutral-a12);
 }
 
 .embed_flex.hide {
@@ -257,11 +243,6 @@
   font-size: var(--font-size-1);
   line-height: var(--line-height-1);
   letter-spacing: var(--letter-spacing-1);
-}
-
-.text-grey_600.text-underline-copy {
-  text-decoration: underline;
-  cursor: pointer;
 }
 
 #w-node-_60e9b28e-dd33-c12e-35d9-e4ce24cd65b0-24cd6572 {

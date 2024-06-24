@@ -346,7 +346,7 @@ const TypeInput: FC<{
   question: AssessmentQuestion;
 }> = ({ question }) => {
   const { assessment } = useAssessment();
-  switch (assessment.mode) {
+  switch (assessment?.mode) {
     case 'classic':
       return <TypeSwitch question={question} />;
     default:
@@ -358,7 +358,7 @@ const TypeInput: FC<{
           alignItems={'start'}
           pl={'12px'}
           style={{
-            backgroundColor:  'var(--white)',
+            backgroundColor: 'var(--white)',
             border: '1px solid #cbcbcb',
             borderRadius: 'var(--radius-2)',
           }}
@@ -399,7 +399,10 @@ const TypeSwitch: FC<{
   return (
     <Stack
       width={'200px'}
-      style={{ backgroundColor:  'var(--white)', borderRadius: 'var(--radius-4)' }}
+      style={{
+        backgroundColor: 'var(--white)',
+        borderRadius: 'var(--radius-4)',
+      }}
     >
       <SelectionComp
         onChange={(e) => handleTypeUpdate(e.target.value)}

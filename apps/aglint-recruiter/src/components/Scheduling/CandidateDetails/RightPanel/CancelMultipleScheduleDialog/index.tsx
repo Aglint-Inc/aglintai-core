@@ -44,14 +44,23 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
     try {
       if (selectedApplicationLog.metadata?.type === 'booking_confirmation') {
         if (selectedApplicationLog.metadata?.filter_id) {
-          cancelSelfScheduledSessions(
+          await cancelSelfScheduledSessions(
             selectedApplicationLog.metadata?.filter_id,
           );
         } else if (selectedApplicationLog.metadata?.availability_request_id) {
-          cancelRequestAvailibilitySession(
+          await cancelRequestAvailibilitySession(
             selectedApplicationLog.metadata?.availability_request_id,
           );
         }
+      }
+      if (
+        selectedApplicationLog.metadata?.type ===
+          'candidate_response_self_schedule' &&
+        selectedApplicationLog.metadata?.filter_id
+      ) {
+        await cancelSelfScheduledSessions(
+          selectedApplicationLog.metadata?.filter_id,
+        );
       }
     } catch {
       toast.error('Error cancelling schedule');

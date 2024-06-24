@@ -3,10 +3,11 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
 import { EmptyState } from '@/devlink2/EmptyState';
+import { Skeleton } from '@/devlink2/Skeleton';
 import { Activities } from '@/devlink3/Activities';
 import { ActivitiesCard } from '@/devlink3/ActivitiesCard';
+import { SkeletonActivitiesCard } from '@/devlink3/SkeletonActivitiesCard';
 import Icon from '@/src/components/Common/Icons/Icon';
-import Loader from '@/src/components/Common/Loader';
 
 import { useAllActivities } from '../hooks';
 import CancelMultipleScheduleDialog from './CancelMultipleScheduleDialog';
@@ -37,7 +38,11 @@ function RightPanel({
             )}
             {!isFetched || isLoading ? (
               <Stack height={'calc(100vh - 60px)'}>
-                <Loader />
+                <SkeletonActivitiesCard slotSkeleton={<Skeleton />} />
+                <SkeletonActivitiesCard slotSkeleton={<Skeleton />} />
+                <SkeletonActivitiesCard slotSkeleton={<Skeleton />} />
+                <SkeletonActivitiesCard slotSkeleton={<Skeleton />} />
+                <SkeletonActivitiesCard slotSkeleton={<Skeleton />} />
               </Stack>
             ) : (
               activities?.map((act, ind) => {

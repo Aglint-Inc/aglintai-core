@@ -1,6 +1,5 @@
+import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
-
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 import { ZOOM_API_URL } from './constants';

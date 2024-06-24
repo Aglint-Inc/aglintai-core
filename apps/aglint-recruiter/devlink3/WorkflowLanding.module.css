@@ -1,12 +1,12 @@
 .workflow_listing {
   overflow: auto;
   background-color: var(--neutral-2);
-  height: calc(100vh - 60px);
+  height: calc(100vh - 48px);
 }
 
 .slot_search_and-_filter {
   display: flex;
-  height: 60px;
+  height: 48px;
   padding-right: 20px;
   padding-left: 20px;
   justify-content: flex-start;
@@ -31,5 +31,5 @@
 
   background-color: var(--neutral-2);
 
-  height: calc(100vh - 108px);
+  height: calc(100vh - 96px);
 }

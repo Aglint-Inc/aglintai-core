@@ -5,6 +5,7 @@ import converter from 'number-to-words';
 import { useEffect, useState } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { TeamUsersList } from '@/devlink/TeamUsersList';
 import { TeamEmpty } from '@/devlink3/TeamEmpty';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -12,7 +13,6 @@ import { API_get_last_login } from '@/src/pages/api/get_last_login/types';
 import toast from '@/src/utils/toast';
 
 // import AUIButton from '../../Common/AUIButton';
-import Icon from '../../Common/Icons/Icon';
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
 import DynamicLoader from '../../Scheduling/Interviewers/DynamicLoader';
@@ -163,15 +163,16 @@ const TeamManagement = () => {
           <>
             <Stack marginRight={5}>
               <UITextField
-                width='400px'
+                width='250px'
+                height={32}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position='end'>
-                      <Icon variant='JobSearch' height='14' />
+                      <GlobalIcon iconName='search' size='5'/>
                     </InputAdornment>
                   ),
                 }}
-                placeholder='Search by Name, Email or Title'
+                placeholder='Search Member'
                 onChange={handleSearchInputChange}
               />
             </Stack>
@@ -270,19 +271,18 @@ const TeamManagement = () => {
           </>
         }
         slotInviteBtn={
-          <>
-            <ButtonSolid
-              size='2'
-              textButton='Invite Member'
-              isLeftIcon={true}
-              iconName='mail'
-              onClickButton={{
-                onClick: () => {
-                  setOpenDrawer({ open: true, window: 'addMember' });
-                },
-              }}
-            />
-          </>
+          <ButtonSolid
+            isRightIcon={false}
+            isLeftIcon={true}
+            size={'2'}
+            textButton ={'Invite'}
+            iconName = {'send'}
+            onClickButton={{
+              onClick: () => {
+                setOpenDrawer({ open: true, window: 'addMember' });
+              }
+            }}
+          />
         }
         pendInvitesVisibility={Boolean(inviteUser)}
         onClickViewPendingInvites={{

@@ -4,6 +4,7 @@ import * as _Builtin from "./_Builtin";
 import { JobsBanner } from "./JobsBanner";
 import { Text } from "./Text";
 import { PipeLine } from "./PipeLine";
+import { GlobalIcon } from "./GlobalIcon";
 import { ScheduleCardSmall } from "./ScheduleCardSmall";
 import { GraphBlock } from "./GraphBlock";
 import { CardWithNumber } from "./CardWithNumber";
@@ -230,19 +231,19 @@ export function JobDashboard({
               className={_utils.cx(_styles, "div-block-1606")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                tag="div"
-              >
-                {"Upcoming Schedules"}
-              </_Builtin.Block>
+              <Text content="" />
               {isViewScheduleVisible ? (
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "text-gray-600", "is_link")}
+                  className={_utils.cx(
+                    _styles,
+                    "flex-horizontal",
+                    "align-center"
+                  )}
                   tag="div"
                   {...onClickViewSchedule}
                 >
-                  {"View all"}
+                  <Text content="View all" size="2" weight="" color="accent" />
+                  <GlobalIcon iconName="" />
                 </_Builtin.Block>
               ) : null}
             </_Builtin.Block>
@@ -530,11 +531,11 @@ export function JobDashboard({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1710-copy")}
+            className={_utils.cx(_styles, "jd-setting-wrap")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1711-copy")}
+              className={_utils.cx(_styles, "jd-setting-header")}
               tag="div"
             >
               <Text content="Settings" color="neutral" size="1" weight="" />

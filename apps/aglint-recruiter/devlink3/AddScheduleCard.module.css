@@ -9,7 +9,7 @@
 .orange_line {
   width: 100%;
   height: 2px;
-  background-color: var(--accent-9);
+  background-color: var(--accent-11);
 }
 
 .add_divider_wrap {
@@ -28,7 +28,7 @@
 
 .add-icon-module {
   position: relative;
-  color: var(--accent-9);
+  color: var(--accent-11);
 }
 
 .icons {
@@ -49,14 +49,6 @@
 
 .cursor-pointer {
   cursor: pointer;
-}
-
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
 }
 
 .icons.pointer {

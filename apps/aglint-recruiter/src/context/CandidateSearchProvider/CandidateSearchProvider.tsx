@@ -1,4 +1,5 @@
 import { DatabaseTable, JsonResume } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { isArray } from 'lodash';
 import cloneDeep from 'lodash/cloneDeep';
 import set from 'lodash/set';
@@ -7,11 +8,6 @@ import React, { createContext, useContext, useReducer } from 'react';
 
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
-
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '../../components/JobsDashboard/JobPostCreateUpdate/utils';
 
 export interface CandidateSearchRes {
   application_id: string;
@@ -198,7 +194,7 @@ const CandidateSearchProvider = ({ children }) => {
           .eq('id', router.query.searchQryId),
       );
     } catch {
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     }
 
     // const r =
@@ -245,7 +241,7 @@ const CandidateSearchProvider = ({ children }) => {
       supabaseWrap(await supabase.from('applications').insert([...newJobApps]));
       toast.success('Applied to jobs successfully.');
     } catch (er) {
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
       // console.log(er);
     }
   };

@@ -49,9 +49,10 @@
 
 .job-link-tag {
   display: flex;
-  width: 32px;
-  height: 16px;
-  padding-top: 1px;
+  height: 20px;
+  min-width: 20px;
+  padding-right: var(--space-1);
+  padding-left: var(--space-1);
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -61,27 +62,8 @@
   color: var(--neutral-10);
 }
 
-.job-link-tag.blue-500 {
-  background-color: #337fbd;
-}
-
-.blue-500 {
-  background-color: var(--blue500-72579298);
-}
-
-.green-500 {
-  background-color: var(--green500-287ff474);
-}
-
-.yellow-600 {
-  background-color: var(--yellow600-1478b5f5);
-}
-
-.red-500 {
-  background-color: var(--red500-2e806c7d);
-}
-
 .job-link-tag.active-tage {
+  border-radius: var(--radius-1);
   background-color: var(--accent-9);
   color: var(--white);
 }

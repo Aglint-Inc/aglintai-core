@@ -3,9 +3,9 @@ import {supabaseAdmin} from '../../../../services/supabase/SupabaseAdmin';
 
 import {getFullName} from '../../../../utils/getFullName';
 import {EmailAgentPayload} from '../../../../types/email_agent/apiPayload.types';
-import {EmailTemplateFields} from '@aglint/shared-types';
-import {supabaseWrap} from '@aglint/shared-utils';
+import {DatabaseTable, EmailTemplateFields} from '@aglint/shared-types';
 import {envConfig} from 'src/config';
+import {DAYJS_FORMATS, ScheduleUtils, supabaseWrap} from '@aglint/shared-utils';
 
 export const fetchEmailAgentCandDetails = async (
   thread_id: string,
@@ -13,7 +13,7 @@ export const fetchEmailAgentCandDetails = async (
 ) => {
   const [cand_rec] = supabaseWrap(
     await supabaseAdmin
-      .from('scheduling-agent-chat-history')
+      .from('scheduling_agent_chat_history')
       .select(
         '*, interview_filter_json(* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,description,recruiter!public_jobs_recruiter_id_fkey(scheduling_settings,email_template)), candidates(id,email,first_name,last_name,timezone))))'
       )
@@ -41,7 +41,9 @@ export const fetchEmailAgentCandDetails = async (
   const sessions = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
-      .select('*,interview_meeting(*)')
+      .select(
+        '*,interview_meeting(*,recruiter_user(first_name,last_name,scheduling_settings))'
+      )
       .in('id', cand_rec.interview_filter_json.session_ids)
   );
   if (!sessions[0].interview_meeting) {
@@ -96,12 +98,7 @@ export const fetchEmailAgentCandDetails = async (
 
   const email_details = getInitialEmailTemplate();
 
-  // TODO: delete this code later
-  const getUsTime = (d: string) => {
-    const [date, month, year] = d.split('/');
-    return [month, date, year].join('/');
-  };
-
+  const meeting_organizer = sessions[0].interview_meeting.recruiter_user;
   const agent_payload: EmailAgentPayload = {
     history: cand_rec.chat_history,
     payload: {
@@ -110,8 +107,14 @@ export const fetchEmailAgentCandDetails = async (
           .candidates.email,
       candidate_name: getFullName(candidate.first_name, candidate.last_name),
       company_name: job.company,
-      start_date: getUsTime(filter_json.start_date),
-      end_date: getUsTime(filter_json.end_date),
+      start_date: ScheduleUtils.convertDateFormatToDayjs(
+        filter_json.start_date,
+        meeting_organizer.scheduling_settings.timeZone.tzCode
+      ).format(DAYJS_FORMATS.DATE_FORMAT),
+      end_date: ScheduleUtils.convertDateFormatToDayjs(
+        filter_json.end_date,
+        meeting_organizer.scheduling_settings.timeZone.tzCode
+      ).format(DAYJS_FORMATS.DATE_FORMATZ),
       job_role: job.job_title,
       company_logo: job.logo,
       company_id: job.recruiter_id,
@@ -127,8 +130,14 @@ export const fetchEmailAgentCandDetails = async (
       candidate_id:
         cand_rec.interview_filter_json.interview_schedule.applications
           .candidates.id,
-      organizer_name: filter_json.organizer_name ?? job.company,
-      interview_meetings: sessions.map(ses => ses.interview_meeting),
+      organizer_name: getFullName(
+        meeting_organizer.first_name,
+        meeting_organizer.last_name
+      ),
+      organizer_timezone: meeting_organizer.scheduling_settings.timeZone.tzCode,
+      interview_meetings: sessions.map(
+        ses => ses.interview_meeting as DatabaseTable['interview_meeting']
+      ),
       meeting_summary,
       job_description: job.description,
       comp_scheduling_setting: job.recruiter.scheduling_settings as any,

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./NewScheduleCard.module.css";
@@ -27,21 +28,9 @@ export function NewScheduleCard({
           className={_utils.cx(_styles, "div-block-1492")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-sm", "text-grey_600")}
-            tag="div"
-          >
-            {textMonth}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-20", "fw-semibold")}
-            tag="div"
-          >
-            {textDate}
-          </_Builtin.Block>
-          <_Builtin.Block className={_utils.cx(_styles, "text-xsm")} tag="div">
-            {textDay}
-          </_Builtin.Block>
+          <Text content={textMonth} size="1" weight="" color="neutral-11" />
+          <Text content={textDate} size="5" weight="bold" color="neutral-11" />
+          <Text content={textDay} size="1" weight="" color="neutral-11" />
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
@@ -61,14 +50,19 @@ export function NewScheduleCard({
             <_Builtin.Block tag="div">
               {slotIconMeeting ?? <SlotComp componentNeme="Icon" />}
             </_Builtin.Block>
-            <_Builtin.Block tag="div">{textPlatformName}</_Builtin.Block>
+            <Text
+              content={textPlatformName}
+              size="2"
+              weight=""
+              color="neutral-12"
+            />
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1497")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Candidate :"}</_Builtin.Block>
+          <Text size="2" weight="" color="neutral-12" content="Candidate :" />
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1496")}
             tag="div"
@@ -79,7 +73,12 @@ export function NewScheduleCard({
             >
               {slotCandidateImage}
             </_Builtin.Block>
-            <_Builtin.Block tag="div">{textCandidateName}</_Builtin.Block>
+            <Text
+              content={textCandidateName}
+              size="2"
+              weight=""
+              color="neutral-12"
+            />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

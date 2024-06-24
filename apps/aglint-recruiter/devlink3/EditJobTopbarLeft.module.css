@@ -10,121 +10,22 @@
   background-color: white;
 }
 
-.div-block-481 {
+.ejtl-content {
   display: flex;
   align-items: center;
-  grid-column-gap: 12px;
-  grid-row-gap: 12px;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
 }
 
-.fw-semibold {
-  font-weight: 600;
-}
-
-.fw-semibold.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.fw-semibold.relative_2.two-line-clamp.capitalize {
-  text-transform: capitalize;
-}
-
-.fw-semibold.capitalize {
-  text-transform: capitalize;
-}
-
-.text-red-600 {
-  color: #cc3340;
-}
-
-.fw-semibold.text-purple {
-  color: #a81897;
-}
-
-.fw-semibold.text-green {
-  color: #228f67;
-}
-
-.fw-semibold.text-yellow {
-  color: #eac05b;
-}
-
-.fw-semibold.text-orange {
-  color: #ed942d;
-}
-
-.fw-semibold.text-red {
-  color: #d93f4c;
-}
-
-.text-lg {
-  font-size: 18px;
-  line-height: 24px;
-}
-
-.text-grey_600 {
-  color: var(--sand-11);
-}
-
-.hide {
-  display: none;
-}
-
-.div-block-716 {
+.ejtl-btn-wrap {
   display: flex;
   align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .cursor-pointer {
   cursor: pointer;
-}
-
-.accent-text {
-  color: var(--accent-9);
-}
-
-.accent-text.text-underline {
-  text-decoration: underline;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
-.accent-text.text-underline.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.accent-text.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.text-sm {
-  font-size: var(--font-size-1);
-  line-height: var(--line-height-1);
-  letter-spacing: var(--letter-spacing-1);
-}
-
-.accent-text.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.accent-text.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.accent-text.text-capital {
-  text-transform: uppercase;
 }
 
 .icons {
@@ -141,14 +42,6 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
-}
-
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
 }
 
 .icons.pointer {

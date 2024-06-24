@@ -21,7 +21,9 @@ export function CandidateOverview({
         />
         <Text content="Overview" color="" />
       </_Builtin.Block>
-      <Text content={textOverview} color="neutral" />
+      <_Builtin.Block className={_utils.cx(_styles, "width_100")} tag="div">
+        <Text content={textOverview} color="neutral" />
+      </_Builtin.Block>
     </_Component>
   );
 }

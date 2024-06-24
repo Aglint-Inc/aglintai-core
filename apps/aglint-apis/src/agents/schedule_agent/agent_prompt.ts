@@ -1,16 +1,9 @@
-import dayjs from 'dayjs';
-import {CandidateInfoType} from '../../types/app_types/scheduleAgentTypes';
 import {dayjsLocal} from '../../utils/dayjsLocal/dayjsLocal';
 import {formatDate} from '../../utils/scheduling_utils/time_zone';
 import {getCachedCandidateInfo} from '../../services/cache/cache-db';
 
-const utc = require('dayjs/plugin/utc');
-const timezone = require('dayjs/plugin/timezone');
-dayjs.extend(utc);
-dayjs.extend(timezone);
-
-export const agentPrompt = (cand_phone: string) => {
-  const cand_info = getCachedCandidateInfo(cand_phone);
+export const agentPrompt = async (cand_phone: string) => {
+  const cand_info = await getCachedCandidateInfo(cand_phone);
   const getPlanSummary = () => {
     let summary = '';
     cand_info.interview_sessions.forEach((sess, idx) => {

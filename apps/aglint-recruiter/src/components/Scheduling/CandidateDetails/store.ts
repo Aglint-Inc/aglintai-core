@@ -37,6 +37,7 @@ export interface SchedulingApplication {
   isSendingToCandidate: boolean;
   isIndividualRescheduleOpen: boolean;
   selectedApplicationLog: DatabaseTable['application_logs'];
+  rescheduleSessionIds: string[];
 }
 
 const initialState: SchedulingApplication = {
@@ -61,6 +62,7 @@ const initialState: SchedulingApplication = {
   isSendingToCandidate: false, // sending to candidate loader state for api call
   editSession: null, // session details for editing
   selectedApplicationLog: null, // selected application log details while cancelling or rescheduling from activity panel
+  rescheduleSessionIds: [], // reschedule session ids
 };
 
 export const useSchedulingApplicationStore = create<SchedulingApplication>()(
@@ -71,6 +73,9 @@ export const useSchedulingApplicationStore = create<SchedulingApplication>()(
 
 export const setInitalLoading = (initialLoading: boolean) =>
   useSchedulingApplicationStore.setState({ initialLoading });
+
+export const setRescheduleSessionIds = (rescheduleSessionIds: string[]) =>
+  useSchedulingApplicationStore.setState({ rescheduleSessionIds });
 
 export const setIsSendingToCandidate = (isSendingToCandidate: boolean) =>
   useSchedulingApplicationStore.setState({ isSendingToCandidate });

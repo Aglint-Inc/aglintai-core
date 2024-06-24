@@ -5,12 +5,12 @@ import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-import { GreenhouseApplication } from '@/src/components/JobsDashboard/AddJobWithIntegrations/GreenhouseModal/types';
+import { GreenhouseApplication } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/GreenhouseModal/types';
 import {
   createReference,
   extractLinkedInURLGreenhouse,
   processEmailsInBatches,
-} from '@/src/components/JobsDashboard/AddJobWithIntegrations/GreenhouseModal/utils';
+} from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/GreenhouseModal/utils';
 
 const crypto = require('crypto');
 

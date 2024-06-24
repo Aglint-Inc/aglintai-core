@@ -51,7 +51,7 @@ function PhoneTranscript({
         >
           {transcript &&
             transcript.length &&
-            transcript.map((ele, i) => {
+            transcript.filter(ele=>ele).map((ele, i) => {
               const receiver = tasks
                 .map((item) => item.applications.candidates)
                 .find((item) => item.id === ele.id);

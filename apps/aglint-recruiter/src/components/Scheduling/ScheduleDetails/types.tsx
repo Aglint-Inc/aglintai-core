@@ -1,14 +1,25 @@
 import {
+  DatabaseTable,
   InterviewMeetingTypeDb,
   InterviewModuleType,
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
+  schedulingSettingType,
 } from '@aglint/shared-types';
-import { schedulingSettingType } from '@aglint/shared-types';
 
-import { ScheduleType } from '../InterviewTypes/types';
-
-export type ScheduleMeeting = ScheduleType & {
+export type ScheduleMeeting = {
+  job: {
+    id: string;
+    job_title: string;
+    description: string;
+  };
+  candidates: {
+    id: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+  };
+  schedule: DatabaseTable['interview_schedule'];
   interview_meeting: InterviewMeetingTypeDb;
   interview_session: InterviewSessionTypeDB;
   interview_module: InterviewModuleType;

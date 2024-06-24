@@ -20,8 +20,12 @@ import { DropdownSelectButton } from './CancelReasons';
 const RecentRescheduleCancel = () => {
   const { data: analyticsData } = useScheduleSessionsAnalytics();
   const { data: CancelReasonsData } = useCancelRescheduleReasons();
-  const { data: userDetails, isPending: loading } =
-    useCancelRescheduleReasonsUsers();
+  const {
+    data: userDetails,
+    isPending,
+    parentFetching,
+    disabled,
+  } = useCancelRescheduleReasonsUsers();
   const [type, setType] = useState<'interviewer' | 'candidate'>('candidate');
   const processedRescheduleData = (CancelReasonsData || [])
     .filter((item) => item.type == 'reschedule')
@@ -34,49 +38,84 @@ const RecentRescheduleCancel = () => {
           );
           const detail_id = tempAD.interview_schedule.application_id;
           const meet_id = tempAD.interview_meeting.id;
-          acc['candidate'] = [...temp, { ...curr, detail_id, meet_id }];
+          const temp_user = userDetails?.[type];
+          const user = temp_user?.[detail_id];
+          if (user) {
+            const tempItem = {
+              id: user.id,
+              meet_id: meet_id,
+              name: user.name,
+              image: user.profile_image,
+              time: curr.created_at,
+              desc: curr.other_details?.note || curr.reason,
+            };
+
+            acc['candidate'] = [...temp, tempItem];
+          }
         } else {
           const temp = acc['interviewer'] || [];
           const detail_id = curr.session_relation_id;
           const meet_id = analyticsData.find(
             (item) => item.interview_session.id == curr.session_id,
           ).interview_meeting.id;
-
-          acc['interviewer'] = [...temp, { ...curr, detail_id, meet_id }];
+          const temp_user = userDetails?.[type];
+          const user = temp_user?.[detail_id];
+          if (user) {
+            const tempItem = {
+              id: user.id,
+              meet_id: meet_id,
+              name: user.name,
+              image: user.profile_image,
+              time: curr.created_at,
+              desc: curr.other_details?.note || curr.reason,
+            };
+            acc['interviewer'] = [...temp, tempItem];
+          }
         }
         return acc;
       },
       { interviewer: [], candidate: [] } as {
         // eslint-disable-next-line no-unused-vars
-        interviewer: ((typeof CancelReasonsData)[number] & {
-          detail_id: string;
+        interviewer: {
+          id: any;
           meet_id: string;
-        })[];
-        candidate: ((typeof CancelReasonsData)[number] & {
-          detail_id: string;
+          name: any;
+          image: any;
+          time: string;
+          desc: string;
+        }[];
+        candidate: {
+          id: any;
           meet_id: string;
-        })[];
+          name: any;
+          image: any;
+          time: string;
+          desc: string;
+        }[];
       },
     );
-  const processedCancelData = CancelReasonsData?.map((item) => {
-    const temp_user = {
-      ...userDetails?.['candidate'],
-      ...userDetails?.['interviewer'],
-    };
-    const detail_id = analyticsData.find(
-      (itemX) => itemX.interview_session.id == item.session_id,
-    ).interview_schedule.application_id;
-    const user = temp_user?.[detail_id];
-    return (
-      user && {
-        id: user.id,
-        name: user.name,
-        image: user.profile_image,
-        time: item.created_at,
-        desc: item.other_details?.note || item.reason,
-      }
-    );
-  }).filter((item) => item);
+  const processedCancelData = (CancelReasonsData || [])
+    .map((item) => {
+      const temp_user = {
+        ...userDetails?.['candidate'],
+        ...userDetails?.['interviewer'],
+      };
+      const detail_id = analyticsData.find(
+        (itemX) => itemX.interview_session.id == item.session_id,
+      ).interview_schedule.application_id;
+      const user = temp_user?.[detail_id];
+      return (
+        user && {
+          id: user.id,
+          name: user.name,
+          image: user.profile_image,
+          time: item.created_at,
+          desc: item.other_details?.note || item.reason,
+        }
+      );
+    })
+    .filter((item) => item);
+  const loading = parentFetching || (!disabled && isPending);
 
   return (
     <>
@@ -86,20 +125,6 @@ const RecentRescheduleCancel = () => {
             <RecentRescheduleListItem loading />
           ) : processedRescheduleData?.[type].length ? (
             processedRescheduleData?.[type]
-              .map((item) => {
-                const temp_user = userDetails?.[type];
-                const user = temp_user[item.detail_id];
-                return (
-                  user && {
-                    id: user.id,
-                    meet_id: item.meet_id,
-                    name: user.name,
-                    image: user.profile_image,
-                    time: item.created_at,
-                    desc: item.other_details?.note || item.reason,
-                  }
-                );
-              })
               .filter((item) => item)
               .map((user) => {
                 return (

@@ -4,11 +4,11 @@ import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { Page404 } from '@/devlink/Page404';
 import { AvailabilityEmpty } from '@/devlink2/AvailabilityEmpty';
-import { ButtonPrimary } from '@/devlink2/ButtonPrimary';
 import { CalendarPick } from '@/devlink2/CalendarPick';
 import { DatePicker } from '@/devlink2/DatePicker';
 import { PickSlotDay } from '@/devlink2/PickSlotDay';
@@ -40,6 +40,7 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
     setIsSubmitted,
     setCandidateRequestAvailability,
   } = useRequestAvailabilityContext();
+  const [loading, setLoading] = useState(false);
   const handleClickDate = ({
     selectedDate,
     day,
@@ -203,6 +204,7 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
     setOpenDaySlotPopup(null);
   };
   async function submitData() {
+    setLoading(true);
     const { data: requestData } = await axios.post(
       `/api/scheduling/request_availability/updateRequestAvailability`,
       {
@@ -245,7 +247,7 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
       {
         data: {
           title: `Candidate submitted availability`,
-          description: `Candidate submitted availability on ${dates} for Coding Interview (Round 2) Interviews.`,
+          description: `Candidate submitted availability on ${dates} for ${candidateRequestAvailability.session_ids.map((ele) => ele.name).join(',')} Interviews.`,
           module: 'scheduler',
           task_id: task.id,
           logged_by: 'candidate',
@@ -255,6 +257,7 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
     );
     setCandidateRequestAvailability(requestData);
     setIsSubmitted(true);
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -271,11 +274,13 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
           isPickSlotIconActive={markAsAllSlotsSelected}
           textPickSlots={`Pick at least  ${candidateRequestAvailability.number_of_slots} slots from each day.`}
           slotPrimaryButton={
-            <ButtonPrimary
+            <ButtonSolid
               onClickButton={{
                 onClick: handleSubmit,
               }}
-              textLabel={singleDay ? 'Submit Availability' : 'Done'}
+              textButton={singleDay ? 'Submit Availability' : 'Done'}
+              isLoading={loading}
+              isDisabled={!markAsAllDateSelected}
             />
           }
           slotCalenderPick={

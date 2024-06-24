@@ -146,10 +146,6 @@
   margin-top: 3px;
 }
 
-.icons.mr--10 {
-  margin-right: -8px;
-}
-
 .icons.mt-2 {
   margin-top: 2px;
 }
@@ -352,21 +348,6 @@
   grid-row-gap: var(--space-2);
 }
 
-.save-list-slot-item.p-0 {
-  padding: 0px;
-}
-
-.save-list-slot-item.p-0.cd-auto {
-  display: flex;
-  width: auto;
-  flex-direction: column;
-  justify-content: flex-start;
-  flex-wrap: nowrap;
-  align-items: flex-start;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-}
-
 .empty-saved-list {
   display: flex;
   width: 600px;
@@ -408,10 +389,6 @@
   align-items: center;
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
-}
-
-.history-wrap-candidate.cursor-pointer.hide {
-  display: none;
 }
 
 .slot-candidate-history-card {

@@ -5,10 +5,10 @@ var timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
 import { ApiCancelScheduledInterview } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

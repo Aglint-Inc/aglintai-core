@@ -24,14 +24,14 @@ export function JobDetailBlock({
       className={_utils.cx(_styles, "job-sidebar-main-block")}
       tag="div"
     >
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-759")} tag="div">
+      <_Builtin.Block className={_utils.cx(_styles, "jdb-content")} tag="div">
         {isJobDetailVisible ? (
           <_Builtin.Block
             className={_utils.cx(_styles, "job_detail_right")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-507")}
+              className={_utils.cx(_styles, "jdb-header-left")}
               tag="div"
             >
               <Text content="" />
@@ -63,10 +63,10 @@ export function JobDetailBlock({
         ) : null}
         {isJobDetailVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "aeravgaergf", "mb-20")}
+            className={_utils.cx(_styles, "jdb-job-description")}
             tag="div"
           >
-            <Text content="Job Description" />
+            <Text content="Job Description" weight="medium" />
             <_Builtin.Block
               className={_utils.cx(_styles, "cj-richtext-editor-wrapper")}
               tag="div"
@@ -88,10 +88,10 @@ export function JobDetailBlock({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-507")}
+              className={_utils.cx(_styles, "jdb-header-left")}
               tag="div"
             >
-              <Text content="Hiring Team" />
+              <Text content="Hiring Team" weight="medium" />
               <Text content={textDescription} weight="" color="neutral" />
             </_Builtin.Block>
           </_Builtin.Block>

@@ -1,4 +1,4 @@
-import JobWorkflowDashboard from '@/src/components/JobWorkflows';
+import JobWorkflowDashboard from '@/src/components/Jobs/Job/Workflow';
 import { JobProvider } from '@/src/context/JobContext';
 import JobDashboardProvider from '@/src/context/JobDashboard';
 

@@ -3,21 +3,23 @@ import React, { useEffect, useState } from 'react';
 
 import { AgentPopoverBlock } from '@/devlink3/AgentPopoverBlock';
 import { ScheduleTypeButton } from '@/devlink3/ScheduleTypeButton';
+import toast from '@/src/utils/toast';
 
 import ScheduleIndividualCard from '../FullSchedule/ScheduleIndividual';
 import {
   SchedulingApplication,
+  setRequestSessionIds,
   setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../store';
 import { setScheduleFlow, setStepScheduling } from './store';
 
 function RescheduleSlot() {
-  const { initialSessions, selectedApplicationLog, selectedApplication } =
+  const { initialSessions, selectedApplication, rescheduleSessionIds } =
     useSchedulingApplicationStore((state) => ({
       initialSessions: state.initialSessions,
-      selectedApplicationLog: state.selectedApplicationLog,
       selectedApplication: state.selectedApplication,
+      rescheduleSessionIds: state.rescheduleSessionIds,
     }));
 
   const [selectedLocalSessionIds, setLocalselectedLocalSessionIds] = useState<
@@ -25,38 +27,14 @@ function RescheduleSlot() {
   >([]);
 
   useEffect(() => {
-    if (selectedApplicationLog.metadata.type === 'booking_confirmation') {
-      setLocalselectedLocalSessionIds(
-        selectedApplicationLog.metadata.sessions.map((ses) => ses.id),
-      );
-    } else if (
-      selectedApplicationLog.metadata.type ===
-      'candidate_response_self_schedule'
-    ) {
-      setLocalselectedLocalSessionIds(
-        selectedApplicationLog.metadata.session_ids,
-      );
-    }
-    return;
-  }, [selectedApplicationLog]);
+    setLocalselectedLocalSessionIds(rescheduleSessionIds);
+  }, [rescheduleSessionIds]);
 
-  let session_ids = [];
   let selectedSessions: SchedulingApplication['initialSessions'] = [];
 
-  if (selectedApplicationLog?.metadata?.type === 'booking_confirmation') {
-    session_ids = selectedApplicationLog.metadata.sessions.map((ses) => ses.id);
-    selectedSessions = initialSessions.filter((ses) =>
-      session_ids?.includes(ses.id),
-    );
-  } else if (
-    selectedApplicationLog?.metadata?.type ===
-    'candidate_response_self_schedule'
-  ) {
-    session_ids = selectedApplicationLog.metadata.session_ids;
-    selectedSessions = initialSessions.filter((ses) =>
-      session_ids.includes(ses.id),
-    );
-  }
+  selectedSessions = initialSessions.filter((ses) =>
+    rescheduleSessionIds?.includes(ses.id),
+  );
 
   const selectSession = ({
     session,
@@ -77,6 +55,10 @@ function RescheduleSlot() {
     null,
   );
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (selectedLocalSessionIds.length === 0) {
+      toast.warning('Please select a session to schedule.');
+      return;
+    }
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -89,14 +71,14 @@ function RescheduleSlot() {
     <Stack position={'absolute'} width={'100%'} overflow={'hidden'}>
       <Stack
         position={'relative'}
-        height={'calc(100vh - 60px)'}
+        height={'calc(100vh - 48px)'}
         zIndex={10}
         width={'100%'}
       >
         <Stack
           spacing={2}
           p={2}
-          height={'calc(100vh - 126px)'}
+          height={'calc(100vh - 110px)'}
           width={'100%'}
           overflow={'scroll'}
         >
@@ -114,7 +96,13 @@ function RescheduleSlot() {
             );
           })}
         </Stack>
-        <Stack spacing={2} direction={'row'} justifyContent={'flex-end'} p={2}>
+        <Stack
+          display={'grid'}
+          gridTemplateColumns={'1fr 1fr 1fr'}
+          spacing={2}
+          direction={'row'}
+          p={2}
+        >
           <ScheduleTypeButton
             isSelfScheduleIcon={true}
             isAgentIcon={false}
@@ -122,6 +110,10 @@ function RescheduleSlot() {
             isRequestAvailabilityIcon={false}
             onClickButton={{
               onClick: () => {
+                if (selectedLocalSessionIds.length === 0) {
+                  toast.warning('Please select a session to schedule.');
+                  return;
+                }
                 setSelectedSessionIds(selectedLocalSessionIds);
                 setScheduleFlow('self_scheduling');
                 setStepScheduling('pick_date');
@@ -129,18 +121,35 @@ function RescheduleSlot() {
             }}
             textButton={'Send Self Scheduling Link'}
           />
-          <>
-            <ScheduleTypeButton
-              isSelfScheduleIcon={false}
-              isAgentIcon={true}
-              isDebriefIcon={false}
-              isRequestAvailabilityIcon={false}
-              onClickButton={{
-                onClick: handleClick,
-              }}
-              textButton={'Schedule Via Agent'}
-            />
-          </>
+
+          <ScheduleTypeButton
+            isSelfScheduleIcon={false}
+            isAgentIcon={false}
+            isDebriefIcon={false}
+            isRequestAvailabilityIcon={true}
+            onClickButton={{
+              onClick: () => {
+                if (selectedLocalSessionIds.length === 0) {
+                  toast.warning('Please select a session to schedule.');
+                  return;
+                }
+                setScheduleFlow('create_request_availibility');
+                setStepScheduling('pick_date');
+                setRequestSessionIds(selectedLocalSessionIds);
+              },
+            }}
+            textButton={'Request Availability'}
+          />
+          <ScheduleTypeButton
+            isSelfScheduleIcon={false}
+            isAgentIcon={true}
+            isDebriefIcon={false}
+            isRequestAvailabilityIcon={false}
+            onClickButton={{
+              onClick: handleClick,
+            }}
+            textButton={'Schedule Via Agent'}
+          />
 
           <Popover
             id='popover-agent'

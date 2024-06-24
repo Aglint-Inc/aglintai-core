@@ -3,9 +3,9 @@ import dayjs from 'dayjs';
 import { MouseEvent, useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { FilterList } from '@/devlink2/FilterList';
 import { FilterPill } from '@/devlink2/FilterPill';
-import Icon from '@/src/components/Common/Icons/Icon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import UITextField from '@/src/components/Common/UITextField';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
@@ -177,15 +177,15 @@ function Filters() {
     <Stack direction={'row'} spacing={'var(--space-3)'}>
       <UITextField
         height={32}
-        width='300px'
+        width='250px'
         InputProps={{
           endAdornment: (
             <InputAdornment position='end'>
-              <Icon variant='JobSearch' height='14' />
+              <GlobalIcon iconName='search' size='5'/>
             </InputAdornment>
           ),
         }}
-        placeholder={'Search by session name'}
+        placeholder={'Search session.'}
         onChange={(e) => {
           if (e.target.value) {
             const filteredSchedules = filterSchedules.filter((ele) => {

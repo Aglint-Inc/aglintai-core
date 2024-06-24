@@ -3,6 +3,7 @@ import { get } from 'lodash';
 import { nanoid } from 'nanoid';
 import React, { useState } from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ScrDropdown } from '@/devlink2/ScrDropdown';
 import { ScrQuestionEdit } from '@/devlink2/ScrQuestionEdit';
 import { ScrQuestionOptionEdit } from '@/devlink2/ScrQuestionOptionEdit';
@@ -10,7 +11,7 @@ import { ToggleButton } from '@/devlink2/ToggleButton';
 import UITextField from '@/src/components/Common/UITextField';
 import { usePhoneScreening } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
 
-import { PhoneScreenQuestion } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
+import { PhoneScreenQuestion } from '../types';
 import { qnTypeToIcon } from './ScreeningComp';
 import { qnTypeToLabel2 } from './utils';
 
@@ -182,20 +183,30 @@ const PhoneScreenNewQnForm = ({
             />
           </>
         }
-        onclickAddOption={{
-          onClick: () => {
-            handleUpdateFormFields({
-              path: `${qnPath}.options`,
-              value: [
-                ...editQn.options,
-                {
-                  id: nanoid(),
-                  option: '',
+        slotButton={
+          <>
+            <ButtonGhost
+              textButton='Add Option'
+              size={2}
+              iconName='add'
+              isLeftIcon
+              onClickButton={{
+                onClick: () => {
+                  handleUpdateFormFields({
+                    path: `${qnPath}.options`,
+                    value: [
+                      ...editQn.options,
+                      {
+                        id: nanoid(),
+                        option: '',
+                      },
+                    ],
+                  });
                 },
-              ],
-            });
-          },
-        }}
+              }}
+            />
+          </>
+        }
         onclickRequiredCheckbox={{
           onClick: () => {
             handleUpdateFormFields({

@@ -14,18 +14,6 @@
   border-radius: var(--radius-full);
 }
 
-.green-500 {
-  background-color: var(--green500-287ff474);
-}
-
-.yellow-500 {
-  background-color: var(--yellow500-c095f0f1);
-}
-
-.red-500 {
-  background-color: var(--red500-2e806c7d);
-}
-
 .dash-status-block.published {
   background-color: var(--success-9);
   color: var(--white);
@@ -134,10 +122,6 @@
 
 .icons.mt-3 {
   margin-top: 3px;
-}
-
-.icons.mr--10 {
-  margin-right: -8px;
 }
 
 .icons.mt-2 {

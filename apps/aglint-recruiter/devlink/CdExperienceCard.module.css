@@ -86,10 +86,6 @@
   line-height: 9px;
 }
 
-.text-grey-600 {
-  color: var(--grey600-d5bebe21);
-}
-
 .div-block-689 {
   position: relative;
   z-index: 2;
@@ -104,8 +100,8 @@
   color: hsla(0, 0.00%, 0.00%, 1.00);
 }
 
-.max-width-500 {
-  max-width: 500px;
+.text-grey-600 {
+  color: var(--grey600-d5bebe21);
 }
 
 .fw-semibold {
@@ -138,14 +134,6 @@
   line-height: 16px;
 }
 
-.text-grey-600.mt-9 {
-  margin-top: 9px;
-}
-
-.mt-9 {
-  margin-top: 9px;
-}
-
 .text-grey-600.text-grow {
   white-space: nowrap;
 }
@@ -162,12 +150,6 @@
 
 .mt-10 {
   margin-top: 10px;
-}
-
-@media screen and (max-width: 479px) {
-  .text-grey-600.mob {
-    font-size: 12px;
-  }
 }
 
 .cd-experience-active {

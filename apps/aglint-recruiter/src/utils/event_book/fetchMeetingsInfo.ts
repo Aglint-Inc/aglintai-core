@@ -1,6 +1,5 @@
 import { ScheduleAuthType, schedulingSettingType } from '@aglint/shared-types';
-
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import { supabaseWrap } from '@aglint/shared-utils';
 
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 export const fetchMeetingsInfo = async (meeting_ids) => {

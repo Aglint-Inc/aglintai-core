@@ -185,10 +185,7 @@ export function FeedbackCandidate({
           ) : null}
           {isRatingVisible ? (
             <_Builtin.Block tag="div" {...onClickSubmit}>
-              <ButtonSolid
-                onClickButton={onClickSubmit}
-                textButton="Submit Feedback"
-              />
+              <ButtonSolid onClickButton={onClickSubmit} textButton="" />
             </_Builtin.Block>
           ) : null}
           {isThankYouVisible ? (

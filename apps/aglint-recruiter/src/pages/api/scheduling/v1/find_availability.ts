@@ -1,25 +1,17 @@
 /* eslint-disable no-console */
-import dayjs from 'dayjs';
-
-import { schema_find_availability_payload } from '@/src/types/scheduling/schema_find_availability_payload';
-
-const utc = require('dayjs/plugin/utc');
-const timezone = require('dayjs/plugin/timezone');
-dayjs.extend(utc);
-dayjs.extend(timezone);
+import { schema_find_availability_payload } from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
+import * as v from 'valibot';
 
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const parsedData = schema_find_availability_payload.parse({
+    const parsedData = v.parse(schema_find_availability_payload, {
       ...req.body,
       options: req.body.options || {
         include_conflicting_slots: {},
       },
     });
-
     const cand_schedule = new CandidatesSchedulingV2(
       {
         recruiter_id: parsedData.recruiter_id,

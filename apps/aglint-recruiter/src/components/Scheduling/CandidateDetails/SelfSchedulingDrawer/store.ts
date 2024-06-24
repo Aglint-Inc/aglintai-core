@@ -10,14 +10,20 @@ export interface SchedulingFlow {
     end_date: string;
   };
   schedulingOptions: ApiResponseFindAvailability;
-  stepScheduling: 'pick_date' | 'preference' | 'slot_options' | 'reschedule';
+  stepScheduling:
+    | 'pick_date'
+    | 'preference'
+    | 'slot_options'
+    | 'reschedule'
+    | 'request_availibility';
   noOptions: boolean;
   isSendToCandidateOpen: boolean;
   scheduleFlow:
     | 'self_scheduling'
     | 'email_agent'
     | 'phone_agent'
-    | 'request_availibility'
+    | 'create_request_availibility'
+    | 'update_request_availibility'
     | 'debrief';
   fetchingPlan: boolean;
   selectedSlots: PlanCombinationRespType[];

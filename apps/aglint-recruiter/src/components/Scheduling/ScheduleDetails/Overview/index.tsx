@@ -8,13 +8,13 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
-import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { StatusBadge } from '@/devlink2/StatusBadge';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import { ScheduleButton } from '@/devlink3/ScheduleButton';
 import { ScheduleTabOverview } from '@/devlink3/ScheduleTabOverview';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
+import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -33,6 +33,8 @@ import IconReschedule from '../Icons/IconReschedule';
 import RequestRescheduleDialog from '../RequestRescheduleDialog';
 import { ScheduleMeeting } from '../types';
 import AllRolesMeetings from './AllRolesMeetings';
+import IconAccept from './IconAccept';
+import IconDecline from './IconDecline';
 import InterviewerListCard from './InterviewerListCard';
 
 function Overview({
@@ -40,18 +42,16 @@ function Overview({
   schedule,
   isCancelOpen,
   setIsCancelOpen,
-  setIsRescheduleOpen,
   refetch,
 }: {
   cancelReasons: ReturnType<typeof useScheduleDetails>['data']['cancel_data'];
   schedule: ScheduleMeeting;
   isCancelOpen: boolean;
   setIsCancelOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsRescheduleOpen: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
 }) {
   const router = useRouter();
-  const { recruiterUser } = useAuthDetails();
+  const { recruiterUser, isAllowed } = useAuthDetails();
   const [filterJson, setFilterJson] = useState<InterviewFilterJsonType>();
   const [isRequestRescheduleOpen, setIsRequestRescheduleOpen] = useState(false);
   const [isDeclineOpen, setIsDeclineOpen] = useState(false);
@@ -78,6 +78,7 @@ function Overview({
       .from('interview_filter_json')
       .select('*')
       .contains('session_ids', [schedule.interview_session.id]);
+
     setFilterJson(data[0]);
   };
 
@@ -112,17 +113,17 @@ function Overview({
   );
 
   const isRescheduleButtonVisible =
-    schedule?.users?.find(
+    (schedule?.users?.find(
       (user) =>
         user.interview_session_relation.is_confirmed &&
         user.email === recruiterUser.email &&
         user.interview_session_relation.training_type === 'qualified',
     ) &&
-    !cancelReasons?.some(
-      (item) =>
-        item.recruiter_user.id === recruiterUser.user_id &&
-        !item.interview_session_cancel.is_resolved,
-    ) &&
+      !cancelReasons?.some(
+        (item) =>
+          item.recruiter_user.id === recruiterUser.user_id &&
+          !item.interview_session_cancel.is_resolved,
+      )) ||
     schedule?.interview_meeting?.status === 'confirmed';
 
   const isCancelButtonVisible =
@@ -178,6 +179,36 @@ function Overview({
       )}
 
       <ScheduleTabOverview
+        isResendLinkVisible={
+          isAllowed([
+            'admin',
+            'recruiter',
+            'hiring_manager',
+            'recruiting_coordinator',
+          ]) &&
+          (schedule.interview_meeting.status === 'waiting' ||
+            schedule.interview_meeting.status === 'confirmed')
+        }
+        isCopyLinkVisible={
+          isAllowed([
+            'admin',
+            'recruiter',
+            'hiring_manager',
+            'recruiting_coordinator',
+          ]) &&
+          (schedule.interview_meeting.status === 'confirmed' ||
+            schedule.interview_meeting.status === 'waiting')
+        }
+        slotAttendeesIcon={schedule.users.map((item) => {
+          return item.interview_session_relation.accepted_status ===
+            'accepted' ? (
+            <IconAccept />
+          ) : item.interview_session_relation.accepted_status === 'declined' ? (
+            <IconDecline />
+          ) : (
+            ''
+          );
+        })}
         onClickResendLink={{
           onClick: () => {
             if (
@@ -187,7 +218,7 @@ function Overview({
               if (filterJson?.id) {
                 onClickResendInvite({
                   session_name: schedule.interview_session.name,
-                  application_id: schedule.applications.id,
+                  application_id: schedule.schedule.application_id,
                   candidate_name: getFullName(
                     schedule.candidates.first_name,
                     schedule.candidates.last_name,
@@ -205,17 +236,16 @@ function Overview({
         }}
         onClickCopyCandidate={{
           onClick: async () => {
-            filterJson?.id &&
-              navigator.clipboard.writeText(
-                `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule.schedule.id}?filter_id=${filterJson.id}`,
-              );
+            navigator.clipboard.writeText(
+              `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule.schedule.id}?filter_id=${filterJson?.id}`,
+            );
           },
         }}
         slotButton={
           <>
             {isRescheduleButtonVisible && (
               <ScheduleButton
-                textLabel={'Request Reschedule'}
+                textLabel={'Reschedule'}
                 slotIcon={<IconReschedule />}
                 onClickProps={{
                   onClick: () => {
@@ -246,12 +276,21 @@ function Overview({
         isScheduleCardVisible={
           isRescheduleCardVisible && cancelReasons?.length > 0
         }
-        isMeetingLinkVisible={schedule.interview_meeting.status == 'confirmed'}
+        isMeetingLinkVisible={
+          schedule.interview_meeting.status == 'confirmed' &&
+          Boolean(schedule.interview_meeting.meeting_link)
+        }
         onClickInterviewModuleLink={{
           onClick: () => {
-            router.push(
-              `/scheduling/module/members/${schedule.interview_session.module_id}`,
-            );
+            isAllowed([
+              'admin',
+              'recruiter',
+              'hiring_manager',
+              'recruiting_coordinator',
+            ]) &&
+              router.push(
+                `/scheduling/module/members/${schedule.interview_session.module_id}`,
+              );
           },
         }}
         textSchedule={
@@ -310,7 +349,7 @@ function Overview({
         slotJoinMeetingButton={
           schedule?.interview_meeting?.status === 'confirmed' &&
           schedule?.interview_meeting?.meeting_link && (
-            <ButtonGhost
+            <ButtonSurface
               size={1}
               textButton={'Join Meeting'}
               isLeftIcon={false}
@@ -348,7 +387,7 @@ function Overview({
         }}
         onClickReschedule={{
           onClick: () => {
-            setIsRescheduleOpen(true);
+            //
           },
         }}
         textTimeDuration={getBreakLabel(

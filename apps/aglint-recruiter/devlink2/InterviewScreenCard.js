@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./InterviewScreenCard.module.css";
@@ -31,9 +32,7 @@ export function InterviewScreenCard({
       {...onClickCard}
     >
       <_Builtin.Block tag="div">
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {textTitle}
-        </_Builtin.Block>
+        <Text content={textTitle} weight="bold" size="2" color="neutral-11" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1114")}
@@ -48,43 +47,15 @@ export function InterviewScreenCard({
               className={_utils.cx(_styles, "date-wrappers")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-sm", "text-gray-600")}
-                tag="div"
-              >
-                {textMonth}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "text-20",
-                  "fw-semibold",
-                  "text-grey-600"
-                )}
-                tag="div"
-              >
-                {textDate}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-xsm", "text-grey-600")}
-                tag="div"
-              >
-                {textDay}
-              </_Builtin.Block>
-              {isStatusVisible ? (
-                <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "text-xsm",
-                    "text-first-cap",
-                    "mt-5"
-                  )}
-                  tag="div"
-                  {...colorPropsText}
-                >
-                  {textStatus}
-                </_Builtin.Block>
-              ) : null}
+              <Text content={textMonth} weight="" size="1" color="neutral" />
+              <Text content={textDate} weight="bold" size="5" />
+              <Text content={textDay} weight="" size="1" color="neutral" />
+              <Text
+                content={textStatus}
+                weight=""
+                size="1"
+                color="neutral-12"
+              />
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
@@ -92,7 +63,7 @@ export function InterviewScreenCard({
           className={_utils.cx(_styles, "div-block-912")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{textTime}</_Builtin.Block>
+          <Text content={textTime} weight="" size="2" color="neutral-11" />
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-913")}
             tag="div"
@@ -100,7 +71,12 @@ export function InterviewScreenCard({
             <_Builtin.Block tag="div">
               {slotMeetingIcon ?? <SlotComp componentName="Meeting Icon" />}
             </_Builtin.Block>
-            <_Builtin.Block tag="div">{textMeetingPlatform}</_Builtin.Block>
+            <Text
+              content={textMeetingPlatform}
+              weight=""
+              size="2"
+              color="neutral-11"
+            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-915")}

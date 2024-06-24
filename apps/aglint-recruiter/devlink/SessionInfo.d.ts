@@ -8,4 +8,5 @@ declare function SessionInfo(props: {
   textMeetingType?: React.ReactNode;
   slotMeetingTypeIcon?: Types.Devlink.Slot;
   slotInterviewtypeIcon?: Types.Devlink.Slot;
+  iconName?: React.ReactNode;
 }): React.JSX.Element;

@@ -3,8 +3,8 @@
   padding: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 
   border: 1px solid var(--neutral-6);
   border-radius: var(--radius-4);
@@ -12,10 +12,10 @@
   background-color: var(--neutral-2);
 }
 
-.div-block-1759 {
+.tnr-btn-wrap {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
 }

@@ -18,17 +18,20 @@ export function InterviewPlan({
   slotInterviewCoordinator,
   slotPrimaryButton,
   isEmptyVisible = false,
+  isCoordinatorVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "interviewplan")} tag="div">
-      <_Builtin.Block
-        className={_utils.cx(_styles, "slot-interview-coordinator")}
-        tag="div"
-      >
-        {slotInterviewCoordinator}
-      </_Builtin.Block>
+      {isCoordinatorVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "slot-interview-coordinator")}
+          tag="div"
+        >
+          {slotInterviewCoordinator}
+        </_Builtin.Block>
+      ) : null}
       <_Builtin.Block className={_utils.cx(_styles, "title_wrap")} tag="div">
-        <Text content="Interview plan for this job" weight="medium" />
+        <Text content="Interview plan for this job" weight="bold" />
         <Text
           weight=""
           content="Add your interview type to form an interview plan. You can find your interview type in scheduler"
@@ -61,10 +64,10 @@ export function InterviewPlan({
             <InterviewModuleCard />
             <InterviewBreakCard />
             <AddScheduleCard isAddSessionOptionVisible={false} />
+            <GeneralScheduleCard />
           </>
         )}
       </_Builtin.Block>
-      <GeneralScheduleCard />
     </_Component>
   );
 }

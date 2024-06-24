@@ -29,7 +29,7 @@ export function ScheduleOption({
         >
           {isRadio ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "radio_wra")}
+              className={_utils.cx(_styles, "radio_wrap")}
               tag="div"
               {...onClickSelect}
             >
@@ -47,7 +47,7 @@ export function ScheduleOption({
           ) : null}
           {isCheckbox ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "radio_wra")}
+              className={_utils.cx(_styles, "radio_wrap")}
               tag="div"
               {...onClickSelect}
             >

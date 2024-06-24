@@ -80,7 +80,15 @@ export interface ContextValue {
   isScreeningEnabled: boolean;
   isSchedulingEnabled: boolean;
   emailTemplates: UseQueryResult<
-    DatabaseTable['company_email_template'][],
+    {
+      created_at: string;
+      id: string;
+      recruiter_id: string;
+      subject: string;
+      body: string;
+      type: DatabaseTable['company_email_template']['type'];
+      from_name: string;
+    }[],
     Error
   >;
 }
@@ -315,8 +323,8 @@ const AuthProvider = ({ children }) => {
     });
   };
 
-  const isAssessmentEnabled = useFeatureFlagEnabled('isNewAssessmentEnabled');
-  const isScreeningEnabled = useFeatureFlagEnabled('isPhoneScreeningEnabled');
+  const isAssessmentEnabled = false; //useFeatureFlagEnabled('isNewAssessmentEnabled');
+  const isScreeningEnabled = false; //useFeatureFlagEnabled('isPhoneScreeningEnabled');
   const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
 
   // role based access

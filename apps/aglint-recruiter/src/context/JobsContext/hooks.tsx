@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseEnums } from '@aglint/shared-types';
+import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import { useMemo } from 'react';
 
@@ -25,6 +25,53 @@ const JOB_SECTIONS: DatabaseEnums['application_status'][] = [
   'disqualified',
 ];
 
+export const getActiveSection = ({
+  isAssessmentEnabled,
+  isSchedulingEnabled,
+  isScreeningEnabled,
+  job,
+}: {
+  isAssessmentEnabled: boolean;
+  isSchedulingEnabled: boolean;
+  isScreeningEnabled: boolean;
+  job: Pick<
+    DatabaseTable['public_jobs'],
+    'phone_screen_enabled' | 'assessment'
+  >;
+}) =>
+  JOB_SECTIONS.filter((section) => {
+    switch (section) {
+      case 'new':
+        return true;
+      case 'screening':
+        return (job?.phone_screen_enabled ?? false) && isScreeningEnabled;
+      case 'assessment':
+        return (job?.assessment ?? false) && isAssessmentEnabled;
+      case 'interview':
+        return isSchedulingEnabled;
+      case 'qualified':
+        return true;
+      case 'disqualified':
+        return true;
+    }
+  });
+
+export const useJobActiveSections = (
+  job: Pick<
+    DatabaseTable['public_jobs'],
+    'phone_screen_enabled' | 'assessment'
+  >,
+) => {
+  const { isAssessmentEnabled, isSchedulingEnabled, isScreeningEnabled } =
+    useAuthDetails();
+  return getActiveSection({
+    isAssessmentEnabled,
+    isSchedulingEnabled,
+    isScreeningEnabled,
+    job,
+  });
+};
+
 const useJobActions = () => {
   const {
     recruiter,
@@ -38,21 +85,14 @@ const useJobActions = () => {
     () => ({
       ...jobs,
       data: (jobs?.data ?? []).map((job) => {
-        const activeSections = JOB_SECTIONS.filter((section) => {
-          switch (section) {
-            case 'new':
-              return true;
-            case 'screening':
-              return (job?.phone_screen_enabled ?? false) && isScreeningEnabled;
-            case 'assessment':
-              return (job?.assessment ?? false) && isAssessmentEnabled;
-            case 'interview':
-              return isSchedulingEnabled;
-            case 'qualified':
-              return true;
-            case 'disqualified':
-              return true;
-          }
+        const activeSections = getActiveSection({
+          isAssessmentEnabled,
+          isSchedulingEnabled,
+          isScreeningEnabled,
+          job: {
+            assessment: job?.assessment,
+            phone_screen_enabled: job?.phone_screen_enabled,
+          },
         });
         return { ...job, activeSections };
       }),

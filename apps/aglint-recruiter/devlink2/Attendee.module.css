@@ -9,7 +9,7 @@
 .attendee_block {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .toggle_flexx {
@@ -35,6 +35,8 @@
 
 .embed_flex {
   display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .embed_flex.relative_3 {

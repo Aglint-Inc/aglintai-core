@@ -16,6 +16,7 @@ export function InterviewModuleStats({
     <_Component
       className={_utils.cx(_styles, "dashboard_widget_wrap")}
       tag="div"
+      col-span="3"
     >
       <_Builtin.Block
         className={_utils.cx(_styles, "dashboard-widget-header")}

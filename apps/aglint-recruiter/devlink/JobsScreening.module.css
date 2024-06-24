@@ -135,14 +135,6 @@
   opacity: 0.7;
 }
 
-.fw-light {
-  font-weight: 300;
-}
-
-.text-capitalize {
-  text-transform: uppercase;
-}
-
 .cdd-import-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -352,10 +344,6 @@
   color: var(--blue600-aad8d97e);
 }
 
-.text-kale-600 {
-  color: var(--kale600-c60cbc05);
-}
-
 .text-grey-400 {
   color: var(--grey400-863ed4b5);
 }
@@ -366,14 +354,6 @@
 
 .text-color-white {
   color: white;
-}
-
-.text-blue-800 {
-  color: var(--blue800-09c1dfbf);
-}
-
-.text-red-500 {
-  color: var(--red500-2e806c7d);
 }
 
 .input {

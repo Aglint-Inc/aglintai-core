@@ -8,7 +8,6 @@ import {
   Alert,
   Autocomplete,
   Chip,
-  IconButton,
   Popover,
   Stack,
   Typography,
@@ -20,6 +19,7 @@ import { capitalize, cloneDeep } from 'lodash';
 import { useRouter } from 'next/router';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { DayOff } from '@/devlink2/DayOff';
 import { KeywordCard } from '@/devlink2/KeywordCard';
 import { Keywords } from '@/devlink2/Keywords';
@@ -28,7 +28,6 @@ import { ScheduleSettings } from '@/devlink2/ScheduleSettings';
 import { TimeRangeInput } from '@/devlink2/TimeRangeInput';
 import { WorkingHourDay } from '@/devlink2/WorkingHourDay';
 import FilterInput from '@/src/components/CandidateDatabase/Search/FilterInput';
-import Icon from '@/src/components/Common/Icons/Icon';
 import UITextField from '@/src/components/Common/UITextField';
 import DateSelect from '@/src/components/Scheduling/Settings/Components/DateSelector';
 import MuiSelect from '@/src/components/Scheduling/Settings/Components/MuiSelect';
@@ -473,12 +472,14 @@ function InterviewerLevelSettings({
                           key={item} // Add a unique key prop for each item
                           clickable
                           onDelete={() => {
-                            setFreeKeywords((prev) => prev.filter((ele) => ele !== item));
+                            setFreeKeywords((prev) =>
+                              prev.filter((ele) => ele !== item),
+                            );
                           }}
                           deleteIcon={
-                            <IconButton>
-                              <Icon variant='CloseThinIcon' />
-                            </IconButton>
+                            <Stack>
+                              <GlobalIcon iconName='close' size='4' />
+                            </Stack>
                           }
                           label={item}
                         />
@@ -486,7 +487,7 @@ function InterviewerLevelSettings({
                     </>
                   )
                 }
-              />                
+              />
               <KeywordCard
                 textTitle={'Soft Conflicts'}
                 textWarning={
@@ -521,12 +522,14 @@ function InterviewerLevelSettings({
                           key={item} // Add a unique key prop for each item
                           clickable
                           onDelete={() => {
-                            setSoftConflictsKeyWords((prev) => prev.filter((ele) => ele !== item));
+                            setSoftConflictsKeyWords((prev) =>
+                              prev.filter((ele) => ele !== item),
+                            );
                           }}
                           deleteIcon={
-                            <IconButton>
-                              <Icon variant='CloseThinIcon' />
-                            </IconButton>
+                            <Stack>
+                              <GlobalIcon iconName='close' size='4' />{' '}
+                            </Stack>
                           }
                           label={item}
                         />
@@ -572,12 +575,14 @@ function InterviewerLevelSettings({
                           key={item} // Add a unique key prop for each item
                           clickable
                           onDelete={() => {
-                            setOutOfOffice((prev) => prev.filter((ele) => ele !== item));
+                            setOutOfOffice((prev) =>
+                              prev.filter((ele) => ele !== item),
+                            );
                           }}
                           deleteIcon={
-                            <IconButton>
-                              <Icon variant='CloseThinIcon' />
-                            </IconButton>
+                            <Stack>
+                              <GlobalIcon iconName='close' size='4' />
+                            </Stack>
                           }
                           label={item}
                         />
@@ -623,12 +628,14 @@ function InterviewerLevelSettings({
                           key={item} // Add a unique key prop for each item
                           clickable
                           onDelete={() => {
-                            setRecruitingBlocks((prev) => prev.filter((ele) => ele !== item));
+                            setRecruitingBlocks((prev) =>
+                              prev.filter((ele) => ele !== item),
+                            );
                           }}
                           deleteIcon={
-                            <IconButton>
-                              <Icon variant='CloseThinIcon' />
-                            </IconButton>
+                            <Stack>
+                              <GlobalIcon iconName='close' size='4' />
+                            </Stack>
                           }
                           label={item}
                         />

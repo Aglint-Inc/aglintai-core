@@ -20,10 +20,7 @@ export function TaskNotRespond({
       tag="div"
     >
       <Text weight="" content="" />
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1759")}
-        tag="div"
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "tnr-btn-wrap")} tag="div">
         <ButtonSolid
           onClickButton={onClickReqPhone}
           size="1"

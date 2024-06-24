@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { IconButtonSoft } from "./IconButtonSoft";
 import { Text } from "./Text";
 import { SelectActionsDropdown } from "./SelectActionsDropdown";
 import { ButtonSoft } from "./ButtonSoft";
@@ -30,11 +31,14 @@ export function SelectActionBar({
         className={_utils.cx(_styles, "select-action-left-block")}
         tag="div"
       >
-        <_Builtin.HtmlEmbed
-          className={_utils.cx(_styles, "close-button")}
-          value="%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22currentColor%22%2F%3E%0A%3Cpath%20d%3D%22M0.5%203C0.5%201.61929%201.61929%200.5%203%200.5H21C22.3807%200.5%2023.5%201.61929%2023.5%203V21C23.5%2022.3807%2022.3807%2023.5%2021%2023.5H3C1.61929%2023.5%200.5%2022.3807%200.5%2021V3Z%22%20stroke%3D%22%23191400%22%20stroke-opacity%3D%220.207843%22%2F%3E%0A%3Cpath%20d%3D%22M14.6172%2015.1328L11.5%2012.0391L8.40625%2015.1328C8.21875%2015.2734%208.03906%2015.2734%207.86719%2015.1328C7.72656%2014.9609%207.72656%2014.7891%207.86719%2014.6172L10.9609%2011.5L7.86719%208.40625C7.72656%208.21875%207.72656%208.03906%207.86719%207.86719C8.03906%207.72656%208.21875%207.72656%208.40625%207.86719L11.5%2010.9609L14.6172%207.86719C14.7891%207.72656%2014.9609%207.72656%2015.1328%207.86719C15.2734%208.03906%2015.2734%208.21875%2015.1328%208.40625L12.0391%2011.5L15.1328%2014.6172C15.2734%2014.7891%2015.2734%2014.9609%2015.1328%2015.1328C14.9609%2015.2734%2014.7891%2015.2734%2014.6172%2015.1328Z%22%20fill%3D%22%2321201C%22%2F%3E%0A%3C%2Fsvg%3E"
-          {...onClickClear}
-        />
+        <_Builtin.Block tag="div" {...onClickClear}>
+          <IconButtonSoft
+            iconName="close"
+            color="neutral"
+            iconWeight="thin"
+            size="1"
+          />
+        </_Builtin.Block>
         <Text content={textSelected} weight="" />
         {isSelectAllVisible ? (
           <_Builtin.Block

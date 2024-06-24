@@ -52,12 +52,16 @@
   overflow: visible;
   justify-content: center;
   align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 
-  transition: all 200ms ease;
+  transition-property: all;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
 
   cursor: pointer;
+
+  user-select: none;
 }
 
 .icon_placeholder {

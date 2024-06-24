@@ -12,4 +12,5 @@ declare function IconButtonSoft(props: {
   iconWeight?: Types.Builtin.Text;
   iconColor?: Types.Builtin.Text;
   iconName?: React.ReactNode;
+  onClickButton?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

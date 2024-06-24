@@ -1,29 +1,41 @@
-import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
-import { EmailTemplateAPi } from '@aglint/shared-types';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
+import { getFullName } from '@aglint/shared-utils';
+import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 
 export async function dbUtil(
   req_body: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['api_payload'],
 ) {
-  const { data: filterJson } = await supabaseAdmin
-    .from('interview_filter_json')
-    .select(
-      'filter_json,interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company),candidates(first_name,email,recruiter(logo))))',
-    )
-    .eq('id', req_body.filter_json_id)
-    .single()
-    .throwOnError();
+  const [filterJson] = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_filter_json')
+      .select(
+        'filter_json,interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company,recruiter),candidates(first_name,last_name,email,recruiter(logo))))',
+      )
+      .eq('id', req_body.filter_json_id),
+  );
 
   const {
     interview_schedule: {
       applications: {
-        candidates: { email: cand_email, first_name, recruiter },
-        public_jobs: { company, recruiter_id, job_title },
+        candidates: { email: cand_email, first_name, recruiter, last_name },
+        public_jobs: {
+          company,
+          recruiter_id,
+          job_title,
+          recruiter: recruiter_user_id,
+        },
       },
     },
   } = filterJson;
 
+  const [recruiter_user] = supabaseWrap(
+    await supabaseAdmin
+      .from('recruiter_user')
+      .select('first_name,last_name')
+      .eq('user_id', recruiter_user_id),
+  );
   const comp_email_temp = await fetchCompEmailTemp(
     recruiter_id,
     'sendSelfScheduleRequest_email_applicant',
@@ -31,11 +43,19 @@ export async function dbUtil(
   const scheduleLink = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.interview_schedule.id}?filter_id=${req_body.filter_json_id}`;
   const comp_email_placeholder: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['comp_email_placeholders'] =
     {
-      '{{ candidateFirstName }}': first_name,
-      '{{ companyName }}': company,
-      '{{ jobTitle }}': job_title,
-      '{{ selfScheduleLink }}': `<a href="${scheduleLink}">here</a>`,
-      '{{ supportLink }}': '',
+      candidateFirstName: first_name,
+      companyName: company,
+      jobRole: job_title,
+      selfScheduleLink: `<a href="${scheduleLink}">here</a>`,
+      recruiterName: getFullName(
+        recruiter_user.first_name,
+        recruiter_user.last_name,
+      ),
+      candidateLastName: last_name,
+      candidateName: getFullName(first_name, last_name),
+      recruiterFirstName: recruiter_user.first_name,
+      recruiterLastName: recruiter_user.last_name,
+      recruiterTimeZone: '',
     };
 
   const filled_comp_template = fillCompEmailTemplate(

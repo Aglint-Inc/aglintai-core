@@ -12,14 +12,6 @@
   cursor: pointer;
 }
 
-.skills-wrapps.blue-100 {
-  background-color: #edf7ff;
-}
-
-.blue-100 {
-  background-color: var(--blue100-d2a1a159);
-}
-
 .icons {
   display: flex;
   flex-direction: column;
@@ -113,10 +105,6 @@
 
 .icons.mt-3 {
   margin-top: 3px;
-}
-
-.icons.mr--10 {
-  margin-right: -8px;
 }
 
 .icons.mt-2 {

@@ -147,7 +147,7 @@
   display: flex;
   grid-column-gap: 2px;
   grid-row-gap: 2px;
-  border-radius: 10px;
+  border-radius: var(--radius-4);
 }
 
 .training-completed-wrap {
@@ -230,6 +230,24 @@
   align-items: center;
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
+}
+
+.mlc-drop-wrap {
+  display: flex;
+  width: 26px;
+  height: 26px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: var(--radius-2);
+
+  transition: all 200ms ease;
+
+  cursor: pointer;
+}
+
+.mlc-drop-wrap:hover {
+  background-color: rgba(32, 16, 0, 0.06);
 }
 
 .mlc-three-dot {

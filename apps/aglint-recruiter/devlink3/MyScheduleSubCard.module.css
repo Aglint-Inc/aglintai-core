@@ -31,10 +31,6 @@
   grid-row-gap: var(--space-2);
 }
 
-.mssc-top-wrap.space-between {
-  justify-content: space-between;
-}
-
 .mssc-top-left-wrap {
   display: flex;
   justify-content: flex-start;
@@ -64,8 +60,8 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .icons {
@@ -88,14 +84,6 @@
   cursor: pointer;
 }
 
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
-}
-
 .icons.pointer {
   cursor: pointer;
 }
@@ -104,8 +92,8 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .card_flex.hide {
@@ -114,6 +102,11 @@
 
 .hide {
   display: none;
+}
+
+.card_flex.gap-2 {
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .mssc-drop-wraper {

@@ -3,11 +3,13 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { Text } from "./Text";
+import { IconButtonGhost } from "./IconButtonGhost";
+import { GlobalBadge } from "./GlobalBadge";
 import * as _utils from "./utils";
 import _styles from "./CompanyLocation.module.css";
 
 const _interactionsData = JSON.parse(
-  '{"events":{"e-1556":{"id":"e-1556","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-597","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1557"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"7f03ee71-98f6-b885-6c12-74504b4627a7","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"7f03ee71-98f6-b885-6c12-74504b4627a7","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1716304090165},"e-1557":{"id":"e-1557","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-598","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1556"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"7f03ee71-98f6-b885-6c12-74504b4627a7","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"7f03ee71-98f6-b885-6c12-74504b4627a7","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1716304090167}},"actionLists":{"a-597":{"id":"a-597","title":"comapny_lcation","actionItemGroups":[{"actionItems":[{"id":"a-597-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".location-delete-wrappers","selectorGuids":["9ec61334-e594-fee9-aacb-eaec52e40f69"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1716303907669},"a-598":{"id":"a-598","title":"comapny_lcation 2","actionItemGroups":[{"actionItems":[{"id":"a-598-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".location-delete-wrappers","selectorGuids":["9ec61334-e594-fee9-aacb-eaec52e40f69"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1716303907669}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+  '{"events":{"e-1556":{"id":"e-1556","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-597","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1557"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"7f03ee71-98f6-b885-6c12-74504b4627a7","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"7f03ee71-98f6-b885-6c12-74504b4627a7","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1716304090165},"e-1557":{"id":"e-1557","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-598","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1556"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"7f03ee71-98f6-b885-6c12-74504b4627a7","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"7f03ee71-98f6-b885-6c12-74504b4627a7","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1716304090167},"e-1576":{"id":"e-1576","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-613","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1577"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"627f9dba-f186-82c1-a71f-5a95f8ccc427","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"627f9dba-f186-82c1-a71f-5a95f8ccc427","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718275972142},"e-1577":{"id":"e-1577","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-614","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1576"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"627f9dba-f186-82c1-a71f-5a95f8ccc427","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"627f9dba-f186-82c1-a71f-5a95f8ccc427","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718275972144},"e-1578":{"id":"e-1578","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-613","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1579"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"5bae7064-a4ab-5c07-f32d-92c0deb12e6f","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"5bae7064-a4ab-5c07-f32d-92c0deb12e6f","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718276624481},"e-1579":{"id":"e-1579","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-614","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1578"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"5bae7064-a4ab-5c07-f32d-92c0deb12e6f","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"5bae7064-a4ab-5c07-f32d-92c0deb12e6f","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718276624482}},"actionLists":{"a-597":{"id":"a-597","title":"comapny_lcation","actionItemGroups":[{"actionItems":[{"id":"a-597-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".location-delete-wrappers","selectorGuids":["9ec61334-e594-fee9-aacb-eaec52e40f69"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1716303907669},"a-598":{"id":"a-598","title":"comapny_lcation 2","actionItemGroups":[{"actionItems":[{"id":"a-598-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".location-delete-wrappers","selectorGuids":["9ec61334-e594-fee9-aacb-eaec52e40f69"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1716303907669},"a-613":{"id":"a-613","title":"score pill hover in","actionItemGroups":[{"actionItems":[{"id":"a-613-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".icons","selectorGuids":["c637f5c7-9613-2c22-7371-c11bf4042351"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-613-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".icons","selectorGuids":["c637f5c7-9613-2c22-7371-c11bf4042351"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":true,"createdOn":1718275975402},"a-614":{"id":"a-614","title":"score pill hover out","actionItemGroups":[{"actionItems":[{"id":"a-614-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".icons","selectorGuids":["c637f5c7-9613-2c22-7371-c11bf4042351"]},"value":0,"unit":""}}]}],"useFirstGroupAsInitialState":false,"createdOn":1718275975402}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
 );
 
 export function CompanyLocation({
@@ -27,23 +29,10 @@ export function CompanyLocation({
       data-w-id="7f03ee71-98f6-b885-6c12-74504b4627a7"
       tag="div"
     >
-      <_Builtin.Block
-        className={_utils.cx(_styles, "flex-horizontal", "center", "gap-2")}
-        tag="div"
-      >
-        <Text content={textLocationHeader} weight="medium" />
-        {isHeadQuaterVisible ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "success-badge")}
-            tag="div"
-          >
-            <Text size="1" color="white" content="Headquaters" />
-          </_Builtin.Block>
-        ) : null}
-      </_Builtin.Block>
+      <Text content={textLocationHeader} weight="medium" />
       <Text content={textFullAddress} />
       <_Builtin.Block
-        className={_utils.cx(_styles, "flex-horizontal", "center", "gap-2")}
+        className={_utils.cx(_styles, "flex-horizontal", "center", "gap-1")}
         tag="div"
       >
         <_Builtin.HtmlEmbed
@@ -56,17 +45,27 @@ export function CompanyLocation({
         className={_utils.cx(_styles, "location-delete-wrappers")}
         tag="div"
       >
-        <_Builtin.HtmlEmbed
-          className={_utils.cx(_styles, "icons", "curser-hover-pointer")}
-          value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M0%209.44681V11.4894C0%2011.7714%200.228621%2012%200.510638%2012H2.55319C2.68862%2012%202.8185%2011.9462%202.91427%2011.8504L10.063%204.70172C10.0631%204.70157%2010.0633%204.70143%2010.0634%204.70128L11.6972%203.06746C12.1009%202.66379%2012.1009%202.03409%2011.6972%201.63041L10.3696%200.302754C9.96591%20-0.100918%209.33621%20-0.100918%208.93254%200.302754L0.149562%209.08573C0.0537992%209.1815%200%209.31138%200%209.44681ZM9.70213%203.61827L10.9715%202.34894L9.65106%201.02853L8.38173%202.29787L9.70213%203.61827ZM7.65957%203.02002L1.02128%209.65832V10.9787H2.34168L8.97998%204.34043L7.65957%203.02002Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
-          {...onClickEdit}
+        <IconButtonGhost
+          onClickButton={onClickEdit}
+          iconName="edit_square"
+          iconColor="neutral"
+          color="neutral"
         />
-        <_Builtin.HtmlEmbed
-          className={_utils.cx(_styles, "icons", "curser-hover-pointer")}
-          value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M4%202V1C4%200.423858%204.42386%200%205%200H7C7.57614%200%208%200.423858%208%201V2H10C10.2761%202%2010.5%202.22386%2010.5%202.5C10.5%202.77614%2010.2761%203%2010%203H7.5H4.5H2C1.72386%203%201.5%202.77614%201.5%202.5C1.5%202.22386%201.72386%202%202%202H4ZM7%202V1H5V2H7ZM5%209.5C5%209.77614%204.77614%2010%204.5%2010C4.22386%2010%204%209.77614%204%209.5V5C4%204.72386%204.22386%204.5%204.5%204.5C4.77614%204.5%205%204.72386%205%205V9.5ZM8%209.5C8%209.77614%207.77614%2010%207.5%2010C7.22386%2010%207%209.77614%207%209.5V5C7%204.72386%207.22386%204.5%207.5%204.5C7.77614%204.5%208%204.72386%208%205V9.5ZM2%204.5C2%204.22386%202.22386%204%202.5%204C2.77614%204%203%204.22386%203%204.5V11H9V4.5C9%204.22386%209.22386%204%209.5%204C9.77614%204%2010%204.22386%2010%204.5V11C10%2011.5761%209.57614%2012%209%2012H3C2.42386%2012%202%2011.5761%202%2011V4.5Z%22%20fill%3D%22%23E35B66%22%2F%3E%0A%3C%2Fsvg%3E"
-          {...onClickDelete}
+        <IconButtonGhost
+          onClickButton={onClickDelete}
+          iconName="delete"
+          iconColor="error"
+          color="error"
         />
       </_Builtin.Block>
+      {isHeadQuaterVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "cl-badge-wrap")}
+          tag="div"
+        >
+          <GlobalBadge textBadge="Headquarters" />
+        </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }

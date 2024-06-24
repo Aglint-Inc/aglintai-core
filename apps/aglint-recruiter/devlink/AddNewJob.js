@@ -1,13 +1,21 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import * as _interactions from "./interactions";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./AddNewJob.module.css";
+
+const _interactionsData = JSON.parse(
+  '{"events":{"e-1576":{"id":"e-1576","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-613","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1577"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"627f9dba-f186-82c1-a71f-5a95f8ccc427","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"627f9dba-f186-82c1-a71f-5a95f8ccc427","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718275972142},"e-1577":{"id":"e-1577","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-614","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1576"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"627f9dba-f186-82c1-a71f-5a95f8ccc427","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"627f9dba-f186-82c1-a71f-5a95f8ccc427","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718275972144},"e-1578":{"id":"e-1578","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-613","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1579"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"5bae7064-a4ab-5c07-f32d-92c0deb12e6f","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"5bae7064-a4ab-5c07-f32d-92c0deb12e6f","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718276624481},"e-1579":{"id":"e-1579","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-614","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1578"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"5bae7064-a4ab-5c07-f32d-92c0deb12e6f","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"5bae7064-a4ab-5c07-f32d-92c0deb12e6f","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718276624482}},"actionLists":{"a-613":{"id":"a-613","title":"score pill hover in","actionItemGroups":[{"actionItems":[{"id":"a-613-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".icons","selectorGuids":["c637f5c7-9613-2c22-7371-c11bf4042351"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-613-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".icons","selectorGuids":["c637f5c7-9613-2c22-7371-c11bf4042351"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":true,"createdOn":1718275975402},"a-614":{"id":"a-614","title":"score pill hover out","actionItemGroups":[{"actionItems":[{"id":"a-614-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".icons","selectorGuids":["c637f5c7-9613-2c22-7371-c11bf4042351"]},"value":0,"unit":""}}]}],"useFirstGroupAsInitialState":false,"createdOn":1718275975402}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+);
 
 export function AddNewJob({
   as: _Component = _Builtin.Block,
   onClickAdd = {},
 }) {
+  _interactions.useInteractions(_interactionsData, _styles);
+
   return (
     <_Component
       className={_utils.cx(_styles, "subnavaddjob")}
@@ -18,9 +26,15 @@ export function AddNewJob({
         className={_utils.cx(_styles, "icons")}
         value="%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewbox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M15%208C15%207.70833%2014.9062%207.46875%2014.7188%207.28125C14.5312%207.09375%2014.2917%207%2014%207H2C1.70833%207%201.46875%207.09375%201.28125%207.28125C1.09375%207.46875%201%207.70833%201%208V16C1%2016.2917%201.09375%2016.5312%201.28125%2016.7188C1.46875%2016.9062%201.70833%2017%202%2017H11.25C11.5625%2017.375%2011.9271%2017.7083%2012.3438%2018H2C1.4375%2017.9792%200.96875%2017.7812%200.59375%2017.4062C0.21875%2017.0312%200.0208333%2016.5625%200%2016V8C0.0208333%207.4375%200.21875%206.96875%200.59375%206.59375C0.96875%206.21875%201.4375%206.02083%202%206H14C14.5625%206.02083%2015.0312%206.21875%2015.4062%206.59375C15.7812%206.96875%2015.9792%207.4375%2016%208V8.03125C15.8333%208.01042%2015.6667%208%2015.5%208C15.3333%208%2015.1667%208.01042%2015%208.03125V8ZM14%204C14.3125%204.02083%2014.4792%204.1875%2014.5%204.5C14.4792%204.8125%2014.3125%204.97917%2014%205H2C1.6875%204.97917%201.52083%204.8125%201.5%204.5C1.52083%204.1875%201.6875%204.02083%202%204H14ZM12.5%202C12.8125%202.02083%2012.9792%202.1875%2013%202.5C12.9792%202.8125%2012.8125%202.97917%2012.5%203H3.5C3.1875%202.97917%203.02083%202.8125%203%202.5C3.02083%202.1875%203.1875%202.02083%203.5%202H12.5ZM12%2013.5C12%2014.125%2012.1562%2014.7083%2012.4688%2015.25C12.7812%2015.7917%2013.2083%2016.2188%2013.75%2016.5312C14.2917%2016.8438%2014.875%2017%2015.5%2017C16.125%2017%2016.7083%2016.8438%2017.25%2016.5312C17.7917%2016.2188%2018.2188%2015.7917%2018.5312%2015.25C18.8438%2014.7083%2019%2014.125%2019%2013.5C19%2012.875%2018.8438%2012.2917%2018.5312%2011.75C18.2188%2011.2083%2017.7917%2010.7812%2017.25%2010.4688C16.7083%2010.1562%2016.125%2010%2015.5%2010C14.875%2010%2014.2917%2010.1562%2013.75%2010.4688C13.2083%2010.7812%2012.7812%2011.2083%2012.4688%2011.75C12.1562%2012.2917%2012%2012.875%2012%2013.5ZM20%2013.5C20%2014.3125%2019.8021%2015.0625%2019.4062%2015.75C19.0104%2016.4375%2018.4583%2016.9896%2017.75%2017.4062C17.0417%2017.8021%2016.2917%2018%2015.5%2018C14.7083%2018%2013.9583%2017.8021%2013.25%2017.4062C12.5417%2016.9896%2011.9896%2016.4375%2011.5938%2015.75C11.1979%2015.0625%2011%2014.3125%2011%2013.5C11%2012.6875%2011.1979%2011.9375%2011.5938%2011.25C11.9896%2010.5625%2012.5417%2010.0104%2013.25%209.59375C13.9583%209.19792%2014.7083%209%2015.5%209C16.2917%209%2017.0417%209.19792%2017.75%209.59375C18.4583%2010.0104%2019.0104%2010.5625%2019.4062%2011.25C19.8021%2011.9375%2020%2012.6875%2020%2013.5ZM16%2011.5V13H17.5C17.8125%2013.0208%2017.9792%2013.1875%2018%2013.5C17.9792%2013.8125%2017.8125%2013.9792%2017.5%2014H16V15.5C15.9792%2015.8125%2015.8125%2015.9792%2015.5%2016C15.1875%2015.9792%2015.0208%2015.8125%2015%2015.5V14H13.5C13.1875%2013.9792%2013.0208%2013.8125%2013%2013.5C13.0208%2013.1875%2013.1875%2013.0208%2013.5%2013H15V11.5C15.0208%2011.1875%2015.1875%2011.0208%2015.5%2011C15.8125%2011.0208%2015.9792%2011.1875%2016%2011.5Z%22%20fill%3D%22%232F3941%22%20style%3D%22fill%3A%232F3941%3Bfill%3Acolor(display-p3%200.1843%200.2235%200.2549)%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E"
       />
-      <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-        {"Add Job"}
-      </_Builtin.Block>
+      <Text
+        content={
+          <>
+            {"Add Job"}
+            <br />
+          </>
+        }
+        weight="medium"
+      />
     </_Component>
   );
 }

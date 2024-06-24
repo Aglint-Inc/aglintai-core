@@ -26,7 +26,7 @@ function ScheduleMeetingList({
               date != 'undefined' ? (
                 dayjs(date).format('MMM')
               ) : (
-                <DateIcon size={40} />
+                <DateIcon />
               )
             }
             slotMyScheduleSubCard={schedules.map((meetingDetails, i) => {

@@ -1,4 +1,5 @@
 import { Stack } from '@mui/material';
+import { Box } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
@@ -39,6 +40,8 @@ function AllList({
       style={{
         opacity: isLoading ? 0.5 : 1,
         pointerEvents: isLoading ? 'none' : 'auto',
+        height: 'calc(100vh - 182px)',
+        overflowY: 'auto',
       }}
     >
       {isLoading || isPending ? (
@@ -57,7 +60,21 @@ function AllList({
       ) : (
         <>
           {!isPending && !isFetching && applicationList.length === 0 && (
-            <AllInterviewEmpty textDynamic='No candidate found' />
+            <Box
+              sx={{
+                margin: 'var(--space-4)',
+                borderRadius: 'var(--radius-2)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: 'calc(100vh - 166px)',
+                backgroundColor: 'var(--neutral-2)', // replace with your desired background color
+              }}
+            >
+              <Box maxWidth="sm" width="300px">
+                <AllInterviewEmpty textDynamic="No candidate found." />
+              </Box>
+            </Box>
           )}
           {applicationList.map((app) => {
             return (

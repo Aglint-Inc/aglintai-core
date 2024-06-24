@@ -4,21 +4,21 @@ import {
   IconButton,
   InputAdornment,
   Stack,
-  TextField,
   Typography,
 } from '@mui/material';
-import { IconExclamationCircle } from '@tabler/icons-react';
 import LoaderGrey from 'aglint-recruiter/public/lottie/LoaderGrey';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { RecLoginPage } from '@/devlink2/RecLoginPage';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Footer from '../Common/Footer';
+import UITextField from '../Common/UITextField';
 
 interface LoginFormInputs {
   email: string;
@@ -162,7 +162,7 @@ function Login() {
           }}
           slotForm={
             <Stack spacing={'var(--space-3)'}>
-              <TextField
+              <UITextField
                 {...email}
                 id='email'
                 placeholder='Email'
@@ -178,7 +178,7 @@ function Login() {
                 }}
               />
 
-              <TextField
+              <UITextField
                 {...password}
                 id='password'
                 placeholder='Password'
@@ -200,9 +200,11 @@ function Login() {
                         onMouseDown={handleMouseDownPassword}
                         edge='end'
                       >
-                        <span icon-size='sm'>
-                          {showPassword ? 'visibility' : 'visibility_off'}
-                        </span>
+                        {showPassword ? (
+                          <GlobalIcon iconName='visibility' />
+                        ) : (
+                          <GlobalIcon iconName='visibility_off' />
+                        )}
                       </IconButton>
                     </InputAdornment>
                   ),
@@ -212,12 +214,12 @@ function Login() {
                 <Stack
                   alignItems='center'
                   component={Typography}
-                  direction="row"
-                  color="var(--error-11)"
+                  direction='row'
+                  color='var(--error-11)'
                   gap={0.5}
-                  fontSize="12px"
+                  fontSize='12px'
                 >
-                  <IconExclamationCircle size='1.2em' />
+                  <GlobalIcon iconName='error' />
                   {loginError}
                 </Stack>
               )}
@@ -227,15 +229,15 @@ function Login() {
             onClick: handleSubmit(onSubmit),
           }}
         />
-    </Box>
-    <Box
-      sx={{
-        width: '100%',
-        textAlign: 'center',
-      }}
-    >
-      <Footer />
-    </Box>
+      </Box>
+      <Box
+        sx={{
+          width: '100%',
+          textAlign: 'center',
+        }}
+      >
+        <Footer />
+      </Box>
     </Container>
   );
 }

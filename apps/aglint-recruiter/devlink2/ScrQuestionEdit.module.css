@@ -180,64 +180,9 @@
   grid-row-gap: 12px;
 }
 
-.div-block-419 {
+.sqe-btn-wrap {
   display: flex;
-  margin-top: 20px;
-}
-
-.scr-question-add-btn {
-  display: flex;
-  padding: 2px 6px;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
-
-  border-radius: 4px;
-
-  transition: all 250ms ease;
-
-  cursor: pointer;
-}
-
-.scr-question-add-btn:hover {
-  background-color: #edf7ff;
-}
-
-.text-blue-500 {
-  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
-}
-
-.text-underline {
-  transition: all 250ms ease;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.text-underline:hover {
-  opacity: 0.7;
-}
-
-.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.7;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
-}
-
-.text-blue-500.ml-12 {
-  margin-left: 8px;
+  margin-top: var(--space-4);
 }
 
 .div-block-421 {

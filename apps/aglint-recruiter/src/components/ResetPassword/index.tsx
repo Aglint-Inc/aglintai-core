@@ -16,6 +16,7 @@ import {
 } from 'react-hook-form';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ResetPassword } from '@/devlink/ResetPassword';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
@@ -172,7 +173,7 @@ export default function ResetPasswordComponent() {
   );
 }
 
-const CustomFormField = ({
+export const CustomFormField = ({
   type,
   multiLine,
   placeholder,
@@ -209,9 +210,11 @@ const CustomFormField = ({
               onClick={handleClickShowPassword}
               edge='end'
             >
-              <span icon-size='sm'>
-                {showPassword ? 'visibility' : 'visibility_off'}
-              </span>
+              {showPassword ? (
+                <GlobalIcon iconName='visibility' />
+              ) : (
+                <GlobalIcon iconName='visibility_off' />
+              )}
             </IconButton>
           </InputAdornment>
         ),

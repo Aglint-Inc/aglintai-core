@@ -13,13 +13,15 @@ import {
   SessionsCombType,
   TimeDurationType,
 } from '@aglint/shared-types';
-import { ScheduleUtils, SINGLE_DAY_TIME } from '@aglint/shared-utils';
+import {
+  ScheduleUtils,
+  scheduling_options_schema,
+  SINGLE_DAY_TIME,
+} from '@aglint/shared-utils';
 import { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash';
 import { nanoid } from 'nanoid';
-import { z } from 'zod';
-
-import { scheduling_options_schema } from '@/src/types/scheduling/schema_find_availability_payload';
+import * as v from 'valibot';
 
 import {
   DBDetailsType,
@@ -53,7 +55,7 @@ export class CandidatesSchedulingV2 {
 
   constructor(
     _api_payload: Omit<APIFindAvailability, 'options'>,
-    _api_options: z.infer<typeof scheduling_options_schema>,
+    _api_options: v.InferInput<typeof scheduling_options_schema>,
   ) {
     this.api_payload = {
       candidate_tz: _api_payload.candidate_tz,
@@ -285,7 +287,15 @@ export class CandidatesSchedulingV2 {
     this.db_details.all_inters = this.db_details.all_inters.filter(
       (i) => i.interviewer_type !== 'training',
     );
-    //
+  }
+  public async ignoreInterviewer(inter_id: string) {
+    this.db_details.ses_with_ints = this.db_details.ses_with_ints.map((s) => ({
+      ...s,
+      trainingIntervs: [],
+    }));
+    this.db_details.all_inters = this.db_details.all_inters.filter(
+      (i) => i.user_id !== inter_id,
+    );
   }
 
   //NOTE: private funcs
@@ -686,6 +696,7 @@ export class CandidatesSchedulingV2 {
       const upd_sess_slot: SessionCombinationRespType = { ...sesn_slot };
       const curr_sess_cal_dic_ints = cal_disc_inters[sessn_idx].inters;
       const curr_sess_indef_paused_ints = indef_paused_inters[sessn_idx].inters;
+      const curr_sess_load_reached_ints = load_reached_ints[sessn_idx].inters;
       const curr_sess_curr_day_paused_ints =
         curr_day_paused_inters[sessn_idx].inters;
       const curr_sess_common_time = session_ints_common_time[sessn_idx];
@@ -709,8 +720,7 @@ export class CandidatesSchedulingV2 {
           );
         },
       );
-      const is_load_checked = load_reached_ints.length === 0;
-      if (is_all_ints_available && is_load_checked) {
+      if (is_all_ints_available && curr_sess_load_reached_ints.length === 0) {
         upd_sess_slot.is_conflict = false;
         return upd_sess_slot;
       } else {
@@ -949,17 +959,16 @@ export class CandidatesSchedulingV2 {
           'day',
         )
       ) {
-        const unique_conflicts = new Set<ConflictReason['conflict_type']>();
-
-        upd_sess_slot.ints_conflicts.forEach((int) => {
-          for (let intr of int.conflict_reasons) {
-            unique_conflicts.add(intr.conflict_type);
-          }
-        });
-        upd_sess_slot.is_conflict = true;
-        upd_sess_slot.conflict_types = [...Array.from(unique_conflicts)];
         upd_sess_slot.conflict_types.push('day_passed');
       }
+      const unique_conflicts = new Set<ConflictReason['conflict_type']>();
+      upd_sess_slot.ints_conflicts.forEach((int) => {
+        for (let intr of int.conflict_reasons) {
+          unique_conflicts.add(intr.conflict_type);
+        }
+      });
+      upd_sess_slot.is_conflict = true;
+      upd_sess_slot.conflict_types = [...Array.from(unique_conflicts)];
 
       return upd_sess_slot;
     };
@@ -1106,4 +1115,7 @@ export class CandidatesSchedulingV2 {
     };
     return { generateSlotsForCurrDay, verifyCurrDaySlot };
   };
+  static sum(a, b) {
+    return a + b;
+  }
 }

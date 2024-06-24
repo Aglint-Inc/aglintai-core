@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 
 const Outlook = () => {
@@ -18,7 +19,7 @@ const Outlook = () => {
   const handleSubmit = async () => {
     try {
       const { data: authLink } = await axios.post(
-        '/api/scheduling/auth/outlook'
+        '/api/scheduling/auth/outlook',
       );
       router.push(authLink);
     } catch (error) {
@@ -32,8 +33,8 @@ const Outlook = () => {
       const { data: tokenInfo } = await axios.post(
         '/api/scheduling/auth/outlook-req-tokens',
         {
-          code
-        }
+          code,
+        },
       );
 
       console.log(tokenInfo);
@@ -47,8 +48,11 @@ const Outlook = () => {
 
   return (
     <>
-      <button onClick={handleSubmit}>connect microsoft</button>
-
+      <ButtonSolid
+        size={2}
+        textButton={'connect microsoft'}
+        onClickButton={{ onClick: handleSubmit }}
+      />
       <Stack
         direction={'row'}
         width={'100vw'}

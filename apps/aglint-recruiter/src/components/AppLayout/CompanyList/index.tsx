@@ -1,4 +1,5 @@
 import { RecruiterType } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { Avatar, Popover, Stack } from '@mui/material';
 // import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -13,10 +14,6 @@ import { companyType } from '@/src/utils/userRoles';
 
 import Icon from '../../Common/Icons/Icon';
 import SidePanelDrawer from '../../Common/SidePanelDrawer';
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '../../JobsDashboard/JobPostCreateUpdate/utils';
 import AddNewCompany from './AddNewCompany';
 
 type CompanyTYpe = {
@@ -63,7 +60,7 @@ function CompanyList() {
         })),
       );
     } catch (error) {
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     }
   }
 
@@ -167,7 +164,9 @@ function CompanyList() {
                     px={'var(--space-1)'}
                     borderRadius={'var(--radius-4)'}
                     key={i}
-                    bgcolor={ele.recName === recruiter?.name && 'var(--neutral-1)'}
+                    bgcolor={
+                      ele.recName === recruiter?.name && 'var(--neutral-1)'
+                    }
                     onClick={() => {
                       updateStatus(ele.recId);
                     }}

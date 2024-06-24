@@ -1,6 +1,8 @@
 import { Drawer } from '@mui/material';
 import { useRouter } from 'next/router';
 
+import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
+
 import RequestAvailability from '../..';
 
 function RequestAvailabilityDrawer() {
@@ -19,6 +21,7 @@ function RequestAvailabilityDrawer() {
   const candidateRequestAvailability = Boolean(
     router.query?.candidate_request_availability,
   );
+
   return (
     <>
       <Drawer
@@ -26,7 +29,10 @@ function RequestAvailabilityDrawer() {
         anchor='right'
         open={candidateRequestAvailability}
       >
-        <RequestAvailability />
+        <SideDrawerLarge
+          // onClickPrimary={handleSubmit}
+          slotSideDrawerbody={<RequestAvailability />}
+        />
       </Drawer>
     </>
   );

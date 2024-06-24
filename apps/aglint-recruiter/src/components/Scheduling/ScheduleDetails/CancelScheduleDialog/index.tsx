@@ -54,7 +54,7 @@ function CancelScheduleDialog({
 
         addScheduleActivity({
           title: `Canceled ${schedule.interview_session.name}. Reason: ${reason} `,
-          application_id: schedule.applications.id,
+          application_id: schedule.schedule.application_id,
           logged_by: 'user',
           supabase: supabase,
           created_by: recruiterUser.user_id,
@@ -81,12 +81,13 @@ function CancelScheduleDialog({
     >
       <DeletePopup
         textTitle={'Cancel Schedule'}
+        textDescription=''
         isIcon={false}
         isWidget={true}
         slotWidget={
           <Stack spacing={2} width={'100%'}>
             <Typography variant='body1'>
-              Please provide a reason for reschedule.
+              Please provide a reason for canceling and any additional notes.
             </Typography>
             <Stack spacing={1}>
               {reasons.map((rea) => {

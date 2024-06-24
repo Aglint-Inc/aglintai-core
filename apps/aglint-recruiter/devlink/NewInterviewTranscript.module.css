@@ -186,25 +186,8 @@
   text-transform: capitalize;
 }
 
-.text-red-500 {
-  color: var(--red500-2e806c7d);
-}
-
-.text-align-center {
-  text-align: center;
-}
-
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
-}
-
-.text-no-wrap {
-  white-space: nowrap;
-  overflow-wrap: anywhere;
-}
-
-.mt-20 {
-  margin-top: 20px;
 }
 
 .clickable {

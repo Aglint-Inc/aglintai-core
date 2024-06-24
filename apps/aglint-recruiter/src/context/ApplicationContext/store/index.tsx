@@ -1,13 +1,15 @@
 import { create, StateCreator } from 'zustand';
 
-import { createDrawerSlice, DrawerSlice } from './currentApplication';
+import { createDrawerSlice, DrawerSlice } from './drawer';
+import { createResumePreviewSlice, ResumePreviewSlice } from './resumePreview';
 import { createTabSlice, TabSlice } from './tabs';
 
-type SlicesType = DrawerSlice & TabSlice;
+type SlicesType = DrawerSlice & TabSlice & ResumePreviewSlice;
 
 const Slices = {
   createDrawerSlice,
   createTabSlice,
+  createResumePreviewSlice,
 };
 
 export type CreateSlice<
@@ -28,6 +30,7 @@ const createApplicationSlice: StateCreator<
   resetAll: () => {
     get().resetDrawer();
     get().resetTab();
+    get().resetPreview();
   },
 });
 

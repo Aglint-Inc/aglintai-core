@@ -18,23 +18,23 @@ export function TaskTable({
   slotCheckbox,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1433")} tag="div">
+    <_Component className={_utils.cx(_styles, "task_table")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1436")}
+        className={_utils.cx(_styles, "task_table_filters")}
         tag="div"
       >
         {slotFilter ?? <TaskUpdateButton />}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1439")}
+        className={_utils.cx(_styles, "task_table_wrapper")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1434", "height-40")}
+          className={_utils.cx(_styles, "task_row", "title-row")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1535")}
+            className={_utils.cx(_styles, "task_selection_checkbox")}
             id={_utils.cx(
               _styles,
               "w-node-e2a009d4-d014-04d6-b837-039f401c4ec7-401c4ec4"
@@ -49,7 +49,12 @@ export function TaskTable({
               )}
               tag="div"
             >
-              {slotCheckbox}
+              {slotCheckbox ?? (
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "embed_flex")}
+                  value="%3Csvg%20width%3D%2216%22%20height%3D%2220%22%20viewBox%3D%220%200%2016%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2220%22%20fill%3D%22white%22%20fill-opacity%3D%220.01%22%2F%3E%0A%3Cpath%20d%3D%22M0%205C0%203.34315%201.34315%202%203%202H13C14.6569%202%2016%203.34315%2016%205V15C16%2016.6569%2014.6569%2018%2013%2018H3C1.34315%2018%200%2016.6569%200%2015V5Z%22%20fill%3D%22white%22%20fill-opacity%3D%220.9%22%2F%3E%0A%3Cpath%20d%3D%22M0.5%205C0.5%203.61929%201.61929%202.5%203%202.5H13C14.3807%202.5%2015.5%203.61929%2015.5%205V15C15.5%2016.3807%2014.3807%2017.5%2013%2017.5H3C1.61929%2017.5%200.5%2016.3807%200.5%2015V5Z%22%20stroke%3D%22%23191400%22%20stroke-opacity%3D%220.207843%22%2F%3E%0A%3C%2Fsvg%3E"
+                />
+              )}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
@@ -118,14 +123,17 @@ export function TaskTable({
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "task_new_button")}
+          tag="div"
+        >
           <_Builtin.Block
             className={_utils.cx(_styles, "new_task")}
             tag="div"
             {...onClickNewTask}
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1441")}
+              className={_utils.cx(_styles, "tjc-space-div")}
               tag="div"
             />
             <_Builtin.Block
@@ -148,7 +156,10 @@ export function TaskTable({
             </_Builtin.Block>
           ) : null}
         </_Builtin.Block>
-        <_Builtin.Block tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "slot_tasktablecard")}
+          tag="div"
+        >
           {slotTaskTableCard ?? <TaskTableCard />}
         </_Builtin.Block>
       </_Builtin.Block>

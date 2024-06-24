@@ -3,6 +3,7 @@ import { DatabaseTable } from '@aglint/shared-types';
 import { Popover, Stack, Typography } from '@mui/material';
 import React, { ReactNode, useState } from 'react';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import { NoData } from '@/devlink3/NoData';
@@ -10,8 +11,8 @@ import { Reason } from '@/devlink3/Reason';
 import { useCancelRescheduleReasons } from '@/src/queries/scheduling-dashboard';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
-import { DoughnutChart } from '../../JobsDashboard/Dashboard/Doughnut';
-import { getOrderedGraphValues } from '../../JobsDashboard/Dashboard/utils';
+import { DoughnutChart } from '../../Jobs/Job/Dashboard/doughnut';
+import { getOrderedGraphValues } from '../../Jobs/Job/Dashboard/utils';
 
 const CancelReasons = () => {
   const [reasonType, setReasonType] =
@@ -51,14 +52,8 @@ const CancelReasons = () => {
         />
       }
       slotReasonGraph={
-        !(
-          processedCancelReasonsData[reasonType] &&
-          Object.keys(processedCancelReasonsData[reasonType]).length
-        ) ? (
-          <Stack minHeight={'296px'}>
-            <NoData />
-          </Stack>
-        ) : (
+        processedCancelReasonsData[reasonType] &&
+        Object.keys(processedCancelReasonsData[reasonType]).length ? (
           <Stack>
             <Stack
               alignItems={'center'}
@@ -111,6 +106,10 @@ const CancelReasons = () => {
               </Stack>
             </Stack>
           </Stack>
+        ) : (
+          <Stack height={'296px'}>
+            <NoData />
+          </Stack>
         )
       }
     />
@@ -158,18 +157,7 @@ export const DropdownSelectButton = <T,>({
         textLabel={capitalizeFirstLetter(selectedItem)}
         slotRightIcon={
           <Stack>
-            <svg
-              width='15'
-              height='16'
-              viewBox='0 0 15 16'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path
-                d='M7.75781 11.2578C7.58594 11.4141 7.41406 11.4141 7.24219 11.2578L2.74219 6.75781C2.58594 6.58594 2.58594 6.41406 2.74219 6.24219C2.91406 6.08594 3.08594 6.08594 3.25781 6.24219L7.5 10.4609L11.7422 6.24219C11.9141 6.08594 12.0859 6.08594 12.2578 6.24219C12.4141 6.41406 12.4141 6.58594 12.2578 6.75781L7.75781 11.2578Z'
-                fill='#0F3554'
-              />
-            </svg>
+            <GlobalIcon iconName='keyboard_arrow_down' />
           </Stack>
         }
       />
@@ -194,10 +182,10 @@ export const DropdownSelectButton = <T,>({
       >
         <FilterDropdown
           isRemoveVisible={false}
-          slotOption={itemList.map((label) => {
+          slotOption={itemList.map((label, i) => {
             return (
               <Stack
-                key={id}
+                key={i}
                 direction={'row'}
                 sx={{ alignItems: 'center' }}
                 spacing={1}

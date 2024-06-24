@@ -47,45 +47,25 @@ const CandidateFeedback = ({
       ) : (
         <Stack gap={2}>
           <Alert
-            severity="info"
+            severity='info'
             icon={false}
             action={
-              <ButtonSoft 
-              onClickButton={{onClick: handleRequestFeedback}}
-              isLeftIcon={false}
-              isRightIcon={false}
-              size={2}
-              color={'neutral'}
-              textButton={
-                feedback ? 
-                  'Ask Again' : 
-                  'Request Feedback'
-              }
+              <ButtonSoft
+                onClickButton={{ onClick: handleRequestFeedback }}
+                isLeftIcon={false}
+                isRightIcon={false}
+                size={1}
+                color={'neutral'}
+                textButton={feedback ? 'Ask Again' : 'Request Feedback'}
               />
             }
           >
-            {/* <AlertTitle>Info</AlertTitle> */}
             <Typography variant='body1'>
-            {
-              feedback ? 
-                "You have requested feedback. The candidate hasn't submitted any yet. Would you like to ask again?" : 
-                "The candidate hasn't submitted any feedback"}
-              
+              {feedback
+                ? "You have requested feedback. The candidate hasn't submitted any yet. Would you like to ask again?"
+                : "The candidate hasn't submitted any feedback"}
             </Typography>
           </Alert>
-          {/* <Typography variant='body1'>
-            {"Candidate haven't submitted any feedback"}
-          </Typography>
-
-          <Typography variant='body1'
-            sx={{
-              cursor: 'pointer',
-              textDecoration: 'underline',
-            }}
-            onClick={handleRequestFeedback}
-          >
-            {feedback ? 'Request Feedback Again' : 'Request Feedback'}
-          </Typography> */}
         </Stack>
       )}
     </Stack>

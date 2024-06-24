@@ -8,7 +8,6 @@ import { Autocomplete, Drawer, Stack } from '@mui/material';
 import converter from 'number-to-words';
 import { useState } from 'react';
 
-import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { InviteTeamCard } from '@/devlink/InviteTeamCard';
@@ -164,18 +163,18 @@ const AddMember = ({
     return true;
   };
   const inviteUser = async () => {
-    const res = await inviteUserApi(
-      {
-        ...form,
-        scheduling_settings:
-          recruiter.scheduling_settings as schedulingSettingType,
-      },
-      // userDetails.user.id,
-      recruiter.id,
-    );
-    if (res.status === 200) {
-      let { error, created, user } = res.data;
-      if (!error && created) {
+    try {
+      const resData = await inviteUserApi(
+        {
+          ...form,
+          scheduling_settings:
+            recruiter.scheduling_settings as schedulingSettingType,
+        },
+        recruiter.id,
+      );
+
+      let { created, user } = resData;
+      if (created) {
         setMembers((prev) => [...prev, user]);
         setInviteData((prev) => [
           ...prev,
@@ -208,13 +207,12 @@ const AddMember = ({
           employment: null,
           manager_id: null,
         });
-      } else {
-        toast.error(
-          error?.includes('email address:') ? error : 'Member already exists.',
-        );
       }
+    } catch (error) {
+      toast.error(String(error));
+    } finally {
+      setIsDisable(false);
     }
-    setIsDisable(false);
   };
   const memberListObj = memberList.reduce((acc, curr) => {
     acc[curr.id] = curr.name;
@@ -229,9 +227,10 @@ const AddMember = ({
             <TeamInvite
               isFixedButtonVisible
               slotPrimaryButton={
-                <ButtonPrimaryRegular
+                <ButtonSolid
+                  textButton='Done'
+                  size={2}
                   isDisabled={!inviteData?.length}
-                  textLabel={'Done'}
                   onClickButton={{
                     onClick: () => {
                       onClose(),
@@ -389,6 +388,7 @@ const AddMember = ({
                               employment: false,
                             });
                           }}
+                          required
                           name='Employment'
                           placeholder='Select Employment Type'
                           label='Employment'
@@ -543,32 +543,61 @@ const AddMember = ({
                 </Stack>
               }
               slotButtons={
-                <Stack width={'100%'} marginTop={'16px'}>
-                  <ButtonSolid
-                    isLeftIcon={false}
-                    isRightIcon={false}
-                    size='2'
-                    isDisabled={
-                      form.email &&
-                      form.first_name &&
-                      form.designation &&
-                      form.department &&
-                      form.role &&
-                      form.manager_id
-                        ? false
-                        : true
-                    }
-                    onClickButton={{
-                      onClick:()=>{
+                <Stack
+                  display={'flex'}
+                  flexDirection={'row'}
+                  gap={'8px'}
+                  width={'100%'}
+                >
+                  <Stack width={'100%'} marginTop={'16px'}>
+                    <ButtonSoft
+                      isLeftIcon={false}
+                      isRightIcon={false}
+                      size='2'
+                      color={'neutral'}
+                      textButton='Cancel'
+                      onClickButton={{
+                        onClick: () => {
+                          onClose(),
+                            setInviteData([]),
+                            setForm({
+                              ...form,
+                              first_name: null,
+                              last_name: null,
+                              email: null,
+                              department: null,
+                              designation: null,
+                            });
+                        },
+                      }}
+                    />
+                  </Stack>
+                  <Stack width={'100%'} marginTop={'16px'}>
+                    <ButtonSolid
+                      isLeftIcon={false}
+                      isRightIcon={false}
+                      size='2'
+                      isDisabled={
+                        form.email &&
+                        form.first_name &&
+                        form.designation &&
+                        form.department &&
+                        form.role &&
+                        form.manager_id
+                          ? false
+                          : true
+                      }
+                      onClickButton={{
+                        onClick: () => {
                           setIsDisable(true);
                           if (checkValidation()) {
                             inviteUser();
                           }
-                      }
-                    }} 
-                    textButton={'Invite'}
-                  />
-                  {/* <AUIButton
+                        },
+                      }}
+                      textButton={'Invite'}
+                    />
+                    {/* <AUIButton
                     disabled=
                     size='medium'
                     onClick={() => {
@@ -580,6 +609,7 @@ const AddMember = ({
                   >
                     Invite
                   </AUIButton> */}
+                  </Stack>
                 </Stack>
               }
               onClickClose={{
@@ -617,10 +647,11 @@ const AddMember = ({
                   />
                 }
                 slotButton={
-                  <ButtonSoft textButton={"Resend"} 
+                  <ButtonSoft
+                    textButton={'Resend'}
                     isLeftIcon={false}
                     isRightIcon={false}
-                    size='2' 
+                    size='2'
                     onClickButton={{
                       onClick: () => {
                         setResendDisable(member.user_id);
@@ -633,8 +664,10 @@ const AddMember = ({
                             return toast.error(error);
                           },
                         );
-                      }}} isDisabled={isResendDisable === member.user_id}></ButtonSoft>
-                  
+                      },
+                    }}
+                    isDisabled={isResendDisable === member.user_id}
+                  ></ButtonSoft>
                 }
               />
             ))}

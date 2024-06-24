@@ -5,9 +5,9 @@ import { useState } from 'react';
 import { AddNewJob } from '@/devlink/AddNewJob';
 import { CreateJob } from '@/devlink/CreateJob';
 import { NavJobSubLink } from '@/devlink/NavJobSubLink';
-import { AshbyModalComp } from '@/src/components/JobsDashboard/AddJobWithIntegrations/Ashby';
-import { GreenhouseModal } from '@/src/components/JobsDashboard/AddJobWithIntegrations/GreenhouseModal';
-import { LeverModalComp } from '@/src/components/JobsDashboard/AddJobWithIntegrations/LeverModal';
+import { AshbyModalComp } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/Ashby';
+import { GreenhouseModal } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/GreenhouseModal';
+import { LeverModalComp } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/LeverModal';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
 import {
@@ -29,7 +29,7 @@ function JobSubNavbar() {
       p={'12px 10px'}
       width={200}
       borderRight={'1px solid'}
-       borderColor='var(--neutral-6)'
+      borderColor='var(--neutral-6)'
     >
       {userPermissions?.permissions['jobs_create'] && <AddJob />}
       <NavJobSubLink

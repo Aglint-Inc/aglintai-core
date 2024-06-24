@@ -5,17 +5,15 @@
   display: flex;
   overflow: hidden;
   width: 650px;
-  padding: 0px;
+  padding: var(--space-4);
   flex-direction: column;
   grid-auto-columns: 1fr;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
   grid-template-columns: 1fr;
   grid-template-rows: max-content auto max-content;
 
-  border-radius: 10px;
+  border-radius: var(--radius-4);
 
-  background-color: white;
+  background-color: var(--white);
 }
 
 .popup_header-copy {
@@ -27,7 +25,7 @@
   z-index: 1;
 
   display: flex;
-  padding: 20px;
+  padding: var(--space-4);
   justify-content: space-between;
   align-items: center;
 
@@ -42,7 +40,14 @@
 }
 
 .popup_close {
+  padding: var(--space-1);
+  border-radius: var(--radius-2);
+  transition: all 200ms ease;
   cursor: pointer;
+}
+
+.popup_close:hover {
+  background-color: var(--neutral-3);
 }
 
 .popup_close.cursor-pointer {
@@ -55,68 +60,6 @@
 
 .cursor-pointer {
   cursor: pointer;
-}
-
-.embed_flex-2 {
-  display: flex;
-}
-
-.embed_flex-2.cursor {
-  cursor: pointer;
-}
-
-.popup_body-copy {
-  display: flex;
-  overflow: auto;
-  height: 600px;
-  padding: 60px 20px 80px;
-  flex-direction: column;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-}
-
-.title_desc {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  grid-column-gap: 2px;
-  grid-row-gap: 2px;
-}
-
-.div-block-1547 {
-  display: flex;
-  min-height: 420px;
-  justify-content: center;
-  align-items: center;
-}
-
-.div-block-1548 {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  flex-wrap: nowrap;
-  align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
-}
-
-.text-link-accent {
-  transition: opacity 200ms ease;
-  color: var(--accent-11);
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.text-link-accent:hover {
-  opacity: 0.88;
-}
-
-.div-block-1549 {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
 }
 
 .icons {
@@ -135,19 +78,65 @@
   opacity: 0.8;
 }
 
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
-}
-
 .icons.pointer {
   cursor: pointer;
 }
 
-.div-block-1294 {
+.popup_body-copy {
+  display: flex;
+  overflow: auto;
+  height: 600px;
+  padding: var(--space-9) var(--space-4);
+  flex-direction: column;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.title_desc {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 2px;
+  grid-row-gap: 2px;
+}
+
+.fvp-not-submitted-wrap {
+  display: flex;
+  min-height: 420px;
+  justify-content: center;
+  align-items: center;
+}
+
+.fvp-context-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.text-link-accent {
+  transition: opacity 200ms ease;
+  color: var(--accent-11);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-link-accent:hover {
+  opacity: 0.88;
+}
+
+.fvp-text-wrap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.fvp-edit-feedback {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -162,9 +151,9 @@
   z-index: 1;
 
   display: flex;
-  padding: 20px;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  padding: var(--space-4);
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 
   background-image: linear-gradient(180deg, hsla(0, 0.00%, 0.00%, 0.00), white 18%);
 }
@@ -172,147 +161,6 @@
 .wide_button-copy.right-corner {
   justify-content: flex-end;
   align-items: center;
-}
-
-.button_primary {
-  display: flex;
-  padding: 8px 16px;
-  justify-content: center;
-  align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-
-  border-radius: 6px;
-
-  background-color: #1f73b7;
-
-  transition: all 200ms ease;
-
-  color: white;
-
-  cursor: pointer;
-}
-
-.button_primary:hover {
-  background-color: #144a75;
-}
-
-.button_primary.danger {
-  width: 100%;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  background-color: #d93f4c;
-}
-
-.button_primary.danger:hover {
-  background-color: #cc3340;
-}
-
-.button_primary.greay_btn {
-  width: 100%;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  background-color: #e9ebed;
-  color: #2f3941;
-}
-
-.button_primary.greay_btn:hover {
-  background-color: #d8dcde;
-}
-
-.button_primary.greay_btn.width-auto-copy {
-  width: auto;
-  background-color: var(--accent-3);
-  color: var(--accent-11);
-}
-
-.button_primary.greay_btn.width-auto-copy:hover {
-  background-color: var(--accent-4);
-}
-
-.button_primary.is_outline {
-  border: 1px solid #1f73b7;
-  background-color: white;
-  color: #1f73b7;
-}
-
-.button_primary.is_outline.width-100 {
-  width: 100%;
-}
-
-.button_primary.greay_btn-copy-copy {
-  height: 36px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  background-color: #e9ebed;
-  color: #2f3941;
-}
-
-.button_primary.greay_btn-copy-copy:hover {
-  background-color: #d8dcde;
-}
-
-.hide {
-  display: none;
-}
-
-.button_primary.green-btn {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  background-color: var(--accent-9);
-}
-
-.button_primary.large_btn-copy {
-  position: relative;
-  overflow: hidden;
-  width: 300px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.embed_flex {
-  display: flex;
-  overflow: hidden;
-  width: var(--space-5);
-  height: var(--space-5);
-  align-items: center;
-
-  border-radius: var(--radius-2);
-
-  color: var(--neutral-a11);
-
-  cursor: pointer;
-}
-
-.embed_flex:hover {
-  background-color: var(--neutral-a3);
-  color: var(--neutral-a12);
-}
-
-.embed_flex.hide {
-  display: none;
-}
-
-.embed_flex.custom_top {
-  margin-top: 2px;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.embed_flex.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.embed_flex.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.embed_flex.fixedd {
-  width: 23px;
 }
 
 .embed_css_block {

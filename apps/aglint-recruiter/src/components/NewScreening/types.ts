@@ -1,5 +1,3 @@
-import { Job } from '@/src/queries/jobs/types';
-
 export type QuestionOption = {
   id: string;
   option: string;
@@ -35,7 +33,6 @@ export type CandidateScreeningType = {
   company: string;
   email: string;
   candidate_id: string;
-  email_template: Job['email_template'];
   result_created_at: string | null;
   assessment_result: any;
 };
@@ -66,4 +63,18 @@ export type QuestionnaireData = {
   id: string;
   title: string;
   questions: QuestionnaireTypes;
+};
+
+export type PhoneScreenQuestion = {
+  id: string;
+  isRequired: boolean;
+  question: string;
+  description: string;
+  showDescription: boolean;
+  questionLabel: string;
+  type: 'multiSelect' | 'singleSelect' | 'shortAnswer';
+  options: {
+    option: string;
+    id: string;
+  }[];
 };

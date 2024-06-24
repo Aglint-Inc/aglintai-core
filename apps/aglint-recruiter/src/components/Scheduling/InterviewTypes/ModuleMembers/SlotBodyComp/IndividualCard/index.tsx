@@ -105,7 +105,7 @@ function IndividualCard({
                             <PanelBlock
                               slotPanelIcon={
                                 <SessionIcon
-                                  sessionType={
+                                  session_type={
                                     prog.interview_session.session_type
                                   }
                                 />
@@ -157,7 +157,7 @@ function IndividualCard({
                             <PanelBlock
                               slotPanelIcon={
                                 <SessionIcon
-                                  sessionType={
+                                  session_type={
                                     prog.interview_session.session_type
                                   }
                                 />

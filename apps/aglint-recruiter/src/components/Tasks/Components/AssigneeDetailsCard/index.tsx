@@ -177,9 +177,10 @@ export const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
 ))(() => ({
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor:'var(--white)',
-    color: 'var(--black-a7)',
-    boxShadow: 'var(--shadow-2)',
-    fontSize: 12,
+    border:'1px solid var(--neutral-6)',
+    color: 'var(--neutral-12)',
+    boxShadow: 'none',
+    fontSize: 12
   },
   [`& .${tooltipClasses.tooltipPlacementBottom}`]: {
     minWidth: 360,

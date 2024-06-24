@@ -19,19 +19,6 @@
   }
 }
 
-.text-regular {
-  font-size: 16px;
-  line-height: 1.4;
-}
-
-.fw-semibold {
-  font-weight: 600;
-}
-
-.text-kale-800 {
-  color: var(--kale800-682c1482);
-}
-
 .open-job-info-list {
   display: flex;
   margin-top: 12px;
@@ -56,11 +43,27 @@
   grid-row-gap: 4px;
 }
 
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+.apply-button-icon {
+  position: absolute;
+  left: auto;
+  top: auto;
+  right: 27px;
+  bottom: 34px;
+
+  display: none;
   align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  cursor: pointer;
+}
+
+.apply-button-icon:hover {
+  opacity: 0.9;
+}
+
+.text-blue-600 {
+  color: var(--blue600-aad8d97e);
 }
 
 .cursor-pointer {
@@ -70,6 +73,21 @@
 
 .cursor-pointer:hover {
   opacity: 0.7;
+}
+
+.text-blue-600.ml-8 {
+  margin-left: 8px;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .icons.cursor-pointer.three-dot {
@@ -151,10 +169,6 @@
   margin-top: 3px;
 }
 
-.icons.mr--10 {
-  margin-right: -8px;
-}
-
 .icons.mt-2 {
   margin-top: 2px;
 }
@@ -183,99 +197,4 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
-}
-
-.text-grey-600 {
-  color: var(--grey600-d5bebe21);
-}
-
-.max-width-500 {
-  max-width: 500px;
-}
-
-.text-grey-600.mt-5 {
-  margin-top: 5px;
-}
-
-.mt-5 {
-  margin-top: 5px;
-}
-
-.inline-text {
-  display: inline;
-}
-
-.text-sm-2 {
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.text-grey-600.mt-9 {
-  margin-top: 9px;
-}
-
-.mt-9 {
-  margin-top: 9px;
-}
-
-.text-grey-600.text-grow {
-  white-space: nowrap;
-}
-
-.text-grow {
-  flex: 0 0 auto;
-}
-
-.text-sm-default {
-  font-size: 12px;
-  line-height: 1.3333333333333333;
-  letter-spacing: 0px;
-}
-
-.mt-10 {
-  margin-top: 10px;
-}
-
-@media screen and (max-width: 479px) {
-  .text-grey-600.mob {
-    font-size: 12px;
-  }
-}
-
-.apply-button-icon {
-  position: absolute;
-  left: auto;
-  top: auto;
-  right: 27px;
-  bottom: 34px;
-
-  display: none;
-  align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-
-  cursor: pointer;
-}
-
-.apply-button-icon:hover {
-  opacity: 0.9;
-}
-
-.text-blue-600 {
-  color: var(--blue600-aad8d97e);
-}
-
-.text-underline {
-  transition: all 250ms ease;
-  color: var(--accent-11);
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.text-underline:hover {
-  opacity: 0.7;
-}
-
-.text-blue-600.ml-8 {
-  margin-left: 8px;
 }

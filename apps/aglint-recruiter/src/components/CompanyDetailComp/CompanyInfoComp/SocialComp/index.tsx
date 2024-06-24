@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { RecruiterType } from '@aglint/shared-types';
 import PublicIcon from '@mui/icons-material/Public';
-import { Dialog, Stack, TextField } from '@mui/material';
+import { Box, Dialog, Stack, Typography } from '@mui/material';
 import { Avatar } from '@mui/material';
 import Image from 'next/image';
 import React, { Dispatch, SetStateAction, useState } from 'react';
@@ -9,7 +9,6 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { AddSocialLink } from '@/devlink/AddSocialLink';
 import { NewSocialLinkPop } from '@/devlink/NewSocialLinkPop';
 import UITextField from '@/src/components/Common/UITextField';
-import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 import { debouncedSave } from '../../utils';
@@ -256,33 +255,36 @@ const SocialComp = ({ setIsSaving }) => {
 
   return (
     <Stack gap={'var(--space-2)'}>
-      <UITypography type={'small'} color={'var(--neutral-12)'} fontBold='default'>
-        Social Links
-      </UITypography>
-      <Stack gap={'var(--space-5)'}>
+      <Typography color={'var(--neutral-12)'}>Social</Typography>
+      <Stack gap={'var(--space-4)'}>
         {socials?.map((socialName) => {
           return (
             <Stack
               key={socialName}
               direction={'row'}
               alignItems={'start'}
-              gap={2}
+              justifyContent={'left'}
+              gap={1}
             >
-              <Stack
+              <Box
                 style={{
                   border: `1px solid var(--neutral-6)`,
-                  padding: 'var(--space-2)',
                   borderRadius: 'var(--radius-2)',
+                  display: 'flex',
+                  height: '36px',
+                  width: '36px',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
                 <Image
                   src={`/images/logo/${socialName}.svg`}
-                  height={20}
-                  width={20}
+                  height={16}
+                  width={16}
                   alt=''
                 />
-              </Stack>
-              <Stack width={'370px'}>
+              </Box>
+              <Stack width={'380px'}>
                 <UITextField
                   labelSize='small'
                   fullWidth
@@ -416,6 +418,7 @@ const AddSocialLinkButton = ({
   };
   const [social, setSocial] = useState(initialSocial);
   const [loading, setLoading] = useState(false);
+
   const handleValidate = () => {
     return Object.entries(social).reduce(
       (acc, [key, curr]) => {
@@ -491,7 +494,8 @@ const AddSocialLinkButton = ({
   };
   const forms = (
     <Stack pt={2} spacing={2}>
-      <TextField
+      <UITextField
+        label='Platform Name'
         placeholder='Platform name'
         value={social.name.value}
         required
@@ -499,15 +503,37 @@ const AddSocialLinkButton = ({
         helperText={
           social.name.error && 'Please enter valid a social media name'
         }
+        onFocus={() =>
+          setSocial({
+            ...social,
+            name: {
+              error: false,
+              type: social.name.type,
+              value: social.name.value,
+            },
+          })
+        }
         onChange={(e) => handleChange(e, 'name')}
       />
-      <TextField
+      <UITextField
+        label='Platform URL'
         placeholder='Platform URL'
         value={social.url.value}
         required
         error={social.url.error}
         helperText={social.url.error && 'Please enter valid a social media url'}
         onChange={(e) => handleChange(e, 'url')}
+        onKeyDown={handleSubmit}
+        onFocus={() =>
+          setSocial({
+            ...social,
+            url: {
+              error: false,
+              type: social.url.type,
+              value: social.url.value,
+            },
+          })
+        }
       />
     </Stack>
   );

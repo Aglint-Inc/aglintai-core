@@ -1,11 +1,12 @@
 /* eslint-disable security/detect-object-injection */
+import { DatabaseTable } from '@aglint/shared-types';
+
 import {
   JobDetailsForm,
   JobHiringTeamForm,
-} from '@/src/components/JobCreate/form';
-import { getHelper } from '@/src/components/JobEmailTemplates';
-import { templateObj } from '@/src/components/JobEmailTemplates/utils';
-import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
+} from '@/src/components/Jobs/Create/form';
+// import { getHelper } from '@/src/components/Jobs/Job/Email-Templates';
+// import { templateObj } from '@/src/components/Jobs/Job/Email-Templates/utils';
 import {
   useAllAssessments,
   useAllAssessmentTemplates,
@@ -14,7 +15,6 @@ import { Assessment } from '@/src/queries/assessment/types';
 import { useInterviewPlans } from '@/src/queries/interview-plans';
 import {
   useJobDashboardRefresh,
-  useJobInterviewPlanEnabled,
   useJobLocations,
   useJobMatches,
   useJobSchedules,
@@ -57,7 +57,6 @@ const useProviderJobDashboardActions = () => {
   const matches = useJobMatches(job);
   const tenureAndExperience = useJobTenureAndExperience(job);
   const schedules = useJobSchedules(job);
-  const interviewPlanEnabled = useJobInterviewPlanEnabled(job);
   const interviewPlans = useInterviewPlans();
   const workflows = useJobWorkflow({ id: job?.id });
 
@@ -115,7 +114,6 @@ const useProviderJobDashboardActions = () => {
     !matches.isPending &&
     !tenureAndExperience.isPending &&
     !schedules.isPending &&
-    !interviewPlanEnabled.isPending &&
     !interviewPlans.isPending &&
     !workflows.isPending
   );
@@ -125,7 +123,7 @@ const useProviderJobDashboardActions = () => {
     refreshDashboard(job?.id);
   };
 
-  const emailTemplateValidity = validateEmailTemplates(job?.email_template);
+  // const emailTemplateValidity = validateEmailTemplates(job?.email_template);
 
   const loadStatus: 'loading' | 'error' | 'success' =
     jobLoad && job !== undefined
@@ -140,8 +138,7 @@ const useProviderJobDashboardActions = () => {
     job,
     jobLoad,
     loadStatus,
-    emailTemplateValidity,
-    interviewPlanEnabled,
+    // emailTemplateValidity,
     workflows,
     handleJobRefresh,
     isInterviewPlanDisabled,
@@ -289,7 +286,9 @@ export const getHiringTeamValidity = (job: Job): HiringTeamValidity => {
   return result;
 };
 
-export const validateJd = (jd_json: JdJsonType) => {
+export const validateJd = (
+  jd_json: DatabaseTable['public_jobs']['jd_json'],
+) => {
   return (
     !jd_json ||
     Object.entries(jd_json).length === 0 ||
@@ -316,20 +315,20 @@ export const hashCode = (str: string) => {
   return hash;
 };
 
-export const validateEmailTemplates = (
-  emailTemplates: Job['email_template'],
-) => {
-  return (
-    emailTemplates &&
-    Object.entries(emailTemplates).reduce((acc, [key, value]) => {
-      const label = templateObj[key]?.heading;
-      Object.entries(value).forEach(([key, value]) => {
-        if (key !== 'default' && validateString(String(value)))
-          acc.push(`${getHelper(key as any)} in ${label}`);
-      });
-      return acc;
-    }, [] as string[])
-  );
-};
+// export const validateEmailTemplates = (
+//   emailTemplates: Job['email_template'],
+// ) => {
+//   return (
+//     emailTemplates &&
+//     Object.entries(emailTemplates).reduce((acc, [key, value]) => {
+//       const label = templateObj[key]?.heading;
+//       Object.entries(value).forEach(([key, value]) => {
+//         if (key !== 'default' && validateString(String(value)))
+//           acc.push(`${getHelper(key as any)} in ${label}`);
+//       });
+//       return acc;
+//     }, [] as string[])
+//   );
+// };
 
 export default useProviderJobDashboardActions;

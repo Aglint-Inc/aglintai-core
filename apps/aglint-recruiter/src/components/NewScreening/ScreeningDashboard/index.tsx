@@ -2,6 +2,8 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { ButtonWide } from '@/devlink2/ButtonWide';
@@ -120,12 +122,32 @@ const Screening = () => {
             slotTopbarRight={
               <>
                 <PhoneScreeningTopRight
-                  onClickAllCandidates={{
-                    onClick: () => {
-                      router.push('/screening-dashboard');
-                    },
-                  }}
-                  onClickNewScreening={{ onClick: () => setIsPopupOpen(true) }}
+                  slotButton={
+                    <>
+                      <ButtonSoft
+                        textButton='All Candidates'
+                        size={2}
+                        color={'neutral'}
+                        iconName='north_east'
+                        isLeftIcon
+                        highContrast='true'
+                        onClickButton={{
+                          onClick: () => {
+                            router.push('/screening-dashboard');
+                          },
+                        }}
+                      />
+                      <ButtonSolid
+                        textButton='New Screening'
+                        size={2}
+                        isLeftIcon
+                        iconName='add'
+                        onClickButton={{
+                          onClick: () => setIsPopupOpen(true),
+                        }}
+                      />
+                    </>
+                  }
                 />
               </>
             }
@@ -145,6 +167,8 @@ const Screening = () => {
                 <UITextField
                   placeholder='Enter Screening Name'
                   value={input}
+                  label='Screening Name'
+                  required
                   onChange={(e) => setInput(e.target.value)}
                 />
               }

@@ -110,6 +110,9 @@
     margin-top: 0;
     margin-bottom: 10px;
   }
+  strong {
+    color: var(--neutral-12);
+  }
   blockquote {
     margin: 0 0 10px 0;
     padding: 10px 20px;
@@ -146,6 +149,9 @@
   }
   .w-embed:after {
     clear: both;
+  }
+  iframe {
+    border: 0;
   }
   /* .w-video {
     width: 100%;

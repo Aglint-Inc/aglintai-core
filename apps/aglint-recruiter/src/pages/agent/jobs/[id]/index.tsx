@@ -1,8 +1,7 @@
 import Agent from '@/src/components/Agent';
 import Seo from '@/src/components/Common/Seo';
-import JobPostFormProvider from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
-import JobApplicationProvider from '@/src/context/JobApplicationsContext';
 import { JobAssistantProvider } from '@/src/context/JobAssistant';
+import { JobProvider } from '@/src/context/JobContext';
 import JobDashboardProvider from '@/src/context/JobDashboard';
 
 function AgentPage() {
@@ -12,11 +11,9 @@ function AgentPage() {
         title='Job Assissant | Aglint AI'
         description='AI for People Products'
       />
-      <JobPostFormProvider>
-        <JobAssistantProvider>
-          <Agent />
-        </JobAssistantProvider>
-      </JobPostFormProvider>
+      <JobAssistantProvider>
+        <Agent />
+      </JobAssistantProvider>
     </>
   );
 }
@@ -25,8 +22,8 @@ export default AgentPage;
 
 AgentPage.privateProvider = function privateProvider(page) {
   return (
-    <JobDashboardProvider>
-      <JobApplicationProvider>{page}</JobApplicationProvider>
-    </JobDashboardProvider>
+    <JobProvider>
+      <JobDashboardProvider>{page}</JobDashboardProvider>
+    </JobProvider>
   );
 };

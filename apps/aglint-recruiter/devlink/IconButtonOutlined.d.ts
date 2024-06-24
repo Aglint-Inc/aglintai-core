@@ -12,4 +12,5 @@ declare function IconButtonOutlined(props: {
   highContrast?: Types.Builtin.Text;
   isLoading?: Types.Visibility.VisibilityConditions;
   isDisabled?: Types.Visibility.VisibilityConditions;
+  onClickButton?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

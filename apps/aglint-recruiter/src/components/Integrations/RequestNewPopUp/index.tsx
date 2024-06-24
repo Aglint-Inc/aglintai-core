@@ -74,6 +74,7 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
       <ShowCode.When isTrue={!showThanks}>
         <ConfirmationPopup
           isIcon={false}
+          
           textPopupTitle={'Request Integration'}
           textPopupDescription={
             <Stack direction={'column'} spacing={'16px'}>
@@ -108,7 +109,7 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
           onClickAction={{
             onClick: requestTool,
           }}
-          isGreyButtonVisible={false}
+          isGreyButtonVisible={true}
           textPopupButton={'Request'}
         />
       </ShowCode.When>

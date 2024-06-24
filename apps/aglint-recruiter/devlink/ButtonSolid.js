@@ -52,7 +52,14 @@ export function ButtonSolid({
           className={_utils.cx(_styles, "align-items-center")}
           tag="div"
         >
-          {slotIcon ?? <GlobalIcon size={size} iconName={iconName} />}
+          {slotIcon ?? (
+            <GlobalIcon
+              size={iconSize}
+              iconName={iconName}
+              weight={iconWeight}
+              color={iconColor}
+            />
+          )}
         </_Builtin.Block>
       ) : null}
       {isDisabled ? (

@@ -80,12 +80,12 @@ function RequestRescheduleDialog({
 
         addScheduleActivity({
           title: `Requested reschedule for ${schedule.interview_session.name}. Reason: ${reason} `,
-          application_id: schedule.applications.id,
+          application_id: schedule.schedule.application_id,
           logged_by: 'user',
           supabase: supabase,
           created_by: recruiterUser.user_id,
         });
-        
+
         refetch();
       }
     } catch {
@@ -113,12 +113,13 @@ function RequestRescheduleDialog({
         onClickAction={{
           onClick: onClickConfirm,
         }}
+        textPopupDescription=''
         isDescriptionVisible={false}
         isWidget={true}
         slotWidget={
           <Stack spacing={2}>
             <Typography variant='body1'>
-              Choose a date range that you want to reschedule with
+              Please chose the new date range for the interview.
             </Typography>
             <Stack spacing={2} direction={'row'}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -180,7 +181,7 @@ function RequestRescheduleDialog({
             </Stack>
 
             <Typography variant='body1'>
-              Please provide a reason for reschedule.
+              Please provide a reason for rescheduling and any additional notes.
             </Typography>
             <Stack spacing={1}>
               {reasons.map((rea) => {

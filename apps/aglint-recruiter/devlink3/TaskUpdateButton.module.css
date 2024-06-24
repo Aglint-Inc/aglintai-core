@@ -1,4 +1,4 @@
-.div-block-1607 {
+.tub-wrap {
   position: absolute;
   left: 0%;
   top: 0%;
@@ -7,24 +7,24 @@
 
   display: flex;
   width: 100%;
-  padding: var(--space-2) 16px;
+  padding: var(--space-2) var(--space-4);
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 40px;
-  grid-row-gap: 40px;
+  grid-column-gap: var(--space-7);
+  grid-row-gap: var(--space-7);
 
   background-color: var(--white);
 }
 
-.div-block-1608 {
+.tub-left-wrap {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
-.div-block-1611 {
+.tub-close-wrap {
   display: flex;
   width: 20px;
   height: 20px;
@@ -38,11 +38,11 @@
   cursor: pointer;
 }
 
-.div-block-1611.cursor-pointer {
+.tub-close-wrap.cursor-pointer {
   transition: all 200ms ease;
 }
 
-.div-block-1611.cursor-pointer:hover {
+.tub-close-wrap.cursor-pointer:hover {
   opacity: 0.8;
 }
 
@@ -66,22 +66,14 @@
   opacity: 0.8;
 }
 
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
-}
-
 .icons.pointer {
   cursor: pointer;
 }
 
-.div-block-1609 {
+.tub-btn-wrap {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }

@@ -1,8 +1,10 @@
 .candiate-side-drawer-wrapper {
+  overflow: hidden;
   width: 700px;
-  height: 100%;
+  height: 100vh;
   flex-direction: column;
   justify-content: space-between;
+
   background-color: var(--white);
 }
 
@@ -44,11 +46,11 @@
   padding-top: var(--space-3);
   padding-right: var(--space-3);
   padding-bottom: var(--space-3);
-  padding-left: var(--space-3);
+  padding-left: var(--space-4);
 
   background-color: white;
 
-  height: calc(100vh - 141px);
+  height: calc(100vh - 157px);
 }
 
 .candidate_details {

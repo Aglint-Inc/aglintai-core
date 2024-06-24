@@ -1,4 +1,5 @@
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import { supabaseWrap } from '@aglint/shared-utils';
+
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 export const fetchDBScheduleDetails = async (filter_id: string) => {

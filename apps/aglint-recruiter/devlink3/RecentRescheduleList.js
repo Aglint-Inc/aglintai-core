@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./RecentRescheduleList.module.css";
 
@@ -35,24 +36,14 @@ export function RecentRescheduleList({
             className={_utils.cx(_styles, "decline_user_details")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {textName}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-600")}
-              tag="div"
-            >
-              {textTime}
-            </_Builtin.Block>
+            <Text content={textName} />
+            <Text content={textTime} weight="" color="neutral" size="1" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "decline_reason")}
             tag="div"
           >
-            <_Builtin.Block tag="div">{textDesc}</_Builtin.Block>
+            <Text content={textDesc} weight="" color="neutral" />
             <_Builtin.Block
               className={_utils.cx(_styles, "slot_for_icon")}
               tag="div"

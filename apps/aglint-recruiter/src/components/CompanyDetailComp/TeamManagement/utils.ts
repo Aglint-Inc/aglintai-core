@@ -4,8 +4,8 @@ import {
   RecruiterUserType,
   schedulingSettingType,
 } from '@aglint/shared-types';
-import axios from 'axios';
 
+import axios from '@/src/client/axios';
 import { supabase } from '@/src/utils/supabase/client';
 
 export const setMemberInDb = async (
@@ -23,33 +23,14 @@ export const setMemberInDb = async (
   return null;
 };
 
-export const inviteUserApi = (
-  form: {
-    first_name: string;
-    last_name: string;
-    email: string;
-    designation: string;
-    employment: employmentTypeEnum;
-    department: string;
-    role: string;
-    manager_id: string;
-    scheduling_settings: schedulingSettingType;
-  },
-  // id: string,
+export const inviteUserApi = async (
+  form: InviteUserAPIType['request']['users'][number],
   recruiter_id: string,
-  // recruiter_user: {
-  //   name: string;
-  //   email: string;
-  // },
 ) => {
-  const res = axios.post<InviteUserAPIType['response']>('/api/invite_user', {
+  return axios.call<InviteUserAPIType>('POST', '/api/invite_user', {
     users: [form],
-    // id: id,
     recruiter_id,
-    // recruiter_user: recruiter_user,
   });
-
-  return res;
 };
 
 export const reinviteUser = (email: string, id: string) => {
@@ -81,16 +62,10 @@ export type InviteUserAPIType = {
       manager_id: string;
       scheduling_settings: schedulingSettingType;
     }[];
-    id: string;
     recruiter_id: string;
-    // recruiter_user: {
-    //   name: string;
-    //   email: string;
-    // };
   };
   response: {
     created: boolean;
-    error: string;
     user: RecruiterUserType;
   };
 };

@@ -1,7 +1,7 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
+import { getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
-import { getFullName } from '@aglint/shared-utils';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 
 export async function dbUtil(
@@ -19,10 +19,10 @@ export async function dbUtil(
   const [recruiter_user] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
-      .select('first_name,last_name')
+      .select('first_name,last_name,scheduling_settings')
       .eq('user_id', avail_req_data.applications.public_jobs.recruiter),
   );
-
+  const recruiter_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
   if (!avail_req_data || !recruiter_user) {
     throw new Error('Record not found');
   }
@@ -32,6 +32,7 @@ export async function dbUtil(
       email: cand_email,
       recruiter_id,
       first_name,
+      last_name,
       recruiter: { logo },
     },
     public_jobs: { company, job_title },
@@ -44,15 +45,19 @@ export async function dbUtil(
   );
   const comp_email_placeholder: EmailTemplateAPi<'sendAvailReqReminder_email_applicant'>['comp_email_placeholders'] =
     {
-      '{{ candidateFirstName }}': first_name,
-      '{{ companyName }}': company,
-      '{{ jobTitle }}': job_title,
-      '{{ availabilityLink }}': `<a href="${candidate_link}">here</a>`,
-      '{{ supportLink }}': '',
-      '{{ recruiterFullName }}': getFullName(
+      candidateFirstName: first_name,
+      companyName: company,
+      jobRole: job_title,
+      availabilityReqLink: `<a href="${candidate_link}">here</a>`,
+      recruiterName: getFullName(
         recruiter_user.first_name,
         recruiter_user.last_name,
       ),
+      candidateLastName: last_name,
+      candidateName: getFullName(first_name, last_name),
+      recruiterFirstName: recruiter_user.first_name,
+      recruiterLastName: recruiter_user.last_name,
+      recruiterTimeZone: recruiter_tz,
     };
 
   const filled_comp_template = fillCompEmailTemplate(

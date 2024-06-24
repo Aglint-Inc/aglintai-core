@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { SlotComp } from "./SlotComp";
 
 export function ListCard({
   as: _Component = _Builtin.Block,
@@ -13,9 +12,7 @@ export function ListCard({
   return (
     <_Component tag="div">
       {isAvatarWithNameVisible ? (
-        <_Builtin.Block tag="div">
-          {slotAvatarWithName ?? <SlotComp componentNeme="Avatars with Name" />}
-        </_Builtin.Block>
+        <_Builtin.Block tag="div">{slotAvatarWithName}</_Builtin.Block>
       ) : null}
       {isListVisible ? (
         <_Builtin.Block tag="div">{textList}</_Builtin.Block>

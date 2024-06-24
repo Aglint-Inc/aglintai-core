@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./InterviewPanelMember.module.css";
 
@@ -31,7 +32,7 @@ export function InterviewPanelMember({
           </_Builtin.Block>
         ) : null}
       </_Builtin.Block>
-      <_Builtin.Block tag="div">{textMemberName}</_Builtin.Block>
+      <Text content={textMemberName} weight="" color="neutral" />
     </_Component>
   );
 }

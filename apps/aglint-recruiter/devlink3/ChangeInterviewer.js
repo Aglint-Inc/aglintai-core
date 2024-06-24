@@ -40,30 +40,30 @@ export function ChangeInterviewer({
         <_Builtin.Block className={_utils.cx(_styles, "slot_widget")} tag="div">
           <_Builtin.Block tag="div">
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1685")}
+              className={_utils.cx(_styles, "ci-details-wrap")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1686")}
+                className={_utils.cx(_styles, "ci-profile-image")}
                 tag="div"
               >
                 {slotProfileImage}
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1687")}
+                className={_utils.cx(_styles, "ci-details")}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{textName}</_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-sm", "text-grey-600")}
-                  tag="div"
-                >
-                  {textDesignation}
-                </_Builtin.Block>
+                <Text content={textName} weight="" />
+                <Text
+                  content={textDesignation}
+                  weight=""
+                  size="1"
+                  color="neutral"
+                />
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1688")}
+              className={_utils.cx(_styles, "ci-divider-wrap")}
               tag="div"
             >
               <_Builtin.HtmlEmbed

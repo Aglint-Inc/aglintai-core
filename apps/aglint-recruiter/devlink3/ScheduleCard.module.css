@@ -58,6 +58,18 @@
   grid-row-gap: var(--space-4);
 }
 
+.flex-horizontal.gap-2 {
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.flex-horizontal.align-center {
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .icons {
   display: flex;
   flex-direction: column;
@@ -76,14 +88,6 @@
 
 .cursor-pointer {
   cursor: pointer;
-}
-
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
 }
 
 .icons.pointer {

@@ -2,7 +2,8 @@ import type {
   EmailTemplateAPi,
   MeetingDetailCardType,
 } from '@aglint/shared-types';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/userTzDayjs';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   platformRemoveUnderscore,
@@ -29,10 +30,19 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+        'candidates(first_name,last_name,email,timezone,recruiter_id,recruiter(logo)),public_jobs(job_title,company,recruiter)',
       )
       .eq('id', req_body.application_id),
   );
+  const [recruiter_user] = supabaseWrap(
+    await supabaseAdmin
+      .from('recruiter_user')
+      .select('first_name,last_name,scheduling_settings')
+      .eq('user_id', candidateJob.public_jobs.recruiter),
+  );
+  const recruiter_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
+
+  const cand_tz = 'America/Los_Angeles';
 
   const meeting_details: MeetingDetailCardType[] = sessions.map((session) => {
     const {
@@ -43,8 +53,10 @@ export async function fetchUtil(
       session_type,
     } = session;
     return {
-      date: dayjsLocal(start_time).format('ddd MMMM DD, YYYY'),
-      time: `${dayjsLocal(start_time).format('hh:mm A')} - ${dayjsLocal(end_time).format('hh:mm A')}`,
+      date: dayjsLocal(start_time)
+        .tz(cand_tz)
+        .format(DAYJS_FORMATS.DATE_FORMAT),
+      time: `${dayjsLocal(start_time).tz(cand_tz).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(end_time).tz(cand_tz).format(DAYJS_FORMATS.END_TIME_FORMAT)}`,
       sessionType: name,
       platform: platformRemoveUnderscore(schedule_type),
       duration: durationCalculator(session_duration),
@@ -62,9 +74,18 @@ export async function fetchUtil(
 
   const comp_email_placeholder: EmailTemplateAPi<'interviewCancel_email_applicant'>['comp_email_placeholders'] =
     {
-      '{{ candidateFirstName }}': candidates.first_name,
-      '{{ companyName }}': public_jobs.company,
-      '{{ jobTitle }}': public_jobs.job_title,
+      candidateFirstName: candidates.first_name,
+      companyName: public_jobs.company,
+      jobRole: public_jobs.job_title,
+      recruiterName: getFullName(
+        recruiter_user.first_name,
+        recruiter_user.last_name,
+      ),
+      candidateLastName: candidates.last_name,
+      candidateName: getFullName(candidates.first_name, candidates.last_name),
+      recruiterFirstName: recruiter_user.first_name,
+      recruiterLastName: recruiter_user.last_name,
+      recruiterTimeZone: recruiter_tz,
     };
 
   const filled_comp_template = fillCompEmailTemplate(

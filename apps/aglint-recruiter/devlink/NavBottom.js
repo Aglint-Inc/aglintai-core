@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { GlobalIcon } from "./GlobalIcon";
 import * as _utils from "./utils";
 import _styles from "./NavBottom.module.css";
 
@@ -25,12 +26,6 @@ export function NavBottom({
         tag="div"
         {...onClickLogout}
       >
-        <_Builtin.Block className={_utils.cx(_styles, "logout_icon")} tag="div">
-          <_Builtin.HtmlEmbed
-            className={_utils.cx(_styles, "icons", "relative-1")}
-            value="%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewbox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M21.4124%2012.7125L16.6124%2017.5125C16.3374%2017.7625%2016.0624%2017.7625%2015.7874%2017.5125C15.5374%2017.2375%2015.5374%2016.9625%2015.7874%2016.6875L19.5374%2012.9H8.9999C8.6249%2012.875%208.4249%2012.675%208.3999%2012.3C8.4249%2011.925%208.6249%2011.725%208.9999%2011.7H19.5374L15.7874%207.9125C15.5374%207.6375%2015.5374%207.3625%2015.7874%207.0875C16.0624%206.8375%2016.3374%206.8375%2016.6124%207.0875L21.4124%2011.8875C21.6624%2012.1625%2021.6624%2012.4375%2021.4124%2012.7125ZM8.9999%205.1H5.3999C4.8999%205.125%204.4749%205.3%204.1249%205.625C3.7999%205.975%203.6249%206.4%203.5999%206.9V17.7C3.6249%2018.2%203.7999%2018.625%204.1249%2018.975C4.4749%2019.3%204.8999%2019.475%205.3999%2019.5H8.9999C9.3749%2019.525%209.5749%2019.725%209.5999%2020.1C9.5749%2020.475%209.3749%2020.675%208.9999%2020.7H5.3999C4.5499%2020.675%203.8374%2020.3875%203.2624%2019.8375C2.7124%2019.2625%202.4249%2018.55%202.3999%2017.7V6.9C2.4249%206.05%202.7124%205.3375%203.2624%204.7625C3.8374%204.2125%204.5499%203.925%205.3999%203.9H8.9999C9.3749%203.925%209.5749%204.125%209.5999%204.5C9.5749%204.875%209.3749%205.075%208.9999%205.1Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
-          />
-        </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "navlink_tooltip")}
           tag="div"
@@ -39,6 +34,7 @@ export function NavBottom({
             {"Logout"}
           </_Builtin.Block>
         </_Builtin.Block>
+        <GlobalIcon iconName="logout" size="6" color="" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "user_profile")}

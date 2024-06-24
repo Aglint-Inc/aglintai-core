@@ -5,11 +5,10 @@ import { useState } from 'react';
 import { createToast } from 'vercel-toast';
 
 import { AddToList } from '@/devlink/AddToList';
-import { ButtonPrimarySmall } from '@/devlink/ButtonPrimarySmall';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CdSavedList } from '@/devlink/CdSavedList';
 import { SavedList } from '@/devlink/SavedList';
 import { SavedListMenu } from '@/devlink/SavedListMenu';
-import LoaderGrey from '@/public/lottie/LoaderGrey';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ROUTES from '@/src/utils/routing/routes';
@@ -203,18 +202,10 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
       >
         <SavedListMenu
           slotAddButton={
-            <ButtonPrimarySmall
-              isStartIcon={isSaving}
-              slotStartIcon={
-                <Stack
-                  justifyContent={'center'}
-                  alignItems={'center'}
-                  height={'100%'}
-                >
-                  <LoaderGrey />
-                </Stack>
-              }
-              textLabel={'Save'}
+            <ButtonSolid
+              textButton='Save'
+              size={2}
+              isLoading={isSaving}
               isDisabled={selectedList.length == 0}
               onClickButton={{
                 onClick: () => {

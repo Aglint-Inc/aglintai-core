@@ -16,6 +16,7 @@ export function IconButtonSolid({
   iconName = "shapes",
   isDisabled = false,
   isLoading = false,
+  onClickButton = {},
 }) {
   return (
     <_Component
@@ -24,6 +25,7 @@ export function IconButtonSolid({
       icon-button-size-solid={size}
       button-color-solid={color}
       button-high-contrast-solid={highContrast}
+      {...onClickButton}
     >
       <_Builtin.Block tag="div">
         <GlobalIcon

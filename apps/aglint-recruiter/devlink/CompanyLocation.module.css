@@ -57,15 +57,10 @@
 }
 
 .flex-horizontal.gap-space-2 {
+  justify-content: flex-start;
+  align-items: center;
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
-}
-
-.success-badge {
-  padding: var(--space-1) var(--space-3);
-  border-radius: var(--radius-2);
-  background-color: var(--success-a11);
-  color: var(--white);
 }
 
 .icons {
@@ -163,10 +158,6 @@
   margin-top: 3px;
 }
 
-.icons.mr--10 {
-  margin-right: -8px;
-}
-
 .icons.mt-2 {
   margin-top: 2px;
 }
@@ -202,6 +193,18 @@
 
   display: none;
   align-items: center;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.location-delete-wrappers:hover {
+  display: flex;
+}
+
+.cl-badge-wrap {
+  position: absolute;
+  left: auto;
+  top: auto;
+  right: 16px;
+  bottom: 16px;
 }

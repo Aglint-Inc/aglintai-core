@@ -1,12 +1,14 @@
 import { RecruiterUserType } from '@aglint/shared-types';
-import { Stack } from '@mui/material';
+import { Popover, Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { capitalize } from 'lodash';
 import { useMemo, useState } from 'react';
 
+import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { TeamListItem } from '@/devlink/TeamListItem';
+import { TeamOptionList } from '@/devlink/TeamOptionList';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useInterviewerList } from '@/src/components/Scheduling/Interviewers';
 import {
@@ -67,6 +69,19 @@ const Member = ({
     setOpenForCancel(false);
   }
 
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
   return (
     <>
       <DeleteMemberDialog
@@ -75,7 +90,7 @@ const Member = ({
         openForDelete={openForDelete}
         openForCancel={openForCancel}
         warning={
-          openForDelete && membersDetails[member.user_id].allModules.length
+          openForDelete && membersDetails[member.user_id]?.allModules.length
             ? `User is part of scheduling Module- ${membersDetails[member.user_id].allModules}.`.replaceAll(
                 ',',
                 ', ',
@@ -87,40 +102,89 @@ const Member = ({
       <TeamListItem
         // isDeleteDisable={member.role !== 'admin' ? false : true}
         // isEditInviteVisible={member.join_status === 'invited'}
-        isActiveVisible={canSuspend && member.is_suspended}
-        isSuspendVisible={canSuspend && !member.is_suspended}
-        textLocation={member.interview_location}
-        isCancelInviteVisible={member.join_status === 'invited' ? true : false}
-        isDeleteVisible={
-          member.role === 'admin' || member.join_status === 'invited'
-            ? false
-            : true
+        slotThreeDot={
+          <>
+            <Stack onClick={handleClick}>
+              <IconButtonGhost
+                iconName='more_vert'
+                size={2}
+                iconSize={6}
+                color={'neutral'}
+              />
+            </Stack>
+
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+            >
+              <TeamOptionList
+                isMarkActiveVisible={canSuspend && member.is_suspended}
+                isSuspendVisible={canSuspend && !member.is_suspended}
+                isCancelInviteVisible={
+                  member.join_status === 'invited' ? true : false
+                }
+                isDeleteVisible={
+                  member.role === 'admin' || member.join_status === 'invited'
+                    ? false
+                    : true
+                }
+                isResetPasswordVisible={
+                  member.role !== 'admin' && member.join_status !== 'invited'
+                }
+                onClickMarkActive={{
+                  onClick: () => {
+                    updateMember({ is_suspended: false });
+                    handleClose();
+                  },
+                }}
+                onClickSuspend={{
+                  onClick: () => {
+                    updateMember({
+                      is_suspended: true,
+                    }),
+                      handleClose();
+                  },
+                }}
+                onClickEdit={{
+                  onClick: (e) => {
+                    editMember(e);
+                    handleClose();
+                  },
+                }}
+                onClickCancelInvite={{
+                  onClick: () => {
+                    setOpenForCancel(true);
+                    handleClose();
+                  },
+                }}
+                onClickDelete={{
+                  onClick: () => {
+                    setOpenForDelete(true);
+                    handleClose();
+                  },
+                }}
+                onClickResetPassword={{
+                  onClick: () => {
+                    resetPassword(member.email)
+                      .then(() => toast.success('Password reset email sent.'))
+                      .catch(() => toast.error('Password reset failed.'));
+                    handleClose();
+                  },
+                }}
+              />
+            </Popover>
+          </>
         }
-        isResetPasswordVisible={
-          member.role !== 'admin' && member.join_status !== 'invited'
-        }
-        onClickActive={{
-          onClick: () => updateMember({ is_suspended: false }),
-        }}
-        onClickSuspend={{
-          onClick: () =>
-            updateMember({
-              is_suspended: true,
-            }),
-        }}
-        onClickEditInvite={{ onClick: editMember }}
-        onClickCancelInvite={{
-          onClick: () => {
-            setOpenForCancel(true);
-          },
-        }}
-        onClickResetPassword={{
-          onClick: () => {
-            resetPassword(member.email)
-              .then(() => toast.success('Password reset email sent.'))
-              .catch(() => toast.error('Password reset failed.'));
-          },
-        }}
         key={1}
         textLastActive={
           member.last_login ? dayjs(member.last_login).fromNow() : '--:--'
@@ -174,11 +238,6 @@ const Member = ({
             )}
           </Stack>
         }
-        onClickRemove={{
-          onClick: () => {
-            setOpenForDelete(true);
-          },
-        }}
       />
     </>
   );

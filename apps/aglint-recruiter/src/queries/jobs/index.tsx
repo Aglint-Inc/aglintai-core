@@ -1,6 +1,6 @@
+import { DatabaseTable } from '@aglint/shared-types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -44,7 +44,7 @@ export const useJobCreate = () => {
           rolesResponsibilities: [],
           title: '',
           level: 'Mid-level',
-        } as JdJsonType,
+        } as DatabaseTable['public_jobs']['jd_json'],
       };
 
       return createJob({

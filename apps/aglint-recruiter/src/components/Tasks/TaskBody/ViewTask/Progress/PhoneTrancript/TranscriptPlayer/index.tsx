@@ -1,6 +1,7 @@
-import { LinearProgress, Stack, Typography } from '@mui/material';
-import { IconPlayerPause, IconPlayerPlay } from '@tabler/icons-react';
+import { Box, LinearProgress, Stack, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
+
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 
 import { ShowCode } from '../../../../../../Common/ShowCode';
 function TranscriptPlayer({ src }: { src: string }) {
@@ -75,26 +76,42 @@ function TranscriptPlayer({ src }: { src: string }) {
     >
       <ShowCode>
         <ShowCode.When isTrue={!playing}>
-          <IconPlayerPlay
-            style={{
+          <Box
+            sx={{
               cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
             }}
             onClick={() => {
               audioRef.current?.play();
               setPlaying(true);
-            }}
-          />
+            }}>
+            <GlobalIcon
+             iconName='play_arrow' 
+             size={6} 
+             weight='thin'
+             color='neutral-8'
+            />
+          </Box>
         </ShowCode.When>
         <ShowCode.When isTrue={playing}>
-          <IconPlayerPause
-            style={{
+          <Box
+            sx={{
               cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
             }}
             onClick={() => {
               audioRef.current?.pause();
               setPlaying(false);
-            }}
-          />
+            }}>
+            <GlobalIcon
+              iconName='pause' 
+              size={6} 
+              weight='thin'
+              color='neutral-8'
+            />
+          </Box>
         </ShowCode.When>
       </ShowCode>
 

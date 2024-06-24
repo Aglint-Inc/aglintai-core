@@ -1,5 +1,6 @@
+import type { EmailTemplateAPi } from '@aglint/shared-types';
+import { getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
-import { EmailTemplateAPi } from '@aglint/shared-types';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 
@@ -9,7 +10,7 @@ export async function dbUtil(
   const { data: filterJson } = await supabaseAdmin
     .from('interview_filter_json')
     .select(
-      'filter_json,interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company),candidates(first_name,email,recruiter(logo))))',
+      'filter_json,interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company,recruiter),candidates(first_name,last_name,email,recruiter(logo))))',
     )
     .eq('id', req_body.filter_json_id)
     .single()
@@ -18,7 +19,7 @@ export async function dbUtil(
   const {
     interview_schedule: {
       applications: {
-        candidates: { email: cand_email, first_name, recruiter },
+        candidates: { email: cand_email, first_name, last_name, recruiter },
         public_jobs: { company, recruiter_id, job_title },
       },
     },
@@ -31,11 +32,12 @@ export async function dbUtil(
   const scheduleLink = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.interview_schedule.id}?filter_id=${req_body.filter_json_id}`;
   const comp_email_placeholder: EmailTemplateAPi<'selfScheduleReminder_email_applicant'>['comp_email_placeholders'] =
     {
-      '{{ candidateFirstName }}': first_name,
-      '{{ companyName }}': company,
-      '{{ jobTitle }}': job_title,
-      '{{ selfScheduleLink }}': `<a href="${scheduleLink}">here</a>`,
-      '{{ supportLink }}': '',
+      candidateFirstName: first_name,
+      companyName: company,
+      candidateLastName: last_name,
+      candidateName: getFullName(first_name, last_name),
+      jobRole: job_title,
+      selfScheduleLink: `<a href="${scheduleLink}">here</a>`,
     };
 
   const filled_comp_template = fillCompEmailTemplate(

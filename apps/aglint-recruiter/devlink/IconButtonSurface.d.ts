@@ -12,4 +12,5 @@ declare function IconButtonSurface(props: {
   iconName?: React.ReactNode;
   isDisabled?: Types.Visibility.VisibilityConditions;
   isLoading?: Types.Visibility.VisibilityConditions;
+  onClickButton?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

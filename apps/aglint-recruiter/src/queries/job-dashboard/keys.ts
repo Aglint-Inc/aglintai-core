@@ -31,12 +31,6 @@ export const jobDashboardQueryKeys = {
   schedules: (args: JobRequisite) => ({
     queryKey: [...jobDashboardQueryKeys.dashboard(args).queryKey, 'schedules'],
   }),
-  interviewPlanEnabled: (args: JobRequisite) => ({
-    queryKey: [
-      ...jobDashboardQueryKeys.dashboard(args).queryKey,
-      'interviewPlanEnabled',
-    ],
-  }),
   workflows: (args: JobRequisite) => ({
     queryKey: [...jobDashboardQueryKeys.dashboard(args).queryKey, 'workflows'],
   }),

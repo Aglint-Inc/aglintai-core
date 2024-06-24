@@ -40,4 +40,6 @@ declare function ScheduleTabOverview(props: {
   slotAttendeesIcon?: Types.Devlink.Slot;
   onClickCopyCandidate?: Types.Devlink.RuntimeProps;
   onClickResendLink?: Types.Devlink.RuntimeProps;
+  isResendLinkVisible?: Types.Visibility.VisibilityConditions;
+  isCopyLinkVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

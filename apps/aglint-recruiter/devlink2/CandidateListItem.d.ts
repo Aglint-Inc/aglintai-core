@@ -24,4 +24,6 @@ declare function CandidateListItem(props: {
   isNewBadgeVisible?: Types.Visibility.VisibilityConditions;
   isBookmarkedVisible?: Types.Visibility.VisibilityConditions;
   slotBookmark?: Types.Devlink.Slot;
+  slotInterviewPipline?: Types.Devlink.Slot;
+  isAssessmentVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

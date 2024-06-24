@@ -5,18 +5,19 @@ import {
   Html,
   Img,
   Tailwind,
-  Text,
 } from '@react-email/components';
 import { Parser } from 'html-to-react';
 import * as React from 'react';
-import { aglintLogo } from '../utils/assets/common';
-import { EmailTemplateAPi } from '@aglint/shared-types';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
+import config from '../../tailwind.config';
+import { Footer } from '../components/template/Footer';
+
 type EmailType = EmailTemplateAPi<'sendAvailReqReminder_email_applicant'>;
 
 // export dummy
 export const dummy: EmailType['react_email_placeholders'] = {
   emailBody:
-    '<p>Dear {{ candidateFirstName }},</p><p>I hope this message finds you well.</p><p>I am writing to follow up on my previous email regarding the interview for the {{ jobTitle }} position at {{ companyName }}. We are very interested in discussing your application and learning more about your experiences.</p><p>If you could please click on the link below to select your availability for an interview, it would be greatly appreciated:</p><p>{{ availabilityLink }}</p><p>If you have any questions or need further information, please feel free to reach out.</p><p>Thank you, and I look forward to hearing from you soon.</p><p>Best regards,</p><p>{{ recruiterFullName }}<br>{{ companyName }}<br></p>',
+    '<p>Dear {{ candidateFirstName }},</p><p></p><p style="text-align: start">I hope this message finds you well.</p><p style="text-align: start">I am writing to follow up on my previous email regarding the interview for the {{ jobTitle }} position at {{ companyName }}. We are very interested in discussing your application and learning more about your experiences.</p><p style="text-align: start">If you could please click on the link below to select your availability for an interview, it would be greatly appreciated:</p><p style="text-align: start">{{ availabilityLink }}</p><p style="text-align: start">If you have any questions or need further information, please feel free to reach out.</p><p style="text-align: start">Thank you, and I look forward to hearing from you soon.</p><p style="text-align: start"></p><p style="text-align: start">Best regards,</p><p>{{ companyName }} Recruitment Team</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   subject: '',
@@ -33,28 +34,22 @@ export const CandidateAvailabilityRequest = ({
   return (
     <Html>
       <Head />
-      <Tailwind>
-        {/* <Preview>Schedule Interview</Preview> */}
-        <Body className="bg-[#f0f0f0] font-sans  p-[20px]">
+      <Tailwind config={config}>
+        {/* <Preview></Preview> */}
+        <Body className="bg-neutral-3 font-sans  p-[20px]">
           <Container className="px-[3px] mx-auto">
-            <Container className="p-[50px] bg-white">
+            <Container className="p-[50px] bg-white rounded-[8px]">
               <Img
                 alt="Company logo"
                 className="w-[80px] mb-[10px]"
                 src={companyLogo}
               />
 
-              <Text className="">{htmlParser.parse(emailBody)}</Text>
+              <Container className="text-text-sm text-neutral-12">
+                {htmlParser.parse(emailBody)}
+              </Container>
             </Container>
-            <Text className="flex items-center text-[10px]  mx-auto w-fit text-gray-500">
-              Powered By
-              <Img
-                alt="Aglint Logo"
-                className="w-[70px] mx-2 inline-block"
-                src={aglintLogo}
-              />
-              @ 2024 Aglint Inc. All Right Reserved
-            </Text>
+            <Footer />
           </Container>
         </Body>
       </Tailwind>
@@ -62,7 +57,3 @@ export const CandidateAvailabilityRequest = ({
   );
 };
 export default CandidateAvailabilityRequest;
-
-// [companyName]
-// [firstName]
-// [scheduleName]

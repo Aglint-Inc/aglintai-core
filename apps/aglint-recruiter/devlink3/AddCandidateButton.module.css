@@ -17,7 +17,7 @@
 .score_settings.pop {
   padding: 4px 10px 4px 8px;
   border-radius: 8px;
-  background-color: #f79a3d;
+  background-color: var(--warning-8);
   color: white;
 }
 

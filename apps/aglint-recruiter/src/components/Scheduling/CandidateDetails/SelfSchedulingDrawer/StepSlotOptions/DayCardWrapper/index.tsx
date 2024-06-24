@@ -3,7 +3,7 @@ import { Collapse, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useMemo, useState } from 'react';
 
-import { ButtonTextSmall } from '@/devlink/ButtonTextSmall';
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { DateOption } from '@/devlink3/DateOption';
 import { ScheduleOption } from '@/devlink3/ScheduleOption';
 
@@ -122,11 +122,10 @@ function DayCardWrapper({
                 })}
                 {displayedSlots < slots.length && (
                   <Stack direction={'row'} justifyContent={'center'} p={1}>
-                    <ButtonTextSmall
-                      textLabel={'Load More'}
-                      onClickButton={{
-                        onClick: loadMoreSlots,
-                      }}
+                    <ButtonGhost
+                      textButton='Load More'
+                      size={2}
+                      onClickButton={{ onClick: loadMoreSlots }}
                     />
                   </Stack>
                 )}

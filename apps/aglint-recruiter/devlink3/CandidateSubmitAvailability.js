@@ -15,18 +15,15 @@ export function CandidateSubmitAvailability({
   onClickReReq = {},
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1768")} tag="div">
+    <_Component className={_utils.cx(_styles, "csa-wrapper")} tag="div">
       <Text content="??" weight="" color="neutral" />
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1771")}
+        className={_utils.cx(_styles, "csa-date-slots")}
         tag="div"
       >
         {slotList ?? <SlotComp componentNeme="DateOption" />}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1770")}
-        tag="div"
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "csa-btn-slots")} tag="div">
         <ButtonSolid
           onClickButton={onClickSchedule}
           size="1"

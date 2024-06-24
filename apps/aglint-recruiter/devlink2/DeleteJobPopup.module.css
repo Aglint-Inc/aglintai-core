@@ -78,14 +78,14 @@
 
 .div-block-330 {
   display: flex;
-  padding: 14px 16px;
+  padding: var(--space-4);
   flex-direction: column;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
 
-  border-radius: 10px;
+  border-radius: var(--radius-4);
 
-  background-color: var(--grey100-ce28dc20);
+  background-color: var(--neutral-3);
 }
 
 .div-block-331 {

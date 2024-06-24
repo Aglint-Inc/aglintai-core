@@ -5,7 +5,7 @@ import {
   SessionCombinationRespType,
 } from '@aglint/shared-types';
 import { schema_candidate_direct_booking } from '@aglint/shared-types/src/aglintApi/valibotSchema/candidate-self-schedule';
-import { ScheduleUtils } from '@aglint/shared-utils';
+import { ScheduleUtils, scheduling_options_schema } from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
 
@@ -13,7 +13,6 @@ import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/Candi
 import { bookCandidateSelectedOption } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/bookCandidateSelectedOption';
 import { fetchDBScheduleDetails } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchDBScheduleDetails';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
-import { scheduling_options_schema } from '@/src/types/scheduling/schema_find_availability_payload';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -28,9 +27,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       parsed,
     );
 
-    const zod_options = scheduling_options_schema.parse({
+    const zod_options = v.parse(scheduling_options_schema, {
       include_conflicting_slots: {},
     });
+
+    zod_options.include_conflicting_slots.show_conflicts_events = true;
+    zod_options.include_conflicting_slots.show_soft_conflicts = true;
 
     const cand_schedule = new CandidatesSchedulingV2(
       {
@@ -59,7 +61,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       verified_plans[0],
       schedule_db_details,
     );
-    
+
     return res.status(200).json('ok');
   } catch (err) {
     console.error(err);

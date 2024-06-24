@@ -1,8 +1,8 @@
 import { JsonResume } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 
 import { supabase } from '@/src/utils/supabase/client';
 
-import { supabaseWrap } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 import { Candidate } from './candFilter.type';
 
 type CandidateSearchType = {

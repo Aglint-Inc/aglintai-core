@@ -1,28 +1,11 @@
 /* eslint-disable security/detect-object-injection */
-import {
-  Drawer,
-  Stack,
-  // Input,
-  // OutlinedInput,
-  // Stack,
-  TextField,
-  // Typography,
-} from '@mui/material';
+import { Drawer, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { ReactDOM, useEffect, useRef, useState } from 'react';
 dayjs.extend(relativeTime);
 
-// import { set } from 'lodash';
-
-// import {
-//   AglintChatCard,
-//   AssistantHelp,
-//   AssistantLanding,
-//   AssistantTaskEmpty,
-//   PageLayout,
-// } from '@/devlink2';
 import { AgentLayout } from '@/devlink3/AgentLayout';
 import { AgentTask } from '@/devlink3/AgentTask';
 import { ChatBlockAglint } from '@/devlink3/ChatBlockAglint';
@@ -100,17 +83,13 @@ function SchedulerAgent() {
   };
   const { recruiterUser } = AuthContext.useAuthDetails();
   const inputRef = useRef(null);
-  // const [messages, setMessages] = useState<messageType[]>([]);
   const [loading, setLoading] = useState(false);
-  // const [indexes, setIndexes] = useState([]);
-  // eslint-disable-next-line no-console
   async function createThread() {
     const { data } = await axios.get('/api/assistant/createThread');
     localStorage.setItem('agent_thread_id', data.id);
   }
 
   async function sendMessage(message: string) {
-    // let message = inputRef.current.value;
     inputRef.current.value = '';
     const today = dayjs(new Date()).fromNow();
     const tempChats = [...agentChats];
@@ -192,47 +171,7 @@ function SchedulerAgent() {
                 ...tempMessage,
                 date: today,
               });
-
-              // if (index === 2) {
-              //   setTimeout(() => {
-              //     setLoading(true);
-              //   });
-              //   setTimeout(() => {
-              //     setLoading(false);
-
-              //     tempActiveChat.messages.push({
-              //       ...extraMessage[0],
-              //       date: today,
-              //     });
-              //   }, 5000);
-              // } else if (index === 4) {
-              //   setTimeout(() => {
-              //     setLoading(true);
-              //   });
-              //   setTimeout(() => {
-              //     setLoading(false);
-
-              //     tempActiveChat.messages.push({
-              //       ...extraMessage[1],
-              //       date: today,
-              //     });
-              //   }, 5000);
-              // } else if (index === 7) {
-              //   setTimeout(() => {
-              //     setLoading(true);
-              //   });
-              //   setTimeout(() => {
-              //     setLoading(false);
-
-              //     tempActiveChat.messages.push({
-              //       ...extraMessage[2],
-              //       date: today,
-              //     });
-              //   }, 5000);
-              // } else {
               setLoading(false);
-              // }
-              // setIndexes((pre) => [...pre, Number(index)]);
               tempChats[activeChat] = tempActiveChat;
               setAgentChats(tempChats);
               clearInterval(timeInterval);
@@ -240,7 +179,6 @@ function SchedulerAgent() {
           }
         }, 1700);
       }
-      // inputRef.current.focus();
     } else {
       toast.warning('Please enter your request.');
     }
@@ -276,49 +214,27 @@ function SchedulerAgent() {
                   ? 'Data Scientist with expertise in machine learning for our Boston office'
                   : agentChats[activeChat]?.name
         }
-        //   onClickNewTask={{ onClick: handleNewChat }}
         slotAgentTask={
           <>
             {agentChats.map((chat, i) => {
-              // const tempTask =
-              //   agentChats[i]?.timeline[agentChats[i]?.timeline.length - 1];
               return (
                 <AgentTask
                   key={i}
                   isActive={i === activeChat}
                   textTaskName={chat.name}
-                  // isTimeline={Boolean(tempTask)}
                   onClickCard={{
                     onClick: () => {
                       setActiveChat(i);
-                      // setMessages(chat.messages);
                     },
                   }}
-                  // slotTimeline={tempTask}
                 />
               );
             })}
-            {/* <AgentTask
-                isActive={'demo_chat_2' === activeChat}
-                textTaskName={'Monday interview'}
-                onClickCard={{
-                  onClick: () => {
-                    setActiveChat('demo_chat_2');
-                  },
-                }}
-              /> */}
             <AgentTask
               isActive={'demo_chat_1' === activeChat}
               textTaskName={
                 'John Abraham, Staff DevOps Engineer Candidate: Interview Scheduling'
               }
-              // slotTimeline={
-              //   <Timeline
-              //     slotStatusIcon={<CheckMarkIcon />}
-              //     textTitle={'Interview confirmed'}
-              //     textTime={'1 day ago'}
-              //   />
-              // }
               onClickCard={{
                 onClick: () => {
                   setActiveChat('demo_chat_1');
@@ -362,13 +278,6 @@ function SchedulerAgent() {
               textTaskName={
                 'Data Scientist with expertise in machine learning for our Boston office'
               }
-              // slotTimeline={
-              //   <Timeline
-              //     slotStatusIcon={<CheckMarkIcon />}
-              //     textTitle={'Interview confirmed'}
-              //     textTime={'1 day ago'}
-              //   />
-              // }
               slotTaskIcon={
                 <svg
                   width='22'
@@ -461,27 +370,6 @@ function SchedulerAgent() {
                         <>{item.notifications}</>
                       </>
                     );
-                    // return (
-                    //   <ScrollList key={i} uniqueKey={i}>
-                    //     <AglintChatCard
-                    //       key={i}
-                    //       textName={item.sender}
-                    //       textMessage={item.message}
-                    //       textTime={item.date}
-                    //       slotUserImage={
-                    //         <>
-                    //           <MuiAvatar
-                    //             variant='rounded'
-                    //             level={item.sender}
-                    //             src={recruiterUser.profile_image}
-                    //           />
-                    //         </>
-                    //       }
-                    //       isAglintLogoVisible={item.sender == 'Aglint'}
-                    //       isUserLogoVisible={item.sender !== 'Aglint'}
-                    //     />
-                    //   </ScrollList>
-                    // );
                   })}
                   {loading && (
                     <ChatBlockAglint
@@ -503,47 +391,13 @@ function SchedulerAgent() {
                     message:
                       'Hello there!, Ready to assist with scheduling your interviews today?',
                     date: null,
-                    component: null, // React component to display the chatbot's name
+                    component: null,
                   });
                   setAgentChats(tempChats);
                 },
               }}
             />
           )
-          // <Stack
-          //   direction={'row'}
-          //   rowGap={'var(--space-5)'}
-          //   flexDirection={'column'}
-          //   overflow={'auto'}
-          //   height={'calc(100%)'}
-          //   py={5}
-          //   id='chat_scroll'
-          // >
-          //   {messages.map((item, i) => {
-          //     return (
-          //       <ScrollList key={i} uniqueKey={i}>
-          //         <AglintChatCard
-          //           key={i}
-          //           textName={item.sender}
-          //           textMessage={item.message}
-          //           textTime={item.date}
-          //           slotUserImage={
-          //             <>
-          //               <MuiAvatar
-          //                 variant='rounded'
-          //                 level={item.sender}
-          //                 src={recruiterUser.profile_image}
-          //               />
-          //             </>
-          //           }
-          //           isAglintLogoVisible={item.sender == 'Aglint'}
-          //           isUserLogoVisible={item.sender !== 'Aglint'}
-          //         />
-          //       </ScrollList>
-          //     );
-          //   })}
-          //   {loading && <ChatMessageLoader />}
-          // </Stack>
         }
         slotTimelineBlock={
           <>
@@ -624,180 +478,10 @@ function SchedulerAgent() {
       </Drawer>
     </>
   );
-  // <PageLayout
-  //   slotTopbarLeft={<Typography variant='h3'>Aglint</Typography>}
-  //   slotBody={
-  //     <>
-  //       <AssistantLanding
-  //         slotChat={
-  //           <AssistantHelp
-  //             onClickSchedulerAgent={{
-  //               onClick: () => {
-  //                 setMessages((pre) => [
-  //                   ...pre,
-  //                   {
-  //                     sender: 'Aglint',
-  //                     message:
-  //                       'Hello there!, Ready to assist with scheduling your interviews today?',
-  //                     date: null,
-  //                     component: null, // React component to display the chatbot's name
-  //                   },
-  //                 ]);
-  //               },
-  //             }}
-  //             isSlotChatVisible={messages.length !== 0}
-  //             isChatDashVisible={messages.length === 0}
-  //             slotMessage={
-  //               <Stack
-  //                 direction={'row'}
-  //                 rowGap={'var(--space-5)'}
-  //                 flexDirection={'column'}
-  //                 overflow={'auto'}
-  //                 height={'calc(100%)'}
-  //                 py={5}
-  //                 id='chat_scroll'
-  //               >
-  //                 {messages.map((item, i) => {
-  //                   return (
-  //                     <ScrollList key={i} uniqueKey={i}>
-  //                       <AglintChatCard
-  //                         key={i}
-  //                         textName={item.sender}
-  //                         textMessage={item.message}
-  //                         textTime={item.date}
-  //                         slotUserImage={
-  //                           <>
-  //                             <MuiAvatar
-  //                               variant='rounded'
-  //                               level={item.sender}
-  //                               src={recruiterUser.profile_image}
-  //                             />
-  //                           </>
-  //                         }
-  //                         isAglintLogoVisible={item.sender == 'Aglint'}
-  //                         isUserLogoVisible={item.sender !== 'Aglint'}
-  //                       />
-  //                     </ScrollList>
-  //                   );
-  //                 })}
-  //                 {loading && <ChatMessageLoader />}
-  //               </Stack>
-  //             }
-  //             slotChatInput={
-  //               <TextField
-  //                 autoComplete='new-password'
-  //                 sx={{
-  //                   '& .MuiOutlinedInput-root': {
-  //                     height: 50,
-  //                     fontSize: 15,
-  //                   },
-  //                 }}
-  //                 inputRef={inputRef}
-  //                 fullWidth
-  //                 variant='outlined'
-  //                 onKeyDown={(e) => {
-  //                   if (e.key === 'Enter') {
-  //                     sendMessage();
-  //                   }
-  //                 }}
-  //               />
-  //             }
-  //             onClickSend={{
-  //               onClick: () => {
-  //                 sendMessage();
-  //               },
-  //             }}
-  //           />
-  //         }
-  //         isFilterVisible={true}
-  //         slotTask={
-  //           <Stack direction={'row'} flexDirection={'column'} gap={'var(--space-2)'}>
-  //             <AssistantTaskEmpty />
-  //           </Stack>
-  //         }
-  //       />
-  //     </>
-  //   }
-  // />
 }
 
 export default SchedulerAgent;
-// export const chatMessages2 = [
-//   {
-//     sender: 'You',
-//     message: 'Hello!',
-//     date: null,
-//     component: null, // React component to explain how the chatbot works
-//   },
-//   {
-//     sender: 'Aglint',
-//     message:
-//       'Hello there!, Ready to assist with scheduling your interviews today?',
-//     date: null,
-//     component: null, // React component to display the chatbot's name
-//   },
-//   {
-//     sender: 'You',
-//     message:
-//       'Yes, I need to schedule interviews for the Software Developer role.',
-//     date: null,
-//     component: null,
-//   },
-//   {
-//     sender: 'Aglint',
-//     message: 'Understood. How many interviews are we scheduling?',
-//     date: null,
-//     component: null, // React component to explain how the chatbot works
-//   },
-//   {
-//     sender: 'You',
-//     message: `Let's go with the top 5 candidates.`,
-//     date: null,
-//     component: null,
-//   },
-//   {
-//     sender: 'Aglint',
-//     message: 'Do you have preferred dates and times?',
-//     date: null,
-//     component: null, // React component to explain how the chatbot works
-//   },
-//   {
-//     sender: 'You',
-//     message: `Next Monday and Tuesday, anytime in the afternoon.`,
-//     date: null,
-//     component: null,
-//   },
-//   {
-//     sender: 'Aglint',
-//     message: `Got it. I'll check the candidates' availability. Any specific duration for each interview?`,
-//     date: null,
-//     component: null, // React component to explain how the chatbot works
-//   },
-//   {
-//     sender: 'You',
-//     message: `Allocate 1 hour for each, with a 15-minute break in between.`,
-//     date: null,
-//     component: null,
-//   },
-//   {
-//     sender: 'Aglint',
-//     message: `Perfect. I'll arrange them and send confirmation emails. Do you want to include any specific interviewers from your team?`,
-//     date: null,
-//     component: null, // React component to explain how the chatbot works
-//   },
-//   {
-//     sender: 'You',
-//     message: `That's all for now, thank you!`,
-//     date: null,
-//     component: null,
-//   },
-//   {
-//     sender: 'Aglint',
-//     message: `You're welcome! I'll update you shortly on the schedule. Have a great day!`,
-//     date: null,
-//     component: null,
-//   },
-// ];
+
 export const questions = [
   'Hi, I need to schedule an interview for the Senior Machine Learning Engineer position. Can you help with that?',
   "Let's go with the Software Engineering Panel",
@@ -933,137 +617,6 @@ export const chatMessages = [
   },
 ];
 
-// export const chatMessages = [
-//   {
-//     sender: 'You',
-//     message:
-//       'Hey, schedule an interview with John for the Software Engineer role with the SW Eng Panel OR Sarah, Cindy, Joe, Brian.',
-//     date: null,
-//     component: null,
-//   },
-//   {
-//     sender: 'Aglint',
-//     message: 'Sounds good, do you have a day or time-frame in mind?',
-//     date: null,
-//     component: null,
-//   },
-//   {
-//     sender: 'You',
-//     message: 'Schedule in the next two weeks.',
-//     date: null,
-//     component: null,
-//   },
-//   {
-//     sender: 'Aglint',
-//     message:
-//       "Got it, I'll reach out to the John and get the process started. Unless you want me to check with the interviewing team first.",
-//     date: null,
-//     component: null,
-//   },
-//   {
-//     sender: 'You',
-//     message: 'Please check with the candidate first and set it up.',
-//     date: null,
-//     component: (
-//       <WidgetFlexRow
-//         slorWidgetIndividual={
-//           <>
-//             <WidgetPanelCard
-//               textMemberCount={'11 Members'}
-//               textPanelName={'something'}
-//             />
-//           </>
-//         }
-//       />
-//     ),
-//   },
-//   {
-//     sender: 'Aglint',
-//     message: 'Got it.',
-//     date: null,
-//     component: null,
-//   },
-
-//   {
-//     sender: 'You',
-//     message:
-//       'Awesome, thanks. I forgot to ask, can you add Henry and Denise to {shadow} the interview.',
-//     date: null,
-//     component: null,
-//   },
-//   {
-//     sender: 'Aglint',
-//     message:
-//       'Got it, no problem. I will add add Henry and Denise to {shadow} the interview once confirmed. I will prioritize the SW Eng Panel and add them as optional. Let me know if they are required to shadow.',
-//     date: null,
-//     component: null,
-//   },
-//   {
-//     sender: 'You',
-//     message: 'No, optional is fine.',
-//     date: null,
-//     component: null,
-//   },
-//   {
-//     sender: 'Aglint',
-//     message: 'Got it.',
-//     date: null,
-//     component: null,
-//   },
-
-//   {
-//     sender: 'You',
-//     message: 'Yes, confirm it. Did the shadows confirm?',
-//     date: null,
-//     component: null,
-//   },
-//   {
-//     sender: 'Aglint',
-//     message: `Sorry, I did'nt understand.`,
-//     component: null,
-//     date: null,
-//   },
-//   {
-//     sender: 'You',
-//     message: 'Did Henry and Denise confirm to {shadow} the interview',
-//     date: null,
-//     component: null,
-//   },
-
-//   {
-//     sender: 'Aglint',
-//     message: 'Got it. Yes, they have confirmed.',
-//     date: null,
-//     component: null,
-//   },
-//   {
-//     sender: 'You',
-//     message: 'Awesome.',
-//     date: null,
-//     component: null,
-//   },
-//   {
-//     sender: 'Aglint',
-//     message: 'Great, sending confirmed schedules now.',
-//     date: null,
-//     component: null,
-//   },
-
-//   {
-//     sender: 'You',
-//     message: 'Yes, please reschedule',
-//     date: null,
-//     component: null,
-//   },
-//   {
-//     sender: 'Aglint',
-//     message: 'Got it, will do.',
-//     date: null,
-//     component: null,
-//   },
-// ];
-
-// 3  5 8
 export const extraMessage = [
   {
     sender: 'Aglint',

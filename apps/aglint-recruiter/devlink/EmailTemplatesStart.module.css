@@ -1,24 +1,8 @@
 .email-template-wrap {
   display: flex;
   overflow: hidden;
-  margin-top: var(--space-4);
-  margin-right: var(--space-4);
-  margin-bottom: var(--space-4);
-  margin-left: var(--space-4);
   justify-content: flex-start;
 
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: var(--neutral-6);
-  border-right-style: solid;
-  border-right-width: 1px;
-  border-right-color: var(--neutral-6);
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  border-bottom-color: var(--neutral-6);
-  border-left-style: solid;
-  border-left-width: 1px;
-  border-left-color: var(--neutral-6);
   border-top-left-radius: var(--radius-4);
   border-top-right-radius: var(--radius-4);
   border-bottom-left-radius: var(--radius-4);
@@ -26,7 +10,7 @@
 
   background-color: var(--white);
 
-  height: calc(100vh - 80px);
+  height: calc(100vh - 96px);
 }
 
 .email-template-left-wrap {
@@ -39,7 +23,7 @@
   flex-grow: 0;
   flex-shrink: 0;
   flex-basis: auto;
-  height: calc(100vh - 48px);
+  height: calc(100vh - 96px);
 }
 
 .email-template-left-head {

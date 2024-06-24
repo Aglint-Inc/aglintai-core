@@ -4,23 +4,25 @@ import {
   DatabaseTable,
   DatabaseTableInsert,
   DatabaseTableUpdate,
-  DatabaseView,
 } from '@aglint/shared-types';
 import {
   infiniteQueryOptions,
   keepPreviousData,
+  queryOptions,
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { createBatches } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
-import { UploadApiFormData } from '@/src/apiUtils/job/jobApplications/candidateUpload/types';
-import { handleJobApplicationApi } from '@/src/apiUtils/job/jobApplications/utils';
+import { UploadApiFormData } from '@/src/apiUtils/job/candidateUpload/types';
+import { handleJobApi } from '@/src/apiUtils/job/utils';
 import { ApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { Application } from '@/src/types/applications.types';
+import { createBatches } from '@/src/utils/createBatches';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { GC_TIME } from '..';
 import { jobQueries } from '../job';
 
 const ROWS = 30;
@@ -29,6 +31,18 @@ export const applicationsQueries = {
   all: ({ job_id }: ApplicationsAllQueryPrerequistes) => ({
     queryKey: [...jobQueries.job({ id: job_id }).queryKey, 'applications'],
   }),
+  locationFilters: ({ job_id }: ApplicationsAllQueryPrerequistes) =>
+    queryOptions({
+      enabled: !!job_id,
+      gcTime: job_id ? GC_TIME : 0,
+      queryKey: [
+        ...applicationsQueries.all({ job_id }).queryKey,
+        'location_filters',
+      ],
+      queryFn: async () =>
+        (await supabase.rpc('get_applicant_locations', { job_id }).single())
+          .data.locations,
+    }),
   applications: ({
     job_id,
     count,
@@ -82,7 +96,7 @@ type ApplicationsAllQueryPrerequistes = {
 type Params = ApplicationsAllQueryPrerequistes & {
   filters: ApplicationsStore['filters'];
   sort: ApplicationsStore['sort'];
-  status: DatabaseView['application_view']['status'];
+  status: Application['status'];
 };
 
 const getApplications = async ({
@@ -96,6 +110,10 @@ const getApplications = async ({
     .range(index, index + ROWS - 1)
     .eq('job_id', job_id)
     .eq('status', status);
+
+  if (filters?.bookmarked) {
+    query.eq('bookmarked', true);
+  }
 
   if (filters?.search?.length) {
     query.ilike('name', `%${filters.search}%`);
@@ -120,9 +138,52 @@ const getApplications = async ({
     );
   }
 
+  const { country, state, city } = (filters?.locations ?? []).reduce(
+    (acc, curr, i) => {
+      let type: keyof typeof acc = null;
+      switch (i) {
+        case 0:
+          type = 'country';
+          break;
+        case 1:
+          type = 'state';
+          break;
+        case 2:
+          type = 'city';
+          break;
+      }
+      acc[type].push(
+        curr
+          .filter(({ status }) => status === 'active')
+          .map(({ label }) => label),
+      );
+      return acc;
+    },
+    { country: [], state: [], city: [] },
+  );
+
+  if ([...country, ...state, ...city].length)
+    query.or(
+      [
+        country.length
+          ? `country.in.(${country.map((country) => country).join(',')})`
+          : null,
+        state.length
+          ? `state.in.(${(state ?? []).map((state) => state).join(',')})`
+          : null,
+        (city ?? []).length
+          ? `city.in.(${(city ?? []).map((city) => city).join(',')})`
+          : null,
+      ]
+        .filter(Boolean)
+        .join(','),
+    );
+
   if (sort) {
     query.order(sort.type, { ascending: sort.order === 'asc' });
   }
+
+  query.order('id');
 
   const applications = (await query.throwOnError()).data.map(
     (application, i) => ({ ...application, index: index + i }),
@@ -215,9 +276,7 @@ export const updateApplication = async ({
 
 const sampleApplicationView: {
   // eslint-disable-next-line no-unused-vars
-  [key in keyof Partial<
-    DatabaseTable['applications']
-  >]: keyof DatabaseView['application_view'];
+  [key in keyof Partial<DatabaseTable['applications']>]: keyof Application;
 } = {
   applied_at: 'applied_at',
   bookmarked: 'bookmarked',
@@ -234,16 +293,12 @@ const sampleApplicationView: {
 
 export const diffApplication = (
   application: UpdateParams['application'],
-): Partial<DatabaseView['application_view']> => {
-  return Object.entries(application).reduce(
-    (acc, [key, value]) => {
-      const mappedColumn =
-        sampleApplicationView[key as keyof typeof application];
-      if (mappedColumn) acc[mappedColumn] = value as never;
-      return acc;
-    },
-    {} as Partial<DatabaseView['application_view']>,
-  );
+): Partial<Application> => {
+  return Object.entries(application).reduce((acc, [key, value]) => {
+    const mappedColumn = sampleApplicationView[key as keyof typeof application];
+    if (mappedColumn) acc[mappedColumn] = value as never;
+    return acc;
+  }, {} as Partial<Application>);
 };
 
 export const useUploadApplication = (params: Omit<Params, 'status'>) => {
@@ -257,22 +312,27 @@ export const useUploadApplication = (params: Omit<Params, 'status'>) => {
     id: params.job_id,
   }).queryKey;
   return useMutation({
-    mutationFn: (
+    mutationFn: async (
       payload: Omit<HandleUploadApplication, 'job_id' | 'recruiter_id'>,
-    ) =>
-      handleUploadApplication({
+    ) => {
+      toast.message('Uploading application');
+      await handleUploadApplication({
         job_id: params.job_id,
         recruiter_id,
         ...payload,
-      }),
-    onSuccess: () =>
-      Promise.allSettled([
+      });
+    },
+    onError: (error) => toast.error(`Upload failed. (${error.message})`),
+    onSuccess: async () => {
+      await Promise.allSettled([
         queryClient.invalidateQueries({ queryKey }),
         queryClient.invalidateQueries(
           jobQueries.job_processing_count({ id: params.job_id }),
         ),
         queryClient.invalidateQueries({ queryKey: jobCountQueryKey }),
-      ]),
+      ]);
+      toast.success('Uploaded successfully');
+    },
   });
 };
 type HandleUploadApplication = ApplicationsAllQueryPrerequistes & {
@@ -295,10 +355,7 @@ const handleUploadApplication = async (payload: HandleUploadApplication) => {
     },
     files: formData,
   };
-  const response = await handleJobApplicationApi(
-    'candidateUpload/manualUpload',
-    request,
-  );
+  const response = await handleJobApi('candidateUpload/manualUpload', request);
   if (!response.confirmation) throw new Error(response.error);
 };
 
@@ -313,22 +370,27 @@ export const useUploadResume = (params: Omit<Params, 'status'>) => {
     id: params.job_id,
   }).queryKey;
   return useMutation({
-    mutationFn: (
+    mutationFn: async (
       payload: Omit<HandleUploadResume, 'job_id' | 'recruiter_id'>,
-    ) =>
-      handleBulkResumeUpload({
+    ) => {
+      toast.message('Uploading applications');
+      await handleBulkResumeUpload({
         job_id: params.job_id,
         recruiter_id,
         ...payload,
-      }),
-    onSuccess: () =>
-      Promise.allSettled([
+      });
+    },
+    onError: (error) => toast.error(`Upload failed. (${error.message})`),
+    onSuccess: async () => {
+      await Promise.allSettled([
         queryClient.invalidateQueries({ queryKey }),
         queryClient.invalidateQueries(
           jobQueries.job_processing_count({ id: params.job_id }),
         ),
         queryClient.invalidateQueries({ queryKey: jobCountQueryKey }),
-      ]),
+      ]);
+      toast.success('Uploaded successfully');
+    },
   });
 };
 type HandleUploadResume = ApplicationsAllQueryPrerequistes & {
@@ -347,10 +409,7 @@ const handleResumeUpload = async (payload: HandleUploadResume) => {
     },
     files: formData,
   };
-  const response = await handleJobApplicationApi(
-    'candidateUpload/resumeUpload',
-    request,
-  );
+  const response = await handleJobApi('candidateUpload/resumeUpload', request);
   return response;
 };
 const handleBulkResumeUpload = async (payload: HandleUploadResume) => {
@@ -378,25 +437,32 @@ export const useUploadCsv = (params: Omit<Params, 'status'>) => {
     id: params.job_id,
   }).queryKey;
   return useMutation({
-    mutationFn: (payload: Omit<HandleUploadCsv, 'job_id' | 'recruiter_id'>) =>
-      handleBulkCsvUpload({
+    mutationFn: async (
+      payload: Omit<HandleUploadCsv, 'job_id' | 'recruiter_id'>,
+    ) => {
+      toast.message('Uploading applications');
+      await handleBulkCsvUpload({
         job_id: params.job_id,
         recruiter_id,
         ...payload,
-      }),
-    onSuccess: () =>
-      Promise.allSettled([
+      });
+    },
+    onError: (error) => toast.error(`Upload failed. (${error.message})`),
+    onSuccess: async () => {
+      await Promise.allSettled([
         queryClient.invalidateQueries({ queryKey }),
         queryClient.invalidateQueries(
           jobQueries.job_processing_count({ id: params.job_id }),
         ),
         queryClient.invalidateQueries({ queryKey: jobCountQueryKey }),
-      ]),
+      ]);
+      toast.success('Uploaded successfully');
+    },
   });
 };
 type HandleUploadCsv = ApplicationsAllQueryPrerequistes & {
   candidates: Parameters<
-    typeof handleJobApplicationApi<'candidateUpload/csvUpload'>
+    typeof handleJobApi<'candidateUpload/csvUpload'>
   >['1']['candidates'];
   recruiter_id: string;
 };
@@ -406,10 +472,7 @@ const handleBulkCsvUpload = async (payload: HandleUploadCsv) => {
     recruiter_id: payload.recruiter_id,
     candidates: payload.candidates,
   };
-  const response = await handleJobApplicationApi(
-    'candidateUpload/csvUpload',
-    formData,
-  );
+  const response = await handleJobApi('candidateUpload/csvUpload', formData);
   if (!response.confirmation) throw new Error(response.error);
 };
 
@@ -451,6 +514,7 @@ type MoveApplications = ApplicationsAllQueryPrerequistes & {
   applications: DatabaseTable['applications']['id'][];
   status: keyof SectionToEmailGuard;
   email: SectionToEmailGuard[keyof SectionToEmailGuard];
+  callBacks?: Promise<any>[];
 };
 type SectionToEmail = {
   interview: null;
@@ -474,9 +538,11 @@ const moveApplications = async ({
   applications,
   status,
   email,
+  callBacks = [],
 }: MoveApplications) => {
   const safeApplications = applications.map((id) => ({ id, status, job_id }));
   await Promise.allSettled([
+    ...callBacks,
     supabase.from('applications').upsert(safeApplications).throwOnError(),
     (async () => {
       if (email) {

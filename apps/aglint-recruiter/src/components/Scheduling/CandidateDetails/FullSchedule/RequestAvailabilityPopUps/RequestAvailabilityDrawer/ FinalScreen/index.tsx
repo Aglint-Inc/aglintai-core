@@ -8,7 +8,7 @@ function FinalScreen() {
   const { selectedDateSlots } = useAvailabilityContext();
   return (
     <div>
-      <Stack p={2} overflow={'auto'} height={'100%'}>
+      <Stack p={2} overflow={'auto'} height={'calc(100vh - 96px)'} direction={'column'}>
         {selectedDateSlots?.map((item, index) => {
           const date = item.dateSlots[0]?.sessions[0]?.start_time;
           return (

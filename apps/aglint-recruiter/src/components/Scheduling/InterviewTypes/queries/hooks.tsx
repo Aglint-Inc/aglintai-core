@@ -39,9 +39,9 @@ export const useAllSchedulesByModuleId = () => {
       moduleId: router.query.module_id as string,
     }),
     queryFn: () => fetchModules(router.query.module_id as string),
-    enabled: !!router.query.module_id,
-    initialData: [],
-    refetchOnWindowFocus: false,
+    // enabled: !!router.query.module_id,
+    // initialData: [],
+    // refetchOnWindowFocus: false,
   });
   return query;
 };
@@ -84,7 +84,6 @@ export const useProgressModuleUsers = ({
         trainer_ids: trainer_ids,
       }),
     enabled: router.query.module_id && trainer_ids.length > 0,
-    initialData: [],
     refetchOnWindowFocus: false,
   });
   return query;
@@ -112,7 +111,6 @@ export const useModuleAndUsers = () => {
       }
       return resMod.data;
     },
-    initialData: null,
     enabled: !!router.query.module_id,
     refetchOnWindowFocus: false,
   });

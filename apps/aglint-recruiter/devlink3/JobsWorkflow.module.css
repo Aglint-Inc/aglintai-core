@@ -1,100 +1,16 @@
 .jobs_workflow_warper {
   display: flex;
-  padding: 20px;
+  padding: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
 }
 
-.div-block-1754 {
+.jw-btn-wrap {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-}
-
-.div-block-1755 {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.icons.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
-}
-
-.icons.pointer {
-  cursor: pointer;
-}
-
-.accent-text {
-  color: var(--accent-9);
-}
-
-.accent-text.text-underline {
-  text-decoration: underline;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
-.accent-text.text-underline.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.accent-text.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.text-sm {
-  font-size: var(--font-size-1);
-  line-height: var(--line-height-1);
-  letter-spacing: var(--letter-spacing-1);
-}
-
-.accent-text.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.accent-text.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.accent-text.text-capital {
-  text-transform: uppercase;
-}
-
-.fw-semibold {
-  font-weight: 600;
 }
 
 .slotworkflowcard {
@@ -102,6 +18,6 @@
   max-width: 700px;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
 }

@@ -21,27 +21,22 @@
 .im_action {
   display: flex;
   align-items: center;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.imc-icon-wrap {
+  padding: var(--space-1);
+  border-radius: var(--radius-2);
+}
+
+.imc-icon-wrap:hover {
+  background-color: var(--neutral-3);
 }
 
 .embed_flex {
   display: flex;
-  overflow: hidden;
-  width: var(--space-5);
-  height: var(--space-5);
   align-items: center;
-
-  border-radius: var(--radius-2);
-
-  color: var(--neutral-a11);
-
-  cursor: pointer;
-}
-
-.embed_flex:hover {
-  background-color: var(--neutral-a3);
-  color: var(--neutral-a12);
 }
 
 .embed_flex.hide {
@@ -97,8 +92,8 @@
 .interview_module_duration {
   display: flex;
   align-items: center;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .imc-meet-wrappers {
@@ -152,31 +147,12 @@
   grid-row-gap: var(--space-4);
 }
 
-.intrerview_module_members.break {
-  flex-direction: row;
-  flex-wrap: nowrap;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
-}
-
-.break {
-  display: flex;
-  align-items: center;
-  grid-column-gap: var(--space-1);
-  grid-row-gap: var(--space-1);
-}
-
 .text-gray-600 {
   color: var(--sand-11);
 }
 
 .text-gray-600.is_link {
   color: #337fbd;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.text-gray-600.underline {
   text-decoration: underline;
   cursor: pointer;
 }

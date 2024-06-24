@@ -39,12 +39,6 @@
   border-radius: 100px;
 }
 
-.slot_useravatr.small {
-  width: 24px;
-  height: 24px;
-  background-color: #f8f9f9;
-}
-
 .panel_card_text {
   position: relative;
   z-index: 2;
@@ -81,29 +75,8 @@
   color: var(--sand-11);
 }
 
-.text-sm.text-underline {
-  text-decoration: underline;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
 .text-grey-600 {
   color: #68737d;
-}
-
-.text-sm.text-underline.text-grey-600.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.text-sm.text-underline.text-grey-600.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
 }
 
 .is_active_blue_100 {

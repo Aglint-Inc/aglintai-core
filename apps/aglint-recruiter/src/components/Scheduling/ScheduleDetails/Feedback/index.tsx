@@ -4,7 +4,7 @@ import { Dialog, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 // import axios from 'axios';
 import dayjs from 'dayjs';
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { StatusBadge } from '@/devlink2/StatusBadge';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
@@ -23,7 +23,6 @@ import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import DynamicLoader from '../../Interviewers/DynamicLoader';
-import { useAllInterviewersDetails } from '../hooks';
 import {
   re_mapper,
   saveInterviewerFeedback,
@@ -79,7 +78,6 @@ const FeedbackWindow = ({
 
   const { isAllowed, userDetails } = useAuthDetails();
   const user_id = userDetails?.user.id;
-  const { data: members, isFetching } = useAllInterviewersDetails();
 
   const tempRelations = useMemo(() => {
     const tempData = (
@@ -115,13 +113,14 @@ const FeedbackWindow = ({
   const interviewers = useMemo(() => {
     const interviewers: FeedbackWindowInterviewersType = {};
 
-    if (tempRelations && members.length) {
+    if (tempRelations) {
       interview_sessions.forEach((session) => {
         const temp = tempRelations[String(session.id)] || [];
         temp.forEach((memRelation) => {
-          const tempMem = members.find(
-            (item) => item.user_id === memRelation.user_id,
-          );
+          const tempMem = relationsData.find(
+            (item) =>
+              item.interview_module_relation.user_id === memRelation.user_id,
+          ).interview_module_relation.recruiter_user;
           if (!tempMem) return;
           interviewers[String(session.id)] = [
             ...(interviewers[String(session.id)] || []),
@@ -145,7 +144,7 @@ const FeedbackWindow = ({
       });
     }
     return interviewers;
-  }, [tempRelations, members]);
+  }, [tempRelations]);
 
   const handelSubmit = async ({
     session_id,
@@ -173,7 +172,7 @@ const FeedbackWindow = ({
   return (
     <>
       <ShowCode>
-        <ShowCode.When isTrue={isLoading || isFetching}>
+        <ShowCode.When isTrue={isLoading}>
           <Stack position={'relative'} height={'calc(100vh - 172px)'}>
             <DynamicLoader />
           </Stack>
@@ -287,7 +286,7 @@ const AdminFeedback = ({
     <>
       <ScheduleTabFeedback
         styleMinWidth={{
-          style: { minWidth: multiSession ? '1164px' : '900px' },
+          style: { minWidth: multiSession ? '1164px' : '600px' },
         }}
         isSessionVisible={multiSession}
         slotFeedbackTableRow={
@@ -422,7 +421,7 @@ const AdminFeedback = ({
                                   }}
                                   slotAvatar={
                                     <Avatar
-                                      variant='rounded-xs'
+                                      variant='rounded-medium'
                                       src={int.profile_image}
                                       level={getFullName(
                                         int.first_name,
@@ -781,7 +780,7 @@ const InterviewerFeedback = ({
     <>
       <ScheduleTabFeedback
         styleMinWidth={{
-          style: { minWidth: multiSession ? '1164px' : '900px' },
+          style: { minWidth: multiSession ? '1164px' : '600px' },
         }}
         isSessionVisible={multiSession}
         slotFeedbackTableRow={

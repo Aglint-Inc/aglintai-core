@@ -8,7 +8,7 @@ import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import { MembersList } from '@/devlink3/MembersList';
 import { MyScheduleSubCard } from '@/devlink3/MyScheduleSubCard';
 import CandidateDefaultIcon from '@/src/components/Common/Icons/CandidateDefaultIcon';
-import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
+import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import IconScheduleType from '../../../Candidates/ListCard/Icon';
@@ -56,12 +56,13 @@ function ScheduleMeetingCard({
               e.stopPropagation();
             },
           }}
+          isDropdownIconVisible={interviewers.length > 0}
+          isMembersListVisible={interviewers.length > 0}
           slotMembersList={
             <>
               <Collapse in={collapseOpen}>
                 <Stack direction={'column'} spacing={'var(--space-2)'}>
                   <MembersList
-                    isCorrectVisible={false}
                     slotImage={<CandidateDefaultIcon size={40} />}
                     textName={getFullName(
                       meetingDetails.candidate?.first_name,
@@ -132,7 +133,11 @@ function ScheduleMeetingCard({
             meetingDetails.interview_meeting.session_duration,
           )}
           textJob={
-            <Stack direction={'row'} alignItems={'center'} spacing={'var(--space-5)'}>
+            <Stack
+              direction={'row'}
+              alignItems={'center'}
+              spacing={'var(--space-5)'}
+            >
               <span>{meetingDetails?.interview_meeting?.job_title}</span>
               <AvatarWithName
                 isAvatarVisible={false}

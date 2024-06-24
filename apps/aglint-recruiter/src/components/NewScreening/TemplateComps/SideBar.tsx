@@ -4,10 +4,7 @@ import { AssessmentSide } from '@/devlink/AssessmentSide';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { usePhoneScreening } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
 
-import { useJobForm } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
-
 const ScreeningSideBar = () => {
-  const { handleUpdateFormFields } = useJobForm();
   const { recruiterUser } = useAuthDetails();
   const { template_id } = usePhoneScreening();
   return (
@@ -19,14 +16,6 @@ const ScreeningSideBar = () => {
       textPreviewButton={'Preview'}
       textPreview='See How Candidates Will Experience the Screening Questions'
       textDescDisable='Disable Phone Screening for this job.'
-      onClickDisableAssessment={{
-        onClick: () => {
-          handleUpdateFormFields({
-            path: 'isPhoneScreenEnabled',
-            value: false,
-          });
-        },
-      }}
       onClickAssessmentPreview={{
         onClick: () => {
           window.open(

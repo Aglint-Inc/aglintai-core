@@ -1,17 +1,17 @@
 .avatar_selectionpill {
   display: flex;
-  padding: 6px 10px;
+  padding: var(--space-1);
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: nowrap;
   align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 
-  border: 1px solid #e9ebed;
-  border-radius: 100px;
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-2);
 
-  background-color: #f7f9fb;
+  background-color: var(--neutral-2);
 
   cursor: default;
 }
@@ -25,7 +25,7 @@
   overflow: hidden;
   width: 24px;
   height: 24px;
-  border-radius: 100px;
+  border-radius: var(--radius-full);
 }
 
 .shadow_embed {
@@ -41,18 +41,5 @@
 }
 
 .close_btn {
-  cursor: pointer;
-}
-
-.embed_flex {
-  display: flex;
-}
-
-.embed_flex.relative_3 {
-  position: relative;
-  z-index: 3;
-}
-
-.embed_flex.is_cursor {
   cursor: pointer;
 }

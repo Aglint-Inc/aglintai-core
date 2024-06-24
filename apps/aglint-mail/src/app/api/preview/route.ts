@@ -26,16 +26,11 @@ export async function POST(req: Request) {
       throw new ClientError('attribute application_id missing', 400);
     }
     const { emails } = await getEmails();
+    const emailBody = body.replace(/\{\{/g, '').replace(/\}\}/g, '');
 
     const emailIdx = emails.findIndex((e) => e === mail_type);
 
-    // if (emailIdx === -1)
-    //   throw new ClientError(
-    //     `${data.mail_type} does not match any mail_type`,
-    //     400,
-    //   );
-
-    const { html } = await renderEmailTemplates(emails[emailIdx], body);
+    const { html } = await renderEmailTemplates(emails[emailIdx], emailBody);
     return NextResponse.json(html, {
       status: 200,
     });
@@ -76,11 +71,13 @@ export async function POST(req: Request) {
 
 export const renderEmailTemplates = async (
   filename: string,
-  payload: string,
+  emailBody: string,
 ) => {
-  const { default: Template } = await import(`../../../emails/${filename}`);
-
-  const element = createElement(Template, payload);
+  const { default: Template, dummy } = await import(
+    `../../../emails/${filename}`
+  );
+  dummy.emailBody = emailBody;
+  const element = createElement(Template, dummy);
   const html = render(element);
   return { html };
 };

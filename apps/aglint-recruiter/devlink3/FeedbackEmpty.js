@@ -18,11 +18,7 @@ export function FeedbackEmpty({
       >
         <Text content="No feedback submitted" weight="" color="neutral" />
         <_Builtin.Block tag="div">
-          <ButtonSoft
-            onClickButton={onClickSubmit}
-            size="2"
-            textButton="Add Feedback"
-          />
+          <ButtonSoft onClickButton={onClickSubmit} size="2" textButton="" />
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

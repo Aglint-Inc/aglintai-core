@@ -5,10 +5,10 @@
     "lint": "tsup",
     "dev": "tsup --watch"
   },
-  "type": "module",
+  "type": "commonjs",
   "version": "0.0.1",
-  "main": "./dist/index.cjs",
-  "types": "./dist/index.d.cts",
+  "main": "./dist/index.js",
+  "types": "./src/index.ts",
   "dependencies": {
     "dayjs": "^1.11.11",
     "typescript": "latest",

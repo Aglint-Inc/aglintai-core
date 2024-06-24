@@ -20,23 +20,20 @@ import SchedulerIcon from '../IconsSideBar/SchedulerIcon';
 import SourcingHubIcon from '../IconsSideBar/SourcingHubIcon';
 import TaskIcon from '../IconsSideBar/TaskIcon';
 import WorkFlowIcon from '../IconsSideBar/WorkFlowIcon';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 function SideNavbar() {
   const router = useRouter();
   const pathName = usePathname();
   const { checkPermissions } = useRolesAndPermissions();
+  const { isAssessmentEnabled, isSchedulingEnabled, isScreeningEnabled } =
+    useAuthDetails();
 
   const isAssistantEnabled = useFeatureFlagEnabled('isAssistantEnabled');
   const isSupportEnabled = useFeatureFlagEnabled('isSupportEnabled');
   const isAgentEnabled = useFeatureFlagEnabled('isAgentEnabled');
-  const isAssessmentEnabled = useFeatureFlagEnabled('isNewAssessmentEnabled');
   const isSourcingEnabled = useFeatureFlagEnabled('isSourcingEnabled');
-  const isPhoneScreeningEnabled = useFeatureFlagEnabled(
-    'isPhoneScreeningEnabled',
-  );
   let isTasksEnabled = useFeatureFlagEnabled('isTasksEnabled');
-
-  const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
 
   const navList: {
     text: LinkProps['module'];
@@ -113,7 +110,7 @@ function SideNavbar() {
       SubComponents: null,
       route: ROUTES['/screening'](),
       comingSoon: false,
-      isVisible: isPhoneScreeningEnabled,
+      isVisible: isScreeningEnabled,
       permission: ['phone_screening_enabled'],
     },
 

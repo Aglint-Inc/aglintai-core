@@ -1,0 +1,38 @@
+.selectedslot {
+  display: flex;
+}
+
+.icon_text_grid {
+  display: grid;
+  justify-content: flex-start;
+  justify-items: stretch;
+  align-items: start;
+  align-content: start;
+  grid-auto-columns: 1fr;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+  grid-template-columns: max-content 1fr;
+  grid-template-rows: auto;
+}
+
+.icon_text_grid.width_300 {
+  width: 140px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.icon_fix_wrap {
+  padding-top: 1px;
+}
+
+.hr_wrap_4 {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+#w-node-_03e87da1-2623-d1b9-20fd-f85ba0aba0b5-6aafe2d8 {
+}

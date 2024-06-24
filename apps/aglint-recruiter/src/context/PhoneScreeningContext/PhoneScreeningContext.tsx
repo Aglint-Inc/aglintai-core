@@ -1,11 +1,8 @@
+import { supabaseWrap } from '@aglint/shared-utils';
 import { cloneDeep, debounce, set } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { createContext, useContext, useEffect, useReducer } from 'react';
 
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -193,7 +190,7 @@ const PhoneScreeningProvider = ({ children }) => {
             },
           });
         } catch (err) {
-          toast.error(API_FAIL_MSG);
+          toast.error('Something went wrong. Please try again.');
         }
       })();
     }
@@ -253,7 +250,7 @@ const PhoneScreeningProvider = ({ children }) => {
           formSyncTODB(updatedState);
         }
       } catch (err) {
-        toast.error(API_FAIL_MSG);
+        toast.error('Something went wrong. Please try again.');
       }
     };
 

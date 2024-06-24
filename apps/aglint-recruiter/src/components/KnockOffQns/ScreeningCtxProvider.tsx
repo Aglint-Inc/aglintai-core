@@ -1,3 +1,4 @@
+import { supabaseWrap } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import { cloneDeep, set } from 'lodash';
@@ -15,11 +16,7 @@ import { FormJobType } from '@/src/context/PhoneScreeningContext/PhoneScreeningC
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { PhoneScreenQuestion } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '../JobsDashboard/JobPostCreateUpdate/utils';
+import { PhoneScreenQuestion } from '../NewScreening/types';
 import { defaultLogo } from './utils';
 
 type PhoneScreenCandQnType = Omit<PhoneScreenQuestion, 'options'>;
@@ -260,7 +257,7 @@ export const ScreeningCtxProvider = ({ children }) => {
           },
         });
       } catch (err) {
-        toast.error(API_FAIL_MSG);
+        toast.error('Something went wrong. Please try again.');
         router.push('/login');
       } finally {
         setIsLoading(false);
@@ -378,7 +375,7 @@ export const ScreeningCtxProvider = ({ children }) => {
           },
         });
       } catch (err) {
-        toast.error(API_FAIL_MSG);
+        toast.error('Something went wrong. Please try again.');
         router.push('/login');
       } finally {
         setIsLoading(false);

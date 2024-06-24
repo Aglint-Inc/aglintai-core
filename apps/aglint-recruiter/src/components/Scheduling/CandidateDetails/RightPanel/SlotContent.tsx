@@ -11,7 +11,7 @@ import { ConfirmScheduleListCard } from '@/devlink3/ConfirmScheduleListCard';
 import { RescheduleCard } from '@/devlink3/RescheduleCard';
 import { ScheduleButton } from '@/devlink3/ScheduleButton';
 import CandidateDefaultIcon from '@/src/components/Common/Icons/CandidateDefaultIcon';
-import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
+import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import ROUTES from '@/src/utils/routing/routes';
 
@@ -21,11 +21,13 @@ import IconCancelSchedule from '../../ScheduleDetails/Icons/IconCancelSchedule';
 import IconReschedule from '../../ScheduleDetails/Icons/IconReschedule';
 import { formatTimeWithTimeZone } from '../../utils';
 import {
+  setDateRange,
   setIsScheduleNowOpen,
   setStepScheduling,
 } from '../SelfSchedulingDrawer/store';
 import {
   setMultipleCancelOpen,
+  setRescheduleSessionIds,
   setSelectedApplicationLog,
   useSchedulingApplicationStore,
 } from '../store';
@@ -93,6 +95,8 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
                   isLeftIcon={true}
                   onClickButton={{
                     onClick: () => {
+                      const session_ids = sessions.map((session) => session.id);
+                      setRescheduleSessionIds(session_ids);
                       setStepScheduling('reschedule');
                       setSelectedApplicationLog(act);
                       setIsScheduleNowOpen(true);
@@ -131,6 +135,7 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
       reason: act.metadata.reason,
       other_details: act.metadata.other_details,
       filter_id: act.metadata.filter_id,
+      session_ids: act.metadata.session_ids,
     };
 
     return (
@@ -148,7 +153,7 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
           textName={selectedApplication.candidates.first_name}
           textReschedule={
             rescheduleDetails.response_type === 'reschedule'
-              ? 'requested for reschedule'
+              ? 'requested a reschedule'
               : 'cancelled this schedule'
           }
           slotProfileImage={<CandidateDefaultIcon size={20} />}
@@ -168,7 +173,13 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
                     onClick: () => {
                       setStepScheduling('reschedule');
                       setSelectedApplicationLog(act);
+                      setRescheduleSessionIds(rescheduleDetails.session_ids);
                       setIsScheduleNowOpen(true);
+                      setDateRange({
+                        start_date:
+                          rescheduleDetails.other_details.dateRange.start,
+                        end_date: rescheduleDetails.other_details.dateRange.end,
+                      });
                     },
                   }}
                 />

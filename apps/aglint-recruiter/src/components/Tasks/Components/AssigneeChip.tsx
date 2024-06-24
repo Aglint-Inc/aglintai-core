@@ -4,10 +4,10 @@ import {
   PhoneAgentId,
   SystemAgentId,
 } from '@aglint/shared-utils';
-import { Stack, Typography, Zoom } from '@mui/material';
-import { IconSettingsAutomation } from '@tabler/icons-react';
+import { Box, Stack, Typography, Zoom } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { AgentPill } from '@/devlink3/AgentPill';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import { ListCard } from '@/devlink3/ListCard';
@@ -54,7 +54,13 @@ function AssigneeChip({
           isAvatarVisible={true}
           isCandidateIconVisible={false}
           slotAvatar={
-            <IconSettingsAutomation color='grey' stroke={2} size={30} />
+            <Box
+            sx={{
+                display: 'flex',
+                alignItems: 'center'
+            }}>
+              <GlobalIcon iconName='computer' size={6} weight={'regular'} color='neutral-8'/>
+            </Box>
           }
           textName={'System'}
         />

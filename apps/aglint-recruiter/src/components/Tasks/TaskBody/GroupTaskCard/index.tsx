@@ -21,6 +21,7 @@ import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import AssigneeChip from '../../Components/AssigneeChip';
 import StatusChip from '../../Components/StatusChip';
+import TaskStatusTag from '../../Components/TaskStatusTag';
 import { useTaskStatesContext } from '../../TaskStatesContext';
 
 function GroupTaskCard({
@@ -39,10 +40,11 @@ function GroupTaskCard({
     <Tooltip {...props} classes={{ popper: className }} />
   ))(() => ({
     [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: 'var(--black)',
-      color: 'var(--black-a7)',
-      boxShadow: 'var(--shadow-1)',
-      fontSize: 'var(--font-size-1)',
+      backgroundColor: 'var(--neutral-12)',
+      border: '1px solid var(--neutral-6)',
+      color: 'var(--neutral-1)',
+      boxShadow: 'none',
+      fontSize: 'var(--font-size-2)',
     },
   }));
 
@@ -140,14 +142,14 @@ function GroupTaskCard({
               {''}
             </ShowCode.When>
             <ShowCode.Else>
-              <StatusChip status={task.status} />
+              <TaskStatusTag task={task} />
             </ShowCode.Else>
           </ShowCode>
         }
         textTask={
           <LightTooltip
-            enterDelay={1000}
-            enterNextDelay={1000}
+            enterDelay={100}
+            enterNextDelay={100}
             title={
               <>
                 <span

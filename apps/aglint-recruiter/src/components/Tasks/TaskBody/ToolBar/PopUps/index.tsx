@@ -50,13 +50,11 @@ function PopUps({
               <ShowCode>
                 <ShowCode.When isTrue={reason === 'close_tasks'}>
                   <Stack direction={'column'} spacing={'var(--space-1)'}>
-                    <Typography variant='body1'>
-                      {`You've selected ${selectedTasksIds.length} tasks.`}
+                    <Typography variant='body1medium'>
+                      {`You've selected ${selectedTasksIds.length} ${selectedTasksIds.length === 1 ? 'task' : 'tasks'}.`}
                     </Typography>
-                    <Typography fontSize={'14px'} variant='caption'>
-                      {
-                        'Closing these will end all current activity, including actions by agents.'
-                      }
+                    <Typography>
+                      Closing these will end all current activity, including actions by agents.
                     </Typography>
                   </Stack>
                 </ShowCode.When>
@@ -112,33 +110,31 @@ function PopUps({
               <ShowCode>
                 <ShowCode.When isTrue={reason === 'change_status'}>
                   <Stack direction={'column'} spacing={'var(--space-1)'}>
-                    <Typography variant='body1'>
-                      {`You've selected ${selectedTasksIds.length} tasks.`}
+                    <Typography variant='body1medium'>
+                      {`You've selected ${selectedTasksIds.length} ${selectedTasksIds.length === 1 ? 'task' : 'tasks'}.`}
                     </Typography>
-                    <Typography fontSize={'14px'} variant='caption'>
+                    <Typography>
                       Choose a new status from the dropdown menu to update them.
                     </Typography>
                   </Stack>
                 </ShowCode.When>
                 <ShowCode.When isTrue={reason === 'change_assignee'}>
                   <Stack direction={'column'} spacing={'var(--space-1)'}>
-                    <Typography variant='body1'>
-                      {`You are reassigning ${selectedTasksIds.length} selected tasks. `}
+                  <Typography variant='body1medium'>
+                      {`You've selected ${selectedTasksIds.length} ${selectedTasksIds.length === 1 ? 'task' : 'tasks'}.`}
                     </Typography>
-                    <Typography fontSize={'14px'} variant='caption'>
-                      Please choose an agent or a team member from the from the
-                      dropdown menu to proceed with reassignment.
+                    <Typography>
+                      Please choose an agent or a team member from the from the dropdown menu to proceed with reassignment.
                     </Typography>
                   </Stack>
                 </ShowCode.When>
                 <ShowCode.When isTrue={reason === 'update_priority'}>
                   <Stack direction={'column'} spacing={'var(--space-1)'}>
-                    <Typography variant='body1'>
-                      {`You've selected ${selectedTasksIds.length} tasks.`}
+                    <Typography variant='body1medium'>
+                      {`You've selected ${selectedTasksIds.length} ${selectedTasksIds.length === 1 ? 'task' : 'tasks'}.`}
                     </Typography>
-                    <Typography fontSize={'14px'} variant='caption'>
-                      Choose a new priority level from the the from the dropdown
-                      menu to proceed.
+                    <Typography>
+                      Choose a new priority level from the the from the dropdown menu to proceed.
                     </Typography>
                   </Stack>
                 </ShowCode.When>

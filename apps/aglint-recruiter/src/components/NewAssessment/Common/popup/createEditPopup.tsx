@@ -2,9 +2,9 @@ import { Dialog, MenuItem, Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { AssessmentPopup as AssessmentPopupDev } from '@/devlink2/AssessmentPopup';
 import { SelectionPill } from '@/devlink2/SelectionPill';
-import AUIButton from '@/src/components/Common/AUIButton';
 import UITextField from '@/src/components/Common/UITextField';
 import { useCreateAssessment } from '@/src/queries/assessment';
 
@@ -80,6 +80,8 @@ const CreateEditPopup: React.FC<{
     <UITextField
       name='title'
       placeholder='Enter assessment name'
+      label='Assessment Name'
+      required
       value={fields.title}
       onChange={handleChange}
     />
@@ -88,6 +90,8 @@ const CreateEditPopup: React.FC<{
   const description = (
     <UITextField
       name='description'
+      label='Description'
+      required
       placeholder='Briefly describe about the assessment'
       value={fields.description}
       onChange={handleChange}
@@ -115,9 +119,14 @@ const CreateEditPopup: React.FC<{
     fields.title.trim() === '' || fields.description.trim() === '' || disable;
   const submit = (
     <Stack width={'100%'}>
-      <AUIButton onClick={handleSubmit} disabled={disabled}>
-        {type === 'edit' ? 'Save changes' : popupTitle}
-      </AUIButton>
+      <ButtonSolid
+        textButton={type === 'edit' ? 'Save changes' : popupTitle}
+        isDisabled={disabled}
+        onClickButton={{
+          onClick: handleSubmit,
+        }}
+        size={2}
+      />
     </Stack>
   );
 

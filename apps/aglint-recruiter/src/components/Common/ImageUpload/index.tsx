@@ -1,11 +1,11 @@
-import UploadIcon from '@mui/icons-material/Upload';
 import { Avatar, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
+import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
-import Icon from '@/src/components/Common/Icons/Icon';
+import { GlobalIcon } from '@/devlink3/GlobalIcon';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
@@ -76,8 +76,8 @@ function ImageUpload({
         <Stack
           position={'relative'}
           sx={{
-            borderRadius: 'var(--radius-3)',
-            borderColor: 'var(--neutral-12)',
+            borderRadius: 'var(--radius-2)',
+            borderColor: 'var(--neutral-6)',
           }}
           onMouseEnter={() => setIsStackHovered(true)}
           onMouseLeave={() => setIsStackHovered(false)}
@@ -98,24 +98,22 @@ function ImageUpload({
               variant='square'
             >
               {router.route.includes(ROUTES['/profile']()) ? (
-                <Icon
-                  variant='UserSolo'
-                  height='32'
-                  width='32'
+                <GlobalIcon
+                  iconName='UserSolo'
+                  size={6}
                   color='var(--neutral-11)'
                 />
               ) : (
-                <Icon
-                  variant='CompanyOutlinedBig'
-                  height='100%'
-                  width='100%'
+                <GlobalIcon
+                  iconName='CompanyOutlinedBig'
+                  size={6}
                   color='var(--neutral-11)'
                 />
               )}
             </Avatar>
-            {image && (
+            {/* {image && (
               <Stack position={'absolute'} bottom={-10} left={26}></Stack>
-            )}
+            )} */}
           </Stack>
           {loading && (
             <Stack
@@ -156,7 +154,7 @@ function ImageUpload({
                     cursor: 'pointer',
                     transition: 'all 0.5s ease',
                     opacity: isStackHovered ? 1 : 0,
-                    borderRadius: 'var(--radius-3)',
+                    borderRadius: 'var(--radius-2)',
                     mt: 'var(--space-1)',
                   }}
                   height={`${size}px`}
@@ -165,14 +163,12 @@ function ImageUpload({
                   justifyContent={'center'}
                   alignItems={'center'}
                 >
-                  <UploadIcon
-                    fontSize='medium'
-                    sx={{
-                      position: 'absolute',
-                      color: 'var(--neutral-12)',
-                      top: 0,
-                      right: 0,
-                    }}
+                  <IconButtonSoft
+                    iconSize={6}
+                    color='neutral'
+                    iconWeight='thin'
+                    iconName='cloud_upload'
+                    iconColor='neutral'
                   />
                 </Stack>
               </FileUploader>
@@ -195,11 +191,14 @@ function ImageUpload({
                 {image && (
                   <Stack
                     direction={'row'}
-                    spacing={1}
                     sx={{
                       transition: 'all 0.5s ease',
                       visibility: isStackHovered ? 'visible' : 'hidden',
                       opacity: isStackHovered ? 1 : 0,
+                      background: 'var(--black)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      borderRadius: 'var(--radius-4)',
                     }}
                   >
                     <FileUploader
@@ -215,7 +214,12 @@ function ImageUpload({
                           transition: '',
                         }}
                       >
-                        <Icon variant='ReloadFilled' />
+                        <IconButtonSoft
+                          iconSize={4}
+                          color={'white'}
+                          iconName='restart_alt'
+                          iconColor='white'
+                        />
                       </Stack>
                     </FileUploader>
 
@@ -228,7 +232,11 @@ function ImageUpload({
                       }}
                       sx={{ color: 'var(--white)', cursor: 'pointer' }}
                     >
-                      <Icon variant='DeleteIcon' />
+                      <IconButtonSoft
+                        iconSize={4}
+                        color={'error'}
+                        iconName='delete'
+                      />
                     </Stack>
                   </Stack>
                 )}

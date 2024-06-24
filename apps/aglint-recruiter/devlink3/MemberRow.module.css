@@ -88,29 +88,8 @@
   color: var(--sand-11);
 }
 
-.text-sm.text-underline {
-  text-decoration: underline;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
 .text-grey-600 {
   color: #68737d;
-}
-
-.text-sm.text-underline.text-grey-600.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.text-sm.text-underline.text-grey-600.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
 }
 
 .timezone_block {
@@ -129,30 +108,10 @@
   width: 80px;
 }
 
-.text-grey_600.text-underline-copy {
-  text-decoration: underline;
-  cursor: pointer;
-}
-
 .slot_conflicts_block {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-}
-
-.text-gray-600 {
-  color: var(--sand-11);
-}
-
-.text-gray-600.is_link {
-  color: #337fbd;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.text-gray-600.underline {
-  text-decoration: underline;
-  cursor: pointer;
 }

@@ -30,41 +30,31 @@
   background-color: white;
 }
 
-.schedule_tabs {
+.sdt-tabs {
   display: flex;
-  padding: 10px 20px;
+  padding-right: var(--space-1);
+  padding-left: var(--space-1);
   flex-direction: row;
   flex-wrap: nowrap;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
 
-  border-bottom: 1px solid #e9ebed;
-}
-
-.schedule_tabs.gap-0 {
-  padding: 0px 4px;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
+  border-bottom: 1px solid var(--neutral-6);
 }
 
 .scheduletab_content {
   display: flex;
   overflow: auto;
-  padding-top: 0px;
-  padding-right: 0px;
-  padding-bottom: 60px;
-  padding-left: 0px;
+  padding-bottom: var(--space-9);
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 30px;
-  grid-row-gap: 30px;
-  height: calc(100vh - 109px);
+  grid-column-gap: var(--space-6);
+  grid-row-gap: var(--space-6);
+  height: auto !important;
 }
 
-.div-block-1365 {
+.sdt-tab-content {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 30px;
-  grid-row-gap: 30px;
+  grid-column-gap: var(--space-6);
+  grid-row-gap: var(--space-6);
 }

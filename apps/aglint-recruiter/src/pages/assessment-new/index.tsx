@@ -1,6 +1,7 @@
 import Seo from '@components/Common/Seo';
 
 import AssessmentDashboard from '@/src/components/NewAssessment/AssessmentDashboard';
+import { WithAssessment } from '@/src/components/withAssessment';
 
 const AssessmentDashboardPage = () => {
   return (
@@ -9,7 +10,9 @@ const AssessmentDashboardPage = () => {
         title='Assessments | Aglint AI'
         description='AI for People Products'
       />
-      <AssessmentDashboard />
+      <WithAssessment>
+        <AssessmentDashboard />
+      </WithAssessment>
     </>
   );
 };

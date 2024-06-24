@@ -1,42 +1,22 @@
-import { DatabaseEnums, StatusJobs } from '@aglint/shared-types';
+import {
+  DatabaseEnums,
+  DatabaseTable,
+  DatabaseTableInsert,
+  StatusJobs,
+} from '@aglint/shared-types';
 import { DB } from '@aglint/shared-types';
 
 import { ScoreWheelParams } from '@/src/components/Common/ScoreWheel';
-import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
-import { CountJobs, InterviewPlan } from '@/src/context/JobsContext/types';
+import { CountJobs } from '@/src/context/JobsContext/types';
 
 type JobTableRPC = DB['public']['Functions']['getjob']['Returns'][number];
-type JobTable = DB['public']['Tables']['public_jobs'];
-
-// export type Job = Pick<
-//   Omit<JobTableRPC, keyof CustomJobType> & CustomJobType,
-//   | 'active_status'
-//   | 'assessment'
-//   | 'company'
-//   | 'count'
-//   | 'created_at'
-//   | 'department'
-//   | 'description'
-//   | 'description_hash'
-//   | 'draft'
-//   | 'email_template'
-//   | 'id'
-//   | 'jd_json'
-//   | 'job_title'
-//   | 'job_type'
-//   | 'location'
-//   | 'parameter_weights'
-//   | 'phone_screen_enabled'
-//   | 'posted_by'
-//   | 'recruiter_id'
-//   | 'scoring_criteria_loading'
-//   | 'status'
-//   | 'workplace_type'
-// >;
 
 export type Job = Omit<JobTableRPC, keyof CustomJobType> & CustomJobType;
 
-export type JobInsert = Omit<JobTable['Insert'], keyof CustomJobType> &
+export type JobInsert = Omit<
+  DatabaseTableInsert['public_jobs'],
+  keyof CustomJobType
+> &
   Partial<Omit<CustomJobType, JobLocal>>;
 export type JobLocal =
   | 'count'
@@ -55,18 +35,16 @@ export type JobCreate = Required<
 };
 
 type CustomJobType = {
-  jd_json: JdJsonType;
+  jd_json: DatabaseTable['public_jobs']['jd_json'];
   active_status: StatusJobs | null;
   count: CountJobs;
   activeSections: DatabaseEnums['application_status'][];
   // eslint-disable-next-line no-unused-vars
-  email_template: { [key in EmailTemplateTypes]: EmailTemplate };
   processing_count: {
     // eslint-disable-next-line no-unused-vars
     [id in DB['public']['Enums']['application_processing_status']]: number;
   };
   parameter_weights: ScoreWheelParams;
-  interview_plan: InterviewPlan;
 
   draft: Pick<
     JobTableRPC,
@@ -77,21 +55,5 @@ type CustomJobType = {
     | 'workplace_type'
     | 'job_type'
     | 'location'
-  > & { jd_json: JdJsonType };
-};
-
-type EmailTemplateTypes =
-  | 'interview'
-  | 'interview_resend'
-  | 'rejection'
-  | 'phone_screening'
-  | 'phone_screening_resend'
-  | 'application_received'
-  | 'init_email_agent';
-
-type EmailTemplate = {
-  body: string;
-  default: boolean;
-  subject: string;
-  fromName: string;
+  > & { jd_json: DatabaseTable['public_jobs']['jd_json'] };
 };

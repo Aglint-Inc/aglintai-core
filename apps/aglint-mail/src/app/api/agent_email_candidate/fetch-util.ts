@@ -1,6 +1,10 @@
-import { ScheduleUtils, getFullName } from '@aglint/shared-utils';
+import {
+  DAYJS_FORMATS,
+  ScheduleUtils,
+  getFullName,
+} from '@aglint/shared-utils';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import { EmailTemplateAPi } from '@aglint/shared-types';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 
@@ -11,7 +15,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        'filter_json,interview_schedule(id,applications(public_jobs(job_title,company),candidates(first_name,email,recruiter_id,recruiter(logo,id))))',
+        'filter_json,interview_schedule(id,applications(public_jobs(job_title,company),candidates(first_name,last_name,email,recruiter_id,recruiter(logo,id))))',
       )
       .eq('id', req_body.filter_id),
   );
@@ -32,6 +36,7 @@ export async function fetchUtil(
           email: cand_email,
           recruiter_id,
           first_name,
+          last_name,
           recruiter: { logo },
         },
         public_jobs: { company, job_title },
@@ -48,20 +53,25 @@ export async function fetchUtil(
 
   const comp_email_placeholder: EmailTemplateAPi<'agent_email_candidate'>['comp_email_placeholders'] =
     {
-      '{{ candidateFirstName }}': first_name,
-      '{{ companyName }}': company,
-      '{{ jobRole }}': job_title,
-      '{{ startDate }}': ScheduleUtils.convertDateFormatToDayjs(
+      candidateFirstName: first_name,
+      companyName: company,
+      jobRole: job_title,
+      recruiterTimeZone: recruiter_tz,
+      selfScheduleLink: `<a href="${scheduleLink}">here</a>`,
+      recruiterName: getFullName(recr.first_name, recr.last_name),
+      candidateLastName: last_name,
+      candidateName: getFullName(first_name, last_name),
+      recruiterFirstName: recr.first_name,
+      recruiterLastName: recr.last_name,
+      dateRange: `${ScheduleUtils.convertDateFormatToDayjs(
         start_date,
         recruiter_tz,
-      ).format('MMMM DD, YYYY'),
-      '{{ endDate }}': ScheduleUtils.convertDateFormatToDayjs(
+      ).format(
+        DAYJS_FORMATS.DATE_FORMAT,
+      )} - ${ScheduleUtils.convertDateFormatToDayjs(
         end_date,
         recruiter_tz,
-      ).format('MMMM DD, YYYY'),
-      '{{ recruiterTimeZone }}': recruiter_tz,
-      '{{ selfScheduleLink }}': `<a href="${scheduleLink}">here</a>`,
-      '{{ recruiterFullName }}': getFullName(recr.first_name, recr.last_name),
+      ).format(DAYJS_FORMATS.DATE_FORMATZ)}`,
     };
 
   const filled_comp_template = fillCompEmailTemplate(

@@ -102,23 +102,23 @@ export const convertDateFormatToDayjs = (
 };
 
 // agent tools
-export const addToolInvocToCandCache = (
+export const addToolInvocToCandCache = async (
   phone_no: string,
   tool: ScheduleTool
 ) => {
-  const cand_info = getCachedCandidateInfo(phone_no);
+  const cand_info = await getCachedCandidateInfo(phone_no);
   const upd_cand_info = {...cand_info};
   upd_cand_info.tool_invocations.push(tool);
-  updateCandidateInfo(upd_cand_info);
+  await updateCandidateInfo(upd_cand_info);
 };
-export const removeToolInvocFromCandCache = (
+export const removeToolInvocFromCandCache = async (
   phone_no: string,
   tool: ScheduleTool
 ) => {
-  const cand_info = getCachedCandidateInfo(phone_no);
+  const cand_info = await getCachedCandidateInfo(phone_no);
   const upd_cand_info = {...cand_info};
   upd_cand_info.tool_invocations = upd_cand_info.tool_invocations.filter(
     t => t !== tool
   );
-  updateCandidateInfo(upd_cand_info);
+  await updateCandidateInfo(upd_cand_info);
 };

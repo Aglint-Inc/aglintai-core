@@ -16,6 +16,7 @@ export function IconButtonSurface({
   iconName = "shapes",
   isDisabled = false,
   isLoading = false,
+  onClickButton = {},
 }) {
   return (
     <_Component
@@ -24,6 +25,7 @@ export function IconButtonSurface({
       icon-button-size-surface={size}
       button-color-surface={color}
       button-high-contrast-surface={highContrast}
+      {...onClickButton}
     >
       <_Builtin.Block tag="div">
         <GlobalIcon

@@ -1,0 +1,163 @@
+.npc-wrap {
+  display: flex;
+  padding: var(--space-4);
+  justify-content: space-between;
+  align-items: flex-start;
+
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+
+  background-color: var(--white);
+}
+
+.npc-left-wrap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  grid-column-gap: var(--space-8);
+  grid-row-gap: var(--space-8);
+}
+
+.npc-slot-checkbox {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
+}
+
+.ske_badge {
+  position: relative;
+  overflow: hidden;
+  height: 20px;
+  border-radius: 3px;
+}
+
+.ske_badge.width_80 {
+  width: 80px;
+}
+
+.dummy_skeleton {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  background-color: #e9e8e6;
+}
+
+.npc-interview-detail-wrap {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.card_flex {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.card_flex.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+.card_flex.gap-2 {
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.icons.pointer {
+  cursor: pointer;
+}
+
+.ske_icon_24 {
+  position: relative;
+  overflow: hidden;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-1);
+}
+
+.ske_text_regular {
+  position: relative;
+
+  display: flex;
+  overflow: hidden;
+  height: 20px;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  border-radius: 4px;
+}
+
+.ske_text_regular.width_200 {
+  width: 200px;
+}
+
+.ske_text_regular.width_120 {
+  width: 120px;
+}
+
+.ske_text_regular.width_140 {
+  width: 140px;
+}
+
+.ske_text_regular.width_380 {
+  width: 380px;
+}
+
+.npc-right-wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.npc-right {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.three-dot-wrap {
+  position: relative;
+  z-index: 2;
+}
+
+.sloteditoptions {
+  display: none;
+}

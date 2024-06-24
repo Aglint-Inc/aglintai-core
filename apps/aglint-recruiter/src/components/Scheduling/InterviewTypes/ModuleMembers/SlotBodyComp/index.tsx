@@ -1,5 +1,6 @@
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 import { InterviewMemberList } from '@/devlink2/InterviewMemberList';
 import { ModuleMembers } from '@/devlink2/ModuleMembers';
@@ -7,11 +8,15 @@ import { NewTabPill } from '@/devlink3/NewTabPill';
 import Loader from '@/src/components/Common/Loader';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import ROUTES from '@/src/utils/routing/routes';
+import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import ModuleSchedules from '../../../Common/ModuleSchedules';
+import Instructions from '../../../ScheduleDetails/Instructions';
 import {
   useAllSchedulesByModuleId,
   useGetMeetingsByModuleId,
+  useModuleAndUsers,
 } from '../../queries/hooks';
 import {
   setIsAddMemberDialogOpen,
@@ -21,7 +26,6 @@ import {
 import { ModuleType } from '../../types';
 import AddMemberDialog from '../AddMemberDialog';
 import DeleteMemberDialog from '../DeleteMemberDialog';
-import InstructionsComp from '../Instructions';
 import ModuleSettingComp from '../ModuleSetting';
 import PauseDialog from '../PauseDialog';
 import ResumeMemberDialog from '../ResumeMemberDialog';
@@ -57,6 +61,22 @@ function SlotBodyComp({
 
   const currentTab = router.query.tab as TabsModuleMembers['queryParams'];
 
+  const [textValue, setTextValue] = useState(null);
+
+  const { refetch } = useModuleAndUsers();
+  async function updateInstruction() {
+    if (textValue) {
+      const { data } = await supabase
+        .from('interview_module')
+        .update({ instructions: textValue })
+        .eq('id', editModule?.id)
+        .select();
+      if (data) {
+        toast.success('Instructions updated successfully.');
+        refetch();
+      }
+    }
+  }
   return (
     <>
       <SettingsDialog editModule={editModule} />
@@ -150,8 +170,13 @@ function SlotBodyComp({
                   />
                 )}
 
-                {currentTab === 'instructions' && (
-                  <InstructionsComp editModule={editModule} />
+                {currentTab === 'instructions' && editModule?.instructions && (
+                  <Instructions
+                    instruction={editModule?.instructions}
+                    setTextValue={setTextValue}
+                    showEditButton={true}
+                    updateInstruction={updateInstruction}
+                  />
                 )}
 
                 {currentTab === 'training' && (

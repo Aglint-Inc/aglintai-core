@@ -1,6 +1,8 @@
 import type { DatabaseTable } from '@aglint/shared-types';
 import { QueryClient, queryOptions } from '@tanstack/react-query';
+import axios from 'axios';
 
+import { GetInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { GC_TIME } from '..';
@@ -22,6 +24,13 @@ const jobQueries = {
             .single()
             .throwOnError()
         ).data,
+    }),
+  interview_plans: ({ id }: JobRequisite) =>
+    queryOptions({
+      queryKey: [...jobQueries.job({ id }).queryKey, 'interview_plans'],
+      queryFn: async () =>
+        (await axios.get(`/api/scheduling/get_interview_plans?job_id=${id}`))
+          .data as GetInterviewPlansType['respone'],
     }),
   job_application_count: ({
     id,

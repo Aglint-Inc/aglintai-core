@@ -1,4 +1,4 @@
-.div-block-1650 {
+.member-list-wrapper {
   position: relative;
 
   display: flex;
@@ -7,29 +7,69 @@
   justify-content: space-between;
   align-items: flex-start;
 
-  background-color: white;
+  background-color: var(--white);
 }
 
-.div-block-1647 {
+.member-list-content {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
-.div-block-1651 {
+.ml-profile-wrap {
   position: relative;
 }
 
 .avatar_40 {
+  overflow: hidden;
   width: var(--space-7);
   height: var(--space-7);
   flex: 0 0 auto;
   border-radius: var(--radius-2);
 }
 
-.div-block-1652 {
+.embed_flex {
+  display: flex;
+  align-items: center;
+}
+
+.embed_flex.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+.embed_flex.custom_top {
+  margin-top: 2px;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.embed_flex.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.embed_flex.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.embed_flex.fixedd {
+  width: 23px;
+}
+
+.ml-badge-wrapper {
   position: absolute;
   left: auto;
   top: auto;
@@ -53,18 +93,6 @@
   opacity: 0.8;
 }
 
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
-}
-
 .icons.pointer {
   cursor: pointer;
 }
@@ -77,12 +105,17 @@
   grid-row-gap: 2px;
 }
 
-.div-block-1648 {
+.ml-name-wrap {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.slot_for_icon {
+  width: auto;
+  height: auto;
 }
 
 .ml-card-wrap {
@@ -93,100 +126,40 @@
   grid-row-gap: var(--space-3);
 }
 
-.div-block-1654 {
+.ml-button-wrap {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 12px;
-  grid-row-gap: 12px;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
 }
 
-.div-block-1653 {
+.ml-link-wrap {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+
+  transition: all 200ms ease;
+
+  cursor: pointer;
 }
 
-.div-block-1653.cursor-pointer {
+.ml-link-wrap:hover {
+  opacity: 0.8;
+}
+
+.ml-link-wrap.cursor-pointer {
   transition: opacity 250ms ease;
   cursor: pointer;
 }
 
-.div-block-1653.cursor-pointer:hover {
+.ml-link-wrap.cursor-pointer:hover {
   opacity: 0.8;
 }
 
-.text-sm {
-  font-size: var(--font-size-1);
-  line-height: var(--line-height-1);
-  letter-spacing: var(--letter-spacing-1);
-}
-
-.text-sm.color-grey-600 {
-  color: var(--sand-11);
-}
-
-.color-grey-600 {
-  color: #68737d;
-}
-
-.fw-semibold {
-  font-weight: 600;
-}
-
-.text-sm.text-capitalize {
-  text-transform: uppercase;
-}
-
-.text-grey_600 {
-  color: var(--sand-11);
-}
-
-.text-sm.text-underline {
-  text-decoration: underline;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
-.text-grey-600 {
-  color: #68737d;
-}
-
-.text-sm.text-underline.text-grey-600.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.text-sm.text-underline.text-grey-600.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.div-block-1668 {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-}
-
-.text-grey-600.text-underline {
-  text-decoration: underline;
-}
-
-.text-grey-600.text-underline.cursor-pointer {
-  transition: opacity 250ms ease;
-  cursor: pointer;
-}
-
-.text-grey-600.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.div-block-1659 {
+.ml-member-detail {
   position: absolute;
   left: 0%;
   top: 48px;
@@ -197,13 +170,11 @@
   display: none;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 12px;
-  grid-row-gap: 12px;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
 
-  border: 1px solid #e9ebed;
-  border-radius: 10px;
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
 
-  background-color: white;
-
-  box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
+  background-color: var(--white);
 }

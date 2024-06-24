@@ -2,7 +2,8 @@ import { InputAdornment } from '@mui/material';
 import { Stack } from '@mui/system';
 import React from 'react';
 
-import Icon from '../Icons/Icon';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
+
 import UITextField from '../UITextField';
 
 type SearchComponentType = {
@@ -20,12 +21,13 @@ const SearchComponent = ({
   return (
     <Stack>
       <UITextField
-        width='400px'
+        width='250px'
+        height={32}
         value={value}
         InputProps={{
           endAdornment: (
             <InputAdornment position='end'>
-              <Icon variant='JobSearch' height='14' />
+              <GlobalIcon iconName={'search'} size={'5'} />
             </InputAdornment>
           ),
         }}

@@ -1,6 +1,12 @@
 .page-404 {
-  padding: var(--space-7);
+  padding-top: var(--space-7);
+  padding-right: var(--space-7);
+  padding-bottom: var(--space-7);
+  padding-left: var(--space-7);
+
   background-color: var(--neutral-2);
+
+  height: calc(100vh - 48px);
 }
 
 @media screen and (max-width: 767px) {

@@ -1,4 +1,4 @@
-.div-block-1614 {
+.cio-wrap {
   display: flex;
   width: 280px;
   padding: var(--space-4);
@@ -14,19 +14,19 @@
   background-color: var(--white-a12);
 }
 
-.div-block-1615 {
+.cio-items {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 
   transition: all 250ms ease;
 
   cursor: pointer;
 }
 
-.div-block-1615:hover {
+.cio-items:hover {
   opacity: 0.8;
 }
 
@@ -50,22 +50,6 @@
   cursor: pointer;
 }
 
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
-}
-
 .icons.pointer {
   cursor: pointer;
-}
-
-.text-green-500 {
-  color: var(--success-11);
-}
-
-.text-red-500 {
-  color: var(--error-11);
 }

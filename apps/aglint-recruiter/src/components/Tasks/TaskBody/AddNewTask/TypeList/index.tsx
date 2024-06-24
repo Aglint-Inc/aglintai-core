@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
-import { DB } from '@aglint/shared-types';
-import { Stack } from '@mui/material';
-import { capitalize } from 'lodash';
+import { DatabaseEnums, DB } from '@aglint/shared-types';
+import { Popover, Stack } from '@mui/material';
 import React from 'react';
 
 import { InterviewTaskPill } from '@/devlink3/InterviewTaskPill';
+import { ListCard } from '@/devlink3/ListCard';
+import { ListPop } from '@/devlink3/ListPop';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 function TypeList({
   selectedType,
@@ -33,9 +35,11 @@ function TypeList({
         }}
         onClick={handleClick}
       >
-        <InterviewTaskPill textInterviewName={capitalize(selectedType)} />
+        <InterviewTaskPill
+          textInterviewName={capitalizeFirstLetter(selectedType)}
+        />
       </Stack>
-      {/* <Popover
+      <Popover
         id={id}
         open={open}
         anchorEl={anchorEl}
@@ -55,7 +59,7 @@ function TypeList({
         }}
       >
         <ListPop
-          slotListCard={['schedule', 'training'].map((ele, i) => {
+          slotListCard={typeArray.map((ele, i) => {
             return (
               <Stack
                 key={i}
@@ -64,24 +68,30 @@ function TypeList({
                 sx={{
                   cursor: 'pointer',
                   '&:hover': {
-                    bgcolor: 'var(--neutral-2)'
+                    bgcolor: 'var(--neutral-2)',
                   },
                 }}
                 onClick={() => {
-                  setSelectedType(
-                    ele as DB['public']['Enums']['task_type_enum'],
-                  );
+                  setSelectedType(ele as DatabaseEnums['task_type_enum']);
                   handleClose();
                 }}
               >
-                <ListCard textList={capitalize(ele)} />
+                <ListCard textList={capitalizeFirstLetter(ele)} />
               </Stack>
             );
           })}
         />
-      </Popover> */}
+      </Popover>
     </>
   );
 }
 
 export default TypeList;
+
+export const typeArray = [
+  // 'training',
+  'schedule',
+  'self_schedule',
+  'availability',
+  // 'empty',
+] as DatabaseEnums['task_type_enum'][];

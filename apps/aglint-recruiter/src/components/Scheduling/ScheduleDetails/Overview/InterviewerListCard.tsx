@@ -15,6 +15,8 @@ import { supabase } from '@/src/utils/supabase/client';
 import { calculateHourDifference } from '../../InterviewTypes/utils';
 import { formatTimeWithTimeZone } from '../../utils';
 import { ScheduleMeeting } from '../types';
+import IconAccept from './IconAccept';
+import IconDecline from './IconDecline';
 
 function InterviewerListCard({
   schedule,
@@ -121,8 +123,9 @@ function InterviewerListCard({
               },
             }}
             textDesignation={item.position || '--'}
-            isCorrectVisible={isAccepted}
-            isWrongVisible={isDeclined}
+            slotIcon={
+              isAccepted ? <IconAccept /> : isDeclined ? <IconDecline /> : ''
+            }
             isDetailVisible={true}
             isDesignationVisible={true}
             isButtonVisible={false}

@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "downlevelIteration": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "paths": {
+      "@/*": ["./*"],
+      "@devlink": ["./devlink/*"],
+      "@components/*": ["./src/components/*"],
+      "@config/*": ["./src/config/*"],
+      "@context/*": ["./src/contaxt/*"],
+      "@defaultData/*": ["./src/defaultData/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@public/*": ["./public/*"],
+      "@types/*": ["./src/types/*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.jsx",
+    "**/*.js",
+    "src/components/Feedback/Session/index.jsx",
+    "src/components/JobPost/SingUpDialog/index.sx"
+  ],
+  "exclude": ["node_modules"]
+}

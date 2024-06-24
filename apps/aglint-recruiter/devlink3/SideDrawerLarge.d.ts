@@ -15,4 +15,5 @@ declare function SideDrawerLarge(props: {
   onClickBack?: Types.Devlink.RuntimeProps;
   isDisabled?: Types.Visibility.VisibilityConditions;
   isLoading?: Types.Visibility.VisibilityConditions;
+  dynamicHeight?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

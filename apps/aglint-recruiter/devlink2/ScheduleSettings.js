@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { SlotComp } from "./SlotComp";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./ScheduleSettings.module.css";
 
@@ -31,7 +32,7 @@ export function ScheduleSettings({
         >
           {isCompanyLevelVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1115", "keyword-head")}
+              className={_utils.cx(_styles, "wh-top-wrapper", "keyword-head")}
               tag="div"
             >
               <_Builtin.Block
@@ -59,26 +60,17 @@ export function ScheduleSettings({
         </_Builtin.Block>
       ) : null}
       {isCompanyLevelVisible ? (
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1117")}
-          tag="div"
-        >
+        <_Builtin.Block className={_utils.cx(_styles, "wh-top-wrap")} tag="div">
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1115")}
+            className={_utils.cx(_styles, "wh-top-wrapper")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Availability"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-600")}
-              tag="div"
-            >
-              {"Set up recruitng time ranges and available working hours"}
-            </_Builtin.Block>
+            <Text
+              content="Set up recruitng time ranges and available working hours"
+              weight=""
+              color="neutral"
+            />
+            <Text content="Availability" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1116", "hide")}
@@ -102,7 +94,7 @@ export function ScheduleSettings({
         </_Builtin.Block>
       ) : null}
       <_Builtin.Block className={_utils.cx(_styles, "setting_wrap")} tag="div">
-        <_Builtin.Block tag="div">{"Time Zone"}</_Builtin.Block>
+        <Text content="Time Zone" />
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_timezoneinput", "reverse-order")}
           tag="div"
@@ -134,24 +126,15 @@ export function ScheduleSettings({
           className={_utils.cx(_styles, "setting_title")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Interview Load"}</_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-gray-500")}
-            tag="div"
-          >
-            {"Setup maximum interviews per day and week."}
-          </_Builtin.Block>
+          <Text content="Interview Load" />
+          <Text
+            content="Setup maximum interviews per day and week."
+            weight=""
+            color="neutral"
+          />
         </_Builtin.Block>
         <_Builtin.Grid className={_utils.cx(_styles, "load_grid")} tag="div">
-          <_Builtin.Block
-            id={_utils.cx(
-              _styles,
-              "w-node-_76440e59-9763-59af-34c8-e8567ac45a4f-0d30d7a9"
-            )}
-            tag="div"
-          >
-            {"Daily Limit"}
-          </_Builtin.Block>
+          <Text content="Daily Limit" />
           <_Builtin.Block
             className={_utils.cx(_styles, "slot_hr_input")}
             id={_utils.cx(
@@ -162,15 +145,7 @@ export function ScheduleSettings({
           >
             {slotDailyLimit}
           </_Builtin.Block>
-          <_Builtin.Block
-            id={_utils.cx(
-              _styles,
-              "w-node-_76440e59-9763-59af-34c8-e8567ac45a52-0d30d7a9"
-            )}
-            tag="div"
-          >
-            {"Weekly Limit"}
-          </_Builtin.Block>
+          <Text content="Weekly Limit" />
           <_Builtin.Block
             className={_utils.cx(_styles, "slot_hr_input")}
             id={_utils.cx(
@@ -188,13 +163,12 @@ export function ScheduleSettings({
           className={_utils.cx(_styles, "setting_title")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Working Hours"}</_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-gray-500")}
-            tag="div"
-          >
-            {"Setup working hour across company level."}
-          </_Builtin.Block>
+          <Text content="" />
+          <Text
+            content="Setup working hour across company level."
+            weight=""
+            color="neutral"
+          />
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "week_days")} tag="div">
           {slotWorkingHourDay ?? (

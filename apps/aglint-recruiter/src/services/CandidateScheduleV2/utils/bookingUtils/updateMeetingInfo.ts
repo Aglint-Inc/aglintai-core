@@ -1,7 +1,7 @@
 import { CalendarEvent } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import { BookedMeetingDetails } from './types';

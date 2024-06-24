@@ -5,20 +5,21 @@ import {
   Head,
   Html,
   Img,
-  Preview,
   Tailwind,
-  Text,
 } from '@react-email/components';
 import { Parser } from 'html-to-react';
 import * as React from 'react';
 import type { EmailTemplateAPi } from '@aglint/shared-types';
-import { aglintLogo } from '../utils/assets/common';
+import { Session } from '../components/template/Sessions';
+import config from '../../tailwind.config';
+import { Footer } from '../components/template/Footer';
 
 type EmailType = EmailTemplateAPi<'debrief_email_interviewer'>;
 
 // export dummy
 export const dummy: EmailType['react_email_placeholders'] = {
-  emailBody: `<p>Dear {{ interviewerFirstName }},</p><p>Please join the debrief session to discuss {{ candidateFirstName }}'s interview for the {{ jobTitle }} position. Your insights are valuable to the selection process.</p><p>Cheers,</p><p>{{ companyName }} Recruitment Team</p>`,
+  emailBody: `<p>Dear {{ interviewerFirstName }},</p><p></p><p>Please join the debrief session to discuss {{ candidateFirstName }}'s interview for {{ jobTitle }}. Your insights are valuable to the selection process.</p><p></p><p>Thanks,</p><p>{{ companyName }} Recruitment Team</p>`,
+
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
   meetingDetails: {
@@ -33,7 +34,7 @@ export const dummy: EmailType['react_email_placeholders'] = {
       'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/google_meet.png',
   },
   subject: '',
-  candidateLink: '',
+  candidateLink: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/af9538ac-50e8-4941-91c5-39a678c60077`,
 };
 
 // export get subject
@@ -49,61 +50,30 @@ export const DebriefCalendarInvite = ({
   return (
     <Html>
       <Head />
-      <Tailwind>
-        <Preview>Debrief Session</Preview>
-        <Body className="bg-[#f0f0f0] font-sans  p-[20px]">
+      <Tailwind config={config}>
+        {/* <Preview></Preview> */}
+        <Body className="bg-neutral-3 font-sans  p-[20px]">
           <Container className="px-[3px] mx-auto">
-            <Container className="p-[50px] bg-white">
+            <Container className="p-[50px] bg-white rounded-[8px]">
               <Img
                 alt="Company logo"
                 className="w-[80px] mb-[10px]"
                 src={companyLogo}
               />
 
-              <Text className="">{htmlParser.parse(emailBody)}</Text>
-              <Container
-                className="my-3 rounded-md "
-                style={{
-                  border: '1px solid #E9EBED',
-                  padding: '10px 20px',
-                }}
-              >
-                <Text className="m-0">
-                  <strong>{htmlParser.parse(meetingDetails.date)} </strong>
-                  {htmlParser.parse(meetingDetails.time)}
-                </Text>
-                <Text className="m-0 flex gap-1 item-center my-1">
-                  <Img
-                    className="inline "
-                    src={meetingDetails.sessionTypeIcon}
-                  />
-                  &nbsp;
-                  {htmlParser.parse(meetingDetails.sessionType)}
-                </Text>
-                <Text className="m-0 flex gap-1 items-center ">
-                  <Img src={meetingDetails.meetingIcon} />
-                  &nbsp;
-                  {htmlParser.parse(meetingDetails.platform)}&nbsp;&nbsp;
-                  <Img src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/duration.png" />
-                  {htmlParser.parse(meetingDetails.duration)}
-                </Text>
+              <Container className="text-text-sm text-neutral-12">
+                {htmlParser.parse(emailBody)}
               </Container>
+
+              <Session meetingDetail={meetingDetails} />
               <Button
-                className="px-3 py-2 bg-[#337FBD] text-white br rounded-md text-[14px]"
+                className="px-3 py-2 bg-accent-9 text-white br rounded-[4px] text-text-xs"
                 href={candidateLink}
               >
                 Candidate details
               </Button>
             </Container>
-            <Text className="flex items-center text-[10px]  mx-auto w-fit text-gray-500">
-              Powered By
-              <Img
-                alt="Aglint Logo"
-                className="w-[70px] mx-2 inline-block"
-                src={aglintLogo}
-              />
-              @ 2024 Aglint Inc. All Right Reserved
-            </Text>
+            <Footer />
           </Container>
         </Body>
       </Tailwind>
@@ -112,8 +82,3 @@ export const DebriefCalendarInvite = ({
 };
 
 export default DebriefCalendarInvite;
-
-// [teamMemberName]
-// [firstName]
-// [jobTitle]
-// [companyName]

@@ -7,7 +7,7 @@ import _styles from "./IconButtonGhost.module.css";
 
 export function IconButtonGhost({
   as: _Component = _Builtin.Block,
-  iconSize = "2",
+  iconSize = "4",
   iconWeight = "medium",
   iconColor = "inherit",
   iconName = "shapes",
@@ -16,6 +16,7 @@ export function IconButtonGhost({
   isDisabled = false,
   color = "accent",
   highContrast = "false",
+  onClickButton = {},
 }) {
   return (
     <_Component
@@ -24,6 +25,7 @@ export function IconButtonGhost({
       icon-button-size-ghost={size}
       button-color-ghost={color}
       button-high-contrast-ghost={highContrast}
+      {...onClickButton}
     >
       <_Builtin.Block tag="div">
         <GlobalIcon

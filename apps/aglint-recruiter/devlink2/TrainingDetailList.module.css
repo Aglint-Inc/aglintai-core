@@ -1,4 +1,4 @@
-.div-block-1670 {
+.training-details {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -6,7 +6,7 @@
   grid-row-gap: 10px;
 }
 
-.div-block-1669 {
+.shadow-name {
   display: flex;
   width: 300px;
   justify-content: flex-start;
@@ -86,11 +86,11 @@
   text-transform: capitalize;
 }
 
-.div-block-1673 {
+.badge-wrap {
   width: 150px;
 }
 
-.div-block-1675 {
+.slot-interview-type-block {
   display: flex;
   justify-content: flex-start;
   align-items: center;

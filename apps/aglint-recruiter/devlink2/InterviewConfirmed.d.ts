@@ -10,4 +10,5 @@ declare function InterviewConfirmed(props: {
   slotButton?: Types.Devlink.Slot;
   onClickAddCalender?: Types.Devlink.RuntimeProps;
   slotBanner?: Types.Devlink.Slot;
+  isBannerVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

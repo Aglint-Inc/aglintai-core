@@ -1,15 +1,18 @@
-.div-block-1540 {
+.priority_wrap {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   flex-wrap: nowrap;
   align-items: flex-start;
 }
 
 .priority_individual {
   display: flex;
+  justify-content: flex-start;
+  align-items: center;
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
+
   color: #ce2c31;
 }
 
@@ -23,21 +26,7 @@
 
 .embed_flex {
   display: flex;
-  overflow: hidden;
-  width: var(--space-5);
-  height: var(--space-5);
   align-items: center;
-
-  border-radius: var(--radius-2);
-
-  color: var(--neutral-a11);
-
-  cursor: pointer;
-}
-
-.embed_flex:hover {
-  background-color: var(--neutral-a3);
-  color: var(--neutral-a12);
 }
 
 .embed_flex.hide {

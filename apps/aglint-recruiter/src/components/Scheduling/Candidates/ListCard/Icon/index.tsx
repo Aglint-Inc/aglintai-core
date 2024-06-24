@@ -1,6 +1,7 @@
 import { DB } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 
 function IconScheduleType({
@@ -11,7 +12,7 @@ function IconScheduleType({
   return (
     <Stack height={'100%'} justifyContent={'center'} alignItems={'center'}>
       <ShowCode>
-        <ShowCode.When isTrue={type == 'in_person_meeting'}>
+        <ShowCode.When isTrue={type === 'in_person_meeting'}>
           <svg
             width='18'
             height='18'
@@ -26,7 +27,8 @@ function IconScheduleType({
           </svg>
         </ShowCode.When>
         <ShowCode.When isTrue={type == 'phone_call'}>
-          <svg
+          <GlobalIcon iconName='phone_in_talk' color={'var(--neutral-11)'}/>
+          {/* <svg
             width='18'
             height='18'
             viewBox='0 0 18 18'
@@ -37,9 +39,10 @@ function IconScheduleType({
               d='M11.8125 9.44531L14.4375 10.5703C14.6406 10.6641 14.7969 10.8125 14.9062 11.0156C15 11.2031 15.0234 11.4062 14.9766 11.625L14.4141 14.25C14.2891 14.7188 13.9844 14.9688 13.5 15C13.3594 15 13.2188 15 13.0781 15C12.9688 14.9844 12.8594 14.9766 12.75 14.9766C10.9219 14.8203 9.27344 14.2656 7.80469 13.3125C6.33594 12.3594 5.17188 11.1172 4.3125 9.58594C3.45312 8.07031 3.01562 6.375 3 4.5C3.03125 4.01562 3.28125 3.71094 3.75 3.58594L6.375 3.02344C6.59375 2.97656 6.79688 3.00781 6.98438 3.11719C7.1875 3.21094 7.33594 3.35937 7.42969 3.5625L8.55469 6.1875C8.71094 6.60938 8.61719 6.97656 8.27344 7.28906L7.33594 8.0625C7.97656 9.15625 8.84375 10.0234 9.9375 10.6641L10.7109 9.72656C11.0234 9.38281 11.3906 9.28906 11.8125 9.44531ZM13.5 14.25C13.5938 14.25 13.6562 14.2031 13.6875 14.1094L14.25 11.4844C14.2656 11.375 14.2266 11.3047 14.1328 11.2734L11.5078 10.1484C11.4297 10.1172 11.3594 10.1328 11.2969 10.1953L10.5234 11.1562C10.2422 11.4375 9.92188 11.4922 9.5625 11.3203C8.34375 10.6172 7.38281 9.65625 6.67969 8.4375C6.50781 8.07812 6.5625 7.75781 6.84375 7.47656L7.80469 6.70312C7.86719 6.64062 7.88281 6.57031 7.85156 6.49219L6.72656 3.86719C6.67969 3.77344 6.60938 3.73437 6.51562 3.75L3.89062 4.3125C3.79688 4.34375 3.75 4.40625 3.75 4.5C3.76562 6.3125 4.21094 7.95312 5.08594 9.42188C5.94531 10.8906 7.10938 12.0547 8.57812 12.9141C10.0469 13.7891 11.6875 14.2344 13.5 14.25Z'
               fill='#2F3941'
             />
-          </svg>
+          </svg> */}
         </ShowCode.When>
         <ShowCode.When isTrue={type == 'google_meet'}>
+          {/* <GlobalIcon iconName='video_camera_front' /> */}
           <svg
             width='24'
             height='20'
@@ -54,6 +57,7 @@ function IconScheduleType({
           </svg>
         </ShowCode.When>
         <ShowCode.When isTrue={type === 'zoom'}>
+          {/* <GlobalIcon iconName='filter_tilt_shift' /> */}
           <svg
             width='24'
             height='20'

@@ -148,23 +148,6 @@
   color: var(--neutral-5);
 }
 
-.cancel_arrowtask.disable {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-  z-index: 1;
-
-  color: #f9f9f8;
-
-  cursor: not-allowed;
-}
-
-.cancel_arrowtask.disable:hover {
-  opacity: 1;
-}
-
 .icons {
   display: flex;
   flex-direction: column;
@@ -258,10 +241,6 @@
 
 .icons.mt-3 {
   margin-top: 3px;
-}
-
-.icons.mr--10 {
-  margin-right: -8px;
 }
 
 .icons.mt-2 {

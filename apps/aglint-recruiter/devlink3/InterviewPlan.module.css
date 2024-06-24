@@ -12,7 +12,7 @@
 
   background-color: var(--neutral-2);
 
-  height: calc(100vh - 60px);
+  height: calc(100vh - 48px);
 }
 
 .slot-interview-coordinator {
@@ -70,14 +70,6 @@
   cursor: pointer;
 }
 
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
-}
-
 .icons.pointer {
   cursor: pointer;
 }
@@ -87,6 +79,4 @@
   width: 100%;
   max-width: 700px;
   flex-direction: column;
-  grid-column-gap: var(--space-3);
-  grid-row-gap: var(--space-3);
 }

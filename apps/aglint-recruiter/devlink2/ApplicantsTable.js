@@ -14,12 +14,13 @@ export function ApplicantsTable({
   isDisqualifiedVisible = true,
   propsDrag = {},
   isDragVisible = true,
+  isAssessmentVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "candidate-list")} tag="div">
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "embed_css")}
-        value="%3Cstyle%3E%0A%5Btable-column%5D%7B%0A%20%20%20%20width%3Amax-content%20%3B%0A%7D%0A%5Btable-column%3D%22checkbox%22%5D%7B%0A%20%20%20%20width%3A50px%20%3B%0A%20%20%20%20min-width%3A50px%20%3B%0A%7D%0A%5Btable-column%3D%22candidate-name%22%5D%7B%0A%20%20%20%20width%3A280px%3B%0A%20%20%20%20min-width%3A280px%20%3B%0A%7D%0A%5Btable-column%3D%22interview%22%5D%7B%0A%20%20%20%20width%3A320px%3B%0A%20%20%20%20%20min-width%3A300px%20%3B%0A%7D%0A%5Btable-column%3D%22resume-match%22%5D%7B%0A%20%20%20%20width%3A250px%3B%0A%20%20%20%20%20min-width%3A250px%20%3B%0A%7D%0A%5Btable-column%3D%22screening%22%5D%7B%0A%20%20%20%20width%3A200px%3B%0A%20%20%20%20%20min-width%3A200px%20%3B%0A%7D%0A%5Btable-column%3D%22assessment%22%5D%7B%0A%20%20%20%20width%3A220px%3B%0A%20%20%20%20%20min-width%3A220px%20%3B%0A%7D%0A%5Btable-column%3D%22disqualified-email%22%5D%7B%0A%20%20%20%20width%3A200px%3B%0A%20%20%20%20%20min-width%3A200px%20%3B%0A%7D%0A%5Btable-column%3D%22job-title%22%5D%7B%0A%20%20%20%20width%3A280px%3B%0A%20%20%20%20%20min-width%3A280px%20%3B%0A%7D%0A%5Btable-column%3D%22location%22%5D%7B%0A%20%20%20%20width%3A230px%3B%0A%20%20%20%20%20min-width%3A230px%20%3B%0A%7D%0A%5Btable-column%3D%22applied-date%22%5D%7B%0A%20%20%20%20min-width%3A240px%3B%0A%20%20%20%20width%3A100%25%3B%0A%7D%0A%3C%2Fstyle%3E"
+        value="%3Cstyle%3E%0A%5Btable-column%5D%7B%0A%20%20%20%20width%3Amax-content%20%3B%0A%7D%0A%5Btable-column%3D%22checkbox%22%5D%7B%0A%20%20%20%20width%3A50px%20%3B%0A%20%20%20%20min-width%3A50px%20%3B%0A%7D%0A%5Btable-column%3D%22candidate-name%22%5D%7B%0A%20%20%20%20width%3A280px%3B%0A%20%20%20%20min-width%3A280px%20%3B%0A%7D%0A%5Btable-column%3D%22interview%22%5D%7B%0A%20%20%20%20width%3A420px%3B%0A%20%20%20%20%20min-width%3A420px%20%3B%0A%7D%0A%5Btable-column%3D%22resume-match%22%5D%7B%0A%20%20%20%20width%3A250px%3B%0A%20%20%20%20%20min-width%3A250px%20%3B%0A%7D%0A%5Btable-column%3D%22screening%22%5D%7B%0A%20%20%20%20width%3A200px%3B%0A%20%20%20%20%20min-width%3A200px%20%3B%0A%7D%0A%5Btable-column%3D%22assessment%22%5D%7B%0A%20%20%20%20width%3A220px%3B%0A%20%20%20%20%20min-width%3A220px%20%3B%0A%7D%0A%5Btable-column%3D%22disqualified-email%22%5D%7B%0A%20%20%20%20width%3A200px%3B%0A%20%20%20%20%20min-width%3A200px%20%3B%0A%7D%0A%5Btable-column%3D%22job-title%22%5D%7B%0A%20%20%20%20width%3A280px%3B%0A%20%20%20%20%20min-width%3A280px%20%3B%0A%7D%0A%5Btable-column%3D%22location%22%5D%7B%0A%20%20%20%20width%3A230px%3B%0A%20%20%20%20%20min-width%3A230px%20%3B%0A%7D%0A%5Btable-column%3D%22applied-date%22%5D%7B%0A%20%20%20%20min-width%3A240px%3B%0A%20%20%20%20width%3A100%25%3B%0A%7D%0A%3C%2Fstyle%3E"
       />
       <_Builtin.Block
         className={_utils.cx(_styles, "candidate-list-wrapper")}
@@ -77,7 +78,7 @@ export function ApplicantsTable({
             )}
             tag="div"
           >
-            <Text content="Candidate" size="2" />
+            <Text content="Candidate" size="1" />
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -95,9 +96,29 @@ export function ApplicantsTable({
             )}
             tag="div"
           >
-            <Text content="Resume Match" size="2" />
+            <Text content="Resume Match" size="1" />
           </_Builtin.Block>
         </_Builtin.Block>
+        {isInterviewVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
+            tag="div"
+            table-column="interview"
+          >
+            <_Builtin.Block
+              className={_utils.cx(
+                _styles,
+                "cv-list-column",
+                "name",
+                "overflow-visible",
+                "width-100"
+              )}
+              tag="div"
+            >
+              <Text content="Interview" size="1" />
+            </_Builtin.Block>
+          </_Builtin.Block>
+        ) : null}
         {isScreeningVisible ? (
           <_Builtin.Block
             className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
@@ -114,11 +135,11 @@ export function ApplicantsTable({
               )}
               tag="div"
             >
-              <Text content="Screening Status" size="2" />
+              <Text content="Screening Status" size="1" />
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
-        {isInterviewVisible ? (
+        {isAssessmentVisible ? (
           <_Builtin.Block
             className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
             tag="div"
@@ -134,7 +155,7 @@ export function ApplicantsTable({
               )}
               tag="div"
             >
-              <Text content="Assessment Score" size="2" />
+              <Text content="Assessment Score" size="1" />
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
@@ -154,7 +175,7 @@ export function ApplicantsTable({
               )}
               tag="div"
             >
-              <Text content="Disqualified Email" size="2" />
+              <Text content="Disqualified Email" size="1" />
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
@@ -173,7 +194,7 @@ export function ApplicantsTable({
             )}
             tag="div"
           >
-            <Text content="Current Job Title" size="2" />
+            <Text content="Current Job Title" size="1" />
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -191,7 +212,7 @@ export function ApplicantsTable({
             )}
             tag="div"
           >
-            <Text content="Location" size="2" />
+            <Text content="Location" size="1" />
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -209,7 +230,7 @@ export function ApplicantsTable({
             )}
             tag="div"
           >
-            <Text content="Applied Date" size="2" />
+            <Text content="Applied Date" size="1" />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

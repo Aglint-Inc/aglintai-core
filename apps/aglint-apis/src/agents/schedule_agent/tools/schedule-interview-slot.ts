@@ -44,7 +44,7 @@ export const scheduleInterviewSlot = () => {
     cand_phone: string,
     candLogger: LoggerType
   ) => {
-    const cand_info = getCachedCandidateInfo(cand_phone);
+    const cand_info = await getCachedCandidateInfo(cand_phone);
 
     if (cand_info.schedule_status === 'confirmed') {
       return `interview already scheduled at ${cand_info.cand_selected_slot}`;
@@ -120,10 +120,12 @@ export const scheduleInterviewSlot = () => {
             slot_start_time: req_slot_time.format(),
           },
           filter_id: cand_info.req_payload.filter_json_id,
+          agent_type: 'phone_agent',
+          task_id: cand_info.req_payload.task_id,
         };
 
         await axios.post(
-          `${envConfig.CLIENT_APP_URL}/api/scheduling/v1/confirm_interview_slot`,
+          `${envConfig.CLIENT_APP_URL}/api/scheduling/v1/booking/confirm-slot-no-conflicts`,
           payload
         );
         cand_info.cand_selected_slot = req_slot_time.format();

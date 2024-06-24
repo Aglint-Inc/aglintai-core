@@ -1,15 +1,10 @@
 import { RecruiterType } from '@aglint/shared-types';
-import {
-  Autocomplete,
-  Dialog,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Autocomplete, Dialog, Stack, Typography } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { AddRolesPop } from '@/devlink/AddRolesPop';
 import { RolesPill } from '@/devlink/RolesPill';
+import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 interface RolesProps {
@@ -28,6 +23,7 @@ const AddRolesDialog: React.FC<RolesProps> = ({
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState([]);
   const [roles, setRoles] = useState<string[]>([]);
+  const [inputError, setInputError] = useState(false);
   const iniRoles = useRef([]);
 
   const handleInputChange = (event, newInputValue) => {
@@ -150,13 +146,16 @@ const AddRolesDialog: React.FC<RolesProps> = ({
               );
             }}
             renderInput={(params) => (
-              <TextField
+              <UITextField
                 {...params}
                 placeholder='Type or Choose from the list and press enter'
                 InputProps={{
                   ...params.InputProps,
                   type: 'search',
                 }}
+                onFocus={() => setInputError(false)}
+                error={inputError}
+                helperText='Make any changes then add the Roles'
                 onKeyDown={handleKeyDown}
               />
             )}
@@ -175,6 +174,8 @@ const AddRolesDialog: React.FC<RolesProps> = ({
                 available_roles: roles,
               });
               handleClose();
+            } else {
+              setInputError(true);
             }
           },
         }}

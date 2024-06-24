@@ -1,4 +1,4 @@
-.div-block-1672 {
+.training-status-wrap {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -6,28 +6,30 @@
   align-items: flex-start;
 }
 
-.div-block-1671 {
+.ts-item {
   display: flex;
-  padding: 4px 10px;
+  padding: var(--space-1) var(--space-2);
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 
   border: 1px solid var(--success-a6);
-  border-radius: 6px;
+  border-radius: var(--radius-4);
 
   background-color: var(--success-a3);
 
   color: white;
 }
 
-.div-block-1671.pending {
+.ts-item.pending {
+  border-color: var(--accent-6);
   background-color: #fff7ed;
   color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
 }
 
-.div-block-1671.not-schedule {
+.ts-item.not-schedule {
+  border-color: var(--neutral-6);
   background-color: #f7f9fb;
   color: #68737d;
 }

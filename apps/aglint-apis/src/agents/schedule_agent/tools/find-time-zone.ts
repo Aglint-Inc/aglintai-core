@@ -33,7 +33,7 @@ export const findCandTimeZone = () => {
     args: z.infer<typeof schema>;
     candLogger: LoggerType;
   }) => {
-    const condidate_info = getCachedCandidateInfo(cand_phone);
+    const condidate_info = await getCachedCandidateInfo(cand_phone);
     let parsedData = null;
     try {
       parsedData = schema.parse(args);
@@ -62,7 +62,7 @@ export const findCandTimeZone = () => {
         tz_code: time_zone,
         tz_label: googleTimeZone[time_zone].split(')')[1],
       };
-      updateCandidateInfo(cand_info);
+      await updateCandidateInfo(cand_info);
       return `${googleTimeZone[time_zone].split(')')[1]} ${time_zone}`;
     } catch (error: any) {
       candLogger(

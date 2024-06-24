@@ -1,47 +1,46 @@
-.div-block-1434 {
+.task_row {
   display: grid;
   grid-auto-columns: 1fr;
-  grid-template-columns: 20px 1fr 130px 110px 160px 190px;
+  grid-template-columns: 20px auto 15% 10% 15% 15%;
   grid-template-rows: auto;
   border-bottom: 1px solid #e9ebed;
 }
 
-.div-block-1434.height-40 {
+.task_row.title-row {
   position: sticky;
   top: 0px;
   z-index: 3;
 
-  height: 40px;
+  height: var(--space-7);
   padding-left: 10px;
   align-content: center;
-  grid-template-columns: 20px 1fr 130px 110px 160px 190px;
 
   background-color: var(--neutral-2);
 }
 
-.div-block-1434.height-40.job-cand {
+.task_row.title-row.job-cand {
   padding-left: 1%;
   grid-template-columns: 20px 1fr 130px 110px 160px 160px 130px;
 }
 
-.div-block-1434.height-53 {
+.task_row.height-53 {
   position: relative;
   height: var(--space-8);
   align-content: center;
 }
 
-.div-block-1434.height-53.job-cand {
+.task_row.height-53.job-cand {
   padding-left: 1%;
   grid-template-columns: 20px 1fr 130px 110px 160px 160px 130px;
   cursor: pointer;
 }
 
-.div-block-1434.height-53.pointer {
+.task_row.height-53.pointer {
   padding-left: 10px;
   cursor: pointer;
 }
 
-.div-block-1536 {
+.tjsc-checkbox-wrap {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -59,7 +58,7 @@
   z-index: 1;
 
   display: flex;
-  padding: var(--space-1) 16px;
+  padding: var(--space-1) var(--space-4);
   justify-content: flex-start;
   align-items: center;
 }
@@ -85,13 +84,15 @@
   justify-content: space-between;
 }
 
-.div-block-1626 {
+.tjsc-overdue-wrap {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   flex: 0 0 auto;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+
+  color: var(--accent-9);
 }
 
 .icons {
@@ -114,20 +115,8 @@
   cursor: pointer;
 }
 
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
-}
-
 .icons.pointer {
   cursor: pointer;
-}
-
-.text-block-31 {
-  color: #ff6224;
 }
 
 .div-block-1449 {

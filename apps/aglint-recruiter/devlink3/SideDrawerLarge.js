@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { CloseButton } from "./CloseButton";
+import { GlobalIcon } from "./GlobalIcon";
 import { SlotComp } from "./SlotComp";
 import { ButtonSoft } from "./ButtonSoft";
 import { ButtonSolid } from "./ButtonSolid";
@@ -23,6 +23,7 @@ export function SideDrawerLarge({
   onClickBack = {},
   isDisabled = false,
   isLoading = false,
+  dynamicHeight = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "large_sidedrawer")} tag="div">
@@ -33,11 +34,18 @@ export function SideDrawerLarge({
         <_Builtin.Block className={_utils.cx(_styles, "flex_hr_10")} tag="div">
           <Text content={textDrawertitle} weight="medium" />
         </_Builtin.Block>
-        <CloseButton onClickClose={onClickCancel} />
+        <_Builtin.Block
+          className={_utils.cx(_styles, "sdl-close-btn-wrap")}
+          tag="div"
+          {...onClickCancel}
+        >
+          <GlobalIcon iconName="close" />
+        </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "sidedrawer_body")}
         tag="div"
+        {...dynamicHeight}
       >
         {slotSideDrawerbody ?? <SlotComp componentNeme="ScheduleOptionList" />}
       </_Builtin.Block>

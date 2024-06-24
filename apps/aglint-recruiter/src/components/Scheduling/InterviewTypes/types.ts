@@ -1,5 +1,6 @@
 import {
   CandidateType,
+  DatabaseTable,
   InterviewMeetingTypeDb,
   InterviewModuleRelationType,
   InterviewModuleType,
@@ -12,8 +13,6 @@ import {
 import { DB } from '@aglint/shared-types';
 import { schedulingSettingType } from '@aglint/shared-types';
 import { PauseJson } from '@aglint/shared-types';
-
-import { ScoreJson } from '@/src/context/JobApplicationsContext/types';
 
 import { ApplicationList } from '../Candidates/utils';
 
@@ -64,7 +63,7 @@ export type StatusTraining = DB['public']['Enums']['status_training'];
 
 export type ScheduleType = {
   applications: JobApplcationDB & {
-    score_json: ScoreJson;
+    score_json: DatabaseTable['applications']['score_json'];
   };
   file: ApplicationList['file'];
   candidates: CandidateType;

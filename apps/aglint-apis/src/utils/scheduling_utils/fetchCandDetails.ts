@@ -8,23 +8,19 @@ import {
 import {getFullName} from '../getFullName';
 import {
   APIFindSlotsDateRange,
-  CandidateType,
-  InterviewFilterJsonType,
   InterviewMeetingTypeDb,
-  InterviewScheduleTypeDB,
   InterviewSessionTypeDB,
-  JobApplcationDB,
-  PublicJobsType,
-  RecruiterType,
   SessionsCombType,
   schedulingSettingType,
 } from '@aglint/shared-types';
-import {SINGLE_DAY_TIME, supabaseWrap} from '@aglint/shared-utils';
 import {envConfig} from '../../config';
+import {SINGLE_DAY_TIME, supabaseWrap} from '@aglint/shared-utils';
+
 const utc = require('dayjs/plugin/utc');
 const timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
+
 export const fetchCandidateDetails = async (
   req_body: unknown
 ): Promise<CandidateInfoType> => {
@@ -62,8 +58,8 @@ export const fetchCandidateDetails = async (
       const all_slots = await getallSlotsInDateRange({
         candidate_tz: 'Asia/colombo', // default time zone
         session_ids: cand_rec.session_ids,
-        start_date_str: filter_json.end_date,
-        end_date_str: filter_json.start_date,
+        start_date_str: filter_json.start_date,
+        end_date_str: filter_json.end_date,
         recruiter_id: company_id,
       });
       return all_slots;
@@ -139,43 +135,20 @@ export const fetchCandidateDetails = async (
   return cand_info;
 };
 
-type CandidateScheduleDetails = InterviewFilterJsonType & {
-  interview_schedule: Pick<InterviewScheduleTypeDB, 'id' | 'application_id'> & {
-    applications: Pick<JobApplcationDB, 'id'> & {
-      candidates: Pick<
-        CandidateType,
-        'first_name' | 'last_name' | 'email' | 'id'
-      >;
-      public_jobs: Pick<
-        PublicJobsType,
-        | 'recruiter_id'
-        | 'company'
-        | 'id'
-        | 'logo'
-        | 'job_title'
-        | 'description'
-        | 'overview'
-      > & {
-        recruiter: Pick<RecruiterType, 'scheduling_settings'>;
-      };
-    };
-  };
-};
-
 export const isCurrDayHoliday = (
-  comp_schedule_setting: any,
+  comp_schedule_setting: schedulingSettingType,
   curr_day: Dayjs
 ) => {
   // is curr day holiday
   if (
-    comp_schedule_setting.totalDaysOff.find((holiday: any) =>
+    comp_schedule_setting.totalDaysOff.find(holiday =>
       curr_day.isSame(dayjs(holiday.date, 'DD MMM YYYY'), 'day')
     )
   ) {
     return true;
   }
   const work_day = comp_schedule_setting.workingHours.find(
-    (day: any) => curr_day.format('dddd').toLowerCase() === day.day
+    day => curr_day.format('dddd').toLowerCase() === day.day
   );
   // is day week off
   if (!work_day.isWorkDay) {

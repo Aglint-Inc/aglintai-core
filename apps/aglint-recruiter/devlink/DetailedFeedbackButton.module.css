@@ -19,15 +19,6 @@
   color: var(--accent-12);
 }
 
-.clickable {
-  transition: all 300ms ease;
-  cursor: pointer;
-}
-
-.clickable:hover {
-  opacity: 0.8;
-}
-
 .icon-embed {
   display: flex;
   width: 100%;

@@ -2,6 +2,8 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { SlotComp } from "./SlotComp";
+import { Text } from "./Text";
+import { GlobalIcon } from "./GlobalIcon";
 import * as _utils from "./utils";
 import _styles from "./SelectedMemberPill.module.css";
 
@@ -36,17 +38,14 @@ export function SelectedMemberPill({
           />
         ) : null}
       </_Builtin.Block>
-      <_Builtin.Block tag="div">{textMemberName}</_Builtin.Block>
+      <Text content={textMemberName} weight="" />
       {isCloseButton ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "close_btn")}
           tag="div"
           {...onClickRemove}
         >
-          <_Builtin.HtmlEmbed
-            className={_utils.cx(_styles, "embed_flex")}
-            value="%3Csvg%20width%3D%2218%22%20height%3D%2218%22%20viewbox%3D%220%200%2018%2018%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M12.5859%206.21094L9.79688%209L12.5859%2011.7891C12.8047%2012.0547%2012.8047%2012.3203%2012.5859%2012.5859C12.3203%2012.8047%2012.0547%2012.8047%2011.7891%2012.5859L9%209.79688L6.21094%2012.5859C5.94531%2012.8047%205.67969%2012.8047%205.41406%2012.5859C5.19531%2012.3203%205.19531%2012.0547%205.41406%2011.7891L8.20312%209L5.41406%206.21094C5.19531%205.94531%205.19531%205.67969%205.41406%205.41406C5.67969%205.19531%205.94531%205.19531%206.21094%205.41406L9%208.20312L11.7891%205.41406C12.0547%205.19531%2012.3203%205.19531%2012.5859%205.41406C12.8047%205.67969%2012.8047%205.94531%2012.5859%206.21094Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
-          />
+          <GlobalIcon iconName="close" size="3" weight="medium" />
         </_Builtin.Block>
       ) : null}
     </_Component>

@@ -26,7 +26,7 @@ export const cancelInterview = () => {
     cand_phone: string,
     candLogger: LoggerType
   ) => {
-    const cand_info = getCachedCandidateInfo(cand_phone);
+    const cand_info = await getCachedCandidateInfo(cand_phone);
     const {reason} = args;
     if (!reason) return 'reason field required';
     try {
@@ -44,7 +44,7 @@ export const cancelInterview = () => {
         }
       );
       cand_info.schedule_status = 'cancelled';
-      updateCandidateInfo(cand_info);
+      await updateCandidateInfo(cand_info);
       await candLogger(
         agent_activities.phone_agent.tools['cancel-interview']
           .sucessessfull_cancel,

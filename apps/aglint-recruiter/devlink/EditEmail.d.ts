@@ -4,8 +4,6 @@ import * as Types from "./types";
 declare function EditEmail(props: {
   as?: React.ElementType;
   textEmailName?: React.ReactNode;
-  onClickSaveChanges?: Types.Devlink.RuntimeProps;
-  onClickClose?: Types.Devlink.RuntimeProps;
   slotForm?: Types.Devlink.Slot;
   editEmailDescription?: React.ReactNode;
   slotBottom?: Types.Devlink.Slot;
@@ -14,4 +12,5 @@ declare function EditEmail(props: {
   textTipsMessage?: React.ReactNode;
   onClickPreview?: Types.Devlink.RuntimeProps;
   isPreviewVisible?: Types.Visibility.VisibilityConditions;
+  slotButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -41,7 +41,7 @@ export function ActivitiesCard({
         tag="div"
       >
         <Text content={textTitle} weight="medium" />
-        <Text content={textDesc} color="neutral" weight="" />
+        <Text content={textDesc} color="neutral" weight="" size="1" />
         {isContentVisible ? (
           <_Builtin.Block
             className={_utils.cx(_styles, "activity_card_widget")}

@@ -2,13 +2,13 @@
   "name": "aglint-mail",
   "description": "A live preview of your emails right in your browser.",
   "scripts": {
+    "dev:build": "npm run build --workspace=@aglint/shared-utils",
     "build": "next build",
     "start": "next start",
-    "dev": "next dev --port 3100",
-    "test": "vitest run",
-    "test:watch": "vitest",
+    "dev": "npm run dev:build && next dev --port 3100",
     "clean": "rm -rf dist",
-    "lint": "eslint . && tsc"
+    "lint": "eslint . && tsc",
+    "fix": "eslint --fix"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -38,7 +38,6 @@
     "debounce": "2.0.0",
     "esbuild": "0.19.11",
     "eslint-config-prettier": "9.0.0",
-    "eslint-config-turbo": "1.10.12",
     "framer-motion": "10.17.4",
     "glob": "10.3.4",
     "html-to-react": "^1.7.0",
@@ -73,6 +72,7 @@
     "@types/shelljs": "0.8.15",
     "@types/webpack": "5.28.5",
     "eslint": "8.50.0",
+    "eslint-config-turbo": "^1.10.12",
     "tsup": "7.2.0",
     "tsx": "4.9.0",
     "vitest": "1.1.3"

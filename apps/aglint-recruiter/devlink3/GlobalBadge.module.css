@@ -1,0 +1,6 @@
+.global_badge {
+  display: flex;
+  width: auto;
+  justify-content: center;
+  align-items: center;
+}

@@ -2,13 +2,14 @@
   position: relative;
 
   display: flex;
-  padding: 6px 12px;
-  justify-content: flex-start;
+  height: 30px;
+  padding: var(--space-2) var(--space-3);
+  justify-content: center;
   align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 
-  border-radius: 4px;
+  border-radius: var(--radius-2);
 
   background-color: var(--neutral-3);
 
@@ -26,21 +27,7 @@
 
 .embed_flex {
   display: flex;
-  overflow: hidden;
-  width: var(--space-5);
-  height: var(--space-5);
   align-items: center;
-
-  border-radius: var(--radius-2);
-
-  color: var(--neutral-a11);
-
-  cursor: pointer;
-}
-
-.embed_flex:hover {
-  background-color: var(--neutral-a3);
-  color: var(--neutral-a12);
 }
 
 .embed_flex.hide {

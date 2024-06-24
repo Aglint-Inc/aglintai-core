@@ -8,7 +8,6 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { useCurrentJob } from '../job-assessment/keys';
-import { jobDashboardQueryKeys } from '../job-dashboard/keys';
 import { interviewPlanKeys, interviewSessionMutationKeys } from './keys';
 import {
   InterviewPlansType,
@@ -21,18 +20,13 @@ export const useInterviewPlans = () => {
   const { job, id } = useCurrentJob();
   const { recruiter_id } = useAuthDetails();
   const { queryKey } = interviewPlanKeys.interview_plan({ id });
-  const { queryKey: interviewPlanEnabled } =
-    jobDashboardQueryKeys.interviewPlanEnabled({ id });
   const response = useQuery({
     queryKey,
     queryFn: () => getInterviewPlansAPI(id),
     enabled: !!(recruiter_id && job),
   });
   const refetch = async () => {
-    await Promise.allSettled([
-      queryClient.invalidateQueries({ queryKey }),
-      queryClient.invalidateQueries({ queryKey: interviewPlanEnabled }),
-    ]);
+    await Promise.allSettled([queryClient.invalidateQueries({ queryKey })]);
   };
   return { ...response, refetch };
 };
@@ -57,15 +51,10 @@ export const useAddInterviewSession = () => {
   const queryClient = useQueryClient();
   const { id } = useCurrentJob();
   const { queryKey } = interviewPlanKeys.interview_plan({ id });
-  const { queryKey: interviewPlanEnabled } =
-    jobDashboardQueryKeys.interviewPlanEnabled({ id });
   const mutation = useMutation({
     mutationFn: async (args: CreateInterviewSession) => {
       await createInterviewSession(args);
-      await Promise.allSettled([
-        queryClient.invalidateQueries({ queryKey }),
-        queryClient.invalidateQueries({ queryKey: interviewPlanEnabled }),
-      ]);
+      await Promise.allSettled([queryClient.invalidateQueries({ queryKey })]);
     },
     onError: () => {
       toast.error('Unable to create interview session.');
@@ -97,16 +86,12 @@ export const useDeleteInterviewSession = () => {
   const { id } = useCurrentJob();
   const { queryKey } = interviewPlanKeys.interview_plan({ id });
   const { mutationKey } = interviewSessionMutationKeys.delete();
-  const { queryKey: interviewPlanEnabled } =
-    jobDashboardQueryKeys.interviewPlanEnabled({ id });
+
   const mutation = useMutation({
     mutationKey,
     mutationFn: async (args: DeleteInterviewSession) => {
       await deleteInterviewSession(args);
-      await Promise.allSettled([
-        queryClient.invalidateQueries({ queryKey }),
-        queryClient.invalidateQueries({ queryKey: interviewPlanEnabled }),
-      ]);
+      await Promise.allSettled([queryClient.invalidateQueries({ queryKey })]);
     },
     onError: () => {
       toast.error('Unable to delete interview session.');
@@ -137,15 +122,11 @@ export const useAddDebriefSession = () => {
   const queryClient = useQueryClient();
   const { id } = useCurrentJob();
   const { queryKey } = interviewPlanKeys.interview_plan({ id });
-  const { queryKey: interviewPlanEnabled } =
-    jobDashboardQueryKeys.interviewPlanEnabled({ id });
+
   const mutation = useMutation({
     mutationFn: async (args: CreateDebriefSession) => {
       await createDebriefSession(args);
-      await Promise.allSettled([
-        queryClient.invalidateQueries({ queryKey }),
-        queryClient.invalidateQueries({ queryKey: interviewPlanEnabled }),
-      ]);
+      await Promise.allSettled([queryClient.invalidateQueries({ queryKey })]);
     },
     onError: () => {
       toast.error('Unable to create debrief session.');

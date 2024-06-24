@@ -8,13 +8,20 @@
   justify-content: center;
   align-items: center;
 
-  border-radius: var(--radius-3);
+  border-top-left-radius: var(--radius-3);
+  border-top-right-radius: var(--radius-3);
+  border-bottom-left-radius: var(--radius-3);
+  border-bottom-right-radius: var(--radius-3);
+
+  color: var(--neutral-11);
 
   cursor: pointer;
+
+  user-select: none;
 }
 
 .navlink:hover {
-  color: var(--red-400\<deleted\|variable-dd53ad27\>);
+  color: var(--neutral-12);
 }
 
 .navlink_current {
@@ -129,10 +136,6 @@
 
 .icons.mt-3 {
   margin-top: 3px;
-}
-
-.icons.mr--10 {
-  margin-right: -8px;
 }
 
 .icons.mt-2 {

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./InterviewModePill.module.css";
 
@@ -25,7 +26,7 @@ export function InterviewModePill({
           />
         )}
       </_Builtin.Block>
-      <_Builtin.Block tag="div">{textModeName}</_Builtin.Block>
+      <Text content={textModeName} weight="" color="neutral" />
       {isActive ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "inteview_modepill-_active")}

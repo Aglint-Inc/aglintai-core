@@ -1,10 +1,7 @@
 import { NextResponse } from 'next/server';
 import * as v from 'valibot';
 import { interviewCancelEmailApplicantSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
-import { ClientError } from '../../../utils/apiUtils/customErrors';
-import sendMail from '../../../config/sendgrid';
-import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
-import { getEmails } from '../../../utils/apiUtils/get-emails';
+import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { fetchUtil } from './fetch-util';
 
 export async function POST(req: Request) {
@@ -17,25 +14,12 @@ export async function POST(req: Request) {
     );
     const { filled_comp_template, react_email_placeholders, recipient_email } =
       await fetchUtil(parsed_body);
-    const { emails } = await getEmails();
-    const emailIdx = emails.findIndex((e) => e === filled_comp_template.type);
 
-    if (emailIdx === -1)
-      throw new ClientError(
-        `${filled_comp_template.type} does not match any mail_type`,
-        400,
-      );
-
-    const { html, subject } = await renderEmailTemplate(
-      filled_comp_template.type,
+    await sendMailFun(
+      filled_comp_template,
       react_email_placeholders,
+      recipient_email,
     );
-    await sendMail({
-      email: recipient_email,
-      html,
-      subject,
-      text: html,
-    });
     return NextResponse.json('success', {
       status: 200,
     });
@@ -51,3 +35,12 @@ export async function POST(req: Request) {
     );
   }
 }
+
+// {
+//   "meta": {
+//       "application_id": "e8218fdc-524c-4f05-8786-23399370777b",
+//       "session_ids": [
+//           "edab9d72-53f1-4a34-91e2-934f50bcea0e"
+//       ]
+//   }
+// }

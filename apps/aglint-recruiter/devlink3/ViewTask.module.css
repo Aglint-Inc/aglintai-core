@@ -32,27 +32,6 @@
   letter-spacing: var(--letter-spacing-1);
 }
 
-.text-grey-600.text-underline {
-  text-decoration: underline;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
-.text-grey-600.text-underline.cursor-pointer {
-  transition: opacity 250ms ease;
-  cursor: pointer;
-}
-
-.text-grey-600.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
 .taskdrawer_controls {
   display: flex;
   justify-content: flex-start;
@@ -182,12 +161,8 @@
   opacity: 0.8;
 }
 
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .icons.pointer {
@@ -203,8 +178,8 @@
   padding-left: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: var(--space-5);
-  grid-row-gap: var(--space-5);
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
   height: calc(100vh - 41px);
 }
 
@@ -219,6 +194,7 @@
 
 .task_detail {
   display: flex;
+  padding: var(--space-1);
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 10px;
@@ -228,14 +204,13 @@
 .task_activityy {
   display: flex;
   min-height: 200px;
-  padding: var(--space-3);
+  padding: var(--space-1);
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: var(--space-5);
   grid-row-gap: var(--space-5);
 
-  border: 1px solid var(--neutral-6);
   border-radius: var(--radius-3);
 
-  background-color: var(--neutral-2);
+  background-color: var(--neutral-1);
 }

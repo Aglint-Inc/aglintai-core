@@ -1,8 +1,10 @@
-import { CircularProgress, Stack } from '@mui/material';
+import { supabaseWrap } from '@aglint/shared-utils';
+import { Stack } from '@mui/material';
 import { isEmpty } from 'lodash';
 import router from 'next/router';
 import React, { useState } from 'react';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { JobDescriptionModal } from '@/devlink/JobDescriptionModal';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
@@ -10,12 +12,7 @@ import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import AUIButton from '../../Common/AUIButton';
 import UITextField from '../../Common/UITextField';
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '../../JobsDashboard/JobPostCreateUpdate/utils';
 import { getRelevantCndidates } from '../utils';
 
 export const JDSearchModal = ({ setJdPopup }) => {
@@ -60,7 +57,7 @@ ${jdText}
         `/candidates/search?searchQryId=${history.id}&search_title=${jobRole}`,
       );
     } catch (err) {
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
       //
     } finally {
       setJdPopup(false);
@@ -107,25 +104,17 @@ ${jdText}
         },
       }}
       slotButtonPrimaryRegular={
-        <AUIButton
-          variant='primary'
-          size='small'
-          onClick={() => {
-            getMatchingCandsFromJd();
+        <ButtonSolid
+          isLoading={isJdSearching}
+          isDisabled={disabled}
+          textButton='Search'
+          size={2}
+          onClickButton={{
+            onClick: () => {
+              getMatchingCandsFromJd();
+            },
           }}
-          disabled={disabled}
-          endIcon={
-            isJdSearching && (
-              <CircularProgress
-                color='inherit'
-                size={'15px'}
-                sx={{ color: 'var(--neutral-6)' }}
-              />
-            )
-          }
-        >
-          Search
-        </AUIButton>
+        />
       }
     />
   );

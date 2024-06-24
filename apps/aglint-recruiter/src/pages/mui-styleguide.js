@@ -680,7 +680,7 @@ export const InputAdornmentExample = () => {
       label='Input with icon'
       InputProps={{
         startAdornment: (
-          <InputAdornment position='start'>
+          <InputAdornment position='end'>
             <AccountCircle />
           </InputAdornment>
         ),

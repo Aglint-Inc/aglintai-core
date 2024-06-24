@@ -4,9 +4,5 @@ import * as Types from "./types";
 declare function BannerWarning(props: {
   as?: React.ElementType;
   textBanner?: React.ReactNode;
-  onClickDismiss?: Types.Devlink.RuntimeProps;
-  textButton?: React.ReactNode;
-  onClickButton?: Types.Devlink.RuntimeProps;
-  isDismiss?: Types.Visibility.VisibilityConditions;
-  isButton?: Types.Visibility.VisibilityConditions;
+  slotButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

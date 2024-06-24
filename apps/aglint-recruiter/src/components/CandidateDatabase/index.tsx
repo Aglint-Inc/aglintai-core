@@ -1,9 +1,11 @@
 import { CandidateListTypeDB, SearchHistoryType } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { CircularProgress, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect, useRef, useState } from 'react';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateDatabaseSearch } from '@/devlink/CandidateDatabaseSearch';
 import { CandidateHistoryCard } from '@/devlink/CandidateHistoryCard';
 import { CdSearchHistoryLoader } from '@/devlink/CdSearchHistoryLoader';
@@ -27,10 +29,6 @@ import { CandidateSearchState } from '../../context/CandidateSearchProvider/Cand
 import Loader from '../Common/Loader';
 import MuiPopup from '../Common/MuiPopup';
 import UITextField from '../Common/UITextField';
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '../JobsDashboard/JobPostCreateUpdate/utils';
 import { Candidate } from './AppoloSearch/types';
 import { JDSearchModal } from './JobDescriprionModal/JDSearchModal';
 import EmptyState from './Search/EmptyState';
@@ -74,7 +72,7 @@ function CandidateSearchHistory() {
       await fetchList();
       setHistory(history);
     } catch (err) {
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setIsHistoryLoading(false);
     }
@@ -95,7 +93,7 @@ function CandidateSearchHistory() {
         setIsCandidates(true);
       }
     } catch (err) {
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     }
   };
 
@@ -110,7 +108,7 @@ function CandidateSearchHistory() {
       setHistory((p) => p.filter((p) => p.id !== deleteHistoryId));
     } catch (err) {
       setHistory((p) => p.filter((p) => p.id !== deleteHistoryId));
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setDeleteHistoryId(-1);
       setDeleteHistory(false);
@@ -146,7 +144,7 @@ function CandidateSearchHistory() {
       );
     } catch (err) {
       // console.log(err);
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setIsQrySearching(false);
     }
@@ -157,6 +155,7 @@ function CandidateSearchHistory() {
     try {
       if (searchQuery.length === 0 || isQrySearching) return;
       setIsQrySearching(true);
+
       const res = await axios.post('/api/candidatedb/query', {
         query: searchQuery,
       });
@@ -261,7 +260,7 @@ function CandidateSearchHistory() {
       router.push(`/candidates/aglintdb?id=${history.id}`);
     } catch (err) {
       // console.log(err);
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setIsQrySearching(false);
     }
@@ -280,16 +279,20 @@ function CandidateSearchHistory() {
   };
 
   const submitHandler = async () => {
-    const { data, error } = await supabase
-      .from('candidate_list')
-      .insert({ name: text, recruiter_id: recruiter.id })
-      .select();
-    if (!error) {
-      setList([...list, data[0]]);
-      setText('');
-      setIsInputVisible(false);
+    if (text) {
+      const { data, error } = await supabase
+        .from('candidate_list')
+        .insert({ name: text, recruiter_id: recruiter.id })
+        .select();
+      if (!error) {
+        setList([...list, data[0]]);
+        setText('');
+        setIsInputVisible(false);
+      } else {
+        toast.error('Something went wrong. Please try again.');
+      }
     } else {
-      toast.error('Something went wrong. Please try again.');
+      toast.error('Please enter the list name then submit');
     }
   };
 
@@ -322,7 +325,7 @@ function CandidateSearchHistory() {
       );
       setList((p) => p.filter((p) => p.id !== deleteList.id));
     } catch (err) {
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setDeleteList(null);
     }
@@ -447,7 +450,23 @@ function CandidateSearchHistory() {
                   currentTab === 'discover talent') &&
                   isWelMatVisible() && (
                     <SearchAglintCd
-                      isViewAllCandidateVisible={true}
+                      // isViewAllCandidateVisible={true}
+                      slotSearchButton={
+                        <ButtonSolid
+                          textButton='Search'
+                          size={3}
+                          isLoading={isQrySearching}
+                          onClickButton={{
+                            onClick: () => {
+                              if (currentTab === 'talent rediscovery') {
+                                getMatchingCandsFromQry();
+                              } else {
+                                getCandsFromApi();
+                              }
+                            },
+                          }}
+                        />
+                      }
                       isSearchByJdVisible={currentTab === 'talent rediscovery'}
                       isSearchInAglintVisible={currentTab === 'discover talent'}
                       isSearchInAllVisible={currentTab === 'talent rediscovery'}
@@ -485,6 +504,11 @@ function CandidateSearchHistory() {
                           value={text}
                           onChange={(e) => {
                             setText(e.target.value);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              submitHandler();
+                            }
                           }}
                         />
                       }
@@ -685,32 +709,6 @@ function CandidateSearchHistory() {
                           setIsJdPopUPopOpen(true);
                         },
                       }}
-                      onClickViewAllCandidate={{
-                        onClick: () => {
-                          router.push('/candidates');
-                        },
-                      }}
-                      onClickSearch={{
-                        onClick: () => {
-                          if (currentTab === 'talent rediscovery') {
-                            getMatchingCandsFromQry();
-                          } else {
-                            getCandsFromApi();
-                          }
-                        },
-                      }}
-                      isClearHistoryVisible={history.length > 0}
-                      slotLottieSearch={
-                        isQrySearching && (
-                          <>
-                            <CircularProgress
-                              color='inherit'
-                              size={'15px'}
-                              sx={{ color: 'var(--neutral-6)' }}
-                            />
-                          </>
-                        )
-                      }
                     />
                   )}
               </YTransform>

@@ -25,16 +25,6 @@
   grid-row-gap: var(--space-4);
 }
 
-.close-button {
-  display: flex;
-  transition: all 200ms ease;
-  color: var(--neutral-2);
-}
-
-.close-button:hover {
-  color: var(--neutral-4);
-}
-
 .accent-link-with-underline {
   display: flex;
   grid-column-gap: var(--space-1);

@@ -1,0 +1,99 @@
+.jd-analysis-item-wrap {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.cd_title {
+  display: flex;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.ske_text_regular {
+  position: relative;
+
+  display: flex;
+  overflow: hidden;
+  height: 20px;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+
+  border-radius: var(--space-1);
+}
+
+.ske_text_regular.width_200 {
+  width: 200px;
+}
+
+.ske_text_regular.width_100 {
+  width: 100px;
+}
+
+.width_100 {
+  width: 100%;
+}
+
+.ske_text_regular.width_50 {
+  width: 50px;
+}
+
+.ske_text_regular.width_500 {
+  width: 500px;
+}
+
+.dummy_skeleton {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  background-color: var(--neutral-4);
+}
+
+.ske_text_small {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 16px;
+  border-radius: var(--radius-1);
+}
+
+.ske_text_small.width_100 {
+  width: 100px;
+}
+
+.ske_text_small.width_90 {
+  width: 90%;
+}
+
+.ske_text_small.width_80 {
+  width: 80%;
+}
+
+.ske_text_small.width_20 {
+  width: 40%;
+}
+
+.ske_text_small.width_100 {
+  width: 90%;
+}
+
+.ske_text_small.width_100-copy {
+  width: 100px;
+}
+
+.ske_text_small.width_100-copy {
+  width: 100px;
+}
+
+.ske_text_small.width_100px {
+  width: 100px;
+}

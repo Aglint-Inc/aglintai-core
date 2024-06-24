@@ -1,5 +1,6 @@
 .score-setting-wrapper {
   padding: var(--space-4);
+  background-color: var(--white);
 }
 
 .score-setting-header {
@@ -36,18 +37,6 @@
   height: 20px;
   border-radius: var(--radius-2);
   background-color: var(--neutral-3);
-}
-
-.blue-200 {
-  background-color: var(--blue200-07311850);
-}
-
-.grey-200 {
-  background-color: var(--grey200-9ba653f1);
-}
-
-.indicator-box.purple {
-  background-color: #886bd8;
 }
 
 .indicator-box.must-have {

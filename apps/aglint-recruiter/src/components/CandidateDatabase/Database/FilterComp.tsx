@@ -3,6 +3,8 @@ import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { Close } from '@/devlink/Close';
 import { Filter } from '@/devlink/Filter';
 import { FilterButton } from '@/devlink/FilterButton';
@@ -20,6 +22,8 @@ type FilterType = {
 
 const FilterComp = () => {
   const [anchorlEl, setAnchorEl] = useState(null);
+
+  const [ApplyButtonDisable, setApplyButtonDisable] = useState(false);
   const [filters, setFilters] = useState<FilterType[]>([
     {
       id: nanoid(),
@@ -106,6 +110,16 @@ const FilterComp = () => {
     return isDisable;
   }, [filters]);
 
+  useEffect(() => {
+    if (filters.length === 0) {
+      setApplyButtonDisable(true);
+    } else setApplyButtonDisable(false);
+  }, [anchorlEl]);
+
+  useEffect(() => {
+    setApplyButtonDisable(false);
+  }, [filters]);
+
   return (
     <>
       <FilterButton
@@ -136,8 +150,37 @@ const FilterComp = () => {
         }}
       >
         <Filter
-          isApplyFilterDisable={isSubmitDisabled}
           isFilterEmpty={filters.length == 0}
+          slotButton={
+            <>
+              <ButtonGhost
+                textButton='Add Filter'
+                size={2}
+                iconName='add'
+                isLeftIcon
+                onClickButton={{
+                  onClick: () => {
+                    const remainingFilters = allFilters.filter(
+                      (alFil) => !filters.includes(alFil),
+                    );
+                    if (remainingFilters.length > 0 && filters.length < 3) {
+                      setFilters((prev) => [...prev, remainingFilters[0]]);
+                    }
+                  },
+                }}
+              />
+              <ButtonSolid
+                textButton='Apply Filter'
+                size={2}
+                isDisabled={ApplyButtonDisable || isSubmitDisabled}
+                onClickButton={{
+                  onClick: () => {
+                    handleApply();
+                  },
+                }}
+              />
+            </>
+          }
           slotFilter={
             <>
               <Stack gap={0.5}>
@@ -165,21 +208,21 @@ const FilterComp = () => {
               </Stack>
             </>
           }
-          onClickAddFilter={{
-            onClick: () => {
-              const remainingFilters = allFilters.filter(
-                (alFil) => !filters.includes(alFil),
-              );
-              if (remainingFilters.length > 0 && filters.length < 3) {
-                setFilters((prev) => [...prev, remainingFilters[0]]);
-              }
-            },
-          }}
-          onClickApplyFilter={{
-            onClick: () => {
-              handleApply();
-            },
-          }}
+          // onClickAddFilter={{
+          //   onClick: () => {
+          //     const remainingFilters = allFilters.filter(
+          //       (alFil) => !filters.includes(alFil),
+          //     );
+          //     if (remainingFilters.length > 0 && filters.length < 3) {
+          //       setFilters((prev) => [...prev, remainingFilters[0]]);
+          //     }
+          //   },
+          // }}
+          // onClickApplyFilter={{
+          //   onClick: () => {
+          //     handleApply();
+          //   },
+          // }}
         />
       </Popover>
     </>

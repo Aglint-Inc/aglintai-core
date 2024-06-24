@@ -48,7 +48,3 @@ export type CustomSchedulingSettings = {
   };
   debrief_defaults: CustomMembersMeta;
 };
-
-export type CustomEmailTemplate = {
-  [id in keyof EmailTemplateType | EmailTempPath]: EmailTemplateFields;
-};

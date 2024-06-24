@@ -8,19 +8,40 @@ import {
 import { diffApplication } from '@/src/queries/job-applications';
 
 import { useApplications } from '../ApplicationsContext';
+import { useAuthDetails } from '../AuthContext/AuthContext';
 import { useApplicationStore } from './store';
 
 export const useApplicationContext = (
   props: Parameters<(typeof applicationQuery)['application']>[0],
 ) => {
+  const { isAssessmentEnabled, isSchedulingEnabled, isScreeningEnabled } =
+    useAuthDetails();
   const queryClient = useQueryClient();
   const updateApplication = useApplications()?.handleAsyncUpdateApplication;
-  const { resetTab } = useApplicationStore(({ resetTab }) => ({
+  const { resetTab, tab } = useApplicationStore(({ resetTab, tab }) => ({
     resetTab,
+    tab,
   }));
 
+  const tabs = useQuery(
+    applicationQuery.tabs({
+      ...props,
+      isAssessmentEnabled,
+      isSchedulingEnabled,
+      isScreeningEnabled,
+    }),
+  );
   const meta = useQuery(applicationQuery.meta(props));
   const details = useQuery(applicationQuery.details(props));
+  const interview = useQuery(
+    applicationQuery.interview({ ...props, enabled: tab === 'Interview' }),
+  );
+  const tasks = useQuery(
+    applicationQuery.tasks({ ...props, enabled: tab === 'Tasks' }),
+  );
+  const activity = useQuery(
+    applicationQuery.activity({ ...props, enabled: tab === 'Activity' }),
+  );
   const { mutate } = useUpdateApplication(props);
 
   const handleUpdateApplication = useCallback(
@@ -61,5 +82,14 @@ export const useApplicationContext = (
     resetTab();
     return () => resetTab();
   }, []);
-  return { meta, details, handleUpdateApplication };
+  return {
+    application_id: props.application_id,
+    tabs,
+    meta,
+    details,
+    interview,
+    tasks,
+    activity,
+    handleUpdateApplication,
+  };
 };

@@ -2,7 +2,6 @@ import { DatabaseEnums, DatabaseTableUpdate, DB } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
@@ -89,7 +88,9 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
     <>
       <ViewTaskCard
         slotType={
-          <InterviewTaskPill textInterviewName={capitalize(task.type)} />
+          <InterviewTaskPill
+            textInterviewName={capitalizeFirstLetter(task.type)}
+          />
         }
         slotJob={capitalizeFirstLetter(
           task?.applications?.public_jobs?.job_title,
@@ -138,7 +139,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                     name: recruiterUser.first_name,
                     id: recruiterUser.user_id,
                   },
-                  progress_type: 'standard',
+                  progress_type: task.last_progress.progress_type,
                 },
                 optionData: {
                   currentSessions: task.session_ids as any,
@@ -174,7 +175,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                       name: recruiterUser.first_name,
                       id: recruiterUser.user_id,
                     },
-                    progress_type: 'standard',
+                    progress_type: task.last_progress.progress_type,
                   },
                   optionData: {
                     scheduleDateRange: {
@@ -208,7 +209,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                       name: recruiterUser.first_name,
                       id: recruiterUser.user_id,
                     },
-                    progress_type: 'standard',
+                    progress_type: task.last_progress.progress_type,
                   },
                   optionData: {
                     scheduleDateRange: {
@@ -248,7 +249,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                     name: recruiterUser.first_name as string,
                     id: recruiterUser.user_id as string,
                   },
-                  progress_type: 'standard',
+                  progress_type: task.last_progress.progress_type,
                 },
                 optionData: {
                   dueDate: {
@@ -280,7 +281,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                         name: recruiterUser.first_name,
                         id: recruiterUser.user_id,
                       },
-                      progress_type: 'standard',
+                      progress_type: task.last_progress.progress_type,
                     },
                     optionData: {
                       assignerId: assigner.user_id,
@@ -330,7 +331,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                       name: recruiterUser.first_name,
                       id: recruiterUser.user_id,
                     },
-                    progress_type: 'standard',
+                    progress_type: task.last_progress.progress_type,
                   },
                   optionData: {
                     triggerTime: { prev: task.start_date, current: e },
@@ -357,7 +358,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                       name: recruiterUser.first_name as string,
                       id: recruiterUser.user_id as string,
                     },
-                    progress_type: 'standard',
+                    progress_type: task.last_progress.progress_type,
                   },
                   optionData: {
                     currentStatus: task.status,
@@ -395,7 +396,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                       name: recruiterUser.first_name as string,
                       id: recruiterUser.user_id as string,
                     },
-                    progress_type: 'standard',
+                    progress_type: task.last_progress.progress_type,
                   },
                   optionData: {
                     currentPriority: task.priority,

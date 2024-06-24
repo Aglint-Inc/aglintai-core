@@ -6,11 +6,11 @@ var timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
 import { APISendgridPayload, EmailTemplateAPi } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { v4 as uuidV4 } from 'uuid';
 
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { InitAgentBodyParams } from '@/src/components/ScheduleAgent/types';
 import { EmailWebHook } from '@/src/services/EmailWebhook/EmailWebhook';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -56,7 +56,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
     const email_details = data as APISendgridPayload;
     supabaseWrap(
-      await supabaseAdmin.from('scheduling-agent-chat-history').insert({
+      await supabaseAdmin.from('scheduling_agent_chat_history').insert({
         application_id: cand_details.application_id,
         job_id: cand_details.job_id,
         chat_history: [
@@ -102,6 +102,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await candLogger(
       agent_activities.email_agent.init_agent.failed_to_init,
       {},
+      'email_agent',
+      'email_failed',
     );
     return res.status(500).send(error.message);
   }

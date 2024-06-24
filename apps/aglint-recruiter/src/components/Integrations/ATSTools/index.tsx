@@ -1,11 +1,11 @@
 import { RecruiterType } from '@aglint/shared-types';
 import { IconButton, TextField } from '@mui/material';
-import { IconEye, IconEyeOff } from '@tabler/icons-react';
 import axios from 'axios';
 import { capitalize } from 'lodash';
 import posthog from 'posthog-js';
 import { useRef, useState } from 'react';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { IntegrationCard } from '@/devlink2/IntegrationCard';
@@ -353,14 +353,15 @@ function ATSTools() {
             type={hideApiKey ? 'password' : 'text'}
             fullWidth
             inputRef={inputRef}
+            placeholder='Enter API Key'
             InputProps={{
               endAdornment: (
                 <IconButton
                   onClick={() => {
                     setHideApiKey((pre) => !pre);
                   }}
-                >
-                  {hideApiKey ? <IconEyeOff /> : <IconEye />}
+                > 
+                  {hideApiKey ? <GlobalIcon iconName='visibility'/> : <GlobalIcon iconName='visibility_off'/>}
                 </IconButton>
               ),
             }}

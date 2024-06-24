@@ -4,6 +4,8 @@ import axios from 'axios';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { InterviewMode } from '@/devlink2/InterviewMode';
 import { InterviewModePill } from '@/devlink2/InterviewModePill';
 import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
@@ -15,8 +17,8 @@ import {
   DropDown,
   IndividualIcon,
   PanelIcon,
-} from '@/src/components/JobNewInterviewPlan/sessionForms';
-import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
+} from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
+import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
@@ -311,7 +313,6 @@ function SideDrawerEdit() {
       } else {
         toast.error('Error caching session.');
       }
-      await fetchInterviewDataByApplication();
       handleClose();
     } else {
       if (editSession.session_type !== 'debrief') {
@@ -361,9 +362,10 @@ function SideDrawerEdit() {
         };
         await updateDebriefSession(updateDebriefParams);
       }
-      await fetchInterviewDataByApplication();
+
       handleClose();
     }
+    await fetchInterviewDataByApplication();
     setSaving(false);
   };
 
@@ -372,8 +374,6 @@ function SideDrawerEdit() {
       <Stack overflow={'hidden'}>
         {editSession && (
           <SideDrawerBlock
-            onClickClose={{ onClick: () => handleClose() }}
-            textPrimaryButton='Save'
             textTitle='Edit Session'
             slotSidedrawerBody={
               <Stack>
@@ -587,6 +587,7 @@ function SideDrawerEdit() {
                             {selectedInterviewers?.map((interviewer) => {
                               return (
                                 <SelectedMemberPill
+                                  isCloseButton={true}
                                   key={interviewer.value}
                                   onClickRemove={{
                                     onClick: () => {
@@ -621,6 +622,7 @@ function SideDrawerEdit() {
                               return (
                                 <SelectedMemberPill
                                   key={interviewer.value}
+                                  isCloseButton={true}
                                   onClickRemove={{
                                     onClick: () => {
                                       setTrainingInterviewers(
@@ -670,14 +672,28 @@ function SideDrawerEdit() {
                 )}
               </Stack>
             }
-            onClickPrimaryButton={{
-              onClick: () => {
-                if (!saving) {
-                  setSaving(true);
-                  handleSave();
-                }
-              },
-            }}
+            slotButton={
+              <>
+                <ButtonSoft
+                  textButton='Cancel'
+                  color={'neutral'}
+                  size={2}
+                  onClickButton={{ onClick: () => handleClose() }}
+                />
+                <ButtonSolid
+                  textButton='Save'
+                  size={2}
+                  onClickButton={{
+                    onClick: () => {
+                      if (!saving) {
+                        setSaving(true);
+                        handleSave();
+                      }
+                    },
+                  }}
+                />
+              </>
+            }
           />
         )}
       </Stack>

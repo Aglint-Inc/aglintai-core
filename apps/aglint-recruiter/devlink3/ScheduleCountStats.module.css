@@ -10,7 +10,7 @@
 .scheduling-menu {
   display: flex;
   width: 20%;
-  padding: var(--space-4);
+  padding: var(--space-4) var(--space-2);
   flex-direction: column;
   justify-content: flex-start;
   flex-wrap: nowrap;
@@ -24,36 +24,18 @@
   background-color: white;
 }
 
-.icons {
+.event_available {
+  color: var(--success-9);
+}
+
+.count_info {
   display: flex;
+  padding-right: var(--space-2);
+  padding-left: var(--space-2);
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.icons.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
-}
-
-.icons.pointer {
-  cursor: pointer;
+  flex-wrap: nowrap;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 .schedule-count-wrap {
@@ -85,10 +67,8 @@
   opacity: 0.8;
 }
 
-.text-sm {
-  font-size: var(--font-size-1);
-  line-height: var(--line-height-1);
-  letter-spacing: var(--letter-spacing-1);
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .accent-text.cursor-pointer {
@@ -100,19 +80,22 @@
   opacity: 0.8;
 }
 
-.accent-text.text-capital {
-  text-transform: uppercase;
-}
-
 .fw-semibold {
   font-weight: 600;
 }
 
-.text-xl {
-  font-size: 22px;
-  line-height: 28px;
+.hourglass_empty {
+  color: var(--neutral-9);
 }
 
-.text-xl.text-count-schedule {
-  color: #151d48;
+.calendar_clock {
+  color: var(--warning-8);
+}
+
+.event_upcoming {
+  color: var(--blue-9);
+}
+
+.event_busy {
+  color: var(--tomato-9);
 }

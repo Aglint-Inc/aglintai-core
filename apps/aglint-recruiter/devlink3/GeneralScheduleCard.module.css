@@ -7,7 +7,9 @@
 
   display: flex;
   width: 100%;
-  padding: var(--space-4);
+  padding-right: var(--space-4);
+  padding-bottom: var(--space-4);
+  padding-left: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: var(--space-2);
@@ -20,7 +22,7 @@
 }
 
 .gsc-header-space {
-  height: 46px;
+  height: 40px;
 }
 
 .gsc-header-wrap {
@@ -31,23 +33,22 @@
   bottom: auto;
 
   display: flex;
-  height: 56px;
+  height: 40px;
   padding: var(--space-4);
   justify-content: space-between;
   align-items: center;
 
+  border-bottom: 1px solid var(--neutral-6);
   border-top-left-radius: var(--radius-4);
   border-top-right-radius: var(--radius-4);
-
-  background-color: var(--neutral-2);
 }
 
 .gsc-header-title {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .icons {
@@ -70,14 +71,6 @@
   cursor: pointer;
 }
 
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
-}
-
 .icons.pointer {
   cursor: pointer;
 }
@@ -86,8 +79,17 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: var(--space-4);
-  grid-row-gap: var(--space-4);
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.gsc-icon-wrap {
+  padding: var(--space-1);
+  border-radius: var(--radius-2);
+}
+
+.gsc-icon-wrap:hover {
+  background-color: var(--neutral-3);
 }
 
 .gsc-module-wrap {
@@ -116,8 +118,8 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .gsc-meeting-wrap {
@@ -139,21 +141,12 @@
   padding: var(--space-2) var(--space-4);
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 
   border-radius: var(--radius-3);
 
   background-color: var(--neutral-3);
-}
-
-.gsc-module-link.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.gsc-module-link.cursor-pointer:hover {
-  opacity: 0.8;
 }
 
 .gsc-interviewer-wrap {

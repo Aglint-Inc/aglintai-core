@@ -66,29 +66,8 @@
   color: var(--sand-11);
 }
 
-.text-sm.text-underline {
-  text-decoration: underline;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
 .text-grey-600 {
   color: #68737d;
-}
-
-.text-sm.text-underline.text-grey-600.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.text-sm.text-underline.text-grey-600.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
 }
 
 .avatar_group_30 {

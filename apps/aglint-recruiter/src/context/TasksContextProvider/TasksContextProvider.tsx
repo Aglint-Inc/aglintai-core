@@ -25,6 +25,7 @@ import {
 } from 'react';
 
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
+import { typeArray } from '@/src/components/Tasks/TaskBody/AddNewTask/TypeList';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 
@@ -34,6 +35,8 @@ export type taskFilterType = {
   Status: DatabaseEnums['task_status'][];
   Priority: DatabaseEnums['task_priority'][];
   Assignee: string[];
+  Type: DatabaseEnums['task_type_enum'][];
+  Candidate: string[];
 };
 
 type TasksReducerType = {
@@ -45,6 +48,7 @@ type TasksReducerType = {
     assignee: { options: { id: string; label: string }[]; values: string[] };
     jobTitle: { options: { id: string; label: string }[]; values: string[] };
     priority: { options: DatabaseEnums['task_priority'][]; values: string[] };
+    type: { options: DatabaseEnums['task_type_enum'][]; values: string[] };
     date: { values: string[] };
     candidate: { options: { id: string; label: string }[]; values: string[] };
   };
@@ -100,6 +104,7 @@ const reducerInitialState: TasksReducerType = {
     assignee: { options: [], values: [] },
     jobTitle: { options: [], values: [] },
     priority: { options: ['high', 'low', 'medium'], values: [] },
+    type: { options: typeArray, values: [] },
     date: { values: [] },
     candidate: { options: [], values: [] },
   },
@@ -391,6 +396,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
     const priority = tasksReducer.filter.priority;
     const date = tasksReducer.filter.date;
     const candidate = tasksReducer.filter.candidate;
+    const type = tasksReducer.filter.type;
     let temp = [...sortedTask];
 
     if (status.values.length) {
@@ -414,6 +420,9 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
     }
     if (priority.values.length) {
       temp = temp.filter((task) => priority.values.includes(task?.priority));
+    }
+    if (type.values.length) {
+      temp = temp.filter((task) => type.values.includes(task?.type));
     }
     if (date.values.length) {
       if (date.values.length === 2) {
@@ -493,6 +502,8 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
           temp.filter.priority.values = preFilterData?.Priority || [];
           temp.filter.status.values = preFilterData?.Status || [];
           temp.filter.jobTitle.values = preFilterData?.Job || [];
+          temp.filter.type.values = preFilterData?.Type || [];
+          temp.filter.candidate.values = preFilterData?.Candidate || [];
         }
 
         temp.tasks = data.data;
@@ -596,7 +607,7 @@ const getTasks = ({
   return (
     user_id
       ? supabase
-          .from('new_tasks')
+          .from('tasks_view')
           .select(
             '*, applications(* , candidates( * ), public_jobs( * )), candidate_request_availability ( id,slots,booking_confirmed )',
             getCount ? { count: 'exact' } : {},
@@ -605,7 +616,7 @@ const getTasks = ({
             `assignee.cs.{${user_id}}, or(task_owner.eq.${user_id}, created_by.eq.${user_id})`,
           )
       : supabase
-          .from('new_tasks')
+          .from('tasks_view')
           .select(
             '*, applications(* , candidates( * ), public_jobs( * )), candidate_request_availability ( id,slots,booking_confirmed )',
             getCount ? { count: 'exact' } : {},
@@ -639,13 +650,21 @@ export const updateTask = ({
       ? supabase.from('new_tasks').update(task).eq('id', task.id)
       : supabase.from('new_tasks').insert(task)
   )
-    .select(
-      '*, applications(* , candidates( * ), public_jobs( * )), candidate_request_availability ( id,slots,booking_confirmed )',
-    )
+    .select('id')
     .single()
-    .then(({ data, error }) => {
-      const temp = data as unknown as Omit<typeof data, 'applications'> & {
-        applications: (typeof data)['applications'];
+    .then(async ({ data, error }) => {
+      const { data: updatedTask } = await supabase
+        .from('tasks_view')
+        .select(
+          '*, applications(* , candidates( * ), public_jobs( * )), candidate_request_availability ( id,slots,booking_confirmed )',
+        )
+        .eq('id', data.id)
+        .single();
+      const temp = updatedTask as unknown as Omit<
+        typeof updatedTask,
+        'applications'
+      > & {
+        applications: (typeof updatedTask)['applications'];
       };
       if (error) throw new Error(error.message);
       return temp;

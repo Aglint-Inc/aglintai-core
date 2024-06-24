@@ -1,7 +1,7 @@
 import { MenuItem, Stack, TextField, Typography } from '@mui/material';
 import React from 'react';
 
-import { WarningSvg } from '../../JobCreate/form';
+import { WarningSvg } from '../../Jobs/Create/form';
 import MuiAvatar from '../MuiAvatar';
 import UITypography from '../UITypography';
 
@@ -81,6 +81,7 @@ const AvatarSelectDropDown = ({
       <TextField
         select
         onChange={onChange}
+        error={error}
         sx={{
           '.MuiOutlinedInput-root': {
             // border: `1px solid ${error ? 'var(--error-6)' : 'var(--neutral-6)'}`,

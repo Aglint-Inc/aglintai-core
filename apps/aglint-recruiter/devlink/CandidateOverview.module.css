@@ -40,3 +40,7 @@
   position: relative;
   z-index: 2;
 }
+
+.width_100 {
+  width: 100%;
+}

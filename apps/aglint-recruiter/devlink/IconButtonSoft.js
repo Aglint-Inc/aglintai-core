@@ -16,6 +16,7 @@ export function IconButtonSoft({
   iconWeight = "medium",
   iconColor = "inherit",
   iconName = "shapes",
+  onClickButton = {},
 }) {
   return (
     <_Component
@@ -24,6 +25,7 @@ export function IconButtonSoft({
       icon-button-size-soft={size}
       button-color-soft={color}
       button-high-contrast-soft={highContrast}
+      {...onClickButton}
     >
       <_Builtin.Block tag="div">
         <GlobalIcon

@@ -2,8 +2,15 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 function processDirectory(
-  rootDirs: { [key: string]: { basePath: string; appRouter: boolean } },
-  outputFile: string,
+  rootDirs: {
+    [key: string]: { basePath: string; appRouter: boolean };
+  },
+  outputFiles: {
+    path: string;
+    objectName: string;
+    // eslint-disable-next-line no-unused-vars
+    filter?: (x: string[]) => string[];
+  }[],
 ) {
   const result: string[] = [];
 
@@ -53,11 +60,14 @@ function processDirectory(
   );
 
   // eslint-disable-next-line security/detect-non-literal-fs-filename
-  fs.writeFileSync(
-    outputFile,
-    `export const PATHS = [\n${result.map((item) => "'" + item + "'").join(',\n')}\n] as const`,
-    'utf-8',
-  );
+  outputFiles.forEach((item) => {
+    const tempResult = item.filter?.(item.filter(result)) || result;
+    fs.writeFileSync(
+      item.path,
+      `export const ${item.objectName} = [\n${tempResult.map((item) => "'" + item + "'").join(',\n')}\n] as const`,
+      'utf-8',
+    );
+  });
 }
 
 // const args = process.argv.slice(2);
@@ -74,57 +84,14 @@ const rootDirectory = {
     appRouter: true,
   },
 };
-const outputFile = 'script/paths.ts';
+const allPathOutputFile = 'src/constant/allPaths.ts';
+const apiPathOutputFile = 'src/constant/apiPaths.ts';
 
-processDirectory(rootDirectory, outputFile);
-
-// import yargs from 'yargs';
-// import { hideBin } from 'yargs/helpers';
-
-// const argv = yargs(hideBin(process.argv))
-//   .option('scan', {
-//     alias: 's',
-//     type: 'string',
-//     description: 'scan path',
-//     demandOption: false,
-//   })
-//   .option('file', {
-//     alias: 'f',
-//     type: 'string',
-//     description: 'output file path',
-//     demandOption: false,
-//   }).argv;
-
-// type path_Node = {
-//   path: string;
-//   leaf_node: boolean;
-//   child_nodes: path_Node[];
-// };
-// function convertToTreeStructure(paths: string[]): path_Node {
-//   const tree: path_Node = { path: '', leaf_node: false, child_nodes: [] };
-
-//   paths.forEach((path) => {
-//     const segments = path.split('/').filter((segment) => segment !== '');
-
-//     let currentNode = tree;
-//     segments.forEach((segment) => {
-//       if (!currentNode.child_nodes) {
-//         currentNode.child_nodes = [];
-//       }
-
-//       let childNode = currentNode.child_nodes.find(
-//         (node: any) => node.path === segment,
-//       );
-//       if (!childNode) {
-//         childNode = { path: segment, leaf_node: false, child_nodes: [] };
-//         currentNode.child_nodes.push(childNode);
-//       }
-
-//       currentNode = childNode;
-//     });
-
-//     currentNode.leaf_node = true;
-//   });
-
-//   return tree;
-// }
+processDirectory(rootDirectory, [
+  { path: allPathOutputFile, objectName: 'PATHS' },
+  {
+    path: apiPathOutputFile,
+    objectName: 'API_PATHS',
+    filter: (x) => x.filter((item) => item.startsWith('/api')),
+  },
+]);

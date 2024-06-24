@@ -119,7 +119,7 @@ export default function Loading() {
           if (recruiterRel.role === 'interviewer') {
             router.push(
               localStorage.getItem('redirectURL') ||
-                `${ROUTES['/scheduling']()}?tab=mySchedules`,
+                `${ROUTES['/scheduling']()}?tab=myschedules`,
             );
             localStorage.removeItem('redirectURL');
           } else if (recruiterRel.role === 'recruiter') {

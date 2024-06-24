@@ -1,11 +1,8 @@
+import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 import { cloneDeep, set } from 'lodash';
 import React, { Dispatch, useContext, useEffect } from 'react';
 
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { resolveAiCmd } from '@/src/utils/prompts/candidateDb/email';
 import { supabase } from '@/src/utils/supabase/client';
@@ -232,7 +229,7 @@ const OutReachCtxProvider = ({
           },
         });
       } catch (err) {
-        toast.error(API_FAIL_MSG);
+        toast.error('Something went wrong. Please try again.');
       } finally {
         //
       }
@@ -304,7 +301,7 @@ const OutReachCtxProvider = ({
 
       //
     } catch (err) {
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       dispatch({
         type: 'updateState',
@@ -367,7 +364,7 @@ const OutReachCtxProvider = ({
       }
     } catch (err) {
       // console.log(err);
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     }
   };
 
@@ -408,7 +405,7 @@ const OutReachCtxProvider = ({
         },
       });
     } catch (err) {
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       dispatch({
         type: 'updateState',

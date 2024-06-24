@@ -2,7 +2,8 @@ import type {
   EmailTemplateAPi,
   MeetingDetailCardType,
 } from '@aglint/shared-types';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/userTzDayjs';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   platformRemoveUnderscore,
@@ -28,7 +29,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company,recruiter)',
+        'candidates(first_name,last_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company,recruiter)',
       )
       .eq('id', req_body.application_id),
   );
@@ -43,7 +44,7 @@ export async function fetchUtil(
   const [recruiter_user] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
-      .select('email,first_name,scheduling_settings')
+      .select('email,first_name,last_name,scheduling_settings')
       .eq('user_id', candidateJob.public_jobs.recruiter),
   );
 
@@ -59,8 +60,8 @@ export async function fetchUtil(
       session_type,
     } = session;
     return {
-      date: dayjsLocal(start_time).tz(int_tz).format('ddd MMMM DD, YYYY'),
-      time: `${dayjsLocal(start_time).tz(int_tz).format('hh:mm A')} - ${dayjsLocal(end_time).tz(int_tz).format('hh:mm A')}`,
+      date: dayjsLocal(start_time).tz(int_tz).format(DAYJS_FORMATS.DATE_FORMAT),
+      time: `${dayjsLocal(start_time).tz(int_tz).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(end_time).tz(int_tz).format(DAYJS_FORMATS.END_TIME_FORMAT)}`,
       sessionType: name,
       platform: platformRemoveUnderscore(schedule_type),
       duration: durationCalculator(session_duration),
@@ -76,11 +77,20 @@ export async function fetchUtil(
 
   const comp_email_placeholder: EmailTemplateAPi<'InterviewCancelReq_email_recruiter'>['comp_email_placeholders'] =
     {
-      '{{ additionalRescheduleNotes }}': session_cancel.other_details.note,
-      '{{ cancelReason }}': session_cancel.reason,
-      '{{ recruiterName }}': recruiter_user.first_name,
-      '{{ candidateFirstName }}': candidates.first_name,
-      '{{ companyName }}': public_jobs.company,
+      additionalRescheduleNotes: session_cancel.other_details.note,
+      cancelReason: session_cancel.reason,
+      recruiterName: getFullName(
+        recruiter_user.first_name,
+        recruiter_user.last_name,
+      ),
+      jobRole: candidateJob.public_jobs.job_title,
+      candidateFirstName: candidates.first_name,
+      candidateLastName: candidates.last_name,
+      candidateName: getFullName(candidates.first_name, candidates.last_name),
+      companyName: public_jobs.company,
+      recruiterFirstName: recruiter_user.first_name,
+      recruiterLastName: recruiter_user.last_name,
+      recruiterTimeZone: int_tz,
     };
 
   const filled_comp_template = fillCompEmailTemplate(

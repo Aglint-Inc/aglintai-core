@@ -42,20 +42,17 @@
   cursor: pointer;
 }
 
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
-}
-
 .icons.pointer {
   cursor: pointer;
 }
 
+.title_wrapper {
+  padding: var(--space-4);
+}
+
 .task_detail {
   display: flex;
+  padding: var(--space-1);
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 10px;

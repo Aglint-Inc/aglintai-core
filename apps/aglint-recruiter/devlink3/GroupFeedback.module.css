@@ -1,18 +1,18 @@
 .div-block-1572 {
   display: flex;
   width: 100%;
-  height: 40px;
-  padding-right: 20px;
-  padding-left: 20px;
+  height: 36px;
+  padding-right: var(--space-4);
+  padding-left: var(--space-4);
   justify-content: flex-start;
   align-items: center;
   grid-column-gap: 16px;
   grid-row-gap: 16px;
 
-  border-top: 1px solid #f8f9f9;
-  border-bottom: 1px solid #f8f9f9;
+  border-top: 0px none #f8f9f9;
+  border-bottom: 1px solid var(--neutral-4);
 
-  background-color: #f3f4f6;
+  background-color: var(--neutral-1);
 }
 
 .div-block-1573 {
@@ -43,75 +43,8 @@
   cursor: pointer;
 }
 
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
-}
-
 .icons.pointer {
   cursor: pointer;
-}
-
-.fw-semibold {
-  font-weight: 600;
-}
-
-.fw-semibold.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.fw-semibold.relative_2.two-line-clamp.capitalize {
-  text-transform: capitalize;
-}
-
-.fw-semibold.capitalize {
-  text-transform: capitalize;
-}
-
-.text-red-600 {
-  color: #cc3340;
-}
-
-.fw-semibold.text-purple {
-  color: #a81897;
-}
-
-.fw-semibold.text-green {
-  color: #228f67;
-}
-
-.fw-semibold.text-yellow {
-  color: #eac05b;
-}
-
-.fw-semibold.text-orange {
-  color: #ed942d;
-}
-
-.fw-semibold.text-red {
-  color: #d93f4c;
-}
-
-.text-lg {
-  font-size: 18px;
-  line-height: 24px;
-}
-
-.text-grey_600 {
-  color: var(--sand-11);
-}
-
-.hide {
-  display: none;
 }
 
 .div-block-1574 {
@@ -126,6 +59,10 @@
   display: none;
 }
 
+.hide {
+  display: none;
+}
+
 .text-grey-600 {
   color: #68737d;
 }
@@ -134,21 +71,4 @@
   font-size: var(--font-size-1);
   line-height: var(--line-height-1);
   letter-spacing: var(--letter-spacing-1);
-}
-
-.text-grey-600.text-underline {
-  text-decoration: underline;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
-.text-grey-600.text-underline.cursor-pointer {
-  transition: opacity 250ms ease;
-  cursor: pointer;
-}
-
-.text-grey-600.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
 }

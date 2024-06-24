@@ -46,6 +46,9 @@ export const agent_activities = {
     //
   },
   email_agent: {
+    repy: {
+      failed: 'Agent Failed to reply due to :',
+    },
     tools: {
       'find-time-zone': {
         failed_to_find_time_zone:
@@ -74,6 +77,7 @@ export const agent_activities = {
         failed_cancel_interview:
           'Failed to cancel the scheduled interview. {err_msg}',
       },
+      'get-job-description': {},
     },
   },
 };

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { HistoryPill } from "./HistoryPill";
 import * as _utils from "./utils";
 import _styles from "./TrainingProgressList.module.css";
@@ -27,27 +28,17 @@ export function TrainingProgressList({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1520")}
+          className={_utils.cx(_styles, "tpl-profile-wrap")}
           tag="div"
         >
           {slotInterviewerImage}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1521")}
+          className={_utils.cx(_styles, "tpl-name-wrap")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {textName}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey_600")}
-            tag="div"
-          >
-            {textRole}
-          </_Builtin.Block>
+          <Text content={textName} weight="medium" />
+          <Text content={textRole} weight="" color="neutral" />
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
@@ -58,7 +49,7 @@ export function TrainingProgressList({
         )}
         tag="div"
       >
-        <_Builtin.Block tag="div">{textInterviewModule}</_Builtin.Block>
+        <Text content={textInterviewModule} weight="" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "sd_table_header_cell", "progress")}
@@ -69,7 +60,7 @@ export function TrainingProgressList({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1522")}
+          className={_utils.cx(_styles, "tpl-history-pill-wrap")}
           tag="div"
         >
           {slotHistoryPill ?? <HistoryPill />}

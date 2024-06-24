@@ -106,7 +106,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({
           position={'absolute'}
           zIndex={10000}
           width={'100%'}
-          bgcolor={'#fff'}
+          bgcolor={'var(--neutral-2)'}
         >
           <InterviewCompleted
             onClickSupport={{
@@ -208,6 +208,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({
         sx={{
           height: '100vh',
           overflow: thank || loading ? 'hidden' : 'scroll',
+          background: 'var(--neutral-2)',
         }}
       >
         <JobListing
@@ -222,8 +223,8 @@ const JobPostPublic: React.FC<JobsListProps> = ({
                 '& .MuiAvatar-img ': {
                   objectFit: 'contain',
                 },
-                height: '78px',
-                width: '78px',
+                height: '80px',
+                width: '80px',
               }}
             >
               <Icon variant='CompanyOutlinedBig' height='100%' width='100%' />
@@ -304,8 +305,8 @@ const JobPostPublic: React.FC<JobsListProps> = ({
                 '& .MuiAvatar-img ': {
                   objectFit: 'contain',
                 },
-                height: '58px',
-                width: '58px',
+                height: 'var(--space-8)',
+                width: 'var(--space-8)',
                 background: 'var(--neutral-3)',
               }}
             >
@@ -353,8 +354,6 @@ const JobPostPublic: React.FC<JobsListProps> = ({
           }}
           slotInputForm={
             <TextField
-              margin='none'
-              sx={{ pb: '10px' }}
               required
               fullWidth
               id='email'

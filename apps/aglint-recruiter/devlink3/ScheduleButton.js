@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./ScheduleButton.module.css";
 
@@ -13,11 +14,11 @@ export function ScheduleButton({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "div-block-1667")}
+      className={_utils.cx(_styles, "schedule-btn-wrap")}
       tag="div"
       {...onClickProps}
     >
-      <_Builtin.Block tag="div">
+      <_Builtin.Block tag="div" {...textColorProps}>
         {slotIcon ?? (
           <_Builtin.HtmlEmbed
             className={_utils.cx(_styles, "icons")}
@@ -25,12 +26,8 @@ export function ScheduleButton({
           />
         )}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "text-block-32")}
-        tag="div"
-        {...textColorProps}
-      >
-        {textLabel}
+      <_Builtin.Block tag="div" {...textColorProps}>
+        <Text content={textLabel} weight="" color="" />
       </_Builtin.Block>
     </_Component>
   );

@@ -5,6 +5,12 @@
   border-radius: var(--radius-4);
 }
 
+.close-job-modal-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .close-data-wrap {
   display: flex;
   margin-top: var(--space-4);
@@ -28,26 +34,6 @@
   grid-row-gap: var(--space-1);
 }
 
-.close-job-btn-modal {
-  position: absolute;
-  left: auto;
-  top: 14px;
-  right: 20px;
-  bottom: auto;
-
-  padding: var(--space-1);
-
-  border-radius: var(--radius-full);
-
-  transition: all 250ms ease;
-
-  cursor: pointer;
-}
-
-.close-job-btn-modal:hover {
-  background-color: #f8f9f9;
-}
-
 .buttn_flex {
   display: grid;
   padding-top: var(--space-3);
@@ -56,17 +42,4 @@
   grid-row-gap: var(--space-2);
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
-}
-
-.wide_button {
-  position: relative;
-  z-index: 1;
-}
-
-.disable-wrap {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
 }

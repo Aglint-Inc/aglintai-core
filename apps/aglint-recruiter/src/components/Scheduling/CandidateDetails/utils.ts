@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import {
   APIFindAvailability,
@@ -7,7 +8,7 @@ import {
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
   JobApplcationDB,
-  SupabaseType
+  SupabaseType,
 } from '@aglint/shared-types';
 import { BookingConfirmationMetadata } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
@@ -27,7 +28,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { addScheduleActivity } from '../Candidates/queries/utils';
-import { mailHandler } from '../Candidates/utils';
+// import { mailHandler } from '../Candidates/utils';
 import { getScheduleName } from '../utils';
 import { fetchInterviewDataJob, fetchInterviewDataSchedule } from './hooks';
 import { SchedulingFlow } from './SelfSchedulingDrawer/store';
@@ -944,24 +945,17 @@ export const agentTrigger = async ({
     rec_user_phone: formatPhoneNumber(rec_user_phone),
   });
 
-  let timezone = null;
-  if (!candidate.timezone && (candidate.city || candidate.state)) {
-    timezone = await getCandidateTimezone({
-      location: `${candidate.city} ${candidate.state}`,
-      candidate_id: candidate.id,
-    });
-  }
+  // let timezone = null;
+  // if (!candidate.timezone && (candidate.city || candidate.state)) {
+  //   timezone = await getCandidateTimezone({
+  //     location: `${candidate.city} ${candidate.state}`,
+  //     candidate_id: candidate.id,
+  //   });
+  // }
 
-  if (
-    await checkAvailibility({
-      dateRange,
-      recruiter_id,
-      session_ids,
-      task_id,
-      timezone,
-      type,
-    })
-  ) {
+  // TODO: chinmai fix
+  // eslint-disable-next-line no-constant-condition
+  if (1) {
     if (type === 'email_agent') {
       const bodyParams: InitAgentBodyParams = {
         filter_json_id: filterJsonId,
@@ -1087,7 +1081,7 @@ export const createTask = async ({
   await createTaskProgress({
     type: 'create_task',
     data: {
-      progress_type: 'standard',
+      progress_type: type === 'user' ? 'self_schedule' : 'schedule',
       created_by: { id: rec_user_id, name: recruiter_user_name },
       task_id: task.id,
     },
@@ -1229,25 +1223,24 @@ export const onClickResendInvite = async ({
     if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
 
     if (checkFilterJson) {
-      const resMail = await mailHandler({
-        filter_id: checkFilterJson.id,
-        supabase,
-        application_id,
-        task_id: checkFilterJson.new_tasks[0].id,
-      });
-
-      if (resMail.sent) {
-        addScheduleActivity({
-          title: `Resent booking link to ${candidate_name} for ${session_name}`,
-          application_id: application_id,
-          logged_by: 'user',
-
-          supabase,
-          created_by: rec_user_id,
-        });
-        toast.success('Invite resent successfully.');
-      }
-      return resMail;
+      //TODO: Implement new mailHandler
+      // const resMail = await mailHandler({
+      //   filter_id: checkFilterJson.id,
+      //   supabase,
+      //   application_id,
+      //   task_id: checkFilterJson.new_tasks[0].id,
+      // });
+      // if (resMail.sent) {
+      //   addScheduleActivity({
+      //     title: `Resent booking link to ${candidate_name} for ${session_name}`,
+      //     application_id: application_id,
+      //     logged_by: 'user',
+      //     supabase,
+      //     created_by: rec_user_id,
+      //   });
+      //   toast.success('Invite resent successfully.');
+      // }
+      // return resMail;
     }
   } catch (e) {
     toast.error(e.message);

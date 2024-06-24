@@ -7,8 +7,8 @@ import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
 import { SidedrawerBodyDebrief } from '@/devlink2/SidedrawerBodyDebrief';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
-import { DropDown } from '@/src/components/JobNewInterviewPlan/sessionForms';
-import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
+import { DropDown } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
+import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon';
 import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -114,6 +114,7 @@ function DebriedForm({
             {debriefMembers?.map((member) => {
               return (
                 <SelectedMemberPill
+                  isCloseButton={true}
                   key={member.value}
                   onClickRemove={{
                     onClick: () => {

@@ -16,14 +16,6 @@
   grid-row-gap: var(--space-1);
 }
 
-.cj-input-wrapper.pb-80 {
-  padding-bottom: 80px;
-}
-
-.pb-80 {
-  padding-bottom: 80px;
-}
-
 .cj-richtext-editor-wrapper {
   overflow: hidden;
   width: 100%;

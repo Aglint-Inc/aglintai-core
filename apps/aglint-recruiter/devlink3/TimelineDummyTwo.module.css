@@ -64,21 +64,7 @@
 
 .embed_flex {
   display: flex;
-  overflow: hidden;
-  width: var(--space-5);
-  height: var(--space-5);
   align-items: center;
-
-  border-radius: var(--radius-2);
-
-  color: var(--neutral-a11);
-
-  cursor: pointer;
-}
-
-.embed_flex:hover {
-  background-color: var(--neutral-a3);
-  color: var(--neutral-a12);
 }
 
 .embed_flex.hide {
@@ -177,14 +163,6 @@
   cursor: pointer;
 }
 
-.link.text-underline {
-  text-decoration: underline;
-}
-
-.text-underline {
-  text-decoration: underline;
-}
-
 .timeindicator {
   display: flex;
   align-items: center;
@@ -208,11 +186,6 @@
   font-size: var(--font-size-1);
   line-height: var(--line-height-1);
   letter-spacing: var(--letter-spacing-1);
-}
-
-.text-grey_600.text-underline-copy {
-  text-decoration: underline;
-  cursor: pointer;
 }
 
 .status_block {

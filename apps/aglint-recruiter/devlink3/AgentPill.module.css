@@ -1,10 +1,21 @@
-.div-block-1335 {
+.agent-pill-wrapper {
   display: flex;
-  padding: 0px;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.ap-icon-wrap {
+  display: flex;
+  width: var(--space-5);
+  height: var(--space-5);
+  justify-content: center;
+  align-items: center;
+
+  border-radius: var(--radius-2);
+
+  background-color: var(--accent-2);
 }
 
 .icons {
@@ -27,18 +38,10 @@
   cursor: pointer;
 }
 
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
-}
-
 .icons.pointer {
   cursor: pointer;
 }
 
-.text-yellow-800 {
-  color: var(--warning-11);
+.ap-text-wrap {
+  color: var(--neutral-11);
 }

@@ -7,4 +7,5 @@ declare function JobsWorkflow(props: {
   onClickAddWorkflow?: Types.Devlink.RuntimeProps;
   isVisible?: Types.Visibility.VisibilityConditions;
   onClickCreateWorkflow?: Types.Devlink.RuntimeProps;
+  slotButtonSoft?: Types.Devlink.Slot;
 }): React.JSX.Element;

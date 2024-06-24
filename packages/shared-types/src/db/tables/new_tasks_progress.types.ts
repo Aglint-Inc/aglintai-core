@@ -3,7 +3,11 @@ import type { TableType } from "./index.types";
 
 export type CustomNewTaskProgress = TableType<
   "new_tasks_progress",
-  { jsonb_data: CustomJsonbData; title_meta: CustomTitleMeta }
+  {
+    jsonb_data: CustomJsonbData;
+    title_meta: CustomTitleMeta;
+    created_by: { id: string; name: string };
+  }
 >;
 
 type CustomJsonbData = {
