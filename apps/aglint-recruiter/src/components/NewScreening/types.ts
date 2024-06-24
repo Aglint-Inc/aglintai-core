@@ -1,5 +1,3 @@
-import { Job } from '@/src/queries/jobs/types';
-
 export type QuestionOption = {
   id: string;
   option: string;
@@ -35,7 +33,6 @@ export type CandidateScreeningType = {
   company: string;
   email: string;
   candidate_id: string;
-  email_template: Job['email_template'];
   result_created_at: string | null;
   assessment_result: any;
 };

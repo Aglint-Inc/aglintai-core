@@ -142,10 +142,13 @@ const Template = ({ action: { payload } }: ActionProps) => {
   return forms;
 };
 
-type EmailTemplate = DatabaseTable['recruiter']['email_template'];
+type EmailTemplate = Pick<
+  DatabaseTable['company_email_template'],
+  'body' | 'subject'
+>;
 
 type FormsType = {
-  name: keyof Omit<EmailTemplate[keyof EmailTemplate], 'default'>;
+  name: keyof EmailTemplate;
   value: {
     [key in keyof WorkflowAction['payload']]: WorkflowAction['payload'][key];
   };
