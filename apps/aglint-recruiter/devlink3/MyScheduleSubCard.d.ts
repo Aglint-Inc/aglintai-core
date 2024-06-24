@@ -25,4 +25,6 @@ declare function MyScheduleSubCard(props: {
   isMembersListVisible?: Types.Visibility.VisibilityConditions;
   slotThreeDot?: Types.Devlink.Slot;
   isDropdownIconVisible?: Types.Visibility.VisibilityConditions;
+  slotAvatarWithName?: Types.Devlink.Slot;
+  isAvatarWithNameVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
