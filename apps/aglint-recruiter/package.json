@@ -16,7 +16,8 @@
     "devlink": "npx webflow devlink sync",
     "pull": "git pull origin development --no-rebase",
     "test": "jest",
-    "test:watch": "npm run dev:build && jest --watch"
+    "test:watch": "npm run dev:build && jest --watch",
+    "get-path": "npx tsc script/path_gen.ts --skipLibCheck && node script/path_gen.js"
   },
   "dependencies": {
     "@aglint/shared-utils": "*",
