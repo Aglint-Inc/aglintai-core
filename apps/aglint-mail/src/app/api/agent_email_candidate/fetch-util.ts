@@ -1,4 +1,8 @@
-import { ScheduleUtils, getFullName } from '@aglint/shared-utils';
+import {
+  DAYJS_FORMATS,
+  ScheduleUtils,
+  getFullName,
+} from '@aglint/shared-utils';
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
@@ -52,14 +56,6 @@ export async function fetchUtil(
       candidateFirstName: first_name,
       companyName: company,
       jobRole: job_title,
-      startDate: ScheduleUtils.convertDateFormatToDayjs(
-        start_date,
-        recruiter_tz,
-      ).format('MMMM DD, YYYY'),
-      endDate: ScheduleUtils.convertDateFormatToDayjs(
-        end_date,
-        recruiter_tz,
-      ).format('MMMM DD, YYYY'),
       recruiterTimeZone: recruiter_tz,
       selfScheduleLink: `<a href="${scheduleLink}">here</a>`,
       recruiterName: getFullName(recr.first_name, recr.last_name),
@@ -67,6 +63,15 @@ export async function fetchUtil(
       candidateName: getFullName(first_name, last_name),
       recruiterFirstName: recr.first_name,
       recruiterLastName: recr.last_name,
+      dateRange: `${ScheduleUtils.convertDateFormatToDayjs(
+        start_date,
+        recruiter_tz,
+      ).format(
+        DAYJS_FORMATS.DATE_FORMAT,
+      )} - ${ScheduleUtils.convertDateFormatToDayjs(
+        end_date,
+        recruiter_tz,
+      ).format(DAYJS_FORMATS.DATE_FORMATZ)}`,
     };
 
   const filled_comp_template = fillCompEmailTemplate(
