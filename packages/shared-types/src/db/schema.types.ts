@@ -1007,6 +1007,18 @@ export type Database = {
         }
         Relationships: []
       }
+      function_url: {
+        Row: {
+          value: string | null
+        }
+        Insert: {
+          value?: string | null
+        }
+        Update: {
+          value?: string | null
+        }
+        Relationships: []
+      }
       greenhouse_reference: {
         Row: {
           application_id: string
@@ -1838,6 +1850,44 @@ export type Database = {
           },
         ]
       }
+      job_email_template: {
+        Row: {
+          body: string | null
+          created_at: string
+          from_name: string | null
+          id: string
+          job_id: string
+          subject: string | null
+          type: Database["public"]["Enums"]["email_slack_types"]
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          from_name?: string | null
+          id?: string
+          job_id: string
+          subject?: string | null
+          type: Database["public"]["Enums"]["email_slack_types"]
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          from_name?: string | null
+          id?: string
+          job_id?: string
+          subject?: string | null
+          type?: Database["public"]["Enums"]["email_slack_types"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_email_template_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "public_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       job_reference: {
         Row: {
           ats: string | null
@@ -2249,7 +2299,6 @@ export type Database = {
           description: string | null
           description_hash: number
           draft: Json | null
-          email_template: Json
           end_video: Json | null
           experience_in_months: number | null
           hiring_manager: string | null
@@ -2306,7 +2355,6 @@ export type Database = {
           description?: string | null
           description_hash?: number
           draft?: Json | null
-          email_template?: Json
           end_video?: Json | null
           experience_in_months?: number | null
           hiring_manager?: string | null
@@ -2363,7 +2411,6 @@ export type Database = {
           description?: string | null
           description_hash?: number
           draft?: Json | null
-          email_template?: Json
           end_video?: Json | null
           experience_in_months?: number | null
           hiring_manager?: string | null
@@ -2591,7 +2638,6 @@ export type Database = {
           domain_admin_email: string | null
           e_o_statement: string | null
           email: string | null
-          email_template: Json
           employee_size: string | null
           employment_type: Json
           google_workspace_domain: string | null
@@ -2637,7 +2683,6 @@ export type Database = {
           domain_admin_email?: string | null
           e_o_statement?: string | null
           email?: string | null
-          email_template?: Json
           employee_size?: string | null
           employment_type?: Json
           google_workspace_domain?: string | null
@@ -2683,7 +2728,6 @@ export type Database = {
           domain_admin_email?: string | null
           e_o_statement?: string | null
           email?: string | null
-          email_template?: Json
           employee_size?: string | null
           employment_type?: Json
           google_workspace_domain?: string | null
@@ -4547,7 +4591,6 @@ export type Database = {
           description: string
           description_hash: number
           draft: Json
-          email_template: Json
           id: string
           jd_json: Json
           job_title: string
@@ -4628,7 +4671,6 @@ export type Database = {
           description: string
           description_hash: number
           draft: Json
-          email_template: Json
           id: string
           jd_json: Json
           job_title: string

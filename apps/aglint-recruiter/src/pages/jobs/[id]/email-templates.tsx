@@ -1,6 +1,6 @@
 import Seo from '@components/Common/Seo';
 
-import JobEmailTemplatesDashboard from '@/src/components/Jobs/Job/Email-Templates';
+// import JobEmailTemplatesDashboard from '@/src/components/Jobs/Job/Email-Templates';
 import { JobProvider } from '@/src/context/JobContext';
 import JobDashboardProvider from '@/src/context/JobDashboard';
 
@@ -11,7 +11,8 @@ const JobEmailTemplatesPage = () => {
         title='Email Templates - Job | Aglint AI'
         description='AI for People Products'
       />
-      <JobEmailTemplatesDashboard />
+      {/* <JobEmailTemplatesDashboard /> */}
+      <>Email templates</>
     </>
   );
 };

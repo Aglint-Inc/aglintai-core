@@ -5,8 +5,8 @@ import {
   JobDetailsForm,
   JobHiringTeamForm,
 } from '@/src/components/Jobs/Create/form';
-import { getHelper } from '@/src/components/Jobs/Job/Email-Templates';
-import { templateObj } from '@/src/components/Jobs/Job/Email-Templates/utils';
+// import { getHelper } from '@/src/components/Jobs/Job/Email-Templates';
+// import { templateObj } from '@/src/components/Jobs/Job/Email-Templates/utils';
 import {
   useAllAssessments,
   useAllAssessmentTemplates,
@@ -123,7 +123,7 @@ const useProviderJobDashboardActions = () => {
     refreshDashboard(job?.id);
   };
 
-  const emailTemplateValidity = validateEmailTemplates(job?.email_template);
+  // const emailTemplateValidity = validateEmailTemplates(job?.email_template);
 
   const loadStatus: 'loading' | 'error' | 'success' =
     jobLoad && job !== undefined
@@ -138,7 +138,7 @@ const useProviderJobDashboardActions = () => {
     job,
     jobLoad,
     loadStatus,
-    emailTemplateValidity,
+    // emailTemplateValidity,
     workflows,
     handleJobRefresh,
     isInterviewPlanDisabled,
@@ -315,20 +315,20 @@ export const hashCode = (str: string) => {
   return hash;
 };
 
-export const validateEmailTemplates = (
-  emailTemplates: Job['email_template'],
-) => {
-  return (
-    emailTemplates &&
-    Object.entries(emailTemplates).reduce((acc, [key, value]) => {
-      const label = templateObj[key]?.heading;
-      Object.entries(value).forEach(([key, value]) => {
-        if (key !== 'default' && validateString(String(value)))
-          acc.push(`${getHelper(key as any)} in ${label}`);
-      });
-      return acc;
-    }, [] as string[])
-  );
-};
+// export const validateEmailTemplates = (
+//   emailTemplates: Job['email_template'],
+// ) => {
+//   return (
+//     emailTemplates &&
+//     Object.entries(emailTemplates).reduce((acc, [key, value]) => {
+//       const label = templateObj[key]?.heading;
+//       Object.entries(value).forEach(([key, value]) => {
+//         if (key !== 'default' && validateString(String(value)))
+//           acc.push(`${getHelper(key as any)} in ${label}`);
+//       });
+//       return acc;
+//     }, [] as string[])
+//   );
+// };
 
 export default useProviderJobDashboardActions;
