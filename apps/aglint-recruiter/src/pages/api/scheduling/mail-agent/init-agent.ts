@@ -102,6 +102,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await candLogger(
       agent_activities.email_agent.init_agent.failed_to_init,
       {},
+      'email_agent',
+      'email_failed',
     );
     return res.status(500).send(error.message);
   }

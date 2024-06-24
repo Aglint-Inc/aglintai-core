@@ -13,7 +13,7 @@ export const fetchEmailAgentCandDetails = async (
 ) => {
   const [cand_rec] = supabaseWrap(
     await supabaseAdmin
-      .from('scheduling-agent-chat-history')
+      .from('scheduling_agent_chat_history')
       .select(
         '*, interview_filter_json(* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,description,recruiter!public_jobs_recruiter_id_fkey(scheduling_settings,email_template)), candidates(id,email,first_name,last_name,timezone))))'
       )
