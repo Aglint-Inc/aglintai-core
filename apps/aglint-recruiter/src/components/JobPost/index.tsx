@@ -32,6 +32,7 @@ import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import Footer from '../Common/Footer';
 import Icon from '../Common/Icons/Icon';
 import UploadDB from './UploadDB';
 
@@ -106,7 +107,8 @@ const JobPostPublic: React.FC<JobsListProps> = ({
           position={'absolute'}
           zIndex={10000}
           width={'100%'}
-          bgcolor={'var(--neutral-2)'}
+          bgcolor={'var(--sand-3)'}
+          paddingBottom={'16px'}
         >
           <InterviewCompleted
             onClickSupport={{
@@ -183,6 +185,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({
               </Stack>
             }
           />
+          <Footer brand={true}/>
         </Stack>
       )}
       {loading && (
@@ -208,7 +211,8 @@ const JobPostPublic: React.FC<JobsListProps> = ({
         sx={{
           height: '100vh',
           overflow: thank || loading ? 'hidden' : 'scroll',
-          background: 'var(--neutral-2)',
+          background: 'var(--sand-3)',
+          paddingBottom:'16px'
         }}
       >
         <JobListing
@@ -401,7 +405,11 @@ const JobPostPublic: React.FC<JobsListProps> = ({
             </Stack>
           }
         />
+       
+        
+        <Footer brand={true}/>
       </Stack>
+      
     </Stack>
   );
 };

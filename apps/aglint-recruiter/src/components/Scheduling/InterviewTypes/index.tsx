@@ -112,10 +112,12 @@ export function Modules() {
                           textObjective={mod.interview_modules.description}
                           textModuleName={mod.interview_modules.name}
                           slotMemberPic={
-                            <AvatarGroup total={mod.users.length}>
+                            <AvatarGroup variant='rounded' total={mod.users.length}>
+                            
                               {mod.users.slice(0, 5).map((user) => {
                                 return (
                                   <MuiAvatar
+                                    
                                     key={user.user_id}
                                     src={user.profile_image}
                                     level={getFullName(
@@ -123,9 +125,12 @@ export function Modules() {
                                       user.last_name,
                                     )}
                                     variant='rounded-small'
+                                  
+                                    
                                   />
                                 );
                               })}
+
                             </AvatarGroup>
                           }
                           textMembersCount={
