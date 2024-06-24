@@ -182,10 +182,10 @@ export const DropdownSelectButton = <T,>({
       >
         <FilterDropdown
           isRemoveVisible={false}
-          slotOption={itemList.map((label) => {
+          slotOption={itemList.map((label, i) => {
             return (
               <Stack
-                key={id}
+                key={i}
                 direction={'row'}
                 sx={{ alignItems: 'center' }}
                 spacing={1}
