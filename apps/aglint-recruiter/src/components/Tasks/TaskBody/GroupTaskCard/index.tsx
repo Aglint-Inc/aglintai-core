@@ -21,6 +21,7 @@ import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import AssigneeChip from '../../Components/AssigneeChip';
 import StatusChip from '../../Components/StatusChip';
+import TaskStatusTag from '../../Components/TaskStatusTag';
 import { useTaskStatesContext } from '../../TaskStatesContext';
 
 function GroupTaskCard({
@@ -141,7 +142,7 @@ function GroupTaskCard({
               {''}
             </ShowCode.When>
             <ShowCode.Else>
-              <StatusChip status={task.status} />
+              <TaskStatusTag task={task} />
             </ShowCode.Else>
           </ShowCode>
         }

@@ -10,12 +10,12 @@ export type CustomNewTasks = TableType<
   }
 >;
 
-type CustomNewScheduleDateRange = {
+export type CustomNewScheduleDateRange = {
   start_date: string;
   end_date: string;
 };
 
-type taskActionType = {
+export type taskActionType = {
   call_followUp: number;
   email_followUp: number;
   call_followUp_reminder: number;
@@ -23,7 +23,7 @@ type taskActionType = {
   debrief_schedule_followUp: number;
 };
 
-type meetingCardType = {
+export type meetingCardType = {
   id: string;
   name: string;
   interview_meeting: {

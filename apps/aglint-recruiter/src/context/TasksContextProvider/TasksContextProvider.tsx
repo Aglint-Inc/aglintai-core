@@ -607,7 +607,7 @@ const getTasks = ({
   return (
     user_id
       ? supabase
-          .from('new_tasks')
+          .from('tasks_view')
           .select(
             '*, applications(* , candidates( * ), public_jobs( * )), candidate_request_availability ( id,slots,booking_confirmed )',
             getCount ? { count: 'exact' } : {},
@@ -616,7 +616,7 @@ const getTasks = ({
             `assignee.cs.{${user_id}}, or(task_owner.eq.${user_id}, created_by.eq.${user_id})`,
           )
       : supabase
-          .from('new_tasks')
+          .from('tasks_view')
           .select(
             '*, applications(* , candidates( * ), public_jobs( * )), candidate_request_availability ( id,slots,booking_confirmed )',
             getCount ? { count: 'exact' } : {},
@@ -650,13 +650,21 @@ export const updateTask = ({
       ? supabase.from('new_tasks').update(task).eq('id', task.id)
       : supabase.from('new_tasks').insert(task)
   )
-    .select(
-      '*, applications(* , candidates( * ), public_jobs( * )), candidate_request_availability ( id,slots,booking_confirmed )',
-    )
+    .select('id')
     .single()
-    .then(({ data, error }) => {
-      const temp = data as unknown as Omit<typeof data, 'applications'> & {
-        applications: (typeof data)['applications'];
+    .then(async ({ data, error }) => {
+      const { data: updatedTask } = await supabase
+        .from('tasks_view')
+        .select(
+          '*, applications(* , candidates( * ), public_jobs( * )), candidate_request_availability ( id,slots,booking_confirmed )',
+        )
+        .eq('id', data.id)
+        .single();
+      const temp = updatedTask as unknown as Omit<
+        typeof updatedTask,
+        'applications'
+      > & {
+        applications: (typeof updatedTask)['applications'];
       };
       if (error) throw new Error(error.message);
       return temp;

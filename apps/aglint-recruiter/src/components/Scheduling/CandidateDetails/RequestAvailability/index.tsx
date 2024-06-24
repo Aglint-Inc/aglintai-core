@@ -180,7 +180,7 @@ function RequestAvailability() {
                 ),
               },
               task_id: task_id,
-              progress_type: 'standard',
+              progress_type: 'request_availability',
             },
             type: 're_request_availability',
             optionData: {
@@ -285,7 +285,7 @@ function RequestAvailability() {
                 ),
               },
               task_id: task.id,
-              progress_type: 'standard',
+              progress_type: 'request_availability',
             },
             type: 'request_availability',
             optionData: {
