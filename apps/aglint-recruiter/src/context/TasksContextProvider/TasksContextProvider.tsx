@@ -4,6 +4,7 @@ import {
   DatabaseTable,
   DatabaseTableInsert,
   DatabaseTableUpdate,
+  DatabaseView,
 } from '@aglint/shared-types';
 import {
   EmailAgentId,
@@ -25,6 +26,10 @@ import {
 } from 'react';
 
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
+import {
+  getIndicator,
+  indicatorType,
+} from '@/src/components/Tasks/Components/TaskStatusTag/utils';
 import { typeArray } from '@/src/components/Tasks/TaskBody/AddNewTask/TypeList';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
@@ -64,10 +69,10 @@ type TasksReducerType = {
 export type TasksAgentContextType = TasksReducerType & {
   handelAddTask: (
     x: DatabaseTableInsert['new_tasks'],
-  ) => Promise<DatabaseTable['new_tasks']>;
+  ) => Promise<DatabaseView['tasks_view']>;
   handelUpdateTask: (
     x: (Omit<DatabaseTableUpdate['new_tasks'], 'id'> & { id: string })[],
-  ) => Promise<DatabaseTable['new_tasks'][]>;
+  ) => Promise<DatabaseView['tasks_view'][]>;
   handelDeleteTask: (id: string) => Promise<boolean>;
   handelGetTaskProgress: (task_id: string) => Promise<boolean>;
   handelAddTaskProgress: (
@@ -92,12 +97,23 @@ const reducerInitialState: TasksReducerType = {
   filter: {
     status: {
       options: [
-        { id: 'not_started', label: 'Not Started' },
-        { id: 'scheduled', label: 'Scheduled' },
-        { id: 'in_progress', label: 'In Progress' },
-        { id: 'completed', label: 'Completed' },
-        { id: 'cancelled', label: 'Cancelled' },
-        { id: 'closed', label: 'Closed' },
+        {
+          id: 'ACTION_NEEDED_AGENT_FAIL' as indicatorType,
+          label: 'ACTION_NEEDED_AGENT_FAIL',
+        },
+        { id: 'BOOKED' as indicatorType, label: 'BOOKED' },
+        { id: 'MAIL_SENT' as indicatorType, label: 'MAIL_SENT' },
+        { id: 'NO_RESPONSE' as indicatorType, label: 'NO_RESPONSE' },
+        {
+          id: 'REQUEST_AVAILABILITY' as indicatorType,
+          label: 'REQUEST_AVAILABILITY',
+        },
+        {
+          id: 'REQUEST_SUBMITTED' as indicatorType,
+          label: 'REQUEST_SUBMITTED',
+        },
+        { id: 'SCHEDULE' as indicatorType, label: 'SCHEDULE' },
+        { id: 'UNKNOWN_STATUS' as indicatorType, label: 'UNKNOWN_STATUS' },
       ],
       values: [],
     },
@@ -401,7 +417,20 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
 
     if (status.values.length) {
       temp = temp.filter((sub) => {
-        return status.values.includes(sub.status.toLowerCase());
+        const progress_type = sub.last_progress.progress_type;
+        const created_at = sub.last_progress.created_at;
+
+        if (
+          status.values.includes(
+            getIndicator({
+              task: sub,
+              progress_type: progress_type,
+              created_at: created_at,
+            }),
+          )
+        ) {
+          return sub;
+        }
       });
     }
 
