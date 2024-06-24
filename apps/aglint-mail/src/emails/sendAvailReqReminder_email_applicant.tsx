@@ -8,9 +8,10 @@ import {
 } from '@react-email/components';
 import { Parser } from 'html-to-react';
 import * as React from 'react';
-import { EmailTemplateAPi } from '@aglint/shared-types';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
 import config from '../../tailwind.config';
 import { Footer } from '../components/template/Footer';
+
 type EmailType = EmailTemplateAPi<'sendAvailReqReminder_email_applicant'>;
 
 // export dummy

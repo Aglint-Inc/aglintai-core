@@ -1,6 +1,6 @@
 import { Container, Img, Text } from '@react-email/components';
-import { durationIcon } from '../../utils/email/common/functions';
 import { Parser } from 'html-to-react';
+import { durationIcon } from '../../utils/email/common/functions';
 
 export const Session = ({ meetingDetail }) => {
   const htmlParser = Parser();
@@ -13,8 +13,8 @@ export const Session = ({ meetingDetail }) => {
       <Text className="m-0 mt-[5px] flex items-center leading-[24px] text-text-xs text-neutral-12">
         <span className="inline-flex items-center leading-[24px]">
           <Img
-            src={meetingDetail.sessionTypeIcon}
             className="w-[24px] h-[24px]"
+            src={meetingDetail.sessionTypeIcon}
           />
           &nbsp;
           {htmlParser.parse(meetingDetail.sessionType)}
@@ -22,11 +22,11 @@ export const Session = ({ meetingDetail }) => {
       </Text>
       <Text className="m-0 flex items-center leading-[24px] text-text-xs text-neutral-12">
         <span className="inline-flex items-center leading-[24px]">
-          <Img src={meetingDetail.meetingIcon} className="w-[24px] h-[24px]" />
+          <Img className="w-[24px] h-[24px]" src={meetingDetail.meetingIcon} />
           &nbsp;
           {htmlParser.parse(meetingDetail.platform)}
           &nbsp;&nbsp;
-          <Img src={durationIcon} className="w-[24px] h-[24px]" />
+          <Img className="w-[24px] h-[24px]" src={durationIcon} />
           &nbsp;
           {htmlParser.parse(meetingDetail.duration)}
         </span>
