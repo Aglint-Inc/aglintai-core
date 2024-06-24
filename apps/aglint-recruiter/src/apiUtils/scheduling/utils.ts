@@ -10,13 +10,13 @@ import {
   fetchInterviewDataJob,
   fetchInterviewDataSchedule,
 } from '@/src/components/Scheduling/CandidateDetails/hooks';
+import { selfScheduleMailToCandidate } from '@/src/components/Scheduling/CandidateDetails/mailUtils';
 import {
   createCloneSession,
   createTask,
   getOrganizerId,
 } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
-import { mailHandler } from '@/src/components/Scheduling/Candidates/utils';
 import { getScheduleName } from '@/src/components/Scheduling/utils';
 
 export const sendToCandidateWithSessionIds = async ({
@@ -146,11 +146,8 @@ export const sendToCandidateWithSessionIds = async ({
         task_id: resTask.id,
       });
 
-      mailHandler({
+      selfScheduleMailToCandidate({
         filter_id: filterJson[0].id,
-        supabase,
-        application_id: selectedApplication.id,
-        task_id: resTask.id,
       });
     } else {
       const organizer_id = await getOrganizerId(
@@ -225,11 +222,9 @@ export const sendToCandidateWithSessionIds = async ({
         created_by: recruiterUser.user_id,
         task_id: resTask.id,
       });
-      mailHandler({
+
+      selfScheduleMailToCandidate({
         filter_id: filterJson[0].id,
-        supabase,
-        application_id: selectedApplication.id,
-        task_id: resTask.id,
       });
     }
 
