@@ -163,18 +163,18 @@ const AddMember = ({
     return true;
   };
   const inviteUser = async () => {
-    const res = await inviteUserApi(
-      {
-        ...form,
-        scheduling_settings:
-          recruiter.scheduling_settings as schedulingSettingType,
-      },
-      // userDetails.user.id,
-      recruiter.id,
-    );
-    if (res.status === 200) {
-      let { error, created, user } = res.data;
-      if (!error && created) {
+    try {
+      const resData = await inviteUserApi(
+        {
+          ...form,
+          scheduling_settings:
+            recruiter.scheduling_settings as schedulingSettingType,
+        },
+        recruiter.id,
+      );
+
+      let { created, user } = resData;
+      if (created) {
         setMembers((prev) => [...prev, user]);
         setInviteData((prev) => [
           ...prev,
@@ -207,13 +207,12 @@ const AddMember = ({
           employment: null,
           manager_id: null,
         });
-      } else {
-        toast.error(
-          error?.includes('email address:') ? error : 'Member already exists.',
-        );
       }
+    } catch (error) {
+      toast.error(String);
+    } finally {
+      setIsDisable(false);
     }
-    setIsDisable(false);
   };
   const memberListObj = memberList.reduce((acc, curr) => {
     acc[curr.id] = curr.name;
@@ -389,6 +388,7 @@ const AddMember = ({
                               employment: false,
                             });
                           }}
+                          required
                           name='Employment'
                           placeholder='Select Employment Type'
                           label='Employment'
