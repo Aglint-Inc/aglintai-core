@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { supportedTypes } from '@/src/apiUtils/job/jobApplications/candidateUpload/utils';
+import { supportedTypes } from '@/src/apiUtils/job/candidateUpload/utils';
 
 import {
   createCandidateResumeDbAction,
@@ -11,27 +11,10 @@ export type CandidateResumesContext = {
     inputData: CandidateResumesCreateAction['request']['inputData'],
     signal?: CandidateResumesCreateAction['request']['signal'],
   ) => void;
-  // handleCandidateResumesBulkCreate: (
-  //   inputData: CandidateResumesBulkCreateAction['request']['inputData'],
-  //   signal?: CandidateResumesBulkCreateAction['request']['signal'],
-  // ) => void;
-  // handleCandidateResumesRead: (
-  //   signal?: CandidateResumesReadAction['request']['signal'],
-  // ) => void;
-  // handleCandidateResumesUpdate: (
-  //   inputData: CandidateResumesUpdateAction['request']['inputData'],
-  //   signal?: CandidateResumesUpdateAction['request']['signal'],
-  // ) => void;
-  // handleCandidateResumesBulkUpdate: (
-  //   inputData: CandidateResumesBulkUpdateAction['request']['inputData'],
-  //   signal?: CandidateResumesBulkUpdateAction['request']['signal'],
-  // ) => void;
   handleCandidateResumesDelete: (
     inputData: CandidateResumesDeleteAction['request']['inputData'],
     signal?: CandidateResumesDeleteAction['request']['signal'],
   ) => void;
-  // handleCandidateResumesError: (error: PostgrestError) => void;
-  // intialLoad: boolean;
 };
 
 export type CandidateResumesCreateAction = {

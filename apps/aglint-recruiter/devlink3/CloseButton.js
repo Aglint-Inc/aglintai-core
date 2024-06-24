@@ -7,8 +7,8 @@ import _styles from "./CloseButton.module.css";
 export function CloseButton({
   as: _Component = _Builtin.Block,
   onClickClose = {},
-  isWithoutBorder = true,
-  isWithBorder = false,
+  isWithoutBorder = false,
+  isWithBorder = true,
 }) {
   return (
     <_Component

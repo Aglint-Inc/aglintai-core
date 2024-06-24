@@ -17,7 +17,7 @@ import { YTransform } from '@/src/utils/framer-motions/Animation';
 import TipTapAIEditor from '../../Common/TipTapAIEditor';
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
-import { emailTempKeys } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/EmailTemplates';
+import { emailTempKeys } from '../../Scheduling/Settings/SchedulingEmailTemplates';
 import { debouncedSave } from '../utils';
 
 const EmailTemplate = ({ setIsSaving }) => {
@@ -84,10 +84,10 @@ const EmailTemplate = ({ setIsSaving }) => {
               {isEditorLoad && (
                 <>
                   <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="center"
-                    bgcolor="var(--neutral-2)"
+                    direction='row'
+                    alignItems='center'
+                    justifyContent='center'
+                    bgcolor='var(--neutral-2)'
                     sx={{ width: '100%', height: 'calc(100vh - 96px)' }}
                   >
                     <LoaderSvg />

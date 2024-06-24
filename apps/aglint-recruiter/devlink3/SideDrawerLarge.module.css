@@ -39,6 +39,16 @@
   color: var(--neutral-9);
 }
 
+.sdl-close-btn-wrap {
+  padding: var(--space-1);
+  border-radius: var(--radius-2);
+  transition: all 200ms ease;
+}
+
+.sdl-close-btn-wrap:hover {
+  background-color: var(--neutral-3);
+}
+
 .sidedrawer_body {
   overflow: auto;
 }

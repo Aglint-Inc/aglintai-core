@@ -1,22 +1,22 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
+import { SlotComp } from "./SlotComp";
 import { ButtonOutlinedRegular } from "./ButtonOutlinedRegular";
 import * as _utils from "./utils";
 import _styles from "./EnableAssessment.module.css";
 
 export function EnableAssessment({
   as: _Component = _Builtin.Block,
-  onClickEnableAssessment = {},
-  isAddJob = true,
-  onClickProceed = {},
-  isProceedDisable = true,
   isEnableAssessmentVisible = true,
   isPhoneScreeningEnable = false,
   onClickEnablePhoneScreening = {},
+  slotAssessmentButton,
+  slotPhoneScreenButton,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-758")} tag="div">
+    <_Component className={_utils.cx(_styles, "ea-wrapper")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "enable-assessment-wrap")}
         tag="div"
@@ -27,34 +27,24 @@ export function EnableAssessment({
               className={_utils.cx(_styles, "enable-header")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                tag="div"
-              >
-                {"Enable AI powered assesment for the candidates"}
-              </_Builtin.Block>
+              <Text content="" weight="medium" />
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "color-grey-600", "mt-12")}
+              className={_utils.cx(_styles, "ea-desc-wrap")}
               tag="div"
             >
-              {
-                "By utilizing the AI-powered assessment, you can send assessment to candidates and generate a score reflecting their proficiency. This assessment score allows you to rank candidates, aiding in identifying the most suitable candidate for the specified position."
-              }
+              <Text
+                content="By utilizing the AI-powered assessment, you can send assessment to candidates and generate a score reflecting their proficiency. This assessment score allows you to rank candidates, aiding in identifying the most suitable candidate for the specified position."
+                color="neutral"
+              />
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "enable-assessment-button-wrap")}
               tag="div"
-              {...onClickEnableAssessment}
             >
-              <ButtonOutlinedRegular
-                textLabel={
-                  <>
-                    {"Enable Assessment"}
-                    <br />
-                  </>
-                }
-              />
+              {slotAssessmentButton ?? (
+                <SlotComp componentName="ButtonOutlined" />
+              )}
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
@@ -82,9 +72,10 @@ export function EnableAssessment({
             <_Builtin.Block
               className={_utils.cx(_styles, "enable-assessment-button-wrap")}
               tag="div"
-              {...onClickEnablePhoneScreening}
             >
-              <ButtonOutlinedRegular textLabel="Enable phone screening" />
+              {slotPhoneScreenButton ?? (
+                <ButtonOutlinedRegular textLabel="Enable phone screening" />
+              )}
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}

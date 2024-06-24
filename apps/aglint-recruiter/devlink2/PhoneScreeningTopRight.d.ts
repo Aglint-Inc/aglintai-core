@@ -6,4 +6,5 @@ declare function PhoneScreeningTopRight(props: {
   slotSearchInput?: Types.Devlink.Slot;
   onClickAllCandidates?: Types.Devlink.RuntimeProps;
   onClickNewScreening?: Types.Devlink.RuntimeProps;
+  slotButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -8,12 +8,12 @@ import { CandidateExperience } from '@/devlink/CandidateExperience';
 import { CdExperienceCard } from '@/devlink/CdExperienceCard';
 import { EmailOutReach } from '@/devlink/EmailOutReach';
 import LoaderGrey from '@/public/lottie/LoaderGrey';
+import CompanyLogo from '@/src/components/Common/CompanyLogo';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import MuiAvatar from '../../../Common/MuiAvatar';
-import CompanyLogo from '../../../JobApplicationsDashboard/Common/CompanyLogo';
 import AddToListComp from '../AddToList';
 import {
   setCandidates,

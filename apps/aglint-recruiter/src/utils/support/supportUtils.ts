@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
-import { ScoreJson } from '@/src/context/JobApplicationsContext/types';
+import { DatabaseTable } from '@aglint/shared-types';
+
 import { Job } from '@/src/queries/jobs/types';
 
 const Priority = {
@@ -179,7 +180,7 @@ export type QualificationRelevance =
   | 'more match';
 
 export const getOverallResumeScore = (
-  scores: ScoreJson['scores'],
+  scores: DatabaseTable['applications']['score_json']['scores'],
   parameter_weights: Job['parameter_weights'],
 ) => {
   return Math.trunc(

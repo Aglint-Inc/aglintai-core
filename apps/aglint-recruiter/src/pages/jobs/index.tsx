@@ -2,7 +2,7 @@
 // import { useEffect } from 'react';
 
 import Seo from '@/src/components/Common/Seo';
-import DashboardComp from '@/src/components/JobsDashboard';
+import DashboardComp from '@/src/components/Jobs/Dashboard';
 // import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import IntegrationProvider from '@/src/context/IntegrationProvider/IntegrationProvider';
 

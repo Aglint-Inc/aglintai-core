@@ -285,6 +285,13 @@ export type Database = {
             referencedRelation: "new_tasks"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "public_application_logs_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks_view"
+            referencedColumns: ["id"]
+          },
         ]
       }
       application_reference: {
@@ -2142,6 +2149,13 @@ export type Database = {
             referencedRelation: "new_tasks"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "public_new_tasks_progress_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks_view"
+            referencedColumns: ["id"]
+          },
         ]
       }
       notify_me: {
@@ -3049,7 +3063,7 @@ export type Database = {
         }
         Relationships: []
       }
-      "scheduling-agent-chat-history": {
+      scheduling_agent_chat_history: {
         Row: {
           agent_processing: boolean
           application_id: string | null
@@ -3130,6 +3144,13 @@ export type Database = {
             columns: ["task_id"]
             isOneToOne: false
             referencedRelation: "new_tasks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_scheduling-agent-chat-history_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks_view"
             referencedColumns: ["id"]
           },
         ]
@@ -3802,6 +3823,82 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: true
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tasks_view: {
+        Row: {
+          agent: Database["public"]["Enums"]["task_agent_type"] | null
+          application_id: string | null
+          assignee: string[] | null
+          created_at: string | null
+          created_by: string | null
+          due_date: string | null
+          filter_id: string | null
+          id: string | null
+          last_progress: Json | null
+          name: string | null
+          priority: Database["public"]["Enums"]["task_priority"] | null
+          recruiter_id: string | null
+          request_availability_id: string | null
+          schedule_date_range: Json | null
+          session_ids: Json[] | null
+          start_date: string | null
+          status: Database["public"]["Enums"]["task_status"] | null
+          task_action: Json | null
+          task_owner: string | null
+          trigger_count: number | null
+          type: Database["public"]["Enums"]["task_type_enum"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "new_tasks_request_availability_id_fkey"
+            columns: ["request_availability_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_request_availability"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_new_tasks_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_new_tasks_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_new_tasks_cretaed_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_new_tasks_cretaed_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_new_tasks_cretaed_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_new_tasks_filter_id_fkey"
+            columns: ["filter_id"]
+            isOneToOne: false
+            referencedRelation: "interview_filter_json"
             referencedColumns: ["id"]
           },
         ]
@@ -4660,6 +4757,12 @@ export type Database = {
           name: string
           members: Json
           members_meta: Json
+        }
+        Returns: undefined
+      }
+      insert_email_templates: {
+        Args: {
+          recruiter_id: string
         }
         Returns: undefined
       }

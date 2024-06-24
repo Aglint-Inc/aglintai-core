@@ -13,7 +13,6 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import UITextField from '../../Common/UITextField';
-import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 import { getRelevantCndidates } from '../utils';
 
 export const JDSearchModal = ({ setJdPopup }) => {
@@ -58,7 +57,7 @@ ${jdText}
         `/candidates/search?searchQryId=${history.id}&search_title=${jobRole}`,
       );
     } catch (err) {
-      toast.error(API_FAIL_MSG);
+      toast.error('Something went wrong. Please try again.');
       //
     } finally {
       setJdPopup(false);

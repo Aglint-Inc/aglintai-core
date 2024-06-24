@@ -18,7 +18,10 @@ import GreenBgCheckedIcon from '@/src/components/Common/Icons/GreenBgCheckedIcon
 import PopUpArrowIcon from '@/src/components/Common/Icons/PopUpArrowIcon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import ToggleBtn from '@/src/components/Common/UIToggle';
-import { IndividualIcon, PanelIcon } from '@/src/components/JobNewInterviewPlan/sessionForms';
+import {
+  IndividualIcon,
+  PanelIcon,
+} from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
 import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
@@ -350,8 +353,9 @@ function RequestAvailability() {
               direction={'row'}
               alignItems={'center'}
               spacing={'var(--space-2)'}
+              width={'480px'}
             >
-              <Typography variant='body1' width={'450px'}>
+              <Typography variant='body1' width={'520px'}>
                 Minimum number of days should be selected.
               </Typography>
               <Autocomplete
@@ -360,7 +364,7 @@ function RequestAvailability() {
                 disablePortal
                 value={selectedDays}
                 options={requestDaysListOptions}
-                // sx={{ width: 200 }}
+                sx={{ width: 200 }}
                 renderOption={(props, option) => {
                   return <li {...props}>{option.label}</li>;
                 }}
@@ -378,8 +382,9 @@ function RequestAvailability() {
               direction={'row'}
               alignItems={'center'}
               spacing={'var(--space-2)'}
+              width={'480px'}
             >
-              <Typography variant='body1' width={'450px'}>
+              <Typography variant='body1' width={'520px'}>
                 Minimum number of slots selected per each day.
               </Typography>
               <Autocomplete
@@ -388,7 +393,7 @@ function RequestAvailability() {
                 disablePortal
                 value={selectedSlots}
                 options={slotsListOptions}
-                // sx={{ width: 200 }}
+                sx={{ width: 200 }}
                 renderOption={(props, option) => {
                   return <li {...props}>{option.label}</li>;
                 }}
@@ -412,7 +417,9 @@ function RequestAvailability() {
                   <ScheduleSelectPill
                     slotIcons={
                       <ShowCode>
-                        <ShowCode.When isTrue={ele.session_type == 'individual'}>
+                        <ShowCode.When
+                          isTrue={ele.session_type == 'individual'}
+                        >
                           <IndividualIcon />
                         </ShowCode.When>
                         <ShowCode.When isTrue={ele.session_type == 'panel'}>

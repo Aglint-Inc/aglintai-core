@@ -1,6 +1,7 @@
 import Seo from '@components/Common/Seo';
 
-import JobAssessmentDashboard from '@/src/components/JobAssessment';
+import JobAssessmentDashboard from '@/src/components/Jobs/Job/Assessment';
+import { WithAssessment } from '@/src/components/withAssessment';
 import { JobProvider } from '@/src/context/JobContext';
 import JobDashboardProvider from '@/src/context/JobDashboard';
 
@@ -16,10 +17,12 @@ const JobAssessmentPage = () => {
   );
 };
 
-JobAssessmentPage.privateProvider = function privateProvider(page) {
+JobAssessmentPage.privateProvider = (page) => {
   return (
     <JobProvider>
-      <JobDashboardProvider>{page}</JobDashboardProvider>
+      <JobDashboardProvider>
+        <WithAssessment>{page}</WithAssessment>
+      </JobDashboardProvider>
     </JobProvider>
   );
 };

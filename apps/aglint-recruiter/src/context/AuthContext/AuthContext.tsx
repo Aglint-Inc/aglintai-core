@@ -293,8 +293,8 @@ const AuthProvider = ({ children }) => {
     });
   };
 
-  const isAssessmentEnabled = useFeatureFlagEnabled('isNewAssessmentEnabled');
-  const isScreeningEnabled = useFeatureFlagEnabled('isPhoneScreeningEnabled');
+  const isAssessmentEnabled = false; //useFeatureFlagEnabled('isNewAssessmentEnabled');
+  const isScreeningEnabled = false; //useFeatureFlagEnabled('isPhoneScreeningEnabled');
   const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
 
   // role based access

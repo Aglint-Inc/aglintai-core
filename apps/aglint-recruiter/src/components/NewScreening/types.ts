@@ -67,3 +67,17 @@ export type QuestionnaireData = {
   title: string;
   questions: QuestionnaireTypes;
 };
+
+export type PhoneScreenQuestion = {
+  id: string;
+  isRequired: boolean;
+  question: string;
+  description: string;
+  showDescription: boolean;
+  questionLabel: string;
+  type: 'multiSelect' | 'singleSelect' | 'shortAnswer';
+  options: {
+    option: string;
+    id: string;
+  }[];
+};

@@ -23,19 +23,19 @@ import WorkFlowIcon from '../IconsSideBar/WorkFlowIcon';
 function SideNavbar() {
   const router = useRouter();
   const pathName = usePathname();
-  const { loading, isAllowed } = useAuthDetails();
+  const {
+    loading,
+    isAllowed,
+    isAssessmentEnabled,
+    isSchedulingEnabled,
+    isScreeningEnabled,
+  } = useAuthDetails();
 
   const isAssistantEnabled = useFeatureFlagEnabled('isAssistantEnabled');
   const isSupportEnabled = useFeatureFlagEnabled('isSupportEnabled');
   const isAgentEnabled = useFeatureFlagEnabled('isAgentEnabled');
-  const isAssessmentEnabled = useFeatureFlagEnabled('isNewAssessmentEnabled');
   const isSourcingEnabled = useFeatureFlagEnabled('isSourcingEnabled');
-  const isPhoneScreeningEnabled = useFeatureFlagEnabled(
-    'isPhoneScreeningEnabled',
-  );
   let isTasksEnabled = useFeatureFlagEnabled('isTasksEnabled');
-
-  const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
 
   const navList: {
     text: LinkProps['module'];
@@ -131,7 +131,7 @@ function SideNavbar() {
       SubComponents: null,
       route: ROUTES['/screening'](),
       comingsoon: false,
-      isvisible: isPhoneScreeningEnabled,
+      isvisible: isScreeningEnabled,
       roles: ['admin', 'recruiter', 'recruiting_coordinator', 'interviewer'],
     },
 

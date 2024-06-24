@@ -7,7 +7,7 @@ import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-import { splitFullName } from '@/src/components/JobsDashboard/AddJobWithIntegrations/utils';
+import { splitFullName } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/utils';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY || '';

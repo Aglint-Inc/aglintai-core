@@ -11,18 +11,17 @@
 .interviewerdetail-left {
   display: flex;
   width: 100%;
-  padding: 0px;
   flex-direction: column;
   flex-wrap: nowrap;
 }
 
 .interviewer_basic_details {
   display: flex;
-  padding: 20px;
+  padding: var(--space-4);
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 40px;
-  grid-row-gap: 40px;
+  grid-column-gap: var(--space-7);
+  grid-row-gap: var(--space-7);
 }
 
 .interviewer_info {

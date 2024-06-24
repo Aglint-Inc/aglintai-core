@@ -3,7 +3,6 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { Text } from "./Text";
-import { ButtonSolid } from "./ButtonSolid";
 import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./SearchAglintCd.module.css";
@@ -18,11 +17,7 @@ export function SearchAglintCd({
   isSearchDbVisible = true,
   isSearchInAglintVisible = true,
   isSearchInAllVisible = false,
-  isViewAllCandidateVisible = false,
-  onClickViewAllCandidate = {},
   slotInputSearch,
-  onClickSearch = {},
-  slotLottieSearch,
   isSearchByJdVisible = true,
   onClickSearchJobDescription = {},
   isSearchJdVisible = true,
@@ -36,9 +31,8 @@ export function SearchAglintCd({
   onClickSubmit = {},
   onClickClose = {},
   onClickCreateNewList = {},
-  onClickClearHistory = {},
-  isClearHistoryVisible = true,
   slotCandidateHistoryCard,
+  slotSearchButton,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -131,13 +125,8 @@ export function SearchAglintCd({
                 >
                   {slotInputSearch}
                 </_Builtin.Block>
-                <_Builtin.Block tag="div" {...onClickSearch}>
-                  <ButtonSolid
-                    size="3"
-                    textButton="Search"
-                    isRightIcon={false}
-                    isLeftIcon={false}
-                  />
+                <_Builtin.Block tag="div">
+                  {slotSearchButton ?? <SlotComp componentName="ButtonSolid" />}
                 </_Builtin.Block>
               </_Builtin.Block>
               {isSearchByJdVisible ? (

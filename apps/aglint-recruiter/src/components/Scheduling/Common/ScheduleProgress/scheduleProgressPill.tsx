@@ -6,7 +6,7 @@ import { type Ref, forwardRef, memo } from 'react';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ScheduleProgressPill as ScheduleProgressPillDev } from '@/devlink/ScheduleProgressPill';
 import { StatusBadge } from '@/devlink2/StatusBadge';
-import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
+import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 
 import IconScheduleType from '../../Candidates/ListCard/Icon';
 import { getScheduleType } from '../../Candidates/utils';

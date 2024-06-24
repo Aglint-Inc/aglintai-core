@@ -1,10 +1,10 @@
-import { DatabaseEnums, DatabaseView } from '@aglint/shared-types';
 import { memo } from 'react';
 
 import { WorkflowConnector } from '@/devlink3/WorkflowConnector';
 import { WorkflowItem } from '@/devlink3/WorkflowItem';
 import UISelect from '@/src/components/Common/Uiselect';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
+import { Workflow } from '@/src/types/workflow.types';
 
 const Trigger = () => {
   return (
@@ -101,8 +101,8 @@ const DURATION_OPTIONS: { name: string; value: number }[] = [
 ];
 
 const TRIGGER_PAYLOAD: {
-  trigger: DatabaseView['workflow_view']['trigger'];
-  phase: DatabaseEnums['workflow_phase'][];
+  trigger: Workflow['trigger'];
+  phase: Workflow['phase'][];
 }[] = [
   {
     trigger: 'sendAvailReqReminder',
@@ -142,15 +142,15 @@ const TRIGGER_OPTIONS = TRIGGER_PAYLOAD.reduce(
   [] as {
     name: string;
     value: {
-      trigger: DatabaseView['workflow_view']['trigger'];
-      phase: DatabaseEnums['workflow_phase'];
+      trigger: Workflow['trigger'];
+      phase: Workflow['phase'];
     };
   }[],
 );
 
 export function getTriggerOption(
-  trigger: DatabaseView['workflow_view']['trigger'],
-  phase: DatabaseEnums['workflow_phase'],
+  trigger: Workflow['trigger'],
+  phase: Workflow['phase'],
 ): string {
   let message = '';
   switch (trigger) {

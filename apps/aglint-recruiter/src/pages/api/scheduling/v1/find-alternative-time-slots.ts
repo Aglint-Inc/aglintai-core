@@ -1,17 +1,15 @@
 /* eslint-disable no-unused-vars */
-import {
-  APIFindAltenativeTimeSlotResponse,
-  SessionCombinationRespType,
-} from '@aglint/shared-types';
+import { SessionCombinationRespType } from '@aglint/shared-types';
+import { schema_find_alternative_slots } from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
+import * as v from 'valibot';
 
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
-import { schema_find_alternative_slots } from '@/src/types/scheduling/schema_find_availability_payload';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const parsed_body = schema_find_alternative_slots.parse({
+    const parsed_body = v.parse(schema_find_alternative_slots, {
       ...req.body,
       options: req.body.options || {
         include_conflicting_slots: {},

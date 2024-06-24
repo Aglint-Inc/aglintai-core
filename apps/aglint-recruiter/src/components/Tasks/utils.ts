@@ -12,7 +12,7 @@ import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
 import dayjs from 'dayjs';
 
-import { Supabase } from '@/src/apiUtils/job/jobApplications/candidateUpload/types';
+import { Supabase } from '@/src/apiUtils/job/candidateUpload/types';
 import { ApplicationType } from '@/src/context/CandidateAssessment/types';
 import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { supabase } from '@/src/utils/supabase/client';

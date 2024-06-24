@@ -5,22 +5,25 @@ import {
   SessionCombinationRespType,
   SessionsCombType,
 } from '@aglint/shared-types';
-import { ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
+import {
+  ScheduleUtils,
+  scheduling_options_schema,
+  supabaseWrap,
+} from '@aglint/shared-utils';
 import { nanoid } from 'nanoid';
 import { NextApiRequest, NextApiResponse } from 'next';
+import * as v from 'valibot';
 
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { planCombineSlots } from '@/src/services/CandidateScheduleV2/utils/planCombine';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
-import { scheduling_options_schema } from '@/src/types/scheduling/schema_find_availability_payload';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let { api_options, filter_json_id, candidate_tz } =
     req.body as APIVerifyRecruiterSelectedSlots;
   try {
     const { filter_json_data } = await fetch_details_from_db(filter_json_id);
-    const zod_options = scheduling_options_schema.parse({
+    const zod_options = v.parse(scheduling_options_schema, {
       ...api_options,
       include_conflicting_slots: api_options?.include_conflicting_slots || {},
     });
