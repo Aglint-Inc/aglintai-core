@@ -696,6 +696,7 @@ export class CandidatesSchedulingV2 {
       const upd_sess_slot: SessionCombinationRespType = { ...sesn_slot };
       const curr_sess_cal_dic_ints = cal_disc_inters[sessn_idx].inters;
       const curr_sess_indef_paused_ints = indef_paused_inters[sessn_idx].inters;
+      const curr_sess_load_reached_ints = load_reached_ints[sessn_idx].inters;
       const curr_sess_curr_day_paused_ints =
         curr_day_paused_inters[sessn_idx].inters;
       const curr_sess_common_time = session_ints_common_time[sessn_idx];
@@ -719,8 +720,7 @@ export class CandidatesSchedulingV2 {
           );
         },
       );
-      const is_load_checked = load_reached_ints.length === 0;
-      if (is_all_ints_available && is_load_checked) {
+      if (is_all_ints_available && curr_sess_load_reached_ints.length === 0) {
         upd_sess_slot.is_conflict = false;
         return upd_sess_slot;
       } else {
@@ -959,17 +959,16 @@ export class CandidatesSchedulingV2 {
           'day',
         )
       ) {
-        const unique_conflicts = new Set<ConflictReason['conflict_type']>();
-
-        upd_sess_slot.ints_conflicts.forEach((int) => {
-          for (let intr of int.conflict_reasons) {
-            unique_conflicts.add(intr.conflict_type);
-          }
-        });
-        upd_sess_slot.is_conflict = true;
-        upd_sess_slot.conflict_types = [...Array.from(unique_conflicts)];
         upd_sess_slot.conflict_types.push('day_passed');
       }
+      const unique_conflicts = new Set<ConflictReason['conflict_type']>();
+      upd_sess_slot.ints_conflicts.forEach((int) => {
+        for (let intr of int.conflict_reasons) {
+          unique_conflicts.add(intr.conflict_type);
+        }
+      });
+      upd_sess_slot.is_conflict = true;
+      upd_sess_slot.conflict_types = [...Array.from(unique_conflicts)];
 
       return upd_sess_slot;
     };
