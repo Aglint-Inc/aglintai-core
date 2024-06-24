@@ -5,7 +5,7 @@ import {getFullName} from '../../../../utils/getFullName';
 import {EmailAgentPayload} from '../../../../types/email_agent/apiPayload.types';
 import {DatabaseTable, EmailTemplateFields} from '@aglint/shared-types';
 import {envConfig} from 'src/config';
-import {supabaseWrap} from '@aglint/shared-utils';
+import {DAYJS_FORMATS, ScheduleUtils, supabaseWrap} from '@aglint/shared-utils';
 
 export const fetchEmailAgentCandDetails = async (
   thread_id: string,
@@ -98,11 +98,6 @@ export const fetchEmailAgentCandDetails = async (
 
   const email_details = getInitialEmailTemplate();
 
-  // TODO: delete this code later
-  const getUsTime = (d: string) => {
-    const [date, month, year] = d.split('/');
-    return [month, date, year].join('/');
-  };
   const meeting_organizer = sessions[0].interview_meeting.recruiter_user;
   const agent_payload: EmailAgentPayload = {
     history: cand_rec.chat_history,
@@ -112,8 +107,14 @@ export const fetchEmailAgentCandDetails = async (
           .candidates.email,
       candidate_name: getFullName(candidate.first_name, candidate.last_name),
       company_name: job.company,
-      start_date: getUsTime(filter_json.start_date),
-      end_date: getUsTime(filter_json.end_date),
+      start_date: ScheduleUtils.convertDateFormatToDayjs(
+        filter_json.start_date,
+        meeting_organizer.scheduling_settings.timeZone.tzCode
+      ).format(DAYJS_FORMATS.DATE_FORMAT),
+      end_date: ScheduleUtils.convertDateFormatToDayjs(
+        filter_json.end_date,
+        meeting_organizer.scheduling_settings.timeZone.tzCode
+      ).format(DAYJS_FORMATS.DATE_FORMATZ),
       job_role: job.job_title,
       company_logo: job.logo,
       company_id: job.recruiter_id,
