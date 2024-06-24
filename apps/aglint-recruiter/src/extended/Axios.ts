@@ -1,36 +1,46 @@
-import { Axios, AxiosError, AxiosRequestConfig } from 'axios';
+import axios, {
+  AxiosError,
+  AxiosRequestConfig,
+  AxiosResponse,
+  AxiosStatic,
+} from 'axios';
 
 import { API_PATHS } from '../constant/apiPaths';
 import { ApiInterface } from '../utils/apiUtils/api.type';
 
-export default class CustomAxios extends Axios {
+export default class CustomAxios {
+  private _axios: AxiosStatic;
+  get: typeof axios.get;
+  post: typeof axios.post;
   constructor() {
-    super();
+    this._axios = axios;
+    this.get = axios.get;
+    this.post = axios.post;
   }
   async call<T extends ApiInterface>(
     method: 'POST' | 'GET',
     path: (typeof API_PATHS)[number],
     body: T['request'],
     config?: AxiosRequestConfig<any>,
-  ): Promise<T['response']> {
+  ) {
     try {
-      let caller = null;
+      let caller: Promise<AxiosResponse<T['response'], any>>;
       switch (method) {
         case 'GET':
-          caller = this.get(path, { ...config, params: body });
+          caller = this._axios.get(path, { ...config, params: body });
           break;
         case 'POST':
-          caller = this.post(path, body, config);
+          caller = this._axios.post(path, body, config);
           break;
         default:
-          break;
+          throw new Error(`Unsupported method: ${method}`);
       }
       const resData = await caller.then((res) => res.data);
       return resData;
     } catch (error) {
       let errorMessage = 'Api Error';
-      if (error instanceof AxiosError) {
-        errorMessage = error.response.data.error;
+      if (error instanceof AxiosError && error.response) {
+        errorMessage = error.response.data.error || errorMessage;
       }
       throw new Error(errorMessage);
     }

@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { DB } from '@aglint/shared-types';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import React, {
   ChangeEventHandler,
   Dispatch,
@@ -40,6 +40,7 @@ type SessionFormProps = Pick<
   | 'schedule_type'
   | 'session_type'
   | 'interview_module'
+  | 'location'
 > &
   CustomSessionFormProps;
 
@@ -77,6 +78,8 @@ const getLabel = (key: keyof SessionFormProps) => {
       return 'Session name';
     case 'schedule_type':
       return 'Schedule type';
+    case 'location':
+      return 'Address';
     case 'session_duration':
       return 'Session duration';
     case 'interview_module':
@@ -104,6 +107,7 @@ export const initialSessionFields: SessionFormProps = {
   interviewer_cnt: null,
   training: false,
   trainees: [],
+  location: null,
 };
 
 type HandleChange = <T extends keyof SessionFormProps>(
@@ -111,6 +115,11 @@ type HandleChange = <T extends keyof SessionFormProps>(
   key: T,
   // eslint-disable-next-line no-unused-vars
   value: SessionFormProps[T],
+) => void;
+
+type HandleTypeChange = (
+  // eslint-disable-next-line no-unused-vars
+  value: SessionFormProps['schedule_type'],
 ) => void;
 
 type HandleModeChange = (
@@ -153,8 +162,15 @@ const SessionForms = ({
   fields: SessionFormFields;
   setFields: Dispatch<SetStateAction<SessionFormFields>>;
 }) => {
-  const { name, session_duration, schedule_type, interview_module, ...rest } =
-    fields;
+  const {
+    name,
+    session_duration,
+    schedule_type,
+    location,
+    interview_module,
+    ...rest
+  } = fields;
+
   const handleChange: HandleChange = useCallback((key, value) => {
     setFields((prev) => ({
       ...prev,
@@ -162,6 +178,22 @@ const SessionForms = ({
         ...prev[key],
         error: false,
         value,
+      },
+    }));
+  }, []);
+
+  const handleTypeChange: HandleTypeChange = useCallback((value) => {
+    setFields((prev) => ({
+      ...prev,
+      schedule_type: {
+        ...prev.schedule_type,
+        error: false,
+        value,
+      },
+      location: {
+        ...prev.location,
+        error: false,
+        value: value === 'in_person_meeting' ? '' : null,
       },
     }));
   }, []);
@@ -196,15 +228,6 @@ const SessionForms = ({
       },
     }));
   }, []);
-  // const handleSessionDuration: ChangeEventHandler<
-  //   HTMLInputElement | HTMLTextAreaElement
-  // > = useCallback((e) => {
-  //   const entry = e.target.value as any;
-  //   const safeEntry = +entry;
-  //   if (entry === null || entry === '') handleChange('session_duration', null);
-  //   else if (safeEntry < 0) handleChange('session_duration', 0);
-  //   else handleChange('session_duration', safeEntry);
-  // }, []);
 
   const nameField = useMemo(
     () => (
@@ -226,17 +249,29 @@ const SessionForms = ({
         value={session_duration.value}
         handleChange={handleChange}
       />
-      // <UITextField
-      //   name={'session_duration'}
-      //   type='number'
-      //   placeholder={'Session duration'}
-      //   value={session_duration.value}
-      //   error={session_duration.error}
-      //   helperText={session_duration.helper}
-      //   onChange={handleSessionDuration}
-      // />
     ),
     [session_duration],
+  );
+
+  const locationField = useMemo(
+    () =>
+      schedule_type.value === 'in_person_meeting' ? (
+        <Stack gap={1}>
+          <Typography>Address</Typography>
+          <UITextField
+            name={'location'}
+            multiline
+            minRows={5}
+            value={location.value}
+            error={location.error}
+            helperText={location.helper}
+            onChange={({ target: { value } }) =>
+              handleChange('location', value)
+            }
+          />
+        </Stack>
+      ) : null,
+    [location, schedule_type],
   );
 
   return (
@@ -250,10 +285,13 @@ const SessionForms = ({
         />
       }
       slotScheduleTypeDropdown={
-        <ScheduleTypeField
-          value={schedule_type.value}
-          handleChange={handleChange}
-        />
+        <Stack gap={2}>
+          <ScheduleTypeField
+            value={schedule_type.value}
+            handleTypeChange={handleTypeChange}
+          />
+          {locationField}
+        </Stack>
       }
       slotInterviewMode={
         interview_module.value ? (
@@ -505,10 +543,10 @@ const Interview = ({
 
 const ScheduleTypeField = ({
   value,
-  handleChange,
+  handleTypeChange,
 }: {
   value: SessionFormProps['schedule_type'];
-  handleChange: HandleChange;
+  handleTypeChange: HandleTypeChange;
 }) => {
   const options = [
     {
@@ -541,7 +579,7 @@ const ScheduleTypeField = ({
     e,
   ) => {
     const schedule = options.find((m) => m.value === e.target.value);
-    if (schedule) handleChange('schedule_type', schedule.value);
+    if (schedule) handleTypeChange(schedule.value);
   };
   return (
     <DropDown
@@ -842,6 +880,17 @@ export const validateSessionFields = (fields: SessionFormFields) => {
             }
           }
           break;
+        case 'location':
+          {
+            if (
+              fields?.schedule_type?.value === 'in_person_meeting' &&
+              validateString(value?.value as string)
+            ) {
+              acc.error = true;
+              acc.newFields[safeKey].error = true;
+            }
+          }
+          break;
         case 'session_type':
           {
             const safeValue = value as SessionFormFields['session_type'];
@@ -901,6 +950,7 @@ export const getSessionPayload = (
     interviewers,
     name,
     schedule_type,
+    location,
     session_duration,
     session_type,
     trainees,
@@ -929,7 +979,7 @@ export const getSessionPayload = (
     interviewer_cnt,
     name,
     schedule_type,
-    location: null,
+    location,
     break_duration: 0,
     module_id: interview_module.id,
     interview_module_relation_entries: [...safeInterviewers, ...safeTrainees],

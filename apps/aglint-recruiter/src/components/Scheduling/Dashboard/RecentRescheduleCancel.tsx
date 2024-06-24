@@ -115,7 +115,8 @@ const RecentRescheduleCancel = () => {
       );
     })
     .filter((item) => item);
-  const loading = (parentFetching && isPending) || !disabled;
+  const loading = parentFetching || (!disabled && isPending);
+
   return (
     <>
       <RecentReschedule

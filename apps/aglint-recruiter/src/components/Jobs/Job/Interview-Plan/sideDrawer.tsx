@@ -140,12 +140,14 @@ const CreateSession = ({ handleClose, order }: DrawerProps) => {
         <>
           <ButtonSoft
             textButton='Cancel'
+            isDisabled={sessionCreation}
             color={'neutral'}
             size={2}
             onClickButton={{ onClick: () => handleClose() }}
           />
           <ButtonSolid
             textButton='Add'
+            isLoading={sessionCreation}
             size={2}
             onClickButton={{ onClick: () => handleAdd() }}
           />
@@ -170,6 +172,7 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
     schedule_type,
     session_duration,
     session_type,
+    location,
     interview_module,
     interview_session_relation,
     interviewer_cnt,
@@ -200,6 +203,7 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
     name,
     interviewer_cnt,
     schedule_type,
+    location,
     session_duration,
     session_type,
     interview_module,
@@ -240,12 +244,14 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
         <>
           <ButtonSoft
             textButton='Cancel'
+            isDisabled={isLoading}
             color={'neutral'}
             size={2}
             onClickButton={{ onClick: () => handleClose() }}
           />
           <ButtonSolid
             textButton='Save'
+            isLoading={isLoading}
             size={2}
             onClickButton={{ onClick: () => handleEdit() }}
           />
@@ -298,11 +304,13 @@ const CreateDebrief = ({ handleClose, order }: DrawerProps) => {
           <ButtonSoft
             textButton='Cancel'
             color={'neutral'}
+            isDisabled={debriefCreation}
             size={2}
             onClickButton={{ onClick: () => handleClose() }}
           />
           <ButtonSolid
             textButton='Add'
+            isLoading={debriefCreation}
             size={2}
             onClickButton={{ onClick: () => handleAdd() }}
           />
@@ -323,6 +331,7 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
     schedule_type,
     session_duration,
     session_type,
+    location,
     interview_session_relation,
     members_meta,
   } = data.interview_session.find((session) => id === session.id);
@@ -338,6 +347,7 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
     schedule_type,
     session_duration,
     session_type,
+    location,
     interview_session_relation,
     members,
     members_meta,
@@ -376,11 +386,13 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
           <ButtonSoft
             textButton='Cancel'
             color={'neutral'}
+            isDisabled={isLoading}
             size={2}
             onClickButton={{ onClick: () => handleClose() }}
           />
           <ButtonSolid
             textButton='Save'
+            isLoading={isLoading}
             size={2}
             onClickButton={{ onClick: () => handleEdit() }}
           />
@@ -427,12 +439,14 @@ const BreakSession = ({ handleClose, id }: DrawerProps) => {
         <>
           <ButtonSoft
             textButton='Cancel'
+            isDisabled={isLoading}
             color={'neutral'}
             size={2}
             onClickButton={{ onClick: () => handleClose() }}
           />
           <ButtonSolid
             textButton={break_duration === 0 ? 'Add' : 'Save'}
+            isLoading={isLoading}
             size={2}
             onClickButton={{ onClick: () => handleUpdate() }}
           />
