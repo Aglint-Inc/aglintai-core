@@ -94,7 +94,7 @@ export function nestedOptionMapper(
           return 'partial';
         }
         return acc;
-      }, temp_options[0].status);
+      }, temp_options[0]?.status);
 
     res[Number(index)] = [
       headers?.[Number(index)] || null,
