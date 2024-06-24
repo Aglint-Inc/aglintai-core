@@ -1,3 +1,4 @@
+import { DatabaseTable } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Stack, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -15,10 +16,7 @@ import { TaskProgress } from '@/devlink3/TaskProgress';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { fetchInterviewMeetingProgresstask } from '@/src/components/Scheduling/CandidateDetails/utils';
-import {
-  TasksAgentContextType,
-  useTasksContext,
-} from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { EmailAgentIcon } from '../../../Components/EmailAgentIcon';
@@ -35,7 +33,9 @@ function SubTaskProgress() {
   const { tasks } = useTasksContext();
   const { assignerList, setOpenEmailFollowUp } = useTaskStatesContext();
   const router = useRouter();
-  const { data: progressList, isFetchedAfterMount } = useProgress();
+  const route = useRouter();
+  const taskId = route.query.task_id ? (route.query.task_id as string) : null;
+  const { data: progressList, isFetchedAfterMount } = useProgress({ taskId });
   const today = dayjs();
   const selectedTask = tasks.find((ele) => ele.id === router.query?.task_id);
   const { data: sessionList } = useSessionsList();
@@ -59,6 +59,12 @@ function SubTaskProgress() {
                     return item.progress_type === 'email_follow_up_reminder'
                       ? i
                       : lastIndex;
+                  },
+                  -1,
+                );
+                const lastAgentEmailIndex = progressList.reduce(
+                  (lastIndex, item, i) => {
+                    return item.progress_type === 'send_email' ? i : lastIndex;
                   },
                   -1,
                 );
@@ -108,11 +114,14 @@ function SubTaskProgress() {
                     key={i}
                     isTaskProgressVisible={true}
                     textTask={
-                      <ProgressTitle
-                        title={item.title}
-                        titleMetaData={item.title_meta}
-                        selectedTask={selectedTask}
-                      />
+                      <>
+                        {item.progress_type}
+                        <ProgressTitle
+                          title={item.title}
+                          titleMetaData={item.title_meta}
+                          selectedTask={selectedTask}
+                        />
+                      </>
                     }
                     slotImage={
                       <ShowCode>
@@ -178,7 +187,8 @@ function SubTaskProgress() {
                       <ShowCode>
                         <ShowCode.When
                           isTrue={
-                            item.progress_type === 'email_messages' &&
+                            (item.progress_type === 'email_messages' ||
+                              item.progress_type === 'send_email') &&
                             item.jsonb_data?.message
                           }
                         >
@@ -201,10 +211,10 @@ function SubTaskProgress() {
                               ></span>
                               <ShowCode.When
                                 isTrue={
+                                  lastAgentEmailIndex === i &&
                                   dayjs(item.created_at).isBefore(
                                     today.add(-2, 'day'),
                                   ) &&
-                                  selectedTask.assignee[0] === EmailAgentId &&
                                   !(
                                     selectedTask.task_action
                                       ?.email_followUp_reminder > 0
@@ -300,7 +310,8 @@ function SubTaskProgress() {
                         </ShowCode.When>
                         <ShowCode.When
                           isTrue={
-                            item.progress_type === 'request_availability_list'
+                            item.progress_type ===
+                              'request_availability_list' && !!item.jsonb_data
                           }
                         >
                           <RequestAvailabilityList
@@ -380,9 +391,7 @@ async function getScheduleSessions(session_ids: string[]) {
 }
 
 // progress list
-export const useProgress = () => {
-  const route = useRouter();
-  let taskId = route.query.task_id ? (route.query.task_id as string) : null;
+export const useProgress = ({ taskId }: { taskId: string }) => {
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: ['get_new_tasks_progress'],
@@ -406,7 +415,7 @@ async function getTaskProgress(taskId: string) {
     })
     .eq('task_id', taskId);
 
-  return data as TasksAgentContextType['taskProgress'];
+  return data as DatabaseTable['new_tasks_progress'][];
 }
 
 // progress list
