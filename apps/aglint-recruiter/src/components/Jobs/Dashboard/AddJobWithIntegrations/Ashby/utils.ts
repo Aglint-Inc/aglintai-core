@@ -97,7 +97,6 @@ export const createJobObject = async (
       id: post.public_job_id,
       description: post.description,
       department: recruiter?.departments?.[0] ?? null,
-      email_template: recruiter.email_template,
       job_type: post.employmentType == 'Contract' ? 'contract' : 'full time',
       workplace_type: 'on site',
       company: recruiter.name,

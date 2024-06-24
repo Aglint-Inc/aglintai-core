@@ -20,7 +20,7 @@ import {
   scheduleDebrief,
 } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
-import { mailHandler } from '@/src/components/Scheduling/Candidates/utils';
+// import { mailHandler } from '@/src/components/Scheduling/Candidates/utils';
 import { getScheduleName } from '@/src/components/Scheduling/utils';
 
 export interface ApiBodyParamsSendToCandidate {
@@ -214,13 +214,13 @@ const sendToCandidate = async ({
           created_by: recruiterUser.user_id,
           task_id: resTask.id,
         });
-
-        mailHandler({
-          filter_id: filterJson[0].id,
-          supabase,
-          application_id: selectedApplication.id,
-          task_id: resTask.id,
-        });
+        //TODO: Implement new mailHandler
+        // mailHandler({
+        //   filter_id: filterJson[0].id,
+        //   supabase,
+        //   application_id: selectedApplication.id,
+        //   task_id: resTask.id,
+        // });
       }
 
       if (is_debrief && selectedDebrief) {
@@ -309,12 +309,13 @@ const sendToCandidate = async ({
           created_by: recruiterUser.user_id,
           task_id: resTask.id,
         });
-        mailHandler({
-          filter_id: filterJson[0].id,
-          supabase,
-          application_id: selectedApplication.id,
-          task_id: resTask.id,
-        });
+        //TODO: Implement new mailHandler
+        // mailHandler({
+        //   filter_id: filterJson[0].id,
+        //   supabase,
+        //   application_id: selectedApplication.id,
+        //   task_id: resTask.id,
+        // });
       }
 
       if (is_debrief && selectedDebrief) {
