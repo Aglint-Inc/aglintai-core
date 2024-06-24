@@ -1,7 +1,7 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
+import { getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
-import { getFullName } from '@aglint/shared-utils';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 
 export async function dbUtil(
