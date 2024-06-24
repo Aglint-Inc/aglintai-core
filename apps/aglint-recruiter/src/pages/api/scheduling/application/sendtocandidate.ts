@@ -115,7 +115,7 @@ const sendToCandidate = async ({
     start_date: string;
     end_date: string;
   };
-  selectedSlots?: SchedulingFlow['filteredSchedulingOptions'];
+  selectedSlots: SchedulingFlow['filteredSchedulingOptions'];
   selectedDebrief: SchedulingFlow['filteredSchedulingOptions'][number];
   recruiterUser: {
     email: string;
