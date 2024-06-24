@@ -3,6 +3,7 @@ import type {
   MeetingDetailCardType,
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   platformRemoveUnderscore,
@@ -12,7 +13,6 @@ import {
 } from '../../../utils/email/common/functions';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
-import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'interviewReschedule_email_applicant'>['api_payload'],

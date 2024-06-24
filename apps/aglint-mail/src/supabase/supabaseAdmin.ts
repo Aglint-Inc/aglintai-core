@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { DB } from '@aglint/shared-types';
+import type { DB } from '@aglint/shared-types';
 
 export const supabaseAdmin = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,

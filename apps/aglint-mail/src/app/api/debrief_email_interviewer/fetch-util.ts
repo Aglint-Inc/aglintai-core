@@ -2,6 +2,8 @@ import type {
   EmailTemplateAPi,
   MeetingDetailCardType,
 } from '@aglint/shared-types';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   platformRemoveUnderscore,
@@ -11,8 +13,6 @@ import {
 } from '../../../utils/email/common/functions';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
-import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'debrief_email_interviewer'>['api_payload'],

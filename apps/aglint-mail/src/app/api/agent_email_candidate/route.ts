@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import * as v from 'valibot';
 import { agentEmailCandidateSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
+import type { APISendgridPayload } from '@aglint/shared-types';
 import sendMail from '../../../config/sendgrid';
 import { fetchUtil } from './fetch-util';
-import { APISendgridPayload } from '@aglint/shared-types';
 
 export async function POST(req: Request) {
   const req_body = await req.json();

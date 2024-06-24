@@ -1,4 +1,6 @@
 import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   platformRemoveUnderscore,
@@ -6,10 +8,8 @@ import {
   sessionTypeIcon,
   scheduleTypeIcon,
 } from '../../../utils/email/common/functions';
-import { EmailTemplateAPi } from '@aglint/shared-types';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'confInterview_email_organizer'>['api_payload'],
