@@ -225,7 +225,7 @@ const EMAIL_VISIBILITIES: {
   interview: ['new', 'screening', 'assessment'],
   qualified: ['new', 'screening', 'assessment', 'interview'],
   disqualified: ['new', 'screening', 'assessment', 'interview', 'qualified'],
-} as const;
+};
 
 const CASCADE_VISIBILITIES: {
   // eslint-disable-next-line no-unused-vars
@@ -250,7 +250,7 @@ const CASCADE_VISIBILITIES: {
   interview: ['interview', 'qualified', 'disqualified'],
   qualified: ['qualified', 'disqualified'],
   disqualified: ['disqualified'],
-} as const;
+};
 
 export const useKeyPress = (key: KeyboardEvent['key']) => {
   const [pressed, setPressed] = useState(false);
