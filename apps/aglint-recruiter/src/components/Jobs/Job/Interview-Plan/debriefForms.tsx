@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { Stack, Typography } from '@mui/material';
 import React, {
   ChangeEventHandler,
   Dispatch,
@@ -34,6 +35,7 @@ type DebriefFormProps = Pick<
   | 'schedule_type'
   | 'session_type'
   | 'members_meta'
+  | 'location'
 > &
   CustomDebriefFormProps;
 
@@ -85,6 +87,7 @@ const getLabel = (key: keyof DebriefFormProps) => {
 export const initialDebriefFields: DebriefFormProps = {
   name: '',
   schedule_type: 'google_meet',
+  location: null,
   session_duration: 30,
   session_type: 'debrief',
   members: [],
@@ -104,6 +107,11 @@ type HandleChange = <T extends keyof DebriefFormProps>(
   value: DebriefFormProps[T],
 ) => void;
 
+type HandleTypeChange = (
+  // eslint-disable-next-line no-unused-vars
+  value: DebriefFormProps['schedule_type'],
+) => void;
+
 const DebriefForms = ({
   fields,
   setFields,
@@ -116,8 +124,14 @@ const DebriefForms = ({
     companyMembers: { data },
   } = useJobInterviewPlan();
 
-  const { name, session_duration, schedule_type, members, members_meta } =
-    fields;
+  const {
+    name,
+    session_duration,
+    schedule_type,
+    location,
+    members,
+    members_meta,
+  } = fields;
   const memberRecommendations =
     data.filter(
       ({ user_id }) =>
@@ -144,15 +158,21 @@ const DebriefForms = ({
     }));
   }, []);
 
-  // const handleSessionDuration: ChangeEventHandler<
-  //   HTMLInputElement | HTMLTextAreaElement
-  // > = useCallback((e) => {
-  //   const entry = e.target.value as any;
-  //   const safeEntry = +entry;
-  //   if (entry === null || entry === '') handleChange('session_duration', null);
-  //   else if (safeEntry < 0) handleChange('session_duration', 0);
-  //   else handleChange('session_duration', safeEntry);
-  // }, []);
+  const handleTypeChange: HandleTypeChange = useCallback((value) => {
+    setFields((prev) => ({
+      ...prev,
+      schedule_type: {
+        ...prev.schedule_type,
+        error: false,
+        value,
+      },
+      location: {
+        ...prev.location,
+        error: false,
+        value: value === 'in_person_meeting' ? '' : null,
+      },
+    }));
+  }, []);
 
   const nameField = useMemo(
     () => (
@@ -174,17 +194,29 @@ const DebriefForms = ({
         value={session_duration.value}
         handleChange={handleChange}
       />
-      // <UITextField
-      //   name={'session_duration'}
-      //   type='number'
-      //   placeholder={'Session duration'}
-      //   value={session_duration.value}
-      //   error={session_duration.error}
-      //   helperText={session_duration.helper}
-      //   onChange={handleSessionDuration}
-      // />
     ),
     [session_duration],
+  );
+
+  const locationField = useMemo(
+    () =>
+      schedule_type.value === 'in_person_meeting' ? (
+        <Stack gap={1}>
+          <Typography>Address</Typography>
+          <UITextField
+            name={'location'}
+            multiline
+            minRows={5}
+            value={location.value}
+            error={location.error}
+            helperText={location.helper}
+            onChange={({ target: { value } }) =>
+              handleChange('location', value)
+            }
+          />
+        </Stack>
+      ) : null,
+    [location, schedule_type],
   );
 
   return (
@@ -195,10 +227,13 @@ const DebriefForms = ({
         <InterviewerPills value={members.value} handleChange={handleChange} />
       }
       slotScheduleTypeDropdown={
-        <ScheduleTypeField
-          value={schedule_type.value}
-          handleChange={handleChange}
-        />
+        <Stack gap={2}>
+          <ScheduleTypeField
+            value={schedule_type.value}
+            handleTypeChange={handleTypeChange}
+          />
+          {locationField}
+        </Stack>
       }
       slotMembersDropdown={
         showMembers && (
@@ -319,10 +354,10 @@ const Member = ({
 
 const ScheduleTypeField = ({
   value,
-  handleChange,
+  handleTypeChange,
 }: {
   value: DebriefFormProps['schedule_type'];
-  handleChange: HandleChange;
+  handleTypeChange: HandleTypeChange;
 }) => {
   const options = [
     {
@@ -355,7 +390,7 @@ const ScheduleTypeField = ({
     e,
   ) => {
     const schedule = options.find((m) => m.value === e.target.value);
-    if (schedule) handleChange('schedule_type', schedule.value);
+    if (schedule) handleTypeChange(schedule.value);
   };
   return (
     <DropDown
@@ -495,6 +530,17 @@ export const validateDebriefSessionFields = (fields: DebriefFormFields) => {
             }
           }
           break;
+        case 'location':
+          {
+            if (
+              fields?.schedule_type?.value === 'in_person_meeting' &&
+              validateString(value?.value as string)
+            ) {
+              acc.error = true;
+              acc.newFields[safeKey].error = true;
+            }
+          }
+          break;
         case 'session_type':
           {
             const safeValue = value as DebriefFormFields['session_type'];
@@ -538,16 +584,22 @@ export const getDebriefSessionPayload = (
   session_order: number,
   interview_plan_id: string,
 ): CreateDebriefSession => {
-  const { name, schedule_type, session_duration, members, members_meta } =
-    Object.entries(fields).reduce(
-      (acc, [key, value]) => {
-        acc[key] = value.value;
-        return acc;
-      },
-      {} as {
-        [key in keyof DebriefFormFields]: DebriefFormFields[key]['value'];
-      },
-    );
+  const {
+    name,
+    schedule_type,
+    location,
+    session_duration,
+    members,
+    members_meta,
+  } = Object.entries(fields).reduce(
+    (acc, [key, value]) => {
+      acc[key] = value.value;
+      return acc;
+    },
+    {} as {
+      [key in keyof DebriefFormFields]: DebriefFormFields[key]['value'];
+    },
+  );
   const safeMembers: CreateDebriefSession['members'] = members.map(
     ({ user_id }) => ({
       id: user_id,
@@ -558,7 +610,7 @@ export const getDebriefSessionPayload = (
     name,
     members_meta,
     schedule_type,
-    location: null,
+    location,
     break_duration: 0,
     members: safeMembers,
     session_order,

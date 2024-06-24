@@ -1,6 +1,7 @@
 import type { Database } from "../schema.types";
 import type { CustomizableTypes, Type } from "../utils.types";
 import { CustomApplicationView } from "./application_view.types";
+import { CustomTasksView } from "./tasks_view";
 import type { CustomWorkflowView } from "./workflow_view.types";
 
 type DatabaseViews = Database["public"]["Views"];
@@ -27,5 +28,9 @@ export type ViewType<
 
 export type Views = Type<
   DatabaseViews,
-  { workflow_view: CustomWorkflowView; application_view: CustomApplicationView }
+  {
+    workflow_view: CustomWorkflowView;
+    application_view: CustomApplicationView;
+    tasks_view: CustomTasksView;
+  }
 >;

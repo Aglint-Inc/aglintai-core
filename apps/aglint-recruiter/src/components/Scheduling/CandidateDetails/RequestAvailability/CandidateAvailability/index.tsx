@@ -155,7 +155,7 @@ function CandidateAvailability() {
                 id: candidateRequestAvailability.applications.candidates.id,
               },
               title: `Candidate opened request availability link for ${candidateRequestAvailability.session_ids.map((ele) => ele.name).join(',')}.`,
-              progress_type: 'standard',
+              progress_type: 'request_availability',
             } as DatabaseTableInsert['new_tasks_progress'],
           });
       }

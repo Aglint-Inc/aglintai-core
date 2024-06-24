@@ -1,6 +1,13 @@
 import { DB } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
-import { Box, Collapse, Drawer, Stack, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Collapse,
+  Drawer,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
@@ -153,7 +160,12 @@ function AddNewTask() {
             name: recruiterUser.first_name,
             id: recruiterUser.user_id,
           },
-          progress_type: 'standard',
+          progress_type:
+            selectedType === 'schedule'
+              ? 'schedule'
+              : selectedType === 'self_schedule'
+                ? 'self_schedule'
+                : 'standard',
         },
         optionData: {
           candidateName:
@@ -585,9 +597,9 @@ function AddNewTask() {
                 }
                 slotWhentoCallIcon={
                   selectedAssignee?.user_id === EmailAgentId ? (
-                    <GlobalIcon iconName='mail' color={'neutral-8'}/>
+                    <GlobalIcon iconName='mail' color={'neutral-8'} />
                   ) : (
-                    <GlobalIcon iconName='phone_in_talk' color={'neutral-8'}/>
+                    <GlobalIcon iconName='phone_in_talk' color={'neutral-8'} />
                   )
                 }
               />
@@ -602,9 +614,8 @@ function AddNewTask() {
 export default AddNewTask;
 
 export const CallIcon = () => {
-  
   return (
-    <GlobalIcon iconName='phone_in_talk' color={'neutral-8'}/>
+    <GlobalIcon iconName='phone_in_talk' color={'neutral-8'} />
     // <svg
     //   width='15'
     //   height='16'
@@ -623,7 +634,7 @@ export const CallIcon = () => {
 
 export const EmailIcon = () => {
   return (
-    <GlobalIcon iconName='mail'  color={'neutral-8'}/>
+    <GlobalIcon iconName='mail' color={'neutral-8'} />
     // <svg
     //   width='15'
     //   height='16'
