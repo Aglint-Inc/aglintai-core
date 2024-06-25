@@ -363,7 +363,7 @@ function Scheduling() {
                 direction={'row'}
                 spacing={2}
               >
-                <Typography variant='body1'>Show keys</Typography>
+                {/* <Typography variant='body1'>Show keys</Typography> */}
                 <ToggleButton
                   onclickToggle={{
                     onClick: () => {
