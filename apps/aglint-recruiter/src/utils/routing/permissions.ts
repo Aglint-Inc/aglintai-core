@@ -65,6 +65,7 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/application/candidatesessioncache': ['scheduler_enabled'],
   //v1 apis
   '/api/scheduling/v1/get-candidate-selected-slots': ['scheduler_enabled'],
+  '/api/scheduling/v1/event_attendee_status': ['scheduler_enabled'],
   // request availability apis
   '/api/scheduling/request_availability/getCandidateRequestData': [
     'scheduler_enabled',
