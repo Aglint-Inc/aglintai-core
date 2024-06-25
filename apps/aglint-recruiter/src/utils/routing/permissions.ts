@@ -5,7 +5,7 @@ import { PATHS } from '@/script/paths';
 // import ROUTES from './routes';
 
 type Operations = 'enabled' | 'create' | 'read' | 'update' | 'delete';
-type Modules = 'workflow';
+type Modules = 'workflow' | 'team';
 
 type NewPermissions = `${Modules}_${Operations}`;
 
@@ -53,6 +53,7 @@ const PERMISSIONS: Permissions = {
    */
   '/api/job/jobApplications/read': ['jobs_read', 'candidates_add'],
   '/api/getMembersWithRole': ['jobs_read'], //change to correct permission
+  '/api/get_last_login': ['jobs_read'], //change to correct permission
   '/api/scheduling/fetchUserDetails': ['scheduler_enabled'],
   '/api/scheduling/fetch_interview_session_task': ['scheduler_enabled'],
   '/api/scheduling/fetch_activities': ['scheduler_enabled'],
@@ -83,6 +84,7 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/request_availability/updateRequestAvailability': [
     'scheduler_enabled',
   ],
+  '/api/scheduling/get_interview_training_progress': ['scheduler_enabled'],
 };
 
 export default PERMISSIONS;

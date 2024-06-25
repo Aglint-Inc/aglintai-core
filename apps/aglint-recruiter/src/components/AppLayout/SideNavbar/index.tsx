@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 
 import { NavLink } from '@/devlink/NavLink';
 import { AssistantLogo } from '@/devlink2/AssistantLogo';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
@@ -20,7 +21,6 @@ import SchedulerIcon from '../IconsSideBar/SchedulerIcon';
 import SourcingHubIcon from '../IconsSideBar/SourcingHubIcon';
 import TaskIcon from '../IconsSideBar/TaskIcon';
 import WorkFlowIcon from '../IconsSideBar/WorkFlowIcon';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 function SideNavbar() {
   const router = useRouter();

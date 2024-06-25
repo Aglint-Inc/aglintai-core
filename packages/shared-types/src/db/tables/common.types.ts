@@ -1,9 +1,4 @@
-import type {
-  EmailTempPath,
-  EmailTemplateFields,
-  EmailTemplateType,
-} from "../..";
-import type { CustomMembersMeta } from "../common.types";
+import type { CustomMembersMeta } from '../common.types';
 
 export type CustomSchedulingSettings = {
   isAutomaticTimezone: boolean;
@@ -16,11 +11,11 @@ export type CustomSchedulingSettings = {
   interviewLoad: {
     dailyLimit: {
       value: number;
-      type: "Hours" | "Interviews";
+      type: 'Hours' | 'Interviews';
     };
     weeklyLimit: {
       value: number;
-      type: "Hours" | "Interviews";
+      type: 'Hours' | 'Interviews';
     };
   };
   workingHours: {

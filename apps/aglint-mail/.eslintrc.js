@@ -18,10 +18,7 @@ module.exports = {
     JSX: true,
   },
   settings: {
-    'import/resolver': {
-      typescript: {
-        project: true,
-      },
+    "import/resolver": {
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
