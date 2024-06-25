@@ -100,12 +100,11 @@ const EditMember = ({
       temp.role = true;
       flag = true;
     }
-    if (form.role !== 'admin') {
       if (!form.manager_id || form.manager_id.trim() === '') {
         temp.manager = true;
         flag = true;
       }
-    }
+    
     if (flag) {
       setFormError(temp);
       setIsDisable(false);
@@ -450,7 +449,6 @@ const EditMember = ({
                   textButton='Update'
                   color={'accent'}
                   isDisabled={isDisable}
-                  isLoading={isDisable}
                   onClickButton={{
                     onClick: () => {
                       setIsDisable(true);
