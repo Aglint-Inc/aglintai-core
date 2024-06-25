@@ -1,27 +1,57 @@
-import type { PropsWithChildren, ReactNode } from 'react';
+import { type PropsWithChildren, type ReactNode, useMemo } from 'react';
 
 import { CandidateDetail } from '@/devlink/CandidateDetail';
 import { GlobalIcon } from '@/devlink3/GlobalIcon';
+import { useApplication } from '@/src/context/ApplicationContext';
 
+import { getIconName } from '../../utils';
+import { EmptyDetailState } from '../common';
 import { Badge } from './badge';
 import { Education } from './education';
 import { Experience } from './experience';
 import { Skills } from './skills';
 
 const Analysis = (props: PropsWithChildren<{ score?: ReactNode }>) => {
+  const {
+    details: { data, status },
+  } = useApplication();
+  const scores = data?.score_json?.scores;
+  const reasoning = data?.score_json?.reasoning;
+  const isEmpty = useMemo(
+    () =>
+      status !== 'pending' &&
+      scores &&
+      reasoning &&
+      Object.keys(scores ?? {}).filter((key) => {
+        const safeKey = key as keyof typeof scores;
+        switch (safeKey) {
+          case 'skills':
+            return safeKey in reasoning;
+          case 'experience':
+            return 'positions' in reasoning;
+          case 'education':
+            return 'schools' in reasoning;
+        }
+      }).length === 0,
+    [status, scores, reasoning],
+  );
   return (
     <CandidateDetail
       slotBadge={props.score ?? <Badge />}
       slotBody={
-        props.children ?? (
-          <>
-            <Education />
-            <Skills />
-            <Experience />
-          </>
+        isEmpty ? (
+          <EmptyDetailState section='Analysis' />
+        ) : (
+          props.children ?? (
+            <>
+              <Education />
+              <Skills />
+              <Experience />
+            </>
+          )
         )
       }
-      slotIcon={<GlobalIcon size={5} iconName={'equalizer'} />}
+      slotIcon={<GlobalIcon size={5} iconName={getIconName('Analysis')} />}
       textTitle={'Analysis'}
     />
   );

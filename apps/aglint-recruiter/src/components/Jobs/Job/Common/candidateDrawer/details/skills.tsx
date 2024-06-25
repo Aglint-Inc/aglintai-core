@@ -8,11 +8,13 @@ import { GlobalIcon } from '@/devlink3/GlobalIcon';
 import { useApplication } from '@/src/context/ApplicationContext';
 
 import { Loader } from '../common';
+import { getIconName } from '../utils';
+import { EmptyDetailState } from './common';
 
 const Skills = () => {
   return (
     <CandidateDetail
-      slotIcon={<GlobalIcon size={5} iconName={'handyman'} />}
+      slotIcon={<GlobalIcon size={5} iconName={getIconName('Skills')} />}
       slotBody={
         <Stack direction={'row'} width={'100%'} flexWrap={'wrap'} gap={1}>
           <Content />
@@ -44,7 +46,7 @@ const Content = () => {
       data?.score_json?.relevance?.skills
     )
   )
-    return <>No skills found</>;
+    return <EmptyDetailState section='Skills' />;
   return <Skill />;
 };
 

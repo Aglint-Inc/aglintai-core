@@ -29,11 +29,7 @@ const Interview = () => {
   const { push } = useRouter();
 
   if (status === 'success' && (sessions ?? []).length === 0)
-    return (
-      <Loader count={4}>
-        <SkeletonNewInterviewPlanCard slotLoader={<Skeleton />} />
-      </Loader>
-    );
+    return <EmptyState tab='Interview' />;
 
   return (
     <JobDetailInterview
