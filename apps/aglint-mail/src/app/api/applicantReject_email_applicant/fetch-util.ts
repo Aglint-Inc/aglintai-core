@@ -1,8 +1,7 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
-import { getFullName } from '@aglint/shared-utils';
+import { fillCompEmailTemplate, getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { fetchJobEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
-import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'applicantReject_email_applicant'>['api_payload'],
