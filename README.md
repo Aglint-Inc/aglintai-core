@@ -123,3 +123,7 @@ Please add any screenshots that would help understand your changes.
 In case the changes need to be reverted, please describe the rollback plan.
 
 [Guideline](https://www.conventionalcommits.org/en/v1.0.0/)
+
+### Resolving module resolution problem from repo packages
+
+- Any changes made in repo package "npm run build" on that package and install globally for resolving

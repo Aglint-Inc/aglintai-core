@@ -1,6 +1,11 @@
 import { DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
-import { NextApiRequest, NextApiResponse } from 'next';
+
+import {
+  NextApiRequest,
+  NextApiResponse,
+} from '@/src/interface/NextApiRequest.interface';
+import { apiRequestResponseFactory } from '@/src/utils/apiUtils/responseFactory';
 
 import { API_getMembersWithRole } from './type';
 
@@ -13,24 +18,20 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  if (req.method === 'POST') {
-    const { id } = req.body as API_getMembersWithRole['request'];
-    if (!id) {
-      return res
-        .status(400)
-        .send(
-          getResponse({ error: 'Invalid request. Required props missing.' }),
-        );
+  const apiMethod = apiRequestResponseFactory<API_getMembersWithRole>(req, res);
+  return apiMethod('GET', async ({ requesterDetails }) => {
+    const rec_id = requesterDetails.recruiter_id;
+    if (!rec_id) {
+      return {
+        error: rec_id
+          ? 'Failed to load recruiter'
+          : 'Invalid request. Required props missing.',
+        status: 400,
+      };
     }
-
-    return res.send(getResponse({ members: await getMembers(id) }));
-  }
-  res.setHeader('Allow', 'POST');
-  res.status(405).end('Method Not Allowed!');
+    return getMembers(rec_id);
+  });
 }
-const getResponse = (data: Partial<API_getMembersWithRole['response']>) => {
-  return { passwordReset: false, error: null, ...data };
-};
 
 const getMembers = (id: string) => {
   return supabase

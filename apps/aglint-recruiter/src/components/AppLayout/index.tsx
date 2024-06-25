@@ -11,7 +11,10 @@ import { NavProfileBlock } from '@/devlink2/NavProfileBlock';
 import { ResponsiveBanner } from '@/devlink2/ResponsiveBanner';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useResizeWindow } from '@/src/context/ResizeWindow/ResizeWindow';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
+import NotFoundPage from '@/src/pages/404';
 import { isEnvProd } from '@/src/utils/isEnvProd';
+import PERMISSIONS from '@/src/utils/routing/permissions';
 import ROUTES from '@/src/utils/routing/routes';
 
 import Icon from '../Common/Icons/Icon';
@@ -317,6 +320,11 @@ export default function AppLayout({ children }) {
           </Stack>
         </Stack>
         {children}
+        {/* {checkPermissions(PERMISSIONS[String(router.pathname)]) ? (
+          children
+        ) : (
+          <NotFoundPage />
+        )} */}
       </Stack>
     </Stack>
   );
