@@ -31,13 +31,14 @@ export const selfScheduleMailToCandidate = async ({
 
 export const cancelMailHandler = async ({
   application_id,
+  session_ids,
 }: {
   application_id: string;
-  session_ids: string;
+  session_ids: string[];
 }) => {
   try {
     const bodyParams: EmailTemplateAPi<'interviewCancel_email_applicant'>['api_payload'] =
-      { application_id, session_ids: [] };
+      { application_id, session_ids };
 
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/api/emails/interviewCancel_email_applicant`,
@@ -45,6 +46,7 @@ export const cancelMailHandler = async ({
         meta: bodyParams,
       },
     );
+
     if (res.status === 200) {
       return true;
     } else {
