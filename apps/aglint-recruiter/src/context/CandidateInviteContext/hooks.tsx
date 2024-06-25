@@ -68,7 +68,10 @@ const useInviteActions = () => {
     };
     try {
       if (!isPending) {
-        await mutateAsync(bodyParams);
+        await mutateAsync({
+          bodyParams,
+          is_agent_link: !meta.data.filter_json.selected_options,
+        });
       } else {
         toast.warning('Confirming slots. Please wait.');
       }
