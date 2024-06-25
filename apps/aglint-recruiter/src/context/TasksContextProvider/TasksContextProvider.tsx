@@ -415,8 +415,8 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
 
     if (status.values.length) {
       temp = temp.filter((sub) => {
-        const progress_type = sub.last_progress.progress_type;
-        const created_at = sub.last_progress.created_at;
+        const progress_type = sub.latest_progress.progress_type;
+        const created_at = sub.latest_progress.created_at;
 
         if (
           status.values.includes(

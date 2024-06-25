@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GeneralPopupLarge } from '@/devlink3/GeneralPopupLarge';
+import Icon from '@/src/components/Common/Icons/Icon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 
@@ -78,6 +79,8 @@ function Instructions({
           <ShowCode.When isTrue={showEditButton}>
             <Stack direction={'row'} justifyContent={'start'}>
               <ButtonSoft
+                isLeftIcon={true}
+                slotIcon={<Icon height='15' width='15' variant='EditIcon' />}
                 size={1}
                 textButton={'Edit Instruction'}
                 onClickButton={{

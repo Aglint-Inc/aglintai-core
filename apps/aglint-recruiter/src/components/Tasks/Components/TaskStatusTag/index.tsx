@@ -7,8 +7,8 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { getIndicator, getIndicatorMessage, indicatorType } from './utils';
 
 function TaskStatusTag({ task }: { task: DatabaseView['tasks_view'] }) {
-  const progress_type = task?.last_progress?.progress_type;
-  const created_at = task.last_progress.created_at;
+  const progress_type = task?.latest_progress?.progress_type;
+  const created_at = task.latest_progress?.created_at;
 
   return (
     <Stack direction={'row'} spacing={1}>
