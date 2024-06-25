@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { DatePickerBody } from '@/devlink3/DatePickerBody';
 import DateRange from '@/src/components/Tasks/Components/DateRange';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
+import { ApiBodyParamsScheduleAgentWithoutTaskId } from '@/src/pages/api/scheduling/application/schedulewithagentwithouttaskid';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
@@ -103,15 +103,17 @@ function SelectDateRange() {
   const onClickScheduleAgent = async (type: 'phone_agent' | 'email_agent') => {
     try {
       setFetchingPlan(true);
+      const bodyParamsAvailibility: APIFindAvailability = {
+        session_ids: selectedSessionIds,
+        recruiter_id: recruiter.id,
+        start_date_str: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+        end_date_str: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+        candidate_tz: dayjs.tz.guess(),
+      };
+
       const resAllOptions = await axios.post(
         '/api/scheduling/v1/find_availability',
-        {
-          session_ids: selectedSessionIds,
-          recruiter_id: recruiter.id,
-          start_date_str: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
-          end_date_str: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-          candidate_tz: dayjs.tz.guess(),
-        } as APIFindAvailability,
+        bodyParamsAvailibility,
       );
 
       if (resAllOptions.data.length === 0) {
@@ -119,29 +121,31 @@ function SelectDateRange() {
         return;
       }
 
+      const bodyParams: ApiBodyParamsScheduleAgentWithoutTaskId = {
+        application_id: selectedApplication.id,
+        dateRange: dateRange,
+        recruiter_id: recruiter.id,
+        recruiter_user_name: getFullName(
+          recruiterUser.first_name,
+          recruiterUser.last_name,
+        ),
+        session_ids: selectedSessionIds,
+        task_id: null,
+        type: type,
+        candidate_name: getFullName(
+          selectedApplication.candidates.first_name,
+          selectedApplication.candidates.last_name,
+        ),
+        company_name: recruiter.name,
+        rec_user_phone: recruiterUser.phone,
+        rec_user_id: recruiterUser.user_id,
+        user_tz: dayjs.tz.guess(),
+        trigger_count: 0,
+      };
+
       const res = await axios.post(
         '/api/scheduling/application/schedulewithagentwithouttaskid',
-        {
-          application_id: selectedApplication.id,
-          dateRange: dateRange,
-          recruiter_id: recruiter.id,
-          recruiter_user_name: getFullName(
-            recruiterUser.first_name,
-            recruiterUser.last_name,
-          ),
-          session_ids: selectedSessionIds,
-          task_id: null,
-          type: type,
-          candidate_name: getFullName(
-            selectedApplication.candidates.first_name,
-            selectedApplication.candidates.last_name,
-          ),
-          company_name: recruiter.name,
-          rec_user_phone: recruiterUser.phone,
-          rec_user_id: recruiterUser.user_id,
-          user_tz: dayjs.tz.guess(),
-          trigger_count: 0,
-        } as ApiBodyParamsScheduleAgent,
+        bodyParams,
       );
 
       if (!res) {
@@ -188,7 +192,7 @@ function SelectDateRange() {
         isEmailAgent={scheduleFlow === 'email_agent'}
         isPhoneAgent={scheduleFlow === 'phone_agent'}
         isRequestAvailability={false}
-        isContinueButton={true}
+        isContinueButton={scheduleFlow === 'self_scheduling'}
         isSelfScheduling={scheduleFlow === 'self_scheduling'}
         onClickButton={{
           onClick: async () => {
