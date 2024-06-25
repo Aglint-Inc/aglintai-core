@@ -76,12 +76,12 @@ function processDirectory(
 // const rootDirectory = args[0].split(',') || ['.'];
 // const outputFile = args[1] || 'script/paths.ts';
 const rootDirectory = {
-  'src/pages': {
+  [path.join('src', 'pages')]: {
     basePath: '',
     appRouter: false,
   },
-  '../aglint-mail/src/app/api': {
-    basePath: '/api/emails',
+  [path.join('../aglint-mail/src/app/', 'api')]: {
+    basePath: path.join('/api', 'emails'),
     appRouter: true,
   },
 };

@@ -1,4 +1,5 @@
 "use strict";
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 // import { replaceAll } from '@aglint/shared-utils';
 var fs = require("fs");
@@ -49,16 +50,16 @@ function processDirectory(rootDirs, outputFiles) {
 // const args = process.argv.slice(2);
 // const rootDirectory = args[0].split(',') || ['.'];
 // const outputFile = args[1] || 'script/paths.ts';
-var rootDirectory = {
-    'src/pages': {
+var rootDirectory = (_a = {},
+    _a[path.join('src', 'pages')] = {
         basePath: '',
         appRouter: false,
     },
-    '../aglint-mail/src/app/api': {
-        basePath: '/api/emails',
+    _a[path.join('../aglint-mail/src/app/', 'api')] = {
+        basePath: path.join('/api', 'emails'),
         appRouter: true,
     },
-};
+    _a);
 var allPathOutputFile = 'src/constant/allPaths.ts';
 var apiPathOutputFile = 'src/constant/apiPaths.ts';
 processDirectory(rootDirectory, [
