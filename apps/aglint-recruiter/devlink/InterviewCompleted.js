@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./InterviewCompleted.module.css";
 
@@ -14,7 +15,7 @@ export function InterviewCompleted({
   propsTextColor = {},
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-499")} tag="div">
+    <_Component className={_utils.cx(_styles, "ic-wrapper")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "int-completed-wrapper")}
         tag="div"
@@ -34,26 +35,31 @@ export function InterviewCompleted({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "int-completed-lottie-block")}
-              tag="div"
-            >
-              {slotLottie}
-            </_Builtin.Block>
-            <_Builtin.Block
               className={_utils.cx(_styles, "int-completed-main-content")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "text-lg",
-                  "fw-semibold",
-                  "text-green-600"
-                )}
+                className={_utils.cx(_styles, "ic-title-icon-wrap")}
                 tag="div"
-                {...propsTextColor}
               >
-                {textTitle}
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "int-completed-lottie-block")}
+                  tag="div"
+                >
+                  {slotLottie}
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "ic-title-wrap")}
+                  tag="div"
+                  {...propsTextColor}
+                >
+                  <Text
+                    content={textTitle}
+                    weight="medium"
+                    size="4"
+                    align="center"
+                  />
+                </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block tag="div">
                 <_Builtin.Block
@@ -67,12 +73,7 @@ export function InterviewCompleted({
                   {textDescription}
                 </_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "text-blue-500-2",
-                    "text-underline",
-                    "inline-block"
-                  )}
+                  className={_utils.cx(_styles, "text-accent-link")}
                   tag="div"
                   {...onClickSupport}
                 >
