@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { scheduleWithAgentWithoutTaskId } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-export interface ApiBodyParamsScheduleAgent {
+export interface ApiBodyParamsScheduleAgentWithoutTaskId {
   type: 'phone_agent' | 'email_agent';
   session_ids: string[];
   application_id: string;
@@ -38,7 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       candidate_name,
       company_name,
       user_tz,
-    } = req.body as ApiBodyParamsScheduleAgent;
+    } = req.body as ApiBodyParamsScheduleAgentWithoutTaskId;
 
     const resAgent = await scheduleWithAgentWithoutTaskId({
       application_id,
