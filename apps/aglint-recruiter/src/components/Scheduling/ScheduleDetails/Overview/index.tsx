@@ -84,7 +84,7 @@ function Overview({
 
   const fetchCalendarStatus = async () => {
     try {
-      const eventId = (schedule.interview_meeting?.meeting_json as any)?.id;
+      const eventId = schedule.interview_meeting?.cal_event_id;
       const user_id = schedule.users[0].id;
 
       const res = await axios.post('/api/scheduling/v1/event_attendee_status', {
@@ -99,7 +99,7 @@ function Overview({
     }
   };
 
-  const { users } = schedule;
+  const users = schedule?.users || [];
 
   const isRescheduleCardVisible =
     recruiterUser.role === 'admin' ||

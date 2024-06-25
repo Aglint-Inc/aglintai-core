@@ -9,8 +9,8 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { addScheduleActivity } from '../../../Candidates/queries/utils';
-import { cancelMailHandler } from '../../../Candidates/utils';
 import { useGetScheduleApplication } from '../../hooks';
+import { cancelMailHandler } from '../../mailUtils';
 import {
   setMultipleCancelOpen,
   setSelectedApplicationLog,
@@ -18,7 +18,7 @@ import {
 } from '../../store';
 
 function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
-  const { recruiterUser, recruiter } = useAuthDetails();
+  const { recruiterUser } = useAuthDetails();
   const isCancelOpen = useSchedulingApplicationStore(
     (state) => state.isMultipleCancelOpen,
   );
@@ -107,6 +107,7 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
     mailActivityCalenderHandler({
       selectedSessions,
       sessionsName,
+      application_id: selectedApplication.id,
     });
   };
 
@@ -151,23 +152,22 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
     mailActivityCalenderHandler({
       selectedSessions,
       sessionsName,
+      application_id: selectedApplication.id,
     });
   };
 
   const mailActivityCalenderHandler = async ({
     selectedSessions,
     sessionsName,
+    application_id,
   }: {
     selectedSessions: typeof initialSessions;
     sessionsName: string;
+    application_id: string;
   }) => {
     cancelMailHandler({
-      candidate_name: selectedApplication.candidates.first_name,
-      mail: recruiterUser.email,
-      job_title: selectedApplication.public_jobs.job_title,
-      rec_id: recruiter.id,
-      session_name: sessionsName,
-      supabase: supabase,
+      application_id,
+      session_ids: selectedSessions.map((ses) => ses.id),
     });
 
     await addScheduleActivity({

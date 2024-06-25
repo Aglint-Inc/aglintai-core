@@ -3,25 +3,17 @@ import axios from 'axios';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { addScheduleActivity } from '../../../Candidates/queries/utils';
-import { cancelMailHandler } from '../../../Candidates/utils';
+import { cancelMailHandler } from '../../mailUtils';
 import { SchedulingApplication } from '../../store';
 
 export const meetingActivityMailCalenderHandler = async ({
   selectedSession,
   application_id,
   rec_user_id,
-  rec_id,
-  candidate_email,
-  candidate_name,
-  job_title,
 }: {
   selectedSession: SchedulingApplication['selectedSession'];
   application_id: string;
   rec_user_id: string;
-  rec_id: string;
-  candidate_email: string;
-  candidate_name: string;
-  job_title: string;
 }) => {
   const { error: errMeet } = await supabase
     .from('interview_meeting')
@@ -44,12 +36,8 @@ export const meetingActivityMailCalenderHandler = async ({
 
   if (selectedSession.interview_meeting.meeting_flow !== 'debrief') {
     cancelMailHandler({
-      candidate_name: candidate_name,
-      mail: candidate_email,
-      job_title: job_title,
-      rec_id: rec_id,
-      session_name: selectedSession.name,
-      supabase: supabase,
+      application_id: application_id,
+      session_ids: [selectedSession.id],
     });
   }
 

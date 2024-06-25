@@ -1,4 +1,3 @@
-import { getFullName } from '@aglint/shared-utils';
 import { Dialog } from '@mui/material';
 
 import { DeletePopup } from '@/devlink3/DeletePopup';
@@ -14,7 +13,7 @@ import {
 import { meetingActivityMailCalenderHandler } from './utils';
 
 function CancelScheduleDialog({ refetch }: { refetch: () => void }) {
-  const { recruiterUser, recruiter } = useAuthDetails();
+  const { recruiterUser } = useAuthDetails();
   const { availabilities, isCancelOpen, selectedApplication, selectedSession } =
     useSchedulingApplicationStore((state) => ({
       availabilities: state.availabilities,
@@ -44,13 +43,6 @@ function CancelScheduleDialog({ refetch }: { refetch: () => void }) {
           selectedSession,
           application_id: selectedApplication.id,
           rec_user_id: recruiterUser.user_id,
-          rec_id: recruiter.id,
-          candidate_email: selectedApplication.candidates.email,
-          candidate_name: getFullName(
-            selectedApplication.candidates.first_name,
-            selectedApplication.candidates.last_name,
-          ),
-          job_title: selectedApplication.public_jobs.job_title,
         });
       }
     } catch {

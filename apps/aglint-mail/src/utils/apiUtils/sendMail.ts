@@ -10,7 +10,9 @@ import { getEmails } from './get-emails';
 import { renderEmailTemplate } from './renderEmailTemplate';
 
 export const sendMailFun = async <T extends DatabaseEnums['email_slack_types']>(
-  filled_comp_template: DatabaseTable['company_email_template'],
+  filled_comp_template:
+    | DatabaseTable['job_email_template']
+    | DatabaseTable['company_email_template'],
   react_email_placeholders: EmailTemplateAPi<T>['react_email_placeholders'],
   recipient_email: string,
   attachments?: ICSAttachment[],
