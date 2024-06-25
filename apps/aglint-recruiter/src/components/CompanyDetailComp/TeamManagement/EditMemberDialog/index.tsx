@@ -100,7 +100,10 @@ const EditMember = ({
       temp.role = true;
       flag = true;
     }
-    if (!form.manager_id || form.manager_id.trim() === '') {
+    if (
+      form.role != 'admin' &&
+      (!form.manager_id || form.manager_id.trim() == '')
+    ) {
       temp.manager = true;
       flag = true;
     }
@@ -224,6 +227,7 @@ const EditMember = ({
                           employment: false,
                         });
                       }}
+                      required
                       name='Employment'
                       placeholder='Select Employment Type'
                       label='Employment'
@@ -471,8 +475,10 @@ const EditMember = ({
                             onClose();
                             toast.success('Member updated successfully.');
                           })
-                          .catch(() => {
-                            toast.error('Error updating member.');
+                          .catch((error) => {
+                            toast.error(
+                              String(error || 'Error updating member.'),
+                            );
                             setIsDisable(false);
                           });
                       }
