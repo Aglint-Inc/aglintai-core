@@ -87,6 +87,10 @@
   cursor: pointer;
 }
 
+.timer-icon-wrap {
+  width: 24px;
+}
+
 .npc-right-wrap {
   position: relative;
   z-index: 1;

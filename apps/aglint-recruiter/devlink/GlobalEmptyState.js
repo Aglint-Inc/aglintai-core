@@ -10,7 +10,6 @@ export function GlobalEmptyState({
   as: _Component = _Builtin.Block,
   textDesc = "Heading",
   iconName = "shapes",
-  backgroundColor = "neutral",
   styleEmpty = {},
 }) {
   return (
@@ -23,7 +22,7 @@ export function GlobalEmptyState({
         className={_utils.cx(_styles, "ges-content-wrap")}
         tag="div"
       >
-        <GlobalIcon iconName={iconName} size="8" color="inherit" />
+        <GlobalIcon iconName={iconName} size="7" color="inherit" />
         <Text content={textDesc} />
       </_Builtin.Block>
     </_Component>
