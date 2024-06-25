@@ -860,16 +860,29 @@ const JobClose = ({
           }
           textButton={isDelete ? 'Delete Job' : 'Close Job'}
           textJobTitle={job_title.trim()}
-          onClickCancel={{ onClick: () => handleClose() }}
-          onClickCloseJob={{ onClick: () => handleSubmit() }}
+          onClickCloseJob={{ onClick: () => handleClose() }}
           textLocation={location}
-          isDisabled={job_title.trim() !== value.trim()}
           slotInput={
             <UITextField
               placeholder={job_title.trim()}
               value={value}
               onChange={(e) => setValue(e.target.value)}
             />
+          }
+          slotButton={
+            <>
+              <ButtonGhost
+                textButton='Cancel'
+                size={2}
+                onClickButton={{ onClick: () => handleClose() }}
+              />
+              <ButtonSolid
+                textButton={isDelete ? 'Delete Job' : 'Close Job'}
+                size={2}
+                onClickButton={{ onClick: handleSubmit }}
+                isDisabled={job_title.trim() !== value.trim()}
+              />
+            </>
           }
         />
       </Dialog>
