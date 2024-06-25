@@ -1,10 +1,7 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import {
-  fetchCompEmailTemp,
-  fetchJobEmailTemp,
-} from '../../../utils/apiUtils/fetchCompEmailTemp';
+import { fetchJobEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 
 export async function fetchUtil(
@@ -29,7 +26,6 @@ export async function fetchUtil(
   const {
     candidates: {
       email: cand_email,
-      recruiter_id,
       first_name,
       last_name,
       recruiter: { logo },
