@@ -31,12 +31,12 @@ const Actions = () => {
         }
         isSendScreeningVisible={
           false &&
-          activeSections.includes('assessment') &&
+          activeSections.includes('screening') &&
           section === 'screening'
         }
         isDisqualifyVisible={
           false &&
-          activeSections.includes('assessment') &&
+          activeSections.includes('disqualified') &&
           section === 'disqualified'
         }
         isSelectAllVisible={false}

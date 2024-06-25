@@ -63,10 +63,9 @@ function CreateTask({
   const [selectedPriority, setSelectedPriority] =
     useState<DatabaseEnums['task_priority']>('medium');
   const {
-    interviewPlans: {
-      data: { interview_session },
-    },
+    interviewPlans: { data },
   } = useJob();
+  const interview_session = data?.interview_session;
   useEffect(() => {
     if (interview_session && assignerList) {
       setSelectedSession(

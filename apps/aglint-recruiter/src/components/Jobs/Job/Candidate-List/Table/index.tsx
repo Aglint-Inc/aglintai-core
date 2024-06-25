@@ -13,11 +13,7 @@ import { EmptyList } from './common';
 import ApplicantsList from './list';
 
 export const Table = memo(() => {
-  return (
-    <>
-      <List />
-    </>
-  );
+  return <List />;
 });
 Table.displayName = 'Table';
 

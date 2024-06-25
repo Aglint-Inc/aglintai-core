@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react';
 
 import { useApplications } from '@/src/context/ApplicationsContext';
 
-import ApplicationCard from './card';
+import DNDCard from './card/dndCard';
 import { EmptyList } from './common';
 
 const ApplicantsList = ({
@@ -96,7 +96,7 @@ const ApplicantsList = ({
                     <></>
                   )
                 ) : (
-                  <ApplicationCard application={application} />
+                  <DNDCard application={application} />
                 )}
               </>
             </Stack>

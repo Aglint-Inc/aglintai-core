@@ -1,25 +1,20 @@
-/* eslint-disable security/detect-object-injection */
 import { CircularProgress, Stack } from '@mui/material';
-import { useCallback, useEffect, useMemo } from 'react';
 
 import { JobDetails } from '@/devlink2/JobDetails';
-import { NewTabPill } from '@/devlink3/NewTabPill';
 import Loader from '@/src/components/Common/Loader';
-import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 import { useApplications } from '@/src/context/ApplicationsContext';
-import { useKeyPress } from '@/src/context/ApplicationsContext/hooks';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useJob } from '@/src/context/JobContext';
 import NotFoundPage from '@/src/pages/404';
-import { Application } from '@/src/types/applications.types';
-import { capitalize } from '@/src/utils/text/textUtils';
 
 import { UploadApplications } from '../Common/uploadApplications';
 import { Actions } from './Actions';
+import DNDProvider from './dndProvider';
 import Drawer from './Drawer';
 import Filters from './Filters';
 import { BreadCrumbs } from './layout';
 import { Table } from './Table';
+import Tabs from './Tabs';
 
 const ApplicationsDashboard = () => {
   const { job, jobLoad } = useApplications();
@@ -44,7 +39,7 @@ const ApplicationsComponent = () => {
     ({ setImportPopup, checklist }) => ({ setImportPopup, checklist }),
   );
   return (
-    <>
+    <DNDProvider>
       <JobDetails
         isImportCandidates={job.status === 'published'}
         onclickAddCandidates={{ onClick: () => setImportPopup(true) }}
@@ -61,84 +56,13 @@ const ApplicationsComponent = () => {
           />
         }
         slotBreadcrumb={<BreadCrumbs />}
-        slotTabs={<NewJobDetailsTabs />}
+        slotTabs={<Tabs />}
         slotTable={<Table />}
         isFilterVisible={true}
         slotFilters={checklist.length === 0 ? <Filters /> : <Actions />}
       />
       <Drawer />
       <UploadApplications />
-    </>
-  );
-};
-
-const NewJobDetailsTabs = () => {
-  const { job } = useJob();
-
-  const { section, changeSection } = useApplicationsStore(
-    ({ section, changeSection }) => ({
-      section,
-      changeSection,
-    }),
-  );
-
-  const drawerOpen = useApplicationStore(({ drawer }) => drawer.open);
-
-  const count = useMemo(
-    () => (job?.activeSections ?? []).length,
-    [job?.activeSections],
-  );
-
-  const handleSelectNextSection = useCallback(() => {
-    if (job?.activeSections) {
-      const index = job.activeSections.indexOf(section);
-      changeSection(job.activeSections[(index + 1) % count]);
-    }
-  }, [job?.activeSections, section, count]);
-
-  const handleSelectPrevSection = useCallback(() => {
-    if (job?.activeSections) {
-      const index = job.activeSections.indexOf(section);
-      changeSection(job.activeSections[index - 1 < 0 ? count - 1 : index - 1]);
-    }
-  }, [job?.activeSections, section, count]);
-
-  const { pressed: right } = useKeyPress('ArrowRight');
-  const { pressed: left } = useKeyPress('ArrowLeft');
-
-  useEffect(() => {
-    if (!drawerOpen)
-      if (left) handleSelectPrevSection();
-      else if (right) handleSelectNextSection();
-  }, [drawerOpen, left, right]);
-
-  return (
-    <>
-      {job.activeSections.map((section) => (
-        <SectionCard key={section} status={section} />
-      ))}
-    </>
-  );
-};
-
-const SectionCard = ({ status }: { status: Application['status'] }) => {
-  const { job } = useJob();
-  const { section, changeSection } = useApplicationsStore(
-    ({ section, changeSection }) => ({
-      section,
-      changeSection,
-    }),
-  );
-  return (
-    <Stack onClick={() => changeSection(status)}>
-      <NewTabPill
-        isPillActive={section === status}
-        // slotStartIcon={<SectionIcons section={status} />}
-        // isStartIconVisible={true}
-        isTabCountVisible={true}
-        textLabel={`${capitalize(status)}`}
-        tabCount={`${job.count[status]}`}
-      />
-    </Stack>
+    </DNDProvider>
   );
 };
