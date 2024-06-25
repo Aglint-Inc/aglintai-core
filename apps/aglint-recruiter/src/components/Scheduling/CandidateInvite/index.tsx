@@ -52,6 +52,7 @@ import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import CompanyLogo from '../../Common/CompanyLogo';
+import Footer from '../../Common/Footer';
 import Loader from '../../Common/Loader';
 import { getBreakLabel } from '../../Jobs/Job/Interview-Plan/utils';
 import DateRange from '../../Tasks/Components/DateRange';
@@ -138,7 +139,14 @@ const CandidateInvitePlanPage = () => {
 
   if (!waiting) return <ConfirmedPage rounds={rounds} />;
   return (
-    <CandidateConfirmationPage
+    <Stack sx={{
+    backgroundColor:'var(--sand-3)', 
+    width:'100%', 
+    minHeight:'100vh', 
+    overflow:'auto', 
+    paddingBottom:'24px'} }>
+
+      <CandidateConfirmationPage
       slotCompanyLogo={<Logo />}
       onClickView={{
         onClick: () => {
@@ -163,6 +171,9 @@ const CandidateInvitePlanPage = () => {
         </>
       }
     />
+    <Footer brand={true}/>
+    </Stack>
+    
   );
 };
 
