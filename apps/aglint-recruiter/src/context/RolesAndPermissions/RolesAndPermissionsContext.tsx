@@ -1,16 +1,21 @@
 /* eslint-disable security/detect-object-injection */
 'use client';
-import { DatabaseEnums } from '@aglint/shared-types';
+
 import { createContext, ReactNode, useContext } from 'react';
+
+import { PermissionEnums } from '@/src/utils/routing/permissions';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 
 /* eslint-disable no-unused-vars */
 export type RolesAndPermissionsContextType = {
-  checkPermissions?: (x: DatabaseEnums['permissions_type'][]) => boolean;
+  checkPermissions?: (x: PermissionEnums[]) => boolean;
+  devlinkProps?: (
+    x: PermissionEnums[],
+  ) => { onClick: null; style: { display: 'none' } } | {};
   ifAllowed: <T extends Function | ReactNode>(
     func: T,
-    permission: DatabaseEnums['permissions_type'][],
+    permission: PermissionEnums[],
   ) => T;
 };
 
@@ -54,9 +59,25 @@ export const RolesAndPermissionsProvider = ({
     return (<></>) as typeof func; // Return an empty fragment if func is a React node
   };
 
+  const devlinkProps: RolesAndPermissionsContextType['devlinkProps'] = (
+    permissions,
+  ) => {
+    // eslint-disable-next-line security/detect-object-injection
+    const allow =
+      Boolean(permissions.length) &&
+      permissions.reduce(
+        (prev, curr) => prev && Boolean(userPermissions['permissions'][curr]),
+        true,
+      );
+    if (allow) {
+      return {};
+    }
+    return { onClick: null, style: { display: 'none' } };
+  };
+
   return (
     <RolesAndPermissionsContext.Provider
-      value={{ checkPermissions, ifAllowed }}
+      value={{ checkPermissions, ifAllowed, devlinkProps }}
     >
       {children}
     </RolesAndPermissionsContext.Provider>

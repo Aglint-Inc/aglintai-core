@@ -9,6 +9,8 @@ import { useWorkflowStore } from '@/src/context/Workflows/store';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
+import { WithPermission } from '../../withPermission';
+
 type LayoutProps = React.PropsWithChildren;
 const Layout = (props: LayoutProps) => {
   return (
@@ -43,12 +45,14 @@ const BreadCrumbs = () => {
 const Edit = () => {
   const setPopup = useWorkflowStore(({ setPopup }) => setPopup);
   return (
-    <ButtonSoft
-      size={'2'}
-      iconName={'bolt'}
-      isLeftIcon={true}
-      textButton={'Edit Workflow'}
-      onClickButton={{ onClick: () => setPopup({ open: true }) }}
-    />
+    <WithPermission permission={['workflow_update']}>
+      <ButtonSoft
+        size={'2'}
+        iconName={'bolt'}
+        isLeftIcon={true}
+        textButton={'Edit Workflow'}
+        onClickButton={{ onClick: () => setPopup({ open: true }) }}
+      />
+    </WithPermission>
   );
 };

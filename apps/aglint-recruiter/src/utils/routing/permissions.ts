@@ -4,9 +4,18 @@ import { PATHS } from '@/script/paths';
 
 // import ROUTES from './routes';
 
+type Operations = 'enabled' | 'create' | 'read' | 'update' | 'delete';
+type Modules = 'workflow';
+
+type NewPermissions = `${Modules}_${Operations}`;
+
+export type PermissionEnums =
+  | DatabaseEnums['permissions_type']
+  | NewPermissions;
+
 type Permissions = {
   // eslint-disable-next-line no-unused-vars
-  [id in (typeof PATHS)[number]]: DatabaseEnums['permissions_type'][];
+  [id in (typeof PATHS)[number]]: PermissionEnums[];
 };
 
 const DEFAULT: Permissions = Object.assign(
@@ -20,16 +29,18 @@ const PERMISSIONS: Permissions = {
    * permissions will reduced  using 'and'
    */
   '/tasks': ['tasks_enabled'],
-  '/jobs': ['jobs_enabled'],
-  '/jobs/create': ['jobs_create'],
-  '/jobs/[id]': ['jobs_read'],
-  '/jobs/[id]/job-details': ['jobs_update'],
-  '/jobs/[id]/profile-score': ['jobs_update'],
-  '/jobs/[id]/interview-plan': ['jobs_update'],
-  '/jobs/[id]/assessment': ['jobs_update'],
-  '/jobs/[id]/screening': ['jobs_update'],
+  '/jobs': ['jobs_enabled', 'jobs_read'],
+  '/jobs/create': ['jobs_enabled', 'jobs_read', 'jobs_create'],
+  '/jobs/[id]': ['jobs_enabled', 'jobs_read', 'jobs_read'],
+  '/jobs/[id]/job-details': ['jobs_enabled', 'jobs_read', 'jobs_update'],
+  '/jobs/[id]/profile-score': ['jobs_enabled', 'jobs_read', 'jobs_update'],
+  '/jobs/[id]/interview-plan': ['jobs_enabled', 'jobs_read', 'jobs_update'],
+  '/jobs/[id]/assessment': ['jobs_enabled', 'jobs_read', 'jobs_update'],
+  '/jobs/[id]/screening': ['jobs_enabled', 'jobs_read', 'jobs_update'],
   '/jobs/[id]/hiring-team': ['jobs_update'],
-  '/jobs/[id]/email-templates': ['jobs_update'],
+  '/jobs/[id]/email-templates': ['jobs_enabled', 'jobs_read', 'jobs_update'],
+  '/workflows': ['workflow_enabled', 'workflow_read'],
+  '/workflows/[id]': ['workflow_enabled', 'workflow_read'],
 
   '/scheduling': ['scheduler_enabled'],
 

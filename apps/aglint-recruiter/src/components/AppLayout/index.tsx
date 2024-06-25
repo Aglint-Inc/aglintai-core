@@ -11,9 +11,9 @@ import { NavProfileBlock } from '@/devlink2/NavProfileBlock';
 import { ResponsiveBanner } from '@/devlink2/ResponsiveBanner';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useResizeWindow } from '@/src/context/ResizeWindow/ResizeWindow';
-import { isEnvProd } from '@/src/utils/isEnvProd';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import NotFoundPage from '@/src/pages/404';
+import { isEnvProd } from '@/src/utils/isEnvProd';
 import PERMISSIONS from '@/src/utils/routing/permissions';
 import ROUTES from '@/src/utils/routing/routes';
 
@@ -40,8 +40,6 @@ export default function AppLayout({ children }) {
     queryClient.removeQueries();
     handleLogout();
   };
-
-  const { checkPermissions } = useRolesAndPermissions();
 
   useEffect(() => {
     if (process.env.NODE_ENV === 'production' && windowSize.innerWidth > 991) {
@@ -321,11 +319,12 @@ export default function AppLayout({ children }) {
             ></Stack>
           </Stack>
         </Stack>
-        {checkPermissions(PERMISSIONS[String(router.pathname)]) ? (
+        {children}
+        {/* {checkPermissions(PERMISSIONS[String(router.pathname)]) ? (
           children
         ) : (
           <NotFoundPage />
-        )}
+        )} */}
       </Stack>
     </Stack>
   );
