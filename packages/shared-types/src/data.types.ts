@@ -88,33 +88,6 @@ export type SupportEmailAPIType = {
   email: string;
 } & getMailBodyType;
 
-export type EmailTemplateFields = {
-  body: string;
-  default: boolean;
-  subject: string;
-  fromName: string;
-};
-
-export type EmailTempPath =
-  | 'candidate_availability_request'
-  | 'candidate_invite_confirmation'
-  | 'debrief_calendar_invite'
-  | 'cancel_interview_session'
-  | 'init_email_agent'
-  | 'confirmation_mail_to_organizer'
-  | 'candidate_reschedule_request'
-  | 'candidate_cancel_request'
-  | 'recruiter_rescheduling_email';
-
-export type EmailTemplateType = {
-  interview: EmailTemplateFields;
-  rejection: EmailTemplateFields;
-  application_received: EmailTemplateFields;
-  phone_screening: EmailTemplateFields;
-  interview_resend: EmailTemplateFields;
-  phone_screening_resend: EmailTemplateFields;
-};
-
 export type getNotificationMailBodyType = {
   details: {
     fromEmail: string;

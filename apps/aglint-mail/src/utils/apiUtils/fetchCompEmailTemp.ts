@@ -1,4 +1,4 @@
-import type { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import type { DatabaseEnums } from '@aglint/shared-types';
 import { supabaseWrap, supabaseAdmin } from '../../supabase/supabaseAdmin';
 
 export const fetchCompEmailTemp = async (
@@ -12,6 +12,19 @@ export const fetchCompEmailTemp = async (
       .eq('recruiter_id', recruiter_id)
       .eq('type', mail_type),
   );
-  if (!template) throw new Error('template not found');
-  return template as DatabaseTable['company_email_template'];
+  return template;
+};
+
+export const fetchJobEmailTemp = async (
+  job_id: string,
+  mail_type: DatabaseEnums['email_slack_types'],
+) => {
+  const [template] = supabaseWrap(
+    await supabaseAdmin
+      .from('job_email_template')
+      .select()
+      .eq('job_id', job_id)
+      .eq('type', mail_type),
+  );
+  return template;
 };
