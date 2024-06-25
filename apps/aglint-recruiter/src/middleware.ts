@@ -30,7 +30,7 @@ export async function middleware(request: NextRequest) {
       request.headers.append('x-requester-rec_id', rec_id);
       request.headers.append('x-requester-role', role);
     } else {
-      return NextResponse.redirect(new URL('/api/unauthorized', request.url));
+      return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
     }
   } else {
     // not login
