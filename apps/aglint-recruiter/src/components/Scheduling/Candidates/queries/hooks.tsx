@@ -1,4 +1,4 @@
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -11,7 +11,7 @@ export const useAllInterviewSchedules = ({ page, filter, rec_id }) => {
   const query = useQuery({
     queryKey: ['all_candidates_schedules', { page }, { filter }],
     queryFn: () => fetchInterviewData({ page, filter, rec_id }),
-    placeholderData: keepPreviousData,
+    placeholderData: [],
     refetchOnWindowFocus: false,
   });
   return query;

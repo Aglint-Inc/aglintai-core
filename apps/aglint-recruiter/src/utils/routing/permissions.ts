@@ -59,10 +59,15 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/fetch_activities': ['scheduler_enabled'],
   '/api/scheduling/get_interview_modules': ['scheduler_enabled'],
   '/api/scheduling/fetch_interview_module_by_id': ['scheduler_enabled'],
+  '/api/scheduling/get_interview_plans': ['scheduler_enabled'],
   // scheduling application apis
   '/api/scheduling/application/sendtocandidate': ['scheduler_enabled'],
   '/api/scheduling/application/cancelschedule': ['scheduler_enabled'],
   '/api/scheduling/application/candidatesessioncache': ['scheduler_enabled'],
+  '/api/scheduling/application/schedulewithagentwithouttaskid': [
+    'scheduler_enabled',
+  ],
+  '/api/scheduling/application/schedulewithagent': ['scheduler_enabled'],
   //v1 apis
   '/api/scheduling/v1/get-candidate-selected-slots': ['scheduler_enabled'],
   '/api/scheduling/v1/event_attendee_status': ['scheduler_enabled'],
@@ -70,11 +75,11 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/request_availability/getCandidateRequestData': [
     'scheduler_enabled',
   ],
+
   '/api/scheduling/request_availability/getTaskIdDetailsByRequestId': [
     'scheduler_enabled',
   ],
   '/api/scheduling/get_interviewer_and_modules': ['scheduler_enabled'],
-
   '/api/scheduling/request_availability/insertScheduleActivities': [
     'scheduler_enabled',
   ],

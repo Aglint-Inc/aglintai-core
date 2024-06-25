@@ -18,6 +18,7 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { fetchInterviewMeetingProgresstask } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { supabase } from '@/src/utils/supabase/client';
+import { capitalize } from '@/src/utils/text/textUtils';
 
 import { EmailAgentIcon } from '../../../Components/EmailAgentIcon';
 import { PhoneAgentIcon } from '../../../Components/PhoneAgentIcon';
@@ -115,7 +116,7 @@ function SubTaskProgress() {
                     isTaskProgressVisible={true}
                     textTask={
                       <>
-                        {item.progress_type}
+                        {capitalize(item.progress_type)}
                         <ProgressTitle
                           title={item.title}
                           titleMetaData={item.title_meta}

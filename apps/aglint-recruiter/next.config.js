@@ -22,20 +22,23 @@ const nextConfig = {
     ];
   },
   async redirects() {
-    return [
+    const redirects = [
       {
         source: '/',
         destination: '/login',
         basePath: false,
         permanent: false,
       },
-      {
+    ];
+    if (process.env.NODE_ENV === 'production') {
+      redirects.push({
         source: '/signup',
         destination: '/login',
         basePath: false,
         permanent: false,
-      },
-    ];
+      });
+    }
+    return redirects;
   },
   images: {
     domains: ['uploads-ssl.webflow.com'],
