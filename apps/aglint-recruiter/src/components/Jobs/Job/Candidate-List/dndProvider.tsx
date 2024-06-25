@@ -9,13 +9,13 @@ import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useMousePosition } from '@/src/hooks/useMousePosition';
 
-const DNDList = (props: PropsWithChildren) => {
+const DNDProvider = (props: PropsWithChildren) => {
   const count = useApplicationsStore(({ checklist }) => checklist.length);
   if (count === 0) return <>{props.children}</>;
   return <DNDLayer>{props.children}</DNDLayer>;
 };
 
-export default DNDList;
+export default DNDProvider;
 
 const DNDLayer = (props: PropsWithChildren) => {
   return (
@@ -81,7 +81,7 @@ const CustomDragLayer = ({ x }: { x: number }) => {
 const DragCard = () => {
   const count = useApplicationsStore(({ checklist }) => checklist.length);
   return (
-    <Stack style={{ width: '200px' }}>
+    <Stack style={{ width: '180px' }}>
       <DragPill
         textLabel={`Move ${count} candidate${count === 1 ? '' : 's'}`}
       />

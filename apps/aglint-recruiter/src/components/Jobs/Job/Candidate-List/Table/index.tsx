@@ -10,15 +10,10 @@ import { useKeyPress } from '@/src/hooks/useKeyPress';
 
 import { Loader } from '../../Common/candidateDrawer/common';
 import { EmptyList } from './common';
-import DNDList from './dndList';
 import ApplicantsList from './list';
 
 export const Table = memo(() => {
-  return (
-    <DNDList>
-      <List />
-    </DNDList>
-  );
+  return <List />;
 });
 Table.displayName = 'Table';
 
