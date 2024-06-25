@@ -1,7 +1,10 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
+import {
+  fetchCompEmailTemp,
+  fetchJobEmailTemp,
+} from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 
 export async function fetchUtil(
@@ -11,7 +14,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company,recruiter)',
+        'candidates(first_name,last_name,email,recruiter_id,recruiter(logo)),public_jobs(id,job_title,company,recruiter)',
       )
       .eq('id', req_body.application_id),
   );
@@ -34,8 +37,8 @@ export async function fetchUtil(
     public_jobs: { company, job_title },
   } = candidateJob;
 
-  const comp_email_temp = await fetchCompEmailTemp(
-    recruiter_id,
+  const comp_email_temp = await fetchJobEmailTemp(
+    candidateJob.public_jobs.id,
     'applicantReject_email_applicant',
   );
 

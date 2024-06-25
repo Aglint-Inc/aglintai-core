@@ -9,7 +9,9 @@ export const fillCompEmailTemplate = <
   T extends DatabaseEnums['email_slack_types'],
 >(
   dynamic_fields: EmailTemplateAPi<T>['comp_email_placeholders'],
-  email_template: DatabaseTable['company_email_template'],
+  email_template:
+    | DatabaseTable['company_email_template']
+    | DatabaseTable['job_email_template'],
 ) => {
   const updated_template = { ...email_template };
   if (!updated_template.from_name) {
