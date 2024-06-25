@@ -56,6 +56,8 @@ const ResumePreviewer = ({
             <BookMark
               isBookMarked={bookmark.isBookmarked}
               onClickBookmark={{ onClick: () => bookmark.handleBookmark() }}
+              isDarkIconVisible={true}
+              isLightIconVisible={false}
             />
           )
         }
