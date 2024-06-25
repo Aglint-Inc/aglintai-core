@@ -120,7 +120,7 @@ export function SchedulingDashboard({
       >
         {slotScheduleCount ?? <ScheduleCountStats />}
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "sd_row_6")} tag="div">
+      <_Builtin.Block className={_utils.cx(_styles, "sd_row_5")} tag="div">
         <_Builtin.Block
           id={_utils.cx(
             _styles,
@@ -146,21 +146,6 @@ export function SchedulingDashboard({
               </>
             )}
           </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "sd_card_with_number")}
-          id={_utils.cx(
-            _styles,
-            "w-node-_339a57db-5c0d-724d-c085-cf060b322c4d-aa8c5b1c"
-          )}
-          tag="div"
-        >
-          {slotsCradsWithNumber ?? (
-            <>
-              <CardWithNumber />
-              <CardWithNumber />
-            </>
-          )}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "sd_row_2")} tag="div">

@@ -46,6 +46,14 @@
   cursor: pointer;
 }
 
+.ssp-close-wrap.cursor-pointer.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
 .icons {
   display: flex;
   flex-direction: column;

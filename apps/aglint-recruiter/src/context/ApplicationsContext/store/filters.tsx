@@ -4,7 +4,9 @@ import { Application } from '@/src/types/applications.types';
 import { CreateSlice } from '.';
 
 type Sort = {
-  type: keyof Pick<Application, 'resume_score' | 'applied_at' | 'name'>;
+  type:
+    | keyof Pick<Application, 'resume_score' | 'applied_at' | 'name'>
+    | 'location';
   order: 'asc' | 'desc';
 };
 
@@ -42,11 +44,11 @@ export type FilterSortSlice = {
 };
 
 const initialFilters: Filters = {
-  bookmarked: false,
   search: '',
-  badges: [],
+  bookmarked: false,
   locations: [],
   resume_score: [],
+  badges: [],
 };
 
 const initialSort: Sort = {

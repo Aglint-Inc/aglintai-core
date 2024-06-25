@@ -7,4 +7,5 @@ declare function ScheduleReasonSection(props: {
   textHeading?: React.ReactNode;
   textDesc?: React.ReactNode;
   onClickAdd?: Types.Devlink.RuntimeProps;
+  slotAddButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -104,7 +104,7 @@ const Filters = () => {
   const component = useMemo(
     () => (
       <FilterHeader
-        filters={[...safeFilters, Locations, bookmarkedButton]}
+        filters={[bookmarkedButton, ...safeFilters, Locations]}
         sort={safeSort}
         search={{
           value: search,
@@ -171,4 +171,5 @@ const sortTypes: ApplicationsStore['sort']['type'][] = [
   'applied_at',
   'name',
   'resume_score',
+  'location',
 ];

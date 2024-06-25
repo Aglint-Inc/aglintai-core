@@ -137,14 +137,6 @@
   }
 }
 
-.max-width-700 {
-  max-width: 700px;
-}
-
-.text-align-center {
-  text-align: center;
-}
-
 .div-block-991 {
   display: grid;
   grid-auto-columns: 1fr;

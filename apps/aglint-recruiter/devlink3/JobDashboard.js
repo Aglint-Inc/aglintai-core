@@ -231,7 +231,7 @@ export function JobDashboard({
               className={_utils.cx(_styles, "div-block-1606")}
               tag="div"
             >
-              <Text content="" />
+              <Text content="Upcoming Schedules" weight="medium" />
               {isViewScheduleVisible ? (
                 <_Builtin.Block
                   className={_utils.cx(
