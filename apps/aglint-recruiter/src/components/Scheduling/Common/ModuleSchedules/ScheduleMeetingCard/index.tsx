@@ -57,7 +57,7 @@ function ScheduleMeetingCard({
             },
           }}
           isDropdownIconVisible={interviewers.length > 0}
-          isMembersListVisible={interviewers.length > 0}
+          isMembersListVisible={interviewers.length > 0 && collapseOpen}
           slotMembersList={
             <>
               <Collapse in={collapseOpen}>
@@ -132,6 +132,16 @@ function ScheduleMeetingCard({
           textDuration={getBreakLabel(
             meetingDetails.interview_meeting.session_duration,
           )}
+          slotAvatarWithName={<AvatarWithName
+            isAvatarVisible={false}
+            isCandidateIconVisible={true}
+            textName={getFullName(
+              meetingDetails.candidate.first_name,
+              meetingDetails.candidate.last_name,
+            )}
+          
+          />}
+          isAvatarWithNameVisible={!collapseOpen}
           textJob={
             <Stack
               direction={'row'}
@@ -139,14 +149,8 @@ function ScheduleMeetingCard({
               spacing={'var(--space-5)'}
             >
               <span>{meetingDetails?.interview_meeting?.job_title}</span>
-              <AvatarWithName
-                isAvatarVisible={false}
-                isCandidateIconVisible={true}
-                textName={getFullName(
-                  meetingDetails.candidate.first_name,
-                  meetingDetails.candidate.last_name,
-                )}
-              />
+              
+              
             </Stack>
           }
           bgColorProps={{
