@@ -11,19 +11,20 @@ const ResumePreviewer = ({
   url,
   name,
   bookmark = null,
-  handleUp = null,
-  handleDown = null,
+  navigation = null,
 }: {
   open: boolean;
   onClose: () => void;
   id: string;
   name: string;
   url: string;
-  handleUp?: () => void;
-  handleDown?: () => void;
   bookmark?: {
     isBookmarked: boolean;
     handleBookmark: () => void;
+  };
+  navigation?: {
+    handleUp: () => void;
+    handleDown: () => void;
   };
 }) => {
   return (
@@ -47,20 +48,22 @@ const ResumePreviewer = ({
         key={id}
         textName={name}
         onClickDown={{
-          style: { display: handleDown ? 'flex' : 'none' },
-          onClick: () => handleDown(),
+          style: { display: navigation?.handleDown ? 'flex' : 'none' },
+          onClick: () => navigation?.handleDown(),
         }}
         slotBookmark={
           bookmark && (
             <BookMark
               isBookMarked={bookmark.isBookmarked}
               onClickBookmark={{ onClick: () => bookmark.handleBookmark() }}
+              isDarkIconVisible={true}
+              isLightIconVisible={false}
             />
           )
         }
         onClickUp={{
-          style: { display: handleUp ? 'flex' : 'none' },
-          onClick: () => handleUp(),
+          style: { display: navigation?.handleUp ? 'flex' : 'none' },
+          onClick: () => navigation?.handleUp(),
         }}
         onClickClose={{ onClick: () => onClose() }}
         slotResume={

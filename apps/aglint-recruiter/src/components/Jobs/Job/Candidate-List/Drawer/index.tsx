@@ -99,9 +99,11 @@ const Drawer = () => {
             meta,
             tabs,
           }}
-          handleUp={handleSelectPrevApplication}
-          handleDown={handleSelectNextApplication}
           showResumePreviewActions={true}
+          navigation={{
+            handleUp: handleSelectPrevApplication,
+            handleDown: handleSelectNextApplication,
+          }}
         >
           <Application.Body
             topBar={

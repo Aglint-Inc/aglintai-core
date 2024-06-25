@@ -100,10 +100,11 @@ const EditMember = ({
       temp.role = true;
       flag = true;
     }
-    if (!form.manager_id || form.manager_id.trim() === '') {
-      temp.manager = true;
-      flag = true;
-    }
+      if (!form.manager_id || form.manager_id.trim() === '') {
+        temp.manager = true;
+        flag = true;
+      }
+    
     if (flag) {
       setFormError(temp);
       setIsDisable(false);
