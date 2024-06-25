@@ -46,7 +46,9 @@ function Overview({
                 },
               }}
             />
-          ) : null
+          ) : (
+            <></>
+          )
         }
         slotButtonTraining={
           trainingModulesList.length ? (
@@ -61,7 +63,9 @@ function Overview({
                 },
               }}
             />
-          ) : null
+          ) : (
+            <></>
+          )
         }
         slotUpcomingSchedule={
           upcomingScheduleList.length > 0 ? (
