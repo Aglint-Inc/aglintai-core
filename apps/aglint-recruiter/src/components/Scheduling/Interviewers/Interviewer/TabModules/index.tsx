@@ -70,7 +70,7 @@ function TabInterviewModules({
                 </Stack>
               </>
             ) : (
-              <AllInterviewEmpty textDynamic='No Interview Types Added Yet' />
+              <AllInterviewEmpty textDynamic='No interview types added yet.' />
             )}
           </>
         }

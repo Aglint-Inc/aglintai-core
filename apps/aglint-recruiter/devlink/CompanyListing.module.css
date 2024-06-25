@@ -349,10 +349,10 @@
 
 .company-list-link-wrappers {
   display: flex;
-  margin-top: 20px;
+  margin-top: var(--space-3);
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 @media screen and (max-width: 767px) {

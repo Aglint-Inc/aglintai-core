@@ -20,7 +20,6 @@ import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import AssigneeChip from '../../Components/AssigneeChip';
-import StatusChip from '../../Components/StatusChip';
 import TaskStatusTag from '../../Components/TaskStatusTag';
 import { useTaskStatesContext } from '../../TaskStatesContext';
 

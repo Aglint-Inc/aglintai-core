@@ -29,7 +29,7 @@ function TraininingModules({
           );
         })
       ) : (
-        <AllInterviewEmpty textDynamic='No Interview Types Found' />
+        <AllInterviewEmpty textDynamic='No interview types found.' />
       )}
     </>
   );
