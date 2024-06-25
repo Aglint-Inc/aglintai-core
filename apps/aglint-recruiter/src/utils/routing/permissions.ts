@@ -43,7 +43,9 @@ const PERMISSIONS: Permissions = {
   '/workflows/[id]': ['workflow_enabled', 'workflow_read'],
 
   '/scheduling': ['scheduler_enabled'],
-
+  '/scheduling/module/members/[module_id]': ['scheduler_enabled'],
+  '/scheduling/interviewer/[member_id]': ['scheduler_enabled'],
+  '/scheduling/application/[application_id]': ['scheduler_enabled'],
   '/company': ['company_setting_enabled'],
 
   /** Any one of the permission is required to access this apis
@@ -58,7 +60,8 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/fetch_interview_module_by_id': ['scheduler_enabled'],
   // scheduling application apis
   '/api/scheduling/application/sendtocandidate': ['scheduler_enabled'],
-  '/scheduling/application/[application_id]': ['scheduler_enabled'],
+  '/api/scheduling/application/cancelschedule': ['scheduler_enabled'],
+  '/api/scheduling/application/candidatesessioncache': ['scheduler_enabled'],
   //v1 apis
   '/api/scheduling/v1/get-candidate-selected-slots': ['scheduler_enabled'],
   // request availability apis
@@ -68,6 +71,8 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/request_availability/getTaskIdDetailsByRequestId': [
     'scheduler_enabled',
   ],
+  '/api/scheduling/get_interviewer_and_modules': ['scheduler_enabled'],
+ 
   '/api/scheduling/request_availability/insertScheduleActivities': [
     'scheduler_enabled',
   ],
