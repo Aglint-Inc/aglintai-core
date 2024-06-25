@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+// import { replaceAll } from '@aglint/shared-utils';
 var fs = require("fs");
 var path = require("path");
 function processDirectory(rootDirs, outputFiles) {
@@ -42,7 +43,7 @@ function processDirectory(rootDirs, outputFiles) {
     outputFiles.forEach(function (item) {
         var _a;
         var tempResult = ((_a = item.filter) === null || _a === void 0 ? void 0 : _a.call(item, item.filter(result))) || result;
-        fs.writeFileSync(item.path, "export const ".concat(item.objectName, " = [\n").concat(tempResult.map(function (item) { return "'" + item + "'"; }).join(',\n'), "\n] as const"), 'utf-8');
+        fs.writeFileSync(item.path, "export const ".concat(item.objectName, " = [\n").concat(tempResult.map(function (item) { return "'" + replaceAll(item, '\\', '/') + "'"; }).join(',\n'), "\n] as const"), 'utf-8');
     });
 }
 // const args = process.argv.slice(2);
@@ -68,3 +69,7 @@ processDirectory(rootDirectory, [
         filter: function (x) { return x.filter(function (item) { return item.startsWith('/api'); }); },
     },
 ]);
+function replaceAll(str, find, replace) {
+    // Split the string by the find substring and join the parts with the replace substring
+    return str.split(find).join(replace);
+}

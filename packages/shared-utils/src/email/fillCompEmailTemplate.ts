@@ -4,6 +4,7 @@ import type {
   DatabaseTable,
   EmailTemplateAPi,
 } from '@aglint/shared-types';
+import { replaceAll } from '../replaceAll';
 
 export const fillCompEmailTemplate = <
   T extends DatabaseEnums['email_slack_types'],
@@ -19,18 +20,21 @@ export const fillCompEmailTemplate = <
   }
 
   for (const key of Object.keys(dynamic_fields)) {
-    updated_template.subject = updated_template.subject.replace(
-      new RegExp(`{{${key}}}`, 'g'),
+    updated_template.from_name = replaceAll(
+      updated_template.from_name,
+      `{{${key}}}`,
       // @ts-ignore
       dynamic_fields[String(key)]
     );
-    updated_template.body = updated_template.body.replace(
-      new RegExp(`{{${key}}}`, 'g'),
+    updated_template.subject = replaceAll(
+      updated_template.subject,
+      `{{${key}}}`,
       // @ts-ignore
       dynamic_fields[String(key)]
     );
-    updated_template.from_name = updated_template.from_name.replace(
-      new RegExp(`{{${key}}}`, 'g'),
+    updated_template.body = replaceAll(
+      updated_template.body,
+      `{{${key}}}`,
       // @ts-ignore
       dynamic_fields[String(key)]
     );
