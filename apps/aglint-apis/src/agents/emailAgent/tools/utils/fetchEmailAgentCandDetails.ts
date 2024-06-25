@@ -5,8 +5,12 @@ import {getFullName} from '../../../../utils/getFullName';
 import {EmailAgentPayload} from '../../../../types/email_agent/apiPayload.types';
 import {DatabaseTable, EmailTemplateAPi} from '@aglint/shared-types';
 import {envConfig} from 'src/config';
-import {DAYJS_FORMATS, ScheduleUtils, supabaseWrap} from '@aglint/shared-utils';
-import {fillCompEmailTemplate} from '@aglint/shared-utils/src/email/fillCompEmailTemplate';
+import {
+  DAYJS_FORMATS,
+  ScheduleUtils,
+  fillCompEmailTemplate,
+  supabaseWrap,
+} from '@aglint/shared-utils';
 
 export const fetchEmailAgentCandDetails = async (
   thread_id: string,
