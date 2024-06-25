@@ -5,7 +5,7 @@ import {
   NextApiRequest,
   NextApiResponse,
 } from '@/src/interface/NextApiRequest.interface';
-import { apiRequestResponseFactory } from '@/src/utils/apiUtils/responseFactory';
+import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
 
 import { API_getMembersWithRole } from './type';
 
@@ -18,7 +18,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const apiMethod = apiRequestResponseFactory<API_getMembersWithRole>(req, res);
+  const apiMethod = apiRequestHandlerFactory<API_getMembersWithRole>(req, res);
   return apiMethod('GET', async ({ requesterDetails }) => {
     const rec_id = requesterDetails.recruiter_id;
     if (!rec_id) {

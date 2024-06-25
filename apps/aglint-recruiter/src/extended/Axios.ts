@@ -6,7 +6,7 @@ import axios, {
 } from 'axios';
 
 import { API_PATHS } from '../constant/apiPaths';
-import { ApiInterface } from '../utils/apiUtils/api.type';
+import { ApiInterface } from '../interface/NextApiRequest.interface';
 
 export default class CustomAxios {
   private _axios: AxiosStatic;
