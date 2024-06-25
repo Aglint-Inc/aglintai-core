@@ -40,6 +40,16 @@ function SubTaskProgress() {
   const selectedTask = tasks.find((ele) => ele.id === router.query?.task_id);
   const { data: sessionList } = useSessionsList();
 
+  function formatString(inputString) {
+    // Split the string by underscores
+    let words = inputString.split('_');
+    // Capitalize the first letter of each word and join them with spaces
+    let formattedString = words
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+    return formattedString;
+  }
+
   return (
     <>
       <FollowUp />
@@ -115,7 +125,7 @@ function SubTaskProgress() {
                     isTaskProgressVisible={true}
                     textTask={
                       <>
-                        {item.progress_type}
+                        {formatString(item.progress_type)}
                         <ProgressTitle
                           title={item.title}
                           titleMetaData={item.title_meta}
