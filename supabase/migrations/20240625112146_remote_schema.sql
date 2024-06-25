@@ -6,6 +6,8 @@ drop view if exists "public"."tasks_view";
 
 drop view if exists "public"."workflow_view";
 
+DROP TABLE IF EXISTS "public"."job_email_template";
+
 create table "public"."job_email_template" (
     "id" uuid not null default gen_random_uuid(),
     "created_at" timestamp with time zone not null default now(),
@@ -17,9 +19,9 @@ create table "public"."job_email_template" (
 );
 
 
-alter table "public"."public_jobs" drop column "email_template";
+-- alter table "public"."public_jobs" drop column "email_template";
 
-alter table "public"."recruiter" drop column "email_template";
+-- alter table "public"."recruiter" drop column "email_template";
 
 CREATE UNIQUE INDEX job_email_template_pkey ON public.job_email_template USING btree (id);
 
@@ -895,6 +897,8 @@ grant trigger on table "public"."job_email_template" to "service_role";
 grant truncate on table "public"."job_email_template" to "service_role";
 
 grant update on table "public"."job_email_template" to "service_role";
+
+DROP TRIGGER IF EXISTS jobs_email_template_insert_trigger ON public.public_jobs;
 
 CREATE TRIGGER jobs_email_template_insert_trigger AFTER INSERT ON public.public_jobs FOR EACH ROW EXECUTE FUNCTION job_email_template_init();
 
