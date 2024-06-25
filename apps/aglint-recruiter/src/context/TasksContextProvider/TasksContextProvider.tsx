@@ -99,19 +99,19 @@ const reducerInitialState: TasksReducerType = {
       options: [
         {
           id: 'ACTION_NEEDED' as indicatorType,
-          label: 'ACTION_NEEDED',
+          label: 'Action Needed',
         },
-        { id: 'BOOKED' as indicatorType, label: 'BOOKED' },
+        { id: 'BOOKED' as indicatorType, label: 'Booked' },
         {
           id: 'AWAITING_RESPONSE' as indicatorType,
-          label: 'AWAITING_RESPONSE',
+          label: 'Awaiting Response',
         },
-        { id: 'NO_RESPONSE' as indicatorType, label: 'NO_RESPONSE' },
+        { id: 'NO_RESPONSE' as indicatorType, label: 'No Response' },
         {
           id: 'READY_TO_SCHEDULE' as indicatorType,
-          label: 'READY_TO_SCHEDULE',
+          label: 'Ready to Schedule',
         },
-        { id: 'UNKNOWN_STATUS' as indicatorType, label: 'UNKNOWN_STATUS' },
+        { id: 'UNKNOWN_STATUS' as indicatorType, label: 'Unknown Status' },
       ],
       values: [],
     },
