@@ -2,7 +2,7 @@
 import { Stack } from '@mui/material';
 
 import { CandidateDetail } from '@/devlink/CandidateDetail';
-import { CandidateSkillPills } from '@/devlink/CandidateSkillPills';
+import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { Skeleton } from '@/devlink2/Skeleton';
 import { GlobalIcon } from '@/devlink3/GlobalIcon';
 import { useApplication } from '@/src/context/ApplicationContext';
@@ -64,15 +64,10 @@ const Skill = () => {
   return (
     <>
       {skills.map((skill, i) => (
-        <CandidateSkillPills
+        <GlobalBadge
           key={i}
-          textSkill={skill}
-          propsBgColor={{
-            style: {
-              backgroundColor:
-                relevance[skill] === 'high' && 'rgba(248, 249, 249, 1)',
-            },
-          }}
+          textBadge={skill}
+          color={relevance[skill] === 'high' ? 'purple' : 'neutral'}
         />
       ))}
     </>
