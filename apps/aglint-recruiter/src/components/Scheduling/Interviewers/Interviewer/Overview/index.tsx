@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { Dispatch } from 'react';
 
+import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview';
 
@@ -32,20 +33,36 @@ function Overview({
   return (
     <>
       <InterviewerDetailOverview
-        onClickViewAllModule={{
-          onClick: () => {
-            router.push(
-              `/scheduling/interviewer/${detailsWithCount.interviewer.user_id}?tab=interviewtypes`,
-            );
-          },
-        }}
-        onClickViewAllSchedule={{
-          onClick: () => {
-            router.push(
-              `/scheduling/interviewer/${detailsWithCount.interviewer.user_id}?tab=allschedules`,
-            );
-          },
-        }}
+        slotButtonSchedule={
+          upcomingScheduleList.length ? (
+            <ButtonSurface
+              textButton='View all'
+              size={1}
+              onClickButton={{
+                onClick: () => {
+                  router.push(
+                    `/scheduling/interviewer/${detailsWithCount.interviewer.user_id}?tab=allschedules`,
+                  );
+                },
+              }}
+            />
+          ) : null
+        }
+        slotButtonTraining={
+          trainingModulesList.length ? (
+            <ButtonSurface
+              textButton='View all'
+              size={1}
+              onClickButton={{
+                onClick: () => {
+                  router.push(
+                    `/scheduling/interviewer/${detailsWithCount.interviewer.user_id}?tab=interviewtypes`,
+                  );
+                },
+              }}
+            />
+          ) : null
+        }
         slotUpcomingSchedule={
           upcomingScheduleList.length > 0 ? (
             upcomingScheduleList.map((meetingDetails, i) => {
