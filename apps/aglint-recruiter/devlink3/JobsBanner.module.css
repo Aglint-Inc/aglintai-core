@@ -29,28 +29,11 @@
   grid-row-gap: var(--space-1);
 }
 
-.icons {
+.warning-icon-wrap {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.icons.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.icons.pointer {
-  cursor: pointer;
+  color: var(--error-11);
 }
 
 .jb-desc-wrap {
