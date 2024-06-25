@@ -11,7 +11,12 @@ const Drawer = () => {
     interviewPlans: { data: interviewPlans },
   } = useJob();
 
-  const { job, sectionApplication } = useApplications();
+  const {
+    job,
+    sectionApplication,
+    handleSelectPrevApplication,
+    handleSelectNextApplication,
+  } = useApplications();
 
   const {
     drawer: { open, application_id },
@@ -94,6 +99,9 @@ const Drawer = () => {
             meta,
             tabs,
           }}
+          handleUp={handleSelectPrevApplication}
+          handleDown={handleSelectNextApplication}
+          showResumePreviewActions={true}
         >
           <Application.Body
             topBar={

@@ -22,7 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     console.log();
 
-    if (!(meeting_id && session_id && reason && notes && cancel_user_id)) {
+    if (!(meeting_id && session_id && reason && cancel_user_id)) {
       return res.status(400).send('Missing required fields');
     }
 

@@ -80,7 +80,7 @@ const rootDirectory = {
     appRouter: false,
   },
   '../aglint-mail/src/app/api': {
-    basePath: 'api/emails',
+    basePath: '/api/emails',
     appRouter: true,
   },
 };

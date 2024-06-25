@@ -51,6 +51,7 @@ const PERMISSIONS: Permissions = {
   /** Any one of the permission is required to access this apis
    * permission will reduced  using 'or'
    */
+  '/api/scheduling/get_interview_plans': ['scheduler_enabled'],
   '/api/getMembersWithRole': ['jobs_read'], //change to correct permission
   '/api/get_last_login': ['jobs_read'], //change to correct permission
   '/api/scheduling/fetchUserDetails': ['scheduler_enabled'],
@@ -88,6 +89,14 @@ const PERMISSIONS: Permissions = {
     'scheduler_enabled',
   ],
   '/api/scheduling/get_interview_training_progress': ['scheduler_enabled'],
+  // request availability mail apis
+  '/api/emails/sendAvailabilityRequest_email_applicant': ['scheduler_enabled'],
+  '/api/emails/sendAvailReqReminder_email_applicant': ['scheduler_enabled'],
+  '/api/emails/selfScheduleReminder_email_applicant': ['scheduler_enabled'],
+  '/api/emails/availabilityReqResend_email_candidate': ['scheduler_enabled'],
+  '/api/scheduling/v1/booking/confirm-recruiter-selected-option': [
+    'scheduler_enabled',
+  ],
 };
 
 export default PERMISSIONS;

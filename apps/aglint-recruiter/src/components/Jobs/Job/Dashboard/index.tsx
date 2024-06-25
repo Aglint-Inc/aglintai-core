@@ -207,7 +207,7 @@ const Dashboard = () => {
     push(`/jobs/${job.id}/candidate-list`);
   };
 
-  const banners = useBanners({ publishButton });
+  const banners = useBanners();
 
   return (
     <>
@@ -580,11 +580,7 @@ const Schedules = () => {
   );
 };
 
-const useBanners = ({
-  publishButton,
-}: {
-  publishButton: React.JSX.Element;
-}) => {
+const useBanners = () => {
   const { push } = useRouter();
   const {
     publishStatus,
@@ -600,8 +596,7 @@ const useBanners = ({
     }),
   );
   const banners: React.JSX.Element[] = [];
-  if (job.status === 'draft')
-    banners.push(<JobsBanner slotButton={publishButton} />);
+  if (job.status === 'draft') banners.push(<JobsBanner />);
   if (isInterviewPlanDisabled && !dismissWarnings.interview_plan)
     banners.push(
       <DashboardWarning
@@ -637,7 +632,7 @@ const useBanners = ({
   if (isInterviewSessionEmpty && !dismissWarnings.interview_session)
     banners.push(
       <DashboardWarning
-        textWarningTitle={'Interview sessions not set'}
+        textWarningTitle={'Interview plan not set'}
         textDesc={
           'Add one or more interview types to create an interview plan.'
         }
