@@ -44,11 +44,11 @@ export type FilterSortSlice = {
 };
 
 const initialFilters: Filters = {
-  bookmarked: false,
   search: '',
-  badges: [],
+  bookmarked: false,
   locations: [],
   resume_score: [],
+  badges: [],
 };
 
 const initialSort: Sort = {
