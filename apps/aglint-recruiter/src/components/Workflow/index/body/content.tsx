@@ -27,6 +27,7 @@ export default Content;
 const Cards = (props: {
   data: ReturnType<typeof useWorkflows>['workflows']['data'];
 }) => {
+  const { devlinkProps } = useWorkflows();
   const { push } = useRouter();
   const { filters, setDeletion } = useWorkflowStore(
     ({ filters, setDeletion }) => ({ filters, setDeletion }),
@@ -67,6 +68,7 @@ const Cards = (props: {
                 jobCount === 0
                   ? handleDeleteWorkflow({ id })
                   : setDeletion({ open: true, workflow: { id, jobs } }),
+              ...devlinkProps.delete,
             }}
             onClickEdit={{
               onClick: () => push(ROUTES['/workflows/[id]']({ id })),

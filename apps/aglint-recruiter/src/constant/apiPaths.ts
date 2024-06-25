@@ -58,7 +58,6 @@ export const API_PATHS = [
 '/api/emails/styles',
 '/api/emails/utils',
 '/api/encryptData',
-'/api/example',
 '/api/fetchCompanyDetails',
 '/api/generateVideo',
 '/api/getLinkedin',
@@ -162,6 +161,7 @@ export const API_PATHS = [
 '/api/supabase/getCandidate-files',
 '/api/support/email',
 '/api/support/notificationEmail',
+'/api/unauthorized',
 '/api/updateUsers',
 '/api/webhook',
 '/api/workflow-cron'

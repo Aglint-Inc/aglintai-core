@@ -1,6 +1,8 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-
-import { ApiInterface } from './api.type';
+import {
+  ApiInterface,
+  NextApiRequest,
+  NextApiResponse,
+} from '@/src/interface/NextApiRequest.interface';
 
 /**
  * Returns a function that sends a response with the given data and error, or an error message if the status is 500.

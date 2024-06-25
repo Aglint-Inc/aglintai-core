@@ -545,8 +545,8 @@ export const scheduleWithAgent = async ({
           rec_user_phone,
           dateRange,
           session_ids,
-          recruiter_id,
           recruiter_user_id: rec_user_id,
+          recruiter_id,
         });
       }
       return true;

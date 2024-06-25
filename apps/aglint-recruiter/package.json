@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "npm run dev:build && next dev",
+    "dev": "npm run get-path && npm run dev:build && next dev",
     "build": "next build",
     "start": "next start",
     "dev:build": "npm run build --workspace=@aglint/shared-utils",

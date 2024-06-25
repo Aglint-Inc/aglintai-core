@@ -7,6 +7,8 @@ import JobsProvider from '../context/JobsContext';
 import ScreenSizeProvider from '../context/ResizeWindow/ResizeWindow';
 import Theme from '../context/Theme/Theme';
 import { QueryProvider } from '../queries';
+import { RolesAndPermissionsProvider } from '../context/RolesAndPermissions/RolesAndPermissionsContext';
+import AppLayout from '../components/AppLayout';
 
 const BuildProviderTree = (providers) => {
   return ({ children }) => {
@@ -24,7 +26,9 @@ const Providers = BuildProviderTree([
   ScreenSizeProvider,
   QueryProvider,
   AuthProvider,
+  RolesAndPermissionsProvider,
   JobsProvider,
+  AppLayout,
 ]);
 
 export default Providers;

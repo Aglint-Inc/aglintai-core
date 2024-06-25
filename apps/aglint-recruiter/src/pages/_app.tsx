@@ -10,7 +10,6 @@ import ScreenSizeProvider from '../context/ResizeWindow/ResizeWindow';
 import Providers from '../context/Providers';
 import Theme from '../context/Theme/Theme';
 import { QueryProvider } from '../queries';
-import AppLayout from '../components/AppLayout';
 
 const MyApp = ({ Component, pageProps }) => {
   const provider =
@@ -34,11 +33,7 @@ const MyApp = ({ Component, pageProps }) => {
     );
   }
 
-  return (
-    <Providers>
-      <AppLayout>{provider(<Component {...pageProps} />)}</AppLayout>
-    </Providers>
-  );
+  return <Providers>{provider(<Component {...pageProps} />)}</Providers>;
 };
 
 MyApp.propTypes = {

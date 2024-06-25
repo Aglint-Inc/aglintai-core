@@ -6,6 +6,7 @@ import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { JobsDashboard } from '@/devlink/JobsDashboard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { Job } from '@/src/queries/jobs/types';
 import ROUTES from '@/src/utils/routing/routes';
 
@@ -26,6 +27,7 @@ const DashboardComp = () => {
   } = useJobs();
   const [filteredJobs, setFilteredJobs] = useState<Job[]>(data);
   const { recruiter } = useAuthDetails();
+  const { ifAllowed } = useRolesAndPermissions();
 
   useEffect(() => {
     if (recruiter?.name === null) {
@@ -95,12 +97,17 @@ const DashboardComp = () => {
       ) : (
         <>
           {data?.length == 0 ? (
-            <EmptyJobDashboard
-              handleClickAddJob={() => {
-                router.push(ROUTES['/jobs/create']());
-              }}
-              heading={'Jobs'}
-            />
+            <>
+              {ifAllowed(
+                <EmptyJobDashboard
+                  handleClickAddJob={() => {
+                    router.push(ROUTES['/jobs/create']());
+                  }}
+                  heading={'Jobs'}
+                />,
+                ['jobs_create'],
+              )}
+            </>
           ) : (
             <Stack height={'100%'} direction={'row'}>
               <SubNavBar />

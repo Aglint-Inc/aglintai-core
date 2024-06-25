@@ -42,6 +42,12 @@ export interface ContextValue {
   userCountry: string | null;
   setUserDetails: (details: Session | null) => void;
   recruiter: RecruiterType | null;
+  userPermissions: {
+    role: string;
+    permissions: Partial<{
+      [key in DatabaseEnums['permissions_type']]: boolean;
+    }>;
+  };
   recruiter_id: string | null;
   setRecruiter: Dispatch<SetStateAction<RecruiterType>>;
   allRecruiterRelation: RecruiterRelationsType[];
@@ -95,6 +101,7 @@ const defaultProvider = {
   handleUpdateEmail: undefined,
   handleUpdatePassword: undefined,
   recruiter: null,
+  userPermissions: null,
   recruiter_id: null,
   setRecruiter: () => {},
   allRecruiterRelation: null,
@@ -130,9 +137,16 @@ const AuthProvider = ({ children }) => {
   const [userCountry, setUserCountry] = useState('us');
   const [loading, setLoading] = useState<boolean>(true);
   const [members, setMembers] = useState<RecruiterUserType[]>([]);
+  const [userPermissions, setUserPermissions] =
+    useState<ContextValue['userPermissions']>(null);
 
-  const getMembersFromDB = async (recruiter_id: string, user_id: string) => {
-    setMembers(await getMembers(recruiter_id));
+  const getMembersFromDB = async () => {
+    setMembers(
+      await getMembers().catch(() => {
+        toast.error('failed load Members');
+        return [];
+      }),
+    );
   };
 
   async function getSupabaseSession() {
@@ -164,10 +178,26 @@ const AuthProvider = ({ children }) => {
     const { data: recruiterRel, error: errorRel } = await supabase
       .from('recruiter_relation')
       .select(
-        '*, recruiter(*), recruiter_user!public_recruiter_relation_user_id_fkey(*)',
+        '*, recruiter(*), recruiter_user!public_recruiter_relation_user_id_fkey(*), roles(name,role_permissions(permissions(name)))',
       )
       .match({ user_id: userDetails.user.id, is_active: true })
       .single();
+
+    // get user permissions
+
+    const rolePermissions: ContextValue['userPermissions'] = {
+      role: recruiterRel?.roles?.name || null,
+      permissions:
+        recruiterRel?.roles?.role_permissions.reduce(
+          (prev, curr) => {
+            prev[curr.permissions.name] = true;
+            return prev;
+          },
+          {} as ContextValue['userPermissions']['permissions'],
+        ) || {},
+    };
+
+    setUserPermissions(rolePermissions);
 
     if (!errorRel && recruiterRel?.recruiter_user) {
       posthog.identify(userDetails.user.email, {
@@ -195,7 +225,7 @@ const AuthProvider = ({ children }) => {
           'recruiting_coordinator',
         ].includes(recruiterRel.role)
       ) {
-        await getMembersFromDB(recruiterRel.recruiter.id, userDetails.user.id);
+        await getMembersFromDB();
       }
     } else {
       toast.error('Something went wrong! Please try logging in again.');
@@ -362,6 +392,7 @@ const AuthProvider = ({ children }) => {
         userCountry,
         setUserDetails,
         recruiter,
+        userPermissions,
         recruiter_id,
         handleUpdateProfile,
         handleUpdateEmail,
@@ -414,7 +445,7 @@ const isRoutePublic = (path = '') => {
 };
 
 const pageFeatureMapper = {
-  [ROUTES['/assisstant']()]: 'isAssistantEnabled',
+  [ROUTES['/assistant']()]: 'isAssistantEnabled',
   [ROUTES['/assessment-new']()]: 'isNewAssessmentEnabled',
   [ROUTES['/agent']()]: 'isAgentEnabled',
   [ROUTES['/screening']()]: 'isPhoneScreeningEnabled',
@@ -442,11 +473,10 @@ const updateMember = ({
     });
 };
 
-const getMembers = (id: string) => {
+const getMembers = () => {
   return axios
-    .post<API_getMembersWithRole['response']>('/api/getMembersWithRole', { id })
+    .get<API_getMembersWithRole['response']>('/api/getMembersWithRole')
     .then(({ data }) => {
-      if (data.error) throw new Error(data.error);
-      return data.members;
+      return data;
     });
 };

@@ -1,12 +1,12 @@
 import {
   DAYJS_FORMATS,
   ScheduleUtils,
+  fillCompEmailTemplate,
   getFullName,
 } from '@aglint/shared-utils';
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
-import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'agent_email_candidate'>['api_payload'],

@@ -10,6 +10,7 @@ import { JobDetailBlock } from '@/devlink3/JobDetailBlock';
 import { useJob } from '@/src/context/JobContext';
 import { validateString } from '@/src/context/JobDashboard/hooks';
 import { useJobs } from '@/src/context/JobsContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/jobs/types';
 import ROUTES from '@/src/utils/routing/routes';
@@ -221,13 +222,14 @@ const JobEditForm = ({
 const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
   const { hiring_manager, recruiter, recruiting_coordinator, sourcer } =
     useJobForms(fields, handleChange);
+  const { ifAllowed } = useRolesAndPermissions();
 
   const forms = (
     <>
-      {hiring_manager}
-      {recruiter}
-      {recruiting_coordinator}
-      {sourcer}
+      {ifAllowed(hiring_manager, ['jobs_assignHiringManager'])}
+      {ifAllowed(recruiter, ['jobs_assignHiringManager'])}
+      {ifAllowed(recruiting_coordinator, ['jobs_assignCoordinator'])}
+      {ifAllowed(sourcer, ['jobs_assignSourcer'])}
     </>
   );
 

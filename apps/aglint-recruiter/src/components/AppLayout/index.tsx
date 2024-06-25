@@ -317,6 +317,11 @@ export default function AppLayout({ children }) {
           </Stack>
         </Stack>
         {children}
+        {/* {checkPermissions(PERMISSIONS[String(router.pathname)]) ? (
+          children
+        ) : (
+          <NotFoundPage />
+        )} */}
       </Stack>
     </Stack>
   );

@@ -3,6 +3,7 @@ import React from 'react';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
 
+import { WithPermission } from '../../withPermission';
 import Create from './popup/create';
 
 type LayoutProps = React.PropsWithChildren;
@@ -23,5 +24,9 @@ const BreadCrumbs = () => {
 };
 
 const Actions = () => {
-  return <Create />;
+  return (
+    <WithPermission permission={['workflow_create']}>
+      <Create />
+    </WithPermission>
+  );
 };

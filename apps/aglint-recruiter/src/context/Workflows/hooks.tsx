@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import {
@@ -10,6 +10,7 @@ import {
 } from '@/src/queries/workflow';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
+import { useRolesAndPermissions } from '../RolesAndPermissions/RolesAndPermissionsContext';
 
 const useWorkflowsContext = () => {
   const { recruiter_id } = useAuthDetails();
@@ -47,12 +48,39 @@ const useWorkflowsContext = () => {
     [workflows.data],
   );
 
+  const { devlinkProps: getDevlinkProps, checkPermissions } =
+    useRolesAndPermissions();
+
+  const permissions = useMemo(
+    () => ({
+      enabled: checkPermissions(['workflow_enabled']),
+      create: checkPermissions(['workflow_create']),
+      read: checkPermissions(['workflow_read']),
+      update: checkPermissions(['workflow_update']),
+      delete: checkPermissions(['workflow_delete']),
+    }),
+    [checkPermissions],
+  );
+
+  const devlinkProps = useMemo(
+    () => ({
+      enabled: getDevlinkProps(['workflow_enabled']),
+      create: getDevlinkProps(['workflow_create']),
+      read: getDevlinkProps(['workflow_read']),
+      update: getDevlinkProps(['workflow_update']),
+      delete: getDevlinkProps(['workflow_delete']),
+    }),
+    [getDevlinkProps],
+  );
+
   return {
     workflows,
     workflowUpdate,
     workflowMutations,
     handleCreateWorkflow,
     handleDeleteWorkflow,
+    devlinkProps,
+    permissions,
   };
 };
 

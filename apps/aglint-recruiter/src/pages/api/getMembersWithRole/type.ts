@@ -1,20 +1,13 @@
 import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 
-export type API_getMembersWithRole = {
-  request: {
-    id: string;
-  };
-  response:
-    | {
-        members: (DatabaseTable['recruiter_user'] & {
-          role: DatabaseEnums['user_roles'];
-          manager_id: string;
-        })[];
+import { ApiInterface } from '@/src/interface/NextApiRequest.interface';
 
-        error: null;
-      }
-    | {
-        members: null;
-        error: string;
-      };
-};
+export interface API_getMembersWithRole extends ApiInterface {
+  request: {
+    id?: string;
+  };
+  response: (DatabaseTable['recruiter_user'] & {
+    role: DatabaseEnums['user_roles'];
+    manager_id: string;
+  })[];
+}

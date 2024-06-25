@@ -1,3 +1,4 @@
+import { DatabaseEnums } from '@aglint/shared-types';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
@@ -7,6 +8,7 @@ import { useEffect } from 'react';
 import { NavLink } from '@/devlink/NavLink';
 import { AssistantLogo } from '@/devlink2/AssistantLogo';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
@@ -23,13 +25,9 @@ import WorkFlowIcon from '../IconsSideBar/WorkFlowIcon';
 function SideNavbar() {
   const router = useRouter();
   const pathName = usePathname();
-  const {
-    loading,
-    isAllowed,
-    isAssessmentEnabled,
-    isSchedulingEnabled,
-    isScreeningEnabled,
-  } = useAuthDetails();
+  const { checkPermissions } = useRolesAndPermissions();
+  const { isAssessmentEnabled, isSchedulingEnabled, isScreeningEnabled } =
+    useAuthDetails();
 
   const isAssistantEnabled = useFeatureFlagEnabled('isAssistantEnabled');
   const isSupportEnabled = useFeatureFlagEnabled('isSupportEnabled');
@@ -41,131 +39,112 @@ function SideNavbar() {
     text: LinkProps['module'];
     SubComponents: any;
     route: string;
-    comingsoon: boolean;
-    isvisible: boolean;
-    roles?: (
-      | 'admin'
-      | 'recruiter'
-      | 'interviewer'
-      | 'recruiting_coordinator'
-      | 'sourcer'
-      | 'hiring_manager'
-    )[];
+    comingSoon: boolean;
+    isVisible: boolean;
+    permission?: DatabaseEnums['permissions_type'][];
   }[] = [
     {
       text: 'Agent',
       SubComponents: null,
       route: ROUTES['/agent'](),
-      comingsoon: false,
-      isvisible: isAgentEnabled,
-      roles: ['admin'],
+      comingSoon: false,
+      isVisible: isAgentEnabled,
     },
     {
       text: 'Tasks',
       SubComponents: null,
       route: ROUTES['/tasks']() + '?myTasks',
-      comingsoon: false,
-      isvisible: isTasksEnabled,
-      // roles: [
-      //   'admin',
-      //   'interviewer',
-      //   'recruiter',
-      // ],
+      comingSoon: false,
+      isVisible: isTasksEnabled,
+      permission: ['tasks_enabled'],
     },
     {
       text: 'Jobs',
       SubComponents: null,
       route: ROUTES['/jobs']() + '?status=published',
-      comingsoon: false,
-      isvisible: true,
-      roles: [
-        'admin',
-        'hiring_manager',
-        'recruiter',
-        'recruiting_coordinator',
-        'sourcer',
-      ],
+      comingSoon: false,
+      isVisible: true,
+      permission: ['jobs_enabled'],
     },
     {
       text: 'Scheduler',
       SubComponents: null,
       route: ROUTES['/scheduling']() + '?tab=dashboard',
-      comingsoon: false,
-      isvisible: isSchedulingEnabled,
-      roles: ['admin', 'recruiter', 'recruiting_coordinator', 'interviewer'],
+      comingSoon: false,
+      isVisible: isSchedulingEnabled,
+      permission: ['scheduler_enabled'],
     },
     {
       text: 'Workflows',
       SubComponents: null,
       route: ROUTES['/workflows'](),
-      comingsoon: false,
-      isvisible: true,
-      roles: ['admin', 'recruiter'],
+      comingSoon: false,
+      isVisible: true,
+      // permission: 'workflows_enabled',
     },
     {
       text: 'Sourcing Hub',
       SubComponents: null,
       route: ROUTES['/candidates/history']() + '?currentTab=discover%20talent',
-      comingsoon: false,
-      isvisible: isSourcingEnabled,
-      roles: ['admin', 'recruiter'],
+      comingSoon: false,
+      isVisible: isSourcingEnabled,
+      // permission: '',
     },
     {
       text: 'Support',
       SubComponents: null,
       route: ROUTES['/support'](),
-      comingsoon: false,
-      isvisible: isSupportEnabled,
-      roles: ['admin'],
+      comingSoon: false,
+      isVisible: isSupportEnabled,
+      // permission: ,
     },
     {
       text: 'Agent',
       SubComponents: null,
-      route: ROUTES['/assisstant'](),
-      comingsoon: false,
-      isvisible: isAssistantEnabled,
-      roles: ['admin'],
+      route: ROUTES['/assistant'](),
+      comingSoon: false,
+      isVisible: isAssistantEnabled,
     },
     {
       text: 'Phone Screening',
       SubComponents: null,
       route: ROUTES['/screening'](),
-      comingsoon: false,
-      isvisible: isScreeningEnabled,
-      roles: ['admin', 'recruiter', 'recruiting_coordinator', 'interviewer'],
+      comingSoon: false,
+      isVisible: isScreeningEnabled,
+      permission: ['phone_screening_enabled'],
     },
 
     {
       text: 'Assessment',
       SubComponents: null,
       route: ROUTES['/assessment-new'](),
-      comingsoon: false,
-      isvisible: isAssessmentEnabled,
-      roles: ['admin', 'recruiter'],
+      comingSoon: false,
+      isVisible: isAssessmentEnabled,
+      permission: ['assessment_enabled'],
     },
     {
       text: 'Integrations',
       SubComponents: null,
       route: ROUTES['/integrations'](),
-      comingsoon: false,
-      isvisible: true,
-      roles: ['admin'],
+      comingSoon: false,
+      isVisible: true,
+      permission: ['integrations_enabled'],
     },
     {
       text: 'Company Settings',
       SubComponents: null,
       route: ROUTES['/company'](),
-      comingsoon: false,
-      isvisible: true,
-      roles: ['admin'],
+      comingSoon: false,
+      isVisible: true,
+      permission: ['company_setting_enabled'],
     },
   ];
 
   useEffect(() => {
     const tempR = navList.find((item) => {
       return pathName?.includes(item.route);
-    })?.roles;
-    if (tempR && !isAllowed(tempR)) {
+    })?.permission;
+    if (tempR && !checkPermissions(tempR)) {
       toast.error('This section of the application is not accessible to you.');
       router.replace(ROUTES['/loading']());
     }
@@ -173,15 +152,16 @@ function SideNavbar() {
 
   return (
     <>
-      {!loading &&
-        navList
-          .filter((item) => (item.roles ? isAllowed(item.roles) : true))
-          .filter((item) => item.isvisible)
-          .map((item) => {
-            return (
-              <LinkComp module={item.text} key={item.text} path={item.route} />
-            );
-          })}
+      {navList
+        .filter((item) =>
+          item.permission ? checkPermissions(item.permission) : true,
+        )
+        .filter((item) => item.isVisible)
+        .map((item) => {
+          return (
+            <LinkComp module={item.text} key={item.text} path={item.route} />
+          );
+        })}
     </>
   );
 }
