@@ -607,7 +607,7 @@ const useBanners = ({
       <DashboardWarning
         textWarningTitle={'Interview plan not set'}
         textDesc={
-          'Add one or more interview types to create an interview plan.'
+          'To use the scheduling module, please configure an interview plan for this job.'
         }
         slotButton={
           <>
