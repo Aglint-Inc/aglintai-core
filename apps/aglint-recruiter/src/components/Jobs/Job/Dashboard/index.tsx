@@ -607,7 +607,7 @@ const useBanners = ({
       <DashboardWarning
         textWarningTitle={'Interview plan not set'}
         textDesc={
-          'To use the scheduling module, please configure an interview plan for this job.'
+          'Add one or more interview types to create an interview plan.'
         }
         slotButton={
           <>
@@ -637,7 +637,7 @@ const useBanners = ({
   if (isInterviewSessionEmpty && !dismissWarnings.interview_session)
     banners.push(
       <DashboardWarning
-        textWarningTitle={'Interview sessions not set'}
+        textWarningTitle={'Interview plan not set'}
         textDesc={
           'Add one or more interview types to create an interview plan.'
         }
