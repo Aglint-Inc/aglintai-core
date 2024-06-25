@@ -5,7 +5,6 @@ import {
 } from '@aglint/shared-types';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import { ButtonSurface } from '@/devlink/ButtonSurface';
@@ -50,7 +49,6 @@ function Overview({
   setIsCancelOpen: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
 }) {
-  const router = useRouter();
   const { recruiterUser, isAllowed } = useAuthDetails();
   const [filterJson, setFilterJson] = useState<InterviewFilterJsonType>();
   const [isRequestRescheduleOpen, setIsRequestRescheduleOpen] = useState(false);
@@ -288,8 +286,9 @@ function Overview({
               'hiring_manager',
               'recruiting_coordinator',
             ]) &&
-              router.push(
+              window.open(
                 `/scheduling/module/members/${schedule.interview_session.module_id}`,
+                '_blank',
               );
           },
         }}
