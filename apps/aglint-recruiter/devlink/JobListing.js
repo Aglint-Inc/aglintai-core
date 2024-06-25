@@ -62,49 +62,54 @@ export function JobListing({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-456")}
+              className={_utils.cx(_styles, "jl-left-wrapper")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-433")}
+                className={_utils.cx(_styles, "jl-apply-job-wrap")}
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-435")}
+                  className={_utils.cx(_styles, "jl-left-top-wrap")}
                   tag="div"
                 >
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "job-listing-image--slot")}
+                    className={_utils.cx(_styles, "jl-top-left-wrap")}
                     tag="div"
                   >
-                    {slotCompanyLogo}
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "job-listing-image--slot")}
+                      tag="div"
+                    >
+                      {slotCompanyLogo}
+                    </_Builtin.Block>
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "lefet-name--job")}
+                      tag="div"
+                    >
+                      <Text content={textCompanyName} color="neutral" />
+                      <Text
+                        content={textRole}
+                        color="neutral-12"
+                        size="4"
+                        weight="medium"
+                      />
+                      <Text content={textCompanyLocation} color="neutral" />
+                    </_Builtin.Block>
                   </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "lefet-name--job")}
-                    tag="div"
-                  >
-                    <Text content={textCompanyName} color="neutral" />
-                    <Text
-                      content={textRole}
-                      color="neutral-12"
-                      size="4"
-                      weight="bold"
-                    />
-                    <Text content={textCompanyLocation} color="neutral" />
-                  </_Builtin.Block>
+                  <ButtonSolid
+                    onClickButton={onClickApplyNow}
+                    textButton="Apply Now"
+                    size="2"
+                  />
                 </_Builtin.Block>
-                <ButtonSolid
-                  onClickButton={onClickApplyNow}
-                  textButton=""
-                  size="2"
-                />
-              </_Builtin.Block>
-              <_Builtin.Block tag="div">{slotDescription}</_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "slot-appl-job-form")}
-                tag="div"
-              >
-                {slotApplyForThisJob}
+                <_Builtin.Block tag="div">{slotDescription}</_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "slot-appl-job-form")}
+                  tag="div"
+                >
+                  {slotApplyForThisJob}
+                </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "about-company-wrapper-job")}
@@ -125,7 +130,7 @@ export function JobListing({
                       content={textCompanyName}
                       color="neutral-12"
                       size="4"
-                      weight="bold"
+                      weight="medium"
                     />
                     <_Builtin.Block
                       className={_utils.cx(
@@ -180,7 +185,7 @@ export function JobListing({
                   {slotLinks}
                 </_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-444")}
+                  className={_utils.cx(_styles, "jl-view-btn-wrap")}
                   tag="div"
                 >
                   <ButtonSoft
@@ -193,7 +198,7 @@ export function JobListing({
               {isOtherOpenJobVisible ? (
                 <_Builtin.Block tag="div">
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "div-block-467")}
+                    className={_utils.cx(_styles, "jl-other-open-wrap")}
                     tag="div"
                   >
                     <_Builtin.Block
@@ -227,20 +232,20 @@ export function JobListing({
               ) : null}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-438")}
+              className={_utils.cx(_styles, "jl-right-wrapper")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-442")}
+                className={_utils.cx(_styles, "jl-sticky-right-wrap")}
                 tag="div"
               >
                 <_Builtin.Block
                   className={_utils.cx(_styles, "share-job-wrappers")}
                   tag="div"
                 >
-                  <Text weight="bold" size="2" content="" />
+                  <Text weight="medium" size="2" content="Share Job via:" />
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "div-block-436")}
+                    className={_utils.cx(_styles, "jl-social-wrap")}
                     tag="div"
                   >
                     {slotSocialLink}
