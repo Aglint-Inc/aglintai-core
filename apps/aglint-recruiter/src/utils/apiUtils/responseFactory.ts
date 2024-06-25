@@ -1,6 +1,8 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-
-import { ApiInterface } from './api.type';
+import {
+  ApiInterface,
+  NextApiRequest,
+  NextApiResponse,
+} from '@/src/interface/NextApiRequest.interface';
 
 /**
  * Returns a function that sends a response with the given data and error, or an error message if the status is 500.
@@ -47,7 +49,7 @@ export const getResponseFactory = <T>(res: NextApiResponse) => {
  * }) => Promise<T['response'] | { error: string; status: number }>,
  *   required?: Array<keyof T['request']>) => Promise<void>} - The response handler function.
  */
-export function apiRequestHandlerFactory<T extends ApiInterface>(
+export function apiRequestResponseFactory<T extends ApiInterface>(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
@@ -96,7 +98,7 @@ export function apiRequestHandlerFactory<T extends ApiInterface>(
     apiImplementation: (reqDetails: {
       body?: T['request'];
       requesterDetails: typeof requesterDetails;
-    }) => Promise<T['response'] | { error: string; status?: number }>,
+    }) => Promise<T['response'] | { error: string; status: number }>,
     required?: (keyof T['request'])[],
   ) {
     try {

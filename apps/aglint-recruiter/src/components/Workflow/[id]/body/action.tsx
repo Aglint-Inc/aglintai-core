@@ -22,32 +22,38 @@ const Actions = () => {
   const {
     actions: { data, status },
     actionMutations: mutations,
+    permissions,
+    devlinkProps,
   } = useWorkflow();
-  const { createAction, globalOptions, allOptions } = useActions();
+  const { createAction, globalOptions } = useActions();
   const canCreateAction = useMemo(
     () => !!globalOptions.length,
     [globalOptions],
   );
   if (status === 'error') return <>Error</>;
   if (status === 'pending') return <Loader />;
-  const actions = data.map((action, i) => {
+  const actions = data.map((action) => {
     const loading = !!mutations.find((mutation) => mutation.id === action.id);
     return (
       <OptimisticWrapper key={action.id} loading={loading}>
+        <WorkflowConnector />
         <Action key={action.id} action={action} />
-        {i !== allOptions.length - 1 && <WorkflowConnector />}
       </OptimisticWrapper>
     );
   });
   return (
     <>
       {actions}
-      {canCreateAction && (
-        <WorkflowAdd
-          onClickAdd={{
-            onClick: () => createAction(),
-          }}
-        />
+      {canCreateAction && permissions.update && (
+        <>
+          <WorkflowConnector />
+          <WorkflowAdd
+            onClickAdd={{
+              onClick: () => createAction(),
+              ...devlinkProps.update,
+            }}
+          />
+        </>
       )}
     </>
   );
@@ -60,7 +66,7 @@ type ActionProps = {
 };
 
 const Action = (props: ActionProps) => {
-  const { handleDeleteAction } = useWorkflow();
+  const { handleDeleteAction, devlinkProps } = useWorkflow();
   return (
     <WorkflowItem
       textWorkflowType={'Action'}
@@ -70,6 +76,7 @@ const Action = (props: ActionProps) => {
       isDeleteVisible={true}
       onClickDelete={{
         onClick: () => handleDeleteAction({ id: props.action.id }),
+        ...devlinkProps.delete,
       }}
     />
   );
@@ -93,7 +100,7 @@ const ActionForm = ({
   const {
     emailTemplates: { data: all_company_email_template },
   } = useAuthDetails();
-  const { handleUpdateAction } = useWorkflow();
+  const { handleUpdateAction, permissions } = useWorkflow();
   const { globalOptions, getCurrentOption } = useActions();
   const options = useMemo(
     () => [...globalOptions, getCurrentOption(type)],
@@ -103,6 +110,7 @@ const ActionForm = ({
     <UISelect
       label='Do this'
       value={type}
+      disabled={!permissions.update}
       menuOptions={options}
       onChange={(e) => {
         const {

@@ -21,7 +21,7 @@ import ROUTES from '@/src/utils/routing/routes';
 function JobSubNavbar() {
   const router = useRouter();
   const { jobs } = useJobs();
-
+  const { userPermissions } = useAuthDetails();
   return (
     <Stack
       paddingTop={'12px !important'}
@@ -31,7 +31,7 @@ function JobSubNavbar() {
       borderRight={'1px solid'}
       borderColor='var(--neutral-6)'
     >
-      <AddJob />
+      {userPermissions?.permissions['jobs_create'] && <AddJob />}
       <NavJobSubLink
         onClickJobAll={{
           onClick: () => router.push(`${ROUTES['/jobs']()}?status=all`),
