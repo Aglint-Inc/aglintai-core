@@ -9,7 +9,7 @@ import type { ViewType } from "./index.types";
 export type CustomTasksView = ViewType<
   "tasks_view",
   {
-    last_progress: LastProgressType;
+    latest_progress: LastProgressType;
     session_ids: meetingCardType[];
     schedule_date_range: CustomNewScheduleDateRange;
     task_action: taskActionType;
