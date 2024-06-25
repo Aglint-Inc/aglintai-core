@@ -3,6 +3,7 @@ import { cronPaths } from './cron';
 export const allowedPaths = new Set([
   '/login',
   '/signup',
+  '/api/signup',
   '/api/unauthorized',
   '/api/jobpost/indexing',
   '/api/sitemap.xml',

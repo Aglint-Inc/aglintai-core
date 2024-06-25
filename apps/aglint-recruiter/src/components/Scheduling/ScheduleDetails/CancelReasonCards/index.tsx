@@ -97,7 +97,7 @@ function CancelReasonCards({
                   variant={'rounded-small'}
                 />
               ) : (
-                <GlobalIcon iconName='account_circle' />
+                <GlobalIcon iconName='account_circle' size={'6'} />
               )
             }
             onClickRescheduleNow={{
