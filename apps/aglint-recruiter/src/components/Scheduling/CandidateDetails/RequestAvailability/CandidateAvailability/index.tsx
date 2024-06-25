@@ -11,6 +11,7 @@ import { AvailabilityReq } from '@/devlink2/AvailabilityReq';
 import { GlobalIcon } from '@/devlink2/GlobalIcon';
 import { MultiDaySelect } from '@/devlink2/MultiDaySelect';
 import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
+import Footer from '@/src/components/Common/Footer';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
@@ -24,6 +25,7 @@ import {
 import AvailableSlots from './AvailableSlots';
 import DateSlotsPoPup from './DateSlotsPopUp';
 import DaySessionCard from './DaySessionCard';
+
 
 function CandidateAvailability() {
   const router = useRouter();
@@ -186,6 +188,13 @@ function CandidateAvailability() {
   return (
     <div>
       <DateSlotsPoPup />
+      <Stack sx={{
+        bgcolor:'var(--sand-3)',
+        width:'100%', height:'100vh', 
+        overflow:'auto', 
+        paddingTop:'60px', 
+        paddingBottom:'24px'
+        }}>
       <AvailabilityReq
         slotTtitle={
           isSubmitted ? (
@@ -302,6 +311,8 @@ function CandidateAvailability() {
           </ShowCode>
         }
       />
+      <Footer brand={true}/>
+      </Stack>
     </div>
   );
 }
