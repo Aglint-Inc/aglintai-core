@@ -171,4 +171,5 @@ const sortTypes: ApplicationsStore['sort']['type'][] = [
   'applied_at',
   'name',
   'resume_score',
+  'location',
 ];
