@@ -101,6 +101,7 @@ const Drawer = () => {
           }}
           handleUp={handleSelectPrevApplication}
           handleDown={handleSelectNextApplication}
+          showResumePreviewActions={true}
         >
           <Application.Body
             topBar={

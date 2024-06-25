@@ -25,12 +25,13 @@ export const useApplication = () => {
 
 const Application = ({
   children,
+  showResumePreviewActions = false,
   ...props
 }: PropsWithChildren<
   Parameters<(typeof applicationQuery)['application']>[0] &
     Partial<
       Pick<Parameters<typeof ResumePreviewer>[0], 'handleDown' | 'handleUp'>
-    >
+    > & { showResumePreviewActions?: boolean }
 >) => {
   const value = useApplicationContext(props);
   const { preview, resetPreview, resetAll } = useApplicationStore(
@@ -51,8 +52,17 @@ const Application = ({
         open={preview}
         onClose={() => resetPreview()}
         url={value?.meta?.data?.file_url}
-        handleDown={props?.handleDown}
-        handleUp={props?.handleUp}
+        handleDown={showResumePreviewActions && props?.handleDown}
+        handleUp={showResumePreviewActions && props?.handleUp}
+        bookmark={
+          showResumePreviewActions && {
+            isBookmarked: value?.meta?.data?.bookmarked,
+            handleBookmark: () =>
+              value?.handleUpdateApplication({
+                bookmarked: !value?.meta?.data?.bookmarked,
+              }),
+          }
+        }
       />
       {children ?? <></>}
     </ApplicationContext.Provider>

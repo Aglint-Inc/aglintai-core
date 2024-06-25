@@ -1,5 +1,6 @@
 import { Dialog, Stack } from '@mui/material';
 
+import { BookMark } from '@/devlink/BookMark';
 import { ResumeWrap } from '@/devlink3/ResumeWrap';
 import Loader from '@/src/components/Common/Loader';
 
@@ -9,6 +10,7 @@ const ResumePreviewer = ({
   id,
   url,
   name,
+  bookmark = null,
   handleUp = null,
   handleDown = null,
 }: {
@@ -19,6 +21,10 @@ const ResumePreviewer = ({
   url: string;
   handleUp?: () => void;
   handleDown?: () => void;
+  bookmark?: {
+    isBookmarked: boolean;
+    handleBookmark: () => void;
+  };
 }) => {
   return (
     <Dialog
@@ -44,7 +50,14 @@ const ResumePreviewer = ({
           style: { display: handleDown ? 'flex' : 'none' },
           onClick: () => handleDown(),
         }}
-        slotBookmark={<></>}
+        slotBookmark={
+          bookmark && (
+            <BookMark
+              isBookMarked={bookmark.isBookmarked}
+              onClickBookmark={{ onClick: () => bookmark.handleBookmark() }}
+            />
+          )
+        }
         onClickUp={{
           style: { display: handleUp ? 'flex' : 'none' },
           onClick: () => handleUp(),
