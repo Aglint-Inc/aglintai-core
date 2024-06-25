@@ -4,7 +4,9 @@ import { Application } from '@/src/types/applications.types';
 import { CreateSlice } from '.';
 
 type Sort = {
-  type: keyof Pick<Application, 'resume_score' | 'applied_at' | 'name'>;
+  type:
+    | keyof Pick<Application, 'resume_score' | 'applied_at' | 'name'>
+    | 'location';
   order: 'asc' | 'desc';
 };
 
