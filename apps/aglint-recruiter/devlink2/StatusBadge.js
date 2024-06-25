@@ -21,7 +21,7 @@ export function StatusBadge({
           <GlobalBadge
             showIcon={true}
             iconName="event_available"
-            textBadge=""
+            textBadge="Completed"
             color="success"
           />
         </_Builtin.Block>

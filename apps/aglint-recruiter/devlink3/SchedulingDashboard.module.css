@@ -67,12 +67,12 @@
   cursor: pointer;
 }
 
-.sd_row_6 {
+.sd_row_5 {
   display: grid;
   grid-auto-columns: 1fr;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
 }
 
@@ -103,15 +103,6 @@
   grid-column-gap: var(--space-4);
   grid-row-gap: var(--space-4);
   grid-template-columns: 0.7fr 1.3fr 1fr 1fr 1fr;
-  grid-template-rows: auto;
-}
-
-.sd_row_5 {
-  display: grid;
-  grid-auto-columns: 1fr;
-  grid-column-gap: var(--space-4);
-  grid-row-gap: var(--space-4);
-  grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
 }
 

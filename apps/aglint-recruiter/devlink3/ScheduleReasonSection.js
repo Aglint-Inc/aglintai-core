@@ -13,6 +13,7 @@ export function ScheduleReasonSection({
   textHeading = "Reschedule Reasons",
   textDesc = "Add reasons for rescheduling, and these options will be provided at the time of rescheduling.",
   onClickAdd = {},
+  slotAddButton,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "srs-wrap")} tag="div">
@@ -33,7 +34,11 @@ export function ScheduleReasonSection({
         >
           {slotReasonList ?? <ReasonList />}
         </_Builtin.Block>
-        <ButtonGhost onClickButton={onClickAdd} size="2" textButton="Add" />
+        <_Builtin.Block tag="div">
+          {slotAddButton ?? (
+            <ButtonGhost onClickButton={onClickAdd} size="2" textButton="Add" />
+          )}
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );
