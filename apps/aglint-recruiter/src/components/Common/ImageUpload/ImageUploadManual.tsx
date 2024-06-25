@@ -57,11 +57,7 @@ function ImageUploadManual({
         >
           <Stack>
             <Avatar
-              src={
-                initImage
-                  ? initImage
-                  : 'https://static.vecteezy.com/system/resources/previews/036/594/092/non_2x/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg'
-              }
+              src={initImage ? initImage : '/images/emptyProfile.jpg'}
               sx={{
                 width: size ? size : '100%',
                 height: size ? size : '100%',
