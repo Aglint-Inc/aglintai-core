@@ -18,6 +18,7 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { fetchInterviewMeetingProgresstask } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { supabase } from '@/src/utils/supabase/client';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { EmailAgentIcon } from '../../../Components/EmailAgentIcon';
 import { PhoneAgentIcon } from '../../../Components/PhoneAgentIcon';
@@ -39,16 +40,6 @@ function SubTaskProgress() {
   const today = dayjs();
   const selectedTask = tasks.find((ele) => ele.id === router.query?.task_id);
   const { data: sessionList } = useSessionsList();
-
-  function formatString(inputString) {
-    // Split the string by underscores
-    let words = inputString.split('_');
-    // Capitalize the first letter of each word and join them with spaces
-    let formattedString = words
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-    return formattedString;
-  }
 
   return (
     <>
@@ -125,7 +116,7 @@ function SubTaskProgress() {
                     isTaskProgressVisible={true}
                     textTask={
                       <>
-                        {formatString(item.progress_type)}
+                        {capitalizeAll(item.progress_type)}
                         <ProgressTitle
                           title={item.title}
                           titleMetaData={item.title_meta}
