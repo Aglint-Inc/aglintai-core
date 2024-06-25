@@ -1,8 +1,14 @@
 .open-jobs-list-card {
   position: relative;
-  padding: 16px 20px;
-  border-radius: 10px;
+
+  padding: var(--space-4);
+
+  border-radius: var(--radius-4);
+
+  background-color: var(--neutral-2);
+
   text-transform: capitalize;
+
   cursor: pointer;
 }
 
@@ -21,10 +27,10 @@
 
 .open-job-info-list {
   display: flex;
-  margin-top: 12px;
+  margin-top: var(--space-3);
   align-items: center;
-  grid-column-gap: 40px;
-  grid-row-gap: 40px;
+  grid-column-gap: var(--space-6);
+  grid-row-gap: var(--space-6);
 }
 
 @media screen and (max-width: 767px) {
@@ -52,149 +58,14 @@
 
   display: none;
   align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+
+  color: var(--accent-11);
 
   cursor: pointer;
 }
 
 .apply-button-icon:hover {
-  opacity: 0.9;
-}
-
-.text-blue-600 {
-  color: var(--blue600-aad8d97e);
-}
-
-.cursor-pointer {
-  transition: opacity 200ms ease;
-  cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.7;
-}
-
-.text-blue-600.ml-8 {
-  margin-left: 8px;
-}
-
-.fw-semibold {
-  font-weight: 600;
-}
-
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.icons.cursor-pointer.three-dot {
-  width: 20px;
-  height: 20px;
-  padding: 0px;
-}
-
-.icons.curser-hover-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.curser-hover-pointer:hover {
-  opacity: 0.8;
-}
-
-.icons.rotate-180 {
-  transform: rotate(180deg);
-}
-
-.icons.avatar-play {
-  border-radius: 4px;
-}
-
-.icons.db-star-icons {
-  position: absolute;
-  left: auto;
-  top: -6px;
-  right: -6px;
-  bottom: auto;
-}
-
-.icons.ml-5 {
-  margin-left: 5px;
-}
-
-.pointer {
-  cursor: pointer;
-}
-
-.icons.ml-20 {
-  margin-left: 20px;
-}
-
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
-.color-white {
-  color: var(--white-80449ce7);
-}
-
-.icons.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
-}
-
-.icons.mb-9 {
-  margin-bottom: var(--space-9);
-}
-
-.mt-4 {
-  margin-top: 4px;
-}
-
-.icons.mt-3 {
-  margin-top: 3px;
-}
-
-.icons.mt-2 {
-  margin-top: 2px;
-}
-
-.mt-2 {
-  margin-top: var(--space-2);
-}
-
-.icons.bookmarked {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-}
-
-.icons.start {
-  justify-content: center;
-  align-items: flex-start;
-}
-
-.icons.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.cursor-pointer:hover {
-  opacity: 0.8;
+  color: var(--accent-12);
 }

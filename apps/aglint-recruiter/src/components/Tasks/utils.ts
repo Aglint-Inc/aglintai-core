@@ -17,6 +17,7 @@ import { ApplicationType } from '@/src/context/CandidateAssessment/types';
 import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { supabase } from '@/src/utils/supabase/client';
 
+import { getIndicator } from './Components/TaskStatusTag/utils';
 import { meetingCardType } from './TaskBody/ViewTask/Progress/SessionCard';
 import { groupByTextType } from './TaskStatesContext';
 
@@ -291,6 +292,23 @@ export function getFormattedTask({
       return acc;
     }, {});
 
+  const groupedTasksByProgressType = tasks
+    .filter((task) => task.application_id)
+    .reduce((acc, task) => {
+      const progressType = getIndicator({
+        task,
+        progress_type: task.last_progress.progress_type,
+        created_at: task.last_progress.created_at,
+      });
+      if (!acc[progressType]) {
+        acc[progressType] = { progress_type: progressType, tasklist: [] };
+      }
+      acc[progressType].status = progressType;
+
+      acc[progressType].tasklist.push(task);
+      return acc;
+    }, {});
+
   const groupedTasksByAssignee = tasks
     .filter((ele) => ele.application_id)
     .reduce((acc, task) => {
@@ -322,8 +340,8 @@ export function getFormattedTask({
     ).sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
   }
   if (selectedGroupBy.label == 'status') {
-    return Object.values(groupedTasksByStatus) as {
-      status: TasksAgentContextType['tasks'][number]['status'];
+    return Object.values(groupedTasksByProgressType) as {
+      status: TasksAgentContextType['tasks'][number]['last_progress']['progress_type'];
       tasklist: TasksAgentContextType['tasks'];
     }[];
   }

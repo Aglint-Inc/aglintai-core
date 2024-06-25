@@ -5,12 +5,12 @@
   align-items: flex-end;
 }
 
-.div-block-1699 {
+.sad-icon-wrap {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .div-block-1698 {
@@ -108,18 +108,17 @@
   position: absolute;
   left: auto;
   top: auto;
-  right: -10px;
+  right: -18px;
   bottom: -25px;
-  z-index: 3;
+  z-index: 360;
 
   display: none;
-  padding: 3px 10px;
+  order: -1;
 
-  border-radius: 4px;
+  border: 1px solid var(--neutral-3);
+  border-radius: var(--radius-4);
 
-  background-color: #2f3941;
-
-  color: white;
+  background-color: var(--neutral-2);
 }
 
 .text-sm {

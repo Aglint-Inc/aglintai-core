@@ -285,7 +285,16 @@ const InterviewerModule = ({
                       textModuleName={mod.interview_modules.name}
                       textDepartment={mod.interview_modules.department}
                       slotMemberPic={
-                        <AvatarGroup total={mod.users.length}>
+                        <AvatarGroup
+                          total={mod.users.length}
+                          sx={{
+                            '& .MuiAvatar-root': {
+                              width: 28,
+                              height: 28,
+                              fontSize: 12,
+                            },
+                          }}
+                        >
                           {mod.users.slice(0, 5).map((user) => {
                             return (
                               <MuiAvatar

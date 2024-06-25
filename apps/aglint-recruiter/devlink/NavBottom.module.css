@@ -38,7 +38,7 @@
   top: auto;
   right: auto;
   bottom: 6px;
-  z-index: 110;
+  z-index: 360;
 
   display: none;
   height: var(--space-5);
