@@ -9,11 +9,13 @@ import { GlobalIcon } from '@/devlink3/GlobalIcon';
 import { useApplication } from '@/src/context/ApplicationContext';
 
 import { Loader } from '../common';
+import { getIconName } from '../utils';
+import { EmptyDetailState } from './common';
 
 const Education = () => {
   return (
     <CandidateDetail
-      slotIcon={<GlobalIcon size={5} iconName={'school'} />}
+      slotIcon={<GlobalIcon size={5} iconName={getIconName('Education')} />}
       slotBody={<Content />}
       textTitle={'Education'}
       slotBadge={<></>}
@@ -39,7 +41,7 @@ const Content = () => {
       data?.score_json?.relevance?.schools
     )
   )
-    return <>No schools found</>;
+    return <EmptyDetailState section='Education' />;
   return <Schools />;
 };
 
