@@ -18,36 +18,50 @@ import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/Candi
 import { planCombineSlots } from '@/src/services/CandidateScheduleV2/utils/planCombine';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let { api_options, filter_json_id, candidate_tz } =
     req.body as APIVerifyRecruiterSelectedSlots;
   try {
     const { filter_json_data } = await fetch_details_from_db(filter_json_id);
-    const zod_options = v.parse(scheduling_options_schema, {
+    const selected_options =
+      filter_json_data.selected_options as PlanCombinationRespType[];
+
+    let zod_options = v.parse(scheduling_options_schema, {
       ...api_options,
       include_conflicting_slots: api_options?.include_conflicting_slots || {},
     });
-
-    const selected_options =
-      filter_json_data.selected_options as PlanCombinationRespType[];
+    if (!selected_options) {
+      zod_options = v.parse(scheduling_options_schema, {
+        include_conflicting_slots: {},
+      });
+    }
     const cand_schedule = new CandidatesSchedulingV2(
       {
         candidate_tz: candidate_tz,
         end_date_str: filter_json_data.filter_json.end_date,
         recruiter_id: filter_json_data.interview_schedule.recruiter_id,
-        session_ids: selected_options[0].sessions.map((s) => s.session_id),
+        session_ids: filter_json_data.session_ids,
         start_date_str: filter_json_data.filter_json.start_date,
       },
       zod_options,
     );
     await cand_schedule.fetchDetails();
     await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
-    const verified_slots =
-      cand_schedule.verifyIntSelectedSlots(selected_options);
-    const all_day_plans = convertOptionsToDateRangeSlots(
-      verified_slots,
-      candidate_tz,
-    );
+    let all_day_plans = [];
+
+    // email agent schedule link
+    if (!selected_options) {
+      all_day_plans = cand_schedule.findCandSlotsForDateRange();
+    } else {
+      const verified_slots =
+        cand_schedule.verifyIntSelectedSlots(selected_options);
+      all_day_plans = convertOptionsToDateRangeSlots(
+        verified_slots,
+        candidate_tz,
+      );
+    }
+
     return res.status(200).json(all_day_plans);
   } catch (error) {
     console.error(error);
@@ -116,32 +130,3 @@ const convertOptionsToDateRangeSlots = (
 
   return all_day_plans;
 };
-
-// const day_map_slots: {
-//     [int_start_day: string]: PlanCombinationRespType[][];
-//   } = {};
-
-//   for (let curr_int_day_slots of verified_options) {
-//     const session_rounds = ScheduleUtils.getSessionRounds(
-//       curr_int_day_slots.sessions,
-//     ) as unknown as SessionCombinationRespType[][];
-//     const int_start_day = userTzDayjs(session_rounds[0][0].start_time)
-//       .tz(candidate_tz)
-//       .startOf('day')
-//       .format();
-//     const plan_combs: PlanCombinationRespType[] = session_rounds.map((s) => {
-//       return {
-//         plan_comb_id: nanoid(),
-//         sessions: s,
-//       };
-//     });
-//     console.log(plan_combs);
-//     if (!day_map_slots[int_start_day]) {
-//       day_map_slots[int_start_day] = [];
-//     }
-//     day_map_slots[int_start_day].push([...plan_combs]);
-//   }
-//   for (const slots of Object.values(day_map_slots)) {
-//     const session_combs = planCombineSlots(slots);
-//     all_day_plans = [...all_day_plans, session_combs];
-//   }

@@ -1,3 +1,4 @@
+// import { replaceAll } from '@aglint/shared-utils';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -64,7 +65,7 @@ function processDirectory(
     const tempResult = item.filter?.(item.filter(result)) || result;
     fs.writeFileSync(
       item.path,
-      `export const ${item.objectName} = [\n${tempResult.map((item) => "'" + item + "'").join(',\n')}\n] as const`,
+      `export const ${item.objectName} = [\n${tempResult.map((item) => "'" + replaceAll(item, '\\', '/') + "'").join(',\n')}\n] as const`,
       'utf-8',
     );
   });
@@ -75,12 +76,12 @@ function processDirectory(
 // const rootDirectory = args[0].split(',') || ['.'];
 // const outputFile = args[1] || 'script/paths.ts';
 const rootDirectory = {
-  'src/pages': {
+  [path.join('src', 'pages')]: {
     basePath: '',
     appRouter: false,
   },
-  '../aglint-mail/src/app/api': {
-    basePath: '/api/emails',
+  [path.join('../aglint-mail/src/app/', 'api')]: {
+    basePath: path.join('/api', 'emails'),
     appRouter: true,
   },
 };
@@ -95,3 +96,8 @@ processDirectory(rootDirectory, [
     filter: (x) => x.filter((item) => item.startsWith('/api')),
   },
 ]);
+
+function replaceAll(str: string, find: string, replace: string) {
+  // Split the string by the find substring and join the parts with the replace substring
+  return str.split(find).join(replace);
+}

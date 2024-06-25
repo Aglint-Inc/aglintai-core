@@ -1,5 +1,7 @@
 "use strict";
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
+// import { replaceAll } from '@aglint/shared-utils';
 var fs = require("fs");
 var path = require("path");
 function processDirectory(rootDirs, outputFiles) {
@@ -42,22 +44,22 @@ function processDirectory(rootDirs, outputFiles) {
     outputFiles.forEach(function (item) {
         var _a;
         var tempResult = ((_a = item.filter) === null || _a === void 0 ? void 0 : _a.call(item, item.filter(result))) || result;
-        fs.writeFileSync(item.path, "export const ".concat(item.objectName, " = [\n").concat(tempResult.map(function (item) { return "'" + item + "'"; }).join(',\n'), "\n] as const"), 'utf-8');
+        fs.writeFileSync(item.path, "export const ".concat(item.objectName, " = [\n").concat(tempResult.map(function (item) { return "'" + replaceAll(item, '\\', '/') + "'"; }).join(',\n'), "\n] as const"), 'utf-8');
     });
 }
 // const args = process.argv.slice(2);
 // const rootDirectory = args[0].split(',') || ['.'];
 // const outputFile = args[1] || 'script/paths.ts';
-var rootDirectory = {
-    'src/pages': {
+var rootDirectory = (_a = {},
+    _a[path.join('src', 'pages')] = {
         basePath: '',
         appRouter: false,
     },
-    '../aglint-mail/src/app/api': {
-        basePath: '/api/emails',
+    _a[path.join('../aglint-mail/src/app/', 'api')] = {
+        basePath: path.join('/api', 'emails'),
         appRouter: true,
     },
-};
+    _a);
 var allPathOutputFile = 'src/constant/allPaths.ts';
 var apiPathOutputFile = 'src/constant/apiPaths.ts';
 processDirectory(rootDirectory, [
@@ -68,3 +70,7 @@ processDirectory(rootDirectory, [
         filter: function (x) { return x.filter(function (item) { return item.startsWith('/api'); }); },
     },
 ]);
+function replaceAll(str, find, replace) {
+    // Split the string by the find substring and join the parts with the replace substring
+    return str.split(find).join(replace);
+}
