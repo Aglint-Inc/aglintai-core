@@ -1,5 +1,9 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
-import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
+import {
+  DAYJS_FORMATS,
+  fillCompEmailTemplate,
+  getFullName,
+} from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
@@ -9,7 +13,6 @@ import {
   scheduleTypeIcon,
 } from '../../../utils/email/common/functions';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
-import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'interviewStart_email_interviewers'>['api_payload'],

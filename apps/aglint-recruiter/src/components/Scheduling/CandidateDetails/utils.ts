@@ -31,6 +31,7 @@ import { addScheduleActivity } from '../Candidates/queries/utils';
 // import { mailHandler } from '../Candidates/utils';
 import { getScheduleName } from '../utils';
 import { fetchInterviewDataJob, fetchInterviewDataSchedule } from './hooks';
+import { selfScheduleReminderMailToCandidate } from './mailUtils';
 import { SchedulingFlow } from './SelfSchedulingDrawer/store';
 import { SchedulingApplication } from './store';
 
@@ -1223,24 +1224,21 @@ export const onClickResendInvite = async ({
     if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
 
     if (checkFilterJson) {
-      //TODO: Implement new mailHandler
-      // const resMail = await mailHandler({
-      //   filter_id: checkFilterJson.id,
-      //   supabase,
-      //   application_id,
-      //   task_id: checkFilterJson.new_tasks[0].id,
-      // });
-      // if (resMail.sent) {
-      //   addScheduleActivity({
-      //     title: `Resent booking link to ${candidate_name} for ${session_name}`,
-      //     application_id: application_id,
-      //     logged_by: 'user',
-      //     supabase,
-      //     created_by: rec_user_id,
-      //   });
-      //   toast.success('Invite resent successfully.');
-      // }
-      // return resMail;
+      const resMail = await selfScheduleReminderMailToCandidate({
+        filter_id: checkFilterJson.id,
+      });
+
+      if (resMail) {
+        addScheduleActivity({
+          title: `Resent booking link to ${candidate_name} for ${session_name}`,
+          application_id: application_id,
+          logged_by: 'user',
+          supabase,
+          created_by: rec_user_id,
+        });
+        toast.success('Invite resent successfully.');
+      }
+      return resMail;
     }
   } catch (e) {
     toast.error(e.message);

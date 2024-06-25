@@ -3,7 +3,11 @@ import type {
   MeetingDetailCardType,
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
+import {
+  DAYJS_FORMATS,
+  fillCompEmailTemplate,
+  getFullName,
+} from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   platformRemoveUnderscore,
@@ -11,7 +15,6 @@ import {
   sessionTypeIcon,
   scheduleTypeIcon,
 } from '../../../utils/email/common/functions';
-import { fillCompEmailTemplate } from '../../../utils/apiUtils/fillCompEmailTemplate';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 
 export async function fetchUtil(
