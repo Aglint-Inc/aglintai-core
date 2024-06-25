@@ -58,6 +58,7 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/fetch_activities': ['scheduler_enabled'],
   '/api/scheduling/get_interview_modules': ['scheduler_enabled'],
   '/api/scheduling/fetch_interview_module_by_id': ['scheduler_enabled'],
+  '/api/scheduling/get_interview_plans': ['scheduler_enabled'],
   // scheduling application apis
   '/api/scheduling/application/sendtocandidate': ['scheduler_enabled'],
   '/api/scheduling/application/cancelschedule': ['scheduler_enabled'],
