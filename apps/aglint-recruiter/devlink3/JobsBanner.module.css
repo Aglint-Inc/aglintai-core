@@ -1,32 +1,32 @@
-.div-block-1515 {
+.jb-wrap {
   display: flex;
-  padding: 10px 16px;
+  padding: var(--space-2) var(--space-4);
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: nowrap;
   align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 
-  border-radius: 10px;
+  border-radius: var(--radius-4);
 
   background-color: #fff7ed;
 }
 
-.div-block-1678 {
+.jb-content-wrap {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
-.div-block-1516 {
+.job-content-sub-wrap {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .icons {
@@ -51,4 +51,12 @@
 
 .icons.pointer {
   cursor: pointer;
+}
+
+.jb-desc-wrap {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
