@@ -27,7 +27,10 @@ const Application = ({
   children,
   ...props
 }: PropsWithChildren<
-  Parameters<(typeof applicationQuery)['application']>[0]
+  Parameters<(typeof applicationQuery)['application']>[0] &
+    Partial<
+      Pick<Parameters<typeof ResumePreviewer>[0], 'handleDown' | 'handleUp'>
+    >
 >) => {
   const value = useApplicationContext(props);
   const { preview, resetPreview, resetAll } = useApplicationStore(
@@ -46,9 +49,10 @@ const Application = ({
         id={value?.application_id}
         name={value?.meta?.data?.name}
         open={preview}
-        slotBookmark={<></>}
         onClose={() => resetPreview()}
         url={value?.meta?.data?.file_url}
+        handleDown={props?.handleDown}
+        handleUp={props?.handleUp}
       />
       {children ?? <></>}
     </ApplicationContext.Provider>

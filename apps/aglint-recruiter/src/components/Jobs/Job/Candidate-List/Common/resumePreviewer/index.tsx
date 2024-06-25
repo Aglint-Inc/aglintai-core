@@ -1,5 +1,4 @@
 import { Dialog, Stack } from '@mui/material';
-import { ReactNode } from 'react';
 
 import { ResumeWrap } from '@/devlink3/ResumeWrap';
 import Loader from '@/src/components/Common/Loader';
@@ -10,14 +9,16 @@ const ResumePreviewer = ({
   id,
   url,
   name,
-  slotBookmark,
+  handleUp = null,
+  handleDown = null,
 }: {
   open: boolean;
   onClose: () => void;
   id: string;
   name: string;
   url: string;
-  slotBookmark: ReactNode;
+  handleUp?: () => void;
+  handleDown?: () => void;
 }) => {
   return (
     <Dialog
@@ -39,9 +40,15 @@ const ResumePreviewer = ({
       <ResumeWrap
         key={id}
         textName={name}
-        onClickDown={{ style: { display: 'none' } }}
-        slotBookmark={slotBookmark}
-        onClickUp={{ style: { display: 'none' } }}
+        onClickDown={{
+          style: { display: handleDown ? 'flex' : 'none' },
+          onClick: () => handleDown(),
+        }}
+        slotBookmark={<></>}
+        onClickUp={{
+          style: { display: handleUp ? 'flex' : 'none' },
+          onClick: () => handleUp(),
+        }}
         onClickClose={{ onClick: () => onClose() }}
         slotResume={
           <Stack
