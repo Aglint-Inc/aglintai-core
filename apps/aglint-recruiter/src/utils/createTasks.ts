@@ -34,7 +34,7 @@ export const createTasks = async (
       data: {
         task_id: eachTask.id as string,
         created_by: recruiterUser,
-        progress_type: 'standard',
+        progress_type: 'schedule',
       },
       optionData: {
         candidateName: candidate.name,
