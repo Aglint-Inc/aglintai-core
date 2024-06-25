@@ -77,7 +77,7 @@ const company = {
 } as const;
 const companyPostings = {
   '/company-postings/[id]': ({ id }: { id: string }) =>
-    pageRouteBuilder([ROUTES.app(), id]),
+    pageRouteBuilder([ROUTES.app(), 'company-postings', id]),
 } as const;
 const forgotPassword = {
   '/forgot-password': () => pageRouteBuilder([ROUTES.app(), 'forgot-password']),
