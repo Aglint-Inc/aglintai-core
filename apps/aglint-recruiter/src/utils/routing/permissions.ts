@@ -74,7 +74,7 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/request_availability/getCandidateRequestData': [
     'scheduler_enabled',
   ],
-
+  '/api/setMembersWithRole': ['jobs_read'],
   '/api/scheduling/request_availability/getTaskIdDetailsByRequestId': [
     'scheduler_enabled',
   ],

@@ -465,6 +465,7 @@ const updateMember = ({
   recruiter_id: string;
 }) => {
   const body: API_setMembersWithRole['request'] = { data: data, recruiter_id };
+
   return axios
     .post<API_setMembersWithRole['response']>('/api/setMembersWithRole', body)
     .then(({ data }) => {
