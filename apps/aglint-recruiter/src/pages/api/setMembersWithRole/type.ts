@@ -11,19 +11,11 @@ export type API_setMembersWithRole = {
       role?: DatabaseEnums['user_roles'];
       manager_id?: string;
     };
-    recruiter_id: string;
   };
-  response:
-    | {
-        data: DatabaseTable['recruiter_user'] & {
-          role?: DatabaseEnums['user_roles'];
-          manager_id?: string;
-        };
-
-        error: null;
-      }
-    | {
-        data: null;
-        error: string;
-      };
+  response: {
+    data: DatabaseTable['recruiter_user'] & {
+      role?: DatabaseEnums['user_roles'];
+      manager_id?: string;
+    };
+  };
 };

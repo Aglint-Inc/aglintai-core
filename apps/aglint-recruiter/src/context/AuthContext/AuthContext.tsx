@@ -12,7 +12,6 @@ import {
 } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
@@ -27,6 +26,7 @@ import {
 } from 'react';
 
 import { LoaderSvg } from '@/devlink/LoaderSvg';
+import axios from '@/src/client/axios';
 import { API_getMembersWithRole } from '@/src/pages/api/getMembersWithRole/type';
 import { API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
 import { emailTemplateQueries } from '@/src/queries/email-templates';
@@ -464,13 +464,11 @@ const updateMember = ({
   };
   recruiter_id: string;
 }) => {
-  const body: API_setMembersWithRole['request'] = { data: data, recruiter_id };
   return axios
-    .post<API_setMembersWithRole['response']>('/api/setMembersWithRole', body)
-    .then(({ data }) => {
-      if (data.error) throw new Error(data.error);
-      return data.data;
-    });
+    .call<API_setMembersWithRole>('POST', '/api/setMembersWithRole', {
+      data,
+    })
+    .then((res) => res.data);
 };
 
 const getMembers = () => {

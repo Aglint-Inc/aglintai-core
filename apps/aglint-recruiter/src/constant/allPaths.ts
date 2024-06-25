@@ -170,7 +170,6 @@ export const PATHS = [
 '/api/supabase/getCandidate-files',
 '/api/support/email',
 '/api/support/notificationEmail',
-'/api/unauthorized',
 '/api/updateUsers',
 '/api/webhook',
 '/api/workflow-cron',
