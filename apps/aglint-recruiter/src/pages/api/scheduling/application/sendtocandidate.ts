@@ -11,6 +11,7 @@ import { CookieOptions, createServerClient, serialize } from '@supabase/ssr';
 import dayjs from 'dayjs';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { selfScheduleMailToCandidate } from '@/src/components/Scheduling/CandidateDetails/mailUtils';
 import { SchedulingFlow } from '@/src/components/Scheduling/CandidateDetails/SelfSchedulingDrawer/store';
 import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
 import {
@@ -115,7 +116,7 @@ const sendToCandidate = async ({
     start_date: string;
     end_date: string;
   };
-  selectedSlots?: SchedulingFlow['filteredSchedulingOptions'];
+  selectedSlots: SchedulingFlow['filteredSchedulingOptions'];
   selectedDebrief: SchedulingFlow['filteredSchedulingOptions'][number];
   recruiterUser: {
     email: string;
@@ -214,6 +215,10 @@ const sendToCandidate = async ({
           created_by: recruiterUser.user_id,
           task_id: resTask.id,
         });
+
+        selfScheduleMailToCandidate({
+          filter_id: filterJson[0].id,
+        });
         //TODO: Implement new mailHandler
         // mailHandler({
         //   filter_id: filterJson[0].id,
@@ -308,6 +313,10 @@ const sendToCandidate = async ({
           supabase,
           created_by: recruiterUser.user_id,
           task_id: resTask.id,
+        });
+
+        selfScheduleMailToCandidate({
+          filter_id: filterJson[0].id,
         });
         //TODO: Implement new mailHandler
         // mailHandler({
