@@ -73,10 +73,7 @@ export function getIndicator({
     return 'READY_TO_SCHEDULE' as indicatorType;
   }
 
-  if (
-    progress_type === 'interview_schedule' ||
-    progress_type === 'call_completed'
-  ) {
+  if (progress_type === 'interview_schedule') {
     return 'BOOKED' as indicatorType;
   }
 
@@ -84,7 +81,8 @@ export function getIndicator({
     progress_type === 'call_failed' ||
     progress_type === 'call_disconnected' ||
     progress_type === 'email_failed' ||
-    task.status === 'failed'
+    task.status === 'failed' ||
+    progress_type === 'call_completed'
   ) {
     return 'ACTION_NEEDED' as indicatorType;
   }

@@ -3,8 +3,6 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
 import { IconButtonGhost } from "./IconButtonGhost";
-import { ButtonGhost } from "./ButtonGhost";
-import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./CloseJobModal.module.css";
 
@@ -27,7 +25,7 @@ export function CloseJobModal({
         className={_utils.cx(_styles, "close-job-modal-heading")}
         tag="div"
       >
-        <Text content={textPopupTitle} weight="bold" />
+        <Text content={textPopupTitle} weight="medium" />
         <IconButtonGhost
           onClickButton={onClickCloseJob}
           iconName="close"
@@ -54,22 +52,7 @@ export function CloseJobModal({
       </_Builtin.Block>
       <_Builtin.Block tag="div">{slotInput}</_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "buttn_flex")} tag="div">
-        <ButtonGhost
-          onClickButton={onClickCancel}
-          isLeftIcon={false}
-          isRightIcon={false}
-          textButton="Cancel"
-          size="2"
-        />
-        <ButtonSolid
-          textButton={textButton}
-          isDisabled={isDisabled}
-          onClickButton={onClickCloseJob}
-          color="error"
-          isLeftIcon={false}
-          isRightIcon={false}
-          size="2"
-        />
+        {slotButton}
       </_Builtin.Block>
     </_Component>
   );

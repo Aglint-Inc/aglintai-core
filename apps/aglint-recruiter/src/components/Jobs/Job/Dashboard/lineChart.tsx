@@ -27,7 +27,7 @@ const LineChart: React.FC<{
     (acc, [key, value]) => {
       acc.names.push(key);
       acc.counts.push(value);
-      acc.pointBackgroundColor.push('#87929d');
+      acc.pointBackgroundColor.push('#8d8d8690');
       return acc;
     },
     { names: [], counts: [], pointBackgroundColor: [] },
@@ -51,7 +51,7 @@ const LineChart: React.FC<{
           return gradientBg;
         },
         data: counts,
-        borderColor: 'var(--neutral-6)',
+        borderColor: '#bcbbb5',
         pointBackgroundColor,
         tension: 0.3,
       },
