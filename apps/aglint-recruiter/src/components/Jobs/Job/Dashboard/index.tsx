@@ -261,7 +261,17 @@ const Dashboard = () => {
             slotCardWithNumber={<TenureAndExpSummary />}
             isViewScheduleVisible={schedule.length > 3}
             onClickViewSchedule={{
-              onClick: () => push(`/scheduling?tab=mySchedules`),
+              onClick: () => {
+                localStorage.setItem(
+                  'scheduleFilterIds',
+                  JSON.stringify({
+                    status: ['confirmed'],
+                    member: [],
+                    job: [job?.id],
+                  }),
+                );
+                push(`/scheduling?tab=schedules`);
+              },
             }}
             slotScheduleCardSmall={<Schedules />}
             // textCandidateCount={counts.total}
