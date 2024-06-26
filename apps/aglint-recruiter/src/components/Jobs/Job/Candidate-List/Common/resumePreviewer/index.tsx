@@ -27,6 +27,17 @@ const ResumePreviewer = ({
     handleDown: () => void;
   };
 }) => {
+  const downloadFile = async () => {
+    fetch(url).then((response) => {
+      response.blob().then((blob) => {
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = `${(name ?? '').replaceAll(' ', '_').toLowerCase()}_resume${getExtension(url)}`;
+        a.click();
+      });
+    });
+  };
   return (
     <Dialog
       sx={{
@@ -52,14 +63,17 @@ const ResumePreviewer = ({
           onClick: () => navigation?.handleDown(),
         }}
         slotBookmark={
-          bookmark && (
-            <BookMark
-              isBookMarked={bookmark.isBookmarked}
-              onClickBookmark={{ onClick: () => bookmark.handleBookmark() }}
-              isDarkIconVisible={true}
-              isLightIconVisible={false}
-            />
-          )
+          <Stack direction={'row'} gap={1}>
+            <BookMark onClickBookmark={{ onClick: () => downloadFile() }} />
+            {bookmark && (
+              <BookMark
+                isBookMarked={bookmark.isBookmarked}
+                onClickBookmark={{ onClick: () => bookmark.handleBookmark() }}
+                isDarkIconVisible={true}
+                isLightIconVisible={false}
+              />
+            )}
+          </Stack>
         }
         onClickUp={{
           style: { display: navigation?.handleUp ? 'flex' : 'none' },
@@ -101,12 +115,12 @@ const ResumePreviewer = ({
 
 export { ResumePreviewer };
 
-function Embed({ url }: { url: string }) {
-  const isDocOrDocx = /\.(doc|docx)$/i.test(url);
+const Embed = ({ url }: { url: string }) => {
+  const extension = getExtension(url);
   return (
     <embed
       src={
-        isDocOrDocx
+        extension === '.docx' || extension === '.doc'
           ? `https://view.officeapps.live.com/op/embed.aspx?src=${url}`
           : url
       }
@@ -115,4 +129,8 @@ function Embed({ url }: { url: string }) {
       height='100%'
     />
   );
-}
+};
+
+const getExtension = (url: string) => {
+  return url.slice(url.lastIndexOf('.'), url.length);
+};

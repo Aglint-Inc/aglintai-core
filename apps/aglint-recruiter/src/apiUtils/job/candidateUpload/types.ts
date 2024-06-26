@@ -52,7 +52,7 @@ export type ResumeUploadApi = {
   response: {
     confirmation: boolean;
     error: PostgrestError['message'];
-  }[];
+  };
 };
 
 export type ResumeReuploadApi = {
