@@ -7,6 +7,7 @@ import { useApplications } from '@/src/context/ApplicationsContext';
 import { useKeyPress } from '@/src/context/ApplicationsContext/hooks';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { Application } from '@/src/types/applications.types';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import ResumeScore from '../../Common/resumeScore';
 import { formatTimeStamp } from '../../utils';
@@ -92,7 +93,7 @@ const ApplicationCard = memo(
         onClickSelect={{ onClick: handleCheck }}
         isChecked={isChecked}
         slotProfileImage={<></>}
-        name={application.name}
+        name={capitalizeAll(application.name)}
         jobTitle={application.current_job_title || '---'}
         location={location || '---'}
         slotResumeScore={
