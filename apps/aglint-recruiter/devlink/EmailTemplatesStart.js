@@ -34,7 +34,7 @@ export function EmailTemplatesStart({
           className={_utils.cx(_styles, "email-template-left-head")}
           tag="div"
         >
-          <Text content="Email Templates" weight="bold" />
+          <Text content="Email Templates" weight="medium" />
           <Text
             content="Emails will be triggered in mentioned events."
             color="neutral"
