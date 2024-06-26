@@ -8,11 +8,8 @@ import {
   JobApplcationDB,
 } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
-import axios from 'axios';
 
 import { ResumeJson } from '@/src/apiUtils/resumeScoring/types';
-import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
-import toast from '@/src/utils/toast';
 
 export interface TimeSlot {
   startTime: string;
@@ -252,60 +249,4 @@ export const getScheduleTextcolor = (
       : status === 'waiting'
         ? '#703815'
         : '#681219';
-};
-
-export const cancelMailHandler = async ({
-  rec_id,
-  candidate_name,
-  session_name,
-  mail,
-  job_title,
-  supabase,
-}) => {
-  try {
-    const { data, error } = await supabase
-      .from('recruiter')
-      .select('name, email_template')
-      .eq('id', rec_id);
-    if (error) throw new Error(error.message);
-
-    if (data[0].email_template) {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`,
-        {
-          fromEmail: `messenger@aglinthq.com`,
-          fromName: 'Aglint',
-          email: mail,
-          subject: fillEmailTemplate(
-            data[0].email_template['cancel_interview_session'].subject,
-            {
-              company_name: data[0].name,
-              first_name: candidate_name,
-              last_name: '',
-              job_title: job_title,
-              session_name: session_name,
-            },
-          ),
-          text: fillEmailTemplate(
-            data[0].email_template['cancel_interview_session'].body,
-            {
-              company_name: data[0].name,
-              first_name: candidate_name,
-              last_name: '',
-              job_title: job_title,
-              session_name: session_name,
-            },
-          ),
-        },
-      );
-
-      if (res.status === 200 && res.data.data === 'Email sent') {
-        return true;
-      } else {
-        toast.error('Unable to send mail. Please try again later.');
-      }
-    }
-  } catch (e) {
-    toast.error('Unable to send mail. Please try again later.');
-  }
 };

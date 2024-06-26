@@ -159,6 +159,7 @@ export * from "./DetailedFeedbackCard";
 export * from "./DetailedFeedbackCardSmall";
 export * from "./DevLinkProvider";
 export * from "./DisconnectInterviewModal";
+export * from "./Download";
 export * from "./EditEmail";
 export * from "./EditableListItem";
 export * from "./EducationItem";

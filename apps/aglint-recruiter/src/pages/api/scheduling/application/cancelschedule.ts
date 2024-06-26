@@ -5,24 +5,35 @@ import { CookieOptions, createServerClient, serialize } from '@supabase/ssr';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { cancelMailHandler } from '@/src/components/Scheduling/CandidateDetails/mailUtils';
+
 export interface ApiBodyParamsCancelSchedule {
   meeting_id: string;
   session_id: string;
   reason: string;
   notes: string;
   cancel_user_id: string;
+  application_id: string;
 }
 
 export type ApiResponseCancelSchedule = 'cancelled';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { meeting_id, session_id, reason, notes, cancel_user_id } =
-      req.body as ApiBodyParamsCancelSchedule;
+    const {
+      meeting_id,
+      session_id,
+      reason,
+      notes,
+      cancel_user_id,
+      application_id,
+    } = req.body as ApiBodyParamsCancelSchedule;
 
     console.log();
 
-    if (!(meeting_id && session_id && reason && cancel_user_id)) {
+    if (
+      !(meeting_id && session_id && reason && cancel_user_id && application_id)
+    ) {
       return res.status(400).send('Missing required fields');
     }
 
@@ -85,6 +96,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           note: notes,
         },
         cancel_user_id: cancel_user_id,
+      });
+
+      cancelMailHandler({
+        application_id,
+        session_ids: [session_id],
       });
 
       if (error) throw new Error(error.message);

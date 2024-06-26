@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { type PropsWithChildren, type ReactNode, useMemo } from 'react';
 
 import { CandidateDetail } from '@/devlink/CandidateDetail';
@@ -26,11 +27,11 @@ const Analysis = (props: PropsWithChildren<{ score?: ReactNode }>) => {
         const safeKey = key as keyof typeof scores;
         switch (safeKey) {
           case 'skills':
-            return safeKey in reasoning;
+            return safeKey in reasoning && reasoning?.[safeKey];
           case 'experience':
-            return 'positions' in reasoning;
+            return 'positions' in reasoning && reasoning?.['positions'];
           case 'education':
-            return 'schools' in reasoning;
+            return 'schools' in reasoning && reasoning?.['schools'];
         }
       }).length === 0,
     [status, scores, reasoning],
