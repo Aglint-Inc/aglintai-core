@@ -98,6 +98,7 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/v1/booking/confirm-recruiter-selected-option': [
     'scheduler_enabled',
   ],
+  '/api/emails/preview': ['scheduler_enabled'],
 };
 
 export default PERMISSIONS;
