@@ -90,11 +90,7 @@ function SchedulerEmailTemps() {
       throw error;
     }
   };
-  const options = [
-    '{{recruiterName}}',
-    '{{companyName}}',
-    '{{interviewerFirstName}}',
-  ];
+  const options = ['{{recruiterName}}', '{{companyName}}'];
 
   return (
     <Stack>
