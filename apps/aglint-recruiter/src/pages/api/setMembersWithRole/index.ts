@@ -28,9 +28,10 @@ export default async function handler(
       if (user_id === data.user_id || temp_role !== 'admin') {
         throw new Error('Permission denied.');
       }
-      let role = data.role;
+      let role: string;
+      let role_id = data.role_id;
       let manager_id = data.manager_id;
-      delete data.role;
+      delete data.role_id;
       delete data.manager_id;
       const userData = await setMembers(data);
 
@@ -38,16 +39,17 @@ export default async function handler(
         const temp = await setRelation({
           user_id: userData.user_id,
           recruiter_id,
-          role,
+          role_id,
           manager_id,
         });
         role = temp.role;
+        role_id = temp.role_id;
         manager_id = temp.manager_id;
       }
       return {
         data: {
           ...userData,
-          role: role || undefined,
+          ...{ role: role, role_id: role_id || undefined },
           manager_id: manager_id || undefined,
         },
       };
@@ -87,10 +89,14 @@ const setRelation = (
     .update(data)
     .eq('user_id', data.user_id)
     .eq('recruiter_id', data.recruiter_id)
-    .select('role, manager_id')
+    .select('role_id, manager_id, roles(name)')
     .single()
     .then(({ data, error }) => {
       if (error) throw new Error(error.message);
-      return data;
+      return {
+        role: data.roles.name,
+        role_id: data.role_id,
+        manager_id: data.manager_id,
+      };
     });
 };

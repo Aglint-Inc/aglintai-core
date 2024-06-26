@@ -64,7 +64,7 @@ export interface ContextValue {
   handelMemberUpdate: (x: {
     user_id: string;
     data: DatabaseTableUpdate['recruiter_user'] & {
-      role?: DatabaseEnums['user_roles'];
+      role_id?: string;
       manager_id?: string;
     };
   }) => Promise<boolean>;
@@ -209,7 +209,8 @@ const AuthProvider = ({ children }) => {
         handleUpdateProfile({ join_status: 'joined' }, userDetails.user.id);
       setRecruiterUser({
         ...recruiterUser,
-        role: recruiterRel.role,
+        role: recruiterRel.roles.name,
+        role_id: recruiterRel.role_id,
         manager_id: recruiterRel.manager_id,
       });
       setRecruiter({
@@ -307,7 +308,6 @@ const AuthProvider = ({ children }) => {
     if (!user_id && data && recruiter.id) return Promise.resolve(false);
     return updateMember({
       data: { ...data, user_id },
-      recruiter_id: recruiter.id,
     }).then((data) => {
       if (data) {
         setMembers((prev) =>
@@ -334,7 +334,7 @@ const AuthProvider = ({ children }) => {
         for (let item of flags) {
           if (!posthog.isFeatureEnabled(item)) return false;
         }
-      return roles.includes(recruiterUser.role);
+      return false;
     }
     return false;
   };
@@ -455,14 +455,12 @@ const pageFeatureMapper = {
 
 const updateMember = ({
   data,
-  recruiter_id,
 }: {
   data: Omit<DatabaseTableUpdate['recruiter_user'], 'user_id'> & {
     user_id: string;
-    role?: DatabaseEnums['user_roles'];
+    role_id?: string;
     manager_id?: string;
   };
-  recruiter_id: string;
 }) => {
   return axios
     .call<API_setMembersWithRole>('POST', '/api/setMembersWithRole', {
@@ -472,9 +470,9 @@ const updateMember = ({
 };
 
 const getMembers = () => {
-  return axios
-    .get<API_getMembersWithRole['response']>('/api/getMembersWithRole')
-    .then(({ data }) => {
-      return data;
-    });
+  return axios.call<API_getMembersWithRole>(
+    'GET',
+    '/api/getMembersWithRole',
+    null,
+  );
 };

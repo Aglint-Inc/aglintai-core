@@ -12,7 +12,7 @@ function processDirectory(
     filter?: (x: string[]) => string[];
   }[],
 ) {
-  const result: string[] = [];
+  let result: string[] = [];
 
   function walkDirectory(
     rootDir: string,
@@ -59,9 +59,19 @@ function processDirectory(
     }),
   );
 
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  // filter out wrong PATH SEPARATOR
+
+  if (path.sep === path.win32.sep) {
+    result = result.map((item) =>
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
+      item.replace(new RegExp('\\' + path.win32.sep, 'g'), '/'),
+    );
+  }
+
+  // write to file
   outputFiles.forEach((item) => {
     const tempResult = item.filter?.(item.filter(result)) || result;
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     fs.writeFileSync(
       item.path,
       `export const ${item.objectName} = [\n${tempResult.map((item) => "'" + item + "'").join(',\n')}\n] as const`,
@@ -75,17 +85,17 @@ function processDirectory(
 // const rootDirectory = args[0].split(',') || ['.'];
 // const outputFile = args[1] || 'script/paths.ts';
 const rootDirectory = {
-  'src/pages': {
+  [path.join('src/pages', '')]: {
     basePath: '',
     appRouter: false,
   },
-  '../aglint-mail/src/app/api': {
-    basePath: 'api/emails',
+  [path.join('../aglint-mail/src/app', 'api')]: {
+    basePath: path.join('/api', 'emails'),
     appRouter: true,
   },
 };
-const allPathOutputFile = 'src/constant/allPaths.ts';
-const apiPathOutputFile = 'src/constant/apiPaths.ts';
+const allPathOutputFile = path.join('src/constant', 'allPaths.ts');
+const apiPathOutputFile = path.join('src/constant', 'apiPaths.ts');
 
 processDirectory(rootDirectory, [
   { path: allPathOutputFile, objectName: 'PATHS' },

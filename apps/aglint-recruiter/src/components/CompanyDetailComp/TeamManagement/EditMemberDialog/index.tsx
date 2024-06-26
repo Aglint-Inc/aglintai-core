@@ -1,5 +1,4 @@
 import { employmentTypeEnum, RecruiterUserType } from '@aglint/shared-types';
-import { DB } from '@aglint/shared-types';
 import { Autocomplete, Drawer, Stack } from '@mui/material';
 import { useState } from 'react';
 
@@ -14,6 +13,7 @@ import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import { interviewLocationType } from '../AddMemberDialog';
+import { useRolesOptions } from '../hooks';
 
 const EditMember = ({
   open,
@@ -22,10 +22,11 @@ const EditMember = ({
   onClose,
 }: {
   open: boolean;
-  member: RecruiterUserType;
+  member: RecruiterUserType & { role_id: string };
   memberList: { id: string; name: string }[];
   onClose: () => void;
 }) => {
+  const { data: roleOptions } = useRolesOptions();
   const { handelMemberUpdate, recruiter } = useAuthDetails();
   const [form, setForm] = useState<{
     first_name: string;
@@ -35,7 +36,8 @@ const EditMember = ({
     employment: employmentTypeEnum;
     designation: string;
     department: string;
-    role: RecruiterUserType['role'];
+    role: string;
+    role_id: string;
     manager_id: string;
   }>({
     first_name: member.first_name,
@@ -46,6 +48,7 @@ const EditMember = ({
     department: member.department,
     designation: member.position,
     role: member.role,
+    role_id: member.role_id,
     manager_id: member.manager_id,
   });
 
@@ -96,12 +99,12 @@ const EditMember = ({
       temp.designation = true;
       flag = true;
     }
-    if (!form.role || form.role.trim() === '') {
+    if (!form.role_id || form.role_id.trim() === '') {
       temp.role = true;
       flag = true;
     }
     if (
-      form.role != 'admin' &&
+      form.role_id != 'admin' &&
       (!form.manager_id || form.manager_id.trim() == '')
     ) {
       temp.manager = true;
@@ -304,30 +307,21 @@ const EditMember = ({
                 <Stack direction={'row'} gap={2}>
                   <Autocomplete
                     fullWidth
-                    value={capitalizeFirstLetter(form.role)}
-                    onChange={(event: any, newValue: string | null) => {
+                    value={{ name: form.role, id: form.role_id }}
+                    getOptionLabel={(option) =>
+                      capitalizeFirstLetter(option.name)
+                    }
+                    onChange={(event: any, newValue) => {
                       setForm({
                         ...form,
-                        role: newValue as
-                          | 'recruiter'
-                          | 'interviewer'
-                          | 'hiring_manager'
-                          | 'recruiting_coordinator'
-                          | 'sourcer',
+                        role: newValue.name,
+                        role_id: newValue.id,
                       });
                     }}
                     id='controllable-states-demo'
-                    options={
-                      [
-                        'recruiter',
-                        'interviewer',
-                        'hiring_manager',
-                        'recruiting_coordinator',
-                        'sourcer',
-                      ] as DB['public']['Enums']['user_roles'][]
-                    }
+                    options={roleOptions}
                     renderOption={(props, op) => (
-                      <li {...props}>{capitalizeFirstLetter(op)}</li>
+                      <li {...props}>{capitalizeFirstLetter(op.name)}</li>
                     )}
                     renderInput={(params) => (
                       <UITextField
@@ -405,7 +399,8 @@ const EditMember = ({
                           linked_in: null,
                           interview_location: null,
                           designation: null,
-                          role: 'recruiter',
+                          role: null,
+                          role_id: null,
                           manager_id: null,
                         });
                     },
@@ -467,7 +462,7 @@ const EditMember = ({
                             employment: form.employment,
                             department: form.department,
                             position: form.designation,
-                            role: form.role.toLowerCase() as typeof form.role,
+                            role_id: form.role_id,
                             manager_id: form.manager_id,
                           },
                         })
@@ -501,6 +496,7 @@ const EditMember = ({
                   interview_location: null,
                   designation: null,
                   role: 'recruiter',
+                  role_id: null,
                   manager_id: null,
                 });
             },
