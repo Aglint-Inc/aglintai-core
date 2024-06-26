@@ -38,6 +38,7 @@ import { useGetScheduleApplication } from '../../hooks';
 import {
   setEditSession,
   setIsEditOpen,
+  setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../../store';
 import DebriedForm from './DebriefFrom';
@@ -366,6 +367,7 @@ function SideDrawerEdit() {
       handleClose();
     }
     await fetchInterviewDataByApplication();
+    setSelectedSessionIds([]);
     setSaving(false);
   };
 

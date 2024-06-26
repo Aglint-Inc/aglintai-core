@@ -2,9 +2,9 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { Text } from "./Text";
 import { ButtonSoft } from "./ButtonSoft";
 import { ViewTaskCard } from "./ViewTaskCard";
-import { Text } from "./Text";
 import { TaskProgress } from "./TaskProgress";
 import * as _utils from "./utils";
 import _styles from "./ViewTask.module.css";
@@ -27,6 +27,7 @@ export function ViewTask({
   isDisableNext = false,
   onClickCompleteTask = {},
   isCompleteTaskVisible = true,
+  slotTaskHeader,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -37,10 +38,20 @@ export function ViewTask({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-600")}
+          className={_utils.cx(_styles, "vt-header-left-wrap")}
           tag="div"
         >
-          {"Task Detail"}
+          <Text
+            content={
+              <>
+                {"Task Detail"}
+                <br />
+              </>
+            }
+            weight=""
+            color="neutral"
+          />
+          <_Builtin.Block tag="div">{slotTaskHeader}</_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "taskdrawer_controls")}

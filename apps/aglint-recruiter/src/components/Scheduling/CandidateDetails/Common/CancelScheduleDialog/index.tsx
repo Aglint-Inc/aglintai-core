@@ -8,6 +8,7 @@ import toast from '@/src/utils/toast';
 import { useGetScheduleApplication } from '../../hooks';
 import {
   setIndividualCancelOpen,
+  setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../../store';
 import { meetingActivityMailCalenderHandler } from './utils';
@@ -50,6 +51,7 @@ function CancelScheduleDialog({ refetch }: { refetch: () => void }) {
     } finally {
       setIndividualCancelOpen(false);
       fetchInterviewDataByApplication();
+      setSelectedSessionIds([]);
       refetch();
     }
   };
