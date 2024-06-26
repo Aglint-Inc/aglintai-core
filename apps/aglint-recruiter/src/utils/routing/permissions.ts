@@ -29,6 +29,12 @@ const PERMISSIONS: Permissions = {
    * permissions will reduced  using 'and'
    */
   '/tasks': ['tasks_enabled'],
+  //
+
+  '/api/job/candidateUpload/csvUpload': ['jobs_enabled'],
+  '/api/job/candidateUpload/manualUpload': ['jobs_enabled'],
+  '/api/job/candidateUpload/resumeReupload': ['jobs_enabled'],
+  '/api/job/candidateUpload/resumeUpload': ['jobs_enabled'],
   '/jobs': ['jobs_enabled', 'jobs_read'],
   '/jobs/create': ['jobs_enabled', 'jobs_read', 'jobs_create'],
   '/jobs/[id]': ['jobs_enabled', 'jobs_read', 'jobs_read'],
