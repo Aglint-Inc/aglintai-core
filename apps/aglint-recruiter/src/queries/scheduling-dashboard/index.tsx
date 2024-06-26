@@ -131,12 +131,14 @@ export const useScheduleSessionsAnalytics = () => {
 
 export const useCancelRescheduleReasons = () => {
   const { recruiter } = useAuthDetails();
+  const { isLoading } = useScheduleSessionsAnalytics();
   const { queryKey } = schedulingDashboardQueryKeys.CancelRescheduleReasons({
     recruiter_id: recruiter.id,
   });
   return useQuery({
     queryKey,
     queryFn: () => getCancelRescheduleReasons(recruiter.id),
+    enabled: !isLoading,
   });
 };
 
@@ -147,7 +149,7 @@ export const useCancelRescheduleReasonsUsers = () => {
     useCancelRescheduleReasons();
   const users = CancelRescheduleReasons?.reduce(
     (acc, curr) => {
-      const temp_item = data.find(
+      const temp_item = data?.find(
         (item) => item.interview_session.id == curr.session_id,
       );
 
