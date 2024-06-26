@@ -1,6 +1,7 @@
 import { Dialog, Stack } from '@mui/material';
 
 import { BookMark } from '@/devlink/BookMark';
+import { Download } from '@/devlink/Download';
 import { ResumeWrap } from '@/devlink3/ResumeWrap';
 import Loader from '@/src/components/Common/Loader';
 
@@ -12,6 +13,7 @@ const ResumePreviewer = ({
   name,
   bookmark = null,
   navigation = null,
+  download = false,
 }: {
   open: boolean;
   onClose: () => void;
@@ -26,6 +28,7 @@ const ResumePreviewer = ({
     handleUp: () => void;
     handleDown: () => void;
   };
+  download?: boolean;
 }) => {
   const downloadFile = async () => {
     fetch(url).then((response) => {
@@ -64,7 +67,14 @@ const ResumePreviewer = ({
         }}
         slotBookmark={
           <Stack direction={'row'} gap={1}>
-            <BookMark onClickBookmark={{ onClick: () => downloadFile() }} />
+            {download && (
+              <Download
+                onClickDownload={{
+                  onClick: () => downloadFile(),
+                  style: { cursor: 'pointer' },
+                }}
+              />
+            )}
             {bookmark && (
               <BookMark
                 isBookMarked={bookmark.isBookmarked}
