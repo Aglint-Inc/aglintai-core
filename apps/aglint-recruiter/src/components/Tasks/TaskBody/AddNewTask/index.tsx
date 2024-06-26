@@ -34,9 +34,8 @@ import SelectStatus from '../../Components/SelectStatus';
 import { useTaskStatesContext } from '../../TaskStatesContext';
 import {
   assigneeType,
-  createTaskProgress,
   extractDataFromText,
-  JobCandidatesType,
+  JobCandidatesType
 } from '../../utils';
 import { meetingCardType } from '../ViewTask/Progress/SessionCard';
 import AssigneeList from './AssigneeList';
@@ -152,29 +151,6 @@ function AddNewTask() {
         .eq('id', data.id)
         .single();
 
-      createTaskProgress({
-        type: 'create_task',
-        data: {
-          task_id: data.id as string,
-          created_by: {
-            name: recruiterUser.first_name,
-            id: recruiterUser.user_id,
-          },
-          progress_type:
-            selectedType === 'schedule'
-              ? 'schedule'
-              : selectedType === 'self_schedule'
-                ? 'self_schedule'
-                : 'standard',
-        },
-        optionData: {
-          candidateName:
-            selectedCandidate.candidates.first_name +
-            ' ' +
-            (selectedCandidate.candidates.last_name ?? ''),
-          sessions: selectedSession,
-        },
-      });
       const assignee = selectedTask.assignee[0];
       if (
         isImmediate &&

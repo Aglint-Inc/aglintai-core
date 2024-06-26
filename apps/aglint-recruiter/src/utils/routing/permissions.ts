@@ -1,6 +1,6 @@
 import { DatabaseEnums } from '@aglint/shared-types';
 
-import { PATHS } from '@/script/paths';
+import { PATHS } from '@/src/constant/allPaths';
 
 // import ROUTES from './routes';
 
@@ -51,7 +51,7 @@ const PERMISSIONS: Permissions = {
   /** Any one of the permission is required to access this apis
    * permission will reduced  using 'or'
    */
-  '/api/job/jobApplications/read': ['jobs_read', 'candidates_add'],
+  '/api/scheduling/get_interview_plans': ['scheduler_enabled'],
   '/api/getMembersWithRole': ['jobs_read'], //change to correct permission
   '/api/get_last_login': ['jobs_read'], //change to correct permission
   '/api/setMembersWithRole': ['jobs_read'], //change to correct permission
@@ -64,17 +64,22 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/application/sendtocandidate': ['scheduler_enabled'],
   '/api/scheduling/application/cancelschedule': ['scheduler_enabled'],
   '/api/scheduling/application/candidatesessioncache': ['scheduler_enabled'],
+  '/api/scheduling/application/schedulewithagentwithouttaskid': [
+    'scheduler_enabled',
+  ],
+  '/api/scheduling/application/schedulewithagent': ['scheduler_enabled'],
   //v1 apis
   '/api/scheduling/v1/get-candidate-selected-slots': ['scheduler_enabled'],
+  '/api/scheduling/v1/event_attendee_status': ['scheduler_enabled'],
   // request availability apis
   '/api/scheduling/request_availability/getCandidateRequestData': [
     'scheduler_enabled',
   ],
+  '/api/setMembersWithRole': ['jobs_read'],
   '/api/scheduling/request_availability/getTaskIdDetailsByRequestId': [
     'scheduler_enabled',
   ],
   '/api/scheduling/get_interviewer_and_modules': ['scheduler_enabled'],
-
   '/api/scheduling/request_availability/insertScheduleActivities': [
     'scheduler_enabled',
   ],
@@ -85,6 +90,14 @@ const PERMISSIONS: Permissions = {
     'scheduler_enabled',
   ],
   '/api/scheduling/get_interview_training_progress': ['scheduler_enabled'],
+  // request availability mail apis
+  '/api/emails/sendAvailabilityRequest_email_applicant': ['scheduler_enabled'],
+  '/api/emails/sendAvailReqReminder_email_applicant': ['scheduler_enabled'],
+  '/api/emails/selfScheduleReminder_email_applicant': ['scheduler_enabled'],
+  '/api/emails/availabilityReqResend_email_candidate': ['scheduler_enabled'],
+  '/api/scheduling/v1/booking/confirm-recruiter-selected-option': [
+    'scheduler_enabled',
+  ],
 };
 
 export default PERMISSIONS;

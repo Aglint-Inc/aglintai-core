@@ -1,8 +1,9 @@
-.div-block-1720 {
+.date-picker-wrap {
   position: relative;
+  display: inline-block;
 }
 
-.div-block-1719 {
+.dp-inactive-wrap {
   display: flex;
   width: 85px;
   height: 85px;
@@ -20,7 +21,7 @@
   cursor: pointer;
 }
 
-.div-block-1719.active {
+.dp-inactive-wrap.active {
   position: absolute;
   left: 0%;
   top: 0%;
@@ -81,7 +82,7 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
-.div-block-1726 {
+.dp-disable-wrap {
   position: absolute;
   left: 0%;
   top: 0%;
@@ -94,4 +95,28 @@
   background-color: white;
 
   opacity: 0.6;
+}
+
+.dp-minus-wrap {
+  position: absolute;
+  left: auto;
+  top: 0%;
+  right: 0%;
+  bottom: auto;
+  z-index: 2;
+
+  display: flex;
+  width: 18px;
+  height: 18px;
+  justify-content: center;
+  align-items: center;
+
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-full);
+
+  background-color: var(--white);
+
+  pointer-events: none;
+
+  cursor: auto;
 }

@@ -9,13 +9,13 @@ import { ResumePreviewer } from '@/src/components/Jobs/Job/Candidate-List/Common
 import { Body } from '@/src/components/Jobs/Job/Common/candidateDrawer/body';
 import { Details } from '@/src/components/Jobs/Job/Common/candidateDrawer/details';
 import { Overview } from '@/src/components/Jobs/Job/Common/candidateDrawer/details/insights/overview';
-import { applicationQuery } from '@/src/queries/application';
 
 import { useApplicationContext } from './hooks';
 import { useApplicationStore } from './store';
 
-const ApplicationContext =
-  createContext<ReturnType<typeof useApplicationContext>>(undefined);
+type UseContextType = typeof useApplicationContext;
+
+const ApplicationContext = createContext<ReturnType<UseContextType>>(undefined);
 
 export const useApplication = () => {
   const value = useContext(ApplicationContext);
@@ -26,9 +26,7 @@ export const useApplication = () => {
 const Application = ({
   children,
   ...props
-}: PropsWithChildren<
-  Parameters<(typeof applicationQuery)['application']>[0]
->) => {
+}: PropsWithChildren<Parameters<UseContextType>[0]>) => {
   const value = useApplicationContext(props);
   const { preview, resetPreview, resetAll } = useApplicationStore(
     ({ preview, resetPreview, resetAll }) => ({
@@ -46,9 +44,18 @@ const Application = ({
         id={value?.application_id}
         name={value?.meta?.data?.name}
         open={preview}
-        slotBookmark={<></>}
         onClose={() => resetPreview()}
         url={value?.meta?.data?.file_url}
+        navigation={props?.showResumePreviewActions && props?.navigation}
+        bookmark={
+          props?.showResumePreviewActions && {
+            isBookmarked: value?.meta?.data?.bookmarked,
+            handleBookmark: () =>
+              value?.handleUpdateApplication({
+                bookmarked: !value?.meta?.data?.bookmarked,
+              }),
+          }
+        }
       />
       {children ?? <></>}
     </ApplicationContext.Provider>

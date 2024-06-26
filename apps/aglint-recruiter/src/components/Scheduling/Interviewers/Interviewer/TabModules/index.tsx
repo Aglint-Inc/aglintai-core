@@ -31,8 +31,8 @@ function TabInterviewModules({
     <>
       <InterviewerDetailOverview
         isViewButtonVisible={false}
-        textButton1={'Add'}
-        textButton2={'Add'}
+        // textButton1={'Add'}
+        // textButton2={'Add'}
         textHeader1={'Qualified Interview Types'}
         textHeader2={'Training Interview Types'}
         slotUpcomingSchedule={

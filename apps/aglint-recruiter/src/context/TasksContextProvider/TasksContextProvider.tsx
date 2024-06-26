@@ -415,8 +415,8 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
 
     if (status.values.length) {
       temp = temp.filter((sub) => {
-        const progress_type = sub.last_progress.progress_type;
-        const created_at = sub.last_progress.created_at;
+        const progress_type = sub.latest_progress.progress_type;
+        const created_at = sub.latest_progress.created_at;
 
         if (
           status.values.includes(
@@ -677,9 +677,39 @@ export const updateTask = ({
       ? supabase.from('new_tasks').update(task).eq('id', task.id)
       : supabase.from('new_tasks').insert(task)
   )
-    .select('id')
+    .select(
+      'id, recruiter_user(first_name,last_name), applications(* , candidates( * ), public_jobs( * ))',
+    )
     .single()
     .then(async ({ data, error }) => {
+      if (type === 'new') {
+        const candidateName = getFullName(
+          data.applications.candidates.first_name,
+          data.applications.candidates.last_name,
+        );
+        const sessions = task.session_ids;
+        await createTaskProgress({
+          task_id: data?.id as string,
+          title: `Created task for {candidate} to schedule interviews for {selectedSessions}`,
+          created_by: {
+            id: task.created_by,
+            name: getFullName(
+              data.recruiter_user.first_name,
+              data.recruiter_user.first_name,
+            ),
+          },
+          title_meta: {
+            '{candidate}': candidateName,
+            '{selectedSessions}': sessions,
+          },
+          progress_type:
+            task.type === 'schedule'
+              ? 'schedule'
+              : task.type === 'self_schedule'
+                ? 'self_schedule'
+                : 'standard',
+        });
+      }
       const { data: updatedTask } = await supabase
         .from('tasks_view')
         .select(

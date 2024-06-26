@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect } from 'react';
 
+import type { ResumePreviewer } from '@/src/components/Jobs/Job/Candidate-List/Common/resumePreviewer';
 import {
   applicationQuery,
   useUpdateApplication,
@@ -12,7 +13,10 @@ import { useAuthDetails } from '../AuthContext/AuthContext';
 import { useApplicationStore } from './store';
 
 export const useApplicationContext = (
-  props: Parameters<(typeof applicationQuery)['application']>[0],
+  props: Parameters<(typeof applicationQuery)['application']>[0] &
+    Partial<Pick<Parameters<typeof ResumePreviewer>[0], 'navigation'>> & {
+      showResumePreviewActions?: boolean;
+    },
 ) => {
   const { isAssessmentEnabled, isSchedulingEnabled, isScreeningEnabled } =
     useAuthDetails();
@@ -83,7 +87,6 @@ export const useApplicationContext = (
     return () => resetTab();
   }, []);
   return {
-    application_id: props.application_id,
     tabs,
     meta,
     details,
@@ -91,5 +94,6 @@ export const useApplicationContext = (
     tasks,
     activity,
     handleUpdateApplication,
+    ...props,
   };
 };

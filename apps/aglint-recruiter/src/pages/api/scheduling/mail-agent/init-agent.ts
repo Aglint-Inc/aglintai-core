@@ -91,7 +91,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         '{candidate}': cand_details.candidate_name,
       },
       'email_agent',
-      'email_messages',
+      'send_email',
       {
         message: email_details.html,
       },

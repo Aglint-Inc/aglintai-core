@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { GlobalIcon } from "./GlobalIcon";
 import * as _utils from "./utils";
 import _styles from "./AvailableTimeRange.module.css";
 
@@ -43,6 +44,15 @@ export function AvailableTimeRange({
           >
             <Text content={textTime} color="" />
           </_Builtin.Block>
+        </_Builtin.Block>
+      ) : null}
+      {isActive ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "dp-minus-wrap")}
+          tag="div"
+          {...onClickTime}
+        >
+          <GlobalIcon iconName="remove" />
         </_Builtin.Block>
       ) : null}
     </_Component>

@@ -1,6 +1,6 @@
 import { Dialog, Stack } from '@mui/material';
-import { ReactNode } from 'react';
 
+import { BookMark } from '@/devlink/BookMark';
 import { ResumeWrap } from '@/devlink3/ResumeWrap';
 import Loader from '@/src/components/Common/Loader';
 
@@ -10,14 +10,22 @@ const ResumePreviewer = ({
   id,
   url,
   name,
-  slotBookmark,
+  bookmark = null,
+  navigation = null,
 }: {
   open: boolean;
   onClose: () => void;
   id: string;
   name: string;
   url: string;
-  slotBookmark: ReactNode;
+  bookmark?: {
+    isBookmarked: boolean;
+    handleBookmark: () => void;
+  };
+  navigation?: {
+    handleUp: () => void;
+    handleDown: () => void;
+  };
 }) => {
   return (
     <Dialog
@@ -39,9 +47,24 @@ const ResumePreviewer = ({
       <ResumeWrap
         key={id}
         textName={name}
-        onClickDown={{ style: { display: 'none' } }}
-        slotBookmark={slotBookmark}
-        onClickUp={{ style: { display: 'none' } }}
+        onClickDown={{
+          style: { display: navigation?.handleDown ? 'flex' : 'none' },
+          onClick: () => navigation?.handleDown(),
+        }}
+        slotBookmark={
+          bookmark && (
+            <BookMark
+              isBookMarked={bookmark.isBookmarked}
+              onClickBookmark={{ onClick: () => bookmark.handleBookmark() }}
+              isDarkIconVisible={true}
+              isLightIconVisible={false}
+            />
+          )
+        }
+        onClickUp={{
+          style: { display: navigation?.handleUp ? 'flex' : 'none' },
+          onClick: () => navigation?.handleUp(),
+        }}
         onClickClose={{ onClick: () => onClose() }}
         slotResume={
           <Stack

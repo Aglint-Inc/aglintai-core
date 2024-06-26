@@ -171,19 +171,22 @@ function ScheduleIndividualCard({
             session.interview_meeting?.status === 'waiting'
           }
           onClickCancelSchedule={{
-            onClick: () => {
+            onClick: (e) => {
+              e.stopPropagation();
               setSelectedSession(session);
               setIndividualCancelOpen(true);
             },
           }}
           onClickReschedule={{
-            onClick: () => {
+            onClick: (e) => {
+              e.stopPropagation();
               setSelectedSession(session);
               setIndividualRescheduleOpen(true);
             },
           }}
           onClickEdit={{
-            onClick: () => {
+            onClick: (e) => {
+              e.stopPropagation();
               setEditSession(session);
               setIsEditOpen(true);
             },

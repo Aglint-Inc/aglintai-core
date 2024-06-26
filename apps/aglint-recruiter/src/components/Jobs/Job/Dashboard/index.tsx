@@ -207,7 +207,7 @@ const Dashboard = () => {
     push(`/jobs/${job.id}/candidate-list`);
   };
 
-  const banners = useBanners({ publishButton });
+  const banners = useBanners();
 
   return (
     <>
@@ -580,11 +580,7 @@ const Schedules = () => {
   );
 };
 
-const useBanners = ({
-  publishButton,
-}: {
-  publishButton: React.JSX.Element;
-}) => {
+const useBanners = () => {
   const { push } = useRouter();
   const {
     publishStatus,
@@ -600,8 +596,7 @@ const useBanners = ({
     }),
   );
   const banners: React.JSX.Element[] = [];
-  if (job.status === 'draft')
-    banners.push(<JobsBanner slotButton={publishButton} />);
+  if (job.status === 'draft') banners.push(<JobsBanner />);
   if (isInterviewPlanDisabled && !dismissWarnings.interview_plan)
     banners.push(
       <DashboardWarning
@@ -637,9 +632,9 @@ const useBanners = ({
   if (isInterviewSessionEmpty && !dismissWarnings.interview_session)
     banners.push(
       <DashboardWarning
-        textWarningTitle={'Interview sessions not set'}
+        textWarningTitle={'Interview plan not set'}
         textDesc={
-          'To use the scheduling module, please create atleast one interview session for the plan.'
+          'Add one or more interview types to create an interview plan.'
         }
         slotButton={
           <>
@@ -865,16 +860,29 @@ const JobClose = ({
           }
           textButton={isDelete ? 'Delete Job' : 'Close Job'}
           textJobTitle={job_title.trim()}
-          onClickCancel={{ onClick: () => handleClose() }}
-          onClickCloseJob={{ onClick: () => handleSubmit() }}
+          onClickCloseJob={{ onClick: () => handleClose() }}
           textLocation={location}
-          isDisabled={job_title.trim() !== value.trim()}
           slotInput={
             <UITextField
               placeholder={job_title.trim()}
               value={value}
               onChange={(e) => setValue(e.target.value)}
             />
+          }
+          slotButton={
+            <>
+              <ButtonGhost
+                textButton='Cancel'
+                size={2}
+                onClickButton={{ onClick: () => handleClose() }}
+              />
+              <ButtonSolid
+                textButton={isDelete ? 'Delete Job' : 'Close Job'}
+                size={2}
+                onClickButton={{ onClick: handleSubmit }}
+                isDisabled={job_title.trim() !== value.trim()}
+              />
+            </>
           }
         />
       </Dialog>

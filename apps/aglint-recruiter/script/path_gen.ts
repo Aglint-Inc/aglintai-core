@@ -85,7 +85,7 @@ function processDirectory(
 // const rootDirectory = args[0].split(',') || ['.'];
 // const outputFile = args[1] || 'script/paths.ts';
 const rootDirectory = {
-  [path.join('src/pages', '')]: {
+  [path.join('src', 'pages')]: {
     basePath: '',
     appRouter: false,
   },

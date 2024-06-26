@@ -37,7 +37,7 @@ export function OpenJobListingCard({
           className={_utils.cx(_styles, "div-block-428")}
           tag="div"
         >
-          <GlobalIcon iconName="" />
+          <GlobalIcon iconName="location_on" />
           <Text content={textLocation} color="neutral" />
         </_Builtin.Block>
         <_Builtin.Block

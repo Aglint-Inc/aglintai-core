@@ -121,10 +121,6 @@
   margin-top: 3px;
 }
 
-.icons.mr--10 {
-  margin-right: -8px;
-}
-
 .icons.mt-2 {
   margin-top: 2px;
 }
@@ -146,14 +142,15 @@
   align-items: flex-start;
 }
 
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
 .text-red-500 {
   color: var(--red500-2e806c7d);
-}
-
-.text-red-500.text-grow {
-  flex: 0 0 auto;
-}
-
-.text-grow {
-  flex: 0 0 auto;
 }

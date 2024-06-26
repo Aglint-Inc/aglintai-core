@@ -180,7 +180,11 @@ const getApplications = async ({
     );
 
   if (sort) {
-    query.order(sort.type, { ascending: sort.order === 'asc' });
+    if (sort.type === 'location')
+      ['city', 'state', 'country'].forEach((type) =>
+        query.order(type, { ascending: sort.order === 'asc' }),
+      );
+    else query.order(sort.type, { ascending: sort.order === 'asc' });
   }
 
   query.order('id');

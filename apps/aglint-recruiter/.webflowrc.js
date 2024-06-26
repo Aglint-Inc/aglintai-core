@@ -5,7 +5,7 @@ module.exports = {
   authToken: process.env.WF_AUTH, // An environment variable is recommended for this field.
   cssModules: true,
   allowTelemetry: true,
-  components: "/^(?!Scr|Assessment).*/i"
+  // components: "/^(?!Scr|Assessment).*/i"
 };
 
 // git ls-files -d | xargs git checkout --

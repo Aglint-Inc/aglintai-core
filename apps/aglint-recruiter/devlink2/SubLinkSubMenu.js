@@ -2,7 +2,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { SubMenu } from "./SubMenu";
 import * as _utils from "./utils";
-import _styles from "./SublinkSubMenu.module.css";
+import _styles from "./SubLinkSubMenu.module.css";
 
 export function SublinkSubMenu({
   as: _Component = _Builtin.Block,

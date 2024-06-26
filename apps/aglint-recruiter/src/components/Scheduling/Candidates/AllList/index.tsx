@@ -20,7 +20,7 @@ function AllList({
   isError: boolean;
   applicationList: ApplicationList[];
   isFetching: boolean;
-  isLoading;
+  isLoading: boolean;
 }) {
   const router = useRouter();
   const onClickCard = (app: ApplicationList) => {
@@ -44,8 +44,10 @@ function AllList({
         overflowY: 'auto',
       }}
     >
-      {isLoading || isPending ? (
-        <Stack width={'100%'} height={'500px'}>
+      {isLoading ||
+      isPending ||
+      (isFetching && applicationList.length === 0) ? (
+        <Stack width={'100%'} height={'100%'}>
           <Loader />
         </Stack>
       ) : isError ? (
@@ -71,8 +73,8 @@ function AllList({
                 backgroundColor: 'var(--neutral-2)', // replace with your desired background color
               }}
             >
-              <Box maxWidth="sm" width="300px">
-                <AllInterviewEmpty textDynamic="No candidate found." />
+              <Box maxWidth='sm' width='300px'>
+                <AllInterviewEmpty textDynamic='No candidate found.' />
               </Box>
             </Box>
           )}

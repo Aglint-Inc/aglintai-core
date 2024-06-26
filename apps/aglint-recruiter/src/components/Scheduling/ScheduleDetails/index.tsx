@@ -34,7 +34,9 @@ function SchedulingViewComp() {
 
   const schedule = data?.schedule_data;
   const cancelReasons = data?.cancel_data?.filter(
-    (item) => !item.interview_session_cancel.cancel_user_id,
+    (item) =>
+      !item.interview_session_cancel.cancel_user_id &&
+      item.interview_session_cancel.is_ignored === false,
   );
 
   const viewScheduleTabs = [

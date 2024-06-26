@@ -3,6 +3,7 @@
 import {
   APIFindAvailability,
   APIScheduleDebreif,
+  DatabaseTableInsert,
   DB,
   InterviewMeetingTypeDb,
   InterviewSessionRelationTypeDB,
@@ -31,6 +32,7 @@ import { addScheduleActivity } from '../Candidates/queries/utils';
 // import { mailHandler } from '../Candidates/utils';
 import { getScheduleName } from '../utils';
 import { fetchInterviewDataJob, fetchInterviewDataSchedule } from './hooks';
+import { selfScheduleReminderMailToCandidate } from './mailUtils';
 import { SchedulingFlow } from './SelfSchedulingDrawer/store';
 import { SchedulingApplication } from './store';
 
@@ -134,57 +136,62 @@ export const createCloneSession = async ({
 
     const organizer_id = await getOrganizerId(application_id, supabase);
 
+    const insertableMeetings: DatabaseTableInsert['interview_meeting'][] =
+      refSessions.map((ses) => {
+        return {
+          interview_schedule_id: ses.new_schedule_id,
+          status: ses.isSelected ? 'waiting' : 'not_scheduled',
+          instructions: refSessions.find((s) => s.id === ses.id)
+            ?.interview_module?.instructions,
+          id: ses.new_meeting_id,
+          organizer_id,
+        };
+      });
+
     const { data: insertedMeetings, error: errorInsertedMeetings } =
       await supabase
         .from('interview_meeting')
-        .insert(
-          refSessions.map((ses) => {
-            return {
-              interview_schedule_id: ses.new_schedule_id,
-              status: ses.isSelected ? 'waiting' : 'not_scheduled',
-              instructions: refSessions.find((s) => s.id === ses.id)
-                ?.interview_module?.instructions,
-              id: ses.new_meeting_id,
-              organizer_id,
-            } as InterviewMeetingTypeDb;
-          }),
-        )
+        .insert(insertableMeetings)
         .select();
 
     if (errorInsertedMeetings) throw new Error(errorInsertedMeetings.message);
 
+    const insertableSessions: DatabaseTableInsert['interview_session'][] =
+      allSessions.map((session) => ({
+        interview_plan_id: null,
+        id: refSessions.find((ref) => ref.id === session.id).newId,
+        break_duration: session.break_duration,
+        interviewer_cnt: session.interviewer_cnt,
+        location: session.location,
+        module_id: session.module_id,
+        name: session.name,
+        schedule_type: session.schedule_type,
+        session_duration: session.session_duration,
+        session_order: session.session_order,
+        session_type: session.session_type,
+        meeting_id: refSessions.find((ref) => ref.id === session.id)
+          .new_meeting_id,
+      }));
+
     const { error: errorInsertedSessions } = await supabase
       .from('interview_session')
-      .insert(
-        allSessions.map((session) => ({
-          interview_plan_id: null,
-          id: refSessions.find((ref) => ref.id === session.id).newId,
-          break_duration: session.break_duration,
-          interviewer_cnt: session.interviewer_cnt,
-          location: session.location,
-          module_id: session.module_id,
-          name: session.name,
-          schedule_type: session.schedule_type,
-          session_duration: session.session_duration,
-          session_order: session.session_order,
-          session_type: session.session_type,
-          meeting_id: refSessions.find((ref) => ref.id === session.id)
-            .new_meeting_id,
-        })) as InterviewSessionTypeDB[],
-      );
+      .insert(insertableSessions);
 
     if (errorInsertedSessions) throw new Error(errorInsertedSessions.message);
 
-    let insertableUserRelation = [];
+    let insertableUserRelation: DatabaseTableInsert['interview_session_relation'][] =
+      [];
+
     refSessions.map((session) => {
       session.users?.map((user) => {
-        insertableUserRelation.push({
+        const insertRel: DatabaseTableInsert['interview_session_relation'] = {
           interview_module_relation_id: user.interview_module_relation?.id,
           interviewer_type: user.interviewer_type,
           session_id: session.newId,
           training_type: user.training_type,
           user_id: user.user_id,
-        } as InterviewSessionRelationTypeDB);
+        };
+        insertableUserRelation.push(insertRel);
       });
     });
 
@@ -434,12 +441,6 @@ export const scheduleWithAgent = async ({
 
         await agentTrigger({
           type,
-          candidate: {
-            timezone: sessionsWithPlan.application.candidates.timezone,
-            city: sessionsWithPlan.application.candidates.city,
-            state: sessionsWithPlan.application.candidates.state,
-            id: sessionsWithPlan.application.candidates.id,
-          },
           filterJsonId: filterJson.id,
           task_id,
           recruiter_user_name,
@@ -448,9 +449,6 @@ export const scheduleWithAgent = async ({
           jobRole: sessionsWithPlan.application.public_jobs.job_title,
           candidate_email: sessionsWithPlan.application.candidates.email,
           rec_user_phone,
-          dateRange,
-          session_ids: createCloneRes.session_ids,
-          recruiter_id,
           recruiter_user_id: rec_user_id,
         });
       } else {
@@ -529,12 +527,6 @@ export const scheduleWithAgent = async ({
 
         await agentTrigger({
           type,
-          candidate: {
-            timezone: sessionsWithPlan.application.candidates.timezone,
-            city: sessionsWithPlan.application.candidates.city,
-            state: sessionsWithPlan.application.candidates.state,
-            id: sessionsWithPlan.application.candidates.id,
-          },
           filterJsonId: filterJson.id,
           task_id,
           recruiter_user_name,
@@ -543,10 +535,7 @@ export const scheduleWithAgent = async ({
           jobRole: sessionsWithPlan.application.public_jobs.job_title,
           candidate_email: sessionsWithPlan.application.candidates.email,
           rec_user_phone,
-          dateRange,
-          session_ids,
           recruiter_user_id: rec_user_id,
-          recruiter_id,
         });
       }
       return true;
@@ -675,12 +664,6 @@ export const scheduleWithAgentWithoutTaskId = async ({
 
         await agentTrigger({
           type,
-          candidate: {
-            timezone: sessionsWithPlan.application.candidates.timezone,
-            city: sessionsWithPlan.application.candidates.city,
-            state: sessionsWithPlan.application.candidates.state,
-            id: sessionsWithPlan.application.candidates.id,
-          },
           filterJsonId: filterJson.id,
           task_id: task.id,
           recruiter_user_name,
@@ -689,9 +672,6 @@ export const scheduleWithAgentWithoutTaskId = async ({
           jobRole: sessionsWithPlan.application.public_jobs.job_title,
           candidate_email: sessionsWithPlan.application.candidates.email,
           rec_user_phone,
-          dateRange,
-          recruiter_id,
-          session_ids: createCloneRes.session_ids,
           recruiter_user_id: rec_user_id,
         });
       } else {
@@ -759,12 +739,6 @@ export const scheduleWithAgentWithoutTaskId = async ({
 
         await agentTrigger({
           type,
-          candidate: {
-            timezone: sessionsWithPlan.application.candidates.timezone,
-            city: sessionsWithPlan.application.candidates.city,
-            state: sessionsWithPlan.application.candidates.state,
-            id: sessionsWithPlan.application.candidates.id,
-          },
           filterJsonId: filterJson.id,
           task_id: task.id,
           recruiter_user_name,
@@ -773,9 +747,6 @@ export const scheduleWithAgentWithoutTaskId = async ({
           jobRole: sessionsWithPlan.application.public_jobs.job_title,
           candidate_email: sessionsWithPlan.application.candidates.email,
           rec_user_phone,
-          dateRange,
-          recruiter_id,
-          session_ids,
           recruiter_user_id: rec_user_id,
         });
       }
@@ -909,10 +880,7 @@ export const agentTrigger = async ({
   jobRole,
   candidate_email,
   rec_user_phone = '',
-  dateRange,
-  recruiter_id,
-  session_ids,
-  candidate,
+
   recruiter_user_id,
 }: {
   type: 'email_agent' | 'phone_agent';
@@ -924,18 +892,6 @@ export const agentTrigger = async ({
   jobRole: string;
   candidate_email: string;
   rec_user_phone: string;
-  dateRange: {
-    start_date: string;
-    end_date: string;
-  };
-  session_ids: string[];
-  recruiter_id: string;
-  candidate: {
-    timezone: string;
-    city: string;
-    state: string;
-    id: string;
-  };
   recruiter_user_id: string;
 }) => {
   console.log({
@@ -945,63 +901,52 @@ export const agentTrigger = async ({
     rec_user_phone: formatPhoneNumber(rec_user_phone),
   });
 
-  // let timezone = null;
-  // if (!candidate.timezone && (candidate.city || candidate.state)) {
-  //   timezone = await getCandidateTimezone({
-  //     location: `${candidate.city} ${candidate.state}`,
-  //     candidate_id: candidate.id,
-  //   });
-  // }
+  if (type === 'email_agent') {
+    const bodyParams: InitAgentBodyParams = {
+      filter_json_id: filterJsonId,
+      task_id: task_id,
+      recruiter_user_id,
+    };
 
-  // TODO: chinmai fix
-  // eslint-disable-next-line no-constant-condition
-  if (1) {
-    if (type === 'email_agent') {
-      const bodyParams: InitAgentBodyParams = {
-        filter_json_id: filterJsonId,
-        task_id: task_id,
-        recruiter_user_id,
-      };
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/mail-agent/init-agent`,
-        bodyParams,
-      );
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/mail-agent/init-agent`,
+      bodyParams,
+    );
 
-      if (res?.status === 200) {
-        console.log('mail agent triggered successfully');
-      } else {
-        console.log('error in mail agent');
-      }
+    if (res?.status === 200) {
+      console.log(res);
 
-      return res.status;
-    } else if (type === 'phone_agent') {
-      const res = await axios.post(
-        // 'https://rested-logically-lynx.ngrok-free.app/api/schedule-agent/create-phone-call',
-        `${process.env.NEXT_PUBLIC_AGENT_API}/api/schedule-agent/create-phone-call`,
-        {
-          begin_sentence_template: `Hi ${candidate_name}, this is ${recruiter_user_name} calling from ${company_name}. We wanted to schedule an interview for the position of ${jobRole}, Is this the right time to talk?`,
-          interviewer_name: recruiter_user_name,
-          // to_phone_no: '+919482306657',
-          from_phone_no: '+12512066348',
-          to_phone_no: formatPhoneNumber(rec_user_phone),
-          // retell_agent_id: 'dcc1869a822931ef646f28e185e7402e',
-          retell_agent_id: process.env.RETELL_AGENT_ID,
-          filter_json_id: filterJsonId,
-          cand_email: candidate_email,
-          // cand_email: sessionsWithPlan.application.candidates.email,
-          task_id: task_id,
-        },
-      );
-
-      if (res?.status === 200) {
-        console.log('phone agent triggered successfully');
-      } else {
-        console.log('error in phone agent');
-      }
-      return res.status;
+      console.log('mail agent triggered successfully');
+    } else {
+      console.log('error in mail agent');
     }
-  } else {
-    console.log('No slots for selected date range');
+
+    return res.status;
+  } else if (type === 'phone_agent') {
+    const res = await axios.post(
+      // 'https://rested-logically-lynx.ngrok-free.app/api/schedule-agent/create-phone-call',
+      `${process.env.NEXT_PUBLIC_AGENT_API}/api/schedule-agent/create-phone-call`,
+      {
+        begin_sentence_template: `Hi ${candidate_name}, this is ${recruiter_user_name} calling from ${company_name}. We wanted to schedule an interview for the position of ${jobRole}, Is this the right time to talk?`,
+        interviewer_name: recruiter_user_name,
+        // to_phone_no: '+919482306657',
+        from_phone_no: '+12512066348',
+        to_phone_no: formatPhoneNumber(rec_user_phone),
+        // retell_agent_id: 'dcc1869a822931ef646f28e185e7402e',
+        retell_agent_id: process.env.RETELL_AGENT_ID,
+        filter_json_id: filterJsonId,
+        cand_email: candidate_email,
+        // cand_email: sessionsWithPlan.application.candidates.email,
+        task_id: task_id,
+      },
+    );
+
+    if (res?.status === 200) {
+      console.log('phone agent triggered successfully');
+    } else {
+      console.log('error in phone agent');
+    }
+    return res.status;
   }
 };
 
@@ -1223,24 +1168,21 @@ export const onClickResendInvite = async ({
     if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
 
     if (checkFilterJson) {
-      //TODO: Implement new mailHandler
-      // const resMail = await mailHandler({
-      //   filter_id: checkFilterJson.id,
-      //   supabase,
-      //   application_id,
-      //   task_id: checkFilterJson.new_tasks[0].id,
-      // });
-      // if (resMail.sent) {
-      //   addScheduleActivity({
-      //     title: `Resent booking link to ${candidate_name} for ${session_name}`,
-      //     application_id: application_id,
-      //     logged_by: 'user',
-      //     supabase,
-      //     created_by: rec_user_id,
-      //   });
-      //   toast.success('Invite resent successfully.');
-      // }
-      // return resMail;
+      const resMail = await selfScheduleReminderMailToCandidate({
+        filter_id: checkFilterJson.id,
+      });
+
+      if (resMail) {
+        addScheduleActivity({
+          title: `Resent booking link to ${candidate_name} for ${session_name}`,
+          application_id: application_id,
+          logged_by: 'user',
+          supabase,
+          created_by: rec_user_id,
+        });
+        toast.success('Invite resent successfully.');
+      }
+      return resMail;
     }
   } catch (e) {
     toast.error(e.message);

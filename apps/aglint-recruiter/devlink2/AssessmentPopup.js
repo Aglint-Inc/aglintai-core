@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import { SelectionPill } from "./SelectionPill";
 import { ButtonWide } from "./ButtonWide";
 import * as _utils from "./utils";
@@ -27,12 +28,7 @@ export function AssessmentPopup({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "sidebar_top")} tag="div">
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {textPopupTitle}
-          </_Builtin.Block>
+          <Text content={textPopupTitle} />
           <_Builtin.Block
             className={_utils.cx(_styles, "sidebar_close")}
             tag="div"
@@ -57,7 +53,7 @@ export function AssessmentPopup({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block className={_utils.cx(_styles, "ps_row")} tag="div">
-            <_Builtin.Block tag="div">{"Assesment Mode"}</_Builtin.Block>
+            <Text content="" weight="" />
             <_Builtin.Block
               className={_utils.cx(_styles, "ps_input_slot")}
               tag="div"
@@ -66,7 +62,7 @@ export function AssessmentPopup({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block className={_utils.cx(_styles, "ps_row")} tag="div">
-            <_Builtin.Block tag="div">{"Assesment Category"}</_Builtin.Block>
+            <Text content="Assessment Category" weight="" />
             <_Builtin.Block
               className={_utils.cx(_styles, "ps_input_slot")}
               tag="div"
@@ -83,9 +79,7 @@ export function AssessmentPopup({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block className={_utils.cx(_styles, "ps_row")} tag="div">
-            <_Builtin.Block tag="div">
-              {"Choose the level of the questions"}
-            </_Builtin.Block>
+            <Text content="Choose the level of the questions" weight="" />
             <_Builtin.Block
               className={_utils.cx(_styles, "ps_input_slot", "_3-1grid")}
               tag="div"

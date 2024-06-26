@@ -4,9 +4,8 @@ import { palette } from '@/src/context/Theme/Theme';
 
 export const capitalize = (str: string) => {
   return (
-    (str ?? '').trim().replaceAll('_', ' ').charAt(0).toUpperCase() +
-    str.substring(1)
-  );
+    (str ?? '').trim().charAt(0).toUpperCase() + str.substring(1)
+  ).replaceAll('_', ' ');
 };
 
 export const capitalizeAll = (str: string) => {

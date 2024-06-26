@@ -28,6 +28,7 @@ const Actions = () => {
   }));
   const {
     meta: { data },
+    navigation,
     handleUpdateApplication,
   } = useApplication();
   return (
@@ -40,8 +41,14 @@ const Actions = () => {
           handleUpdateApplication({ bookmarked: !data.bookmarked }),
       }}
       onClickClose={{ onClick: () => handlClose() }}
-      onClickDown={{ onClick: () => {}, style: { display: 'none' } }}
-      onClickUp={{ onClick: () => {}, style: { display: 'none' } }}
+      onClickDown={{
+        style: { display: navigation?.handleDown ? 'flex' : 'none' },
+        onClick: () => navigation?.handleDown(),
+      }}
+      onClickUp={{
+        style: { display: navigation?.handleUp ? 'flex' : 'none' },
+        onClick: () => navigation?.handleUp(),
+      }}
     />
   );
 };

@@ -12,6 +12,7 @@ import {
   useUploadResume,
 } from '@/src/queries/job-applications';
 
+import { useApplicationStore } from '../ApplicationContext/store';
 import { useJob } from '../JobContext';
 import { ApplicationsStore, useApplicationsStore } from './store';
 
@@ -198,6 +199,45 @@ export const useApplicationsActions = () => {
     section,
   ]);
 
+  const {
+    drawer: { application_id },
+    handleOpen,
+  } = useApplicationStore(({ drawer, handleOpen }) => ({
+    drawer,
+    handleOpen,
+  }));
+
+  const sectionApplications = useMemo(
+    () => (sectionApplication?.data?.pages ?? []).flatMap((page) => page),
+    [sectionApplication?.data?.pages],
+  );
+
+  const currentIndex = useMemo(
+    () => sectionApplications.findIndex(({ id }) => id === application_id),
+    [application_id, sectionApplications],
+  );
+
+  const applicationsCount = useMemo(
+    () => sectionApplications.length,
+    [sectionApplications],
+  );
+
+  const handleSelectNextApplication = useCallback(() => {
+    handleOpen({
+      application_id:
+        sectionApplications[(currentIndex + 1) % applicationsCount].id,
+    });
+  }, [sectionApplication, currentIndex, applicationsCount, handleOpen]);
+
+  const handleSelectPrevApplication = useCallback(() => {
+    handleOpen({
+      application_id:
+        sectionApplications[
+          currentIndex - 1 < 0 ? applicationsCount - 1 : currentIndex - 1
+        ].id,
+    });
+  }, [sectionApplication, currentIndex, applicationsCount, handleOpen]);
+
   return {
     job,
     jobLoad,
@@ -212,6 +252,8 @@ export const useApplicationsActions = () => {
     handleUploadResume,
     handleUploadCsv,
     handleMoveApplications,
+    handleSelectNextApplication,
+    handleSelectPrevApplication,
   };
 };
 

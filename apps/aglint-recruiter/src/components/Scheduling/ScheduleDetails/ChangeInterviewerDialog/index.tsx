@@ -47,11 +47,11 @@ function ChangeInterviewerDialog({
     if (cancelUserId) fetchInterviewers();
   }, [cancelUserId]);
 
-  const cancelInterviewer = schedule.users.find(
+  const cancelInterviewer = schedule?.users.find(
     (user) => user.id === cancelUserId,
   );
 
-  const possibleUsers = schedule.users.filter(
+  const possibleUsers = schedule?.users.filter(
     (user) =>
       user.id !== cancelUserId && !user.interview_session_relation.is_confirmed,
   );
