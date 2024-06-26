@@ -27,6 +27,17 @@ const ResumePreviewer = ({
     handleDown: () => void;
   };
 }) => {
+  const downloadFile = async () => {
+    fetch(url).then((response) => {
+      response.blob().then((blob) => {
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = `${(name ?? '').replaceAll(' ', '_').toLowerCase()}_resume${getExtension(url)}`;
+        a.click();
+      });
+    });
+  };
   return (
     <Dialog
       sx={{
@@ -53,9 +64,7 @@ const ResumePreviewer = ({
         }}
         slotBookmark={
           <Stack direction={'row'} gap={1}>
-            <a href='url' download={`${name}.${isDocs(url) ? 'docx' : 'pdf'}`}>
-              <BookMark />
-            </a>
+            <BookMark onClickBookmark={{ onClick: () => downloadFile() }} />
             {bookmark && (
               <BookMark
                 isBookMarked={bookmark.isBookmarked}
@@ -107,11 +116,11 @@ const ResumePreviewer = ({
 export { ResumePreviewer };
 
 const Embed = ({ url }: { url: string }) => {
-  const isDocx = isDocs(url);
+  const extension = getExtension(url);
   return (
     <embed
       src={
-        isDocx
+        extension === '.docx' || extension === '.doc'
           ? `https://view.officeapps.live.com/op/embed.aspx?src=${url}`
           : url
       }
@@ -122,6 +131,6 @@ const Embed = ({ url }: { url: string }) => {
   );
 };
 
-const isDocs = (url: string) => {
-  return /\.(doc|docx)$/i.test(url);
+const getExtension = (url: string) => {
+  return url.slice(url.lastIndexOf('.'), url.length);
 };
