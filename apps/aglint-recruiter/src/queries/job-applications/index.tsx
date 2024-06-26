@@ -285,7 +285,6 @@ const sampleApplicationView: {
   applied_at: 'applied_at',
   bookmarked: 'bookmarked',
   candidate_file_id: 'candidate_file_id',
-  candidate_id: 'candidate_id',
   created_at: 'created_at',
   id: 'id',
   overall_interview_score: 'interview_score',
@@ -320,7 +319,7 @@ export const useUploadApplication = (params: Omit<Params, 'status'>) => {
       payload: Omit<HandleUploadApplication, 'job_id' | 'recruiter_id'>,
     ) => {
       toast.message('Uploading application');
-      await handleUploadApplication({
+      return await handleUploadApplication({
         job_id: params.job_id,
         recruiter_id,
         ...payload,
@@ -414,6 +413,8 @@ const handleResumeUpload = async (payload: HandleUploadResume) => {
     files: formData,
   };
   const response = await handleJobApi('candidateUpload/resumeUpload', request);
+  if (response.filter(({ confirmation }) => !confirmation).length !== 0)
+    throw new Error('Failed to upload resume');
   return response;
 };
 const handleBulkResumeUpload = async (payload: HandleUploadResume) => {
@@ -427,7 +428,14 @@ const handleBulkResumeUpload = async (payload: HandleUploadResume) => {
         files: batch,
       }),
     );
-  await Promise.allSettled(promises);
+  const responses = await Promise.allSettled(promises);
+  const failedResponses = responses.filter(
+    ({ status }) => status === 'rejected',
+  ) as PromiseRejectedResult[];
+  if (failedResponses.length !== 0)
+    throw new Error(
+      `Failed to upload ${failedResponses.length} resumes. (${failedResponses.map(({ reason }) => reason).join(', ')})`,
+    );
 };
 
 export const useUploadCsv = (params: Omit<Params, 'status'>) => {

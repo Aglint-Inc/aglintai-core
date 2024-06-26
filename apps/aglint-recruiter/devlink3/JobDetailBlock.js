@@ -38,7 +38,7 @@ export function JobDetailBlock({
               <Text content={textDescription} weight="" color="neutral" />
             </_Builtin.Block>
             {isCreate ? (
-              <_Builtin.Block tag="div" {...onClickCreate}>
+              <_Builtin.Block tag="div">
                 <ButtonSolid
                   onClickButton={onClickCreate}
                   textButton="Create Job"

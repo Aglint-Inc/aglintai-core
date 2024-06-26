@@ -32,7 +32,8 @@ export const applicationQuery = {
     isAssessmentEnabled,
     isSchedulingEnabled,
     isScreeningEnabled,
-  }: Omit<Params, 'application_id'> &
+    enabled,
+  }: Omit<ToggleParams, 'application_id'> &
     Partial<{
       isAssessmentEnabled: boolean;
       isSchedulingEnabled: boolean;
@@ -40,7 +41,7 @@ export const applicationQuery = {
     }>) =>
     queryOptions({
       placeholderData: placeholderData?.tabs,
-      enabled: !!job_id,
+      enabled: enabled && !!job_id,
       gcTime: job_id ? 1 * 60_000 : 0,
       queryKey: [...applicationQuery.all({ job_id }).queryKey, 'tabs'] as const,
       queryFn: async () => {
@@ -94,8 +95,9 @@ export const applicationQuery = {
       ],
       queryFn: () => getApplicationInterview({ application_id, job_id }),
     }),
-  tasks: ({ application_id, job_id, enabled }: ToggleParams) =>
+  tasks: ({ application_id, job_id, enabled, placeholderData }: ToggleParams) =>
     queryOptions({
+      placeholderData: placeholderData?.tasks,
       enabled: enabled && !!application_id && !!job_id,
       gcTime: application_id ? 1 * 60_000 : 0,
       refetchOnMount: true,
@@ -105,8 +107,14 @@ export const applicationQuery = {
       ],
       queryFn: () => getApplicationTasks({ application_id }),
     }),
-  activity: ({ application_id, job_id, enabled }: ToggleParams) =>
+  activity: ({
+    application_id,
+    job_id,
+    enabled,
+    placeholderData,
+  }: ToggleParams) =>
     queryOptions({
+      placeholderData: placeholderData?.activity,
       enabled: enabled && !!application_id && !!job_id,
       gcTime: application_id ? 1 * 60_000 : 0,
       refetchOnMount: true,
@@ -153,6 +161,8 @@ type Params = ApplicationAllQueryPrerequistes & {
     meta?: Awaited<ReturnType<typeof getApplicationMeta>>;
     details?: Awaited<ReturnType<typeof getApplicationDetails>>;
     interview?: Awaited<ReturnType<typeof getApplicationInterview>>;
+    tasks?: Awaited<ReturnType<typeof getApplicationTasks>>;
+    activity?: Awaited<ReturnType<typeof getApplicationActivity>>;
   };
 };
 
@@ -175,7 +185,7 @@ const getApplicationMeta = async ({
     await supabase
       .from('application_view')
       .select(
-        'name, city, email, phone, current_job_title, resume_processing_state, processing_status, resume_score, badges, bookmarked, file_url',
+        'name, city, email, phone, current_job_title, resume_processing_state, processing_status, resume_score, badges, bookmarked, file_url, task_count, activity_count',
       )
       .eq('id', application_id)
       .single()

@@ -1,0 +1,13 @@
+.download-icon-wrap {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: var(--radius-2);
+
+  background-color: #3a3e41;
+
+  color: var(--white);
+}

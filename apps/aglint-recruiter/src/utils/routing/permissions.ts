@@ -29,6 +29,13 @@ const PERMISSIONS: Permissions = {
    * permissions will reduced  using 'and'
    */
   '/tasks': ['tasks_enabled'],
+  //
+
+  '/api/job/profileScore': ['jobs_enabled'],
+  '/api/job/candidateUpload/csvUpload': ['jobs_enabled'],
+  '/api/job/candidateUpload/manualUpload': ['jobs_enabled'],
+  '/api/job/candidateUpload/resumeReupload': ['jobs_enabled'],
+  '/api/job/candidateUpload/resumeUpload': ['jobs_enabled'],
   '/jobs': ['jobs_enabled', 'jobs_read'],
   '/jobs/create': ['jobs_enabled', 'jobs_read', 'jobs_create'],
   '/jobs/[id]': ['jobs_enabled', 'jobs_read', 'jobs_read'],
@@ -54,7 +61,7 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/get_interview_plans': ['scheduler_enabled'],
   '/api/getMembersWithRole': ['jobs_read'], //change to correct permission
   '/api/get_last_login': ['jobs_read'], //change to correct permission
-  '/api/setMembersWithRole': ['jobs_read'], //change to correct permission
+  '/api/setMembersWithRole': ['jobs_read', 'scheduler_enabled'], //change to correct permission
   '/api/scheduling/fetchUserDetails': ['scheduler_enabled'],
   '/api/scheduling/fetch_interview_session_task': ['scheduler_enabled'],
   '/api/scheduling/fetch_activities': ['scheduler_enabled'],
@@ -75,7 +82,6 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/request_availability/getCandidateRequestData': [
     'scheduler_enabled',
   ],
-  '/api/setMembersWithRole': ['jobs_read'],
   '/api/scheduling/request_availability/getTaskIdDetailsByRequestId': [
     'scheduler_enabled',
   ],

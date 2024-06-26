@@ -382,13 +382,6 @@ export type Database = {
             foreignKeyName: "applications_candidate_id_fkey"
             columns: ["candidate_id"]
             isOneToOne: false
-            referencedRelation: "application_view"
-            referencedColumns: ["candidate_id"]
-          },
-          {
-            foreignKeyName: "applications_candidate_id_fkey"
-            columns: ["candidate_id"]
-            isOneToOne: false
             referencedRelation: "candidates"
             referencedColumns: ["id"]
           },
@@ -679,13 +672,6 @@ export type Database = {
           type?: Database["public"]["Enums"]["file_type"] | null
         }
         Relationships: [
-          {
-            foreignKeyName: "candidate_files_candidate_id_fkey"
-            columns: ["candidate_id"]
-            isOneToOne: false
-            referencedRelation: "application_view"
-            referencedColumns: ["candidate_id"]
-          },
           {
             foreignKeyName: "candidate_files_candidate_id_fkey"
             columns: ["candidate_id"]
@@ -2256,6 +2242,7 @@ export type Database = {
       permissions: {
         Row: {
           created_at: string | null
+          description: string | null
           id: number
           is_enable: boolean | null
           name: Database["public"]["Enums"]["permissions_type"]
@@ -2264,6 +2251,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
+          description?: string | null
           id?: number
           is_enable?: boolean | null
           name: Database["public"]["Enums"]["permissions_type"]
@@ -2272,6 +2260,7 @@ export type Database = {
         }
         Update: {
           created_at?: string | null
+          description?: string | null
           id?: number
           is_enable?: boolean | null
           name?: Database["public"]["Enums"]["permissions_type"]
@@ -3005,6 +2994,7 @@ export type Database = {
       roles: {
         Row: {
           created_at: string
+          description: string | null
           id: string
           name: string
           recruiter_id: string
@@ -3012,6 +3002,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          description?: string | null
           id?: string
           name: string
           recruiter_id: string
@@ -3019,6 +3010,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          description?: string | null
           id?: string
           name?: string
           recruiter_id?: string
@@ -3647,17 +3639,16 @@ export type Database = {
     Views: {
       application_view: {
         Row: {
+          activity_count: number | null
           applied_at: string | null
           badges: Json | null
           bookmarked: boolean | null
           candidate_file_id: string | null
-          candidate_id: string | null
           city: string | null
           country: string | null
           created_at: string | null
           current_job_title: string | null
           email: string | null
-          email_status: Json | null
           file_url: string | null
           id: string | null
           interview_score: number | null
@@ -3676,6 +3667,7 @@ export type Database = {
           resume_score: number | null
           state: string | null
           status: Database["public"]["Enums"]["application_status"] | null
+          task_count: number | null
         }
         Relationships: [
           {
@@ -5226,6 +5218,38 @@ export type Database = {
         | "assessment_enabled"
         | "integrations_enabled"
         | "company_setting_enabled"
+        | "workflow_enabled"
+        | "workflow_create"
+        | "workflow_read"
+        | "workflow_update"
+        | "workflow_delete"
+        | "team_enabled"
+        | "team_create"
+        | "team_read"
+        | "team_update"
+        | "team_delete"
+        | "tasks_create"
+        | "tasks_read"
+        | "tasks_update"
+        | "tasks_delete"
+        | "scheduler_create"
+        | "scheduler_read"
+        | "scheduler_update"
+        | "scheduler_delete"
+        | "scheduler_request_availability"
+        | "scheduler_send_scheduling"
+        | "scheduler_interview_types_create"
+        | "scheduler_interview_types_read"
+        | "scheduler_interview_types_update"
+        | "scheduler_interviewer_edit"
+        | "settings_scheduler_enable"
+        | "settings_scheduler_update"
+        | "settings_company_enable"
+        | "settings_company_update"
+        | "settings_team_enable"
+        | "settings_team_update"
+        | "settings_roles_enable"
+        | "settings_roles_update"
       progress_type:
         | "standard"
         | "interview_schedule"
