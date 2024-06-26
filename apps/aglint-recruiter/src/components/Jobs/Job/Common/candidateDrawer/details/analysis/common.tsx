@@ -15,18 +15,13 @@ const AnalysisItem = ({
   if (status === 'pending') return <>Loading...</>;
   const scores = data?.score_json?.scores;
   const reasoning = data?.score_json?.reasoning;
+  const reasoningType = getSafeReasoningType(type);
   if (
     !(
       scores &&
       reasoning &&
       typeof scores?.[type] === 'number' &&
-      reasoning[
-        type === 'education'
-          ? 'schools'
-          : type === 'experience'
-            ? 'positions'
-            : 'skills'
-      ]
+      reasoning[reasoningType]
     )
   )
     return <></>;
@@ -34,7 +29,7 @@ const AnalysisItem = ({
   return (
     <JdAnalysisItem
       textTitle={capitalizeAll(type)}
-      textAnalysis={reasoning[type]}
+      textAnalysis={reasoning[reasoningType]}
       textBadge={`${tier} -  ${scores[type]}`}
       isHigh={tier === 'High'}
       isMedium={tier === 'Medium'}
@@ -47,4 +42,17 @@ export { AnalysisItem };
 
 const getScoreTier = (score: number): 'High' | 'Medium' | 'Low' => {
   return score > 66 ? 'High' : score > 33 ? 'Medium' : 'Low';
+};
+
+const getSafeReasoningType = (
+  type: keyof ApplicationDetails<'details'>['score_json']['scores'],
+): keyof ApplicationDetails<'details'>['score_json']['reasoning'] => {
+  switch (type) {
+    case 'skills':
+      return 'skills';
+    case 'experience':
+      return 'positions';
+    case 'education':
+      return 'schools';
+  }
 };
