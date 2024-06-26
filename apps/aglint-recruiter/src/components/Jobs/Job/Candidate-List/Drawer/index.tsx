@@ -86,6 +86,7 @@ const Drawer = () => {
                 session_type,
                 schedule_type,
                 session_order,
+                meeting_id,
               }) => ({
                 session_duration,
                 session_name: name,
@@ -93,6 +94,7 @@ const Drawer = () => {
                 schedule_type,
                 status: 'not_scheduled',
                 session_order,
+                meeting_id,
               }),
             ),
     [interviewPlans?.interview_session, sessions],
