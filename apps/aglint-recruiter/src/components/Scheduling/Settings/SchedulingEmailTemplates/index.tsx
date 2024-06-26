@@ -94,14 +94,7 @@ function SchedulerEmailTemps() {
 
   return (
     <Stack>
-      <Box
-        sx={
-          {
-            // border: '1px solid var(--neutral-6)',
-            // borderRadius: 'var(--radius-4)',
-          }
-        }
-      >
+      <Box>
         {emailTemplate && (
           <EmailTemplatesStart
             slotEmailTemplateCards={emailTemplate
