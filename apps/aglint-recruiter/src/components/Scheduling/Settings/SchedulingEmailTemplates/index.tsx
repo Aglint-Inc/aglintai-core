@@ -1,6 +1,13 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseEnums, DatabaseTableInsert } from '@aglint/shared-types';
-import { Box, Popover, Stack } from '@mui/material';
+import {
+  Box,
+  MenuItem,
+  Popover,
+  Select,
+  Stack,
+  Typography,
+} from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
@@ -11,7 +18,6 @@ import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { PreviewEmail } from '@/devlink2/PreviewEmail';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
-import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
@@ -39,6 +45,7 @@ function SchedulerEmailTemps() {
   };
   const [isHtml, setHtml] = useState(null);
   const [popOverLoading, setPopOverLoading] = useState(false);
+
   useEffect(() => {
     if (emailTemplates.data) {
       setEmailTemplate([...emailTemplates.data]);
@@ -49,6 +56,7 @@ function SchedulerEmailTemps() {
       setIsEditorLoad(false);
     }, 500);
   }, [emailTemplates]);
+
   async function updateEmail({
     id,
     data,
@@ -63,6 +71,7 @@ function SchedulerEmailTemps() {
       },
     });
     setSaving(false);
+    await emailTemplates.refetch();
     toast.message('Saved Successfully!');
   }
   const preview = async () => {
@@ -81,14 +90,21 @@ function SchedulerEmailTemps() {
       throw error;
     }
   };
+  const options = [
+    '{{recruiterName}}',
+    '{{companyName}}',
+    '{{interviewerFirstName}}',
+  ];
 
   return (
-    <Stack sx={{ padding: '24px' }}>
+    <Stack>
       <Box
-        sx={{
-          border: '1px solid var(--neutral-6)',
-          borderRadius: 'var(--radius-4)',
-        }}
+        sx={
+          {
+            // border: '1px solid var(--neutral-6)',
+            // borderRadius: 'var(--radius-4)',
+          }
+        }
       >
         {emailTemplate && (
           <EmailTemplatesStart
@@ -133,6 +149,22 @@ function SchedulerEmailTemps() {
                 {!isEditorLoad && (
                   <YTransform uniqueKey={selectedTemplate}>
                     <EditEmail
+                      slotSaveButton={
+                        <ButtonSolid
+                          size={2}
+                          isLoading={saving}
+                          textButton={'Save'}
+                          onClickButton={{
+                            onClick: () => {
+                              setSaving(true);
+                              updateEmail({
+                                id: selectedTemplate.id,
+                                data: selectedTemplate,
+                              });
+                            },
+                          }}
+                        />
+                      }
                       onClickPreview={{
                         onClick: (e) => {
                           preview();
@@ -154,68 +186,150 @@ function SchedulerEmailTemps() {
                         emailTemplateCopy[selectedTemplate?.type]?.heading
                       }
                       slotForm={
-                        <Stack spacing={'var(--space-5)'}>
-                          <UITextField
-                            labelSize='small'
-                            fullWidth
-                            label='Sender Name'
-                            secondaryText={`This name appears as the "From" name in emails to candidates. Choose a representative name for your company or recruiter.`}
-                            value={selectedTemplate?.from_name}
-                            onChange={(e) => {
-                              const text = e.target.value;
-
-                              setSelectedTemplate((pre) => {
-                                pre.from_name = text;
-
-                                return { ...pre };
-                              });
+                        tiptapLoader ? (
+                          <Stack
+                            alignItems={'center'}
+                            justifyContent={'center'}
+                            sx={{
+                              height: 'calc(100vh - 220px)',
+                              width: '100%',
                             }}
-                          />
-                          <UITextField
-                            labelSize='small'
-                            fullWidth
-                            placeholder={
-                              emailTemplateCopy[selectedTemplate?.type]
-                                ?.subjectPlaceHolder
-                            }
-                            label='Email Subject'
-                            value={selectedTemplate?.subject}
-                            onChange={(e) => {
-                              const text = e.target.value;
-                              setSelectedTemplate((pre) => {
-                                pre.subject = text;
-
-                                return { ...pre };
-                              });
-                            }}
-                            minRows={1}
-                            multiline
-                          />
-                          <Stack>
-                            <UITypography type='small'>Email Body</UITypography>
-                            <Stack
-                              sx={{
-                                mt: '8px',
-                                border: '1px solid',
-                                borderColor: 'var(--neutral-6)',
-                                borderRadius: 'var(--radius-2)',
-                              }}
-                            >
-                              {tiptapLoader && (
-                                <>
+                          >
+                            <LoaderSvg />
+                          </Stack>
+                        ) : (
+                          <Stack spacing={'var(--space-5)'}>
+                            <Stack spacing={1}>
+                              <UITypography type='small' fontBold='normal'>
+                                Sender Name
+                              </UITypography>
+                              <Stack>
+                                {`This name appears as the "From" name in emails to
+                            candidates. Choose a representative name for your
+                            company or recruiter.
+                            `}
+                              </Stack>
+                              <Select
+                                defaultValue={selectedTemplate?.from_name}
+                                onChange={(e) => {
+                                  setSelectedTemplate((pre) => {
+                                    pre.from_name = e.target.value;
+                                    return { ...pre };
+                                  });
+                                }}
+                                sx={{
+                                  '& .MuiOutlinedInput-notchedOutline': {
+                                    border: '1px solid #DAD9D6',
+                                  },
+                                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                                    border: '1px solid #DAD9D6',
+                                  },
+                                  '&.Mui-focused .MuiOutlinedInput-notchedOutline':
+                                    {
+                                      border: '1px solid #DAD9D6',
+                                    },
+                                }}
+                              >
+                                {options.length === 0 ? (
                                   <Stack
-                                    alignItems={'center'}
-                                    height={'200px'}
-                                    justifyContent={'center'}
+                                    px={1}
+                                    style={{
+                                      fontStyle: 'italic',
+                                      color: 'var(--neutral-9)',
+                                      cursor: 'default',
+                                    }}
                                   >
-                                    <LoaderSvg />
+                                    No options available
                                   </Stack>
-                                </>
-                              )}
-                              {!tiptapLoader && (
+                                ) : (
+                                  options.map((value, idx) => (
+                                    <MenuItem
+                                      key={idx}
+                                      value={value}
+                                      sx={{
+                                        backgroundColor: '#f7f7f7', // normal state background color
+                                        '&:hover': {
+                                          backgroundColor: '#ededed', // hover state background color
+                                        },
+                                        '&.Mui-selected': {
+                                          backgroundColor: '#e3e3e3', // selected state background color
+                                          '&:hover': {
+                                            backgroundColor: '#d6d6d6', // maintain selected state color on hover
+                                          },
+                                        },
+                                      }}
+                                    >
+                                      <Typography
+                                        sx={{
+                                          backgroundColor: '#f7ebfc',
+                                          paddingLeft: '3px',
+                                          paddingRight: '3px',
+                                          paddingBottom: '3px',
+                                          color: '#B552E2',
+                                          borderRadius: '2px',
+                                          width: 'fit-content',
+                                        }}
+                                      >
+                                        {value}
+                                      </Typography>
+                                    </MenuItem>
+                                  ))
+                                )}
+                              </Select>
+                            </Stack>
+
+                            <Stack>
+                              <UITypography type='small' fontBold='normal'>
+                                Email Subject
+                              </UITypography>
+                              <Stack
+                                sx={{
+                                  mt: '8px',
+                                  border: '1px solid',
+                                  borderColor: 'var(--neutral-6)',
+                                  borderRadius: 'var(--radius-2)',
+                                }}
+                              >
+                                <TipTapAIEditor
+                                  enablAI={false}
+                                  toolbar={false}
+                                  placeholder={
+                                    emailTemplateCopy[selectedTemplate?.type]
+                                      ?.subjectPlaceHolder
+                                  }
+                                  singleLine={true}
+                                  padding={1}
+                                  editor_type='email'
+                                  template_type={selectedTemplate.type}
+                                  handleChange={(html) => {
+                                    const text = html;
+                                    setSelectedTemplate((pre) => {
+                                      pre.subject = text;
+                                      return { ...pre };
+                                    });
+                                  }}
+                                  initialValue={selectedTemplate?.subject}
+                                />
+                              </Stack>
+                            </Stack>
+
+                            <Stack>
+                              <UITypography type='small' fontBold='normal'>
+                                Email Body
+                              </UITypography>
+                              <Stack
+                                sx={{
+                                  mt: '8px',
+                                  border: '1px solid',
+                                  borderColor: 'var(--neutral-6)',
+                                  borderRadius: 'var(--radius-2)',
+                                }}
+                              >
                                 <TipTapAIEditor
                                   enablAI={false}
                                   placeholder={''}
+                                  maxHeight='250px'
+                                  height='360px'
                                   editor_type='email'
                                   template_type={selectedTemplate.type}
                                   handleChange={(html) => {
@@ -227,30 +341,10 @@ function SchedulerEmailTemps() {
                                   }}
                                   initialValue={selectedTemplate.body}
                                 />
-                              )}
+                              </Stack>
                             </Stack>
                           </Stack>
-                          <Stack
-                            width={'100%'}
-                            direction={'row'}
-                            justifyContent={'start'}
-                          >
-                            <ButtonSolid
-                              size={2}
-                              isLoading={saving}
-                              textButton={'Save'}
-                              onClickButton={{
-                                onClick: () => {
-                                  setSaving(true);
-                                  updateEmail({
-                                    id: selectedTemplate.id,
-                                    data: selectedTemplate,
-                                  });
-                                },
-                              }}
-                            />
-                          </Stack>
-                        </Stack>
+                        )
                       }
                     />
                     <Popover

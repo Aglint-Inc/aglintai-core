@@ -10,10 +10,11 @@
   "main": "./dist/index.js",
   "types": "./src/index.ts",
   "dependencies": {
-    "dayjs": "^1.11.11",
-    "typescript": "latest",
     "@types/node": "^20.11.24",
-    "tsup": "^8.0.2"
+    "dayjs": "^1.11.11",
+    "html-to-text": "^9.0.5",
+    "tsup": "^8.0.2",
+    "typescript": "latest"
   },
   "devDependencies": {
     "@aglint/typescript-config": "*"

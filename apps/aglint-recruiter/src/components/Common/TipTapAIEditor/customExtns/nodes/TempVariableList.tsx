@@ -48,6 +48,8 @@ export default forwardRef(function DropDown(props: any, ref) {
 
       if (event.key === 'Enter') {
         enterHandler();
+        event.preventDefault();
+        event.stopPropagation();
         return true;
       }
 
