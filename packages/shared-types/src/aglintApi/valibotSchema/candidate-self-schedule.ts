@@ -17,7 +17,7 @@ export const schema_confirm_slot_no_conflict = v.object({
   cand_tz: v.pipe(v.string(), v.nonEmpty('required cand_tz')),
   task_id: v.nullish(v.string()),
   agent_type: v.optional(
-    v.picklist(['phone_agent', 'email_agent']),
+    v.picklist(['phone_agent', 'email_agent', 'candidate']),
     'email_agent'
   ),
   selected_slot: v.object({

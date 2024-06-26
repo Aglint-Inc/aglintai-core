@@ -87,7 +87,13 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                 ? 'Schedule With Email Agent'
                 : scheduleFlow === 'phone_agent'
                   ? 'Schedule With Phone Agent'
-                  : 'Request Availability instead of Schedule Now'
+                  : scheduleFlow === 'create_request_availibility'
+                    ? 'Request Availability'
+                    : scheduleFlow === 'update_request_availibility'
+                      ? 'Update Request Availability'
+                      : scheduleFlow === 'debrief'
+                        ? 'Schedule Debrief'
+                        : 'Schedule Now'
           }
           onClickPrimary={{
             onClick: () => {

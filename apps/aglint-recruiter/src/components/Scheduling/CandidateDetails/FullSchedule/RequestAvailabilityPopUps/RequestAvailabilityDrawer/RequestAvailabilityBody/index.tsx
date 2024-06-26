@@ -96,6 +96,7 @@ function RequestAvailabilityBody({
         height={'calc(100vh - 177px)'}
         overflow={'auto'}
         direction={'column'}
+        gap={'16px'}
       >
         <ShowCode>
           <ShowCode.When isTrue={selectedIndex === availableSlots?.length}>

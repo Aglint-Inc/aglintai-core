@@ -87,7 +87,7 @@ const LineChart = ({ interviewConversion, type }: InterviewConversionProps) => {
     (acc, { timeline, count }) => {
       acc.names.push(timeline);
       acc.counts.push(count);
-      acc.pointBackgroundColor.push('#87929d');
+      acc.pointBackgroundColor.push('#8d8d8690');
       return acc;
     },
     { names: [], counts: [], pointBackgroundColor: [] },
@@ -111,7 +111,7 @@ const LineChart = ({ interviewConversion, type }: InterviewConversionProps) => {
           return gradientBg;
         },
         data: counts,
-        borderColor: 'var(--neutral-6)',
+        borderColor: '#bcbbb5',
         pointBackgroundColor,
         tension: 0.3,
       },

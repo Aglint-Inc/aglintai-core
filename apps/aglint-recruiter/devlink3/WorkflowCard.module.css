@@ -79,10 +79,6 @@
   cursor: pointer;
 }
 
-.wc_icon_button:hover {
-  box-shadow: 0 0 0 1px #e9ebed;
-}
-
 .wc_bottom {
   display: flex;
   justify-content: space-between;

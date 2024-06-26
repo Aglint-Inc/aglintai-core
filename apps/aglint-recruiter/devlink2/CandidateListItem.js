@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { GlobalIcon } from "./GlobalIcon";
 import { Text } from "./Text";
 import { ResumeTag } from "./ResumeTag";
 import { SlotComp } from "./SlotComp";
@@ -58,11 +59,9 @@ export function CandidateListItem({
       >
         <_Builtin.Block className={_utils.cx(_styles, "drag_icon")} tag="div">
           {isDragVisible ? (
-            <_Builtin.HtmlEmbed
-              className={_utils.cx(_styles, "icons")}
-              value="%3Csvg%20width%3D%2214%22%20height%3D%2216%22%20viewbox%3D%220%200%2014%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M14%206C13.9792%206.3125%2013.8125%206.47917%2013.5%206.5H0.5C0.1875%206.47917%200.0208333%206.3125%200%206C0.0208333%205.6875%200.1875%205.52083%200.5%205.5H13.5C13.8125%205.52083%2013.9792%205.6875%2014%206ZM14%2010C13.9792%2010.3125%2013.8125%2010.4792%2013.5%2010.5H0.5C0.1875%2010.4792%200.0208333%2010.3125%200%2010C0.0208333%209.6875%200.1875%209.52083%200.5%209.5H13.5C13.8125%209.52083%2013.9792%209.6875%2014%2010Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
-              {...propsDrag}
-            />
+            <_Builtin.Block tag="div" {...propsDrag}>
+              <GlobalIcon iconName="drag_indicator" />
+            </_Builtin.Block>
           ) : null}
         </_Builtin.Block>
         {isHighlighted ? (

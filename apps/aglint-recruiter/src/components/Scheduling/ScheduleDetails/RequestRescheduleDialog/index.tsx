@@ -103,7 +103,7 @@ function RequestRescheduleDialog({
       }}
     >
       <ConfirmationPopup
-        textPopupTitle={'Request Reschedule'}
+        textPopupTitle={'Reschedule'}
         isIcon={false}
         onClickCancel={{
           onClick: () => {
@@ -216,7 +216,7 @@ function RequestRescheduleDialog({
             />
           </Stack>
         }
-        textPopupButton={'Confirm'}
+        textPopupButton={'Proceed to Reschedule'}
       />
     </Dialog>
   );
