@@ -19,6 +19,7 @@ export type CustomApplicationView = ViewType<
         Database["public"]["Views"]["meeting_details"]["Row"],
         "start_time" | "end_time"
       >;
+      meeting_id: string;
     })[];
   }
 >;

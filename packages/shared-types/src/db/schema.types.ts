@@ -2246,7 +2246,6 @@ export type Database = {
           id: number
           is_enable: boolean | null
           name: Database["public"]["Enums"]["permissions_type"]
-          recruiter_id: string
           updated_at: string | null
         }
         Insert: {
@@ -2255,7 +2254,6 @@ export type Database = {
           id?: number
           is_enable?: boolean | null
           name: Database["public"]["Enums"]["permissions_type"]
-          recruiter_id: string
           updated_at?: string | null
         }
         Update: {
@@ -2264,18 +2262,9 @@ export type Database = {
           id?: number
           is_enable?: boolean | null
           name?: Database["public"]["Enums"]["permissions_type"]
-          recruiter_id?: string
           updated_at?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "permissions_recruiter_id_fkey"
-            columns: ["recruiter_id"]
-            isOneToOne: false
-            referencedRelation: "recruiter"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       public_jobs: {
         Row: {
