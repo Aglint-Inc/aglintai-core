@@ -160,6 +160,7 @@ function SelectDateRange() {
       refetch();
       setFetchingPlan(false);
       fetchInterviewDataByApplication();
+      setSelectedSessionIds([]);
       resetState();
     }
   };
@@ -192,7 +193,10 @@ function SelectDateRange() {
         isEmailAgent={scheduleFlow === 'email_agent'}
         isPhoneAgent={scheduleFlow === 'phone_agent'}
         isRequestAvailability={false}
-        isContinueButton={scheduleFlow === 'self_scheduling'}
+        isContinueButton={
+          scheduleFlow === 'self_scheduling' ||
+          scheduleFlow === 'create_request_availibility'
+        }
         isSelfScheduling={scheduleFlow === 'self_scheduling'}
         onClickButton={{
           onClick: async () => {
