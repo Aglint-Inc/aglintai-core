@@ -135,14 +135,11 @@ function SubTaskProgress() {
                     key={i}
                     isTaskProgressVisible={true}
                     textTask={
-                      <>
-                        {item.progress_type}
-                        <ProgressTitle
-                          title={item.title}
-                          titleMetaData={item.title_meta}
-                          selectedTask={selectedTask}
-                        />
-                      </>
+                      <ProgressTitle
+                        title={item.title}
+                        titleMetaData={item.title_meta}
+                        selectedTask={selectedTask}
+                      />
                     }
                     slotImage={
                       <ShowCode>
