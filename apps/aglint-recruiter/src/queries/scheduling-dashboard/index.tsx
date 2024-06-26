@@ -131,15 +131,12 @@ export const useScheduleSessionsAnalytics = () => {
 
 export const useCancelRescheduleReasons = () => {
   const { recruiter } = useAuthDetails();
-  const { data, isPending: loading } = useScheduleSessionsAnalytics();
   const { queryKey } = schedulingDashboardQueryKeys.CancelRescheduleReasons({
     recruiter_id: recruiter.id,
   });
   return useQuery({
     queryKey,
-    queryFn: () =>
-      getCancelRescheduleReasons(data.map((item) => item.interview_session.id)),
-    enabled: !loading,
+    queryFn: () => getCancelRescheduleReasons(recruiter.id),
   });
 };
 
@@ -305,11 +302,16 @@ const getAnalyticsData = async (rec_id: string) => {
   );
 };
 
-const getCancelRescheduleReasons = async (session_ids: string[]) => {
+const getCancelRescheduleReasons = async (rec_id: string) => {
   return supabase
     .from('interview_session_cancel')
-    .select()
-    .in('session_id', session_ids)
+    .select(
+      '*,interview_session(interview_meeting(interview_schedule(recruiter_id)))',
+    )
+    .eq(
+      'interview_session.interview_meeting.interview_schedule.recruiter_id',
+      rec_id,
+    )
     .throwOnError()
     .then(({ data }) => data);
 };
