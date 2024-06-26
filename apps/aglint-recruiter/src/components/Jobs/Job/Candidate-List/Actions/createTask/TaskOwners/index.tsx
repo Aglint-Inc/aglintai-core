@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { SystemAgentId } from '@aglint/shared-utils';
 import { Popover, Stack, Typography } from '@mui/material';
 import React from 'react';
 
@@ -37,7 +38,10 @@ function TaskOwners({
         onClick={handleClick}
       >
         {selectedAssignee ? (
-          <AssigneeChip assigneeId={selectedAssignee.user_id} />
+          <AssigneeChip
+            disableHoverListener={true}
+            assigneeId={selectedAssignee.user_id}
+          />
         ) : (
           <Typography variant='caption' fontSize={'14px'}>
             Select Assignee
@@ -64,30 +68,35 @@ function TaskOwners({
         }}
       >
         <ListPop
-          slotListCard={(assignerList ?? []).map((ele, i) => {
-            return (
-              <Stack
-                width={'100%'}
-                p={'var(--space-1)'}
-                key={i}
-                sx={{
-                  cursor: 'pointer',
-                  '&:hover': {
-                    bgcolor: 'var(--neutral-2)',
-                  },
-                }}
-                onClick={() => {
-                  setSelectedAssignee(ele);
-                  handleClose();
-                  if (onChange) {
-                    onChange(ele);
-                  }
-                }}
-              >
-                <AssigneeChip assigneeId={ele.user_id} />
-              </Stack>
-            );
-          })}
+          slotListCard={(assignerList ?? [])
+            .filter((ele) => ele.user_id !== SystemAgentId)
+            .map((ele, i) => {
+              return (
+                <Stack
+                  width={'100%'}
+                  p={'var(--space-1)'}
+                  key={i}
+                  sx={{
+                    cursor: 'pointer',
+                    '&:hover': {
+                      bgcolor: 'var(--neutral-2)',
+                    },
+                  }}
+                  onClick={() => {
+                    setSelectedAssignee(ele);
+                    handleClose();
+                    if (onChange) {
+                      onChange(ele);
+                    }
+                  }}
+                >
+                  <AssigneeChip
+                    disableHoverListener={true}
+                    assigneeId={ele.user_id}
+                  />
+                </Stack>
+              );
+            })}
         />
       </Popover>
     </>

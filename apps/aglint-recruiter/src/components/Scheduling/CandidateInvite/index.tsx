@@ -285,6 +285,12 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
 
   return (
     <>
+     <Stack sx={{
+    backgroundColor:'var(--sand-3)', 
+    width:'100%', 
+    minHeight:'100vh', 
+    overflow:'auto', 
+    paddingBottom:'24px'} }>
       <InterviewConfirmed
         slotBanner={
           <>
@@ -390,6 +396,7 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
           type={cancelReschedule}
         />
       )}
+      </Stack>
     </>
   );
 };

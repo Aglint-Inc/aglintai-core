@@ -29,19 +29,27 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
       isSendingToCandidate: state.isSendingToCandidate,
     }));
 
-  const { isScheduleNowOpen, scheduleFlow, stepScheduling, fetchingPlan } =
-    useSchedulingFlowStore((state) => ({
-      isScheduleNowOpen: state.isScheduleNowOpen,
-      scheduleFlow: state.scheduleFlow,
-      stepScheduling: state.stepScheduling,
-      fetchingPlan: state.fetchingPlan,
-    }));
+  const {
+    isScheduleNowOpen,
+    scheduleFlow,
+    stepScheduling,
+    fetchingPlan,
+    dateRange,
+  } = useSchedulingFlowStore((state) => ({
+    isScheduleNowOpen: state.isScheduleNowOpen,
+    scheduleFlow: state.scheduleFlow,
+    stepScheduling: state.stepScheduling,
+    fetchingPlan: state.fetchingPlan,
+    dateRange: state.dateRange,
+  }));
 
   useEffect(() => {
-    setDateRange({
-      start_date: currentDate.toISOString(),
-      end_date: initialEndDate.toISOString(),
-    });
+    if (!(dateRange.start_date || dateRange.end_date)) {
+      setDateRange({
+        start_date: currentDate.toISOString(),
+        end_date: initialEndDate.toISOString(),
+      });
+    }
     return () => {
       resetSchedulingFlowStore();
       setSelectedSessionIds([]);
