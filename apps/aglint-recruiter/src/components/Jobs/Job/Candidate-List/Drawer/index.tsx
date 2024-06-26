@@ -51,8 +51,18 @@ const Drawer = () => {
           badges: placeholderData?.badges,
           bookmarked: placeholderData?.bookmarked,
           file_url: placeholderData?.file_url,
+          activity_count: placeholderData?.activity_count,
+          task_count: placeholderData?.task_count,
         }
       : undefined;
+
+  const activity: Parameters<
+    typeof Application
+  >[0]['placeholderData']['activity'] =
+    placeholderData?.activity_count === 0 ? [] : undefined;
+
+  const tasks: Parameters<typeof Application>[0]['placeholderData']['tasks'] =
+    placeholderData?.activity_count === 0 ? [] : undefined;
 
   const sessions: Parameters<
     typeof Application
@@ -98,12 +108,15 @@ const Drawer = () => {
             interview: [...sessions, ...plans],
             meta,
             tabs,
+            activity,
+            tasks,
           }}
           showResumePreviewActions={true}
           navigation={{
             handleUp: handleSelectPrevApplication,
             handleDown: handleSelectNextApplication,
           }}
+          showTabs={true}
         >
           <Application.Body
             topBar={

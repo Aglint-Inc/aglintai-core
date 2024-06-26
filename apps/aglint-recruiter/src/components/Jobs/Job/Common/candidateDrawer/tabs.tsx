@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { memo, useCallback, useEffect, useMemo } from 'react';
 
 import { NewTabPill } from '@/devlink3/NewTabPill';
@@ -21,7 +22,19 @@ const allTabs: {
   Activity: null,
 };
 
-const Tabs = memo(() => {
+const Tabs = () => {
+  const { showTabs, tabs, interview, meta } = useApplication();
+  if (!showTabs) return <></>;
+  if (
+    tabs.status === 'pending' ||
+    interview.status === 'pending' ||
+    meta.status === 'pending'
+  )
+    return <></>;
+  return <AllTabs />;
+};
+
+const AllTabs = memo(() => {
   const { tab, setTab, drawerOpen } = useApplicationStore(
     ({ tab, setTab, drawer }) => ({
       tab,
@@ -32,7 +45,24 @@ const Tabs = memo(() => {
 
   const {
     tabs: { data },
+    interview,
+    meta,
   } = useApplication();
+
+  const counts: {
+    // eslint-disable-next-line no-unused-vars
+    [id in ApplicationStore['tab']]: number | null;
+  } = useMemo(
+    () => ({
+      Screening: null,
+      Assessment: null,
+      Details: null,
+      Interview: interview?.data?.length ?? null,
+      Activity: meta?.data?.activity_count ?? null,
+      Tasks: meta?.data?.task_count ?? null,
+    }),
+    [interview, meta],
+  );
 
   const tabs = Object.entries(allTabs).reduce(
     (acc, [key, value]) => {
@@ -76,12 +106,14 @@ const Tabs = memo(() => {
           onClickPill={{ onClick: () => setTab(t) }}
           textLabel={t}
           isPillActive={tab === t}
+          isTabCountVisible={counts[t] !== null}
+          tabCount={counts[t] ?? 0}
         />
       )),
     [tabs, tab],
   );
   return <>{pills}</>;
 });
-Tabs.displayName = 'Tabs';
+AllTabs.displayName = 'AllTabs';
 
 export { Tabs };
