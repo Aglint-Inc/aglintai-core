@@ -31,6 +31,7 @@ const PERMISSIONS: Permissions = {
   '/tasks': ['tasks_enabled'],
   //
 
+  '/api/job/profileScore': ['jobs_enabled'],
   '/api/job/candidateUpload/csvUpload': ['jobs_enabled'],
   '/api/job/candidateUpload/manualUpload': ['jobs_enabled'],
   '/api/job/candidateUpload/resumeReupload': ['jobs_enabled'],
