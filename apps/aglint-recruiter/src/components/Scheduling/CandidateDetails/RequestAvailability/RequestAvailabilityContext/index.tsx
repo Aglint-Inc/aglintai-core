@@ -29,7 +29,6 @@ export type candidateRequestAvailabilityType =
     applications: DatabaseTable['applications'] & {
       candidates: DatabaseTable['candidates'];
       public_jobs: DatabaseTable['public_jobs'];
-
     };
   };
 
@@ -255,6 +254,21 @@ export const createTask = async (data: DatabaseTableInsert['new_tasks']) => {
     const { data: task, error } = await supabase
       .from('new_tasks')
       .insert({ ...data })
+      .select()
+      .single();
+
+    if (error) throw new Error(error.message);
+    return task;
+  } catch (error) {
+    toast.error(error.message);
+  }
+};
+export const updateTask = async (data: DatabaseTableUpdate['new_tasks']) => {
+  try {
+    const { data: task, error } = await supabase
+      .from('new_tasks')
+      .update({ ...data })
+      .eq('id', data.id)
       .select()
       .single();
 

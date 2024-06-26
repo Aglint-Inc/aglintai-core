@@ -44,6 +44,7 @@ import {
   createTask,
   insertCandidateRequestAvailability,
   updateCandidateRequestAvailability,
+  updateTask,
   useRequestAvailabilityContext,
 } from './RequestAvailabilityContext';
 import {
@@ -56,6 +57,7 @@ import {
 
 function RequestAvailability() {
   const router = useRouter();
+  const selectedTaskId = router.query.task_id as string;
   const { recruiter, recruiterUser } = useAuthDetails();
 
   const {
@@ -250,31 +252,39 @@ function RequestAvailability() {
         // end
         let task = null as null | DatabaseTable['new_tasks'];
         if (markCreateTicket) {
-          task = await createTask({
-            assignee: [recruiterUser.user_id],
-            created_by: recruiterUser.user_id,
-            name: `Request Availability ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.last_name)} - ${selectedApplication.public_jobs.job_title.trim()}.`,
-            agent: null,
-            application_id: selectedApplication.id,
-            due_date: selectedDate[0].toString(),
-            priority: 'medium',
-            recruiter_id: recruiter.id,
-            schedule_date_range: {
-              end_date: selectedDate[0].toString(),
-              start_date: selectedDate[1].toString(),
-            },
-            start_date: dayjs().toString(),
-            task_owner: recruiterUser.user_id,
-            session_ids: selectedSessions.map((ele) => {
-              return {
-                id: ele.id,
-                name: ele.name,
-              } as DatabaseTableInsert['new_tasks']['session_ids'][number];
-            }),
-            status: 'in_progress',
-            type: 'availability',
-            request_availability_id: result.id,
-          });
+          if (selectedTaskId) {
+            task = await updateTask({
+              id: selectedTaskId,
+              status: 'in_progress',
+              request_availability_id: result.id,
+            });
+          } else {
+            task = await createTask({
+              assignee: [recruiterUser.user_id],
+              created_by: recruiterUser.user_id,
+              name: `Request Availability ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.last_name)} - ${selectedApplication.public_jobs.job_title.trim()}.`,
+              agent: null,
+              application_id: selectedApplication.id,
+              due_date: selectedDate[0].toString(),
+              priority: 'medium',
+              recruiter_id: recruiter.id,
+              schedule_date_range: {
+                end_date: selectedDate[0].toString(),
+                start_date: selectedDate[1].toString(),
+              },
+              start_date: dayjs().toString(),
+              task_owner: recruiterUser.user_id,
+              session_ids: selectedSessions.map((ele) => {
+                return {
+                  id: ele.id,
+                  name: ele.name,
+                } as DatabaseTableInsert['new_tasks']['session_ids'][number];
+              }),
+              status: 'in_progress',
+              type: 'availability',
+              request_availability_id: result.id,
+            });
+          }
           await createTaskProgress({
             data: {
               created_by: {
@@ -437,7 +447,9 @@ function RequestAvailability() {
               })
             : null
         }
-        isCheckbox={scheduleFlow === 'create_request_availibility'}
+        isCheckbox={
+          scheduleFlow === 'create_request_availibility' && !selectedTaskId
+        }
         slotCheckboxAvailability={
           <Checkbox
             defaultChecked={markCreateTicket}
