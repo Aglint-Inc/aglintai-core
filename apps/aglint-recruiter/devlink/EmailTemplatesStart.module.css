@@ -2,15 +2,8 @@
   display: flex;
   overflow: hidden;
   justify-content: flex-start;
-
-  border-top-left-radius: var(--radius-4);
-  border-top-right-radius: var(--radius-4);
-  border-bottom-left-radius: var(--radius-4);
-  border-bottom-right-radius: var(--radius-4);
-
+  border-radius: var(--radius-4);
   background-color: var(--white);
-
-  height: calc(100vh - 96px);
 }
 
 .email-template-left-wrap {
@@ -23,7 +16,7 @@
   flex-grow: 0;
   flex-shrink: 0;
   flex-basis: auto;
-  height: calc(100vh - 96px);
+  height: calc(100vh - 48px);
 }
 
 .email-template-left-head {
@@ -55,7 +48,7 @@
 .email-template-right-wrap {
   overflow: auto;
   width: 100%;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 48px);
 }
 
 #w-node-_7a13e008-ea54-7273-6b2d-06ecde60cc59-adb6be91 {
