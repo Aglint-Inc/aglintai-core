@@ -44,7 +44,7 @@ export function EditEmail({
               className={_utils.cx(_styles, "eemial-tip-left-content")}
               tag="div"
             >
-              <Text content="Click on the or press ‘ / ’ while typing to add dynamic content to email templates" />
+              <Text content="Press ‘ {{ ’ while typing to add dynamic content to email templates" />
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
