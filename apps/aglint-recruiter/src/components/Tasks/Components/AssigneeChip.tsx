@@ -25,6 +25,7 @@ function AssigneeChip({
   assigneeId,
   disableHoverListener = false,
   isOnlyName = false,
+  
 }: {
   assigneeId: string;
   disableHoverListener?: boolean;
