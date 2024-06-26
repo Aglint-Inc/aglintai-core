@@ -106,6 +106,7 @@ export const PATHS = [
 '/api/lever/saveResume',
 '/api/phone-screening/get-application-info',
 '/api/phone-screening/submit',
+'/api/pre-seed',
 '/api/request_feedback',
 '/api/reset_password',
 '/api/resumecron/batchscore',
