@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { RescheduleCard } from '@/devlink3/RescheduleCard';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
