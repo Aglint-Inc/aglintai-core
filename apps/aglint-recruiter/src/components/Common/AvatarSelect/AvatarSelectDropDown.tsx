@@ -10,6 +10,7 @@ type MenuOption = {
   value: string | number;
   start_icon_url?:
     | string
+    | React.JSX.Element
     | {
         name: string;
         url: string;
@@ -144,7 +145,8 @@ const AvatarSelectDropDown = ({
                         <Stack
                           key={index}
                           sx={{
-                            zIndex: menu.start_icon_url.length - index,
+                            zIndex:
+                              (menu.start_icon_url as any[]).length - index,
                             transform: `translateX(-${index * 30}%)`,
                           }}
                         >
@@ -166,12 +168,15 @@ const AvatarSelectDropDown = ({
                       </Stack>
                     )}
                   </Stack>
-                ) : (
+                ) : !menu.start_icon_url ||
+                  typeof menu.start_icon_url === 'string' ? (
                   <MuiAvatar
-                    src={menu.start_icon_url}
+                    src={menu.start_icon_url as string}
                     level={menu.name}
                     variant='rounded-xs'
                   />
+                ) : (
+                  menu.start_icon_url
                 ))}
               {menu.name}
               <Stack direction={'row'} gap={2} ml={'auto'}>
