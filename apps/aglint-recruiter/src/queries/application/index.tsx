@@ -250,6 +250,7 @@ const getApplicationInterview = async ({
         status: 'not_scheduled',
         session_order,
         date: null,
+        meeting_id: null,
       }),
     );
   return plans;

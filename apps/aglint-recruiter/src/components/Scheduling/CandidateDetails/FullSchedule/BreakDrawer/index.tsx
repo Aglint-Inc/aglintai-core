@@ -13,7 +13,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { useGetScheduleApplication } from '../../hooks';
-import { setIsEditBreakOpen, useSchedulingApplicationStore } from '../../store';
+import { setIsEditBreakOpen, setSelectedSessionIds, useSchedulingApplicationStore } from '../../store';
 
 function BreakDrawerEdit() {
   const { recruiter, recruiterUser } = useAuthDetails();
@@ -82,6 +82,7 @@ function BreakDrawerEdit() {
       }
 
       await fetchInterviewDataByApplication();
+      setSelectedSessionIds([]);
       handleClose();
     } else {
       await supabase
@@ -91,6 +92,7 @@ function BreakDrawerEdit() {
         })
         .eq('id', editSession.id);
       await fetchInterviewDataByApplication();
+      setSelectedSessionIds([]);
       handleClose();
     }
     setSaving(false);

@@ -28,13 +28,22 @@ export const ScheduleProgress = ({
         ? []
         : (data?.interview_session ?? [])
             .sort((a, z) => a.session_order - z.session_order)
-            .map(({ session_duration, name, session_type, schedule_type }) => ({
-              session_duration,
-              session_name: name,
-              session_type,
-              schedule_type,
-              status: 'not_scheduled',
-            })),
+            .map(
+              ({
+                session_duration,
+                name,
+                session_type,
+                schedule_type,
+                meeting_id,
+              }) => ({
+                session_duration,
+                session_name: name,
+                session_type,
+                schedule_type,
+                status: 'not_scheduled',
+                meeting_id,
+              }),
+            ),
     [sessions, data],
   );
   return <ScheduleProgressDev sessions={[...sessions, ...jobSessions]} />;

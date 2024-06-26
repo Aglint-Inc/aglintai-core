@@ -154,6 +154,7 @@ export const useSelfSchedulingDrawer = ({
       setIsSendingToCandidate(false);
       refetch();
       fetchInterviewDataByApplication();
+      setSelectedSessionIds([]);
     }
   };
 

@@ -14,6 +14,11 @@ import { useKeyPress } from '@/src/hooks/useKeyPress';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
+import { GetTaskStatusBadge } from '../../Components/TaskStatusTag';
+import {
+  getIndicator,
+  getIndicatorMessage,
+} from '../../Components/TaskStatusTag/utils';
 import { useTaskStatesContext } from '../../TaskStatesContext';
 import { createTaskProgress } from '../../utils';
 import SubTaskProgress from './Progress';
@@ -166,6 +171,17 @@ function ViewTaskDrawer() {
         </ShowCode.When>
         <ShowCode.Else>
           <ViewTask
+            slotTaskHeader={
+              selectedTask && (
+                <GetTaskStatusBadge
+                  indicator={getIndicator({
+                    task: selectedTask,
+                    created_at: selectedTask?.latest_progress?.created_at,
+                    progress_type: selectedTask?.latest_progress?.progress_type,
+                  })}
+                />
+              )
+            }
             isCompleteTaskVisible={
               selectedTask?.assignee[0] !== EmailAgentId &&
               selectedTask?.assignee[0] !== PhoneAgentId &&
