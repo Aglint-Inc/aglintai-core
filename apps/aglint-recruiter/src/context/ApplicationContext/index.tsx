@@ -56,6 +56,7 @@ const Application = ({
               }),
           }
         }
+        download={value?.meta?.data?.resume_processing_state === 'unparsable'}
       />
       {children ?? <></>}
     </ApplicationContext.Provider>

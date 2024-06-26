@@ -5,6 +5,7 @@ import { CandidateName } from '@/devlink/CandidateName';
 import { CandidateSidedrawerTop } from '@/devlink/CandidateSidedrawerTop';
 import { useApplication } from '@/src/context/ApplicationContext';
 import { useApplicationStore } from '@/src/context/ApplicationContext/store';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 const Info = () => {
   const {
@@ -17,7 +18,7 @@ const Info = () => {
       isResume={!!data?.file_url}
       onClickLinkedin={{ onClick: () => {} }}
       onClickResume={{ onClick: () => setPreview(true) }}
-      textName={data?.name ?? '---'}
+      textName={capitalizeAll(data?.name ?? '---')}
     />
   );
 };
