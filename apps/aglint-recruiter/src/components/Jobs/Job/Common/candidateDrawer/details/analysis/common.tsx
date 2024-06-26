@@ -19,7 +19,7 @@ const AnalysisItem = ({
     !(
       scores &&
       reasoning &&
-      scores[type] &&
+      typeof scores?.[type] === 'number' &&
       reasoning[
         type === 'education'
           ? 'schools'
