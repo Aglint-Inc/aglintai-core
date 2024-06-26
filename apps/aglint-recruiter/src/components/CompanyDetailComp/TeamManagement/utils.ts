@@ -1,5 +1,4 @@
 import {
-  DatabaseEnums,
   employmentTypeEnum,
   RecruiterUserType,
   schedulingSettingType,
@@ -58,7 +57,7 @@ export type InviteUserAPIType = {
       interview_location: string;
       employment: employmentTypeEnum;
       department: string;
-      role: DatabaseEnums['user_roles'];
+      role_id: string;
       manager_id: string;
       scheduling_settings: schedulingSettingType;
     }[];

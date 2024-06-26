@@ -1,4 +1,3 @@
-// import { replaceAll } from '@aglint/shared-utils';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -13,7 +12,7 @@ function processDirectory(
     filter?: (x: string[]) => string[];
   }[],
 ) {
-  const result: string[] = [];
+  let result: string[] = [];
 
   function walkDirectory(
     rootDir: string,
@@ -60,12 +59,22 @@ function processDirectory(
     }),
   );
 
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  // filter out wrong PATH SEPARATOR
+
+  if (path.sep === path.win32.sep) {
+    result = result.map((item) =>
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
+      item.replace(new RegExp('\\' + path.win32.sep, 'g'), '/'),
+    );
+  }
+
+  // write to file
   outputFiles.forEach((item) => {
     const tempResult = item.filter?.(item.filter(result)) || result;
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     fs.writeFileSync(
       item.path,
-      `export const ${item.objectName} = [\n${tempResult.map((item) => "'" + replaceAll(item, '\\', '/') + "'").join(',\n')}\n] as const`,
+      `export const ${item.objectName} = [\n${tempResult.map((item) => "'" + item + "'").join(',\n')}\n] as const`,
       'utf-8',
     );
   });
@@ -80,13 +89,13 @@ const rootDirectory = {
     basePath: '',
     appRouter: false,
   },
-  [path.join('../aglint-mail/src/app/', 'api')]: {
+  [path.join('../aglint-mail/src/app', 'api')]: {
     basePath: path.join('/api', 'emails'),
     appRouter: true,
   },
 };
-const allPathOutputFile = 'src/constant/allPaths.ts';
-const apiPathOutputFile = 'src/constant/apiPaths.ts';
+const allPathOutputFile = path.join('src/constant', 'allPaths.ts');
+const apiPathOutputFile = path.join('src/constant', 'apiPaths.ts');
 
 processDirectory(rootDirectory, [
   { path: allPathOutputFile, objectName: 'PATHS' },
@@ -96,8 +105,3 @@ processDirectory(rootDirectory, [
     filter: (x) => x.filter((item) => item.startsWith('/api')),
   },
 ]);
-
-function replaceAll(str: string, find: string, replace: string) {
-  // Split the string by the find substring and join the parts with the replace substring
-  return str.split(find).join(replace);
-}

@@ -54,6 +54,7 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/get_interview_plans': ['scheduler_enabled'],
   '/api/getMembersWithRole': ['jobs_read'], //change to correct permission
   '/api/get_last_login': ['jobs_read'], //change to correct permission
+  '/api/setMembersWithRole': ['jobs_read'], //change to correct permission
   '/api/scheduling/fetchUserDetails': ['scheduler_enabled'],
   '/api/scheduling/fetch_interview_session_task': ['scheduler_enabled'],
   '/api/scheduling/fetch_activities': ['scheduler_enabled'],
