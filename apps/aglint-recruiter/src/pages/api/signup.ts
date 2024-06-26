@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-import { RecruiterUserType } from '@aglint/shared-types';
 import { DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -15,13 +14,12 @@ export type ApiBodyParamsSignup = {
   user_id: string;
   first_name: string;
   last_name: string;
-  role: RecruiterUserType['role'];
-  flow: any;
+  flow: string;
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { email, user_id, first_name, last_name, role, flow } =
+    const { email, user_id, first_name, last_name, flow } =
       req.body as ApiBodyParamsSignup;
 
     const { error: errUser, data: recUser } = await supabase
@@ -32,7 +30,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         first_name: first_name,
         last_name: last_name || '',
       })
-      .select();
+      .select()
+      .single();
+
+    console.log('recUser', recUser);
+
     if (errUser) throw new Error(errUser.message);
 
     let rec_id = uuidv4();
@@ -44,29 +46,48 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         recruiter_active: true,
         id: rec_id,
       })
-      .select();
+      .select()
+      .single();
+
+    console.log('rec', rec);
+
     if (errRec) throw new Error(errRec.message);
 
+    await setTimeout(() => {
+      return Promise.resolve();
+    }, 2000);
+
+    const { data: rol, error: errRol } = await supabase
+      .from('roles')
+      .select()
+      .eq('name', 'admin')
+      .eq('recruiter_id', rec.id)
+      .single();
+
+    if (errRol) throw new Error(errRol.message);
+
     const { error: errRel } = await supabase.from('recruiter_relation').insert({
-      role: role,
+      role: 'admin',
       recruiter_id: rec_id,
       user_id: user_id,
       is_active: true,
       created_by: user_id,
+      role_id: rol.id,
     });
+    
     if (errRel) throw new Error(errRel.message);
 
     await supabase
       .from('recruiter_user')
       .update({
-        recruiter_id: rec[0].id,
-        scheduling_settings: rec[0].scheduling_settings,
+        recruiter_id: rec.id,
+        scheduling_settings: rec.scheduling_settings,
       })
       .eq('user_id', user_id);
 
     return res.status(200).json({
-      recruiter_user: recUser[0],
-      recruiter: rec[0],
+      recruiter_user: recUser,
+      recruiter: rec,
     });
   } catch (error) {
     // console.log('error', error);

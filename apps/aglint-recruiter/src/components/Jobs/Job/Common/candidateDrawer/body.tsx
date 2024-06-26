@@ -28,7 +28,7 @@ type Props = {
   activity: ReactNode;
 };
 
-const Body = (props: Partial<Props>) => {
+const Body = (props: Partial<Props> & { showTabs?: boolean }) => {
   const blocker = useBlocker();
   if (blocker)
     return (

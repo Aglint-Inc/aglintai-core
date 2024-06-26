@@ -4,6 +4,7 @@ export const allowedPaths = new Set([
   '/login',
   '/signup',
   '/api/signup',
+  '/api/pre-seed',
   '/api/unauthorized',
   '/api/jobpost/indexing',
   '/api/sitemap.xml',
