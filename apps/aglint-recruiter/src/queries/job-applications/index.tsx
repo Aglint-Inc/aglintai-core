@@ -285,7 +285,6 @@ const sampleApplicationView: {
   applied_at: 'applied_at',
   bookmarked: 'bookmarked',
   candidate_file_id: 'candidate_file_id',
-  candidate_id: 'candidate_id',
   created_at: 'created_at',
   id: 'id',
   overall_interview_score: 'interview_score',
@@ -414,7 +413,8 @@ const handleResumeUpload = async (payload: HandleUploadResume) => {
     files: formData,
   };
   const response = await handleJobApi('candidateUpload/resumeUpload', request);
-  if (!response.confirmation) throw new Error(response.error);
+  if (response.filter(({ confirmation }) => !confirmation).length !== 0)
+    throw new Error('Failed to upload resume');
   return response;
 };
 const handleBulkResumeUpload = async (payload: HandleUploadResume) => {
