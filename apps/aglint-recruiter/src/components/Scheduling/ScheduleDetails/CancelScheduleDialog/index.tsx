@@ -18,7 +18,7 @@ function CancelScheduleDialog({
   setIsDeclineOpen,
   sessionRelation,
   schedule,
-  refetch
+  refetch,
 }: {
   isDeclineOpen: boolean;
   setIsDeclineOpen: Dispatch<React.SetStateAction<boolean>>;
@@ -50,6 +50,7 @@ function CancelScheduleDialog({
           session_id: schedule.interview_session.id,
           notes,
           reason,
+          application_id: schedule.schedule.application_id,
         };
 
         addScheduleActivity({

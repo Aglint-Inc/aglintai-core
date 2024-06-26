@@ -68,11 +68,11 @@ export interface ContextValue {
       manager_id?: string;
     };
   }) => Promise<boolean>;
-  isAllowed: (
+  isAllowed: ( //checkPermission
     roles: DatabaseEnums['user_roles'][],
     flags?: featureFlag[],
   ) => boolean;
-  allowAction: <T extends Function | ReactNode>(
+  allowAction: <T extends Function | ReactNode>( //ifAllowed
     func: T,
     role: DatabaseEnums['user_roles'][],
   ) => T;
