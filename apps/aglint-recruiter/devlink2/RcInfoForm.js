@@ -2,7 +2,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./RcInfoForm.module.css";
 
@@ -46,19 +45,17 @@ export function RcInfoForm({
               className={_utils.cx(_styles, "sl-company-image-block")}
               tag="div"
             >
-              {slotLogo ?? <SlotComp componentName="slot for Logo" />}
+              {slotLogo}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "sl-com-title-info-block")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-411")}
+                className={_utils.cx(_styles, "change-company-logo")}
                 tag="div"
               >
-                {slotChangeLogoBtn ?? (
-                  <SlotComp componentName="slot for Button" />
-                )}
+                {slotChangeLogoBtn}
               </_Builtin.Block>
               <Text
                 size="2"
@@ -71,9 +68,7 @@ export function RcInfoForm({
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block tag="div">
-          {slotForm ?? <SlotComp componentName="slot for Form" />}
-        </_Builtin.Block>
+        <_Builtin.Block tag="div">{slotForm}</_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

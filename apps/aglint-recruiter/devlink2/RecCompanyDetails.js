@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./RecCompanyDetails.module.css";
 
@@ -24,13 +23,13 @@ export function RecCompanyDetails({
           className={_utils.cx(_styles, "sl-info-input-wrapper")}
           tag="div"
         >
-          {slotMain ?? <SlotComp componentName="slot Main" />}
+          {slotMain}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "sl-nav-buttons")}
           tag="div"
         >
-          {slotButtons ?? <SlotComp componentName="slot for Navigation" />}
+          {slotButtons}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
