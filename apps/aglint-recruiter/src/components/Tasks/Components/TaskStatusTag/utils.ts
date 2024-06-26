@@ -60,13 +60,13 @@ export function getIndicator({
 
   if (
     progress_type === 'request_availability' ||
-    progress_type === 'send_email'
+    progress_type === 'send_email' ||
+    progress_type === 'self_schedule'
   ) {
     return 'AWAITING_RESPONSE' as indicatorType;
   }
 
   if (
-    progress_type === 'self_schedule' ||
     progress_type === 'schedule' ||
     progress_type === 'request_availability_list'
   ) {

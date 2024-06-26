@@ -703,11 +703,11 @@ export const updateTask = ({
             '{selectedSessions}': sessions,
           },
           progress_type:
-            task.type === 'schedule'
+            task.type === 'schedule' ||
+            task.type === 'self_schedule' ||
+            task.type === 'availability'
               ? 'schedule'
-              : task.type === 'self_schedule'
-                ? 'self_schedule'
-                : 'standard',
+              : 'standard',
         });
       }
       const { data: updatedTask } = await supabase

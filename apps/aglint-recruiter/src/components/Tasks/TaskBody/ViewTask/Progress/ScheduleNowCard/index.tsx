@@ -5,10 +5,15 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GeneralBanner } from '@/devlink/GeneralBanner';
 import Icon from '@/src/components/Common/Icons/Icon';
 import {
-  setDateRange
+  setDateRange,
+  setIsScheduleNowOpen,
+  setScheduleFlow,
+  setStepScheduling,
 } from '@/src/components/Scheduling/CandidateDetails/SelfSchedulingDrawer/store';
-import { setSelectedSessionIds } from '@/src/components/Scheduling/CandidateDetails/store';
-
+import {
+  setRequestSessionIds,
+  setSelectedSessionIds,
+} from '@/src/components/Scheduling/CandidateDetails/store';
 function ScheduleNowCard({
   selectedTask,
 }: {
@@ -23,26 +28,36 @@ function ScheduleNowCard({
           color: 'var(--info-11)',
         },
       }}
-      textHeading={'Create a meeting'}
-      textDesc={
-        <div
-          dangerouslySetInnerHTML={{
-            __html: ``,
-          }}
-        ></div>
-      }
+      textHeading={'Schedule interview'}
+      textDesc={'Please select a date and time to schedule your interview.'}
       slotHeadingIcon={<Icon height={'16'} width={'20'} variant='Check' />}
       slotButton={
         <>
           <ButtonSolid
-            textButton={'Schedule Now'}
+            textButton={
+              selectedTask.type === 'availability'
+                ? 'Request Availability'
+                : 'Schedule Now'
+            }
             isLoading={false}
             isLeftIcon={false}
             isRightIcon={false}
             size={1}
             onClickButton={{
               onClick: () => {
-                // setScheduleFlow('update_request_availibility');
+                if (selectedTask.type === 'availability') {
+                  setIsScheduleNowOpen(true);
+                  setScheduleFlow('create_request_availibility');
+                  setStepScheduling('request_availibility');
+                }
+                if (selectedTask.type === 'self_schedule') {
+                  setIsScheduleNowOpen(true);
+                  setScheduleFlow('self_scheduling');
+                  setStepScheduling('pick_date');
+                }
+                setRequestSessionIds(
+                  selectedTask.session_ids.map((ele) => ele.id),
+                );
                 setSelectedSessionIds(
                   selectedTask.session_ids.map((ele) => ele.id),
                 );
@@ -53,7 +68,7 @@ function ScheduleNowCard({
                 });
 
                 router.push(
-                  `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/application/${selectedTask.application_id}`,
+                  `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/application/${selectedTask.application_id}?task_id=${selectedTask.id}`,
                 );
               },
             }}
