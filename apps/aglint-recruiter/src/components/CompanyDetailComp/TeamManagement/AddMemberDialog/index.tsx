@@ -1,5 +1,4 @@
 import {
-  DB,
   employmentTypeEnum,
   RecruiterUserType,
   schedulingSettingType,
@@ -22,6 +21,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
+import { useRolesOptions } from '../hooks';
 import { inviteUserApi, reinviteUser } from '../utils';
 export type interviewLocationType = {
   city: string;
@@ -56,7 +56,8 @@ const AddMember = ({
     designation: string;
     interview_location: string;
     department: string;
-    role: RecruiterUserType['role'];
+    role: string;
+    role_id: string;
     scheduling_settings: schedulingSettingType;
     manager_id: string;
   }>({
@@ -69,6 +70,7 @@ const AddMember = ({
     designation: null,
     department: null,
     role: null,
+    role_id: null,
     scheduling_settings: null,
     manager_id: null,
   });
@@ -83,7 +85,7 @@ const AddMember = ({
       department: string;
       interview_location: string;
       designation: string;
-      role: RecruiterUserType['role'];
+      role_id: string;
       manager_id: string;
     }[]
   >([]);
@@ -113,6 +115,8 @@ const AddMember = ({
   const [isDisable, setIsDisable] = useState(false);
   const [isResendDisable, setResendDisable] = useState<string>(null);
   const [isInviteCardVisible, setInviteCardVisible] = useState(false);
+
+  const { data: roleOptions } = useRolesOptions();
 
   const checkValidation = () => {
     let flag = false;
@@ -147,7 +151,7 @@ const AddMember = ({
       temp = { ...temp, designation: true };
       flag = true;
     }
-    if (!form.role || form.role.trim() === '') {
+    if (!form.role_id || form.role_id.trim() === '') {
       temp = { ...temp, role: true };
       flag = true;
     }
@@ -186,7 +190,7 @@ const AddMember = ({
             department: form.department,
             interview_location: form.interview_location,
             designation: form.designation,
-            role: form.role.toLowerCase() as typeof form.role,
+            role_id: form.role_id,
             manager_id: form.manager_id,
             employment: form.employment,
           },
@@ -203,6 +207,7 @@ const AddMember = ({
           interview_location: null,
           designation: null,
           role: null,
+          role_id: null,
           scheduling_settings: null,
           employment: null,
           manager_id: null,
@@ -464,30 +469,21 @@ const AddMember = ({
                   <Stack direction={'row'} gap={2}>
                     <Autocomplete
                       fullWidth
-                      value={capitalizeFirstLetter(form.role)}
-                      onChange={(event: any, newValue: string | null) => {
+                      value={{ name: form.role, id: form.role_id }}
+                      getOptionLabel={(option) =>
+                        capitalizeFirstLetter(option.name)
+                      }
+                      onChange={(event: any, newValue) => {
                         setForm({
                           ...form,
-                          role: newValue as
-                            | 'recruiter'
-                            | 'interviewer'
-                            | 'hiring_manager'
-                            | 'recruiting_coordinator'
-                            | 'sourcer',
+                          role: newValue.name,
+                          role_id: newValue.id,
                         });
                       }}
                       id='controllable-states-demo'
-                      options={
-                        [
-                          'recruiter',
-                          'interviewer',
-                          'hiring_manager',
-                          'recruiting_coordinator',
-                          'sourcer',
-                        ] as DB['public']['Enums']['user_roles'][]
-                      }
+                      options={roleOptions}
                       renderOption={(props, op) => (
-                        <li {...props}>{capitalizeFirstLetter(op)}</li>
+                        <li {...props}>{capitalizeFirstLetter(op.name)}</li>
                       )}
                       renderInput={(params) => (
                         <UITextField
@@ -582,7 +578,7 @@ const AddMember = ({
                         form.first_name &&
                         form.designation &&
                         form.department &&
-                        form.role &&
+                        form.role_id &&
                         form.manager_id
                           ? false
                           : true

@@ -88,7 +88,7 @@ export function apiRequestHandlerFactory<T extends ApiInterface>(
    * @param {(reqDetails: {
    *   body?: T['request'];
    *   requesterDetails: typeof requesterDetails;
-   * }) => Promise<T['response'] | { error: string; status: number }>} apiImplementation - The API implementation function.
+   * }) => Promise<T['response'] | { error: string; status?: number }>} apiImplementation - The API implementation function.
    * @param {(keyof T['request'])[]} [required] - Optional array of required properties.
    * @return {Promise<void>} A Promise that resolves to void.
    */

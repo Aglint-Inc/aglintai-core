@@ -61,6 +61,7 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/get_interview_plans': ['scheduler_enabled'],
   '/api/getMembersWithRole': ['jobs_read'], //change to correct permission
   '/api/get_last_login': ['jobs_read'], //change to correct permission
+  '/api/setMembersWithRole': ['jobs_read'], //change to correct permission
   '/api/scheduling/fetchUserDetails': ['scheduler_enabled'],
   '/api/scheduling/fetch_interview_session_task': ['scheduler_enabled'],
   '/api/scheduling/fetch_activities': ['scheduler_enabled'],
@@ -81,7 +82,6 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/request_availability/getCandidateRequestData': [
     'scheduler_enabled',
   ],
-  '/api/setMembersWithRole': ['jobs_read'],
   '/api/scheduling/request_availability/getTaskIdDetailsByRequestId': [
     'scheduler_enabled',
   ],
@@ -104,6 +104,7 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/v1/booking/confirm-recruiter-selected-option': [
     'scheduler_enabled',
   ],
+  '/api/emails/preview': ['scheduler_enabled'],
 };
 
 export default PERMISSIONS;

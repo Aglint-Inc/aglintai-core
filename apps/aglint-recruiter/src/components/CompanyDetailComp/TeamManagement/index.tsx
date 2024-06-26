@@ -168,7 +168,7 @@ const TeamManagement = () => {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position='end'>
-                      <GlobalIcon iconName='search' size='5'/>
+                      <GlobalIcon iconName='search' size='5' />
                     </InputAdornment>
                   ),
                 }}
@@ -176,7 +176,11 @@ const TeamManagement = () => {
                 onChange={handleSearchInputChange}
               />
             </Stack>
-            <Stack display={'flex'} flexDirection={'row'} gap={'var(--space-2)'}>
+            <Stack
+              display={'flex'}
+              flexDirection={'row'}
+              gap={'var(--space-2)'}
+            >
               <FilterDropDown
                 icon={<StatusIcon />}
                 title={'Status'}
@@ -275,12 +279,12 @@ const TeamManagement = () => {
             isRightIcon={false}
             isLeftIcon={true}
             size={'2'}
-            textButton ={'Invite'}
-            iconName = {'send'}
+            textButton={'Invite'}
+            iconName={'send'}
             onClickButton={{
               onClick: () => {
                 setOpenDrawer({ open: true, window: 'addMember' });
-              }
+              },
             }}
           />
         }
@@ -348,6 +352,7 @@ const useTeamMembers = () => {
     })[],
     enabled: Boolean(members?.length),
     refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
   useEffect(() => {
     if (query.data && members.length) {
