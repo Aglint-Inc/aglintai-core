@@ -16,6 +16,7 @@ import {
   ScheduleProgressPillProps,
 } from '@/src/components/Scheduling/Common/ScheduleProgress/scheduleProgressPill';
 import { useApplication } from '@/src/context/ApplicationContext';
+import ROUTES from '@/src/utils/routing/routes';
 
 import { getBreakLabel } from '../../Interview-Plan/utils';
 import { EmptyState, Loader } from './common';
@@ -69,8 +70,13 @@ const Content = () => {
 const InterviewSessionCard = ({
   session: { date = null, ...props },
 }: {
-  session: Omit<ScheduleProgressPillProps, 'position'> & { location?: string };
+  session: Omit<ScheduleProgressPillProps, 'position'> & {
+    location?: string;
+    meeting_id?: string;
+  };
 }) => {
+  const { push } = useRouter();
+  const { application_id } = useApplication();
   const isScheduleDate =
     (props.status === 'completed' || props.status === 'confirmed') && !!date;
   const scheduleDate = getScheduleDate(date);
@@ -112,7 +118,19 @@ const InterviewSessionCard = ({
       isCheckboxVisible={false}
       isSelected={false}
       isThreeDotVisible={false}
-      onClickCard={null}
+      onClickCard={{
+        style: { cursor: 'pointer' },
+        onClick: () =>
+          props?.meeting_id
+            ? push(
+                `${ROUTES['/scheduling/view']()}?meeting_id=${props.meeting_id}`,
+              )
+            : push(
+                ROUTES['/scheduling/application/[application_id]']({
+                  application_id,
+                }),
+              ),
+      }}
       onClickDots={null}
       textDay={null}
       textMonth={null}

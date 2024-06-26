@@ -46,7 +46,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
         textCompanyAbout={recruiter.company_overview}
         textCompanyType={recruiter.industry || '--'}
         textEmployeeCount={recruiter.employee_size || '--'}
-        isHeaderDescriptionVisible={Boolean(recruiter.company_values)}
+        // isHeaderDescriptionVisible={Boolean(recruiter.company_values)}
         textHeaderDiscription={recruiter.company_values}
         textOpenJobCount={filteredJobs.length}
         slotOpenJobListing={filteredJobs.map((job, ind) => {
