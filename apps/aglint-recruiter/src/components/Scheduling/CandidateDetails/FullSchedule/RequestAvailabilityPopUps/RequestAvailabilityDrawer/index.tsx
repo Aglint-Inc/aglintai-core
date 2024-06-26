@@ -18,7 +18,7 @@ import toast from '@/src/utils/toast';
 
 import { useAllActivities, useGetScheduleApplication } from '../../../hooks';
 import { updateCandidateRequestAvailability } from '../../../RequestAvailability/RequestAvailabilityContext';
-import { useSchedulingApplicationStore } from '../../../store';
+import { setSelectedSessionIds, useSchedulingApplicationStore } from '../../../store';
 import { useAvailabilityContext } from '../RequestAvailabilityContext';
 import RequestAvailabilityBody from './RequestAvailabilityBody';
 
@@ -110,6 +110,7 @@ function RequestAvailabilityDrawer() {
           });
           toast.success('Booked sessions');
           fetchInterviewDataByApplication();
+          setSelectedSessionIds([]);
           refetch();
           closeDrawer();
         } else {

@@ -35,7 +35,7 @@ import { useTaskStatesContext } from '../../TaskStatesContext';
 import {
   assigneeType,
   extractDataFromText,
-  JobCandidatesType
+  JobCandidatesType,
 } from '../../utils';
 import { meetingCardType } from '../ViewTask/Progress/SessionCard';
 import AssigneeList from './AssigneeList';
@@ -530,6 +530,10 @@ function AddNewTask() {
                 slotAssignedTo={
                   <Stack width={'100%'} direction={'column'}>
                     <AssigneeList
+                      hideAgents={
+                        selectedType === 'availability' ||
+                        selectedType === 'self_schedule'
+                      }
                       selectedAssignee={selectedAssignee}
                       setSelectedAssignee={setSelectedAssignee}
                       onChange={(assigner: any) => {

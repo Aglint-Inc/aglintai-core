@@ -14,6 +14,7 @@ import { cancelMailHandler } from '../../mailUtils';
 import {
   setMultipleCancelOpen,
   setSelectedApplicationLog,
+  setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../../store';
 
@@ -67,6 +68,7 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
     } finally {
       refetch();
       fetchInterviewDataByApplication();
+      setSelectedSessionIds([]);
       onClickClose();
     }
   };

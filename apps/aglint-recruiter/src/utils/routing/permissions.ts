@@ -98,7 +98,10 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/get_interview_training_progress': ['scheduler_enabled'],
   // request availability mail apis
   '/api/emails/sendAvailabilityRequest_email_applicant': ['scheduler_enabled'],
-  '/api/emails/sendAvailReqReminder_email_applicant': ['scheduler_enabled'],
+  '/api/emails/sendAvailReqReminder_email_applicant': [
+    'scheduler_enabled',
+    'tasks_enabled',
+  ],
   '/api/emails/selfScheduleReminder_email_applicant': ['scheduler_enabled'],
   '/api/emails/availabilityReqResend_email_candidate': ['scheduler_enabled'],
   '/api/scheduling/v1/booking/confirm-recruiter-selected-option': [
