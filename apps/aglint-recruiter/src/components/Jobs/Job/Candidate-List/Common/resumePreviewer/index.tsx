@@ -52,14 +52,19 @@ const ResumePreviewer = ({
           onClick: () => navigation?.handleDown(),
         }}
         slotBookmark={
-          bookmark && (
-            <BookMark
-              isBookMarked={bookmark.isBookmarked}
-              onClickBookmark={{ onClick: () => bookmark.handleBookmark() }}
-              isDarkIconVisible={true}
-              isLightIconVisible={false}
-            />
-          )
+          <Stack direction={'row'} gap={1}>
+            <a href='url' download={`${name}.${isDocs(url) ? 'docx' : 'pdf'}`}>
+              <BookMark />
+            </a>
+            {bookmark && (
+              <BookMark
+                isBookMarked={bookmark.isBookmarked}
+                onClickBookmark={{ onClick: () => bookmark.handleBookmark() }}
+                isDarkIconVisible={true}
+                isLightIconVisible={false}
+              />
+            )}
+          </Stack>
         }
         onClickUp={{
           style: { display: navigation?.handleUp ? 'flex' : 'none' },
@@ -101,12 +106,12 @@ const ResumePreviewer = ({
 
 export { ResumePreviewer };
 
-function Embed({ url }: { url: string }) {
-  const isDocOrDocx = /\.(doc|docx)$/i.test(url);
+const Embed = ({ url }: { url: string }) => {
+  const isDocx = isDocs(url);
   return (
     <embed
       src={
-        isDocOrDocx
+        isDocx
           ? `https://view.officeapps.live.com/op/embed.aspx?src=${url}`
           : url
       }
@@ -115,4 +120,8 @@ function Embed({ url }: { url: string }) {
       height='100%'
     />
   );
-}
+};
+
+const isDocs = (url: string) => {
+  return /\.(doc|docx)$/i.test(url);
+};
