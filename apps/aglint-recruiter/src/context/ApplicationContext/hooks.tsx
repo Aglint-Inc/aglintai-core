@@ -16,6 +16,7 @@ export const useApplicationContext = (
   props: Parameters<(typeof applicationQuery)['application']>[0] &
     Partial<Pick<Parameters<typeof ResumePreviewer>[0], 'navigation'>> & {
       showResumePreviewActions?: boolean;
+      showTabs?: boolean;
     },
 ) => {
   const { isAssessmentEnabled, isSchedulingEnabled, isScreeningEnabled } =
@@ -33,12 +34,16 @@ export const useApplicationContext = (
       isAssessmentEnabled,
       isSchedulingEnabled,
       isScreeningEnabled,
+      enabled: !!props?.showTabs,
     }),
   );
   const meta = useQuery(applicationQuery.meta(props));
   const details = useQuery(applicationQuery.details(props));
   const interview = useQuery(
-    applicationQuery.interview({ ...props, enabled: tab === 'Interview' }),
+    applicationQuery.interview({
+      ...props,
+      enabled: tab === 'Interview' || !!props?.showTabs,
+    }),
   );
   const tasks = useQuery(
     applicationQuery.tasks({ ...props, enabled: tab === 'Tasks' }),
