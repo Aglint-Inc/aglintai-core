@@ -187,7 +187,7 @@ const MoveCandidateInterview = () => {
 
   const [taskCheck, setTaskCheck] = useState(false);
   const [task, setTask] = useState<TaskType>(null);
-
+  const [assigner, setAssigner] = useState(null);
   const createTask = async () =>
     taskCheck &&
     (await createTasks(
@@ -201,6 +201,7 @@ const MoveCandidateInterview = () => {
         .filter(({ id }) => checklist.includes(id))
         .map(({ id, name }) => ({ id, name })),
       task,
+      assigner,
     ));
 
   const { buttons, title, description } = useMeta(() => {
@@ -227,6 +228,7 @@ const MoveCandidateInterview = () => {
             <CreateTask
               applications={checklist}
               setTask={setTask}
+              setAssigner={setAssigner}
               job_id={job?.id}
             />
           </Collapse>
