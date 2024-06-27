@@ -14,6 +14,7 @@ export function nestedOptionMapper(
   headers: string[],
   options: nestedOptionMapperType,
   selectedOptions: nestedType<string[]>,
+  showCount: boolean,
 ) {
   if (!options) return [];
   const res: [
@@ -104,7 +105,10 @@ export function nestedOptionMapper(
         .flat()
         .filter((item) => item.status != 'inactive').length || 0,
     ];
-    return { status, label: header };
+    return {
+      status,
+      label: showCount ? `${header} (${tempItem.length})` : header,
+    };
   }
   mapOption({
     optionList: options,
