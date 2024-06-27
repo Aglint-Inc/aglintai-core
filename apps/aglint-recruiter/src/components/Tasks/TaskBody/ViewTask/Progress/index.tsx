@@ -329,15 +329,15 @@ function SubTaskProgress() {
                         <ShowCode.When
                           isTrue={
                             item.progress_type ===
-                              'request_availability_list' && !!item.jsonb_data
+                              'request_availability_list' &&
+                            !!item.jsonb_data &&
+                            lastEmailRequestAvailabilityListIndex === i &&
+                            !progressList
+                              .map((ele) => ele.progress_type)
+                              .includes('interview_schedule')
                           }
                         >
-                          <RequestAvailabilityList
-                            item={item}
-                            disable={
-                              lastEmailRequestAvailabilityListIndex !== i
-                            }
-                          />
+                          <RequestAvailabilityList item={item} />
                         </ShowCode.When>
                         <ShowCode.When
                           isTrue={

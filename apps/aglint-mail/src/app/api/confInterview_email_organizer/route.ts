@@ -20,11 +20,11 @@ export async function POST(req: Request) {
       recipient_email,
     } of fetch_details) {
       // eslint-disable-next-line no-await-in-loop
-      await sendMailFun(
+      await sendMailFun({
         filled_comp_template,
         react_email_placeholders,
         recipient_email,
-      );
+      });
     }
     return NextResponse.json('success', {
       status: 200,

@@ -9,7 +9,7 @@ import { EditEmail } from '@/devlink/EditEmail';
 import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
-import EmailPreview from '@/src/components/Common/EmailTemplateEditor/EmailPreview';
+import EmailPreviewPopover from '@/src/components/Common/EmailTemplateEditor/EmailPreviewPopover';
 import EmailTemplateEditForm from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
@@ -208,7 +208,7 @@ function SchedulerEmailTemps() {
                         )
                       }
                     />
-                    <EmailPreview
+                    <EmailPreviewPopover
                       anchorEl={anchorEl}
                       setAnchorEl={setAnchorEl}
                       setHtml={setHtml}
