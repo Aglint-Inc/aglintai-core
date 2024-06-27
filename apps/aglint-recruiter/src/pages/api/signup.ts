@@ -53,9 +53,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (errRec) throw new Error(errRec.message);
 
-    await setTimeout(() => {
-      return Promise.resolve();
-    }, 2000);
+    await sleep(3000);
 
     const { data: rol, error: errRol } = await supabase
       .from('roles')
@@ -63,6 +61,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .eq('name', 'admin')
       .eq('recruiter_id', rec.id)
       .single();
+
+    console.log(rol);
 
     if (errRol) throw new Error(errRol.message);
 
@@ -74,7 +74,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       created_by: user_id,
       role_id: rol.id,
     });
-    
+
     if (errRel) throw new Error(errRel.message);
 
     await supabase
@@ -96,3 +96,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default handler;
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
