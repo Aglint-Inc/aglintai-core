@@ -17,7 +17,11 @@ export const updateMeetingEventDetails = async (
     cal_event: CalendarEvent;
   }) => {
     let meeting_link = '';
-    if (cal_event.conferenceData.conferenceSolution.name === 'zoom') {
+
+    if (
+      cal_event.conferenceData &&
+      cal_event.conferenceData.conferenceSolution.name === 'zoom'
+    ) {
       meeting_link = cal_event.conferenceData.entryPoints[0].uri;
     } else {
       meeting_link = cal_event.hangoutLink;
