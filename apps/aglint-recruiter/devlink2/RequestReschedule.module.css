@@ -1,21 +1,39 @@
-.div-block-1491 {
+.rr-wrapper {
   display: flex;
   width: 470px;
-  padding: 20px;
+  padding: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
 
-  border-radius: 10px;
+  border-radius: var(--radius-4);
 
-  background-color: var(--neutral-2);
+  background-color: var(--white);
 }
 
 .div-block-1492 {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.rr-close-btn {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: var(--radius-2);
+
+  transition: all 200ms ease;
+
+  cursor: pointer;
+}
+
+.rr-close-btn:hover {
+  background-color: var(--neutral-3);
 }
 
 .div-block-1493 {
@@ -139,6 +157,14 @@
   flex-wrap: nowrap;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
+}
+
+.rr-radio-slot-wrap {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .div-block-1681 {

@@ -31,7 +31,7 @@ export function RcInfoForm({
         >
           <Text
             size="2"
-            weight="bold"
+            weight="medium"
             color=""
             content="Company Logo"
             align=""

@@ -217,11 +217,11 @@
   }
 }
 
-.div-block-425 {
+.cl-header-item {
   display: flex;
   align-items: center;
-  grid-column-gap: 9px;
-  grid-row-gap: 9px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .icons {

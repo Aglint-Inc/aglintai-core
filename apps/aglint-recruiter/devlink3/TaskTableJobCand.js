@@ -62,12 +62,7 @@ export function TaskTableJobCand({
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500")}
-              tag="div"
-            >
-              {"Task"}
-            </_Builtin.Block>
+            <Text color="neutral-12" content="Task" weight="medium" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "task_row_cell")}
@@ -77,19 +72,19 @@ export function TaskTableJobCand({
             )}
             tag="div"
           >
-            <Text content={textStatusHeader} color="neutral" weight="medium" />
+            <Text
+              content={textStatusHeader}
+              color="neutral-12"
+              weight="medium"
+            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "task_row_cell")}
-            id={_utils.cx(
-              _styles,
-              "w-node-_99d975b3-40a3-c9c4-b0fc-07003f0a3884-79bd2c91"
-            )}
             tag="div"
           >
             <Text
               content={textPriorityHeader}
-              color="neutral"
+              color="neutral-12"
               weight="medium"
             />
           </_Builtin.Block>
@@ -103,7 +98,7 @@ export function TaskTableJobCand({
           >
             <Text
               content={textAssigneeHeader}
-              color="neutral"
+              color="neutral-12"
               weight="medium"
             />
           </_Builtin.Block>
@@ -117,7 +112,7 @@ export function TaskTableJobCand({
           >
             <Text
               content={textCandidateHeader}
-              color="neutral"
+              color="neutral-12"
               weight="medium"
             />
           </_Builtin.Block>
@@ -129,12 +124,7 @@ export function TaskTableJobCand({
             )}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500")}
-              tag="div"
-            >
-              {textJobHeader}
-            </_Builtin.Block>
+            <Text content={textJobHeader} color="neutral-12" weight="medium" />
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

@@ -21,7 +21,12 @@ export function GeneralBanner({
         tag="div"
         {...titleColorProps}
       >
-        <_Builtin.Block tag="div">{slotHeadingIcon}</_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "gb-icon-wrap")}
+          tag="div"
+        >
+          {slotHeadingIcon}
+        </_Builtin.Block>
         <Text content={textHeading} weight="bold" />
       </_Builtin.Block>
       <_Builtin.Block
