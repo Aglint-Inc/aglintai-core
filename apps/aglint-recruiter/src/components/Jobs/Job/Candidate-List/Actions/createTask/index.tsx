@@ -153,7 +153,7 @@ function CreateTask({
             setSelectedSession={setSelectedSession}
             application_id={applications[0]}
             job_id={job_id}
-            onChange={(sessions: any) => {
+            onChange={({ sessions }) => {
               setTask((pre) => {
                 const preTask = { ...pre };
                 return {
