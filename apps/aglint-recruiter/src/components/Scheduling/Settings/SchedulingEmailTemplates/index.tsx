@@ -2,6 +2,7 @@
 import { DatabaseEnums, DatabaseTableInsert } from '@aglint/shared-types';
 import { Box, Stack } from '@mui/material';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -14,6 +15,7 @@ import EmailTemplateEditForm from '@/src/components/Common/EmailTemplateEditor/E
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
+import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
 import { upateEmailTemplate } from './utils';
@@ -31,19 +33,36 @@ function SchedulerEmailTemps() {
     null,
   );
 
+  const router = useRouter();
+
   const [isHtml, setHtml] = useState(null);
   const [popOverLoading, setPopOverLoading] = useState(false);
 
   useEffect(() => {
+    if (!emailTempKeys.find((key) => key === router.query.email)) {
+      const currentTemplate = emailTempKeys.find((key) =>
+        key.startsWith(String(router.query.email)),
+      );
+      router.push(
+        `${ROUTES['/scheduling']()}?tab=settings&subtab=emailTemplate&email=${currentTemplate}`,
+      );
+    }
+  }, []);
+
+  useEffect(() => {
     if (emailTemplates.data) {
       setEmailTemplate([...emailTemplates.data]);
-      setSelectedTemplate(emailTemplates.data[11]);
+    }
+    if (emailTemplates.isFetched) {
+      setSelectedTemplate(
+        emailTemplates.data.find((temps) => temps.type === router.query.email),
+      );
     }
 
     setTimeout(() => {
       setIsEditorLoad(false);
     }, 500);
-  }, [emailTemplates]);
+  }, [emailTemplates, emailTemplates.data]);
 
   async function updateEmail({
     id,
@@ -116,12 +135,15 @@ function SchedulerEmailTemps() {
               .map((emailPath) => (
                 <EmailTemplateCards
                   key={emailPath.id}
-                  isActive={selectedTemplate.type === emailPath.type}
+                  isActive={emailPath.type === router.query.email}
                   textDescription={emailTemplateCopy[emailPath.type]?.trigger}
                   textTitle={emailTemplateCopy[emailPath.type]?.listing}
                   onClickApplicationRecieved={{
                     onClick: () => {
                       if (selectedTemplate.id !== emailPath.id) {
+                        router.push(
+                          `${ROUTES['/scheduling']()}?tab=settings&subtab=emailTemplate&email=${emailPath.type}`,
+                        );
                         setTipTapLoder(true);
                         setSelectedTemplate(emailPath);
                         setTimeout(() => {
