@@ -15,9 +15,7 @@ import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContext
 
 function RequestAvailabilityList({
   item,
-  disable,
 }: {
-  disable: boolean;
   item: DatabaseTable['new_tasks_progress'];
 }) {
   const router = useRouter();
@@ -52,11 +50,6 @@ function RequestAvailabilityList({
       slotButton={
         <>
           <ButtonSolid
-            isDisabled={
-              disable ||
-              selectedTask.candidate_request_availability?.booking_confirmed ||
-              !selectedTask.candidate_request_availability?.slots
-            }
             textButton={'Schedule'}
             isLoading={false}
             isLeftIcon={false}
@@ -71,11 +64,6 @@ function RequestAvailabilityList({
             }}
           />
           <ButtonSoft
-            isDisabled={
-              disable ||
-              selectedTask.candidate_request_availability?.booking_confirmed ||
-              !selectedTask.candidate_request_availability?.slots
-            }
             textButton={'Request again'}
             isLoading={false}
             isLeftIcon={false}
