@@ -98,15 +98,15 @@ function TaskBody() {
               style: {
                 gridTemplateColumns:
                   selectedGroupBy.label === 'job'
-                    ? `20px 1fr 130px 110px 160px 160px 1px`
+                    ? `20px 1fr 150px 110px 160px 180px 1px`
                     : selectedGroupBy.label === 'candidate'
-                      ? `20px 1fr 130px 110px 160px 1px 160px`
+                      ? `20px 1fr 150px 110px 160px 1px 180px`
                       : selectedGroupBy.label === 'assignee'
-                        ? `20px 1fr 130px 110px 1px 160px 160px`
+                        ? `20px 1fr 150px 110px 1px 160px 180px`
                         : selectedGroupBy.label === 'priority'
-                          ? `20px 1fr 130px 1px 160px 160px 160px`
+                          ? `20px 1fr 150px 1px 160px 160px 180px`
                           : selectedGroupBy.label === 'status'
-                            ? `20px 1fr 1px 160px 160px 160px 160px`
+                            ? `20px 1fr 1px 160px 160px 160px 180px`
                             : null,
                 alignContent: 'center',
               },

@@ -25,6 +25,7 @@ import React, {
   useState,
 } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateConfirmationPage } from '@/devlink/CandidateConfirmationPage';
 import { CandidateScheduleCard } from '@/devlink/CandidateScheduleCard';
@@ -32,10 +33,7 @@ import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { SelectedDateAndTime } from '@/devlink/SelectedDateAndTime';
 import { SessionAndTime } from '@/devlink/SessionAndTime';
 import { SessionInfo } from '@/devlink/SessionInfo';
-import { ButtonDanger } from '@/devlink2/ButtonDanger';
-import { ButtonPrimary } from '@/devlink2/ButtonPrimary';
 import { ButtonSurface } from '@/devlink2/ButtonSurface';
-import { CancelButton } from '@/devlink2/CancelButton';
 import { InterviewConfirmed } from '@/devlink2/InterviewConfirmed';
 import { InterviewConfirmedCard } from '@/devlink2/InterviewConfirmedCard';
 import { RequestReschedule } from '@/devlink2/RequestReschedule';
@@ -65,6 +63,7 @@ import CandidateInviteCalendar, {
   CandidateInviteCalendarProps,
 } from './calender';
 import { dayJS, getCalenderEventUrl, getDurationText } from './utils';
+
 
 const CandidateInviteNew = () => {
   const load = useCandidateInvite();
@@ -396,6 +395,7 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
           type={cancelReschedule}
         />
       )}
+      <Footer brand={true}/>
       </Stack>
     </>
   );
@@ -536,7 +536,8 @@ const CancelRescheduleDialog = ({
         textHeader={title}
         isCancelWarningVisible={type === 'cancel'}
         isRangeVisible={type === 'reschedule'}
-        slotCancelButton={<CancelButton onClickButton={{ onClick: onClose }} />}
+      slotCancelButton={<ButtonSoft textButton='Close' size={2} onClickButton={{ onClick: onClose }}
+      color={'neutral'}/>}
         slotDateRangeInput={
           <div>
             <Stack
@@ -606,6 +607,7 @@ const CancelRescheduleDialog = ({
             onChange={(e) => {
               setFormData((pre) => ({ ...pre, reason: e.currentTarget.value }));
             }}
+            sx={{gap:'4px'}}
           >
             {options.map((item) => (
               <FormControlLabel
@@ -628,16 +630,16 @@ const CancelRescheduleDialog = ({
         slotPrimaryButton={
           <Stack>
             {type === 'reschedule' && (
-              <ButtonPrimary
-                textLabel={'Reschedule'}
-                onClickButton={{ onClick: handleSubmit }}
-              />
+              <ButtonSolid 
+              textButton='Reschedule'
+              size={2}
+              onClickButton={{ onClick: handleSubmit }}/>
             )}
             {type === 'cancel' && (
-              <ButtonDanger
-                textLabel={'Cancel Schedule'}
-                onClickButton={{ onClick: handleSubmit }}
-              />
+              <ButtonSolid textButton='Cancel Schedule'
+              size={2}
+              color={'error'}
+              onClickButton={{ onClick: handleSubmit }}/>
             )}
           </Stack>
         }

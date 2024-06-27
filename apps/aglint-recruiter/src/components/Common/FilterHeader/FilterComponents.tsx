@@ -256,6 +256,7 @@ export function FilterComponent({
             borderRadius: 'var(--radius-2)',
             borderColor: 'var(--neutral-6)',
             minWidth: '176px',
+            backgroundColor:'white'
           },
         }}
       >
