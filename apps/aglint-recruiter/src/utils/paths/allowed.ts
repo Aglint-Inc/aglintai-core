@@ -26,6 +26,8 @@ export const allowedPaths = new Set([
   '/api/jobpost/read',
   '/api/jobpost/write',
   '/api/jobpost/company',
+  '/api/fetchCompanyDetails',
+  '/api/emails/recruiterOnboarding',
   '/api/phone-screening/submit',
   '/api/phone-screening/get-application-info',
   '/api/assessment/access_applications',
