@@ -213,6 +213,33 @@ export const createCloneSession = async ({
       ),
     }));
 
+    // task session replace
+    const oldSessionIds = refSessions.map((ses) => ses.id);
+
+    const { data: taskSelRel, error: errTaskSelRel } = await supabase
+      .from('task_session_relation')
+      .select()
+      .in('session_id', oldSessionIds);
+
+    if (errTaskSelRel) throw new Error(errTaskSelRel.message);
+
+    if (taskSelRel.length > 0) {
+      const { error: errTaskUpdSesRel } = await supabase
+        .from('task_session_relation')
+        .upsert(
+          taskSelRel.map((taskRel) => ({
+            id: taskRel.id,
+            session_id: refSessions.find((ses) => ses.id === taskRel.session_id)
+              .newId,
+            task_id: taskRel.task_id,
+          })),
+        );
+
+      if (errTaskUpdSesRel) throw new Error(errTaskUpdSesRel.message);
+    }
+
+    // task session replace
+
     return {
       schedule: data[0],
       session_ids: newSessionIds,
