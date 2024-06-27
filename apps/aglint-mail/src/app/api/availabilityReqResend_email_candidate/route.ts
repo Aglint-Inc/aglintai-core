@@ -12,11 +12,11 @@ export async function POST(req: Request) {
     const { filled_comp_template, react_email_placeholders, recipient_email } =
       await dbUtil(req_body);
 
-    await sendMailFun(
+    await sendMailFun({
       filled_comp_template,
       react_email_placeholders,
       recipient_email,
-    );
+    });
 
     return NextResponse.json('success', {
       status: 200,

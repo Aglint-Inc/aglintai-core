@@ -122,7 +122,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                       const location = [loc.city, loc.region, loc.country]
                         .filter(Boolean)
                         .join(', ');
-                      const address = [loc.full_address];
+                      const [address] = [loc.full_address];
                       const timeZone = [loc.timezone];
                       const isHeadQuaterVisible = loc?.is_headquarter
                         ? loc.is_headquarterue
@@ -132,7 +132,6 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                         <>
                           <Stack p={'var(--space-1)'}>
                             <CompanyLocation
-                              // isHeadQuaterVisible={isHeadQuaterVisible[0]}
                               isHeadQuaterVisible={isHeadQuaterVisible}
                               onClickEdit={{
                                 onClick: () => {
@@ -142,12 +141,9 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                                   });
                                 },
                               }}
-                              textFullAddress={address}
+                              textFullAddress={address || '-'}
                               textLocationHeader={location}
                               textTimeZone={timeZone}
-                              // onClickDelete={{
-                              //   onClick: () => handleDeleteLocation(i),
-                              // }}
                               onClickDelete={{
                                 onClick: () => {
                                   setDeletPopup(true);

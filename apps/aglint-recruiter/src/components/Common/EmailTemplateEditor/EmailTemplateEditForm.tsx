@@ -11,7 +11,9 @@ interface Props {
   senderNameChange: any;
   emailSubjectChange: any;
   emailBodyChange: any;
-  selectedTemplate: DatabaseTableInsert['company_email_template'];
+  selectedTemplate:
+    | DatabaseTableInsert['company_email_template']
+    | DatabaseTableInsert['job_email_template'];
   disabled?: boolean;
 }
 

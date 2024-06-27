@@ -12,7 +12,7 @@ interface Prop {
   isHtml: any;
 }
 
-export default function EmailPreview({
+export default function EmailPreviewPopover({
   Loading,
   anchorEl,
   setAnchorEl,
