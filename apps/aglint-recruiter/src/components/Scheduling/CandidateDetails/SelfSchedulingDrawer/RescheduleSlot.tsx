@@ -36,19 +36,21 @@ function RescheduleSlot() {
     rescheduleSessionIds?.includes(ses.id),
   );
 
-  const selectSession = ({
-    session,
-  }: {
-    session: SchedulingApplication['initialSessions'][0];
-  }) => {
-    if (selectedLocalSessionIds.includes(session.id)) {
-      setLocalselectedLocalSessionIds(
-        selectedLocalSessionIds.filter((id) => id !== session.id),
-      );
-    } else {
-      setLocalselectedLocalSessionIds([...selectedLocalSessionIds, session.id]);
-    }
-  };
+  const selectSession = () =>
+    //   {
+    //   session,
+    // }: {
+    //   session: SchedulingApplication['initialSessions'][0];
+    // }
+    {
+      // if (selectedLocalSessionIds.includes(session.id)) {
+      //   setLocalselectedLocalSessionIds(
+      //     selectedLocalSessionIds.filter((id) => id !== session.id),
+      //   );
+      // } else {
+      //   setLocalselectedLocalSessionIds([...selectedLocalSessionIds, session.id]);
+      // }
+    };
 
   //popopver
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -87,7 +89,7 @@ function RescheduleSlot() {
               <ScheduleIndividualCard
                 session={ses}
                 key={ses.id}
-                isCheckboxVisible={true}
+                isCheckboxVisible={false}
                 isThreeDotVisible={false}
                 onClickCheckBox={selectSession}
                 selectedSessionIds={selectedLocalSessionIds}

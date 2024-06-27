@@ -1,5 +1,6 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
@@ -29,6 +30,7 @@ export const useSelfSchedulingDrawer = ({
   isDebrief: boolean;
   refetch: () => void;
 }) => {
+  const router = useRouter();
   const { recruiter, recruiterUser } = useAuthDetails();
   const {
     selectedApplication,
@@ -61,6 +63,8 @@ export const useSelfSchedulingDrawer = ({
     schedulingOptions: state.schedulingOptions,
     fetchingPlan: state.fetchingPlan,
   }));
+
+  const task_id = router.query.task as string;
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
 
@@ -136,6 +140,7 @@ export const useSelfSchedulingDrawer = ({
         selectedSlots: filteredSchedulingOptions.filter((opt) =>
           selectedCombIds.includes(opt.plan_comb_id),
         ),
+        task_id,
       };
       const res = await axios.post(
         '/api/scheduling/application/sendtocandidate',

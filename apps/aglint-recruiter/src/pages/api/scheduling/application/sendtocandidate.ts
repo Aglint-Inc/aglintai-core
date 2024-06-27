@@ -23,6 +23,8 @@ import {
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 // import { mailHandler } from '@/src/components/Scheduling/Candidates/utils';
 import { getScheduleName } from '@/src/components/Scheduling/utils';
+import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
+import { createTaskProgress } from '@/src/components/Tasks/utils';
 
 export interface ApiBodyParamsSendToCandidate {
   is_debrief?: boolean;
@@ -39,6 +41,7 @@ export interface ApiBodyParamsSendToCandidate {
   recruiterUser: RecruiterUserType;
   user_tz: string;
   selectedApplicationLog: DatabaseTable['application_logs'];
+  task_id: string | null;
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -106,6 +109,7 @@ const sendToCandidate = async ({
   supabase,
   user_tz,
   selectedApplicationLog,
+  task_id,
 }: {
   is_debrief?: boolean;
   selectedApplication: SchedulingApplication['selectedApplication'];
@@ -127,6 +131,7 @@ const sendToCandidate = async ({
   supabase: ReturnType<typeof createServerClient<DB>>;
   user_tz: string;
   selectedApplicationLog?: DatabaseTable['application_logs'];
+  task_id: string | null;
 }) => {
   try {
     const scheduleName = getScheduleName({
@@ -186,23 +191,53 @@ const sendToCandidate = async ({
       if (errorFilterJson) throw new Error(errorFilterJson.message);
 
       if (!is_debrief) {
-        const resTask = await createTask({
-          application_id: selectedApplication.id,
-          dateRange,
-          filter_id: filterJson[0].id,
-          rec_user_id: recruiterUser.user_id,
-          recruiter_id,
-          selectedSessions: createCloneRes.refSessions.filter((ses) =>
-            selectedSessionIds.includes(ses.id),
-          ),
-          type: 'user',
-          recruiter_user_name: recruiterUser.first_name,
-          candidate_name: getFullName(
-            selectedApplication.candidates.first_name,
-            selectedApplication.candidates.last_name,
-          ),
-          supabase,
-        });
+        if (!task_id) {
+          const resTask = await createTask({
+            application_id: selectedApplication.id,
+            dateRange,
+            filter_id: filterJson[0].id,
+            rec_user_id: recruiterUser.user_id,
+            recruiter_id,
+            selectedSessions: createCloneRes.refSessions.filter((ses) =>
+              selectedSessionIds.includes(ses.id),
+            ),
+            type: 'user',
+            recruiter_user_name: recruiterUser.first_name,
+            candidate_name: getFullName(
+              selectedApplication.candidates.first_name,
+              selectedApplication.candidates.last_name,
+            ),
+            supabase,
+          });
+        } else {
+          await createTaskProgress({
+            type: 'self_scheduling',
+            data: {
+              progress_type: 'schedule',
+              created_by: {
+                id: recruiterUser.user_id,
+                name: getFullName(
+                  recruiterUser.first_name,
+                  recruiterUser.last_name,
+                ),
+              },
+              task_id: task_id,
+            },
+            optionData: {
+              candidateName: getFullName(
+                selectedApplication.candidates.first_name,
+                selectedApplication.candidates.last_name,
+              ),
+              sessions: createCloneRes.refSessions
+                .filter((ses) => selectedSessionIds.includes(ses.id))
+                .map((ele) => ({
+                  id: ele.id,
+                  name: ele.name,
+                })) as meetingCardType[],
+            },
+            supabaseCaller: supabase,
+          });
+        }
 
         addScheduleActivity({
           title: `Sent booking link to ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.last_name)} for ${createCloneRes.refSessions
