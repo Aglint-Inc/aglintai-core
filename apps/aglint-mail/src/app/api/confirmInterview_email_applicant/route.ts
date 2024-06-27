@@ -19,12 +19,12 @@ export async function POST(req: Request) {
       mail_attachments,
     } = await fetchUtil(parsed_body);
 
-    await sendMailFun(
+    await sendMailFun({
       filled_comp_template,
       react_email_placeholders,
       recipient_email,
-      mail_attachments,
-    );
+      attachments: mail_attachments,
+    });
     return NextResponse.json('success', {
       status: 200,
     });

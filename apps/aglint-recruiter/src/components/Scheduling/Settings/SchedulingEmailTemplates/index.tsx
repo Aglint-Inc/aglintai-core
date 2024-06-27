@@ -1,13 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseEnums, DatabaseTableInsert } from '@aglint/shared-types';
-import {
-  Box,
-  MenuItem,
-  Popover,
-  Select,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
@@ -16,9 +9,8 @@ import { EditEmail } from '@/devlink/EditEmail';
 import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
-import { PreviewEmail } from '@/devlink2/PreviewEmail';
-import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
-import UITypography from '@/src/components/Common/UITypography';
+import EmailPreviewPopover from '@/src/components/Common/EmailTemplateEditor/EmailPreviewPopover';
+import EmailTemplateEditForm from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
@@ -38,11 +30,7 @@ function SchedulerEmailTemps() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
-  const open = Boolean(anchorEl);
-  const handleClose = () => {
-    setAnchorEl(null);
-    setHtml(null);
-  };
+
   const [isHtml, setHtml] = useState(null);
   const [popOverLoading, setPopOverLoading] = useState(false);
 
@@ -90,7 +78,29 @@ function SchedulerEmailTemps() {
       throw error;
     }
   };
-  const options = ['{{recruiterName}}', '{{companyName}}'];
+
+  const senderNameChange = (e) => {
+    setSelectedTemplate((pre) => {
+      pre.from_name = e.target.value;
+      return { ...pre };
+    });
+  };
+
+  const emailSubjectChange = (html) => {
+    const text = html;
+    setSelectedTemplate((pre) => {
+      pre.subject = text;
+      return { ...pre };
+    });
+  };
+
+  const emailBodyChange = (html) => {
+    const text = html;
+    setSelectedTemplate((pre) => {
+      pre.body = text;
+      return { ...pre };
+    });
+  };
 
   return (
     <Stack>
@@ -111,11 +121,13 @@ function SchedulerEmailTemps() {
                   textTitle={emailTemplateCopy[emailPath.type]?.listing}
                   onClickApplicationRecieved={{
                     onClick: () => {
-                      setTipTapLoder(true);
-                      setSelectedTemplate(emailPath);
-                      setTimeout(() => {
-                        setTipTapLoder(false);
-                      }, 500);
+                      if (selectedTemplate.id !== emailPath.id) {
+                        setTipTapLoder(true);
+                        setSelectedTemplate(emailPath);
+                        setTimeout(() => {
+                          setTipTapLoder(false);
+                        }, 500);
+                      }
                     },
                   }}
                 />
@@ -187,194 +199,22 @@ function SchedulerEmailTemps() {
                             <LoaderSvg />
                           </Stack>
                         ) : (
-                          <Stack spacing={'var(--space-5)'}>
-                            <Stack spacing={1}>
-                              <UITypography type='small' fontBold='normal'>
-                                Sender Name
-                              </UITypography>
-                              <Stack>
-                                {`This name appears as the "From" name in emails to
-                            candidates. Choose a representative name for your
-                            company or recruiter.
-                            `}
-                              </Stack>
-                              <Select
-                                defaultValue={selectedTemplate?.from_name}
-                                onChange={(e) => {
-                                  setSelectedTemplate((pre) => {
-                                    pre.from_name = e.target.value;
-                                    return { ...pre };
-                                  });
-                                }}
-                                sx={{
-                                  '& .MuiOutlinedInput-notchedOutline': {
-                                    border: '1px solid #DAD9D6',
-                                  },
-                                  '&:hover .MuiOutlinedInput-notchedOutline': {
-                                    border: '1px solid #DAD9D6',
-                                  },
-                                  '&.Mui-focused .MuiOutlinedInput-notchedOutline':
-                                    {
-                                      border: '1px solid #DAD9D6',
-                                    },
-                                }}
-                              >
-                                {options.length === 0 ? (
-                                  <Stack
-                                    px={1}
-                                    style={{
-                                      fontStyle: 'italic',
-                                      color: 'var(--neutral-9)',
-                                      cursor: 'default',
-                                    }}
-                                  >
-                                    No options available
-                                  </Stack>
-                                ) : (
-                                  options.map((value, idx) => (
-                                    <MenuItem
-                                      key={idx}
-                                      value={value}
-                                      sx={{
-                                        backgroundColor: '#f7f7f7', // normal state background color
-                                        '&:hover': {
-                                          backgroundColor: '#ededed', // hover state background color
-                                        },
-                                        '&.Mui-selected': {
-                                          backgroundColor: '#e3e3e3', // selected state background color
-                                          '&:hover': {
-                                            backgroundColor: '#d6d6d6', // maintain selected state color on hover
-                                          },
-                                        },
-                                      }}
-                                    >
-                                      <Typography
-                                        sx={{
-                                          backgroundColor: '#f7ebfc',
-                                          paddingLeft: '3px',
-                                          paddingRight: '3px',
-                                          paddingBottom: '3px',
-                                          color: '#B552E2',
-                                          borderRadius: '2px',
-                                          width: 'fit-content',
-                                        }}
-                                      >
-                                        {value}
-                                      </Typography>
-                                    </MenuItem>
-                                  ))
-                                )}
-                              </Select>
-                            </Stack>
-
-                            <Stack>
-                              <UITypography type='small' fontBold='normal'>
-                                Email Subject
-                              </UITypography>
-                              <Stack
-                                sx={{
-                                  mt: '8px',
-                                  border: '1px solid',
-                                  borderColor: 'var(--neutral-6)',
-                                  borderRadius: 'var(--radius-2)',
-                                }}
-                              >
-                                <TipTapAIEditor
-                                  enablAI={false}
-                                  toolbar={false}
-                                  placeholder={
-                                    emailTemplateCopy[selectedTemplate?.type]
-                                      ?.subjectPlaceHolder
-                                  }
-                                  singleLine={true}
-                                  padding={1}
-                                  editor_type='email'
-                                  template_type={selectedTemplate.type}
-                                  handleChange={(html) => {
-                                    const text = html;
-                                    setSelectedTemplate((pre) => {
-                                      pre.subject = text;
-                                      return { ...pre };
-                                    });
-                                  }}
-                                  initialValue={selectedTemplate?.subject}
-                                />
-                              </Stack>
-                            </Stack>
-
-                            <Stack>
-                              <UITypography type='small' fontBold='normal'>
-                                Email Body
-                              </UITypography>
-                              <Stack
-                                sx={{
-                                  mt: '8px',
-                                  border: '1px solid',
-                                  borderColor: 'var(--neutral-6)',
-                                  borderRadius: 'var(--radius-2)',
-                                }}
-                              >
-                                <TipTapAIEditor
-                                  enablAI={false}
-                                  placeholder={''}
-                                  maxHeight='250px'
-                                  height='360px'
-                                  editor_type='email'
-                                  template_type={selectedTemplate.type}
-                                  handleChange={(html) => {
-                                    const text = html;
-                                    setSelectedTemplate((pre) => {
-                                      pre.body = text;
-                                      return { ...pre };
-                                    });
-                                  }}
-                                  initialValue={selectedTemplate.body}
-                                />
-                              </Stack>
-                            </Stack>
-                          </Stack>
+                          <EmailTemplateEditForm
+                            senderNameChange={senderNameChange}
+                            emailBodyChange={emailBodyChange}
+                            emailSubjectChange={emailSubjectChange}
+                            selectedTemplate={selectedTemplate}
+                          />
                         )
                       }
                     />
-                    <Popover
-                      id='popover-agent'
-                      open={open}
+                    <EmailPreviewPopover
                       anchorEl={anchorEl}
-                      anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                      }}
-                      transformOrigin={{ vertical: -6, horizontal: 0 }}
-                      onClose={handleClose}
-                    >
-                      <PreviewEmail
-                        slotContent={
-                          popOverLoading ? (
-                            <Stack
-                              alignItems={'center'}
-                              height={'400px'}
-                              justifyContent={'center'}
-                            >
-                              <LoaderSvg />
-                            </Stack>
-                          ) : (
-                            <iframe
-                              width={'790px'}
-                              height={'490px'}
-                              color='white'
-                              srcDoc={isHtml}
-                              title='Previw Email'
-                            />
-                          )
-                        }
-                        onClickClose={{
-                          onClick: () => {
-                            setAnchorEl(null);
-                            setHtml(null);
-                          },
-                        }}
-                      />
-                    </Popover>
+                      setAnchorEl={setAnchorEl}
+                      setHtml={setHtml}
+                      isHtml={isHtml}
+                      Loading={popOverLoading}
+                    />
                   </YTransform>
                 )}
               </>
