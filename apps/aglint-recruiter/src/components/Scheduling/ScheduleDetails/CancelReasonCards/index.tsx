@@ -155,7 +155,10 @@ function CancelReasonCards({
             }}
             isButtonVisible={true}
             isChangeInterviewerVisible={isChangeInterviewerVisible}
-            textReason={item.interview_session_cancel.reason}
+            textReason={
+              item.interview_session_cancel.reason +
+              `${item.interview_session_cancel?.other_details?.dateRange ? item.interview_session_cancel.other_details.dateRange.start : ''}`
+            }
             onClickChangeInterviewer={{
               onClick: () => {
                 if (
@@ -171,7 +174,7 @@ function CancelReasonCards({
               },
             }}
             isRescheduleBtnVisible={isRescheduleVisible}
-            isIgnoreVisible={true}
+            isIgnoreVisible={false}
             onClickIgnore={{
               onClick: () => {
                 onClickIgnore(item.interview_session_cancel.id);

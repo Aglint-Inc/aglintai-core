@@ -51,6 +51,7 @@ type FilterNestedType = {
   sectionHeaders: string[];
   setValue: (value: nestedType<string[]>) => void;
   isVisible?: boolean;
+  showCount?: boolean;
 };
 
 export type FilterComponentType = {
@@ -175,6 +176,7 @@ function FilterSwitcher(filter: FilterTypes, index: number) {
             filter.setValue(values);
           }}
           icon={filter.icon}
+          showCount={filter.showCount}
         />
       );
     }
@@ -447,6 +449,7 @@ export type NestedFilterComponentType = {
   setSelectedItems: FilterNestedType['setValue'];
   sectionHeaders: string[];
   icon: ReactNode;
+  showCount?: boolean;
 };
 
 function NestedFilterComponent({
@@ -456,6 +459,7 @@ function NestedFilterComponent({
   selectedItems,
   sectionHeaders,
   icon,
+  showCount = false,
 }: NestedFilterComponentType) {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
@@ -475,6 +479,7 @@ function NestedFilterComponent({
     sectionHeaders,
     nestedItems,
     selectedItems,
+    showCount,
   );
 
   // const sectionsSelectedArray = Object.entries(selectedItems || {});
@@ -554,10 +559,10 @@ function NestedFilterComponent({
                 }}
                 onClickRefresh={{
                   onClick: () => {
-                    // setSelectedItems({
-                    //   ...selectedItems,
-                    //   [section]: [],
-                    // });
+                    setSelectedItems({
+                      ...selectedItems,
+                      [section]: [],
+                    });
                   },
                 }}
                 slotItems={
@@ -589,15 +594,7 @@ function NestedFilterComponent({
           })}
           onClickReset={{
             onClick: () => {
-              // setSelectedItems(
-              //   sectionsArray.reduce(
-              //     (acc, curr) => {
-              //       acc[curr[0]] = [];
-              //       return acc;
-              //     },
-              //     {} as typeof selectedItems,
-              //   ),
-              // );
+              setSelectedItems([]);
             },
           }}
         />

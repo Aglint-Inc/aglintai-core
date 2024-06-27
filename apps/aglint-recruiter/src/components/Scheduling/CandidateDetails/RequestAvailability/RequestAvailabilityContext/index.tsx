@@ -279,7 +279,11 @@ export const updateTask = async (data: DatabaseTableUpdate['new_tasks']) => {
   }
 };
 
-export async function insertTaskProgress({ taskData }: { taskData: any }) {
+export async function insertTaskProgress({
+  taskData,
+}: {
+  taskData: DatabaseTableInsert['new_tasks_progress'];
+}) {
   const { data: progress } = await axios.post(
     `/api/scheduling/request_availability/insertTaskProgress`,
     {

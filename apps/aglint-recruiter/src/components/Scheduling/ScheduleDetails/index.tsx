@@ -9,6 +9,7 @@ import { PageLayout } from '@/devlink2/PageLayout';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ScheduleDetailTabs } from '@/devlink3/ScheduleDetailTabs';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -25,7 +26,8 @@ import Overview from './Overview';
 
 function SchedulingViewComp() {
   const router = useRouter();
-  const { isAllowed, recruiterUser } = useAuthDetails();
+  const { recruiterUser } = useAuthDetails();
+  const { checkPermissions } = useRolesAndPermissions();
   const { data, isPending, refetch, isFetched } = useScheduleDetails();
   const [isChangeInterviewerOpen, setIsChangeInterviewerOpen] = useState(false);
   const [isCancelOpen, setIsCancelOpen] = useState(false);
@@ -104,12 +106,7 @@ function SchedulingViewComp() {
             <ScheduleDetailTabs
               slotScheduleTabOverview={
                 <Stack spacing={'var(--space-4)'}>
-                  {isAllowed([
-                    'admin',
-                    'recruiting_coordinator',
-                    'hiring_manager',
-                    'recruiter',
-                  ]) && (
+                  {checkPermissions(['scheduler_create']) && (
                     <CancelReasonCards
                       cancelReasons={cancelReasons}
                       schedule={schedule}
@@ -118,7 +115,6 @@ function SchedulingViewComp() {
                       setIsChangeInterviewerOpen={setIsChangeInterviewerOpen}
                     />
                   )}
-
                   <Overview
                     refetch={refetch}
                     cancelReasons={cancelReasons}

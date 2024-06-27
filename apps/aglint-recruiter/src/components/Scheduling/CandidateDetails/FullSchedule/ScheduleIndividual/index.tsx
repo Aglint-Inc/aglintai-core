@@ -21,7 +21,7 @@ import {
 
 function ScheduleIndividualCard({
   session,
-  isCheckboxVisible = false,
+  isCheckboxVisible = true,
   isThreeDotVisible = true,
   onClickCheckBox,
   selectedSessionIds,
@@ -44,7 +44,7 @@ function ScheduleIndividualCard({
   return (
     <NewInterviewPlanCard
       isScheduleNowButtonVisible={false}
-      isCheckboxVisible={true}
+      isCheckboxVisible={isCheckboxVisible}
       onClickCard={{
         onClick: (e) => {
           e.stopPropagation();

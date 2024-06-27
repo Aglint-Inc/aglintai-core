@@ -21,12 +21,13 @@ import SideDrawerEdit from './EditDrawer';
 import RequestAvailabilityPopUps from './RequestAvailabilityPopUps';
 import { AvailabilityProvider } from './RequestAvailabilityPopUps/RequestAvailabilityContext';
 import ScheduleIndividualCard from './ScheduleIndividual';
+import TaskPopups from './TaskPopups';
 
 function FullSchedule({ refetch }: { refetch: () => void }) {
   const {
+    availabilities,
     initialSessions,
     selectedSessionIds,
-    availabilities,
     fetchingSchedule,
   } = useSchedulingApplicationStore((state) => ({
     initialSessions: state.initialSessions,
@@ -79,7 +80,7 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                   <RequestAvailabilityPopUps />
                 </AvailabilityProvider>
               )}
-
+              <TaskPopups />
               {initialSessions.map((session, ind) => {
                 return (
                   <Stack

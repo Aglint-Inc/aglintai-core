@@ -1,10 +1,12 @@
 import { APIFindAvailability } from '@aglint/shared-types';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
 
 import { DatePickerBody } from '@/devlink3/DatePickerBody';
 import DateRange from '@/src/components/Tasks/Components/DateRange';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
 import { ApiBodyParamsScheduleAgentWithoutTaskId } from '@/src/pages/api/scheduling/application/schedulewithagentwithouttaskid';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
@@ -25,11 +27,13 @@ import {
 
 function SelectDateRange() {
   const { recruiter, recruiterUser } = useAuthDetails();
+  const router = useRouter();
   const { selectedSessionIds, selectedApplication } =
     useSchedulingApplicationStore((state) => ({
       selectedSessionIds: state.selectedSessionIds,
       selectedApplication: state.selectedApplication,
     }));
+  const task_id = router.query.task_id as string;
 
   const { dateRange, fetchingPlan, scheduleFlow } = useSchedulingFlowStore(
     (state) => ({
@@ -121,37 +125,71 @@ function SelectDateRange() {
         return;
       }
 
-      const bodyParams: ApiBodyParamsScheduleAgentWithoutTaskId = {
-        application_id: selectedApplication.id,
-        dateRange: dateRange,
-        recruiter_id: recruiter.id,
-        recruiter_user_name: getFullName(
-          recruiterUser.first_name,
-          recruiterUser.last_name,
-        ),
-        session_ids: selectedSessionIds,
-        task_id: null,
-        type: type,
-        candidate_name: getFullName(
-          selectedApplication.candidates.first_name,
-          selectedApplication.candidates.last_name,
-        ),
-        company_name: recruiter.name,
-        rec_user_phone: recruiterUser.phone,
-        rec_user_id: recruiterUser.user_id,
-        user_tz: dayjs.tz.guess(),
-        trigger_count: 0,
-      };
+      if (!task_id) {
+        const bodyParams: ApiBodyParamsScheduleAgentWithoutTaskId = {
+          application_id: selectedApplication.id,
+          dateRange: dateRange,
+          recruiter_id: recruiter.id,
+          recruiter_user_name: getFullName(
+            recruiterUser.first_name,
+            recruiterUser.last_name,
+          ),
+          session_ids: selectedSessionIds,
+          task_id: null,
+          type: type,
+          candidate_name: getFullName(
+            selectedApplication.candidates.first_name,
+            selectedApplication.candidates.last_name,
+          ),
+          company_name: recruiter.name,
+          rec_user_phone: recruiterUser.phone,
+          rec_user_id: recruiterUser.user_id,
+          user_tz: dayjs.tz.guess(),
+          trigger_count: 0,
+        };
 
-      const res = await axios.post(
-        '/api/scheduling/application/schedulewithagentwithouttaskid',
-        bodyParams,
-      );
-
-      if (!res) {
-        toast.error(
-          'Failed to schedule with agent. Please try again later or contact support.',
+        const res = await axios.post(
+          '/api/scheduling/application/schedulewithagentwithouttaskid',
+          bodyParams,
         );
+
+        if (res.status !== 200) {
+          toast.error(
+            'Failed to schedule with agent. Please try again later or contact support.',
+          );
+        }
+      } else {
+        const bodyParams: ApiBodyParamsScheduleAgent = {
+          application_id: selectedApplication.id,
+          dateRange: dateRange,
+          recruiter_id: recruiter.id,
+          recruiter_user_name: getFullName(
+            recruiterUser.first_name,
+            recruiterUser.last_name,
+          ),
+          session_ids: selectedSessionIds,
+          task_id: task_id,
+          type: type,
+          candidate_name: getFullName(
+            selectedApplication.candidates.first_name,
+            selectedApplication.candidates.last_name,
+          ),
+          company_name: recruiter.name,
+          rec_user_phone: recruiterUser.phone,
+          rec_user_id: recruiterUser.user_id,
+          user_tz: dayjs.tz.guess(),
+        };
+
+        const res = await axios.post(
+          '/api/scheduling/application/schedulewithagentwithouttaskid',
+          bodyParams,
+        );
+
+        if (res.status !== 200) {
+          toast.error(
+            'Failed to schedule with agent. Please try again later or contact support.',
+          );
+        }
       }
       resetState();
     } catch (e) {
@@ -170,6 +208,13 @@ function SelectDateRange() {
     setSchedulingOptions([]);
     setSelectedSessionIds([]);
     setStepScheduling('pick_date');
+    const currentPath = router.pathname;
+    const currentQuery = { ...router.query };
+    delete currentQuery.task_id;
+    router.replace({
+      pathname: currentPath,
+      query: currentQuery,
+    });
   };
 
   const { setSelectedDate } = useRequestAvailabilityContext();
@@ -194,8 +239,7 @@ function SelectDateRange() {
         isPhoneAgent={scheduleFlow === 'phone_agent'}
         isRequestAvailability={false}
         isContinueButton={
-          scheduleFlow === 'self_scheduling' ||
-          scheduleFlow === 'create_request_availibility'
+          scheduleFlow !== 'email_agent' && scheduleFlow !== 'phone_agent'
         }
         isSelfScheduling={scheduleFlow === 'self_scheduling'}
         onClickButton={{

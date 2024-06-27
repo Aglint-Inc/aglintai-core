@@ -1,7 +1,6 @@
 import { RecruiterType } from '@aglint/shared-types';
 import { Autocomplete, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import posthog from 'posthog-js';
 import { useEffect, useRef, useState } from 'react';
 
 import { BasicInfo } from '@/devlink/BasicInfo';
@@ -14,7 +13,6 @@ import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import ImageUpload from '../../Common/ImageUpload';
 import MuiPopup from '../../Common/MuiPopup';
-import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
 import AssessmentSettings from '../AssessmentSettings';
 import Assistant from '../Assistant';
@@ -35,7 +33,6 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   const [isVideoAssessment, setIsVideoAssessment] = useState(false);
   const [isDetele, setDeletPopup] = useState(false);
   const [nameError, setNameError] = useState(false);
-  let isJobMarketingEnabled = posthog.isFeatureEnabled('isJobMarketingEnabled');
 
   const initialCompanyName = useRef(recruiter?.name);
 
@@ -125,7 +122,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                       const location = [loc.city, loc.region, loc.country]
                         .filter(Boolean)
                         .join(', ');
-                      const address = [loc.full_address];
+                      const [address] = [loc.full_address];
                       const timeZone = [loc.timezone];
                       const isHeadQuaterVisible = loc?.is_headquarter
                         ? loc.is_headquarterue
@@ -135,7 +132,6 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                         <>
                           <Stack p={'var(--space-1)'}>
                             <CompanyLocation
-                              // isHeadQuaterVisible={isHeadQuaterVisible[0]}
                               isHeadQuaterVisible={isHeadQuaterVisible}
                               onClickEdit={{
                                 onClick: () => {
@@ -145,12 +141,9 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                                   });
                                 },
                               }}
-                              textFullAddress={address}
+                              textFullAddress={address || '-'}
                               textLocationHeader={location}
                               textTimeZone={timeZone}
-                              // onClickDelete={{
-                              //   onClick: () => handleDeleteLocation(i),
-                              // }}
                               onClickDelete={{
                                 onClick: () => {
                                   setDeletPopup(true);
@@ -271,8 +264,8 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                   setDialog({ ...dialog, stacks: true });
                 },
               }}
-              isAvailableRolesVisible={isJobMarketingEnabled}
-              isSpecialistVisible={isJobMarketingEnabled}
+              isAvailableRolesVisible={true}
+              isSpecialistVisible={true}
               slotEmploymentType={<CompanyJdComp setIsSaving={setIsSaving} />}
             />
           </>
@@ -421,9 +414,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                     }}
                   />
 
-                  <ShowCode.When isTrue={isJobMarketingEnabled}>
-                    <SocialComp setIsSaving={setIsSaving} />
-                  </ShowCode.When>
+                  <SocialComp setIsSaving={setIsSaving} />
                 </Stack>
               }
               textLogoUpdate={'Update Logo'}

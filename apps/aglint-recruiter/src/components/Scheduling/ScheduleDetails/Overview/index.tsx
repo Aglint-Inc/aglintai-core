@@ -15,6 +15,7 @@ import { ScheduleTabOverview } from '@/devlink3/ScheduleTabOverview';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
@@ -49,7 +50,8 @@ function Overview({
   setIsCancelOpen: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
 }) {
-  const { recruiterUser, isAllowed } = useAuthDetails();
+  const { recruiterUser } = useAuthDetails();
+  const { checkPermissions } = useRolesAndPermissions();
   const [filterJson, setFilterJson] = useState<InterviewFilterJsonType>();
   const [isRequestRescheduleOpen, setIsRequestRescheduleOpen] = useState(false);
   const [isDeclineOpen, setIsDeclineOpen] = useState(false);
@@ -133,7 +135,7 @@ function Overview({
     schedule?.interview_meeting?.status === 'confirmed';
 
   const [sessionRelation, setSessionRelation] =
-    useState<InterviewSessionRelationTypeDB>();
+    useState<InterviewSessionRelationTypeDB | null>();
 
   useEffect(() => {
     if (schedule?.users) {
@@ -178,22 +180,12 @@ function Overview({
 
       <ScheduleTabOverview
         isResendLinkVisible={
-          isAllowed([
-            'admin',
-            'recruiter',
-            'hiring_manager',
-            'recruiting_coordinator',
-          ]) &&
+          checkPermissions(['scheduler_create']) &&
           (schedule.interview_meeting.status === 'waiting' ||
             schedule.interview_meeting.status === 'confirmed')
         }
         isCopyLinkVisible={
-          isAllowed([
-            'admin',
-            'recruiter',
-            'hiring_manager',
-            'recruiting_coordinator',
-          ]) &&
+          checkPermissions(['scheduler_create']) &&
           (schedule.interview_meeting.status === 'confirmed' ||
             schedule.interview_meeting.status === 'waiting')
         }
@@ -204,7 +196,7 @@ function Overview({
           ) : item.interview_session_relation.accepted_status === 'declined' ? (
             <IconDecline />
           ) : (
-            ''
+            '-'
           );
         })}
         onClickResendLink={{
@@ -243,7 +235,11 @@ function Overview({
           <>
             {isRescheduleButtonVisible && (
               <ScheduleButton
-                textLabel={'Reschedule'}
+                textLabel={
+                  checkPermissions(['scheduler_create'])
+                    ? 'Reschedule'
+                    : 'Request Reschedule'
+                }
                 slotIcon={<IconReschedule />}
                 onClickProps={{
                   onClick: () => {
@@ -280,12 +276,7 @@ function Overview({
         }
         onClickInterviewModuleLink={{
           onClick: () => {
-            isAllowed([
-              'admin',
-              'recruiter',
-              'hiring_manager',
-              'recruiting_coordinator',
-            ]) &&
+            checkPermissions(['scheduler_create']) &&
               window.open(
                 `/scheduling/module/members/${schedule.interview_session.module_id}`,
                 '_blank',

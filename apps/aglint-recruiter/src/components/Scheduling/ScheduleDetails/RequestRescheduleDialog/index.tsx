@@ -196,7 +196,11 @@ function RequestRescheduleDialog({
                     spacing={1}
                   >
                     <Checkbox isChecked={rea === reason} />
-                    <Typography variant='body1' color={'var(--neutral-12)'}>
+                    <Typography
+                      variant='body1'
+                      color={'var(--neutral-12)'}
+                      sx={{ cursor: 'pointer' }}
+                    >
                       {rea}
                     </Typography>
                   </Stack>

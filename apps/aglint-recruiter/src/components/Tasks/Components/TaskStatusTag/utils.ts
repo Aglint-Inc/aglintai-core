@@ -1,4 +1,5 @@
 import { DatabaseEnums, DatabaseView } from '@aglint/shared-types';
+import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 
 import dayjs from '@/src/utils/dayjs';
 
@@ -11,7 +12,8 @@ export type indicatorType =
   | 'SCHEDULED'
   | 'RESCHEDULE'
   | 'ACTION_NEEDED'
-  | 'UNKNOWN_STATUS';
+  | 'UNKNOWN_STATUS'
+  | 'ASSIGNED_TO_AGENT';
 
 export function getIndicatorMessage(indicator: indicatorType): string {
   switch (indicator) {
@@ -31,6 +33,8 @@ export function getIndicatorMessage(indicator: indicatorType): string {
       return 'Unknown Status';
     case 'MAIL_SENT':
       return 'Mail Sent';
+    case 'ASSIGNED_TO_AGENT':
+      return 'Assigned to Agent';
     default:
       return 'Invalid indicator type';
   }
@@ -47,28 +51,35 @@ export function getIndicator({
 }) {
   let toDayDateTime = dayjs();
   let dueDateTime = dayjs(created_at);
+  const assignee = task.assignee[0];
   if (
     dueDateTime.isBefore(toDayDateTime.add(-2, 'day')) &&
     progress_type === 'email_messages'
   ) {
     return 'NO_RESPONSE' as indicatorType;
   }
-
+  if (
+    progress_type === 'schedule' &&
+    (assignee === EmailAgentId || assignee === PhoneAgentId)
+  ) {
+    return 'ASSIGNED_TO_AGENT' as indicatorType;
+  }
   if (task.trigger_count === 2 && progress_type === 'call_disconnected') {
     return 'NO_RESPONSE' as indicatorType;
   }
 
   if (
     progress_type === 'request_availability' ||
-    progress_type === 'send_email' ||
-    progress_type === 'self_schedule'
+    progress_type === 'send_email'
   ) {
     return 'AWAITING_RESPONSE' as indicatorType;
   }
 
   if (
-    progress_type === 'schedule' ||
-    progress_type === 'request_availability_list'
+    (progress_type === 'schedule' ||
+      progress_type === 'request_availability_list') &&
+    assignee !== EmailAgentId &&
+    assignee !== PhoneAgentId
   ) {
     return 'READY_TO_SCHEDULE' as indicatorType;
   }
