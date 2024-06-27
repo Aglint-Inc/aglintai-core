@@ -4,14 +4,7 @@ import { PATHS } from '@/src/constant/allPaths';
 
 // import ROUTES from './routes';
 
-type Operations = 'enabled' | 'create' | 'read' | 'update' | 'delete';
-type Modules = 'workflow' | 'team';
-
-type NewPermissions = `${Modules}_${Operations}`;
-
-export type PermissionEnums =
-  | DatabaseEnums['permissions_type']
-  | NewPermissions;
+export type PermissionEnums = DatabaseEnums['permissions_type'];
 
 type Permissions = {
   // eslint-disable-next-line no-unused-vars
@@ -59,9 +52,9 @@ const PERMISSIONS: Permissions = {
    * permission will reduced  using 'or'
    */
   '/api/scheduling/get_interview_plans': ['scheduler_enabled'],
-  '/api/getMembersWithRole': ['jobs_read'], //change to correct permission
-  '/api/get_last_login': ['jobs_read'], //change to correct permission
-  '/api/setMembersWithRole': ['jobs_read', 'scheduler_enabled'], //change to correct permission
+  '/api/getMembersWithRole': ['team_enabled'],
+  '/api/get_last_login': ['team_read'],
+  '/api/setMembersWithRole': ['team_enabled', 'scheduler_enabled'],
   '/api/scheduling/fetchUserDetails': ['scheduler_enabled'],
   '/api/scheduling/fetch_interview_session_task': ['scheduler_enabled'],
   '/api/scheduling/fetch_activities': ['scheduler_enabled'],
