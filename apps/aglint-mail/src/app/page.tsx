@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { Button, Heading, Text } from '../components';
 import { Shell } from '../components/shell';
 import { emailsDirectoryAbsolutePath } from '../utils/emails-directory-absolute-path';
-import logo from './logo.png';
 
 const Home = () => {
   const baseEmailsDirectoryName = path.basename(emailsDirectoryAbsolutePath);
@@ -17,7 +16,7 @@ const Home = () => {
             alt="React Email Icon"
             className="mb-8"
             height={144}
-            src={logo}
+            src={'/static/logo.png'}
             style={{
               borderRadius: 34,
               boxShadow: '0px 10px 200px 20px #2B7CA080',
