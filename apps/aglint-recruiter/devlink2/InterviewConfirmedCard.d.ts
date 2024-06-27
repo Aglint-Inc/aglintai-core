@@ -11,4 +11,6 @@ declare function InterviewConfirmedCard(props: {
   textDuration?: React.ReactNode;
   onClickJoinGoogleMeet?: Types.Devlink.RuntimeProps;
   onClickAddCalendar?: Types.Devlink.RuntimeProps;
+  isJoinMeetingButtonVisible?: Types.Visibility.VisibilityConditions;
+  isAddtoCalenderVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
