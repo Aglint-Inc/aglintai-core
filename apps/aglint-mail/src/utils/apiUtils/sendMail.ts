@@ -47,6 +47,6 @@ export const sendMailFun = async <
       attachments,
     });
   } else {
-    return html;
+    return { html, subject };
   }
 };

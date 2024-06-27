@@ -12,7 +12,7 @@ export async function POST(req: Request) {
       await dbUtil(req_body);
     const is_preview = req_body.is_preview;
 
-    const html = await sendMailFun({
+    const { html, subject } = await sendMailFun({
       filled_comp_template,
       react_email_placeholders,
       recipient_email,
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     });
     if (is_preview) {
       return NextResponse.json(
-        { html: html },
+        { html, subject },
         {
           status: 200,
         },
