@@ -22,18 +22,25 @@ export default async function handler(
   try {
     const [fields] = await form.parse(req);
     const candidate_email = getEmail(fields.from[0]);
+    const agent_email = getEmail(fields.to[0]);
+    console.log(agent_email);
     const raw_email_body: string = fields.text[0];
     const raw_headers = fields.headers[0];
 
     const curr_email_body = EmailWebHook.parseEmailBody(raw_email_body);
     const curr_email_headers = EmailWebHook.parseMailHeaders(raw_headers);
-    const thread_id = EmailWebHook.parseThreadId(curr_email_headers);
+    const thread_id = EmailWebHook.parseThreadId(
+      curr_email_headers,
+      agent_email,
+    );
     if (!thread_id) {
+      console.log('invalid thread id');
       return res.status(200).send('invlaid thread id');
     }
     const reply_email_headers = EmailWebHook.getNewMailHeader(
       curr_email_headers,
       thread_id,
+      agent_email,
     );
 
     type ApiPayload = {

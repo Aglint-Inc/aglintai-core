@@ -116,18 +116,18 @@ export default function Loading() {
               .eq('user_id', userDetails?.user?.id);
           }
 
-          if (recruiterRel.role === 'interviewer') {
+          if (recruiterRel.roles.name === 'interviewer') {
             router.push(
               localStorage.getItem('redirectURL') ||
                 `${ROUTES['/scheduling']()}?tab=myschedules`,
             );
             localStorage.removeItem('redirectURL');
-          } else if (recruiterRel.role === 'recruiter') {
+          } else if (recruiterRel.roles.name === 'recruiter') {
             router.push(
               localStorage.getItem('redirectURL') || ROUTES['/jobs'](),
             );
             localStorage.removeItem('redirectURL');
-          } else if (recruiterRel.role === 'recruiting_coordinator') {
+          } else if (recruiterRel.roles.name === 'recruiting_coordinator') {
             router.push(
               localStorage.getItem('redirectURL') || ROUTES['/scheduling'](),
             );
@@ -190,7 +190,7 @@ const getRelationsDetails = ({ user_id }: { user_id: string }) => {
   return supabase
     .from('recruiter_relation')
     .select(
-      '*,recruiter_user!public_recruiter_relation_user_id_fkey(*),recruiter(industry)',
+      '*,recruiter_user!public_recruiter_relation_user_id_fkey(*),recruiter(industry),roles(*)',
     )
     .eq('user_id', user_id)
     .eq('is_active', true)

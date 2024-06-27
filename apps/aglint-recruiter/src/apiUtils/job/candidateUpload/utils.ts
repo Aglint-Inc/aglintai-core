@@ -109,7 +109,7 @@ export const bulkCreateCandidate = async (
   const timeout = setTimeout(() => timerSignal.abort(), 15000);
   const { data, error } = await supabase
     .from('candidates')
-    .insert(candidate)
+    .upsert(candidate, { onConflict: 'email, recruiter_id' })
     .select()
     .abortSignal(signal)
     .abortSignal(timerSignal.signal);

@@ -26,6 +26,7 @@ const RecentRescheduleCancel = () => {
     parentFetching,
     disabled,
   } = useCancelRescheduleReasonsUsers();
+
   const [type, setType] = useState<'interviewer' | 'candidate'>('candidate');
   const processedRescheduleData = (CancelReasonsData || [])
     .filter((item) => item.type == 'reschedule')
