@@ -94,6 +94,7 @@ export const interviewStartEmailInterviewersSchema = v.object({
 export const sendSelfScheduleRequest_email_applicant = v.object({
   filter_json_id: v.string(),
   is_preview: v.optional(v.boolean(), false),
+  task_id: v.optional(v.string(), undefined),
 });
 
 export const sendAvailabilityRequestEmailApplicantSchema = v.object({
