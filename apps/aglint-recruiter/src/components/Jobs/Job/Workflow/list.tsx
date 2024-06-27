@@ -269,7 +269,7 @@ const WorkflowBrowser = () => {
         slotPopup={
           <Stack
             style={{
-              height: 'calc(100vh - 120px)',
+              height: 'calc(100vh - 300px)',
               gap: '8px',
               overflow: 'scroll',
             }}
@@ -280,32 +280,6 @@ const WorkflowBrowser = () => {
         onClickClose={{ onClick: () => handleClose() }}
         textDescription={<Filters />}
       />
-      {/* <BrowseAssessment
-        onClickAddSelectedTemplates={{ onClick: () => handleAddTemplates() }}
-        textTemplatesCount={`${count} workflow${
-          count === 1 ? '' : 's'
-        } selected`}
-        isSelected={count !== 0}
-        onClickClose={{ onClick: () => handleClose() }}
-        slotBrowseCard={
-          workflows.length !== 0 && (
-            <AllBrowserCards
-              workflows={workflows}
-              selections={selections}
-              handleClick={handleClick}
-            />
-          )
-        }
-        slotEmpty={
-          workflows.length === 0 && <AssessmentEmpty isCreateNew={false} />
-        }
-        slotSearch={
-          <SearchField
-            val={filter}
-            handleSearch={async (val) => setFilter(val ?? '')}
-          />
-        }
-      /> */}
     </Dialog>
   );
 };
