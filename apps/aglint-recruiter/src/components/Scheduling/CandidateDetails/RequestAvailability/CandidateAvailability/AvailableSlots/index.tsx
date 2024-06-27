@@ -224,6 +224,7 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
     if (task.id) {
       await insertTaskProgress({
         taskData: {
+          title: 'Candidate submitted the availability',
           task_id: task.id,
           created_by: {
             name: getFullName(
