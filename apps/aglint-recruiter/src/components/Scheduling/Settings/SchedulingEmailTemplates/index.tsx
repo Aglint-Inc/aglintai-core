@@ -37,16 +37,13 @@ function SchedulerEmailTemps() {
   useEffect(() => {
     if (emailTemplates.data) {
       setEmailTemplate([...emailTemplates.data]);
+      setSelectedTemplate(emailTemplates.data[11]);
     }
 
     setTimeout(() => {
       setIsEditorLoad(false);
     }, 500);
   }, [emailTemplates]);
-
-  useEffect(() => {
-    setSelectedTemplate(emailTemplates.data[3]);
-  }, []);
 
   async function updateEmail({
     id,
@@ -124,11 +121,13 @@ function SchedulerEmailTemps() {
                   textTitle={emailTemplateCopy[emailPath.type]?.listing}
                   onClickApplicationRecieved={{
                     onClick: () => {
-                      setTipTapLoder(true);
-                      setSelectedTemplate(emailPath);
-                      setTimeout(() => {
-                        setTipTapLoder(false);
-                      }, 500);
+                      if (selectedTemplate.id !== emailPath.id) {
+                        setTipTapLoder(true);
+                        setSelectedTemplate(emailPath);
+                        setTimeout(() => {
+                          setTipTapLoder(false);
+                        }, 500);
+                      }
                     },
                   }}
                 />
