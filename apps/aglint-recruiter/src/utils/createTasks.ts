@@ -1,4 +1,8 @@
+import { getFullName } from '@aglint/shared-utils';
+
 import { TaskType } from '../components/Jobs/Job/Candidate-List/Actions/createTask';
+import { addScheduleActivity } from '../components/Scheduling/Candidates/queries/utils';
+import { AssignerType } from '../components/Tasks/TaskStatesContext';
 import { createTaskProgress } from '../components/Tasks/utils';
 import { supabase } from './supabase/client';
 
@@ -10,7 +14,9 @@ export const createTasks = async (
   },
   candidates: { name: string; id: string }[],
   task: TaskType,
+  assigner: AssignerType,
 ) => {
+  const assignerName = getFullName(assigner.first_name, assigner.last_name);
   const safeData = candidates.map((candidate) => ({
     name: `Schedule interview for ${candidate.name} - ${task.session_ids.map((ele) => ele.name).join(', ')}.`,
     recruiter_id,
@@ -41,11 +47,16 @@ export const createTasks = async (
         sessions: eachTask.session_ids as any,
       },
     });
-    // await supabase.from('new_tasks_progress').insert({
-    //   title: `Task created by <span class="mention">@${job.recruiterUser.name}</span>`,
-    //   progress_type: 'standard',
-    //   created_by: job.recruiterUser,
-    //   task_id: eachTask.id,
-    // });
+    addScheduleActivity({
+      application_id: candidate.id,
+      created_by: recruiterUser.id,
+      logged_by: 'user',
+      supabase: supabase,
+      title: `Task assigned to ${assignerName} for scheduling ${eachTask.session_ids.map((ele) => ele.name).join(',')}`,
+      description: '',
+      metadata: null,
+      task_id: eachTask.id,
+      module: 'scheduler',
+    });
   }
 };
