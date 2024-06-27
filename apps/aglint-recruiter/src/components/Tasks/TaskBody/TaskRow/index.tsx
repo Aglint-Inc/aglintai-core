@@ -206,7 +206,7 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                 }
               }}
               size='small'
-              sx={{ color: 'var(--accent-9)' }}
+              sx={{ color: 'var(--accent-9)'}}
             />
           </Stack>
         }
