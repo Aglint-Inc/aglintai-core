@@ -4,7 +4,7 @@
   flex-direction: column;
 
   border: 1px solid #e9ebed;
-  border-radius: 10px;
+  border-radius: var(--radius-4);
 
   box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
 }
@@ -14,9 +14,6 @@
 }
 
 .assessment-type-sub-wrap {
-  padding-top: 10px;
-  padding-right: 16px;
-  padding-left: 16px;
   flex-direction: column;
 }
 
@@ -24,10 +21,12 @@
   display: flex;
   overflow: auto;
   max-height: 350px;
-  padding-bottom: 16px;
+  padding: var(--space-3);
   flex-direction: column;
   grid-column-gap: 16px;
   grid-row-gap: 16px;
+
+  background-color: var(--white);
 }
 
 .filter_dropdiown {
@@ -40,7 +39,9 @@
   grid-column-gap: 8px;
   grid-row-gap: 8px;
 
-  background-color: #f8f9f9;
+  border-top: 1px solid var(--neutral-6);
+
+  background-color: var(--neutral-2);
 }
 
 .link_with_text {
@@ -48,6 +49,7 @@
   align-items: center;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
+  cursor: pointer;
 }
 
 .icons {

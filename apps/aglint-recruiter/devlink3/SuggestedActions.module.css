@@ -1,0 +1,106 @@
+.ai_suggestion {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  overflow: hidden;
+  padding: var(--space-2) var(--space-3);
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+
+  border-radius: var(--radius-3);
+
+  cursor: pointer;
+}
+
+@media screen and (min-width: 1440px) {
+  .ai_suggestion {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    grid-column-gap: var(--space-3);
+    grid-row-gap: var(--space-3);
+  }
+}
+
+.ai_suggestion:hover {
+  background-color: var(--neutral-2);
+}
+
+.suggestion_left {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.ai_icon {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+}
+
+.ai_icon.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+.ai_icon.custom_top {
+  margin-top: 2px;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.ai_icon.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.ai_icon.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.ai_icon.fixedd {
+  width: 23px;
+}
+
+.suggetion_right {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.active_bg_neutral {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 1;
+
+  background-color: var(--neutral-3);
+}

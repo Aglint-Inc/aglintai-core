@@ -159,7 +159,7 @@
 }
 
 .link {
-  color: #337fbd;
+  color: var(--accent-11);
   cursor: pointer;
 }
 

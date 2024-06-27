@@ -106,6 +106,13 @@ export const useSelfSchedulingDrawer = ({
       setStepScheduling('pick_date');
       setSelectedApplicationLog(null);
     }
+    const currentPath = router.pathname;
+    const currentQuery = { ...router.query };
+    delete currentQuery.task_id;
+    router.replace({
+      pathname: currentPath,
+      query: currentQuery,
+    });
   };
 
   const onClickSendToCandidate = async () => {

@@ -208,6 +208,13 @@ function SelectDateRange() {
     setSchedulingOptions([]);
     setSelectedSessionIds([]);
     setStepScheduling('pick_date');
+    const currentPath = router.pathname;
+    const currentQuery = { ...router.query };
+    delete currentQuery.task_id;
+    router.replace({
+      pathname: currentPath,
+      query: currentQuery,
+    });
   };
 
   const { setSelectedDate } = useRequestAvailabilityContext();

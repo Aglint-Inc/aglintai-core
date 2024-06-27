@@ -18,7 +18,7 @@ export function LearnHowAshby({
       >
         <Text
           size="3"
-          weight="bold"
+          weight="medium"
           align=""
           highContrast=""
           content="How to connect with Ashby"
@@ -42,7 +42,7 @@ export function LearnHowAshby({
             }
           </_Builtin.Paragraph>
           <_Builtin.List
-            className={_utils.cx(_styles, "list", "mt-20", "mb-20")}
+            className={_utils.cx(_styles, "learn-list-how")}
             tag="ul"
             unstyled={false}
           >
@@ -94,6 +94,7 @@ export function LearnHowAshby({
       >
         <Text size="2" weight="" color="neutral" content="" />
         <_Builtin.Link
+          className={_utils.cx(_styles, "link")}
           button={false}
           block=""
           options={{
