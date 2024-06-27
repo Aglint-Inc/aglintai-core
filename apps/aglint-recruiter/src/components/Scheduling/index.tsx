@@ -13,6 +13,7 @@ import { InterviewModuleTable } from '@/devlink2/InterviewModuleTable';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { TaskSwitchButton } from '@/devlink3/TaskSwitchButton';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
@@ -162,8 +163,8 @@ export default SchedulingMainComp;
 const BodyComp = ({ setSaving }) => {
   const router = useRouter();
   const tab = router.query.tab as SchedulingTab;
-  const { recruiter, allowAction, isAllowed, recruiterUser, setRecruiter } =
-    useAuthDetails();
+  const { recruiter, recruiterUser, setRecruiter } = useAuthDetails();
+  const { checkPermissions } = useRolesAndPermissions();
   async function updateSettings(schedulingSettingObj: schedulingSettingType) {
     setSaving('saving');
     const { data: updatedRecruiter, error } = await supabase
@@ -187,14 +188,10 @@ const BodyComp = ({ setSaving }) => {
     <>
       <ShowCode>
         <ShowCode.When isTrue={tab === 'candidates'}>
-          {allowAction(<AllSchedules />, [
-            'admin',
-            'recruiter',
-            'recruiting_coordinator',
-          ])}
+          {checkPermissions(['scheduler_create']) && <AllSchedules />}
         </ShowCode.When>
         <ShowCode.When isTrue={tab === 'interviewtypes'}>
-          {isAllowed(['admin', 'recruiter', 'recruiting_coordinator']) ? (
+          {checkPermissions(['scheduler_interview_types_create']) ? (
             <Modules />
           ) : (
             <InterviewerModule
@@ -204,23 +201,18 @@ const BodyComp = ({ setSaving }) => {
           )}
         </ShowCode.When>
         <ShowCode.When isTrue={tab === 'interviewers'}>
-          {allowAction(<AllInterviewersComp />, [
-            'admin',
-            'recruiter',
-            'recruiting_coordinator',
-          ])}
+          {checkPermissions(['scheduler_interviewer_edit']) && (
+            <AllInterviewersComp />
+          )}
         </ShowCode.When>
         <ShowCode.When isTrue={tab === 'settings'}>
-          {isAllowed(['interviewer']) ? (
-            <InterviewerSetting />
+          {checkPermissions(['settings_scheduler_enable']) ? (
+            <SchedulingSettings
+              updateSettings={updateSettings}
+              initialData={recruiter?.scheduling_settings}
+            />
           ) : (
-            allowAction(
-              <SchedulingSettings
-                updateSettings={updateSettings}
-                initialData={recruiter?.scheduling_settings}
-              />,
-              ['admin', 'recruiter', 'recruiting_coordinator'],
-            )
+            <InterviewerSetting />
           )}
         </ShowCode.When>
         <ShowCode.When isTrue={tab === 'schedules'}>
@@ -230,11 +222,7 @@ const BodyComp = ({ setSaving }) => {
           <MySchedule />
         </ShowCode.When>
         <ShowCode.Else>
-          {allowAction(<SchedulingDashboard />, [
-            'admin',
-            'recruiter',
-            'recruiting_coordinator',
-          ])}
+          {checkPermissions(['scheduler_enabled']) && <SchedulingDashboard />}
         </ShowCode.Else>
       </ShowCode>
     </>
