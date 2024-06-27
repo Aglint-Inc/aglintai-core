@@ -1,7 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
-import { TaskTypeDb } from '@aglint/shared-types';
-import { DB } from '@aglint/shared-types';
+import { DB, TaskTypeDb } from '@aglint/shared-types';
 import {
   EmailAgentId,
   PhoneAgentId,
@@ -64,7 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 };
                 axios.post(debrief_url, bodyParams);
               } else {
-                axios.post(agent_url, {
+                const bodyParams: ApiBodyParamsScheduleAgent = {
                   application_id: task.application_id,
                   dateRange: task.schedule_date_range,
                   recruiter_id: task.applications.public_jobs.recruiter.id,
@@ -72,19 +71,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     task.recruiter_user.first_name,
                     task.recruiter_user.last_name,
                   ),
-                  session_ids: task.interview_filter_json.session_ids,
+                  session_ids: task.session_ids.map((ses) => ses.id),
                   task_id: task.id,
-                  type: task.assignee.includes(EmailAgentId)
-                    ? 'email_agent'
-                    : task.assignee.includes(EmailAgentId)
-                      ? 'phone_agent'
-                      : '',
+                  type: task.assignee.includes(PhoneAgentId)
+                    ? 'phone_agent'
+                    : 'email_agent',
                   candidate_name: task.applications.candidates.first_name,
                   company_name: task.applications.public_jobs.recruiter.name,
                   rec_user_phone: task.recruiter_user.phone,
                   rec_user_id: task.recruiter_user.user_id,
                   user_tz: 'Asia/Calcutta',
-                } as ApiBodyParamsScheduleAgent);
+                };
+
+                axios.post(agent_url, bodyParams);
               }
             } catch (error) {
               console.error('Error for application:', error.message);
