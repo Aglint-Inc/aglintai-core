@@ -13,7 +13,7 @@ import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
-import EmailPreview from '@/src/components/Common/EmailTemplateEditor/EmailPreview';
+import EmailPreviewPopover from '@/src/components/Common/EmailTemplateEditor/EmailPreviewPopover';
 import EmailTemplateEditForm from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
 import Loader from '@/src/components/Common/Loader';
 import { useCurrentJob } from '@/src/queries/job-assessment/keys';
@@ -176,7 +176,7 @@ const JobEmailTemplates = () => {
                     selectedTemplate={editTemp}
                   />
 
-                  <EmailPreview
+                  <EmailPreviewPopover
                     anchorEl={anchorEl}
                     setAnchorEl={setAnchorEl}
                     setHtml={setHtml}
