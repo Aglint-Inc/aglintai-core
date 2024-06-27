@@ -23,6 +23,8 @@ import {
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 // import { mailHandler } from '@/src/components/Scheduling/Candidates/utils';
 import { getScheduleName } from '@/src/components/Scheduling/utils';
+import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
+import { createTaskProgress } from '@/src/components/Tasks/utils';
 
 export interface ApiBodyParamsSendToCandidate {
   is_debrief?: boolean;
@@ -39,6 +41,7 @@ export interface ApiBodyParamsSendToCandidate {
   recruiterUser: RecruiterUserType;
   user_tz: string;
   selectedApplicationLog: DatabaseTable['application_logs'];
+  task_id: string | null;
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -76,6 +79,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       is_debrief: bodyParams.is_debrief,
       selectedApplicationLog: bodyParams.selectedApplicationLog,
       selectedSlots: bodyParams.selectedSlots,
+      task_id: bodyParams.task_id,
     });
 
     console.log('resSendToCandidate', resSendToCandidate);
@@ -106,6 +110,7 @@ const sendToCandidate = async ({
   supabase,
   user_tz,
   selectedApplicationLog,
+  task_id,
 }: {
   is_debrief?: boolean;
   selectedApplication: SchedulingApplication['selectedApplication'];
@@ -127,8 +132,10 @@ const sendToCandidate = async ({
   supabase: ReturnType<typeof createServerClient<DB>>;
   user_tz: string;
   selectedApplicationLog?: DatabaseTable['application_logs'];
+  task_id: string | null;
 }) => {
   try {
+    let update_task_id = task_id;
     const scheduleName = getScheduleName({
       job_title: selectedApplication.public_jobs.job_title,
       first_name: selectedApplication.candidates.first_name,
@@ -186,23 +193,54 @@ const sendToCandidate = async ({
       if (errorFilterJson) throw new Error(errorFilterJson.message);
 
       if (!is_debrief) {
-        const resTask = await createTask({
-          application_id: selectedApplication.id,
-          dateRange,
-          filter_id: filterJson[0].id,
-          rec_user_id: recruiterUser.user_id,
-          recruiter_id,
-          selectedSessions: createCloneRes.refSessions.filter((ses) =>
-            selectedSessionIds.includes(ses.id),
-          ),
-          type: 'user',
-          recruiter_user_name: recruiterUser.first_name,
-          candidate_name: getFullName(
-            selectedApplication.candidates.first_name,
-            selectedApplication.candidates.last_name,
-          ),
-          supabase,
-        });
+        if (!update_task_id) {
+          const resTask = await createTask({
+            application_id: selectedApplication.id,
+            dateRange,
+            filter_id: filterJson[0].id,
+            rec_user_id: recruiterUser.user_id,
+            recruiter_id,
+            selectedSessions: createCloneRes.refSessions.filter((ses) =>
+              selectedSessionIds.includes(ses.id),
+            ),
+            type: 'user',
+            recruiter_user_name: recruiterUser.first_name,
+            candidate_name: getFullName(
+              selectedApplication.candidates.first_name,
+              selectedApplication.candidates.last_name,
+            ),
+            supabase,
+          });
+          update_task_id = resTask.id;
+        } else {
+          await createTaskProgress({
+            type: 'self_scheduling',
+            data: {
+              progress_type: 'schedule',
+              created_by: {
+                id: recruiterUser.user_id,
+                name: getFullName(
+                  recruiterUser.first_name,
+                  recruiterUser.last_name,
+                ),
+              },
+              task_id: update_task_id,
+            },
+            optionData: {
+              candidateName: getFullName(
+                selectedApplication.candidates.first_name,
+                selectedApplication.candidates.last_name,
+              ),
+              sessions: createCloneRes.refSessions
+                .filter((ses) => selectedSessionIds.includes(ses.id))
+                .map((ele) => ({
+                  id: ele.id,
+                  name: ele.name,
+                })) as meetingCardType[],
+            },
+            supabaseCaller: supabase,
+          });
+        }
 
         addScheduleActivity({
           title: `Sent booking link to ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.last_name)} for ${createCloneRes.refSessions
@@ -213,19 +251,12 @@ const sendToCandidate = async ({
           logged_by: 'user',
           supabase,
           created_by: recruiterUser.user_id,
-          task_id: resTask.id,
+          task_id: update_task_id,
         });
 
         selfScheduleMailToCandidate({
           filter_id: filterJson[0].id,
         });
-        //TODO: Implement new mailHandler
-        // mailHandler({
-        //   filter_id: filterJson[0].id,
-        //   supabase,
-        //   application_id: selectedApplication.id,
-        //   task_id: resTask.id,
-        // });
       }
 
       if (is_debrief && selectedDebrief) {
@@ -286,45 +317,68 @@ const sendToCandidate = async ({
       if (errorFilterJson) throw new Error(errorFilterJson.message);
 
       if (!is_debrief) {
-        const resTask = await createTask({
-          application_id: selectedApplication.id,
-          dateRange,
-          filter_id: filterJson[0].id,
-          rec_user_id: recruiterUser.user_id,
-          recruiter_id,
-          selectedSessions: initialSessions.filter((ses) =>
-            selectedSessionIds.includes(ses.id),
-          ),
-          type: 'user',
-          recruiter_user_name: recruiterUser.first_name,
-          candidate_name: getFullName(
-            selectedApplication.candidates.first_name,
-            selectedApplication.candidates.last_name,
-          ),
-          supabase,
-        });
-        addScheduleActivity({
-          title: `Candidate invited for session ${initialSessions
-            .filter((ses) => selectedSessionIds.includes(ses.id))
-            .map((ses) => ses.name)
-            .join(' , ')}`,
-          logged_by: 'user',
-          application_id: selectedApplication.id,
-          supabase,
-          created_by: recruiterUser.user_id,
-          task_id: resTask.id,
-        });
+        if (!update_task_id) {
+          const resTask = await createTask({
+            application_id: selectedApplication.id,
+            dateRange,
+            filter_id: filterJson[0].id,
+            rec_user_id: recruiterUser.user_id,
+            recruiter_id,
+            selectedSessions: initialSessions.filter((ses) =>
+              selectedSessionIds.includes(ses.id),
+            ),
+            type: 'user',
+            recruiter_user_name: recruiterUser.first_name,
+            candidate_name: getFullName(
+              selectedApplication.candidates.first_name,
+              selectedApplication.candidates.last_name,
+            ),
+            supabase,
+          });
+          addScheduleActivity({
+            title: `Candidate invited for session ${initialSessions
+              .filter((ses) => selectedSessionIds.includes(ses.id))
+              .map((ses) => ses.name)
+              .join(' , ')}`,
+            logged_by: 'user',
+            application_id: selectedApplication.id,
+            supabase,
+            created_by: recruiterUser.user_id,
+            task_id: resTask.id,
+          });
+        } else {
+          await createTaskProgress({
+            type: 'self_scheduling',
+            data: {
+              progress_type: 'schedule',
+              created_by: {
+                id: recruiterUser.user_id,
+                name: getFullName(
+                  recruiterUser.first_name,
+                  recruiterUser.last_name,
+                ),
+              },
+              task_id: update_task_id,
+            },
+            optionData: {
+              candidateName: getFullName(
+                selectedApplication.candidates.first_name,
+                selectedApplication.candidates.last_name,
+              ),
+              sessions: initialSessions
+                .filter((ses) => selectedSessionIds.includes(ses.id))
+                .map((ele) => ({
+                  id: ele.id,
+                  name: ele.name,
+                })) as meetingCardType[],
+            },
+            supabaseCaller: supabase,
+          });
+        }
 
         selfScheduleMailToCandidate({
           filter_id: filterJson[0].id,
         });
-        //TODO: Implement new mailHandler
-        // mailHandler({
-        //   filter_id: filterJson[0].id,
-        //   supabase,
-        //   application_id: selectedApplication.id,
-        //   task_id: resTask.id,
-        // });
       }
 
       if (is_debrief && selectedDebrief) {

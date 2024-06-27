@@ -8,8 +8,12 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GeneralBanner } from '@/devlink/GeneralBanner';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { setDateRange } from '../../SelfSchedulingDrawer/store';
-import { setRequestSessionIds, setSelectedSessionIds } from '../../store';
+import {
+  setDateRange,
+  setIsScheduleNowOpen,
+  setStepScheduling,
+} from '../../SelfSchedulingDrawer/store';
+import { setRescheduleSessionIds } from '../../store';
 
 function TaskPopups() {
   const [tasks, setTasks] = useState<DatabaseView['tasks_view'][]>(null);
@@ -48,13 +52,10 @@ function TaskPopups() {
                   size={1}
                   onClickButton={{
                     onClick: () => {
-                      setRequestSessionIds(
+                      setRescheduleSessionIds(
                         tasks[0].session_ids.map((ele) => ele.id),
                       );
-                      setSelectedSessionIds(
-                        tasks[0].session_ids.map((ele) => ele.id),
-                      );
-
+                      setStepScheduling('reschedule');
                       setDateRange({
                         start_date: tasks[0].schedule_date_range.start_date,
                         end_date: tasks[0].schedule_date_range.end_date,
@@ -62,6 +63,7 @@ function TaskPopups() {
                       router.push(
                         `/scheduling/application/${router.query.application_id}?task_id=${tasks[0].id}`,
                       );
+                      setIsScheduleNowOpen(true);
                     },
                   }}
                 />

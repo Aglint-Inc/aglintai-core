@@ -1000,6 +1000,7 @@ export const createTask = async ({
       start_date: new Date().toISOString(),
       assignee: [assignee],
       filter_id: filter_id,
+      type: type === 'user' ? 'self_schedule' : 'schedule',
       session_ids: selectedSessions.map((ses) => {
         return {
           id: ses.id,
@@ -1017,6 +1018,7 @@ export const createTask = async ({
         };
       }),
       trigger_count: 1,
+      task_owner: rec_user_id,
     })
     .select()
     .single();
@@ -1026,7 +1028,7 @@ export const createTask = async ({
   await createTaskProgress({
     type: 'create_task',
     data: {
-      progress_type: type === 'user' ? 'self_schedule' : 'schedule',
+      progress_type: 'schedule',
       created_by: { id: rec_user_id, name: recruiter_user_name },
       task_id: task.id,
     },

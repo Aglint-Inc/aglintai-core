@@ -99,7 +99,7 @@ const CandidateInvitePlanPage = () => {
   const {
     setDetailsPop,
     meta: {
-      data: { meetings, filter_json },
+      data: { candidate, meetings, filter_json, schedule },
     },
     timezone,
     setSelectedSlots,
@@ -137,7 +137,16 @@ const CandidateInvitePlanPage = () => {
 
   if (meetings.length === 0) return <NotFoundPage />;
 
-  if (!waiting) return <ConfirmedPage rounds={rounds} />;
+  if (!waiting)
+    return (
+      <ConfirmedInvitePage
+        rounds={rounds}
+        candidate={candidate}
+        filter_json={filter_json}
+        meetings={meetings}
+        schedule={schedule}
+      />
+    );
   return (
     <Stack
       sx={{
@@ -175,6 +184,7 @@ const CandidateInvitePlanPage = () => {
       />
       <Footer brand={true} />
     </Stack>
+     
   );
 };
 
@@ -185,12 +195,14 @@ type ScheduleCardsProps = {
   }[];
 };
 
-const ConfirmedPage = (props: ScheduleCardsProps) => {
-  const {
-    meta: {
-      data: { candidate, schedule, meetings, filter_json },
-    },
-  } = useCandidateInvite();
+export const ConfirmedInvitePage = (
+  props: ScheduleCardsProps &
+    Pick<
+      Awaited<ReturnType<typeof useCandidateInvite>>['meta']['data'],
+      'candidate' | 'schedule' | 'meetings' | 'filter_json'
+    >,
+) => {
+  const { candidate, filter_json, meetings, schedule } = props;
   const [cancelReschedule, setCancelReschedule] = useState<
     'reschedule' | 'cancel'
   >(null);
@@ -241,27 +253,31 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
   const handleCancelReschedule = async (
     detail: Omit<DatabaseTableInsert['interview_session_cancel'], 'session_id'>,
   ) => {
-    const metadata: CandidateResponseSelfSchedule = {
-      action: 'waiting',
-      type: 'candidate_response_self_schedule',
-      reason: detail.reason,
-      other_details: detail.other_details,
-      response_type: detail.type === 'declined' ? 'cancel' : 'reschedule',
-      filter_id: filter_json?.id,
-      session_ids: meetings.map((ses) => ses.interview_session.id),
-    };
+    // return true;
 
-    addScheduleActivity({
-      title:
-        detail.type === 'declined'
-          ? `Canceled ${meetings?.map((ses) => ses.interview_session.name).join(' , ')}`
-          : `Requested reschedule for ${meetings?.map((ses) => ses.interview_session.name).join(' , ')}`,
-      application_id: schedule.application_id,
-      logged_by: 'candidate',
-      supabase: supabase,
-      created_by: null,
-      metadata,
-    });
+    if (filter_json?.id) {
+      const metadata: CandidateResponseSelfSchedule = {
+        action: 'waiting',
+        type: 'candidate_response_self_schedule',
+        reason: detail.reason,
+        other_details: detail.other_details,
+        response_type: detail.type === 'declined' ? 'cancel' : 'reschedule',
+        filter_id: filter_json.id,
+        session_ids: meetings.map((ses) => ses.interview_session.id),
+      };
+
+      addScheduleActivity({
+        title:
+          detail.type === 'declined'
+            ? `Canceled ${meetings?.map((ses) => ses.interview_session.name).join(' , ')}`
+            : `Requested reschedule for ${meetings?.map((ses) => ses.interview_session.name).join(' , ')}`,
+        application_id: schedule.application_id,
+        logged_by: 'candidate',
+        supabase: supabase,
+        created_by: null,
+        metadata,
+      });
+    }
 
     const details = props.rounds
       .reduce(
