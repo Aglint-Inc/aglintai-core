@@ -115,23 +115,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export default handler;
 
-export const sendEmailFromAgent = async ({
-  candidate_email,
-  from_name,
-  mail_body,
-  headers,
-  subject,
-}) => {
-  await axios.post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
-    email: candidate_email,
-    fromEmail: process.env.NEXT_PUBLIC_AGENT_EMAIL,
-    fromName: from_name,
-    subject: subject,
-    text: mail_body,
-    headers,
-  });
-};
-
 const fetchCandDetails = async ({ filter_json_id }) => {
   const [rec] = supabaseWrap(
     await supabaseAdmin
