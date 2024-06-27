@@ -11,7 +11,6 @@ import dayjs from 'dayjs';
 import { marked } from 'marked';
 import { useRouter } from 'next/router';
 
-import { GeneralBanner } from '@/devlink/GeneralBanner';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { EmptyState } from '@/devlink2/EmptyState';
 import { Skeleton } from '@/devlink2/Skeleton';
@@ -84,10 +83,7 @@ function SubTaskProgress() {
                   }, -1);
                 const lastScheduleNowCardIndex = progressList.reduce(
                   (lastIndex, item, i) => {
-                    return item.progress_type === 'schedule' ||
-                      item.progress_type === 'self_schedule'
-                      ? i
-                      : lastIndex;
+                    return item.progress_type === 'schedule' ? i : lastIndex;
                   },
                   -1,
                 );
@@ -139,13 +135,11 @@ function SubTaskProgress() {
                     key={i}
                     isTaskProgressVisible={true}
                     textTask={
-                      <>
-                        <ProgressTitle
-                          title={item.title}
-                          titleMetaData={item.title_meta}
-                          selectedTask={selectedTask}
-                        />
-                      </>
+                      <ProgressTitle
+                        title={item.title}
+                        titleMetaData={item.title_meta}
+                        selectedTask={selectedTask}
+                      />
                     }
                     slotImage={
                       <ShowCode>
@@ -350,16 +344,11 @@ function SubTaskProgress() {
                             selectedTask.assignee[0] !== EmailAgentId &&
                             selectedTask.assignee[0] !== PhoneAgentId &&
                             selectedTask.assignee[0] !== SystemAgentId &&
-                            (item.progress_type === 'schedule' ||
-                              item.progress_type === 'self_schedule') &&
+                            item.progress_type === 'schedule' &&
                             lastScheduleNowCardIndex === i &&
                             progressList
                               .map((item) => item.progress_type)
-                              .every(
-                                (item) =>
-                                  item === 'schedule' ||
-                                  item === 'self_schedule',
-                              )
+                              .every((item) => item === 'schedule')
                           }
                         >
                           <ScheduleNowCard selectedTask={selectedTask} />
@@ -368,9 +357,9 @@ function SubTaskProgress() {
                           isTrue={
                             item.progress_type === 'request_availability' &&
                             lastRequestAvailabilityTypeIndex === i &&
-                            progressList
-                              .map((item) => item.progress_type)
-                              .every((item) => item === 'request_availability')
+                            !progressList
+                              .map((ele) => ele.progress_type)
+                              .includes('request_availability_list')
                           }
                         >
                           <RequestAvailabilityResend
@@ -378,25 +367,23 @@ function SubTaskProgress() {
                           />
                         </ShowCode.When>
                         <ShowCode.When
-                          isTrue={item.progress_type === 'call_failed'}
+                          isTrue={
+                            item.progress_type === 'call_failed' ||
+                            item.progress_type === 'email_failed'
+                          }
                         >
-                          <GeneralBanner
-                            textHeading={''}
-                            slotButton={<></>}
-                            textDesc={''}
-                            slotHeadingIcon={
-                              <>
-                                <GlobalBadge
-                                  color={'error'}
-                                  iconName={'error'}
-                                  showIcon={true}
-                                  textBadge={
-                                    'Call Failed, Please Contact to admin@aglint.com'
-                                  }
-                                />
-                              </>
-                            }
-                          />
+                          <Stack
+                            direction={'row'}
+                            justifyContent={'flex-start'}
+                            alignItems={'center'}
+                          >
+                            <GlobalBadge
+                              color={'error'}
+                              iconName={'error'}
+                              showIcon={true}
+                              textBadge={'Please Contact to support@aglint.com'}
+                            />
+                          </Stack>
                         </ShowCode.When>
                       </ShowCode>
                     }

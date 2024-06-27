@@ -121,6 +121,7 @@ function AddNewTask() {
 
     handelAddTask({
       assignee: [selectedAssignee?.user_id],
+      task_owner:selectedAssignee?.user_id,
       created_by: recruiterUser?.user_id || null,
       application_id: selectedCandidate?.id || null,
       name: inputData || 'Untitled',
