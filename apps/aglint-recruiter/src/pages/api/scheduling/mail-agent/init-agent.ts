@@ -31,13 +31,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const cand_details = await fetchCandDetails({
       filter_json_id,
     });
-
-    const thread_id = uuidV4();
-    // `<${conversation_id}.${Date.now()}@parse.aglinthq.com>`;
-    const message_id = EmailWebHook.getMessageId(
-      thread_id,
-      process.env.NEXT_PUBLIC_AGENT_EMAIL,
+    const [comp_integration] = supabaseWrap(
+      await supabaseAdmin
+        .from('integrations')
+        .select()
+        .eq('recruiter_id', cand_details.company_id),
     );
+    const thread_id = uuidV4();
+    const agent_email =
+      process.env.LOCAL_AGENT_EMAIL ?? comp_integration.schedule_agent_email;
+    // `<${conversation_id}.${Date.now()}@parse.aglinthq.com>`;
+    const message_id = EmailWebHook.getMessageId(thread_id, agent_email);
     const mailPayload: EmailTemplateAPi<'agent_email_candidate'>['api_payload'] =
       {
         recruiter_user_id,
@@ -46,7 +50,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           'Message-ID': message_id,
           'In-Reply-To': message_id,
         },
-        agent_email: process.env.NEXT_PUBLIC_AGENT_EMAIL,
+        agent_email,
       };
     const { data } = await axios.post(
       `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/agent_email_candidate`,
