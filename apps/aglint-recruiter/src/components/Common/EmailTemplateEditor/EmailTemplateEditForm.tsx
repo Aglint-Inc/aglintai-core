@@ -1,33 +1,44 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { DatabaseTableInsert } from '@aglint/shared-types';
 import { MenuItem, Select, Stack, Typography } from '@mui/material';
-import { FC } from 'react';
+import React from 'react';
 
-import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
-import UITypography from '@/src/components/Common/UITypography';
+import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
 
-const options = ['{{recruiterName}}', '{{companyName}}'];
+import TipTapAIEditor from '../TipTapAIEditor';
+import UITypography from '../UITypography';
 
-export const JobEmailTemplateForms: FC<MetaFormProps> = ({
-  handleChange,
+interface Props {
+  senderNameChange: any;
+  emailSubjectChange: any;
+  emailBodyChange: any;
+  selectedTemplate: DatabaseTableInsert['company_email_template'];
+  disabled?: boolean;
+}
+
+export default function EmailTemplateEditForm({
+  senderNameChange,
+  emailSubjectChange,
+  emailBodyChange,
+  selectedTemplate,
   disabled = false,
-  editTemp,
-}) => {
-  const sender_name = (
-    <>
+}: Props) {
+  const options = ['{{recruiterName}}', '{{companyName}}'];
+  return (
+    <Stack spacing={'var(--space-5)'}>
       <Stack spacing={1}>
         <UITypography type='small' fontBold='normal'>
           Sender Name
         </UITypography>
         <Stack>
-          {`This name appears as the "From" name in emails to candidates. Choose a representative name for your company or recruiter.
-                            `}
+          {`This name appears as the "From" name in emails to
+  candidates. Choose a representative name for your
+  company or recruiter.
+  `}
         </Stack>
         <Select
-          defaultValue={editTemp.from_name}
-          onChange={(e) => {
-            handleChange({ ...editTemp, from_name: e.target.value });
-          }}
+          defaultValue={selectedTemplate?.from_name}
           disabled={disabled}
+          onChange={senderNameChange}
           sx={{
             '& .MuiOutlinedInput-notchedOutline': {
               border: '1px solid #DAD9D6',
@@ -87,11 +98,7 @@ export const JobEmailTemplateForms: FC<MetaFormProps> = ({
           )}
         </Select>
       </Stack>
-    </>
-  );
 
-  const email_subject = (
-    <>
       <Stack>
         <UITypography type='small' fontBold='normal'>
           Email Subject
@@ -107,72 +114,43 @@ export const JobEmailTemplateForms: FC<MetaFormProps> = ({
           <TipTapAIEditor
             enablAI={false}
             toolbar={false}
-            placeholder={'Email Subject'}
+            placeholder={
+              emailTemplateCopy[selectedTemplate?.type]?.subjectPlaceHolder
+            }
             singleLine={true}
             padding={1}
-            disabled={disabled}
             editor_type='email'
-            template_type={editTemp.type}
-            handleChange={(html) => {
-              const text = html;
-              handleChange({ ...editTemp, subject: text });
-            }}
-            initialValue={editTemp.subject}
+            template_type={selectedTemplate.type}
+            handleChange={emailSubjectChange}
+            initialValue={selectedTemplate?.subject}
           />
         </Stack>
       </Stack>
-    </>
-  );
 
-  const email_body = (
-    <Stack>
-      <UITypography type='small'>Email Body</UITypography>
-      <Stack
-        sx={{
-          mt: 'var(--space-2)',
-          border: '1px solid',
-          borderColor: 'var(--success-6)',
-          // borderColor: true ? 'var(--success-6)' : 'var(--neutral-6)',
-          borderRadius: 'var(--radius-2)',
-        }}
-      >
-        <TipTapAIEditor
-          disabled={disabled}
-          initialValue={editTemp.body}
-          handleChange={(s) => {
-            handleChange({ ...editTemp, body: s });
-          }}
-          placeholder={editTemp.body}
-          editor_type='email'
-          template_type={editTemp.type}
-        />
-      </Stack>
-      {/* {true && (
+      <Stack>
+        <UITypography type='small' fontBold='normal'>
+          Email Body
+        </UITypography>
         <Stack
-          alignItems={'center'}
-          direction={'row'}
-          color={'var(--error-11)'}
+          sx={{
+            mt: '8px',
+            border: '1px solid',
+            borderColor: 'var(--neutral-6)',
+            borderRadius: 'var(--radius-2)',
+          }}
         >
-          <WarningSvg />
+          <TipTapAIEditor
+            enablAI={false}
+            placeholder={''}
+            maxHeight='250px'
+            height='360px'
+            editor_type='email'
+            template_type={selectedTemplate.type}
+            handleChange={emailBodyChange}
+            initialValue={selectedTemplate.body}
+          />
         </Stack>
-      )} */}
+      </Stack>
     </Stack>
   );
-
-  const forms = (
-    <Stack spacing={'var(--space-5)'}>
-      {sender_name}
-      {email_subject}
-      {email_body}
-    </Stack>
-  );
-
-  return forms;
-};
-
-type MetaFormProps = {
-  editTemp: DatabaseTable['job_email_template'];
-  // eslint-disable-next-line no-unused-vars
-  handleChange: (editTemp: DatabaseTable['job_email_template']) => void;
-  disabled?: boolean;
-};
+}
