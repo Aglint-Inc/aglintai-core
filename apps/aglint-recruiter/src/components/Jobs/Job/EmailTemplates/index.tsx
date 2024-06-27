@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
-import { Box, Popover, Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -11,10 +11,10 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { EditEmail } from '@/devlink/EditEmail';
 import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
-import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
-import { PreviewEmail } from '@/devlink2/PreviewEmail';
+import EmailPreview from '@/src/components/Common/EmailTemplateEditor/EmailPreview';
+import EmailTemplateEditForm from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
 import Loader from '@/src/components/Common/Loader';
 import { useCurrentJob } from '@/src/queries/job-assessment/keys';
 import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
@@ -22,7 +22,6 @@ import { supabase } from '@/src/utils/supabase/client';
 import { capitalize } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
-import { JobEmailTemplateForms } from './form';
 const templates_order: DatabaseEnums['email_slack_types'][] = [
   'applicationRecieved_email_applicant',
   'applicantReject_email_applicant',
@@ -97,12 +96,6 @@ const JobEmailTemplates = () => {
   const [isHtml, setHtml] = useState(null);
   const [popOverLoading, setPopOverLoading] = useState(false);
 
-  const open = Boolean(anchorEl);
-  const handleClose = () => {
-    setAnchorEl(null);
-    setHtml(null);
-  };
-
   const preview = async () => {
     setPopOverLoading(true);
     try {
@@ -118,6 +111,17 @@ const JobEmailTemplates = () => {
       toast.error(`Error fetching preview: ${error}`);
       throw error;
     }
+  };
+
+  const senderNameChange = (e) => {
+    handleUpdateTemp({ ...editTemp, from_name: e.target.value });
+  };
+  const emailSubjectChange = (html) => {
+    const text = html;
+    handleUpdateTemp({ ...editTemp, subject: text });
+  };
+  const emailBodyChange = (s) => {
+    handleUpdateTemp({ ...editTemp, body: s });
   };
 
   return (
@@ -165,51 +169,20 @@ const JobEmailTemplates = () => {
               }
               slotForm={
                 <>
-                  <JobEmailTemplateForms
-                    // selection={selection}
-                    // handleChange={handleChange}
-                    handleChange={handleUpdateTemp}
-                    editTemp={editTemp}
+                  <EmailTemplateEditForm
+                    senderNameChange={senderNameChange}
+                    emailSubjectChange={emailSubjectChange}
+                    emailBodyChange={emailBodyChange}
+                    selectedTemplate={editTemp}
                   />
-                  <Popover
-                    id='popover-agent'
-                    open={open}
+
+                  <EmailPreview
                     anchorEl={anchorEl}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'left',
-                    }}
-                    transformOrigin={{ vertical: -6, horizontal: 0 }}
-                    onClose={handleClose}
-                  >
-                    <PreviewEmail
-                      slotContent={
-                        popOverLoading ? (
-                          <Stack
-                            alignItems={'center'}
-                            height={'400px'}
-                            justifyContent={'center'}
-                          >
-                            <LoaderSvg />
-                          </Stack>
-                        ) : (
-                          <iframe
-                            width={'790px'}
-                            height={'490px'}
-                            color='white'
-                            srcDoc={isHtml}
-                            title='Previw Email'
-                          />
-                        )
-                      }
-                      onClickClose={{
-                        onClick: () => {
-                          setAnchorEl(null);
-                          setHtml(null);
-                        },
-                      }}
-                    />
-                  </Popover>
+                    setAnchorEl={setAnchorEl}
+                    setHtml={setHtml}
+                    isHtml={isHtml}
+                    Loading={popOverLoading}
+                  />
                 </>
               }
               isSaveChangesButtonVisible={false}
