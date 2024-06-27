@@ -12,13 +12,14 @@ export async function POST(req: Request) {
       await dbUtil(req_body);
     const is_preview = req_body.is_preview;
 
-    const { html, subject } = await sendMailFun({
+    const htmlSub = await sendMailFun({
       filled_comp_template,
       react_email_placeholders,
       recipient_email,
       is_preview,
     });
     if (is_preview) {
+      const { html, subject } = htmlSub;
       return NextResponse.json(
         { html, subject },
         {
