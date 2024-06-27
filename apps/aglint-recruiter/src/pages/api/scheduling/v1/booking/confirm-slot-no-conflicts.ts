@@ -12,7 +12,7 @@ import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayj
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const parsed = v.parse(schema_confirm_slot_no_conflict, req.body);
-    const schedule_db_details = await fetchDBScheduleDetails(parsed.filter_id);
+    const schedule_db_details = await fetchDBScheduleDetails(req.body);
     const { filter_json_data } = schedule_db_details;
     const zod_options = v.parse(scheduling_options_schema, {
       include_conflicting_slots: {},
