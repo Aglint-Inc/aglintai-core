@@ -1,6 +1,7 @@
 .interview-confirmed-wrap {
   position: relative;
 
+  display: flex;
   overflow: auto;
   width: 100%;
   height: 100vh;
@@ -8,17 +9,24 @@
   justify-content: center;
   align-items: flex-start;
 
-  background-color: var(--neutral-2);
+  background-color: var(--sand-3);
 }
 
 .invitation-sublink-wrap {
   display: flex;
+  max-width: 900px;
+  padding: var(--space-6);
   flex-direction: column;
   justify-content: center;
   flex-wrap: nowrap;
   align-items: center;
   grid-column-gap: var(--space-4);
   grid-row-gap: var(--space-4);
+
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+
+  background-color: var(--white);
 }
 
 .invitation-header-wrap {
@@ -148,33 +156,4 @@
   align-items: center;
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
-}
-
-.interview-confirmed-footer-wrap {
-  position: relative;
-  left: 0%;
-  top: auto;
-  right: 0%;
-  bottom: 0%;
-
-  display: flex;
-  margin-top: var(--space-9);
-  padding: var(--space-4);
-  justify-content: center;
-  align-items: center;
-}
-
-.powered-footer-wrap {
-  display: flex;
-  align-items: center;
-  grid-column-gap: var(--space-3);
-  grid-row-gap: var(--space-3);
-}
-
-.powered-footer-wrap.mt-30 {
-  margin-top: 30px;
-}
-
-.mt-30 {
-  margin-top: 30px;
 }

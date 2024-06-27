@@ -18,7 +18,7 @@ export function LearnHowLever({
       >
         <Text
           size="3"
-          weight="bold"
+          weight="medium"
           align=""
           highContrast=""
           content="How to connect with Lever"
@@ -42,7 +42,7 @@ export function LearnHowLever({
             }
           </_Builtin.Paragraph>
           <_Builtin.List
-            className={_utils.cx(_styles, "list", "mt-20", "mb-20")}
+            className={_utils.cx(_styles, "learn-list-how")}
             tag="ul"
             unstyled={false}
           >
@@ -93,6 +93,7 @@ export function LearnHowLever({
       >
         <Text content="" weight="" color="neutral" />
         <_Builtin.Link
+          className={_utils.cx(_styles, "link")}
           button={false}
           block=""
           options={{

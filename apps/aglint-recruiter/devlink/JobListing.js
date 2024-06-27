@@ -140,7 +140,7 @@ export function JobListing({
                       tag="div"
                     >
                       <_Builtin.Block
-                        className={_utils.cx(_styles, "div-block-425")}
+                        className={_utils.cx(_styles, "cl-header-item")}
                         tag="div"
                       >
                         <_Builtin.HtmlEmbed
@@ -155,7 +155,7 @@ export function JobListing({
                         />
                       </_Builtin.Block>
                       <_Builtin.Block
-                        className={_utils.cx(_styles, "div-block-425")}
+                        className={_utils.cx(_styles, "cl-header-item")}
                         tag="div"
                       >
                         <_Builtin.HtmlEmbed

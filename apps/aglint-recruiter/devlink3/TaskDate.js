@@ -17,11 +17,7 @@ export function TaskDate({
   textButton2 = "In a date range",
 }) {
   return (
-    <_Component
-      className={_utils.cx(_styles, "date-range-widget")}
-      tag="div"
-      box-shadow="4"
-    >
+    <_Component className={_utils.cx(_styles, "date-range-widget")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "date-range-switcher")}
         tag="div"

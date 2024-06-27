@@ -114,7 +114,7 @@ export function TeamUsersList({
               tag="div"
             >
               <_Builtin.Block tag="div">
-                <GlobalIcon iconName="person_pin" size="4" />
+                <GlobalIcon iconName="badge" size="4" />
               </_Builtin.Block>
               <Text content="Role" />
             </_Builtin.Block>
@@ -127,7 +127,7 @@ export function TeamUsersList({
               tag="div"
             >
               <_Builtin.Block tag="div">
-                <GlobalIcon iconName="domain" size="4" />
+                <GlobalIcon iconName="corporate_fare" size="4" />
               </_Builtin.Block>
               <Text content="Department" />
             </_Builtin.Block>
@@ -140,7 +140,7 @@ export function TeamUsersList({
               tag="div"
             >
               <_Builtin.Block tag="div">
-                <GlobalIcon iconName="location_pin" size="4" />
+                <GlobalIcon iconName="pin_drop" size="4" />
               </_Builtin.Block>
               <Text content="Location" />
             </_Builtin.Block>

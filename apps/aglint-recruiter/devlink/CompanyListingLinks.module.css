@@ -5,8 +5,10 @@
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 
-  border: 1px solid var(--grey200-9ba653f1);
-  border-radius: 100px;
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-full);
+
+  background-color: var(--white);
 
   transition: all 250ms ease;
 

@@ -1,7 +1,6 @@
 .available-req-wrap {
   display: flex;
-  max-width: 900px;
-  min-width: 800px;
+  width: 1000px;
   margin-right: auto;
   margin-bottom: var(--space-7);
   margin-left: auto;
