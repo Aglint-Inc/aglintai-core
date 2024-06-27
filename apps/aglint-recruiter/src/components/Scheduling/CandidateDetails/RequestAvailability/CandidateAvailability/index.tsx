@@ -26,7 +26,6 @@ import AvailableSlots from './AvailableSlots';
 import DateSlotsPoPup from './DateSlotsPopUp';
 import DaySessionCard from './DaySessionCard';
 
-
 function CandidateAvailability() {
   const router = useRouter();
   const {
@@ -84,7 +83,8 @@ function CandidateAvailability() {
               ),
             ],
           },
-        },
+          title: 'Candidate submitted the availability',
+        } as DatabaseTableInsert['new_tasks_progress'],
       });
     }
     const dates = selectedSlots
@@ -188,98 +188,80 @@ function CandidateAvailability() {
   return (
     <div>
       <DateSlotsPoPup />
-      <Stack sx={{
-        bgcolor:'var(--sand-3)',
-        width:'100%', height:'100vh', 
-        overflow:'auto', 
-        paddingTop:'60px', 
-        paddingBottom:'24px'
-        }}>
-      <AvailabilityReq
-        slotTtitle={
-          isSubmitted ? (
-            <>
-              <GlobalIcon size={6} weight={'light'} iconName={'check_circle'} />
-              <Text
-                size={4}
-                weight={'medium'}
-                content={'Availability Submitted successfully'}
-              />
-            </>
-          ) : (
-            <>
-              <GlobalIcon size={6} weight={'light'} iconName={'event'} />
-              <Text
-                size={4}
-                weight={'medium'}
-                content={'Your Availability Requested'}
-              />
-            </>
-          )
-        }
-        textDesc={
-          isSubmitted
-            ? 'Please wait as we finalize the schedule. One of the selected time slots from each day will be chosen, and you will receive a confirmation email shortly.'
-            : 'Please confirm your availability for the upcoming interview by selecting a suitable time slot from the options provided.'
-        }
-        styleTextColor={{
-          style: {
-            color: isSubmitted ? 'var(--success-11)' : 'var(--neutral-12)',
-          },
+      <Stack
+        sx={{
+          bgcolor: 'var(--sand-3)',
+          width: '100%',
+          height: '100vh',
+          overflow: 'auto',
+          paddingTop: '60px',
+          paddingBottom: '24px',
         }}
-        slotCompanyIcon={
-          candidateRequestAvailability?.applications.public_jobs.logo && (
-            <MuiAvatar
-              variant='square-large'
-              height='100px'
-              width='100px'
-              level=''
-              src={candidateRequestAvailability?.applications.public_jobs.logo}
-            />
-          )
-        }
-        slotPickSlotDay={
-          <ShowCode>
-            <ShowCode.When isTrue={multiDaySessions.length > 1}>
-              <MultiDaySelect
-                slotPrimaryButton={
-                  !isSubmitted && (
-                    <ButtonSolid
-                      onClickButton={{ onClick: handleSubmit }}
-                      textButton={'Submit Availability'}
-                      isLoading={submitLoading}
-                    />
-                  )
+      >
+        <AvailabilityReq
+          slotTtitle={
+            isSubmitted ? (
+              <>
+                <GlobalIcon
+                  size={6}
+                  weight={'light'}
+                  iconName={'check_circle'}
+                />
+                <Text
+                  size={4}
+                  weight={'medium'}
+                  content={'Availability Submitted successfully'}
+                />
+              </>
+            ) : (
+              <>
+                <GlobalIcon size={6} weight={'light'} iconName={'event'} />
+                <Text
+                  size={4}
+                  weight={'medium'}
+                  content={'Your Availability Requested'}
+                />
+              </>
+            )
+          }
+          textDesc={
+            isSubmitted
+              ? 'Please wait as we finalize the schedule. One of the selected time slots from each day will be chosen, and you will receive a confirmation email shortly.'
+              : 'Please confirm your availability for the upcoming interview by selecting a suitable time slot from the options provided.'
+          }
+          styleTextColor={{
+            style: {
+              color: isSubmitted ? 'var(--success-11)' : 'var(--neutral-12)',
+            },
+          }}
+          slotCompanyIcon={
+            candidateRequestAvailability?.applications.public_jobs.logo && (
+              <MuiAvatar
+                variant='square-large'
+                height='100px'
+                width='100px'
+                level=''
+                src={
+                  candidateRequestAvailability?.applications.public_jobs.logo
                 }
-                slotCandidateScheduleCard={multiDaySessions.map(
-                  (sessions, i) => {
-                    const totalSessionMinutes = sessions.reduce(
-                      (accumulator, session) =>
-                        accumulator + session.session_duration,
-                      0,
-                    );
-
-                    const dates =
-                      daySlots.find((ele) => ele.round === i + 1)?.dates || [];
-                    return (
-                      <>
-                        <DaySessionCard
-                          cardIndex={i}
-                          totalSessionMinutes={totalSessionMinutes}
-                          sessions={sessions}
-                          dates={dates}
-                        />
-                      </>
-                    );
-                  },
-                )}
               />
-            </ShowCode.When>
-            <ShowCode.Else>
-              <ShowCode>
-                <ShowCode.When isTrue={isSubmitted}>
-                  <>
-                    {multiDaySessions.map((sessions, i) => {
+            )
+          }
+          slotPickSlotDay={
+            <ShowCode>
+              <ShowCode.When isTrue={multiDaySessions.length > 1}>
+                <MultiDaySelect
+                  slotPrimaryButton={
+                    !isSubmitted && (
+                      <ButtonSolid
+                        onClickButton={{ onClick: handleSubmit }}
+                        textButton={'Submit Availability'}
+                        isLoading={submitLoading}
+                      />
+                    )
+                  }
+                  slotCandidateScheduleCard={multiDaySessions.map(
+                    (sessions, i) => {
                       const totalSessionMinutes = sessions.reduce(
                         (accumulator, session) =>
                           accumulator + session.session_duration,
@@ -292,7 +274,6 @@ function CandidateAvailability() {
                       return (
                         <>
                           <DaySessionCard
-                            showDayCount={false}
                             cardIndex={i}
                             totalSessionMinutes={totalSessionMinutes}
                             sessions={sessions}
@@ -300,18 +281,47 @@ function CandidateAvailability() {
                           />
                         </>
                       );
-                    })}
-                  </>
-                </ShowCode.When>
-                <ShowCode.Else>
-                  <AvailableSlots singleDay={true} />
-                </ShowCode.Else>
-              </ShowCode>
-            </ShowCode.Else>
-          </ShowCode>
-        }
-      />
-      <Footer brand={true}/>
+                    },
+                  )}
+                />
+              </ShowCode.When>
+              <ShowCode.Else>
+                <ShowCode>
+                  <ShowCode.When isTrue={isSubmitted}>
+                    <>
+                      {multiDaySessions.map((sessions, i) => {
+                        const totalSessionMinutes = sessions.reduce(
+                          (accumulator, session) =>
+                            accumulator + session.session_duration,
+                          0,
+                        );
+
+                        const dates =
+                          daySlots.find((ele) => ele.round === i + 1)?.dates ||
+                          [];
+                        return (
+                          <>
+                            <DaySessionCard
+                              showDayCount={false}
+                              cardIndex={i}
+                              totalSessionMinutes={totalSessionMinutes}
+                              sessions={sessions}
+                              dates={dates}
+                            />
+                          </>
+                        );
+                      })}
+                    </>
+                  </ShowCode.When>
+                  <ShowCode.Else>
+                    <AvailableSlots singleDay={true} />
+                  </ShowCode.Else>
+                </ShowCode>
+              </ShowCode.Else>
+            </ShowCode>
+          }
+        />
+        <Footer brand={true} />
       </Stack>
     </div>
   );
