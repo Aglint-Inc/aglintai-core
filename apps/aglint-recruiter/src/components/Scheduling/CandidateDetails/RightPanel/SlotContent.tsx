@@ -150,7 +150,7 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
             },
           }}
           isButtonVisible={false}
-          textName={selectedApplication.candidates.first_name}
+          textName={selectedApplication?.candidates?.first_name}
           textReschedule={
             rescheduleDetails.response_type === 'reschedule'
               ? 'requested a reschedule'
