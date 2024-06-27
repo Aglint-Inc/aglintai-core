@@ -1,4 +1,3 @@
-import { InterviewFilterJsonType } from '../../data.types';
 import { PlanCombinationRespType } from '../../scheduleTypes';
 import { TableType } from './index.types';
 
