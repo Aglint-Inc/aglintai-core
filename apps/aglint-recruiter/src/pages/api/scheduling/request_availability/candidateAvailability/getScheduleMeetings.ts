@@ -25,16 +25,22 @@ export default async function handler(
 ) {
   try {
     if (req.method === 'POST') {
-      const { request_id } = req.body;
-      if (request_id) {
-        const { data } = await supabase
-          .from('candidate_request_availability')
+      const { application_id } = req.body;
+      if (application_id) {
+        const { data: sch, error: errSch } = await supabase
+          .from('interview_schedule')
           .select(
-            '*, applications ( candidate_id, candidates ( * ), public_jobs ( logo,company ) )',
+            '*,applications(*, public_jobs(id,job_title,location,recruiter_id),candidates(*),candidate_files(id,file_url,candidate_id,resume_json,type)),recruiter(id,logo,name)',
           )
-          .eq('id', request_id)
+          .eq('application_id', application_id)
           .single();
-        return res.send(data);
+        if (errSch) {
+          return res.send({
+            data: null,
+            error: errSch.message,
+          } as ApiResponseActivities);
+        }
+        return res.send(sch);
       } else {
         return res.send({
           data: null,

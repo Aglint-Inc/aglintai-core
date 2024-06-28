@@ -6,6 +6,7 @@ import {
   DatabaseTableUpdate,
   DatabaseView,
 } from '@aglint/shared-types';
+import { meetingCardType } from '@aglint/shared-types/src/db/tables/new_tasks.types';
 import {
   EmailAgentId,
   PhoneAgentId,
@@ -68,7 +69,7 @@ type TasksReducerType = {
 /* eslint-disable no-unused-vars */
 export type TasksAgentContextType = TasksReducerType & {
   handelAddTask: (
-    x: DatabaseTableInsert['new_tasks'],
+    x: DatabaseTableInsert['new_tasks'] & { sessions: meetingCardType[] },
   ) => Promise<DatabaseView['tasks_view']>;
   handelUpdateTask: (
     x: (Omit<DatabaseTableUpdate['new_tasks'], 'id'> & { id: string })[],
@@ -320,11 +321,15 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
   const handelAddTask: TasksAgentContextType['handelAddTask'] = async (
     task,
   ) => {
-    return updateTask({ type: 'new', task }).then(async (taskData) => {
-      const tempTask = [{ ...taskData }, ...cloneDeep(tasksReducer.tasks)];
-      handelTaskChanges(tempTask, 'add');
-      return taskData;
-    });
+    let sessions: (typeof task)['sessions'] = [...task.sessions];
+    delete task.sessions;
+    return updateTask({ type: 'new', task }, sessions).then(
+      async (taskData) => {
+        const tempTask = [{ ...taskData }, ...cloneDeep(tasksReducer.tasks)];
+        handelTaskChanges(tempTask, 'add');
+        return taskData;
+      },
+    );
   };
 
   const handelUpdateTask: TasksAgentContextType['handelUpdateTask'] = async (
@@ -663,15 +668,21 @@ const getTasks = ({
     });
 };
 
-export const updateTask = ({
-  type,
-  task,
-}:
-  | { type: 'new'; task: DatabaseTableInsert['new_tasks'] }
-  | {
-      type: 'update';
-      task: Omit<DatabaseTableUpdate['new_tasks'], 'id'> & { id: string };
-    }) => {
+export const updateTask = (
+  {
+    type,
+    task,
+  }:
+    | {
+        type: 'new';
+        task: DatabaseTableInsert['new_tasks'];
+      }
+    | {
+        type: 'update';
+        task: Omit<DatabaseTableUpdate['new_tasks'], 'id'> & { id: string };
+      },
+  sessions?: meetingCardType[],
+) => {
   return (
     type === 'update'
       ? supabase.from('new_tasks').update(task).eq('id', task.id)
@@ -683,15 +694,17 @@ export const updateTask = ({
     .single()
     .then(async ({ data, error }) => {
       if (type === 'new') {
+        await supabase.from('task_session_relation').insert(
+          sessions.map((ele) => ({
+            session_id: ele.id,
+            task_id: data.id,
+          })),
+        );
         const candidateName = getFullName(
           data.applications.candidates.first_name,
           data.applications.candidates.last_name,
         );
-        const { data: selectedTask } = await supabase
-          .from('tasks_view')
-          .select('session_ids')
-          .eq('id', task.id)
-          .single();
+
         await createTaskProgress({
           task_id: data?.id as string,
           title: `Created task for {candidate} to schedule interviews for {selectedSessions}`,
@@ -704,7 +717,7 @@ export const updateTask = ({
           },
           title_meta: {
             '{candidate}': candidateName,
-            '{selectedSessions}': selectedTask.session_ids,
+            '{selectedSessions}': sessions,
           },
           progress_type:
             task.type === 'schedule' ||

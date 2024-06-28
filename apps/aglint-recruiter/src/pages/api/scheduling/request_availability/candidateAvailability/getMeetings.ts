@@ -25,16 +25,31 @@ export default async function handler(
 ) {
   try {
     if (req.method === 'POST') {
-      const { request_id } = req.body;
-      if (request_id) {
-        const { data } = await supabase
-          .from('candidate_request_availability')
-          .select(
-            '*, applications ( candidate_id, candidates ( * ), public_jobs ( logo,company ) )',
-          )
-          .eq('id', request_id)
-          .single();
-        return res.send(data);
+      const { session_ids } = req.body;
+      if (session_ids.length) {
+        const { data: meetings, error: errSes } = await supabase
+          .from('interview_session')
+          .select('*,interview_meeting(*)')
+          .in('id', session_ids)
+          .order('session_order', {
+            ascending: true,
+          });
+        if (errSes) {
+          return res.send({
+            data: null,
+            error: errSes.message,
+          } as ApiResponseActivities);
+        }
+
+        const reduceSess = meetings.map((ele) => {
+          return {
+            interview_session: ele,
+            interview_meeting: ele.interview_meeting,
+          };
+        });
+        return res.send({
+          meetings: reduceSess,
+        });
       } else {
         return res.send({
           data: null,

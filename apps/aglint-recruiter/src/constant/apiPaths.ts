@@ -131,6 +131,8 @@ export const API_PATHS = [
 '/api/scheduling/mail-agent/email-webhook',
 '/api/scheduling/mail-agent/init-agent',
 '/api/scheduling/refresh-tokens',
+'/api/scheduling/request_availability/candidateAvailability/getMeetings',
+'/api/scheduling/request_availability/candidateAvailability/getScheduleMeetings',
 '/api/scheduling/request_availability/getCandidateRequestData',
 '/api/scheduling/request_availability/getTaskIdDetailsByRequestId',
 '/api/scheduling/request_availability/insertScheduleActivities',
