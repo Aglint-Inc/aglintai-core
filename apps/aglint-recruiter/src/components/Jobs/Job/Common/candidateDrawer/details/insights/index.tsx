@@ -1,8 +1,8 @@
 import { Stack } from '@mui/material';
 import { PropsWithChildren } from 'react';
 
-import { Badges } from './badges';
-import { Overview } from './overview';
+import { Badges } from './Badges';
+import { Overview } from './Overview';
 
 const Insights = (props: PropsWithChildren) => {
   return (

@@ -4,10 +4,10 @@ import React, { useEffect, useRef } from 'react';
 
 import { useApplications } from '@/src/context/ApplicationsContext';
 
-import DNDCard from './card/dndCard';
-import { EmptyList } from './common';
+import DNDCard from './Card/DNDCard';
+import { EmptyList } from './Common/EmptyList';
 
-const ApplicantsList = ({
+const List = ({
   applications,
   header,
   loader,
@@ -107,4 +107,4 @@ const ApplicantsList = ({
   );
 };
 
-export default ApplicantsList;
+export default List;

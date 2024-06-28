@@ -19,8 +19,9 @@ import { useApplication } from '@/src/context/ApplicationContext';
 import ROUTES from '@/src/utils/routing/routes';
 
 import { getBreakLabel } from '../../../Interview-Plan/utils';
-import { EmptyState, Loader } from '../common';
-import { Actions } from './actions';
+import { EmptyState } from '../Common/EmptyState';
+import { Loader } from '../Common/Loader';
+import { Actions } from './Actions';
 
 const Interview = () => {
   const {

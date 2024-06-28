@@ -10,13 +10,13 @@ import ResumeWait from '@/public/lottie/ResumeWait';
 import { useApplication } from '@/src/context/ApplicationContext';
 import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 
-import { Activity } from './activity';
-import { Details } from './details';
-import { Interview } from './interview';
-import { Meta } from './meta';
-import { Tabs } from './tabs';
-import { Tasks } from './tasks';
-import { TopBar } from './topBar';
+import { Activity } from './Activity';
+import { Details } from './Details';
+import { Interview } from './Interview';
+import { Meta } from './Meta';
+import { Tabs } from './Tabs';
+import { Tasks } from './Tasks';
+import { TopBar } from './TopBar';
 
 type Props = {
   topBar: ReactNode;

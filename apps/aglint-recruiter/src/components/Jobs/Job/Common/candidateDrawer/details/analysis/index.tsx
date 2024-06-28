@@ -6,13 +6,13 @@ import { GlobalIcon } from '@/devlink3/GlobalIcon';
 import { useApplication } from '@/src/context/ApplicationContext';
 
 import { getIconName } from '../../utils';
-import { EmptyDetailState } from '../common';
-import { Badge } from './badge';
-import { Education } from './education';
-import { Experience } from './experience';
-import { Skills } from './skills';
+import { EmptyDetailState } from '../Common/EmptyDetailState';
+import { Badge } from './Badge';
+import { Education } from './Education';
+import { Experience } from './Experience';
+import { Skills } from './Skills';
 
-const Analysis = (props: PropsWithChildren<{ score?: ReactNode }>) => {
+export const Analysis = (props: PropsWithChildren<{ score?: ReactNode }>) => {
   const {
     details: { data, status },
   } = useApplication();
@@ -61,5 +61,3 @@ Analysis.Badge = Badge;
 Analysis.Education = Education;
 Analysis.Skills = Skills;
 Analysis.Experience = Experience;
-
-export { Analysis };

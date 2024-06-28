@@ -2,10 +2,10 @@ import { AnalysisSkeleton } from '@/devlink/AnalysisSkeleton';
 import { Skeleton } from '@/devlink2/Skeleton';
 import { useApplication } from '@/src/context/ApplicationContext';
 
-import { Loader } from '../../common';
-import { AnalysisItem } from './common';
+import { Loader } from '../../Common/Loader';
+import { AnalysisItem } from './Common/AnalysisItem';
 
-const Education = () => {
+export const Education = () => {
   const {
     details: { status },
   } = useApplication();
@@ -17,5 +17,3 @@ const Education = () => {
     );
   return <AnalysisItem type='education' />;
 };
-
-export { Education };

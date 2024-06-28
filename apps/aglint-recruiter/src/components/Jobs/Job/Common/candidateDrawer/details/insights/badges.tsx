@@ -9,17 +9,15 @@ import { useApplication } from '@/src/context/ApplicationContext';
 import { ApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { BADGE_CONSTANTS } from '@/src/queries/job-applications';
 
-import { Loader } from '../../common';
+import { Loader } from '../../Common/Loader';
 
-const Badges = () => {
+export const Badges = () => {
   return (
     <Stack style={{ display: 'flex', flexDirection: 'row', gap: '8px' }}>
       <Content />
     </Stack>
   );
 };
-
-export { Badges };
 
 const Content = () => {
   const {

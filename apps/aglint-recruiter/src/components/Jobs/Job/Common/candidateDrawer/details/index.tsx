@@ -1,11 +1,11 @@
 import { Stack } from '@mui/material';
 import type { PropsWithChildren } from 'react';
 
-import { Analysis } from './analysis';
-import { Education } from './education';
-import { Experience } from './experience';
-import { Insights } from './insights';
-import { Skills } from './skills';
+import { Analysis } from './Analysis';
+import { Education } from './Education';
+import { Experience } from './Experience';
+import { Insights } from './Insights';
+import { Skills } from './Skills';
 
 const Details = (props: PropsWithChildren) => {
   return (
