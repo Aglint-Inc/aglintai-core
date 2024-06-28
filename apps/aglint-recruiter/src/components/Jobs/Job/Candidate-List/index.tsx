@@ -7,9 +7,9 @@ import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useJob } from '@/src/context/JobContext';
 import NotFoundPage from '@/src/pages/404';
 
-import { UploadApplications } from '../Common/uploadApplications';
+import { UploadApplications } from '../Common/UploadApplications';
 import { Actions } from './Actions';
-import DNDProvider from './dndProvider';
+import DNDProvider from './DNDProvider';
 import Drawer from './Drawer';
 import Filters from './Filters';
 import { BreadCrumbs } from './layout';

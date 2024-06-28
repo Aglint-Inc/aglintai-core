@@ -691,18 +691,22 @@ function FilterOptionsList({
           return (
             <>
               {optionList.header && (
-                <Typography>{optionList.header}</Typography>
+                <Typography paddingLeft={'4px'}>{optionList.header}</Typography>
               )}
               {filteredOp.map((option) => {
                 return (
                   <Stack
                     key={option.id}
                     direction={'row'}
-                    sx={{ alignItems: 'center' }}
+                    padding={'8px 12px'}
+                    sx={{ alignItems: 'center', borderRadius:'4px',':hover':{
+                      bgcolor:'var(--neutral-2)'
+                    }}}
                     spacing={1}
                     onClick={() => {
                       setSelectedItems(option.id, optionList.path || []);
                     }}
+                    
                   >
                     <Checkbox
                       checked={
@@ -717,7 +721,7 @@ function FilterOptionsList({
                     <Typography
                       sx={{
                         fontSize: '14px',
-                        fontWeight: 600,
+                        fontWeight: 400,
                         cursor: 'pointer',
                       }}
                     >

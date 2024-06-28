@@ -3575,6 +3575,7 @@ export type Database = {
           interview_score: number | null
           is_new: boolean | null
           job_id: string | null
+          latest_activity: string | null
           linkedin: string | null
           meeting_details: Json | null
           name: string | null
@@ -5080,7 +5081,12 @@ export type Database = {
         | "zoom"
       interviewer_type: "qualified" | "shadow" | "reverse_shadow"
       job_scoring_param_status: "loading" | "success"
-      meeting_flow: "self_scheduling" | "candidate_request" | "debrief"
+      meeting_flow:
+        | "self_scheduling"
+        | "candidate_request"
+        | "debrief"
+        | "mail_agent"
+        | "phone_agent"
       modules: "standard" | "scheduler" | "assessment" | "jobs"
       permissions_type:
         | "jobs_create"

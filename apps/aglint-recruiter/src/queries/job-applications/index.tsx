@@ -184,7 +184,11 @@ const getApplications = async ({
       ['city', 'state', 'country'].forEach((type) =>
         query.order(type, { ascending: sort.order === 'asc' }),
       );
-    else query.order(sort.type, { ascending: sort.order === 'asc' });
+    else
+      query.order(sort.type, {
+        ascending: sort.order === 'asc',
+        nullsFirst: false,
+      });
   }
 
   query.order('id');

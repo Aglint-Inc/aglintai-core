@@ -1,7 +1,7 @@
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { capitalize } from '@/src/utils/text/textUtils';
 
-import { getIconName, Section } from '../utils';
+import { type Section, getIconName } from '../../../utils';
 
 export const EmptyDetailState = ({ section }: { section: Section }) => {
   return (

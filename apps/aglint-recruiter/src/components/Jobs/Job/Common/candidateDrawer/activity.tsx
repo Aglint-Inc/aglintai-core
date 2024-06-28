@@ -8,7 +8,8 @@ import IconApplicationLogs from '@/src/components/Scheduling/CandidateDetails/Ri
 import SlotContent from '@/src/components/Scheduling/CandidateDetails/RightPanel/SlotContent';
 import { useApplication } from '@/src/context/ApplicationContext';
 
-import { EmptyState, Loader } from './common';
+import { EmptyState } from './Common/EmptyState';
+import { Loader } from './Common/Loader';
 
 export const Activity = () => {
   const { push } = useRouter();

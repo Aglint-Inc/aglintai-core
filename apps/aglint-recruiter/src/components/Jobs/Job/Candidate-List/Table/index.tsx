@@ -7,16 +7,11 @@ import { SkeletonCandidateListItem } from '@/devlink2/SkeletonCandidateListItem'
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useKeyPress } from '@/src/hooks/useKeyPress';
 
-import { Loader } from '../../Common/candidateDrawer/common';
-import { EmptyList } from './common';
-import ApplicantsList from './list';
+import { Loader } from '../../Common/CandidateDrawer/Common/Loader';
+import { EmptyList } from './Common/EmptyList';
+import List from './List';
 
 export const Table = memo(() => {
-  return <List />;
-});
-Table.displayName = 'Table';
-
-const List = memo(() => {
   const {
     job: { count },
     cascadeVisibilites,
@@ -52,7 +47,7 @@ const List = memo(() => {
     return <Loader count={8}>{skeleton}</Loader>;
 
   return (
-    <ApplicantsList
+    <List
       key={section}
       applications={sectionApplication}
       count={count[section]}
@@ -76,4 +71,4 @@ const List = memo(() => {
     />
   );
 });
-List.displayName = 'List';
+Table.displayName = 'Table';

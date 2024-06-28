@@ -1,10 +1,13 @@
 /* eslint-disable security/detect-object-injection */
 import { JdAnalysisItem } from '@/devlink/JdAnalysisItem';
 import { useApplication } from '@/src/context/ApplicationContext';
-import { ApplicationDetails } from '@/src/context/ApplicationContext/type';
+import type { ApplicationDetails } from '@/src/context/ApplicationContext/type';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
-const AnalysisItem = ({
+import { getSafeReasoningType } from '../Util/getSafeReasoningType';
+import { getScoreTier } from '../Util/getScoreTier';
+
+export const AnalysisItem = ({
   type,
 }: {
   type: keyof ApplicationDetails<'details'>['score_json']['scores'];
@@ -36,23 +39,4 @@ const AnalysisItem = ({
       isPoor={tier === 'Low'}
     />
   );
-};
-
-export { AnalysisItem };
-
-const getScoreTier = (score: number): 'High' | 'Medium' | 'Low' => {
-  return score > 66 ? 'High' : score > 33 ? 'Medium' : 'Low';
-};
-
-const getSafeReasoningType = (
-  type: keyof ApplicationDetails<'details'>['score_json']['scores'],
-): keyof ApplicationDetails<'details'>['score_json']['reasoning'] => {
-  switch (type) {
-    case 'skills':
-      return 'skills';
-    case 'experience':
-      return 'positions';
-    case 'education':
-      return 'schools';
-  }
 };

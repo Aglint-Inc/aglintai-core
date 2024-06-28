@@ -14,7 +14,8 @@ import { useApplication } from '@/src/context/ApplicationContext';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ROUTES from '@/src/utils/routing/routes';
 
-import { EmptyState, Loader } from './common';
+import { EmptyState } from './Common/EmptyState';
+import { Loader } from './Common/Loader';
 
 const Tasks = () => {
   const {
