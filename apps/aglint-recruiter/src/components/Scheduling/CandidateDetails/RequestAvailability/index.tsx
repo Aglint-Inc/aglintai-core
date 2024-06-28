@@ -255,7 +255,6 @@ function RequestAvailability() {
         if (markCreateTicket) {
           if (selectedTaskId) {
             task = await updateTask({
-              id: selectedTaskId,
               status: 'in_progress',
               request_availability_id: result.id,
             });
@@ -280,13 +279,14 @@ function RequestAvailability() {
               type: 'availability',
               request_availability_id: result.id,
             });
+            await supabase.from('task_session_relation').insert(
+              selectedSessions.map((ele) => ({
+                session_id: ele.id,
+                task_id: task.id,
+              })),
+            );
           }
-          await supabase.from('task_session_relation').insert(
-            selectedSessions.map((ele) => ({
-              session_id: ele.id,
-              task_id: task.id,
-            })),
-          );
+
           await createTaskProgress({
             data: {
               created_by: {

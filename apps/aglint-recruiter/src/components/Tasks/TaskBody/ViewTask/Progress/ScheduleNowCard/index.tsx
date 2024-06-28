@@ -7,13 +7,9 @@ import Icon from '@/src/components/Common/Icons/Icon';
 import {
   setDateRange,
   setIsScheduleNowOpen,
-  setScheduleFlow,
   setStepScheduling,
 } from '@/src/components/Scheduling/CandidateDetails/SelfSchedulingDrawer/store';
-import {
-  setRequestSessionIds,
-  setSelectedSessionIds,
-} from '@/src/components/Scheduling/CandidateDetails/store';
+import { setRescheduleSessionIds } from '@/src/components/Scheduling/CandidateDetails/store';
 function ScheduleNowCard({
   selectedTask,
 }: {
@@ -45,27 +41,16 @@ function ScheduleNowCard({
             size={1}
             onClickButton={{
               onClick: () => {
-                if (selectedTask.type === 'availability') {
-                  setIsScheduleNowOpen(true);
-                  setScheduleFlow('create_request_availibility');
-                  setStepScheduling('request_availibility');
-                }
-                if (selectedTask.type === 'self_schedule') {
-                  setIsScheduleNowOpen(true);
-                  setScheduleFlow('self_scheduling');
-                  setStepScheduling('pick_date');
-                }
-                setRequestSessionIds(
-                  selectedTask.session_ids.map((ele) => ele.id),
-                );
-                setSelectedSessionIds(
-                  selectedTask.session_ids.map((ele) => ele.id),
-                );
-
                 setDateRange({
                   start_date: selectedTask.schedule_date_range.start_date,
                   end_date: selectedTask.schedule_date_range.end_date,
                 });
+                setIsScheduleNowOpen(true);
+
+                setRescheduleSessionIds(
+                  selectedTask.session_ids.map((ele) => ele.id),
+                );
+                setStepScheduling('reschedule');
 
                 router.push(
                   `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/application/${selectedTask.application_id}?task_id=${selectedTask.id}`,

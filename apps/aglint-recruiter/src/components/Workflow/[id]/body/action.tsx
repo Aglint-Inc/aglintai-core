@@ -9,7 +9,6 @@ import { WorkflowItem } from '@/devlink3/WorkflowItem';
 import Loader from '@/src/components/Common/Loader';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UISelect from '@/src/components/Common/Uiselect';
-import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -166,19 +165,28 @@ type FormsType = {
 const EmailSubject: React.FC<FormsType> = memo(
   ({ name, value, disabled = true }) => {
     return (
-      <UITextField
-        label={'Email Subject'}
-        disabled={disabled}
-        name={name}
-        placeholder={'Email Subject'}
-        value={value[name]}
-        error={false}
-        helperText={null}
-        onChange={null}
-        minRows={1}
-        multiline
-        defaultLabelColor={'var(--neutral-6)'}
-      />
+      <Stack>
+        <UITypography type='small'>Email Subject</UITypography>
+        <Stack
+          sx={{
+            mt: '8px',
+            border: '1px solid',
+            borderColor: 'var(--neutral-6)',
+            borderRadius: 'var(--radius-2)',
+          }}
+        >
+          <TipTapAIEditor
+            singleLine={true}
+            padding={1}
+            toolbar={false}
+            disabled={disabled}
+            editor_type='email'
+            initialValue={value[name]}
+            handleChange={null}
+            placeholder=''
+          />
+        </Stack>
+      </Stack>
     );
   },
 );
@@ -198,7 +206,9 @@ const EmailBody: React.FC<FormsType> = memo(
           }}
         >
           <TipTapAIEditor
+            toolbar={false}
             disabled={disabled}
+            editor_type='email'
             initialValue={value[name]}
             handleChange={null}
             placeholder=''

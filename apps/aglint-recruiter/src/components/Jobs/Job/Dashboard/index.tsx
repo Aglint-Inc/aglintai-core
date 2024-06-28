@@ -60,7 +60,7 @@ import ROUTES from '@/src/utils/routing/routes';
 import { capitalize, capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
-import { UploadApplications } from '../Common/uploadApplications';
+import { UploadApplications } from '../Common/UploadApplications';
 import DashboardBarChart from './barChart';
 import DashboardDoughnutChart from './doughnut';
 import DashboardLineChart from './lineChart';
