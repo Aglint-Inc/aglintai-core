@@ -466,7 +466,7 @@ const Interview = ({
       <UITextField
         name={'interviewer_cnt'}
         type='number'
-        width='40px'
+        width='60px'
         value={interviewer_cnt?.value ?? ''}
         error={interviewer_cnt.error}
         helperText={interviewer_cnt.helper}
