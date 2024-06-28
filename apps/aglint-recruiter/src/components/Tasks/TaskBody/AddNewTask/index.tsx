@@ -141,6 +141,7 @@ function AddNewTask() {
             ? 'scheduled'
             : 'not_started',
       priority: selectedPriority,
+      sessions: selectedSession,
     }).then(async (data) => {
       const { data: selectedTask } = await supabase
         .from('new_tasks')
@@ -149,13 +150,6 @@ function AddNewTask() {
         )
         .eq('id', data.id)
         .single();
-
-      await supabase.from('task_session_relation').insert(
-        selectedSession.map((ele) => ({
-          session_id: ele.id,
-          task_id: selectedTask.id,
-        })),
-      );
 
       const assignee = selectedTask.assignee[0];
       if (
