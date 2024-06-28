@@ -75,7 +75,11 @@ const getCandFilteredSlots = (
   parsed_body: CandidateDirectBookingType,
 ) => {
   const int_rounds_length = ScheduleUtils.getSessionRounds(
-    interviewer_selected_options[0].sessions,
+    interviewer_selected_options[0].sessions.map((s) => ({
+      break_duration: s.break_duration,
+      session_duration: s.duration,
+      session_order: s.session_order,
+    })),
   ).length;
   if (parsed_body.selected_plan.length !== int_rounds_length) {
     throw new Error('invalid plan');
@@ -84,7 +88,11 @@ const getCandFilteredSlots = (
 
   interviewer_selected_options.forEach((plan) => {
     const session_rounds = ScheduleUtils.getSessionRounds(
-      plan.sessions,
+      plan.sessions.map((s) => ({
+        break_duration: s.break_duration,
+        session_duration: s.duration,
+        session_order: s.session_order,
+      })),
     ) as unknown as SessionCombinationRespType[][];
     let is_valid = true;
     for (
