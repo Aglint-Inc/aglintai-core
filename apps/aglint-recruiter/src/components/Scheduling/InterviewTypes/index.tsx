@@ -1,8 +1,7 @@
-import { AvatarGroup, Box, InputAdornment, Stack } from '@mui/material';
+import { AvatarGroup, Box, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { EmptyState } from '@/devlink2/EmptyState';
 import { InterviewModuleCard } from '@/devlink2/InterviewModuleCard';
 import { InterviewModuleTable } from '@/devlink2/InterviewModuleTable';
@@ -13,7 +12,7 @@ import ROUTES from '@/src/utils/routing/routes';
 import Icon from '../../Common/Icons/Icon';
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
-import UITextField from '../../Common/UITextField';
+import SearchField from '../../Common/SearchField/SearchField';
 import CreateModuleDialog from './CreateModuleDialog';
 import { setTextSearch, useFilterModuleStore } from './filter-store';
 import FilterCreatedBy from './Filters/FilterCreatedBy';
@@ -66,21 +65,13 @@ export function Modules() {
           <InterviewModuleTable
             slotFilter={
               <Stack direction={'row'} gap={2}>
-                <UITextField
-                  width={'250px'}
-                  height={32}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position='end'>
-                        <GlobalIcon iconName='search' size='5' />
-                      </InputAdornment>
-                    ),
-                  }}
+                <SearchField
+                  value={textSearch}
+                  onClear={() => setTextSearch('')}
                   placeholder='Search by name.'
                   onChange={(e) => {
                     setTextSearch(e.target.value);
                   }}
-                  value={textSearch}
                 />
                 <FilterDepartment />
                 <FilterCreatedBy />

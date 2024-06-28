@@ -1,15 +1,14 @@
-import { InputAdornment, Popover, Stack } from '@mui/material';
+import { Popover, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 import { MouseEvent, useEffect, useState, useTransition } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { FilterList } from '@/devlink2/FilterList';
 import { FilterPill } from '@/devlink2/FilterPill';
+import SearchField from '@/src/components/Common/SearchField/SearchField';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import UITextField from '@/src/components/Common/UITextField';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { useScheduleStatesContext } from '../ScheduleStatesContext';
@@ -75,6 +74,8 @@ function Filters() {
     scheduleFilterIds?.date_range || [],
   );
 
+  const [searchText, setSearchText] = useState<string>('');
+  const [, startTransition] = useTransition();
   const [selectedItem, setSelectedItem] = useState<any>(initialFilter);
 
   // popOver
@@ -191,25 +192,22 @@ function Filters() {
     allSchedules,
   ]);
 
-  const [searchText, setSearchText] = useState('');
-  const [, startTransition] = useTransition();
-
   const handleTextChange = (e) => {
-    setSearchText(e.target.value);
+    const value = e.target.value;
+    setSearchText(value);
     startTransition(() => {
-      if (e.target.value) {
+      if (value) {
         const filteredSchedules = filterSchedules.filter((ele) => {
           if (
             ele.interview_meeting.session_name
               .toLowerCase()
-              .includes(e.target.value.toLowerCase())
+              .includes(value.toLowerCase())
           ) {
             return ele;
           }
         });
         setFilterSchedule(filteredSchedules);
-      }
-      if (!e.target.value) {
+      } else {
         setFilterSchedule(allSchedules);
       }
     });
@@ -223,31 +221,11 @@ function Filters() {
   };
   return (
     <Stack direction={'row'} spacing={'var(--space-3)'}>
-      <UITextField
-        height={32}
-        width='250px'
-        InputProps={{
-          endAdornment: searchText ? (
-            <Stack
-              onClick={handleTextClear}
-              sx={{
-                '&:hover': {
-                  backgroundColor: 'var(--neutral-3)',
-                  cursor: 'pointer',
-                },
-              }}
-            >
-              <GlobalIcon iconName='close' size={5} />
-            </Stack>
-          ) : (
-            <InputAdornment position='end'>
-              <GlobalIcon iconName='search' size='5' />
-            </InputAdornment>
-          ),
-        }}
-        placeholder={'Search session.'}
+      <SearchField
         value={searchText}
         onChange={handleTextChange}
+        onClear={handleTextClear}
+        placeholder={'Search session.'}
       />
       {selectedFilters.map((filterType, i) => {
         let itemList: { label: string; id: string }[] =

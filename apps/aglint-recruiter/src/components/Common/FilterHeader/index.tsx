@@ -1,9 +1,9 @@
 import { Stack } from '@mui/material';
 import React from 'react';
 
+import SearchField from '../SearchField/SearchField';
 import DateRangeSelector from './DateRangeSelector';
 import { FiltersComponent, FilterTypes } from './FilterComponents';
-import SearchComponent from './SearchComponent';
 import SortComponent, { sortComponentType } from './SortComponent';
 
 export default function FilterHeader({
@@ -23,7 +23,14 @@ export default function FilterHeader({
       justifyContent={'space-between'}
       gap={2}
     >
-      {Boolean(search) && <SearchComponent {...search} />}
+      {Boolean(search) && (
+        <SearchField
+          value={search.value}
+          onChange={(e) => search.setValue(e.target.value)}
+          onClear={() => search.setValue('')}
+          placeholder={search.placeholder}
+        />
+      )}
       <Stack direction={'row'} justifyContent={'space-between'} flexGrow={1}>
         <Stack direction={'row'} gap={2}>
           <FiltersComponent
