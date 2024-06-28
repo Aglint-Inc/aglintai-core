@@ -13,7 +13,7 @@ import toast from '@/src/utils/toast';
 import {
   setIsScheduleNowOpen,
   setStepScheduling,
-} from '../../CandidateDetails/SelfSchedulingDrawer/store';
+} from '../../CandidateDetails/SchedulingDrawer/store';
 import { setRescheduleSessionIds } from '../../CandidateDetails/store';
 import { useScheduleDetails } from '../hooks';
 import { ScheduleMeeting } from '../types';
@@ -135,10 +135,12 @@ function CancelReasonCards({
             textReschedule={
               item.interview_session_cancel.schedule_id
                 ? item.interview_session_cancel.type === 'reschedule'
-                  ? 'requested a reschedule'
+                  ? 'requested a reschedule' +
+                    `${item.interview_session_cancel?.other_details?.dateRange ? ` from ${dayjs(item.interview_session_cancel.other_details.dateRange.start).format('DD MMM')} - ${dayjs(item.interview_session_cancel.other_details.dateRange.end).format('DD MMM')}` : ''}`
                   : 'cancelled this schedule'
                 : item.interview_session_cancel.type === 'reschedule'
-                  ? 'requested a reschedule'
+                  ? 'requested a reschedule' +
+                    `${item.interview_session_cancel?.other_details?.dateRange ? ` from ${dayjs(item.interview_session_cancel.other_details.dateRange.start).format('DD MMM')} - ${dayjs(item.interview_session_cancel.other_details.dateRange.end).format('DD MMM')}` : ''}`
                   : 'declined this schedule'
             }
             bgColorProps={{
@@ -156,8 +158,9 @@ function CancelReasonCards({
             isButtonVisible={true}
             isChangeInterviewerVisible={isChangeInterviewerVisible}
             textReason={
-              item.interview_session_cancel.reason +
-              `${item.interview_session_cancel?.other_details?.dateRange ? item.interview_session_cancel.other_details.dateRange.start : ''}`
+              item.interview_session_cancel.reason.toLowerCase() === 'other'
+                ? item.interview_session_cancel.other_details?.note
+                : item.interview_session_cancel.reason
             }
             onClickChangeInterviewer={{
               onClick: () => {

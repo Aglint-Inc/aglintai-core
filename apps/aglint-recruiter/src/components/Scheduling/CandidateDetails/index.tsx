@@ -13,7 +13,6 @@ import CandidateInfo from '../Common/CandidateInfo';
 import ScheduleProgress from '../Common/ScheduleProgress';
 import FeedbackWindow from '../ScheduleDetails/Feedback';
 import CandidateFeedback from './CandidateFeedback';
-import DeleteScheduleDialog from './Common/CancelScheduleDialog';
 import RescheduleDialog from './Common/RescheduleDialog';
 import FullSchedule from './FullSchedule';
 import { useAllActivities, useGetScheduleApplication } from './hooks';
@@ -66,9 +65,6 @@ function SchedulingApplication() {
 
   return (
     <>
-      {/* <RequestAvailabilityDrawer /> */}
-
-      <DeleteScheduleDialog refetch={allActivities.refetch} />
       <RescheduleDialog refetch={allActivities.refetch} />
 
       <PageLayout

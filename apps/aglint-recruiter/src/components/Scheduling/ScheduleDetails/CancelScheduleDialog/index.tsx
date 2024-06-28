@@ -1,9 +1,8 @@
-import { InterviewSessionRelationTypeDB } from '@aglint/shared-types';
-import { Dialog, Stack, TextField, Typography } from '@mui/material';
+import { DatabaseEnums } from '@aglint/shared-types';
+import { Dialog, Radio, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { Dispatch, useEffect, useState } from 'react';
 
-import { Checkbox } from '@/devlink/Checkbox';
 import { DeletePopup } from '@/devlink3/DeletePopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsCancelSchedule } from '@/src/pages/api/scheduling/application/cancelschedule';
@@ -11,20 +10,25 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { addScheduleActivity } from '../../Candidates/queries/utils';
-import { ScheduleMeeting } from '../types';
 
 function CancelScheduleDialog({
   isDeclineOpen,
   setIsDeclineOpen,
-  sessionRelation,
-  schedule,
   refetch,
+  meeting_id,
+  session_id,
+  application_id,
+  session_name,
+  meeting_flow,
 }: {
   isDeclineOpen: boolean;
   setIsDeclineOpen: Dispatch<React.SetStateAction<boolean>>;
-  sessionRelation: InterviewSessionRelationTypeDB;
-  schedule: ScheduleMeeting;
   refetch: () => void;
+  meeting_id: string;
+  session_id: string;
+  application_id: string;
+  session_name: string;
+  meeting_flow: DatabaseEnums['meeting_flow'];
 }) {
   const { recruiter, recruiterUser } = useAuthDetails();
 
@@ -38,34 +42,34 @@ function CancelScheduleDialog({
   ];
 
   useEffect(() => {
-    setReason('Too Many Interviews');
+    setReason(reasons[0]);
   }, []);
 
   const onClickConfirm = async () => {
     try {
-      if (sessionRelation?.id) {
-        const req_body: ApiBodyParamsCancelSchedule = {
-          cancel_user_id: recruiterUser.user_id,
-          meeting_id: schedule.interview_meeting.id,
-          session_id: schedule.interview_session.id,
-          notes,
-          reason,
-          application_id: schedule.schedule.application_id,
-        };
+      const req_body: ApiBodyParamsCancelSchedule = {
+        cancel_user_id: recruiterUser.user_id,
+        meeting_id,
+        session_id,
+        notes,
+        reason,
+        application_id,
+        meeting_flow,
+      };
 
-        addScheduleActivity({
-          title: `Canceled ${schedule.interview_session.name}. Reason: ${reason} `,
-          application_id: schedule.schedule.application_id,
-          logged_by: 'user',
-          supabase: supabase,
-          created_by: recruiterUser.user_id,
-        });
+      await axios.post('/api/scheduling/application/cancelschedule', {
+        ...req_body,
+      });
 
-        await axios.post('/api/scheduling/application/cancelschedule', {
-          ...req_body,
-        });
-        refetch();
-      }
+      addScheduleActivity({
+        title: `Canceled ${session_name}. Reason: ${reason} `,
+        application_id,
+        logged_by: 'user',
+        supabase: supabase,
+        created_by: recruiterUser.user_id,
+      });
+
+      refetch();
     } catch {
       toast.error('Unable to save cancel reason');
     } finally {
@@ -102,8 +106,14 @@ function CancelScheduleDialog({
                     alignItems={'center'}
                     spacing={1}
                   >
-                    <Checkbox isChecked={rea === reason} />
-                    <Typography variant='body1' color={'var(--neutral-12)'}>
+                    <Radio checked={rea === reason} />
+                    <Typography
+                      variant='body1'
+                      color={'var(--neutral-12)'}
+                      sx={{
+                        cursor: 'pointer',
+                      }}
+                    >
                       {rea}
                     </Typography>
                   </Stack>

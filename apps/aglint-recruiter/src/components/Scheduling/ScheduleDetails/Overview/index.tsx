@@ -31,6 +31,7 @@ import { useScheduleDetails } from '../hooks';
 import IconCancelSchedule from '../Icons/IconCancelSchedule';
 import IconReschedule from '../Icons/IconReschedule';
 import RequestRescheduleDialog from '../RequestRescheduleDialog';
+import RescheduleDialog from '../RescheduleDialog';
 import { ScheduleMeeting } from '../types';
 import AllRolesMeetings from './AllRolesMeetings';
 import IconAccept from './IconAccept';
@@ -53,7 +54,8 @@ function Overview({
   const { recruiterUser } = useAuthDetails();
   const { checkPermissions } = useRolesAndPermissions();
   const [filterJson, setFilterJson] = useState<InterviewFilterJsonType>();
-  const [isRequestRescheduleOpen, setIsRequestRescheduleOpen] = useState(false);
+  const [isRequestRescheduleOpen, setIsRequestRescheduleOpen] = useState(false); //role interviewers will ask for reschedule
+  const [isRescheduleOpen, setIsRescheduleOpen] = useState(false); // role who have permission to reschedule
   const [isDeclineOpen, setIsDeclineOpen] = useState(false);
 
   // eslint-disable-next-line no-unused-vars
@@ -82,10 +84,61 @@ function Overview({
     setFilterJson(data[0]);
   };
 
+  const users = schedule?.users || [];
+
+  const isMeetingJobHiringTeam =
+    schedule?.hiring_manager?.id === recruiterUser.user_id ||
+    schedule?.organizer?.id === recruiterUser.user_id ||
+    schedule?.recruiting_coordinator?.id === recruiterUser.user_id ||
+    schedule?.recruiter?.id === recruiterUser.user_id;
+
+  const confirmedUsers = users?.filter(
+    (item) => item.interview_session_relation.is_confirmed,
+  );
+
+  //if logged in user is hiring team or having scheduler_update permission
+  const isRescheduleButtonVisible =
+    (isMeetingJobHiringTeam || checkPermissions(['scheduler_update'])) &&
+    schedule?.interview_meeting?.status === 'confirmed';
+
+  // if logged in user is an interviewer in this session
+  const isRequestRescheduleButtonVisible =
+    schedule?.users?.find(
+      (user) =>
+        user.interview_session_relation.is_confirmed &&
+        user.email === recruiterUser.email &&
+        user.interview_session_relation.training_type === 'qualified',
+    ) &&
+    !cancelReasons?.some(
+      (item) =>
+        item.recruiter_user.id === recruiterUser.user_id &&
+        !item.interview_session_cancel.is_resolved,
+    ) &&
+    schedule?.interview_meeting?.status === 'confirmed';
+  // if logged in user is an interviewer in this session
+
+  const isCancelButtonVisible =
+    (checkPermissions(['scheduler_create']) || isMeetingJobHiringTeam) &&
+    schedule?.interview_meeting?.status === 'confirmed';
+
+  // if logged in user is interviewer session relation will be there or else null
+  const [sessionRelation, setSessionRelation] =
+    useState<InterviewSessionRelationTypeDB | null>();
+
+  useEffect(() => {
+    if (schedule?.users) {
+      setSessionRelation(
+        schedule?.users?.find((user) => user.email === recruiterUser.email)
+          ?.interview_session_relation,
+      );
+    }
+  }, [schedule?.users]);
+  // if logged in user is interviewer session relation will be there or else null
+
   const fetchCalendarStatus = async () => {
     try {
       const eventId = schedule.interview_meeting?.cal_event_id;
-      const user_id = schedule.users[0].id;
+      const user_id = confirmedUsers[0].id;
 
       const res = await axios.post('/api/scheduling/v1/event_attendee_status', {
         attendee_interv_id: user_id,
@@ -99,93 +152,55 @@ function Overview({
     }
   };
 
-  const users = schedule?.users || [];
-
-  const isRescheduleCardVisible =
-    recruiterUser.role === 'admin' ||
-    recruiterUser.role === 'recruiter' ||
-    recruiterUser.role === 'hiring_manager' ||
-    recruiterUser.role === 'recruiting_coordinator' ||
-    recruiterUser.user_id === schedule.interview_coordinator?.id;
-
-  const confirmedUsers = users?.filter(
-    (item) => item.interview_session_relation.is_confirmed,
-  );
-
-  const isRescheduleButtonVisible =
-    (schedule?.users?.find(
-      (user) =>
-        user.interview_session_relation.is_confirmed &&
-        user.email === recruiterUser.email &&
-        user.interview_session_relation.training_type === 'qualified',
-    ) &&
-      !cancelReasons?.some(
-        (item) =>
-          item.recruiter_user.id === recruiterUser.user_id &&
-          !item.interview_session_cancel.is_resolved,
-      )) ||
-    schedule?.interview_meeting?.status === 'confirmed';
-
-  const isCancelButtonVisible =
-    (recruiterUser.role === 'admin' ||
-      recruiterUser.role === 'recruiter' ||
-      recruiterUser.role === 'hiring_manager' ||
-      recruiterUser.role === 'recruiting_coordinator' ||
-      recruiterUser.user_id === schedule?.interview_coordinator?.id) &&
-    schedule?.interview_meeting?.status === 'confirmed';
-
-  const [sessionRelation, setSessionRelation] =
-    useState<InterviewSessionRelationTypeDB | null>();
-
-  useEffect(() => {
-    if (schedule?.users) {
-      setSessionRelation(
-        schedule?.users?.find((user) => user.email === recruiterUser.email)
-          ?.interview_session_relation,
-      );
-    }
-  }, [schedule?.users]);
-
   if (!schedule) {
     return null;
   }
 
   return (
     <>
-      {schedule && (
-        <>
-          <DeclineScheduleDialog
-            sessionRelation={sessionRelation}
-            isDeclineOpen={isDeclineOpen}
-            setIsDeclineOpen={setIsDeclineOpen}
-            schedule={schedule}
-            refetch={refetch}
-          />
-          <CancelScheduleDialog
-            sessionRelation={sessionRelation}
-            isDeclineOpen={isCancelOpen}
-            setIsDeclineOpen={setIsCancelOpen}
-            schedule={schedule}
-            refetch={refetch}
-          />
-          <RequestRescheduleDialog
-            isRequestRescheduleOpen={isRequestRescheduleOpen}
-            setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
-            sessionRelation={sessionRelation}
-            schedule={schedule}
-            refetch={refetch}
-          />
-        </>
-      )}
+      <>
+        <DeclineScheduleDialog
+          sessionRelation={sessionRelation}
+          isDeclineOpen={isDeclineOpen}
+          setIsDeclineOpen={setIsDeclineOpen}
+          schedule={schedule}
+          refetch={refetch}
+        />
+        <CancelScheduleDialog
+          isDeclineOpen={isCancelOpen}
+          setIsDeclineOpen={setIsCancelOpen}
+          refetch={refetch}
+          application_id={schedule.schedule.application_id}
+          meeting_id={schedule.interview_meeting.id}
+          session_id={schedule.interview_session.id}
+          session_name={schedule.interview_session.name}
+          meeting_flow={schedule.interview_meeting.meeting_flow}
+        />
+        <RequestRescheduleDialog
+          isRequestRescheduleOpen={isRequestRescheduleOpen}
+          setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
+          sessionRelation={sessionRelation}
+          schedule={schedule}
+          refetch={refetch}
+        />
+        <RescheduleDialog
+          refetch={() => {}}
+          isRescheduleOpen={isRescheduleOpen}
+          setIsRescheduleOpen={setIsRescheduleOpen}
+          application_id={schedule.schedule.application_id}
+          meeting_id={schedule.interview_meeting.id}
+          session_id={schedule.interview_session.id}
+        />
+      </>
 
       <ScheduleTabOverview
         isResendLinkVisible={
-          checkPermissions(['scheduler_create']) &&
+          checkPermissions(['scheduler_update']) &&
           (schedule.interview_meeting.status === 'waiting' ||
             schedule.interview_meeting.status === 'confirmed')
         }
         isCopyLinkVisible={
-          checkPermissions(['scheduler_create']) &&
+          checkPermissions(['scheduler_update']) &&
           (schedule.interview_meeting.status === 'confirmed' ||
             schedule.interview_meeting.status === 'waiting')
         }
@@ -233,13 +248,9 @@ function Overview({
         }}
         slotButton={
           <>
-            {isRescheduleButtonVisible && (
+            {isRequestRescheduleButtonVisible && (
               <ScheduleButton
-                textLabel={
-                  checkPermissions(['scheduler_create'])
-                    ? 'Reschedule'
-                    : 'Request Reschedule'
-                }
+                textLabel={'Request Reschedule'}
                 slotIcon={<IconReschedule />}
                 onClickProps={{
                   onClick: () => {
@@ -248,6 +259,7 @@ function Overview({
                 }}
               />
             )}
+
             {isCancelButtonVisible && (
               <ScheduleButton
                 textLabel={'Cancel Schedule'}
@@ -265,11 +277,21 @@ function Overview({
                 }}
               />
             )}
+
+            {isRescheduleButtonVisible && (
+              <ScheduleButton
+                textLabel={'Reschedule'}
+                slotIcon={<IconReschedule />}
+                onClickProps={{
+                  onClick: () => {
+                    setIsRescheduleOpen(true);
+                  },
+                }}
+              />
+            )}
           </>
         }
-        isScheduleCardVisible={
-          isRescheduleCardVisible && cancelReasons?.length > 0
-        }
+        isScheduleCardVisible={true}
         isMeetingLinkVisible={
           schedule.interview_meeting.status == 'confirmed' &&
           Boolean(schedule.interview_meeting.meeting_link)

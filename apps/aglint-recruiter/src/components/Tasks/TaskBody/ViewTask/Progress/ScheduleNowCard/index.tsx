@@ -9,7 +9,7 @@ import {
   setIsScheduleNowOpen,
   setScheduleFlow,
   setStepScheduling,
-} from '@/src/components/Scheduling/CandidateDetails/SelfSchedulingDrawer/store';
+} from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/store';
 import {
   setRequestSessionIds,
   setSelectedSessionIds,

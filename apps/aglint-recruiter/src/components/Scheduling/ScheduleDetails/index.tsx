@@ -38,7 +38,8 @@ function SchedulingViewComp() {
   const cancelReasons = data?.cancel_data?.filter(
     (item) =>
       !item.interview_session_cancel.cancel_user_id &&
-      item.interview_session_cancel.is_ignored === false,
+      item.interview_session_cancel.is_ignored === false &&
+      item.interview_session_cancel.is_resolved === false,
   );
 
   const viewScheduleTabs = [
@@ -106,7 +107,7 @@ function SchedulingViewComp() {
             <ScheduleDetailTabs
               slotScheduleTabOverview={
                 <Stack spacing={'var(--space-4)'}>
-                  {checkPermissions(['scheduler_create']) && (
+                  {checkPermissions(['scheduler_update']) && (
                     <CancelReasonCards
                       cancelReasons={cancelReasons}
                       schedule={schedule}

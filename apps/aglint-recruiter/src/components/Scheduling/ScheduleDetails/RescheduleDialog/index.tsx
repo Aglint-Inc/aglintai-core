@@ -1,32 +1,48 @@
-import { InterviewSessionRelationTypeDB } from '@aglint/shared-types';
-import { Dialog, Radio, Stack, TextField, Typography } from '@mui/material';
+import {
+  Checkbox,
+  Dialog,
+  Radio,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
 import React, { Dispatch, useEffect, useState } from 'react';
 
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { addScheduleActivity } from '../../Candidates/queries/utils';
+import { cancelMailHandler } from '../../CandidateDetails/mailUtils';
+import {
+  setIsScheduleNowOpen,
+  setStepScheduling,
+} from '../../CandidateDetails/SchedulingDrawer/store';
+import { setRescheduleSessionIds } from '../../CandidateDetails/store';
 import { DateIcon } from '../../Settings/Components/DateSelector';
-import { ScheduleMeeting } from '../types';
+import { removeSessionFromFilterJson } from '../utils';
 
-function RequestRescheduleDialog({
-  isRequestRescheduleOpen,
-  setIsRequestRescheduleOpen,
-  sessionRelation,
-  schedule,
+function RescheduleDialog({
+  isRescheduleOpen,
   refetch,
+  setIsRescheduleOpen,
+  application_id,
+  meeting_id,
+  session_id,
 }: {
-  isRequestRescheduleOpen: boolean;
-  setIsRequestRescheduleOpen: Dispatch<React.SetStateAction<boolean>>;
-  sessionRelation: InterviewSessionRelationTypeDB;
-  schedule: ScheduleMeeting;
+  isRescheduleOpen: boolean;
   refetch: () => void;
+  setIsRescheduleOpen: Dispatch<React.SetStateAction<boolean>>;
+  application_id: string;
+  meeting_id: string;
+  session_id: string;
 }) {
+  const router = useRouter();
   const { recruiter, recruiterUser } = useAuthDetails();
   const currentDate = dayjs();
   const [reason, setReason] = useState('');
@@ -35,6 +51,7 @@ function RequestRescheduleDialog({
     start_date: string;
     end_date: string;
   }>();
+  const [sendCancelMail, setSendCancelMail] = useState(true);
 
   const reasons = recruiter.scheduling_reason?.internal?.rescheduling || [
     'Too Many Interviews',
@@ -53,62 +70,100 @@ function RequestRescheduleDialog({
 
   const onClickConfirm = async () => {
     try {
-      if (sessionRelation.id) {
-        await supabase
-          .from('interview_session_relation')
-          .update({ accepted_status: 'request_reschedule' })
-          .eq('id', sessionRelation.id);
+      const { error: errMeet } = await supabase
+        .from('interview_meeting')
+        .update({
+          status: 'cancelled',
+          start_time: null,
+          end_time: null,
+          cal_event_id: null,
+          meeting_link: null,
+          meeting_json: null,
+        })
+        .eq('id', meeting_id);
 
-        const { error } = await supabase
-          .from('interview_session_cancel')
-          .insert({
-            reason,
-            session_relation_id: sessionRelation.id,
-            session_id: schedule.interview_session.id,
-            type: 'reschedule',
-            other_details: {
-              dateRange: {
-                start: dateRange.start_date,
-                end: dateRange.end_date,
-              },
-              note: notes,
+      if (errMeet) throw new Error(errMeet.message);
+
+      const { error: errSesRel } = await supabase
+        .from('interview_session_relation')
+        .update({
+          accepted_status: 'waiting',
+          is_confirmed: false,
+        })
+        .eq('session_id', session_id);
+
+      if (errSesRel) throw new Error(errSesRel.message);
+
+      const { error: errInsSesCancel } = await supabase
+        .from('interview_session_cancel')
+        .insert({
+          type: 'reschedule',
+          session_id,
+          other_details: {
+            dateRange: {
+              start: dateRange.start_date,
+              end: dateRange.end_date,
             },
-          });
-
-        if (error) throw new Error();
-
-        addScheduleActivity({
-          title: `Requested reschedule for ${schedule.interview_session.name}. Reason: ${reason} `,
-          application_id: schedule.schedule.application_id,
-          logged_by: 'user',
-          supabase: supabase,
-          created_by: recruiterUser.user_id,
+            note: notes,
+          },
+          cancel_user_id: recruiterUser.user_id,
+          is_resolved: true,
+          reason,
         });
 
-        refetch();
-      } else {
-        //
+      if (errInsSesCancel) throw new Error(errInsSesCancel.message);
+
+      const { error: errUpdSesCancel } = await supabase
+        .from('interview_session_cancel')
+        .update({
+          is_resolved: true,
+        })
+        .eq('session_id', session_id);
+
+      if (errUpdSesCancel) throw new Error(errUpdSesCancel.message);
+
+      await removeSessionFromFilterJson({
+        session_id,
+        supabase,
+      });
+
+      if (sendCancelMail) {
+        cancelMailHandler({
+          application_id,
+          session_ids: [session_id],
+        });
       }
+
+      refetch();
+      setRescheduleSessionIds([session_id]);
+      setStepScheduling('reschedule');
+      setIsScheduleNowOpen(true);
+
+      router.push(
+        ROUTES['/scheduling/application/[application_id]']({
+          application_id,
+        }),
+      );
     } catch {
       toast.error('Unable to save cancel reason');
     } finally {
-      setIsRequestRescheduleOpen(false);
+      setIsRescheduleOpen(false);
     }
   };
 
   return (
     <Dialog
-      open={isRequestRescheduleOpen}
+      open={isRescheduleOpen}
       onClose={() => {
-        setIsRequestRescheduleOpen(false);
+        setIsRescheduleOpen(false);
       }}
     >
       <ConfirmationPopup
-        textPopupTitle={'Request Reschedule'}
+        textPopupTitle={'Reschedule'}
         isIcon={false}
         onClickCancel={{
           onClick: () => {
-            setIsRequestRescheduleOpen(false);
+            setIsRescheduleOpen(false);
           },
         }}
         onClickAction={{
@@ -219,12 +274,27 @@ function RequestRescheduleDialog({
                 setNotes(e.target.value);
               }}
             />
+
+            <Typography variant='body1' color={'error'}>
+              Old meeting will be moved to cancelled status if you proceed.
+            </Typography>
+            <Stack spacing={1} direction={'row'} alignItems={'center'}>
+              <Checkbox
+                checked={sendCancelMail}
+                onChange={(e) => {
+                  setSendCancelMail(e.target.checked);
+                }}
+              />
+              <Typography variant='body1'>
+                Send a cancellation email to the candidate
+              </Typography>
+            </Stack>
           </Stack>
         }
-        textPopupButton={'Request Reschedule'}
+        textPopupButton={'Proceed to Reschedule'}
       />
     </Dialog>
   );
 }
 
-export default RequestRescheduleDialog;
+export default RescheduleDialog;

@@ -6,12 +6,15 @@ import { NewInterviewPlan } from '@/devlink3/NewInterviewPlan';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import toast from '@/src/utils/toast';
 
-import CancelScheduleDialog from '../Common/CancelScheduleDialog';
-import RescheduleDialog from '../Common/RescheduleDialog';
-import SelfSchedulingDrawer from '../SelfSchedulingDrawer';
+import CancelScheduleDialog from '../../ScheduleDetails/CancelScheduleDialog';
+import RescheduleDialog from '../../ScheduleDetails/RescheduleDialog';
+import { useGetScheduleApplication } from '../hooks';
+import SelfSchedulingDrawer from '../SchedulingDrawer';
 import {
   SchedulingApplication,
   setEditSession,
+  setIndividualCancelOpen,
+  setIndividualRescheduleOpen,
   setIsEditBreakOpen,
   setSelectedSessionIds,
   useSchedulingApplicationStore,
@@ -29,11 +32,19 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
     initialSessions,
     selectedSessionIds,
     fetchingSchedule,
+    selectedApplication,
+    isIndividualCancelOpen,
+    selectedSession,
+    isIndividualRescheduleOpen,
   } = useSchedulingApplicationStore((state) => ({
     initialSessions: state.initialSessions,
     selectedSessionIds: state.selectedSessionIds,
     availabilities: state.availabilities,
     fetchingSchedule: state.fetchingSchedule,
+    selectedApplication: state.selectedApplication,
+    isIndividualCancelOpen: state.isIndividualCancelOpen,
+    selectedSession: state.selectedSession,
+    isIndividualRescheduleOpen: state.isIndividualRescheduleOpen,
   }));
 
   const isDebrief = initialSessions
@@ -64,12 +75,36 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
     }
   };
 
+  const { fetchInterviewDataByApplication } = useGetScheduleApplication();
+
   return (
     <>
       <SideDrawerEdit />
       <BreakDrawerEdit />
-      <CancelScheduleDialog refetch={refetch} />
-      <RescheduleDialog refetch={refetch} />
+      <CancelScheduleDialog
+        refetch={() => {
+          fetchInterviewDataByApplication();
+          refetch();
+        }}
+        application_id={selectedApplication.id}
+        isDeclineOpen={isIndividualCancelOpen}
+        setIsDeclineOpen={setIndividualCancelOpen}
+        meeting_flow={selectedSession?.interview_meeting.meeting_flow}
+        meeting_id={selectedSession?.interview_meeting.id}
+        session_id={selectedSession?.id}
+        session_name={selectedSession?.name}
+      />
+      <RescheduleDialog
+        refetch={() => {
+          fetchInterviewDataByApplication();
+          refetch();
+        }}
+        isRescheduleOpen={isIndividualRescheduleOpen}
+        setIsRescheduleOpen={setIndividualRescheduleOpen}
+        application_id={selectedApplication.id}
+        meeting_id={selectedSession?.interview_meeting.id}
+        session_id={selectedSession?.id}
+      />
       <SelfSchedulingDrawer refetch={refetch} />
       <NewInterviewPlan
         slotNewInterviewPlanCard={
@@ -115,9 +150,12 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                       }}
                     >
                       <ScheduleIndividualCard
+                        isCheckboxVisible={true}
                         session={session}
                         onClickCheckBox={selectSession}
                         selectedSessionIds={selectedSessionIds}
+                        isOnclickCard={true}
+                        isThreeDotVisible={true}
                       />
                     </Stack>
                     {session.break_duration > 0 && (

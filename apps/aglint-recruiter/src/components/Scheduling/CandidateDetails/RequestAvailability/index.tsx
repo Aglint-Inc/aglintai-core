@@ -38,7 +38,7 @@ import {
   setIsScheduleNowOpen,
   setStepScheduling,
   useSchedulingFlowStore,
-} from '../SelfSchedulingDrawer/store';
+} from '../SchedulingDrawer/store';
 import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
 import {
   createTask,

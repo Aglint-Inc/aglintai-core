@@ -46,7 +46,7 @@ const initialState: SchedulingApplication = {
   selectedSessionIds: [], // selected session ids
   requestSessionIds: [], // selected session ids in request candidate availability
   availabilities: [], // candidate availabilities sent to candidate for showing banner
-  selectedSession: null,
+  selectedSession: null, // used for cancelling individual session
   initialSessions: [], // sessions with meeting details based on this plan in getting rendered in candidate details
   selectedSchedule: null, // selected schedule details (interview_schedule table) used to find session is cached or not (if schedule exits then session is cached or else sessions are fetched from job plan)
   interviewModules: [], // all the interview modules for showing in the dropdown in edit session drawer

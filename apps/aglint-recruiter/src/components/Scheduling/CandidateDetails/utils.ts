@@ -33,7 +33,7 @@ import { addScheduleActivity } from '../Candidates/queries/utils';
 import { getScheduleName } from '../utils';
 import { fetchInterviewDataJob, fetchInterviewDataSchedule } from './hooks';
 import { selfScheduleReminderMailToCandidate } from './mailUtils';
-import { SchedulingFlow } from './SelfSchedulingDrawer/store';
+import { SchedulingFlow } from './SchedulingDrawer/store';
 import { SchedulingApplication } from './store';
 
 export const fetchInterviewMeetingProgresstask = async ({
@@ -1051,6 +1051,20 @@ export const createTask = async ({
     .single();
 
   if (errorTasks) throw new Error(errorTasks.message);
+
+  const insertTaskSesRels: DatabaseTableInsert['task_session_relation'][] =
+    selectedSessions.map((ses) => {
+      return {
+        task_id: task.id,
+        session_id: ses.id,
+      };
+    });
+
+  const { data: taskSesRel, error: errorTaskSesRel } = await supabase
+    .from('task_session_relation')
+    .insert(insertTaskSesRels);
+
+  if (errorTaskSesRel) throw new Error(errorTaskSesRel.message);
 
   await createTaskProgress({
     type: 'create_task',
