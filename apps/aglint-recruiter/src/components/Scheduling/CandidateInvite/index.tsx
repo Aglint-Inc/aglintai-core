@@ -52,7 +52,7 @@ import IconScheduleType from '../Candidates/ListCard/Icon';
 import { addScheduleActivity } from '../Candidates/queries/utils';
 import { getScheduleType } from '../Candidates/utils';
 import { SessionIcon } from '../Common/ScheduleProgress/scheduleProgressPill';
-import { TimezoneSelector } from '../Settings';
+import { TimezoneObj, TimezoneSelector } from '../Settings';
 import { DateIcon } from '../Settings/Components/DateSelector';
 import CandidateInviteCalendar, {
   CandidateInviteCalendarProps,
@@ -97,7 +97,7 @@ const CandidateInvitePlanPage = () => {
   const {
     setDetailsPop,
     meta: {
-      data: { candidate, meetings, filter_json, schedule },
+      data: { candidate, meetings, filter_json, schedule, recruiter },
     },
     timezone,
     setSelectedSlots,
@@ -143,6 +143,8 @@ const CandidateInvitePlanPage = () => {
         filter_json={filter_json}
         meetings={meetings}
         schedule={schedule}
+        recruiter={recruiter}
+        timezone={timezone}
       />
     );
   return (
@@ -156,7 +158,9 @@ const CandidateInvitePlanPage = () => {
       }}
     >
       <CandidateConfirmationPage
-        slotCompanyLogo={<Logo />}
+        slotCompanyLogo={
+          <Logo companyName={recruiter.name} logo={recruiter.logo} />
+        }
         onClickView={{
           onClick: () => {
             setDetailsPop(true);
@@ -196,10 +200,12 @@ export const ConfirmedInvitePage = (
   props: ScheduleCardsProps &
     Pick<
       Awaited<ReturnType<typeof useCandidateInvite>>['meta']['data'],
-      'candidate' | 'schedule' | 'meetings' | 'filter_json'
-    >,
+      'candidate' | 'schedule' | 'meetings' | 'filter_json' | 'recruiter'
+    > &
+    Pick<Awaited<ReturnType<typeof useCandidateInvite>>, 'timezone'>,
 ) => {
-  const { candidate, filter_json, meetings, schedule } = props;
+  const { candidate, filter_json, meetings, schedule, recruiter, timezone } =
+    props;
   const [cancelReschedule, setCancelReschedule] = useState<
     'reschedule' | 'cancel'
   >(null);
@@ -348,11 +354,14 @@ export const ConfirmedInvitePage = (
             </>
           }
           isBannerVisible={Boolean(cancelReschedulingDetails?.all)}
-          slotCompanyLogo={<Logo />}
+          slotCompanyLogo={
+            <Logo companyName={recruiter.name} logo={recruiter.logo} />
+          }
           slotInterviewConfirmedCard={
             <ConfirmedScheduleCards
               rounds={props.rounds}
               isValid={!cancelReschedulingDetails?.all}
+              timezone={timezone}
             />
           }
           textDesc={
@@ -839,7 +848,7 @@ const SingleDaySession = (props: SingleDaySessionProps) => {
 };
 
 const ConfirmedScheduleCards = (
-  props: ScheduleCardsProps & { isValid: boolean },
+  props: ScheduleCardsProps & { isValid: boolean } & { timezone: TimezoneObj },
 ) => {
   const scheduleCards = props.rounds.map((round, index) => (
     <ConfirmedScheduleCard
@@ -848,6 +857,7 @@ const ConfirmedScheduleCards = (
       index={index}
       showTitle={props.rounds.length !== 1}
       isValid={props.isValid}
+      timezone={props.timezone}
     />
   ));
 
@@ -855,9 +865,9 @@ const ConfirmedScheduleCards = (
 };
 
 const ConfirmedScheduleCard = (
-  props: ScheduleCardProps & { isValid: boolean },
+  props: ScheduleCardProps & { isValid: boolean } & { timezone: TimezoneObj },
 ) => {
-  const { timezone } = useCandidateInvite();
+  const { timezone } = props;
   const [month, date, day, year] = dayJS(
     props?.round?.sessions?.[0].interview_meeting?.start_time ?? null,
     timezone.tzCode,
@@ -1214,15 +1224,10 @@ const BreakCard = ({ break_duration }: { break_duration: number }) => {
   );
 };
 
-const Logo = () => {
-  const {
-    meta: {
-      data: { recruiter },
-    },
-  } = useCandidateInvite();
+const Logo = ({ companyName, logo }: { companyName: string; logo: string }) => {
   return (
     <Stack height={'60px'}>
-      <CompanyLogo companyName={recruiter.name} companyLogo={recruiter.logo} />
+      <CompanyLogo companyName={companyName} companyLogo={logo} />
     </Stack>
   );
 };
