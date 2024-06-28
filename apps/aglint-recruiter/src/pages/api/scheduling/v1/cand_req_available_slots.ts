@@ -96,6 +96,7 @@ const fetchDetails = async (payload: CandReqAvailableSlots) => {
 // Suggest times over outside work hours ==> show
 // show dayoffs times over day offs ==> show
 
+type DayOffOOO = 'ooo' | 'day_off';
 const convertToOptionsReqSlot = (
   fetched_details: Awaited<ReturnType<typeof fetchDetails>>,
   payload: CandReqAvailableSlots,
@@ -117,9 +118,10 @@ const convertToOptionsReqSlot = (
       slots: [],
     };
     let no_conf_slots_start_time = new Set<string>();
-    let conf_slots_start_time = new Map<string, 'ooo' | 'day_off'>();
-
+    let conf_slots_start_time = new Map<string, DayOffOOO[]>();
     for (let slot of slots) {
+      const day_off_arr: DayOffOOO[] = [];
+
       const is_conflict_free = slot.sessions.every((s) => !s.is_conflict);
       const is_ooo = slot.sessions.some((s) =>
         s.conflict_types.includes('out_of_working_hours'),
@@ -132,10 +134,15 @@ const convertToOptionsReqSlot = (
       }
 
       if (is_day_off) {
-        conf_slots_start_time.set(slot.sessions[0].start_time, 'day_off');
+        day_off_arr.push('day_off');
       }
       if (is_ooo) {
-        conf_slots_start_time.set(slot.sessions[0].start_time, 'ooo');
+        day_off_arr.push('ooo');
+      }
+      if (day_off_arr.length > 0) {
+        conf_slots_start_time.set(slot.sessions[0].start_time, [
+          ...day_off_arr,
+        ]);
       }
     }
     while (
@@ -143,13 +150,14 @@ const convertToOptionsReqSlot = (
         .add(fetched_details.curr_round_duration, 'minutes')
         .isSameOrBefore(curr_day_end_time, 'minutes')
     ) {
-      const ooo_day_off_option = conf_slots_start_time.get(curr_time.format());
+      const ooo_day_off_option =
+        conf_slots_start_time.get(curr_time.format()) ?? [];
       // Dont show options in these cases
       if (
         (!fetched_details.avail_req_details.availability.day_offs &&
-          ooo_day_off_option === 'day_off') ||
+          ooo_day_off_option.includes('day_off')) ||
         (!fetched_details.avail_req_details.availability.outside_work_hours &&
-          ooo_day_off_option === 'ooo')
+          ooo_day_off_option.includes('ooo'))
       ) {
         curr_time = curr_time.add(
           fetched_details.curr_round_duration,
