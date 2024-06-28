@@ -54,7 +54,7 @@ export class ScheduleUtils {
   static getSessionRounds(
     db_int_sessions: Pick<
       InterviewSessionTypeDB,
-      'session_order' | 'break_duration'
+      'session_order' | 'break_duration' | 'session_duration'
     >[]
   ) {
     let sorted_sessions = db_int_sessions.sort(
@@ -62,7 +62,7 @@ export class ScheduleUtils {
     );
     let session_rounds: Pick<
       InterviewSessionTypeDB,
-      'session_order' | 'break_duration'
+      'session_order' | 'break_duration' | 'session_duration'
     >[][] = [[]];
     let curr_round = 0;
     for (let sess of sorted_sessions) {
