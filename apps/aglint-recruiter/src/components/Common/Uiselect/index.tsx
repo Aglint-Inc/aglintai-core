@@ -1,4 +1,5 @@
-import { Stack } from '@mui/material';
+import Icon from '@components/Common/Icons/Icon';
+import { Stack, Typography } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import React, { useState } from 'react';
@@ -21,8 +22,11 @@ type Props = {
     event: SelectChangeEvent<any>,
   ) => void;
   defaultValue?: any;
+  required?: boolean;
   startIcon?: any;
   size?: 'sm' | 'md';
+  error?: boolean;
+  helperText?: string;
 };
 
 const UISelect = ({
@@ -31,8 +35,11 @@ const UISelect = ({
   onChange,
   disabled,
   label,
+  required,
   defaultValue,
   startIcon,
+  error,
+  helperText,
 }: Props) => {
   let [focus, setFocus] = useState(false);
 
@@ -46,15 +53,22 @@ const UISelect = ({
       gap={'var(--space-1)'}
     >
       {label && (
-        <UITypography type={'small'} fontBold='default'>
-          {label}
-        </UITypography>
+        <Stack direction={'row'}>
+          <UITypography type={'small'} fontBold='default'>
+            {label}
+          </UITypography>
+
+          {required && (
+            <Typography sx={{ color: 'var(--error-9)' }}>&nbsp;*</Typography>
+          )}
+        </Stack>
       )}
       <Select
         startAdornment={startIcon}
         disabled={disabled}
         value={value}
         onChange={onChange}
+        error={error}
         // displayEmpty
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
@@ -103,6 +117,14 @@ const UISelect = ({
           ))
         )}
       </Select>
+      {error && helperText && (
+        <Stack direction={'row'} alignItems={'center'} justifyContent={'start'}>
+          <Icon height='12px' color='var(--error-9)' variant='AlertIcon' />
+          <UITypography type='small' color={'var(--error-11)'}>
+            {error ? (helperText ? helperText : '') : ''}
+          </UITypography>
+        </Stack>
+      )}
     </Stack>
   );
 };
