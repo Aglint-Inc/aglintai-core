@@ -839,6 +839,19 @@ export class CandidatesSchedulingV2 {
         const conflicting_events = this.intervs_details_map
           .get(attendee.user_id)
           .cal_date_events[curr_day_str].filter((cal_event) => {
+            if (
+              cal_event.cal_type === 'recruiting_blocks' &&
+              this.api_options.use_recruiting_blocks
+            ) {
+              return false;
+            }
+
+            if (
+              cal_event.cal_type === 'free_time' &&
+              this.api_options.include_free_time
+            ) {
+              return false;
+            }
             return isTimeChunksOverLapps(
               {
                 startTime: this.getTimeInCandTimeZone(cal_event.start.dateTime),
