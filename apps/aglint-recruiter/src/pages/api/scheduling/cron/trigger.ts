@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
-import { DB, TaskTypeDb } from '@aglint/shared-types';
+import { DatabaseTableInsert, DB } from '@aglint/shared-types';
 import {
   EmailAgentId,
   PhoneAgentId,
@@ -28,7 +28,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { data, error } = await supabase
       .from('new_tasks')
       .select(
-        '*,applications(id,candidates(first_name),public_jobs(id,recruiter!public_jobs_recruiter_id_fkey(id,name))),recruiter_user(user_id,first_name,last_name,email,phone),interview_filter_json(*)',
+        '*,applications(id,candidates(first_name),public_jobs(id,recruiter!public_jobs_recruiter_id_fkey(id,name))),recruiter_user(user_id,first_name,last_name,email,phone),interview_filter_json(*),task_session_relation(*)',
       )
       .eq('status', 'scheduled')
       .or(
@@ -71,7 +71,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     task.recruiter_user.first_name,
                     task.recruiter_user.last_name,
                   ),
-                  session_ids: task.session_ids.map((ses) => ses.id),
+                  session_ids: task.task_session_relation.map(
+                    (ele) => ele.session_id,
+                  ),
                   task_id: task.id,
                   type: task.assignee.includes(PhoneAgentId)
                     ? 'phone_agent'
@@ -91,30 +93,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           }),
         );
 
-        const { error } = await supabase.from('new_tasks').upsert(
-          data.map((task) => {
+        const updateTasks: DatabaseTableInsert['new_tasks'][] = data.map(
+          (task) => {
             return {
               id: task.id,
               status: 'in_progress',
-              agent: task.agent,
-              application_id: task.application_id,
-              assignee: task.assignee,
               name: task.name,
-              created_at: task.created_at,
+              assignee: task.assignee,
               created_by: task.created_by,
-              due_date: task.due_date,
-              filter_id: task.filter_id,
-              priority: task.priority,
-              recruiter_id: task.recruiter_id,
-              schedule_date_range: task.schedule_date_range,
-              session_ids: task.session_ids,
-              start_date: task.start_date,
-              task_owner: task.task_owner,
-              trigger_count: task.trigger_count + 1,
-              type: task.type,
-            } as TaskTypeDb;
-          }),
+            };
+          },
         );
+
+        const { error } = await supabase.from('new_tasks').upsert(updateTasks);
 
         console.log(error?.message, 'error progress update');
 
