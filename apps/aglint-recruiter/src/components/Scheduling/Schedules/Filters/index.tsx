@@ -1,6 +1,7 @@
 import { InputAdornment, Popover, Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import { MouseEvent, useEffect, useState } from 'react';
+import _ from 'lodash';
+import { MouseEvent, useEffect, useState, useTransition } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -190,36 +191,63 @@ function Filters() {
     allSchedules,
   ]);
 
+  const [searchText, setSearchText] = useState('');
+  const [, startTransition] = useTransition();
+
+  const handleTextChange = (e) => {
+    setSearchText(e.target.value);
+    startTransition(() => {
+      if (e.target.value) {
+        const filteredSchedules = filterSchedules.filter((ele) => {
+          if (
+            ele.interview_meeting.session_name
+              .toLowerCase()
+              .includes(e.target.value.toLowerCase())
+          ) {
+            return ele;
+          }
+        });
+        setFilterSchedule(filteredSchedules);
+      }
+      if (!e.target.value) {
+        setFilterSchedule(allSchedules);
+      }
+    });
+  };
+
+  const handleTextClear = () => {
+    setSearchText('');
+    startTransition(() => {
+      setFilterSchedule(allSchedules);
+    });
+  };
   return (
     <Stack direction={'row'} spacing={'var(--space-3)'}>
       <UITextField
         height={32}
         width='250px'
         InputProps={{
-          endAdornment: (
+          endAdornment: searchText ? (
+            <Stack
+              onClick={handleTextClear}
+              sx={{
+                '&:hover': {
+                  backgroundColor: 'var(--neutral-3)',
+                  cursor: 'pointer',
+                },
+              }}
+            >
+              <GlobalIcon iconName='close' size={5} />
+            </Stack>
+          ) : (
             <InputAdornment position='end'>
               <GlobalIcon iconName='search' size='5' />
             </InputAdornment>
           ),
         }}
         placeholder={'Search session.'}
-        onChange={(e) => {
-          if (e.target.value) {
-            const filteredSchedules = filterSchedules.filter((ele) => {
-              if (
-                ele.interview_meeting.session_name
-                  .toLowerCase()
-                  .includes(e.target.value.toLowerCase())
-              ) {
-                return ele;
-              }
-            });
-            setFilterSchedule(filteredSchedules);
-          }
-          if (!e.target.value) {
-            setFilterSchedule(allSchedules);
-          }
-        }}
+        value={searchText}
+        onChange={handleTextChange}
       />
       {selectedFilters.map((filterType, i) => {
         let itemList: { label: string; id: string }[] =
@@ -268,7 +296,7 @@ function Filters() {
           slotIcon={<IconPlusFilter />}
         />
       </ShowCode.When>
-      <ShowCode.When isTrue={!deepEqual(selectedItem, initialFilter)}>
+      <ShowCode.When isTrue={!_.isEqual(selectedItem, initialFilter)}>
         <ButtonGhost
           textButton='Reset All'
           size={2}
@@ -363,33 +391,3 @@ function Filters() {
 }
 
 export default Filters;
-
-function deepEqual(obj1, obj2) {
-  if (obj1 === obj2) {
-    return true; // Both are the same reference or both are null/undefined
-  }
-
-  if (
-    typeof obj1 !== 'object' ||
-    typeof obj2 !== 'object' ||
-    obj1 === null ||
-    obj2 === null
-  ) {
-    return false; // Either obj1 or obj2 is not an object or one of them is null
-  }
-
-  const keys1 = Object.keys(obj1);
-  const keys2 = Object.keys(obj2);
-
-  if (keys1.length !== keys2.length) {
-    return false; // Objects do not have the same number of keys
-  }
-
-  for (let key of keys1) {
-    if (!keys2.includes(key) || !deepEqual(obj1[key], obj2[key])) {
-      return false; // Keys do not match or values do not match
-    }
-  }
-
-  return true;
-}
