@@ -1,4 +1,6 @@
 /* eslint-disable security/detect-object-injection */
+
+// NOTE:  FUNCTION NOT IN USE
 import { TimeDurationDayjsType, TimeDurationType } from '@aglint/shared-types';
 
 import { DayjsTimeRange, FuncParams } from '../types';
