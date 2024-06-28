@@ -7,9 +7,14 @@ import Icon from '@/src/components/Common/Icons/Icon';
 import {
   setDateRange,
   setIsScheduleNowOpen,
+  setScheduleFlow,
   setStepScheduling,
 } from '@/src/components/Scheduling/CandidateDetails/SelfSchedulingDrawer/store';
-import { setRescheduleSessionIds } from '@/src/components/Scheduling/CandidateDetails/store';
+import {
+  setRequestSessionIds,
+  setRescheduleSessionIds,
+  setSelectedSessionIds,
+} from '@/src/components/Scheduling/CandidateDetails/store';
 function ScheduleNowCard({
   selectedTask,
 }: {
@@ -51,7 +56,20 @@ function ScheduleNowCard({
                   selectedTask.session_ids.map((ele) => ele.id),
                 );
                 setStepScheduling('reschedule');
-
+                if (selectedTask.type === 'availability') {
+                  setScheduleFlow('create_request_availibility');
+                  setStepScheduling('request_availibility');
+                  setRequestSessionIds(
+                    selectedTask.session_ids.map((ele) => ele.id),
+                  );
+                }
+                if (selectedTask.type === 'self_schedule') {
+                  setScheduleFlow('self_scheduling');
+                  setStepScheduling('pick_date');
+                  setSelectedSessionIds(
+                    selectedTask.session_ids.map((ele) => ele.id),
+                  );
+                }
                 router.push(
                   `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/application/${selectedTask.application_id}?task_id=${selectedTask.id}`,
                 );
