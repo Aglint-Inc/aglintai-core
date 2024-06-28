@@ -10,7 +10,11 @@ import {
   setScheduleFlow,
   setStepScheduling,
 } from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/store';
-import { setRescheduleSessionIds } from '@/src/components/Scheduling/CandidateDetails/store';
+import {
+  setRequestSessionIds,
+  setRescheduleSessionIds,
+  setSelectedSessionIds,
+} from '@/src/components/Scheduling/CandidateDetails/store';
 function ScheduleNowCard({
   selectedTask,
 }: {
