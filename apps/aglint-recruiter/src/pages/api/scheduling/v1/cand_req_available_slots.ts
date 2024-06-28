@@ -75,6 +75,7 @@ const fetchDetails = async (payload: CandReqAvailableSlots) => {
     avail_req_details.availability.recruiting_block_keywords;
   const session_rounds = ScheduleUtils.getSessionRounds(
     avail_req_details.session_ids.map((s, idx) => ({
+      ...s,
       session_order: idx,
       break_duration: s.break_duration,
       session_duration: s.session_duration,

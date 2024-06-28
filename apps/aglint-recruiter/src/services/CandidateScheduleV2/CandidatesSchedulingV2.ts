@@ -207,13 +207,15 @@ export class CandidatesSchedulingV2 {
   ) => {
     const verified_slots: PlanCombinationRespType[] = [];
     for (const comb of selected_slots) {
-      const session_rounds = ScheduleUtils.getSessionRounds(
-        comb.sessions.map((s) => ({
-          break_duration: s.break_duration,
-          session_duration: s.duration,
-          session_order: s.session_order,
-        })),
-      ) as unknown as SessionCombinationRespType[][];
+      const session_rounds: SessionCombinationRespType[][] =
+        ScheduleUtils.getSessionRounds(
+          comb.sessions.map((s) => ({
+            ...s,
+            break_duration: s.break_duration,
+            session_duration: s.duration,
+            session_order: s.session_order,
+          })),
+        ) as unknown as SessionCombinationRespType[][];
       let is_option_verified = true;
       for (const curr_round_sess of session_rounds) {
         const cand_date = userTzDayjs(curr_round_sess[0].start_time)

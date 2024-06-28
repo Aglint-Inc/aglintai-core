@@ -139,7 +139,6 @@ export const PATHS = [
 '/api/scheduling/mail-agent/init-agent',
 '/api/scheduling/refresh-tokens',
 '/api/scheduling/request_availability/candidateAvailability/getMeetings',
-'/api/scheduling/request_availability/candidateAvailability/getMeetingsRounds',
 '/api/scheduling/request_availability/candidateAvailability/getScheduleMeetings',
 '/api/scheduling/request_availability/getCandidateRequestData',
 '/api/scheduling/request_availability/getTaskIdDetailsByRequestId',

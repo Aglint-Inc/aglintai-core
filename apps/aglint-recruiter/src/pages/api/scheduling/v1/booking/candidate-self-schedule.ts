@@ -89,6 +89,7 @@ const getCandFilteredSlots = (
   interviewer_selected_options.forEach((plan) => {
     const session_rounds = ScheduleUtils.getSessionRounds(
       plan.sessions.map((s) => ({
+        ...s,
         break_duration: s.break_duration,
         session_duration: s.duration,
         session_order: s.session_order,
