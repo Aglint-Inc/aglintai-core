@@ -8,7 +8,7 @@ import {
   setDateRange,
   setIsScheduleNowOpen,
   setStepScheduling,
-} from '@/src/components/Scheduling/CandidateDetails/SelfSchedulingDrawer/store';
+} from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/store';
 import { setRescheduleSessionIds } from '@/src/components/Scheduling/CandidateDetails/store';
 function ScheduleNowCard({
   selectedTask,
