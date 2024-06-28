@@ -1,37 +1,51 @@
 import { Stack } from '@mui/material';
-import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
-import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
+import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
+import ROUTES from '@/src/utils/routing/routes';
 
 import { useModuleAndUsers } from '../queries/hooks';
 import SlotBodyComp from './SlotBodyComp';
 import TopRightButtons from './TopRightButtons';
 
 function ModuleMembersComp() {
-  const router = useRouter();
   const {
     data: editModule,
     isLoading: fetchingModule,
     isFetching,
   } = useModuleAndUsers();
 
+  const { breadcrum, setBreadcrum } = useBreadcrumContext();
+  useEffect(() => {
+    if (editModule?.id) {
+      setBreadcrum([
+        {
+          name: 'Scheduling',
+          route: ROUTES['/scheduling']() + `?tab=dashboard`,
+        },
+        {
+          name: 'Interview Types',
+          route: ROUTES['/scheduling']() + `?tab=interviewtypes`,
+        },
+        {
+          name: `${editModule.name}`,
+          route: ROUTES['/scheduling'](),
+        },
+      ]);
+    }
+  }, [editModule?.id]);
+
   return (
     <>
       <PageLayout
-        onClickBack={{
-          onClick: () => {
-            router.push('/scheduling?tab=interviewtypes');
-          },
-        }}
-        isBackButton={true}
-        slotTopbarLeft={
-          <>
-            <Breadcrum textName={editModule?.name} />
-          </>
-        }
+        slotTopbarLeft={<>{breadcrum}</>}
         slotTopbarRight={
-          <Stack direction={'row'} justifyItems={'center'} gap={'var(--space-2)'}>
+          <Stack
+            direction={'row'}
+            justifyItems={'center'}
+            gap={'var(--space-2)'}
+          >
             <TopRightButtons editModule={editModule} />
           </Stack>
         }

@@ -1,10 +1,11 @@
 import { Stack } from '@mui/material';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 
 import { CandidateName } from '@/devlink/CandidateName';
 import { CandidateSidedrawerTop } from '@/devlink/CandidateSidedrawerTop';
 import { useApplication } from '@/src/context/ApplicationContext';
 import { useApplicationStore } from '@/src/context/ApplicationContext/store';
+import { useKeyPress } from '@/src/hooks/useKeyPress';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 const Info = () => {
@@ -32,6 +33,10 @@ const Actions = () => {
     navigation,
     handleUpdateApplication,
   } = useApplication();
+  const { pressed } = useKeyPress('b');
+  useEffect(() => {
+    if (pressed) handleUpdateApplication({ bookmarked: !data?.bookmarked });
+  }, [pressed]);
   return (
     <CandidateSidedrawerTop
       isBookmarked={data.bookmarked}
