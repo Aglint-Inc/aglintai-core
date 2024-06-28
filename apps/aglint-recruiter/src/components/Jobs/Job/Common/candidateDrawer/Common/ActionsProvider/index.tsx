@@ -3,9 +3,11 @@ import {
   PhoneAgentId,
   SystemAgentId,
 } from '@aglint/shared-utils';
+import dayjs from 'dayjs';
 import {
   type PropsWithChildren,
   createContext,
+  memo,
   useContext,
   useMemo,
 } from 'react';
@@ -17,23 +19,25 @@ const ApplicationInterviewActionsContext =
     undefined,
   );
 
-export const ApplicationInterviewActionsProvider = (
-  props: PropsWithChildren,
-) => {
-  return (
-    <ApplicationInterviewActionsContext.Provider
-      value={useApplicationInterviewActionsContext()}
-    >
-      {props.children}
-    </ApplicationInterviewActionsContext.Provider>
-  );
-};
+export const ApplicationInterviewActionsProvider = memo(
+  (props: PropsWithChildren) => {
+    return (
+      <ApplicationInterviewActionsContext.Provider
+        value={useApplicationInterviewActionsContext()}
+      >
+        {props.children}
+      </ApplicationInterviewActionsContext.Provider>
+    );
+  },
+);
+ApplicationInterviewActionsProvider.displayName =
+  'ApplicationInterviewActionsProvider';
 
 export const useApplicationInterviewActions = () =>
   useContext(ApplicationInterviewActionsContext);
 
 const useApplicationInterviewActionsContext = () => {
-  const { interview, tasks } = useApplication();
+  const { interview, tasks, activity } = useApplication();
   const scheduledSessions = useMemo(
     () =>
       (interview.data ?? []).filter(({ status }) => status !== 'not_scheduled'),
@@ -51,6 +55,14 @@ const useApplicationInterviewActionsContext = () => {
     [tasks, EmailAgentId, PhoneAgentId, SystemAgentId],
   );
 
+  const latestActivities = useMemo(
+    () =>
+      (activity.data ?? []).filter(
+        ({ created_at }) => dayjs().diff(dayjs(created_at), 'h') <= 24,
+      ),
+    [activity],
+  );
+
   const validActions = useMemo(
     () =>
       notStartedTasks.filter(
@@ -62,5 +74,5 @@ const useApplicationInterviewActionsContext = () => {
     [notStartedTasks, scheduledSessions],
   );
 
-  return validActions;
+  return { validActions, notStartedTasks, latestActivities };
 };

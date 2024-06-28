@@ -58,7 +58,8 @@ const AllTabs = memo(() => {
     meta,
   } = useApplication();
 
-  const interviewActions = useApplicationInterviewActions();
+  const { validActions, notStartedTasks, latestActivities } =
+    useApplicationInterviewActions();
 
   const counts: {
     // eslint-disable-next-line no-unused-vars
@@ -68,11 +69,11 @@ const AllTabs = memo(() => {
       Screening: null,
       Assessment: null,
       Details: null,
-      Interview: interviewActions.length ?? null,
-      Activity: meta?.data?.activity_count ?? null,
-      Tasks: meta?.data?.task_count ?? null,
+      Interview: validActions.length ?? null,
+      Activity: latestActivities.length ?? null,
+      Tasks: notStartedTasks.length ?? null,
     }),
-    [interview, meta, interviewActions],
+    [interview, meta, validActions, notStartedTasks, latestActivities],
   );
 
   const tabs = Object.entries(allTabs).reduce(

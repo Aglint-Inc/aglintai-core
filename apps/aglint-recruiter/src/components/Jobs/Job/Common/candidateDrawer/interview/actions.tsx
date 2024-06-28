@@ -31,7 +31,7 @@ const Actions = () => {
 export { Actions };
 
 const Content = () => {
-  const validActions = useApplicationInterviewActions();
+  const { validActions } = useApplicationInterviewActions();
 
   return (
     <>
