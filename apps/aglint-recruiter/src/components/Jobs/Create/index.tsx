@@ -48,12 +48,10 @@ const JobCreate = () => {
   const { recruiter } = useAuthDetails();
   const { push } = useRouter();
   const initialCompany = recruiter?.name ?? '';
-  const initialTitle = recruiter?.name
-    ? `Ex : ${initialCompany}'s first job`
-    : '';
+  const initialTitle = recruiter?.name ? `${initialCompany}'s first job` : '';
   const [fields, setFields] = useState<Form>({
     job_title: {
-      value: '',
+      value: null,
       required: true,
       placeholder: initialTitle,
       error: { value: false, helper: `Job title can't be empty` },
@@ -64,12 +62,12 @@ const JobCreate = () => {
       error: { value: false, helper: `Company name can't be empty` },
     },
     department: {
-      value: recruiter?.departments?.[0] ?? null,
+      value: null,
       required: true,
       error: { value: false, helper: `Department name can't be empty` },
     },
     job_type: {
-      value: 'full time',
+      value: null,
       required: true,
       error: { value: false, helper: `Job type can't be empty` },
     },
@@ -79,7 +77,7 @@ const JobCreate = () => {
       error: { value: false, helper: `Job location can't be empty` },
     },
     workplace_type: {
-      value: 'on site',
+      value: null,
       required: true,
       error: { value: false, helper: `Workplace type can't be empty` },
     },
