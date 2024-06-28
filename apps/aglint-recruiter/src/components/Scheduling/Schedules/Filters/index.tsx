@@ -30,19 +30,17 @@ function Filters() {
 
   useEffect(() => {
     if (typeof window != 'undefined') {
-      const localSetFilterNames = JSON.parse(
-        localStorage.getItem('schedulesFilter'),
-      ) as string[];
-      if (localSetFilterNames) {
-        const defaultFilters = filterOptions.filter((ele) =>
-          localSetFilterNames.includes(ele.name),
-        );
-        setSelectedFilters([...defaultFilters]);
-      }
+      localStorage.setItem(
+        'schedulesFilter',
+        JSON.stringify([...filterOptions].map((ele) => ele.name)),
+      );
+      setSelectedFilters([...filterOptions]);
     }
   }, []);
+
   const scheduleFilterIds =
     JSON.parse(localStorage.getItem('scheduleFilterIds')) || {};
+
   const [selectedStatus, setSelectedStatus] = useState<string[]>(
     scheduleFilterIds?.status || [],
   );
@@ -181,7 +179,7 @@ function Filters() {
         InputProps={{
           endAdornment: (
             <InputAdornment position='end'>
-              <GlobalIcon iconName='search' size='5'/>
+              <GlobalIcon iconName='search' size='5' />
             </InputAdornment>
           ),
         }}

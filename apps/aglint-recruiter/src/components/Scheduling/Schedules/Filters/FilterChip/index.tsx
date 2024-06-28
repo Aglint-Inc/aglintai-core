@@ -138,6 +138,7 @@ function FilterChip({
           }
           onClickDelete={{
             onClick: () => {
+              handleClose();
               removeFilter();
               if (selectedItem.length) {
                 setSelectedItem([]);
@@ -147,6 +148,7 @@ function FilterChip({
           }}
           onClickReset={{
             onClick: () => {
+              handleClose();
               if (selectedItem.length) {
                 setSelectedItem([]);
                 resetSelectedItem([]);
