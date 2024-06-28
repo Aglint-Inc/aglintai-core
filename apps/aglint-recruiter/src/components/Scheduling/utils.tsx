@@ -55,5 +55,3 @@ export const formatTimeWithTimeZone = ({
       'hh:mm A',
     )} ${convertTimeZoneToAbbreviation(timeZone || userTzDayjs.tz.guess())}`;
 };
-
-
