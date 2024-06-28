@@ -2,11 +2,11 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { Breadcrum } from '@/devlink2/Breadcrum';
 import { InterviewPlanEmpty } from '@/devlink2/InterviewPlanEmpty';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { CandidateSchedule } from '@/devlink3/CandidateSchedule';
 import Loader from '@/src/components/Common/Loader';
+import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
 import ROUTES from '@/src/utils/routing/routes';
 
 import CandidateInfo from '../Common/CandidateInfo';
@@ -19,7 +19,6 @@ import FullSchedule from './FullSchedule';
 import { useAllActivities, useGetScheduleApplication } from './hooks';
 import { RequestAvailabilityProvider } from './RequestAvailability/RequestAvailabilityContext';
 import RightPanel from './RightPanel';
-import StatusUpdateDropdownBreadcrum from './StatusUpdateDropdownBreadcrum';
 import {
   resetSchedulingApplicationState,
   setFetchingSchedule,
@@ -37,7 +36,6 @@ function SchedulingApplication() {
     initialSessions,
     selectedSessionIds,
     selectedApplication,
-    scheduleName,
   } = useSchedulingApplicationStore((state) => ({
     fetchingSchedule: state.fetchingSchedule,
     initialSessions: state.initialSessions,
@@ -53,6 +51,25 @@ function SchedulingApplication() {
   const allActivities = useAllActivities({
     application_id: selectedApplication?.id,
   });
+
+  const { breadcrum, setBreadcrum } = useBreadcrumContext();
+  useEffect(() => {
+    if (selectedApplication?.id) {
+      setBreadcrum([
+        {
+          name: 'Scheduling',
+          route: ROUTES['/scheduling']() + `?tab=dashboard`,
+        },
+        {
+          name: 'Candidates',
+          route: ROUTES['/scheduling']() + `?tab=candidates`,
+        },
+        {
+          name: `${selectedApplication.candidates.first_name} ${selectedApplication.candidates.last_name}`.trim(),
+        },
+      ]);
+    }
+  }, [selectedApplication?.id]);
 
   useEffect(() => {
     if (router.isReady && router.query.application_id) {
@@ -72,16 +89,17 @@ function SchedulingApplication() {
       <RescheduleDialog refetch={allActivities.refetch} />
 
       <PageLayout
-        onClickBack={{
-          onClick: () => {
-            router.push(ROUTES['/scheduling']() + '?tab=candidates');
-          },
-        }}
-        isBackButton={true}
+        // onClickBack={{
+        //   onClick: () => {
+        //     router.push(ROUTES['/scheduling']() + '?tab=candidates');
+        //   },
+        // }}
+        // isBackButton={true}
         slotTopbarLeft={
           <>
-            <Breadcrum textName={scheduleName} />
-            {!fetchingSchedule && <StatusUpdateDropdownBreadcrum />}
+            {breadcrum}
+            {/* <Breadcrum textName={scheduleName} />
+            {!fetchingSchedule && <StatusUpdateDropdownBreadcrum />} */}
           </>
         }
         slotBody={
