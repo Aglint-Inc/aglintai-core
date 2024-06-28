@@ -62,11 +62,14 @@ function FilterChip({
       handleChange([...items]);
     }
   }
+
   return (
     <>
       <ButtonFilter
         isDotVisible={
-          itemList.length && selectedItem[filterType.name].length > 0
+          filterType.name === 'date_range'
+            ? selectedItem[filterType.name].length > 0
+            : itemList.length && selectedItem[filterType.name].length > 0
         }
         isActive={itemList.length && selectedItem[filterType.name].length > 0}
         slotLeftIcon={filterType.Icon}
