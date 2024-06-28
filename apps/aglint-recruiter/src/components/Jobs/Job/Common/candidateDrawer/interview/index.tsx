@@ -18,8 +18,9 @@ import {
 import { useApplication } from '@/src/context/ApplicationContext';
 import ROUTES from '@/src/utils/routing/routes';
 
-import { getBreakLabel } from '../../Interview-Plan/utils';
-import { EmptyState, Loader } from './common';
+import { getBreakLabel } from '../../../Interview-Plan/utils';
+import { EmptyState, Loader } from '../common';
+import { Actions } from './actions';
 
 const Interview = () => {
   const {
@@ -34,7 +35,12 @@ const Interview = () => {
 
   return (
     <JobDetailInterview
-      slotNewInterviewPlanCard={<Content />}
+      slotNewInterviewPlanCard={
+        <>
+          <Actions />
+          <Content />
+        </>
+      }
       onClickViewScheduler={{
         style: { display: status === 'success' ? 'flex' : 'none' },
         onClick: () =>
