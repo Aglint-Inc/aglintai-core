@@ -9,6 +9,7 @@ import Theme from '../context/Theme/Theme';
 import { QueryProvider } from '../queries';
 import { RolesAndPermissionsProvider } from '../context/RolesAndPermissions/RolesAndPermissionsContext';
 import AppLayout from '../components/AppLayout';
+import { BreadcrumProvider } from './BreadcrumContext/BreadcrumContext';
 
 const BuildProviderTree = (providers) => {
   return ({ children }) => {
@@ -27,6 +28,7 @@ const Providers = BuildProviderTree([
   QueryProvider,
   AuthProvider,
   RolesAndPermissionsProvider,
+  BreadcrumProvider,
   JobsProvider,
   AppLayout,
 ]);

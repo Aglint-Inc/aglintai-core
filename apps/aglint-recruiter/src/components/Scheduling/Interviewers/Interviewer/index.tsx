@@ -1,15 +1,16 @@
 import { useRouter } from 'next/router';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { InterviewerDetail } from '@/devlink3/InterviewerDetail';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
 import { useInterviewerContext } from '@/src/context/InterviewerContext/InterviewerContext';
 import { getFullName } from '@/src/utils/jsonResume';
+import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
 import ModuleSchedules from '../../Common/ModuleSchedules';
@@ -97,25 +98,29 @@ function Interviewer() {
     };
   }, [interviewerDetails]);
 
+  const { breadcrum, setBreadcrum } = useBreadcrumContext();
+  useEffect(() => {
+    if (interviewerDetails?.interviewer?.user_id) {
+      setBreadcrum([
+        {
+          name: 'Scheduling',
+          route: ROUTES['/scheduling']() + `?tab=dashboard`,
+        },
+        {
+          name: 'Interviewers',
+          route: ROUTES['/scheduling']() + `?tab=interviewers`,
+        },
+        {
+          name: `${interviewerDetails.interviewer.first_name || ''} ${interviewerDetails.interviewer.last_name || ''}`.trim(),
+        },
+      ]);
+    }
+  }, [interviewerDetails?.interviewer?.user_id]);
+
   return (
     <>
       <PageLayout
-        onClickBack={{
-          onClick: () => {
-            router.push(`/scheduling?tab=interviewers`);
-          },
-        }}
-        isBackButton={true}
-        slotTopbarLeft={
-          <>
-            <Breadcrum
-              textName={getFullName(
-                interviewerDetails?.interviewer?.first_name,
-                interviewerDetails?.interviewer?.last_name,
-              )}
-            />
-          </>
-        }
+        slotTopbarLeft={<>{breadcrum}</>}
         slotBody={
           <>
             {isLoadingInterviewer || isLoadingSchedule ? (

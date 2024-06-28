@@ -27,6 +27,7 @@ export type Form = Partial<{
   [id in keyof Omit<JobCreate, 'jd_json' | 'description_hash'>]: {
     value: JobCreate[id];
     required: boolean;
+    placeholder?: string;
     error: {
       value: boolean;
       helper: string;
@@ -158,7 +159,7 @@ const JobTitle: FC<MetaForms> = memo(({ name, value, onChange }) => {
       label={'Job Title'}
       name={name}
       required
-      placeholder={'Ex : Software developer'}
+      placeholder={value.placeholder}
       value={value.value as string}
       error={value.error.value}
       helperText={value.error.helper}
@@ -278,6 +279,9 @@ const JobType: FC<MetaForms> = memo(({ name, value, onChange }) => {
       label={'Job type'}
       menuOptions={options}
       value={value.value as string}
+      required={value.required}
+      error={value.error.value}
+      helperText={value.error.helper}
       onChange={(e) => onChange(name, e.target.value)}
     />
   );
@@ -295,6 +299,9 @@ const JobDepartment: FC<MetaForms> = memo(({ name, value, onChange }) => {
     <UISelect
       label={'Department'}
       menuOptions={options}
+      error={value.error.value}
+      helperText={value.error.helper}
+      required={value.required}
       value={value.value as string}
       onChange={(e) => onChange(name, e.target.value)}
     />
@@ -365,6 +372,9 @@ const JobWorkPlace: FC<MetaForms> = memo(({ name, value, onChange }) => {
     <UISelect
       label={'Workplace type'}
       menuOptions={options}
+      error={value.error.value}
+      required={value.required}
+      helperText={value.error.helper}
       value={value.value as string}
       onChange={(e) => onChange(name, e.target.value)}
     />

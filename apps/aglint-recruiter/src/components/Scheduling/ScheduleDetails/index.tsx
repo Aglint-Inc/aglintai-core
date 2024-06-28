@@ -2,14 +2,15 @@
 import { Stack } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ScheduleDetailTabs } from '@/devlink3/ScheduleDetailTabs';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -78,6 +79,25 @@ function SchedulingViewComp() {
     }
   }
 
+  const { breadcrum, setBreadcrum } = useBreadcrumContext();
+  useEffect(() => {
+    if (data?.schedule_data?.candidates.id) {
+      setBreadcrum([
+        {
+          name: 'Scheduling',
+          route: ROUTES['/scheduling']() + `?tab=dashboard`,
+        },
+        {
+          name: 'Schedules',
+          route: ROUTES['/scheduling']() + `?tab=schedules`,
+        },
+        {
+          name: `${data.schedule_data.schedule.schedule_name}`.trim(),
+        },
+      ]);
+    }
+  }, [data?.schedule_data?.candidates.id]);
+
   return (
     <ShowCode>
       <ShowCode.When isTrue={isPending || !isFetched}>
@@ -92,17 +112,7 @@ function SchedulingViewComp() {
           setCancelUserId={setCancelUserId}
         />
         <PageLayout
-          onClickBack={{
-            onClick: () => {
-              router.back();
-            },
-          }}
-          isBackButton={true}
-          slotTopbarLeft={
-            <>
-              <Breadcrum textName={schedule?.schedule.schedule_name} />
-            </>
-          }
+          slotTopbarLeft={<>{breadcrum}</>}
           slotBody={
             <ScheduleDetailTabs
               slotScheduleTabOverview={

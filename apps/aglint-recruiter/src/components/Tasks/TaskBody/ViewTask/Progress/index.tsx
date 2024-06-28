@@ -502,7 +502,7 @@ export const useSessionsList = () => {
 
 async function getSessionsList(taskId: string) {
   const { data } = await supabase
-    .from('new_tasks')
+    .from('tasks_view')
     .select('session_ids')
     .eq('id', taskId)
     .single();

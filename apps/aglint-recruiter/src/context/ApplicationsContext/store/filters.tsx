@@ -5,7 +5,10 @@ import { CreateSlice } from '.';
 
 type Sort = {
   type:
-    | keyof Pick<Application, 'resume_score' | 'applied_at' | 'name'>
+    | keyof Pick<
+        Application,
+        'resume_score' | 'applied_at' | 'name' | 'latest_activity'
+      >
     | 'location';
   order: 'asc' | 'desc';
 };
@@ -52,7 +55,7 @@ const initialFilters: Filters = {
 };
 
 const initialSort: Sort = {
-  type: 'resume_score',
+  type: 'latest_activity',
   order: 'desc',
 };
 

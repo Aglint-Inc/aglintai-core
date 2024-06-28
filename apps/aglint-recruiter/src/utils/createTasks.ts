@@ -16,14 +16,15 @@ export const createTasks = async (
   task: TaskType,
   assigner: AssignerType,
 ) => {
+  const { session_ids, ...resetTask } = task;
   const assignerName = getFullName(assigner.first_name, assigner.last_name);
   const safeData = candidates.map((candidate) => ({
-    name: `Schedule interview for ${candidate.name} - ${task.session_ids.map((ele) => ele.name).join(', ')}.`,
+    name: `Schedule interview for ${candidate.name} - ${session_ids.map((ele) => ele.name).join(', ')}.`,
     recruiter_id,
     application_id: candidate.id,
     created_by: recruiterUser.id,
     type: 'schedule',
-    ...task,
+    ...resetTask,
   }));
   const { error, data } = await supabase
     .from('new_tasks')
@@ -35,6 +36,14 @@ export const createTasks = async (
     const candidate = candidates.find(
       (ele) => ele.id === eachTask.application_id,
     );
+
+    await supabase.from('task_session_relation').insert(
+      session_ids.map((ele) => ({
+        session_id: ele.id,
+        task_id: eachTask.id,
+      })),
+    );
+
     await createTaskProgress({
       type: 'create_task',
       data: {
@@ -44,7 +53,7 @@ export const createTasks = async (
       },
       optionData: {
         candidateName: candidate.name,
-        sessions: eachTask.session_ids as any,
+        sessions: session_ids,
       },
     });
     addScheduleActivity({
@@ -52,7 +61,7 @@ export const createTasks = async (
       created_by: recruiterUser.id,
       logged_by: 'user',
       supabase: supabase,
-      title: `Task assigned to ${assignerName} for scheduling ${eachTask.session_ids.map((ele) => ele.name).join(',')}`,
+      title: `Task assigned to ${assignerName} for scheduling ${session_ids.map((ele) => ele.name).join(',')}`,
       description: '',
       metadata: null,
       task_id: eachTask.id,

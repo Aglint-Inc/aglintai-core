@@ -15,6 +15,11 @@ import {
 
 import { meetingCardType } from '../../ViewTask/Progress/SessionCard';
 
+type OnChangeProps = {
+  sessions: meetingCardType[];
+  selected_session_id?: string;
+  action?: 'add' | 'remove';
+};
 function SessionList({
   selectedSession,
   setSelectedSession,
@@ -24,10 +29,9 @@ function SessionList({
   job_id,
 }: {
   selectedSession: meetingCardType[] | null;
-
   setSelectedSession: (x: meetingCardType[]) => void;
   isOptionList?: boolean;
-  onChange?: any;
+  onChange?: (props: OnChangeProps) => void;
   application_id: string;
   job_id: string;
 }) {
@@ -124,7 +128,7 @@ function SessionList({
                         sx={{
                           cursor: 'pointer',
                           '&:hover': {
-                            bgcolor: 'var(--neutral-2)'
+                            bgcolor: 'var(--neutral-2)',
                           },
                           bgcolor:
                             selectedSession
@@ -148,7 +152,11 @@ function SessionList({
                                   name: ele.name,
                                 }));
                               if (onChange) {
-                                onChange(data);
+                                onChange({
+                                  sessions: data as meetingCardType[],
+                                  selected_session_id: item.id,
+                                  action: 'remove',
+                                });
                               }
                               return data;
                             }
@@ -157,7 +165,11 @@ function SessionList({
                               name: ele.name,
                             }));
                             if (onChange) {
-                              onChange(data);
+                              onChange({
+                                sessions: data as meetingCardType[],
+                                selected_session_id: item.id,
+                                action: 'add',
+                              });
                             }
                             return data;
                           });

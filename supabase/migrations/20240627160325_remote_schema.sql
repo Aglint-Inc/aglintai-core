@@ -10,18 +10,19 @@ drop view if exists "public"."tasks_view";
 
 drop view if exists "public"."workflow_view";
 
+drop table if exists "public"."task_session_relation";
+
 create table "public"."task_session_relation" (
     "id" uuid not null default gen_random_uuid(),
     "session_id" uuid not null,
     "task_id" uuid not null
 );
 
+ALTER TABLE "public"."new_tasks" DROP COLUMN IF EXISTS "session_ids";
 
-alter table "public"."new_tasks" drop column "session_ids";
+alter table "public"."public_jobs" DROP COLUMN IF EXISTS "email_template";
 
-alter table "public"."public_jobs" drop column "email_template";
-
-alter table "public"."recruiter" drop column "email_template";
+alter table "public"."recruiter" DROP COLUMN IF EXISTS "email_template";
 
 CREATE UNIQUE INDEX task_session_relation_pkey ON public.task_session_relation USING btree (id);
 

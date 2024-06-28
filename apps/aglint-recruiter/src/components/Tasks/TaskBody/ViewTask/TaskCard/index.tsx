@@ -14,6 +14,7 @@ import {
   TasksAgentContextType,
   useTasksContext,
 } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { supabase } from '@/src/utils/supabase/client';
 import {
   capitalizeAll,
   capitalizeFirstLetter,
@@ -79,6 +80,30 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
     ]);
   }
 
+  async function updateSessionRelations({
+    action,
+    session_id,
+  }: {
+    action: 'add' | 'remove';
+    session_id: string;
+  }) {
+    if (action === 'add') {
+      const { data } = await supabase
+        .from('task_session_relation')
+        .insert({ task_id: task.id, session_id })
+        .select();
+
+      return data;
+    } else if (action === 'remove') {
+      await supabase
+        .from('task_session_relation')
+        .delete()
+        .eq('session_id', session_id)
+        .eq('task_id', task.id)
+        .then(() => {});
+    }
+  }
+
   const createdBy = members.find((ele) => ele.user_id === task.created_by);
   // open trigger Time
   const [openTriggerTime, setOpenTriggerTime] = useState(null);
@@ -129,8 +154,12 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             application_id={task.applications.id}
             job_id={task.applications.job_id}
             isOptionList={task.status === 'not_started'}
-            onChange={(data: any) => {
-              updateChanges({ session_ids: data });
+            onChange={({ sessions, selected_session_id, action }) => {
+              updateSessionRelations({
+                action,
+                session_id: selected_session_id,
+              });
+
               createTaskProgress({
                 type: 'session_update',
                 data: {
@@ -143,7 +172,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                 },
                 optionData: {
                   currentSessions: task.session_ids as any,
-                  selectedSession: data,
+                  selectedSession: sessions,
                 },
               });
             }}

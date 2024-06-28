@@ -3575,6 +3575,7 @@ export type Database = {
           interview_score: number | null
           is_new: boolean | null
           job_id: string | null
+          latest_activity: string | null
           linkedin: string | null
           meeting_details: Json | null
           name: string | null
