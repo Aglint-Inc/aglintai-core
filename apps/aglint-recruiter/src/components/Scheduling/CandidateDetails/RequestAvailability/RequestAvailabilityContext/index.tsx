@@ -152,20 +152,28 @@ function RequestAvailabilityProvider({ children }) {
     setMultiDaySessions(meetingsRound);
 
     try {
-      for (let i = 0; i < meetingsRound.length; i++) {
-        const dateSlots = await getDateSlots({
-          requestAvailability,
-          day: i + 1,
-        });
-        setDateSlots((prev) => [
-          ...prev,
-          {
-            round: i + 1,
-            dates:
-              dateSlots as DatabaseTable['candidate_request_availability']['slots'][number]['dates'],
-          },
-        ]);
-      }
+      await Promise.all(
+        meetingsRound.map(async (_, idx) => {
+          const dateSlots = await getDateSlots({
+            requestAvailability,
+            day: idx + 1,
+          });
+          setDateSlots((prev) => [
+            ...prev,
+            {
+              round: idx + 1,
+              dates: dateSlots.map((d) => ({
+                curr_day: d.curr_interview_day,
+                slots: d.slots.map((slot) => ({
+                  startTime: slot.start_time,
+                  endTime: slot.end_time,
+                  isSlotAvailable: slot.is_slot_available,
+                })),
+              })) as DatabaseTable['candidate_request_availability']['slots'][number]['dates'],
+            },
+          ]);
+        }),
+      );
     } catch (error) {
       toast.error('Something went wrong!');
     }
@@ -309,7 +317,7 @@ export async function getDateSlots({
     recruiter_id: requestAvailability.recruiter_id,
     candidate_tz: userTzDayjs.tz.guess(),
     avail_req_id: requestAvailability.id,
-    curr_round: 1,
+    curr_round: day,
   };
   const { data: dateSlots } = await axios.post(
     '/api/scheduling/v1/cand_req_available_slots',

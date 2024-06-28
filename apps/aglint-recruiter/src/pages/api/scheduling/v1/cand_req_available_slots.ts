@@ -69,10 +69,8 @@ const fetchDetails = async (payload: CandReqAvailableSlots) => {
   });
   updated_api_options.include_free_time =
     avail_req_details.availability.free_keywords;
-  updated_api_options.include_conflicting_slots.day_off =
-    avail_req_details.availability.day_offs;
-  updated_api_options.include_conflicting_slots.out_of_working_hrs =
-    avail_req_details.availability.outside_work_hours;
+  updated_api_options.include_conflicting_slots.day_off = true;
+  updated_api_options.include_conflicting_slots.out_of_working_hrs = true;
   updated_api_options.use_recruiting_blocks =
     avail_req_details.availability.recruiting_block_keywords;
   const session_rounds = ScheduleUtils.getSessionRounds(
