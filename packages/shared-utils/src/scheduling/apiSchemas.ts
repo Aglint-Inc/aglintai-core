@@ -48,7 +48,12 @@ export const schema_find_slots_date_range = v.object({
   candidate_tz: v.string(),
   options: v.optional(scheduling_options_schema, {}),
 });
-
+export const schema_candidate_req_availabale_slots = v.object({
+  avail_req_id: v.string(),
+  recruiter_id: v.string(),
+  candidate_tz: v.string(),
+  curr_round: v.optional(v.number(), 1),
+});
 export const schema_verify_interviewer_selected_slots = v.object({
   cand_availability_id: v.string(),
   user_tz: v.string(),

@@ -6,7 +6,7 @@ import { Stepper } from '@/devlink2/Stepper';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 
 import FinalScreen from '../ FinalScreen';
-import DayCardWrapper from '../../../../SelfSchedulingDrawer/StepSlotOptions/DayCardWrapper';
+import DayCardWrapper from '../../../../SchedulingDrawer/StepSlotOptions/DayCardWrapper';
 import { useAvailabilityContext } from '../../RequestAvailabilityContext';
 
 function RequestAvailabilityBody({

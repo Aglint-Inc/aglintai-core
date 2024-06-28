@@ -10,7 +10,7 @@ import {
   setIsScheduleNowOpen,
   setScheduleFlow,
   setStepScheduling,
-} from '@/src/components/Scheduling/CandidateDetails/SelfSchedulingDrawer/store';
+} from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/store';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 
 function RequestAvailabilityList({

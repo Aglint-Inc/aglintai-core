@@ -24,7 +24,7 @@ import {
   setDateRange,
   setIsScheduleNowOpen,
   setStepScheduling,
-} from '../SelfSchedulingDrawer/store';
+} from '../SchedulingDrawer/store';
 import {
   setMultipleCancelOpen,
   setRescheduleSessionIds,

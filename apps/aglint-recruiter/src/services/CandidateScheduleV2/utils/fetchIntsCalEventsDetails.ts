@@ -37,23 +37,26 @@ export const fetchIntsCalEventsDetails = async (
   }));
 
   const getCalEventType = (cal_event_summary: string): CalConflictType => {
-    const soft_conf_key_words =
-      comp_schedule_setting.schedulingKeyWords.SoftConflicts.map((str) =>
-        str.toLowerCase(),
-      );
-    const out_of_office_key_words =
-      comp_schedule_setting.schedulingKeyWords.outOfOffice.map((str) =>
-        str.toLowerCase(),
-      );
-
-    const is_soft_conflict = soft_conf_key_words.some((key_word) =>
-      cal_event_summary.toLowerCase().includes(key_word),
+    const scheduling_keywords = comp_schedule_setting.schedulingKeyWords;
+    const is_soft_conflict = scheduling_keywords.SoftConflicts.some(
+      (key_word) =>
+        cal_event_summary.toLowerCase().includes(key_word.toLowerCase()),
     );
     if (is_soft_conflict) return 'soft';
-    const is_ooo_conflict = out_of_office_key_words.some((key_word) =>
-      cal_event_summary.toLowerCase().includes(key_word),
+    const is_ooo_conflict = scheduling_keywords.outOfOffice.some((key_word) =>
+      cal_event_summary.toLowerCase().includes(key_word.toLocaleLowerCase()),
     );
     if (is_ooo_conflict) return 'ooo';
+
+    const is_recruiting_block = scheduling_keywords.recruitingBlocks.some(
+      (key_word) =>
+        cal_event_summary.toLowerCase().includes(key_word.toLocaleLowerCase()),
+    );
+    if (is_recruiting_block) return 'recruiting_blocks';
+    const is_free_block = scheduling_keywords.free.some((key_word) =>
+      cal_event_summary.toLowerCase().includes(key_word.toLocaleLowerCase()),
+    );
+    if (is_free_block) return 'free_time';
 
     return 'cal_event';
   };

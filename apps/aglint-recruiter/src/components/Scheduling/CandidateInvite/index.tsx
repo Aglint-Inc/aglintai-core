@@ -645,7 +645,7 @@ const CancelRescheduleDialog = ({
           <Stack>
             {type === 'reschedule' && (
               <ButtonSolid
-                textButton='Reschedule'
+                textButton='Request Reschedule'
                 size={2}
                 onClickButton={{ onClick: handleSubmit }}
               />

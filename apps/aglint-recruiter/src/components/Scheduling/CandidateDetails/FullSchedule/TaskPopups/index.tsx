@@ -12,7 +12,7 @@ import {
   setDateRange,
   setIsScheduleNowOpen,
   setStepScheduling,
-} from '../../SelfSchedulingDrawer/store';
+} from '../../SchedulingDrawer/store';
 import { setRescheduleSessionIds } from '../../store';
 
 function TaskPopups() {

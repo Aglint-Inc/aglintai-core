@@ -21,7 +21,7 @@ import ROUTES from '@/src/utils/routing/routes';
 import { getBreakLabel } from '../../../Interview-Plan/utils';
 import { EmptyState } from '../Common/EmptyState';
 import { Loader } from '../Common/Loader';
-import { Actions } from './Actions';
+import { Actions } from './Action2';
 
 const Interview = () => {
   const {
