@@ -88,6 +88,11 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/request_availability/updateRequestAvailability': [
     'scheduler_enabled',
   ],
+  '/api/scheduling/request_availability/candidateAvailability/getMeetings': [
+    'scheduler_enabled',
+  ],
+  '/api/scheduling/request_availability/candidateAvailability/getScheduleMeetings':
+    ['scheduler_enabled'],
   '/api/scheduling/get_interview_training_progress': ['scheduler_enabled'],
   // request availability mail apis
   '/api/emails/sendAvailabilityRequest_email_applicant': ['scheduler_enabled'],
