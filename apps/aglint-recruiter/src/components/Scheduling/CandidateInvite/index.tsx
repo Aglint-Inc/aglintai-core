@@ -59,7 +59,6 @@ import CandidateInviteCalendar, {
 } from './calender';
 import { dayJS, getCalenderEventUrl, getDurationText } from './utils';
 
-
 const CandidateInviteNew = () => {
   const load = useCandidateInvite();
   return (
@@ -183,7 +182,6 @@ const CandidateInvitePlanPage = () => {
       />
       <Footer brand={true} />
     </Stack>
-     
   );
 };
 
@@ -419,7 +417,7 @@ export const ConfirmedInvitePage = (
             type={cancelReschedule}
           />
         )}
-      <Footer brand={true}/>
+        <Footer brand={true} />
       </Stack>
     </>
   );
@@ -539,8 +537,14 @@ const CancelRescheduleDialog = ({
         textHeader={title}
         isCancelWarningVisible={type === 'cancel'}
         isRangeVisible={type === 'reschedule'}
-      slotCancelButton={<ButtonSoft textButton='Close' size={2} onClickButton={{ onClick: onClose }}
-      color={'neutral'}/>}
+        slotCancelButton={
+          <ButtonSoft
+            textButton='Close'
+            size={2}
+            onClickButton={{ onClick: onClose }}
+            color={'neutral'}
+          />
+        }
         slotDateRangeInput={
           <Stack spacing={2} direction={'row'}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -608,7 +612,7 @@ const CancelRescheduleDialog = ({
             onChange={(e) => {
               setFormData((pre) => ({ ...pre, reason: e.currentTarget.value }));
             }}
-            sx={{gap:'4px'}}
+            sx={{ gap: '4px' }}
           >
             {options.map((item) => (
               <FormControlLabel
@@ -631,16 +635,19 @@ const CancelRescheduleDialog = ({
         slotPrimaryButton={
           <Stack>
             {type === 'reschedule' && (
-              <ButtonSolid 
-              textButton='Reschedule'
-              size={2}
-              onClickButton={{ onClick: handleSubmit }}/>
+              <ButtonSolid
+                textButton='Request Reschedule'
+                size={2}
+                onClickButton={{ onClick: handleSubmit }}
+              />
             )}
             {type === 'cancel' && (
-              <ButtonSolid textButton='Cancel Schedule'
-              size={2}
-              color={'error'}
-              onClickButton={{ onClick: handleSubmit }}/>
+              <ButtonSolid
+                textButton='Cancel Schedule'
+                size={2}
+                color={'error'}
+                onClickButton={{ onClick: handleSubmit }}
+              />
             )}
           </Stack>
         }

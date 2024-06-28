@@ -1,11 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
-import { DB } from '@aglint/shared-types';
+import { DatabaseEnums, DB } from '@aglint/shared-types';
 import { CookieOptions, createServerClient, serialize } from '@supabase/ssr';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { cancelMailHandler } from '@/src/components/Scheduling/CandidateDetails/mailUtils';
+import { removeSessionFromFilterJson } from '@/src/components/Scheduling/ScheduleDetails/utils';
 
 export interface ApiBodyParamsCancelSchedule {
   meeting_id: string;
@@ -14,6 +15,7 @@ export interface ApiBodyParamsCancelSchedule {
   notes: string;
   cancel_user_id: string;
   application_id: string;
+  meeting_flow: DatabaseEnums['meeting_flow'];
 }
 
 export type ApiResponseCancelSchedule = 'cancelled';
@@ -27,6 +29,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       notes,
       cancel_user_id,
       application_id,
+      meeting_flow,
     } = req.body as ApiBodyParamsCancelSchedule;
 
     console.log();
@@ -56,64 +59,72 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
 
     if (meeting_id && session_id) {
-      const { data: checkFilterJson, error: errMeetFilterJson } = await supabase
-        .from('interview_filter_json')
-        .select('*')
-        .contains('session_ids', [session_id]);
-
-      if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
-
-      if (checkFilterJson.length > 0) {
-        const updateDbArray = checkFilterJson.map((filterJson) => ({
-          ...filterJson,
-          session_ids: filterJson.session_ids.filter((id) => id !== session_id),
-        }));
-
-        const { error: errFilterJson } = await supabase
-          .from('interview_filter_json')
-          .upsert(updateDbArray);
-
-        if (errFilterJson) throw new Error(errFilterJson.message);
-      }
-
       const { data, error: errMeet } = await supabase
         .from('interview_meeting')
         .update({
           status: 'cancelled',
+          cal_event_id: null,
+          meeting_link: null,
+          meeting_json: null,
         })
         .eq('id', meeting_id)
         .select();
-      if (errMeet) {
-        throw new Error(errMeet.message);
-      }
 
-      const { error } = await supabase.from('interview_session_cancel').insert({
-        reason,
-        type: 'declined',
-        session_id,
-        other_details: {
-          dateRange: null,
-          note: notes,
-        },
-        cancel_user_id: cancel_user_id,
-      });
+      if (errMeet) throw new Error(errMeet.message);
+
+      const { error: errSesRel } = await supabase
+        .from('interview_session_relation')
+        .update({
+          accepted_status: 'waiting',
+          is_confirmed: false,
+        })
+        .eq('session_id', session_id);
+
+      if (errSesRel) throw new Error(errSesRel.message);
+
+      const { error: errIntSesCancel } = await supabase
+        .from('interview_session_cancel')
+        .insert({
+          reason,
+          type: 'declined',
+          session_id,
+          other_details: {
+            dateRange: null,
+            note: notes,
+          },
+          cancel_user_id: cancel_user_id,
+          is_resolved: true,
+        });
+      if (errIntSesCancel) throw new Error(errIntSesCancel.message);
+
+      if (
+        meeting_flow === 'self_scheduling' ||
+        meeting_flow === 'mail_agent' ||
+        meeting_flow === 'phone_agent'
+      ) {
+        await removeSessionFromFilterJson({
+          session_id,
+          supabase,
+        });
+      }
 
       cancelMailHandler({
         application_id,
         session_ids: [session_id],
       });
 
-      if (error) throw new Error(error.message);
-
-      if (data[0].meeting_json)
+      if (data[0].meeting_json) {
         axios.post(
           `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v2/cancel_calender_event`,
           {
             calender_event: data[0].meeting_json,
           },
         );
+      }
 
       return res.status(200).send('cancelled');
+    } else {
+      return res.status(400).send('Invalid meeting_id or session_id');
     }
   } catch (error) {
     // console.log('error', error);

@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { selfScheduleMailToCandidate } from '@/src/components/Scheduling/CandidateDetails/mailUtils';
-import { SchedulingFlow } from '@/src/components/Scheduling/CandidateDetails/SelfSchedulingDrawer/store';
+import { SchedulingFlow } from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/store';
 import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
 import {
   createCloneSession,

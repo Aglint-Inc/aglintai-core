@@ -107,6 +107,7 @@ export const API_PATHS = [
 '/api/scheduling/application/debrief-add-users',
 '/api/scheduling/application/fetchfeedbackdetails',
 '/api/scheduling/application/mailthankyou',
+'/api/scheduling/application/reschedulemeeting',
 '/api/scheduling/application/schedulewithagent',
 '/api/scheduling/application/schedulewithagentwithouttaskid',
 '/api/scheduling/application/sendtocandidate',

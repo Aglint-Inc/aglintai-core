@@ -15,7 +15,7 @@ import {
   setIsScheduleNowOpen,
   setScheduleFlow,
   setStepScheduling,
-} from '../../SelfSchedulingDrawer/store';
+} from '../../SchedulingDrawer/store';
 import {
   setRequestSessionIds,
   useSchedulingApplicationStore,
