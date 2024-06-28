@@ -46,7 +46,10 @@ export const useApplicationContext = (
     }),
   );
   const tasks = useQuery(
-    applicationQuery.tasks({ ...props, enabled: tab === 'Tasks' }),
+    applicationQuery.tasks({
+      ...props,
+      enabled: tab === 'Tasks' || tab === 'Interview',
+    }),
   );
   const activity = useQuery(
     applicationQuery.activity({ ...props, enabled: tab === 'Activity' }),

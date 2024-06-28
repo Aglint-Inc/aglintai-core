@@ -35,6 +35,7 @@ export const ScheduleProgress = ({
                 session_type,
                 schedule_type,
                 meeting_id,
+                id,
               }) => ({
                 session_duration,
                 session_name: name,
@@ -42,6 +43,7 @@ export const ScheduleProgress = ({
                 schedule_type,
                 status: 'not_scheduled',
                 meeting_id,
+                session_id: id,
               }),
             ),
     [sessions, data],

@@ -262,7 +262,6 @@ function RequestAvailability() {
         if (markCreateTicket) {
           if (selectedTaskId) {
             task = await updateTask({
-              id: selectedTaskId,
               status: 'in_progress',
               request_availability_id: result.id,
               type: 'availability',

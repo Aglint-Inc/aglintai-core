@@ -81,6 +81,7 @@ const Drawer = () => {
             .sort((a, z) => a.session_order - z.session_order)
             .map(
               ({
+                id,
                 session_duration,
                 name,
                 session_type,
@@ -95,6 +96,7 @@ const Drawer = () => {
                 status: 'not_scheduled',
                 session_order,
                 meeting_id,
+                session_id: id,
               }),
             ),
     [interviewPlans?.interview_session, sessions],
