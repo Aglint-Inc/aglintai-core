@@ -2,6 +2,7 @@ import { InputAdornment, Popover, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { MouseEvent, useEffect, useState } from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { FilterList } from '@/devlink2/FilterList';
@@ -16,6 +17,11 @@ import { filterOptions, getListItems } from '../utils';
 import FilterChip from './FilterChip';
 import IconPlusFilter from './FilterChip/IconPlusFilter';
 
+const initialFilter = filterOptions.reduce((acc, item) => {
+  acc[item.name] = [];
+  return acc;
+}, {});
+
 function Filters() {
   const {
     allSchedules,
@@ -28,13 +34,24 @@ function Filters() {
     [],
   );
 
+  const resetAll = () => {
+    setSelectedStatus([]);
+    setSelectedMembers([]);
+    setSelectedJob([]);
+    setSelectedScheduleType([]);
+    setSelectedDateRange([]);
+    setSelectedItem(initialFilter);
+    localStorage.setItem('scheduleFilterIds', JSON.stringify(initialFilter));
+    localStorage.setItem(
+      'schedulesFilter',
+      JSON.stringify([...filterOptions].map((ele) => ele.name)),
+    );
+    setSelectedFilters([...filterOptions]);
+  };
+
   useEffect(() => {
     if (typeof window != 'undefined') {
-      localStorage.setItem(
-        'schedulesFilter',
-        JSON.stringify([...filterOptions].map((ele) => ele.name)),
-      );
-      setSelectedFilters([...filterOptions]);
+      resetAll();
     }
   }, []);
 
@@ -56,6 +73,8 @@ function Filters() {
   const [selectedDateRange, setSelectedDateRange] = useState<string[]>(
     scheduleFilterIds?.date_range || [],
   );
+
+  const [selectedItem, setSelectedItem] = useState<any>(initialFilter);
 
   // popOver
   const [openFilterOptions, setOpenFilterOptions] =
@@ -212,6 +231,8 @@ function Filters() {
           });
         return (
           <FilterChip
+            setSelectedItem={setSelectedItem}
+            selectedItem={selectedItem}
             handleChange={(ids: string[]) => {
               handleOnSelectItem(ids, filterType.name);
             }}
@@ -231,9 +252,6 @@ function Filters() {
             itemList={itemList || []}
             key={i}
             filterType={filterType}
-            defaultSelectedIds={
-              scheduleFilterIds && scheduleFilterIds[String(filterType.name)]
-            }
           />
         );
       })}
@@ -248,6 +266,20 @@ function Filters() {
           }}
           textButton={'Add Filter'}
           slotIcon={<IconPlusFilter />}
+        />
+      </ShowCode.When>
+      <ShowCode.When isTrue={!deepEqual(selectedItem, initialFilter)}>
+        <ButtonGhost
+          textButton='Reset All'
+          size={2}
+          isLeftIcon={true}
+          iconSize={4}
+          iconName='refresh'
+          onClickButton={{
+            onClick: () => {
+              resetAll();
+            },
+          }}
         />
       </ShowCode.When>
       <Popover
@@ -331,3 +363,33 @@ function Filters() {
 }
 
 export default Filters;
+
+function deepEqual(obj1, obj2) {
+  if (obj1 === obj2) {
+    return true; // Both are the same reference or both are null/undefined
+  }
+
+  if (
+    typeof obj1 !== 'object' ||
+    typeof obj2 !== 'object' ||
+    obj1 === null ||
+    obj2 === null
+  ) {
+    return false; // Either obj1 or obj2 is not an object or one of them is null
+  }
+
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+
+  if (keys1.length !== keys2.length) {
+    return false; // Objects do not have the same number of keys
+  }
+
+  for (let key of keys1) {
+    if (!keys2.includes(key) || !deepEqual(obj1[key], obj2[key])) {
+      return false; // Keys do not match or values do not match
+    }
+  }
+
+  return true;
+}
