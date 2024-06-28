@@ -10,6 +10,11 @@ import {
 import { ApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useKeyPress } from '@/src/hooks/useKeyPress';
 
+import {
+  ApplicationInterviewActionsProvider,
+  useApplicationInterviewActions,
+} from './Common/ActionsProvider';
+
 const allTabs: {
   // eslint-disable-next-line no-unused-vars
   [id in ApplicationStore['tab']]: ApplicationsStore['section'] | null;
@@ -31,7 +36,11 @@ const Tabs = () => {
     meta.status === 'pending'
   )
     return <></>;
-  return <AllTabs />;
+  return (
+    <ApplicationInterviewActionsProvider>
+      <AllTabs />
+    </ApplicationInterviewActionsProvider>
+  );
 };
 
 const AllTabs = memo(() => {
@@ -49,6 +58,9 @@ const AllTabs = memo(() => {
     meta,
   } = useApplication();
 
+  const { validActions, notStartedTasks, latestActivities } =
+    useApplicationInterviewActions();
+
   const counts: {
     // eslint-disable-next-line no-unused-vars
     [id in ApplicationStore['tab']]: number | null;
@@ -57,11 +69,11 @@ const AllTabs = memo(() => {
       Screening: null,
       Assessment: null,
       Details: null,
-      Interview: interview?.data?.length ?? null,
-      Activity: meta?.data?.activity_count ?? null,
-      Tasks: meta?.data?.task_count ?? null,
+      Interview: validActions.length ?? null,
+      Activity: latestActivities.length ?? null,
+      Tasks: notStartedTasks.length ?? null,
     }),
-    [interview, meta],
+    [interview, meta, validActions, notStartedTasks, latestActivities],
   );
 
   const tabs = Object.entries(allTabs).reduce(
@@ -106,7 +118,7 @@ const AllTabs = memo(() => {
           onClickPill={{ onClick: () => setTab(t) }}
           textLabel={t}
           isPillActive={tab === t}
-          isTabCountVisible={counts[t] !== null}
+          isTabCountVisible={counts[t] !== null && counts[t] !== 0}
           tabCount={counts[t] ?? 0}
         />
       )),

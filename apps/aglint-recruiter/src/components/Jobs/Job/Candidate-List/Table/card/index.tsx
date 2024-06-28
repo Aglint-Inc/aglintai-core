@@ -9,9 +9,9 @@ import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { Application } from '@/src/types/applications.types';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
-import ResumeScore from '../../Common/resumeScore';
+import ResumeScore from '../../Common/ResumeScore';
 import { formatTimeStamp } from '../../utils';
-import { ScheduleProgress } from './scheduleProgress';
+import { ScheduleProgress } from './ScheduleProgress';
 
 const ApplicationCard = memo(
   ({ application }: { application: Application }) => {
