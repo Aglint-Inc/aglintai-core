@@ -62,6 +62,7 @@ function GroupBy() {
             border: 'none',
             marginTop: 'var(--space-4)',
             padding: 'var(--space-1) var(--space-2)',
+            bgcolor:'white'
           },
         }}
       >
@@ -72,8 +73,10 @@ function GroupBy() {
                 key={item.label}
                 direction={'row'}
                 alignItems={'center'}
-                spacing={'var(--space-2)'}
-                padding={'var(--space-1) 0'}
+                spacing={'var(--space-1)'}
+                padding={'var(--space-2) var(--space-3)'}
+                sx={{':hover':{bgcolor:'var(--neutral-2)'}}}
+                borderRadius={'var(--radius-2)'}
               >
                 <Stack>{item.icon}</Stack>
                 <FilterPill
