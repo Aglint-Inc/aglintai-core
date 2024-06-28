@@ -687,7 +687,11 @@ export const updateTask = ({
           data.applications.candidates.first_name,
           data.applications.candidates.last_name,
         );
-        const sessions = task.session_ids;
+        const { data: selectedTask } = await supabase
+          .from('tasks_view')
+          .select('session_ids')
+          .eq('id', task.id)
+          .single();
         await createTaskProgress({
           task_id: data?.id as string,
           title: `Created task for {candidate} to schedule interviews for {selectedSessions}`,
@@ -700,7 +704,7 @@ export const updateTask = ({
           },
           title_meta: {
             '{candidate}': candidateName,
-            '{selectedSessions}': sessions,
+            '{selectedSessions}': selectedTask.session_ids,
           },
           progress_type:
             task.type === 'schedule' ||

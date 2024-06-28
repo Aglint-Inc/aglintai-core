@@ -121,7 +121,7 @@ function AddNewTask() {
 
     handelAddTask({
       assignee: [selectedAssignee?.user_id],
-      task_owner:selectedAssignee?.user_id,
+      task_owner: selectedAssignee?.user_id,
       created_by: recruiterUser?.user_id || null,
       application_id: selectedCandidate?.id || null,
       name: inputData || 'Untitled',
@@ -129,7 +129,6 @@ function AddNewTask() {
       start_date: dayjs(selectTriggerTime).toString(),
       recruiter_id: recruiter.id,
       schedule_date_range: scheduleDate,
-      session_ids: selectedSession,
       type: selectedType || 'schedule',
       status:
         (selectedAssignee?.user_id === EmailAgentId ||
@@ -143,7 +142,6 @@ function AddNewTask() {
             : 'not_started',
       priority: selectedPriority,
     }).then(async (data) => {
-      // chinmai code for cron job
       const { data: selectedTask } = await supabase
         .from('new_tasks')
         .select(
@@ -151,6 +149,13 @@ function AddNewTask() {
         )
         .eq('id', data.id)
         .single();
+
+      await supabase.from('task_session_relation').insert(
+        selectedSession.map((ele) => ({
+          session_id: ele.id,
+          task_id: selectedTask.id,
+        })),
+      );
 
       const assignee = selectedTask.assignee[0];
       if (

@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { IconButtonSoft } from "./IconButtonSoft";
+import { GlobalIcon } from "./GlobalIcon";
 import { SlotComp } from "./SlotComp";
 import { ButtonSoft } from "./ButtonSoft";
 import { ButtonSolid } from "./ButtonSolid";
@@ -24,14 +24,18 @@ export function RequestReschedule({
   slotPrimaryButton,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1491")} tag="div">
+    <_Component className={_utils.cx(_styles, "rr-wrapper")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1492")}
         tag="div"
       >
         <Text content={textHeader} weight="medium" />
-        <_Builtin.Block tag="div" {...onClickClose}>
-          <IconButtonSoft iconWeight="thin" iconName="close" color="neutral" />
+        <_Builtin.Block
+          className={_utils.cx(_styles, "rr-close-btn")}
+          tag="div"
+          {...onClickClose}
+        >
+          <GlobalIcon iconName="close" size="4" />
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block tag="div">
@@ -87,7 +91,10 @@ export function RequestReschedule({
           color="neutral"
           content="Please provide a reason for reschedule."
         />
-        <_Builtin.Block tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "rr-radio-slot-wrap")}
+          tag="div"
+        >
           {slotRadioText ?? <SlotComp componentName="Options" />}
         </_Builtin.Block>
       </_Builtin.Block>

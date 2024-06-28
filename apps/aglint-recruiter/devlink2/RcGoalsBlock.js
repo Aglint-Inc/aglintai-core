@@ -22,7 +22,7 @@ export function RcGoalsBlock({
         <Text
           content="What are your goals with Aglint?"
           align=""
-          weight="bold"
+          weight="medium"
         />
       </_Builtin.Block>
       <_Builtin.Block

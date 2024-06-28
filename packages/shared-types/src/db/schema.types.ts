@@ -1954,7 +1954,6 @@ export type Database = {
           recruiter_id: string | null
           request_availability_id: string | null
           schedule_date_range: Json | null
-          session_ids: Json[] | null
           start_date: string | null
           status: Database["public"]["Enums"]["task_status"]
           task_action: Json | null
@@ -1976,7 +1975,6 @@ export type Database = {
           recruiter_id?: string | null
           request_availability_id?: string | null
           schedule_date_range?: Json | null
-          session_ids?: Json[] | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["task_status"]
           task_action?: Json | null
@@ -1998,7 +1996,6 @@ export type Database = {
           recruiter_id?: string | null
           request_availability_id?: string | null
           schedule_date_range?: Json | null
-          session_ids?: Json[] | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["task_status"]
           task_action?: Json | null
@@ -3765,7 +3762,7 @@ export type Database = {
           recruiter_id: string | null
           request_availability_id: string | null
           schedule_date_range: Json | null
-          session_ids: Json[] | null
+          session_ids: Json | null
           start_date: string | null
           status: Database["public"]["Enums"]["task_status"] | null
           task_action: Json | null

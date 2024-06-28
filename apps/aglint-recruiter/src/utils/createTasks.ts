@@ -35,6 +35,14 @@ export const createTasks = async (
     const candidate = candidates.find(
       (ele) => ele.id === eachTask.application_id,
     );
+
+    await supabase.from('task_session_relation').insert(
+      task.session_ids.map((ele) => ({
+        session_id: ele.id,
+        task_id: eachTask.id,
+      })),
+    );
+
     await createTaskProgress({
       type: 'create_task',
       data: {
@@ -44,7 +52,7 @@ export const createTasks = async (
       },
       optionData: {
         candidateName: candidate.name,
-        sessions: eachTask.session_ids as any,
+        sessions: task.session_ids,
       },
     });
     addScheduleActivity({
@@ -52,7 +60,7 @@ export const createTasks = async (
       created_by: recruiterUser.id,
       logged_by: 'user',
       supabase: supabase,
-      title: `Task assigned to ${assignerName} for scheduling ${eachTask.session_ids.map((ele) => ele.name).join(',')}`,
+      title: `Task assigned to ${assignerName} for scheduling ${task.session_ids.map((ele) => ele.name).join(',')}`,
       description: '',
       metadata: null,
       task_id: eachTask.id,

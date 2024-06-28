@@ -56,7 +56,7 @@ import MuiNumberfield from './Components/MuiNumberfield';
 import MuiSelect from './Components/MuiSelect';
 import SelectTime from './Components/SelectTime';
 import DebriefDefaults from './DebriefDefaults';
-import SchedulerEmailTemps from './SchedulingEmailTemplates';
+import SchedulerEmailTemps, { emailTempKeys } from './SchedulingEmailTemplates';
 import SchedulingRegions from './SchedulingReason';
 import { settingSubNavItem } from './SubNav/utils';
 let schedulingSettingObj = {};
@@ -1115,7 +1115,26 @@ const settingsItems = [
 
 function SettingsSubNabItem() {
   const router = useRouter();
+  const { emailTemplates } = useAuthDetails();
+  const [firstTemplate, setFirstTemplate] = useState(null);
 
+  //for select the first email template type
+
+  useEffect(() => {
+    if (emailTemplates.isFetched) {
+      if (router.query.email) {
+        setFirstTemplate(router.query.email);
+      } else {
+        setFirstTemplate(
+          [...emailTemplates.data]
+            ?.filter((emailPath) => emailTempKeys.includes(emailPath.type))
+            .filter((v, i, a) => a.findIndex((v2) => v2.type === v.type) === i)
+            .sort((a, b) => a.type.localeCompare(b.type))[0].type,
+        );
+      }
+    }
+  }, [router]);
+  // console.log(router.query);
   return (
     <>
       {settingsItems.map((item, i) => {
@@ -1127,9 +1146,15 @@ function SettingsSubNabItem() {
             onClickTab={{
               onClick: (e: any) => {
                 e.stopPropagation();
-                router.push(
-                  `${ROUTES['/scheduling']()}?tab=settings&subtab=${item.value}`,
-                );
+                if (item.value === 'emailTemplate') {
+                  router.push(
+                    `${ROUTES['/scheduling']()}?tab=settings&subtab=${item.value}&email=${firstTemplate}`,
+                  );
+                } else {
+                  router.push(
+                    `${ROUTES['/scheduling']()}?tab=settings&subtab=${item.value}`,
+                  );
+                }
               },
             }}
           />

@@ -42,7 +42,7 @@ export async function fetchUtil(
   if (req_body.availability_req_id) {
     cand_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.availability_req_id}`;
   } else {
-    cand_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${req_body.schedule_id}?filter_id=${req_body.schedule_id}`;
+    cand_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${req_body.schedule_id}?filter_id=${req_body.filter_id}`;
   }
   const recruiter_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
   const {

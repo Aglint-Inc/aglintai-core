@@ -22,6 +22,7 @@ import {
   IndividualIcon,
   PanelIcon,
 } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
+import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
 import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
@@ -274,17 +275,18 @@ function RequestAvailability() {
               },
               start_date: dayjs().toString(),
               task_owner: recruiterUser.user_id,
-              session_ids: selectedSessions.map((ele) => {
-                return {
-                  id: ele.id,
-                  name: ele.name,
-                } as DatabaseTableInsert['new_tasks']['session_ids'][number];
-              }),
+
               status: 'in_progress',
               type: 'availability',
               request_availability_id: result.id,
             });
           }
+          await supabase.from('task_session_relation').insert(
+            selectedSessions.map((ele) => ({
+              session_id: ele.id,
+              task_id: task.id,
+            })),
+          );
           await createTaskProgress({
             data: {
               created_by: {
@@ -299,7 +301,7 @@ function RequestAvailability() {
             },
             type: 'request_availability',
             optionData: {
-              sessions: task.session_ids,
+              sessions: selectedSessions as any as meetingCardType[],
               candidateName: getFullName(
                 selectedApplication.candidates.first_name,
                 selectedApplication.candidates.last_name,

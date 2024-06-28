@@ -20,7 +20,7 @@
 
 .task_row.title-row.job-cand {
   padding-left: 1%;
-  grid-template-columns: 20px 1fr 130px 110px 160px 160px 130px;
+  grid-template-columns: 20px 1fr 150px 110px 160px 160px 130px;
 }
 
 .task_row.height-53 {
@@ -31,7 +31,7 @@
 
 .task_row.height-53.job-cand {
   padding-left: 1%;
-  grid-template-columns: 20px 1fr 130px 110px 160px 160px 130px;
+  grid-template-columns: 20px 1fr 150px 110px 160px 160px 130px;
   cursor: pointer;
 }
 

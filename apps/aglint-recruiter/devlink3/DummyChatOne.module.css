@@ -88,8 +88,8 @@
 .chat_text {
   display: flex;
   flex-direction: column;
-  grid-column-gap: 2px;
-  grid-row-gap: 2px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .chat_name_and_time {
@@ -164,7 +164,7 @@
 }
 
 .link {
-  color: #337fbd;
+  color: var(--accent-11);
   cursor: pointer;
 }
 

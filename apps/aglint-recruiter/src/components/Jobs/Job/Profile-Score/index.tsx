@@ -466,8 +466,10 @@ const Pill: FC<{
   const [value, setValue] = useState(item.field);
   const [check, setCheck] = useState(item.isMustHave);
   const onSubmit = () => {
-    handleSubmit({ ...item, field: value, isMustHave: check });
-    setOpen(false);
+    if (value !== '') {
+      handleSubmit({ ...item, field: value, isMustHave: check });
+      setOpen(false);
+    }
   };
   const onDelete = () => {
     handleDelete();
@@ -544,18 +546,12 @@ const Pill: FC<{
               size={'2'}
               isLeftIcon={false}
               isRightIcon={false}
+              isDisabled={!value}
               onClickButton={{
                 onClick: () => onSubmit(),
               }}
-              textButton='Submit'
+              textButton='Update'
             />
-            // <ButtonPrimarySmall
-            //   isDisabled={value === ''}
-            //   textLabel={'Submit'}
-            //   onClickButton={{
-            //     onClick: () => onSubmit(),
-            //   }}
-            // />
           }
         />
       </Popover>
@@ -582,8 +578,10 @@ const AddOption: FC<{
     }, 400);
   };
   const onSubmit = () => {
-    handleSubmit({ id: nanoid(), field: value, isMustHave: check });
-    handleClose();
+    if (value !== '') {
+      handleSubmit({ id: nanoid(), field: value, isMustHave: check });
+      handleClose();
+    }
   };
   return (
     <Stack ref={ref}>
@@ -648,18 +646,12 @@ const AddOption: FC<{
               size={'2'}
               isLeftIcon={false}
               isRightIcon={false}
+              isDisabled={!value}
               onClickButton={{
                 onClick: () => onSubmit(),
               }}
               textButton='Submit'
             />
-            // <ButtonPrimarySmall
-            //   isDisabled={value === ''}
-            //   textLabel={'Submit'}
-            //   onClickButton={{
-            //     onClick: () => onSubmit(),
-            //   }}
-            // />
           }
         />
       </Popover>

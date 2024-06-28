@@ -27,6 +27,7 @@ export type Form = Partial<{
   [id in keyof Omit<JobCreate, 'jd_json' | 'description_hash'>]: {
     value: JobCreate[id];
     required: boolean;
+    placeholder?: string;
     error: {
       value: boolean;
       helper: string;
@@ -158,7 +159,7 @@ const JobTitle: FC<MetaForms> = memo(({ name, value, onChange }) => {
       label={'Job Title'}
       name={name}
       required
-      placeholder={'Ex : Software developer'}
+      placeholder={value.placeholder}
       value={value.value as string}
       error={value.error.value}
       helperText={value.error.helper}
