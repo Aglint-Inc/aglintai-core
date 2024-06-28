@@ -1,3 +1,4 @@
+import { DatabaseEnums } from '@aglint/shared-types';
 import {
   Checkbox,
   Dialog,
@@ -24,6 +25,7 @@ import {
   setStepScheduling,
 } from '../../CandidateDetails/SchedulingDrawer/store';
 import { setRescheduleSessionIds } from '../../CandidateDetails/store';
+import { addScheduleActivity } from '../../Candidates/queries/utils';
 import { DateIcon } from '../../Settings/Components/DateSelector';
 import { removeSessionFromFilterJson } from '../utils';
 
@@ -34,6 +36,8 @@ function RescheduleDialog({
   application_id,
   meeting_id,
   session_id,
+  meeting_flow,
+  session_name,
 }: {
   isRescheduleOpen: boolean;
   refetch: () => void;
@@ -41,6 +45,8 @@ function RescheduleDialog({
   application_id: string;
   meeting_id: string;
   session_id: string;
+  meeting_flow: DatabaseEnums['meeting_flow'];
+  session_name: string;
 }) {
   const router = useRouter();
   const { recruiter, recruiterUser } = useAuthDetails();
@@ -122,11 +128,24 @@ function RescheduleDialog({
 
       if (errUpdSesCancel) throw new Error(errUpdSesCancel.message);
 
-      await removeSessionFromFilterJson({
-        session_id,
+      await addScheduleActivity({
+        title: `Cancelled session ${session_name} and try to reschedule.`,
+        application_id,
+        logged_by: 'user',
         supabase,
+        created_by: recruiterUser.user_id,
       });
 
+      if (
+        meeting_flow === 'self_scheduling' ||
+        meeting_flow === 'phone_agent' ||
+        meeting_flow === 'mail_agent'
+      ) {
+        await removeSessionFromFilterJson({
+          session_id,
+          supabase,
+        });
+      }
       if (sendCancelMail) {
         cancelMailHandler({
           application_id,

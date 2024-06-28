@@ -9,10 +9,15 @@ import { ActivitiesCard } from '@/devlink3/ActivitiesCard';
 import { SkeletonActivitiesCard } from '@/devlink3/SkeletonActivitiesCard';
 import Icon from '@/src/components/Common/Icons/Icon';
 
-import { useAllActivities } from '../hooks';
-import CancelMultipleScheduleDialog from './CancelMultipleScheduleDialog';
+import CancelScheduleDialog from '../../ScheduleDetails/CancelScheduleDialog';
+import { useAllActivities, useGetScheduleApplication } from '../hooks';
+import {
+  setCancelSessions,
+  setMultipleCancelOpen,
+  useSchedulingApplicationStore,
+} from '../store';
 import IconApplicationLogs from './IconApplicationLogs';
-import SlotContent from './SlotContent';
+import SlotContent from './SlotWidgets';
 
 function RightPanel({
   allActivities,
@@ -21,10 +26,33 @@ function RightPanel({
 }) {
   const router = useRouter();
   const { data: activities, isLoading, isFetched, refetch } = allActivities;
+  const { cancelSessions, isMultipleCancelOpen, selectedApplicationLog } =
+    useSchedulingApplicationStore((state) => ({
+      cancelSessions: state.cancelSessions,
+      isMultipleCancelOpen: state.isMultipleCancelOpen,
+      selectedApplicationLog: state.selectedApplicationLog,
+    }));
+
+  const { fetchInterviewDataByApplication } = useGetScheduleApplication();
 
   return (
     <>
-      <CancelMultipleScheduleDialog refetch={refetch} />
+      {cancelSessions?.length > 0 && (
+        <CancelScheduleDialog
+          refetch={() => {
+            fetchInterviewDataByApplication();
+            refetch();
+          }}
+          metaDetails={cancelSessions || []}
+          isDeclineOpen={isMultipleCancelOpen}
+          setIsDeclineOpen={setMultipleCancelOpen}
+          closeDialog={() => {
+            setCancelSessions(null);
+          }}
+          application_log_id={selectedApplicationLog?.id}
+        />
+      )}
+
       <Activities
         slotActivitiesCard={
           <>

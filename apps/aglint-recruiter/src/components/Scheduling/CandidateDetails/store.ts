@@ -38,6 +38,14 @@ export interface SchedulingApplication {
   isIndividualRescheduleOpen: boolean;
   selectedApplicationLog: DatabaseTable['application_logs'];
   rescheduleSessionIds: string[];
+  cancelSessions:
+    | {
+        session_id: string;
+        meeting_id: string;
+        session_name: string;
+        application_id: string;
+      }[]
+    | null;
 }
 
 const initialState: SchedulingApplication = {
@@ -47,6 +55,7 @@ const initialState: SchedulingApplication = {
   requestSessionIds: [], // selected session ids in request candidate availability
   availabilities: [], // candidate availabilities sent to candidate for showing banner
   selectedSession: null, // used for cancelling individual session
+  cancelSessions: null, // used for cancelling multiple session from activities right panel
   initialSessions: [], // sessions with meeting details based on this plan in getting rendered in candidate details
   selectedSchedule: null, // selected schedule details (interview_schedule table) used to find session is cached or not (if schedule exits then session is cached or else sessions are fetched from job plan)
   interviewModules: [], // all the interview modules for showing in the dropdown in edit session drawer
@@ -73,6 +82,10 @@ export const useSchedulingApplicationStore = create<SchedulingApplication>()(
 
 export const setInitalLoading = (initialLoading: boolean) =>
   useSchedulingApplicationStore.setState({ initialLoading });
+
+export const setCancelSessions = (
+  cancelReasons: SchedulingApplication['cancelSessions'],
+) => useSchedulingApplicationStore.setState({ cancelSessions: cancelReasons });
 
 export const setRescheduleSessionIds = (rescheduleSessionIds: string[]) =>
   useSchedulingApplicationStore.setState({ rescheduleSessionIds });

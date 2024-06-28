@@ -1,4 +1,3 @@
-import { DatabaseEnums } from '@aglint/shared-types';
 import { Dialog, Radio, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { Dispatch, useEffect, useState } from 'react';
@@ -6,29 +5,27 @@ import React, { Dispatch, useEffect, useState } from 'react';
 import { DeletePopup } from '@/devlink3/DeletePopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsCancelSchedule } from '@/src/pages/api/scheduling/application/cancelschedule';
-import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
-
-import { addScheduleActivity } from '../../Candidates/queries/utils';
 
 function CancelScheduleDialog({
   isDeclineOpen,
   setIsDeclineOpen,
   refetch,
-  meeting_id,
-  session_id,
-  application_id,
-  session_name,
-  meeting_flow,
+  metaDetails,
+  closeDialog,
+  application_log_id,
 }: {
   isDeclineOpen: boolean;
   setIsDeclineOpen: Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
-  meeting_id: string;
-  session_id: string;
-  application_id: string;
-  session_name: string;
-  meeting_flow: DatabaseEnums['meeting_flow'];
+  metaDetails: {
+    meeting_id: string;
+    session_id: string;
+    application_id: string;
+    session_name: string;
+  }[];
+  application_log_id: string | null; // used for removing cancel button from activities after cancelling
+  closeDialog: () => void;
 }) {
   const { recruiter, recruiterUser } = useAuthDetails();
 
@@ -47,28 +44,23 @@ function CancelScheduleDialog({
 
   const onClickConfirm = async () => {
     try {
-      const req_body: ApiBodyParamsCancelSchedule = {
-        cancel_user_id: recruiterUser.user_id,
-        meeting_id,
-        session_id,
-        notes,
-        reason,
-        application_id,
-        meeting_flow,
-      };
-
-      await axios.post('/api/scheduling/application/cancelschedule', {
-        ...req_body,
+      const promises = metaDetails.map(async (meta) => {
+        const req_body: ApiBodyParamsCancelSchedule = {
+          cancel_user_id: recruiterUser.user_id,
+          meeting_id: meta.meeting_id,
+          session_id: meta.session_id,
+          notes,
+          reason,
+          application_id: meta.application_id,
+          application_log_id,
+        };
+        return axios.post(
+          '/api/scheduling/application/cancelschedule',
+          req_body,
+        );
       });
 
-      addScheduleActivity({
-        title: `Canceled ${session_name}. Reason: ${reason} `,
-        application_id,
-        logged_by: 'user',
-        supabase: supabase,
-        created_by: recruiterUser.user_id,
-      });
-
+      await Promise.all(promises);
       refetch();
     } catch {
       toast.error('Unable to save cancel reason');
@@ -82,10 +74,11 @@ function CancelScheduleDialog({
       open={isDeclineOpen}
       onClose={() => {
         setIsDeclineOpen(false);
+        closeDialog();
       }}
     >
       <DeletePopup
-        textTitle={'Cancel Schedule'}
+        textTitle={`Cancel Schedule ${metaDetails.map((meta) => meta.session_name).join(', ')}`}
         textDescription=''
         isIcon={false}
         isWidget={true}
@@ -136,11 +129,14 @@ function CancelScheduleDialog({
         onClickCancel={{
           onClick: () => {
             setIsDeclineOpen(false);
+            closeDialog();
           },
         }}
         onClickDelete={{
           onClick: () => {
-            onClickConfirm();
+            if (reason) {
+              onClickConfirm();
+            }
           },
         }}
         buttonText={'Decline'}

@@ -61,7 +61,7 @@ import { capitalize, capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import { UploadApplications } from '../Common/UploadApplications';
-import DashboardBarChart from './barChart';
+import DashboardBarChart from './BarChart';
 import DashboardDoughnutChart from './doughnut';
 import DashboardLineChart from './lineChart';
 import TenureAndExpSummary from './tenureAndExpSummary';
