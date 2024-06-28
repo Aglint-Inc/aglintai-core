@@ -29,7 +29,6 @@ const createApplicationSlice: StateCreator<
 > = (set, get) => ({
   resetAll: () => {
     get().resetDrawer();
-    get().resetTab();
     get().resetPreview();
   },
 });

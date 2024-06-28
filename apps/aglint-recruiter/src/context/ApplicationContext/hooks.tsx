@@ -10,21 +10,22 @@ import { diffApplication } from '@/src/queries/job-applications';
 
 import { useApplications } from '../ApplicationsContext';
 import { useAuthDetails } from '../AuthContext/AuthContext';
-import { useApplicationStore } from './store';
+import { ApplicationStore, useApplicationStore } from './store';
 
 export const useApplicationContext = (
   props: Parameters<(typeof applicationQuery)['application']>[0] &
     Partial<Pick<Parameters<typeof ResumePreviewer>[0], 'navigation'>> & {
       showResumePreviewActions?: boolean;
       showTabs?: boolean;
+      defaultTab?: ApplicationStore['tab'];
     },
 ) => {
   const { isAssessmentEnabled, isSchedulingEnabled, isScreeningEnabled } =
     useAuthDetails();
   const queryClient = useQueryClient();
   const updateApplication = useApplications()?.handleAsyncUpdateApplication;
-  const { resetTab, tab } = useApplicationStore(({ resetTab, tab }) => ({
-    resetTab,
+  const { setTab, tab } = useApplicationStore(({ setTab, tab }) => ({
+    setTab,
     tab,
   }));
 
@@ -94,8 +95,8 @@ export const useApplicationContext = (
   );
 
   useEffect(() => {
-    resetTab();
-    return () => resetTab();
+    setTab(props?.defaultTab ?? 'Details');
+    return () => setTab(props?.defaultTab ?? 'Details');
   }, []);
   return {
     tabs,
