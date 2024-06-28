@@ -210,9 +210,12 @@ export class CandidatesSchedulingV2 {
   ) => {
     const verified_slots: PlanCombinationRespType[] = [];
     for (const comb of selected_slots) {
-      // TODO: type fix
       const session_rounds = ScheduleUtils.getSessionRounds(
-        comb.sessions,
+        comb.sessions.map((s) => ({
+          break_duration: s.break_duration,
+          session_duration: s.duration,
+          session_order: s.session_order,
+        })),
       ) as unknown as SessionCombinationRespType[][];
       let is_option_verified = true;
       for (const curr_round_sess of session_rounds) {
@@ -972,6 +975,8 @@ export class CandidatesSchedulingV2 {
 
       return upd_sess_slot;
     };
+
+    // this is recursion function
     const getSessionsAvailability = (
       session_idx: number,
       session_start_time: string,
