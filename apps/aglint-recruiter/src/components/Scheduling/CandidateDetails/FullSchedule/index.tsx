@@ -81,30 +81,43 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
     <>
       <SideDrawerEdit />
       <BreakDrawerEdit />
-      <CancelScheduleDialog
-        refetch={() => {
-          fetchInterviewDataByApplication();
-          refetch();
-        }}
-        application_id={selectedApplication.id}
-        isDeclineOpen={isIndividualCancelOpen}
-        setIsDeclineOpen={setIndividualCancelOpen}
-        meeting_flow={selectedSession?.interview_meeting.meeting_flow}
-        meeting_id={selectedSession?.interview_meeting.id}
-        session_id={selectedSession?.id}
-        session_name={selectedSession?.name}
-      />
-      <RescheduleDialog
-        refetch={() => {
-          fetchInterviewDataByApplication();
-          refetch();
-        }}
-        isRescheduleOpen={isIndividualRescheduleOpen}
-        setIsRescheduleOpen={setIndividualRescheduleOpen}
-        application_id={selectedApplication.id}
-        meeting_id={selectedSession?.interview_meeting.id}
-        session_id={selectedSession?.id}
-      />
+      {selectedSession && (
+        <>
+          <CancelScheduleDialog
+            refetch={() => {
+              fetchInterviewDataByApplication();
+              refetch();
+            }}
+            metaDetails={[
+              {
+                application_id: selectedApplication.id,
+                meeting_id: selectedSession?.interview_meeting.id,
+                session_id: selectedSession?.id,
+                session_name: selectedSession?.name,
+              },
+            ]}
+            isDeclineOpen={isIndividualCancelOpen}
+            setIsDeclineOpen={setIndividualCancelOpen}
+            closeDialog={() => {}}
+            application_log_id={null}
+          />
+
+          <RescheduleDialog
+            refetch={() => {
+              fetchInterviewDataByApplication();
+              refetch();
+            }}
+            isRescheduleOpen={isIndividualRescheduleOpen}
+            setIsRescheduleOpen={setIndividualRescheduleOpen}
+            application_id={selectedApplication.id}
+            meeting_id={selectedSession?.interview_meeting.id}
+            session_id={selectedSession?.id}
+            session_name={selectedSession?.name}
+            meeting_flow={selectedSession?.interview_meeting.meeting_flow}
+          />
+        </>
+      )}
+
       <SelfSchedulingDrawer refetch={refetch} />
       <NewInterviewPlan
         slotNewInterviewPlanCard={

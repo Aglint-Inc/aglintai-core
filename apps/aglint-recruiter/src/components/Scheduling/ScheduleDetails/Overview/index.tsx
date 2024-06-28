@@ -170,11 +170,16 @@ function Overview({
           isDeclineOpen={isCancelOpen}
           setIsDeclineOpen={setIsCancelOpen}
           refetch={refetch}
-          application_id={schedule.schedule.application_id}
-          meeting_id={schedule.interview_meeting.id}
-          session_id={schedule.interview_session.id}
-          session_name={schedule.interview_session.name}
-          meeting_flow={schedule.interview_meeting.meeting_flow}
+          metaDetails={[
+            {
+              application_id: schedule.schedule.application_id,
+              meeting_id: schedule.interview_meeting.id,
+              session_name: schedule.interview_session.name,
+              session_id: schedule.interview_session.id,
+            },
+          ]}
+          closeDialog={() => {}}
+          application_log_id={null}
         />
         <RequestRescheduleDialog
           isRequestRescheduleOpen={isRequestRescheduleOpen}
@@ -190,6 +195,8 @@ function Overview({
           application_id={schedule.schedule.application_id}
           meeting_id={schedule.interview_meeting.id}
           session_id={schedule.interview_session.id}
+          meeting_flow={schedule.interview_meeting.meeting_flow}
+          session_name={schedule.interview_session.name}
         />
       </>
 

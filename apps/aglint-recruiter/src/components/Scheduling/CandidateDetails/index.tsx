@@ -13,7 +13,6 @@ import CandidateInfo from '../Common/CandidateInfo';
 import ScheduleProgress from '../Common/ScheduleProgress';
 import FeedbackWindow from '../ScheduleDetails/Feedback';
 import CandidateFeedback from './CandidateFeedback';
-import RescheduleDialog from './Common/RescheduleDialog';
 import FullSchedule from './FullSchedule';
 import { useAllActivities, useGetScheduleApplication } from './hooks';
 import { RequestAvailabilityProvider } from './RequestAvailability/RequestAvailabilityContext';
@@ -82,22 +81,8 @@ function SchedulingApplication() {
 
   return (
     <>
-      <RescheduleDialog refetch={allActivities.refetch} />
-
       <PageLayout
-        // onClickBack={{
-        //   onClick: () => {
-        //     router.push(ROUTES['/scheduling']() + '?tab=candidates');
-        //   },
-        // }}
-        // isBackButton={true}
-        slotTopbarLeft={
-          <>
-            {breadcrum}
-            {/* <Breadcrum textName={scheduleName} />
-            {!fetchingSchedule && <StatusUpdateDropdownBreadcrum />} */}
-          </>
-        }
+        slotTopbarLeft={<>{breadcrum}</>}
         slotBody={
           <>
             {fetchingSchedule ? (
