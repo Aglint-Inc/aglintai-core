@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import {
   CandReqAvailableSlots,
+  CurrRoundCandidateAvailReq,
   DatabaseTable,
   DatabaseTableInsert,
   DatabaseTableUpdate,
@@ -304,18 +305,17 @@ export async function getDateSlots({
   requestAvailability: candidateRequestAvailabilityType;
   day: number;
 }) {
+  const payload: CandReqAvailableSlots = {
+    recruiter_id: requestAvailability.recruiter_id,
+    candidate_tz: userTzDayjs.tz.guess(),
+    avail_req_id: requestAvailability.id,
+    curr_round: 1,
+  };
   const { data: dateSlots } = await axios.post(
     '/api/scheduling/v1/cand_req_available_slots',
-    {
-      candidate_tz: userTzDayjs.tz.guess(),
-      recruiter_id: requestAvailability.recruiter_id,
-      session_ids: requestAvailability.session_ids.map((ele) => ele.id),
-      date_range_start: requestAvailability.date_range[0],
-      date_range_end: requestAvailability.date_range[1],
-      current_interview_day: day,
-    } as CandReqAvailableSlots,
+    payload,
   );
-  return dateSlots;
+  return dateSlots as CurrRoundCandidateAvailReq[];
 }
 
 export function getDatesBetween(startDate: string, endDate: string) {
