@@ -251,6 +251,7 @@ const getApplicationInterview = async ({
         session_order,
         date: null,
         meeting_id: null,
+        session_id: null,
       }),
     );
   return plans;
@@ -261,8 +262,10 @@ const getApplicationTasks = async ({
 }: Pick<Params, 'application_id'>) =>
   (
     await supabase
-      .from('new_tasks')
-      .select('id, name, created_by, status')
+      .from('tasks_view')
+      .select(
+        'id, name, created_by, status, type, session_ids, schedule_date_range',
+      )
       .eq('application_id', application_id)
       .order('created_at', { ascending: false })
       .throwOnError()
