@@ -48,11 +48,14 @@ const JobCreate = () => {
   const { recruiter } = useAuthDetails();
   const { push } = useRouter();
   const initialCompany = recruiter?.name ?? '';
-  const initialTitle = recruiter?.name ? `${initialCompany}'s first job` : '';
+  const initialTitle = recruiter?.name
+    ? `Ex : ${initialCompany}'s first job`
+    : '';
   const [fields, setFields] = useState<Form>({
     job_title: {
-      value: initialTitle,
+      value: '',
       required: true,
+      placeholder: initialTitle,
       error: { value: false, helper: `Job title can't be empty` },
     },
     company: {
