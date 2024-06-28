@@ -126,7 +126,7 @@ function GroupSections({
                     item?.applications?.candidates?.last_name,
                   )}
                   isRoleVisible={false}
-                  isRoleHorizontalVisible={true}
+                  // isRoleHorizontalVisible={true}
                   textRole={capitalizeFirstLetter(
                     item?.applications?.public_jobs?.job_title,
                   )}

@@ -23,13 +23,7 @@ import {
   useSchedulingFlowStore,
 } from './store';
 
-export const useSelfSchedulingDrawer = ({
-  isDebrief,
-  refetch,
-}: {
-  isDebrief: boolean;
-  refetch: () => void;
-}) => {
+export const useSelfSchedulingDrawer = () => {
   const router = useRouter();
   const { recruiter, recruiterUser } = useAuthDetails();
   const {
@@ -45,6 +39,10 @@ export const useSelfSchedulingDrawer = ({
     selectedApplicationLog: state.selectedApplicationLog,
     isSendingToCandidate: state.isSendingToCandidate,
   }));
+
+  const isDebrief = initialSessions
+    .filter((ses) => selectedSessionIds.includes(ses.id))
+    .some((ses) => ses.session_type === 'debrief');
 
   const {
     dateRange,
@@ -105,7 +103,11 @@ export const useSelfSchedulingDrawer = ({
       setSelectedSessionIds([]);
       setStepScheduling('pick_date');
       setSelectedApplicationLog(null);
+      removeQueryParams();
     }
+  };
+
+  const removeQueryParams = () => {
     const currentPath = router.pathname;
     const currentQuery = { ...router.query };
     delete currentQuery.task_id;
@@ -164,11 +166,10 @@ export const useSelfSchedulingDrawer = ({
       toast.error('Error sending to candidate.');
     } finally {
       setIsSendingToCandidate(false);
-      refetch();
       fetchInterviewDataByApplication();
       setSelectedSessionIds([]);
     }
   };
 
-  return { onClickPrimary, resetStateSelfScheduling };
+  return { onClickPrimary, resetStateSelfScheduling, removeQueryParams };
 };

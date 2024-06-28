@@ -1,9 +1,10 @@
 import { DatabaseTableInsert } from '@aglint/shared-types';
+import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { Text } from '@/devlink/Text';
@@ -16,8 +17,10 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
+import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
 
+import { ConfirmedInvitePage } from '../../../CandidateInvite';
 import {
   insertTaskProgress,
   useRequestAvailabilityContext,
@@ -40,7 +43,52 @@ function CandidateAvailability() {
     setDateSlots,
     setDaySlots,
   } = useRequestAvailabilityContext();
+  const [confirmLoading, setConfirmLoading] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
+  const [meetingsAndRounds, setMeetingsAndRound] = useState<{
+    rounds: any[];
+    meetings: any[];
+    schedule: any;
+  }>(null);
+  const getMeetings = async (session_ids: string[], application_id: string) => {
+    setConfirmLoading(true);
+    const {
+      data: { meetings },
+    } = await axios.post(
+      '/api/scheduling/request_availability/candidateAvailability/getMeetings',
+      {
+        session_ids,
+      },
+    );
+    const { rounds } = meetings.reduce(
+      (acc, curr) => {
+        const count = acc.rounds.length;
+        if (
+          count === 0 ||
+          acc.rounds[count - 1].sessions[
+            acc.rounds[count - 1].sessions.length - 1
+          ].interview_session.break_duration >= SINGLE_DAY_TIME
+        )
+          acc.rounds.push({
+            title: `Day ${acc.rounds.length + 1}`,
+            sessions: [curr],
+          });
+        else acc.rounds[count - 1].sessions.push(curr);
+        return acc;
+      },
+      { rounds: [] as any },
+    );
+
+    const { data: sch } = await axios.post(
+      `/api/scheduling/request_availability/candidateAvailability/getScheduleMeetings`,
+      {
+        application_id,
+      },
+    );
+
+    setMeetingsAndRound({ rounds: rounds, meetings: meetings, schedule: sch });
+    setConfirmLoading(false);
+  };
 
   async function handleSubmit() {
     if (multiDaySessions.length !== daySlots.length) {
@@ -109,58 +157,70 @@ function CandidateAvailability() {
     setSubmitLoading(false);
   }
 
-  const checkAndUpdate = async () => {
-    if (candidateRequestAvailability.slots) {
-      setIsSubmitted(true);
-      setDateSlots(candidateRequestAvailability.slots);
-      setDaySlots(candidateRequestAvailability.slots);
-    } else {
-      if (!candidateRequestAvailability.visited) {
-        const { data: task } = await axios.post(
-          `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,
-          {
-            request_id: candidateRequestAvailability?.id,
-          },
-        );
+  const initialTimezone = useMemo(() => {
+    const tz = dayjs.tz.guess();
+    return timeZones.find(({ tzCode }) => tzCode === tz);
+  }, []);
 
-        const { data: requestData } = await axios.post(
-          `/api/scheduling/request_availability/updateRequestAvailability`,
-          {
-            id: String(router.query?.request_id),
-            data: { visited: true },
-          },
-        );
-        setCandidateRequestAvailability(requestData);
-        await axios.post(
-          `/api/scheduling/request_availability/insertScheduleActivities`,
-          {
-            data: {
-              title: `Candidate opened request availability link for ${candidateRequestAvailability.session_ids.map((ele) => ele.name).join(',')}.`,
-              module: 'scheduler',
-              logged_by: 'candidate',
-              application_id: candidateRequestAvailability.application_id,
-              task_id: task.id,
-            } as DatabaseTableInsert['application_logs'],
-          },
-        );
-        if (task.id)
-          await insertTaskProgress({
-            taskData: {
-              task_id: task.id,
-              created_by: {
-                name: getFullName(
-                  candidateRequestAvailability.applications.candidates
-                    .first_name,
-                  candidateRequestAvailability.applications.candidates
-                    .last_name,
-                ),
-                id: candidateRequestAvailability.applications.candidates.id,
-              },
-              title: `Candidate opened request availability link for ${candidateRequestAvailability.session_ids.map((ele) => ele.name).join(',')}.`,
-              progress_type: 'request_availability',
-            } as DatabaseTableInsert['new_tasks_progress'],
-          });
+  const checkAndUpdate = async () => {
+    if (!candidateRequestAvailability.booking_confirmed) {
+      if (candidateRequestAvailability.slots) {
+        setIsSubmitted(true);
+        setDateSlots(candidateRequestAvailability.slots);
+        setDaySlots(candidateRequestAvailability.slots);
+      } else {
+        if (!candidateRequestAvailability.visited) {
+          const { data: task } = await axios.post(
+            `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,
+            {
+              request_id: candidateRequestAvailability?.id,
+            },
+          );
+
+          const { data: requestData } = await axios.post(
+            `/api/scheduling/request_availability/updateRequestAvailability`,
+            {
+              id: String(router.query?.request_id),
+              data: { visited: true },
+            },
+          );
+          setCandidateRequestAvailability(requestData);
+          await axios.post(
+            `/api/scheduling/request_availability/insertScheduleActivities`,
+            {
+              data: {
+                title: `Candidate opened request availability link for ${candidateRequestAvailability.session_ids.map((ele) => ele.name).join(',')}.`,
+                module: 'scheduler',
+                logged_by: 'candidate',
+                application_id: candidateRequestAvailability.application_id,
+                task_id: task.id,
+              } as DatabaseTableInsert['application_logs'],
+            },
+          );
+          if (task.id)
+            await insertTaskProgress({
+              taskData: {
+                task_id: task.id,
+                created_by: {
+                  name: getFullName(
+                    candidateRequestAvailability.applications.candidates
+                      .first_name,
+                    candidateRequestAvailability.applications.candidates
+                      .last_name,
+                  ),
+                  id: candidateRequestAvailability.applications.candidates.id,
+                },
+                title: `Candidate opened request availability link for ${candidateRequestAvailability.session_ids.map((ele) => ele.name).join(',')}.`,
+                progress_type: 'request_availability',
+              } as DatabaseTableInsert['new_tasks_progress'],
+            });
+        }
       }
+    } else {
+      getMeetings(
+        candidateRequestAvailability.session_ids.map((ele) => ele.id),
+        candidateRequestAvailability.application_id,
+      );
     }
   };
   useEffect(() => {
@@ -168,7 +228,7 @@ function CandidateAvailability() {
       checkAndUpdate();
     }
   }, [candidateRequestAvailability]);
-  if (loading) {
+  if (loading || confirmLoading) {
     return (
       <Stack
         width={'100%'}
@@ -182,6 +242,27 @@ function CandidateAvailability() {
           <CandidateSlotLoad />
         </Stack>
       </Stack>
+    );
+  }
+
+  if (
+    candidateRequestAvailability?.booking_confirmed === true &&
+    meetingsAndRounds?.meetings
+  ) {
+    return (
+      <ConfirmedInvitePage
+        candidate={candidateRequestAvailability.applications.candidates}
+        filter_json={null}
+        meetings={meetingsAndRounds.meetings}
+        rounds={meetingsAndRounds.rounds}
+        schedule={meetingsAndRounds.schedule}
+        recruiter={{
+          id: candidateRequestAvailability.recruiter_id,
+          name: candidateRequestAvailability.applications.public_jobs.company,
+          logo: candidateRequestAvailability.applications.public_jobs.logo,
+        }}
+        timezone={initialTimezone}
+      />
     );
   }
 

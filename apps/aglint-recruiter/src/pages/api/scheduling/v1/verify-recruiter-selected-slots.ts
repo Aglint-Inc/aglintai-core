@@ -119,7 +119,11 @@ const convertOptionsToDateRangeSlots = (
 ) => {
   let all_day_plans: SessionsCombType[][][] = [];
   const sesn_round_cnt = ScheduleUtils.getSessionRounds(
-    verified_options[0].sessions,
+    verified_options[0].sessions.map((s) => ({
+      break_duration: s.break_duration,
+      session_duration: s.duration,
+      session_order: s.session_order,
+    })),
   ).length;
   const slot_map: {
     [int_start_date: string]: PlanCombinationRespType[][];
@@ -133,9 +137,15 @@ const convertOptionsToDateRangeSlots = (
     if (!slot_map[int_start_date]) {
       slot_map[int_start_date] = new Array(sesn_round_cnt);
     }
-    const slot_rounds = ScheduleUtils.getSessionRounds(
-      slot_option.sessions,
-    ) as unknown as SessionCombinationRespType[][];
+    const slot_rounds: SessionCombinationRespType[][] =
+      ScheduleUtils.getSessionRounds(
+        slot_option.sessions.map((s) => ({
+          ...s,
+          break_duration: s.break_duration,
+          session_duration: s.duration,
+          session_order: s.session_order,
+        })),
+      ) as unknown as SessionCombinationRespType[][];
     for (
       let curr_round_idx = 0;
       curr_round_idx < sesn_round_cnt;

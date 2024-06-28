@@ -13,6 +13,7 @@ const Drawer = () => {
 
   const {
     job,
+    section,
     sectionApplication,
     handleSelectPrevApplication,
     handleSelectNextApplication,
@@ -121,6 +122,7 @@ const Drawer = () => {
             handleDown: handleSelectNextApplication,
           }}
           showTabs={true}
+          defaultTab={section === 'interview' ? 'Interview' : 'Details'}
         >
           <Application.Body
             topBar={

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GeneralBanner } from '@/devlink/GeneralBanner';
 import Icon from '@/src/components/Common/Icons/Icon';
-import { setDateRange } from '@/src/components/Scheduling/CandidateDetails/SelfSchedulingDrawer/store';
+import { setDateRange } from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/store';
 import {
   setRequestSessionIds,
   setSelectedSessionIds,

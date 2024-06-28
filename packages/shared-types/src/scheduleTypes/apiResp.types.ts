@@ -15,6 +15,8 @@ export type CalConflictType =
   | 'day_passed'
   | 'holiday'
   | 'day_off'
+  | 'free_time'
+  | 'recruiting_blocks'
   | 'cal_event';
 export type ConflictReason = {
   conflict_type:

@@ -61,7 +61,7 @@ import { capitalize, capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import { UploadApplications } from '../Common/UploadApplications';
-import DashboardBarChart from './barChart';
+import DashboardBarChart from './BarChart2';
 import DashboardDoughnutChart from './doughnut';
 import DashboardLineChart from './lineChart';
 import TenureAndExpSummary from './tenureAndExpSummary';
@@ -156,6 +156,7 @@ const Dashboard = () => {
   const handlePublish = async () => {
     if (publishable) {
       const response = await handleJobPublish(job);
+      toast.success('Job published successfully');
       if (response && scoring_criteria_changed) {
         //await handleJobApplicationRescore();
       }

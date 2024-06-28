@@ -1,11 +1,10 @@
 import { InterviewSessionRelationTypeDB } from '@aglint/shared-types';
-import { Dialog, Stack, TextField, Typography } from '@mui/material';
+import { Dialog, Radio, Stack, TextField, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import React, { Dispatch, useEffect, useState } from 'react';
 
-import { Checkbox } from '@/devlink/Checkbox';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
@@ -42,19 +41,19 @@ function RequestRescheduleDialog({
     'Out of the office',
     'Scheduling conflicts',
     'Illness or emergency',
-  ];
+  ]; // extra array not needed temporarily added
 
   useEffect(() => {
     setDateRange({
       start_date: currentDate.toISOString(),
       end_date: currentDate.add(15, 'day').toISOString(),
     });
-    setReason('Too Many Interviews');
+    setReason(reasons[0]);
   }, []);
 
   const onClickConfirm = async () => {
     try {
-      if (sessionRelation?.id) {
+      if (sessionRelation.id) {
         await supabase
           .from('interview_session_relation')
           .update({ accepted_status: 'request_reschedule' })
@@ -87,6 +86,8 @@ function RequestRescheduleDialog({
         });
 
         refetch();
+      } else {
+        //
       }
     } catch {
       toast.error('Unable to save cancel reason');
@@ -103,7 +104,7 @@ function RequestRescheduleDialog({
       }}
     >
       <ConfirmationPopup
-        textPopupTitle={'Reschedule'}
+        textPopupTitle={'Request Reschedule'}
         isIcon={false}
         onClickCancel={{
           onClick: () => {
@@ -195,7 +196,7 @@ function RequestRescheduleDialog({
                     alignItems={'center'}
                     spacing={1}
                   >
-                    <Checkbox isChecked={rea === reason} />
+                    <Radio checked={rea === reason} />
                     <Typography
                       variant='body1'
                       color={'var(--neutral-12)'}
@@ -220,7 +221,7 @@ function RequestRescheduleDialog({
             />
           </Stack>
         }
-        textPopupButton={'Proceed to Reschedule'}
+        textPopupButton={'Request Reschedule'}
       />
     </Dialog>
   );

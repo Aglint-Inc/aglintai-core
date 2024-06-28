@@ -39,7 +39,7 @@ import {
   setIsScheduleNowOpen,
   setStepScheduling,
   useSchedulingFlowStore,
-} from '../SelfSchedulingDrawer/store';
+} from '../SchedulingDrawer/store';
 import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
 import {
   createTask,
@@ -86,6 +86,13 @@ function RequestAvailability() {
   );
   function getDrawerClose() {
     setIsScheduleNowOpen(false);
+    const currentPath = router.pathname;
+    const currentQuery = { ...router.query };
+    delete currentQuery.task_id;
+    router.replace({
+      pathname: currentPath,
+      query: currentQuery,
+    });
   }
 
   const [availability, setAvailability] = useState<
@@ -257,6 +264,7 @@ function RequestAvailability() {
             task = await updateTask({
               status: 'in_progress',
               request_availability_id: result.id,
+              type: 'availability',
             });
           } else {
             task = await createTask({
