@@ -1,8 +1,3 @@
-import {
-  EmailAgentId,
-  PhoneAgentId,
-  SystemAgentId,
-} from '@aglint/shared-utils';
 import { useRouter } from 'next/router';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -15,37 +10,28 @@ import {
 } from '@/src/components/Scheduling/CandidateDetails/store';
 import { useApplication } from '@/src/context/ApplicationContext';
 
+import {
+  ApplicationInterviewActionsProvider,
+  useApplicationInterviewActions,
+} from '../Common/ActionsProvider';
+
 const Actions = () => {
   const { tasks, interview } = useApplication();
 
   if (tasks.status !== 'success' || interview.status !== 'success')
     return <></>;
 
-  return <Content />;
+  return (
+    <ApplicationInterviewActionsProvider>
+      <Content />
+    </ApplicationInterviewActionsProvider>
+  );
 };
 
 export { Actions };
 
 const Content = () => {
-  const { tasks, interview } = useApplication();
-
-  const scheduledSessions = (interview.data ?? []).filter(
-    ({ status }) => status !== 'not_scheduled',
-  );
-
-  const notStartedTasks = (tasks.data ?? []).filter(
-    ({ status, type, created_by }) =>
-      type === 'schedule' &&
-      ![EmailAgentId, PhoneAgentId, SystemAgentId].includes(created_by) &&
-      (status === 'not_started' || status === 'overdue'),
-  );
-
-  const validActions = notStartedTasks.filter(
-    ({ session_ids }) =>
-      !session_ids.some(({ id }) =>
-        scheduledSessions.find(({ session_id }) => session_id === id),
-      ),
-  );
+  const { validActions } = useApplicationInterviewActions();
 
   return (
     <>

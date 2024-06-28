@@ -125,7 +125,8 @@ function GroupSections({
                     item?.applications?.candidates?.first_name,
                     item?.applications?.candidates?.last_name,
                   )}
-                  isRoleVisible={true}
+                  isRoleVisible={false}
+                  // isRoleHorizontalVisible={true}
                   textRole={capitalizeFirstLetter(
                     item?.applications?.public_jobs?.job_title,
                   )}
@@ -146,7 +147,7 @@ function GroupSections({
                       sx={{
                         cursor: 'pointer',
                       }}
-                      variant='body2'
+                      variant='body1'
                     >
                       {item.tasklist.length}
                     </Typography>

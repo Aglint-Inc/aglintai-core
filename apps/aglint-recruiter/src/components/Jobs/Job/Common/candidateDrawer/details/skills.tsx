@@ -7,9 +7,9 @@ import { Skeleton } from '@/devlink2/Skeleton';
 import { GlobalIcon } from '@/devlink3/GlobalIcon';
 import { useApplication } from '@/src/context/ApplicationContext';
 
-import { Loader } from '../common';
+import { Loader } from '../Common/Loader';
 import { getIconName } from '../utils';
-import { EmptyDetailState } from './common';
+import { EmptyDetailState } from './Common/EmptyDetailState';
 
 const Skills = () => {
   return (

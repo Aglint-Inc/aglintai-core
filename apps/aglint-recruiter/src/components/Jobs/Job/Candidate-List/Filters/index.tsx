@@ -168,8 +168,9 @@ const resume_score = resumeScoreTypes.map((id) => ({
 }));
 
 const sortTypes: ApplicationsStore['sort']['type'][] = [
+  'latest_activity',
+  'resume_score',
   'applied_at',
   'name',
-  'resume_score',
   'location',
 ];

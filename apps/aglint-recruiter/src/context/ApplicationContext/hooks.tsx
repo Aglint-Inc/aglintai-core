@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect } from 'react';
 
-import type { ResumePreviewer } from '@/src/components/Jobs/Job/Candidate-List/Common/resumePreviewer';
+import type { ResumePreviewer } from '@/src/components/Jobs/Job/Candidate-List/Common/ResumePreviewer';
 import {
   applicationQuery,
   useUpdateApplication,
@@ -48,11 +48,14 @@ export const useApplicationContext = (
   const tasks = useQuery(
     applicationQuery.tasks({
       ...props,
-      enabled: tab === 'Tasks' || tab === 'Interview',
+      enabled: tab === 'Tasks' || tab === 'Interview' || !!props?.showTabs,
     }),
   );
   const activity = useQuery(
-    applicationQuery.activity({ ...props, enabled: tab === 'Activity' }),
+    applicationQuery.activity({
+      ...props,
+      enabled: tab === 'Activity' || !!props?.showTabs,
+    }),
   );
   const { mutate } = useUpdateApplication(props);
 

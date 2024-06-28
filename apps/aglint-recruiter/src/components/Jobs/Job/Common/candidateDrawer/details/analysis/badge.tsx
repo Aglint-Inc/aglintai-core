@@ -1,8 +1,8 @@
 import { useApplication } from '@/src/context/ApplicationContext';
 
-import ResumeScore from '../../../../Candidate-List/Common/resumeScore';
+import ResumeScore from '../../../../Candidate-List/Common/ResumeScore';
 
-const Badge = () => {
+export const Badge = () => {
   const {
     meta: { data, status },
   } = useApplication();
@@ -15,5 +15,3 @@ const Badge = () => {
     />
   );
 };
-
-export { Badge };
