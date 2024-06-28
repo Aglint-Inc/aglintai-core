@@ -156,6 +156,7 @@ const Dashboard = () => {
   const handlePublish = async () => {
     if (publishable) {
       const response = await handleJobPublish(job);
+      toast.success('Job published successfully');
       if (response && scoring_criteria_changed) {
         //await handleJobApplicationRescore();
       }
