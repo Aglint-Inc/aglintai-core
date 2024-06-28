@@ -2,17 +2,17 @@ import { schedulingSettingType, SocialsType } from '@aglint/shared-types';
 import { AvatarGroup, Box, Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { BodyWithSublink } from '@/devlink2/BodyWithSublink';
-import { Breadcrum } from '@/devlink2/Breadcrum';
 import { EmptyState } from '@/devlink2/EmptyState';
 import { InterviewModuleCard } from '@/devlink2/InterviewModuleCard';
 import { InterviewModuleTable } from '@/devlink2/InterviewModuleTable';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { TaskSwitchButton } from '@/devlink3/TaskSwitchButton';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
@@ -40,6 +40,7 @@ function SchedulingMainComp() {
   const router = useRouter();
   const { recruiterUser, isAllowed } = useAuthDetails();
   const [saving, setSaving] = useState<'saving' | 'saved'>('saved');
+
   useEffect(() => {
     if (router.isReady && !router.query.tab) {
       router.push(
@@ -59,48 +60,36 @@ function SchedulingMainComp() {
     recruiterUser.role === 'recruiter' ||
     recruiterUser.role === 'recruiting_coordinator';
 
+  const { breadcrum, setBreadcrum } = useBreadcrumContext();
+
+  useEffect(() => {
+    if (tab == 'dashboard') {
+      setBreadcrum([
+        {
+          name: 'Scheduling',
+          route: ROUTES['/scheduling']() + '?tab=dashboard',
+        },
+      ]);
+    } else if (tab) {
+      setBreadcrum([
+        {
+          name: 'Scheduling',
+          route: ROUTES['/scheduling']() + `?tab=dashboard`,
+        },
+        {
+          name: tab === 'interviewtypes' ? 'Interview Types' : tab,
+          route: ROUTES['/scheduling']() + `?tab=${tab}`,
+        },
+      ]);
+    }
+  }, [tab]);
+
   return (
     <>
       <SeoSettings tab={tab} />
 
       <PageLayout
-        slotTopbarLeft={
-          <>
-            {isSubNavDisabled && (
-              <Breadcrum
-                isLink={true}
-                onClickLink={{
-                  onClick: () => {
-                    router.push(`${ROUTES['/scheduling']()}?tab=dashboard`);
-                  },
-                }}
-              />
-            )}
-
-            <Breadcrum
-              textName={
-                isSubNavDisabled
-                  ? tab === 'candidates'
-                    ? 'Candidates'
-                    : tab === 'schedules'
-                      ? 'Schedules'
-                      : tab === 'interviewers'
-                        ? 'Interviewers'
-                        : tab === 'interviewtypes'
-                          ? 'Interview Types'
-                          : tab === 'settings'
-                            ? 'Settings'
-                            : tab === 'dashboard'
-                              ? 'Dashboard'
-                              : tab === 'myschedules'
-                                ? 'My Scheduler'
-                                : null
-                  : 'Scheduler'
-              }
-              showArrow={isSubNavDisabled}
-            />
-          </>
-        }
+        slotTopbarLeft={<>{breadcrum}</>}
         slotSaving={<SyncStatus status={saving} />}
         slotTopbarRight={
           <>
