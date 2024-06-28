@@ -93,6 +93,7 @@ export function Modules() {
                     {filterModules.map((mod) => {
                       return (
                         <InterviewModuleCard
+                          textDepartment={mod.interview_modules.department}
                           isArchivedIconVisible={
                             mod.interview_modules.is_archived
                           }
@@ -126,7 +127,6 @@ export function Modules() {
                               {mod.users.slice(0, 5).map((user) => {
                                 return (
                                   <MuiAvatar
-                                    
                                     key={user.user_id}
                                     src={user.profile_image}
                                     level={getFullName(
@@ -134,12 +134,9 @@ export function Modules() {
                                       user.last_name,
                                     )}
                                     variant='rounded-small'
-                                  
-                                    
                                   />
                                 );
                               })}
-
                             </AvatarGroup>
                           }
                           textMembersCount={
