@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import dayjs from 'dayjs';
 
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
@@ -47,11 +48,9 @@ export const formatTimeWithTimeZone = ({
   end_time: string;
   timeZone?: string;
 }) => {
-  return `${dayjs(start_time)
+  return `${dayjsLocal(start_time)
     .tz(timeZone || userTzDayjs.tz.guess())
     .format('hh:mm A')} - ${dayjs(end_time)
     .tz(timeZone || userTzDayjs.tz.guess())
-    .format(
-      'hh:mm A',
-    )} ${convertTimeZoneToAbbreviation(timeZone || userTzDayjs.tz.guess())}`;
+    .format('hh:mm A zzz')}`;
 };

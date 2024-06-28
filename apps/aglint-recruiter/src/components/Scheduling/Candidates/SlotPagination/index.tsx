@@ -32,33 +32,31 @@ function SlotPagination({
             zIndex: 3,
           }}
         >
-          {pagination.total > 0 && (
-            <CandidatesListPagination
-              totalCandidatesCount={pagination.total}
-              currentCandidatesCount={
-                isFetching && applicationList.length == 0
-                  ? '--'
-                  : applicationList.length
-              }
-              totalPageCount={Math.ceil(pagination.total / ITEM_PAGE_LIMIT)}
-              onclickNext={{
-                onClick: () => {
-                  if (
-                    pagination.page <
-                    Math.ceil(pagination.total / ITEM_PAGE_LIMIT)
-                  )
-                    setPagination({ page: pagination.page + 1 });
-                },
-              }}
-              onclickPrevious={{
-                onClick: () => {
-                  if (pagination.page > 1)
-                    setPagination({ page: pagination.page - 1 });
-                },
-              }}
-              slotPageNumber={pagination.page}
-            />
-          )}
+          <CandidatesListPagination
+            totalCandidatesCount={pagination.total}
+            currentCandidatesCount={
+              isFetching && applicationList.length == 0
+                ? '--'
+                : applicationList.length
+            }
+            totalPageCount={Math.ceil(pagination.total / ITEM_PAGE_LIMIT)}
+            onclickNext={{
+              onClick: () => {
+                if (
+                  pagination.page <
+                  Math.ceil(pagination.total / ITEM_PAGE_LIMIT)
+                )
+                  setPagination({ page: pagination.page + 1 });
+              },
+            }}
+            onclickPrevious={{
+              onClick: () => {
+                if (pagination.page > 1)
+                  setPagination({ page: pagination.page - 1 });
+              },
+            }}
+            slotPageNumber={pagination.page}
+          />
         </Stack>
       )}
     </>

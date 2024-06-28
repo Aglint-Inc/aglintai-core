@@ -60,10 +60,8 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
     .filter((ses) => selectedSessionIds.includes(ses.id))
     .some((ses) => ses.session_type === 'debrief');
 
-  const { resetStateSelfScheduling, onClickPrimary } = useSelfSchedulingDrawer({
-    isDebrief,
-    refetch,
-  });
+  const { resetStateSelfScheduling, onClickPrimary } =
+    useSelfSchedulingDrawer();
 
   return (
     <>
@@ -106,6 +104,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
           onClickPrimary={{
             onClick: () => {
               onClickPrimary();
+              refetch();
             },
           }}
           onClickCancel={{
