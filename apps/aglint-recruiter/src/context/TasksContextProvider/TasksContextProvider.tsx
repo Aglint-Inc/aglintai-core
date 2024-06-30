@@ -38,6 +38,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import { useAuthDetails } from '../AuthContext/AuthContext';
 export type taskFilterType = {
   Job: string[];
+  Date: string[];
   Status: DatabaseEnums['task_status'][];
   Priority: DatabaseEnums['task_priority'][];
   Assignee: string[];
@@ -563,6 +564,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
           temp.filter.jobTitle.values = preFilterData?.Job || [];
           temp.filter.type.values = preFilterData?.Type || [];
           temp.filter.candidate.values = preFilterData?.Candidate || [];
+          temp.filter.date.values = preFilterData?.Date || [];
         }
 
         temp.tasks = data.data;
