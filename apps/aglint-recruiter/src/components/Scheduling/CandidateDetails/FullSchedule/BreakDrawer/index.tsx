@@ -120,7 +120,6 @@ function BreakDrawerEdit() {
         {editSession && (
           <SideDrawerBlock
             textTitle='Edit break duration'
-            // onClickClose={}
             slotSidedrawerBody={
               <Stack p={'var(--space-4)'}>
                 <DropDown
