@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react';
 
 import { useApplications } from '@/src/context/ApplicationsContext';
 
-import DNDCard from './Card/DNDCard';
+import DNDCard from './CardNew/DNDCard';
 import { EmptyList } from './Common/EmptyList';
 
 const List = ({
