@@ -81,6 +81,7 @@ export type TasksAgentContextType = TasksReducerType & {
   ) => Promise<boolean>;
   handelSearch: (x: string) => void;
   handelFilter: (x: AtLeastOneRequired<TasksReducerType['filter']>) => void;
+  handelResetFilter: () => void;
   handelSort: (x: TasksReducerType['sort']) => void;
   loadingTasks: boolean;
 };
@@ -137,6 +138,7 @@ const contextInitialState: TasksAgentContextType = {
   handelAddTaskProgress: (x) => Promise.resolve(false),
   handelSearch: (x) => {},
   handelFilter: (x) => {},
+  handelResetFilter: () => {},
   handelSort: (x) => {},
 };
 /* eslint-enable no-unused-vars */
@@ -397,6 +399,30 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
+  //reset added
+  const handelResetFilter: TasksAgentContextType['handelResetFilter'] = () => {
+    const data = Object.keys(tasksReducer.filter).reduce((acc, key) => {
+      acc[key] = { ...tasksReducer.filter[key], values: [] };
+      return acc;
+    }, {});
+
+    localStorage.setItem(
+      'taskFilters',
+      JSON.stringify({
+        Candidate: [],
+        Status: [],
+        Assignee: [],
+        Priority: [],
+        Job: [],
+        Type: [],
+      }),
+    );
+    dispatch({
+      type: TasksReducerAction.FILTER,
+      payload: data,
+    });
+  };
+
   const handelSort: TasksAgentContextType['handelSort'] = (sort) => {
     dispatch({
       type: TasksReducerAction.SORT,
@@ -420,8 +446,8 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
 
     if (status.values.length) {
       temp = temp.filter((sub) => {
-        const progress_type = sub.latest_progress.progress_type;
-        const created_at = sub.latest_progress.created_at;
+        const progress_type = sub?.latest_progress?.progress_type;
+        const created_at = sub?.latest_progress?.created_at;
 
         if (
           status.values.includes(
@@ -607,6 +633,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
             handelSearch,
             handelFilter,
             handelSort,
+            handelResetFilter,
             loadingTasks,
           }}
         >
