@@ -3,6 +3,7 @@
 import {
   APIFindAvailability,
   APIScheduleDebreif,
+  DatabaseEnums,
   DatabaseTableInsert,
   DB,
   EmailTemplateAPi,
@@ -101,6 +102,7 @@ export const createCloneSession = async ({
   supabase,
   recruiter_id,
   rec_user_id,
+  meeting_flow,
 }: {
   is_get_more_option: boolean;
   application_id: string;
@@ -110,6 +112,7 @@ export const createCloneSession = async ({
   recruiter_id: string;
   supabase: ReturnType<typeof createServerClient<DB>>;
   rec_user_id: string;
+  meeting_flow: DatabaseEnums['meeting_flow'];
 }) => {
   // create schedule first then create sessions and meetings and then create session relation
   let new_schedule_id = uuidv4();
@@ -146,6 +149,7 @@ export const createCloneSession = async ({
             ?.interview_module?.instructions,
           id: ses.new_meeting_id,
           organizer_id,
+          meeting_flow,
         };
       });
 
@@ -405,6 +409,7 @@ export const scheduleWithAgent = async ({
           supabase,
           recruiter_id: recruiter_id,
           rec_user_id,
+          meeting_flow: type === 'email_agent' ? 'mail_agent' : 'phone_agent',
         });
 
         console.log(
@@ -640,6 +645,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
           supabase,
           recruiter_id: recruiter_id,
           rec_user_id,
+          meeting_flow: type === 'email_agent' ? 'mail_agent' : 'phone_agent',
         });
 
         console.log(

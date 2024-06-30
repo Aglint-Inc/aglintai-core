@@ -162,6 +162,7 @@ const sendToCandidate = async ({
         recruiter_id: recruiter_id,
         supabase: supabase,
         rec_user_id: recruiterUser.user_id,
+        meeting_flow: is_debrief ? 'debrief' : 'self_scheduling',
       });
 
       console.log('createCloneRes success');
@@ -309,6 +310,7 @@ const sendToCandidate = async ({
           id: ses.interview_meeting.id,
           interview_schedule_id: ses.interview_meeting.interview_schedule_id,
           organizer_id,
+          meeting_flow: 'self_scheduling',
         }));
 
       const { error: errorUpdatedMeetings } = await supabase
