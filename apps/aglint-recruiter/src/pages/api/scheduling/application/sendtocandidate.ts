@@ -150,6 +150,8 @@ const sendToCandidate = async ({
 
     // check if schedule is already created (if yes then sessions are cached on candidate level)
     if (checkSch.length === 0) {
+      console.log('no schedule');
+
       // if not then cache all the sessions on candidate level
       const createCloneRes = await createCloneSession({
         is_get_more_option: false,
@@ -161,6 +163,8 @@ const sendToCandidate = async ({
         supabase: supabase,
         rec_user_id: recruiterUser.user_id,
       });
+
+      console.log('createCloneRes success');
 
       const { data: filterJson, error: errorFilterJson } = await supabase
         .from('interview_filter_json')
@@ -192,8 +196,12 @@ const sendToCandidate = async ({
 
       if (errorFilterJson) throw new Error(errorFilterJson.message);
 
+      console.log('filterJson success');
+
       if (!is_debrief) {
         if (!update_task_id) {
+          console.log('no task_id');
+
           const resTask = await createTask({
             application_id: selectedApplication.id,
             dateRange,
@@ -211,8 +219,11 @@ const sendToCandidate = async ({
             ),
             supabase,
           });
+
+          console.log('created task and progress');
           update_task_id = resTask.id;
         } else {
+          console.log(`task_id ${update_task_id}`);
           await createTaskProgress({
             type: 'self_scheduling',
             data: {
@@ -240,6 +251,7 @@ const sendToCandidate = async ({
             },
             supabaseCaller: supabase,
           });
+          console.log('created task progress');
         }
 
         addScheduleActivity({
@@ -254,9 +266,13 @@ const sendToCandidate = async ({
           task_id: update_task_id,
         });
 
+        console.log('added activity');
+
         selfScheduleMailToCandidate({
           filter_id: filterJson[0].id,
         });
+
+        console.log('sent mail to candidate');
       }
 
       if (is_debrief && selectedDebrief) {
@@ -280,6 +296,8 @@ const sendToCandidate = async ({
         });
       }
     } else {
+      console.log('schedule already exists');
+
       const organizer_id = await getOrganizerId(
         selectedApplication.id,
         supabase,
@@ -299,6 +317,8 @@ const sendToCandidate = async ({
 
       if (errorUpdatedMeetings) throw new Error(errorUpdatedMeetings.message);
 
+      console.log('updated meetings');
+
       const { data: filterJson, error: errorFilterJson } = await supabase
         .from('interview_filter_json')
         .insert({
@@ -316,8 +336,12 @@ const sendToCandidate = async ({
 
       if (errorFilterJson) throw new Error(errorFilterJson.message);
 
+      console.log('filterJson success');
+
       if (!is_debrief) {
         if (!update_task_id) {
+          console.log('no task_id');
+
           const resTask = await createTask({
             application_id: selectedApplication.id,
             dateRange,
@@ -335,6 +359,9 @@ const sendToCandidate = async ({
             ),
             supabase,
           });
+
+          console.log('created task and progress');
+
           addScheduleActivity({
             title: `Candidate invited for session ${initialSessions
               .filter((ses) => selectedSessionIds.includes(ses.id))
@@ -346,7 +373,10 @@ const sendToCandidate = async ({
             created_by: recruiterUser.user_id,
             task_id: resTask.id,
           });
+
+          update_task_id = resTask.id;
         } else {
+          console.log(`task_id ${update_task_id}`);
           await createTaskProgress({
             type: 'self_scheduling',
             data: {
@@ -375,6 +405,8 @@ const sendToCandidate = async ({
             supabaseCaller: supabase,
           });
         }
+
+        console.log('created task progress');
 
         selfScheduleMailToCandidate({
           filter_id: filterJson[0].id,
@@ -417,7 +449,10 @@ const sendToCandidate = async ({
         .from('interview_filter_json')
         .delete()
         .eq('id', selectedApplicationLog.metadata.filter_id);
+
+      console.log('updated application logs');
     }
+
     return true;
   } catch (e) {
     // eslint-disable-next-line no-console

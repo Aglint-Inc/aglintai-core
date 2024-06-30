@@ -19,19 +19,18 @@ import {
   setMultipleCancelOpen,
   setRescheduleSessionIds,
   setSelectedApplicationLog,
-  useSchedulingApplicationStore
+  useSchedulingApplicationStore,
 } from '../../store';
 import BookingConfirmation from './BookingConfirmation';
 
 function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
   const router = useRouter();
-  const { selectedApplication,  } =
-    useSchedulingApplicationStore((state) => ({
-      selectedApplication: state.selectedApplication,
-    }));
+  const { selectedApplication } = useSchedulingApplicationStore((state) => ({
+    selectedApplication: state.selectedApplication,
+  }));
 
   if (act.metadata.type === 'booking_confirmation') {
-    <BookingConfirmation act={act} />;
+    return <BookingConfirmation act={act} />;
   } else if (act.metadata.type === 'candidate_response_self_schedule') {
     const rescheduleDetails = {
       response_type: act.metadata.response_type,

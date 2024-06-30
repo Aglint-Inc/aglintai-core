@@ -4,7 +4,7 @@ import {
 } from '@aglint/shared-types';
 import { Collapse } from '@mui/material';
 import dayjs from 'dayjs';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { ConflictChip } from '@/devlink3/ConflictChip';
 import { NoConflicts } from '@/devlink3/NoConflicts';
@@ -19,6 +19,8 @@ function SingleDayCard({
   ind,
   isMultiDay,
   isCollapseNeeded = true,
+  selectedCombIds = [],
+  comb_id,
 }: {
   item: {
     date: string;
@@ -27,6 +29,8 @@ function SingleDayCard({
   ind: number;
   isMultiDay: boolean;
   isCollapseNeeded?: boolean;
+  selectedCombIds: string[];
+  comb_id: string;
 }) {
   const day = item.date;
   const sessions = item.sessions;
@@ -66,6 +70,14 @@ function SingleDayCard({
     .filter((item) => item.conflict_type === 'out_of_working_hours');
 
   const [collapse, setCollapse] = React.useState(false);
+
+  useEffect(() => {
+    if (selectedCombIds.length > 0 && selectedCombIds.includes(comb_id)) {
+      setCollapse(true);
+    } else {
+      setCollapse(false);
+    }
+  }, [selectedCombIds]);
 
   return (
     <SingleDaySchedule
