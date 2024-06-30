@@ -10,7 +10,6 @@ import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
 import { TaskDate } from '@/devlink3/TaskDate';
 import DateRange from '@/src/components/Tasks/Components/DateRange';
-import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 
 import { ShowCode } from '../ShowCode';
 
@@ -28,12 +27,10 @@ function DateRangeSelector({ name, setValue, values }: DateRangeSelectorType) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const { filter } = useTasksContext();
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
-  const currentDate = filter.date.values;
   return (
     <>
       <ButtonFilter
