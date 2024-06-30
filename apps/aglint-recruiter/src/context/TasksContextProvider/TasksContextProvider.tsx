@@ -419,7 +419,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
     );
     dispatch({
       type: TasksReducerAction.FILTER,
-      payload: data,
+      payload: data as TasksReducerType['filter'],
     });
   };
 
