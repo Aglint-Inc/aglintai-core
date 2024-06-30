@@ -1,6 +1,8 @@
 import { Stack } from '@mui/material';
 import React from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
+
 import SearchField from '../SearchField/SearchField';
 import DateRangeSelector from './DateRangeSelector';
 import { FiltersComponent, FilterTypes } from './FilterComponents';
@@ -8,6 +10,7 @@ import SortComponent, { sortComponentType } from './SortComponent';
 
 export default function FilterHeader({
   search,
+  handelResetFilter,
   filters,
   sort,
   dateRangeSelector,
@@ -17,12 +20,7 @@ export default function FilterHeader({
   },
 }: FilterHeaderType) {
   return (
-    <Stack
-      direction={'row'}
-      width={'100%'}
-      justifyContent={'space-between'}
-      gap={2}
-    >
+    <Stack direction={'row'} gap={2}>
       {Boolean(search) && (
         <SearchField
           value={search.value}
@@ -44,11 +42,19 @@ export default function FilterHeader({
         </Stack>
       </Stack>
       {Boolean(sort) && <SortComponent {...sort} />}
+      <ButtonGhost
+        textButton='Reset All'
+        size={2}
+        iconName='refresh'
+        isLeftIcon
+        onClickButton={{ onClick: handelResetFilter }}
+      />
     </Stack>
   );
 }
 
 export type FilterHeaderType = {
+  handelResetFilter?: () => void;
   search?: {
     value: string;
     // eslint-disable-next-line no-unused-vars

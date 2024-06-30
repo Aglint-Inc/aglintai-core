@@ -4,10 +4,12 @@ import FilterHeader from '@/src/components/Common/FilterHeader';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 
 function FilterTasks() {
-  const { search, filter, handelSearch, handelFilter } = useTasksContext();
+  const { search, filter, handelSearch, handelFilter, handelResetFilter } =
+    useTasksContext();
 
   return (
     <FilterHeader
+      handelResetFilter={handelResetFilter}
       search={{
         value: search,
         setValue: (e) => {
