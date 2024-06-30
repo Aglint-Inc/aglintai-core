@@ -13,6 +13,7 @@ function FilterJobDashboard({
   setSort,
   sortValue,
   sortOptions,
+  handlerResetFilter,
 }: {
   filterOptions: ReturnType<typeof useJobFilterAndSort>['filterOptions'];
   setFilterValues: ReturnType<typeof useJobFilterAndSort>['setFilterValues'];
@@ -20,10 +21,23 @@ function FilterJobDashboard({
   setSort: ReturnType<typeof useJobFilterAndSort>['setSort'];
   sortValue: ReturnType<typeof useJobFilterAndSort>['sortValue'];
   sortOptions: ReturnType<typeof useJobFilterAndSort>['sortOptions'];
+  handlerResetFilter: () => void;
 }) {
+  function areAllArraysEmpty() {
+    for (let key in filterValues) {
+      // eslint-disable-next-line security/detect-object-injection
+      if (Array.isArray(filterValues[key]) && filterValues[key].length > 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   return (
     <Stack width={'100%'}>
       <FilterHeader
+        isResetAll={areAllArraysEmpty()}
+        handelResetAll={handlerResetFilter}
         filters={[
           {
             type: 'filter',

@@ -40,18 +40,19 @@ export default function FilterHeader({
           {Boolean(dateRangeSelector) && (
             <DateRangeSelector {...dateRangeSelector} />
           )}
+          {isResetAll && (
+            <ButtonGhost
+              textButton='Reset All'
+              size={2}
+              iconName='refresh'
+              color={'error'}
+              isLeftIcon
+              onClickButton={{ onClick: handelResetAll }}
+            />
+          )}
         </Stack>
       </Stack>
       {Boolean(sort) && <SortComponent {...sort} />}
-      {isResetAll && (
-        <ButtonGhost
-          textButton='Reset All'
-          size={2}
-          iconName='refresh'
-          isLeftIcon
-          onClickButton={{ onClick: handelResetAll }}
-        />
-      )}
     </Stack>
   );
 }

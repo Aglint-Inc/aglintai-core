@@ -99,6 +99,20 @@ const DashboardComp = () => {
     });
   };
 
+  const handlerResetFilter = () => {
+    handleTextClear();
+    setFilterValues({
+      status: [],
+      location: [],
+      type: [],
+      hiringManager: [],
+      recruiter: [],
+      source: [],
+      department: [],
+      workplace: [],
+      coOrdinator: [],
+    });
+  };
   const handleTextClear = () => {
     setSearchText('');
     startTransition(() => {
@@ -138,6 +152,7 @@ const DashboardComp = () => {
               <JobsDashboard
                 slotFilters={
                   <FilterJobDashboard
+                    handlerResetFilter={handlerResetFilter}
                     filterOptions={filterOptions}
                     filterValues={filterValues}
                     setFilterValues={setFilterValues}
