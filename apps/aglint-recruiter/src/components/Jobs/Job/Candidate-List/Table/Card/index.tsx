@@ -9,7 +9,7 @@ import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { Application } from '@/src/types/applications.types';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
-import ResumeScore from '../../Common/ResumeScore';
+import ResumeScore from '../../Common/ResumeScoreNew';
 import { formatTimeStamp } from '../../utils';
 import { ScheduleProgress } from './ScheduleProgress';
 
