@@ -1,4 +1,5 @@
 import { Stack } from '@mui/material';
+// import { Dayjs } from 'dayjs';
 import React from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
@@ -10,8 +11,9 @@ import SortComponent, { sortComponentType } from './SortComponent';
 
 export default function FilterHeader({
   search,
-  handelResetFilter,
+  handelResetAll,
   filters,
+  isResetAll,
   sort,
   dateRangeSelector,
   showFiltersByDefault,
@@ -42,19 +44,21 @@ export default function FilterHeader({
         </Stack>
       </Stack>
       {Boolean(sort) && <SortComponent {...sort} />}
-      <ButtonGhost
-        textButton='Reset All'
-        size={2}
-        iconName='refresh'
-        isLeftIcon
-        onClickButton={{ onClick: handelResetFilter }}
-      />
+      {isResetAll && (
+        <ButtonGhost
+          textButton='Reset All'
+          size={2}
+          iconName='refresh'
+          isLeftIcon
+          onClickButton={{ onClick: handelResetAll }}
+        />
+      )}
     </Stack>
   );
 }
 
 export type FilterHeaderType = {
-  handelResetFilter?: () => void;
+  handelResetAll?: () => void;
   search?: {
     value: string;
     // eslint-disable-next-line no-unused-vars
@@ -66,8 +70,10 @@ export type FilterHeaderType = {
   // eslint-disable-next-line no-unused-vars
   setShowFilters?: (x: string[]) => void;
   sort?: sortComponentType;
+  isResetAll?: boolean;
   dateRangeSelector?: {
     name: string;
+    values: string[];
     // eslint-disable-next-line no-unused-vars
     setValue: (x: any) => void;
   };

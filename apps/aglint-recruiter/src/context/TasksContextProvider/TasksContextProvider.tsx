@@ -399,9 +399,9 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  //reset added
   const handelResetFilter: TasksAgentContextType['handelResetFilter'] = () => {
     const data = Object.keys(tasksReducer.filter).reduce((acc, key) => {
+      // eslint-disable-next-line security/detect-object-injection
       acc[key] = { ...tasksReducer.filter[key], values: [] };
       return acc;
     }, {});
@@ -415,6 +415,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
         Priority: [],
         Job: [],
         Type: [],
+        Date: [],
       }),
     );
     dispatch({
