@@ -122,6 +122,9 @@ function FilterTasks() {
       dateRangeSelector={{
         name: 'Interview Date',
         setValue: (val) => {
+          const preData = JSON.parse(localStorage.getItem('taskFilters')) || {};
+          preData.Date = [...val];
+          localStorage.setItem('taskFilters', JSON.stringify(preData));
           handelFilter({
             ...filter,
             date: { ...filter.date, values: val },

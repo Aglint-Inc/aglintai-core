@@ -2,6 +2,7 @@ import { Stack } from '@mui/material';
 import React from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 
 import SearchField from '../SearchField/SearchField';
 import DateRangeSelector from './DateRangeSelector';
@@ -19,6 +20,21 @@ export default function FilterHeader({
     x;
   },
 }: FilterHeaderType) {
+  const { filter } = useTasksContext();
+  function areValuesEmpty() {
+    for (const key in filter) {
+      if (
+        // eslint-disable-next-line security/detect-object-injection
+        Array.isArray(filter[key].values) &&
+        // eslint-disable-next-line security/detect-object-injection
+        filter[key].values.length !== 0
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   return (
     <Stack direction={'row'} gap={2}>
       {Boolean(search) && (
@@ -42,13 +58,15 @@ export default function FilterHeader({
         </Stack>
       </Stack>
       {Boolean(sort) && <SortComponent {...sort} />}
-      <ButtonGhost
-        textButton='Reset All'
-        size={2}
-        iconName='refresh'
-        isLeftIcon
-        onClickButton={{ onClick: handelResetFilter }}
-      />
+      {areValuesEmpty() && (
+        <ButtonGhost
+          textButton='Reset All'
+          size={2}
+          iconName='refresh'
+          isLeftIcon
+          onClickButton={{ onClick: handelResetFilter }}
+        />
+      )}
     </Stack>
   );
 }
