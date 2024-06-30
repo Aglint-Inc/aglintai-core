@@ -47,7 +47,7 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
         }
         slotDateOption={
           <>
-            {memoGruopedData?.map((item) => {
+            {memoGruopedData?.map((item, index) => {
               return (
                 <DayCardWrapper
                   key={item.dateArray.join(', ')}
@@ -59,6 +59,7 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
                   isCheckboxAndRadio={true}
                   isDayCollapseNeeded={true}
                   isSlotCollapseNeeded={true}
+                  index={index}
                 />
               );
             })}

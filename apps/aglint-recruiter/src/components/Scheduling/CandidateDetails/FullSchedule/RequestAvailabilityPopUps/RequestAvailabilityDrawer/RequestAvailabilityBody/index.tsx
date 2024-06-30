@@ -124,6 +124,7 @@ function RequestAvailabilityBody({
                   onClickSelect={(id) => onClickSelect(id, item)}
                   isDisabled={!isPrevSelectedDate || isPastDate}
                   isDayCollapseNeeded={false}
+                  index={index}
                 />
               );
             })}

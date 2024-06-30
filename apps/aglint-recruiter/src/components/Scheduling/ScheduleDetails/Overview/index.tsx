@@ -1,6 +1,6 @@
 import {
   APIEventAttendeeStatus,
-  InterviewFilterJsonType,
+  DatabaseTable,
   InterviewSessionRelationTypeDB,
 } from '@aglint/shared-types';
 import axios from 'axios';
@@ -53,7 +53,13 @@ function Overview({
 }) {
   const { recruiterUser } = useAuthDetails();
   const { checkPermissions } = useRolesAndPermissions();
-  const [filterJson, setFilterJson] = useState<InterviewFilterJsonType>();
+  const [filterJson, setFilterJson] = useState<
+    DatabaseTable['interview_filter_json'] | null
+  >(null);
+  const [requestAvailibility, setRequestAvailibility] = useState<
+    DatabaseTable['candidate_request_availability'] | null
+  >(null);
+
   const [isRequestRescheduleOpen, setIsRequestRescheduleOpen] = useState(false); //role interviewers will ask for reschedule
   const [isRescheduleOpen, setIsRescheduleOpen] = useState(false); // role who have permission to reschedule
   const [isDeclineOpen, setIsDeclineOpen] = useState(false);
@@ -71,17 +77,51 @@ function Overview({
   useEffect(() => {
     if (schedule?.interview_meeting) {
       fetchCalendarStatus();
-      fetchFilterJson();
+      if (
+        schedule?.interview_meeting.meeting_flow === 'self_scheduling' ||
+        schedule?.interview_meeting.meeting_flow === 'debrief' ||
+        schedule?.interview_meeting.meeting_flow === 'phone_agent' ||
+        schedule?.interview_meeting.meeting_flow === 'mail_agent'
+      ) {
+        fetchFilterJson();
+      } else if (
+        schedule?.interview_meeting.meeting_flow === 'candidate_request'
+      ) {
+        fetchRequestAvailibilty();
+      }
     }
   }, [schedule?.interview_meeting]);
 
   const fetchFilterJson = async () => {
-    const { data } = await supabase
-      .from('interview_filter_json')
-      .select('*')
-      .contains('session_ids', [schedule.interview_session.id]);
+    try {
+      const { data } = await supabase
+        .from('interview_filter_json')
+        .select('*')
+        .contains('session_ids', [schedule.interview_session.id]);
 
-    setFilterJson(data[0]);
+      setFilterJson(data[0]);
+    } catch (e) {
+      //
+    }
+  };
+
+  const fetchRequestAvailibilty = async () => {
+    try {
+      const { data } = await supabase
+        .from('candidate_request_availability')
+        .select('*')
+        .eq('application_id', schedule.schedule.application_id);
+
+      const reqAvail = data.find((item) =>
+        item.session_ids.some(
+          (ses) => ses.id === schedule.interview_session.id,
+        ),
+      );
+
+      setRequestAvailibility(reqAvail);
+    } catch (e) {
+      //
+    }
   };
 
   const users = schedule?.users || [];
@@ -237,6 +277,19 @@ function Overview({
                   ),
                   rec_user_id: recruiterUser.user_id,
                   filter_id: filterJson.id,
+                  request_id: null,
+                });
+              } else if (requestAvailibility?.id) {
+                onClickResendInvite({
+                  session_name: schedule.interview_session.name,
+                  application_id: schedule.schedule.application_id,
+                  candidate_name: getFullName(
+                    schedule.candidates.first_name,
+                    schedule.candidates.last_name,
+                  ),
+                  rec_user_id: recruiterUser.user_id,
+                  request_id: requestAvailibility.id,
+                  filter_id: null,
                 });
               }
             } else {
@@ -248,9 +301,15 @@ function Overview({
         }}
         onClickCopyCandidate={{
           onClick: async () => {
-            navigator.clipboard.writeText(
-              `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule.schedule.id}?filter_id=${filterJson?.id}`,
-            );
+            if (filterJson?.id) {
+              navigator.clipboard.writeText(
+                `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule.schedule.id}?filter_id=${filterJson?.id}`,
+              );
+            } else if (requestAvailibility?.id) {
+              navigator.clipboard.writeText(
+                `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${requestAvailibility?.id}`,
+              );
+            }
           },
         }}
         slotButton={

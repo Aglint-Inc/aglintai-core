@@ -1,7 +1,7 @@
 import { PlanCombinationRespType } from '@aglint/shared-types';
 import { Collapse, Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { DateOption } from '@/devlink3/DateOption';
@@ -20,6 +20,7 @@ function DayCardWrapper({
   isSlotCollapseNeeded = true,
   isDisabled = false,
   isCheckboxAndRadio = true,
+  index,
 }: {
   isDebrief: boolean;
   item: {
@@ -33,6 +34,7 @@ function DayCardWrapper({
   isSlotCollapseNeeded?: boolean;
   isDisabled?: boolean;
   isCheckboxAndRadio?: boolean;
+  index: number;
 }) {
   const dates = item?.dateArray || [];
   const header = dates
@@ -68,6 +70,12 @@ function DayCardWrapper({
       };
     });
   }, [slots, dates]);
+
+  useEffect(() => {
+    if (index === 0) {
+      setCollapse(true);
+    }
+  }, []);
 
   return (
     <>
@@ -113,6 +121,8 @@ function DayCardWrapper({
                               ind={ind}
                               isMultiDay={isMultiDay}
                               isCollapseNeeded={isSlotCollapseNeeded}
+                              selectedCombIds={selectedCombIds}
+                              comb_id={slot.plan_comb_id}
                             />
                           );
                         },

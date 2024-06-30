@@ -3,8 +3,10 @@
 import {
   APIFindAvailability,
   APIScheduleDebreif,
+  DatabaseEnums,
   DatabaseTableInsert,
   DB,
+  EmailTemplateAPi,
   InterviewMeetingTypeDb,
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
@@ -100,6 +102,7 @@ export const createCloneSession = async ({
   supabase,
   recruiter_id,
   rec_user_id,
+  meeting_flow,
 }: {
   is_get_more_option: boolean;
   application_id: string;
@@ -109,6 +112,7 @@ export const createCloneSession = async ({
   recruiter_id: string;
   supabase: ReturnType<typeof createServerClient<DB>>;
   rec_user_id: string;
+  meeting_flow: DatabaseEnums['meeting_flow'];
 }) => {
   // create schedule first then create sessions and meetings and then create session relation
   let new_schedule_id = uuidv4();
@@ -145,6 +149,7 @@ export const createCloneSession = async ({
             ?.interview_module?.instructions,
           id: ses.new_meeting_id,
           organizer_id,
+          meeting_flow,
         };
       });
 
@@ -404,6 +409,7 @@ export const scheduleWithAgent = async ({
           supabase,
           recruiter_id: recruiter_id,
           rec_user_id,
+          meeting_flow: type === 'email_agent' ? 'mail_agent' : 'phone_agent',
         });
 
         console.log(
@@ -639,6 +645,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
           supabase,
           recruiter_id: recruiter_id,
           rec_user_id,
+          meeting_flow: type === 'email_agent' ? 'mail_agent' : 'phone_agent',
         });
 
         console.log(
@@ -1028,22 +1035,6 @@ export const createTask = async ({
       assignee: [assignee],
       filter_id: filter_id,
       type: type === 'user' ? 'self_schedule' : 'schedule',
-      session_ids: selectedSessions.map((ses) => {
-        return {
-          id: ses.id,
-          name: ses.name,
-          interview_meeting: ses.interview_meeting
-            ? {
-                id: ses.interview_meeting.id,
-                start_time: ses.interview_meeting.start_time,
-                end_time: ses.interview_meeting.end_time,
-                meeting_link: ses.interview_meeting.meeting_link,
-              }
-            : null,
-          session_order: ses.session_order,
-          users: [],
-        };
-      }),
       trigger_count: 1,
       task_owner: rec_user_id,
     })
@@ -1194,25 +1185,19 @@ export const onClickResendInvite = async ({
   rec_user_id,
   application_id,
   filter_id,
+  request_id,
 }: {
   candidate_name: string;
   session_name: string;
   rec_user_id: string;
   application_id: string;
-  filter_id: string;
+  filter_id: string | null;
+  request_id: string | null;
 }) => {
   try {
-    const { data: checkFilterJson, error: errMeetFilterJson } = await supabase
-      .from('interview_filter_json')
-      .select('*,new_tasks(id)')
-      .eq('id', filter_id)
-      .single();
-
-    if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
-
-    if (checkFilterJson) {
+    if (filter_id) {
       const resMail = await selfScheduleReminderMailToCandidate({
-        filter_id: checkFilterJson.id,
+        filter_id: filter_id,
       });
 
       if (resMail) {
@@ -1226,6 +1211,19 @@ export const onClickResendInvite = async ({
         toast.success('Invite resent successfully.');
       }
       return resMail;
+    } else if (request_id) {
+      const bodyParams: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
+        {
+          avail_req_id: request_id,
+          recruiter_user_id: rec_user_id,
+        };
+
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/emails/sendAvailabilityRequest_email_applican`,
+        {
+          meta: bodyParams,
+        },
+      );
     }
   } catch (e) {
     toast.error(e.message);

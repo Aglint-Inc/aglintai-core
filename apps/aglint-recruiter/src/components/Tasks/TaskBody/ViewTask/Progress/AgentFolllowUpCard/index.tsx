@@ -37,6 +37,7 @@ function AgentFollowUpCard({
       rec_user_id: recruiterUser.user_id,
       filter_id: selectedTask.filter_id,
       session_name: `${selectedTask.session_ids.map((ses) => ses.name).join(' , ')}`,
+      request_id: null,
     });
 
     createTaskProgress({

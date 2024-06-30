@@ -29,6 +29,7 @@ function FinalScreen() {
               isDayCollapseNeeded={false}
               isSlotCollapseNeeded={false}
               isCheckboxAndRadio={false}
+              index={index}
             />
           );
         })}
