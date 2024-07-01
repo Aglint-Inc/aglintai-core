@@ -23,20 +23,10 @@ function FilterJobDashboard({
   sortOptions: ReturnType<typeof useJobFilterAndSort>['sortOptions'];
   handlerResetFilter: () => void;
 }) {
-  function areAllArraysEmpty() {
-    for (let key in filterValues) {
-      // eslint-disable-next-line security/detect-object-injection
-      if (Array.isArray(filterValues[key]) && filterValues[key].length > 0) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   return (
     <Stack width={'100%'}>
       <FilterHeader
-        isResetAll={areAllArraysEmpty()}
+        isResetAll={true}
         handelResetAll={handlerResetFilter}
         filters={[
           {

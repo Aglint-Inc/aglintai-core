@@ -7,23 +7,10 @@ function FilterTasks() {
   const { search, filter, handelSearch, handelFilter, handelResetFilter } =
     useTasksContext();
 
-  function areValuesEmpty() {
-    for (const key in filter) {
-      if (
-        // eslint-disable-next-line security/detect-object-injection
-        Array.isArray(filter[key].values) &&
-        // eslint-disable-next-line security/detect-object-injection
-        filter[key].values.length !== 0
-      ) {
-        return true;
-      }
-    }
-    return false;
-  }
   return (
     <FilterHeader
       handelResetAll={handelResetFilter}
-      isResetAll={areValuesEmpty()}
+      isResetAll={true}
       search={{
         value: search,
         setValue: (e) => {
