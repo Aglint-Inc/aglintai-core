@@ -52,7 +52,10 @@ export const useApplicationsActions = () => {
   });
 
   const locationFilterOptions = useQuery(
-    applicationsQueries.locationFilters({ job_id }),
+    applicationsQueries.locationFilters({
+      job_id,
+      polling: applicationScoringPollEnabled,
+    }),
   );
 
   const newApplications = useInfiniteQuery(
