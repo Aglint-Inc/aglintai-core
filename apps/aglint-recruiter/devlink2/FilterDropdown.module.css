@@ -21,35 +21,42 @@
   display: flex;
   overflow: auto;
   max-height: 350px;
-  padding: var(--space-3);
+  padding: var(--space-1);
   flex-direction: column;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
 
   background-color: var(--white);
 }
 
 .filter_dropdiown {
   display: flex;
-  padding: 10px 16px;
+  margin-right: var(--space-1);
+  margin-left: var(--space-1);
+  padding-top: var(--space-1);
+  padding-bottom: var(--space-1);
   flex-direction: column;
   justify-content: space-between;
   flex-wrap: nowrap;
-  align-items: flex-start;
+  align-items: stretch;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
 
   border-top: 1px solid var(--neutral-6);
-
-  background-color: var(--neutral-2);
 }
 
 .link_with_text {
   display: flex;
+  padding: var(--space-2) var(--space-3);
   align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+
+  border-radius: var(--radius-2);
+
   cursor: pointer;
+}
+
+.link_with_text:hover {
+  background-color: var(--error-3);
 }
 
 .icons {
@@ -117,14 +124,6 @@
   bottom: auto;
 
   cursor: pointer;
-}
-
-.div-block-1276 {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
 }
 
 .text-red-500 {

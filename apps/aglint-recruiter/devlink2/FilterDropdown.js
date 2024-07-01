@@ -49,7 +49,7 @@ export function FilterDropdown({
         </_Builtin.Block>
         {isRemoveVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1276", "cursor-pointer")}
+            className={_utils.cx(_styles, "link_with_text")}
             tag="div"
             {...onClickDelete}
           >

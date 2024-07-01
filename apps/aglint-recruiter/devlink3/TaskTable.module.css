@@ -176,6 +176,10 @@
   width: 20px;
 }
 
+.tjc-space-div.group-header {
+  width: 1%;
+}
+
 .link-flex-accent {
   display: flex;
   justify-content: flex-start;

@@ -233,6 +233,7 @@ export * from "./TaskTableJobSubCard";
 export * from "./TaskUpdateButton";
 export * from "./TeamEmpty";
 export * from "./Text";
+export * from "./TextWithIcon";
 export * from "./ThemeStyle";
 export * from "./TimeBlock";
 export * from "./TimeRangeSelector";

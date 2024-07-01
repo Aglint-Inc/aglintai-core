@@ -55,6 +55,24 @@
   cursor: pointer;
 }
 
+.cp-close {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: var(--radius-2);
+
+  transition: all 200ms ease;
+
+  cursor: pointer;
+}
+
+.cp-close:hover {
+  background-color: var(--neutral-3);
+}
+
 .popup_body {
   display: flex;
   flex-direction: column;
