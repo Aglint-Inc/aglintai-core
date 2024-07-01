@@ -98,6 +98,8 @@ function SchedulingViewComp() {
     }
   }, [data?.schedule_data?.candidates.id]);
 
+  console.log(schedule);
+
   return (
     <ShowCode>
       <ShowCode.When isTrue={isPending || !isFetched}>
