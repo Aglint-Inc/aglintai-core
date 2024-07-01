@@ -149,6 +149,10 @@
   cursor: pointer;
 }
 
+.embed_flex.is_absolute {
+  position: absolute;
+}
+
 .avatar_group_block {
   display: flex;
   height: 32px;

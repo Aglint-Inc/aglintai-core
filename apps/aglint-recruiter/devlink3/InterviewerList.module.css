@@ -73,5 +73,7 @@
   right: 0%;
   bottom: 0%;
 
+  flex: 1;
+
   background-color: #f7f9fb;
 }

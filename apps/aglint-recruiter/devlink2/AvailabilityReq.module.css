@@ -50,6 +50,10 @@
   cursor: pointer;
 }
 
+.embed_flex.is_absolute {
+  position: absolute;
+}
+
 .title-withicon {
   display: flex;
   justify-content: flex-start;

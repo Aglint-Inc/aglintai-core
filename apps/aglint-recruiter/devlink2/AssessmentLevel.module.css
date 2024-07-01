@@ -33,6 +33,10 @@
   cursor: pointer;
 }
 
+.embed_flex.is_absolute {
+  position: absolute;
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 16px;

@@ -48,6 +48,10 @@
   cursor: pointer;
 }
 
+.embed_flex.is_absolute {
+  position: absolute;
+}
+
 .sidedrawer_body {
   display: flex;
   overflow: auto;

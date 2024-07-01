@@ -82,6 +82,10 @@
   width: 23px;
 }
 
+.no-conflicts-text {
+  flex: 1;
+}
+
 .is_normal_cursor {
   position: absolute;
   left: 0%;

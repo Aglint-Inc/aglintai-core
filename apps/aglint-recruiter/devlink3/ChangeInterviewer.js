@@ -111,7 +111,6 @@ export function ChangeInterviewer({
         <_Builtin.Block
           className={_utils.cx(_styles, "wide_button", "width-100")}
           tag="div"
-          {...onClickChange}
         >
           <ButtonSolid
             onClickButton={onClickChange}
