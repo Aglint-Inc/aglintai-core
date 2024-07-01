@@ -130,7 +130,7 @@ const CreateSession = ({ handleClose, order }: DrawerProps) => {
       }
       setSessionCreation(false);
     } else {
-      toast.warning('Session under creation. Please wait.');
+      toast.warning('Stage under creation. Please wait.');
     }
   };
 
@@ -154,7 +154,7 @@ const CreateSession = ({ handleClose, order }: DrawerProps) => {
         </>
       }
       onClickClose={{ onClick: () => handleClose() }}
-      textTitle='Create Session'
+      textTitle='Create Stage'
       slotSidedrawerBody={
         <SessionForms fields={fields} setFields={setFields} />
       }
@@ -231,13 +231,13 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
         handleClose();
       }
     } else {
-      toast.warning('Session under updation. Please wait.');
+      toast.warning('Stage under updation. Please wait.');
     }
   };
 
   return (
     <SideDrawerBlock
-      textTitle='Edit Session'
+      textTitle='Edit Stage'
       slotSidedrawerBody={
         <SessionForms fields={fields} setFields={setFields} />
       }
@@ -292,7 +292,7 @@ const CreateDebrief = ({ handleClose, order }: DrawerProps) => {
       }
       setDebriefCreation(false);
     } else {
-      toast.warning('Session under creation. Please wait.');
+      toast.warning('Stage under creation. Please wait.');
     }
   };
   return (
@@ -374,7 +374,7 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
         handleClose();
       }
     } else {
-      toast.warning('Session under updation. Please wait.');
+      toast.warning('Stage under updation. Please wait.');
     }
   };
 
@@ -431,7 +431,7 @@ const BreakSession = ({ handleClose, id }: DrawerProps) => {
         handleClose();
       }
     } else {
-      toast.warning('Session under updation. Please wait.');
+      toast.warning('Stage under updation. Please wait.');
     }
   };
   return (

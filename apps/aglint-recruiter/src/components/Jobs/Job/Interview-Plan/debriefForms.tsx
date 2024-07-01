@@ -75,13 +75,13 @@ export const getDebriefFields = (
 const getLabel = (key: keyof DebriefFormProps) => {
   switch (key) {
     case 'name':
-      return 'Session name';
+      return 'Stage name';
     case 'schedule_type':
       return 'Schedule type';
     case 'session_duration':
-      return 'Session duration';
+      return 'Stage duration';
     case 'session_type':
-      return 'Session type';
+      return 'Stage type';
   }
 };
 export const initialDebriefFields: DebriefFormProps = {
@@ -178,7 +178,7 @@ const DebriefForms = ({
     () => (
       <UITextField
         name={'name'}
-        placeholder={'Session name'}
+        placeholder={getLabel('name')}
         value={name.value}
         error={name.error}
         helperText={name.helper}
