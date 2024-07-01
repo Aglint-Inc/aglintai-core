@@ -49,10 +49,6 @@ const DashboardComp = () => {
     }
   }, [recruiter, router, data]);
 
-  useEffect(() => {
-    setSearchText('');
-  }, [router.query.status]);
-
   const initialFilterJobs = () => {
     if (router.query.status == 'all') {
       setFilteredJobs(sortJobs(data));
