@@ -1,4 +1,5 @@
 import { CircularProgress, Stack } from '@mui/material';
+import { useEffect } from 'react';
 
 import { JobDetails } from '@/devlink2/JobDetails';
 import Loader from '@/src/components/Common/Loader';
@@ -18,6 +19,10 @@ import Tabs from './Tabs';
 
 const ApplicationsDashboard = () => {
   const { job, jobLoad } = useApplications();
+  const resetAll = useApplicationsStore(({ resetAll }) => resetAll);
+  useEffect(() => {
+    return () => resetAll();
+  }, []);
   return jobLoad ? (
     job !== undefined ? (
       <ApplicationsComponent />
