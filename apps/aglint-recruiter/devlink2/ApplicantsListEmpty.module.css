@@ -14,25 +14,3 @@
   width: 100px;
   height: 100px;
 }
-
-.inline-block {
-  display: inline;
-  margin-right: 2px;
-  margin-left: 2px;
-}
-
-.inline-block.ml-6 {
-  margin-left: 6px;
-}
-
-.text-grey-600 {
-  color: #68737d;
-}
-
-.fw-semibold {
-  font-weight: 600;
-}
-
-.text-color-black {
-  color: var(--black-9b0fc3fc);
-}
