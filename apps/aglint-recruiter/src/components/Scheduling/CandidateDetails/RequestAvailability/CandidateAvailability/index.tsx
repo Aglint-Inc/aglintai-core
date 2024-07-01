@@ -50,6 +50,10 @@ function CandidateAvailability() {
     meetings: any[];
     schedule: any;
   }>(null);
+  const interview_sessions =
+    candidateRequestAvailability?.request_session_relation.map(
+      (ele) => ele.interview_session,
+    );
   const getMeetings = async (session_ids: string[], application_id: string) => {
     setConfirmLoading(true);
     const {
@@ -67,7 +71,7 @@ function CandidateAvailability() {
           count === 0 ||
           acc.rounds[count - 1].sessions[
             acc.rounds[count - 1].sessions.length - 1
-          ].interview_session.break_duration >= SINGLE_DAY_TIME
+          ].interview_sessions.break_duration >= SINGLE_DAY_TIME
         )
           acc.rounds.push({
             title: `Day ${acc.rounds.length + 1}`,
@@ -144,7 +148,7 @@ function CandidateAvailability() {
       {
         data: {
           title: `Candidate submitted availability`,
-          description: `Candidate submitted availability on ${dates} for ${candidateRequestAvailability.session_ids.map((ele) => ele.name).join(',')} Interviews.`,
+          description: `Candidate submitted availability on ${dates} for ${interview_sessions.map((ele) => ele.name).join(',')} Interviews.`,
           module: 'scheduler',
           task_id: task.id,
           logged_by: 'candidate',
@@ -189,7 +193,7 @@ function CandidateAvailability() {
             `/api/scheduling/request_availability/insertScheduleActivities`,
             {
               data: {
-                title: `Candidate opened request availability link for ${candidateRequestAvailability.session_ids.map((ele) => ele.name).join(',')}.`,
+                title: `Candidate opened request availability link for ${interview_sessions.map((ele) => ele.name).join(',')}.`,
                 module: 'scheduler',
                 logged_by: 'candidate',
                 application_id: candidateRequestAvailability.application_id,
@@ -210,7 +214,7 @@ function CandidateAvailability() {
                   ),
                   id: candidateRequestAvailability.applications.candidates.id,
                 },
-                title: `Candidate opened request availability link for ${candidateRequestAvailability.session_ids.map((ele) => ele.name).join(',')}.`,
+                title: `Candidate opened request availability link for ${interview_sessions.map((ele) => ele.name).join(',')}.`,
                 progress_type: 'request_availability',
               } as DatabaseTableInsert['new_tasks_progress'],
             });
@@ -218,7 +222,7 @@ function CandidateAvailability() {
       }
     } else {
       getMeetings(
-        candidateRequestAvailability.session_ids.map((ele) => ele.id),
+        interview_sessions.map((ele) => ele.id),
         candidateRequestAvailability.application_id,
       );
     }

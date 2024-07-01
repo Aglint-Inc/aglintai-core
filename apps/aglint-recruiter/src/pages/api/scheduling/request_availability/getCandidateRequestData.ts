@@ -30,7 +30,7 @@ export default async function handler(
         const { data } = await supabase
           .from('candidate_request_availability')
           .select(
-            '*, applications ( candidate_id, candidates ( * ), public_jobs ( logo,company ) )',
+            '*,request_session_relation( interview_session(*) ), applications ( candidate_id, candidates ( * ), public_jobs ( logo,company ) )',
           )
           .eq('id', request_id)
           .single();

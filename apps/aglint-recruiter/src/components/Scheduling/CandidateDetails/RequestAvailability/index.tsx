@@ -236,6 +236,13 @@ function RequestAvailability() {
           total_slots: null,
         });
 
+        await supabase.from('request_session_relation').insert(
+          selectedSessions.map((ele) => ({
+            session_id: ele.id,
+            request_availability_id: result.id,
+          })),
+        );
+
         const updateMeetings: DatabaseTableInsert['interview_meeting'][] =
           localSessions.map((ses) => {
             return {

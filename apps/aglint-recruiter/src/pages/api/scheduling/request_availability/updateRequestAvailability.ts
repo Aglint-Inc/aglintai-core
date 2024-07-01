@@ -34,7 +34,7 @@ export default async function handler(
           })
           .eq('id', id)
           .select(
-            '*, applications ( candidate_id, candidates ( * ), public_jobs ( logo ) ) )',
+            '*,request_session_relation( interview_session(*) ), applications ( candidate_id, candidates ( * ), public_jobs ( logo,company ) )',
           )
           .single();
         if (!error) {
