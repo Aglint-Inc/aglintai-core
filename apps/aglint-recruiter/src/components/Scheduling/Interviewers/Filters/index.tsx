@@ -95,7 +95,6 @@ function Filters({ setFilteredInterviewer }) {
   // filters by column END
 
   const resetFilter = () => {
-    handleTextClear();
     setSelectedQualifiedModule([]);
     setSelectedTrainingModule([]);
   };

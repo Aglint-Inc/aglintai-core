@@ -100,7 +100,6 @@ const DashboardComp = () => {
   };
 
   const handlerResetFilter = () => {
-    handleTextClear();
     setFilterValues({
       status: [],
       location: [],

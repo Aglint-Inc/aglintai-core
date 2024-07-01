@@ -16,9 +16,11 @@ const initialState: FilterModuleState = {
 
 export const useFilterModuleStore = create<FilterModuleState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       ...initialState,
-      reset: () => set(initialState),
+      reset: () => {
+        set({ ...initialState, textSearch: get().textSearch });
+      },
     }),
     {
       name: 'filter-module',

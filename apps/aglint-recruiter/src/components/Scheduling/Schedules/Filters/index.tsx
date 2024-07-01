@@ -52,7 +52,6 @@ function Filters() {
       JSON.stringify([...filterOptions].map((ele) => ele.name)),
     );
     setSelectedFilters([...filterOptions]);
-    handleTextClear();
   };
 
   useEffect(() => {
@@ -186,7 +185,23 @@ function Filters() {
           dateRangeMatch
         );
       });
-      setFilterSchedule(filteredSchedule);
+
+      if (searchText) {
+        const filteredSchedules = filterSchedules.filter((ele) => {
+          if (
+            ele.interview_meeting.session_name
+              .toLowerCase()
+              .includes(searchText.toLowerCase())
+          ) {
+            return ele;
+          }
+        });
+        setFilterSchedule(filteredSchedules);
+      } else {
+        setFilterSchedule(filteredSchedule);
+      }
+
+      // setFilterSchedule(filteredSchedule);
       setLoadingSchedules(false);
     }
   }, [

@@ -60,7 +60,14 @@ export const useFilterCandidateStore = create<FilterCandidateState>()(
   persist(
     (set, get) => ({
       ...initialState,
-      reset: () => set(initialState),
+      reset: () =>
+        set({
+          ...initialState,
+          filter: {
+            ...initialState.filter,
+            textSearch: get().filter.textSearch,
+          },
+        }),
       isInitialState: () => {
         const { filter: curFil, filterVisible: curFilVis } = get();
         const curState = { ...curFil, ...curFilVis };
@@ -68,6 +75,8 @@ export const useFilterCandidateStore = create<FilterCandidateState>()(
         const { filter: iniFil, filterVisible: iniFilVis } = initialState;
         const iniState = { ...iniFil, ...iniFilVis };
 
+        delete curState['textSearch'];
+        delete iniState['textSearch'];
         return !isEqual(curState, iniState);
       },
     }),
