@@ -20,7 +20,6 @@ function AllFilters() {
 
   useEffect(() => {
     const initalAllFilterShow = Object.keys(FilterType);
-    Object.keys(FilterType);
     setFilterVisible(initalAllFilterShow as FilterType[]);
   }, []);
 
