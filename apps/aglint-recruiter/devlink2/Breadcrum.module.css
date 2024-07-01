@@ -31,6 +31,10 @@
   cursor: pointer;
 }
 
+.embed_flex.is_absolute {
+  position: absolute;
+}
+
 .is_active_link {
   position: absolute;
   left: 0%;
@@ -47,7 +51,7 @@
 
   transition: all 200ms ease-in-out;
 
-  color: var(--accent-10);
+  color: var(--accent-11);
 
   cursor: pointer;
 }

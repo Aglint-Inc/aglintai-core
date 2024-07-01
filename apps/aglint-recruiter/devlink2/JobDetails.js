@@ -27,6 +27,7 @@ export function JobDetails({
   slotShowFilterButton,
   isFilterVisible = true,
   slotButtons,
+  slotGlobalBanner,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "job-details-wrapper")} tag="div">
@@ -307,6 +308,9 @@ export function JobDetails({
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block className={_utils.cx(_styles, "slot_banner")} tag="div">
+        {slotGlobalBanner}
       </_Builtin.Block>
     </_Component>
   );

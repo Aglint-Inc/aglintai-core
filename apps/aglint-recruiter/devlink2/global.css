@@ -2645,6 +2645,8 @@ textarea.w-select {
   --sand-1: #fdfdfc;
   --neutral-1: var(--sand-1);
   --text: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --kale-600\<deleted\|variable-fc9c3cf7-09bb-7364-ed8d-95d89e6d8422\>: hsla(184.44444444444443, 54.00%, 19.61%, 1.00);
+  --kale-800\<deleted\|variable-f2fd7071-1c51-e4c0-2aa9-ed4d60cbbee9\>: hsla(186.38297872340425, 95.92%, 9.61%, 1.00);
 }
 
 body {
