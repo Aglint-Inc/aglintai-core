@@ -33,6 +33,11 @@ function Filters() {
   const [selectedFilters, setSelectedFilters] = useState<FilterOptionsType[]>(
     [],
   );
+  const [searchText, setSearchText] = useState<string>('');
+  const [, startTransition] = useTransition();
+  const [selectedItem, setSelectedItem] = useState<any>(
+    JSON.parse(localStorage.getItem('scheduleFilterIds')) || initialFilter,
+  );
 
   const resetAll = () => {
     setSelectedStatus([]);
@@ -47,6 +52,7 @@ function Filters() {
       JSON.stringify([...filterOptions].map((ele) => ele.name)),
     );
     setSelectedFilters([...filterOptions]);
+    handleTextClear();
   };
 
   useEffect(() => {
@@ -76,12 +82,6 @@ function Filters() {
   );
   const [selectedDateRange, setSelectedDateRange] = useState<string[]>(
     scheduleFilterIds?.date_range || [],
-  );
-
-  const [searchText, setSearchText] = useState<string>('');
-  const [, startTransition] = useTransition();
-  const [selectedItem, setSelectedItem] = useState<any>(
-    JSON.parse(localStorage.getItem('scheduleFilterIds')) || initialFilter,
   );
 
   // popOver

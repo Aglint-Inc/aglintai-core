@@ -1,6 +1,7 @@
 import { Stack } from '@mui/material';
 import React, { useEffect, useState, useTransition } from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { QualifiedIcons } from '@/devlink2/QualifiedIcons';
 import SearchField from '@/src/components/Common/SearchField/SearchField';
 import FilterDropDown from '@/src/components/CompanyDetailComp/TeamManagement/FilterDropDown';
@@ -93,6 +94,11 @@ function Filters({ setFilteredInterviewer }) {
 
   // filters by column END
 
+  const resetFilter = () => {
+    handleTextClear();
+    setSelectedQualifiedModule([]);
+    setSelectedTrainingModule([]);
+  };
   if (isLoading) {
     return null;
   }
@@ -135,6 +141,19 @@ function Filters({ setFilteredInterviewer }) {
             />
           }
         />
+        {(selectedQualifiedModule.length > 0 ||
+          selectedTrainingModule.length > 0) && (
+          <ButtonGhost
+            textButton='Reset All'
+            size={2}
+            color={'error'}
+            iconName='refresh'
+            isLeftIcon
+            onClickButton={{
+              onClick: resetFilter,
+            }}
+          />
+        )}
       </Stack>
     </div>
   );
