@@ -51,7 +51,11 @@ function Filters() {
 
   useEffect(() => {
     if (typeof window != 'undefined') {
-      resetAll();
+      localStorage.setItem(
+        'schedulesFilter',
+        JSON.stringify([...filterOptions].map((ele) => ele.name)),
+      );
+      setSelectedFilters([...filterOptions]);
     }
   }, []);
 
@@ -76,7 +80,9 @@ function Filters() {
 
   const [searchText, setSearchText] = useState<string>('');
   const [, startTransition] = useTransition();
-  const [selectedItem, setSelectedItem] = useState<any>(initialFilter);
+  const [selectedItem, setSelectedItem] = useState<any>(
+    JSON.parse(localStorage.getItem('scheduleFilterIds')) || initialFilter,
+  );
 
   // popOver
   const [openFilterOptions, setOpenFilterOptions] =
