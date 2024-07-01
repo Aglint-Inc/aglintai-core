@@ -71,7 +71,7 @@ function CandidateAvailability() {
           count === 0 ||
           acc.rounds[count - 1].sessions[
             acc.rounds[count - 1].sessions.length - 1
-          ].interview_sessions.break_duration >= SINGLE_DAY_TIME
+          ].interview_session.break_duration >= SINGLE_DAY_TIME
         )
           acc.rounds.push({
             title: `Day ${acc.rounds.length + 1}`,

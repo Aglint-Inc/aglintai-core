@@ -31,10 +31,14 @@ export const applicationsQueries = {
   all: ({ job_id }: ApplicationsAllQueryPrerequistes) => ({
     queryKey: [...jobQueries.job({ id: job_id }).queryKey, 'applications'],
   }),
-  locationFilters: ({ job_id }: ApplicationsAllQueryPrerequistes) =>
+  locationFilters: ({
+    job_id,
+    polling = false,
+  }: ApplicationsAllQueryPrerequistes) =>
     queryOptions({
       enabled: !!job_id,
       gcTime: job_id ? GC_TIME : 0,
+      refetchOnMount: polling,
       queryKey: [
         ...applicationsQueries.all({ job_id }).queryKey,
         'location_filters',
