@@ -13,7 +13,11 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { useGetScheduleApplication } from '../../hooks';
-import { setIsEditBreakOpen, setSelectedSessionIds, useSchedulingApplicationStore } from '../../store';
+import {
+  setIsEditBreakOpen,
+  setSelectedSessionIds,
+  useSchedulingApplicationStore,
+} from '../../store';
 
 function BreakDrawerEdit() {
   const { recruiter, recruiterUser } = useAuthDetails();
@@ -127,6 +131,7 @@ function BreakDrawerEdit() {
                 />
               </Stack>
             }
+            onClickClose={{ onClick: () => handleClose() }}
             slotButton={
               <>
                 <ButtonSoft

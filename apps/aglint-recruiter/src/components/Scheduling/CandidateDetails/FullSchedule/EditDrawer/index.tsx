@@ -377,6 +377,7 @@ function SideDrawerEdit() {
         {editSession && (
           <SideDrawerBlock
             textTitle='Edit Session'
+            onClickClose={{ onClose: () => handleClose() }}
             slotSidedrawerBody={
               <Stack>
                 {editSession.session_type !== 'debrief' ? (

@@ -153,6 +153,7 @@ const CreateSession = ({ handleClose, order }: DrawerProps) => {
           />
         </>
       }
+      onClickClose={{ onClick: () => handleClose() }}
       textTitle='Create Session'
       slotSidedrawerBody={
         <SessionForms fields={fields} setFields={setFields} />
@@ -240,6 +241,7 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
       slotSidedrawerBody={
         <SessionForms fields={fields} setFields={setFields} />
       }
+      onClickClose={{ onClick: () => handleClose() }}
       slotButton={
         <>
           <ButtonSoft
@@ -299,6 +301,7 @@ const CreateDebrief = ({ handleClose, order }: DrawerProps) => {
       slotSidedrawerBody={
         <DebriefForms fields={fields} setFields={setFields} />
       }
+      onClickClose={{ onClick: () => handleClose() }}
       slotButton={
         <>
           <ButtonSoft
@@ -381,6 +384,7 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
       slotSidedrawerBody={
         <DebriefForms fields={fields} setFields={setFields} />
       }
+      onClickClose={{ onClick: () => handleClose() }}
       slotButton={
         <>
           <ButtonSoft
