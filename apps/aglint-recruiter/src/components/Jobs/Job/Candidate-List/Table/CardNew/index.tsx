@@ -17,6 +17,7 @@ const ApplicationCard = memo(
   ({ application }: { application: Application }) => {
     const {
       cascadeVisibilites,
+      job: { status },
       sectionApplication: {
         data: { pages },
       },
@@ -97,10 +98,14 @@ const ApplicationCard = memo(
         jobTitle={application.current_job_title || '---'}
         location={location || '---'}
         slotResumeScore={
-          <ResumeScore
-            resume_processing_state={application.resume_processing_state}
-            resume_score={application.resume_score}
-          />
+          status === 'draft' ? (
+            <>---</>
+          ) : (
+            <ResumeScore
+              resume_processing_state={application.resume_processing_state}
+              resume_score={application.resume_score}
+            />
+          )
         }
         isScreeningVisible={cascadeVisibilites.screening}
         isAssessmentVisible={cascadeVisibilites.assessment}
