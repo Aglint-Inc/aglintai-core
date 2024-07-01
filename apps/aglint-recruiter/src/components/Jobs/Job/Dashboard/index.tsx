@@ -628,7 +628,7 @@ const useBanners = () => {
             />
 
             <ButtonSolid
-              textButton='View'
+              textButton='Set now'
               size={2}
               color={'accent'}
               highContrast={'true'}
@@ -660,7 +660,7 @@ const useBanners = () => {
             />
 
             <ButtonSolid
-              textButton='View'
+              textButton='Set now'
               size={2}
               color={'accent'}
               highContrast={'true'}
