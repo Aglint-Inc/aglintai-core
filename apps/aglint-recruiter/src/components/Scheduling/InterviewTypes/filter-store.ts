@@ -5,6 +5,7 @@ interface FilterModuleState {
   textSearch: string;
   departments: string[];
   created_by: string[];
+  reset?: () => void;
 }
 
 const initialState: FilterModuleState = {
@@ -15,8 +16,9 @@ const initialState: FilterModuleState = {
 
 export const useFilterModuleStore = create<FilterModuleState>()(
   persist(
-    () => ({
+    (set) => ({
       ...initialState,
+      reset: () => set(initialState),
     }),
     {
       name: 'filter-module',

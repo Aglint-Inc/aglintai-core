@@ -2,6 +2,7 @@ import { AvatarGroup, Box, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { EmptyState } from '@/devlink2/EmptyState';
 import { InterviewModuleCard } from '@/devlink2/InterviewModuleCard';
 import { InterviewModuleTable } from '@/devlink2/InterviewModuleTable';
@@ -26,6 +27,7 @@ export function Modules() {
   const textSearch = useFilterModuleStore((state) => state.textSearch);
   const departments = useFilterModuleStore((state) => state.departments);
   const createdBy = useFilterModuleStore((state) => state.created_by);
+  const filterReset = useFilterModuleStore((state) => state.reset);
   const { data: allModules, isLoading, isFetching } = useAllInterviewModules();
   const [showArchive, setShowArchive] = useState(false);
   const [archives, setArchives] = useState(false);
@@ -75,6 +77,18 @@ export function Modules() {
                 />
                 <FilterDepartment />
                 <FilterCreatedBy />
+                {(departments.length > 0 || createdBy.length > 0) && (
+                  <ButtonGhost
+                    textButton='Reset All'
+                    iconName='refresh'
+                    size={2}
+                    onClickButton={{
+                      onClick: filterReset,
+                    }}
+                    isLeftIcon
+                    color={'error'}
+                  />
+                )}
               </Stack>
             }
             slotInterviewModuleCard={
