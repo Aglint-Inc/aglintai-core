@@ -68,7 +68,8 @@ export interface ContextValue {
       manager_id?: string;
     };
   }) => Promise<boolean>;
-  isAllowed: ( //checkPermission
+  isAllowed: (
+    //checkPermission
     roles: DatabaseEnums['user_roles'][],
     flags?: featureFlag[],
   ) => boolean;
@@ -245,7 +246,11 @@ const AuthProvider = ({ children }) => {
 
   const fetchUserLocation = async () => {
     try {
-      const res = await fetch('/api/getUserLocation');
+      const res = await fetch('https://ipinfo.io/json', {
+        headers: {
+          Authorization: `Bearer e82b96e5cb0802`,
+        },
+      });
       const data = await res.json();
 
       const country = data.country; // Extract the country code from the response
