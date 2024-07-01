@@ -1,13 +1,14 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./ApplicantsListEmpty.module.css";
 
 export function ApplicantsListEmpty({
   as: _Component = _Builtin.Block,
   slotLottie,
-  textEmpty = "applied",
+  textEmpty = "No Candidates",
 }) {
   return (
     <_Component
@@ -20,26 +21,7 @@ export function ApplicantsListEmpty({
       >
         {slotLottie}
       </_Builtin.Block>
-      <_Builtin.Block tag="div">
-        <_Builtin.Block
-          className={_utils.cx(_styles, "inline-block")}
-          tag="div"
-        >
-          {"No"}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "inline-block")}
-          tag="div"
-        >
-          {textEmpty}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "inline-block")}
-          tag="div"
-        >
-          {"candidates found."}
-        </_Builtin.Block>
-      </_Builtin.Block>
+      <Text content={textEmpty} weight="" color="neutral" />
     </_Component>
   );
 }
