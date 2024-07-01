@@ -10,6 +10,7 @@ import { CandidateDatabaseSearch } from '@/devlink/CandidateDatabaseSearch';
 import { CandidateHistoryCard } from '@/devlink/CandidateHistoryCard';
 import { CdSearchHistoryLoader } from '@/devlink/CdSearchHistoryLoader';
 import { ClearHistory } from '@/devlink/ClearHistory';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { NavSublink } from '@/devlink/NavSublink';
 import { SavedList } from '@/devlink/SavedList';
 import { SavedListLoader } from '@/devlink/SavedListLoader';
@@ -493,6 +494,20 @@ function CandidateSearchHistory() {
                                 }
                               }
                             },
+                            endAdornment: searchQuery && (
+                              <Stack
+                                onClick={() => setSearchQuery('')}
+                                sx={{
+                                  p: '3px',
+                                  '&:hover': {
+                                    backgroundColor: 'var(--neutral-3)',
+                                    cursor: 'pointer',
+                                  },
+                                }}
+                              >
+                                <GlobalIcon iconName='close' size={5} />
+                              </Stack>
+                            ),
                           }}
                         />
                       }

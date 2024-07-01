@@ -48,7 +48,7 @@ function TaskBody() {
                   }
                 }}
                 size='small'
-                sx={{color:'var(--accent-9)'}}
+                sx={{ color: 'var(--accent-9)' }}
               />
             }
             slotFilter={
@@ -79,7 +79,10 @@ function TaskBody() {
                     );
                   })}
                 <ShowCode.When isTrue={!loadingTasks && tasks.length === 0}>
-                  <Stack height={'calc(100vh - 176px)'} style={{ backgroundColor: 'var(--neutral-2)' }}>
+                  <Stack
+                    height={'calc(100vh - 176px)'}
+                    style={{ backgroundColor: 'var(--neutral-2)' }}
+                  >
                     <TaskEmpty />
                   </Stack>
                 </ShowCode.When>
@@ -141,7 +144,10 @@ function TaskBody() {
                     return <GroupSections key={i} item={item} index={i} />;
                   })}
                 <ShowCode.When isTrue={!loadingTasks && tasks.length === 0}>
-                <Stack height={'calc(100vh - 136px)'} style={{ backgroundColor: 'var(--neutral-2)' }}>
+                  <Stack
+                    height={'calc(100vh - 136px)'}
+                    style={{ backgroundColor: 'var(--neutral-2)' }}
+                  >
                     <TaskEmpty />
                   </Stack>
                 </ShowCode.When>

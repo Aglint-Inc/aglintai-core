@@ -271,21 +271,25 @@ export function FilterComponent({
         <FilterDropdown
           isRemoveVisible={false}
           slotOption={
-            <FilterOptionsList
-              optionList={itemList}
-              selectedItems={selectedItems}
-              searchFilter={filterSearch}
-              setSelectedItems={(val) => {
-                let temp = [...selectedItems];
-                if (temp.includes(val)) {
-                  temp = temp.filter((innerEle) => innerEle !== val);
-                } else {
-                  temp.push(val);
-                }
-                setSelectedItems(temp);
-              }}
-              nested={false}
-            />
+            itemList.length ? (
+              <FilterOptionsList
+                optionList={itemList}
+                selectedItems={selectedItems}
+                searchFilter={filterSearch}
+                setSelectedItems={(val) => {
+                  let temp = [...selectedItems];
+                  if (temp.includes(val)) {
+                    temp = temp.filter((innerEle) => innerEle !== val);
+                  } else {
+                    temp.push(val);
+                  }
+                  setSelectedItems(temp);
+                }}
+                nested={false}
+              />
+            ) : (
+              <Typography>No {title}</Typography>
+            )
           }
           onClickReset={{
             onClick: () => {
