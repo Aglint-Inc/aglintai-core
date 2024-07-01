@@ -16,7 +16,6 @@
 
 .jdb-content {
   max-width: 600px;
-  margin-bottom: var(--space-9);
 }
 
 .job_detail_right {
@@ -82,4 +81,11 @@
   align-items: center;
   grid-column-gap: var(--space-1);
   grid-row-gap: var(--space-1);
+}
+
+.jdb-btn-wrap {
+  display: flex;
+  margin-top: var(--space-4);
+  justify-content: flex-end;
+  align-items: center;
 }
