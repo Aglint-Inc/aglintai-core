@@ -1,4 +1,5 @@
 import { DatabaseTable, InterviewSession } from '@aglint/shared-types';
+import { isEqual } from 'lodash';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
@@ -20,6 +21,8 @@ export interface FilterCandidateState {
     total: number;
   };
   filterVisible: FilterType[];
+  isInitialState?: () => boolean;
+  reset?: () => void;
 }
 
 export enum FilterType {
@@ -50,13 +53,32 @@ const initialState: FilterCandidateState = {
     page: 1,
     total: 0,
   },
-  filterVisible: [FilterType.status, FilterType.relatedJobs],
+  filterVisible: Object.keys(FilterType) as FilterType[],
 };
 
 export const useFilterCandidateStore = create<FilterCandidateState>()(
   persist(
-    () => ({
+    (set, get) => ({
       ...initialState,
+      reset: () =>
+        set({
+          ...initialState,
+          filter: {
+            ...initialState.filter,
+            textSearch: get().filter.textSearch,
+          },
+        }),
+      isInitialState: () => {
+        const { filter: curFil, filterVisible: curFilVis } = get();
+        const curState = { ...curFil, ...curFilVis };
+
+        const { filter: iniFil, filterVisible: iniFilVis } = initialState;
+        const iniState = { ...iniFil, ...iniFilVis };
+
+        delete curState['textSearch'];
+        delete iniState['textSearch'];
+        return !isEqual(curState, iniState);
+      },
     }),
     {
       name: 'filter-candidate',

@@ -1,14 +1,18 @@
 import { Stack } from '@mui/material';
 import React from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
+
+import SearchField from '../SearchField/SearchField';
 import DateRangeSelector from './DateRangeSelector';
 import { FiltersComponent, FilterTypes } from './FilterComponents';
-import SearchComponent from './SearchComponent';
 import SortComponent, { sortComponentType } from './SortComponent';
 
 export default function FilterHeader({
   search,
+  handelResetAll,
   filters,
+  isResetAll,
   sort,
   dateRangeSelector,
   showFiltersByDefault,
@@ -17,13 +21,15 @@ export default function FilterHeader({
   },
 }: FilterHeaderType) {
   return (
-    <Stack
-      direction={'row'}
-      width={'100%'}
-      justifyContent={'space-between'}
-      gap={2}
-    >
-      {Boolean(search) && <SearchComponent {...search} />}
+    <Stack direction={'row'} gap={2}>
+      {Boolean(search) && (
+        <SearchField
+          value={search.value}
+          onChange={(e) => search.setValue(e.target.value)}
+          onClear={() => search.setValue('')}
+          placeholder={search.placeholder}
+        />
+      )}
       <Stack direction={'row'} justifyContent={'space-between'} flexGrow={1}>
         <Stack direction={'row'} gap={2}>
           <FiltersComponent
@@ -34,6 +40,16 @@ export default function FilterHeader({
           {Boolean(dateRangeSelector) && (
             <DateRangeSelector {...dateRangeSelector} />
           )}
+          {isResetAll && (
+            <ButtonGhost
+              textButton='Reset All'
+              size={2}
+              iconName='refresh'
+              color={'error'}
+              isLeftIcon
+              onClickButton={{ onClick: handelResetAll }}
+            />
+          )}
         </Stack>
       </Stack>
       {Boolean(sort) && <SortComponent {...sort} />}
@@ -42,6 +58,7 @@ export default function FilterHeader({
 }
 
 export type FilterHeaderType = {
+  handelResetAll?: () => void;
   search?: {
     value: string;
     // eslint-disable-next-line no-unused-vars
@@ -53,8 +70,10 @@ export type FilterHeaderType = {
   // eslint-disable-next-line no-unused-vars
   setShowFilters?: (x: string[]) => void;
   sort?: sortComponentType;
+  isResetAll?: boolean;
   dateRangeSelector?: {
     name: string;
+    values: string[];
     // eslint-disable-next-line no-unused-vars
     setValue: (x: any) => void;
   };

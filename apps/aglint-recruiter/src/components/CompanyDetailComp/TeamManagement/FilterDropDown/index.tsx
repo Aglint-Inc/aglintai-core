@@ -40,7 +40,6 @@ function FilterDropDown({
         isActive={Boolean(selectedItems.length)}
         isDotVisible={Boolean(selectedItems.length)}
         slotLeftIcon={<Stack>{icon}</Stack>}
-        // isDotVisible={filter.job_ids.length > 0}
         onClickStatus={{
           onClick: handleClick,
         }}
@@ -98,7 +97,6 @@ function FilterDropDown({
                     }
                   }}
                 >
-                  
                   {capitalizeFirstLetter(item)}
                 </Typography>
               </Stack>

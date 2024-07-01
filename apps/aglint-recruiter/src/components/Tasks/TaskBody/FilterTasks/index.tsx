@@ -4,10 +4,26 @@ import FilterHeader from '@/src/components/Common/FilterHeader';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 
 function FilterTasks() {
-  const { search, filter, handelSearch, handelFilter } = useTasksContext();
+  const { search, filter, handelSearch, handelFilter, handelResetFilter } =
+    useTasksContext();
 
+  function areValuesEmpty() {
+    for (const key in filter) {
+      if (
+        // eslint-disable-next-line security/detect-object-injection
+        Array.isArray(filter[key].values) &&
+        // eslint-disable-next-line security/detect-object-injection
+        filter[key].values.length !== 0
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
   return (
     <FilterHeader
+      handelResetAll={handelResetFilter}
+      isResetAll={areValuesEmpty()}
       search={{
         value: search,
         setValue: (e) => {
@@ -119,7 +135,11 @@ function FilterTasks() {
       ]}
       dateRangeSelector={{
         name: 'Interview Date',
+        values: filter.date.values,
         setValue: (val) => {
+          const preData = JSON.parse(localStorage.getItem('taskFilters')) || {};
+          preData.Date = [...val];
+          localStorage.setItem('taskFilters', JSON.stringify(preData));
           handelFilter({
             ...filter,
             date: { ...filter.date, values: val },

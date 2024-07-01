@@ -1,8 +1,7 @@
-import { InputAdornment, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 
-import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { JobsDashboard } from '@/devlink/JobsDashboard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
@@ -12,7 +11,7 @@ import ROUTES from '@/src/utils/routing/routes';
 
 import SubNavBar from '../../AppLayout/SubNavbar';
 import Loader from '../../Common/Loader';
-import UITextField from '../../Common/UITextField';
+import SearchField from '../../Common/SearchField/SearchField';
 import { stepObj } from '../../SignUpComp/SlideSignup/utils';
 import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
 import FilterJobDashboard, { useJobFilterAndSort } from './Filters';
@@ -26,6 +25,8 @@ const DashboardComp = () => {
     initialLoad,
   } = useJobs();
   const [filteredJobs, setFilteredJobs] = useState<Job[]>(data);
+  const [searchText, setSearchText] = useState<string>();
+  const [, startTransition] = useTransition();
   const { recruiter } = useAuthDetails();
   const { ifAllowed } = useRolesAndPermissions();
 
@@ -48,6 +49,10 @@ const DashboardComp = () => {
     }
   }, [recruiter, router, data]);
 
+  useEffect(() => {
+    setSearchText('');
+  }, [router.query.status]);
+
   const initialFilterJobs = () => {
     if (router.query.status == 'all') {
       setFilteredJobs(sortJobs(data));
@@ -65,21 +70,6 @@ const DashboardComp = () => {
     }
   };
 
-  const handlerFilter = (e) => {
-    if (router.query.status == 'all') {
-      setFilteredJobs([...searchJobs(data, e.target.value)]);
-    } else if (router.query.status == 'published') {
-      const filter = data.filter((job) => job.status == 'published');
-      setFilteredJobs([...searchJobs(filter, e.target.value)]);
-    } else if (router.query.status == 'closed') {
-      const filter = data.filter((job) => job.status == 'closed');
-      setFilteredJobs([...searchJobs(filter, e.target.value)]);
-    } else if (router.query.status == 'draft') {
-      const filter = data.filter((job) => job.status == 'draft');
-      setFilteredJobs([...searchJobs(filter, e.target.value)]);
-    }
-  };
-
   const {
     jobs,
     filterOptions,
@@ -89,6 +79,53 @@ const DashboardComp = () => {
     sortOptions,
     sortValue,
   } = useJobFilterAndSort(filteredJobs);
+
+  const handlerFilter = (e) => {
+    const value = e.target.value;
+    setSearchText(value);
+    startTransition(() => {
+      if (router.query.status == 'all') {
+        setFilteredJobs([...searchJobs(data, value)]);
+      } else if (router.query.status == 'published') {
+        const filter = data.filter((job) => job.status == 'published');
+        setFilteredJobs([...searchJobs(filter, value)]);
+      } else if (router.query.status == 'closed') {
+        const filter = data.filter((job) => job.status == 'closed');
+        setFilteredJobs([...searchJobs(filter, value)]);
+      } else if (router.query.status == 'draft') {
+        const filter = data.filter((job) => job.status == 'draft');
+        setFilteredJobs([...searchJobs(filter, value)]);
+      }
+    });
+  };
+
+  const handlerResetFilter = () => {
+    setFilterValues({
+      status: [],
+      location: [],
+      type: [],
+      hiringManager: [],
+      recruiter: [],
+      source: [],
+      department: [],
+      workplace: [],
+      coOrdinator: [],
+    });
+  };
+  const handleTextClear = () => {
+    setSearchText('');
+    startTransition(() => {
+      if (router.query.status == 'all') {
+        setFilteredJobs(data);
+      } else if (router.query.status == 'published') {
+        setFilteredJobs(data.filter((job) => job.status == 'published'));
+      } else if (router.query.status == 'closed') {
+        setFilteredJobs(data.filter((job) => job.status == 'closed'));
+      } else if (router.query.status == 'draft') {
+        setFilteredJobs(data.filter((job) => job.status == 'draft'));
+      }
+    });
+  };
 
   return (
     <Stack height={'100%'} width={'100%'}>
@@ -114,6 +151,7 @@ const DashboardComp = () => {
               <JobsDashboard
                 slotFilters={
                   <FilterJobDashboard
+                    handlerResetFilter={handlerResetFilter}
                     filterOptions={filterOptions}
                     filterValues={filterValues}
                     setFilterValues={setFilterValues}
@@ -125,20 +163,11 @@ const DashboardComp = () => {
                 slotAllJobs={<JobsList jobs={jobs} />}
                 slotSearchInputJob={
                   <Stack>
-                    <UITextField
-                      width='250px'
-                      height={32}
+                    <SearchField
+                      value={searchText}
+                      onChange={handlerFilter}
+                      onClear={handleTextClear}
                       placeholder='Search'
-                      onChange={(e) => {
-                        handlerFilter(e);
-                      }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position='end'>
-                            <GlobalIcon iconName='search' size='5' />
-                          </InputAdornment>
-                        ),
-                      }}
                     />
                   </Stack>
                 }
