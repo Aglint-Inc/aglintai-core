@@ -5,7 +5,6 @@ declare function ImportCsv(props: {
   as?: React.ElementType;
   isListingCountVisible?: Types.Visibility.VisibilityConditions;
   textListingCount?: React.ReactNode;
-  onClickReupload?: Types.Devlink.RuntimeProps;
   isImportDescVisible?: Types.Visibility.VisibilityConditions;
   textCountExistinJob?: React.ReactNode;
   onClickImportRemaining?: Types.Devlink.RuntimeProps;

@@ -125,7 +125,6 @@ const ImportCsv = () => {
     onDropRejected: () => {
       toast.error('Invalid file.');
     },
-    // disabled: !allowed || isLoading || areHeadersLoading,
   });
   return (
     <Stack
@@ -186,7 +185,7 @@ const ImportCsv = () => {
                 </>
               )
             }
-            onClickImportRemaining={{
+            onClickImport={{
               onClick: async () => {
                 await createCandidates(bulkImportdata);
               },
@@ -200,8 +199,6 @@ const ImportCsv = () => {
 export { ImportCsv };
 
 function CandidatesListTable({ importedCandidate }) {
-  // eslint-disable-next-line no-console
-  console.log('importedCandidate', importedCandidate);
   return (
     <Stack
       borderRadius={'10px'}
