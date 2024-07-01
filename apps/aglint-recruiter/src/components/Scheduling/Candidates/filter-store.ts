@@ -70,10 +70,10 @@ export const useFilterCandidateStore = create<FilterCandidateState>()(
         }),
       isInitialState: () => {
         const { filter: curFil, filterVisible: curFilVis } = get();
-        const curState = { ...curFil, ...curFilVis };
+        const curState = { ...curFil, filterVisible: curFilVis };
 
         const { filter: iniFil, filterVisible: iniFilVis } = initialState;
-        const iniState = { ...iniFil, ...iniFilVis };
+        const iniState = { ...iniFil, filterVisible: iniFilVis };
 
         delete curState['textSearch'];
         delete iniState['textSearch'];
