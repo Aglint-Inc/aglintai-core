@@ -2,6 +2,7 @@ import { CircularProgress, Stack } from '@mui/material';
 import { useEffect } from 'react';
 
 import { JobDetails } from '@/devlink2/JobDetails';
+import { JobsBanner } from '@/devlink3/JobsBanner';
 import Loader from '@/src/components/Common/Loader';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
@@ -61,6 +62,7 @@ const ApplicationsComponent = () => {
           />
         }
         slotBreadcrumb={<BreadCrumbs />}
+        slotGlobalBanner={job?.status === 'draft' && <JobsBanner />}
         slotTabs={<Tabs />}
         slotTable={<Table />}
         isFilterVisible={true}
