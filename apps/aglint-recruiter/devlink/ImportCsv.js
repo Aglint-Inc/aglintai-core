@@ -16,7 +16,6 @@ export function ImportCsv({
   as: _Component = _Builtin.Block,
   isListingCountVisible = true,
   textListingCount = "Listing 320 candidates",
-  onClickReupload = {},
   isImportDescVisible = true,
   textCountExistinJob = "130 candidates already exists in this job",
   onClickImportRemaining = {},
@@ -74,12 +73,12 @@ export function ImportCsv({
           <_Builtin.Block
             className={_utils.cx(_styles, "flex-horizontal", "gap-space-2")}
             tag="div"
-            {...onClickImportRemaining}
           >
             <_Builtin.Block tag="div">
               {slotReuploadButton ?? <SlotComp componentName="Button" />}
             </_Builtin.Block>
             <ButtonSolid
+              onClickButton={onClickImport}
               isRightIcon={false}
               isLeftIcon={false}
               size="2"
