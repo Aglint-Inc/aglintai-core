@@ -1,4 +1,9 @@
-import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
+import {
+  DatabaseTable,
+  DatabaseTableInsert,
+  InterviewSessionTypeDB,
+} from '@aglint/shared-types';
+import { ScheduleUtils } from '@aglint/shared-utils';
 import {
   Autocomplete,
   Checkbox,
@@ -29,6 +34,7 @@ import {
   ApiBodyParamsSessionCache,
   ApiResponseSessionCache,
 } from '@/src/pages/api/scheduling/application/candidatesessioncache';
+import { getCompanyDaysCnt } from '@/src/services/CandidateScheduleV2/utils/companyWorkingDays';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -103,13 +109,22 @@ function RequestAvailability() {
     outside_work_hours: false,
     recruiting_block_keywords: false,
   });
-  const [selectedDays, setSelectedDays] = useState(requestDaysListOptions[3]);
+  const [selectedDays, setSelectedDays] = useState(requestDaysListOptions[1]);
   const [selectedSlots, setSelectedSlots] = useState(slotsListOptions[1]);
 
   const [markCreateTicket, setMarkCreateTicket] = useState(true);
 
+  const meetingsRound = ScheduleUtils.getSessionRounds(
+    selectedSessions,
+  ) as unknown as InterviewSessionTypeDB[][];
   // handle submit
-
+  const maxDays =
+    getCompanyDaysCnt(
+      recruiter.scheduling_settings,
+      selectedDate[0].format('DD/MM/YYYY'),
+      selectedDate[1].format('DD/MM/YYYY'),
+    ) -
+    (meetingsRound.length - 1);
   async function handleSubmit() {
     if (loading) {
       return null;
@@ -392,8 +407,9 @@ function RequestAvailability() {
                 value={selectedDays}
                 options={requestDaysListOptions}
                 sx={{ width: 200 }}
-                renderOption={(props, option) => {
-                  return <li {...props}>{option.label}</li>;
+                renderOption={(props, option, i) => {
+                  if (i.index + 1 < maxDays)
+                    return <li {...props}>{option.label}</li>;
                 }}
                 renderInput={(params) => (
                   <TextField {...params} placeholder='Days' />
