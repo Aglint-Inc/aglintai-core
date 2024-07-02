@@ -56,9 +56,8 @@ export const emailTemplateCopy: CompanyEmailType = {
     description: 'Request from candidate to cancel interview',
   },
   interviewReschedule_email_applicant: {
-    heading: 'Recruiter Reschedule',
-    description:
-      'This template is used for sending mail to candidate about rescheduling. Ensure to include clear instructions and personalize the email for better engagement.',
+    heading: '',
+    description: '',
   },
   interviewStart_email_applicant: {
     heading: 'Candidate Interview Reminder',
@@ -105,7 +104,7 @@ export const emailTemplateCopy: CompanyEmailType = {
   },
 
   interviewDetails_calender_interviewer: {
-    heading: 'Interview Scheduled : Candidate Details',
+    heading: 'Interviewer Interview Confirmation',
     description: '',
   },
   rescheduleSelfSchedule_email_applicant: {
