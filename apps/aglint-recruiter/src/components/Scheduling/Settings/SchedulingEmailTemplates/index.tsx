@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseEnums, DatabaseTableInsert } from '@aglint/shared-types';
+import { DatabaseTableInsert } from '@aglint/shared-types';
 import { Box, Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -10,18 +10,23 @@ import { EditEmail } from '@/devlink/EditEmail';
 import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
+import { NewTabPill } from '@/devlink3/NewTabPill';
 import EmailPreviewPopover from '@/src/components/Common/EmailTemplateEditor/EmailPreviewPopover';
 import EmailTemplateEditForm from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
+import SearchField from '@/src/components/Common/SearchField/SearchField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
-import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
-import { upateEmailTemplate } from './utils';
+import {
+  filterEmailByTemplateTab,
+  template_tabs,
+  upateEmailTemplate,
+} from './utils';
 
 function SchedulerEmailTemps() {
-  const { emailTemplates } = useAuthDetails();
+  const { emailTemplates: compEmailTemps } = useAuthDetails();
   const [emailTemplate, setEmailTemplate] =
     useState<DatabaseTableInsert['company_email_template'][]>(null);
   const [tiptapLoader, setTipTapLoder] = useState(false);
@@ -32,37 +37,30 @@ function SchedulerEmailTemps() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
-
+  const [searchQry, setSearchQry] = useState('');
   const router = useRouter();
 
   const [isHtml, setHtml] = useState(null);
   const [popOverLoading, setPopOverLoading] = useState(false);
 
+  const temp_tab = router.query.template_tab as string;
   useEffect(() => {
-    if (!emailTempKeys.find((key) => key === router.query.email)) {
-      const currentTemplate = emailTempKeys.find((key) =>
-        key.startsWith(String(router.query.email)),
-      );
-      router.push(
-        `${ROUTES['/scheduling']()}?tab=settings&subtab=emailTemplate&email=${currentTemplate}`,
-      );
+    if (!template_tabs.find((t) => t.key === temp_tab)) {
+      router.query.template_tab = template_tabs[0].key;
+      router.push(router);
     }
-  }, []);
+    const temps = compEmailTemps?.data;
+    if (!temps || !router.isReady) return;
+    setEmailTemplate([...temps]);
 
-  useEffect(() => {
-    if (emailTemplates.data) {
-      setEmailTemplate([...emailTemplates.data]);
-    }
-    if (emailTemplates.isFetched) {
-      setSelectedTemplate(
-        emailTemplates.data.find((temps) => temps.type === router.query.email),
-      );
-    }
-
+    const curr_tab_temps = temps.filter((temp) =>
+      filterEmailByTemplateTab(router.query.template_tab as any, temp.type),
+    );
+    setSelectedTemplate({ ...curr_tab_temps[0] });
     setTimeout(() => {
       setIsEditorLoad(false);
     }, 500);
-  }, [emailTemplates, emailTemplates.data]);
+  }, [router.query, compEmailTemps.data]);
 
   async function updateEmail({
     id,
@@ -78,7 +76,7 @@ function SchedulerEmailTemps() {
       },
     });
     setSaving(false);
-    await emailTemplates.refetch();
+    await compEmailTemps.refetch();
     toast.message('Saved Successfully!');
   }
   const preview = async () => {
@@ -126,24 +124,63 @@ function SchedulerEmailTemps() {
       <Box>
         {emailTemplate && (
           <EmailTemplatesStart
+            slotNewTabPill={template_tabs.map((tab) => {
+              return (
+                <NewTabPill
+                  key={tab.key}
+                  textLabel={tab.label}
+                  isPillActive={tab.key === temp_tab}
+                  onClickPill={{
+                    onClick: () => {
+                      router.query.template_tab = tab.key;
+                      router.push(router);
+                    },
+                  }}
+                />
+              );
+            })}
+            slotSearchFilter={
+              <>
+                <SearchField
+                  placeholder={'Search candidates.'}
+                  onChange={(e) => {
+                    setSearchQry(e.target.value);
+                  }}
+                  onClear={() => {
+                    setSearchQry('');
+                  }}
+                  value={searchQry}
+                />
+              </>
+            }
             slotEmailTemplateCards={emailTemplate
-              ?.filter((emailPath) => emailTempKeys.includes(emailPath.type))
-              .filter(
-                (v, i, a) => a.findIndex((v2) => v2.type === v.type) === i,
-              )
+              .filter((emailPath) => {
+                const flag = filterEmailByTemplateTab(
+                  temp_tab as any,
+                  emailPath.type,
+                );
+                if (searchQry.length > 0) {
+                  return (
+                    flag &&
+                    emailTemplateCopy[emailPath.type].heading
+                      .toLocaleLowerCase()
+                      .includes(searchQry.toLocaleLowerCase())
+                  );
+                }
+                return flag;
+              })
               .sort((a, b) => a.type.localeCompare(b.type))
               .map((emailPath) => (
                 <EmailTemplateCards
                   key={emailPath.id}
-                  isActive={emailPath.type === router.query.email}
-                  textDescription={emailTemplateCopy[emailPath.type]?.trigger}
-                  textTitle={emailTemplateCopy[emailPath.type]?.listing}
+                  isActive={emailPath.type === selectedTemplate.type}
+                  textDescription={
+                    emailTemplateCopy[emailPath.type].description
+                  }
+                  textTitle={emailTemplateCopy[emailPath.type]?.heading}
                   onClickApplicationRecieved={{
                     onClick: () => {
                       if (selectedTemplate.id !== emailPath.id) {
-                        router.push(
-                          `${ROUTES['/scheduling']()}?tab=settings&subtab=emailTemplate&email=${emailPath.type}`,
-                        );
                         setTipTapLoder(true);
                         setSelectedTemplate(emailPath);
                         setTimeout(() => {
@@ -152,6 +189,7 @@ function SchedulerEmailTemps() {
                       }
                     },
                   }}
+                  slotBadge={<></>}
                 />
               ))}
             slotEmailDetails={
@@ -195,12 +233,10 @@ function SchedulerEmailTemps() {
                         },
                       }}
                       isPreviewVisible={
-                        selectedTemplate.type == emailTempKeys[0] ? false : true
+                        router.query.template_tab !== 'slack' &&
+                        router.query.template_tab !== 'calender'
                       }
-                      textTipsMessage={
-                        emailTemplateCopy[selectedTemplate?.type]
-                          ?.dynamicContent
-                      }
+                      textTipsMessage={undefined}
                       editEmailDescription={
                         emailTemplateCopy[selectedTemplate?.type]?.description
                       }
@@ -226,6 +262,14 @@ function SchedulerEmailTemps() {
                             emailBodyChange={emailBodyChange}
                             emailSubjectChange={emailSubjectChange}
                             selectedTemplate={selectedTemplate}
+                            showSender={
+                              router.query.template_tab !== 'slack' &&
+                              router.query.template_tab !== 'calender'
+                            }
+                            showSubject={
+                              router.query.template_tab !== 'slack' &&
+                              router.query.template_tab !== 'calender'
+                            }
                           />
                         )
                       }
@@ -249,21 +293,3 @@ function SchedulerEmailTemps() {
 }
 
 export default SchedulerEmailTemps;
-
-export const emailTempKeys: DatabaseEnums['email_slack_types'][] = [
-  'agent_email_candidate',
-  'confInterview_email_organizer',
-  'confirmInterview_email_applicant',
-  'debrief_email_interviewer',
-  'interReschedReq_email_recruiter',
-  'interviewCancel_email_applicant',
-  'InterviewCancelReq_email_recruiter',
-  'interviewReschedule_email_applicant',
-  'interviewStart_email_applicant',
-  'interviewStart_email_interviewers',
-  'selfScheduleReminder_email_applicant',
-  'sendAvailabilityRequest_email_applicant',
-  'sendAvailReqReminder_email_applicant',
-  'sendSelfScheduleRequest_email_applicant',
-  'availabilityReqResend_email_candidate',
-];
