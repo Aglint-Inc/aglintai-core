@@ -239,11 +239,13 @@ function GroupSections({
         key={index}
         slotTaskTableJobCard={
           <>
-            {item.tasklist
-              .filter((ele) => ele.type !== 'empty')
-              .map((ele, i) => {
-                return <GroupTaskCard key={i} task={ele} />;
-              })}
+            <Stack id='taskContainer' overflow={'auto'}>
+              {item.tasklist
+                .filter((ele) => ele.type !== 'empty')
+                .map((ele, i) => {
+                  return <GroupTaskCard key={i} task={ele} />;
+                })}
+            </Stack>
             <ShowCode.When
               isTrue={
                 item.tasklist.filter((ele) => ele.type !== 'empty').length === 0

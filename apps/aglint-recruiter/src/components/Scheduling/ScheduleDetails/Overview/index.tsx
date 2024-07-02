@@ -65,7 +65,7 @@ function Overview({ schedule }: { schedule: ScheduleMeeting }) {
             confirmedUsers?.map((item) => {
               return (
                 <>
-                  <InterviewerListCard item={item} schedule={schedule} />
+                  <InterviewerListCard disableHoverListener={true} item={item} schedule={schedule} />
                 </>
               );
             })

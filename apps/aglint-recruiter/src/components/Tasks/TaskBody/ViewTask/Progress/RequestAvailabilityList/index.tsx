@@ -4,8 +4,7 @@ import { useRouter } from 'next/router';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GeneralBanner } from '@/devlink/GeneralBanner';
-import Icon from '@/src/components/Common/Icons/Icon';
+import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import {
   setIsScheduleNowOpen,
   setScheduleFlow,
@@ -32,22 +31,18 @@ function RequestAvailabilityList({
     );
 
   return (
-    <GeneralBanner
-      titleColorProps={{
-        style: {
-          color: 'var(--info-11)',
-        },
-      }}
-      textHeading={'Candidate submitted availability'}
-      textDesc={
+    <GlobalBanner
+      color={'warning'}
+      iconName={'schedule'}
+      textTitle={'Candidate submitted availability'}
+      textDescription={
         <div
           dangerouslySetInnerHTML={{
             __html: `Candidate submitted availability on ${dates} for ${selectedTask.session_ids.map((ele: any) => `<b>${ele.name}</b>`)} Interviews.`,
           }}
         ></div>
       }
-      slotHeadingIcon={<Icon height={'16'} width={'20'} variant='Check' />}
-      slotButton={
+      slotButtons={
         <>
           <ButtonSolid
             textButton={'Schedule'}
