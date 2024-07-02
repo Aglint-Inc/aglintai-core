@@ -136,8 +136,10 @@ function SchedulerEmailTemps() {
                 <EmailTemplateCards
                   key={emailPath.id}
                   isActive={emailPath.type === router.query.email}
-                  textDescription={emailTemplateCopy[emailPath.type]?.trigger}
-                  textTitle={emailTemplateCopy[emailPath.type]?.listing}
+                  textDescription={
+                    emailTemplateCopy[emailPath.type].description
+                  }
+                  textTitle={emailTemplateCopy[emailPath.type]?.heading}
                   onClickApplicationRecieved={{
                     onClick: () => {
                       if (selectedTemplate.id !== emailPath.id) {
@@ -197,10 +199,7 @@ function SchedulerEmailTemps() {
                       isPreviewVisible={
                         selectedTemplate.type == emailTempKeys[0] ? false : true
                       }
-                      textTipsMessage={
-                        emailTemplateCopy[selectedTemplate?.type]
-                          ?.dynamicContent
-                      }
+                      textTipsMessage={undefined}
                       editEmailDescription={
                         emailTemplateCopy[selectedTemplate?.type]?.description
                       }
@@ -266,4 +265,16 @@ export const emailTempKeys: DatabaseEnums['email_slack_types'][] = [
   'sendAvailReqReminder_email_applicant',
   'sendSelfScheduleRequest_email_applicant',
   'availabilityReqResend_email_candidate',
+  'interviewDetails_calender_interviewer',
+  'rescheduleSelfSchedule_email_applicant',
+  'interviewStart_email_organizer',
+  'meetingDeclined_email_organizer',
+  'meetingAccepted_email_organizer',
 ];
+
+// New
+// interviewDetails_calender_interviewer
+// rescheduleSelfSchedule_email_applicant
+// interviewStart_email_organizer
+// meetingDeclined_email_organizer
+// meetingAccepted_email_organizer
