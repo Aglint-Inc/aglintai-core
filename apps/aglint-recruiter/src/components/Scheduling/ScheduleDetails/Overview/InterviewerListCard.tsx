@@ -23,11 +23,13 @@ function InterviewerListCard({
   item,
   setIsDeclineOpen,
   refetch,
+  disableHoverListener = false,
 }: {
   schedule: ScheduleMeeting;
   item: ScheduleMeeting['users'][0];
   setIsDeclineOpen: Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
+  disableHoverListener?: boolean;
 }) {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
@@ -75,6 +77,7 @@ function InterviewerListCard({
   return (
     <>
       <CustomTooltip
+        disableHoverListener={disableHoverListener}
         key={item.id + ' member'}
         title={
           <React.Fragment>

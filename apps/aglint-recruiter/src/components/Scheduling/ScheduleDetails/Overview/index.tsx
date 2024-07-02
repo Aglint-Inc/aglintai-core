@@ -453,6 +453,7 @@ function Overview({
                 schedule={schedule}
                 setIsDeclineOpen={setIsDeclineOpen}
                 refetch={refetch}
+                disableHoverListener={true}
               />
             </>
           );
