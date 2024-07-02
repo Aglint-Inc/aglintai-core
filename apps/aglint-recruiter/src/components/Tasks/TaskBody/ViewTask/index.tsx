@@ -118,7 +118,7 @@ function ViewTaskDrawer() {
         const nextTask = tasks.find(
           (ele) => ele.id === tasks[Number(nextIndex)].id,
         );
-        route.push(ROUTES['/tasks']() + '?task_id=' + nextTask.id);
+        route.replace(ROUTES['/tasks']() + '?task_id=' + nextTask.id);
         setTaskId(nextTask.id);
       }
     } else {
@@ -137,7 +137,7 @@ function ViewTaskDrawer() {
         const nextTask = tasks.find(
           (ele) => ele.id === tasks[Number(prevIndex)].id,
         );
-        route.push(ROUTES['/tasks']() + '?task_id=' + nextTask.id);
+        route.replace(ROUTES['/tasks']() + '?task_id=' + nextTask.id);
         setTaskId(nextTask.id);
       }
     } else {
@@ -174,6 +174,21 @@ function ViewTaskDrawer() {
 
   useEffect(() => setSelectedIndex(0), []);
 
+  function handleCloseDrawer() {
+    const currentPath = route.pathname; // Get current path
+    const currentQuery = { ...route.query }; // Get current query parameters
+
+    delete currentQuery.task_id; // Remove the specific query parameter
+
+    route.replace({
+      pathname: currentPath,
+      query: currentQuery,
+    });
+    setDisableNext(false);
+    setDisablePrev(false);
+    setTaskId(null);
+  }
+
   useEffect(() => {
     if (up) {
       prevTask();
@@ -198,11 +213,7 @@ function ViewTaskDrawer() {
     <Drawer
       anchor={'right'}
       open={openViewTask}
-      onClose={() => {
-        route.push(ROUTES['/tasks']());
-        setDisableNext(false);
-        setDisablePrev(false);
-      }}
+      onClose={handleCloseDrawer}
       sx={{
         '& .MuiPaper-root': {
           overflowY: 'hidden',
@@ -377,9 +388,7 @@ function ViewTaskDrawer() {
             slotTaskCard={<TaskCard task={selectedTask} />}
             slotTaskProgress={<SubTaskProgress />}
             onClickClose={{
-              onClick: () => {
-                route.push(ROUTES['/tasks']());
-              },
+              onClick: handleCloseDrawer,
             }}
           />
         </ShowCode.Else>

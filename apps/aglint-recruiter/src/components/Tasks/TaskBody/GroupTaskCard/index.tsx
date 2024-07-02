@@ -126,7 +126,7 @@ function GroupTaskCard({
         }
         onClickCard={{
           onClick: () => {
-            route.push(ROUTES['/tasks']() + '?task_id=' + task.id);
+            route.replace(ROUTES['/tasks']() + '?task_id=' + task.id);
             setTaskId(task.id);
           },
         }}
