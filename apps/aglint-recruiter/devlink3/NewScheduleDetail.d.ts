@@ -16,7 +16,16 @@ declare function NewScheduleDetail(props: {
   textDate?: React.ReactNode;
   textDay?: React.ReactNode;
   textPanelName?: React.ReactNode;
-  iconPanel?: React.ReactNode;
   slotStatusBadge?: Types.Devlink.Slot;
   textTime?: React.ReactNode;
+  textDuration?: React.ReactNode;
+  textMeetingPlatform?: React.ReactNode;
+  textMeetingLink?: React.ReactNode;
+  slotPanelIcon?: Types.Devlink.Slot;
+  slotMeetingIcon?: Types.Devlink.Slot;
+  slotJoinMeeting?: Types.Devlink.Slot;
+  textInterviewerCount?: React.ReactNode;
+  isMeetingLinkVisible?: Types.Visibility.VisibilityConditions;
+  isTimingVisible?: Types.Visibility.VisibilityConditions;
+  isDateCardVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

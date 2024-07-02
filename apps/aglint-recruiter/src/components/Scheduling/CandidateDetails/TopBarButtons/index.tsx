@@ -34,8 +34,8 @@ function TopBarButtons() {
   const open = Boolean(anchorEl);
 
   const isDebrief = initialSessions
-    .filter((ses) => selectedSessionIds.includes(ses.id))
-    .some((ses) => ses.session_type === 'debrief');
+    .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
+    .some((ses) => ses.interview_session.session_type === 'debrief');
 
   return (
     <>

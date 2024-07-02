@@ -1,4 +1,5 @@
-import { AvatarWithName } from '@/devlink3/AvatarWithName';
+import { Stack } from '@mui/material';
+
 import { UserNameCard } from '@/devlink3/UserNameCard';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -37,7 +38,7 @@ function AllRolesMeetings({ schedule }: { schedule: ScheduleMeeting }) {
   const filteredRoles = allRoles.filter((item) => Boolean(item.details));
 
   return (
-    <>
+    <Stack spacing={'var(--space-2)'}>
       {filteredRoles.map((item) => {
         return (
           <>
@@ -49,7 +50,9 @@ function AllRolesMeetings({ schedule }: { schedule: ScheduleMeeting }) {
                     item.details.last_name,
                   )}
                   src={item.details.profile_image}
-                  variant={'rounded-medium'}
+                  variant={'rounded'}
+                  width='100%'
+                  height='100%'
                   fontSize='20px'
                 />
               }
@@ -62,7 +65,7 @@ function AllRolesMeetings({ schedule }: { schedule: ScheduleMeeting }) {
           </>
         );
       })}
-    </>
+    </Stack>
   );
 }
 

@@ -43,7 +43,7 @@ import WorkflowIcon from '@/src/components/Common/ModuleIcons/workflowIcon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import PublishButton from '@/src/components/Common/PublishButton';
 import UITextField from '@/src/components/Common/UITextField';
-import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon';
+import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';

@@ -41,9 +41,9 @@ function BreakDrawerEdit() {
 
   useEffect(() => {
     if (editSession) {
-      setValue(editSession.break_duration);
+      setValue(editSession.interview_session.break_duration);
     }
-  }, [editSession?.id]);
+  }, [editSession?.interview_session.id]);
 
   const handleClose = () => {
     setIsEditBreakOpen(false);
@@ -78,8 +78,9 @@ function BreakDrawerEdit() {
           })
           .eq(
             'id',
-            createCloneRes.refSessions.find((s) => s.id === editSession.id)
-              .newId,
+            createCloneRes.refSessions.find(
+              (s) => s.id === editSession.interview_session.id,
+            ).newId,
           );
       } else {
         toast.error('Error caching session.');
@@ -94,7 +95,7 @@ function BreakDrawerEdit() {
         .update({
           break_duration: value,
         })
-        .eq('id', editSession.id);
+        .eq('id', editSession.interview_session.id);
       await fetchInterviewDataByApplication();
       setSelectedSessionIds([]);
       handleClose();

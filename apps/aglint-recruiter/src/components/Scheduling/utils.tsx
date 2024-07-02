@@ -48,9 +48,11 @@ export const formatTimeWithTimeZone = ({
   end_time: string;
   timeZone?: string;
 }) => {
-  return `${dayjsLocal(start_time)
-    .tz(timeZone || userTzDayjs.tz.guess())
-    .format('hh:mm A')} - ${dayjsLocal(end_time)
-    .tz(timeZone || userTzDayjs.tz.guess())
-    .format(timeZone ? 'hh:mm A zzz' : 'hh:mm A')}`;
+  return start_time
+    ? `${dayjsLocal(start_time)
+        .tz(timeZone || userTzDayjs.tz.guess())
+        .format('hh:mm A')} - ${dayjsLocal(end_time)
+        .tz(timeZone || userTzDayjs.tz.guess())
+        .format(timeZone ? 'hh:mm A zzz' : 'hh:mm A')}`
+    : '--';
 };

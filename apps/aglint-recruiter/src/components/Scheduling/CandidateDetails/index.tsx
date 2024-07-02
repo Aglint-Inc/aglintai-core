@@ -133,9 +133,9 @@ function SchedulingApplication() {
                     <Stack p={'var(--space-4)'}>
                       <FeedbackWindow
                         interview_sessions={initialSessions.map((item) => ({
-                          id: item.id,
-                          title: item.name,
-                          created_at: item.created_at,
+                          id: item.interview_session.id,
+                          title: item.interview_session.name,
+                          created_at: item.interview_session.created_at,
                           status: item.interview_meeting?.status,
                           time: {
                             start: item.interview_meeting?.start_time,
@@ -170,10 +170,10 @@ function SchedulingApplication() {
           >
             <ScheduleProgress
               sessions={initialSessions.map((item) => ({
-                session_duration: item.session_duration,
-                session_name: item.name,
-                schedule_type: item.schedule_type,
-                session_type: item.session_type,
+                session_duration: item.interview_session.session_duration,
+                session_name: item.interview_session.name,
+                schedule_type: item.interview_session.schedule_type,
+                session_type: item.interview_session.session_type,
                 status: item.interview_meeting?.status || 'not_scheduled',
                 date: item.interview_meeting?.start_time
                   ? {

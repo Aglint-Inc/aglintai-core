@@ -17,7 +17,7 @@ import toast from '@/src/utils/toast';
 import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';
 import CandidateInfo from '../Common/CandidateInfo';
-import CancelReasonCards from './CancelReasonCards';
+import Banners from './Banners';
 import CancelScheduleDialog from './CancelScheduleDialog';
 import ChangeInterviewerDialog from './ChangeInterviewerDialog';
 import DeclineScheduleDialog from './DeclineScheduleDialog';
@@ -39,9 +39,14 @@ function SchedulingViewComp() {
   const [isRequestRescheduleOpen, setIsRequestRescheduleOpen] = useState(false); //role interviewers will ask for reschedule
   const [isRescheduleOpen, setIsRescheduleOpen] = useState(false); // role who have permission to reschedule
   const [isDeclineOpen, setIsDeclineOpen] = useState(false);
-
   const [cancelUserId, setCancelUserId] = useState('');
   const [textValue, setTextValue] = useState('');
+  const [filterJson, setFilterJson] = useState<
+    DatabaseTable['interview_filter_json'] | null
+  >(null);
+  const [requestAvailibility, setRequestAvailibility] = useState<
+    DatabaseTable['candidate_request_availability'] | null
+  >(null);
 
   const schedule = data?.schedule_data;
   const cancelReasons = data?.cancel_data?.filter(
@@ -127,61 +132,61 @@ function SchedulingViewComp() {
   }, [schedule?.users]);
   // if logged in user is interviewer session relation will be there or else null
 
+  useEffect(() => {
+    if (schedule?.interview_meeting) {
+      if (
+        schedule?.interview_meeting.meeting_flow === 'self_scheduling' ||
+        schedule?.interview_meeting.meeting_flow === 'debrief' ||
+        schedule?.interview_meeting.meeting_flow === 'phone_agent' ||
+        schedule?.interview_meeting.meeting_flow === 'mail_agent'
+      ) {
+        fetchFilterJson();
+      } else if (
+        schedule?.interview_meeting.meeting_flow === 'candidate_request'
+      ) {
+        fetchRequestAvailibilty();
+      }
+    }
+  }, [schedule?.interview_meeting]);
+
+  const fetchFilterJson = async () => {
+    try {
+      const { data } = await supabase
+        .from('interview_filter_json')
+        .select('*')
+        .contains('session_ids', [schedule.interview_session.id]);
+
+      setFilterJson(data[0]);
+    } catch (e) {
+      //
+    }
+  };
+
+  const fetchRequestAvailibilty = async () => {
+    try {
+      const { data } = await supabase
+        .from('candidate_request_availability')
+        .select('*')
+        .eq('application_id', schedule.schedule.application_id);
+
+      const reqAvail = data.find((item) =>
+        item.session_ids.some(
+          (ses) => ses.id === schedule.interview_session.id,
+        ),
+      );
+
+      setRequestAvailibility(reqAvail);
+    } catch (e) {
+      //
+    }
+  };
+
   return (
     <>
       {isLoading ? (
         <Loader />
       ) : (
         <>
-          {' '}
-          <>
-            <DeclineScheduleDialog
-              sessionRelation={sessionRelation}
-              isDeclineOpen={isDeclineOpen}
-              setIsDeclineOpen={setIsDeclineOpen}
-              schedule={schedule}
-              refetch={refetch}
-            />
-            <CancelScheduleDialog
-              isDeclineOpen={isCancelOpen}
-              setIsDeclineOpen={setIsCancelOpen}
-              refetch={refetch}
-              metaDetails={[
-                {
-                  application_id: schedule.schedule.application_id,
-                  meeting_id: schedule.interview_meeting.id,
-                  session_name: schedule.interview_session.name,
-                  session_id: schedule.interview_session.id,
-                },
-              ]}
-              closeDialog={() => {}}
-              application_log_id={null}
-            />
-            <RequestRescheduleDialog
-              isRequestRescheduleOpen={isRequestRescheduleOpen}
-              setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
-              sessionRelation={sessionRelation}
-              schedule={schedule}
-              refetch={refetch}
-            />
-            <RescheduleDialog
-              refetch={() => {}}
-              isRescheduleOpen={isRescheduleOpen}
-              setIsRescheduleOpen={setIsRescheduleOpen}
-              application_id={schedule.schedule.application_id}
-              meeting_id={schedule.interview_meeting.id}
-              session_id={schedule.interview_session.id}
-              meeting_flow={schedule.interview_meeting.meeting_flow}
-              session_name={schedule.interview_session.name}
-            />
-          </>
-          <ChangeInterviewerDialog
-            isChangeInterviewerOpen={isChangeInterviewerOpen}
-            setIsChangeInterviewerOpen={setIsChangeInterviewerOpen}
-            schedule={schedule}
-            cancelUserId={cancelUserId}
-            setCancelUserId={setCancelUserId}
-          />
           <PageLayout
             slotTopbarLeft={<>{breadcrum}</>}
             slotBody={
@@ -191,20 +196,20 @@ function SchedulingViewComp() {
                     {(recruiterUser.role === 'admin' ||
                       recruiterUser.role === 'recruiter' ||
                       recruiterUser.role === 'hiring manager') && (
-                      <CancelReasonCards
+                      <Banners
                         cancelReasons={cancelReasons}
                         schedule={schedule}
                         setCancelUserId={setCancelUserId}
                         cancelUserId={cancelUserId}
                         setIsChangeInterviewerOpen={setIsChangeInterviewerOpen}
+                        filterJson={filterJson}
+                        requestAvailibility={requestAvailibility}
+                        sessionRelation={sessionRelation}
+                        refetch={refetch}
+                        setIsDeclineOpen={setIsDeclineOpen}
                       />
                     )}
-                    <Overview
-                      refetch={refetch}
-                      schedule={schedule}
-                      setIsCancelOpen={setIsCancelOpen}
-                      setIsDeclineOpen={setIsDeclineOpen}
-                    />
+                    <Overview schedule={schedule} />
                   </Stack>
                 }
                 slotDarkPills={viewScheduleTabs
@@ -302,6 +307,55 @@ function SchedulingViewComp() {
               />
             }
           />
+
+          <>
+            <DeclineScheduleDialog
+              sessionRelation={sessionRelation}
+              isDeclineOpen={isDeclineOpen}
+              setIsDeclineOpen={setIsDeclineOpen}
+              schedule={schedule}
+              refetch={refetch}
+            />
+            <CancelScheduleDialog
+              isDeclineOpen={isCancelOpen}
+              setIsDeclineOpen={setIsCancelOpen}
+              refetch={refetch}
+              metaDetails={[
+                {
+                  application_id: schedule.schedule.application_id,
+                  meeting_id: schedule.interview_meeting.id,
+                  session_name: schedule.interview_session.name,
+                  session_id: schedule.interview_session.id,
+                },
+              ]}
+              closeDialog={() => {}}
+              application_log_id={null}
+            />
+            <RequestRescheduleDialog
+              isRequestRescheduleOpen={isRequestRescheduleOpen}
+              setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
+              sessionRelation={sessionRelation}
+              schedule={schedule}
+              refetch={refetch}
+            />
+            <RescheduleDialog
+              refetch={() => {}}
+              isRescheduleOpen={isRescheduleOpen}
+              setIsRescheduleOpen={setIsRescheduleOpen}
+              application_id={schedule.schedule.application_id}
+              meeting_id={schedule.interview_meeting.id}
+              session_id={schedule.interview_session.id}
+              meeting_flow={schedule.interview_meeting.meeting_flow}
+              session_name={schedule.interview_session.name}
+            />
+            <ChangeInterviewerDialog
+              isChangeInterviewerOpen={isChangeInterviewerOpen}
+              setIsChangeInterviewerOpen={setIsChangeInterviewerOpen}
+              schedule={schedule}
+              cancelUserId={cancelUserId}
+              setCancelUserId={setCancelUserId}
+            />
+          </>
         </>
       )}
     </>

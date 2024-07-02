@@ -1,7 +1,6 @@
 import React, { Dispatch } from 'react';
 
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { ButtonSurface } from '@/devlink/ButtonSurface';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 
@@ -54,7 +53,8 @@ function ButtonGroup({
   return (
     <>
       {isRequestRescheduleButtonVisible && (
-        <ButtonSolid
+        <ButtonSoft
+          color={'accent'}
           size={1}
           textButton={'Request Reschedule'}
           onClickButton={{
@@ -66,11 +66,11 @@ function ButtonGroup({
       )}
 
       {isCancelButtonVisible && (
-        <ButtonSurface
+        <ButtonSoft
+          color={'neutral'}
           size={1}
           textButton={'Cancel Schedule'}
           onClickButton={{
-            style: { background: '#FFF0F1' },
             onClick: () => {
               setIsCancelOpen(true);
             },
@@ -79,7 +79,8 @@ function ButtonGroup({
       )}
 
       {isRescheduleButtonVisible && (
-        <ButtonSolid
+        <ButtonSoft
+          color={'accent'}
           size={1}
           textButton={'Reschedule'}
           onClickButton={{

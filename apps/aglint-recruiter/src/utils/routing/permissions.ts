@@ -87,6 +87,7 @@ const PERMISSIONS: Permissions = {
   ],
   '/api/scheduling/request_availability/updateRequestAvailability': [
     'scheduler_enabled',
+    'scheduler_create',
   ],
   '/api/scheduling/request_availability/candidateAvailability/getMeetings': [
     'scheduler_enabled',
@@ -95,14 +96,16 @@ const PERMISSIONS: Permissions = {
     ['scheduler_enabled'],
   '/api/scheduling/get_interview_training_progress': ['scheduler_enabled'],
   // request availability mail apis
-  '/api/emails/sendAvailabilityRequest_email_applicant': ['scheduler_enabled'],
-  '/api/scheduling/v1/find-alternative-time-slots': [
+  '/api/emails/sendAvailabilityRequest_email_applicant': [
     'scheduler_enabled',
-    'scheduler_update',
+    'scheduler_create',
   ],
-  '/api/scheduling/v1/update_meeting_interviewers': [
+  '/api/scheduling/v1/find-alternative-time-slots': ['scheduler_update'],
+  '/api/scheduling/v1/update_meeting_interviewers': ['scheduler_update'],
+  '/api/request_feedback': ['scheduler_update'],
+  '/api/scheduling/application/fetchfeedbackdetails': [
     'scheduler_enabled',
-    'scheduler_update',
+    'tasks_enabled',
   ],
   '/api/emails/sendAvailReqReminder_email_applicant': [
     'scheduler_enabled',

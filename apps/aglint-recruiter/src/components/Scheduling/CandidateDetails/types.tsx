@@ -1,19 +1,13 @@
 import {
   Candidate,
   DatabaseTable,
-  InterviewMeetingTypeDb,
-  InterviewModuleRelationType,
   InterviewModuleType,
-  InterviewSessionRelationTypeDB,
   JobApplcationDB,
   PlanCombinationRespType,
 } from '@aglint/shared-types';
-import { CustomMembersMeta } from '@aglint/shared-types/src/db/common.types';
 
 import { ResumeJson } from '@/src/apiUtils/resumeScoring/types';
 import { supabase } from '@/src/utils/supabase/client';
-
-import { fetchInterviewDataJob } from './hooks';
 
 export async function getApplicationSchedule({
   application_id,
@@ -39,12 +33,26 @@ export type SelectedApplicationTypeDB = ResultType & {
   };
 };
 
-export type SessionsType =
-  ReturnType<typeof fetchInterviewDataJob> extends Promise<infer T>
-    ? T extends { sessions: infer S }
-      ? S
-      : never
-    : never;
+export type SessionsType = {
+  interview_session: DatabaseTable['interview_session'];
+  interview_meeting: DatabaseTable['interview_meeting'] | null;
+  interview_module: DatabaseTable['interview_module'] | null;
+  users: {
+    interview_session_relation: DatabaseTable['interview_session_relation'];
+    interview_module_relation:
+      | DatabaseTable['interview_module_relation']
+      | null;
+    user_details: {
+      user_id: string;
+      first_name: string;
+      last_name: string;
+      email: string;
+      profile_image: string;
+      position: string;
+      scheduling_settings: DatabaseTable['recruiter_user']['scheduling_settings'];
+    };
+  }[];
+};
 
 export type ApplicationDataResponseType = {
   application: JobApplcationDB;
@@ -66,10 +74,8 @@ export type ApplicationDataResponseType = {
 
 export type InterviewDataResponseType = {
   interview_module: InterviewModuleType | null;
-  interview_session: DatabaseTable['interview_session'] & {
-    members_meta: CustomMembersMeta;
-  };
-  interview_meeting: InterviewMeetingTypeDb | null;
+  interview_session: DatabaseTable['interview_session'];
+  interview_meeting: DatabaseTable['interview_meeting'] | null;
   interview_session_relations: {
     session_id: string;
     interview_module_relation: {
@@ -89,8 +95,10 @@ export type InterviewDataResponseType = {
         profile_image: string;
         position: string;
       } | null;
-      interview_module_relation: InterviewModuleRelationType | null;
-      interview_session_relation: InterviewSessionRelationTypeDB;
+      interview_module_relation:
+        | DatabaseTable['interview_module_relation']
+        | null;
+      interview_session_relation: DatabaseTable['interview_session_relation'];
     }[];
   };
 };
