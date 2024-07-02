@@ -22,3 +22,22 @@ export async function upateEmailTemplate({
     return error;
   }
 }
+
+export const template_tabs = [
+  {
+    label: 'Email',
+    key: 'email',
+  },
+  {
+    label: 'Slack',
+    key: 'slack',
+  },
+  {
+    label: 'Agent',
+    key: 'agent',
+  },
+  {
+    label: 'Calender',
+    key: 'calender',
+  },
+] as const;

@@ -10,15 +10,18 @@ import { EditEmail } from '@/devlink/EditEmail';
 import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
+import { GlobalBadge } from '@/devlink3/GlobalBadge';
+import { NewTabPill } from '@/devlink3/NewTabPill';
 import EmailPreviewPopover from '@/src/components/Common/EmailTemplateEditor/EmailPreviewPopover';
 import EmailTemplateEditForm from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
+import FilterHeader from '@/src/components/Common/FilterHeader';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
-import { upateEmailTemplate } from './utils';
+import { template_tabs, upateEmailTemplate } from './utils';
 
 function SchedulerEmailTemps() {
   const { emailTemplates } = useAuthDetails();
@@ -126,8 +129,39 @@ function SchedulerEmailTemps() {
       <Box>
         {emailTemplate && (
           <EmailTemplatesStart
+            slotNewTabPill={template_tabs.map((tab) => {
+              return (
+                <NewTabPill key={tab.key} textLabel={tab.label} isPillActive />
+              );
+            })}
+            slotSearchFilter={
+              <>
+                <FilterHeader
+                  // handelResetAll={handelResetFilter}
+                  // isResetAll={allResetShow}
+                  search={{
+                    // value: search,
+                    setValue: (e) => {
+                      // handelSearch(e);
+                    },
+                    placeholder: 'Search candidates.',
+                  }}
+                  filters={[
+                    {
+                      type: 'filter',
+                      name: 'Tags',
+                      options: ['options 1'],
+                      setValue: (val) => {
+                        //
+                      },
+                      value: [],
+                    },
+                  ]}
+                />
+              </>
+            }
             slotEmailTemplateCards={emailTemplate
-              ?.filter((emailPath) => emailTempKeys.includes(emailPath.type))
+              .filter((emailPath) => emailTempKeys.includes(emailPath.type))
               .filter(
                 (v, i, a) => a.findIndex((v2) => v2.type === v.type) === i,
               )
@@ -154,6 +188,13 @@ function SchedulerEmailTemps() {
                       }
                     },
                   }}
+                  slotBadge={
+                    <>
+                      <GlobalBadge color={'neutral'} />
+                      <GlobalBadge />
+                      <GlobalBadge />
+                    </>
+                  }
                 />
               ))}
             slotEmailDetails={

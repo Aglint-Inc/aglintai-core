@@ -2,8 +2,6 @@ import { DatabaseTableInsert } from '@aglint/shared-types';
 import { MenuItem, Select, Stack, Typography } from '@mui/material';
 import React from 'react';
 
-import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
-
 import TipTapAIEditor from '../TipTapAIEditor';
 import UITypography from '../UITypography';
 
@@ -24,7 +22,7 @@ export default function EmailTemplateEditForm({
   selectedTemplate,
   disabled = false,
 }: Props) {
-  const options = ['{{recruiterName}}', '{{companyName}}'];
+  const options = ['{{organizerName}}', '{{companyName}}', 'Aglint Ai'];
   return (
     <Stack spacing={'var(--space-5)'}>
       <Stack spacing={1}>
@@ -116,9 +114,7 @@ export default function EmailTemplateEditForm({
           <TipTapAIEditor
             enablAI={false}
             toolbar={false}
-            placeholder={
-              emailTemplateCopy[selectedTemplate?.type]?.subjectPlaceHolder
-            }
+            placeholder={'subject'}
             singleLine={true}
             padding={1}
             editor_type='email'
