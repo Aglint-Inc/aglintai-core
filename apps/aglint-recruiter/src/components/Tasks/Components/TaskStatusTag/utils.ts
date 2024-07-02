@@ -13,7 +13,9 @@ export type indicatorType =
   | 'RESCHEDULE'
   | 'ACTION_NEEDED'
   | 'UNKNOWN_STATUS'
-  | 'ASSIGNED_TO_AGENT';
+  | 'ASSIGNED_TO_AGENT'
+  | 'COMPLETED'
+  | 'CLOSED';
 
 export function getIndicatorMessage(indicator: indicatorType): string {
   switch (indicator) {
@@ -35,6 +37,10 @@ export function getIndicatorMessage(indicator: indicatorType): string {
       return 'Mail Sent';
     case 'ASSIGNED_TO_AGENT':
       return 'Assigned to Agent';
+    case 'COMPLETED':
+      return 'Task Completed';
+    case 'CLOSED':
+      return 'Task Closed';
     default:
       return 'Invalid indicator type';
   }
@@ -52,6 +58,8 @@ export function getIndicator({
   let toDayDateTime = dayjs();
   let dueDateTime = dayjs(created_at);
   const assignee = task.assignee[0];
+  const checkCloseOrCompleted =
+    task.status !== 'closed' && task.status !== 'completed';
   if (
     dueDateTime.isBefore(toDayDateTime.add(-2, 'day')) &&
     progress_type === 'email_messages'
@@ -69,15 +77,16 @@ export function getIndicator({
   }
 
   if (
-    progress_type === 'request_availability' ||
+    (progress_type === 'request_availability' && checkCloseOrCompleted) ||
     progress_type === 'send_email'
   ) {
     return 'AWAITING_RESPONSE' as indicatorType;
   }
 
   if (
-    (progress_type === 'schedule' ||
-      progress_type === 'request_availability_list') &&
+    ((progress_type === 'schedule' && checkCloseOrCompleted) ||
+      (progress_type === 'request_availability_list' &&
+        checkCloseOrCompleted)) &&
     assignee !== EmailAgentId &&
     assignee !== PhoneAgentId
   ) {
@@ -96,6 +105,12 @@ export function getIndicator({
     progress_type === 'call_completed'
   ) {
     return 'ACTION_NEEDED' as indicatorType;
+  }
+  if (task.status === 'completed') {
+    return 'COMPLETED' as indicatorType;
+  }
+  if (task.status === 'closed') {
+    return 'CLOSED' as indicatorType;
   }
   return 'UNKNOWN_STATUS' as indicatorType;
 }

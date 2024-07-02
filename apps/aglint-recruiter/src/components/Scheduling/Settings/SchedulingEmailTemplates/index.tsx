@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseTableInsert } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { Box, Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -17,18 +18,21 @@ import SearchField from '@/src/components/Common/SearchField/SearchField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import {
   filterEmailByTemplateTab,
+  TEMPLATE_TABS,
   template_tabs,
   upateEmailTemplate,
 } from './utils';
 
 function SchedulerEmailTemps() {
-  const { emailTemplates: compEmailTemps } = useAuthDetails();
-  const [emailTemplate, setEmailTemplate] =
-    useState<DatabaseTableInsert['company_email_template'][]>(null);
+  const { recruiter_id } = useAuthDetails();
+  const [emailTemplate, setEmailTemplate] = useState<
+    DatabaseTableInsert['company_email_template'][]
+  >([]);
   const [tiptapLoader, setTipTapLoder] = useState(false);
   const [selectedTemplate, setSelectedTemplate] =
     useState<DatabaseTableInsert['company_email_template']>(null);
@@ -43,24 +47,42 @@ function SchedulerEmailTemps() {
   const [isHtml, setHtml] = useState(null);
   const [popOverLoading, setPopOverLoading] = useState(false);
 
-  const temp_tab = router.query.template_tab as string;
+  const temp_tab = router.query.template_tab as any;
+
+  useEffect(() => {
+    (async () => {
+      try {
+        let template_tab = template_tabs[0].key;
+        if (!template_tabs.find((t) => t.key === temp_tab)) {
+          template_tab = template_tabs[0].key;
+        }
+        const temps = await fetchEmailTemplates(recruiter_id);
+        if (!temps || !router.isReady) return;
+
+        const curr_tab_temps = SortCurrentTabTemps(temps);
+
+        const current_filtered_temp = curr_tab_temps.filter((t) =>
+          filterEmailByTemplateTab(template_tab, t.type),
+        );
+        setSelectedTemplate({ ...current_filtered_temp[0] });
+        setEmailTemplate([...curr_tab_temps]);
+
+        setTipTapLoder(true);
+        setTimeout(() => {
+          setTipTapLoder(false);
+          setIsEditorLoad(false);
+        }, 500);
+      } catch (err) {
+        toast.error('Something went wrong');
+      }
+    })();
+  }, [recruiter_id]);
   useEffect(() => {
     if (!template_tabs.find((t) => t.key === temp_tab)) {
       router.query.template_tab = template_tabs[0].key;
       router.push(router);
     }
-    const temps = compEmailTemps?.data;
-    if (!temps || !router.isReady) return;
-    setEmailTemplate([...temps]);
-
-    const curr_tab_temps = temps.filter((temp) =>
-      filterEmailByTemplateTab(router.query.template_tab as any, temp.type),
-    );
-    setSelectedTemplate({ ...curr_tab_temps[0] });
-    setTimeout(() => {
-      setIsEditorLoad(false);
-    }, 500);
-  }, [router.query, compEmailTemps.data]);
+  }, [router.isReady, router.query]);
 
   async function updateEmail({
     id,
@@ -76,7 +98,6 @@ function SchedulerEmailTemps() {
       },
     });
     setSaving(false);
-    await compEmailTemps.refetch();
     toast.message('Saved Successfully!');
   }
   const preview = async () => {
@@ -92,7 +113,6 @@ function SchedulerEmailTemps() {
     } catch (error) {
       setPopOverLoading(false);
       toast.error(`Error fetching preview: ${error}`);
-      throw error;
     }
   };
 
@@ -119,6 +139,20 @@ function SchedulerEmailTemps() {
     });
   };
 
+  const handleChangeTemplateTab = (update_tab: TEMPLATE_TABS) => {
+    const current_filtered_temp = emailTemplate.filter((t) =>
+      filterEmailByTemplateTab(update_tab, t.type),
+    );
+    setSelectedTemplate({ ...current_filtered_temp[0] });
+    setTipTapLoder(true);
+    setTimeout(() => {
+      setTipTapLoder(false);
+    }, 500);
+    setSearchQry('');
+    router.query.template_tab = update_tab;
+    router.push(router);
+  };
+
   return (
     <Stack>
       <Box>
@@ -132,8 +166,7 @@ function SchedulerEmailTemps() {
                   isPillActive={tab.key === temp_tab}
                   onClickPill={{
                     onClick: () => {
-                      router.query.template_tab = tab.key;
-                      router.push(router);
+                      handleChangeTemplateTab(tab.key);
                     },
                   }}
                 />
@@ -142,7 +175,7 @@ function SchedulerEmailTemps() {
             slotSearchFilter={
               <>
                 <SearchField
-                  placeholder={'Search candidates.'}
+                  placeholder={'Search Templates.'}
                   onChange={(e) => {
                     setSearchQry(e.target.value);
                   }}
@@ -169,7 +202,21 @@ function SchedulerEmailTemps() {
                 }
                 return flag;
               })
-              .sort((a, b) => a.type.localeCompare(b.type))
+              .sort((a, b) => {
+                if (
+                  emailTemplateCopy[a.type].heading >
+                  emailTemplateCopy[b.type].heading
+                ) {
+                  return 1;
+                }
+                if (
+                  emailTemplateCopy[b.type].heading >
+                  emailTemplateCopy[a.type].heading
+                ) {
+                  return -1;
+                }
+                return 0;
+              })
               .map((emailPath) => (
                 <EmailTemplateCards
                   key={emailPath.id}
@@ -232,10 +279,7 @@ function SchedulerEmailTemps() {
                           setAnchorEl(e.currentTarget);
                         },
                       }}
-                      isPreviewVisible={
-                        router.query.template_tab !== 'slack' &&
-                        router.query.template_tab !== 'calender'
-                      }
+                      isPreviewVisible={router.query.template_tab === 'email'}
                       textTipsMessage={undefined}
                       editEmailDescription={
                         emailTemplateCopy[selectedTemplate?.type]?.description
@@ -270,6 +314,11 @@ function SchedulerEmailTemps() {
                               router.query.template_tab !== 'slack' &&
                               router.query.template_tab !== 'calender'
                             }
+                            overrideBodyLabel={
+                              router.query.template_tab === 'slack'
+                                ? 'Slack Message'
+                                : 'Slack m'
+                            }
                           />
                         )
                       }
@@ -293,3 +342,35 @@ function SchedulerEmailTemps() {
 }
 
 export default SchedulerEmailTemps;
+
+const fetchEmailTemplates = async (recruiter_id) => {
+  const templates = supabaseWrap(
+    await supabase
+      .from('company_email_template')
+      .select()
+      .eq('recruiter_id', recruiter_id),
+  );
+  return templates;
+};
+
+const SortCurrentTabTemps = (
+  templates: DatabaseTableInsert['company_email_template'][],
+) => {
+  const curr_tab_temps = templates
+    .filter((temp) => emailTemplateCopy[temp.type]?.heading)
+    .sort((a, b) => {
+      if (
+        emailTemplateCopy[a.type].heading > emailTemplateCopy[b.type].heading
+      ) {
+        return 1;
+      }
+      if (
+        emailTemplateCopy[b.type].heading > emailTemplateCopy[a.type].heading
+      ) {
+        return -1;
+      }
+      return 0;
+    });
+
+  return curr_tab_temps;
+};

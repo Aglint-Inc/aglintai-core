@@ -45,3 +45,8 @@ export const allTempvariables = [
   ...interviewer,
   ...dates,
 ] as const;
+
+export const candidateProfileLink = 'candidateProfileLink';
+export const interviewInstructionLink = 'interviewInstructionLink';
+export const interviewFeedbackLink = 'interviewFeedbackLink';
+export const candidateScheduleLink = 'candidateScheduleLink';

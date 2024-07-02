@@ -1,10 +1,13 @@
 /* eslint-disable no-unused-vars */
 import { DatabaseEnums } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
-import { Button, Drawer, Stack, TextField } from '@mui/material';
+import { ArrowDownward } from '@mui/icons-material';
+import { Drawer, Popover, Stack, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 
+import { ButtonFilter } from '@/devlink2/ButtonFilter';
+import { GlobalIcon } from '@/devlink2/GlobalIcon';
 import { ViewTask } from '@/devlink3/ViewTask';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
@@ -19,11 +22,12 @@ import { getIndicator } from '../../Components/TaskStatusTag/utils';
 import { useTaskStatesContext } from '../../TaskStatesContext';
 import { createTaskProgress } from '../../utils';
 import SubTaskProgress from './Progress';
+import TaskActionButtons from './TaskActionButtons';
 import TaskCard from './TaskCard';
 
 function ViewTaskDrawer() {
   const route = useRouter();
-  const { openViewTask, setOpenViewTask } = useTaskStatesContext();
+  const { openViewTask, setOpenViewTask, setTaskId } = useTaskStatesContext();
   const { tasks: taskList, handelUpdateTask } = useTasksContext();
   const { recruiterUser } = useAuthDetails();
   const tasks = taskList.filter(
@@ -72,7 +76,7 @@ function ViewTaskDrawer() {
           name: recruiterUser.first_name as string,
           id: recruiterUser.user_id as string,
         },
-        progress_type: 'standard',
+        progress_type: selectedTask.latest_progress.progress_type,
       },
       optionData: {
         currentStatus: currentStatus,
@@ -94,7 +98,7 @@ function ViewTaskDrawer() {
             name: recruiterUser.first_name as string,
             id: recruiterUser.user_id as string,
           },
-          progress_type: 'standard',
+          progress_type: selectedTask.latest_progress.progress_type,
         },
         optionData: {
           currentStatus: status,
@@ -114,7 +118,8 @@ function ViewTaskDrawer() {
         const nextTask = tasks.find(
           (ele) => ele.id === tasks[Number(nextIndex)].id,
         );
-        route.push(ROUTES['/tasks']() + '?task_id=' + nextTask.id);
+        route.replace(ROUTES['/tasks']() + '?task_id=' + nextTask.id);
+        setTaskId(nextTask.id);
       }
     } else {
       setDisableNext(true);
@@ -132,7 +137,8 @@ function ViewTaskDrawer() {
         const nextTask = tasks.find(
           (ele) => ele.id === tasks[Number(prevIndex)].id,
         );
-        route.push(ROUTES['/tasks']() + '?task_id=' + nextTask.id);
+        route.replace(ROUTES['/tasks']() + '?task_id=' + nextTask.id);
+        setTaskId(nextTask.id);
       }
     } else {
       setDisablePrev(true);
@@ -140,13 +146,12 @@ function ViewTaskDrawer() {
     upHandler();
   }
 
-  const a = document.getElementById('taskContainer')?.scrollHeight;
   const upHandler = () => {
     if (selectedIndex === 0) {
       document.getElementById('taskContainer').scrollTop =
         document.getElementById('taskContainer').scrollHeight;
     } else {
-      document.getElementById('taskContainer').scrollTop -= 47;
+      document.getElementById('taskContainer').scrollTop -= 48;
     }
     setSelectedIndex(
       tasks.findIndex((ele) => ele.id === route.query.task_id) + 1,
@@ -157,7 +162,7 @@ function ViewTaskDrawer() {
     if (selectedIndex + 1 === taskList.length) {
       document.getElementById('taskContainer').scrollTop = 0;
     } else {
-      document.getElementById('taskContainer').scrollTop += 47;
+      document.getElementById('taskContainer').scrollTop += 48;
     }
     setSelectedIndex(
       tasks.findIndex((ele) => ele.id === route.query.task_id) - 1,
@@ -169,6 +174,21 @@ function ViewTaskDrawer() {
 
   useEffect(() => setSelectedIndex(0), []);
 
+  function handleCloseDrawer() {
+    const currentPath = route.pathname; // Get current path
+    const currentQuery = { ...route.query }; // Get current query parameters
+
+    delete currentQuery.task_id; // Remove the specific query parameter
+
+    route.replace({
+      pathname: currentPath,
+      query: currentQuery,
+    });
+    setDisableNext(false);
+    setDisablePrev(false);
+    setTaskId(null);
+  }
+
   useEffect(() => {
     if (up) {
       prevTask();
@@ -177,15 +197,23 @@ function ViewTaskDrawer() {
       nextTask();
     }
   }, [up, down]);
+
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const open = Boolean(anchorEl);
+
+  const id = open ? 'jobs-filter' : undefined;
+  function handleClose() {
+    setAnchorEl(null);
+  }
+
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
   return (
     <Drawer
       anchor={'right'}
       open={openViewTask}
-      onClose={() => {
-        route.push(ROUTES['/tasks']());
-        setDisableNext(false);
-        setDisablePrev(false);
-      }}
+      onClose={handleCloseDrawer}
       sx={{
         '& .MuiPaper-root': {
           overflowY: 'hidden',
@@ -211,23 +239,103 @@ function ViewTaskDrawer() {
                 />
               )
             }
-            isCompleteTaskVisible={
-              selectedTask?.assignee[0] !== EmailAgentId &&
-              selectedTask?.assignee[0] !== PhoneAgentId &&
-              selectedTask?.status !== 'closed' &&
-              selectedTask?.status !== 'completed'
+            slotActionButton={
+              <>
+                <TaskActionButtons selectedTask={selectedTask} />
+              </>
             }
-            onClickCompleteTask={{
-              onClick: () => {
-                updateTask({
-                  status: 'completed',
-                  currentStatus: selectedTask.status,
-                });
-              },
-            }}
-            isCancelTaskVisible={
-              selectedTask?.status !== 'closed' &&
-              selectedTask?.status !== 'completed'
+            slotButtonFilter={
+              <>
+                <ButtonFilter
+                  textLabel={'Action'}
+                  slotRightIcon={
+                    <GlobalIcon iconName={'keyboard_arrow_down'} />
+                  }
+                  slotLeftIcon={<></>}
+                  onClickStatus={{
+                    onClick: (e) => {
+                      handleClick(e);
+                    },
+                  }}
+                />
+
+                <Popover
+                  id={id}
+                  open={open}
+                  anchorEl={anchorEl}
+                  onClose={handleClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
+                  transformOrigin={{ vertical: -10, horizontal: 0 }}
+                  sx={{
+                    '& .MuiPopover-paper': {
+                      borderRadius: 'var(--radius-2)',
+                      borderColor: 'var(--neutral-6)',
+                      minWidth: '176px',
+                      backgroundColor: 'white',
+                    },
+                  }}
+                >
+                  <Stack
+                    direction={'row'}
+                    padding={'8px 12px'}
+                    sx={{
+                      alignItems: 'center',
+                      borderRadius: '4px',
+                      ':hover': {
+                        bgcolor: 'var(--neutral-2)',
+                      },
+                    }}
+                    spacing={1}
+                    onClick={() => {
+                      updateTask({
+                        status: 'completed',
+                        currentStatus: selectedTask.status,
+                      });
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: '14px',
+                        fontWeight: 400,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Completed task
+                    </Typography>
+                  </Stack>
+                  <Stack
+                    direction={'row'}
+                    padding={'8px 12px'}
+                    sx={{
+                      alignItems: 'center',
+                      borderRadius: '4px',
+                      ':hover': {
+                        bgcolor: 'var(--neutral-2)',
+                      },
+                    }}
+                    spacing={1}
+                    onClick={() => {
+                      updateTask({
+                        status: 'closed',
+                        currentStatus: selectedTask.status,
+                      });
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: '14px',
+                        fontWeight: 400,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Close task
+                    </Typography>
+                  </Stack>
+                </Popover>
+              </>
             }
             onClickCancelTask={{
               onClick: () => {
@@ -280,9 +388,7 @@ function ViewTaskDrawer() {
             slotTaskCard={<TaskCard task={selectedTask} />}
             slotTaskProgress={<SubTaskProgress />}
             onClickClose={{
-              onClick: () => {
-                route.push(ROUTES['/tasks']());
-              },
+              onClick: handleCloseDrawer,
             }}
           />
         </ShowCode.Else>

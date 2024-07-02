@@ -15,6 +15,7 @@ interface Props {
   disabled?: boolean;
   showSubject?: boolean;
   showSender?: boolean;
+  overrideBodyLabel?: string;
 }
 
 export default function EmailTemplateEditForm({
@@ -25,6 +26,7 @@ export default function EmailTemplateEditForm({
   disabled = false,
   showSender = true,
   showSubject = true,
+  overrideBodyLabel,
 }: Props) {
   const options = ['{{organizerName}}', '{{companyName}}', 'Aglint Ai'];
   return (
@@ -108,7 +110,7 @@ export default function EmailTemplateEditForm({
       {showSubject && (
         <Stack>
           <UITypography type='small' fontBold='normal'>
-            Email Subject
+            {overrideBodyLabel ? overrideBodyLabel : 'Email Subject'}
           </UITypography>
           <Stack
             sx={{

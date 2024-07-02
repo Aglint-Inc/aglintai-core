@@ -42,7 +42,9 @@ export function GetTaskStatusBadge({
           />
         </ShowCode.When>
 
-        <ShowCode.When isTrue={indicator === 'BOOKED'}>
+        <ShowCode.When
+          isTrue={indicator === 'BOOKED' || indicator === 'COMPLETED'}
+        >
           <GlobalBadge
             color={'success'}
             showIcon={false}
@@ -71,7 +73,9 @@ export function GetTaskStatusBadge({
           />
         </ShowCode.When>
 
-        <ShowCode.When isTrue={indicator === 'ACTION_NEEDED'}>
+        <ShowCode.When
+          isTrue={indicator === 'ACTION_NEEDED' || indicator === 'CLOSED'}
+        >
           <GlobalBadge
             color={'error'}
             iconName={'error'}

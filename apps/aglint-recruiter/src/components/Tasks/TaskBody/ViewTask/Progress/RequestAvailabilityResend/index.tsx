@@ -1,11 +1,9 @@
 import { DatabaseView } from '@aglint/shared-types';
 import axios from 'axios';
-import React from 'react';
 
-import { GeneralBanner } from '@/devlink/GeneralBanner';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { ButtonSolid } from '@/devlink2/ButtonSolid';
-import Icon from '@/src/components/Common/Icons/Icon';
+import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import toast from '@/src/utils/toast';
 
 function RequestAvailabilityResend({
@@ -14,22 +12,18 @@ function RequestAvailabilityResend({
   selectedTask: DatabaseView['tasks_view'];
 }) {
   return (
-    <GeneralBanner
-      titleColorProps={{
-        style: {
-          color: 'var(--warning-11)',
-        },
-      }}
-      textHeading={'Waiting for candidates availability submission'}
-      textDesc={
+    <GlobalBanner
+      color={'warning'}
+      iconName={'schedule'}
+      textTitle={'Waiting for candidates availability submission'}
+      textDescription={
         <div
           dangerouslySetInnerHTML={{
             __html: `Candidate received a link to choose multiple options for ${selectedTask.session_ids.map((ele) => `<b>${ele.name}</b>`)} Interviews.`,
           }}
         ></div>
       }
-      slotHeadingIcon={<Icon height='15' width='' variant='Clock' />}
-      slotButton={
+      slotButtons={
         <>
           <ButtonSolid
             textButton={'Resend invite'}

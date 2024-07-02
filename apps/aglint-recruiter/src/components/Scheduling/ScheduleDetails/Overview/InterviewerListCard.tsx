@@ -20,9 +20,11 @@ import IconDecline from './IconDecline';
 function InterviewerListCard({
   schedule,
   item,
+  disableHoverListener = false,
 }: {
   schedule: ScheduleMeeting;
   item: ScheduleMeeting['users'][0];
+  disableHoverListener: boolean;
 }) {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
@@ -52,6 +54,7 @@ function InterviewerListCard({
   return (
     <>
       <CustomTooltip
+        disableHoverListener={disableHoverListener}
         key={item.id + ' member'}
         title={
           <React.Fragment>

@@ -578,3 +578,37 @@ const moveApplications = async ({
     })(),
   ]);
 };
+
+export const useRescoreApplications = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (args: Parameters<typeof rescoreApplications>[0]) => {
+      await rescoreApplications({
+        job_id: args.job_id,
+      });
+      const applicationQueryKey = [
+        ...applicationsQueries.all({ job_id: args.job_id }).queryKey,
+      ];
+      const jobCountQueryKey = jobQueries.job_application_count({
+        id: args.job_id,
+      }).queryKey;
+      const jobProcessingQueryKey = jobQueries.job_processing_count({
+        id: args.job_id,
+      }).queryKey;
+      await Promise.allSettled([
+        queryClient.invalidateQueries({ queryKey: applicationQueryKey }),
+        queryClient.invalidateQueries({ queryKey: jobCountQueryKey }),
+        queryClient.invalidateQueries({ queryKey: jobProcessingQueryKey }),
+      ]);
+      return undefined;
+    },
+  });
+};
+const rescoreApplications = async ({
+  job_id,
+}: ApplicationsAllQueryPrerequistes) =>
+  await supabase
+    .from('applications')
+    .update({ overall_score: -1, processing_status: 'not started' })
+    .eq('job_id', job_id)
+    .throwOnError();

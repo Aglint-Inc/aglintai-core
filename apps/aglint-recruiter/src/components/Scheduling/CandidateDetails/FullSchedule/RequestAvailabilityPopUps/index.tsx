@@ -6,8 +6,7 @@ import { useEffect } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GeneralBanner } from '@/devlink/GeneralBanner';
-import Icon from '@/src/components/Common/Icons/Icon';
+import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import toast from '@/src/utils/toast';
 
@@ -89,26 +88,32 @@ function RequestAvailabilityPopUps() {
               <>
                 <ShowCode>
                   <ShowCode.When isTrue={!item.slots}>
-                    <GeneralBanner
-                      titleColorProps={{
-                        style: {
-                          color: 'var(--warning-11)',
-                        },
-                      }}
-                      textHeading={
+                    <GlobalBanner
+                      color={'warning'}
+                      iconName={'schedule'}
+                      // titleColorProps={{
+                      //   style: {
+                      //     color: 'var(--warning-11)',
+                      //   },
+                      // }}
+                      // textHeading={
+                      //   'Waiting for candidates availability submission'
+                      // }
+                      textTitle={
                         'Waiting for candidates availability submission'
                       }
-                      textDesc={
+                      textDescription={
                         <div
                           dangerouslySetInnerHTML={{
                             __html: `Candidate received a link to choose multiple options for ${item.session_ids.map((ele) => `<b>${ele.name}</b>`)} Interviews.`,
                           }}
                         ></div>
                       }
-                      slotHeadingIcon={
-                        <Icon height='15' width='' variant='Clock' />
-                      }
-                      slotButton={
+                      // slotHeadingIcon={
+                      //   <Icon height='15' width='' variant='Clock' />
+                      // }
+
+                      slotButtons={
                         <>
                           <ButtonSolid
                             textButton={'Resend invite'}
@@ -124,6 +129,17 @@ function RequestAvailabilityPopUps() {
                                   'Resend invited link sent successfully!',
                                 );
                               },
+                            }}
+                          />
+
+                          <ButtonSoft
+                            textButton={'Request again'}
+                            isLoading={false}
+                            isLeftIcon={false}
+                            isRightIcon={false}
+                            size={1}
+                            onClickButton={{
+                              onClick: () => handleRequestAgain(item.id),
                             }}
                           />
                           <ButtonSoft
@@ -146,24 +162,18 @@ function RequestAvailabilityPopUps() {
                     />
                   </ShowCode.When>
                   <ShowCode.Else>
-                    <GeneralBanner
-                      titleColorProps={{
-                        style: {
-                          color: 'var(--info-11)',
-                        },
-                      }}
-                      textHeading={'Candidate submitted availability'}
-                      textDesc={
+                    <GlobalBanner
+                      iconName={'check_circle'}
+                      color={'warning'}
+                      textTitle={'Candidate submitted availability'}
+                      textDescription={
                         <div
                           dangerouslySetInnerHTML={{
                             __html: `Candidate submitted availability on ${dates} for ${item.session_ids.map((ele) => `<b>${ele.name}</b>`)} Interviews.`,
                           }}
                         ></div>
                       }
-                      slotHeadingIcon={
-                        <Icon height={'16'} width={'20'} variant='Check' />
-                      }
-                      slotButton={
+                      slotButtons={
                         <>
                           <ButtonSolid
                             textButton={'Schedule'}
