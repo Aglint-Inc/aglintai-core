@@ -15,10 +15,7 @@ import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
 import { GetTaskStatusBadge } from '../../Components/TaskStatusTag';
-import {
-  getIndicator,
-  getIndicatorMessage,
-} from '../../Components/TaskStatusTag/utils';
+import { getIndicator } from '../../Components/TaskStatusTag/utils';
 import { useTaskStatesContext } from '../../TaskStatesContext';
 import { createTaskProgress } from '../../utils';
 import SubTaskProgress from './Progress';
@@ -38,6 +35,8 @@ function ViewTaskDrawer() {
 
   const [disableNext, setDisableNext] = useState(false);
   const [disablePrev, setDisablePrev] = useState(false);
+
+  const [selectedIndex, setSelectedIndex] = useState(null);
 
   useEffect(() => {
     if (taskId) {
@@ -120,6 +119,8 @@ function ViewTaskDrawer() {
     } else {
       setDisableNext(true);
     }
+
+    downHandler();
   }
 
   function prevTask() {
@@ -136,9 +137,37 @@ function ViewTaskDrawer() {
     } else {
       setDisablePrev(true);
     }
+    upHandler();
   }
+
+  const a = document.getElementById('taskContainer')?.scrollHeight;
+  const upHandler = () => {
+    if (selectedIndex === 0) {
+      document.getElementById('taskContainer').scrollTop =
+        document.getElementById('taskContainer').scrollHeight;
+    } else {
+      document.getElementById('taskContainer').scrollTop -= 47;
+    }
+    setSelectedIndex(
+      tasks.findIndex((ele) => ele.id === route.query.task_id) + 1,
+    );
+  };
+
+  const downHandler = () => {
+    if (selectedIndex + 1 === taskList.length) {
+      document.getElementById('taskContainer').scrollTop = 0;
+    } else {
+      document.getElementById('taskContainer').scrollTop += 47;
+    }
+    setSelectedIndex(
+      tasks.findIndex((ele) => ele.id === route.query.task_id) - 1,
+    );
+  };
+
   const { pressed: up } = useKeyPress('ArrowUp');
   const { pressed: down } = useKeyPress('ArrowDown');
+
+  useEffect(() => setSelectedIndex(0), []);
 
   useEffect(() => {
     if (up) {
