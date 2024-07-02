@@ -101,7 +101,7 @@ function DateRangeField() {
               dayjsLocal(value.endTime).valueOf()
             ) {
               toast.error(
-                'start time and End time cannot be same, End time must be greater than start time',
+                'Start time End time cannot be same and End time must be greater than start time',
               );
               return;
             }
