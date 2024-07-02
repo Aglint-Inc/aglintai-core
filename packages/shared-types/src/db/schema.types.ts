@@ -5324,6 +5324,8 @@ export type Database = {
         | "sendAvailReqReminder"
         | "interviewerConfirmation"
         | "interviewEnd"
+        | "meetingDeclined"
+        | "meetingAccepted"
     }
     CompositeTypes: {
       location_type: {
