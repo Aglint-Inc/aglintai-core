@@ -20,7 +20,7 @@ import { InterviewPlan as InterviewPlanDev } from '@/devlink3/InterviewPlan';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
-import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon';
+import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import NotFoundPage from '@/src/pages/404';
 import { CompanyMember } from '@/src/queries/company-members';

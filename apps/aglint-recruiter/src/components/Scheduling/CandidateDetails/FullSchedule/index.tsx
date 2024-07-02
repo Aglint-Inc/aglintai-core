@@ -1,3 +1,4 @@
+import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 
 import { EditOptionModule } from '@/devlink3/EditOptionModule';
@@ -11,7 +12,6 @@ import RescheduleDialog from '../../ScheduleDetails/RescheduleDialog';
 import { useGetScheduleApplication } from '../hooks';
 import SelfSchedulingDrawer from '../SchedulingDrawer';
 import {
-  SchedulingApplication,
   setEditSession,
   setIndividualCancelOpen,
   setIndividualRescheduleOpen,
@@ -48,25 +48,30 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
   }));
 
   const isDebrief = initialSessions
-    .filter((ses) => selectedSessionIds.includes(ses.id))
-    .some((ses) => ses.session_type === 'debrief');
+    .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
+    .some((ses) => ses.interview_session.session_type === 'debrief');
 
   const isNormalSession = initialSessions
-    .filter((ses) => selectedSessionIds.includes(ses.id))
-    .some((ses) => ses.session_type !== 'debrief');
+    .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
+    .some((ses) => ses.interview_session.session_type !== 'debrief');
 
-  const selectSession = ({
-    session,
-  }: {
-    session: SchedulingApplication['initialSessions'][number];
-  }) => {
+  const selectSession = ({ session_id }: { session_id: string }) => {
+    const session = initialSessions.find(
+      (ses) => ses.interview_session.id === session_id,
+    );
+
     if (session?.users?.length > 0) {
-      if (selectedSessionIds.includes(session.id)) {
+      if (selectedSessionIds.includes(session.interview_session.id)) {
         setSelectedSessionIds(
-          selectedSessionIds.filter((id) => id !== session.id),
+          selectedSessionIds.filter(
+            (id) => id !== session.interview_session.id,
+          ),
         );
       } else {
-        setSelectedSessionIds([...selectedSessionIds, session.id]);
+        setSelectedSessionIds([
+          ...selectedSessionIds,
+          session.interview_session.id,
+        ]);
       }
     } else {
       toast.warning(
@@ -92,8 +97,8 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
               {
                 application_id: selectedApplication.id,
                 meeting_id: selectedSession?.interview_meeting.id,
-                session_id: selectedSession?.id,
-                session_name: selectedSession?.name,
+                session_id: selectedSession?.interview_session.id,
+                session_name: selectedSession?.interview_session.name,
               },
             ]}
             isDeclineOpen={isIndividualCancelOpen}
@@ -111,8 +116,8 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
             setIsRescheduleOpen={setIndividualRescheduleOpen}
             application_id={selectedApplication.id}
             meeting_id={selectedSession?.interview_meeting.id}
-            session_id={selectedSession?.id}
-            session_name={selectedSession?.name}
+            session_id={selectedSession?.interview_session.id}
+            session_name={selectedSession?.interview_session.name}
             meeting_flow={selectedSession?.interview_meeting.meeting_flow}
           />
         </>
@@ -135,46 +140,71 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                     key={ind}
                     style={{
                       opacity:
-                        isNormalSession && session.session_type === 'debrief'
+                        isNormalSession &&
+                        session.interview_session.session_type === 'debrief'
                           ? 0.5
                           : isDebrief &&
-                              (session.session_type !== 'debrief' ||
-                                !selectedSessionIds.includes(session.id))
+                              (session.interview_session.session_type !==
+                                'debrief' ||
+                                !selectedSessionIds.includes(
+                                  session.interview_session.id,
+                                ))
                             ? 0.5
                             : 1,
                       pointerEvents:
-                        isNormalSession && session.session_type === 'debrief'
+                        isNormalSession &&
+                        session.interview_session.session_type === 'debrief'
                           ? 'none'
                           : isDebrief &&
-                              (session.session_type !== 'debrief' ||
-                                !selectedSessionIds.includes(session.id))
+                              (session.interview_session.session_type !==
+                                'debrief' ||
+                                !selectedSessionIds.includes(
+                                  session.interview_session.id,
+                                ))
                             ? 'none'
                             : 'auto',
                     }}
                   >
-                    <Stack
-                      sx={{
-                        cursor:
-                          session.interview_meeting?.status === 'completed' ||
-                          session.interview_meeting?.status === 'confirmed' ||
-                          session.interview_meeting?.status === 'waiting'
-                            ? 'pointer'
-                            : 'auto',
+                    <ScheduleIndividualCard
+                      isCheckboxVisible={true}
+                      interview_session={{
+                        break_duration:
+                          session.interview_session.break_duration,
+                        id: session.interview_session.id,
+                        name: session.interview_session.name,
+                        schedule_type: session.interview_session.schedule_type,
+                        session_duration:
+                          session.interview_session.session_duration,
+                        session_type: session.interview_session.session_type,
                       }}
-                    >
-                      <ScheduleIndividualCard
-                        isCheckboxVisible={true}
-                        session={session}
-                        onClickCheckBox={selectSession}
-                        selectedSessionIds={selectedSessionIds}
-                        isOnclickCard={true}
-                        isThreeDotVisible={true}
-                      />
-                    </Stack>
-                    {session.break_duration > 0 && (
+                      interview_meeting={{
+                        end_time: session.interview_meeting.end_time,
+                        id: session.interview_meeting.id,
+                        start_time: session.interview_meeting.start_time,
+                        status: session.interview_meeting.status,
+                      }}
+                      onClickCheckBox={selectSession}
+                      selectedSessionIds={selectedSessionIds}
+                      candidate={{
+                        fullname: getFullName(
+                          selectedApplication.candidates.first_name,
+                          selectedApplication.candidates.last_name,
+                        ),
+                        timezone: selectedApplication.candidates.timezone,
+                        currentJobTitle:
+                          selectedApplication.candidates.current_job_title,
+                      }}
+                      jobTitle={selectedApplication.public_jobs.job_title}
+                      users={session.users}
+                      isCollapseNeeded={true}
+                      isActionButtonVisible={true}
+                    />
+                    {session.interview_session.break_duration > 0 && (
                       <Stack pt={'var(--space-2)'}>
                         <InterviewBreakCard
-                          textDuration={getBreakLabel(session.break_duration)}
+                          textDuration={getBreakLabel(
+                            session.interview_session.break_duration,
+                          )}
                           isThreeDotVisible={true}
                           isEditDeleteVisible={false}
                           slotEditOptionModule={

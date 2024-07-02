@@ -30,7 +30,7 @@
 .cs-slot-wrap {
   overflow: auto;
   padding-bottom: var(--space-9);
-  background-color: var(--sand-2);
+  background-color: var(--white);
   height: calc(100vh - 85px);
 }
 

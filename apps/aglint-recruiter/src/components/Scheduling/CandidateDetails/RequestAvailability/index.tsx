@@ -83,11 +83,14 @@ function RequestAvailability() {
   });
 
   const selectedSessions = requestSessionIds.length
-    ? initialSessions.filter((ele) => requestSessionIds.includes(ele.id))
+    ? initialSessions.filter((ele) =>
+        requestSessionIds.includes(ele.interview_session.id),
+      )
     : [];
 
   const totalSessionMinutes = selectedSessions.reduce(
-    (accumulator, session) => accumulator + session.session_duration,
+    (accumulator, session) =>
+      accumulator + session.interview_session.session_duration,
     0,
   );
   function getDrawerClose() {
@@ -115,7 +118,12 @@ function RequestAvailability() {
   const [markCreateTicket, setMarkCreateTicket] = useState(true);
 
   const meetingsRound = ScheduleUtils.getSessionRounds(
-    selectedSessions,
+    selectedSessions.map(
+      (ele) =>
+        ({
+          ...ele.interview_session,
+        }) as InterviewSessionTypeDB,
+    ),
   ) as unknown as InterviewSessionTypeDB[][];
   // handle submit
   const maxDays =
@@ -153,7 +161,7 @@ function RequestAvailability() {
 
           localSessions = selectedSessions.map((ses) => {
             const newSession = resData.refSessions.find(
-              (ele) => ele.id === ses.id,
+              (ele) => ele.interview_session.id === ses.interview_session.id,
             );
 
             return {
@@ -222,7 +230,7 @@ function RequestAvailability() {
           created_by: recruiterUser.user_id,
           logged_by: 'user',
           supabase: supabase,
-          title: `Resend request availability to Schedule Interviews for ${selectedSessions.map((ele) => ele.name).join(',')}`,
+          title: `Resend request availability to Schedule Interviews for ${selectedSessions.map((ele) => ele.interview_session.name).join(',')}`,
           module: 'scheduler',
           task_id: task_id,
         });
@@ -239,13 +247,13 @@ function RequestAvailability() {
           number_of_slots: selectedSlots.value,
           session_ids: localSessions.map((session) => {
             return {
-              id: session.id,
-              name: session.name,
-              session_duration: session.session_duration,
-              break_duration: session.break_duration,
-              session_order: session.session_order,
-              location: session.location,
-              session_type: session.session_type,
+              id: session.interview_session.id,
+              name: session.interview_session.name,
+              session_duration: session.interview_session.session_duration,
+              break_duration: session.interview_session.break_duration,
+              session_order: session.interview_session.session_order,
+              location: session.interview_session.location,
+              session_type: session.interview_session.session_type,
             };
           }),
           total_slots: null,
@@ -253,7 +261,7 @@ function RequestAvailability() {
 
         await supabase.from('request_session_relation').insert(
           selectedSessions.map((ele) => ({
-            session_id: ele.id,
+            session_id: ele.interview_session.id,
             request_availability_id: result.id,
           })),
         );
@@ -311,7 +319,7 @@ function RequestAvailability() {
             });
             await supabase.from('task_session_relation').insert(
               selectedSessions.map((ele) => ({
-                session_id: ele.id,
+                session_id: ele.interview_session.id,
                 task_id: task.id,
               })),
             );
@@ -347,7 +355,7 @@ function RequestAvailability() {
           title: `Request Availability from ${getFullName(
             selectedApplication.candidates.first_name,
             selectedApplication.candidates.last_name,
-          )} to Schedule Interviews for ${selectedSessions.map((ele) => ele.name).join(',')}`,
+          )} to Schedule Interviews for ${selectedSessions.map((ele) => ele.interview_session.name).join(',')}`,
           module: 'scheduler',
           task_id: task ? task.id : null,
         });
@@ -461,20 +469,24 @@ function RequestAvailability() {
                     slotIcons={
                       <ShowCode>
                         <ShowCode.When
-                          isTrue={ele.session_type == 'individual'}
+                          isTrue={
+                            ele.interview_session.session_type == 'individual'
+                          }
                         >
                           <IndividualIcon />
                         </ShowCode.When>
-                        <ShowCode.When isTrue={ele.session_type == 'panel'}>
+                        <ShowCode.When
+                          isTrue={ele.interview_session.session_type == 'panel'}
+                        >
                           <PanelIcon />
                         </ShowCode.When>
                       </ShowCode>
                     }
                     textTime={convertMinutesToHoursAndMinutes(
-                      ele.session_duration,
+                      ele.interview_session.session_duration,
                     )}
                     key={i}
-                    textScheduleName={ele.name}
+                    textScheduleName={ele.interview_session.name}
                   />
                 );
               })

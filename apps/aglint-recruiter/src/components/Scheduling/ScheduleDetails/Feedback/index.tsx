@@ -18,6 +18,7 @@ import Avatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { API_request_feedback } from '@/src/pages/api/request_feedback/type';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
@@ -76,7 +77,8 @@ const FeedbackWindow = ({
     session_ids: interview_sessions.map((item) => item.id),
   });
 
-  const { isAllowed, userDetails } = useAuthDetails();
+  const { userDetails } = useAuthDetails();
+  const {checkPermissions} = useRolesAndPermissions();
   const user_id = userDetails?.user.id;
 
   const tempRelations = useMemo(() => {
@@ -177,7 +179,7 @@ const FeedbackWindow = ({
             <DynamicLoader />
           </Stack>
         </ShowCode.When>
-        <ShowCode.When isTrue={isAllowed(['admin'])}>
+        <ShowCode.When isTrue={checkPermissions(['scheduler_update'])}>
           <></>
           <AdminFeedback
             {...{
@@ -286,7 +288,7 @@ const AdminFeedback = ({
     <>
       <ScheduleTabFeedback
         styleMinWidth={{
-          style: { minWidth: multiSession ? '1164px' : '600px' },
+          style: { minWidth: multiSession ? '1164px' : '700px' },
         }}
         isSessionVisible={multiSession}
         slotFeedbackTableRow={

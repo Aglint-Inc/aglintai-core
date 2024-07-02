@@ -8,4 +8,8 @@ declare function GlobalUserDetail(props: {
   textTimeZone?: React.ReactNode;
   textRole?: React.ReactNode;
   isRoleVisible?: Types.Visibility.VisibilityConditions;
+  slotImage?: Types.Devlink.Slot;
+  isSlotImageVisible?: Types.Visibility.VisibilityConditions;
+  isCandidateAvatarVisible?: Types.Visibility.VisibilityConditions;
+  slotCandidateStatus?: Types.Devlink.Slot;
 }): React.JSX.Element;

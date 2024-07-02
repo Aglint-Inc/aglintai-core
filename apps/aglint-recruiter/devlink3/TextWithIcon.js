@@ -14,6 +14,8 @@ export function TextWithIcon({
   iconSize = "3",
   slotIcon,
   color = "neutral-12",
+  fontSize = "2",
+  iconWeight = "light",
 }) {
   return (
     <_Component
@@ -23,10 +25,20 @@ export function TextWithIcon({
     >
       <_Builtin.Block className={_utils.cx(_styles, "slot_icon")} tag="div">
         {slotIcon ?? (
-          <GlobalIcon size={iconSize} iconName={iconName} weight="light" />
+          <GlobalIcon size={iconSize} iconName={iconName} weight={iconWeight} />
         )}
       </_Builtin.Block>
-      <Text weight={fontWeight} content={textContent} color="" />
+      <_Builtin.Block
+        className={_utils.cx(_styles, "one-line-clamp")}
+        tag="div"
+      >
+        <Text
+          weight={fontWeight}
+          content={textContent}
+          size={fontSize}
+          color=""
+        />
+      </_Builtin.Block>
     </_Component>
   );
 }
