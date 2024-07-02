@@ -1,10 +1,13 @@
 /* eslint-disable no-unused-vars */
 import { DatabaseEnums } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
-import { Button, Drawer, Stack, TextField } from '@mui/material';
+import { ArrowDownward } from '@mui/icons-material';
+import { Drawer, Popover, Stack, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 
+import { ButtonFilter } from '@/devlink2/ButtonFilter';
+import { GlobalIcon } from '@/devlink2/GlobalIcon';
 import { ViewTask } from '@/devlink3/ViewTask';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
@@ -15,13 +18,11 @@ import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
 import { GetTaskStatusBadge } from '../../Components/TaskStatusTag';
-import {
-  getIndicator,
-  getIndicatorMessage,
-} from '../../Components/TaskStatusTag/utils';
+import { getIndicator } from '../../Components/TaskStatusTag/utils';
 import { useTaskStatesContext } from '../../TaskStatesContext';
 import { createTaskProgress } from '../../utils';
 import SubTaskProgress from './Progress';
+import TaskActionButtons from './TaskActionButtons';
 import TaskCard from './TaskCard';
 
 function ViewTaskDrawer() {
@@ -73,7 +74,7 @@ function ViewTaskDrawer() {
           name: recruiterUser.first_name as string,
           id: recruiterUser.user_id as string,
         },
-        progress_type: 'standard',
+        progress_type: selectedTask.latest_progress.progress_type,
       },
       optionData: {
         currentStatus: currentStatus,
@@ -95,7 +96,7 @@ function ViewTaskDrawer() {
             name: recruiterUser.first_name as string,
             id: recruiterUser.user_id as string,
           },
-          progress_type: 'standard',
+          progress_type: selectedTask.latest_progress.progress_type,
         },
         optionData: {
           currentStatus: status,
@@ -148,6 +149,18 @@ function ViewTaskDrawer() {
       nextTask();
     }
   }, [up, down]);
+
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const open = Boolean(anchorEl);
+
+  const id = open ? 'jobs-filter' : undefined;
+  function handleClose() {
+    setAnchorEl(null);
+  }
+
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
   return (
     <Drawer
       anchor={'right'}
@@ -182,23 +195,103 @@ function ViewTaskDrawer() {
                 />
               )
             }
-            isCompleteTaskVisible={
-              selectedTask?.assignee[0] !== EmailAgentId &&
-              selectedTask?.assignee[0] !== PhoneAgentId &&
-              selectedTask?.status !== 'closed' &&
-              selectedTask?.status !== 'completed'
+            slotActionButton={
+              <>
+                <TaskActionButtons selectedTask={selectedTask} />
+              </>
             }
-            onClickCompleteTask={{
-              onClick: () => {
-                updateTask({
-                  status: 'completed',
-                  currentStatus: selectedTask.status,
-                });
-              },
-            }}
-            isCancelTaskVisible={
-              selectedTask?.status !== 'closed' &&
-              selectedTask?.status !== 'completed'
+            slotButtonFilter={
+              <>
+                <ButtonFilter
+                  textLabel={'Action'}
+                  slotRightIcon={
+                    <GlobalIcon iconName={'keyboard_arrow_down'} />
+                  }
+                  slotLeftIcon={<></>}
+                  onClickStatus={{
+                    onClick: (e) => {
+                      handleClick(e);
+                    },
+                  }}
+                />
+
+                <Popover
+                  id={id}
+                  open={open}
+                  anchorEl={anchorEl}
+                  onClose={handleClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
+                  transformOrigin={{ vertical: -10, horizontal: 0 }}
+                  sx={{
+                    '& .MuiPopover-paper': {
+                      borderRadius: 'var(--radius-2)',
+                      borderColor: 'var(--neutral-6)',
+                      minWidth: '176px',
+                      backgroundColor: 'white',
+                    },
+                  }}
+                >
+                  <Stack
+                    direction={'row'}
+                    padding={'8px 12px'}
+                    sx={{
+                      alignItems: 'center',
+                      borderRadius: '4px',
+                      ':hover': {
+                        bgcolor: 'var(--neutral-2)',
+                      },
+                    }}
+                    spacing={1}
+                    onClick={() => {
+                      updateTask({
+                        status: 'completed',
+                        currentStatus: selectedTask.status,
+                      });
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: '14px',
+                        fontWeight: 400,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Completed task
+                    </Typography>
+                  </Stack>
+                  <Stack
+                    direction={'row'}
+                    padding={'8px 12px'}
+                    sx={{
+                      alignItems: 'center',
+                      borderRadius: '4px',
+                      ':hover': {
+                        bgcolor: 'var(--neutral-2)',
+                      },
+                    }}
+                    spacing={1}
+                    onClick={() => {
+                      updateTask({
+                        status: 'closed',
+                        currentStatus: selectedTask.status,
+                      });
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: '14px',
+                        fontWeight: 400,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Close task
+                    </Typography>
+                  </Stack>
+                </Popover>
+              </>
             }
             onClickCancelTask={{
               onClick: () => {

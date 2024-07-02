@@ -330,7 +330,8 @@ function SubTaskProgress() {
                           isTrue={
                             item.progress_type ===
                               'request_availability_list' &&
-                            !!item.jsonb_data &&
+                            selectedTask.status !== 'closed' &&
+                            selectedTask.status !== 'completed' &&
                             lastEmailRequestAvailabilityListIndex === i &&
                             !progressList
                               .map((ele) => ele.progress_type)
@@ -345,6 +346,8 @@ function SubTaskProgress() {
                             selectedTask.assignee[0] !== PhoneAgentId &&
                             selectedTask.assignee[0] !== SystemAgentId &&
                             item.progress_type === 'schedule' &&
+                            selectedTask.status !== 'closed' &&
+                            selectedTask.status !== 'completed' &&
                             lastScheduleNowCardIndex === i &&
                             progressList
                               .map((item) => item.progress_type)
@@ -356,6 +359,8 @@ function SubTaskProgress() {
                         <ShowCode.When
                           isTrue={
                             item.progress_type === 'request_availability' &&
+                            selectedTask.status !== 'closed' &&
+                            selectedTask.status !== 'completed' &&
                             lastRequestAvailabilityTypeIndex === i &&
                             !progressList
                               .map((ele) => ele.progress_type)

@@ -5,7 +5,6 @@ import * as _interactions from "./interactions";
 import { GlobalIcon } from "./GlobalIcon";
 import { Text } from "./Text";
 import { Kbd } from "./Kbd";
-import { ButtonSoft } from "./ButtonSoft";
 import { ViewTaskCard } from "./ViewTaskCard";
 import { TaskProgress } from "./TaskProgress";
 import * as _utils from "./utils";
@@ -30,6 +29,8 @@ export function ViewTask({
   onClickCompleteTask = {},
   isCompleteTaskVisible = true,
   slotTaskHeader,
+  slotButtonFilter,
+  slotActionButton,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -98,7 +99,7 @@ export function ViewTask({
                 >
                   <Text weight="" size="1" content="Press" />
                   <Kbd textShortcut="↓" />
-                  <Text weight="" size="1" content="for prev" />
+                  <Text weight="" size="1" content="for next" />
                 </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
@@ -117,31 +118,13 @@ export function ViewTask({
           className={_utils.cx(_styles, "taskdrawer_controls")}
           tag="div"
         >
-          {isCancelTaskVisible ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "task_action_buttons")}
-              tag="div"
-            >
-              <ButtonSoft
-                onClickButton={onClickCancelTask}
-                size="1"
-                textButton="Close Task"
-                color="error"
-                highContrast="false"
-              />
-              {isCompleteTaskVisible ? (
-                <_Builtin.Block tag="div">
-                  <ButtonSoft
-                    onClickButton={onClickCompleteTask}
-                    size="1"
-                    textButton="Complete Task"
-                    color="neutral"
-                    highContrast="false"
-                  />
-                </_Builtin.Block>
-              ) : null}
-            </_Builtin.Block>
-          ) : null}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "task_action_buttons")}
+            tag="div"
+          >
+            {slotActionButton}
+          </_Builtin.Block>
+          <_Builtin.Block tag="div">{slotButtonFilter}</_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "task-close-wrap")}
             tag="div"
