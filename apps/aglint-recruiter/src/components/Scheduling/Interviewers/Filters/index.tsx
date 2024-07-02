@@ -11,37 +11,11 @@ import { useInterviewerList } from '..';
 function Filters({ setFilteredInterviewer }) {
   const { data: interviewers, isLoading } = useInterviewerList();
 
-  // search filter interviewers
   const [searchText, setSearchText] = useState('');
   const [, startTransition] = useTransition();
 
-  const filterMembers = (searchText: string) => {
-    const filtered = interviewers.filter((interviewer) => {
-      return (
-        interviewer.rec_user.first_name
-          .toLowerCase()
-          .includes(searchText.toLowerCase()) ||
-        interviewer.rec_user.position
-          .toLowerCase()
-          .includes(searchText.toLowerCase()) ||
-        interviewer.rec_user.email
-          .toLowerCase()
-          .includes(searchText.toLowerCase())
-      );
-    });
-    setFilteredInterviewer(filtered);
-  };
-
   const handleSearchInputChange = (e: any) => {
-    const input = e.target.value.trim();
     setSearchText(e.target.value);
-    startTransition(() => {
-      if (input) {
-        filterMembers(searchText);
-      } else {
-        setFilteredInterviewer(interviewers);
-      }
-    });
   };
 
   const handleTextClear = () => {
@@ -50,9 +24,7 @@ function Filters({ setFilteredInterviewer }) {
       setFilteredInterviewer(interviewers);
     });
   };
-  // search filter END
 
-  // filters by column
   const [selectedQualifiedModule, setSelectedQualifiedModule] = useState<
     string[]
   >([]);
@@ -75,6 +47,10 @@ function Filters({ setFilteredInterviewer }) {
   const uniqueTrainingModules = [...new Set(allQualifiedModules)];
 
   useEffect(() => {
+    const isFilter = Boolean(
+      selectedQualifiedModule.length || selectedTrainingModule.length,
+    );
+    const isSearch = !!searchText;
     const filtered = interviewers.filter((interviewer) => {
       const qualifiedModuleMatch =
         selectedQualifiedModule.length &&
@@ -87,12 +63,28 @@ function Filters({ setFilteredInterviewer }) {
           interviewer.training_module_names.includes(element),
         );
 
-      return qualifiedModuleMatch || trainingModuleMatch;
-    });
-    setFilteredInterviewer(filtered.length ? filtered : interviewers);
-  }, [selectedQualifiedModule, selectedTrainingModule]);
+      const filteredSearch =
+        searchText.trim().length &&
+        (interviewer.rec_user.first_name
+          .toLowerCase()
+          .includes(searchText.toLowerCase()) ||
+          interviewer.rec_user.position
+            .toLowerCase()
+            .includes(searchText.toLowerCase()) ||
+          interviewer.rec_user.email
+            .toLowerCase()
+            .includes(searchText.toLowerCase()));
 
-  // filters by column END
+      return isSearch && isFilter
+        ? (qualifiedModuleMatch || trainingModuleMatch) && filteredSearch
+        : isFilter
+          ? qualifiedModuleMatch || trainingModuleMatch
+          : isSearch
+            ? filteredSearch
+            : true;
+    });
+    setFilteredInterviewer(isSearch || isFilter ? filtered : interviewers);
+  }, [selectedQualifiedModule, selectedTrainingModule, searchText]);
 
   const resetFilter = () => {
     setSelectedQualifiedModule([]);
