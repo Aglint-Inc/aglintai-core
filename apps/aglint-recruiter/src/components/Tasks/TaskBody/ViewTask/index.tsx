@@ -27,7 +27,7 @@ import TaskCard from './TaskCard';
 
 function ViewTaskDrawer() {
   const route = useRouter();
-  const { openViewTask, setOpenViewTask } = useTaskStatesContext();
+  const { openViewTask, setOpenViewTask, setTaskId } = useTaskStatesContext();
   const { tasks: taskList, handelUpdateTask } = useTasksContext();
   const { recruiterUser } = useAuthDetails();
   const tasks = taskList.filter(
@@ -119,6 +119,7 @@ function ViewTaskDrawer() {
           (ele) => ele.id === tasks[Number(nextIndex)].id,
         );
         route.push(ROUTES['/tasks']() + '?task_id=' + nextTask.id);
+        setTaskId(nextTask.id);
       }
     } else {
       setDisableNext(true);
@@ -137,6 +138,7 @@ function ViewTaskDrawer() {
           (ele) => ele.id === tasks[Number(prevIndex)].id,
         );
         route.push(ROUTES['/tasks']() + '?task_id=' + nextTask.id);
+        setTaskId(nextTask.id);
       }
     } else {
       setDisablePrev(true);
@@ -150,7 +152,7 @@ function ViewTaskDrawer() {
       document.getElementById('taskContainer').scrollTop =
         document.getElementById('taskContainer').scrollHeight;
     } else {
-      document.getElementById('taskContainer').scrollTop -= 47;
+      document.getElementById('taskContainer').scrollTop -= 48;
     }
     setSelectedIndex(
       tasks.findIndex((ele) => ele.id === route.query.task_id) + 1,
@@ -161,7 +163,7 @@ function ViewTaskDrawer() {
     if (selectedIndex + 1 === taskList.length) {
       document.getElementById('taskContainer').scrollTop = 0;
     } else {
-      document.getElementById('taskContainer').scrollTop += 47;
+      document.getElementById('taskContainer').scrollTop += 48;
     }
     setSelectedIndex(
       tasks.findIndex((ele) => ele.id === route.query.task_id) - 1,
