@@ -1,4 +1,5 @@
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
+import { UserNameCard } from '@/devlink3/UserNameCard';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
 
@@ -39,26 +40,26 @@ function AllRolesMeetings({ schedule }: { schedule: ScheduleMeeting }) {
     <>
       {filteredRoles.map((item) => {
         return (
-          <AvatarWithName
-            key={item.type}
-            textRole={item.label}
-            isRoleVisible={true}
-            textName={getFullName(
-              item.details.first_name,
-              item.details.last_name,
-            )}
-            slotAvatar={
-              <MuiAvatar
-                level={getFullName(
-                  item.details.first_name,
-                  item.details.last_name,
-                )}
-                src={item.details.profile_image}
-                variant={'rounded-medium'}
-                fontSize='20px'
-              />
-            }
-          />
+          <>
+            <UserNameCard
+              slotAvatar={
+                <MuiAvatar
+                  level={getFullName(
+                    item.details.first_name,
+                    item.details.last_name,
+                  )}
+                  src={item.details.profile_image}
+                  variant={'rounded-medium'}
+                  fontSize='20px'
+                />
+              }
+              textName={getFullName(
+                item.details.first_name,
+                item.details.last_name,
+              )}
+              textRole={item.label}
+            />
+          </>
         );
       })}
     </>

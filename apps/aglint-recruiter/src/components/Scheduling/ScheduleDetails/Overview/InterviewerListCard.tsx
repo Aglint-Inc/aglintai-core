@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React, { Dispatch } from 'react';
 
+import { GlobalUserDetail } from '@/devlink3/GlobalUserDetail';
 import { MemberDetail } from '@/devlink3/MemberDetail';
 import { MembersList } from '@/devlink3/MembersList';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
@@ -116,6 +117,17 @@ function InterviewerListCard({
         }
       >
         <Stack>
+          <GlobalUserDetail
+            textTimeZone={formatTimeWithTimeZone({
+              start_time: schedule.interview_meeting.start_time,
+              end_time: schedule.interview_meeting.end_time,
+              timeZone: userTzDayjs.tz.guess(),
+            })}
+            isRoleVisible={true}
+            slotRole={'asd'}
+            textRole={item.position || '--'}
+            textName={fullName}
+          />
           <MembersList
             onClickAccept={{
               onClick: () => {

@@ -1,4 +1,5 @@
 // import Feedback from './Feedback';
+import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
@@ -9,7 +10,6 @@ import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ScheduleDetailTabs } from '@/devlink3/ScheduleDetailTabs';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -18,20 +18,28 @@ import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';
 import CandidateInfo from '../Common/CandidateInfo';
 import CancelReasonCards from './CancelReasonCards';
+import CancelScheduleDialog from './CancelScheduleDialog';
 import ChangeInterviewerDialog from './ChangeInterviewerDialog';
+import DeclineScheduleDialog from './DeclineScheduleDialog';
 import FeedbackWindow from './Feedback';
 import { useScheduleDetails } from './hooks';
 import Instructions from './Instructions';
 import JobDetails from './JobDetails';
 import Overview from './Overview';
+import ButtonGroup from './Overview/ButtonGroup';
+import RequestRescheduleDialog from './RequestRescheduleDialog';
+import RescheduleDialog from './RescheduleDialog';
 
 function SchedulingViewComp() {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
-  const { checkPermissions } = useRolesAndPermissions();
-  const { data, isPending, refetch, isFetched } = useScheduleDetails();
+  const { data, refetch, isLoading } = useScheduleDetails();
   const [isChangeInterviewerOpen, setIsChangeInterviewerOpen] = useState(false);
   const [isCancelOpen, setIsCancelOpen] = useState(false);
+  const [isRequestRescheduleOpen, setIsRequestRescheduleOpen] = useState(false); //role interviewers will ask for reschedule
+  const [isRescheduleOpen, setIsRescheduleOpen] = useState(false); // role who have permission to reschedule
+  const [isDeclineOpen, setIsDeclineOpen] = useState(false);
+
   const [cancelUserId, setCancelUserId] = useState('');
   const [textValue, setTextValue] = useState('');
 
@@ -98,131 +106,205 @@ function SchedulingViewComp() {
     }
   }, [data?.schedule_data?.candidates.id]);
 
-  console.log(schedule);
+  const isMeetingJobHiringTeam =
+    schedule?.hiring_manager?.id === recruiterUser.user_id ||
+    schedule?.organizer?.id === recruiterUser.user_id ||
+    schedule?.recruiting_coordinator?.id === recruiterUser.user_id ||
+    schedule?.recruiter?.id === recruiterUser.user_id;
+
+  // if logged in user is interviewer session relation will be there or else null
+  const [sessionRelation, setSessionRelation] = useState<
+    DatabaseTable['interview_session_relation'] | null
+  >();
+
+  useEffect(() => {
+    if (schedule?.users) {
+      setSessionRelation(
+        schedule?.users?.find((user) => user.email === recruiterUser.email)
+          ?.interview_session_relation,
+      );
+    }
+  }, [schedule?.users]);
+  // if logged in user is interviewer session relation will be there or else null
 
   return (
-    <ShowCode>
-      <ShowCode.When isTrue={isPending || !isFetched}>
+    <>
+      {isLoading ? (
         <Loader />
-      </ShowCode.When>
-      <ShowCode.Else>
-        <ChangeInterviewerDialog
-          isChangeInterviewerOpen={isChangeInterviewerOpen}
-          setIsChangeInterviewerOpen={setIsChangeInterviewerOpen}
-          schedule={schedule}
-          cancelUserId={cancelUserId}
-          setCancelUserId={setCancelUserId}
-        />
-        <PageLayout
-          slotTopbarLeft={<>{breadcrum}</>}
-          slotBody={
-            <ScheduleDetailTabs
-              slotScheduleTabOverview={
-                <Stack spacing={'var(--space-4)'}>
-                  {checkPermissions(['scheduler_update']) && (
-                    <CancelReasonCards
-                      cancelReasons={cancelReasons}
-                      schedule={schedule}
-                      setCancelUserId={setCancelUserId}
-                      cancelUserId={cancelUserId}
-                      setIsChangeInterviewerOpen={setIsChangeInterviewerOpen}
-                    />
-                  )}
-                  <Overview
-                    refetch={refetch}
-                    cancelReasons={cancelReasons}
-                    schedule={schedule}
-                    isCancelOpen={isCancelOpen}
-                    setIsCancelOpen={setIsCancelOpen}
-                  />
-                </Stack>
-              }
-              slotDarkPills={viewScheduleTabs
-                .filter(
-                  (item) =>
-                    !item.hide &&
-                    (item.tab !== 'feedback' ||
-                      schedule?.interview_meeting?.status === 'completed'),
-                )
-                .map((item, i: number) => {
-                  return (
-                    <NewTabPill
-                      textLabel={item.name}
-                      key={i}
-                      isPillActive={router.query.tab === item.tab}
-                      onClickPill={{
-                        onClick: () => {
-                          router.replace(
-                            `/scheduling/view?meeting_id=${router.query.meeting_id}&tab=${item.tab}`,
-                          );
-                        },
-                      }}
-                    />
-                  );
-                })}
-              slotTabContent={
-                <ShowCode>
-                  <ShowCode.When
-                    isTrue={
-                      router.query.tab === 'candidate_details' ||
-                      !router.query.tab
-                    }
-                  >
-                    {schedule && (
-                      <CandidateInfo
-                        application_id={schedule.schedule.application_id}
-                        job_id={schedule.job.id}
+      ) : (
+        <>
+          {' '}
+          <>
+            <DeclineScheduleDialog
+              sessionRelation={sessionRelation}
+              isDeclineOpen={isDeclineOpen}
+              setIsDeclineOpen={setIsDeclineOpen}
+              schedule={schedule}
+              refetch={refetch}
+            />
+            <CancelScheduleDialog
+              isDeclineOpen={isCancelOpen}
+              setIsDeclineOpen={setIsCancelOpen}
+              refetch={refetch}
+              metaDetails={[
+                {
+                  application_id: schedule.schedule.application_id,
+                  meeting_id: schedule.interview_meeting.id,
+                  session_name: schedule.interview_session.name,
+                  session_id: schedule.interview_session.id,
+                },
+              ]}
+              closeDialog={() => {}}
+              application_log_id={null}
+            />
+            <RequestRescheduleDialog
+              isRequestRescheduleOpen={isRequestRescheduleOpen}
+              setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
+              sessionRelation={sessionRelation}
+              schedule={schedule}
+              refetch={refetch}
+            />
+            <RescheduleDialog
+              refetch={() => {}}
+              isRescheduleOpen={isRescheduleOpen}
+              setIsRescheduleOpen={setIsRescheduleOpen}
+              application_id={schedule.schedule.application_id}
+              meeting_id={schedule.interview_meeting.id}
+              session_id={schedule.interview_session.id}
+              meeting_flow={schedule.interview_meeting.meeting_flow}
+              session_name={schedule.interview_session.name}
+            />
+          </>
+          <ChangeInterviewerDialog
+            isChangeInterviewerOpen={isChangeInterviewerOpen}
+            setIsChangeInterviewerOpen={setIsChangeInterviewerOpen}
+            schedule={schedule}
+            cancelUserId={cancelUserId}
+            setCancelUserId={setCancelUserId}
+          />
+          <PageLayout
+            slotTopbarLeft={<>{breadcrum}</>}
+            slotBody={
+              <ScheduleDetailTabs
+                slotScheduleTabOverview={
+                  <Stack spacing={'var(--space-4)'}>
+                    {(recruiterUser.role === 'admin' ||
+                      recruiterUser.role === 'recruiter' ||
+                      recruiterUser.role === 'hiring manager') && (
+                      <CancelReasonCards
+                        cancelReasons={cancelReasons}
+                        schedule={schedule}
+                        setCancelUserId={setCancelUserId}
+                        cancelUserId={cancelUserId}
+                        setIsChangeInterviewerOpen={setIsChangeInterviewerOpen}
                       />
                     )}
-                  </ShowCode.When>
-                  <ShowCode.When isTrue={router.query.tab === 'instructions'}>
-                    <Instructions
-                      instruction={
-                        schedule?.interview_meeting.instructions as string
-                      }
-                      setTextValue={setTextValue}
-                      showEditButton={
-                        recruiterUser.role === 'admin' ||
-                        recruiterUser.role === 'recruiter' ||
-                        schedule.schedule.coordinator_id ===
-                          recruiterUser.user_id
-                      }
-                      updateInstruction={updateInstruction}
+                    <Overview
+                      refetch={refetch}
+                      schedule={schedule}
+                      setIsCancelOpen={setIsCancelOpen}
+                      setIsDeclineOpen={setIsDeclineOpen}
                     />
-                  </ShowCode.When>
-                  <ShowCode.When isTrue={router.query.tab === 'feedback'}>
-                    <Stack margin={'var(--space-4)'}>
-                      <FeedbackWindow
-                        interview_sessions={[
-                          {
-                            id: schedule?.interview_session.id,
-                            title: schedule?.interview_session.name,
-                            created_at: schedule?.interview_session.created_at,
-                            time: {
-                              start: schedule?.interview_meeting.start_time,
-                              end: schedule?.interview_meeting.end_time,
-                            },
-                            status: schedule?.interview_meeting.status,
+                  </Stack>
+                }
+                slotDarkPills={viewScheduleTabs
+                  .filter(
+                    (item) =>
+                      !item.hide &&
+                      (item.tab !== 'feedback' ||
+                        schedule?.interview_meeting?.status === 'completed'),
+                  )
+                  .map((item, i: number) => {
+                    return (
+                      <NewTabPill
+                        textLabel={item.name}
+                        key={i}
+                        isPillActive={router.query.tab === item.tab}
+                        onClickPill={{
+                          onClick: () => {
+                            router.replace(
+                              `/scheduling/view?meeting_id=${router.query.meeting_id}&tab=${item.tab}`,
+                            );
                           },
-                        ]}
-                        candidate={{
-                          email: schedule?.candidates.email,
-                          name: `${schedule?.candidates.first_name || ''} ${schedule?.candidates.last_name || ''}`.trim(),
-                          job_id: schedule?.job?.id,
                         }}
                       />
-                    </Stack>
-                  </ShowCode.When>
-                  <ShowCode.When isTrue={router.query.tab === 'job_details'}>
-                    <JobDetails schedule={schedule} />
-                  </ShowCode.When>
-                </ShowCode>
-              }
-            />
-          }
-        />
-      </ShowCode.Else>
-    </ShowCode>
+                    );
+                  })}
+                slotTabContent={
+                  <ShowCode>
+                    <ShowCode.When
+                      isTrue={
+                        router.query.tab === 'candidate_details' ||
+                        !router.query.tab
+                      }
+                    >
+                      {schedule && (
+                        <CandidateInfo
+                          application_id={schedule.schedule.application_id}
+                          job_id={schedule.job.id}
+                        />
+                      )}
+                    </ShowCode.When>
+                    <ShowCode.When isTrue={router.query.tab === 'instructions'}>
+                      <Instructions
+                        instruction={
+                          schedule?.interview_meeting.instructions as string
+                        }
+                        setTextValue={setTextValue}
+                        showEditButton={
+                          recruiterUser.role === 'admin' ||
+                          recruiterUser.role === 'recruiter' ||
+                          schedule?.schedule.coordinator_id ===
+                            recruiterUser.user_id
+                        }
+                        updateInstruction={updateInstruction}
+                      />
+                    </ShowCode.When>
+                    <ShowCode.When isTrue={router.query.tab === 'feedback'}>
+                      <Stack margin={'var(--space-4)'}>
+                        <FeedbackWindow
+                          interview_sessions={[
+                            {
+                              id: schedule?.interview_session.id,
+                              title: schedule?.interview_session.name,
+                              created_at:
+                                schedule?.interview_session.created_at,
+                              time: {
+                                start: schedule?.interview_meeting.start_time,
+                                end: schedule?.interview_meeting.end_time,
+                              },
+                              status: schedule?.interview_meeting.status,
+                            },
+                          ]}
+                          candidate={{
+                            email: schedule?.candidates.email,
+                            name: `${schedule?.candidates.first_name || ''} ${schedule?.candidates.last_name || ''}`.trim(),
+                            job_id: schedule?.job?.id,
+                          }}
+                        />
+                      </Stack>
+                    </ShowCode.When>
+                    <ShowCode.When isTrue={router.query.tab === 'job_details'}>
+                      <JobDetails schedule={schedule} />
+                    </ShowCode.When>
+                  </ShowCode>
+                }
+              />
+            }
+            slotTopbarRight={
+              <ButtonGroup
+                setIsCancelOpen={setIsCancelOpen}
+                isMeetingJobHiringTeam={isMeetingJobHiringTeam}
+                cancelReasons={cancelReasons}
+                schedule={schedule}
+                setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
+                setIsRescheduleOpen={setIsRescheduleOpen}
+              />
+            }
+          />
+        </>
+      )}
+    </>
   );
 }
 

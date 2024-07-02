@@ -1,8 +1,5 @@
-import {
-  APIEventAttendeeStatus,
-  DatabaseTable,
-  InterviewSessionRelationTypeDB,
-} from '@aglint/shared-types';
+import { APIEventAttendeeStatus, DatabaseTable } from '@aglint/shared-types';
+import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
@@ -10,8 +7,11 @@ import React, { useEffect, useState } from 'react';
 import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { StatusBadge } from '@/devlink2/StatusBadge';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
-import { ScheduleButton } from '@/devlink3/ScheduleButton';
+import { ButtonSoft } from '@/devlink3/ButtonSoft';
+import { GlobalUserDetail } from '@/devlink3/GlobalUserDetail';
+import { NewScheduleDetail } from '@/devlink3/NewScheduleDetail';
 import { ScheduleTabOverview } from '@/devlink3/ScheduleTabOverview';
+import { UserNameCard } from '@/devlink3/UserNameCard';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -24,14 +24,8 @@ import toast from '@/src/utils/toast';
 import { onClickResendInvite } from '../../CandidateDetails/utils';
 import IconScheduleType from '../../Candidates/ListCard/Icon';
 import { getScheduleType } from '../../Candidates/utils';
+import { SessionIcon } from '../../Common/ScheduleProgress/scheduleProgressPill';
 import { formatTimeWithTimeZone } from '../../utils';
-import CancelScheduleDialog from '../CancelScheduleDialog';
-import DeclineScheduleDialog from '../DeclineScheduleDialog';
-import { useScheduleDetails } from '../hooks';
-import IconCancelSchedule from '../Icons/IconCancelSchedule';
-import IconReschedule from '../Icons/IconReschedule';
-import RequestRescheduleDialog from '../RequestRescheduleDialog';
-import RescheduleDialog from '../RescheduleDialog';
 import { ScheduleMeeting } from '../types';
 import AllRolesMeetings from './AllRolesMeetings';
 import IconAccept from './IconAccept';
@@ -39,17 +33,15 @@ import IconDecline from './IconDecline';
 import InterviewerListCard from './InterviewerListCard';
 
 function Overview({
-  cancelReasons,
   schedule,
-  isCancelOpen,
   setIsCancelOpen,
   refetch,
+  setIsDeclineOpen,
 }: {
-  cancelReasons: ReturnType<typeof useScheduleDetails>['data']['cancel_data'];
   schedule: ScheduleMeeting;
-  isCancelOpen: boolean;
   setIsCancelOpen: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
+  setIsDeclineOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const { recruiterUser } = useAuthDetails();
   const { checkPermissions } = useRolesAndPermissions();
@@ -59,10 +51,6 @@ function Overview({
   const [requestAvailibility, setRequestAvailibility] = useState<
     DatabaseTable['candidate_request_availability'] | null
   >(null);
-
-  const [isRequestRescheduleOpen, setIsRequestRescheduleOpen] = useState(false); //role interviewers will ask for reschedule
-  const [isRescheduleOpen, setIsRescheduleOpen] = useState(false); // role who have permission to reschedule
-  const [isDeclineOpen, setIsDeclineOpen] = useState(false);
 
   // eslint-disable-next-line no-unused-vars
   const [allCalendarStatus, setAllCalendarStatus] = useState<
@@ -126,54 +114,9 @@ function Overview({
 
   const users = schedule?.users || [];
 
-  const isMeetingJobHiringTeam =
-    schedule?.hiring_manager?.id === recruiterUser.user_id ||
-    schedule?.organizer?.id === recruiterUser.user_id ||
-    schedule?.recruiting_coordinator?.id === recruiterUser.user_id ||
-    schedule?.recruiter?.id === recruiterUser.user_id;
-
   const confirmedUsers = users?.filter(
     (item) => item.interview_session_relation.is_confirmed,
   );
-
-  //if logged in user is hiring team or having scheduler_update permission
-  const isRescheduleButtonVisible =
-    (isMeetingJobHiringTeam || checkPermissions(['scheduler_update'])) &&
-    schedule?.interview_meeting?.status === 'confirmed';
-
-  // if logged in user is an interviewer in this session
-  const isRequestRescheduleButtonVisible =
-    schedule?.users?.find(
-      (user) =>
-        user.interview_session_relation.is_confirmed &&
-        user.email === recruiterUser.email &&
-        user.interview_session_relation.training_type === 'qualified',
-    ) &&
-    !cancelReasons?.some(
-      (item) =>
-        item.recruiter_user.id === recruiterUser.user_id &&
-        !item.interview_session_cancel.is_resolved,
-    ) &&
-    schedule?.interview_meeting?.status === 'confirmed';
-  // if logged in user is an interviewer in this session
-
-  const isCancelButtonVisible =
-    (checkPermissions(['scheduler_create']) || isMeetingJobHiringTeam) &&
-    schedule?.interview_meeting?.status === 'confirmed';
-
-  // if logged in user is interviewer session relation will be there or else null
-  const [sessionRelation, setSessionRelation] =
-    useState<InterviewSessionRelationTypeDB | null>();
-
-  useEffect(() => {
-    if (schedule?.users) {
-      setSessionRelation(
-        schedule?.users?.find((user) => user.email === recruiterUser.email)
-          ?.interview_session_relation,
-      );
-    }
-  }, [schedule?.users]);
-  // if logged in user is interviewer session relation will be there or else null
 
   const fetchCalendarStatus = async () => {
     try {
@@ -198,47 +141,113 @@ function Overview({
 
   return (
     <>
-      <>
-        <DeclineScheduleDialog
-          sessionRelation={sessionRelation}
-          isDeclineOpen={isDeclineOpen}
-          setIsDeclineOpen={setIsDeclineOpen}
-          schedule={schedule}
-          refetch={refetch}
-        />
-        <CancelScheduleDialog
-          isDeclineOpen={isCancelOpen}
-          setIsDeclineOpen={setIsCancelOpen}
-          refetch={refetch}
-          metaDetails={[
-            {
-              application_id: schedule.schedule.application_id,
-              meeting_id: schedule.interview_meeting.id,
-              session_name: schedule.interview_session.name,
-              session_id: schedule.interview_session.id,
-            },
-          ]}
-          closeDialog={() => {}}
-          application_log_id={null}
-        />
-        <RequestRescheduleDialog
-          isRequestRescheduleOpen={isRequestRescheduleOpen}
-          setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
-          sessionRelation={sessionRelation}
-          schedule={schedule}
-          refetch={refetch}
-        />
-        <RescheduleDialog
-          refetch={() => {}}
-          isRescheduleOpen={isRescheduleOpen}
-          setIsRescheduleOpen={setIsRescheduleOpen}
-          application_id={schedule.schedule.application_id}
-          meeting_id={schedule.interview_meeting.id}
-          session_id={schedule.interview_session.id}
-          meeting_flow={schedule.interview_meeting.meeting_flow}
-          session_name={schedule.interview_session.name}
-        />
-      </>
+      <NewScheduleDetail
+        slotInterviewerList={confirmedUsers?.map((item) => {
+          return (
+            <>
+              <InterviewerListCard
+                item={item}
+                schedule={schedule}
+                setIsDeclineOpen={setIsDeclineOpen}
+                refetch={refetch}
+              />
+            </>
+          );
+        })}
+        slotHiringTeamList={<AllRolesMeetings schedule={schedule} />}
+        slotOrganizerList={
+          <UserNameCard
+            textRole={schedule.organizer.position}
+            textName={getFullName(
+              schedule.organizer.first_name,
+              schedule.organizer.last_name,
+            )}
+            slotAvatar={
+              <MuiAvatar
+                level={getFullName(
+                  schedule.organizer.first_name,
+                  schedule.organizer.last_name,
+                )}
+                src={schedule.organizer.profile_image}
+                variant={'rounded-medium'}
+              />
+            }
+          />
+        }
+        textDate={dayjs(schedule.interview_meeting.end_time).format('DD')}
+        textTime={formatTimeWithTimeZone({
+          start_time: schedule.interview_meeting.start_time,
+          end_time: schedule.interview_meeting.end_time,
+          timeZone: schedule.candidates.timezone,
+        })}
+        textDay={dayjs(schedule.interview_meeting.end_time).format('dd')}
+        textMonth={dayjs(schedule.interview_meeting.end_time).format('MMM')}
+        textPanelName={schedule.interview_session.name}
+        slotStatusBadge={
+          <StatusBadge
+            isCancelledVisible={
+              schedule.interview_meeting.status === 'cancelled'
+            }
+            isCompletedVisible={
+              schedule.interview_meeting.status === 'completed'
+            }
+            isConfirmedVisible={
+              schedule.interview_meeting.status === 'confirmed'
+            }
+            isInProgressVisible={false}
+            isWaitingVisible={schedule.interview_meeting.status === 'waiting'}
+          />
+        }
+        slotInterviewTypeButton={
+          <Stack direction={'row'}>
+            <ButtonSoft
+              size={1}
+              textButton={schedule.interview_module.name}
+              isRightIcon={true}
+              slotIcon={
+                <svg
+                  width='12'
+                  height='12'
+                  viewBox='0 0 12 12'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
+                >
+                  <path
+                    d='M9.375 2.25C9.60938 2.26563 9.73438 2.39062 9.75 2.625V7.875C9.73438 8.10938 9.60938 8.23438 9.375 8.25C9.14062 8.23438 9.01562 8.10938 9 7.875V3.53906L2.88281 9.63281C2.71094 9.78906 2.53906 9.78906 2.36719 9.63281C2.21094 9.46094 2.21094 9.28906 2.36719 9.11719L8.46094 3H4.125C3.89062 2.98437 3.76562 2.85938 3.75 2.625C3.76562 2.39062 3.89062 2.26563 4.125 2.25H9.375Z'
+                    fill='#CC4E00'
+                  />
+                </svg>
+              }
+              onClickButton={{
+                onClick: () => {
+                  checkPermissions(['scheduler_create']) &&
+                    window.open(
+                      `/scheduling/module/members/${schedule.interview_session.module_id}`,
+                      '_blank',
+                    );
+                },
+              }}
+            />
+          </Stack>
+        }
+        iconPanel={
+          <SessionIcon session_type={schedule.interview_session.session_type} />
+        }
+        slotCandidateList={
+          <GlobalUserDetail
+            isRoleVisible={false}
+            textName={getFullName(
+              schedule.candidates.first_name,
+              schedule.candidates.last_name,
+            )}
+            textTimeZone={formatTimeWithTimeZone({
+              start_time: schedule.interview_meeting.start_time,
+              end_time: schedule.interview_meeting.end_time,
+              timeZone: userTzDayjs.tz.guess(),
+            })}
+          />
+        }
+      />
 
       <ScheduleTabOverview
         isResendLinkVisible={
@@ -251,16 +260,21 @@ function Overview({
           (schedule.interview_meeting.status === 'confirmed' ||
             schedule.interview_meeting.status === 'waiting')
         }
-        slotAttendeesIcon={schedule.users.map((item) => {
-          return item.interview_session_relation.accepted_status ===
-            'accepted' ? (
-            <IconAccept />
-          ) : item.interview_session_relation.accepted_status === 'declined' ? (
-            <IconDecline />
-          ) : (
-            '-'
-          );
-        })}
+        slotAttendeesIcon={
+          schedule.users.length > 0
+            ? schedule.users.map((item) => {
+                return item.interview_session_relation.accepted_status ===
+                  'accepted' ? (
+                  <IconAccept />
+                ) : item.interview_session_relation.accepted_status ===
+                  'declined' ? (
+                  <IconDecline />
+                ) : (
+                  ''
+                );
+              })
+            : '--'
+        }
         onClickResendLink={{
           onClick: () => {
             if (
@@ -312,51 +326,6 @@ function Overview({
             }
           },
         }}
-        slotButton={
-          <>
-            {isRequestRescheduleButtonVisible && (
-              <ScheduleButton
-                textLabel={'Request Reschedule'}
-                slotIcon={<IconReschedule />}
-                onClickProps={{
-                  onClick: () => {
-                    setIsRequestRescheduleOpen(true);
-                  },
-                }}
-              />
-            )}
-
-            {isCancelButtonVisible && (
-              <ScheduleButton
-                textLabel={'Cancel Schedule'}
-                slotIcon={<IconCancelSchedule />}
-                textColorProps={{
-                  style: {
-                    color: '#D93F4C',
-                  },
-                }}
-                onClickProps={{
-                  style: { background: '#FFF0F1' },
-                  onClick: () => {
-                    setIsCancelOpen(true);
-                  },
-                }}
-              />
-            )}
-
-            {isRescheduleButtonVisible && (
-              <ScheduleButton
-                textLabel={'Reschedule'}
-                slotIcon={<IconReschedule />}
-                onClickProps={{
-                  onClick: () => {
-                    setIsRescheduleOpen(true);
-                  },
-                }}
-              />
-            )}
-          </>
-        }
         isScheduleCardVisible={true}
         isMeetingLinkVisible={
           schedule.interview_meeting.status == 'confirmed' &&
