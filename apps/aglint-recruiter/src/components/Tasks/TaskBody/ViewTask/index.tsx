@@ -146,7 +146,6 @@ function ViewTaskDrawer() {
     upHandler();
   }
 
-  const a = document.getElementById('taskContainer')?.scrollHeight;
   const upHandler = () => {
     if (selectedIndex === 0) {
       document.getElementById('taskContainer').scrollTop =

@@ -46,7 +46,7 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
       sx={{
         bgcolor:
           taskId === task.id || selectedTasksIds.includes(task.id)
-            ? 'var(--blue-2)'
+            ? 'var(--orange-2)'
             : undefined,
         '&:hover': {
           bgcolor: 'var(--neutral-2)',

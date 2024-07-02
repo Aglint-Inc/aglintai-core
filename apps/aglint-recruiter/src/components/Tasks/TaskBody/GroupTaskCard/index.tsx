@@ -29,8 +29,13 @@ function GroupTaskCard({
   task: TasksAgentContextType['tasks'][number];
 }) {
   const route = useRouter();
-  const { setTaskId, selectedTasksIds, setSelectedTasksIds, selectedGroupBy } =
-    useTaskStatesContext();
+  const {
+    setTaskId,
+    taskId,
+    selectedTasksIds,
+    setSelectedTasksIds,
+    selectedGroupBy,
+  } = useTaskStatesContext();
   let toDayDateTime = dayjs();
   const tomorrowDate = toDayDateTime.add(1, 'day');
   let dueDateTime = dayjs(task.due_date);
@@ -50,7 +55,7 @@ function GroupTaskCard({
   return (
     <Stack
       sx={{
-        bgcolor: 'var(--white)',
+        bgcolor: taskId === task.id && 'var(--orange-2)',
         '&:hover': {
           bgcolor: 'var(--neutral-2)',
           '& div:first-child div .checkboxClass': {
@@ -198,7 +203,7 @@ function GroupTaskCard({
                 }
               }}
               size='small'
-              sx={{color:'var(--accent-9)'}}
+              sx={{ color: 'var(--accent-9)' }}
             />
           </Stack>
         }
