@@ -62,10 +62,17 @@ function Filters() {
       );
       setSelectedFilters([...filterOptions]);
     }
+    const local = JSON.parse(localStorage.getItem('scheduleFilterIds'));
+
+    if (
+      !_.isEqual(Object.keys(local).sort(), Object.keys(initialFilter).sort())
+    ) {
+      localStorage.setItem('scheduleFilterIds', JSON.stringify(initialFilter));
+    }
   }, []);
 
   const scheduleFilterIds =
-    JSON.parse(localStorage.getItem('scheduleFilterIds')) || {};
+    JSON.parse(localStorage.getItem('scheduleFilterIds')) || initialFilter;
 
   const [selectedStatus, setSelectedStatus] = useState<string[]>(
     scheduleFilterIds?.status || [],
