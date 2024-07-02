@@ -6,11 +6,13 @@ import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContext
 function FilterTasks() {
   const { search, filter, handelSearch, handelFilter, handelResetFilter } =
     useTasksContext();
-
+  const allResetShow = !!Object.values(filter)
+    .map((ele) => ele.values)
+    .flat().length;
   return (
     <FilterHeader
       handelResetAll={handelResetFilter}
-      isResetAll={true}
+      isResetAll={allResetShow}
       search={{
         value: search,
         setValue: (e) => {
