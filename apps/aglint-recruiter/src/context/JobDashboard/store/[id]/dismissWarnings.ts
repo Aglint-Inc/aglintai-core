@@ -4,6 +4,7 @@ type DismissWarnings = {
   job_description: boolean;
   interview_plan: boolean;
   interview_session: boolean;
+  score_changed: boolean;
 };
 
 export type DismissWarningsSlice = {
@@ -17,6 +18,7 @@ const initialDismissWarning: DismissWarnings = {
   job_description: false,
   interview_plan: false,
   interview_session: false,
+  score_changed: false,
 };
 
 export const createDismissWarningsSlice: CreateSlice<DismissWarningsSlice> = (
