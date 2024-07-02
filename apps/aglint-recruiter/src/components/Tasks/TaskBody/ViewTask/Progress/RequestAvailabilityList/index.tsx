@@ -32,7 +32,7 @@ function RequestAvailabilityList({
 
   return (
     <GlobalBanner
-      color={'check'}
+      color={'warning'}
       iconName={'schedule'}
       textTitle={'Candidate submitted availability'}
       textDescription={

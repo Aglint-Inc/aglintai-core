@@ -23,8 +23,8 @@ function ScheduleNowCard({
 
   return (
     <GlobalBanner
-      color={'waiting'}
-      iconName={'check'}
+      color={'warning'}
+      iconName={'check_circle'}
       textTitle={'Schedule interview'}
       textDescription={
         'Please select a date and time to schedule your interview.'
