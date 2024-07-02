@@ -5242,6 +5242,8 @@ export type Database = {
         | "send_email"
         | "request_submitted"
         | "schedule"
+        | "closed"
+        | "completed"
       public_job_status: "draft" | "published" | "closed"
       public_job_type:
         | "contract"
@@ -5322,6 +5324,8 @@ export type Database = {
         | "sendAvailReqReminder"
         | "interviewerConfirmation"
         | "interviewEnd"
+        | "meetingDeclined"
+        | "meetingAccepted"
     }
     CompositeTypes: {
       location_type: {
