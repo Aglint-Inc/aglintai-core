@@ -52,13 +52,17 @@ function SchedulerEmailTemps() {
   useEffect(() => {
     (async () => {
       try {
+        let template_tab = template_tabs[0].key;
+        if (!template_tabs.find((t) => t.key === temp_tab)) {
+          template_tab = template_tabs[0].key;
+        }
         const temps = await fetchEmailTemplates(recruiter_id);
         if (!temps || !router.isReady) return;
 
         const curr_tab_temps = SortCurrentTabTemps(temps);
 
         const current_filtered_temp = curr_tab_temps.filter((t) =>
-          filterEmailByTemplateTab(temp_tab, t.type),
+          filterEmailByTemplateTab(template_tab, t.type),
         );
         setSelectedTemplate({ ...current_filtered_temp[0] });
         setEmailTemplate([...curr_tab_temps]);
@@ -109,7 +113,6 @@ function SchedulerEmailTemps() {
     } catch (error) {
       setPopOverLoading(false);
       toast.error(`Error fetching preview: ${error}`);
-      throw error;
     }
   };
 
