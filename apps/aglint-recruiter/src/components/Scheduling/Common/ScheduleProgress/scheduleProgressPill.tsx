@@ -8,7 +8,7 @@ import { ScheduleProgressPill as ScheduleProgressPillDev } from '@/devlink/Sched
 import { StatusBadge } from '@/devlink2/StatusBadge';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 
-import IconScheduleType from '../../Candidates/ListCard/Icon';
+import IconScheduleType from '../../Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '../../Candidates/utils';
 
 type Enums = DB['public']['Enums'];

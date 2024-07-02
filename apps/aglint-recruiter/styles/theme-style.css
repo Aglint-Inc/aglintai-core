@@ -1663,3 +1663,22 @@ box-shadow: inset 0 0 0 1px var(--pink-8);
   background-color: var(--neutral-2);
   color: var(--neutral-11);
 }
+
+[data-color="neutral"] {
+  color: var(--neutral-11);
+}
+[data-color="neutral-12"] {
+  color: var(--neutral-12);
+}
+[data-color="error"] {
+  color: var(--error-11);
+}
+[data-color="warning"] {
+  color: var(--warning-11);
+}
+[data-color="success"] {
+  color: var(--success-11);
+}
+[data-color="info"] {
+  color: var(--info-11);
+}

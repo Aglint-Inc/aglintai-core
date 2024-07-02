@@ -10,7 +10,7 @@ import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import IconScheduleType from '../../../Candidates/ListCard/Icon';
+import IconScheduleType from '../../../Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '../../../Candidates/utils';
 import { formatTimeWithTimeZone } from '../../../utils';
 import {
@@ -56,12 +56,12 @@ function BookingConfirmation({
 
         const selectedSessions: SchedulingApplication['cancelSessions'] =
           initialSessions
-            .filter((ses) => checkFilterJson.session_ids.includes(ses.id))
+            .filter((ses) => checkFilterJson.session_ids.includes(ses.interview_session.id))
             .map((ses) => ({
               application_id: selectedApplication.id,
               meeting_id: ses.interview_meeting.id,
-              session_id: ses.id,
-              session_name: ses.name,
+              session_id: ses.interview_session.id,
+              session_name: ses.interview_session.name,
             }));
 
         setCancelSessions(selectedSessions);
@@ -78,14 +78,14 @@ function BookingConfirmation({
 
         const selectedSessions = reqAva.session_ids
           .map((reqses) => {
-            const session = initialSessions.find((ses) => ses.id === reqses.id);
+            const session = initialSessions.find((ses) => ses.interview_session.id === reqses.id);
             return session;
           })
           .map((ses) => ({
             application_id: selectedApplication.id,
             meeting_id: ses.interview_meeting.id,
-            session_id: ses.id,
-            session_name: ses.name,
+            session_id: ses.interview_session.id,
+            session_name: ses.interview_session.name,
           }));
 
         setCancelSessions(selectedSessions);

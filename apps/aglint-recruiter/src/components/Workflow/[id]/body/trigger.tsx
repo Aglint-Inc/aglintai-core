@@ -124,6 +124,14 @@ const TRIGGER_PAYLOAD: {
     trigger: 'interviewEnd',
     phase: ['now', 'after'],
   },
+  {
+    trigger: 'meetingDeclined',
+    phase: ['now', 'after'],
+  },
+  {
+    trigger: 'meetingAccepted',
+    phase: ['now', 'after'],
+  },
 ];
 
 const TRIGGER_OPTIONS = TRIGGER_PAYLOAD.reduce(
@@ -164,10 +172,17 @@ export function getTriggerOption(
       message = 'starting an interview';
       break;
     case 'interviewerConfirmation':
-      message = 'interview confirmation by interviewer';
+      message = 'interview confirmation by an interviewer';
       break;
     case 'interviewEnd':
       message = 'ending an interview';
+      break;
+    case 'meetingDeclined':
+      message = 'an interviewer declines a meeting invitation';
+      break;
+    case 'meetingAccepted':
+      message = 'an interviewer accepts a meeting invitation';
+      break;
   }
   let preMessage = '';
   switch (phase) {

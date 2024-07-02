@@ -104,6 +104,10 @@ const ACTION_TRIGGER_MAP: {
       name: 'Send emails to interviewers',
     },
     {
+      value: 'interviewStart_email_organizer',
+      name: 'Send emails to organizer',
+    },
+    {
       value: 'interviewStart_slack_interviewers',
       name: 'Send slack messages to interviewers',
     },
@@ -118,6 +122,18 @@ const ACTION_TRIGGER_MAP: {
     {
       value: 'interviewEnd_slack_interviewers',
       name: 'Send feedback messages to interviewers on slack',
+    },
+  ],
+  meetingDeclined: [
+    {
+      value: 'meetingDeclined_email_organizer',
+      name: 'Send email to organizer',
+    },
+  ],
+  meetingAccepted: [
+    {
+      value: 'meetingAccepted_email_organizer',
+      name: 'Send email to organizer',
     },
   ],
 };

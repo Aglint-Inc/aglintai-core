@@ -28,6 +28,17 @@ export function EmailTemplateCards({
         <_Builtin.Block className={_utils.cx(_styles, "relative-1")} tag="div">
           <Text content={textTitle} />
         </_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "slotbadge")} tag="div">
+          {slotBadge ?? (
+            <>
+              <GlobalBadge />
+              <GlobalBadge />
+              <GlobalBadge />
+              <GlobalBadge />
+              <GlobalBadge />
+            </>
+          )}
+        </_Builtin.Block>
       </_Builtin.Block>
       {isActive ? (
         <_Builtin.Block

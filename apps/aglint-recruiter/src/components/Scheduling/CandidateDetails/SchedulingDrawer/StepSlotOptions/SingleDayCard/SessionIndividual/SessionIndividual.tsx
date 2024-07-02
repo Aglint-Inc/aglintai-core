@@ -1,11 +1,11 @@
 import { PlanCombinationRespType } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 import { MemberRow } from '@/devlink3/MemberRow';
 import { NoConflicts } from '@/devlink3/NoConflicts';
 import { SessionDetails } from '@/devlink3/SessionDetails';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
-import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { formatTimeWithTimeZone } from '../../../../../utils';
@@ -26,11 +26,7 @@ function SessionIndividual({
         key={session.session_id}
         textSessionName={session_name}
         textSessionDuration={session_duration}
-        textSessionTime={formatTimeWithTimeZone({
-          start_time: session.start_time,
-          end_time: session.end_time,
-          timeZone: userTzDayjs.tz.guess(),
-        })}
+        textSessionTime={`${dayjsLocal(session.start_time).format('hh:mm A')} - ${dayjsLocal(session.end_time).format('hh:mm A')}`}
         isMemberRow={true}
         slotMemberRow={members.map((member) => {
           const allUserConflicts = session.ints_conflicts

@@ -141,6 +141,7 @@ function SchedulerEmailTemps() {
     setTimeout(() => {
       setTipTapLoder(false);
     }, 500);
+    setSearchQry('');
     router.query.template_tab = update_tab;
     router.push(router);
   };

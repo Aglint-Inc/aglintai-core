@@ -9,6 +9,8 @@
 
   border: 1px solid var(--neutral-6);
   border-radius: var(--radius-4);
+
+  background-color: var(--white);
 }
 
 .ip_content_wrap {
@@ -49,6 +51,20 @@
   grid-row-gap: var(--space-2);
 }
 
+.text_with_icon {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.slot_icon {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .ip_meeting_link {
   display: flex;
   justify-content: flex-start;
@@ -67,7 +83,7 @@
 
 .ip_content_left {
   display: flex;
-  width: 60%;
+  width: 65%;
   height: 100%;
   padding-right: var(--space-4);
   flex-direction: column;
@@ -84,9 +100,25 @@
   grid-row-gap: var(--space-2);
 }
 
+.nsd-list-wrap {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.nsd-header-wrap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
 .ip_content_right {
   display: flex;
-  width: 40%;
+  width: 35%;
   padding-left: var(--space-6);
   flex-direction: column;
   flex-wrap: nowrap;

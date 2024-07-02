@@ -10,7 +10,7 @@ import { HistoryTrainingCard } from '@/devlink3/HistoryTrainingCard';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import ROUTES from '@/src/utils/routing/routes';
 
-import IconScheduleType from '../../../Candidates/ListCard/Icon';
+import IconScheduleType from '../../../Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '../../../Candidates/utils';
 import { ScheduleListType } from '../../../Common/ModuleSchedules/hooks';
 import { DetailsWithCount, PauseDialog } from '../../type';

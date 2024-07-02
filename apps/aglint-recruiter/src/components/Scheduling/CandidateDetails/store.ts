@@ -17,11 +17,11 @@ export type TabSchedulingType =
 
 export interface SchedulingApplication {
   initialLoading: boolean;
-  initialSessions: SessionsType;
+  initialSessions: SessionsType[];
   selectedSessionIds: string[];
   requestSessionIds: string[];
   selectedApplication: SelectedApplicationTypeDB;
-  selectedSession: SessionsType[0] | null;
+  selectedSession: SessionsType | null;
   selectedSchedule: InterviewScheduleTypeDB;
   interviewModules: InterviewModuleType[];
   scheduleName: string;
@@ -29,7 +29,7 @@ export interface SchedulingApplication {
   fetchingSchedule: boolean;
   isEditOpen: boolean;
   isEditBreakOpen: boolean;
-  editSession: SessionsType[0];
+  editSession: SessionsType;
   availabilities: DatabaseTable['candidate_request_availability'][];
   isIndividualCancelOpen: boolean;
   isMultipleCancelOpen: boolean;
@@ -123,10 +123,13 @@ export const setIsEditOpen = (isEditOpen: boolean) =>
 export const setIsEditBreakOpen = (isEditBreakOpen: boolean) =>
   useSchedulingApplicationStore.setState({ isEditBreakOpen });
 
-export const setSelectedSession = (selectedSession: SessionsType[0]) =>
-  useSchedulingApplicationStore.setState({ selectedSession });
+export const setSelectedSession = (
+  selectedSession: SchedulingApplication['selectedSession'],
+) => useSchedulingApplicationStore.setState({ selectedSession });
 
-export const setEditSession = (editSession: Partial<SessionsType[0]>) =>
+export const setEditSession = (
+  editSession: Partial<SchedulingApplication['editSession']>,
+) =>
   useSchedulingApplicationStore.setState((state) => ({
     editSession: { ...state.editSession, ...editSession },
   }));
@@ -135,8 +138,9 @@ export const setSelectedSchedule = (
   selectedSchedule: InterviewScheduleTypeDB,
 ) => useSchedulingApplicationStore.setState({ selectedSchedule });
 
-export const setinitialSessions = (initialSessions: SessionsType) =>
-  useSchedulingApplicationStore.setState({ initialSessions });
+export const setinitialSessions = (
+  initialSessions: SchedulingApplication['initialSessions'],
+) => useSchedulingApplicationStore.setState({ initialSessions });
 
 export const setSelectedSessionIds = (selectedSessionIds: string[]) =>
   useSchedulingApplicationStore.setState({ selectedSessionIds });

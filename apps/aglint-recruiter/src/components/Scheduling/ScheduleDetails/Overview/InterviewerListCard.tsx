@@ -1,16 +1,15 @@
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-import React, { Dispatch } from 'react';
+import React from 'react';
 
+import { TextWithIcon } from '@/devlink2/TextWithIcon';
+import { GlobalUserDetail } from '@/devlink3/GlobalUserDetail';
 import { MemberDetail } from '@/devlink3/MemberDetail';
-import { MembersList } from '@/devlink3/MembersList';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { CustomTooltip } from '@/src/components/Common/Tooltip';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
-import { supabase } from '@/src/utils/supabase/client';
 
 import { calculateHourDifference } from '../../InterviewTypes/utils';
 import { formatTimeWithTimeZone } from '../../utils';
@@ -21,41 +20,19 @@ import IconDecline from './IconDecline';
 function InterviewerListCard({
   schedule,
   item,
-  setIsDeclineOpen,
-  refetch,
 }: {
   schedule: ScheduleMeeting;
   item: ScheduleMeeting['users'][0];
-  setIsDeclineOpen: Dispatch<React.SetStateAction<boolean>>;
-  refetch: () => void;
 }) {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
   const currentDay = dayjs();
 
-  const onClickAccept = async (session_relation_id) => {
-    if (schedule.interview_meeting.status === 'confirmed') {
-      await supabase
-        .from('interview_session_relation')
-        .update({ accepted_status: 'accepted' })
-        .eq('id', session_relation_id);
-      refetch();
-    }
-  };
-
   const isAccepted =
     item.interview_session_relation.accepted_status === 'accepted';
   const isDeclined =
     item.interview_session_relation.accepted_status === 'declined';
-  const isAcceptVisible =
-    item.interview_session_relation.accepted_status === 'waiting' &&
-    schedule.interview_meeting.status === 'confirmed' &&
-    item.interview_session_relation.training_type === 'qualified';
-  const isDeclineVisible =
-    item.interview_session_relation.accepted_status !== 'declined' &&
-    item.interview_session_relation.accepted_status !== 'request_reschedule' &&
-    schedule.interview_meeting.status === 'confirmed' &&
-    item.interview_session_relation.training_type === 'qualified';
+
   const allMeetings = item.weekly_meetings || [];
   const dailyMeetings = allMeetings.filter((meet) =>
     dayjs(meet?.end_time).isSame(currentDay, 'day'),
@@ -116,47 +93,50 @@ function InterviewerListCard({
         }
       >
         <Stack>
-          <MembersList
-            onClickAccept={{
-              onClick: () => {
-                onClickAccept(item.interview_session_relation.id);
-              },
-            }}
-            textDesignation={item.position || '--'}
-            slotIcon={
-              isAccepted ? <IconAccept /> : isDeclined ? <IconDecline /> : ''
+          <GlobalUserDetail
+            textTimeZone={formatTimeWithTimeZone({
+              start_time: schedule.interview_meeting.start_time,
+              end_time: schedule.interview_meeting.end_time,
+              timeZone: item.scheduling_settings?.timeZone?.tzCode,
+            })}
+            isRoleVisible={true}
+            slotRole={
+              item.position ? (
+                <TextWithIcon
+                  fontWeight={'regular'}
+                  textContent={item.position}
+                  iconName={'work'}
+                  iconSize={4}
+                  color='neutral'
+                />
+              ) : (
+                '--'
+              )
             }
-            isDetailVisible={true}
-            isDesignationVisible={true}
-            isButtonVisible={false}
-            isAcceptDeclineVisibe={recruiterUser.user_id === item.id}
-            isAcceptVisible={isAcceptVisible}
-            isDeclineVisible={isDeclineVisible}
-            onClickDecline={{
-              onClick: () => {
-                setIsDeclineOpen(true);
-              },
-            }}
+            textName={fullName}
             slotImage={
               <MuiAvatar
                 level={fullName}
                 src={item.profile_image}
-                variant={'rounded-medium'}
+                variant={'rounded'}
                 fontSize={'14px'}
+                width='100%'
+                height='100%'
               />
             }
-            textName={fullName}
-            isReverseShadow={
-              item.interview_session_relation.training_type === 'reverse_shadow'
+            isSlotImageVisible={true}
+            isCandidateAvatarVisible={false}
+            slotCandidateStatus={
+              <>
+                {isAccepted ? (
+                  <IconAccept />
+                ) : isDeclined ? (
+                  <IconDecline />
+                ) : (
+                  ''
+                )}
+              </>
             }
-            isShadow={
-              item.interview_session_relation.training_type === 'shadow'
-            }
-            textTime={formatTimeWithTimeZone({
-              start_time: schedule.interview_meeting.start_time,
-              end_time: schedule.interview_meeting.end_time,
-              timeZone: userTzDayjs.tz.guess(),
-            })}
           />
         </Stack>
       </CustomTooltip>

@@ -10,4 +10,5 @@ declare function GlobalBanner(props: {
   slotButtons?: Types.Devlink.Slot;
   isAdditionalNotes?: Types.Visibility.VisibilityConditions;
   color?: Types.Builtin.Text;
+  isDescriptionVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

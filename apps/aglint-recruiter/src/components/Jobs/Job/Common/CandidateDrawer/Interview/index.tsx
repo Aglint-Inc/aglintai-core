@@ -6,7 +6,7 @@ import { Skeleton } from '@/devlink2/Skeleton';
 import { StatusBadge } from '@/devlink2/StatusBadge';
 import { NewInterviewPlanCard } from '@/devlink3/NewInterviewPlanCard';
 import { SkeletonNewInterviewPlanCard } from '@/devlink3/SkeletonNewInterviewPlanCard';
-import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon';
+import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import {
   getScheduleBgcolor,
   getScheduleType,
