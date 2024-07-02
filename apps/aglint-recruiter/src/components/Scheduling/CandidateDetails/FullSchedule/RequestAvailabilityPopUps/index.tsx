@@ -126,6 +126,17 @@ function RequestAvailabilityPopUps() {
                               },
                             }}
                           />
+
+                          <ButtonSoft
+                            textButton={'Request again'}
+                            isLoading={false}
+                            isLeftIcon={false}
+                            isRightIcon={false}
+                            size={1}
+                            onClickButton={{
+                              onClick: () => handleRequestAgain(item.id),
+                            }}
+                          />
                           <ButtonSoft
                             textButton={'Copy invite'}
                             isLoading={false}
