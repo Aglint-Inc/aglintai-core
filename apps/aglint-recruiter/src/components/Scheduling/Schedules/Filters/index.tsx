@@ -64,10 +64,15 @@ function Filters() {
     }
     const local = JSON.parse(localStorage.getItem('scheduleFilterIds'));
 
-    if (
-      !_.isEqual(Object.keys(local).sort(), Object.keys(initialFilter).sort())
-    ) {
-      localStorage.setItem('scheduleFilterIds', JSON.stringify(initialFilter));
+    if (local) {
+      if (
+        !_.isEqual(Object.keys(local).sort(), Object.keys(initialFilter).sort())
+      ) {
+        localStorage.setItem(
+          'scheduleFilterIds',
+          JSON.stringify(initialFilter),
+        );
+      }
     }
   }, []);
 
