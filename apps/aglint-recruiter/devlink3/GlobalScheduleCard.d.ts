@@ -15,10 +15,16 @@ declare function GlobalScheduleCard(props: {
   iconMeetingPlatform?: React.ReactNode;
   textRole?: React.ReactNode;
   textCandidateName?: React.ReactNode;
-  iconAvatar?: React.ReactNode;
   slotButtonViewDetail?: Types.Devlink.Slot;
   onClickDropdown?: Types.Devlink.RuntimeProps;
   slotRequestDetail?: Types.Devlink.Slot;
   slotDropdownContent?: Types.Devlink.Slot;
-  isDropdownContentVisible?: Types.Visibility.VisibilityConditions;
+  slotCheckbox?: Types.Devlink.Slot;
+  isCheckboxVisible?: Types.Visibility.VisibilityConditions;
+  isDateVisible?: Types.Visibility.VisibilityConditions;
+  isTimeVisible?: Types.Visibility.VisibilityConditions;
+  isSelectedVisible?: Types.Visibility.VisibilityConditions;
+  isDropdownIconVisible?: Types.Visibility.VisibilityConditions;
+  styleGrid?: Types.Devlink.RuntimeProps;
+  isButtonBlockVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

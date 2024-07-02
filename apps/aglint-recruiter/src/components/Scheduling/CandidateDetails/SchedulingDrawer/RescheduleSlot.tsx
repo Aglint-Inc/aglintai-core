@@ -1,3 +1,4 @@
+import { getFullName } from '@aglint/shared-utils';
 import { Popover, Stack } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
@@ -33,7 +34,7 @@ function RescheduleSlot() {
   let selectedSessions: SchedulingApplication['initialSessions'] = [];
 
   selectedSessions = initialSessions.filter((ses) =>
-    rescheduleSessionIds?.includes(ses.id),
+    rescheduleSessionIds?.includes(ses.interview_session.id),
   );
 
   const selectSession = () =>
@@ -87,13 +88,36 @@ function RescheduleSlot() {
           {selectedSessions.map((ses) => {
             return (
               <ScheduleIndividualCard
-                session={ses}
-                key={ses.id}
+                key={ses.interview_session.id}
                 isCheckboxVisible={false}
-                isThreeDotVisible={false}
                 onClickCheckBox={selectSession}
                 selectedSessionIds={selectedLocalSessionIds}
-                isOnclickCard={false}
+                candidate={{
+                  currentJobTitle:
+                    selectedApplication.candidates.current_job_title,
+                  fullname: getFullName(
+                    selectedApplication.candidates.first_name,
+                    selectedApplication.candidates.last_name,
+                  ),
+                  timezone: selectedApplication.candidates.timezone,
+                }}
+                interview_meeting={{
+                  end_time: ses.interview_meeting.end_time,
+                  id: ses.interview_meeting.id,
+                  start_time: ses.interview_meeting.start_time,
+                  status: ses.interview_meeting.status,
+                }}
+                interview_session={{
+                  break_duration: ses.interview_session.break_duration,
+                  id: ses.interview_session.id,
+                  name: ses.interview_session.name,
+                  schedule_type: ses.interview_session.schedule_type,
+                  session_duration: ses.interview_session.session_duration,
+                  session_type: ses.interview_session.session_type,
+                }}
+                jobTitle={selectedApplication.public_jobs.job_title}
+                isCollapseNeeded={false}
+                isActionButtonVisible={false}
               />
             );
           })}

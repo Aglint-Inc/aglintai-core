@@ -18,6 +18,7 @@ export type ScheduleMeeting = {
     email: string;
     first_name: string;
     last_name: string;
+    timezone: string;
   };
   schedule: DatabaseTable['interview_schedule'];
   interview_meeting: InterviewMeetingTypeDb;
