@@ -177,12 +177,18 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                           session.interview_session.session_duration,
                         session_type: session.interview_session.session_type,
                       }}
-                      interview_meeting={{
-                        end_time: session.interview_meeting.end_time,
-                        id: session.interview_meeting.id,
-                        start_time: session.interview_meeting.start_time,
-                        status: session.interview_meeting.status,
-                      }}
+                      interview_meeting={
+                        session.interview_meeting
+                          ? {
+                              end_time: session.interview_meeting?.end_time,
+                              id: session.interview_meeting?.id,
+                              start_time: session.interview_meeting?.start_time,
+                              status: session.interview_meeting?.status,
+                              meeting_flow:
+                                session.interview_meeting?.meeting_flow,
+                            }
+                          : null
+                      }
                       onClickCheckBox={selectSession}
                       selectedSessionIds={selectedSessionIds}
                       candidate={{
@@ -198,6 +204,7 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                       users={session.users}
                       isCollapseNeeded={true}
                       isActionButtonVisible={true}
+                      cancelReasons={session.cancel_reasons || []}
                     />
                     {session.interview_session.break_duration > 0 && (
                       <Stack pt={'var(--space-2)'}>

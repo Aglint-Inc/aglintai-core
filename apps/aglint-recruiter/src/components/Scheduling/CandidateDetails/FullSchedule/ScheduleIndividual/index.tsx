@@ -10,9 +10,10 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { Text } from '@/devlink/Text';
 import { StatusBadge } from '@/devlink2/StatusBadge';
-import { TextWithIcon } from '@/devlink2/TextWithIcon';
+import { GlobalBadge } from '@/devlink3/GlobalBadge';
 import { GlobalScheduleCard } from '@/devlink3/GlobalScheduleCard';
 import { GlobalUserDetail } from '@/devlink3/GlobalUserDetail';
+import { TextWithIcon } from '@/devlink3/TextWithIcon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 
@@ -43,7 +44,7 @@ interface ScheduleIndividualCardType {
   >;
   interview_meeting: Pick<
     DatabaseTable['interview_meeting'],
-    'id' | 'start_time' | 'end_time' | 'status'
+    'id' | 'start_time' | 'end_time' | 'status' | 'meeting_flow'
   > | null;
   onClickCheckBox: ({
     // eslint-disable-next-line no-unused-vars
@@ -61,6 +62,7 @@ interface ScheduleIndividualCardType {
   users?: SchedulingApplication['initialSessions'][0]['users'];
   isCollapseNeeded?: boolean;
   isActionButtonVisible?: boolean;
+  cancelReasons?: DatabaseTable['interview_session_cancel'][];
 }
 
 function ScheduleIndividualCard({
@@ -74,6 +76,7 @@ function ScheduleIndividualCard({
   interview_meeting,
   isCollapseNeeded = false,
   isActionButtonVisible = false,
+  cancelReasons = [],
 }: ScheduleIndividualCardType) {
   const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
@@ -87,8 +90,34 @@ function ScheduleIndividualCard({
     (user) => user.interview_session_relation.is_confirmed,
   );
 
+  const cancelRequests = cancelReasons.filter(
+    (reason) => reason.type === 'declined',
+  );
+
+  const rescheduleRequests = cancelReasons.filter(
+    (reason) => reason.type === 'reschedule',
+  );
+
   return (
     <GlobalScheduleCard
+      isCheckboxVisible={
+        (!interview_meeting ||
+          interview_meeting.status === 'not_scheduled' ||
+          interview_meeting.status === 'cancelled' ||
+          interview_meeting.status === 'reschedule') &&
+        isCheckboxVisible
+      }
+      slotCheckbox={
+        <Checkbox
+          size='small'
+          checked={selectedSessionIds.includes(interview_session.id)}
+          onClick={(e) => {
+            e.stopPropagation();
+            onClickCheckBox({ session_id: interview_session.id });
+          }}
+        />
+      }
+      isSelectedVisible={selectedSessionIds.includes(interview_session.id)}
       isDropdownIconVisible={
         isCollapseNeeded &&
         (interview_meeting?.status === 'confirmed' ||
@@ -128,14 +157,13 @@ function ScheduleIndividualCard({
           />
         )
       }
-      slotRequestDetail={<></>}
       textDate={
-        interview_meeting.end_time
+        interview_meeting?.end_time
           ? dayjs(interview_meeting.end_time).format('ddd, MMM DD, YYYY')
           : '--'
       }
       textTime={
-        interview_meeting.start_time
+        interview_meeting?.start_time
           ? formatTimeWithTimeZone({
               start_time: interview_meeting.start_time,
               end_time: interview_meeting.end_time,
@@ -161,11 +189,15 @@ function ScheduleIndividualCard({
               <>
                 <Stack spacing={'var(--space-2)'}>
                   <GlobalUserDetail
-                    textTimeZone={formatTimeWithTimeZone({
-                      start_time: interview_meeting.start_time,
-                      end_time: interview_meeting.end_time,
-                      timeZone: candidate.timezone,
-                    })}
+                    textTimeZone={
+                      interview_meeting?.start_time
+                        ? formatTimeWithTimeZone({
+                            start_time: interview_meeting.start_time,
+                            end_time: interview_meeting.end_time,
+                            timeZone: candidate.timezone,
+                          })
+                        : '--'
+                    }
                     isRoleVisible={Boolean(candidate.currentJobTitle)}
                     slotRole={
                       jobTitle ? (
@@ -320,29 +352,58 @@ function ScheduleIndividualCard({
       styleGrid={{
         style: {
           gridTemplateColumns: isActionButtonVisible
-            ? '1.1fr 1.7fr 1fr'
+            ? '1.1fr 1.7fr 0.6fr'
             : '1fr 1.7fr 0fr',
         },
       }}
-      slotRequestStatus={<></>}
-      isCheckboxVisible={
-        (!interview_meeting ||
-          interview_meeting.status === 'not_scheduled' ||
-          interview_meeting.status === 'cancelled' ||
-          interview_meeting.status === 'reschedule') &&
-        isCheckboxVisible
+      slotRequestStatus={
+        <>
+          {interview_meeting?.status === 'waiting' && (
+            <>
+              {interview_meeting?.meeting_flow === 'candidate_request' ? (
+                <TextWithIcon
+                  iconName={'attach_email'}
+                  textContent={'Requested availability from candidate'}
+                  color={'warning'}
+                  fontSize={1}
+                />
+              ) : interview_meeting?.meeting_flow === 'self_scheduling' ? (
+                <TextWithIcon
+                  iconName={'attach_email'}
+                  textContent={'Sent self scheduling link to candidate'}
+                  color={'warning'}
+                  fontSize={1}
+                />
+              ) : (
+                ''
+              )}
+            </>
+          )}
+        </>
       }
-      slotCheckbox={
-        <Checkbox
-          size='small'
-          checked={selectedSessionIds.includes(interview_session.id)}
-          onClick={(e) => {
-            e.stopPropagation();
-            onClickCheckBox({ session_id: interview_session.id });
-          }}
-        />
+      slotRequestDetail={
+        <>
+          {cancelRequests.length > 0 && (
+            <GlobalBadge
+              color={'error'}
+              iconName='event_busy'
+              textBadge={`${cancelRequests.length} Cancel Request`}
+              showIcon={true}
+              iconSize={2}
+            />
+          )}
+
+          {rescheduleRequests.length > 0 && (
+            <GlobalBadge
+              color={'event_repeat'}
+              iconName='refresh'
+              textBadge={`${rescheduleRequests.length} Reschedule Request`}
+              showIcon={true}
+              iconSize={2}
+            />
+          )}
+        </>
       }
-      isSelectedVisible={selectedSessionIds.includes(interview_session.id)}
     />
   );
 }

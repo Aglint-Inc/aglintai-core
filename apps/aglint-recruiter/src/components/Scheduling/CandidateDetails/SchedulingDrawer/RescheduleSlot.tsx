@@ -106,6 +106,7 @@ function RescheduleSlot() {
                   id: ses.interview_meeting.id,
                   start_time: ses.interview_meeting.start_time,
                   status: ses.interview_meeting.status,
+                  meeting_flow: ses.interview_meeting.meeting_flow,
                 }}
                 interview_session={{
                   break_duration: ses.interview_session.break_duration,

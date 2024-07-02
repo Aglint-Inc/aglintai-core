@@ -52,6 +52,7 @@ export type SessionsType = {
       scheduling_settings: DatabaseTable['recruiter_user']['scheduling_settings'];
     };
   }[];
+  cancel_reasons: DatabaseTable['interview_session_cancel'][] | null;
 };
 
 export type ApplicationDataResponseType = {
@@ -101,6 +102,7 @@ export type InterviewDataResponseType = {
       interview_session_relation: DatabaseTable['interview_session_relation'];
     }[];
   };
+  cancel_reasons: DatabaseTable['interview_session_cancel'][] | null;
 };
 
 export type ApiResponseFindAvailability = PlanCombinationRespType[][][];
