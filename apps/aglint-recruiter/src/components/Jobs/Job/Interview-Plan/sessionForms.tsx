@@ -75,17 +75,17 @@ export const getSessionFields = (
 const getLabel = (key: keyof SessionFormProps) => {
   switch (key) {
     case 'name':
-      return 'Session name';
+      return 'Stage name';
     case 'schedule_type':
       return 'Schedule type';
     case 'location':
       return 'Address';
     case 'session_duration':
-      return 'Session duration';
+      return 'Stage duration';
     case 'interview_module':
       return 'Interview module';
     case 'session_type':
-      return 'Session type';
+      return 'Stage type';
     case 'training':
       return 'Training';
     case 'interviewer_cnt':
@@ -233,7 +233,7 @@ const SessionForms = ({
     () => (
       <UITextField
         name={'name'}
-        placeholder={'Session name'}
+        placeholder={getLabel('name')}
         value={name.value}
         error={name.error}
         helperText={name.helper}
