@@ -19,7 +19,7 @@ export function BannerLoading({ as: _Component = _Builtin.Block, slotLoader }) {
           {slotLoader}
         </_Builtin.Block>
         <Text
-          content="Generating profile score. Please wait before publishing."
+          content="Aglint Ai is generating criteria to score resume"
           weight="medium"
           color="neutral"
         />

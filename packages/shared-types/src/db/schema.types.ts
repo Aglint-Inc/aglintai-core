@@ -2226,9 +2226,6 @@ export type Database = {
           recruiter_id: string
           recruiting_coordinator: string | null
           scoring_criteria_loading: boolean
-          scoring_param_status:
-            | Database["public"]["Enums"]["job_scoring_param_status"]
-            | null
           screening_questions: Json[] | null
           screening_setting: Json | null
           screening_template: string | null
@@ -2282,9 +2279,6 @@ export type Database = {
           recruiter_id: string
           recruiting_coordinator?: string | null
           scoring_criteria_loading?: boolean
-          scoring_param_status?:
-            | Database["public"]["Enums"]["job_scoring_param_status"]
-            | null
           screening_questions?: Json[] | null
           screening_setting?: Json | null
           screening_template?: string | null
@@ -2338,9 +2332,6 @@ export type Database = {
           recruiter_id?: string
           recruiting_coordinator?: string | null
           scoring_criteria_loading?: boolean
-          scoring_param_status?:
-            | Database["public"]["Enums"]["job_scoring_param_status"]
-            | null
           screening_questions?: Json[] | null
           screening_setting?: Json | null
           screening_template?: string | null
@@ -5147,7 +5138,6 @@ export type Database = {
         | "phone_call"
         | "zoom"
       interviewer_type: "qualified" | "shadow" | "reverse_shadow"
-      job_scoring_param_status: "loading" | "success"
       meeting_flow:
         | "self_scheduling"
         | "candidate_request"
