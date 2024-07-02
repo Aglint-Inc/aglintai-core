@@ -1,9 +1,12 @@
 import { DatabaseView } from '@aglint/shared-types';
+import { Stack, Tooltip } from '@mui/material';
 import axios from 'axios';
+import React, { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
+import UITypography from '@/src/components/Common/UITypography';
 import toast from '@/src/utils/toast';
 
 function RequestAvailabilityResend({
@@ -11,6 +14,20 @@ function RequestAvailabilityResend({
 }: {
   selectedTask: DatabaseView['tasks_view'];
 }) {
+  //tooltip for copy link
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+
+  const handleButtonClick = () => {
+    setTooltipOpen(true);
+    setTimeout(() => {
+      setTooltipOpen(false);
+    }, 700);
+  };
+
+  const handleTooltipClose = () => {
+    setTooltipOpen(false);
+  };
+
   return (
     <GlobalBanner
       color={'warning'}
@@ -43,21 +60,32 @@ function RequestAvailabilityResend({
               },
             }}
           />
-          <ButtonSoft
-            textButton={'Copy invite'}
-            isLoading={false}
-            isLeftIcon={false}
-            isRightIcon={false}
-            size={1}
-            onClickButton={{
-              onClick: () => {
-                navigator.clipboard.writeText(
-                  `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${selectedTask.request_availability_id}`,
-                );
-                toast.message('Invited link copied!');
-              },
-            }}
-          />
+          <Tooltip
+            title={<UITypography type='extraSmall'>Link Copied</UITypography>}
+            open={tooltipOpen}
+            disableHoverListener
+            disableFocusListener
+            disableTouchListener
+            onClose={handleTooltipClose}
+          >
+            <Stack>
+              <ButtonSoft
+                textButton={'Copy invite'}
+                isLoading={false}
+                isLeftIcon={false}
+                isRightIcon={false}
+                size={1}
+                onClickButton={{
+                  onClick: () => {
+                    navigator.clipboard.writeText(
+                      `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${selectedTask.request_availability_id}`,
+                    );
+                    handleButtonClick();
+                  },
+                }}
+              />
+            </Stack>
+          </Tooltip>
         </>
       }
     />
