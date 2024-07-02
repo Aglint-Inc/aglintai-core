@@ -47,7 +47,7 @@ function SchedulerEmailTemps() {
   const [isHtml, setHtml] = useState(null);
   const [popOverLoading, setPopOverLoading] = useState(false);
 
-  const temp_tab = router.query.template_tab as string;
+  const temp_tab = router.query.template_tab as any;
 
   useEffect(() => {
     (async () => {
@@ -56,9 +56,13 @@ function SchedulerEmailTemps() {
         if (!temps || !router.isReady) return;
 
         const curr_tab_temps = SortCurrentTabTemps(temps);
+
+        const current_filtered_temp = curr_tab_temps.filter((t) =>
+          filterEmailByTemplateTab(temp_tab, t.type),
+        );
+        setSelectedTemplate({ ...current_filtered_temp[0] });
         setEmailTemplate([...curr_tab_temps]);
 
-        setSelectedTemplate({ ...curr_tab_temps[0] });
         setTipTapLoder(true);
         setTimeout(() => {
           setTipTapLoder(false);
@@ -306,6 +310,11 @@ function SchedulerEmailTemps() {
                             showSubject={
                               router.query.template_tab !== 'slack' &&
                               router.query.template_tab !== 'calender'
+                            }
+                            overrideBodyLabel={
+                              router.query.template_tab === 'slack'
+                                ? 'Slack Message'
+                                : 'Slack m'
                             }
                           />
                         )
