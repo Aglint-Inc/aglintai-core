@@ -13,7 +13,6 @@ import {
   interviewer,
   jobDetails,
   organizer,
-  organizer,
   rescheduleReason,
   selfSchedulingLink,
   time,
