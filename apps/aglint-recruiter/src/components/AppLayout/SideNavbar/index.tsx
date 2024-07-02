@@ -260,13 +260,19 @@ const LinkComp = ({
   module: LinkProps['module'];
   path: LinkProps['path'] | string;
 }) => {
+  //@ts-ignore
+  const pattern = /^\/[^\/]+/;
   const { pathname } = useRouter();
+  const filteredPathname = pathname.match(pattern)[0];
 
   return (
     <Link href={path}>
       <LinkIcon
         module={module}
-        active={pathname.includes(path) || path.includes(pathname)}
+        active={
+          filteredPathname.match(pattern)[0].includes(path) ||
+          path.includes(filteredPathname)
+        }
       />
     </Link>
   );
