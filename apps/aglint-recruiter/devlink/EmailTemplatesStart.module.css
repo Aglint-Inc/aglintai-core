@@ -39,8 +39,12 @@
 }
 
 .slot_search_and_filter {
+  display: flex;
+  height: 52px;
   padding-top: var(--space-4);
   padding-bottom: var(--space-4);
+  justify-content: flex-start;
+  align-items: center;
   grid-auto-columns: 1fr;
   grid-column-gap: 16px;
   grid-row-gap: 16px;
@@ -50,12 +54,14 @@
 
 .email-start-wrap {
   display: flex;
+  overflow: auto;
   flex-direction: column;
   grid-auto-columns: 1fr;
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
+  height: calc(100vh - 132px);
 }
 
 .email-template-right-wrap {

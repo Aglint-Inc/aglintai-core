@@ -12,12 +12,6 @@
   background-color: var(--white);
 }
 
-@media screen and (min-width: 1440px) {
-  .recent-decline {
-    background-color: #f7f9fb;
-  }
-}
-
 .dashboard-widget-header {
   display: flex;
   height: 40px;

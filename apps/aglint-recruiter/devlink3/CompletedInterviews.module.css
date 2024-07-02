@@ -18,7 +18,7 @@
   align-items: center;
 }
 
-.div-block-1783 {
+.ci_option_switch {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -29,6 +29,7 @@
 .normal_menulink {
   position: relative;
   color: var(--neutral-9);
+  cursor: pointer;
 }
 
 .text-hover-link {
