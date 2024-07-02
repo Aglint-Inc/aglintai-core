@@ -30,13 +30,11 @@ export const emailTemplateCopy: CompanyEmailType = {
   },
   confInterview_email_organizer: {
     heading: 'Organizer Interview Confirmation',
-    description:
-      'Calendar invite sent to the organizer with confirmed interview date and time details.',
+    description: `This email template is used to confirm the interview schedule for the organizer. This email is sent by the system automatically every time an interview is confirmed for the organizer.`,
   },
   confirmInterview_email_applicant: {
     heading: 'Candidate Interview Confirmation',
-    description:
-      'Calendar invite sent to the candidate with confirmation of interview date and time details.',
+    description: `This email template is used to confirm a candidate's interview schedule. This email is sent by the system automatically every time an interview is confirmed for the candidate.`,
   },
   debrief_email_interviewer: {
     heading: 'Debrief Invitation',
@@ -45,15 +43,16 @@ export const emailTemplateCopy: CompanyEmailType = {
   },
   interReschedReq_email_recruiter: {
     heading: 'Candidate Reschedule Interview Request',
-    description: 'Candidate raises Request Reschedule',
+    description:
+      'This email template is used to request the rescheduling of a scheduled interview by a candidate. This email is sent by the system automatically every time a candidate requests to reschedule an interview.',
   },
   interviewCancel_email_applicant: {
     heading: 'Candidate Cancel Interview Notice',
-    description: 'Cancel interview Email sent to candidate',
+    description: `This email template is used to notify organizer when a candidate cancels a scheduled interview. This email is sent by the system automatically every time a candidate cancels an interview.`,
   },
   InterviewCancelReq_email_recruiter: {
     heading: 'Candidate Cancel Interview Request',
-    description: 'Request from candidate to cancel interview',
+    description: `This email template is used to request the cancellation of a scheduled interview by a candidate. This email is sent by the system automatically every time a candidate requests to cancel an interview.`,
   },
   interviewReschedule_email_applicant: {
     heading: '',
@@ -61,28 +60,25 @@ export const emailTemplateCopy: CompanyEmailType = {
   },
   interviewStart_email_applicant: {
     heading: 'Candidate Interview Reminder',
-    description:
-      'A reminder or heads-up email sent to the candidate by the system.',
+    description: `This email template is used to send a reminder to the candidate about their upcoming interview. This email is sent by the system automatically before the interview.`,
   },
   interviewStart_email_interviewers: {
     heading: 'Interviewer Interview Reminder',
     description:
-      'A reminder or heads-up email sent to the interviewer by the system.',
+      'This email template is used to send a reminder to the interviewer about their upcoming interview. This email is sent by the system automatically before the interview.',
   },
   selfScheduleReminder_email_applicant: {
-    heading: 'Self-Schedule Remainder',
+    heading: 'Self-Schedule Reminder',
     description:
       'Email sent to the candidate when they have not responded to the initial self-schedule link.',
   },
   sendAvailabilityRequest_email_applicant: {
     heading: 'Availability Request',
-    description:
-      'This template is used for sending the candidate booking link to schedule interviews. Ensure to include clear instructions and personalize the email for better engagement.',
+    description: `This email template is used to request a candidate's availability for scheduling interviews. This email is sent by the system automatically every time availability is requested.`,
   },
   sendAvailReqReminder_email_applicant: {
     heading: 'Availability Request Reminder',
-    description:
-      'This template is used for sending remainder to the candidate to schedule interviews. Ensure to include clear instructions and personalize the email for better engagement.',
+    description: `This email template is used to send a reminder to candidates to provide their availability for scheduling interviews. You can use the workflow feature to enable this reminder automatically.`,
   },
   sendSelfScheduleRequest_email_applicant: {
     heading: 'Self-Schedule Request',
@@ -91,8 +87,7 @@ export const emailTemplateCopy: CompanyEmailType = {
   },
   availabilityReqResend_email_candidate: {
     heading: 'Availability Re Request',
-    description:
-      'This email template is used to resend availability request to the candidate. Ensure to include clear instructions and personalize the email for better engagement.',
+    description: `This email template is used to re-request a candidate's availability for scheduling interviews. This email is sent by the system automatically every time availability is re-requested.`,
   },
   applicantReject_email_applicant: {
     heading: 'Application Rejected',
@@ -105,26 +100,30 @@ export const emailTemplateCopy: CompanyEmailType = {
 
   interviewDetails_calender_interviewer: {
     heading: 'Interviewer Interview Confirmation',
-    description: '',
+    description: `This email template is used to confirm the interview schedule for the interviewer. This email is sent by the system automatically every time an interview is confirmed for the interviewer.
+`,
   },
   rescheduleSelfSchedule_email_applicant: {
     heading: 'Self-Schedule Re Request',
-    description: '',
+    description: `This email template is used to re-request a candidate to self-schedule their interview. This email is sent by the system automatically every time a self-schedule is re-requested.`,
   },
   interviewStart_email_organizer: {
     heading: 'Organizer Interview Reminder',
-    description: '',
+    description:
+      'This email template is used to send a reminder to the organizer about the upcoming interview. This email is sent by the system automatically before the interview.',
   },
   meetingDeclined_email_organizer: {
-    heading: 'Interviewer Interview Accepted',
-    description: 'Meeting accepted by interviewer',
+    heading: 'Interviewer Interview Declined',
+    description:
+      'This email template is used to notify organizer when an interviewer declines an interview invitation. This email is sent by the system automatically every time an interviewer declines an interview.',
   },
   meetingAccepted_email_organizer: {
-    heading: 'Interviewer Interview Declined',
-    description: 'Meeting declined by interviewer',
+    heading: 'Interviewer Interview Accepted',
+    description:
+      'This email template is used to notify organizer when an interviewer accepts an interview invitation. This email is sent by the system automatically every time an interviewer accepts an interview.',
   },
   interviewEnd_slack_interviewers: {
-    heading: 'ss',
+    heading: '',
     description: '',
   },
   interviewerConfirmation_slack_interviewers: {

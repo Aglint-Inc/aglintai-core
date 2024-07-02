@@ -1,6 +1,9 @@
 import * as v from 'valibot';
 import { RecruiterUserType } from '../data.types';
-import { PlanCombinationRespType } from '../scheduleTypes';
+import {
+  PlanCombinationRespType,
+  SessionCombinationRespType,
+} from '../scheduleTypes';
 import {
   schema_candidate_direct_booking,
   schema_confirm_slot_no_conflict,
@@ -38,7 +41,7 @@ export type APIUpdateMeetingInterviewers = {
   candidate_email: string;
 };
 
-export type APIFindAltenativeTimeSlotResponse = PlanCombinationRespType[];
+export type APIFindAltenativeTimeSlotResponse = SessionCombinationRespType[];
 
 export type APICandScheduleMailThankYou = {
   availability_request_id?: string;
