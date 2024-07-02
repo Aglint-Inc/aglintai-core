@@ -1,3 +1,4 @@
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
 import { DesktopTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -7,6 +8,7 @@ import React from 'react';
 import { Checkbox } from '@/devlink/Checkbox';
 import { RolesPill } from '@/devlink/RolesPill';
 import { TimeRangeSelector } from '@/devlink3/TimeRangeSelector';
+import toast from '@/src/utils/toast';
 
 import { ClockIcon } from '../../../Settings/Components/SelectTime';
 import { setFilters, useSchedulingFlowStore } from '../store';
@@ -94,6 +96,30 @@ function DateRangeField() {
         }
         onClickAdd={{
           onClick: () => {
+            const startHour = dayjsLocal(value.startTime).hour();
+            const endHour = dayjsLocal(value.endTime).hour();
+            const startMinute = dayjsLocal(value.startTime).minute();
+            const endMinute = dayjsLocal(value.endTime).minute();
+            const startampm = dayjsLocal(value.startTime).format('A');
+            const endampm = dayjsLocal(value.endTime).format('A');
+
+            if (
+              startHour === endHour &&
+              startMinute === endMinute &&
+              startampm === endampm
+            ) {
+              toast.error('start time and End time cannot be same');
+              return;
+            }
+            if (
+              startHour > endHour ||
+              startMinute > endMinute ||
+              startampm === endampm
+            ) {
+              toast.error('End time must be greater than start time');
+              return;
+            }
+
             if (!value?.startTime || !value?.endTime) return;
             setFilters({
               preferredDateRanges: [
