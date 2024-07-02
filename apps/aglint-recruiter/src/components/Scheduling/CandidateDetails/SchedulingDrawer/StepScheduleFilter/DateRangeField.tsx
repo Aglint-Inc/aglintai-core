@@ -96,27 +96,13 @@ function DateRangeField() {
         }
         onClickAdd={{
           onClick: () => {
-            const startHour = dayjsLocal(value.startTime).hour();
-            const endHour = dayjsLocal(value.endTime).hour();
-            const startMinute = dayjsLocal(value.startTime).minute();
-            const endMinute = dayjsLocal(value.endTime).minute();
-            const startampm = dayjsLocal(value.startTime).format('A');
-            const endampm = dayjsLocal(value.endTime).format('A');
-
             if (
-              startHour === endHour &&
-              startMinute === endMinute &&
-              startampm === endampm
+              dayjsLocal(value.startTime).valueOf() >=
+              dayjsLocal(value.endTime).valueOf()
             ) {
-              toast.error('start time and End time cannot be same');
-              return;
-            }
-            if (
-              startHour > endHour ||
-              startMinute > endMinute ||
-              startampm === endampm
-            ) {
-              toast.error('End time must be greater than start time');
+              toast.error(
+                'start time and End time cannot be same, End time must be greater than start time',
+              );
               return;
             }
 
