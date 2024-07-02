@@ -1,4 +1,5 @@
 import {
+  Alert,
   Autocomplete,
   Chip,
   Dialog,
@@ -855,26 +856,34 @@ function SchedulingSettings({
                           type='string'
                         />
                       }
-                      slotSuggestPill={freeKeyWords.map((item) => {
-                        return (
-                          <>
-                            <Chip
-                              clickable
-                              onDelete={() => {
-                                setFreeKeywords((pre) => {
-                                  return pre.filter((ele) => ele !== item);
-                                });
-                              }}
-                              deleteIcon={
-                                <Stack>
-                                  <GlobalIcon iconName='close' size='4' />
-                                </Stack>
-                              }
-                              label={item}
-                            />
-                          </>
-                        );
-                      })}
+                      slotSuggestPill={
+                        freeKeyWords.length === 0 ? (
+                          <Alert severity='info' icon={false}>
+                            <Typography>No free keywords added.</Typography>
+                          </Alert>
+                        ) : (
+                          freeKeyWords.map((item) => {
+                            return (
+                              <>
+                                <Chip
+                                  clickable
+                                  onDelete={() => {
+                                    setFreeKeywords((pre) => {
+                                      return pre.filter((ele) => ele !== item);
+                                    });
+                                  }}
+                                  deleteIcon={
+                                    <Stack>
+                                      <GlobalIcon iconName='close' size='4' />
+                                    </Stack>
+                                  }
+                                  label={item}
+                                />
+                              </>
+                            );
+                          })
+                        )
+                      }
                     />
                     <KeywordCard
                       textTitle={'Soft Conflicts'}
@@ -901,26 +910,36 @@ function SchedulingSettings({
                           type='string'
                         />
                       }
-                      slotSuggestPill={softConflictsKeyWords.map((item) => {
-                        return (
-                          <>
-                            <Chip
-                              clickable
-                              onDelete={() => {
-                                setSoftConflictsKeyWords((pre) => {
-                                  return pre.filter((ele) => ele !== item);
-                                });
-                              }}
-                              deleteIcon={
-                                <Stack>
-                                  <GlobalIcon iconName='close' size='4' />
-                                </Stack>
-                              }
-                              label={item}
-                            />
-                          </>
-                        );
-                      })}
+                      slotSuggestPill={
+                        softConflictsKeyWords.length === 0 ? (
+                          <Alert severity='info' icon={false}>
+                            <Typography>
+                              No soft conflict keyword added.
+                            </Typography>
+                          </Alert>
+                        ) : (
+                          softConflictsKeyWords.map((item) => {
+                            return (
+                              <>
+                                <Chip
+                                  clickable
+                                  onDelete={() => {
+                                    setSoftConflictsKeyWords((pre) => {
+                                      return pre.filter((ele) => ele !== item);
+                                    });
+                                  }}
+                                  deleteIcon={
+                                    <Stack>
+                                      <GlobalIcon iconName='close' size='4' />
+                                    </Stack>
+                                  }
+                                  label={item}
+                                />
+                              </>
+                            );
+                          })
+                        )
+                      }
                     />
                     <KeywordCard
                       textTitle={'Out of Office'}
@@ -947,26 +966,36 @@ function SchedulingSettings({
                           type='string'
                         />
                       }
-                      slotSuggestPill={outOfOffice.map((item) => {
-                        return (
-                          <>
-                            <Chip
-                              clickable
-                              onDelete={() => {
-                                setOutOfOffice((pre) => {
-                                  return pre.filter((ele) => ele !== item);
-                                });
-                              }}
-                              deleteIcon={
-                                <Stack>
-                                  <GlobalIcon iconName='close' size='4' />
-                                </Stack>
-                              }
-                              label={item}
-                            />
-                          </>
-                        );
-                      })}
+                      slotSuggestPill={
+                        outOfOffice.length === 0 ? (
+                          <Alert severity='info' icon={false}>
+                            <Typography>
+                              No out of office keywords added.
+                            </Typography>
+                          </Alert>
+                        ) : (
+                          outOfOffice.map((item) => {
+                            return (
+                              <>
+                                <Chip
+                                  clickable
+                                  onDelete={() => {
+                                    setOutOfOffice((pre) => {
+                                      return pre.filter((ele) => ele !== item);
+                                    });
+                                  }}
+                                  deleteIcon={
+                                    <Stack>
+                                      <GlobalIcon iconName='close' size='4' />
+                                    </Stack>
+                                  }
+                                  label={item}
+                                />
+                              </>
+                            );
+                          })
+                        )
+                      }
                     />
                     <KeywordCard
                       textTitle={'Recruiting Blocks'}
@@ -993,26 +1022,38 @@ function SchedulingSettings({
                           type='string'
                         />
                       }
-                      slotSuggestPill={recruitingBlocks.map((item) => {
-                        return (
-                          <>
-                            <Chip
-                              clickable
-                              onDelete={() => {
-                                setRecruitingBlocks((pre) => {
-                                  return pre.filter((ele) => ele !== item);
-                                });
-                              }}
-                              deleteIcon={
-                                <Stack>
-                                  <GlobalIcon iconName='close' size='4' />
-                                </Stack>
-                              }
-                              label={item}
-                            />
-                          </>
-                        );
-                      })}
+                      slotSuggestPill={
+                        recruitingBlocks.length === 0 ? (
+                          <Alert
+                            severity='info'
+                            variant='outlined'
+                            icon={false}
+                          >
+                            <Typography>No recruiting blocks added.</Typography>
+                          </Alert>
+                        ) : (
+                          recruitingBlocks.map((item) => {
+                            return (
+                              <>
+                                <Chip
+                                  clickable
+                                  onDelete={() => {
+                                    setRecruitingBlocks((pre) => {
+                                      return pre.filter((ele) => ele !== item);
+                                    });
+                                  }}
+                                  deleteIcon={
+                                    <Stack>
+                                      <GlobalIcon iconName='close' size='4' />
+                                    </Stack>
+                                  }
+                                  label={item}
+                                />
+                              </>
+                            );
+                          })
+                        )
+                      }
                     />
                   </>
                 }

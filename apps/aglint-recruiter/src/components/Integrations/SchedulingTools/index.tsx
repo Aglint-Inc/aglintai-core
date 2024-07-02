@@ -17,6 +17,7 @@ import toast from '@/src/utils/toast';
 
 import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';
+import UITextField from '../../Common/UITextField';
 import SchedulingPopUps from '../SchedulingToolPopUps';
 import { SchedulingReasonTypes, schedulingToolsType } from '../types';
 import { GooglLogo, updateRecruiter, ZoomLogo } from '../utils';
@@ -91,7 +92,7 @@ function Scheduling() {
       const client_secret = clientSecretRef.current.value;
       const account_id = accountIdRef.current.value;
 
-      if (!client_id && !client_secret && !account_id) {
+      if (!client_id || !client_secret || !account_id) {
         toast.warning('Provide API key.');
         return null;
       }
@@ -375,23 +376,29 @@ function Scheduling() {
                 />
               </Stack>
               <Stack direction={'column'} spacing={1}>
-                <Typography variant='body1'>Account Id</Typography>
-                <TextField
+                <UITextField
                   type={hideApiKey ? 'password' : 'text'}
                   fullWidth
-                  inputRef={accountIdRef}
+                  required
+                  label='Account Id'
+                  placeholder='Enter Account ID'
+                  ref={accountIdRef}
                 />
-                <Typography variant='body1'>Client Id</Typography>
-                <TextField
+                <UITextField
                   type={hideApiKey ? 'password' : 'text'}
                   fullWidth
-                  inputRef={clientIdRef}
+                  label='Client Id'
+                  required
+                  placeholder='Enter Client Id'
+                  ref={clientIdRef}
                 />
-                <Typography variant='body1'>Client Secrete</Typography>
-                <TextField
+                <UITextField
                   type={hideApiKey ? 'password' : 'text'}
                   fullWidth
-                  inputRef={clientSecretRef}
+                  label='Client Secrete'
+                  required
+                  placeholder='Enter Client Secrete'
+                  ref={clientSecretRef}
                 />
               </Stack>
             </ShowCode.When>
