@@ -1,3 +1,8 @@
+.et_wrapper {
+  overflow: hidden;
+  height: calc(100vh - 48px);
+}
+
 .slot_newtabpill-copy {
   display: flex;
   height: 32px;
@@ -20,14 +25,13 @@
 .email-template-left-wrap {
   overflow: auto;
   width: 350px;
-  padding-top: var(--space-4);
   padding-right: var(--space-4);
   padding-bottom: var(--space-4);
   padding-left: var(--space-4);
   flex-grow: 0;
   flex-shrink: 0;
   flex-basis: auto;
-  height: calc(100vh - 48px);
+  height: calc(100vh - 80px);
 }
 
 .slot-email-temp-warning {
@@ -35,7 +39,6 @@
 }
 
 .slot_search_and_filter {
-  display: grid;
   padding-top: var(--space-4);
   padding-bottom: var(--space-4);
   grid-auto-columns: 1fr;
@@ -58,7 +61,7 @@
 .email-template-right-wrap {
   overflow: auto;
   width: 100%;
-  height: calc(100vh - 48px);
+  height: calc(100vh - 80px);
 }
 
 #w-node-_7a13e008-ea54-7273-6b2d-06ecde60cc59-adb6be91 {

@@ -27,7 +27,7 @@ export function EmailTemplatesStart({
   slotSearchFilter,
 }) {
   return (
-    <_Component tag="div">
+    <_Component className={_utils.cx(_styles, "et_wrapper")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "slot_newtabpill-copy")}
         tag="div"
