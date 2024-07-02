@@ -260,8 +260,7 @@ const LinkComp = ({
   module: LinkProps['module'];
   path: LinkProps['path'] | string;
 }) => {
-  //@ts-ignore
-  const pattern = /^\/[^\/]+/;
+  const pattern = /^\/[^/]+/;
   const { pathname } = useRouter();
   const filteredPathname = pathname.match(pattern)[0];
 
