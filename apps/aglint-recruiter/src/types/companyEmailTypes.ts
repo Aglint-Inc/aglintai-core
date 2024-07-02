@@ -1,4 +1,18 @@
 import { DatabaseEnums } from '@aglint/shared-types';
+
+type TagType =
+  | 'Aglint Ai'
+  | 'Candidate'
+  | 'Self Schedule'
+  | 'Availability'
+  | 'Cancel Interview'
+  | 'Reschedule Interview'
+  | 'Reminder Interview'
+  | 'Cancel Interview'
+  | 'Confirm Interview'
+  | 'Debreif'
+  | 'Email Agent'
+  | 'Slack';
 type EmailTemplatType = {
   heading: string;
   description: string;
@@ -91,7 +105,7 @@ export const emailTemplateCopy: CompanyEmailType = {
   },
 
   interviewDetails_calender_interviewer: {
-    heading: 'Interviewer Interview Confirmation',
+    heading: 'Interview Scheduled : Candidate Details',
     description: '',
   },
   rescheduleSelfSchedule_email_applicant: {
@@ -111,7 +125,7 @@ export const emailTemplateCopy: CompanyEmailType = {
     description: 'Meeting declined by interviewer',
   },
   interviewEnd_slack_interviewers: {
-    heading: '',
+    heading: 'ss',
     description: '',
   },
   interviewerConfirmation_slack_interviewers: {
@@ -119,8 +133,8 @@ export const emailTemplateCopy: CompanyEmailType = {
     description: '',
   },
   interviewStart_slack_interviewers: {
-    heading: '',
-    description: '',
+    heading: 'Slack Interview Reminder',
+    description: 'Slack Interview Reminder',
   },
   phoneScreen_email_candidate: null,
   phoneScreenRemind_email_applicant: null,

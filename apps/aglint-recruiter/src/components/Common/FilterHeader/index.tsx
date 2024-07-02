@@ -65,7 +65,7 @@ export type FilterHeaderType = {
     setValue: (x: string) => void;
     placeholder?: string;
   };
-  filters: FilterTypes[];
+  filters?: FilterTypes[];
   showFiltersByDefault?: string[];
   // eslint-disable-next-line no-unused-vars
   setShowFilters?: (x: string[]) => void;

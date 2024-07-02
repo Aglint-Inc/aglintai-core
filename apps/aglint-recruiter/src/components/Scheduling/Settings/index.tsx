@@ -56,9 +56,10 @@ import MuiNumberfield from './Components/MuiNumberfield';
 import MuiSelect from './Components/MuiSelect';
 import SelectTime from './Components/SelectTime';
 import DebriefDefaults from './DebriefDefaults';
-import SchedulerEmailTemps, { emailTempKeys } from './SchedulingEmailTemplates';
+import SchedulerEmailTemps from './SchedulingEmailTemplates';
+import { emailTempKeys } from './SchedulingEmailTemplates/utils';
 import SchedulingRegions from './SchedulingReason';
-import { settingSubNavItem } from './SubNav/utils';
+import { settingsItems, settingSubNavItem } from './SubNav/utils';
 let schedulingSettingObj = {};
 let changeValue = null;
 type specificLocationType = 'all_locations' | 'specific_locations';
@@ -1103,16 +1104,6 @@ export const TimezoneSelector = ({
   );
 };
 
-const settingsItems = [
-  { label: 'Interview Load', value: 'interviewLoad' },
-  { label: 'Working Hours', value: 'workingHours' },
-  { label: 'Company Day Off', value: 'dayOff' },
-  { label: 'Keywords', value: 'keywords' },
-  { label: 'Email Template', value: 'emailTemplate' },
-  { label: 'Scheduling Reasons', value: 'reasons' },
-  { label: 'Debrief Defaults', value: 'debriefDefaults' },
-];
-
 function SettingsSubNabItem() {
   const router = useRouter();
   const { emailTemplates } = useAuthDetails();
@@ -1146,7 +1137,7 @@ function SettingsSubNabItem() {
             onClickTab={{
               onClick: (e: any) => {
                 e.stopPropagation();
-                if (item.value === 'emailTemplate') {
+                if (item.value === settingSubNavItem['EMAILTEMPLATE']) {
                   router.push(
                     `${ROUTES['/scheduling']()}?tab=settings&subtab=${item.value}&email=${firstTemplate}`,
                   );
