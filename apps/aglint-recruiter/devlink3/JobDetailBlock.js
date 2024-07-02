@@ -37,15 +37,6 @@ export function JobDetailBlock({
               <Text content="" />
               <Text content={textDescription} weight="" color="neutral" />
             </_Builtin.Block>
-            {isCreate ? (
-              <_Builtin.Block tag="div">
-                <ButtonSolid
-                  onClickButton={onClickCreate}
-                  textButton="Create Job"
-                  size="2"
-                />
-              </_Builtin.Block>
-            ) : null}
           </_Builtin.Block>
         ) : null}
         {isJobDetailVisible ? (
@@ -109,6 +100,20 @@ export function JobDetailBlock({
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "jdb-btn-wrap")}
+          tag="div"
+        >
+          {isCreate ? (
+            <_Builtin.Block tag="div">
+              <ButtonSolid
+                onClickButton={onClickCreate}
+                textButton="Create Job"
+                size="2"
+              />
+            </_Builtin.Block>
+          ) : null}
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

@@ -176,6 +176,10 @@
   cursor: pointer;
 }
 
+.embed_flex.is_absolute {
+  position: absolute;
+}
+
 .overlay_gradient {
   position: absolute;
   left: 0%;

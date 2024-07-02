@@ -38,7 +38,7 @@ export function ScoreCardEdit({
             <_Builtin.Block tag="div">
               {slotCheckBox ?? <Checkbox />}
             </_Builtin.Block>
-            <Text content="" />
+            <Text content="Must have" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "sce-left-btn-wrap")}

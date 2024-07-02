@@ -145,6 +145,10 @@ const jobQueries = {
           queryClient.refetchQueries({ queryKey: tenureAndExperienceQueryKey }),
           queryClient.refetchQueries({ queryKey: newApplicationsQueryKey }),
           queryClient.refetchQueries({ queryKey: processingCountQueryKey }),
+          queryClient.refetchQueries({
+            queryKey: applicationsQueries.locationFilters({ job_id: id })
+              .queryKey,
+          }),
         ]);
       },
     }),

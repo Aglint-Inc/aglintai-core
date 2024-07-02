@@ -1,8 +1,8 @@
-import { AvatarGroup, Box, InputAdornment, Stack } from '@mui/material';
+import { AvatarGroup, Box, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { EmptyState } from '@/devlink2/EmptyState';
 import { InterviewModuleCard } from '@/devlink2/InterviewModuleCard';
 import { InterviewModuleTable } from '@/devlink2/InterviewModuleTable';
@@ -13,7 +13,7 @@ import ROUTES from '@/src/utils/routing/routes';
 import Icon from '../../Common/Icons/Icon';
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
-import UITextField from '../../Common/UITextField';
+import SearchField from '../../Common/SearchField/SearchField';
 import CreateModuleDialog from './CreateModuleDialog';
 import { setTextSearch, useFilterModuleStore } from './filter-store';
 import FilterCreatedBy from './Filters/FilterCreatedBy';
@@ -27,6 +27,7 @@ export function Modules() {
   const textSearch = useFilterModuleStore((state) => state.textSearch);
   const departments = useFilterModuleStore((state) => state.departments);
   const createdBy = useFilterModuleStore((state) => state.created_by);
+  const filterReset = useFilterModuleStore((state) => state.reset);
   const { data: allModules, isLoading, isFetching } = useAllInterviewModules();
   const [showArchive, setShowArchive] = useState(false);
   const [archives, setArchives] = useState(false);
@@ -66,24 +67,28 @@ export function Modules() {
           <InterviewModuleTable
             slotFilter={
               <Stack direction={'row'} gap={2}>
-                <UITextField
-                  width={'250px'}
-                  height={32}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position='end'>
-                        <GlobalIcon iconName='search' size='5' />
-                      </InputAdornment>
-                    ),
-                  }}
+                <SearchField
+                  value={textSearch}
+                  onClear={() => setTextSearch('')}
                   placeholder='Search by name.'
                   onChange={(e) => {
                     setTextSearch(e.target.value);
                   }}
-                  value={textSearch}
                 />
                 <FilterDepartment />
                 <FilterCreatedBy />
+                {(departments.length > 0 || createdBy.length > 0) && (
+                  <ButtonGhost
+                    textButton='Reset All'
+                    iconName='refresh'
+                    size={2}
+                    onClickButton={{
+                      onClick: filterReset,
+                    }}
+                    isLeftIcon
+                    color={'error'}
+                  />
+                )}
               </Stack>
             }
             slotInterviewModuleCard={
@@ -93,6 +98,7 @@ export function Modules() {
                     {filterModules.map((mod) => {
                       return (
                         <InterviewModuleCard
+                          textDepartment={mod.interview_modules.department}
                           isArchivedIconVisible={
                             mod.interview_modules.is_archived
                           }
@@ -126,7 +132,6 @@ export function Modules() {
                               {mod.users.slice(0, 5).map((user) => {
                                 return (
                                   <MuiAvatar
-                                    
                                     key={user.user_id}
                                     src={user.profile_image}
                                     level={getFullName(
@@ -134,12 +139,9 @@ export function Modules() {
                                       user.last_name,
                                     )}
                                     variant='rounded-small'
-                                  
-                                    
                                   />
                                 );
                               })}
-
                             </AvatarGroup>
                           }
                           textMembersCount={

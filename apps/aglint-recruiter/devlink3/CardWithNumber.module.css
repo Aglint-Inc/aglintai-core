@@ -5,6 +5,7 @@
 
 .cardwithnumber {
   display: flex;
+  height: 100%;
   padding: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;

@@ -40,7 +40,7 @@ function SchedulingMainComp() {
   const router = useRouter();
   const { recruiterUser, isAllowed } = useAuthDetails();
   const [saving, setSaving] = useState<'saving' | 'saved'>('saved');
-
+  const { checkPermissions } = useRolesAndPermissions();
   useEffect(() => {
     if (router.isReady && !router.query.tab) {
       router.push(
@@ -111,7 +111,7 @@ function SchedulingMainComp() {
                 </Stack>
               )}
             {(tab === 'schedules' || tab === 'myschedules') &&
-              isAllowed(['admin', 'recruiter', 'recruiting_coordinator']) && (
+              checkPermissions(['scheduler_enabled']) && (
                 <TaskSwitchButton
                   isIconVisible={false}
                   isJobCandActive={tab === 'schedules'}

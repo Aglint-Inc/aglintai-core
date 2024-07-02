@@ -2811,6 +2811,60 @@ export type Database = {
           },
         ]
       }
+      request_session_relation: {
+        Row: {
+          id: string
+          request_availability_id: string
+          session_id: string
+        }
+        Insert: {
+          id?: string
+          request_availability_id: string
+          session_id: string
+        }
+        Update: {
+          id?: string
+          request_availability_id?: string
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "request_availability_relation_request_availability_id_fkey"
+            columns: ["request_availability_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_request_availability"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "request_availability_relation_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["session_id"]
+          },
+          {
+            foreignKeyName: "request_availability_relation_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "interview_session"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "request_availability_relation_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "meeting_details"
+            referencedColumns: ["session_id"]
+          },
+          {
+            foreignKeyName: "request_availability_relation_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "meeting_interviewers"
+            referencedColumns: ["session_id"]
+          },
+        ]
+      }
       role_permissions: {
         Row: {
           permission_id: number
@@ -4000,6 +4054,14 @@ export type Database = {
           phase: string
           meta: Json
           base_time?: string
+        }
+        Returns: undefined
+      }
+      create_user: {
+        Args: {
+          email: string
+          password: string
+          user_id: string
         }
         Returns: undefined
       }

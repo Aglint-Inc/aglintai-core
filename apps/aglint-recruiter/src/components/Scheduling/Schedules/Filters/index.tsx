@@ -1,13 +1,14 @@
-import { InputAdornment, Popover, Stack } from '@mui/material';
+import { Popover, Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import { MouseEvent, useEffect, useState } from 'react';
+import _ from 'lodash';
+import { MouseEvent, useEffect, useState, useTransition } from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { FilterList } from '@/devlink2/FilterList';
 import { FilterPill } from '@/devlink2/FilterPill';
+import SearchField from '@/src/components/Common/SearchField/SearchField';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import UITextField from '@/src/components/Common/UITextField';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { useScheduleStatesContext } from '../ScheduleStatesContext';
@@ -15,6 +16,11 @@ import { FilterOptionsType } from '../types';
 import { filterOptions, getListItems } from '../utils';
 import FilterChip from './FilterChip';
 import IconPlusFilter from './FilterChip/IconPlusFilter';
+
+const initialFilter = filterOptions.reduce((acc, item) => {
+  acc[item.name] = [];
+  return acc;
+}, {});
 
 function Filters() {
   const {
@@ -27,22 +33,40 @@ function Filters() {
   const [selectedFilters, setSelectedFilters] = useState<FilterOptionsType[]>(
     [],
   );
+  const [searchText, setSearchText] = useState<string>('');
+  const [, startTransition] = useTransition();
+  const [selectedItem, setSelectedItem] = useState<any>(
+    JSON.parse(localStorage.getItem('scheduleFilterIds')) || initialFilter,
+  );
+
+  const resetAll = () => {
+    setSelectedStatus([]);
+    setSelectedMembers([]);
+    setSelectedJob([]);
+    setSelectedScheduleType([]);
+    setSelectedDateRange([]);
+    setSelectedItem(initialFilter);
+    localStorage.setItem('scheduleFilterIds', JSON.stringify(initialFilter));
+    localStorage.setItem(
+      'schedulesFilter',
+      JSON.stringify([...filterOptions].map((ele) => ele.name)),
+    );
+    setSelectedFilters([...filterOptions]);
+  };
 
   useEffect(() => {
     if (typeof window != 'undefined') {
-      const localSetFilterNames = JSON.parse(
-        localStorage.getItem('schedulesFilter'),
-      ) as string[];
-      if (localSetFilterNames) {
-        const defaultFilters = filterOptions.filter((ele) =>
-          localSetFilterNames.includes(ele.name),
-        );
-        setSelectedFilters([...defaultFilters]);
-      }
+      localStorage.setItem(
+        'schedulesFilter',
+        JSON.stringify([...filterOptions].map((ele) => ele.name)),
+      );
+      setSelectedFilters([...filterOptions]);
     }
   }, []);
+
   const scheduleFilterIds =
     JSON.parse(localStorage.getItem('scheduleFilterIds')) || {};
+
   const [selectedStatus, setSelectedStatus] = useState<string[]>(
     scheduleFilterIds?.status || [],
   );
@@ -161,7 +185,23 @@ function Filters() {
           dateRangeMatch
         );
       });
-      setFilterSchedule(filteredSchedule);
+
+      if (searchText) {
+        const filteredSchedules = filterSchedules.filter((ele) => {
+          if (
+            ele.interview_meeting.session_name
+              .toLowerCase()
+              .includes(searchText.toLowerCase())
+          ) {
+            return ele;
+          }
+        });
+        setFilterSchedule(filteredSchedules);
+      } else {
+        setFilterSchedule(filteredSchedule);
+      }
+
+      // setFilterSchedule(filteredSchedule);
       setLoadingSchedules(false);
     }
   }, [
@@ -173,36 +213,40 @@ function Filters() {
     allSchedules,
   ]);
 
+  const handleTextChange = (e) => {
+    const value = e.target.value;
+    setSearchText(value);
+    startTransition(() => {
+      if (value) {
+        const filteredSchedules = filterSchedules.filter((ele) => {
+          if (
+            ele.interview_meeting.session_name
+              .toLowerCase()
+              .includes(value.toLowerCase())
+          ) {
+            return ele;
+          }
+        });
+        setFilterSchedule(filteredSchedules);
+      } else {
+        setFilterSchedule(allSchedules);
+      }
+    });
+  };
+
+  const handleTextClear = () => {
+    setSearchText('');
+    startTransition(() => {
+      setFilterSchedule(allSchedules);
+    });
+  };
   return (
     <Stack direction={'row'} spacing={'var(--space-3)'}>
-      <UITextField
-        height={32}
-        width='250px'
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position='end'>
-              <GlobalIcon iconName='search' size='5'/>
-            </InputAdornment>
-          ),
-        }}
+      <SearchField
+        value={searchText}
+        onChange={handleTextChange}
+        onClear={handleTextClear}
         placeholder={'Search session.'}
-        onChange={(e) => {
-          if (e.target.value) {
-            const filteredSchedules = filterSchedules.filter((ele) => {
-              if (
-                ele.interview_meeting.session_name
-                  .toLowerCase()
-                  .includes(e.target.value.toLowerCase())
-              ) {
-                return ele;
-              }
-            });
-            setFilterSchedule(filteredSchedules);
-          }
-          if (!e.target.value) {
-            setFilterSchedule(allSchedules);
-          }
-        }}
       />
       {selectedFilters.map((filterType, i) => {
         let itemList: { label: string; id: string }[] =
@@ -214,6 +258,8 @@ function Filters() {
           });
         return (
           <FilterChip
+            setSelectedItem={setSelectedItem}
+            selectedItem={selectedItem}
             handleChange={(ids: string[]) => {
               handleOnSelectItem(ids, filterType.name);
             }}
@@ -233,9 +279,6 @@ function Filters() {
             itemList={itemList || []}
             key={i}
             filterType={filterType}
-            defaultSelectedIds={
-              scheduleFilterIds && scheduleFilterIds[String(filterType.name)]
-            }
           />
         );
       })}
@@ -250,6 +293,20 @@ function Filters() {
           }}
           textButton={'Add Filter'}
           slotIcon={<IconPlusFilter />}
+        />
+      </ShowCode.When>
+      <ShowCode.When isTrue={!_.isEqual(selectedItem, initialFilter)}>
+        <ButtonGhost
+          textButton='Reset All'
+          size={2}
+          isLeftIcon={true}
+          iconSize={4}
+          iconName='refresh'
+          onClickButton={{
+            onClick: () => {
+              resetAll();
+            },
+          }}
         />
       </ShowCode.When>
       <Popover

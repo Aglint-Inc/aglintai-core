@@ -48,8 +48,8 @@ export function GlobalBanner({
         >
           {slotButtons ?? (
             <>
-              <ButtonSoft size="2" color="neutral" />
-              <ButtonSolid size="2" />
+              <ButtonSoft size="1" color="neutral" />
+              <ButtonSolid size="1" />
             </>
           )}
         </_Builtin.Block>

@@ -25,6 +25,10 @@
   cursor: pointer;
 }
 
+.embed_flex.is_absolute {
+  position: absolute;
+}
+
 .assessment_empty_text {
   display: flex;
   flex-direction: column;

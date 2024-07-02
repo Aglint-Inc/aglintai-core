@@ -31,6 +31,10 @@ export type candidateRequestAvailabilityType =
       candidates: DatabaseTable['candidates'];
       public_jobs: DatabaseTable['public_jobs'];
     };
+    request_session_relation: DatabaseTable['request_session_relation'] &
+      {
+        interview_session: DatabaseTable['interview_session'];
+      }[];
   };
 
 interface ContextValue {
@@ -145,12 +149,12 @@ function RequestAvailabilityProvider({ children }) {
     );
 
     // check multi-day
-
     const meetingsRound = ScheduleUtils.getSessionRounds(
-      requestAvailability.session_ids as InterviewSessionTypeDB[],
+      requestAvailability?.request_session_relation.map(
+        (ele) => ele.interview_session,
+      ),
     ) as unknown as InterviewSessionTypeDB[][];
     setMultiDaySessions(meetingsRound);
-
     try {
       await Promise.all(
         meetingsRound.map(async (_, idx) => {

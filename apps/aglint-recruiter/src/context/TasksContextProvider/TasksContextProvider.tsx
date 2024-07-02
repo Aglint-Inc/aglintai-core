@@ -38,6 +38,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import { useAuthDetails } from '../AuthContext/AuthContext';
 export type taskFilterType = {
   Job: string[];
+  Date: string[];
   Status: DatabaseEnums['task_status'][];
   Priority: DatabaseEnums['task_priority'][];
   Assignee: string[];
@@ -81,6 +82,7 @@ export type TasksAgentContextType = TasksReducerType & {
   ) => Promise<boolean>;
   handelSearch: (x: string) => void;
   handelFilter: (x: AtLeastOneRequired<TasksReducerType['filter']>) => void;
+  handelResetFilter: () => void;
   handelSort: (x: TasksReducerType['sort']) => void;
   loadingTasks: boolean;
 };
@@ -137,6 +139,7 @@ const contextInitialState: TasksAgentContextType = {
   handelAddTaskProgress: (x) => Promise.resolve(false),
   handelSearch: (x) => {},
   handelFilter: (x) => {},
+  handelResetFilter: () => {},
   handelSort: (x) => {},
 };
 /* eslint-enable no-unused-vars */
@@ -397,6 +400,31 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
+  const handelResetFilter: TasksAgentContextType['handelResetFilter'] = () => {
+    const data = Object.keys(tasksReducer.filter).reduce((acc, key) => {
+      // eslint-disable-next-line security/detect-object-injection
+      acc[key] = { ...tasksReducer.filter[key], values: [] };
+      return acc;
+    }, {});
+
+    localStorage.setItem(
+      'taskFilters',
+      JSON.stringify({
+        Candidate: [],
+        Status: [],
+        Assignee: [],
+        Priority: [],
+        Job: [],
+        Type: [],
+        Date: [],
+      }),
+    );
+    dispatch({
+      type: TasksReducerAction.FILTER,
+      payload: data as TasksReducerType['filter'],
+    });
+  };
+
   const handelSort: TasksAgentContextType['handelSort'] = (sort) => {
     dispatch({
       type: TasksReducerAction.SORT,
@@ -420,8 +448,8 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
 
     if (status.values.length) {
       temp = temp.filter((sub) => {
-        const progress_type = sub.latest_progress.progress_type;
-        const created_at = sub.latest_progress.created_at;
+        const progress_type = sub?.latest_progress?.progress_type;
+        const created_at = sub?.latest_progress?.created_at;
 
         if (
           status.values.includes(
@@ -536,6 +564,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
           temp.filter.jobTitle.values = preFilterData?.Job || [];
           temp.filter.type.values = preFilterData?.Type || [];
           temp.filter.candidate.values = preFilterData?.Candidate || [];
+          temp.filter.date.values = preFilterData?.Date || [];
         }
 
         temp.tasks = data.data;
@@ -607,6 +636,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
             handelSearch,
             handelFilter,
             handelSort,
+            handelResetFilter,
             loadingTasks,
           }}
         >

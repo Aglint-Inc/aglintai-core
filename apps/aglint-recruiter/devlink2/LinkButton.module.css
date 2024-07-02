@@ -39,3 +39,7 @@
 .embed_flex.is_cursor {
   cursor: pointer;
 }
+
+.embed_flex.is_absolute {
+  position: absolute;
+}

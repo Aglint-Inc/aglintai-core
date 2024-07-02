@@ -17,6 +17,7 @@ import { MultiFilterLayout } from '@/devlink3/MultiFilterLayout';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import UITextField from '../UITextField';
+import ToggleBtn from '../UIToggle';
 import {
   nestedOptionMapper,
   nestedType,
@@ -185,7 +186,12 @@ function FilterSwitcher(filter: FilterTypes, index: number) {
         <ButtonFilter
           key={index}
           isActive={filter.isActive}
-          isDotVisible={filter.isActive}
+          isDotVisible={false}
+          slotLeftIcon={
+            <Stack style={{ pointerEvents: 'none' }}>
+              <ToggleBtn isChecked={filter.isActive} />
+            </Stack>
+          }
           textLabel={capitalizeFirstLetter(filter.name || '')}
           onClickStatus={{ onClick: () => filter.onClick() }}
         />
@@ -258,28 +264,32 @@ export function FilterComponent({
             borderRadius: 'var(--radius-2)',
             borderColor: 'var(--neutral-6)',
             minWidth: '176px',
-            backgroundColor:'white'
+            backgroundColor: 'white',
           },
         }}
       >
         <FilterDropdown
           isRemoveVisible={false}
           slotOption={
-            <FilterOptionsList
-              optionList={itemList}
-              selectedItems={selectedItems}
-              searchFilter={filterSearch}
-              setSelectedItems={(val) => {
-                let temp = [...selectedItems];
-                if (temp.includes(val)) {
-                  temp = temp.filter((innerEle) => innerEle !== val);
-                } else {
-                  temp.push(val);
-                }
-                setSelectedItems(temp);
-              }}
-              nested={false}
-            />
+            itemList.length ? (
+              <FilterOptionsList
+                optionList={itemList}
+                selectedItems={selectedItems}
+                searchFilter={filterSearch}
+                setSelectedItems={(val) => {
+                  let temp = [...selectedItems];
+                  if (temp.includes(val)) {
+                    temp = temp.filter((innerEle) => innerEle !== val);
+                  } else {
+                    temp.push(val);
+                  }
+                  setSelectedItems(temp);
+                }}
+                nested={false}
+              />
+            ) : (
+              <Typography>No {title}</Typography>
+            )
           }
           onClickReset={{
             onClick: () => {
@@ -699,14 +709,17 @@ function FilterOptionsList({
                     key={option.id}
                     direction={'row'}
                     padding={'8px 12px'}
-                    sx={{ alignItems: 'center', borderRadius:'4px',':hover':{
-                      bgcolor:'var(--neutral-2)'
-                    }}}
+                    sx={{
+                      alignItems: 'center',
+                      borderRadius: '4px',
+                      ':hover': {
+                        bgcolor: 'var(--neutral-2)',
+                      },
+                    }}
                     spacing={1}
                     onClick={() => {
                       setSelectedItems(option.id, optionList.path || []);
                     }}
-                    
                   >
                     <Checkbox
                       checked={

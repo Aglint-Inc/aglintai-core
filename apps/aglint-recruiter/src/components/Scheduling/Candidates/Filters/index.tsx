@@ -1,4 +1,12 @@
-import { FilterType, useFilterCandidateStore } from '../filter-store';
+import { useEffect } from 'react';
+
+import { ButtonGhost } from '@/devlink/ButtonGhost';
+
+import {
+  FilterType,
+  setFilterVisible,
+  useFilterCandidateStore,
+} from '../filter-store';
 import FilterCordinator from './FilterCordinator';
 import FilterInterviewModule from './FilterInterviewModule';
 import FilterJob from './FilterJob';
@@ -8,6 +16,13 @@ import FilterStatus from './FilterStatus';
 
 function AllFilters() {
   const filterVisible = useFilterCandidateStore((state) => state.filterVisible);
+  const { reset, isInitialState } = useFilterCandidateStore();
+
+  useEffect(() => {
+    const initalAllFilterShow = Object.keys(FilterType);
+    setFilterVisible(initalAllFilterShow as FilterType[]);
+  }, []);
+
   return (
     <>
       <FilterSearchField />
@@ -27,6 +42,18 @@ function AllFilters() {
             return null;
         }
       })}
+      {isInitialState() && (
+        <ButtonGhost
+          textButton='Reset All'
+          onClickButton={{
+            onClick: reset,
+          }}
+          size={2}
+          color={'error'}
+          isLeftIcon
+          iconName='refresh'
+        />
+      )}
     </>
   );
 }

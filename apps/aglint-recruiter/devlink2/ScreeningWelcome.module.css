@@ -50,6 +50,10 @@
   cursor: pointer;
 }
 
+.embed_flex.is_absolute {
+  position: absolute;
+}
+
 .end_icon {
   position: absolute;
   left: 0%;

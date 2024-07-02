@@ -46,11 +46,6 @@ function DateRangeField() {
       <TimeRangeSelector
         slotCheckbox={<Checkbox />}
         isMultiDay={false}
-        slotSelectedTime={
-          value?.startTime &&
-          value.endTime &&
-          `${dayjs(value.startTime).format('hh:mm A')} - ${dayjs(value.endTime).format('hh:mm A')}`
-        }
         slotTimeinputs={
           <Stack direction={'row'} spacing={2}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
