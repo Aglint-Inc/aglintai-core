@@ -1,13 +1,12 @@
-/* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
 import {
   DatabaseTable,
+  DB,
   InterviewMeetingTypeDb,
   RecruiterUserType,
 } from '@aglint/shared-types';
-import { DB } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
-import { CookieOptions, createServerClient, serialize } from '@supabase/ssr';
+import { createServerClient } from '@supabase/ssr';
 import dayjs from 'dayjs';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -21,10 +20,10 @@ import {
   scheduleDebrief,
 } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
-// import { mailHandler } from '@/src/components/Scheduling/Candidates/utils';
 import { getScheduleName } from '@/src/components/Scheduling/utils';
 import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
 import { createTaskProgress } from '@/src/components/Tasks/utils';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 export interface ApiBodyParamsSendToCandidate {
   is_debrief?: boolean;
@@ -46,24 +45,6 @@ export interface ApiBodyParamsSendToCandidate {
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const supabase = createServerClient<DB>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return req.cookies[name];
-          },
-          set(name: string, value: string, options: CookieOptions) {
-            res.setHeader('Set-Cookie', serialize(name, value, options));
-          },
-          remove(name: string, options: CookieOptions) {
-            res.setHeader('Set-Cookie', serialize(name, '', options));
-          },
-        },
-      },
-    ) as any;
-
     const bodyParams: ApiBodyParamsSendToCandidate = req.body;
 
     const resSendToCandidate = await sendToCandidate({
@@ -75,7 +56,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       selectedApplication: bodyParams.selectedApplication,
       selectedSessionIds: bodyParams.selectedSessionIds,
       user_tz: bodyParams.user_tz,
-      supabase: supabase,
+      supabase: supabaseAdmin,
       is_debrief: bodyParams.is_debrief,
       selectedApplicationLog: bodyParams.selectedApplicationLog,
       selectedSlots: bodyParams.selectedSlots,
@@ -244,7 +225,9 @@ const sendToCandidate = async ({
                 selectedApplication.candidates.last_name,
               ),
               sessions: createCloneRes.refSessions
-                .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
+                .filter((ses) =>
+                  selectedSessionIds.includes(ses.interview_session.id),
+                )
                 .map((ele) => ({
                   id: ele.interview_session.id,
                   name: ele.interview_session.name,
@@ -255,8 +238,8 @@ const sendToCandidate = async ({
           console.log('created task progress');
         }
 
-        addScheduleActivity({
-          title: `Sent booking link to ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.last_name)} for ${createCloneRes.refSessions
+        await addScheduleActivity({
+          title: `Sent self scheduling link to ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.last_name)} for ${createCloneRes.refSessions
             .filter((ses) => ses.isSelected)
             .map((ses) => ses.interview_session.name)
             .join(' , ')}`,
@@ -366,9 +349,11 @@ const sendToCandidate = async ({
 
           console.log('created task and progress');
 
-          addScheduleActivity({
-            title: `Candidate invited for session ${initialSessions
-              .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
+          await addScheduleActivity({
+            title: `Sent self scheduling link to ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.last_name)} for ${initialSessions
+              .filter((ses) =>
+                selectedSessionIds.includes(ses.interview_session.id),
+              )
               .map((ses) => ses.interview_session.name)
               .join(' , ')}`,
             logged_by: 'user',
@@ -400,7 +385,9 @@ const sendToCandidate = async ({
                 selectedApplication.candidates.last_name,
               ),
               sessions: initialSessions
-                .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
+                .filter((ses) =>
+                  selectedSessionIds.includes(ses.interview_session.id),
+                )
                 .map((ele) => ({
                   id: ele.interview_session.id,
                   name: ele.interview_session.name,

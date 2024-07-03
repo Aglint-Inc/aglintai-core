@@ -1198,6 +1198,7 @@ export const onClickResendInvite = async ({
   application_id,
   filter_id,
   request_id,
+  task_id,
 }: {
   candidate_name: string;
   session_name: string;
@@ -1205,11 +1206,13 @@ export const onClickResendInvite = async ({
   application_id: string;
   filter_id: string | null;
   request_id: string | null;
+  task_id: string;
 }) => {
   try {
     if (filter_id) {
       const resMail = await selfScheduleReminderMailToCandidate({
         filter_id: filter_id,
+        task_id,
       });
 
       if (resMail) {
@@ -1231,7 +1234,7 @@ export const onClickResendInvite = async ({
         };
 
       await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/emails/sendAvailabilityRequest_email_applican`,
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/emails/sendAvailabilityRequest_email_applicant`,
         {
           meta: bodyParams,
         },

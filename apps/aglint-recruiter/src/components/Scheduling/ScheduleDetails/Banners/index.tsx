@@ -20,7 +20,7 @@ import { setRescheduleSessionIds } from '../../CandidateDetails/store';
 import { onClickResendInvite } from '../../CandidateDetails/utils';
 import { useScheduleDetails } from '../hooks';
 import { ScheduleMeeting } from '../types';
-import { onClickAccept, onClickCopyLink } from '../utils';
+import { fetchFilterJson, onClickAccept, onClickCopyLink } from '../utils';
 
 interface CancelReasonCardsProps {
   cancelReasons: ReturnType<typeof useScheduleDetails>['data']['cancel_data'];
@@ -28,7 +28,7 @@ interface CancelReasonCardsProps {
   setCancelUserId: React.Dispatch<React.SetStateAction<string>>;
   cancelUserId: string;
   setIsChangeInterviewerOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  filterJson: DatabaseTable['interview_filter_json'];
+  filterJson: Awaited<ReturnType<typeof fetchFilterJson>>;
   requestAvailibility: DatabaseTable['candidate_request_availability'];
   refetch: () => void;
   sessionRelation: DatabaseTable['interview_session_relation'];
@@ -142,6 +142,7 @@ function Banners({
                       schedule_id: schedule.schedule.id,
                       filter_id: filterJson?.id,
                       request_id: requestAvailibility?.id,
+                      task_id: filterJson?.new_tasks[0]?.id,
                     });
                   },
                 }}
@@ -163,8 +164,9 @@ function Banners({
                           schedule.candidates.last_name,
                         ),
                         rec_user_id: recruiterUser.user_id,
-                        filter_id: filterJson.id,
-                        request_id: requestAvailibility.id,
+                        filter_id: filterJson?.id,
+                        request_id: requestAvailibility?.id,
+                        task_id: filterJson?.new_tasks[0].id,
                       });
                     } else {
                       toast.warning(
