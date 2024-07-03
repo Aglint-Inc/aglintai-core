@@ -78,10 +78,15 @@ const TriggerInfo = () => {
   const {
     workflow: { interval, trigger, phase },
   } = useWorkflow();
-  return `Any subsequent actions will be triggered ${phase ? DURATION_OPTIONS.find(({ value }) => value === interval)?.name ?? '' + ' ' : ''} ${getTriggerOption(trigger, phase).toLowerCase()}.`;
+  const option = DURATION_OPTIONS.find(({ value }) => value === interval);
+  return `Any subsequent actions will be triggered ${phase ? (option.value === 0 ? 'with no delay' : option.name ?? '' + ' ') : ''} ${getTriggerOption(trigger, phase).toLowerCase()}.`;
 };
 
 const DURATION_OPTIONS: { name: string; value: number }[] = [
+  {
+    name: 'No delay',
+    value: 0,
+  },
   {
     name: '30 mins',
     value: 30,
@@ -106,31 +111,31 @@ const TRIGGER_PAYLOAD: {
 }[] = [
   {
     trigger: 'sendAvailReqReminder',
-    phase: ['now', 'after'],
+    phase: ['after'],
   },
   {
     trigger: 'selfScheduleReminder',
-    phase: ['now', 'after'],
+    phase: ['after'],
   },
   {
     trigger: 'interviewStart',
-    phase: ['before', 'now'],
+    phase: ['before'],
   },
   {
     trigger: 'interviewerConfirmation',
-    phase: ['now', 'after'],
+    phase: ['after'],
   },
   {
     trigger: 'interviewEnd',
-    phase: ['now', 'after'],
+    phase: ['after'],
   },
   {
     trigger: 'meetingDeclined',
-    phase: ['now', 'after'],
+    phase: ['after'],
   },
   {
     trigger: 'meetingAccepted',
-    phase: ['now', 'after'],
+    phase: ['after'],
   },
 ];
 
@@ -172,7 +177,7 @@ export function getTriggerOption(
       message = 'starting an interview';
       break;
     case 'interviewerConfirmation':
-      message = 'interview confirmation by an interviewer';
+      message = 'an interviewer confirms an interview';
       break;
     case 'interviewEnd':
       message = 'ending an interview';
@@ -193,7 +198,7 @@ export function getTriggerOption(
       preMessage = 'After';
       break;
     case 'now':
-      preMessage = 'At';
+      preMessage = 'When';
       break;
   }
   return `${preMessage} ${message}`;
