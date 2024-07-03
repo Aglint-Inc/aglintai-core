@@ -9,9 +9,9 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import UIPhoneInput from '@/src/components/Common/UIPhoneInput';
 import UITextField from '@/src/components/Common/UITextField';
-import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useJob } from '@/src/context/JobContext';
 
 type FormEntries = {
   first_name: FormField;
@@ -73,7 +73,8 @@ const ImportManual = () => {
   const setImportPopup = useApplicationsStore(
     ({ setImportPopup }) => setImportPopup,
   );
-  const { handleUploadApplication } = useApplications();
+  const { handleUploadApplication } = useJob();
+
   const handleValidate = () => {
     return Object.entries(applicant).reduce(
       (acc, [key, curr]) => {

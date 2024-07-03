@@ -7,9 +7,6 @@ import {
   applicationsQueries,
   useMoveApplications,
   useUpdateApplication,
-  useUploadApplication,
-  useUploadCsv,
-  useUploadResume,
 } from '@/src/queries/job-applications';
 
 import { useApplicationStore } from '../ApplicationContext/store';
@@ -139,19 +136,6 @@ export const useApplicationsActions = () => {
     [CASCADE_VISIBILITIES, job?.flags, section],
   );
 
-  const { mutate: handleUploadApplication } = useUploadApplication({
-    job_id,
-    ...params,
-  });
-  const { mutate: handleUploadResume } = useUploadResume({
-    job_id,
-    ...params,
-  });
-  const { mutate: handleUploadCsv } = useUploadCsv({
-    job_id,
-    ...params,
-  });
-
   const { mutateAsync: moveApplications } = useMoveApplications(
     {
       job_id,
@@ -245,9 +229,6 @@ export const useApplicationsActions = () => {
     locationFilterOptions,
     handleUpdateApplication,
     handleAsyncUpdateApplication,
-    handleUploadApplication,
-    handleUploadResume,
-    handleUploadCsv,
     handleMoveApplications,
     handleSelectNextApplication,
     handleSelectPrevApplication,

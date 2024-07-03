@@ -18,7 +18,7 @@ import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loa
 import { getTriggerOption } from '@/src/components/Workflow/[id]/body/trigger';
 import { JobIcon } from '@/src/components/Workflow/index/body/icons';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useJobDetails } from '@/src/context/JobDashboard';
+import { useJobDashboard } from '@/src/context/JobDashboard';
 import {
   JobDashboardStore,
   useJobDashboardStore,
@@ -39,7 +39,7 @@ const JobWorkflowComp = () => {
   const { push } = useRouter();
   const {
     workflows: { data: jobWorkflows },
-  } = useJobDetails();
+  } = useJobDashboard();
   const { setPopup } = useJobDashboardStore(({ setPopup }) => ({
     setPopup,
   }));
@@ -70,7 +70,7 @@ const JobWorkflows = () => {
   const {
     job,
     workflows: { data: jobWorkflows, status, refetch },
-  } = useJobDetails();
+  } = useJobDashboard();
   const { push } = useRouter();
   const { setPopup } = useJobDashboardStore(({ setPopup }) => ({
     setPopup,
@@ -132,7 +132,7 @@ const WorkflowBrowser = () => {
   const {
     job,
     workflows: { data: workflows },
-  } = useJobDetails();
+  } = useJobDashboard();
   const { data, status } = useWorkflowQuery({ recruiter_id });
   const {
     popup: { open },

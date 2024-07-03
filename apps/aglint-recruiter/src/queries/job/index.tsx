@@ -15,11 +15,13 @@ const jobQueries = {
     enabled,
     queryClient,
     initialData,
+    refetchOnMount,
   }: Pollers & { initialData?: Job }) =>
     queryOptions({
       queryKey: [...jobsQueryKeys.jobs().queryKey, { id }],
       enabled,
       initialData,
+      refetchOnMount,
       queryFn: async () => {
         const job = await readJob(id);
         const { queryKey } = jobsQueryKeys.jobs();
@@ -58,7 +60,11 @@ const jobQueries = {
 };
 
 type Pollers = JobRequisite &
-  Partial<{ enabled: boolean; queryClient: QueryClient }>;
+  Partial<{
+    enabled: boolean;
+    queryClient: QueryClient;
+    refetchOnMount: boolean;
+  }>;
 
 export type JobRequisite = Pick<DatabaseTable['public_jobs'], 'id'>;
 

@@ -22,7 +22,7 @@ const JobDashboardProvider = ({ children }: { children: ReactNode }) => {
 
 export default JobDashboardProvider;
 
-export const useJobDetails = (): JobDashboardContextType => {
+export const useJobDashboard = (): JobDashboardContextType => {
   const value = useContext(JobDashboardContext);
   return { ...value };
 };

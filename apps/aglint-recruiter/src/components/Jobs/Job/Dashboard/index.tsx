@@ -49,7 +49,7 @@ import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJob } from '@/src/context/JobContext';
-import { useJobDetails } from '@/src/context/JobDashboard';
+import { useJobDashboard } from '@/src/context/JobDashboard';
 import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 import { useJobs } from '@/src/context/JobsContext';
 import NotFoundPage from '@/src/pages/404';
@@ -68,7 +68,7 @@ import DashboardLineChart from './lineChart';
 import TenureAndExpSummary from './tenureAndExpSummary';
 
 const JobDashboard = () => {
-  const { loadStatus } = useJobDetails();
+  const { loadStatus } = useJobDashboard();
   switch (loadStatus) {
     case 'loading':
       return (
@@ -84,7 +84,7 @@ const JobDashboard = () => {
 };
 
 const getMatches = (
-  counts: ReturnType<typeof useJobDetails>['matches']['data'],
+  counts: ReturnType<typeof useJobDashboard>['matches']['data'],
 ) => {
   return Object.entries(counts.matches).reduce(
     (acc, [key, value]) => {
@@ -111,18 +111,20 @@ const Dashboard = () => {
     handleRescoreApplications,
     handleJobAsyncUpdate,
     handleJobPublish,
+    status: { description_changed, scoring_criteria_changed },
   } = useJob();
   const {
-    matches: { data: counts },
-    schedules: { data: schedule },
-    status: { description_changed, scoring_criteria_changed },
     publishStatus: {
       publishable,
       loading,
       detailsValidity,
       hiringTeamValidity,
     },
-  } = useJobDetails();
+  } = useJobDashboard();
+  const {
+    matches: { data: counts },
+    schedules: { data: schedule },
+  } = useJobDashboard();
   const { push } = useRouter();
   const { handleJobDelete } = useJobs();
 
@@ -304,7 +306,9 @@ const Dashboard = () => {
                 {applicationScoringPollEnabled && (
                   <ScoreSetting
                     textScoreCount={`${
-                      job?.processing_count?.processed ?? '---'
+                      job?.processing_count.processed +
+                      job?.processing_count.unavailable +
+                      job?.processing_count.unparsable
                     }/${counts?.total ?? '---'}`}
                     slotScoringLoader={scoringLoader}
                   />
@@ -351,7 +355,7 @@ export default JobDashboard;
 
 const Roles = () => {
   const { push } = useRouter();
-  const { job } = useJobDetails();
+  const { job } = useJobDashboard();
   const { data, status } = useCompanyMembers();
   const { hiring_manager, recruiter, recruiting_coordinator, sourcer } = job;
   const coordinatorsData = {
@@ -415,7 +419,7 @@ const BreadCrumbs = () => {
   const {
     job,
     matches: { data: counts },
-  } = useJobDetails();
+  } = useJobDashboard();
   return (
     <>
       <Breadcrum
@@ -438,7 +442,7 @@ const BreadCrumbs = () => {
 };
 
 const Preview = () => {
-  const { job } = useJobDetails();
+  const { job } = useJobDashboard();
   const handlePreview = () => {
     window.open(
       `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${job?.id}`,
@@ -463,7 +467,7 @@ const Preview = () => {
 };
 
 const Pipeline = () => {
-  const { job } = useJobDetails();
+  const { job } = useJobDashboard();
   const { push } = useRouter();
   const setSection = useApplicationsStore(({ setSection }) => setSection);
   const newSections = Object.entries(job.section_count).reduce(
@@ -539,7 +543,7 @@ const Pipeline = () => {
 const Schedules = () => {
   const {
     schedules: { data },
-  } = useJobDetails();
+  } = useJobDashboard();
   const { push } = useRouter();
   if (data.length === 0) return <NoData />;
   const cards = data
@@ -603,12 +607,12 @@ const Schedules = () => {
 const useBanners = () => {
   const { push } = useRouter();
   const {
-    publishStatus,
-    status,
     job,
     isInterviewPlanDisabled,
     isInterviewSessionEmpty,
-  } = useJobDetails();
+    publishStatus,
+    status,
+  } = useJobDashboard();
   const { dismissWarnings, setDismissWarnings } = useJobDashboardStore(
     ({ dismissWarnings, setDismissWarnings }) => ({
       dismissWarnings,
@@ -846,7 +850,7 @@ const JobClose = ({
 }) => {
   const {
     job: { job_title, location, status },
-  } = useJobDetails();
+  } = useJobDashboard();
   const [modal, setModal] = useState(false);
   const [value, setValue] = useState('');
   const handleClose = () => {
@@ -951,7 +955,7 @@ const Modules = () => {
 };
 
 const WorkflowModule = () => {
-  const { job } = useJobDetails();
+  const { job } = useJobDashboard();
   const { push } = useRouter();
   const handleClick = () => {
     push(ROUTES['/jobs/[id]/workflows']({ id: job?.id }));
@@ -971,7 +975,7 @@ const HiringTeamModule = () => {
     publishStatus: {
       hiringTeamValidity: { validity },
     },
-  } = useJobDetails();
+  } = useJobDashboard();
   const { push } = useRouter();
   const handleClick = () => {
     push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id }));
@@ -992,7 +996,7 @@ const JobDetailsModule = () => {
     publishStatus: {
       detailsValidity: { validity },
     },
-  } = useJobDetails();
+  } = useJobDashboard();
   const { push } = useRouter();
   const handleClick = () => {
     push(ROUTES['/jobs/[id]/job-details']({ id: job?.id }));
@@ -1008,7 +1012,7 @@ const JobDetailsModule = () => {
 };
 
 const AssessmentModule = () => {
-  const { job } = useJobDetails();
+  const { job } = useJobDashboard();
   const { push } = useRouter();
   const handleClick = () => {
     push(`/jobs/${job.id}/assessment`);
@@ -1024,7 +1028,7 @@ const AssessmentModule = () => {
 };
 
 const EmailTemplatesModule = () => {
-  const { job /* emailTemplateValidity */ } = useJobDetails();
+  const { job /* emailTemplateValidity */ } = useJobDashboard();
   const { push } = useRouter();
   const handleClick = () => {
     push(`/jobs/${job.id}/email-templates`);
@@ -1041,12 +1045,12 @@ const EmailTemplatesModule = () => {
 
 export type DashboardGraphOptions<
   T extends keyof Pick<
-    ReturnType<typeof useJobDetails>,
+    ReturnType<typeof useJobDashboard>,
     'assessments' | 'locations' | 'matches' | 'skills' | 'tenureAndExperience'
   >,
 > = {
   // eslint-disable-next-line no-unused-vars
-  [id in keyof ReturnType<typeof useJobDetails>[T]['data']]: string;
+  [id in keyof ReturnType<typeof useJobDashboard>[T]['data']]: string;
 };
 
 const Doughnut = () => {
@@ -1135,7 +1139,7 @@ const getPlural = (count: number, label: string) => {
 };
 
 const ScreeningModule = () => {
-  const { job } = useJobDetails();
+  const { job } = useJobDashboard();
   const { push } = useRouter();
 
   const handleClick = () => {
@@ -1153,7 +1157,7 @@ const ScreeningModule = () => {
 
 const InterviewModule = () => {
   const { job, isInterviewPlanDisabled, isInterviewSessionEmpty } =
-    useJobDetails();
+    useJobDashboard();
   const { interview_plan, interview_session } = useJobDashboardStore(
     ({ dismissWarnings }) => dismissWarnings,
   );
@@ -1176,7 +1180,7 @@ const InterviewModule = () => {
 };
 
 const ProfileScoreModule = () => {
-  const { job, status } = useJobDetails();
+  const { job, status } = useJobDashboard();
   const { push } = useRouter();
   const handleClick = () => {
     push(`/jobs/${job.id}/profile-score`);

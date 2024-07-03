@@ -13,7 +13,7 @@ import List from './List';
 
 export const Table = memo(() => {
   const {
-    job: { processing_count },
+    job: { section_count },
     cascadeVisibilites,
     section,
     sectionApplication,
@@ -41,7 +41,7 @@ export const Table = memo(() => {
     [cascadeVisibilites],
   );
 
-  if ((processing_count[section] ?? 0) === 0) return <EmptyList />;
+  if ((section_count[section] ?? 0) === 0) return <EmptyList />;
   if (sectionApplication.status === 'error') return <>Error</>;
   if (sectionApplication.status === 'pending')
     return <Loader count={8}>{skeleton}</Loader>;
@@ -50,12 +50,12 @@ export const Table = memo(() => {
     <List
       key={section}
       applications={sectionApplication}
-      count={processing_count[section]}
+      count={section_count[section]}
       loader={<Loader count={5}>{skeleton}</Loader>}
       header={
         <Stack
           style={{
-            zIndex: processing_count[section] + 1,
+            zIndex: section_count[section] + 1,
             position: 'sticky',
             top: 0,
           }}

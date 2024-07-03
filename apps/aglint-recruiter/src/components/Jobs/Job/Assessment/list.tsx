@@ -19,7 +19,7 @@ import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import { AssessmentDetails } from '@/src/components/NewAssessment/AssessmentDashboard/card';
 import TypeIcon from '@/src/components/NewAssessment/Common/icons/types';
 import { useJob } from '@/src/context/JobContext';
-import { useJobDetails } from '@/src/context/JobDashboard';
+import { useJobDashboard } from '@/src/context/JobDashboard';
 import { Assessment, AssessmentTemplate } from '@/src/queries/assessment/types';
 import {
   useJobAssessmentsBulkConnect,
@@ -32,7 +32,7 @@ const JobAssessment = () => {
     assessments: {
       data: { jobAssessments },
     },
-  } = useJobDetails();
+  } = useJobDashboard();
   const [open, setOpen] = useState(false);
   // const isRecommendedVisible =
   //   status !== 'error' &&
@@ -71,7 +71,7 @@ const JobAssessments = ({ onOpen }: { onOpen: () => void }) => {
       data: { jobAssessments },
       refetch,
     },
-  } = useJobDetails();
+  } = useJobDashboard();
   const { mutate } = useJobAssessmentsDisconnect();
   const handleDisconnect = (assessment_id: Assessment['id']) => {
     mutate(assessment_id);
@@ -136,7 +136,7 @@ const AssessmentListCard = ({
 const AssessmentTemplates = () => {
   const {
     templates: { data, status },
-  } = useJobDetails();
+  } = useJobDashboard();
   const { mutate } = useJobAssessmentTemplateConnect();
   const handleConnect = (template: AssessmentTemplate) => {
     mutate(template);
@@ -227,7 +227,7 @@ const AssessmentBrowser = ({
       data: { otherAssessments },
     },
     templates: { data: templates },
-  } = useJobDetails();
+  } = useJobDashboard();
   const { mutate } = useJobAssessmentsBulkConnect();
   const [section, setSection] = useState<keyof BroweserSelections>('private');
   const [selections, setSelections] = useState<BroweserSelections>({
@@ -396,7 +396,7 @@ const AssessmentPreview = () => {
     assessments: {
       data: { jobAssessments },
     },
-  } = useJobDetails();
+  } = useJobDashboard();
   const {
     job: { id },
     handleJobAsyncUpdate,

@@ -13,9 +13,16 @@ const Tabs = () => {
 
   const activeSections = useMemo(
     () =>
-      Object.entries(job?.flags)
-        .filter(([, value]) => value)
-        .map(([key]) => key) as (keyof (typeof job)['flags'])[],
+      (
+        [
+          'new',
+          'screening',
+          'assessment',
+          'interview',
+          'qualified',
+          'disqualified',
+        ] as (keyof (typeof job)['flags'])[]
+      ).filter((value) => job?.flags[value]),
     [job?.flags],
   );
 

@@ -312,15 +312,11 @@ export const diffApplication = (
   }, {} as Partial<Application>);
 };
 
-export const useUploadApplication = (params: Omit<Params, 'status'>) => {
+export const useUploadApplication = ({ job_id }: Pick<Params, 'job_id'>) => {
   const { recruiter_id } = useAuthDetails();
   const queryClient = useQueryClient();
-  const { queryKey } = applicationsQueries.applications({
-    ...params,
-    status: 'new',
-  });
   const jobQueryKey = jobQueries.job({
-    id: params.job_id,
+    id: job_id,
   }).queryKey;
   return useMutation({
     mutationFn: async (
@@ -328,17 +324,14 @@ export const useUploadApplication = (params: Omit<Params, 'status'>) => {
     ) => {
       toast.message('Uploading application');
       return await handleUploadApplication({
-        job_id: params.job_id,
+        job_id,
         recruiter_id,
         ...payload,
       });
     },
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: async () => {
-      await Promise.allSettled([
-        queryClient.refetchQueries({ queryKey }),
-        queryClient.refetchQueries({ queryKey: jobQueryKey }),
-      ]);
+      await queryClient.refetchQueries({ queryKey: jobQueryKey });
       toast.success('Uploaded successfully');
     },
   });
@@ -367,13 +360,9 @@ const handleUploadApplication = async (payload: HandleUploadApplication) => {
   if (!response.confirmation) throw new Error(response.error);
 };
 
-export const useUploadResume = (params: Omit<Params, 'status'>) => {
+export const useUploadResume = (params: Pick<Params, 'job_id'>) => {
   const { recruiter_id } = useAuthDetails();
   const queryClient = useQueryClient();
-  const { queryKey } = applicationsQueries.applications({
-    ...params,
-    status: 'new',
-  });
   const jobQueryKey = jobQueries.job({
     id: params.job_id,
   }).queryKey;
@@ -390,10 +379,7 @@ export const useUploadResume = (params: Omit<Params, 'status'>) => {
     },
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: async () => {
-      await Promise.allSettled([
-        queryClient.refetchQueries({ queryKey }),
-        queryClient.refetchQueries({ queryKey: jobQueryKey }),
-      ]);
+      await queryClient.refetchQueries({ queryKey: jobQueryKey });
       toast.success('Uploaded successfully');
     },
   });
@@ -440,13 +426,9 @@ const handleBulkResumeUpload = async (payload: HandleUploadResume) => {
     );
 };
 
-export const useUploadCsv = (params: Omit<Params, 'status'>) => {
+export const useUploadCsv = (params: Pick<Params, 'job_id'>) => {
   const { recruiter_id } = useAuthDetails();
   const queryClient = useQueryClient();
-  const { queryKey } = applicationsQueries.applications({
-    ...params,
-    status: 'new',
-  });
   const jobQueryKey = jobQueries.job({
     id: params.job_id,
   }).queryKey;
@@ -463,10 +445,7 @@ export const useUploadCsv = (params: Omit<Params, 'status'>) => {
     },
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: async () => {
-      await Promise.allSettled([
-        queryClient.refetchQueries({ queryKey }),
-        queryClient.refetchQueries({ queryKey: jobQueryKey }),
-      ]);
+      await await queryClient.refetchQueries({ queryKey: jobQueryKey });
       toast.success('Uploaded successfully');
     },
   });
@@ -577,16 +556,10 @@ export const useRescoreApplications = () => {
       await rescoreApplications({
         job_id: args.job_id,
       });
-      const applicationQueryKey = [
-        ...applicationsQueries.all({ job_id: args.job_id }).queryKey,
-      ];
       const jobQueryKey = jobQueries.job({
         id: args.job_id,
       }).queryKey;
-      await Promise.allSettled([
-        queryClient.refetchQueries({ queryKey: applicationQueryKey }),
-        queryClient.refetchQueries({ queryKey: jobQueryKey }),
-      ]);
+      await queryClient.refetchQueries({ queryKey: jobQueryKey });
       return undefined;
     },
   });

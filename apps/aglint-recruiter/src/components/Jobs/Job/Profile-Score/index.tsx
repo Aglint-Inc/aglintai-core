@@ -29,7 +29,6 @@ import ScoreWheel, {
 } from '@/src/components/Common/ScoreWheel';
 import UITextField from '@/src/components/Common/UITextField';
 import { useJob } from '@/src/context/JobContext';
-import { useJobDetails } from '@/src/context/JobDashboard';
 import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/jobs/types';
@@ -303,8 +302,7 @@ const ProfileScore = () => {
 
 const Banners = () => {
   const { push } = useRouter();
-  const { job, handleRegenerateJd } = useJob();
-  const { status } = useJobDetails();
+  const { job, handleRegenerateJd, status } = useJob();
   const { dismissWarnings, setDismissWarnings } = useJobDashboardStore(
     ({ dismissWarnings, setDismissWarnings }) => ({
       dismissWarnings,

@@ -1,16 +1,22 @@
 import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 import { handleJobApi } from '@/src/apiUtils/job/utils';
 import { jobQueries } from '@/src/queries/job';
-import { useRescoreApplications } from '@/src/queries/job-applications';
+import {
+  useRescoreApplications,
+  useUploadApplication,
+  useUploadCsv,
+  useUploadResume,
+} from '@/src/queries/job-applications';
 import { useJobUpdate } from '@/src/queries/jobs';
 import { Job } from '@/src/queries/jobs/types';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
-import { hashCode } from '../JobDashboard/hooks';
+import { useJobDashboardStore } from '../JobDashboard/store';
 import { useJobs } from '../JobsContext';
+import { hashCode, validateDescription, validateJd } from './utils';
 
 const useJobContext = () => {
   const params = useParams();
@@ -46,6 +52,31 @@ const useJobContext = () => {
     job.status === 'published' &&
     (job.processing_count.fetching !== 0 ||
       job.processing_count.processing !== 0);
+
+  const jobPolling =
+    !!job && (scoreParameterPollEnabled || applicationScoringPollEnabled);
+
+  const { dismissWarnings } = useJobDashboardStore(({ dismissWarnings }) => ({
+    dismissWarnings,
+  }));
+
+  const jdValidity = !validateJd(job?.draft?.jd_json);
+
+  const status = job &&
+    jobLoad && {
+      loading: job.scoring_criteria_loading,
+      description_error:
+        !job.scoring_criteria_loading &&
+        validateDescription(job?.draft?.description ?? ''),
+      description_changed:
+        !job.scoring_criteria_loading &&
+        !dismissWarnings.job_description &&
+        hashCode(job?.draft?.description ?? '') !== job?.description_hash,
+      jd_json_error: !job.scoring_criteria_loading && !jdValidity,
+      scoring_criteria_changed:
+        hashCode(JSON.stringify(job?.draft?.jd_json ?? {})) !==
+        hashCode(JSON.stringify(job?.jd_json ?? {})),
+    };
 
   const interviewPlans = useQuery(jobQueries.interview_plans({ id: job_id }));
 
@@ -100,6 +131,16 @@ const useJobContext = () => {
     await handleGenerateJd(job.id);
   };
 
+  const { mutate: handleUploadApplication } = useUploadApplication({
+    job_id,
+  });
+  const { mutate: handleUploadResume } = useUploadResume({
+    job_id,
+  });
+  const { mutate: handleUploadCsv } = useUploadCsv({
+    job_id,
+  });
+
   useQueries({
     queries: [
       jobQueries.job({
@@ -110,12 +151,25 @@ const useJobContext = () => {
       }),
       jobQueries.polling({
         id: job_id,
-        enabled: false,
-        //!!job && (applicationScoringPollEnabled || scoreParameterPollEnabled),
+        enabled: jobPolling,
         queryClient,
       }),
     ],
   });
+
+  const initialRef = useRef(true);
+
+  useEffect(() => {
+    if (initialRef.current) {
+      initialRef.current = false;
+      return;
+    }
+    if (!jobPolling) {
+      queryClient.refetchQueries({
+        queryKey: jobQueries.job({ id: job_id }).queryKey,
+      });
+    }
+  }, [jobPolling]);
 
   return {
     job,
@@ -123,12 +177,18 @@ const useJobContext = () => {
     jobLoad,
     scoreParameterPollEnabled,
     applicationScoringPollEnabled,
+    jobPolling,
     interviewPlans,
     handleJobAsyncUpdate,
     handleJobUpdate,
     handleJobPublish,
     handleRegenerateJd,
     handleRescoreApplications,
+    handleUploadApplication,
+    handleUploadResume,
+    handleUploadCsv,
+    status,
+    jdValidity,
   };
 };
 
