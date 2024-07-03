@@ -69,7 +69,6 @@ export const emailTempKeys: DatabaseEnums['email_slack_types'][] = [
   'sendAvailReqReminder_email_applicant',
   'sendSelfScheduleRequest_email_applicant',
   'availabilityReqResend_email_candidate',
-  'interviewDetails_calender_interviewer',
   'rescheduleSelfSchedule_email_applicant',
   'interviewStart_email_organizer',
   'meetingDeclined_email_organizer',
