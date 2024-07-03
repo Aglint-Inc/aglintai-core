@@ -110,7 +110,7 @@ export default function EmailTemplateEditForm({
       {showSubject && (
         <Stack>
           <UITypography type='small' fontBold='normal'>
-            {overrideBodyLabel ? overrideBodyLabel : 'Email Subject'}
+            Email Subject
           </UITypography>
           <Stack
             sx={{
@@ -137,7 +137,7 @@ export default function EmailTemplateEditForm({
 
       <Stack>
         <UITypography type='small' fontBold='normal'>
-          Email Body
+          {overrideBodyLabel.length > 0 ? overrideBodyLabel : 'Email Body'}
         </UITypography>
         <Stack
           sx={{

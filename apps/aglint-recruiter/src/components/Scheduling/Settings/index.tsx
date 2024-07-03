@@ -76,6 +76,7 @@ function SchedulingSettings({
   updateSettings,
   initialData,
   isOverflow = true,
+  setSaving,
 }) {
   const { recruiter } = useAuthDetails();
   const eventRef = useRef<HTMLInputElement>(null);
@@ -1062,7 +1063,7 @@ function SchedulingSettings({
             <ShowCode.When
               isTrue={router.query.subtab == settingSubNavItem.EMAILTEMPLATE}
             >
-              <SchedulerEmailTemps />
+              <SchedulerEmailTemps setSaving={setSaving} />
             </ShowCode.When>
             <ShowCode.When
               isTrue={router.query.subtab == settingSubNavItem.REASONS}
