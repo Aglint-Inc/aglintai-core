@@ -1,14 +1,13 @@
-import { Stack, Tooltip } from '@mui/material';
+import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import UITypography from '@/src/components/Common/UITypography';
 import toast from '@/src/utils/toast';
 
 import {
@@ -73,20 +72,6 @@ function RequestAvailabilityPopUps() {
     if (selectedRequest)
       setRequestSessionIds(selectedRequest.session_ids.map((ele) => ele.id));
   }, [router.query?.candidate_request_availability]);
-
-  //tooltip for copy link
-  const [tooltipOpen, setTooltipOpen] = useState(false);
-
-  const handleButtonClick = () => {
-    setTooltipOpen(true);
-    setTimeout(() => {
-      setTooltipOpen(false);
-    }, 700);
-  };
-
-  const handleTooltipClose = () => {
-    setTooltipOpen(false);
-  };
 
   return (
     <div>

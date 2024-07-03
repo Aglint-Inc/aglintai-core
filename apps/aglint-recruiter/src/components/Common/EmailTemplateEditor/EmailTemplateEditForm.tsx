@@ -26,7 +26,7 @@ export default function EmailTemplateEditForm({
   disabled = false,
   showSender = true,
   showSubject = true,
-  overrideBodyLabel,
+  overrideBodyLabel = '',
 }: Props) {
   const options = ['{{organizerName}}', '{{companyName}}', 'Aglint Ai'];
   return (
