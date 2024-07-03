@@ -12,4 +12,5 @@ declare function GlobalBadge(props: {
   iconWeight?: Types.Builtin.Text;
   iconColor?: Types.Builtin.Text;
   iconName?: React.ReactNode;
+  showText?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

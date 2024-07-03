@@ -118,7 +118,8 @@ function RescheduleSlot() {
                 }}
                 jobTitle={selectedApplication.public_jobs.job_title}
                 isCollapseNeeded={false}
-                isActionButtonVisible={false}
+                isEditIconVisible={false}
+                gridStyle='1fr 1.7fr 0fr'
               />
             );
           })}

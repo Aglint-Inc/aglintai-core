@@ -9,6 +9,7 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import React, { Dispatch, useEffect, useState } from 'react';
 
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { ChangeInterviewer } from '@/devlink3/ChangeInterviewer';
 import { MemberRow } from '@/devlink3/MemberRow';
 import { NoConflicts } from '@/devlink3/NoConflicts';
@@ -58,7 +59,11 @@ function ChangeInterviewerDialog({
 
   const possibleUsers = schedule?.users.filter(
     (user) =>
-      user.id !== cancelUserId && !user.interview_session_relation.is_confirmed,
+      user.id !== cancelUserId &&
+      !user.interview_session_relation.is_confirmed &&
+      avaialableUsers.find((item) =>
+        item.qualifiedIntervs.some((int) => int.user_id === user.id),
+      ),
   );
 
   const fetchInterviewers = async () => {
@@ -110,6 +115,11 @@ function ChangeInterviewerDialog({
       const selectedUser = schedule.users.find(
         (user) => user.id === seletectedUserId,
       );
+
+      if (!selectedUser) {
+        toast.error('Please select an alternate interviewer');
+        return;
+      }
 
       const restUsers = schedule.users.filter(
         (user) =>
@@ -220,9 +230,17 @@ function ChangeInterviewerDialog({
             ) : (
               <Stack spacing={1}>
                 {possibleUsers.length === 0 && (
-                  <Stack pl={2}>
-                    No alternate interviewers in this session
-                  </Stack>
+                  <GlobalEmptyState
+                    iconName={'person'}
+                    textDesc={
+                      ' No alternate interviewer found for this session'
+                    }
+                    styleEmpty={{
+                      style: {
+                        backgroundColor: 'var(--neutral-2)',
+                      },
+                    }}
+                  />
                 )}
                 {possibleUsers.map((user) => {
                   const sessionConflicts = avaialableUsers.find((item) =>
