@@ -44,29 +44,13 @@ const useJobContext = () => {
   const applicationScoringPollEnabled =
     !!job &&
     job.status === 'published' &&
-    (job.processing_count['not started'] !== 0 ||
+    (job.processing_count.fetching !== 0 ||
       job.processing_count.processing !== 0);
 
   const interviewPlans = useQuery(jobQueries.interview_plans({ id: job_id }));
 
   const { mutateAsync: jobAsyncUpdate, mutate: jobUpdate } = useJobUpdate();
   const { mutateAsync: handleRescoreApplications } = useRescoreApplications();
-
-  const handleJobPublish = async (job: Job) => {
-    if (recruiter) {
-      try {
-        await jobAsyncUpdate({
-          ...job,
-          ...job.draft,
-          status: 'published',
-          description_hash: hashCode(job.draft.description),
-        });
-        return true;
-      } catch {
-        return false;
-      }
-    }
-  };
 
   const handleJobUpdate = async (
     jobId: string,
@@ -90,6 +74,21 @@ const useJobContext = () => {
         });
       } catch {
         //
+      }
+    }
+  };
+
+  const handleJobPublish = async (job: Job) => {
+    if (recruiter) {
+      try {
+        await handleJobAsyncUpdate(job.id, {
+          ...job.draft,
+          status: 'published',
+          description_hash: hashCode(job.draft.description),
+        });
+        return true;
+      } catch {
+        return false;
       }
     }
   };
