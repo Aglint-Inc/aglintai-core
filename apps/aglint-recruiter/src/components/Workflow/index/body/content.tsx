@@ -32,7 +32,7 @@ const Cards = (props: {
   const { filters, setDeletion } = useWorkflowStore(
     ({ filters, setDeletion }) => ({ filters, setDeletion }),
   );
-  const { handleDeleteWorkflow, workflowMutations: mutations } = useWorkflows();
+  const { workflowMutations: mutations } = useWorkflows();
   const cards = props.data
     .filter(({ title, jobs }) => {
       return Object.entries(filters).reduce((acc, [key, value]) => {
@@ -65,9 +65,7 @@ const Cards = (props: {
             textJobs={`Used in ${jobCount} job${jobCount === 1 ? '' : 's'}`}
             onClickDelete={{
               onClick: () =>
-                jobCount === 0
-                  ? handleDeleteWorkflow({ id })
-                  : setDeletion({ open: true, workflow: { id, jobs } }),
+                setDeletion({ open: true, workflow: { id, jobs } }),
               ...devlinkProps.delete,
             }}
             onClickEdit={{
