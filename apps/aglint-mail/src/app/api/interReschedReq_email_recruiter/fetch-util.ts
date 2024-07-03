@@ -75,7 +75,7 @@ export async function fetchUtil(
   );
 
   const req_start_date = session_cancel.other_details.dateRange.start;
-  const req_end_date = session_cancel.other_details.dateRange.start;
+  const req_end_date = session_cancel.other_details.dateRange.end;
   const comp_email_placeholder: EmailTemplateAPi<'interReschedReq_email_recruiter'>['comp_email_placeholders'] =
     {
       additionalRescheduleNotes: session_cancel.other_details.note,

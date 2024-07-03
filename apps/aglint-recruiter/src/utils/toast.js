@@ -4,7 +4,7 @@ import { createToast } from 'vercel-toast';
 const toast = {
   error: (message) => {
     createToast(message, {
-      timeout: 3000,
+      timeout: 300000,
       type: 'error',
       cancel: '✕',
     });
@@ -12,7 +12,7 @@ const toast = {
 
   success: (message) => {
     createToast(message, {
-      timeout: 3000,
+      timeout: 300000,
       type: 'success',
       cancel: '✕',
     });
@@ -20,7 +20,7 @@ const toast = {
 
   warning: (message) => {
     createToast(message, {
-      timeout: 3000,
+      timeout: 300000,
       type: 'warning',
       cancel: '✕',
     });
@@ -28,7 +28,7 @@ const toast = {
 
   action: (message, onUndo) => {
     createToast(message, {
-      timeout: 3000,
+      timeout: 300000,
       type: 'dark',
       action: {
         text: 'Undo',
@@ -43,7 +43,7 @@ const toast = {
 
   message: (message) => {
     createToast(message, {
-      timeout: 3000,
+      timeout: 300000,
       cancel: '✕',
       default: '',
       type: 'dark',

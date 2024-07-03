@@ -13,6 +13,7 @@ import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { Session } from '../components/template/Sessions';
 import config from '../../tailwind.config';
 import { Footer } from '../components/template/Footer';
+import { companyLogoDummy } from '../utils/assets/common';
 
 type EmailType = EmailTemplateAPi<'debrief_email_interviewer'>;
 
@@ -20,8 +21,7 @@ type EmailType = EmailTemplateAPi<'debrief_email_interviewer'>;
 export const dummy: EmailType['react_email_placeholders'] = {
   emailBody: `<p>Dear {{ interviewerFirstName }},</p><p></p><p>Please join the debrief session to discuss {{ candidateFirstName }}'s interview for {{ jobTitle }}. Your insights are valuable to the selection process.</p><p></p><p>Thanks,</p><p>{{ companyName }} Recruitment Team</p>`,
 
-  companyLogo:
-    'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
+  companyLogo: companyLogoDummy,
   meetingDetails: {
     date: 'Fri, May 12, 2024',
     time: '09:00 AM - 09:30 PM PST',

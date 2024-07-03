@@ -37,13 +37,16 @@ export const selfScheduleMailToCandidate = async ({
 
 export const selfScheduleReminderMailToCandidate = async ({
   filter_id,
+  task_id,
 }: {
   filter_id: string;
+  task_id?: string;
 }) => {
   try {
     const bodyParams: EmailTemplateAPi<'selfScheduleReminder_email_applicant'>['api_payload'] =
       {
         filter_json_id: filter_id,
+        task_id: task_id,
       };
 
     const res = await axios.post(

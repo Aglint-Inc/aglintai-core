@@ -51,8 +51,8 @@
       }
 
       &.error {
-        --toast-bg: var(--tomatto-3);
-        --toast-fg: var(--tomatto-11);
+        --toast-bg: var(--tomato-3);
+        --toast-fg: var(--tomato-11);
         --toast-border-color: var(--tomatto-6);
       }
 
