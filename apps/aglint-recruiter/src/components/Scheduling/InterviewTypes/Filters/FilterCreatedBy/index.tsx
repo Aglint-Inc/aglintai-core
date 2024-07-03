@@ -159,8 +159,9 @@ function FilterCreatedBy() {
                       direction={'row'}
                       spacing={1}
                       sx={{
-                        p: '8px 4px',
+                        p: 'var(--space-2) var(--space-3)',
                         cursor: 'pointer',
+                        ':hover':{bgcolor:'var(--neutral-2)'}, borderRadius:'var(--radius-2)'
                       }}
                       alignItems={'center'}
                       onClick={() => {
