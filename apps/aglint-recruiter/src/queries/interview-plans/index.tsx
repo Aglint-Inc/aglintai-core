@@ -1,10 +1,7 @@
 import { DB } from '@aglint/shared-types';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJob } from '@/src/context/JobContext';
-import { GetInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -14,23 +11,6 @@ import {
   InterviewSessionRelationType,
   InterviewSessionUpdate,
 } from './types';
-
-export const useInterviewPlans = () => {
-  const queryClient = useQueryClient();
-  const { job, job_id } = useJob();
-  const id = job_id;
-  const { recruiter_id } = useAuthDetails();
-  const { queryKey } = interviewPlanKeys.interview_plan({ id });
-  const response = useQuery({
-    queryKey,
-    queryFn: () => getInterviewPlansAPI(id),
-    enabled: !!(recruiter_id && job),
-  });
-  const refetch = async () => {
-    await Promise.allSettled([queryClient.invalidateQueries({ queryKey })]);
-  };
-  return { ...response, refetch };
-};
 
 export const useCreateInterviewPlan = () => {
   const queryClient = useQueryClient();
@@ -244,12 +224,6 @@ export const createInterviewPlan = async (job_id: string) => {
     .select();
   if (error) throw new Error(error.message);
   return data[0];
-};
-
-export const getInterviewPlansAPI = async (job_id: string) => {
-  return (
-    await axios.get(`/api/scheduling/get_interview_plans?job_id=${job_id}`)
-  ).data as GetInterviewPlansType['respone'];
 };
 
 export type CreateInterviewSession = Omit<

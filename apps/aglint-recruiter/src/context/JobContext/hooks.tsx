@@ -104,13 +104,14 @@ const useJobContext = () => {
     queries: [
       jobQueries.job({
         id: job_id,
-        enabled: !!job && scoreParameterPollEnabled,
+        enabled: !!job,
         initialData: job,
         queryClient,
       }),
-      jobQueries.application_polling({
+      jobQueries.polling({
         id: job_id,
-        enabled: applicationScoringPollEnabled,
+        enabled: false,
+        //!!job && (applicationScoringPollEnabled || scoreParameterPollEnabled),
         queryClient,
       }),
     ],

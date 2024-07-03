@@ -12,7 +12,6 @@ import {
   useAllAssessmentTemplates,
 } from '@/src/queries/assessment';
 import { Assessment } from '@/src/queries/assessment/types';
-import { useInterviewPlans } from '@/src/queries/interview-plans';
 import {
   useJobLocations,
   useJobMatches,
@@ -28,7 +27,7 @@ import { useJob } from '../JobContext';
 import { useJobDashboardStore } from './store';
 
 const useProviderJobDashboardActions = () => {
-  const { jobLoad, job, job_id } = useJob();
+  const { jobLoad, job, job_id, interviewPlans } = useJob();
 
   const assessments = useAllAssessments();
   const templates = useAllAssessmentTemplates();
@@ -55,7 +54,6 @@ const useProviderJobDashboardActions = () => {
   const matches = useJobMatches(job);
   const tenureAndExperience = useJobTenureAndExperience(job);
   const schedules = useJobSchedules(job);
-  const interviewPlans = useInterviewPlans();
   const workflows = useJobWorkflow({ id: job?.id });
 
   const isInterviewPlanDisabled =

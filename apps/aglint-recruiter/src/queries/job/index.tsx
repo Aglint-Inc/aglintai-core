@@ -5,8 +5,6 @@ import axios from 'axios';
 import { GetInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
 
 import { GC_TIME } from '..';
-import { applicationsQueries } from '../job-applications';
-import { jobDashboardQueryKeys } from '../job-dashboard/keys';
 import { readJob } from '../jobs';
 import { jobsQueryKeys } from '../jobs/keys';
 import { Job } from '../jobs/types';
@@ -44,30 +42,19 @@ const jobQueries = {
         (await axios.get(`/api/scheduling/get_interview_plans?job_id=${id}`))
           .data as GetInterviewPlansType['respone'],
     }),
-  application_polling: ({ id, enabled, queryClient }: Pollers) =>
-    queryOptions({
+  polling: ({ id, enabled, queryClient }: Pollers) => {
+    return queryOptions({
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       refetchInterval: enabled ? 5000 : false,
-      queryKey: [...jobQueries.job({ id }).queryKey, 'application_polling'],
+      queryKey: ['job_polling', { id }],
       queryFn: async () => {
-        const { queryKey: dashboardQueryKey } = jobDashboardQueryKeys.dashboard(
-          { id },
-        );
-        const { queryKey: locationFilterQueryKeys } =
-          applicationsQueries.locationFilters({ job_id: id });
-        const { queryKey: applicationsQueryKey } = applicationsQueries.all({
-          job_id: id,
-        });
-        await Promise.allSettled([
-          queryClient.refetchQueries({ queryKey: dashboardQueryKey }),
-          queryClient.refetchQueries({ queryKey: applicationsQueryKey }),
-          queryClient.refetchQueries({
-            queryKey: locationFilterQueryKeys,
-          }),
-        ]);
+        const jobQueryKey = jobQueries.job({ id }).queryKey;
+        queryClient.invalidateQueries({ queryKey: jobQueryKey });
+        return true;
       },
-    }),
+    });
+  },
 };
 
 type Pollers = JobRequisite &
