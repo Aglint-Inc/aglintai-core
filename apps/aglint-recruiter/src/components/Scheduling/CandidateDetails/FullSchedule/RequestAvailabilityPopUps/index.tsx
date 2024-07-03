@@ -22,6 +22,7 @@ import {
 } from '../../store';
 import { useAvailabilityContext } from './RequestAvailabilityContext';
 import RequestAvailabilityDrawer from './RequestAvailabilityDrawer';
+import { GlobalIcon } from '@/devlink';
 
 function RequestAvailabilityPopUps() {
   const router = useRouter();
@@ -100,6 +101,8 @@ function RequestAvailabilityPopUps() {
                 .map((ele) => ele.dates)
                 .flat()
                 .map((ele) => `<b>${dayjs(ele.curr_day).format('DD MMM')}</b>`);
+            const [copied, setCopied] = useState(false);
+
             return (
               <>
                 <ShowCode>
@@ -107,14 +110,6 @@ function RequestAvailabilityPopUps() {
                     <GlobalBanner
                       color={'warning'}
                       iconName={'schedule'}
-                      // titleColorProps={{
-                      //   style: {
-                      //     color: 'var(--warning-11)',
-                      //   },
-                      // }}
-                      // textHeading={
-                      //   'Waiting for candidates availability submission'
-                      // }
                       textTitle={
                         'Waiting for candidates availability submission'
                       }
@@ -125,10 +120,6 @@ function RequestAvailabilityPopUps() {
                           }}
                         ></div>
                       }
-                      // slotHeadingIcon={
-                      //   <Icon height='15' width='' variant='Clock' />
-                      // }
-
                       slotButtons={
                         <>
                           <ButtonSolid
@@ -159,17 +150,23 @@ function RequestAvailabilityPopUps() {
                             }}
                           />
                           <ButtonSoft
-                            textButton={'Copy invite'}
+                            textButton={copied ? 'Copied' : 'Copy link'}
                             isLoading={false}
                             isLeftIcon={false}
                             isRightIcon={false}
+                            slotIcon={<GlobalIcon iconName={'check_circle'} />}
                             size={1}
                             onClickButton={{
                               onClick: () => {
-                                navigator.clipboard.writeText(
-                                  `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${item.id}`,
-                                );
-                                toast.message('Invited link copied!');
+                                if (!copied) {
+                                  setCopied(true);
+                                  setTimeout(() => {
+                                    setCopied(false);
+                                  }, 2000);
+                                  navigator.clipboard.writeText(
+                                    `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${item.id}`,
+                                  );
+                                }
                               },
                             }}
                           />
