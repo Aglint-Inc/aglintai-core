@@ -1,5 +1,9 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
-import { fillCompEmailTemplate, getFullName } from '@aglint/shared-utils';
+import {
+  fillCompEmailTemplate,
+  getFullName,
+  supabaseWrap,
+} from '@aglint/shared-utils';
 import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 
@@ -9,11 +13,20 @@ export async function dbUtil(
   const { data: filterJson } = await supabaseAdmin
     .from('interview_filter_json')
     .select(
-      'filter_json,interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company,recruiter),candidates(first_name,last_name,email,recruiter(logo))))',
+      'filter_json,session_ids,interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company,recruiter),candidates(first_name,last_name,email,recruiter(logo))))',
     )
     .eq('id', req_body.filter_json_id)
     .single()
     .throwOnError();
+
+  const [meetingDetails] = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_session')
+      .select('interview_meeting(recruiter_user(*))')
+      .eq('id', filterJson.session_ids[0]),
+  );
+
+  const meeting_organizer = meetingDetails.interview_meeting.recruiter_user;
 
   const {
     interview_schedule: {
@@ -28,7 +41,10 @@ export async function dbUtil(
     recruiter_id,
     'selfScheduleReminder_email_applicant',
   );
-  const scheduleLink = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.interview_schedule.id}?filter_id=${req_body.filter_json_id}`;
+  const task_id = req_body.task_id;
+  const scheduleLink = task_id
+    ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.interview_schedule.id}?filter_id=${req_body.filter_json_id}&task_id=${task_id}`
+    : `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.interview_schedule.id}?filter_id=${req_body.filter_json_id}`;
   const comp_email_placeholder: EmailTemplateAPi<'selfScheduleReminder_email_applicant'>['comp_email_placeholders'] =
     {
       candidateFirstName: first_name,
@@ -37,6 +53,13 @@ export async function dbUtil(
       candidateName: getFullName(first_name, last_name),
       jobRole: job_title,
       selfScheduleLink: `<a href="${scheduleLink}">here</a>`,
+      organizerName: getFullName(
+        meeting_organizer.first_name,
+        meeting_organizer.last_name,
+      ),
+      organizerFirstName: meeting_organizer.first_name,
+      organizerLastName: meeting_organizer.last_name,
+      OrganizerTimeZone: meeting_organizer.scheduling_settings.timeZone.tzCode,
     };
 
   const filled_comp_template = fillCompEmailTemplate(

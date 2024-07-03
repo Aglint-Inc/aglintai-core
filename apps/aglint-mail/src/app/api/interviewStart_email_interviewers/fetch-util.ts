@@ -21,7 +21,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('interview_session')
       .select(
-        'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time,organizer_id,recruiter_user(first_name,email))',
+        'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time,organizer_id,recruiter_user(first_name,last_name,scheduling_settings,email))',
       )
       .eq('meeting_id', req_body.meeting_id),
   );
@@ -35,14 +35,15 @@ export async function fetchUtil(
       .eq('id', req_body.application_id),
   );
 
-  const [recruiter_user] = supabaseWrap(
+  const [meeting_interviewer] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
       .select('email,first_name,last_name,scheduling_settings')
       .eq('user_id', req_body.recruiter_user_id),
   );
+  const organizer = sessions[0].interview_meeting.recruiter_user;
 
-  const int_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
+  const int_tz = meeting_interviewer.scheduling_settings.timeZone.tzCode;
 
   const meeting_details: EmailTemplateAPi<'interviewStart_email_interviewers'>['react_email_placeholders']['meetingDetails'] =
     sessions.map((session) => {
@@ -73,7 +74,7 @@ export async function fetchUtil(
 
   const comp_email_placeholder: EmailTemplateAPi<'interviewStart_email_interviewers'>['comp_email_placeholders'] =
     {
-      recruiterFirstName: recruiter_user.first_name,
+      organizerFirstName: organizer.first_name,
       candidateName: getFullName(
         candidateJob.candidates.first_name,
         candidateJob.candidates.last_name,
@@ -89,14 +90,17 @@ export async function fetchUtil(
       endDate: dayjsLocal(sessions[0].interview_meeting.end_time)
         .tz(int_tz)
         .format(DAYJS_FORMATS.DATE_FORMAT),
-      recruiterName: getFullName(
-        recruiter_user.first_name,
-        recruiter_user.last_name,
-      ),
+      organizerName: getFullName(organizer.first_name, organizer.last_name),
       candidateFirstName: candidateJob.candidates.first_name,
       candidateLastName: candidateJob.candidates.last_name,
-      recruiterLastName: recruiter_user.last_name,
-      recruiterTimeZone: int_tz,
+      organizerLastName: organizer.last_name,
+      OrganizerTimeZone: organizer.scheduling_settings.timeZone.tzCode,
+      interviewerFirstName: meeting_interviewer.first_name,
+      interviewerLastName: meeting_interviewer.last_name,
+      interviewerName: getFullName(
+        meeting_interviewer.first_name,
+        meeting_interviewer.last_name,
+      ),
     };
 
   const filled_comp_template = fillCompEmailTemplate(
@@ -116,6 +120,6 @@ export async function fetchUtil(
   return {
     filled_comp_template,
     react_email_placeholders,
-    recipient_email: recruiter_user.email,
+    recipient_email: meeting_interviewer.email,
   };
 }

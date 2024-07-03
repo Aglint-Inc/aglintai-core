@@ -2,6 +2,8 @@ import { Drawer, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 
@@ -73,7 +75,6 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
         }}
       >
         <SideDrawerLarge
-          isLoading={isSendingToCandidate}
           onClickBack={{
             onClick: () => {
               if (stepScheduling === 'preference') {
@@ -101,25 +102,38 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                         ? 'Schedule Debrief'
                         : 'Schedule Now'
           }
-          onClickPrimary={{
-            onClick: () => {
-              onClickPrimary();
-              refetch();
-            },
-          }}
-          onClickCancel={{
-            onClick: () => {
-              resetStateSelfScheduling();
-            },
-          }}
-          textPrimaryButton={
-            !isDebrief
-              ? stepScheduling === 'preference'
-                ? 'Continue'
-                : 'Send to Candidate'
-              : 'Schedule Now'
+          slotButtons={
+            <>
+              <ButtonSoft
+                size={2}
+                color={'neutral'}
+                textButton={stepScheduling === 'pick_date' ? 'Close' : 'Back'}
+                onClickButton={{
+                  onClick: () => {
+                    resetStateSelfScheduling();
+                  },
+                }}
+              />
+              <ButtonSolid
+                isLoading={isSendingToCandidate}
+                size={2}
+                textButton={
+                  !isDebrief
+                    ? stepScheduling === 'preference' ||
+                      stepScheduling === 'pick_date'
+                      ? 'Continue'
+                      : 'Send to Candidate'
+                    : 'Schedule Now'
+                }
+                onClickButton={{
+                  onClick: async () => {
+                    await onClickPrimary();
+                    refetch();
+                  },
+                }}
+              />
+            </>
           }
-          isSelectedNumber={false}
           slotSideDrawerbody={
             !fetchingPlan ? (
               <>
@@ -151,7 +165,11 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
             )
           }
           isBottomBar={
-            stepScheduling === 'slot_options' || stepScheduling === 'preference'
+            !fetchingPlan &&
+            stepScheduling !== 'request_availibility' &&
+            (stepScheduling === 'slot_options' ||
+              stepScheduling === 'preference' ||
+              stepScheduling === 'pick_date')
           }
         />
       </Drawer>

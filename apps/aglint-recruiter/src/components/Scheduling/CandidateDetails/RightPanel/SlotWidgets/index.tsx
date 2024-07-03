@@ -2,14 +2,12 @@ import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { RescheduleCard } from '@/devlink3/RescheduleCard';
-import { ScheduleButton } from '@/devlink3/ScheduleButton';
 import CandidateDefaultIcon from '@/src/components/Common/Icons/CandidateDefaultIcon';
 import ROUTES from '@/src/utils/routing/routes';
 
-import IconCancelSchedule from '../../../ScheduleDetails/Icons/IconCancelSchedule';
-import IconReschedule from '../../../ScheduleDetails/Icons/IconReschedule';
 import {
   setDateRange,
   setIsScheduleNowOpen,
@@ -25,9 +23,11 @@ import BookingConfirmation from './BookingConfirmation';
 
 function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
   const router = useRouter();
-  const { selectedApplication } = useSchedulingApplicationStore((state) => ({
-    selectedApplication: state.selectedApplication,
-  }));
+  const { selectedApplication, initialSessions } =
+    useSchedulingApplicationStore((state) => ({
+      selectedApplication: state.selectedApplication,
+      initialSessions: state.initialSessions,
+    }));
 
   if (act.metadata.type === 'booking_confirmation') {
     return <BookingConfirmation act={act} />;
@@ -39,6 +39,12 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
       filter_id: act.metadata.filter_id,
       session_ids: act.metadata.session_ids,
     };
+
+    const isButtonVisible = act.metadata.session_ids.every(
+      (id) =>
+        initialSessions.find((ses) => ses.interview_session.id === id)
+          ?.interview_meeting?.status === 'confirmed',
+    );
 
     return (
       <Stack spacing={2} width={'100%'}>
@@ -64,14 +70,15 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
           isRescheduleBtnVisible={false}
         />
 
-        {rescheduleDetails?.filter_id &&
+        {isButtonVisible &&
+          rescheduleDetails?.filter_id &&
           act?.metadata?.action === 'waiting' && (
             <Stack direction={'row'} spacing={2}>
               {rescheduleDetails.response_type === 'reschedule' && (
-                <ScheduleButton
-                  textLabel={'Reschedule'}
-                  slotIcon={<IconReschedule />}
-                  onClickProps={{
+                <ButtonSoft
+                  size={1}
+                  textButton={'Reschedule'}
+                  onClickButton={{
                     onClick: () => {
                       setStepScheduling('reschedule');
                       setSelectedApplicationLog(act);
@@ -87,16 +94,11 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
                 />
               )}
               {rescheduleDetails.response_type === 'cancel' && (
-                <ScheduleButton
-                  textLabel={'Cancel Schedule'}
-                  slotIcon={<IconCancelSchedule />}
-                  textColorProps={{
-                    style: {
-                      color: '#D93F4C',
-                    },
-                  }}
-                  onClickProps={{
-                    style: { background: '#FFF0F1' },
+                <ButtonSoft
+                  size={1}
+                  color={'neutral'}
+                  textButton={'Cancel Schedule'}
+                  onClickButton={{
                     onClick: () => {
                       setSelectedApplicationLog(act);
                       setMultipleCancelOpen(true);

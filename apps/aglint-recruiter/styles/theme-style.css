@@ -944,7 +944,7 @@ background-color: var(--neutral-9);
 color: var(--white);
 }
 [button-color-solid="neutral"]:hover {
-background-color: var(--neurtal-10); 
+background-color: var(--neutral-10); 
 }
 /* solidcolor error */
 [button-color-solid="error"] {

@@ -2,10 +2,11 @@ import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import toast from '@/src/utils/toast';
@@ -25,6 +26,7 @@ import RequestAvailabilityDrawer from './RequestAvailabilityDrawer';
 function RequestAvailabilityPopUps() {
   const router = useRouter();
   const { availabilities } = useSchedulingApplicationStore();
+  const [copied, setCopied] = useState(false);
 
   const { setSelectedRequestAvailability } = useAvailabilityContext();
 
@@ -85,6 +87,7 @@ function RequestAvailabilityPopUps() {
                 .map((ele) => ele.dates)
                 .flat()
                 .map((ele) => `<b>${dayjs(ele.curr_day).format('DD MMM')}</b>`);
+
             return (
               <>
                 <ShowCode>
@@ -92,14 +95,6 @@ function RequestAvailabilityPopUps() {
                     <GlobalBanner
                       color={'warning'}
                       iconName={'schedule'}
-                      // titleColorProps={{
-                      //   style: {
-                      //     color: 'var(--warning-11)',
-                      //   },
-                      // }}
-                      // textHeading={
-                      //   'Waiting for candidates availability submission'
-                      // }
                       textTitle={
                         'Waiting for candidates availability submission'
                       }
@@ -110,10 +105,6 @@ function RequestAvailabilityPopUps() {
                           }}
                         ></div>
                       }
-                      // slotHeadingIcon={
-                      //   <Icon height='15' width='' variant='Clock' />
-                      // }
-
                       slotButtons={
                         <>
                           <ButtonSolid
@@ -144,17 +135,23 @@ function RequestAvailabilityPopUps() {
                             }}
                           />
                           <ButtonSoft
-                            textButton={'Copy invite'}
+                            textButton={copied ? 'Copied' : 'Copy link'}
                             isLoading={false}
                             isLeftIcon={false}
                             isRightIcon={false}
+                            slotIcon={<GlobalIcon iconName={'check_circle'} />}
                             size={1}
                             onClickButton={{
                               onClick: () => {
-                                navigator.clipboard.writeText(
-                                  `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${item.id}`,
-                                );
-                                toast.message('Invited link copied!');
+                                if (!copied) {
+                                  setCopied(true);
+                                  setTimeout(() => {
+                                    setCopied(false);
+                                  }, 2000);
+                                  navigator.clipboard.writeText(
+                                    `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${item.id}`,
+                                  );
+                                }
                               },
                             }}
                           />

@@ -8,6 +8,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { RolesPill } from '@/devlink/RolesPill';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
@@ -471,18 +472,35 @@ const InterviewSession = ({
                 handleEdit={(key) => handleEdit(key, session.id)}
               />
             }
-            onClickEdit={{
-              onClick: () =>
-                handleEdit(sessionToEdit(session.session_type), session.id),
-            }}
-            onClickDelete={{
-              onClick: () =>
-                handleDeletionSelect({
-                  id: session.id,
-                  name: session.name,
-                  break: false,
-                }),
-            }}
+            slotButtons={
+              <>
+                <IconButtonSoft
+                  iconName={'delete'}
+                  size={1}
+                  color={'error'}
+                  onClickButton={{
+                    onClick: () =>
+                      handleDeletionSelect({
+                        id: session.id,
+                        name: session.name,
+                        break: false,
+                      }),
+                  }}
+                />
+                <IconButtonSoft
+                  iconName={'edit'}
+                  size={1}
+                  color={'neutral'}
+                  onClickButton={{
+                    onClick: () =>
+                      handleEdit(
+                        sessionToEdit(session.session_type),
+                        session.id,
+                      ),
+                  }}
+                />
+              </>
+            }
           />
         </Stack>
       </OptimisticWrapper>
@@ -558,9 +576,27 @@ const InterviewBreak = ({
 }) => {
   return (
     <InterviewBreakCard
+      slotEditButton={
+        <>
+          <IconButtonSoft
+            iconName={'delete'}
+            size={1}
+            color={'error'}
+            onClickButton={{
+              onClick: () => handleDelete(),
+            }}
+          />
+          <IconButtonSoft
+            iconName={'edit'}
+            size={1}
+            color={'neutral'}
+            onClickButton={{
+              onClick: () => handleEdit(),
+            }}
+          />
+        </>
+      }
       textDuration={getBreakLabel(duration)}
-      onClickEdit={{ onClick: () => handleEdit() }}
-      onClickDelete={{ onClick: () => handleDelete() }}
     />
   );
 };

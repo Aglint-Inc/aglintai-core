@@ -154,7 +154,6 @@ function RequestAvailabilityDrawer() {
         textPrimaryButton={
           selectedIndex !== availableSlots?.length ? 'Continue' : 'Schedule Now'
         }
-        isSelectedNumber={false}
         slotSideDrawerbody={
           <ShowCode>
             <ShowCode.When isTrue={isLoading && !isFetched}>

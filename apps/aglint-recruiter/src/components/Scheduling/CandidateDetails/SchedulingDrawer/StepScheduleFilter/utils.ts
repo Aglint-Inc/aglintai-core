@@ -54,6 +54,7 @@ export const filterByDateRanges = ({
     });
 };
 
+// function which is used to show count in preference screen
 export function filterSchedulingOptions({
   schedulingOptions,
   filters,
@@ -129,17 +130,19 @@ export function filterSchedulingOptions({
     );
   }
 
+  const allFilteredOptionsSet = new Set([
+    ...noConflicts,
+    ...softConflicts,
+    ...hardConflicts,
+    ...outSideWorkHours,
+  ]);
+
   return {
     noConflicts,
     softConflicts,
     hardConflicts,
     outSideWorkHours,
-    allFilteredOptions: [
-      ...noConflicts,
-      ...softConflicts,
-      ...hardConflicts,
-      ...outSideWorkHours,
-    ],
+    allFilteredOptions: Array.from(allFilteredOptionsSet),
   };
 }
 
@@ -147,6 +150,7 @@ const extractTime = (datetime) => {
   return dayjs(datetime).format('HH:mm');
 };
 
+// actual function which generates slots
 export function filterSchedulingOptionsArray({
   schedulingOptions,
   filters,
@@ -249,12 +253,14 @@ export function filterSchedulingOptionsArray({
           );
         }
 
-        return [
+        const allFilteredOptionsSet = new Set([
           ...noConflicts,
           ...softConflicts,
           ...hardConflicts,
           ...outSideWorkHours,
-        ];
+        ]);
+
+        return [...allFilteredOptionsSet];
       }),
   );
 

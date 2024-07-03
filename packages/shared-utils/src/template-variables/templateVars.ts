@@ -17,10 +17,15 @@ import {
   rescheduleReason,
   selfSchedulingLink,
   time,
-} from './variables';
+} from "./variables";
 
 export const emailVariablePayloads = {
-  debrief_email_interviewer: [...interviewer, ...candidates, ...jobDetails],
+  debrief_email_interviewer: [
+    ...interviewer,
+    ...candidates,
+    ...jobDetails,
+    ...organizer,
+  ],
   applicationRecieved_email_applicant: [
     ...organizer,
     ...candidates,
@@ -64,12 +69,7 @@ export const emailVariablePayloads = {
     ...jobDetails,
     ...dates,
   ],
-  interviewReschedule_email_applicant: [
-    ...candidates,
-    ...jobDetails,
-    ...organizer,
-    selfSchedulingLink,
-  ],
+
   interviewStart_email_applicant: [
     ...candidates,
     ...jobDetails,
@@ -132,6 +132,7 @@ export const emailVariablePayloads = {
     ...candidates,
     ...interviewer,
     meetingDetailsLink,
+    candidateScheduleLink,
     ...organizer,
     ...jobDetails,
   ],
