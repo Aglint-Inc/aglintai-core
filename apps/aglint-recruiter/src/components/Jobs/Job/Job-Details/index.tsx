@@ -19,7 +19,6 @@ import {
   validateDescription,
   validateString,
 } from '@/src/context/JobDashboard/hooks';
-import { useJobs } from '@/src/context/JobsContext';
 import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/jobs/types';
 import ROUTES from '@/src/utils/routing/routes';
@@ -208,9 +207,7 @@ const validateForms = (fields: JobDetailsForm) => {
   }, {} as JobDetailsForm);
 };
 
-type Payload = Parameters<
-  ReturnType<typeof useJobs>['handleJobAsyncUpdate']
->[1];
+type Payload = Parameters<ReturnType<typeof useJob>['handleJobAsyncUpdate']>[1];
 
 const JobEditForm = ({
   fields,
@@ -222,8 +219,7 @@ const JobEditForm = ({
   setSaving: Dispatch<SetStateAction<boolean>>;
 }) => {
   const initialRef = useRef(false);
-  const { job } = useJob();
-  const { handleJobAsyncUpdate } = useJobs();
+  const { job, handleJobAsyncUpdate } = useJob();
 
   const newJob = Object.entries(fields).reduce((acc, [key, { value }]) => {
     acc[key] = value;

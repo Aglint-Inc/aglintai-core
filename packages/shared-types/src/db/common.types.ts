@@ -36,7 +36,10 @@ export type CustomEmailTypes = Extract<
 >;
 
 export type CustomJobParamters = Type<
-  Database["public"]["Tables"]["public_jobs"]["Row"],
+  Pick<
+    Database["public"]["Tables"]["public_jobs"]["Row"],
+    "parameter_weights" | "jd_json" | "draft"
+  >,
   {
     parameter_weights: CustomParameterWeights;
     jd_json: CustomJdJson;
@@ -70,7 +73,7 @@ type jsonItemType = {
 };
 
 type CustomDraft = Pick<
-  Database["public"]["Functions"]["getjob"]["Returns"][number],
+  Database["public"]["Tables"]["public_jobs"]["Row"],
   | "job_title"
   | "description"
   | "department"

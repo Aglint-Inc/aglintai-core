@@ -14,7 +14,6 @@ import {
 import { Assessment } from '@/src/queries/assessment/types';
 import { useInterviewPlans } from '@/src/queries/interview-plans';
 import {
-  useJobDashboardRefresh,
   useJobLocations,
   useJobMatches,
   useJobSchedules,
@@ -26,11 +25,9 @@ import { Job } from '@/src/queries/jobs/types';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { useJob } from '../JobContext';
-import { useJobs } from '../JobsContext';
 import { useJobDashboardStore } from './store';
 
 const useProviderJobDashboardActions = () => {
-  const { handleJobRefresh: jobRefresh } = useJobs();
   const { jobLoad, job, job_id } = useJob();
 
   const assessments = useAllAssessments();
@@ -52,6 +49,7 @@ const useProviderJobDashboardActions = () => {
         jobAssessments: [] as Assessment[],
         otherAssessments: [] as Assessment[],
       };
+
   const skills = useJobSkills(job);
   const locations = useJobLocations(job);
   const matches = useJobMatches(job);
@@ -59,8 +57,6 @@ const useProviderJobDashboardActions = () => {
   const schedules = useJobSchedules(job);
   const interviewPlans = useInterviewPlans();
   const workflows = useJobWorkflow({ id: job?.id });
-
-  const refreshDashboard = useJobDashboardRefresh();
 
   const isInterviewPlanDisabled =
     interviewPlans.isFetched && !interviewPlans?.data;
@@ -118,11 +114,6 @@ const useProviderJobDashboardActions = () => {
     !workflows.isPending
   );
 
-  const handleJobRefresh = async () => {
-    await jobRefresh(job?.id);
-    refreshDashboard(job?.id);
-  };
-
   // const emailTemplateValidity = validateEmailTemplates(job?.email_template);
 
   const loadStatus: 'loading' | 'error' | 'success' =
@@ -140,7 +131,6 @@ const useProviderJobDashboardActions = () => {
     loadStatus,
     // emailTemplateValidity,
     workflows,
-    handleJobRefresh,
     isInterviewPlanDisabled,
     isInterviewSessionEmpty,
     schedules,

@@ -21,6 +21,7 @@ import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
+import { useJob } from '@/src/context/JobContext';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import NotFoundPage from '@/src/pages/404';
 import { CompanyMember } from '@/src/queries/company-members';
@@ -30,7 +31,6 @@ import {
   InterviewPlansType,
   InterviewSessionType,
 } from '@/src/queries/interview-plans/types';
-import { useCurrentJob } from '@/src/queries/job-assessment/keys';
 import { getFullName } from '@/src/utils/jsonResume';
 import {
   capitalize,
@@ -99,7 +99,7 @@ const EnableInterviewPlan = () => {
 
 const BreadCrumbs = () => {
   const { push } = useRouter();
-  const { job } = useCurrentJob();
+  const { job } = useJob();
   return (
     <>
       <Breadcrum

@@ -105,8 +105,13 @@ const getMatches = (
 };
 
 const Dashboard = () => {
-  const { job, applicationScoringPollEnabled, handleRescoreApplications } =
-    useJob();
+  const {
+    job,
+    applicationScoringPollEnabled,
+    handleRescoreApplications,
+    handleJobAsyncUpdate,
+    handleJobPublish,
+  } = useJob();
   const {
     matches: { data: counts },
     schedules: { data: schedule },
@@ -119,7 +124,7 @@ const Dashboard = () => {
     },
   } = useJobDetails();
   const { push } = useRouter();
-  const { handleJobAsyncUpdate, handleJobDelete, handleJobPublish } = useJobs();
+  const { handleJobDelete } = useJobs();
 
   const { setImportPopup, setFilters } = useApplicationsStore(
     ({ setImportPopup, setFilters }) => ({ setImportPopup, setFilters }),
@@ -299,7 +304,7 @@ const Dashboard = () => {
                 {applicationScoringPollEnabled && (
                   <ScoreSetting
                     textScoreCount={`${
-                      job?.processing_count?.success ?? '---'
+                      job?.processing_count?.processed ?? '---'
                     }/${counts?.total ?? '---'}`}
                     slotScoringLoader={scoringLoader}
                   />
@@ -461,13 +466,15 @@ const Pipeline = () => {
   const { job } = useJobDetails();
   const { push } = useRouter();
   const setSection = useApplicationsStore(({ setSection }) => setSection);
-  const newSections = Object.entries(job.count).reduce(
+  const newSections = Object.entries(job.section_count).reduce(
     (acc, [key, value]) => {
       acc[key] = { count: value, label: getPlural(value, 'candidate') };
       return acc;
     },
-    // eslint-disable-next-line no-unused-vars
-    {} as { [id in keyof Job['count']]: { count: number; label: string } },
+    {} as {
+      // eslint-disable-next-line no-unused-vars
+      [id in keyof Job['section_count']]: { count: number; label: string };
+    },
   );
   const handlClick = (section: Application['status']) => {
     setSection(section);
@@ -483,7 +490,7 @@ const Pipeline = () => {
           onClick: () => handlClick('new'),
         }}
       />
-      {job.activeSections.includes('screening') && (
+      {job.flags.screening && (
         <PipeLine
           textCandidateCount={newSections.screening.label}
           textName={capitalize('screening')}
@@ -492,7 +499,7 @@ const Pipeline = () => {
           }}
         />
       )}
-      {job.activeSections.includes('assessment') && (
+      {job.flags.assessment && (
         <PipeLine
           textCandidateCount={newSections.assessment.label}
           textName={capitalize('assessment')}
@@ -501,7 +508,7 @@ const Pipeline = () => {
           }}
         />
       )}
-      {job.activeSections.includes('interview') && (
+      {job.flags.interview && (
         <PipeLine
           textCandidateCount={newSections.interview.label}
           textName={capitalize('interview')}

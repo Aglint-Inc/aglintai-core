@@ -18,15 +18,14 @@ import SearchField from '@/src/components/Common/SearchField';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import { AssessmentDetails } from '@/src/components/NewAssessment/AssessmentDashboard/card';
 import TypeIcon from '@/src/components/NewAssessment/Common/icons/types';
+import { useJob } from '@/src/context/JobContext';
 import { useJobDetails } from '@/src/context/JobDashboard';
-import { useJobs } from '@/src/context/JobsContext';
 import { Assessment, AssessmentTemplate } from '@/src/queries/assessment/types';
 import {
   useJobAssessmentsBulkConnect,
   useJobAssessmentsDisconnect,
   useJobAssessmentTemplateConnect,
 } from '@/src/queries/job-assessment';
-import { useCurrentJob } from '@/src/queries/job-assessment/keys';
 
 const JobAssessment = () => {
   const {
@@ -178,8 +177,7 @@ const AssessmentEditor = ({
   payload: 'interview_instructions' | 'interview_success';
   skeletonCount: number;
 }) => {
-  const { job } = useCurrentJob();
-  const { handleJobAsyncUpdate } = useJobs();
+  const { job, handleJobAsyncUpdate } = useJob();
   const [value, setValue] = useState(job[payload]);
   const initialRef = useRef(true);
   const handleUpdate = useCallback(
@@ -399,8 +397,10 @@ const AssessmentPreview = () => {
       data: { jobAssessments },
     },
   } = useJobDetails();
-  const { handleJobAsyncUpdate } = useJobs();
-  const { id } = useCurrentJob();
+  const {
+    job: { id },
+    handleJobAsyncUpdate,
+  } = useJob();
   const handlePreview = () => {
     window.open(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/preview-assessment/${id}`,

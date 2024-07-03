@@ -7,8 +7,13 @@ export type CustomJobView = ViewType<"job_view", CustomJobViewAllParamters>;
 
 type CustomJobViewAllParamters = CustomJobParamters & CustomJobViewParameters;
 
+type A = CustomJobViewAllParamters["flags"];
+
 type CustomJobViewParameters = Type<
-  Database["public"]["Views"]["job_view"]["Row"],
+  Pick<
+    Database["public"]["Views"]["job_view"]["Row"],
+    "section_count" | "processing_count" | "flags"
+  >,
   {
     section_count: CustomSectionCount;
     processing_count: CustomProcessingCount;
@@ -18,10 +23,10 @@ type CustomJobViewParameters = Type<
 
 type ApplicationStatus = Database["public"]["Enums"]["application_status"];
 
-type CustomSectionCount = { [id in keyof ApplicationStatus]: number };
+type CustomSectionCount = { [id in ApplicationStatus]: number };
 
 type ProcessingState = Database["public"]["Enums"]["resume_processing_state"];
 
-type CustomProcessingCount = { [id in keyof ProcessingState]: number };
+type CustomProcessingCount = { [id in ProcessingState]: number };
 
-type CustomFlag = { [id in keyof ApplicationStatus]: boolean };
+type CustomFlag = { [id in ApplicationStatus]: boolean };
