@@ -180,6 +180,7 @@ export const fetchInterviewDataJob = async ({
                 : sesitem.debrief_user,
             }) as SessionsType['users'][0],
         ),
+        cancel_reasons: [],
       })) || [];
 
     return {
@@ -233,6 +234,7 @@ export const fetchInterviewDataSchedule = async (
                 : sesitem.debrief_user,
             }) as SessionsType['users'][0],
         ) || [],
+      cancel_reasons: item.cancel_reasons || [],
     }));
 
     return {

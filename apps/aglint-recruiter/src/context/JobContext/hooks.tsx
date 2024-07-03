@@ -3,6 +3,7 @@ import { useParams } from 'next/navigation';
 import { useMemo } from 'react';
 
 import { jobQueries } from '@/src/queries/job';
+import { useRescoreApplications } from '@/src/queries/job-applications';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 import { useJobs } from '../JobsContext';
@@ -39,6 +40,8 @@ const useJobContext = () => {
       (job?.processing_count?.processing ?? 0) !== 0);
 
   const interviewPlans = useQuery(jobQueries.interview_plans({ id: job_id }));
+
+  const { mutateAsync: handleRescoreApplications } = useRescoreApplications();
 
   useQueries({
     queries: [
@@ -86,6 +89,7 @@ const useJobContext = () => {
     scoreParameterPollEnabled,
     applicationScoringPollEnabled,
     interviewPlans,
+    handleRescoreApplications,
   };
 };
 

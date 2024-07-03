@@ -1,3 +1,4 @@
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
 import { DesktopTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -7,6 +8,7 @@ import React from 'react';
 import { Checkbox } from '@/devlink/Checkbox';
 import { RolesPill } from '@/devlink/RolesPill';
 import { TimeRangeSelector } from '@/devlink3/TimeRangeSelector';
+import toast from '@/src/utils/toast';
 
 import { ClockIcon } from '../../../Settings/Components/SelectTime';
 import { setFilters, useSchedulingFlowStore } from '../store';
@@ -94,6 +96,16 @@ function DateRangeField() {
         }
         onClickAdd={{
           onClick: () => {
+            if (
+              dayjsLocal(value.startTime).valueOf() >=
+              dayjsLocal(value.endTime).valueOf()
+            ) {
+              toast.error(
+                'Start time End time cannot be same and End time must be greater than start time',
+              );
+              return;
+            }
+
             if (!value?.startTime || !value?.endTime) return;
             setFilters({
               preferredDateRanges: [
