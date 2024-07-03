@@ -180,10 +180,10 @@ type Payloads = {
     };
   };
 
-  interviewReschedule_email_applicant: {
+  rescheduleSelfSchedule_email_applicant: {
     api_payload: v.InferInput<typeof interviewRescheduleEmailApplicantSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["interviewReschedule_email_applicant"][number]]: string;
+      [key in (typeof emailVariablePayloads)["rescheduleSelfSchedule_email_applicant"][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -203,6 +203,7 @@ type Payloads = {
       emailBody: string;
       subject: string;
       companyLogo: string;
+      meetingDetail: MeetingDetailCardType;
     };
   };
   interviewStart_email_interviewers: {

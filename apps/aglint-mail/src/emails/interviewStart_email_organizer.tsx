@@ -13,6 +13,7 @@ import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { Session } from '../components/template/Sessions';
 import config from '../../tailwind.config';
 import { Footer } from '../components/template/Footer';
+import { companyLogoDummy } from '../utils/assets/common';
 
 // export dummy
 export const dummy: EmailTemplateAPi<'interviewStart_email_organizer'>['react_email_placeholders'] =
@@ -22,8 +23,7 @@ export const dummy: EmailTemplateAPi<'interviewStart_email_organizer'>['react_em
     subject:
       '<p>Reminder: Upcoming Interview for <span class="temp-variable" data-type="temp-variable" data-id="jobRole">{{jobRole}}</span> with <span class="temp-variable" data-type="temp-variable" data-id="candidateFirstName">{{candidateFirstName}}</span> </p>',
 
-    companyLogo:
-      'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
+    companyLogo: companyLogoDummy,
     meetingDetail: {
       date: 'Fri, May 12, 2024',
       time: '09:00 AM - 09:30 PM PST',

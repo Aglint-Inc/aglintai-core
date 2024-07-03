@@ -11,6 +11,7 @@ import * as React from 'react';
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import config from '../../tailwind.config';
 import { Footer } from '../components/template/Footer';
+import { companyLogoDummy } from '../utils/assets/common';
 
 type EmailType = EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>;
 
@@ -18,8 +19,7 @@ export const dummy: EmailType['react_email_placeholders'] = {
   emailBody:
     '<p>Dear {{ candidateFirstName }},</p><p></p><p>Thank you for applying for the {{ jobTitle }} position at {{ companyName }}. We have reviewed your application and are impressed with your qualifications and experiences. We would like to invite you to participate in an interview to further discuss how your skills and experiences align with our needs.</p><p></p><p>To streamline the scheduling process, please click on the link below to select your availability for an interview:</p><p>{{ availabilityReqLink }}</p><p>Looking forward to your response.</p><p></p><p>Best regards,</p><p>{{ companyName }} Recruitment Team</p>',
 
-  companyLogo:
-    'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
+  companyLogo: companyLogoDummy,
   subject: '',
 };
 

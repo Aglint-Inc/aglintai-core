@@ -11,13 +11,13 @@ import * as React from 'react';
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import config from '../../tailwind.config';
 import { Footer } from '../components/template/Footer';
+import { companyLogoDummy } from '../utils/assets/common';
 
 type EmailType = EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>;
 export const dummy: EmailType['react_email_placeholders'] = {
   emailBody:
     '<p>Dear {{ candidateFirstName }},</p><p></p><p style="text-align: start">Thank you for submitting your application for the {{ jobTitle }} at {{ companyName }}. We are pleased to announce that you have been selected for an assessment.</p><p style="text-align: start"></p><p style="text-align: start">You are welcome to choose an assessment time that suits your schedule.</p><p style="text-align: start">{{ selfScheduleLink}}</p><p style="text-align: start"></p><p style="text-align: start">We wish you the best of luck and are eager to hear your insights!</p><p style="text-align: start"></p><p style="text-align: start">Best regards,</p><p>{{ companyName }} Recruitment Team</p>',
-  companyLogo:
-    'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
+  companyLogo: companyLogoDummy,
   subject: '',
 };
 
