@@ -2,12 +2,12 @@ import { FC } from 'react';
 
 import { CardWithNumber } from '@/devlink3/CardWithNumber';
 import { NoData } from '@/devlink3/NoData';
-import { useJobDetails } from '@/src/context/JobDashboard';
+import { useJobDashboard } from '@/src/context/JobDashboard';
 
 const TenureAndExpSummary = () => {
   const {
-    tenureAndExperience: { data }
-  } = useJobDetails();
+    tenureAndExperience: { data },
+  } = useJobDashboard();
   if (!data) {
     return (
       <>
@@ -39,7 +39,7 @@ const Tenure: FC<{
 };
 
 const Experience: FC<{ average_experience: number }> = ({
-  average_experience
+  average_experience,
 }) => {
   const years = (average_experience / 12).toFixed(1);
   return (

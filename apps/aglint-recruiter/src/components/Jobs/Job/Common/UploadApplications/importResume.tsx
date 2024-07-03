@@ -8,13 +8,13 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ImportResume as ImportResumeDev } from '@/devlink/ImportResume';
 import { UploadedResume } from '@/devlink/UploadedResume';
 import { UploadedResumeList } from '@/devlink/UploadedResumeList';
-import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
+import { useJob } from '@/src/context/JobContext';
 import toast from '@/src/utils/toast';
 
 const ImportResume = () => {
   const [selectedfile, setSelectedFile] = useState([]);
-  const { handleUploadResume } = useApplications();
+  const { handleUploadResume } = useJob();
   const setImportPopup = useApplicationsStore(
     ({ setImportPopup }) => setImportPopup,
   );

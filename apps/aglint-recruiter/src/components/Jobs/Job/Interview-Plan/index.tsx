@@ -22,16 +22,16 @@ import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
+import { useJob } from '@/src/context/JobContext';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import NotFoundPage from '@/src/pages/404';
 import { CompanyMember } from '@/src/queries/company-members';
 import { DeleteInterviewSession } from '@/src/queries/interview-plans';
-import { interviewPlanKeys } from '@/src/queries/interview-plans/keys';
 import {
   InterviewPlansType,
   InterviewSessionType,
 } from '@/src/queries/interview-plans/types';
-import { useCurrentJob } from '@/src/queries/job-assessment/keys';
+import { jobQueries } from '@/src/queries/job';
 import { getFullName } from '@/src/utils/jsonResume';
 import {
   capitalize,
@@ -100,7 +100,7 @@ const EnableInterviewPlan = () => {
 
 const BreadCrumbs = () => {
   const { push } = useRouter();
-  const { job } = useCurrentJob();
+  const { job } = useJob();
   return (
     <>
       <Breadcrum
@@ -333,7 +333,7 @@ const InterviewSession = ({
   );
   const isLoading = getLoadingState(session.id);
 
-  const { queryKey } = interviewPlanKeys.interview_plan({ id: job.id });
+  const { queryKey } = jobQueries.interview_plans({ id: job?.id });
 
   const handleMoveCard = (dragIndex, hoverIndex) => {
     const sessions = structuredClone(data.interview_session);

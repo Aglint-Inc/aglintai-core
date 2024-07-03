@@ -7,7 +7,7 @@ import { MoveCandidate } from './moveCandidate';
 
 const Actions = () => {
   const {
-    job: { activeSections },
+    job: { flags },
   } = useApplications();
   const { checklist, setChecklist, section, setActionPopup } =
     useApplicationsStore(
@@ -25,19 +25,13 @@ const Actions = () => {
         onclickSelectAll={null}
         onClickDelete={{ style: { display: 'none' } }}
         isAssessmentVisible={
-          false &&
-          activeSections.includes('assessment') &&
-          section === 'assessment'
+          false && flags.assessment && section === 'assessment'
         }
         isSendScreeningVisible={
-          false &&
-          activeSections.includes('screening') &&
-          section === 'screening'
+          false && flags.screening && section === 'screening'
         }
         isDisqualifyVisible={
-          false &&
-          activeSections.includes('disqualified') &&
-          section === 'disqualified'
+          false && flags.disqualified && section === 'disqualified'
         }
         isSelectAllVisible={false}
         onClickClear={{ onClick: () => setChecklist([]) }}
