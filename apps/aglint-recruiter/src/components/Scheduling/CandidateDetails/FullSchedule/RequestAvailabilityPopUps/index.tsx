@@ -26,6 +26,7 @@ import RequestAvailabilityDrawer from './RequestAvailabilityDrawer';
 function RequestAvailabilityPopUps() {
   const router = useRouter();
   const { availabilities } = useSchedulingApplicationStore();
+  const [copied, setCopied] = useState(false);
 
   const { setSelectedRequestAvailability } = useAvailabilityContext();
 
@@ -86,7 +87,6 @@ function RequestAvailabilityPopUps() {
                 .map((ele) => ele.dates)
                 .flat()
                 .map((ele) => `<b>${dayjs(ele.curr_day).format('DD MMM')}</b>`);
-            const [copied, setCopied] = useState(false);
 
             return (
               <>
