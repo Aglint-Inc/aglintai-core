@@ -45,14 +45,14 @@ export async function dbUtil(
       companyName: company,
       jobRole: job_title,
       availabilityReqLink: `<a href="${candidate_link}">here</a>`,
-      OrganizerName: getFullName(
+      organizerName: getFullName(
         meeting_organizer.first_name,
         meeting_organizer.last_name,
       ),
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),
-      OrganizerFirstName: meeting_organizer.first_name,
-      OrganizerLastName: meeting_organizer.last_name,
+      organizerFirstName: meeting_organizer.first_name,
+      organizerLastName: meeting_organizer.last_name,
       OrganizerTimeZone: recruiter_tz,
     };
 

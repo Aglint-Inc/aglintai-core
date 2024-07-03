@@ -44,11 +44,11 @@ export async function dbUtil(
       companyName: company,
       jobRole: job_title,
       selfScheduleLink: `<a href="${scheduleLink}">here</a>`,
-      OrganizerName: getFullName(organizer.first_name, organizer.last_name),
+      organizerName: getFullName(organizer.first_name, organizer.last_name),
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),
-      OrganizerFirstName: organizer.first_name,
-      OrganizerLastName: organizer.last_name,
+      organizerFirstName: organizer.first_name,
+      organizerLastName: organizer.last_name,
       OrganizerTimeZone: '',
     };
 

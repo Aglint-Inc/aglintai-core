@@ -74,7 +74,7 @@ export async function fetchUtil(
 
   const comp_email_placeholder: EmailTemplateAPi<'interviewStart_email_interviewers'>['comp_email_placeholders'] =
     {
-      OrganizerFirstName: organizer.first_name,
+      organizerFirstName: organizer.first_name,
       candidateName: getFullName(
         candidateJob.candidates.first_name,
         candidateJob.candidates.last_name,
@@ -90,10 +90,10 @@ export async function fetchUtil(
       endDate: dayjsLocal(sessions[0].interview_meeting.end_time)
         .tz(int_tz)
         .format(DAYJS_FORMATS.DATE_FORMAT),
-      OrganizerName: getFullName(organizer.first_name, organizer.last_name),
+      organizerName: getFullName(organizer.first_name, organizer.last_name),
       candidateFirstName: candidateJob.candidates.first_name,
       candidateLastName: candidateJob.candidates.last_name,
-      OrganizerLastName: organizer.last_name,
+      organizerLastName: organizer.last_name,
       OrganizerTimeZone: organizer.scheduling_settings.timeZone.tzCode,
       interviewerFirstName: meeting_interviewer.first_name,
       interviewerLastName: meeting_interviewer.last_name,

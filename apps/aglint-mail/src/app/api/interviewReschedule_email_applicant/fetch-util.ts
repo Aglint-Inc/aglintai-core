@@ -89,14 +89,14 @@ export async function fetchUtil(
       jobRole: job_title,
       companyName: company,
       selfScheduleLink: scheduleLink,
-      OrganizerName: getFullName(
+      organizerName: getFullName(
         meeting_organizer.first_name,
         meeting_organizer.last_name,
       ),
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),
-      OrganizerFirstName: meeting_organizer.first_name,
-      OrganizerLastName: meeting_organizer.last_name,
+      organizerFirstName: meeting_organizer.first_name,
+      organizerLastName: meeting_organizer.last_name,
       OrganizerTimeZone: org_tz,
     };
 
