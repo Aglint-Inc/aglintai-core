@@ -1,13 +1,14 @@
-import { Stack } from '@mui/material';
+import { Stack, Tooltip } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import UITypography from '@/src/components/Common/UITypography';
 import toast from '@/src/utils/toast';
 
 import {
@@ -72,6 +73,21 @@ function RequestAvailabilityPopUps() {
     if (selectedRequest)
       setRequestSessionIds(selectedRequest.session_ids.map((ele) => ele.id));
   }, [router.query?.candidate_request_availability]);
+
+  //tooltip for copy link
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+
+  const handleButtonClick = () => {
+    setTooltipOpen(true);
+    setTimeout(() => {
+      setTooltipOpen(false);
+    }, 700);
+  };
+
+  const handleTooltipClose = () => {
+    setTooltipOpen(false);
+  };
+
   return (
     <div>
       <RequestAvailabilityDrawer />
@@ -131,32 +147,36 @@ function RequestAvailabilityPopUps() {
                               },
                             }}
                           />
-
-                          <ButtonSoft
-                            textButton={'Request again'}
-                            isLoading={false}
-                            isLeftIcon={false}
-                            isRightIcon={false}
-                            size={1}
-                            onClickButton={{
-                              onClick: () => handleRequestAgain(item.id),
-                            }}
-                          />
-                          <ButtonSoft
-                            textButton={'Copy invite'}
-                            isLoading={false}
-                            isLeftIcon={false}
-                            isRightIcon={false}
-                            size={1}
-                            onClickButton={{
-                              onClick: () => {
-                                navigator.clipboard.writeText(
-                                  `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${item.id}`,
-                                );
-                                toast.message('Invited link copied!');
-                              },
-                            }}
-                          />
+                          <Tooltip
+                            title={
+                              <UITypography type='extraSmall'>
+                                Link Copied
+                              </UITypography>
+                            }
+                            open={tooltipOpen}
+                            disableHoverListener
+                            disableFocusListener
+                            disableTouchListener
+                            onClose={handleTooltipClose}
+                          >
+                            <Stack>
+                              <ButtonSoft
+                                textButton={'Copy invite'}
+                                isLoading={false}
+                                isLeftIcon={false}
+                                isRightIcon={false}
+                                size={1}
+                                onClickButton={{
+                                  onClick: () => {
+                                    navigator.clipboard.writeText(
+                                      `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${item.id}`,
+                                    );
+                                    handleButtonClick();
+                                  },
+                                }}
+                              />
+                            </Stack>
+                          </Tooltip>
                         </>
                       }
                     />
