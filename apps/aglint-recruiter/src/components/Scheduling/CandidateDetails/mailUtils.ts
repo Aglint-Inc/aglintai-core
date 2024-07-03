@@ -45,7 +45,7 @@ export const selfScheduleReminderMailToCandidate = async ({
   try {
     const bodyParams: EmailTemplateAPi<'selfScheduleReminder_email_applicant'>['api_payload'] =
       {
-        filter_json_id: filter_id,
+        filter_id: filter_id,
         task_id: task_id,
       };
 
