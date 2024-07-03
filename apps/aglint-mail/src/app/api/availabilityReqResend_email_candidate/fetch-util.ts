@@ -46,9 +46,9 @@ export async function dbUtil(
       candidateName: getFullName(first_name, last_name),
       companyName: company,
       jobRole: job_title,
-      OrganizerFirstName: recruiter_user.first_name,
-      OrganizerLastName: recruiter_user.last_name,
-      OrganizerName: getFullName(
+      organizerFirstName: recruiter_user.first_name,
+      organizerLastName: recruiter_user.last_name,
+      organizerName: getFullName(
         recruiter_user.first_name,
         recruiter_user.last_name,
       ),

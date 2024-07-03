@@ -68,9 +68,9 @@ export async function fetchUtil(
 
   const comp_email_placeholder: EmailTemplateAPi<'interviewStart_email_organizer'>['comp_email_placeholders'] =
     {
-      OrganizerName: getFullName(organizer.first_name, organizer.last_name),
-      OrganizerFirstName: organizer.first_name,
-      OrganizerLastName: organizer.last_name,
+      organizerName: getFullName(organizer.first_name, organizer.last_name),
+      organizerFirstName: organizer.first_name,
+      organizerLastName: organizer.last_name,
       OrganizerTimeZone: int_tz,
       candidateName: getFullName(candidate.first_name, candidate.last_name),
       jobRole: public_jobs.job_title,

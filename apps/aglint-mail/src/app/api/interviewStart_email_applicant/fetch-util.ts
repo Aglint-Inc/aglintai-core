@@ -52,7 +52,7 @@ export async function dbFetch(
       candidateLastName: last_name,
       jobRole: job_title,
       candidateName: company,
-      OrganizerName: getFullName(
+      organizerName: getFullName(
         meeting_organizer.first_name,
         meeting_organizer.last_name,
       ),
@@ -66,8 +66,8 @@ export async function dbFetch(
         .tz(cand_tz)
         .format(DAYJS_FORMATS.DATE_FORMAT),
       companyName: company,
-      OrganizerFirstName: meeting_organizer.first_name,
-      OrganizerLastName: meeting_organizer.last_name,
+      organizerFirstName: meeting_organizer.first_name,
+      organizerLastName: meeting_organizer.last_name,
       OrganizerTimeZone: recruiter_tz,
     };
   const filled_comp_template = fillCompEmailTemplate(

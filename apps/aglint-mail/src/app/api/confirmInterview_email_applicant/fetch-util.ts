@@ -100,10 +100,10 @@ export async function fetchUtil(
       candidateName: getFullName(first_name, last_name),
       companyName: company,
       jobRole: job_title,
-      OrganizerFirstName: meeting_organizer.first_name,
-      OrganizerLastName: meeting_organizer.last_name,
+      organizerFirstName: meeting_organizer.first_name,
+      organizerLastName: meeting_organizer.last_name,
       OrganizerTimeZone: recruiter_tz,
-      OrganizerName: getFullName(
+      organizerName: getFullName(
         meeting_organizer.first_name,
         meeting_organizer.first_name,
       ),

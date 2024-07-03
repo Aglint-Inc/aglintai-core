@@ -10,8 +10,8 @@ export const company = ["companyName"];
 
 export const organizer = [
   "OrganizerName",
-  "OrganizerFirstName",
-  "OrganizerLastName",
+  "organizerFirstName",
+  "organizerLastName",
   "OrganizerTimeZone",
 ] as const;
 
