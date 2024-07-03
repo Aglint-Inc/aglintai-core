@@ -42,6 +42,7 @@ import {
   setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../../store';
+import { createCloneSession } from '../../utils';
 import DebriedForm from './DebriefFrom';
 
 export type Interviewer = {
@@ -255,7 +256,7 @@ function SideDrawerEdit() {
         } as ApiBodyParamsSessionCache,
       );
 
-      let createCloneRes;
+      let createCloneRes: Awaited<ReturnType<typeof createCloneSession>>;
 
       if (res.status === 200 && res.data) {
         createCloneRes = res.data;
@@ -263,7 +264,8 @@ function SideDrawerEdit() {
       if (createCloneRes) {
         if (editSession.interview_session.session_type !== 'debrief') {
           const newSession = createCloneRes.refSessions.find(
-            (session) => session.id === editSession.interview_session.id,
+            (session) =>
+              session.interview_session.id === editSession.interview_session.id,
           );
 
           const interview_module_relation_entries: EditInterviewSession['interview_module_relation_entries'] =

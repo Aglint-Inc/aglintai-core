@@ -9,4 +9,5 @@ declare function TextWithIcon(props: {
   iconName?: React.ReactNode;
   iconSize?: Types.Builtin.Text;
   slotIcon?: Types.Devlink.Slot;
+  fontSize?: Types.Builtin.Text;
 }): React.JSX.Element;
