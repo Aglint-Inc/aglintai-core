@@ -48,15 +48,15 @@ export async function dbUtil(
       companyName: company,
       jobRole: job_title,
       availabilityReqLink: `<a href="${candidate_link}">here</a>`,
-      recruiterName: getFullName(
+      OrganizerName: getFullName(
         recruiter_user.first_name,
         recruiter_user.last_name,
       ),
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),
-      recruiterFirstName: recruiter_user.first_name,
-      recruiterLastName: recruiter_user.last_name,
-      recruiterTimeZone: recruiter_tz,
+      OrganizerFirstName: recruiter_user.first_name,
+      OrganizerLastName: recruiter_user.last_name,
+      OrganizerTimeZone: recruiter_tz,
     };
 
   const filled_comp_template = fillCompEmailTemplate(

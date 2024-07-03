@@ -21,7 +21,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('interview_session')
       .select(
-        'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time, recruiter_user(first_name,email))',
+        'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time, recruiter_user(first_name,last_name,scheduling_settings,email))',
       )
       .in('id', req_body.session_ids),
   );
@@ -30,16 +30,11 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,recruiter_id,timezone,recruiter(logo)),public_jobs(job_title,company,recruiter)',
+        'candidates(first_name,last_name,recruiter_id,timezone,recruiter(logo)),public_jobs(job_title,company)',
       )
       .eq('id', req_body.application_id),
   );
-  const [recruiter_user] = supabaseWrap(
-    await supabaseAdmin
-      .from('recruiter_user')
-      .select('first_name,last_name,scheduling_settings')
-      .eq('user_id', candidateJob.public_jobs.recruiter),
-  );
+  const organizer = int_sessions[0].interview_meeting.recruiter_user;
 
   const {
     candidates: {
@@ -51,7 +46,7 @@ export async function fetchUtil(
     public_jobs,
   } = candidateJob;
 
-  const org_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
+  const org_tz = organizer.scheduling_settings.timeZone.tzCode;
 
   const comp_email_temp = await fetchCompEmailTemp(
     recruiter_id,
@@ -64,13 +59,10 @@ export async function fetchUtil(
         candidateFirstName: first_name,
         candidateLastName: last_name,
         candidateName: getFullName(first_name, last_name),
-        recruiterFirstName: recruiter_user.first_name,
-        recruiterLastName: recruiter_user.last_name,
-        recruiterName: getFullName(
-          recruiter_user.first_name,
-          recruiter_user.last_name,
-        ),
-        recruiterTimeZone: org_tz,
+        OrganizerFirstName: organizer.first_name,
+        OrganizerLastName: organizer.last_name,
+        OrganizerName: getFullName(organizer.first_name, organizer.last_name),
+        OrganizerTimeZone: org_tz,
         companyName: public_jobs.company,
         jobRole: public_jobs.job_title,
       };

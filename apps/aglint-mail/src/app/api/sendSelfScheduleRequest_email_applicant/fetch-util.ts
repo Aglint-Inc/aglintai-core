@@ -10,7 +10,7 @@ export async function dbUtil(
     await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        'filter_json,interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company,recruiter),candidates(first_name,last_name,email,recruiter(logo))))',
+        'filter_json,interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company),candidates(first_name,last_name,email,recruiter(logo))))',
       )
       .eq('id', req_body.filter_json_id),
   );
@@ -19,21 +19,16 @@ export async function dbUtil(
     interview_schedule: {
       applications: {
         candidates: { email: cand_email, first_name, recruiter, last_name },
-        public_jobs: {
-          company,
-          recruiter_id,
-          job_title,
-          recruiter: recruiter_user_id,
-        },
+        public_jobs: { company, recruiter_id, job_title },
       },
     },
   } = filterJson;
 
-  const [recruiter_user] = supabaseWrap(
+  const [organizer] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
       .select('first_name,last_name')
-      .eq('user_id', recruiter_user_id),
+      .eq('user_id', req_body.organizer_id),
   );
   const comp_email_temp = await fetchCompEmailTemp(
     recruiter_id,
@@ -49,15 +44,12 @@ export async function dbUtil(
       companyName: company,
       jobRole: job_title,
       selfScheduleLink: `<a href="${scheduleLink}">here</a>`,
-      recruiterName: getFullName(
-        recruiter_user.first_name,
-        recruiter_user.last_name,
-      ),
+      OrganizerName: getFullName(organizer.first_name, organizer.last_name),
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),
-      recruiterFirstName: recruiter_user.first_name,
-      recruiterLastName: recruiter_user.last_name,
-      recruiterTimeZone: '',
+      OrganizerFirstName: organizer.first_name,
+      OrganizerLastName: organizer.last_name,
+      OrganizerTimeZone: '',
     };
 
   const filled_comp_template = fillCompEmailTemplate(
