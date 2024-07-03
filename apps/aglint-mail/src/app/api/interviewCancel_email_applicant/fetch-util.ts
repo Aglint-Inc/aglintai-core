@@ -42,8 +42,6 @@ export async function fetchUtil(
 
   const org_tz = meeting_organizer.scheduling_settings.timeZone.tzCode;
 
-  const cand_tz = 'America/Los_Angeles';
-
   const meeting_details: MeetingDetailCardType[] = int_sessions.map(
     (session) => {
       const {
@@ -55,9 +53,9 @@ export async function fetchUtil(
       } = session;
       return {
         date: dayjsLocal(start_time)
-          .tz(cand_tz)
+          .tz(org_tz)
           .format(DAYJS_FORMATS.DATE_FORMAT),
-        time: `${dayjsLocal(start_time).tz(cand_tz).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(end_time).tz(cand_tz).format(DAYJS_FORMATS.END_TIME_FORMAT)}`,
+        time: `${dayjsLocal(start_time).tz(org_tz).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(end_time).tz(org_tz).format(DAYJS_FORMATS.END_TIME_FORMAT)}`,
         sessionType: name,
         platform: platformRemoveUnderscore(schedule_type),
         duration: durationCalculator(session_duration),
