@@ -15,6 +15,7 @@ import {
   interviewStartEmailApplicantSchema,
   interviewStartEmailInterviewersSchema,
   interviewStartEmailOrganizerSchema,
+  meetingDeclinedEmailOrganizerSchema,
   phoneScreenEmailCandidateSchema,
   phoneScreenRemindEmailApplicantSchema,
   selfScheduleReminderEmailApplicantSchema,
@@ -273,6 +274,21 @@ type Payloads = {
       emailBody: string;
       subject: string;
       companyLogo: string;
+    };
+  };
+
+  meetingDeclined_email_organizer: {
+    api_payload: v.InferInput<typeof meetingDeclinedEmailOrganizerSchema>;
+    comp_email_placeholders: {
+      [key in (typeof emailVariablePayloads)["meetingDeclined_email_organizer"][number]]: string;
+    };
+    react_email_placeholders: {
+      emailBody: string;
+      subject: string;
+      companyLogo: string;
+      meetingDetailsLink: string;
+      candidateScheduleLink: string;
+      meetingDetail: MeetingDetailCardType;
     };
   };
 };

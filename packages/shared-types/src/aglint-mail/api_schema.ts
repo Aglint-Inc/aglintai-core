@@ -115,3 +115,9 @@ export const sendAvailReqReminderEmailApplicant = v.object({
 export const selfScheduleReminderEmailApplicantSchema = v.object({
   filter_json_id: v.string(),
 });
+
+export const meetingDeclinedEmailOrganizerSchema = v.object({
+  session_id: v.string(),
+  interviewer_id: v.string(),
+  application_id: v.string(),
+});
