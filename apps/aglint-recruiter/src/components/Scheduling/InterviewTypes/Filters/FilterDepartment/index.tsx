@@ -106,7 +106,7 @@ function FilterDepartment() {
           isRemoveVisible={false}
           onClickReset={{
             onClick: () => {
-              setDepartments(['']);
+              setDepartments([]);
             },
           }}
         />

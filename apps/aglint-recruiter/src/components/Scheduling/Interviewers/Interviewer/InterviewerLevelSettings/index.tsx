@@ -462,7 +462,7 @@ function InterviewerLevelSettings({
                 }
                 slotSuggestPill={
                   freeKeyWords.length === 0 ? (
-                    <Alert severity='info'>
+                    <Alert severity='info' icon={false}>
                       <Typography>No free keywords added.</Typography>
                     </Alert>
                   ) : (

@@ -1,7 +1,7 @@
 .schedule-details-page {
   flex-direction: column;
   flex-wrap: nowrap;
-  background-color: var(--sand-2);
+  background-color: var(--white);
 }
 
 .schedule-detail-wrap {

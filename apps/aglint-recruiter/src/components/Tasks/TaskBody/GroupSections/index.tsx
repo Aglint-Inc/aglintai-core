@@ -125,7 +125,8 @@ function GroupSections({
                     item?.applications?.candidates?.first_name,
                     item?.applications?.candidates?.last_name,
                   )}
-                  isRoleVisible={true}
+                  isRoleVisible={false}
+                  // isRoleHorizontalVisible={true}
                   textRole={capitalizeFirstLetter(
                     item?.applications?.public_jobs?.job_title,
                   )}
@@ -146,7 +147,7 @@ function GroupSections({
                       sx={{
                         cursor: 'pointer',
                       }}
-                      variant='body2'
+                      variant='body1'
                     >
                       {item.tasklist.length}
                     </Typography>
@@ -238,11 +239,13 @@ function GroupSections({
         key={index}
         slotTaskTableJobCard={
           <>
-            {item.tasklist
-              .filter((ele) => ele.type !== 'empty')
-              .map((ele, i) => {
-                return <GroupTaskCard key={i} task={ele} />;
-              })}
+            <Stack id='taskContainer' overflow={'auto'}>
+              {item.tasklist
+                .filter((ele) => ele.type !== 'empty')
+                .map((ele, i) => {
+                  return <GroupTaskCard key={i} task={ele} />;
+                })}
+            </Stack>
             <ShowCode.When
               isTrue={
                 item.tasklist.filter((ele) => ele.type !== 'empty').length === 0

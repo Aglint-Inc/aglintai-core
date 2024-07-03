@@ -106,6 +106,14 @@ function SlotColumn({
       onClickClose={{ onClick: () => onClose() }}
       textDateHeading={dayjs(slotTime.curr_day).format('dddd DD, MMMM')}
       slotTime={slotTime.slots.map((slot, ind) => {
+        const isSelected =
+          (!isSubmitted &&
+            selectedSlots
+              .find((ele) => ele.round === day)
+              .dates.find((ele) => ele.curr_day === slotTime.curr_day)
+              .slots.map((ele) => ele.startTime)
+              .includes(slot.startTime)) ||
+          isSubmitted;
         return (
           <Stack key={ind}>
             <AvailableTimeRange
@@ -118,16 +126,8 @@ function SlotColumn({
                     });
                 },
               }}
-              isSemiActive={false}
-              isActive={
-                (!isSubmitted &&
-                  selectedSlots
-                    .find((ele) => ele.round === day)
-                    .dates.find((ele) => ele.curr_day === slotTime.curr_day)
-                    .slots.map((ele) => ele.startTime)
-                    .includes(slot.startTime)) ||
-                isSubmitted
-              }
+              isSemiActive={slot.isSlotAvailable && !isSelected}
+              isActive={isSelected}
               key={ind}
               textTime={`${dayjs(slot.startTime).format('hh:mm A')} - ${dayjs(slot.endTime).format('hh:mm A')}`}
             />

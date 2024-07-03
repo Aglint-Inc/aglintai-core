@@ -130,7 +130,7 @@ const CreateSession = ({ handleClose, order }: DrawerProps) => {
       }
       setSessionCreation(false);
     } else {
-      toast.warning('Session under creation. Please wait.');
+      toast.warning('Stage under creation. Please wait.');
     }
   };
 
@@ -153,7 +153,8 @@ const CreateSession = ({ handleClose, order }: DrawerProps) => {
           />
         </>
       }
-      textTitle='Create Session'
+      onClickClose={{ onClick: () => handleClose() }}
+      textTitle='Create Stage'
       slotSidedrawerBody={
         <SessionForms fields={fields} setFields={setFields} />
       }
@@ -230,16 +231,17 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
         handleClose();
       }
     } else {
-      toast.warning('Session under updation. Please wait.');
+      toast.warning('Stage under updation. Please wait.');
     }
   };
 
   return (
     <SideDrawerBlock
-      textTitle='Edit Session'
+      textTitle='Edit Stage'
       slotSidedrawerBody={
         <SessionForms fields={fields} setFields={setFields} />
       }
+      onClickClose={{ onClick: () => handleClose() }}
       slotButton={
         <>
           <ButtonSoft
@@ -290,7 +292,7 @@ const CreateDebrief = ({ handleClose, order }: DrawerProps) => {
       }
       setDebriefCreation(false);
     } else {
-      toast.warning('Session under creation. Please wait.');
+      toast.warning('Stage under creation. Please wait.');
     }
   };
   return (
@@ -299,6 +301,7 @@ const CreateDebrief = ({ handleClose, order }: DrawerProps) => {
       slotSidedrawerBody={
         <DebriefForms fields={fields} setFields={setFields} />
       }
+      onClickClose={{ onClick: () => handleClose() }}
       slotButton={
         <>
           <ButtonSoft
@@ -371,7 +374,7 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
         handleClose();
       }
     } else {
-      toast.warning('Session under updation. Please wait.');
+      toast.warning('Stage under updation. Please wait.');
     }
   };
 
@@ -381,6 +384,7 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
       slotSidedrawerBody={
         <DebriefForms fields={fields} setFields={setFields} />
       }
+      onClickClose={{ onClick: () => handleClose() }}
       slotButton={
         <>
           <ButtonSoft
@@ -427,7 +431,7 @@ const BreakSession = ({ handleClose, id }: DrawerProps) => {
         handleClose();
       }
     } else {
-      toast.warning('Session under updation. Please wait.');
+      toast.warning('Stage under updation. Please wait.');
     }
   };
   return (

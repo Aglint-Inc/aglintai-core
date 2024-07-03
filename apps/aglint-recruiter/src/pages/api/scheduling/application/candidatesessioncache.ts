@@ -60,6 +60,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       supabase,
       recruiter_id,
       rec_user_id,
+      meeting_flow: 'self_scheduling',
     });
 
     return res.status(200).send(resClone);

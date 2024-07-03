@@ -1,12 +1,13 @@
 import * as v from 'valibot';
 import { RecruiterUserType } from '../data.types';
-import { PlanCombinationRespType } from '../scheduleTypes';
+import { PlanCombinationRespType, SessionCombinationRespType } from '../scheduleTypes';
 import {
   schema_candidate_direct_booking,
   schema_confirm_slot_no_conflict,
 } from './valibotSchema/candidate-self-schedule';
 import {
   scheduling_options_schema,
+  schema_candidate_req_availabale_slots,
   schema_find_availability_payload,
   schema_find_interview_slot,
   schema_find_slots_date_range,
@@ -37,7 +38,7 @@ export type APIUpdateMeetingInterviewers = {
   candidate_email: string;
 };
 
-export type APIFindAltenativeTimeSlotResponse = PlanCombinationRespType[];
+export type APIFindAltenativeTimeSlotResponse = SessionCombinationRespType[];
 
 export type APICandScheduleMailThankYou = {
   availability_request_id?: string;
@@ -65,15 +66,9 @@ export type APIFindSlotsDateRange = v.InferInput<
   typeof schema_find_slots_date_range
 >;
 
-export type CandReqAvailableSlots = {
-  session_ids: string[];
-  recruiter_id: string;
-  date_range_start: string;
-  date_range_end: string;
-  candidate_tz: string;
-  current_interview_day: number; // starts from 1
-  options?: APIOptions;
-};
+export type CandReqAvailableSlots = v.InferInput<
+  typeof schema_candidate_req_availabale_slots
+>;
 
 export type APIGetCandidateSelectedSlots = {
   cand_availability_id: string;
@@ -136,4 +131,13 @@ export type APICandidateConfirmSlot = {
   candidate_name?: string;
   candidate_id?: string;
   is_debreif?: boolean;
+};
+
+export type CurrRoundCandidateAvailReq = {
+  curr_interview_day: string;
+  slots: {
+    start_time: string;
+    end_time: string;
+    is_slot_available: boolean;
+  }[];
 };

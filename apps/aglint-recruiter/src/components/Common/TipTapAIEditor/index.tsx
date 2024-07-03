@@ -1,7 +1,7 @@
 import { DatabaseEnums } from '@aglint/shared-types';
 import { Stack } from '@mui/system';
 import { Editor, EditorContent, useEditor } from '@tiptap/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { SkeletonParagraph } from '@/devlink2/SkeletonParagraph';
 
@@ -14,15 +14,20 @@ export type TipTapAIEditorParams = {
   placeholder: string;
   initialValue: string | undefined;
   enablAI?: boolean;
+  maxHeight?: string;
   // eslint-disable-next-line no-unused-vars
   handleChange: (s: string) => void;
   showWarnOnEdit?: () => void;
+  toolbar?: boolean;
   defaultJson?: any;
+  padding?: number | string;
   loader?: {
     isLoading: boolean;
     count: number;
   };
   disabled?: boolean;
+  singleLine?: boolean;
+  height?: string;
   border?: boolean;
   borderRadius?: React.CSSProperties['borderRadius'];
   editor_type?: 'email' | 'regular';
@@ -38,12 +43,15 @@ const TipTapAIEditor = ({
     isLoading: false,
     count: 1,
   },
-  defaultJson,
+  singleLine = false,
+  height = 'auto',
   disabled = false,
   border = false,
   borderRadius,
   editor_type = 'regular',
   template_type,
+  toolbar = true,
+  padding = 2,
 }: TipTapAIEditorParams) => {
   const [selectionRange, setSelectionRange] = useState<
     TipTapAIEditorCtxType['selectionRange']
@@ -82,12 +90,18 @@ const TipTapAIEditor = ({
       attributes: {
         spellcheck: 'false',
       },
+      handleKeyDown(view, event) {
+        // if singleLine and dropdown open enter key will work otherwise enter not work.if multiline enterkey will work on all situation
+        if (!singleLine || event.key !== 'Enter') {
+          return false;
+        }
+        if (document.querySelector('.tippy-box')) {
+          return false;
+        }
+        return true;
+      },
     },
   }) as Editor;
-
-  useEffect(() => {
-    if (editor && defaultJson) editor.commands.setContent(defaultJson, true);
-  }, [defaultJson, editor]);
 
   return (
     <TipTapCtx.Provider
@@ -108,7 +122,7 @@ const TipTapAIEditor = ({
         }}
       >
         <div>
-          {editor && (
+          {editor && toolbar && (
             <>
               <Stack
                 sx={{
@@ -127,9 +141,12 @@ const TipTapAIEditor = ({
             sx={{
               backgroundColor: 'var(--white)',
               borderRadius: borderRadius || 'var(--radius-2)',
+              // maxHeight: maxHeight,
+              height: height,
+              overflow: 'auto',
               '& .ProseMirror': {
-                minHeight: '250px',
                 width: '100%',
+
                 wordBreak: 'break-word',
                 color: disabled ? 'var(--neutral-3)' : 'var(--neutral-12)',
                 cursor: disabled ? 'default' : 'auto',
@@ -157,7 +174,7 @@ const TipTapAIEditor = ({
               },
             }}
           >
-            <Stack p={2}>
+            <Stack p={padding}>
               {loader.isLoading ? (
                 <Stack gap={1}>
                   {[...Array(loader.count)].map((e, i) => (
@@ -165,7 +182,19 @@ const TipTapAIEditor = ({
                   ))}
                 </Stack>
               ) : (
-                <EditorContent editor={editor} />
+                <EditorContent
+                  editor={editor}
+                  className={singleLine && 'single-line-editor'}
+                  style={
+                    singleLine
+                      ? {
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }
+                      : {}
+                  }
+                />
               )}
             </Stack>
           </Stack>

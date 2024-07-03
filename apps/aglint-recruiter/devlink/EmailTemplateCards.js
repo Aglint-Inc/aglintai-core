@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { GlobalBadge } from "./GlobalBadge";
 import * as _utils from "./utils";
 import _styles from "./EmailTemplateCards.module.css";
 
@@ -12,6 +13,7 @@ export function EmailTemplateCards({
   textDescription = "Triggered instantly when candidate applied to this job.",
   textTitle = "Application recieved",
   isActive = false,
+  slotBadge,
 }) {
   return (
     <_Component

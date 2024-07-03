@@ -29,8 +29,13 @@ function GroupTaskCard({
   task: TasksAgentContextType['tasks'][number];
 }) {
   const route = useRouter();
-  const { setTaskId, selectedTasksIds, setSelectedTasksIds, selectedGroupBy } =
-    useTaskStatesContext();
+  const {
+    setTaskId,
+    taskId,
+    selectedTasksIds,
+    setSelectedTasksIds,
+    selectedGroupBy,
+  } = useTaskStatesContext();
   let toDayDateTime = dayjs();
   const tomorrowDate = toDayDateTime.add(1, 'day');
   let dueDateTime = dayjs(task.due_date);
@@ -50,7 +55,7 @@ function GroupTaskCard({
   return (
     <Stack
       sx={{
-        bgcolor: 'var(--white)',
+        bgcolor: taskId === task.id && 'var(--orange-2)',
         '&:hover': {
           bgcolor: 'var(--neutral-2)',
           '& div:first-child div .checkboxClass': {
@@ -65,15 +70,15 @@ function GroupTaskCard({
             padding: '1%',
             gridTemplateColumns:
               selectedGroupBy.label === 'job'
-                ? `20px 1fr 130px 110px 160px 160px 1px`
+                ? `20px 1fr 150px 110px 160px 180px 1px`
                 : selectedGroupBy.label === 'candidate'
-                  ? `20px 1fr 130px 110px 160px 1px 160px`
+                  ? `20px 1fr 150px 110px 160px 1px 180px`
                   : selectedGroupBy.label === 'assignee'
-                    ? `20px 1fr 130px 110px 1px 160px 160px`
+                    ? `20px 1fr 150px 110px 1px 160px 180px`
                     : selectedGroupBy.label === 'priority'
-                      ? `20px 1fr 130px 1px 160px 160px 160px`
+                      ? `20px 1fr 150px 1px 160px 160px 180px`
                       : selectedGroupBy.label === 'status'
-                        ? `20px 1fr 1px 160px 160px 160px 160px`
+                        ? `20px 1fr 1px 160px 160px 160px 180px`
                         : null,
           },
         }}
@@ -121,7 +126,7 @@ function GroupTaskCard({
         }
         onClickCard={{
           onClick: () => {
-            route.push(ROUTES['/tasks']() + '?task_id=' + task.id);
+            route.replace(ROUTES['/tasks']() + '?task_id=' + task.id);
             setTaskId(task.id);
           },
         }}
@@ -198,7 +203,7 @@ function GroupTaskCard({
                 }
               }}
               size='small'
-              color='info'
+              sx={{ color: 'var(--accent-9)' }}
             />
           </Stack>
         }

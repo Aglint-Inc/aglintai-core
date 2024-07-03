@@ -32,8 +32,8 @@ export type CustomSchedulingSettings = {
     locations: string[];
   }[];
   schedulingKeyWords: {
-    free: any[];
-    SoftConflicts: any[];
+    free: string[];
+    SoftConflicts: string[];
     outOfOffice: string[];
     recruitingBlocks: string[];
   };

@@ -16,6 +16,7 @@ export function AvatarWithName({
   isTickVisible = false,
   isAvatarVisible = true,
   isCandidateIconVisible = false,
+  isRoleHorizontalVisible = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "avatarwithname")} tag="div">
@@ -62,10 +63,23 @@ export function AvatarWithName({
       ) : null}
       <_Builtin.Block tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "one-line-clamp")}
+          className={_utils.cx(_styles, "awn-horizontal-wrap")}
           tag="div"
         >
-          <Text content={textName} weight="medium" />
+          <_Builtin.Block
+            className={_utils.cx(_styles, "one-line-clamp")}
+            tag="div"
+          >
+            <Text content={textName} weight="medium" />
+          </_Builtin.Block>
+          {isRoleHorizontalVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "one-line-clamp")}
+              tag="div"
+            >
+              <Text content={textRole} weight="" color="neutral" size="1" />
+            </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
         {isRoleVisible ? (
           <_Builtin.Block

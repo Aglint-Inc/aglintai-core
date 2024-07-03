@@ -89,7 +89,7 @@ const useInviteActions = () => {
         .throwOnError();
 
       addScheduleActivity({
-        title: `Candidate viewed the link`,
+        title: `Candidate opened self Scheduling link for ${meta.data.meetings.map((ses) => ses.interview_session.name).join(', ')}`,
         application_id: meta.data.schedule.application_id,
         created_by: null,
         logged_by: 'candidate',

@@ -1,4 +1,9 @@
-import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
+import {
+  DatabaseTable,
+  DatabaseTableInsert,
+  InterviewSessionTypeDB,
+} from '@aglint/shared-types';
+import { ScheduleUtils } from '@aglint/shared-utils';
 import {
   Autocomplete,
   Checkbox,
@@ -22,12 +27,14 @@ import {
   IndividualIcon,
   PanelIcon,
 } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
+import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
 import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
   ApiBodyParamsSessionCache,
   ApiResponseSessionCache,
 } from '@/src/pages/api/scheduling/application/candidatesessioncache';
+import { getCompanyDaysCnt } from '@/src/services/CandidateScheduleV2/utils/companyWorkingDays';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -38,12 +45,13 @@ import {
   setIsScheduleNowOpen,
   setStepScheduling,
   useSchedulingFlowStore,
-} from '../SelfSchedulingDrawer/store';
+} from '../SchedulingDrawer/store';
 import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
 import {
   createTask,
   insertCandidateRequestAvailability,
   updateCandidateRequestAvailability,
+  updateTask,
   useRequestAvailabilityContext,
 } from './RequestAvailabilityContext';
 import {
@@ -56,6 +64,7 @@ import {
 
 function RequestAvailability() {
   const router = useRouter();
+  const selectedTaskId = router.query.task_id as string;
   const { recruiter, recruiterUser } = useAuthDetails();
 
   const {
@@ -74,15 +83,25 @@ function RequestAvailability() {
   });
 
   const selectedSessions = requestSessionIds.length
-    ? initialSessions.filter((ele) => requestSessionIds.includes(ele.id))
+    ? initialSessions.filter((ele) =>
+        requestSessionIds.includes(ele.interview_session.id),
+      )
     : [];
 
   const totalSessionMinutes = selectedSessions.reduce(
-    (accumulator, session) => accumulator + session.session_duration,
+    (accumulator, session) =>
+      accumulator + session.interview_session.session_duration,
     0,
   );
   function getDrawerClose() {
     setIsScheduleNowOpen(false);
+    const currentPath = router.pathname;
+    const currentQuery = { ...router.query };
+    delete currentQuery.task_id;
+    router.replace({
+      pathname: currentPath,
+      query: currentQuery,
+    });
   }
 
   const [availability, setAvailability] = useState<
@@ -93,13 +112,27 @@ function RequestAvailability() {
     outside_work_hours: false,
     recruiting_block_keywords: false,
   });
-  const [selectedDays, setSelectedDays] = useState(requestDaysListOptions[3]);
+  const [selectedDays, setSelectedDays] = useState(requestDaysListOptions[1]);
   const [selectedSlots, setSelectedSlots] = useState(slotsListOptions[1]);
 
   const [markCreateTicket, setMarkCreateTicket] = useState(true);
 
+  const meetingsRound = ScheduleUtils.getSessionRounds(
+    selectedSessions.map(
+      (ele) =>
+        ({
+          ...ele.interview_session,
+        }) as InterviewSessionTypeDB,
+    ),
+  ) as unknown as InterviewSessionTypeDB[][];
   // handle submit
-
+  const maxDays =
+    getCompanyDaysCnt(
+      recruiter.scheduling_settings,
+      selectedDate[0].format('DD/MM/YYYY'),
+      selectedDate[1].format('DD/MM/YYYY'),
+    ) -
+    (meetingsRound.length - 1);
   async function handleSubmit() {
     if (loading) {
       return null;
@@ -128,7 +161,7 @@ function RequestAvailability() {
 
           localSessions = selectedSessions.map((ses) => {
             const newSession = resData.refSessions.find(
-              (ele) => ele.id === ses.id,
+              (ele) => ele.interview_session.id === ses.interview_session.id,
             );
 
             return {
@@ -197,7 +230,7 @@ function RequestAvailability() {
           created_by: recruiterUser.user_id,
           logged_by: 'user',
           supabase: supabase,
-          title: `Resend request availability to Schedule Interviews for ${selectedSessions.map((ele) => ele.name).join(',')}`,
+          title: `Resend request availability to Schedule Interviews for ${selectedSessions.map((ele) => ele.interview_session.name).join(',')}`,
           module: 'scheduler',
           task_id: task_id,
         });
@@ -214,17 +247,24 @@ function RequestAvailability() {
           number_of_slots: selectedSlots.value,
           session_ids: localSessions.map((session) => {
             return {
-              id: session.id,
-              name: session.name,
-              session_duration: session.session_duration,
-              break_duration: session.break_duration,
-              session_order: session.session_order,
-              location: session.location,
-              session_type: session.session_type,
+              id: session.interview_session.id,
+              name: session.interview_session.name,
+              session_duration: session.interview_session.session_duration,
+              break_duration: session.interview_session.break_duration,
+              session_order: session.interview_session.session_order,
+              location: session.interview_session.location,
+              session_type: session.interview_session.session_type,
             };
           }),
           total_slots: null,
         });
+
+        await supabase.from('request_session_relation').insert(
+          selectedSessions.map((ele) => ({
+            session_id: ele.interview_session.id,
+            request_availability_id: result.id,
+          })),
+        );
 
         const updateMeetings: DatabaseTableInsert['interview_meeting'][] =
           localSessions.map((ses) => {
@@ -250,31 +290,41 @@ function RequestAvailability() {
         // end
         let task = null as null | DatabaseTable['new_tasks'];
         if (markCreateTicket) {
-          task = await createTask({
-            assignee: [recruiterUser.user_id],
-            created_by: recruiterUser.user_id,
-            name: `Request Availability ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.last_name)} - ${selectedApplication.public_jobs.job_title.trim()}.`,
-            agent: null,
-            application_id: selectedApplication.id,
-            due_date: selectedDate[0].toString(),
-            priority: 'medium',
-            recruiter_id: recruiter.id,
-            schedule_date_range: {
-              end_date: selectedDate[0].toString(),
-              start_date: selectedDate[1].toString(),
-            },
-            start_date: dayjs().toString(),
-            task_owner: recruiterUser.user_id,
-            session_ids: selectedSessions.map((ele) => {
-              return {
-                id: ele.id,
-                name: ele.name,
-              } as DatabaseTableInsert['new_tasks']['session_ids'][number];
-            }),
-            status: 'in_progress',
-            type: 'availability',
-            request_availability_id: result.id,
-          });
+          if (selectedTaskId) {
+            task = await updateTask({
+              status: 'in_progress',
+              request_availability_id: result.id,
+              type: 'availability',
+            });
+          } else {
+            task = await createTask({
+              assignee: [recruiterUser.user_id],
+              created_by: recruiterUser.user_id,
+              name: `Request Availability ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.last_name)} - ${selectedApplication.public_jobs.job_title.trim()}.`,
+              agent: null,
+              application_id: selectedApplication.id,
+              due_date: selectedDate[0].toString(),
+              priority: 'medium',
+              recruiter_id: recruiter.id,
+              schedule_date_range: {
+                end_date: selectedDate[0].toString(),
+                start_date: selectedDate[1].toString(),
+              },
+              start_date: dayjs().toString(),
+              task_owner: recruiterUser.user_id,
+
+              status: 'in_progress',
+              type: 'availability',
+              request_availability_id: result.id,
+            });
+            await supabase.from('task_session_relation').insert(
+              selectedSessions.map((ele) => ({
+                session_id: ele.interview_session.id,
+                task_id: task.id,
+              })),
+            );
+          }
+
           await createTaskProgress({
             data: {
               created_by: {
@@ -289,7 +339,7 @@ function RequestAvailability() {
             },
             type: 'request_availability',
             optionData: {
-              sessions: task.session_ids,
+              sessions: selectedSessions as any as meetingCardType[],
               candidateName: getFullName(
                 selectedApplication.candidates.first_name,
                 selectedApplication.candidates.last_name,
@@ -305,7 +355,7 @@ function RequestAvailability() {
           title: `Request Availability from ${getFullName(
             selectedApplication.candidates.first_name,
             selectedApplication.candidates.last_name,
-          )} to Schedule Interviews for ${selectedSessions.map((ele) => ele.name).join(',')}`,
+          )} to Schedule Interviews for ${selectedSessions.map((ele) => ele.interview_session.name).join(',')}`,
           module: 'scheduler',
           task_id: task ? task.id : null,
         });
@@ -365,8 +415,9 @@ function RequestAvailability() {
                 value={selectedDays}
                 options={requestDaysListOptions}
                 sx={{ width: 200 }}
-                renderOption={(props, option) => {
-                  return <li {...props}>{option.label}</li>;
+                renderOption={(props, option, i) => {
+                  if (i.index + 1 < maxDays)
+                    return <li {...props}>{option.label}</li>;
                 }}
                 renderInput={(params) => (
                   <TextField {...params} placeholder='Days' />
@@ -418,26 +469,32 @@ function RequestAvailability() {
                     slotIcons={
                       <ShowCode>
                         <ShowCode.When
-                          isTrue={ele.session_type == 'individual'}
+                          isTrue={
+                            ele.interview_session.session_type == 'individual'
+                          }
                         >
                           <IndividualIcon />
                         </ShowCode.When>
-                        <ShowCode.When isTrue={ele.session_type == 'panel'}>
+                        <ShowCode.When
+                          isTrue={ele.interview_session.session_type == 'panel'}
+                        >
                           <PanelIcon />
                         </ShowCode.When>
                       </ShowCode>
                     }
                     textTime={convertMinutesToHoursAndMinutes(
-                      ele.session_duration,
+                      ele.interview_session.session_duration,
                     )}
                     key={i}
-                    textScheduleName={ele.name}
+                    textScheduleName={ele.interview_session.name}
                   />
                 );
               })
             : null
         }
-        isCheckbox={scheduleFlow === 'create_request_availibility'}
+        isCheckbox={
+          scheduleFlow === 'create_request_availibility' && !selectedTaskId
+        }
         slotCheckboxAvailability={
           <Checkbox
             defaultChecked={markCreateTicket}

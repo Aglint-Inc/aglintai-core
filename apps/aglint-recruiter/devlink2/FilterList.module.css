@@ -3,12 +3,9 @@
   overflow: auto;
   width: 150px;
   max-height: 400px;
-  padding: var(--space-1) var(--space-2);
   flex-direction: column;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
 
-  background-color: var(--neutral-2);
+  background-color: var(--white);
 }
 
 .all-interview-filter-copy {

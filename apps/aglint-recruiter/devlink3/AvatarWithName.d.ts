@@ -12,4 +12,5 @@ declare function AvatarWithName(props: {
   isTickVisible?: Types.Visibility.VisibilityConditions;
   isAvatarVisible?: Types.Visibility.VisibilityConditions;
   isCandidateIconVisible?: Types.Visibility.VisibilityConditions;
+  isRoleHorizontalVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

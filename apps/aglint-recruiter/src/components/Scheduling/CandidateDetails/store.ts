@@ -17,11 +17,11 @@ export type TabSchedulingType =
 
 export interface SchedulingApplication {
   initialLoading: boolean;
-  initialSessions: SessionsType;
+  initialSessions: SessionsType[];
   selectedSessionIds: string[];
   requestSessionIds: string[];
   selectedApplication: SelectedApplicationTypeDB;
-  selectedSession: SessionsType[0] | null;
+  selectedSession: SessionsType | null;
   selectedSchedule: InterviewScheduleTypeDB;
   interviewModules: InterviewModuleType[];
   scheduleName: string;
@@ -29,7 +29,7 @@ export interface SchedulingApplication {
   fetchingSchedule: boolean;
   isEditOpen: boolean;
   isEditBreakOpen: boolean;
-  editSession: SessionsType[0];
+  editSession: SessionsType;
   availabilities: DatabaseTable['candidate_request_availability'][];
   isIndividualCancelOpen: boolean;
   isMultipleCancelOpen: boolean;
@@ -38,6 +38,14 @@ export interface SchedulingApplication {
   isIndividualRescheduleOpen: boolean;
   selectedApplicationLog: DatabaseTable['application_logs'];
   rescheduleSessionIds: string[];
+  cancelSessions:
+    | {
+        session_id: string;
+        meeting_id: string;
+        session_name: string;
+        application_id: string;
+      }[]
+    | null;
 }
 
 const initialState: SchedulingApplication = {
@@ -46,7 +54,8 @@ const initialState: SchedulingApplication = {
   selectedSessionIds: [], // selected session ids
   requestSessionIds: [], // selected session ids in request candidate availability
   availabilities: [], // candidate availabilities sent to candidate for showing banner
-  selectedSession: null,
+  selectedSession: null, // used for cancelling individual session
+  cancelSessions: null, // used for cancelling multiple session from activities right panel
   initialSessions: [], // sessions with meeting details based on this plan in getting rendered in candidate details
   selectedSchedule: null, // selected schedule details (interview_schedule table) used to find session is cached or not (if schedule exits then session is cached or else sessions are fetched from job plan)
   interviewModules: [], // all the interview modules for showing in the dropdown in edit session drawer
@@ -73,6 +82,10 @@ export const useSchedulingApplicationStore = create<SchedulingApplication>()(
 
 export const setInitalLoading = (initialLoading: boolean) =>
   useSchedulingApplicationStore.setState({ initialLoading });
+
+export const setCancelSessions = (
+  cancelReasons: SchedulingApplication['cancelSessions'],
+) => useSchedulingApplicationStore.setState({ cancelSessions: cancelReasons });
 
 export const setRescheduleSessionIds = (rescheduleSessionIds: string[]) =>
   useSchedulingApplicationStore.setState({ rescheduleSessionIds });
@@ -110,10 +123,13 @@ export const setIsEditOpen = (isEditOpen: boolean) =>
 export const setIsEditBreakOpen = (isEditBreakOpen: boolean) =>
   useSchedulingApplicationStore.setState({ isEditBreakOpen });
 
-export const setSelectedSession = (selectedSession: SessionsType[0]) =>
-  useSchedulingApplicationStore.setState({ selectedSession });
+export const setSelectedSession = (
+  selectedSession: SchedulingApplication['selectedSession'],
+) => useSchedulingApplicationStore.setState({ selectedSession });
 
-export const setEditSession = (editSession: Partial<SessionsType[0]>) =>
+export const setEditSession = (
+  editSession: Partial<SchedulingApplication['editSession']>,
+) =>
   useSchedulingApplicationStore.setState((state) => ({
     editSession: { ...state.editSession, ...editSession },
   }));
@@ -122,8 +138,9 @@ export const setSelectedSchedule = (
   selectedSchedule: InterviewScheduleTypeDB,
 ) => useSchedulingApplicationStore.setState({ selectedSchedule });
 
-export const setinitialSessions = (initialSessions: SessionsType) =>
-  useSchedulingApplicationStore.setState({ initialSessions });
+export const setinitialSessions = (
+  initialSessions: SchedulingApplication['initialSessions'],
+) => useSchedulingApplicationStore.setState({ initialSessions });
 
 export const setSelectedSessionIds = (selectedSessionIds: string[]) =>
   useSchedulingApplicationStore.setState({ selectedSessionIds });

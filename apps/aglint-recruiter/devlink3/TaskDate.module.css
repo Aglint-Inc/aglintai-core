@@ -7,9 +7,6 @@
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
 
-  border: 1px solid var(--neutral-6);
-  border-radius: var(--radius-4);
-
   background-color: var(--white);
 }
 
@@ -37,14 +34,14 @@
   right: 0%;
   bottom: 0%;
 
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
+  border-top-left-radius: var(--radius-4);
+  border-bottom-left-radius: var(--radius-4);
 
-  background-color: #e9ebed;
+  background-color: var(--sand-3);
 }
 
 .task-date-active.right {
-  border-radius: 0px 10px 10px 0px;
+  border-radius: 0px var(--radius-4) var(--radius-4) 0px;
 }
 
 .relative-1 {

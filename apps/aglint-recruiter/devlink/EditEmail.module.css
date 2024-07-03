@@ -1,14 +1,55 @@
 .edit-email-wrap {
   overflow: auto;
   width: 100%;
+  height: 100%;
 }
 
 .company-email-edit {
   width: 100%;
+  height: 100%;
+  padding-top: var(--space-4);
+  padding-right: var(--space-4);
+  padding-bottom: var(--space-4);
+}
+
+.eemail-tip-wrap {
+  display: flex;
+  padding: var(--space-3) var(--space-4);
+  justify-content: space-between;
+  align-items: center;
+
+  border-radius: var(--radius-4);
+
+  background-color: rgba(181, 82, 226, 0.1);
+}
+
+.eemial-tip-left-content {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.eemail-body-wrap {
+  margin-top: var(--space-4);
   padding: var(--space-4);
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+  background-color: var(--neutral-2);
 }
 
 .company-email-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.company-email-left-wrap {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -167,21 +208,6 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
-}
-
-.edit-email-tip-wrap {
-  display: flex;
-  margin-top: var(--space-4);
-  padding: var(--space-4);
-  justify-content: flex-start;
-  align-items: flex-start;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
-
-  border: 1px solid var(--accent-6);
-  border-radius: var(--radius-4);
-
-  background-color: var(--accent-3);
 }
 
 .slot-company-email-form {

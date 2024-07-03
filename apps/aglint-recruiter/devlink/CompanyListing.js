@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { Text } from "./Text";
 import { CompanyListingLinks } from "./CompanyListingLinks";
 import { OpenJobListingCard } from "./OpenJobListingCard";
 import { OfficeLocationCard } from "./OfficeLocationCard";
@@ -40,6 +41,7 @@ export function CompanyListing({
   isOpenJobsVisible = true,
   isAboutJobVisible = true,
   isOfficeLocationVisible = true,
+  isHeaderDescriptionVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -62,38 +64,23 @@ export function CompanyListing({
           >
             {slotCompanyImage}
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "text-xxxl",
-              "fw-semibold",
-              "res-text-xxxl"
-            )}
-            tag="div"
-          >
-            {textCompanyName}
-          </_Builtin.Block>
+          <Text content={textCompanyName} size="8" weight="medium" />
           <_Builtin.Block
             className={_utils.cx(_styles, "company-info-wrappers")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-425")}
+              className={_utils.cx(_styles, "cl-header-item")}
               tag="div"
             >
               <_Builtin.HtmlEmbed
                 className={_utils.cx(_styles, "icons")}
                 value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2220%22%20height%3D%2220%22%20viewbox%3D%220%200%2020%2020%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M19.9944%2019.0693C20.0481%2019.5264%2019.7212%2019.9405%2019.2641%2019.9943C18.807%2020.0481%2018.3929%2019.7211%2018.3391%2019.264C18.0548%2016.8471%2015.907%2015%2013.3334%2015C10.7599%2015%208.61205%2016.8471%208.32771%2019.264C8.27393%2019.7211%207.8598%2020.0481%207.40271%2019.9943C6.94563%2019.9405%206.61868%2019.5264%206.67245%2019.0693C7.05696%2015.801%209.92635%2013.3333%2013.3334%2013.3333C16.7405%2013.3333%2019.6099%2015.801%2019.9944%2019.0693ZM1.65337%2012.6491C1.57104%2013.1019%201.13722%2013.4022%200.684407%2013.3199C0.231593%2013.2376%20-0.0687435%2012.8037%200.0135862%2012.3509C0.422542%2010.1017%202.61772%208.33333%205.00014%208.33333C7.38257%208.33333%209.57775%2010.1017%209.9867%2012.3509C10.069%2012.8037%209.7687%2013.2376%209.31588%2013.3199C8.86307%2013.4022%208.42925%2013.1019%208.34692%2012.6491C8.08428%2011.2045%206.58899%2010%205.00014%2010C3.4113%2010%201.91601%2011.2045%201.65337%2012.6491ZM5%206.66667C3.15905%206.66667%201.66667%205.17428%201.66667%203.33333C1.66667%201.49238%203.15905%200%205%200C6.84095%200%208.33333%201.49238%208.33333%203.33333C8.33333%205.17428%206.84095%206.66667%205%206.66667ZM5%205C5.92047%205%206.66667%204.25381%206.66667%203.33333C6.66667%202.41286%205.92047%201.66667%205%201.66667C4.07953%201.66667%203.33333%202.41286%203.33333%203.33333C3.33333%204.25381%204.07953%205%205%205ZM13.3333%2011.6667C11.0321%2011.6667%209.16667%209.80119%209.16667%207.5C9.16667%205.19881%2011.0321%203.33333%2013.3333%203.33333C15.6345%203.33333%2017.5%205.19881%2017.5%207.5C17.5%209.80119%2015.6345%2011.6667%2013.3333%2011.6667ZM13.3333%2010C14.714%2010%2015.8333%208.88071%2015.8333%207.5C15.8333%206.11929%2014.714%205%2013.3333%205C11.9526%205%2010.8333%206.11929%2010.8333%207.5C10.8333%208.88071%2011.9526%2010%2013.3333%2010Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
               />
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-lg", "fw-semibold")}
-                tag="div"
-              >
-                {textEmployeeCount}
-              </_Builtin.Block>
+              <Text content={textEmployeeCount} size="4" weight="medium" />
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-425")}
+              className={_utils.cx(_styles, "cl-header-item")}
               tag="div"
             >
               <_Builtin.HtmlEmbed
@@ -108,7 +95,9 @@ export function CompanyListing({
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
-          <_Builtin.Block tag="div">{textHeaderDiscription}</_Builtin.Block>
+          {isHeaderDescriptionVisible ? (
+            <_Builtin.Block tag="div">{textHeaderDiscription}</_Builtin.Block>
+          ) : null}
           <_Builtin.Block
             className={_utils.cx(_styles, "company-list-link-wrappers")}
             tag="div"

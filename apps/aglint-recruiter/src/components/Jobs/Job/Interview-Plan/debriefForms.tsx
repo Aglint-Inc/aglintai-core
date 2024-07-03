@@ -14,7 +14,7 @@ import { SidedrawerBodyDebrief } from '@/devlink2/SidedrawerBodyDebrief';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
 import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
-import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon';
+import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { validateString } from '@/src/context/JobDashboard/hooks';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { CompanyMember } from '@/src/queries/company-members';
@@ -75,13 +75,13 @@ export const getDebriefFields = (
 const getLabel = (key: keyof DebriefFormProps) => {
   switch (key) {
     case 'name':
-      return 'Session name';
+      return 'Stage name';
     case 'schedule_type':
       return 'Schedule type';
     case 'session_duration':
-      return 'Session duration';
+      return 'Stage duration';
     case 'session_type':
-      return 'Session type';
+      return 'Stage type';
   }
 };
 export const initialDebriefFields: DebriefFormProps = {
@@ -178,7 +178,7 @@ const DebriefForms = ({
     () => (
       <UITextField
         name={'name'}
-        placeholder={'Session name'}
+        placeholder={getLabel('name')}
         value={name.value}
         error={name.error}
         helperText={name.helper}

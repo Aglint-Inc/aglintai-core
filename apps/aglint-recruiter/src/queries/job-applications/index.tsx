@@ -31,10 +31,14 @@ export const applicationsQueries = {
   all: ({ job_id }: ApplicationsAllQueryPrerequistes) => ({
     queryKey: [...jobQueries.job({ id: job_id }).queryKey, 'applications'],
   }),
-  locationFilters: ({ job_id }: ApplicationsAllQueryPrerequistes) =>
+  locationFilters: ({
+    job_id,
+    polling = false,
+  }: ApplicationsAllQueryPrerequistes) =>
     queryOptions({
       enabled: !!job_id,
       gcTime: job_id ? GC_TIME : 0,
+      refetchOnMount: polling,
       queryKey: [
         ...applicationsQueries.all({ job_id }).queryKey,
         'location_filters',
@@ -184,7 +188,11 @@ const getApplications = async ({
       ['city', 'state', 'country'].forEach((type) =>
         query.order(type, { ascending: sort.order === 'asc' }),
       );
-    else query.order(sort.type, { ascending: sort.order === 'asc' });
+    else
+      query.order(sort.type, {
+        ascending: sort.order === 'asc',
+        nullsFirst: false,
+      });
   }
 
   query.order('id');
@@ -285,7 +293,6 @@ const sampleApplicationView: {
   applied_at: 'applied_at',
   bookmarked: 'bookmarked',
   candidate_file_id: 'candidate_file_id',
-  candidate_id: 'candidate_id',
   created_at: 'created_at',
   id: 'id',
   overall_interview_score: 'interview_score',
@@ -320,7 +327,7 @@ export const useUploadApplication = (params: Omit<Params, 'status'>) => {
       payload: Omit<HandleUploadApplication, 'job_id' | 'recruiter_id'>,
     ) => {
       toast.message('Uploading application');
-      await handleUploadApplication({
+      return await handleUploadApplication({
         job_id: params.job_id,
         recruiter_id,
         ...payload,
@@ -414,6 +421,8 @@ const handleResumeUpload = async (payload: HandleUploadResume) => {
     files: formData,
   };
   const response = await handleJobApi('candidateUpload/resumeUpload', request);
+  if (response.filter(({ confirmation }) => !confirmation).length !== 0)
+    throw new Error('Failed to upload resume');
   return response;
 };
 const handleBulkResumeUpload = async (payload: HandleUploadResume) => {
@@ -427,7 +436,14 @@ const handleBulkResumeUpload = async (payload: HandleUploadResume) => {
         files: batch,
       }),
     );
-  await Promise.allSettled(promises);
+  const responses = await Promise.allSettled(promises);
+  const failedResponses = responses.filter(
+    ({ status }) => status === 'rejected',
+  ) as PromiseRejectedResult[];
+  if (failedResponses.length !== 0)
+    throw new Error(
+      `Failed to upload ${failedResponses.length} resumes. (${failedResponses.map(({ reason }) => reason).join(', ')})`,
+    );
 };
 
 export const useUploadCsv = (params: Omit<Params, 'status'>) => {
@@ -562,3 +578,37 @@ const moveApplications = async ({
     })(),
   ]);
 };
+
+export const useRescoreApplications = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (args: Parameters<typeof rescoreApplications>[0]) => {
+      await rescoreApplications({
+        job_id: args.job_id,
+      });
+      const applicationQueryKey = [
+        ...applicationsQueries.all({ job_id: args.job_id }).queryKey,
+      ];
+      const jobCountQueryKey = jobQueries.job_application_count({
+        id: args.job_id,
+      }).queryKey;
+      const jobProcessingQueryKey = jobQueries.job_processing_count({
+        id: args.job_id,
+      }).queryKey;
+      await Promise.allSettled([
+        queryClient.invalidateQueries({ queryKey: applicationQueryKey }),
+        queryClient.invalidateQueries({ queryKey: jobCountQueryKey }),
+        queryClient.invalidateQueries({ queryKey: jobProcessingQueryKey }),
+      ]);
+      return undefined;
+    },
+  });
+};
+const rescoreApplications = async ({
+  job_id,
+}: ApplicationsAllQueryPrerequistes) =>
+  await supabase
+    .from('applications')
+    .update({ overall_score: -1, processing_status: 'not started' })
+    .eq('job_id', job_id)
+    .throwOnError();

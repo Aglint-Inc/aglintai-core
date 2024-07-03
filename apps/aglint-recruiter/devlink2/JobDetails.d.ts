@@ -15,4 +15,5 @@ declare function JobDetails(props: {
   slotShowFilterButton?: Types.Devlink.Slot;
   isFilterVisible?: Types.Visibility.VisibilityConditions;
   slotButtons?: Types.Devlink.Slot;
+  slotGlobalBanner?: Types.Devlink.Slot;
 }): React.JSX.Element;

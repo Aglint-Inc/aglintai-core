@@ -1,7 +1,6 @@
 .available-req-wrap {
   display: flex;
-  max-width: 900px;
-  min-width: 800px;
+  width: 1000px;
   margin-right: auto;
   margin-bottom: var(--space-7);
   margin-left: auto;
@@ -49,6 +48,10 @@
 
 .embed_flex.is_cursor {
   cursor: pointer;
+}
+
+.embed_flex.is_absolute {
+  position: absolute;
 }
 
 .title-withicon {

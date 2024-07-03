@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { selfScheduleMailToCandidate } from '@/src/components/Scheduling/CandidateDetails/mailUtils';
-import { SchedulingFlow } from '@/src/components/Scheduling/CandidateDetails/SelfSchedulingDrawer/store';
+import { SchedulingFlow } from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/store';
 import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
 import {
   createCloneSession,
@@ -23,6 +23,8 @@ import {
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 // import { mailHandler } from '@/src/components/Scheduling/Candidates/utils';
 import { getScheduleName } from '@/src/components/Scheduling/utils';
+import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
+import { createTaskProgress } from '@/src/components/Tasks/utils';
 
 export interface ApiBodyParamsSendToCandidate {
   is_debrief?: boolean;
@@ -39,6 +41,7 @@ export interface ApiBodyParamsSendToCandidate {
   recruiterUser: RecruiterUserType;
   user_tz: string;
   selectedApplicationLog: DatabaseTable['application_logs'];
+  task_id: string | null;
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -76,6 +79,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       is_debrief: bodyParams.is_debrief,
       selectedApplicationLog: bodyParams.selectedApplicationLog,
       selectedSlots: bodyParams.selectedSlots,
+      task_id: bodyParams.task_id,
     });
 
     console.log('resSendToCandidate', resSendToCandidate);
@@ -106,6 +110,7 @@ const sendToCandidate = async ({
   supabase,
   user_tz,
   selectedApplicationLog,
+  task_id,
 }: {
   is_debrief?: boolean;
   selectedApplication: SchedulingApplication['selectedApplication'];
@@ -127,8 +132,10 @@ const sendToCandidate = async ({
   supabase: ReturnType<typeof createServerClient<DB>>;
   user_tz: string;
   selectedApplicationLog?: DatabaseTable['application_logs'];
+  task_id: string | null;
 }) => {
   try {
+    let update_task_id = task_id;
     const scheduleName = getScheduleName({
       job_title: selectedApplication.public_jobs.job_title,
       first_name: selectedApplication.candidates.first_name,
@@ -143,6 +150,8 @@ const sendToCandidate = async ({
 
     // check if schedule is already created (if yes then sessions are cached on candidate level)
     if (checkSch.length === 0) {
+      console.log('no schedule');
+
       // if not then cache all the sessions on candidate level
       const createCloneRes = await createCloneSession({
         is_get_more_option: false,
@@ -153,7 +162,10 @@ const sendToCandidate = async ({
         recruiter_id: recruiter_id,
         supabase: supabase,
         rec_user_id: recruiterUser.user_id,
+        meeting_flow: is_debrief ? 'debrief' : 'self_scheduling',
       });
+
+      console.log('createCloneRes success');
 
       const { data: filterJson, error: errorFilterJson } = await supabase
         .from('interview_filter_json')
@@ -171,10 +183,10 @@ const sendToCandidate = async ({
               sessions: slot.sessions.map((ses) => ({
                 ...ses,
                 session_id: createCloneRes.refSessions.find(
-                  (s) => s.id === ses.session_id,
+                  (s) => s.interview_session.id === ses.session_id,
                 ).newId,
                 meeting_id: createCloneRes.refSessions.find(
-                  (s) => s.id === ses.session_id,
+                  (s) => s.interview_session.id === ses.session_id,
                 ).interview_meeting.id,
               })),
             };
@@ -185,47 +197,83 @@ const sendToCandidate = async ({
 
       if (errorFilterJson) throw new Error(errorFilterJson.message);
 
+      console.log('filterJson success');
+
       if (!is_debrief) {
-        const resTask = await createTask({
-          application_id: selectedApplication.id,
-          dateRange,
-          filter_id: filterJson[0].id,
-          rec_user_id: recruiterUser.user_id,
-          recruiter_id,
-          selectedSessions: createCloneRes.refSessions.filter((ses) =>
-            selectedSessionIds.includes(ses.id),
-          ),
-          type: 'user',
-          recruiter_user_name: recruiterUser.first_name,
-          candidate_name: getFullName(
-            selectedApplication.candidates.first_name,
-            selectedApplication.candidates.last_name,
-          ),
-          supabase,
-        });
+        if (!update_task_id) {
+          console.log('no task_id');
+
+          const resTask = await createTask({
+            application_id: selectedApplication.id,
+            dateRange,
+            filter_id: filterJson[0].id,
+            rec_user_id: recruiterUser.user_id,
+            recruiter_id,
+            selectedSessions: createCloneRes.refSessions.filter((ses) =>
+              selectedSessionIds.includes(ses.interview_session.id),
+            ),
+            type: 'user',
+            recruiter_user_name: recruiterUser.first_name,
+            candidate_name: getFullName(
+              selectedApplication.candidates.first_name,
+              selectedApplication.candidates.last_name,
+            ),
+            supabase,
+          });
+
+          console.log('created task and progress');
+          update_task_id = resTask.id;
+        } else {
+          console.log(`task_id ${update_task_id}`);
+          await createTaskProgress({
+            type: 'self_scheduling',
+            data: {
+              progress_type: 'schedule',
+              created_by: {
+                id: recruiterUser.user_id,
+                name: getFullName(
+                  recruiterUser.first_name,
+                  recruiterUser.last_name,
+                ),
+              },
+              task_id: update_task_id,
+            },
+            optionData: {
+              candidateName: getFullName(
+                selectedApplication.candidates.first_name,
+                selectedApplication.candidates.last_name,
+              ),
+              sessions: createCloneRes.refSessions
+                .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
+                .map((ele) => ({
+                  id: ele.interview_session.id,
+                  name: ele.interview_session.name,
+                })) as meetingCardType[],
+            },
+            supabaseCaller: supabase,
+          });
+          console.log('created task progress');
+        }
 
         addScheduleActivity({
           title: `Sent booking link to ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.last_name)} for ${createCloneRes.refSessions
             .filter((ses) => ses.isSelected)
-            .map((ses) => ses.name)
+            .map((ses) => ses.interview_session.name)
             .join(' , ')}`,
           application_id: selectedApplication.id,
           logged_by: 'user',
           supabase,
           created_by: recruiterUser.user_id,
-          task_id: resTask.id,
+          task_id: update_task_id,
         });
+
+        console.log('added activity');
 
         selfScheduleMailToCandidate({
           filter_id: filterJson[0].id,
         });
-        //TODO: Implement new mailHandler
-        // mailHandler({
-        //   filter_id: filterJson[0].id,
-        //   supabase,
-        //   application_id: selectedApplication.id,
-        //   task_id: resTask.id,
-        // });
+
+        console.log('sent mail to candidate');
       }
 
       if (is_debrief && selectedDebrief) {
@@ -249,17 +297,20 @@ const sendToCandidate = async ({
         });
       }
     } else {
+      console.log('schedule already exists');
+
       const organizer_id = await getOrganizerId(
         selectedApplication.id,
         supabase,
       );
       const upsertMeetings: InterviewMeetingTypeDb[] = initialSessions
-        .filter((ses) => selectedSessionIds.includes(ses.id))
+        .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
         .map((ses) => ({
           status: 'waiting',
           id: ses.interview_meeting.id,
           interview_schedule_id: ses.interview_meeting.interview_schedule_id,
           organizer_id,
+          meeting_flow: 'self_scheduling',
         }));
 
       const { error: errorUpdatedMeetings } = await supabase
@@ -267,6 +318,8 @@ const sendToCandidate = async ({
         .upsert(upsertMeetings);
 
       if (errorUpdatedMeetings) throw new Error(errorUpdatedMeetings.message);
+
+      console.log('updated meetings');
 
       const { data: filterJson, error: errorFilterJson } = await supabase
         .from('interview_filter_json')
@@ -285,46 +338,81 @@ const sendToCandidate = async ({
 
       if (errorFilterJson) throw new Error(errorFilterJson.message);
 
+      console.log('filterJson success');
+
       if (!is_debrief) {
-        const resTask = await createTask({
-          application_id: selectedApplication.id,
-          dateRange,
-          filter_id: filterJson[0].id,
-          rec_user_id: recruiterUser.user_id,
-          recruiter_id,
-          selectedSessions: initialSessions.filter((ses) =>
-            selectedSessionIds.includes(ses.id),
-          ),
-          type: 'user',
-          recruiter_user_name: recruiterUser.first_name,
-          candidate_name: getFullName(
-            selectedApplication.candidates.first_name,
-            selectedApplication.candidates.last_name,
-          ),
-          supabase,
-        });
-        addScheduleActivity({
-          title: `Candidate invited for session ${initialSessions
-            .filter((ses) => selectedSessionIds.includes(ses.id))
-            .map((ses) => ses.name)
-            .join(' , ')}`,
-          logged_by: 'user',
-          application_id: selectedApplication.id,
-          supabase,
-          created_by: recruiterUser.user_id,
-          task_id: resTask.id,
-        });
+        if (!update_task_id) {
+          console.log('no task_id');
+
+          const resTask = await createTask({
+            application_id: selectedApplication.id,
+            dateRange,
+            filter_id: filterJson[0].id,
+            rec_user_id: recruiterUser.user_id,
+            recruiter_id,
+            selectedSessions: initialSessions.filter((ses) =>
+              selectedSessionIds.includes(ses.interview_session.id),
+            ),
+            type: 'user',
+            recruiter_user_name: recruiterUser.first_name,
+            candidate_name: getFullName(
+              selectedApplication.candidates.first_name,
+              selectedApplication.candidates.last_name,
+            ),
+            supabase,
+          });
+
+          console.log('created task and progress');
+
+          addScheduleActivity({
+            title: `Candidate invited for session ${initialSessions
+              .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
+              .map((ses) => ses.interview_session.name)
+              .join(' , ')}`,
+            logged_by: 'user',
+            application_id: selectedApplication.id,
+            supabase,
+            created_by: recruiterUser.user_id,
+            task_id: resTask.id,
+          });
+
+          update_task_id = resTask.id;
+        } else {
+          console.log(`task_id ${update_task_id}`);
+          await createTaskProgress({
+            type: 'self_scheduling',
+            data: {
+              progress_type: 'schedule',
+              created_by: {
+                id: recruiterUser.user_id,
+                name: getFullName(
+                  recruiterUser.first_name,
+                  recruiterUser.last_name,
+                ),
+              },
+              task_id: update_task_id,
+            },
+            optionData: {
+              candidateName: getFullName(
+                selectedApplication.candidates.first_name,
+                selectedApplication.candidates.last_name,
+              ),
+              sessions: initialSessions
+                .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
+                .map((ele) => ({
+                  id: ele.interview_session.id,
+                  name: ele.interview_session.name,
+                })) as meetingCardType[],
+            },
+            supabaseCaller: supabase,
+          });
+        }
+
+        console.log('created task progress');
 
         selfScheduleMailToCandidate({
           filter_id: filterJson[0].id,
         });
-        //TODO: Implement new mailHandler
-        // mailHandler({
-        //   filter_id: filterJson[0].id,
-        //   supabase,
-        //   application_id: selectedApplication.id,
-        //   task_id: resTask.id,
-        // });
       }
 
       if (is_debrief && selectedDebrief) {
@@ -363,7 +451,10 @@ const sendToCandidate = async ({
         .from('interview_filter_json')
         .delete()
         .eq('id', selectedApplicationLog.metadata.filter_id);
+
+      console.log('updated application logs');
     }
+
     return true;
   } catch (e) {
     // eslint-disable-next-line no-console

@@ -1,5 +1,9 @@
 import { DatabaseTable } from '@aglint/shared-types';
-import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
+import {
+  EmailAgentId,
+  PhoneAgentId,
+  SystemAgentId,
+} from '@aglint/shared-utils';
 import { Stack, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
@@ -7,6 +11,7 @@ import dayjs from 'dayjs';
 import { marked } from 'marked';
 import { useRouter } from 'next/router';
 
+import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { EmptyState } from '@/devlink2/EmptyState';
 import { Skeleton } from '@/devlink2/Skeleton';
 import { AgentFollowUp } from '@/devlink3/AgentFollowUp';
@@ -18,7 +23,6 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { fetchInterviewMeetingProgresstask } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { supabase } from '@/src/utils/supabase/client';
-import { capitalize } from '@/src/utils/text/textUtils';
 
 import { EmailAgentIcon } from '../../../Components/EmailAgentIcon';
 import { PhoneAgentIcon } from '../../../Components/PhoneAgentIcon';
@@ -28,6 +32,8 @@ import AgentFollowUpCard from './AgentFolllowUpCard';
 import PhoneTranscript from './PhoneTrancript';
 import ProgressTitle from './ProgressTitle';
 import RequestAvailabilityList from './RequestAvailabilityList';
+import RequestAvailabilityResend from './RequestAvailabilityResend';
+import ScheduleNowCard from './ScheduleNowCard';
 import SessionCard, { meetingCardType } from './SessionCard';
 
 function SubTaskProgress() {
@@ -75,6 +81,20 @@ function SubTaskProgress() {
                       ? i
                       : lastIndex;
                   }, -1);
+                const lastScheduleNowCardIndex = progressList.reduce(
+                  (lastIndex, item, i) => {
+                    return item.progress_type === 'schedule' ? i : lastIndex;
+                  },
+                  -1,
+                );
+                const lastRequestAvailabilityTypeIndex = progressList.reduce(
+                  (lastIndex, item, i) => {
+                    return item.progress_type === 'request_availability'
+                      ? i
+                      : lastIndex;
+                  },
+                  -1,
+                );
                 let CandidateCreator = tasks
                   .map((ele) => ele.applications.candidates)
                   .find((ele) => ele.id === (item.created_by as any).id);
@@ -115,14 +135,11 @@ function SubTaskProgress() {
                     key={i}
                     isTaskProgressVisible={true}
                     textTask={
-                      <>
-                        {capitalize(item.progress_type)}
-                        <ProgressTitle
-                          title={item.title}
-                          titleMetaData={item.title_meta}
-                          selectedTask={selectedTask}
-                        />
-                      </>
+                      <ProgressTitle
+                        title={item.title}
+                        titleMetaData={item.title_meta}
+                        selectedTask={selectedTask}
+                      />
                     }
                     slotImage={
                       <ShowCode>
@@ -263,6 +280,7 @@ function SubTaskProgress() {
                                           ses={ses as meetingCardType}
                                           key={indOpt}
                                           sessionList={sessionList}
+                                          applicationId={selectedTask.application_id}
                                         />
                                       );
                                     })}
@@ -312,15 +330,66 @@ function SubTaskProgress() {
                         <ShowCode.When
                           isTrue={
                             item.progress_type ===
-                              'request_availability_list' && !!item.jsonb_data
+                              'request_availability_list' &&
+                            selectedTask.status !== 'closed' &&
+                            selectedTask.status !== 'completed' &&
+                            lastEmailRequestAvailabilityListIndex === i &&
+                            !progressList
+                              .map((ele) => ele.progress_type)
+                              .includes('interview_schedule')
                           }
                         >
-                          <RequestAvailabilityList
-                            item={item}
-                            disable={
-                              lastEmailRequestAvailabilityListIndex !== i
-                            }
+                          <RequestAvailabilityList item={item} />
+                        </ShowCode.When>
+                        <ShowCode.When
+                          isTrue={
+                            selectedTask.assignee[0] !== EmailAgentId &&
+                            selectedTask.assignee[0] !== PhoneAgentId &&
+                            selectedTask.assignee[0] !== SystemAgentId &&
+                            item.progress_type === 'schedule' &&
+                            selectedTask.status !== 'closed' &&
+                            selectedTask.status !== 'completed' &&
+                            lastScheduleNowCardIndex === i &&
+                            progressList
+                              .map((item) => item.progress_type)
+                              .every((item) => item === 'schedule')
+                          }
+                        >
+                          <ScheduleNowCard selectedTask={selectedTask} />
+                        </ShowCode.When>
+                        <ShowCode.When
+                          isTrue={
+                            item.progress_type === 'request_availability' &&
+                            selectedTask.status !== 'closed' &&
+                            selectedTask.status !== 'completed' &&
+                            lastRequestAvailabilityTypeIndex === i &&
+                            !progressList
+                              .map((ele) => ele.progress_type)
+                              .includes('request_availability_list')
+                          }
+                        >
+                          <RequestAvailabilityResend
+                            selectedTask={selectedTask}
                           />
+                        </ShowCode.When>
+                        <ShowCode.When
+                          isTrue={
+                            item.progress_type === 'call_failed' ||
+                            item.progress_type === 'email_failed'
+                          }
+                        >
+                          <Stack
+                            direction={'row'}
+                            justifyContent={'flex-start'}
+                            alignItems={'center'}
+                          >
+                            <GlobalBadge
+                              color={'error'}
+                              iconName={'error'}
+                              showIcon={true}
+                              textBadge={'Please Contact to support@aglint.com'}
+                            />
+                          </Stack>
                         </ShowCode.When>
                       </ShowCode>
                     }
@@ -439,7 +508,7 @@ export const useSessionsList = () => {
 
 async function getSessionsList(taskId: string) {
   const { data } = await supabase
-    .from('new_tasks')
+    .from('tasks_view')
     .select('session_ids')
     .eq('id', taskId)
     .single();

@@ -5,10 +5,10 @@ import {
   useEffect,
 } from 'react';
 
-import { ResumePreviewer } from '@/src/components/Jobs/Job/Candidate-List/Common/resumePreviewer';
-import { Body } from '@/src/components/Jobs/Job/Common/candidateDrawer/body';
-import { Details } from '@/src/components/Jobs/Job/Common/candidateDrawer/details';
-import { Overview } from '@/src/components/Jobs/Job/Common/candidateDrawer/details/insights/overview';
+import { ResumePreviewer } from '@/src/components/Jobs/Job/Candidate-List/Common/ResumePreviewer';
+import { Body } from '@/src/components/Jobs/Job/Common/CandidateDrawer/Body';
+import { Details } from '@/src/components/Jobs/Job/Common/CandidateDrawer/Details';
+import { Overview } from '@/src/components/Jobs/Job/Common/CandidateDrawer/Details/Insights/Overview';
 
 import { useApplicationContext } from './hooks';
 import { useApplicationStore } from './store';
@@ -56,6 +56,7 @@ const Application = ({
               }),
           }
         }
+        download={value?.meta?.data?.resume_processing_state === 'unparsable'}
       />
       {children ?? <></>}
     </ApplicationContext.Provider>

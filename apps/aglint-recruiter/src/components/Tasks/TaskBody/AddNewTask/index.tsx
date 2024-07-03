@@ -35,7 +35,7 @@ import { useTaskStatesContext } from '../../TaskStatesContext';
 import {
   assigneeType,
   extractDataFromText,
-  JobCandidatesType
+  JobCandidatesType,
 } from '../../utils';
 import { meetingCardType } from '../ViewTask/Progress/SessionCard';
 import AssigneeList from './AssigneeList';
@@ -121,6 +121,7 @@ function AddNewTask() {
 
     handelAddTask({
       assignee: [selectedAssignee?.user_id],
+      task_owner: selectedAssignee?.user_id,
       created_by: recruiterUser?.user_id || null,
       application_id: selectedCandidate?.id || null,
       name: inputData || 'Untitled',
@@ -128,7 +129,6 @@ function AddNewTask() {
       start_date: dayjs(selectTriggerTime).toString(),
       recruiter_id: recruiter.id,
       schedule_date_range: scheduleDate,
-      session_ids: selectedSession,
       type: selectedType || 'schedule',
       status:
         (selectedAssignee?.user_id === EmailAgentId ||
@@ -141,8 +141,8 @@ function AddNewTask() {
             ? 'scheduled'
             : 'not_started',
       priority: selectedPriority,
+      sessions: selectedSession,
     }).then(async (data) => {
-      // chinmai code for cron job
       const { data: selectedTask } = await supabase
         .from('new_tasks')
         .select(
@@ -530,6 +530,10 @@ function AddNewTask() {
                 slotAssignedTo={
                   <Stack width={'100%'} direction={'column'}>
                     <AssigneeList
+                      hideAgents={
+                        selectedType === 'availability' ||
+                        selectedType === 'self_schedule'
+                      }
                       selectedAssignee={selectedAssignee}
                       setSelectedAssignee={setSelectedAssignee}
                       onChange={(assigner: any) => {

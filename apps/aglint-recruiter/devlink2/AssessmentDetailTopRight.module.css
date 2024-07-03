@@ -65,6 +65,10 @@
   cursor: pointer;
 }
 
+.embed_flex.is_absolute {
+  position: absolute;
+}
+
 .more_settings {
   position: relative;
   z-index: 1;

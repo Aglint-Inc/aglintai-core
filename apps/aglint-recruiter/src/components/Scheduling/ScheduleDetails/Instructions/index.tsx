@@ -93,6 +93,9 @@ function Instructions({
           </ShowCode.When>
         </ShowCode>
         <div
+          style={{
+            maxWidth: '600px',
+          }}
           dangerouslySetInnerHTML={{
             __html: marked(instruction || 'Instructions not given'),
           }}

@@ -1,8 +1,6 @@
-import { InputAdornment } from '@mui/material';
 import React from 'react';
 
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import UITextField from '@/src/components/Common/UITextField';
+import SearchField from '@/src/components/Common/SearchField/SearchField';
 
 import { setFilter, useFilterCandidateStore } from '../../filter-store';
 
@@ -12,21 +10,13 @@ function FilterSearchField() {
   );
   return (
     <>
-      <UITextField
-        width='250px'
-        height={32}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position='end'>
-              <GlobalIcon iconName='search' size='5' />
-            </InputAdornment>
-          ),
-        }}
-        placeholder='Search by name.'
+      <SearchField
         value={textSearch}
         onChange={(e) => {
           setFilter({ textSearch: e.target.value });
         }}
+        placeholder='Search by name.'
+        onClear={() => setFilter({ textSearch: '' })}
       />
     </>
   );

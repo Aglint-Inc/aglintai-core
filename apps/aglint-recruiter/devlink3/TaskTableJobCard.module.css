@@ -37,6 +37,10 @@
   width: 20px;
 }
 
+.tjc-space-div.group-header {
+  width: 1%;
+}
+
 .tjc-slot-drop-icon {
   display: flex;
   margin-right: var(--space-3);

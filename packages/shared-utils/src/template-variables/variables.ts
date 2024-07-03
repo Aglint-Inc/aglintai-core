@@ -8,11 +8,11 @@ export const jobDetails = ['companyName', 'jobRole'] as const;
 
 export const company = ['companyName'];
 
-export const recruiter = [
-  'recruiterName',
-  'recruiterFirstName',
-  'recruiterLastName',
-  'recruiterTimeZone',
+export const organizer = [
+  'OrganizerName',
+  'OrganizerFirstName',
+  'OrganizerLastName',
+  'OrganizerTimeZone',
 ] as const;
 
 export const interviewer = [
@@ -41,7 +41,13 @@ export const allTempvariables = [
   ...candidates,
   ...jobDetails,
   ...company,
-  ...recruiter,
+  ...organizer,
   ...interviewer,
   ...dates,
 ] as const;
+
+export const candidateProfileLink = 'candidateProfileLink';
+export const interviewInstructionLink = 'interviewInstructionLink';
+export const interviewFeedbackLink = 'interviewFeedbackLink';
+export const candidateScheduleLink = 'candidateScheduleLink';
+export const meetingDetailsLink = 'meetingDetailsLink';

@@ -1635,3 +1635,50 @@ box-shadow: inset 0 0 0 1px var(--pink-8);
 [class*="SlotComp_slot-comp__"] {
     display: none;
 } */
+
+/* Banner Styles */
+
+[data-banner-color="info"] {
+  border-color: var(--info-6);
+  background-color: var(--info-2);
+  color: var(--info-11);
+}
+[data-banner-color="warning"] {
+  border-color: var(--warning-6);
+  background-color: var(--warning-2);
+  color: var(--warning-11);
+}
+[data-banner-color="success"] {
+  border-color: var(--success-6);
+  background-color: var(--success-2);
+  color: var(--success-11);
+}
+[data-banner-color="error"] {
+  border-color: var(--error-6);
+  background-color: var(--error-2);
+  color: var(--error-11);
+}
+[data-banner-color="neutral"] {
+  border-color: var(--neutral-6);
+  background-color: var(--neutral-2);
+  color: var(--neutral-11);
+}
+
+[data-color="neutral"] {
+  color: var(--neutral-11);
+}
+[data-color="neutral-12"] {
+  color: var(--neutral-12);
+}
+[data-color="error"] {
+  color: var(--error-11);
+}
+[data-color="warning"] {
+  color: var(--warning-11);
+}
+[data-color="success"] {
+  color: var(--success-11);
+}
+[data-color="info"] {
+  color: var(--info-11);
+}

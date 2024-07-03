@@ -8,7 +8,6 @@ dayjs.extend(timezone);
 import {
   DatabaseTable,
   DB,
-  InterviewMeetingTypeDb,
   InterviewPlanTypeDB,
   SupabaseType,
 } from '@aglint/shared-types';
@@ -29,11 +28,11 @@ import {
   setScheduleName,
   setSelectedApplication,
   setSelectedSchedule,
-  setSelectedSessionIds,
 } from './store';
 import {
   ApplicationDataResponseType,
   InterviewDataResponseType,
+  SessionsType,
 } from './types';
 
 export const useAllActivities = ({ application_id }) => {
@@ -138,7 +137,6 @@ export const useGetScheduleApplication = () => {
     } catch (error) {
       toast.error(error.message);
     } finally {
-      setSelectedSessionIds([]);
       setFetchingSchedule(false);
     }
   };
@@ -166,21 +164,23 @@ export const fetchInterviewDataJob = async ({
 
     if (error) throw new Error(error.message);
 
-    const sessions =
+    const sessions: SessionsType[] =
       data.interview_data?.map((item) => ({
-        ...item.interview_session,
-        interview_meeting: null as InterviewMeetingTypeDb,
+        interview_session: item.interview_session,
+        interview_meeting: null,
         interview_module: item.interview_module,
         users: item.interview_session_relations?.interview_module_relation?.map(
-          (sesitem) => ({
-            ...sesitem.interview_session_relation,
-            interview_module_relation: {
-              ...sesitem.interview_module_relation,
-              recruiter_user: sesitem.recruiter_user,
-            },
-            recruiter_user: sesitem.debrief_user,
-          }),
+          (sesitem) =>
+            ({
+              interview_session_relation: sesitem.interview_session_relation,
+              interview_module_relation: sesitem.interview_module_relation,
+              user_details: sesitem.interview_session_relation
+                .interview_module_relation_id
+                ? sesitem.recruiter_user
+                : sesitem.debrief_user,
+            }) as SessionsType['users'][0],
         ),
+        cancel_reasons: [],
       })) || [];
 
     return {
@@ -218,21 +218,23 @@ export const fetchInterviewDataSchedule = async (
 
     if (error) throw new Error(error.message);
 
-    const sessions = data.interview_data?.map((item) => ({
-      ...item.interview_session,
+    const sessions: SessionsType[] = data.interview_data?.map((item) => ({
+      interview_session: item.interview_session,
       interview_meeting: item.interview_meeting,
       interview_module: item.interview_module,
       users:
         item.interview_session_relations?.interview_module_relation?.map(
-          (sesitem) => ({
-            ...sesitem.interview_session_relation,
-            interview_module_relation: {
-              ...sesitem.interview_module_relation,
-              recruiter_user: sesitem.recruiter_user,
-            },
-            recruiter_user: sesitem.debrief_user,
-          }),
+          (sesitem) =>
+            ({
+              interview_session_relation: sesitem.interview_session_relation,
+              interview_module_relation: sesitem.interview_module_relation,
+              user_details: sesitem.interview_session_relation
+                .interview_module_relation_id
+                ? sesitem.recruiter_user
+                : sesitem.debrief_user,
+            }) as SessionsType['users'][0],
         ) || [],
+      cancel_reasons: item.cancel_reasons || [],
     }));
 
     return {

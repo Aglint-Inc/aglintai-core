@@ -100,5 +100,9 @@
   cursor: pointer;
 }
 
+.embed_flex.is_absolute {
+  position: absolute;
+}
+
 #w-node-_2f34ab5e-3b60-bfa9-d8a9-1d5e5a5f16c4-5a5f16c4 {
 }

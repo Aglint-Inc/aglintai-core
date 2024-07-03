@@ -19,4 +19,5 @@ declare function CompanyListing(props: {
   isOpenJobsVisible?: Types.Visibility.VisibilityConditions;
   isAboutJobVisible?: Types.Visibility.VisibilityConditions;
   isOfficeLocationVisible?: Types.Visibility.VisibilityConditions;
+  isHeaderDescriptionVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -123,14 +123,15 @@ const SlideTwoSignUp = () => {
         password: details.password,
       });
       if (!authdata.error) {
-        const res = (await axios.post('/api/signup', {
+        const bodyParams: ApiBodyParamsSignup = {
           email: details.email,
           user_id: authdata.data.user.id,
           first_name: details.first_name,
           last_name: details.last_name,
-          role: 'admin',
           flow: flow,
-        } as ApiBodyParamsSignup)) as {
+        };
+
+        const res = (await axios.post('/api/signup', bodyParams)) as {
           data: { recruiter_user: RecruiterUserType; recruiter: RecruiterType };
           status: number;
         };
@@ -174,22 +175,22 @@ const SlideTwoSignUp = () => {
     }
   };
 
-  const oauthHandler = async (provider) => {
-    if (typeof window !== 'undefined')
-      try {
-        const { error } = await supabase.auth.signInWithOAuth({
-          provider: provider,
-          options: {
-            redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/loading`,
-          },
-        });
-        if (error) {
-          toast.error(error.message);
-        }
-      } catch (err) {
-        toast.error(err.message);
-      }
-  };
+  // const oauthHandler = async (provider) => {
+  //   if (typeof window !== 'undefined')
+  //     try {
+  //       const { error } = await supabase.auth.signInWithOAuth({
+  //         provider: provider,
+  //         options: {
+  //           redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/loading`,
+  //         },
+  //       });
+  //       if (error) {
+  //         toast.error(error.message);
+  //       }
+  //     } catch (err) {
+  //       toast.error(err.message);
+  //     }
+  // };
 
   const [routeChacker, setRouteCheker] = useState(true);
 
@@ -244,11 +245,11 @@ const SlideTwoSignUp = () => {
         isSignUpButtonVisible={
           !details.first_name || !details.email || !details.password
         }
-        onClickRegisterWithGoogle={{
-          onClick: () => {
-            oauthHandler('google');
-          },
-        }}
+        // onClickRegisterWithGoogle={{
+        //   onClick: () => {
+        //     oauthHandler('google');
+        //   },
+        // }}
         onClickBack={{
           onClick: () => {
             router.push(`${ROUTES['/signup']()}?step=${stepObj.type}`);
@@ -287,9 +288,7 @@ const SlideTwoSignUp = () => {
                 }}
                 error={signUpError.first_name.error}
                 helperText={
-                  signUpError.first_name.error
-                    ? signUpError.first_name.msg
-                    : ''
+                  signUpError.first_name.error ? signUpError.first_name.msg : ''
                 }
                 inputProps={{
                   autoCapitalize: 'true',
@@ -335,9 +334,7 @@ const SlideTwoSignUp = () => {
                 }));
               }}
               error={signUpError.email.error}
-              helperText={
-                signUpError.email.error ? signUpError.email.msg : ''
-              }
+              helperText={signUpError.email.error ? signUpError.email.msg : ''}
               inputProps={{
                 autoCapitalize: 'true',
                 style: {

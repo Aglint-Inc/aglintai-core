@@ -26,7 +26,7 @@
 }
 
 .assessment_duplicate_popup.width-550 {
-  width: 550px;
+  width: 650px;
   padding: var(--space-4);
 }
 
@@ -43,8 +43,8 @@
 .popup_title {
   display: flex;
   align-items: center;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .popup_close {
@@ -81,8 +81,8 @@
 .popup_body {
   display: flex;
   flex-direction: column;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
 }
 
 .slot_widget {
@@ -155,8 +155,6 @@
   max-height: 280px;
   padding-top: var(--space-2);
   padding-bottom: var(--space-2);
-
-  border: 1px solid var(--neutral-6);
   border-radius: var(--radius-4);
 }
 

@@ -69,10 +69,11 @@ export interface ContextValue {
     };
   }) => Promise<boolean>;
   isAllowed: (
+    //checkPermission
     roles: DatabaseEnums['user_roles'][],
     flags?: featureFlag[],
   ) => boolean;
-  allowAction: <T extends Function | ReactNode>(
+  allowAction: <T extends Function | ReactNode>( //ifAllowed
     func: T,
     role: DatabaseEnums['user_roles'][],
   ) => T;
@@ -245,7 +246,11 @@ const AuthProvider = ({ children }) => {
 
   const fetchUserLocation = async () => {
     try {
-      const res = await fetch('/api/getUserLocation');
+      const res = await fetch('https://ipinfo.io/json', {
+        headers: {
+          Authorization: `Bearer e82b96e5cb0802`,
+        },
+      });
       const data = await res.json();
 
       const country = data.country; // Extract the country code from the response

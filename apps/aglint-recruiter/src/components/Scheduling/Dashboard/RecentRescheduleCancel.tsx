@@ -26,6 +26,7 @@ const RecentRescheduleCancel = () => {
     parentFetching,
     disabled,
   } = useCancelRescheduleReasonsUsers();
+
   const [type, setType] = useState<'interviewer' | 'candidate'>('candidate');
   const processedRescheduleData = (CancelReasonsData || [])
     .filter((item) => item.type == 'reschedule')
@@ -36,8 +37,8 @@ const RecentRescheduleCancel = () => {
           const tempAD = analyticsData.find(
             (item) => item.interview_session.id == curr.session_id,
           );
-          const detail_id = tempAD.interview_schedule.application_id;
-          const meet_id = tempAD.interview_meeting.id;
+          const detail_id = tempAD?.interview_schedule.application_id;
+          const meet_id = tempAD?.interview_meeting.id;
           const temp_user = userDetails?.[type];
           const user = temp_user?.[detail_id];
           if (user) {
@@ -57,7 +58,7 @@ const RecentRescheduleCancel = () => {
           const detail_id = curr.session_relation_id;
           const meet_id = analyticsData.find(
             (item) => item.interview_session.id == curr.session_id,
-          ).interview_meeting.id;
+          )?.interview_meeting.id;
           const temp_user = userDetails?.[type];
           const user = temp_user?.[detail_id];
           if (user) {
@@ -102,7 +103,7 @@ const RecentRescheduleCancel = () => {
       };
       const detail_id = analyticsData.find(
         (itemX) => itemX.interview_session.id == item.session_id,
-      ).interview_schedule.application_id;
+      )?.interview_schedule.application_id;
       const user = temp_user?.[detail_id];
       return (
         user && {
@@ -272,6 +273,7 @@ const RecentDeclineListItem = ({
         <Avatar
           src={detail.image ? detail.image : undefined}
           alt={detail.name}
+          variant='rounded-medium'
         />
       }
       textName={detail.name}

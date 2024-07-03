@@ -2,24 +2,21 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { Breadcrum } from '@/devlink2/Breadcrum';
 import { InterviewPlanEmpty } from '@/devlink2/InterviewPlanEmpty';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { CandidateSchedule } from '@/devlink3/CandidateSchedule';
 import Loader from '@/src/components/Common/Loader';
+import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
 import ROUTES from '@/src/utils/routing/routes';
 
 import CandidateInfo from '../Common/CandidateInfo';
 import ScheduleProgress from '../Common/ScheduleProgress';
 import FeedbackWindow from '../ScheduleDetails/Feedback';
 import CandidateFeedback from './CandidateFeedback';
-import DeleteScheduleDialog from './Common/CancelScheduleDialog';
-import RescheduleDialog from './Common/RescheduleDialog';
 import FullSchedule from './FullSchedule';
 import { useAllActivities, useGetScheduleApplication } from './hooks';
 import { RequestAvailabilityProvider } from './RequestAvailability/RequestAvailabilityContext';
 import RightPanel from './RightPanel';
-import StatusUpdateDropdownBreadcrum from './StatusUpdateDropdownBreadcrum';
 import {
   resetSchedulingApplicationState,
   setFetchingSchedule,
@@ -37,7 +34,6 @@ function SchedulingApplication() {
     initialSessions,
     selectedSessionIds,
     selectedApplication,
-    scheduleName,
   } = useSchedulingApplicationStore((state) => ({
     fetchingSchedule: state.fetchingSchedule,
     initialSessions: state.initialSessions,
@@ -54,6 +50,25 @@ function SchedulingApplication() {
     application_id: selectedApplication?.id,
   });
 
+  const { breadcrum, setBreadcrum } = useBreadcrumContext();
+  useEffect(() => {
+    if (selectedApplication?.id) {
+      setBreadcrum([
+        {
+          name: 'Scheduling',
+          route: ROUTES['/scheduling']() + `?tab=dashboard`,
+        },
+        {
+          name: 'Candidates',
+          route: ROUTES['/scheduling']() + `?tab=candidates`,
+        },
+        {
+          name: `${selectedApplication.candidates.first_name} ${selectedApplication.candidates.last_name}`.trim(),
+        },
+      ]);
+    }
+  }, [selectedApplication?.id]);
+
   useEffect(() => {
     if (router.isReady && router.query.application_id) {
       setFetchingSchedule(true);
@@ -66,24 +81,8 @@ function SchedulingApplication() {
 
   return (
     <>
-      {/* <RequestAvailabilityDrawer /> */}
-
-      <DeleteScheduleDialog refetch={allActivities.refetch} />
-      <RescheduleDialog refetch={allActivities.refetch} />
-
       <PageLayout
-        onClickBack={{
-          onClick: () => {
-            router.push(ROUTES['/scheduling']() + '?tab=candidates');
-          },
-        }}
-        isBackButton={true}
-        slotTopbarLeft={
-          <>
-            <Breadcrum textName={scheduleName} />
-            {!fetchingSchedule && <StatusUpdateDropdownBreadcrum />}
-          </>
-        }
+        slotTopbarLeft={<>{breadcrum}</>}
         slotBody={
           <>
             {fetchingSchedule ? (
@@ -134,9 +133,9 @@ function SchedulingApplication() {
                     <Stack p={'var(--space-4)'}>
                       <FeedbackWindow
                         interview_sessions={initialSessions.map((item) => ({
-                          id: item.id,
-                          title: item.name,
-                          created_at: item.created_at,
+                          id: item.interview_session.id,
+                          title: item.interview_session.name,
+                          created_at: item.interview_session.created_at,
                           status: item.interview_meeting?.status,
                           time: {
                             start: item.interview_meeting?.start_time,
@@ -171,10 +170,10 @@ function SchedulingApplication() {
           >
             <ScheduleProgress
               sessions={initialSessions.map((item) => ({
-                session_duration: item.session_duration,
-                session_name: item.name,
-                schedule_type: item.schedule_type,
-                session_type: item.session_type,
+                session_duration: item.interview_session.session_duration,
+                session_name: item.interview_session.name,
+                schedule_type: item.interview_session.schedule_type,
+                session_type: item.interview_session.session_type,
                 status: item.interview_meeting?.status || 'not_scheduled',
                 date: item.interview_meeting?.start_time
                   ? {

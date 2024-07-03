@@ -11,7 +11,7 @@ import CandidateDefaultIcon from '@/src/components/Common/Icons/CandidateDefault
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { getFullName } from '@/src/utils/jsonResume';
 
-import IconScheduleType from '../../../Candidates/ListCard/Icon';
+import IconScheduleType from '../../../Candidates/ListCard/Icon/IconScheduleType';
 import {
   getScheduleBgcolor,
   getScheduleTextcolor,
@@ -132,15 +132,16 @@ function ScheduleMeetingCard({
           textDuration={getBreakLabel(
             meetingDetails.interview_meeting.session_duration,
           )}
-          slotAvatarWithName={<AvatarWithName
-            isAvatarVisible={false}
-            isCandidateIconVisible={true}
-            textName={getFullName(
-              meetingDetails.candidate.first_name,
-              meetingDetails.candidate.last_name,
-            )}
-          
-          />}
+          slotAvatarWithName={
+            <AvatarWithName
+              isAvatarVisible={false}
+              isCandidateIconVisible={true}
+              textName={getFullName(
+                meetingDetails.candidate.first_name,
+                meetingDetails.candidate.last_name,
+              )}
+            />
+          }
           isAvatarWithNameVisible={!collapseOpen}
           textJob={
             <Stack
@@ -149,8 +150,6 @@ function ScheduleMeetingCard({
               spacing={'var(--space-5)'}
             >
               <span>{meetingDetails?.interview_meeting?.job_title}</span>
-              
-              
             </Stack>
           }
           bgColorProps={{

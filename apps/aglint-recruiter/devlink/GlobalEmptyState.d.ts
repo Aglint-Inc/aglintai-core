@@ -6,4 +6,5 @@ declare function GlobalEmptyState(props: {
   textDesc?: React.ReactNode;
   iconName?: React.ReactNode;
   styleEmpty?: Types.Devlink.RuntimeProps;
+  size?: Types.Builtin.Text;
 }): React.JSX.Element;

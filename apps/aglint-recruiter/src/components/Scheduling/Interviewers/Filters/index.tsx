@@ -1,9 +1,9 @@
-import { InputAdornment, Stack } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { Stack } from '@mui/material';
+import React, { useEffect, useState, useTransition } from 'react';
 
-import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { QualifiedIcons } from '@/devlink2/QualifiedIcons';
-import UITextField from '@/src/components/Common/UITextField';
+import SearchField from '@/src/components/Common/SearchField/SearchField';
 import FilterDropDown from '@/src/components/CompanyDetailComp/TeamManagement/FilterDropDown';
 
 import { useInterviewerList } from '..';
@@ -11,41 +11,20 @@ import { useInterviewerList } from '..';
 function Filters({ setFilteredInterviewer }) {
   const { data: interviewers, isLoading } = useInterviewerList();
 
-  // search filter interviewers
   const [searchText, setSearchText] = useState('');
-
-  const filterMembers = (searchText: string) => {
-    const filtered = interviewers.filter((interviewer) => {
-      return (
-        interviewer.rec_user.first_name
-          .toLowerCase()
-          .includes(searchText.toLowerCase()) ||
-        interviewer.rec_user.position
-          .toLowerCase()
-          .includes(searchText.toLowerCase()) ||
-        interviewer.rec_user.email
-          .toLowerCase()
-          .includes(searchText.toLowerCase())
-      );
-    });
-    setFilteredInterviewer(filtered);
-  };
-  useEffect(() => {
-    if (searchText) {
-      filterMembers(searchText);
-    }
-  }, [searchText]);
+  const [, startTransition] = useTransition();
 
   const handleSearchInputChange = (e: any) => {
-    const input = e.target.value.trim();
-    if (!input) {
-      setFilteredInterviewer(interviewers);
-    }
-    if (input) setSearchText(e.target.value);
+    setSearchText(e.target.value);
   };
-  // search filter END
 
-  // filters by column
+  const handleTextClear = () => {
+    setSearchText('');
+    startTransition(() => {
+      setFilteredInterviewer(interviewers);
+    });
+  };
+
   const [selectedQualifiedModule, setSelectedQualifiedModule] = useState<
     string[]
   >([]);
@@ -68,6 +47,10 @@ function Filters({ setFilteredInterviewer }) {
   const uniqueTrainingModules = [...new Set(allQualifiedModules)];
 
   useEffect(() => {
+    const isFilter = Boolean(
+      selectedQualifiedModule.length || selectedTrainingModule.length,
+    );
+    const isSearch = !!searchText;
     const filtered = interviewers.filter((interviewer) => {
       const qualifiedModuleMatch =
         selectedQualifiedModule.length &&
@@ -80,13 +63,33 @@ function Filters({ setFilteredInterviewer }) {
           interviewer.training_module_names.includes(element),
         );
 
-      return qualifiedModuleMatch || trainingModuleMatch;
+      const filteredSearch =
+        searchText.trim().length &&
+        (interviewer.rec_user.first_name
+          .toLowerCase()
+          .includes(searchText.toLowerCase()) ||
+          interviewer.rec_user.position
+            .toLowerCase()
+            .includes(searchText.toLowerCase()) ||
+          interviewer.rec_user.email
+            .toLowerCase()
+            .includes(searchText.toLowerCase()));
+
+      return isSearch && isFilter
+        ? (qualifiedModuleMatch || trainingModuleMatch) && filteredSearch
+        : isFilter
+          ? qualifiedModuleMatch || trainingModuleMatch
+          : isSearch
+            ? filteredSearch
+            : true;
     });
-    setFilteredInterviewer(filtered.length ? filtered : interviewers);
-  }, [selectedQualifiedModule, selectedTrainingModule]);
+    setFilteredInterviewer(isSearch || isFilter ? filtered : interviewers);
+  }, [selectedQualifiedModule, selectedTrainingModule, searchText]);
 
-  // filters by column END
-
+  const resetFilter = () => {
+    setSelectedQualifiedModule([]);
+    setSelectedTrainingModule([]);
+  };
   if (isLoading) {
     return null;
   }
@@ -99,18 +102,11 @@ function Filters({ setFilteredInterviewer }) {
         spacing={'var(--space-2)'}
         marginRight={5}
       >
-        <UITextField
-          width='250px'
-          height={32}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position='end'>
-                <GlobalIcon iconName='search' size='5'/>
-              </InputAdornment>
-            ),
-          }}
-          placeholder='Search Interviewer'
+        <SearchField
+          value={searchText}
           onChange={handleSearchInputChange}
+          onClear={handleTextClear}
+          placeholder='Search Interviewer'
         />
         <FilterDropDown
           title={'Qualified'}
@@ -136,6 +132,19 @@ function Filters({ setFilteredInterviewer }) {
             />
           }
         />
+        {(selectedQualifiedModule.length > 0 ||
+          selectedTrainingModule.length > 0) && (
+          <ButtonGhost
+            textButton='Reset All'
+            size={2}
+            color={'error'}
+            iconName='refresh'
+            isLeftIcon
+            onClickButton={{
+              onClick: resetFilter,
+            }}
+          />
+        )}
       </Stack>
     </div>
   );

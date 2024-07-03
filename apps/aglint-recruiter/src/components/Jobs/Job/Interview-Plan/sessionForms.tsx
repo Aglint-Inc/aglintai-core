@@ -17,7 +17,7 @@ import AvatarSelectDropDown from '@/src/components/Common/AvatarSelect/AvatarSel
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
 import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
-import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon';
+import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { validateString } from '@/src/context/JobDashboard/hooks';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { CompanyMember } from '@/src/queries/company-members';
@@ -75,17 +75,17 @@ export const getSessionFields = (
 const getLabel = (key: keyof SessionFormProps) => {
   switch (key) {
     case 'name':
-      return 'Session name';
+      return 'Stage name';
     case 'schedule_type':
       return 'Schedule type';
     case 'location':
       return 'Address';
     case 'session_duration':
-      return 'Session duration';
+      return 'Stage duration';
     case 'interview_module':
       return 'Interview module';
     case 'session_type':
-      return 'Session type';
+      return 'Stage type';
     case 'training':
       return 'Training';
     case 'interviewer_cnt':
@@ -233,7 +233,7 @@ const SessionForms = ({
     () => (
       <UITextField
         name={'name'}
-        placeholder={'Session name'}
+        placeholder={getLabel('name')}
         value={name.value}
         error={name.error}
         helperText={name.helper}
@@ -466,7 +466,7 @@ const Interview = ({
       <UITextField
         name={'interviewer_cnt'}
         type='number'
-        width='40px'
+        width='60px'
         value={interviewer_cnt?.value ?? ''}
         error={interviewer_cnt.error}
         helperText={interviewer_cnt.helper}
