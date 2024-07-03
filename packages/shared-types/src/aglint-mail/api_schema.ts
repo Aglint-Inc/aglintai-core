@@ -121,3 +121,8 @@ export const meetingDeclinedEmailOrganizerSchema = v.object({
   interviewer_id: v.string(),
   application_id: v.string(),
 });
+export const MeetingAcceptedEmailOrganizerSchema = v.object({
+  session_id: v.string(),
+  interviewer_id: v.string(),
+  application_id: v.string(),
+});

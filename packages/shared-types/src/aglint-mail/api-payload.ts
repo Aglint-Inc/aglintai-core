@@ -1,6 +1,7 @@
 import v from "valibot";
 import { DatabaseEnums } from "..";
 import {
+  MeetingAcceptedEmailOrganizerSchema,
   agentEmailCandidateSchema,
   applicantRejectEmailApplicantSchema,
   applicationRecievedEmailApplicantSchema,
@@ -277,6 +278,20 @@ type Payloads = {
     };
   };
 
+  meetingAccepted_email_organizer: {
+    api_payload: v.InferInput<typeof MeetingAcceptedEmailOrganizerSchema>;
+    comp_email_placeholders: {
+      [key in (typeof emailVariablePayloads)["meetingAccepted_email_organizer"][number]]: string;
+    };
+    react_email_placeholders: {
+      emailBody: string;
+      subject: string;
+      companyLogo: string;
+      meetingDetailsLink: string;
+      candidateScheduleLink: string;
+      meetingDetail: MeetingDetailCardType;
+    };
+  };
   meetingDeclined_email_organizer: {
     api_payload: v.InferInput<typeof meetingDeclinedEmailOrganizerSchema>;
     comp_email_placeholders: {
