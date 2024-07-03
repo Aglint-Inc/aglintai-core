@@ -10,19 +10,16 @@ export async function dbUtil(
     await supabaseAdmin
       .from('candidate_request_availability')
       .select(
-        'id,applications(id, candidates(first_name,last_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title, company,recruiter))',
+        'id,request_session_relation( interview_session(interview_meeting(recruiter_user(*))) ),applications(id, candidates(first_name,last_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title, company))',
       )
       .eq('id', req_body.avail_req_id),
   );
 
-  const [recruiter_user] = supabaseWrap(
-    await supabaseAdmin
-      .from('recruiter_user')
-      .select('first_name,last_name,scheduling_settings')
-      .eq('user_id', avail_req_data.applications.public_jobs.recruiter),
-  );
-  const recruiter_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
-  if (!avail_req_data || !recruiter_user) {
+  const meeting_organizer =
+    avail_req_data.request_session_relation[0].interview_session
+      .interview_meeting.recruiter_user;
+  const recruiter_tz = meeting_organizer.scheduling_settings.timeZone.tzCode;
+  if (!avail_req_data || !meeting_organizer) {
     throw new Error('Record not found');
   }
 
@@ -48,15 +45,15 @@ export async function dbUtil(
       companyName: company,
       jobRole: job_title,
       availabilityReqLink: `<a href="${candidate_link}">here</a>`,
-      recruiterName: getFullName(
-        recruiter_user.first_name,
-        recruiter_user.last_name,
+      OrganizerName: getFullName(
+        meeting_organizer.first_name,
+        meeting_organizer.last_name,
       ),
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),
-      recruiterFirstName: recruiter_user.first_name,
-      recruiterLastName: recruiter_user.last_name,
-      recruiterTimeZone: recruiter_tz,
+      OrganizerFirstName: meeting_organizer.first_name,
+      OrganizerLastName: meeting_organizer.last_name,
+      OrganizerTimeZone: recruiter_tz,
     };
 
   const filled_comp_template = fillCompEmailTemplate(

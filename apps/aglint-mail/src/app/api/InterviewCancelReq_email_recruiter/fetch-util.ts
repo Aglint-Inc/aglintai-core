@@ -20,11 +20,11 @@ import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'InterviewCancelReq_email_recruiter'>['api_payload'],
 ) {
-  const sessions = supabaseWrap(
+  const int_sessions = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
       .select(
-        'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
+        '*,interview_meeting(*, recruiter_user(first_name,last_name,email,scheduling_settings))',
       )
       .in('id', req_body.session_ids),
   );
@@ -32,7 +32,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company,recruiter)',
+        'candidates(first_name,last_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
       )
       .eq('id', req_body.application_id),
   );
@@ -44,34 +44,34 @@ export async function fetchUtil(
       .eq('id', req_body.interview_cancel_id),
   );
 
-  const [recruiter_user] = supabaseWrap(
-    await supabaseAdmin
-      .from('recruiter_user')
-      .select('email,first_name,last_name,scheduling_settings')
-      .eq('user_id', candidateJob.public_jobs.recruiter),
-  );
+  const meeting_organizer = int_sessions[0].interview_meeting.recruiter_user;
 
-  const int_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
+  const org_tz = meeting_organizer.scheduling_settings.timeZone.tzCode;
+
   const { candidates, public_jobs } = candidateJob;
 
-  const meeting_details: MeetingDetailCardType[] = sessions.map((session) => {
-    const {
-      interview_meeting: { start_time, end_time },
-      name,
-      schedule_type,
-      session_duration,
-      session_type,
-    } = session;
-    return {
-      date: dayjsLocal(start_time).tz(int_tz).format(DAYJS_FORMATS.DATE_FORMAT),
-      time: `${dayjsLocal(start_time).tz(int_tz).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(end_time).tz(int_tz).format(DAYJS_FORMATS.END_TIME_FORMAT)}`,
-      sessionType: name,
-      platform: platformRemoveUnderscore(schedule_type),
-      duration: durationCalculator(session_duration),
-      sessionTypeIcon: sessionTypeIcon(session_type),
-      meetingIcon: scheduleTypeIcon(schedule_type),
-    };
-  });
+  const meeting_details: MeetingDetailCardType[] = int_sessions.map(
+    (session) => {
+      const {
+        interview_meeting: { start_time, end_time },
+        name,
+        schedule_type,
+        session_duration,
+        session_type,
+      } = session;
+      return {
+        date: dayjsLocal(start_time)
+          .tz(org_tz)
+          .format(DAYJS_FORMATS.DATE_FORMAT),
+        time: `${dayjsLocal(start_time).tz(org_tz).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(end_time).tz(org_tz).format(DAYJS_FORMATS.END_TIME_FORMAT)}`,
+        sessionType: name,
+        platform: platformRemoveUnderscore(schedule_type),
+        duration: durationCalculator(session_duration),
+        sessionTypeIcon: sessionTypeIcon(session_type),
+        meetingIcon: scheduleTypeIcon(schedule_type),
+      };
+    },
+  );
 
   const comp_email_temp = await fetchCompEmailTemp(
     candidateJob.candidates.recruiter_id,
@@ -83,17 +83,17 @@ export async function fetchUtil(
       additionalRescheduleNotes: session_cancel.other_details.note,
       cancelReason: session_cancel.reason,
       recruiterName: getFullName(
-        recruiter_user.first_name,
-        recruiter_user.last_name,
+        meeting_organizer.first_name,
+        meeting_organizer.last_name,
       ),
       jobRole: candidateJob.public_jobs.job_title,
       candidateFirstName: candidates.first_name,
       candidateLastName: candidates.last_name,
       candidateName: getFullName(candidates.first_name, candidates.last_name),
       companyName: public_jobs.company,
-      recruiterFirstName: recruiter_user.first_name,
-      recruiterLastName: recruiter_user.last_name,
-      recruiterTimeZone: int_tz,
+      recruiterFirstName: meeting_organizer.first_name,
+      recruiterLastName: meeting_organizer.last_name,
+      recruiterTimeZone: org_tz,
     };
 
   const filled_comp_template = fillCompEmailTemplate(
@@ -113,6 +113,6 @@ export async function fetchUtil(
   return {
     filled_comp_template,
     react_email_placeholders,
-    recipient_email: recruiter_user.email,
+    recipient_email: meeting_organizer.email,
   };
 }

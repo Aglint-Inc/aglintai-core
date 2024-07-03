@@ -15,24 +15,19 @@ export async function dbFetch(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,email,recruiter_id,recruiter(logo),timezone),public_jobs(job_title,company,recruiter)',
+        'candidates(first_name,last_name,email,recruiter_id,recruiter(logo),timezone),public_jobs(job_title,company)',
       )
       .eq('id', req_body.application_id),
   );
   const [meeting] = supabaseWrap(
     await supabaseAdmin
       .from('interview_meeting')
-      .select()
+      .select('*, recruiter_user(*)')
       .eq('id', req_body.meeting_id),
   );
 
-  const [recruiter_user] = supabaseWrap(
-    await supabaseAdmin
-      .from('recruiter_user')
-      .select('first_name,last_name,scheduling_settings')
-      .eq('user_id', candidateJob.public_jobs.recruiter),
-  );
-  const recruiter_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
+  const meeting_organizer = meeting.recruiter_user;
+  const recruiter_tz = meeting_organizer.scheduling_settings.timeZone.tzCode;
   const {
     candidates: {
       email,
@@ -57,9 +52,9 @@ export async function dbFetch(
       candidateLastName: last_name,
       jobRole: job_title,
       candidateName: company,
-      recruiterName: getFullName(
-        recruiter_user.first_name,
-        recruiter_user.last_name,
+      OrganizerName: getFullName(
+        meeting_organizer.first_name,
+        meeting_organizer.last_name,
       ),
       startDate: dayjsLocal(meeting.start_time)
         .tz(cand_tz)
@@ -71,9 +66,9 @@ export async function dbFetch(
         .tz(cand_tz)
         .format(DAYJS_FORMATS.DATE_FORMAT),
       companyName: company,
-      recruiterFirstName: recruiter_user.first_name,
-      recruiterLastName: recruiter_user.last_name,
-      recruiterTimeZone: recruiter_tz,
+      OrganizerFirstName: meeting_organizer.first_name,
+      OrganizerLastName: meeting_organizer.last_name,
+      OrganizerTimeZone: recruiter_tz,
     };
   const filled_comp_template = fillCompEmailTemplate(
     comp_email_placeholder,

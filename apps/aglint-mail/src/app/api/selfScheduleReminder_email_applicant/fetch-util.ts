@@ -1,5 +1,9 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
-import { fillCompEmailTemplate, getFullName } from '@aglint/shared-utils';
+import {
+  fillCompEmailTemplate,
+  getFullName,
+  supabaseWrap,
+} from '@aglint/shared-utils';
 import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 
@@ -9,11 +13,20 @@ export async function dbUtil(
   const { data: filterJson } = await supabaseAdmin
     .from('interview_filter_json')
     .select(
-      'filter_json,interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company,recruiter),candidates(first_name,last_name,email,recruiter(logo))))',
+      'filter_json,session_ids,interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company,recruiter),candidates(first_name,last_name,email,recruiter(logo))))',
     )
     .eq('id', req_body.filter_json_id)
     .single()
     .throwOnError();
+
+  const [meetingDetails] = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_session')
+      .select('interview_meeting(recruiter_user(*))')
+      .eq('id', filterJson.session_ids[0]),
+  );
+
+  const meeting_organizer = meetingDetails.interview_meeting.recruiter_user;
 
   const {
     interview_schedule: {
@@ -37,6 +50,13 @@ export async function dbUtil(
       candidateName: getFullName(first_name, last_name),
       jobRole: job_title,
       selfScheduleLink: `<a href="${scheduleLink}">here</a>`,
+      OrganizerName: getFullName(
+        meeting_organizer.first_name,
+        meeting_organizer.last_name,
+      ),
+      OrganizerFirstName: meeting_organizer.first_name,
+      OrganizerLastName: meeting_organizer.last_name,
+      OrganizerTimeZone: meeting_organizer.scheduling_settings.timeZone.tzCode,
     };
 
   const filled_comp_template = fillCompEmailTemplate(

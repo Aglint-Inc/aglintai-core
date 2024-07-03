@@ -1,6 +1,7 @@
 import * as v from "valibot";
 export const applicationRecievedEmailApplicantSchema = v.object({
   application_id: v.string(),
+  organizer_id: v.string(),
 });
 
 export const debriefEmailInterviewerSchema = v.object({
@@ -38,6 +39,7 @@ export const confirmInterviewEmailApplicantSchema = v.object({
 
 export const applicantRejectEmailApplicantSchema = v.object({
   application_id: v.string(),
+  organizer_id: v.string(),
 });
 export const availabilityReqResendEmailCandidateSchema = v.object({
   avail_req_id: v.string(),
@@ -99,6 +101,7 @@ export const interviewStartEmailOrganizerSchema = v.object({
 
 export const sendSelfScheduleRequest_email_applicant = v.object({
   filter_json_id: v.string(),
+  organizer_id: v.string(),
   is_preview: v.optional(v.boolean(), false),
   task_id: v.optional(v.string(), undefined),
 });
