@@ -69,8 +69,9 @@ function FilterDropDown({
               <Stack
                 key={i}
                 direction={'row'}
-                sx={{ alignItems: 'center' }}
+                sx={{ alignItems: 'center', ':hover':{bgcolor:'var(--neutral-2)'}, borderRadius:'var(--radius-2)', cursor:'pointer' }}
                 spacing={1}
+                padding={'var(--space-2) var(--space-3)'}
               >
                 <Checkbox
                   isChecked={selectedItems.includes(item)}
