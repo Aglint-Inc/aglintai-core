@@ -102,23 +102,17 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                         ? 'Schedule Debrief'
                         : 'Schedule Now'
           }
-          onClickPrimary={{
-            onClick: () => {
-              onClickPrimary();
-              refetch();
-            },
-          }}
-          onClickCancel={{
-            onClick: () => {
-              resetStateSelfScheduling();
-            },
-          }}
           slotButtons={
             <>
               <ButtonSoft
                 size={2}
                 color={'neutral'}
                 textButton={stepScheduling === 'pick_date' ? 'Close' : 'Back'}
+                onClickButton={{
+                  onClick: () => {
+                    resetStateSelfScheduling();
+                  },
+                }}
               />
               <ButtonSolid
                 isLoading={isSendingToCandidate}
@@ -171,6 +165,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
             )
           }
           isBottomBar={
+            !fetchingPlan &&
             stepScheduling !== 'request_availibility' &&
             (stepScheduling === 'slot_options' ||
               stepScheduling === 'preference' ||
