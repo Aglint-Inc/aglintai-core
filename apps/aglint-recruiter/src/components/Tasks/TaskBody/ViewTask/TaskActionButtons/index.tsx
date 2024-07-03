@@ -184,6 +184,43 @@ function TaskActionButtons({
             />
           </Stack>
         </ShowCode.When>
+        <ShowCode.When isTrue={progress_type === 'interview_schedule'}>
+          <Stack
+            width={'100%'}
+            direction={'row'}
+            spacing={2}
+            justifyContent={'end'}
+          >
+            <ButtonSolid
+              size={1}
+              textButton={'Reschedule'}
+              onClickButton={{
+                onClick: () => {
+                  setRescheduleSessionIds(
+                    selectedTask.session_ids.map((session) => session.id),
+                  );
+                  setStepScheduling('reschedule');
+                  // setSelectedApplicationLog(act);
+                  setIsScheduleNowOpen(true);
+                  router.push(
+                    `/scheduling/application/${selectedTask.application_id}`,
+                  );
+                },
+              }}
+            />
+            <ButtonSoft
+              onClickButton={{
+                onClick: () => {
+                  router.push(
+                    `/scheduling/application/${selectedTask.application_id}`,
+                  );
+                },
+              }}
+              size={1}
+              textButton={'View'}
+            />
+          </Stack>
+        </ShowCode.When>
         {/* <ShowCode.When
           isTrue={
             progress_type === 'call_failed' || progress_type === 'email_failed'
