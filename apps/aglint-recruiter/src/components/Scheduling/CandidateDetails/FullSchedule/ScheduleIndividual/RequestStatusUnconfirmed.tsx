@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TextWithIcon } from '@/devlink2/TextWithIcon';
+import { TextWithIcon } from '@/devlink3/TextWithIcon';
 
 import { ScheduleIndividualCardType } from './types';
 
