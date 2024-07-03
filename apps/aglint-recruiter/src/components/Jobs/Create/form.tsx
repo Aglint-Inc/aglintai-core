@@ -330,7 +330,7 @@ const roles = {
 
 const JobCoordinator: FC<MetaForms> = memo(({ name, onChange, value }) => {
   const { data } = useCompanyMembers();
-  const options = data
+  const options = (data ?? [])
     .filter(({ role }) => (roles[name] ?? (() => []))().includes(role))
     .map((c) => ({
       name: getFullName(c.first_name, c.last_name),

@@ -112,10 +112,13 @@ const useJobContext = () => {
   const handleJobPublish = async (job: Job) => {
     if (recruiter) {
       try {
-        await handleJobAsyncUpdate(job.id, {
-          ...job.draft,
+        // eslint-disable-next-line no-unused-vars
+        const { processing_count, section_count, flags, ...safeJob } = job;
+        await handleJobAsyncUpdate(safeJob.id, {
+          ...safeJob,
+          ...safeJob.draft,
           status: 'published',
-          description_hash: hashCode(job.draft.description),
+          description_hash: hashCode(safeJob.draft.description),
         });
         return true;
       } catch {
@@ -128,7 +131,7 @@ const useJobContext = () => {
     await handleJobAsyncUpdate(job?.id, {
       scoring_criteria_loading: true,
     });
-    await handleGenerateJd(job.id);
+    await handleGenerateJd(job.id, true);
   };
 
   const { mutate: handleUploadApplication } = useUploadApplication({
@@ -194,6 +197,9 @@ const useJobContext = () => {
 
 export { useJobContext };
 
-export const handleGenerateJd = async (job_id: string) => {
-  return await handleJobApi('profileScore', { job_id });
+export const handleGenerateJd = async (
+  job_id: string,
+  regenerate: boolean = false,
+) => {
+  return await handleJobApi('profileScore', { job_id, regenerate });
 };

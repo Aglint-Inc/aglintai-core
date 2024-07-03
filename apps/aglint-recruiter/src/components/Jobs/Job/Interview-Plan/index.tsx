@@ -26,11 +26,11 @@ import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import NotFoundPage from '@/src/pages/404';
 import { CompanyMember } from '@/src/queries/company-members';
 import { DeleteInterviewSession } from '@/src/queries/interview-plans';
-import { interviewPlanKeys } from '@/src/queries/interview-plans/keys';
 import {
   InterviewPlansType,
   InterviewSessionType,
 } from '@/src/queries/interview-plans/types';
+import { jobQueries } from '@/src/queries/job';
 import { getFullName } from '@/src/utils/jsonResume';
 import {
   capitalize,
@@ -332,7 +332,7 @@ const InterviewSession = ({
   );
   const isLoading = getLoadingState(session.id);
 
-  const { queryKey } = interviewPlanKeys.interview_plan({ id: job.id });
+  const { queryKey } = jobQueries.interview_plans({ id: job?.id });
 
   const handleMoveCard = (dragIndex, hoverIndex) => {
     const sessions = structuredClone(data.interview_session);

@@ -18,7 +18,7 @@ import { useJob } from '@/src/context/JobContext';
 import {
   validateDescription,
   validateString,
-} from '@/src/context/JobDashboard/hooks';
+} from '@/src/context/JobContext/utils';
 import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/jobs/types';
 import ROUTES from '@/src/utils/routing/routes';

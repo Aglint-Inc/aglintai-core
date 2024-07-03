@@ -5,7 +5,8 @@ import { useJob } from '@/src/context/JobContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { interviewPlanKeys, interviewSessionMutationKeys } from './keys';
+import { jobQueries } from '../job';
+import { interviewSessionMutationKeys } from './keys';
 import {
   InterviewPlansType,
   InterviewSessionRelationType,
@@ -16,7 +17,7 @@ export const useCreateInterviewPlan = () => {
   const queryClient = useQueryClient();
   const { job_id } = useJob();
   const id = job_id;
-  const { queryKey } = interviewPlanKeys.interview_plan({ id });
+  const { queryKey } = jobQueries.interview_plans({ id });
   const mutation = useMutation({
     mutationFn: async () => {
       await createInterviewPlan(id);
@@ -33,7 +34,7 @@ export const useAddInterviewSession = () => {
   const queryClient = useQueryClient();
   const { job_id } = useJob();
   const id = job_id;
-  const { queryKey } = interviewPlanKeys.interview_plan({ id });
+  const { queryKey } = jobQueries.interview_plans({ id });
   const mutation = useMutation({
     mutationFn: async (args: CreateInterviewSession) => {
       await createInterviewSession(args);
@@ -50,7 +51,7 @@ export const useUpdateInterviewSession = () => {
   const queryClient = useQueryClient();
   const { job_id } = useJob();
   const id = job_id;
-  const { queryKey } = interviewPlanKeys.interview_plan({ id });
+  const { queryKey } = jobQueries.interview_plans({ id });
   const { mutationKey } = interviewSessionMutationKeys.update();
   const mutation = useMutation({
     mutationKey,
@@ -69,7 +70,7 @@ export const useDeleteInterviewSession = () => {
   const queryClient = useQueryClient();
   const { job_id } = useJob();
   const id = job_id;
-  const { queryKey } = interviewPlanKeys.interview_plan({ id });
+  const { queryKey } = jobQueries.interview_plans({ id });
   const { mutationKey } = interviewSessionMutationKeys.delete();
 
   const mutation = useMutation({
@@ -89,7 +90,7 @@ export const useEditInterviewSession = () => {
   const queryClient = useQueryClient();
   const { job_id } = useJob();
   const id = job_id;
-  const { queryKey } = interviewPlanKeys.interview_plan({ id });
+  const { queryKey } = jobQueries.interview_plans({ id });
   const { mutationKey } = interviewSessionMutationKeys.update();
   const mutation = useMutation({
     mutationKey,
@@ -108,7 +109,7 @@ export const useAddDebriefSession = () => {
   const queryClient = useQueryClient();
   const { job_id } = useJob();
   const id = job_id;
-  const { queryKey } = interviewPlanKeys.interview_plan({ id });
+  const { queryKey } = jobQueries.interview_plans({ id });
 
   const mutation = useMutation({
     mutationFn: async (args: CreateDebriefSession) => {
@@ -126,7 +127,7 @@ export const useEditDebriefSession = () => {
   const queryClient = useQueryClient();
   const { job_id } = useJob();
   const id = job_id;
-  const { queryKey } = interviewPlanKeys.interview_plan({ id });
+  const { queryKey } = jobQueries.interview_plans({ id });
   const { mutationKey } = interviewSessionMutationKeys.update();
   const mutation = useMutation({
     mutationKey,
@@ -145,7 +146,7 @@ export const useReorderInterviewSessions = () => {
   const queryClient = useQueryClient();
   const { job_id } = useJob();
   const id = job_id;
-  const { queryKey } = interviewPlanKeys.interview_plan({ id });
+  const { queryKey } = jobQueries.interview_plans({ id });
   const mutation = useMutation({
     mutationFn: async (args: {
       updatedInterviewSessions: InterviewPlansType['interview_session'];
