@@ -56,7 +56,9 @@ function BookingConfirmation({
 
         const selectedSessions: SchedulingApplication['cancelSessions'] =
           initialSessions
-            .filter((ses) => checkFilterJson.session_ids.includes(ses.interview_session.id))
+            .filter((ses) =>
+              checkFilterJson.session_ids.includes(ses.interview_session.id),
+            )
             .map((ses) => ({
               application_id: selectedApplication.id,
               meeting_id: ses.interview_meeting.id,
@@ -78,7 +80,9 @@ function BookingConfirmation({
 
         const selectedSessions = reqAva.session_ids
           .map((reqses) => {
-            const session = initialSessions.find((ses) => ses.interview_session.id === reqses.id);
+            const session = initialSessions.find(
+              (ses) => ses.interview_session.id === reqses.id,
+            );
             return session;
           })
           .map((ses) => ({
@@ -100,6 +104,12 @@ function BookingConfirmation({
     const sessions = act.metadata.sessions;
     const filter_id = act.metadata.filter_id;
     const availability_request_id = act.metadata.availability_request_id;
+
+    const isButtonVisible = act.metadata.sessions.every(
+      (session) =>
+        initialSessions.find((ses) => ses.interview_session.id === session.id)
+          ?.interview_meeting?.status === 'confirmed',
+    );
 
     return (
       <Stack spacing={2} width={'100%'}>
@@ -136,7 +146,8 @@ function BookingConfirmation({
           })}
         </Stack>
 
-        {(filter_id || availability_request_id) &&
+        {isButtonVisible &&
+          (filter_id || availability_request_id) &&
           act?.metadata?.action === 'waiting' && (
             <Stack direction={'row'} spacing={2}>
               <Stack width={'50%'}>

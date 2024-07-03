@@ -106,7 +106,7 @@ const CandidateInvitePlanPage = () => {
   } = useCandidateInvite();
 
   useEffect(() => {
-    if (filter_json?.id && !filter_json.viewed_on) {
+    if (filter_json?.id) {
       handleViewedOn();
     }
   }, [filter_json]);

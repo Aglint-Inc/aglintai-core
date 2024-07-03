@@ -178,7 +178,7 @@ function RescheduleDialog({
       }}
     >
       <ConfirmationPopup
-        textPopupTitle={'Reschedule'}
+        textPopupTitle={`Reschedule ${session_name}`}
         isIcon={false}
         onClickCancel={{
           onClick: () => {
