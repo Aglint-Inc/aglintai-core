@@ -113,6 +113,15 @@ const CompanyDetailComp = () => {
                 },
               }}
             />
+            <NavSublink
+              textLink={'Roles & Permissions'}
+              isActive={router.query?.tab === 'roles'}
+              onClickNav={{
+                onClick: () => {
+                  router.replace('/company?tab=roles');
+                },
+              }}
+            />
           </>
         }
         slotSavedChanges={
