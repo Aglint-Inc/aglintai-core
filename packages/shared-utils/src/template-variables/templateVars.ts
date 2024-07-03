@@ -20,7 +20,12 @@ import {
 } from "./variables";
 
 export const emailVariablePayloads = {
-  debrief_email_interviewer: [...interviewer, ...candidates, ...jobDetails],
+  debrief_email_interviewer: [
+    ...interviewer,
+    ...candidates,
+    ...jobDetails,
+    ...organizer,
+  ],
   applicationRecieved_email_applicant: [
     ...organizer,
     ...candidates,

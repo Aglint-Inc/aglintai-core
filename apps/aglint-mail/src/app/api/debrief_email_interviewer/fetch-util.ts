@@ -47,6 +47,8 @@ export async function fetchUtil(
       .eq('session_id', req_body.session_id),
   );
 
+  const meeting_organizer = session.interview_meeting.recruiter_user;
+
   const org_tz =
     session.interview_meeting.recruiter_user.scheduling_settings.timeZone
       .tzCode;
@@ -85,6 +87,13 @@ export async function fetchUtil(
         interviewerFirstName: inter.first_name,
         interviewerLastName: inter.last_name,
         interviewerName: getFullName(inter.first_name, inter.last_name),
+        organizerFirstName: meeting_organizer.first_name,
+        organizerLastName: meeting_organizer.last_name,
+        OrganizerTimeZone: org_tz,
+        organizerName: getFullName(
+          meeting_organizer.first_name,
+          meeting_organizer.first_name,
+        ),
       };
 
     const filled_comp_template = fillCompEmailTemplate(
