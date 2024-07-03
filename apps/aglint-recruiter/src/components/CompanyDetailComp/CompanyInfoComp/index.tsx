@@ -23,6 +23,7 @@ import AddDepartmentsDialog from './AddDepartmentsDialog';
 import AddLocationDialog from './AddLocationDialog';
 import AddRolesDialog from './AddRolesDialog';
 import AddSpecialityDialog from './AddSpecialityDialog';
+import RolesAndPermissions from './RolesAndPermissions';
 import SocialComp from './SocialComp';
 
 const CompanyInfoComp = ({ setIsSaving }) => {
@@ -437,6 +438,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
           </>
         )} */}
         {router.query?.tab === 'team' && <TeamManagement />}
+        {router.query?.tab === 'roles' && <RolesAndPermissions />}
       </YTransform>
     </Stack>
   );
