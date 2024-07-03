@@ -117,6 +117,7 @@ export const sendAvailReqReminderEmailApplicant = v.object({
 
 export const selfScheduleReminderEmailApplicantSchema = v.object({
   filter_json_id: v.string(),
+  task_id: v.optional(v.string(), undefined),
 });
 
 export const meetingDeclinedEmailOrganizerSchema = v.object({
