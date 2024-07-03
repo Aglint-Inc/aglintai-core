@@ -171,7 +171,7 @@ export function getTriggerOption(
       message = 'sending an availability request';
       break;
     case 'selfScheduleReminder':
-      message = 'sending an self schedule request';
+      message = 'sending a self schedule request';
       break;
     case 'interviewStart':
       message = 'starting an interview';
