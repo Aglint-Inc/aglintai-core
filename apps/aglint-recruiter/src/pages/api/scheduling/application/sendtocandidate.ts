@@ -271,6 +271,8 @@ const sendToCandidate = async ({
 
         selfScheduleMailToCandidate({
           filter_id: filterJson[0].id,
+          organizer_id: createCloneRes.organizer_id,
+          task_id: update_task_id,
         });
 
         console.log('sent mail to candidate');
@@ -412,6 +414,8 @@ const sendToCandidate = async ({
 
         selfScheduleMailToCandidate({
           filter_id: filterJson[0].id,
+          organizer_id,
+          task_id: update_task_id,
         });
       }
 
