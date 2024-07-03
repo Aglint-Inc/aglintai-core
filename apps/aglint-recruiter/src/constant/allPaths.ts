@@ -252,6 +252,8 @@ export const PATHS = [
 '/api/emails/interviewReschedule_email_applicant',
 '/api/emails/interviewStart_email_applicant',
 '/api/emails/interviewStart_email_interviewers',
+'/api/emails/interviewStart_email_organizer',
+'/api/emails/meetingDeclined_email_organizer',
 '/api/emails/preview',
 '/api/emails/selfScheduleReminder_email_applicant',
 '/api/emails/sendAvailReqReminder_email_applicant',

@@ -80,7 +80,7 @@ export async function fetchUtil(
     {
       additionalRescheduleNotes: session_cancel.other_details.note,
       candidateFirstName: candidates.first_name,
-      recruiterName: getFullName(
+      OrganizerName: getFullName(
         meeting_organizer.first_name,
         meeting_organizer.last_name,
       ),
@@ -94,10 +94,11 @@ export async function fetchUtil(
         .format(DAYJS_FORMATS.DATE_FORMATZ),
       candidateLastName: candidates.last_name,
       candidateName: getFullName(candidates.first_name, candidates.last_name),
-      recruiterFirstName: meeting_organizer.first_name,
-      recruiterLastName: meeting_organizer.last_name,
-      recruiterTimeZone: int_tz,
+      OrganizerFirstName: meeting_organizer.first_name,
+      OrganizerLastName: meeting_organizer.last_name,
+      OrganizerTimeZone: int_tz,
       rescheduleReason: session_cancel.reason,
+      candidateScheduleLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}">here</a>`,
     };
 
   const filled_comp_template = fillCompEmailTemplate(
