@@ -6,7 +6,7 @@
   grid-column-gap: var(--space-4);
   grid-row-gap: var(--space-4);
 
-  border: 1px solid var(--neutral-6);
+  border: 1px dashed var(--neutral-6);
   border-radius: var(--radius-4);
 
   background-color: var(--white);
@@ -73,47 +73,12 @@
   width: 23px;
 }
 
-.im_action {
+.slot_button-copy {
   display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
   align-items: center;
-  grid-column-gap: var(--space-1);
-  grid-row-gap: var(--space-1);
-}
-
-.ibc-icon-wrap {
-  padding: var(--space-1);
-  border-radius: var(--radius-2);
-}
-
-.ibc-icon-wrap:hover {
-  background-color: var(--neutral-3);
-}
-
-.three-dot-wrap {
-  position: relative;
-  z-index: 2;
-}
-
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.icons.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.icons.pointer {
-  cursor: pointer;
-}
-
-.sloteditoptions {
-  display: none;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
