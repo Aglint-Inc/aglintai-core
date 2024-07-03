@@ -69,12 +69,7 @@ export const emailVariablePayloads = {
     ...jobDetails,
     ...dates,
   ],
-  interviewReschedule_email_applicant: [
-    ...candidates,
-    ...jobDetails,
-    ...organizer,
-    selfSchedulingLink,
-  ],
+
   interviewStart_email_applicant: [
     ...candidates,
     ...jobDetails,

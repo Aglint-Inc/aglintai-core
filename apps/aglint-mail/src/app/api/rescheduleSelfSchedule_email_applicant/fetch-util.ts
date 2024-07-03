@@ -18,7 +18,7 @@ import {
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 
 export async function fetchUtil(
-  req_body: EmailTemplateAPi<'interviewReschedule_email_applicant'>['api_payload'],
+  req_body: EmailTemplateAPi<'rescheduleSelfSchedule_email_applicant'>['api_payload'],
 ) {
   const { self_schedule_link } = req_body;
 
@@ -54,9 +54,8 @@ export async function fetchUtil(
 
   const comp_email_temp = await fetchCompEmailTemp(
     recruiter_id,
-    'interviewReschedule_email_applicant',
+    'rescheduleSelfSchedule_email_applicant',
   );
-  const cand_tz = 'America/Los_Angeles';
 
   const meeting_details: MeetingDetailCardType[] = int_sessions.map(
     (session) => {
@@ -69,9 +68,9 @@ export async function fetchUtil(
       } = session;
       return {
         date: dayjsLocal(start_time)
-          .tz(cand_tz)
+          .tz(org_tz)
           .format(DAYJS_FORMATS.DATE_FORMAT),
-        time: `${dayjsLocal(start_time).tz(cand_tz).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(end_time).tz(cand_tz).format(DAYJS_FORMATS.END_TIME_FORMAT)}`,
+        time: `${dayjsLocal(start_time).tz(org_tz).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(end_time).tz(org_tz).format(DAYJS_FORMATS.END_TIME_FORMAT)}`,
         sessionType: name,
         platform: platformRemoveUnderscore(schedule_type),
         duration: durationCalculator(session_duration),
@@ -81,9 +80,9 @@ export async function fetchUtil(
     },
   );
 
-  const scheduleLink = `<a href='${self_schedule_link}'>click here</a>`;
+  const scheduleLink = `<a href='${req_body.self_schedule_link}'>click here</a>`;
 
-  const comp_email_placeholder: EmailTemplateAPi<'interviewReschedule_email_applicant'>['comp_email_placeholders'] =
+  const comp_email_placeholder: EmailTemplateAPi<'rescheduleSelfSchedule_email_applicant'>['comp_email_placeholders'] =
     {
       candidateFirstName: first_name,
       jobRole: job_title,
@@ -105,7 +104,7 @@ export async function fetchUtil(
     comp_email_temp,
   );
 
-  const react_email_placeholders: EmailTemplateAPi<'interviewReschedule_email_applicant'>['react_email_placeholders'] =
+  const react_email_placeholders: EmailTemplateAPi<'rescheduleSelfSchedule_email_applicant'>['react_email_placeholders'] =
     {
       companyLogo: logo,
       emailBody: filled_comp_template.body,
