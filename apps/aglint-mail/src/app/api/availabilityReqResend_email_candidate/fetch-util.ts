@@ -46,13 +46,13 @@ export async function dbUtil(
       candidateName: getFullName(first_name, last_name),
       companyName: company,
       jobRole: job_title,
-      recruiterFirstName: recruiter_user.first_name,
-      recruiterLastName: recruiter_user.last_name,
-      recruiterName: getFullName(
+      OrganizerFirstName: recruiter_user.first_name,
+      OrganizerLastName: recruiter_user.last_name,
+      OrganizerName: getFullName(
         recruiter_user.first_name,
         recruiter_user.last_name,
       ),
-      recruiterTimeZone: recruiter_tz,
+      OrganizerTimeZone: recruiter_tz,
     };
 
   const filled_comp_template = fillCompEmailTemplate(
