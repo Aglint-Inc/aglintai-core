@@ -319,7 +319,7 @@ export const useUploadApplication = (params: Omit<Params, 'status'>) => {
     ...params,
     status: 'new',
   });
-  const jobCountQueryKey = jobQueries.job_application_count({
+  const jobQueryKey = jobQueries.job({
     id: params.job_id,
   }).queryKey;
   return useMutation({
@@ -336,11 +336,8 @@ export const useUploadApplication = (params: Omit<Params, 'status'>) => {
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: async () => {
       await Promise.allSettled([
-        queryClient.invalidateQueries({ queryKey }),
-        queryClient.invalidateQueries(
-          jobQueries.job_processing_count({ id: params.job_id }),
-        ),
-        queryClient.invalidateQueries({ queryKey: jobCountQueryKey }),
+        queryClient.refetchQueries({ queryKey }),
+        queryClient.refetchQueries({ queryKey: jobQueryKey }),
       ]);
       toast.success('Uploaded successfully');
     },
@@ -377,7 +374,7 @@ export const useUploadResume = (params: Omit<Params, 'status'>) => {
     ...params,
     status: 'new',
   });
-  const jobCountQueryKey = jobQueries.job_application_count({
+  const jobQueryKey = jobQueries.job({
     id: params.job_id,
   }).queryKey;
   return useMutation({
@@ -394,11 +391,8 @@ export const useUploadResume = (params: Omit<Params, 'status'>) => {
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: async () => {
       await Promise.allSettled([
-        queryClient.invalidateQueries({ queryKey }),
-        queryClient.invalidateQueries(
-          jobQueries.job_processing_count({ id: params.job_id }),
-        ),
-        queryClient.invalidateQueries({ queryKey: jobCountQueryKey }),
+        queryClient.refetchQueries({ queryKey }),
+        queryClient.refetchQueries({ queryKey: jobQueryKey }),
       ]);
       toast.success('Uploaded successfully');
     },
@@ -453,7 +447,7 @@ export const useUploadCsv = (params: Omit<Params, 'status'>) => {
     ...params,
     status: 'new',
   });
-  const jobCountQueryKey = jobQueries.job_application_count({
+  const jobQueryKey = jobQueries.job({
     id: params.job_id,
   }).queryKey;
   return useMutation({
@@ -470,11 +464,8 @@ export const useUploadCsv = (params: Omit<Params, 'status'>) => {
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: async () => {
       await Promise.allSettled([
-        queryClient.invalidateQueries({ queryKey }),
-        queryClient.invalidateQueries(
-          jobQueries.job_processing_count({ id: params.job_id }),
-        ),
-        queryClient.invalidateQueries({ queryKey: jobCountQueryKey }),
+        queryClient.refetchQueries({ queryKey }),
+        queryClient.refetchQueries({ queryKey: jobQueryKey }),
       ]);
       toast.success('Uploaded successfully');
     },
@@ -518,13 +509,13 @@ export const useMoveApplications = (
         ...applicationsQueries.all({ job_id: payload.job_id }).queryKey,
         { status: args.status },
       ];
-      const jobCountQueryKey = jobQueries.job_application_count({
+      const jobQueryKey = jobQueries.job({
         id: payload.job_id,
       }).queryKey;
       await Promise.allSettled([
-        queryClient.invalidateQueries({ queryKey: destinationQueryKey }),
-        queryClient.invalidateQueries({ queryKey: sourceQueryKey }),
-        queryClient.invalidateQueries({ queryKey: jobCountQueryKey }),
+        queryClient.refetchQueries({ queryKey: destinationQueryKey }),
+        queryClient.refetchQueries({ queryKey: sourceQueryKey }),
+        queryClient.refetchQueries({ queryKey: jobQueryKey }),
       ]);
       return undefined;
     },
@@ -589,16 +580,12 @@ export const useRescoreApplications = () => {
       const applicationQueryKey = [
         ...applicationsQueries.all({ job_id: args.job_id }).queryKey,
       ];
-      const jobCountQueryKey = jobQueries.job_application_count({
-        id: args.job_id,
-      }).queryKey;
-      const jobProcessingQueryKey = jobQueries.job_processing_count({
+      const jobQueryKey = jobQueries.job({
         id: args.job_id,
       }).queryKey;
       await Promise.allSettled([
-        queryClient.invalidateQueries({ queryKey: applicationQueryKey }),
-        queryClient.invalidateQueries({ queryKey: jobCountQueryKey }),
-        queryClient.invalidateQueries({ queryKey: jobProcessingQueryKey }),
+        queryClient.refetchQueries({ queryKey: applicationQueryKey }),
+        queryClient.refetchQueries({ queryKey: jobQueryKey }),
       ]);
       return undefined;
     },

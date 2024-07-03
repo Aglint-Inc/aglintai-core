@@ -47,7 +47,7 @@ const Tab = forwardRef(
           isPillActive={section === status}
           isTabCountVisible={true}
           textLabel={`${capitalize(status)}`}
-          tabCount={`${job.count[status]}`}
+          tabCount={`${job.processing_count[status]}`}
         />
         <Stack
           style={{

@@ -96,11 +96,11 @@ const DashboardDoughnutChart: FC<{
 }> = ({ option }) => {
   const {
     locations: { data: locationPool },
-    job: { count },
+    job: { processing_count },
   } = useJobDetails();
   const locations = locationPool?.[option] ?? null;
   if (!locations) return <NoData />;
-  const totalCount = Object.values(count).reduce((acc, curr) => {
+  const totalCount = Object.values(processing_count).reduce((acc, curr) => {
     acc += curr;
     return acc;
   }, 0);

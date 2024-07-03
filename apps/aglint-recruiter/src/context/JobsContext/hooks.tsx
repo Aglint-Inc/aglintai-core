@@ -1,5 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import { useMemo } from 'react';
 
@@ -7,15 +6,6 @@ import { useJobCreate, useJobDelete, useJobsRead } from '@/src/queries/jobs';
 import { Job } from '@/src/queries/jobs/types';
 
 import { handleGenerateJd } from '../JobContext/hooks';
-
-const JOB_SECTIONS: DatabaseEnums['application_status'][] = [
-  'new',
-  'screening',
-  'assessment',
-  'interview',
-  'qualified',
-  'disqualified',
-];
 
 export const getActiveSection = ({
   isAssessmentEnabled,
@@ -27,39 +17,14 @@ export const getActiveSection = ({
   isSchedulingEnabled: boolean;
   isScreeningEnabled: boolean;
   job: Pick<Job, 'phone_screen_enabled' | 'assessment'>;
-}) =>
-  JOB_SECTIONS.filter((section) => {
-    switch (section) {
-      case 'new':
-        return true;
-      case 'screening':
-        return (job?.phone_screen_enabled ?? false) && isScreeningEnabled;
-      case 'assessment':
-        return (job?.assessment ?? false) && isAssessmentEnabled;
-      case 'interview':
-        return isSchedulingEnabled;
-      case 'qualified':
-        return true;
-      case 'disqualified':
-        return true;
-    }
-  });
-
-export const useJobActiveSections = (
-  job: Pick<
-    DatabaseTable['public_jobs'],
-    'phone_screen_enabled' | 'assessment'
-  >,
-) => {
-  const { isAssessmentEnabled, isSchedulingEnabled, isScreeningEnabled } =
-    useAuthDetails();
-  return getActiveSection({
-    isAssessmentEnabled,
-    isSchedulingEnabled,
-    isScreeningEnabled,
-    job,
-  });
-};
+}): Job['flags'] => ({
+  new: true,
+  screening: !!job?.phone_screen_enabled && isScreeningEnabled,
+  assessment: !!job?.assessment && isAssessmentEnabled,
+  disqualified: true,
+  interview: isSchedulingEnabled,
+  qualified: true,
+});
 
 const useJobActions = () => {
   const {
