@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     const { filled_comp_template, react_email_placeholders, recipient_email } =
       await dbUtil(req_body);
 
-    const is_preview = req_body.is_preview;
+    const is_preview = req_body?.is_preview;
     const htmlSub = await sendMailFun({
       filled_comp_template,
       react_email_placeholders,
@@ -46,8 +46,9 @@ export async function POST(req: Request) {
 }
 
 // {
-//   "meta": {
-//       "avail_req_id":"eb718192-9610-4d4c-988b-6e84fc914c08",
-//       "recruiter_user_id":"7f6c4cae-78b6-4eb6-86fd-9a0e0310147b"
+//   "meta":{
+//      "session_id":"c043d406-0c92-4eac-93d1-3cf4d79334a5",
+//      "application_id":"19bdc5e7-4e48-410a-a04b-9b22a964de81",
+//   //    "is_preview":true
 //   }
 // }

@@ -1,6 +1,7 @@
-import * as v from 'valibot';
+import * as v from "valibot";
 export const applicationRecievedEmailApplicantSchema = v.object({
   application_id: v.string(),
+  organizer_id: v.string(),
 });
 
 export const debriefEmailInterviewerSchema = v.object({
@@ -18,8 +19,8 @@ export const agentEmailCandidateSchema = v.object({
   recruiter_user_id: v.string(),
   filter_id: v.string(),
   mail_headers: v.object({
-    'Message-ID': v.string(),
-    'In-Reply-To': v.string(),
+    "Message-ID": v.string(),
+    "In-Reply-To": v.string(),
   }),
 });
 
@@ -38,6 +39,7 @@ export const confirmInterviewEmailApplicantSchema = v.object({
 
 export const applicantRejectEmailApplicantSchema = v.object({
   application_id: v.string(),
+  organizer_id: v.string(),
 });
 export const availabilityReqResendEmailCandidateSchema = v.object({
   avail_req_id: v.string(),
@@ -91,8 +93,15 @@ export const interviewStartEmailInterviewersSchema = v.object({
   recruiter_user_id: v.string(),
 });
 
+export const interviewStartEmailOrganizerSchema = v.object({
+  session_id: v.string(),
+  application_id: v.string(),
+  is_preview: v.optional(v.boolean(), false),
+});
+
 export const sendSelfScheduleRequest_email_applicant = v.object({
   filter_json_id: v.string(),
+  organizer_id: v.string(),
   is_preview: v.optional(v.boolean(), false),
   task_id: v.optional(v.string(), undefined),
 });
@@ -108,4 +117,15 @@ export const sendAvailReqReminderEmailApplicant = v.object({
 
 export const selfScheduleReminderEmailApplicantSchema = v.object({
   filter_json_id: v.string(),
+});
+
+export const meetingDeclinedEmailOrganizerSchema = v.object({
+  session_id: v.string(),
+  interviewer_id: v.string(),
+  application_id: v.string(),
+});
+export const MeetingAcceptedEmailOrganizerSchema = v.object({
+  session_id: v.string(),
+  interviewer_id: v.string(),
+  application_id: v.string(),
 });

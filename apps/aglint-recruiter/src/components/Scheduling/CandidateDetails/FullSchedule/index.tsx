@@ -1,7 +1,7 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 
-import { EditOptionModule } from '@/devlink3/EditOptionModule';
+import { IconButtonSoft } from '@/devlink3/IconButtonSoft';
 import { InterviewBreakCard } from '@/devlink3/InterviewBreakCard';
 import { NewInterviewPlan } from '@/devlink3/NewInterviewPlan';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
@@ -203,7 +203,9 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                       jobTitle={selectedApplication.public_jobs.job_title}
                       users={session.users}
                       isCollapseNeeded={true}
-                      isActionButtonVisible={true}
+                      isEditIconVisible={true}
+                      isViewDetailVisible={true}
+                      gridStyle={'1.1fr 1.7fr 0.6fr'}
                       cancelReasons={session.cancel_reasons || []}
                     />
                     {session.interview_session.break_duration > 0 && (
@@ -212,22 +214,20 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                           textDuration={getBreakLabel(
                             session.interview_session.break_duration,
                           )}
-                          isThreeDotVisible={true}
-                          isEditDeleteVisible={false}
-                          slotEditOptionModule={
-                            <EditOptionModule
-                              isResendInviteVisible={false}
-                              isEditVisible={true}
-                              isViewScheduleVisible={false}
-                              isCancelScheduleVisible={false}
-                              isRescheduleVisible={false}
-                              onClickEdit={{
-                                onClick: () => {
-                                  setEditSession(session);
-                                  setIsEditBreakOpen(true);
-                                },
-                              }}
-                            />
+                          slotEditButton={
+                            <>
+                              <IconButtonSoft
+                                iconName={'edit'}
+                                size={1}
+                                color={'neutral'}
+                                onClickButton={{
+                                  onClick: () => {
+                                    setEditSession(session);
+                                    setIsEditBreakOpen(true);
+                                  },
+                                }}
+                              />
+                            </>
                           }
                         />
                       </Stack>

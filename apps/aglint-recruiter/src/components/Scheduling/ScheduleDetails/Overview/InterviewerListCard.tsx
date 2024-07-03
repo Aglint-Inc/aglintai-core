@@ -6,6 +6,7 @@ import React from 'react';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { GlobalUserDetail } from '@/devlink3/GlobalUserDetail';
 import { MemberDetail } from '@/devlink3/MemberDetail';
+import InterviewerAcceptDeclineIcon from '@/src/components/Common/Icons/InterviewerAcceptDeclineIcon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { CustomTooltip } from '@/src/components/Common/Tooltip';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -14,8 +15,6 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { calculateHourDifference } from '../../InterviewTypes/utils';
 import { formatTimeWithTimeZone } from '../../utils';
 import { ScheduleMeeting } from '../types';
-import IconAccept from './IconAccept';
-import IconDecline from './IconDecline';
 
 function InterviewerListCard({
   schedule,
@@ -29,11 +28,6 @@ function InterviewerListCard({
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
   const currentDay = dayjs();
-
-  const isAccepted =
-    item.interview_session_relation.accepted_status === 'accepted';
-  const isDeclined =
-    item.interview_session_relation.accepted_status === 'declined';
 
   const allMeetings = item.weekly_meetings || [];
   const dailyMeetings = allMeetings.filter((meet) =>
@@ -130,15 +124,16 @@ function InterviewerListCard({
             isSlotImageVisible={true}
             isCandidateAvatarVisible={false}
             slotCandidateStatus={
-              <>
-                {isAccepted ? (
-                  <IconAccept />
-                ) : isDeclined ? (
-                  <IconDecline />
-                ) : (
-                  ''
-                )}
-              </>
+              <Stack
+                height={'100%'}
+                alignItems={'center'}
+                justifyContent={'center'}
+                direction={'row'}
+              >
+                <InterviewerAcceptDeclineIcon
+                  type={item.interview_session_relation.accepted_status}
+                />
+              </Stack>
             }
           />
         </Stack>

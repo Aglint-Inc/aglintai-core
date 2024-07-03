@@ -14,6 +14,7 @@ export function TextWithIcon({
   iconName = "shapes",
   iconSize = "2",
   slotIcon,
+  fontSize = "2",
 }) {
   return (
     <_Component
@@ -25,10 +26,13 @@ export function TextWithIcon({
       tag="div"
       data-color={color}
     >
-      <_Builtin.Block className={_utils.cx(_styles, "slot_icon")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "slot_icon-copy")}
+        tag="div"
+      >
         {slotIcon ?? <GlobalIcon iconName={iconName} size={iconSize} />}
       </_Builtin.Block>
-      <Text weight={fontWeight} content={textContent} />
+      <Text weight={fontWeight} content={textContent} size={fontSize} />
     </_Component>
   );
 }

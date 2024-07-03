@@ -129,17 +129,19 @@ export function filterSchedulingOptions({
     );
   }
 
+  const allFilteredOptionsSet = new Set([
+    ...noConflicts,
+    ...softConflicts,
+    ...hardConflicts,
+    ...outSideWorkHours,
+  ]);
+
   return {
     noConflicts,
     softConflicts,
     hardConflicts,
     outSideWorkHours,
-    allFilteredOptions: [
-      ...noConflicts,
-      ...softConflicts,
-      ...hardConflicts,
-      ...outSideWorkHours,
-    ],
+    allFilteredOptions: Array.from(allFilteredOptionsSet),
   };
 }
 

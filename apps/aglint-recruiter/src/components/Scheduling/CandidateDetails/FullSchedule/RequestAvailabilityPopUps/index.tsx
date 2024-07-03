@@ -1,4 +1,4 @@
-import { Stack, Tooltip } from '@mui/material';
+import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
@@ -8,7 +8,6 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import UITypography from '@/src/components/Common/UITypography';
 import toast from '@/src/utils/toast';
 
 import {
@@ -22,6 +21,7 @@ import {
 } from '../../store';
 import { useAvailabilityContext } from './RequestAvailabilityContext';
 import RequestAvailabilityDrawer from './RequestAvailabilityDrawer';
+import { GlobalIcon } from '@/devlink';
 
 function RequestAvailabilityPopUps() {
   const router = useRouter();
@@ -74,20 +74,6 @@ function RequestAvailabilityPopUps() {
       setRequestSessionIds(selectedRequest.session_ids.map((ele) => ele.id));
   }, [router.query?.candidate_request_availability]);
 
-  //tooltip for copy link
-  const [tooltipOpen, setTooltipOpen] = useState(false);
-
-  const handleButtonClick = () => {
-    setTooltipOpen(true);
-    setTimeout(() => {
-      setTooltipOpen(false);
-    }, 700);
-  };
-
-  const handleTooltipClose = () => {
-    setTooltipOpen(false);
-  };
-
   return (
     <div>
       <RequestAvailabilityDrawer />
@@ -100,6 +86,8 @@ function RequestAvailabilityPopUps() {
                 .map((ele) => ele.dates)
                 .flat()
                 .map((ele) => `<b>${dayjs(ele.curr_day).format('DD MMM')}</b>`);
+            const [copied, setCopied] = useState(false);
+
             return (
               <>
                 <ShowCode>
@@ -107,14 +95,6 @@ function RequestAvailabilityPopUps() {
                     <GlobalBanner
                       color={'warning'}
                       iconName={'schedule'}
-                      // titleColorProps={{
-                      //   style: {
-                      //     color: 'var(--warning-11)',
-                      //   },
-                      // }}
-                      // textHeading={
-                      //   'Waiting for candidates availability submission'
-                      // }
                       textTitle={
                         'Waiting for candidates availability submission'
                       }
@@ -125,10 +105,6 @@ function RequestAvailabilityPopUps() {
                           }}
                         ></div>
                       }
-                      // slotHeadingIcon={
-                      //   <Icon height='15' width='' variant='Clock' />
-                      // }
-
                       slotButtons={
                         <>
                           <ButtonSolid
@@ -147,36 +123,38 @@ function RequestAvailabilityPopUps() {
                               },
                             }}
                           />
-                          <Tooltip
-                            title={
-                              <UITypography type='extraSmall'>
-                                Link Copied
-                              </UITypography>
-                            }
-                            open={tooltipOpen}
-                            disableHoverListener
-                            disableFocusListener
-                            disableTouchListener
-                            onClose={handleTooltipClose}
-                          >
-                            <Stack>
-                              <ButtonSoft
-                                textButton={'Copy invite'}
-                                isLoading={false}
-                                isLeftIcon={false}
-                                isRightIcon={false}
-                                size={1}
-                                onClickButton={{
-                                  onClick: () => {
-                                    navigator.clipboard.writeText(
-                                      `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${item.id}`,
-                                    );
-                                    handleButtonClick();
-                                  },
-                                }}
-                              />
-                            </Stack>
-                          </Tooltip>
+
+                          <ButtonSoft
+                            textButton={'Request again'}
+                            isLoading={false}
+                            isLeftIcon={false}
+                            isRightIcon={false}
+                            size={1}
+                            onClickButton={{
+                              onClick: () => handleRequestAgain(item.id),
+                            }}
+                          />
+                          <ButtonSoft
+                            textButton={copied ? 'Copied' : 'Copy link'}
+                            isLoading={false}
+                            isLeftIcon={false}
+                            isRightIcon={false}
+                            slotIcon={<GlobalIcon iconName={'check_circle'} />}
+                            size={1}
+                            onClickButton={{
+                              onClick: () => {
+                                if (!copied) {
+                                  setCopied(true);
+                                  setTimeout(() => {
+                                    setCopied(false);
+                                  }, 2000);
+                                  navigator.clipboard.writeText(
+                                    `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${item.id}`,
+                                  );
+                                }
+                              },
+                            }}
+                          />
                         </>
                       }
                     />
