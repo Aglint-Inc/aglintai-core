@@ -135,6 +135,7 @@ const JobEmailTemplates = () => {
           />
         </>
       }
+      slotSearchFilter={<></>}
       slotEmailDetails={
         <>
           {isloadTiptap ? (

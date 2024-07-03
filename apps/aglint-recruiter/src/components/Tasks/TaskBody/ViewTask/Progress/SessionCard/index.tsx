@@ -1,6 +1,7 @@
 import { DatabaseEnums } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -14,7 +15,6 @@ import {
 } from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/store';
 import { setRescheduleSessionIds } from '@/src/components/Scheduling/CandidateDetails/store';
 import { getFullName } from '@/src/utils/jsonResume';
-import { useRouter } from 'next/router';
 
 export type meetingCardType = {
   id: string;
