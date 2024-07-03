@@ -25,7 +25,7 @@ import { useTaskStatesContext } from '../../TaskStatesContext';
 
 function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
   const route = useRouter();
-  const { setTaskId, selectedTasksIds, setSelectedTasksIds } =
+  const { setTaskId, taskId, selectedTasksIds, setSelectedTasksIds } =
     useTaskStatesContext();
   // let toDayDateTime = dayjs();
   // const tomorrowDate = toDayDateTime.add(1, 'day');
@@ -45,8 +45,8 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
     <Stack
       sx={{
         bgcolor:
-          route.query.task_id === task.id || selectedTasksIds.includes(task.id)
-            ? 'var(--blue-2)'
+          taskId === task.id || selectedTasksIds.includes(task.id)
+            ? 'var(--orange-2)'
             : undefined,
         '&:hover': {
           bgcolor: 'var(--neutral-2)',
@@ -102,7 +102,7 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
         // }
         onClickCard={{
           onClick: () => {
-            route.push(ROUTES['/tasks']() + '?task_id=' + task.id);
+            route.replace(ROUTES['/tasks']() + '?task_id=' + task.id);
             setTaskId(task.id);
           },
         }}
@@ -206,7 +206,7 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                 }
               }}
               size='small'
-              sx={{ color: 'var(--accent-9)'}}
+              sx={{ color: 'var(--accent-9)' }}
             />
           </Stack>
         }

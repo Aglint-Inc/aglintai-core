@@ -2226,9 +2226,6 @@ export type Database = {
           recruiter_id: string
           recruiting_coordinator: string | null
           scoring_criteria_loading: boolean
-          scoring_param_status:
-            | Database["public"]["Enums"]["job_scoring_param_status"]
-            | null
           screening_questions: Json[] | null
           screening_setting: Json | null
           screening_template: string | null
@@ -2282,9 +2279,6 @@ export type Database = {
           recruiter_id: string
           recruiting_coordinator?: string | null
           scoring_criteria_loading?: boolean
-          scoring_param_status?:
-            | Database["public"]["Enums"]["job_scoring_param_status"]
-            | null
           screening_questions?: Json[] | null
           screening_setting?: Json | null
           screening_template?: string | null
@@ -2338,9 +2332,6 @@ export type Database = {
           recruiter_id?: string
           recruiting_coordinator?: string | null
           scoring_criteria_loading?: boolean
-          scoring_param_status?:
-            | Database["public"]["Enums"]["job_scoring_param_status"]
-            | null
           screening_questions?: Json[] | null
           screening_setting?: Json | null
           screening_template?: string | null
@@ -5126,6 +5117,11 @@ export type Database = {
         | "sendSelfScheduleRequest_email_applicant"
         | "sendAvailabilityRequest_email_applicant"
         | "availabilityReqResend_email_candidate"
+        | "interviewDetails_calender_interviewer"
+        | "rescheduleSelfSchedule_email_applicant"
+        | "interviewStart_email_organizer"
+        | "meetingDeclined_email_organizer"
+        | "meetingAccepted_email_organizer"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"
@@ -5142,7 +5138,6 @@ export type Database = {
         | "phone_call"
         | "zoom"
       interviewer_type: "qualified" | "shadow" | "reverse_shadow"
-      job_scoring_param_status: "loading" | "success"
       meeting_flow:
         | "self_scheduling"
         | "candidate_request"
@@ -5237,6 +5232,8 @@ export type Database = {
         | "send_email"
         | "request_submitted"
         | "schedule"
+        | "closed"
+        | "completed"
       public_job_status: "draft" | "published" | "closed"
       public_job_type:
         | "contract"
@@ -5317,6 +5314,8 @@ export type Database = {
         | "sendAvailReqReminder"
         | "interviewerConfirmation"
         | "interviewEnd"
+        | "meetingDeclined"
+        | "meetingAccepted"
     }
     CompositeTypes: {
       location_type: {

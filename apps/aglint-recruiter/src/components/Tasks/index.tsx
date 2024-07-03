@@ -12,12 +12,12 @@ function Tasks() {
       <PageLayout
         slotTopbarLeft={<Typography variant='body1medium'>Tasks</Typography>}
         slotTopbarRight={
-          <Stack direction={'row'} alignItems={'center'} spacing={'var(--space-2)'}>
-            <Typography
-              variant='body1'
-            >
-              Group by
-            </Typography>
+          <Stack
+            direction={'row'}
+            alignItems={'center'}
+            spacing={'var(--space-2)'}
+          >
+            <Typography variant='body1'>Group by</Typography>
             <GroupBy />
           </Stack>
         }

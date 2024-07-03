@@ -183,10 +183,10 @@ const sendToCandidate = async ({
               sessions: slot.sessions.map((ses) => ({
                 ...ses,
                 session_id: createCloneRes.refSessions.find(
-                  (s) => s.id === ses.session_id,
+                  (s) => s.interview_session.id === ses.session_id,
                 ).newId,
                 meeting_id: createCloneRes.refSessions.find(
-                  (s) => s.id === ses.session_id,
+                  (s) => s.interview_session.id === ses.session_id,
                 ).interview_meeting.id,
               })),
             };
@@ -210,7 +210,7 @@ const sendToCandidate = async ({
             rec_user_id: recruiterUser.user_id,
             recruiter_id,
             selectedSessions: createCloneRes.refSessions.filter((ses) =>
-              selectedSessionIds.includes(ses.id),
+              selectedSessionIds.includes(ses.interview_session.id),
             ),
             type: 'user',
             recruiter_user_name: recruiterUser.first_name,
@@ -244,10 +244,10 @@ const sendToCandidate = async ({
                 selectedApplication.candidates.last_name,
               ),
               sessions: createCloneRes.refSessions
-                .filter((ses) => selectedSessionIds.includes(ses.id))
+                .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
                 .map((ele) => ({
-                  id: ele.id,
-                  name: ele.name,
+                  id: ele.interview_session.id,
+                  name: ele.interview_session.name,
                 })) as meetingCardType[],
             },
             supabaseCaller: supabase,
@@ -258,7 +258,7 @@ const sendToCandidate = async ({
         addScheduleActivity({
           title: `Sent booking link to ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.last_name)} for ${createCloneRes.refSessions
             .filter((ses) => ses.isSelected)
-            .map((ses) => ses.name)
+            .map((ses) => ses.interview_session.name)
             .join(' , ')}`,
           application_id: selectedApplication.id,
           logged_by: 'user',
@@ -304,7 +304,7 @@ const sendToCandidate = async ({
         supabase,
       );
       const upsertMeetings: InterviewMeetingTypeDb[] = initialSessions
-        .filter((ses) => selectedSessionIds.includes(ses.id))
+        .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
         .map((ses) => ({
           status: 'waiting',
           id: ses.interview_meeting.id,
@@ -351,7 +351,7 @@ const sendToCandidate = async ({
             rec_user_id: recruiterUser.user_id,
             recruiter_id,
             selectedSessions: initialSessions.filter((ses) =>
-              selectedSessionIds.includes(ses.id),
+              selectedSessionIds.includes(ses.interview_session.id),
             ),
             type: 'user',
             recruiter_user_name: recruiterUser.first_name,
@@ -366,8 +366,8 @@ const sendToCandidate = async ({
 
           addScheduleActivity({
             title: `Candidate invited for session ${initialSessions
-              .filter((ses) => selectedSessionIds.includes(ses.id))
-              .map((ses) => ses.name)
+              .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
+              .map((ses) => ses.interview_session.name)
               .join(' , ')}`,
             logged_by: 'user',
             application_id: selectedApplication.id,
@@ -398,10 +398,10 @@ const sendToCandidate = async ({
                 selectedApplication.candidates.last_name,
               ),
               sessions: initialSessions
-                .filter((ses) => selectedSessionIds.includes(ses.id))
+                .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
                 .map((ele) => ({
-                  id: ele.id,
-                  name: ele.name,
+                  id: ele.interview_session.id,
+                  name: ele.interview_session.name,
                 })) as meetingCardType[],
             },
             supabaseCaller: supabase,

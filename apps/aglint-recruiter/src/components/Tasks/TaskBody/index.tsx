@@ -69,15 +69,17 @@ function TaskBody() {
             isNewTaskCardVisible={false}
             slotTaskTableCard={
               <>
-                {tasks
-                  .filter((ele) => ele.type !== 'empty')
-                  .map((ele, i) => {
-                    return (
-                      <>
-                        <TaskRow task={ele} key={i} />
-                      </>
-                    );
-                  })}
+                <Stack id='taskContainer' height={'100%'} overflow={'auto'}>
+                  {tasks
+                    .filter((ele) => ele.type !== 'empty')
+                    .map((ele, i) => {
+                      return (
+                        <>
+                          <TaskRow task={ele} key={i} />
+                        </>
+                      );
+                    })}
+                </Stack>
                 <ShowCode.When isTrue={!loadingTasks && tasks.length === 0}>
                   <Stack
                     height={'calc(100vh - 176px)'}

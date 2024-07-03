@@ -201,9 +201,10 @@ const useJobActions = () => {
   };
 
   const experimental_handleRegenerateJd = async (job: Job) => {
-    handleUIJobUpdate({ ...job, scoring_criteria_loading: true });
+    await handleJobAsyncUpdate(job?.id, {
+      scoring_criteria_loading: true,
+    });
     await handleGenerateJd(job.id);
-    // handleJobRefresh(job.id);
   };
 
   const handleGetJob = (jobId: string) => {

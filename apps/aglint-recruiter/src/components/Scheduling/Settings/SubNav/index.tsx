@@ -4,11 +4,12 @@ import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
-import { SublinkSubMenu } from '@/devlink2/SubLinkSubMenu';
 import { SublinkTab } from '@/devlink2/SublinkTab';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { featureFlag } from '@/src/utils/Constants';
 import ROUTES from '@/src/utils/routing/routes';
+
+import { settingsItems } from './utils';
 // import toast from '@/src/utils/toast';
 
 const tabs: {
@@ -91,47 +92,9 @@ function SubNav() {
               item === 'settings' &&
               router.query.tab === item
             }
-            slotSubLinkSubMenu={<SettingsSubNabItem tab={item} />}
           />
         ))}
     </>
   );
 }
 export default SubNav;
-
-const settingsItems = [
-  { label: 'Interview Load', value: 'interviewLoad' },
-  { label: 'Working Hours', value: 'workingHours' },
-  { label: 'Company Day Off', value: 'dayOff' },
-  { label: 'Keywords', value: 'keywords' },
-  { label: 'Email Template', value: 'emailTemplate' },
-  { label: 'Debrief Defaults', value: 'debriefDefaults' },
-];
-
-function SettingsSubNabItem({ tab }: { tab: string }) {
-  const router = useRouter();
-  return (
-    <>
-      {settingsItems.map((item, i) => {
-        return (
-          <SublinkSubMenu
-            key={i}
-            textLink={item.label}
-            isActive={router.query.subtab === item.value}
-            onClickLink={{
-              onClick: (e: any) => {
-                e.stopPropagation();
-                router.push(
-                  `${ROUTES['/scheduling']()}?tab=${tab.replace(
-                    ' ',
-                    '',
-                  )}&subtab=${item.value}`,
-                );
-              },
-            }}
-          />
-        );
-      })}
-    </>
-  );
-}

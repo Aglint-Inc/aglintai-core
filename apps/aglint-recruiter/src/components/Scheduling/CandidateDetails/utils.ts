@@ -133,7 +133,7 @@ export const createCloneSession = async ({
     const refSessions = allSessions.map((session) => ({
       ...session,
       newId: uuidv4(),
-      isSelected: session_ids.includes(session.id),
+      isSelected: session_ids.includes(session.interview_session.id),
       new_meeting_id: uuidv4(),
       new_schedule_id: new_schedule_id,
     }));
@@ -145,7 +145,7 @@ export const createCloneSession = async ({
         return {
           interview_schedule_id: ses.new_schedule_id,
           status: ses.isSelected ? 'waiting' : 'not_scheduled',
-          instructions: refSessions.find((s) => s.id === ses.id)
+          instructions: refSessions.find((s) => s.interview_session.id === ses.interview_session.id)
             ?.interview_module?.instructions,
           id: ses.new_meeting_id,
           organizer_id,
@@ -164,17 +164,17 @@ export const createCloneSession = async ({
     const insertableSessions: DatabaseTableInsert['interview_session'][] =
       allSessions.map((session) => ({
         interview_plan_id: null,
-        id: refSessions.find((ref) => ref.id === session.id).newId,
-        break_duration: session.break_duration,
-        interviewer_cnt: session.interviewer_cnt,
-        location: session.location,
-        module_id: session.module_id,
-        name: session.name,
-        schedule_type: session.schedule_type,
-        session_duration: session.session_duration,
-        session_order: session.session_order,
-        session_type: session.session_type,
-        meeting_id: refSessions.find((ref) => ref.id === session.id)
+        id: refSessions.find((ref) => ref.interview_session.id === session.interview_session.id).newId,
+        break_duration: session.interview_session.break_duration,
+        interviewer_cnt: session.interview_session.interviewer_cnt,
+        location: session.interview_session.location,
+        module_id: session.interview_session.module_id,
+        name: session.interview_session.name,
+        schedule_type: session.interview_session.schedule_type,
+        session_duration: session.interview_session.session_duration,
+        session_order: session.interview_session.session_order,
+        session_type: session.interview_session.session_type,
+        meeting_id: refSessions.find((ref) => ref.interview_session.id === session.interview_session.id)
           .new_meeting_id,
       }));
 
@@ -191,10 +191,10 @@ export const createCloneSession = async ({
       session.users?.map((user) => {
         const insertRel: DatabaseTableInsert['interview_session_relation'] = {
           interview_module_relation_id: user.interview_module_relation?.id,
-          interviewer_type: user.interviewer_type,
+          interviewer_type: user.interview_session_relation.interviewer_type,
           session_id: session.newId,
-          training_type: user.training_type,
-          user_id: user.user_id,
+          training_type: user.interview_session_relation.training_type,
+          user_id: user.user_details.user_id,
         };
         insertableUserRelation.push(insertRel);
       });
@@ -219,7 +219,7 @@ export const createCloneSession = async ({
     }));
 
     // task session replace
-    const oldSessionIds = refSessions.map((ses) => ses.id);
+    const oldSessionIds = refSessions.map((ses) => ses.interview_session.id);
 
     const { data: taskSelRel, error: errTaskSelRel } = await supabase
       .from('task_session_relation')
@@ -234,7 +234,7 @@ export const createCloneSession = async ({
         .upsert(
           taskSelRel.map((taskRel) => ({
             id: taskRel.id,
-            session_id: refSessions.find((ses) => ses.id === taskRel.session_id)
+            session_id: refSessions.find((ses) => ses.interview_session.id === taskRel.session_id)
               .newId,
             task_id: taskRel.task_id,
           })),
@@ -332,8 +332,8 @@ export const scheduleDebrief = async ({
 
     addScheduleActivity({
       title: `Scheduling ${initialSessions
-        .filter((ses) => selectedSessionIds.includes(ses.id))
-        .map((ses) => ses.name)
+        .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
+        .map((ses) => ses.interview_session.name)
         .join(' , ')}`,
       logged_by: 'user',
       application_id,
@@ -415,7 +415,7 @@ export const scheduleWithAgent = async ({
         console.log(
           createCloneRes.refSessions
             .filter((ses) => ses.isSelected)
-            .map((ses) => `old session_id ${ses.id} to ${ses.newId}`),
+            .map((ses) => `old session_id ${ses.interview_session.id} to ${ses.newId}`),
         );
 
         const filterJson = await createFilterJson({
@@ -437,8 +437,8 @@ export const scheduleWithAgent = async ({
               .filter((ses) => ses.isSelected)
               .map((ses) => {
                 return {
-                  id: ses.id,
-                  name: ses.name,
+                  id: ses.interview_session.id,
+                  name: ses.interview_session.name,
                   interview_meeting: ses.interview_meeting
                     ? {
                         id: ses.interview_meeting.id,
@@ -447,7 +447,7 @@ export const scheduleWithAgent = async ({
                         meeting_link: ses.interview_meeting.meeting_link,
                       }
                     : null,
-                  session_order: ses.session_order,
+                  session_order: ses.interview_session.session_order,
                   users: [],
                 };
               }),
@@ -461,7 +461,7 @@ export const scheduleWithAgent = async ({
         addScheduleActivity({
           title: `Candidate invited for ${createCloneRes.refSessions
             .filter((ses) => ses.isSelected)
-            .map((ses) => ses.name)
+            .map((ses) => ses.interview_session.name)
             .join(' , ')} via ${
             type === 'email_agent' ? 'email agent' : 'phone agent'
           }`,
@@ -494,7 +494,7 @@ export const scheduleWithAgent = async ({
         );
 
         const selectedSessions = sessionsWithPlan.sessions.filter((ses) =>
-          session_ids.includes(ses.id),
+          session_ids.includes(ses.interview_session.id),
         );
         const organizer_id = await getOrganizerId(application_id, supabase);
         const { error: errorUpdatedMeetings } = await supabase
@@ -526,8 +526,8 @@ export const scheduleWithAgent = async ({
             filter_id: filterJson.id,
             session_ids: selectedSessions.map((ses) => {
               return {
-                id: ses.id,
-                name: ses.name,
+                id: ses.interview_session.id,
+                name: ses.interview_session.name,
                 interview_meeting: ses.interview_meeting
                   ? {
                       id: ses.interview_meeting.id,
@@ -536,7 +536,7 @@ export const scheduleWithAgent = async ({
                       meeting_link: ses.interview_meeting.meeting_link,
                     }
                   : null,
-                session_order: ses.session_order,
+                session_order: ses.interview_session.session_order,
                 users: [],
               };
             }),
@@ -546,7 +546,7 @@ export const scheduleWithAgent = async ({
 
         addScheduleActivity({
           title: `Candidate invited for ${selectedSessions
-            .map((ses) => ses.name)
+            .map((ses) => ses.interview_session.name)
             .join(' , ')} via ${
             type === 'email_agent' ? 'email agent' : 'phone agent'
           }`,
@@ -651,7 +651,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
         console.log(
           createCloneRes.refSessions
             .filter((ses) => ses.isSelected)
-            .map((ses) => `old session_id ${ses.id} to ${ses.newId}`),
+            .map((ses) => `old session_id ${ses.interview_session.id} to ${ses.newId}`),
         );
 
         const filterJson = await createFilterJson({
@@ -684,7 +684,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
 
         addScheduleActivity({
           title: `Candidate invited for session ${selSes
-            .map((ses) => ses.name)
+            .map((ses) => ses.interview_session.name)
             .join(' , ')} via ${
             type === 'email_agent' ? 'Email Agent' : 'Phone Agent'
           }`,
@@ -718,7 +718,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
         );
 
         const selectedSessions = sessionsWithPlan.sessions.filter((ses) =>
-          session_ids.includes(ses.id),
+          session_ids.includes(ses.interview_session.id),
         );
         const organizer_id = await getOrganizerId(application_id, supabase);
         const { error: errorUpdatedMeetings } = await supabase
@@ -759,7 +759,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
 
         addScheduleActivity({
           title: `Candidate invited for session ${selectedSessions
-            .map((ses) => ses.name)
+            .map((ses) => ses.interview_session.name)
             .join(' , ')} via ${
             type === 'email_agent' ? 'Email Agent' : 'Phone Agent'
           }`,
@@ -1023,7 +1023,7 @@ export const createTask = async ({
     .from('new_tasks')
     .insert({
       name: `Schedule interview for ${candidate_name} - ${selectedSessions
-        .map((ses) => ses.name)
+        .map((ses) => ses.interview_session.name)
         .join(' , ')}`,
       application_id,
       created_by: rec_user_id,
@@ -1047,7 +1047,7 @@ export const createTask = async ({
     selectedSessions.map((ses) => {
       return {
         task_id: task.id,
-        session_id: ses.id,
+        session_id: ses.interview_session.id,
       };
     });
 
@@ -1067,8 +1067,8 @@ export const createTask = async ({
     optionData: {
       candidateName: candidate_name,
       sessions: selectedSessions.map((ele) => ({
-        id: ele.id,
-        name: ele.name,
+        id: ele.interview_session.id,
+        name: ele.interview_session.name,
       })) as meetingCardType[],
     },
     supabaseCaller: supabase,

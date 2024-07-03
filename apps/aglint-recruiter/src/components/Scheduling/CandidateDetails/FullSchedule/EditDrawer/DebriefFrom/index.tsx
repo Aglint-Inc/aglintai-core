@@ -9,9 +9,11 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
 import { DropDown } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
-import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon';
+import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
+import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
 import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { palette } from '@/src/context/Theme/Theme';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import {
@@ -19,7 +21,7 @@ import {
   setMembers,
   useSchedulingApplicationStore,
 } from '../../../store';
-import { Interviewer } from '..';
+import { Interviewer, schedule_type } from '..';
 
 function DebriedForm({
   debriefMembers,
@@ -84,23 +86,33 @@ function DebriedForm({
           <UITextField
             name={'name'}
             placeholder={'Session name'}
-            value={editSession.name}
+            value={editSession.interview_session.name}
             onChange={(e) =>
               setEditSession({
-                name: e.target.value,
+                interview_session: {
+                  ...editSession.interview_session,
+                  name: e.target.value,
+                },
               })
             }
           />
         }
         slotDurationDropdown={
-          <TextField fullWidth select value={editSession.session_duration}>
+          <TextField
+            fullWidth
+            select
+            value={editSession.interview_session.session_duration}
+          >
             {[30, 45, 60, 120]?.map((ses) => (
               <MenuItem
                 value={ses}
                 key={ses}
                 onClick={() =>
                   setEditSession({
-                    session_duration: ses,
+                    interview_session: {
+                      ...editSession.interview_session,
+                      session_duration: ses,
+                    },
                   })
                 }
               >
@@ -142,46 +154,27 @@ function DebriedForm({
           <TextField
             fullWidth
             select
-            value={editSession.schedule_type}
+            value={editSession.interview_session.schedule_type}
             onChange={(e) => {
               setEditSession({
-                schedule_type: e.target
-                  .value as InterviewSession['schedule_type'],
+                interview_session: {
+                  ...editSession.interview_session,
+                  schedule_type: e.target
+                    .value as InterviewSession['schedule_type'],
+                },
               });
             }}
           >
-            <MenuItem value='google_meet'>
-              <Stack direction={'row'} spacing={2}>
-                <IconScheduleType type='google_meet' />
-                <Typography variant='body1' color={'var(--neutral-12)'}>
-                  Google Meet
-                </Typography>
-              </Stack>
-            </MenuItem>
-            <MenuItem value='zoom'>
-              <Stack direction={'row'} spacing={2}>
-                <IconScheduleType type='zoom' />
-                <Typography variant='body1' color={'var(--neutral-12)'}>
-                  Zoom
-                </Typography>
-              </Stack>
-            </MenuItem>
-            <MenuItem value='phone_call'>
-              <Stack direction={'row'} spacing={2}>
-                <IconScheduleType type='phone_call' />
-                <Typography variant='body1' color={'var(--neutral-12)'}>
-                  Phone Call
-                </Typography>
-              </Stack>
-            </MenuItem>
-            <MenuItem value='in_person_meeting'>
-              <Stack direction={'row'} spacing={2}>
-                <IconScheduleType type='in_person_meeting' />
-                <Typography variant='body1' color={'var(--neutral-12)'}>
-                  In Person Meeting
-                </Typography>
-              </Stack>
-            </MenuItem>
+            {schedule_type.map((type) => (
+              <MenuItem value={type} key={type}>
+                <Stack direction={'row'} spacing={2}>
+                  <IconScheduleType type={type} size={5} />
+                  <Typography variant='body1' color={palette.grey[800]}>
+                    {getScheduleType(type)}
+                  </Typography>
+                </Stack>
+              </MenuItem>
+            ))}
           </TextField>
         }
         slotMembersDropdown={

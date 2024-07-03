@@ -187,8 +187,9 @@ export const DropdownSelectButton = <T,>({
               <Stack
                 key={i}
                 direction={'row'}
-                sx={{ alignItems: 'center' }}
+                sx={{ alignItems: 'center', ':hover':{bgcolor:'var(--neutral-2)'}, borderRadius:'var(--radius-2)' }}
                 spacing={1}
+                padding={'var(--space-2) var(--space-3)'}
                 onClick={() => {
                   setSelectedItem(label);
                   handleClose();

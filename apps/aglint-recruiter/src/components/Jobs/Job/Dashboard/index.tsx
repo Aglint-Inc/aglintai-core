@@ -12,6 +12,7 @@ import { CloseDeleteJob } from '@/devlink/CloseDeleteJob';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { Breadcrum } from '@/devlink2/Breadcrum';
+import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { AddCandidateButton } from '@/devlink3/AddCandidateButton';
 import { BannerLoading } from '@/devlink3/BannerLoading';
@@ -43,7 +44,7 @@ import WorkflowIcon from '@/src/components/Common/ModuleIcons/workflowIcon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import PublishButton from '@/src/components/Common/PublishButton';
 import UITextField from '@/src/components/Common/UITextField';
-import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon';
+import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -104,7 +105,8 @@ const getMatches = (
 };
 
 const Dashboard = () => {
-  const { job, applicationScoringPollEnabled } = useJob();
+  const { job, applicationScoringPollEnabled, handleRescoreApplications } =
+    useJob();
   const {
     matches: { data: counts },
     schedules: { data: schedule },
@@ -158,7 +160,7 @@ const Dashboard = () => {
       const response = await handleJobPublish(job);
       toast.success('Job published successfully');
       if (response && scoring_criteria_changed) {
-        //await handleJobApplicationRescore();
+        await handleRescoreApplications({ job_id: job?.id });
       }
       return response;
     } else {
@@ -793,13 +795,36 @@ const useBanners = () => {
         }
       />,
     );
-  // if (status.scoring_criteria_changed)
-  //   banners.push(
-  //     <DashboardWarning
-  //       onClickDismiss={{ onClick: () => setDismiss(true) }}
-  //       onClickView={{ onClick: () => push(`/jobs/${job.id}/profile-score`) }}
-  //     />
-  //   );
+  if (status.scoring_criteria_changed && !dismissWarnings.score_changed)
+    banners.push(
+      <GlobalBanner
+        textTitle={'Scoring criteria has been updated'}
+        color='success'
+        iconName='check_circle'
+        textDescription='You may need to publish changes to score applicants with the current scoring criteria'
+        slotButtons={
+          <>
+            <ButtonSoft
+              textButton='Ignore'
+              size={2}
+              color={'neutral'}
+              onClickButton={{
+                onClick: () => setDismissWarnings({ score_changed: true }),
+              }}
+            />
+
+            <ButtonSolid
+              textButton='View'
+              size={2}
+              color={'accent'}
+              onClickButton={{
+                onClick: () => push(`/jobs/${job.id}/profile-score`),
+              }}
+            />
+          </>
+        }
+      />,
+    );
   return banners;
 };
 

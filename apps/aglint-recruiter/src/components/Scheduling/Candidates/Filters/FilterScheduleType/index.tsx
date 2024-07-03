@@ -49,7 +49,7 @@ function FilterScheduleType() {
     label: string,
   ) => {
     return (
-      <Stack direction={'row'} sx={{ alignItems: 'center' }} spacing={1}>
+      <Stack direction={'row'} sx={{ alignItems: 'center', ':hover':{bgcolor:'var(--neutral-2)'}, borderRadius:'var(--radius-2)' }} spacing={1} padding={'var(--space-2) var(--space-3)'}>
         <Checkbox
           isChecked={filter.scheduleType.includes(scheduleType)}
           onClickCheck={{

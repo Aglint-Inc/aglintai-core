@@ -18,6 +18,7 @@ export function GlobalBanner({
   slotButtons,
   isAdditionalNotes = false,
   color = "neutral",
+  isDescriptionVisible = true,
 }) {
   return (
     <_Component
@@ -36,7 +37,11 @@ export function GlobalBanner({
         <GlobalIcon iconName={iconName} size="8" weight="" />
         <_Builtin.Block className={_utils.cx(_styles, "flex_v1")} tag="div">
           <Text content={textTitle} />
-          <Text content={textDescription} color="neutral" weight="" />
+          {isDescriptionVisible ? (
+            <_Builtin.Block tag="div">
+              <Text content={textDescription} color="neutral" weight="" />
+            </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "button_wrapper")}

@@ -104,8 +104,9 @@ function FilterInterviewModule() {
                   <Stack
                     key={mod.id}
                     direction={'row'}
-                    sx={{ alignItems: 'center' }}
+                    sx={{ alignItems: 'center', ':hover':{bgcolor:'var(--neutral-2)'}, borderRadius:'var(--radius-2)'  }}
                     spacing={1}
+                    padding={'var(--space-2) var(--space-3)'}
                   >
                     <Checkbox
                       isChecked={filter.module_ids.includes(mod.id)}

@@ -1,4 +1,4 @@
-import * as v from "valibot";
+import * as v from 'valibot';
 export const applicationRecievedEmailApplicantSchema = v.object({
   application_id: v.string(),
 });
@@ -18,8 +18,8 @@ export const agentEmailCandidateSchema = v.object({
   recruiter_user_id: v.string(),
   filter_id: v.string(),
   mail_headers: v.object({
-    "Message-ID": v.string(),
-    "In-Reply-To": v.string(),
+    'Message-ID': v.string(),
+    'In-Reply-To': v.string(),
   }),
 });
 

@@ -2,12 +2,11 @@ import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GeneralBanner } from '@/devlink/GeneralBanner';
-import Icon from '@/src/components/Common/Icons/Icon';
+import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import toast from '@/src/utils/toast';
 
@@ -22,6 +21,7 @@ import {
 } from '../../store';
 import { useAvailabilityContext } from './RequestAvailabilityContext';
 import RequestAvailabilityDrawer from './RequestAvailabilityDrawer';
+import { GlobalIcon } from '@/devlink';
 
 function RequestAvailabilityPopUps() {
   const router = useRouter();
@@ -73,6 +73,7 @@ function RequestAvailabilityPopUps() {
     if (selectedRequest)
       setRequestSessionIds(selectedRequest.session_ids.map((ele) => ele.id));
   }, [router.query?.candidate_request_availability]);
+
   return (
     <div>
       <RequestAvailabilityDrawer />
@@ -85,30 +86,26 @@ function RequestAvailabilityPopUps() {
                 .map((ele) => ele.dates)
                 .flat()
                 .map((ele) => `<b>${dayjs(ele.curr_day).format('DD MMM')}</b>`);
+            const [copied, setCopied] = useState(false);
+
             return (
               <>
                 <ShowCode>
                   <ShowCode.When isTrue={!item.slots}>
-                    <GeneralBanner
-                      titleColorProps={{
-                        style: {
-                          color: 'var(--warning-11)',
-                        },
-                      }}
-                      textHeading={
+                    <GlobalBanner
+                      color={'warning'}
+                      iconName={'schedule'}
+                      textTitle={
                         'Waiting for candidates availability submission'
                       }
-                      textDesc={
+                      textDescription={
                         <div
                           dangerouslySetInnerHTML={{
                             __html: `Candidate received a link to choose multiple options for ${item.session_ids.map((ele) => `<b>${ele.name}</b>`)} Interviews.`,
                           }}
                         ></div>
                       }
-                      slotHeadingIcon={
-                        <Icon height='15' width='' variant='Clock' />
-                      }
-                      slotButton={
+                      slotButtons={
                         <>
                           <ButtonSolid
                             textButton={'Resend invite'}
@@ -126,18 +123,35 @@ function RequestAvailabilityPopUps() {
                               },
                             }}
                           />
+
                           <ButtonSoft
-                            textButton={'Copy invite'}
+                            textButton={'Request again'}
                             isLoading={false}
                             isLeftIcon={false}
                             isRightIcon={false}
                             size={1}
                             onClickButton={{
+                              onClick: () => handleRequestAgain(item.id),
+                            }}
+                          />
+                          <ButtonSoft
+                            textButton={copied ? 'Copied' : 'Copy link'}
+                            isLoading={false}
+                            isLeftIcon={false}
+                            isRightIcon={false}
+                            slotIcon={<GlobalIcon iconName={'check_circle'} />}
+                            size={1}
+                            onClickButton={{
                               onClick: () => {
-                                navigator.clipboard.writeText(
-                                  `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${item.id}`,
-                                );
-                                toast.message('Invited link copied!');
+                                if (!copied) {
+                                  setCopied(true);
+                                  setTimeout(() => {
+                                    setCopied(false);
+                                  }, 2000);
+                                  navigator.clipboard.writeText(
+                                    `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${item.id}`,
+                                  );
+                                }
                               },
                             }}
                           />
@@ -146,24 +160,18 @@ function RequestAvailabilityPopUps() {
                     />
                   </ShowCode.When>
                   <ShowCode.Else>
-                    <GeneralBanner
-                      titleColorProps={{
-                        style: {
-                          color: 'var(--info-11)',
-                        },
-                      }}
-                      textHeading={'Candidate submitted availability'}
-                      textDesc={
+                    <GlobalBanner
+                      iconName={'check_circle'}
+                      color={'warning'}
+                      textTitle={'Candidate submitted availability'}
+                      textDescription={
                         <div
                           dangerouslySetInnerHTML={{
                             __html: `Candidate submitted availability on ${dates} for ${item.session_ids.map((ele) => `<b>${ele.name}</b>`)} Interviews.`,
                           }}
                         ></div>
                       }
-                      slotHeadingIcon={
-                        <Icon height={'16'} width={'20'} variant='Check' />
-                      }
-                      slotButton={
+                      slotButtons={
                         <>
                           <ButtonSolid
                             textButton={'Schedule'}

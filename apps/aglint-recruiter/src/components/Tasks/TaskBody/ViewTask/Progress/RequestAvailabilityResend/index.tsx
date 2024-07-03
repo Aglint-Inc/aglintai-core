@@ -1,11 +1,12 @@
 import { DatabaseView } from '@aglint/shared-types';
+import { Stack, Tooltip } from '@mui/material';
 import axios from 'axios';
-import React from 'react';
+import React, { useState } from 'react';
 
-import { GeneralBanner } from '@/devlink/GeneralBanner';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { ButtonSolid } from '@/devlink2/ButtonSolid';
-import Icon from '@/src/components/Common/Icons/Icon';
+import { GlobalBanner } from '@/devlink2/GlobalBanner';
+import UITypography from '@/src/components/Common/UITypography';
 import toast from '@/src/utils/toast';
 
 function RequestAvailabilityResend({
@@ -13,23 +14,33 @@ function RequestAvailabilityResend({
 }: {
   selectedTask: DatabaseView['tasks_view'];
 }) {
+  //tooltip for copy link
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+
+  const handleButtonClick = () => {
+    setTooltipOpen(true);
+    setTimeout(() => {
+      setTooltipOpen(false);
+    }, 700);
+  };
+
+  const handleTooltipClose = () => {
+    setTooltipOpen(false);
+  };
+
   return (
-    <GeneralBanner
-      titleColorProps={{
-        style: {
-          color: 'var(--warning-11)',
-        },
-      }}
-      textHeading={'Waiting for candidates availability submission'}
-      textDesc={
+    <GlobalBanner
+      color={'warning'}
+      iconName={'schedule'}
+      textTitle={'Waiting for candidates availability submission'}
+      textDescription={
         <div
           dangerouslySetInnerHTML={{
             __html: `Candidate received a link to choose multiple options for ${selectedTask.session_ids.map((ele) => `<b>${ele.name}</b>`)} Interviews.`,
           }}
         ></div>
       }
-      slotHeadingIcon={<Icon height='15' width='' variant='Clock' />}
-      slotButton={
+      slotButtons={
         <>
           <ButtonSolid
             textButton={'Resend invite'}
@@ -49,21 +60,32 @@ function RequestAvailabilityResend({
               },
             }}
           />
-          <ButtonSoft
-            textButton={'Copy invite'}
-            isLoading={false}
-            isLeftIcon={false}
-            isRightIcon={false}
-            size={1}
-            onClickButton={{
-              onClick: () => {
-                navigator.clipboard.writeText(
-                  `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${selectedTask.request_availability_id}`,
-                );
-                toast.message('Invited link copied!');
-              },
-            }}
-          />
+          <Tooltip
+            title={<UITypography type='extraSmall'>Link Copied</UITypography>}
+            open={tooltipOpen}
+            disableHoverListener
+            disableFocusListener
+            disableTouchListener
+            onClose={handleTooltipClose}
+          >
+            <Stack>
+              <ButtonSoft
+                textButton={'Copy invite'}
+                isLoading={false}
+                isLeftIcon={false}
+                isRightIcon={false}
+                size={1}
+                onClickButton={{
+                  onClick: () => {
+                    navigator.clipboard.writeText(
+                      `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${selectedTask.request_availability_id}`,
+                    );
+                    handleButtonClick();
+                  },
+                }}
+              />
+            </Stack>
+          </Tooltip>
         </>
       }
     />

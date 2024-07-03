@@ -1,4 +1,5 @@
 import {
+  Alert,
   Autocomplete,
   Chip,
   Dialog,
@@ -56,9 +57,10 @@ import MuiNumberfield from './Components/MuiNumberfield';
 import MuiSelect from './Components/MuiSelect';
 import SelectTime from './Components/SelectTime';
 import DebriefDefaults from './DebriefDefaults';
-import SchedulerEmailTemps, { emailTempKeys } from './SchedulingEmailTemplates';
+import SchedulerEmailTemps from './SchedulingEmailTemplates';
+import { emailTempKeys } from './SchedulingEmailTemplates/utils';
 import SchedulingRegions from './SchedulingReason';
-import { settingSubNavItem } from './SubNav/utils';
+import { settingsItems, settingSubNavItem } from './SubNav/utils';
 let schedulingSettingObj = {};
 let changeValue = null;
 type specificLocationType = 'all_locations' | 'specific_locations';
@@ -74,6 +76,7 @@ function SchedulingSettings({
   updateSettings,
   initialData,
   isOverflow = true,
+  setSaving,
 }) {
   const { recruiter } = useAuthDetails();
   const eventRef = useRef<HTMLInputElement>(null);
@@ -854,26 +857,34 @@ function SchedulingSettings({
                           type='string'
                         />
                       }
-                      slotSuggestPill={freeKeyWords.map((item) => {
-                        return (
-                          <>
-                            <Chip
-                              clickable
-                              onDelete={() => {
-                                setFreeKeywords((pre) => {
-                                  return pre.filter((ele) => ele !== item);
-                                });
-                              }}
-                              deleteIcon={
-                                <Stack>
-                                  <GlobalIcon iconName='close' size='4' />
-                                </Stack>
-                              }
-                              label={item}
-                            />
-                          </>
-                        );
-                      })}
+                      slotSuggestPill={
+                        freeKeyWords.length === 0 ? (
+                          <Alert severity='info' icon={false}>
+                            <Typography>No free keywords added.</Typography>
+                          </Alert>
+                        ) : (
+                          freeKeyWords.map((item) => {
+                            return (
+                              <>
+                                <Chip
+                                  clickable
+                                  onDelete={() => {
+                                    setFreeKeywords((pre) => {
+                                      return pre.filter((ele) => ele !== item);
+                                    });
+                                  }}
+                                  deleteIcon={
+                                    <Stack>
+                                      <GlobalIcon iconName='close' size='4' />
+                                    </Stack>
+                                  }
+                                  label={item}
+                                />
+                              </>
+                            );
+                          })
+                        )
+                      }
                     />
                     <KeywordCard
                       textTitle={'Soft Conflicts'}
@@ -900,26 +911,36 @@ function SchedulingSettings({
                           type='string'
                         />
                       }
-                      slotSuggestPill={softConflictsKeyWords.map((item) => {
-                        return (
-                          <>
-                            <Chip
-                              clickable
-                              onDelete={() => {
-                                setSoftConflictsKeyWords((pre) => {
-                                  return pre.filter((ele) => ele !== item);
-                                });
-                              }}
-                              deleteIcon={
-                                <Stack>
-                                  <GlobalIcon iconName='close' size='4' />
-                                </Stack>
-                              }
-                              label={item}
-                            />
-                          </>
-                        );
-                      })}
+                      slotSuggestPill={
+                        softConflictsKeyWords.length === 0 ? (
+                          <Alert severity='info' icon={false}>
+                            <Typography>
+                              No soft conflict keyword added.
+                            </Typography>
+                          </Alert>
+                        ) : (
+                          softConflictsKeyWords.map((item) => {
+                            return (
+                              <>
+                                <Chip
+                                  clickable
+                                  onDelete={() => {
+                                    setSoftConflictsKeyWords((pre) => {
+                                      return pre.filter((ele) => ele !== item);
+                                    });
+                                  }}
+                                  deleteIcon={
+                                    <Stack>
+                                      <GlobalIcon iconName='close' size='4' />
+                                    </Stack>
+                                  }
+                                  label={item}
+                                />
+                              </>
+                            );
+                          })
+                        )
+                      }
                     />
                     <KeywordCard
                       textTitle={'Out of Office'}
@@ -946,26 +967,36 @@ function SchedulingSettings({
                           type='string'
                         />
                       }
-                      slotSuggestPill={outOfOffice.map((item) => {
-                        return (
-                          <>
-                            <Chip
-                              clickable
-                              onDelete={() => {
-                                setOutOfOffice((pre) => {
-                                  return pre.filter((ele) => ele !== item);
-                                });
-                              }}
-                              deleteIcon={
-                                <Stack>
-                                  <GlobalIcon iconName='close' size='4' />
-                                </Stack>
-                              }
-                              label={item}
-                            />
-                          </>
-                        );
-                      })}
+                      slotSuggestPill={
+                        outOfOffice.length === 0 ? (
+                          <Alert severity='info' icon={false}>
+                            <Typography>
+                              No out of office keywords added.
+                            </Typography>
+                          </Alert>
+                        ) : (
+                          outOfOffice.map((item) => {
+                            return (
+                              <>
+                                <Chip
+                                  clickable
+                                  onDelete={() => {
+                                    setOutOfOffice((pre) => {
+                                      return pre.filter((ele) => ele !== item);
+                                    });
+                                  }}
+                                  deleteIcon={
+                                    <Stack>
+                                      <GlobalIcon iconName='close' size='4' />
+                                    </Stack>
+                                  }
+                                  label={item}
+                                />
+                              </>
+                            );
+                          })
+                        )
+                      }
                     />
                     <KeywordCard
                       textTitle={'Recruiting Blocks'}
@@ -992,26 +1023,38 @@ function SchedulingSettings({
                           type='string'
                         />
                       }
-                      slotSuggestPill={recruitingBlocks.map((item) => {
-                        return (
-                          <>
-                            <Chip
-                              clickable
-                              onDelete={() => {
-                                setRecruitingBlocks((pre) => {
-                                  return pre.filter((ele) => ele !== item);
-                                });
-                              }}
-                              deleteIcon={
-                                <Stack>
-                                  <GlobalIcon iconName='close' size='4' />
-                                </Stack>
-                              }
-                              label={item}
-                            />
-                          </>
-                        );
-                      })}
+                      slotSuggestPill={
+                        recruitingBlocks.length === 0 ? (
+                          <Alert
+                            severity='info'
+                            variant='outlined'
+                            icon={false}
+                          >
+                            <Typography>No recruiting blocks added.</Typography>
+                          </Alert>
+                        ) : (
+                          recruitingBlocks.map((item) => {
+                            return (
+                              <>
+                                <Chip
+                                  clickable
+                                  onDelete={() => {
+                                    setRecruitingBlocks((pre) => {
+                                      return pre.filter((ele) => ele !== item);
+                                    });
+                                  }}
+                                  deleteIcon={
+                                    <Stack>
+                                      <GlobalIcon iconName='close' size='4' />
+                                    </Stack>
+                                  }
+                                  label={item}
+                                />
+                              </>
+                            );
+                          })
+                        )
+                      }
                     />
                   </>
                 }
@@ -1020,7 +1063,7 @@ function SchedulingSettings({
             <ShowCode.When
               isTrue={router.query.subtab == settingSubNavItem.EMAILTEMPLATE}
             >
-              <SchedulerEmailTemps />
+              <SchedulerEmailTemps setSaving={setSaving} />
             </ShowCode.When>
             <ShowCode.When
               isTrue={router.query.subtab == settingSubNavItem.REASONS}
@@ -1103,16 +1146,6 @@ export const TimezoneSelector = ({
   );
 };
 
-const settingsItems = [
-  { label: 'Interview Load', value: 'interviewLoad' },
-  { label: 'Working Hours', value: 'workingHours' },
-  { label: 'Company Day Off', value: 'dayOff' },
-  { label: 'Keywords', value: 'keywords' },
-  { label: 'Email Template', value: 'emailTemplate' },
-  { label: 'Scheduling Reasons', value: 'reasons' },
-  { label: 'Debrief Defaults', value: 'debriefDefaults' },
-];
-
 function SettingsSubNabItem() {
   const router = useRouter();
   const { emailTemplates } = useAuthDetails();
@@ -1146,7 +1179,7 @@ function SettingsSubNabItem() {
             onClickTab={{
               onClick: (e: any) => {
                 e.stopPropagation();
-                if (item.value === 'emailTemplate') {
+                if (item.value === settingSubNavItem['EMAILTEMPLATE']) {
                   router.push(
                     `${ROUTES['/scheduling']()}?tab=settings&subtab=${item.value}&email=${firstTemplate}`,
                   );

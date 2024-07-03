@@ -2,8 +2,7 @@ import { DatabaseView } from '@aglint/shared-types';
 import { useRouter } from 'next/router';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GeneralBanner } from '@/devlink/GeneralBanner';
-import Icon from '@/src/components/Common/Icons/Icon';
+import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import {
   setDateRange,
   setIsScheduleNowOpen,
@@ -23,16 +22,14 @@ function ScheduleNowCard({
   const router = useRouter();
 
   return (
-    <GeneralBanner
-      titleColorProps={{
-        style: {
-          color: 'var(--info-11)',
-        },
-      }}
-      textHeading={'Schedule interview'}
-      textDesc={'Please select a date and time to schedule your interview.'}
-      slotHeadingIcon={<Icon height={'16'} width={'20'} variant='Check' />}
-      slotButton={
+    <GlobalBanner
+      color={'warning'}
+      iconName={'check_circle'}
+      textTitle={'Schedule interview'}
+      textDescription={
+        'Please select a date and time to schedule your interview.'
+      }
+      slotButtons={
         <>
           <ButtonSolid
             textButton={
