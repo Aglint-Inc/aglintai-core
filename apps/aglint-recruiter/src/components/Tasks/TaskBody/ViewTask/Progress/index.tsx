@@ -280,6 +280,7 @@ function SubTaskProgress() {
                                           ses={ses as meetingCardType}
                                           key={indOpt}
                                           sessionList={sessionList}
+                                          applicationId={selectedTask.application_id}
                                         />
                                       );
                                     })}

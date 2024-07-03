@@ -147,36 +147,32 @@ function RequestAvailabilityPopUps() {
                               },
                             }}
                           />
-                          <Tooltip
-                            title={
-                              <UITypography type='extraSmall'>
-                                Link Copied
-                              </UITypography>
-                            }
-                            open={tooltipOpen}
-                            disableHoverListener
-                            disableFocusListener
-                            disableTouchListener
-                            onClose={handleTooltipClose}
-                          >
-                            <Stack>
-                              <ButtonSoft
-                                textButton={'Copy invite'}
-                                isLoading={false}
-                                isLeftIcon={false}
-                                isRightIcon={false}
-                                size={1}
-                                onClickButton={{
-                                  onClick: () => {
-                                    navigator.clipboard.writeText(
-                                      `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${item.id}`,
-                                    );
-                                    handleButtonClick();
-                                  },
-                                }}
-                              />
-                            </Stack>
-                          </Tooltip>
+
+                          <ButtonSoft
+                            textButton={'Request again'}
+                            isLoading={false}
+                            isLeftIcon={false}
+                            isRightIcon={false}
+                            size={1}
+                            onClickButton={{
+                              onClick: () => handleRequestAgain(item.id),
+                            }}
+                          />
+                          <ButtonSoft
+                            textButton={'Copy invite'}
+                            isLoading={false}
+                            isLeftIcon={false}
+                            isRightIcon={false}
+                            size={1}
+                            onClickButton={{
+                              onClick: () => {
+                                navigator.clipboard.writeText(
+                                  `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${item.id}`,
+                                );
+                                toast.message('Invited link copied!');
+                              },
+                            }}
+                          />
                         </>
                       }
                     />
