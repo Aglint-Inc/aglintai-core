@@ -199,6 +199,7 @@ const BodyComp = ({ setSaving }) => {
             <SchedulingSettings
               updateSettings={updateSettings}
               initialData={recruiter?.scheduling_settings}
+              setSaving={setSaving}
             />
           ) : (
             <InterviewerSetting />

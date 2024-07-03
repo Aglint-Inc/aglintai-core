@@ -1,28 +1,13 @@
 /* eslint-disable no-unused-vars */
-import { DatabaseEnums, DatabaseTableInsert } from '@aglint/shared-types';
+import {
+  DatabaseEnums,
+  DatabaseTable,
+  DatabaseTableInsert,
+} from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 
+import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
 import { supabase } from '@/src/utils/supabase/client';
-
-export async function upateEmailTemplate({
-  id,
-  data,
-}: {
-  id: string;
-  data: DatabaseTableInsert['company_email_template'];
-}) {
-  const { data: emailDetails, error } = await supabase
-    .from('company_email_template')
-    .update({ ...data })
-    .eq('id', id)
-    .select()
-    .single();
-
-  if (!error) {
-    return emailDetails;
-  } else {
-    return error;
-  }
-}
 
 export enum TEMPLATE_TABS {
   Email = 'email',
@@ -106,3 +91,35 @@ export const allTempKeys: DatabaseEnums['email_slack_types'][] = [
   ...slackTempKeys,
   ...calenderTempKeys,
 ];
+
+export const fetchEmailTemplates = async (recruiter_id) => {
+  const templates = supabaseWrap(
+    await supabase
+      .from('company_email_template')
+      .select()
+      .eq('recruiter_id', recruiter_id),
+  );
+  return templates;
+};
+
+export const SortCurrentTabTemps = (
+  templates: DatabaseTable['company_email_template'][],
+) => {
+  const curr_tab_temps = templates
+    .filter((temp) => emailTemplateCopy[temp.type]?.heading)
+    .sort((a, b) => {
+      if (
+        emailTemplateCopy[a.type].heading > emailTemplateCopy[b.type].heading
+      ) {
+        return 1;
+      }
+      if (
+        emailTemplateCopy[b.type].heading > emailTemplateCopy[a.type].heading
+      ) {
+        return -1;
+      }
+      return 0;
+    });
+
+  return curr_tab_temps;
+};
