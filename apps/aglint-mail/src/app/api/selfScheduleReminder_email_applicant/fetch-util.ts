@@ -50,12 +50,12 @@ export async function dbUtil(
       candidateName: getFullName(first_name, last_name),
       jobRole: job_title,
       selfScheduleLink: `<a href="${scheduleLink}">here</a>`,
-      OrganizerName: getFullName(
+      organizerName: getFullName(
         meeting_organizer.first_name,
         meeting_organizer.last_name,
       ),
-      OrganizerFirstName: meeting_organizer.first_name,
-      OrganizerLastName: meeting_organizer.last_name,
+      organizerFirstName: meeting_organizer.first_name,
+      organizerLastName: meeting_organizer.last_name,
       OrganizerTimeZone: meeting_organizer.scheduling_settings.timeZone.tzCode,
     };
 

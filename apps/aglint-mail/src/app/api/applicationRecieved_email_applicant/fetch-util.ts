@@ -43,10 +43,10 @@ export async function fetchUtil(
       candidateLastName: last_name,
       jobRole: job_title,
       companyName: company,
-      OrganizerName: getFullName(organizer.first_name, organizer.last_name),
+      organizerName: getFullName(organizer.first_name, organizer.last_name),
       candidateName: getFullName(first_name, last_name),
-      OrganizerFirstName: organizer.first_name,
-      OrganizerLastName: organizer.last_name,
+      organizerFirstName: organizer.first_name,
+      organizerLastName: organizer.last_name,
       OrganizerTimeZone: recruiter_tz,
     };
 

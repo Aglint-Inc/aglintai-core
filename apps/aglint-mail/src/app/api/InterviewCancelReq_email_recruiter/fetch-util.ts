@@ -82,7 +82,7 @@ export async function fetchUtil(
     {
       additionalRescheduleNotes: session_cancel.other_details.note,
       cancelReason: session_cancel.reason,
-      OrganizerName: getFullName(
+      organizerName: getFullName(
         meeting_organizer.first_name,
         meeting_organizer.last_name,
       ),
@@ -91,8 +91,8 @@ export async function fetchUtil(
       candidateLastName: candidates.last_name,
       candidateName: getFullName(candidates.first_name, candidates.last_name),
       companyName: public_jobs.company,
-      OrganizerFirstName: meeting_organizer.first_name,
-      OrganizerLastName: meeting_organizer.last_name,
+      organizerFirstName: meeting_organizer.first_name,
+      organizerLastName: meeting_organizer.last_name,
       OrganizerTimeZone: org_tz,
       candidateScheduleLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}">here</a>`,
     };

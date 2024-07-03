@@ -9,9 +9,9 @@ export const jobDetails = ["companyName", "jobRole"] as const;
 export const company = ["companyName"];
 
 export const organizer = [
-  "OrganizerName",
-  "OrganizerFirstName",
-  "OrganizerLastName",
+  "organizerName",
+  "organizerFirstName",
+  "organizerLastName",
   "OrganizerTimeZone",
 ] as const;
 
