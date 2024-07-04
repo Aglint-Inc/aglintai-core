@@ -33,6 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     zod_options.include_conflicting_slots.show_conflicts_events = true;
     zod_options.include_conflicting_slots.show_soft_conflicts = true;
+    zod_options.include_conflicting_slots.out_of_working_hrs = true;
 
     const cand_schedule = new CandidatesSchedulingV2(
       {
