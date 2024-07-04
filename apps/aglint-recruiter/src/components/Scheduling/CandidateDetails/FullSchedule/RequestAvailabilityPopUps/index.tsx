@@ -12,7 +12,6 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import toast from '@/src/utils/toast';
 
 import {
-  setDateRange,
   setIsScheduleNowOpen,
   setScheduleFlow,
   setStepScheduling,
@@ -24,11 +23,10 @@ import {
 } from '../../store';
 import { useAvailabilityContext } from './RequestAvailabilityContext';
 import RequestAvailabilityDrawer from './RequestAvailabilityDrawer';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 function RequestAvailabilityPopUps() {
   const router = useRouter();
-  const { availabilities } = useSchedulingApplicationStore();
+  const { availabilities, initialSessions } = useSchedulingApplicationStore();
   const [copied, setCopied] = useState(false);
 
   const { setSelectedRequestAvailability } = useAvailabilityContext();
@@ -46,7 +44,7 @@ function RequestAvailabilityPopUps() {
     });
   }
 
-  function handleRequestAgain(request_id: string) {
+  function handleRequestAgain(request_id: string, session_ids: string[]) {
     const currentPath = router.pathname;
     const currentQuery = router.query;
     const updatedQuery = {
@@ -60,12 +58,8 @@ function RequestAvailabilityPopUps() {
     setIsScheduleNowOpen(true);
     setStepScheduling('pick_date');
     setScheduleFlow('update_request_availibility');
-    setDateRange({
-      start_date: dayjsLocal().toISOString(),
-      end_date: dayjsLocal().add(7, 'day').toISOString(),
-    });
-    setRequestSessionIds([]);
-    setSelectedSessionIds([]);
+    setSelectedSessionIds(session_ids);
+    setRequestSessionIds(session_ids);
   }
 
   function sendReminderEmail({ request_id }: { request_id: string }) {
@@ -76,12 +70,19 @@ function RequestAvailabilityPopUps() {
     });
   }
 
+  const selectedRequest = availabilities?.find((item) => {
+    return (
+      item.candidate_request_availability.id ==
+      router.query?.candidate_request_availability
+    );
+  });
+
+  const reqSesIds =
+    selectedRequest?.request_session_relations.map((ele) => ele.session_id) ||
+    [];
+
   useEffect(() => {
-    const selectedRequest = availabilities?.find((item) => {
-      return item.id == router.query?.candidate_request_availability;
-    });
-    if (selectedRequest)
-      setRequestSessionIds(selectedRequest.session_ids.map((ele) => ele.id));
+    if (selectedRequest) setRequestSessionIds(reqSesIds);
   }, [router.query?.candidate_request_availability]);
 
   return (
@@ -91,16 +92,26 @@ function RequestAvailabilityPopUps() {
         {availabilities &&
           availabilities.map((item) => {
             const dates =
-              item.slots &&
-              item.slots
+              item.candidate_request_availability.slots &&
+              item.candidate_request_availability.slots
                 .map((ele) => ele.dates)
                 .flat()
                 .map((ele) => `<b>${dayjs(ele.curr_day).format('DD MMM')}</b>`);
 
+            const sesIds = item?.request_session_relations.map(
+              (ele) => ele.session_id,
+            );
+
+            const sessions = initialSessions.filter((session) =>
+              sesIds.includes(session.interview_session.id),
+            );
+
             return (
               <>
                 <ShowCode>
-                  <ShowCode.When isTrue={!item.slots}>
+                  <ShowCode.When
+                    isTrue={!item.candidate_request_availability.slots}
+                  >
                     <GlobalBanner
                       color={'warning'}
                       iconName={'schedule'}
@@ -110,7 +121,7 @@ function RequestAvailabilityPopUps() {
                       textDescription={
                         <div
                           dangerouslySetInnerHTML={{
-                            __html: `Candidate received a link to choose multiple options for ${item.session_ids.map((ele) => `<b>${ele.name}</b>`)} Interviews.`,
+                            __html: `Candidate received a link to choose multiple options for ${sessions.map((ele) => `<b>${ele.interview_session.name}</b>`)} Interviews.`,
                           }}
                         ></div>
                       }
@@ -124,7 +135,10 @@ function RequestAvailabilityPopUps() {
                             size={1}
                             onClickButton={{
                               onClick: () => {
-                                sendReminderEmail({ request_id: item.id });
+                                sendReminderEmail({
+                                  request_id:
+                                    item.candidate_request_availability.id,
+                                });
 
                                 toast.message(
                                   'Resend invited link sent successfully!',
@@ -140,7 +154,11 @@ function RequestAvailabilityPopUps() {
                             isRightIcon={false}
                             size={1}
                             onClickButton={{
-                              onClick: () => handleRequestAgain(item.id),
+                              onClick: () =>
+                                handleRequestAgain(
+                                  item.candidate_request_availability.id,
+                                  sesIds,
+                                ),
                             }}
                           />
                           <ButtonSoft
@@ -158,7 +176,7 @@ function RequestAvailabilityPopUps() {
                                     setCopied(false);
                                   }, 2000);
                                   navigator.clipboard.writeText(
-                                    `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${item.id}`,
+                                    `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${item.candidate_request_availability.id}`,
                                   );
                                 }
                               },
@@ -176,7 +194,7 @@ function RequestAvailabilityPopUps() {
                       textDescription={
                         <div
                           dangerouslySetInnerHTML={{
-                            __html: `Candidate submitted availability on ${dates} for ${item.session_ids.map((ele) => `<b>${ele.name}</b>`)} Interviews.`,
+                            __html: `Candidate submitted availability on ${dates} for ${sessions.map((ele) => `<b>${ele.interview_session.name}</b>`)} Interviews.`,
                           }}
                         ></div>
                       }
@@ -190,8 +208,12 @@ function RequestAvailabilityPopUps() {
                             size={1}
                             onClickButton={{
                               onClick: () => {
-                                openDrawer(item.id);
-                                setSelectedRequestAvailability(item);
+                                openDrawer(
+                                  item.candidate_request_availability.id,
+                                );
+                                setSelectedRequestAvailability(
+                                  item.candidate_request_availability,
+                                );
                               },
                             }}
                           />
@@ -202,7 +224,11 @@ function RequestAvailabilityPopUps() {
                             isRightIcon={false}
                             size={1}
                             onClickButton={{
-                              onClick: () => handleRequestAgain(item.id),
+                              onClick: () =>
+                                handleRequestAgain(
+                                  item.candidate_request_availability.id,
+                                  sesIds,
+                                ),
                             }}
                           />
                         </>

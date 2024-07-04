@@ -15,6 +15,10 @@ export type TabSchedulingType =
   | 'feedback'
   | 'candidate_feedback';
 
+export interface AvailabilitiesSchedulingApplication {
+  candidate_request_availability: DatabaseTable['candidate_request_availability'];
+  request_session_relations: DatabaseTable['request_session_relation'][];
+}
 export interface SchedulingApplication {
   initialLoading: boolean;
   initialSessions: SessionsType[];
@@ -30,7 +34,7 @@ export interface SchedulingApplication {
   isEditOpen: boolean;
   isEditBreakOpen: boolean;
   editSession: SessionsType;
-  availabilities: DatabaseTable['candidate_request_availability'][];
+  availabilities: AvailabilitiesSchedulingApplication[];
   isIndividualCancelOpen: boolean;
   isMultipleCancelOpen: boolean;
   isMultipleRescheduleOpen: boolean;
@@ -97,7 +101,7 @@ export const setRequestSessionIds = (requestSessionIds: string[]) =>
   useSchedulingApplicationStore.setState({ requestSessionIds });
 
 export const setAvailabilities = (
-  availabilities: DatabaseTable['candidate_request_availability'][],
+  availabilities: AvailabilitiesSchedulingApplication[],
 ) => useSchedulingApplicationStore.setState({ availabilities });
 
 export const setSelectedApplicationLog = (
