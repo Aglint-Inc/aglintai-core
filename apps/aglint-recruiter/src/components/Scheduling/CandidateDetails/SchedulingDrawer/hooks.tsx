@@ -15,6 +15,8 @@ import { useGetScheduleApplication } from '../hooks';
 import { useRequestAvailabilityContext } from '../RequestAvailability/RequestAvailabilityContext';
 import {
   setIsSendingToCandidate,
+  setRequestSessionIds,
+  setRescheduleSessionIds,
   setSelectedApplicationLog,
   setSelectedSessionIds,
   useSchedulingApplicationStore,
@@ -107,7 +109,7 @@ export const useSelfSchedulingDrawer = () => {
       generateCombinations();
     } else if (stepScheduling === 'slot_options') {
       if (!isSendingToCandidate) {
-        onClickSendToCandidate();
+        await onClickSendToCandidate();
       }
     }
   };
@@ -140,6 +142,8 @@ export const useSelfSchedulingDrawer = () => {
       setStepScheduling('pick_date');
       setSelectedApplicationLog(null);
       removeQueryParams();
+      setRequestSessionIds([]);
+      setRescheduleSessionIds([]);
     }
   };
 

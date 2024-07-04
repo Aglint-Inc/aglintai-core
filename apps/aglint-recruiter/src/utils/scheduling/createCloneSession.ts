@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
 
-import { handleMeetingsOrganizerResetRelations, upsertMeetingsWithOrganizerId } from './upsertMeetingsWithOrganizerId';
+import { getOrganizerId } from './getOrganizerId';
 
 export const createCloneSession = async ({
   is_get_more_option,
@@ -56,6 +56,8 @@ export const createCloneSession = async ({
       new_schedule_id: new_schedule_id,
     }));
 
+    const organizer_id = await getOrganizerId(application_id, supabase);
+
     const insertableMeetings: DatabaseTableInsert['interview_meeting'][] =
       refSessions.map((ses) => {
         return {
@@ -66,15 +68,15 @@ export const createCloneSession = async ({
           )?.interview_module?.instructions,
           id: ses.new_meeting_id,
           meeting_flow,
+          organizer_id,
         };
       });
 
-    const { meetings: insertedMeetings, organizer_id } =
-      await handleMeetingsOrganizerResetRelations({
-        application_id,
-        selectedSessions,
-        supabase,
-      });
+    const { data: insertedMeetings } = await supabase
+      .from('interview_meeting')
+      .upsert(insertableMeetings)
+      .select()
+      .throwOnError();
 
     const insertableSessions: DatabaseTableInsert['interview_session'][] =
       allSessions.map((session) => ({

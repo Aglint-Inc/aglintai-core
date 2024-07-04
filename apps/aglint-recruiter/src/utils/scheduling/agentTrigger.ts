@@ -47,8 +47,6 @@ export const agentTrigger = async ({
     );
 
     if (res?.status === 200) {
-      console.log(res);
-
       console.log('mail agent triggered successfully');
     } else {
       console.log('error in mail agent');

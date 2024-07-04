@@ -2,7 +2,6 @@
 /* eslint-disable no-console */
 import {
   APIScheduleDebreif,
-  DatabaseTableInsert,
   DB,
   EmailTemplateAPi,
   InterviewSessionTypeDB,
@@ -14,16 +13,10 @@ import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
 import dayjs from 'dayjs';
 
-import { agentTrigger } from '@/src/utils/scheduling/agentTrigger';
-import { createCloneSession } from '@/src/utils/scheduling/createCloneSession';
-import { resetSessionRelations } from '@/src/utils/scheduling/resetSessionRelations';
-import { upsertMeetingsWithOrganizerId } from '@/src/utils/scheduling/upsertMeetingsWithOrganizerId';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { addScheduleActivity } from '../Candidates/queries/utils';
-import { getScheduleName } from '../utils';
-import { fetchInterviewDataJob, fetchInterviewDataSchedule } from './hooks';
 import { selfScheduleReminderMailToCandidate } from './mailUtils';
 import { SchedulingFlow } from './SchedulingDrawer/store';
 import { SchedulingApplication } from './store';
