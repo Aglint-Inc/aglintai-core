@@ -39,14 +39,14 @@ export const sendMailFun = async <
   );
   if (is_preview) {
     return { html, subject };
-  } else {
-    await sendMail({
-      email: recipient_email,
-      html,
-      subject,
-      text: html,
-      fromName: filled_comp_template.from_name,
-      attachments,
-    });
   }
+  await sendMail({
+    email: recipient_email,
+    html,
+    subject,
+    text: html,
+    fromName: filled_comp_template.from_name,
+    attachments,
+  });
+  return null;
 };
