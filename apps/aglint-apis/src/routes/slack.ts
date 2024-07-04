@@ -10,12 +10,12 @@ import {sendDirectMessage} from 'src/controllers/slack/sendDirectMessage';
 const slackRoutes = express.Router();
 
 const interviewerConfirmationRoute: DatabaseEnums['email_slack_types'] =
-  'candidateBook_slack_interviewerForFeedback';
+  'candidateBook_slack_interviewerForConfirmation';
 const interview_reminder_route: DatabaseEnums['email_slack_types'] =
   'interviewStart_slack_interviewers';
 
 const interviewer_feedback_route: DatabaseEnums['email_slack_types'] =
-  'interviewEnd_slack_interviewers';
+  'interviewEnd_slack_interviewerForFeedback';
 
 slackRoutes.post(
   `/${interviewerConfirmationRoute}`,
