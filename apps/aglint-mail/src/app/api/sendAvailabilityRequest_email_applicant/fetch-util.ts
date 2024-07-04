@@ -6,26 +6,57 @@ import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 export async function dbUtil(
   req_body: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'],
 ) {
-  const [avail_req_data] = supabaseWrap(
-    await supabaseAdmin
-      .from('candidate_request_availability')
-      .select(
-        'id,applications(id, candidates(first_name,last_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title, company))',
-      )
-      .eq('id', req_body.avail_req_id),
-  );
+  let avail_req_data: Avail;
+  let recruiter_user: Recru;
 
-  const [recruiter_user] = supabaseWrap(
-    await supabaseAdmin
-      .from('recruiter_user')
-      .select('first_name,last_name,scheduling_settings')
-      .eq('user_id', req_body.recruiter_user_id),
-  );
-  const recruiter_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
-  if (!avail_req_data || !recruiter_user) {
-    throw new Error('Record not found');
+  if (!req_body?.is_preview) {
+    const [avail_req] = supabaseWrap(
+      await supabaseAdmin
+        .from('candidate_request_availability')
+        .select(
+          'id,applications(id, candidates(first_name,last_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title, company))',
+        )
+        .eq('id', req_body.avail_req_id),
+    );
+
+    avail_req_data = avail_req;
+
+    const [recruiter] = supabaseWrap(
+      await supabaseAdmin
+        .from('recruiter_user')
+        .select('first_name,last_name,scheduling_settings')
+        .eq('user_id', req_body.recruiter_user_id),
+    );
+
+    recruiter_user = recruiter;
+  } else {
+    avail_req_data = {
+      applications: {
+        candidates: {
+          first_name: req_body.preview_details.candidateFirstName,
+          last_name: req_body.preview_details.candidateLastName,
+          recruiter_id: req_body.recruiter_user_id,
+          recruiter: {
+            logo: req_body.preview_details.companyLogo,
+          },
+        },
+        public_jobs: {
+          job_title: req_body.preview_details.jobRole,
+          company: req_body.preview_details.companyName,
+        },
+      },
+    };
+
+    recruiter_user = {
+      first_name: req_body.preview_details.organizerFirstName,
+      last_name: req_body.preview_details.organizerLastName,
+      scheduling_settings: {
+        timeZone: {
+          tzCode: req_body.preview_details.organizerTimeZone,
+        },
+      },
+    };
   }
-
   const {
     candidates: {
       email: cand_email,
@@ -37,11 +68,15 @@ export async function dbUtil(
     public_jobs: { company, job_title },
   } = avail_req_data.applications;
 
+  const recruiter_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
+
   const candidate_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.avail_req_id}`;
+
   const comp_email_temp = await fetchCompEmailTemp(
     recruiter_id,
     'sendAvailabilityRequest_email_applicant',
   );
+
   const comp_email_placeholder: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['comp_email_placeholders'] =
     {
       candidateFirstName: first_name,
@@ -75,5 +110,33 @@ export async function dbUtil(
     filled_comp_template,
     react_email_placeholders,
     recipient_email: cand_email,
+  };
+}
+
+interface Avail {
+  applications: {
+    candidates: {
+      first_name: string;
+      last_name: string;
+      email?: string;
+      recruiter_id: string;
+      recruiter: {
+        logo: string;
+      };
+    };
+    public_jobs: {
+      job_title: string;
+      company: string;
+    };
+  };
+}
+
+interface Recru {
+  first_name: string;
+  last_name: string;
+  scheduling_settings: {
+    timeZone: {
+      tzCode: string;
+    };
   };
 }

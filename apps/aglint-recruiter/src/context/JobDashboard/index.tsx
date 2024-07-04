@@ -4,7 +4,8 @@ import useProviderJobDashboardActions from './hooks';
 import { useJobDashboardStore } from './store';
 import { type JobDashboardContextType } from './types';
 
-const JobDashboardContext = createContext(undefined);
+const JobDashboardContext =
+  createContext<ReturnType<typeof useProviderJobDashboardActions>>(undefined);
 
 const JobDashboardProvider = ({ children }: { children: ReactNode }) => {
   const resetAll = useJobDashboardStore(({ resetAll }) => resetAll);
@@ -21,7 +22,7 @@ const JobDashboardProvider = ({ children }: { children: ReactNode }) => {
 
 export default JobDashboardProvider;
 
-export const useJobDetails = (): JobDashboardContextType => {
+export const useJobDashboard = (): JobDashboardContextType => {
   const value = useContext(JobDashboardContext);
   return { ...value };
 };

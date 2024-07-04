@@ -12,7 +12,7 @@ import React, { FC } from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import { NoData } from '@/devlink3/NoData';
-import { useJobDetails } from '@/src/context/JobDashboard';
+import { useJobDashboard } from '@/src/context/JobDashboard';
 
 import { DashboardGraphOptions } from '.';
 import { getOrderedGraphValues } from './utils';
@@ -98,7 +98,7 @@ const DashboardBarChart: FC<{
 }> = ({ option }) => {
   const {
     skills: { data: skillPool },
-  } = useJobDetails();
+  } = useJobDashboard();
   const skills = skillPool?.[option] ?? null;
   const total = skills
     ? Object.values(skills).reduce((acc, curr) => {

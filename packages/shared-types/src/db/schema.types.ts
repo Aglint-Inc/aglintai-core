@@ -382,6 +382,13 @@ export type Database = {
             foreignKeyName: "applications_job_id_fkey"
             columns: ["job_id"]
             isOneToOne: false
+            referencedRelation: "job_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "applications_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
           },
@@ -453,6 +460,13 @@ export type Database = {
             columns: ["assessment_id"]
             isOneToOne: false
             referencedRelation: "assessment"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assessment_job_relation_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "job_view"
             referencedColumns: ["id"]
           },
           {
@@ -1331,6 +1345,13 @@ export type Database = {
             foreignKeyName: "public_interview_plan_job_id_fkey"
             columns: ["job_id"]
             isOneToOne: true
+            referencedRelation: "job_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_interview_plan_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: true
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
           },
@@ -1730,6 +1751,13 @@ export type Database = {
             foreignKeyName: "job_assiatan_chat_job_id_fkey"
             columns: ["job_id"]
             isOneToOne: false
+            referencedRelation: "job_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_assiatan_chat_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
           },
@@ -1806,6 +1834,13 @@ export type Database = {
             foreignKeyName: "job_email_template_job_id_fkey"
             columns: ["job_id"]
             isOneToOne: false
+            referencedRelation: "job_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_email_template_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
           },
@@ -1840,6 +1875,13 @@ export type Database = {
           recruiter_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "job_reference_public_job_id_fkey"
+            columns: ["public_job_id"]
+            isOneToOne: false
+            referencedRelation: "job_view"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "job_reference_public_job_id_fkey"
             columns: ["public_job_id"]
@@ -1882,6 +1924,13 @@ export type Database = {
           recruiter_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "lever_job_reference_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "job_view"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "lever_job_reference_job_id_fkey"
             columns: ["job_id"]
@@ -1930,6 +1979,13 @@ export type Database = {
           stage?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "lever_reference_public_job_id_fkey"
+            columns: ["public_job_id"]
+            isOneToOne: false
+            referencedRelation: "job_view"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "lever_reference_public_job_id_fkey"
             columns: ["public_job_id"]
@@ -3052,6 +3108,13 @@ export type Database = {
             foreignKeyName: "public_scheduling-agent-chat-history_job_id_fkey"
             columns: ["job_id"]
             isOneToOne: false
+            referencedRelation: "job_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_scheduling-agent-chat-history_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
           },
@@ -3241,6 +3304,13 @@ export type Database = {
             columns: ["company_id"]
             isOneToOne: false
             referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "support_ticket_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "job_view"
             referencedColumns: ["id"]
           },
           {
@@ -3582,6 +3652,13 @@ export type Database = {
             foreignKeyName: "workflow_job_relation_job_id_fkey"
             columns: ["job_id"]
             isOneToOne: false
+            referencedRelation: "job_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_job_relation_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
           },
@@ -3651,6 +3728,13 @@ export type Database = {
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "applications_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "job_view"
+            referencedColumns: ["id"]
+          },
         ]
       }
       debreif_meeting_interviewers: {
@@ -3689,6 +3773,118 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      job_view: {
+        Row: {
+          assessment: boolean | null
+          company: string | null
+          created_at: string | null
+          department: string | null
+          description: string | null
+          description_hash: number | null
+          draft: Json | null
+          flags: Json | null
+          hiring_manager: string | null
+          id: string | null
+          interview_coordinator: string | null
+          jd_json: Json | null
+          job_title: string | null
+          job_type: Database["public"]["Enums"]["public_job_type"] | null
+          location: string | null
+          parameter_weights: Json | null
+          phone_screen_enabled: boolean | null
+          posted_by: string | null
+          processing_count: Json | null
+          recruiter: string | null
+          recruiter_id: string | null
+          recruiting_coordinator: string | null
+          scoring_criteria_loading: boolean | null
+          section_count: Json | null
+          sourcer: string | null
+          status: Database["public"]["Enums"]["public_job_status"] | null
+          workplace_type:
+            | Database["public"]["Enums"]["public_job_workplace"]
+            | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_jobs_hiring_manager_fkey"
+            columns: ["hiring_manager"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_jobs_hiring_manager_fkey"
+            columns: ["hiring_manager"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_jobs_interview_coordinator_fkey"
+            columns: ["interview_coordinator"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_jobs_interview_coordinator_fkey"
+            columns: ["interview_coordinator"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_jobs_recruiter_fkey"
+            columns: ["recruiter"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_jobs_recruiter_fkey"
+            columns: ["recruiter"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_jobs_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_jobs_recruiting_coordinator_fkey"
+            columns: ["recruiting_coordinator"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_jobs_recruiting_coordinator_fkey"
+            columns: ["recruiting_coordinator"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_jobs_sourcer_fkey"
+            columns: ["sourcer"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_jobs_sourcer_fkey"
+            columns: ["sourcer"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
           },
         ]
       }

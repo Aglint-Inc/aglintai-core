@@ -4,8 +4,8 @@ import { useRouter } from 'next/router';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
 import Loader from '@/src/components/Common/Loader';
+import { useJob } from '@/src/context/JobContext';
 import { useJobs } from '@/src/context/JobsContext';
-import { useCurrentJob } from '@/src/queries/job-assessment/keys';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalize } from '@/src/utils/text/textUtils';
 
@@ -32,7 +32,7 @@ export default JobWorkflowDashboard;
 
 const BreadCrumbs = () => {
   const { push } = useRouter();
-  const { job } = useCurrentJob();
+  const { job } = useJob();
   return (
     <>
       <Breadcrum

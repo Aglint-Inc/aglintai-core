@@ -12,7 +12,7 @@ import OpenAI from 'openai';
 import { ChatCompletionMessageParam } from 'openai/resources';
 
 import { distributeScoreWeights } from '@/src/components/Jobs/Job/Profile-Score';
-import * as hooks from '@/src/context/JobDashboard/hooks';
+import * as hooks from '@/src/context/JobContext/utils';
 
 export const openai = new OpenAI({
   apiKey: process.env.OPENAI_KEY,
@@ -46,13 +46,8 @@ const handler = async (
       },
     },
   );
-  const { job_id } = req.body as JobProfileScoreApi['request'];
-  // await supabase
-  //   .from('public_jobs')
-  //   .update({ scoring_criteria_loading: false })
-  //   .eq('id', job_id);
-  // res.status(200).send();
-  // return;
+  const { job_id, regenerate = false } =
+    req.body as JobProfileScoreApi['request'];
   const { data } = await supabase
     .from('public_jobs')
     .select('description, draft, job_title')
@@ -102,16 +97,15 @@ Job description: ${(job.draft as any).description}`,
     };
     const descriptionHash = hooks.hashCode((job.draft as any).description);
     const weights = distributeScoreWeights(j);
-    await supabase
-      .from('public_jobs')
-      .update({
-        jd_json: j,
-        draft: { ...(job.draft as any), jd_json: j },
-        description_hash: descriptionHash,
-        scoring_criteria_loading: false,
-        parameter_weights: weights,
-      })
-      .eq('id', job_id);
+    const payload = {
+      jd_json: j,
+      draft: { ...(job.draft as any), jd_json: j },
+      description_hash: descriptionHash,
+      scoring_criteria_loading: false,
+      parameter_weights: weights,
+    };
+    if (regenerate) delete payload.jd_json;
+    await supabase.from('public_jobs').update(payload).eq('id', job_id);
     res.status(200).send();
     return;
   } catch (e) {
@@ -265,6 +259,7 @@ export default handler;
 export type JobProfileScoreApi = {
   request: {
     job_id: string;
+    regenerate?: boolean;
   };
   response: void;
 };
