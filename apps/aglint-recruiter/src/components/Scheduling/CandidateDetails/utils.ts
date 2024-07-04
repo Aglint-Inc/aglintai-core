@@ -325,7 +325,7 @@ export const onClickResendInvite = async ({
       const bodyParams: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
         {
           avail_req_id: request_id,
-          recruiter_user_id: rec_user_id,
+          organizer_user_id: rec_user_id,
         };
 
       await axios.post(

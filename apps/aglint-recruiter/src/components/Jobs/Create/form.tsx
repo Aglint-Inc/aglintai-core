@@ -9,7 +9,7 @@ import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UISelect from '@/src/components/Common/Uiselect';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useJobDetails } from '@/src/context/JobDashboard';
+import { useJobDashboard } from '@/src/context/JobDashboard';
 import { useCompanyMembers } from '@/src/queries/company-members';
 import { JobCreate } from '@/src/queries/jobs/types';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -330,7 +330,7 @@ const roles = {
 
 const JobCoordinator: FC<MetaForms> = memo(({ name, onChange, value }) => {
   const { data } = useCompanyMembers();
-  const options = data
+  const options = (data ?? [])
     .filter(({ role }) => (roles[name] ?? (() => []))().includes(role))
     .map((c) => ({
       name: getFullName(c.first_name, c.last_name),
@@ -383,7 +383,7 @@ const JobWorkPlace: FC<MetaForms> = memo(({ name, value, onChange }) => {
 JobWorkPlace.displayName = 'JobWorkPlace';
 
 const JobDescription: FC<MetaForms> = memo(({ name, value, onChange }) => {
-  const { job } = useJobDetails();
+  const { job } = useJobDashboard();
   const disable = job?.scoring_criteria_loading;
   const handleToast = () => {
     if (disable)

@@ -22,6 +22,7 @@ import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
 import { STATE_GREENHOUSE_DIALOG } from '@/src/context/IntegrationProvider/utils';
+import { handleGenerateJd } from '@/src/context/JobContext/hooks';
 import { useJobs } from '@/src/context/JobsContext';
 import { ScrollList } from '@/src/utils/framer-motions/Animation';
 import ROUTES from '@/src/utils/routing/routes';
@@ -42,7 +43,7 @@ export function GreenhouseModal() {
   const { recruiter, setRecruiter } = useAuthDetails();
   const { setIntegration, integration, handleClose } = useIntegration();
   const router = useRouter();
-  const { jobs, handleJobRead, experimental_handleGenerateJd } = useJobs();
+  const { jobs, handleJobsRefresh } = useJobs();
   const [loading, setLoading] = useState(false);
   const [postings, setPostings] = useState<JobGreenhouse[]>([]);
   const [selectedGreenhousePostings, setSelectedGreenhousePostings] = useState<
@@ -130,10 +131,10 @@ export function GreenhouseModal() {
         });
 
         await supabase.from('job_reference').insert(astJobsObj).select();
-        await experimental_handleGenerateJd(newJobs[0].id);
+        await handleGenerateJd(newJobs[0].id);
         //creating candidates and job_applications
         await createJobApplications(jobsObj, recruiter.greenhouse_key);
-        await handleJobRead();
+        await handleJobsRefresh();
         //closing modal once done
         setIntegration((prev) => ({
           ...prev,

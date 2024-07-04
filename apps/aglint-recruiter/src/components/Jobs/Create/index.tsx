@@ -10,7 +10,7 @@ import { EditJobTopbarLeft } from '@/devlink3/EditJobTopbarLeft';
 import { JobDetailBlock } from '@/devlink3/JobDetailBlock';
 import Loader from '@/src/components/Common/Loader';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { hashCode } from '@/src/context/JobDashboard/hooks';
+import { hashCode } from '@/src/context/JobContext/utils';
 import { useJobs } from '@/src/context/JobsContext';
 import { useCompanyMembers } from '@/src/queries/company-members';
 import ROUTES from '@/src/utils/routing/routes';

@@ -48,11 +48,11 @@ export const emailTemplateCopy: CompanyEmailType = {
   },
   interviewCancel_email_applicant: {
     heading: 'Candidate Cancel Interview Notice',
-    description: `This email template is used to notify organizer when a candidate cancels a scheduled interview. This email is sent by the system automatically every time a candidate cancels an interview.`,
+    description: `This email template informs a job candidate about the cancellation of their scheduled interview.`,
   },
   InterviewCancelReq_email_recruiter: {
     heading: 'Candidate Cancel Interview Request',
-    description: `This email template is used to request the cancellation of a scheduled interview by a candidate. This email is sent by the system automatically every time a candidate requests to cancel an interview.`,
+    description: `This email template is used to notify organizer when a candidate cancels a scheduled interview. This email is sent by the system automatically every time a candidate cancels an interview.`,
   },
   interviewReschedule_email_applicant: {
     heading: '',

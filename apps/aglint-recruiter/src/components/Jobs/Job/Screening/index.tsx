@@ -18,7 +18,6 @@ import { ScreeningLandingCard } from '@/devlink2/ScreeningLandingCard';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJob } from '@/src/context/JobContext';
-import { useCurrentJob } from '@/src/queries/job-assessment/keys';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -321,7 +320,7 @@ export default ScreeningDashboardComp;
 
 const JobScreeningDashboardBreadCrumbs = () => {
   const { push } = useRouter();
-  const { job } = useCurrentJob();
+  const { job } = useJob();
   return (
     <>
       <Breadcrum

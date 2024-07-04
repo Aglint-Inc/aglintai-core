@@ -28,7 +28,7 @@ const Drawer = () => {
   }));
 
   const tabs: Parameters<typeof Application>[0]['placeholderData']['tabs'] =
-    job?.activeSections;
+    job?.flags;
 
   const placeholderData = useMemo(
     () =>

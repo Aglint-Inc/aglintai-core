@@ -29,9 +29,7 @@ import ScoreWheel, {
 } from '@/src/components/Common/ScoreWheel';
 import UITextField from '@/src/components/Common/UITextField';
 import { useJob } from '@/src/context/JobContext';
-import { useJobDetails } from '@/src/context/JobDashboard';
 import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
-import { useJobs } from '@/src/context/JobsContext';
 import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/jobs/types';
 import { capitalize } from '@/src/utils/text/textUtils';
@@ -71,9 +69,7 @@ const ProfileScorePage = () => {
 };
 
 const ProfileScoreControls = () => {
-  const { handleJobAsyncUpdate } = useJobs();
-  // const { handleJobApplicationRecalculate } = useJobApplications();
-  const { job } = useJob();
+  const { job, handleJobAsyncUpdate } = useJob();
   const initialRef = useRef(false);
   const initialSubmitRef = useRef(false);
   const jd_json = job.draft.jd_json;
@@ -306,9 +302,7 @@ const ProfileScore = () => {
 
 const Banners = () => {
   const { push } = useRouter();
-  const { experimental_handleRegenerateJd } = useJobs();
-  const { status } = useJobDetails();
-  const { job } = useJob();
+  const { job, handleRegenerateJd, status } = useJob();
   const { dismissWarnings, setDismissWarnings } = useJobDashboardStore(
     ({ dismissWarnings, setDismissWarnings }) => ({
       dismissWarnings,
@@ -338,7 +332,7 @@ const Banners = () => {
         textBanner={'No profile score criterias set.'}
         textButton={'Generate'}
         onClickButton={{
-          onClick: () => experimental_handleRegenerateJd(job),
+          onClick: () => handleRegenerateJd(job),
         }}
       />
     );
@@ -365,7 +359,7 @@ const Banners = () => {
               size={2}
               highContrast='true'
               onClickButton={{
-                onClick: () => experimental_handleRegenerateJd(job),
+                onClick: () => handleRegenerateJd(job),
               }}
             />
           </>
@@ -376,9 +370,9 @@ const Banners = () => {
 };
 
 const Section: FC<{ type: Sections }> = ({ type }) => {
-  const { handleJobUpdate } = useJobs();
   const {
     job: { draft, id },
+    handleJobUpdate,
   } = useJob();
   const { jd_json } = draft;
   const section: keyof typeof jd_json =

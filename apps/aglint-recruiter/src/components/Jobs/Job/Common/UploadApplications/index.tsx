@@ -1,7 +1,6 @@
 import { Dialog } from '@mui/material';
 
 import { ImportCandidates } from '@/devlink/ImportCandidates';
-import { ApplicationsProvider } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 
 import { ImportCsv } from './importCsv';
@@ -13,24 +12,22 @@ const UploadApplications = () => {
     ({ importPopup, setImportPopup }) => ({ importPopup, setImportPopup }),
   );
   return (
-    <ApplicationsProvider>
-      <Dialog
-        open={importPopup}
-        onClose={() => setImportPopup(false)}
-        maxWidth='md'
-      >
-        <ImportCandidates
-          isImportDescVisible={false}
-          isListingCountVisible={true}
-          slotAddManually={<ImportManual />}
-          slotImportCsv={<ImportCsv />}
-          onClickClose={{
-            onClick: () => setImportPopup(false),
-          }}
-          slotImportResume={<ImportResume />}
-        />
-      </Dialog>
-    </ApplicationsProvider>
+    <Dialog
+      open={importPopup}
+      onClose={() => setImportPopup(false)}
+      maxWidth='md'
+    >
+      <ImportCandidates
+        isImportDescVisible={false}
+        isListingCountVisible={true}
+        slotAddManually={<ImportManual />}
+        slotImportCsv={<ImportCsv />}
+        onClickClose={{
+          onClick: () => setImportPopup(false),
+        }}
+        slotImportResume={<ImportResume />}
+      />
+    </Dialog>
   );
 };
 

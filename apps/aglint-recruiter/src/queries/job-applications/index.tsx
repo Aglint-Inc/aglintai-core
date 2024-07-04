@@ -312,15 +312,11 @@ export const diffApplication = (
   }, {} as Partial<Application>);
 };
 
-export const useUploadApplication = (params: Omit<Params, 'status'>) => {
+export const useUploadApplication = ({ job_id }: Pick<Params, 'job_id'>) => {
   const { recruiter_id } = useAuthDetails();
   const queryClient = useQueryClient();
-  const { queryKey } = applicationsQueries.applications({
-    ...params,
-    status: 'new',
-  });
-  const jobCountQueryKey = jobQueries.job_application_count({
-    id: params.job_id,
+  const jobQueryKey = jobQueries.job({
+    id: job_id,
   }).queryKey;
   return useMutation({
     mutationFn: async (
@@ -328,20 +324,14 @@ export const useUploadApplication = (params: Omit<Params, 'status'>) => {
     ) => {
       toast.message('Uploading application');
       return await handleUploadApplication({
-        job_id: params.job_id,
+        job_id,
         recruiter_id,
         ...payload,
       });
     },
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: async () => {
-      await Promise.allSettled([
-        queryClient.invalidateQueries({ queryKey }),
-        queryClient.invalidateQueries(
-          jobQueries.job_processing_count({ id: params.job_id }),
-        ),
-        queryClient.invalidateQueries({ queryKey: jobCountQueryKey }),
-      ]);
+      await queryClient.refetchQueries({ queryKey: jobQueryKey });
       toast.success('Uploaded successfully');
     },
   });
@@ -370,14 +360,10 @@ const handleUploadApplication = async (payload: HandleUploadApplication) => {
   if (!response.confirmation) throw new Error(response.error);
 };
 
-export const useUploadResume = (params: Omit<Params, 'status'>) => {
+export const useUploadResume = (params: Pick<Params, 'job_id'>) => {
   const { recruiter_id } = useAuthDetails();
   const queryClient = useQueryClient();
-  const { queryKey } = applicationsQueries.applications({
-    ...params,
-    status: 'new',
-  });
-  const jobCountQueryKey = jobQueries.job_application_count({
+  const jobQueryKey = jobQueries.job({
     id: params.job_id,
   }).queryKey;
   return useMutation({
@@ -393,13 +379,7 @@ export const useUploadResume = (params: Omit<Params, 'status'>) => {
     },
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: async () => {
-      await Promise.allSettled([
-        queryClient.invalidateQueries({ queryKey }),
-        queryClient.invalidateQueries(
-          jobQueries.job_processing_count({ id: params.job_id }),
-        ),
-        queryClient.invalidateQueries({ queryKey: jobCountQueryKey }),
-      ]);
+      await queryClient.refetchQueries({ queryKey: jobQueryKey });
       toast.success('Uploaded successfully');
     },
   });
@@ -446,14 +426,10 @@ const handleBulkResumeUpload = async (payload: HandleUploadResume) => {
     );
 };
 
-export const useUploadCsv = (params: Omit<Params, 'status'>) => {
+export const useUploadCsv = (params: Pick<Params, 'job_id'>) => {
   const { recruiter_id } = useAuthDetails();
   const queryClient = useQueryClient();
-  const { queryKey } = applicationsQueries.applications({
-    ...params,
-    status: 'new',
-  });
-  const jobCountQueryKey = jobQueries.job_application_count({
+  const jobQueryKey = jobQueries.job({
     id: params.job_id,
   }).queryKey;
   return useMutation({
@@ -469,13 +445,7 @@ export const useUploadCsv = (params: Omit<Params, 'status'>) => {
     },
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: async () => {
-      await Promise.allSettled([
-        queryClient.invalidateQueries({ queryKey }),
-        queryClient.invalidateQueries(
-          jobQueries.job_processing_count({ id: params.job_id }),
-        ),
-        queryClient.invalidateQueries({ queryKey: jobCountQueryKey }),
-      ]);
+      await await queryClient.refetchQueries({ queryKey: jobQueryKey });
       toast.success('Uploaded successfully');
     },
   });
@@ -518,13 +488,13 @@ export const useMoveApplications = (
         ...applicationsQueries.all({ job_id: payload.job_id }).queryKey,
         { status: args.status },
       ];
-      const jobCountQueryKey = jobQueries.job_application_count({
+      const jobQueryKey = jobQueries.job({
         id: payload.job_id,
       }).queryKey;
       await Promise.allSettled([
-        queryClient.invalidateQueries({ queryKey: destinationQueryKey }),
-        queryClient.invalidateQueries({ queryKey: sourceQueryKey }),
-        queryClient.invalidateQueries({ queryKey: jobCountQueryKey }),
+        queryClient.refetchQueries({ queryKey: destinationQueryKey }),
+        queryClient.refetchQueries({ queryKey: sourceQueryKey }),
+        queryClient.refetchQueries({ queryKey: jobQueryKey }),
       ]);
       return undefined;
     },
@@ -586,20 +556,10 @@ export const useRescoreApplications = () => {
       await rescoreApplications({
         job_id: args.job_id,
       });
-      const applicationQueryKey = [
-        ...applicationsQueries.all({ job_id: args.job_id }).queryKey,
-      ];
-      const jobCountQueryKey = jobQueries.job_application_count({
+      const jobQueryKey = jobQueries.job({
         id: args.job_id,
       }).queryKey;
-      const jobProcessingQueryKey = jobQueries.job_processing_count({
-        id: args.job_id,
-      }).queryKey;
-      await Promise.allSettled([
-        queryClient.invalidateQueries({ queryKey: applicationQueryKey }),
-        queryClient.invalidateQueries({ queryKey: jobCountQueryKey }),
-        queryClient.invalidateQueries({ queryKey: jobProcessingQueryKey }),
-      ]);
+      await queryClient.refetchQueries({ queryKey: jobQueryKey });
       return undefined;
     },
   });

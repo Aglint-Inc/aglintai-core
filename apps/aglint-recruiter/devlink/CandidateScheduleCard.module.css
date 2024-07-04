@@ -13,7 +13,7 @@
   grid-row-gap: var(--space-4);
 
   border: 1px solid var(--neutral-6);
-  border-radius: var(--radius-4);
+  border-radius: var(--radius-2);
 
   background-color: var(--white);
 }

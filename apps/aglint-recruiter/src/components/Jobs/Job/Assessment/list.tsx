@@ -18,22 +18,21 @@ import SearchField from '@/src/components/Common/SearchField';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import { AssessmentDetails } from '@/src/components/NewAssessment/AssessmentDashboard/card';
 import TypeIcon from '@/src/components/NewAssessment/Common/icons/types';
-import { useJobDetails } from '@/src/context/JobDashboard';
-import { useJobs } from '@/src/context/JobsContext';
+import { useJob } from '@/src/context/JobContext';
+import { useJobDashboard } from '@/src/context/JobDashboard';
 import { Assessment, AssessmentTemplate } from '@/src/queries/assessment/types';
 import {
   useJobAssessmentsBulkConnect,
   useJobAssessmentsDisconnect,
   useJobAssessmentTemplateConnect,
 } from '@/src/queries/job-assessment';
-import { useCurrentJob } from '@/src/queries/job-assessment/keys';
 
 const JobAssessment = () => {
   const {
     assessments: {
       data: { jobAssessments },
     },
-  } = useJobDetails();
+  } = useJobDashboard();
   const [open, setOpen] = useState(false);
   // const isRecommendedVisible =
   //   status !== 'error' &&
@@ -72,7 +71,7 @@ const JobAssessments = ({ onOpen }: { onOpen: () => void }) => {
       data: { jobAssessments },
       refetch,
     },
-  } = useJobDetails();
+  } = useJobDashboard();
   const { mutate } = useJobAssessmentsDisconnect();
   const handleDisconnect = (assessment_id: Assessment['id']) => {
     mutate(assessment_id);
@@ -137,7 +136,7 @@ const AssessmentListCard = ({
 const AssessmentTemplates = () => {
   const {
     templates: { data, status },
-  } = useJobDetails();
+  } = useJobDashboard();
   const { mutate } = useJobAssessmentTemplateConnect();
   const handleConnect = (template: AssessmentTemplate) => {
     mutate(template);
@@ -178,8 +177,7 @@ const AssessmentEditor = ({
   payload: 'interview_instructions' | 'interview_success';
   skeletonCount: number;
 }) => {
-  const { job } = useCurrentJob();
-  const { handleJobAsyncUpdate } = useJobs();
+  const { job, handleJobAsyncUpdate } = useJob();
   const [value, setValue] = useState(job[payload]);
   const initialRef = useRef(true);
   const handleUpdate = useCallback(
@@ -229,7 +227,7 @@ const AssessmentBrowser = ({
       data: { otherAssessments },
     },
     templates: { data: templates },
-  } = useJobDetails();
+  } = useJobDashboard();
   const { mutate } = useJobAssessmentsBulkConnect();
   const [section, setSection] = useState<keyof BroweserSelections>('private');
   const [selections, setSelections] = useState<BroweserSelections>({
@@ -398,9 +396,11 @@ const AssessmentPreview = () => {
     assessments: {
       data: { jobAssessments },
     },
-  } = useJobDetails();
-  const { handleJobAsyncUpdate } = useJobs();
-  const { id } = useCurrentJob();
+  } = useJobDashboard();
+  const {
+    job: { id },
+    handleJobAsyncUpdate,
+  } = useJob();
   const handlePreview = () => {
     window.open(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/preview-assessment/${id}`,
