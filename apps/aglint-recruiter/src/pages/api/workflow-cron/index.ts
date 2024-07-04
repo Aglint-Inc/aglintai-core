@@ -28,7 +28,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await axios.post(
         `${process.env.NEXT_PUBLIC_AGENT_API}/api/slack/${meta.email_type}`,
         {
-          session_id: meta.session_id,
+          ...meta
         },
       );
     }
