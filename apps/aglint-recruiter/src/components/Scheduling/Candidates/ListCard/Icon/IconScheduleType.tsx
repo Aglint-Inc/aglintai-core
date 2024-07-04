@@ -6,7 +6,7 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 
 function IconScheduleType({
   type,
-  size = 6,
+  size = 4,
 }: {
   type: DB['public']['Enums']['interview_schedule_type'];
   size?: number;
@@ -32,7 +32,7 @@ function IconScheduleType({
           <GlobalIcon iconName='phone_in_talk' size={size} />
         </ShowCode.When>
         <ShowCode.When isTrue={type == 'google_meet' || type === 'zoom'}>
-          <GlobalIcon iconName='hangout_video' size={size} />
+          <GlobalIcon iconName='videocam' size={size} />
         </ShowCode.When>
       </ShowCode>
     </Stack>

@@ -229,7 +229,7 @@ function Overview({ schedule }: { schedule: ScheduleMeeting }) {
         slotPanelIcon={
           <IconSessionType
             type={schedule.interview_session.session_type}
-            size={6}
+            size={4}
           />
         }
       />
