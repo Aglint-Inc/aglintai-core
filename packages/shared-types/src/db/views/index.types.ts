@@ -1,6 +1,7 @@
 import type { Database } from "../schema.types";
 import type { CustomizableTypes, Type } from "../utils.types";
 import { CustomApplicationView } from "./application_view.types";
+import { CustomJobView } from "./job_view.types";
 import { CustomTasksView } from "./tasks_view";
 import type { CustomWorkflowView } from "./workflow_view.types";
 
@@ -32,5 +33,6 @@ export type Views = Type<
     workflow_view: CustomWorkflowView;
     application_view: CustomApplicationView;
     tasks_view: CustomTasksView;
+    job_view: CustomJobView;
   }
 >;

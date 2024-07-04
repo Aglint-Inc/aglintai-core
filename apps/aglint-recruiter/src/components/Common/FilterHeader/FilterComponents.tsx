@@ -576,7 +576,7 @@ function NestedFilterComponent({
                   },
                 }}
                 slotItems={
-                  <Stack p={2} gap={2}>
+                  <Stack p={1}>
                     <FilterOptionsList
                       optionList={optionList}
                       // selectedItems={selectedItems?.[String(section)] || []}

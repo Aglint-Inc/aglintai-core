@@ -1,277 +1,120 @@
-import { APIFindAvailability } from '@aglint/shared-types';
-import axios from 'axios';
+import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
 
+import { GlobalInfo } from '@/devlink2/GlobalInfo';
+import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { DatePickerBody } from '@/devlink3/DatePickerBody';
+import { ScheduleSelectPill } from '@/devlink3/ScheduleSelectPill';
+import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import DateRange from '@/src/components/Tasks/Components/DateRange';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
-import { ApiBodyParamsScheduleAgentWithoutTaskId } from '@/src/pages/api/scheduling/application/schedulewithagentwithouttaskid';
-import { getFullName } from '@/src/utils/jsonResume';
-import toast from '@/src/utils/toast';
 
-import { useAllActivities, useGetScheduleApplication } from '../hooks';
-import { useRequestAvailabilityContext } from '../RequestAvailability/RequestAvailabilityContext';
-import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
-import { ApiResponseFindAvailability } from '../types';
-import {
-  setDateRange,
-  setFetchingPlan,
-  setIsScheduleNowOpen,
-  setNoOptions,
-  setSchedulingOptions,
-  setStepScheduling,
-  useSchedulingFlowStore,
-} from './store';
+import IconSessionType from '../RightPanel/IconSessionType';
+import { useSchedulingApplicationStore } from '../store';
+import { setDateRange, useSchedulingFlowStore } from './store';
 
 function SelectDateRange() {
-  const { recruiter, recruiterUser } = useAuthDetails();
-  const router = useRouter();
-  const { selectedSessionIds, selectedApplication } =
-    useSchedulingApplicationStore((state) => ({
-      selectedSessionIds: state.selectedSessionIds,
-      selectedApplication: state.selectedApplication,
-    }));
-  const task_id = router.query.task_id as string;
+  const { dateRange, scheduleFlow } = useSchedulingFlowStore((state) => ({
+    dateRange: state.dateRange,
+    scheduleFlow: state.scheduleFlow,
+  }));
 
-  const { dateRange, fetchingPlan, scheduleFlow } = useSchedulingFlowStore(
+  const { selectedSessionIds, initialSessions } = useSchedulingApplicationStore(
     (state) => ({
-      dateRange: state.dateRange,
-      fetchingPlan: state.fetchingPlan,
-      scheduleFlow: state.scheduleFlow,
+      selectedSessionIds: state.selectedSessionIds,
+      initialSessions: state.initialSessions,
     }),
   );
 
-  const { fetchInterviewDataByApplication } = useGetScheduleApplication();
-  const { refetch } = useAllActivities({
-    application_id: selectedApplication?.id,
-  });
+  const selectedSessions = initialSessions.filter((session) =>
+    selectedSessionIds.includes(session.interview_session.id),
+  );
 
-  const findScheduleOptions = async ({
-    session_ids,
-    rec_id,
-    dateRange,
-  }: {
-    session_ids: string[];
-    rec_id: string;
-    dateRange: {
-      start_date: string;
-      end_date: string;
-    };
-  }) => {
-    try {
-      setNoOptions(false);
-      setFetchingPlan(true);
-
-      const bodyParams: APIFindAvailability = {
-        session_ids: session_ids,
-        recruiter_id: rec_id,
-        start_date_str: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
-        end_date_str: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-        candidate_tz: dayjs.tz.guess(),
-        options: {
-          include_conflicting_slots: {
-            out_of_working_hrs: true,
-            show_soft_conflicts: true,
-            show_conflicts_events: true,
-          },
-        },
-      };
-      const res = await axios.post(
-        '/api/scheduling/v1/find_availability',
-        bodyParams,
-      );
-
-      if (res.status === 200) {
-        const slots = res.data as ApiResponseFindAvailability;
-
-        if (slots.length === 0) {
-          setNoOptions(true);
-          toast.error('No availability found.');
-        } else {
-          setSchedulingOptions(slots);
-          setStepScheduling('preference');
-        }
-      } else {
-        toast.error('Error retrieving availability.');
-      }
-    } catch (e) {
-      toast.error(e.message);
-      //
-    } finally {
-      setFetchingPlan(false);
-    }
-  };
-
-  const onClickScheduleAgent = async (type: 'phone_agent' | 'email_agent') => {
-    try {
-      setFetchingPlan(true);
-      const bodyParamsAvailibility: APIFindAvailability = {
-        session_ids: selectedSessionIds,
-        recruiter_id: recruiter.id,
-        start_date_str: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
-        end_date_str: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-        candidate_tz: dayjs.tz.guess(),
-      };
-
-      const resAllOptions = await axios.post(
-        '/api/scheduling/v1/find_availability',
-        bodyParamsAvailibility,
-      );
-
-      if (resAllOptions.data.length === 0) {
-        toast.warning('No availability found.');
-        return;
-      }
-
-      if (!task_id) {
-        const bodyParams: ApiBodyParamsScheduleAgentWithoutTaskId = {
-          application_id: selectedApplication.id,
-          dateRange: dateRange,
-          recruiter_id: recruiter.id,
-          recruiter_user_name: getFullName(
-            recruiterUser.first_name,
-            recruiterUser.last_name,
-          ),
-          session_ids: selectedSessionIds,
-          task_id: null,
-          type: type,
-          candidate_name: getFullName(
-            selectedApplication.candidates.first_name,
-            selectedApplication.candidates.last_name,
-          ),
-          company_name: recruiter.name,
-          rec_user_phone: recruiterUser.phone,
-          rec_user_id: recruiterUser.user_id,
-          user_tz: dayjs.tz.guess(),
-          trigger_count: 0,
-        };
-
-        const res = await axios.post(
-          '/api/scheduling/application/schedulewithagentwithouttaskid',
-          bodyParams,
-        );
-
-        if (res.status !== 200) {
-          toast.error(
-            'Failed to schedule with agent. Please try again later or contact support.',
-          );
-        }
-      } else {
-        const bodyParams: ApiBodyParamsScheduleAgent = {
-          application_id: selectedApplication.id,
-          dateRange: dateRange,
-          recruiter_id: recruiter.id,
-          recruiter_user_name: getFullName(
-            recruiterUser.first_name,
-            recruiterUser.last_name,
-          ),
-          session_ids: selectedSessionIds,
-          task_id: task_id,
-          type: type,
-          candidate_name: getFullName(
-            selectedApplication.candidates.first_name,
-            selectedApplication.candidates.last_name,
-          ),
-          company_name: recruiter.name,
-          rec_user_phone: recruiterUser.phone,
-          rec_user_id: recruiterUser.user_id,
-          user_tz: dayjs.tz.guess(),
-        };
-
-        const res = await axios.post(
-          '/api/scheduling/application/schedulewithagentwithouttaskid',
-          bodyParams,
-        );
-
-        if (res.status !== 200) {
-          toast.error(
-            'Failed to schedule with agent. Please try again later or contact support.',
-          );
-        }
-      }
-      resetState();
-    } catch (e) {
-      //
-    } finally {
-      refetch();
-      setFetchingPlan(false);
-      fetchInterviewDataByApplication();
-      setSelectedSessionIds([]);
-      resetState();
-    }
-  };
-
-  const resetState = () => {
-    setIsScheduleNowOpen(false);
-    setSchedulingOptions([]);
-    setSelectedSessionIds([]);
-    setStepScheduling('pick_date');
-    const currentPath = router.pathname;
-    const currentQuery = { ...router.query };
-    delete currentQuery.task_id;
-    router.replace({
-      pathname: currentPath,
-      query: currentQuery,
-    });
-  };
-
-  const { setSelectedDate } = useRequestAvailabilityContext();
+  const totalTime = selectedSessions
+    .map((session) => session.interview_session.session_duration)
+    .reduce((acc, curr) => acc + curr, 0);
 
   return (
     <>
       <DatePickerBody
-        isLoading={false}
-        slotMuiDatePicker={
-          <DateRange
-            onChange={(val) => {
-              setDateRange({
-                start_date: val[0]?.toISOString(),
-                end_date: val[1]?.toISOString(),
-              });
-            }}
-            value={[dayjs(dateRange.start_date), dayjs(dateRange.end_date)]}
-            calendars={2}
+        slotGlobalnfo={
+          <GlobalInfo
+            textTitle={'How it works'}
+            textDescription={
+              scheduleFlow === 'self_scheduling'
+                ? 'Use this feature to select and send available options within a specified date range. The candidate can then choose one of these options to confirm the schedule.'
+                : scheduleFlow === 'email_agent'
+                  ? 'Please provide a date range, and the agent will contact the candidate via email to arrange a suitable time within the specified period.'
+                  : scheduleFlow === 'phone_agent'
+                    ? 'Please provide a date range, and the agent will contact the candidate via phone to arrange a suitable time within the specified period.'
+                    : scheduleFlow === 'debrief'
+                      ? `A debrief interview session allows the hiring team to discuss and evaluate the candidate's performance collectively. By sharing insights and feedback, the team can make a well-informed decision on the candidate's suitability for the role.`
+                      : 'Use this feature to request availability from candidates by selecting a date range and customizing time suggestions based on various options. Ensure minimum selections for days and slots.'
+            }
           />
         }
-        isEmailAgent={scheduleFlow === 'email_agent'}
-        isPhoneAgent={scheduleFlow === 'phone_agent'}
-        isRequestAvailability={false}
-        isContinueButton={
-          scheduleFlow !== 'email_agent' && scheduleFlow !== 'phone_agent'
+        textCalenderHelper={
+          scheduleFlow === 'self_scheduling'
+            ? 'Choose the date range within which you want to self schedule.'
+            : scheduleFlow === 'email_agent'
+              ? 'Please provide a date range, and the agent will contact the candidate via email to arrange a suitable time within the specified period.'
+              : scheduleFlow === 'phone_agent'
+                ? 'Please provide a date range, and the agent will contact the candidate via phone to arrange a suitable time within the specified period.'
+                : scheduleFlow === 'debrief'
+                  ? `Choose date range within which you want to schedule a debrief session.`
+                  : 'Choose the date range within which you want to request availability.'
         }
-        isSelfScheduling={scheduleFlow === 'self_scheduling'}
-        onClickButton={{
-          onClick: async () => {
-            if (dateRange.start_date && dateRange.end_date && !fetchingPlan) {
-              if (
-                scheduleFlow === 'self_scheduling' ||
-                scheduleFlow === 'debrief'
-              ) {
-                await findScheduleOptions({
-                  dateRange: dateRange,
-                  session_ids: selectedSessionIds,
-                  rec_id: recruiter.id,
+        slotTextWithIcon={
+          <>
+            <TextWithIcon
+              iconSize={3}
+              iconName={'check_circle'}
+              textContent={`${selectedSessionIds.length} Schedule selected`}
+            />
+            <TextWithIcon
+              iconSize={3}
+              iconName={'schedule'}
+              textContent={getBreakLabel(totalTime)}
+            />
+          </>
+        }
+        slotScheduleSelectPill={
+          <>
+            {selectedSessions.map((session) => (
+              <ScheduleSelectPill
+                key={session.interview_session.id}
+                slotIcons={
+                  <IconSessionType
+                    type={session.interview_session.session_type}
+                    size={6}
+                  />
+                }
+                textScheduleName={session.interview_session.name}
+                textTime={getBreakLabel(
+                  session.interview_session.session_duration,
+                )}
+              />
+            ))}
+          </>
+        }
+        slotMuiDatePicker={
+          <Stack
+            sx={{
+              border: '1px solid var(--neutral-6)',
+              borderRadius: 'var(--radius-2)',
+            }}
+          >
+            <DateRange
+              onChange={(val) => {
+                setDateRange({
+                  start_date: val[0]?.toISOString(),
+                  end_date: val[1]?.toISOString(),
                 });
-              } else if (
-                scheduleFlow === 'phone_agent' ||
-                scheduleFlow === 'email_agent'
-              ) {
-                await onClickScheduleAgent(scheduleFlow);
-              } else if (
-                scheduleFlow === 'create_request_availibility' ||
-                scheduleFlow === 'update_request_availibility'
-              ) {
-                setSelectedDate([
-                  dayjs(dateRange.start_date),
-                  dayjs(dateRange.end_date),
-                ]);
-                setStepScheduling('request_availibility');
-              }
-            }
-          },
-        }}
+              }}
+              value={[dayjs(dateRange.start_date), dayjs(dateRange.end_date)]}
+              calendars={2}
+            />
+          </Stack>
+        }
       />
     </>
   );

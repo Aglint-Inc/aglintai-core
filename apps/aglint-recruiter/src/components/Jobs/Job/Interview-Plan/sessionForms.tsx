@@ -18,7 +18,7 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
 import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
-import { validateString } from '@/src/context/JobDashboard/hooks';
+import { validateString } from '@/src/context/JobContext/utils';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { CompanyMember } from '@/src/queries/company-members';
 import { CreateInterviewSession } from '@/src/queries/interview-plans';

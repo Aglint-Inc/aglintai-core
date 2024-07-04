@@ -79,7 +79,7 @@ const AllTabs = memo(() => {
   const tabs = Object.entries(allTabs).reduce(
     (acc, [key, value]) => {
       const safeKey = key as ApplicationStore['tab'];
-      if (!value || (data ?? []).includes(value)) acc.push(safeKey);
+      if (!value || data[value]) acc.push(safeKey);
       return acc;
     },
     [] as ApplicationStore['tab'][],

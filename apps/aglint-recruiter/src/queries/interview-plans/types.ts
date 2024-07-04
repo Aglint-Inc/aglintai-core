@@ -1,10 +1,8 @@
 import { DB } from '@aglint/shared-types';
 
-import { getInterviewPlansAPI } from '.';
+import { GetInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
 
-export type InterviewPlansType = Awaited<
-  ReturnType<typeof getInterviewPlansAPI>
->;
+export type InterviewPlansType = GetInterviewPlansType['respone'];
 
 export type InterviewSessionType =
   InterviewPlansType['interview_session'][number];

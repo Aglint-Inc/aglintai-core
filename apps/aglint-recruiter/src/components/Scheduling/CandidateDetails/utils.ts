@@ -145,8 +145,9 @@ export const createCloneSession = async ({
         return {
           interview_schedule_id: ses.new_schedule_id,
           status: ses.isSelected ? 'waiting' : 'not_scheduled',
-          instructions: refSessions.find((s) => s.interview_session.id === ses.interview_session.id)
-            ?.interview_module?.instructions,
+          instructions: refSessions.find(
+            (s) => s.interview_session.id === ses.interview_session.id,
+          )?.interview_module?.instructions,
           id: ses.new_meeting_id,
           organizer_id,
           meeting_flow,
@@ -164,7 +165,9 @@ export const createCloneSession = async ({
     const insertableSessions: DatabaseTableInsert['interview_session'][] =
       allSessions.map((session) => ({
         interview_plan_id: null,
-        id: refSessions.find((ref) => ref.interview_session.id === session.interview_session.id).newId,
+        id: refSessions.find(
+          (ref) => ref.interview_session.id === session.interview_session.id,
+        ).newId,
         break_duration: session.interview_session.break_duration,
         interviewer_cnt: session.interview_session.interviewer_cnt,
         location: session.interview_session.location,
@@ -174,8 +177,9 @@ export const createCloneSession = async ({
         session_duration: session.interview_session.session_duration,
         session_order: session.interview_session.session_order,
         session_type: session.interview_session.session_type,
-        meeting_id: refSessions.find((ref) => ref.interview_session.id === session.interview_session.id)
-          .new_meeting_id,
+        meeting_id: refSessions.find(
+          (ref) => ref.interview_session.id === session.interview_session.id,
+        ).new_meeting_id,
       }));
 
     const { error: errorInsertedSessions } = await supabase
@@ -234,8 +238,9 @@ export const createCloneSession = async ({
         .upsert(
           taskSelRel.map((taskRel) => ({
             id: taskRel.id,
-            session_id: refSessions.find((ses) => ses.interview_session.id === taskRel.session_id)
-              .newId,
+            session_id: refSessions.find(
+              (ses) => ses.interview_session.id === taskRel.session_id,
+            ).newId,
             task_id: taskRel.task_id,
           })),
         );
@@ -249,6 +254,7 @@ export const createCloneSession = async ({
       schedule: data[0],
       session_ids: newSessionIds,
       refSessions: updatedRefSessions,
+      organizer_id,
     };
   } catch (e) {
     await supabase
@@ -415,7 +421,10 @@ export const scheduleWithAgent = async ({
         console.log(
           createCloneRes.refSessions
             .filter((ses) => ses.isSelected)
-            .map((ses) => `old session_id ${ses.interview_session.id} to ${ses.newId}`),
+            .map(
+              (ses) =>
+                `old session_id ${ses.interview_session.id} to ${ses.newId}`,
+            ),
         );
 
         const filterJson = await createFilterJson({
@@ -651,7 +660,10 @@ export const scheduleWithAgentWithoutTaskId = async ({
         console.log(
           createCloneRes.refSessions
             .filter((ses) => ses.isSelected)
-            .map((ses) => `old session_id ${ses.interview_session.id} to ${ses.newId}`),
+            .map(
+              (ses) =>
+                `old session_id ${ses.interview_session.id} to ${ses.newId}`,
+            ),
         );
 
         const filterJson = await createFilterJson({
@@ -1186,6 +1198,7 @@ export const onClickResendInvite = async ({
   application_id,
   filter_id,
   request_id,
+  task_id,
 }: {
   candidate_name: string;
   session_name: string;
@@ -1193,11 +1206,13 @@ export const onClickResendInvite = async ({
   application_id: string;
   filter_id: string | null;
   request_id: string | null;
+  task_id: string;
 }) => {
   try {
     if (filter_id) {
       const resMail = await selfScheduleReminderMailToCandidate({
         filter_id: filter_id,
+        task_id,
       });
 
       if (resMail) {
@@ -1215,11 +1230,11 @@ export const onClickResendInvite = async ({
       const bodyParams: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
         {
           avail_req_id: request_id,
-          recruiter_user_id: rec_user_id,
+          organizer_user_id: rec_user_id,
         };
 
       await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/emails/sendAvailabilityRequest_email_applican`,
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/emails/sendAvailabilityRequest_email_applicant`,
         {
           meta: bodyParams,
         },

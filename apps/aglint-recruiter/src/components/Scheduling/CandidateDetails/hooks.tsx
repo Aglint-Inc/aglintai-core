@@ -1,19 +1,8 @@
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
-import { useRouter } from 'next/router';
-dayjs.extend(utc);
-dayjs.extend(timezone);
-
-import {
-  DatabaseTable,
-  DB,
-  InterviewPlanTypeDB,
-  SupabaseType,
-} from '@aglint/shared-types';
+import { DB, InterviewPlanTypeDB, SupabaseType } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
+import { useRouter } from 'next/router';
 
 import { ApiResponseActivities } from '@/src/pages/api/scheduling/fetch_activities';
 import { supabase } from '@/src/utils/supabase/client';
@@ -21,6 +10,7 @@ import toast from '@/src/utils/toast';
 
 import { getScheduleName } from '../utils';
 import {
+  AvailabilitiesSchedulingApplication,
   SchedulingApplication,
   setAvailabilities,
   setFetchingSchedule,
@@ -111,7 +101,8 @@ export const useGetScheduleApplication = () => {
             setinitialSessions(
               sessionsWithPlan.sessions.sort(
                 (itemA, itemB) =>
-                  itemA['session_order'] - itemB['session_order'],
+                  itemA.interview_session['session_order'] -
+                  itemB.interview_session['session_order'],
               ),
             );
           }
@@ -128,7 +119,8 @@ export const useGetScheduleApplication = () => {
             setinitialSessions(
               sessionsWithPlan.sessions.sort(
                 (itemA, itemB) =>
-                  itemA['session_order'] - itemB['session_order'],
+                  itemA.interview_session['session_order'] -
+                  itemB.interview_session['session_order'],
               ),
             );
           }
@@ -211,7 +203,7 @@ export const fetchInterviewDataSchedule = async (
       data: {
         interview_data: InterviewDataResponseType[];
         application_data: ApplicationDataResponseType;
-        request_data: DatabaseTable['candidate_request_availability'][];
+        request_data: AvailabilitiesSchedulingApplication[];
       };
       error: any;
     };
@@ -245,7 +237,7 @@ export const fetchInterviewDataSchedule = async (
         candidates: data.application_data?.candidate,
         public_jobs: data.application_data?.public_jobs,
       } as SchedulingApplication['selectedApplication'],
-      availabilities: data.request_data,
+      availabilities: data.request_data || [],
     };
   } catch (e) {
     toast.error(e.message);

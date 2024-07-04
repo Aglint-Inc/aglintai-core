@@ -1,3 +1,7 @@
+.new-gsc-wrap {
+  position: relative;
+}
+
 .global_schedule_card {
   position: relative;
   border: 1px solid var(--neutral-6);
@@ -127,6 +131,20 @@
   align-items: center;
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
+}
+
+.flex-h2.depricate {
+  display: none;
+}
+
+.schedule_notifications {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
 }
 
 .gsc-selected {

@@ -24,19 +24,16 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('interview_session')
       .select(
-        'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
+        '*,interview_meeting(*, recruiter_user(first_name,last_name,email,scheduling_settings))',
       )
       .eq('id', req_body.session_id),
   );
 
-  if (!session) {
-    throw new Error('session not available');
-  }
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,timezone,recruiter_id,recruiter(logo)),public_jobs(job_title,company,recruiter)',
+        'candidates(first_name,last_name,timezone,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
       )
       .eq('id', req_body.application_id),
   );
@@ -50,15 +47,11 @@ export async function fetchUtil(
       .eq('session_id', req_body.session_id),
   );
 
-  const [recruiter_user] = supabaseWrap(
-    await supabaseAdmin
-      .from('recruiter_user')
-      .select('first_name,last_name,scheduling_settings')
-      .eq('user_id', candidateJob.public_jobs.recruiter),
-  );
+  const meeting_organizer = session.interview_meeting.recruiter_user;
 
-  const org_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
-
+  const org_tz =
+    session.interview_meeting.recruiter_user.scheduling_settings.timeZone
+      .tzCode;
   const {
     interview_meeting,
     name,
@@ -93,9 +86,13 @@ export async function fetchUtil(
         companyName: public_jobs.company,
         interviewerFirstName: inter.first_name,
         interviewerLastName: inter.last_name,
-        interviewerName: getFullName(
-          recruiter_user.first_name,
-          recruiter_user.last_name,
+        interviewerName: getFullName(inter.first_name, inter.last_name),
+        organizerFirstName: meeting_organizer.first_name,
+        organizerLastName: meeting_organizer.last_name,
+        OrganizerTimeZone: org_tz,
+        organizerName: getFullName(
+          meeting_organizer.first_name,
+          meeting_organizer.first_name,
         ),
       };
 

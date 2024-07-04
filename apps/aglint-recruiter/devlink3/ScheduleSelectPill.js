@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { SlotComp } from "./SlotComp";
 import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./ScheduleSelectPill.module.css";
@@ -23,9 +22,7 @@ export function ScheduleSelectPill({
           className={_utils.cx(_styles, "ssp-header-wrap")}
           tag="div"
         >
-          <_Builtin.Block tag="div">
-            {slotIcons ?? <SlotComp componentNeme="Icon" />}
-          </_Builtin.Block>
+          <_Builtin.Block tag="div">{slotIcons}</_Builtin.Block>
           <Text content={textScheduleName} weight="" />
         </_Builtin.Block>
         <Text content={textTime} size="1" weight="" color="neutral" />

@@ -27,7 +27,7 @@ export function DeletePopup({
     >
       <_Builtin.Block className={_utils.cx(_styles, "popup_header")} tag="div">
         <_Builtin.Block className={_utils.cx(_styles, "popup_title")} tag="div">
-          <Text content={textTitle} />
+          <Text content={textTitle} weight="medium" />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "popup_close")}

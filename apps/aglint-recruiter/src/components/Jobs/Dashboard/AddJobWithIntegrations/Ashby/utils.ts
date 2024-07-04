@@ -5,7 +5,7 @@ import {
 } from '@aglint/shared-types';
 import axios from 'axios';
 
-import { hashCode } from '@/src/context/JobDashboard/hooks';
+import { hashCode } from '@/src/context/JobContext/utils';
 import { JobInsert } from '@/src/queries/jobs/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

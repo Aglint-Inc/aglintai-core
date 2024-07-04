@@ -1,4 +1,7 @@
-import type { EmailTemplateAPi } from '@aglint/shared-types';
+import type {
+  EmailTemplateAPi,
+  MeetingDetailCardType,
+} from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import {
   DAYJS_FORMATS,
@@ -7,6 +10,12 @@ import {
 } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
+import {
+  durationCalculator,
+  platformRemoveUnderscore,
+  scheduleTypeIcon,
+  sessionTypeIcon,
+} from '../../../utils/email/common/functions';
 
 export async function dbFetch(
   req_body: EmailTemplateAPi<'interviewStart_email_applicant'>['api_payload'],
@@ -15,24 +24,25 @@ export async function dbFetch(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,email,recruiter_id,recruiter(logo),timezone),public_jobs(job_title,company,recruiter)',
+        'candidates(first_name,last_name,email,recruiter_id,recruiter(logo),timezone),public_jobs(job_title,company)',
       )
       .eq('id', req_body.application_id),
   );
-  const [meeting] = supabaseWrap(
+  const [meeting_details] = supabaseWrap(
     await supabaseAdmin
-      .from('interview_meeting')
+      .from('meeting_details')
       .select()
       .eq('id', req_body.meeting_id),
   );
 
-  const [recruiter_user] = supabaseWrap(
+  const [meeting_organizer] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
-      .select('first_name,last_name,scheduling_settings')
-      .eq('user_id', candidateJob.public_jobs.recruiter),
+      .select()
+      .eq('user_id', meeting_details.organizer_id),
   );
-  const recruiter_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
+
+  const recruiter_tz = meeting_organizer.scheduling_settings.timeZone.tzCode;
   const {
     candidates: {
       email,
@@ -49,7 +59,8 @@ export async function dbFetch(
     'interviewStart_email_applicant',
   );
 
-  const cand_tz = 'America/Los_angeles';
+  // const cand_tz = 'America/Los_angeles';
+  const rec_tz = meeting_organizer.scheduling_settings.timeZone.tzCode;
 
   const comp_email_placeholder: EmailTemplateAPi<'interviewStart_email_applicant'>['comp_email_placeholders'] =
     {
@@ -57,34 +68,47 @@ export async function dbFetch(
       candidateLastName: last_name,
       jobRole: job_title,
       candidateName: company,
-      recruiterName: getFullName(
-        recruiter_user.first_name,
-        recruiter_user.last_name,
+      organizerName: getFullName(
+        meeting_organizer.first_name,
+        meeting_organizer.last_name,
       ),
-      startDate: dayjsLocal(meeting.start_time)
-        .tz(cand_tz)
+      startDate: dayjsLocal(meeting_details.start_time)
+        .tz(rec_tz)
         .format(DAYJS_FORMATS.DATE_FORMAT),
-      time: dayjsLocal(meeting.start_time)
-        .tz(cand_tz)
+      time: dayjsLocal(meeting_details.start_time)
+        .tz(rec_tz)
         .format(DAYJS_FORMATS.END_TIME_FORMAT),
-      endDate: dayjsLocal(meeting.end_time)
-        .tz(cand_tz)
+      endDate: dayjsLocal(meeting_details.end_time)
+        .tz(rec_tz)
         .format(DAYJS_FORMATS.DATE_FORMAT),
       companyName: company,
-      recruiterFirstName: recruiter_user.first_name,
-      recruiterLastName: recruiter_user.last_name,
-      recruiterTimeZone: recruiter_tz,
+      organizerFirstName: meeting_organizer.first_name,
+      organizerLastName: meeting_organizer.last_name,
+      OrganizerTimeZone: recruiter_tz,
     };
   const filled_comp_template = fillCompEmailTemplate(
     comp_email_placeholder,
     comp_email_temp,
   );
 
+  const meeting_detail_card: MeetingDetailCardType = {
+    date: dayjsLocal(meeting_details.start_time)
+      .tz(rec_tz)
+      .format(DAYJS_FORMATS.DATE_FORMAT),
+    time: `${dayjsLocal(meeting_details.start_time).tz(rec_tz).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(meeting_details.end_time).tz(rec_tz).format(DAYJS_FORMATS.END_TIME_FORMAT)}`,
+    sessionType: meeting_details.session_name,
+    platform: platformRemoveUnderscore(meeting_details.schedule_type),
+    duration: durationCalculator(meeting_details.session_duration),
+    sessionTypeIcon: sessionTypeIcon(meeting_details.session_type),
+    meetingIcon: scheduleTypeIcon(meeting_details.schedule_type),
+  };
+
   const react_email_placeholders: EmailTemplateAPi<'interviewStart_email_applicant'>['react_email_placeholders'] =
     {
       companyLogo: logo,
       emailBody: filled_comp_template.body,
       subject: filled_comp_template.subject,
+      meetingDetail: meeting_detail_card,
     };
 
   return {

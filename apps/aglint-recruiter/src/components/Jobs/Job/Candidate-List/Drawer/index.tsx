@@ -28,7 +28,7 @@ const Drawer = () => {
   }));
 
   const tabs: Parameters<typeof Application>[0]['placeholderData']['tabs'] =
-    job?.activeSections;
+    job?.flags;
 
   const placeholderData = useMemo(
     () =>
@@ -98,6 +98,7 @@ const Drawer = () => {
                 session_order,
                 meeting_id,
                 session_id: id,
+                meeting_flow: null,
               }),
             ),
     [interviewPlans?.interview_session, sessions],

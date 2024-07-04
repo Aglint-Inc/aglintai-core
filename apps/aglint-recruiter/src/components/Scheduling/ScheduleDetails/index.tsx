@@ -29,6 +29,7 @@ import Overview from './Overview';
 import ButtonGroup from './Overview/ButtonGroup';
 import RequestRescheduleDialog from './RequestRescheduleDialog';
 import RescheduleDialog from './RescheduleDialog';
+import { fetchFilterJson } from './utils';
 
 function SchedulingViewComp() {
   const router = useRouter();
@@ -41,9 +42,8 @@ function SchedulingViewComp() {
   const [isDeclineOpen, setIsDeclineOpen] = useState(false);
   const [cancelUserId, setCancelUserId] = useState('');
   const [textValue, setTextValue] = useState('');
-  const [filterJson, setFilterJson] = useState<
-    DatabaseTable['interview_filter_json'] | null
-  >(null);
+  const [filterJson, setFilterJson] =
+    useState<Awaited<ReturnType<typeof fetchFilterJson>>>(null);
   const [requestAvailibility, setRequestAvailibility] = useState<
     DatabaseTable['candidate_request_availability'] | null
   >(null);
@@ -140,7 +140,10 @@ function SchedulingViewComp() {
         schedule?.interview_meeting.meeting_flow === 'phone_agent' ||
         schedule?.interview_meeting.meeting_flow === 'mail_agent'
       ) {
-        fetchFilterJson();
+        (async () => {
+          const res = await fetchFilterJson([schedule.interview_session.id]);
+          setFilterJson(res);
+        })();
       } else if (
         schedule?.interview_meeting.meeting_flow === 'candidate_request'
       ) {
@@ -148,19 +151,6 @@ function SchedulingViewComp() {
       }
     }
   }, [schedule?.interview_meeting]);
-
-  const fetchFilterJson = async () => {
-    try {
-      const { data } = await supabase
-        .from('interview_filter_json')
-        .select('*')
-        .contains('session_ids', [schedule.interview_session.id]);
-
-      setFilterJson(data[0]);
-    } catch (e) {
-      //
-    }
-  };
 
   const fetchRequestAvailibilty = async () => {
     try {
