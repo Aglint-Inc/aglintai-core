@@ -22,6 +22,7 @@ import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
 import { STATE_ASHBY_DIALOG } from '@/src/context/IntegrationProvider/utils';
+import { handleGenerateJd } from '@/src/context/JobContext/hooks';
 import { useJobs } from '@/src/context/JobsContext';
 import { ScrollList } from '@/src/utils/framer-motions/Animation';
 import ROUTES from '@/src/utils/routing/routes';
@@ -36,7 +37,7 @@ export function AshbyModalComp() {
   const { recruiter, setRecruiter } = useAuthDetails();
   const { setIntegration, integration, handleClose } = useIntegration();
   const router = useRouter();
-  const { jobs, handleJobRead, experimental_handleGenerateJd } = useJobs();
+  const { jobs, handleJobsRefresh } = useJobs();
   const [postings, setPostings] = useState<JobAshby[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedAshbyPostings, setSelectedAshbyPostings] = useState<
@@ -110,12 +111,11 @@ export function AshbyModalComp() {
           };
         });
         await supabase.from('job_reference').insert(astJobsObj).select();
-        await experimental_handleGenerateJd(newJobs[0].id);
+        await handleGenerateJd(newJobs[0].id);
+        await handleJobsRefresh();
         // await axios.post('/api/ashby/batchsave', {
         //   recruiter_id: recruiter.id,
         // });
-
-        await handleJobRead();
         //closing modal once done
         setIntegration((prev) => ({
           ...prev,

@@ -11,7 +11,7 @@ import React, { FC } from 'react';
 import { Line } from 'react-chartjs-2';
 
 import { NoData } from '@/devlink3/NoData';
-import { useJobDetails } from '@/src/context/JobDashboard';
+import { useJobDashboard } from '@/src/context/JobDashboard';
 
 import { DashboardGraphOptions } from '.';
 
@@ -119,7 +119,7 @@ const DashboardLineChart: FC<{
 }> = ({ option }) => {
   const {
     tenureAndExperience: { data: dataSet },
-  } = useJobDetails();
+  } = useJobDashboard();
   const experience = dataSet?.[option] ?? null;
   const total = experience
     ? Object.values(experience).reduce((acc, curr) => {

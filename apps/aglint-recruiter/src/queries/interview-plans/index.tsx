@@ -1,40 +1,23 @@
 import { DB } from '@aglint/shared-types';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { GetInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
+import { useJob } from '@/src/context/JobContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { useCurrentJob } from '../job-assessment/keys';
-import { interviewPlanKeys, interviewSessionMutationKeys } from './keys';
+import { jobQueries } from '../job';
+import { interviewSessionMutationKeys } from './keys';
 import {
   InterviewPlansType,
   InterviewSessionRelationType,
   InterviewSessionUpdate,
 } from './types';
 
-export const useInterviewPlans = () => {
-  const queryClient = useQueryClient();
-  const { job, id } = useCurrentJob();
-  const { recruiter_id } = useAuthDetails();
-  const { queryKey } = interviewPlanKeys.interview_plan({ id });
-  const response = useQuery({
-    queryKey,
-    queryFn: () => getInterviewPlansAPI(id),
-    enabled: !!(recruiter_id && job),
-  });
-  const refetch = async () => {
-    await Promise.allSettled([queryClient.invalidateQueries({ queryKey })]);
-  };
-  return { ...response, refetch };
-};
-
 export const useCreateInterviewPlan = () => {
   const queryClient = useQueryClient();
-  const { id } = useCurrentJob();
-  const { queryKey } = interviewPlanKeys.interview_plan({ id });
+  const { job_id } = useJob();
+  const id = job_id;
+  const { queryKey } = jobQueries.interview_plans({ id });
   const mutation = useMutation({
     mutationFn: async () => {
       await createInterviewPlan(id);
@@ -49,8 +32,9 @@ export const useCreateInterviewPlan = () => {
 
 export const useAddInterviewSession = () => {
   const queryClient = useQueryClient();
-  const { id } = useCurrentJob();
-  const { queryKey } = interviewPlanKeys.interview_plan({ id });
+  const { job_id } = useJob();
+  const id = job_id;
+  const { queryKey } = jobQueries.interview_plans({ id });
   const mutation = useMutation({
     mutationFn: async (args: CreateInterviewSession) => {
       await createInterviewSession(args);
@@ -65,8 +49,9 @@ export const useAddInterviewSession = () => {
 
 export const useUpdateInterviewSession = () => {
   const queryClient = useQueryClient();
-  const { id } = useCurrentJob();
-  const { queryKey } = interviewPlanKeys.interview_plan({ id });
+  const { job_id } = useJob();
+  const id = job_id;
+  const { queryKey } = jobQueries.interview_plans({ id });
   const { mutationKey } = interviewSessionMutationKeys.update();
   const mutation = useMutation({
     mutationKey,
@@ -83,8 +68,9 @@ export const useUpdateInterviewSession = () => {
 
 export const useDeleteInterviewSession = () => {
   const queryClient = useQueryClient();
-  const { id } = useCurrentJob();
-  const { queryKey } = interviewPlanKeys.interview_plan({ id });
+  const { job_id } = useJob();
+  const id = job_id;
+  const { queryKey } = jobQueries.interview_plans({ id });
   const { mutationKey } = interviewSessionMutationKeys.delete();
 
   const mutation = useMutation({
@@ -102,8 +88,9 @@ export const useDeleteInterviewSession = () => {
 
 export const useEditInterviewSession = () => {
   const queryClient = useQueryClient();
-  const { id } = useCurrentJob();
-  const { queryKey } = interviewPlanKeys.interview_plan({ id });
+  const { job_id } = useJob();
+  const id = job_id;
+  const { queryKey } = jobQueries.interview_plans({ id });
   const { mutationKey } = interviewSessionMutationKeys.update();
   const mutation = useMutation({
     mutationKey,
@@ -120,8 +107,9 @@ export const useEditInterviewSession = () => {
 
 export const useAddDebriefSession = () => {
   const queryClient = useQueryClient();
-  const { id } = useCurrentJob();
-  const { queryKey } = interviewPlanKeys.interview_plan({ id });
+  const { job_id } = useJob();
+  const id = job_id;
+  const { queryKey } = jobQueries.interview_plans({ id });
 
   const mutation = useMutation({
     mutationFn: async (args: CreateDebriefSession) => {
@@ -137,8 +125,9 @@ export const useAddDebriefSession = () => {
 
 export const useEditDebriefSession = () => {
   const queryClient = useQueryClient();
-  const { id } = useCurrentJob();
-  const { queryKey } = interviewPlanKeys.interview_plan({ id });
+  const { job_id } = useJob();
+  const id = job_id;
+  const { queryKey } = jobQueries.interview_plans({ id });
   const { mutationKey } = interviewSessionMutationKeys.update();
   const mutation = useMutation({
     mutationKey,
@@ -155,8 +144,9 @@ export const useEditDebriefSession = () => {
 
 export const useReorderInterviewSessions = () => {
   const queryClient = useQueryClient();
-  const { id } = useCurrentJob();
-  const { queryKey } = interviewPlanKeys.interview_plan({ id });
+  const { job_id } = useJob();
+  const id = job_id;
+  const { queryKey } = jobQueries.interview_plans({ id });
   const mutation = useMutation({
     mutationFn: async (args: {
       updatedInterviewSessions: InterviewPlansType['interview_session'];
@@ -235,12 +225,6 @@ export const createInterviewPlan = async (job_id: string) => {
     .select();
   if (error) throw new Error(error.message);
   return data[0];
-};
-
-export const getInterviewPlansAPI = async (job_id: string) => {
-  return (
-    await axios.get(`/api/scheduling/get_interview_plans?job_id=${job_id}`)
-  ).data as GetInterviewPlansType['respone'];
 };
 
 export type CreateInterviewSession = Omit<

@@ -1,12 +1,11 @@
 import * as React from "react";
 import * as Types from "./types";
 
-declare function TextWithIcon(props: {
+declare function GlobalCta(props: {
   as?: React.ElementType;
   color?: Types.Builtin.Text;
-  fontWeight?: Types.Builtin.Text;
-  textContent?: React.ReactNode;
+  textTitle?: React.ReactNode;
+  textDescription?: React.ReactNode;
+  slotButton?: Types.Devlink.Slot;
   iconName?: React.ReactNode;
-  iconSize?: Types.Builtin.Text;
-  slotIcon?: Types.Devlink.Slot;
 }): React.JSX.Element;

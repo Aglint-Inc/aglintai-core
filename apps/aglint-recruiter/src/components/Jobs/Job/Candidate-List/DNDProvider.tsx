@@ -28,7 +28,7 @@ const DNDLayer = (props: PropsWithChildren) => {
 
 const CustomDragLayer = ({ x }: { x: number }) => {
   const {
-    job: { count },
+    job: { section_count },
     section,
   } = useApplications();
   const { itemType, isDragging, initialOffset, currentOffset } = useDragLayer(
@@ -59,7 +59,7 @@ const CustomDragLayer = ({ x }: { x: number }) => {
       style={{
         position: 'fixed',
         pointerEvents: 'none',
-        zIndex: count[section] + 1,
+        zIndex: section_count[section] + 1,
         left: 0,
         top: 0,
         width: '100%',

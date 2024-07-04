@@ -1,4 +1,5 @@
 import { Database, Tables } from "./schema.types";
+import { Type } from "./utils.types";
 
 export type CustomMembersMeta = {
   [id in
@@ -33,3 +34,51 @@ export type CustomEmailTypes = Extract<
   | "meetingDeclined_email_organizer"
   | "meetingAccepted_email_organizer"
 >;
+
+export type CustomJobParamters = Type<
+  Pick<
+    Database["public"]["Tables"]["public_jobs"]["Row"],
+    "parameter_weights" | "jd_json" | "draft"
+  >,
+  {
+    parameter_weights: CustomParameterWeights;
+    jd_json: CustomJdJson;
+    draft: CustomDraft;
+  }
+>;
+
+type CustomParameterWeights = {
+  skills: number;
+  experience: number;
+  education: number;
+};
+
+type CustomJdJson = {
+  title: string;
+  level:
+    | "Fresher-level"
+    | "Associate-level"
+    | "Mid-level"
+    | "Senior-level"
+    | "Executive-level";
+  rolesResponsibilities: jsonItemType[];
+  skills: jsonItemType[];
+  educations: jsonItemType[]; // Adjust this line based on the structure of the "education" property
+};
+
+type jsonItemType = {
+  field: string;
+  isMustHave: boolean;
+  id: string;
+};
+
+type CustomDraft = Pick<
+  Database["public"]["Tables"]["public_jobs"]["Row"],
+  | "job_title"
+  | "description"
+  | "department"
+  | "company"
+  | "workplace_type"
+  | "job_type"
+  | "location"
+> & { jd_json: CustomJdJson };
