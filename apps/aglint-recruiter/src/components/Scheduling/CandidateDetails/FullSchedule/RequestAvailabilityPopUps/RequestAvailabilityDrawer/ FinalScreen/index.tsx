@@ -1,19 +1,19 @@
-import { Stack } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-
-import DayCardWrapper from '../../../../SchedulingDrawer/StepSlotOptions/DayCardWrapper';
-import { useAvailabilityContext } from '../../RequestAvailabilityContext';
-import { EmailPreviewOnScheduling } from '@/devlink3';
-import toast from '@/src/utils/toast';
 import {
   EmailTemplateAPi,
   SessionCombinationRespType,
 } from '@aglint/shared-types';
+import { Stack } from '@mui/material';
 import axios from 'axios';
-import { ShowCode } from '@/src/components/Common/ShowCode';
-import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
+import { useEffect, useState } from 'react';
+
+import { EmailPreviewOnScheduling } from '@/devlink3/EmailPreviewOnScheduling';
 import Loader from '@/src/components/Common/Loader';
+import { ShowCode } from '@/src/components/Common/ShowCode';
+import toast from '@/src/utils/toast';
+
+import DayCardWrapper from '../../../../SchedulingDrawer/StepSlotOptions/DayCardWrapper';
 import { useSchedulingApplicationStore } from '../../../../store';
+import { useAvailabilityContext } from '../../RequestAvailabilityContext';
 
 function FinalScreen() {
   const { selectedDateSlots } = useAvailabilityContext();
@@ -49,7 +49,7 @@ function FinalScreen() {
           setEmailData(data);
           setFetching(false);
         })
-        .catch((error) => {
+        .catch(() => {
           toast.error('Fail to fetch email preview');
           setFetching(false);
         });

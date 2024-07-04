@@ -1,16 +1,18 @@
-import { ButtonSoft, ButtonSolid } from '@/devlink';
-import { EmailPreviewOnScheduling } from '@/devlink3';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import toast from '@/src/utils/toast';
 import { EmailTemplateAPi } from '@aglint/shared-types';
 import axios from 'axios';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useSchedulingApplicationStore } from '../../../store';
-import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
+
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { EmailPreviewOnScheduling } from '@/devlink3/EmailPreviewOnScheduling';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import toast from '@/src/utils/toast';
+
+import { useSchedulingApplicationStore } from '../../../store';
 
 function EmailPreview({
-  requestAvailabilityId,
   setRequestSteps,
   onSubmit,
   loading,
@@ -45,7 +47,7 @@ function EmailPreview({
           setEmailData(data);
           setFetching(false);
         })
-        .catch((error) => {
+        .catch(() => {
           toast.error('Fail to fetch email preview');
           setFetching(false);
         });
