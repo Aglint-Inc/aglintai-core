@@ -3,11 +3,10 @@ import { marked } from 'marked';
 import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { GeneralPopupLarge } from '@/devlink3/GeneralPopupLarge';
-import Icon from '@/src/components/Common/Icons/Icon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
-import { GlobalIcon } from '@/devlink';
 
 function Instructions({
   instruction,
