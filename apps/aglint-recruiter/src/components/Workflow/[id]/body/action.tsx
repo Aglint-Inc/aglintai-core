@@ -24,11 +24,8 @@ const Actions = () => {
     permissions,
     devlinkProps,
   } = useWorkflow();
-  const { createAction, globalOptions } = useActions();
-  const canCreateAction = useMemo(
-    () => !!globalOptions.length,
-    [globalOptions],
-  );
+  const { createAction, canCreateAction } = useActions();
+
   if (status === 'error') return <>Error</>;
   if (status === 'pending') return <Loader />;
   const actions = data.map((action) => {
