@@ -31,6 +31,7 @@ import {
   updateDebriefSession,
 } from '@/src/queries/interview-plans';
 import { getFullName } from '@/src/utils/jsonResume';
+import { createCloneSession } from '@/src/utils/scheduling/createCloneSession';
 import toast from '@/src/utils/toast';
 
 import IconScheduleType from '../../../Candidates/ListCard/Icon/IconScheduleType';
@@ -42,7 +43,6 @@ import {
   setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../../store';
-import { createCloneSession } from '../../utils';
 import DebriedForm from './DebriefFrom';
 
 export type Interviewer = {

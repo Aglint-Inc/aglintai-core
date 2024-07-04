@@ -1,3 +1,4 @@
+import { DatabaseEnums } from '@aglint/shared-types';
 import {
   additionalRescheduleNotes,
   availabilityReqLink,
@@ -17,7 +18,7 @@ import {
   rescheduleReason,
   selfSchedulingLink,
   time,
-} from "./variables";
+} from './variables';
 
 export const emailVariablePayloads = {
   debrief_email_interviewer: [
@@ -26,11 +27,7 @@ export const emailVariablePayloads = {
     ...jobDetails,
     ...organizer,
   ],
-  applicationRecieved_email_applicant: [
-    ...organizer,
-    ...candidates,
-    ...jobDetails,
-  ],
+  applicationRecieved_email_applicant: [...candidates, ...jobDetails],
   interviewCancel_email_applicant: [...organizer, ...candidates, ...jobDetails],
   agent_email_candidate: [
     ...organizer,
@@ -45,7 +42,7 @@ export const emailVariablePayloads = {
     ...candidates,
     ...jobDetails,
   ],
-  applicantReject_email_applicant: [...candidates, ...jobDetails, ...organizer],
+  applicantReject_email_applicant: [...candidates, ...jobDetails],
   availabilityReqResend_email_candidate: [
     ...candidates,
     ...jobDetails,
@@ -143,5 +140,12 @@ export const emailVariablePayloads = {
     candidateScheduleLink,
     ...organizer,
     ...jobDetails,
+  ],
+  interviewEnd_email_interviewerForFeedback: [
+    ...candidates,
+    ...interviewer,
+    ...organizer,
+    ...jobDetails,
+    interviewFeedbackLink,
   ],
 };

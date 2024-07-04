@@ -36,10 +36,10 @@ export async function fetchUtil(
       .in('id', req_body.session_ids),
   );
   const meeting_organizer = int_sessions[0].interview_meeting.recruiter_user;
-  let cand_link = '';
+  let cand_link = '#';
   if (req_body.availability_req_id) {
     cand_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.availability_req_id}`;
-  } else {
+  } else if (req_body.filter_id) {
     cand_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${req_body.schedule_id}?filter_id=${req_body.filter_id}`;
   }
   const recruiter_tz = meeting_organizer.scheduling_settings.timeZone.tzCode;
