@@ -11,4 +11,6 @@ declare function TextWithIcon(props: {
   color?: Types.Builtin.Text;
   fontSize?: Types.Builtin.Text;
   iconWeight?: Types.Builtin.Text;
+  fontColor?: Types.Builtin.Text;
+  iconColor?: Types.Builtin.Text;
 }): React.JSX.Element;

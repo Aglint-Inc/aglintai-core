@@ -16,6 +16,8 @@ export function TextWithIcon({
   color = "neutral-12",
   fontSize = "2",
   iconWeight = "light",
+  fontColor,
+  iconColor = "inherit",
 }) {
   return (
     <_Component
@@ -25,7 +27,12 @@ export function TextWithIcon({
     >
       <_Builtin.Block className={_utils.cx(_styles, "slot_icon")} tag="div">
         {slotIcon ?? (
-          <GlobalIcon size={iconSize} iconName={iconName} weight={iconWeight} />
+          <GlobalIcon
+            size={iconSize}
+            iconName={iconName}
+            weight={iconWeight}
+            color={iconColor}
+          />
         )}
       </_Builtin.Block>
       <_Builtin.Block
@@ -36,7 +43,7 @@ export function TextWithIcon({
           weight={fontWeight}
           content={textContent}
           size={fontSize}
-          color=""
+          color={fontColor}
         />
       </_Builtin.Block>
     </_Component>

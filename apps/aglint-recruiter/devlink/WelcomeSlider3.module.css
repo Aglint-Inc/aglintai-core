@@ -77,34 +77,6 @@
   grid-row-gap: 32px;
 }
 
-.auth-cta-block.sign-up {
-  padding: 40px 32px;
-  grid-column-gap: 24px;
-  grid-row-gap: 24px;
-  border-radius: 20px;
-  background-color: rgba(248, 249, 249, 0.5);
-}
-
-@media screen and (max-width: 991px) {
-  .auth-cta-block.sign-up {
-    text-align: center;
-  }
-}
-
-.sign-up {
-  flex-direction: column;
-}
-
-.auth-cta-block.sign-up.tab-edit {
-  align-items: center;
-}
-
-@media screen and (max-width: 991px) {
-  .auth-cta-block.sign-up.tab-edit {
-    align-items: stretch;
-  }
-}
-
 .auth-cta-block.tab-edit {
   align-items: center;
 }

@@ -1,0 +1,73 @@
+.reschedule_options {
+  display: flex;
+  overflow: hidden;
+  max-width: 330px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 1px;
+  grid-row-gap: 1px;
+
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+
+  background-color: var(--neutral-6);
+}
+
+.reschedule_option {
+  display: flex;
+  padding-top: var(--space-3);
+  padding-right: var(--space-3);
+  padding-bottom: var(--space-3);
+  padding-left: var(--space-3);
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+
+  background-color: var(--white);
+
+  transition-property: all;
+  transition-duration: 300ms;
+  transition-timing-function: ease;
+
+  cursor: pointer;
+
+  user-select: none;
+}
+
+.reschedule_option:hover {
+  background-color: var(--accent-3);
+  color: var(--accent-11);
+}
+
+.text_with_icon {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
+.embed_flex {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.embed_flex.relative_3 {
+  position: relative;
+  z-index: 3;
+}
+
+.embed_flex.is_cursor {
+  cursor: pointer;
+}
+
+.embed_flex.is_absolute {
+  position: absolute;
+}
+
+#w-node-_2ce4fd5f-2679-1bf6-6c0e-4a0691f931d1-91f931c3 {
+}
+#w-node-_2ce4fd5f-2679-1bf6-6c0e-4a0691f931d9-91f931c3 {
+}
