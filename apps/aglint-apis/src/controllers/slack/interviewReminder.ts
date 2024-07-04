@@ -38,8 +38,7 @@ export async function interviewReminder(req: Request, res: Response) {
     const candidate = application.candidates;
 
     const userResponse = await slackWeb.users.lookupByEmail({
-      email: 'chandra@aglinthq.com',
-      // email: interviewer.email,
+      email: interviewer.email,
     });
     const userId = userResponse.user.id;
 

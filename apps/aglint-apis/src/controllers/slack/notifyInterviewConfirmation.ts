@@ -37,8 +37,7 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
     );
 
     const userResponse = await slackWeb.users.lookupByEmail({
-      email: 'chandra@aglinthq.com',
-      // email: interviewer.email,
+      email: interviewer.email,
     });
     const userId = userResponse.user.id;
 
