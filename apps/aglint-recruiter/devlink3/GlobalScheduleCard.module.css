@@ -1,3 +1,7 @@
+.new-gsc-wrap {
+  position: relative;
+}
+
 .global_schedule_card {
   position: relative;
   border: 1px solid var(--neutral-6);
