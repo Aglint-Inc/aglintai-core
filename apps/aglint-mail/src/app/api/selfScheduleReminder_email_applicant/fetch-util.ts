@@ -15,7 +15,7 @@ export async function dbUtil(
     .select(
       'filter_json,session_ids,interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company,recruiter),candidates(first_name,last_name,email,recruiter(logo))))',
     )
-    .eq('id', req_body.filter_json_id)
+    .eq('id', req_body.filter_id)
     .single()
     .throwOnError();
 
@@ -43,8 +43,8 @@ export async function dbUtil(
   );
   const task_id = req_body.task_id;
   const scheduleLink = task_id
-    ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.interview_schedule.id}?filter_id=${req_body.filter_json_id}&task_id=${task_id}`
-    : `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.interview_schedule.id}?filter_id=${req_body.filter_json_id}`;
+    ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.interview_schedule.id}?filter_id=${req_body.filter_id}&task_id=${task_id}`
+    : `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.interview_schedule.id}?filter_id=${req_body.filter_id}`;
   const comp_email_placeholder: EmailTemplateAPi<'selfScheduleReminder_email_applicant'>['comp_email_placeholders'] =
     {
       candidateFirstName: first_name,
