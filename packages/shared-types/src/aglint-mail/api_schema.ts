@@ -1,4 +1,3 @@
-import { company } from '@aglint/shared-utils/src/template-variables/variables';
 import * as v from 'valibot';
 export const applicationRecievedEmailApplicantSchema = v.object({
   application_id: v.string(),
@@ -35,7 +34,17 @@ export const confirmInterviewEmailApplicantSchema = v.object({
   schedule_id: v.nullish(v.string()),
   filter_id: v.nullish(v.string()),
   availability_req_id: v.nullish(v.string()),
-  is_preview: v.optional(v.boolean(), false),
+  preview_details: v.optional(
+    v.object({
+      meeting_timings: v.array(
+        v.object({
+          meeting_start_time: v.string(),
+          meeting_end_time: v.string(),
+        })
+      ),
+    }),
+    undefined
+  ),
 });
 
 export const applicantRejectEmailApplicantSchema = v.object({
