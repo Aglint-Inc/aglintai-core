@@ -569,6 +569,11 @@ const rescoreApplications = async ({
 }: ApplicationsAllQueryPrerequistes) =>
   await supabase
     .from('applications')
-    .update({ overall_score: -1, processing_status: 'not started' })
+    .update({
+      overall_score: -1,
+      processing_status: 'not started',
+      score_json: null,
+      retry: 0,
+    })
     .eq('job_id', job_id)
     .throwOnError();
