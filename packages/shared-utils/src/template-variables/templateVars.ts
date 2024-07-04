@@ -146,5 +146,6 @@ export const emailVariablePayloads = {
     ...interviewer,
     ...organizer,
     ...jobDetails,
+    interviewFeedbackLink,
   ],
 };
