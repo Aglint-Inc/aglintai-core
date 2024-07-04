@@ -33,6 +33,8 @@ export type CustomEmailTypes = Extract<
   | "agent_email_candidate"
   | "meetingDeclined_email_organizer"
   | "meetingAccepted_email_organizer"
+  | "candidateBook_slack_interviewerForFeedback"
+  | "candidateBook_email_interviewerForFeedback"
 >;
 
 export type CustomJobParamters = Type<

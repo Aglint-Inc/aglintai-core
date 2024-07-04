@@ -5498,6 +5498,7 @@ export type Database = {
         | "interviewEnd"
         | "meetingDeclined"
         | "meetingAccepted"
+        | "candidateBook"
     }
     CompositeTypes: {
       location_type: {

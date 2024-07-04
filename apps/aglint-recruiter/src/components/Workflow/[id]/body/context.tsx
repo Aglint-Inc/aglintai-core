@@ -136,4 +136,14 @@ const ACTION_TRIGGER_MAP: {
       name: 'Send email to organizer',
     },
   ],
+  candidateBook: [
+    {
+      value: 'candidateBook_email_interviewerForFeedback',
+      name: 'Send email to interviewers',
+    },
+    {
+      value: 'candidateBook_slack_interviewerForFeedback',
+      name: 'Send slack messages to interviewers',
+    },
+  ],
 };
