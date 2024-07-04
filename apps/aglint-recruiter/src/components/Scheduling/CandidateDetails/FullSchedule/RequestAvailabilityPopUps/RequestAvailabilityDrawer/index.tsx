@@ -10,6 +10,8 @@ import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { GlobalCta } from '@/devlink3/GlobalCta';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
@@ -18,7 +20,11 @@ import toast from '@/src/utils/toast';
 
 import { useAllActivities, useGetScheduleApplication } from '../../../hooks';
 import { updateCandidateRequestAvailability } from '../../../RequestAvailability/RequestAvailabilityContext';
-import { setSelectedSessionIds, useSchedulingApplicationStore } from '../../../store';
+import DayCardWrapper from '../../../SchedulingDrawer/StepSlotOptions/DayCardWrapper';
+import {
+  setSelectedSessionIds,
+  useSchedulingApplicationStore,
+} from '../../../store';
 import { useAvailabilityContext } from '../RequestAvailabilityContext';
 import RequestAvailabilityBody from './RequestAvailabilityBody';
 
@@ -69,7 +75,7 @@ function RequestAvailabilityDrawer() {
   async function handleContinue() {
     if (selectedIndex !== availableSlots.length) {
       setSelectedIndex((pre) => pre + 1);
-    } else {
+    } else if (selectedIndex === availableSlots.length) {
       setLoading(true);
 
       const { data: task } = await axios.post(
@@ -112,7 +118,7 @@ function RequestAvailabilityDrawer() {
           fetchInterviewDataByApplication();
           setSelectedSessionIds([]);
           refetch();
-          closeDrawer();
+          // closeDrawer();
         } else {
           throw new Error('Booking failed');
         }
@@ -120,6 +126,9 @@ function RequestAvailabilityDrawer() {
         toast.error(error.message);
       }
       setLoading(false);
+      setSelectedIndex((pre) => pre + 1);
+    } else {
+      return null;
     }
   }
   function handleBack() {
@@ -156,6 +165,54 @@ function RequestAvailabilityDrawer() {
         }
         slotSideDrawerbody={
           <ShowCode>
+            <ShowCode.When
+              isTrue={selectedIndex === availableSlots?.length + 1}
+            >
+              <Stack p={2} height={'calc(100vh - 96px)'}>
+                <GlobalCta
+                  iconName={'event_upcoming'}
+                  color={'info'}
+                  textTitle={'Interview Confirmed'}
+                  textDescription={
+                    'The candidate and the interviewers received an email containing a link to join to the interview on the specified date and time'
+                  }
+                  slotButton={
+                    <Stack direction={'column'} spacing={2}>
+                      {selectedDateSlots?.map((item, index) => {
+                        const date = item.dateSlots[0]?.sessions[0]?.start_time;
+                        return (
+                          <DayCardWrapper
+                            key={index}
+                            isDebrief={true}
+                            selectedCombIds={[]}
+                            item={{
+                              dateArray: [date],
+                              plans: item.dateSlots,
+                            }}
+                            onClickSelect={() => {}}
+                            isDayCollapseNeeded={false}
+                            isSlotCollapseNeeded={false}
+                            isCheckboxAndRadio={false}
+                            index={index}
+                          />
+                        );
+                      })}
+                      <Stack
+                        direction={'row'}
+                        justifyItems={'center'}
+                        justifyContent={'center'}
+                      >
+                        <ButtonSoft
+                          size={2}
+                          color={'accent'}
+                          textButton={'View in schedules'}
+                        />
+                      </Stack>
+                    </Stack>
+                  }
+                />
+              </Stack>
+            </ShowCode.When>
             <ShowCode.When isTrue={isLoading && !isFetched}>
               <Stack height={'calc(100vh - 96px)'}>
                 <DynamicLoader />
@@ -167,7 +224,7 @@ function RequestAvailabilityDrawer() {
             </ShowCode.Else>
           </ShowCode>
         }
-        isBottomBar={true}
+        isBottomBar={selectedIndex !== availableSlots?.length + 1}
       />
     </Drawer>
   );

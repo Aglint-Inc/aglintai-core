@@ -23,11 +23,11 @@ import {
 } from '../../store';
 import { useAvailabilityContext } from './RequestAvailabilityContext';
 import RequestAvailabilityDrawer from './RequestAvailabilityDrawer';
+import { IconButtonSoft } from '@/devlink2';
 
 function RequestAvailabilityPopUps() {
   const router = useRouter();
   const { availabilities, initialSessions } = useSchedulingApplicationStore();
-  const [copied, setCopied] = useState(false);
 
   const { setSelectedRequestAvailability } = useAvailabilityContext();
 
@@ -59,6 +59,7 @@ function RequestAvailabilityPopUps() {
     setStepScheduling('pick_date');
     setScheduleFlow('update_request_availibility');
     setSelectedSessionIds(session_ids);
+    setRequestSessionIds(session_ids);
   }
 
   function sendReminderEmail({ request_id }: { request_id: string }) {
@@ -152,6 +153,7 @@ function RequestAvailabilityPopUps() {
                             isLeftIcon={false}
                             isRightIcon={false}
                             size={1}
+                            color={'neutral'}
                             onClickButton={{
                               onClick: () =>
                                 handleRequestAgain(
@@ -160,27 +162,10 @@ function RequestAvailabilityPopUps() {
                                 ),
                             }}
                           />
-                          <ButtonSoft
-                            textButton={copied ? 'Copied' : 'Copy link'}
-                            isLoading={false}
-                            isLeftIcon={false}
-                            isRightIcon={false}
-                            slotIcon={<GlobalIcon iconName={'check_circle'} />}
-                            size={1}
-                            onClickButton={{
-                              onClick: () => {
-                                if (!copied) {
-                                  setCopied(true);
-                                  setTimeout(() => {
-                                    setCopied(false);
-                                  }, 2000);
-                                  navigator.clipboard.writeText(
-                                    `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${item.candidate_request_availability.id}`,
-                                  );
-                                }
-                              },
-                            }}
+                          <CopyButton
+                            request_id={item.candidate_request_availability.id}
                           />
+                          <IconButtonSoft iconName={'content_copy'} />
                         </>
                       }
                     />
@@ -244,3 +229,31 @@ function RequestAvailabilityPopUps() {
 }
 
 export default RequestAvailabilityPopUps;
+
+function CopyButton({ request_id }: { request_id: string }) {
+  const [copied, setCopied] = useState(false);
+
+  return (
+    <ButtonSoft
+      textButton={copied ? 'Copied' : 'Copy link'}
+      isLoading={false}
+      isLeftIcon={false}
+      isRightIcon={false}
+      slotIcon={<GlobalIcon iconName={'check_circle'} />}
+      size={1}
+      onClickButton={{
+        onClick: () => {
+          if (!copied) {
+            setCopied(true);
+            setTimeout(() => {
+              setCopied(false);
+            }, 2000);
+            navigator.clipboard.writeText(
+              `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${request_id}`,
+            );
+          }
+        },
+      }}
+    />
+  );
+}
