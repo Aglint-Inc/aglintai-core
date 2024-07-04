@@ -29,10 +29,10 @@ export default function EmailPreviewPopover({
       id='popover-agent'
       open={open}
       onClose={handleClose}
-      sx={{ width: 'auto' }}
       PaperProps={{
         style: {
           width: 'auto',
+          maxWidth: 'none',
         },
       }}
     >
@@ -41,7 +41,7 @@ export default function EmailPreviewPopover({
           Loading ? (
             <Stack
               alignItems={'center'}
-              height={'500px'}
+              height={'800px'}
               justifyContent={'center'}
             >
               <LoaderSvg />
@@ -50,7 +50,7 @@ export default function EmailPreviewPopover({
             <Stack>
               <iframe
                 width={'100%'}
-                height={'500px'}
+                height={'800px'}
                 color='white'
                 srcDoc={isHtml}
                 title='Previw Email'
