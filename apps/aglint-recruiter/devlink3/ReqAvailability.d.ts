@@ -21,4 +21,7 @@ declare function ReqAvailability(props: {
   isCheckingSlotsVisible?: Types.Visibility.VisibilityConditions;
   isCheckbox?: Types.Visibility.VisibilityConditions;
   isLoading?: Types.Visibility.VisibilityConditions;
+  textFoundSlotsCount?: React.ReactNode;
+  slotBadge?: Types.Devlink.Slot;
+  textSelectedDate?: React.ReactNode;
 }): React.JSX.Element;

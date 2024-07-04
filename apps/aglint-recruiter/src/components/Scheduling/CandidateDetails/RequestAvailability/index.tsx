@@ -14,7 +14,7 @@ import {
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ReqAvailability } from '@/devlink3/ReqAvailability';
 import { ScheduleSelectPill } from '@/devlink3/ScheduleSelectPill';
@@ -39,6 +39,10 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { ButtonSoft, ButtonSolid, GlobalBadge } from '@/devlink';
+import { GlobalCta } from '@/devlink3';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { addScheduleActivity } from '../../Candidates/queries/utils';
 import { useAllActivities, useGetScheduleApplication } from '../hooks';
 import {
@@ -47,6 +51,7 @@ import {
   useSchedulingFlowStore,
 } from '../SchedulingDrawer/store';
 import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
+import EmailPreview from './Components/EmailPriview';
 import {
   createTask,
   insertCandidateRequestAvailability,
@@ -57,7 +62,9 @@ import {
 import {
   availabilityArrayList,
   convertMinutesToHoursAndMinutes,
+  filterSchedulingOptionsArray,
   getAvailability,
+  getAvailabilitySlots,
   requestDaysListOptions,
   slotsListOptions,
 } from './utils';
@@ -73,7 +80,6 @@ function RequestAvailability() {
     selectedApplication,
     selectedSchedule,
   } = useSchedulingApplicationStore();
-
   const { scheduleFlow } = useSchedulingFlowStore();
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
   const { selectedDate } = useRequestAvailabilityContext();
@@ -81,6 +87,8 @@ function RequestAvailability() {
   const { refetch } = useAllActivities({
     application_id: selectedApplication?.id,
   });
+  const [requestDetails, setRequestDetails] =
+    useState<DatabaseTable['candidate_request_availability']>(null);
 
   const selectedSessions = requestSessionIds.length
     ? initialSessions.filter((ele) =>
@@ -114,6 +122,24 @@ function RequestAvailability() {
   });
   const [selectedDays, setSelectedDays] = useState(requestDaysListOptions[1]);
   const [selectedSlots, setSelectedSlots] = useState(slotsListOptions[1]);
+  type AvailabilitySlotType = {
+    day: 0;
+    slots: any;
+  }[];
+  type FilteredAvailabilitySlotType = {
+    day: 0;
+    slots: { date: string; count: number }[];
+  }[];
+
+  const [selectedAvailabilitySlots, setSelectedAvailabilitySlots] =
+    useState<AvailabilitySlotType | null>(null);
+
+  const [filteredAvailabilitySlots, setFilteredAvailabilitySlots] =
+    useState<FilteredAvailabilitySlotType | null>(null);
+  const [isFindingSlots, setIsFindingSlots] = useState(false);
+  const [requestSteps, setRequestSteps] = useState<
+    'finding_slots' | 'preview' | 'success'
+  >('finding_slots');
 
   const [markCreateTicket, setMarkCreateTicket] = useState(true);
 
@@ -187,6 +213,7 @@ function RequestAvailability() {
             booking_confirmed: false,
           },
         });
+        setRequestDetails(result);
 
         axios.post(`/api/emails/availabilityReqResend_email_candidate`, {
           meta: {
@@ -194,7 +221,6 @@ function RequestAvailability() {
             recruiter_user_id: recruiterUser.user_id,
           },
         });
-        toast.message('Request sent successfully!');
         const { data: requestData } = await axios.post(
           `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,
           {
@@ -258,7 +284,7 @@ function RequestAvailability() {
           }),
           total_slots: null,
         });
-
+        setRequestDetails(result);
         await supabase.from('request_session_relation').insert(
           selectedSessions.map((ele) => ({
             session_id: ele.interview_session.id,
@@ -286,7 +312,6 @@ function RequestAvailability() {
             recruiter_user_id: recruiterUser.user_id,
           },
         });
-        toast.message('Request sent successfully!');
         // end
         let task = null as null | DatabaseTable['new_tasks'];
         if (markCreateTicket) {
@@ -363,157 +388,312 @@ function RequestAvailability() {
 
       refetch(); // refetching activities
       fetchInterviewDataByApplication(); // refetching interview data
-      getDrawerClose(); // closing drawer
       setSelectedSessionIds([]); // resetting selected sessions
     } catch (error) {
       toast.error(error.message);
     }
-
+    setRequestSteps('success');
     setLoading(false);
   }
 
+  useEffect(() => {
+    setFilteredAvailabilitySlots([]);
+    if (selectedAvailabilitySlots?.length === meetingsRound.length) {
+      selectedAvailabilitySlots.map((ele, i) => {
+        //@ts-ignore
+        setFilteredAvailabilitySlots((pre) => {
+          if (!pre) {
+            return [
+              {
+                day: i + 1,
+                slots:
+                  filterSchedulingOptionsArray({
+                    filters: availability,
+                    schedulingOptions: ele.slots || [],
+                  }) || [],
+              },
+            ];
+          } else {
+            return [
+              ...pre,
+              {
+                day: i + 1,
+                slots:
+                  filterSchedulingOptionsArray({
+                    filters: availability,
+                    schedulingOptions: ele.slots || [],
+                  }) || [],
+              },
+            ];
+          }
+        });
+      });
+      setIsFindingSlots(false);
+    }
+  }, [availability, selectedAvailabilitySlots]);
+  console.log(meetingsRound);
+  console.log(filteredAvailabilitySlots);
+
+  useEffect(() => {
+    setSelectedAvailabilitySlots(null);
+    setIsFindingSlots(true);
+    meetingsRound.map((ele, i) => {
+      getAvailabilitySlots({
+        session_ids: ele.map((ele) => ele.id),
+        recruiter_id: recruiter.id,
+        start_date_str: dayjs(selectedDate[0]).format('DD/MM/YYYY'),
+        end_date_str: dayjs(selectedDate[1]).format('DD/MM/YYYY'),
+        candidate_tz:
+          selectedApplication.candidates.timezone || userTzDayjs.tz.guess(),
+        options: {
+          include_free_time: true,
+          use_recruiting_blocks: true,
+          include_conflicting_slots: {
+            out_of_working_hrs: true,
+            day_off: true,
+          },
+        },
+      }).then(({ data }) => {
+        //@ts-ignore
+        setSelectedAvailabilitySlots((pre) => {
+          if (!pre) {
+            return [
+              {
+                day: i + 1,
+                slots: data,
+              },
+            ];
+          }
+          return [
+            ...pre,
+            {
+              day: i + 1,
+              slots: data,
+            },
+          ];
+        });
+      });
+    });
+  }, []);
+  const sumCounts = (availability: FilteredAvailabilitySlotType): number => {
+    if (availability) {
+      return availability.reduce((total, currentDay) => {
+        const dayTotal = currentDay.slots.length
+          ? currentDay.slots.reduce((daySum, slot) => daySum + slot.count, 0)
+          : 0;
+        return total + dayTotal;
+      }, 0);
+    }
+  };
+  const totalCount = sumCounts(filteredAvailabilitySlots);
+
   return (
     <Stack>
-      <ReqAvailability
-        isCheckingSlotsVisible={false}
-        isFoundSlots={false}
-        textFoundSlots={`Found 126 slots for the sugeestion`}
-        slotCheckingIcon={<GreenBgCheckedIcon />}
-        slotReqToggle={availabilityArrayList.map((ele, i) => (
-          <ToggleWithText
-            slotToggle={
-              <ToggleBtn
-                handleChange={() => {
-                  const newValue = getAvailability({
-                    preValue: availability,
-                    taskActionType: ele.key,
-                  });
-                  setAvailability({ ...newValue });
-                }}
-                isChecked={availability[ele.key]}
-              />
-            }
-            key={i}
-            textToggleLight={ele.label}
-          />
-        ))}
-        slotAvailabilityCriteria={
-          <>
-            <Stack
-              direction={'row'}
-              alignItems={'center'}
-              spacing={'var(--space-2)'}
-              width={'480px'}
-            >
-              <Typography variant='body1' width={'520px'}>
-                Minimum number of days should be selected.
-              </Typography>
-              <Autocomplete
-                fullWidth
-                disableClearable
-                disablePortal
-                value={selectedDays}
-                options={requestDaysListOptions}
-                sx={{ width: 200 }}
-                renderOption={(props, option, i) => {
-                  if (i.index + 1 < maxDays)
-                    return <li {...props}>{option.label}</li>;
-                }}
-                renderInput={(params) => (
-                  <TextField {...params} placeholder='Days' />
-                )}
-                onChange={(_, value) => {
-                  setSelectedDays(value);
-                }}
-                popupIcon={<PopUpArrowIcon />}
-              />
-            </Stack>
-
-            <Stack
-              direction={'row'}
-              alignItems={'center'}
-              spacing={'var(--space-2)'}
-              width={'480px'}
-            >
-              <Typography variant='body1' width={'520px'}>
-                Minimum number of slots selected per each day.
-              </Typography>
-              <Autocomplete
-                fullWidth
-                disableClearable
-                disablePortal
-                value={selectedSlots}
-                options={slotsListOptions}
-                sx={{ width: 200 }}
-                renderOption={(props, option) => {
-                  return <li {...props}>{option.label}</li>;
-                }}
-                renderInput={(params) => (
-                  <TextField {...params} placeholder='Days' />
-                )}
-                onChange={(_, value) => {
-                  setSelectedSlots(value);
-                }}
-                popupIcon={<PopUpArrowIcon />}
-              />
-            </Stack>
-          </>
-        }
-        textScheduleSelected={`${selectedSessions.length} Schedule selected`}
-        textDuration={`${convertMinutesToHoursAndMinutes(totalSessionMinutes)}`}
-        slotScheduleSelectPill={
-          selectedSessions.length
-            ? selectedSessions.map((ele, i) => {
+      <ShowCode>
+        <ShowCode.When isTrue={requestSteps === 'finding_slots'}>
+          <ReqAvailability
+            textSelectedDate={`${selectedDate[0].format('DD MMMM YYYY')} - ${selectedDate[1].format('DD MMMM YYYY')}`}
+            isCheckingSlotsVisible={isFindingSlots}
+            isFoundSlots={!isFindingSlots}
+            textFoundSlotsCount={`Found ${totalCount} slots for the suggestion`}
+            slotCheckingIcon={<GreenBgCheckedIcon />}
+            slotBadge={
+              filteredAvailabilitySlots &&
+              filteredAvailabilitySlots.map((ele) => {
                 return (
-                  <ScheduleSelectPill
-                    slotIcons={
-                      <ShowCode>
-                        <ShowCode.When
-                          isTrue={
-                            ele.interview_session.session_type == 'individual'
-                          }
-                        >
-                          <IndividualIcon />
-                        </ShowCode.When>
-                        <ShowCode.When
-                          isTrue={ele.interview_session.session_type == 'panel'}
-                        >
-                          <PanelIcon />
-                        </ShowCode.When>
-                      </ShowCode>
-                    }
-                    textTime={convertMinutesToHoursAndMinutes(
-                      ele.interview_session.session_duration,
-                    )}
-                    key={i}
-                    textScheduleName={ele.interview_session.name}
-                  />
+                  <>
+                    <Stack spacing={1} direction={`column`}>
+                      <Stack>Day-{ele.day}</Stack>
+                      <Stack
+                        flexDirection={'row'}
+                        flexWrap={'wrap'}
+                        gridColumn={'var(--space-2)'}
+                        gridRow={'var(--space-2)'}
+                        gap={1}
+                      >
+                        {ele.slots.map((ele, i) => {
+                          return (
+                            <GlobalBadge
+                              color={'neutral'}
+                              textBadge={`${dayjsLocal(ele.date).format('DD MMMM')}-${ele.count}`}
+                            />
+                          );
+                        })}
+                      </Stack>
+                    </Stack>
+                  </>
                 );
               })
-            : null
-        }
-        isCheckbox={
-          scheduleFlow === 'create_request_availibility' && !selectedTaskId
-        }
-        slotCheckboxAvailability={
-          <Checkbox
-            defaultChecked={markCreateTicket}
-            onChange={(e) => {
-              setMarkCreateTicket(e.target.checked);
+            }
+            slotReqToggle={availabilityArrayList.map((ele, i) => (
+              <ToggleWithText
+                slotToggle={
+                  <ToggleBtn
+                    handleChange={() => {
+                      const newValue = getAvailability({
+                        preValue: availability,
+                        taskActionType: ele.key,
+                      });
+                      setAvailability({ ...newValue });
+                    }}
+                    isChecked={availability[ele.key]}
+                  />
+                }
+                key={i}
+                textToggleLight={ele.label}
+              />
+            ))}
+            slotAvailabilityCriteria={
+              <>
+                <Stack
+                  direction={'row'}
+                  alignItems={'center'}
+                  spacing={'var(--space-2)'}
+                  width={'480px'}
+                >
+                  <Typography variant='body1' width={'520px'}>
+                    Minimum number of days should be selected.
+                  </Typography>
+                  <Autocomplete
+                    fullWidth
+                    disableClearable
+                    disablePortal
+                    value={selectedDays}
+                    options={requestDaysListOptions}
+                    sx={{ width: 200 }}
+                    renderOption={(props, option, i) => {
+                      if (i.index + 1 < maxDays)
+                        return <li {...props}>{option.label}</li>;
+                    }}
+                    renderInput={(params) => (
+                      <TextField {...params} placeholder='Days' />
+                    )}
+                    onChange={(_, value) => {
+                      setSelectedDays(value);
+                    }}
+                    popupIcon={<PopUpArrowIcon />}
+                  />
+                </Stack>
+
+                <Stack
+                  direction={'row'}
+                  alignItems={'center'}
+                  spacing={'var(--space-2)'}
+                  width={'480px'}
+                >
+                  <Typography variant='body1' width={'520px'}>
+                    Minimum number of slots selected per each day.
+                  </Typography>
+                  <Autocomplete
+                    fullWidth
+                    disableClearable
+                    disablePortal
+                    value={selectedSlots}
+                    options={slotsListOptions}
+                    sx={{ width: 200 }}
+                    renderOption={(props, option) => {
+                      return <li {...props}>{option.label}</li>;
+                    }}
+                    renderInput={(params) => (
+                      <TextField {...params} placeholder='Days' />
+                    )}
+                    onChange={(_, value) => {
+                      setSelectedSlots(value);
+                    }}
+                    popupIcon={<PopUpArrowIcon />}
+                  />
+                </Stack>
+              </>
+            }
+            textScheduleSelected={`${selectedSessions.length} Schedule selected`}
+            textDuration={`${convertMinutesToHoursAndMinutes(totalSessionMinutes)}`}
+            slotScheduleSelectPill={
+              selectedSessions.length
+                ? selectedSessions.map((ele, i) => {
+                    return (
+                      <ScheduleSelectPill
+                        slotIcons={
+                          <ShowCode>
+                            <ShowCode.When
+                              isTrue={
+                                ele.interview_session.session_type ==
+                                'individual'
+                              }
+                            >
+                              <IndividualIcon />
+                            </ShowCode.When>
+                            <ShowCode.When
+                              isTrue={
+                                ele.interview_session.session_type == 'panel'
+                              }
+                            >
+                              <PanelIcon />
+                            </ShowCode.When>
+                          </ShowCode>
+                        }
+                        textTime={convertMinutesToHoursAndMinutes(
+                          ele.interview_session.session_duration,
+                        )}
+                        key={i}
+                        textScheduleName={ele.interview_session.name}
+                      />
+                    );
+                  })
+                : null
+            }
+            isCheckbox={
+              scheduleFlow === 'create_request_availibility' && !selectedTaskId
+            }
+            slotCheckboxAvailability={
+              <Checkbox
+                defaultChecked={markCreateTicket}
+                onChange={(e) => {
+                  setMarkCreateTicket(e.target.checked);
+                }}
+              />
+            }
+            isLoading={loading}
+            onClickReqAvailability={{
+              onClick: () => {
+                setRequestSteps('preview');
+              },
+            }}
+            onClickClose={{ onClick: getDrawerClose }}
+            onClickCancel={{
+              onClick: () => {
+                setStepScheduling('pick_date');
+              },
             }}
           />
-        }
-        isLoading={loading}
-        onClickReqAvailability={{
-          onClick: handleSubmit,
-        }}
-        onClickClose={{ onClick: getDrawerClose }}
-        onClickCancel={{
-          onClick: () => {
-            setStepScheduling('pick_date');
-          },
-        }}
-      />
+        </ShowCode.When>
+        <ShowCode.When isTrue={requestSteps === 'preview'}>
+          <EmailPreview
+            setRequestSteps={setRequestSteps}
+            requestAvailabilityId={requestDetails?.id}
+            onSubmit={handleSubmit}
+            loading={loading}
+          />
+        </ShowCode.When>
+        <ShowCode.When isTrue={requestSteps === 'success'}>
+          <GlobalCta
+            textTitle={'Availability requested successfully'}
+            textDescription={`Candidate received a link to submit availability between ${selectedDate[0].format('DD MMMM YYYY')} to ${selectedDate[1].format('DD MMMM YYYY')}4.`}
+            slotButton={
+              <ButtonSolid
+              size={2}
+                textButton={'Copy link'}
+                onClickButton={{
+                  onClick: () => {
+                    navigator.clipboard.writeText(
+                      `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${requestDetails.id}`,
+                    );
+                  },
+                }}
+              />
+            }
+          />
+        </ShowCode.When>
+      </ShowCode>
     </Stack>
   );
 }
