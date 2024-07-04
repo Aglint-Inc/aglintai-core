@@ -57,48 +57,10 @@ function RolesAndPermissions() {
     ) || {};
 
   return role ? (
-    <PageLayout
-      isBackButton={true}
-      onClickBack={{ onClick: () => setRole(null) }}
-      slotTopbarLeft={
-        <Breadcrum textName={capitalizeFirstLetter(role.name + ' Role')} />
-      }
-      slotBody={
-        <Stack p={3}>
-          {Object.entries(roleDetails).map(
-            ([module, { description, permissions }]) => (
-              <Stack key={module}>
-                <Typography variant='h4'>
-                  {capitalizeFirstLetter(module)}
-                </Typography>
-                <Typography>{description}</Typography>
-                <Stack>
-                  <FormGroup>
-                    {permissions?.map((permission) => {
-                      return (
-                        <Stack key={permission.id}>
-                          <FormControlLabel
-                            checked={permission.isActive}
-                            control={<Checkbox />}
-                            label={permission.name}
-                            sx={{
-                              marginLeft: '8px',
-                              gap: '8px',
-                            }}
-                          />
-                          <Typography>
-                            {permission.description || ''}
-                          </Typography>
-                        </Stack>
-                      );
-                    })}
-                  </FormGroup>
-                </Stack>
-              </Stack>
-            ),
-          )}
-        </Stack>
-      }
+    <RoleDetails
+      role={role}
+      roleDetails={roleDetails}
+      setRole={() => setRole(null)}
     />
   ) : (
     <Stack width={'100%'} padding={3}>
@@ -111,6 +73,7 @@ function RolesAndPermissions() {
             { header: 'Role', width: '200px' },
             { header: 'Users', width: '70px' },
             { header: 'Description', width: null },
+            { header: 'view all permissions', width: '100px' },
           ]}
           roles={data?.rolesAndPermissions || {}}
           loading={loading}
@@ -202,11 +165,7 @@ const RoleTable = ({
                 <TableRow
                   hover
                   key={role.id}
-                  onClick={() => {
-                    setRole({ ...role, name: item });
-                  }}
                   sx={{
-                    '&:hover': { cursor: 'pointer' },
                     '&:hover .MuiTableCell-root': { background: '#e4e4e4' },
                   }}
                 >
@@ -218,6 +177,22 @@ const RoleTable = ({
                   </TableCell>
                   <TableCell key={1} variant='head' align={'left'}>
                     {role.description}
+                  </TableCell>
+                  <TableCell
+                    key={1}
+                    variant='head'
+                    align={'left'}
+                    onClick={() => {
+                      setRole({ ...role, name: item });
+                    }}
+                    sx={{
+                      cursor: 'pointer',
+                      ':hover': {
+                        textDecoration: 'underline',
+                      },
+                    }}
+                  >
+                    {'click here'}
                   </TableCell>
                 </TableRow>
               );
@@ -244,7 +219,7 @@ const getRoleAndPermissions = async (recruiter_id: string) => {
     .eq('recruiter_id', recruiter_id)
     .throwOnError()
     .then(({ data }) => {
-      return data.reduce(
+      const rolesAndPermissions = data.reduce(
         (acc, curr) => {
           acc[curr.roles.name] = {
             ...acc[curr.roles.name],
@@ -277,6 +252,7 @@ const getRoleAndPermissions = async (recruiter_id: string) => {
           };
         },
       );
+      return rolesAndPermissions;
     })
     .then(async (rolesAndPermissions) => {
       const permission = await supabase
@@ -312,14 +288,12 @@ const getRoleAndPermissions = async (recruiter_id: string) => {
           });
           return permission;
         });
-
       return { rolesAndPermissions, all_permission: permission };
     });
 };
 
 const getRoleAndPermissionsWithUserCount = async (recruiter_id: string) => {
-  let RolesAndPermissions = await getRoleAndPermissions(recruiter_id);
-
+  let rolesAndPermissionsDetails = await getRoleAndPermissions(recruiter_id);
   return supabase
     .from('recruiter_relation')
     .select('role_id')
@@ -333,11 +307,13 @@ const getRoleAndPermissionsWithUserCount = async (recruiter_id: string) => {
         },
         {} as { [key: string]: number },
       );
-      Object.keys(RolesAndPermissions).map((item) => {
-        RolesAndPermissions[item].assignedTo =
-          count[RolesAndPermissions[item].id] || 0;
-      });
-      return RolesAndPermissions;
+      Object.keys(rolesAndPermissionsDetails.rolesAndPermissions).map(
+        (item) => {
+          rolesAndPermissionsDetails.rolesAndPermissions[item].assignedTo =
+            count[rolesAndPermissionsDetails.rolesAndPermissions[item].id] || 0;
+        },
+      );
+      return rolesAndPermissionsDetails;
     });
 };
 
@@ -471,3 +447,69 @@ const app_modules: {
 ];
 
 const temp_modules = app_modules.map((item) => item.name);
+function RoleDetails({
+  role,
+  roleDetails,
+  setRole,
+}: {
+  role: ReturnType<
+    typeof useRoleAndPermissions
+  >['data']['rolesAndPermissions'][number] & { name: string };
+  setRole: () => void;
+  roleDetails: {
+    [key: string]: {
+      description: string;
+      permissions: (typeof role)['permissions'];
+    };
+  };
+}) {
+  return (
+    <PageLayout
+      isBackButton={true}
+      onClickBack={{ onClick: setRole }}
+      slotTopbarLeft={
+        <Breadcrum textName={capitalizeFirstLetter(role.name + ' Role')} />
+      }
+      slotBody={
+        <Stack p={3}>
+          {Object.entries(roleDetails).map(
+            ([module, { description, permissions }]) => (
+              <Stack key={module} pb={2}>
+                <Typography variant='h4'>
+                  {capitalizeFirstLetter(module)}
+                </Typography>
+                <Typography pb={1}>{description}</Typography>
+                <FormGroup
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    maxWidth: '900px',
+                  }}
+                >
+                  {permissions?.map((permission) => {
+                    return (
+                      <Stack key={permission.id} width={'40%'}>
+                        <FormControlLabel
+                          checked={permission.isActive}
+                          control={<Checkbox />}
+                          label={permission.name}
+                          sx={{
+                            marginLeft: '4px',
+                            gap: '8px',
+                          }}
+                        />
+                        <Typography ml={4} variant='caption'>
+                          {permission.description || 'sample'}
+                        </Typography>
+                      </Stack>
+                    );
+                  })}
+                </FormGroup>
+              </Stack>
+            ),
+          )}
+        </Stack>
+      }
+    />
+  );
+}

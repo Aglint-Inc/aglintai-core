@@ -1,4 +1,4 @@
-import {supabaseWrap} from '@aglint/shared-utils';
+import {getFullName, supabaseWrap} from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 import {Request, Response} from 'express';
 import {envConfig} from 'src/config';
@@ -6,113 +6,76 @@ import {slackWeb} from 'src/services/slack/slackWeb';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 
 export async function interviewReminder(req: Request, res: Response) {
-  const {session_id} = req.body;
+  const {session_id, recruiter_user_id, application_id} = req.body;
 
-  if (!session_id) {
-    return res.status(400).json({error: 'Session id required'});
+  if (!session_id || !recruiter_user_id || !application_id) {
+    return res
+      .status(400)
+      .json({error: 'Session id, Recruiter user id, Application id required'});
   }
   try {
-    // get metting details by session_id
-    const [data] = supabaseWrap(
+    const [session_details] = supabaseWrap(
       await supabaseAdmin
         .from('meeting_details')
         .select()
         .eq('session_id', session_id)
     );
 
-    if (!data) {
-      throw new Error('failed to fetch a meeting details');
-    }
-
-    const {
-      id: meeting_id,
-      session_name,
-      session_duration,
-      start_time,
-      end_time,
-      schedule_type,
-      interview_schedule_id,
-      organizer_id,
-    } = data;
-
-    // get job title and candidate details using interview_schedule_id
-    const [can_app] = supabaseWrap(
-      await supabaseAdmin
-        .from('interview_schedule')
-        .select('applications(public_jobs(job_title), candidates(*))')
-        .eq('id', interview_schedule_id)
-    );
-    if (!can_app) {
-      throw new Error('failed to fetch a candidate and application details');
-    }
-
-    const interviewer_emails = supabaseWrap(
+    const [interviewer] = supabaseWrap(
       await supabaseAdmin
         .from('meeting_interviewers')
-        .select('email')
+        .select()
         .eq('session_id', session_id)
+        .eq('user_id', recruiter_user_id)
     );
-
-    if (!interviewer_emails) {
-      throw new Error('failed to fetch a interviewers detail');
-    }
-
-    const [organizer_email] = supabaseWrap(
+    const [application] = supabaseWrap(
       await supabaseAdmin
-        .from('recruiter_user')
-        .select('email')
-        .eq('user_id', organizer_id)
+        .from('applications')
+        .select('candidates(*),public_jobs(job_title)')
+        .eq('id', application_id)
     );
-    if (!organizer_email) {
-      throw new Error('failed to fetch a recruiter detail');
-    }
-    const emails = [
-      ...new Set([organizer_email, ...interviewer_emails].map(e => e.email)),
-    ];
 
-    const job_title = can_app.applications.public_jobs.job_title;
-    const candidate_name = `${can_app.applications.candidates.first_name} ${can_app.applications.candidates.first_name}`;
+    const candidate = application.candidates;
 
-    for (const email of emails) {
-      const userResponse = await slackWeb.users.lookupByEmail({
-        email: email,
-      });
-      const userId = userResponse.user.id;
+    const userResponse = await slackWeb.users.lookupByEmail({
+      email: interviewer.email,
+    });
+    const userId = userResponse.user.id;
 
-      await slackWeb.chat.postMessage({
-        channel: userId,
-        // text: message,
-        blocks: [
-          {
-            type: 'section',
-            text: {
-              type: 'mrkdwn',
-              text: '*Interview 🧑‍💻 Reminder*',
-            },
+    await slackWeb.chat.postMessage({
+      channel: userId,
+      // text: message,
+      blocks: [
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: '*Interview 🧑‍💻 Reminder*',
           },
-          {
-            type: 'section',
-            text: {
-              type: 'mrkdwn',
-              text: `* ${session_name} sheduled with candidate :*\n*<${envConfig.CLIENT_APP_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details|${candidate_name} - ${job_title}>*`,
-            },
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: `* ${session_details.session_name} sheduled with candidate :*\n*<${envConfig.CLIENT_APP_URL}/scheduling/view?meeting_id=${interviewer.meeting_id}&tab=candidate_details|${getFullName(candidate.first_name, candidate.last_name)} - ${application.public_jobs.job_title}>*`,
           },
-          {
-            type: 'section',
-            text: {
-              type: 'mrkdwn',
-              text: `*Meeting Place :* ${meetingPlatform(schedule_type)}\n*Meeting Time :* ${dayjs(start_time).format('MMMM DD hh:mm A')} - ${dayjs(end_time).format('hh:mm A')} IST\n *Duration :* ${session_duration} Minutes\n`,
-            },
-            accessory: {
-              type: 'image',
-              image_url:
-                'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/google-calendar%201.png',
-              alt_text: 'google calender',
-            },
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: `*Meeting Place :* ${meetingPlatform(session_details.schedule_type)}\n*Meeting Time :* ${dayjs(session_details.start_time).format('MMMM DD hh:mm A')} - ${dayjs(session_details.end_time).format('hh:mm A')} IST\n *Duration :* ${session_details.session_duration} Minutes\n`,
           },
-        ],
-      });
-    }
+          accessory: {
+            type: 'image',
+            image_url:
+              'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/google-calendar%201.png',
+            alt_text: 'google calender',
+          },
+        },
+      ],
+    });
+
     res.status(200).json({message: 'message sucessfully sended'});
   } catch (err) {
     console.error('some thing went wrong:', err);
@@ -128,7 +91,7 @@ const meetingPlatform = (schedule_type: string) => {
 };
 
 // {
-//   "session_id":"d232ef5b-0002-4813-82f7-b8246bb696f7",
+//   "session_id": "78670a52-bc33-4a11-9615-2dec793d7d5a",
+//   "recruiter_user_id":"3521d240-eb11-4ae5-ac27-d4f4e2ac5ea5",
+//   "application_id":"3608fe82-bef4-4085-bec0-6fe82620240f"
 // }
-
-// session_id -> got interview confirmation from interviewers and organizer
