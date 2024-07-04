@@ -19,14 +19,15 @@ export async function POST(req: Request) {
       mail_attachments,
     } = await fetchUtil(parsed_body);
 
+    const is_preview = Boolean(parsed_body.preview_details);
     const resp = await sendMailFun({
       filled_comp_template,
       react_email_placeholders,
       recipient_email,
       attachments: mail_attachments,
-      is_preview: parsed_body.is_preview,
+      is_preview,
     });
-    if (parsed_body.is_preview) {
+    if (is_preview) {
       return NextResponse.json(
         { html: resp.html, subject: resp.subject },
         {
