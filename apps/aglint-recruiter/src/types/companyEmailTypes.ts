@@ -145,6 +145,4 @@ This email template is used to remind interviewers to provide feedback for a can
   },
   phoneScreen_email_candidate: null,
   phoneScreenRemind_email_applicant: null,
-  candidateBook_email_interviewerForFeedback: null,
-  candidateBook_slack_interviewerForFeedback: null,
 };
