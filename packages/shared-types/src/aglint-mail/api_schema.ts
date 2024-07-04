@@ -107,9 +107,21 @@ export const sendSelfScheduleRequest_email_applicant = v.object({
 });
 
 export const sendAvailabilityRequestEmailApplicantSchema = v.object({
-  avail_req_id: v.string(),
+  avail_req_id: v.optional(v.string()),
   recruiter_user_id: v.string(),
   is_preview: v.optional(v.boolean(), false),
+  preview_details: v.optional(
+    v.object({
+      candidateFirstName: v.optional(v.string()),
+      candidateLastName: v.optional(v.string()),
+      companyName: v.optional(v.string()),
+      jobRole: v.optional(v.string()),
+      organizerFirstName: v.optional(v.string()),
+      organizerLastName: v.optional(v.string()),
+      organizerTimeZone: v.optional(v.string()),
+      companyLogo: v.optional(v.string()),
+    })
+  ),
 });
 export const sendAvailReqReminderEmailApplicant = v.object({
   avail_req_id: v.string(),
