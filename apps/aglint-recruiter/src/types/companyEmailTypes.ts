@@ -136,4 +136,6 @@ export const emailTemplateCopy: CompanyEmailType = {
   },
   phoneScreen_email_candidate: null,
   phoneScreenRemind_email_applicant: null,
+  candidateBook_email_interviewerForFeedback: null,
+  candidateBook_slack_interviewerForFeedback: null,
 };

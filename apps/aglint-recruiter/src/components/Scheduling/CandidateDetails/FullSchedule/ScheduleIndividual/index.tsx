@@ -18,12 +18,12 @@ import RequestStatusUnconfirmed from './RequestStatusUnconfirmed';
 import { ScheduleIndividualCardType } from './types';
 
 function ScheduleIndividualCard({
-  isCheckboxVisible = false,
   interview_session,
-  onClickCheckBox,
-  selectedSessionIds,
   candidate,
-  jobTitle,
+  jobTitle = null,
+  selectedSessionIds = [],
+  isCheckboxVisible = false,
+  onClickCheckBox = () => {},
   users = [],
   interview_meeting = null,
   isCollapseNeeded = false,
@@ -107,7 +107,7 @@ function ScheduleIndividualCard({
           : '--'
       }
       textTime={
-        interview_meeting?.start_time
+        interview_meeting?.start_time && candidate?.timezone
           ? formatTimeWithTimeZone({
               start_time: interview_meeting.start_time,
               end_time: interview_meeting.end_time,
@@ -118,6 +118,7 @@ function ScheduleIndividualCard({
       textCandidateName={candidate.fullname}
       textDuration={getBreakLabel(interview_session.session_duration)}
       textPlaformName={getScheduleType(interview_session.schedule_type)}
+      showJobTitle={!!jobTitle}
       textRole={jobTitle}
       textPanelName={interview_session.name}
       onClickDropdown={{
