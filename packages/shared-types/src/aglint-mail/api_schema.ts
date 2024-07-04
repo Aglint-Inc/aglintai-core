@@ -1,8 +1,7 @@
-import { company } from '@aglint/shared-utils/src/template-variables/variables';
-import * as v from 'valibot';
+import { company } from "@aglint/shared-utils/src/template-variables/variables";
+import * as v from "valibot";
 export const applicationRecievedEmailApplicantSchema = v.object({
   application_id: v.string(),
-  organizer_id: v.string(),
 });
 
 export const debriefEmailInterviewerSchema = v.object({
@@ -20,8 +19,8 @@ export const agentEmailCandidateSchema = v.object({
   recruiter_user_id: v.string(),
   filter_id: v.string(),
   mail_headers: v.object({
-    'Message-ID': v.string(),
-    'In-Reply-To': v.string(),
+    "Message-ID": v.string(),
+    "In-Reply-To": v.string(),
   }),
 });
 
@@ -40,7 +39,6 @@ export const confirmInterviewEmailApplicantSchema = v.object({
 
 export const applicantRejectEmailApplicantSchema = v.object({
   application_id: v.string(),
-  organizer_id: v.string(),
 });
 export const availabilityReqResendEmailCandidateSchema = v.object({
   avail_req_id: v.string(),
@@ -109,7 +107,7 @@ export const sendSelfScheduleRequest_email_applicant = v.object({
 
 export const sendAvailabilityRequestEmailApplicantSchema = v.object({
   organizer_user_id: v.string(),
-  avail_req_id: v.nullish(v.string('missing avail_req_id'), undefined),
+  avail_req_id: v.nullish(v.string("missing avail_req_id"), undefined),
   preview_details: v.nullish(
     v.object({
       application_id: v.string(),

@@ -1,4 +1,4 @@
-import { Popover, Stack } from '@mui/material';
+import { Dialog, Stack } from '@mui/material';
 import React, { Dispatch, SetStateAction } from 'react';
 
 import { LoaderSvg } from '@/devlink/LoaderSvg';
@@ -25,35 +25,37 @@ export default function EmailPreviewPopover({
     setHtml(null);
   };
   return (
-    <Popover
+    <Dialog
       id='popover-agent'
       open={open}
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left',
-      }}
-      transformOrigin={{ vertical: -6, horizontal: 0 }}
       onClose={handleClose}
+      PaperProps={{
+        style: {
+          width: 'auto',
+          maxWidth: 'none',
+        },
+      }}
     >
       <PreviewEmail
         slotContent={
           Loading ? (
             <Stack
               alignItems={'center'}
-              height={'400px'}
+              height={'800px'}
               justifyContent={'center'}
             >
               <LoaderSvg />
             </Stack>
           ) : (
-            <iframe
-              width={'790px'}
-              height={'490px'}
-              color='white'
-              srcDoc={isHtml}
-              title='Previw Email'
-            />
+            <Stack>
+              <iframe
+                width={'100%'}
+                height={'800px'}
+                color='white'
+                srcDoc={isHtml}
+                title='Previw Email'
+              />
+            </Stack>
           )
         }
         onClickClose={{
@@ -63,6 +65,6 @@ export default function EmailPreviewPopover({
           },
         }}
       />
-    </Popover>
+    </Dialog>
   );
 }

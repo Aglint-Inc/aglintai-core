@@ -27,11 +27,7 @@ export const emailVariablePayloads = {
     ...jobDetails,
     ...organizer,
   ],
-  applicationRecieved_email_applicant: [
-    ...organizer,
-    ...candidates,
-    ...jobDetails,
-  ],
+  applicationRecieved_email_applicant: [...candidates, ...jobDetails],
   interviewCancel_email_applicant: [...organizer, ...candidates, ...jobDetails],
   agent_email_candidate: [
     ...organizer,
@@ -46,7 +42,7 @@ export const emailVariablePayloads = {
     ...candidates,
     ...jobDetails,
   ],
-  applicantReject_email_applicant: [...candidates, ...jobDetails, ...organizer],
+  applicantReject_email_applicant: [...candidates, ...jobDetails],
   availabilityReqResend_email_candidate: [
     ...candidates,
     ...jobDetails,
