@@ -4504,23 +4504,6 @@ export type Database = {
           users: Json
         }[]
       }
-      get_interview_schedule_by_meeting_id: {
-        Args: {
-          target_meeting_id: string
-        }
-        Returns: {
-          interview_meeting: Json
-          interview_session: Json
-          schedule: Json
-          applications: Json
-          candidates: Json
-          interview_module: Json
-          file: Json
-          job: Json
-          users: Json
-          coordinator: Json
-        }[]
-      }
       get_interview_schedule_by_module_id: {
         Args: {
           target_module_id: string
@@ -5318,6 +5301,8 @@ export type Database = {
         | "interviewStart_email_organizer"
         | "meetingDeclined_email_organizer"
         | "meetingAccepted_email_organizer"
+        | "candidateBook_slack_interviewerForFeedback"
+        | "candidateBook_email_interviewerForFeedback"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"
