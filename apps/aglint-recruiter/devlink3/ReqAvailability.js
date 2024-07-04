@@ -5,8 +5,6 @@ import { Text } from "./Text";
 import { CloseButton } from "./CloseButton";
 import { TextWithIcon } from "./TextWithIcon";
 import { SlotComp } from "./SlotComp";
-import { ButtonSoft } from "./ButtonSoft";
-import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./ReqAvailability.module.css";
 
@@ -16,23 +14,17 @@ export function ReqAvailability({
   onClickEditDate = {},
   onClickClose = {},
   textScheduleSelected = "2 Schedule selected",
-  textDuration = "30 Hours",
-  slotIcons,
-  slotCheckingIcon,
+  textDuration = "2 Schedule selected",
   slotScheduleSelectPill,
   slotReqToggle,
   slotCheckboxAvailability,
   isFoundSlots = true,
-  textFoundSlots = "Found 126 slots for the sugeestion",
   slotAvailabilityCriteria,
-  onClickCancel = {},
-  onClickReqAvailability = {},
   isCheckingSlotsVisible = true,
   isCheckbox = true,
-  isLoading = false,
   textFoundSlotsCount = "This is a global text component",
   slotBadge,
-  textSelectedDate = "12 Jun 2024 - 15 Jun 2024",
+  slotButton,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "req_vailibility")} tag="div">
@@ -50,22 +42,19 @@ export function ReqAvailability({
               tag="div"
             >
               <TextWithIcon
-                textContent={textSelectedDate}
-                iconName="calendar_today"
+                textContent={textDateAvailability}
+                iconName=""
                 fontWeight="medium"
-                iconSize="4"
               />
               <TextWithIcon
                 textContent={textScheduleSelected}
                 iconName="check_circle"
                 fontWeight="medium"
-                iconSize="4"
               />
               <TextWithIcon
                 textContent={textDuration}
-                iconName="hourglass_empty"
+                iconName="hourglass"
                 fontWeight="medium"
-                iconSize="4"
               />
             </_Builtin.Block>
             <_Builtin.Block
@@ -210,18 +199,22 @@ export function ReqAvailability({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "button_grid")} tag="div">
-        <ButtonSoft
-          onClickButton={onClickCancel}
-          textButton="Back"
-          size="2"
-          color="neutral"
-        />
-        <ButtonSolid
-          onClickButton={onClickReqAvailability}
-          isLoading={isLoading}
-          textButton="Request Availability"
-          size="2"
-        />
+        {slotButton ?? (
+          <>
+            <SlotComp
+              id={_utils.cx(
+                _styles,
+                "w-node-_93562b0d-55a8-fbd1-9ddf-ab7a8cde7002-1a879a45"
+              )}
+            />
+            <SlotComp
+              id={_utils.cx(
+                _styles,
+                "w-node-_4ba1d6dd-8287-5d05-e38b-2e8e95cfa38d-1a879a45"
+              )}
+            />
+          </>
+        )}
       </_Builtin.Block>
     </_Component>
   );

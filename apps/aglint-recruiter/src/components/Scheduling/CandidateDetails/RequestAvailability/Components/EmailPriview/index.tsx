@@ -4,7 +4,10 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
 import { EmailTemplateAPi } from '@aglint/shared-types';
 import axios from 'axios';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useSchedulingApplicationStore } from '../../../store';
+import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
+import { ShowCode } from '@/src/components/Common/ShowCode';
 
 function EmailPreview({
   requestAvailabilityId,
@@ -19,15 +22,18 @@ function EmailPreview({
   onSubmit: () => void;
   loading: boolean;
 }) {
+  const { selectedApplication } = useSchedulingApplicationStore();
   const { recruiterUser } = useAuthDetails();
   const [emailData, setEmailData] = useState<{ html: string; subject: string }>(
     null,
   );
+  const [fetching, setFetching] = useState(true);
   const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
     {
-      avail_req_id: requestAvailabilityId,
-      recruiter_user_id: recruiterUser.user_id,
-      is_preview: true,
+      preview_details: {
+        application_id: selectedApplication.id,
+      },
+      organizer_user_id: recruiterUser.user_id,
     };
   useEffect(() => {
     if (!emailData) {
@@ -37,18 +43,21 @@ function EmailPreview({
         })
         .then(({ data }) => {
           setEmailData(data);
-          console.log(data);
+          setFetching(false);
         })
         .catch((error) => {
           toast.error('Fail to fetch email preview');
+          setFetching(false);
         });
     }
   }, []);
+
   return (
     <EmailPreviewOnScheduling
       slotButton={
         <>
           <ButtonSoft
+            color={'neutral'}
             size={2}
             onClickButton={{
               onClick: () => {
@@ -68,15 +77,20 @@ function EmailPreview({
         </>
       }
       slotEmailPreview={
-        <>
-          <iframe
-            width={'600px'}
-            height={'620px'}
-            color='white'
-            srcDoc={emailData?.html}
-            title='Previw Email'
-          />
-        </>
+        <ShowCode>
+          <ShowCode.When isTrue={fetching}>
+            <DynamicLoader height='50vh' />
+          </ShowCode.When>
+          <ShowCode.Else>
+            <iframe
+              width={'600px'}
+              height={'620px'}
+              color='white'
+              srcDoc={emailData?.html}
+              title='Previw Email'
+            />
+          </ShowCode.Else>
+        </ShowCode>
       }
     />
   );

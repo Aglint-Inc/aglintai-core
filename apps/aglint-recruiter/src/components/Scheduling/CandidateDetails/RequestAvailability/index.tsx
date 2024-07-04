@@ -1,6 +1,7 @@
 import {
   DatabaseTable,
   DatabaseTableInsert,
+  EmailTemplateAPi,
   InterviewSessionTypeDB,
 } from '@aglint/shared-types';
 import { ScheduleUtils } from '@aglint/shared-utils';
@@ -305,11 +306,14 @@ function RequestAvailability() {
         await supabase.from('interview_meeting').upsert(updateMeetings);
 
         // send request availability email to candidate
-
+        const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
+          {
+            organizer_user_id: recruiterUser.user_id,
+            avail_req_id: result.id,
+          };
         axios.post(`/api/emails/sendAvailabilityRequest_email_applicant`, {
           meta: {
-            avail_req_id: result.id,
-            recruiter_user_id: recruiterUser.user_id,
+            ...payload,
           },
         });
         // end
@@ -492,11 +496,11 @@ function RequestAvailability() {
       <ShowCode>
         <ShowCode.When isTrue={requestSteps === 'finding_slots'}>
           <ReqAvailability
-            textSelectedDate={`${selectedDate[0].format('DD MMMM YYYY')} - ${selectedDate[1].format('DD MMMM YYYY')}`}
+            // textDateAvailability={`Availability on ${selectedDate[0].format('DD MMMM YYYY')}`}
+            textDateAvailability={`${selectedDate[0].format('DD MMMM YYYY')} - ${selectedDate[1].format('DD MMMM YYYY')}`}
             isCheckingSlotsVisible={isFindingSlots}
             isFoundSlots={!isFindingSlots}
             textFoundSlotsCount={`Found ${totalCount} slots for the suggestion`}
-            slotCheckingIcon={<GreenBgCheckedIcon />}
             slotBadge={
               filteredAvailabilitySlots &&
               filteredAvailabilitySlots.map((ele) => {
@@ -652,18 +656,25 @@ function RequestAvailability() {
                 }}
               />
             }
-            isLoading={loading}
-            onClickReqAvailability={{
-              onClick: () => {
-                setRequestSteps('preview');
-              },
-            }}
-            onClickClose={{ onClick: getDrawerClose }}
-            onClickCancel={{
-              onClick: () => {
-                setStepScheduling('pick_date');
-              },
-            }}
+            slotButton={
+              <>
+                <ButtonSoft
+                  color={'neutral'}
+                  size={2}
+                  onClickButton={{ onClick: getDrawerClose }}
+                  textButton={'Cancel'}
+                />
+                <ButtonSolid
+                  size={2}
+                  textButton={'Continue'}
+                  onClickButton={{
+                    onClick: () => {
+                      setRequestSteps('preview');
+                    },
+                  }}
+                />
+              </>
+            }
           />
         </ShowCode.When>
         <ShowCode.When isTrue={requestSteps === 'preview'}>
@@ -680,7 +691,7 @@ function RequestAvailability() {
             textDescription={`Candidate received a link to submit availability between ${selectedDate[0].format('DD MMMM YYYY')} to ${selectedDate[1].format('DD MMMM YYYY')}4.`}
             slotButton={
               <ButtonSolid
-              size={2}
+                size={2}
                 textButton={'Copy link'}
                 onClickButton={{
                   onClick: () => {
