@@ -92,15 +92,6 @@
   align-items: center;
 }
 
-.embed_flex.ml--1 {
-  margin-left: -9px;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
 .hover_arroe {
   position: absolute;
   left: 22px;

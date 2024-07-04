@@ -22,6 +22,7 @@ export function SideDrawerLarge({
   isLoading = false,
   dynamicHeight = {},
   slotButtons,
+  slotHeaderIcon,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "large_sidedrawer")} tag="div">
@@ -30,8 +31,8 @@ export function SideDrawerLarge({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "flex_hr_10")} tag="div">
+          <_Builtin.Block tag="div">{slotHeaderIcon}</_Builtin.Block>
           <Text content={textDrawertitle} weight="medium" />
-          <_Builtin.Block tag="div" />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "sdl-close-btn-wrap")}

@@ -221,10 +221,6 @@
   }
 }
 
-.icons.mb-9 {
-  margin-bottom: var(--space-9);
-}
-
 .mt-4 {
   margin-top: 4px;
 }
@@ -343,15 +339,6 @@
 .embed_flex {
   display: flex;
   align-items: center;
-}
-
-.embed_flex.ml--1 {
-  margin-left: -9px;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
 }
 
 #w-node-_386f3b7b-e9ac-d3e4-5660-9b25755cbcef-e4f6dd07 {

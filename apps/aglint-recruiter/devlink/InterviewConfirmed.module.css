@@ -148,20 +148,8 @@
   color: var(--green600-40a2ee5f);
 }
 
-@media screen and (max-width: 767px) {
-  .text-lg.fw-semibold.responsive-text {
-    font-size: 14px;
-  }
-}
-
 .text-lg.text-grey-700.letter-spacing-small {
   letter-spacing: -0.45px;
-}
-
-@media screen and (max-width: 767px) {
-  .text-lg.text-grey-700.responsive-text {
-    font-size: 14px;
-  }
 }
 
 .text-lg.text-gray-400 {
@@ -340,10 +328,6 @@
 
 .icons.hide {
   display: none;
-}
-
-.icons.mb-9 {
-  margin-bottom: var(--space-9);
 }
 
 .mt-4 {
