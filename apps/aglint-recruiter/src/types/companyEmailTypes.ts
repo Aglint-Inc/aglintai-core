@@ -122,12 +122,12 @@ export const emailTemplateCopy: CompanyEmailType = {
     description:
       'This email template is used to notify organizer when an interviewer accepts an interview invitation. This email is sent by the system automatically every time an interviewer accepts an interview.',
   },
-  candidateBook_email_interviewerForFeedback: {
-    heading: 'Interviewer Feedback',
+  interviewEnd_email_interviewerForFeedback: {
+    heading: 'Interviewer Feedback Reminder',
     description: `
 This email template is used to remind interviewers to provide feedback for a candidate's recent interview`,
   },
-  candidateBook_slack_interviewerForFeedback: {
+  interviewEnd_slack_interviewerForFeedback: {
     description: '',
     heading: '',
   },
@@ -145,4 +145,6 @@ This email template is used to remind interviewers to provide feedback for a can
   },
   phoneScreen_email_candidate: null,
   phoneScreenRemind_email_applicant: null,
+  candidateBook_slack_interviewerForFeedback: null,
+  candidateBook_email_interviewerForFeedback: null,
 };
