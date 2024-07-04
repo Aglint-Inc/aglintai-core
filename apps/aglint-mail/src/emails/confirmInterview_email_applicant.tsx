@@ -72,6 +72,11 @@ export const InterviewBookingConfirmation = ({
               <Button
                 className="px-3 py-2 bg-accent-9 text-white br rounded-[4px] text-text-xs"
                 href={candidateLink}
+                onClick={() => {
+                  if (candidateLink.length === 0) {
+                    return false;
+                  }
+                }}
               >
                 View Details
               </Button>
