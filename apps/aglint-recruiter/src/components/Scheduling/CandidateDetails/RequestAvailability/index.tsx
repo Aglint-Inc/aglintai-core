@@ -216,12 +216,6 @@ function RequestAvailability() {
         });
         setRequestDetails(result);
 
-        axios.post(`/api/emails/availabilityReqResend_email_candidate`, {
-          meta: {
-            avail_req_id: result.id,
-            recruiter_user_id: recruiterUser.user_id,
-          },
-        });
         const { data: requestData } = await axios.post(
           `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,
           {
@@ -316,6 +310,7 @@ function RequestAvailability() {
             ...payload,
           },
         });
+
         // end
         let task = null as null | DatabaseTable['new_tasks'];
         if (markCreateTicket) {
