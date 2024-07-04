@@ -23,6 +23,7 @@ import {
 } from '../../store';
 import { useAvailabilityContext } from './RequestAvailabilityContext';
 import RequestAvailabilityDrawer from './RequestAvailabilityDrawer';
+import { IconButtonSoft } from '@/devlink2';
 
 function RequestAvailabilityPopUps() {
   const router = useRouter();
@@ -152,6 +153,7 @@ function RequestAvailabilityPopUps() {
                             isLeftIcon={false}
                             isRightIcon={false}
                             size={1}
+                            color={'neutral'}
                             onClickButton={{
                               onClick: () =>
                                 handleRequestAgain(
@@ -181,6 +183,7 @@ function RequestAvailabilityPopUps() {
                               },
                             }}
                           />
+                          <IconButtonSoft iconName={'content_copy'} />
                         </>
                       }
                     />
