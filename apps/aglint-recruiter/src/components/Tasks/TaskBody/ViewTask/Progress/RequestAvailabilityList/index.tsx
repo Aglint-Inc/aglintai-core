@@ -10,11 +10,11 @@ import {
   setScheduleFlow,
   setStepScheduling,
 } from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/store';
-import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import {
   setRequestSessionIds,
   setSelectedSessionIds,
 } from '@/src/components/Scheduling/CandidateDetails/store';
+import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 
 function RequestAvailabilityList({
   item,

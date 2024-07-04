@@ -10,6 +10,8 @@ import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { GlobalCta } from '@/devlink3/GlobalCta';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
@@ -18,15 +20,13 @@ import toast from '@/src/utils/toast';
 
 import { useAllActivities, useGetScheduleApplication } from '../../../hooks';
 import { updateCandidateRequestAvailability } from '../../../RequestAvailability/RequestAvailabilityContext';
+import DayCardWrapper from '../../../SchedulingDrawer/StepSlotOptions/DayCardWrapper';
 import {
   setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../../../store';
 import { useAvailabilityContext } from '../RequestAvailabilityContext';
 import RequestAvailabilityBody from './RequestAvailabilityBody';
-import { GlobalCta } from '@/devlink3';
-import { ButtonSoft } from '@/devlink';
-import DayCardWrapper from '../../../SchedulingDrawer/StepSlotOptions/DayCardWrapper';
 
 function RequestAvailabilityDrawer() {
   const router = useRouter();

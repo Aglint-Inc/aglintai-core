@@ -1,7 +1,12 @@
 /* eslint-disable security/detect-object-injection */
-import { APIFindAvailability, DatabaseTable, SessionCombinationRespType } from '@aglint/shared-types';
+import {
+  APIFindAvailability,
+  DatabaseTable,
+  SessionCombinationRespType,
+} from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import axios from 'axios';
+
 import { ApiResponseFindAvailability } from '../types';
 
 const daysList = Array.from({ length: 10 }, (_, index) => {
@@ -68,7 +73,6 @@ export async function getAvailabilitySlots(bodyParams: APIFindAvailability) {
     '/api/scheduling/v1/find_availability',
     bodyParams,
   );
-  console.log(res);
   return res;
 }
 

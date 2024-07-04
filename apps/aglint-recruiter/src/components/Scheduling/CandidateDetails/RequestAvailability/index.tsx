@@ -5,6 +5,7 @@ import {
   InterviewSessionTypeDB,
 } from '@aglint/shared-types';
 import { ScheduleUtils } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import {
   Autocomplete,
   Checkbox,
@@ -17,10 +18,13 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalBadge } from '@/devlink/GlobalBadge';
+import { GlobalCta } from '@/devlink3/GlobalCta';
 import { ReqAvailability } from '@/devlink3/ReqAvailability';
 import { ScheduleSelectPill } from '@/devlink3/ScheduleSelectPill';
 import { ToggleWithText } from '@/devlink3/ToggleWithText';
-import GreenBgCheckedIcon from '@/src/components/Common/Icons/GreenBgCheckedIcon';
 import PopUpArrowIcon from '@/src/components/Common/Icons/PopUpArrowIcon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import ToggleBtn from '@/src/components/Common/UIToggle';
@@ -36,18 +40,14 @@ import {
   ApiResponseSessionCache,
 } from '@/src/pages/api/scheduling/application/candidatesessioncache';
 import { getCompanyDaysCnt } from '@/src/services/CandidateScheduleV2/utils/companyWorkingDays';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { ButtonSoft, ButtonSolid, GlobalBadge } from '@/devlink';
-import { GlobalCta } from '@/devlink3';
-import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { addScheduleActivity } from '../../Candidates/queries/utils';
 import { useAllActivities, useGetScheduleApplication } from '../hooks';
 import {
-  setIsScheduleNowOpen,
   setStepScheduling,
   useSchedulingFlowStore,
 } from '../SchedulingDrawer/store';
@@ -102,16 +102,16 @@ function RequestAvailability() {
       accumulator + session.interview_session.session_duration,
     0,
   );
-  function getDrawerClose() {
-    setIsScheduleNowOpen(false);
-    const currentPath = router.pathname;
-    const currentQuery = { ...router.query };
-    delete currentQuery.task_id;
-    router.replace({
-      pathname: currentPath,
-      query: currentQuery,
-    });
-  }
+  // function getDrawerClose() {
+  //   setIsScheduleNowOpen(false);
+  //   const currentPath = router.pathname;
+  //   const currentQuery = { ...router.query };
+  //   delete currentQuery.task_id;
+  //   router.replace({
+  //     pathname: currentPath,
+  //     query: currentQuery,
+  //   });
+  // }
 
   const [availability, setAvailability] = useState<
     DatabaseTable['candidate_request_availability']['availability']
@@ -430,8 +430,6 @@ function RequestAvailability() {
       setIsFindingSlots(false);
     }
   }, [availability, selectedAvailabilitySlots]);
-  console.log(meetingsRound);
-  console.log(filteredAvailabilitySlots);
 
   useEffect(() => {
     setSelectedAvailabilitySlots(null);
@@ -514,6 +512,7 @@ function RequestAvailability() {
                         {ele.slots.map((ele, i) => {
                           return (
                             <GlobalBadge
+                              key={i}
                               color={'neutral'}
                               textBadge={`${dayjsLocal(ele.date).format('DD MMMM')} - ${ele.count} slots`}
                             />
