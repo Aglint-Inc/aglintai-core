@@ -126,6 +126,7 @@ const JobEmailTemplates = () => {
 
   return (
     <EmailTemplatesStart
+      showTabs={false}
       isWarningVisible={true}
       slotEmailTemplateCards={
         <>
