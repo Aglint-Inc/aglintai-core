@@ -125,6 +125,7 @@ function RequestAvailabilityBody({
                   isDisabled={!isPrevSelectedDate || isPastDate}
                   isDayCollapseNeeded={false}
                   index={index}
+                  setSelectedCombIds={() => {}}
                 />
               );
             })}

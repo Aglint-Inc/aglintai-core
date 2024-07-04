@@ -7,7 +7,8 @@
 }
 
 .schedule_option_hint {
-  padding: 20px 20px 0px;
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--neutral-6);
 }
 
 .schedule_options {

@@ -12,4 +12,5 @@ declare function ScheduleOption(props: {
   onClickSelect?: Types.Devlink.RuntimeProps;
   slotSingleDaySchedule?: Types.Devlink.Slot;
   isCheckboxAndRadio?: Types.Visibility.VisibilityConditions;
+  slotCheckbox?: Types.Devlink.Slot;
 }): React.JSX.Element;

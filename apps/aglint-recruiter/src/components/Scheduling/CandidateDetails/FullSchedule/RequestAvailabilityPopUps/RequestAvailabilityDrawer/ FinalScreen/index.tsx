@@ -30,6 +30,7 @@ function FinalScreen() {
               isSlotCollapseNeeded={false}
               isCheckboxAndRadio={false}
               index={index}
+              setSelectedCombIds={() => {}}
             />
           );
         })}
