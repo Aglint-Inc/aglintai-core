@@ -17,7 +17,6 @@ import StepSlotOptions from './StepSlotOptions';
 import {
   resetSchedulingFlowStore,
   setDateRange,
-  setStepScheduling,
   useSchedulingFlowStore,
 } from './store';
 
@@ -75,16 +74,9 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
         }}
       >
         <SideDrawerLarge
-          onClickBack={{
+          onClickCancel={{
             onClick: () => {
-              if (stepScheduling === 'preference') {
-                setStepScheduling('pick_date');
-              } else if (
-                stepScheduling === 'slot_options' &&
-                !isSendingToCandidate
-              ) {
-                setStepScheduling('preference');
-              }
+              resetStateSelfScheduling();
             },
           }}
           textDrawertitle={

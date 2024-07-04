@@ -15,6 +15,7 @@ interface Props {
   disabled?: boolean;
   showSubject?: boolean;
   showSender?: boolean;
+  isJobTemplate?: boolean;
 }
 
 export default function EmailTemplateEditForm({
@@ -25,8 +26,11 @@ export default function EmailTemplateEditForm({
   disabled = false,
   showSender = true,
   showSubject = true,
+  isJobTemplate = false,
 }: Props) {
-  const options = ['{{organizerName}}', '{{companyName}}', 'Aglint Ai'];
+  const options = isJobTemplate
+    ? ['{{companyName}}', 'Aglint Ai']
+    : ['{{organizerName}}', '{{companyName}}', 'Aglint Ai'];
   return (
     <Stack spacing={'var(--space-5)'}>
       {showSender && (

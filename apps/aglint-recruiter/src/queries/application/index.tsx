@@ -252,6 +252,7 @@ const getApplicationInterview = async ({
         date: null,
         meeting_id: null,
         session_id: null,
+        meeting_flow: null,
       }),
     );
   return plans;

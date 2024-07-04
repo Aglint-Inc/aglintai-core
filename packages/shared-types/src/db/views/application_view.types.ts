@@ -15,6 +15,7 @@ export type CustomApplicationView = ViewType<
       | "session_type"
       | "status"
       | "session_id"
+      | "meeting_flow"
     > & {
       date?: Pick<
         Database["public"]["Views"]["meeting_details"]["Row"],
