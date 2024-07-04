@@ -95,7 +95,9 @@ function SchedulerEmailTemps({ setSaving }) {
           .update({ ...updated_template })
           .eq('id', updated_template.id),
       );
-      setSaving('saved');
+      setTimeout(() => {
+        setSaving('saved');
+      }, 1000);
     } catch (err) {
       toast.error('Something went wrong!');
     }
@@ -176,6 +178,7 @@ function SchedulerEmailTemps({ setSaving }) {
                     setSearchQry('');
                   }}
                   value={searchQry}
+                  isFullWidth={true}
                 />
               </>
             }
@@ -310,11 +313,6 @@ function SchedulerEmailTemps({ setSaving }) {
                             showSubject={
                               router.query.template_tab !== 'slack' &&
                               router.query.template_tab !== 'calender'
-                            }
-                            overrideBodyLabel={
-                              router.query.template_tab === 'slack'
-                                ? 'Slack Message'
-                                : ''
                             }
                           />
                         )

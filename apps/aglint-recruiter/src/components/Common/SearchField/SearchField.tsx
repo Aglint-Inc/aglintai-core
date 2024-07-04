@@ -11,16 +11,19 @@ export default function SearchField({
   onChange,
   onClear,
   placeholder,
+  isFullWidth = false,
 }: {
   value: string;
   placeholder?: string;
   onChange: any;
   onClear: any;
+  isFullWidth?: boolean;
 }) {
   return (
     <UITextField
       height={32}
-      width='250px'
+      width={isFullWidth ? undefined : '250px'}
+      fullWidth={isFullWidth}
       InputProps={{
         endAdornment: value ? (
           <Stack
