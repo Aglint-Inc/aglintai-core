@@ -27,7 +27,6 @@ import RequestAvailabilityDrawer from './RequestAvailabilityDrawer';
 function RequestAvailabilityPopUps() {
   const router = useRouter();
   const { availabilities, initialSessions } = useSchedulingApplicationStore();
-  const [copied, setCopied] = useState(false);
 
   const { setSelectedRequestAvailability } = useAvailabilityContext();
 
@@ -161,26 +160,8 @@ function RequestAvailabilityPopUps() {
                                 ),
                             }}
                           />
-                          <ButtonSoft
-                            textButton={copied ? 'Copied' : 'Copy link'}
-                            isLoading={false}
-                            isLeftIcon={false}
-                            isRightIcon={false}
-                            slotIcon={<GlobalIcon iconName={'check_circle'} />}
-                            size={1}
-                            onClickButton={{
-                              onClick: () => {
-                                if (!copied) {
-                                  setCopied(true);
-                                  setTimeout(() => {
-                                    setCopied(false);
-                                  }, 2000);
-                                  navigator.clipboard.writeText(
-                                    `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${item.candidate_request_availability.id}`,
-                                  );
-                                }
-                              },
-                            }}
+                          <CopyButton
+                            request_id={item.candidate_request_availability.id}
                           />
                         </>
                       }
@@ -245,3 +226,31 @@ function RequestAvailabilityPopUps() {
 }
 
 export default RequestAvailabilityPopUps;
+
+function CopyButton({ request_id }: { request_id: string }) {
+  const [copied, setCopied] = useState(false);
+
+  return (
+    <ButtonSoft
+      textButton={copied ? 'Copied' : 'Copy link'}
+      isLoading={false}
+      isLeftIcon={false}
+      isRightIcon={false}
+      slotIcon={<GlobalIcon iconName={'check_circle'} />}
+      size={1}
+      onClickButton={{
+        onClick: () => {
+          if (!copied) {
+            setCopied(true);
+            setTimeout(() => {
+              setCopied(false);
+            }, 2000);
+            navigator.clipboard.writeText(
+              `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${request_id}`,
+            );
+          }
+        },
+      }}
+    />
+  );
+}

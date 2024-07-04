@@ -691,7 +691,8 @@ function RequestAvailability() {
             textDescription={`Candidate received a link to submit availability between ${selectedDate[0].format('DD MMMM YYYY')} to ${selectedDate[1].format('DD MMMM YYYY')}4.`}
             slotButton={
               <ButtonSolid
-                size={2}
+                size={1}
+                color={'neutral'}
                 textButton={'Copy link'}
                 onClickButton={{
                   onClick: () => {
