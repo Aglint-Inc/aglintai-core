@@ -49,7 +49,7 @@ import { addScheduleActivity } from '../../Candidates/queries/utils';
 import { useAllActivities, useGetScheduleApplication } from '../hooks';
 import {
   setStepScheduling,
-  useSchedulingFlowStore
+  useSchedulingFlowStore,
 } from '../SchedulingDrawer/store';
 import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
 import EmailPreview from './Components/EmailPriview';
