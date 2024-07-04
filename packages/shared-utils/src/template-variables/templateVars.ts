@@ -1,4 +1,4 @@
-import { DatabaseEnums } from '@aglint/shared-types';
+import { DatabaseEnums } from "@aglint/shared-types";
 import {
   additionalRescheduleNotes,
   availabilityReqLink,
@@ -18,7 +18,7 @@ import {
   rescheduleReason,
   selfSchedulingLink,
   time,
-} from './variables';
+} from "./variables";
 
 export const emailVariablePayloads = {
   debrief_email_interviewer: [
