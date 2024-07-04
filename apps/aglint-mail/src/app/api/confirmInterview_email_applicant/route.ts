@@ -19,12 +19,22 @@ export async function POST(req: Request) {
       mail_attachments,
     } = await fetchUtil(parsed_body);
 
-    await sendMailFun({
+    const { html, subject } = await sendMailFun({
       filled_comp_template,
       react_email_placeholders,
       recipient_email,
       attachments: mail_attachments,
+      is_preview: parsed_body.is_preview,
     });
+    if (parsed_body.is_preview) {
+      return NextResponse.json(
+        { html, subject },
+        {
+          status: 200,
+        },
+      );
+    }
+
     return NextResponse.json('success', {
       status: 200,
     });
