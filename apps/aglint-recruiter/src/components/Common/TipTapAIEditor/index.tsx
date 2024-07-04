@@ -174,7 +174,7 @@ const TipTapAIEditor = ({
               },
             }}
           >
-            <Stack p={padding}>
+            <Stack p={singleLine ? '9px 6px 6px' : padding}>
               {loader.isLoading ? (
                 <Stack gap={1}>
                   {[...Array(loader.count)].map((e, i) => (
