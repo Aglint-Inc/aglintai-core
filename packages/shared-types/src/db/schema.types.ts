@@ -5304,6 +5304,8 @@ export type Database = {
         | "meetingAccepted_email_organizer"
         | "candidateBook_slack_interviewerForFeedback"
         | "candidateBook_email_interviewerForFeedback"
+        | "interviewEnd_slack_interviewerForFeedback"
+        | "interviewEnd_email_interviewerForFeedback"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"
@@ -5498,6 +5500,7 @@ export type Database = {
         | "interviewEnd"
         | "meetingDeclined"
         | "meetingAccepted"
+        | "candidateBook"
     }
     CompositeTypes: {
       location_type: {

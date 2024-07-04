@@ -141,7 +141,7 @@ export const emailVariablePayloads = {
     ...organizer,
     ...jobDetails,
   ],
-  candidateBook_email_interviewerForFeedback: [
+  interviewEnd_email_interviewerForFeedback: [
     ...candidates,
     ...interviewer,
     ...organizer,
