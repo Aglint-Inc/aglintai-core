@@ -1,9 +1,5 @@
 "use client";
 
-console.warn(
-  "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
-);
-
 export * as _Builtin from "./_Builtin";
 export * from "./devlinkContext";
 export * from "./interactions";
@@ -208,6 +204,8 @@ export * from "./ScheduleOptions";
 export * from "./SchedulerDashboard";
 export * from "./ScheduleSettings";
 export * from "./ScheduleWithAgent";
+export * from "./SchedulerDashboard";
+export * from "./SchedulingFlow";
 export * from "./SchedulingFlow";
 export * from "./SchedulingSetting";
 export * from "./ScrCheckmarkIcon";
@@ -254,6 +252,8 @@ export * from "./SlotComp";
 export * from "./SlotPicker";
 export * from "./StatusBadge";
 export * from "./Stepper";
+export * from "./SubLinkSubMenu";
+export * from "./SubMenu";
 export * from "./SubLinkSubMenu";
 export * from "./SublinkTab";
 export * from "./SubMenu";
