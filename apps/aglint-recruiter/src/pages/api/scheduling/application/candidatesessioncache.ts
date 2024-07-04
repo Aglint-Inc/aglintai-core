@@ -5,7 +5,7 @@ import { CookieOptions, createServerClient, serialize } from '@supabase/ssr';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
-import { createCloneSession } from '@/src/components/Scheduling/CandidateDetails/utils';
+import { createCloneSession } from '@/src/utils/scheduling/createCloneSession';
 
 export interface ApiBodyParamsSessionCache {
   is_get_more_option: boolean;

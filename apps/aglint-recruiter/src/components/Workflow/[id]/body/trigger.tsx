@@ -137,6 +137,10 @@ const TRIGGER_PAYLOAD: {
     trigger: 'meetingAccepted',
     phase: ['after'],
   },
+  {
+    trigger: 'candidateBook',
+    phase: ['after'],
+  },
 ];
 
 const TRIGGER_OPTIONS = TRIGGER_PAYLOAD.reduce(
@@ -187,6 +191,9 @@ export function getTriggerOption(
       break;
     case 'meetingAccepted':
       message = 'an interviewer accepts a meeting invitation';
+      break;
+    case 'candidateBook':
+      message = 'a candidate books a meeting';
       break;
   }
   let preMessage = '';
