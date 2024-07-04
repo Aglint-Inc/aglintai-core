@@ -37,7 +37,9 @@ export const sendMailFun = async <
     filled_comp_template.type as T,
     react_email_placeholders,
   );
-  if (!is_preview) {
+  if (is_preview) {
+    return { html, subject };
+  } else {
     await sendMail({
       email: recipient_email,
       html,
@@ -46,7 +48,5 @@ export const sendMailFun = async <
       fromName: filled_comp_template.from_name,
       attachments,
     });
-  } else {
-    return { html, subject };
   }
 };

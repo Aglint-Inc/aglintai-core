@@ -11,6 +11,7 @@ import * as React from 'react';
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import config from '../../tailwind.config';
 import { Footer } from '../components/template/Footer';
+import { companyLogoDummy } from '../utils/assets/common';
 
 type EmailType = EmailTemplateAPi<'selfScheduleReminder_email_applicant'>;
 
@@ -18,8 +19,7 @@ type EmailType = EmailTemplateAPi<'selfScheduleReminder_email_applicant'>;
 export const dummy: EmailType['react_email_placeholders'] = {
   emailBody:
     '<p>Dear {{ candidateFirstName }},</p><p></p><p>This is a friendly reminder about the self-schedule interview request you received for the {{ jobTitle }} position at {{ companyName }}.</p><p></p><p>Please use the following link to schedule your interview: {{ selfScheduleLink }}</p><p>Looking forward to connecting with you!</p><p></p><p>Best regards,</p><p>{{ companyName }} Recruitment Team</p>',
-  companyLogo:
-    'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
+  companyLogo: companyLogoDummy,
   subject: '',
 };
 

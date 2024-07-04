@@ -16,6 +16,7 @@ export function GlobalBadge({
   iconWeight = "medium",
   iconColor = "inherit",
   iconName = "shapes",
+  showText = true,
 }) {
   return (
     <_Component
@@ -35,7 +36,7 @@ export function GlobalBadge({
           />
         </_Builtin.Block>
       ) : null}
-      <_Builtin.Block tag="div">{textBadge}</_Builtin.Block>
+      {showText ? <_Builtin.Block tag="div">{textBadge}</_Builtin.Block> : null}
     </_Component>
   );
 }

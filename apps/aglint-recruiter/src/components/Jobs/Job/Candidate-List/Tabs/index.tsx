@@ -11,6 +11,21 @@ import DNDTab from './dndTab';
 const Tabs = () => {
   const { job } = useJob();
 
+  const activeSections = useMemo(
+    () =>
+      (
+        [
+          'new',
+          'screening',
+          'assessment',
+          'interview',
+          'qualified',
+          'disqualified',
+        ] as (keyof (typeof job)['flags'])[]
+      ).filter((value) => job?.flags[value]),
+    [job?.flags],
+  );
+
   const { section, changeSection } = useApplicationsStore(
     ({ section, changeSection }) => ({
       section,
@@ -20,24 +35,21 @@ const Tabs = () => {
 
   const drawerOpen = useApplicationStore(({ drawer }) => drawer.open);
 
-  const count = useMemo(
-    () => (job?.activeSections ?? []).length,
-    [job?.activeSections],
-  );
+  const count = useMemo(() => (activeSections ?? []).length, [activeSections]);
 
   const handleSelectNextSection = useCallback(() => {
-    if (job?.activeSections) {
-      const index = job.activeSections.indexOf(section);
-      changeSection(job.activeSections[(index + 1) % count]);
+    if (activeSections) {
+      const index = activeSections.indexOf(section);
+      changeSection(activeSections[(index + 1) % count]);
     }
-  }, [job?.activeSections, section, count]);
+  }, [activeSections, section, count]);
 
   const handleSelectPrevSection = useCallback(() => {
-    if (job?.activeSections) {
-      const index = job.activeSections.indexOf(section);
-      changeSection(job.activeSections[index - 1 < 0 ? count - 1 : index - 1]);
+    if (activeSections) {
+      const index = activeSections.indexOf(section);
+      changeSection(activeSections[index - 1 < 0 ? count - 1 : index - 1]);
     }
-  }, [job?.activeSections, section, count]);
+  }, [activeSections, section, count]);
 
   const { pressed: right } = useKeyPress('ArrowRight');
   const { pressed: left } = useKeyPress('ArrowLeft');
@@ -50,7 +62,7 @@ const Tabs = () => {
 
   return (
     <>
-      {job.activeSections.map((section) => (
+      {activeSections.map((section) => (
         <DNDTab key={section} section={section} />
       ))}
     </>

@@ -47,7 +47,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
 
         return (
           <>
-            <ScrollList key = {ind} uniqueKey={job.id}>
+            <ScrollList key={ind} uniqueKey={job.id}>
               <JobsListingCard
                 isAssessmentPillVisible={isAssessmentEnabled && job.assessment}
                 isScreeningPillsVisible={
@@ -92,17 +92,17 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                 key={ind}
                 textJobRole={jobDetails?.job_title}
                 textCompanyLocation={`${jobDetails?.location}`}
-                newCount={job?.count?.new}
-                qualifiedCount={job?.count?.qualified}
-                assessmentCount={job?.count?.assessment}
-                disqualifiedCount={job?.count?.disqualified}
+                newCount={job?.section_count?.new}
+                qualifiedCount={job?.section_count?.qualified}
+                assessmentCount={job?.section_count?.assessment}
+                disqualifiedCount={job?.section_count?.disqualified}
                 bgColorProps={{
                   style: {
                     backgroundColor: getBgColorJobsList(job.status),
                     color: getTextColorJobsList(job.status),
                   },
                 }}
-                interviewCount={job?.count?.interview}
+                interviewCount={job?.section_count?.interview}
                 textJobsStatus={job.status}
                 isJobWarningVisible={
                   job.status == 'published' &&

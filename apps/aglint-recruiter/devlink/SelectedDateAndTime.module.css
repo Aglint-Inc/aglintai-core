@@ -1,5 +1,6 @@
 .selected_date {
   display: grid;
+  align-items: stretch;
   grid-auto-columns: 1fr;
   grid-column-gap: var(--space-4);
   grid-row-gap: var(--space-4);
@@ -30,6 +31,7 @@
 .sessionandtime_wrap {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   flex-wrap: nowrap;
   grid-column-gap: var(--space-4);
   grid-row-gap: var(--space-4);

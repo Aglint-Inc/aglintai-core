@@ -34,7 +34,7 @@ const Create = () => {
       title: form.title.value,
       description: form.description.value,
       auto_connect: form.auto_connect.value,
-      phase: 'now',
+      phase: 'after',
       trigger: 'sendAvailReqReminder',
     });
     closePopup();

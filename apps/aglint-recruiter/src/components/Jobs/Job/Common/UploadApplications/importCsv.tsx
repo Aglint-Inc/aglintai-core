@@ -12,15 +12,15 @@ import { ImportCsv as ImportCsvDev } from '@/devlink/ImportCsv';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { CsvUploadApi } from '@/src/apiUtils/job/candidateUpload/types';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
+import { useJob } from '@/src/context/JobContext';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import toast from '@/src/utils/toast';
 
 export type BulkImportCandidateCsv = CsvUploadApi['request']['candidates'];
 
 const ImportCsv = () => {
-  const { handleUploadCsv } = useApplications();
+  const { handleUploadCsv } = useJob();
   const setImportPopup = useApplicationsStore(
     ({ setImportPopup }) => setImportPopup,
   );

@@ -3,15 +3,15 @@ import { type JobTypeDB } from '@aglint/shared-types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useJob } from '@/src/context/JobContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { assessmentQueryKeys, generateUUID } from '../assessment/keys';
 import { type Assessment, AssessmentTemplate } from '../assessment/types';
-import { useCurrentJob } from './keys';
 
 export const useJobAssessmentsConnect = () => {
-  const { id, job } = useCurrentJob();
+  const { job_id: id, job } = useJob();
   const title = job?.job_title ?? null;
   const queryClient = useQueryClient();
   const { queryKey } = assessmentQueryKeys.assessments();
@@ -48,7 +48,8 @@ type BulkConnectProps = {
 
 export const useJobAssessmentsBulkConnect = () => {
   const { recruiter_id } = useAuthDetails();
-  const { id, job } = useCurrentJob();
+  const { job, job_id } = useJob();
+  const id = job_id;
   const title = job?.job_title ?? null;
   const queryClient = useQueryClient();
   const { queryKey } = assessmentQueryKeys.assessments();
@@ -115,7 +116,8 @@ export const useJobAssessmentsBulkConnect = () => {
 
 export const useJobAssessmentTemplateConnect = () => {
   const { recruiter_id } = useAuthDetails();
-  const { id, job } = useCurrentJob();
+  const { job, job_id } = useJob();
+  const id = job_id;
   const title = job?.job_title ?? null;
   const assessment_id = generateUUID();
   const queryClient = useQueryClient();
@@ -174,7 +176,8 @@ export const useJobAssessmentTemplateConnect = () => {
 };
 
 export const useJobAssessmentsDisconnect = () => {
-  const { id } = useCurrentJob();
+  const { job_id } = useJob();
+  const id = job_id;
   const queryClient = useQueryClient();
   const { queryKey } = assessmentQueryKeys.assessments();
   return useMutation({

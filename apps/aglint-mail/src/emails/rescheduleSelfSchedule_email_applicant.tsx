@@ -6,7 +6,6 @@ import {
   Html,
   Img,
   Tailwind,
-  Text,
 } from '@react-email/components';
 import { Parser } from 'html-to-react';
 import * as React from 'react';
@@ -14,6 +13,7 @@ import type { EmailTemplateAPi } from '@aglint/shared-types';
 import config from '../../tailwind.config';
 import { Session } from '../components/template/Sessions';
 import { Footer } from '../components/template/Footer';
+import { companyLogoDummy } from '../utils/assets/common';
 
 type EmailType = EmailTemplateAPi<'interReschedReq_email_recruiter'>;
 
@@ -21,8 +21,7 @@ type EmailType = EmailTemplateAPi<'interReschedReq_email_recruiter'>;
 export const dummy: EmailType['react_email_placeholders'] = {
   emailBody:
     '<p>Hi {{ candidateFirstName }},</p><p>I hope this message finds you well.</p><p>Due to unforeseen circumstances, we need to reschedule your interview for the {{ jobRole }} position at {{ companyName }}. We apologize for any inconvenience this may cause and appreciate your understanding.</p><p>To find a new time that works best for you, please use the following link to schedule your interview: {{ selfScheduleLink }}</p><p>If you have any questions or need further assistance, feel free to reach out to us.</p><p>Looking forward to connecting with you!</p><p>Best regards,</p><p>{{ companyName }} Recruitment Team</p><p></p>',
-  companyLogo:
-    'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
+  companyLogo: companyLogoDummy,
   meetingDetails: [
     {
       date: 'Fri, May 12, 2024',
@@ -67,9 +66,7 @@ export const CandidateRescheduleRequest = ({
               <Container className="text-text-sm text-neutral-12">
                 {htmlParser.parse(emailBody)}
               </Container>
-              <Text className="text-[12px] my-0  text-text-sm text-neutral-12">
-                Current Schedule{meetingDetails.length > 1 && 's'} :
-              </Text>
+
               {meetingDetails.map((meetingDetail, i) => (
                 <Session key={i} meetingDetail={meetingDetail} />
               ))}

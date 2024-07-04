@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import toast from '@/src/utils/toast';
@@ -21,11 +22,11 @@ import {
 } from '../../store';
 import { useAvailabilityContext } from './RequestAvailabilityContext';
 import RequestAvailabilityDrawer from './RequestAvailabilityDrawer';
-import { GlobalIcon } from '@/devlink';
 
 function RequestAvailabilityPopUps() {
   const router = useRouter();
   const { availabilities } = useSchedulingApplicationStore();
+  const [copied, setCopied] = useState(false);
 
   const { setSelectedRequestAvailability } = useAvailabilityContext();
 
@@ -86,7 +87,6 @@ function RequestAvailabilityPopUps() {
                 .map((ele) => ele.dates)
                 .flat()
                 .map((ele) => `<b>${dayjs(ele.curr_day).format('DD MMM')}</b>`);
-            const [copied, setCopied] = useState(false);
 
             return (
               <>

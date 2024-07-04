@@ -20,11 +20,11 @@ import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'interReschedReq_email_recruiter'>['api_payload'],
 ) {
-  const sessions = supabaseWrap(
+  const int_sessions = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
       .select(
-        'session_type,session_duration,schedule_type,name,interview_meeting(start_time,end_time)',
+        '*,interview_meeting(*, recruiter_user(first_name,last_name,email,scheduling_settings))',
       )
       .in('id', req_body.session_ids),
   );
@@ -33,16 +33,9 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company,recruiter)',
+        'candidates(first_name,last_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
       )
       .eq('id', req_body.application_id),
-  );
-
-  const [recruiter_user] = supabaseWrap(
-    await supabaseAdmin
-      .from('recruiter_user')
-      .select('email,first_name,last_name,scheduling_settings')
-      .eq('user_id', candidateJob.public_jobs.recruiter),
   );
   const [session_cancel] = supabaseWrap(
     await supabaseAdmin
@@ -56,36 +49,40 @@ export async function fetchUtil(
     candidateJob.candidates.recruiter_id,
     'interReschedReq_email_recruiter',
   );
-  const int_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
+  const meeting_organizer = int_sessions[0].interview_meeting.recruiter_user;
 
-  const meeting_details: MeetingDetailCardType[] = sessions.map((session) => {
-    const {
-      interview_meeting: { start_time, end_time },
-      name,
-      schedule_type,
-      session_duration,
-      session_type,
-    } = session;
-    return {
-      date: dayjsLocal(start_time).format(DAYJS_FORMATS.DATE_FORMAT),
-      time: `${dayjsLocal(start_time).tz(int_tz).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(end_time).tz(int_tz).format(DAYJS_FORMATS.END_TIME_FORMAT)}`,
-      sessionType: name,
-      platform: platformRemoveUnderscore(schedule_type),
-      duration: durationCalculator(session_duration),
-      sessionTypeIcon: sessionTypeIcon(session_type),
-      meetingIcon: scheduleTypeIcon(schedule_type),
-    };
-  });
+  const int_tz = meeting_organizer.scheduling_settings.timeZone.tzCode;
+
+  const meeting_details: MeetingDetailCardType[] = int_sessions.map(
+    (session) => {
+      const {
+        interview_meeting: { start_time, end_time },
+        name,
+        schedule_type,
+        session_duration,
+        session_type,
+      } = session;
+      return {
+        date: dayjsLocal(start_time).format(DAYJS_FORMATS.DATE_FORMAT),
+        time: `${dayjsLocal(start_time).tz(int_tz).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(end_time).tz(int_tz).format(DAYJS_FORMATS.END_TIME_FORMAT)}`,
+        sessionType: name,
+        platform: platformRemoveUnderscore(schedule_type),
+        duration: durationCalculator(session_duration),
+        sessionTypeIcon: sessionTypeIcon(session_type),
+        meetingIcon: scheduleTypeIcon(schedule_type),
+      };
+    },
+  );
 
   const req_start_date = session_cancel.other_details.dateRange.start;
-  const req_end_date = session_cancel.other_details.dateRange.start;
+  const req_end_date = session_cancel.other_details.dateRange.end;
   const comp_email_placeholder: EmailTemplateAPi<'interReschedReq_email_recruiter'>['comp_email_placeholders'] =
     {
       additionalRescheduleNotes: session_cancel.other_details.note,
       candidateFirstName: candidates.first_name,
-      recruiterName: getFullName(
-        recruiter_user.first_name,
-        recruiter_user.last_name,
+      organizerName: getFullName(
+        meeting_organizer.first_name,
+        meeting_organizer.last_name,
       ),
       jobRole: candidateJob.public_jobs.job_title,
       companyName: candidateJob.public_jobs.company,
@@ -97,10 +94,11 @@ export async function fetchUtil(
         .format(DAYJS_FORMATS.DATE_FORMATZ),
       candidateLastName: candidates.last_name,
       candidateName: getFullName(candidates.first_name, candidates.last_name),
-      recruiterFirstName: recruiter_user.first_name,
-      recruiterLastName: recruiter_user.last_name,
-      recruiterTimeZone: int_tz,
+      organizerFirstName: meeting_organizer.first_name,
+      organizerLastName: meeting_organizer.last_name,
+      OrganizerTimeZone: int_tz,
       rescheduleReason: session_cancel.reason,
+      candidateScheduleLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}">here</a>`,
     };
 
   const filled_comp_template = fillCompEmailTemplate(
@@ -121,6 +119,6 @@ export async function fetchUtil(
   return {
     filled_comp_template,
     react_email_placeholders,
-    recipient_email: recruiter_user.email,
+    recipient_email: meeting_organizer.email,
   };
 }

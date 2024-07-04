@@ -111,7 +111,8 @@ export const useGetScheduleApplication = () => {
             setinitialSessions(
               sessionsWithPlan.sessions.sort(
                 (itemA, itemB) =>
-                  itemA['session_order'] - itemB['session_order'],
+                  itemA.interview_session['session_order'] -
+                  itemB.interview_session['session_order'],
               ),
             );
           }
@@ -128,7 +129,8 @@ export const useGetScheduleApplication = () => {
             setinitialSessions(
               sessionsWithPlan.sessions.sort(
                 (itemA, itemB) =>
-                  itemA['session_order'] - itemB['session_order'],
+                  itemA.interview_session['session_order'] -
+                  itemB.interview_session['session_order'],
               ),
             );
           }

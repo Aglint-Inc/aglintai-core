@@ -3,8 +3,8 @@ import { marked } from 'marked';
 import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { GeneralPopupLarge } from '@/devlink3/GeneralPopupLarge';
-import Icon from '@/src/components/Common/Icons/Icon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 
@@ -80,7 +80,7 @@ function Instructions({
             <Stack direction={'row'} justifyContent={'start'}>
               <ButtonSoft
                 isLeftIcon={true}
-                slotIcon={<Icon height='15' width='15' variant='EditIcon' />}
+                slotIcon={<GlobalIcon iconName={'edit'} size={'3'}/>}
                 size={1}
                 textButton={'Edit Instruction'}
                 onClickButton={{

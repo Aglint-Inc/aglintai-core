@@ -11,7 +11,6 @@ import {
   useDeleteInterviewSession,
   useEditDebriefSession,
   useEditInterviewSession,
-  useInterviewPlans,
   useReorderInterviewSessions,
   useUpdateInterviewSession,
 } from '@/src/queries/interview-plans';
@@ -19,13 +18,10 @@ import { interviewSessionMutationKeys } from '@/src/queries/interview-plans/keys
 
 import { useJob } from '../JobContext';
 
-// import toast from '@/src/utils/toast';
-
 const useJobInterviewPlanActions = () => {
-  const { job } = useJob();
+  const { job, interviewPlans } = useJob();
   const companyMembers = useCompanyMembers();
   const interviewModules = useInterviewModules();
-  const interviewPlans = useInterviewPlans();
   const { mutateAsync: createPlan } = useCreateInterviewPlan();
   const { mutateAsync: createSession } = useAddInterviewSession();
   const { mutate: handleUpdateSession } = useUpdateInterviewSession();

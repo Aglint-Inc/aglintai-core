@@ -11,6 +11,7 @@ import * as React from 'react';
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import config from '../../tailwind.config';
 import { Footer } from '../components/template/Footer';
+import { companyLogoDummy } from '../utils/assets/common';
 
 type EmailType = EmailTemplateAPi<'sendAvailReqReminder_email_applicant'>;
 
@@ -18,8 +19,7 @@ type EmailType = EmailTemplateAPi<'sendAvailReqReminder_email_applicant'>;
 export const dummy: EmailType['react_email_placeholders'] = {
   emailBody:
     '<p>Dear {{ candidateFirstName }},</p><p></p><p style="text-align: start">I hope this message finds you well.</p><p style="text-align: start">I am writing to follow up on my previous email regarding the interview for the {{ jobTitle }} position at {{ companyName }}. We are very interested in discussing your application and learning more about your experiences.</p><p style="text-align: start">If you could please click on the link below to select your availability for an interview, it would be greatly appreciated:</p><p style="text-align: start">{{ availabilityLink }}</p><p style="text-align: start">If you have any questions or need further information, please feel free to reach out.</p><p style="text-align: start">Thank you, and I look forward to hearing from you soon.</p><p style="text-align: start"></p><p style="text-align: start">Best regards,</p><p>{{ companyName }} Recruitment Team</p>',
-  companyLogo:
-    'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
+  companyLogo: companyLogoDummy,
   subject: '',
 };
 

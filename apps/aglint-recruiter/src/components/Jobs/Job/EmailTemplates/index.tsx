@@ -16,7 +16,7 @@ import { PageLayout } from '@/devlink2/PageLayout';
 import EmailPreviewPopover from '@/src/components/Common/EmailTemplateEditor/EmailPreviewPopover';
 import EmailTemplateEditForm from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
 import Loader from '@/src/components/Common/Loader';
-import { useCurrentJob } from '@/src/queries/job-assessment/keys';
+import { useJob } from '@/src/context/JobContext';
 import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalize } from '@/src/utils/text/textUtils';
@@ -52,7 +52,7 @@ export default JobEmailTemplatesDashboard;
 
 const JobEmailTemplatesDashboardBreadCrumbs = () => {
   const { push } = useRouter();
-  const { job } = useCurrentJob();
+  const { job } = useJob();
   return (
     <>
       <Breadcrum

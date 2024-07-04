@@ -9,10 +9,37 @@ export async function POST(req: Request) {
 
   try {
     const req_body = v.parse(sendAvailabilityRequestEmailApplicantSchema, meta);
+
+    if (req_body?.is_preview) {
+      const data = req_body.preview_details;
+      if (
+        !(
+          data.candidateFirstName &&
+          data.candidateLastName &&
+          data.companyName &&
+          data.jobRole &&
+          data.organizerFirstName &&
+          data.organizerLastName &&
+          data.organizerTimeZone &&
+          data.companyLogo
+        )
+      ) {
+        throw new Error(
+          'For preview some thing missing in this property candidateFirstName, candidateLastName, companyName, jobRole, organizerFirstName, organizerLastName, organizerTimeZone, companyLogo',
+        );
+      }
+    } else {
+      // eslint-disable-next-line no-lonely-if
+      if (!req_body.avail_req_id || !req_body.recruiter_user_id) {
+        throw new Error(
+          'For sending email some properties are missing avail_req_id,recruiter_user_id ',
+        );
+      }
+    }
     const { filled_comp_template, react_email_placeholders, recipient_email } =
       await dbUtil(req_body);
 
-    const is_preview = req_body.is_preview;
+    const is_preview = req_body?.is_preview;
     const htmlSub = await sendMailFun({
       filled_comp_template,
       react_email_placeholders,
@@ -46,8 +73,25 @@ export async function POST(req: Request) {
 }
 
 // {
+//     "meta": {
+//         "avail_req_id": "3534e9a6-4db6-4601-8d97-9118c726aaf8",
+//         "recruiter_user_id": "eedee99a-e323-48e6-a590-f25f7f18a704"
+//     }
+// }
+
+// {
 //   "meta": {
-//       "avail_req_id":"eb718192-9610-4d4c-988b-6e84fc914c08",
-//       "recruiter_user_id":"7f6c4cae-78b6-4eb6-86fd-9a0e0310147b"
+//       "is_preview": true,
+//       "recruiter_user_id": "523ac2a1-d536-4a84-962c-60179a8bbc48",
+//       "preview_details": {
+//           "candidateFirstName": "chandra",
+//           "candidateLastName": "kumar",
+//           "companyName": "aglint",
+//           "jobRole": "jobRole",
+//           "organizerFirstName":"dheeraj",
+//           "organizerLastName": "kumar",
+//           "organizerTimeZone": "IST",
+//           "companyLogo": "https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/company_logo.png"
+//       }
 //   }
 // }

@@ -236,6 +236,42 @@ const TipTapMenus = () => {
           >
             <UITypography type='small'>Heading 3</UITypography>
           </MenuBtn>
+          <MenuBtn
+            className={
+              editor.isActive('heading', { level: 4 }) ? 'is-active' : ''
+            }
+            onClick={() => {
+              editor.chain().focus().toggleHeading({ level: 4 }).run();
+              setTypography('Heading 4');
+              setAnchorEl(null);
+            }}
+          >
+            <UITypography type='small'>Heading 4</UITypography>
+          </MenuBtn>
+          <MenuBtn
+            className={
+              editor.isActive('heading', { level: 5 }) ? 'is-active' : ''
+            }
+            onClick={() => {
+              editor.chain().focus().toggleHeading({ level: 5 }).run();
+              setTypography('Heading 5');
+              setAnchorEl(null);
+            }}
+          >
+            <UITypography type='small'>Heading 5</UITypography>
+          </MenuBtn>
+          <MenuBtn
+            className={
+              editor.isActive('heading', { level: 6 }) ? 'is-active' : ''
+            }
+            onClick={() => {
+              editor.chain().focus().toggleHeading({ level: 6 }).run();
+              setTypography('Heading 6');
+              setAnchorEl(null);
+            }}
+          >
+            <UITypography type='small'>Heading 6</UITypography>
+          </MenuBtn>
         </Stack>
       </Popover>
     </Stack>

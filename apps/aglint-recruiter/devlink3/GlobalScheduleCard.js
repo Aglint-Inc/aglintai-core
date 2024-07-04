@@ -193,11 +193,11 @@ export function GlobalScheduleCard({
                   {slotButtonViewDetail ?? (
                     <ButtonSolid
                       size="1"
-                      color="neutral"
                       textButton="View Detail"
                       isRightIcon={true}
                       iconSize="2"
                       iconName="north_east"
+                      color="neutral"
                     />
                   )}
                 </_Builtin.Block>
@@ -211,7 +211,10 @@ export function GlobalScheduleCard({
                   </_Builtin.Block>
                 ) : null}
               </_Builtin.Block>
-              <_Builtin.Block tag="div">
+              <_Builtin.Block
+                className={_utils.cx(_styles, "schedule_notifications")}
+                tag="div"
+              >
                 {slotRequestDetail ?? (
                   <>
                     <GlobalBadge

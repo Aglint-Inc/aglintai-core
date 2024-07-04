@@ -8,19 +8,14 @@ import toast from '@/src/utils/toast';
 import { jobsQueryKeys } from './keys';
 import { Job, JobCreate, JobInsert } from './types';
 
-export const useJobRead = () => {
-  const queryClient = useQueryClient();
+export const useJobsRead = () => {
   const { recruiter_id } = useAuthDetails();
   const { queryKey } = jobsQueryKeys.jobs();
-  const response = useQuery({
+  return useQuery({
     queryKey,
     queryFn: () => readJobs(recruiter_id),
     enabled: !!recruiter_id,
   });
-  const refetch = async () => {
-    await queryClient.invalidateQueries({ queryKey });
-  };
-  return { ...response, refetch };
 };
 
 export const useJobCreate = () => {
@@ -100,21 +95,6 @@ export const useJobUpdate = () => {
   return mutation;
 };
 
-export const useJobUIUpdate = () => {
-  const queryClient = useQueryClient();
-  const { queryKey } = jobsQueryKeys.jobs();
-  const mutate = (newJob: Partial<Job>) => {
-    const previousJobs = queryClient.getQueryData<Job[]>(queryKey);
-    const newJobs = previousJobs.reduce((acc, curr) => {
-      if (curr.id === newJob.id) acc.push({ ...curr, ...newJob });
-      else acc.push(curr);
-      return acc;
-    }, [] as Job[]);
-    queryClient.setQueryData<Job[]>(queryKey, newJobs);
-  };
-  return { mutate };
-};
-
 export const useJobDelete = () => {
   const queryClient = useQueryClient();
   const { queryKey } = jobsQueryKeys.jobs();
@@ -137,39 +117,24 @@ export const useJobDelete = () => {
   return mutation;
 };
 
-export const useJobRefresh = () => {
-  const queryClient = useQueryClient();
-  const { queryKey } = jobsQueryKeys.jobs();
-  const mutation = useMutation({
-    mutationFn: (id: Job['id']) => readJob(id),
-    onSuccess: (data) => {
-      queryClient.setQueryData<Job[]>(queryKey, (prev) => {
-        return prev.reduce((acc, curr) => {
-          if (curr.id === data.id) acc.push(data);
-          else acc.push(curr);
-          return acc;
-        }, [] as Job[]);
-      });
-    },
-  });
-  return mutation;
-};
+export const readJobs = async (recruiter_id: string) =>
+  (
+    await supabase
+      .from('job_view')
+      .select()
+      .eq('recruiter_id', recruiter_id)
+      .throwOnError()
+  ).data;
 
-export const readJobs = async (recruiter_id: string) => {
-  const { data, error } = await supabase.rpc('getjobsv2', {
-    recruiter_id,
-  });
-  if (error) throw new Error(error.message);
-  return data as unknown as Job[];
-};
-
-export const readJob = async (id: Job['id']) => {
-  const { data, error } = await supabase.rpc('getjob', {
-    jobid: id,
-  });
-  if (error) throw new Error(error.message);
-  return data[0] as unknown as Job;
-};
+export const readJob = async (id: string) =>
+  (
+    await supabase
+      .from('job_view')
+      .select()
+      .eq('id', id)
+      .throwOnError()
+      .single()
+  ).data;
 
 const createJob = async (job: JobInsert) => {
   const { data: d1, error: e1 } = await supabase
