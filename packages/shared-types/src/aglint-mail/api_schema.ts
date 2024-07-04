@@ -1,3 +1,4 @@
+import { company } from '@aglint/shared-utils/src/template-variables/variables';
 import * as v from 'valibot';
 export const applicationRecievedEmailApplicantSchema = v.object({
   application_id: v.string(),
@@ -107,20 +108,13 @@ export const sendSelfScheduleRequest_email_applicant = v.object({
 });
 
 export const sendAvailabilityRequestEmailApplicantSchema = v.object({
-  avail_req_id: v.optional(v.string()),
-  recruiter_user_id: v.string(),
-  is_preview: v.optional(v.boolean(), false),
-  preview_details: v.optional(
+  organizer_user_id: v.string(),
+  avail_req_id: v.nullish(v.string('missing avail_req_id'), undefined),
+  preview_details: v.nullish(
     v.object({
-      candidateFirstName: v.optional(v.string()),
-      candidateLastName: v.optional(v.string()),
-      companyName: v.optional(v.string()),
-      jobRole: v.optional(v.string()),
-      organizerFirstName: v.optional(v.string()),
-      organizerLastName: v.optional(v.string()),
-      organizerTimeZone: v.optional(v.string()),
-      companyLogo: v.optional(v.string()),
-    })
+      application_id: v.string(),
+    }),
+    undefined
   ),
 });
 export const sendAvailReqReminderEmailApplicant = v.object({

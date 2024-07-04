@@ -6,10 +6,7 @@ import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 export async function dbUtil(
   req_body: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'],
 ) {
-  let avail_req_data: Avail;
-  let recruiter_user: Recru;
-
-  if (!req_body?.is_preview) {
+  const fetchCandDetailsFromAvailability = async () => {
     const [avail_req] = supabaseWrap(
       await supabaseAdmin
         .from('candidate_request_availability')
@@ -18,45 +15,38 @@ export async function dbUtil(
         )
         .eq('id', req_body.avail_req_id),
     );
-
-    avail_req_data = avail_req;
-
-    const [recruiter] = supabaseWrap(
+    return avail_req.applications;
+  };
+  const fetchCandDetailsFromApplication = async () => {
+    const [application] = supabaseWrap(
+      await supabaseAdmin
+        .from('applications')
+        .select(
+          'id, candidates(first_name,last_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title, company)',
+        )
+        .eq('id', req_body.preview_details.application_id),
+    );
+    return application;
+  };
+  const fetchOrganzierDetails = async () => {
+    const [organizer] = supabaseWrap(
       await supabaseAdmin
         .from('recruiter_user')
         .select('first_name,last_name,scheduling_settings')
-        .eq('user_id', req_body.recruiter_user_id),
+        .eq('user_id', req_body.organizer_user_id),
     );
-
-    recruiter_user = recruiter;
+    return organizer;
+  };
+  let avail_req_data: Awaited<
+    ReturnType<typeof fetchCandDetailsFromApplication>
+  >;
+  const meeting_organizer = await fetchOrganzierDetails();
+  if (req_body.avail_req_id) {
+    avail_req_data = await fetchCandDetailsFromAvailability();
   } else {
-    avail_req_data = {
-      applications: {
-        candidates: {
-          first_name: req_body.preview_details.candidateFirstName,
-          last_name: req_body.preview_details.candidateLastName,
-          recruiter_id: req_body.recruiter_user_id,
-          recruiter: {
-            logo: req_body.preview_details.companyLogo,
-          },
-        },
-        public_jobs: {
-          job_title: req_body.preview_details.jobRole,
-          company: req_body.preview_details.companyName,
-        },
-      },
-    };
-
-    recruiter_user = {
-      first_name: req_body.preview_details.organizerFirstName,
-      last_name: req_body.preview_details.organizerLastName,
-      scheduling_settings: {
-        timeZone: {
-          tzCode: req_body.preview_details.organizerTimeZone,
-        },
-      },
-    };
+    avail_req_data = await fetchCandDetailsFromApplication();
   }
+
   const {
     candidates: {
       email: cand_email,
@@ -66,11 +56,16 @@ export async function dbUtil(
       recruiter: { logo },
     },
     public_jobs: { company, job_title },
-  } = avail_req_data.applications;
+  } = avail_req_data;
 
-  const recruiter_tz = recruiter_user.scheduling_settings.timeZone.tzCode;
+  const recruiter_tz = meeting_organizer.scheduling_settings.timeZone.tzCode;
 
-  const candidate_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.avail_req_id}`;
+  let candidate_link = '';
+  if (avail_req_data.id.length > 0) {
+    candidate_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.avail_req_id}`;
+  } else {
+    candidate_link = '#';
+  }
 
   const comp_email_temp = await fetchCompEmailTemp(
     recruiter_id,
@@ -84,13 +79,13 @@ export async function dbUtil(
       jobRole: job_title,
       availabilityReqLink: `<a href="${candidate_link}">here</a>`,
       organizerName: getFullName(
-        recruiter_user.first_name,
-        recruiter_user.last_name,
+        meeting_organizer.first_name,
+        meeting_organizer.last_name,
       ),
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),
-      organizerFirstName: recruiter_user.first_name,
-      organizerLastName: recruiter_user.last_name,
+      organizerFirstName: meeting_organizer.first_name,
+      organizerLastName: meeting_organizer.last_name,
       OrganizerTimeZone: recruiter_tz,
     };
 
@@ -110,33 +105,5 @@ export async function dbUtil(
     filled_comp_template,
     react_email_placeholders,
     recipient_email: cand_email,
-  };
-}
-
-interface Avail {
-  applications: {
-    candidates: {
-      first_name: string;
-      last_name: string;
-      email?: string;
-      recruiter_id: string;
-      recruiter: {
-        logo: string;
-      };
-    };
-    public_jobs: {
-      job_title: string;
-      company: string;
-    };
-  };
-}
-
-interface Recru {
-  first_name: string;
-  last_name: string;
-  scheduling_settings: {
-    timeZone: {
-      tzCode: string;
-    };
   };
 }
