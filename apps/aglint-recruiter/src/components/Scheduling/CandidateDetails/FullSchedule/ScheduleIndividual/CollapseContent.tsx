@@ -23,15 +23,15 @@ function CollapseContent({
   currentSession,
   collapsed,
   candidate,
-  jobTitle,
   confirmedUsers,
+  jobTitle = null,
 }: {
   interview_meeting: ScheduleIndividualCardType['interview_meeting'];
   currentSession: SchedulingApplication['initialSessions'][0] | null;
   collapsed: boolean;
   candidate: ScheduleIndividualCardType['candidate'];
-  jobTitle: ScheduleIndividualCardType['jobTitle'];
   confirmedUsers: ScheduleIndividualCardType['users'];
+  jobTitle?: ScheduleIndividualCardType['jobTitle'];
 }) {
   return (
     <Collapse in={collapsed}>

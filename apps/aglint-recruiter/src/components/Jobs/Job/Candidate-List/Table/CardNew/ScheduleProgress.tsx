@@ -44,6 +44,7 @@ export const ScheduleProgress = ({
                 status: 'not_scheduled',
                 meeting_id,
                 session_id: id,
+                meeting_flow: null,
               }),
             ),
     [sessions, data],
