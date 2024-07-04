@@ -502,12 +502,13 @@ function RequestAvailability() {
             isFoundSlots={!isFindingSlots}
             textFoundSlotsCount={`Found ${totalCount} slots for the suggestion`}
             slotBadge={
-              filteredAvailabilitySlots &&
+              !!filteredAvailabilitySlots &&
+              !!totalCount &&
               filteredAvailabilitySlots.map((ele) => {
                 return (
                   <>
                     <Stack spacing={1} direction={`column`}>
-                      <Stack>Day-{ele.day}</Stack>
+                      <Typography variant='body1'>Day-{ele.day}</Typography>
                       <Stack
                         flexDirection={'row'}
                         flexWrap={'wrap'}
@@ -519,7 +520,7 @@ function RequestAvailability() {
                           return (
                             <GlobalBadge
                               color={'neutral'}
-                              textBadge={`${dayjsLocal(ele.date).format('DD MMMM')}-${ele.count}`}
+                              textBadge={`${dayjsLocal(ele.date).format('DD MMMM')} - ${ele.count} slots`}
                             />
                           );
                         })}
@@ -661,8 +662,12 @@ function RequestAvailability() {
                 <ButtonSoft
                   color={'neutral'}
                   size={2}
-                  onClickButton={{ onClick: getDrawerClose }}
-                  textButton={'Cancel'}
+                  onClickButton={{
+                    onClick: () => {
+                      setStepScheduling('pick_date');
+                    },
+                  }}
+                  textButton={'back'}
                 />
                 <ButtonSolid
                   size={2}
@@ -698,6 +703,7 @@ function RequestAvailability() {
                     navigator.clipboard.writeText(
                       `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${requestDetails.id}`,
                     );
+                    toast.message('Link copied successfully');
                   },
                 }}
               />

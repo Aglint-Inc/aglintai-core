@@ -12,16 +12,19 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import toast from '@/src/utils/toast';
 
 import {
+  setDateRange,
   setIsScheduleNowOpen,
   setScheduleFlow,
   setStepScheduling,
 } from '../../SchedulingDrawer/store';
 import {
   setRequestSessionIds,
+  setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../../store';
 import { useAvailabilityContext } from './RequestAvailabilityContext';
 import RequestAvailabilityDrawer from './RequestAvailabilityDrawer';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 function RequestAvailabilityPopUps() {
   const router = useRouter();
@@ -57,6 +60,12 @@ function RequestAvailabilityPopUps() {
     setIsScheduleNowOpen(true);
     setStepScheduling('pick_date');
     setScheduleFlow('update_request_availibility');
+    setDateRange({
+      start_date: dayjsLocal().toISOString(),
+      end_date: dayjsLocal().add(7, 'day').toISOString(),
+    });
+    setRequestSessionIds([]);
+    setSelectedSessionIds([]);
   }
 
   function sendReminderEmail({ request_id }: { request_id: string }) {
