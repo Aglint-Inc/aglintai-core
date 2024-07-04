@@ -12,6 +12,7 @@ import {
   interReschedReqEmailRecruiterSchema,
   interviewCancelEmailApplicantSchema,
   interviewCancelReqEmailRecruiterSchema,
+  interviewEndEmailInterviewerForFeedbackSchema,
   interviewRescheduleEmailApplicantSchema,
   interviewStartEmailApplicantSchema,
   interviewStartEmailInterviewersSchema,
@@ -305,6 +306,20 @@ type Payloads = {
       meetingDetailsLink: string;
       candidateScheduleLink: string;
       meetingDetail: MeetingDetailCardType;
+    };
+  };
+  interviewEnd_email_interviewerForFeedback: {
+    api_payload: v.InferInput<
+      typeof interviewEndEmailInterviewerForFeedbackSchema
+    >;
+    comp_email_placeholders: {
+      [key in (typeof emailVariablePayloads)["interviewEnd_email_interviewerForFeedback"][number]]: string;
+    };
+    react_email_placeholders: {
+      emailBody: string;
+      subject: string;
+      companyLogo: string;
+      interviewFeedbackLink: string;
     };
   };
 };
