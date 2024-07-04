@@ -3,7 +3,6 @@ import { DatabaseTable } from '@aglint/shared-types';
 import { SchedulingApplication } from '../../store';
 
 export interface ScheduleIndividualCardType {
-  isCheckboxVisible?: boolean;
   interview_session: Pick<
     DatabaseTable['interview_session'],
     | 'id'
@@ -13,23 +12,24 @@ export interface ScheduleIndividualCardType {
     | 'schedule_type'
     | 'session_type'
   >;
-  interview_meeting: Pick<
+  candidate: {
+    timezone?: string;
+    fullname: string;
+    currentJobTitle: string;
+  };
+  isCheckboxVisible?: boolean;
+  interview_meeting?: Pick<
     DatabaseTable['interview_meeting'],
     'id' | 'start_time' | 'end_time' | 'status' | 'meeting_flow'
   > | null;
-  onClickCheckBox: ({
+  onClickCheckBox?: ({
     // eslint-disable-next-line no-unused-vars
     session_id,
   }: {
     session_id: string;
   }) => void;
-  selectedSessionIds: string[];
-  candidate: {
-    timezone: string;
-    fullname: string;
-    currentJobTitle: string;
-  };
-  jobTitle: string;
+  selectedSessionIds?: string[];
+  jobTitle?: string;
   users?: SchedulingApplication['initialSessions'][0]['users'];
   isCollapseNeeded?: boolean;
   isEditIconVisible?: boolean;

@@ -1,24 +1,14 @@
+import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import type React from 'react';
 
 import { JobDetailInterview } from '@/devlink/JobDetailInterview';
 import { Skeleton } from '@/devlink2/Skeleton';
-import { StatusBadge } from '@/devlink2/StatusBadge';
-import { NewInterviewPlanCard } from '@/devlink3/NewInterviewPlanCard';
 import { SkeletonNewInterviewPlanCard } from '@/devlink3/SkeletonNewInterviewPlanCard';
-import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
-import {
-  getScheduleBgcolor,
-  getScheduleType,
-} from '@/src/components/Scheduling/Candidates/utils';
-import {
-  getScheduleDate,
-  ScheduleProgressPillProps,
-} from '@/src/components/Scheduling/Common/ScheduleProgress/scheduleProgressPill';
+import ScheduleIndividualCard from '@/src/components/Scheduling/CandidateDetails/FullSchedule/ScheduleIndividual';
 import { useApplication } from '@/src/context/ApplicationContext';
 import ROUTES from '@/src/utils/routing/routes';
 
-import { getBreakLabel } from '../../../Interview-Plan/utils';
 import { EmptyState } from '../Common/EmptyState';
 import { Loader } from '../Common/Loader';
 import { Actions } from './Action2';
@@ -54,96 +44,65 @@ const Interview = () => {
 export { Interview };
 
 const Content = () => {
+  const { push } = useRouter();
   const {
-    interview: { data: sessions, status },
+    application_id,
+    meta: { data: meta, status: meta_status },
+    interview: { data: sessions, status: interview_status },
   } = useApplication();
 
-  if (status === 'pending')
+  if (interview_status === 'pending' || meta_status === 'pending')
     return (
       <Loader count={4}>
         <SkeletonNewInterviewPlanCard slotLoader={<Skeleton />} />
       </Loader>
     );
 
-  if (status === 'error') return <>Something went wrong</>;
+  if (meta_status === 'error' || interview_status === 'error')
+    return <>Something went wrong</>;
 
   if (sessions.length === 0) return <EmptyState tab='Interview' />;
 
   return sessions.map((session, i) => (
-    <InterviewSessionCard key={i} session={session} />
-  ));
-};
-
-const InterviewSessionCard = ({
-  session: { date = null, ...props },
-}: {
-  session: Omit<ScheduleProgressPillProps, 'position'> & {
-    location?: string;
-    meeting_id?: string;
-  };
-}) => {
-  const { push } = useRouter();
-  const { application_id } = useApplication();
-  const isScheduleDate =
-    (props.status === 'completed' || props.status === 'confirmed') && !!date;
-  const scheduleDate = getScheduleDate(date);
-  const backgroundColor = getScheduleBgcolor(props.status);
-  const schedule_type = getScheduleType(props.schedule_type);
-  const session_duration = getBreakLabel(props.session_duration);
-  return (
-    <NewInterviewPlanCard
-      slotPlatformIcon={<IconScheduleType type={props.schedule_type} />}
-      isTimeVisible={isScheduleDate}
-      textMeetingPlatform={schedule_type}
-      textLocation={props.location ?? '---'}
-      textMeetingTitle={props.session_name}
-      textTime={session_duration}
-      textDate={scheduleDate}
-      propsBgColorStatus={{
-        style: {
-          backgroundColor,
-        },
-      }}
-      slotStatus={
-        <StatusBadge
-          isCancelledVisible={props.status === 'cancelled'}
-          isConfirmedVisible={props.status === 'confirmed'}
-          isWaitingVisible={props.status === 'waiting'}
-          isCompletedVisible={props.status === 'completed'}
-          isNotScheduledVisible={props.status === 'not_scheduled' || false}
-        />
+    <Stack
+      key={i}
+      style={{ cursor: 'pointer' }}
+      onClick={() =>
+        session.meeting_id
+          ? push(
+              `${ROUTES['/scheduling/view']()}?meeting_id=${session.meeting_id}`,
+            )
+          : push(
+              ROUTES['/scheduling/application/[application_id]']({
+                application_id,
+              }),
+            )
       }
-      isPanelIconVisible={props.session_type === 'panel'}
-      isOnetoOneIconVisible={props.session_type === 'individual'}
-      isDebriefIconVisible={props.session_type === 'debrief'}
-      isLocationVisible={props.schedule_type === 'in_person_meeting'}
-      isDurationVisible={!!session_duration}
-      textDuration={session_duration}
-      isNotScheduledIconVisible={false}
-      isDateVisible={false}
-      isScheduleNowButtonVisible={false}
-      isCheckboxVisible={false}
-      isSelected={false}
-      isThreeDotVisible={false}
-      onClickCard={{
-        style: { cursor: 'pointer' },
-        onClick: () =>
-          props?.meeting_id
-            ? push(
-                `${ROUTES['/scheduling/view']()}?meeting_id=${props.meeting_id}`,
-              )
-            : push(
-                ROUTES['/scheduling/application/[application_id]']({
-                  application_id,
-                }),
-              ),
-      }}
-      onClickDots={null}
-      textDay={null}
-      textMonth={null}
-      slotCheckbox={<></>}
-      slotEditOptionModule={<></>}
-      slotScheduleNowButton={<></>}
-    />
-  );
+    >
+      <ScheduleIndividualCard
+        key={i}
+        interview_session={{
+          id: session.session_id,
+          break_duration: 0,
+          name: session.session_name,
+          schedule_type: session.schedule_type,
+          session_duration: session.session_duration,
+          session_type: session.session_type,
+        }}
+        candidate={{
+          fullname: meta.name,
+          currentJobTitle: meta.current_job_title,
+        }}
+        interview_meeting={
+          session.meeting_id && {
+            id: session.meeting_id,
+            status: session.status,
+            end_time: session.date?.end_time,
+            start_time: session.date?.end_time,
+            meeting_flow: session.meeting_flow,
+          }
+        }
+      />
+    </Stack>
+  ));
 };
