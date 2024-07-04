@@ -138,4 +138,7 @@ export const emailTemplateCopy: CompanyEmailType = {
   phoneScreenRemind_email_applicant: null,
   candidateBook_email_interviewerForFeedback: null,
   candidateBook_slack_interviewerForFeedback: null,
+  candidateBook_slack_interviewerForConfirmation: null,
+  interviewEnd_email_interviewerForFeedback: null,
+  interviewEnd_slack_interviewerForFeedback: null,
 };

@@ -29,12 +29,12 @@ export type CustomEmailTypes = Extract<
   | "interviewStart_slack_interviewers"
   | "sendAvailReqReminder_email_applicant"
   | "interviewerConfirmation_slack_interviewers"
-  | "interviewEnd_slack_interviewers"
+  | "interviewEnd_email_interviewerForFeedback"
+  | "interviewEnd_slack_interviewerForFeedback"
   | "agent_email_candidate"
   | "meetingDeclined_email_organizer"
   | "meetingAccepted_email_organizer"
-  | "candidateBook_slack_interviewerForFeedback"
-  | "candidateBook_email_interviewerForFeedback"
+  | "candidateBook_slack_interviewerForConfirmation"
 >;
 
 export type CustomJobParamters = Type<

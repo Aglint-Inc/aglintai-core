@@ -303,6 +303,7 @@ export type Database = {
           overall_interview_score: number
           overall_score: number
           phone_screening: Json | null
+          processing_started_at: string | null
           processing_status: Database["public"]["Enums"]["application_processing_status"]
           retry: number
           score_json: Json | null
@@ -326,6 +327,7 @@ export type Database = {
           overall_interview_score?: number
           overall_score?: number
           phone_screening?: Json | null
+          processing_started_at?: string | null
           processing_status?: Database["public"]["Enums"]["application_processing_status"]
           retry?: number
           score_json?: Json | null
@@ -349,6 +351,7 @@ export type Database = {
           overall_interview_score?: number
           overall_score?: number
           phone_screening?: Json | null
+          processing_started_at?: string | null
           processing_status?: Database["public"]["Enums"]["application_processing_status"]
           retry?: number
           score_json?: Json | null
@@ -5304,6 +5307,9 @@ export type Database = {
         | "meetingAccepted_email_organizer"
         | "candidateBook_slack_interviewerForFeedback"
         | "candidateBook_email_interviewerForFeedback"
+        | "interviewEnd_slack_interviewerForFeedback"
+        | "interviewEnd_email_interviewerForFeedback"
+        | "candidateBook_slack_interviewerForConfirmation"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"
