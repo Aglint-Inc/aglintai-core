@@ -62,28 +62,6 @@ function FinalScreen() {
         height={'calc(100vh - 96px)'}
         direction={'column'}
       >
-<<<<<<< HEAD
-        {selectedDateSlots?.map((item, index) => {
-          const date = item.dateSlots[0]?.sessions[0]?.start_time;
-          return (
-            <DayCardWrapper
-              key={index}
-              isDebrief={true}
-              selectedCombIds={[]}
-              item={{
-                dateArray: [date],
-                plans: item.dateSlots,
-              }}
-              onClickSelect={() => {}}
-              isDayCollapseNeeded={false}
-              isSlotCollapseNeeded={false}
-              isCheckboxAndRadio={false}
-              index={index}
-              setSelectedCombIds={() => {}}
-            />
-          );
-        })}
-=======
         <EmailPreviewOnScheduling
           textSlotCount={'Please confirm the selected schedule'}
           slotButton={<></>}
@@ -124,6 +102,7 @@ function FinalScreen() {
                     isSlotCollapseNeeded={false}
                     isCheckboxAndRadio={false}
                     index={index}
+                    setSelectedCombIds={() => {}}
                   />
                 );
               })}
@@ -131,7 +110,6 @@ function FinalScreen() {
           }
           showSelectedSchedules={true}
         />
->>>>>>> a6f6545e4368932b02e3b085dca1279d77d4cf04
       </Stack>
     </div>
   );

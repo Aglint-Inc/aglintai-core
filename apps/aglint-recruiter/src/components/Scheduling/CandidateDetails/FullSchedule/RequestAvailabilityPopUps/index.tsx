@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import toast from '@/src/utils/toast';
@@ -23,7 +24,6 @@ import {
 } from '../../store';
 import { useAvailabilityContext } from './RequestAvailabilityContext';
 import RequestAvailabilityDrawer from './RequestAvailabilityDrawer';
-import { IconButtonSoft } from '@/devlink2';
 
 function RequestAvailabilityPopUps() {
   const router = useRouter();
