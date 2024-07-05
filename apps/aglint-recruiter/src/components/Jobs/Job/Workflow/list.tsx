@@ -248,17 +248,17 @@ const WorkflowBrowser = () => {
         onClickAction={{ onClick: () => handleSubmit() }}
         textPopupTitle={'Add Workflow'}
         textPopupButton={
-          <Stack direction={'row'} gap={2}>
+          <Stack direction={'row'} gap={1}>
             Add
             <Stack
+              px={'8px'}
               style={{
                 display: count ? 'flex' : 'none',
                 alignItems: 'center',
 
                 backgroundColor: 'var(--white)',
-                color: '#2596be',
-                borderRadius: 'var(--radius-4)',
-                width: '20px',
+                color: 'var(--accent-11)',
+                borderRadius: 'var(--radius-1)',
               }}
             >
               {count}
