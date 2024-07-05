@@ -147,6 +147,5 @@ export const MeetingAcceptedEmailOrganizerSchema = v.object({
 export const interviewEndEmailInterviewerForFeedbackSchema = v.object({
   session_id: v.string(),
   recruiter_user_id: v.string(),
-  recruiter_id: v.string(),
   application_id: v.string(),
 });
