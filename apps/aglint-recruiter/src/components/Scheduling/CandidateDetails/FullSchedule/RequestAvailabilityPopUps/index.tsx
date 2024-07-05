@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { ShowCode } from '@/src/components/Common/ShowCode';
@@ -98,13 +97,15 @@ function RequestAvailabilityPopUps() {
                 .flat()
                 .map((ele) => `<b>${dayjs(ele.curr_day).format('DD MMM')}</b>`);
 
-            const sesIds = item?.request_session_relations.map(
-              (ele) => ele.session_id,
-            );
+            const sesIds = item?.request_session_relations
+              ? item?.request_session_relations.map((ele) => ele.session_id)
+              : [];
 
-            const sessions = initialSessions.filter((session) =>
-              sesIds.includes(session.interview_session.id),
-            );
+            const sessions = sesIds.length
+              ? initialSessions.filter((session) =>
+                  sesIds.includes(session.interview_session.id),
+                )
+              : [];
 
             return (
               <>
@@ -165,7 +166,6 @@ function RequestAvailabilityPopUps() {
                           <CopyButton
                             request_id={item.candidate_request_availability.id}
                           />
-                          <IconButtonSoft iconName={'content_copy'} />
                         </>
                       }
                     />
@@ -234,12 +234,7 @@ function CopyButton({ request_id }: { request_id: string }) {
   const [copied, setCopied] = useState(false);
 
   return (
-    <ButtonSoft
-      textButton={copied ? 'Copied' : 'Copy link'}
-      isLoading={false}
-      isLeftIcon={false}
-      isRightIcon={false}
-      slotIcon={<GlobalIcon iconName={'check_circle'} />}
+    <IconButtonSoft
       size={1}
       onClickButton={{
         onClick: () => {
@@ -254,6 +249,7 @@ function CopyButton({ request_id }: { request_id: string }) {
           }
         },
       }}
+      iconName={copied ? 'check' : 'content_copy'}
     />
   );
 }

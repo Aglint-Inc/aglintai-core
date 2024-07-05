@@ -6,11 +6,13 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { Text } from '@/devlink/Text';
 import { AvailabilityReq } from '@/devlink2/AvailabilityReq';
 import { GlobalIcon } from '@/devlink2/GlobalIcon';
 import { MultiDaySelect } from '@/devlink2/MultiDaySelect';
+import { GlobalCta } from '@/devlink3/GlobalCta';
 import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 import Footer from '@/src/components/Common/Footer';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
@@ -42,6 +44,7 @@ function CandidateAvailability() {
     setCandidateRequestAvailability,
     setDateSlots,
     setDaySlots,
+    dateSlots,
   } = useRequestAvailabilityContext();
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
@@ -269,7 +272,30 @@ function CandidateAvailability() {
       />
     );
   }
-
+  if (dateSlots.length === 0) {
+    return (
+      <>
+        <GlobalCta
+          color={'error'}
+          iconName={'error'}
+          textTitle={'No Slots Available'}
+          textDescription={'Please try to contact our support team'}
+          slotButton={
+            <ButtonSoft
+              size={1}
+              color={'neutral'}
+              textButton={'Contact Support'}
+              onClickButton={{
+                onClick: () => {
+                  window.open('mailto:support@aglinthq.com');
+                },
+              }}
+            />
+          }
+        />
+      </>
+    );
+  }
   return (
     <div>
       <DateSlotsPoPup />

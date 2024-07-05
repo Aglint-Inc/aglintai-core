@@ -113,8 +113,6 @@ export * from "./FilterPageLayout";
 export * from "./FilterPill";
 export * from "./GlobalBadge";
 export * from "./GlobalBanner";
-export * from "./GlobalBannerInline";
-export * from "./GlobalBannerShort";
 export * from "./GlobalIcon";
 export * from "./GlobalInfo";
 export * from "./GlobalStyles";

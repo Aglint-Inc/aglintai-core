@@ -75,7 +75,9 @@ function RequestAvailabilityDrawer() {
   async function handleContinue() {
     if (selectedIndex !== availableSlots.length) {
       setSelectedIndex((pre) => pre + 1);
-    } else if (selectedIndex === availableSlots.length) {
+      return null;
+    }
+    if (selectedIndex === availableSlots.length) {
       setLoading(true);
 
       const { data: task } = await axios.post(
@@ -114,11 +116,9 @@ function RequestAvailabilityDrawer() {
               booking_confirmed: true,
             },
           });
-          toast.success('Booked sessions');
           fetchInterviewDataByApplication();
           setSelectedSessionIds([]);
           refetch();
-          // closeDrawer();
         } else {
           throw new Error('Booking failed');
         }
@@ -127,8 +127,6 @@ function RequestAvailabilityDrawer() {
       }
       setLoading(false);
       setSelectedIndex((pre) => pre + 1);
-    } else {
-      return null;
     }
   }
   function handleBack() {
@@ -183,7 +181,6 @@ function RequestAvailabilityDrawer() {
                         return (
                           <DayCardWrapper
                             key={index}
-                            isDebrief={true}
                             selectedCombIds={[]}
                             item={{
                               dateArray: [date],
@@ -192,7 +189,9 @@ function RequestAvailabilityDrawer() {
                             onClickSelect={() => {}}
                             isDayCollapseNeeded={false}
                             isSlotCollapseNeeded={false}
-                            isCheckboxAndRadio={false}
+                            isDayCheckboxNeeded={false}
+                            isRadioNeeded={false}
+                            isSlotCheckboxNeeded={false}
                             index={index}
                             setSelectedCombIds={() => {}}
                           />
@@ -206,6 +205,13 @@ function RequestAvailabilityDrawer() {
                         <ButtonSoft
                           size={2}
                           color={'accent'}
+                          onClickButton={{
+                            onClick: () => {
+                              router.replace(
+                                `/scheduling/view?meeting_id=${selectedDateSlots[0].dateSlots[0].sessions[0].meeting_id}`,
+                              );
+                            },
+                          }}
                           textButton={'View in schedules'}
                         />
                       </Stack>

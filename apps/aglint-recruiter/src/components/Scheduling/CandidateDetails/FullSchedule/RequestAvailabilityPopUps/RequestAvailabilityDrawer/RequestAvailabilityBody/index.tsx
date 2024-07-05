@@ -115,17 +115,22 @@ function RequestAvailabilityBody({
               return (
                 <DayCardWrapper
                   key={index}
-                  isDebrief={true}
+                  isRadioNeeded={true}
                   selectedCombIds={selectedIds}
                   item={{
                     dateArray: [date],
                     plans: item,
                   }}
-                  onClickSelect={(id) => onClickSelect(id, item)}
+                  onClickSelect={(id) => {
+                    onClickSelect(id, item);
+                  }}
                   isDisabled={!isPrevSelectedDate || isPastDate}
                   isDayCollapseNeeded={false}
                   index={index}
+                  isSlotCollapseNeeded={true}
                   setSelectedCombIds={() => {}}
+                  isDayCheckboxNeeded={false}
+                  isSlotCheckboxNeeded={false}
                 />
               );
             })}

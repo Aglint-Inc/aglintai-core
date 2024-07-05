@@ -4,6 +4,10 @@ console.warn(
   "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
 );
 
+console.warn(
+  "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
+);
+
 export * as _Builtin from "./_Builtin";
 export * from "./devlinkContext";
 export * from "./interactions";
@@ -202,6 +206,7 @@ export * from "./RecPrimaryBtn";
 export * from "./RefreshButton";
 export * from "./RequestReschedule";
 export * from "./ResAbsentError";
+export * from "./RescheduleOptions";
 export * from "./RescheduleOptions";
 export * from "./ResponseCard";
 export * from "./ResponsiveBanner";

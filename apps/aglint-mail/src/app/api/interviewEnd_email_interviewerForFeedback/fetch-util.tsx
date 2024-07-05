@@ -36,7 +36,7 @@ export async function fetchUtil(
   const organizer = recruiter_user.interview_meeting.recruiter_user;
 
   const comp_email_temp = await fetchCompEmailTemp(
-    req_body.recruiter_id,
+    candidateJob.public_jobs.recruiter_id,
     'interviewEnd_email_interviewerForFeedback',
   );
 
