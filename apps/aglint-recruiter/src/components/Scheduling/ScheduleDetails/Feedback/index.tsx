@@ -578,6 +578,10 @@ const AdminFeedback = ({
               key={1}
               // fullWidth
               open={selectedInterviewer.interviewer !== null}
+              onClose={() => {
+                setSelectedInterviewer(null);
+                setEdit(false);
+              }}
               maxWidth={'lg'}
               // sx={{ '& .MuiPaper-root': { maxWidth: '650px' } }}
             >
