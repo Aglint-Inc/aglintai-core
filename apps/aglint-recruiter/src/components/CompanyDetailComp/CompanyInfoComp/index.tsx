@@ -115,6 +115,42 @@ const CompanyInfoComp = ({ setIsSaving }) => {
         />
         {router.query?.tab === 'additional-info' && (
           <>
+            <MuiPopup
+              props={{
+                open: dialog.deletelocation.open,
+                onClose: () => {
+                  setDialog({
+                    ...dialog,
+                    deletelocation: { open: false, edit: -1 },
+                  });
+                },
+              }}
+            >
+              <DeletePopup
+                textDescription={
+                  'Are u sure u want to delete this office location? This action cannot be undone.'
+                }
+                textTitle={'Delete Office Location'}
+                isIcon={false}
+                onClickCancel={{
+                  onClick: () => {
+                    setDialog({
+                      ...dialog,
+                      deletelocation: { open: false, edit: -1 },
+                    });
+                  },
+                }}
+                onClickDelete={{
+                  onClick: () => {
+                    handleDeleteLocation(dialog.deletelocation.edit);
+                    setDialog({
+                      ...dialog,
+                      deletelocation: { open: false, edit: -1 },
+                    });
+                  },
+                }}
+              />
+            </MuiPopup>
             <CompanyInfo
               slotLocation={
                 <>
@@ -147,37 +183,14 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                               textTimeZone={timeZone}
                               onClickDelete={{
                                 onClick: () => {
-                                  setDeletPopup(true);
+                                  setDialog({
+                                    ...dialog,
+                                    deletelocation: { open: true, edit: i },
+                                  });
                                 },
                               }}
                             />
                           </Stack>
-                          <MuiPopup
-                            props={{
-                              open: isDetele,
-                              onClose: () => {
-                                setDeletPopup(false);
-                              },
-                            }}
-                          >
-                            <DeletePopup
-                              textDescription={
-                                'Are u sure u want to delete this office location? This action cannot be undone.'
-                              }
-                              textTitle={'Delete Office Location'}
-                              isIcon={false}
-                              onClickCancel={{
-                                onClick: () => {
-                                  setDeletPopup(false);
-                                },
-                              }}
-                              onClickDelete={{
-                                onClick: () => {
-                                  handleDeleteLocation(i), setDeletPopup(false);
-                                },
-                              }}
-                            />
-                          </MuiPopup>
                         </>
                       );
                     })}
@@ -448,6 +461,7 @@ export default CompanyInfoComp;
 
 const initialDialog = () => {
   return {
+    deletelocation: { open: false, edit: -1 },
     location: { open: false, edit: -1 },
     roles: false,
     departments: false,
