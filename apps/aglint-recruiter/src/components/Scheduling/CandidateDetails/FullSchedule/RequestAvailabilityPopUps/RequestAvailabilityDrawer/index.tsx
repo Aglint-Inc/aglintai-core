@@ -75,7 +75,9 @@ function RequestAvailabilityDrawer() {
   async function handleContinue() {
     if (selectedIndex !== availableSlots.length) {
       setSelectedIndex((pre) => pre + 1);
-    } else if (selectedIndex === availableSlots.length) {
+      return null;
+    }
+    if (selectedIndex === availableSlots.length) {
       setLoading(true);
 
       const { data: task } = await axios.post(
@@ -127,8 +129,6 @@ function RequestAvailabilityDrawer() {
       }
       setLoading(false);
       setSelectedIndex((pre) => pre + 1);
-    } else {
-      return null;
     }
   }
   function handleBack() {
