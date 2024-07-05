@@ -12,6 +12,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { EmailChangePop } from '@/devlink/EmailChangePop';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { NavSublink } from '@/devlink/NavSublink';
 import { PasswordUpdated } from '@/devlink/PasswordUpdated';
 import { ProfileList } from '@/devlink/ProfileList';
@@ -19,6 +20,7 @@ import { UserChangeEmail } from '@/devlink/UserChangeEmail';
 import { UserDetails } from '@/devlink/UserDetails';
 import { UserPasswordChange } from '@/devlink/UserPasswordChange';
 import { UserProfile } from '@/devlink/UserProfile';
+import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { handleUpdatePassword } from '@/src/context/AuthContext/utils';
 import { supabase } from '@/src/utils/supabase/client';
@@ -363,6 +365,41 @@ const ProfileDashboard = () => {
           }}
         >
           <UserDetails
+            slotClose={
+              <IconButtonGhost
+                iconName='close'
+                size={2}
+                color={'neutral'}
+                onClickButton={{
+                  onClick: () => {
+                    setProfile(structuredClone(initialProfileFormFields));
+                    setProfileForm(false);
+                  },
+                }}
+              />
+            }
+            slotButton={
+              <>
+                <ButtonSoft
+                  textButton='Cancel'
+                  size={2}
+                  color={'neutral'}
+                  onClickButton={{
+                    onClick: () => {
+                      setProfile(structuredClone(initialProfileFormFields));
+                      setProfileForm(false);
+                    },
+                  }}
+                />
+                <ButtonSolid
+                  textButton='Update'
+                  size={2}
+                  onClickButton={{
+                    onClick: onUpdateSubmit,
+                  }}
+                />
+              </>
+            }
             isWarningVisible={isError}
             slotWarning={
               <Typography variant='caption' color='error'>
@@ -421,15 +458,6 @@ const ProfileDashboard = () => {
                 </Stack> */}
               </>
             }
-            onClickClose={{
-              onClick: () => {
-                setProfile(structuredClone(initialProfileFormFields));
-                setProfileForm(false);
-              },
-            }}
-            onClickUpdate={{
-              onClick: onUpdateSubmit,
-            }}
             onClickProfilePhotoChange={{
               onClick: () => {
                 document.getElementById('image-upload').click();
