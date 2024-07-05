@@ -35,15 +35,6 @@
   align-items: center;
 }
 
-.embed_flex.ml--1 {
-  margin-left: -9px;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
 .jd_anasis_individual_medium {
   display: flex;
   padding-right: var(--space-2);

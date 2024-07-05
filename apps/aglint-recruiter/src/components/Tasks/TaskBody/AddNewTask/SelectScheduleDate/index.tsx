@@ -129,6 +129,7 @@ function SelectScheduleDate({
               >
                 <ButtonGhost
                   size={2}
+                  color={'neutral'}
                   textButton='Cancel'
                   onClickButton={{
                     onClick: () => {

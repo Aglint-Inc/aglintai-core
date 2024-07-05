@@ -69,7 +69,7 @@ export async function interviewReminder(req: Request, res: Response) {
           accessory: {
             type: 'image',
             image_url:
-              'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/google-calendar%201.png',
+              'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/slack_assets/google_calender.png?t=2024-07-04T15%3A08%3A17.513Z',
             alt_text: 'google calender',
           },
         },

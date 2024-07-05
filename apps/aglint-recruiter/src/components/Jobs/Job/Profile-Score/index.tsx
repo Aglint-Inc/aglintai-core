@@ -629,8 +629,9 @@ const AddOption: FC<{
           isDeleteVisible={false}
           isCancelVisible={true}
           slotButton={
-            <ButtonGhost
+            <ButtonSoft
               textButton='Cancel'
+              color={'neutral'}
               size={2}
               onClickButton={{ onClick: () => handleClose() }}
             />

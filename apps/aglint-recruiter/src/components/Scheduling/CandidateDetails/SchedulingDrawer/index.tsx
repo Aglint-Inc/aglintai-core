@@ -11,6 +11,7 @@ import RequestAvailability from '../RequestAvailability';
 import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
 import ButtonReschedule from './ButtonReschedule';
 import EmailPreviewSelfSchedule from './EmailPreviewSelfSchedule';
+import HeaderIcon from './HeaderIcon';
 import { useSelfSchedulingDrawer } from './hooks';
 import RescheduleSlot from './RescheduleSlot';
 import StepScheduleFilter from './StepScheduleFilter';
@@ -82,6 +83,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
               resetStateSelfScheduling();
             },
           }}
+          slotHeaderIcon={<HeaderIcon />}
           textDrawertitle={
             stepScheduling === 'reschedule'
               ? 'Reschedule'

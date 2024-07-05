@@ -61,15 +61,6 @@
   align-items: center;
 }
 
-.embed_flex.ml--1 {
-  margin-left: -9px;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
 .time_zome_drop {
   display: flex;
   padding: var(--space-1) var(--space-2);
@@ -169,10 +160,6 @@
   .hide {
     display: none;
   }
-}
-
-.icons.mb-9 {
-  margin-bottom: var(--space-9);
 }
 
 .mt-4 {

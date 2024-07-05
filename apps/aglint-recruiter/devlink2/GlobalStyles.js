@@ -34,6 +34,10 @@ export function GlobalStyles({ as: _Component = _Builtin.Block }) {
         className={_utils.cx(_styles, "banner_-css")}
         value="%3Cstyle%3E%0A%5Bdata-banner-color%3D%22info%22%5D%20%7B%0A%20%20%20%20border-color%3A%20var(--info-6)%3B%0A%20%20%20%20background-color%3A%20var(--info-2)%3B%0A%20%20%20%20color%3A%20var(--info-11)%3B%0A%20%20%7D%0A%20%20%5Bdata-banner-color%3D%22warning%22%5D%20%7B%0A%20%20%20%20border-color%3A%20var(--warning-6)%3B%0A%20%20%20%20background-color%3A%20var(--warning-2)%3B%0A%20%20%20%20color%3A%20var(--warning-11)%3B%0A%20%20%7D%0A%20%20%5Bdata-banner-color%3D%22success%22%5D%20%7B%0A%20%20%20%20border-color%3A%20var(--success-6)%3B%0A%20%20%20%20background-color%3A%20var(--success-2)%3B%0A%20%20%20%20color%3A%20var(--success-11)%3B%0A%20%20%7D%0A%20%20%5Bdata-banner-color%3D%22error%22%5D%20%7B%0A%20%20%20%20border-color%3A%20var(--error-6)%3B%0A%20%20%20%20background-color%3A%20var(--error-2)%3B%0A%20%20%20%20color%3A%20var(--error-11)%3B%0A%20%20%7D%0A%20%20%5Bdata-banner-color%3D%22neutral%22%5D%20%7B%0A%20%20%20%20border-color%3A%20var(--neutral-6)%3B%0A%20%20%20%20background-color%3A%20var(--neutral-2)%3B%0A%20%20%20%20color%3A%20var(--neutral-11)%3B%0A%20%20%7D%0A%3C%2Fstyle%3E"
       />
+      <_Builtin.HtmlEmbed
+        className={_utils.cx(_styles, "textwith_icon")}
+        value="%3Cstyle%3E%0A%5Bdata-color%3D%22neutral%22%5D%20%7B%0A%20%20color%3A%20var(--neutral-11)%3B%0A%7D%0A%5Bdata-color%3D%22neutral-12%22%5D%20%7B%0A%20%20color%3A%20var(--neutral-12)%3B%0A%7D%0A%5Bdata-color%3D%22error%22%5D%20%7B%0A%20%20color%3A%20var(--error-11)%3B%0A%7D%0A%5Bdata-color%3D%22warning%22%5D%20%7B%0A%20%20color%3A%20var(--warning-11)%3B%0A%7D%0A%5Bdata-color%3D%22success%22%5D%20%7B%0A%20%20color%3A%20var(--success-11)%3B%0A%7D%0A%5Bdata-color%3D%22info%22%5D%20%7B%0A%20%20color%3A%20var(--info-11)%3B%0A%7D%0A%5Bdata-color%3D%22accent%22%5D%20%7B%0A%20%20color%3A%20var(--accent-11)%3B%0A%7D%0A%3C%2Fstyle%3E"
+      />
     </_Component>
   );
 }

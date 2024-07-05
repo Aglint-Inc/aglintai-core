@@ -560,9 +560,15 @@ function SideDrawerEdit() {
                         slotMemberCountDropdown={
                           selectedInterviewers?.length > 0 && (
                             <TextField
+                              size='small'
                               name={'interviewer_cnt'}
                               type='number'
-                              sx={{ width: '60px' }}
+                              sx={{
+                                width: '60px',
+                                '& .MuiOutlinedInput-root': {
+                                  padding: '0px!important',
+                                },
+                              }}
                               value={
                                 editSession.interview_session.interviewer_cnt ||
                                 1

@@ -161,7 +161,7 @@
 }
 
 .image_cover.rounded {
-  border-radius: 100px;
+  border-radius: var(--radius-2);
 }
 
 .is_active_blue_100 {

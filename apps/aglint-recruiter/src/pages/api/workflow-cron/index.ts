@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { APIWorkFlowCron } from '@aglint/shared-types';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -6,6 +7,8 @@ import { getResponseFactory } from '@/src/utils/apiUtils/responseFactory';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  console.log('incoming body', req.body);
+
   const getResponse = getResponseFactory<APIWorkFlowCron['response']>(res);
   const { id, workflow_id, workflow_action_id, execution_time, meta } =
     req.body as APIWorkFlowCron['request'];
@@ -28,7 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await axios.post(
         `${process.env.NEXT_PUBLIC_AGENT_API}/api/slack/${meta.email_type}`,
         {
-          session_id: meta.session_id,
+          ...meta,
         },
       );
     }
@@ -40,6 +43,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .throwOnError();
     return getResponse({ data: { success: true } });
   } catch (error) {
+    console.error('incoming body', error);
     await supabaseAdmin
       .from('workflow_action_logs')
       .update({ status: 'failed' })

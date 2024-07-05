@@ -135,6 +135,11 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
               )}
               <TaskPopups />
               {initialSessions.map((session, ind) => {
+                const currentSession = initialSessions.find(
+                  (session) =>
+                    session.interview_session.id ===
+                    session.interview_session.id,
+                );
                 return (
                   <Stack
                     key={ind}
@@ -208,6 +213,7 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                       isViewDetailVisible={true}
                       gridStyle={'1.1fr 1.7fr 0.6fr'}
                       cancelReasons={session.cancel_reasons || []}
+                      currentSession={currentSession}
                     />
                     {session.interview_session.break_duration > 0 && (
                       <Stack pt={'var(--space-2)'}>

@@ -22,26 +22,6 @@
   position: relative;
 }
 
-.radio_active {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-
-  display: flex;
-  width: 16px;
-  height: 16px;
-  align-items: center;
-}
-
-.radio_inactive {
-  display: flex;
-  width: 16px;
-  height: 16px;
-  align-items: center;
-}
-
 .detail_schedules {
   position: relative;
   z-index: 1;

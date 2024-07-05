@@ -83,7 +83,7 @@ export function NewScheduleDetail({
                   textContent={textTime}
                   fontWeight="medium"
                   iconName="schedule"
-                  iconSize="6"
+                  iconSize="4"
                   iconWeight="medium"
                 />
               </_Builtin.Block>
@@ -92,7 +92,7 @@ export function NewScheduleDetail({
               textContent={textDuration}
               fontWeight="medium"
               iconName="hourglass"
-              iconSize="6"
+              iconSize="4"
               iconWeight="medium"
             />
           </_Builtin.Block>
@@ -122,7 +122,7 @@ export function NewScheduleDetail({
                   textContent={textMeetingLink}
                   fontWeight="medium"
                   iconName="attach_file"
-                  iconSize="6"
+                  iconSize="4"
                   iconWeight="medium"
                 />
                 <_Builtin.Block tag="div">{slotJoinMeeting}</_Builtin.Block>

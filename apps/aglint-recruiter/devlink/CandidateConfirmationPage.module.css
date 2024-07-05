@@ -78,15 +78,6 @@
   align-items: center;
 }
 
-.embed_flex.ml--1 {
-  margin-left: -9px;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
 .ccp-btn-wrap {
   transition: all 200ms ease;
   color: var(--accent-11);
