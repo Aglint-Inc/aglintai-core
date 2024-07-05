@@ -194,8 +194,11 @@ function RequestAvailability() {
 
             return {
               ...ses,
-              id: newSession.newId,
               interview_meeting: newSession.interview_meeting,
+              interview_session: {
+                ...newSession.interview_session,
+                id: newSession.newId,
+              },
             };
           });
         } else {
@@ -282,7 +285,7 @@ function RequestAvailability() {
         });
         setRequestDetails(result);
         await supabase.from('request_session_relation').insert(
-          selectedSessions.map((ele) => ({
+          localSessions.map((ele) => ({
             session_id: ele.interview_session.id,
             request_availability_id: result.id,
           })),

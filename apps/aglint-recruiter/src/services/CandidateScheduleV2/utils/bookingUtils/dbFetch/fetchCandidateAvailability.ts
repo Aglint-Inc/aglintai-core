@@ -29,8 +29,8 @@ export const fetchCandAvailForBooking = async (
       show_conflicts_events: true,
       show_soft_conflicts: true,
     },
-    include_free_time: avail_details.availability.free_keywords,
-    use_recruiting_blocks: avail_details.availability.recruiting_block_keywords,
+    include_free_time: true,
+    use_recruiting_blocks: true,
   });
 
   return {
