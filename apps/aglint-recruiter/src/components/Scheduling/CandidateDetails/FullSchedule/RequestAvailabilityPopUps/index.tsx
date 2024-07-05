@@ -101,11 +101,11 @@ function RequestAvailabilityPopUps() {
               ? item?.request_session_relations.map((ele) => ele.session_id)
               : [];
 
-            const sessions =
-              sesIds.length &&
-              initialSessions.filter((session) =>
-                sesIds.includes(session.interview_session.id),
-              );
+            const sessions = sesIds.length
+              ? initialSessions.filter((session) =>
+                  sesIds.includes(session.interview_session.id),
+                )
+              : [];
 
             return (
               <>
