@@ -78,7 +78,7 @@ const FeedbackWindow = ({
   });
 
   const { userDetails } = useAuthDetails();
-  const {checkPermissions} = useRolesAndPermissions();
+  const { checkPermissions } = useRolesAndPermissions();
   const user_id = userDetails?.user.id;
 
   const tempRelations = useMemo(() => {
@@ -604,6 +604,7 @@ const AdminFeedback = ({
                 </ShowCode.When>
                 <ShowCode.Else>
                   <FeedbackViewPopup
+                    isNextPrevVisible={interviewers.length > 1}
                     isEditFeedbackVisible={
                       selectedInterviewer.interviewer.user_id === user_id
                     }
@@ -696,13 +697,14 @@ const AdminFeedback = ({
                         textName={`${selectedInterviewer.interviewer.first_name} ${selectedInterviewer.interviewer.last_name}`}
                         slotAvatar={
                           <Avatar
+                            width='24px'
+                            height='24px'
                             variant='circular'
                             src={selectedInterviewer.interviewer?.profile_image}
                             level={getFullName(
                               selectedInterviewer.interviewer?.first_name,
                               selectedInterviewer.interviewer?.last_name,
                             )}
-                            dynamicSizing
                           />
                         }
                       />
@@ -1023,7 +1025,7 @@ const InterviewerFeedback = ({
                 <ShowCode.Else>
                   <FeedbackViewPopup
                     isEditFeedbackVisible={true}
-                    isNextPrevVisible={Boolean(interviewers.length)}
+                    isNextPrevVisible={interviewers.length > 1}
                     onClickEditFeedback={{
                       onClick: () => {
                         setEdit(true);
@@ -1062,13 +1064,14 @@ const InterviewerFeedback = ({
                         textName={`${selectedInterviewer.interviewer.first_name} ${selectedInterviewer.interviewer.last_name}`}
                         slotAvatar={
                           <Avatar
+                            width='24px'
+                            height='24px'
                             variant='circular'
                             src={selectedInterviewer.interviewer?.profile_image}
                             level={getFullName(
                               selectedInterviewer.interviewer?.first_name,
                               selectedInterviewer.interviewer?.last_name,
                             )}
-                            dynamicSizing
                           />
                         }
                       />

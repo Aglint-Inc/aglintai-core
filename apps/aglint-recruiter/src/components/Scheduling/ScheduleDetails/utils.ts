@@ -94,7 +94,6 @@ export const onClickCopyLink = async ({
       `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${request_id}`,
     );
   }
-  toast.message('Copied to clipboard');
 };
 
 export const fetchCalendarStatus = async ({
