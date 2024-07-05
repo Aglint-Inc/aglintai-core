@@ -69,7 +69,7 @@ export async function feedback(req: Request, res: Response) {
           block_id: 'rating_block',
           text: {
             type: 'mrkdwn',
-            text: 'Rate ⭐ your experience:',
+            text: 'Rate your experience:',
           },
           accessory: {
             type: 'static_select',

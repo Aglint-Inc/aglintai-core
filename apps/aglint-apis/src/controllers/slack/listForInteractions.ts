@@ -139,7 +139,7 @@ export const listForInteractions = async (req: Request, res: Response) => {
                     },
                     {
                       type: 'text',
-                      text: '\nThanks 🥰 for Feedback,\n ',
+                      text: '\nThanks for Feedback,\n ',
                       style: {
                         bold: true,
                       },
