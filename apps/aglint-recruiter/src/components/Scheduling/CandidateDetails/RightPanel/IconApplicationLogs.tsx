@@ -3,6 +3,7 @@ import { Type } from '@aglint/shared-types/src/db/utils.types';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { EmailAgentIcon } from '@/src/components/Tasks/Components/EmailAgentIcon';
 import { PhoneAgentIcon } from '@/src/components/Tasks/Components/PhoneAgentIcon';
+import { SystemIcon } from '@/src/components/Tasks/Components/SystemIcon';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { useAllActivities } from '../hooks';
@@ -25,6 +26,8 @@ function IconApplicationLogs({
     <>
       {act.logged_by === 'email_agent' ? (
         <EmailAgentIcon />
+      ) : act.logged_by === 'system' ? (
+        <SystemIcon />
       ) : act.logged_by === 'phone_agent' ? (
         <PhoneAgentIcon />
       ) : act.logged_by == 'candidate' ? (
