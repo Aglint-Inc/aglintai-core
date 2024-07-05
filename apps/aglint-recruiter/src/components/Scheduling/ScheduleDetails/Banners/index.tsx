@@ -2,7 +2,7 @@ import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -53,6 +53,7 @@ function Banners({
     (user) =>
       user.id !== cancelUserId && !user.interview_session_relation.is_confirmed,
   );
+  const [copied, setCopied] = useState(false);
 
   const meetingFlow = schedule.interview_meeting.meeting_flow;
 
@@ -135,15 +136,21 @@ function Banners({
             <>
               <ButtonSoft
                 size={'1'}
-                textButton={'Copy Link'}
+                textButton={copied ? 'Copied' : 'Copy link'}
                 onClickButton={{
                   onClick: () => {
-                    onClickCopyLink({
-                      schedule_id: schedule.schedule.id,
-                      filter_id: filterJson?.id,
-                      request_id: requestAvailibility?.id,
-                      task_id: filterJson?.new_tasks[0]?.id,
-                    });
+                    if (!copied) {
+                      setCopied(true);
+                      setTimeout(() => {
+                        setCopied(false);
+                      }, 2000);
+                      onClickCopyLink({
+                        schedule_id: schedule.schedule.id,
+                        filter_id: filterJson?.id,
+                        request_id: requestAvailibility?.id,
+                        task_id: filterJson?.new_tasks[0]?.id,
+                      });
+                    }
                   },
                 }}
               />

@@ -696,14 +696,15 @@ function RequestAvailability() {
                 textButton={copied ? 'Copied' : 'Copy link'}
                 onClickButton={{
                   onClick: () => {
-                    navigator.clipboard.writeText(
-                      `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${requestDetails.id}`,
-                    );
-                    setCopied(true);
-                    setTimeout(() => {
-                      setCopied(false);
-                    }, 2000);
-                    toast.message('Link copied successfully');
+                    if (!copied) {
+                      navigator.clipboard.writeText(
+                        `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${requestDetails.id}`,
+                      );
+                      setCopied(true);
+                      setTimeout(() => {
+                        setCopied(false);
+                      }, 2000);
+                    }
                   },
                 }}
               />
