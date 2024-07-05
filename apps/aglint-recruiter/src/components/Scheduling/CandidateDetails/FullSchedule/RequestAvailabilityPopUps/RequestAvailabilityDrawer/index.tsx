@@ -116,11 +116,9 @@ function RequestAvailabilityDrawer() {
               booking_confirmed: true,
             },
           });
-          toast.success('Booked sessions');
           fetchInterviewDataByApplication();
           setSelectedSessionIds([]);
           refetch();
-          // closeDrawer();
         } else {
           throw new Error('Booking failed');
         }
@@ -207,6 +205,13 @@ function RequestAvailabilityDrawer() {
                         <ButtonSoft
                           size={2}
                           color={'accent'}
+                          onClickButton={{
+                            onClick: () => {
+                              router.replace(
+                                `/scheduling/view?meeting_id=${selectedDateSlots[0].dateSlots[0].sessions[0].meeting_id}`,
+                              );
+                            },
+                          }}
                           textButton={'View in schedules'}
                         />
                       </Stack>
