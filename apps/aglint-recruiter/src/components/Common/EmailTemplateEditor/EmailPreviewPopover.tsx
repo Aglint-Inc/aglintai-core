@@ -1,6 +1,7 @@
 import { Dialog, Stack } from '@mui/material';
 import React, { Dispatch, SetStateAction } from 'react';
 
+import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { PreviewEmail } from '@/devlink2/PreviewEmail';
 
@@ -58,12 +59,19 @@ export default function EmailPreviewPopover({
             </Stack>
           )
         }
-        onClickClose={{
-          onClick: () => {
-            setAnchorEl(null);
-            setHtml(null);
-          },
-        }}
+        slotClose={
+          <IconButtonGhost
+            iconName='close'
+            size={1}
+            color={'neutral'}
+            onClickButton={{
+              onClick: () => {
+                setAnchorEl(null);
+                setHtml(null);
+              },
+            }}
+          />
+        }
       />
     </Dialog>
   );
