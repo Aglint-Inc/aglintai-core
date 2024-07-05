@@ -17,6 +17,7 @@ import StepSlotOptions from './StepSlotOptions';
 import {
   resetSchedulingFlowStore,
   setDateRange,
+  setStepScheduling,
   useSchedulingFlowStore,
 } from './store';
 
@@ -102,7 +103,13 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                 textButton={stepScheduling === 'pick_date' ? 'Close' : 'Back'}
                 onClickButton={{
                   onClick: () => {
-                    resetStateSelfScheduling();
+                    if (stepScheduling === 'pick_date') {
+                      resetStateSelfScheduling();
+                    } else if (stepScheduling === 'slot_options') {
+                      setStepScheduling('preference');
+                    } else if (stepScheduling === 'preference') {
+                      setStepScheduling('pick_date');
+                    }
                   },
                 }}
               />

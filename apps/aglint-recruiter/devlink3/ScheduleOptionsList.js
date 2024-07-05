@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { Text } from "./Text";
 import { DateOption } from "./DateOption";
 import { EmptySlots } from "./EmptySlots";
 import * as _utils from "./utils";
@@ -12,7 +11,7 @@ export function ScheduleOptionsList({
   slotDateOption,
   slotToggle,
   slotfilters,
-  textDescription = "Select multiple available options and then click 'send' to forward them to the candidate for selection.",
+  slotDescription,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "scheduleoptions")} tag="div">
@@ -20,7 +19,7 @@ export function ScheduleOptionsList({
         className={_utils.cx(_styles, "schedule_option_hint")}
         tag="div"
       >
-        <Text content={textDescription} weight="" />
+        {slotDescription}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "schedule_options")}

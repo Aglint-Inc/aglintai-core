@@ -6,12 +6,12 @@ import { Collapse } from '@mui/material';
 import dayjs from 'dayjs';
 import React, { useEffect } from 'react';
 
-import { ConflictChip } from '@/devlink3/ConflictChip';
-import { NoConflicts } from '@/devlink3/NoConflicts';
+import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { SingleDaySchedule } from '@/devlink3/SingleDaySchedule';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 
 import { formatTimeWithTimeZone } from '../../../../utils';
+import ConflictWithHover from './SessionIndividual/ConflictWithHover';
 import SessionIndividual from './SessionIndividual/SessionIndividual';
 
 function SingleDayCard({
@@ -89,7 +89,6 @@ function SingleDayCard({
       rotateArrow={{
         style: {
           display: isCollapseNeeded ? 'flex' : 'none',
-          transform: collapse ? 'rotate(180deg)' : '',
         },
       }}
       isMultiDay={isMultiDay}
@@ -98,29 +97,60 @@ function SingleDayCard({
       textTotalTimeRange={totalTimeRange}
       slotConflicts={
         <>
-          {sesAllConflicts.length === 0 && <NoConflicts />}
-          {sesSoftConflicts.length > 0 && (
-            <ConflictChip
-              isSoftConflict={true}
+          {sesAllConflicts.length === 0 && (
+            <ConflictWithHover
+              isNoConflict={true}
               isHardConflict={false}
               isOutsideWorkHours={false}
+              isSoftConflict={false}
+              conflictReasons={[]}
+              textCount={'No conflicts'}
+              isToolTipVisible={false}
+            />
+          )}
+          {sesSoftConflicts.length > 0 && (
+            <ConflictWithHover
+              isHardConflict={false}
+              isOutsideWorkHours={false}
+              isSoftConflict={true}
+              isNoConflict={false}
+              conflictReasons={sesSoftConflicts}
               textCount={sesSoftConflicts.length}
+              isToolTipVisible={false}
             />
           )}
           {sesHardConflicts.length > 0 && (
-            <ConflictChip
-              isSoftConflict={false}
+            <ConflictWithHover
+              isNoConflict={false}
               isHardConflict={true}
               isOutsideWorkHours={false}
+              isSoftConflict={false}
+              conflictReasons={sesHardConflicts}
               textCount={sesHardConflicts.length}
+              isToolTipVisible={false}
             />
           )}
           {sesOutsideWorkHours.length > 0 && (
-            <ConflictChip
-              isSoftConflict={false}
+            <ConflictWithHover
+              isNoConflict={false}
               isHardConflict={false}
               isOutsideWorkHours={true}
+              isSoftConflict={false}
+              conflictReasons={sesOutsideWorkHours}
               textCount={sesOutsideWorkHours.length}
+              isToolTipVisible={false}
+            />
+          )}
+          {isCollapseNeeded && (
+            <IconButtonSoft
+              size={1}
+              color={'neutral'}
+              iconName={'keyboard_double_arrow_down'}
+              onClickButton={{
+                onClick: () => {
+                  setCollapse(!collapse);
+                },
+              }}
             />
           )}
         </>

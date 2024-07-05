@@ -54,6 +54,13 @@
 }
 
 .sidedrawer_bottom_bar {
+  position: absolute;
+  left: 0%;
+  top: auto;
+  right: 0%;
+  bottom: 0%;
+  z-index: 2;
+
   display: grid;
   padding: var(--space-2) var(--space-4);
   justify-content: space-between;
@@ -64,4 +71,6 @@
   grid-template-rows: auto;
 
   border-top: 1px solid var(--neutral-6);
+
+  background-color: var(--white);
 }

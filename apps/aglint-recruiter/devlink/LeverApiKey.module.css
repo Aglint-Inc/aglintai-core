@@ -132,10 +132,6 @@
   }
 }
 
-.icons.mb-9 {
-  margin-bottom: var(--space-9);
-}
-
 .mt-4 {
   margin-top: 4px;
 }
@@ -313,10 +309,6 @@
   .fw-semibold.text-lg.text-yellow-600.mobile-14 {
     font-size: 14px;
   }
-}
-
-.fw-semibold.new-greenhouse {
-  color: #14413d;
 }
 
 .text-color-white {

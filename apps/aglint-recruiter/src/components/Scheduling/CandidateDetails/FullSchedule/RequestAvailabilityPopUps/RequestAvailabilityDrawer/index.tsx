@@ -194,6 +194,7 @@ function RequestAvailabilityDrawer() {
                             isSlotCollapseNeeded={false}
                             isCheckboxAndRadio={false}
                             index={index}
+                            setSelectedCombIds={() => {}}
                           />
                         );
                       })}

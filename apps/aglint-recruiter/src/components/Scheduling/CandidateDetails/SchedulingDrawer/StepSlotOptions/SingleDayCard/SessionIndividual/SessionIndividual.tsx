@@ -2,13 +2,13 @@ import { PlanCombinationRespType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 import { MemberRow } from '@/devlink3/MemberRow';
-import { NoConflicts } from '@/devlink3/NoConflicts';
 import { SessionDetails } from '@/devlink3/SessionDetails';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { formatTimeWithTimeZone } from '../../../../../utils';
+import IconSessionType from '../../../../RightPanel/IconSessionType';
 import ConflictWithHover from './ConflictWithHover';
 
 function SessionIndividual({
@@ -23,6 +23,7 @@ function SessionIndividual({
   return (
     <>
       <SessionDetails
+        slotSessionIcon={<IconSessionType type={session.session_type} />}
         key={session.session_id}
         textSessionName={session_name}
         textSessionDuration={session_duration}
@@ -57,7 +58,9 @@ function SessionIndividual({
                 <MuiAvatar
                   level={getFullName(member.first_name, member.last_name)}
                   src={member.profile_image}
-                  variant={'circular-medium'}
+                  variant={'rounded'}
+                  width={'100%'}
+                  height={'100%'}
                 />
               }
               isShadow={member.training_type === 'shadow'}
@@ -68,34 +71,53 @@ function SessionIndividual({
                 end_time: session.end_time,
                 timeZone: member.int_tz,
               })}
+              textStandardTime={dayjsLocal(session.start_time)
+                .tz(member.int_tz)
+                .format('zzz')}
               slotConflicts={
                 <>
-                  {allUserConflicts.length === 0 && <NoConflicts />}
+                  {allUserConflicts.length === 0 && (
+                    <ConflictWithHover
+                      isNoConflict={true}
+                      isHardConflict={false}
+                      isOutsideWorkHours={false}
+                      isSoftConflict={false}
+                      conflictReasons={[]}
+                      textCount={'No conflicts'}
+                      isToolTipVisible={true}
+                    />
+                  )}
                   {userSoftConflicts.length > 0 && (
                     <ConflictWithHover
                       isHardConflict={false}
                       isOutsideWorkHours={false}
                       isSoftConflict={true}
+                      isNoConflict={false}
                       conflictReasons={userSoftConflicts}
                       textCount={userSoftConflicts.length}
+                      isToolTipVisible={true}
                     />
                   )}
                   {userHardConflicts.length > 0 && (
                     <ConflictWithHover
+                      isNoConflict={false}
                       isHardConflict={true}
                       isOutsideWorkHours={false}
                       isSoftConflict={false}
                       conflictReasons={userHardConflicts}
                       textCount={userHardConflicts.length}
+                      isToolTipVisible={true}
                     />
                   )}
                   {userOutsideWorkHours.length > 0 && (
                     <ConflictWithHover
+                      isNoConflict={false}
                       isHardConflict={false}
                       isOutsideWorkHours={true}
                       isSoftConflict={false}
                       conflictReasons={userOutsideWorkHours}
                       textCount={userOutsideWorkHours.length}
+                      isToolTipVisible={true}
                     />
                   )}
                 </>

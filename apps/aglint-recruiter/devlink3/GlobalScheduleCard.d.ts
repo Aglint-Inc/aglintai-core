@@ -27,5 +27,4 @@ declare function GlobalScheduleCard(props: {
   isDropdownIconVisible?: Types.Visibility.VisibilityConditions;
   styleGrid?: Types.Devlink.RuntimeProps;
   isButtonBlockVisible?: Types.Visibility.VisibilityConditions;
-  showJobTitle?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

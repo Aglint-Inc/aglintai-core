@@ -118,7 +118,7 @@ function ScheduleIndividualCard({
       textCandidateName={candidate.fullname}
       textDuration={getBreakLabel(interview_session.session_duration)}
       textPlaformName={getScheduleType(interview_session.schedule_type)}
-      showJobTitle={!!jobTitle}
+      // showJobTitle={!!jobTitle}
       textRole={jobTitle}
       textPanelName={interview_session.name}
       onClickDropdown={{

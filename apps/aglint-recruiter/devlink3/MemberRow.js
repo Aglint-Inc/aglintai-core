@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Text } from "./Text";
+import { TextWithIcon } from "./TextWithIcon";
 import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./MemberRow.module.css";
@@ -15,6 +17,7 @@ export function MemberRow({
   textTime = "11:30PM - 12:30PM PST",
   slotConflicts,
   isInterviewerTime = true,
+  textStandardTime = "IST",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "member_row")} tag="div">
@@ -52,13 +55,14 @@ export function MemberRow({
           ) : null}
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "name-wrap")} tag="div">
-          <_Builtin.Block tag="div">{textName}</_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-sm", "color-grey-600")}
-            tag="div"
-          >
-            {textRole}
-          </_Builtin.Block>
+          <Text content={textName} weight="medium" />
+          <TextWithIcon
+            textContent={textRole}
+            fontSize="1"
+            color="neutral"
+            iconName="work"
+            iconSize="2"
+          />
         </_Builtin.Block>
       </_Builtin.Block>
       {isInterviewerTime ? (
@@ -66,11 +70,19 @@ export function MemberRow({
           className={_utils.cx(_styles, "timezone_block")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey_600", "text-sm")}
-            tag="div"
-          >
-            {textTime}
+          <_Builtin.Block tag="div">
+            <TextWithIcon
+              textContent={textTime}
+              fontSize="1"
+              iconName="pace"
+              color="neutral"
+            />
+            <TextWithIcon
+              textContent={textStandardTime}
+              fontSize="1"
+              iconName="language"
+              color="neutral"
+            />
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}

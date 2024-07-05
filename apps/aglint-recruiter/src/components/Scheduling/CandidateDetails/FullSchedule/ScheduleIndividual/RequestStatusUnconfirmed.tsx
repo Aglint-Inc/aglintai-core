@@ -16,7 +16,7 @@ function RequestStatusUnconfirmed({
           {interview_meeting?.meeting_flow === 'candidate_request' ? (
             <TextWithIcon
               iconName={'attach_email'}
-              textContent={'Requested availability from candidate'}
+              textContent={'Availability Requested'}
               color={'warning'}
               fontWeight={'regular'}
               iconSize={2}
@@ -25,7 +25,7 @@ function RequestStatusUnconfirmed({
           ) : interview_meeting?.meeting_flow === 'self_scheduling' ? (
             <TextWithIcon
               iconName={'attach_email'}
-              textContent={'Sent self scheduling link to candidate'}
+              textContent={'Self Scheduling Requested'}
               color={'warning'}
               fontWeight={'regular'}
               fontSize={1}

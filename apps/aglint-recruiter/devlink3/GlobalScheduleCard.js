@@ -35,7 +35,6 @@ export function GlobalScheduleCard({
   isDropdownIconVisible = true,
   styleGrid = {},
   isButtonBlockVisible = true,
-  showJobTitle = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "new-gsc-wrap")} tag="div">
@@ -147,16 +146,12 @@ export function GlobalScheduleCard({
                 className={_utils.cx(_styles, "flex_hr_6")}
                 tag="div"
               >
-                {showJobTitle ? (
-                  <_Builtin.Block tag="div">
-                    <TextWithIcon
-                      textContent={textRole}
-                      iconName="trip"
-                      fontWeight="regular"
-                      iconWeight="medium"
-                    />
-                  </_Builtin.Block>
-                ) : null}
+                <TextWithIcon
+                  textContent={textRole}
+                  iconName="trip"
+                  fontWeight="regular"
+                  iconWeight="medium"
+                />
                 <_Builtin.Block
                   className={_utils.cx(_styles, "text_with_icon")}
                   tag="div"
