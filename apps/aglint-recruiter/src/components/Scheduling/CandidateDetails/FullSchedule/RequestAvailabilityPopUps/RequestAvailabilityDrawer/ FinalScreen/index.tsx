@@ -91,8 +91,8 @@ function FinalScreen() {
                 return (
                   <DayCardWrapper
                     key={index}
-                    isDebrief={true}
                     selectedCombIds={[]}
+                    // selectedCombIds={selectedDateSlots.map(ele=>ele.dateSlots).flat().map(ele=>ele.plan_comb_id)}
                     item={{
                       dateArray: [date],
                       plans: item.dateSlots,
@@ -100,7 +100,9 @@ function FinalScreen() {
                     onClickSelect={() => {}}
                     isDayCollapseNeeded={false}
                     isSlotCollapseNeeded={false}
-                    isCheckboxAndRadio={false}
+                    isRadioNeeded={false}
+                    isDayCheckboxNeeded={false}
+                    isSlotCheckboxNeeded={false}
                     index={index}
                     setSelectedCombIds={() => {}}
                   />

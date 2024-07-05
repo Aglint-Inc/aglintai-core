@@ -183,7 +183,6 @@ function RequestAvailabilityDrawer() {
                         return (
                           <DayCardWrapper
                             key={index}
-                            isDebrief={true}
                             selectedCombIds={[]}
                             item={{
                               dateArray: [date],
@@ -192,7 +191,9 @@ function RequestAvailabilityDrawer() {
                             onClickSelect={() => {}}
                             isDayCollapseNeeded={false}
                             isSlotCollapseNeeded={false}
-                            isCheckboxAndRadio={false}
+                            isDayCheckboxNeeded={false}
+                            isRadioNeeded={false}
+                            isSlotCheckboxNeeded={false}
                             index={index}
                             setSelectedCombIds={() => {}}
                           />

@@ -1,5 +1,5 @@
 import { PlanCombinationRespType } from '@aglint/shared-types';
-import { Checkbox, Collapse, Stack } from '@mui/material';
+import { Checkbox, Collapse, Radio, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import React, { Dispatch, useEffect, useMemo, useState } from 'react';
 
@@ -15,18 +15,19 @@ import SingleDayCard from '../SingleDayCard';
 const NUMBER_OF_SLOTS_TO_DISPLAY = 10;
 
 function DayCardWrapper({
-  isDebrief,
+  isRadioNeeded = true,
   item,
   onClickSelect,
   selectedCombIds,
   isDayCollapseNeeded = true,
   isSlotCollapseNeeded = true,
   isDisabled = false,
-  isCheckboxAndRadio = true,
+  isDayCheckboxNeeded = true,
+  isSlotCheckboxNeeded = true,
   index,
   setSelectedCombIds,
 }: {
-  isDebrief: boolean;
+  isRadioNeeded: boolean;
   item: {
     dateArray: string[];
     plans: PlanCombinationRespType[];
@@ -37,7 +38,8 @@ function DayCardWrapper({
   isDayCollapseNeeded?: boolean;
   isSlotCollapseNeeded?: boolean;
   isDisabled?: boolean;
-  isCheckboxAndRadio?: boolean;
+  isDayCheckboxNeeded?: boolean;
+  isSlotCheckboxNeeded?: boolean;
   index: number;
   setSelectedCombIds: Dispatch<React.SetStateAction<string[]>>;
 }) {
@@ -125,7 +127,7 @@ function DayCardWrapper({
             )}
           </>
         }
-        isCheckboxVisible={isCheckboxAndRadio}
+        isCheckboxVisible={isDayCheckboxNeeded}
         isSelected={isSelected}
         slotCheckbox={
           <Checkbox
@@ -162,20 +164,30 @@ function DayCardWrapper({
                   return (
                     <ScheduleOption
                       slotCheckbox={
-                        isCheckboxAndRadio && (
-                          <Checkbox
-                            checked={selectedCombIds.includes(
-                              slot.plan_comb_id,
-                            )}
-                            onClick={() => onClickSelect(slot.plan_comb_id)}
-                          />
-                        )
+                        <>
+                          {isSlotCheckboxNeeded && (
+                            <Checkbox
+                              checked={selectedCombIds.includes(
+                                slot.plan_comb_id,
+                              )}
+                              onClick={() => onClickSelect(slot.plan_comb_id)}
+                            />
+                          )}
+                          {isRadioNeeded && (
+                            <Radio
+                              checked={selectedCombIds.includes(
+                                slot.plan_comb_id,
+                              )}
+                              onClick={() => {
+                                onClickSelect(slot.plan_comb_id);
+                              }}
+                            />
+                          )}
+                        </>
                       }
-                      isCheckboxAndRadio={isCheckboxAndRadio}
                       key={slot.plan_comb_id}
                       isSelected={selectedCombIds.includes(slot.plan_comb_id)}
-                      isCheckbox={!isDebrief}
-                      isRadio={isDebrief}
+                      isCheckbox={isSlotCheckboxNeeded || isRadioNeeded}
                       slotSingleDaySchedule={slot.daySessions?.map(
                         (item, ind) => {
                           return (
