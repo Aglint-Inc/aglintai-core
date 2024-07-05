@@ -2,7 +2,7 @@ import { Dialog } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 
-import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
 import UITextField from '@/src/components/Common/UITextField';
@@ -76,9 +76,10 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
         textJobTitle={moduleName}
         slotButton={
           <>
-            <ButtonGhost
+            <ButtonSoft
               size={2}
               textButton='Cancel'
+              color={'neutral'}
               onClickButton={{ onClick: onClose }}
             />
             <ButtonSolid

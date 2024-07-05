@@ -2,7 +2,7 @@ import { Dialog } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 
-import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
 import UITextField from '@/src/components/Common/UITextField';
@@ -95,9 +95,10 @@ function ArchiveModuleDialog({ editModule }: { editModule: ModuleType }) {
         textJobTitle={moduleName}
         slotButton={
           <>
-            <ButtonGhost
+            <ButtonSoft
               textButton='Cancel'
               size={2}
+              color={'neutral'}
               onClickButton={{ onClick: () => onClose() }}
             />
             <ButtonSolid
