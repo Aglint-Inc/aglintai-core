@@ -6,7 +6,19 @@
 
   border-style: solid;
   border-width: 1px;
-  border-radius: var(--radius-4);
+  border-radius: var(--radius-2);
+}
+
+.global_banner.info_short {
+  width: 100%;
+  padding-top: var(--space-2);
+  padding-bottom: var(--space-2);
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: 40px;
+  grid-row-gap: 40px;
 }
 
 .banner_main_block {

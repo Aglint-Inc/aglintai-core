@@ -45,45 +45,6 @@
   flex-direction: column;
 }
 
-.auth-right-block.sign-up-sign {
-  position: relative;
-
-  display: flex;
-  width: 100%;
-  height: auto;
-  margin-bottom: 40px;
-  padding-right: 40px;
-  padding-left: 40px;
-  align-items: center;
-  grid-column-gap: 30px;
-  grid-row-gap: 30px;
-
-  background-color: white;
-
-  opacity: 1;
-}
-
-@media screen and (max-width: 991px) {
-  .auth-right-block.sign-up-sign {
-    overflow: scroll;
-    height: 100dvh;
-    padding-top: 60px;
-    padding-left: 0px;
-    align-items: center;
-    grid-column-gap: 40px;
-    grid-row-gap: 40px;
-
-    text-align: center;
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .auth-right-block.sign-up-sign {
-    padding-right: 20px;
-    padding-left: 20px;
-  }
-}
-
 .auth-cta-block {
   display: flex;
   flex-direction: column;
@@ -91,34 +52,6 @@
   align-items: center;
   grid-column-gap: 32px;
   grid-row-gap: 32px;
-}
-
-.auth-cta-block.sign-up {
-  padding: 40px 32px;
-  grid-column-gap: 24px;
-  grid-row-gap: 24px;
-  border-radius: 20px;
-  background-color: rgba(248, 249, 249, 0.5);
-}
-
-@media screen and (max-width: 991px) {
-  .auth-cta-block.sign-up {
-    text-align: center;
-  }
-}
-
-.sign-up {
-  flex-direction: column;
-}
-
-.auth-cta-block.sign-up.tab-edit {
-  align-items: center;
-}
-
-@media screen and (max-width: 991px) {
-  .auth-cta-block.sign-up.tab-edit {
-    align-items: stretch;
-  }
 }
 
 .auth-cta-block.tab-edit {

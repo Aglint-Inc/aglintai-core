@@ -15,13 +15,6 @@ export async function fetchUtil(
       .eq('id', req_body.application_id),
   );
 
-  const [organizer] = supabaseWrap(
-    await supabaseAdmin
-      .from('recruiter_user')
-      .select('first_name,last_name,scheduling_settings')
-      .eq('user_id', req_body.organizer_id),
-  );
-  const recruiter_tz = organizer.scheduling_settings.timeZone.tzCode;
   const {
     candidates: {
       email: cand_email,
@@ -44,10 +37,6 @@ export async function fetchUtil(
       candidateName: getFullName(first_name, last_name),
       companyName: company,
       jobRole: job_title,
-      organizerFirstName: organizer.first_name,
-      organizerLastName: organizer.last_name,
-      organizerName: getFullName(organizer.first_name, organizer.last_name),
-      OrganizerTimeZone: recruiter_tz,
     };
 
   const filled_comp_template = fillCompEmailTemplate(

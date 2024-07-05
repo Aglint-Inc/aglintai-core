@@ -12,7 +12,6 @@ import React, { Dispatch, useEffect, useState } from 'react';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { ChangeInterviewer } from '@/devlink3/ChangeInterviewer';
 import { MemberRow } from '@/devlink3/MemberRow';
-import { NoConflicts } from '@/devlink3/NoConflicts';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -309,7 +308,17 @@ function ChangeInterviewerDialog({
                         })}
                         slotConflicts={
                           <>
-                            {allUserConflicts.length === 0 && <NoConflicts />}
+                            {allUserConflicts.length === 0 && (
+                              <ConflictWithHover
+                                isHardConflict={false}
+                                isOutsideWorkHours={false}
+                                isSoftConflict={false}
+                                conflictReasons={[]}
+                                textCount={'No conflicts'}
+                                isNoConflict={true}
+                                isToolTipVisible={true}
+                              />
+                            )}
                             {userSoftConflicts.length > 0 && (
                               <ConflictWithHover
                                 isHardConflict={false}
@@ -317,6 +326,8 @@ function ChangeInterviewerDialog({
                                 isSoftConflict={true}
                                 conflictReasons={userSoftConflicts}
                                 textCount={userSoftConflicts.length}
+                                isNoConflict={false}
+                                isToolTipVisible={true}
                               />
                             )}
                             {userHardConflicts.length > 0 && (
@@ -326,6 +337,8 @@ function ChangeInterviewerDialog({
                                 isSoftConflict={false}
                                 conflictReasons={userHardConflicts}
                                 textCount={userHardConflicts.length}
+                                isNoConflict={false}
+                                isToolTipVisible={true}
                               />
                             )}
                             {userOutsideWorkHours.length > 0 && (
@@ -335,6 +348,8 @@ function ChangeInterviewerDialog({
                                 isSoftConflict={false}
                                 conflictReasons={userOutsideWorkHours}
                                 textCount={userOutsideWorkHours.length}
+                                isNoConflict={false}
+                                isToolTipVisible={true}
                               />
                             )}
                           </>

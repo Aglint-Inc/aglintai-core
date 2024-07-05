@@ -77,6 +77,12 @@ function TaskActionButtons({
                   setIsScheduleNowOpen(true);
                   setStepScheduling('pick_date');
                   setScheduleFlow('update_request_availibility');
+                  setSelectedSessionIds(
+                    selectedTask.session_ids.map((ele) => ele.id),
+                  );
+                  setRequestSessionIds(
+                    selectedTask.session_ids.map((ele) => ele.id),
+                  );
                   router.push(
                     `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/application/${selectedTask.application_id}?candidate_request_availability=${selectedTask.request_availability_id}`,
                   );

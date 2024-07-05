@@ -31,6 +31,7 @@ import {
   updateDebriefSession,
 } from '@/src/queries/interview-plans';
 import { getFullName } from '@/src/utils/jsonResume';
+import { createCloneSession } from '@/src/utils/scheduling/createCloneSession';
 import toast from '@/src/utils/toast';
 
 import IconScheduleType from '../../../Candidates/ListCard/Icon/IconScheduleType';
@@ -42,7 +43,6 @@ import {
   setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../../store';
-import { createCloneSession } from '../../utils';
 import DebriedForm from './DebriefFrom';
 
 export type Interviewer = {
@@ -560,9 +560,15 @@ function SideDrawerEdit() {
                         slotMemberCountDropdown={
                           selectedInterviewers?.length > 0 && (
                             <TextField
+                              size='small'
                               name={'interviewer_cnt'}
                               type='number'
-                              sx={{ width: '60px' }}
+                              sx={{
+                                width: '60px',
+                                '& .MuiOutlinedInput-root': {
+                                  padding: '0px!important',
+                                },
+                              }}
                               value={
                                 editSession.interview_session.interviewer_cnt ||
                                 1
@@ -702,6 +708,7 @@ function SideDrawerEdit() {
                 <ButtonSolid
                   textButton='Save'
                   size={2}
+                  isLoading={saving}
                   onClickButton={{
                     onClick: () => {
                       if (!saving) {

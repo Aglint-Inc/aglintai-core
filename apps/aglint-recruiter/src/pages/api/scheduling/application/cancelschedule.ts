@@ -117,7 +117,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await removeSessionFromRequestAvailibility({
           session_id,
           supabase,
-          application_id,
         });
       }
 

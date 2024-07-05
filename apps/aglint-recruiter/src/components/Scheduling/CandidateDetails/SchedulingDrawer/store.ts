@@ -15,7 +15,8 @@ export interface SchedulingFlow {
     | 'preference'
     | 'slot_options'
     | 'reschedule'
-    | 'request_availibility';
+    | 'request_availibility'
+    | 'self_scheduling_email_preview';
   noOptions: boolean;
   isSendToCandidateOpen: boolean;
   scheduleFlow:

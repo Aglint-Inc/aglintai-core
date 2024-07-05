@@ -70,7 +70,7 @@ export const InterviewBookingConfirmation = ({
                 <Session key={i} meetingDetail={meetingDetail} />
               ))}
               <Button
-                className="px-3 py-2 bg-accent-9 text-white br rounded-[4px] text-text-xs"
+                className={`px-3 py-2 bg-accent-9 text-white br rounded-[4px] text-text-xs ${candidateLink.length === 0 ? 'pointer-events-none' : 'pointer-events-auto'}`}
                 href={candidateLink}
               >
                 View Details

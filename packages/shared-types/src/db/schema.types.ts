@@ -303,6 +303,7 @@ export type Database = {
           overall_interview_score: number
           overall_score: number
           phone_screening: Json | null
+          processing_started_at: string | null
           processing_status: Database["public"]["Enums"]["application_processing_status"]
           retry: number
           score_json: Json | null
@@ -326,6 +327,7 @@ export type Database = {
           overall_interview_score?: number
           overall_score?: number
           phone_screening?: Json | null
+          processing_started_at?: string | null
           processing_status?: Database["public"]["Enums"]["application_processing_status"]
           retry?: number
           score_json?: Json | null
@@ -349,6 +351,7 @@ export type Database = {
           overall_interview_score?: number
           overall_score?: number
           phone_screening?: Json | null
+          processing_started_at?: string | null
           processing_status?: Database["public"]["Enums"]["application_processing_status"]
           retry?: number
           score_json?: Json | null
@@ -3900,6 +3903,7 @@ export type Database = {
           id: string | null
           instructions: string | null
           interview_schedule_id: string | null
+          meeting_flow: Database["public"]["Enums"]["meeting_flow"] | null
           meeting_json: Json | null
           meeting_link: string | null
           organizer_id: string | null
@@ -4502,23 +4506,6 @@ export type Database = {
           interview_session: Json
           candidates: Json
           users: Json
-        }[]
-      }
-      get_interview_schedule_by_meeting_id: {
-        Args: {
-          target_meeting_id: string
-        }
-        Returns: {
-          interview_meeting: Json
-          interview_session: Json
-          schedule: Json
-          applications: Json
-          candidates: Json
-          interview_module: Json
-          file: Json
-          job: Json
-          users: Json
-          coordinator: Json
         }[]
       }
       get_interview_schedule_by_module_id: {
@@ -5318,6 +5305,11 @@ export type Database = {
         | "interviewStart_email_organizer"
         | "meetingDeclined_email_organizer"
         | "meetingAccepted_email_organizer"
+        | "candidateBook_slack_interviewerForFeedback"
+        | "candidateBook_email_interviewerForFeedback"
+        | "interviewEnd_slack_interviewerForFeedback"
+        | "interviewEnd_email_interviewerForFeedback"
+        | "candidateBook_slack_interviewerForConfirmation"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"
@@ -5512,6 +5504,7 @@ export type Database = {
         | "interviewEnd"
         | "meetingDeclined"
         | "meetingAccepted"
+        | "candidateBook"
     }
     CompositeTypes: {
       location_type: {

@@ -2,8 +2,7 @@
 import {
   DatabaseTable,
   DB,
-  InterviewMeetingTypeDb,
-  RecruiterUserType,
+  RecruiterUserType
 } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { createServerClient } from '@supabase/ssr';
@@ -13,16 +12,14 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { selfScheduleMailToCandidate } from '@/src/components/Scheduling/CandidateDetails/mailUtils';
 import { SchedulingFlow } from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/store';
 import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
-import {
-  createCloneSession,
-  createTask,
-  getOrganizerId,
-  scheduleDebrief,
-} from '@/src/components/Scheduling/CandidateDetails/utils';
+import { scheduleDebrief } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 import { getScheduleName } from '@/src/components/Scheduling/utils';
 import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
 import { createTaskProgress } from '@/src/components/Tasks/utils';
+import { createCloneSession } from '@/src/utils/scheduling/createCloneSession';
+import { createTask } from '@/src/utils/scheduling/createTask';
+import { handleMeetingsOrganizerResetRelations } from '@/src/utils/scheduling/upsertMeetingsWithOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 export interface ApiBodyParamsSendToCandidate {
@@ -284,25 +281,13 @@ const sendToCandidate = async ({
     } else {
       console.log('schedule already exists');
 
-      const organizer_id = await getOrganizerId(
-        selectedApplication.id,
+      const { organizer_id } = await handleMeetingsOrganizerResetRelations({
+        application_id: selectedApplication.id,
+        selectedSessions: initialSessions.filter((ses) =>
+          selectedSessionIds.includes(ses.interview_session.id),
+        ),
         supabase,
-      );
-      const upsertMeetings: InterviewMeetingTypeDb[] = initialSessions
-        .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
-        .map((ses) => ({
-          status: 'waiting',
-          id: ses.interview_meeting.id,
-          interview_schedule_id: ses.interview_meeting.interview_schedule_id,
-          organizer_id,
-          meeting_flow: 'self_scheduling',
-        }));
-
-      const { error: errorUpdatedMeetings } = await supabase
-        .from('interview_meeting')
-        .upsert(upsertMeetings);
-
-      if (errorUpdatedMeetings) throw new Error(errorUpdatedMeetings.message);
+      });
 
       console.log('updated meetings');
 

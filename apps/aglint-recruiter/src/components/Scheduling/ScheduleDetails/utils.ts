@@ -40,35 +40,43 @@ export const removeSessionFromFilterJson = async ({
 
 export const removeSessionFromRequestAvailibility = async ({
   supabase,
-  application_id,
   session_id,
 }: {
   supabase: SupabaseType;
-  application_id: string;
   session_id: string;
 }) => {
   try {
-    const { data: reqAva, error: errReqAva } = await supabase
-      .from('candidate_request_availability')
-      .select('*')
-      .eq('application_id', application_id);
+    const { data: reqSesRel } = await supabase
+      .from('request_session_relation')
+      .select()
+      .eq('session_id', session_id)
+      .single()
+      .throwOnError();
 
-    if (errReqAva) throw new Error(errReqAva.message);
+    const req_id = reqSesRel.request_availability_id;
 
-    if (reqAva.length > 0) {
-      const updateDbArray = reqAva.map((req) => ({
-        ...req,
-        session_ids: req.session_ids.filter((ses) => ses.id !== session_id),
-      }));
+    const { data: reqSesRels } = await supabase
+      .from('request_session_relation')
+      .select()
+      .eq('request_availability_id', req_id)
+      .throwOnError();
 
-      const { error: errReqAvaUpdate } = await supabase
+    if (reqSesRels?.length === 1) {
+      await supabase
         .from('candidate_request_availability')
-        .upsert(updateDbArray);
-
-      if (errReqAvaUpdate) throw new Error(errReqAvaUpdate.message);
+        .delete()
+        .eq('id', req_id)
+        .throwOnError();
+    } else {
+      await supabase
+        .from('request_session_relation')
+        .delete()
+        .eq('session_id', session_id)
+        .throwOnError();
     }
-  } catch {
-    //
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log(e.message);
   }
 };
 
@@ -94,7 +102,6 @@ export const onClickCopyLink = async ({
       `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${request_id}`,
     );
   }
-  toast.message('Copied to clipboard');
 };
 
 export const fetchCalendarStatus = async ({

@@ -4,7 +4,7 @@ import { getFullName } from '@aglint/shared-utils';
 import { Collapse, Dialog, Stack } from '@mui/material';
 import { useState } from 'react';
 
-import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateSelectionPopup } from '@/devlink2/CandidateSelectionPopup';
 import { SelectActionsDropdown } from '@/devlink2/SelectActionsDropdown';
@@ -310,7 +310,7 @@ function useMeta(onSubmit: () => void) {
   );
   const buttons = (
     <Stack spacing={'10px'} mt={'10px'} direction={'row'} alignItems={'center'}>
-      <ButtonGhost
+      <ButtonSoft
         textButton='Cancel'
         color={'neutral'}
         size={2}

@@ -1,6 +1,8 @@
 import { Stack } from '@mui/material';
+import dayjs from 'dayjs';
 import { useMemo } from 'react';
 
+import { Text } from '@/devlink/Text';
 import { ScheduleOptionsList } from '@/devlink3/ScheduleOptionsList';
 
 import { setSelectedCombIds, useSchedulingFlowStore } from '../store';
@@ -13,6 +15,8 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
   const filteredSchedulingOptions = useSchedulingFlowStore(
     (state) => state.filteredSchedulingOptions,
   );
+
+  const dateRange = useSchedulingFlowStore((state) => state.dateRange);
 
   const selectedCombIds = useSchedulingFlowStore(
     (state) => state.selectedCombIds,
@@ -42,8 +46,21 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
   return (
     <Stack height={'calc(100vh - 96px)'}>
       <ScheduleOptionsList
-        textDescription={
-          isDebrief ? 'Select a date and time for your interview.' : ''
+        slotDescription={
+          isDebrief ? (
+            <Text content={'Select a date and time for your interview.'} />
+          ) : (
+            <>
+              <Text
+                content={`Showing available options between ${dayjs(dateRange.start_date).format('DD MMM YYYY')} - ${dayjs(dateRange.end_date).format('DD MMM YYYY')}`}
+                weight={'medium'}
+              />
+
+              <Text
+                content={`Select multiple available options and then click 'send' to forward them to the candidate for selection.`}
+              />
+            </>
+          )
         }
         slotDateOption={
           <>
@@ -51,15 +68,17 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
               return (
                 <DayCardWrapper
                   key={item.dateArray.join(', ')}
-                  isDebrief={isDebrief}
+                  isRadioNeeded={isDebrief}
                   item={item}
                   onClickSelect={onClickSelect}
                   selectedCombIds={selectedCombIds}
                   isDisabled={false}
-                  isCheckboxAndRadio={true}
+                  isDayCheckboxNeeded={!isDebrief}
+                  isSlotCheckboxNeeded={false}
                   isDayCollapseNeeded={true}
                   isSlotCollapseNeeded={true}
                   index={index}
+                  setSelectedCombIds={setSelectedCombIds}
                 />
               );
             })}

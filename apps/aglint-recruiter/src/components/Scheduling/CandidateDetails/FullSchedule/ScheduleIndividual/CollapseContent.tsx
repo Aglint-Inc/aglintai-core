@@ -23,15 +23,17 @@ function CollapseContent({
   currentSession,
   collapsed,
   candidate,
-  jobTitle,
   confirmedUsers,
+  jobTitle = null,
+  isCollapseButtonsVisible = false,
 }: {
   interview_meeting: ScheduleIndividualCardType['interview_meeting'];
   currentSession: SchedulingApplication['initialSessions'][0] | null;
   collapsed: boolean;
   candidate: ScheduleIndividualCardType['candidate'];
-  jobTitle: ScheduleIndividualCardType['jobTitle'];
   confirmedUsers: ScheduleIndividualCardType['users'];
+  jobTitle?: ScheduleIndividualCardType['jobTitle'];
+  isCollapseButtonsVisible?: boolean;
 }) {
   return (
     <Collapse in={collapsed}>
@@ -109,6 +111,7 @@ function CollapseContent({
                             iconName={'work'}
                             iconSize={4}
                             color='neutral'
+                            fontSize={1}
                           />
                         ) : (
                           '--'
@@ -134,35 +137,36 @@ function CollapseContent({
             )}
           </>
           <>
-            {(interview_meeting?.status === 'waiting' ||
-              interview_meeting?.status === 'confirmed') && (
-              <Stack direction={'row'} spacing={'var(--space-4)'}>
-                <ButtonSoft
-                  size={1}
-                  color={'accent'}
-                  textButton={'Reschedule'}
-                  onClickButton={{
-                    onClick: (e) => {
-                      e.stopPropagation();
-                      setSelectedSession(currentSession);
-                      setIndividualRescheduleOpen(true);
-                    },
-                  }}
-                />
-                <ButtonSoft
-                  size={1}
-                  color={'neutral'}
-                  textButton={'Cancel Schedule'}
-                  onClickButton={{
-                    onClick: (e) => {
-                      e.stopPropagation();
-                      setSelectedSession(currentSession);
-                      setIndividualCancelOpen(true);
-                    },
-                  }}
-                />
-              </Stack>
-            )}
+            {isCollapseButtonsVisible &&
+              (interview_meeting?.status === 'waiting' ||
+                interview_meeting?.status === 'confirmed') && (
+                <Stack direction={'row'} spacing={'var(--space-4)'}>
+                  <ButtonSoft
+                    size={1}
+                    color={'accent'}
+                    textButton={'Reschedule'}
+                    onClickButton={{
+                      onClick: (e) => {
+                        e.stopPropagation();
+                        setSelectedSession(currentSession);
+                        setIndividualRescheduleOpen(true);
+                      },
+                    }}
+                  />
+                  <ButtonSoft
+                    size={1}
+                    color={'neutral'}
+                    textButton={'Cancel Schedule'}
+                    onClickButton={{
+                      onClick: (e) => {
+                        e.stopPropagation();
+                        setSelectedSession(currentSession);
+                        setIndividualCancelOpen(true);
+                      },
+                    }}
+                  />
+                </Stack>
+              )}
           </>
         </Stack>
       )}

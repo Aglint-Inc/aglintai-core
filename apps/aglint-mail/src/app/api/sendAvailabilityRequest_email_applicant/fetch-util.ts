@@ -61,7 +61,7 @@ export async function dbUtil(
   const recruiter_tz = meeting_organizer.scheduling_settings.timeZone.tzCode;
 
   let candidate_link = '';
-  if (avail_req_data.id.length > 0) {
+  if (req_body.avail_req_id) {
     candidate_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.avail_req_id}`;
   } else {
     candidate_link = '#';
@@ -77,7 +77,7 @@ export async function dbUtil(
       candidateFirstName: first_name,
       companyName: company,
       jobRole: job_title,
-      availabilityReqLink: `<a href="${candidate_link}">here</a>`,
+      availabilityReqLink: `<a href="${candidate_link}" target="_blank" >here</a>`,
       organizerName: getFullName(
         meeting_organizer.first_name,
         meeting_organizer.last_name,

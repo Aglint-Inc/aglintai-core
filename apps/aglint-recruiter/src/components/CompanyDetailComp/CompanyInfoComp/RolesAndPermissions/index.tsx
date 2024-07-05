@@ -1,8 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseEnums } from '@aglint/shared-types';
 import {
-  List,
-  ListItem,
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
   Paper,
   Skeleton,
   Stack,
@@ -26,22 +27,23 @@ import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 function RolesAndPermissions() {
   const { data, isPending: loading } = useRoleAndPermissions();
-  const [role, setRole] = useState<(typeof data)[number] & { name: string }>(
-    null,
-  );
+
+  const [role, setRole] = useState<
+    (typeof data)['rolesAndPermissions'][number] & { name: string }
+  >(null);
+
   const roleDetails =
     role?.permissions.reduce(
       (acc, curr) => {
-        const curr_key = curr.name.split('_')[0];
-        const temp = app_modules[curr_key]
-          ? curr_key
-          : temp_modules.find((item) =>
-              app_modules[item].extra_permissions.includes(curr.name),
-            ) || 'other';
-
+        const temp = temp_modules.find((name) =>
+          app_modules
+            .find((mod) => mod.name == name)
+            ?.permissions.includes(curr.name),
+        );
         if (temp) {
           acc[temp] = acc[temp] || ({} as (typeof acc)[string]);
-          acc[temp].description = app_modules[temp]?.description || '';
+          acc[temp].description =
+            app_modules.find((mod) => mod.name == temp)?.description || '';
           acc[temp].permissions = [...(acc[temp]?.permissions || []), curr];
         }
         return acc;
@@ -55,37 +57,10 @@ function RolesAndPermissions() {
     ) || {};
 
   return role ? (
-    <PageLayout
-      isBackButton={true}
-      onClickBack={{ onClick: () => setRole(null) }}
-      slotTopbarLeft={
-        <Breadcrum textName={capitalizeFirstLetter(role.name + ' Role')} />
-      }
-      slotBody={
-        <Stack p={3}>
-          {Object.entries(roleDetails).map(
-            ([module, { description, permissions }]) => (
-              <Stack key={module}>
-                <Typography variant='h4'>
-                  {capitalizeFirstLetter(module)}
-                </Typography>
-                <Typography>{description}</Typography>
-                <Stack>
-                  <List>
-                    {permissions.map((permission) => {
-                      return (
-                        <ListItem key={permission.id} sx={{ paddingY: '4px' }}>
-                          {permission.name}
-                        </ListItem>
-                      );
-                    })}
-                  </List>
-                </Stack>
-              </Stack>
-            ),
-          )}
-        </Stack>
-      }
+    <RoleDetails
+      role={role}
+      roleDetails={roleDetails}
+      setRole={() => setRole(null)}
     />
   ) : (
     <Stack width={'100%'} padding={3}>
@@ -98,8 +73,9 @@ function RolesAndPermissions() {
             { header: 'Role', width: '200px' },
             { header: 'Users', width: '70px' },
             { header: 'Description', width: null },
+            { header: 'view all permissions', width: '100px' },
           ]}
-          roles={data}
+          roles={data?.rolesAndPermissions || {}}
           loading={loading}
           setRole={setRole}
         />
@@ -117,10 +93,14 @@ const RoleTable = ({
 }: {
   loading: boolean;
   headers: { header: string; width: string }[];
-  roles: Awaited<ReturnType<typeof getRoleAndPermissions>>;
+  roles: Awaited<
+    ReturnType<typeof getRoleAndPermissions>
+  >['rolesAndPermissions'];
   setRole: (
     // eslint-disable-next-line no-unused-vars
-    x: Awaited<ReturnType<typeof getRoleAndPermissions>>[string] & {
+    x: Awaited<
+      ReturnType<typeof getRoleAndPermissions>
+    >['rolesAndPermissions'][string] & {
       name: string;
     },
   ) => void;
@@ -185,11 +165,7 @@ const RoleTable = ({
                 <TableRow
                   hover
                   key={role.id}
-                  onClick={() => {
-                    setRole({ ...role, name: item });
-                  }}
                   sx={{
-                    '&:hover': { cursor: 'pointer' },
                     '&:hover .MuiTableCell-root': { background: '#e4e4e4' },
                   }}
                 >
@@ -201,6 +177,22 @@ const RoleTable = ({
                   </TableCell>
                   <TableCell key={1} variant='head' align={'left'}>
                     {role.description}
+                  </TableCell>
+                  <TableCell
+                    key={1}
+                    variant='head'
+                    align={'left'}
+                    onClick={() => {
+                      setRole({ ...role, name: item });
+                    }}
+                    sx={{
+                      cursor: 'pointer',
+                      ':hover': {
+                        textDecoration: 'underline',
+                      },
+                    }}
+                  >
+                    {'click here'}
                   </TableCell>
                 </TableRow>
               );
@@ -223,24 +215,24 @@ const useRoleAndPermissions = () => {
 const getRoleAndPermissions = async (recruiter_id: string) => {
   return supabase
     .from('role_permissions')
-    .select('role_id, permission_id, roles(name), permissions(name)')
+    .select('role_id, permission_id, roles(name, description)')
     .eq('recruiter_id', recruiter_id)
-    .eq('permissions.is_enable', true)
     .throwOnError()
     .then(({ data }) => {
-      return data.reduce(
+      const rolesAndPermissions = data.reduce(
         (acc, curr) => {
           acc[curr.roles.name] = {
             ...acc[curr.roles.name],
             id: curr.role_id,
             assignedTo: 0,
-            description: 'Role description',
+            description: curr.roles.description,
             permissions: [
               ...(acc[curr.roles.name]?.permissions || []),
               {
                 id: curr.permission_id,
-                name: curr.permissions.name,
-                description: 'permission description',
+                name: null,
+                description: null,
+                isActive: true,
               },
             ],
           };
@@ -255,16 +247,53 @@ const getRoleAndPermissions = async (recruiter_id: string) => {
               id: number;
               name: DatabaseEnums['permissions_type'];
               description: string;
+              isActive: boolean;
             }[];
           };
         },
       );
+      return rolesAndPermissions;
+    })
+    .then(async (rolesAndPermissions) => {
+      const permission = await supabase
+        .from('permissions')
+        .select('id,name, description')
+        .eq('is_enable', true)
+        .throwOnError()
+        .then(({ data }) => {
+          const permission = data.reduce(
+            (acc, curr) => {
+              acc[curr.id] = {
+                id: curr.id,
+                name: curr.name,
+                description: curr.description,
+              };
+              return acc;
+            },
+            {} as {
+              [permission: number]: {
+                id: number;
+                name: DatabaseEnums['permissions_type'];
+                description: string;
+              };
+            },
+          );
+          Object.keys(rolesAndPermissions).forEach((item) => {
+            rolesAndPermissions[item].permissions = rolesAndPermissions[
+              item
+            ].permissions.map((item) => ({
+              ...item,
+              ...permission[item.id],
+            }));
+          });
+          return permission;
+        });
+      return { rolesAndPermissions, all_permission: permission };
     });
 };
 
 const getRoleAndPermissionsWithUserCount = async (recruiter_id: string) => {
-  let RolesAndPermissions = await getRoleAndPermissions(recruiter_id);
-
+  let rolesAndPermissionsDetails = await getRoleAndPermissions(recruiter_id);
   return supabase
     .from('recruiter_relation')
     .select('role_id')
@@ -278,72 +307,209 @@ const getRoleAndPermissionsWithUserCount = async (recruiter_id: string) => {
         },
         {} as { [key: string]: number },
       );
-      Object.keys(RolesAndPermissions).map((item) => {
-        RolesAndPermissions[item].assignedTo =
-          count[RolesAndPermissions[item].id] || 0;
-      });
-      return RolesAndPermissions;
+      Object.keys(rolesAndPermissionsDetails.rolesAndPermissions).map(
+        (item) => {
+          rolesAndPermissionsDetails.rolesAndPermissions[item].assignedTo =
+            count[rolesAndPermissionsDetails.rolesAndPermissions[item].id] || 0;
+        },
+      );
+      return rolesAndPermissionsDetails;
     });
 };
 
 const app_modules: {
-  [key: string]: {
-    name: string;
-    description: string;
-    extra_permissions: string[];
-  };
-} = {
-  jobs: {
-    name: 'Jobs',
-    description: 'Jobs description',
-    extra_permissions: [
-      'assessment_enabled',
-      'integrations_enabled',
-      'phone_screening_enabled',
-      'sourcing_enabled',
+  name: string;
+  description: string;
+  permissions: string[];
+}[] = [
+  {
+    name: 'candidate permissions',
+    description:
+      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
+    permissions: [
       'candidates_add',
       'candidates_read',
       'candidates_update',
       'candidates_delete',
       'candidates_moveStage',
-      'profileScore_view',
-      'profileScore_update',
+    ],
+  },
+  {
+    name: 'job permissions',
+    description:
+      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Jobs module:',
+    permissions: [
+      'jobs_create',
+      'jobs_read',
+      'jobs_update',
+      'jobs_delete',
+      'jobs_publish',
+      'jobs_unpublish',
+      'jobs_archive',
+      'jobs_restore',
+      'jobs_assignHiringManager',
+      'jobs_assignRecruiter',
+      'jobs_assignCoordinator',
+      'jobs_assignSourcer',
+    ],
+  },
+
+  {
+    name: 'profile score permissions',
+    description:
+      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
+    permissions: ['profileScore_view', 'profileScore_update'],
+  },
+  {
+    name: 'interview permissions',
+    description:
+      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
+    permissions: [
       'interviews_schedule',
       'interviews_read',
       'interviews_update',
       'interviews_delete',
-      'reports_generate',
-      'reports_view',
-      'reports_export',
     ],
   },
-  tasks: {
-    name: 'Tasks',
-    description: 'tasks description',
-    extra_permissions: [],
+  {
+    name: 'report permissions',
+    description:
+      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
+    permissions: ['reports_generate', 'reports_view', 'reports_export'],
   },
-  scheduler: {
-    name: 'Scheduler',
-    description: 'scheduler description',
-    extra_permissions: [],
+  {
+    name: 'settings permissions',
+    description:
+      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
+    permissions: ['settings_view', 'settings_update'],
   },
-  workflow: {
-    name: 'Workflow',
-    description: 'workflow description',
-    extra_permissions: [],
+  {
+    name: 'task permissions',
+    description:
+      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
+    permissions: [
+      'tasks_enabled',
+      'tasks_create',
+      'tasks_read',
+      'tasks_update',
+      'tasks_delete',
+    ],
   },
-  settings: {
-    name: 'Company',
-    description: 'settings description',
-    extra_permissions: [
+  {
+    name: 'scheduler permissions',
+    description:
+      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
+    permissions: [
+      'scheduler_enabled',
+      'scheduler_create',
+      'scheduler_read',
+      'scheduler_update',
+      'scheduler_delete',
+      'scheduler_request_availability',
+      'scheduler_send_scheduling',
+      'scheduler_interview_types_create',
+      'scheduler_interview_types_read',
+      'scheduler_interview_types_update',
+      'scheduler_interviewer_edit',
+    ],
+  },
+  {
+    name: 'miscellaneous permissions',
+    description:
+      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
+    permissions: [
+      'jobs_enabled',
+      'sourcing_enabled',
+      'phone_screening_enabled',
+      'assessment_enabled',
+      'integrations_enabled',
       'company_setting_enabled',
-      'team_delete',
+      'workflow_enabled',
+      'workflow_create',
+      'workflow_read',
+      'workflow_update',
+      'workflow_delete',
       'team_enabled',
       'team_create',
       'team_read',
       'team_update',
+      'team_delete',
+      'settings_scheduler_enable',
+      'settings_scheduler_update',
+      'settings_company_enable',
+      'settings_company_update',
+      'settings_team_enable',
+      'settings_team_update',
+      'settings_roles_enable',
+      'settings_roles_update',
     ],
   },
-};
+];
 
-const temp_modules = Object.keys(app_modules);
+const temp_modules = app_modules.map((item) => item.name);
+function RoleDetails({
+  role,
+  roleDetails,
+  setRole,
+}: {
+  role: ReturnType<
+    typeof useRoleAndPermissions
+  >['data']['rolesAndPermissions'][number] & { name: string };
+  setRole: () => void;
+  roleDetails: {
+    [key: string]: {
+      description: string;
+      permissions: (typeof role)['permissions'];
+    };
+  };
+}) {
+  return (
+    <PageLayout
+      isBackButton={true}
+      onClickBack={{ onClick: setRole }}
+      slotTopbarLeft={
+        <Breadcrum textName={capitalizeFirstLetter(role.name + ' Role')} />
+      }
+      slotBody={
+        <Stack p={3}>
+          {Object.entries(roleDetails).map(
+            ([module, { description, permissions }]) => (
+              <Stack key={module} pb={2}>
+                <Typography variant='h4'>
+                  {capitalizeFirstLetter(module)}
+                </Typography>
+                <Typography pb={1}>{description}</Typography>
+                <FormGroup
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    maxWidth: '900px',
+                  }}
+                >
+                  {permissions?.map((permission) => {
+                    return (
+                      <Stack key={permission.id} width={'40%'}>
+                        <FormControlLabel
+                          checked={permission.isActive}
+                          control={<Checkbox />}
+                          label={permission.name}
+                          sx={{
+                            marginLeft: '4px',
+                            gap: '8px',
+                          }}
+                        />
+                        <Typography ml={4} variant='caption'>
+                          {permission.description || 'sample'}
+                        </Typography>
+                      </Stack>
+                    );
+                  })}
+                </FormGroup>
+              </Stack>
+            ),
+          )}
+        </Stack>
+      }
+    />
+  );
+}

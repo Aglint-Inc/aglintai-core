@@ -5,6 +5,7 @@ import {
   InterviewSessionTypeDB,
 } from '@aglint/shared-types';
 import { ScheduleUtils } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import {
   Autocomplete,
   Checkbox,
@@ -17,10 +18,13 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalBadge } from '@/devlink/GlobalBadge';
+import { GlobalCta } from '@/devlink3/GlobalCta';
 import { ReqAvailability } from '@/devlink3/ReqAvailability';
 import { ScheduleSelectPill } from '@/devlink3/ScheduleSelectPill';
 import { ToggleWithText } from '@/devlink3/ToggleWithText';
-import GreenBgCheckedIcon from '@/src/components/Common/Icons/GreenBgCheckedIcon';
 import PopUpArrowIcon from '@/src/components/Common/Icons/PopUpArrowIcon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import ToggleBtn from '@/src/components/Common/UIToggle';
@@ -36,18 +40,14 @@ import {
   ApiResponseSessionCache,
 } from '@/src/pages/api/scheduling/application/candidatesessioncache';
 import { getCompanyDaysCnt } from '@/src/services/CandidateScheduleV2/utils/companyWorkingDays';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { ButtonSoft, ButtonSolid, GlobalBadge } from '@/devlink';
-import { GlobalCta } from '@/devlink3';
-import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { addScheduleActivity } from '../../Candidates/queries/utils';
 import { useAllActivities, useGetScheduleApplication } from '../hooks';
 import {
-  setIsScheduleNowOpen,
   setStepScheduling,
   useSchedulingFlowStore,
 } from '../SchedulingDrawer/store';
@@ -85,6 +85,7 @@ function RequestAvailability() {
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
   const { selectedDate } = useRequestAvailabilityContext();
   const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
   const { refetch } = useAllActivities({
     application_id: selectedApplication?.id,
   });
@@ -102,16 +103,16 @@ function RequestAvailability() {
       accumulator + session.interview_session.session_duration,
     0,
   );
-  function getDrawerClose() {
-    setIsScheduleNowOpen(false);
-    const currentPath = router.pathname;
-    const currentQuery = { ...router.query };
-    delete currentQuery.task_id;
-    router.replace({
-      pathname: currentPath,
-      query: currentQuery,
-    });
-  }
+  // function getDrawerClose() {
+  //   setIsScheduleNowOpen(false);
+  //   const currentPath = router.pathname;
+  //   const currentQuery = { ...router.query };
+  //   delete currentQuery.task_id;
+  //   router.replace({
+  //     pathname: currentPath,
+  //     query: currentQuery,
+  //   });
+  // }
 
   const [availability, setAvailability] = useState<
     DatabaseTable['candidate_request_availability']['availability']
@@ -193,8 +194,11 @@ function RequestAvailability() {
 
             return {
               ...ses,
-              id: newSession.newId,
               interview_meeting: newSession.interview_meeting,
+              interview_session: {
+                ...newSession.interview_session,
+                id: newSession.newId,
+              },
             };
           });
         } else {
@@ -216,12 +220,6 @@ function RequestAvailability() {
         });
         setRequestDetails(result);
 
-        axios.post(`/api/emails/availabilityReqResend_email_candidate`, {
-          meta: {
-            avail_req_id: result.id,
-            recruiter_user_id: recruiterUser.user_id,
-          },
-        });
         const { data: requestData } = await axios.post(
           `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,
           {
@@ -287,7 +285,7 @@ function RequestAvailability() {
         });
         setRequestDetails(result);
         await supabase.from('request_session_relation').insert(
-          selectedSessions.map((ele) => ({
+          localSessions.map((ele) => ({
             session_id: ele.interview_session.id,
             request_availability_id: result.id,
           })),
@@ -316,6 +314,7 @@ function RequestAvailability() {
             ...payload,
           },
         });
+
         // end
         let task = null as null | DatabaseTable['new_tasks'];
         if (markCreateTicket) {
@@ -435,8 +434,6 @@ function RequestAvailability() {
       setIsFindingSlots(false);
     }
   }, [availability, selectedAvailabilitySlots]);
-  console.log(meetingsRound);
-  console.log(filteredAvailabilitySlots);
 
   useEffect(() => {
     setSelectedAvailabilitySlots(null);
@@ -502,12 +499,13 @@ function RequestAvailability() {
             isFoundSlots={!isFindingSlots}
             textFoundSlotsCount={`Found ${totalCount} slots for the suggestion`}
             slotBadge={
-              filteredAvailabilitySlots &&
+              !!filteredAvailabilitySlots &&
+              !!totalCount &&
               filteredAvailabilitySlots.map((ele) => {
                 return (
                   <>
                     <Stack spacing={1} direction={`column`}>
-                      <Stack>Day-{ele.day}</Stack>
+                      <Typography variant='body1'>Day-{ele.day}</Typography>
                       <Stack
                         flexDirection={'row'}
                         flexWrap={'wrap'}
@@ -518,8 +516,9 @@ function RequestAvailability() {
                         {ele.slots.map((ele, i) => {
                           return (
                             <GlobalBadge
+                              key={i}
                               color={'neutral'}
-                              textBadge={`${dayjsLocal(ele.date).format('DD MMMM')}-${ele.count}`}
+                              textBadge={`${dayjsLocal(ele.date).format('DD MMMM')} - ${ele.count} slots`}
                             />
                           );
                         })}
@@ -661,8 +660,12 @@ function RequestAvailability() {
                 <ButtonSoft
                   color={'neutral'}
                   size={2}
-                  onClickButton={{ onClick: getDrawerClose }}
-                  textButton={'Cancel'}
+                  onClickButton={{
+                    onClick: () => {
+                      setStepScheduling('pick_date');
+                    },
+                  }}
+                  textButton={'back'}
                 />
                 <ButtonSolid
                   size={2}
@@ -691,13 +694,20 @@ function RequestAvailability() {
             textDescription={`Candidate received a link to submit availability between ${selectedDate[0].format('DD MMMM YYYY')} to ${selectedDate[1].format('DD MMMM YYYY')}4.`}
             slotButton={
               <ButtonSolid
-                size={2}
-                textButton={'Copy link'}
+                size={1}
+                color={'neutral'}
+                textButton={copied ? 'Copied' : 'Copy link'}
                 onClickButton={{
                   onClick: () => {
-                    navigator.clipboard.writeText(
-                      `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${requestDetails.id}`,
-                    );
+                    if (!copied) {
+                      navigator.clipboard.writeText(
+                        `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${requestDetails.id}`,
+                      );
+                      setCopied(true);
+                      setTimeout(() => {
+                        setCopied(false);
+                      }, 2000);
+                    }
                   },
                 }}
               />

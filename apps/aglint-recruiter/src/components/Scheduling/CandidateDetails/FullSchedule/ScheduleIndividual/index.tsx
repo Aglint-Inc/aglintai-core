@@ -10,7 +10,6 @@ import IconScheduleType from '../../../Candidates/ListCard/Icon/IconScheduleType
 import { getScheduleType } from '../../../Candidates/utils';
 import { formatTimeWithTimeZone } from '../../../utils';
 import IconSessionType from '../../RightPanel/IconSessionType';
-import { useSchedulingApplicationStore } from '../../store';
 import ButtonGroupRight from './ButtonGroupRight';
 import CancelRescheduleBadges from './CancelRescheduleBadges';
 import CollapseContent from './CollapseContent';
@@ -18,12 +17,12 @@ import RequestStatusUnconfirmed from './RequestStatusUnconfirmed';
 import { ScheduleIndividualCardType } from './types';
 
 function ScheduleIndividualCard({
-  isCheckboxVisible = false,
   interview_session,
-  onClickCheckBox,
-  selectedSessionIds,
   candidate,
-  jobTitle,
+  jobTitle = null,
+  selectedSessionIds = [],
+  isCheckboxVisible = false,
+  onClickCheckBox = () => {},
   users = [],
   interview_meeting = null,
   isCollapseNeeded = false,
@@ -31,14 +30,11 @@ function ScheduleIndividualCard({
   isViewDetailVisible = false,
   cancelReasons = [],
   gridStyle = '1.1fr 1.7fr 0.6fr',
+  isCollapseButtonsVisible = false,
+  currentSession,
 }: ScheduleIndividualCardType) {
   const [collapsed, setCollapsed] = useState(false);
-  const { initialSessions } = useSchedulingApplicationStore((state) => ({
-    initialSessions: state.initialSessions,
-  }));
-  const currentSession = initialSessions.find(
-    (session) => session.interview_session.id === interview_session.id,
-  );
+
   const confirmedUsers =
     users?.filter((user) => user.interview_session_relation.is_confirmed) || [];
 
@@ -107,7 +103,7 @@ function ScheduleIndividualCard({
           : '--'
       }
       textTime={
-        interview_meeting?.start_time
+        interview_meeting?.start_time && candidate?.timezone
           ? formatTimeWithTimeZone({
               start_time: interview_meeting.start_time,
               end_time: interview_meeting.end_time,
@@ -135,6 +131,7 @@ function ScheduleIndividualCard({
             currentSession={currentSession}
             interview_meeting={interview_meeting}
             jobTitle={jobTitle}
+            isCollapseButtonsVisible={isCollapseButtonsVisible}
           />
         )
       }

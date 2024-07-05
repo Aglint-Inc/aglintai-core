@@ -1,5 +1,13 @@
 "use client";
 
+console.warn(
+  "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
+);
+
+console.warn(
+  "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
+);
+
 export * as _Builtin from "./_Builtin";
 export * from "./devlinkContext";
 export * from "./interactions";
@@ -109,7 +117,10 @@ export * from "./FilterPageLayout";
 export * from "./FilterPill";
 export * from "./GlobalBadge";
 export * from "./GlobalBanner";
+export * from "./GlobalBannerInline";
+export * from "./GlobalBannerShort";
 export * from "./GlobalIcon";
+export * from "./GlobalInfo";
 export * from "./GlobalStyles";
 export * from "./GreyTextLink";
 export * from "./IconButtonGhost";
@@ -195,6 +206,8 @@ export * from "./RecommendedQuestionCard";
 export * from "./RefreshButton";
 export * from "./RequestReschedule";
 export * from "./ResAbsentError";
+export * from "./RescheduleOptions";
+export * from "./RescheduleOptions";
 export * from "./ResponseCard";
 export * from "./ResponsiveBanner";
 export * from "./ResumeErrorBlock";
@@ -202,7 +215,6 @@ export * from "./ResumeTag";
 export * from "./ScheduleOptions";
 export * from "./ScheduleSettings";
 export * from "./ScheduleWithAgent";
-export * from "./SchedulerDashboard";
 export * from "./SchedulingFlow";
 export * from "./SchedulingSetting";
 export * from "./ScrCheckmarkIcon";
@@ -250,7 +262,6 @@ export * from "./SlotPicker";
 export * from "./StatusBadge";
 export * from "./Stepper";
 export * from "./SubLinkSubMenu";
-export * from "./SubMenu";
 export * from "./SublinkTab";
 export * from "./SubmittedCard";
 export * from "./SummaryBlock";

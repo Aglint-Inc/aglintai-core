@@ -918,7 +918,8 @@ const JobClose = ({
           }
           slotButton={
             <>
-              <ButtonGhost
+              <ButtonSoft
+                color={'neutral'}
                 textButton='Cancel'
                 size={2}
                 onClickButton={{ onClick: () => handleClose() }}

@@ -1,5 +1,5 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import type { CalendarEvent, EmailTemplateAPi } from '@aglint/shared-types';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
 import {
   DAYJS_FORMATS,
   fillCompEmailTemplate,
@@ -39,7 +39,7 @@ export async function fetchUtil(
   let cand_link = '';
   if (req_body.availability_req_id) {
     cand_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.availability_req_id}`;
-  } else {
+  } else if (req_body.filter_id) {
     cand_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${req_body.schedule_id}?filter_id=${req_body.filter_id}`;
   }
   const recruiter_tz = meeting_organizer.scheduling_settings.timeZone.tzCode;
@@ -59,12 +59,21 @@ export async function fetchUtil(
     'confirmInterview_email_applicant',
   );
 
-  const meeting_details = int_sessions.map((int_session) => {
+  const meeting_details = int_sessions.map((int_session, idx) => {
+    let meeting_start_time = int_session.interview_meeting.start_time;
+    let meeting_end_time = int_session.interview_meeting.end_time;
+
+    if (req_body.preview_details) {
+      meeting_start_time =
+        req_body.preview_details.meeting_timings[idx].meeting_start_time;
+      meeting_end_time =
+        req_body.preview_details.meeting_timings[idx].meeting_end_time;
+    }
     return {
-      date: dayjsLocal(int_session.interview_meeting.start_time)
+      date: dayjsLocal(meeting_start_time)
         .tz(recruiter_tz)
         .format(DAYJS_FORMATS.DATE_FORMAT),
-      time: `${dayjsLocal(int_session.interview_meeting.start_time).tz(recruiter_tz).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(int_session.interview_meeting.end_time).tz(recruiter_tz).format(DAYJS_FORMATS.END_TIME_FORMAT)} `,
+      time: `${dayjsLocal(meeting_start_time).tz(recruiter_tz).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(meeting_end_time).tz(recruiter_tz).format(DAYJS_FORMATS.END_TIME_FORMAT)} `,
       sessionType: int_session.name,
       platform: platformRemoveUnderscore(int_session.schedule_type),
       duration: durationCalculator(int_session.session_duration),
@@ -73,8 +82,16 @@ export async function fetchUtil(
     };
   });
 
-  const mail_attachments = int_sessions.map((s) => {
-    const cal_event = s.interview_meeting.meeting_json as CalendarEvent;
+  const mail_attachments = int_sessions.map((s, idx) => {
+    let meeting_start_time = s.interview_meeting.start_time;
+    let meeting_end_time = s.interview_meeting.end_time;
+
+    if (req_body.preview_details) {
+      meeting_start_time =
+        req_body.preview_details.meeting_timings[idx].meeting_start_time;
+      meeting_end_time =
+        req_body.preview_details.meeting_timings[idx].meeting_end_time;
+    }
     const cand_cal_event_name = `Interview Invite: ${job_title} at ${company}`;
     const meeting_info =
       `<h3>${s.name}</h3>` +
@@ -83,7 +100,8 @@ export async function fetchUtil(
       `<p> meeting link ${s.interview_meeting.meeting_link} </p>` +
       `<p><a href=${cand_link}`;
     return createICSAttachment(
-      cal_event,
+      meeting_start_time,
+      meeting_end_time,
       cand_cal_event_name,
       meeting_info,
       s.interview_meeting.meeting_link,

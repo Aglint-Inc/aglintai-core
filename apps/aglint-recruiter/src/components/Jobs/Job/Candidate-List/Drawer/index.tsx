@@ -98,6 +98,7 @@ const Drawer = () => {
                 session_order,
                 meeting_id,
                 session_id: id,
+                meeting_flow: null,
               }),
             ),
     [interviewPlans?.interview_session, sessions],
