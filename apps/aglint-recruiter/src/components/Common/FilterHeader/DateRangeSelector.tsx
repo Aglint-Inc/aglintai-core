@@ -5,6 +5,8 @@ import dayjs from 'dayjs';
 import React, { useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
 import { TaskDate } from '@/devlink3/TaskDate';
@@ -134,8 +136,9 @@ function DateRangeSelector({ name, setValue, values }: DateRangeSelectorType) {
                   spacing={'var(--space-2)'}
                   alignItems={'center'}
                 >
-                  <ButtonGhost
+                  <ButtonSoft
                     size={2}
+                    color={'neutral'}
                     textButton='Cancel'
                     onClickButton={{
                       onClick: () => {
@@ -143,7 +146,7 @@ function DateRangeSelector({ name, setValue, values }: DateRangeSelectorType) {
                       },
                     }}
                   />
-                  <ButtonGhost
+                  <ButtonSolid
                     size={2}
                     textButton='OK'
                     onClickButton={{

@@ -70,7 +70,7 @@ export async function fetchUtil(
       companyLogo: candidate.recruiter.logo,
       emailBody: filled_comp_template.body,
       subject: filled_comp_template.subject,
-      interviewFeedbackLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=feedback">here</a>`,
+      interviewFeedbackLink: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=feedback`,
     };
 
   return {
