@@ -7,4 +7,6 @@ declare function ClearHistory(props: {
   onClickClearHistory?: Types.Devlink.RuntimeProps;
   textDesc?: React.ReactNode;
   textHeader?: React.ReactNode;
+  slotButton?: Types.Devlink.Slot;
+  slotCloseButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -5,12 +5,14 @@ import axios from 'axios';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect, useRef, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateDatabaseSearch } from '@/devlink/CandidateDatabaseSearch';
 import { CandidateHistoryCard } from '@/devlink/CandidateHistoryCard';
 import { CdSearchHistoryLoader } from '@/devlink/CdSearchHistoryLoader';
 import { ClearHistory } from '@/devlink/ClearHistory';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { NavSublink } from '@/devlink/NavSublink';
 import { SavedList } from '@/devlink/SavedList';
 import { SavedListLoader } from '@/devlink/SavedListLoader';
@@ -796,16 +798,42 @@ function CandidateSearchHistory() {
           textHeader={`Delete ${
             list.filter((l) => l.id === deleteList?.id)[0]?.name || ''
           }`}
-          onClickCancel={{
-            onClick: () => {
-              setDeleteList(null);
-            },
-          }}
-          onClickClearHistory={{
-            onClick: () => {
-              handleDeleteList();
-            },
-          }}
+          slotCloseButton={
+            <IconButtonGhost
+              iconName='close'
+              iconSize={4}
+              size={1}
+              color={'neutral'}
+              onClickButton={{
+                onClick: () => {
+                  setDeleteList(null);
+                },
+              }}
+            />
+          }
+          slotButton={
+            <>
+              <ButtonSoft
+                textButton='Cancel'
+                size={2}
+                color={'neutral'}
+                onClickButton={{
+                  onClick: () => {
+                    setDeleteList(null);
+                  },
+                }}
+              />
+              <ButtonSolid
+                textButton='Clear History'
+                size={2}
+                onClickButton={{
+                  onClick: () => {
+                    handleDeleteList();
+                  },
+                }}
+              />
+            </>
+          }
         />
       </MuiPopup>
 
@@ -825,19 +853,48 @@ function CandidateSearchHistory() {
           textHeader={`Delete ${
             history.filter((h) => h.id === deleteHistoryId)[0]?.search_query
           }`}
-          onClickCancel={{
-            onClick: () => {
-              setDeleteHistory(false);
-              setTimeout(() => {
-                setDeleteHistoryId(-1);
-              }, 500);
-            },
-          }}
-          onClickClearHistory={{
-            onClick: () => {
-              handleDeleteHistory();
-            },
-          }}
+          slotCloseButton={
+            <IconButtonGhost
+              iconName='close'
+              iconSize={4}
+              size={1}
+              color={'neutral'}
+              onClickButton={{
+                onClick: () => {
+                  setDeleteHistory(false);
+                  setTimeout(() => {
+                    setDeleteHistoryId(-1);
+                  }, 500);
+                },
+              }}
+            />
+          }
+          slotButton={
+            <>
+              <ButtonSoft
+                textButton='Cancel'
+                size={2}
+                color={'neutral'}
+                onClickButton={{
+                  onClick: () => {
+                    setDeleteHistory(false);
+                    setTimeout(() => {
+                      setDeleteHistoryId(-1);
+                    }, 500);
+                  },
+                }}
+              />
+              <ButtonSolid
+                textButton='Delete'
+                size={2}
+                onClickButton={{
+                  onClick: () => {
+                    handleDeleteHistory();
+                  },
+                }}
+              />
+            </>
+          }
         />
       </MuiPopup>
     </>
