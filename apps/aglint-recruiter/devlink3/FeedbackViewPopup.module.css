@@ -39,49 +39,6 @@
   grid-row-gap: var(--space-1);
 }
 
-.popup_close {
-  padding: var(--space-1);
-  border-radius: var(--radius-2);
-  transition: all 200ms ease;
-  cursor: pointer;
-}
-
-.popup_close:hover {
-  background-color: var(--neutral-3);
-}
-
-.popup_close.cursor-pointer {
-  transition: all 250ms ease;
-}
-
-.popup_close.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.icons.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.icons.pointer {
-  cursor: pointer;
-}
-
 .popup_body-copy {
   display: flex;
   overflow: auto;
@@ -134,6 +91,30 @@
   align-items: center;
   grid-column-gap: var(--space-1);
   grid-row-gap: var(--space-1);
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.icons.pointer {
+  cursor: pointer;
 }
 
 .fvp-edit-feedback {

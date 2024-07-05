@@ -6,6 +6,8 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { useMemo, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { StatusBadge } from '@/devlink2/StatusBadge';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import { FeedbackTableRow } from '@/devlink3/FeedbackTableRow';
@@ -605,6 +607,62 @@ const AdminFeedback = ({
                 <ShowCode.Else>
                   <FeedbackViewPopup
                     isNextPrevVisible={interviewers.length > 1}
+                    slotClose={
+                      <IconButtonGhost
+                        color={'neutral'}
+                        iconName='close'
+                        size={2}
+                        onClickButton={{
+                          onClick: () => {
+                            setSelectedInterviewer(null);
+                            setEdit(false);
+                          },
+                        }}
+                      />
+                    }
+                    slotButton={
+                      <>
+                        <ButtonSoft
+                          textButton='Previous'
+                          highContrast={'true'}
+                          size={2}
+                          iconName='arrow_back_ios'
+                          isLeftIcon
+                          iconSize={2}
+                          onClickButton={{
+                            onClick: () => {
+                              const index =
+                                selectedInterviewer.index - 1 > -1
+                                  ? selectedInterviewer.index - 1
+                                  : interviewers.length - 1;
+                              setSelectedInterviewer({
+                                index,
+                                interviewer: interviewers[Number(index)],
+                              });
+                            },
+                          }}
+                        />
+                        <ButtonSoft
+                          textButton='Next'
+                          highContrast={'true'}
+                          size={2}
+                          iconName='arrow_forward_ios'
+                          isRightIcon
+                          iconSize={2}
+                          onClickButton={{
+                            onClick: () => {
+                              const index =
+                                (selectedInterviewer.index + 1) %
+                                interviewers.length;
+                              setSelectedInterviewer({
+                                index,
+                                interviewer: interviewers[Number(index)],
+                              });
+                            },
+                          }}
+                        />
+                      </>
+                    }
                     isEditFeedbackVisible={
                       selectedInterviewer.interviewer.user_id === user_id
                     }
@@ -662,34 +720,6 @@ const AdminFeedback = ({
                     onClickEditFeedback={{
                       onClick: () => {
                         setEdit(true);
-                      },
-                    }}
-                    onClickClose={{
-                      onClick: () => {
-                        setSelectedInterviewer(null);
-                        setEdit(false);
-                      },
-                    }}
-                    onClickNext={{
-                      onClick: () => {
-                        const index =
-                          (selectedInterviewer.index + 1) % interviewers.length;
-                        setSelectedInterviewer({
-                          index,
-                          interviewer: interviewers[Number(index)],
-                        });
-                      },
-                    }}
-                    onClickPrev={{
-                      onClick: () => {
-                        const index =
-                          selectedInterviewer.index - 1 > -1
-                            ? selectedInterviewer.index - 1
-                            : interviewers.length - 1;
-                        setSelectedInterviewer({
-                          index,
-                          interviewer: interviewers[Number(index)],
-                        });
                       },
                     }}
                     slotAvatarWithName={
@@ -1031,34 +1061,62 @@ const InterviewerFeedback = ({
                         setEdit(true);
                       },
                     }}
-                    onClickClose={{
-                      onClick: () => {
-                        setSelectedInterviewer(null);
-                        setEdit(false);
-                      },
-                    }}
-                    onClickNext={{
-                      onClick: () => {
-                        const index =
-                          (selectedInterviewer.index + 1) % interviewers.length;
-                        setSelectedInterviewer({
-                          index,
-                          interviewer: interviewers[Number(index)],
-                        });
-                      },
-                    }}
-                    onClickPrev={{
-                      onClick: () => {
-                        const index =
-                          selectedInterviewer.index - 1 > -1
-                            ? selectedInterviewer.index - 1
-                            : interviewers.length - 1;
-                        setSelectedInterviewer({
-                          index,
-                          interviewer: interviewers[Number(index)],
-                        });
-                      },
-                    }}
+                    slotClose={
+                      <IconButtonGhost
+                        color={'neutral'}
+                        iconName='close'
+                        size={2}
+                        onClickButton={{
+                          onClick: () => {
+                            setSelectedInterviewer(null);
+                            setEdit(false);
+                          },
+                        }}
+                      />
+                    }
+                    slotButton={
+                      <>
+                        <ButtonSoft
+                          textButton='Previous'
+                          highContrast={'true'}
+                          size={2}
+                          iconName='arrow_back_ios'
+                          isLeftIcon
+                          iconSize={2}
+                          onClickButton={{
+                            onClick: () => {
+                              const index =
+                                selectedInterviewer.index - 1 > -1
+                                  ? selectedInterviewer.index - 1
+                                  : interviewers.length - 1;
+                              setSelectedInterviewer({
+                                index,
+                                interviewer: interviewers[Number(index)],
+                              });
+                            },
+                          }}
+                        />
+                        <ButtonSoft
+                          textButton='Next'
+                          highContrast={'true'}
+                          size={2}
+                          iconName='arrow_forward_ios'
+                          isRightIcon
+                          iconSize={2}
+                          onClickButton={{
+                            onClick: () => {
+                              const index =
+                                (selectedInterviewer.index + 1) %
+                                interviewers.length;
+                              setSelectedInterviewer({
+                                index,
+                                interviewer: interviewers[Number(index)],
+                              });
+                            },
+                          }}
+                        />
+                      </>
+                    }
                     slotAvatarWithName={
                       <AvatarWithName
                         textName={`${selectedInterviewer.interviewer.first_name} ${selectedInterviewer.interviewer.last_name}`}
