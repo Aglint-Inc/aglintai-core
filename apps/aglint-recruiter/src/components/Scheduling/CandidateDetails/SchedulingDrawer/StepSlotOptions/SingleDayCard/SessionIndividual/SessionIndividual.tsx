@@ -23,7 +23,9 @@ function SessionIndividual({
   return (
     <>
       <SessionDetails
-        slotSessionIcon={<IconSessionType type={session.session_type} />}
+        slotSessionIcon={
+          <IconSessionType type={session.session_type} size={5} />
+        }
         key={session.session_id}
         textSessionName={session_name}
         textSessionDuration={session_duration}

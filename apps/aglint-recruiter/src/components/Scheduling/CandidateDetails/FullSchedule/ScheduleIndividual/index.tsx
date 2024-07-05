@@ -10,7 +10,6 @@ import IconScheduleType from '../../../Candidates/ListCard/Icon/IconScheduleType
 import { getScheduleType } from '../../../Candidates/utils';
 import { formatTimeWithTimeZone } from '../../../utils';
 import IconSessionType from '../../RightPanel/IconSessionType';
-import { useSchedulingApplicationStore } from '../../store';
 import ButtonGroupRight from './ButtonGroupRight';
 import CancelRescheduleBadges from './CancelRescheduleBadges';
 import CollapseContent from './CollapseContent';
@@ -31,14 +30,11 @@ function ScheduleIndividualCard({
   isViewDetailVisible = false,
   cancelReasons = [],
   gridStyle = '1.1fr 1.7fr 0.6fr',
+  isCollapseButtonsVisible = false,
+  currentSession,
 }: ScheduleIndividualCardType) {
   const [collapsed, setCollapsed] = useState(false);
-  const { initialSessions } = useSchedulingApplicationStore((state) => ({
-    initialSessions: state.initialSessions,
-  }));
-  const currentSession = initialSessions.find(
-    (session) => session.interview_session.id === interview_session.id,
-  );
+
   const confirmedUsers =
     users?.filter((user) => user.interview_session_relation.is_confirmed) || [];
 
@@ -118,7 +114,6 @@ function ScheduleIndividualCard({
       textCandidateName={candidate.fullname}
       textDuration={getBreakLabel(interview_session.session_duration)}
       textPlaformName={getScheduleType(interview_session.schedule_type)}
-      // showJobTitle={!!jobTitle}
       textRole={jobTitle}
       textPanelName={interview_session.name}
       onClickDropdown={{
@@ -136,6 +131,7 @@ function ScheduleIndividualCard({
             currentSession={currentSession}
             interview_meeting={interview_meeting}
             jobTitle={jobTitle}
+            isCollapseButtonsVisible={isCollapseButtonsVisible}
           />
         )
       }
