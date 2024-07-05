@@ -5,22 +5,29 @@ import React, { useEffect, useState } from 'react';
 
 import { EmailPreviewOnScheduling } from '@/devlink3/EmailPreviewOnScheduling';
 import toast from '@/src/utils/toast';
+import { useSchedulingApplicationStore } from '../store';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 function EmailPreviewSelfSchedule() {
   const [emailData, setEmailData] = useState<{ html: string; subject: string }>(
     null,
   );
+  const { recruiterUser } = useAuthDetails();
   const [fetching, setFetching] = useState(true);
+
+  const { selectedApplication } = useSchedulingApplicationStore((state) => ({
+    selectedApplication: state.selectedApplication,
+  }));
+
   const payload: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['api_payload'] =
     {
-      filter_json_id: 'self_schedule_request',
-      organizer_id: '',
-      is_preview: true,
+      application_id: selectedApplication.id,
+      organizer_id: recruiterUser.user_id,
     };
   useEffect(() => {
     if (!emailData) {
       axios
-        .post('/api/emails/sendAvailabilityRequest_email_applicant', {
+        .post('/api/emails/sendSelfScheduleRequest_email_applicant', {
           meta: { ...payload },
         })
         .then(({ data }) => {

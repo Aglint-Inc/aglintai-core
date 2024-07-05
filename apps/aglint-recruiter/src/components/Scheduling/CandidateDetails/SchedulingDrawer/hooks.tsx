@@ -108,9 +108,10 @@ export const useSelfSchedulingDrawer = () => {
     if (stepScheduling === 'preference') {
       generateCombinations();
     } else if (stepScheduling === 'slot_options') {
-      if (!isSendingToCandidate) {
-        await onClickSendToCandidate();
-      }
+      setStepScheduling('self_scheduling_email_preview');
+      // if (!isSendingToCandidate) {
+      //   await onClickSendToCandidate();
+      // }
     }
   };
 
