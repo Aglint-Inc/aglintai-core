@@ -5,6 +5,6 @@ declare function AddDepartmentPop(props: {
   as?: React.ElementType;
   slotDepartmentsPills?: Types.Devlink.Slot;
   slotInput?: Types.Devlink.Slot;
-  onClickCancel?: Types.Devlink.RuntimeProps;
-  onClickDone?: Types.Devlink.RuntimeProps;
+  slotButton?: Types.Devlink.Slot;
+  slotClose?: Types.Devlink.Slot;
 }): React.JSX.Element;
