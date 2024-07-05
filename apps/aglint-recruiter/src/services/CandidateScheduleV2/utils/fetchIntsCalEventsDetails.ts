@@ -10,6 +10,7 @@ import {
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { GoogleCalender } from '../../GoogleCalender/google-calender';
+import { CandScheduleApiError } from './CandScheduleApiError';
 import { userTzDayjs } from './userTzDayjs';
 
 export const fetchIntsCalEventsDetails = async (
@@ -21,6 +22,7 @@ export const fetchIntsCalEventsDetails = async (
   cand_tz: string,
 ) => {
   const ints_meta: InterDetailsType[] = session_inters.map((i) => ({
+    full_name: getFullName(i.first_name, i.last_name),
     email: i.email,
     interviewer_id: i.user_id,
     name: getFullName(i.first_name, i.last_name),
@@ -89,6 +91,12 @@ export const fetchIntsCalEventsDetails = async (
     } catch (error) {
       newInt.isCalenderConnected = false;
     }
+    if (!newInt.isCalenderConnected) {
+      throw new CandScheduleApiError(
+        `${int.full_name}'s calender is not connected`,
+        400,
+      );
+    }
     return newInt;
   });
 
@@ -130,6 +138,7 @@ export const fetchIntsCalEventsDetails = async (
       work_hours: i.work_hours,
       day_off: {},
       holiday: {},
+      full_name: i.full_name,
     };
   });
 

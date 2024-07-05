@@ -15,7 +15,7 @@ function EmailPreviewSelfSchedule() {
     {
       filter_json_id: 'self_schedule_request',
       organizer_id: '',
-      is_preview: true,
+      // is_preview: true,
     };
   useEffect(() => {
     if (!emailData) {

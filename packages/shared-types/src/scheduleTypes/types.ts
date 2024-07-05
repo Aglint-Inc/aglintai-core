@@ -103,6 +103,7 @@ export type MinCalEventDetailTypes = Pick<
   cal_type: CalConflictType;
 };
 export type InterDetailsType = {
+  full_name: string;
   tokens: ScheduleAuthType | null;
   interviewer_id: string;
   email: string;

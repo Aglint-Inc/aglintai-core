@@ -32,7 +32,6 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   const [logo, setLogo] = useState<string>();
   const [dialog, setDialog] = useState(initialDialog());
   const [isVideoAssessment, setIsVideoAssessment] = useState(false);
-  const [isDetele, setDeletPopup] = useState(false);
   const [nameError, setNameError] = useState(false);
 
   const initialCompanyName = useRef(recruiter?.name);

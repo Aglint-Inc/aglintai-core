@@ -34,10 +34,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
 
     return res.status(200).send(all_combs);
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.error(err);
-    return res.status(500).send(err.message);
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(error.status ?? 500)
+      .json({ name: error.name, message: error.message });
   }
 };
 
