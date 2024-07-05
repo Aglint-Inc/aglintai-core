@@ -1,11 +1,19 @@
+import { EmailTemplateAPi } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
+import axios from 'axios';
 import dayjs from 'dayjs';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { Text } from '@/devlink/Text';
 import { ScheduleOptionsList } from '@/devlink3/ScheduleOptionsList';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
-import { setSelectedCombIds, useSchedulingFlowStore } from '../store';
+import { useSchedulingApplicationStore } from '../../store';
+import {
+  setEmailData,
+  setSelectedCombIds,
+  useSchedulingFlowStore,
+} from '../store';
 import DayCardWrapper from './DayCardWrapper';
 import { extractPlanData, groupByDateRange } from './utils';
 
@@ -15,6 +23,12 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
   const filteredSchedulingOptions = useSchedulingFlowStore(
     (state) => state.filteredSchedulingOptions,
   );
+
+  const { recruiterUser } = useAuthDetails();
+
+  const { selectedApplication } = useSchedulingApplicationStore((state) => ({
+    selectedApplication: state.selectedApplication,
+  }));
 
   const dateRange = useSchedulingFlowStore((state) => state.dateRange);
 
@@ -42,6 +56,26 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
     () => groupedData,
     [filteredSchedulingOptions],
   );
+
+  const payload: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['api_payload'] =
+    {
+      application_id: selectedApplication.id,
+      organizer_id: recruiterUser.user_id,
+    };
+
+  useEffect(() => {
+    try {
+      axios
+        .post('/api/emails/sendSelfScheduleRequest_email_applicant', {
+          meta: { ...payload },
+        })
+        .then(({ data }) => {
+          setEmailData(data);
+        });
+    } catch (e) {
+      //
+    }
+  }, []);
 
   return (
     <Stack height={'calc(100vh - 96px)'}>
@@ -74,7 +108,7 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
                   selectedCombIds={selectedCombIds}
                   isDisabled={false}
                   isDayCheckboxNeeded={!isDebrief}
-                  isSlotCheckboxNeeded={false}
+                  isSlotCheckboxNeeded={!isDebrief}
                   isDayCollapseNeeded={true}
                   isSlotCollapseNeeded={true}
                   index={index}

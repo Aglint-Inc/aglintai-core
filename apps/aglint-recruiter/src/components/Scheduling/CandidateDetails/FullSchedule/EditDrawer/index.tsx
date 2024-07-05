@@ -342,7 +342,7 @@ function SideDrawerEdit() {
 
         const editInterviewSessionParams: EditInterviewSession = {
           break_duration: editSession.interview_session.break_duration,
-          interviewer_cnt: editSession.interview_session.interviewer_cnt,
+          interviewer_cnt: editSession.interview_session.interviewer_cnt || 1,
           location: editSession.interview_session.location,
           module_id: editSession.interview_session.module_id,
           name: editSession.interview_session.name,

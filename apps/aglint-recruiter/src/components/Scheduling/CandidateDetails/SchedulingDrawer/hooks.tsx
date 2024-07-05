@@ -108,6 +108,8 @@ export const useSelfSchedulingDrawer = () => {
     if (stepScheduling === 'preference') {
       generateCombinations();
     } else if (stepScheduling === 'slot_options') {
+      setStepScheduling('self_scheduling_email_preview');
+    } else if (stepScheduling === 'self_scheduling_email_preview') {
       if (!isSendingToCandidate) {
         await onClickSendToCandidate();
       }
@@ -236,9 +238,12 @@ export const useSelfSchedulingDrawer = () => {
       } else {
         toast.error('Error retrieving availability.');
       }
-    } catch (e) {
-      toast.error(e.message);
-      //
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error('Error retrieving availability.');
+      }
     } finally {
       setFetchingPlan(false);
     }

@@ -115,6 +115,10 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                       setStepScheduling('preference');
                     } else if (stepScheduling === 'preference') {
                       setStepScheduling('pick_date');
+                    } else if (
+                      stepScheduling === 'self_scheduling_email_preview'
+                    ) {
+                      setStepScheduling('slot_options');
                     }
                   },
                 }}
@@ -129,7 +133,8 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                   textButton={
                     !isDebrief
                       ? stepScheduling === 'preference' ||
-                        stepScheduling === 'pick_date'
+                        stepScheduling === 'pick_date' ||
+                        stepScheduling === 'slot_options'
                         ? 'Continue'
                         : 'Send to Candidate'
                       : 'Schedule Now'
