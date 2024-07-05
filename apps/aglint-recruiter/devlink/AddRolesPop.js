@@ -2,10 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { IconButtonGhost } from "./IconButtonGhost";
 import { SlotComp } from "./SlotComp";
-import { ButtonGhost } from "./ButtonGhost";
-import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./AddRolesPop.module.css";
 
@@ -13,8 +10,9 @@ export function AddRolesPop({
   as: _Component = _Builtin.Block,
   slotInput,
   slotRolesPills,
-  onClickDone = {},
   onClickCancel = {},
+  slotButton,
+  slotClose,
 }) {
   return (
     <_Component
@@ -26,13 +24,7 @@ export function AddRolesPop({
         tag="div"
       >
         <Text weight="medium" content="Add Roles" />
-        <IconButtonGhost
-          onClickButton={onClickCancel}
-          iconName="close"
-          iconWeight="thin"
-          iconColor="neutral"
-          color="neutral"
-        />
+        <_Builtin.Block tag="div">{slotClose}</_Builtin.Block>
       </_Builtin.Block>
       <Text
         color="neutral"
@@ -54,22 +46,7 @@ export function AddRolesPop({
         className={_utils.cx(_styles, "roles-btn-wrap")}
         tag="div"
       >
-        <_Builtin.Block tag="div" {...onClickCancel}>
-          <ButtonGhost
-            isLeftIcon={false}
-            isRightIcon={false}
-            textButton="Cancel"
-            size="2"
-          />
-        </_Builtin.Block>
-        <_Builtin.Block tag="div" {...onClickDone}>
-          <ButtonSolid
-            isLeftIcon={false}
-            isRightIcon={false}
-            textButton="Add"
-            size="2"
-          />
-        </_Builtin.Block>
+        {slotButton}
       </_Builtin.Block>
     </_Component>
   );

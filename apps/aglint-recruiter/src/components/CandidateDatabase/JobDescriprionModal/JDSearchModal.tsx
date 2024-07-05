@@ -4,7 +4,9 @@ import { isEmpty } from 'lodash';
 import router from 'next/router';
 import React, { useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { JobDescriptionModal } from '@/devlink/JobDescriptionModal';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
@@ -98,23 +100,42 @@ ${jdText}
           </Stack>
         </>
       }
-      onClickClose={{
-        onClick: () => {
-          setJdPopup(false);
-        },
-      }}
-      slotButtonPrimaryRegular={
-        <ButtonSolid
-          isLoading={isJdSearching}
-          isDisabled={disabled}
-          textButton='Search'
-          size={2}
+      slotClose={
+        <IconButtonGhost
+          iconName='close'
+          color={'neutral'}
+          size={1}
           onClickButton={{
             onClick: () => {
-              getMatchingCandsFromJd();
+              setJdPopup(false);
             },
           }}
         />
+      }
+      slotButtonPrimaryRegular={
+        <>
+          <ButtonSoft
+            textButton='Cancel'
+            size={2}
+            color={'neutral'}
+            onClickButton={{
+              onClick: () => {
+                setJdPopup(false);
+              },
+            }}
+          />
+          <ButtonSolid
+            isLoading={isJdSearching}
+            isDisabled={disabled}
+            textButton='Search'
+            size={2}
+            onClickButton={{
+              onClick: () => {
+                getMatchingCandsFromJd();
+              },
+            }}
+          />
+        </>
       }
     />
   );

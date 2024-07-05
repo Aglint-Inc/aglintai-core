@@ -29,7 +29,6 @@ export function ButtonSolid({
       button-size-solid={size}
       button-color-solid={color}
       button-high-contrast-solid={highContrast}
-      {...onClickButton}
     >
       {isLeftIcon ? (
         <_Builtin.Block
@@ -46,7 +45,13 @@ export function ButtonSolid({
           )}
         </_Builtin.Block>
       ) : null}
-      <_Builtin.Block tag="div">{textButton}</_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "button-solid-wrap")}
+        tag="div"
+        {...onClickButton}
+      >
+        <_Builtin.Block tag="div">{textButton}</_Builtin.Block>
+      </_Builtin.Block>
       {isRightIcon ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "align-items-center")}
