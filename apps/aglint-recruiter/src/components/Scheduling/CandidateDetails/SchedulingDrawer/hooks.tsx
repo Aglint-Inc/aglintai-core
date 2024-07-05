@@ -134,29 +134,6 @@ export const useSelfSchedulingDrawer = () => {
     }
   };
 
-  const resetStateSelfScheduling = () => {
-    if (!isSendingToCandidate && !fetchingPlan) {
-      setIsScheduleNowOpen(false);
-      setSchedulingOptions([]);
-      setSelectedSessionIds([]);
-      setStepScheduling('pick_date');
-      setSelectedApplicationLog(null);
-      removeQueryParams();
-      setRequestSessionIds([]);
-      setRescheduleSessionIds([]);
-    }
-  };
-
-  const removeQueryParams = () => {
-    const currentPath = router.pathname;
-    const currentQuery = { ...router.query };
-    delete currentQuery.task_id;
-    router.replace({
-      pathname: currentPath,
-      query: currentQuery,
-    });
-  };
-
   const onClickSendToCandidate = async () => {
     try {
       setIsSendingToCandidate(true);
@@ -360,15 +337,24 @@ export const useSelfSchedulingDrawer = () => {
       setFetchingPlan(false);
       fetchInterviewDataByApplication();
       setSelectedSessionIds([]);
-      resetState();
+      resetStateSelfScheduling();
     }
   };
 
-  const resetState = () => {
-    setIsScheduleNowOpen(false);
-    setSchedulingOptions([]);
-    setSelectedSessionIds([]);
-    setStepScheduling('pick_date');
+  const resetStateSelfScheduling = () => {
+    if (!isSendingToCandidate && !fetchingPlan) {
+      setIsScheduleNowOpen(false);
+      setSchedulingOptions([]);
+      setSelectedSessionIds([]);
+      setStepScheduling('pick_date');
+      setSelectedApplicationLog(null);
+      removeQueryParams();
+      setRequestSessionIds([]);
+      setRescheduleSessionIds([]);
+    }
+  };
+
+  const removeQueryParams = () => {
     const currentPath = router.pathname;
     const currentQuery = { ...router.query };
     delete currentQuery.task_id;

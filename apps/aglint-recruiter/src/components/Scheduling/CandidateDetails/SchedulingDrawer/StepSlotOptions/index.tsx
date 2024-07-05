@@ -73,8 +73,8 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
                   onClickSelect={onClickSelect}
                   selectedCombIds={selectedCombIds}
                   isDisabled={false}
-                  isDayCheckboxNeeded={true}
-                  isSlotCheckboxNeeded={true}
+                  isDayCheckboxNeeded={!isDebrief}
+                  isSlotCheckboxNeeded={false}
                   isDayCollapseNeeded={true}
                   isSlotCollapseNeeded={true}
                   index={index}
