@@ -68,12 +68,13 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
               return (
                 <DayCardWrapper
                   key={item.dateArray.join(', ')}
-                  isDebrief={isDebrief}
+                  isRadioNeeded={isDebrief}
                   item={item}
                   onClickSelect={onClickSelect}
                   selectedCombIds={selectedCombIds}
                   isDisabled={false}
-                  isCheckboxAndRadio={true}
+                  isDayCheckboxNeeded={true}
+                  isSlotCheckboxNeeded={true}
                   isDayCollapseNeeded={true}
                   isSlotCollapseNeeded={true}
                   index={index}

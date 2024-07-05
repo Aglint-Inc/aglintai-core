@@ -36,7 +36,7 @@ export async function fetchUtil(
   const organizer = recruiter_user.interview_meeting.recruiter_user;
 
   const comp_email_temp = await fetchCompEmailTemp(
-    req_body.recruiter_id,
+    candidateJob.public_jobs.recruiter_id,
     'interviewEnd_email_interviewerForFeedback',
   );
 
@@ -70,7 +70,7 @@ export async function fetchUtil(
       companyLogo: candidate.recruiter.logo,
       emailBody: filled_comp_template.body,
       subject: filled_comp_template.subject,
-      interviewFeedbackLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=feedback">here</a>`,
+      interviewFeedbackLink: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=feedback`,
     };
 
   return {

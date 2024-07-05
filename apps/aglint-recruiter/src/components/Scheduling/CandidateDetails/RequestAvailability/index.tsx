@@ -85,6 +85,7 @@ function RequestAvailability() {
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
   const { selectedDate } = useRequestAvailabilityContext();
   const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
   const { refetch } = useAllActivities({
     application_id: selectedApplication?.id,
   });
@@ -692,13 +693,18 @@ function RequestAvailability() {
               <ButtonSolid
                 size={1}
                 color={'neutral'}
-                textButton={'Copy link'}
+                textButton={copied ? 'Copied' : 'Copy link'}
                 onClickButton={{
                   onClick: () => {
-                    navigator.clipboard.writeText(
-                      `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${requestDetails.id}`,
-                    );
-                    toast.message('Link copied successfully');
+                    if (!copied) {
+                      navigator.clipboard.writeText(
+                        `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${requestDetails.id}`,
+                      );
+                      setCopied(true);
+                      setTimeout(() => {
+                        setCopied(false);
+                      }, 2000);
+                    }
                   },
                 }}
               />

@@ -98,13 +98,15 @@ function RequestAvailabilityPopUps() {
                 .flat()
                 .map((ele) => `<b>${dayjs(ele.curr_day).format('DD MMM')}</b>`);
 
-            const sesIds = item?.request_session_relations.map(
-              (ele) => ele.session_id,
-            );
+            const sesIds = item?.request_session_relations
+              ? item?.request_session_relations.map((ele) => ele.session_id)
+              : [];
 
-            const sessions = initialSessions.filter((session) =>
-              sesIds.includes(session.interview_session.id),
-            );
+            const sessions =
+              sesIds.length &&
+              initialSessions.filter((session) =>
+                sesIds.includes(session.interview_session.id),
+              );
 
             return (
               <>
