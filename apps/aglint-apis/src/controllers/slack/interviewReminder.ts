@@ -4,6 +4,7 @@ import {Request, Response} from 'express';
 import {envConfig} from 'src/config';
 import {slackWeb} from 'src/services/slack/slackWeb';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
+import {googleCalenderLogo} from 'src/utils/assests';
 
 export async function interviewReminder(req: Request, res: Response) {
   const {session_id, recruiter_user_id, application_id} = req.body;
@@ -68,8 +69,7 @@ export async function interviewReminder(req: Request, res: Response) {
           },
           accessory: {
             type: 'image',
-            image_url:
-              'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/slack_assets/google_calender.png?t=2024-07-04T15%3A08%3A17.513Z',
+            image_url: googleCalenderLogo,
             alt_text: 'google calender',
           },
         },
