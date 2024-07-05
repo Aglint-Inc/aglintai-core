@@ -11,7 +11,7 @@ export function AddJob({
   slotAddJobList,
   textJobSelected = "0",
   slotAddButton,
-  onClickCancel = {},
+  slotCancelButton,
 }) {
   return (
     <_Component
@@ -39,8 +39,10 @@ export function AddJob({
           className={_utils.cx(_styles, "add-job-bottom-right")}
           tag="div"
         >
-          <_Builtin.Block tag="div" {...onClickCancel}>
-            <Text content="Cancel" size="1" color="neutral" />
+          <_Builtin.Block tag="div">
+            {slotCancelButton ?? (
+              <Text content="Cancel" size="1" color="neutral" />
+            )}
           </_Builtin.Block>
           <_Builtin.Block tag="div">{slotAddButton}</_Builtin.Block>
         </_Builtin.Block>
