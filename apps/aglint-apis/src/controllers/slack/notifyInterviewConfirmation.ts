@@ -5,6 +5,7 @@ import {envConfig} from 'src/config';
 import {slackWeb} from 'src/services/slack/slackWeb';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import {googleCalenderLogo} from 'src/utils/assests';
+import {meetingPlatform} from 'src/utils/platform';
 
 export async function notifyInterviewConfirmation(req: Request, res: Response) {
   const {session_id, application_id} = req.body;
@@ -66,7 +67,7 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
               type: 'section',
               text: {
                 type: 'mrkdwn',
-                text: `*Meeting Place :* ${session_details.schedule_type}\n*Meeting Time :* ${dayjs(session_details.start_time).format('MMMM DD hh:mm A')} - ${dayjs(session_details.end_time).format('hh:mm A')} IST\n *Duration :* ${session_details.session_duration} Minutes\n`,
+                text: `*Meeting Place :* ${meetingPlatform(session_details.schedule_type)}\n*Meeting Time :* ${dayjs(session_details.start_time).format('MMMM DD hh:mm A')} - ${dayjs(session_details.end_time).format('hh:mm A')} IST\n *Duration :* ${session_details.session_duration} Minutes\n`,
               },
               accessory: {
                 type: 'image',
