@@ -248,6 +248,7 @@ function ViewTaskDrawer() {
               <>
                 <ButtonFilter
                   textLabel={'Action'}
+                  fontSize={'1'}
                   slotRightIcon={
                     <GlobalIcon iconName={'keyboard_arrow_down'} />
                   }

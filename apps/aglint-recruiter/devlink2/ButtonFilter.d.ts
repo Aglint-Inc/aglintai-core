@@ -9,4 +9,5 @@ declare function ButtonFilter(props: {
   textLabel?: React.ReactNode;
   isDotVisible?: Types.Visibility.VisibilityConditions;
   isActive?: Types.Visibility.VisibilityConditions;
+  fontSize?: Types.Builtin.Text;
 }): React.JSX.Element;
