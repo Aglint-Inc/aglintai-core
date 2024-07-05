@@ -13,6 +13,7 @@ export function ButtonFilter({
   textLabel = "Status",
   isDotVisible = false,
   isActive = true,
+  fontSize = "2",
 }) {
   return (
     <_Component
@@ -27,7 +28,7 @@ export function ButtonFilter({
         {slotLeftIcon}
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "relative-1")} tag="div">
-        <Text content={textLabel} weight="" />
+        <Text content={textLabel} size={fontSize} weight="" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "relative-1", "icon-center")}
