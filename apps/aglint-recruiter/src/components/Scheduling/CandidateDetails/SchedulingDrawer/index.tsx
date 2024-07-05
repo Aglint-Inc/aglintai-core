@@ -9,6 +9,8 @@ import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 
 import RequestAvailability from '../RequestAvailability';
 import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
+import ButtonReschedule from './ButtonReschedule';
+import EmailPreviewSelfSchedule from './EmailPreviewSelfSchedule';
 import { useSelfSchedulingDrawer } from './hooks';
 import RescheduleSlot from './RescheduleSlot';
 import StepScheduleFilter from './StepScheduleFilter';
@@ -81,19 +83,21 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
             },
           }}
           textDrawertitle={
-            scheduleFlow === 'self_scheduling'
-              ? 'Send Self Scheduling Link'
-              : scheduleFlow === 'email_agent'
-                ? 'Schedule With Email Agent'
-                : scheduleFlow === 'phone_agent'
-                  ? 'Schedule With Phone Agent'
-                  : scheduleFlow === 'create_request_availibility'
-                    ? 'Request Availability'
-                    : scheduleFlow === 'update_request_availibility'
-                      ? 'Update Request Availability'
-                      : scheduleFlow === 'debrief'
-                        ? 'Schedule Debrief'
-                        : 'Schedule Now'
+            stepScheduling === 'reschedule'
+              ? 'Reschedule'
+              : scheduleFlow === 'self_scheduling'
+                ? 'Send Self Scheduling Link'
+                : scheduleFlow === 'email_agent'
+                  ? 'Schedule With Email Agent'
+                  : scheduleFlow === 'phone_agent'
+                    ? 'Schedule With Phone Agent'
+                    : scheduleFlow === 'create_request_availibility'
+                      ? 'Request Availability'
+                      : scheduleFlow === 'update_request_availibility'
+                        ? 'Update Request Availability'
+                        : scheduleFlow === 'debrief'
+                          ? 'Schedule Debrief'
+                          : 'Schedule Now'
           }
           slotButtons={
             <>
@@ -113,24 +117,29 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                   },
                 }}
               />
-              <ButtonSolid
-                isLoading={isSendingToCandidate}
-                size={2}
-                textButton={
-                  !isDebrief
-                    ? stepScheduling === 'preference' ||
-                      stepScheduling === 'pick_date'
-                      ? 'Continue'
-                      : 'Send to Candidate'
-                    : 'Schedule Now'
-                }
-                onClickButton={{
-                  onClick: async () => {
-                    await onClickPrimary();
-                    refetch();
-                  },
-                }}
-              />
+
+              {stepScheduling === 'reschedule' ? (
+                <ButtonReschedule />
+              ) : (
+                <ButtonSolid
+                  isLoading={isSendingToCandidate}
+                  size={2}
+                  textButton={
+                    !isDebrief
+                      ? stepScheduling === 'preference' ||
+                        stepScheduling === 'pick_date'
+                        ? 'Continue'
+                        : 'Send to Candidate'
+                      : 'Schedule Now'
+                  }
+                  onClickButton={{
+                    onClick: async () => {
+                      await onClickPrimary();
+                      refetch();
+                    },
+                  }}
+                />
+              )}
             </>
           }
           slotSideDrawerbody={
@@ -144,9 +153,11 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                   <StepScheduleFilter />
                 ) : stepScheduling === 'request_availibility' ? (
                   <RequestAvailability />
-                ) : (
+                ) : stepScheduling === 'slot_options' ? (
                   <StepSlotOptions isDebrief={isDebrief} />
-                )}
+                ) : stepScheduling === 'self_scheduling_email_preview' ? (
+                  <EmailPreviewSelfSchedule />
+                ) : null}
               </>
             ) : (
               <Stack height={'calc(100vh - 96px)'}>
@@ -164,11 +175,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
             )
           }
           isBottomBar={
-            !fetchingPlan &&
-            stepScheduling !== 'request_availibility' &&
-            (stepScheduling === 'slot_options' ||
-              stepScheduling === 'preference' ||
-              stepScheduling === 'pick_date')
+            !fetchingPlan && stepScheduling !== 'request_availibility'
           }
         />
       </Drawer>

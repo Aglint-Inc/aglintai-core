@@ -702,6 +702,7 @@ function SideDrawerEdit() {
                 <ButtonSolid
                   textButton='Save'
                   size={2}
+                  isLoading={saving}
                   onClickButton={{
                     onClick: () => {
                       if (!saving) {

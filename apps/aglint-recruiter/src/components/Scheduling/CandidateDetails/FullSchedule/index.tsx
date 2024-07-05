@@ -167,6 +167,7 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                   >
                     <ScheduleIndividualCard
                       isCheckboxVisible={true}
+                      isCollapseButtonsVisible={true}
                       interview_session={{
                         break_duration:
                           session.interview_session.break_duration,

@@ -11,6 +11,7 @@ import { ScheduleOption } from '@/devlink3/ScheduleOption';
 import { TextWithIcon } from '@/devlink3/TextWithIcon';
 
 import SingleDayCard from '../SingleDayCard';
+import DayCardConflicts from './DayCardConflicts';
 
 const NUMBER_OF_SLOTS_TO_DISPLAY = 10;
 
@@ -111,6 +112,8 @@ function DayCardWrapper({
               content={`${noOfTotalSlots} options, ${noOfSelectedSlots} selected`}
               color={isSelected ? 'accent' : 'neutral'}
             />
+            <DayCardConflicts slotsWithDaySessions={slotsWithDaySessions} />
+
             {isDayCollapseNeeded && (
               <IconButtonSoft
                 size={1}

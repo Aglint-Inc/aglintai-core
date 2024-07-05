@@ -36,4 +36,5 @@ export interface ScheduleIndividualCardType {
   cancelReasons?: DatabaseTable['interview_session_cancel'][];
   gridStyle?: '1.1fr 1.7fr 0.6fr' | '1fr 1.7fr 0fr';
   isViewDetailVisible?: boolean;
+  isCollapseButtonsVisible?: boolean;
 }

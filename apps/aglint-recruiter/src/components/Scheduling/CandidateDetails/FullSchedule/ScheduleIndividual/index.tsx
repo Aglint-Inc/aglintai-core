@@ -31,6 +31,7 @@ function ScheduleIndividualCard({
   isViewDetailVisible = false,
   cancelReasons = [],
   gridStyle = '1.1fr 1.7fr 0.6fr',
+  isCollapseButtonsVisible = false,
 }: ScheduleIndividualCardType) {
   const [collapsed, setCollapsed] = useState(false);
   const { initialSessions } = useSchedulingApplicationStore((state) => ({
@@ -136,6 +137,7 @@ function ScheduleIndividualCard({
             currentSession={currentSession}
             interview_meeting={interview_meeting}
             jobTitle={jobTitle}
+            isCollapseButtonsVisible={isCollapseButtonsVisible}
           />
         )
       }
