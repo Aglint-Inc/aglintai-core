@@ -1,4 +1,4 @@
-import * as v from 'valibot';
+import * as v from "valibot";
 export const applicationRecievedEmailApplicantSchema = v.object({
   application_id: v.string(),
 });
@@ -18,8 +18,8 @@ export const agentEmailCandidateSchema = v.object({
   recruiter_user_id: v.string(),
   filter_id: v.string(),
   mail_headers: v.object({
-    'Message-ID': v.string(),
-    'In-Reply-To': v.string(),
+    "Message-ID": v.string(),
+    "In-Reply-To": v.string(),
   }),
 });
 
@@ -109,15 +109,15 @@ export const interviewStartEmailOrganizerSchema = v.object({
 });
 
 export const sendSelfScheduleRequest_email_applicant = v.object({
-  filter_json_id: v.string(),
   organizer_id: v.string(),
-  is_preview: v.optional(v.boolean(), false),
+  filter_json_id: v.optional(v.string()),
+  application_id: v.optional(v.string()),
   task_id: v.optional(v.string(), undefined),
 });
 
 export const sendAvailabilityRequestEmailApplicantSchema = v.object({
   organizer_user_id: v.string(),
-  avail_req_id: v.nullish(v.string('missing avail_req_id'), undefined),
+  avail_req_id: v.nullish(v.string("missing avail_req_id"), undefined),
   preview_details: v.nullish(
     v.object({
       application_id: v.string(),
