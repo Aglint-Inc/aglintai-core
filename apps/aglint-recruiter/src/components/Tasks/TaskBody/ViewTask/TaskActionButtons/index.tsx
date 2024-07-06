@@ -67,7 +67,7 @@ function TaskActionButtons({
               }}
             />
             <ButtonSoft
-              textButton={'Request again'}
+              textButton={'Request Again'}
               isLoading={false}
               isLeftIcon={false}
               isRightIcon={false}
@@ -153,7 +153,7 @@ function TaskActionButtons({
         >
           <Stack direction={'row'} spacing={1}>
             <ButtonSolid
-              textButton={'Resend invite'}
+              textButton={'Resend Invite'}
               isLoading={false}
               isLeftIcon={false}
               isRightIcon={false}

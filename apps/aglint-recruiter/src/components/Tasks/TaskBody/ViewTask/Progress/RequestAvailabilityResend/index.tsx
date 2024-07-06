@@ -43,7 +43,7 @@ function RequestAvailabilityResend({
       slotButtons={
         <>
           <ButtonSolid
-            textButton={'Resend invite'}
+            textButton={'Resend Invite'}
             isLoading={false}
             isLeftIcon={false}
             isRightIcon={false}

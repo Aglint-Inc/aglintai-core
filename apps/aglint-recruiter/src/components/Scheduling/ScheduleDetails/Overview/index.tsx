@@ -65,7 +65,11 @@ function Overview({ schedule }: { schedule: ScheduleMeeting }) {
             confirmedUsers?.map((item) => {
               return (
                 <>
-                  <InterviewerListCard disableHoverListener={true} item={item} schedule={schedule} />
+                  <InterviewerListCard
+                    disableHoverListener={true}
+                    item={item}
+                    schedule={schedule}
+                  />
                 </>
               );
             })
@@ -154,22 +158,8 @@ function Overview({ schedule }: { schedule: ScheduleMeeting }) {
               color={'accent'}
               textButton={schedule.interview_module.name}
               isRightIcon={true}
-              slotIcon={
-                <Stack>
-                  <svg
-                    width='12'
-                    height='12'
-                    viewBox='0 0 12 12'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path
-                      d='M9.375 2.25C9.60938 2.26563 9.73438 2.39062 9.75 2.625V7.875C9.73438 8.10938 9.60938 8.23438 9.375 8.25C9.14062 8.23438 9.01562 8.10938 9 7.875V3.53906L2.88281 9.63281C2.71094 9.78906 2.53906 9.78906 2.36719 9.63281C2.21094 9.46094 2.21094 9.28906 2.36719 9.11719L8.46094 3H4.125C3.89062 2.98437 3.76562 2.85938 3.75 2.625C3.76562 2.39062 3.89062 2.26563 4.125 2.25H9.375Z'
-                      fill='#CC4E00'
-                    />
-                  </svg>
-                </Stack>
-              }
+              iconName='north_east'
+              iconSize={3}
               onClickButton={{
                 onClick: () => {
                   checkPermissions(['scheduler_create']) &&
@@ -205,7 +195,9 @@ function Overview({ schedule }: { schedule: ScheduleMeeting }) {
               size={1}
               textButton={'Join Meeting'}
               isLeftIcon={false}
-              isRightIcon={false}
+              isRightIcon={true}
+              iconName='north_east'
+              iconSize={3}
               onClickButton={{
                 onClick: () => {
                   window.open(
