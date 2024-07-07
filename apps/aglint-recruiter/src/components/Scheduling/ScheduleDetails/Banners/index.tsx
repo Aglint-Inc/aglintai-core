@@ -103,8 +103,8 @@ function Banners({
                   size={'1'}
                   textButton={'Accept'}
                   onClickButton={{
-                    onClick: () => {
-                      onClickAccept(sessionRelation.id);
+                    onClick: async () => {
+                      await onClickAccept(sessionRelation.id);
                       refetch();
                     },
                   }}
