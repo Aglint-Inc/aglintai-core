@@ -1,15 +1,17 @@
 import { CircularProgress, Stack } from '@mui/material';
+import { useEffect } from 'react';
 
 import { JobDetails } from '@/devlink2/JobDetails';
+import { JobsBanner } from '@/devlink3/JobsBanner';
 import Loader from '@/src/components/Common/Loader';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useJob } from '@/src/context/JobContext';
 import NotFoundPage from '@/src/pages/404';
 
-import { UploadApplications } from '../Common/uploadApplications';
+import { UploadApplications } from '../Common/UploadApplications';
 import { Actions } from './Actions';
-import DNDProvider from './dndProvider';
+import DNDProvider from './DNDProvider';
 import Drawer from './Drawer';
 import Filters from './Filters';
 import { BreadCrumbs } from './layout';
@@ -18,6 +20,10 @@ import Tabs from './Tabs';
 
 const ApplicationsDashboard = () => {
   const { job, jobLoad } = useApplications();
+  const resetAll = useApplicationsStore(({ resetAll }) => resetAll);
+  useEffect(() => {
+    return () => resetAll();
+  }, []);
   return jobLoad ? (
     job !== undefined ? (
       <ApplicationsComponent />
@@ -56,6 +62,7 @@ const ApplicationsComponent = () => {
           />
         }
         slotBreadcrumb={<BreadCrumbs />}
+        slotGlobalBanner={job?.status === 'draft' && <JobsBanner />}
         slotTabs={<Tabs />}
         slotTable={<Table />}
         isFilterVisible={true}

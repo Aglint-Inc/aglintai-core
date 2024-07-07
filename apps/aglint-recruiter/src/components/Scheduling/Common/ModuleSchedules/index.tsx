@@ -1,12 +1,11 @@
-import { InputAdornment, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { Box } from '@mui/material';
 import React, { useState } from 'react';
 
-import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 import { InterviewMemberSide } from '@/devlink2/InterviewMemberSide';
+import SearchField from '@/src/components/Common/SearchField/SearchField';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import UITextField from '@/src/components/Common/UITextField';
 
 import DynamicLoader from '../../Interviewers/DynamicLoader';
 import { ScheduleListType } from './hooks';
@@ -48,21 +47,13 @@ function ModuleSchedules({
     <InterviewMemberSide
       slotInterview={
         <Stack>
-          <UITextField
-            height={32}
-            width='250px'
+          <SearchField
             value={changeText}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position='end'>
-                  <GlobalIcon iconName='search' size='5'/>
-                </InputAdornment>
-              ),
-            }}
-            placeholder={'Search by session.'}
             onChange={(e) => {
               setChangeText(e.target.value);
             }}
+            onClear={() => setChangeText('')}
+            placeholder={'Search by session.'}
           />
         </Stack>
       }
@@ -94,8 +85,8 @@ function ModuleSchedules({
                 backgroundColor: 'var(--neutral-2)', // replace with your desired background color
               }}
             >
-              <Box maxWidth="sm" width="300px" p={2}>
-              <AllInterviewEmpty textDynamic='No schedule found' />
+              <Box maxWidth='sm' width='300px' p={2}>
+                <AllInterviewEmpty textDynamic='No schedule found' />
               </Box>
             </Box>
           </ShowCode.When>

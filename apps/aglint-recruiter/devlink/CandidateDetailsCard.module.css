@@ -218,10 +218,6 @@
   }
 }
 
-.fw-semibold.new-greenhouse {
-  color: #14413d;
-}
-
 .text-color-white {
   color: white;
 }
@@ -366,10 +362,6 @@
 
 .icons.hide {
   display: none;
-}
-
-.icons.mb-9 {
-  margin-bottom: var(--space-9);
 }
 
 .mt-4 {

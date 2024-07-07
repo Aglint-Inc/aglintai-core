@@ -4,7 +4,7 @@ import { getFullName } from '@aglint/shared-utils';
 import { Collapse, Dialog, Stack } from '@mui/material';
 import { useState } from 'react';
 
-import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateSelectionPopup } from '@/devlink2/CandidateSelectionPopup';
 import { SelectActionsDropdown } from '@/devlink2/SelectActionsDropdown';
@@ -187,7 +187,7 @@ const MoveCandidateInterview = () => {
 
   const [taskCheck, setTaskCheck] = useState(false);
   const [task, setTask] = useState<TaskType>(null);
-
+  const [assigner, setAssigner] = useState(null);
   const createTask = async () =>
     taskCheck &&
     (await createTasks(
@@ -201,6 +201,7 @@ const MoveCandidateInterview = () => {
         .filter(({ id }) => checklist.includes(id))
         .map(({ id, name }) => ({ id, name })),
       task,
+      assigner,
     ));
 
   const { buttons, title, description } = useMeta(() => {
@@ -227,6 +228,7 @@ const MoveCandidateInterview = () => {
             <CreateTask
               applications={checklist}
               setTask={setTask}
+              setAssigner={setAssigner}
               job_id={job?.id}
             />
           </Collapse>
@@ -308,7 +310,7 @@ function useMeta(onSubmit: () => void) {
   );
   const buttons = (
     <Stack spacing={'10px'} mt={'10px'} direction={'row'} alignItems={'center'}>
-      <ButtonGhost
+      <ButtonSoft
         textButton='Cancel'
         color={'neutral'}
         size={2}

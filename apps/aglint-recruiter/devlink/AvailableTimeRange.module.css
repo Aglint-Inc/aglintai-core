@@ -82,14 +82,23 @@
 .dp-minus-wrap {
   position: absolute;
   left: auto;
-  top: -10px;
-  right: -10px;
+  top: 0%;
+  right: 0%;
   bottom: auto;
+  z-index: 2;
 
-  padding: 4px;
+  display: flex;
+  width: 18px;
+  height: 18px;
+  justify-content: center;
+  align-items: center;
 
   border: 1px solid #dad9d6;
   border-radius: 9999px;
 
   background-color: white;
+
+  pointer-events: none;
+
+  cursor: auto;
 }

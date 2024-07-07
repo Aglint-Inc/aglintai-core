@@ -10,6 +10,7 @@ import {
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { GoogleCalender } from '../../GoogleCalender/google-calender';
+import { CandScheduleApiError } from './CandScheduleApiError';
 import { userTzDayjs } from './userTzDayjs';
 
 export const fetchIntsCalEventsDetails = async (
@@ -21,6 +22,7 @@ export const fetchIntsCalEventsDetails = async (
   cand_tz: string,
 ) => {
   const ints_meta: InterDetailsType[] = session_inters.map((i) => ({
+    full_name: getFullName(i.first_name, i.last_name),
     email: i.email,
     interviewer_id: i.user_id,
     name: getFullName(i.first_name, i.last_name),
@@ -37,23 +39,26 @@ export const fetchIntsCalEventsDetails = async (
   }));
 
   const getCalEventType = (cal_event_summary: string): CalConflictType => {
-    const soft_conf_key_words =
-      comp_schedule_setting.schedulingKeyWords.SoftConflicts.map((str) =>
-        str.toLowerCase(),
-      );
-    const out_of_office_key_words =
-      comp_schedule_setting.schedulingKeyWords.outOfOffice.map((str) =>
-        str.toLowerCase(),
-      );
-
-    const is_soft_conflict = soft_conf_key_words.some((key_word) =>
-      cal_event_summary.toLowerCase().includes(key_word),
+    const scheduling_keywords = comp_schedule_setting.schedulingKeyWords;
+    const is_soft_conflict = scheduling_keywords.SoftConflicts.some(
+      (key_word) =>
+        cal_event_summary.toLowerCase().includes(key_word.toLowerCase()),
     );
     if (is_soft_conflict) return 'soft';
-    const is_ooo_conflict = out_of_office_key_words.some((key_word) =>
-      cal_event_summary.toLowerCase().includes(key_word),
+    const is_ooo_conflict = scheduling_keywords.outOfOffice.some((key_word) =>
+      cal_event_summary.toLowerCase().includes(key_word.toLocaleLowerCase()),
     );
     if (is_ooo_conflict) return 'ooo';
+
+    const is_recruiting_block = scheduling_keywords.recruitingBlocks.some(
+      (key_word) =>
+        cal_event_summary.toLowerCase().includes(key_word.toLocaleLowerCase()),
+    );
+    if (is_recruiting_block) return 'recruiting_blocks';
+    const is_free_block = scheduling_keywords.free.some((key_word) =>
+      cal_event_summary.toLowerCase().includes(key_word.toLocaleLowerCase()),
+    );
+    if (is_free_block) return 'free_time';
 
     return 'cal_event';
   };
@@ -85,6 +90,12 @@ export const fetchIntsCalEventsDetails = async (
       newInt.isCalenderConnected = true;
     } catch (error) {
       newInt.isCalenderConnected = false;
+    }
+    if (!newInt.isCalenderConnected) {
+      throw new CandScheduleApiError(
+        `${int.full_name}'s calender is not connected`,
+        400,
+      );
     }
     return newInt;
   });
@@ -127,6 +138,7 @@ export const fetchIntsCalEventsDetails = async (
       work_hours: i.work_hours,
       day_off: {},
       holiday: {},
+      full_name: i.full_name,
     };
   });
 

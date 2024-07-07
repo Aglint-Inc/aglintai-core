@@ -126,14 +126,6 @@
   grid-row-gap: var(--space-3);
 }
 
-.int-completed-bottom.fixed-bottom {
-  position: fixed;
-  left: 0%;
-  top: auto;
-  right: 0%;
-  bottom: 0%;
-}
-
 .icon-embed {
   display: flex;
   width: 100%;
@@ -262,10 +254,6 @@
   .hide {
     display: none;
   }
-}
-
-.icons.mb-9 {
-  margin-bottom: var(--space-9);
 }
 
 .mt-4 {

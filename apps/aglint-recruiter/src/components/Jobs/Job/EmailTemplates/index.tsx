@@ -3,30 +3,33 @@ import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { Box, Stack } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
-import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { EditEmail } from '@/devlink/EditEmail';
 import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
-import { JobEditWarning } from '@/devlink/JobEditWarning';
-import { JobWarningList } from '@/devlink/JobWarningList';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
+import EmailPreviewPopover from '@/src/components/Common/EmailTemplateEditor/EmailPreviewPopover';
+import EmailTemplateEditForm from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
 import Loader from '@/src/components/Common/Loader';
-import { useCurrentJob } from '@/src/queries/job-assessment/keys';
+import { SyncStatus } from '@/src/components/NewScreening/PhoneScreenTemplate';
+import { useJob } from '@/src/context/JobContext';
 import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalize } from '@/src/utils/text/textUtils';
+import toast from '@/src/utils/toast';
 
-import { JobEmailTemplateForms } from './form';
 const templates_order: DatabaseEnums['email_slack_types'][] = [
   'applicationRecieved_email_applicant',
   'applicantReject_email_applicant',
 ];
 const JobEmailTemplatesDashboard = () => {
-  const { isFetching } = useCurrJobTemps();
+  const [saving, setSaving] = useState<'saving' | 'saved'>('saved');
+  const { isFetching } = useCurrJobTemps({ setSaving });
 
   return (
     <Stack height={'100%'} width={'100%'}>
@@ -36,9 +39,10 @@ const JobEmailTemplatesDashboard = () => {
         <PageLayout
           slotTopbarLeft={<JobEmailTemplatesDashboardBreadCrumbs />}
           slotTopbarRight={<></>}
+          slotSaving={<SyncStatus status={saving} />}
           slotBody={
             <Box padding={'24px'} bgcolor={'var(--neutral-2)'}>
-              <JobEmailTemplates />
+              <JobEmailTemplates setSaving={setSaving} />
             </Box>
           }
         />
@@ -51,7 +55,7 @@ export default JobEmailTemplatesDashboard;
 
 const JobEmailTemplatesDashboardBreadCrumbs = () => {
   const { push } = useRouter();
-  const { job } = useCurrentJob();
+  const { job } = useJob();
   return (
     <>
       <Breadcrum
@@ -80,28 +84,51 @@ const JobEmailTemplatesDashboardBreadCrumbs = () => {
   );
 };
 
-const JobEmailTemplates = () => {
+const JobEmailTemplates = ({ setSaving }) => {
   const {
     editTemp,
     isloadTiptap,
     selectedTemp,
     handleChangeSelectedTemplate,
     handleUpdateTemp,
-    isUpdatingDb,
-    handleSubmit,
-  } = useCurrJobTemps();
+  } = useCurrJobTemps({ setSaving });
+
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [isHtml, setHtml] = useState(null);
+  const [popOverLoading, setPopOverLoading] = useState(false);
+
+  const preview = async () => {
+    setPopOverLoading(true);
+    try {
+      const { data } = await axios.post(`/api/emails/preview`, {
+        mail_type: editTemp.type,
+        body: editTemp.body,
+      });
+      setHtml(data);
+      setPopOverLoading(false);
+      return data;
+    } catch (error) {
+      setPopOverLoading(false);
+      toast.error(`Error fetching preview: ${error}`);
+      throw error;
+    }
+  };
+
+  const senderNameChange = (e) => {
+    handleUpdateTemp({ ...editTemp, from_name: e.target.value });
+  };
+  const emailSubjectChange = (html) => {
+    const text = html;
+    handleUpdateTemp({ ...editTemp, subject: text });
+  };
+  const emailBodyChange = (s) => {
+    handleUpdateTemp({ ...editTemp, body: s });
+  };
+
   return (
     <EmailTemplatesStart
+      showTabs={false}
       isWarningVisible={true}
-      slotWarning={
-        <JobEditWarning
-          slotWarningList={
-            <>
-              <JobWarningList key={1} textWarning={'warning'} />
-            </>
-          }
-        />
-      }
       slotEmailTemplateCards={
         <>
           <Sections
@@ -110,6 +137,7 @@ const JobEmailTemplates = () => {
           />
         </>
       }
+      slotSearchFilter={<></>}
       slotEmailDetails={
         <>
           {isloadTiptap ? (
@@ -122,31 +150,28 @@ const JobEmailTemplates = () => {
                 emailTemplateCopy[editTemp.type].description
               }
               textEmailName={emailTemplateCopy[editTemp.type].heading}
+              onClickPreview={{
+                onClick: (e) => {
+                  preview();
+                  setAnchorEl(e.currentTarget);
+                },
+              }}
               slotForm={
                 <>
-                  <JobEmailTemplateForms
-                    // selection={selection}
-                    // handleChange={handleChange}
-                    handleChange={handleUpdateTemp}
-                    editTemp={editTemp}
+                  <EmailTemplateEditForm
+                    senderNameChange={senderNameChange}
+                    emailSubjectChange={emailSubjectChange}
+                    emailBodyChange={emailBodyChange}
+                    selectedTemplate={editTemp}
+                    isJobTemplate={true}
                   />
-                  <Stack
-                    marginTop={1}
-                    width={'100%'}
-                    direction={'row'}
-                    justifyContent={'start'}
-                  >
-                    <ButtonSolid
-                      size={2}
-                      isLoading={isUpdatingDb}
-                      textButton={'Save'}
-                      onClickButton={{
-                        onClick: () => {
-                          handleSubmit();
-                        },
-                      }}
-                    />
-                  </Stack>
+                  <EmailPreviewPopover
+                    anchorEl={anchorEl}
+                    setAnchorEl={setAnchorEl}
+                    setHtml={setHtml}
+                    isHtml={isHtml}
+                    Loading={popOverLoading}
+                  />
                 </>
               }
               isSaveChangesButtonVisible={false}
@@ -189,7 +214,7 @@ const Sections = ({
   );
 };
 
-export function useCurrJobTemps() {
+export function useCurrJobTemps({ setSaving }) {
   const router = useRouter();
   const [selectedTemp, setSelectedTemp] = useState<
     DatabaseEnums['email_slack_types']
@@ -239,6 +264,7 @@ export function useCurrJobTemps() {
             subject: updated_val.subject,
           })
           .eq('job_id', router.query.id)
+          .eq('type', updated_val.type)
           .select(),
       );
       return updated_temp;
@@ -261,6 +287,7 @@ export function useCurrJobTemps() {
     updated_val: DatabaseTable['job_email_template'],
   ) => {
     setEditTemp(() => ({ ...updated_val }));
+    debouncedUpdateEmail(updated_val);
   };
 
   const handleChangeSelectedTemplate = (
@@ -274,9 +301,16 @@ export function useCurrJobTemps() {
     }, 300);
   };
 
-  const handleSubmit = async () => {
-    mutateAsync(editTemp);
-  };
+  const debouncedUpdateEmail = useCallback(debounce(updateEmailToDB, 300), []);
+  async function updateEmailToDB(updated_val) {
+    try {
+      setSaving('saving');
+      await mutateAsync(updated_val);
+      setSaving('saved');
+    } catch (err) {
+      toast.error('Something went wrong!');
+    }
+  }
 
   return {
     selectedTemp,
@@ -285,7 +319,6 @@ export function useCurrJobTemps() {
     editTemp,
     handleUpdateTemp,
     handleChangeSelectedTemplate,
-    handleSubmit,
     isUpdatingDb,
     isUpdatingFailed,
   };

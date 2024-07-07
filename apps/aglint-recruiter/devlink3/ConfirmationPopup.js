@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { IconButtonGhost } from "./IconButtonGhost";
+import { GlobalIcon } from "./GlobalIcon";
 import { ButtonSoft } from "./ButtonSoft";
 import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
@@ -49,13 +49,13 @@ export function ConfirmationPopup({
             ) : null}
             <Text content={textPopupTitle} weight="medium" />
           </_Builtin.Block>
-          <IconButtonGhost
-            onClickButton={onClickCancel}
-            iconName="close"
-            iconColor="neutral"
-            iconWeight="thin"
-            color="neutral"
-          />
+          <_Builtin.Block
+            className={_utils.cx(_styles, "cp-close")}
+            tag="div"
+            {...onClickCancel}
+          >
+            <GlobalIcon iconName="close" />
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block tag="div">
           <Text content={textPopupDescription} weight="" color="neutral" />

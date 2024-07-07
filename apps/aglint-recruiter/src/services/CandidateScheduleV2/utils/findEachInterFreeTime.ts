@@ -79,7 +79,7 @@ export const findEachInterviewerFreeTimes = (
 
   /**
    *
-   * @param current_day
+   * @param current_day // in interviewer_tz
    * @param int_schedule_setting
    * @returns considers holidays, dayOffs,
    */
@@ -88,6 +88,21 @@ export const findEachInterviewerFreeTimes = (
     interv: InterDetailsType,
   ) => {
     const { int_schedule_setting } = interv;
+    const work_day = int_schedule_setting.workingHours.find(
+      (day) => current_day.format('dddd').toLowerCase() === day.day,
+    );
+    let work_hour = {
+      startTime: ScheduleUtils.setTimeInDay(
+        current_day.format(),
+        work_day.timeRange.startTime,
+        int_schedule_setting.timeZone.tzCode,
+      ).format(),
+      endTime: ScheduleUtils.setTimeInDay(
+        current_day.format(),
+        work_day.timeRange.endTime,
+        int_schedule_setting.timeZone.tzCode,
+      ).format(),
+    };
     let holiday: TimeDurationType = {
       startTime: current_day
         .startOf('day')
@@ -112,33 +127,18 @@ export const findEachInterviewerFreeTimes = (
     if (is_holiday)
       return {
         holiday: holiday,
-        work_hour: null,
+        work_hour: work_hour,
         day_off: null,
       };
-    const work_day = int_schedule_setting.workingHours.find(
-      (day) => current_day.format('dddd').toLowerCase() === day.day,
-    );
+
     // is day week off
     if (!work_day.isWorkDay) {
       return {
         holiday: null,
-        work_hour: null,
+        work_hour: work_hour,
         day_off,
       };
     }
-
-    let work_hour = {
-      startTime: ScheduleUtils.setTimeInDay(
-        current_day.format(),
-        work_day.timeRange.startTime,
-        int_schedule_setting.timeZone.tzCode,
-      ).format(),
-      endTime: ScheduleUtils.setTimeInDay(
-        current_day.format(),
-        work_day.timeRange.endTime,
-        int_schedule_setting.timeZone.tzCode,
-      ).format(),
-    };
 
     return {
       holiday: null,

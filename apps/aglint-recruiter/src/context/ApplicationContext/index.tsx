@@ -5,17 +5,17 @@ import {
   useEffect,
 } from 'react';
 
-import { ResumePreviewer } from '@/src/components/Jobs/Job/Candidate-List/Common/resumePreviewer';
-import { Body } from '@/src/components/Jobs/Job/Common/candidateDrawer/body';
-import { Details } from '@/src/components/Jobs/Job/Common/candidateDrawer/details';
-import { Overview } from '@/src/components/Jobs/Job/Common/candidateDrawer/details/insights/overview';
-import { applicationQuery } from '@/src/queries/application';
+import { ResumePreviewer } from '@/src/components/Jobs/Job/Candidate-List/Common/ResumePreviewer';
+import { Body } from '@/src/components/Jobs/Job/Common/CandidateDrawer/Body';
+import { Details } from '@/src/components/Jobs/Job/Common/CandidateDrawer/Details';
+import { Overview } from '@/src/components/Jobs/Job/Common/CandidateDrawer/Details/Insights/Overview';
 
 import { useApplicationContext } from './hooks';
 import { useApplicationStore } from './store';
 
-const ApplicationContext =
-  createContext<ReturnType<typeof useApplicationContext>>(undefined);
+type UseContextType = typeof useApplicationContext;
+
+const ApplicationContext = createContext<ReturnType<UseContextType>>(undefined);
 
 export const useApplication = () => {
   const value = useContext(ApplicationContext);
@@ -25,14 +25,8 @@ export const useApplication = () => {
 
 const Application = ({
   children,
-  showResumePreviewActions = false,
   ...props
-}: PropsWithChildren<
-  Parameters<(typeof applicationQuery)['application']>[0] &
-    Partial<
-      Pick<Parameters<typeof ResumePreviewer>[0], 'handleDown' | 'handleUp'>
-    > & { showResumePreviewActions?: boolean }
->) => {
+}: PropsWithChildren<Parameters<UseContextType>[0]>) => {
   const value = useApplicationContext(props);
   const { preview, resetPreview, resetAll } = useApplicationStore(
     ({ preview, resetPreview, resetAll }) => ({
@@ -52,10 +46,9 @@ const Application = ({
         open={preview}
         onClose={() => resetPreview()}
         url={value?.meta?.data?.file_url}
-        handleDown={showResumePreviewActions && props?.handleDown}
-        handleUp={showResumePreviewActions && props?.handleUp}
+        navigation={props?.showResumePreviewActions && props?.navigation}
         bookmark={
-          showResumePreviewActions && {
+          props?.showResumePreviewActions && {
             isBookmarked: value?.meta?.data?.bookmarked,
             handleBookmark: () =>
               value?.handleUpdateApplication({
@@ -63,6 +56,7 @@ const Application = ({
               }),
           }
         }
+        download={value?.meta?.data?.resume_processing_state === 'unparsable'}
       />
       {children ?? <></>}
     </ApplicationContext.Provider>

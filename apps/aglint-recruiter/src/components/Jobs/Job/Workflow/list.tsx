@@ -18,7 +18,7 @@ import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loa
 import { getTriggerOption } from '@/src/components/Workflow/[id]/body/trigger';
 import { JobIcon } from '@/src/components/Workflow/index/body/icons';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useJobDetails } from '@/src/context/JobDashboard';
+import { useJobDashboard } from '@/src/context/JobDashboard';
 import {
   JobDashboardStore,
   useJobDashboardStore,
@@ -39,7 +39,7 @@ const JobWorkflowComp = () => {
   const { push } = useRouter();
   const {
     workflows: { data: jobWorkflows },
-  } = useJobDetails();
+  } = useJobDashboard();
   const { setPopup } = useJobDashboardStore(({ setPopup }) => ({
     setPopup,
   }));
@@ -70,7 +70,7 @@ const JobWorkflows = () => {
   const {
     job,
     workflows: { data: jobWorkflows, status, refetch },
-  } = useJobDetails();
+  } = useJobDashboard();
   const { push } = useRouter();
   const { setPopup } = useJobDashboardStore(({ setPopup }) => ({
     setPopup,
@@ -132,7 +132,7 @@ const WorkflowBrowser = () => {
   const {
     job,
     workflows: { data: workflows },
-  } = useJobDetails();
+  } = useJobDashboard();
   const { data, status } = useWorkflowQuery({ recruiter_id });
   const {
     popup: { open },
@@ -248,17 +248,17 @@ const WorkflowBrowser = () => {
         onClickAction={{ onClick: () => handleSubmit() }}
         textPopupTitle={'Add Workflow'}
         textPopupButton={
-          <Stack direction={'row'} gap={2}>
+          <Stack direction={'row'} gap={1}>
             Add
             <Stack
+              px={'8px'}
               style={{
                 display: count ? 'flex' : 'none',
                 alignItems: 'center',
 
                 backgroundColor: 'var(--white)',
-                color: '#2596be',
-                borderRadius: 'var(--radius-4)',
-                width: '20px',
+                color: 'var(--accent-11)',
+                borderRadius: 'var(--radius-1)',
               }}
             >
               {count}
@@ -269,7 +269,7 @@ const WorkflowBrowser = () => {
         slotPopup={
           <Stack
             style={{
-              height: 'calc(100vh - 120px)',
+              height: 'calc(100vh - 300px)',
               gap: '8px',
               overflow: 'scroll',
             }}
@@ -280,32 +280,6 @@ const WorkflowBrowser = () => {
         onClickClose={{ onClick: () => handleClose() }}
         textDescription={<Filters />}
       />
-      {/* <BrowseAssessment
-        onClickAddSelectedTemplates={{ onClick: () => handleAddTemplates() }}
-        textTemplatesCount={`${count} workflow${
-          count === 1 ? '' : 's'
-        } selected`}
-        isSelected={count !== 0}
-        onClickClose={{ onClick: () => handleClose() }}
-        slotBrowseCard={
-          workflows.length !== 0 && (
-            <AllBrowserCards
-              workflows={workflows}
-              selections={selections}
-              handleClick={handleClick}
-            />
-          )
-        }
-        slotEmpty={
-          workflows.length === 0 && <AssessmentEmpty isCreateNew={false} />
-        }
-        slotSearch={
-          <SearchField
-            val={filter}
-            handleSearch={async (val) => setFilter(val ?? '')}
-          />
-        }
-      /> */}
     </Dialog>
   );
 };

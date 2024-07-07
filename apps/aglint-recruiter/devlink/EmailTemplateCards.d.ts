@@ -8,4 +8,5 @@ declare function EmailTemplateCards(props: {
   textDescription?: React.ReactNode;
   textTitle?: React.ReactNode;
   isActive?: Types.Visibility.VisibilityConditions;
+  slotBadge?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -24,9 +24,13 @@ export class EmailWebHook {
     return record as MailHeaders;
   }
 
-  static getNewMailHeader(mail_headers: MailHeaders, thread_id: string) {
+  static getNewMailHeader(
+    mail_headers: MailHeaders,
+    thread_id: string,
+    agent_email: string,
+  ) {
     const message_id = `<${thread_id}.${Date.now()}@${
-      process.env.NEXT_PUBLIC_AGENT_EMAIL.split('@')[1]
+      agent_email.split('@')[1]
     }>`;
     const newHeader = {
       'In-Reply-To': mail_headers['Message-ID'],
@@ -35,14 +39,13 @@ export class EmailWebHook {
 
     return newHeader;
   }
-  static parseThreadId(mail_headers: MailHeaders) {
+  static parseThreadId(mail_headers: MailHeaders, agent_email: string) {
     try {
       // .split('.')[0]
       const refrences = mail_headers['References']
         .split(' ')
         .map((r) => r.toLowerCase().slice(1, -1));
-      const agent_mail_domain =
-        process.env.NEXT_PUBLIC_AGENT_EMAIL.split('@')[1];
+      const agent_mail_domain = agent_email.split('@')[1];
       const ref = refrences.find((ref) => ref.includes(agent_mail_domain));
 
       if (!ref || !ref.includes(agent_mail_domain)) {

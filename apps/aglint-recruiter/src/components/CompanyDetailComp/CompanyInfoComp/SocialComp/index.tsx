@@ -7,6 +7,8 @@ import Image from 'next/image';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
 import { AddSocialLink } from '@/devlink/AddSocialLink';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { NewSocialLinkPop } from '@/devlink/NewSocialLinkPop';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -542,9 +544,22 @@ const AddSocialLinkButton = ({
       <Dialog open={open} onClose={() => handleClose()}>
         <Stack style={{ pointerEvents: loading ? 'none' : 'auto' }}>
           <NewSocialLinkPop
-            onClickCancel={{ onClick: () => handleClose() }}
-            onClickAdd={{ onClick: () => handleSubmit() }}
             slotSocialForms={forms}
+            slotButton={
+              <>
+                <ButtonSoft
+                  textButton='Cancel'
+                  size={2}
+                  color={'neutral'}
+                  onClickButton={{ onClick: () => handleClose() }}
+                />
+                <ButtonSolid
+                  textButton='Add'
+                  size={2}
+                  onClickButton={{ onClick: () => handleSubmit() }}
+                />
+              </>
+            }
           />
         </Stack>
       </Dialog>

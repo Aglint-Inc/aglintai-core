@@ -6,6 +6,7 @@ import {
   DatabaseTableUpdate,
   DatabaseView,
 } from '@aglint/shared-types';
+import { meetingCardType } from '@aglint/shared-types/src/db/tables/new_tasks.types';
 import {
   EmailAgentId,
   PhoneAgentId,
@@ -37,6 +38,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import { useAuthDetails } from '../AuthContext/AuthContext';
 export type taskFilterType = {
   Job: string[];
+  Date: string[];
   Status: DatabaseEnums['task_status'][];
   Priority: DatabaseEnums['task_priority'][];
   Assignee: string[];
@@ -68,7 +70,7 @@ type TasksReducerType = {
 /* eslint-disable no-unused-vars */
 export type TasksAgentContextType = TasksReducerType & {
   handelAddTask: (
-    x: DatabaseTableInsert['new_tasks'],
+    x: DatabaseTableInsert['new_tasks'] & { sessions: meetingCardType[] },
   ) => Promise<DatabaseView['tasks_view']>;
   handelUpdateTask: (
     x: (Omit<DatabaseTableUpdate['new_tasks'], 'id'> & { id: string })[],
@@ -80,6 +82,7 @@ export type TasksAgentContextType = TasksReducerType & {
   ) => Promise<boolean>;
   handelSearch: (x: string) => void;
   handelFilter: (x: AtLeastOneRequired<TasksReducerType['filter']>) => void;
+  handelResetFilter: () => void;
   handelSort: (x: TasksReducerType['sort']) => void;
   loadingTasks: boolean;
 };
@@ -136,6 +139,7 @@ const contextInitialState: TasksAgentContextType = {
   handelAddTaskProgress: (x) => Promise.resolve(false),
   handelSearch: (x) => {},
   handelFilter: (x) => {},
+  handelResetFilter: () => {},
   handelSort: (x) => {},
 };
 /* eslint-enable no-unused-vars */
@@ -320,11 +324,15 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
   const handelAddTask: TasksAgentContextType['handelAddTask'] = async (
     task,
   ) => {
-    return updateTask({ type: 'new', task }).then(async (taskData) => {
-      const tempTask = [{ ...taskData }, ...cloneDeep(tasksReducer.tasks)];
-      handelTaskChanges(tempTask, 'add');
-      return taskData;
-    });
+    let sessions: (typeof task)['sessions'] = [...task.sessions];
+    delete task.sessions;
+    return updateTask({ type: 'new', task }, sessions).then(
+      async (taskData) => {
+        const tempTask = [{ ...taskData }, ...cloneDeep(tasksReducer.tasks)];
+        handelTaskChanges(tempTask, 'add');
+        return taskData;
+      },
+    );
   };
 
   const handelUpdateTask: TasksAgentContextType['handelUpdateTask'] = async (
@@ -392,6 +400,31 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
+  const handelResetFilter: TasksAgentContextType['handelResetFilter'] = () => {
+    const data = Object.keys(tasksReducer.filter).reduce((acc, key) => {
+      // eslint-disable-next-line security/detect-object-injection
+      acc[key] = { ...tasksReducer.filter[key], values: [] };
+      return acc;
+    }, {});
+
+    localStorage.setItem(
+      'taskFilters',
+      JSON.stringify({
+        Candidate: [],
+        Status: [],
+        Assignee: [],
+        Priority: [],
+        Job: [],
+        Type: [],
+        Date: [],
+      }),
+    );
+    dispatch({
+      type: TasksReducerAction.FILTER,
+      payload: data as TasksReducerType['filter'],
+    });
+  };
+
   const handelSort: TasksAgentContextType['handelSort'] = (sort) => {
     dispatch({
       type: TasksReducerAction.SORT,
@@ -415,8 +448,8 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
 
     if (status.values.length) {
       temp = temp.filter((sub) => {
-        const progress_type = sub.last_progress.progress_type;
-        const created_at = sub.last_progress.created_at;
+        const progress_type = sub?.latest_progress?.progress_type;
+        const created_at = sub?.latest_progress?.created_at;
 
         if (
           status.values.includes(
@@ -531,6 +564,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
           temp.filter.jobTitle.values = preFilterData?.Job || [];
           temp.filter.type.values = preFilterData?.Type || [];
           temp.filter.candidate.values = preFilterData?.Candidate || [];
+          temp.filter.date.values = preFilterData?.Date || [];
         }
 
         temp.tasks = data.data;
@@ -602,6 +636,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
             handelSearch,
             handelFilter,
             handelSort,
+            handelResetFilter,
             loadingTasks,
           }}
         >
@@ -663,15 +698,21 @@ const getTasks = ({
     });
 };
 
-export const updateTask = ({
-  type,
-  task,
-}:
-  | { type: 'new'; task: DatabaseTableInsert['new_tasks'] }
-  | {
-      type: 'update';
-      task: Omit<DatabaseTableUpdate['new_tasks'], 'id'> & { id: string };
-    }) => {
+export const updateTask = (
+  {
+    type,
+    task,
+  }:
+    | {
+        type: 'new';
+        task: DatabaseTableInsert['new_tasks'];
+      }
+    | {
+        type: 'update';
+        task: Omit<DatabaseTableUpdate['new_tasks'], 'id'> & { id: string };
+      },
+  sessions?: meetingCardType[],
+) => {
   return (
     type === 'update'
       ? supabase.from('new_tasks').update(task).eq('id', task.id)
@@ -683,11 +724,17 @@ export const updateTask = ({
     .single()
     .then(async ({ data, error }) => {
       if (type === 'new') {
+        await supabase.from('task_session_relation').insert(
+          sessions.map((ele) => ({
+            session_id: ele.id,
+            task_id: data.id,
+          })),
+        );
         const candidateName = getFullName(
           data.applications.candidates.first_name,
           data.applications.candidates.last_name,
         );
-        const sessions = task.session_ids;
+
         await createTaskProgress({
           task_id: data?.id as string,
           title: `Created task for {candidate} to schedule interviews for {selectedSessions}`,
@@ -703,11 +750,11 @@ export const updateTask = ({
             '{selectedSessions}': sessions,
           },
           progress_type:
-            task.type === 'schedule'
+            task.type === 'schedule' ||
+            task.type === 'self_schedule' ||
+            task.type === 'availability'
               ? 'schedule'
-              : task.type === 'self_schedule'
-                ? 'self_schedule'
-                : 'standard',
+              : 'standard',
         });
       }
       const { data: updatedTask } = await supabase

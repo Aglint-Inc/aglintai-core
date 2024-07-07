@@ -1,21 +1,21 @@
 import { NextResponse } from 'next/server';
 import * as v from 'valibot';
-import { sendSelfScheduleRequest_email_applicant } from '@aglint/shared-types/src/aglint-mail/api_schema';
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { dbUtil } from './fetch-util';
+import { selfScheduleReminderEmailApplicantSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
 
 export async function POST(req: Request) {
   const { meta } = await req.json();
 
   try {
-    const req_body = v.parse(sendSelfScheduleRequest_email_applicant, meta);
+    const req_body = v.parse(selfScheduleReminderEmailApplicantSchema, meta);
     const { filled_comp_template, react_email_placeholders, recipient_email } =
       await dbUtil(req_body);
-    await sendMailFun(
+    await sendMailFun({
       filled_comp_template,
       react_email_placeholders,
       recipient_email,
-    );
+    });
     return NextResponse.json('success', {
       status: 200,
     });

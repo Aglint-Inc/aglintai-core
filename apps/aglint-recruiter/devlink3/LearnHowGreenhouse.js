@@ -18,8 +18,8 @@ export function LearnHowGreenhouse({
       >
         <Text
           size="3"
-          weight="bold"
-          align=""
+          weight="medium"
+          align="center"
           highContrast=""
           content="How to connect with Greenhouse"
         />
@@ -42,7 +42,7 @@ export function LearnHowGreenhouse({
             }
           </_Builtin.Paragraph>
           <_Builtin.List
-            className={_utils.cx(_styles, "list", "mt-20", "mb-20")}
+            className={_utils.cx(_styles, "learn-list-how")}
             tag="ul"
             unstyled={false}
           >
@@ -95,6 +95,7 @@ export function LearnHowGreenhouse({
       >
         <Text weight="" color="neutral" content="For more guidelines visit :" />
         <_Builtin.Link
+          className={_utils.cx(_styles, "link")}
           button={false}
           block=""
           options={{

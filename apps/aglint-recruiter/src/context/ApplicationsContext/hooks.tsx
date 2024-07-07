@@ -7,9 +7,6 @@ import {
   applicationsQueries,
   useMoveApplications,
   useUpdateApplication,
-  useUploadApplication,
-  useUploadCsv,
-  useUploadResume,
 } from '@/src/queries/job-applications';
 
 import { useApplicationStore } from '../ApplicationContext/store';
@@ -52,7 +49,10 @@ export const useApplicationsActions = () => {
   });
 
   const locationFilterOptions = useQuery(
-    applicationsQueries.locationFilters({ job_id }),
+    applicationsQueries.locationFilters({
+      job_id,
+      polling: applicationScoringPollEnabled,
+    }),
   );
 
   const newApplications = useInfiniteQuery(
@@ -60,7 +60,7 @@ export const useApplicationsActions = () => {
       job_id,
       polling: applicationScoringPollEnabled,
       status: 'new',
-      count: job?.count?.new ?? 0,
+      count: job?.section_count?.new ?? 0,
       ...params,
     }),
   );
@@ -69,7 +69,7 @@ export const useApplicationsActions = () => {
       job_id,
       polling: applicationScoringPollEnabled,
       status: 'screening',
-      count: job?.count?.screening ?? 0,
+      count: job?.section_count?.screening ?? 0,
       ...params,
     }),
   );
@@ -78,7 +78,7 @@ export const useApplicationsActions = () => {
       job_id,
       polling: applicationScoringPollEnabled,
       status: 'assessment',
-      count: job?.count?.assessment ?? 0,
+      count: job?.section_count?.assessment ?? 0,
       ...params,
     }),
   );
@@ -87,7 +87,7 @@ export const useApplicationsActions = () => {
       job_id,
       polling: applicationScoringPollEnabled,
       status: 'interview',
-      count: job?.count?.interview ?? 0,
+      count: job?.section_count?.interview ?? 0,
       ...params,
     }),
   );
@@ -96,7 +96,7 @@ export const useApplicationsActions = () => {
       job_id,
       polling: applicationScoringPollEnabled,
       status: 'qualified',
-      count: job?.count?.qualified ?? 0,
+      count: job?.section_count?.qualified ?? 0,
       ...params,
     }),
   );
@@ -105,7 +105,7 @@ export const useApplicationsActions = () => {
       job_id,
       polling: applicationScoringPollEnabled,
       status: 'disqualified',
-      count: job?.count?.disqualified ?? 0,
+      count: job?.section_count?.disqualified ?? 0,
       ...params,
     }),
   );
@@ -114,46 +114,27 @@ export const useApplicationsActions = () => {
     () =>
       Object.entries(EMAIL_VISIBILITIES ?? {}).reduce(
         (acc, [key, value]) => {
-          acc[key] =
-            (job?.activeSections ?? []).includes(
-              key as keyof typeof EMAIL_VISIBILITIES,
-            ) && value.includes(section);
+          acc[key] = job?.flags[key] && value.includes(section);
           return acc;
         },
         // eslint-disable-next-line no-unused-vars
         {} as { [id in keyof typeof EMAIL_VISIBILITIES]: boolean },
       ),
-    [EMAIL_VISIBILITIES, job?.activeSections, section],
+    [EMAIL_VISIBILITIES, job?.flags, section],
   );
 
   const cascadeVisibilites = useMemo(
     () =>
       Object.entries(CASCADE_VISIBILITIES ?? {}).reduce(
         (acc, [key, value]) => {
-          acc[key] =
-            (job?.activeSections ?? []).includes(
-              key as keyof typeof CASCADE_VISIBILITIES,
-            ) && value.includes(section);
+          acc[key] = job?.flags[key] && value.includes(section);
           return acc;
         },
         // eslint-disable-next-line no-unused-vars
         {} as { [id in keyof typeof CASCADE_VISIBILITIES]: boolean },
       ),
-    [CASCADE_VISIBILITIES, job?.activeSections, section],
+    [CASCADE_VISIBILITIES, job?.flags, section],
   );
-
-  const { mutate: handleUploadApplication } = useUploadApplication({
-    job_id,
-    ...params,
-  });
-  const { mutate: handleUploadResume } = useUploadResume({
-    job_id,
-    ...params,
-  });
-  const { mutate: handleUploadCsv } = useUploadCsv({
-    job_id,
-    ...params,
-  });
 
   const { mutateAsync: moveApplications } = useMoveApplications(
     {
@@ -248,9 +229,6 @@ export const useApplicationsActions = () => {
     locationFilterOptions,
     handleUpdateApplication,
     handleAsyncUpdateApplication,
-    handleUploadApplication,
-    handleUploadResume,
-    handleUploadCsv,
     handleMoveApplications,
     handleSelectNextApplication,
     handleSelectPrevApplication,

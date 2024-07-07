@@ -34,6 +34,10 @@
   cursor: pointer;
 }
 
+.embed_flex.is_absolute {
+  position: absolute;
+}
+
 .fw-semibold {
   font-weight: 600;
 }

@@ -6,55 +6,77 @@ import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 export async function dbUtil(
   req_body: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['api_payload'],
 ) {
-  const [filterJson] = supabaseWrap(
-    await supabaseAdmin
-      .from('interview_filter_json')
-      .select(
-        'filter_json,interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company,recruiter),candidates(first_name,last_name,email,recruiter(logo))))',
-      )
-      .eq('id', req_body.filter_json_id),
-  );
+  const fetchCandDetailsFromSchedule = async () => {
+    const [filterJson] = supabaseWrap(
+      await supabaseAdmin
+        .from('interview_filter_json')
+        .select(
+          'interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company),candidates(first_name,last_name,email,recruiter(logo))))',
+        )
+        .eq('id', req_body.filter_json_id),
+    );
+    return filterJson.interview_schedule;
+  };
+  const fetchCandDetailsFromApplication = async () => {
+    const [filterJson] = supabaseWrap(
+      await supabaseAdmin
+        .from('applications')
+        .select(
+          'public_jobs(job_title,recruiter_id,company),candidates(first_name,last_name,email,recruiter(logo))',
+        )
+        .eq('id', req_body.application_id),
+    );
+    return {
+      id: '',
+      applications: { ...filterJson },
+    };
+  };
 
+  const fetchOrganzierDetails = async () => {
+    const [organizer] = supabaseWrap(
+      await supabaseAdmin
+        .from('recruiter_user')
+        .select('first_name,last_name')
+        .eq('user_id', req_body.organizer_id),
+    );
+    return organizer;
+  };
+
+  let filterJson: Awaited<ReturnType<typeof fetchCandDetailsFromSchedule>>;
+  const organizer = await fetchOrganzierDetails();
+
+  if (req_body.filter_json_id) {
+    filterJson = await fetchCandDetailsFromSchedule();
+  } else {
+    filterJson = await fetchCandDetailsFromApplication();
+  }
   const {
-    interview_schedule: {
-      applications: {
-        candidates: { email: cand_email, first_name, recruiter, last_name },
-        public_jobs: {
-          company,
-          recruiter_id,
-          job_title,
-          recruiter: recruiter_user_id,
-        },
-      },
+    applications: {
+      candidates: { email: cand_email, first_name, recruiter, last_name },
+      public_jobs: { company, recruiter_id, job_title },
     },
   } = filterJson;
 
-  const [recruiter_user] = supabaseWrap(
-    await supabaseAdmin
-      .from('recruiter_user')
-      .select('first_name,last_name')
-      .eq('user_id', recruiter_user_id),
-  );
   const comp_email_temp = await fetchCompEmailTemp(
     recruiter_id,
     'sendSelfScheduleRequest_email_applicant',
   );
-  const scheduleLink = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.interview_schedule.id}?filter_id=${req_body.filter_json_id}`;
+  const task_id = req_body.task_id;
+  const scheduleLink = task_id
+    ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.id}?filter_id=${req_body.filter_json_id}&task_id=${task_id}`
+    : `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.id}?filter_id=${req_body.filter_json_id}`;
   const comp_email_placeholder: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['comp_email_placeholders'] =
     {
       candidateFirstName: first_name,
       companyName: company,
       jobRole: job_title,
-      selfScheduleLink: `<a href="${scheduleLink}">here</a>`,
-      recruiterName: getFullName(
-        recruiter_user.first_name,
-        recruiter_user.last_name,
-      ),
+      selfScheduleLink: `<a href="${scheduleLink}" target="_blank" >here</a>`,
+      organizerName: getFullName(organizer.first_name, organizer.last_name),
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),
-      recruiterFirstName: recruiter_user.first_name,
-      recruiterLastName: recruiter_user.last_name,
-      recruiterTimeZone: '',
+      organizerFirstName: organizer.first_name,
+      organizerLastName: organizer.last_name,
+      OrganizerTimeZone: '',
     };
 
   const filled_comp_template = fillCompEmailTemplate(

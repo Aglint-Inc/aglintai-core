@@ -170,6 +170,10 @@
   cursor: pointer;
 }
 
+.embed_flex.is_absolute {
+  position: absolute;
+}
+
 #w-node-_40c5256d-4659-c0c1-dc54-95a455fc1442-55fc1442 {
   grid-column-start: span 1;
   grid-column-end: span 1;

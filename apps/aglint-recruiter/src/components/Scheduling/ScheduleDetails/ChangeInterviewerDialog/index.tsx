@@ -9,8 +9,9 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import React, { Dispatch, useEffect, useState } from 'react';
 
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { ChangeInterviewer } from '@/devlink3/ChangeInterviewer';
-import { InterviewerList } from '@/devlink3/InterviewerList';
+import { MemberRow } from '@/devlink3/MemberRow';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -18,7 +19,11 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { convertTimeZoneToAbbreviation } from '../../utils';
+import ConflictWithHover from '../../CandidateDetails/SchedulingDrawer/StepSlotOptions/SingleDayCard/SessionIndividual/ConflictWithHover';
+import {
+  convertTimeZoneToAbbreviation,
+  formatTimeWithTimeZone,
+} from '../../utils';
 import { ScheduleMeeting } from '../types';
 
 function ChangeInterviewerDialog({
@@ -53,7 +58,11 @@ function ChangeInterviewerDialog({
 
   const possibleUsers = schedule?.users.filter(
     (user) =>
-      user.id !== cancelUserId && !user.interview_session_relation.is_confirmed,
+      user.id !== cancelUserId &&
+      !user.interview_session_relation.is_confirmed &&
+      avaialableUsers.find((item) =>
+        item.qualifiedIntervs.some((int) => int.user_id === user.id),
+      ),
   );
 
   const fetchInterviewers = async () => {
@@ -80,14 +89,11 @@ function ChangeInterviewerDialog({
       if (res.status === 200) {
         setAvailableUsers(
           (res.data as APIFindAltenativeTimeSlotResponse).filter((item) =>
-            item.sessions.some(
-              (session) =>
-                session.qualifiedIntervs[0].user_id !== cancelInterviewer.id,
-            ),
+            item.qualifiedIntervs.some((int) => int.user_id !== cancelUserId),
           ),
         );
       }
-    } catch {
+    } catch (e) {
       //
     } finally {
       setLoading(false);
@@ -108,6 +114,11 @@ function ChangeInterviewerDialog({
       const selectedUser = schedule.users.find(
         (user) => user.id === seletectedUserId,
       );
+
+      if (!selectedUser) {
+        toast.error('Please select an alternate interviewer');
+        return;
+      }
 
       const restUsers = schedule.users.filter(
         (user) =>
@@ -216,46 +227,138 @@ function ChangeInterviewerDialog({
                 <Loader />
               </Stack>
             ) : (
-              <>
+              <Stack spacing={1}>
                 {possibleUsers.length === 0 && (
-                  <Stack pl={2}>
-                    No alternate interviewers in this session
-                  </Stack>
+                  <GlobalEmptyState
+                    iconName={'person'}
+                    textDesc={
+                      ' No alternate interviewer found for this session'
+                    }
+                    styleEmpty={{
+                      style: {
+                        backgroundColor: 'var(--neutral-2)',
+                      },
+                    }}
+                  />
                 )}
                 {possibleUsers.map((user) => {
-                  const isAvailable =
-                    avaialableUsers?.find((item) =>
-                      item.sessions.find(
-                        (session) =>
-                          session.qualifiedIntervs[0].user_id === user.id,
-                      ),
-                    ).sessions[0].is_conflict === false;
+                  const sessionConflicts = avaialableUsers.find((item) =>
+                    item.qualifiedIntervs.some(
+                      (int) => int.user_id === user.id,
+                    ),
+                  );
+
+                  const allUserConflicts =
+                    sessionConflicts?.ints_conflicts
+                      .filter((item) => item.interviewer.user_id === user.id)
+                      .map((item) => item.conflict_reasons)
+                      .map((item) => item)
+                      .flat() || [];
+
+                  const userSoftConflicts = allUserConflicts.filter(
+                    (item) => item.conflict_type === 'soft',
+                  );
+
+                  const userHardConflicts = allUserConflicts.filter(
+                    (item) =>
+                      item.conflict_type !== 'soft' &&
+                      item.conflict_type !== 'out_of_working_hours',
+                  );
+
+                  const userOutsideWorkHours = allUserConflicts.filter(
+                    (item) => item.conflict_type === 'out_of_working_hours',
+                  );
+
+                  if (!sessionConflicts) return null;
+
                   return (
                     <Stack
                       key={user.id}
                       onClick={() => {
                         setSeletectedUserId(user.id);
                       }}
+                      p={'var(--space-2)'}
+                      sx={{
+                        cursor: 'pointer',
+                        border: '1px solid',
+                        borderColor:
+                          seletectedUserId === user.id
+                            ? 'var(--accent-6)'
+                            : 'var(--neutral-6)',
+                        borderRadius: 'var(--radius-4)',
+                      }}
                     >
-                      <InterviewerList
-                        isSelected={seletectedUserId === user.id}
-                        textName={
-                          getFullName(user.first_name, user.last_name) +
-                          ` ( ${isAvailable ? 'Available' : 'Not Available'} ) `
-                        }
-                        textDesignation={user.position || ''}
-                        slotProfileImage={
+                      <MemberRow
+                        key={user.id}
+                        textRole={user.position}
+                        slotInterviewerImage={
                           <MuiAvatar
                             level={getFullName(user.first_name, user.last_name)}
                             src={user.profile_image}
-                            variant={'rounded-medium'}
+                            variant={'circular-medium'}
                           />
+                        }
+                        isShadow={false}
+                        isReverseShadow={false}
+                        textName={getFullName(user.first_name, user.last_name)}
+                        textTime={formatTimeWithTimeZone({
+                          start_time: sessionConflicts.start_time,
+                          end_time: sessionConflicts.end_time,
+                          timeZone: dayjs.tz.guess(),
+                        })}
+                        slotConflicts={
+                          <>
+                            {allUserConflicts.length === 0 && (
+                              <ConflictWithHover
+                                isHardConflict={false}
+                                isOutsideWorkHours={false}
+                                isSoftConflict={false}
+                                conflictReasons={[]}
+                                textCount={'No conflicts'}
+                                isNoConflict={true}
+                                isToolTipVisible={true}
+                              />
+                            )}
+                            {userSoftConflicts.length > 0 && (
+                              <ConflictWithHover
+                                isHardConflict={false}
+                                isOutsideWorkHours={false}
+                                isSoftConflict={true}
+                                conflictReasons={userSoftConflicts}
+                                textCount={userSoftConflicts.length}
+                                isNoConflict={false}
+                                isToolTipVisible={true}
+                              />
+                            )}
+                            {userHardConflicts.length > 0 && (
+                              <ConflictWithHover
+                                isHardConflict={true}
+                                isOutsideWorkHours={false}
+                                isSoftConflict={false}
+                                conflictReasons={userHardConflicts}
+                                textCount={userHardConflicts.length}
+                                isNoConflict={false}
+                                isToolTipVisible={true}
+                              />
+                            )}
+                            {userOutsideWorkHours.length > 0 && (
+                              <ConflictWithHover
+                                isHardConflict={false}
+                                isOutsideWorkHours={true}
+                                isSoftConflict={false}
+                                conflictReasons={userOutsideWorkHours}
+                                textCount={userOutsideWorkHours.length}
+                                isNoConflict={false}
+                                isToolTipVisible={true}
+                              />
+                            )}
+                          </>
                         }
                       />
                     </Stack>
                   );
                 })}
-              </>
+              </Stack>
             )
           }
         />

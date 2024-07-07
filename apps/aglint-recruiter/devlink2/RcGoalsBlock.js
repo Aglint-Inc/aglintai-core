@@ -19,7 +19,11 @@ export function RcGoalsBlock({
         className={_utils.cx(_styles, "sl-goal-title-block")}
         tag="div"
       >
-        <Text content="??" align="" weight="bold" />
+        <Text
+          content="What are your goals with Aglint?"
+          align=""
+          weight="medium"
+        />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "sl-goal-check-wrapper")}

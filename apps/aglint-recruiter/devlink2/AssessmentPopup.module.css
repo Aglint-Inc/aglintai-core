@@ -43,6 +43,10 @@
   cursor: pointer;
 }
 
+.embed_flex.is_absolute {
+  position: absolute;
+}
+
 .sidebar_body {
   position: relative;
   z-index: 1;

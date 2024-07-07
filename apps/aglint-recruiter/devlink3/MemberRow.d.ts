@@ -11,4 +11,5 @@ declare function MemberRow(props: {
   textTime?: React.ReactNode;
   slotConflicts?: Types.Devlink.Slot;
   isInterviewerTime?: Types.Visibility.VisibilityConditions;
+  textStandardTime?: React.ReactNode;
 }): React.JSX.Element;

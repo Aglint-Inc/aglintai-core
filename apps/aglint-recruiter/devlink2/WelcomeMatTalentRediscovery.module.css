@@ -202,6 +202,10 @@
   cursor: pointer;
 }
 
+.embed_flex.is_absolute {
+  position: absolute;
+}
+
 .loading_div {
   position: absolute;
   left: 0%;

@@ -1,4 +1,4 @@
-import { FormControlLabel, Switch } from '@mui/material';
+import { FormControlLabel, Stack, Switch } from '@mui/material';
 import { styled } from '@mui/system';
 import React from 'react';
 
@@ -36,16 +36,30 @@ const AntSwitch = styled(Switch)(() => ({
   },
 }));
 
-function ToggleBtn({ isChecked, handleChange }:{ isChecked:boolean, handleChange :any}) {
+function ToggleBtn({
+  isChecked,
+  handleChange = () => {},
+}: {
+  isChecked: boolean;
+  // eslint-disable-next-line no-unused-vars
+  handleChange?: (value: boolean) => void;
+}) {
   return (
     <FormControlLabel
       sx={{ width: 'var(--space-6)', margin: 0 }}
-      control={<AntSwitch
-        onChange={(e, value) => {
-          handleChange(value);
-          return e;
-        } }
-        checked={isChecked} />} label={''}    />
+      control={
+        <Stack style={{ transform: 'scale(0.8)' }}>
+          <AntSwitch
+            onChange={(e, value) => {
+              handleChange(value);
+              return e;
+            }}
+            checked={isChecked}
+          />
+        </Stack>
+      }
+      label={''}
+    />
   );
 }
 

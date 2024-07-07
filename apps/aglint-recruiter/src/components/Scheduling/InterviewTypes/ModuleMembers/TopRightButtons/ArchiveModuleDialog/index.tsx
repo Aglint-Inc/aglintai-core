@@ -2,6 +2,8 @@ import { Dialog } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
 import UITextField from '@/src/components/Common/UITextField';
 import { supabase } from '@/src/utils/supabase/client';
@@ -91,16 +93,27 @@ function ArchiveModuleDialog({ editModule }: { editModule: ModuleType }) {
         textWarning={`By clicking archive the interview type will not be available to select in interview plans while scheduling.`}
         textButton={'Archive'}
         textJobTitle={moduleName}
-        onClickCancel={{
-          onClick: () => onClose(),
-        }}
-        onClickCloseJob={{
-          onClick: () => {
-            if (editModule.id) archiveModule();
-          },
-        }}
+        slotButton={
+          <>
+            <ButtonSoft
+              textButton='Cancel'
+              size={2}
+              color={'neutral'}
+              onClickButton={{ onClick: () => onClose() }}
+            />
+            <ButtonSolid
+              textButton='Archive'
+              size={2}
+              onClickButton={{
+                onClick: () => {
+                  if (editModule.id) archiveModule();
+                },
+              }}
+              isDisabled={loading || moduleName !== value.trim()}
+            />
+          </>
+        }
         textLocation={moduleDescription}
-        isDisabled={loading || moduleName !== value.trim()}
         slotInput={
           <UITextField
             disabled={loading}

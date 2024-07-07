@@ -1,20 +1,18 @@
-import { InputAdornment, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import converter from 'number-to-words';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { TeamUsersList } from '@/devlink/TeamUsersList';
 import { TeamEmpty } from '@/devlink3/TeamEmpty';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { API_get_last_login } from '@/src/pages/api/get_last_login/types';
 import toast from '@/src/utils/toast';
 
-// import AUIButton from '../../Common/AUIButton';
+import SearchField from '../../Common/SearchField/SearchField';
 import { ShowCode } from '../../Common/ShowCode';
-import UITextField from '../../Common/UITextField';
 import DynamicLoader from '../../Scheduling/Interviewers/DynamicLoader';
 import AddMember from './AddMemberDialog';
 import EditMember from './EditMemberDialog';
@@ -27,15 +25,6 @@ import Member from './MemberList';
 
 type ItemType = string;
 
-const debounce = (func, delay) => {
-  let timeoutId;
-  return (...args) => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => {
-      func(...args);
-    }, delay);
-  };
-};
 const TeamManagement = () => {
   const { recruiterUser, setMembers, handelMemberUpdate } = useAuthDetails();
   const { data: members, isFetching } = useTeamMembers();
@@ -53,16 +42,6 @@ const TeamManagement = () => {
   // filter members
   const [searchText, setSearchText] = useState('');
   const [filteredMembers, setFilteredMembers] = useState(members);
-
-  const filterMembers = (searchText: string) => {
-    const filtered = members.filter(
-      (member) =>
-        member.first_name.toLowerCase().includes(searchText.toLowerCase()) ||
-        member.position.toLowerCase().includes(searchText.toLowerCase()) ||
-        member.email.toLowerCase().includes(searchText.toLowerCase()),
-    );
-    setFilteredMembers(filtered);
-  };
 
   const [selectedDepartments, setSelectedDepartments] = useState<ItemType[]>(
     [],
@@ -107,12 +86,6 @@ const TeamManagement = () => {
   ].map((item) => (item === 'joined' ? 'active' : item));
 
   useEffect(() => {
-    const debouncedFilter = debounce(filterMembers, 300);
-    debouncedFilter(searchText);
-    return () => clearTimeout(debouncedFilter as any);
-  }, [searchText]);
-
-  useEffect(() => {
     const filtered = members.filter((member) => {
       const departmentMatch =
         !selectedDepartments.length ||
@@ -141,20 +114,34 @@ const TeamManagement = () => {
     members,
   ]);
 
-  const handleSearchInputChange = (e: any) => {
-    const input = e.target.value.trim();
-    setSelectedDepartments([]);
-    setSelectedLocations([]);
-    setSelectedRoles([]);
-    setSelectedStatus([]);
-    if (input) setSearchText(e.target.value);
-  };
-  // end
-
   const pendingList = members.filter(
     (member) => member.join_status?.toLocaleLowerCase() === 'invited',
   );
   const inviteUser = pendingList.length;
+
+  const [, startTransition] = useTransition();
+
+  function handleTextChange(e) {
+    const value = e.target.value;
+    setSearchText(value);
+    startTransition(() => {
+      if (value) {
+        const filtered = members.filter(
+          (member) =>
+            member.first_name.toLowerCase().includes(value.toLowerCase()) ||
+            member.position.toLowerCase().includes(value.toLowerCase()) ||
+            member.email.toLowerCase().includes(value.toLowerCase()),
+        );
+        setFilteredMembers(filtered);
+      } else {
+        setFilteredMembers(members);
+      }
+    });
+  }
+  function handleTextClear() {
+    setSearchText('');
+    setFilteredMembers(members);
+  }
 
   return (
     <>
@@ -162,21 +149,18 @@ const TeamManagement = () => {
         slotSearchAndFilter={
           <>
             <Stack marginRight={5}>
-              <UITextField
-                width='250px'
-                height={32}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position='end'>
-                      <GlobalIcon iconName='search' size='5'/>
-                    </InputAdornment>
-                  ),
-                }}
+              <SearchField
+                value={searchText}
+                onChange={handleTextChange}
+                onClear={handleTextClear}
                 placeholder='Search Member'
-                onChange={handleSearchInputChange}
               />
             </Stack>
-            <Stack display={'flex'} flexDirection={'row'} gap={'var(--space-2)'}>
+            <Stack
+              display={'flex'}
+              flexDirection={'row'}
+              gap={'var(--space-2)'}
+            >
               <FilterDropDown
                 icon={<StatusIcon />}
                 title={'Status'}
@@ -275,12 +259,12 @@ const TeamManagement = () => {
             isRightIcon={false}
             isLeftIcon={true}
             size={'2'}
-            textButton ={'Invite'}
-            iconName = {'send'}
+            textButton={'Invite'}
+            iconName={'send'}
             onClickButton={{
               onClick: () => {
                 setOpenDrawer({ open: true, window: 'addMember' });
-              }
+              },
             }}
           />
         }
@@ -348,6 +332,7 @@ const useTeamMembers = () => {
     })[],
     enabled: Boolean(members?.length),
     refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
   useEffect(() => {
     if (query.data && members.length) {

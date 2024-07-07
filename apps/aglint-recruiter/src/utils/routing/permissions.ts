@@ -4,14 +4,7 @@ import { PATHS } from '@/src/constant/allPaths';
 
 // import ROUTES from './routes';
 
-type Operations = 'enabled' | 'create' | 'read' | 'update' | 'delete';
-type Modules = 'workflow' | 'team';
-
-type NewPermissions = `${Modules}_${Operations}`;
-
-export type PermissionEnums =
-  | DatabaseEnums['permissions_type']
-  | NewPermissions;
+export type PermissionEnums = DatabaseEnums['permissions_type'];
 
 type Permissions = {
   // eslint-disable-next-line no-unused-vars
@@ -29,6 +22,13 @@ const PERMISSIONS: Permissions = {
    * permissions will reduced  using 'and'
    */
   '/tasks': ['tasks_enabled'],
+  //
+
+  '/api/job/profileScore': ['jobs_enabled'],
+  '/api/job/candidateUpload/csvUpload': ['jobs_enabled'],
+  '/api/job/candidateUpload/manualUpload': ['jobs_enabled'],
+  '/api/job/candidateUpload/resumeReupload': ['jobs_enabled'],
+  '/api/job/candidateUpload/resumeUpload': ['jobs_enabled'],
   '/jobs': ['jobs_enabled', 'jobs_read'],
   '/jobs/create': ['jobs_enabled', 'jobs_read', 'jobs_create'],
   '/jobs/[id]': ['jobs_enabled', 'jobs_read', 'jobs_read'],
@@ -52,8 +52,9 @@ const PERMISSIONS: Permissions = {
    * permission will reduced  using 'or'
    */
   '/api/scheduling/get_interview_plans': ['scheduler_enabled'],
-  '/api/getMembersWithRole': ['jobs_read'], //change to correct permission
-  '/api/get_last_login': ['jobs_read'], //change to correct permission
+  '/api/getMembersWithRole': ['team_enabled'],
+  '/api/get_last_login': ['team_read'],
+  '/api/setMembersWithRole': ['team_enabled', 'scheduler_enabled'],
   '/api/scheduling/fetchUserDetails': ['scheduler_enabled'],
   '/api/scheduling/fetch_interview_session_task': ['scheduler_enabled'],
   '/api/scheduling/fetch_activities': ['scheduler_enabled'],
@@ -74,7 +75,6 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/request_availability/getCandidateRequestData': [
     'scheduler_enabled',
   ],
-
   '/api/scheduling/request_availability/getTaskIdDetailsByRequestId': [
     'scheduler_enabled',
   ],
@@ -87,16 +87,37 @@ const PERMISSIONS: Permissions = {
   ],
   '/api/scheduling/request_availability/updateRequestAvailability': [
     'scheduler_enabled',
+    'scheduler_create',
   ],
+  '/api/scheduling/request_availability/candidateAvailability/getMeetings': [
+    'scheduler_enabled',
+  ],
+  '/api/scheduling/request_availability/candidateAvailability/getScheduleMeetings':
+    ['scheduler_enabled'],
   '/api/scheduling/get_interview_training_progress': ['scheduler_enabled'],
   // request availability mail apis
-  '/api/emails/sendAvailabilityRequest_email_applicant': ['scheduler_enabled'],
-  '/api/emails/sendAvailReqReminder_email_applicant': ['scheduler_enabled'],
+  '/api/emails/sendAvailabilityRequest_email_applicant': [
+    'scheduler_enabled',
+    'scheduler_create',
+  ],
+  '/api/scheduling/v1/find-alternative-time-slots': ['scheduler_update'],
+  '/api/scheduling/v1/update_meeting_interviewers': ['scheduler_update'],
+  '/api/request_feedback': ['scheduler_update'],
+  '/api/scheduling/application/fetchfeedbackdetails': [
+    'scheduler_enabled',
+    'tasks_enabled',
+  ],
+  '/api/emails/sendAvailReqReminder_email_applicant': [
+    'scheduler_enabled',
+    'tasks_enabled',
+  ],
   '/api/emails/selfScheduleReminder_email_applicant': ['scheduler_enabled'],
   '/api/emails/availabilityReqResend_email_candidate': ['scheduler_enabled'],
   '/api/scheduling/v1/booking/confirm-recruiter-selected-option': [
     'scheduler_enabled',
   ],
+  '/api/emails/confirmInterview_email_applicant': ['scheduler_enabled'],
+  '/api/emails/preview': ['scheduler_enabled'],
 };
 
 export default PERMISSIONS;

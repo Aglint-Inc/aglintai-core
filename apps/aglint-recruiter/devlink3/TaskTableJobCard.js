@@ -37,7 +37,7 @@ export function TaskTableJobCard({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "tjc-space-div", "header")}
+              className={_utils.cx(_styles, "tjc-space-div", "group-header")}
               tag="div"
             />
             <_Builtin.Block

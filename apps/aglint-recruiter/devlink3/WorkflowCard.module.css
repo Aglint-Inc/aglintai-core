@@ -79,10 +79,6 @@
   cursor: pointer;
 }
 
-.wc_icon_button:hover {
-  box-shadow: 0 0 0 1px #e9ebed;
-}
-
 .wc_bottom {
   display: flex;
   justify-content: space-between;
@@ -112,6 +108,6 @@
   right: 0%;
   bottom: 0%;
 
-  border: 1px solid #337fbd;
+  border: 1px solid var(--accent-9);
   border-radius: 10px;
 }

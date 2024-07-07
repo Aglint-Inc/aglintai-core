@@ -10,7 +10,7 @@ import { EditJobTopbarLeft } from '@/devlink3/EditJobTopbarLeft';
 import { JobDetailBlock } from '@/devlink3/JobDetailBlock';
 import Loader from '@/src/components/Common/Loader';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { hashCode } from '@/src/context/JobDashboard/hooks';
+import { hashCode } from '@/src/context/JobContext/utils';
 import { useJobs } from '@/src/context/JobsContext';
 import { useCompanyMembers } from '@/src/queries/company-members';
 import ROUTES from '@/src/utils/routing/routes';
@@ -51,8 +51,9 @@ const JobCreate = () => {
   const initialTitle = recruiter?.name ? `${initialCompany}'s first job` : '';
   const [fields, setFields] = useState<Form>({
     job_title: {
-      value: initialTitle,
+      value: null,
       required: true,
+      placeholder: initialTitle,
       error: { value: false, helper: `Job title can't be empty` },
     },
     company: {
@@ -61,12 +62,12 @@ const JobCreate = () => {
       error: { value: false, helper: `Company name can't be empty` },
     },
     department: {
-      value: recruiter?.departments?.[0] ?? null,
+      value: null,
       required: true,
       error: { value: false, helper: `Department name can't be empty` },
     },
     job_type: {
-      value: 'full time',
+      value: null,
       required: true,
       error: { value: false, helper: `Job type can't be empty` },
     },
@@ -76,7 +77,7 @@ const JobCreate = () => {
       error: { value: false, helper: `Job location can't be empty` },
     },
     workplace_type: {
-      value: 'on site',
+      value: null,
       required: true,
       error: { value: false, helper: `Workplace type can't be empty` },
     },

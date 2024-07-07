@@ -15,4 +15,7 @@ declare function ViewTask(props: {
   isDisableNext?: Types.Visibility.VisibilityConditions;
   onClickCompleteTask?: Types.Devlink.RuntimeProps;
   isCompleteTaskVisible?: Types.Visibility.VisibilityConditions;
+  slotTaskHeader?: Types.Devlink.Slot;
+  slotButtonFilter?: Types.Devlink.Slot;
+  slotActionButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

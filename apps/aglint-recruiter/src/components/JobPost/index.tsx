@@ -185,7 +185,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({
               </Stack>
             }
           />
-          <Footer brand={true}/>
+          <Footer brand={true} />
         </Stack>
       )}
       {loading && (
@@ -212,7 +212,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({
           height: '100vh',
           overflow: thank || loading ? 'hidden' : 'scroll',
           background: 'var(--sand-3)',
-          paddingBottom:'16px'
+          paddingBottom: '16px',
         }}
       >
         <JobListing
@@ -350,9 +350,11 @@ const JobPostPublic: React.FC<JobsListProps> = ({
           }
           onClickViewMore={{
             onClick: () => {
-              router.push(
+              window.open(
                 process.env.NEXT_PUBLIC_WEBSITE +
+                  '/' +
                   ROUTES['/company-postings/[id]']({ id: recruiter.id }),
+                '_blank',
               );
             },
           }}
@@ -405,11 +407,9 @@ const JobPostPublic: React.FC<JobsListProps> = ({
             </Stack>
           }
         />
-       
-        
-        <Footer brand={true}/>
+
+        <Footer brand={true} />
       </Stack>
-      
     </Stack>
   );
 };

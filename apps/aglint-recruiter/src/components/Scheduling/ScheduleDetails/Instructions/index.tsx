@@ -3,6 +3,7 @@ import { marked } from 'marked';
 import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { GeneralPopupLarge } from '@/devlink3/GeneralPopupLarge';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
@@ -78,6 +79,8 @@ function Instructions({
           <ShowCode.When isTrue={showEditButton}>
             <Stack direction={'row'} justifyContent={'start'}>
               <ButtonSoft
+                isLeftIcon={true}
+                slotIcon={<GlobalIcon iconName={'edit'} size={'3'}/>}
                 size={1}
                 textButton={'Edit Instruction'}
                 onClickButton={{
@@ -90,6 +93,9 @@ function Instructions({
           </ShowCode.When>
         </ShowCode>
         <div
+          style={{
+            maxWidth: '600px',
+          }}
           dangerouslySetInnerHTML={{
             __html: marked(instruction || 'Instructions not given'),
           }}

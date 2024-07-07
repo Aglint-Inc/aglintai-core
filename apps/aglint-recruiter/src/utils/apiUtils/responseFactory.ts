@@ -73,6 +73,7 @@ export function apiRequestHandlerFactory<T extends ApiInterface>(
     status?: number,
   ) {
     status = status || (error ? 500 : 200);
+    if (res.headersSent) return;
     return res.status(status).send(status === 200 ? data : { error });
   }
   const requesterDetails = {
@@ -88,7 +89,7 @@ export function apiRequestHandlerFactory<T extends ApiInterface>(
    * @param {(reqDetails: {
    *   body?: T['request'];
    *   requesterDetails: typeof requesterDetails;
-   * }) => Promise<T['response'] | { error: string; status: number }>} apiImplementation - The API implementation function.
+   * }) => Promise<T['response'] | { error: string; status?: number }>} apiImplementation - The API implementation function.
    * @param {(keyof T['request'])[]} [required] - Optional array of required properties.
    * @return {Promise<void>} A Promise that resolves to void.
    */
@@ -128,7 +129,7 @@ export function apiRequestHandlerFactory<T extends ApiInterface>(
         }
       }
       const response = await apiImplementation(reqDetails);
-      if (typeof response === 'object' && 'error' in response) {
+      if (response && typeof response === 'object' && 'error' in response) {
         return getResponse({ error: response.error }, response.status);
       }
       return getResponse({ data: response });

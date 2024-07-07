@@ -14,6 +14,7 @@ import {
   TasksAgentContextType,
   useTasksContext,
 } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { supabase } from '@/src/utils/supabase/client';
 import {
   capitalizeAll,
   capitalizeFirstLetter,
@@ -79,6 +80,30 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
     ]);
   }
 
+  async function updateSessionRelations({
+    action,
+    session_id,
+  }: {
+    action: 'add' | 'remove';
+    session_id: string;
+  }) {
+    if (action === 'add') {
+      const { data } = await supabase
+        .from('task_session_relation')
+        .insert({ task_id: task.id, session_id })
+        .select();
+
+      return data;
+    } else if (action === 'remove') {
+      await supabase
+        .from('task_session_relation')
+        .delete()
+        .eq('session_id', session_id)
+        .eq('task_id', task.id)
+        .then(() => {});
+    }
+  }
+
   const createdBy = members.find((ele) => ele.user_id === task.created_by);
   // open trigger Time
   const [openTriggerTime, setOpenTriggerTime] = useState(null);
@@ -129,8 +154,12 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             application_id={task.applications.id}
             job_id={task.applications.job_id}
             isOptionList={task.status === 'not_started'}
-            onChange={(data: any) => {
-              updateChanges({ session_ids: data });
+            onChange={({ sessions, selected_session_id, action }) => {
+              updateSessionRelations({
+                action,
+                session_id: selected_session_id,
+              });
+
               createTaskProgress({
                 type: 'session_update',
                 data: {
@@ -139,11 +168,11 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                     name: recruiterUser.first_name,
                     id: recruiterUser.user_id,
                   },
-                  progress_type: task.last_progress.progress_type,
+                  progress_type: task.latest_progress.progress_type,
                 },
                 optionData: {
                   currentSessions: task.session_ids as any,
-                  selectedSession: data,
+                  selectedSession: sessions,
                 },
               });
             }}
@@ -175,7 +204,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                       name: recruiterUser.first_name,
                       id: recruiterUser.user_id,
                     },
-                    progress_type: task.last_progress.progress_type,
+                    progress_type: task.latest_progress.progress_type,
                   },
                   optionData: {
                     scheduleDateRange: {
@@ -209,7 +238,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                       name: recruiterUser.first_name,
                       id: recruiterUser.user_id,
                     },
-                    progress_type: task.last_progress.progress_type,
+                    progress_type: task.latest_progress.progress_type,
                   },
                   optionData: {
                     scheduleDateRange: {
@@ -249,7 +278,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                     name: recruiterUser.first_name as string,
                     id: recruiterUser.user_id as string,
                   },
-                  progress_type: task.last_progress.progress_type,
+                  progress_type: task.latest_progress.progress_type,
                 },
                 optionData: {
                   dueDate: {
@@ -281,7 +310,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                         name: recruiterUser.first_name,
                         id: recruiterUser.user_id,
                       },
-                      progress_type: task.last_progress.progress_type,
+                      progress_type: task.latest_progress.progress_type,
                     },
                     optionData: {
                       assignerId: assigner.user_id,
@@ -331,7 +360,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                       name: recruiterUser.first_name,
                       id: recruiterUser.user_id,
                     },
-                    progress_type: task.last_progress.progress_type,
+                    progress_type: task.latest_progress.progress_type,
                   },
                   optionData: {
                     triggerTime: { prev: task.start_date, current: e },
@@ -358,7 +387,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                       name: recruiterUser.first_name as string,
                       id: recruiterUser.user_id as string,
                     },
-                    progress_type: task.last_progress.progress_type,
+                    progress_type: task.latest_progress.progress_type,
                   },
                   optionData: {
                     currentStatus: task.status,
@@ -396,7 +425,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                       name: recruiterUser.first_name as string,
                       id: recruiterUser.user_id as string,
                     },
-                    progress_type: task.last_progress.progress_type,
+                    progress_type: task.latest_progress.progress_type,
                   },
                   optionData: {
                     currentPriority: task.priority,

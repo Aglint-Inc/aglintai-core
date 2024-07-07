@@ -10,6 +10,8 @@ import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { GlobalCta } from '@/devlink3/GlobalCta';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
@@ -18,7 +20,11 @@ import toast from '@/src/utils/toast';
 
 import { useAllActivities, useGetScheduleApplication } from '../../../hooks';
 import { updateCandidateRequestAvailability } from '../../../RequestAvailability/RequestAvailabilityContext';
-import { useSchedulingApplicationStore } from '../../../store';
+import DayCardWrapper from '../../../SchedulingDrawer/StepSlotOptions/DayCardWrapper';
+import {
+  setSelectedSessionIds,
+  useSchedulingApplicationStore,
+} from '../../../store';
 import { useAvailabilityContext } from '../RequestAvailabilityContext';
 import RequestAvailabilityBody from './RequestAvailabilityBody';
 
@@ -69,7 +75,9 @@ function RequestAvailabilityDrawer() {
   async function handleContinue() {
     if (selectedIndex !== availableSlots.length) {
       setSelectedIndex((pre) => pre + 1);
-    } else {
+      return null;
+    }
+    if (selectedIndex === availableSlots.length) {
       setLoading(true);
 
       const { data: task } = await axios.post(
@@ -108,10 +116,9 @@ function RequestAvailabilityDrawer() {
               booking_confirmed: true,
             },
           });
-          toast.success('Booked sessions');
           fetchInterviewDataByApplication();
+          setSelectedSessionIds([]);
           refetch();
-          closeDrawer();
         } else {
           throw new Error('Booking failed');
         }
@@ -119,6 +126,7 @@ function RequestAvailabilityDrawer() {
         toast.error(error.message);
       }
       setLoading(false);
+      setSelectedIndex((pre) => pre + 1);
     }
   }
   function handleBack() {
@@ -153,9 +161,65 @@ function RequestAvailabilityDrawer() {
         textPrimaryButton={
           selectedIndex !== availableSlots?.length ? 'Continue' : 'Schedule Now'
         }
-        isSelectedNumber={false}
         slotSideDrawerbody={
           <ShowCode>
+            <ShowCode.When
+              isTrue={selectedIndex === availableSlots?.length + 1}
+            >
+              <Stack p={2} height={'calc(100vh - 96px)'}>
+                <GlobalCta
+                  iconName={'event_upcoming'}
+                  color={'info'}
+                  textTitle={'Interview Confirmed'}
+                  textDescription={
+                    'The candidate and the interviewers received an email containing a link to join to the interview on the specified date and time'
+                  }
+                  slotButton={
+                    <Stack direction={'column'} spacing={2}>
+                      {selectedDateSlots?.map((item, index) => {
+                        const date = item.dateSlots[0]?.sessions[0]?.start_time;
+                        return (
+                          <DayCardWrapper
+                            key={index}
+                            selectedCombIds={[]}
+                            item={{
+                              dateArray: [date],
+                              plans: item.dateSlots,
+                            }}
+                            onClickSelect={() => {}}
+                            isDayCollapseNeeded={false}
+                            isSlotCollapseNeeded={false}
+                            isDayCheckboxNeeded={false}
+                            isRadioNeeded={false}
+                            isSlotCheckboxNeeded={false}
+                            index={index}
+                            setSelectedCombIds={() => {}}
+                          />
+                        );
+                      })}
+                      <Stack
+                        direction={'row'}
+                        justifyItems={'center'}
+                        justifyContent={'center'}
+                      >
+                        <ButtonSoft
+                          size={2}
+                          color={'accent'}
+                          onClickButton={{
+                            onClick: () => {
+                              router.replace(
+                                `/scheduling/view?meeting_id=${selectedDateSlots[0].dateSlots[0].sessions[0].meeting_id}`,
+                              );
+                            },
+                          }}
+                          textButton={'View in schedules'}
+                        />
+                      </Stack>
+                    </Stack>
+                  }
+                />
+              </Stack>
+            </ShowCode.When>
             <ShowCode.When isTrue={isLoading && !isFetched}>
               <Stack height={'calc(100vh - 96px)'}>
                 <DynamicLoader />
@@ -167,7 +231,7 @@ function RequestAvailabilityDrawer() {
             </ShowCode.Else>
           </ShowCode>
         }
-        isBottomBar={true}
+        isBottomBar={selectedIndex !== availableSlots?.length + 1}
       />
     </Drawer>
   );

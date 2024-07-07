@@ -1,4 +1,4 @@
-import { InterviewSession } from '@aglint/shared-types';
+import { DatabaseEnums, InterviewSession } from '@aglint/shared-types';
 import { Drawer, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { capitalize } from 'lodash';
@@ -31,13 +31,16 @@ import {
   updateDebriefSession,
 } from '@/src/queries/interview-plans';
 import { getFullName } from '@/src/utils/jsonResume';
+import { createCloneSession } from '@/src/utils/scheduling/createCloneSession';
 import toast from '@/src/utils/toast';
 
-import IconScheduleType from '../../../Candidates/ListCard/Icon';
+import IconScheduleType from '../../../Candidates/ListCard/Icon/IconScheduleType';
+import { getScheduleType } from '../../../Candidates/utils';
 import { useGetScheduleApplication } from '../../hooks';
 import {
   setEditSession,
   setIsEditOpen,
+  setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../../store';
 import DebriedForm from './DebriefFrom';
@@ -80,34 +83,37 @@ function SideDrawerEdit() {
 
   useEffect(() => {
     if (editSession) {
-      if (editSession.session_type !== 'debrief') {
+      if (editSession.interview_session.session_type !== 'debrief') {
         setSelectedInterviewers(
           editSession?.users
-            ?.filter((user) => user.interviewer_type === 'qualified')
+            ?.filter(
+              (user) =>
+                user.interview_session_relation.interviewer_type ===
+                'qualified',
+            )
             .map((user) => ({
               name: getFullName(
-                user.interview_module_relation.recruiter_user?.first_name,
-                user.interview_module_relation.recruiter_user?.last_name,
+                user.user_details.first_name,
+                user.user_details.last_name,
               ),
               value: user.interview_module_relation?.id,
-              start_icon_url:
-                user.interview_module_relation.recruiter_user?.profile_image,
+              start_icon_url: user.user_details.profile_image,
             })) || [],
         );
 
         const trainingInterviewers = editSession?.users?.filter(
-          (user) => user.interviewer_type === 'training',
+          (user) =>
+            user.interview_session_relation.interviewer_type === 'training',
         );
 
         setTrainingInterviewers(
           trainingInterviewers?.map((user) => ({
             name: getFullName(
-              user.interview_module_relation.recruiter_user.first_name,
-              user.interview_module_relation.recruiter_user.last_name,
+              user.user_details.first_name,
+              user.user_details.last_name,
             ),
             value: user.interview_module_relation.id,
-            start_icon_url:
-              user.interview_module_relation.recruiter_user.profile_image,
+            start_icon_url: user.user_details.profile_image,
           })),
         );
 
@@ -118,11 +124,11 @@ function SideDrawerEdit() {
         setDebriefMembers(
           editSession?.users?.map((user) => ({
             name: getFullName(
-              user.recruiter_user.first_name,
-              user.recruiter_user.last_name,
+              user.user_details.first_name,
+              user.user_details.last_name,
             ),
-            value: user.user_id,
-            start_icon_url: user.recruiter_user.profile_image,
+            value: user.user_details.user_id,
+            start_icon_url: user.user_details.profile_image,
           })),
         );
       }
@@ -142,7 +148,7 @@ function SideDrawerEdit() {
   }));
 
   const moduleCurrent = interviewModules?.data?.find(
-    (module) => module.id === editSession?.module_id,
+    (module) => module.id === editSession?.interview_session.module_id,
   );
 
   const selectedQuaInterviewerIds = selectedInterviewers.map(
@@ -250,15 +256,16 @@ function SideDrawerEdit() {
         } as ApiBodyParamsSessionCache,
       );
 
-      let createCloneRes;
+      let createCloneRes: Awaited<ReturnType<typeof createCloneSession>>;
 
       if (res.status === 200 && res.data) {
         createCloneRes = res.data;
       }
       if (createCloneRes) {
-        if (editSession.session_type !== 'debrief') {
+        if (editSession.interview_session.session_type !== 'debrief') {
           const newSession = createCloneRes.refSessions.find(
-            (session) => session.id === editSession.id,
+            (session) =>
+              session.interview_session.id === editSession.interview_session.id,
           );
 
           const interview_module_relation_entries: EditInterviewSession['interview_module_relation_entries'] =
@@ -281,15 +288,15 @@ function SideDrawerEdit() {
           });
 
           const editInterviewSessionParams: EditInterviewSession = {
-            break_duration: editSession.break_duration,
-            interviewer_cnt: editSession.interviewer_cnt,
-            location: editSession.location,
-            module_id: editSession.module_id,
-            name: editSession.name,
-            schedule_type: editSession.schedule_type,
-            session_duration: editSession.session_duration,
+            break_duration: editSession.interview_session.break_duration,
+            interviewer_cnt: editSession.interview_session.interviewer_cnt,
+            location: editSession.interview_session.location,
+            module_id: editSession.interview_session.module_id,
+            name: editSession.interview_session.name,
+            schedule_type: editSession.interview_session.schedule_type,
+            session_duration: editSession.interview_session.session_duration,
             session_id: newSession.newId,
-            session_type: editSession.session_type,
+            session_type: editSession.interview_session.session_type,
             interview_module_relation_entries:
               interview_module_relation_entries,
           };
@@ -297,16 +304,16 @@ function SideDrawerEdit() {
           editInterviewSession(editInterviewSessionParams);
         } else {
           const updateDebriefParams: UpdateDebriefSession = {
-            break_duration: editSession.break_duration,
-            location: editSession.location,
-            name: editSession.name,
-            schedule_type: editSession.schedule_type,
-            session_duration: editSession.session_duration,
+            break_duration: editSession.interview_session.break_duration,
+            location: editSession.interview_session.location,
+            name: editSession.interview_session.name,
+            schedule_type: editSession.interview_session.schedule_type,
+            session_duration: editSession.interview_session.session_duration,
             session_id: createCloneRes.refSessions[0].newId,
             members: debriefMembers.map((member) => ({
               id: member.value as string,
             })),
-            members_meta: editSession.members_meta,
+            members_meta: editSession.interview_session.members_meta,
           };
           updateDebriefSession(updateDebriefParams);
         }
@@ -315,7 +322,7 @@ function SideDrawerEdit() {
       }
       handleClose();
     } else {
-      if (editSession.session_type !== 'debrief') {
+      if (editSession.interview_session.session_type !== 'debrief') {
         const interview_module_relation_entries = [];
         selectedInterviewers.forEach((interviewer) => {
           interview_module_relation_entries.push({
@@ -334,31 +341,31 @@ function SideDrawerEdit() {
         });
 
         const editInterviewSessionParams: EditInterviewSession = {
-          break_duration: editSession.break_duration,
-          interviewer_cnt: editSession.interviewer_cnt,
-          location: editSession.location,
-          module_id: editSession.module_id,
-          name: editSession.name,
-          schedule_type: editSession.schedule_type,
-          session_duration: editSession.session_duration,
-          session_id: editSession.id,
-          session_type: editSession.session_type,
+          break_duration: editSession.interview_session.break_duration,
+          interviewer_cnt: editSession.interview_session.interviewer_cnt || 1,
+          location: editSession.interview_session.location,
+          module_id: editSession.interview_session.module_id,
+          name: editSession.interview_session.name,
+          schedule_type: editSession.interview_session.schedule_type,
+          session_duration: editSession.interview_session.session_duration,
+          session_id: editSession.interview_session.id,
+          session_type: editSession.interview_session.session_type,
           interview_module_relation_entries: interview_module_relation_entries,
         };
 
         await editInterviewSession(editInterviewSessionParams);
       } else {
         const updateDebriefParams: UpdateDebriefSession = {
-          break_duration: editSession.break_duration,
-          location: editSession.location,
-          name: editSession.name,
-          schedule_type: editSession.schedule_type,
-          session_duration: editSession.session_duration,
-          session_id: editSession.id,
+          break_duration: editSession.interview_session.break_duration,
+          location: editSession.interview_session.location,
+          name: editSession.interview_session.name,
+          schedule_type: editSession.interview_session.schedule_type,
+          session_duration: editSession.interview_session.session_duration,
+          session_id: editSession.interview_session.id,
           members: debriefMembers.map((member) => ({
             id: member.value as string,
           })),
-          members_meta: editSession.members_meta,
+          members_meta: editSession.interview_session.members_meta,
         };
         await updateDebriefSession(updateDebriefParams);
       }
@@ -366,6 +373,7 @@ function SideDrawerEdit() {
       handleClose();
     }
     await fetchInterviewDataByApplication();
+    setSelectedSessionIds([]);
     setSaving(false);
   };
 
@@ -375,18 +383,22 @@ function SideDrawerEdit() {
         {editSession && (
           <SideDrawerBlock
             textTitle='Edit Session'
+            onClickClose={{ onClick: () => handleClose() }}
             slotSidedrawerBody={
               <Stack>
-                {editSession.session_type !== 'debrief' ? (
+                {editSession.interview_session.session_type !== 'debrief' ? (
                   <SidedrawerBodySession
                     slotSessionNameInput={
                       <UITextField
                         name={'name'}
                         placeholder={'Session name'}
-                        value={editSession.name}
+                        value={editSession.interview_session.name}
                         onChange={(e) =>
                           setEditSession({
-                            name: e.target.value,
+                            interview_session: {
+                              ...editSession.interview_session,
+                              name: e.target.value,
+                            },
                           })
                         }
                       />
@@ -395,32 +407,42 @@ function SideDrawerEdit() {
                       <TextField
                         fullWidth
                         select
-                        value={editSession.session_duration}
+                        value={editSession.interview_session.session_duration}
                       >
-                        {[30, 45, 60, 120]?.map((ses) => (
+                        {[30, 45, 60, 120]?.map((dur) => (
                           <MenuItem
-                            value={ses}
-                            key={ses}
+                            value={dur}
+                            key={dur}
                             onClick={() =>
                               setEditSession({
-                                session_duration: ses,
+                                interview_session: {
+                                  ...editSession.interview_session,
+                                  session_duration: dur,
+                                },
                               })
                             }
                           >
-                            {getBreakLabel(ses)}
+                            {getBreakLabel(dur)}
                           </MenuItem>
                         ))}
                       </TextField>
                     }
                     slotModuleDropdown={
-                      <TextField fullWidth select value={editSession.module_id}>
+                      <TextField
+                        fullWidth
+                        select
+                        value={editSession.interview_session.module_id}
+                      >
                         {interviewModules?.data?.map((module) => (
                           <MenuItem
                             value={module.id}
                             key={module.id}
                             onClick={() => {
                               setEditSession({
-                                module_id: module.id,
+                                interview_session: {
+                                  ...editSession.interview_session,
+                                  module_id: module.id,
+                                },
                               });
                               setSelectedInterviewers([]);
                               setTrainingInterviewers([]);
@@ -436,64 +458,41 @@ function SideDrawerEdit() {
                       <TextField
                         fullWidth
                         select
-                        value={editSession.schedule_type}
+                        value={editSession.interview_session.schedule_type}
                         onChange={(e) => {
                           setEditSession({
-                            schedule_type: e.target
-                              .value as InterviewSession['schedule_type'],
+                            interview_session: {
+                              ...editSession.interview_session,
+                              schedule_type: e.target
+                                .value as InterviewSession['schedule_type'],
+                            },
                           });
                         }}
                       >
-                        <MenuItem value='google_meet'>
-                          <Stack direction={'row'} spacing={2}>
-                            <IconScheduleType type='google_meet' />
-                            <Typography
-                              variant='body1'
-                              color={palette.grey[800]}
-                            >
-                              Google Meet
-                            </Typography>
-                          </Stack>
-                        </MenuItem>
-                        <MenuItem value='zoom'>
-                          <Stack direction={'row'} spacing={2}>
-                            <IconScheduleType type='zoom' />
-                            <Typography
-                              variant='body1'
-                              color={palette.grey[800]}
-                            >
-                              Zoom
-                            </Typography>
-                          </Stack>
-                        </MenuItem>
-                        <MenuItem value='phone_call'>
-                          <Stack direction={'row'} spacing={2}>
-                            <IconScheduleType type='phone_call' />
-                            <Typography
-                              variant='body1'
-                              color={palette.grey[800]}
-                            >
-                              Phone Call
-                            </Typography>
-                          </Stack>
-                        </MenuItem>
-                        <MenuItem value='in_person_meeting'>
-                          <Stack direction={'row'} spacing={2}>
-                            <IconScheduleType type='in_person_meeting' />
-                            <Typography
-                              variant='body1'
-                              color={palette.grey[800]}
-                            >
-                              In Person Meeting
-                            </Typography>
-                          </Stack>
-                        </MenuItem>
+                        {schedule_type.map((type) => (
+                          <MenuItem value={type} key={type}>
+                            <Stack direction={'row'} spacing={2}>
+                              <IconScheduleType type={type} size={5} />
+                              <Typography
+                                variant='body1'
+                                color={palette.grey[800]}
+                              >
+                                {getScheduleType(type)}
+                              </Typography>
+                            </Stack>
+                          </MenuItem>
+                        ))}
                       </TextField>
                     }
                     slotInterviewMode={
                       <InterviewMode
-                        isIndividual={editSession.session_type === 'individual'}
-                        isPanel={editSession.session_type === 'panel'}
+                        isIndividual={
+                          editSession.interview_session.session_type ===
+                          'individual'
+                        }
+                        isPanel={
+                          editSession.interview_session.session_type === 'panel'
+                        }
                         isTraining={true}
                         textToggleLabel={`Training ${trainingToggle ? 'On' : 'Off'}`}
                         slotToggle={
@@ -508,7 +507,10 @@ function SideDrawerEdit() {
                         slotInterviewModePill={
                           <>
                             <InterviewModePill
-                              isActive={editSession.session_type === 'panel'}
+                              isActive={
+                                editSession.interview_session.session_type ===
+                                'panel'
+                              }
                               textModeName={'Panel'}
                               slotModeIcon={
                                 <Stack style={{ transform: 'translateY(1px)' }}>
@@ -518,14 +520,18 @@ function SideDrawerEdit() {
                               onClickPill={{
                                 onClick: () => {
                                   setEditSession({
-                                    session_type: 'panel',
+                                    interview_session: {
+                                      ...editSession.interview_session,
+                                      session_type: 'panel',
+                                    },
                                   });
                                 },
                               }}
                             />
                             <InterviewModePill
                               isActive={
-                                editSession.session_type === 'individual'
+                                editSession.interview_session.session_type ===
+                                'individual'
                               }
                               textModeName={'Individual'}
                               slotModeIcon={
@@ -536,7 +542,10 @@ function SideDrawerEdit() {
                               onClickPill={{
                                 onClick: () => {
                                   setEditSession({
-                                    session_type: 'individual',
+                                    interview_session: {
+                                      ...editSession.interview_session,
+                                      session_type: 'individual',
+                                    },
                                   });
                                 },
                               }}
@@ -551,13 +560,25 @@ function SideDrawerEdit() {
                         slotMemberCountDropdown={
                           selectedInterviewers?.length > 0 && (
                             <TextField
+                              size='small'
                               name={'interviewer_cnt'}
                               type='number'
-                              sx={{ width: '60px' }}
-                              value={editSession.interviewer_cnt || 1}
+                              sx={{
+                                width: '60px',
+                                '& .MuiOutlinedInput-root': {
+                                  padding: '0px!important',
+                                },
+                              }}
+                              value={
+                                editSession.interview_session.interviewer_cnt ||
+                                1
+                              }
                               onChange={(e) => {
                                 setEditSession({
-                                  interviewer_cnt: Number(e.target.value),
+                                  interview_session: {
+                                    ...editSession.interview_session,
+                                    interviewer_cnt: Number(e.target.value),
+                                  },
                                 });
                               }}
                               select
@@ -599,7 +620,11 @@ function SideDrawerEdit() {
                                         ),
                                       );
                                       setEditSession({
-                                        interviewer_cnt: 1,
+                                        interview_session: {
+                                          ...editSession.interview_session,
+                                          interviewer_cnt:
+                                            selectedInterviewers.length - 1,
+                                        },
                                       });
                                     },
                                   }}
@@ -683,6 +708,7 @@ function SideDrawerEdit() {
                 <ButtonSolid
                   textButton='Save'
                   size={2}
+                  isLoading={saving}
                   onClickButton={{
                     onClick: () => {
                       if (!saving) {
@@ -702,3 +728,10 @@ function SideDrawerEdit() {
 }
 
 export default SideDrawerEdit;
+
+export const schedule_type: DatabaseEnums['interview_schedule_type'][] = [
+  'google_meet',
+  'zoom',
+  'phone_call',
+  'in_person_meeting',
+];

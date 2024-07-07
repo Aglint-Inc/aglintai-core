@@ -13,7 +13,7 @@ export type TabSlice = {
   // eslint-disable-next-line no-unused-vars
   setTab: (tab: Tab) => void;
   // eslint-disable-next-line no-unused-vars
-  resetTab: () => void;
+  // resetTab: () => void;
 };
 
 const initialTab: Tab = 'Details';
@@ -21,5 +21,5 @@ const initialTab: Tab = 'Details';
 export const createTabSlice: CreateSlice<TabSlice> = (set) => ({
   tab: initialTab,
   setTab: (tab) => set({ tab }),
-  resetTab: () => set({ tab: initialTab }),
+  // resetTab: () => set({ tab: initialTab }),
 });

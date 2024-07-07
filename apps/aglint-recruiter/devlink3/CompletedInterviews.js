@@ -30,7 +30,7 @@ export function CompletedInterviews({
       >
         <Text content="Completed Interviews" weight="medium" />
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1783")}
+          className={_utils.cx(_styles, "ci_option_switch")}
           tag="div"
         >
           <_Builtin.Block

@@ -17,15 +17,6 @@
   align-items: center;
 }
 
-.embed_flex.ml--1 {
-  margin-left: -9px;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
 .linkedin_icon {
   position: relative;
   z-index: 1;
@@ -52,8 +43,8 @@
   overflow: visible;
   justify-content: center;
   align-items: center;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 
   transition-property: all;
   transition-duration: 200ms;

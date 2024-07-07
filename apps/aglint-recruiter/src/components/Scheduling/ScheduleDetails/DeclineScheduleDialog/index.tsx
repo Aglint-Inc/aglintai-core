@@ -1,9 +1,8 @@
 import { InterviewSessionRelationTypeDB } from '@aglint/shared-types';
 import { InterviewerDeclineMetadata } from '@aglint/shared-types/src/db/tables/application_logs.types';
-import { Dialog, Stack, TextField, Typography } from '@mui/material';
+import { Dialog, Radio, Stack, TextField, Typography } from '@mui/material';
 import React, { Dispatch, useEffect, useState } from 'react';
 
-import { Checkbox } from '@/devlink/Checkbox';
 import { DeletePopup } from '@/devlink3/DeletePopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
@@ -38,7 +37,7 @@ function DeclineScheduleDialog({
   ];
 
   useEffect(() => {
-    setReason('Too Many Interviews');
+    setReason(reasons[0]);
   }, []);
 
   const onClickConfirm = async () => {
@@ -124,8 +123,14 @@ function DeclineScheduleDialog({
                     alignItems={'center'}
                     spacing={1}
                   >
-                    <Checkbox isChecked={rea === reason} />
-                    <Typography variant='body1' color={'var(--neutral-12)'}>
+                    <Radio checked={rea === reason} />
+                    <Typography
+                      variant='body1'
+                      color={'var(--neutral-12)'}
+                      sx={{
+                        cursor: 'pointer',
+                      }}
+                    >
                       {rea}
                     </Typography>
                   </Stack>

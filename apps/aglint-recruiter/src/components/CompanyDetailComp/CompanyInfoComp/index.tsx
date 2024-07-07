@@ -1,7 +1,6 @@
 import { RecruiterType } from '@aglint/shared-types';
 import { Autocomplete, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import posthog from 'posthog-js';
 import { useEffect, useRef, useState } from 'react';
 
 import { BasicInfo } from '@/devlink/BasicInfo';
@@ -14,7 +13,6 @@ import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import ImageUpload from '../../Common/ImageUpload';
 import MuiPopup from '../../Common/MuiPopup';
-import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
 import AssessmentSettings from '../AssessmentSettings';
 import Assistant from '../Assistant';
@@ -25,6 +23,7 @@ import AddDepartmentsDialog from './AddDepartmentsDialog';
 import AddLocationDialog from './AddLocationDialog';
 import AddRolesDialog from './AddRolesDialog';
 import AddSpecialityDialog from './AddSpecialityDialog';
+import RolesAndPermissions from './RolesAndPermissions';
 import SocialComp from './SocialComp';
 
 const CompanyInfoComp = ({ setIsSaving }) => {
@@ -33,9 +32,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   const [logo, setLogo] = useState<string>();
   const [dialog, setDialog] = useState(initialDialog());
   const [isVideoAssessment, setIsVideoAssessment] = useState(false);
-  const [isDetele, setDeletPopup] = useState(false);
   const [nameError, setNameError] = useState(false);
-  let isJobMarketingEnabled = posthog.isFeatureEnabled('isJobMarketingEnabled');
 
   const initialCompanyName = useRef(recruiter?.name);
 
@@ -117,6 +114,42 @@ const CompanyInfoComp = ({ setIsSaving }) => {
         />
         {router.query?.tab === 'additional-info' && (
           <>
+            <MuiPopup
+              props={{
+                open: dialog.deletelocation.open,
+                onClose: () => {
+                  setDialog({
+                    ...dialog,
+                    deletelocation: { open: false, edit: -1 },
+                  });
+                },
+              }}
+            >
+              <DeletePopup
+                textDescription={
+                  'Are u sure u want to delete this office location? This action cannot be undone.'
+                }
+                textTitle={'Delete Office Location'}
+                isIcon={false}
+                onClickCancel={{
+                  onClick: () => {
+                    setDialog({
+                      ...dialog,
+                      deletelocation: { open: false, edit: -1 },
+                    });
+                  },
+                }}
+                onClickDelete={{
+                  onClick: () => {
+                    handleDeleteLocation(dialog.deletelocation.edit);
+                    setDialog({
+                      ...dialog,
+                      deletelocation: { open: false, edit: -1 },
+                    });
+                  },
+                }}
+              />
+            </MuiPopup>
             <CompanyInfo
               slotLocation={
                 <>
@@ -125,7 +158,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                       const location = [loc.city, loc.region, loc.country]
                         .filter(Boolean)
                         .join(', ');
-                      const address = [loc.full_address];
+                      const [address] = [loc.full_address];
                       const timeZone = [loc.timezone];
                       const isHeadQuaterVisible = loc?.is_headquarter
                         ? loc.is_headquarterue
@@ -135,7 +168,6 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                         <>
                           <Stack p={'var(--space-1)'}>
                             <CompanyLocation
-                              // isHeadQuaterVisible={isHeadQuaterVisible[0]}
                               isHeadQuaterVisible={isHeadQuaterVisible}
                               onClickEdit={{
                                 onClick: () => {
@@ -145,45 +177,19 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                                   });
                                 },
                               }}
-                              textFullAddress={address}
+                              textFullAddress={address || '-'}
                               textLocationHeader={location}
                               textTimeZone={timeZone}
-                              // onClickDelete={{
-                              //   onClick: () => handleDeleteLocation(i),
-                              // }}
                               onClickDelete={{
                                 onClick: () => {
-                                  setDeletPopup(true);
+                                  setDialog({
+                                    ...dialog,
+                                    deletelocation: { open: true, edit: i },
+                                  });
                                 },
                               }}
                             />
                           </Stack>
-                          <MuiPopup
-                            props={{
-                              open: isDetele,
-                              onClose: () => {
-                                setDeletPopup(false);
-                              },
-                            }}
-                          >
-                            <DeletePopup
-                              textDescription={
-                                'Are u sure u want to delete this office location? This action cannot be undone.'
-                              }
-                              textTitle={'Delete Office Location'}
-                              isIcon={false}
-                              onClickCancel={{
-                                onClick: () => {
-                                  setDeletPopup(false);
-                                },
-                              }}
-                              onClickDelete={{
-                                onClick: () => {
-                                  handleDeleteLocation(i), setDeletPopup(false);
-                                },
-                              }}
-                            />
-                          </MuiPopup>
                         </>
                       );
                     })}
@@ -271,8 +277,8 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                   setDialog({ ...dialog, stacks: true });
                 },
               }}
-              isAvailableRolesVisible={isJobMarketingEnabled}
-              isSpecialistVisible={isJobMarketingEnabled}
+              isAvailableRolesVisible={true}
+              isSpecialistVisible={true}
               slotEmploymentType={<CompanyJdComp setIsSaving={setIsSaving} />}
             />
           </>
@@ -421,9 +427,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                     }}
                   />
 
-                  <ShowCode.When isTrue={isJobMarketingEnabled}>
-                    <SocialComp setIsSaving={setIsSaving} />
-                  </ShowCode.When>
+                  <SocialComp setIsSaving={setIsSaving} />
                 </Stack>
               }
               textLogoUpdate={'Update Logo'}
@@ -446,6 +450,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
           </>
         )} */}
         {router.query?.tab === 'team' && <TeamManagement />}
+        {router.query?.tab === 'roles' && <RolesAndPermissions />}
       </YTransform>
     </Stack>
   );
@@ -455,6 +460,7 @@ export default CompanyInfoComp;
 
 const initialDialog = () => {
   return {
+    deletelocation: { open: false, edit: -1 },
     location: { open: false, edit: -1 },
     roles: false,
     departments: false,

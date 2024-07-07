@@ -13,6 +13,7 @@ import type { EmailTemplateAPi } from '@aglint/shared-types';
 import config from '../../tailwind.config';
 import { Session } from '../components/template/Sessions';
 import { Footer } from '../components/template/Footer';
+import { companyLogoDummy } from '../utils/assets/common';
 
 type EmailType = EmailTemplateAPi<'confirmInterview_email_applicant'>;
 
@@ -20,8 +21,7 @@ type EmailType = EmailTemplateAPi<'confirmInterview_email_applicant'>;
 export const dummy: EmailType['react_email_placeholders'] = {
   emailBody:
     '<p>Hi {{ candidateFirstName }},</p><p></p><p>We are pleased to confirm your interview for the {{ jobTitle }} position. Please find the details of your interview below.</p><p></p><p>Regards,</p><p>{{ companyName }}  Recruitment Team</p>',
-  companyLogo:
-    'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
+  companyLogo: companyLogoDummy,
   meetingDetails: [
     {
       date: 'Fri, May 12, 2024',
@@ -70,7 +70,7 @@ export const InterviewBookingConfirmation = ({
                 <Session key={i} meetingDetail={meetingDetail} />
               ))}
               <Button
-                className="px-3 py-2 bg-accent-9 text-white br rounded-[4px] text-text-xs"
+                className={`px-3 py-2 bg-accent-9 text-white br rounded-[4px] text-text-xs ${candidateLink.length === 0 ? 'pointer-events-none' : 'pointer-events-auto'}`}
                 href={candidateLink}
               >
                 View Details

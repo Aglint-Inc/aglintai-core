@@ -9,4 +9,5 @@ declare function SessionDetails(props: {
   textSessionDuration?: React.ReactNode;
   isMemberRow?: Types.Visibility.VisibilityConditions;
   slotMemberRow?: Types.Devlink.Slot;
+  isTimingVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

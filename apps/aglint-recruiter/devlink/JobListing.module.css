@@ -217,11 +217,11 @@
   }
 }
 
-.div-block-425 {
+.cl-header-item {
   display: flex;
   align-items: center;
-  grid-column-gap: 9px;
-  grid-row-gap: 9px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .icons {
@@ -305,10 +305,6 @@
   .hide {
     display: none;
   }
-}
-
-.icons.mb-9 {
-  margin-bottom: var(--space-9);
 }
 
 .mt-4 {
@@ -585,10 +581,6 @@
   .fw-semibold.text-lg.text-yellow-600.mobile-14 {
     font-size: 14px;
   }
-}
-
-.fw-semibold.new-greenhouse {
-  color: #14413d;
 }
 
 .text-color-white {

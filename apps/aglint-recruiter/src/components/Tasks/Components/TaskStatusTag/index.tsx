@@ -7,8 +7,8 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { getIndicator, getIndicatorMessage, indicatorType } from './utils';
 
 function TaskStatusTag({ task }: { task: DatabaseView['tasks_view'] }) {
-  const progress_type = task?.last_progress?.progress_type;
-  const created_at = task.last_progress.created_at;
+  const progress_type = task?.latest_progress?.progress_type;
+  const created_at = task.latest_progress?.created_at;
 
   return (
     <Stack direction={'row'} spacing={1}>
@@ -42,7 +42,9 @@ export function GetTaskStatusBadge({
           />
         </ShowCode.When>
 
-        <ShowCode.When isTrue={indicator === 'BOOKED'}>
+        <ShowCode.When
+          isTrue={indicator === 'BOOKED' || indicator === 'COMPLETED'}
+        >
           <GlobalBadge
             color={'success'}
             showIcon={false}
@@ -71,7 +73,9 @@ export function GetTaskStatusBadge({
           />
         </ShowCode.When>
 
-        <ShowCode.When isTrue={indicator === 'ACTION_NEEDED'}>
+        <ShowCode.When
+          isTrue={indicator === 'ACTION_NEEDED' || indicator === 'CLOSED'}
+        >
           <GlobalBadge
             color={'error'}
             iconName={'error'}

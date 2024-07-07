@@ -1,18 +1,19 @@
 /* eslint-disable security/detect-object-injection */
 import { CandidateDirectBookingType } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import dayjs from '@utils/dayjs';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo, useState } from 'react';
 
-import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 import { TimezoneObj } from '@/src/components/Scheduling/Settings';
+import { ApiBodyOpenSelfScheduling } from '@/src/pages/api/scheduling/application/openselfscheduling';
 import { BodyParamsCandidateInvite } from '@/src/pages/api/scheduling/invite';
 import {
   useConfirmSlots,
   useInviteMeta,
   useInviteSlots,
 } from '@/src/queries/candidate-invite';
-import { supabase } from '@/src/utils/supabase/client';
 import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
 
@@ -68,7 +69,10 @@ const useInviteActions = () => {
     };
     try {
       if (!isPending) {
-        await mutateAsync(bodyParams);
+        await mutateAsync({
+          bodyParams,
+          is_agent_link: !meta.data.filter_json.selected_options,
+        });
       } else {
         toast.warning('Confirming slots. Please wait.');
       }
@@ -79,19 +83,20 @@ const useInviteActions = () => {
 
   const handleViewedOn = async () => {
     try {
-      await supabase
-        .from('interview_filter_json')
-        .update({ viewed_on: new Date().toISOString() })
-        .eq('id', meta.data.filter_json.id)
-        .throwOnError();
-
-      addScheduleActivity({
-        title: `Candidate viewed the link`,
+      const bodyParams: ApiBodyOpenSelfScheduling = {
         application_id: meta.data.schedule.application_id,
-        created_by: null,
-        logged_by: 'candidate',
-        supabase,
-      });
+        filter_id: meta.data.filter_json.id,
+        sesssion_name: meta.data.meetings.map(
+          (ses) => ses.interview_session.name,
+        ),
+        timezone: dayjsLocal.tz.guess(),
+        candidate_id: meta.data.candidate.id,
+      };
+
+      await axios.post(
+        '/api/scheduling/application/openselfscheduling',
+        bodyParams,
+      );
     } catch {
       //
     }

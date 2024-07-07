@@ -29,19 +29,32 @@ const useActionsContext = () => {
     [ACTION_TRIGGER_MAP, trigger, actions],
   );
 
+  const currentEmailTemplate = useMemo(
+    () =>
+      (all_company_email_template ?? []).find(
+        ({ type }) => type === globalOptions[0]?.value,
+      ),
+    [all_company_email_template, globalOptions],
+  );
+
+  const canCreateAction = useMemo(
+    () => currentEmailTemplate && !!globalOptions.length,
+    [globalOptions, currentEmailTemplate],
+  );
+
   const createAction = useCallback(() => {
-    const emailTemplate = (all_company_email_template ?? []).find(
-      ({ type }) => type === globalOptions[0].value,
-    );
-    handleCreateAction({
-      order: (actions ?? []).length ? actions[actions.length - 1].order + 1 : 1,
-      email_template_id: emailTemplate.id,
-      payload: {
-        body: emailTemplate.body,
-        subject: emailTemplate.subject,
-      },
-    });
-  }, [globalOptions, all_company_email_template, handleCreateAction, actions]);
+    if (canCreateAction)
+      handleCreateAction({
+        order: (actions ?? []).length
+          ? actions[actions.length - 1].order + 1
+          : 1,
+        email_template_id: currentEmailTemplate.id,
+        payload: {
+          body: currentEmailTemplate.body,
+          subject: currentEmailTemplate.subject,
+        },
+      });
+  }, [handleCreateAction, actions, currentEmailTemplate, canCreateAction]);
 
   const getCurrentOption = useCallback(
     (type: WorkflowAction['company_email_template']['type']) =>
@@ -51,6 +64,7 @@ const useActionsContext = () => {
   return {
     createAction,
     getCurrentOption,
+    canCreateAction,
     globalOptions,
   };
 };
@@ -104,6 +118,10 @@ const ACTION_TRIGGER_MAP: {
       name: 'Send emails to interviewers',
     },
     {
+      value: 'interviewStart_email_organizer',
+      name: 'Send emails to organizer',
+    },
+    {
       value: 'interviewStart_slack_interviewers',
       name: 'Send slack messages to interviewers',
     },
@@ -116,8 +134,30 @@ const ACTION_TRIGGER_MAP: {
   ],
   interviewEnd: [
     {
-      value: 'interviewEnd_slack_interviewers',
+      value: 'interviewEnd_email_interviewerForFeedback',
+      name: 'Send feedback emails to interviewers',
+    },
+    {
+      value: 'interviewEnd_slack_interviewerForFeedback',
       name: 'Send feedback messages to interviewers on slack',
+    },
+  ],
+  meetingDeclined: [
+    {
+      value: 'meetingDeclined_email_organizer',
+      name: 'Send email to organizer',
+    },
+  ],
+  meetingAccepted: [
+    {
+      value: 'meetingAccepted_email_organizer',
+      name: 'Send email to organizer',
+    },
+  ],
+  candidateBook: [
+    {
+      value: 'candidateBook_slack_interviewerForConfirmation',
+      name: 'Send confirmation messages to interviewers on slack',
     },
   ],
 };

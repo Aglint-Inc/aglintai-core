@@ -36,6 +36,10 @@
   cursor: pointer;
 }
 
+.embed_flex.is_absolute {
+  position: absolute;
+}
+
 .inteview_modepill-_active {
   position: absolute;
   left: 0%;

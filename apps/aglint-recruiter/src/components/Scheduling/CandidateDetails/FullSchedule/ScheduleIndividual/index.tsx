@@ -1,101 +1,90 @@
-import { Checkbox, Stack } from '@mui/material';
+import { Checkbox } from '@mui/material';
 import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 import { StatusBadge } from '@/devlink2/StatusBadge';
-import { EditOptionModule } from '@/devlink3/EditOptionModule';
-import { NewInterviewPlanCard } from '@/devlink3/NewInterviewPlanCard';
-import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
+import { GlobalScheduleCard } from '@/devlink3/GlobalScheduleCard';
+import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 
-import IconScheduleType from '../../../Candidates/ListCard/Icon';
-import { getScheduleBgcolor, getScheduleType } from '../../../Candidates/utils';
+import IconScheduleType from '../../../Candidates/ListCard/Icon/IconScheduleType';
+import { getScheduleType } from '../../../Candidates/utils';
 import { formatTimeWithTimeZone } from '../../../utils';
-import {
-  SchedulingApplication,
-  setEditSession,
-  setIndividualCancelOpen,
-  setIndividualRescheduleOpen,
-  setIsEditOpen,
-  setSelectedSession,
-} from '../../store';
+import IconSessionType from '../../RightPanel/IconSessionType';
+import ButtonGroupRight from './ButtonGroupRight';
+import CancelRescheduleBadges from './CancelRescheduleBadges';
+import CollapseContent from './CollapseContent';
+import RequestStatusUnconfirmed from './RequestStatusUnconfirmed';
+import { ScheduleIndividualCardType } from './types';
 
 function ScheduleIndividualCard({
-  session,
+  interview_session,
+  candidate,
+  jobTitle = null,
+  selectedSessionIds = [],
   isCheckboxVisible = false,
-  isThreeDotVisible = true,
-  onClickCheckBox,
-  selectedSessionIds,
-  isOnclickCard = true,
-}: {
-  session: SchedulingApplication['initialSessions'][number];
-  isCheckboxVisible?: boolean;
-  isThreeDotVisible?: boolean;
-  onClickCheckBox: ({
-    // eslint-disable-next-line no-unused-vars
-    session,
-  }: {
-    session: SchedulingApplication['initialSessions'][0];
-  }) => void;
-  selectedSessionIds: string[];
-  isOnclickCard?: boolean;
-}) {
-  const router = useRouter();
+  onClickCheckBox = () => {},
+  users = [],
+  interview_meeting = null,
+  isCollapseNeeded = false,
+  isEditIconVisible = false,
+  isViewDetailVisible = false,
+  cancelReasons = [],
+  gridStyle = '1.1fr 1.7fr 0.6fr',
+  isCollapseButtonsVisible = false,
+  currentSession,
+}: ScheduleIndividualCardType) {
+  const [collapsed, setCollapsed] = useState(false);
+
+  const confirmedUsers =
+    users?.filter((user) => user.interview_session_relation.is_confirmed) || [];
 
   return (
-    <NewInterviewPlanCard
-      isScheduleNowButtonVisible={false}
-      isCheckboxVisible={true}
-      onClickCard={{
-        onClick: (e) => {
-          e.stopPropagation();
-          if (isOnclickCard) {
-            if (
-              session.interview_meeting?.status === 'completed' ||
-              session.interview_meeting?.status === 'confirmed' ||
-              session.interview_meeting?.status === 'waiting'
-            ) {
-              router.push(
-                `/scheduling/view?meeting_id=${session.interview_meeting.id}&tab=candidate_details`,
-              );
-            } else if (
-              session.interview_meeting?.status === 'not_scheduled' ||
-              !session.interview_meeting ||
-              session.interview_meeting?.status === 'cancelled'
-            ) {
-              onClickCheckBox({ session });
-            }
-          } else {
-            onClickCheckBox({ session });
-          }
-        },
-      }}
+    <GlobalScheduleCard
+      isCheckboxVisible={
+        (!interview_meeting ||
+          interview_meeting.status === 'not_scheduled' ||
+          interview_meeting.status === 'cancelled' ||
+          interview_meeting.status === 'reschedule') &&
+        isCheckboxVisible
+      }
+      slotCheckbox={
+        <Checkbox
+          size='small'
+          checked={selectedSessionIds.includes(interview_session.id)}
+          onClick={(e) => {
+            e.stopPropagation();
+            onClickCheckBox({ session_id: interview_session.id });
+          }}
+        />
+      }
+      isSelectedVisible={selectedSessionIds.includes(interview_session.id)}
+      isDropdownIconVisible={
+        isCollapseNeeded &&
+        (interview_meeting?.status === 'confirmed' ||
+          interview_meeting?.status === 'completed' ||
+          interview_meeting?.status === 'waiting')
+      }
       isDateVisible={
-        session.interview_meeting?.status !== 'cancelled' &&
-        Boolean(session.interview_meeting?.start_time)
+        interview_meeting?.status === 'confirmed' ||
+        interview_meeting?.status === 'completed'
       }
-      isThreeDotVisible={
-        session.interview_meeting?.status !== 'completed' && isThreeDotVisible
+      isTimeVisible={
+        interview_meeting?.status === 'confirmed' ||
+        interview_meeting?.status === 'completed'
       }
-      propsBgColorStatus={{
-        style: {
-          background: getScheduleBgcolor(session.interview_meeting?.status),
-        },
-      }}
-      slotStatus={
-        session.interview_meeting?.status ? (
+      iconPanel={<IconSessionType type={interview_session.session_type} />}
+      iconMeetingPlatform={
+        <IconScheduleType type={interview_session.schedule_type} />
+      }
+      slotGlobalBadge={
+        interview_meeting?.status ? (
           <StatusBadge
-            isCancelledVisible={
-              session.interview_meeting.status === 'cancelled'
-            }
-            isConfirmedVisible={
-              session.interview_meeting.status === 'confirmed'
-            }
-            isWaitingVisible={session.interview_meeting.status === 'waiting'}
-            isCompletedVisible={
-              session.interview_meeting.status === 'completed'
-            }
+            isCancelledVisible={interview_meeting.status === 'cancelled'}
+            isConfirmedVisible={interview_meeting.status === 'confirmed'}
+            isWaitingVisible={interview_meeting.status === 'waiting'}
+            isCompletedVisible={interview_meeting.status === 'completed'}
             isNotScheduledVisible={
-              session.interview_meeting.status === 'not_scheduled' || false
+              interview_meeting.status === 'not_scheduled' || false
             }
           />
         ) : (
@@ -108,90 +97,62 @@ function ScheduleIndividualCard({
           />
         )
       }
-      isDebriefIconVisible={session.session_type === 'debrief'}
-      isPanelIconVisible={session.session_type === 'panel'}
-      isOnetoOneIconVisible={session.session_type === 'individual'}
-      isDurationVisible={true}
-      isLocationVisible={Boolean(session.location)}
-      isNotScheduledIconVisible={!session.interview_meeting?.start_time}
-      slotCheckbox={
-        !session.interview_meeting ||
-        session.interview_meeting.status === 'not_scheduled' ||
-        session.interview_meeting.status === 'cancelled' ||
-        session.interview_meeting.status === 'reschedule' ||
-        isCheckboxVisible ? (
-          <Checkbox
-            size='small'
-            checked={selectedSessionIds.includes(session.id)}
+      textDate={
+        interview_meeting?.end_time
+          ? dayjs(interview_meeting.end_time).format('ddd, MMM DD, YYYY')
+          : '--'
+      }
+      textTime={
+        interview_meeting?.start_time && candidate?.timezone
+          ? formatTimeWithTimeZone({
+              start_time: interview_meeting.start_time,
+              end_time: interview_meeting.end_time,
+              timeZone: candidate.timezone,
+            })
+          : '--'
+      }
+      textCandidateName={candidate.fullname}
+      textDuration={getBreakLabel(interview_session.session_duration)}
+      textPlaformName={getScheduleType(interview_session.schedule_type)}
+      textRole={jobTitle}
+      textPanelName={interview_session.name}
+      onClickDropdown={{
+        onClick: (e) => {
+          e.stopPropagation();
+          setCollapsed(!collapsed);
+        },
+      }}
+      slotDropdownContent={
+        isCollapseNeeded && (
+          <CollapseContent
+            candidate={candidate}
+            collapsed={collapsed}
+            confirmedUsers={confirmedUsers}
+            currentSession={currentSession}
+            interview_meeting={interview_meeting}
+            jobTitle={jobTitle}
+            isCollapseButtonsVisible={isCollapseButtonsVisible}
           />
-        ) : (
-          <Stack width={'18px'}></Stack>
         )
       }
-      isSelected={selectedSessionIds.includes(session.id)}
-      isTimeVisible={
-        (session.interview_meeting?.status == 'confirmed' ||
-          session.interview_meeting?.status == 'completed') &&
-        Boolean(session.interview_meeting?.start_time)
-      }
-      slotPlatformIcon={<IconScheduleType type={session.schedule_type} />}
-      textDuration={`${session.session_duration} Minutes`}
-      textLocation={session.location || '--'}
-      textMeetingPlatform={getScheduleType(session.schedule_type)}
-      textMeetingTitle={session.name || '--'}
-      textDate={
-        (session.interview_meeting?.status == 'confirmed' ||
-          session.interview_meeting?.status == 'completed') &&
-        (session.interview_meeting?.start_time
-          ? dayjs(session.interview_meeting?.start_time).format(
-              'ddd, MMM DD, YYYY',
-            )
-          : '')
-      }
-      textTime={formatTimeWithTimeZone({
-        start_time: session.interview_meeting?.start_time,
-        end_time: session.interview_meeting?.end_time,
-        timeZone: userTzDayjs.tz.guess(),
-      })}
-      slotEditOptionModule={
-        <EditOptionModule
-          isResendInviteVisible={false}
-          isEditVisible={
-            !session.interview_meeting ||
-            session.interview_meeting?.status === 'not_scheduled' ||
-            session.interview_meeting?.status === 'cancelled'
-          }
-          isViewScheduleVisible={false}
-          isCancelScheduleVisible={
-            session.interview_meeting?.status === 'confirmed' ||
-            session.interview_meeting?.status === 'waiting'
-          }
-          isRescheduleVisible={
-            session.interview_meeting?.status === 'confirmed' ||
-            session.interview_meeting?.status === 'waiting'
-          }
-          onClickCancelSchedule={{
-            onClick: (e) => {
-              e.stopPropagation();
-              setSelectedSession(session);
-              setIndividualCancelOpen(true);
-            },
-          }}
-          onClickReschedule={{
-            onClick: (e) => {
-              e.stopPropagation();
-              setSelectedSession(session);
-              setIndividualRescheduleOpen(true);
-            },
-          }}
-          onClickEdit={{
-            onClick: (e) => {
-              e.stopPropagation();
-              setEditSession(session);
-              setIsEditOpen(true);
-            },
-          }}
+      slotButtonViewDetail={
+        <ButtonGroupRight
+          isViewDetailVisible={isViewDetailVisible}
+          isEditIconVisible={isEditIconVisible}
+          currentSession={currentSession}
+          interview_meeting={interview_meeting}
         />
+      }
+      styleGrid={{
+        style: {
+          gridTemplateColumns: gridStyle,
+        },
+      }}
+      slotRequestStatus={
+        <RequestStatusUnconfirmed interview_meeting={interview_meeting} />
+      }
+      slotRequestDetail={
+        <CancelRescheduleBadges cancelReasons={cancelReasons} />
       }
     />
   );

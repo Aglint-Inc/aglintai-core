@@ -5,7 +5,7 @@ import { CookieOptions, createServerClient, serialize } from '@supabase/ssr';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
-import { createCloneSession } from '@/src/components/Scheduling/CandidateDetails/utils';
+import { createCloneSession } from '@/src/utils/scheduling/createCloneSession';
 
 export interface ApiBodyParamsSessionCache {
   is_get_more_option: boolean;
@@ -60,6 +60,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       supabase,
       recruiter_id,
       rec_user_id,
+      meeting_flow: 'self_scheduling',
     });
 
     return res.status(200).send(resClone);

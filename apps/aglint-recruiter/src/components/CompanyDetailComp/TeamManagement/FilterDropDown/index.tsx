@@ -40,7 +40,6 @@ function FilterDropDown({
         isActive={Boolean(selectedItems.length)}
         isDotVisible={Boolean(selectedItems.length)}
         slotLeftIcon={<Stack>{icon}</Stack>}
-        // isDotVisible={filter.job_ids.length > 0}
         onClickStatus={{
           onClick: handleClick,
         }}
@@ -70,8 +69,9 @@ function FilterDropDown({
               <Stack
                 key={i}
                 direction={'row'}
-                sx={{ alignItems: 'center' }}
+                sx={{ alignItems: 'center', ':hover':{bgcolor:'var(--neutral-2)'}, borderRadius:'var(--radius-2)', cursor:'pointer' }}
                 spacing={1}
+                padding={'var(--space-2) var(--space-3)'}
               >
                 <Checkbox
                   isChecked={selectedItems.includes(item)}
@@ -98,7 +98,6 @@ function FilterDropDown({
                     }
                   }}
                 >
-                  
                   {capitalizeFirstLetter(item)}
                 </Typography>
               </Stack>

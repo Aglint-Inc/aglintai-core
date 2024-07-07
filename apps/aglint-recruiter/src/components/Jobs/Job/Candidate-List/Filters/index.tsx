@@ -19,13 +19,17 @@ const Filters = () => {
     filters: { search, bookmarked, locations, ...filters },
     setFilters,
     sort,
+    resetFilterSort,
     setSort,
-  } = useApplicationsStore(({ filters, setFilters, sort, setSort }) => ({
-    filters,
-    setFilters,
-    sort,
-    setSort,
-  }));
+  } = useApplicationsStore(
+    ({ filters, setFilters, sort, resetFilterSort, setSort }) => ({
+      filters,
+      setFilters,
+      resetFilterSort,
+      sort,
+      setSort,
+    }),
+  );
   const filterOptions = { badges, resume_score };
   const safeFilters: Parameters<typeof FilterHeader>[0]['filters'] = useMemo(
     () =>
@@ -106,6 +110,8 @@ const Filters = () => {
       <FilterHeader
         filters={[bookmarkedButton, ...safeFilters, Locations]}
         sort={safeSort}
+        isResetAll={true}
+        handelResetAll={resetFilterSort}
         search={{
           value: search,
           setValue: (newValue: typeof search) =>
@@ -168,8 +174,9 @@ const resume_score = resumeScoreTypes.map((id) => ({
 }));
 
 const sortTypes: ApplicationsStore['sort']['type'][] = [
+  'latest_activity',
+  'resume_score',
   'applied_at',
   'name',
-  'resume_score',
   'location',
 ];

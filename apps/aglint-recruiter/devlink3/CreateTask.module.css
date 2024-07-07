@@ -22,28 +22,22 @@
   border-bottom: 1px solid var(--neutral-6);
 }
 
-.icons {
+.create-task-close-wrap {
   display: flex;
-  flex-direction: column;
+  width: 24px;
+  height: 24px;
   justify-content: center;
   align-items: center;
-}
 
-.icons.cursor-pointer {
-  transition: all 250ms ease;
+  border-radius: var(--radius-2);
+
+  transition: all 200ms ease;
+
   cursor: pointer;
 }
 
-.icons.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.icons.pointer {
-  cursor: pointer;
+.create-task-close-wrap:hover {
+  background-color: var(--neutral-3);
 }
 
 .title_wrapper {

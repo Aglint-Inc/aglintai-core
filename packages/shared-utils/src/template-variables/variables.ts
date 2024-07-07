@@ -8,11 +8,11 @@ export const jobDetails = ['companyName', 'jobRole'] as const;
 
 export const company = ['companyName'];
 
-export const recruiter = [
-  'recruiterName',
-  'recruiterFirstName',
-  'recruiterLastName',
-  'recruiterTimeZone',
+export const organizer = [
+  'organizerName',
+  'organizerFirstName',
+  'organizerLastName',
+  'OrganizerTimeZone',
 ] as const;
 
 export const interviewer = [
@@ -30,7 +30,6 @@ export const selfSchedulingLink = 'selfScheduleLink' as const;
 export const supportLink = 'supportLink' as const;
 
 export const availabilityReqLink = 'availabilityReqLink' as const;
-
 export const cancelReason = 'cancelReason' as const;
 
 export const additionalRescheduleNotes = 'additionalRescheduleNotes' as const;
@@ -41,7 +40,13 @@ export const allTempvariables = [
   ...candidates,
   ...jobDetails,
   ...company,
-  ...recruiter,
+  ...organizer,
   ...interviewer,
   ...dates,
 ] as const;
+
+export const candidateProfileLink = 'candidateProfileLink' as const;
+export const interviewInstructionLink = 'interviewInstructionLink' as const;
+export const interviewFeedbackLink = 'interviewFeedbackLink' as const;
+export const candidateScheduleLink = 'candidateScheduleLink' as const;
+export const meetingDetailsLink = 'meetingDetailsLink' as const;

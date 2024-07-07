@@ -4,7 +4,6 @@ import type { TableType } from "./index.types";
 export type CustomNewTasks = TableType<
   "new_tasks",
   {
-    session_ids: meetingCardType[];
     schedule_date_range: CustomNewScheduleDateRange;
     task_action: taskActionType;
   }

@@ -17,11 +17,11 @@ export async function POST(req: Request) {
       recipient_email,
       filled_comp_template,
     } of interviewers_mail_data) {
-      await sendMailFun(
+      await sendMailFun({
         filled_comp_template,
         react_email_placeholders,
         recipient_email,
-      );
+      });
     }
 
     return NextResponse.json('success', {

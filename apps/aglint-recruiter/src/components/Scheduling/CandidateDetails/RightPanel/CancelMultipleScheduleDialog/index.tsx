@@ -14,6 +14,7 @@ import { cancelMailHandler } from '../../mailUtils';
 import {
   setMultipleCancelOpen,
   setSelectedApplicationLog,
+  setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../../store';
 
@@ -67,6 +68,7 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
     } finally {
       refetch();
       fetchInterviewDataByApplication();
+      setSelectedSessionIds([]);
       onClickClose();
     }
   };
@@ -83,11 +85,11 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
     if (errReqAva) throw new Error(errReqAva.message);
 
     const selectedSessions = reqAva.session_ids.map((reqses) => {
-      const session = initialSessions.find((ses) => ses.id === reqses.id);
+      const session = initialSessions.find((ses) => ses.interview_session.id === reqses.id);
       return session;
     });
 
-    const sessionsName = selectedSessions.map((ses) => ses.name).join(' , ');
+    const sessionsName = selectedSessions.map((ses) => ses.interview_session.name).join(' , ');
 
     const selectedMeetings: DatabaseTableInsert['interview_meeting'][] =
       selectedSessions.map((ses) => ({
@@ -118,10 +120,10 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
       .eq('id', filter_id);
 
     const selectedSessions = initialSessions.filter((ses) =>
-      checkFilterJson[0].session_ids.includes(ses.id),
+      checkFilterJson[0].session_ids.includes(ses.interview_session.id),
     );
 
-    const sessionsName = selectedSessions.map((ses) => ses.name).join(' , ');
+    const sessionsName = selectedSessions.map((ses) => ses.interview_session.name).join(' , ');
 
     if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
 
@@ -167,7 +169,7 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
   }) => {
     cancelMailHandler({
       application_id,
-      session_ids: selectedSessions.map((ses) => ses.id),
+      session_ids: selectedSessions.map((ses) => ses.interview_session.id),
     });
 
     await addScheduleActivity({

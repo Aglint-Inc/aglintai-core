@@ -1,7 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
-import { TaskTypeDb } from '@aglint/shared-types';
-import { DB } from '@aglint/shared-types';
+import { DatabaseTableInsert, DB } from '@aglint/shared-types';
 import {
   EmailAgentId,
   PhoneAgentId,
@@ -29,7 +28,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { data, error } = await supabase
       .from('new_tasks')
       .select(
-        '*,applications(id,candidates(first_name),public_jobs(id,recruiter!public_jobs_recruiter_id_fkey(id,name))),recruiter_user(user_id,first_name,last_name,email,phone),interview_filter_json(*)',
+        '*,applications(id,candidates(first_name),public_jobs(id,recruiter!public_jobs_recruiter_id_fkey(id,name))),recruiter_user(user_id,first_name,last_name,email,phone),interview_filter_json(*),task_session_relation(*)',
       )
       .eq('status', 'scheduled')
       .or(
@@ -64,7 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 };
                 axios.post(debrief_url, bodyParams);
               } else {
-                axios.post(agent_url, {
+                const bodyParams: ApiBodyParamsScheduleAgent = {
                   application_id: task.application_id,
                   dateRange: task.schedule_date_range,
                   recruiter_id: task.applications.public_jobs.recruiter.id,
@@ -72,19 +71,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     task.recruiter_user.first_name,
                     task.recruiter_user.last_name,
                   ),
-                  session_ids: task.interview_filter_json.session_ids,
+                  session_ids: task.task_session_relation.map(
+                    (ele) => ele.session_id,
+                  ),
                   task_id: task.id,
-                  type: task.assignee.includes(EmailAgentId)
-                    ? 'email_agent'
-                    : task.assignee.includes(EmailAgentId)
-                      ? 'phone_agent'
-                      : '',
+                  type: task.assignee.includes(PhoneAgentId)
+                    ? 'phone_agent'
+                    : 'email_agent',
                   candidate_name: task.applications.candidates.first_name,
                   company_name: task.applications.public_jobs.recruiter.name,
                   rec_user_phone: task.recruiter_user.phone,
                   rec_user_id: task.recruiter_user.user_id,
                   user_tz: 'Asia/Calcutta',
-                } as ApiBodyParamsScheduleAgent);
+                };
+
+                axios.post(agent_url, bodyParams);
               }
             } catch (error) {
               console.error('Error for application:', error.message);
@@ -92,30 +93,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           }),
         );
 
-        const { error } = await supabase.from('new_tasks').upsert(
-          data.map((task) => {
+        const updateTasks: DatabaseTableInsert['new_tasks'][] = data.map(
+          (task) => {
             return {
               id: task.id,
               status: 'in_progress',
-              agent: task.agent,
-              application_id: task.application_id,
-              assignee: task.assignee,
               name: task.name,
-              created_at: task.created_at,
+              assignee: task.assignee,
               created_by: task.created_by,
-              due_date: task.due_date,
-              filter_id: task.filter_id,
-              priority: task.priority,
-              recruiter_id: task.recruiter_id,
-              schedule_date_range: task.schedule_date_range,
-              session_ids: task.session_ids,
-              start_date: task.start_date,
-              task_owner: task.task_owner,
-              trigger_count: task.trigger_count + 1,
-              type: task.type,
-            } as TaskTypeDb;
-          }),
+            };
+          },
         );
+
+        const { error } = await supabase.from('new_tasks').upsert(updateTasks);
 
         console.log(error?.message, 'error progress update');
 

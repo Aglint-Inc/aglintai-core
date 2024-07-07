@@ -18,4 +18,7 @@ declare function EmailTemplatesStart(props: {
   slotWarning?: Types.Devlink.Slot;
   isWarningVisible?: Types.Visibility.VisibilityConditions;
   slotEmailDetails?: Types.Devlink.Slot;
+  slotNewTabPill?: Types.Devlink.Slot;
+  slotSearchFilter?: Types.Devlink.Slot;
+  showTabs?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

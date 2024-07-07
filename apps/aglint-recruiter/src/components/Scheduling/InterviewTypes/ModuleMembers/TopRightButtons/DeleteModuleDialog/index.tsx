@@ -2,6 +2,8 @@ import { Dialog } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
 import UITextField from '@/src/components/Common/UITextField';
 import ROUTES from '@/src/utils/routing/routes';
@@ -71,16 +73,26 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
       <CloseJobModal
         textPopupTitle={`Delete Interview Type`}
         textWarning={`By clicking delete the module will be permanently deleted`}
-        textButton={'Delete'}
         textJobTitle={moduleName}
-        onClickCancel={{
-          onClick: () => onClose(),
-        }}
-        onClickCloseJob={{
-          onClick: () => {
-            if (editModule.id) deleteModule();
-          },
-        }}
+        slotButton={
+          <>
+            <ButtonSoft
+              size={2}
+              textButton='Cancel'
+              color={'neutral'}
+              onClickButton={{ onClick: onClose }}
+            />
+            <ButtonSolid
+              size={2}
+              textButton='Delete'
+              onClickButton={{
+                onClick: () => {
+                  if (editModule.id) deleteModule();
+                },
+              }}
+            />
+          </>
+        }
         textLocation={moduleDescription}
         isDisabled={loading || moduleName !== value.trim()}
         slotInput={

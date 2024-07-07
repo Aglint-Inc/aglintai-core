@@ -12,6 +12,7 @@ import { CloseDeleteJob } from '@/devlink/CloseDeleteJob';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { Breadcrum } from '@/devlink2/Breadcrum';
+import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { AddCandidateButton } from '@/devlink3/AddCandidateButton';
 import { BannerLoading } from '@/devlink3/BannerLoading';
@@ -43,12 +44,12 @@ import WorkflowIcon from '@/src/components/Common/ModuleIcons/workflowIcon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import PublishButton from '@/src/components/Common/PublishButton';
 import UITextField from '@/src/components/Common/UITextField';
-import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon';
+import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJob } from '@/src/context/JobContext';
-import { useJobDetails } from '@/src/context/JobDashboard';
+import { useJobDashboard } from '@/src/context/JobDashboard';
 import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 import { useJobs } from '@/src/context/JobsContext';
 import NotFoundPage from '@/src/pages/404';
@@ -60,14 +61,14 @@ import ROUTES from '@/src/utils/routing/routes';
 import { capitalize, capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
-import { UploadApplications } from '../Common/uploadApplications';
-import DashboardBarChart from './barChart';
+import { UploadApplications } from '../Common/UploadApplications';
+import DashboardBarChart from './BarChart2';
 import DashboardDoughnutChart from './doughnut';
 import DashboardLineChart from './lineChart';
 import TenureAndExpSummary from './tenureAndExpSummary';
 
 const JobDashboard = () => {
-  const { loadStatus } = useJobDetails();
+  const { loadStatus } = useJobDashboard();
   switch (loadStatus) {
     case 'loading':
       return (
@@ -83,7 +84,7 @@ const JobDashboard = () => {
 };
 
 const getMatches = (
-  counts: ReturnType<typeof useJobDetails>['matches']['data'],
+  counts: ReturnType<typeof useJobDashboard>['matches']['data'],
 ) => {
   return Object.entries(counts.matches).reduce(
     (acc, [key, value]) => {
@@ -104,20 +105,28 @@ const getMatches = (
 };
 
 const Dashboard = () => {
-  const { job, applicationScoringPollEnabled } = useJob();
   const {
-    matches: { data: counts },
-    schedules: { data: schedule },
+    job,
+    applicationScoringPollEnabled,
+    handleRescoreApplications,
+    handleJobAsyncUpdate,
+    handleJobPublish,
     status: { description_changed, scoring_criteria_changed },
+  } = useJob();
+  const {
     publishStatus: {
       publishable,
       loading,
       detailsValidity,
       hiringTeamValidity,
     },
-  } = useJobDetails();
+  } = useJobDashboard();
+  const {
+    matches: { data: counts },
+    schedules: { data: schedule },
+  } = useJobDashboard();
   const { push } = useRouter();
-  const { handleJobAsyncUpdate, handleJobDelete, handleJobPublish } = useJobs();
+  const { handleJobDelete } = useJobs();
 
   const { setImportPopup, setFilters } = useApplicationsStore(
     ({ setImportPopup, setFilters }) => ({ setImportPopup, setFilters }),
@@ -156,8 +165,9 @@ const Dashboard = () => {
   const handlePublish = async () => {
     if (publishable) {
       const response = await handleJobPublish(job);
+      toast.success('Job published successfully');
       if (response && scoring_criteria_changed) {
-        //await handleJobApplicationRescore();
+        await handleRescoreApplications({ job_id: job?.id });
       }
       return response;
     } else {
@@ -207,7 +217,7 @@ const Dashboard = () => {
     push(`/jobs/${job.id}/candidate-list`);
   };
 
-  const banners = useBanners({ publishButton });
+  const banners = useBanners();
 
   return (
     <>
@@ -261,7 +271,17 @@ const Dashboard = () => {
             slotCardWithNumber={<TenureAndExpSummary />}
             isViewScheduleVisible={schedule.length > 3}
             onClickViewSchedule={{
-              onClick: () => push(`/scheduling?tab=mySchedules`),
+              onClick: () => {
+                localStorage.setItem(
+                  'scheduleFilterIds',
+                  JSON.stringify({
+                    status: ['confirmed'],
+                    member: [],
+                    job: [job?.id],
+                  }),
+                );
+                push(`/scheduling?tab=schedules`);
+              },
             }}
             slotScheduleCardSmall={<Schedules />}
             // textCandidateCount={counts.total}
@@ -286,7 +306,9 @@ const Dashboard = () => {
                 {applicationScoringPollEnabled && (
                   <ScoreSetting
                     textScoreCount={`${
-                      job?.processing_count?.success ?? '---'
+                      job?.processing_count.processed +
+                      job?.processing_count.unavailable +
+                      job?.processing_count.unparsable
                     }/${counts?.total ?? '---'}`}
                     slotScoringLoader={scoringLoader}
                   />
@@ -333,7 +355,7 @@ export default JobDashboard;
 
 const Roles = () => {
   const { push } = useRouter();
-  const { job } = useJobDetails();
+  const { job } = useJobDashboard();
   const { data, status } = useCompanyMembers();
   const { hiring_manager, recruiter, recruiting_coordinator, sourcer } = job;
   const coordinatorsData = {
@@ -397,7 +419,7 @@ const BreadCrumbs = () => {
   const {
     job,
     matches: { data: counts },
-  } = useJobDetails();
+  } = useJobDashboard();
   return (
     <>
       <Breadcrum
@@ -420,7 +442,7 @@ const BreadCrumbs = () => {
 };
 
 const Preview = () => {
-  const { job } = useJobDetails();
+  const { job } = useJobDashboard();
   const handlePreview = () => {
     window.open(
       `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${job?.id}`,
@@ -445,16 +467,18 @@ const Preview = () => {
 };
 
 const Pipeline = () => {
-  const { job } = useJobDetails();
+  const { job } = useJobDashboard();
   const { push } = useRouter();
   const setSection = useApplicationsStore(({ setSection }) => setSection);
-  const newSections = Object.entries(job.count).reduce(
+  const newSections = Object.entries(job.section_count).reduce(
     (acc, [key, value]) => {
       acc[key] = { count: value, label: getPlural(value, 'candidate') };
       return acc;
     },
-    // eslint-disable-next-line no-unused-vars
-    {} as { [id in keyof Job['count']]: { count: number; label: string } },
+    {} as {
+      // eslint-disable-next-line no-unused-vars
+      [id in keyof Job['section_count']]: { count: number; label: string };
+    },
   );
   const handlClick = (section: Application['status']) => {
     setSection(section);
@@ -470,7 +494,7 @@ const Pipeline = () => {
           onClick: () => handlClick('new'),
         }}
       />
-      {job.activeSections.includes('screening') && (
+      {job.flags.screening && (
         <PipeLine
           textCandidateCount={newSections.screening.label}
           textName={capitalize('screening')}
@@ -479,7 +503,7 @@ const Pipeline = () => {
           }}
         />
       )}
-      {job.activeSections.includes('assessment') && (
+      {job.flags.assessment && (
         <PipeLine
           textCandidateCount={newSections.assessment.label}
           textName={capitalize('assessment')}
@@ -488,7 +512,7 @@ const Pipeline = () => {
           }}
         />
       )}
-      {job.activeSections.includes('interview') && (
+      {job.flags.interview && (
         <PipeLine
           textCandidateCount={newSections.interview.label}
           textName={capitalize('interview')}
@@ -519,7 +543,7 @@ const Pipeline = () => {
 const Schedules = () => {
   const {
     schedules: { data },
-  } = useJobDetails();
+  } = useJobDashboard();
   const { push } = useRouter();
   if (data.length === 0) return <NoData />;
   const cards = data
@@ -580,19 +604,15 @@ const Schedules = () => {
   );
 };
 
-const useBanners = ({
-  publishButton,
-}: {
-  publishButton: React.JSX.Element;
-}) => {
+const useBanners = () => {
   const { push } = useRouter();
   const {
-    publishStatus,
-    status,
     job,
     isInterviewPlanDisabled,
     isInterviewSessionEmpty,
-  } = useJobDetails();
+    publishStatus,
+    status,
+  } = useJobDashboard();
   const { dismissWarnings, setDismissWarnings } = useJobDashboardStore(
     ({ dismissWarnings, setDismissWarnings }) => ({
       dismissWarnings,
@@ -600,8 +620,7 @@ const useBanners = ({
     }),
   );
   const banners: React.JSX.Element[] = [];
-  if (job.status === 'draft')
-    banners.push(<JobsBanner slotButton={publishButton} />);
+  if (job.status === 'draft') banners.push(<JobsBanner />);
   if (isInterviewPlanDisabled && !dismissWarnings.interview_plan)
     banners.push(
       <DashboardWarning
@@ -622,7 +641,7 @@ const useBanners = ({
             />
 
             <ButtonSolid
-              textButton='View'
+              textButton='Set now'
               size={2}
               color={'accent'}
               highContrast={'true'}
@@ -654,7 +673,7 @@ const useBanners = ({
             />
 
             <ButtonSolid
-              textButton='View'
+              textButton='Set now'
               size={2}
               color={'accent'}
               highContrast={'true'}
@@ -787,13 +806,36 @@ const useBanners = ({
         }
       />,
     );
-  // if (status.scoring_criteria_changed)
-  //   banners.push(
-  //     <DashboardWarning
-  //       onClickDismiss={{ onClick: () => setDismiss(true) }}
-  //       onClickView={{ onClick: () => push(`/jobs/${job.id}/profile-score`) }}
-  //     />
-  //   );
+  if (status.scoring_criteria_changed && !dismissWarnings.score_changed)
+    banners.push(
+      <GlobalBanner
+        textTitle={'Scoring criteria has been updated'}
+        color='success'
+        iconName='check_circle'
+        textDescription='You may need to publish changes to score applicants with the current scoring criteria'
+        slotButtons={
+          <>
+            <ButtonSoft
+              textButton='Ignore'
+              size={2}
+              color={'neutral'}
+              onClickButton={{
+                onClick: () => setDismissWarnings({ score_changed: true }),
+              }}
+            />
+
+            <ButtonSolid
+              textButton='View'
+              size={2}
+              color={'accent'}
+              onClickButton={{
+                onClick: () => push(`/jobs/${job.id}/profile-score`),
+              }}
+            />
+          </>
+        }
+      />,
+    );
   return banners;
 };
 
@@ -808,7 +850,7 @@ const JobClose = ({
 }) => {
   const {
     job: { job_title, location, status },
-  } = useJobDetails();
+  } = useJobDashboard();
   const [modal, setModal] = useState(false);
   const [value, setValue] = useState('');
   const handleClose = () => {
@@ -865,16 +907,30 @@ const JobClose = ({
           }
           textButton={isDelete ? 'Delete Job' : 'Close Job'}
           textJobTitle={job_title.trim()}
-          onClickCancel={{ onClick: () => handleClose() }}
-          onClickCloseJob={{ onClick: () => handleSubmit() }}
+          onClickCloseJob={{ onClick: () => handleClose() }}
           textLocation={location}
-          isDisabled={job_title.trim() !== value.trim()}
           slotInput={
             <UITextField
               placeholder={job_title.trim()}
               value={value}
               onChange={(e) => setValue(e.target.value)}
             />
+          }
+          slotButton={
+            <>
+              <ButtonSoft
+                color={'neutral'}
+                textButton='Cancel'
+                size={2}
+                onClickButton={{ onClick: () => handleClose() }}
+              />
+              <ButtonSolid
+                textButton={isDelete ? 'Delete Job' : 'Close Job'}
+                size={2}
+                onClickButton={{ onClick: handleSubmit }}
+                isDisabled={job_title.trim() !== value.trim()}
+              />
+            </>
           }
         />
       </Dialog>
@@ -900,7 +956,7 @@ const Modules = () => {
 };
 
 const WorkflowModule = () => {
-  const { job } = useJobDetails();
+  const { job } = useJobDashboard();
   const { push } = useRouter();
   const handleClick = () => {
     push(ROUTES['/jobs/[id]/workflows']({ id: job?.id }));
@@ -920,7 +976,7 @@ const HiringTeamModule = () => {
     publishStatus: {
       hiringTeamValidity: { validity },
     },
-  } = useJobDetails();
+  } = useJobDashboard();
   const { push } = useRouter();
   const handleClick = () => {
     push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id }));
@@ -941,7 +997,7 @@ const JobDetailsModule = () => {
     publishStatus: {
       detailsValidity: { validity },
     },
-  } = useJobDetails();
+  } = useJobDashboard();
   const { push } = useRouter();
   const handleClick = () => {
     push(ROUTES['/jobs/[id]/job-details']({ id: job?.id }));
@@ -957,7 +1013,7 @@ const JobDetailsModule = () => {
 };
 
 const AssessmentModule = () => {
-  const { job } = useJobDetails();
+  const { job } = useJobDashboard();
   const { push } = useRouter();
   const handleClick = () => {
     push(`/jobs/${job.id}/assessment`);
@@ -973,7 +1029,7 @@ const AssessmentModule = () => {
 };
 
 const EmailTemplatesModule = () => {
-  const { job /* emailTemplateValidity */ } = useJobDetails();
+  const { job /* emailTemplateValidity */ } = useJobDashboard();
   const { push } = useRouter();
   const handleClick = () => {
     push(`/jobs/${job.id}/email-templates`);
@@ -990,12 +1046,12 @@ const EmailTemplatesModule = () => {
 
 export type DashboardGraphOptions<
   T extends keyof Pick<
-    ReturnType<typeof useJobDetails>,
+    ReturnType<typeof useJobDashboard>,
     'assessments' | 'locations' | 'matches' | 'skills' | 'tenureAndExperience'
   >,
 > = {
   // eslint-disable-next-line no-unused-vars
-  [id in keyof ReturnType<typeof useJobDetails>[T]['data']]: string;
+  [id in keyof ReturnType<typeof useJobDashboard>[T]['data']]: string;
 };
 
 const Doughnut = () => {
@@ -1084,7 +1140,7 @@ const getPlural = (count: number, label: string) => {
 };
 
 const ScreeningModule = () => {
-  const { job } = useJobDetails();
+  const { job } = useJobDashboard();
   const { push } = useRouter();
 
   const handleClick = () => {
@@ -1102,7 +1158,7 @@ const ScreeningModule = () => {
 
 const InterviewModule = () => {
   const { job, isInterviewPlanDisabled, isInterviewSessionEmpty } =
-    useJobDetails();
+    useJobDashboard();
   const { interview_plan, interview_session } = useJobDashboardStore(
     ({ dismissWarnings }) => dismissWarnings,
   );
@@ -1125,7 +1181,7 @@ const InterviewModule = () => {
 };
 
 const ProfileScoreModule = () => {
-  const { job, status } = useJobDetails();
+  const { job, status } = useJobDashboard();
   const { push } = useRouter();
   const handleClick = () => {
     push(`/jobs/${job.id}/profile-score`);

@@ -3,6 +3,9 @@ import { Autocomplete, Dialog, Stack, Typography } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { AddTechStack } from '@/devlink/AddTechStack';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { RolesPill } from '@/devlink/RolesPill';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -164,24 +167,49 @@ const AddSpecialityDialog: React.FC<StacksProps> = ({
             )}
           />
         }
-        onClickCancel={{
-          onClick: () => {
-            handleClose();
-          },
-        }}
-        onClickDone={{
-          onClick: () => {
-            if (!campareChanges()) {
-              handleChange({
-                ...recruiter,
-                technology_score: stacks,
-              });
-              handleClose();
-            } else {
-              setInputError(true);
-            }
-          },
-        }}
+        slotClose={
+          <IconButtonGhost
+            iconName='close'
+            size={2}
+            color={'neutral'}
+            onClickButton={{
+              onClick: () => {
+                handleClose();
+              },
+            }}
+          />
+        }
+        slotButton={
+          <>
+            <ButtonSoft
+              textButton='Cancel'
+              size={2}
+              color={'neutral'}
+              onClickButton={{
+                onClick: () => {
+                  handleClose();
+                },
+              }}
+            />
+            <ButtonSolid
+              textButton='Add'
+              size={2}
+              onClickButton={{
+                onClick: () => {
+                  if (!campareChanges()) {
+                    handleChange({
+                      ...recruiter,
+                      technology_score: stacks,
+                    });
+                    handleClose();
+                  } else {
+                    setInputError(true);
+                  }
+                },
+              }}
+            />
+          </>
+        }
       />
     </Dialog>
   );

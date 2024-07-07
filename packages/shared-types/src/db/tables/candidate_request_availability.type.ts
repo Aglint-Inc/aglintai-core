@@ -1,7 +1,7 @@
-import type { TableType } from "./index.types";
+import type { TableType } from './index.types';
 
 export type CandidateRequestAvailability = TableType<
-  "candidate_request_availability",
+  'candidate_request_availability',
   {
     availability: AvailabilityType;
     date_range: DateRange;
@@ -32,6 +32,7 @@ type dateSlotsType = {
     slots: {
       startTime: string;
       endTime: string;
+      isSlotAvailable: boolean;
     }[];
   }[];
 };

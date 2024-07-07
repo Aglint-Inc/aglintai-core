@@ -85,3 +85,11 @@
 .icons.pointer {
   cursor: pointer;
 }
+
+.awn-horizontal-wrap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}

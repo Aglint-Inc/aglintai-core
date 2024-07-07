@@ -1,4 +1,9 @@
 /* eslint-disable no-unused-vars */
+import {
+  EmailAgentId,
+  PhoneAgentId,
+  SystemAgentId,
+} from '@aglint/shared-utils';
 import { Popover, Stack, Typography } from '@mui/material';
 import React from 'react';
 
@@ -13,11 +18,13 @@ function AssigneeList({
   setSelectedAssignee,
   onChange,
   isOptionList = true,
+  hideAgents = false,
 }: {
   selectedAssignee: assigneeType;
   setSelectedAssignee: (x: assigneeType) => void;
   onChange?: any;
   isOptionList?: boolean;
+  hideAgents?: boolean;
 }) {
   const { assignerList } = useTaskStatesContext();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -43,7 +50,7 @@ function AssigneeList({
       >
         {selectedAssignee ? (
           <AssigneeChip
-            disableHoverListener={true}
+            disableHoverListener={isOptionList}
             assigneeId={selectedAssignee.user_id}
           />
         ) : (
@@ -73,6 +80,13 @@ function AssigneeList({
       >
         <ListPop
           slotListCard={assignerList.map((ele, i) => {
+            if (
+              hideAgents &&
+              (ele.user_id === EmailAgentId ||
+                ele.user_id === PhoneAgentId ||
+                ele.user_id === SystemAgentId)
+            )
+              return null;
             return (
               <Stack
                 width={'100%'}
@@ -81,7 +95,7 @@ function AssigneeList({
                 sx={{
                   cursor: 'pointer',
                   '&:hover': {
-                    bgcolor: 'var(--neutral-2)'
+                    bgcolor: 'var(--neutral-2)',
                   },
                 }}
                 onClick={() => {

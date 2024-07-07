@@ -91,24 +91,12 @@
   color: var(--green600-40a2ee5f);
 }
 
-@media screen and (max-width: 767px) {
-  .text-lg.fw-semibold.responsive-text {
-    font-size: 14px;
-  }
-}
-
 .text-grey-700 {
   color: var(--grey700-7fbe857b);
 }
 
 .text-lg.text-grey-700.letter-spacing-small {
   letter-spacing: -0.45px;
-}
-
-@media screen and (max-width: 767px) {
-  .text-lg.text-grey-700.responsive-text {
-    font-size: 14px;
-  }
 }
 
 .text-lg.text-gray-400 {
@@ -249,10 +237,6 @@
   .fw-semibold.text-lg.text-yellow-600.mobile-14 {
     font-size: 14px;
   }
-}
-
-.fw-semibold.new-greenhouse {
-  color: #14413d;
 }
 
 .text-color-white {

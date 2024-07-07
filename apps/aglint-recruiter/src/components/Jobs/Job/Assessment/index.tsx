@@ -10,7 +10,6 @@ import Loader from '@/src/components/Common/Loader';
 import AssessmentResetWrapper from '@/src/components/NewAssessment/Common/wrapper/resetWrapper';
 import { useJob } from '@/src/context/JobContext';
 import { useJobs } from '@/src/context/JobsContext';
-import { useCurrentJob } from '@/src/queries/job-assessment/keys';
 import { capitalize } from '@/src/utils/text/textUtils';
 
 import JobAssessment from './list';
@@ -41,7 +40,7 @@ export default JobAssessmentDashboard;
 
 const JobAssessmentDashboardBreadCrumbs = () => {
   const { push } = useRouter();
-  const { job } = useCurrentJob();
+  const { job } = useJob();
   return (
     <>
       <Breadcrum
@@ -71,8 +70,10 @@ const JobAssessmentDashboardBreadCrumbs = () => {
 };
 
 const EnableAssessment = () => {
-  const { handleJobAsyncUpdate } = useJobs();
-  const { id } = useCurrentJob();
+  const {
+    job: { id },
+    handleJobAsyncUpdate,
+  } = useJob();
   const [disable, setDisable] = useState(false);
   const handelEnable = async () => {
     if (!disable) {

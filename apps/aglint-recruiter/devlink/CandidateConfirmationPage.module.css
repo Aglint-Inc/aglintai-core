@@ -3,7 +3,6 @@
 
   display: flex;
   width: 100%;
-  height: 100%;
   padding-top: var(--space-9);
   padding-bottom: var(--space-9);
   flex-direction: column;
@@ -77,15 +76,6 @@
 .embed_flex {
   display: flex;
   align-items: center;
-}
-
-.embed_flex.ml--1 {
-  margin-left: -9px;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
 }
 
 .ccp-btn-wrap {

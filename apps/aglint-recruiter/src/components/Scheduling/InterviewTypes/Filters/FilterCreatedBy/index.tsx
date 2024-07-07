@@ -36,22 +36,13 @@ function FilterCreatedBy() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
-  const [text, setText] = useState('');
   const [members, setMembers] = useState<UserType[]>([]);
-  const [selectedMembers, setSelectedMembers] = useState<UserType[]>([]);
   const [loading, setLoading] = useState(false);
   const createdBy = useFilterModuleStore((state) => state.created_by);
 
   useEffect(() => {
-    handleSearch();
-    setCreatedBy([]); //needs a fix
+    handleSearch('');
   }, []);
-
-  useEffect(() => {
-    if (text) {
-      handleSearch();
-    }
-  }, [text]);
 
   const open = Boolean(anchorEl);
   const id = open ? 'interview-panels' : undefined;
@@ -64,16 +55,16 @@ function FilterCreatedBy() {
     setAnchorEl(null);
   };
 
-  const handleSearch = () => {
-    debouncedHandleSearch();
+  const handleSearch = (value) => {
+    debouncedHandleSearch(value);
   };
 
-  const debouncedHandleSearch = debounce(async () => {
+  const debouncedHandleSearch = debounce(async (value) => {
     try {
       setLoading(true);
       const { data, error } = await supabase.rpc('search_members', {
         recruiter_id_param: recruiter.id,
-        name_param: text,
+        name_param: value,
       });
 
       if (error) throw new Error(error.message);
@@ -95,6 +86,14 @@ function FilterCreatedBy() {
       setLoading(false);
     }
   }, 300);
+
+  const handleFilterClick = (user_id) => {
+    if (createdBy.includes(user_id)) {
+      setCreatedBy(createdBy.filter((l) => l != user_id));
+    } else {
+      setCreatedBy([...createdBy, user_id]);
+    }
+  };
 
   return (
     <>
@@ -138,75 +137,30 @@ function FilterCreatedBy() {
                 type='search'
                 sx={{ pb: 1 }}
                 placeholder='Search users'
-                value={text}
-                onChange={(e) => {
-                  setText(e.target.value);
-                }}
+                onChange={(e) => handleSearch(e.target.value)}
               />
               <Stack height='10px'>
                 {loading && <LinearProgress color='info' />}
               </Stack>
 
               <Stack maxHeight={'50vh'} overflow={'auto'}>
-                {members
-                  .filter(
-                    (user) =>
-                      !selectedMembers.some((u) => u.user_id == user.user_id),
-                  )
-                  .map((item, index) => (
-                    <Stack
-                      key={index}
-                      direction={'row'}
-                      spacing={1}
-                      sx={{
-                        p: '8px 4px',
-                        cursor: 'pointer',
-                      }}
-                      alignItems={'center'}
-                      onClick={() => {
-                        setMembers((prev) =>
-                          prev.filter((u) => u.user_id !== item.user_id),
-                        );
-                        setSelectedMembers((prev) => [...prev, item]);
-                        setCreatedBy([...createdBy, item.user_id]);
-                      }}
-                    >
-                      <Checkbox isChecked={false} />
-                      <MuiAvatar
-                        src={item.profile_image}
-                        level={getFullName(item.first_name, item.last_name)}
-                        variant='rounded-small'
-                      />
-                      <Typography variant='body1'>
-                        {capitalize(item.first_name)}
-                      </Typography>
-                      <Typography variant='caption'>
-                        - {item.position}
-                      </Typography>
-                    </Stack>
-                  ))}
-
-                {selectedMembers.map((item) => (
+                {members.map((item, index) => (
                   <Stack
-                    key={item.user_id}
+                    key={index}
                     direction={'row'}
                     spacing={1}
                     sx={{
-                      p: '8px 4px',
+                      p: 'var(--space-2) var(--space-3)',
                       cursor: 'pointer',
+                      ':hover': { bgcolor: 'var(--neutral-2)' },
+                      borderRadius: 'var(--radius-2)',
                     }}
                     alignItems={'center'}
                     onClick={() => {
-                      setMembers((prev) => [...prev, item]);
-                      setCreatedBy(
-                        createdBy.filter((id) => id !== item.user_id),
-                      );
-                      setSelectedMembers((prev) => {
-                        return prev.filter((u) => u.user_id !== item.user_id);
-                      });
+                      handleFilterClick(item.user_id);
                     }}
                   >
-                    <Checkbox isChecked={true} />
+                    <Checkbox isChecked={createdBy.includes(item.user_id)} />
                     <MuiAvatar
                       src={item.profile_image}
                       level={getFullName(item.first_name, item.last_name)}
@@ -230,7 +184,6 @@ function FilterCreatedBy() {
           onClickReset={{
             onClick: () => {
               setCreatedBy([]);
-              setSelectedMembers([]);
             },
           }}
         />

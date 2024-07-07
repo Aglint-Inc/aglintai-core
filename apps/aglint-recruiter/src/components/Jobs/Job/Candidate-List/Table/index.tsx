@@ -7,18 +7,13 @@ import { SkeletonCandidateListItem } from '@/devlink2/SkeletonCandidateListItem'
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useKeyPress } from '@/src/hooks/useKeyPress';
 
-import { Loader } from '../../Common/candidateDrawer/common';
-import { EmptyList } from './common';
-import ApplicantsList from './list';
+import { Loader } from '../../Common/CandidateDrawer/Common/Loader';
+import { EmptyList } from './Common/EmptyList';
+import List from './List';
 
 export const Table = memo(() => {
-  return <List />;
-});
-Table.displayName = 'Table';
-
-const List = memo(() => {
   const {
-    job: { count },
+    job: { section_count },
     cascadeVisibilites,
     section,
     sectionApplication,
@@ -46,20 +41,24 @@ const List = memo(() => {
     [cascadeVisibilites],
   );
 
-  if ((count[section] ?? 0) === 0) return <EmptyList />;
+  if ((section_count[section] ?? 0) === 0) return <EmptyList />;
   if (sectionApplication.status === 'error') return <>Error</>;
   if (sectionApplication.status === 'pending')
     return <Loader count={8}>{skeleton}</Loader>;
 
   return (
-    <ApplicantsList
+    <List
       key={section}
       applications={sectionApplication}
-      count={count[section]}
+      count={section_count[section]}
       loader={<Loader count={5}>{skeleton}</Loader>}
       header={
         <Stack
-          style={{ zIndex: count[section] + 1, position: 'sticky', top: 0 }}
+          style={{
+            zIndex: section_count[section] + 1,
+            position: 'sticky',
+            top: 0,
+          }}
         >
           <ApplicantsTable
             isAllChecked={false}
@@ -76,4 +75,4 @@ const List = memo(() => {
     />
   );
 });
-List.displayName = 'List';
+Table.displayName = 'Table';

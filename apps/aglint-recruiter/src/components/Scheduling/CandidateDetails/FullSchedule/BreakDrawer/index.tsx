@@ -13,7 +13,11 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { useGetScheduleApplication } from '../../hooks';
-import { setIsEditBreakOpen, useSchedulingApplicationStore } from '../../store';
+import {
+  setIsEditBreakOpen,
+  setSelectedSessionIds,
+  useSchedulingApplicationStore,
+} from '../../store';
 
 function BreakDrawerEdit() {
   const { recruiter, recruiterUser } = useAuthDetails();
@@ -37,9 +41,9 @@ function BreakDrawerEdit() {
 
   useEffect(() => {
     if (editSession) {
-      setValue(editSession.break_duration);
+      setValue(editSession.interview_session.break_duration);
     }
-  }, [editSession?.id]);
+  }, [editSession?.interview_session.id]);
 
   const handleClose = () => {
     setIsEditBreakOpen(false);
@@ -74,14 +78,16 @@ function BreakDrawerEdit() {
           })
           .eq(
             'id',
-            createCloneRes.refSessions.find((s) => s.id === editSession.id)
-              .newId,
+            createCloneRes.refSessions.find(
+              (s) => s.id === editSession.interview_session.id,
+            ).newId,
           );
       } else {
         toast.error('Error caching session.');
       }
 
       await fetchInterviewDataByApplication();
+      setSelectedSessionIds([]);
       handleClose();
     } else {
       await supabase
@@ -89,8 +95,9 @@ function BreakDrawerEdit() {
         .update({
           break_duration: value,
         })
-        .eq('id', editSession.id);
+        .eq('id', editSession.interview_session.id);
       await fetchInterviewDataByApplication();
+      setSelectedSessionIds([]);
       handleClose();
     }
     setSaving(false);
@@ -125,6 +132,7 @@ function BreakDrawerEdit() {
                 />
               </Stack>
             }
+            onClickClose={{ onClick: () => handleClose() }}
             slotButton={
               <>
                 <ButtonSoft

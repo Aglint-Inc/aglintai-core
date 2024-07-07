@@ -34,8 +34,12 @@ const DeletePopup = () => {
   return (
     <Dialog open={deletion.open}>
       <DeletePopupDev
-        buttonText={'Unlink and delete'}
-        textDescription={`This workflow is being used in ${count} job${count === 1 ? '' : 's'}. Are you sure you want to unlink and delete this workflow.`}
+        buttonText={count === 0 ? 'Delete' : 'Unlink and Delete'}
+        textDescription={
+          count === 0
+            ? ' Are you sure you want to delete this workflow?'
+            : `This workflow is being used in ${count} job${count === 1 ? '' : 's'}. Are you sure you want to unlink and Delete this workflow?`
+        }
         onClickCancel={{ onClick: () => closeDeletion() }}
         onClickDelete={{
           onClick: () => {

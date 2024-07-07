@@ -131,15 +131,14 @@ export const useScheduleSessionsAnalytics = () => {
 
 export const useCancelRescheduleReasons = () => {
   const { recruiter } = useAuthDetails();
-  const { data, isPending: loading } = useScheduleSessionsAnalytics();
+  const { isLoading } = useScheduleSessionsAnalytics();
   const { queryKey } = schedulingDashboardQueryKeys.CancelRescheduleReasons({
     recruiter_id: recruiter.id,
   });
   return useQuery({
     queryKey,
-    queryFn: () =>
-      getCancelRescheduleReasons(data.map((item) => item.interview_session.id)),
-    enabled: !loading,
+    queryFn: () => getCancelRescheduleReasons(recruiter.id),
+    enabled: !isLoading,
   });
 };
 
@@ -150,7 +149,7 @@ export const useCancelRescheduleReasonsUsers = () => {
     useCancelRescheduleReasons();
   const users = CancelRescheduleReasons?.reduce(
     (acc, curr) => {
-      const temp_item = data.find(
+      const temp_item = data?.find(
         (item) => item.interview_session.id == curr.session_id,
       );
 
@@ -196,6 +195,7 @@ export const useCancelRescheduleReasonsUsers = () => {
 
 export const useCompletedInterviewDetails = () => {
   const [filterDuration, setFilterDuration] = useState<8 | 1>(1);
+  const { recruiter_id } = useAuthDetails();
   const type = filterDuration == 1 ? 'week' : 'month';
   const { queryKey } = schedulingDashboardQueryKeys.CompletedInterviewDetails({
     type,
@@ -209,6 +209,7 @@ export const useCompletedInterviewDetails = () => {
             ? { n: -30, unit: 'days' }
             : { n: -8, unit: 'months' },
         ),
+        rec_id: recruiter_id,
       }).then((data) => {
         return groupDateBy(data, filterDuration == 1 ? 'week' : 'month');
       }),
@@ -305,11 +306,19 @@ const getAnalyticsData = async (rec_id: string) => {
   );
 };
 
-const getCancelRescheduleReasons = async (session_ids: string[]) => {
+const getCancelRescheduleReasons = async (rec_id: string) => {
   return supabase
     .from('interview_session_cancel')
-    .select()
-    .in('session_id', session_ids)
+    .select(
+      '*,interview_session(interview_meeting(interview_schedule(recruiter_id)))',
+    )
+    .eq(
+      'interview_session.interview_meeting.interview_schedule.recruiter_id',
+      rec_id,
+    )
+    .not('interview_session.interview_meeting.interview_schedule', 'is', null)
+    .not('interview_session.interview_meeting', 'is', null)
+    .not('interview_session', 'is', null)
     .throwOnError()
     .then(({ data }) => data);
 };
@@ -366,12 +375,16 @@ const getInterviewerByRelationId = async (relation_ids: string[]) => {
 
 const getCompletedInterviewDetails = async ({
   filterFromDate,
+  rec_id,
 }: {
   filterFromDate: string;
+  rec_id: string;
 }) => {
   return supabase
     .from('interview_meeting')
-    .select('created_at')
+    .select('created_at,interview_schedule(recruiter_id)')
+    .eq('interview_schedule.recruiter_id', rec_id)
+    .not('interview_schedule', 'is', null)
     .eq('status', 'completed')
     .gt('created_at', filterFromDate)
     .then(({ data }) => {

@@ -34,6 +34,17 @@ export const confirmInterviewEmailApplicantSchema = v.object({
   schedule_id: v.nullish(v.string()),
   filter_id: v.nullish(v.string()),
   availability_req_id: v.nullish(v.string()),
+  preview_details: v.optional(
+    v.object({
+      meeting_timings: v.array(
+        v.object({
+          meeting_start_time: v.string(),
+          meeting_end_time: v.string(),
+        })
+      ),
+    }),
+    undefined
+  ),
 });
 
 export const applicantRejectEmailApplicantSchema = v.object({
@@ -91,18 +102,50 @@ export const interviewStartEmailInterviewersSchema = v.object({
   recruiter_user_id: v.string(),
 });
 
+export const interviewStartEmailOrganizerSchema = v.object({
+  session_id: v.string(),
+  application_id: v.string(),
+  is_preview: v.optional(v.boolean(), false),
+});
+
 export const sendSelfScheduleRequest_email_applicant = v.object({
-  filter_json_id: v.string(),
+  organizer_id: v.string(),
+  filter_json_id: v.optional(v.string()),
+  application_id: v.optional(v.string()),
+  task_id: v.optional(v.string(), undefined),
 });
 
 export const sendAvailabilityRequestEmailApplicantSchema = v.object({
-  avail_req_id: v.string(),
-  recruiter_user_id: v.string(),
+  organizer_user_id: v.string(),
+  avail_req_id: v.nullish(v.string("missing avail_req_id"), undefined),
+  preview_details: v.nullish(
+    v.object({
+      application_id: v.string(),
+    }),
+    undefined
+  ),
 });
 export const sendAvailReqReminderEmailApplicant = v.object({
   avail_req_id: v.string(),
 });
 
 export const selfScheduleReminderEmailApplicantSchema = v.object({
-  filter_json_id: v.string(),
+  filter_id: v.string(),
+  task_id: v.optional(v.string(), undefined),
+});
+
+export const meetingDeclinedEmailOrganizerSchema = v.object({
+  session_id: v.string(),
+  interviewer_id: v.string(),
+  application_id: v.string(),
+});
+export const MeetingAcceptedEmailOrganizerSchema = v.object({
+  session_id: v.string(),
+  interviewer_id: v.string(),
+  application_id: v.string(),
+});
+export const interviewEndEmailInterviewerForFeedbackSchema = v.object({
+  session_id: v.string(),
+  recruiter_user_id: v.string(),
+  application_id: v.string(),
 });

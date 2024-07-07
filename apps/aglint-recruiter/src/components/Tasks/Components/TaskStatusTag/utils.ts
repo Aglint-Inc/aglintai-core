@@ -1,4 +1,5 @@
 import { DatabaseEnums, DatabaseView } from '@aglint/shared-types';
+import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 
 import dayjs from '@/src/utils/dayjs';
 
@@ -11,7 +12,10 @@ export type indicatorType =
   | 'SCHEDULED'
   | 'RESCHEDULE'
   | 'ACTION_NEEDED'
-  | 'UNKNOWN_STATUS';
+  | 'UNKNOWN_STATUS'
+  | 'ASSIGNED_TO_AGENT'
+  | 'COMPLETED'
+  | 'CLOSED';
 
 export function getIndicatorMessage(indicator: indicatorType): string {
   switch (indicator) {
@@ -31,6 +35,12 @@ export function getIndicatorMessage(indicator: indicatorType): string {
       return 'Unknown Status';
     case 'MAIL_SENT':
       return 'Mail Sent';
+    case 'ASSIGNED_TO_AGENT':
+      return 'Assigned to Agent';
+    case 'COMPLETED':
+      return 'Task Completed';
+    case 'CLOSED':
+      return 'Task Closed';
     default:
       return 'Invalid indicator type';
   }
@@ -47,36 +57,43 @@ export function getIndicator({
 }) {
   let toDayDateTime = dayjs();
   let dueDateTime = dayjs(created_at);
+  const assignee = task.assignee[0];
+  const checkCloseOrCompleted =
+    task.status !== 'closed' && task.status !== 'completed';
   if (
     dueDateTime.isBefore(toDayDateTime.add(-2, 'day')) &&
     progress_type === 'email_messages'
   ) {
     return 'NO_RESPONSE' as indicatorType;
   }
-
+  if (
+    progress_type === 'schedule' &&
+    (assignee === EmailAgentId || assignee === PhoneAgentId)
+  ) {
+    return 'ASSIGNED_TO_AGENT' as indicatorType;
+  }
   if (task.trigger_count === 2 && progress_type === 'call_disconnected') {
     return 'NO_RESPONSE' as indicatorType;
   }
 
   if (
-    progress_type === 'request_availability' ||
+    (progress_type === 'request_availability' && checkCloseOrCompleted) ||
     progress_type === 'send_email'
   ) {
     return 'AWAITING_RESPONSE' as indicatorType;
   }
 
   if (
-    progress_type === 'self_schedule' ||
-    progress_type === 'schedule' ||
-    progress_type === 'request_availability_list'
+    ((progress_type === 'schedule' && checkCloseOrCompleted) ||
+      (progress_type === 'request_availability_list' &&
+        checkCloseOrCompleted)) &&
+    assignee !== EmailAgentId &&
+    assignee !== PhoneAgentId
   ) {
     return 'READY_TO_SCHEDULE' as indicatorType;
   }
 
-  if (
-    progress_type === 'interview_schedule' ||
-    progress_type === 'call_completed'
-  ) {
+  if (progress_type === 'interview_schedule') {
     return 'BOOKED' as indicatorType;
   }
 
@@ -84,9 +101,16 @@ export function getIndicator({
     progress_type === 'call_failed' ||
     progress_type === 'call_disconnected' ||
     progress_type === 'email_failed' ||
-    task.status === 'failed'
+    task.status === 'failed' ||
+    progress_type === 'call_completed'
   ) {
     return 'ACTION_NEEDED' as indicatorType;
+  }
+  if (task.status === 'completed') {
+    return 'COMPLETED' as indicatorType;
+  }
+  if (task.status === 'closed') {
+    return 'CLOSED' as indicatorType;
   }
   return 'UNKNOWN_STATUS' as indicatorType;
 }

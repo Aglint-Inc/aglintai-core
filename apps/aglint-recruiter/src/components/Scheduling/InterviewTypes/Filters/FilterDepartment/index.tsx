@@ -38,7 +38,17 @@ function FilterDepartment() {
 
   const renderStatus = (label: string) => {
     return (
-      <Stack direction={'row'} alignItems={'center'} spacing={1}>
+      <Stack
+        direction={'row'}
+        sx={{
+          alignItems: 'center',
+          ':hover': { bgcolor: 'var(--neutral-2)' },
+          borderRadius: 'var(--radius-2)',
+        }}
+        spacing={1}
+        padding={'var(--space-2) var(--space-3)'}
+        marginTop={'0px !important'}
+      >
         <Checkbox
           isChecked={departments.includes(label)}
           onClickCheck={{
@@ -106,7 +116,7 @@ function FilterDepartment() {
           isRemoveVisible={false}
           onClickReset={{
             onClick: () => {
-              setDepartments(['']);
+              setDepartments([]);
             },
           }}
         />

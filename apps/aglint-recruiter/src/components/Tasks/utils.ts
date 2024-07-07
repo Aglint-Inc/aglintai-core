@@ -82,7 +82,8 @@ type ProgressType =
   | 'debrief_scheduled'
   | 'email_followUp_reminder'
   | 'request_availability'
-  | 're_request_availability';
+  | 're_request_availability'
+  | 'self_scheduling';
 
 type optionDataType = {
   assignerId?: string;
@@ -194,9 +195,11 @@ export async function createTaskProgress({
       case 'email_followUp_reminder':
         return `{assigneeName} sent a follow-up email on {time_format}`;
       case 'request_availability':
-        return `Request Availability from {candidate} to Schedule Interviews for {selectedSessions}`;
+        return `Requested Availability from {candidate} to Schedule Interviews for {selectedSessions}`;
       case 're_request_availability':
         return `Resend request availability`;
+      case 'self_scheduling':
+        return `Sent booking link to {candidate} for {selectedSessions}`;
       default:
         return '';
     }
@@ -297,8 +300,8 @@ export function getFormattedTask({
     .reduce((acc, task) => {
       const progressType = getIndicator({
         task,
-        progress_type: task.last_progress.progress_type,
-        created_at: task.last_progress.created_at,
+        progress_type: task?.latest_progress?.progress_type,
+        created_at: task.latest_progress?.created_at,
       });
       if (!acc[progressType]) {
         acc[progressType] = { progress_type: progressType, tasklist: [] };
@@ -341,7 +344,7 @@ export function getFormattedTask({
   }
   if (selectedGroupBy.label == 'status') {
     return Object.values(groupedTasksByProgressType) as {
-      status: TasksAgentContextType['tasks'][number]['last_progress']['progress_type'];
+      status: TasksAgentContextType['tasks'][number]['latest_progress']['progress_type'];
       tasklist: TasksAgentContextType['tasks'];
     }[];
   }

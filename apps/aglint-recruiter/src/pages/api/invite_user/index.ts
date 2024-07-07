@@ -97,17 +97,23 @@ async function registerMember(
     .insert({
       recruiter_id,
       user_id: userId,
-      role: user.role,
+      role: 'interviewer',
+      role_id: user.role_id,
       manager_id: user.manager_id,
       is_active: true,
       created_by: create_id,
     })
-    .select()
+    .select('*, roles(name)')
     .single();
   if (relationError) {
     throw new Error(
       'user relation creation failed!\n message' + relationError.message,
     );
   }
-  return { ...recUser, role: relation.role, manager_id: relation.manager_id };
+  return {
+    ...recUser,
+    role_id: relation.role_id,
+    role: relation.roles.name,
+    manager_id: relation.manager_id,
+  };
 }

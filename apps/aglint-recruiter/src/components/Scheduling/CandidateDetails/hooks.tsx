@@ -1,20 +1,8 @@
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
-import { useRouter } from 'next/router';
-dayjs.extend(utc);
-dayjs.extend(timezone);
-
-import {
-  DatabaseTable,
-  DB,
-  InterviewMeetingTypeDb,
-  InterviewPlanTypeDB,
-  SupabaseType,
-} from '@aglint/shared-types';
+import { DB, InterviewPlanTypeDB, SupabaseType } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
+import { useRouter } from 'next/router';
 
 import { ApiResponseActivities } from '@/src/pages/api/scheduling/fetch_activities';
 import { supabase } from '@/src/utils/supabase/client';
@@ -22,6 +10,7 @@ import toast from '@/src/utils/toast';
 
 import { getScheduleName } from '../utils';
 import {
+  AvailabilitiesSchedulingApplication,
   SchedulingApplication,
   setAvailabilities,
   setFetchingSchedule,
@@ -29,11 +18,11 @@ import {
   setScheduleName,
   setSelectedApplication,
   setSelectedSchedule,
-  setSelectedSessionIds,
 } from './store';
 import {
   ApplicationDataResponseType,
   InterviewDataResponseType,
+  SessionsType,
 } from './types';
 
 export const useAllActivities = ({ application_id }) => {
@@ -112,7 +101,8 @@ export const useGetScheduleApplication = () => {
             setinitialSessions(
               sessionsWithPlan.sessions.sort(
                 (itemA, itemB) =>
-                  itemA['session_order'] - itemB['session_order'],
+                  itemA.interview_session['session_order'] -
+                  itemB.interview_session['session_order'],
               ),
             );
           }
@@ -129,7 +119,8 @@ export const useGetScheduleApplication = () => {
             setinitialSessions(
               sessionsWithPlan.sessions.sort(
                 (itemA, itemB) =>
-                  itemA['session_order'] - itemB['session_order'],
+                  itemA.interview_session['session_order'] -
+                  itemB.interview_session['session_order'],
               ),
             );
           }
@@ -138,7 +129,6 @@ export const useGetScheduleApplication = () => {
     } catch (error) {
       toast.error(error.message);
     } finally {
-      setSelectedSessionIds([]);
       setFetchingSchedule(false);
     }
   };
@@ -166,21 +156,23 @@ export const fetchInterviewDataJob = async ({
 
     if (error) throw new Error(error.message);
 
-    const sessions =
+    const sessions: SessionsType[] =
       data.interview_data?.map((item) => ({
-        ...item.interview_session,
-        interview_meeting: null as InterviewMeetingTypeDb,
+        interview_session: item.interview_session,
+        interview_meeting: null,
         interview_module: item.interview_module,
         users: item.interview_session_relations?.interview_module_relation?.map(
-          (sesitem) => ({
-            ...sesitem.interview_session_relation,
-            interview_module_relation: {
-              ...sesitem.interview_module_relation,
-              recruiter_user: sesitem.recruiter_user,
-            },
-            recruiter_user: sesitem.debrief_user,
-          }),
+          (sesitem) =>
+            ({
+              interview_session_relation: sesitem.interview_session_relation,
+              interview_module_relation: sesitem.interview_module_relation,
+              user_details: sesitem.interview_session_relation
+                .interview_module_relation_id
+                ? sesitem.recruiter_user
+                : sesitem.debrief_user,
+            }) as SessionsType['users'][0],
         ),
+        cancel_reasons: [],
       })) || [];
 
     return {
@@ -211,28 +203,30 @@ export const fetchInterviewDataSchedule = async (
       data: {
         interview_data: InterviewDataResponseType[];
         application_data: ApplicationDataResponseType;
-        request_data: DatabaseTable['candidate_request_availability'][];
+        request_data: AvailabilitiesSchedulingApplication[];
       };
       error: any;
     };
 
     if (error) throw new Error(error.message);
 
-    const sessions = data.interview_data?.map((item) => ({
-      ...item.interview_session,
+    const sessions: SessionsType[] = data.interview_data?.map((item) => ({
+      interview_session: item.interview_session,
       interview_meeting: item.interview_meeting,
       interview_module: item.interview_module,
       users:
         item.interview_session_relations?.interview_module_relation?.map(
-          (sesitem) => ({
-            ...sesitem.interview_session_relation,
-            interview_module_relation: {
-              ...sesitem.interview_module_relation,
-              recruiter_user: sesitem.recruiter_user,
-            },
-            recruiter_user: sesitem.debrief_user,
-          }),
+          (sesitem) =>
+            ({
+              interview_session_relation: sesitem.interview_session_relation,
+              interview_module_relation: sesitem.interview_module_relation,
+              user_details: sesitem.interview_session_relation
+                .interview_module_relation_id
+                ? sesitem.recruiter_user
+                : sesitem.debrief_user,
+            }) as SessionsType['users'][0],
         ) || [],
+      cancel_reasons: item.cancel_reasons || [],
     }));
 
     return {
@@ -243,7 +237,7 @@ export const fetchInterviewDataSchedule = async (
         candidates: data.application_data?.candidate,
         public_jobs: data.application_data?.public_jobs,
       } as SchedulingApplication['selectedApplication'],
-      availabilities: data.request_data,
+      availabilities: data.request_data || [],
     };
   } catch (e) {
     toast.error(e.message);

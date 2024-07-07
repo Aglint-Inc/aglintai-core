@@ -20,6 +20,7 @@ import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
 import { STATE_LEVER_DIALOG } from '@/src/context/IntegrationProvider/utils';
+import { handleGenerateJd } from '@/src/context/JobContext/hooks';
 import { useJobs } from '@/src/context/JobsContext';
 import { ScrollList } from '@/src/utils/framer-motions/Animation';
 import ROUTES from '@/src/utils/routing/routes';
@@ -39,7 +40,7 @@ export function LeverModalComp() {
   const { recruiter, setRecruiter } = useAuthDetails();
   const { setIntegration, integration, handleClose } = useIntegration();
   const router = useRouter();
-  const { jobs, handleJobRead, experimental_handleGenerateJd } = useJobs();
+  const { jobs, handleJobsRefresh } = useJobs();
   const [loading, setLoading] = useState(false);
   const [leverPostings, setLeverPostings] = useState([]);
   const [selectedLeverPostings, setSelectedLeverPostings] = useState([]);
@@ -112,8 +113,8 @@ export function LeverModalComp() {
           };
         });
         await createJobApplications(jobsObj, recruiter.lever_key);
-        await experimental_handleGenerateJd(newJobs[0].id);
-        await handleJobRead();
+        await handleGenerateJd(newJobs[0].id);
+        await handleJobsRefresh();
         setIntegration((prev) => ({
           ...prev,
           lever: { open: false, step: STATE_LEVER_DIALOG.IMPORTING },

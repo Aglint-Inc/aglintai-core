@@ -6,7 +6,7 @@ import { Stepper } from '@/devlink2/Stepper';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 
 import FinalScreen from '../ FinalScreen';
-import DayCardWrapper from '../../../../SelfSchedulingDrawer/StepSlotOptions/DayCardWrapper';
+import DayCardWrapper from '../../../../SchedulingDrawer/StepSlotOptions/DayCardWrapper';
 import { useAvailabilityContext } from '../../RequestAvailabilityContext';
 
 function RequestAvailabilityBody({
@@ -96,6 +96,7 @@ function RequestAvailabilityBody({
         height={'calc(100vh - 177px)'}
         overflow={'auto'}
         direction={'column'}
+        gap={'16px'}
       >
         <ShowCode>
           <ShowCode.When isTrue={selectedIndex === availableSlots?.length}>
@@ -114,15 +115,22 @@ function RequestAvailabilityBody({
               return (
                 <DayCardWrapper
                   key={index}
-                  isDebrief={true}
+                  isRadioNeeded={true}
                   selectedCombIds={selectedIds}
                   item={{
                     dateArray: [date],
                     plans: item,
                   }}
-                  onClickSelect={(id) => onClickSelect(id, item)}
+                  onClickSelect={(id) => {
+                    onClickSelect(id, item);
+                  }}
                   isDisabled={!isPrevSelectedDate || isPastDate}
                   isDayCollapseNeeded={false}
+                  index={index}
+                  isSlotCollapseNeeded={true}
+                  setSelectedCombIds={() => {}}
+                  isDayCheckboxNeeded={false}
+                  isSlotCheckboxNeeded={false}
                 />
               );
             })}

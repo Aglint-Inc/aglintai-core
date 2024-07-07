@@ -31,15 +31,7 @@ export function SelectedDateAndTime({
         {slotSessionAndTime ?? (
           <>
             <SessionAndTime />
-            <SessionAndTime textSessionName="C++ Coading" />
-            <SessionAndTime
-              textSessionName={
-                <>
-                  {"Company Introduction"}
-                  <br />
-                </>
-              }
-            />
+            <SessionAndTime />
           </>
         )}
       </_Builtin.Block>

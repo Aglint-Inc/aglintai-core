@@ -48,7 +48,7 @@ function TaskBody() {
                   }
                 }}
                 size='small'
-                sx={{color:'var(--accent-9)'}}
+                sx={{ color: 'var(--accent-9)' }}
               />
             }
             slotFilter={
@@ -69,17 +69,22 @@ function TaskBody() {
             isNewTaskCardVisible={false}
             slotTaskTableCard={
               <>
-                {tasks
-                  .filter((ele) => ele.type !== 'empty')
-                  .map((ele, i) => {
-                    return (
-                      <>
-                        <TaskRow task={ele} key={i} />
-                      </>
-                    );
-                  })}
+                <Stack id='taskContainer' height={'100%'} overflow={'auto'}>
+                  {tasks
+                    .filter((ele) => ele.type !== 'empty')
+                    .map((ele, i) => {
+                      return (
+                        <>
+                          <TaskRow task={ele} key={i} />
+                        </>
+                      );
+                    })}
+                </Stack>
                 <ShowCode.When isTrue={!loadingTasks && tasks.length === 0}>
-                  <Stack height={'calc(100vh - 176px)'} style={{ backgroundColor: 'var(--neutral-2)' }}>
+                  <Stack
+                    height={'calc(100vh - 176px)'}
+                    style={{ backgroundColor: 'var(--neutral-2)' }}
+                  >
                     <TaskEmpty />
                   </Stack>
                 </ShowCode.When>
@@ -98,15 +103,15 @@ function TaskBody() {
               style: {
                 gridTemplateColumns:
                   selectedGroupBy.label === 'job'
-                    ? `20px 1fr 130px 110px 160px 160px 1px`
+                    ? `20px 1fr 150px 110px 160px 180px 1px`
                     : selectedGroupBy.label === 'candidate'
-                      ? `20px 1fr 130px 110px 160px 1px 160px`
+                      ? `20px 1fr 150px 110px 160px 1px 180px`
                       : selectedGroupBy.label === 'assignee'
-                        ? `20px 1fr 130px 110px 1px 160px 160px`
+                        ? `20px 1fr 150px 110px 1px 160px 180px`
                         : selectedGroupBy.label === 'priority'
-                          ? `20px 1fr 130px 1px 160px 160px 160px`
+                          ? `20px 1fr 150px 1px 160px 160px 180px`
                           : selectedGroupBy.label === 'status'
-                            ? `20px 1fr 1px 160px 160px 160px 160px`
+                            ? `20px 1fr 1px 160px 160px 160px 180px`
                             : null,
                 alignContent: 'center',
               },
@@ -141,7 +146,10 @@ function TaskBody() {
                     return <GroupSections key={i} item={item} index={i} />;
                   })}
                 <ShowCode.When isTrue={!loadingTasks && tasks.length === 0}>
-                <Stack height={'calc(100vh - 136px)'} style={{ backgroundColor: 'var(--neutral-2)' }}>
+                  <Stack
+                    height={'calc(100vh - 136px)'}
+                    style={{ backgroundColor: 'var(--neutral-2)' }}
+                  >
                     <TaskEmpty />
                   </Stack>
                 </ShowCode.When>

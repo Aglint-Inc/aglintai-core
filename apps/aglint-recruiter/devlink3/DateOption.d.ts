@@ -10,4 +10,8 @@ declare function DateOption(props: {
   onClickDateOption?: Types.Devlink.RuntimeProps;
   rotateArrow?: Types.Devlink.RuntimeProps;
   isDisabled?: Types.Visibility.VisibilityConditions;
+  slotCheckbox?: Types.Devlink.Slot;
+  isCheckboxVisible?: Types.Visibility.VisibilityConditions;
+  slotRightBlock?: Types.Devlink.Slot;
+  slotLeftBlock?: Types.Devlink.Slot;
 }): React.JSX.Element;

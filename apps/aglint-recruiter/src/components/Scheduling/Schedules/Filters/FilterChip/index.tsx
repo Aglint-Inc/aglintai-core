@@ -1,6 +1,6 @@
 import { Popover, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Checkbox } from '@/devlink/Checkbox';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
@@ -16,20 +16,20 @@ function FilterChip({
   itemList,
   removeFilter,
   resetSelectedItem,
+  setSelectedItem,
+  selectedItem,
   handleChange,
-  defaultSelectedIds,
 }: {
   filterType: FilterOptionsType;
   itemList: { label: string; id: string }[];
   removeFilter: any;
+  setSelectedItem: any;
+  selectedItem: any;
   resetSelectedItem: any;
   handleChange: any;
-  defaultSelectedIds?: any;
 }) {
-  const [selectedItem, setSelectedItem] = useState<any[]>(
-    defaultSelectedIds || [],
-  );
   // popOver open state
+
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
@@ -46,22 +46,32 @@ function FilterChip({
   const id = open ? 'jobs-filter' : undefined;
 
   function onSelectItem(item: { id: any }) {
-    if (selectedItem.includes(item.id)) {
-      const filterItems = selectedItem.filter((ele) => ele !== item.id);
-      setSelectedItem([...filterItems]);
+    if (selectedItem[filterType.name].includes(item.id)) {
+      const filterItems = selectedItem[filterType.name].filter(
+        (ele) => ele !== item.id,
+      );
+      setSelectedItem((pre) => ({
+        ...pre,
+        [filterType.name]: [...filterItems],
+      }));
       handleChange([...filterItems]);
       return;
     } else {
-      const items = [...selectedItem, item.id];
-      setSelectedItem([...items]);
+      const items = [...selectedItem[filterType.name], item.id];
+      setSelectedItem((pre) => ({ ...pre, [filterType.name]: [...items] }));
       handleChange([...items]);
     }
   }
+
   return (
     <>
       <ButtonFilter
-        isDotVisible={itemList.length && selectedItem.length > 0}
-        isActive={itemList.length && selectedItem.length > 0}
+        isDotVisible={
+          filterType.name === 'date_range'
+            ? selectedItem[filterType.name].length > 0
+            : itemList.length && selectedItem[filterType.name].length > 0
+        }
+        isActive={itemList.length && selectedItem[filterType.name].length > 0}
         slotLeftIcon={filterType.Icon}
         onClickStatus={{ onClick: handleClick }}
         textLabel={capitalizeAll(filterType.name.replaceAll('-', ' '))}
@@ -91,10 +101,16 @@ function FilterChip({
                 <DateRange
                   disablePast={false}
                   onChange={(e) => {
-                    setSelectedItem(e);
+                    setSelectedItem((pre) => ({
+                      ...pre,
+                      [filterType.name]: e,
+                    }));
                     handleChange(e);
                   }}
-                  value={[dayjs(selectedItem[0]), dayjs(selectedItem[1])]}
+                  value={[
+                    dayjs(selectedItem[filterType.name][0]),
+                    dayjs(selectedItem[filterType.name][1]),
+                  ]}
                 />
               </ShowCode.When>
               <ShowCode.Else>
@@ -104,11 +120,15 @@ function FilterChip({
                       <Stack
                         key={item.id}
                         direction={'row'}
-                        sx={{ alignItems: 'center' }}
+                        sx={{ alignItems: 'center', ':hover':{bgcolor:'var(--neutral-2)'}, borderRadius:'var(--radius-2)' }}
                         spacing={1}
+                        padding={'var(--space-2) var(--space-3)'}
+                        marginTop={'0px !important'}
                       >
                         <Checkbox
-                          isChecked={selectedItem.includes(item.id)}
+                          isChecked={selectedItem[filterType.name].includes(
+                            item.id,
+                          )}
                           onClickCheck={{
                             onClick: () => {
                               onSelectItem(item);
@@ -138,17 +158,19 @@ function FilterChip({
           }
           onClickDelete={{
             onClick: () => {
+              handleClose();
               removeFilter();
-              if (selectedItem.length) {
-                setSelectedItem([]);
+              if (selectedItem[filterType.name].length) {
+                setSelectedItem((pre) => ({ ...pre, [filterType.name]: [] }));
                 resetSelectedItem([]);
               }
             },
           }}
           onClickReset={{
             onClick: () => {
-              if (selectedItem.length) {
-                setSelectedItem([]);
+              handleClose();
+              if (selectedItem[filterType.name].length) {
+                setSelectedItem((pre) => ({ ...pre, [filterType.name]: [] }));
                 resetSelectedItem([]);
               }
             },

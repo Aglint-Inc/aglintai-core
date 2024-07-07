@@ -17,6 +17,7 @@ import { MultiFilterLayout } from '@/devlink3/MultiFilterLayout';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import UITextField from '../UITextField';
+import ToggleBtn from '../UIToggle';
 import {
   nestedOptionMapper,
   nestedType,
@@ -51,6 +52,7 @@ type FilterNestedType = {
   sectionHeaders: string[];
   setValue: (value: nestedType<string[]>) => void;
   isVisible?: boolean;
+  showCount?: boolean;
 };
 
 export type FilterComponentType = {
@@ -175,6 +177,7 @@ function FilterSwitcher(filter: FilterTypes, index: number) {
             filter.setValue(values);
           }}
           icon={filter.icon}
+          showCount={filter.showCount}
         />
       );
     }
@@ -183,7 +186,12 @@ function FilterSwitcher(filter: FilterTypes, index: number) {
         <ButtonFilter
           key={index}
           isActive={filter.isActive}
-          isDotVisible={filter.isActive}
+          isDotVisible={false}
+          slotLeftIcon={
+            <Stack style={{ pointerEvents: 'none' }}>
+              <ToggleBtn isChecked={filter.isActive} />
+            </Stack>
+          }
           textLabel={capitalizeFirstLetter(filter.name || '')}
           onClickStatus={{ onClick: () => filter.onClick() }}
         />
@@ -256,27 +264,32 @@ export function FilterComponent({
             borderRadius: 'var(--radius-2)',
             borderColor: 'var(--neutral-6)',
             minWidth: '176px',
+            backgroundColor: 'white',
           },
         }}
       >
         <FilterDropdown
           isRemoveVisible={false}
           slotOption={
-            <FilterOptionsList
-              optionList={itemList}
-              selectedItems={selectedItems}
-              searchFilter={filterSearch}
-              setSelectedItems={(val) => {
-                let temp = [...selectedItems];
-                if (temp.includes(val)) {
-                  temp = temp.filter((innerEle) => innerEle !== val);
-                } else {
-                  temp.push(val);
-                }
-                setSelectedItems(temp);
-              }}
-              nested={false}
-            />
+            itemList.length ? (
+              <FilterOptionsList
+                optionList={itemList}
+                selectedItems={selectedItems}
+                searchFilter={filterSearch}
+                setSelectedItems={(val) => {
+                  let temp = [...selectedItems];
+                  if (temp.includes(val)) {
+                    temp = temp.filter((innerEle) => innerEle !== val);
+                  } else {
+                    temp.push(val);
+                  }
+                  setSelectedItems(temp);
+                }}
+                nested={false}
+              />
+            ) : (
+              <Typography>No {title}</Typography>
+            )
           }
           onClickReset={{
             onClick: () => {
@@ -446,6 +459,7 @@ export type NestedFilterComponentType = {
   setSelectedItems: FilterNestedType['setValue'];
   sectionHeaders: string[];
   icon: ReactNode;
+  showCount?: boolean;
 };
 
 function NestedFilterComponent({
@@ -455,6 +469,7 @@ function NestedFilterComponent({
   selectedItems,
   sectionHeaders,
   icon,
+  showCount = false,
 }: NestedFilterComponentType) {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
@@ -474,6 +489,7 @@ function NestedFilterComponent({
     sectionHeaders,
     nestedItems,
     selectedItems,
+    showCount,
   );
 
   // const sectionsSelectedArray = Object.entries(selectedItems || {});
@@ -553,14 +569,14 @@ function NestedFilterComponent({
                 }}
                 onClickRefresh={{
                   onClick: () => {
-                    // setSelectedItems({
-                    //   ...selectedItems,
-                    //   [section]: [],
-                    // });
+                    setSelectedItems({
+                      ...selectedItems,
+                      [section]: [],
+                    });
                   },
                 }}
                 slotItems={
-                  <Stack p={2} gap={2}>
+                  <Stack p={1}>
                     <FilterOptionsList
                       optionList={optionList}
                       // selectedItems={selectedItems?.[String(section)] || []}
@@ -588,15 +604,7 @@ function NestedFilterComponent({
           })}
           onClickReset={{
             onClick: () => {
-              // setSelectedItems(
-              //   sectionsArray.reduce(
-              //     (acc, curr) => {
-              //       acc[curr[0]] = [];
-              //       return acc;
-              //     },
-              //     {} as typeof selectedItems,
-              //   ),
-              // );
+              setSelectedItems([]);
             },
           }}
         />
@@ -693,14 +701,21 @@ function FilterOptionsList({
           return (
             <>
               {optionList.header && (
-                <Typography>{optionList.header}</Typography>
+                <Typography paddingLeft={'4px'}>{optionList.header}</Typography>
               )}
               {filteredOp.map((option) => {
                 return (
                   <Stack
                     key={option.id}
                     direction={'row'}
-                    sx={{ alignItems: 'center' }}
+                    padding={'8px 12px'}
+                    sx={{
+                      alignItems: 'center',
+                      borderRadius: '4px',
+                      ':hover': {
+                        bgcolor: 'var(--neutral-2)',
+                      },
+                    }}
                     spacing={1}
                     onClick={() => {
                       setSelectedItems(option.id, optionList.path || []);
@@ -719,7 +734,7 @@ function FilterOptionsList({
                     <Typography
                       sx={{
                         fontSize: '14px',
-                        fontWeight: 600,
+                        fontWeight: 400,
                         cursor: 'pointer',
                       }}
                     >
