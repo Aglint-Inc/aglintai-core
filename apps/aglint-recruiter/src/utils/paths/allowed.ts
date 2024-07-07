@@ -92,6 +92,7 @@ export const allowedPaths = new Set([
   '/api/emails/interviewCancel_email_applicant',
   '/api/emails/selfScheduleReminder_email_applicant',
   '/api/scheduling/application/openselfscheduling',
+  '/api/scheduling/v1/booking/schedule-debreif',
   'https://aglint-phone-ngrok-app.ngrok.io/api/create-phone-call',
   ...cronPaths,
 ]);

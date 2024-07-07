@@ -1,4 +1,8 @@
-import { DatabaseTableInsert, SupabaseType } from '@aglint/shared-types';
+import {
+  DatabaseTable,
+  DatabaseTableInsert,
+  SupabaseType,
+} from '@aglint/shared-types';
 
 import { SessionsType } from '@/src/components/Scheduling/CandidateDetails/types';
 
@@ -9,10 +13,12 @@ export const handleMeetingsOrganizerResetRelations = async ({
   application_id,
   supabase,
   selectedSessions,
+  meeting_flow,
 }: {
   application_id: string;
   supabase: SupabaseType;
   selectedSessions: SessionsType[];
+  meeting_flow: DatabaseTable['interview_meeting']['meeting_flow'];
 }) => {
   const selectedSessionIds = selectedSessions.map(
     (ses) => ses.interview_session.id,
@@ -26,6 +32,7 @@ export const handleMeetingsOrganizerResetRelations = async ({
       id: ses.interview_meeting.id,
       interview_schedule_id: ses.interview_meeting.interview_schedule_id,
       organizer_id,
+      meeting_flow,
     }));
 
   const { data } = await supabase
