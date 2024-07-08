@@ -117,6 +117,8 @@ const PERMISSIONS: Permissions = {
     'scheduler_enabled',
     'tasks_enabled',
   ],
+  '/api/ai/gpt3-5-turbo': ['company_setting_enabled'],
+  '/api/encryptData': ['integrations_enabled'],
   '/api/emails/selfScheduleReminder_email_applicant': ['scheduler_enabled'],
   '/api/emails/availabilityReqResend_email_candidate': ['scheduler_enabled'],
   '/api/scheduling/v1/booking/confirm-recruiter-selected-option': [
