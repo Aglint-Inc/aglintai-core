@@ -359,6 +359,18 @@ export class CandidatesSchedulingV2 {
           userTzDayjs(slot2.sessions[0].start_time).unix()
         );
       });
+    } else {
+      const single_comb_reason: PlanCombinationRespType = {
+        plan_comb_id: nanoid(),
+        sessions: [],
+        no_slot_reasons: [],
+      };
+      all_schedule_combs.forEach((plan) => {
+        single_comb_reason.no_slot_reasons = [
+          ...single_comb_reason.no_slot_reasons,
+          ...plan.no_slot_reasons,
+        ];
+      });
     }
 
     return all_schedule_combs;
