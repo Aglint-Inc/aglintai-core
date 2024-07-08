@@ -160,6 +160,7 @@ const convertOptionsToDateRangeSlots = (
       slot_map[int_start_date][curr_round_idx].push({
         plan_comb_id: nanoid(),
         sessions: [...curr_round_slots],
+        no_slot_reasons: [],
       });
     }
   }
