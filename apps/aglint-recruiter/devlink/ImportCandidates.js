@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { IconButtonGhost } from "./IconButtonGhost";
+import { IconButtonSoft } from "./IconButtonSoft";
 import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
@@ -32,13 +32,17 @@ export function ImportCandidates({
         className={_utils.cx(_styles, "ic-popup-close-btn")}
         tag="div"
       >
-        <IconButtonGhost
+        <IconButtonSoft
           onClickButton={onClickClose}
-          iconName="close"
           color="neutral"
-          size="2"
-          iconSize="5"
-          iconWeight="thin"
+          iconName={
+            <>
+              {"close"}
+              <br />
+            </>
+          }
+          size="1"
+          iconSize="3"
         />
       </_Builtin.Block>
       <_Builtin.TabsWrapper
