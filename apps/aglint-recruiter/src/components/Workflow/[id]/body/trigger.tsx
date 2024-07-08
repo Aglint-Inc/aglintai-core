@@ -1,5 +1,6 @@
 import { memo } from 'react';
 
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { WorkflowItem } from '@/devlink3/WorkflowItem';
 import UISelect from '@/src/components/Common/Uiselect';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
@@ -79,7 +80,12 @@ const TriggerInfo = () => {
     workflow: { interval, trigger, phase },
   } = useWorkflow();
   const option = DURATION_OPTIONS.find(({ value }) => value === interval);
-  return `Any subsequent actions will be triggered ${phase ? (option.value === 0 ? 'with no delay' : option.name ?? '' + ' ') : ''} ${getTriggerOption(trigger, phase).toLowerCase()}.`;
+  return (
+    <GlobalBannerInline
+      slotButton={<></>}
+      textContent={`Any subsequent actions will be triggered ${phase ? (option.value === 0 ? 'with no delay' : option.name ?? '' + ' ') : ''} ${getTriggerOption(trigger, phase).toLowerCase()}.`}
+    />
+  );
 };
 
 const DURATION_OPTIONS: { name: string; value: number }[] = [
