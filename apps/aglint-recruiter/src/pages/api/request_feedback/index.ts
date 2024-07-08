@@ -1,5 +1,9 @@
+import { DatabaseEnums, DB } from '@aglint/shared-types';
 import sgMail from '@sendgrid/mail';
+import { createServerClient } from '@supabase/ssr';
 import { NextApiRequest, NextApiResponse } from 'next';
+
+import { API_request_feedback } from './type';
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -29,17 +33,19 @@ export default async function handler(
         );
     }
 
-    const { sender, job_title, company } = await checkPermissionsAndGetDetails({
-      job_id,
-      getVal: (name) => req.cookies[String(name)],
-      roles: ['admin'],
-    });
+    const { sender, job_title, company, meeting_id } =
+      await checkPermissionsAndGetDetails({
+        job_id,
+        getVal: (name) => req.cookies[String(name)],
+        roles: ['admin'],
+        session_id,
+      });
 
     if (sender) {
       const email = getEmail({
         candidateName: candidate.name,
         deadline: 'lol hour',
-        feedbackFormLink: `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/view?meeting_id=&tab=feedback`,
+        feedbackFormLink: `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/view?meeting_id=${meeting_id}&tab=feedback`,
         interviewerName: receiver.name,
         jobTitle: job_title,
         sender: {
@@ -69,20 +75,17 @@ const getResponse = (data: { emailSent?: boolean; error?: string }) => {
   return { emailSent: false, error: null, ...data };
 };
 
-import { DatabaseEnums, DB } from '@aglint/shared-types';
-import { createServerClient } from '@supabase/ssr';
-
-import { API_request_feedback } from './type';
-
 const checkPermissionsAndGetDetails = async ({
   getVal,
   roles,
   job_id,
+  session_id,
 }: {
   // eslint-disable-next-line no-unused-vars
   getVal: (name: string) => string;
   roles: DatabaseEnums['user_roles'][];
   job_id: string;
+  session_id: string;
 }) => {
   try {
     const supabase = createServerClient<DB>(
@@ -135,11 +138,20 @@ const checkPermissionsAndGetDetails = async ({
               if (error) throw new Error(error.message);
               return jData;
             }),
+          supabase
+            .from('interview_session')
+            .select('meeting_id')
+            .eq('id', session_id)
+            .then(({ data: Data, error }) => {
+              if (error) throw new Error(error.message);
+              return Data;
+            }),
         ]);
         return {
           sender: asyncCalls[0],
           job_title: asyncCalls[1].job_title,
           company: asyncCalls[1].company,
+          meeting_id: asyncCalls[2][0].meeting_id,
         };
       }
       throw new Error('Failed to load auth user.');

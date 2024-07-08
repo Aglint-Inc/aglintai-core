@@ -32,6 +32,7 @@ export type TipTapAIEditorParams = {
   borderRadius?: React.CSSProperties['borderRadius'];
   editor_type?: 'email' | 'regular';
   template_type?: DatabaseEnums['email_slack_types'];
+  isSize?: boolean;
 };
 
 const TipTapAIEditor = ({
@@ -52,6 +53,7 @@ const TipTapAIEditor = ({
   template_type,
   toolbar = true,
   padding = 2,
+  isSize = true,
 }: TipTapAIEditorParams) => {
   const [selectionRange, setSelectionRange] = useState<
     TipTapAIEditorCtxType['selectionRange']
@@ -132,6 +134,7 @@ const TipTapAIEditor = ({
               >
                 <MenuBtns
                   borderRadius={(border && borderRadius) || 'var(--radius-2)'}
+                  isSize={isSize}
                 />
               </Stack>
             </>
