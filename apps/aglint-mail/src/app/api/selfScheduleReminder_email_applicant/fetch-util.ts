@@ -22,10 +22,12 @@ export async function dbUtil(
   const [meetingDetails] = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
-      .select('interview_meeting(recruiter_user(*))')
+      .select('interview_meeting(recruiter_user(*),status)')
       .eq('id', filterJson.session_ids[0]),
   );
-
+  if (meetingDetails.interview_meeting.status !== 'waiting') {
+    return null;
+  }
   const meeting_organizer = meetingDetails.interview_meeting.recruiter_user;
 
   const {
