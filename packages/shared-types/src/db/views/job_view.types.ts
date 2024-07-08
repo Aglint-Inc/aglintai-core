@@ -7,8 +7,6 @@ export type CustomJobView = ViewType<"job_view", CustomJobViewAllParamters>;
 
 type CustomJobViewAllParamters = CustomJobParamters & CustomJobViewParameters;
 
-type A = CustomJobViewAllParamters["flags"];
-
 type CustomJobViewParameters = Type<
   Pick<
     Database["public"]["Views"]["job_view"]["Row"],

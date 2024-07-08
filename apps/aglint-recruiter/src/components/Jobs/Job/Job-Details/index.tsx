@@ -228,9 +228,13 @@ const JobEditForm = ({
 
   const handleSave = async () => {
     setSaving(true);
-    await handleJobAsyncUpdate(job.id, {
-      draft: { ...job.draft, ...newJob },
-    });
+    const payload = { draft: { ...job.draft, ...newJob } };
+    if (job?.description !== newJob?.description)
+      payload['dashboard_warnings'] = {
+        ...job?.dashboard_warnings,
+        job_description: false,
+      };
+    await handleJobAsyncUpdate(job.id, payload);
     setSaving(false);
   };
 
