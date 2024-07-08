@@ -685,67 +685,72 @@ function FilterOptionsList({
           onChange={(e) => setSearch(e.target.value)}
         />
       )}
-      {filteredOptions
-        ?.map((optionList) => {
-          let filteredOp = optionList.options;
-          if (searchFilter) {
-            filteredOp = optionList.options.filter((item) =>
-              item.label.toLowerCase().includes(search.toLowerCase()),
-            );
-          }
-          return { ...optionList, options: filteredOp };
-        })
-        .filter((item) => item.options?.length)
-        .map((optionList) => {
-          let filteredOp = optionList.options;
-          return (
-            <>
-              {optionList.header && (
-                <Typography paddingLeft={'4px'}>{optionList.header}</Typography>
-              )}
-              {filteredOp.map((option) => {
-                return (
-                  <Stack
-                    key={option.id}
-                    direction={'row'}
-                    padding={'8px 12px'}
-                    sx={{
-                      alignItems: 'center',
-                      borderRadius: '4px',
-                      ':hover': {
-                        bgcolor: 'var(--neutral-2)',
-                      },
-                    }}
-                    spacing={1}
-                    onClick={() => {
-                      setSelectedItems(option.id, optionList.path || []);
-                    }}
-                  >
-                    <Checkbox
-                      checked={
-                        nested
-                          ? // @ts-ignore
-                            option.status === 'active'
-                          : selectedItems.includes(option.id)
-                      }
-                      // @ts-ignore
-                      indeterminate={nested && option.status === 'partial'}
-                    />
-                    <Typography
-                      sx={{
-                        fontSize: '14px',
-                        fontWeight: 400,
-                        cursor: 'pointer',
-                      }}
-                    >
-                      {option.label}
-                    </Typography>
-                  </Stack>
+
+      {filteredOptions[0].options.length > 0
+        ? filteredOptions
+            ?.map((optionList) => {
+              let filteredOp = optionList.options;
+              if (searchFilter) {
+                filteredOp = optionList.options.filter((item) =>
+                  item.label.toLowerCase().includes(search.toLowerCase()),
                 );
-              })}
-            </>
-          );
-        })}
+              }
+              return { ...optionList, options: filteredOp };
+            })
+            .filter((item) => item.options?.length)
+            .map((optionList) => {
+              let filteredOp = optionList.options;
+              return (
+                <>
+                  {optionList.header && (
+                    <Typography paddingLeft={'4px'}>
+                      {optionList.header}
+                    </Typography>
+                  )}
+                  {filteredOp.map((option) => {
+                    return (
+                      <Stack
+                        key={option.id}
+                        direction={'row'}
+                        padding={'8px 12px'}
+                        sx={{
+                          alignItems: 'center',
+                          borderRadius: '4px',
+                          ':hover': {
+                            bgcolor: 'var(--neutral-2)',
+                          },
+                        }}
+                        spacing={1}
+                        onClick={() => {
+                          setSelectedItems(option.id, optionList.path || []);
+                        }}
+                      >
+                        <Checkbox
+                          checked={
+                            nested
+                              ? // @ts-ignore
+                                option.status === 'active'
+                              : selectedItems.includes(option.id)
+                          }
+                          // @ts-ignore
+                          indeterminate={nested && option.status === 'partial'}
+                        />
+                        <Typography
+                          sx={{
+                            fontSize: '14px',
+                            fontWeight: 400,
+                            cursor: 'pointer',
+                          }}
+                        >
+                          {option.label}
+                        </Typography>
+                      </Stack>
+                    );
+                  })}
+                </>
+              );
+            })
+        : 'No Locations Available'}
     </>
   );
 }

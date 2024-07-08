@@ -63,7 +63,7 @@ function RequestAvailabilityList({
             }}
           />
           <ButtonSoft
-            textButton={'Request again'}
+            textButton={'Request Again'}
             isLoading={false}
             isLeftIcon={false}
             isRightIcon={false}

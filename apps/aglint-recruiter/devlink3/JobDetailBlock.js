@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { ButtonSoft } from "./ButtonSoft";
 import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./JobDetailBlock.module.css";
@@ -18,6 +19,7 @@ export function JobDetailBlock({
   slotHiringTeamForm,
   isJobDetailVisible = true,
   isHiringTeamVisible = true,
+  onClickCancel = {},
 }) {
   return (
     <_Component
@@ -105,7 +107,13 @@ export function JobDetailBlock({
           tag="div"
         >
           {isCreate ? (
-            <_Builtin.Block tag="div">
+            <_Builtin.Block className={_utils.cx(_styles, "flex-h2")} tag="div">
+              <ButtonSoft
+                onClickButton={onClickCancel}
+                color="neutral"
+                size="2"
+                textButton="Cancel"
+              />
               <ButtonSolid
                 onClickButton={onClickCreate}
                 textButton="Create Job"

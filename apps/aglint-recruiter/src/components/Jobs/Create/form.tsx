@@ -423,6 +423,7 @@ export type JobMetaFormProps = {
   // eslint-disable-next-line no-unused-vars
   handleChange: (name: keyof Form, value: string | number) => void;
   handleCreate?: () => void;
+  handleCancel?: () => void;
 };
 
 export const WarningSvg = () => {

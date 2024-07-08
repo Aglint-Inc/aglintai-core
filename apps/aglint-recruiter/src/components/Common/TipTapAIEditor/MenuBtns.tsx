@@ -24,8 +24,10 @@ const MenuBtn = styled(IconButton)({
 
 function MenuBtns({
   borderRadius,
+  isSize,
 }: {
   borderRadius?: React.CSSProperties['borderRadius'];
+  isSize: boolean;
 }) {
   return (
     <Stack
@@ -44,7 +46,7 @@ function MenuBtns({
         }),
       }}
     >
-      <TipTapMenus />
+      <TipTapMenus isSize={isSize} />
       <TipTapUndoRedo />
     </Stack>
   );
@@ -52,7 +54,7 @@ function MenuBtns({
 
 export default MenuBtns;
 
-const TipTapMenus = () => {
+const TipTapMenus = ({ isSize }: { isSize: boolean }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const { editor } = useTipTap();
   const [typography, setTypography] = useState('Paragraph');
@@ -65,6 +67,22 @@ const TipTapMenus = () => {
   };
 
   if (!editor) return <></>;
+
+  const handleClick = (level, text) => {
+    editor.chain().focus().toggleHeading({ level }).run();
+    setTypography(text);
+    setAnchorEl(null);
+  };
+
+  const headings = [
+    { level: 1, text: 'Heading 1' },
+    { level: 2, text: 'Heading 2' },
+    { level: 3, text: 'Heading 3' },
+    { level: 4, text: 'Heading 4' },
+    { level: 5, text: 'Heading 5' },
+    { level: 6, text: 'Heading 6' },
+  ];
+
   return (
     <Stack
       direction={'row'}
@@ -73,14 +91,16 @@ const TipTapMenus = () => {
       p={'var(--space-1)'}
       sx={{ position: 'sticky', top: '0', zIndex: '111' }}
     >
-      <ButtonGhost
-        color={'neutral'}
-        isRightIcon
-        iconName='keyboard_arrow_down'
-        size={2}
-        textButton={typography}
-        onClickButton={{ onClick: handleOpenMenu }}
-      />
+      {isSize && (
+        <ButtonGhost
+          color={'neutral'}
+          isRightIcon
+          iconName='keyboard_arrow_down'
+          size={2}
+          textButton={typography}
+          onClickButton={{ onClick: handleOpenMenu }}
+        />
+      )}
 
       <Tooltip title={'regular'} placement='top-start'>
         <MenuBtn
@@ -175,6 +195,7 @@ const TipTapMenus = () => {
           />
         </MenuBtn>
       </Tooltip>
+
       <Popover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
@@ -200,78 +221,17 @@ const TipTapMenus = () => {
           >
             <UITypography type='small'>Paragraph</UITypography>
           </MenuBtn>
-          <MenuBtn
-            className={
-              editor.isActive('heading', { level: 1 }) ? 'is-active' : ''
-            }
-            onClick={() => {
-              editor.chain().focus().toggleHeading({ level: 1 }).run();
-              setTypography('Heading 1');
-              setAnchorEl(null);
-            }}
-          >
-            <UITypography type='small'>Heading 1</UITypography>
-          </MenuBtn>
-          <MenuBtn
-            className={
-              editor.isActive('heading', { level: 2 }) ? 'is-active' : ''
-            }
-            onClick={() => {
-              editor.chain().focus().toggleHeading({ level: 2 }).run();
-              setTypography('Heading 2');
-              setAnchorEl(null);
-            }}
-          >
-            <UITypography type='small'>Heading 2</UITypography>
-          </MenuBtn>
-          <MenuBtn
-            className={
-              editor.isActive('heading', { level: 3 }) ? 'is-active' : ''
-            }
-            onClick={() => {
-              editor.chain().focus().toggleHeading({ level: 3 }).run();
-              setTypography('Heading 3');
-              setAnchorEl(null);
-            }}
-          >
-            <UITypography type='small'>Heading 3</UITypography>
-          </MenuBtn>
-          <MenuBtn
-            className={
-              editor.isActive('heading', { level: 4 }) ? 'is-active' : ''
-            }
-            onClick={() => {
-              editor.chain().focus().toggleHeading({ level: 4 }).run();
-              setTypography('Heading 4');
-              setAnchorEl(null);
-            }}
-          >
-            <UITypography type='small'>Heading 4</UITypography>
-          </MenuBtn>
-          <MenuBtn
-            className={
-              editor.isActive('heading', { level: 5 }) ? 'is-active' : ''
-            }
-            onClick={() => {
-              editor.chain().focus().toggleHeading({ level: 5 }).run();
-              setTypography('Heading 5');
-              setAnchorEl(null);
-            }}
-          >
-            <UITypography type='small'>Heading 5</UITypography>
-          </MenuBtn>
-          <MenuBtn
-            className={
-              editor.isActive('heading', { level: 6 }) ? 'is-active' : ''
-            }
-            onClick={() => {
-              editor.chain().focus().toggleHeading({ level: 6 }).run();
-              setTypography('Heading 6');
-              setAnchorEl(null);
-            }}
-          >
-            <UITypography type='small'>Heading 6</UITypography>
-          </MenuBtn>
+          {headings.map(({ level, text }) => (
+            <MenuBtn
+              key={`heading-${level}`}
+              className={
+                editor.isActive('heading', { level }) ? 'is-active' : ''
+              }
+              onClick={() => handleClick(level, text)}
+            >
+              <UITypography type='small'>{text}</UITypography>
+            </MenuBtn>
+          ))}
         </Stack>
       </Popover>
     </Stack>
