@@ -43,9 +43,9 @@ const useJobActions = () => {
         ...job,
         flags: {
           ...flags,
-          screening: flags.screening && isScreeningEnabled,
-          assessment: flags.assessment && isAssessmentEnabled,
-          interview: flags.interview && isSchedulingEnabled,
+          screening: !!(flags?.screening && isScreeningEnabled),
+          assessment: !!(flags?.assessment && isAssessmentEnabled),
+          interview: !!(flags?.interview && isSchedulingEnabled),
         },
       })),
     }),
@@ -66,7 +66,7 @@ const useJobActions = () => {
     if (recruiter) {
       try {
         const data = await jobCreate(newJob);
-        await handleGenerateJd(data.id);
+        handleGenerateJd(data.id);
         return data;
       } catch {
         //

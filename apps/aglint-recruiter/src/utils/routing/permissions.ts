@@ -52,6 +52,12 @@ const PERMISSIONS: Permissions = {
    * permission will reduced  using 'or'
    */
   '/api/scheduling/get_interview_plans': ['scheduler_enabled'],
+  '/api/greenhouse/getPostings': ['jobs_enabled'],
+  '/api/greenhouse/saveApiKey': ['settings_company_update'],
+  '/api/lever/getPostings': ['jobs_enabled'],
+  '/api/lever/saveApiKey': ['settings_company_update'],
+  '/api/ashby/getPostings': ['jobs_enabled'],
+  '/api/ashby/saveApiKey': ['settings_company_update'],
   '/api/getMembersWithRole': ['team_enabled'],
   '/api/get_last_login': ['team_read'],
   '/api/setMembersWithRole': ['team_enabled', 'scheduler_enabled'],
@@ -111,6 +117,8 @@ const PERMISSIONS: Permissions = {
     'scheduler_enabled',
     'tasks_enabled',
   ],
+  '/api/ai/gpt3-5-turbo': ['company_setting_enabled'],
+  '/api/encryptData': ['integrations_enabled'],
   '/api/emails/selfScheduleReminder_email_applicant': ['scheduler_enabled'],
   '/api/emails/availabilityReqResend_email_candidate': ['scheduler_enabled'],
   '/api/scheduling/v1/booking/confirm-recruiter-selected-option': [

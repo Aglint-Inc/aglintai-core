@@ -1,7 +1,6 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable security/detect-unsafe-regex */
 /* eslint-disable security/detect-object-injection */
-import { DatabaseEnums } from '@aglint/shared-types';
 import { RecruiterUserType } from '@aglint/shared-types';
 import { Autocomplete, Avatar, Dialog, Stack, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
@@ -23,6 +22,8 @@ import { UserProfile } from '@/devlink/UserProfile';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { handleUpdatePassword } from '@/src/context/AuthContext/utils';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { PermissionEnums } from '@/src/utils/routing/permissions';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalize, capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
@@ -71,7 +72,7 @@ type PasswordFormFields = {
 const navTabs: {
   label: string;
   route: string;
-  roles?: DatabaseEnums['user_roles'][];
+  roles?: PermissionEnums[];
 }[] = [
   {
     label: 'Your Details',
@@ -80,7 +81,7 @@ const navTabs: {
   {
     label: 'Change Email',
     route: 'change_email',
-    roles: ['admin'],
+    roles: ['settings_update'],
   },
   {
     label: 'Password Update',
@@ -89,13 +90,9 @@ const navTabs: {
 ];
 
 const ProfileDashboard = () => {
-  const {
-    userDetails,
-    handleUpdateProfile,
-    recruiterUser,
-    handleUpdateEmail,
-    isAllowed,
-  } = useAuthDetails();
+  const { userDetails, handleUpdateProfile, recruiterUser, handleUpdateEmail } =
+    useAuthDetails();
+  const { checkPermissions } = useRolesAndPermissions();
   const userMail = userDetails.user.email;
   const router = useRouter();
   const initialFormValues: FormValues = {
@@ -633,7 +630,9 @@ const ProfileDashboard = () => {
           slotNavSublink={
             <>
               {navTabs
-                .filter((item) => (item.roles ? isAllowed(item.roles) : true))
+                .filter((item) =>
+                  item.roles ? checkPermissions(item.roles) : true,
+                )
                 .map((item) => (
                   <NavSublink
                     key={item.route}

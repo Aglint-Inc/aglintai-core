@@ -12,7 +12,6 @@ import ROUTES from '@/src/utils/routing/routes';
 import SubNavBar from '../../AppLayout/SubNavbar';
 import Loader from '../../Common/Loader';
 import SearchField from '../../Common/SearchField/SearchField';
-import { stepObj } from '../../SignUpComp/SlideSignup/utils';
 import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
 import FilterJobDashboard, { useJobFilterAndSort } from './Filters';
 import JobsList from './JobsList';
@@ -31,20 +30,14 @@ const DashboardComp = () => {
   const { ifAllowed } = useRolesAndPermissions();
 
   useEffect(() => {
-    if (recruiter?.name === null) {
-      router.push(`/signup?step=${stepObj.detailsOne}`, undefined, {
-        shallow: true,
-      });
-    } else {
-      if (router.isReady) {
-        if (!router.query.status) {
-          router.push(`?status=published`, undefined, {
-            shallow: true,
-          });
-        }
-        if (data) {
-          initialFilterJobs();
-        }
+    if (router.isReady) {
+      if (!router.query.status) {
+        router.push(`?status=published`, undefined, {
+          shallow: true,
+        });
+      }
+      if (data) {
+        initialFilterJobs();
       }
     }
   }, [recruiter, router, data]);

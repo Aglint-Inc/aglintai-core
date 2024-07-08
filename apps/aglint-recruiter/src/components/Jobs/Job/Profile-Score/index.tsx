@@ -29,7 +29,7 @@ import ScoreWheel, {
 } from '@/src/components/Common/ScoreWheel';
 import UITextField from '@/src/components/Common/UITextField';
 import { useJob } from '@/src/context/JobContext';
-import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
+import { useJobDashboard } from '@/src/context/JobDashboard';
 import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/jobs/types';
 import { capitalize } from '@/src/utils/text/textUtils';
@@ -303,12 +303,7 @@ const ProfileScore = () => {
 const Banners = () => {
   const { push } = useRouter();
   const { job, handleRegenerateJd, status } = useJob();
-  const { dismissWarnings, setDismissWarnings } = useJobDashboardStore(
-    ({ dismissWarnings, setDismissWarnings }) => ({
-      dismissWarnings,
-      setDismissWarnings,
-    }),
-  );
+  const { handleWarningUpdate } = useJobDashboard();
   if (status.loading) return <></>;
   if (status.description_error)
     return (
@@ -337,7 +332,7 @@ const Banners = () => {
       />
     );
   if (status.description_changed)
-    return dismissWarnings.job_description ? (
+    return job?.dashboard_warnings?.job_description ? (
       <></>
     ) : (
       <BannerWarning
@@ -351,7 +346,7 @@ const Banners = () => {
               size={2}
               highContrast='true'
               onClickButton={{
-                onClick: () => setDismissWarnings({ job_description: true }),
+                onClick: () => handleWarningUpdate({ job_description: true }),
               }}
             />
             <ButtonSolid

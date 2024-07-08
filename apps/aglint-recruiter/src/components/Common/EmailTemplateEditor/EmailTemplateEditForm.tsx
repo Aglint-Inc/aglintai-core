@@ -34,7 +34,7 @@ export default function EmailTemplateEditForm({
   return (
     <Stack spacing={'var(--space-5)'}>
       {showSender && (
-        <Stack spacing={1}>
+        <Stack>
           <UITypography type='small' fontBold='normal'>
             From
           </UITypography>
@@ -127,6 +127,7 @@ export default function EmailTemplateEditForm({
               toolbar={false}
               placeholder={'subject'}
               singleLine={true}
+              isSize={false}
               padding={1}
               editor_type='email'
               template_type={selectedTemplate.type}

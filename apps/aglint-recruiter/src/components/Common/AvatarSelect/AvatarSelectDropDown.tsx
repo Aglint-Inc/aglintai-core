@@ -1,6 +1,8 @@
 import { MenuItem, Stack, TextField, Typography } from '@mui/material';
 import React from 'react';
 
+import { palette } from '@/src/context/Theme/Theme';
+
 import { WarningSvg } from '../../Jobs/Create/form';
 import MuiAvatar from '../MuiAvatar';
 import UITypography from '../UITypography';
@@ -37,6 +39,7 @@ type Props = {
   required?: boolean;
   disabled?: boolean;
   defaultLabelColor?: string;
+  placeHolder?: string;
 };
 
 const AvatarSelectDropDown = ({
@@ -45,7 +48,6 @@ const AvatarSelectDropDown = ({
   value,
   onChange,
   label = null,
-
   labelBold = 'default',
   labelSize = 'small',
   defaultValue = null,
@@ -54,12 +56,16 @@ const AvatarSelectDropDown = ({
   disabled,
   required,
   defaultLabelColor = null,
+  placeHolder = 'Choose from the list',
 }: Props) => {
   let labelColor = defaultLabelColor ? defaultLabelColor : 'var(--neutral-12)';
 
   if (disabled) {
     labelColor = defaultLabelColor ? defaultLabelColor : 'var(--neutral-11)';
   }
+  const unassigned = !!(menuOptions ?? []).find(
+    ({ name }) => name.toLowerCase() === 'unassigned',
+  );
   return (
     <Stack gap={'var(--space-1)'} width={'100%'}>
       {/* {label && <Stack>{label}</Stack>} */}
@@ -73,121 +79,127 @@ const AvatarSelectDropDown = ({
             {label}
           </UITypography>
           {required && (
-            <Typography sx={{ color: 'var(--error-9)', pl: 0.5 }}>
-              *{/* <sup>*</sup> */}
-            </Typography>
+            <Typography sx={{ color: 'var(--error-9)', pl: 0.5 }}>*</Typography>
           )}
         </Stack>
       )}
-      <TextField
-        select
-        onChange={onChange}
-        error={error}
-        sx={{
-          '.MuiOutlinedInput-root': {
-            // border: `1px solid ${error ? 'var(--error-6)' : 'var(--neutral-6)'}`,
-            '&.Mui-focused': {
-              // borderColor: ` ${error ? 'var(--error-a6)' : 'var(--accent-a6)'}`,
-              // outline: 'none',
-              // shadow: 'none',
+      <Stack style={{ position: 'relative', width: '100%', height: '100%' }}>
+        <TextField
+          select
+          onChange={onChange}
+          error={error}
+          sx={{
+            '.MuiSelect-outlined': {
+              display: showMenuIcons && 'flex',
+              gap: showMenuIcons && 'var(--space-1)',
+              alignItems: showMenuIcons && 'center',
             },
-          },
-          '.MuiSelect-outlined': {
-            display: showMenuIcons && 'flex',
-            gap: showMenuIcons && 'var(--space-1)',
-            alignItems: showMenuIcons && 'center',
-          },
-        }}
-        fullWidth
-        value={value}
-        defaultValue={defaultValue}
-        SelectProps={{
-          MenuProps: {
-            PaperProps: {
-              style: {
-                maxHeight: '240px',
+          }}
+          fullWidth
+          value={value}
+          defaultValue={defaultValue}
+          SelectProps={{
+            MenuProps: {
+              PaperProps: {
+                style: {
+                  maxHeight: '240px',
+                },
               },
             },
-          },
-        }}
-      >
-        {menuOptions.length === 0 ? (
-          <Stack
-            px={1}
-            style={{
-              fontStyle: 'italic',
-              color: 'var(--neutral-12)',
-              cursor: 'default',
-            }}
-          >
-            No options available
-          </Stack>
-        ) : (
-          menuOptions.map((menu, idx) => (
-            <MenuItem
-              sx={{
-                padding: 'var(--space-2)',
-                direction: 'ltr',
-                display: 'flex',
-                gap: 'var(--space-1)',
+          }}
+        >
+          {menuOptions.length === 0 ? (
+            <Stack
+              px={1}
+              style={{
+                fontStyle: 'italic',
+                color: 'var(--neutral-12)',
+                cursor: 'default',
               }}
-              key={idx}
-              value={menu.value}
             >
-              {showMenuIcons &&
-                (menu.icon ? (
-                  menu.icon
-                ) : Array.isArray(menu.start_icon_url) ? (
-                  <Stack direction={'row'}>
-                    {menu.start_icon_url
-                      .slice(0, 3)
-                      .map(({ name, url }, index) => (
-                        <Stack
-                          key={index}
-                          sx={{
-                            zIndex:
-                              (menu.start_icon_url as any[]).length - index,
-                            transform: `translateX(-${index * 30}%)`,
-                          }}
-                        >
+              No options available
+            </Stack>
+          ) : (
+            menuOptions.map((menu, idx) => (
+              <MenuItem
+                sx={{
+                  padding: 'var(--space-2)',
+                  direction: 'ltr',
+                  display: 'flex',
+                  gap: 'var(--space-1)',
+                }}
+                key={idx}
+                value={menu.value}
+              >
+                {showMenuIcons &&
+                  (menu.icon ? (
+                    menu.icon
+                  ) : Array.isArray(menu.start_icon_url) ? (
+                    <Stack direction={'row'}>
+                      {menu.start_icon_url
+                        .slice(0, 3)
+                        .map(({ name, url }, index) => (
+                          <Stack
+                            key={index}
+                            sx={{
+                              zIndex:
+                                (menu.start_icon_url as any[]).length - index,
+                              transform: `translateX(-${index * 30}%)`,
+                            }}
+                          >
+                            <MuiAvatar
+                              src={url}
+                              level={name}
+                              variant='rounded-xs'
+                            />
+                          </Stack>
+                        ))}
+                      {(menu?.start_icon_url?.slice(3) ?? []).length > 0 && (
+                        <Stack sx={{ transform: `translateX(-80%)` }}>
                           <MuiAvatar
-                            src={url}
-                            level={name}
+                            src={null}
+                            level={`${menu.start_icon_url.slice(3).length}+`}
                             variant='rounded-xs'
+                            extended={true}
                           />
                         </Stack>
-                      ))}
-                    {(menu?.start_icon_url?.slice(3) ?? []).length > 0 && (
-                      <Stack sx={{ transform: `translateX(-80%)` }}>
-                        <MuiAvatar
-                          src={null}
-                          level={`${menu.start_icon_url.slice(3).length}+`}
-                          variant='rounded-xs'
-                          extended={true}
-                        />
-                      </Stack>
-                    )}
-                  </Stack>
-                ) : !menu.start_icon_url ||
-                  typeof menu.start_icon_url === 'string' ? (
-                  <MuiAvatar
-                    src={menu.start_icon_url as string}
-                    level={menu.name}
-                    variant='rounded-xs'
-                  />
-                ) : (
-                  menu.start_icon_url
-                ))}
-              {menu.name}
-              <Stack direction={'row'} gap={2} ml={'auto'}>
-                {(menu.meta ?? []).map(({ title, icon }, i) => (
-                  <Meta key={i} title={title} icon={icon} />
-                ))}
-              </Stack>
-            </MenuItem>
-          ))
-        )}
-      </TextField>
+                      )}
+                    </Stack>
+                  ) : !menu.start_icon_url ||
+                    typeof menu.start_icon_url === 'string' ? (
+                    <MuiAvatar
+                      src={menu.start_icon_url as string}
+                      level={menu.name}
+                      variant='rounded-xs'
+                    />
+                  ) : (
+                    menu.start_icon_url
+                  ))}
+                {menu.name}
+                <Stack direction={'row'} gap={2} ml={'auto'}>
+                  {(menu.meta ?? []).map(({ title, icon }, i) => (
+                    <Meta key={i} title={title} icon={icon} />
+                  ))}
+                </Stack>
+              </MenuItem>
+            ))
+          )}
+        </TextField>
+      </Stack>
+      {placeHolder && value === '_' && !unassigned && (
+        <Stack
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            color: palette.grey[500],
+            pointerEvents: 'none',
+            transform: 'translate(12px, 32px)',
+          }}
+        >
+          {placeHolder}
+        </Stack>
+      )}
       {error && helperText && (
         <Stack alignItems={'center'} direction={'row'} color='var(--error-11)'>
           <WarningSvg />
