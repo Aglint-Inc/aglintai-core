@@ -76,9 +76,9 @@ function RequestAvailabilityPopUps() {
     );
   });
 
-  const reqSesIds =
-    selectedRequest?.request_session_relations.map((ele) => ele.session_id) ||
-    [];
+  const reqSesIds = selectedRequest?.request_session_relations
+    ? selectedRequest?.request_session_relations.map((ele) => ele.session_id)
+    : [];
 
   useEffect(() => {
     if (selectedRequest) setRequestSessionIds(reqSesIds);
