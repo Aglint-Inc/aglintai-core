@@ -270,17 +270,7 @@ function RequestAvailability() {
           is_task_created: markCreateTicket,
           number_of_days: selectedDays.value,
           number_of_slots: selectedSlots.value,
-          session_ids: localSessions.map((session) => {
-            return {
-              id: session.interview_session.id,
-              name: session.interview_session.name,
-              session_duration: session.interview_session.session_duration,
-              break_duration: session.interview_session.break_duration,
-              session_order: session.interview_session.session_order,
-              location: session.interview_session.location,
-              session_type: session.interview_session.session_type,
-            };
-          }),
+
           total_slots: null,
         });
         setRequestDetails(result);
@@ -346,7 +336,7 @@ function RequestAvailability() {
               request_availability_id: result.id,
             });
             await supabase.from('task_session_relation').insert(
-              selectedSessions.map((ele) => ({
+              localSessions.map((ele) => ({
                 session_id: ele.interview_session.id,
                 task_id: task.id,
               })),
