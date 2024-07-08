@@ -469,7 +469,7 @@ const Pipeline = () => {
   const { job } = useJobDashboard();
   const { push } = useRouter();
   const setSection = useApplicationsStore(({ setSection }) => setSection);
-  const newSections = Object.entries(job.section_count).reduce(
+  const newSections = Object.entries(job?.section_count ?? {}).reduce(
     (acc, [key, value]) => {
       acc[key] = { count: value, label: getPlural(value, 'candidate') };
       return acc;

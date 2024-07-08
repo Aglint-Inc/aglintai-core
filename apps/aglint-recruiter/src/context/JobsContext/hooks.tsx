@@ -66,7 +66,7 @@ const useJobActions = () => {
     if (recruiter) {
       try {
         const data = await jobCreate(newJob);
-        await handleGenerateJd(data.id);
+        handleGenerateJd(data.id);
         return data;
       } catch {
         //
