@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseEnums } from '@aglint/shared-types';
 import {
+  Button,
   Checkbox,
   FormControlLabel,
   FormGroup,
@@ -15,15 +16,19 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
+import axios from '@/src/client/axios';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
+import { getRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
+import { RoleAndPermissionAPI } from '@/src/pages/api/roleAndPermission/type';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import toast from '@/src/utils/toast';
 
 function RolesAndPermissions() {
   const { data, isPending: loading } = useRoleAndPermissions();
@@ -31,7 +36,6 @@ function RolesAndPermissions() {
   const [role, setRole] = useState<
     (typeof data)['rolesAndPermissions'][number] & { name: string }
   >(null);
-
   const roleDetails =
     role?.permissions.reduce(
       (acc, curr) => {
@@ -170,7 +174,7 @@ const RoleTable = ({
                   }}
                 >
                   <TableCell key={1} variant='head' align={'left'}>
-                    {capitalizeFirstLetter(item)}
+                    {capitalizeFirstLetter(role.name)}
                   </TableCell>
                   <TableCell key={1} variant='head' align={'left'}>
                     {role.assignedTo}
@@ -183,7 +187,7 @@ const RoleTable = ({
                     variant='head'
                     align={'left'}
                     onClick={() => {
-                      setRole({ ...role, name: item });
+                      setRole({ ...role });
                     }}
                     sx={{
                       cursor: 'pointer',
@@ -206,29 +210,71 @@ const RoleTable = ({
 
 const useRoleAndPermissions = () => {
   const { recruiter } = useAuthDetails();
-  return useQuery({
-    queryKey: ['role-and-permissions'],
-    queryFn: () => getRoleAndPermissionsWithUserCount(recruiter.id),
-    enabled: Boolean(recruiter?.id),
+  const queryClient = useQueryClient();
+  const { mutateAsync } = useMutation({
+    mutationFn: updateRole,
+    onSuccess(resData, { add, delete: toDelete, role_id }) {
+      queryClient.setQueryData(
+        ['app', recruiter?.id, 'role-and-permissions'],
+        (
+          prevData: Awaited<
+            ReturnType<typeof getRoleAndPermissionsWithUserCount>
+          >,
+        ) => {
+          prevData.rolesAndPermissions[role_id].permissions =
+            prevData.rolesAndPermissions[role_id].permissions.map((item) => {
+              if (add.length) {
+                const temp = resData.addedPermissions.find(
+                  (i) => i.id === item.id,
+                );
+                if (temp) {
+                  item = { ...item, ...temp, isActive: true };
+                }
+              }
+              if (toDelete.length) {
+                if (toDelete.includes(item.relation_id))
+                  item = { ...item, relation_id: null, isActive: false };
+              }
+              return item;
+            });
+          toast.success('Permissions updated successfully');
+          return { ...prevData };
+        },
+      );
+    },
+    onError(err) {
+      toast.error(err.message);
+    },
   });
+  return {
+    updateRoles: mutateAsync,
+    ...useQuery({
+      queryKey: ['app', recruiter?.id, 'role-and-permissions'],
+      queryFn: getRoleAndPermissionsWithUserCount,
+      enabled: Boolean(recruiter?.id),
+    }),
+  };
+  // const updateRole;
 };
 const getRoleAndPermissions = async (recruiter_id: string) => {
   return supabase
     .from('role_permissions')
-    .select('role_id, permission_id, roles(name, description)')
+    .select('id, role_id, permission_id, roles(id,name, description)')
     .eq('recruiter_id', recruiter_id)
     .throwOnError()
     .then(({ data }) => {
       const rolesAndPermissions = data.reduce(
         (acc, curr) => {
-          acc[curr.roles.name] = {
-            ...acc[curr.roles.name],
+          acc[curr.roles.id] = {
+            ...acc[curr.roles.id],
             id: curr.role_id,
+            name: curr.roles.name,
             assignedTo: 0,
             description: curr.roles.description,
             permissions: [
-              ...(acc[curr.roles.name]?.permissions || []),
+              ...(acc[curr.roles.id]?.permissions || []),
               {
+                relation_id: curr.id,
                 id: curr.permission_id,
                 name: null,
                 description: null,
@@ -241,9 +287,11 @@ const getRoleAndPermissions = async (recruiter_id: string) => {
         {} as {
           [roles: string]: {
             id: string;
+            name: string;
             assignedTo: number;
             description: string;
             permissions: {
+              relation_id: string;
               id: number;
               name: DatabaseEnums['permissions_type'];
               description: string;
@@ -267,6 +315,7 @@ const getRoleAndPermissions = async (recruiter_id: string) => {
                 id: curr.id,
                 name: curr.name,
                 description: curr.description,
+                isActive: false,
               };
               return acc;
             },
@@ -275,46 +324,33 @@ const getRoleAndPermissions = async (recruiter_id: string) => {
                 id: number;
                 name: DatabaseEnums['permissions_type'];
                 description: string;
+                isActive: boolean;
               };
             },
           );
-          Object.keys(rolesAndPermissions).forEach((item) => {
-            rolesAndPermissions[item].permissions = rolesAndPermissions[
-              item
-            ].permissions.map((item) => ({
-              ...item,
-              ...permission[item.id],
+          Object.keys(rolesAndPermissions).forEach((key) => {
+            rolesAndPermissions[key].permissions = data.map((perData) => ({
+              isActive: false,
+              relation_id: null,
+              ...rolesAndPermissions[key].permissions.find(
+                (per) => per.id == perData.id,
+              ),
+              ...perData,
             }));
           });
+
           return permission;
         });
       return { rolesAndPermissions, all_permission: permission };
     });
 };
 
-const getRoleAndPermissionsWithUserCount = async (recruiter_id: string) => {
-  let rolesAndPermissionsDetails = await getRoleAndPermissions(recruiter_id);
-  return supabase
-    .from('recruiter_relation')
-    .select('role_id')
-    .eq('recruiter_id', recruiter_id)
-    .throwOnError()
-    .then(({ data }) => {
-      const count = data.reduce(
-        (acc, curr) => {
-          acc[curr.role_id] = (acc[curr.role_id] || 0) + 1;
-          return acc;
-        },
-        {} as { [key: string]: number },
-      );
-      Object.keys(rolesAndPermissionsDetails.rolesAndPermissions).map(
-        (item) => {
-          rolesAndPermissionsDetails.rolesAndPermissions[item].assignedTo =
-            count[rolesAndPermissionsDetails.rolesAndPermissions[item].id] || 0;
-        },
-      );
-      return rolesAndPermissionsDetails;
-    });
+const getRoleAndPermissionsWithUserCount = async () => {
+  return axios.call<getRoleAndPermissionsAPI>(
+    'POST',
+    '/api/getRoleAndPermissions',
+    {},
+  );
 };
 
 const app_modules: {
@@ -463,6 +499,48 @@ function RoleDetails({
     };
   };
 }) {
+  const { updateRoles } = useRoleAndPermissions();
+  const [editRoles, setEditRoles] = useState<{
+    roleDetails: {
+      [key: string]: Omit<(typeof roleDetails)[''], 'permissions'> & {
+        permissions: ((typeof roleDetails)['']['permissions'][number] & {
+          isEdited: boolean;
+        })[];
+      };
+    };
+    edit: {
+      add: number[];
+      delete: string[];
+    };
+  }>({
+    roleDetails: Object.keys(roleDetails).reduce(
+      (acc, curr) => {
+        const temp = {
+          ...roleDetails[curr],
+          permissions: roleDetails[curr].permissions.map((permission) => {
+            return {
+              ...permission,
+              isEdited: false,
+            };
+          }),
+        };
+        acc[curr] = temp;
+        return acc;
+      },
+      {} as {
+        [key: string]: Omit<(typeof roleDetails)[''], 'permissions'> & {
+          permissions: ((typeof roleDetails)['']['permissions'][number] & {
+            isEdited: boolean;
+          })[];
+        };
+      },
+    ),
+    edit: {
+      add: [],
+      delete: [],
+    },
+  });
+
   return (
     <PageLayout
       isBackButton={true}
@@ -472,7 +550,35 @@ function RoleDetails({
       }
       slotBody={
         <Stack p={3}>
-          {Object.entries(roleDetails).map(
+          <Stack
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              maxWidth: '900px',
+              justifyContent: 'end',
+            }}
+          >
+            <Button
+              size='small'
+              variant='contained'
+              disabled={
+                !(editRoles.edit.delete.length || editRoles.edit.add.length)
+              }
+              onClick={() => {
+                updateRoles({ ...editRoles.edit, role_id: role.id }).then(
+                  () => {
+                    setEditRoles((pre) => ({
+                      ...pre,
+                      edit: { add: [], delete: [] },
+                    }));
+                  },
+                );
+              }}
+            >
+              Update
+            </Button>
+          </Stack>
+          {Object.entries(editRoles.roleDetails || {}).map(
             ([module, { description, permissions }]) => (
               <Stack key={module} pb={2}>
                 <Typography variant='h4'>
@@ -486,11 +592,63 @@ function RoleDetails({
                     maxWidth: '900px',
                   }}
                 >
-                  {permissions?.map((permission) => {
+                  {permissions?.map((permission, index) => {
                     return (
                       <Stack key={permission.id} width={'40%'}>
                         <FormControlLabel
-                          checked={permission.isActive}
+                          checked={
+                            permission.isEdited
+                              ? !permission.isActive
+                              : permission.isActive
+                          }
+                          onClick={() => {
+                            setEditRoles((prev) => {
+                              prev['edit'] = {
+                                add: [],
+                                delete: [],
+                                ...prev['edit'],
+                              };
+
+                              if (permission.isActive) {
+                                if (permission.isEdited) {
+                                  prev['edit'].delete = prev[
+                                    'edit'
+                                  ].delete.filter(
+                                    (item) => item !== permission.relation_id,
+                                  );
+                                  prev['roleDetails'][module].permissions[
+                                    index
+                                  ].isEdited = false;
+                                } else {
+                                  prev['edit'].delete = [
+                                    ...prev['edit'].delete,
+                                    permission.relation_id,
+                                  ];
+                                  prev['roleDetails'][module].permissions[
+                                    index
+                                  ].isEdited = true;
+                                }
+                              } else {
+                                if (permission.isEdited) {
+                                  prev['edit'].add = prev['edit'].add.filter(
+                                    (item) => item !== permission.id,
+                                  );
+                                  prev['roleDetails'][module].permissions[
+                                    index
+                                  ].isEdited = false;
+                                } else {
+                                  prev['edit'].add = [
+                                    ...prev['edit'].add,
+                                    permission.id,
+                                  ];
+                                  prev['roleDetails'][module].permissions[
+                                    index
+                                  ].isEdited = true;
+                                }
+                              }
+                              return { ...prev };
+                            });
+                          }}
                           control={<Checkbox />}
                           label={permission.name}
                           sx={{
@@ -513,3 +671,11 @@ function RoleDetails({
     />
   );
 }
+
+const updateRole = (data: RoleAndPermissionAPI['request']) => {
+  return axios.call<RoleAndPermissionAPI>(
+    'POST',
+    '/api/roleAndPermission',
+    data,
+  );
+};
