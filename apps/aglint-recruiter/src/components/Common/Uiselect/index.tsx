@@ -4,6 +4,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import React, { useState } from 'react';
 
+import { palette } from '@/src/context/Theme/Theme';
+
 import UITypography from '../UITypography';
 
 type MenuOption = {
@@ -27,6 +29,7 @@ type Props = {
   size?: 'sm' | 'md';
   error?: boolean;
   helperText?: string;
+  placeHolder?: string;
 };
 
 const UISelect = ({
@@ -40,6 +43,7 @@ const UISelect = ({
   startIcon,
   error,
   helperText,
+  placeHolder = 'Choose from the list',
 }: Props) => {
   let [focus, setFocus] = useState(false);
 
@@ -63,60 +67,56 @@ const UISelect = ({
           )}
         </Stack>
       )}
-      <Select
-        startAdornment={startIcon}
-        disabled={disabled}
-        value={value}
-        onChange={onChange}
-        error={error}
-        // displayEmpty
-        onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
-        // sx={{
-        //   '&': {
-        //     width: '100%',
-        //     fieldset: {
-        //       py: 0,
-
-        //       border: `1px solid ${outlineColor}!important`,
-        //     },
-        //     '&:hover fieldset': {
-        //       py: 0,
-
-        //       border: `1px solid ${outlineColor}!important`,
-        //     },
-        //     '.MuiSelect-outlined': {
-        //       py: 0,
-
-        //       fontSize: '14px',
-        //       p: size === 'md' ? '8px 14px' : '4px 12px',
-        //     },
-        //     outline: `${size === 'md' ? '3px' : '2px'} solid ${
-        //       focus ? borderColor : 'transparent'
-        //     }`,
-        //   },
-        // }}
-        defaultValue={defaultValue}
+      <Stack
+        style={{
+          position: 'relative',
+        }}
       >
-        {menuOptions.length === 0 ? (
+        <Stack style={{ position: 'absolute', width: '100%', height: '100%' }}>
+          <Select
+            startAdornment={startIcon}
+            disabled={disabled}
+            value={value}
+            onChange={onChange}
+            error={error}
+            onFocus={() => setFocus(true)}
+            defaultValue={defaultValue}
+          >
+            {menuOptions.length === 0 ? (
+              <Stack
+                px={1}
+                style={{
+                  fontStyle: 'italic',
+                  color: 'var(--neutral-9)',
+                  cursor: 'default',
+                }}
+              >
+                No options available
+              </Stack>
+            ) : (
+              menuOptions.map((menu, idx) => (
+                <MenuItem key={idx} value={menu?.value}>
+                  {menu?.name}
+                </MenuItem>
+              ))
+            )}
+          </Select>
+        </Stack>
+        {placeHolder && !value && (
           <Stack
-            px={1}
             style={{
-              fontStyle: 'italic',
-              color: 'var(--neutral-9)',
-              cursor: 'default',
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              padding: '8px 12px',
+              color: palette.grey[500],
+              pointerEvents: 'none',
             }}
           >
-            No options available
+            {placeHolder}
           </Stack>
-        ) : (
-          menuOptions.map((menu, idx) => (
-            <MenuItem key={idx} value={menu?.value}>
-              {menu?.name}
-            </MenuItem>
-          ))
         )}
-      </Select>
+      </Stack>
       {error && helperText && (
         <Stack direction={'row'} alignItems={'center'} justifyContent={'start'}>
           <Icon height='12px' color='var(--error-9)' variant='AlertIcon' />
