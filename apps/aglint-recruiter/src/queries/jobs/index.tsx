@@ -140,13 +140,15 @@ const createJob = async (job: JobInsert) => {
   const { data: d1, error: e1 } = await supabase
     .from('public_jobs')
     .insert(job)
-    .select('id');
+    .select('id')
+    .single();
 
   if (e1) throw new Error(e1.message);
 
-  const { data: d2, error: e2 } = await supabase.rpc('getjob', {
-    jobid: d1[0].id,
-  });
+  const { data: d2, error: e2 } = await supabase
+    .from('job_view')
+    .select()
+    .eq('id', d1.id);
   if (e2) return null;
   return d2[0] as unknown as Job;
 };

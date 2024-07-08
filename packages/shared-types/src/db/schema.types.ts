@@ -219,6 +219,34 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "application_logs_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "application_logs_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "application_logs_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "new_tasks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "application_logs_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks_view"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "public_application_logs_application_id_fkey"
             columns: ["application_id"]
             isOneToOne: false
@@ -230,34 +258,6 @@ export type Database = {
             columns: ["application_id"]
             isOneToOne: false
             referencedRelation: "applications"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_application_logs_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "debreif_meeting_interviewers"
-            referencedColumns: ["user_id"]
-          },
-          {
-            foreignKeyName: "public_application_logs_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "recruiter_user"
-            referencedColumns: ["user_id"]
-          },
-          {
-            foreignKeyName: "public_application_logs_task_id_fkey"
-            columns: ["task_id"]
-            isOneToOne: false
-            referencedRelation: "new_tasks"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_application_logs_task_id_fkey"
-            columns: ["task_id"]
-            isOneToOne: false
-            referencedRelation: "tasks_view"
             referencedColumns: ["id"]
           },
         ]
@@ -2225,6 +2225,7 @@ export type Database = {
           id: number
           is_enable: boolean | null
           name: Database["public"]["Enums"]["permissions_type"]
+          title: string
           updated_at: string | null
         }
         Insert: {
@@ -2233,6 +2234,7 @@ export type Database = {
           id?: number
           is_enable?: boolean | null
           name: Database["public"]["Enums"]["permissions_type"]
+          title: string
           updated_at?: string | null
         }
         Update: {
@@ -2241,6 +2243,7 @@ export type Database = {
           id?: number
           is_enable?: boolean | null
           name?: Database["public"]["Enums"]["permissions_type"]
+          title?: string
           updated_at?: string | null
         }
         Relationships: []
@@ -2252,6 +2255,7 @@ export type Database = {
           company: string | null
           company_details: string | null
           created_at: string
+          dashboard_warnings: Json
           department: string | null
           description: string | null
           description_hash: number
@@ -2305,6 +2309,7 @@ export type Database = {
           company?: string | null
           company_details?: string | null
           created_at?: string
+          dashboard_warnings?: Json
           department?: string | null
           description?: string | null
           description_hash?: number
@@ -2358,6 +2363,7 @@ export type Database = {
           company?: string | null
           company_details?: string | null
           created_at?: string
+          dashboard_warnings?: Json
           department?: string | null
           description?: string | null
           description_hash?: number
@@ -2888,28 +2894,28 @@ export type Database = {
           {
             foreignKeyName: "request_availability_relation_session_id_fkey"
             columns: ["session_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "debreif_meeting_interviewers"
             referencedColumns: ["session_id"]
           },
           {
             foreignKeyName: "request_availability_relation_session_id_fkey"
             columns: ["session_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "interview_session"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "request_availability_relation_session_id_fkey"
             columns: ["session_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "meeting_details"
             referencedColumns: ["session_id"]
           },
           {
             foreignKeyName: "request_availability_relation_session_id_fkey"
             columns: ["session_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "meeting_interviewers"
             referencedColumns: ["session_id"]
           },
@@ -2917,16 +2923,19 @@ export type Database = {
       }
       role_permissions: {
         Row: {
+          id: string
           permission_id: number
           recruiter_id: string
           role_id: string
         }
         Insert: {
+          id?: string
           permission_id: number
           recruiter_id: string
           role_id: string
         }
         Update: {
+          id?: string
           permission_id?: number
           recruiter_id?: string
           role_id?: string
@@ -3784,6 +3793,7 @@ export type Database = {
           assessment: boolean | null
           company: string | null
           created_at: string | null
+          dashboard_warnings: Json | null
           department: string | null
           description: string | null
           description_hash: number | null
@@ -4276,6 +4286,7 @@ export type Database = {
         Args: {
           session_id: string
           interview_plan_id: string
+          job_id: string
         }
         Returns: undefined
       }
