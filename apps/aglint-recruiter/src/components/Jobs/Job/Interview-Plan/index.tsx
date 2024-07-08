@@ -145,6 +145,7 @@ export type DrawerType = typeof initalDrawer;
 
 const InterviewPlan = () => {
   const {
+    job,
     interviewPlans: { data },
     handleDeleteSession,
     getLoadingState,
@@ -253,7 +254,11 @@ const InterviewPlan = () => {
         popup={popup}
         handleClose={handlePopupClose}
         handleDelete={() =>
-          handleDelete({ session_id: popup.id, interview_plan_id: data.id })
+          handleDelete({
+            session_id: popup.id,
+            interview_plan_id: data.id,
+            job_id: job?.id,
+          })
         }
       />
     </>

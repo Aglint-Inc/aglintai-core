@@ -14,7 +14,6 @@ import { useJobUpdate } from '@/src/queries/jobs';
 import { Job } from '@/src/queries/jobs/types';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
-import { useJobDashboardStore } from '../JobDashboard/store';
 import { useJobs } from '../JobsContext';
 import { hashCode, validateDescription, validateJd } from './utils';
 
@@ -56,10 +55,6 @@ const useJobContext = () => {
   const jobPolling =
     !!job && (scoreParameterPollEnabled || applicationScoringPollEnabled);
 
-  const { dismissWarnings } = useJobDashboardStore(({ dismissWarnings }) => ({
-    dismissWarnings,
-  }));
-
   const jdValidity = !validateJd(job?.draft?.jd_json);
 
   const status = job &&
@@ -70,7 +65,7 @@ const useJobContext = () => {
         validateDescription(job?.draft?.description ?? ''),
       description_changed:
         !job.scoring_criteria_loading &&
-        !dismissWarnings.job_description &&
+        !job?.dashboard_warnings?.job_description &&
         hashCode(job?.draft?.description ?? '') !== job?.description_hash,
       jd_json_error: !job.scoring_criteria_loading && !jdValidity,
       scoring_criteria_changed:
@@ -119,6 +114,11 @@ const useJobContext = () => {
           ...safeJob.draft,
           status: 'published',
           description_hash: hashCode(safeJob.draft.description),
+          dashboard_warnings: {
+            ...safeJob.dashboard_warnings,
+            job_description: false,
+            score_changed: false,
+          },
         });
         return true;
       } catch {

@@ -1,6 +1,8 @@
 /* eslint-disable security/detect-object-injection */
 // import { getHelper } from '@/src/components/Jobs/Job/Email-Templates';
 // import { templateObj } from '@/src/components/Jobs/Job/Email-Templates/utils';
+import { useCallback } from 'react';
+
 import {
   useAllAssessments,
   useAllAssessmentTemplates,
@@ -19,7 +21,15 @@ import { useJob } from '../JobContext';
 import { getDetailsValidity, getHiringTeamValidity } from '../JobContext/utils';
 
 const useProviderJobDashboardActions = () => {
-  const { jobLoad, job, job_id, interviewPlans, jdValidity, status } = useJob();
+  const {
+    jobLoad,
+    job,
+    job_id,
+    interviewPlans,
+    jdValidity,
+    status,
+    handleJobUpdate,
+  } = useJob();
 
   const assessments = useAllAssessments();
   const templates = useAllAssessmentTemplates();
@@ -83,6 +93,17 @@ const useProviderJobDashboardActions = () => {
     !workflows.isPending
   );
 
+  const handleWarningUpdate = useCallback(
+    (dashboard_warnings: Partial<(typeof job)['dashboard_warnings']>) => {
+      handleJobUpdate(job?.id, {
+        dashboard_warnings: {
+          ...job?.dashboard_warnings,
+          ...dashboard_warnings,
+        },
+      });
+    },
+    [job?.id, job?.dashboard_warnings],
+  );
   // const emailTemplateValidity = validateEmailTemplates(job?.email_template);
 
   const loadStatus: 'loading' | 'error' | 'success' =
@@ -115,6 +136,7 @@ const useProviderJobDashboardActions = () => {
     locations,
     matches,
     status,
+    handleWarningUpdate,
   };
 
   return value;

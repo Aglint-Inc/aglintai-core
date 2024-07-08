@@ -50,7 +50,6 @@ import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJob } from '@/src/context/JobContext';
 import { useJobDashboard } from '@/src/context/JobDashboard';
-import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 import { useJobs } from '@/src/context/JobsContext';
 import NotFoundPage from '@/src/pages/404';
 import { useCompanyMembers } from '@/src/queries/company-members';
@@ -612,17 +611,13 @@ const useBanners = () => {
     isInterviewSessionEmpty,
     publishStatus,
     status,
+    handleWarningUpdate,
   } = useJobDashboard();
-  const { dismissWarnings, setDismissWarnings } = useJobDashboardStore(
-    ({ dismissWarnings, setDismissWarnings }) => ({
-      dismissWarnings,
-      setDismissWarnings,
-    }),
-  );
+
   const banners: React.JSX.Element[] = [];
   if (job.status === 'draft') banners.push(<JobsBanner />);
 
-  if (isInterviewPlanDisabled && !dismissWarnings.interview_plan)
+  if (isInterviewPlanDisabled && !job?.dashboard_warnings?.interview_plan)
     banners.push(
       <DashboardWarning
         textWarningTitle={'Interview plan not set'}
@@ -637,7 +632,7 @@ const useBanners = () => {
               color={'accent'}
               highContrast={'true'}
               onClickButton={{
-                onClick: () => setDismissWarnings({ interview_plan: true }),
+                onClick: () => handleWarningUpdate({ interview_plan: true }),
               }}
             />
 
@@ -654,7 +649,7 @@ const useBanners = () => {
         }
       />,
     );
-  if (isInterviewSessionEmpty && !dismissWarnings.interview_session)
+  if (isInterviewSessionEmpty && !job?.dashboard_warnings?.interview_session)
     banners.push(
       <DashboardWarning
         textWarningTitle={'Interview plan not set'}
@@ -669,7 +664,7 @@ const useBanners = () => {
               color={'accent'}
               highContrast={'true'}
               onClickButton={{
-                onClick: () => setDismissWarnings({ interview_session: true }),
+                onClick: () => handleWarningUpdate({ interview_session: true }),
               }}
             />
 
@@ -790,7 +785,7 @@ const useBanners = () => {
               color={'accent'}
               highContrast={'true'}
               onClickButton={{
-                onClick: () => setDismissWarnings({ job_description: true }),
+                onClick: () => handleWarningUpdate({ job_description: true }),
               }}
             />
 
@@ -807,7 +802,10 @@ const useBanners = () => {
         }
       />,
     );
-  if (status.scoring_criteria_changed && !dismissWarnings.score_changed)
+  if (
+    status.scoring_criteria_changed &&
+    !job?.dashboard_warnings?.score_changed
+  )
     banners.push(
       <GlobalBanner
         textTitle={'Scoring criteria has been updated'}
@@ -821,7 +819,7 @@ const useBanners = () => {
               size={2}
               color={'neutral'}
               onClickButton={{
-                onClick: () => setDismissWarnings({ score_changed: true }),
+                onClick: () => handleWarningUpdate({ score_changed: true }),
               }}
             />
 
@@ -1162,9 +1160,6 @@ const ScreeningModule = () => {
 const InterviewModule = () => {
   const { job, isInterviewPlanDisabled, isInterviewSessionEmpty } =
     useJobDashboard();
-  const { interview_plan, interview_session } = useJobDashboardStore(
-    ({ dismissWarnings }) => dismissWarnings,
-  );
   const { push } = useRouter();
   const handleClick = () => {
     push(`/jobs/${job.id}/interview-plan`);
@@ -1176,8 +1171,8 @@ const InterviewModule = () => {
       slotIcon={<SchedulingIcon />}
       slotEnableDisable={<></>}
       isWarning={
-        (isInterviewPlanDisabled && !interview_plan) ||
-        (isInterviewSessionEmpty && !interview_session)
+        (isInterviewPlanDisabled && !job?.dashboard_warnings?.interview_plan) ||
+        (isInterviewSessionEmpty && !job?.dashboard_warnings?.interview_session)
       }
     />
   );

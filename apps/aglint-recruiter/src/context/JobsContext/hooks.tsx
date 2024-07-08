@@ -43,9 +43,9 @@ const useJobActions = () => {
         ...job,
         flags: {
           ...flags,
-          screening: flags.screening && isScreeningEnabled,
-          assessment: flags.assessment && isAssessmentEnabled,
-          interview: flags.interview && isSchedulingEnabled,
+          screening: !!(flags?.screening && isScreeningEnabled),
+          assessment: !!(flags?.assessment && isAssessmentEnabled),
+          interview: !!(flags?.interview && isSchedulingEnabled),
         },
       })),
     }),
