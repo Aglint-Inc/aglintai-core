@@ -600,6 +600,9 @@ const AdminFeedback = ({
                         });
                       })
                     }
+                    onCancel={() => {
+                      setEdit(false);
+                    }}
                     onClose={() => {
                       setEdit(false);
                       setSelectedInterviewer({
@@ -1043,6 +1046,9 @@ const InterviewerFeedback = ({
               <ShowCode>
                 <ShowCode.When isTrue={edit}>
                   <FeedbackForm
+                    onCancel={() => {
+                      setEdit(false);
+                    }}
                     interviewerData={selectedInterviewer.interviewer}
                     onSubmit={(feedback) =>
                       handelSubmit(feedback).then(() => {
@@ -1191,6 +1197,7 @@ const FeedbackForm = ({
   interviewerData,
   onSubmit,
   onClose,
+  onCancel,
 }: {
   interviewerData: FeedbackWindowInterviewersType[string][number];
   onSubmit: ({
@@ -1206,6 +1213,7 @@ const FeedbackForm = ({
     feedback: DatabaseTable['interview_session_relation']['feedback'];
   }) => void;
   onClose: () => void;
+  onCancel: () => void;
 }) => {
   const [interviewer, setInterviewer] = useState(interviewerData);
   return (
@@ -1219,7 +1227,7 @@ const FeedbackForm = ({
             textButton='Cancel'
             size={2}
             color={'neutral'}
-            onClickButton={{ onClick: onClose }}
+            onClickButton={{ onClick: onCancel }}
           />
           <ButtonSolid
             textButton='Submit Feedback'
