@@ -11,6 +11,7 @@ import DynamicLoader from '../../Interviewers/DynamicLoader';
 import { ScheduleListType } from './hooks';
 import ScheduleMeetingList from './ScheduleMeetingList';
 
+type tabs = 'all' | 'confirmed' | 'cancelled' | 'completed' | 'waiting';
 function ModuleSchedules({
   isFetched,
   newScheduleList,
@@ -18,14 +19,22 @@ function ModuleSchedules({
   isFetched: boolean;
   newScheduleList: ScheduleListType;
 }) {
-  const [filter, setFilter] = React.useState<
-    'all' | 'confirmed' | 'cancelled' | 'completed' | 'waiting'
-  >('confirmed');
+  const [filter, setFilter] = React.useState<tabs>('confirmed');
   const [changeText, setChangeText] = useState('');
 
   if (!isFetched) {
     return <DynamicLoader />;
   }
+
+  const countCalculation = (tab: tabs) => {
+    return newScheduleList.filter(
+      (sch) =>
+        sch.interview_meeting.status === tab &&
+        sch.interview_meeting.session_name
+          .toLowerCase()
+          .includes(changeText.toLowerCase()),
+    );
+  };
 
   const newFilterSchedules = () => {
     const filSch = newScheduleList;
@@ -34,37 +43,9 @@ function ModuleSchedules({
       case 'all':
         return filSch;
       default:
-        return filSch.filter(
-          (sch) =>
-            sch.interview_meeting.status === filter &&
-            sch.interview_meeting.session_name
-              .toLowerCase()
-              .includes(changeText.toLowerCase()),
-        );
+        return countCalculation(filter);
     }
   };
-
-  const upcomingCount = newScheduleList.filter(
-    (sch) =>
-      sch.interview_meeting.status === 'confirmed' &&
-      sch.interview_meeting.session_name
-        .toLowerCase()
-        .includes(changeText.toLowerCase()),
-  ).length;
-  const cancelCount = newScheduleList.filter(
-    (sch) =>
-      sch.interview_meeting.status === 'cancelled' &&
-      sch.interview_meeting.session_name
-        .toLowerCase()
-        .includes(changeText.toLowerCase()),
-  ).length;
-  const pastCount = newScheduleList.filter(
-    (sch) =>
-      sch.interview_meeting.status === 'completed' &&
-      sch.interview_meeting.session_name
-        .toLowerCase()
-        .includes(changeText.toLowerCase()),
-  ).length;
 
   return (
     <InterviewMemberSide
@@ -83,9 +64,9 @@ function ModuleSchedules({
       isUpcomingActive={filter === 'confirmed'}
       isCancelActive={filter === 'cancelled'}
       isCompletedActive={filter === 'completed'}
-      textUpcomingCount={upcomingCount}
-      textCancelledCount={cancelCount}
-      textPastCount={pastCount}
+      textUpcomingCount={countCalculation('confirmed').length}
+      textCancelledCount={countCalculation('cancelled').length}
+      textPastCount={countCalculation('completed').length}
       onClickUpcoming={{
         onClick: () => setFilter('confirmed'),
       }}
