@@ -1,3 +1,4 @@
+import Heading from '@tiptap/extension-heading';
 import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import TextAlign from '@tiptap/extension-text-align';
@@ -24,5 +25,27 @@ export const getRegularEditorConfigs = ({ placeholder }) => {
     }),
     Underline,
     TextStyle.configure({}),
+    Heading.configure({ levels: [] }),
+  ];
+};
+
+export const getRegularEditorNoHeadingsConfigs = ({ placeholder }) => {
+  return [
+    StarterKit,
+    EventHandler,
+    Placeholder.configure({
+      placeholder: placeholder || '',
+    }),
+    Link.configure({
+      openOnClick: false,
+      validate: (href) => /^https?:\/\//.test(href),
+    }),
+    TextAlign.configure({
+      alignments: ['left', 'right', 'center'],
+      types: ['heading', 'paragraph'],
+    }),
+    Underline,
+    TextStyle.configure({}),
+    Heading.configure({ levels: [] }),
   ];
 };
