@@ -6,8 +6,14 @@ import React, { useState } from 'react';
 import { SkeletonParagraph } from '@/devlink2/SkeletonParagraph';
 
 import { TipTapAIEditorCtxType, TipTapCtx } from './context';
-import { getEmailTemplateExtns } from './customExtns/extns/getEmailTemplateExtns';
-import { getRegularEditorConfigs } from './customExtns/extns/getRegularEditorConfigs';
+import {
+  getEmailTemplateExtns,
+  getEmailTemplateExtnsNoHeading,
+} from './customExtns/extns/getEmailTemplateExtns';
+import {
+  getRegularEditorConfigs,
+  getRegularEditorNoHeadingsConfigs,
+} from './customExtns/extns/getRegularEditorConfigs';
 import MenuBtns from './MenuBtns';
 
 export type TipTapAIEditorParams = {
@@ -33,6 +39,7 @@ export type TipTapAIEditorParams = {
   editor_type?: 'email' | 'regular';
   template_type?: DatabaseEnums['email_slack_types'];
   isSize?: boolean;
+  isAlign?: boolean;
 };
 
 const TipTapAIEditor = ({
@@ -54,6 +61,7 @@ const TipTapAIEditor = ({
   toolbar = true,
   padding = 2,
   isSize = true,
+  isAlign = true,
 }: TipTapAIEditorParams) => {
   const [selectionRange, setSelectionRange] = useState<
     TipTapAIEditorCtxType['selectionRange']
@@ -65,8 +73,12 @@ const TipTapAIEditor = ({
   const editor = useEditor({
     extensions:
       editor_type === 'regular'
-        ? getRegularEditorConfigs({ placeholder })
-        : getEmailTemplateExtns({ placeholder, template_type }),
+        ? isSize
+          ? getRegularEditorConfigs({ placeholder })
+          : getRegularEditorNoHeadingsConfigs({ placeholder })
+        : isSize
+          ? getEmailTemplateExtns({ placeholder, template_type })
+          : getEmailTemplateExtnsNoHeading({ placeholder, template_type }),
     editable: !disabled,
     content: initialValue || '',
     onBlur() {},
@@ -135,6 +147,7 @@ const TipTapAIEditor = ({
                 <MenuBtns
                   borderRadius={(border && borderRadius) || 'var(--radius-2)'}
                   isSize={isSize}
+                  isAlign={isAlign}
                 />
               </Stack>
             </>

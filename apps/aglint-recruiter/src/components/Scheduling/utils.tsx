@@ -48,11 +48,20 @@ export const formatTimeWithTimeZone = ({
   end_time: string;
   timeZone?: string;
 }) => {
+  const localTime = new Date().toTimeString();
+  const timeZoneA = localTime.substring(
+    localTime.lastIndexOf('(') + 1,
+    localTime.lastIndexOf(')'),
+  );
+  const timezone = timeZoneA
+    .split(' ')
+    .map((ele) => ele[0])
+    .join('');
   return start_time
     ? `${dayjsLocal(start_time)
         .tz(timeZone || userTzDayjs.tz.guess())
         .format('hh:mm A')} - ${dayjsLocal(end_time)
         .tz(timeZone || userTzDayjs.tz.guess())
-        .format(timeZone ? 'hh:mm A zzz' : 'hh:mm A')}`
+        .format(timeZone ? 'hh:mm A ' : 'hh:mm A')} ${timezone}`
     : '--';
 };

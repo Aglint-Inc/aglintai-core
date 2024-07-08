@@ -3,10 +3,10 @@ import { ReactNode } from 'react';
 export type FilterOptionsType = {
   name:
     | 'status'
-    | 'member'
+    | 'interviewer'
     | 'candidate'
     | 'date_range'
     | 'schedule_type'
-    | 'job'
+    | 'job';
   Icon: ReactNode;
 };
