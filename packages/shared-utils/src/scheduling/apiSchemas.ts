@@ -6,6 +6,7 @@ export const scheduling_options_schema = v.object({
   check_next_minutes: v.optional(v.number(), 30),
   cand_start_time: v.optional(v.number(), 8),
   cand_end_time: v.optional(v.number(), 18),
+  return_empty_slots_err: v.optional(v.boolean(), false),
   include_conflicting_slots: v.optional(
     v.object({
       show_soft_conflicts: v.optional(v.boolean(), false),
