@@ -152,6 +152,7 @@
 
 .cd_body {
   display: flex;
+  padding-left: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: var(--space-3);
