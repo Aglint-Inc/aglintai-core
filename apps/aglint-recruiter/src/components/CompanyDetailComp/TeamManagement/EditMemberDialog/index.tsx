@@ -132,17 +132,20 @@ const EditMember = ({
         form.role === 'admin' &&
         recruiterUser.created_by === form.user_id
       ) {
-        toast.error('You cannot edit power admin detail');
+        toast.error('Permission Denied');
+        // toast.error('You cannot edit power admin detail');
         return false;
       } else if (
         form.role === 'admin' &&
         recruiterUser.user_id !== form.created_by
       ) {
-        toast.error('You cannot edit another admin detail');
+        toast.error('Permission Denied');
+        // toast.error('You cannot edit another admin detail');
         return false;
       }
     }
-    toast.error('Admin only edit Team member details');
+    toast.error('Permission Denied');
+    // toast.error('Admin only edit Team member details');
     return false;
   }
 
