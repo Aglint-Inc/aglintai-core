@@ -142,6 +142,7 @@ export interface RecruiterUserType extends TempRecruiterUser {
   role_id: string;
   last_login?: string;
   manager_id: string;
+  created_by: string;
 }
 // export type RecruiterUserType =
 //   DatabaseTable['recruiter_user'] & {

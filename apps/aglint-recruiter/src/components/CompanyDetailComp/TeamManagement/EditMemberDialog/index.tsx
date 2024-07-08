@@ -22,12 +22,12 @@ const EditMember = ({
   onClose,
 }: {
   open: boolean;
-  member: RecruiterUserType & { role_id: string };
+  member: RecruiterUserType & { role_id: string; created_by: string };
   memberList: { id: string; name: string }[];
   onClose: () => void;
 }) => {
   const { data: roleOptions } = useRolesOptions();
-  const { handelMemberUpdate, recruiter } = useAuthDetails();
+  const { handelMemberUpdate, recruiter, recruiterUser } = useAuthDetails();
   const [form, setForm] = useState<{
     first_name: string;
     last_name: string;
@@ -39,6 +39,8 @@ const EditMember = ({
     role: string;
     role_id: string;
     manager_id: string;
+    created_by: string;
+    user_id: string;
   }>({
     first_name: member.first_name,
     last_name: member.last_name,
@@ -50,6 +52,8 @@ const EditMember = ({
     role: member.role,
     role_id: member.role_id,
     manager_id: member.manager_id,
+    created_by: member?.created_by,
+    user_id: member?.user_id,
   });
 
   const [inviteData, setInviteData] = useState<
@@ -87,6 +91,7 @@ const EditMember = ({
     const temp = { ...formError };
 
     let flag = false;
+
     if (!form.first_name || form.first_name.trim() === '') {
       temp.first_name = true;
       flag = true;
@@ -103,10 +108,8 @@ const EditMember = ({
       temp.role = true;
       flag = true;
     }
-    if (
-      form.role_id != 'admin' &&
-      (!form.manager_id || form.manager_id.trim() == '')
-    ) {
+
+    if (!permissionCheck()) {
       temp.manager = true;
       flag = true;
     }
@@ -116,6 +119,32 @@ const EditMember = ({
     }
     return !flag;
   };
+
+  function permissionCheck() {
+    if (recruiterUser.role === 'admin') {
+      if (
+        recruiterUser.user_id === form.user_id ||
+        form.role !== 'admin' ||
+        recruiterUser.user_id === form.created_by
+      ) {
+        return true;
+      } else if (
+        form.role === 'admin' &&
+        recruiterUser.created_by === form.user_id
+      ) {
+        toast.error('You cannot edit power admin detail');
+        return false;
+      } else if (
+        form.role === 'admin' &&
+        recruiterUser.user_id !== form.created_by
+      ) {
+        toast.error('You cannot edit another admin detail');
+        return false;
+      }
+    }
+    toast.error('Admin only edit Team member details');
+    return false;
+  }
 
   const memberListObj = memberList.reduce((acc, curr) => {
     acc[curr.id] = curr.name;
@@ -303,7 +332,8 @@ const EditMember = ({
                 />
               </Stack>
 
-              {member.role !== 'admin' && (
+              {(member.role !== 'admin' ||
+                member.created_by === recruiterUser.user_id) && (
                 <Stack direction={'row'} gap={2}>
                   <Autocomplete
                     fullWidth
@@ -402,6 +432,8 @@ const EditMember = ({
                           role: null,
                           role_id: null,
                           manager_id: null,
+                          created_by: null,
+                          user_id: null,
                         });
                     },
                   }}
@@ -446,7 +478,7 @@ const EditMember = ({
                   size={2}
                   textButton='Update'
                   color={'accent'}
-                  isDisabled={isDisable}
+                  isDisabled={recruiterUser.role !== 'admin' || isDisable}
                   onClickButton={{
                     onClick: () => {
                       setIsDisable(true);
@@ -498,6 +530,8 @@ const EditMember = ({
                   role: 'recruiter',
                   role_id: null,
                   manager_id: null,
+                  created_by: null,
+                  user_id: null,
                 });
             },
           }}

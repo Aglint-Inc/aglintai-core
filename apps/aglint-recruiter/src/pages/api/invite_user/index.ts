@@ -1,4 +1,4 @@
-import { DB } from '@aglint/shared-types';
+import { DB, RecruiterUserType } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -110,10 +110,14 @@ async function registerMember(
       'user relation creation failed!\n message' + relationError.message,
     );
   }
-  return {
+
+  const recUserType: RecruiterUserType = {
     ...recUser,
     role_id: relation.role_id,
     role: relation.roles.name,
     manager_id: relation.manager_id,
+    created_by: relation.created_by,
   };
+
+  return recUserType;
 }

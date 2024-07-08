@@ -514,9 +514,7 @@ const AddMember = ({
                       id='controllable-states-demo'
                       options={memberList.map((member) => member.id)}
                       getOptionLabel={(option) => {
-                        return capitalizeFirstLetter(
-                          memberListObj[String(option)],
-                        );
+                        return memberListObj[String(option)];
                       }}
                       renderInput={(params) => (
                         <UITextField
