@@ -127,6 +127,7 @@ export default function EmailTemplateEditForm({
               toolbar={false}
               placeholder={'subject'}
               singleLine={true}
+              isSize={false}
               padding={1}
               editor_type='email'
               template_type={selectedTemplate.type}
