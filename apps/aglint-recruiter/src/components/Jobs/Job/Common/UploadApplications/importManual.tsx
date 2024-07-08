@@ -173,7 +173,7 @@ const ImportManual = () => {
       <Stack
         direction={'row'}
         justifyContent={'flex-end'}
-        sx={{ marginRight: '16px' }}
+        style={{ marginTop: '16px' }}
       >
         <ButtonSolid
           size={2}
@@ -215,7 +215,7 @@ const FormBody = ({
     });
   };
   return (
-    <Stack gap={1.5} p={'16px 16px 16px'}>
+    <Stack gap={1.5}>
       <Stack flexDirection={'row'} gap={2}>
         <UITextField
           fullWidth
@@ -251,7 +251,7 @@ const FormBody = ({
           onChange={(e) => handleChange(e, 'email')}
         />
         <Stack
-          width={'660px'}
+          width={'700px'}
           className='JobApplicationAddManuallyPhoneInput'
           sx={{
             '& .react-tel-input .form-control': {

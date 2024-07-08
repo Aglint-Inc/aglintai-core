@@ -10,7 +10,6 @@ import {
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { GoogleCalender } from '../../GoogleCalender/google-calender';
-import { CandScheduleApiError } from './CandScheduleApiError';
 import { userTzDayjs } from './userTzDayjs';
 
 export const fetchIntsCalEventsDetails = async (
@@ -91,12 +90,7 @@ export const fetchIntsCalEventsDetails = async (
     } catch (error) {
       newInt.isCalenderConnected = false;
     }
-    if (!newInt.isCalenderConnected) {
-      throw new CandScheduleApiError(
-        `${int.full_name}'s calender is not connected`,
-        400,
-      );
-    }
+
     return newInt;
   });
 

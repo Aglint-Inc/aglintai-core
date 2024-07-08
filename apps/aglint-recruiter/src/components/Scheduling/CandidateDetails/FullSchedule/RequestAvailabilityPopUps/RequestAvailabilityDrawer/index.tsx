@@ -98,6 +98,7 @@ function RequestAvailabilityDrawer() {
         selectedOption: {
           plan_comb_id: nanoid(),
           sessions: allSessions,
+          no_slot_reasons: [],
         },
         user_tz: userTzDayjs.tz.guess(),
         task_id,

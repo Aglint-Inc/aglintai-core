@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
-import { Box, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { debounce } from 'lodash';
@@ -40,11 +40,7 @@ const JobEmailTemplatesDashboard = () => {
           slotTopbarLeft={<JobEmailTemplatesDashboardBreadCrumbs />}
           slotTopbarRight={<></>}
           slotSaving={<SyncStatus status={saving} />}
-          slotBody={
-            <Box padding={'24px'} bgcolor={'var(--neutral-2)'}>
-              <JobEmailTemplates setSaving={setSaving} />
-            </Box>
-          }
+          slotBody={<JobEmailTemplates setSaving={setSaving} />}
         />
       )}
     </Stack>

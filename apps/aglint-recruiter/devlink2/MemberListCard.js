@@ -288,11 +288,7 @@ export function MemberListCard({
                     ) : null}
                     {isPauseVisible ? (
                       <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "mlc-three-dot-list",
-                          "cursor-pointer"
-                        )}
+                        className={_utils.cx(_styles, "mlc-three-dot-list")}
                         tag="div"
                         {...onClickPauseInterview}
                       >
@@ -305,11 +301,7 @@ export function MemberListCard({
                     ) : null}
                     {isResumeVisible ? (
                       <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "mlc-three-dot-list",
-                          "cursor-pointer"
-                        )}
+                        className={_utils.cx(_styles, "mlc-three-dot-list")}
                         tag="div"
                         {...onClickResumeInterview}
                       >
@@ -317,7 +309,7 @@ export function MemberListCard({
                           className={_utils.cx(_styles, "icons")}
                           value="%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewbox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M5.75%204.0625C5.58333%203.97917%205.41667%203.97917%205.25%204.0625C5.08333%204.16667%205%204.3125%205%204.5V15.5C5%2015.6875%205.08333%2015.8333%205.25%2015.9375C5.41667%2016.0208%205.58333%2016.0208%205.75%2015.9375L14.75%2010.4375C14.9167%2010.3333%2015%2010.1875%2015%2010C15%209.8125%2014.9167%209.66667%2014.75%209.5625L5.75%204.0625ZM4.78125%203.1875C5.28125%202.91667%205.78125%202.92708%206.28125%203.21875L15.2812%208.71875C15.7396%209.01042%2015.9792%209.4375%2016%2010C15.9792%2010.5625%2015.7396%2010.9896%2015.2812%2011.2812L6.28125%2016.7812C5.78125%2017.0729%205.28125%2017.0833%204.78125%2016.8125C4.28125%2016.5208%204.02083%2016.0833%204%2015.5V4.5C4.02083%203.91667%204.28125%203.47917%204.78125%203.1875Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
                         />
-                        <Text content="Resume" weight="" />
+                        <Text content="Resume" weight="" color="inherit" />
                       </_Builtin.Block>
                     ) : null}
                     {isRemoveVisible ? (
@@ -325,7 +317,7 @@ export function MemberListCard({
                         className={_utils.cx(
                           _styles,
                           "mlc-three-dot-list",
-                          "cursor-pointer"
+                          "error_hover"
                         )}
                         tag="div"
                         {...onClickRemoveModule}

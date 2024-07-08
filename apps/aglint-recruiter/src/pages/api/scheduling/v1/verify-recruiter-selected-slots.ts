@@ -88,7 +88,10 @@ const fetch_details_from_db = async (
   if (!filter_json_data) throw new Error('invalid filter_json_id');
   let start_date_str = filter_json_data.filter_json.start_date;
   let end_date_str = filter_json_data.filter_json.end_date;
-  if (filter_json_data.selected_options?.length !== 0) {
+  if (
+    filter_json_data.selected_options &&
+    filter_json_data.selected_options.length !== 0
+  ) {
     const sorted_options = filter_json_data.selected_options.sort(
       (plan1, plan2) =>
         dayjsLocal(plan1.sessions[0].start_time).unix() -
@@ -160,6 +163,7 @@ const convertOptionsToDateRangeSlots = (
       slot_map[int_start_date][curr_round_idx].push({
         plan_comb_id: nanoid(),
         sessions: [...curr_round_slots],
+        no_slot_reasons: [],
       });
     }
   }
