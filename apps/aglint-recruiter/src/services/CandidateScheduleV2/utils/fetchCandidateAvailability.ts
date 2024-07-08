@@ -29,7 +29,7 @@ export const fetchCandidateAvailability = async (request_id: string) => {
     include_free_time: true,
     use_recruiting_blocks: true,
   });
-
+  zod_options.return_empty_slots_err = true;
   return {
     session_ids: avail_details.session_ids.map((s) => s.id),
     candidate_selected_slots: avail_details.slots,

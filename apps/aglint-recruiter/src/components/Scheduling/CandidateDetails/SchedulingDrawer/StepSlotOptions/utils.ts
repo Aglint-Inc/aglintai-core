@@ -6,6 +6,7 @@ export function extractPlanData(
   return sessionsArray.map((plan) => ({
     plan_comb_id: plan.plan_comb_id,
     sessions: plan.sessions,
+    no_slot_reasons: [],
     dateRange: [
       ...new Set(
         plan.sessions.map((session) => session.start_time.split('T')[0]),
@@ -34,6 +35,7 @@ export function groupByDateRange(
     groupedData[String(dateRangeKey)].push({
       plan_comb_id: plan.plan_comb_id,
       sessions: plan.sessions,
+      no_slot_reasons: [],
     });
   });
 
@@ -42,6 +44,7 @@ export function groupByDateRange(
     plans: plans.map((plan) => ({
       plan_comb_id: plan.plan_comb_id,
       sessions: plan.sessions.flatMap((session) => session),
+      no_slot_reasons: [],
     })),
   }));
 }

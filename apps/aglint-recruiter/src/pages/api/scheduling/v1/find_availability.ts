@@ -12,6 +12,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         include_conflicting_slots: {},
       },
     });
+    parsedData.options.return_empty_slots_err = true;
     const cand_schedule = new CandidatesSchedulingV2(
       {
         recruiter_id: parsedData.recruiter_id,
