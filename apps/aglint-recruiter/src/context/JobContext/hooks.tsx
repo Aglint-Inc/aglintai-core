@@ -127,9 +127,9 @@ const useJobContext = () => {
   };
 
   const canPublish =
-    job.status === 'draft' ||
-    status.description_changed ||
-    status.scoring_criteria_changed;
+    job?.status === 'draft' ||
+    status?.description_changed ||
+    status?.scoring_criteria_changed;
 
   const handlePublish = async () => {
     if (publishStatus.publishable) {
