@@ -12,7 +12,6 @@ import { CloseDeleteJob } from '@/devlink/CloseDeleteJob';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { Breadcrum } from '@/devlink2/Breadcrum';
-import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { AddCandidateButton } from '@/devlink3/AddCandidateButton';
 import { BannerLoading } from '@/devlink3/BannerLoading';
@@ -769,12 +768,10 @@ const useBanners = () => {
     !job?.dashboard_warnings?.score_changed
   )
     banners.push(
-      <GlobalBanner
-        textTitle={'Scoring criteria has been updated'}
-        color='success'
-        iconName='check_circle'
-        textDescription='You may need to publish changes to score applicants with the current scoring criteria'
-        slotButtons={
+      <DashboardWarning
+        textWarningTitle={'Scoring criteria has been updated'}
+        textDesc='You may need to publish changes to score applicants with the current scoring criteria'
+        slotButton={
           <>
             <ButtonSoft
               textButton='Ignore'
