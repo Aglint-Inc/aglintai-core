@@ -81,3 +81,11 @@ export type PlanCombinationRespType = {
     reason: string;
   }[];
 };
+
+export type DateRangePlansType = {
+  interview_start_day: string;
+  interview_rounds: {
+    curr_round_date: string;
+    plans: PlanCombinationRespType[];
+  }[];
+};

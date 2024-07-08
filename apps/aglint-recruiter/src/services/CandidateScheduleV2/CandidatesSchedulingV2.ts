@@ -5,6 +5,7 @@ import {
   CalConflictType,
   ConflictReason,
   DatabaseTable,
+  DateRangePlansType,
   InterviewSessionApiRespType,
   PauseJson,
   PlanCombinationRespType,
@@ -19,7 +20,7 @@ import {
   SINGLE_DAY_TIME,
 } from '@aglint/shared-utils';
 import { Dayjs } from 'dayjs';
-import { cloneDeep, isEqual } from 'lodash';
+import { isEqual } from 'lodash';
 import { nanoid } from 'nanoid';
 import * as v from 'valibot';
 
@@ -383,10 +384,10 @@ export class CandidatesSchedulingV2 {
       this.api_options.make_training_optional,
     );
     const findMultiDaySlotsUtil = (
-      final_combs: PlanCombinationRespType[][],
+      final_combs: DateRangePlansType['interview_rounds'],
       curr_date: Dayjs,
       curr_round_idx: number,
-    ): PlanCombinationRespType[][] => {
+    ): DateRangePlansType['interview_rounds'] => {
       if (curr_round_idx === session_rounds.length) {
         return final_combs;
       }
@@ -412,7 +413,10 @@ export class CandidatesSchedulingV2 {
         return [];
       }
 
-      final_combs.push([...cloneDeep(combs)]);
+      final_combs.push({
+        curr_round_date: curr_date.format(),
+        plans: [...combs],
+      });
 
       const days_gap = Math.floor(
         session_rounds[curr_round_idx][
@@ -452,12 +456,15 @@ export class CandidatesSchedulingV2 {
       let dayjs_end_date = this.schedule_dates.user_end_date_js;
 
       let curr_date = dayjs_start_date;
-      let all_combs: PlanCombinationRespType[][][] = [];
+      const all_combs: DateRangePlansType[] = [];
       while (curr_date.isSameOrBefore(dayjs_end_date)) {
         const plan_combs = findMultiDaySlotsUtil([], curr_date, 0);
         if (plan_combs.length > 0) {
           const session_combs = plan_combs;
-          all_combs = [...all_combs, session_combs];
+          all_combs.push({
+            interview_start_day: curr_date.format(),
+            interview_rounds: [...session_combs],
+          });
         }
         curr_date = curr_date.add(1, 'day');
       }

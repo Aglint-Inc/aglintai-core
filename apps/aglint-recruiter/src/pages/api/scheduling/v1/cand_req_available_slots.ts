@@ -2,6 +2,7 @@
 import {
   CandReqAvailableSlots,
   CurrRoundCandidateAvailReq,
+  DateRangePlansType,
   PlanCombinationRespType,
 } from '@aglint/shared-types';
 import {
@@ -103,7 +104,7 @@ type DayOffOOO = 'ooo' | 'day_off';
 const convertToOptionsReqSlot = (
   fetched_details: Awaited<ReturnType<typeof fetchDetails>>,
   payload: CandReqAvailableSlots,
-  all_day_plans: PlanCombinationRespType[][][],
+  all_day_plans: DateRangePlansType[],
 ) => {
   const curr_round_options: CurrRoundCandidateAvailReq[] = [];
 
@@ -187,9 +188,9 @@ const convertToOptionsReqSlot = (
   };
 
   for (let curr_interview_day of all_day_plans) {
-    const [curr_round_slots] = curr_interview_day;
+    const [curr_round_slots] = curr_interview_day.interview_rounds;
     if (curr_round_slots) {
-      const req_options = convertCurrDaySlotsToOptions(curr_round_slots);
+      const req_options = convertCurrDaySlotsToOptions(curr_round_slots.plans);
       curr_round_options.push(req_options);
     }
   }

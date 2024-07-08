@@ -1,4 +1,5 @@
 import {
+  DateRangePlansType,
   PlanCombinationRespType,
   SessionCombinationRespType,
   SessionsCombType,
@@ -6,7 +7,9 @@ import {
 } from '@aglint/shared-types';
 import { nanoid } from 'nanoid';
 
-export const planCombineSlots = (plan_combs: PlanCombinationRespType[][]) => {
+export const planCombineSlots = (
+  plan_combs: DateRangePlansType['interview_rounds'],
+) => {
   const convertCombsToTimeSlot = (
     all_plan_combs: PlanCombinationRespType[],
   ) => {
@@ -52,7 +55,7 @@ export const planCombineSlots = (plan_combs: PlanCombinationRespType[][]) => {
 
   const multi_day_slots: SessionsCombType[][] = [];
   for (const curr_comb of plan_combs) {
-    const curr_day_session_slots = convertCombsToTimeSlot(curr_comb);
+    const curr_day_session_slots = convertCombsToTimeSlot(curr_comb.plans);
     multi_day_slots.push(curr_day_session_slots);
   }
   return multi_day_slots;
