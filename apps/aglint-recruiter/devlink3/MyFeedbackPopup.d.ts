@@ -8,4 +8,5 @@ declare function MyFeedbackPopup(props: {
   slotObjective?: Types.Devlink.Slot;
   textRecommendation?: React.ReactNode;
   onClickSubmitFeedback?: Types.Devlink.RuntimeProps;
+  slotButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

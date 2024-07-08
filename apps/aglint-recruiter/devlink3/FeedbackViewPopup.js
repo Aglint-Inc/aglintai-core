@@ -2,7 +2,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./FeedbackViewPopup.module.css";
 
@@ -17,7 +16,7 @@ export function FeedbackViewPopup({
   isNextPrevVisible = true,
   isNotSubmittedVisible = false,
   onClickRequestFeedback = {},
-  isEmpty = false,
+  isEmpty = true,
   onClickResendRequest = {},
   isFeedbackReqVisible = false,
   slotButton,
@@ -34,16 +33,22 @@ export function FeedbackViewPopup({
       >
         <_Builtin.Block className={_utils.cx(_styles, "popup_title")} tag="div">
           <Text content="Feedback of" weight="" />
-          <_Builtin.Block tag="div">
-            {slotAvatarWithName ?? (
-              <SlotComp componentNeme="Avatar with Name" />
-            )}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "slot_for_icon")}
+            tag="div"
+          >
+            {slotAvatarWithName}
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block tag="div">{slotClose}</_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "slot_for_icon")}
+          tag="div"
+        >
+          {slotClose}
+        </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "popup_body-copy", "hide-scrollbar")}
+        className={_utils.cx(_styles, "popup_body-copy", "hide-scrollbar-copy")}
         tag="div"
       >
         {isEmpty ? (
@@ -51,7 +56,7 @@ export function FeedbackViewPopup({
             className={_utils.cx(_styles, "title_desc")}
             tag="div"
           >
-            <Text content="" weight="medium" />
+            <Text content="Recommendation Level" weight="medium" />
             <Text content={textRecomendation} color="neutral" weight="" />
           </_Builtin.Block>
         ) : null}
@@ -134,14 +139,14 @@ export function FeedbackViewPopup({
       </_Builtin.Block>
       {isNextPrevVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "wide_button-copy", "right-corner")}
+          className={_utils.cx(_styles, "wide_button-copy-copy")}
           tag="div"
         >
           {slotButton}
         </_Builtin.Block>
       ) : null}
       <_Builtin.HtmlEmbed
-        className={_utils.cx(_styles, "embed_css_block")}
+        className={_utils.cx(_styles, "embed_css_block-copy")}
         value="%3Cstyle%3E%0A%2F*%20Hide%20scrollbar%20for%20Chrome%2C%20Safari%20and%20Opera%20*%2F%0A.hide-scrollbar%3A%3A-webkit-scrollbar%20%7B%0A%20%20display%3A%20none%3B%0A%7D%0A%0A%2F*%20Hide%20scrollbar%20for%20IE%2C%20Edge%20and%20Firefox%20*%2F%0A.hide-scrollbar%7B%0A%20%20-ms-overflow-style%3A%20none%3B%20%20%2F*%20IE%20and%20Edge%20*%2F%0A%20%20scrollbar-width%3A%20none%3B%20%20%2F*%20Firefox%20*%2F%0A%7D%0A%3C%2Fstyle%3E"
       />
     </_Component>
