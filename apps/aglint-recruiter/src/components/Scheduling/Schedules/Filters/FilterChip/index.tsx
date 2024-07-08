@@ -120,7 +120,11 @@ function FilterChip({
                       <Stack
                         key={item.id}
                         direction={'row'}
-                        sx={{ alignItems: 'center', ':hover':{bgcolor:'var(--neutral-2)'}, borderRadius:'var(--radius-2)' }}
+                        sx={{
+                          alignItems: 'center',
+                          ':hover': { bgcolor: 'var(--neutral-2)' },
+                          borderRadius: 'var(--radius-2)',
+                        }}
                         spacing={1}
                         padding={'var(--space-2) var(--space-3)'}
                         marginTop={'0px !important'}
