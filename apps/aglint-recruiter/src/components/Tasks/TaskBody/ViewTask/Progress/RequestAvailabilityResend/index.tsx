@@ -70,7 +70,7 @@ function RequestAvailabilityResend({
           >
             <Stack>
               <ButtonSoft
-                textButton={'Copy invite'}
+                textButton={'Copy Invite'}
                 isLoading={false}
                 isLeftIcon={false}
                 isRightIcon={false}
