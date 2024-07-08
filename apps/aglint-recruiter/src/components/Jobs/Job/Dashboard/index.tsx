@@ -12,7 +12,6 @@ import { CloseDeleteJob } from '@/devlink/CloseDeleteJob';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { Breadcrum } from '@/devlink2/Breadcrum';
-import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { AddCandidateButton } from '@/devlink3/AddCandidateButton';
 import { BannerLoading } from '@/devlink3/BannerLoading';
@@ -58,7 +57,6 @@ import { Application } from '@/src/types/applications.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalize, capitalizeAll } from '@/src/utils/text/textUtils';
-import toast from '@/src/utils/toast';
 
 import { UploadApplications } from '../Common/UploadApplications';
 import DashboardBarChart from './BarChart2';
@@ -107,19 +105,10 @@ const Dashboard = () => {
   const {
     job,
     applicationScoringPollEnabled,
-    handleRescoreApplications,
     handleJobAsyncUpdate,
-    handleJobPublish,
-    status: { description_changed, scoring_criteria_changed },
+    handlePublish,
+    canPublish,
   } = useJob();
-  const {
-    publishStatus: {
-      publishable,
-      loading,
-      detailsValidity,
-      hiringTeamValidity,
-    },
-  } = useJobDashboard();
   const {
     matches: { data: counts },
     schedules: { data: schedule },
@@ -133,9 +122,6 @@ const Dashboard = () => {
 
   const score_matches = getMatches(counts);
   const [popover, setPopover] = useState(false);
-
-  const canPublish =
-    job.status === 'draft' || description_changed || scoring_criteria_changed;
 
   const handleCloseJob = useCallback(async () => {
     return await handleJobAsyncUpdate(job.id, { status: 'closed' });
@@ -160,31 +146,6 @@ const Dashboard = () => {
         break;
     }
   }, [job.status]);
-
-  const handlePublish = async () => {
-    if (publishable) {
-      const response = await handleJobPublish(job);
-      toast.success('Job published successfully');
-      if (response && scoring_criteria_changed) {
-        await handleRescoreApplications({ job_id: job?.id });
-      }
-      return response;
-    } else {
-      if (loading)
-        toast.warning(
-          'Generating profile score criteria. Please wait before publishing.',
-        );
-      else {
-        if (!detailsValidity.validity || !hiringTeamValidity.validity) {
-          if (!detailsValidity.validity) toast.error(detailsValidity.message);
-          if (!hiringTeamValidity.validity)
-            toast.error(hiringTeamValidity.message);
-        } else {
-          toast.error('Unable to publish. Please verify the job details.');
-        }
-      }
-    }
-  };
 
   const publishButton = useMemo(
     () => (
@@ -605,11 +566,11 @@ const Schedules = () => {
 
 const useBanners = () => {
   const { push } = useRouter();
+  const { publishStatus } = useJob();
   const {
     job,
     isInterviewPlanDisabled,
     isInterviewSessionEmpty,
-    publishStatus,
     status,
     handleWarningUpdate,
   } = useJobDashboard();
@@ -807,12 +768,10 @@ const useBanners = () => {
     !job?.dashboard_warnings?.score_changed
   )
     banners.push(
-      <GlobalBanner
-        textTitle={'Scoring criteria has been updated'}
-        color='success'
-        iconName='check_circle'
-        textDescription='You may need to publish changes to score applicants with the current scoring criteria'
-        slotButtons={
+      <DashboardWarning
+        textWarningTitle={'Scoring criteria has been updated'}
+        textDesc='You may need to publish changes to score applicants with the current scoring criteria'
+        slotButton={
           <>
             <ButtonSoft
               textButton='Ignore'
@@ -849,7 +808,7 @@ const JobClose = ({
 }) => {
   const {
     job: { job_title, location, status },
-  } = useJobDashboard();
+  } = useJob();
   const [modal, setModal] = useState(false);
   const [value, setValue] = useState('');
   const handleClose = () => {
@@ -977,7 +936,7 @@ const HiringTeamModule = () => {
     publishStatus: {
       hiringTeamValidity: { validity },
     },
-  } = useJobDashboard();
+  } = useJob();
   const { push } = useRouter();
   const handleClick = () => {
     push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id }));
@@ -998,7 +957,7 @@ const JobDetailsModule = () => {
     publishStatus: {
       detailsValidity: { validity },
     },
-  } = useJobDashboard();
+  } = useJob();
   const { push } = useRouter();
   const handleClick = () => {
     push(ROUTES['/jobs/[id]/job-details']({ id: job?.id }));

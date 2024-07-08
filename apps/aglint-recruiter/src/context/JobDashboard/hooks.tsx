@@ -18,18 +18,10 @@ import {
 import { useJobWorkflow } from '@/src/queries/job-workflow';
 
 import { useJob } from '../JobContext';
-import { getDetailsValidity, getHiringTeamValidity } from '../JobContext/utils';
 
 const useProviderJobDashboardActions = () => {
-  const {
-    jobLoad,
-    job,
-    job_id,
-    interviewPlans,
-    jdValidity,
-    status,
-    handleJobUpdate,
-  } = useJob();
+  const { jobLoad, job, job_id, interviewPlans, status, handleJobUpdate } =
+    useJob();
 
   const assessments = useAllAssessments();
   const templates = useAllAssessmentTemplates();
@@ -64,21 +56,6 @@ const useProviderJobDashboardActions = () => {
     interviewPlans.isFetched &&
     (isInterviewPlanDisabled ||
       interviewPlans?.data?.interview_session?.length === 0);
-
-  const detailsValidity = getDetailsValidity(job);
-  const hiringTeamValidity = getHiringTeamValidity(job);
-
-  const publishStatus = {
-    detailsValidity,
-    hiringTeamValidity,
-    jdValidity,
-    loading: job?.scoring_criteria_loading,
-    publishable:
-      detailsValidity.validity &&
-      hiringTeamValidity.validity &&
-      jdValidity &&
-      !job?.scoring_criteria_loading,
-  };
 
   const initialLoad = !!(
     jobLoad &&
@@ -119,12 +96,10 @@ const useProviderJobDashboardActions = () => {
     job,
     jobLoad,
     loadStatus,
-    // emailTemplateValidity,
     workflows,
     isInterviewPlanDisabled,
     isInterviewSessionEmpty,
     schedules,
-    publishStatus,
     initialLoad,
     assessments: {
       ...assessments,
@@ -141,21 +116,5 @@ const useProviderJobDashboardActions = () => {
 
   return value;
 };
-
-// export const validateEmailTemplates = (
-//   emailTemplates: Job['email_template'],
-// ) => {
-//   return (
-//     emailTemplates &&
-//     Object.entries(emailTemplates).reduce((acc, [key, value]) => {
-//       const label = templateObj[key]?.heading;
-//       Object.entries(value).forEach(([key, value]) => {
-//         if (key !== 'default' && validateString(String(value)))
-//           acc.push(`${getHelper(key as any)} in ${label}`);
-//       });
-//       return acc;
-//     }, [] as string[])
-//   );
-// };
 
 export default useProviderJobDashboardActions;

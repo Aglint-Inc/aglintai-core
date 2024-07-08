@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { JobDetails } from '@/devlink2/JobDetails';
 import { JobsBanner } from '@/devlink3/JobsBanner';
 import Loader from '@/src/components/Common/Loader';
+import PublishButton from '@/src/components/Common/PublishButton';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useJob } from '@/src/context/JobContext';
@@ -40,7 +41,7 @@ const ApplicationsDashboard = () => {
 export default ApplicationsDashboard;
 
 const ApplicationsComponent = () => {
-  const { job } = useJob();
+  const { job, handlePublish, canPublish } = useJob();
   const { setImportPopup, checklist } = useApplicationsStore(
     ({ setImportPopup, checklist }) => ({ setImportPopup, checklist }),
   );
@@ -62,7 +63,18 @@ const ApplicationsComponent = () => {
           />
         }
         slotBreadcrumb={<BreadCrumbs />}
-        slotGlobalBanner={job?.status === 'draft' && <JobsBanner />}
+        slotGlobalBanner={
+          job?.status === 'draft' && (
+            <JobsBanner
+              slotButton={
+                <PublishButton
+                  onClick={() => handlePublish()}
+                  disabled={!canPublish}
+                />
+              }
+            />
+          )
+        }
         slotTabs={<Tabs />}
         slotTable={<Table />}
         isFilterVisible={true}
