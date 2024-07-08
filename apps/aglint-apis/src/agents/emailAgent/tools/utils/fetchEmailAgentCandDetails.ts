@@ -101,16 +101,16 @@ export const fetchEmailAgentCandDetails = async (
       candidateFirstName: candidate.first_name,
       companyName: job.company,
       jobRole: job.job_title,
-      recruiterTimeZone: meeting_organizer.scheduling_settings.timeZone.tzCode,
+      OrganizerTimeZone: meeting_organizer.scheduling_settings.timeZone.tzCode,
       selfScheduleLink: '',
-      recruiterName: getFullName(
+      organizerName: getFullName(
         meeting_organizer.first_name,
         meeting_organizer.last_name
       ),
       candidateLastName: candidate.last_name,
       candidateName: getFullName(candidate.first_name, candidate.last_name),
-      recruiterFirstName: meeting_organizer.first_name,
-      recruiterLastName: meeting_organizer.last_name,
+      organizerFirstName: meeting_organizer.first_name,
+      organizerLastName: meeting_organizer.last_name,
       dateRange: `${ScheduleUtils.convertDateFormatToDayjs(
         filter_json.start_date,
         meeting_organizer.scheduling_settings.timeZone.tzCode

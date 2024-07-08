@@ -9,12 +9,16 @@ export async function POST(req: Request) {
 
   try {
     const req_body = v.parse(sendAvailReqReminderEmailApplicant, meta);
-    const { filled_comp_template, react_email_placeholders, recipient_email } =
-      await dbUtil(req_body);
+    const details = await dbUtil(req_body);
+    if (!details) {
+      return NextResponse.json('success', {
+        status: 200,
+      });
+    }
     await sendMailFun({
-      filled_comp_template,
-      react_email_placeholders,
-      recipient_email,
+      filled_comp_template: details.filled_comp_template,
+      react_email_placeholders: details.react_email_placeholders,
+      recipient_email: details.recipient_email,
     });
     return NextResponse.json('success', {
       status: 200,
