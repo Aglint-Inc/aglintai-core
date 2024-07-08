@@ -12,7 +12,6 @@ import ROUTES from '@/src/utils/routing/routes';
 import SubNavBar from '../../AppLayout/SubNavbar';
 import Loader from '../../Common/Loader';
 import SearchField from '../../Common/SearchField/SearchField';
-import { stepObj } from '../../SignUpComp/SlideSignup/utils';
 import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
 import FilterJobDashboard, { useJobFilterAndSort } from './Filters';
 import JobsList from './JobsList';
