@@ -1,8 +1,8 @@
 .score-edit-card {
   width: 100%;
   padding: 15px;
-  border: 1px solid var(--neutral-6);
-  border-radius: var(--radius-2);
+  border: 1px none var(--neutral-6);
+  border-radius: var(--radius-3);
   background-color: white;
 }
 
