@@ -60,6 +60,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     task.recruiter_user.first_name,
                     task.recruiter_user.last_name,
                   ),
+                  filter_id: task.filter_id,
                 };
                 axios.post(debrief_url, bodyParams);
               } else {

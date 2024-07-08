@@ -49,6 +49,7 @@ export interface SchedulingFlow {
     isWorkLoad: boolean;
   };
   selectedCombIds: string[];
+  emailData: { html: string; subject: string } | null;
 }
 
 const initialState: SchedulingFlow = {
@@ -75,6 +76,7 @@ const initialState: SchedulingFlow = {
     isWorkLoad: true,
   },
   selectedCombIds: [],
+  emailData: null,
 };
 
 export const useSchedulingFlowStore = create<SchedulingFlow>()(() => ({
@@ -83,6 +85,9 @@ export const useSchedulingFlowStore = create<SchedulingFlow>()(() => ({
 
 export const setScheduleFlow = (scheduleFlow: SchedulingFlow['scheduleFlow']) =>
   useSchedulingFlowStore.setState({ scheduleFlow });
+
+export const setEmailData = (emailData: SchedulingFlow['emailData']) =>
+  useSchedulingFlowStore.setState({ emailData });
 
 export const setFilteredSchedulingOptions = (
   schedulingOptions: PlanCombinationRespType[],

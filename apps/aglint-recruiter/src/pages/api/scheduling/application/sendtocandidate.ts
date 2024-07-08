@@ -1,9 +1,5 @@
 /* eslint-disable no-console */
-import {
-  DatabaseTable,
-  DB,
-  RecruiterUserType
-} from '@aglint/shared-types';
+import { DatabaseTable, DB, RecruiterUserType } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { createServerClient } from '@supabase/ssr';
 import dayjs from 'dayjs';
@@ -275,7 +271,7 @@ const sendToCandidate = async ({
           initialSessions,
           selectedSessionIds,
           rec_user_id: recruiterUser.user_id,
-          supabase,
+          supabase,task_id:update_task_id
         });
       }
     } else {
@@ -287,6 +283,7 @@ const sendToCandidate = async ({
           selectedSessionIds.includes(ses.interview_session.id),
         ),
         supabase,
+        meeting_flow: 'self_scheduling',
       });
 
       console.log('updated meetings');
@@ -409,6 +406,7 @@ const sendToCandidate = async ({
           selectedSessionIds,
           rec_user_id: recruiterUser.user_id,
           supabase,
+          task_id: update_task_id,
         });
       }
     }

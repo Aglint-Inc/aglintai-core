@@ -68,6 +68,32 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
   const { resetStateSelfScheduling, onClickPrimary } =
     useSelfSchedulingDrawer();
 
+  const primaryButtonText = () => {
+    if (!isDebrief) {
+      if (scheduleFlow === 'self_scheduling') {
+        if (
+          stepScheduling === 'preference' ||
+          stepScheduling === 'pick_date' ||
+          stepScheduling === 'slot_options'
+        ) {
+          return 'Continue';
+        } else if (stepScheduling === 'self_scheduling_email_preview') {
+          return 'Send to Candidate';
+        }
+      } else if (scheduleFlow === 'email_agent') {
+        return 'Schedule Via Email';
+      } else if (scheduleFlow === 'phone_agent') {
+        return 'Schedule Via Phone';
+      }
+    } else {
+      if (stepScheduling === 'preference' || stepScheduling === 'pick_date') {
+        return 'Continue';
+      } else if (stepScheduling === 'slot_options') {
+        return 'Schedule Now';
+      }
+    }
+  };
+
   return (
     <>
       <Drawer
@@ -115,6 +141,10 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                       setStepScheduling('preference');
                     } else if (stepScheduling === 'preference') {
                       setStepScheduling('pick_date');
+                    } else if (
+                      stepScheduling === 'self_scheduling_email_preview'
+                    ) {
+                      setStepScheduling('slot_options');
                     }
                   },
                 }}
@@ -126,14 +156,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                 <ButtonSolid
                   isLoading={isSendingToCandidate}
                   size={2}
-                  textButton={
-                    !isDebrief
-                      ? stepScheduling === 'preference' ||
-                        stepScheduling === 'pick_date'
-                        ? 'Continue'
-                        : 'Send to Candidate'
-                      : 'Schedule Now'
-                  }
+                  textButton={primaryButtonText()}
                   onClickButton={{
                     onClick: async () => {
                       await onClickPrimary();

@@ -68,7 +68,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(200).json(all_day_plans);
   } catch (error) {
     console.error(error);
-    res.status(500).send(error.message);
+    return res
+      .status(error.status ?? 500)
+      .json({ name: error.name, message: error.message });
   }
 };
 

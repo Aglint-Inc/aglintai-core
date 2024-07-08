@@ -10,11 +10,12 @@ import {
   SessionInterviewerApiRespType,
   SessionInterviewerType,
 } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import { getFullName, supabaseWrap } from '@aglint/shared-utils';
 
 import { decrypt_string } from '@/src/utils/integrations/crypt-funcs';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
+import { CandScheduleApiError } from './CandScheduleApiError';
 import { userTzDayjs } from './userTzDayjs';
 
 export type UserMeetingDetails = {
@@ -101,6 +102,12 @@ export const fetch_details_from_db = async (
       };
       const all_ints = [...s.qualifiedIntervs, ...s.trainingIntervs];
       all_ints.forEach((int) => {
+        if (int.pause_json && int.pause_json.isManual) {
+          throw new CandScheduleApiError(
+            `${getFullName(int.first_name, int.last_name)}'s is paused indefinetly`,
+            400,
+          );
+        }
         all_session_int_detail[s.session_id].interviewers[int.user_id] = {
           email: int.email,
           first_name: int.first_name,

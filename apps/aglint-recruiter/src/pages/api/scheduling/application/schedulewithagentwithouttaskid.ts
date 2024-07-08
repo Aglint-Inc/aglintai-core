@@ -12,9 +12,7 @@ import { getScheduleName } from '@/src/components/Scheduling/utils';
 import { agentTrigger } from '@/src/utils/scheduling/agentTrigger';
 import { createCloneSession } from '@/src/utils/scheduling/createCloneSession';
 import { createTask } from '@/src/utils/scheduling/createTask';
-import {
-  handleMeetingsOrganizerResetRelations
-} from '@/src/utils/scheduling/upsertMeetingsWithOrganizerId';
+import { handleMeetingsOrganizerResetRelations } from '@/src/utils/scheduling/upsertMeetingsWithOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 export interface ApiBodyParamsScheduleAgentWithoutTaskId {
@@ -224,6 +222,7 @@ const scheduleWithAgentWithoutTaskId = async ({
           application_id,
           selectedSessions: selectedSessions,
           supabase,
+          meeting_flow: type === 'email_agent' ? 'mail_agent' : 'phone_agent',
         });
 
         const filterJson = await createFilterJson({

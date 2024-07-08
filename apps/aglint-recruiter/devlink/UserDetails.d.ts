@@ -9,6 +9,6 @@ declare function UserDetails(props: {
   slotUserInfoBtn?: Types.Devlink.Slot;
   slotWarning?: Types.Devlink.Slot;
   isWarningVisible?: Types.Visibility.VisibilityConditions;
-  onClickClose?: Types.Devlink.RuntimeProps;
-  onClickUpdate?: Types.Devlink.RuntimeProps;
+  slotButton?: Types.Devlink.Slot;
+  slotClose?: Types.Devlink.Slot;
 }): React.JSX.Element;

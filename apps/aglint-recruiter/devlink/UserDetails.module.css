@@ -76,51 +76,11 @@
   flex-wrap: nowrap;
 }
 
-.flex-horizontal {
-  display: flex;
-}
-
-.flex-horizontal.center {
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.flex-horizontal.center.gap-3 {
-  grid-column-gap: var(--space-3);
-  grid-row-gap: var(--space-3);
-}
-
-.flex-horizontal.center.gap-2 {
+.ud-button-wrap {
+  display: grid;
+  grid-auto-columns: 1fr;
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
-}
-
-.flex-horizontal.center.gap-1 {
-  grid-column-gap: var(--space-1);
-  grid-row-gap: var(--space-1);
-}
-
-.flex-horizontal.top {
-  justify-content: flex-start;
-  align-items: flex-start;
-}
-
-.flex-horizontal.top.gap-2 {
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
-}
-
-.mt-2 {
-  margin-top: var(--space-2);
-}
-
-.flex-horizontal.gap-space-2 {
-  justify-content: flex-start;
-  align-items: center;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
-}
-
-.width-50 {
-  width: 50%;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
 }

@@ -34,11 +34,11 @@ export const listForInteractions = async (req: Request, res: Response) => {
                 elements: [
                   {
                     type: 'text',
-                    text: 'Thanks 🥰 for confirmation,\n ',
+                    text: 'Thanks for confirmation,\n ',
                   },
                   {
                     type: 'text',
-                    text: 'You will clicked the 🟢 available',
+                    text: 'You have selected the available option.',
                     style: {
                       bold: true,
                     },
@@ -71,11 +71,11 @@ export const listForInteractions = async (req: Request, res: Response) => {
                 elements: [
                   {
                     type: 'text',
-                    text: 'Thanks 🥰 for confirmation,\n ',
+                    text: 'Thanks for confirmation,\n ',
                   },
                   {
                     type: 'text',
-                    text: 'You will clicked the 🔴 Unavailable',
+                    text: 'You have selected the unavailable option.',
                     style: {
                       bold: true,
                     },
@@ -139,7 +139,7 @@ export const listForInteractions = async (req: Request, res: Response) => {
                     },
                     {
                       type: 'text',
-                      text: '\nThanks 🥰 for Feedback,\n ',
+                      text: '\nThanks for Feedback,\n ',
                       style: {
                         bold: true,
                       },

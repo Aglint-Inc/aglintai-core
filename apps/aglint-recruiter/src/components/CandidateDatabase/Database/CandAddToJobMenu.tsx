@@ -5,6 +5,7 @@ import { AddJob } from '@/devlink/AddJob';
 import { AddJobList } from '@/devlink/AddJobList';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ButtonSurface } from '@/devlink/ButtonSurface';
+import { ButtonSoft } from '@/devlink2/ButtonSoft';
 
 type newCandJob = {
   title: string;
@@ -130,11 +131,18 @@ const AddToJobOptions = ({
             </>
           }
           textJobSelected={checkBox.filter((s) => s.checked).length}
-          onClickCancel={{
-            onClick: () => {
-              setAnchorEl(null);
-            },
-          }}
+          slotCancelButton={
+            <ButtonSoft
+              textButton='Cancel'
+              size={2}
+              color={'neutral'}
+              onClickButton={{
+                onClick: () => {
+                  setAnchorEl(null);
+                },
+              }}
+            />
+          }
         />
       </Popover>
     </>

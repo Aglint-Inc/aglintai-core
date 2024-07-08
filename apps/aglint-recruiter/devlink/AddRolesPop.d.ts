@@ -5,6 +5,7 @@ declare function AddRolesPop(props: {
   as?: React.ElementType;
   slotInput?: Types.Devlink.Slot;
   slotRolesPills?: Types.Devlink.Slot;
-  onClickDone?: Types.Devlink.RuntimeProps;
   onClickCancel?: Types.Devlink.RuntimeProps;
+  slotButton?: Types.Devlink.Slot;
+  slotClose?: Types.Devlink.Slot;
 }): React.JSX.Element;

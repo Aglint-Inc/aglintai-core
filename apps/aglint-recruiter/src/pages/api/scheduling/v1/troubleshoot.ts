@@ -32,8 +32,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const plan_combs = cand_schedule.findCandSlotForTheDay();
 
     return res.status(200).json(plan_combs);
-  } catch (err) {
-    return res.status(200).json(err.message);
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(error.status ?? 500)
+      .json({ name: error.name, message: error.message });
   }
 };
 export default handler;

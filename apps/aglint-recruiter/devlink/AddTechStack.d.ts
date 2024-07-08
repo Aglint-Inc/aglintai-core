@@ -5,6 +5,6 @@ declare function AddTechStack(props: {
   as?: React.ElementType;
   slotTechPills?: Types.Devlink.Slot;
   slotInput?: Types.Devlink.Slot;
-  onClickDone?: Types.Devlink.RuntimeProps;
-  onClickCancel?: Types.Devlink.RuntimeProps;
+  slotButton?: Types.Devlink.Slot;
+  slotClose?: Types.Devlink.Slot;
 }): React.JSX.Element;

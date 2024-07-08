@@ -17,7 +17,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await google_cal.updateEventStatus(event_id, 'cancelled');
     return res.status(200).send('ok');
   } catch (error) {
-    res.status(500).send(error.message);
+    console.error(error);
+    return res
+      .status(error.status ?? 500)
+      .json({ name: error.name, message: error.message });
   }
 };
 

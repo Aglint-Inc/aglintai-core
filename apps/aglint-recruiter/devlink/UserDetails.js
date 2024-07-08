@@ -2,10 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { IconButtonGhost } from "./IconButtonGhost";
 import { SlotComp } from "./SlotComp";
-import { ButtonGhost } from "./ButtonGhost";
-import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
 import _styles from "./UserDetails.module.css";
 
@@ -17,8 +14,8 @@ export function UserDetails({
   slotUserInfoBtn,
   slotWarning,
   isWarningVisible = false,
-  onClickClose = {},
-  onClickUpdate = {},
+  slotButton,
+  slotClose,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "edit-profile-wrap")} tag="div">
@@ -27,13 +24,7 @@ export function UserDetails({
         tag="div"
       >
         <Text weight="medium" content="Edit Profile" />
-        <IconButtonGhost
-          onClickButton={onClickClose}
-          iconName="close"
-          iconWeight="thin"
-          iconColor="neutral"
-          color="neutral"
-        />
+        <_Builtin.Block tag="div">{slotClose}</_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block tag="div">
         <_Builtin.Block
@@ -91,33 +82,10 @@ export function UserDetails({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "flex-horizontal", "center", "gap-2")}
+        className={_utils.cx(_styles, "ud-button-wrap")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "width-50")}
-          tag="div"
-          {...onClickClose}
-        >
-          <ButtonGhost
-            isRightIcon={false}
-            isLeftIcon={false}
-            textButton="Cancel"
-            size="2"
-          />
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "width-50")}
-          tag="div"
-          {...onClickUpdate}
-        >
-          <ButtonSolid
-            isLeftIcon={false}
-            isRightIcon={false}
-            textButton="Update"
-            size="2"
-          />
-        </_Builtin.Block>
+        {slotButton}
       </_Builtin.Block>
     </_Component>
   );

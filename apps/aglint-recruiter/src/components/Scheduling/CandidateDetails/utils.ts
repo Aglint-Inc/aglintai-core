@@ -6,7 +6,7 @@ import {
   EmailTemplateAPi,
   InterviewSessionTypeDB,
   JobApplcationDB,
-  SupabaseType
+  SupabaseType,
 } from '@aglint/shared-types';
 import { BookingConfirmationMetadata } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { createServerClient } from '@supabase/ssr';
@@ -76,8 +76,6 @@ export const updateApplicationStatus = async ({
   }
 };
 
-
-
 export const scheduleDebrief = async ({
   selectedDebrief,
   recruiter_id,
@@ -92,6 +90,7 @@ export const scheduleDebrief = async ({
   application_id,
   rec_user_id,
   supabase,
+  task_id,
 }: {
   selectedDebrief: SchedulingFlow['filteredSchedulingOptions'][number];
   recruiter_id: string;
@@ -106,6 +105,7 @@ export const scheduleDebrief = async ({
   application_id: string;
   rec_user_id: string;
   supabase: SupabaseType;
+  task_id: string;
 }) => {
   console.log({
     selectedDebrief,
@@ -123,6 +123,8 @@ export const scheduleDebrief = async ({
     schedule_id,
     user_tz,
     selectedOption: selectedDebrief,
+    filter_id,
+    task_id,
   };
 
   const res = await axios.post(
@@ -131,40 +133,12 @@ export const scheduleDebrief = async ({
   );
 
   if (res.status === 200) {
-    const session_id = selectedDebrief.sessions[0].session_id;
-    const { data: session, error: errorSes } = await supabase
-      .from('interview_session')
-      .select(
-        '*,interview_meeting(id,start_time,end_time,status,cal_event_id,meeting_link),interview_session_relation(*,interview_module_relation(id,recruiter_user(user_id,email,first_name,last_name,profile_image)))',
-      )
-      .eq('id', session_id);
-
-    if (errorSes) throw new Error(errorSes.message);
-
-    const metadata: BookingConfirmationMetadata = {
-      action: 'waiting',
-      filter_id,
-      sessions: session,
-      type: 'booking_confirmation',
-    };
-
-    addScheduleActivity({
-      title: `Scheduling ${initialSessions
-        .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
-        .map((ses) => ses.interview_session.name)
-        .join(' , ')}`,
-      logged_by: 'user',
-      application_id,
-      supabase,
-      created_by: rec_user_id,
-      metadata,
-    });
+    return res.data;
+  } else {
+    console.log('Failed to schedule debrief');
+    throw new Error('Failed to schedule debrief');
   }
 };
-
-
-
-
 
 export const createFilterJson = async ({
   sessions_ids,
@@ -332,5 +306,3 @@ export const onClickResendInvite = async ({
     toast.error(e.message);
   }
 };
-
-

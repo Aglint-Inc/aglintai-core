@@ -323,7 +323,6 @@ export class CandidatesSchedulingV2 {
     curr_day: Dayjs, // cand time zone
   ) => {
     let all_schedule_combs: PlanCombinationRespType[] = [];
-
     const exploreSessionCombs = (
       current_comb: InterviewSessionApiRespType[],
       session_idx,
@@ -648,26 +647,7 @@ export class CandidatesSchedulingV2 {
         ...upd_sess_slot.qualifiedIntervs,
         ...upd_sess_slot.trainingIntervs,
       ];
-      // const is_all_ints_available = curr_sess_common_time.common_time.some(
-      //   (t) => {
-      //     return isTimeChunksEnclosed(
-      //       {
-      //         startTime: this.getTimeInCandTimeZone(t.startTime),
-      //         endTime: this.getTimeInCandTimeZone(t.endTime),
-      //       },
-      //       {
-      //         startTime: this.getTimeInCandTimeZone(upd_sess_slot.start_time),
-      //         endTime: this.getTimeInCandTimeZone(upd_sess_slot.end_time),
-      //       },
-      //     );
-      //   },
-      // );
-      // if (is_all_ints_available && curr_sess_load_reached_ints.length === 0) {
-      //   upd_sess_slot.is_conflict = false;
-      //   return upd_sess_slot;
-      // } else {
-      //   upd_sess_slot.is_conflict = true;
-      // }
+
       for (const attendee of session_attendees) {
         const attendee_details = this.intervs_details_map.get(attendee.user_id);
         const int_conflic_reasons: ConflictReason[] = [];
