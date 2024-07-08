@@ -13,4 +13,5 @@ declare function JobDetailBlock(props: {
   slotHiringTeamForm?: Types.Devlink.Slot;
   isJobDetailVisible?: Types.Visibility.VisibilityConditions;
   isHiringTeamVisible?: Types.Visibility.VisibilityConditions;
+  onClickCancel?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;
