@@ -12,10 +12,17 @@ import {
 } from '@/src/queries/job-applications';
 import { useJobUpdate } from '@/src/queries/jobs';
 import { Job } from '@/src/queries/jobs/types';
+import toast from '@/src/utils/toast';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 import { useJobs } from '../JobsContext';
-import { hashCode, validateDescription, validateJd } from './utils';
+import {
+  getDetailsValidity,
+  getHiringTeamValidity,
+  hashCode,
+  validateDescription,
+  validateJd,
+} from './utils';
 
 const useJobContext = () => {
   const params = useParams();
@@ -104,25 +111,59 @@ const useJobContext = () => {
     }
   };
 
-  const handleJobPublish = async (job: Job) => {
-    if (recruiter) {
-      try {
-        // eslint-disable-next-line no-unused-vars
-        const { processing_count, section_count, flags, ...safeJob } = job;
-        await handleJobAsyncUpdate(safeJob.id, {
-          ...safeJob,
-          ...safeJob.draft,
-          status: 'published',
-          description_hash: hashCode(safeJob.draft.description),
-          dashboard_warnings: {
-            ...safeJob.dashboard_warnings,
-            job_description: false,
-            score_changed: false,
-          },
-        });
-        return true;
-      } catch {
-        return false;
+  const detailsValidity = getDetailsValidity(job);
+  const hiringTeamValidity = getHiringTeamValidity(job);
+
+  const publishStatus = {
+    detailsValidity,
+    hiringTeamValidity,
+    jdValidity,
+    loading: job?.scoring_criteria_loading,
+    publishable:
+      detailsValidity.validity &&
+      hiringTeamValidity.validity &&
+      jdValidity &&
+      !job?.scoring_criteria_loading,
+  };
+
+  const canPublish =
+    job?.status === 'draft' ||
+    status?.description_changed ||
+    status?.scoring_criteria_changed;
+
+  const handlePublish = async () => {
+    if (publishStatus.publishable) {
+      // eslint-disable-next-line no-unused-vars
+      const { processing_count, section_count, flags, ...safeJob } = job;
+      await handleJobAsyncUpdate(safeJob.id, {
+        ...safeJob,
+        ...safeJob.draft,
+        status: 'published',
+        description_hash: hashCode(safeJob.draft.description),
+        dashboard_warnings: {
+          ...safeJob.dashboard_warnings,
+          job_description: false,
+          score_changed: false,
+        },
+      });
+      toast.success('Job published successfully');
+      if (status.scoring_criteria_changed) {
+        await handleRescoreApplications({ job_id: job?.id });
+      }
+      return true;
+    } else {
+      if (publishStatus.loading)
+        toast.warning(
+          'Generating profile score criteria. Please wait before publishing.',
+        );
+      else {
+        if (!detailsValidity.validity || !hiringTeamValidity.validity) {
+          if (!detailsValidity.validity) toast.error(detailsValidity.message);
+          if (!hiringTeamValidity.validity)
+            toast.error(hiringTeamValidity.message);
+        } else {
+          toast.error('Unable to publish. Please verify the job details.');
+        }
       }
     }
   };
@@ -184,12 +225,14 @@ const useJobContext = () => {
     interviewPlans,
     handleJobAsyncUpdate,
     handleJobUpdate,
-    handleJobPublish,
     handleRegenerateJd,
     handleRescoreApplications,
     handleUploadApplication,
     handleUploadResume,
     handleUploadCsv,
+    canPublish,
+    handlePublish,
+    publishStatus,
     status,
     jdValidity,
   };
