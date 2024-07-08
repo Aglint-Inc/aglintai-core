@@ -1031,6 +1031,10 @@ const InterviewerFeedback = ({
               // fullWidth
               open={selectedInterviewer.interviewer !== null}
               maxWidth={'lg'}
+              onClose={() => {
+                setSelectedInterviewer(null);
+                setEdit(false);
+              }}
               // sx={{ '& .MuiPaper-root': { maxWidth: '650px' } }}
             >
               <ShowCode>
