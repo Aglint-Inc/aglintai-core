@@ -117,7 +117,7 @@ function Filters() {
       setSelectedStatus(ids);
       scheduleFilterIds.status = ids;
     }
-    if (filterTypeName === 'member') {
+    if (filterTypeName === 'interviewer') {
       setSelectedMembers(ids);
       scheduleFilterIds.member = ids;
     }
