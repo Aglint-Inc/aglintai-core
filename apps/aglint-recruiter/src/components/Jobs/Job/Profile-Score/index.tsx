@@ -530,6 +530,7 @@ const Pill: FC<{
             <ButtonGhost
               textButton='Delete'
               size={2}
+              color={'error'}
               onClickButton={{ onClick: () => onDelete() }}
               isLeftIcon
               iconName='delete'
@@ -580,7 +581,7 @@ const AddOption: FC<{
   return (
     <Stack ref={ref}>
       <ButtonSoft
-        textButton={`Add ${type}`}
+        textButton={`Add ${capitalize(type)}`}
         iconName='Add'
         isLeftIcon
         size={1}

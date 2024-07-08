@@ -621,6 +621,7 @@ const useBanners = () => {
   );
   const banners: React.JSX.Element[] = [];
   if (job.status === 'draft') banners.push(<JobsBanner />);
+
   if (isInterviewPlanDisabled && !dismissWarnings.interview_plan)
     banners.push(
       <DashboardWarning
@@ -892,6 +893,7 @@ const JobClose = ({
             <ButtonSolid
               textButton={`${isDelete ? 'Delete' : 'Close'} Job`}
               size={2}
+              color={isDelete ? 'error' : 'accent'}
               onClickButton={{ onClick: () => openModal() }}
             />
           }
@@ -926,6 +928,7 @@ const JobClose = ({
               />
               <ButtonSolid
                 textButton={isDelete ? 'Delete Job' : 'Close Job'}
+                color={isDelete ? 'error' : 'accent'}
                 size={2}
                 onClickButton={{ onClick: handleSubmit }}
                 isDisabled={job_title.trim() !== value.trim()}

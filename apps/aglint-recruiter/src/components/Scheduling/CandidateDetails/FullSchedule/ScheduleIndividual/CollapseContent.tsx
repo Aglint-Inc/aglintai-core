@@ -143,7 +143,7 @@ function CollapseContent({
                 <Stack direction={'row'} spacing={'var(--space-4)'}>
                   <ButtonSoft
                     size={1}
-                    color={'accent'}
+                    color={'neutral'}
                     textButton={'Reschedule'}
                     onClickButton={{
                       onClick: (e) => {
@@ -155,8 +155,8 @@ function CollapseContent({
                   />
                   <ButtonSoft
                     size={1}
-                    color={'neutral'}
-                    textButton={'Cancel Schedule'}
+                    color={'error'}
+                    textButton={'Cancel'}
                     onClickButton={{
                       onClick: (e) => {
                         e.stopPropagation();
