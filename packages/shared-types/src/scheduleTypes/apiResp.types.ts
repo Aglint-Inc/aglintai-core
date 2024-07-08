@@ -77,7 +77,7 @@ export type SessionInterviewerApiRespType = Pick<
 export type PlanCombinationRespType = {
   plan_comb_id: string;
   sessions: SessionCombinationRespType[];
-  no_slot_reasons?: {
+  no_slot_reasons: {
     reason: string;
   }[];
 };

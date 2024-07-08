@@ -1063,6 +1063,7 @@ export class CandidatesSchedulingV2 {
           schedule_combs.push({
             plan_comb_id: nanoid(),
             sessions: [...slot_comb],
+            no_slot_reasons: [],
           });
         }
         cand_time = cand_time.add(
