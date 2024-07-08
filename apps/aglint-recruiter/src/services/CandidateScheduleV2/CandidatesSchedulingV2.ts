@@ -13,6 +13,7 @@ import {
   SessionsCombType,
 } from '@aglint/shared-types';
 import {
+  getFullName,
   ScheduleUtils,
   scheduling_options_schema,
   SINGLE_DAY_TIME,
@@ -80,6 +81,7 @@ export class CandidatesSchedulingV2 {
       use_recruiting_blocks: _api_options.use_recruiting_blocks,
       cand_start_time: _api_options.cand_start_time,
       cand_end_time: _api_options.cand_end_time,
+      return_empty_slots_err: _api_options.return_empty_slots_err,
       include_conflicting_slots: {
         calender_not_connected:
           _api_options.include_conflicting_slots.calender_not_connected,
@@ -344,13 +346,33 @@ export class CandidatesSchedulingV2 {
 
     exploreSessionCombs([], 0);
 
-    // sorting slots
-    all_schedule_combs = all_schedule_combs.sort((slot1, slot2) => {
-      return (
-        userTzDayjs(slot1.sessions[0].start_time).unix() -
-        userTzDayjs(slot2.sessions[0].start_time).unix()
-      );
+    const curr_day_slots = all_schedule_combs.filter((comb) => {
+      return comb.sessions.length > 0;
     });
+
+    // is slots are there along with err reasons only send slots
+    if (curr_day_slots.length > 0) {
+      // sorting slots
+      return curr_day_slots.sort((slot1, slot2) => {
+        return (
+          userTzDayjs(slot1.sessions[0].start_time).unix() -
+          userTzDayjs(slot2.sessions[0].start_time).unix()
+        );
+      });
+    } else {
+      const single_comb_reason: PlanCombinationRespType = {
+        plan_comb_id: nanoid(),
+        sessions: [],
+        no_slot_reasons: [],
+      };
+      all_schedule_combs.forEach((plan) => {
+        single_comb_reason.no_slot_reasons = [
+          ...single_comb_reason.no_slot_reasons,
+          ...plan.no_slot_reasons,
+        ];
+      });
+    }
+
     return all_schedule_combs;
   };
 
@@ -476,23 +498,35 @@ export class CandidatesSchedulingV2 {
     const cacheCurrPlanCalc = () => {
       const indef_paused_inters: {
         session_id: string;
-        inters: (Pick<SessionInterviewerApiRespType, 'user_id'> & {
+        inters: (Pick<
+          SessionInterviewerApiRespType,
+          'user_id' | 'first_name' | 'last_name'
+        > & {
           pause_json: PauseJson;
         })[];
       }[] = [];
       const curr_day_paused_inters: {
         session_id: string;
-        inters: (Pick<SessionInterviewerApiRespType, 'user_id'> & {
+        inters: (Pick<
+          SessionInterviewerApiRespType,
+          'user_id' | 'first_name' | 'last_name'
+        > & {
           pause_json: PauseJson;
         })[];
       }[] = [];
       const cal_disc_inters: {
         session_id: string;
-        inters: Pick<SessionInterviewerApiRespType, 'user_id'>[];
+        inters: Pick<
+          SessionInterviewerApiRespType,
+          'user_id' | 'first_name' | 'last_name'
+        >[];
       }[] = [];
       const load_reached_ints: {
         session_id: string;
-        inters: (Pick<SessionInterviewerApiRespType, 'user_id'> & {
+        inters: (Pick<
+          SessionInterviewerApiRespType,
+          'user_id' | 'first_name' | 'last_name'
+        > & {
           type: CalConflictType;
         })[];
       }[] = [];
@@ -534,13 +568,17 @@ export class CandidatesSchedulingV2 {
             !this.intervs_details_map.get(attendee.user_id).isCalenderConnected
           ) {
             cal_disc_inters[sess_idx].inters.push({
-              ...attendee,
+              user_id: attendee.user_id,
+              first_name: attendee.first_name,
+              last_name: attendee.last_name,
             });
           }
           if (interviewer_pause_json) {
             if (interviewer_pause_json.isManual) {
               indef_paused_inters[sess_idx].inters.push({
-                ...attendee,
+                user_id: attendee.user_id,
+                first_name: attendee.first_name,
+                last_name: attendee.last_name,
                 pause_json: interviewer_pause_json,
               });
             } else {
@@ -569,7 +607,9 @@ export class CandidatesSchedulingV2 {
                 )
               ) {
                 curr_day_paused_inters[sess_idx].inters.push({
-                  ...attendee,
+                  user_id: attendee.user_id,
+                  first_name: attendee.first_name,
+                  last_name: attendee.last_name,
                   pause_json: interviewer_pause_json,
                 });
               }
@@ -594,6 +634,8 @@ export class CandidatesSchedulingV2 {
             if (!is_passed) {
               load_reached_ints[sess_idx].inters.push({
                 user_id: attendee.user_id,
+                first_name: attendee.first_name,
+                last_name: attendee.last_name,
                 type,
               });
             }
@@ -954,32 +996,50 @@ export class CandidatesSchedulingV2 {
       }
     };
 
-    const isDayConflictPassed = () => {
-      if (
-        cal_disc_inters.some((s) => s.inters.length > 0) &&
-        !this.api_options.include_conflicting_slots.calender_not_connected
-      ) {
-        return false;
-      }
-      if (
-        indef_paused_inters.some((s) => s.inters.length > 0) &&
-        !this.api_options.include_conflicting_slots.interviewer_pause
-      ) {
-        return false;
-      }
+    const slotDayConflictsReasons = () => {
+      const zerodaySlotsReasons: PlanCombinationRespType = {
+        no_slot_reasons: [],
+        plan_comb_id: nanoid(),
+        sessions: [],
+      };
+      cal_disc_inters.forEach((s) => {
+        s.inters.forEach((inter) => {
+          zerodaySlotsReasons.no_slot_reasons.push({
+            reason: `${getFullName(inter.first_name, inter.last_name)} calender not connected`,
+          });
+        });
+      });
+      curr_day_paused_inters.forEach((s) => {
+        s.inters.forEach((inter) => {
+          zerodaySlotsReasons.no_slot_reasons.push({
+            reason: `${getFullName(inter.first_name, inter.last_name)} is paused`,
+          });
+        });
+      });
+      indef_paused_inters.forEach((s) => {
+        s.inters.forEach((inter) => {
+          zerodaySlotsReasons.no_slot_reasons.push({
+            reason: `${getFullName(inter.first_name, inter.last_name)} is paused indefinetly`,
+          });
+        });
+      });
+      load_reached_ints.forEach((s) => {
+        s.inters.forEach((inter) => {
+          zerodaySlotsReasons.no_slot_reasons.push({
+            reason: `${getFullName(inter.first_name, inter.last_name)}'s ${inter.type === 'day_load_reached' ? 'day' : 'week'} load reached`,
+          });
+        });
+      });
 
-      if (
-        load_reached_ints.some((curr_sess) => curr_sess.inters.length > 0) &&
-        !this.api_options.include_conflicting_slots.interviewers_load
-      ) {
-        return false;
-      }
-      return true;
+      return zerodaySlotsReasons;
     };
 
-    const generateSlotsForCurrDay = () => {
-      if (!isDayConflictPassed()) {
-        return [];
+    const generateSlotsForCurrDay = (): PlanCombinationRespType[] => {
+      const dayConflictsReasons = slotDayConflictsReasons();
+      if (dayConflictsReasons.no_slot_reasons.length > 0) {
+        return this.api_options.return_empty_slots_err
+          ? [dayConflictsReasons]
+          : [];
       }
       const schedule_combs: PlanCombinationRespType[] = [];
 
@@ -1015,6 +1075,7 @@ export class CandidatesSchedulingV2 {
           schedule_combs.push({
             plan_comb_id: nanoid(),
             sessions: [...slot_comb],
+            no_slot_reasons: [],
           });
         }
         cand_time = cand_time.add(
