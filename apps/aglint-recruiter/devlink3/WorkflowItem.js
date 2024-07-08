@@ -39,11 +39,16 @@ export function WorkflowItem({
           </_Builtin.Block>
           <Text content={textTypeDescription} color="neutral" weight="" />
         </_Builtin.Block>
-        <IconButtonGhost
-          onClickButton={onClickDelete}
-          color="error"
-          iconName=""
-        />
+        {isDeleteVisible ? (
+          <_Builtin.Block tag="div">
+            <IconButtonGhost
+              onClickButton={onClickDelete}
+              color="error"
+              iconName="delete"
+              size="1"
+            />
+          </_Builtin.Block>
+        ) : null}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "workflow_item_body")}
