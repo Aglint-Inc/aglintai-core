@@ -1,4 +1,4 @@
-const crypto = require('crypto');
+import * as crypto from 'crypto';
 
 export function decrypt_string(encryptedData) {
   const decipher = crypto.createDecipher('aes256', process.env.ENCRYPTION_KEY);
