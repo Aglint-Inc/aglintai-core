@@ -38,7 +38,7 @@ import { SchedulingTab } from './types';
 
 function SchedulingMainComp() {
   const router = useRouter();
-  const { recruiterUser, isAllowed } = useAuthDetails();
+  const { recruiterUser } = useAuthDetails();
   const [saving, setSaving] = useState<'saving' | 'saved'>('saved');
   const { checkPermissions } = useRolesAndPermissions();
   useEffect(() => {
@@ -94,7 +94,7 @@ function SchedulingMainComp() {
         slotTopbarRight={
           <>
             {tab === 'interviewtypes' &&
-              isAllowed(['admin', 'recruiter', 'recruiting_coordinator']) && (
+              checkPermissions(['scheduler_interview_types_create']) && (
                 <Stack direction={'row'} alignItems={'center'} spacing={2}>
                   <ButtonSolid
                     isRightIcon={false}
@@ -111,7 +111,7 @@ function SchedulingMainComp() {
                 </Stack>
               )}
             {(tab === 'schedules' || tab === 'myschedules') &&
-              checkPermissions(['scheduler_enabled']) && (
+              checkPermissions(['scheduler_enabled', 'scheduler_read']) && (
                 <TaskSwitchButton
                   isIconVisible={false}
                   isJobCandActive={tab === 'schedules'}
