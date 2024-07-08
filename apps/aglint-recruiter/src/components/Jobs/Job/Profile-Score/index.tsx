@@ -490,6 +490,9 @@ const Pill: FC<{
           horizontal: 'left',
         }}
         sx={{
+          '& .MuiPaper-root': {
+            borderRadius: 'var(--radius-3)',
+          },
           '& .MuiPaper-outlined': {
             border: 'none',
             outline: 'none',

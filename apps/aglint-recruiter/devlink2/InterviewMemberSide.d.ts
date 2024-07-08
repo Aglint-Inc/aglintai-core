@@ -14,4 +14,7 @@ declare function InterviewMemberSide(props: {
   slotInterview?: Types.Devlink.Slot;
   onClickWaiting?: Types.Devlink.RuntimeProps;
   isWaitingActive?: Types.Visibility.VisibilityConditions;
+  textUpcomingCount?: React.ReactNode;
+  textCancelledCount?: React.ReactNode;
+  textPastCount?: React.ReactNode;
 }): React.JSX.Element;
