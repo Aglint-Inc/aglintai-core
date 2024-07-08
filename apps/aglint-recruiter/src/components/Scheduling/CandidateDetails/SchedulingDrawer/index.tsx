@@ -84,6 +84,8 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
         return 'Schedule Via Email';
       } else if (scheduleFlow === 'phone_agent') {
         return 'Schedule Via Phone';
+      } else {
+        return 'Continue';
       }
     } else {
       if (stepScheduling === 'preference' || stepScheduling === 'pick_date') {
