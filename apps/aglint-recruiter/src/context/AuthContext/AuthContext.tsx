@@ -166,6 +166,7 @@ const AuthProvider = ({ children }) => {
       } else {
         setUserDetails(data.session);
       }
+
       if (router.route !== ROUTES['/loading']() && data?.session?.user?.id) {
         await getRecruiterDetails(data.session);
       }

@@ -52,7 +52,7 @@ function SelectAtsSystem() {
         .eq('id', recruiter.id)
         .select();
       if (!error) {
-        setRecruiter({ ...data[0], socials: data[0].socials as SocialsType });
+        setRecruiter({ ...data[0], socials: data[0]?.socials as SocialsType });
         router.push(`?step=${stepObj.allSet}`, undefined, {
           shallow: true,
         });

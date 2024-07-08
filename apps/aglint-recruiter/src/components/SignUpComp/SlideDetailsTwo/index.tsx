@@ -1,3 +1,5 @@
+'use client';
+
 import { supabaseWrap } from '@aglint/shared-utils';
 import { Autocomplete, Stack, Typography } from '@mui/material';
 import axios from 'axios';
@@ -55,28 +57,26 @@ function SlideDetailsTwo() {
     <RecCompanyDetails
       slotMain={
         <>
-          {recruiter?.company_website ? (
-            <CompanyDetails />
-          ) : userDetails?.user.user_metadata.role !== 'recruiter' ? (
-            <Stack
-              alignItems={'center'}
-              direction={'row'}
-              justifyContent={'center'}
-            >
-              <ButtonGhost
-                textButton='Skip this step'
-                size={2}
-                onClickButton={{
-                  onClick: () => {
-                    router.push(`?step=${stepObj.atsSystem}`, undefined, {
-                      shallow: true,
-                    });
-                    setStep(stepObj.atsSystem);
-                  },
-                }}
-              />
-            </Stack>
-          ) : null}
+          <CompanyDetails />
+
+          <Stack
+            alignItems={'center'}
+            direction={'row'}
+            justifyContent={'center'}
+          >
+            <ButtonGhost
+              textButton='Skip this step'
+              size={2}
+              onClickButton={{
+                onClick: () => {
+                  router.push(`?step=${stepObj.atsSystem}`, undefined, {
+                    shallow: true,
+                  });
+                  setStep(stepObj.atsSystem);
+                },
+              }}
+            />
+          </Stack>
         </>
       }
     />
