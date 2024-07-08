@@ -69,11 +69,15 @@ export const availabilityArrayList = [
 }[];
 
 export async function getAvailabilitySlots(bodyParams: APIFindAvailability) {
-  const res = await axios.post(
-    '/api/scheduling/v1/find_availability',
-    bodyParams,
-  );
-  return res;
+  try {
+    const res = await axios.post(
+      '/api/scheduling/v1/find_availability',
+      bodyParams,
+    );
+    return res;
+  } catch (error) {
+    return error;
+  }
 }
 
 export function filterSchedulingOptionsArray({

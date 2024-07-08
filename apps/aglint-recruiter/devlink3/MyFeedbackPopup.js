@@ -14,6 +14,7 @@ export function MyFeedbackPopup({
   slotObjective,
   textRecommendation = "Not Recommended",
   onClickSubmitFeedback = {},
+  slotButton,
 }) {
   return (
     <_Component
@@ -21,7 +22,7 @@ export function MyFeedbackPopup({
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "popup_header-copy-copy")}
+        className={_utils.cx(_styles, "myfeedbacl_header")}
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "popup_title")} tag="div">
@@ -36,14 +37,14 @@ export function MyFeedbackPopup({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "popup_body_flex")}
+        className={_utils.cx(_styles, "my_feedback_body")}
         tag="div"
       >
         <_Builtin.Block
           className={_utils.cx(_styles, "input_filed_wrap")}
           tag="div"
         >
-          <Text weight="" content="" />
+          <Text weight="" content="Recommendation Level" />
           <_Builtin.Block
             className={_utils.cx(_styles, "recommendation_level_wrap")}
             tag="div"
@@ -135,21 +136,15 @@ export function MyFeedbackPopup({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "wide_button-copy-copy")}
+        className={_utils.cx(_styles, "wide_button-copy-copy", "bottom_space")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "wide_button", "width-100")}
-          tag="div"
-        >
+        {slotButton ?? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "button_primary", "green-btn")}
+            className={_utils.cx(_styles, "wide_button", "width-100")}
             tag="div"
-            {...onClickSubmitFeedback}
-          >
-            <_Builtin.Block tag="div">{"Submit Feedback"}</_Builtin.Block>
-          </_Builtin.Block>
-        </_Builtin.Block>
+          />
+        )}
       </_Builtin.Block>
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "embed_css_block")}

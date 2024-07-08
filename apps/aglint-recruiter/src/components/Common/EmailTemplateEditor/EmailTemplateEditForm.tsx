@@ -34,7 +34,7 @@ export default function EmailTemplateEditForm({
   return (
     <Stack spacing={'var(--space-5)'}>
       {showSender && (
-        <Stack spacing={1}>
+        <Stack>
           <UITypography type='small' fontBold='normal'>
             From
           </UITypography>

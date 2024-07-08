@@ -735,7 +735,6 @@ export type Database = {
           number_of_days: number | null
           number_of_slots: number | null
           recruiter_id: string
-          session_ids: Json | null
           slots: Json | null
           total_slots: number | null
           user_timezone: string | null
@@ -752,7 +751,6 @@ export type Database = {
           number_of_days?: number | null
           number_of_slots?: number | null
           recruiter_id: string
-          session_ids?: Json | null
           slots?: Json | null
           total_slots?: number | null
           user_timezone?: string | null
@@ -769,7 +767,6 @@ export type Database = {
           number_of_days?: number | null
           number_of_slots?: number | null
           recruiter_id?: string
-          session_ids?: Json | null
           slots?: Json | null
           total_slots?: number | null
           user_timezone?: string | null
