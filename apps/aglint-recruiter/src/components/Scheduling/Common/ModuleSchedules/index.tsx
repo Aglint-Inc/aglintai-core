@@ -29,6 +29,7 @@ function ModuleSchedules({
 
   const newFilterSchedules = () => {
     const filSch = newScheduleList;
+
     switch (filter) {
       case 'all':
         return filSch;
@@ -42,6 +43,28 @@ function ModuleSchedules({
         );
     }
   };
+
+  const upcomingCount = newScheduleList.filter(
+    (sch) =>
+      sch.interview_meeting.status === 'confirmed' &&
+      sch.interview_meeting.session_name
+        .toLowerCase()
+        .includes(changeText.toLowerCase()),
+  ).length;
+  const cancelCount = newScheduleList.filter(
+    (sch) =>
+      sch.interview_meeting.status === 'cancelled' &&
+      sch.interview_meeting.session_name
+        .toLowerCase()
+        .includes(changeText.toLowerCase()),
+  ).length;
+  const pastCount = newScheduleList.filter(
+    (sch) =>
+      sch.interview_meeting.status === 'completed' &&
+      sch.interview_meeting.session_name
+        .toLowerCase()
+        .includes(changeText.toLowerCase()),
+  ).length;
 
   return (
     <InterviewMemberSide
@@ -60,6 +83,9 @@ function ModuleSchedules({
       isUpcomingActive={filter === 'confirmed'}
       isCancelActive={filter === 'cancelled'}
       isCompletedActive={filter === 'completed'}
+      textUpcomingCount={upcomingCount}
+      textCancelledCount={cancelCount}
+      textPastCount={pastCount}
       onClickUpcoming={{
         onClick: () => setFilter('confirmed'),
       }}
