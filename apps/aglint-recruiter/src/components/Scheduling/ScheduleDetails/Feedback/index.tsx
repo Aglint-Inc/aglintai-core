@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 import { useMemo, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { StatusBadge } from '@/devlink2/StatusBadge';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
@@ -630,6 +631,7 @@ const AdminFeedback = ({
                           textButton='Previous'
                           highContrast={'true'}
                           size={2}
+                          color={'neutral'}
                           iconName='arrow_back_ios'
                           isLeftIcon
                           iconSize={2}
@@ -651,6 +653,7 @@ const AdminFeedback = ({
                           highContrast={'true'}
                           size={2}
                           iconName='arrow_forward_ios'
+                          color={'neutral'}
                           isRightIcon
                           iconSize={2}
                           onClickButton={{
@@ -1087,6 +1090,7 @@ const InterviewerFeedback = ({
                         <ButtonSoft
                           textButton='Previous'
                           highContrast={'true'}
+                          color={'neutral'}
                           size={2}
                           iconName='arrow_back_ios'
                           isLeftIcon
@@ -1107,6 +1111,7 @@ const InterviewerFeedback = ({
                         <ButtonSoft
                           textButton='Next'
                           highContrast={'true'}
+                          color={'neutral'}
                           size={2}
                           iconName='arrow_forward_ios'
                           isRightIcon
@@ -1208,18 +1213,32 @@ const FeedbackForm = ({
       onClickClose={{
         onClick: onClose,
       }}
-      onClickSubmitFeedback={{
-        onClick: () => {
-          if (!interviewer.feedback) {
-            return toast.warning('Please provide feedback.');
-          }
-          onSubmit({
-            relation_id: interviewer.relation_id,
-            session_id: interviewer.session.id,
-            feedback: interviewer.feedback,
-          });
-        },
-      }}
+      slotButton={
+        <>
+          <ButtonSoft
+            textButton='Cancel'
+            size={2}
+            color={'neutral'}
+            onClickButton={{ onClick: onClose }}
+          />
+          <ButtonSolid
+            textButton='Submit Feedback'
+            size={2}
+            onClickButton={{
+              onClick: () => {
+                if (!interviewer.feedback) {
+                  return toast.warning('Please provide feedback.');
+                }
+                onSubmit({
+                  relation_id: interviewer.relation_id,
+                  session_id: interviewer.session.id,
+                  feedback: interviewer.feedback,
+                });
+              },
+            }}
+          />
+        </>
+      }
       slotRoundedNumber={
         <>
           {Array(10)
@@ -1251,6 +1270,7 @@ const FeedbackForm = ({
           placeholder='Your feedback.'
           initialValue={interviewer.feedback?.objective || ''}
           border
+          height='300px'
           isSize={false}
           isAlign={false}
           handleChange={(html) => {
