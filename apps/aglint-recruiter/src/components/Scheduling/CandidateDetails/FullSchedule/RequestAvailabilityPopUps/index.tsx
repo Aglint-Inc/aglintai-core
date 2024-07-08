@@ -129,7 +129,7 @@ function RequestAvailabilityPopUps() {
                       slotButtons={
                         <>
                           <ButtonSolid
-                            textButton={'Resend invite'}
+                            textButton={'Resend Invite'}
                             isLoading={false}
                             isLeftIcon={false}
                             isRightIcon={false}
@@ -149,7 +149,7 @@ function RequestAvailabilityPopUps() {
                           />
 
                           <ButtonSoft
-                            textButton={'Request again'}
+                            textButton={'Request Again'}
                             isLoading={false}
                             isLeftIcon={false}
                             isRightIcon={false}
@@ -202,7 +202,7 @@ function RequestAvailabilityPopUps() {
                             }}
                           />
                           <ButtonSoft
-                            textButton={'Request again'}
+                            textButton={'Request Again'}
                             isLoading={false}
                             isLeftIcon={false}
                             isRightIcon={false}

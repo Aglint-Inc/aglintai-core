@@ -212,12 +212,17 @@ const JobCreateForm = ({
     [],
   );
 
+  const handleCancel = useCallback(() => {
+    push(ROUTES['/jobs']());
+  }, []);
+
   return (
     <>
       <JobForms
         fields={fields}
         handleChange={handleChange}
         handleCreate={handleCreate}
+        handleCancel={handleCancel}
       />
       <Dialog open={modal}>
         <CreateJobLoader slotLottie={<Loader />} />
@@ -226,7 +231,12 @@ const JobCreateForm = ({
   );
 };
 
-const JobForms = ({ fields, handleChange, handleCreate }: JobMetaFormProps) => {
+const JobForms = ({
+  fields,
+  handleChange,
+  handleCreate,
+  handleCancel,
+}: JobMetaFormProps) => {
   const {
     company,
     department,
@@ -290,6 +300,7 @@ const JobForms = ({ fields, handleChange, handleCreate }: JobMetaFormProps) => {
           </Stack>
         )
       }
+      onClickCancel={{ onClick: () => handleCancel() }}
     />
   );
 };

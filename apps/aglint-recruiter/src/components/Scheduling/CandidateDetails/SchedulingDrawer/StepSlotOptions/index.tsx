@@ -65,13 +65,14 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
 
   useEffect(() => {
     try {
-      axios
-        .post('/api/emails/sendSelfScheduleRequest_email_applicant', {
-          meta: { ...payload },
-        })
-        .then(({ data }) => {
-          setEmailData(data);
-        });
+      if (!isDebrief)
+        axios
+          .post('/api/emails/sendSelfScheduleRequest_email_applicant', {
+            meta: { ...payload },
+          })
+          .then(({ data }) => {
+            setEmailData(data);
+          });
     } catch (e) {
       //
     }

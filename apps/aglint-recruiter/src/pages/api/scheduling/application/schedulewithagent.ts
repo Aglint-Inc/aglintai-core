@@ -222,6 +222,7 @@ export const scheduleWithAgent = async ({
           application_id,
           selectedSessions,
           supabase,
+          meeting_flow: type === 'email_agent' ? 'mail_agent' : 'phone_agent',
         });
 
         const filterJson = await createFilterJson({

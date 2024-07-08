@@ -886,6 +886,7 @@ function CandidateSearchHistory() {
               />
               <ButtonSolid
                 textButton='Delete'
+                color={'error'}
                 size={2}
                 onClickButton={{
                   onClick: () => {

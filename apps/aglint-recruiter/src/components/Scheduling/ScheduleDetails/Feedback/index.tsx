@@ -1031,6 +1031,10 @@ const InterviewerFeedback = ({
               // fullWidth
               open={selectedInterviewer.interviewer !== null}
               maxWidth={'lg'}
+              onClose={() => {
+                setSelectedInterviewer(null);
+                setEdit(false);
+              }}
               // sx={{ '& .MuiPaper-root': { maxWidth: '650px' } }}
             >
               <ShowCode>
@@ -1247,6 +1251,7 @@ const FeedbackForm = ({
           placeholder='Your feedback.'
           initialValue={interviewer.feedback?.objective || ''}
           border
+          isSize={false}
           handleChange={(html) => {
             const temp = { ...interviewer };
             temp.feedback = {
