@@ -4,7 +4,7 @@ import {
   APIFindAvailability,
   APIScheduleDebreif,
   DatabaseTableInsert,
-  PlanCombinationRespType
+  PlanCombinationRespType,
 } from '@aglint/shared-types';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -26,6 +26,7 @@ export type ApiBodyParamScheduleIndividual = {
   recruiter_user_name: string;
   rec_user_id: string;
   user_tz: string;
+  filter_id: string;
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -39,6 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       recruiter_user_name,
       task_id,
       user_tz,
+      filter_id,
     } = req.body as ApiBodyParamScheduleIndividual;
 
     console.log(application_id, 'application_id');
@@ -97,7 +99,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(200).send('no availibity found');
     }
 
-    const firstSlot = availabilities[0][0].filter(
+    //try to book the first slot available on next day
+    const firstSlot = availabilities[1][0].filter(
       (item) => !item.sessions[0].is_conflict,
     )[0];
 
@@ -106,6 +109,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       task_id,
       user_tz,
       selectedDebrief: firstSlot,
+      filter_id,
     });
 
     return res.status(200).send({
@@ -126,11 +130,13 @@ const confirmSlot = async ({
   schedule_id,
   task_id,
   selectedDebrief,
+  filter_id,
 }: {
   task_id: string;
   user_tz: string;
   schedule_id: string;
   selectedDebrief: PlanCombinationRespType;
+  filter_id: string;
 }) => {
   const bodyParams: APIScheduleDebreif = {
     session_id: selectedDebrief.sessions[0].session_id,
@@ -138,6 +144,7 @@ const confirmSlot = async ({
     user_tz,
     selectedOption: selectedDebrief,
     task_id,
+    filter_id,
   };
 
   const resConfirmSlot = await axios.post(

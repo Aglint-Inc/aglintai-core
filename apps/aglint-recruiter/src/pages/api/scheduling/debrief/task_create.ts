@@ -1,14 +1,12 @@
 /* eslint-disable no-console */
 /* eslint-disable security/detect-object-injection */
+import { DatabaseTableInsert } from '@aglint/shared-types';
 import { SystemAgentId } from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import {
-  createFilterJson,
-} from '@/src/components/Scheduling/CandidateDetails/utils';
+import { createFilterJson } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
-import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
 import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { getFullName } from '@/src/utils/jsonResume';
 import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
@@ -99,7 +97,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       session_id,
     });
 
-    addScheduleActivity({
+    await addScheduleActivity({
       title: `Auto scheduling ${selectedDebrief.interview_session.name}`,
       logged_by: 'user',
       application_id,
@@ -282,20 +280,24 @@ const createTask = async ({
       assignee: [SystemAgentId],
       filter_id: filter_id,
       trigger_count: 0,
-      session_ids: [
-        {
-          id: session_id,
-          name: session.name,
-          interview_meeting: session.interview_meeting,
-          session_order: session.session_order,
-          users: [],
-        },
-      ] as meetingCardType[],
     })
     .select()
     .single();
 
   if (errorTasks) throw new Error(errorTasks.message);
+
+  const insertTaskSesRels: DatabaseTableInsert['task_session_relation'][] = [
+    {
+      task_id: task.id,
+      session_id: session_id,
+    },
+  ];
+
+  const { error: errorTaskSesRel } = await supabaseAdmin
+    .from('task_session_relation')
+    .insert(insertTaskSesRels);
+
+  if (errorTaskSesRel) throw new Error(errorTaskSesRel.message);
 
   await createTaskProgress({
     type: 'create_debrief_task',
