@@ -40,12 +40,13 @@ export type CustomEmailTypes = Extract<
 export type CustomJobParamters = Type<
   Pick<
     Database["public"]["Tables"]["public_jobs"]["Row"],
-    "parameter_weights" | "jd_json" | "draft"
+    "parameter_weights" | "jd_json" | "draft" | "dashboard_warnings"
   >,
   {
     parameter_weights: CustomParameterWeights;
     jd_json: CustomJdJson;
     draft: CustomDraft;
+    dashboard_warnings: CustomDashboardWarnings;
   }
 >;
 
@@ -84,3 +85,10 @@ type CustomDraft = Pick<
   | "job_type"
   | "location"
 > & { jd_json: CustomJdJson };
+
+type CustomDashboardWarnings = {
+  job_description: boolean;
+  interview_plan: boolean;
+  interview_session: boolean;
+  score_changed: boolean;
+};
