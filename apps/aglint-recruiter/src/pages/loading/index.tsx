@@ -138,7 +138,7 @@ export default function Loading() {
             );
             localStorage.removeItem('redirectURL');
           }
-        } catch {
+        } catch (e) {
           router.push(`${ROUTES['/signup']()}?step=${stepObj.detailsOne}`);
         }
       }

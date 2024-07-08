@@ -160,3 +160,31 @@ select
     select workflow_action_log_set_fail_cron();
     $$
 );
+
+
+select
+  cron.schedule(
+    'fail_processing_applications',
+    '*/3 * * * *', 
+    $$
+      with processing_applications as (
+        select 
+          id,
+          retry
+        from
+          applications
+        where 
+          processing_status = 'processing' and 
+          processing_started_at < now() - interval '5 minutes' 
+      ) 
+      update 
+        applications
+      set 
+        processing_status = 'failed',
+        retry = processing_applications.retry + 1
+      from 
+        processing_applications
+      where 
+        applications.id = processing_applications.id;
+    $$
+);

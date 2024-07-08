@@ -1252,6 +1252,7 @@ const FeedbackForm = ({
           initialValue={interviewer.feedback?.objective || ''}
           border
           isSize={false}
+          isAlign={false}
           handleChange={(html) => {
             const temp = { ...interviewer };
             temp.feedback = {

@@ -25,9 +25,11 @@ const MenuBtn = styled(IconButton)({
 function MenuBtns({
   borderRadius,
   isSize,
+  isAlign,
 }: {
   borderRadius?: React.CSSProperties['borderRadius'];
   isSize: boolean;
+  isAlign: boolean;
 }) {
   return (
     <Stack
@@ -46,7 +48,7 @@ function MenuBtns({
         }),
       }}
     >
-      <TipTapMenus isSize={isSize} />
+      <TipTapMenus isSize={isSize} isAlign={isAlign} />
       <TipTapUndoRedo />
     </Stack>
   );
@@ -54,7 +56,13 @@ function MenuBtns({
 
 export default MenuBtns;
 
-const TipTapMenus = ({ isSize }: { isSize: boolean }) => {
+const TipTapMenus = ({
+  isSize,
+  isAlign,
+}: {
+  isSize: boolean;
+  isAlign: boolean;
+}) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const { editor } = useTipTap();
   const [typography, setTypography] = useState('Paragraph');
@@ -133,68 +141,80 @@ const TipTapMenus = ({ isSize }: { isSize: boolean }) => {
           <Icon height='24' width='24' variant='Underline' />
         </MenuBtn>
       </Tooltip>
-      <Tooltip title={'Bullet List'} placement='top-start'>
-        <MenuBtn
-          onClick={() => {
-            editor.chain().focus().toggleBulletList().run();
-          }}
-          disabled={!editor.can().chain().focus().toggleBulletList().run()}
-          className={editor.isActive('bulletList') ? 'is-active' : ''}
-        >
-          <Icon height='24' width='24' variant='BulletLint' />
-        </MenuBtn>
-      </Tooltip>
-      <Tooltip title={'Order List'} placement='top-start'>
-        <MenuBtn
-          onClick={() => {
-            editor.chain().focus().toggleOrderedList().run();
-          }}
-          disabled={!editor.can().chain().focus().toggleOrderedList().run()}
-          className={editor.isActive('orderedList') ? 'is-active' : ''}
-        >
-          <Image
-            unoptimized
-            src={'/images/svg/orderList.svg'}
-            height={24}
-            width={24}
-            alt='orderlist'
-          />
-        </MenuBtn>
-      </Tooltip>
-      <Tooltip title={'AlignLeft'} placement='top-start'>
-        <MenuBtn
-          onClick={() => {
-            editor.chain().focus().setTextAlign('left').run();
-          }}
-          disabled={!editor.can().chain().focus().setTextAlign('left').run()}
-          className={editor.isActive({ textAlign: 'left' }) ? 'is-active' : ''}
-        >
-          <Image
-            unoptimized
-            src={'/images/svg/alignRight.svg'}
-            height={24}
-            width={24}
-            alt='alignLeft'
-          />
-        </MenuBtn>
-      </Tooltip>
-      <Tooltip title={'AlignRight'} placement='top-start'>
-        <MenuBtn
-          onClick={() => {
-            editor.chain().focus().setTextAlign('right').run();
-          }}
-          disabled={!editor.can().chain().focus().setTextAlign('right').run()}
-          className={editor.isActive({ textAlign: 'right' }) ? 'is-active' : ''}
-        >
-          <Image
-            unoptimized
-            src={'/images/svg/alignLeft.svg'}
-            height={24}
-            width={24}
-            alt='alignRight'
-          />
-        </MenuBtn>
-      </Tooltip>
+      {isAlign && (
+        <>
+          <Tooltip title={'Bullet List'} placement='top-start'>
+            <MenuBtn
+              onClick={() => {
+                editor.chain().focus().toggleBulletList().run();
+              }}
+              disabled={!editor.can().chain().focus().toggleBulletList().run()}
+              className={editor.isActive('bulletList') ? 'is-active' : ''}
+            >
+              <Icon height='24' width='24' variant='BulletLint' />
+            </MenuBtn>
+          </Tooltip>
+          <Tooltip title={'Order List'} placement='top-start'>
+            <MenuBtn
+              onClick={() => {
+                editor.chain().focus().toggleOrderedList().run();
+              }}
+              disabled={!editor.can().chain().focus().toggleOrderedList().run()}
+              className={editor.isActive('orderedList') ? 'is-active' : ''}
+            >
+              <Image
+                unoptimized
+                src={'/images/svg/orderList.svg'}
+                height={24}
+                width={24}
+                alt='orderlist'
+              />
+            </MenuBtn>
+          </Tooltip>
+          <Tooltip title={'AlignLeft'} placement='top-start'>
+            <MenuBtn
+              onClick={() => {
+                editor.chain().focus().setTextAlign('left').run();
+              }}
+              disabled={
+                !editor.can().chain().focus().setTextAlign('left').run()
+              }
+              className={
+                editor.isActive({ textAlign: 'left' }) ? 'is-active' : ''
+              }
+            >
+              <Image
+                unoptimized
+                src={'/images/svg/alignRight.svg'}
+                height={24}
+                width={24}
+                alt='alignLeft'
+              />
+            </MenuBtn>
+          </Tooltip>
+          <Tooltip title={'AlignRight'} placement='top-start'>
+            <MenuBtn
+              onClick={() => {
+                editor.chain().focus().setTextAlign('right').run();
+              }}
+              disabled={
+                !editor.can().chain().focus().setTextAlign('right').run()
+              }
+              className={
+                editor.isActive({ textAlign: 'right' }) ? 'is-active' : ''
+              }
+            >
+              <Image
+                unoptimized
+                src={'/images/svg/alignLeft.svg'}
+                height={24}
+                width={24}
+                alt='alignRight'
+              />
+            </MenuBtn>
+          </Tooltip>
+        </>
+      )}
 
       <Popover
         open={Boolean(anchorEl)}

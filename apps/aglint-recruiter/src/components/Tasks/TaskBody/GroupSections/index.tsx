@@ -31,7 +31,14 @@ function GroupSections({
   const [sectionIndex, setSectionIndex] = useState(false);
 
   return (
-    <Collapse in={index === sectionIndex || sectionIndex} collapsedSize={60}>
+    <Collapse
+      in={
+        index === sectionIndex ||
+        sectionIndex ||
+        Object.keys(item)[0] === 'applications'
+      }
+      collapsedSize={60}
+    >
       <TaskTableJobCard
         slotDropIcon={
           <ShowCode>

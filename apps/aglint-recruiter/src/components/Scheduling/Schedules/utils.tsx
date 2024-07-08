@@ -6,7 +6,10 @@ import { FilterOptionsType } from './types';
 
 export const filterOptions = [
   { name: 'status' as FilterOptionsType['name'], Icon: <FilterStatusIcon /> },
-  { name: 'member' as FilterOptionsType['name'], Icon: <FilterMemberIcon /> },
+  {
+    name: 'interviewer' as FilterOptionsType['name'],
+    Icon: <FilterMemberIcon />,
+  },
   { name: 'job' as FilterOptionsType['name'], Icon: <FilterJobIcon /> },
   {
     name: 'schedule_type' as FilterOptionsType['name'],
@@ -46,7 +49,7 @@ export function getListItems({
       }))
       .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i);
   }
-  if (filterType.name === 'member') {
+  if (filterType.name === 'interviewer') {
     const allMembers = allSchedules
       ?.map((ele) => [...(ele.users || [])])
       .flat();
