@@ -2547,12 +2547,12 @@ textarea.w-select {
   --error-2: var(--tomato-2);
   --tomato-1: #fffcfc;
   --error-1: var(--tomato-1);
-  --orange-a11: rgba(67, 18, 0, 0.89);
+  --orange-a11: #cc4e00;
   --accent-a11: var(--orange-a11);
-  --accent-a10: var(--accent-a11);
-  --orange-a12: #cc4e00;
+  --orange-a12: rgba(67, 18, 0, 0.89);
   --accent-a12: var(--orange-a12);
   --orange-a10: #ef5f00;
+  --accent-a10: var(--orange-a10);
   --orange-a9: rgba(246, 94, 0, 0.92);
   --accent-a9: var(--orange-a9);
   --orange-a8: rgba(227, 95, 0, 0.67);
@@ -2792,6 +2792,19 @@ strong {
 
 em {
   font-style: italic;
+}
+
+code {
+  display: inline;
+  height: 26px;
+  padding-right: 10px;
+  padding-left: 10px;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: var(--accent-3);
+
+  color: var(--accent-11);
 }
 
 blockquote {
