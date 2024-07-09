@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { DatabaseEnums, DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';

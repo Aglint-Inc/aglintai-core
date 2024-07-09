@@ -79,17 +79,21 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
       error: errReqAva,
     } = await supabase
       .from('candidate_request_availability')
-      .select('*')
+      .select('*, request_session_relation(session_id)')
       .eq('id', req_id);
 
     if (errReqAva) throw new Error(errReqAva.message);
 
-    const selectedSessions = reqAva.session_ids.map((reqses) => {
-      const session = initialSessions.find((ses) => ses.interview_session.id === reqses.id);
+    const selectedSessions = reqAva.request_session_relation.map((reqses) => {
+      const session = initialSessions.find(
+        (ses) => ses.interview_session.id === reqses.session_id,
+      );
       return session;
     });
 
-    const sessionsName = selectedSessions.map((ses) => ses.interview_session.name).join(' , ');
+    const sessionsName = selectedSessions
+      .map((ses) => ses.interview_session.name)
+      .join(' , ');
 
     const selectedMeetings: DatabaseTableInsert['interview_meeting'][] =
       selectedSessions.map((ses) => ({
@@ -123,7 +127,9 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
       checkFilterJson[0].session_ids.includes(ses.interview_session.id),
     );
 
-    const sessionsName = selectedSessions.map((ses) => ses.interview_session.name).join(' , ');
+    const sessionsName = selectedSessions
+      .map((ses) => ses.interview_session.name)
+      .join(' , ');
 
     if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
 
