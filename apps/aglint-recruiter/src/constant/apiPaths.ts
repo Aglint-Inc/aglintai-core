@@ -162,6 +162,7 @@ export const API_PATHS = [
 '/api/seed_calender',
 '/api/sendgrid',
 '/api/setMembersWithRole',
+'/api/setRoleAndPermission',
 '/api/signup',
 '/api/sitemap.xml',
 '/api/supabase/deleteuser',

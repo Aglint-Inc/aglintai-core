@@ -1,9 +1,5 @@
 "use client";
 
-console.warn(
-  "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
-);
-
 export * as _Builtin from "./_Builtin";
 export * from "./devlinkContext";
 export * from "./interactions";
@@ -279,6 +275,7 @@ export * from "./Page404";
 export * from "./Pagination";
 export * from "./PasswordUpdated";
 export * from "./PdfSelected";
+export * from "./Permissions";
 export * from "./PhoneScreenSuccess";
 export * from "./PhoneScreeningQ";
 export * from "./PhoneScreenings";
@@ -291,7 +288,10 @@ export * from "./ResetPassword";
 export * from "./ResumeFeedbackScore";
 export * from "./ResumeNotFound";
 export * from "./ResumeNotParsable";
+export * from "./RolesAndPermissions";
+export * from "./RolesAndPermissionsDetail";
 export * from "./RolesPill";
+export * from "./RolesRow";
 export * from "./SavedChanges";
 export * from "./SavedList";
 export * from "./SavedListLoader";
@@ -350,6 +350,7 @@ export * from "./UserDetails";
 export * from "./UserPasswordChange";
 export * from "./UserProfile";
 export * from "./UserTranscript";
+export * from "./UserWithRole";
 export * from "./ViewMoreSkills";
 export * from "./ViewTask";
 export * from "./WelcomeSlider1";
