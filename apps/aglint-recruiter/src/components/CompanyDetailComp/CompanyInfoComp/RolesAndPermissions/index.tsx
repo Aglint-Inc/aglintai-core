@@ -203,31 +203,6 @@ const useRoleAndPermissions = () => {
     ) || {};
   const handelUpdateRole = async (data: Parameters<typeof updateRole>['0']) => {
     return mutateAsync(data);
-    // .then((resData) => {
-    //   setRole((pre) => {
-    //     const permissions = pre.permissions.map((pre) => {
-    //       if (data.add === pre.id) {
-    //         return { ...pre, ...resData.addedPermissions, isActive: true };
-    //       }
-    //       // console.log(
-    //       //   data.delete,
-    //       //   pre.relation_id,
-    //       //   data.delete === pre.relation_id,
-    //       // );
-
-    //       if (data.delete === pre.relation_id) {
-    //         return { ...pre, relation_id: null, isActive: false };
-    //       }
-    //       return pre;
-    //     });
-
-    //     return { ...pre, permissions };
-    //   });
-    //   toast.success('Role updated successfully');
-    // })
-    // .catch((error) => {
-    //   toast.error(String(error));
-    // });
   };
   const [lastState, setLastState] = useState<{
     index: number;
@@ -260,19 +235,6 @@ const useRoleAndPermissions = () => {
             );
 
           setRole((pre) => {
-            // const permissions = pre.permissions.map((pre) => {
-            //   if (add === pre.id) {
-            //     return {
-            //       ...pre,
-            //       isActive: true,
-            //     };
-            //   }
-            //   if (toDelete === pre.relation_id) {
-            //     return { ...pre, relation_id: null, isActive: false };
-            //   }
-            //   return pre;
-            // });
-
             return {
               ...pre,
               permissions: tempData.rolesAndPermissions[role_id].permissions,
