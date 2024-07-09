@@ -86,7 +86,10 @@ export function filterSchedulingOptionsArray({
         }) as MultiDayPlanType,
     )
     .filter((comb) => comb.plans.length > 0);
-
+  let noConflictsCnt = 0;
+  let softConflictsCnt = 0;
+  let outWorkinHrsCnt = 0;
+  let hardConflictsCnt = 0;
   allCombs = allCombs.map((comb) => {
     let noConflicts: PlanCombinationRespType[] = [];
     let softConflicts: PlanCombinationRespType[] = [];
@@ -95,48 +98,57 @@ export function filterSchedulingOptionsArray({
 
     if (filters.isNoConflicts) {
       noConflicts = comb.plans.filter((option) =>
-        option.sessions.every((session) => !session.is_conflict),
+        option.sessions.every((session) => session.conflict_types.length === 0),
       );
     }
 
     if (filters.isSoftConflicts) {
-      softConflicts = comb.plans.filter((option) =>
-        option.sessions.every(
-          (session) =>
-            session.conflict_types.includes('soft') &&
-            !session.conflict_types.includes('out_of_working_hours'),
-        ),
+      softConflicts = comb.plans.filter(
+        (option) =>
+          option.sessions.some((s) => s.conflict_types.includes('soft')) &&
+          option.sessions.every(
+            (session) =>
+              session.conflict_types.length === 0 ||
+              (session.conflict_types.length === 1 &&
+                session.conflict_types.includes('soft')),
+          ),
       );
     }
 
     if (filters.isHardConflicts) {
-      hardConflicts = comb.plans.filter((option) =>
-        option.sessions.some(
-          (session) =>
-            !session.conflict_types.includes('soft') &&
-            !session.conflict_types.includes('out_of_working_hours'),
-        ),
+      hardConflicts = comb.plans.filter(
+        (option) =>
+          option.sessions.some((s) => s.conflict_types.length > 0) &&
+          option.sessions.every(
+            (s) =>
+              s.conflict_types.length === 0 ||
+              (!s.conflict_types.includes('soft') &&
+                !s.conflict_types.includes('out_of_working_hours')),
+          ),
       );
     }
 
     if (filters.isOutSideWorkHours) {
-      outsideWorkHours = comb.plans.filter((option) =>
-        option.sessions.some(
-          (session) =>
-            session.conflict_types.includes('out_of_working_hours') &&
-            !session.conflict_types.includes('soft'),
-        ),
+      outsideWorkHours = comb.plans.filter(
+        (option) =>
+          option.sessions.some((s) => s.conflict_types.length > 0) &&
+          option.sessions.some((session) =>
+            session.conflict_types.includes('out_of_working_hours'),
+          ),
       );
     }
 
-    const allConflicts = [
-      ...new Set([
-        ...noConflicts,
-        ...softConflicts,
-        ...hardConflicts,
-        ...outsideWorkHours,
-      ]),
+    const allConflicts: PlanCombinationRespType[] = [
+      ...noConflicts,
+      ...softConflicts,
+      ...hardConflicts,
+      ...outsideWorkHours,
     ];
+
+    noConflictsCnt += noConflicts.length;
+    softConflictsCnt += softConflicts.length;
+    outWorkinHrsCnt += outsideWorkHours.length;
+    hardConflictsCnt += hardConflicts.length;
 
     return {
       date_range: comb.date_range,
@@ -186,13 +198,12 @@ export function filterSchedulingOptionsArray({
   //       }) as MultiDayPlanType,
   //   );
   // }
-
   return {
     combs: allCombs,
-    numberNoConflicts: 0,
-    numberHardConflicts: 0,
-    numberSoftConflicts: 0,
-    numberOutsideWorkHours: 0,
+    numberNoConflicts: noConflictsCnt,
+    numberHardConflicts: hardConflictsCnt,
+    numberSoftConflicts: softConflictsCnt,
+    numberOutsideWorkHours: outWorkinHrsCnt,
   };
 }
 
