@@ -9,6 +9,9 @@ function FilterTasks() {
   const allResetShow = !!Object.values(filter)
     .map((ele) => ele.values)
     .flat().length;
+
+  const localData = JSON.parse(localStorage.getItem('taskFilters')) || {};
+
   return (
     <FilterHeader
       handelResetAll={handelResetFilter}
@@ -25,6 +28,8 @@ function FilterTasks() {
           type: 'filter',
           name: 'Candidate',
           options: filter.candidate.options,
+          filterSearch: true,
+          searchPlaceholder: 'Search candidates',
           setValue: (val) => {
             const preData =
               JSON.parse(localStorage.getItem('taskFilters')) || {};
@@ -35,7 +40,7 @@ function FilterTasks() {
               candidate: { ...filter.candidate, values: val },
             });
           },
-          value: filter.candidate.values,
+          value: localData?.Candidate || filter.candidate.values,
         },
         {
           type: 'filter',
@@ -51,7 +56,7 @@ function FilterTasks() {
               status: { ...filter.status, values: val },
             });
           },
-          value: filter.status.values,
+          value: localData?.Status || filter.status.values,
         },
         {
           type: 'filter',
@@ -67,12 +72,14 @@ function FilterTasks() {
               priority: { ...filter.priority, values: val },
             });
           },
-          value: filter.priority.values,
+          value: localData?.Priority || filter.priority.values,
         },
 
         {
           type: 'filter',
           name: 'Assignee',
+          filterSearch: true,
+          searchPlaceholder: 'Search Assignee',
           options: [
             { header: 'Agents', options: agentsDetails },
             { header: 'Members', options: filter.assignee.options },
@@ -87,11 +94,13 @@ function FilterTasks() {
               assignee: { ...filter.assignee, values: val },
             });
           },
-          value: filter.assignee.values,
+          value: localData?.Assignee || filter.assignee.values,
         },
         {
           type: 'filter',
           name: 'Job',
+          filterSearch: true,
+          searchPlaceholder: 'Search Job',
           options: filter.jobTitle.options,
           setValue: (val) => {
             const preData =
@@ -103,7 +112,7 @@ function FilterTasks() {
               jobTitle: { ...filter.jobTitle, values: val },
             });
           },
-          value: filter.jobTitle.values,
+          value: localData?.Job || filter.jobTitle.values,
         },
         {
           type: 'filter',
@@ -119,12 +128,12 @@ function FilterTasks() {
               type: { ...filter.type, values: val },
             });
           },
-          value: filter.type.values,
+          value: localData?.Type || filter.type.values,
         },
       ]}
       dateRangeSelector={{
         name: 'Interview Date',
-        values: filter.date.values,
+        values: localData?.Date || filter.date.values,
         setValue: (val) => {
           const preData = JSON.parse(localStorage.getItem('taskFilters')) || {};
           preData.Date = [...val];

@@ -61,6 +61,7 @@ export type FilterComponentType = {
   options: dynamicOptionsTypes;
   value: string[];
   filterSearch?: boolean;
+  searchPlaceholder?: string;
   // eslint-disable-next-line no-unused-vars
   setValue: (value: string[]) => void;
   isVisible?: boolean;
@@ -113,6 +114,7 @@ export function FiltersComponent({
     tempSF.push(tempFilters[Number(index)].name);
     setShowFilters(tempSF);
   }
+
   return (
     <>
       {filters
@@ -120,6 +122,7 @@ export function FiltersComponent({
           return item.isVisible;
         })
         .map((filter, index) => FilterSwitcher(filter, index))}
+
       {Boolean(showFilters) && (
         <AddFilterComp
           filterList={filters
@@ -143,7 +146,9 @@ function FilterSwitcher(filter: FilterTypes, index: number) {
         <FilterComponent
           key={index}
           name={capitalizeFirstLetter(filter.name || '')}
+          searchPlaceholder={filter.searchPlaceholder}
           options={filter.options}
+          filterSearch={filter.filterSearch}
           value={filter.value}
           setValue={(values) => {
             filter.setValue(values);
@@ -205,6 +210,7 @@ export function FilterComponent({
   setValue: setSelectedItems,
   value: selectedItems,
   filterSearch = false,
+  searchPlaceholder = '',
   icon,
 }: FilterComponentType) {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -276,6 +282,7 @@ export function FilterComponent({
                 optionList={itemList}
                 selectedItems={selectedItems}
                 searchFilter={filterSearch}
+                searchPlaceholder={searchPlaceholder}
                 setSelectedItems={(val) => {
                   let temp = [...selectedItems];
                   if (temp.includes(val)) {
@@ -617,11 +624,13 @@ function FilterOptionsList({
   selectedItems,
   optionList,
   searchFilter,
+  searchPlaceholder,
   setSelectedItems,
   nested = false,
 }: {
   selectedItems: string[];
   searchFilter: boolean;
+  searchPlaceholder?: string;
 } & (
   | {
       // eslint-disable-next-line no-unused-vars
@@ -645,6 +654,7 @@ function FilterOptionsList({
     }
 )) {
   const [search, setSearch] = React.useState('');
+
   const filteredOptions = optionList?.[0]
     ? (
         (typeof optionList[0] === 'object'
@@ -683,6 +693,7 @@ function FilterOptionsList({
         <UITextField
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          placeholder={searchPlaceholder}
         />
       )}
 
