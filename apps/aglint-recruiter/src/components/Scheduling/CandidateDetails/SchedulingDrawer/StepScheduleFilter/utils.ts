@@ -53,11 +53,6 @@ export function filterSchedulingOptionsArray({
   schedulingOptions: ApiResponseFindAvailability;
   filters: SchedulingFlow['filters'];
 }) {
-  let numberNoConflicts = 0;
-  let numberHardConflicts = 0;
-  let numberSoftConflicts = 0;
-  let numberOutsideWorkHours = 0;
-
   const allFilteredOptions: ApiResponseFindAvailability = schedulingOptions.map(
     (option) => ({
       ...option,
@@ -98,94 +93,49 @@ export function filterSchedulingOptionsArray({
     let hardConflicts: PlanCombinationRespType[] = [];
     let outsideWorkHours: PlanCombinationRespType[] = [];
 
-    const addedPlans = new Set();
-
     if (filters.isNoConflicts) {
-      noConflicts = comb.plans.filter((option) => {
-        const isNoConflict = option.sessions.every(
-          (session) => !session.is_conflict,
-        );
-        if (isNoConflict && !addedPlans.has(option)) {
-          addedPlans.add(option);
-          numberNoConflicts++;
-          return true;
-        }
-        return false;
-      });
-    }
-
-    if (filters.isOutSideWorkHours) {
-      outsideWorkHours = comb.plans.filter((option) => {
-        const isOutsideWorkHours = option.sessions.some(
-          (session) =>
-            session.conflict_types.includes('out_of_working_hours') &&
-            !session.conflict_types.includes('soft') &&
-            !session.conflict_types.includes('day_off') &&
-            !session.conflict_types.includes('cal_event') &&
-            !session.conflict_types.includes('calender_diconnected') &&
-            !session.conflict_types.includes('day_load_reached') &&
-            !session.conflict_types.includes('free_time') &&
-            !session.conflict_types.includes('holiday') &&
-            !session.conflict_types.includes('interviewer_paused') &&
-            !session.conflict_types.includes('ooo') &&
-            !session.conflict_types.includes('recruiting_blocks'),
-        );
-        if (isOutsideWorkHours && !addedPlans.has(option)) {
-          addedPlans.add(option);
-          numberOutsideWorkHours++;
-          return true;
-        }
-        return false;
-      });
+      noConflicts = comb.plans.filter((option) =>
+        option.sessions.every((session) => !session.is_conflict),
+      );
     }
 
     if (filters.isSoftConflicts) {
-      softConflicts = comb.plans.filter((option) => {
-        const hasSoftConflict = option.sessions.every(
+      softConflicts = comb.plans.filter((option) =>
+        option.sessions.every(
           (session) =>
-            !session.is_conflict ||
-            (session.conflict_types.includes('soft') &&
-              !session.conflict_types.includes('day_off') &&
-              !session.conflict_types.includes('cal_event') &&
-              !session.conflict_types.includes('calender_diconnected') &&
-              !session.conflict_types.includes('day_load_reached') &&
-              !session.conflict_types.includes('free_time') &&
-              !session.conflict_types.includes('holiday') &&
-              !session.conflict_types.includes('interviewer_paused') &&
-              !session.conflict_types.includes('ooo') &&
-              !session.conflict_types.includes('out_of_working_hours') &&
-              !session.conflict_types.includes('recruiting_blocks')),
-        );
-        if (hasSoftConflict && !addedPlans.has(option)) {
-          addedPlans.add(option);
-          numberSoftConflicts++;
-          return true;
-        }
-        return false;
-      });
+            session.conflict_types.includes('soft') &&
+            !session.conflict_types.includes('out_of_working_hours'),
+        ),
+      );
     }
 
     if (filters.isHardConflicts) {
-      hardConflicts = comb.plans.filter((option) => {
-        const hasHardConflict = option.sessions.some(
+      hardConflicts = comb.plans.filter((option) =>
+        option.sessions.some(
           (session) =>
             !session.conflict_types.includes('soft') &&
             !session.conflict_types.includes('out_of_working_hours'),
-        );
-        if (hasHardConflict && !addedPlans.has(option)) {
-          addedPlans.add(option);
-          numberHardConflicts++;
-          return true;
-        }
-        return false;
-      });
+        ),
+      );
+    }
+
+    if (filters.isOutSideWorkHours) {
+      outsideWorkHours = comb.plans.filter((option) =>
+        option.sessions.some(
+          (session) =>
+            session.conflict_types.includes('out_of_working_hours') &&
+            !session.conflict_types.includes('soft'),
+        ),
+      );
     }
 
     const allConflicts = [
-      ...noConflicts,
-      ...softConflicts,
-      ...hardConflicts,
-      ...outsideWorkHours,
+      ...new Set([
+        ...noConflicts,
+        ...softConflicts,
+        ...hardConflicts,
+        ...outsideWorkHours,
+      ]),
     ];
 
     return {
@@ -194,55 +144,55 @@ export function filterSchedulingOptionsArray({
     } as MultiDayPlanType;
   });
 
-  if (filters.preferredInterviewers.length > 0) {
-    allCombs = allCombs.map(
-      (comb) =>
-        ({
-          ...comb,
-          plans: comb.plans.sort((a, b) => {
-            const aHasPreferred = a.sessions.some((session) =>
-              hasPreferredInterviewers({ session, filters }),
-            )
-              ? 0
-              : 1;
-            const bHasPreferred = b.sessions.some((session) =>
-              hasPreferredInterviewers({ session, filters }),
-            )
-              ? 0
-              : 1;
-            return aHasPreferred - bHasPreferred;
-          }),
-        }) as MultiDayPlanType,
-    );
-  }
+  // if (filters.preferredInterviewers.length > 0) {
+  //   allCombs = allCombs.map(
+  //     (comb) =>
+  //       ({
+  //         ...comb,
+  //         plans: comb.plans.sort((a, b) => {
+  //           const aHasPreferred = a.sessions.some((session) =>
+  //             hasPreferredInterviewers({ session, filters }),
+  //           )
+  //             ? 0
+  //             : 1;
+  //           const bHasPreferred = b.sessions.some((session) =>
+  //             hasPreferredInterviewers({ session, filters }),
+  //           )
+  //             ? 0
+  //             : 1;
+  //           return aHasPreferred - bHasPreferred;
+  //         }),
+  //       }) as MultiDayPlanType,
+  //   );
+  // }
 
-  if (filters.isWorkLoad) {
-    allCombs = allCombs.map(
-      (comb) =>
-        ({
-          ...comb,
-          plans: comb.plans
-            .map((option) => {
-              const totalWorkload = option.sessions.reduce(
-                (acc, session) => acc + session.day_load_den,
-                0,
-              );
-              return {
-                ...option,
-                totalWorkload,
-              };
-            })
-            .sort((a, b) => a.totalWorkload - b.totalWorkload),
-        }) as MultiDayPlanType,
-    );
-  }
+  // if (filters.isWorkLoad) {
+  //   allCombs = allCombs.map(
+  //     (comb) =>
+  //       ({
+  //         ...comb,
+  //         plans: comb.plans
+  //           .map((option) => {
+  //             const totalWorkload = option.sessions.reduce(
+  //               (acc, session) => acc + session.day_load_den,
+  //               0,
+  //             );
+  //             return {
+  //               ...option,
+  //               totalWorkload,
+  //             };
+  //           })
+  //           .sort((a, b) => a.totalWorkload - b.totalWorkload),
+  //       }) as MultiDayPlanType,
+  //   );
+  // }
 
   return {
     combs: allCombs,
-    numberNoConflicts,
-    numberHardConflicts,
-    numberSoftConflicts,
-    numberOutsideWorkHours,
+    numberNoConflicts: 0,
+    numberHardConflicts: 0,
+    numberSoftConflicts: 0,
+    numberOutsideWorkHours: 0,
   };
 }
 
