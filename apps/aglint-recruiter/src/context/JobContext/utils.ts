@@ -150,13 +150,3 @@ export const validateString = (str: string) => {
 export const validateDescription = (str: string) => {
   return validateString(str) || str.length < 100;
 };
-
-export const hashCode = (str: string) => {
-  var hash = 0;
-  for (var i = 0; i < str.length; i++) {
-    var code = str.charCodeAt(i);
-    hash = (hash << 5) - hash + code;
-    hash = hash & hash;
-  }
-  return hash;
-};
