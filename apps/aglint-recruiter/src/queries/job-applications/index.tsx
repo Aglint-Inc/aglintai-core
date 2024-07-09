@@ -15,6 +15,7 @@ import {
 
 import { UploadApiFormData } from '@/src/apiUtils/job/candidateUpload/types';
 import { handleJobApi } from '@/src/apiUtils/job/utils';
+import type { ApplicationsParams } from '@/src/context/ApplicationsContext/hooks';
 import { ApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { Application } from '@/src/types/applications.types';
@@ -98,8 +99,8 @@ type ApplicationsAllQueryPrerequistes = {
 };
 
 type Params = ApplicationsAllQueryPrerequistes & {
-  filters: ApplicationsStore['filters'];
-  sort: ApplicationsStore['sort'];
+  filters: ApplicationsParams['filters'];
+  sort: ApplicationsParams['sort'];
   status: Application['status'];
 };
 
@@ -204,7 +205,7 @@ const getApplications = async ({
 };
 
 const resumeScoreRange = (
-  match: ApplicationsStore['filters']['resume_score'][number],
+  match: ApplicationsParams['filters']['resume_score'][number],
 ) => {
   switch (match) {
     case 'Top match':
@@ -222,7 +223,7 @@ const resumeScoreRange = (
 
 export const BADGE_CONSTANTS: {
   // eslint-disable-next-line no-unused-vars
-  [id in ApplicationsStore['filters']['badges'][number]]: number;
+  [id in ApplicationsParams['filters']['badges'][number]]: number;
 } = {
   careerGrowth: 89,
   jobStability: 89,
