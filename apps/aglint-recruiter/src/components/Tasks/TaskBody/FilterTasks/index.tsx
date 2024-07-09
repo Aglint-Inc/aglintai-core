@@ -38,7 +38,7 @@ function FilterTasks() {
               candidate: { ...filter.candidate, values: val },
             });
           },
-          value: localData?.Candidate || filter.candidate.values,
+          value: filter.candidate.values,
         },
         {
           type: 'filter',
@@ -54,7 +54,7 @@ function FilterTasks() {
               status: { ...filter.status, values: val },
             });
           },
-          value: localData?.Status || filter.status.values,
+          value: filter.status.values,
         },
         {
           type: 'filter',
@@ -70,7 +70,7 @@ function FilterTasks() {
               priority: { ...filter.priority, values: val },
             });
           },
-          value: localData?.Priority || filter.priority.values,
+          value: filter.priority.values,
         },
 
         {
@@ -92,7 +92,7 @@ function FilterTasks() {
               assignee: { ...filter.assignee, values: val },
             });
           },
-          value: localData?.Assignee || filter.assignee.values,
+          value: filter.assignee.values,
         },
         {
           type: 'filter',
@@ -110,7 +110,7 @@ function FilterTasks() {
               jobTitle: { ...filter.jobTitle, values: val },
             });
           },
-          value: localData?.Job || filter.jobTitle.values,
+          value: filter.jobTitle.values,
         },
         {
           type: 'filter',
@@ -126,12 +126,12 @@ function FilterTasks() {
               type: { ...filter.type, values: val },
             });
           },
-          value: localData?.Type || filter.type.values,
+          value: filter.type.values,
         },
       ]}
       dateRangeSelector={{
         name: 'Interview Date',
-        values: localData?.Date || filter.date.values,
+        values: filter.date.values,
         setValue: (val) => {
           const preData = JSON.parse(localStorage.getItem('taskFilters')) || {};
           preData.Date = [...val];
