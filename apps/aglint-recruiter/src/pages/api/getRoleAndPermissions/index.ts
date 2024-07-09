@@ -42,7 +42,7 @@ const getRoleAndPermissions = async (recruiter_id: string) => {
             ...acc[curr.roles.id],
             id: curr.role_id,
             name: curr.roles.name,
-            assignedTo: 0,
+            assignedTo: [],
             description: curr.roles.description,
             permissions: [
               ...(acc[curr.roles.id]?.permissions || []),
@@ -50,6 +50,7 @@ const getRoleAndPermissions = async (recruiter_id: string) => {
                 relation_id: curr.id,
                 id: curr.permission_id,
                 name: null,
+                title: null,
                 description: null,
                 isActive: true,
               },
@@ -61,11 +62,12 @@ const getRoleAndPermissions = async (recruiter_id: string) => {
           [roles: string]: {
             id: string;
             name: string;
-            assignedTo: number;
+            assignedTo: string[];
             description: string;
             permissions: {
               relation_id: string;
               id: number;
+              title: string;
               name: DatabaseEnums['permissions_type'];
               description: string;
               isActive: boolean;
@@ -78,7 +80,7 @@ const getRoleAndPermissions = async (recruiter_id: string) => {
     .then(async (rolesAndPermissions) => {
       const permission = await supabase
         .from('permissions')
-        .select('id,name, description')
+        .select('id, name, title, description')
         .eq('is_enable', true)
         .throwOnError()
         .then(({ data }) => {
@@ -87,6 +89,7 @@ const getRoleAndPermissions = async (recruiter_id: string) => {
               acc[curr.id] = {
                 id: curr.id,
                 name: curr.name,
+                title: curr.title,
                 description: curr.description,
                 isActive: false,
               };
@@ -96,6 +99,7 @@ const getRoleAndPermissions = async (recruiter_id: string) => {
               [permission: number]: {
                 id: number;
                 name: DatabaseEnums['permissions_type'];
+                title: string;
                 description: string;
                 isActive: boolean;
               };
@@ -122,21 +126,20 @@ const getRoleAndPermissionsWithUserCount = async (recruiter_id: string) => {
   let rolesAndPermissionsDetails = await getRoleAndPermissions(recruiter_id);
   return supabase
     .from('recruiter_relation')
-    .select('role_id')
+    .select('role_id, user_id')
     .eq('recruiter_id', recruiter_id)
     .throwOnError()
     .then(({ data }) => {
-      const count = data.reduce(
-        (acc, curr) => {
-          acc[curr.role_id] = (acc[curr.role_id] || 0) + 1;
-          return acc;
-        },
-        {} as { [key: string]: number },
-      );
       Object.keys(rolesAndPermissionsDetails.rolesAndPermissions).map(
         (item) => {
           rolesAndPermissionsDetails.rolesAndPermissions[item].assignedTo =
-            count[rolesAndPermissionsDetails.rolesAndPermissions[item].id] || 0;
+            data
+              .filter(
+                (di) =>
+                  di.role_id ==
+                  rolesAndPermissionsDetails.rolesAndPermissions[item].id,
+              )
+              .map((item) => item.user_id) || [];
         },
       );
       return rolesAndPermissionsDetails;

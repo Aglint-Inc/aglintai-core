@@ -24,26 +24,28 @@ export default async function handler(
     async ({ requesterDetails, body }) => {
       const { recruiter_id } = requesterDetails;
       const { add, delete: toDelete, role_id } = body;
-      if (toDelete.length) {
-        await supabase.from('role_permissions').delete().in('id', toDelete);
+
+      if (!(add || toDelete))
+        throw new Error('No permission added or deleted is required');
+      if (toDelete) {
+        await supabase.from('role_permissions').delete().eq('id', toDelete);
       }
       let temp_added: SetRoleAndPermissionAPI['response']['addedPermissions'] =
-        [];
-      if (add.length) {
+        null;
+      if (add) {
         const { data } = await supabase
           .from('role_permissions')
-          .insert(
-            add.map((item) => ({ recruiter_id, permission_id: item, role_id })),
-          )
+          .insert({ recruiter_id, permission_id: add, role_id })
           .select('id, permission_id')
+          .single()
           .throwOnError();
-        temp_added = data.map((item) => ({
-          id: item.permission_id,
-          relation_id: item.id,
-        }));
+        temp_added = {
+          id: data.permission_id,
+          relation_id: data.id,
+        };
       }
       return { success: true, addedPermissions: temp_added };
     },
-    ['add', 'delete', 'role_id'],
+    ['role_id'],
   );
 }

@@ -1,7 +1,7 @@
 export type SetRoleAndPermissionAPI = {
   request: {
-    delete: string[];
-    add: number[];
+    delete: string;
+    add: number;
     role_id: string;
   };
   response: {
@@ -9,6 +9,6 @@ export type SetRoleAndPermissionAPI = {
     addedPermissions: {
       relation_id: string;
       id: number;
-    }[];
+    };
   };
 };
