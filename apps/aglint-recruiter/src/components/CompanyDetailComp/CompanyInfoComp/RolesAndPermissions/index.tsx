@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Avatar, Skeleton, Stack } from '@mui/material';
+import { Avatar, Skeleton } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 
@@ -368,7 +368,6 @@ function RoleDetails({
               textDescription={description}
               textTitle={capitalizeFirstLetter(module)}
               slotToggleWithText={permissions?.map((permission) => {
-                console.log(module, permission);
                 if (!permission) return null;
                 return (
                   <ToggleWithText
@@ -585,5 +584,3 @@ const app_modules: {
     permissions: ['settings_roles_enable', 'settings_roles_update'],
   },
 ];
-
-const temp_modules = app_modules.map((item) => item.name);
