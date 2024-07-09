@@ -469,7 +469,7 @@ const handleBulkCsvUpload = async (payload: HandleUploadCsv) => {
 
 export const useMoveApplications = (
   payload: ApplicationsAllQueryPrerequistes,
-  source: ApplicationsStore['section'],
+  source: ApplicationsParams['section'],
   applications: ApplicationsStore['checklist'],
 ) => {
   const queryClient = useQueryClient();
