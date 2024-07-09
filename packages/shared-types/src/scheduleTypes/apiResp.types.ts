@@ -85,7 +85,15 @@ export type PlanCombinationRespType = {
 export type DateRangePlansType = {
   interview_start_day: string;
   interview_rounds: {
-    curr_round_date: string;
+    curr_date: string;
+    plans: PlanCombinationRespType[];
+  }[];
+};
+
+export type CandReqSlotsType = {
+  current_round: number;
+  selected_dates: {
+    curr_date: string;
     plans: PlanCombinationRespType[];
   }[];
 };
