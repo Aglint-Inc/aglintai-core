@@ -214,20 +214,17 @@ const AuthProvider = ({ children }) => {
         role: recruiterRel.roles.name,
         role_id: recruiterRel.role_id,
         manager_id: recruiterRel.manager_id,
+        created_by: recruiterRel.created_by,
       });
       setRecruiter({
         ...recruiterRel.recruiter,
         socials: recruiterRel.recruiter?.socials as unknown as SocialsType,
       });
       setLoading(false);
-      if (
-        [
-          'admin',
-          'recruiter',
-          'hiring_manager',
-          'recruiting_coordinator',
-        ].includes(recruiterRel.role)
-      ) {
+
+      const role = recruiterRel.roles.name;
+
+      if (role !== 'interviewer') {
         await getMembersFromDB();
       }
     } else {

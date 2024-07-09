@@ -1,3 +1,4 @@
+import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -28,6 +29,7 @@ type ItemType = string;
 const TeamManagement = () => {
   const { recruiterUser, setMembers, handelMemberUpdate } = useAuthDetails();
   const { data: members, isFetching } = useTeamMembers();
+
   const [openDrawer, setOpenDrawer] = useState<{
     open: boolean;
     window: 'addMember' | 'pendingMember';
@@ -285,7 +287,7 @@ const TeamManagement = () => {
           memberList={members
             .map((mem) => ({
               id: mem.user_id,
-              name: `${mem.first_name} ${mem.last_name}`.trim(),
+              name: getFullName(mem.first_name, mem.last_name),
             }))
             .filter((mem) => mem.id !== editMember.user_id)}
           member={editMember}
@@ -299,7 +301,7 @@ const TeamManagement = () => {
           menu={openDrawer.window}
           memberList={members.map((mem) => ({
             id: mem.user_id,
-            name: `${mem.first_name} ${mem.last_name}`.trim(),
+            name: getFullName(mem.first_name, mem.last_name),
           }))}
           pendingList={pendingList}
           onClose={() => {
@@ -327,9 +329,7 @@ const useTeamMembers = () => {
         });
       });
     },
-    initialData: [] as unknown as ((typeof members)[number] & {
-      last_login: string;
-    })[],
+    placeholderData: [],
     enabled: Boolean(members?.length),
     refetchOnWindowFocus: false,
     refetchOnMount: false,
