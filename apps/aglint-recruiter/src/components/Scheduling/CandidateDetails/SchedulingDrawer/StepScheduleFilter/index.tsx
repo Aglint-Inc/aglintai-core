@@ -19,10 +19,6 @@ function StepScheduleFilter() {
     }),
   );
 
-  const { selectedSessionIds } = useSchedulingApplicationStore((state) => ({
-    selectedSessionIds: state.selectedSessionIds,
-  }));
-
   const {
     numberHardConflicts,
     numberNoConflicts,
@@ -34,7 +30,6 @@ function StepScheduleFilter() {
       filterSchedulingOptionsArray({
         schedulingOptions,
         filters,
-        selectedSessionsNo: selectedSessionIds.length,
       }),
     [filters],
   );

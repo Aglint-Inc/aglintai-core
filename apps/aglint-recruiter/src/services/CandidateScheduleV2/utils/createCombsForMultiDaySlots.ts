@@ -21,10 +21,12 @@ export const createCombsForMultiDaySlots = (
     }
 
     let current_round = curr_int_day_combs[curr_round_idx];
+
     // if for any rounds plans are empty
     if (current_round.plans.length === 0) {
       return null;
     }
+
     if (!final_combs) {
       final_combs = {
         date_range: [current_round.curr_date],
@@ -36,6 +38,7 @@ export const createCombsForMultiDaySlots = (
       const next_day_combs: PlanCombinationRespType[] = [
         ...current_round.plans,
       ];
+
       for (let final_slot of final_combs.plans) {
         for (let nextdaySlot of next_day_combs) {
           if (
