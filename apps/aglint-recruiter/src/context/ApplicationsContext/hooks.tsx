@@ -1,5 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
@@ -8,23 +10,186 @@ import {
   useMoveApplications,
   useUpdateApplication,
 } from '@/src/queries/job-applications';
+import { Application } from '@/src/types/applications.types';
+import { capitalize } from '@/src/utils/text/textUtils';
 
 import { useApplicationStore } from '../ApplicationContext/store';
 import { useJob } from '../JobContext';
-import { ApplicationsStore, useApplicationsStore } from './store';
+import { useApplicationsStore } from './store';
+
+const filterParams = [
+  'bookmarked',
+  'search',
+  'badges',
+  'resume_score',
+] as const;
+
+type FilterKeys = (typeof filterParams)[number];
+
+type FilterValues = {
+  bookmarked: boolean;
+  search: Application['name'];
+  badges: (keyof Application['badges'])[];
+  resume_score: (
+    | 'Top match'
+    | 'Good match'
+    | 'Average match'
+    | 'Poor match'
+    | 'Not a match'
+  )[];
+};
+
+// eslint-disable-next-line no-unused-vars
+type Filters = { [id in FilterKeys]: FilterValues[id] };
+
+const sortParams = ['type', 'order'] as const;
+
+type SortKeys = (typeof sortParams)[number];
+
+type SortValue = {
+  type:
+    | keyof Pick<
+        Application,
+        'resume_score' | 'applied_at' | 'name' | 'latest_activity'
+      >
+    | 'location';
+  order: 'asc' | 'desc';
+};
+
+const sectionDefaults: Application['status'] = 'new';
+const filterDefaults: Filters = {
+  badges: [],
+  bookmarked: false,
+  resume_score: [],
+  search: '',
+};
+const sortDefaults: SortValue = {
+  type: 'latest_activity',
+  order: 'desc',
+};
+
+// eslint-disable-next-line no-unused-vars
+type Sort = { [id in SortKeys]: SortValue[id] };
+
+export const useApplicationsParams = () => {
+  const { locations, setLocations, resetChecklist } = useApplicationsStore(
+    ({ locations, setLocations, resetChecklist }) => ({
+      locations,
+      setLocations,
+      resetChecklist,
+    }),
+  );
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const section = useMemo(
+    () =>
+      JSON.parse(decodeURIComponent(searchParams.get('section'))) ??
+      sectionDefaults,
+    [searchParams, sectionDefaults],
+  );
+
+  const filters = useMemo(
+    () =>
+      filterParams.reduce((acc, curr) => {
+        acc[curr] =
+          JSON.parse(decodeURIComponent(searchParams.get(curr))) ??
+          (filterDefaults[curr] as Filters[typeof curr]);
+        return acc;
+      }, {}) as Filters,
+    [filterParams, searchParams],
+  );
+
+  const sort = useMemo(
+    () =>
+      sortParams.reduce((acc, curr) => {
+        acc[curr] =
+          JSON.parse(
+            decodeURIComponent(searchParams.get(`sort${capitalize(curr)}`)),
+          ) ?? (sortDefaults[curr] as Sort[typeof curr]);
+        return acc;
+      }, {}) as Sort,
+    [sortParams, searchParams],
+  );
+
+  const safeFilters = useMemo(
+    () => ({ ...filters, locations }),
+    [filters, locations],
+  );
+
+  const getParams = useCallback(
+    (
+      newParams: Partial<
+        typeof filters & typeof sort & { section: typeof section }
+      >,
+    ) => {
+      if (locations) setLocations(locations);
+      return Object.entries(newParams ?? {}).map(
+        ([key, value]) => `${key}=${encodeURIComponent(JSON.stringify(value))}`,
+      );
+    },
+    [router],
+  );
+
+  const setFilters = useCallback(
+    (filters: Partial<typeof safeFilters>) => {
+      const { locations, ...rest } = filters;
+      if (locations) setLocations(locations);
+      Object.entries(rest ?? {}).forEach(([key, value]) => {
+        router.query[key] = encodeURIComponent(JSON.stringify(value));
+      });
+      router.replace(router);
+    },
+    [router],
+  );
+
+  const setSort = useCallback(
+    (newSort: Partial<typeof sort>) => {
+      Object.entries(newSort ?? {}).forEach(([key, value]) => {
+        router.query[`sort${capitalize(key)}`] = encodeURIComponent(
+          JSON.stringify(value),
+        );
+      });
+      router.replace(router);
+    },
+    [router],
+  );
+
+  const setSection = useCallback(
+    (newSection: typeof section) => {
+      router.query['section'] = encodeURIComponent(JSON.stringify(newSection));
+      resetChecklist();
+      router.replace(router);
+    },
+    [router, resetChecklist],
+  );
+
+  return {
+    section,
+    setSection,
+    filters: safeFilters,
+    setFilters,
+    sort,
+    setSort,
+    getParams,
+  };
+};
+
+export type ApplicationsParams = ReturnType<typeof useApplicationsParams>;
 
 export const useApplicationsActions = () => {
   const { jobLoad, job, job_id, applicationScoringPollEnabled } = useJob();
-  const { filters, sort, section, checklist, resetChecklist } =
-    useApplicationsStore(
-      ({ filters, sort, section, checklist, resetChecklist }) => ({
-        filters,
-        sort,
-        section,
-        checklist,
-        resetChecklist,
-      }),
-    );
+
+  const { checklist, resetChecklist } = useApplicationsStore(
+    ({ checklist, resetChecklist }) => ({
+      checklist,
+      resetChecklist,
+    }),
+  );
+
+  const { filters, section, sort, setFilters, setSort, setSection } =
+    useApplicationsParams();
 
   const [params, setParams] = useState({ filters, sort });
   const ref = useRef(true);
@@ -227,6 +392,11 @@ export const useApplicationsActions = () => {
     cascadeVisibilites,
     sectionApplication,
     locationFilterOptions,
+    filters,
+    sort,
+    setFilters,
+    setSort,
+    setSection,
     handleUpdateApplication,
     handleAsyncUpdateApplication,
     handleMoveApplications,
@@ -237,7 +407,7 @@ export const useApplicationsActions = () => {
 
 const EMAIL_VISIBILITIES: {
   // eslint-disable-next-line no-unused-vars
-  [id in ApplicationsStore['section']]: ApplicationsStore['section'][];
+  [id in ApplicationsParams['section']]: ApplicationsParams['section'][];
 } = {
   new: ['disqualified'],
   screening: ['new'],
@@ -249,7 +419,7 @@ const EMAIL_VISIBILITIES: {
 
 const CASCADE_VISIBILITIES: {
   // eslint-disable-next-line no-unused-vars
-  [id in ApplicationsStore['section']]: ApplicationsStore['section'][];
+  [id in ApplicationsParams['section']]: ApplicationsParams['section'][];
 } = {
   new: [
     'new',

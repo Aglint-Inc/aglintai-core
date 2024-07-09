@@ -3,7 +3,7 @@ import { capitalize, Stack } from '@mui/material';
 import { type Ref, forwardRef, useEffect, useState } from 'react';
 
 import { NewTabPill } from '@/devlink3/NewTabPill';
-import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
+import { useApplications } from '@/src/context/ApplicationsContext';
 import { useJob } from '@/src/context/JobContext';
 import type { Application } from '@/src/types/applications.types';
 
@@ -18,12 +18,7 @@ const Tab = forwardRef(
   ) => {
     const { job } = useJob();
 
-    const { section, changeSection } = useApplicationsStore(
-      ({ section, changeSection }) => ({
-        section,
-        changeSection,
-      }),
-    );
+    const { section, setSection } = useApplications();
 
     const [normalize, setNormalize] = useState(false);
 
@@ -40,7 +35,7 @@ const Tab = forwardRef(
     return (
       <Stack
         ref={dropRef}
-        onClick={() => changeSection(status)}
+        onClick={() => setSection(status)}
         style={{ position: 'relative', cursor: 'pointer', width: '180px' }}
       >
         <NewTabPill
