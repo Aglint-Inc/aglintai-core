@@ -5,6 +5,7 @@ import { ButtonGhost } from "./ButtonGhost";
 import { Text } from "./Text";
 import { Permissions } from "./Permissions";
 import { UserWithRole } from "./UserWithRole";
+import { GlobalEmptyState } from "./GlobalEmptyState";
 import * as _utils from "./utils";
 import _styles from "./RolesAndPermissionsDetail.module.css";
 
@@ -16,6 +17,7 @@ export function RolesAndPermissionsDetail({
   slotBackButton,
   textUserCount = "Users (5)",
   textRoleName = "Role Name",
+  textUserDescription = "These are the users with this role.",
 }) {
   return (
     <_Component
@@ -99,10 +101,7 @@ export function RolesAndPermissionsDetail({
             tag="div"
           >
             <Text content={textUserCount} weight="medium" />
-            <Text
-              content="These are the users with this role."
-              color="neutral"
-            />
+            <Text content={textUserDescription} color="neutral" />
             <_Builtin.Block
               className={_utils.cx(_styles, "userwithrole-wrap")}
               tag="div"
@@ -114,6 +113,7 @@ export function RolesAndPermissionsDetail({
                   <UserWithRole />
                   <UserWithRole />
                   <UserWithRole />
+                  <GlobalEmptyState iconName="" textDesc="" />
                 </>
               )}
             </_Builtin.Block>

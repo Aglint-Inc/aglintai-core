@@ -9,4 +9,5 @@ declare function RolesAndPermissionsDetail(props: {
   slotBackButton?: Types.Devlink.Slot;
   textUserCount?: React.ReactNode;
   textRoleName?: React.ReactNode;
+  textUserDescription?: React.ReactNode;
 }): React.JSX.Element;

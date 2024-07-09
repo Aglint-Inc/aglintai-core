@@ -5,6 +5,8 @@
   flex-wrap: nowrap;
   grid-column-gap: var(--space-5);
   grid-row-gap: var(--space-5);
+
+  background-color: var(--white);
 }
 
 .flex-v1 {
