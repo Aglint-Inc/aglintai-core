@@ -4,7 +4,6 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import AllList from './AllList';
 import { useFilterCandidateStore } from './filter-store';
 import AllFilters from './Filters';
-import AddFilterComp from './Filters/FilterMenu';
 import { useAllInterviewSchedules } from './queries/hooks';
 import SlotPagination from './SlotPagination';
 
@@ -37,7 +36,7 @@ function AllSchedules() {
             isLoading={isLoading}
           />
         }
-        slotAddFilter={<AddFilterComp />}
+        slotAddFilter={''}
         slotFilterButton={<AllFilters />}
         slotAllInterviewCard={
           <AllList

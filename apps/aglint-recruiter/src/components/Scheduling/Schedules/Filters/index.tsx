@@ -4,7 +4,6 @@ import _ from 'lodash';
 import { MouseEvent, useEffect, useState, useTransition } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { FilterList } from '@/devlink2/FilterList';
 import { FilterPill } from '@/devlink2/FilterPill';
 import SearchField from '@/src/components/Common/SearchField/SearchField';
@@ -296,7 +295,7 @@ function Filters() {
       })}
 
       <ShowCode.When isTrue={selectedFilters.length !== filterOptions.length}>
-        <ButtonSoft
+        <ButtonGhost
           size={'2'}
           isLeftIcon={true}
           isRightIcon={false}
@@ -312,6 +311,7 @@ function Filters() {
           textButton='Reset All'
           size={2}
           isLeftIcon={true}
+          color={'neutral'}
           iconSize={4}
           iconName='refresh'
           onClickButton={{
