@@ -8,16 +8,15 @@ import { MoveCandidate } from './moveCandidate';
 const Actions = () => {
   const {
     job: { flags },
+    section,
   } = useApplications();
-  const { checklist, setChecklist, section, setActionPopup } =
-    useApplicationsStore(
-      ({ checklist, setChecklist, section, setActionPopup }) => ({
-        checklist,
-        setChecklist,
-        section,
-        setActionPopup,
-      }),
-    );
+  const { checklist, setChecklist, setActionPopup } = useApplicationsStore(
+    ({ checklist, setChecklist, setActionPopup }) => ({
+      checklist,
+      setChecklist,
+      setActionPopup,
+    }),
+  );
   const count = checklist.length;
   return (
     <>
