@@ -260,7 +260,9 @@ export function filterSchedulingOptionsArray({
           ...outSideWorkHours,
         ]);
 
-        return [...allFilteredOptionsSet];
+        return [...allFilteredOptionsSet].filter(
+          (option) => option.sessions.length > 0,
+        );
       }),
   );
 

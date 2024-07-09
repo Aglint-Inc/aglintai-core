@@ -6,14 +6,6 @@
   background-color: white;
 }
 
-.date_option_chcek {
-  display: flex;
-  width: 20px;
-  padding-top: 6px;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
-
 .date_option_list_wrap {
   width: 100%;
 }
@@ -32,6 +24,63 @@
   cursor: pointer;
 }
 
+.flex_h4 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.date_option_chcek-copy {
+  position: relative;
+  z-index: 4;
+
+  display: flex;
+  padding-right: 22px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.embed_flex {
+  display: flex;
+  align-items: center;
+}
+
+.embed_flex.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+.embed_flex.custom_top {
+  margin-top: 2px;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.embed_flex.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.embed_flex.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.embed_flex.fixedd {
+  width: 23px;
+}
+
 .flex_hr_10 {
   display: flex;
   flex-direction: row;
@@ -45,11 +94,6 @@
 .flex_hr_10.relative_2 {
   grid-column-gap: var(--space-1);
   grid-row-gap: var(--space-1);
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
 }
 
 .flex_hr_10.disabled_text {
@@ -112,10 +156,6 @@
   opacity: 0.8;
 }
 
-.cursor-pointer {
-  cursor: pointer;
-}
-
 .icons.pointer {
   cursor: pointer;
 }
@@ -152,36 +192,6 @@
   cursor: not-allowed;
 }
 
-.embed_flex {
-  display: flex;
-  align-items: center;
-}
-
-.embed_flex.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-}
-
-.embed_flex.custom_top {
-  margin-top: 2px;
-}
-
-.embed_flex.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.embed_flex.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.embed_flex.fixedd {
-  width: 23px;
-}
-
 .flex_hr_20 {
   display: flex;
   flex-direction: row;
@@ -201,8 +211,9 @@
 .slot_schedule_option {
   display: flex;
   overflow: hidden;
+  padding: 8px 0px;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: var(--space-3);
-  grid-row-gap: var(--space-3);
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }

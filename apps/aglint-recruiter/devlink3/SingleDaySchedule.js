@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { SlotComp } from "./SlotComp";
+import { SessionDetails } from "./SessionDetails";
 import * as _utils from "./utils";
 import _styles from "./SingleDaySchedule.module.css";
 
@@ -77,7 +78,12 @@ export function SingleDaySchedule({
         className={_utils.cx(_styles, "schedule_option_expandeed")}
         tag="div"
       >
-        {slotSessionDetails ?? <SlotComp componentNeme="Session Details" />}
+        {slotSessionDetails ?? (
+          <>
+            <SessionDetails />
+            <SessionDetails />
+          </>
+        )}
       </_Builtin.Block>
     </_Component>
   );
