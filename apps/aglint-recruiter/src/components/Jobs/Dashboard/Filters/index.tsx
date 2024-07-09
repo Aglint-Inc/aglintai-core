@@ -1,10 +1,12 @@
 import { Stack } from '@mui/material';
+import _ from 'lodash';
 import { useMemo, useState } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { Job } from '@/src/queries/jobs/types';
 
 import FilterHeader from '../../../Common/FilterHeader';
+import { initalFilterValue } from '..';
 
 function FilterJobDashboard({
   filterOptions,
@@ -23,10 +25,12 @@ function FilterJobDashboard({
   sortOptions: ReturnType<typeof useJobFilterAndSort>['sortOptions'];
   handlerResetFilter: () => void;
 }) {
+  const isResetAll = _.isEqual(filterValues, initalFilterValue);
+
   return (
     <Stack width={'100%'}>
       <FilterHeader
-        isResetAll={true}
+        isResetAll={!isResetAll}
         handelResetAll={handlerResetFilter}
         filters={[
           {
