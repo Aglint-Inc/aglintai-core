@@ -26,7 +26,6 @@ export function ScorePercentage({
         tag="div"
       >
         <_Builtin.Block tag="div">{slotInputPercent}</_Builtin.Block>
-        <Text content="%" />
       </_Builtin.Block>
     </_Component>
   );
