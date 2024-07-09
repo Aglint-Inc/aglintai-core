@@ -8,7 +8,6 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
 import { ApiBodyParamsScheduleAgentWithoutTaskId } from '@/src/pages/api/scheduling/application/schedulewithagentwithouttaskid';
 import { ApiBodyParamsSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
-import { createCombsForMultiDaySlots } from '@/src/services/CandidateScheduleV2/utils/createCombsForMultiDaySlots';
 import toast from '@/src/utils/toast';
 
 import { useGetScheduleApplication } from '../hooks';
@@ -127,26 +126,6 @@ export const useSelfSchedulingDrawer = () => {
     }
   };
 
-  const generateCombinations = () => {
-    const { allFilteredOptions } = filterSchedulingOptionsArray({
-      filters,
-      schedulingOptions,
-    });
-    const combs = createCombsForMultiDaySlots(allFilteredOptions).flatMap(
-      (comb) => comb,
-    );
-    if (combs.length === 0) {
-      toast.warning('No combinations found for the selected preferences.');
-    } else if (combs.length > 5000) {
-      toast.warning(
-        'Too many combinations found. Please filter it further by adding prefered date ranges and conflict resolution.',
-      );
-    } else {
-      setFilteredSchedulingOptions(combs);
-      setStepScheduling('slot_options');
-    }
-  };
-
   const onClickSendToCandidate = async () => {
     try {
       setIsSendingToCandidate(true);
@@ -163,6 +142,14 @@ export const useSelfSchedulingDrawer = () => {
         return;
       }
 
+      const plans = filteredSchedulingOptions.map((opt) => opt.plans).flat();
+      const selectedDebrief = plans.find(
+        (opt) => selectedCombIds[0] === opt.plan_comb_id,
+      );
+      const selectedSlots = plans.filter((opt) =>
+        selectedCombIds.includes(opt.plan_comb_id),
+      );
+
       const bodyParams: ApiBodyParamsSendToCandidate = {
         dateRange,
         initialSessions,
@@ -171,14 +158,10 @@ export const useSelfSchedulingDrawer = () => {
         recruiterUser,
         selectedApplication,
         selectedSessionIds,
-        selectedDebrief: filteredSchedulingOptions.find(
-          (opt) => opt.plan_comb_id === selectedCombIds[0],
-        ),
+        selectedDebrief,
         user_tz: dayjs.tz.guess(),
         selectedApplicationLog,
-        selectedSlots: filteredSchedulingOptions.filter((opt) =>
-          selectedCombIds.includes(opt.plan_comb_id),
-        ),
+        selectedSlots,
         task_id,
       };
       const res = await axios.post(
@@ -238,8 +221,6 @@ export const useSelfSchedulingDrawer = () => {
 
       if (res.status === 200) {
         const slots = res.data as ApiResponseFindAvailability;
-
-        console.log(slots);
 
         if (slots.length === 0) {
           setNoOptions(true);

@@ -156,48 +156,49 @@ export function filterSchedulingOptionsArray({
     } as MultiDayPlanType;
   });
 
-  // if (filters.preferredInterviewers.length > 0) {
-  //   allCombs = allCombs.map(
-  //     (comb) =>
-  //       ({
-  //         ...comb,
-  //         plans: comb.plans.sort((a, b) => {
-  //           const aHasPreferred = a.sessions.some((session) =>
-  //             hasPreferredInterviewers({ session, filters }),
-  //           )
-  //             ? 0
-  //             : 1;
-  //           const bHasPreferred = b.sessions.some((session) =>
-  //             hasPreferredInterviewers({ session, filters }),
-  //           )
-  //             ? 0
-  //             : 1;
-  //           return aHasPreferred - bHasPreferred;
-  //         }),
-  //       }) as MultiDayPlanType,
-  //   );
-  // }
+  if (filters.preferredInterviewers.length > 0) {
+    allCombs = allCombs.map(
+      (comb) =>
+        ({
+          ...comb,
+          plans: comb.plans.sort((a, b) => {
+            const aHasPreferred = a.sessions.some((session) =>
+              hasPreferredInterviewers({ session, filters }),
+            )
+              ? 0
+              : 1;
+            const bHasPreferred = b.sessions.some((session) =>
+              hasPreferredInterviewers({ session, filters }),
+            )
+              ? 0
+              : 1;
+            return aHasPreferred - bHasPreferred;
+          }),
+        }) as MultiDayPlanType,
+    );
+  }
 
-  // if (filters.isWorkLoad) {
-  //   allCombs = allCombs.map(
-  //     (comb) =>
-  //       ({
-  //         ...comb,
-  //         plans: comb.plans
-  //           .map((option) => {
-  //             const totalWorkload = option.sessions.reduce(
-  //               (acc, session) => acc + session.day_load_den,
-  //               0,
-  //             );
-  //             return {
-  //               ...option,
-  //               totalWorkload,
-  //             };
-  //           })
-  //           .sort((a, b) => a.totalWorkload - b.totalWorkload),
-  //       }) as MultiDayPlanType,
-  //   );
-  // }
+  if (filters.isWorkLoad) {
+    allCombs = allCombs.map(
+      (comb) =>
+        ({
+          ...comb,
+          plans: comb.plans
+            .map((option) => {
+              const totalWorkload = option.sessions.reduce(
+                (acc, session) => acc + session.day_load_den,
+                0,
+              );
+              return {
+                ...option,
+                totalWorkload,
+              };
+            })
+            .sort((a, b) => a.totalWorkload - b.totalWorkload),
+        }) as MultiDayPlanType,
+    );
+  }
+  
   return {
     combs: allCombs,
     numberNoConflicts: noConflictsCnt,
