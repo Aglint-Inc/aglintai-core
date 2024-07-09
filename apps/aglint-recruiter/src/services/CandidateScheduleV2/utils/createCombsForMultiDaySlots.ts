@@ -27,40 +27,43 @@ export const createCombsForMultiDaySlots = (
     }
     if (!final_combs) {
       final_combs = {
-        date_range: [],
-        plans: [],
+        date_range: [current_round.curr_date],
+        plans: [...current_round.plans],
       };
-    }
-    final_combs.date_range.push(current_round.curr_date);
-    const temp_combs: PlanCombinationRespType[] = [];
-    const next_day_combs: PlanCombinationRespType[] = [...current_round.plans];
-    for (let final_slot of final_combs.plans) {
-      for (let nextdaySlot of next_day_combs) {
-        if (
-          final_slot.no_slot_reasons.length > 0 ||
-          nextdaySlot.no_slot_reasons.length > 0
-        ) {
-          temp_combs.push({
-            plan_comb_id: nanoid(),
-            no_slot_reasons: [
-              ...final_slot.no_slot_reasons,
-              ...nextdaySlot.no_slot_reasons,
-            ],
-            sessions: [],
-          });
-        } else {
-          temp_combs.push({
-            plan_comb_id: nanoid(),
-            sessions: [],
-            no_slot_reasons: [
-              ...final_slot.no_slot_reasons,
-              ...nextdaySlot.no_slot_reasons,
-            ],
-          });
+    } else {
+      final_combs.date_range.push(current_round.curr_date);
+      const temp_combs: PlanCombinationRespType[] = [];
+      const next_day_combs: PlanCombinationRespType[] = [
+        ...current_round.plans,
+      ];
+      for (let final_slot of final_combs.plans) {
+        for (let nextdaySlot of next_day_combs) {
+          if (
+            final_slot.no_slot_reasons.length > 0 ||
+            nextdaySlot.no_slot_reasons.length > 0
+          ) {
+            temp_combs.push({
+              plan_comb_id: nanoid(),
+              no_slot_reasons: [
+                ...final_slot.no_slot_reasons,
+                ...nextdaySlot.no_slot_reasons,
+              ],
+              sessions: [],
+            });
+          } else {
+            temp_combs.push({
+              plan_comb_id: nanoid(),
+              sessions: [],
+              no_slot_reasons: [
+                ...final_slot.no_slot_reasons,
+                ...nextdaySlot.no_slot_reasons,
+              ],
+            });
+          }
         }
       }
+      final_combs.plans = cloneDeep(temp_combs);
     }
-    final_combs.plans = cloneDeep(temp_combs);
 
     return findMultiDaySlot(
       final_combs,
