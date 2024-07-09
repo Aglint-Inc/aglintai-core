@@ -16,12 +16,14 @@ export function EmailPreviewOnScheduling({
   slotSelectedScheduleOptions,
   slotButton,
   showSelectedSchedules = false,
+  insertedIn = "self-scheduling-link",
 }) {
   return (
     <_Component tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "emailpreview_schedule")}
         tag="div"
+        data-inserted-in={insertedIn}
       >
         {showSelectedSchedules ? (
           <_Builtin.Block
@@ -81,6 +83,7 @@ export function EmailPreviewOnScheduling({
           </>
         )}
       </_Builtin.Block>
+      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%5Bdata-inserted-in%3D%22request-availability%22%5D%7B%0A%09padding%3A0%20!important%3B%0A%20%20height%3Aauto%3B%0A%7D%0A%3C%2Fstyle%3E" />
     </_Component>
   );
 }

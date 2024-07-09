@@ -1,4 +1,6 @@
-import { DatabaseEnums } from '@aglint/shared-types';
+import {
+  DatabaseEnums
+} from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
@@ -56,11 +58,10 @@ function ToolBar() {
         toast.message('Please select status.');
         return;
       }
-      const tempTasks = cloneDeep(selectedTasks).map((item) => {
-        delete item.applications;
-        item.status = reason === 'close_tasks' ? 'closed' : selectedStatus;
-        return item;
-      });
+      const tempTasks = cloneDeep(selectedTasks).map((item) => ({
+        id: item.id,
+        status: reason === 'close_tasks' ? 'closed' : selectedStatus,
+      }));
       handelUpdateTask(tempTasks);
       for (let task of selectedTasks) {
         await createTaskProgress({
@@ -73,7 +74,7 @@ function ToolBar() {
                 ' ' +
                 (recruiterUser.last_name ?? ''),
             },
-            progress_type: 'standard',
+            progress_type: task.latest_progress.progress_type,
             task_id: task.id,
           },
           optionData: {
@@ -97,12 +98,11 @@ function ToolBar() {
         toast.message('Please select priority.');
         return;
       }
-      const tempTasks = cloneDeep(selectedTasks).map((item) => {
-        delete item.applications;
-        item.priority = selectedPriority;
-        return item;
-      });
-      handelUpdateTask(tempTasks);
+      const tempTasks = selectedTasks.map((item) => ({
+        id: item.id,
+        priority: selectedPriority,
+      }));
+      handelUpdateTask([...tempTasks]);
       toast.message(
         `Set ${selectedTasksIds.length} ${selectedTasksIds.length === 1 ? 'task' : 'tasks'} to ${selectedPriority} priority.`,
       );
@@ -112,22 +112,15 @@ function ToolBar() {
         toast.message('Please select assignee.');
         return;
       }
-      const tempTasks = cloneDeep(selectedTasks).map((item) => {
-        delete item.applications;
-        item.assignee = [selectedAssignee.user_id];
-        item.status =
-          selectedAssignee.user_id === EmailAgentId ||
-          selectedAssignee.user_id === PhoneAgentId
-            ? 'scheduled'
-            : 'not_started';
-        if (selectedTriggerTime) {
-          item.start_date = isImmediate
-            ? dayjs().add(5, 'minute').toString()
-            : dayjs(selectedTriggerTime).toString();
-        }
-        return item;
-      });
-      handelUpdateTask(tempTasks);
+      const tempTasks = cloneDeep(selectedTasks).map((item) => ({
+        id: item.id,
+        status: 'closed' as DatabaseEnums['task_status'],
+        assignee: [selectedAssignee.user_id],
+        start_date: isImmediate
+          ? dayjs().add(5, 'minute').toString()
+          : dayjs(selectedTriggerTime).toString(),
+      }));
+      handelUpdateTask([...tempTasks]);
       for (let task of selectedTasks) {
         const currentAssignee = assignerList.find(
           (ele) => ele.user_id === task.assignee[0],
@@ -142,7 +135,7 @@ function ToolBar() {
                 ' ' +
                 (recruiterUser.last_name ?? ''),
             },
-            progress_type: 'standard',
+            progress_type: task.latest_progress.progress_type,
             task_id: task.id,
           },
           optionData: {
@@ -176,7 +169,12 @@ function ToolBar() {
   }
 
   return (
-    <Stack py={'var(--space-5)'} px={'40px'} direction={'row'} spacing={'var(--space-5)'}>
+    <Stack
+      py={'var(--space-5)'}
+      px={'40px'}
+      direction={'row'}
+      spacing={'var(--space-5)'}
+    >
       <TaskUpdateButton
         textTaskSelected={`${selectedTasksIds.length} tasks selected`}
         onClickCloseTask={{
