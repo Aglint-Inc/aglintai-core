@@ -5,6 +5,7 @@ import axios from 'axios';
 import converter from 'number-to-words';
 import { useEffect, useState, useTransition } from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { TeamUsersList } from '@/devlink/TeamUsersList';
 import { TeamEmpty } from '@/devlink3/TeamEmpty';
@@ -145,6 +146,18 @@ const TeamManagement = () => {
     setFilteredMembers(members);
   }
 
+  function resetAllFilter() {
+    setSelectedStatus([]);
+    setSelectedRoles([]);
+    setSelectedDepartments([]);
+    setSelectedLocations([]);
+  }
+
+  const isResetAllVisible =
+    Boolean(selectedStatus.length) ||
+    Boolean(selectedDepartments.length) ||
+    Boolean(selectedRoles.length) ||
+    Boolean(selectedLocations.length);
   return (
     <>
       <TeamUsersList
@@ -163,6 +176,18 @@ const TeamManagement = () => {
               flexDirection={'row'}
               gap={'var(--space-2)'}
             >
+              {isResetAllVisible && (
+                <ButtonGhost
+                  textButton='Reset All'
+                  color={'neutral'}
+                  size={2}
+                  iconName='refresh'
+                  isLeftIcon
+                  onClickButton={{
+                    onClick: resetAllFilter,
+                  }}
+                />
+              )}
               <FilterDropDown
                 icon={<StatusIcon />}
                 title={'Status'}
