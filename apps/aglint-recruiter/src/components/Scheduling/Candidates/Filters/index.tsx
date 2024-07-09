@@ -10,6 +10,7 @@ import {
 import FilterCordinator from './FilterCordinator';
 import FilterInterviewModule from './FilterInterviewModule';
 import FilterJob from './FilterJob';
+import AddFilterComp from './FilterMenu';
 import FilterScheduleType from './FilterScheduleType';
 import FilterSearchField from './FilterSearchField';
 import FilterStatus from './FilterStatus';
@@ -23,6 +24,7 @@ function AllFilters() {
     setFilterVisible(initalAllFilterShow as FilterType[]);
   }, []);
 
+  const isResetVisiable = isInitialState();
   return (
     <>
       <FilterSearchField />
@@ -42,14 +44,15 @@ function AllFilters() {
             return null;
         }
       })}
-      {isInitialState() && (
+      <AddFilterComp />
+      {isResetVisiable && (
         <ButtonGhost
           textButton='Reset All'
           onClickButton={{
             onClick: reset,
           }}
           size={2}
-          color={'error'}
+          color={'neutral'}
           isLeftIcon
           iconName='refresh'
         />

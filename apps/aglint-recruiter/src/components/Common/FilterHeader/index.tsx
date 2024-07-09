@@ -45,7 +45,7 @@ export default function FilterHeader({
               textButton='Reset All'
               size={2}
               iconName='refresh'
-              color={'error'}
+              color={'neutral'}
               isLeftIcon
               onClickButton={{ onClick: handelResetAll }}
             />

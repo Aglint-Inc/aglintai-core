@@ -137,7 +137,7 @@ function Filters({ setFilteredInterviewer }) {
           <ButtonGhost
             textButton='Reset All'
             size={2}
-            color={'error'}
+            color={'neutral'}
             iconName='refresh'
             isLeftIcon
             onClickButton={{

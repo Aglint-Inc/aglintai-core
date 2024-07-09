@@ -1,7 +1,7 @@
 import { Popover } from '@mui/material';
 import React from 'react';
 
-import { AddFilter } from '@/devlink2/AddFilter';
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { AllInterviewFilter } from '@/devlink2/AllInterviewFilter';
 
 import {
@@ -41,8 +41,12 @@ function AddFilterComp() {
     <>
       <>
         {filterVisible.length !== FILTERS_LENGTH && (
-          <AddFilter
-            onClickAddFilter={{
+          <ButtonGhost
+            textButton='Add Filter'
+            size={2}
+            iconName='add'
+            isLeftIcon
+            onClickButton={{
               onClick: (e) => {
                 handleClick(e);
               },
