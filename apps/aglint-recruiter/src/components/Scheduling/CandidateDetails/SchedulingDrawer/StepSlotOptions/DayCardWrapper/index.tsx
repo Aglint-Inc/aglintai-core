@@ -95,8 +95,6 @@ function DayCardWrapper({
     selectedCombIds.includes(slot.plan_comb_id),
   ).length;
 
-  console.log(item);
-
   return (
     <>
       <DateOption

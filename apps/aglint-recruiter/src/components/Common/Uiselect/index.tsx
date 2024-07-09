@@ -70,6 +70,7 @@ const UISelect = ({
       <Stack
         style={{
           position: 'relative',
+          height: '36px',
         }}
       >
         <Stack style={{ position: 'absolute', width: '100%', height: '100%' }}>
@@ -102,7 +103,7 @@ const UISelect = ({
             )}
           </Select>
         </Stack>
-        {placeHolder && !value && (
+        {placeHolder && (value === null || value === undefined) && (
           <Stack
             style={{
               position: 'absolute',

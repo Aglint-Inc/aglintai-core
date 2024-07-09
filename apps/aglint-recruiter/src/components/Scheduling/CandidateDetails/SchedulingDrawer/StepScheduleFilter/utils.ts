@@ -12,7 +12,7 @@ export const filterByDateRanges = ({
   preferredDateRanges,
 }: {
   schedulingOptions: {
-    curr_round_date: string;
+    curr_date: string;
     plans: PlanCombinationRespType[];
   };
   preferredDateRanges: SchedulingFlow['filters']['preferredDateRanges'];
@@ -22,7 +22,7 @@ export const filterByDateRanges = ({
   }
 
   return {
-    curr_round_date: schedulingOptions.curr_round_date,
+    ...schedulingOptions,
     plans: schedulingOptions.plans.filter((option) => {
       return option.sessions.every((session) => {
         return preferredDateRanges.some((dateRange) => {
@@ -165,65 +165,20 @@ export function filterSchedulingOptionsArray({
       }),
     }),
   );
-
-  const combs = [];
-
-  // const combs = createCombsForMultiDaySlots(allFilteredOptions).flatMap(
-  //   (comb) => comb,
-  // );
-
   console.log(allFilteredOptions, 'allFilteredOptions');
 
-  const numberNoConflicts = combs
-    .map((comb) => comb.sessions.filter((session) => !session.is_conflict))
-    .filter((comb) => {
-      return comb.length === selectedSessionsNo;
-    });
+  const combs = createCombsForMultiDaySlots(schedulingOptions).flatMap(
+    (comb) => comb,
+  );
 
-  const numberHardConflicts = combs
-    .map((comb) =>
-      comb.sessions.filter((session) =>
-        session.ints_conflicts.some((conflict) =>
-          conflict.conflict_reasons.some(
-            (reason) =>
-              reason.conflict_type !== 'soft' &&
-              reason.conflict_type !== 'out_of_working_hours',
-          ),
-        ),
-      ),
-    )
-    .filter((comb) => comb.length === selectedSessionsNo);
-
-  const numberSoftConflicts = combs
-    .map((comb) =>
-      comb.sessions.filter((session) =>
-        session.ints_conflicts.some((conflict) =>
-          conflict.conflict_reasons.some(
-            (reason) => reason.conflict_type === 'soft',
-          ),
-        ),
-      ),
-    )
-    .filter((comb) => comb.length === selectedSessionsNo);
-
-  const numberOutsideWorkHours = combs
-    .map((comb) =>
-      comb.sessions.filter((session) =>
-        session.ints_conflicts.some((conflict) =>
-          conflict.conflict_reasons.some(
-            (reason) => reason.conflict_type === 'out_of_working_hours',
-          ),
-        ),
-      ),
-    )
-    .filter((comb) => comb.length === selectedSessionsNo);
+  console.log(combs, 'combs');
 
   return {
     combs: combs,
-    numberNoConflicts: numberNoConflicts.length,
-    numberHardConflicts: numberHardConflicts.length,
-    numberSoftConflicts: numberSoftConflicts.length,
-    numberOutsideWorkHours: numberOutsideWorkHours.length,
+    numberNoConflicts: 0,
+    numberHardConflicts: 0,
+    numberSoftConflicts: 0,
+    numberOutsideWorkHours: 0,
   };
 }
 

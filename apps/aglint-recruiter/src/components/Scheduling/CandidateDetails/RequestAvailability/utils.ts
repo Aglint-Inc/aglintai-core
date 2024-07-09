@@ -4,7 +4,6 @@ import {
   DatabaseTable,
   SessionCombinationRespType,
 } from '@aglint/shared-types';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import axios from 'axios';
 
 import { ApiResponseFindAvailability } from '../types';
@@ -95,7 +94,7 @@ export function filterSchedulingOptionsArray({
     const [curr_round_slots] = curr_day_slots.interview_rounds;
 
     if (curr_round_slots.plans[0].no_slot_reasons.length === 0) {
-      const curr_day_str = curr_round_slots.curr_round_date;
+      const curr_day_str = curr_round_slots.curr_date;
       let filtered_slots = curr_round_slots.plans.filter((option) => {
         if (option.sessions.every((s) => !s.is_conflict)) return true;
 

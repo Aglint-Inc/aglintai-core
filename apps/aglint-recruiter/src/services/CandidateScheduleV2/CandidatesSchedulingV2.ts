@@ -3,6 +3,7 @@ import {
   APIFindAvailability,
   APIOptions,
   CalConflictType,
+  CandReqSlotsType,
   ConflictReason,
   DatabaseTable,
   DateRangePlansType,
@@ -248,14 +249,14 @@ export class CandidatesSchedulingV2 {
       session_rounds,
       this.api_options.make_training_optional,
     );
-    let all_combs: PlanCombinationRespType[][][] = [];
+    let all_combs: CandReqSlotsType[] = [];
     for (
       let curr_round_idx = 0;
       curr_round_idx < session_rounds.length;
       ++curr_round_idx
     ) {
       const current_round_int_combs = ints_combs_for_each_round[curr_round_idx];
-      const current_round_combs: PlanCombinationRespType[][] = [];
+      const current_round_combs: DateRangePlansType['interview_rounds'] = [];
       for (let curr_date_slots of cand_selected_slots[curr_round_idx].dates) {
         const cand_date = userTzDayjs(curr_date_slots.curr_day).tz(
           this.api_payload.candidate_tz,
@@ -274,10 +275,16 @@ export class CandidatesSchedulingV2 {
             curr_day_combs.push({ ...comb });
           }
         });
-        current_round_combs.push([...curr_day_combs]);
+        current_round_combs.push({
+          curr_date: cand_date.format(),
+          plans: [...curr_day_combs],
+        });
       }
 
-      all_combs.push([...current_round_combs]);
+      all_combs.push({
+        current_round: curr_round_idx + 1,
+        selected_dates: [...current_round_combs],
+      });
     }
     return all_combs;
   };
@@ -414,7 +421,7 @@ export class CandidatesSchedulingV2 {
       }
 
       final_combs.push({
-        curr_round_date: curr_date.format(),
+        curr_date: curr_date.format(),
         plans: [...combs],
       });
 
