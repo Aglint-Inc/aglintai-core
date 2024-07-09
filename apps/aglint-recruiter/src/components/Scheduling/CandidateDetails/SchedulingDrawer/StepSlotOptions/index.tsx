@@ -69,8 +69,6 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
     }
   }, []);
 
-  console.log('filteredSchedulingOptions', filteredSchedulingOptions);
-
   return (
     <Stack height={'calc(100vh - 96px)'}>
       <ScheduleOptionsList

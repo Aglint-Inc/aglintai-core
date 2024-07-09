@@ -1,5 +1,6 @@
 import {
   APIConfirmRecruiterSelectedOption,
+  CandReqSlotsType,
   PlanCombinationRespType,
   SessionCombinationRespType,
 } from '@aglint/shared-types';
@@ -177,16 +178,12 @@ function RequestAvailabilityDrawer() {
                   }
                   slotButton={
                     <Stack direction={'column'} spacing={2}>
-                      {selectedDateSlots?.map((item, index) => {
-                        const date = item.dateSlots[0]?.sessions[0]?.start_time;
+                      {availableSlots?.map((item, index) => {
                         return (
                           <DayCardWrapper
                             key={index}
                             selectedCombIds={[]}
-                            item={{
-                              dateArray: [date],
-                              plans: item.dateSlots,
-                            }}
+                            item={item.selected_dates}
                             onClickSelect={() => {}}
                             isDayCollapseNeeded={false}
                             isSlotCollapseNeeded={false}
@@ -270,7 +267,7 @@ async function getRequestAvailabilityDetails(request_id: string) {
           user_tz: userTzDayjs.tz.guess(),
         },
       );
-      return data as PlanCombinationRespType[][][];
+      return data as CandReqSlotsType[];
     } catch (error) {
       throw error;
     }
