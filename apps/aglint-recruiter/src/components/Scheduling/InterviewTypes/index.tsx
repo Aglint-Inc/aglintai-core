@@ -86,7 +86,7 @@ export function Modules() {
                       onClick: filterReset,
                     }}
                     isLeftIcon
-                    color={'error'}
+                    color={'neutral'}
                   />
                 )}
               </Stack>

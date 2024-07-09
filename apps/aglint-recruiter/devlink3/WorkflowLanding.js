@@ -23,15 +23,20 @@ export function WorkflowLanding({
         className={_utils.cx(_styles, "slot_workflow_card")}
         tag="div"
       >
-        {slotWorkflowCard ?? (
-          <>
-            <WorkflowEmpty />
-            <WorkflowCard />
-            <WorkflowCard />
-            <WorkflowCard />
-            <WorkflowCard />
-          </>
-        )}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "slot_workflow_card-copy")}
+          tag="div"
+        >
+          {slotWorkflowCard ?? (
+            <>
+              <WorkflowEmpty />
+              <WorkflowCard />
+              <WorkflowCard />
+              <WorkflowCard />
+              <WorkflowCard />
+            </>
+          )}
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

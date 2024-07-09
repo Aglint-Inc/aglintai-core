@@ -1,19 +1,11 @@
 import { DatabaseEnums } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { AvailableOptionCardDate } from '@/devlink2/AvailableOptionCardDate';
 import { OptionAvailable } from '@/devlink2/OptionAvailable';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import {
-  setIsScheduleNowOpen,
-  setStepScheduling,
-} from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/store';
-import { setRescheduleSessionIds } from '@/src/components/Scheduling/CandidateDetails/store';
 import { getFullName } from '@/src/utils/jsonResume';
 
 export type meetingCardType = {
@@ -43,16 +35,11 @@ function SessionCard({
   indOpt,
   ses,
   sessionList,
-  applicationId,
 }: {
   indOpt: number;
   ses: meetingCardType;
   sessionList: meetingCardType[];
-  applicationId: string;
 }) {
-  // const timeZone = dayjs.tz.guess();
-  const router = useRouter();
-
   const localTime = new Date().toTimeString();
   const timeZonea = localTime.substring(
     localTime.lastIndexOf('(') + 1,
@@ -113,35 +100,6 @@ function SessionCard({
           </>
         }
       />
-      <Stack
-        width={'100%'}
-        direction={'row'}
-        spacing={2}
-        justifyContent={'end'}
-      >
-        <ButtonSolid
-          size={1}
-          textButton={'Reschedule'}
-          onClickButton={{
-            onClick: () => {
-              setRescheduleSessionIds(sessionList.map((session) => session.id));
-              setStepScheduling('reschedule');
-              // setSelectedApplicationLog(act);
-              setIsScheduleNowOpen(true);
-              router.push(`/scheduling/application/${applicationId}`);
-            },
-          }}
-        />
-        <ButtonSoft
-          onClickButton={{
-            onClick: () => {
-              router.push(`/scheduling/application/${applicationId}`);
-            },
-          }}
-          size={1}
-          textButton={'View'}
-        />
-      </Stack>
     </>
   );
 }

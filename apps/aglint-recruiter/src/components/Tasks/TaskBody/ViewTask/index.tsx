@@ -246,19 +246,24 @@ function ViewTaskDrawer() {
             }
             slotButtonFilter={
               <>
-                <ButtonFilter
-                  textLabel={'Action'}
-                  fontSize={'1'}
-                  slotRightIcon={
-                    <GlobalIcon iconName={'keyboard_arrow_down'} />
-                  }
-                  slotLeftIcon={<></>}
-                  onClickStatus={{
-                    onClick: (e) => {
-                      handleClick(e);
-                    },
-                  }}
-                />
+                {selectedTask &&
+                  selectedTask.latest_progress?.progress_type !== 'closed' &&
+                  selectedTask.latest_progress?.progress_type !==
+                    'completed' && (
+                    <ButtonFilter
+                      textLabel={'Action'}
+                      fontSize={'1'}
+                      slotRightIcon={
+                        <GlobalIcon iconName={'keyboard_arrow_down'} />
+                      }
+                      slotLeftIcon={<></>}
+                      onClickStatus={{
+                        onClick: (e) => {
+                          handleClick(e);
+                        },
+                      }}
+                    />
+                  )}
 
                 <Popover
                   id={id}

@@ -155,6 +155,8 @@ const TipTapAIEditor = ({
           <Stack
             position={'relative'}
             sx={{
+              pointerEvents: disabled ? 'none' : 'auto',
+              opacity: disabled ? 0.5 : 1,
               backgroundColor: 'var(--white)',
               borderRadius: borderRadius || 'var(--radius-2)',
               // maxHeight: maxHeight,

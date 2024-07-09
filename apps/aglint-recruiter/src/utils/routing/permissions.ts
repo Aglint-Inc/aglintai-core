@@ -126,8 +126,8 @@ const PERMISSIONS: Permissions = {
   ],
   '/api/emails/confirmInterview_email_applicant': ['scheduler_enabled'],
   '/api/emails/preview': ['scheduler_enabled'],
-  '/api/roleAndPermission': ['settings_roles_update'],
   '/api/getRoleAndPermissions': ['settings_roles_update'],
+  '/api/setRoleAndPermission': ['settings_roles_update'],
 };
 
 export default PERMISSIONS;

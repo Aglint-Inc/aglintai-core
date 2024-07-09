@@ -1,4 +1,10 @@
-import { Popover, Stack, Typography } from '@mui/material';
+import {
+  List,
+  ListItemButton,
+  Popover,
+  Stack,
+  Typography,
+} from '@mui/material';
 import React, { ReactNode } from 'react';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
@@ -217,7 +223,7 @@ const SortOptionsDropDown = ({
           },
         }}
       >
-        {newFunction(itemList, id, setSelectedItem, handleClose)}
+        <List>{newFunction(itemList, id, setSelectedItem, handleClose)}</List>
       </Popover>
     </>
   );
@@ -236,11 +242,8 @@ function newFunction(
       isRemoveVisible={false}
       slotOption={itemList.map((item) => {
         return (
-          <Stack
-            key={id}
-            direction={'row'}
-            sx={{ alignItems: 'center' }}
-            spacing={1}
+          <ListItemButton
+            key={item.id}
             onClick={() => {
               setSelectedItem(item.id);
               handleClose();
@@ -255,7 +258,7 @@ function newFunction(
             >
               {capitalizeFirstLetter(item.label)}
             </Typography>
-          </Stack>
+          </ListItemButton>
         );
       })}
       onClickReset={{

@@ -1,0 +1,83 @@
+.role_permissions_topbar {
+  display: flex;
+  height: 48px;
+  padding-right: var(--space-4);
+  padding-left: var(--space-4);
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-bottom: 1px solid var(--neutral-6);
+}
+
+.role_permissions_body {
+  overflow: auto;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  height: calc(100vh - 97px);
+}
+
+.role_detail_layout {
+  display: grid;
+  max-width: 10000px;
+  grid-auto-columns: 1fr;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
+  grid-template-columns: 1fr max-content;
+  grid-template-rows: auto auto;
+}
+
+.permission_detail {
+  display: flex;
+  padding: var(--space-4);
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
+}
+
+.count_permissions {
+  padding: var(--space-3);
+  border-radius: var(--radius-3);
+  background-color: var(--neutral-3);
+}
+
+.slot_permission_card {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
+}
+
+.current_users {
+  display: flex;
+  width: 350px;
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-4);
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.userwithrole-wrap {
+  display: flex;
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-3);
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
+}
+
+#w-node-_298a1f26-d31a-bc9f-70a8-82c16a1d8d94-6a1d8d94 {
+}
+#w-node-_298a1f26-d31a-bc9f-70a8-82c16a1d8d9d-6a1d8d94 {
+}
+#w-node-_298a1f26-d31a-bc9f-70a8-82c16a1d8da5-6a1d8d94 {
+}
