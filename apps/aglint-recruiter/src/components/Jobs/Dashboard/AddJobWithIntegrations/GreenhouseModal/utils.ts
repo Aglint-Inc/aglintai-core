@@ -9,7 +9,6 @@ import {
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-import { hashCode } from '@/src/context/JobContext/utils';
 import { JobInsert } from '@/src/queries/jobs/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -254,7 +253,6 @@ export const createJobObject = async (
         },
         department: recruiter?.departments?.[0] ?? null,
       },
-      description_hash: hashCode(post?.content ?? ''),
       location: post.location.name,
       job_title: post.title,
       status: 'draft',

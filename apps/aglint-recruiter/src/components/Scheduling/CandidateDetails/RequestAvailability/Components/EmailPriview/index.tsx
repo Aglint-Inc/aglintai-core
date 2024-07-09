@@ -86,7 +86,7 @@ function EmailPreview({
           <ShowCode.Else>
             <iframe
               width={'600px'}
-              height={'620px'}
+              height={'720px'}
               color='white'
               srcDoc={emailData?.html}
               title='Previw Email'

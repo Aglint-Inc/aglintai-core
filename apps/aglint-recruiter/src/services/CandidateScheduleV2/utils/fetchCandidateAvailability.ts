@@ -7,7 +7,7 @@ export const fetchCandidateAvailability = async (request_id: string) => {
     await supabaseAdmin
       .from('candidate_request_availability')
       .select(
-        'session_ids,slots,availability,date_range,applications(candidates(timezone)),recruiter_id',
+        'slots,availability,date_range,applications(candidates(timezone)),recruiter_id, request_session_relation(session_id)',
       )
       .eq('id', request_id),
   );
@@ -31,7 +31,9 @@ export const fetchCandidateAvailability = async (request_id: string) => {
   });
   zod_options.return_empty_slots_err = true;
   return {
-    session_ids: avail_details.session_ids.map((s) => s.id),
+    session_ids: avail_details.request_session_relation.map(
+      (s) => s.session_id,
+    ),
     candidate_selected_slots: avail_details.slots,
     start_date_str: avail_details.date_range[0],
     end_date_str: avail_details.date_range[1],

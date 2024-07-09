@@ -12,7 +12,6 @@ import OpenAI from 'openai';
 import { ChatCompletionMessageParam } from 'openai/resources';
 
 import { distributeScoreWeights } from '@/src/components/Jobs/Job/Profile-Score';
-import * as hooks from '@/src/context/JobContext/utils';
 
 export const openai = new OpenAI({
   apiKey: process.env.OPENAI_KEY,
@@ -95,12 +94,10 @@ Job description: ${(job.draft as any).description}`,
       skills: arrItemToReactArr([...json.skills]),
       educations: arrItemToReactArr([...json.educations]),
     };
-    const descriptionHash = hooks.hashCode((job.draft as any).description);
     const weights = distributeScoreWeights(j);
     const payload = {
       jd_json: j,
       draft: { ...(job.draft as any), jd_json: j },
-      description_hash: descriptionHash,
       scoring_criteria_loading: false,
       parameter_weights: weights,
       dashboard_warnings: { ...job?.dashboard_warnings, score_changed: false },

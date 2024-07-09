@@ -238,8 +238,8 @@ const WorkflowBrowser = () => {
       onClose={() => handleClose()}
       sx={{
         '& .MuiPaper-root': {
-          width: '992px !important',
-          maxWidth: '992px !important',
+          width: '600px !important',
+          maxWidth: '600px !important',
         },
       }}
     >

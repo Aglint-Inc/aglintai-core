@@ -29,7 +29,6 @@ function FilterJob() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   const open = Boolean(anchorEl);
   const id = open ? 'jobs-filter' : undefined;
 
@@ -105,7 +104,11 @@ function FilterJob() {
                   <Stack
                     key={job.id}
                     direction={'row'}
-                    sx={{ alignItems: 'center', ':hover':{bgcolor:'var(--neutral-2)'}, borderRadius:'var(--radius-2)' }}
+                    sx={{
+                      alignItems: 'center',
+                      ':hover': { bgcolor: 'var(--neutral-2)' },
+                      borderRadius: 'var(--radius-2)',
+                    }}
                     spacing={1}
                     padding={'var(--space-2) var(--space-3)'}
                     marginTop={'0px !important'}
@@ -126,7 +129,7 @@ function FilterJob() {
                       }}
                       onClick={() => handleFilterClick(job.id)}
                     >
-                      {job.job_title}
+                      {job.job_title} ({job.section_count.interview})
                     </Typography>
                   </Stack>
                 );

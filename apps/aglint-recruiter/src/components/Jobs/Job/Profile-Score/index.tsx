@@ -30,6 +30,7 @@ import ScoreWheel, {
 import UITextField from '@/src/components/Common/UITextField';
 import { useJob } from '@/src/context/JobContext';
 import { useJobDashboard } from '@/src/context/JobDashboard';
+import { palette } from '@/src/context/Theme/Theme';
 import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/jobs/types';
 import { capitalize } from '@/src/utils/text/textUtils';
@@ -188,16 +189,19 @@ const ProfileScoreControls = () => {
               }}
               textTitle={'Experience'}
               slotInputPercent={
-                <>
-                  <UITextField
-                    name='experience'
-                    type='number'
-                    width='70px'
-                    value={weights.experience}
-                    onChange={(e) => handleChange(e)}
-                    disabled={disabled.experience}
-                  />
-                </>
+                <UITextField
+                  name='experience'
+                  type='number'
+                  width='80px'
+                  value={weights.experience}
+                  onChange={(e) => handleChange(e)}
+                  disabled={disabled.experience}
+                  InputProps={{
+                    endAdornment: (
+                      <Stack style={{ color: palette.grey[500] }}>%</Stack>
+                    ),
+                  }}
+                />
               }
             />
             <ScorePercentage
@@ -208,16 +212,19 @@ const ProfileScoreControls = () => {
               }}
               textTitle={'Skills'}
               slotInputPercent={
-                <>
-                  <UITextField
-                    name='skills'
-                    type='number'
-                    width='70px'
-                    value={weights.skills}
-                    onChange={(e) => handleChange(e)}
-                    disabled={disabled.skills}
-                  />
-                </>
+                <UITextField
+                  name='skills'
+                  type='number'
+                  width='80px'
+                  value={weights.skills}
+                  onChange={(e) => handleChange(e)}
+                  disabled={disabled.skills}
+                  InputProps={{
+                    endAdornment: (
+                      <Stack style={{ color: palette.grey[500] }}>%</Stack>
+                    ),
+                  }}
+                />
               }
             />
             <ScorePercentage
@@ -228,16 +235,19 @@ const ProfileScoreControls = () => {
               }}
               textTitle={'Education'}
               slotInputPercent={
-                <>
-                  <UITextField
-                    name='education'
-                    type='number'
-                    width='70px'
-                    value={weights.education}
-                    onChange={(e) => handleChange(e)}
-                    disabled={disabled.education}
-                  />
-                </>
+                <UITextField
+                  name='education'
+                  type='number'
+                  width='80px'
+                  value={weights.education}
+                  onChange={(e) => handleChange(e)}
+                  disabled={disabled.education}
+                  InputProps={{
+                    endAdornment: (
+                      <Stack style={{ color: palette.grey[500] }}>%</Stack>
+                    ),
+                  }}
+                />
               }
             />
           </>

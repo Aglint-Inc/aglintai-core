@@ -8,5 +8,6 @@ export interface API_getMembersWithRole extends ApiInterface {
     role: string;
     role_id: string;
     manager_id: string;
+    created_by: string;
   })[];
 }

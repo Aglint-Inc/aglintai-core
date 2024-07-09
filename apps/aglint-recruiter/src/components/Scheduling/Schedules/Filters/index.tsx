@@ -4,7 +4,6 @@ import _ from 'lodash';
 import { MouseEvent, useEffect, useState, useTransition } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { FilterList } from '@/devlink2/FilterList';
 import { FilterPill } from '@/devlink2/FilterPill';
 import SearchField from '@/src/components/Common/SearchField/SearchField';
@@ -41,7 +40,7 @@ function Filters() {
 
   const resetAll = () => {
     setSelectedStatus([]);
-    setSelectedMembers([]);
+    setSelectedInterviewers([]);
     setSelectedJob([]);
     setSelectedScheduleType([]);
     setSelectedDateRange([]);
@@ -82,8 +81,8 @@ function Filters() {
   const [selectedStatus, setSelectedStatus] = useState<string[]>(
     scheduleFilterIds?.status || [],
   );
-  const [selectedMembers, setSelectedMembers] = useState<string[]>(
-    scheduleFilterIds?.member || [],
+  const [selectedInterviewers, setSelectedInterviewers] = useState<string[]>(
+    scheduleFilterIds?.interviewer || [],
   );
   const [selectedJob, setSelectedJob] = useState<string[]>(
     scheduleFilterIds?.job || [],
@@ -118,8 +117,8 @@ function Filters() {
       scheduleFilterIds.status = ids;
     }
     if (filterTypeName === 'interviewer') {
-      setSelectedMembers(ids);
-      scheduleFilterIds.member = ids;
+      setSelectedInterviewers(ids);
+      scheduleFilterIds.interviewer = ids;
     }
     if (filterTypeName === 'job') {
       setSelectedJob(ids);
@@ -142,7 +141,7 @@ function Filters() {
   function getMeetingIdsForMembers() {
     const filteredMeetingIds = allSchedules
       .filter((schedule) =>
-        schedule.users?.some((user) => selectedMembers.includes(user.id)),
+        schedule.users?.some((user) => selectedInterviewers.includes(user.id)),
       )
       .map((schedule) => schedule.interview_meeting.meeting_id);
     return filteredMeetingIds;
@@ -217,7 +216,7 @@ function Filters() {
       setLoadingSchedules(false);
     }
   }, [
-    selectedMembers,
+    selectedInterviewers,
     selectedStatus,
     selectedJob,
     selectedScheduleType,
@@ -296,7 +295,7 @@ function Filters() {
       })}
 
       <ShowCode.When isTrue={selectedFilters.length !== filterOptions.length}>
-        <ButtonSoft
+        <ButtonGhost
           size={'2'}
           isLeftIcon={true}
           isRightIcon={false}
@@ -312,6 +311,7 @@ function Filters() {
           textButton='Reset All'
           size={2}
           isLeftIcon={true}
+          color={'neutral'}
           iconSize={4}
           iconName='refresh'
           onClickButton={{
