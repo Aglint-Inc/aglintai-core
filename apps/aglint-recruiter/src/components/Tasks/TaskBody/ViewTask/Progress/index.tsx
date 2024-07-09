@@ -11,6 +11,7 @@ import dayjs from 'dayjs';
 import { marked } from 'marked';
 import { useRouter } from 'next/router';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { EmptyState } from '@/devlink2/EmptyState';
 import { Skeleton } from '@/devlink2/Skeleton';
@@ -18,8 +19,14 @@ import { AgentFollowUp } from '@/devlink3/AgentFollowUp';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import { SkeletonActivitiesCard } from '@/devlink3/SkeletonActivitiesCard';
 import { TaskProgress } from '@/devlink3/TaskProgress';
+import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import {
+  setIsScheduleNowOpen,
+  setStepScheduling,
+} from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/store';
+import { setRescheduleSessionIds } from '@/src/components/Scheduling/CandidateDetails/store';
 import { fetchInterviewMeetingProgresstask } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { supabase } from '@/src/utils/supabase/client';
@@ -257,7 +264,7 @@ function SubTaskProgress() {
                                 !sessionList[0]?.interview_meeting?.id
                               }
                             >
-                              <>Scheduling...</>
+                              <Loader />
                             </ShowCode.When>
                             <ShowCode.Else>
                               <Stack
@@ -280,10 +287,46 @@ function SubTaskProgress() {
                                           ses={ses as meetingCardType}
                                           key={indOpt}
                                           sessionList={sessionList}
-                                          applicationId={selectedTask.application_id}
                                         />
                                       );
                                     })}
+                                  <Stack
+                                    width={'100%'}
+                                    direction={'row'}
+                                    spacing={2}
+                                    justifyContent={'end'}
+                                  >
+                                    <ButtonSolid
+                                      size={1}
+                                      textButton={'Reschedule'}
+                                      onClickButton={{
+                                        onClick: () => {
+                                          setRescheduleSessionIds(
+                                            sessionList.map(
+                                              (session) => session.id,
+                                            ),
+                                          );
+                                          setStepScheduling('reschedule');
+                                          // setSelectedApplicationLog(act);
+                                          setIsScheduleNowOpen(true);
+                                          router.push(
+                                            `/scheduling/application/${selectedTask.application_id}`,
+                                          );
+                                        },
+                                      }}
+                                    />
+                                    {/* <ButtonSoft
+                                      onClickButton={{
+                                        onClick: () => {
+                                          router.push(
+                                            `/scheduling/application/${selectedTask.application_id}`,
+                                          );
+                                        },
+                                      }}
+                                      size={1}
+                                      textButton={'View'}
+                                    /> */}
+                                  </Stack>
                                 </Stack>
                               </Stack>
                             </ShowCode.Else>
