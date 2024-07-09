@@ -9,6 +9,7 @@ function FilterTasks() {
   const allResetShow = !!Object.values(filter)
     .map((ele) => ele.values)
     .flat().length;
+
   return (
     <FilterHeader
       handelResetAll={handelResetFilter}
@@ -25,6 +26,8 @@ function FilterTasks() {
           type: 'filter',
           name: 'Candidate',
           options: filter.candidate.options,
+          filterSearch: true,
+          searchPlaceholder: 'Search candidates',
           setValue: (val) => {
             const preData =
               JSON.parse(localStorage.getItem('taskFilters')) || {};
@@ -73,6 +76,8 @@ function FilterTasks() {
         {
           type: 'filter',
           name: 'Assignee',
+          filterSearch: true,
+          searchPlaceholder: 'Search Assignee',
           options: [
             { header: 'Agents', options: agentsDetails },
             { header: 'Members', options: filter.assignee.options },
@@ -92,6 +97,8 @@ function FilterTasks() {
         {
           type: 'filter',
           name: 'Job',
+          filterSearch: true,
+          searchPlaceholder: 'Search Job',
           options: filter.jobTitle.options,
           setValue: (val) => {
             const preData =
