@@ -1082,49 +1082,59 @@ export class CandidatesSchedulingV2 {
         plan_comb_id: nanoid(),
         sessions: [],
       };
-      holiday_ints.forEach((s) => {
-        s.inters.forEach((inter) => {
-          zerodaySlotsReasons.no_slot_reasons.push({
-            reason: `${getFullName(inter.first_name, inter.last_name)} is on holiday`,
+      if (!this.api_options.include_conflicting_slots.holiday) {
+        holiday_ints.forEach((s) => {
+          s.inters.forEach((inter) => {
+            zerodaySlotsReasons.no_slot_reasons.push({
+              reason: `${getFullName(inter.first_name, inter.last_name)} is on holiday`,
+            });
           });
         });
-      });
-      day_off_ints.forEach((s) => {
-        s.inters.forEach((inter) => {
-          zerodaySlotsReasons.no_slot_reasons.push({
-            reason: `${getFullName(inter.first_name, inter.last_name)} is on Day off`,
+      }
+      if (!this.api_options.include_conflicting_slots.day_off) {
+        day_off_ints.forEach((s) => {
+          s.inters.forEach((inter) => {
+            zerodaySlotsReasons.no_slot_reasons.push({
+              reason: `${getFullName(inter.first_name, inter.last_name)} is on Day off`,
+            });
           });
         });
-      });
-      cal_disc_inters.forEach((s) => {
-        s.inters.forEach((inter) => {
-          zerodaySlotsReasons.no_slot_reasons.push({
-            reason: `${getFullName(inter.first_name, inter.last_name)} calender not connected`,
+      }
+      if (!this.api_options.include_conflicting_slots.calender_not_connected) {
+        cal_disc_inters.forEach((s) => {
+          s.inters.forEach((inter) => {
+            zerodaySlotsReasons.no_slot_reasons.push({
+              reason: `${getFullName(inter.first_name, inter.last_name)} calender not connected`,
+            });
           });
         });
-      });
-      curr_day_paused_inters.forEach((s) => {
-        s.inters.forEach((inter) => {
-          zerodaySlotsReasons.no_slot_reasons.push({
-            reason: `${getFullName(inter.first_name, inter.last_name)} is paused`,
+      }
+      if (!this.api_options.include_conflicting_slots.interviewer_pause) {
+        curr_day_paused_inters.forEach((s) => {
+          s.inters.forEach((inter) => {
+            zerodaySlotsReasons.no_slot_reasons.push({
+              reason: `${getFullName(inter.first_name, inter.last_name)} is paused`,
+            });
           });
         });
-      });
-      indef_paused_inters.forEach((s) => {
-        s.inters.forEach((inter) => {
-          zerodaySlotsReasons.no_slot_reasons.push({
-            reason: `${getFullName(inter.first_name, inter.last_name)} is paused indefinetly`,
-          });
-        });
-      });
-      load_reached_ints.forEach((s) => {
-        s.inters.forEach((inter) => {
-          zerodaySlotsReasons.no_slot_reasons.push({
-            reason: `${getFullName(inter.first_name, inter.last_name)}'s ${inter.type === 'day_load_reached' ? 'day' : 'week'} load reached`,
-          });
-        });
-      });
 
+        indef_paused_inters.forEach((s) => {
+          s.inters.forEach((inter) => {
+            zerodaySlotsReasons.no_slot_reasons.push({
+              reason: `${getFullName(inter.first_name, inter.last_name)} is paused indefinetly`,
+            });
+          });
+        });
+      }
+      if (!this.api_options.include_conflicting_slots.interviewers_load) {
+        load_reached_ints.forEach((s) => {
+          s.inters.forEach((inter) => {
+            zerodaySlotsReasons.no_slot_reasons.push({
+              reason: `${getFullName(inter.first_name, inter.last_name)}'s ${inter.type === 'day_load_reached' ? 'day' : 'week'} load reached`,
+            });
+          });
+        });
+      }
       return zerodaySlotsReasons;
     };
 
