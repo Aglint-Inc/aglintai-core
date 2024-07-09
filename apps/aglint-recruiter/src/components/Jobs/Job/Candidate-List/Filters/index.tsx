@@ -99,7 +99,7 @@ const Filters = () => {
         filters={[bookmarkedButton, ...safeFilters, Locations]}
         sort={safeSort}
         isResetAll={true}
-        handelResetAll={() => {}}
+        // handelResetAll={() => {}}
         search={{
           value: search,
           setValue: (newValue: typeof search) =>

@@ -3,8 +3,10 @@ import {
   APIFindAvailability,
   APIOptions,
   CalConflictType,
+  CandReqSlotsType,
   ConflictReason,
   DatabaseTable,
+  DateRangePlansType,
   InterviewSessionApiRespType,
   PauseJson,
   PlanCombinationRespType,
@@ -19,7 +21,7 @@ import {
   SINGLE_DAY_TIME,
 } from '@aglint/shared-utils';
 import { Dayjs } from 'dayjs';
-import { cloneDeep, isEqual } from 'lodash';
+import { isEqual } from 'lodash';
 import { nanoid } from 'nanoid';
 import * as v from 'valibot';
 
@@ -247,14 +249,14 @@ export class CandidatesSchedulingV2 {
       session_rounds,
       this.api_options.make_training_optional,
     );
-    let all_combs: PlanCombinationRespType[][][] = [];
+    let all_combs: CandReqSlotsType[] = [];
     for (
       let curr_round_idx = 0;
       curr_round_idx < session_rounds.length;
       ++curr_round_idx
     ) {
       const current_round_int_combs = ints_combs_for_each_round[curr_round_idx];
-      const current_round_combs: PlanCombinationRespType[][] = [];
+      const current_round_combs: DateRangePlansType['interview_rounds'] = [];
       for (let curr_date_slots of cand_selected_slots[curr_round_idx].dates) {
         const cand_date = userTzDayjs(curr_date_slots.curr_day).tz(
           this.api_payload.candidate_tz,
@@ -273,10 +275,16 @@ export class CandidatesSchedulingV2 {
             curr_day_combs.push({ ...comb });
           }
         });
-        current_round_combs.push([...curr_day_combs]);
+        current_round_combs.push({
+          curr_date: cand_date.format(),
+          plans: [...curr_day_combs],
+        });
       }
 
-      all_combs.push([...current_round_combs]);
+      all_combs.push({
+        current_round: curr_round_idx + 1,
+        selected_dates: [...current_round_combs],
+      });
     }
     return all_combs;
   };
@@ -383,10 +391,10 @@ export class CandidatesSchedulingV2 {
       this.api_options.make_training_optional,
     );
     const findMultiDaySlotsUtil = (
-      final_combs: PlanCombinationRespType[][],
+      final_combs: DateRangePlansType['interview_rounds'],
       curr_date: Dayjs,
       curr_round_idx: number,
-    ): PlanCombinationRespType[][] => {
+    ): DateRangePlansType['interview_rounds'] => {
       if (curr_round_idx === session_rounds.length) {
         return final_combs;
       }
@@ -412,7 +420,10 @@ export class CandidatesSchedulingV2 {
         return [];
       }
 
-      final_combs.push([...cloneDeep(combs)]);
+      final_combs.push({
+        curr_date: curr_date.format(),
+        plans: [...combs],
+      });
 
       const days_gap = Math.floor(
         session_rounds[curr_round_idx][
@@ -452,12 +463,15 @@ export class CandidatesSchedulingV2 {
       let dayjs_end_date = this.schedule_dates.user_end_date_js;
 
       let curr_date = dayjs_start_date;
-      let all_combs: PlanCombinationRespType[][][] = [];
+      const all_combs: DateRangePlansType[] = [];
       while (curr_date.isSameOrBefore(dayjs_end_date)) {
         const plan_combs = findMultiDaySlotsUtil([], curr_date, 0);
         if (plan_combs.length > 0) {
           const session_combs = plan_combs;
-          all_combs = [...all_combs, session_combs];
+          all_combs.push({
+            interview_start_day: curr_date.format(),
+            interview_rounds: [...session_combs],
+          });
         }
         curr_date = curr_date.add(1, 'day');
       }
@@ -530,6 +544,21 @@ export class CandidatesSchedulingV2 {
           type: CalConflictType;
         })[];
       }[] = [];
+      const day_off_ints: {
+        session_id: string;
+        inters: Pick<
+          SessionInterviewerApiRespType,
+          'user_id' | 'first_name' | 'last_name'
+        >[];
+      }[] = [];
+
+      const holiday_ints: {
+        session_id: string;
+        inters: Pick<
+          SessionInterviewerApiRespType,
+          'user_id' | 'first_name' | 'last_name'
+        >[];
+      }[] = [];
 
       let slot_week_load_density = 0;
       let slot_day_load_density = 0;
@@ -556,14 +585,22 @@ export class CandidatesSchedulingV2 {
           session_id: curr_sess.session_id,
           inters: [],
         });
+        day_off_ints.push({
+          session_id: curr_sess.session_id,
+          inters: [],
+        });
+        holiday_ints.push({
+          session_id: curr_sess.session_id,
+          inters: [],
+        });
 
         let cnt_qualified_ints = 0;
 
         session_attendees.forEach((attendee) => {
-          const interviewer_pause_json = this.getIntPauseJson(
-            curr_sess.session_id,
+          const attendee_details = this.intervs_details_map.get(
             attendee.user_id,
           );
+
           if (
             !this.intervs_details_map.get(attendee.user_id).isCalenderConnected
           ) {
@@ -573,6 +610,45 @@ export class CandidatesSchedulingV2 {
               last_name: attendee.last_name,
             });
           }
+          let is_day_off = false;
+          let is_holiday_off = false;
+          attendee_details.holiday[curr_day_str].forEach((t) => {
+            if (
+              t.startTime === curr_day_js.startOf('date').format() &&
+              t.endTime === curr_day_js.endOf('date').format()
+            ) {
+              is_holiday_off = true;
+            }
+          });
+          attendee_details.day_off[curr_day_str].forEach((t) => {
+            if (
+              t.startTime === curr_day_js.startOf('date').format() &&
+              t.endTime === curr_day_js.endOf('date').format()
+            ) {
+              is_day_off = true;
+            }
+          });
+          if (is_day_off) {
+            day_off_ints[sess_idx].inters.push({
+              first_name: attendee.first_name,
+              last_name: attendee.last_name,
+              user_id: attendee.user_id,
+            });
+          }
+          if (is_holiday_off) {
+            holiday_ints[sess_idx].inters.push({
+              first_name: attendee.first_name,
+              last_name: attendee.last_name,
+              user_id: attendee.user_id,
+            });
+          }
+          if (is_day_off || is_holiday_off) {
+            return;
+          }
+          const interviewer_pause_json = this.getIntPauseJson(
+            curr_sess.session_id,
+            attendee.user_id,
+          );
           if (interviewer_pause_json) {
             if (interviewer_pause_json.isManual) {
               indef_paused_inters[sess_idx].inters.push({
@@ -645,6 +721,8 @@ export class CandidatesSchedulingV2 {
         slot_week_load_density = slot_week_load_density / cnt_qualified_ints;
       }
       return {
+        holiday_ints,
+        day_off_ints,
         indef_paused_inters,
         curr_day_paused_inters,
         cal_disc_inters,
@@ -654,6 +732,8 @@ export class CandidatesSchedulingV2 {
       };
     };
     const {
+      day_off_ints,
+      holiday_ints,
       cal_disc_inters,
       curr_day_paused_inters,
       indef_paused_inters,
@@ -1002,35 +1082,59 @@ export class CandidatesSchedulingV2 {
         plan_comb_id: nanoid(),
         sessions: [],
       };
-      cal_disc_inters.forEach((s) => {
-        s.inters.forEach((inter) => {
-          zerodaySlotsReasons.no_slot_reasons.push({
-            reason: `${getFullName(inter.first_name, inter.last_name)} calender not connected`,
+      if (!this.api_options.include_conflicting_slots.holiday) {
+        holiday_ints.forEach((s) => {
+          s.inters.forEach((inter) => {
+            zerodaySlotsReasons.no_slot_reasons.push({
+              reason: `${getFullName(inter.first_name, inter.last_name)} is on holiday`,
+            });
           });
         });
-      });
-      curr_day_paused_inters.forEach((s) => {
-        s.inters.forEach((inter) => {
-          zerodaySlotsReasons.no_slot_reasons.push({
-            reason: `${getFullName(inter.first_name, inter.last_name)} is paused`,
+      }
+      if (!this.api_options.include_conflicting_slots.day_off) {
+        day_off_ints.forEach((s) => {
+          s.inters.forEach((inter) => {
+            zerodaySlotsReasons.no_slot_reasons.push({
+              reason: `${getFullName(inter.first_name, inter.last_name)} is on Day off`,
+            });
           });
         });
-      });
-      indef_paused_inters.forEach((s) => {
-        s.inters.forEach((inter) => {
-          zerodaySlotsReasons.no_slot_reasons.push({
-            reason: `${getFullName(inter.first_name, inter.last_name)} is paused indefinetly`,
+      }
+      if (!this.api_options.include_conflicting_slots.calender_not_connected) {
+        cal_disc_inters.forEach((s) => {
+          s.inters.forEach((inter) => {
+            zerodaySlotsReasons.no_slot_reasons.push({
+              reason: `${getFullName(inter.first_name, inter.last_name)} calender not connected`,
+            });
           });
         });
-      });
-      load_reached_ints.forEach((s) => {
-        s.inters.forEach((inter) => {
-          zerodaySlotsReasons.no_slot_reasons.push({
-            reason: `${getFullName(inter.first_name, inter.last_name)}'s ${inter.type === 'day_load_reached' ? 'day' : 'week'} load reached`,
+      }
+      if (!this.api_options.include_conflicting_slots.interviewer_pause) {
+        curr_day_paused_inters.forEach((s) => {
+          s.inters.forEach((inter) => {
+            zerodaySlotsReasons.no_slot_reasons.push({
+              reason: `${getFullName(inter.first_name, inter.last_name)} is paused`,
+            });
           });
         });
-      });
 
+        indef_paused_inters.forEach((s) => {
+          s.inters.forEach((inter) => {
+            zerodaySlotsReasons.no_slot_reasons.push({
+              reason: `${getFullName(inter.first_name, inter.last_name)} is paused indefinetly`,
+            });
+          });
+        });
+      }
+      if (!this.api_options.include_conflicting_slots.interviewers_load) {
+        load_reached_ints.forEach((s) => {
+          s.inters.forEach((inter) => {
+            zerodaySlotsReasons.no_slot_reasons.push({
+              reason: `${getFullName(inter.first_name, inter.last_name)}'s ${inter.type === 'day_load_reached' ? 'day' : 'week'} load reached`,
+            });
+          });
+        });
+      }
       return zerodaySlotsReasons;
     };
 

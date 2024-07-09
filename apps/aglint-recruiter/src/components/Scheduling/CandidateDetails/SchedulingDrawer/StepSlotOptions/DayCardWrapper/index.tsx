@@ -1,4 +1,4 @@
-import { PlanCombinationRespType } from '@aglint/shared-types';
+import { MultiDayPlanType } from '@aglint/shared-types';
 import { Checkbox, Collapse, Radio, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import React, { Dispatch, useEffect, useMemo, useState } from 'react';
@@ -29,10 +29,7 @@ function DayCardWrapper({
   setSelectedCombIds,
 }: {
   isRadioNeeded: boolean;
-  item: {
-    dateArray: string[];
-    plans: PlanCombinationRespType[];
-  };
+  item: MultiDayPlanType;
   // eslint-disable-next-line no-unused-vars
   onClickSelect: (comb_id: string) => void;
   selectedCombIds: string[];
@@ -44,7 +41,7 @@ function DayCardWrapper({
   index: number;
   setSelectedCombIds: Dispatch<React.SetStateAction<string[]>>;
 }) {
-  const dates = item?.dateArray || [];
+  const dates = item?.date_range || [];
   const header = dates
     .map((date) => dayjs(date).format('MMMM DD dddd'))
     .join(' , ');
@@ -134,9 +131,6 @@ function DayCardWrapper({
         isSelected={isSelected}
         slotCheckbox={
           <Checkbox
-            indeterminate={
-              noOfSelectedSlots > 0 && noOfSelectedSlots < noOfTotalSlots
-            }
             checked={isSelected}
             onClick={() =>
               setSelectedCombIds(

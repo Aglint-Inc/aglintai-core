@@ -1,9 +1,9 @@
 import {
   Candidate,
   DatabaseTable,
+  DateRangePlansType,
   InterviewModuleType,
-  JobApplcationDB,
-  PlanCombinationRespType,
+  JobApplcationDB
 } from '@aglint/shared-types';
 
 import { ResumeJson } from '@/src/apiUtils/resumeScoring/types';
@@ -105,4 +105,4 @@ export type InterviewDataResponseType = {
   cancel_reasons: DatabaseTable['interview_session_cancel'][] | null;
 };
 
-export type ApiResponseFindAvailability = PlanCombinationRespType[][][];
+export type ApiResponseFindAvailability = DateRangePlansType[];

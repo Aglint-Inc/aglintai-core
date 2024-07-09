@@ -2,7 +2,7 @@ import { EmailTemplateAPi } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 
 import { Text } from '@/devlink/Text';
 import { ScheduleOptionsList } from '@/devlink3/ScheduleOptionsList';
@@ -15,7 +15,7 @@ import {
   useSchedulingFlowStore,
 } from '../store';
 import DayCardWrapper from './DayCardWrapper';
-import { extractPlanData, groupByDateRange } from './utils';
+import { groupByDateRange } from './utils';
 
 export type GroupByDateRange = ReturnType<typeof groupByDateRange>;
 
@@ -36,10 +36,6 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
     (state) => state.selectedCombIds,
   );
 
-  const groupedData: GroupByDateRange = groupByDateRange(
-    extractPlanData(filteredSchedulingOptions),
-  );
-
   const onClickSelect = (comb_id: string) => {
     if (isDebrief) {
       setSelectedCombIds([comb_id]);
@@ -51,11 +47,6 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
       }
     }
   };
-
-  const memoGruopedData = useMemo(
-    () => groupedData,
-    [filteredSchedulingOptions],
-  );
 
   const payload: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['api_payload'] =
     {
@@ -99,10 +90,10 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
         }
         slotDateOption={
           <>
-            {memoGruopedData?.map((item, index) => {
+            {filteredSchedulingOptions?.map((item, index) => {
               return (
                 <DayCardWrapper
-                  key={item.dateArray.join(', ')}
+                  key={item.date_range.join(', ')}
                   isRadioNeeded={isDebrief}
                   item={item}
                   onClickSelect={onClickSelect}

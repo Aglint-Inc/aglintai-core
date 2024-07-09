@@ -13,8 +13,8 @@ function PreferedInterviewers() {
   const uniqueInterviewers = [];
 
   schedulingOptions
-    .flatMap((option) => option)
-    .flatMap((option) => option)
+    .flatMap((option) => option.interview_rounds)
+    .flatMap((option) => option.plans)
     .forEach((option) => {
       option.sessions.forEach((session) => {
         session.qualifiedIntervs.forEach((interv) => {

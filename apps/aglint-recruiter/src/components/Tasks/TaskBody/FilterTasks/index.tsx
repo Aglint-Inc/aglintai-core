@@ -4,7 +4,10 @@ import FilterHeader from '@/src/components/Common/FilterHeader';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 
 function FilterTasks() {
-  const { search, filter, handelSearch, handelFilter, handelResetFilter } =
+  const { search, filter, handelSearch, handelFilter, 
+    // handelResetFilter 
+  } =
+
     useTasksContext();
   const allResetShow = !!Object.values(filter)
     .map((ele) => ele.values)
@@ -12,7 +15,7 @@ function FilterTasks() {
 
   return (
     <FilterHeader
-      handelResetAll={handelResetFilter}
+      // handelResetAll={handelResetFilter}
       isResetAll={allResetShow}
       search={{
         value: search,
