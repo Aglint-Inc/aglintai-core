@@ -134,6 +134,7 @@ const JobEmailTemplates = ({ setSaving }) => {
         </>
       }
       slotSearchFilter={<></>}
+      currentModule={'jobs'}
       slotEmailDetails={
         <>
           {isloadTiptap ? (

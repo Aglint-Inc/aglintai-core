@@ -9,4 +9,5 @@ declare function EmailPreviewOnScheduling(props: {
   slotSelectedScheduleOptions?: Types.Devlink.Slot;
   slotButton?: Types.Devlink.Slot;
   showSelectedSchedules?: Types.Visibility.VisibilityConditions;
+  insertedIn?: Types.Builtin.Text;
 }): React.JSX.Element;

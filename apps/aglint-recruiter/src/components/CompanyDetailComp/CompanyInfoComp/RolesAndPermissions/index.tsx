@@ -1,40 +1,182 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseEnums } from '@aglint/shared-types';
-import {
-  Button,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
-  Paper,
-  Skeleton,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from '@mui/material';
+import { Avatar, Skeleton, Stack } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 
-import { Breadcrum } from '@/devlink2/Breadcrum';
-import { PageLayout } from '@/devlink2/PageLayout';
+import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { GlobalBadge } from '@/devlink/GlobalBadge';
+import { Permissions } from '@/devlink/Permissions';
+import { RolesAndPermissions } from '@/devlink/RolesAndPermissions';
+import { RolesAndPermissionsDetail } from '@/devlink/RolesAndPermissionsDetail';
+import { RolesRow } from '@/devlink/RolesRow';
+import { UserWithRole } from '@/devlink/UserWithRole';
+import { ToggleWithText } from '@/devlink3/ToggleWithText';
 import axios from '@/src/client/axios';
+import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
-import { getRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
-import { RoleAndPermissionAPI } from '@/src/pages/api/roleAndPermission/type';
-import { supabase } from '@/src/utils/supabase/client';
+import { type getRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
+import { type SetRoleAndPermissionAPI } from '@/src/pages/api/setRoleAndPermission/type';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
-function RolesAndPermissions() {
-  const { data, isPending: loading } = useRoleAndPermissions();
+function RolesAndPermissionsComponent() {
+  const {
+    data,
+    isPending: loading,
+    handelUpdateRole,
+    role,
+    roleDetails,
+    setRole,
+  } = useRoleAndPermissions();
+
+  return role ? (
+    // roleDetailsComponent
+    <RoleDetails
+      role={role}
+      roleDetails={roleDetails}
+      back={() => setRole(null)}
+      // updateRole={setRole}
+      updateRoles={handelUpdateRole}
+    />
+  ) : (
+    <Stack width={'100%'} padding={3}>
+      <RolesAndPermissions
+        slotRolesRow={
+          <RoleTable
+            roles={data?.rolesAndPermissions || {}}
+            loading={loading}
+            setRole={setRole}
+          />
+        }
+      />
+    </Stack>
+  );
+}
+
+export default RolesAndPermissionsComponent;
+const RoleTable = ({
+  loading,
+  roles,
+  setRole,
+}: {
+  loading: boolean;
+  roles: Awaited<
+    ReturnType<typeof getRoleAndPermissionsWithUserCount>
+  >['rolesAndPermissions'];
+  setRole: (
+    // eslint-disable-next-line no-unused-vars
+    x: Awaited<
+      ReturnType<typeof getRoleAndPermissionsWithUserCount>
+    >['rolesAndPermissions'][string] & {
+      name: string;
+    },
+  ) => void;
+}) => {
+  const { members } = useAuthDetails();
+  return loading
+    ? [
+        <RolesRow
+          key={'x'}
+          textRole={
+            <Skeleton
+              variant='rounded'
+              animation='wave'
+              sx={{ fontSize: '1rem' }}
+            />
+          }
+          textDescription={
+            <Skeleton
+              variant='rounded'
+              animation='wave'
+              sx={{ fontSize: '1rem' }}
+            />
+          }
+          slotAvatars={
+            <Skeleton
+              variant='rounded'
+              animation='wave'
+              sx={{ fontSize: '1rem' }}
+            />
+          }
+        />,
+        <RolesRow
+          key={'y'}
+          textRole={
+            <Skeleton
+              variant='rounded'
+              animation='wave'
+              sx={{ fontSize: '1rem' }}
+            />
+          }
+          textDescription={
+            <Skeleton
+              variant='rounded'
+              animation='wave'
+              sx={{ fontSize: '1rem' }}
+            />
+          }
+          slotAvatars={
+            <Skeleton
+              variant='rounded'
+              animation='wave'
+              sx={{ fontSize: '1rem' }}
+            />
+          }
+        />,
+      ]
+    : Object.keys(roles || {}).map((item) => {
+        const role = roles[item];
+        const count = role.assignedTo.length;
+        return (
+          <RolesRow
+            key={role.id}
+            textRole={capitalizeFirstLetter(role.name)}
+            textDescription={role.description}
+            onClickRow={{
+              onClick: () => {
+                setRole({ ...role });
+              },
+            }}
+            slotAvatars={
+              <>
+                {role.assignedTo.slice(0, 3).map((user_id) => {
+                  const user = members.find(
+                    (member) => member.user_id === user_id,
+                  );
+                  if (!user) return;
+                  return (
+                    <Avatar
+                      key={user_id}
+                      src={user.profile_image}
+                      variant='rounded'
+                      alt={user.first_name}
+                      sx={{ height: '24px', width: '24px' }}
+                    />
+                  );
+                })}
+                {count > 3 && (
+                  <GlobalBadge
+                    textBadge={`+${count - 3} more.`}
+                    color={'neutral'}
+                  />
+                )}
+              </>
+            }
+          />
+        );
+      });
+};
+
+const useRoleAndPermissions = () => {
+  const { recruiter } = useAuthDetails();
+  const queryClient = useQueryClient();
 
   const [role, setRole] = useState<
-    (typeof data)['rolesAndPermissions'][number] & { name: string }
+    Awaited<
+      ReturnType<typeof getRoleAndPermissionsWithUserCount>
+    >['rolesAndPermissions'][string] & {
+      name: string;
+    }
   >(null);
   const roleDetails =
     role?.permissions.reduce(
@@ -59,160 +201,49 @@ function RolesAndPermissions() {
         };
       },
     ) || {};
-
-  return role ? (
-    <RoleDetails
-      role={role}
-      roleDetails={roleDetails}
-      setRole={() => setRole(null)}
-    />
-  ) : (
-    <Stack width={'100%'} padding={3}>
-      <Stack>
-        <Typography variant='h5'>Roles</Typography>
-      </Stack>
-      <Stack paddingY={'20px'}>
-        <RoleTable
-          headers={[
-            { header: 'Role', width: '200px' },
-            { header: 'Users', width: '70px' },
-            { header: 'Description', width: null },
-            { header: 'view all permissions', width: '100px' },
-          ]}
-          roles={data?.rolesAndPermissions || {}}
-          loading={loading}
-          setRole={setRole}
-        />
-      </Stack>
-    </Stack>
-  );
-}
-
-export default RolesAndPermissions;
-const RoleTable = ({
-  loading,
-  headers,
-  roles,
-  setRole,
-}: {
-  loading: boolean;
-  headers: { header: string; width: string }[];
-  roles: Awaited<
-    ReturnType<typeof getRoleAndPermissions>
-  >['rolesAndPermissions'];
-  setRole: (
-    // eslint-disable-next-line no-unused-vars
-    x: Awaited<
-      ReturnType<typeof getRoleAndPermissions>
-    >['rolesAndPermissions'][string] & {
-      name: string;
-    },
-  ) => void;
-}) => {
-  return (
-    <TableContainer
-      variant='outlined'
-      component={Paper}
-      sx={{ background: '#FFF' }}
-    >
-      <Table>
-        <TableHead>
-          <TableRow>
-            {headers.map((item) => (
-              <TableCell
-                key={item.header}
-                variant='head'
-                align={'left'}
-                style={{ width: item.width }}
-                sx={{
-                  backgroundColor: 'background.paper',
-                }}
-              >
-                {item.header}
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {loading ? (
-            <TableRow
-              sx={{
-                backgroundColor: palette.white[100],
-              }}
-            >
-              <TableCell key={1} variant='head' align={'left'}>
-                <Skeleton
-                  variant='rounded'
-                  animation='wave'
-                  sx={{ fontSize: '1rem' }}
-                />
-              </TableCell>
-              <TableCell key={1} variant='head' align={'left'}>
-                <Skeleton
-                  variant='rounded'
-                  animation='wave'
-                  sx={{ fontSize: '1rem' }}
-                />
-              </TableCell>
-              <TableCell key={1} variant='head' align={'left'}>
-                <Skeleton
-                  variant='rounded'
-                  animation='wave'
-                  sx={{ fontSize: '1rem' }}
-                />
-              </TableCell>
-            </TableRow>
-          ) : (
-            Object.keys(roles || {}).map((item) => {
-              const role = roles[item];
-              return (
-                <TableRow
-                  hover
-                  key={role.id}
-                  sx={{
-                    '&:hover .MuiTableCell-root': { background: '#e4e4e4' },
-                  }}
-                >
-                  <TableCell key={1} variant='head' align={'left'}>
-                    {capitalizeFirstLetter(role.name)}
-                  </TableCell>
-                  <TableCell key={1} variant='head' align={'left'}>
-                    {role.assignedTo}
-                  </TableCell>
-                  <TableCell key={1} variant='head' align={'left'}>
-                    {role.description}
-                  </TableCell>
-                  <TableCell
-                    key={1}
-                    variant='head'
-                    align={'left'}
-                    onClick={() => {
-                      setRole({ ...role });
-                    }}
-                    sx={{
-                      cursor: 'pointer',
-                      ':hover': {
-                        textDecoration: 'underline',
-                      },
-                    }}
-                  >
-                    {'click here'}
-                  </TableCell>
-                </TableRow>
-              );
-            })
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-};
-
-const useRoleAndPermissions = () => {
-  const { recruiter } = useAuthDetails();
-  const queryClient = useQueryClient();
-  const { mutateAsync } = useMutation({
+  const handelUpdateRole = async (data: Parameters<typeof updateRole>['0']) => {
+    return mutateAsync(data);
+  };
+  const [lastState, setLastState] = useState<{
+    index: number;
+    permission: (typeof role)['permissions'][number];
+  }>(null);
+  const { mutate: mutateAsync } = useMutation({
     mutationFn: updateRole,
+    onMutate({ add, delete: toDelete, role_id }) {
+      queryClient.setQueryData(
+        ['app', recruiter?.id, 'role-and-permissions'],
+        (
+          prevData: Awaited<
+            ReturnType<typeof getRoleAndPermissionsWithUserCount>
+          >,
+        ) => {
+          const tempData = structuredClone(prevData);
+          tempData.rolesAndPermissions[role_id].permissions =
+            tempData.rolesAndPermissions[role_id].permissions.map(
+              (item, index) => {
+                if (add === item.id) {
+                  setLastState({ index, permission: item });
+                  return { ...item, isActive: true };
+                }
+                if (toDelete && toDelete === item.relation_id) {
+                  setLastState({ index, permission: item });
+                  return { ...item, relation_id: null, isActive: false };
+                }
+                return item;
+              },
+            );
+
+          setRole((pre) => {
+            return {
+              ...pre,
+              permissions: tempData.rolesAndPermissions[role_id].permissions,
+            };
+          });
+          return tempData;
+        },
+      );
+    },
     onSuccess(resData, { add, delete: toDelete, role_id }) {
       queryClient.setQueryData(
         ['app', recruiter?.id, 'role-and-permissions'],
@@ -221,33 +252,62 @@ const useRoleAndPermissions = () => {
             ReturnType<typeof getRoleAndPermissionsWithUserCount>
           >,
         ) => {
-          prevData.rolesAndPermissions[role_id].permissions =
-            prevData.rolesAndPermissions[role_id].permissions.map((item) => {
-              if (add.length) {
-                const temp = resData.addedPermissions.find(
-                  (i) => i.id === item.id,
-                );
+          const tempData = structuredClone(prevData);
+          tempData.rolesAndPermissions[role_id].permissions =
+            tempData.rolesAndPermissions[role_id].permissions.map((item) => {
+              if (add === item.id) {
+                const temp = resData.addedPermissions;
                 if (temp) {
                   item = { ...item, ...temp, isActive: true };
                 }
               }
-              if (toDelete.length) {
-                if (toDelete.includes(item.relation_id))
-                  item = { ...item, relation_id: null, isActive: false };
+              if (toDelete === item.relation_id) {
+                item = { ...item, relation_id: null, isActive: false };
               }
               return item;
             });
-          toast.success('Permissions updated successfully');
-          return { ...prevData };
+          toast.success('Role updated successfully');
+          setRole((pre) => {
+            return {
+              ...pre,
+              permissions: tempData.rolesAndPermissions[role_id].permissions,
+            };
+          });
+          setLastState(null);
+          return tempData;
         },
       );
     },
-    onError(err) {
-      toast.error(err.message);
+    onError(error, { role_id }) {
+      toast.error(String(error));
+      if (lastState)
+        queryClient.setQueryData(
+          ['app', recruiter?.id, 'role-and-permissions'],
+          (
+            prevData: Awaited<
+              ReturnType<typeof getRoleAndPermissionsWithUserCount>
+            >,
+          ) => {
+            const tempData = structuredClone(prevData);
+            tempData.rolesAndPermissions[role_id].permissions[lastState.index] =
+              lastState.permission;
+            setRole((pre) => {
+              return {
+                ...pre,
+                permissions: tempData.rolesAndPermissions[role_id].permissions,
+              };
+            });
+            setLastState(null);
+            return tempData;
+          },
+        );
     },
   });
   return {
-    updateRoles: mutateAsync,
+    role,
+    roleDetails,
+    setRole,
+    handelUpdateRole,
     ...useQuery({
       queryKey: ['app', recruiter?.id, 'role-and-permissions'],
       queryFn: getRoleAndPermissionsWithUserCount,
@@ -255,94 +315,6 @@ const useRoleAndPermissions = () => {
     }),
   };
   // const updateRole;
-};
-const getRoleAndPermissions = async (recruiter_id: string) => {
-  return supabase
-    .from('role_permissions')
-    .select('id, role_id, permission_id, roles(id,name, description)')
-    .eq('recruiter_id', recruiter_id)
-    .throwOnError()
-    .then(({ data }) => {
-      const rolesAndPermissions = data.reduce(
-        (acc, curr) => {
-          acc[curr.roles.id] = {
-            ...acc[curr.roles.id],
-            id: curr.role_id,
-            name: curr.roles.name,
-            assignedTo: 0,
-            description: curr.roles.description,
-            permissions: [
-              ...(acc[curr.roles.id]?.permissions || []),
-              {
-                relation_id: curr.id,
-                id: curr.permission_id,
-                name: null,
-                description: null,
-                isActive: true,
-              },
-            ],
-          };
-          return acc;
-        },
-        {} as {
-          [roles: string]: {
-            id: string;
-            name: string;
-            assignedTo: number;
-            description: string;
-            permissions: {
-              relation_id: string;
-              id: number;
-              name: DatabaseEnums['permissions_type'];
-              description: string;
-              isActive: boolean;
-            }[];
-          };
-        },
-      );
-      return rolesAndPermissions;
-    })
-    .then(async (rolesAndPermissions) => {
-      const permission = await supabase
-        .from('permissions')
-        .select('id,name, description')
-        .eq('is_enable', true)
-        .throwOnError()
-        .then(({ data }) => {
-          const permission = data.reduce(
-            (acc, curr) => {
-              acc[curr.id] = {
-                id: curr.id,
-                name: curr.name,
-                description: curr.description,
-                isActive: false,
-              };
-              return acc;
-            },
-            {} as {
-              [permission: number]: {
-                id: number;
-                name: DatabaseEnums['permissions_type'];
-                description: string;
-                isActive: boolean;
-              };
-            },
-          );
-          Object.keys(rolesAndPermissions).forEach((key) => {
-            rolesAndPermissions[key].permissions = data.map((perData) => ({
-              isActive: false,
-              relation_id: null,
-              ...rolesAndPermissions[key].permissions.find(
-                (per) => per.id == perData.id,
-              ),
-              ...perData,
-            }));
-          });
-
-          return permission;
-        });
-      return { rolesAndPermissions, all_permission: permission };
-    });
 };
 
 const getRoleAndPermissionsWithUserCount = async () => {
@@ -486,196 +458,114 @@ const temp_modules = app_modules.map((item) => item.name);
 function RoleDetails({
   role,
   roleDetails,
-  setRole,
+  back,
+  updateRoles,
 }: {
-  role: ReturnType<
-    typeof useRoleAndPermissions
-  >['data']['rolesAndPermissions'][number] & { name: string };
-  setRole: () => void;
+  role: Awaited<
+    ReturnType<typeof getRoleAndPermissionsWithUserCount>
+  >['rolesAndPermissions'][string] & {
+    name: string;
+  };
+  back: () => void;
   roleDetails: {
     [key: string]: {
       description: string;
       permissions: (typeof role)['permissions'];
     };
   };
+  updateRoles: (
+    // eslint-disable-next-line no-unused-vars
+    x: Parameters<
+      ReturnType<typeof useRoleAndPermissions>['handelUpdateRole']
+    >[0],
+  ) => void;
 }) {
-  const { updateRoles } = useRoleAndPermissions();
-  const [editRoles, setEditRoles] = useState<{
-    roleDetails: {
-      [key: string]: Omit<(typeof roleDetails)[''], 'permissions'> & {
-        permissions: ((typeof roleDetails)['']['permissions'][number] & {
-          isEdited: boolean;
-        })[];
-      };
-    };
-    edit: {
-      add: number[];
-      delete: string[];
-    };
-  }>({
-    roleDetails: Object.keys(roleDetails).reduce(
-      (acc, curr) => {
-        const temp = {
-          ...roleDetails[curr],
-          permissions: roleDetails[curr].permissions.map((permission) => {
-            return {
-              ...permission,
-              isEdited: false,
-            };
-          }),
-        };
-        acc[curr] = temp;
-        return acc;
-      },
-      {} as {
-        [key: string]: Omit<(typeof roleDetails)[''], 'permissions'> & {
-          permissions: ((typeof roleDetails)['']['permissions'][number] & {
-            isEdited: boolean;
-          })[];
-        };
-      },
-    ),
-    edit: {
-      add: [],
-      delete: [],
-    },
-  });
-
+  const { members } = useAuthDetails();
   return (
-    <PageLayout
-      isBackButton={true}
-      onClickBack={{ onClick: setRole }}
-      slotTopbarLeft={
-        <Breadcrum textName={capitalizeFirstLetter(role.name + ' Role')} />
+    <RolesAndPermissionsDetail
+      textRoleName={capitalizeFirstLetter(role.name + ' Role')}
+      textTotalEnabledPermissions={`${role.permissions.filter((item) => item.isActive).length} out of ${role.permissions.length} permissions enabled.`}
+      slotBackButton={
+        <ButtonGhost
+          size={2}
+          color={'neutral'}
+          isLeftIcon={true}
+          iconName={'arrow_back_ios'}
+          textButton={'Back'}
+          iconSize={3}
+          onClickButton={{ onClick: back }}
+        />
       }
-      slotBody={
-        <Stack p={3}>
-          <Stack
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              maxWidth: '900px',
-              justifyContent: 'end',
-            }}
-          >
-            <Button
-              size='small'
-              variant='contained'
-              disabled={
-                !(editRoles.edit.delete.length || editRoles.edit.add.length)
-              }
-              onClick={() => {
-                updateRoles({ ...editRoles.edit, role_id: role.id }).then(
-                  () => {
-                    setEditRoles((pre) => ({
-                      ...pre,
-                      edit: { add: [], delete: [] },
-                    }));
-                  },
-                );
-              }}
-            >
-              Update
-            </Button>
-          </Stack>
-          {Object.entries(editRoles.roleDetails || {}).map(
-            ([module, { description, permissions }]) => (
-              <Stack key={module} pb={2}>
-                <Typography variant='h4'>
-                  {capitalizeFirstLetter(module)}
-                </Typography>
-                <Typography pb={1}>{description}</Typography>
-                <FormGroup
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    maxWidth: '900px',
-                  }}
-                >
-                  {permissions?.map((permission, index) => {
-                    return (
-                      <Stack key={permission.id} width={'40%'}>
-                        <FormControlLabel
-                          checked={
-                            permission.isEdited
-                              ? !permission.isActive
-                              : permission.isActive
-                          }
-                          onClick={() => {
-                            setEditRoles((prev) => {
-                              prev['edit'] = {
-                                add: [],
-                                delete: [],
-                                ...prev['edit'],
-                              };
+      slotPermissions={Object.entries(roleDetails || {}).map(
+        ([module, { description, permissions }]) => (
+          <Permissions
+            key={module}
+            textDescription={description}
+            textTitle={capitalizeFirstLetter(module)}
+            slotToggleWithText={permissions?.map((permission) => {
+              return (
+                <ToggleWithText
+                  key={permission.id}
+                  textToggleLight={permission.title}
+                  slotToggle={
+                    <AntSwitch
+                      checked={permission.isActive}
+                      onClick={() => {
+                        const data = {
+                          add: null,
+                          delete: null,
+                          role_id: role.id,
+                        };
 
-                              if (permission.isActive) {
-                                if (permission.isEdited) {
-                                  prev['edit'].delete = prev[
-                                    'edit'
-                                  ].delete.filter(
-                                    (item) => item !== permission.relation_id,
-                                  );
-                                  prev['roleDetails'][module].permissions[
-                                    index
-                                  ].isEdited = false;
-                                } else {
-                                  prev['edit'].delete = [
-                                    ...prev['edit'].delete,
-                                    permission.relation_id,
-                                  ];
-                                  prev['roleDetails'][module].permissions[
-                                    index
-                                  ].isEdited = true;
-                                }
-                              } else {
-                                if (permission.isEdited) {
-                                  prev['edit'].add = prev['edit'].add.filter(
-                                    (item) => item !== permission.id,
-                                  );
-                                  prev['roleDetails'][module].permissions[
-                                    index
-                                  ].isEdited = false;
-                                } else {
-                                  prev['edit'].add = [
-                                    ...prev['edit'].add,
-                                    permission.id,
-                                  ];
-                                  prev['roleDetails'][module].permissions[
-                                    index
-                                  ].isEdited = true;
-                                }
-                              }
-                              return { ...prev };
-                            });
-                          }}
-                          control={<Checkbox />}
-                          label={permission.name}
-                          sx={{
-                            marginLeft: '4px',
-                            gap: '8px',
-                          }}
-                        />
-                        <Typography ml={4} variant='caption'>
-                          {permission.description || 'sample'}
-                        </Typography>
-                      </Stack>
-                    );
-                  })}
-                </FormGroup>
-              </Stack>
-            ),
-          )}
-        </Stack>
-      }
+                        if (permission.isActive) {
+                          data.delete = permission.relation_id;
+                        } else {
+                          data.add = permission.id;
+                        }
+                        updateRoles(data);
+                      }}
+                    />
+                  }
+                />
+              );
+            })}
+          />
+        ),
+      )}
+      slotUserWithRole={role.assignedTo.map((user_id) => {
+        const user = members.find((member) => member.user_id === user_id);
+        if (!user) return;
+        return (
+          <UserWithRole
+            key={user_id}
+            textName={`${user.first_name || ''} ${user.last_name || ''}`.trim()}
+            textRole={user.position}
+            slotBadge={
+              <GlobalBadge
+                color={user.is_suspended ? 'error' : 'success'}
+                textBadge={user.is_suspended ? 'Suspended' : 'Active'}
+              />
+            }
+            slotAvatar={
+              <Avatar
+                key={user_id}
+                src={user.profile_image}
+                variant='rounded'
+                alt={user.first_name}
+                sx={{ height: '100%', width: '100%' }}
+              />
+            }
+          />
+        );
+      })}
     />
   );
 }
 
-const updateRole = (data: RoleAndPermissionAPI['request']) => {
-  return axios.call<RoleAndPermissionAPI>(
+const updateRole = (data: SetRoleAndPermissionAPI['request']) => {
+  return axios.call<SetRoleAndPermissionAPI>(
     'POST',
-    '/api/roleAndPermission',
+    '/api/setRoleAndPermission',
     data,
   );
 };

@@ -33,3 +33,16 @@
 
   height: calc(100vh - 96px);
 }
+
+.slot_workflow_card-copy {
+  display: flex;
+  width: 100%;
+  max-width: 900px;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 0px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
+}

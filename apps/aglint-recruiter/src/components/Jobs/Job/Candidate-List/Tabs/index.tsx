@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useMemo } from 'react';
 
 import { useApplicationStore } from '@/src/context/ApplicationContext/store';
-import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
+import { useApplications } from '@/src/context/ApplicationsContext';
 import { useJob } from '@/src/context/JobContext';
 import { useKeyPress } from '@/src/hooks/useKeyPress';
 
@@ -26,12 +26,7 @@ const Tabs = () => {
     [job?.flags],
   );
 
-  const { section, changeSection } = useApplicationsStore(
-    ({ section, changeSection }) => ({
-      section,
-      changeSection,
-    }),
-  );
+  const { section, setSection } = useApplications();
 
   const drawerOpen = useApplicationStore(({ drawer }) => drawer.open);
 
@@ -40,14 +35,14 @@ const Tabs = () => {
   const handleSelectNextSection = useCallback(() => {
     if (activeSections) {
       const index = activeSections.indexOf(section);
-      changeSection(activeSections[(index + 1) % count]);
+      setSection(activeSections[(index + 1) % count]);
     }
   }, [activeSections, section, count]);
 
   const handleSelectPrevSection = useCallback(() => {
     if (activeSections) {
       const index = activeSections.indexOf(section);
-      changeSection(activeSections[index - 1 < 0 ? count - 1 : index - 1]);
+      setSection(activeSections[index - 1 < 0 ? count - 1 : index - 1]);
     }
   }, [activeSections, section, count]);
 

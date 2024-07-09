@@ -8,28 +8,16 @@ import {
   nestedObjectToArray,
 } from '@/src/components/Common/FilterHeader/utils';
 import { useApplications } from '@/src/context/ApplicationsContext';
-import {
-  ApplicationsStore,
-  useApplicationsStore,
-} from '@/src/context/ApplicationsContext/store';
+import type { ApplicationsParams } from '@/src/context/ApplicationsContext/hooks';
 
 const Filters = () => {
-  const { locationFilterOptions } = useApplications();
   const {
+    locationFilterOptions,
     filters: { search, bookmarked, locations, ...filters },
-    setFilters,
     sort,
-    resetFilterSort,
+    setFilters,
     setSort,
-  } = useApplicationsStore(
-    ({ filters, setFilters, sort, resetFilterSort, setSort }) => ({
-      filters,
-      setFilters,
-      resetFilterSort,
-      sort,
-      setSort,
-    }),
-  );
+  } = useApplications();
   const filterOptions = { badges, resume_score };
   const safeFilters: Parameters<typeof FilterHeader>[0]['filters'] = useMemo(
     () =>
@@ -101,7 +89,7 @@ const Filters = () => {
           option: sort.type,
           order: sort.order,
         },
-        setOrder: (payload) => setSort(payload as ApplicationsStore['sort']),
+        setOrder: (payload) => setSort(payload as typeof sort),
       }) as typeof safeSort,
     [sort],
   );
@@ -111,7 +99,7 @@ const Filters = () => {
         filters={[bookmarkedButton, ...safeFilters, Locations]}
         sort={safeSort}
         isResetAll={true}
-        handelResetAll={resetFilterSort}
+        handelResetAll={() => {}}
         search={{
           value: search,
           setValue: (newValue: typeof search) =>
@@ -127,7 +115,7 @@ const Filters = () => {
 
 export default Filters;
 
-const badgesTypes: ApplicationsStore['filters']['badges'] = [
+const badgesTypes: ApplicationsParams['filters']['badges'] = [
   'careerGrowth',
   'jobStability',
   'leadership',
@@ -160,7 +148,7 @@ function badgeLabel(key: (typeof badgesTypes)[number]) {
   }
 }
 
-const resumeScoreTypes: ApplicationsStore['filters']['resume_score'] = [
+const resumeScoreTypes: ApplicationsParams['filters']['resume_score'] = [
   'Top match',
   'Good match',
   'Average match',
@@ -173,7 +161,7 @@ const resume_score = resumeScoreTypes.map((id) => ({
   label: id,
 }));
 
-const sortTypes: ApplicationsStore['sort']['type'][] = [
+const sortTypes: ApplicationsParams['sort']['type'][] = [
   'latest_activity',
   'resume_score',
   'applied_at',
