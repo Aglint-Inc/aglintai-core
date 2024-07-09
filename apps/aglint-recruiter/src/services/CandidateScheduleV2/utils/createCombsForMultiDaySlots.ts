@@ -56,11 +56,8 @@ export const createCombsForMultiDaySlots = (
           } else {
             temp_combs.push({
               plan_comb_id: nanoid(),
-              sessions: [],
-              no_slot_reasons: [
-                ...final_slot.no_slot_reasons,
-                ...nextdaySlot.no_slot_reasons,
-              ],
+              sessions: [...final_slot.sessions, ...nextdaySlot.sessions],
+              no_slot_reasons: [],
             });
           }
         }

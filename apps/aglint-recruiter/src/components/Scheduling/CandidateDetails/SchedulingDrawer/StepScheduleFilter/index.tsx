@@ -24,7 +24,6 @@ function StepScheduleFilter() {
     numberNoConflicts,
     numberOutsideWorkHours,
     numberSoftConflicts,
-    combs,
   } = useMemo(
     () =>
       filterSchedulingOptionsArray({
@@ -33,8 +32,6 @@ function StepScheduleFilter() {
       }),
     [filters],
   );
-
-  console.log(combs);
 
   return (
     <Stack height={'calc(100vh - 96px)'}>

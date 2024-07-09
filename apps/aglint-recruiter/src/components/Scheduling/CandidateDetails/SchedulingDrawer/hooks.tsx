@@ -109,7 +109,6 @@ export const useSelfSchedulingDrawer = () => {
       const filterSlots = filterSchedulingOptionsArray({
         schedulingOptions,
         filters,
-        selectedSessionsNo: selectedSessionIds.length,
       });
       setFilteredSchedulingOptions(filterSlots.combs);
       setStepScheduling('slot_options');

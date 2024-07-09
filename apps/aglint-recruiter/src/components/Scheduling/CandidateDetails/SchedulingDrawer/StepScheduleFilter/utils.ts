@@ -53,6 +53,11 @@ export function filterSchedulingOptionsArray({
   schedulingOptions: ApiResponseFindAvailability;
   filters: SchedulingFlow['filters'];
 }) {
+  let numberNoConflicts = 0;
+  let numberHardConflicts = 0;
+  let numberSoftConflicts = 0;
+  let numberOutsideWorkHours = 0;
+
   const allFilteredOptions: ApiResponseFindAvailability = schedulingOptions.map(
     (option) => ({
       ...option,
@@ -71,60 +76,116 @@ export function filterSchedulingOptionsArray({
     }),
   );
 
-  console.log(allFilteredOptions, 'allFilteredOptions');
+  let allCombs: MultiDayPlanType[] =
+    createCombsForMultiDaySlots(allFilteredOptions);
 
-  const allCombs: MultiDayPlanType[] =
-    createCombsForMultiDaySlots(schedulingOptions);
+  allCombs = allCombs
+    .map(
+      (comb) =>
+        ({
+          ...comb,
+          plans: comb.plans.filter(
+            (option) =>
+              option.no_slot_reasons.length === 0 && option.sessions.length > 0,
+          ),
+        }) as MultiDayPlanType,
+    )
+    .filter((comb) => comb.plans.length > 0);
 
-  console.log(allCombs, 'allCombs');
-
-  allCombs.map((comb) => {
+  allCombs = allCombs.map((comb) => {
     let noConflicts: PlanCombinationRespType[] = [];
     let softConflicts: PlanCombinationRespType[] = [];
     let hardConflicts: PlanCombinationRespType[] = [];
     let outsideWorkHours: PlanCombinationRespType[] = [];
 
+    const addedPlans = new Set();
+
     if (filters.isNoConflicts) {
-      noConflicts = comb.plans.filter((option) =>
-        option.sessions.every((session) => !session.is_conflict),
-      );
-    }
-
-    if (filters.isSoftConflicts) {
-      softConflicts = comb.plans.filter((option) =>
-        option.sessions.some((session) =>
-          session.conflict_types.includes('soft'),
-        ),
-      );
-    }
-
-    if (filters.isHardConflicts) {
-      hardConflicts = comb.plans.filter((option) =>
-        option.sessions.some(
-          (session) =>
-            !session.conflict_types.includes('soft') &&
-            !session.conflict_types.includes('out_of_working_hours'),
-        ),
-      );
+      noConflicts = comb.plans.filter((option) => {
+        const isNoConflict = option.sessions.every(
+          (session) => !session.is_conflict,
+        );
+        if (isNoConflict && !addedPlans.has(option)) {
+          addedPlans.add(option);
+          numberNoConflicts++;
+          return true;
+        }
+        return false;
+      });
     }
 
     if (filters.isOutSideWorkHours) {
-      outsideWorkHours = comb.plans.filter((option) =>
-        option.sessions.some(
+      outsideWorkHours = comb.plans.filter((option) => {
+        const isOutsideWorkHours = option.sessions.some(
           (session) =>
             session.conflict_types.includes('out_of_working_hours') &&
-            !session.conflict_types.includes('soft'),
-        ),
-      );
+            !session.conflict_types.includes('soft') &&
+            !session.conflict_types.includes('day_off') &&
+            !session.conflict_types.includes('cal_event') &&
+            !session.conflict_types.includes('calender_diconnected') &&
+            !session.conflict_types.includes('day_load_reached') &&
+            !session.conflict_types.includes('free_time') &&
+            !session.conflict_types.includes('holiday') &&
+            !session.conflict_types.includes('interviewer_paused') &&
+            !session.conflict_types.includes('ooo') &&
+            !session.conflict_types.includes('recruiting_blocks'),
+        );
+        if (isOutsideWorkHours && !addedPlans.has(option)) {
+          addedPlans.add(option);
+          numberOutsideWorkHours++;
+          return true;
+        }
+        return false;
+      });
+    }
+
+    if (filters.isSoftConflicts) {
+      softConflicts = comb.plans.filter((option) => {
+        const hasSoftConflict = option.sessions.every(
+          (session) =>
+            !session.is_conflict ||
+            (session.conflict_types.includes('soft') &&
+              !session.conflict_types.includes('day_off') &&
+              !session.conflict_types.includes('cal_event') &&
+              !session.conflict_types.includes('calender_diconnected') &&
+              !session.conflict_types.includes('day_load_reached') &&
+              !session.conflict_types.includes('free_time') &&
+              !session.conflict_types.includes('holiday') &&
+              !session.conflict_types.includes('interviewer_paused') &&
+              !session.conflict_types.includes('ooo') &&
+              !session.conflict_types.includes('out_of_working_hours') &&
+              !session.conflict_types.includes('recruiting_blocks')),
+        );
+        if (hasSoftConflict && !addedPlans.has(option)) {
+          addedPlans.add(option);
+          numberSoftConflicts++;
+          return true;
+        }
+        return false;
+      });
+    }
+
+    if (filters.isHardConflicts) {
+      hardConflicts = comb.plans.filter((option) => {
+        const hasHardConflict = option.sessions.some(
+          (session) =>
+            !session.conflict_types.includes('soft') &&
+            !session.conflict_types.includes('out_of_working_hours'),
+        );
+        if (hasHardConflict && !addedPlans.has(option)) {
+          addedPlans.add(option);
+          numberHardConflicts++;
+          return true;
+        }
+        return false;
+      });
     }
 
     const allConflicts = [
-      ...new Set([
-        ...noConflicts,
-        ...softConflicts,
-        ...hardConflicts,
-        ...outsideWorkHours,
-      ]),
+      ...noConflicts,
+      ...softConflicts,
+      ...hardConflicts,
+      ...outsideWorkHours,
     ];
 
     return {
@@ -134,7 +195,7 @@ export function filterSchedulingOptionsArray({
   });
 
   if (filters.preferredInterviewers.length > 0) {
-    allCombs.map(
+    allCombs = allCombs.map(
       (comb) =>
         ({
           ...comb,
@@ -156,7 +217,7 @@ export function filterSchedulingOptionsArray({
   }
 
   if (filters.isWorkLoad) {
-    allCombs.map(
+    allCombs = allCombs.map(
       (comb) =>
         ({
           ...comb,
@@ -178,10 +239,10 @@ export function filterSchedulingOptionsArray({
 
   return {
     combs: allCombs,
-    numberNoConflicts: 0,
-    numberHardConflicts: 0,
-    numberSoftConflicts: 0,
-    numberOutsideWorkHours: 0,
+    numberNoConflicts,
+    numberHardConflicts,
+    numberSoftConflicts,
+    numberOutsideWorkHours,
   };
 }
 
