@@ -106,7 +106,13 @@ export const useSelfSchedulingDrawer = () => {
     }
 
     if (stepScheduling === 'preference') {
-      generateCombinations();
+      const filterSlots = filterSchedulingOptionsArray({
+        schedulingOptions,
+        filters,
+        selectedSessionsNo: selectedSessionIds.length,
+      });
+      setFilteredSchedulingOptions(filterSlots.combs);
+      setStepScheduling('slot_options');
     } else if (stepScheduling === 'slot_options') {
       if (scheduleFlow === 'debrief') {
         if (!isSendingToCandidate) {
@@ -233,6 +239,8 @@ export const useSelfSchedulingDrawer = () => {
 
       if (res.status === 200) {
         const slots = res.data as ApiResponseFindAvailability;
+
+        console.log(slots);
 
         if (slots.length === 0) {
           setNoOptions(true);
