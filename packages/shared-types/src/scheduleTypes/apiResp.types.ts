@@ -97,3 +97,7 @@ export type CandReqSlotsType = {
     plans: PlanCombinationRespType[];
   }[];
 };
+export type MultiDayPlanType = {
+  date_range: string[]; // [july 9, july 10]
+  plans: PlanCombinationRespType[];
+};
