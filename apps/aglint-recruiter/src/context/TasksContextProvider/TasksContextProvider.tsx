@@ -302,9 +302,12 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
 
   const init = (data: TasksReducerType) => {
     const application_id = router.query.application_id as string;
-    data.filter.candidate.values = application_id ? [application_id] : [];
+    data.filter.candidate.values = application_id
+      ? [application_id]
+      : data.filter.candidate.values;
     dispatch({ type: TasksReducerAction.INIT, payload: data });
   };
+
   const handelTaskChanges = (
     tasks: TasksAgentContextType['tasks'],
     type?: 'add' | 'update' | 'delete' | 'set',
@@ -566,9 +569,9 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
           temp.filter.candidate.values = preFilterData?.Candidate || [];
           temp.filter.date.values = preFilterData?.Date || [];
         }
-
         temp.tasks = data.data;
         temp.pagination.totalRows = data.count;
+
         init({ ...temp, tasks: data.data });
         setLoading(false);
       });

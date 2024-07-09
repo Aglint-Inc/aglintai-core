@@ -71,17 +71,17 @@ function BookingConfirmation({
       } else if (availability_request_id) {
         const { data: reqAva, error: errReqAva } = await supabase
           .from('candidate_request_availability')
-          .select('*')
+          .select('*, request_session_relation(session_id)')
           .eq('id', availability_request_id)
           .single();
 
-        if (errReqAva || reqAva?.session_ids?.length === 0)
+        if (errReqAva || reqAva?.request_session_relation?.length === 0)
           throw new Error(errReqAva.message);
 
-        const selectedSessions = reqAva.session_ids
+        const selectedSessions = reqAva.request_session_relation
           .map((reqses) => {
             const session = initialSessions.find(
-              (ses) => ses.interview_session.id === reqses.id,
+              (ses) => ses.interview_session.id === reqses.session_id,
             );
             return session;
           })

@@ -93,31 +93,37 @@ export function filterSchedulingOptionsArray({
   let day_filtered_slots: { date: string; count: number }[] = [];
   for (let curr_day_slots of schedulingOptions) {
     const [curr_round_slots] = curr_day_slots;
-    const curr_day_str = dayjsLocal(curr_round_slots[0].sessions[0].start_time)
-      .startOf('day')
-      .format();
-    let filtered_slots = curr_round_slots.filter((option) => {
-      if (option.sessions.every((s) => !s.is_conflict)) return true;
+    if (curr_round_slots[0].no_slot_reasons.length === 0) {
+      const curr_day_str = dayjsLocal(
+        curr_round_slots[0].sessions[0].start_time,
+      )
+        .startOf('day')
+        .format();
+      let filtered_slots = curr_round_slots.filter((option) => {
+        if (option.sessions.every((s) => !s.is_conflict)) return true;
 
-      const slot_conflicts: SessionCombinationRespType['conflict_types'] =
-        option.sessions.reduce((all_conflict_types, curr) => {
-          return [...all_conflict_types, ...curr.conflict_types];
-        }, []);
-      if (slot_conflicts.includes('day_off') && filters.day_offs) {
-        return true;
-      }
-      if (
-        slot_conflicts.includes('out_of_working_hours') &&
-        filters.outside_work_hours
-      ) {
-        return true;
-      }
-      return false;
-    });
-    day_filtered_slots.push({
-      date: curr_day_str,
-      count: filtered_slots.length,
-    });
+        const slot_conflicts: SessionCombinationRespType['conflict_types'] =
+          option.sessions.reduce((all_conflict_types, curr) => {
+            return [...all_conflict_types, ...curr.conflict_types];
+          }, []);
+        if (slot_conflicts.includes('day_off') && filters.day_offs) {
+          return true;
+        }
+        if (
+          slot_conflicts.includes('out_of_working_hours') &&
+          filters.outside_work_hours
+        ) {
+          return true;
+        }
+        return false;
+      });
+      day_filtered_slots.push({
+        date: curr_day_str,
+        count: filtered_slots.length,
+      });
+    } else {
+      //
+    }
   }
 
   return day_filtered_slots;
