@@ -96,6 +96,10 @@ function DateRangeField() {
         }
         onClickAdd={{
           onClick: () => {
+            if (!value) {
+              toast.error('Choose start time and end time then add');
+              return;
+            }
             if (
               dayjsLocal(value.startTime).valueOf() >=
               dayjsLocal(value.endTime).valueOf()
