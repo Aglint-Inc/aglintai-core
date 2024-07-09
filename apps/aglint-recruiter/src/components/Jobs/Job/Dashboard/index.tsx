@@ -45,6 +45,10 @@ import PublishButton from '@/src/components/Common/PublishButton';
 import UITextField from '@/src/components/Common/UITextField';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
+import {
+  ApplicationsParams,
+  useApplicationsParams,
+} from '@/src/context/ApplicationsContext/hooks';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJob } from '@/src/context/JobContext';
@@ -116,9 +120,11 @@ const Dashboard = () => {
   const { push } = useRouter();
   const { handleJobDelete } = useJobs();
 
-  const { setImportPopup, setFilters } = useApplicationsStore(
-    ({ setImportPopup, setFilters }) => ({ setImportPopup, setFilters }),
-  );
+  const { setImportPopup } = useApplicationsStore(({ setImportPopup }) => ({
+    setImportPopup,
+  }));
+
+  const { getParams } = useApplicationsParams();
 
   const score_matches = getMatches(counts);
   const [popover, setPopover] = useState(false);
@@ -171,10 +177,11 @@ const Dashboard = () => {
   );
 
   const handleFilter = (
-    resume_score: Parameters<typeof setFilters>[0]['resume_score'][number],
+    resume_score: ApplicationsParams['filters']['resume_score'][number],
   ) => {
-    setFilters({ resume_score: [resume_score] });
-    push(`/jobs/${job.id}/candidate-list`);
+    push(
+      `/jobs/${job.id}/candidate-list?${getParams({ resume_score: [resume_score] })}`,
+    );
   };
 
   const banners = useBanners();
@@ -428,8 +435,8 @@ const Preview = () => {
 
 const Pipeline = () => {
   const { job } = useJobDashboard();
+  const { getParams } = useApplicationsParams();
   const { push } = useRouter();
-  const setSection = useApplicationsStore(({ setSection }) => setSection);
   const newSections = Object.entries(job?.section_count ?? {}).reduce(
     (acc, [key, value]) => {
       acc[key] = { count: value, label: getPlural(value, 'candidate') };
@@ -441,8 +448,7 @@ const Pipeline = () => {
     },
   );
   const handlClick = (section: Application['status']) => {
-    setSection(section);
-    push(`/jobs/${job.id}/candidate-list`);
+    push(`/jobs/${job.id}/candidate-list?${getParams({ section })}`);
   };
   return (
     <>

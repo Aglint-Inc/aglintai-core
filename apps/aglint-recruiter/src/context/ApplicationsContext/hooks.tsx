@@ -15,7 +15,7 @@ import { capitalize } from '@/src/utils/text/textUtils';
 
 import { useApplicationStore } from '../ApplicationContext/store';
 import { useJob } from '../JobContext';
-import { ApplicationsStore, useApplicationsStore } from './store';
+import { useApplicationsStore } from './store';
 
 const filterParams = [
   'bookmarked',
@@ -72,10 +72,11 @@ const sortDefaults: SortValue = {
 type Sort = { [id in SortKeys]: SortValue[id] };
 
 export const useApplicationsParams = () => {
-  const { locations, setLocations } = useApplicationsStore(
-    ({ locations, setLocations }) => ({
+  const { locations, setLocations, resetChecklist } = useApplicationsStore(
+    ({ locations, setLocations, resetChecklist }) => ({
       locations,
       setLocations,
+      resetChecklist,
     }),
   );
 
@@ -84,7 +85,8 @@ export const useApplicationsParams = () => {
 
   const section = useMemo(
     () =>
-      (searchParams.get('section') ?? sectionDefaults) as Application['status'],
+      JSON.parse(decodeURIComponent(searchParams.get('section'))) ??
+      sectionDefaults,
     [searchParams, sectionDefaults],
   );
 
@@ -155,11 +157,12 @@ export const useApplicationsParams = () => {
   );
 
   const setSection = useCallback(
-    (newSection: Partial<typeof section>) => {
+    (newSection: typeof section) => {
       router.query['section'] = encodeURIComponent(JSON.stringify(newSection));
+      resetChecklist();
       router.replace(router);
     },
-    [router],
+    [router, resetChecklist],
   );
 
   return {
@@ -185,7 +188,7 @@ export const useApplicationsActions = () => {
     }),
   );
 
-  const { filters, section, sort, setFilters, setSort } =
+  const { filters, section, sort, setFilters, setSort, setSection } =
     useApplicationsParams();
 
   const [params, setParams] = useState({ filters, sort });
@@ -393,6 +396,7 @@ export const useApplicationsActions = () => {
     sort,
     setFilters,
     setSort,
+    setSection,
     handleUpdateApplication,
     handleAsyncUpdateApplication,
     handleMoveApplications,
@@ -403,7 +407,7 @@ export const useApplicationsActions = () => {
 
 const EMAIL_VISIBILITIES: {
   // eslint-disable-next-line no-unused-vars
-  [id in ApplicationsStore['section']]: ApplicationsStore['section'][];
+  [id in ApplicationsParams['section']]: ApplicationsParams['section'][];
 } = {
   new: ['disqualified'],
   screening: ['new'],
@@ -415,7 +419,7 @@ const EMAIL_VISIBILITIES: {
 
 const CASCADE_VISIBILITIES: {
   // eslint-disable-next-line no-unused-vars
-  [id in ApplicationsStore['section']]: ApplicationsStore['section'][];
+  [id in ApplicationsParams['section']]: ApplicationsParams['section'][];
 } = {
   new: [
     'new',
