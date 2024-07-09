@@ -8,7 +8,6 @@ import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import {
@@ -66,7 +65,7 @@ function TaskActionButtons({
                 },
               }}
             />
-            <ButtonSoft
+            {/* <ButtonSoft
               textButton={'Request Again'}
               isLoading={false}
               isLeftIcon={false}
@@ -88,7 +87,7 @@ function TaskActionButtons({
                   );
                 },
               }}
-            />
+            /> */}
           </Stack>
         </ShowCode.When>
         <ShowCode.When
@@ -173,7 +172,7 @@ function TaskActionButtons({
                 },
               }}
             />
-            <ButtonSoft
+            {/* <ButtonSoft
               textButton={'Copy invite'}
               isLoading={false}
               isLeftIcon={false}
@@ -187,7 +186,7 @@ function TaskActionButtons({
                   toast.message('Invited link copied!');
                 },
               }}
-            />
+            /> */}
           </Stack>
         </ShowCode.When>
         <ShowCode.When isTrue={progress_type === 'interview_schedule'}>
@@ -214,7 +213,7 @@ function TaskActionButtons({
                 },
               }}
             />
-            <ButtonSoft
+            {/* <ButtonSoft
               onClickButton={{
                 onClick: () => {
                   router.push(
@@ -224,7 +223,7 @@ function TaskActionButtons({
               }}
               size={1}
               textButton={'View'}
-            />
+            /> */}
           </Stack>
         </ShowCode.When>
         {/* <ShowCode.When

@@ -1,13 +1,13 @@
 import { DatabaseEnums, DatabaseTableUpdate, DB } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
-import { Stack } from '@mui/material';
+import { IconButton, Stack, Tooltip } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import { InterviewTaskPill } from '@/devlink3/InterviewTaskPill';
-import { ListCard } from '@/devlink3/ListCard';
 import { ViewTaskCard } from '@/devlink3/ViewTaskCard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
@@ -121,30 +121,44 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
           task?.applications?.public_jobs?.job_title,
         )}
         slotCandidate={
-          task.application_id && (
-            <ListCard
-              isAvatarWithNameVisible={true}
-              isListVisible={false}
-              slotAvatarWithName={
-                task.applications?.candidates && (
-                  <AvatarWithName
-                    isAvatarVisible={false}
-                    isCandidateIconVisible={true}
-                    isRoleVisible={false}
-                    isReverseShadowVisible={false}
-                    isShadowVisible={false}
-                    slotAvatar={<></>}
-                    isTickVisible={false}
-                    // slotAvatar={}
-                    textName={capitalizeAll(
-                      task.applications.candidates?.first_name +
-                        ' ' +
-                        (task.applications.candidates?.last_name ?? ''),
-                    )}
-                  />
-                )
-              }
-            />
+          task.applications?.candidates && (
+            <Stack
+              direction={'row'}
+              justifyContent={'space-between'}
+              alignItems={'center'}
+              width={'100%'}
+            >
+              <AvatarWithName
+                isAvatarVisible={false}
+                isCandidateIconVisible={true}
+                isRoleVisible={false}
+                isReverseShadowVisible={false}
+                isShadowVisible={false}
+                slotAvatar={<></>}
+                isTickVisible={false}
+                // slotAvatar={}
+                textName={capitalizeAll(
+                  task.applications.candidates?.first_name +
+                    ' ' +
+                    (task.applications.candidates?.last_name ?? ''),
+                )}
+              />
+              <Tooltip
+                enterDelay={1000}
+                arrow
+                title={<Stack>Go to Schedule</Stack>}
+              >
+                <IconButton
+                  onClick={() => {
+                    window.open(
+                      `/scheduling/application/${task.application_id}`,
+                    );
+                  }}
+                >
+                  <GlobalIcon iconName={'open_in_new'} />
+                </IconButton>
+              </Tooltip>
+            </Stack>
           )
         }
         slotInterviewTaskPill={
@@ -310,7 +324,8 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                         name: recruiterUser.first_name,
                         id: recruiterUser.user_id,
                       },
-                      progress_type: task.latest_progress.progress_type,
+                      progress_type:
+                        task.latest_progress.progress_type || 'standard',
                     },
                     optionData: {
                       assignerId: assigner.user_id,
