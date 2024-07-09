@@ -26,6 +26,7 @@ export function EmailTemplatesStart({
   slotNewTabPill,
   slotSearchFilter,
   showTabs = true,
+  currentModule,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "et_wrapper")} tag="div">
@@ -44,6 +45,7 @@ export function EmailTemplatesStart({
         <_Builtin.Block
           className={_utils.cx(_styles, "email-template-left-wrap")}
           tag="div"
+          data-dynamic-height={currentModule}
         >
           {isWarningVisible ? (
             <_Builtin.Block
@@ -72,8 +74,8 @@ export function EmailTemplatesStart({
             {slotEmailTemplateCards ?? (
               <>
                 <EmailTemplateCards />
-                <EmailTemplateCards />
-                <EmailTemplateCards />
+                <EmailTemplateCards isActive={true} />
+                <EmailTemplateCards isActive={true} />
               </>
             )}
           </_Builtin.Block>
@@ -81,10 +83,12 @@ export function EmailTemplatesStart({
         <_Builtin.Block
           className={_utils.cx(_styles, "email-template-right-wrap")}
           tag="div"
+          data-dynamic-height={currentModule}
         >
           {slotEmailDetails ?? <EditEmail />}
         </_Builtin.Block>
       </_Builtin.Block>
+      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%5Bdata-dynamic-height%3D%22jobs%22%5D%7B%0Aheight%3A%20calc(100vh%20-%2048px)!important%0A%7D%0A%3C%2Fstyle%3E" />
     </_Component>
   );
 }
