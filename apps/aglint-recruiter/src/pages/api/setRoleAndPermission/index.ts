@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
 
-import { RoleAndPermissionAPI } from './type';
+import { SetRoleAndPermissionAPI } from './type';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -15,7 +15,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const requestHandler = apiRequestHandlerFactory<RoleAndPermissionAPI>(
+  const requestHandler = apiRequestHandlerFactory<SetRoleAndPermissionAPI>(
     req,
     res,
   );
@@ -27,7 +27,8 @@ export default async function handler(
       if (toDelete.length) {
         await supabase.from('role_permissions').delete().in('id', toDelete);
       }
-      let temp_added: RoleAndPermissionAPI['response']['addedPermissions'] = [];
+      let temp_added: SetRoleAndPermissionAPI['response']['addedPermissions'] =
+        [];
       if (add.length) {
         const { data } = await supabase
           .from('role_permissions')

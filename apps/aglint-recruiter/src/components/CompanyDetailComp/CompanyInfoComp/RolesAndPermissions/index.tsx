@@ -24,8 +24,8 @@ import { PageLayout } from '@/devlink2/PageLayout';
 import axios from '@/src/client/axios';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
-import { getRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
-import { RoleAndPermissionAPI } from '@/src/pages/api/roleAndPermission/type';
+import { type getRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
+import { type SetRoleAndPermissionAPI } from '@/src/pages/api/setRoleAndPermission/type';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
@@ -243,7 +243,7 @@ const useRoleAndPermissions = () => {
       );
     },
     onError(err) {
-      toast.error(err.message);
+      toast.error(String(err));
     },
   });
   return {
@@ -672,10 +672,10 @@ function RoleDetails({
   );
 }
 
-const updateRole = (data: RoleAndPermissionAPI['request']) => {
-  return axios.call<RoleAndPermissionAPI>(
+const updateRole = (data: SetRoleAndPermissionAPI['request']) => {
+  return axios.call<SetRoleAndPermissionAPI>(
     'POST',
-    '/api/roleAndPermission',
+    '/api/setRoleAndPermission',
     data,
   );
 };

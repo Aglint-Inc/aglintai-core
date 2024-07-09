@@ -1,4 +1,4 @@
-export type RoleAndPermissionAPI = {
+export type SetRoleAndPermissionAPI = {
   request: {
     delete: string[];
     add: number[];
