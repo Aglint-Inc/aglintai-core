@@ -19,7 +19,6 @@ import { useJobs } from '../JobsContext';
 import {
   getDetailsValidity,
   getHiringTeamValidity,
-  hashCode,
   validateDescription,
   validateJd,
 } from './utils';
@@ -73,11 +72,11 @@ const useJobContext = () => {
       description_changed:
         !job.scoring_criteria_loading &&
         !job?.dashboard_warnings?.job_description &&
-        hashCode(job?.draft?.description ?? '') !== job?.description_hash,
+        (job?.draft?.description ?? '') !== job?.description,
       jd_json_error: !job.scoring_criteria_loading && !jdValidity,
       scoring_criteria_changed:
-        hashCode(JSON.stringify(job?.draft?.jd_json ?? {})) !==
-        hashCode(JSON.stringify(job?.jd_json ?? {})),
+        JSON.stringify(job?.draft?.jd_json ?? {}) !==
+        JSON.stringify(job?.jd_json ?? {}),
     };
 
   const interviewPlans = useQuery(jobQueries.interview_plans({ id: job_id }));
@@ -139,7 +138,6 @@ const useJobContext = () => {
         ...safeJob,
         ...safeJob.draft,
         status: 'published',
-        description_hash: hashCode(safeJob.draft.description),
         dashboard_warnings: {
           ...safeJob.dashboard_warnings,
           job_description: false,
