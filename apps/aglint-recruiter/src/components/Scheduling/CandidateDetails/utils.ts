@@ -6,6 +6,7 @@ import {
   EmailTemplateAPi,
   InterviewSessionTypeDB,
   JobApplcationDB,
+  PlanCombinationRespType,
   SupabaseType,
 } from '@aglint/shared-types';
 import { BookingConfirmationMetadata } from '@aglint/shared-types/src/db/tables/application_logs.types';
@@ -92,7 +93,7 @@ export const scheduleDebrief = async ({
   supabase,
   task_id,
 }: {
-  selectedDebrief: SchedulingFlow['filteredSchedulingOptions'][number];
+  selectedDebrief: PlanCombinationRespType;
   recruiter_id: string;
   user_tz: string;
   schedule_id: string;

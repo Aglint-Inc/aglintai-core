@@ -15,6 +15,7 @@ function FilterJobDashboard({
   setSort,
   sortValue,
   sortOptions,
+  // eslint-disable-next-line no-unused-vars
   handlerResetFilter,
 }: {
   filterOptions: ReturnType<typeof useJobFilterAndSort>['filterOptions'];
@@ -31,7 +32,7 @@ function FilterJobDashboard({
     <Stack width={'100%'}>
       <FilterHeader
         isResetAll={!isResetAll}
-        handelResetAll={handlerResetFilter}
+        // handelResetAll={handlerResetFilter}
         filters={[
           {
             type: 'filter',
