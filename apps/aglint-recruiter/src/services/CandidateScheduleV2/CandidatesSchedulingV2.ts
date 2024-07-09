@@ -544,6 +544,21 @@ export class CandidatesSchedulingV2 {
           type: CalConflictType;
         })[];
       }[] = [];
+      const day_off_ints: {
+        session_id: string;
+        inters: Pick<
+          SessionInterviewerApiRespType,
+          'user_id' | 'first_name' | 'last_name'
+        >[];
+      }[] = [];
+
+      const holiday_ints: {
+        session_id: string;
+        inters: Pick<
+          SessionInterviewerApiRespType,
+          'user_id' | 'first_name' | 'last_name'
+        >[];
+      }[] = [];
 
       let slot_week_load_density = 0;
       let slot_day_load_density = 0;
@@ -570,14 +585,22 @@ export class CandidatesSchedulingV2 {
           session_id: curr_sess.session_id,
           inters: [],
         });
+        day_off_ints.push({
+          session_id: curr_sess.session_id,
+          inters: [],
+        });
+        holiday_ints.push({
+          session_id: curr_sess.session_id,
+          inters: [],
+        });
 
         let cnt_qualified_ints = 0;
 
         session_attendees.forEach((attendee) => {
-          const interviewer_pause_json = this.getIntPauseJson(
-            curr_sess.session_id,
+          const attendee_details = this.intervs_details_map.get(
             attendee.user_id,
           );
+
           if (
             !this.intervs_details_map.get(attendee.user_id).isCalenderConnected
           ) {
@@ -587,6 +610,45 @@ export class CandidatesSchedulingV2 {
               last_name: attendee.last_name,
             });
           }
+          let is_day_off = false;
+          let is_holiday_off = false;
+          attendee_details.holiday[curr_day_str].forEach((t) => {
+            if (
+              t.startTime === curr_day_js.startOf('date').format() &&
+              t.endTime === curr_day_js.endOf('date').format()
+            ) {
+              is_holiday_off = true;
+            }
+          });
+          attendee_details.day_off[curr_day_str].forEach((t) => {
+            if (
+              t.startTime === curr_day_js.startOf('date').format() &&
+              t.endTime === curr_day_js.endOf('date').format()
+            ) {
+              is_day_off = true;
+            }
+          });
+          if (is_day_off) {
+            day_off_ints[sess_idx].inters.push({
+              first_name: attendee.first_name,
+              last_name: attendee.last_name,
+              user_id: attendee.user_id,
+            });
+          }
+          if (is_holiday_off) {
+            holiday_ints[sess_idx].inters.push({
+              first_name: attendee.first_name,
+              last_name: attendee.last_name,
+              user_id: attendee.user_id,
+            });
+          }
+          if (is_day_off || is_holiday_off) {
+            return;
+          }
+          const interviewer_pause_json = this.getIntPauseJson(
+            curr_sess.session_id,
+            attendee.user_id,
+          );
           if (interviewer_pause_json) {
             if (interviewer_pause_json.isManual) {
               indef_paused_inters[sess_idx].inters.push({
@@ -659,6 +721,8 @@ export class CandidatesSchedulingV2 {
         slot_week_load_density = slot_week_load_density / cnt_qualified_ints;
       }
       return {
+        holiday_ints,
+        day_off_ints,
         indef_paused_inters,
         curr_day_paused_inters,
         cal_disc_inters,
@@ -668,6 +732,8 @@ export class CandidatesSchedulingV2 {
       };
     };
     const {
+      day_off_ints,
+      holiday_ints,
       cal_disc_inters,
       curr_day_paused_inters,
       indef_paused_inters,
@@ -1016,6 +1082,20 @@ export class CandidatesSchedulingV2 {
         plan_comb_id: nanoid(),
         sessions: [],
       };
+      holiday_ints.forEach((s) => {
+        s.inters.forEach((inter) => {
+          zerodaySlotsReasons.no_slot_reasons.push({
+            reason: `${getFullName(inter.first_name, inter.last_name)} is on holiday`,
+          });
+        });
+      });
+      day_off_ints.forEach((s) => {
+        s.inters.forEach((inter) => {
+          zerodaySlotsReasons.no_slot_reasons.push({
+            reason: `${getFullName(inter.first_name, inter.last_name)} is on Day off`,
+          });
+        });
+      });
       cal_disc_inters.forEach((s) => {
         s.inters.forEach((inter) => {
           zerodaySlotsReasons.no_slot_reasons.push({
