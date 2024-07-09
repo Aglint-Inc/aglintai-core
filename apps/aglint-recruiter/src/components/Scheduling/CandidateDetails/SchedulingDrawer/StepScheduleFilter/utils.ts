@@ -2,9 +2,10 @@
 import { PlanCombinationRespType } from '@aglint/shared-types';
 import dayjs from 'dayjs';
 
+import { createCombsForMultiDaySlots } from '@/src/services/CandidateScheduleV2/utils/createCombsForMultiDaySlots';
+
 import { ApiResponseFindAvailability } from '../../types';
 import { SchedulingFlow } from '../store';
-import { createCombsForMultiDaySlots } from '@/src/services/CandidateScheduleV2/utils/createCombsForMultiDaySlots';
 
 export const filterByDateRanges = ({
   schedulingOptions,
@@ -161,8 +162,6 @@ export function filterSchedulingOptionsArray({
   const combs = createCombsForMultiDaySlots(allFilteredOptions).flatMap(
     (comb) => comb,
   );
-
-  console.log(combs);
 
   const numberNoConflicts = combs
     .map((comb) => comb.sessions.filter((session) => !session.is_conflict))

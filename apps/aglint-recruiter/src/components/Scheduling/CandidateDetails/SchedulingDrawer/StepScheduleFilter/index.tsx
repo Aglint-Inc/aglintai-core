@@ -4,11 +4,11 @@ import { useMemo } from 'react';
 
 import { SchedulerFilters } from '@/devlink3/SchedulerFilters';
 
+import { useSchedulingApplicationStore } from '../../store';
 import { setFilters, useSchedulingFlowStore } from '../store';
 import DateRangeField from './DateRangeField';
 import PreferedInterviewers from './PreferedInterviewers';
-import { filterByDateRanges, filterSchedulingOptionsArray } from './utils';
-import { useSchedulingApplicationStore } from '../../store';
+import { filterSchedulingOptionsArray } from './utils';
 
 function StepScheduleFilter() {
   const { dateRange, schedulingOptions, filters } = useSchedulingFlowStore(
