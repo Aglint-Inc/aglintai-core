@@ -22,12 +22,12 @@ export default async function handler(
   requestHandler(
     'POST',
     async ({ requesterDetails, body }) => {
-      const { user_id, role: temp_role, recruiter_id } = requesterDetails;
+      const { role: temp_role, recruiter_id } = requesterDetails;
       const { data } = body;
 
-      if (user_id === data.user_id || temp_role !== 'admin') {
-        throw new Error('Permission denied.');
-      }
+      // if (user_id === data.user_id || temp_role !== 'admin') {
+      //   throw new Error('Permission denied.');
+      // }
       let role: string;
       let role_id = data.role_id;
       let manager_id = data.manager_id;

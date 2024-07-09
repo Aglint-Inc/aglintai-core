@@ -37,13 +37,14 @@ const getMembers = (id: string) => {
   return supabase
     .from('recruiter_relation')
     .select(
-      'role_id, manager_id, recruiter_user!public_recruiter_relation_user_id_fkey(*), roles(name)',
+      'role_id, manager_id, created_by,recruiter_user!public_recruiter_relation_user_id_fkey(*), roles(name)',
     )
     .eq('recruiter_id', id)
     .then(({ data, error }) => {
       if (error) throw new Error(error.message);
       return data.map((item) => ({
         ...item.recruiter_user,
+        created_by: item.created_by,
         role: item.roles?.name,
         role_id: item.role_id,
         manager_id: item.manager_id,

@@ -134,6 +134,9 @@ function DayCardWrapper({
         isSelected={isSelected}
         slotCheckbox={
           <Checkbox
+            indeterminate={
+              noOfSelectedSlots > 0 && noOfSelectedSlots < noOfTotalSlots
+            }
             checked={isSelected}
             onClick={() =>
               setSelectedCombIds(
