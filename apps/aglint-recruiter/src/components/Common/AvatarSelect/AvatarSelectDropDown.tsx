@@ -83,7 +83,7 @@ const AvatarSelectDropDown = ({
           )}
         </Stack>
       )}
-      <Stack style={{ position: 'relative', width: '100%', height: '100%' }}>
+      <Stack style={{ position: 'relative', width: '100%', height: '36px' }}>
         <TextField
           select
           onChange={onChange}

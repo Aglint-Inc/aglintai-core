@@ -17,6 +17,18 @@ import FilterJobDashboard, { useJobFilterAndSort } from './Filters';
 import JobsList from './JobsList';
 import { searchJobs, sortJobs } from './utils';
 
+export const initalFilterValue = {
+  status: [],
+  location: [],
+  type: [],
+  hiringManager: [],
+  recruiter: [],
+  source: [],
+  department: [],
+  workplace: [],
+  coOrdinator: [],
+};
+
 const DashboardComp = () => {
   const router = useRouter();
   const {
@@ -89,17 +101,7 @@ const DashboardComp = () => {
   };
 
   const handlerResetFilter = () => {
-    setFilterValues({
-      status: [],
-      location: [],
-      type: [],
-      hiringManager: [],
-      recruiter: [],
-      source: [],
-      department: [],
-      workplace: [],
-      coOrdinator: [],
-    });
+    setFilterValues(initalFilterValue);
   };
   const handleTextClear = () => {
     setSearchText('');
