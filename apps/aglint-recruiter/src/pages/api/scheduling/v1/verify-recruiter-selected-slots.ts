@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import {
   APIVerifyRecruiterSelectedSlots,
+  DateRangePlansType,
   PlanCombinationRespType,
   SessionCombinationRespType,
   SessionsCombType,
@@ -169,7 +170,14 @@ const convertOptionsToDateRangeSlots = (
   }
 
   for (let curr_int_day_slots of Object.values(slot_map)) {
-    all_day_plans.push(planCombineSlots(curr_int_day_slots));
+    const curr_day_plan: DateRangePlansType['interview_rounds'] =
+      curr_int_day_slots.map((curr_round_plans) => {
+        return {
+          curr_date: '', // not used
+          plans: curr_round_plans,
+        };
+      });
+    all_day_plans.push(planCombineSlots(curr_day_plan));
   }
 
   return all_day_plans;

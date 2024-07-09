@@ -1,6 +1,11 @@
 /* eslint-disable security/detect-object-injection */
-import { PlanCombinationRespType } from '@aglint/shared-types';
+import {
+  MultiDayPlanType,
+  PlanCombinationRespType,
+} from '@aglint/shared-types';
 import dayjs from 'dayjs';
+
+import { createCombsForMultiDaySlots } from '@/src/services/CandidateScheduleV2/utils/createCombsForMultiDaySlots';
 
 import { ApiResponseFindAvailability } from '../../types';
 import { SchedulingFlow } from '../store';
@@ -9,142 +14,32 @@ export const filterByDateRanges = ({
   schedulingOptions,
   preferredDateRanges,
 }: {
-  schedulingOptions: ApiResponseFindAvailability;
+  schedulingOptions: {
+    curr_date: string;
+    plans: PlanCombinationRespType[];
+  };
   preferredDateRanges: SchedulingFlow['filters']['preferredDateRanges'];
 }) => {
   if (preferredDateRanges.length === 0) {
-    return schedulingOptions
-      .flatMap((option) => option)
-      .flatMap((option) => option);
+    return schedulingOptions;
   }
 
-  return schedulingOptions
-    .flatMap((option) => option)
-    .flatMap((option) => option)
-    .filter((option) => {
-      // Group sessions by date
-      const sessionsByDate: {
-        [date: string]: PlanCombinationRespType['sessions'];
-      } = option.sessions.reduce((acc, session) => {
-        const date = dayjs(session.start_time).format('YYYY-MM-DD');
-        if (!acc[date]) {
-          acc[date] = [];
-        }
-        acc[date].push(session);
-        return acc;
-      }, {});
-
-      // Check each day's sessions against the preferred date ranges
-      return Object.values(sessionsByDate).every((daySessions) => {
-        const firstSessionStartTime = extractTime(daySessions[0].start_time);
-        const lastSessionEndTime = extractTime(
-          daySessions[daySessions.length - 1].end_time,
-        );
-
+  return {
+    ...schedulingOptions,
+    plans: schedulingOptions.plans.filter((option) => {
+      return option.sessions.every((session) => {
         return preferredDateRanges.some((dateRange) => {
-          const rangeStartTime = extractTime(dateRange.startTime);
-          const rangeEndTime = extractTime(dateRange.endTime);
-
+          const sessionStartTime = extractTime(session.start_time);
+          const sessionEndTime = extractTime(session.end_time);
           return (
-            firstSessionStartTime >= rangeStartTime &&
-            lastSessionEndTime <= rangeEndTime
+            sessionStartTime >= extractTime(dateRange.startTime) &&
+            sessionEndTime <= extractTime(dateRange.endTime)
           );
         });
       });
-    });
-};
-
-// function which is used to show count in preference screen
-export function filterSchedulingOptions({
-  schedulingOptions,
-  filters,
-}: {
-  schedulingOptions: PlanCombinationRespType[];
-  filters: SchedulingFlow['filters'];
-}) {
-  let noConflicts: PlanCombinationRespType[] = [];
-  let softConflicts: PlanCombinationRespType[] = [];
-  let hardConflicts: PlanCombinationRespType[] = [];
-  let outSideWorkHours: PlanCombinationRespType[] = [];
-
-  if (filters.preferredInterviewers.length > 0) {
-    schedulingOptions.sort((a, b) => {
-      const aHasPreferred = a.sessions.some((session) =>
-        hasPreferredInterviewers({ session, filters }),
-      )
-        ? 0
-        : 1;
-      const bHasPreferred = b.sessions.some((session) =>
-        hasPreferredInterviewers({ session, filters }),
-      )
-        ? 0
-        : 1;
-      return aHasPreferred - bHasPreferred;
-    });
-  }
-
-  // Filter for no conflicts
-  if (filters.isNoConflicts) {
-    noConflicts = schedulingOptions.filter((option) =>
-      option.sessions.every((session) => !session.is_conflict),
-    );
-  }
-
-  // Filter for soft conflicts
-  if (filters.isSoftConflicts) {
-    softConflicts = schedulingOptions.filter((option) =>
-      option.sessions.some((session) =>
-        session.ints_conflicts.some((conflict) =>
-          conflict.conflict_reasons.some(
-            (reason) => reason.conflict_type === 'soft',
-          ),
-        ),
-      ),
-    );
-  }
-
-  // Filter for hard conflicts
-  if (filters.isHardConflicts) {
-    hardConflicts = schedulingOptions.filter((option) =>
-      option.sessions.some((session) =>
-        session.ints_conflicts.some((conflict) =>
-          conflict.conflict_reasons.some(
-            (reason) =>
-              reason.conflict_type !== 'soft' &&
-              reason.conflict_type !== 'out_of_working_hours',
-          ),
-        ),
-      ),
-    );
-  }
-
-  if (filters.isOutSideWorkHours) {
-    outSideWorkHours = schedulingOptions.filter((option) =>
-      option.sessions.some((session) =>
-        session.ints_conflicts.some((conflict) =>
-          conflict.conflict_reasons.some(
-            (reason) => reason.conflict_type === 'out_of_working_hours',
-          ),
-        ),
-      ),
-    );
-  }
-
-  const allFilteredOptionsSet = new Set([
-    ...noConflicts,
-    ...softConflicts,
-    ...hardConflicts,
-    ...outSideWorkHours,
-  ]);
-
-  return {
-    noConflicts,
-    softConflicts,
-    hardConflicts,
-    outSideWorkHours,
-    allFilteredOptions: Array.from(allFilteredOptionsSet),
+    }),
   };
-}
+};
 
 const extractTime = (datetime) => {
   return dayjs(datetime).format('HH:mm');
@@ -159,34 +54,114 @@ export function filterSchedulingOptionsArray({
   filters: SchedulingFlow['filters'];
 }) {
   const allFilteredOptions: ApiResponseFindAvailability = schedulingOptions.map(
-    (option) =>
-      option.map((items) => {
+    (option) => ({
+      ...option,
+      interview_rounds: option.interview_rounds.map((items) => {
         let allOptions = items;
 
         if (filters.preferredDateRanges.length > 0) {
           allOptions = filterByDateRanges({
-            schedulingOptions: [[allOptions]],
+            schedulingOptions: allOptions,
             preferredDateRanges: filters.preferredDateRanges,
           });
         }
 
-        if (filters.isWorkLoad) {
-          allOptions
-            .map((option) => {
-              const totalWorkload = option.sessions.reduce(
-                (acc, session) => acc + session.day_load_den,
-                0,
-              );
-              return {
-                ...option,
-                totalWorkload,
-              };
-            })
-            .sort((a, b) => a.totalWorkload - b.totalWorkload);
-        }
+        return allOptions;
+      }),
+    }),
+  );
 
-        if (filters.preferredInterviewers.length > 0) {
-          allOptions.sort((a, b) => {
+  let allCombs: MultiDayPlanType[] =
+    createCombsForMultiDaySlots(allFilteredOptions);
+
+  allCombs = allCombs
+    .map(
+      (comb) =>
+        ({
+          ...comb,
+          plans: comb.plans.filter(
+            (option) =>
+              option.no_slot_reasons.length === 0 && option.sessions.length > 0,
+          ),
+        }) as MultiDayPlanType,
+    )
+    .filter((comb) => comb.plans.length > 0);
+  let noConflictsCnt = 0;
+  let softConflictsCnt = 0;
+  let outWorkinHrsCnt = 0;
+  let hardConflictsCnt = 0;
+  allCombs = allCombs.map((comb) => {
+    let noConflicts: PlanCombinationRespType[] = [];
+    let softConflicts: PlanCombinationRespType[] = [];
+    let hardConflicts: PlanCombinationRespType[] = [];
+    let outsideWorkHours: PlanCombinationRespType[] = [];
+
+    if (filters.isNoConflicts) {
+      noConflicts = comb.plans.filter((option) =>
+        option.sessions.every((session) => session.conflict_types.length === 0),
+      );
+    }
+
+    if (filters.isSoftConflicts) {
+      softConflicts = comb.plans.filter(
+        (option) =>
+          option.sessions.some((s) => s.conflict_types.includes('soft')) &&
+          option.sessions.every(
+            (session) =>
+              session.conflict_types.length === 0 ||
+              (session.conflict_types.length === 1 &&
+                session.conflict_types.includes('soft')),
+          ),
+      );
+    }
+
+    if (filters.isHardConflicts) {
+      hardConflicts = comb.plans.filter(
+        (option) =>
+          option.sessions.some((s) => s.conflict_types.length > 0) &&
+          option.sessions.every(
+            (s) =>
+              s.conflict_types.length === 0 ||
+              (!s.conflict_types.includes('soft') &&
+                !s.conflict_types.includes('out_of_working_hours')),
+          ),
+      );
+    }
+
+    if (filters.isOutSideWorkHours) {
+      outsideWorkHours = comb.plans.filter(
+        (option) =>
+          option.sessions.some((s) => s.conflict_types.length > 0) &&
+          option.sessions.some((session) =>
+            session.conflict_types.includes('out_of_working_hours'),
+          ),
+      );
+    }
+
+    const allConflicts: PlanCombinationRespType[] = [
+      ...noConflicts,
+      ...softConflicts,
+      ...hardConflicts,
+      ...outsideWorkHours,
+    ];
+
+    noConflictsCnt += noConflicts.length;
+    softConflictsCnt += softConflicts.length;
+    outWorkinHrsCnt += outsideWorkHours.length;
+    hardConflictsCnt += hardConflicts.length;
+
+    return {
+      date_range: comb.date_range,
+      plans: allConflicts,
+    } as MultiDayPlanType;
+  });
+
+  if (filters.preferredInterviewers.length > 0) {
+    allCombs = allCombs.map(
+      (comb) =>
+        ({
+          ...comb,
+          plans: comb.plans.sort((a, b) => {
             const aHasPreferred = a.sessions.some((session) =>
               hasPreferredInterviewers({ session, filters }),
             )
@@ -198,76 +173,38 @@ export function filterSchedulingOptionsArray({
               ? 0
               : 1;
             return aHasPreferred - bHasPreferred;
-          });
-        }
+          }),
+        }) as MultiDayPlanType,
+    );
+  }
 
-        let noConflicts: PlanCombinationRespType[] = [];
-        let softConflicts: PlanCombinationRespType[] = [];
-        let hardConflicts: PlanCombinationRespType[] = [];
-        let outSideWorkHours: PlanCombinationRespType[] = [];
-
-        // Filter for no conflicts
-        if (filters.isNoConflicts) {
-          noConflicts = allOptions.filter((option) =>
-            option.sessions.every((session) => !session.is_conflict),
-          );
-        }
-
-        // Filter for soft conflicts
-        if (filters.isSoftConflicts) {
-          softConflicts = allOptions.filter((option) =>
-            option.sessions.some((session) =>
-              session.ints_conflicts.some((conflict) =>
-                conflict.conflict_reasons.some(
-                  (reason) => reason.conflict_type === 'soft',
-                ),
-              ),
-            ),
-          );
-        }
-
-        // Filter for hard conflicts
-        if (filters.isHardConflicts) {
-          hardConflicts = allOptions.filter((option) =>
-            option.sessions.some((session) =>
-              session.ints_conflicts.some((conflict) =>
-                conflict.conflict_reasons.some(
-                  (reason) =>
-                    reason.conflict_type !== 'soft' &&
-                    reason.conflict_type !== 'out_of_working_hours',
-                ),
-              ),
-            ),
-          );
-        }
-
-        if (filters.isOutSideWorkHours) {
-          outSideWorkHours = allOptions.filter((option) =>
-            option.sessions.some((session) =>
-              session.ints_conflicts.some((conflict) =>
-                conflict.conflict_reasons.some(
-                  (reason) => reason.conflict_type === 'out_of_working_hours',
-                ),
-              ),
-            ),
-          );
-        }
-
-        const allFilteredOptionsSet = new Set([
-          ...noConflicts,
-          ...softConflicts,
-          ...hardConflicts,
-          ...outSideWorkHours,
-        ]);
-
-        return [...allFilteredOptionsSet].filter(
-          (option) => option.sessions.length > 0,
-        );
-      }),
-  );
-
+  if (filters.isWorkLoad) {
+    allCombs = allCombs.map(
+      (comb) =>
+        ({
+          ...comb,
+          plans: comb.plans
+            .map((option) => {
+              const totalWorkload = option.sessions.reduce(
+                (acc, session) => acc + session.day_load_den,
+                0,
+              );
+              return {
+                ...option,
+                totalWorkload,
+              };
+            })
+            .sort((a, b) => a.totalWorkload - b.totalWorkload),
+        }) as MultiDayPlanType,
+    );
+  }
+  
   return {
-    allFilteredOptions,
+    combs: allCombs,
+    numberNoConflicts: noConflictsCnt,
+    numberHardConflicts: hardConflictsCnt,
+    numberSoftConflicts: softConflictsCnt,
+    numberOutsideWorkHours: outWorkinHrsCnt,
   };
 }
 

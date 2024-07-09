@@ -1,6 +1,6 @@
 import {
   APIConfirmRecruiterSelectedOption,
-  PlanCombinationRespType,
+  CandReqSlotsType,
   SessionCombinationRespType,
 } from '@aglint/shared-types';
 import { Drawer, Stack } from '@mui/material';
@@ -64,12 +64,14 @@ function RequestAvailabilityDrawer() {
     setSelectedDateSlots([]);
   }
 
-  function handleClick(slots: PlanCombinationRespType[][]) {
+  function handleClick(slots: CandReqSlotsType['selected_dates']) {
     setSelectedDayAvailableBlocks(slots);
   }
 
   useEffect(() => {
-    if (availableSlots) handleClick(availableSlots[Number(selectedIndex)]);
+    if (availableSlots && selectedIndex !== availableSlots.length) {
+      handleClick(availableSlots[Number(selectedIndex)].selected_dates);
+    }
   }, [availableSlots, selectedIndex, router.query?.request_availability_id]);
 
   async function handleContinue() {
@@ -88,7 +90,9 @@ function RequestAvailabilityDrawer() {
       );
       const task_id = task.id;
       const allSessions: SessionCombinationRespType[] = selectedDateSlots
-        .map((ele) => ele.dateSlots)
+        .map((ele) => ele.selected_dates)
+        .flat()
+        .map((ele) => ele.plans)
         .flat()
         .map((ele) => ele.sessions)
         .flat();
@@ -97,7 +101,7 @@ function RequestAvailabilityDrawer() {
         availability_req_id: String(router.query?.request_availability_id),
         selectedOption: {
           plan_comb_id: nanoid(),
-          sessions: allSessions,
+          sessions: allSessions, // sessions
           no_slot_reasons: [],
         },
         user_tz: userTzDayjs.tz.guess(),
@@ -133,7 +137,6 @@ function RequestAvailabilityDrawer() {
   function handleBack() {
     if (selectedIndex !== 0) setSelectedIndex((pre) => pre - 1);
   }
-
   const openAvailabilityDrawer = Boolean(router.query?.request_availability_id);
   return (
     <Drawer
@@ -155,8 +158,9 @@ function RequestAvailabilityDrawer() {
           onClick: closeDrawer,
         }}
         isDisabled={
-          !selectedDateSlots.find((ele) => ele.round === selectedIndex + 1) &&
-          selectedIndex !== availableSlots?.length
+          !selectedDateSlots.find(
+            (ele) => ele.current_round === selectedIndex + 1,
+          ) && selectedIndex !== availableSlots?.length
         }
         isLoading={loading}
         textPrimaryButton={
@@ -177,27 +181,27 @@ function RequestAvailabilityDrawer() {
                   }
                   slotButton={
                     <Stack direction={'column'} spacing={2}>
-                      {selectedDateSlots?.map((item, index) => {
-                        const date = item.dateSlots[0]?.sessions[0]?.start_time;
-                        return (
-                          <DayCardWrapper
-                            key={index}
-                            selectedCombIds={[]}
-                            item={{
-                              dateArray: [date],
-                              plans: item.dateSlots,
-                            }}
-                            onClickSelect={() => {}}
-                            isDayCollapseNeeded={false}
-                            isSlotCollapseNeeded={false}
-                            isDayCheckboxNeeded={false}
-                            isRadioNeeded={false}
-                            isSlotCheckboxNeeded={false}
-                            index={index}
-                            setSelectedCombIds={() => {}}
-                          />
-                        );
-                      })}
+                      {selectedDateSlots &&
+                        selectedDateSlots?.map((item, index) => {
+                          return (
+                            <DayCardWrapper
+                              key={index}
+                              selectedCombIds={[]}
+                              item={{
+                                date_range: [item.selected_dates[0].curr_date],
+                                plans: item.selected_dates[0].plans,
+                              }}
+                              onClickSelect={() => {}}
+                              isDayCollapseNeeded={false}
+                              isSlotCollapseNeeded={false}
+                              isDayCheckboxNeeded={false}
+                              isRadioNeeded={false}
+                              isSlotCheckboxNeeded={false}
+                              index={index}
+                              setSelectedCombIds={() => {}}
+                            />
+                          );
+                        })}
                       <Stack
                         direction={'row'}
                         justifyItems={'center'}
@@ -209,7 +213,7 @@ function RequestAvailabilityDrawer() {
                           onClickButton={{
                             onClick: () => {
                               router.replace(
-                                `/scheduling/view?meeting_id=${selectedDateSlots[0].dateSlots[0].sessions[0].meeting_id}`,
+                                `/scheduling/view?meeting_id=${selectedDateSlots[0].selected_dates[0].plans[0].sessions[0].meeting_id}`,
                               );
                             },
                           }}
@@ -270,7 +274,7 @@ async function getRequestAvailabilityDetails(request_id: string) {
           user_tz: userTzDayjs.tz.guess(),
         },
       );
-      return data as PlanCombinationRespType[][][];
+      return data as CandReqSlotsType[];
     } catch (error) {
       throw error;
     }

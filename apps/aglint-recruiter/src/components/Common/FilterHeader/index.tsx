@@ -10,7 +10,7 @@ import SortComponent, { sortComponentType } from './SortComponent';
 
 export default function FilterHeader({
   search,
-  handelResetAll,
+  // handelResetAll,
   filters,
   isResetAll,
   sort,
@@ -20,6 +20,35 @@ export default function FilterHeader({
     x;
   },
 }: FilterHeaderType) {
+  const handelResetAll = () => {
+    filters.forEach((filter) => {
+      switch (filter.type) {
+        case 'filter':
+        case 'nested-filter': {
+          filter.setValue([]);
+          break;
+        }
+        case 'multi-section-filter': {
+          filter.setValue({});
+          break;
+        }
+      }
+    });
+  };
+  const isFiltersActive = filters.some((filter) => {
+    switch (filter.type) {
+      case 'filter': {
+        return filter.value.length > 0;
+      }
+      case 'nested-filter': {
+        return Object.keys(filter.value).length > 0;
+      }
+      case 'multi-section-filter': {
+        return Object.values(filter.value).some((value) => value.length > 0);
+      }
+    }
+  });
+
   return (
     <Stack direction={'row'} gap={2}>
       {Boolean(search) && (
@@ -42,6 +71,7 @@ export default function FilterHeader({
           )}
           {isResetAll && (
             <ButtonGhost
+              isDisabled={!isFiltersActive}
               textButton='Reset All'
               size={2}
               iconName='refresh'
@@ -58,7 +88,7 @@ export default function FilterHeader({
 }
 
 export type FilterHeaderType = {
-  handelResetAll?: () => void;
+  // handelResetAll?: () => void;
   search?: {
     value: string;
     // eslint-disable-next-line no-unused-vars
