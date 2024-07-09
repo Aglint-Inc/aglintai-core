@@ -6,7 +6,7 @@ import { ReactNode } from 'react';
 import { Badge as BadgeDev } from '@/devlink/Badge';
 import { Skeleton } from '@/devlink2/Skeleton';
 import { useApplication } from '@/src/context/ApplicationContext';
-import { ApplicationsStore } from '@/src/context/ApplicationsContext/store';
+import type { ApplicationsParams } from '@/src/context/ApplicationsContext/hooks';
 import { BADGE_CONSTANTS } from '@/src/queries/job-applications';
 
 import { Loader } from '../../Common/Loader';
@@ -134,7 +134,7 @@ const Knowledgable = () => (
 
 export const BADGE_ICONS: {
   // eslint-disable-next-line no-unused-vars
-  [id in ApplicationsStore['filters']['badges'][number]]: ReactNode;
+  [id in ApplicationsParams['filters']['badges'][number]]: ReactNode;
 } = {
   careerGrowth: <Ambitious />,
   jobStability: <Reliable />,

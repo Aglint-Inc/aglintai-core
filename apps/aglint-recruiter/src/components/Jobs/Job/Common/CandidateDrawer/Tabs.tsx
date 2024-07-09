@@ -7,7 +7,7 @@ import {
   ApplicationStore,
   useApplicationStore,
 } from '@/src/context/ApplicationContext/store';
-import { ApplicationsStore } from '@/src/context/ApplicationsContext/store';
+import type { ApplicationsParams } from '@/src/context/ApplicationsContext/hooks';
 import { useKeyPress } from '@/src/hooks/useKeyPress';
 
 import {
@@ -17,7 +17,7 @@ import {
 
 const allTabs: {
   // eslint-disable-next-line no-unused-vars
-  [id in ApplicationStore['tab']]: ApplicationsStore['section'] | null;
+  [id in ApplicationStore['tab']]: ApplicationsParams['section'] | null;
 } = {
   Details: null,
   Screening: 'screening',
