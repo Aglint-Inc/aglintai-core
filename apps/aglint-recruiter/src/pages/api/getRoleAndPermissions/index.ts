@@ -106,14 +106,16 @@ const getRoleAndPermissions = async (recruiter_id: string) => {
             },
           );
           Object.keys(rolesAndPermissions).forEach((key) => {
-            rolesAndPermissions[key].permissions = data.map((perData) => ({
-              isActive: false,
-              relation_id: null,
-              ...rolesAndPermissions[key].permissions.find(
-                (per) => per.id == perData.id,
-              ),
-              ...perData,
-            }));
+            rolesAndPermissions[String(key)].permissions = data.map(
+              (perData) => ({
+                isActive: false,
+                relation_id: null,
+                ...rolesAndPermissions[String(key)].permissions.find(
+                  (per) => per.id == perData.id,
+                ),
+                ...perData,
+              }),
+            );
           });
 
           return permission;
@@ -132,12 +134,15 @@ const getRoleAndPermissionsWithUserCount = async (recruiter_id: string) => {
     .then(({ data }) => {
       Object.keys(rolesAndPermissionsDetails.rolesAndPermissions).map(
         (item) => {
-          rolesAndPermissionsDetails.rolesAndPermissions[item].assignedTo =
+          rolesAndPermissionsDetails.rolesAndPermissions[
+            String(item)
+          ].assignedTo =
             data
               .filter(
                 (di) =>
                   di.role_id ==
-                  rolesAndPermissionsDetails.rolesAndPermissions[item].id,
+                  rolesAndPermissionsDetails.rolesAndPermissions[String(item)]
+                    .id,
               )
               .map((item) => item.user_id) || [];
         },
