@@ -173,7 +173,7 @@ const convertOptionsToDateRangeSlots = (
     const curr_day_plan: DateRangePlansType['interview_rounds'] =
       curr_int_day_slots.map((curr_round_plans) => {
         return {
-          curr_round_date: '', // not used
+          curr_date: '', // not used
           plans: curr_round_plans,
         };
       });
