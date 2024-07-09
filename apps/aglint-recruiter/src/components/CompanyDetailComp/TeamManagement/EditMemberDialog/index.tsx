@@ -481,6 +481,7 @@ const EditMember = ({
                   size={2}
                   textButton='Update'
                   color={'accent'}
+                  isLoading={isDisable}
                   isDisabled={recruiterUser.role !== 'admin' || isDisable}
                   onClickButton={{
                     onClick: () => {
