@@ -156,12 +156,13 @@ function SchedulingViewComp() {
     try {
       const { data } = await supabase
         .from('candidate_request_availability')
-        .select('*')
+        .select('*, request_session_relation(*)')
         .eq('application_id', schedule.schedule.application_id);
 
+      // TODO: verify
       const reqAvail = data.find((item) =>
-        item.session_ids.some(
-          (ses) => ses.id === schedule.interview_session.id,
+        item.request_session_relation.some(
+          (ses) => ses.session_id === schedule.interview_session.id,
         ),
       );
 
