@@ -69,25 +69,24 @@ import DashboardLineChart from './lineChart';
 import TenureAndExpSummary from './tenureAndExpSummary';
 
 const JobDashboard = () => {
-  const { loadStatus } = useJobDashboard();
-  switch (loadStatus) {
-    case 'loading':
-      return (
-        <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
-          <Loader />
-        </Stack>
-      );
-    case 'error':
-      return <NotFoundPage />;
-    case 'success':
-      return <Dashboard />;
-  }
+  const { jobLoad, job } = useJobDashboard();
+  return jobLoad ? (
+    job !== undefined ? (
+      <Dashboard />
+    ) : (
+      <NotFoundPage />
+    )
+  ) : (
+    <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
+      <Loader />
+    </Stack>
+  );
 };
 
 const getMatches = (
   counts: ReturnType<typeof useJobDashboard>['matches']['data'],
 ) => {
-  return Object.entries(counts.matches).reduce(
+  return Object.entries(counts?.matches ?? {}).reduce(
     (acc, [key, value]) => {
       acc[key] = {
         count: getPlural(value, 'candidate'),
@@ -204,39 +203,49 @@ const Dashboard = () => {
               style: { cursor: 'pointer' },
               onClick: () => handleFilter('Top match'),
             }}
-            textTopMatchPercentage={score_matches.topMatch.percentage}
-            textTopMatchCount={score_matches.topMatch.count}
+            textTopMatchPercentage={
+              score_matches?.topMatch?.percentage ?? '---'
+            }
+            textTopMatchCount={score_matches?.topMatch?.count ?? '---'}
             onClickGoodMatch={{
               style: { cursor: 'pointer' },
               onClick: () => handleFilter('Good match'),
             }}
-            textGoodMatchPercentage={score_matches.goodMatch.percentage}
-            textGoodMatchCount={score_matches.goodMatch.count}
+            textGoodMatchPercentage={
+              score_matches?.goodMatch?.percentage ?? '---'
+            }
+            textGoodMatchCount={score_matches?.goodMatch?.count ?? '---'}
             onClickAverageMatch={{
               style: { cursor: 'pointer' },
               onClick: () => handleFilter('Average match'),
             }}
-            textAverageMatchPercentage={score_matches.averageMatch.percentage}
-            textAveageMatchCount={score_matches.averageMatch.count}
+            textAverageMatchPercentage={
+              score_matches?.averageMatch?.percentage ?? '---'
+            }
+            textAveageMatchCount={score_matches?.averageMatch?.count ?? '---'}
             onClickBelowAverage={{
               style: { cursor: 'pointer' },
               onClick: () => handleFilter('Poor match'),
             }}
-            textBelowAveragePercentage={score_matches.poorMatch.percentage}
-            textBelowAverageCount={score_matches.poorMatch.count}
+            textBelowAveragePercentage={
+              score_matches?.poorMatch?.percentage ?? '---'
+            }
+            textBelowAverageCount={score_matches?.poorMatch?.count ?? '---'}
             onClickNotaMatch={{
               style: { cursor: 'pointer' },
               onClick: () => handleFilter('Not a match'),
             }}
-            textNotAMatchPercentage={score_matches.noMatch.percentage}
-            textNotAMatchCount={score_matches.noMatch.count}
+            textNotAMatchPercentage={
+              score_matches?.noMatch?.percentage ?? '---'
+            }
+            textNotAMatchCount={score_matches?.noMatch?.count ?? '---'}
             slotLocationGraphBlock={<Doughnut />}
             slotExperienceGraph={<LineGraph />}
             slotSkillGraphBlock={<Bars />}
             slotPipeline={<Pipeline />}
             slotModuleCard={<Modules />}
             slotCardWithNumber={<TenureAndExpSummary />}
-            isViewScheduleVisible={schedule.length > 3}
+            isViewScheduleVisible={schedule?.length > 3}
             onClickViewSchedule={{
               onClick: () => {
                 localStorage.setItem(
@@ -400,7 +409,7 @@ const BreadCrumbs = () => {
         }}
       />
       <Breadcrum
-        textName={`${capitalize(job?.job_title ?? 'Job')} (${counts.total})`}
+        textName={`${capitalize(job?.job_title ?? 'Job')} ${counts?.total ? `(${counts.total})` : ''}`}
         showArrow
       />
       <Preview />
@@ -508,9 +517,11 @@ const Pipeline = () => {
 
 const Schedules = () => {
   const {
-    schedules: { data },
+    schedules: { data, status },
   } = useJobDashboard();
   const { push } = useRouter();
+  if (status === 'pending') return <Loader />;
+  if (status === 'error') return <>Error</>;
   if (data.length === 0) return <NoData />;
   const cards = data
     .sort(

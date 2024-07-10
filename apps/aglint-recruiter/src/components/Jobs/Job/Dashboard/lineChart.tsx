@@ -11,6 +11,7 @@ import React, { FC } from 'react';
 import { Line } from 'react-chartjs-2';
 
 import { NoData } from '@/devlink3/NoData';
+import Loader from '@/src/components/Common/Loader';
 import { useJobDashboard } from '@/src/context/JobDashboard';
 
 import { DashboardGraphOptions } from '.';
@@ -118,8 +119,10 @@ const DashboardLineChart: FC<{
   >;
 }> = ({ option }) => {
   const {
-    tenureAndExperience: { data: dataSet },
+    tenureAndExperience: { data: dataSet, status },
   } = useJobDashboard();
+  if (status === 'pending') return <Loader />;
+  if (status === 'error') return <>Error</>;
   const experience = dataSet?.[option] ?? null;
   const total = experience
     ? Object.values(experience).reduce((acc, curr) => {

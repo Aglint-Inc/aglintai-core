@@ -51,24 +51,11 @@ const useProviderJobDashboardActions = () => {
   const workflows = useJobWorkflow({ id: job?.id });
 
   const isInterviewPlanDisabled =
-    interviewPlans.isFetched && !interviewPlans?.data;
+    !interviewPlans.isPending && !interviewPlans?.data;
   const isInterviewSessionEmpty =
-    interviewPlans.isFetched &&
+    !interviewPlans.isPending &&
     (isInterviewPlanDisabled ||
       interviewPlans?.data?.interview_session?.length === 0);
-
-  const initialLoad = !!(
-    jobLoad &&
-    !assessments.isPending &&
-    !templates.isPending &&
-    !skills.isPending &&
-    !locations.isPending &&
-    !matches.isPending &&
-    !tenureAndExperience.isPending &&
-    !schedules.isPending &&
-    // !interviewPlans.isPending &&
-    !workflows.isPending
-  );
 
   const handleWarningUpdate = useCallback(
     (dashboard_warnings: Partial<(typeof job)['dashboard_warnings']>) => {
@@ -81,26 +68,14 @@ const useProviderJobDashboardActions = () => {
     },
     [job?.id, job?.dashboard_warnings],
   );
-  // const emailTemplateValidity = validateEmailTemplates(job?.email_template);
-
-  const loadStatus: 'loading' | 'error' | 'success' =
-    jobLoad && job !== undefined
-      ? job === null
-        ? 'error'
-        : initialLoad
-          ? 'success'
-          : 'loading'
-      : 'loading';
 
   const value = {
     job,
     jobLoad,
-    loadStatus,
     workflows,
     isInterviewPlanDisabled,
     isInterviewSessionEmpty,
     schedules,
-    initialLoad,
     assessments: {
       ...assessments,
       data: assessmentData,

@@ -69,7 +69,7 @@ export default function FilterHeader({
           {Boolean(dateRangeSelector) && (
             <DateRangeSelector {...dateRangeSelector} />
           )}
-          {isResetAll && (
+          {isResetAll && isFiltersActive && (
             <ButtonGhost
               isDisabled={!isFiltersActive}
               textButton='Reset All'
