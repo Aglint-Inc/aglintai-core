@@ -62,7 +62,7 @@ export function CandidateSchedule({
               onClickButton={onClickClose}
               size="1"
               iconSize="3"
-              iconName=""
+              iconName="close"
               color="neutral"
             />
             <Text content={textSelectedNumber} weight="" />

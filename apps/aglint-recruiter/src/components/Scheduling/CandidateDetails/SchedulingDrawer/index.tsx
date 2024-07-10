@@ -23,6 +23,7 @@ import {
   setStepScheduling,
   useSchedulingFlowStore,
 } from './store';
+import SelfScheduleSuccess from './SelfScheduleSuccess';
 
 function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
   const currentDate = dayjs();
@@ -184,7 +185,11 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                   <StepSlotOptions isDebrief={isDebrief} />
                 ) : stepScheduling === 'self_scheduling_email_preview' ? (
                   <EmailPreviewSelfSchedule />
-                ) : null}
+                ) : stepScheduling === 'success_screen' ? (
+                  <SelfScheduleSuccess />
+                ) : (
+                  null
+                )}
               </>
             ) : (
               <Stack height={'calc(100vh - 96px)'}>

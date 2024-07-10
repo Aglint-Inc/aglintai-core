@@ -56,6 +56,8 @@ function ButtonGroupRight({
           <IconButtonSoft
             iconName={'edit'}
             size={1}
+            iconSize={3}
+            iconWeight={'medium'}
             color={'neutral'}
             onClickButton={{
               onClick: () => {

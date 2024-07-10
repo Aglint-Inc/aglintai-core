@@ -40,6 +40,11 @@ export interface ApiBodyParamsSendToCandidate {
   task_id: string | null;
 }
 
+export interface ApiResponseSendToCandidate {
+  data: { filter_id: string; task_id: string; schedule_id: string } | null;
+  error: string | null;
+}
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const bodyParams: ApiBodyParamsSendToCandidate = req.body;
@@ -114,6 +119,8 @@ const sendToCandidate = async ({
 }) => {
   try {
     let update_task_id = task_id;
+    let filter_id;
+    let schedule_id;
     const scheduleName = getScheduleName({
       job_title: selectedApplication.public_jobs.job_title,
       first_name: selectedApplication.candidates.first_name,
@@ -142,6 +149,8 @@ const sendToCandidate = async ({
         rec_user_id: recruiterUser.user_id,
         meeting_flow: is_debrief ? 'debrief' : 'self_scheduling',
       });
+
+      schedule_id = createCloneRes.schedule.id;
 
       console.log('createCloneRes success');
 
@@ -175,6 +184,8 @@ const sendToCandidate = async ({
       if (errorFilterJson) throw new Error(errorFilterJson.message);
 
       console.log('filterJson success');
+
+      filter_id = filterJson[0].id;
 
       if (!is_debrief) {
         if (!update_task_id) {
@@ -279,6 +290,7 @@ const sendToCandidate = async ({
         });
       }
     } else {
+      schedule_id = checkSch[0].id;
       console.log('schedule already exists');
 
       const { organizer_id } = await handleMeetingsOrganizerResetRelations({
@@ -300,7 +312,7 @@ const sendToCandidate = async ({
             end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
           },
           session_ids: selectedSessionIds,
-          schedule_id: checkSch[0].id,
+          schedule_id,
           selected_options: selectedSlots,
           created_by: recruiterUser.user_id,
         })
@@ -432,9 +444,24 @@ const sendToCandidate = async ({
       console.log('updated application logs');
     }
 
-    return true;
+    const res: ApiResponseSendToCandidate = {
+      data: {
+        filter_id,
+        task_id: update_task_id,
+        schedule_id,
+      },
+      error: null,
+    };
+
+    return res;
   } catch (e) {
-    // eslint-disable-next-line no-console
     console.log(e.message);
+
+    const res: ApiResponseSendToCandidate = {
+      data: null,
+      error: e.message,
+    };
+
+    return res;
   }
 };

@@ -217,10 +217,15 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                             session.interview_session.break_duration,
                           )}
                           slotEditButton={
-                            <>
+                            (!session.interview_meeting ||
+                              session.interview_meeting?.status ===
+                                'not_scheduled' ||
+                              session.interview_meeting?.status ===
+                                'cancelled') && (
                               <IconButtonSoft
                                 iconName={'edit'}
                                 size={1}
+                                iconSize={3}
                                 color={'neutral'}
                                 onClickButton={{
                                   onClick: () => {
@@ -229,7 +234,7 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                                   },
                                 }}
                               />
-                            </>
+                            )
                           }
                         />
                       </Stack>

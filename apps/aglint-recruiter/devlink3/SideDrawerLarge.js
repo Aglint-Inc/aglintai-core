@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { GlobalIcon } from "./GlobalIcon";
+import { IconButtonSoft } from "./IconButtonSoft";
 import { SlotComp } from "./SlotComp";
 import { ButtonSoft } from "./ButtonSoft";
 import { ButtonSolid } from "./ButtonSolid";
@@ -34,13 +34,13 @@ export function SideDrawerLarge({
           <_Builtin.Block tag="div">{slotHeaderIcon}</_Builtin.Block>
           <Text content={textDrawertitle} weight="medium" />
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "sdl-close-btn-wrap")}
-          tag="div"
-          {...onClickCancel}
-        >
-          <GlobalIcon iconName="close" size="3" />
-        </_Builtin.Block>
+        <IconButtonSoft
+          onClickButton={onClickCancel}
+          size="1"
+          iconSize="3"
+          iconName=""
+          color="neutral"
+        />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "sidedrawer_body")}

@@ -1,10 +1,8 @@
-import {
-  MultiDayPlanType,
-  PlanCombinationRespType,
-} from '@aglint/shared-types';
+import { MultiDayPlanType } from '@aglint/shared-types';
 import { create } from 'zustand';
 
 import { ApiResponseFindAvailability } from '../types';
+import { ApiResponseSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
 
 export interface SchedulingFlow {
   isScheduleNowOpen: boolean;
@@ -19,7 +17,8 @@ export interface SchedulingFlow {
     | 'slot_options'
     | 'reschedule'
     | 'request_availibility'
-    | 'self_scheduling_email_preview';
+    | 'self_scheduling_email_preview'
+    | 'success_screen';
   noOptions: boolean;
   isSendToCandidateOpen: boolean;
   scheduleFlow:
@@ -30,7 +29,6 @@ export interface SchedulingFlow {
     | 'update_request_availibility'
     | 'debrief';
   fetchingPlan: boolean;
-  selectedSlots: PlanCombinationRespType[];
   filteredSchedulingOptions: MultiDayPlanType[];
   filters: {
     isNoConflicts: boolean;
@@ -53,6 +51,8 @@ export interface SchedulingFlow {
   };
   selectedCombIds: string[];
   emailData: { html: string; subject: string } | null;
+  resSendToCandidate: ApiResponseSendToCandidate['data'];
+  selectedTaskId: string | null;
 }
 
 const initialState: SchedulingFlow = {
@@ -68,7 +68,6 @@ const initialState: SchedulingFlow = {
   isSendToCandidateOpen: false,
   scheduleFlow: 'self_scheduling',
   fetchingPlan: false,
-  selectedSlots: [],
   filters: {
     isNoConflicts: true,
     isSoftConflicts: true,
@@ -80,11 +79,20 @@ const initialState: SchedulingFlow = {
   },
   selectedCombIds: [],
   emailData: null,
+  resSendToCandidate: null,
+  selectedTaskId: null,
 };
 
 export const useSchedulingFlowStore = create<SchedulingFlow>()(() => ({
   ...initialState,
 }));
+
+export const setSelectedTaskId = (selectedTaskId: string | null) =>
+  useSchedulingFlowStore.setState({ selectedTaskId });
+
+export const setResSendToCandidate = (
+  resSendToCandidate: SchedulingFlow['resSendToCandidate'],
+) => useSchedulingFlowStore.setState({ resSendToCandidate });
 
 export const setScheduleFlow = (scheduleFlow: SchedulingFlow['scheduleFlow']) =>
   useSchedulingFlowStore.setState({ scheduleFlow });
@@ -103,9 +111,6 @@ export const setFilters = (filters: Partial<SchedulingFlow['filters']>) =>
   useSchedulingFlowStore.setState((state) => ({
     filters: { ...state.filters, ...filters },
   }));
-
-export const setSelectedSlots = (selectedSlots: PlanCombinationRespType[]) =>
-  useSchedulingFlowStore.setState({ selectedSlots });
 
 export const setStepScheduling = (
   stepScheduling: SchedulingFlow['stepScheduling'],

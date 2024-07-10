@@ -7,7 +7,10 @@ import { useRouter } from 'next/router';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
 import { ApiBodyParamsScheduleAgentWithoutTaskId } from '@/src/pages/api/scheduling/application/schedulewithagentwithouttaskid';
-import { ApiBodyParamsSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
+import {
+  ApiBodyParamsSendToCandidate,
+  ApiResponseSendToCandidate,
+} from '@/src/pages/api/scheduling/application/sendtocandidate';
 import toast from '@/src/utils/toast';
 
 import { useGetScheduleApplication } from '../hooks';
@@ -27,6 +30,7 @@ import {
   setFilteredSchedulingOptions,
   setIsScheduleNowOpen,
   setNoOptions,
+  setResSendToCandidate,
   setSchedulingOptions,
   setStepScheduling,
   useSchedulingFlowStore,
@@ -169,18 +173,21 @@ export const useSelfSchedulingDrawer = () => {
         bodyParams,
       );
 
-      if (res.status === 200 && res.data) {
+      if (res.status === 200) {
+        const resObj = res.data as ApiResponseSendToCandidate['data'];
+        setResSendToCandidate(resObj);
         isDebrief
           ? toast.success('Debrief scheduled')
           : toast.success('Booking link sent to candidate.');
+        setStepScheduling('success_screen');
+      } else {
+        throw new Error('Error sending to candidate.');
       }
-      resetStateSelfScheduling();
     } catch (e) {
       toast.error('Error sending to candidate.');
     } finally {
       setIsSendingToCandidate(false);
       fetchInterviewDataByApplication();
-      setSelectedSessionIds([]);
     }
   };
 

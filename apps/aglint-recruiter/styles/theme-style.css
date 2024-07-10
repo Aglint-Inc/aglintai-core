@@ -858,22 +858,22 @@ color: var(--info-a1);
 *[icon-color="info-1"] {
   color: var(--info-1);
 }
-[icon-button-size-solid="1"],[icon-button-size-soft="1"],[icon-button-size-surface="1"],[icon-button-size-outline="1"],[icon-button-size-ghost="1"] {
+body [icon-button-size-solid="1"],body [icon-button-size-soft="1"],body [icon-button-size-surface="1"],body [icon-button-size-outline="1"],body [icon-button-size-ghost="1"] {
 height: var(--space-5);
 width: var(--space-5);
 border-radius: var(--radius-1);
 }
-[icon-button-size-solid="2"],[icon-button-size-soft="2"],[icon-button-size-surface="2"],[icon-button-size-outline="2"],[icon-button-size-ghost="2"] {
+body [icon-button-size-solid="2"],body [icon-button-size-soft="2"],body [icon-button-size-surface="2"],body [icon-button-size-outline="2"],body [icon-button-size-ghost="2"] {
 height: var(--space-6);
 width: var(--space-6);
 border-radius: var(--radius-2);
 }
-[icon-button-size-solid="3"],[icon-button-size-soft="3"],[icon-button-size-surface="3"],[icon-button-size-outline="3"],[icon-button-size-ghost="3"] {
+body [icon-button-size-solid="3"],body [icon-button-size-soft="3"],body [icon-button-size-surface="3"],body [icon-button-size-outline="3"],body [icon-button-size-ghost="3"] {
 height: var(--space-7);
 width: var(--space-7);
 border-radius: var(--radius-3);
 }
-[icon-button-size-solid="4"],[icon-button-size-soft="4"],[icon-button-size-surface="4"],[icon-button-size-outline="4"],[icon-button-size-ghost="4"] {
+body [icon-button-size-solid="4"],body [icon-button-size-soft="4"],body [icon-button-size-surface="4"],body [icon-button-size-outline="4"],body [icon-button-size-ghost="4"] {
 height: var(--space-8);
 width: var(--space-8);
 border-radius: var(--radius-4);
