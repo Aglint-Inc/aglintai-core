@@ -114,7 +114,6 @@ function SchedulingApplication() {
                     <Stack p={'var(--space-4)'}>
                       <Stack
                         sx={{
-                          border: '1px solid var(--neutral-6)',
                           borderRadius: 'var(--radius-4)',
                           background: 'var(--white)',
                         }}
