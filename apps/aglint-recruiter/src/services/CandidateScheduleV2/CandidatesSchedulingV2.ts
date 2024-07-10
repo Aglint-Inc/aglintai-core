@@ -1082,11 +1082,33 @@ export class CandidatesSchedulingV2 {
         plan_comb_id: nanoid(),
         sessions: [],
       };
+      const ints_reasons: Record<
+        string,
+        { type: ConflictReason['conflict_type']; str_reason: string }[]
+      > = {};
+      if (!this.api_options.include_conflicting_slots.calender_not_connected) {
+        cal_disc_inters.forEach((s) => {
+          s.inters.forEach((inter) => {
+            if (!ints_reasons[inter.user_id]) {
+              ints_reasons[inter.user_id] = [];
+            }
+            ints_reasons[inter.user_id].push({
+              type: 'calender_diconnected',
+              str_reason: `${getFullName(inter.first_name, inter.last_name)} calender not connected`,
+            });
+          });
+        });
+      }
+
       if (!this.api_options.include_conflicting_slots.holiday) {
         holiday_ints.forEach((s) => {
           s.inters.forEach((inter) => {
-            zerodaySlotsReasons.no_slot_reasons.push({
-              reason: `${getFullName(inter.first_name, inter.last_name)} is on holiday`,
+            if (!ints_reasons[inter.user_id]) {
+              ints_reasons[inter.user_id] = [];
+            }
+            ints_reasons[inter.user_id].push({
+              type: 'holiday',
+              str_reason: `${getFullName(inter.first_name, inter.last_name)} is on holiday`,
             });
           });
         });
@@ -1094,17 +1116,12 @@ export class CandidatesSchedulingV2 {
       if (!this.api_options.include_conflicting_slots.day_off) {
         day_off_ints.forEach((s) => {
           s.inters.forEach((inter) => {
-            zerodaySlotsReasons.no_slot_reasons.push({
-              reason: `${getFullName(inter.first_name, inter.last_name)} is on Day off`,
-            });
-          });
-        });
-      }
-      if (!this.api_options.include_conflicting_slots.calender_not_connected) {
-        cal_disc_inters.forEach((s) => {
-          s.inters.forEach((inter) => {
-            zerodaySlotsReasons.no_slot_reasons.push({
-              reason: `${getFullName(inter.first_name, inter.last_name)} calender not connected`,
+            if (!ints_reasons[inter.user_id]) {
+              ints_reasons[inter.user_id] = [];
+            }
+            ints_reasons[inter.user_id].push({
+              type: 'day_off',
+              str_reason: `${getFullName(inter.first_name, inter.last_name)} is on Day off`,
             });
           });
         });
@@ -1112,16 +1129,24 @@ export class CandidatesSchedulingV2 {
       if (!this.api_options.include_conflicting_slots.interviewer_pause) {
         curr_day_paused_inters.forEach((s) => {
           s.inters.forEach((inter) => {
-            zerodaySlotsReasons.no_slot_reasons.push({
-              reason: `${getFullName(inter.first_name, inter.last_name)} is paused`,
+            if (!ints_reasons[inter.user_id]) {
+              ints_reasons[inter.user_id] = [];
+            }
+            ints_reasons[inter.user_id].push({
+              type: 'interviewer_paused',
+              str_reason: `${getFullName(inter.first_name, inter.last_name)} is paused`,
             });
           });
         });
 
         indef_paused_inters.forEach((s) => {
           s.inters.forEach((inter) => {
-            zerodaySlotsReasons.no_slot_reasons.push({
-              reason: `${getFullName(inter.first_name, inter.last_name)} is paused indefinetly`,
+            if (!ints_reasons[inter.user_id]) {
+              ints_reasons[inter.user_id] = [];
+            }
+            ints_reasons[inter.user_id].push({
+              type: 'interviewer_paused',
+              str_reason: `${getFullName(inter.first_name, inter.last_name)} is paused indefinetly`,
             });
           });
         });
@@ -1129,11 +1154,41 @@ export class CandidatesSchedulingV2 {
       if (!this.api_options.include_conflicting_slots.interviewers_load) {
         load_reached_ints.forEach((s) => {
           s.inters.forEach((inter) => {
-            zerodaySlotsReasons.no_slot_reasons.push({
-              reason: `${getFullName(inter.first_name, inter.last_name)}'s ${inter.type === 'day_load_reached' ? 'day' : 'week'} load reached`,
+            if (!ints_reasons[inter.user_id]) {
+              ints_reasons[inter.user_id] = [];
+            }
+            ints_reasons[inter.user_id].push({
+              type: inter.type,
+              str_reason: `${getFullName(inter.first_name, inter.last_name)}'s ${inter.type === 'day_load_reached' ? 'day' : 'week'} load reached`,
             });
           });
         });
+      }
+
+      for (let v of Object.values(ints_reasons)) {
+        let p1_conflict = v.find((c) => c.type == 'calender_diconnected');
+        const p2_conflict = v.find(
+          (c) => c.type == 'day_off' || c.type === 'holiday',
+        );
+        const p3_conflict = v.find(
+          (c) =>
+            c.type == 'interviewer_paused' ||
+            c.type === 'day_load_reached' ||
+            c.type === 'week_load_reached',
+        );
+        if (p1_conflict) {
+          zerodaySlotsReasons.no_slot_reasons.push({
+            reason: p1_conflict.str_reason,
+          });
+        } else if (p2_conflict) {
+          zerodaySlotsReasons.no_slot_reasons.push({
+            reason: p2_conflict.str_reason,
+          });
+        } else if (p3_conflict) {
+          zerodaySlotsReasons.no_slot_reasons.push({
+            reason: p3_conflict.str_reason,
+          });
+        }
       }
       return zerodaySlotsReasons;
     };
