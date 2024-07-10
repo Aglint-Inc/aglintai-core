@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { createElement } from 'react';
 import { render } from '@react-email/render';
 import { z } from 'zod';
+import type { allTempvariables } from '@aglint/shared-utils/src/template-variables/variables';
 import {
   ClientError,
   MailArgValidationError,
@@ -18,6 +19,30 @@ const ReqPayload = z.object({
   body: z.string(),
 });
 
+const replacePlaceholders = (template, values) => {
+  return Object.keys(values).reduce((acc, key) => {
+    return acc.replace(new RegExp(key, 'g'), values[key]);
+  }, template);
+};
+
+const value: { [K in (typeof allTempvariables)[number]]: string } = {
+  '{{candidateFirstName}}': 'Naresh',
+  '{{candidateLastName}}': 'Kumar',
+  '{{candidateName}}': 'Naresh Kumar',
+  '{{organizerName}}': 'Manoj Kumar',
+  '{{organizerFirstName}}': 'Manoj',
+  '{{organizerLastName}}': 'Kumar',
+  '{{OrganizerTimeZone}}': 'IST',
+  '{{interviewerName}}': 'Oygen Thoga',
+  '{{interviewerFirstName}}': 'Oygen',
+  '{{interviewerLastName}}': 'Thoga',
+  '{{companyName}}': 'Aglint',
+  '{{jobRole}}': 'Database Manager',
+  '{{startDate}}': 'Fri, May 12 ',
+  '{{endDate}}': 'Fri, May 16 2024',
+  'time': '10:00 AM',
+};
+
 export async function POST(req: Request) {
   const { mail_type, body }: ReqPayload = await req.json();
 
@@ -26,7 +51,8 @@ export async function POST(req: Request) {
       throw new ClientError('attribute application_id missing', 400);
     }
     const { emails } = await getEmails();
-    const emailBody = body.replace(/\{\{/g, '').replace(/\}\}/g, '');
+    const filledBody = replacePlaceholders(body, value);
+    const emailBody = filledBody.replace(/\{\{/g, '').replace(/\}\}/g, '');
 
     const emailIdx = emails.findIndex((e) => e === mail_type);
 
