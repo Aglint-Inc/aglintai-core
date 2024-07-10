@@ -26,7 +26,7 @@ function InterviewerAcceptDeclineIcon({
               showIcon={true}
               textBadge={null}
               color={'warning'}
-              showText={false}
+              // showText={false}
             />
           </Stack>
         </Tooltip>
