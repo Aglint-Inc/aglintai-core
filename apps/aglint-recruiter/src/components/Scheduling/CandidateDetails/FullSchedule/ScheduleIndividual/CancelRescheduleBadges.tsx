@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { GlobalBadge } from '@/devlink3/GlobalBadge';
+import { GlobalBadge } from '@/devlink/GlobalBadge';
 
 import { ScheduleIndividualCardType } from './types';
 
