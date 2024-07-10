@@ -76,6 +76,7 @@
 .userwithrole-wrap {
   display: flex;
   padding-top: var(--space-3);
+  padding-right: var(--space-3);
   padding-bottom: var(--space-3);
   flex-direction: column;
   flex-wrap: nowrap;

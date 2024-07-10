@@ -4,6 +4,7 @@ import React, { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 import { SidedrawerBodyBreak } from '@/devlink2/SidedrawerBodyBreak';
 import { UpdateInterviewSession } from '@/src/queries/interview-plans';
 import { InterviewSessionType } from '@/src/queries/interview-plans/types';
+import { breakDurations } from '@/src/utils/scheduling/const';
 
 import { DropDown } from './sessionForms';
 import { getBreakLabel } from './utils';
@@ -133,7 +134,7 @@ const SessionDurationField = ({
   value: BreakFormProps['break_duration'];
   handleChange: HandleChange;
 }) => {
-  const options = [30, 45, 60, 120, 1440, 2880, 4320].reduce(
+  const options = breakDurations.reduce(
     (acc, curr) => {
       acc.push({ name: getBreakLabel(curr), value: curr });
       return acc;

@@ -1,12 +1,13 @@
-import { DatabaseEnums } from '@aglint/shared-types';
+import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 
-export type getRoleAndPermissionsAPI = {
+export type GetRoleAndPermissionsAPI = {
   request: {};
   response: {
     rolesAndPermissions: {
       [roles: string]: {
         id: string;
         name: string;
+        isEditable: boolean;
         assignedTo: string[];
         description: string;
         permissions: {
@@ -15,6 +16,7 @@ export type getRoleAndPermissionsAPI = {
           name: DatabaseEnums['permissions_type'];
           title: string;
           description: string;
+          dependency_tree: DatabaseTable['permissions']['dependency_tree'];
           isActive: boolean;
         }[];
       };
@@ -25,6 +27,7 @@ export type getRoleAndPermissionsAPI = {
         name: DatabaseEnums['permissions_type'];
         title: string;
         description: string;
+        dependency_tree: DatabaseTable['permissions']['dependency_tree'];
         isActive: boolean;
       };
     };
