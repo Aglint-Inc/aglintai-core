@@ -3,8 +3,8 @@ import { Stack, Tooltip } from '@mui/material';
 import axios from 'axios';
 import React, { useState } from 'react';
 
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
-import { ButtonSolid } from '@/devlink2/ButtonSolid';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import UITypography from '@/src/components/Common/UITypography';
 import toast from '@/src/utils/toast';
