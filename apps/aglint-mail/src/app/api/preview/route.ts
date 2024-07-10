@@ -5,25 +5,26 @@ import { z } from 'zod';
 import { replaceAll, type allTempvariables } from '@aglint/shared-utils';
 import { ClientError } from '../../../utils/apiUtils/customErrors';
 import { getEmails } from '../../../utils/apiUtils/get-emails';
+import { fetchUtil } from './fetch-utils';
 
 interface ReqPayload {
   mail_type: string;
-  body: string;
+  recruiter_id: string;
 }
 
 const ReqPayload = z.object({
   mailType: z.string(),
-  body: z.string(),
+  recruiter_id: z.string(),
 });
 
 const all_possible_dynamic_values: {
   [K in (typeof allTempvariables)[number]]: string;
 } = {
-  candidateFirstName: 'John',
-  candidateLastName: 'Doe',
-  candidateName: 'John Doe',
-  companyName: 'Tech Innovations Inc.',
-  jobRole: 'Software Engineer',
+  candidateFirstName: 'Emily',
+  candidateLastName: 'Johnson',
+  candidateName: 'Emily Johnson',
+  companyName: 'Aglint',
+  jobRole: 'HR Coordinator',
   organizerName: 'Jane Smith',
   organizerFirstName: 'Jane',
   organizerLastName: 'Smith',
@@ -37,14 +38,16 @@ const all_possible_dynamic_values: {
 };
 
 export async function POST(req: Request) {
-  const { mail_type, body }: ReqPayload = await req.json();
+  const { mail_type, recruiter_id }: ReqPayload = await req.json();
 
   try {
     if (!mail_type) {
       throw new ClientError('attribute application_id missing', 400);
     }
+    const { body, companyName } = await fetchUtil({ recruiter_id, mail_type });
+
     const { emails } = await getEmails();
-    const filledBody = replacePlaceholders(body);
+    const filledBody = replacePlaceholders(body, companyName);
 
     const emailBody = filledBody.replace(/\{\{/g, '').replace(/\}\}/g, '');
 
@@ -74,20 +77,26 @@ export const renderEmailTemplates = async (
   const { default: Template, dummy } = await import(
     `../../../emails/${filename}`
   );
+
+  dummy.body = emailBody;
   dummy.emailBody = emailBody;
   const element = createElement(Template, dummy);
   const html = render(element);
   return { html };
 };
 
-const replacePlaceholders = (template_body: string) => {
+const replacePlaceholders = (template_body: string, compName: string) => {
   let updated_temp_body = template_body;
+  const values = {
+    ...all_possible_dynamic_values,
+    companyName: compName || all_possible_dynamic_values.companyName,
+  };
 
-  for (const key of Object.keys(all_possible_dynamic_values)) {
+  for (const key of Object.keys(values)) {
     updated_temp_body = replaceAll(
       updated_temp_body,
       `{{${key}}}`,
-      all_possible_dynamic_values[String(key)],
+      values[String(key)],
     );
   }
   return updated_temp_body;

@@ -107,7 +107,7 @@ function SchedulerEmailTemps({ setSaving }) {
     try {
       const { data } = await axios.post(`/api/emails/preview`, {
         mail_type: selectedTemplateType,
-        body: templates.find((t) => t.type === selectedTemplateType).body,
+        recruiter_id: recruiter_id,
       });
       setHtml(data);
       setPopOverLoading(false);
