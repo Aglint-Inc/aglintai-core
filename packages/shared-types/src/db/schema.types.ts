@@ -4733,6 +4733,16 @@ export type Database = {
           completed_meeting_count: number
         }[]
       }
+      get_job_workflows: {
+        Args: {
+          recruiter_id: string
+        }
+        Returns: {
+          id: string
+          job_title: string
+          workflow_count: number
+        }[]
+      }
       get_meetings_by_interviewer: {
         Args: {
           int_id: string
