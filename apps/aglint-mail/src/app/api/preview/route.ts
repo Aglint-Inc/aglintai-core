@@ -18,7 +18,7 @@ const ReqPayload = z.object({
 
 const all_possible_dynamic_values: {
   [K in (typeof allTempvariables)[number]]: string;
-} = {
+} & { time: string } = {
   candidateFirstName: 'John',
   candidateLastName: 'Doe',
   candidateName: 'John Doe',
@@ -31,8 +31,9 @@ const all_possible_dynamic_values: {
   interviewerName: 'Michael Johnson',
   interviewerFirstName: 'Michael',
   interviewerLastName: 'Johnson',
-  startDate: '2024-07-15',
-  endDate: '2024-07-15',
+  startDate: 'Fri, May 12, 2024',
+  endDate: 'May 13, 2024',
+  time: '10:30 AM - 11:00 PM',
 };
 
 export async function POST(req: Request) {
@@ -81,9 +82,10 @@ export const renderEmailTemplates = async (
 
 const replacePlaceholders = (template_body: string) => {
   let updated_temp_body = template_body;
+
   for (const key of Object.keys(all_possible_dynamic_values)) {
     updated_temp_body = replaceAll(
-      template_body,
+      updated_temp_body,
       `{{${key}}}`,
       all_possible_dynamic_values[String(key)],
     );
