@@ -15,6 +15,7 @@ import { useEffect, useRef, useState } from 'react';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { CreateTask } from '@/devlink3/CreateTask';
 import { InterviewTaskPill } from '@/devlink3/InterviewTaskPill';
+import { TaskInfoIndividual } from '@/devlink3/TaskInfoIndividual';
 import { ViewTaskCard } from '@/devlink3/ViewTaskCard';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
@@ -460,127 +461,190 @@ function AddNewTask() {
             </ShowCode> */}
             <Box sx={{ padding: '0 16px' }}>
               <ViewTaskCard
-                isPriorityVisible={true}
-                slotPriorityPill={
-                  <PriorityList
-                    selectedPriority={selectedPriority}
-                    setSelectedPriority={setSelectedPriority}
-                  />
-                }
-                slotType={
-                  <TypeList
-                    selectedType={selectedType}
-                    setSelectedType={setSelectedType}
-                  />
-                }
-                slotJob={
-                  <JobList
-                    selectedJob={selectedJob}
-                    setSelectedJob={setSelectedJob}
-                    isOptionList={
-                      selectedGroupBy.label !== 'candidate' &&
-                      selectedGroupBy.label !== 'job'
-                    }
-                  />
-                }
-                isCandidateVisible={!!selectedJob?.id}
-                isInterviewVisible={!!selectedJob?.id}
-                slotCandidate={
-                  <CandidateList
-                    selectedCandidate={selectedCandidate}
-                    setSelectedCandidate={setSelectedCandidate}
-                    candidates={candidates}
-                    isOptionList={selectedGroupBy.label !== 'candidate'}
-                  />
-                }
-                slotInterviewTaskPill={
-                  <SessionList
-                    selectedSession={selectedSession}
-                    setSelectedSession={setSelectedSession}
-                    application_id={selectedCandidate?.id}
-                    job_id={selectedJob?.id}
-                  />
-                }
-                slotInterviewDate={
-                  <SelectScheduleDate
-                    scheduleDate={scheduleDate}
-                    onChange={(e: any) => {
-                      if (e[1]) {
-                        setScheduleDate({ start_date: e[0], end_date: e[1] });
-                        setSelectedDueDate(e[0]);
-                      } else {
-                        setScheduleDate({ start_date: e[0], end_date: null });
-                        setSelectedDueDate(e[0]);
+                slotTaskInfoIndividual={
+                  <>
+                    <TaskInfoIndividual
+                      isClickable={true}
+                      iconName={'arrow_drop_down_circle'}
+                      textInfoName={'Type'}
+                      slotInfoData={
+                        <TypeList
+                          selectedType={selectedType}
+                          setSelectedType={setSelectedType}
+                        />
                       }
-                    }}
-                  />
-                }
-                slotCreatedBy={
-                  <AssigneeChip
-                    disableHoverListener={false}
-                    assigneeId={recruiterUser.user_id}
-                  />
-                }
-                slotDueDate={
-                  <SelectDueDate
-                    selectedDueDate={selectedDueDate}
-                    setSelectedDueDate={setSelectedDueDate}
-                  />
-                }
-                slotAssignedTo={
-                  <Stack width={'100%'} direction={'column'}>
-                    <AssigneeList
-                      hideAgents={
-                        selectedType === 'availability' ||
-                        selectedType === 'self_schedule'
-                      }
-                      selectedAssignee={selectedAssignee}
-                      setSelectedAssignee={setSelectedAssignee}
-                      onChange={(assigner: any) => {
-                        if (
-                          assigner.user_id === EmailAgentId ||
-                          assigner.user_id === PhoneAgentId
-                        ) {
-                          setOpenTriggerTime(spanRef.current);
-                          setSelectedStatus('scheduled');
-                        } else {
-                          setSelectedStatus('not_started');
-                        }
-                      }}
                     />
-                    <span ref={spanRef}></span>
-                  </Stack>
-                }
-                slotWhenToCall={
-                  <TriggerTime
-                    selectTriggerTime={selectTriggerTime}
-                    setSelectTriggerTime={setSelectTriggerTime}
-                    openTriggerTime={openTriggerTime}
-                    setOpenTriggerTime={setOpenTriggerTime}
-                  />
-                }
-                slotStatus={
-                  <SelectStatus
-                    setSelectedStatus={setSelectedStatus}
-                    status={selectedStatus}
-                    isOptionList={false}
-                  />
-                }
-                isWhenToCallVisible={
-                  selectedAssignee?.user_id === EmailAgentId ||
-                  selectedAssignee?.user_id === PhoneAgentId
-                }
-                textWhenToCall={
-                  selectedAssignee?.user_id === EmailAgentId
-                    ? 'When to mail'
-                    : 'When to call'
-                }
-                slotWhentoCallIcon={
-                  selectedAssignee?.user_id === EmailAgentId ? (
-                    <GlobalIcon iconName='mail' color={'neutral-8'} />
-                  ) : (
-                    <GlobalIcon iconName='phone_in_talk' color={'neutral-8'} />
-                  )
+                    <TaskInfoIndividual
+                      isClickable={true}
+                      iconName={'work'}
+                      textInfoName={'Job'}
+                      slotInfoData={
+                        <JobList
+                          selectedJob={selectedJob}
+                          setSelectedJob={setSelectedJob}
+                          isOptionList={
+                            selectedGroupBy.label !== 'candidate' &&
+                            selectedGroupBy.label !== 'job'
+                          }
+                        />
+                      }
+                    />
+                    {selectedJob?.id && (
+                      <TaskInfoIndividual
+                        isClickable={true}
+                        iconName={'id_card'}
+                        textInfoName={'Candidate'}
+                        slotInfoData={
+                          <CandidateList
+                            selectedCandidate={selectedCandidate}
+                            setSelectedCandidate={setSelectedCandidate}
+                            candidates={candidates}
+                            isOptionList={selectedGroupBy.label !== 'candidate'}
+                          />
+                        }
+                      />
+                    )}
+                    {selectedJob?.id && selectedCandidate?.id && (
+                      <TaskInfoIndividual
+                        iconName={'groups'}
+                        isClickable={true}
+                        textInfoName={'Interview sessions'}
+                        slotInfoData={
+                          <SessionList
+                            selectedSession={selectedSession}
+                            setSelectedSession={setSelectedSession}
+                            application_id={selectedCandidate?.id}
+                            job_id={selectedJob?.id}
+                          />
+                        }
+                      />
+                    )}
+                    <TaskInfoIndividual
+                      iconName={'calendar_today'}
+                      isClickable={true}
+                      textInfoName={'Interview date'}
+                      slotInfoData={
+                        <SelectScheduleDate
+                          scheduleDate={scheduleDate}
+                          onChange={(e: any) => {
+                            if (e[1]) {
+                              setScheduleDate({
+                                start_date: e[0],
+                                end_date: e[1],
+                              });
+                              setSelectedDueDate(e[0]);
+                            } else {
+                              setScheduleDate({
+                                start_date: e[0],
+                                end_date: null,
+                              });
+                              setSelectedDueDate(e[0]);
+                            }
+                          }}
+                        />
+                      }
+                    />
+                    <TaskInfoIndividual
+                      isClickable={true}
+                      iconName={'account_circle'}
+                      textInfoName={'Created by'}
+                      slotInfoData={
+                        <AssigneeChip
+                          disableHoverListener={false}
+                          assigneeId={recruiterUser.user_id}
+                        />
+                      }
+                    />
+                    <TaskInfoIndividual
+                      isClickable={true}
+                      iconName={'calendar_today'}
+                      textInfoName={'Due date'}
+                      slotInfoData={
+                        <SelectDueDate
+                          selectedDueDate={selectedDueDate}
+                          setSelectedDueDate={setSelectedDueDate}
+                        />
+                      }
+                    />
+                    <TaskInfoIndividual
+                      isClickable={true}
+                      iconName={'account_circle'}
+                      textInfoName={'Assigned to'}
+                      slotInfoData={
+                        <Stack width={'100%'} direction={'column'}>
+                          <AssigneeList
+                            hideAgents={
+                              selectedType === 'availability' ||
+                              selectedType === 'self_schedule'
+                            }
+                            selectedAssignee={selectedAssignee}
+                            setSelectedAssignee={setSelectedAssignee}
+                            onChange={(assigner: any) => {
+                              if (
+                                assigner.user_id === EmailAgentId ||
+                                assigner.user_id === PhoneAgentId
+                              ) {
+                                setOpenTriggerTime(spanRef.current);
+                                setSelectedStatus('scheduled');
+                              } else {
+                                setSelectedStatus('not_started');
+                              }
+                            }}
+                          />
+                          <span ref={spanRef}></span>
+                        </Stack>
+                      }
+                    />
+
+                    {(selectedAssignee?.user_id === EmailAgentId ||
+                      selectedAssignee?.user_id === PhoneAgentId) && (
+                      <TaskInfoIndividual
+                        isClickable={true}
+                        iconName={
+                          selectedAssignee?.user_id === EmailAgentId
+                            ? 'email'
+                            : 'call'
+                        }
+                        textInfoName={
+                          selectedAssignee?.user_id === EmailAgentId
+                            ? 'When to Mail'
+                            : 'When to Call'
+                        }
+                        slotInfoData={
+                          <TriggerTime
+                            selectTriggerTime={selectTriggerTime}
+                            setSelectTriggerTime={setSelectTriggerTime}
+                            openTriggerTime={openTriggerTime}
+                            setOpenTriggerTime={setOpenTriggerTime}
+                          />
+                        }
+                      />
+                    )}
+
+                    <TaskInfoIndividual
+                      isClickable={true}
+                      iconName={'arrow_drop_down_circle'}
+                      textInfoName={'Priority'}
+                      slotInfoData={
+                        <PriorityList
+                          selectedPriority={selectedPriority}
+                          setSelectedPriority={setSelectedPriority}
+                        />
+                      }
+                    />
+                    <TaskInfoIndividual
+                      isClickable={true}
+                      iconName={'filter_tilt_shift'}
+                      textInfoName={'Status'}
+                      slotInfoData={
+                        <SelectStatus
+                          setSelectedStatus={setSelectedStatus}
+                          status={selectedStatus}
+                          // isOptionList={false}
+                        />
+                      }
+                    />
+                  </>
                 }
               />
             </Box>

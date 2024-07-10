@@ -59,6 +59,9 @@ function RequestAvailabilityDrawer() {
       pathname: currentPath,
       query: currentQuery,
     });
+    fetchInterviewDataByApplication();
+    setSelectedSessionIds([]);
+    refetch();
     setSelectedIndex(0);
     setSelectedDayAvailableBlocks(null);
     setSelectedDateSlots([]);
@@ -70,7 +73,7 @@ function RequestAvailabilityDrawer() {
 
   useEffect(() => {
     if (availableSlots && selectedIndex !== availableSlots.length) {
-      handleClick(availableSlots[Number(selectedIndex)].selected_dates);
+      handleClick(availableSlots[Number(selectedIndex)]?.selected_dates);
     }
   }, [availableSlots, selectedIndex, router.query?.request_availability_id]);
 
@@ -121,9 +124,6 @@ function RequestAvailabilityDrawer() {
               booking_confirmed: true,
             },
           });
-          fetchInterviewDataByApplication();
-          setSelectedSessionIds([]);
-          refetch();
         } else {
           throw new Error('Booking failed');
         }

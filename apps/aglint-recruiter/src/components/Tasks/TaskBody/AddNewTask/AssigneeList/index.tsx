@@ -75,11 +75,14 @@ function AssigneeList({
         sx={{
           '& .MuiPopover-paper': {
             border: 'none',
+            height: '200px',
+            width: '300px',
+            overflow: 'hidden',
           },
         }}
       >
-        <ListPop
-          slotListCard={assignerList.map((ele, i) => {
+        <Stack bgcolor={'#fff'} p={0.5} overflow={'scroll'} maxHeight={'100%'}>
+          {assignerList.map((ele, i) => {
             if (
               (hideAgents &&
                 (ele.user_id === EmailAgentId ||
@@ -91,7 +94,9 @@ function AssigneeList({
             return (
               <Stack
                 width={'100%'}
-                p={'var(--space-1)'}
+                px={1}
+                py={0.5}
+                borderRadius={'6px'}
                 key={i}
                 sx={{
                   cursor: 'pointer',
@@ -114,7 +119,7 @@ function AssigneeList({
               </Stack>
             );
           })}
-        />
+        </Stack>
       </Popover>
     </>
   );
