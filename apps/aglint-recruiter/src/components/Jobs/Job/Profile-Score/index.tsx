@@ -33,7 +33,7 @@ import { useJobDashboard } from '@/src/context/JobDashboard';
 import { palette } from '@/src/context/Theme/Theme';
 import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/jobs/types';
-import { capitalize } from '@/src/utils/text/textUtils';
+import { capitalize, capitalizeSentence } from '@/src/utils/text/textUtils';
 
 type Sections = 'experience' | 'education' | 'skills';
 
@@ -671,7 +671,7 @@ const BreadCrumbs = () => {
     <>
       <Breadcrum
         isLink
-        textName={`${capitalize(job?.status ?? 'all')} jobs`}
+        textName={`${capitalizeSentence(job?.status ?? 'all')} jobs`}
         onClickLink={{
           onClick: () => {
             push(`/jobs?status=${job?.status ?? 'all'}`);
@@ -681,7 +681,7 @@ const BreadCrumbs = () => {
       />
       <Breadcrum
         isLink
-        textName={capitalize(job?.job_title ?? 'Job')}
+        textName={capitalizeSentence(job?.job_title ?? 'Job')}
         onClickLink={{
           onClick: () => {
             push(`/jobs/${job?.id}`);

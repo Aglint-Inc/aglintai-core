@@ -34,9 +34,9 @@ import {
 import { jobQueries } from '@/src/queries/job';
 import { getFullName } from '@/src/utils/jsonResume';
 import {
-  capitalize,
   capitalizeAll,
   capitalizeFirstLetter,
+  capitalizeSentence,
 } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
@@ -105,7 +105,7 @@ const BreadCrumbs = () => {
     <>
       <Breadcrum
         isLink
-        textName={`${capitalize(job?.status ?? 'all')} jobs`}
+        textName={`${capitalizeSentence(job?.status ?? 'all')} jobs`}
         onClickLink={{
           onClick: () => {
             push(`/jobs?status=${job?.status ?? 'all'}`);
@@ -115,7 +115,7 @@ const BreadCrumbs = () => {
       />
       <Breadcrum
         isLink
-        textName={capitalize(job?.job_title ?? 'Job')}
+        textName={capitalizeSentence(job?.job_title ?? 'Job')}
         onClickLink={{
           onClick: () => {
             push(`/jobs/${job?.id}`);

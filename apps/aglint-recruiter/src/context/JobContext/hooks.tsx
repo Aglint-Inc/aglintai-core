@@ -141,8 +141,17 @@ const useJobContext = () => {
 
   const handlePublish = async () => {
     if (publishStatus.publishable) {
-      // eslint-disable-next-line no-unused-vars
-      const { processing_count, section_count, flags, ...safeJob } = job;
+      const {
+        // eslint-disable-next-line no-unused-vars
+        processing_count,
+        // eslint-disable-next-line no-unused-vars
+        section_count,
+        // eslint-disable-next-line no-unused-vars
+        flags,
+        // eslint-disable-next-line no-unused-vars
+        application_match,
+        ...safeJob
+      } = job;
       await handleJobAsyncUpdate(safeJob.id, {
         ...safeJob,
         ...safeJob.draft,

@@ -60,7 +60,11 @@ import { Job } from '@/src/queries/jobs/types';
 import { Application } from '@/src/types/applications.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
-import { capitalize, capitalizeAll } from '@/src/utils/text/textUtils';
+import {
+  capitalize,
+  capitalizeAll,
+  capitalizeSentence,
+} from '@/src/utils/text/textUtils';
 
 import { UploadApplications } from '../Common/UploadApplications';
 import DashboardBarChart from './BarChart2';
@@ -398,7 +402,7 @@ const BreadCrumbs = () => {
     <>
       <Breadcrum
         isLink
-        textName={`${capitalize(job?.status ?? 'all')} jobs`}
+        textName={`${capitalizeSentence(job?.status ?? 'all')} jobs`}
         onClickLink={{
           onClick: () => {
             router.push(`/jobs?status=${job?.status ?? 'all'}`);
@@ -407,7 +411,7 @@ const BreadCrumbs = () => {
         }}
       />
       <Breadcrum
-        textName={`${capitalize(job?.job_title ?? 'Job')} ${total ? `(${total})` : ''}`}
+        textName={`${capitalizeSentence(job?.job_title ?? 'Job')} ${total ? `(${total})` : ''}`}
         showArrow
       />
       <Preview />

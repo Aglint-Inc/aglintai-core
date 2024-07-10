@@ -10,6 +10,7 @@ import { JobsListingCard } from '@/devlink/JobsListingCard';
 import { Job } from '@/src/queries/jobs/types';
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 import ROUTES from '@/src/utils/routing/routes';
+import { capitalizeSentence } from '@/src/utils/text/textUtils';
 
 import { POSTED_BY } from '../AddJobWithIntegrations/utils';
 import {
@@ -90,7 +91,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                   )
                 }
                 key={ind}
-                textJobRole={jobDetails?.job_title}
+                textJobRole={capitalizeSentence(jobDetails?.job_title ?? '---')}
                 textCompanyLocation={`${jobDetails?.location}`}
                 newCount={job?.section_count?.new}
                 qualifiedCount={job?.section_count?.qualified}
