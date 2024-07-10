@@ -98,8 +98,12 @@ export function filterSchedulingOptionsArray({
     let outsideWorkHours: PlanCombinationRespType[] = [];
 
     if (filters.isNoConflicts) {
-      noConflicts = comb.plans.filter((option) =>
-        option.sessions.every((session) => session.conflict_types.length === 0),
+      noConflicts = comb.plans.filter(
+        (option) =>
+          option.no_slot_reasons.length === 0 &&
+          option.sessions.every(
+            (session) => session.conflict_types.length === 0,
+          ),
       );
     }
 
@@ -139,11 +143,16 @@ export function filterSchedulingOptionsArray({
       );
     }
 
+    const noSlotReasons = comb.plans.filter(
+      (slot) => slot.no_slot_reasons.length > 0,
+    );
+
     const allConflicts: PlanCombinationRespType[] = [
       ...noConflicts,
       ...softConflicts,
       ...hardConflicts,
       ...outsideWorkHours,
+      ...noSlotReasons,
     ];
 
     noConflictsCnt += noConflicts.length;
@@ -208,6 +217,12 @@ export function filterSchedulingOptionsArray({
     numberHardConflicts: hardConflictsCnt,
     numberSoftConflicts: softConflictsCnt,
     numberOutsideWorkHours: outWorkinHrsCnt,
+    numberTotal:
+      noConflictsCnt +
+      hardConflictsCnt +
+      softConflictsCnt +
+      outWorkinHrsCnt +
+      outWorkinHrsCnt,
   };
 }
 

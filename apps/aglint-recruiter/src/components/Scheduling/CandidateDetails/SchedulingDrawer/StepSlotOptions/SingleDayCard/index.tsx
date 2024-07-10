@@ -26,9 +26,6 @@ function SingleDayCard({
   item: {
     date: string;
     sessions: SessionCombinationRespType[];
-    no_slot_reasons: {
-      reason: string;
-    }[];
   };
   ind: number;
   isMultiDay: boolean;

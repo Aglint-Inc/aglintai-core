@@ -106,7 +106,7 @@ export const useSelfSchedulingDrawer = ({
           schedulingOptions: resOptions,
           filters,
         });
-        if (filterSlots.combs.length === 0) {
+        if (filterSlots.numberTotal === 0) {
           setFilteredSchedulingOptions(filterSlots.combs);
           setNoOptions(true);
           toast.warning('No availability found with the selected preferences.');
@@ -136,7 +136,7 @@ export const useSelfSchedulingDrawer = ({
         schedulingOptions,
         filters,
       });
-      if (filterSlots.combs.length === 0) {
+      if (filterSlots.numberTotal === 0) {
         toast.warning('No availability found with the selected preferences.');
         return;
       }

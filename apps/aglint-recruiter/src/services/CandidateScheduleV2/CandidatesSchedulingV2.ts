@@ -379,9 +379,8 @@ export class CandidatesSchedulingV2 {
           ...plan.no_slot_reasons,
         ];
       });
+      return [single_comb_reason];
     }
-
-    return all_schedule_combs;
   };
 
   private findMultiDaySlots = () => {

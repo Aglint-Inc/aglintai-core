@@ -1,18 +1,12 @@
 import { GlobalInfo } from '@/devlink2/GlobalInfo';
 
-import { SchedulingFlow, useSchedulingFlowStore } from '../store';
+import { useSchedulingFlowStore } from '../store';
 
 function ErrorsFindAvailibility() {
-  const { noOptions, filteredSchedulingOptions } = useSchedulingFlowStore(
-    (state) => ({
-      noOptions: state.noOptions,
-      filteredSchedulingOptions: state.filteredSchedulingOptions,
-    }),
-  );
-
-  const errors = getErrors(filteredSchedulingOptions);
-
-  console.log(filteredSchedulingOptions);
+  const { noOptions } = useSchedulingFlowStore((state) => ({
+    noOptions: state.noOptions,
+    // filteredSchedulingOptions: state.filteredSchedulingOptions,
+  }));
 
   return (
     <>
@@ -23,7 +17,7 @@ function ErrorsFindAvailibility() {
             'No available slots found. Please try expanding the date ranges.'
           }
           textDescription={null}
-          showWidget={true}
+          showWidget={false}
           // slotWidget={
           //   <ul>
           //     {errors.map((error) => {
@@ -44,13 +38,13 @@ function ErrorsFindAvailibility() {
 
 export default ErrorsFindAvailibility;
 
-function getErrors(
-  schedulingOptions: SchedulingFlow['filteredSchedulingOptions'],
-) {
-  return schedulingOptions.map((option) => ({
-    date_range: option.date_range,
-    errors: option.plans.map((plan) =>
-      plan.no_slot_reasons.map((reason) => reason.reason),
-    ),
-  }));
-}
+// function getErrors(
+//   schedulingOptions: SchedulingFlow['filteredSchedulingOptions'],
+// ) {
+//   return schedulingOptions.map((option) => ({
+//     date_range: option.date_range,
+//     errors: option.plans.map((plan) =>
+//       plan.no_slot_reasons.map((reason) => reason.reason),
+//     ),
+//   }));
+// }

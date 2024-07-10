@@ -7,7 +7,6 @@ import { ScheduleSelectPill } from '@/devlink3/ScheduleSelectPill';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import DateRange from '@/src/components/Tasks/Components/DateRange';
 
-import { GlobalInfo } from '@/devlink2/GlobalInfo';
 import IconSessionType from '../../RightPanel/IconSessionType';
 import {
   setSelectedSessionIds,

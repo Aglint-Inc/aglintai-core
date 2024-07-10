@@ -39,6 +39,7 @@ export const createCombsForMultiDaySlots = (
         ...current_round.plans,
       ];
 
+      let is_break = false;
       for (let final_slot of final_combs.plans) {
         for (let nextdaySlot of next_day_combs) {
           if (
@@ -53,6 +54,8 @@ export const createCombsForMultiDaySlots = (
               ],
               sessions: [],
             });
+            is_break = true;
+            break;
           } else {
             temp_combs.push({
               plan_comb_id: nanoid(),
@@ -60,6 +63,9 @@ export const createCombsForMultiDaySlots = (
               no_slot_reasons: [],
             });
           }
+        }
+        if (is_break) {
+          break;
         }
       }
       final_combs.plans = cloneDeep(temp_combs);
@@ -79,6 +85,16 @@ export const createCombsForMultiDaySlots = (
       0,
     );
     if (curr_day_combs) {
+      curr_day_combs.plans = curr_day_combs.plans.map((c) => {
+        return {
+          ...c,
+          no_slot_reasons: Array.from(
+            new Set(c.no_slot_reasons.map((r) => r.reason)),
+          ).map((reason) => ({
+            reason,
+          })),
+        };
+      });
       all_day_combs.push({
         ...curr_day_combs,
       });
