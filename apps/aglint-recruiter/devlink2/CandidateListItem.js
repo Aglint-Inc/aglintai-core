@@ -38,6 +38,7 @@ export function CandidateListItem({
   slotBookmark,
   slotInterviewPipline,
   isAssessmentVisible = true,
+  highlightType,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -50,6 +51,7 @@ export function CandidateListItem({
         <_Builtin.Block
           className={_utils.cx(_styles, "cv-list-item-highlight")}
           tag="div"
+          data-highlight-state={highlightType}
         />
       ) : null}
       <_Builtin.Block
@@ -68,6 +70,7 @@ export function CandidateListItem({
           <_Builtin.Block
             className={_utils.cx(_styles, "cv-list-item-highlight")}
             tag="div"
+            data-highlight-state={highlightType}
           />
         ) : null}
         <_Builtin.Block
@@ -147,6 +150,7 @@ export function CandidateListItem({
           <_Builtin.Block
             className={_utils.cx(_styles, "cv-list-item-highlight")}
             tag="div"
+            data-highlight-state={highlightType}
           />
         ) : null}
         <_Builtin.Block
@@ -181,6 +185,7 @@ export function CandidateListItem({
             <_Builtin.Block
               className={_utils.cx(_styles, "cv-list-item-highlight")}
               tag="div"
+              data-highlight-state={highlightType}
             />
           ) : null}
           <_Builtin.Block
@@ -215,6 +220,7 @@ export function CandidateListItem({
             <_Builtin.Block
               className={_utils.cx(_styles, "cv-list-item-highlight")}
               tag="div"
+              data-highlight-state={highlightType}
             />
           ) : null}
           <_Builtin.Block
@@ -249,6 +255,7 @@ export function CandidateListItem({
             <_Builtin.Block
               className={_utils.cx(_styles, "cv-list-item-highlight")}
               tag="div"
+              data-highlight-state={highlightType}
             />
           ) : null}
           <_Builtin.Block
@@ -285,6 +292,7 @@ export function CandidateListItem({
             <_Builtin.Block
               className={_utils.cx(_styles, "cv-list-item-highlight")}
               tag="div"
+              data-highlight-state={highlightType}
             />
           ) : null}
           <_Builtin.Block
@@ -318,6 +326,7 @@ export function CandidateListItem({
           <_Builtin.Block
             className={_utils.cx(_styles, "cv-list-item-highlight")}
             tag="div"
+            data-highlight-state={highlightType}
           />
         ) : null}
         <_Builtin.Block
@@ -350,6 +359,7 @@ export function CandidateListItem({
           <_Builtin.Block
             className={_utils.cx(_styles, "cv-list-item-highlight")}
             tag="div"
+            data-highlight-state={highlightType}
           />
         ) : null}
         <_Builtin.Block
@@ -387,6 +397,7 @@ export function CandidateListItem({
           <_Builtin.Block
             className={_utils.cx(_styles, "cv-list-item-highlight")}
             tag="div"
+            data-highlight-state={highlightType}
           />
         ) : null}
         <_Builtin.Block
@@ -405,6 +416,10 @@ export function CandidateListItem({
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
+      <_Builtin.HtmlEmbed
+        className={_utils.cx(_styles, "embed_css")}
+        value="%3Cstyle%3E%0A%5Bdata-highlight-state%3D%22checked%22%5D%20%7B%0A%20%20%20%20background-color%3A%20var(--neutral-2)%3B%0A%7D%0A%5Bdata-highlight-state%3D%22hover%22%5D%20%7B%0A%20%20%20%20background-color%3A%20var(--neutral-3)%3B%0A%7D%0A%5Bdata-highlight-state%3D%22highlighted%22%5D%20%7B%0A%20%20%20%20background-color%3A%20var(--neutral-3)%3B%0A%7D%0A%3C%2Fstyle%3E"
+      />
     </_Component>
   );
 }
