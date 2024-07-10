@@ -16,6 +16,7 @@ type CustomJobViewParameters = Type<
     section_count: CustomSectionCount;
     processing_count: CustomProcessingCount;
     flags: CustomFlag;
+    application_match: CustomApplicationMatch;
   }
 >;
 
@@ -28,3 +29,7 @@ type ProcessingState = Database["public"]["Enums"]["resume_processing_state"];
 type CustomProcessingCount = { [id in ProcessingState]: number };
 
 type CustomFlag = { [id in ApplicationStatus]: boolean };
+
+type ApplicationMatch = Database["public"]["Enums"]["application_match"];
+
+type CustomApplicationMatch = { [id in ApplicationMatch]: number };

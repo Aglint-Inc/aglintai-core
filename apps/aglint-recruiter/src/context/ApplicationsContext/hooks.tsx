@@ -30,13 +30,7 @@ type FilterValues = {
   bookmarked: boolean;
   search: Application['name'];
   badges: (keyof Application['badges'])[];
-  resume_score: (
-    | 'Top match'
-    | 'Good match'
-    | 'Average match'
-    | 'Poor match'
-    | 'Not a match'
-  )[];
+  resume_score: Application['application_match'][];
 };
 
 // eslint-disable-next-line no-unused-vars
@@ -220,6 +214,13 @@ export const useApplicationsActions = () => {
     }),
   );
 
+  const badgesCount = useQuery(
+    applicationsQueries.badgesCount({
+      job_id,
+      polling: applicationScoringPollEnabled,
+    }),
+  );
+
   const newApplications = useInfiniteQuery(
     applicationsQueries.applications({
       job_id,
@@ -392,6 +393,7 @@ export const useApplicationsActions = () => {
     cascadeVisibilites,
     sectionApplication,
     locationFilterOptions,
+    badgesCount,
     filters,
     sort,
     setFilters,
