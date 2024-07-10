@@ -20,20 +20,22 @@ export const Analysis = (props: PropsWithChildren<{ score?: ReactNode }>) => {
   const reasoning = data?.score_json?.reasoning;
   const isEmpty = useMemo(
     () =>
-      status !== 'pending' &&
-      scores &&
-      reasoning &&
-      Object.keys(scores ?? {}).filter((key) => {
-        const safeKey = key as keyof typeof scores;
-        switch (safeKey) {
-          case 'skills':
-            return safeKey in reasoning && reasoning?.[safeKey];
-          case 'experience':
-            return 'positions' in reasoning && reasoning?.['positions'];
-          case 'education':
-            return 'schools' in reasoning && reasoning?.['schools'];
-        }
-      }).length === 0,
+      !!(
+        status === 'success' &&
+        (!scores ||
+          !reasoning ||
+          Object.keys(scores ?? {}).filter((key) => {
+            const safeKey = key as keyof typeof scores;
+            switch (safeKey) {
+              case 'skills':
+                return safeKey in reasoning && reasoning?.[safeKey];
+              case 'experience':
+                return 'positions' in reasoning && reasoning?.['positions'];
+              case 'education':
+                return 'schools' in reasoning && reasoning?.['schools'];
+            }
+          }).length === 0)
+      ),
     [status, scores, reasoning],
   );
   return (
