@@ -1,7 +1,6 @@
 import { TransformSchedule } from '@/src/components/Scheduling/InterviewTypes/types';
 
 import { Assessment } from '../assessment/types';
-import { resumeMatchRPCFormatter } from '.';
 
 export type DashboardTypes = {
   assessments: Assessment[];
@@ -24,12 +23,6 @@ export type DashboardTypes = {
       [id: string]: number;
     };
   };
-  matches: Omit<ReturnType<typeof resumeMatchRPCFormatter>, 'matches'> & {
-    matches: {
-      // eslint-disable-next-line no-unused-vars
-      [id in Matches]: number;
-    };
-  };
   tenureAndExperience: {
     tenure: { [id: number]: number };
     experience: { [id: number]: number };
@@ -41,11 +34,3 @@ export type DashboardTypes = {
     'applications' | 'job' | 'file' | 'schedule'
   >[];
 };
-
-type Matches =
-  | 'averageMatch'
-  | 'goodMatch'
-  | 'noMatch'
-  | 'poorMatch'
-  | 'topMatch'
-  | 'unknownMatch';

@@ -1,8 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { RecruiterType } from '@aglint/shared-types';
-import PublicIcon from '@mui/icons-material/Public';
 import { Box, Dialog, Stack, Typography } from '@mui/material';
-import { Avatar } from '@mui/material';
+import { styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
 import Image from 'next/image';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
@@ -285,6 +284,7 @@ const SocialComp = ({ setIsSaving }) => {
                   height={16}
                   width={16}
                   alt=''
+                  style={{ filter: 'grayscale(100%)' }}
                 />
               </Box>
               <Stack width={'380px'}>
@@ -322,76 +322,91 @@ const SocialComp = ({ setIsSaving }) => {
         })}
         {customSocials?.map((socialName) => {
           return (
-            <Stack
-              key={socialName}
-              position={'relative'}
-              direction={'row'}
-              alignItems={'center'}
-              gap={1}
-            >
-              <Stack
-                style={{
-                  border: `1px solid var(--neutral-6)`,
-                  padding: 'var(--space-2)',
-                  borderRadius: 'var(--radius-2)',
-                  alignItems: 'start',
-                }}
-              >
-                <SocialLogo socialName={socialName} />
-              </Stack>
-              <UITextField
-                labelSize='medium'
-                fullWidth
-                value={recruiter?.socials.custom[socialName]}
-                placeholder={`https://www.${socialName}.com/company-id`}
-                onBlur={() => {
-                  handleChange(
-                    {
-                      ...recruiter,
-                    },
-                    socialName,
-                    true,
-                  );
-                }}
-                onChange={(e) => {
-                  handleChange(
-                    {
+            <CustomTooltip
+              placement='right'
+              title={
+                <Stack
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    const newCustomSocials = recruiter.socials.custom;
+                    delete newCustomSocials[socialName];
+                    handleChange({
                       ...recruiter,
                       socials: {
                         ...recruiter.socials,
-                        custom: {
-                          ...(recruiter.socials.custom as any),
-                          [socialName]: e.target.value,
-                        } as any,
+                        custom: newCustomSocials,
                       },
-                    },
-                    socialName,
-                    true,
-                  );
-                }}
-                error={error.custom[socialName].error}
-                helperText={error.custom[socialName].msg}
-              />
+                    });
+                  }}
+                >
+                  <IconButtonGhost iconName='delete' color={'error'} />
+                </Stack>
+              }
+              key={socialName}
+            >
               <Stack
-                position={'absolute'}
-                sx={{ transform: 'translateX(36px)' }}
-                right={0}
-                style={{ cursor: 'pointer' }}
-                onClick={() => {
-                  const newCustomSocials = recruiter.socials.custom;
-                  delete newCustomSocials[socialName];
-                  handleChange({
-                    ...recruiter,
-                    socials: {
-                      ...recruiter.socials,
-                      custom: newCustomSocials,
-                    },
-                  });
-                }}
+                position={'relative'}
+                direction={'row'}
+                alignItems={'center'}
+                gap={1}
               >
-                <IconButtonGhost iconName='delete' color={'error'} />
+                <Box
+                  style={{
+                    border: `1px solid var(--neutral-6)`,
+                    borderRadius: 'var(--radius-2)',
+                    display: 'flex',
+                    height: '36px',
+                    width: '36px',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Image
+                    src={`https://logo.clearbit.com/${socialName
+                      .toLowerCase()
+                      .replaceAll(' ', '')}.com `}
+                    height={16}
+                    width={16}
+                    alt=''
+                    style={{ filter: 'grayscale(100%)' }}
+                  />
+                </Box>
+
+                <UITextField
+                  labelSize='medium'
+                  fullWidth
+                  value={recruiter?.socials.custom[socialName]}
+                  placeholder={`https://www.${socialName}.com/company-id`}
+                  onBlur={() => {
+                    handleChange(
+                      {
+                        ...recruiter,
+                      },
+                      socialName,
+                      true,
+                    );
+                  }}
+                  onChange={(e) => {
+                    handleChange(
+                      {
+                        ...recruiter,
+                        socials: {
+                          ...recruiter.socials,
+                          custom: {
+                            ...(recruiter.socials.custom as any),
+                            [socialName]: e.target.value,
+                          } as any,
+                        },
+                      },
+                      socialName,
+                      true,
+                    );
+                  }}
+                  error={error.custom[socialName].error}
+                  helperText={error.custom[socialName].msg}
+                />
               </Stack>
-            </Stack>
+            </CustomTooltip>
           );
         })}
         <AddSocialLinkButton setError={setError} />
@@ -577,26 +592,6 @@ export const customOrder = {
   // Add other social media platforms in the desired order here
 };
 
-export const SocialLogo = ({ socialName }: { socialName: string }) => {
-  return (
-    <Avatar
-      variant='square'
-      sx={{
-        bgcolor: 'white.700',
-        width: '16px',
-        height: '16px',
-        color: 'inherit',
-      }}
-      src={`https://logo.clearbit.com/${socialName
-        .toLowerCase()
-        .replaceAll(' ', '')}.com `}
-      alt={socialName}
-    >
-      <PublicIcon />
-    </Avatar>
-  );
-};
-
 const validation = (value: string, method: string) => {
   switch (method) {
     case 'string':
@@ -623,3 +618,26 @@ const validateUrl = (url: string) => {
 const validateString = (str: string) => {
   return str !== null && str.trim().length !== 0;
 };
+
+export const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    maxWidth: 'none',
+    background: 'var(--white)',
+    padding: '0px',
+    boxShadow: 'none',
+    border: '1px solid var(--neutral-6)',
+    borderRadius: 'none',
+    color: 'var(--neutral-12)',
+    fontSize: 'var(--font-size-1)',
+    fontWeight: 400,
+  },
+  [theme.breakpoints.up('sm')]: {
+    '& .MuiTooltip-tooltip': {
+      fontSize: 'inherit',
+      fontWeight: 'inherit',
+      color: 'inherit',
+    },
+  },
+}));

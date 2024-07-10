@@ -1,5 +1,6 @@
 import type { Database } from "../schema.types";
 import type { CustomizableTypes, Type } from "../utils.types";
+import { CustomGetApplicantBadges } from "./get_applicant_badges.types";
 import { CustomGetApplicantLocations } from "./get_applicant_locations.types";
 import type { CustomGetSectionCounts } from "./getsectioncounts.types";
 import type { CustomInsertDebriefSession } from "./insert_debrief_session.types";
@@ -48,5 +49,6 @@ export type Functions = Type<
     update_debrief_session: CustomUpdateDebriefSession;
     getsectioncounts: CustomGetSectionCounts;
     get_applicant_locations: CustomGetApplicantLocations;
+    get_applicant_badges: CustomGetApplicantBadges;
   }
 >;
