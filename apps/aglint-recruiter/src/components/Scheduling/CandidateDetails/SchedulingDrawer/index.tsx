@@ -150,6 +150,8 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                       stepScheduling === 'self_scheduling_email_preview'
                     ) {
                       setStepScheduling('slot_options');
+                    } else if (stepScheduling === 'reschedule') {
+                      resetStateSelfScheduling();
                     }
                   },
                 }}
