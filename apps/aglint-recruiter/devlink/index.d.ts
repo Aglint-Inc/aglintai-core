@@ -297,6 +297,7 @@ export * from "./RolesAndPermissions";
 export * from "./RolesAndPermissionsDetail";
 export * from "./RolesPill";
 export * from "./RolesRow";
+export * from "./RolesRowSkeleton";
 export * from "./SavedChanges";
 export * from "./SavedList";
 export * from "./SavedListLoader";
