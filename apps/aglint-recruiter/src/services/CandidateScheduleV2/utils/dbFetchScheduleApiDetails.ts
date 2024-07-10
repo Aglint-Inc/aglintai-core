@@ -32,7 +32,20 @@ export type UserMeetingDetails = {
 
 export const dbFetchScheduleApiDetails = async (
   params: ScheduleDBDetailsParams,
+  is_fetch_meeting_data = true,
 ): Promise<ScheduleApiDetails> => {
+  const schedule_dates = {
+    user_start_date_js: ScheduleUtils.convertDateFormatToDayjs(
+      params.start_date_str,
+      params.req_user_tz,
+      true,
+    ),
+    user_end_date_js: ScheduleUtils.convertDateFormatToDayjs(
+      params.end_date_str,
+      params.req_user_tz,
+      false,
+    ),
+  };
   const {
     comp_schedule_setting,
     int_meetings,
@@ -40,7 +53,10 @@ export const dbFetchScheduleApiDetails = async (
     inter_data,
     interview_sessions,
     company_cred,
-  } = await fetchAndVerifyDb(params);
+  } = await fetchAndVerifyDb(
+    params,
+    is_fetch_meeting_data ? schedule_dates : undefined,
+  );
 
   let interviewers: SessionInterviewerType[] = inter_data
     .filter(Boolean)
@@ -106,18 +122,7 @@ export const dbFetchScheduleApiDetails = async (
   );
   return {
     req_user_tz: params.req_user_tz,
-    schedule_dates: {
-      user_start_date_js: ScheduleUtils.convertDateFormatToDayjs(
-        params.start_date_str,
-        params.req_user_tz,
-        true,
-      ),
-      user_end_date_js: ScheduleUtils.convertDateFormatToDayjs(
-        params.end_date_str,
-        params.req_user_tz,
-        false,
-      ),
-    },
+    schedule_dates: schedule_dates,
     ses_with_ints: api_sess_ints,
     company_cred,
     all_inters: unique_inters,
@@ -145,13 +150,20 @@ const mapInt = (i: SessionInterviewerType) => {
   return int;
 };
 
-const fetchAndVerifyDb = async (params: ScheduleDBDetailsParams) => {
+const fetchAndVerifyDb = async (
+  params: ScheduleDBDetailsParams,
+  meeting_details_dates: ScheduleApiDetails['schedule_dates'],
+) => {
   const r = supabaseWrap(
     await supabaseAdmin.rpc('get_interview_session_data', {
       session_ids: params.session_ids,
       company_id: params.company_id,
-      meet_start_date: params.meeting_date.start,
-      meet_end_date: params.meeting_date.end,
+      meet_start_date:
+        meeting_details_dates &&
+        meeting_details_dates.user_start_date_js.subtract(7, 'days').format(),
+      meet_end_date:
+        meeting_details_dates &&
+        meeting_details_dates.user_end_date_js.add(7, 'days').format(),
     }),
   );
 

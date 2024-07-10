@@ -55,6 +55,7 @@ const Google = () => {
           setRecruiterUser((prev) => ({
             ...prev,
             schedule_auth: {
+              email: email.data,
               access_token: tokens.access_token,
               refresh_token: tokens.refresh_token,
               expiry_date: tokens.expiry_date,

@@ -35,22 +35,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     zod_options.include_conflicting_slots.show_soft_conflicts = true;
     zod_options.include_conflicting_slots.out_of_working_hrs = true;
 
-    const cand_schedule = new CandidatesSchedulingV2(
-      {
-        candidate_tz: parsed.cand_tz,
-        start_date_str: schedule_db_details.start_date_str,
-        end_date_str: schedule_db_details.end_date_str,
-        recruiter_id: filter_json_data.interview_schedule.recruiter_id,
-        session_ids: interviewer_selected_options[0].sessions.map(
-          (s) => s.session_id,
-        ),
-      },
-      zod_options,
-    );
+    const cand_schedule = new CandidatesSchedulingV2(zod_options);
 
-    await cand_schedule.fetchDetails();
+    await cand_schedule.fetchDetails({
+      req_user_tz: parsed.cand_tz,
+      start_date_str: schedule_db_details.start_date_str,
+      end_date_str: schedule_db_details.end_date_str,
+      company_id: filter_json_data.interview_schedule.recruiter_id,
+      session_ids: interviewer_selected_options[0].sessions.map(
+        (s) => s.session_id,
+      ),
+    });
 
-    await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
     const verified_plans =
       cand_schedule.verifyIntSelectedSlots(cand_filtered_plans);
     if (verified_plans.length === 0) {

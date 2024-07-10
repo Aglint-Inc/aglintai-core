@@ -20,10 +20,6 @@ export type ScheduleDBDetailsParams = {
   start_date_str: string;
   end_date_str: string;
   req_user_tz: string;
-  meeting_date?: {
-    start: string;
-    end: string;
-  };
 };
 
 export type ScheduleApiDetails = {
