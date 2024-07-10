@@ -257,6 +257,7 @@ function SchedulerEmailTemps({ setSaving }) {
                 {!isEditorLoad && (
                   <YTransform uniqueKey={selectedTemplateType}>
                     <EditEmail
+                      currentModule={'scheduler'}
                       slotSaveButton={<></>}
                       onClickPreview={{
                         onClick: (e) => {
