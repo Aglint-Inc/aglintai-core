@@ -5,6 +5,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import React from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { Checkbox } from '@/devlink/Checkbox';
 import { RolesPill } from '@/devlink/RolesPill';
 import { TimeRangeSelector } from '@/devlink3/TimeRangeSelector';
@@ -23,29 +24,71 @@ function DateRangeField() {
 
   return (
     <Stack spacing={2}>
-      {filters.preferredDateRanges.length > 0 && (
-        <Stack gap={1} direction={'row'} sx={{ flexWrap: 'wrap' }}>
-          {filters.preferredDateRanges.map((dateRange, index) => {
-            return (
-              <RolesPill
-                textRoles={`${dayjs(dateRange.startTime).format('hh:mm A')} - ${dayjs(dateRange.endTime).format('hh:mm A')}`}
-                key={index}
-                onClickRemoveRoles={{
-                  onClick: () => {
-                    setFilters({
-                      preferredDateRanges: filters.preferredDateRanges.filter(
-                        (range) => range.startTime !== dateRange.startTime,
-                      ),
-                    });
-                  },
-                }}
-              />
-            );
-          })}
-        </Stack>
-      )}
-
       <TimeRangeSelector
+        slotButton={
+          <ButtonSoft
+            size={2}
+            isDisabled={!value?.startTime || !value?.endTime}
+            textButton={'Add'}
+            onClickButton={{
+              onClick: () => {
+                if (!value) {
+                  toast.error('Choose start time and end time then add');
+                  return;
+                }
+                if (
+                  dayjsLocal(value.startTime).valueOf() >=
+                  dayjsLocal(value.endTime).valueOf()
+                ) {
+                  toast.error(
+                    'Start time End time cannot be same and End time must be greater than start time',
+                  );
+                  return;
+                }
+
+                if (!value?.startTime || !value?.endTime) return;
+                setFilters({
+                  preferredDateRanges: [
+                    ...filters.preferredDateRanges,
+                    {
+                      startTime: dayjs(value.startTime)?.toISOString(),
+                      endTime: dayjs(value.endTime)?.toISOString(),
+                    },
+                  ],
+                });
+                setValue({
+                  endTime: null,
+                  startTime: null,
+                });
+              },
+            }}
+          />
+        }
+        slotSelectedTime={
+          filters.preferredDateRanges.length > 0 && (
+            <Stack gap={1} direction={'row'} sx={{ flexWrap: 'wrap' }}>
+              {filters.preferredDateRanges.map((dateRange, index) => {
+                return (
+                  <RolesPill
+                    textRoles={`${dayjs(dateRange.startTime).format('hh:mm A')} - ${dayjs(dateRange.endTime).format('hh:mm A')}`}
+                    key={index}
+                    onClickRemoveRoles={{
+                      onClick: () => {
+                        setFilters({
+                          preferredDateRanges:
+                            filters.preferredDateRanges.filter(
+                              (range) =>
+                                range.startTime !== dateRange.startTime,
+                            ),
+                        });
+                      },
+                    }}
+                  />
+                );
+              })}
+            </Stack>
+          )
+        }
         slotCheckbox={<Checkbox />}
         isMultiDay={false}
         slotTimeinputs={
@@ -94,38 +137,6 @@ function DateRangeField() {
             </LocalizationProvider>
           </Stack>
         }
-        onClickAdd={{
-          onClick: () => {
-            if (!value) {
-              toast.error('Choose start time and end time then add');
-              return;
-            }
-            if (
-              dayjsLocal(value.startTime).valueOf() >=
-              dayjsLocal(value.endTime).valueOf()
-            ) {
-              toast.error(
-                'Start time End time cannot be same and End time must be greater than start time',
-              );
-              return;
-            }
-
-            if (!value?.startTime || !value?.endTime) return;
-            setFilters({
-              preferredDateRanges: [
-                ...filters.preferredDateRanges,
-                {
-                  startTime: dayjs(value.startTime)?.toISOString(),
-                  endTime: dayjs(value.endTime)?.toISOString(),
-                },
-              ],
-            });
-            setValue({
-              endTime: null,
-              startTime: null,
-            });
-          },
-        }}
         textDay={'Day'}
       />
     </Stack>

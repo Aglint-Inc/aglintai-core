@@ -12,7 +12,6 @@ import RescheduleDialog from '../../ScheduleDetails/RescheduleDialog';
 import { useGetScheduleApplication } from '../hooks';
 import SelfSchedulingDrawer from '../SchedulingDrawer';
 import {
-  setEditSession,
   setIndividualCancelOpen,
   setIndividualRescheduleOpen,
   setIsEditBreakOpen,
@@ -21,6 +20,7 @@ import {
 } from '../store';
 import BreakDrawerEdit from './BreakDrawer';
 import SideDrawerEdit from './EditDrawer';
+import { setEditSession } from './EditDrawer/store';
 import RequestAvailabilityPopUps from './RequestAvailabilityPopUps';
 import { AvailabilityProvider } from './RequestAvailabilityPopUps/RequestAvailabilityContext';
 import ScheduleIndividualCard from './ScheduleIndividual';
@@ -86,6 +86,7 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
     <>
       <SideDrawerEdit />
       <BreakDrawerEdit />
+
       {selectedSession && (
         <>
           <CancelScheduleDialog
@@ -217,10 +218,15 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                             session.interview_session.break_duration,
                           )}
                           slotEditButton={
-                            <>
+                            (!session.interview_meeting ||
+                              session.interview_meeting?.status ===
+                                'not_scheduled' ||
+                              session.interview_meeting?.status ===
+                                'cancelled') && (
                               <IconButtonSoft
                                 iconName={'edit'}
                                 size={1}
+                                iconSize={3}
                                 color={'neutral'}
                                 onClickButton={{
                                   onClick: () => {
@@ -229,7 +235,7 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                                   },
                                 }}
                               />
-                            </>
+                            )
                           }
                         />
                       </Stack>

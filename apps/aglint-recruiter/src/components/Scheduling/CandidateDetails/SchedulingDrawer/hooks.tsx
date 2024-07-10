@@ -7,7 +7,10 @@ import { useRouter } from 'next/router';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
 import { ApiBodyParamsScheduleAgentWithoutTaskId } from '@/src/pages/api/scheduling/application/schedulewithagentwithouttaskid';
-import { ApiBodyParamsSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
+import {
+  ApiBodyParamsSendToCandidate,
+  ApiResponseSendToCandidate,
+} from '@/src/pages/api/scheduling/application/sendtocandidate';
 import toast from '@/src/utils/toast';
 
 import { useGetScheduleApplication } from '../hooks';
@@ -27,12 +30,17 @@ import {
   setFilteredSchedulingOptions,
   setIsScheduleNowOpen,
   setNoOptions,
+  setResSendToCandidate,
   setSchedulingOptions,
   setStepScheduling,
   useSchedulingFlowStore,
 } from './store';
 
-export const useSelfSchedulingDrawer = () => {
+export const useSelfSchedulingDrawer = ({
+  refetch,
+}: {
+  refetch: () => void;
+}) => {
   const router = useRouter();
   const { recruiter, recruiterUser } = useAuthDetails();
   const {
@@ -92,6 +100,7 @@ export const useSelfSchedulingDrawer = () => {
         scheduleFlow === 'email_agent'
       ) {
         await onClickScheduleAgent(scheduleFlow);
+        refetch();
       } else if (
         scheduleFlow === 'create_request_availibility' ||
         scheduleFlow === 'update_request_availibility'
@@ -109,14 +118,27 @@ export const useSelfSchedulingDrawer = () => {
         schedulingOptions,
         filters,
       });
+      if (filterSlots.combs.length === 0) {
+        toast.warning('No availability found with the selected preferences.');
+        return;
+      }
       setFilteredSchedulingOptions(filterSlots.combs);
       setStepScheduling('slot_options');
     } else if (stepScheduling === 'slot_options') {
       if (scheduleFlow === 'debrief') {
+        if (selectedCombIds.length === 0) {
+          toast.warning('Please select a time slot to schedule.');
+          return;
+        }
         if (!isSendingToCandidate) {
           await onClickSendToCandidate();
+          refetch();
         }
       } else if (scheduleFlow === 'self_scheduling') {
+        if (!isDebrief && selectedCombIds.length < 5) {
+          toast.warning('Please select at least 5 time slots to schedule.');
+          return;
+        }
         setStepScheduling('self_scheduling_email_preview');
       }
     } else if (stepScheduling === 'self_scheduling_email_preview') {
@@ -169,18 +191,22 @@ export const useSelfSchedulingDrawer = () => {
         bodyParams,
       );
 
-      if (res.status === 200 && res.data) {
+      if (res.status === 200) {
+        const resObj = res?.data?.data as ApiResponseSendToCandidate['data'];
+
+        setResSendToCandidate(resObj);
         isDebrief
           ? toast.success('Debrief scheduled')
           : toast.success('Booking link sent to candidate.');
+        setStepScheduling('success_screen');
+      } else {
+        throw new Error('Error sending to candidate.');
       }
-      resetStateSelfScheduling();
     } catch (e) {
       toast.error('Error sending to candidate.');
     } finally {
       setIsSendingToCandidate(false);
       fetchInterviewDataByApplication();
-      setSelectedSessionIds([]);
     }
   };
 

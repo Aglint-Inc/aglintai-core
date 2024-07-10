@@ -21,6 +21,7 @@ function SingleDayCard({
   isCollapseNeeded = true,
   selectedCombIds = [],
   comb_id,
+  isAutoCollapse,
 }: {
   item: {
     date: string;
@@ -31,6 +32,7 @@ function SingleDayCard({
   isCollapseNeeded?: boolean;
   selectedCombIds: string[];
   comb_id: string;
+  isAutoCollapse: boolean;
 }) {
   const day = item.date;
   const sessions = item.sessions;
@@ -72,10 +74,12 @@ function SingleDayCard({
   const [collapse, setCollapse] = React.useState(false);
 
   useEffect(() => {
-    if (selectedCombIds.length > 0 && selectedCombIds.includes(comb_id)) {
-      setCollapse(true);
-    } else {
-      setCollapse(false);
+    if (isAutoCollapse) {
+      if (selectedCombIds.length > 0 && selectedCombIds.includes(comb_id)) {
+        setCollapse(true);
+      } else {
+        setCollapse(false);
+      }
     }
   }, [selectedCombIds]);
 

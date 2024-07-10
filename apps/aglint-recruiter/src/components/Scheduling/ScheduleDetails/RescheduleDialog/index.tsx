@@ -27,7 +27,10 @@ import {
 import { setRescheduleSessionIds } from '../../CandidateDetails/store';
 import { addScheduleActivity } from '../../Candidates/queries/utils';
 import { DateIcon } from '../../Settings/Components/DateSelector';
-import { removeSessionFromFilterJson } from '../utils';
+import {
+  removeSessionFromFilterJson,
+  removeSessionFromRequestAvailibility,
+} from '../utils';
 
 function RescheduleDialog({
   isRescheduleOpen,
@@ -145,7 +148,13 @@ function RescheduleDialog({
           session_id,
           supabase,
         });
+      } else {
+        await removeSessionFromRequestAvailibility({
+          session_id,
+          supabase,
+        });
       }
+
       if (sendCancelMail) {
         cancelMailHandler({
           application_id,
