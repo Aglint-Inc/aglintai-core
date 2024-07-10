@@ -7,4 +7,5 @@ declare function UserWithRole(props: {
   textRole?: React.ReactNode;
   slotAvatar?: Types.Devlink.Slot;
   slotBadge?: Types.Devlink.Slot;
+  slotButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

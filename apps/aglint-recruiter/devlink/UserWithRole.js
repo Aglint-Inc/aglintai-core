@@ -18,6 +18,7 @@ export function UserWithRole({
   textRole = "Software developer",
   slotAvatar,
   slotBadge,
+  slotButton,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -69,7 +70,7 @@ export function UserWithRole({
         )}
         tag="div"
       >
-        <IconButtonGhost iconName="" color="error" />
+        {slotButton ?? <IconButtonGhost iconName="" color="error" />}
       </_Builtin.Block>
     </_Component>
   );
