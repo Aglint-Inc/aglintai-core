@@ -6,7 +6,6 @@
   "scripts": {
     "build": "tsup",
     "start": "node build/src/server.js --port 8008",
-    "dev": "tsup --watch --onSuccess 'node build/src/server.js --port 5050'",
     "mocha": "mocha build/test/**/*.js",
     "test": "npm run build && mocha 'build/test/**/*.js'",
     "path-gen": "npx tsc scripts/RouteGen.ts --skipLibCheck && node scripts/RouteGen.js"

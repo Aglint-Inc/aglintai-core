@@ -58,6 +58,7 @@ export function FeedbackViewPopup({
           >
             <Text content="Recommendation Level" weight="medium" />
             <Text content={textRecomendation} color="neutral" weight="" />
+            <_Builtin.Block tag="div" />
           </_Builtin.Block>
         ) : null}
         {isNotSubmittedVisible ? (

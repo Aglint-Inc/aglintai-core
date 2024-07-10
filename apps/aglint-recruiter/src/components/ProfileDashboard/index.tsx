@@ -8,6 +8,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { EmailChangePop } from '@/devlink/EmailChangePop';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
@@ -19,7 +20,6 @@ import { UserChangeEmail } from '@/devlink/UserChangeEmail';
 import { UserDetails } from '@/devlink/UserDetails';
 import { UserPasswordChange } from '@/devlink/UserPasswordChange';
 import { UserProfile } from '@/devlink/UserProfile';
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { handleUpdatePassword } from '@/src/context/AuthContext/utils';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';

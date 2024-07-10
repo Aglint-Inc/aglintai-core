@@ -9,8 +9,8 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { AddSocialLink } from '@/devlink/AddSocialLink';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { NewSocialLinkPop } from '@/devlink/NewSocialLinkPop';
-import { IconButtonGhost } from '@/devlink3/IconButtonGhost';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 

@@ -8,7 +8,7 @@ import _styles from "./ButtonSolid.module.css";
 export function ButtonSolid({
   as: _Component = _Builtin.Block,
   onClickButton = {},
-  size = "3",
+  size = "1",
   color = "accent",
   highContrast = "false",
   isLeftIcon = false,
@@ -23,50 +23,49 @@ export function ButtonSolid({
   iconWeight = "medium",
 }) {
   return (
-    <_Component
-      className={_utils.cx(_styles, "radix-button")}
-      tag="div"
-      button-size-solid={size}
-      button-color-solid={color}
-      button-high-contrast-solid={highContrast}
-    >
-      {isLeftIcon ? (
-        <_Builtin.Block
-          className={_utils.cx(_styles, "align-items-center")}
-          tag="div"
-        >
-          {slotIcon ?? (
-            <GlobalIcon
-              size={iconSize}
-              iconName={iconName}
-              color={iconColor}
-              weight={iconWeight}
-            />
-          )}
-        </_Builtin.Block>
-      ) : null}
+    <_Component className={_utils.cx(_styles, "radix-button")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "button-solid-wrap")}
+        className={_utils.cx(_styles, "default_state")}
         tag="div"
+        button-size-solid={size}
+        button-color-solid={color}
+        button-high-contrast-solid={highContrast}
         {...onClickButton}
       >
-        <_Builtin.Block tag="div">{textButton}</_Builtin.Block>
-      </_Builtin.Block>
-      {isRightIcon ? (
-        <_Builtin.Block
-          className={_utils.cx(_styles, "align-items-center")}
-          tag="div"
-        >
-          {slotIcon ?? (
-            <GlobalIcon
-              size={iconSize}
-              iconName={iconName}
-              weight={iconWeight}
-              color={iconColor}
-            />
-          )}
+        {isLeftIcon ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "align-items-center")}
+            tag="div"
+          >
+            {slotIcon ?? (
+              <GlobalIcon
+                size={iconSize}
+                iconName={iconName}
+                color={iconColor}
+                weight={iconWeight}
+              />
+            )}
+          </_Builtin.Block>
+        ) : null}
+        <_Builtin.Block tag="div">
+          <_Builtin.Block tag="div">{textButton}</_Builtin.Block>
         </_Builtin.Block>
-      ) : null}
+        {isRightIcon ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "align-items-center")}
+            tag="div"
+          >
+            {slotIcon ?? (
+              <GlobalIcon
+                size={iconSize}
+                iconName={iconName}
+                weight={iconWeight}
+                color={iconColor}
+              />
+            )}
+          </_Builtin.Block>
+        ) : null}
+      </_Builtin.Block>
       {isDisabled ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "disabled_state")}

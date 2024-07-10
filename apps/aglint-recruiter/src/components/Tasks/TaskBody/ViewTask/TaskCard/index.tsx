@@ -117,9 +117,31 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             textInterviewName={capitalizeFirstLetter(task.type)}
           />
         }
-        slotJob={capitalizeFirstLetter(
-          task?.applications?.public_jobs?.job_title,
-        )}
+        slotJob={
+          <Stack
+            direction={'row'}
+            justifyContent={'space-between'}
+            alignItems={'center'}
+            width={'100%'}
+          >
+            {capitalizeFirstLetter(task?.applications?.public_jobs?.job_title)}
+            <Tooltip
+              enterDelay={1000}
+              arrow
+              title={<Stack>Go to Schedule</Stack>}
+            >
+              <IconButton
+                onClick={() => {
+                  window.open(
+                    `/jobs/${task?.applications?.public_jobs.id}`,
+                  );
+                }}
+              >
+                <GlobalIcon iconName={'open_in_new'} />
+              </IconButton>
+            </Tooltip>
+          </Stack>
+        }
         slotCandidate={
           task.applications?.candidates && (
             <Stack
@@ -151,7 +173,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                 <IconButton
                   onClick={() => {
                     window.open(
-                      `/scheduling/application/${task.application_id}`,
+                      `/scheduling/application/${task.application_id}?tab=candidate_detail`,
                     );
                   }}
                 >
@@ -162,35 +184,55 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
           )
         }
         slotInterviewTaskPill={
-          <SessionList
-            selectedSession={selectedSession}
-            setSelectedSession={setSelectedSession}
-            application_id={task.applications.id}
-            job_id={task.applications.job_id}
-            isOptionList={task.status === 'not_started'}
-            onChange={({ sessions, selected_session_id, action }) => {
-              updateSessionRelations({
-                action,
-                session_id: selected_session_id,
-              });
+          <Stack
+            direction={'row'}
+            justifyContent={'space-between'}
+            alignItems={'center'}
+            width={'100%'}
+          >
+            <SessionList
+              selectedSession={selectedSession}
+              setSelectedSession={setSelectedSession}
+              application_id={task.applications.id}
+              job_id={task.applications.job_id}
+              isOptionList={task.status === 'not_started'}
+              onChange={({ sessions, selected_session_id, action }) => {
+                updateSessionRelations({
+                  action,
+                  session_id: selected_session_id,
+                });
 
-              createTaskProgress({
-                type: 'session_update',
-                data: {
-                  task_id: router.query.task_id as string,
-                  created_by: {
-                    name: recruiterUser.first_name,
-                    id: recruiterUser.user_id,
+                createTaskProgress({
+                  type: 'session_update',
+                  data: {
+                    task_id: router.query.task_id as string,
+                    created_by: {
+                      name: recruiterUser.first_name,
+                      id: recruiterUser.user_id,
+                    },
+                    progress_type: task.latest_progress?.progress_type,
                   },
-                  progress_type: task.latest_progress.progress_type,
-                },
-                optionData: {
-                  currentSessions: task.session_ids as any,
-                  selectedSession: sessions,
-                },
-              });
-            }}
-          />
+                  optionData: {
+                    currentSessions: task.session_ids as any,
+                    selectedSession: sessions,
+                  },
+                });
+              }}
+            />
+            <Tooltip
+              enterDelay={1000}
+              arrow
+              title={<Stack>Go to Schedule</Stack>}
+            >
+              <IconButton
+                onClick={() => {
+                  window.open(`/scheduling/application/${task.application_id}`);
+                }}
+              >
+                <GlobalIcon iconName={'open_in_new'} />
+              </IconButton>
+            </Tooltip>
+          </Stack>
         }
         slotInterviewDate={
           <SelectScheduleDate

@@ -1,0 +1,52 @@
+.reschedule-option-wrap {
+  display: flex;
+  overflow: hidden;
+  width: 360px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 1px;
+  grid-row-gap: 1px;
+
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-3);
+
+  background-color: var(--neutral-6);
+}
+
+.ro-list-wrap {
+  position: relative;
+
+  display: flex;
+  padding: var(--space-2);
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+
+  background-color: var(--white);
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.text-blue-800 {
+  color: hsla(206.95652173913044, 69.70%, 19.41%, 1.00);
+}
+
+.relative-1.icon-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.option-list-active {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  background-color: var(--accent-2);
+}

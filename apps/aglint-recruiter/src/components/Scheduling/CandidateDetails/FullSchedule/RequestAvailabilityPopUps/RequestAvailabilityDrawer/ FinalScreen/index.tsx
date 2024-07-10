@@ -24,7 +24,9 @@ function FinalScreen() {
   );
   const [fetching, setFetching] = useState(true);
   const allSessions: SessionCombinationRespType[] = selectedDateSlots
-    .map((ele) => ele.dateSlots)
+    .map((ele) => ele.selected_dates)
+    .flat()
+    .map((ele) => ele.plans)
     .flat()
     .map((ele) => ele.sessions)
     .flat();
@@ -87,15 +89,15 @@ function FinalScreen() {
           slotSelectedScheduleOptions={
             <>
               {selectedDateSlots?.map((item, index) => {
-                const date = item.dateSlots[0]?.sessions[0]?.start_time;
+                const date = item.selected_dates[0].curr_date;
                 return (
                   <DayCardWrapper
                     key={index}
                     selectedCombIds={[]}
                     // selectedCombIds={selectedDateSlots.map(ele=>ele.dateSlots).flat().map(ele=>ele.plan_comb_id)}
                     item={{
-                      dateArray: [date],
-                      plans: item.dateSlots,
+                      date_range: [date],
+                      plans: item.selected_dates[0].plans,
                     }}
                     onClickSelect={() => {}}
                     isDayCollapseNeeded={false}

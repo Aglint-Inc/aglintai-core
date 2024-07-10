@@ -62,6 +62,7 @@ export function MemberRow({
             color="neutral"
             iconName="work"
             iconSize="2"
+            fontWeight="regular"
           />
         </_Builtin.Block>
       </_Builtin.Block>
@@ -76,12 +77,14 @@ export function MemberRow({
               fontSize="1"
               iconName="pace"
               color="neutral"
+              fontWeight="regular"
             />
             <TextWithIcon
               textContent={textStandardTime}
               fontSize="1"
               iconName="language"
               color="neutral"
+              fontWeight="regular"
             />
           </_Builtin.Block>
         </_Builtin.Block>

@@ -88,7 +88,7 @@ export function EmailTemplatesStart({
           {slotEmailDetails ?? <EditEmail />}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%5Bdata-dynamic-height%3D%22jobs%22%5D%7B%0Aheight%3A%20calc(100vh%20-%2048px)!important%0A%7D%0A%3C%2Fstyle%3E" />
+      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%5Bdata-dynamic-height%3D%22jobs%22%5D%7B%0A%09height%3A%20calc(100vh%20-%2048px)!important%0A%7D%0A%3C%2Fstyle%3E" />
     </_Component>
   );
 }

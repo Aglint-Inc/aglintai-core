@@ -1,4 +1,7 @@
-import { PlanCombinationRespType } from '@aglint/shared-types';
+import {
+  MultiDayPlanType,
+  PlanCombinationRespType,
+} from '@aglint/shared-types';
 import { create } from 'zustand';
 
 import { ApiResponseFindAvailability } from '../types';
@@ -28,7 +31,7 @@ export interface SchedulingFlow {
     | 'debrief';
   fetchingPlan: boolean;
   selectedSlots: PlanCombinationRespType[];
-  filteredSchedulingOptions: PlanCombinationRespType[];
+  filteredSchedulingOptions: MultiDayPlanType[];
   filters: {
     isNoConflicts: boolean;
     isSoftConflicts: boolean;
@@ -90,7 +93,7 @@ export const setEmailData = (emailData: SchedulingFlow['emailData']) =>
   useSchedulingFlowStore.setState({ emailData });
 
 export const setFilteredSchedulingOptions = (
-  schedulingOptions: PlanCombinationRespType[],
+  schedulingOptions: MultiDayPlanType[],
 ) =>
   useSchedulingFlowStore.setState({
     filteredSchedulingOptions: schedulingOptions,

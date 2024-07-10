@@ -1,6 +1,8 @@
-import { PlanCombinationRespType } from '@aglint/shared-types';
+import {
+  CandReqSlotsType,
+  PlanCombinationRespType,
+} from '@aglint/shared-types';
 import { Divider, Stack } from '@mui/material';
-import dayjs from 'dayjs';
 
 import { Stepper } from '@/devlink2/Stepper';
 import { ShowCode } from '@/src/components/Common/ShowCode';
@@ -12,7 +14,7 @@ import { useAvailabilityContext } from '../../RequestAvailabilityContext';
 function RequestAvailabilityBody({
   availableSlots,
 }: {
-  availableSlots: PlanCombinationRespType[][][];
+  availableSlots: CandReqSlotsType[];
 }) {
   const {
     selectedDayAvailableBlocks,
@@ -21,32 +23,55 @@ function RequestAvailabilityBody({
     selectedIndex,
     setSelectedIndex,
   } = useAvailabilityContext();
-
-  const onClickSelect = (comb_id: string, item: PlanCombinationRespType[]) => {
-    const selectedSlots = item.find((ele) => ele.plan_comb_id === comb_id);
-    setSelectedDateSlots((prev) => {
+  const onClickSelect = (
+    comb_id: string,
+    item: CandReqSlotsType['selected_dates'][number],
+  ) => {
+    const selectedSlots = item.plans.filter(
+      (ele) => ele.plan_comb_id === comb_id,
+    );
+    setSelectedDateSlots((prev: CandReqSlotsType[]) => {
       const round = selectedIndex + 1;
-      const roundExists = prev.some((item) => item.round === round);
+      const roundExists = prev.some((item) => item.current_round === round);
 
       if (roundExists) {
-        return prev.map((item) => {
-          if (item.round === round) {
+        return prev.map((ele) => {
+          if (ele.current_round === round) {
             return {
-              ...item,
-              dateSlots: [selectedSlots],
+              ...ele,
+              selected_dates: [
+                {
+                  curr_date: item.curr_date,
+                  plans: selectedSlots,
+                },
+              ],
             };
           }
-          return item;
+          return ele;
         });
       } else {
-        return [...prev, { round, dateSlots: [selectedSlots] }];
+        return [
+          ...prev,
+          {
+            current_round: round,
+            selected_dates: [
+              {
+                curr_date: item.curr_date,
+                plans: selectedSlots,
+              },
+            ],
+          },
+        ];
       }
     });
   };
   const selectedIds = selectedDateSlots
-    .map((ele) => ele.dateSlots)
+    .map((ele) => ele.selected_dates)
     .flat()
-    .map((ele) => ele.plan_comb_id);
+    .map((ele) => ele.plans)
+    .flat()
+    .map((ele) => ele.plan_comb_id)
+    .flat();
 
   return (
     <Stack
@@ -104,13 +129,14 @@ function RequestAvailabilityBody({
           </ShowCode.When>
           <ShowCode.Else>
             {selectedDayAvailableBlocks?.map((item, index) => {
-              const date = item[0]?.sessions[0]?.start_time;
-              const prevSelectedDate = selectedDateSlots.find(
-                (ele) => ele.round === selectedIndex,
-              )?.dateSlots[0].sessions[0].start_time;
-              const isPastDate = dayjs().isAfter(dayjs(date), 'day');
-              const isPrevSelectedDate =
-                date?.split('T')[0] !== prevSelectedDate?.split('T')[0];
+              // const date = item.curr_date;
+
+              // const prevSelectedDate = selectedDateSlots.find(
+              //   (ele) => ele.current_round === selectedIndex,
+              // )?.selected_dates[0]?.curr_date;
+              // const isPastDate = dayjs().isAfter(dayjs(date), 'day');
+              // const isPrevSelectedDate =
+              //   date?.split('T')[0] !== prevSelectedDate?.split('T')[0];
 
               return (
                 <DayCardWrapper
@@ -118,13 +144,13 @@ function RequestAvailabilityBody({
                   isRadioNeeded={true}
                   selectedCombIds={selectedIds}
                   item={{
-                    dateArray: [date],
-                    plans: item,
+                    date_range: [item.curr_date],
+                    plans: item.plans,
                   }}
                   onClickSelect={(id) => {
                     onClickSelect(id, item);
                   }}
-                  isDisabled={!isPrevSelectedDate || isPastDate}
+                  isDisabled={false}
                   isDayCollapseNeeded={false}
                   index={index}
                   isSlotCollapseNeeded={true}

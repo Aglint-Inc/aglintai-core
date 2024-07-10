@@ -39,7 +39,6 @@
   position: relative;
   z-index: 1;
 
-  display: flex;
   overflow: visible;
   justify-content: center;
   align-items: center;
@@ -49,8 +48,6 @@
   transition-property: all;
   transition-duration: 200ms;
   transition-timing-function: ease;
-
-  cursor: pointer;
 
   user-select: none;
 }

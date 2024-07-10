@@ -7,7 +7,7 @@ import { SchedulerFilters } from '@/devlink3/SchedulerFilters';
 import { setFilters, useSchedulingFlowStore } from '../store';
 import DateRangeField from './DateRangeField';
 import PreferedInterviewers from './PreferedInterviewers';
-import { filterByDateRanges, filterSchedulingOptions } from './utils';
+import { filterSchedulingOptionsArray } from './utils';
 
 function StepScheduleFilter() {
   const { dateRange, schedulingOptions, filters } = useSchedulingFlowStore(
@@ -18,31 +18,19 @@ function StepScheduleFilter() {
     }),
   );
 
-  const dateFilteredOptions = useMemo(
+  const {
+    numberHardConflicts,
+    numberNoConflicts,
+    numberOutsideWorkHours,
+    numberSoftConflicts,
+  } = useMemo(
     () =>
-      filterByDateRanges({
+      filterSchedulingOptionsArray({
         schedulingOptions,
-        preferredDateRanges: filters.preferredDateRanges,
+        filters,
       }),
-    [schedulingOptions, filters.preferredDateRanges],
+    [filters],
   );
-
-  const { noConflicts, softConflicts, hardConflicts, outSideWorkHours } =
-    useMemo(
-      () =>
-        filterSchedulingOptions({
-          schedulingOptions: dateFilteredOptions,
-          filters,
-        }),
-      [
-        dateFilteredOptions,
-        filters.isNoConflicts,
-        filters.isSoftConflicts,
-        filters.isHardConflicts,
-        filters.isOutSideWorkHours,
-        filters.preferredInterviewers,
-      ],
-    );
 
   return (
     <Stack height={'calc(100vh - 96px)'}>
@@ -60,10 +48,10 @@ function StepScheduleFilter() {
           />
         }
         slotTimeRangeSelector={<DateRangeField />}
-        textNumberNoConflicts={noConflicts.length}
-        textNumberHardConflicts={hardConflicts.length}
-        textNumberSoftConflicts={softConflicts.length}
-        textNumberOutsideWorkHours={outSideWorkHours.length}
+        textNumberNoConflicts={numberNoConflicts}
+        textNumberHardConflicts={numberHardConflicts}
+        textNumberSoftConflicts={numberSoftConflicts}
+        textNumberOutsideWorkHours={numberOutsideWorkHours}
         slotPreferedInterviewersSearch={<PreferedInterviewers />}
         slotSuggestionControlTooltip={
           <>

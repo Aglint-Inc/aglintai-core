@@ -2,7 +2,7 @@ import { DatabaseTable } from '@aglint/shared-types';
 import { Stack, Tooltip, Typography } from '@mui/material';
 import React from 'react';
 
-import { GlobalBadge } from '@/devlink3/GlobalBadge';
+import { GlobalBadge } from '@/devlink/GlobalBadge';
 
 function InterviewerAcceptDeclineIcon({
   type,
@@ -26,7 +26,7 @@ function InterviewerAcceptDeclineIcon({
               showIcon={true}
               textBadge={null}
               color={'warning'}
-              showText={false}
+              // showText={false}
             />
           </Stack>
         </Tooltip>

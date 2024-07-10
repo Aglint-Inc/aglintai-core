@@ -1,6 +1,9 @@
 /* eslint-disable no-unused-vars */
-import { DatabaseTable, PlanCombinationRespType } from '@aglint/shared-types';
-import axios from 'axios';
+import {
+  CandReqSlotsType,
+  DatabaseTable,
+  PlanCombinationRespType,
+} from '@aglint/shared-types';
 import {
   createContext,
   Dispatch,
@@ -16,14 +19,12 @@ interface ContextValue {
   setSelectedRequestAvailability: Dispatch<
     SetStateAction<DatabaseTable['candidate_request_availability'] | null>
   >;
-  selectedDayAvailableBlocks: PlanCombinationRespType[][] | null;
+  selectedDayAvailableBlocks: CandReqSlotsType['selected_dates'] | null;
   setSelectedDayAvailableBlocks: Dispatch<
-    SetStateAction<PlanCombinationRespType[][] | null>
+    SetStateAction<CandReqSlotsType['selected_dates'] | null>
   >;
-  selectedDateSlots: { round: number; dateSlots: PlanCombinationRespType[] }[];
-  setSelectedDateSlots: Dispatch<
-    SetStateAction<{ round: number; dateSlots: PlanCombinationRespType[] }[]>
-  >;
+  selectedDateSlots: CandReqSlotsType[];
+  setSelectedDateSlots: Dispatch<SetStateAction<CandReqSlotsType[]>>;
   selectedIndex: number;
   setSelectedIndex: Dispatch<SetStateAction<number>>;
 }
@@ -43,10 +44,10 @@ function AvailabilityProvider({ children }) {
   const [selectedRequestAvailability, setSelectedRequestAvailability] =
     useState<DatabaseTable['candidate_request_availability'] | null>(null);
   const [selectedDayAvailableBlocks, setSelectedDayAvailableBlocks] =
-    useState<PlanCombinationRespType[][]>(null);
+    useState<CandReqSlotsType['selected_dates']>(null);
 
   const [selectedDateSlots, setSelectedDateSlots] = useState<
-    { round: number; dateSlots: PlanCombinationRespType[] }[]
+    CandReqSlotsType[]
   >([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   return (

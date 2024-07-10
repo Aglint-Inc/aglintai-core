@@ -1,0 +1,20 @@
+.guide_nav {
+  display: flex;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 40px;
+  grid-row-gap: 40px;
+
+  background-color: var(--neutral-3);
+}
+
+.guide_link {
+  color: var(--neutral-11);
+  text-decoration: none;
+}
+
+.guide_link:global(.w--current) {
+  color: var(--accent-11);
+}

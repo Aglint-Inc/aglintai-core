@@ -1,7 +1,7 @@
+import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { SessionInfo } from '@/devlink/SessionInfo';
-import { ButtonGhost } from '@/devlink2/ButtonGhost';
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
-import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { MultidayCard } from '@/devlink2/MultidayCard';
 import { SelectedSlot } from '@/devlink2/SelectedSlot';
 import { ShowCode } from '@/src/components/Common/ShowCode';

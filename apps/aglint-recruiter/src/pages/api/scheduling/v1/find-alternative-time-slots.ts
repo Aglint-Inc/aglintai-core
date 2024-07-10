@@ -39,7 +39,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!single_day_slots) {
       return res.status(200).json([]);
     }
-    const slot_combs = single_day_slots.map((comb) => comb.sessions[0]);
+    const slot_combs = single_day_slots.plans.map((comb) => comb.sessions[0]);
     const time_filtered_slots = slot_combs.filter((comb) =>
       filter_slots(comb, parsed_body.slot_start_time, parsed_body.user_tz),
     );

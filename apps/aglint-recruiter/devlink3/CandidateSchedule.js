@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { IconButtonGhost } from "./IconButtonGhost";
+import { IconButtonSoft } from "./IconButtonSoft";
 import { Text } from "./Text";
 import { ScheduleTypeButton } from "./ScheduleTypeButton";
 import { SlotComp } from "./SlotComp";
@@ -58,11 +58,11 @@ export function CandidateSchedule({
             className={_utils.cx(_styles, "schedule_now_bar", "schedule_nbow")}
             tag="div"
           >
-            <IconButtonGhost
+            <IconButtonSoft
               onClickButton={onClickClose}
-              iconName="close"
               size="1"
               iconSize="3"
+              iconName=""
               color="neutral"
             />
             <Text content={textSelectedNumber} weight="" />

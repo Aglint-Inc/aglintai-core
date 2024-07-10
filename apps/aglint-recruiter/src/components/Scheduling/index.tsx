@@ -4,12 +4,12 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { BodyWithSublink } from '@/devlink2/BodyWithSublink';
 import { EmptyState } from '@/devlink2/EmptyState';
 import { InterviewModuleCard } from '@/devlink2/InterviewModuleCard';
 import { InterviewModuleTable } from '@/devlink2/InterviewModuleTable';
 import { PageLayout } from '@/devlink2/PageLayout';
-import { ButtonSolid } from '@/devlink3/ButtonSolid';
 import { TaskSwitchButton } from '@/devlink3/TaskSwitchButton';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';

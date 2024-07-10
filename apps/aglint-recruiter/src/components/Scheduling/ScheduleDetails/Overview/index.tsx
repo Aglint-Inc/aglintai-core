@@ -11,7 +11,6 @@ import { UserNameCard } from '@/devlink3/UserNameCard';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import IconSessionType from '../../CandidateDetails/RightPanel/IconSessionType';
@@ -182,7 +181,7 @@ function Overview({ schedule }: { schedule: ScheduleMeeting }) {
             textTimeZone={formatTimeWithTimeZone({
               start_time: schedule.interview_meeting.start_time,
               end_time: schedule.interview_meeting.end_time,
-              timeZone: userTzDayjs.tz.guess(),
+              timeZone: schedule.candidates.timezone,
             })}
           />
         }

@@ -1,12 +1,16 @@
 /* eslint-disable no-console */
-import { DatabaseTable, DB, RecruiterUserType } from '@aglint/shared-types';
+import {
+  DatabaseTable,
+  DB,
+  PlanCombinationRespType,
+  RecruiterUserType,
+} from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { createServerClient } from '@supabase/ssr';
 import dayjs from 'dayjs';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { selfScheduleMailToCandidate } from '@/src/components/Scheduling/CandidateDetails/mailUtils';
-import { SchedulingFlow } from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/store';
 import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
 import { scheduleDebrief } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
@@ -28,8 +32,8 @@ export interface ApiBodyParamsSendToCandidate {
     start_date: string;
     end_date: string;
   };
-  selectedSlots?: SchedulingFlow['filteredSchedulingOptions'];
-  selectedDebrief: SchedulingFlow['filteredSchedulingOptions'][number];
+  selectedSlots?: PlanCombinationRespType[];
+  selectedDebrief: PlanCombinationRespType;
   recruiterUser: RecruiterUserType;
   user_tz: string;
   selectedApplicationLog: DatabaseTable['application_logs'];
@@ -95,8 +99,8 @@ const sendToCandidate = async ({
     start_date: string;
     end_date: string;
   };
-  selectedSlots: SchedulingFlow['filteredSchedulingOptions'];
-  selectedDebrief: SchedulingFlow['filteredSchedulingOptions'][number];
+  selectedSlots: PlanCombinationRespType[];
+  selectedDebrief: PlanCombinationRespType;
   recruiterUser: {
     email: string;
     first_name: string;
@@ -147,7 +151,6 @@ const sendToCandidate = async ({
           filter_json: {
             start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
             end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-            organizer_name: recruiterUser.first_name,
           },
           session_ids: createCloneRes.session_ids,
           schedule_id: createCloneRes.schedule.id,
@@ -271,7 +274,8 @@ const sendToCandidate = async ({
           initialSessions,
           selectedSessionIds,
           rec_user_id: recruiterUser.user_id,
-          supabase,task_id:update_task_id
+          supabase,
+          task_id: update_task_id,
         });
       }
     } else {
@@ -294,7 +298,6 @@ const sendToCandidate = async ({
           filter_json: {
             start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
             end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-            organizer_name: recruiterUser.first_name,
           },
           session_ids: selectedSessionIds,
           schedule_id: checkSch[0].id,

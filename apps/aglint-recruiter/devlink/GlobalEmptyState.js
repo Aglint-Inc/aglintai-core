@@ -12,6 +12,7 @@ export function GlobalEmptyState({
   iconName = "shapes",
   styleEmpty = {},
   size = "7",
+  slotButton,
 }) {
   return (
     <_Component
@@ -25,6 +26,12 @@ export function GlobalEmptyState({
       >
         <GlobalIcon iconName={iconName} size={size} color="inherit" />
         <Text content={textDesc} />
+        <_Builtin.Block
+          className={_utils.cx(_styles, "slot_for_button")}
+          tag="div"
+        >
+          {slotButton}
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

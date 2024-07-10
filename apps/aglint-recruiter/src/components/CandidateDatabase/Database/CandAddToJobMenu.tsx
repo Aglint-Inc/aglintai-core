@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 
 import { AddJob } from '@/devlink/AddJob';
 import { AddJobList } from '@/devlink/AddJobList';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ButtonSurface } from '@/devlink/ButtonSurface';
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
 
 type newCandJob = {
   title: string;

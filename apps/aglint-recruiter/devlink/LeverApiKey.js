@@ -20,7 +20,7 @@ export function LeverApiKey({
   _interactions.useInteractions(_interactionsData, _styles);
 
   return (
-    <_Component tag="div">
+    <_Component className={_utils.cx(_styles, "lever_api_key")} tag="div">
       <_Builtin.Block tag="div">
         {"Enter your Lever API key to continue"}
       </_Builtin.Block>

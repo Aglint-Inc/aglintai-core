@@ -6,8 +6,8 @@ import { capitalize } from 'lodash';
 import { useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
-import { ButtonSolid } from '@/devlink2/ButtonSolid';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { IntegrationCard } from '@/devlink2/IntegrationCard';
 import { IntegrationUpload } from '@/devlink2/IntegrationUpload';
 import { ToggleButton } from '@/devlink2/ToggleButton';

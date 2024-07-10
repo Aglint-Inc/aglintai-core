@@ -1,9 +1,9 @@
 .userwithrole {
-  display: grid;
+  display: flex;
   grid-auto-columns: 1fr;
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
-  grid-template-columns: max-content 1fr;
+  grid-template-columns: max-content 1fr max-content;
   grid-template-rows: auto;
 }
 
@@ -32,7 +32,16 @@
   grid-row-gap: var(--space-2);
 }
 
+.slot_iconbutton {
+  display: flex;
+  padding-left: 20px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 #w-node-_54b6da50-d8c3-1372-93b0-6aa2dcc3bff9-dcc3bff8 {
 }
 #w-node-_54b6da50-d8c3-1372-93b0-6aa2dcc3bffb-dcc3bff8 {
+}
+#w-node-b098ac28-f9fd-7fd5-aa9f-536e270f4bd7-dcc3bff8 {
 }

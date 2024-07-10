@@ -1,7 +1,7 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 
-import { IconButtonSoft } from '@/devlink3/IconButtonSoft';
+import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { InterviewBreakCard } from '@/devlink3/InterviewBreakCard';
 import { NewInterviewPlan } from '@/devlink3/NewInterviewPlan';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';

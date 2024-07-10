@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import * as _utils from "./utils";
+import _styles from "./Text.module.css";
 
 export function Text({
   as: _Component = _Builtin.Block,
@@ -14,6 +16,7 @@ export function Text({
 }) {
   return (
     <_Component
+      className={_utils.cx(_styles, "global_text")}
       tag="div"
       text-align={align}
       fontSize={size}

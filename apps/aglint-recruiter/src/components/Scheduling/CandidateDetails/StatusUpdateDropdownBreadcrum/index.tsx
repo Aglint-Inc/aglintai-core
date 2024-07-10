@@ -1,7 +1,7 @@
 import { capitalize, Popover } from '@mui/material';
 import React from 'react';
 
-import { ButtonSoft } from '@/devlink3/ButtonSoft';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { CandidateInterviewOption } from '@/devlink3/CandidateInterviewOption';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';

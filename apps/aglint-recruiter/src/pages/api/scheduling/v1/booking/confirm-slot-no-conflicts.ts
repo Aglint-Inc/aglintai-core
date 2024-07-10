@@ -46,7 +46,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
     const [first_day_slots] = cand_schedule.findCandSlotForTheDay();
 
-    const curr_time_slots = first_day_slots.filter((curr_day_slot) => {
+    const curr_time_slots = first_day_slots.plans.filter((curr_day_slot) => {
       return (
         curr_day_slot.sessions[0].start_time ===
         parsed.selected_slot.slot_start_time
