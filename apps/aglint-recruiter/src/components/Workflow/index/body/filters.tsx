@@ -3,7 +3,7 @@ import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
 import { useMemo } from 'react';
 
 import { JobIcon } from '@/src/components/Tasks/TaskBody/GroupBy';
-import { useJobs } from '@/src/context/JobsContext';
+import { useWorkflows } from '@/src/context/Workflows';
 
 import {
   useWorkflowStore,
@@ -11,11 +11,25 @@ import {
 } from '../../../../context/Workflows/store';
 
 const Filters = () => {
+  const { workflowJobFilter } = useWorkflows();
   const {
     filters: { search, ...filters },
     setFilters,
   } = useWorkflowStore(({ filters, setFilters }) => ({ filters, setFilters }));
-  const options = useFilterOptions();
+
+  const jobOptions = useMemo(
+    () =>
+      (workflowJobFilter.data ?? []).map(
+        ({ id, job_title, workflow_count }) => ({
+          id,
+          label: `${job_title} (${workflow_count})`,
+        }),
+      ),
+    [workflowJobFilter.data],
+  );
+
+  const options = useMemo(() => ({ job: jobOptions }), [jobOptions]);
+
   const safeFilters: Parameters<typeof FilterHeader>[0]['filters'] = useMemo(
     () =>
       Object.entries(filters).map(([key, value]) => ({
@@ -56,19 +70,4 @@ const FilterIcon = ({ filter }: FilterIconProps) => {
     case 'job':
       return <JobIcon />;
   }
-};
-
-type FilterOptions = {
-  // eslint-disable-next-line no-unused-vars
-  [id in FilterIconProps['filter']]: { id: string; label: string }[];
-};
-const useFilterOptions = (): FilterOptions => {
-  const {
-    jobs: { data },
-  } = useJobs();
-  const job = (data ?? []).map((job) => ({
-    id: job.id,
-    label: job.job_title,
-  }));
-  return { job };
 };
