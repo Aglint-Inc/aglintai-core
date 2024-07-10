@@ -428,17 +428,12 @@ export const findEachInterviewerFreeTimes = (
 
   const updated_intervs_details = ints_details.map((interv) => {
     let upd_interv: InterDetailsType = { ...interv };
-    if (!upd_interv.isCalenderConnected) {
-      upd_interv.freeTimes = {};
-    } else {
-      upd_interv = findInterviewerWorkHrFreeTime(
-        upd_interv,
-        userTzDayjs(start_date).tz(api_payload.candidate_tz).startOf('day'),
-        userTzDayjs(end_date).tz(api_payload.candidate_tz).endOf('day'),
-      );
-      upd_interv = { ...upd_interv };
-    }
-
+    upd_interv = findInterviewerWorkHrFreeTime(
+      upd_interv,
+      userTzDayjs(start_date).tz(api_payload.candidate_tz).startOf('day'),
+      userTzDayjs(end_date).tz(api_payload.candidate_tz).endOf('day'),
+    );
+    upd_interv = { ...upd_interv };
     return upd_interv;
   });
 

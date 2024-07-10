@@ -14,6 +14,7 @@ import EmailPreviewSelfSchedule from './EmailPreviewSelfSchedule';
 import HeaderIcon from './HeaderIcon';
 import { useSelfSchedulingDrawer } from './hooks';
 import RescheduleSlot from './RescheduleSlot';
+import SelfScheduleSuccess from './SelfScheduleSuccess';
 import StepScheduleFilter from './StepScheduleFilter';
 import SelectDateRange from './StepSelectDate';
 import StepSlotOptions from './StepSlotOptions';
@@ -23,7 +24,6 @@ import {
   setStepScheduling,
   useSchedulingFlowStore,
 } from './store';
-import SelfScheduleSuccess from './SelfScheduleSuccess';
 
 function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
   const currentDate = dayjs();

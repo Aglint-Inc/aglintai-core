@@ -36,7 +36,7 @@ function TaskPopups() {
     <Stack direction={'column'} gap={1}>
       {tasks &&
         tasks.length === 1 &&
-        tasks[0].latest_progress.progress_type === 'schedule' &&
+        tasks[0].latest_progress?.progress_type === 'schedule' &&
         tasks[0].assignee[0] !== EmailAgentId &&
         tasks[0].assignee[0] !== PhoneAgentId && (
           <GeneralBanner

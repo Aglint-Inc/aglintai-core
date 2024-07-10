@@ -2,6 +2,7 @@ import { Dialog } from '@mui/material';
 
 import { DeletePopup as DeletePopupDev } from '@/devlink3/DeletePopup';
 import { WorkflowLanding } from '@/devlink3/WorkflowLanding';
+import Seo from '@/src/components/Common/Seo';
 import { useWorkflows } from '@/src/context/Workflows';
 import { useWorkflowStore } from '@/src/context/Workflows/store';
 
@@ -11,6 +12,7 @@ import Filters from './filters';
 const Body = () => {
   return (
     <>
+      <Seo title='Workflow | Aglint AI' description='AI for People Products' />
       <WorkflowLanding
         slotSearchAndFilter={<Filters />}
         slotWorkflowCard={<Content />}
