@@ -6,6 +6,7 @@ import { Drawer, Popover, Stack, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { MouseEvent, useEffect, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
 import { ViewTask } from '@/devlink3/ViewTask';
@@ -147,7 +148,7 @@ function ViewTaskDrawer() {
     }
     upHandler();
   }
-
+  const [loadingTask, setLoadingTask] = useState(false);
   const upHandler = () => {
     if (selectedIndex === 0) {
       document.getElementById('taskContainer').scrollTop =
@@ -155,9 +156,13 @@ function ViewTaskDrawer() {
     } else {
       document.getElementById('taskContainer').scrollTop -= 48;
     }
+    setLoadingTask(true);
     setSelectedIndex(
       tasks.findIndex((ele) => ele.id === route.query.task_id) + 1,
     );
+    setTimeout(() => {
+      setLoadingTask(false);
+    }, 1000);
   };
 
   const downHandler = () => {
@@ -166,9 +171,13 @@ function ViewTaskDrawer() {
     } else {
       document.getElementById('taskContainer').scrollTop += 48;
     }
+    setLoadingTask(true);
     setSelectedIndex(
       tasks.findIndex((ele) => ele.id === route.query.task_id) - 1,
     );
+    setTimeout(() => {
+      setLoadingTask(false);
+    }, 1000);
   };
 
   const { pressed: up } = useKeyPress('ArrowUp');
@@ -254,18 +263,13 @@ function ViewTaskDrawer() {
                   selectedTask.latest_progress?.progress_type !== 'closed' &&
                   selectedTask.latest_progress?.progress_type !==
                     'completed' && (
-                    <ButtonFilter
-                      textLabel={'Action'}
-                      fontSize={'1'}
-                      slotRightIcon={
-                        <GlobalIcon iconName={'keyboard_arrow_down'} />
-                      }
-                      slotLeftIcon={<></>}
-                      onClickStatus={{
-                        onClick: (e) => {
-                          handleClick(e);
-                        },
-                      }}
+                    <ButtonSoft
+                      size={1}
+                      color={'neutral'}
+                      textButton={'Action'}
+                      isRightIcon={true}
+                      iconName={'keyboard_arrow_down'}
+                      onClickButton={{ onClick: handleClick }}
                     />
                   )}
 
@@ -313,7 +317,7 @@ function ViewTaskDrawer() {
                         cursor: 'pointer',
                       }}
                     >
-                      Completed task
+                      Mark as Completed
                     </Typography>
                   </Stack>
                   <Stack
@@ -395,7 +399,9 @@ function ViewTaskDrawer() {
                 }}
               />
             }
-            slotTaskCard={<TaskCard task={selectedTask} />}
+            slotTaskCard={
+              <TaskCard loadingTask={loadingTask} task={selectedTask} />
+            }
             slotTaskProgress={<SubTaskProgress />}
             onClickClose={{
               onClick: handleCloseDrawer,

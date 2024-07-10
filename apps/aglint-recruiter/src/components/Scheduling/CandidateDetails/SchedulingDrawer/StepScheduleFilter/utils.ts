@@ -86,6 +86,7 @@ export function filterSchedulingOptionsArray({
         }) as MultiDayPlanType,
     )
     .filter((comb) => comb.plans.length > 0);
+
   let noConflictsCnt = 0;
   let softConflictsCnt = 0;
   let outWorkinHrsCnt = 0;
@@ -198,7 +199,9 @@ export function filterSchedulingOptionsArray({
         }) as MultiDayPlanType,
     );
   }
-  
+
+  allCombs = allCombs.filter((comb) => comb.plans.length > 0);
+
   return {
     combs: allCombs,
     numberNoConflicts: noConflictsCnt,

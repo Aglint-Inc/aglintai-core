@@ -92,7 +92,7 @@ function AssigneeDetailsCard({
       )}
       isDesignationVisible={true}
       textDesignation={capitalizeAll(assigneeDetails?.role)}
-      textLocation={assigneeDetails.interview_location}
+      textLocation={assigneeDetails.interview_location || '--'}
       textMail={assigneeDetails.email}
       textTimeZone={assigneeDetails?.scheduling_settings?.timeZone.tzCode}
       //   textTime={`${timeFrom.format('hh:mm A')} - ${timeTo.format('hh:mm A')} ${convertTimeZoneToAbbreviation(userTzDayjs.tz.guess())}`}
@@ -176,11 +176,11 @@ export const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(() => ({
   [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor:'var(--white)',
-    border:'1px solid var(--neutral-6)',
+    backgroundColor: 'var(--white)',
+    border: '1px solid var(--neutral-6)',
     color: 'var(--neutral-12)',
     boxShadow: 'none',
-    fontSize: 12
+    fontSize: 12,
   },
   [`& .${tooltipClasses.tooltipPlacementBottom}`]: {
     minWidth: 360,

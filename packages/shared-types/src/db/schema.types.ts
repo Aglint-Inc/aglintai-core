@@ -3750,6 +3750,9 @@ export type Database = {
     Views: {
       application_status_view: {
         Row: {
+          application_match:
+            | Database["public"]["Enums"]["application_match"]
+            | null
           applied_at: string | null
           badges: Json | null
           bookmarked: boolean | null
@@ -3804,6 +3807,9 @@ export type Database = {
       application_view: {
         Row: {
           activity_count: number | null
+          application_match:
+            | Database["public"]["Enums"]["application_match"]
+            | null
           applied_at: string | null
           badges: Json | null
           bookmarked: boolean | null
@@ -3899,6 +3905,7 @@ export type Database = {
       }
       job_view: {
         Row: {
+          application_match: Json | null
           assessment: boolean | null
           company: string | null
           created_at: string | null
@@ -4526,6 +4533,13 @@ export type Database = {
         }
         Returns: Json
       }
+      get_applicant_badges: {
+        Args: {
+          job_id: string
+          badge_constants?: Json
+        }
+        Returns: Json
+      }
       get_applicant_locations: {
         Args: {
           job_id: string
@@ -4717,6 +4731,16 @@ export type Database = {
           training_module_names: string[]
           upcoming_meeting_count: number
           completed_meeting_count: number
+        }[]
+      }
+      get_job_workflows: {
+        Args: {
+          recruiter_id: string
+        }
+        Returns: {
+          id: string
+          job_title: string
+          workflow_count: number
         }[]
       }
       get_meetings_by_interviewer: {
@@ -5386,6 +5410,13 @@ export type Database = {
         | "user"
         | "system"
         | "candidate"
+      application_match:
+        | "top_match"
+        | "good_match"
+        | "average_match"
+        | "poor_match"
+        | "not_a_match"
+        | "unknown_match"
       application_processing_status:
         | "not started"
         | "processing"

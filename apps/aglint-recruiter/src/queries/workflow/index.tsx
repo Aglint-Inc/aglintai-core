@@ -32,6 +32,15 @@ const getWorkflow = async ({ recruiter_id }: GetWorkflow) => {
   return data;
 };
 
+export const useWorkflowJobFilter = (args: GetWorkflow) => {
+  const { queryKey } = workflowQueryKeys.workflow_job_filter(args);
+  return useQuery({
+    queryKey,
+    queryFn: async () =>
+      (await supabase.rpc('get_job_workflows', args).throwOnError()).data,
+  });
+};
+
 export const useWorkflowMutations = (args: WorkflowKeys) => {
   const { mutationKey } = workflowMutationKeys.workflow(args);
   return useMutationState({

@@ -125,7 +125,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         session_ids: [session_id],
       });
 
-      addScheduleActivity({
+      await addScheduleActivity({
         title: `Canceled ${session_name}`,
         description: `Reason: ${reason}`,
         application_id,

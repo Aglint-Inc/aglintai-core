@@ -6,6 +6,10 @@
   grid-row-gap: var(--space-1);
 }
 
+.slot_selected_time {
+  margin-bottom: 4px;
+}
+
 .slot_input_wrap {
   display: flex;
   grid-column-gap: 16px;

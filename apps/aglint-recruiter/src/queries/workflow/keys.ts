@@ -6,6 +6,13 @@ export const workflowQueryKeys = {
   workflow: (args: GetWorkflow) => ({
     queryKey: [...workflowQueryKeys.all.queryKey, ...argsToKeys(args)],
   }),
+  workflow_job_filter: (args: GetWorkflow) => ({
+    queryKey: [
+      ...workflowQueryKeys.all.queryKey,
+      ...argsToKeys(args),
+      'workflow_job_filter',
+    ],
+  }),
 } as const;
 
 export const workflowMutationKeys = {

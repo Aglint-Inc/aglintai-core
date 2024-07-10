@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import {
   useWorkflowCreate,
   useWorkflowDelete,
+  useWorkflowJobFilter,
   useWorkflowMutations,
   useWorkflowQuery,
   useWorkflowUpdate,
@@ -18,6 +19,7 @@ const useWorkflowsContext = () => {
   const { mutate: createWorkflowMutation } = useWorkflowCreate({
     recruiter_id,
   });
+  const workflowJobFilter = useWorkflowJobFilter({ recruiter_id });
   const { mutate: deleteWorkflowMutation } = useWorkflowDelete({
     recruiter_id,
   });
@@ -77,6 +79,7 @@ const useWorkflowsContext = () => {
     workflows,
     workflowUpdate,
     workflowMutations,
+    workflowJobFilter,
     handleCreateWorkflow,
     handleDeleteWorkflow,
     devlinkProps,

@@ -9,6 +9,10 @@ import { ListCard } from '@/devlink3/ListCard';
 import { ListPop } from '@/devlink3/ListPop';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import {
+  IndividualIcon,
+  PanelIcon,
+} from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
+import {
   ApiRequestInterviewSessionTask,
   ApiResponseInterviewSessionTask,
 } from '@/src/pages/api/scheduling/fetch_interview_session_task';
@@ -45,7 +49,8 @@ function SessionList({
     setAnchorEl(null);
   };
 
-  const [sessionList, setSessionList] = useState<meetingCardType[]>(null);
+  const [sessionList, setSessionList] =
+    useState<ApiResponseInterviewSessionTask['data']>(null);
   async function getSessionList() {
     const {
       data: { data },
@@ -54,17 +59,7 @@ function SessionList({
       job_id: job_id,
     } as ApiRequestInterviewSessionTask);
     const sessions = data as ApiResponseInterviewSessionTask['data'];
-    if (sessions) {
-      setSessionList(
-        sessions.map(
-          (ele) =>
-            ({
-              id: ele.id,
-              name: ele.name,
-            }) as meetingCardType,
-        ),
-      );
-    }
+    setSessionList(sessions);
   }
   useEffect(() => {
     getSessionList();
@@ -77,7 +72,7 @@ function SessionList({
         onClick={handleClick}
         direction={'row'}
         // spacing={4}
-        minHeight={'var(--space-6)'}
+        minHeight={'24px'}
         gap={'var(--space-2)'}
         alignItems={'center'}
       >
@@ -110,83 +105,98 @@ function SessionList({
         }}
         sx={{
           '& .MuiPopover-paper': {
-            border: 'none',
+            // border: 'none',
+            height: '150px',
+            maxHeight: '200px',
+            width: '300px',
           },
         }}
       >
-        <ListPop
-          slotListCard={
-            <ShowCode>
-              <ShowCode.When isTrue={sessionList && !!sessionList.length}>
-                {sessionList &&
-                  sessionList.map((item, i) => {
-                    return (
-                      <Stack
-                        key={i}
-                        width={'100%'}
-                        p={'var(--space-1)'}
-                        sx={{
-                          cursor: 'pointer',
-                          '&:hover': {
-                            bgcolor: 'var(--neutral-2)',
-                          },
-                          bgcolor:
-                            selectedSession
-                              .map((ele) => ele.id)
-                              .includes(item.id) && 'var(--neutral-1)',
-                        }}
-                        onClick={() => {
-                          //   @ts-ignore
-                          setSelectedSession((pre: any[]) => {
-                            if (
-                              pre
-                                .map((ele: { id: any }) => ele.id)
-                                .includes(item.id)
-                            ) {
-                              const data = pre
-                                .filter(
-                                  (ele: { id: string }) => ele.id !== item.id,
-                                )
-                                .map((ele) => ({
-                                  id: ele.id,
-                                  name: ele.name,
-                                }));
-                              if (onChange) {
-                                onChange({
-                                  sessions: data as meetingCardType[],
-                                  selected_session_id: item.id,
-                                  action: 'remove',
-                                });
-                              }
-                              return data;
-                            }
-                            const data = [item, ...pre].map((ele) => ({
-                              id: ele.id,
-                              name: ele.name,
-                            }));
+        <Stack bgcolor={'#fff'} p={0.5} overflow={'scroll'} height={'100%'}>
+          <ShowCode>
+            <ShowCode.When isTrue={sessionList && !!sessionList.length}>
+              {sessionList &&
+                sessionList.map((item, i) => {
+                  return (
+                    <Stack
+                      key={i}
+                      width={'100%'}
+                      px={1}
+                      py={0.5}
+                      borderRadius={`6px`}
+                      sx={{
+                        cursor: 'pointer',
+                        '&:hover': {
+                          bgcolor: 'var(--neutral-2)',
+                        },
+                        bgcolor:
+                          selectedSession
+                            .map((ele) => ele.id)
+                            .includes(item.id) && 'var(--neutral-1)',
+                      }}
+                      onClick={() => {
+                        //   @ts-ignore
+                        setSelectedSession((pre: any[]) => {
+                          if (
+                            pre
+                              .map((ele: { id: any }) => ele.id)
+                              .includes(item.id)
+                          ) {
+                            const data = pre
+                              .filter(
+                                (ele: { id: string }) => ele.id !== item.id,
+                              )
+                              .map((ele) => ({
+                                id: ele.id,
+                                name: ele.name,
+                              }));
                             if (onChange) {
                               onChange({
                                 sessions: data as meetingCardType[],
                                 selected_session_id: item.id,
-                                action: 'add',
+                                action: 'remove',
                               });
                             }
                             return data;
-                          });
-                        }}
-                      >
-                        <ListCard isListVisible={true} textList={item.name} />
+                          }
+                          const data = [item, ...pre].map((ele) => ({
+                            id: ele.id,
+                            name: ele.name,
+                          }));
+                          if (onChange) {
+                            onChange({
+                              sessions: data as meetingCardType[],
+                              selected_session_id: item.id,
+                              action: 'add',
+                            });
+                          }
+                          return data;
+                        });
+                      }}
+                    >
+                      <Stack direction={'row'} spacing={1} width={'100%'}>
+                        <ShowCode>
+                          <ShowCode.When isTrue={item.session_type === 'panel'}>
+                            <PanelIcon />
+                          </ShowCode.When>
+                          <ShowCode.Else>
+                            <IndividualIcon />
+                          </ShowCode.Else>
+                        </ShowCode>
+                        <Typography ml={1} fontSize={'14px'} variant='caption'>
+                          {item.name}
+                        </Typography>
                       </Stack>
-                    );
-                  })}
-              </ShowCode.When>
+                    </Stack>
+                  );
+                })}
+            </ShowCode.When>
 
-              <ShowCode.Else>
-                <EmptyState textDescription={'No sessions found.'} />
-              </ShowCode.Else>
-            </ShowCode>
-          }
-        />
+            <ShowCode.Else>
+              <EmptyState textDescription={'No sessions found.'} />
+            </ShowCode.Else>
+          </ShowCode>
+        </Stack>
       </Popover>
     </>
   );

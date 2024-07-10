@@ -1,6 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-// import { getHelper } from '@/src/components/Jobs/Job/Email-Templates';
-// import { templateObj } from '@/src/components/Jobs/Job/Email-Templates/utils';
 import { useCallback } from 'react';
 
 import {
@@ -10,7 +8,6 @@ import {
 import { Assessment } from '@/src/queries/assessment/types';
 import {
   useJobLocations,
-  useJobMatches,
   useJobSchedules,
   useJobSkills,
   useJobTenureAndExperience,
@@ -20,8 +17,15 @@ import { useJobWorkflow } from '@/src/queries/job-workflow';
 import { useJob } from '../JobContext';
 
 const useProviderJobDashboardActions = () => {
-  const { jobLoad, job, job_id, interviewPlans, status, handleJobUpdate } =
-    useJob();
+  const {
+    jobLoad,
+    job,
+    total,
+    job_id,
+    interviewPlans,
+    status,
+    handleJobUpdate,
+  } = useJob();
 
   const assessments = useAllAssessments();
   const templates = useAllAssessmentTemplates();
@@ -45,7 +49,6 @@ const useProviderJobDashboardActions = () => {
 
   const skills = useJobSkills(job);
   const locations = useJobLocations(job);
-  const matches = useJobMatches(job);
   const tenureAndExperience = useJobTenureAndExperience(job);
   const schedules = useJobSchedules(job);
   const workflows = useJobWorkflow({ id: job?.id });
@@ -84,7 +87,7 @@ const useProviderJobDashboardActions = () => {
     templates,
     skills,
     locations,
-    matches,
+    total,
     status,
     handleWarningUpdate,
   };

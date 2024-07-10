@@ -9,26 +9,23 @@ import { DropDown } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms'
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsSessionCache } from '@/src/pages/api/scheduling/application/candidatesessioncache';
+import { breakDurations } from '@/src/utils/scheduling/const';
+import { createCloneSession } from '@/src/utils/scheduling/createCloneSession';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { useGetScheduleApplication } from '../../hooks';
-import {
-  setIsEditBreakOpen,
-  setSelectedSessionIds,
-  useSchedulingApplicationStore,
-} from '../../store';
+import { setIsEditBreakOpen, useSchedulingApplicationStore } from '../../store';
+import { useEditSessionDrawerStore } from '../EditDrawer/store';
 
 function BreakDrawerEdit() {
   const { recruiter, recruiterUser } = useAuthDetails();
   const {
-    editSession,
     allSessions,
     selectedApplication,
     selectedSchedule,
     isEditBreakOpen,
   } = useSchedulingApplicationStore((state) => ({
-    editSession: state.editSession,
     selectedSchedule: state.selectedSchedule,
     allSessions: state.initialSessions,
     selectedApplication: state.selectedApplication,
@@ -36,8 +33,9 @@ function BreakDrawerEdit() {
   }));
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
   const [value, setValue] = useState<number>(30);
-
   const [saving, setSaving] = useState(false);
+
+  const editSession = useEditSessionDrawerStore((state) => state.editSession);
 
   useEffect(() => {
     if (editSession) {
@@ -46,64 +44,66 @@ function BreakDrawerEdit() {
   }, [editSession?.interview_session.id]);
 
   const handleClose = () => {
-    setIsEditBreakOpen(false);
+    if (!saving) setIsEditBreakOpen(false);
   };
 
   const handleSave = async () => {
-    if (!selectedSchedule && !saving) {
-      const res = await axios.post(
-        '/api/scheduling/application/candidatesessioncache',
-        {
-          allSessions: allSessions,
-          application_id: selectedApplication.id,
-          is_get_more_option: false,
-          scheduleName: `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`,
-          session_ids: [],
-          recruiter_id: recruiter.id,
-          rec_user_id: recruiterUser.user_id,
-        } as ApiBodyParamsSessionCache,
-      );
+    try {
+      setSaving(true);
+      if (!selectedSchedule && !saving) {
+        const res = await axios.post(
+          '/api/scheduling/application/candidatesessioncache',
+          {
+            allSessions: allSessions,
+            application_id: selectedApplication.id,
+            is_get_more_option: false,
+            scheduleName: `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`,
+            session_ids: [],
+            recruiter_id: recruiter.id,
+            rec_user_id: recruiterUser.user_id,
+          } as ApiBodyParamsSessionCache,
+        );
 
-      let createCloneRes;
+        let createCloneRes: Awaited<ReturnType<typeof createCloneSession>>;
 
-      if (res.status === 200 && res.data) {
-        createCloneRes = res.data;
-      }
+        if (res.status === 200 && res.data) {
+          createCloneRes = res.data;
+        }
 
-      if (createCloneRes) {
+        if (createCloneRes) {
+          await supabase
+            .from('interview_session')
+            .update({
+              break_duration: value,
+            })
+            .eq(
+              'id',
+              createCloneRes.refSessions.find(
+                (s) =>
+                  s.interview_session.id === editSession.interview_session.id,
+              ).newId,
+            );
+        } else {
+          toast.error('Error caching session.');
+        }
+      } else {
         await supabase
           .from('interview_session')
           .update({
             break_duration: value,
           })
-          .eq(
-            'id',
-            createCloneRes.refSessions.find(
-              (s) => s.id === editSession.interview_session.id,
-            ).newId,
-          );
-      } else {
-        toast.error('Error caching session.');
+          .eq('id', editSession.interview_session.id);
       }
-
       await fetchInterviewDataByApplication();
-      setSelectedSessionIds([]);
       handleClose();
-    } else {
-      await supabase
-        .from('interview_session')
-        .update({
-          break_duration: value,
-        })
-        .eq('id', editSession.interview_session.id);
-      await fetchInterviewDataByApplication();
-      setSelectedSessionIds([]);
-      handleClose();
+    } catch (e) {
+      toast.error('Error saving break duration.');
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
   };
 
-  const options = [30, 45, 60, 120, 1440, 2880, 4320].reduce(
+  const options = breakDurations.reduce(
     (acc, curr) => {
       acc.push({ name: getBreakLabel(curr), value: curr });
       return acc;
@@ -142,12 +142,12 @@ function BreakDrawerEdit() {
                   onClickButton={{ onClick: () => handleClose() }}
                 />
                 <ButtonSolid
+                  isLoading={saving}
                   textButton='Save'
                   size={2}
                   onClickButton={{
                     onClick: () => {
                       if (!saving) {
-                        setSaving(true);
                         handleSave();
                       }
                     },

@@ -1,8 +1,12 @@
+import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
-import { AgentFollowUp } from '@/devlink3/AgentFollowUp';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import { onClickResendInvite } from '@/src/components/Scheduling/CandidateDetails/utils';
+import { EmailAgentIcon } from '@/src/components/Tasks/Components/EmailAgentIcon';
 import { useTaskStatesContext } from '@/src/components/Tasks/TaskStatesContext';
 import {
   createTaskProgress,
@@ -66,25 +70,37 @@ function AgentFollowUpCard({
     ]);
   }
   return (
-    <AgentFollowUp
-      isEmailAgentIcon={false}
-      isCallAgain={false}
-      isConactViaEmail={false}
-      isPhoneAgentIcon={true}
-      isMakeAPhoneCall={true}
-      isSendFollowupEmail={true}
-      textFollowup={`It's been ${dayjs(progress_created_at).fromNow().replace('ago', '')} since the candidate replied to this email.`}
-      onClickMakeAPhoneCall={{
-        onClick: () => {
-          setOpenPhoneFollowUp(true);
-        },
-      }}
-      onClickSendFollowupEmail={{
-        onClick: () => {
-          setFollowUpEmail();
-        },
-      }}
-    />
+    <Stack mt={2}>
+      <GlobalBannerShort
+        iconName={<EmailAgentIcon />}
+        textTitle={'Agent Follow-up'}
+        textDescription={`It's been ${dayjs(progress_created_at).fromNow().replace('ago', '')} since the candidate replied to this email.`}
+        slotButtons={
+          <>
+            <ButtonSolid
+              size={1}
+              textButton={'Make a Flow-up Call'}
+              isLeftIcon={true}
+              iconName={'call'}
+              onClickButton={{
+                onClick: () => {
+                  setOpenPhoneFollowUp(true);
+                },
+              }}
+            />
+            <ButtonSoft
+              size={1}
+              isLeftIcon={true}
+              iconName={'mail'}
+              textButton={'Send Follow-up Email'}
+              onClickButton={{
+                onClick: setFollowUpEmail,
+              }}
+            />
+          </>
+        }
+      />
+    </Stack>
   );
 }
 

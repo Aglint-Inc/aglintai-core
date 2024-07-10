@@ -7,13 +7,13 @@ import {
   LinearScale,
   Tooltip,
 } from 'chart.js/auto';
-import { capitalize } from 'lodash';
 import React, { FC } from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import { NoData } from '@/devlink3/NoData';
 import Loader from '@/src/components/Common/Loader';
 import { useJobDashboard } from '@/src/context/JobDashboard';
+import { capitalize } from '@/src/utils/text/textUtils';
 
 import { DashboardGraphOptions } from '.';
 import { getOrderedGraphValues } from './utils';
@@ -24,17 +24,21 @@ const BarChart: React.FC<{
   skills: ReturnType<typeof getOrderedGraphValues>;
 }> = ({ skills }) => {
   const matches = useMediaQuery('(min-width:1920px)');
-  const { names, counts, colors } = skills.reduce(
+  const { labels, tooltips, counts, colors } = skills.reduce(
     (acc, { color, name, count }) => {
-      acc.names.push(capitalize(name));
+      const safeName = capitalize((name ?? '').trim());
+      acc.labels.push(
+        safeName.length > 12 ? `${safeName.slice(0, 12)}..` : safeName,
+      );
+      acc.tooltips.push(safeName);
       acc.counts.push(count);
       acc.colors.push(color);
       return acc;
     },
-    { names: [], counts: [], colors: [] },
+    { labels: [], tooltips: [], counts: [], colors: [] },
   );
   const dataBar = {
-    labels: names,
+    labels: labels,
     datasets: [
       {
         label: 'Candidates',
@@ -55,6 +59,11 @@ const BarChart: React.FC<{
         maintainAspectRatio: false,
         aspectRatio: matches ? 4 : 3,
         plugins: {
+          tooltip: {
+            callbacks: {
+              title: (values) => tooltips[values[0].dataIndex],
+            },
+          },
           legend: {
             display: false,
           },

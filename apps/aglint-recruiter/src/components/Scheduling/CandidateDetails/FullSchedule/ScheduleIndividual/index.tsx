@@ -103,7 +103,7 @@ function ScheduleIndividualCard({
           : '--'
       }
       textTime={
-        interview_meeting?.start_time && candidate?.timezone
+        interview_meeting?.start_time
           ? formatTimeWithTimeZone({
               start_time: interview_meeting.start_time,
               end_time: interview_meeting.end_time,

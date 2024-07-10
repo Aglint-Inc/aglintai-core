@@ -1,4 +1,3 @@
-import { DB } from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { supabase } from '@/src/utils/supabase/client';
@@ -35,18 +34,6 @@ export const useJobLocations = (job: Job) => {
     queryKey,
     enabled: !!job,
     queryFn: () => getLocationPool(id),
-    gcTime: job ? GC_TIME : 0,
-  });
-  return response;
-};
-
-export const useJobMatches = (job: Job) => {
-  const id = job?.id;
-  const { queryKey } = jobDashboardQueryKeys.matches({ id });
-  const response = useQuery({
-    queryKey,
-    enabled: !!job,
-    queryFn: () => getResumeMatch(id),
     gcTime: job ? GC_TIME : 0,
   });
   return response;
@@ -113,30 +100,4 @@ export const getScheduleData = async (job_id: string) => {
   );
   if (error) throw new Error(error.message);
   return data as unknown as DashboardTypes['schedules'];
-};
-
-const getResumeMatch = async (job_id: string) => {
-  const { data, error } = await supabase.rpc('getallresumematches', {
-    jobid: job_id,
-    topmatch: 80,
-    goodmatch: 60,
-    averagematch: 40,
-    poormatch: 20,
-  });
-  if (error) throw new Error(error.message);
-  const safeData = resumeMatchRPCFormatter(data);
-  return safeData as unknown as DashboardTypes['matches'];
-};
-
-export const resumeMatchRPCFormatter = (
-  unsafeData: DB['public']['Functions']['getresumematches']['Returns'],
-) => {
-  const initialData = {
-    matches: unsafeData,
-    total: 0,
-  };
-  return Object.values(unsafeData).reduce((acc, curr) => {
-    acc.total += curr;
-    return acc;
-  }, initialData) as typeof initialData;
 };
