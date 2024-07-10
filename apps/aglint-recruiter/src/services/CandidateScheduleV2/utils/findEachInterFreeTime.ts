@@ -32,7 +32,7 @@ import { userTzDayjs } from './userTzDayjs';
  * @returns returns array of free time chunks for each interviewer for every given date bw the daterange
  */
 //
-export const findEachInterviewerFreeTimes = (
+export const findEachInterviewerAPiDetails = (
   ints_details: InterDetailsType[],
   api_options: APIOptions,
   api_details: ScheduleApiDetails,

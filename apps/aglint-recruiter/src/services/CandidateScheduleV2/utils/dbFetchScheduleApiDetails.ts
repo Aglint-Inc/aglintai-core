@@ -15,7 +15,7 @@ import { ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
 import { decrypt_string } from '@/src/utils/integrations/crypt-funcs';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import { DBDetailsType } from '../types';
+import { ScheduleApiDetails, ScheduleDBDetailsParams } from '../types';
 import { userTzDayjs } from './userTzDayjs';
 
 export type UserMeetingDetails = {
@@ -30,21 +30,9 @@ export type UserMeetingDetails = {
   };
 };
 
-type DBDetailsParams = {
-  session_ids: string[];
-  company_id: string;
-  start_date_str: string;
-  end_date_str: string;
-  user_tz: string;
-  meeting_date?: {
-    start: string;
-    end: string;
-  };
-};
-
 export const dbFetchScheduleApiDetails = async (
-  params: DBDetailsParams,
-): Promise<DBDetailsType> => {
+  params: ScheduleDBDetailsParams,
+): Promise<ScheduleApiDetails> => {
   const {
     comp_schedule_setting,
     int_meetings,
@@ -117,15 +105,16 @@ export const dbFetchScheduleApiDetails = async (
     }),
   );
   return {
+    req_user_tz: params.req_user_tz,
     schedule_dates: {
       user_start_date_js: ScheduleUtils.convertDateFormatToDayjs(
         params.start_date_str,
-        params.user_tz,
+        params.req_user_tz,
         true,
       ),
       user_end_date_js: ScheduleUtils.convertDateFormatToDayjs(
         params.end_date_str,
-        params.user_tz,
+        params.req_user_tz,
         false,
       ),
     },
@@ -156,7 +145,7 @@ const mapInt = (i: SessionInterviewerType) => {
   return int;
 };
 
-const fetchAndVerifyDb = async (params: DBDetailsParams) => {
+const fetchAndVerifyDb = async (params: ScheduleDBDetailsParams) => {
   const r = supabaseWrap(
     await supabaseAdmin.rpc('get_interview_session_data', {
       session_ids: params.session_ids,

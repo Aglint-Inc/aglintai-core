@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 import {
-  APIFindAvailability,
   APIOptions,
   CalConflictType,
   CandReqSlotsType,
@@ -26,13 +25,14 @@ import { nanoid } from 'nanoid';
 import * as v from 'valibot';
 
 import {
-  DBDetailsType,
   IntervsWorkHrsEventMapType,
   IntervsWorkHrsEventType,
+  ScheduleApiDetails,
+  ScheduleDBDetailsParams,
 } from './types';
-import { fetch_details_from_db } from './utils/fetch_details_from_db';
+import { dbFetchScheduleApiDetails } from './utils/dbFetchScheduleApiDetails';
 import { fetchIntsCalEventsDetails } from './utils/fetchIntsCalEventsDetails';
-import { findEachInterviewerFreeTimes } from './utils/findEachInterFreeTime';
+import { findEachInterviewerAPiDetails } from './utils/findEachInterFreeTime';
 import { calcIntsCombsForEachSessionRound } from './utils/interviewersCombsForSession';
 import { isIntervLoadPassed } from './utils/isInterviewerLoadPassed';
 import { planCombineSlots } from './utils/planCombine';
@@ -44,135 +44,40 @@ import {
 import { userTzDayjs } from './utils/userTzDayjs';
 
 export class CandidatesSchedulingV2 {
-  public db_details: DBDetailsType;
+  public db_details: ScheduleApiDetails;
   private api_options: APIOptions;
-  private api_payload: Omit<APIFindAvailability, 'options'>;
   public intervs_details_map: IntervsWorkHrsEventMapType;
-  private schedule_dates: {
-    user_start_date_js: Dayjs;
-    user_end_date_js: Dayjs;
-  };
+  private api_details: ScheduleApiDetails;
 
-  constructor(
-    _api_payload: Omit<APIFindAvailability, 'options'>,
-    _api_options: v.InferInput<typeof scheduling_options_schema>,
-  ) {
-    this.api_payload = {
-      candidate_tz: _api_payload.candidate_tz,
-      end_date_str: _api_payload.end_date_str,
-      recruiter_id: _api_payload.recruiter_id,
-      session_ids: _api_payload.session_ids,
-      start_date_str: _api_payload.start_date_str,
-    };
-    this.schedule_dates = {
-      user_start_date_js: ScheduleUtils.convertDateFormatToDayjs(
-        _api_payload.start_date_str,
-        _api_payload.candidate_tz,
-        true,
-      ),
-      user_end_date_js: ScheduleUtils.convertDateFormatToDayjs(
-        _api_payload.end_date_str,
-        _api_payload.candidate_tz,
-        false,
-      ),
-    };
-    this.api_options = {
-      check_next_minutes: _api_options.check_next_minutes,
-      include_free_time: _api_options.include_free_time,
-      make_training_optional: _api_options.make_training_optional,
-      use_recruiting_blocks: _api_options.use_recruiting_blocks,
-      cand_start_time: _api_options.cand_start_time,
-      cand_end_time: _api_options.cand_end_time,
-      return_empty_slots_err: _api_options.return_empty_slots_err,
-      include_conflicting_slots: {
-        calender_not_connected:
-          _api_options.include_conflicting_slots.calender_not_connected,
-        day_off: _api_options.include_conflicting_slots.day_off,
-        holiday: _api_options.include_conflicting_slots.holiday,
-        interviewer_pause:
-          _api_options.include_conflicting_slots.interviewer_pause,
-        interviewers_load:
-          _api_options.include_conflicting_slots.interviewers_load,
-        out_of_office: _api_options.include_conflicting_slots.out_of_office,
-        show_conflicts_events:
-          _api_options.include_conflicting_slots.show_conflicts_events,
-        show_soft_conflicts:
-          _api_options.include_conflicting_slots.show_soft_conflicts,
-        out_of_working_hrs:
-          _api_options.include_conflicting_slots.out_of_working_hrs,
-        day_passed: _api_options.include_conflicting_slots.day_passed,
-      },
-    };
+  constructor(_api_options: v.InferInput<typeof scheduling_options_schema>) {
+    this.api_options = { ..._api_options };
     this.intervs_details_map = new Map();
   }
 
-  // getters and setters
-  public setSchedulingDates(_start_date_js: Dayjs, _end_date_js: Dayjs) {
-    this.schedule_dates = {
-      user_start_date_js: _start_date_js.tz(),
-      user_end_date_js: _end_date_js,
-    };
+  private setIntervsDetailsMap(
+    _intervs_details_map: IntervsWorkHrsEventMapType,
+  ) {
+    this.intervs_details_map = { ..._intervs_details_map };
+  }
+
+  private setApiDetails(_api_details: ScheduleApiDetails) {
+    this.api_details = { ..._api_details };
   }
 
   //NOTE: publicly exposed apis
   /**
-   * fetches necessay details from supabse db for finding the slots
-   */
-  public async fetchDetails() {
-    const meeting_date = {
-      start: null,
-      end: null,
-    };
-    // for per week load balancer
-    if (this.schedule_dates) {
-      const meet_start_date = this.schedule_dates.user_start_date_js.subtract(
-        7,
-        'day',
-      );
-      meeting_date.start = meet_start_date.format();
-      const meet_end_date = this.schedule_dates.user_end_date_js.add(7, 'day');
-      meeting_date.end = meet_end_date.format();
-    }
-    const db_data = await fetch_details_from_db(
-      this.api_payload.session_ids,
-      this.api_payload.recruiter_id,
-      {
-        start: meeting_date.start,
-        end: meeting_date.end,
-      },
-    );
-    this.db_details = {
-      all_inters: db_data.all_inters,
-      comp_schedule_setting: db_data.comp_schedule_setting,
-      company_cred: db_data.company_cred,
-      ses_with_ints: db_data.api_sess_ints,
-      int_meetings: db_data.int_meetings,
-      ints_schd_meetings: db_data.ints_schd_meetings,
-      all_session_int_details: db_data.all_session_int_details,
-    };
-  }
-
-  /**
    * find calender events for each interviewer
    */
-  public async fetchIntsEventsFreeTimeWorkHrs() {
-    const int_with_events = await fetchIntsCalEventsDetails(
-      this.db_details.all_inters,
-      this.db_details.company_cred,
-      this.db_details.comp_schedule_setting,
-      this.schedule_dates.user_start_date_js.format(),
-      this.schedule_dates.user_end_date_js.format(),
-      this.api_payload.candidate_tz,
-    );
+  public async fetchDetails(params: ScheduleDBDetailsParams) {
+    const db_details = await dbFetchScheduleApiDetails(params);
+    const int_with_events = await fetchIntsCalEventsDetails(db_details);
 
-    const inter_details = findEachInterviewerFreeTimes(
+    const inter_details = findEachInterviewerAPiDetails(
       int_with_events,
-      this.api_payload,
       this.api_options,
-      this.db_details,
-      this.schedule_dates.user_start_date_js.format(),
-      this.schedule_dates.user_end_date_js.format(),
+      db_details,
     );
+    const intervs_map: IntervsWorkHrsEventMapType = new Map();
     for (let inter of inter_details) {
       const details: IntervsWorkHrsEventType = {
         email: inter.email,
@@ -185,8 +90,11 @@ export class CandidatesSchedulingV2 {
         interviewer_tz: inter.int_schedule_setting.timeZone.tzCode,
         int_schedule_setting: inter.int_schedule_setting,
       };
-      this.intervs_details_map.set(inter.interviewer_id, details);
+      intervs_map.set(inter.interviewer_id, details);
     }
+
+    this.setApiDetails(db_details);
+    this.setIntervsDetailsMap(intervs_map);
   }
 
   // find slots for the day
@@ -223,7 +131,7 @@ export class CandidatesSchedulingV2 {
       let is_option_verified = true;
       for (const curr_round_sess of session_rounds) {
         const cand_date = userTzDayjs(curr_round_sess[0].start_time)
-          .tz(this.api_payload.candidate_tz)
+          .tz(this.db_details.req_user_tz)
           .startOf('day');
         const { verifyCurrDaySlot } = this.calcMeetingCombinsForPlan(
           cand_date,
@@ -259,7 +167,7 @@ export class CandidatesSchedulingV2 {
       const current_round_combs: DateRangePlansType['interview_rounds'] = [];
       for (let curr_date_slots of cand_selected_slots[curr_round_idx].dates) {
         const cand_date = userTzDayjs(curr_date_slots.curr_day).tz(
-          this.api_payload.candidate_tz,
+          this.db_details.req_user_tz,
         );
 
         const curr_day_slots = this.findFixedBreakSessionCombs(
@@ -289,7 +197,7 @@ export class CandidatesSchedulingV2 {
     return all_combs;
   };
 
-  public async ignoreTrainee() {
+  public ignoreTrainee() {
     this.db_details.ses_with_ints = this.db_details.ses_with_ints.map((s) => ({
       ...s,
       trainingIntervs: [],
@@ -298,7 +206,7 @@ export class CandidatesSchedulingV2 {
       (i) => i.interviewer_type !== 'training',
     );
   }
-  public async ignoreInterviewer(inter_id: string) {
+  public ignoreInterviewer(inter_id: string) {
     this.db_details.ses_with_ints = this.db_details.ses_with_ints.map((s) => ({
       ...s,
       trainingIntervs: [],
@@ -402,7 +310,10 @@ export class CandidatesSchedulingV2 {
       let combs: PlanCombinationRespType[] = [];
       while (
         combs.length === 0 &&
-        curr_date.isSameOrBefore(this.schedule_dates.user_end_date_js, 'day')
+        curr_date.isSameOrBefore(
+          this.api_details.schedule_dates.user_end_date_js,
+          'day',
+        )
       ) {
         combs = this.findFixedBreakSessionCombs(
           ints_combs_for_each_round[curr_round_idx],
@@ -436,15 +347,15 @@ export class CandidatesSchedulingV2 {
     };
 
     const findCurrentDayPlan = () => {
-      let current_day = this.schedule_dates.user_start_date_js;
+      let current_day = this.api_details.schedule_dates.user_start_date_js;
       const plan_combs = findMultiDaySlotsUtil([], current_day, 0);
 
       return plan_combs;
     };
 
     const findAllDayPlans = () => {
-      let dayjs_start_date = this.schedule_dates.user_start_date_js;
-      let dayjs_end_date = this.schedule_dates.user_end_date_js;
+      let dayjs_start_date = this.api_details.schedule_dates.user_start_date_js;
+      let dayjs_end_date = this.api_details.schedule_dates.user_end_date_js;
 
       let curr_date = dayjs_start_date;
       let all_combs: SessionsCombType[][][] = [];
@@ -459,8 +370,8 @@ export class CandidatesSchedulingV2 {
       return all_combs;
     };
     const findAvailabilitySlots = () => {
-      let dayjs_start_date = this.schedule_dates.user_start_date_js;
-      let dayjs_end_date = this.schedule_dates.user_end_date_js;
+      let dayjs_start_date = this.api_details.schedule_dates.user_start_date_js;
+      let dayjs_end_date = this.api_details.schedule_dates.user_end_date_js;
 
       let curr_date = dayjs_start_date;
       const all_combs: DateRangePlansType[] = [];
@@ -481,7 +392,7 @@ export class CandidatesSchedulingV2 {
   };
 
   private getTimeInCandTimeZone = (time: string | Dayjs) => {
-    return userTzDayjs(time).tz(this.api_payload.candidate_tz);
+    return userTzDayjs(time).tz(this.db_details.req_user_tz);
   };
   private getTimeIntTimeZone = (
     time_str: string,
@@ -668,10 +579,10 @@ export class CandidatesSchedulingV2 {
                   {
                     startTime: last_paused_date
                       .startOf('day')
-                      .tz(this.api_payload.candidate_tz),
+                      .tz(this.db_details.req_user_tz),
                     endTime: last_paused_date
                       .endOf('day')
-                      .tz(this.api_payload.candidate_tz),
+                      .tz(this.db_details.req_user_tz),
                   },
                   {
                     startTime:
@@ -826,10 +737,10 @@ export class CandidatesSchedulingV2 {
             {
               startTime: last_paused_date
                 .startOf('day')
-                .tz(this.api_payload.candidate_tz),
+                .tz(this.db_details.req_user_tz),
               endTime: last_paused_date
                 .endOf('day')
-                .tz(this.api_payload.candidate_tz),
+                .tz(this.db_details.req_user_tz),
             },
             {
               startTime: this.getTimeInCandTimeZone(upd_sess_slot.start_time),
@@ -852,13 +763,13 @@ export class CandidatesSchedulingV2 {
         let is_slot_day_off = false;
         attendee_details.day_off[curr_day_str].forEach((t) => {
           is_slot_day_off = isTimeChunksOverLapps(
-            convertTimeDurStrToDayjsChunk(t, this.api_payload.candidate_tz),
+            convertTimeDurStrToDayjsChunk(t, this.db_details.req_user_tz),
             {
               startTime: userTzDayjs(upd_sess_slot.start_time).tz(
-                this.api_payload.candidate_tz,
+                this.db_details.req_user_tz,
               ),
               endTime: userTzDayjs(upd_sess_slot.end_time).tz(
-                this.api_payload.candidate_tz,
+                this.db_details.req_user_tz,
               ),
             },
           );
@@ -884,13 +795,13 @@ export class CandidatesSchedulingV2 {
         let is_slot_holiday = false;
         attendee_details.holiday[curr_day_str].forEach((t) => {
           let flag = isTimeChunksOverLapps(
-            convertTimeDurStrToDayjsChunk(t, this.api_payload.candidate_tz),
+            convertTimeDurStrToDayjsChunk(t, this.db_details.req_user_tz),
             {
               startTime: userTzDayjs(upd_sess_slot.start_time).tz(
-                this.api_payload.candidate_tz,
+                this.db_details.req_user_tz,
               ),
               endTime: userTzDayjs(upd_sess_slot.end_time).tz(
-                this.api_payload.candidate_tz,
+                this.db_details.req_user_tz,
               ),
             },
           );
@@ -916,13 +827,13 @@ export class CandidatesSchedulingV2 {
           curr_day_str
         ].some((t) => {
           return isTimeChunksEnclosed(
-            convertTimeDurStrToDayjsChunk(t, this.api_payload.candidate_tz),
+            convertTimeDurStrToDayjsChunk(t, this.db_details.req_user_tz),
             {
               startTime: userTzDayjs(upd_sess_slot.start_time).tz(
-                this.api_payload.candidate_tz,
+                this.db_details.req_user_tz,
               ),
               endTime: userTzDayjs(upd_sess_slot.end_time).tz(
-                this.api_payload.candidate_tz,
+                this.db_details.req_user_tz,
               ),
             },
           );
@@ -1007,13 +918,11 @@ export class CandidatesSchedulingV2 {
       }
 
       const curr_time = ScheduleUtils.getNearestCurrTime(
-        this.api_payload.candidate_tz,
+        this.db_details.req_user_tz,
       );
       if (
         curr_time.isSameOrAfter(
-          userTzDayjs(upd_sess_slot.start_time).tz(
-            this.api_payload.candidate_tz,
-          ),
+          userTzDayjs(upd_sess_slot.start_time).tz(this.db_details.req_user_tz),
           'day',
         )
       ) {
@@ -1148,7 +1057,7 @@ export class CandidatesSchedulingV2 {
       const schedule_combs: PlanCombinationRespType[] = [];
 
       const curr_time = ScheduleUtils.getNearestCurrTime(
-        this.api_payload.candidate_tz,
+        this.db_details.req_user_tz,
       );
       const cand_start_time = curr_day_js.set(
         'hours',
@@ -1193,7 +1102,7 @@ export class CandidatesSchedulingV2 {
 
     const verifyCurrDaySlot = (slot: SessionCombinationRespType[]) => {
       const slot_start_time = userTzDayjs(slot[0].start_time).tz(
-        this.api_payload.candidate_tz,
+        this.db_details.req_user_tz,
       );
       const slot_comb_conflicts = getSessionsAvailability(
         0,

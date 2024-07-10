@@ -3,42 +3,19 @@ import {
   CalConflictType,
   CompServiceKeyCred,
   InterDetailsType,
-  schedulingSettingType,
-  SessionInterviewerType,
 } from '@aglint/shared-types';
-
-import { getFullName } from '@/src/utils/jsonResume';
+import { getFullName } from '@aglint/shared-utils';
 
 import { GoogleCalender } from '../../GoogleCalender/google-calender';
+import { ScheduleApiDetails } from '../types';
 import { userTzDayjs } from './userTzDayjs';
 
 export const fetchIntsCalEventsDetails = async (
-  session_inters: SessionInterviewerType[],
-  company_cred: CompServiceKeyCred,
-  comp_schedule_setting: schedulingSettingType,
-  start_date: string,
-  end_date: string,
-  cand_tz: string,
+  db_details: ScheduleApiDetails,
 ) => {
-  const ints_meta: InterDetailsType[] = session_inters.map((i) => ({
-    full_name: getFullName(i.first_name, i.last_name),
-    email: i.email,
-    interviewer_id: i.user_id,
-    name: getFullName(i.first_name, i.last_name),
-    profile_img: i.profile_image,
-    all_events: [],
-    tokens: i.schedule_auth as any,
-    cal_date_events: {},
-    freeTimes: {},
-    int_schedule_setting: i.scheduling_settings,
-    isCalenderConnected: false,
-    work_hours: {},
-    day_off: {},
-    holiday: {},
-  }));
-
   const getCalEventType = (cal_event_summary: string): CalConflictType => {
-    const scheduling_keywords = comp_schedule_setting.schedulingKeyWords;
+    const scheduling_keywords =
+      db_details.comp_schedule_setting.schedulingKeyWords;
     const is_soft_conflict = scheduling_keywords.SoftConflicts.some(
       (key_word) =>
         cal_event_summary.toLowerCase().includes(key_word.toLowerCase()),
@@ -61,13 +38,79 @@ export const fetchIntsCalEventsDetails = async (
 
     return 'cal_event';
   };
-  const promisedInts = ints_meta.map(async (int) => {
-    let newInt: InterDetailsType = {
-      ...int,
-      cal_date_events: {},
-      freeTimes: {},
+
+  const ints_events_map = await fetchIntsCalEvents({
+    inter_details: db_details.all_inters.map((i) => ({
+      all_events: [],
+      email: i.email,
+      interviewer_id: i.user_id,
       isCalenderConnected: false,
-    };
+      tokens: i.schedule_auth,
+    })),
+    company_cred: db_details.company_cred,
+    start_time: db_details.schedule_dates.user_end_date_js.format(),
+    end_time: db_details.schedule_dates.user_end_date_js.format(),
+  });
+
+  const ints_cal_details: InterDetailsType[] = db_details.all_inters.map(
+    (i) => {
+      let inter_details: InterDetailsType = {
+        all_events: [...ints_events_map[i.user_id].all_events],
+        email: i.email,
+        full_name: getFullName(i.first_name, i.last_name),
+        int_schedule_setting: i.scheduling_settings,
+        interviewer_id: i.user_id,
+        isCalenderConnected: ints_events_map[i.user_id].isCalenderConnected,
+        tokens: i.schedule_auth,
+        work_hours: {},
+        cal_date_events: {},
+        freeTimes: {},
+        day_off: {},
+        holiday: {},
+      };
+      const cal_event_map: InterDetailsType['cal_date_events'] = {};
+      ints_events_map[i.user_id].all_events.forEach((cal_event) => {
+        const cal_event_date = userTzDayjs(cal_event.start.dateTime)
+          .tz(db_details.req_user_tz)
+          .startOf('day')
+          .format();
+        if (!cal_event_map[cal_event_date]) {
+          cal_event_map[cal_event_date] = [];
+        }
+        cal_event_map[cal_event_date].push({
+          id: cal_event.id,
+          summary: cal_event.summary,
+          attendees: cal_event.attendees ?? [],
+          organizer: cal_event.organizer,
+          end: {
+            ...cal_event.end,
+          },
+          start: {
+            ...cal_event.start,
+          },
+          cal_type: getCalEventType(cal_event.summary),
+        });
+      });
+      inter_details.cal_date_events = { ...cal_event_map };
+      return inter_details;
+    },
+  );
+
+  return ints_cal_details;
+};
+
+type FetchCalEventsParams = {
+  inter_details: Pick<
+    InterDetailsType,
+    'email' | 'tokens' | 'interviewer_id' | 'isCalenderConnected' | 'all_events'
+  >[];
+  company_cred: CompServiceKeyCred;
+  start_time: string;
+  end_time: string;
+};
+const fetchIntsCalEvents = async (params: FetchCalEventsParams) => {
+  const promisedInts = params.inter_details.map(async (int) => {
+    const updated_int_details = { ...int };
     try {
       const google_cal = new GoogleCalender(
         {
@@ -76,65 +119,41 @@ export const fetchIntsCalEventsDetails = async (
             schedule_auth: int.tokens,
             user_id: int.interviewer_id,
           },
-          company_cred: company_cred,
+          company_cred: params.company_cred,
         },
         null,
       );
       await google_cal.authorizeUser();
       const fetched_events = await google_cal.getAllCalenderEvents(
-        start_date,
-        end_date,
+        params.start_time,
+        params.end_time,
       );
-      newInt.all_events = fetched_events;
-      newInt.isCalenderConnected = true;
+      updated_int_details.all_events = fetched_events;
+      updated_int_details.isCalenderConnected = true;
     } catch (error) {
-      newInt.isCalenderConnected = false;
+      updated_int_details.isCalenderConnected = false;
     }
 
-    return newInt;
+    return updated_int_details;
   });
 
-  const ints_events = await Promise.all(promisedInts);
-
-  const ints_cal_details: InterDetailsType[] = ints_events.map((i) => {
-    const cal_event_map: InterDetailsType['cal_date_events'] = {};
-    i.all_events.forEach((cal_event) => {
-      const cal_event_date = userTzDayjs(cal_event.start.dateTime)
-        .tz(cand_tz)
-        .startOf('day')
-        .format();
-      if (!cal_event_map[cal_event_date]) {
-        cal_event_map[cal_event_date] = [];
-      }
-      cal_event_map[cal_event_date].push({
-        id: cal_event.id,
-        summary: cal_event.summary,
-        attendees: cal_event.attendees ?? [],
-        organizer: cal_event.organizer,
-        end: {
-          ...cal_event.end,
-        },
-        start: {
-          ...cal_event.start,
-        },
-        cal_type: getCalEventType(cal_event.summary),
-      });
-    });
-    return {
-      all_events: i.all_events,
-      cal_date_events: cal_event_map,
-      email: i.email,
-      freeTimes: i.freeTimes,
-      int_schedule_setting: i.int_schedule_setting,
-      interviewer_id: i.interviewer_id,
-      isCalenderConnected: i.isCalenderConnected,
-      tokens: i.tokens,
-      work_hours: i.work_hours,
-      day_off: {},
-      holiday: {},
-      full_name: i.full_name,
+  const ints_events: FetchCalEventsParams['inter_details'] =
+    await Promise.all(promisedInts);
+  const ints_events_map: Record<
+    string,
+    Pick<
+      InterDetailsType,
+      | 'email'
+      | 'tokens'
+      | 'interviewer_id'
+      | 'isCalenderConnected'
+      | 'all_events'
+    >
+  > = {};
+  ints_events.forEach((i) => {
+    ints_events_map[i.interviewer_id] = {
+      ...i,
     };
   });
-
-  return ints_cal_details;
+  return ints_events_map;
 };
