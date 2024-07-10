@@ -6,7 +6,7 @@ export const candidates = [
 
 export const jobDetails = ['companyName', 'jobRole'] as const;
 
-export const company = ['companyName'];
+export const company = ['companyName'] as const;
 
 export const organizer = [
   'organizerName',

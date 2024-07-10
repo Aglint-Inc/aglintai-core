@@ -2,11 +2,8 @@ import { NextResponse } from 'next/server';
 import { createElement } from 'react';
 import { render } from '@react-email/render';
 import { z } from 'zod';
-import type { allTempvariables } from '@aglint/shared-utils/src/template-variables/variables';
-import {
-  ClientError,
-  MailArgValidationError,
-} from '../../../utils/apiUtils/customErrors';
+import { replaceAll, type allTempvariables } from '@aglint/shared-utils';
+import { ClientError } from '../../../utils/apiUtils/customErrors';
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 
 interface ReqPayload {
@@ -19,28 +16,23 @@ const ReqPayload = z.object({
   body: z.string(),
 });
 
-const replacePlaceholders = (template, values) => {
-  return Object.keys(values).reduce((acc, key) => {
-    return acc.replace(new RegExp(key, 'g'), values[key]);
-  }, template);
-};
-
-const value: { [K in (typeof allTempvariables)[number]]: string } = {
-  '{{candidateFirstName}}': 'Naresh',
-  '{{candidateLastName}}': 'Kumar',
-  '{{candidateName}}': 'Naresh Kumar',
-  '{{organizerName}}': 'Manoj Kumar',
-  '{{organizerFirstName}}': 'Manoj',
-  '{{organizerLastName}}': 'Kumar',
-  '{{OrganizerTimeZone}}': 'IST',
-  '{{interviewerName}}': 'Oygen Thoga',
-  '{{interviewerFirstName}}': 'Oygen',
-  '{{interviewerLastName}}': 'Thoga',
-  '{{companyName}}': 'Aglint',
-  '{{jobRole}}': 'Database Manager',
-  '{{startDate}}': 'Fri, May 12 ',
-  '{{endDate}}': 'Fri, May 16 2024',
-  'time': '10:00 AM',
+const all_possible_dynamic_values: {
+  [K in (typeof allTempvariables)[number]]: string;
+} = {
+  candidateFirstName: '',
+  candidateLastName: '',
+  candidateName: '',
+  companyName: '',
+  jobRole: '',
+  organizerName: '',
+  organizerFirstName: '',
+  organizerLastName: '',
+  OrganizerTimeZone: '',
+  interviewerName: '',
+  interviewerFirstName: '',
+  interviewerLastName: '',
+  startDate: '',
+  endDate: '',
 };
 
 export async function POST(req: Request) {
@@ -51,7 +43,8 @@ export async function POST(req: Request) {
       throw new ClientError('attribute application_id missing', 400);
     }
     const { emails } = await getEmails();
-    const filledBody = replacePlaceholders(body, value);
+    const filledBody = replacePlaceholders(body);
+
     const emailBody = filledBody.replace(/\{\{/g, '').replace(/\}\}/g, '');
 
     const emailIdx = emails.findIndex((e) => e === mail_type);
@@ -62,36 +55,14 @@ export async function POST(req: Request) {
     });
   } catch (e: any) {
     console.error(e);
-    if (e instanceof ClientError) {
-      return NextResponse.json(
-        {
-          error: `${e.name} : ${e.message}`,
-        },
-        {
-          status: e.status,
-        },
-      );
-    }
-    if (e instanceof MailArgValidationError) {
-      return NextResponse.json(
-        {
-          error: `${e.name}: mail_type:application received,  ${e.message}`,
-        },
-        {
-          status: 400,
-        },
-      );
-    }
-    if (e) {
-      return NextResponse.json(
-        {
-          error: `${e.name}: mail_type:application received,  ${e.message}`,
-        },
-        {
-          status: 500,
-        },
-      );
-    }
+    return NextResponse.json(
+      {
+        error: `${e.name} : ${e.message}`,
+      },
+      {
+        status: e.status,
+      },
+    );
   }
 }
 
@@ -106,4 +77,16 @@ export const renderEmailTemplates = async (
   const element = createElement(Template, dummy);
   const html = render(element);
   return { html };
+};
+
+const replacePlaceholders = (template_body: string) => {
+  let updated_temp_body = template_body;
+  for (const key of Object.keys(all_possible_dynamic_values)) {
+    updated_temp_body = replaceAll(
+      template_body,
+      `{{${key}}}`,
+      all_possible_dynamic_values[String(key)],
+    );
+  }
+  return updated_temp_body;
 };
