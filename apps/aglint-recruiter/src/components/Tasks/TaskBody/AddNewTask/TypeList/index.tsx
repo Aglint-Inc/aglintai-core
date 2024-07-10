@@ -46,7 +46,7 @@ function TypeList({
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right',
+          horizontal: 'left',
         }}
         transformOrigin={{
           vertical: 'top',
@@ -55,16 +55,20 @@ function TypeList({
         sx={{
           '& .MuiPopover-paper': {
             border: 'none',
+            height: '200px',
+            width: '300px',
           },
         }}
       >
-        <ListPop
-          slotListCard={typeArray.map((ele, i) => {
+        <Stack bgcolor={'#fff'} p={0.5} overflow={'scroll'} height={'100%'}>
+          {typeArray.map((ele, i) => {
             return (
               <Stack
                 key={i}
                 width={'100%'}
-                p={'var(--space-1)'}
+                px={1}
+                py={0.5}
+                borderRadius={`6px`}
                 sx={{
                   cursor: 'pointer',
                   '&:hover': {
@@ -80,7 +84,7 @@ function TypeList({
               </Stack>
             );
           })}
-        />
+        </Stack>
       </Popover>
     </>
   );

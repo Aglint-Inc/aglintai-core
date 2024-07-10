@@ -36,4 +36,5 @@ declare function ViewTaskCard(props: {
   slotPriorityPill?: Types.Devlink.Slot;
   onClickPriority?: Types.Devlink.RuntimeProps;
   isPriorityVisible?: Types.Visibility.VisibilityConditions;
+  slotTaskInfoIndividual?: Types.Devlink.Slot;
 }): React.JSX.Element;

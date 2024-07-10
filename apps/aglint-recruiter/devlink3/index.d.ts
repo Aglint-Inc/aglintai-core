@@ -222,6 +222,7 @@ export * from "./SuggetionCard";
 export * from "./SuggetionPill";
 export * from "./TaskDate";
 export * from "./TaskEmpty";
+export * from "./TaskInfoIndividual";
 export * from "./TaskNotRespond";
 export * from "./TaskProgress";
 export * from "./TaskStatus";
