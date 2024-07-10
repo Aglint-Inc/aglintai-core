@@ -1,5 +1,4 @@
 import { Collapse } from '@mui/material';
-import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -12,7 +11,7 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { SessionIcon } from '@/src/components/Scheduling/Common/ScheduleProgress/scheduleProgressPill';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
-import { numberToOrdinalText } from '@/src/utils/numberToText/numberToOrdinalText';
+import { numberToOrdinalText } from '@/src/utils/number/numberToOrdinalText';
 import ROUTES from '@/src/utils/routing/routes';
 
 import { useProgressModuleUsers } from '../../../queries/hooks';
@@ -24,6 +23,7 @@ import {
   setSelUser,
 } from '../../../store';
 import { MemberType, ModuleType } from '../../../types';
+import { getPauseMemberText } from '../utils';
 
 function IndividualCard({
   editModule,
@@ -209,13 +209,7 @@ function IndividualCard({
         }}
         key={user.user_id}
         isMoveToQualifierVisible={isMoveToQualifierVisible}
-        textPauseResumeDate={
-          !user.pause_json?.isManual
-            ? user.pause_json?.end_date
-              ? `Until ${dayjs(user.pause_json.end_date).format('DD MMMM YYYY')}`
-              : '--'
-            : 'Indefinately'
-        }
+        textPauseResumeDate={getPauseMemberText(user.pause_json)}
         onClickRemoveModule={{
           onClick: () => {
             setSelUser(user);

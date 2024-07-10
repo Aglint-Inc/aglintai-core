@@ -5,7 +5,7 @@ import { ShadowSession } from '@/devlink2/ShadowSession';
 import { StatusBadge } from '@/devlink2/StatusBadge';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
-import { numberToOrdinalText } from '@/src/utils/numberToText/numberToOrdinalText';
+import { numberToOrdinalText } from '@/src/utils/number/numberToOrdinalText';
 
 import { setIsProgressDialaogOpen, useModulesStore } from '../../store';
 import { ModuleType } from '../../types';

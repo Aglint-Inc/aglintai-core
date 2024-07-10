@@ -1,0 +1,15 @@
+.schedule_empty_reason {
+  display: flex;
+  overflow: hidden;
+  padding: var(--space-3);
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
+
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-3);
+}
+
+#w-node-_1d3a1dd1-92de-9b26-298e-c17144a98a0a-44a98a0a {
+}

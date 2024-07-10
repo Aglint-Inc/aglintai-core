@@ -93,6 +93,8 @@ const Content = () => {
           fullname: meta.name,
           currentJobTitle: meta.current_job_title,
         }}
+        gridStyle={'1fr 1.7fr 0fr'}
+        jobTitle=''
         interview_meeting={
           session.meeting_id && {
             id: session.meeting_id,
