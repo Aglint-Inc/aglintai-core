@@ -40,33 +40,16 @@ const getRecruiterCredentials = async ({ email }) => {
     await supabaseAdmin.from('recruiter_user').select().eq('email', email),
   );
   const user_id = rec_user.user_id;
-  const promises = [
-    (async () => {
-      const [rec] = supabaseWrap(
-        await supabaseAdmin
-          .from('recruiter_relation')
-          .select('recruiter(*)')
-          .eq('user_id', user_id),
-      );
-      if (!rec.recruiter.service_json) return null;
-      return JSON.parse(decrypt_string(rec.recruiter.service_json));
-    })(),
-    (async () => {
-      const [rec] = supabaseWrap(
-        await supabaseAdmin
-          .from('recruiter_user')
-          .select('schedule_auth')
-          .eq('user_id', user_id),
-      );
+  const [rec] = supabaseWrap(
+    await supabaseAdmin
+      .from('recruiter_relation')
+      .select('recruiter(service_json),recruiter_user(schedule_auth)')
+      .eq('user_id', user_id),
+  );
 
-      return rec.schedule_auth;
-    })(),
-  ];
-
-  const [comp_cred, user_schedule_auth] = await Promise.all(promises);
   const r: CalEventAttendeesAuthDetails = {
     email,
-    schedule_auth: user_schedule_auth,
+    schedule_auth: user_schedule_auth as any,
     user_id,
   };
   return { comp_cred, recruiter: r };
