@@ -30,13 +30,7 @@ type FilterValues = {
   bookmarked: boolean;
   search: Application['name'];
   badges: (keyof Application['badges'])[];
-  resume_score: (
-    | 'Top match'
-    | 'Good match'
-    | 'Average match'
-    | 'Poor match'
-    | 'Not a match'
-  )[];
+  resume_score: Application['application_match'][];
 };
 
 // eslint-disable-next-line no-unused-vars

@@ -9,6 +9,7 @@ import {
 } from '@/src/components/Common/FilterHeader/utils';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import type { ApplicationsParams } from '@/src/context/ApplicationsContext/hooks';
+import { capitalize } from '@/src/utils/text/textUtils';
 
 const Filters = () => {
   const {
@@ -148,16 +149,16 @@ function badgeLabel(key: (typeof badgesTypes)[number]) {
 }
 
 const resumeScoreTypes: ApplicationsParams['filters']['resume_score'] = [
-  'Top match',
-  'Good match',
-  'Average match',
-  'Poor match',
-  'Not a match',
+  'top_match',
+  'good_match',
+  'average_match',
+  'poor_match',
+  'not_a_match',
 ];
 
 const resume_score = resumeScoreTypes.map((id) => ({
   id,
-  label: id,
+  label: capitalize(id),
 }));
 
 const sortTypes: ApplicationsParams['sort']['type'][] = [

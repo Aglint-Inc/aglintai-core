@@ -126,12 +126,7 @@ const getApplications = async ({
 
   if (filters?.resume_score?.length) {
     query.or(
-      filters.resume_score
-        .map((score) => {
-          const { max, min } = resumeScoreRange(score);
-          return `and(resume_score.gte.${min},resume_score.lte.${max})`;
-        })
-        .join(','),
+      `application_match.in.(${filters.resume_score.map((match) => match).join(',')})`,
     );
   }
 
@@ -202,23 +197,6 @@ const getApplications = async ({
     (application, i) => ({ ...application, index: index + i }),
   );
   return applications;
-};
-
-const resumeScoreRange = (
-  match: ApplicationsParams['filters']['resume_score'][number],
-) => {
-  switch (match) {
-    case 'Top match':
-      return { max: 100, min: 80 };
-    case 'Good match':
-      return { max: 79, min: 60 };
-    case 'Average match':
-      return { max: 59, min: 40 };
-    case 'Poor match':
-      return { max: 39, min: 20 };
-    case 'Not a match':
-      return { max: 19, min: 0 };
-  }
 };
 
 export const BADGE_CONSTANTS: {
