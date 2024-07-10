@@ -150,7 +150,7 @@ const mapInt = (i: SessionInterviewerType) => {
   return int;
 };
 
-const fetchAndVerifyDb = async (
+export const fetchAndVerifyDb = async (
   params: ScheduleDBDetailsParams,
   meeting_details_dates: ScheduleApiDetails['schedule_dates'],
 ) => {

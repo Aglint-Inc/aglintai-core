@@ -3,7 +3,7 @@ const config: Config = {
   moduleFileExtensions: ['js', 'json', 'ts'],
   rootDir: '.',
   testEnvironment: 'node',
-  testRegex: '.*\\.test\\.ts$',
+  testRegex: '.*\\.spec\\.ts$',
   transformIgnorePatterns: ['node_modules/(?!(nanoid)/)'],
   transform: {
     '^.+\\.(js|jsx|ts|tsx|mjs)$': [
@@ -14,7 +14,7 @@ const config: Config = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
   },
-  setupFiles: ['<rootDir>/src/test/setEnvVars.ts'],
+  setupFiles: ['<rootDir>/src/__test__/setEnvVars.ts'],
 };
 
 module.exports = config;
