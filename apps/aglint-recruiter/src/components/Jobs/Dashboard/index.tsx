@@ -100,9 +100,6 @@ const DashboardComp = () => {
     });
   };
 
-  const handlerResetFilter = () => {
-    setFilterValues(initalFilterValue);
-  };
   const handleTextClear = () => {
     setSearchText('');
     startTransition(() => {
@@ -142,7 +139,6 @@ const DashboardComp = () => {
               <JobsDashboard
                 slotFilters={
                   <FilterJobDashboard
-                    handlerResetFilter={handlerResetFilter}
                     filterOptions={filterOptions}
                     filterValues={filterValues}
                     setFilterValues={setFilterValues}
