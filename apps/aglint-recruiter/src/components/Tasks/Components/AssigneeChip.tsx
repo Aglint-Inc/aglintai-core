@@ -25,7 +25,6 @@ function AssigneeChip({
   assigneeId,
   disableHoverListener = false,
   isOnlyName = false,
-  
 }: {
   assigneeId: string;
   disableHoverListener?: boolean;
@@ -56,11 +55,17 @@ function AssigneeChip({
           isCandidateIconVisible={false}
           slotAvatar={
             <Box
-            sx={{
+              sx={{
                 display: 'flex',
-                alignItems: 'center'
-            }}>
-              <GlobalIcon iconName='computer' size={6} weight={'regular'} color='neutral-8'/>
+                alignItems: 'center',
+              }}
+            >
+              <GlobalIcon
+                iconName='computer'
+                size={6}
+                weight={'regular'}
+                color='neutral-8'
+              />
             </Box>
           }
           textName={'System'}
@@ -73,6 +78,11 @@ function AssigneeChip({
           TransitionComponent={Zoom}
           title={<AssigneeDetailsCard assigneeDetails={assigneeDetails} />}
           arrow={true}
+          sx={{
+            '& .MuiTooltip-tooltip': {
+              padding: '0px',
+            },
+          }}
         >
           <Stack sx={{ cursor: 'pointer' }}>
             <ListCard

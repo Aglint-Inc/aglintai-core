@@ -1,5 +1,4 @@
-import { InterviewSession } from '@aglint/shared-types';
-import { MenuItem, Stack, TextField, Typography } from '@mui/material';
+import { MenuItem, TextField } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect } from 'react';
 
@@ -7,21 +6,19 @@ import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
 import { SidedrawerBodyDebrief } from '@/devlink2/SidedrawerBodyDebrief';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
-import { DropDown } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
+import { DropDown, ScheduleTypeField } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
-import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
-import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
 import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { getFullName } from '@/src/utils/jsonResume';
+import { sessionDurations } from '@/src/utils/scheduling/const';
 
 import {
-  setEditSession,
   setMembers,
   useSchedulingApplicationStore,
 } from '../../../store';
-import { Interviewer, schedule_type } from '..';
+import { setEditSession, useEditSessionDrawerStore } from '../store';
+import { Interviewer } from '../types';
 
 function DebriedForm({
   debriefMembers,
@@ -33,7 +30,7 @@ function DebriedForm({
   setDebriefMembers: React.Dispatch<React.SetStateAction<Interviewer[]>>;
 }) {
   const { recruiter } = useAuthDetails();
-  const editSession = useSchedulingApplicationStore(
+  const editSession = useEditSessionDrawerStore(
     (state) => state.editSession,
   );
   const members = useSchedulingApplicationStore((state) => state.members);
@@ -103,7 +100,7 @@ function DebriedForm({
             select
             value={editSession.interview_session.session_duration}
           >
-            {[30, 45, 60, 120]?.map((ses) => (
+            {sessionDurations?.map((ses) => (
               <MenuItem
                 value={ses}
                 key={ses}
@@ -151,31 +148,17 @@ function DebriedForm({
           </>
         }
         slotScheduleTypeDropdown={
-          <TextField
-            fullWidth
-            select
+          <ScheduleTypeField
             value={editSession.interview_session.schedule_type}
-            onChange={(e) => {
+            handleTypeChange={(value) => {
               setEditSession({
                 interview_session: {
                   ...editSession.interview_session,
-                  schedule_type: e.target
-                    .value as InterviewSession['schedule_type'],
+                  schedule_type: value,
                 },
               });
             }}
-          >
-            {schedule_type.map((type) => (
-              <MenuItem value={type} key={type}>
-                <Stack direction={'row'} spacing={2}>
-                  <IconScheduleType type={type} size={5} />
-                  <Typography variant='body1' color={palette.grey[800]}>
-                    {getScheduleType(type)}
-                  </Typography>
-                </Stack>
-              </MenuItem>
-            ))}
-          </TextField>
+          />
         }
         slotMembersDropdown={
           filterDebriefMembers.length > 0 && (

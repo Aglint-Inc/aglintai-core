@@ -17,6 +17,7 @@ import EmailPreviewPopover from '@/src/components/Common/EmailTemplateEditor/Ema
 import EmailTemplateEditForm from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
 import Loader from '@/src/components/Common/Loader';
 import { SyncStatus } from '@/src/components/NewScreening/PhoneScreenTemplate';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJob } from '@/src/context/JobContext';
 import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
 import { supabase } from '@/src/utils/supabase/client';
@@ -81,6 +82,8 @@ const JobEmailTemplatesDashboardBreadCrumbs = () => {
 };
 
 const JobEmailTemplates = ({ setSaving }) => {
+  const { job } = useJob();
+  const { recruiter_id } = useAuthDetails();
   const {
     editTemp,
     isloadTiptap,
@@ -98,7 +101,8 @@ const JobEmailTemplates = ({ setSaving }) => {
     try {
       const { data } = await axios.post(`/api/emails/preview`, {
         mail_type: editTemp.type,
-        body: editTemp.body,
+        job_id: job?.id,
+        recruiter_id: recruiter_id,
       });
       setHtml(data);
       setPopOverLoading(false);

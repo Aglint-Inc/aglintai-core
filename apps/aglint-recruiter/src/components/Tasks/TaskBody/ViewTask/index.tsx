@@ -76,7 +76,8 @@ function ViewTaskDrawer() {
           name: recruiterUser.first_name as string,
           id: recruiterUser.user_id as string,
         },
-        progress_type: selectedTask.latest_progress.progress_type,
+        progress_type:
+          selectedTask.latest_progress?.progress_type || 'standard',
       },
       optionData: {
         currentStatus: currentStatus,
@@ -98,7 +99,8 @@ function ViewTaskDrawer() {
             name: recruiterUser.first_name as string,
             id: recruiterUser.user_id as string,
           },
-          progress_type: selectedTask.latest_progress.progress_type,
+          progress_type:
+            selectedTask.latest_progress?.progress_type || 'standard',
         },
         optionData: {
           currentStatus: status,
@@ -234,7 +236,9 @@ function ViewTaskDrawer() {
                   indicator={getIndicator({
                     task: selectedTask,
                     created_at: selectedTask?.latest_progress?.created_at,
-                    progress_type: selectedTask?.latest_progress?.progress_type,
+                    progress_type:
+                      selectedTask?.latest_progress?.progress_type ||
+                      'standard',
                   })}
                 />
               )

@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { RolesRowSkeleton } from "./RolesRowSkeleton";
 import { RolesRow } from "./RolesRow";
 import * as _utils from "./utils";
 import _styles from "./RolesAndPermissions.module.css";
@@ -85,7 +86,7 @@ export function RolesAndPermissions({
         >
           {slotRolesRow ?? (
             <>
-              <RolesRow />
+              <RolesRowSkeleton />
               <RolesRow />
               <RolesRow />
               <RolesRow />

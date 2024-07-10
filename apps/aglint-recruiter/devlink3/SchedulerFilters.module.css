@@ -125,12 +125,13 @@
 
 .flex_ver_left_16 {
   display: flex;
+  margin-top: 4px;
   flex-direction: column;
   justify-content: flex-start;
   flex-wrap: nowrap;
   align-items: stretch;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 .header_wrapper {

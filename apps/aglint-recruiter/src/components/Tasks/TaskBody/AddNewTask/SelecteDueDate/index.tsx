@@ -59,7 +59,7 @@ function SelectDueDate({
         //   },
         // }}
       >
-        <Stack height={350}>
+        <Stack bgcolor={'#fff'} p={0.5} overflow={'scroll'} height={'100%'}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateCalendar
               disablePast

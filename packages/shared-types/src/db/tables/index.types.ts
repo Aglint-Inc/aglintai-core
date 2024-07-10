@@ -15,6 +15,7 @@ import { CustomPublicJobs } from "./public_jobs.types";
 import type { CustomRecruiter } from "./recruiter.types";
 import type { CustomRecruiterUser } from "./recruiter_user.types";
 import type { CustomWorkflowAction } from "./workflow_action.types";
+import { CustomPermissions } from "./permissions";
 
 type DatabaseTables = Database["public"]["Tables"];
 type DatabaseTableInsert<T extends keyof DatabaseTables> =
@@ -71,5 +72,6 @@ export type Tables = Type<
     public_jobs: CustomPublicJobs;
     interview_filter_json: CustomInterviewFilterJson;
     company_email_template: CustomCompanyEmailTemplate;
+    permissions: CustomPermissions;
   }
 >;

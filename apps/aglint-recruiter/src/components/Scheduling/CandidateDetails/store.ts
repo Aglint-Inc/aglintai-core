@@ -33,7 +33,6 @@ export interface SchedulingApplication {
   fetchingSchedule: boolean;
   isEditOpen: boolean;
   isEditBreakOpen: boolean;
-  editSession: SessionsType;
   availabilities: AvailabilitiesSchedulingApplication[];
   isIndividualCancelOpen: boolean;
   isMultipleCancelOpen: boolean;
@@ -73,7 +72,6 @@ const initialState: SchedulingApplication = {
   isEditOpen: false, // edit session drawer open state from interview plan
   isEditBreakOpen: false, // edit break drawer open state from interview plan
   isSendingToCandidate: false, // sending to candidate loader state for api call
-  editSession: null, // session details for editing
   selectedApplicationLog: null, // selected application log details while cancelling or rescheduling from activity panel
   rescheduleSessionIds: [], // reschedule session ids
 };
@@ -131,12 +129,7 @@ export const setSelectedSession = (
   selectedSession: SchedulingApplication['selectedSession'],
 ) => useSchedulingApplicationStore.setState({ selectedSession });
 
-export const setEditSession = (
-  editSession: Partial<SchedulingApplication['editSession']>,
-) =>
-  useSchedulingApplicationStore.setState((state) => ({
-    editSession: { ...state.editSession, ...editSession },
-  }));
+
 
 export const setSelectedSchedule = (
   selectedSchedule: InterviewScheduleTypeDB,

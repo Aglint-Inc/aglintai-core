@@ -16,4 +16,5 @@ declare function EditEmail(props: {
   onClickCloseTip?: Types.Devlink.RuntimeProps;
   isTipVisible?: Types.Visibility.VisibilityConditions;
   slotSaveButton?: Types.Devlink.Slot;
+  currentModule?: Types.Builtin.Text;
 }): React.JSX.Element;
