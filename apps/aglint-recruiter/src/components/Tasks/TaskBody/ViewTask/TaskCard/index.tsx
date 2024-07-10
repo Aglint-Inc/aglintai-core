@@ -132,9 +132,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             >
               <IconButton
                 onClick={() => {
-                  window.open(
-                    `/jobs/${task?.applications?.public_jobs.id}`,
-                  );
+                  window.open(`/jobs/${task?.applications?.public_jobs.id}`);
                 }}
               >
                 <GlobalIcon iconName={'open_in_new'} />
@@ -210,7 +208,8 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                       name: recruiterUser.first_name,
                       id: recruiterUser.user_id,
                     },
-                    progress_type: task.latest_progress?.progress_type,
+                    progress_type:
+                      task.latest_progress?.progress_type || 'standard',
                   },
                   optionData: {
                     currentSessions: task.session_ids as any,
@@ -260,7 +259,8 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                       name: recruiterUser.first_name,
                       id: recruiterUser.user_id,
                     },
-                    progress_type: task.latest_progress.progress_type,
+                    progress_type:
+                      task.latest_progress?.progress_type || 'standard',
                   },
                   optionData: {
                     scheduleDateRange: {
@@ -294,7 +294,8 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                       name: recruiterUser.first_name,
                       id: recruiterUser.user_id,
                     },
-                    progress_type: task.latest_progress.progress_type,
+                    progress_type:
+                      task.latest_progress?.progress_type || 'standard',
                   },
                   optionData: {
                     scheduleDateRange: {
@@ -334,7 +335,8 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                     name: recruiterUser.first_name as string,
                     id: recruiterUser.user_id as string,
                   },
-                  progress_type: task.latest_progress.progress_type,
+                  progress_type:
+                    task.latest_progress?.progress_type || 'standard',
                 },
                 optionData: {
                   dueDate: {
@@ -367,7 +369,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                         id: recruiterUser.user_id,
                       },
                       progress_type:
-                        task.latest_progress.progress_type || 'standard',
+                        task.latest_progress?.progress_type || 'standard',
                     },
                     optionData: {
                       assignerId: assigner.user_id,
@@ -417,7 +419,8 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                       name: recruiterUser.first_name,
                       id: recruiterUser.user_id,
                     },
-                    progress_type: task.latest_progress.progress_type,
+                    progress_type:
+                      task.latest_progress?.progress_type || 'standard',
                   },
                   optionData: {
                     triggerTime: { prev: task.start_date, current: e },
@@ -444,7 +447,8 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                       name: recruiterUser.first_name as string,
                       id: recruiterUser.user_id as string,
                     },
-                    progress_type: task.latest_progress.progress_type,
+                    progress_type:
+                      task.latest_progress?.progress_type || 'standard',
                   },
                   optionData: {
                     currentStatus: task.status,
@@ -482,7 +486,8 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                       name: recruiterUser.first_name as string,
                       id: recruiterUser.user_id as string,
                     },
-                    progress_type: task.latest_progress.progress_type,
+                    progress_type:
+                      task.latest_progress?.progress_type || 'standard',
                   },
                   optionData: {
                     currentPriority: task.priority,
