@@ -201,7 +201,7 @@ const Dashboard = () => {
             }
             onClickTopMatch={{
               style: { cursor: 'pointer' },
-              onClick: () => handleFilter('Top match'),
+              onClick: () => handleFilter('top_match'),
             }}
             textTopMatchPercentage={
               score_matches?.topMatch?.percentage ?? '---'
@@ -209,7 +209,7 @@ const Dashboard = () => {
             textTopMatchCount={score_matches?.topMatch?.count ?? '---'}
             onClickGoodMatch={{
               style: { cursor: 'pointer' },
-              onClick: () => handleFilter('Good match'),
+              onClick: () => handleFilter('good_match'),
             }}
             textGoodMatchPercentage={
               score_matches?.goodMatch?.percentage ?? '---'
@@ -217,7 +217,7 @@ const Dashboard = () => {
             textGoodMatchCount={score_matches?.goodMatch?.count ?? '---'}
             onClickAverageMatch={{
               style: { cursor: 'pointer' },
-              onClick: () => handleFilter('Average match'),
+              onClick: () => handleFilter('average_match'),
             }}
             textAverageMatchPercentage={
               score_matches?.averageMatch?.percentage ?? '---'
@@ -225,7 +225,7 @@ const Dashboard = () => {
             textAveageMatchCount={score_matches?.averageMatch?.count ?? '---'}
             onClickBelowAverage={{
               style: { cursor: 'pointer' },
-              onClick: () => handleFilter('Poor match'),
+              onClick: () => handleFilter('poor_match'),
             }}
             textBelowAveragePercentage={
               score_matches?.poorMatch?.percentage ?? '---'
@@ -233,7 +233,7 @@ const Dashboard = () => {
             textBelowAverageCount={score_matches?.poorMatch?.count ?? '---'}
             onClickNotaMatch={{
               style: { cursor: 'pointer' },
-              onClick: () => handleFilter('Not a match'),
+              onClick: () => handleFilter('not_a_match'),
             }}
             textNotAMatchPercentage={
               score_matches?.noMatch?.percentage ?? '---'

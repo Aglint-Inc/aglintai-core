@@ -5397,10 +5397,9 @@ export type Database = {
         | "top_match"
         | "good_match"
         | "average_match"
-        | "below_average_match"
+        | "poor_match"
         | "not_a_match"
         | "unknown_match"
-        | "poor_match"
       application_processing_status:
         | "not started"
         | "processing"
