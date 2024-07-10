@@ -3,20 +3,36 @@ import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 export async function fetchUtil({
   recruiter_id,
   mail_type,
+  job_id,
 }: {
   recruiter_id: string;
   mail_type: string;
+  job_id: string;
 }) {
   const [companyName] = supabaseWrap(
     await supabaseAdmin.from('recruiter').select('name').eq('id', recruiter_id),
   );
-  const [emailbody] = supabaseWrap(
-    await supabaseAdmin
-      .from('company_email_template')
-      .select('body')
-      .eq('recruiter_id', recruiter_id)
-      .eq('type', mail_type),
-  );
 
-  return { body: emailbody.body, companyName: companyName.name };
+  let emailFetchedbody: string;
+
+  if (job_id) {
+    const [emailbody] = supabaseWrap(
+      await supabaseAdmin
+        .from('job_email_template')
+        .select('body')
+        .eq('job_id', job_id)
+        .eq('type', mail_type),
+    );
+    emailFetchedbody = emailbody.body;
+  } else {
+    const [emailbody] = supabaseWrap(
+      await supabaseAdmin
+        .from('company_email_template')
+        .select('body')
+        .eq('recruiter_id', recruiter_id)
+        .eq('type', mail_type),
+    );
+    emailFetchedbody = emailbody.body;
+  }
+  return { body: emailFetchedbody, companyName: companyName.name };
 }

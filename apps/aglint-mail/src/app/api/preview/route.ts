@@ -9,12 +9,14 @@ import { fetchUtil } from './fetch-utils';
 
 interface ReqPayload {
   mail_type: string;
-  recruiter_id: string;
+  recruiter_id?: string;
+  job_id?: string;
 }
 
 const ReqPayload = z.object({
   mailType: z.string(),
-  recruiter_id: z.string(),
+  recruiter_id: z.optional(z.string(), undefined),
+  job_id: z.optional(z.string(), undefined),
 });
 
 const all_possible_dynamic_values: {
@@ -38,13 +40,17 @@ const all_possible_dynamic_values: {
 };
 
 export async function POST(req: Request) {
-  const { mail_type, recruiter_id }: ReqPayload = await req.json();
+  const { mail_type, recruiter_id, job_id }: ReqPayload = await req.json();
 
   try {
     if (!mail_type) {
       throw new ClientError('attribute application_id missing', 400);
     }
-    const { body, companyName } = await fetchUtil({ recruiter_id, mail_type });
+    const { body, companyName } = await fetchUtil({
+      recruiter_id,
+      mail_type,
+      job_id,
+    });
 
     const { emails } = await getEmails();
     const filledBody = replacePlaceholders(body, companyName);
