@@ -1,8 +1,10 @@
 /* eslint-disable no-unused-vars */
+import { Global } from '@emotion/react';
 import { Popover, Stack, Typography } from '@mui/material';
 import { capitalize } from 'lodash';
 import React from 'react';
 
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { EmptyState } from '@/devlink2/EmptyState';
 import { ListCard } from '@/devlink3/ListCard';
 import { ListPop } from '@/devlink3/ListPop';
@@ -73,43 +75,43 @@ function JobList({
         sx={{
           '& .MuiPopover-paper': {
             border: 'none',
+            height: '200px',
+            width: '300px',
           },
         }}
       >
-        <ListPop
-          slotListCard={
-            <ShowCode>
-              <ShowCode.When isTrue={!!jobs.length}>
-                {jobs.map((ele, i) => {
-                  return (
-                    <Stack
-                      key={i}
-                      p={'var(--space-1)'}
-                      width={'100%'}
-                      sx={{
-                        cursor: 'pointer',
-                        '&:hover': {
-                          bgcolor: 'var(--neutral-2)'
-                        },
-                      }}
-                      onClick={() => {
-                        setSelectedJob({ name: ele.job_title, id: ele.id });
-                        handleClose();
-                      }}
-                    >
-                      <ListCard
-                        textList={capitalizeFirstLetter(ele.job_title)}
-                      />
-                    </Stack>
-                  );
-                })}
-              </ShowCode.When>
-              <ShowCode.Else>
-                <EmptyState textDescription='No jobs found.' />
-              </ShowCode.Else>
-            </ShowCode>
-          }
-        />
+        <Stack bgcolor={'#fff'} p={0.5} overflow={'scroll'} height={'100%'}>
+          <ShowCode>
+            <ShowCode.When isTrue={!!jobs.length}>
+              {jobs.map((ele, i) => {
+                return (
+                  <Stack
+                    key={i}
+                    px={1}
+                    py={0.5}
+                    borderRadius={'6px'}
+                    width={'100%'}
+                    sx={{
+                      cursor: 'pointer',
+                      '&:hover': {
+                        bgcolor: 'var(--neutral-2)',
+                      },
+                    }}
+                    onClick={() => {
+                      setSelectedJob({ name: ele.job_title, id: ele.id });
+                      handleClose();
+                    }}
+                  >
+                    <ListCard textList={capitalizeFirstLetter(ele.job_title)} />
+                  </Stack>
+                );
+              })}
+            </ShowCode.When>
+            <ShowCode.Else>
+              <GlobalEmptyState iconName='work' textDesc='No jobs found.' />
+            </ShowCode.Else>
+          </ShowCode>
+        </Stack>
       </Popover>
     </>
   );

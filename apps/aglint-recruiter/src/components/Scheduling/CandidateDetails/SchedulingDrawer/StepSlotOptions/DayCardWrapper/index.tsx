@@ -27,6 +27,7 @@ function DayCardWrapper({
   isSlotCheckboxNeeded = true,
   index,
   setSelectedCombIds,
+  isAutoCollapse = true,
 }: {
   isRadioNeeded: boolean;
   item: MultiDayPlanType;
@@ -40,6 +41,7 @@ function DayCardWrapper({
   isSlotCheckboxNeeded?: boolean;
   index: number;
   setSelectedCombIds: Dispatch<React.SetStateAction<string[]>>;
+  isAutoCollapse?: boolean;
 }) {
   const dates = item?.date_range || [];
   const header = dates
@@ -76,12 +78,6 @@ function DayCardWrapper({
     });
   }, [slots, dates]);
 
-  useEffect(() => {
-    if (index === 0) {
-      setCollapse(true);
-    }
-  }, []);
-
   const isSelected = slotsWithDaySessions.some((slot) =>
     selectedCombIds.includes(slot.plan_comb_id),
   );
@@ -91,6 +87,22 @@ function DayCardWrapper({
   const noOfSelectedSlots = slotsWithDaySessions.filter((slot) =>
     selectedCombIds.includes(slot.plan_comb_id),
   ).length;
+
+  useEffect(() => {
+    if (isAutoCollapse && index === 0) {
+      setCollapse(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isAutoCollapse) {
+      if (isSelected) {
+        setCollapse(true);
+      } else {
+        setCollapse(false);
+      }
+    }
+  }, [selectedCombIds]);
 
   return (
     <>
@@ -131,6 +143,9 @@ function DayCardWrapper({
         isSelected={isSelected}
         slotCheckbox={
           <Checkbox
+            indeterminate={
+              noOfSelectedSlots > 0 && noOfSelectedSlots < noOfTotalSlots
+            }
             checked={isSelected}
             onClick={() =>
               setSelectedCombIds(
@@ -159,7 +174,7 @@ function DayCardWrapper({
         slotScheduleOption={
           !isDisabled && (
             <Collapse in={isDayCollapseNeeded ? collapse : true}>
-              <Stack spacing={1} pt={'var(--space-2)'}>
+              <Stack spacing={'var(--space-2)'} pt={'var(--space-2)'}>
                 {slotsWithDaySessions.slice(0, displayedSlots)?.map((slot) => {
                   return (
                     <ScheduleOption
@@ -192,6 +207,7 @@ function DayCardWrapper({
                         (item, ind) => {
                           return (
                             <SingleDayCard
+                              isAutoCollapse={isAutoCollapse}
                               key={ind}
                               item={item}
                               ind={ind}

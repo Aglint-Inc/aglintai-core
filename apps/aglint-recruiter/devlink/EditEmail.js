@@ -26,6 +26,7 @@ export function EditEmail({
   onClickCloseTip = {},
   isTipVisible = true,
   slotSaveButton,
+  currentModule,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -51,6 +52,7 @@ export function EditEmail({
         <_Builtin.Block
           className={_utils.cx(_styles, "eemail-body-wrap")}
           tag="div"
+          data-edit-email-module-name={currentModule}
         >
           <_Builtin.Block
             className={_utils.cx(_styles, "company-email-header")}
@@ -109,6 +111,7 @@ export function EditEmail({
           ) : null}
         </_Builtin.Block>
       </_Builtin.Block>
+      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%5Bdata-edit-email-module-name%3D%22scheduler%22%5D%7B%0A%09height%3Acalc(100vh%20-%20180px)%3B%0A%7D%0A%3C%2Fstyle%3E" />
     </_Component>
   );
 }

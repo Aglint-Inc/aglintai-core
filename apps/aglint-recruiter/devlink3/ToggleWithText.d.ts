@@ -8,4 +8,6 @@ declare function ToggleWithText(props: {
   textToggleBold?: React.ReactNode;
   isBoldText?: Types.Visibility.VisibilityConditions;
   slotToggle?: Types.Devlink.Slot;
+  isSubText?: Types.Visibility.VisibilityConditions;
+  textSub?: React.ReactNode;
 }): React.JSX.Element;

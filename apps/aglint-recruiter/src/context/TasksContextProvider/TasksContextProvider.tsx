@@ -114,6 +114,14 @@ const reducerInitialState: TasksReducerType = {
           id: 'READY_TO_SCHEDULE' as indicatorType,
           label: 'Ready to Schedule',
         },
+        {
+          id: 'COMPLETED' as indicatorType,
+          label: 'Completed',
+        },
+        {
+          id: 'CLOSED' as indicatorType,
+          label: 'Closed',
+        },
         { id: 'UNKNOWN_STATUS' as indicatorType, label: 'Unknown Status' },
       ],
       values: [],

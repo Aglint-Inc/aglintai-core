@@ -47,14 +47,19 @@ function CheckboxIcon({
           }}
         >
           <svg
-            className='MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1b9jlql-MuiSvgIcon-root'
-            focusable='false'
-            aria-hidden='true'
-            viewBox='3 3 18 18'
-            fill='currentColor'
+            width='16'
+            height='16'
+            viewBox='0 0 16 16'
+            fill='none'
             xmlns='http://www.w3.org/2000/svg'
           >
-            <path d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z'></path>
+            <rect width='16' height='16' rx='4' fill='#F76B15' />
+            <path
+              fill-rule='evenodd'
+              clip-rule='evenodd'
+              d='M5 9C4.44772 9 4 8.55228 4 8C4 7.44772 4.44772 7 5 7H11C11.5523 7 12 7.44772 12 8C12 8.55228 11.5523 9 11 9H5Z'
+              fill='white'
+            />
           </svg>
         </SvgIcon>
       );

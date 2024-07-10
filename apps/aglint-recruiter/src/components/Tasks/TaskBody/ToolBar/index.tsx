@@ -1,6 +1,4 @@
-import {
-  DatabaseEnums
-} from '@aglint/shared-types';
+import { DatabaseEnums } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
@@ -74,7 +72,7 @@ function ToolBar() {
                 ' ' +
                 (recruiterUser.last_name ?? ''),
             },
-            progress_type: task.latest_progress.progress_type,
+            progress_type: task.latest_progress?.progress_type || 'standard',
             task_id: task.id,
           },
           optionData: {
@@ -118,7 +116,9 @@ function ToolBar() {
         assignee: [selectedAssignee.user_id],
         start_date: isImmediate
           ? dayjs().add(5, 'minute').toString()
-          : dayjs(selectedTriggerTime).toString(),
+          : selectedTriggerTime
+            ? dayjs(selectedTriggerTime).toString()
+            : dayjs().toString(),
       }));
       handelUpdateTask([...tempTasks]);
       for (let task of selectedTasks) {
@@ -135,7 +135,7 @@ function ToolBar() {
                 ' ' +
                 (recruiterUser.last_name ?? ''),
             },
-            progress_type: task.latest_progress.progress_type,
+            progress_type: task.latest_progress?.progress_type || 'standard',
             task_id: task.id,
           },
           optionData: {

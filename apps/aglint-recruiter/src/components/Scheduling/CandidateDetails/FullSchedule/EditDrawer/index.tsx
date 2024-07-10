@@ -1,8 +1,5 @@
-import { DatabaseEnums, InterviewSession } from '@aglint/shared-types';
-import { Drawer, MenuItem, Stack, TextField, Typography } from '@mui/material';
-import axios from 'axios';
+import { Drawer, MenuItem, Stack, TextField } from '@mui/material';
 import { capitalize } from 'lodash';
-import { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -17,127 +14,51 @@ import {
   DropDown,
   IndividualIcon,
   PanelIcon,
+  ScheduleTypeField,
 } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
-import { ApiBodyParamsSessionCache } from '@/src/pages/api/scheduling/application/candidatesessioncache';
 import { useInterviewModules } from '@/src/queries/interview-modules';
-import {
-  EditInterviewSession,
-  editInterviewSession,
-  UpdateDebriefSession,
-  updateDebriefSession,
-} from '@/src/queries/interview-plans';
 import { getFullName } from '@/src/utils/jsonResume';
-import { createCloneSession } from '@/src/utils/scheduling/createCloneSession';
-import toast from '@/src/utils/toast';
+import { sessionDurations } from '@/src/utils/scheduling/const';
 
-import IconScheduleType from '../../../Candidates/ListCard/Icon/IconScheduleType';
-import { getScheduleType } from '../../../Candidates/utils';
-import { useGetScheduleApplication } from '../../hooks';
-import {
-  setEditSession,
-  setIsEditOpen,
-  setSelectedSessionIds,
-  useSchedulingApplicationStore,
-} from '../../store';
+import { useSchedulingApplicationStore } from '../../store';
 import DebriedForm from './DebriefFrom';
-
-export type Interviewer = {
-  name: string;
-  value: string | number;
-  start_icon_url?: string;
-};
+import { useEditSession } from './hooks';
+import {
+  setDebriefMembers,
+  setEditSession,
+  setSelectedInterviewers,
+  setTrainingInterviewers,
+  setTrainingToggle,
+  useEditSessionDrawerStore,
+} from './store';
+import { Interviewer } from './types';
 
 function SideDrawerEdit() {
-  const { recruiter, recruiterUser } = useAuthDetails();
-  const {
-    editSession,
-    allSessions,
-    selectedApplication,
-    selectedSchedule,
-    isEditOpen,
-    members,
-  } = useSchedulingApplicationStore((state) => ({
-    editSession: state.editSession,
-    selectedSchedule: state.selectedSchedule,
-    allSessions: state.initialSessions,
-    selectedApplication: state.selectedApplication,
+  const { isEditOpen, members } = useSchedulingApplicationStore((state) => ({
     isEditOpen: state.isEditOpen,
     members: state.members,
   }));
-  const { fetchInterviewDataByApplication } = useGetScheduleApplication();
   const interviewModules = useInterviewModules();
 
-  const [selectedInterviewers, setSelectedInterviewers] = useState<
-    Interviewer[]
-  >([]);
-  const [trainingInterviewers, setTrainingInterviewers] = useState<
-    Interviewer[]
-  >([]);
-  const [debriefMembers, setDebriefMembers] = useState<Interviewer[]>([]);
-  const [trainingToggle, setTrainingToggle] = useState(false);
-  const [saving, setSaving] = useState(false);
+  const {
+    editSession,
+    selectedInterviewers,
+    saving,
+    trainingInterviewers,
+    trainingToggle,
+    debriefMembers,
+  } = useEditSessionDrawerStore((state) => ({
+    editSession: state.editSession,
+    selectedInterviewers: state.selectedInterviewers,
+    saving: state.saving,
+    trainingInterviewers: state.trainingInterviewers,
+    trainingToggle: state.trainingToggle,
+    debriefMembers: state.debriefMembers,
+  }));
 
-  useEffect(() => {
-    if (editSession) {
-      if (editSession.interview_session.session_type !== 'debrief') {
-        setSelectedInterviewers(
-          editSession?.users
-            ?.filter(
-              (user) =>
-                user.interview_session_relation.interviewer_type ===
-                'qualified',
-            )
-            .map((user) => ({
-              name: getFullName(
-                user.user_details.first_name,
-                user.user_details.last_name,
-              ),
-              value: user.interview_module_relation?.id,
-              start_icon_url: user.user_details.profile_image,
-            })) || [],
-        );
-
-        const trainingInterviewers = editSession?.users?.filter(
-          (user) =>
-            user.interview_session_relation.interviewer_type === 'training',
-        );
-
-        setTrainingInterviewers(
-          trainingInterviewers?.map((user) => ({
-            name: getFullName(
-              user.user_details.first_name,
-              user.user_details.last_name,
-            ),
-            value: user.interview_module_relation.id,
-            start_icon_url: user.user_details.profile_image,
-          })),
-        );
-
-        if (trainingInterviewers?.length > 0) {
-          setTrainingToggle(true);
-        }
-      } else {
-        setDebriefMembers(
-          editSession?.users?.map((user) => ({
-            name: getFullName(
-              user.user_details.first_name,
-              user.user_details.last_name,
-            ),
-            value: user.user_details.user_id,
-            start_icon_url: user.user_details.profile_image,
-          })),
-        );
-      }
-    }
-  }, [editSession?.users]);
-
-  const handleClose = () => {
-    setIsEditOpen(false);
-  };
+  const { handleClose, handleSave } = useEditSession();
 
   let optionsInterviewers = [];
   let optionTrainees = [];
@@ -241,142 +162,6 @@ function SideDrawerEdit() {
     }
   };
 
-  const handleSave = async () => {
-    if (!selectedSchedule && !saving) {
-      const res = await axios.post(
-        '/api/scheduling/application/candidatesessioncache',
-        {
-          allSessions,
-          application_id: selectedApplication.id,
-          is_get_more_option: false,
-          scheduleName: `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`,
-          session_ids: [],
-          recruiter_id: recruiter.id,
-          rec_user_id: recruiterUser.user_id,
-        } as ApiBodyParamsSessionCache,
-      );
-
-      let createCloneRes: Awaited<ReturnType<typeof createCloneSession>>;
-
-      if (res.status === 200 && res.data) {
-        createCloneRes = res.data;
-      }
-      if (createCloneRes) {
-        if (editSession.interview_session.session_type !== 'debrief') {
-          const newSession = createCloneRes.refSessions.find(
-            (session) =>
-              session.interview_session.id === editSession.interview_session.id,
-          );
-
-          const interview_module_relation_entries: EditInterviewSession['interview_module_relation_entries'] =
-            [];
-
-          selectedInterviewers.forEach((interviewer) => {
-            interview_module_relation_entries.push({
-              interviewer_type: 'qualified',
-              id: interviewer.value as string,
-              training_type: 'qualified',
-            });
-          });
-
-          trainingInterviewers.forEach((interviewer) => {
-            interview_module_relation_entries.push({
-              interviewer_type: 'training',
-              id: interviewer.value as string,
-              training_type: null,
-            });
-          });
-
-          const editInterviewSessionParams: EditInterviewSession = {
-            break_duration: editSession.interview_session.break_duration,
-            interviewer_cnt: editSession.interview_session.interviewer_cnt,
-            location: editSession.interview_session.location,
-            module_id: editSession.interview_session.module_id,
-            name: editSession.interview_session.name,
-            schedule_type: editSession.interview_session.schedule_type,
-            session_duration: editSession.interview_session.session_duration,
-            session_id: newSession.newId,
-            session_type: editSession.interview_session.session_type,
-            interview_module_relation_entries:
-              interview_module_relation_entries,
-          };
-
-          editInterviewSession(editInterviewSessionParams);
-        } else {
-          const updateDebriefParams: UpdateDebriefSession = {
-            break_duration: editSession.interview_session.break_duration,
-            location: editSession.interview_session.location,
-            name: editSession.interview_session.name,
-            schedule_type: editSession.interview_session.schedule_type,
-            session_duration: editSession.interview_session.session_duration,
-            session_id: createCloneRes.refSessions[0].newId,
-            members: debriefMembers.map((member) => ({
-              id: member.value as string,
-            })),
-            members_meta: editSession.interview_session.members_meta,
-          };
-          updateDebriefSession(updateDebriefParams);
-        }
-      } else {
-        toast.error('Error caching session.');
-      }
-      handleClose();
-    } else {
-      if (editSession.interview_session.session_type !== 'debrief') {
-        const interview_module_relation_entries = [];
-        selectedInterviewers.forEach((interviewer) => {
-          interview_module_relation_entries.push({
-            interviewer_type: 'qualified',
-            id: interviewer.value,
-            training_type: 'qualified',
-          });
-        });
-
-        trainingInterviewers.forEach((interviewer) => {
-          interview_module_relation_entries.push({
-            interviewer_type: 'training',
-            id: interviewer.value,
-            training_type: null,
-          });
-        });
-
-        const editInterviewSessionParams: EditInterviewSession = {
-          break_duration: editSession.interview_session.break_duration,
-          interviewer_cnt: editSession.interview_session.interviewer_cnt || 1,
-          location: editSession.interview_session.location,
-          module_id: editSession.interview_session.module_id,
-          name: editSession.interview_session.name,
-          schedule_type: editSession.interview_session.schedule_type,
-          session_duration: editSession.interview_session.session_duration,
-          session_id: editSession.interview_session.id,
-          session_type: editSession.interview_session.session_type,
-          interview_module_relation_entries: interview_module_relation_entries,
-        };
-
-        await editInterviewSession(editInterviewSessionParams);
-      } else {
-        const updateDebriefParams: UpdateDebriefSession = {
-          break_duration: editSession.interview_session.break_duration,
-          location: editSession.interview_session.location,
-          name: editSession.interview_session.name,
-          schedule_type: editSession.interview_session.schedule_type,
-          session_duration: editSession.interview_session.session_duration,
-          session_id: editSession.interview_session.id,
-          members: debriefMembers.map((member) => ({
-            id: member.value as string,
-          })),
-          members_meta: editSession.interview_session.members_meta,
-        };
-        await updateDebriefSession(updateDebriefParams);
-      }
-
-      handleClose();
-    }
-    await fetchInterviewDataByApplication();
-    setSelectedSessionIds([]);
-    setSaving(false);
-  };
-
   return (
     <Drawer open={isEditOpen} onClose={() => handleClose()} anchor='right'>
       <Stack overflow={'hidden'}>
@@ -409,7 +194,7 @@ function SideDrawerEdit() {
                         select
                         value={editSession.interview_session.session_duration}
                       >
-                        {[30, 45, 60, 120]?.map((dur) => (
+                        {sessionDurations?.map((dur) => (
                           <MenuItem
                             value={dur}
                             key={dur}
@@ -428,61 +213,46 @@ function SideDrawerEdit() {
                       </TextField>
                     }
                     slotModuleDropdown={
-                      <TextField
-                        fullWidth
-                        select
-                        value={editSession.interview_session.module_id}
-                      >
-                        {interviewModules?.data?.map((module) => (
-                          <MenuItem
-                            value={module.id}
-                            key={module.id}
-                            onClick={() => {
-                              setEditSession({
-                                interview_session: {
-                                  ...editSession.interview_session,
-                                  module_id: module.id,
-                                },
-                              });
-                              setSelectedInterviewers([]);
-                              setTrainingInterviewers([]);
-                              setTrainingToggle(false);
-                            }}
-                          >
-                            {capitalize(module.name)}
-                          </MenuItem>
-                        ))}
-                      </TextField>
+                      <>
+                        <TextField
+                          fullWidth
+                          select
+                          value={editSession.interview_session.module_id}
+                        >
+                          {interviewModules?.data?.map((module) => (
+                            <MenuItem
+                              value={module.id}
+                              key={module.id}
+                              onClick={() => {
+                                setEditSession({
+                                  interview_session: {
+                                    ...editSession.interview_session,
+                                    module_id: module.id,
+                                  },
+                                });
+                                setSelectedInterviewers([]);
+                                setTrainingInterviewers([]);
+                                setTrainingToggle(false);
+                              }}
+                            >
+                              {capitalize(module.name)}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+                      </>
                     }
                     slotScheduleTypeDropdown={
-                      <TextField
-                        fullWidth
-                        select
+                      <ScheduleTypeField
                         value={editSession.interview_session.schedule_type}
-                        onChange={(e) => {
+                        handleTypeChange={(value) => {
                           setEditSession({
                             interview_session: {
                               ...editSession.interview_session,
-                              schedule_type: e.target
-                                .value as InterviewSession['schedule_type'],
+                              schedule_type: value,
                             },
                           });
                         }}
-                      >
-                        {schedule_type.map((type) => (
-                          <MenuItem value={type} key={type}>
-                            <Stack direction={'row'} spacing={2}>
-                              <IconScheduleType type={type} size={5} />
-                              <Typography
-                                variant='body1'
-                                color={palette.grey[800]}
-                              >
-                                {getScheduleType(type)}
-                              </Typography>
-                            </Stack>
-                          </MenuItem>
-                        ))}
-                      </TextField>
+                      />
                     }
                     slotInterviewMode={
                       <InterviewMode
@@ -712,7 +482,6 @@ function SideDrawerEdit() {
                   onClickButton={{
                     onClick: () => {
                       if (!saving) {
-                        setSaving(true);
                         handleSave();
                       }
                     },
@@ -728,10 +497,3 @@ function SideDrawerEdit() {
 }
 
 export default SideDrawerEdit;
-
-export const schedule_type: DatabaseEnums['interview_schedule_type'][] = [
-  'google_meet',
-  'zoom',
-  'phone_call',
-  'in_person_meeting',
-];
