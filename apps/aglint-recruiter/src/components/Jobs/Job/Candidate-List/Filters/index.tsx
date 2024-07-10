@@ -13,12 +13,33 @@ import { capitalize } from '@/src/utils/text/textUtils';
 
 const Filters = () => {
   const {
+    job: { application_match },
     locationFilterOptions,
+    badgesCount,
     filters: { search, bookmarked, locations, ...filters },
     sort,
     setFilters,
     setSort,
   } = useApplications();
+
+  const badges = useMemo(
+    () =>
+      badgesTypes.map((id) => ({
+        id,
+        label: `${badgeLabel(id)} ${badgesCount.data?.[id] ? `(${badgesCount.data[id]})` : ''}`,
+      })),
+    [badgesTypes, badgeLabel, badgesCount.data],
+  );
+
+  const resume_score = useMemo(
+    () =>
+      resumeScoreTypes.map((id) => ({
+        id,
+        label: `${capitalize(id)} ${application_match?.[id] ? `(${application_match[id]})` : ''}`,
+      })),
+    [resumeScoreTypes, capitalize, application_match],
+  );
+
   const filterOptions = { badges, resume_score };
   const safeFilters: Parameters<typeof FilterHeader>[0]['filters'] = useMemo(
     () =>
@@ -124,10 +145,6 @@ const badgesTypes: ApplicationsParams['filters']['badges'] = [
   'skills',
   'jobHopping',
 ];
-const badges = badgesTypes.map((id) => ({
-  id,
-  label: badgeLabel(id),
-}));
 
 function badgeLabel(key: (typeof badgesTypes)[number]) {
   switch (key) {
@@ -155,11 +172,6 @@ const resumeScoreTypes: ApplicationsParams['filters']['resume_score'] = [
   'poor_match',
   'not_a_match',
 ];
-
-const resume_score = resumeScoreTypes.map((id) => ({
-  id,
-  label: capitalize(id),
-}));
 
 const sortTypes: ApplicationsParams['sort']['type'][] = [
   'latest_activity',
