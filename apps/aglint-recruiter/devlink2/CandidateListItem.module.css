@@ -18,6 +18,10 @@
   min-width: calc(100vw - 73px);
 }
 
+.candidate-list-item-wrap:hover {
+  background-color: var(--neutral-3);
+}
+
 .candidate-list-item-wrap.skeleton_height {
   height: 41px;
 }
@@ -446,4 +450,10 @@
 
 .text-titlecase {
   text-transform: capitalize;
+}
+
+.embed_css {
+  position: absolute;
+  z-index: -100;
+  pointer-events: none;
 }

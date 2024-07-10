@@ -88,7 +88,8 @@ const ApplicationCard = memo(
         onClickCandidate={{
           onClick: () => handleOpen({ application_id: application.id }),
         }}
-        isHighlighted={isSelected}
+        isHighlighted={isSelected || isChecked}
+        highlightType={isSelected ? 'highlighted' : 'checked'}
         slotBookmark={<Banners application={application} />}
         isDragVisible={isChecked}
         onClickSelect={{ onClick: handleCheck }}
