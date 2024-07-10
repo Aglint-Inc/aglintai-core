@@ -19,20 +19,20 @@ const ReqPayload = z.object({
 const all_possible_dynamic_values: {
   [K in (typeof allTempvariables)[number]]: string;
 } = {
-  candidateFirstName: '',
-  candidateLastName: '',
-  candidateName: '',
-  companyName: '',
-  jobRole: '',
-  organizerName: '',
-  organizerFirstName: '',
-  organizerLastName: '',
-  OrganizerTimeZone: '',
-  interviewerName: '',
-  interviewerFirstName: '',
-  interviewerLastName: '',
-  startDate: '',
-  endDate: '',
+  candidateFirstName: 'John',
+  candidateLastName: 'Doe',
+  candidateName: 'John Doe',
+  companyName: 'Tech Innovations Inc.',
+  jobRole: 'Software Engineer',
+  organizerName: 'Jane Smith',
+  organizerFirstName: 'Jane',
+  organizerLastName: 'Smith',
+  OrganizerTimeZone: 'PST',
+  interviewerName: 'Michael Johnson',
+  interviewerFirstName: 'Michael',
+  interviewerLastName: 'Johnson',
+  startDate: '2024-07-15',
+  endDate: '2024-07-15',
 };
 
 export async function POST(req: Request) {
