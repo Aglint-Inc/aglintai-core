@@ -26,4 +26,5 @@ declare function CandidateListItem(props: {
   slotBookmark?: Types.Devlink.Slot;
   slotInterviewPipline?: Types.Devlink.Slot;
   isAssessmentVisible?: Types.Visibility.VisibilityConditions;
+  highlightType?: Types.Builtin.Text;
 }): React.JSX.Element;
