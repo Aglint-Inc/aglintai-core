@@ -12,6 +12,7 @@ import React, { FC } from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import { NoData } from '@/devlink3/NoData';
+import Loader from '@/src/components/Common/Loader';
 import { useJobDashboard } from '@/src/context/JobDashboard';
 
 import { DashboardGraphOptions } from '.';
@@ -97,8 +98,10 @@ const DashboardBarChart: FC<{
   option: keyof DashboardGraphOptions<'skills'>;
 }> = ({ option }) => {
   const {
-    skills: { data: skillPool },
+    skills: { data: skillPool, status },
   } = useJobDashboard();
+  if (status === 'pending') return <Loader />;
+  if (status === 'error') return <>Error</>;
   const skills = skillPool?.[option] ?? null;
   const total = skills
     ? Object.values(skills).reduce((acc, curr) => {

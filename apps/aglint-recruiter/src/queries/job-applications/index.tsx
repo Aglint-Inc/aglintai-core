@@ -332,7 +332,7 @@ export const useUploadApplication = ({ job_id }: Pick<Params, 'job_id'>) => {
     },
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: async () => {
-      await queryClient.refetchQueries({ queryKey: jobQueryKey });
+      await queryClient.removeQueries({ queryKey: jobQueryKey });
       toast.success('Uploaded successfully');
     },
   });
@@ -380,7 +380,7 @@ export const useUploadResume = (params: Pick<Params, 'job_id'>) => {
     },
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: async () => {
-      await queryClient.refetchQueries({ queryKey: jobQueryKey });
+      await queryClient.removeQueries({ queryKey: jobQueryKey });
       toast.success('Uploaded successfully');
     },
   });
@@ -446,7 +446,7 @@ export const useUploadCsv = (params: Pick<Params, 'job_id'>) => {
     },
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: async () => {
-      await queryClient.refetchQueries({ queryKey: jobQueryKey });
+      await queryClient.removeQueries({ queryKey: jobQueryKey });
       toast.success('Uploaded successfully');
     },
   });
@@ -486,7 +486,7 @@ export const useMoveApplications = (
       const jobQueryKey = jobQueries.job({
         id: payload.job_id,
       }).queryKey;
-      await queryClient.refetchQueries({ queryKey: jobQueryKey });
+      await queryClient.removeQueries({ queryKey: jobQueryKey });
       toast.success('Moved successfully');
     },
   });
@@ -548,11 +548,11 @@ export const useRescoreApplications = () => {
         job_id: args.job_id,
       });
     },
-    onSuccess: (_, variables) => {
+    onSuccess: async (_, variables) => {
       const jobQueryKey = jobQueries.job({
         id: variables.job_id,
       }).queryKey;
-      queryClient.refetchQueries({ queryKey: jobQueryKey });
+      await queryClient.removeQueries({ queryKey: jobQueryKey });
     },
   });
 };

@@ -5,6 +5,8 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { applicationsQueries } from '../job-applications';
+import { jobDashboardQueryKeys } from '../job-dashboard/keys';
 import { jobsQueryKeys } from './keys';
 import { Job, JobCreate, JobInsert } from './types';
 
@@ -86,6 +88,16 @@ export const useJobUpdate = () => {
       }, [] as Job[]);
       queryClient.setQueryData<Job[]>(queryKey, newJobs);
       return { previousJobs, newJobs };
+    },
+    onSuccess: (_, { id, parameter_weights }) => {
+      if (parameter_weights) {
+        queryClient.removeQueries({
+          queryKey: applicationsQueries.all({ job_id: id }).queryKey,
+        });
+        queryClient.removeQueries({
+          queryKey: jobDashboardQueryKeys.dashboard({ id }).queryKey,
+        });
+      }
     },
     onError: (_, __, context) => {
       toast.error('Unable to update job');

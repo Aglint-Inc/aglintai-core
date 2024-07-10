@@ -207,7 +207,7 @@ const useJobContext = () => {
       return;
     }
     if (!jobPolling) {
-      queryClient.refetchQueries({
+      queryClient.removeQueries({
         queryKey: jobQueries.job({ id: job_id }).queryKey,
       });
     }

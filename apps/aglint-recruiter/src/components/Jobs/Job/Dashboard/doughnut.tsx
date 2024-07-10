@@ -13,6 +13,7 @@ import React, { FC } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
 import { NoData } from '@/devlink3/NoData';
+import Loader from '@/src/components/Common/Loader';
 import { useJobDashboard } from '@/src/context/JobDashboard';
 
 import { DashboardGraphOptions } from '.';
@@ -95,9 +96,11 @@ const DashboardDoughnutChart: FC<{
   option: keyof DashboardGraphOptions<'locations'>;
 }> = ({ option }) => {
   const {
-    locations: { data: locationPool },
+    locations: { data: locationPool, status },
     job: { processing_count },
   } = useJobDashboard();
+  if (status === 'pending') return <Loader />;
+  if (status === 'error') return <>Error</>;
   const locations = locationPool?.[option] ?? null;
   if (!locations) return <NoData />;
   const totalCount = Object.values(processing_count).reduce((acc, curr) => {
