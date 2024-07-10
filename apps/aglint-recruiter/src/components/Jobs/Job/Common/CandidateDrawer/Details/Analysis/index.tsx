@@ -2,7 +2,7 @@
 import { type PropsWithChildren, type ReactNode, useMemo } from 'react';
 
 import { CandidateDetail } from '@/devlink/CandidateDetail';
-import { GlobalIcon } from '@/devlink3/GlobalIcon';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { useApplication } from '@/src/context/ApplicationContext';
 
 import { getIconName } from '../../utils';

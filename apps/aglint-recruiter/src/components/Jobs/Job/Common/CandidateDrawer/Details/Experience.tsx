@@ -5,8 +5,8 @@ import Image from 'next/image';
 import { CandidateDetail } from '@/devlink/CandidateDetail';
 import { ExperienceItem } from '@/devlink/ExperienceItem';
 import { ExperienceSkeleton } from '@/devlink/ExperienceSkeleton';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { Skeleton } from '@/devlink2/Skeleton';
-import { GlobalIcon } from '@/devlink3/GlobalIcon';
 import { useApplication } from '@/src/context/ApplicationContext';
 
 import { Loader } from '../Common/Loader';

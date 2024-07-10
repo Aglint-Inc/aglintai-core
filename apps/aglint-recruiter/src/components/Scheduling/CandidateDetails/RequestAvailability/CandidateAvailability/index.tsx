@@ -8,9 +8,9 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { Text } from '@/devlink/Text';
 import { AvailabilityReq } from '@/devlink2/AvailabilityReq';
-import { GlobalIcon } from '@/devlink2/GlobalIcon';
 import { MultiDaySelect } from '@/devlink2/MultiDaySelect';
 import { GlobalCta } from '@/devlink3/GlobalCta';
 import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
