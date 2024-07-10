@@ -1,3 +1,4 @@
+import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -5,11 +6,8 @@ import React from 'react';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 
-import {
-  SchedulingApplication,
-  setEditSession,
-  setIsEditOpen,
-} from '../../store';
+import { SchedulingApplication, setIsEditOpen } from '../../store';
+import { setDebriefMembers, setEditSession, setSelectedInterviewers, setTrainingInterviewers, setTrainingToggle } from '../EditDrawer/store';
 import { ScheduleIndividualCardType } from './types';
 
 function ButtonGroupRight({
@@ -62,6 +60,58 @@ function ButtonGroupRight({
             onClickButton={{
               onClick: () => {
                 setEditSession(currentSession);
+                if (
+                  currentSession.interview_session.session_type !== 'debrief'
+                ) {
+                  setSelectedInterviewers(
+                    currentSession?.users
+                      ?.filter(
+                        (user) =>
+                          user.interview_session_relation.interviewer_type ===
+                          'qualified',
+                      )
+                      .map((user) => ({
+                        name: getFullName(
+                          user.user_details.first_name,
+                          user.user_details.last_name,
+                        ),
+                        value: user.interview_module_relation?.id,
+                        start_icon_url: user.user_details.profile_image,
+                      })) || [],
+                  );
+
+                  const trainingInterviewers = currentSession?.users?.filter(
+                    (user) =>
+                      user.interview_session_relation.interviewer_type ===
+                      'training',
+                  );
+
+                  setTrainingInterviewers(
+                    trainingInterviewers?.map((user) => ({
+                      name: getFullName(
+                        user.user_details.first_name,
+                        user.user_details.last_name,
+                      ),
+                      value: user.interview_module_relation.id,
+                      start_icon_url: user.user_details.profile_image,
+                    })),
+                  );
+
+                  if (trainingInterviewers?.length > 0) {
+                    setTrainingToggle(true);
+                  }
+                } else {
+                  setDebriefMembers(
+                    currentSession?.users?.map((user) => ({
+                      name: getFullName(
+                        user.user_details.first_name,
+                        user.user_details.last_name,
+                      ),
+                      value: user.user_details.user_id,
+                      start_icon_url: user.user_details.profile_image,
+                    })),
+                  );
+                }
                 setIsEditOpen(true);
               },
             }}

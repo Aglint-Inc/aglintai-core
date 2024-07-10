@@ -12,7 +12,6 @@ import RescheduleDialog from '../../ScheduleDetails/RescheduleDialog';
 import { useGetScheduleApplication } from '../hooks';
 import SelfSchedulingDrawer from '../SchedulingDrawer';
 import {
-  setEditSession,
   setIndividualCancelOpen,
   setIndividualRescheduleOpen,
   setIsEditBreakOpen,
@@ -21,6 +20,7 @@ import {
 } from '../store';
 import BreakDrawerEdit from './BreakDrawer';
 import SideDrawerEdit from './EditDrawer';
+import { setEditSession } from './EditDrawer/store';
 import RequestAvailabilityPopUps from './RequestAvailabilityPopUps';
 import { AvailabilityProvider } from './RequestAvailabilityPopUps/RequestAvailabilityContext';
 import ScheduleIndividualCard from './ScheduleIndividual';
@@ -86,6 +86,7 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
     <>
       <SideDrawerEdit />
       <BreakDrawerEdit />
+
       {selectedSession && (
         <>
           <CancelScheduleDialog

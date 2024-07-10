@@ -37,9 +37,9 @@ export function SideDrawerLarge({
         <IconButtonSoft
           onClickButton={onClickCancel}
           size="1"
-          iconSize="3"
-          iconName=""
+          iconName="close"
           color="neutral"
+          iconSize="3"
         />
       </_Builtin.Block>
       <_Builtin.Block

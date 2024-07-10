@@ -1,4 +1,4 @@
-import { Checkbox, Stack, Switch, Typography } from '@mui/material';
+import { Checkbox, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 
@@ -7,6 +7,7 @@ import { SchedulerFilters } from '@/devlink3/SchedulerFilters';
 import { setFilters, useSchedulingFlowStore } from '../store';
 import DateRangeField from './DateRangeField';
 import PreferedInterviewers from './PreferedInterviewers';
+import SuggesttionToggle from './SuggesttionToggle';
 import { filterSchedulingOptionsArray } from './utils';
 
 function StepScheduleFilter() {
@@ -53,96 +54,7 @@ function StepScheduleFilter() {
         textNumberSoftConflicts={numberSoftConflicts}
         textNumberOutsideWorkHours={numberOutsideWorkHours}
         slotPreferedInterviewersSearch={<PreferedInterviewers />}
-        slotSuggestionControlTooltip={
-          <>
-            <Stack
-              direction={'row'}
-              spacing={1}
-              alignItems={'center'}
-              sx={{
-                cursor: 'pointer',
-              }}
-            >
-              <Switch
-                size='small'
-                checked={filters.isNoConflicts}
-                onChange={() => {
-                  setFilters({
-                    isNoConflicts: !filters.isNoConflicts,
-                  });
-                }}
-              />
-
-              <Typography variant={'body2'}>Show only no conflicts</Typography>
-            </Stack>
-            <Stack
-              direction={'row'}
-              spacing={1}
-              alignItems={'center'}
-              sx={{
-                cursor: 'pointer',
-              }}
-            >
-              <Switch
-                size='small'
-                checked={filters.isSoftConflicts}
-                onChange={() => {
-                  setFilters({
-                    isSoftConflicts: !filters.isSoftConflicts,
-                  });
-                }}
-              />
-
-              <Typography variant={'body2'}>
-                Show soft conflict suggestions
-              </Typography>
-            </Stack>
-            <Stack
-              direction={'row'}
-              spacing={1}
-              alignItems={'center'}
-              sx={{
-                cursor: 'pointer',
-              }}
-            >
-              <Switch
-                size='small'
-                checked={filters.isHardConflicts}
-                onChange={() => {
-                  setFilters({
-                    isHardConflicts: !filters.isHardConflicts,
-                  });
-                }}
-              />
-
-              <Typography variant={'body2'}>
-                Show hard conflict suggestions
-              </Typography>
-            </Stack>
-            <Stack
-              direction={'row'}
-              spacing={1}
-              alignItems={'center'}
-              sx={{
-                cursor: 'pointer',
-              }}
-            >
-              <Switch
-                size='small'
-                checked={filters.isOutSideWorkHours}
-                onChange={() => {
-                  setFilters({
-                    isOutSideWorkHours: !filters.isOutSideWorkHours,
-                  });
-                }}
-              />
-
-              <Typography variant={'body2'}>
-                Suggest times over outside work hours
-              </Typography>
-            </Stack>
-          </>
-        }
+        slotSuggestionControlTooltip={<SuggesttionToggle />}
       />
     </Stack>
   );

@@ -66,8 +66,9 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
     .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
     .some((ses) => ses.interview_session.session_type === 'debrief');
 
-  const { resetStateSelfScheduling, onClickPrimary } =
-    useSelfSchedulingDrawer();
+  const { resetStateSelfScheduling, onClickPrimary } = useSelfSchedulingDrawer({
+    refetch,
+  });
 
   const primaryButtonText = () => {
     if (!isDebrief) {
@@ -141,7 +142,8 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                     if (stepScheduling === 'pick_date') {
                       resetStateSelfScheduling();
                     } else if (stepScheduling === 'slot_options') {
-                      setStepScheduling('preference');
+                      if (!isSendingToCandidate)
+                        setStepScheduling('preference');
                     } else if (stepScheduling === 'preference') {
                       setStepScheduling('pick_date');
                     } else if (
@@ -163,7 +165,6 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                   onClickButton={{
                     onClick: async () => {
                       await onClickPrimary();
-                      refetch();
                     },
                   }}
                 />
@@ -187,9 +188,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                   <EmailPreviewSelfSchedule />
                 ) : stepScheduling === 'success_screen' ? (
                   <SelfScheduleSuccess />
-                ) : (
-                  null
-                )}
+                ) : null}
               </>
             ) : (
               <Stack height={'calc(100vh - 96px)'}>
@@ -207,7 +206,9 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
             )
           }
           isBottomBar={
-            !fetchingPlan && stepScheduling !== 'request_availibility'
+            !fetchingPlan &&
+            stepScheduling !== 'request_availibility' &&
+            stepScheduling !== 'success_screen'
           }
         />
       </Drawer>

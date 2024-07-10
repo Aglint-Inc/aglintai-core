@@ -24,6 +24,7 @@ import { CompanyMember } from '@/src/queries/company-members';
 import { CreateInterviewSession } from '@/src/queries/interview-plans';
 import { InterviewSessionType } from '@/src/queries/interview-plans/types';
 import { getFullName } from '@/src/utils/jsonResume';
+import { sessionDurations } from '@/src/utils/scheduling/const';
 
 import { DepartmentIcon, RoleIcon } from '.';
 import { getBreakLabel } from './utils';
@@ -541,7 +542,7 @@ const Interview = ({
   );
 };
 
-const ScheduleTypeField = ({
+export const ScheduleTypeField = ({
   value,
   handleTypeChange,
 }: {
@@ -633,7 +634,7 @@ export const SessionDurationField = ({
   value: SessionFormProps['session_duration'];
   handleChange: HandleChange;
 }) => {
-  const options = [30, 45, 60, 120].reduce(
+  const options = sessionDurations.reduce(
     (acc, curr) => {
       acc.push({ name: getBreakLabel(curr), value: curr });
       return acc;
