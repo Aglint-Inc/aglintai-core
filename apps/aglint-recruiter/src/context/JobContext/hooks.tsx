@@ -50,6 +50,15 @@ const useJobContext = () => {
     [jobs.data, job_id, jobs.status, jobLoad],
   );
 
+  const total = useMemo(
+    () =>
+      Object.values(job?.section_count ?? {}).reduce((acc, curr) => {
+        acc += curr;
+        return acc;
+      }, 0),
+    [job?.section_count],
+  );
+
   const scoreParameterPollEnabled = !!job && job.scoring_criteria_loading;
 
   const applicationScoringPollEnabled =
@@ -215,6 +224,7 @@ const useJobContext = () => {
 
   return {
     job,
+    total,
     job_id,
     jobLoad,
     scoreParameterPollEnabled,
