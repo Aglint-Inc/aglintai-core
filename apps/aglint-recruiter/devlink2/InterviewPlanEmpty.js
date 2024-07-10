@@ -24,15 +24,16 @@ export function InterviewPlanEmpty({
           className={_utils.cx(_styles, "div-block-1226")}
           tag="div"
         >
-          <Text weight="bold" content="" />
+          <Text weight="medium" content="No Interview Types Found" />
           <Text
             weight=""
             content="Setup an interview plan in the corresponding job settings to schedule interview."
             color="neutral"
+            align="center"
           />
           <ButtonSoft
             onClickButton={onClickCreateInterviewPlan}
-            textButton=""
+            textButton="Go To Interview Types"
             size="2"
           />
         </_Builtin.Block>

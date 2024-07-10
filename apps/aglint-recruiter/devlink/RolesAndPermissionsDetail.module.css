@@ -1,3 +1,7 @@
+.roles_permissions_detail {
+  background-color: white;
+}
+
 .role_permissions_topbar {
   display: flex;
   height: 48px;
@@ -12,7 +16,7 @@
 }
 
 .role_permissions_body {
-  overflow: auto;
+  overflow: hidden;
   grid-auto-columns: 1fr;
   grid-column-gap: 16px;
   grid-row-gap: 16px;
@@ -23,7 +27,6 @@
 
 .role_detail_layout {
   display: grid;
-  max-width: 10000px;
   grid-auto-columns: 1fr;
   grid-column-gap: var(--space-3);
   grid-row-gap: var(--space-3);
@@ -33,11 +36,16 @@
 
 .permission_detail {
   display: flex;
-  padding: var(--space-4);
+  overflow: auto;
+  padding-top: var(--space-4);
+  padding-right: var(--space-4);
+  padding-bottom: var(--space-4);
+  padding-left: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: var(--space-3);
   grid-row-gap: var(--space-3);
+  height: calc(100vh - 97px);
 }
 
 .count_permissions {

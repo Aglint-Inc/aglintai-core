@@ -19,15 +19,15 @@ export function IconButtonSoft({
   onClickButton = {},
 }) {
   return (
-    <_Component
-      className={_utils.cx(_styles, "radix-button")}
-      tag="div"
-      icon-button-size-soft={size}
-      button-color-soft={color}
-      button-high-contrast-soft={highContrast}
-      {...onClickButton}
-    >
-      <_Builtin.Block tag="div">
+    <_Component className={_utils.cx(_styles, "radix-button")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "default_state")}
+        tag="div"
+        icon-button-size-soft={size}
+        button-color-soft={color}
+        button-high-contrast-soft={highContrast}
+        {...onClickButton}
+      >
         <GlobalIcon
           size={iconSize}
           weight={iconWeight}

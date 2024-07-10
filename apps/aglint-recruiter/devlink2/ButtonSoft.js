@@ -24,39 +24,43 @@ export function ButtonSoft({
   iconColor = "inherit",
 }) {
   return (
-    <_Component
-      className={_utils.cx(_styles, "radix-button")}
-      tag="div"
-      button-color-soft={color}
-      button-high-contrast-soft={highContrast}
-      button-size-soft={size}
-      {...onClickButton}
-    >
-      {isLeftIcon ? (
-        <_Builtin.Block tag="div">
-          {slotIcon ?? (
-            <GlobalIcon
-              iconName={iconName}
-              size={iconSize}
-              weight={iconWeight}
-              color={iconColor}
-            />
-          )}
+    <_Component className={_utils.cx(_styles, "radix-button")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "button-soft-wrap")}
+        tag="div"
+        button-color-soft={color}
+        button-high-contrast-soft={highContrast}
+        button-size-soft={size}
+        {...onClickButton}
+      >
+        {isLeftIcon ? (
+          <_Builtin.Block tag="div">
+            {slotIcon ?? (
+              <GlobalIcon
+                iconName={iconName}
+                size={iconSize}
+                weight={iconWeight}
+                color={iconColor}
+              />
+            )}
+          </_Builtin.Block>
+        ) : null}
+        <_Builtin.Block tag="div" button="">
+          <_Builtin.Block tag="div">{textButton}</_Builtin.Block>
         </_Builtin.Block>
-      ) : null}
-      <_Builtin.Block tag="div">{textButton}</_Builtin.Block>
-      {isRightIcon ? (
-        <_Builtin.Block tag="div">
-          {slotIcon ?? (
-            <GlobalIcon
-              iconName={iconName}
-              size={iconSize}
-              weight={iconWeight}
-              color={iconColor}
-            />
-          )}
-        </_Builtin.Block>
-      ) : null}
+        {isRightIcon ? (
+          <_Builtin.Block tag="div">
+            {slotIcon ?? (
+              <GlobalIcon
+                iconName={iconName}
+                size={iconSize}
+                weight={iconWeight}
+                color={iconColor}
+              />
+            )}
+          </_Builtin.Block>
+        ) : null}
+      </_Builtin.Block>
       {isDisabled ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "disabled_state")}

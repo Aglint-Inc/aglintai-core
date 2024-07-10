@@ -7,4 +7,5 @@ declare function GlobalEmptyState(props: {
   iconName?: React.ReactNode;
   styleEmpty?: Types.Devlink.RuntimeProps;
   size?: Types.Builtin.Text;
+  slotButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

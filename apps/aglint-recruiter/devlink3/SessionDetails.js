@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { SlotComp } from "./SlotComp";
+import { MemberRow } from "./MemberRow";
 import * as _utils from "./utils";
 import _styles from "./SessionDetails.module.css";
 
@@ -55,7 +55,7 @@ export function SessionDetails({
           className={_utils.cx(_styles, "slot_member_row")}
           tag="div"
         >
-          {slotMemberRow ?? <SlotComp componentNeme="MemebersRow" />}
+          {slotMemberRow ?? <MemberRow />}
         </_Builtin.Block>
       ) : null}
     </_Component>

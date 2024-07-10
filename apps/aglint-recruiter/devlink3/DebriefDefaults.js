@@ -15,7 +15,7 @@ export function DebriefDefaults({
       tag="div"
     >
       <_Builtin.Block className={_utils.cx(_styles, "debrief_title")} tag="div">
-        <Text content="Debrief Defaults" weight="bold" />
+        <Text content="Debrief Defaults" weight="medium" />
         <Text
           content="Setup a default company wide setting for scheduling debrief sessions."
           weight=""

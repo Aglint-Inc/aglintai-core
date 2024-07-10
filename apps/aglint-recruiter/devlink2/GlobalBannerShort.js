@@ -39,7 +39,6 @@ export function GlobalBannerShort({
           fontSize="1"
         />
         <Text content={textDescription} color="neutral" weight="" size="1" />
-        <_Builtin.Block tag="div" />
         <_Builtin.Block
           className={_utils.cx(_styles, "button_wrapper")}
           id={_utils.cx(

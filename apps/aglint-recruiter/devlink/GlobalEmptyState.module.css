@@ -25,3 +25,13 @@
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
 }
+
+.slot_for_button {
+  display: flex;
+  width: 100%;
+  height: auto;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
