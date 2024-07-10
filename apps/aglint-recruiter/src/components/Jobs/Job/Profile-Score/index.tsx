@@ -118,7 +118,6 @@ const ProfileScoreControls = () => {
   };
   const handleSubmit = async () => {
     await handleJobAsyncUpdate(job.id, { parameter_weights: safeWeights });
-    // await handleJobApplicationRecalculate();
   };
   useEffect(() => {
     if (!initialRef.current) {

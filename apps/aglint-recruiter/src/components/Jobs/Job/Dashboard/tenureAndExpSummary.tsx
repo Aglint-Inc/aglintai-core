@@ -2,12 +2,27 @@ import { FC } from 'react';
 
 import { CardWithNumber } from '@/devlink3/CardWithNumber';
 import { NoData } from '@/devlink3/NoData';
+import Loader from '@/src/components/Common/Loader';
 import { useJobDashboard } from '@/src/context/JobDashboard';
 
 const TenureAndExpSummary = () => {
   const {
-    tenureAndExperience: { data },
+    tenureAndExperience: { data, status },
   } = useJobDashboard();
+  if (status === 'pending')
+    return (
+      <>
+        <Loader />
+        <Loader />
+      </>
+    );
+  if (status === 'error')
+    return (
+      <>
+        <>Error</>
+        <>Error</>;
+      </>
+    );
   if (!data) {
     return (
       <>
