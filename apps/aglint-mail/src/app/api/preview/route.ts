@@ -18,7 +18,7 @@ const ReqPayload = z.object({
 
 const all_possible_dynamic_values: {
   [K in (typeof allTempvariables)[number]]: string;
-} & { time: string } = {
+} = {
   candidateFirstName: 'John',
   candidateLastName: 'Doe',
   candidateName: 'John Doe',
