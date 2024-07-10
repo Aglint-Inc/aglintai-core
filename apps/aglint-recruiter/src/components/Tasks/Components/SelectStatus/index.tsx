@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { DB } from '@aglint/shared-types';
-import { Popover, Stack, Typography } from '@mui/material';
+import { Popover, selectClasses, Stack, Typography } from '@mui/material';
 import React from 'react';
 
 import { ShowCode } from '@/src/components/Common/ShowCode';
@@ -65,14 +65,19 @@ function SelectStatus({
           vertical: 'top',
           horizontal: 'center',
         }}
-        sx={{
-          '& .MuiPaper-outlined': {
-            // border: 'none',
-            borderRadius: 'var(--radius-4)',
-          },
-        }}
+        // sx={{
+        //   '& .MuiPaper-outlined': {
+        //     // border: 'none',
+        //     borderRadius: 'var(--radius-4)',
+        //   },
+        // }}
       >
-        <Stack width={150} spacing={'var(--space-2)'} p={'var(--space-2)'}>
+        <Stack
+          bgcolor={'#fff'}
+          width={150}
+          spacing={'var(--space-2)'}
+          p={'var(--space-2)'}
+        >
           {statusList
             .filter((ele) => !['failed'].includes(ele.id))
             .map(
