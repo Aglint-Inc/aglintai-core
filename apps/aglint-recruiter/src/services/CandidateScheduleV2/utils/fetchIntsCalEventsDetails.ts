@@ -3,6 +3,7 @@ import {
   CalConflictType,
   CompServiceKeyCred,
   InterDetailsType,
+  schedulingSettingType,
 } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 
@@ -13,32 +14,6 @@ import { userTzDayjs } from './userTzDayjs';
 export const fetchIntsCalEventsDetails = async (
   db_details: ScheduleApiDetails,
 ) => {
-  const getCalEventType = (cal_event_summary: string): CalConflictType => {
-    const scheduling_keywords =
-      db_details.comp_schedule_setting.schedulingKeyWords;
-    const is_soft_conflict = scheduling_keywords.SoftConflicts.some(
-      (key_word) =>
-        cal_event_summary.toLowerCase().includes(key_word.toLowerCase()),
-    );
-    if (is_soft_conflict) return 'soft';
-    const is_ooo_conflict = scheduling_keywords.outOfOffice.some((key_word) =>
-      cal_event_summary.toLowerCase().includes(key_word.toLocaleLowerCase()),
-    );
-    if (is_ooo_conflict) return 'ooo';
-
-    const is_recruiting_block = scheduling_keywords.recruitingBlocks.some(
-      (key_word) =>
-        cal_event_summary.toLowerCase().includes(key_word.toLocaleLowerCase()),
-    );
-    if (is_recruiting_block) return 'recruiting_blocks';
-    const is_free_block = scheduling_keywords.free.some((key_word) =>
-      cal_event_summary.toLowerCase().includes(key_word.toLocaleLowerCase()),
-    );
-    if (is_free_block) return 'free_time';
-
-    return 'cal_event';
-  };
-
   const ints_events_map = await fetchIntsCalEvents({
     inter_details: db_details.all_inters.map((i) => ({
       all_events: [],
@@ -48,7 +23,7 @@ export const fetchIntsCalEventsDetails = async (
       tokens: i.schedule_auth,
     })),
     company_cred: db_details.company_cred,
-    start_time: db_details.schedule_dates.user_end_date_js.format(),
+    start_time: db_details.schedule_dates.user_start_date_js.format(),
     end_time: db_details.schedule_dates.user_end_date_js.format(),
   });
 
@@ -88,7 +63,10 @@ export const fetchIntsCalEventsDetails = async (
           start: {
             ...cal_event.start,
           },
-          cal_type: getCalEventType(cal_event.summary),
+          cal_type: getCalEventType(
+            cal_event.summary,
+            db_details.comp_schedule_setting,
+          ),
         });
       });
       inter_details.cal_date_events = { ...cal_event_map };
@@ -156,4 +134,31 @@ const fetchIntsCalEvents = async (params: FetchCalEventsParams) => {
     };
   });
   return ints_events_map;
+};
+
+const getCalEventType = (
+  cal_event_summary: string,
+  comp_schedule_setting: schedulingSettingType,
+): CalConflictType => {
+  const scheduling_keywords = comp_schedule_setting.schedulingKeyWords;
+  const is_soft_conflict = scheduling_keywords.SoftConflicts.some((key_word) =>
+    cal_event_summary.toLowerCase().includes(key_word.toLowerCase()),
+  );
+  if (is_soft_conflict) return 'soft';
+  const is_ooo_conflict = scheduling_keywords.outOfOffice.some((key_word) =>
+    cal_event_summary.toLowerCase().includes(key_word.toLocaleLowerCase()),
+  );
+  if (is_ooo_conflict) return 'ooo';
+
+  const is_recruiting_block = scheduling_keywords.recruitingBlocks.some(
+    (key_word) =>
+      cal_event_summary.toLowerCase().includes(key_word.toLocaleLowerCase()),
+  );
+  if (is_recruiting_block) return 'recruiting_blocks';
+  const is_free_block = scheduling_keywords.free.some((key_word) =>
+    cal_event_summary.toLowerCase().includes(key_word.toLocaleLowerCase()),
+  );
+  if (is_free_block) return 'free_time';
+
+  return 'cal_event';
 };

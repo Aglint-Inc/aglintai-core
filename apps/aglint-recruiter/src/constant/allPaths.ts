@@ -162,7 +162,6 @@ export const PATHS = [
 '/api/scheduling/v1/find_interview_slots',
 '/api/scheduling/v1/find_slots_date_range',
 '/api/scheduling/v1/get-candidate-selected-slots',
-'/api/scheduling/v1/troubleshoot',
 '/api/scheduling/v1/update-calender-event-status',
 '/api/scheduling/v1/update_meeting_interviewers',
 '/api/scheduling/v1/verify-recruiter-selected-slots',

@@ -30,9 +30,9 @@ import {
   ScheduleApiDetails,
   ScheduleDBDetailsParams,
 } from './types';
+import { calcEachIntsAPIDetails } from './utils/calcEachIntsAPIDetails';
 import { dbFetchScheduleApiDetails } from './utils/dbFetchScheduleApiDetails';
 import { fetchIntsCalEventsDetails } from './utils/fetchIntsCalEventsDetails';
-import { findEachInterviewerAPiDetails } from './utils/findEachInterFreeTime';
 import { calcIntsCombsForEachSessionRound } from './utils/interviewersCombsForSession';
 import { isIntervLoadPassed } from './utils/isInterviewerLoadPassed';
 import { planCombineSlots } from './utils/planCombine';
@@ -47,7 +47,6 @@ export class CandidatesSchedulingV2 {
   public db_details: ScheduleApiDetails;
   private api_options: APIOptions;
   public intervs_details_map: IntervsWorkHrsEventMapType;
-  private api_details: ScheduleApiDetails;
 
   constructor(_api_options: v.InferInput<typeof scheduling_options_schema>) {
     this.api_options = { ..._api_options };
@@ -57,11 +56,11 @@ export class CandidatesSchedulingV2 {
   private setIntervsDetailsMap(
     _intervs_details_map: IntervsWorkHrsEventMapType,
   ) {
-    this.intervs_details_map = { ..._intervs_details_map };
+    this.intervs_details_map = _intervs_details_map;
   }
 
-  private setApiDetails(_api_details: ScheduleApiDetails) {
-    this.api_details = { ..._api_details };
+  private setDbDetails(_api_details: ScheduleApiDetails) {
+    this.db_details = { ..._api_details };
   }
 
   //NOTE: publicly exposed apis
@@ -72,7 +71,7 @@ export class CandidatesSchedulingV2 {
     const db_details = await dbFetchScheduleApiDetails(params);
     const int_with_events = await fetchIntsCalEventsDetails(db_details);
 
-    const inter_details = findEachInterviewerAPiDetails(
+    const inter_details = calcEachIntsAPIDetails(
       int_with_events,
       this.api_options,
       db_details,
@@ -93,7 +92,7 @@ export class CandidatesSchedulingV2 {
       intervs_map.set(inter.interviewer_id, details);
     }
 
-    this.setApiDetails(db_details);
+    this.setDbDetails(db_details);
     this.setIntervsDetailsMap(intervs_map);
   }
 
@@ -311,7 +310,7 @@ export class CandidatesSchedulingV2 {
       while (
         combs.length === 0 &&
         curr_date.isSameOrBefore(
-          this.api_details.schedule_dates.user_end_date_js,
+          this.db_details.schedule_dates.user_end_date_js,
           'day',
         )
       ) {
@@ -347,15 +346,15 @@ export class CandidatesSchedulingV2 {
     };
 
     const findCurrentDayPlan = () => {
-      let current_day = this.api_details.schedule_dates.user_start_date_js;
+      let current_day = this.db_details.schedule_dates.user_start_date_js;
       const plan_combs = findMultiDaySlotsUtil([], current_day, 0);
 
       return plan_combs;
     };
 
     const findAllDayPlans = () => {
-      let dayjs_start_date = this.api_details.schedule_dates.user_start_date_js;
-      let dayjs_end_date = this.api_details.schedule_dates.user_end_date_js;
+      let dayjs_start_date = this.db_details.schedule_dates.user_start_date_js;
+      let dayjs_end_date = this.db_details.schedule_dates.user_end_date_js;
 
       let curr_date = dayjs_start_date;
       let all_combs: SessionsCombType[][][] = [];
@@ -370,8 +369,8 @@ export class CandidatesSchedulingV2 {
       return all_combs;
     };
     const findAvailabilitySlots = () => {
-      let dayjs_start_date = this.api_details.schedule_dates.user_start_date_js;
-      let dayjs_end_date = this.api_details.schedule_dates.user_end_date_js;
+      let dayjs_start_date = this.db_details.schedule_dates.user_start_date_js;
+      let dayjs_end_date = this.db_details.schedule_dates.user_end_date_js;
 
       let curr_date = dayjs_start_date;
       const all_combs: DateRangePlansType[] = [];
