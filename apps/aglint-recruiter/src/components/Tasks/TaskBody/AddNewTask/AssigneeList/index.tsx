@@ -81,10 +81,11 @@ function AssigneeList({
         <ListPop
           slotListCard={assignerList.map((ele, i) => {
             if (
-              hideAgents &&
-              (ele.user_id === EmailAgentId ||
-                ele.user_id === PhoneAgentId ||
-                ele.user_id === SystemAgentId)
+              (hideAgents &&
+                (ele.user_id === EmailAgentId ||
+                  ele.user_id === PhoneAgentId ||
+                  ele.user_id === SystemAgentId)) ||
+              selectedAssignee?.user_id === ele.user_id
             )
               return null;
             return (
@@ -95,7 +96,7 @@ function AssigneeList({
                 sx={{
                   cursor: 'pointer',
                   '&:hover': {
-                    bgcolor: 'var(--neutral-2)',
+                    bgcolor: 'var(--neutral-1)',
                   },
                 }}
                 onClick={() => {
