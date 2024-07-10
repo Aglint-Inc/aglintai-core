@@ -9,6 +9,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { marked } from 'marked';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -19,7 +20,6 @@ import { AgentFollowUp } from '@/devlink3/AgentFollowUp';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import { SkeletonActivitiesCard } from '@/devlink3/SkeletonActivitiesCard';
 import { TaskProgress } from '@/devlink3/TaskProgress';
-import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import {
@@ -264,7 +264,14 @@ function SubTaskProgress() {
                                 !sessionList[0]?.interview_meeting?.id
                               }
                             >
-                              <Loader />
+                              <Image
+                                src={
+                                  'https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/6661adfc1e7a10e0f552f20f_iiiwG0vJQN.gif'
+                                }
+                                width={24}
+                                height={24}
+                                alt=''
+                              />
                             </ShowCode.When>
                             <ShowCode.Else>
                               <Stack
