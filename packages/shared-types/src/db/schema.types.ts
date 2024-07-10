@@ -4533,6 +4533,13 @@ export type Database = {
         }
         Returns: Json
       }
+      get_applicant_badges: {
+        Args: {
+          job_id: string
+          badge_constants?: Json
+        }
+        Returns: Json
+      }
       get_applicant_locations: {
         Args: {
           job_id: string

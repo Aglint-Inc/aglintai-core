@@ -48,6 +48,21 @@ export const applicationsQueries = {
         (await supabase.rpc('get_applicant_locations', { job_id }).single())
           .data.locations,
     }),
+  badgesCount: ({
+    job_id,
+    polling = false,
+  }: ApplicationsAllQueryPrerequistes) =>
+    queryOptions({
+      enabled: !!job_id,
+      gcTime: job_id ? GC_TIME : 0,
+      refetchOnMount: polling,
+      queryKey: [
+        ...applicationsQueries.all({ job_id }).queryKey,
+        'badges_count',
+      ],
+      queryFn: async () =>
+        (await supabase.rpc('get_applicant_badges', { job_id })).data,
+    }),
   applications: ({
     job_id,
     count,

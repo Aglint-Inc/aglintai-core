@@ -214,6 +214,13 @@ export const useApplicationsActions = () => {
     }),
   );
 
+  const badgesCount = useQuery(
+    applicationsQueries.badgesCount({
+      job_id,
+      polling: applicationScoringPollEnabled,
+    }),
+  );
+
   const newApplications = useInfiniteQuery(
     applicationsQueries.applications({
       job_id,
@@ -386,6 +393,7 @@ export const useApplicationsActions = () => {
     cascadeVisibilites,
     sectionApplication,
     locationFilterOptions,
+    badgesCount,
     filters,
     sort,
     setFilters,
