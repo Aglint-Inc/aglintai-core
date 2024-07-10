@@ -72,7 +72,7 @@ function SessionList({
         onClick={handleClick}
         direction={'row'}
         // spacing={4}
-        minHeight={'var(--space-6)'}
+        minHeight={'24px'}
         gap={'var(--space-2)'}
         alignItems={'center'}
       >
@@ -106,7 +106,8 @@ function SessionList({
         sx={{
           '& .MuiPopover-paper': {
             // border: 'none',
-            height: '200px',
+            height: '150px',
+            maxHeight: '200px',
             width: '300px',
           },
         }}

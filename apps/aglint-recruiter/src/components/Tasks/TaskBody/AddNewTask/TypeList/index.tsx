@@ -55,7 +55,7 @@ function TypeList({
         sx={{
           '& .MuiPopover-paper': {
             border: 'none',
-            height: '200px',
+            height: '100px',
             width: '300px',
           },
         }}
