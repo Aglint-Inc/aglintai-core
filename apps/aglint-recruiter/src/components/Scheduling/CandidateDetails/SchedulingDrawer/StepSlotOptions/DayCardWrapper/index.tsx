@@ -12,6 +12,7 @@ import { TextWithIcon } from '@/devlink3/TextWithIcon';
 
 import SingleDayCard from '../SingleDayCard';
 import DayCardConflicts from './DayCardConflicts';
+import { EmptySlotReason } from '@/devlink3/EmptySlotReason';
 
 const NUMBER_OF_SLOTS_TO_DISPLAY = 10;
 
@@ -69,6 +70,7 @@ function DayCardWrapper({
               dayjs(session.start_time).format('MMMM DD') ===
               dayjs(date).format('MMMM DD'),
           ),
+          no_slot_reasons: slot.no_slot_reasons,
         };
       });
       return {
@@ -104,6 +106,12 @@ function DayCardWrapper({
     }
   }, [selectedCombIds]);
 
+  const noSlotReasons = slotsWithDaySessions.flatMap((slot) =>
+    slot.daySessions.flatMap((daySession) =>
+      daySession.no_slot_reasons.flatMap((reason) => reason.reason),
+    ),
+  );
+
   return (
     <>
       <DateOption
@@ -119,11 +127,15 @@ function DayCardWrapper({
         }
         slotRightBlock={
           <>
-            <Text
-              content={`${noOfTotalSlots} options, ${noOfSelectedSlots} selected`}
-              color={isSelected ? 'accent' : 'neutral'}
-            />
-            <DayCardConflicts slotsWithDaySessions={slotsWithDaySessions} />
+            {!noSlotReasons.length && (
+              <>
+                <Text
+                  content={`${noOfTotalSlots} options, ${noOfSelectedSlots} selected`}
+                  color={isSelected ? 'accent' : 'neutral'}
+                />
+                <DayCardConflicts slotsWithDaySessions={slotsWithDaySessions} />
+              </>
+            )}
 
             {isDayCollapseNeeded && (
               <IconButtonSoft
@@ -139,7 +151,7 @@ function DayCardWrapper({
             )}
           </>
         }
-        isCheckboxVisible={isDayCheckboxNeeded}
+        isCheckboxVisible={isDayCheckboxNeeded && !noSlotReasons.length}
         isSelected={isSelected}
         slotCheckbox={
           <Checkbox
@@ -176,7 +188,18 @@ function DayCardWrapper({
             <Collapse in={isDayCollapseNeeded ? collapse : true}>
               <Stack spacing={'var(--space-2)'} pt={'var(--space-2)'}>
                 {slotsWithDaySessions.slice(0, displayedSlots)?.map((slot) => {
-                  return (
+                  const noSlotsReasons = slot.daySessions
+                    .filter(
+                      (daySession) => daySession.no_slot_reasons.length > 0,
+                    )
+                    .flatMap((daySession) =>
+                      daySession.no_slot_reasons.flatMap(
+                        (reason) => reason.reason,
+                      ),
+                    );
+                  const uniqueReasons = [...new Set(noSlotsReasons)];
+
+                  return noSlotsReasons.length === 0 ? (
                     <ScheduleOption
                       slotCheckbox={
                         <>
@@ -220,6 +243,16 @@ function DayCardWrapper({
                         },
                       )}
                     />
+                  ) : (
+                    uniqueReasons.map((reason, index) => (
+                      <EmptySlotReason
+                        key={index}
+                        textMain={reason}
+                        iconName={'nightlife'}
+                        color={'info'}
+                        textSub={''}
+                      />
+                    ))
                   );
                 })}
                 {displayedSlots < slots.length && (

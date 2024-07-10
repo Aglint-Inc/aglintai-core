@@ -490,13 +490,9 @@ function Theme({ children }) {
             padding: 0,
             width: size,
             height: size,
-            // '& .MuiSvgIcon-root': {
-            //   // borderRadius: '4px',
-            // },
             '&.Mui-disabled': {
-              color: 'rgba(0, 0, 0, 0.38)',
               '& .MuiSvgIcon-root': {
-                fill: 'rgba(0, 0, 0, 0.38)',
+                opacity: 0.4,
               },
             },
           }),

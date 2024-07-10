@@ -90,11 +90,29 @@ export const useSelfSchedulingDrawer = ({
   const onClickPrimary = async () => {
     if (stepScheduling === 'pick_date') {
       if (scheduleFlow === 'self_scheduling' || scheduleFlow === 'debrief') {
-        await findScheduleOptions({
+        setNoOptions(false);
+        const resOptions = await findScheduleOptions({
           dateRange: dateRange,
           session_ids: selectedSessionIds,
           rec_id: recruiter.id,
         });
+
+        if (resOptions.length === 0) {
+          setNoOptions(true);
+          return;
+        }
+
+        const filterSlots = filterSchedulingOptionsArray({
+          schedulingOptions: resOptions,
+          filters,
+        });
+        if (filterSlots.combs.length === 0) {
+          setFilteredSchedulingOptions(filterSlots.combs);
+          setNoOptions(true);
+          toast.warning('No availability found with the selected preferences.');
+          return;
+        }
+        setStepScheduling('preference');
       } else if (
         scheduleFlow === 'phone_agent' ||
         scheduleFlow === 'email_agent'
@@ -223,9 +241,7 @@ export const useSelfSchedulingDrawer = ({
     };
   }) => {
     try {
-      setNoOptions(false);
       setFetchingPlan(true);
-
       const bodyParams: APIFindAvailability = {
         session_ids: session_ids,
         recruiter_id: rec_id,
@@ -249,12 +265,11 @@ export const useSelfSchedulingDrawer = ({
         const slots = res.data as ApiResponseFindAvailability;
 
         if (slots.length === 0) {
-          setNoOptions(true);
           toast.error('No availability found.');
         } else {
           setSchedulingOptions(slots);
-          setStepScheduling('preference');
         }
+        return slots;
       } else {
         toast.error('Error retrieving availability.');
       }

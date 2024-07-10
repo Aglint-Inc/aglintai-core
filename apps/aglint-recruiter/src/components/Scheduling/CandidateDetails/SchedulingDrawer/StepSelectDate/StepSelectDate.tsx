@@ -7,16 +7,24 @@ import { ScheduleSelectPill } from '@/devlink3/ScheduleSelectPill';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import DateRange from '@/src/components/Tasks/Components/DateRange';
 
-import IconSessionType from '../RightPanel/IconSessionType';
-import { useSchedulingApplicationStore } from '../store';
-import InfoStepSelectState from './InfoStepSelectState';
-import { setDateRange, useSchedulingFlowStore } from './store';
+import { GlobalInfo } from '@/devlink2/GlobalInfo';
+import IconSessionType from '../../RightPanel/IconSessionType';
+import {
+  setSelectedSessionIds,
+  useSchedulingApplicationStore,
+} from '../../store';
+import InfoStepSelectState from '../InfoStepSelectState';
+import { setDateRange, useSchedulingFlowStore } from '../store';
+import ErrorsFindAvailibility from './ErrorsFindAvailibility';
 
 function SelectDateRange() {
-  const { dateRange, scheduleFlow } = useSchedulingFlowStore((state) => ({
-    dateRange: state.dateRange,
-    scheduleFlow: state.scheduleFlow,
-  }));
+  const { dateRange, scheduleFlow, noOptions } = useSchedulingFlowStore(
+    (state) => ({
+      dateRange: state.dateRange,
+      scheduleFlow: state.scheduleFlow,
+      noOptions: state.noOptions,
+    }),
+  );
 
   const { selectedSessionIds, initialSessions } = useSchedulingApplicationStore(
     (state) => ({
@@ -36,7 +44,12 @@ function SelectDateRange() {
   return (
     <>
       <DatePickerBody
-        slotGlobalnfo={<InfoStepSelectState scheduleFlow={scheduleFlow} />}
+        slotGlobalnfo={
+          <>
+            <InfoStepSelectState scheduleFlow={scheduleFlow} />
+            {noOptions && <ErrorsFindAvailibility />}
+          </>
+        }
         textCalenderHelper={
           scheduleFlow === 'self_scheduling'
             ? 'Choose the date range within which you want to self schedule.'
@@ -77,6 +90,17 @@ function SelectDateRange() {
                 textTime={getBreakLabel(
                   session.interview_session.session_duration,
                 )}
+                onClickClose={{
+                  onClick: () => {
+                    if (selectedSessionIds.length > 1) {
+                      setSelectedSessionIds(
+                        selectedSessionIds.filter(
+                          (id) => id !== session.interview_session.id,
+                        ),
+                      );
+                    }
+                  },
+                }}
               />
             ))}
           </>

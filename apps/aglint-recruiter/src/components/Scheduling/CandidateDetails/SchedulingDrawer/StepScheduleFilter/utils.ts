@@ -74,18 +74,18 @@ export function filterSchedulingOptionsArray({
   let allCombs: MultiDayPlanType[] =
     createCombsForMultiDaySlots(allFilteredOptions);
 
-  allCombs = allCombs
-    .map(
-      (comb) =>
-        ({
-          ...comb,
-          plans: comb.plans.filter(
-            (option) =>
-              option.no_slot_reasons.length === 0 && option.sessions.length > 0,
-          ),
-        }) as MultiDayPlanType,
-    )
-    .filter((comb) => comb.plans.length > 0);
+  // allCombs = allCombs
+  //   .map(
+  //     (comb) =>
+  //       ({
+  //         ...comb,
+  //         plans: comb.plans.filter(
+  //           (option) =>
+  //             option.no_slot_reasons.length === 0 && option.sessions.length > 0,
+  //         ),
+  //       }) as MultiDayPlanType,
+  //   )
+  //   .filter((comb) => comb.plans.length > 0);
 
   let noConflictsCnt = 0;
   let softConflictsCnt = 0;

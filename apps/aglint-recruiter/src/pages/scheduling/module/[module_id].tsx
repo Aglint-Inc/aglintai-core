@@ -37,7 +37,7 @@ import {
 import { useAllInterviewersDetails } from '@/src/components/Scheduling/ScheduleDetails/hooks';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
-import { numberToOrdinalText } from '@/src/utils/numberToText/numberToOrdinalText';
+import { numberToOrdinalText } from '@/src/utils/number/numberToOrdinalText';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

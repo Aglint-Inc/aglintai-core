@@ -16,7 +16,7 @@ import { useSelfSchedulingDrawer } from './hooks';
 import RescheduleSlot from './RescheduleSlot';
 import SelfScheduleSuccess from './SelfScheduleSuccess';
 import StepScheduleFilter from './StepScheduleFilter';
-import SelectDateRange from './StepSelectDate';
+import SelectDateRange from './StepSelectDate/StepSelectDate';
 import StepSlotOptions from './StepSlotOptions';
 import {
   resetSchedulingFlowStore,
