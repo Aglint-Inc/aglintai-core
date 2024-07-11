@@ -7,9 +7,17 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { ScheduleListType } from '../../Common/ModuleSchedules/hooks';
+import { schedulesSupabase } from '../../schedules-query';
 
 export type AssignerType = RecruiterUserType & {
   assignee: 'Agents' | 'Interviewers';
+};
+export type ScheduleFilerType = {
+  status: string[];
+  interviewer: string[];
+  job: string[];
+  schedule_type: string[];
+  date_range: string[];
 };
 const initialFilterState = {
   status: [],
@@ -19,10 +27,8 @@ const initialFilterState = {
   date_range: [],
 };
 interface ContextValue {
-  filterSchedules: Awaited<ReturnType<typeof getAllScheduleList>> | null;
-  setFilterSchedule: (
-    x: Awaited<ReturnType<typeof getAllScheduleList>> | null,
-  ) => void;
+  filterSchedules: ScheduleFilerType | null;
+  setFilterSchedule: (x: ScheduleFilerType | null) => void;
   loadingSchedules: boolean;
   setLoadingSchedules: (x: boolean) => void;
   filterState: typeof initialFilterState;
@@ -93,37 +99,17 @@ function ScheduleStatesProvider({ children }) {
 export { ScheduleStatesProvider, useScheduleStatesContext };
 
 export const useAllScheduleList = ({
-  selectedInterviewers,
-  selectedStatus,
-  selectedJob,
-  selectedScheduleType,
-  selectedDateRange,
+  filters,
 }: {
-  selectedInterviewers: string[];
-  selectedStatus: string[];
-  selectedJob: string[];
-  selectedScheduleType: string[];
-  selectedDateRange: string[];
+  filters: ScheduleFilerType;
 }) => {
   const { recruiter_id } = useAuthDetails();
   const queryClient = useQueryClient();
   const query = useQuery({
-    queryKey: [
-      'get_All_Schedule_List',
-
-      selectedInterviewers,
-      selectedStatus,
-      selectedJob,
-      selectedScheduleType,
-      selectedDateRange,
-    ],
+    queryKey: ['get_All_Schedule_List', ...filters.status],
     queryFn: () =>
       getAllScheduleList({
-        selectedInterviewers,
-        selectedStatus,
-        selectedJob,
-        selectedScheduleType,
-        selectedDateRange,
+        ...filters,
         recruiter_id,
       }),
     gcTime: 20000,
@@ -133,32 +119,14 @@ export const useAllScheduleList = ({
   return { ...query, refetch };
 };
 
-export async function getAllScheduleList({
-  selectedInterviewers,
-  selectedStatus,
-  selectedJob,
-  selectedScheduleType,
-  selectedDateRange,
-  recruiter_id,
-}: {
-  selectedInterviewers: string[];
-  selectedStatus: string[];
-  selectedJob: string[];
-  selectedScheduleType: string[];
-  selectedDateRange: string[];
-  recruiter_id: string;
-}) {
+export async function getAllScheduleList({ ...filter }: { Schedule }) {
   // const { data, error } = await supabase.rpc(
   //   'get_interview_schedule_by_rec_id',
   //   {
   //     target_rec_id: recruiter_id,
   //   },
   // );
-  const filters = supabase
-    .from('meeting_details')
-    .select(
-      '*,applications(candidates(first_name,last_name)), public_jobs(id,company,job_title), meeting_interviewers(*)',
-    )
+  const filters = schedulesSupabase
     .eq('recruiter_id', recruiter_id)
     .eq('meeting_interviewers.is_confirmed', true);
 

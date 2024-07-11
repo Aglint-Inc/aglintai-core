@@ -4,21 +4,23 @@ import dayjs from 'dayjs';
 import { NewMyScheduleCard } from '@/devlink3/NewMyScheduleCard';
 
 import { getAllScheduleList } from '../../../Schedules/ScheduleStatesContext';
+import {
+  SchedulesSupabase,
+  transformDataSchedules,
+} from '../../../schedules-query';
 import { DateIcon } from '../../../Settings/Components/DateSelector';
 import ScheduleMeetingCard from '../ScheduleMeetingCard';
 
 function ScheduleMeetingList({
   filterSchedules,
 }: {
-  filterSchedules: Awaited<ReturnType<typeof getAllScheduleList>>;
+  filterSchedules: SchedulesSupabase;
 }) {
   return (
     <Stack spacing={'var(--space-4)'}>
-      {transformData(filterSchedules).map((sch, ind) => {
+      {transformDataSchedules(filterSchedules).map((sch, ind) => {
         const date = Object.keys(sch)[0];
-        const schedules = sch[String(date)] as Awaited<
-          ReturnType<typeof getAllScheduleList>
-        >;
+        const schedules = sch[String(date)];
         return (
           <NewMyScheduleCard
             key={ind}
