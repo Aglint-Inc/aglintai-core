@@ -2,6 +2,7 @@ import { CalendarEvent, NewCalenderEvent } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
 import {
+  CalEventAttendeesAuthDetails,
   GetAuthParams,
   getSuperAdminAuth,
   getUserCalAuth,
@@ -16,12 +17,16 @@ export class GoogleCalender {
   private auth_details: GetAuthParams;
   private user_auth: any;
   constructor(
-    _auth_details: GetAuthParams | null,
+    _comp_domain_cred_hash: string | null,
+    _recruiter_auth: CalEventAttendeesAuthDetails | null,
     _recruiter_user_id: string = null,
   ) {
-    if (_auth_details) {
-      this.auth_details = _auth_details;
-    }
+    this.auth_details = {
+      company_cred: _comp_domain_cred_hash
+        ? JSON.parse(decrypt_string(_comp_domain_cred_hash))
+        : null,
+      recruiter: _recruiter_auth,
+    };
     if (_recruiter_user_id) {
       this.recruiter_user_id = _recruiter_user_id;
     }

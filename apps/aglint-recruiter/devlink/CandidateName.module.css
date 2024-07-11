@@ -23,6 +23,7 @@
 
   display: flex;
   overflow: visible;
+  height: 24px;
   justify-content: center;
   align-items: center;
   grid-column-gap: 4px;
@@ -33,76 +34,4 @@
   transition: all 200ms ease;
 
   cursor: pointer;
-}
-
-.radix-button {
-  position: relative;
-  z-index: 1;
-
-  overflow: visible;
-  justify-content: center;
-  align-items: center;
-  grid-column-gap: var(--space-1);
-  grid-row-gap: var(--space-1);
-
-  transition-property: all;
-  transition-duration: 200ms;
-  transition-timing-function: ease;
-
-  user-select: none;
-}
-
-.icon_placeholder {
-  display: flex;
-}
-
-.disabled_state {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-  z-index: 2;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
-
-  background-color: #f1f0ef;
-
-  box-shadow: 0 0 0 0.5px #f1f0ef;
-
-  color: #bcbbb5;
-
-  cursor: not-allowed;
-}
-
-.loading_state {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-  z-index: 2;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
-
-  background-color: #f1f0ef;
-
-  box-shadow: 0 0 0 0.5px #f1f0ef;
-
-  color: #bcbbb5;
-
-  cursor: progress;
-}
-
-.loader_place_holder {
-  width: 16px;
-  height: 16px;
 }

@@ -65,7 +65,7 @@ export function TaskTableJobCand({
             <Text color="neutral-12" content="Task" weight="medium" />
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "task_row_cell")}
+            className={_utils.cx(_styles, "task_row_cell", "is_status")}
             id={_utils.cx(
               _styles,
               "w-node-_4236db5e-3938-26b8-a04e-ed6679bd2c96-79bd2c91"

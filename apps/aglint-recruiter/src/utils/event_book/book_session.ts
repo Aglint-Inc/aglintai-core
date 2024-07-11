@@ -34,7 +34,7 @@ export const bookSession = async (
   job_title: string,
   cal_event_organizer: CalEventOrganizerAuthDetails,
   cal_event_attendees: CalEventAttendeesAuthDetails[],
-  company_cred: CompServiceKeyCred,
+  company_cred_hash_str: string,
 ) => {
   const event_name = `${session.module_name} : ${candidate_name} for ${job_title}`;
   const event_description = getCalEventDescription(meeting_id);
@@ -105,19 +105,16 @@ export const bookSession = async (
       };
     }
   }
-  const google_cal = new GoogleCalender({
-    recruiter: cal_event_organizer,
-    company_cred,
-  });
+  const google_cal = new GoogleCalender(
+    company_cred_hash_str,
+    cal_event_organizer,
+  );
   await google_cal.authorizeUser();
   const cal_event = await google_cal.createCalenderEvent(calendar_event);
   const attendees_promises = cal_event_attendees.map(async (int) => {
     try {
       const email = (int.schedule_auth as any)?.email ?? int.email;
-      const int_cal = new GoogleCalender({
-        company_cred,
-        recruiter: int,
-      });
+      const int_cal = new GoogleCalender(company_cred_hash_str, int);
       await int_cal.authorizeUser();
       await int_cal.importEvent(cal_event, email);
     } catch (err) {

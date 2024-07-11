@@ -186,6 +186,7 @@
 .task_activityy {
   display: flex;
   min-height: 200px;
+  margin-top: 10px;
   padding: var(--space-1);
   flex-direction: column;
   flex-wrap: nowrap;

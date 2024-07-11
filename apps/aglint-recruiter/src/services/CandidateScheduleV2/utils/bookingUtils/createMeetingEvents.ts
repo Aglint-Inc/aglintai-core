@@ -55,7 +55,7 @@ export const createMeetingEvents = async (
       schedule_db_details.job.job_title,
       meeting_organizer_auth,
       meeting_attendees_auth,
-      cand_schedule.db_details.company_cred,
+      cand_schedule.db_details.company_cred_hash_str,
     );
     const meeting_organizer =
       sess_inters_full_details.interviewers[

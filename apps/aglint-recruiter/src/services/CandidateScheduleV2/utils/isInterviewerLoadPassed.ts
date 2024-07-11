@@ -6,7 +6,7 @@ import {
 } from '@aglint/shared-types';
 import { Dayjs } from 'dayjs';
 
-import { DBDetailsType } from '../types';
+import { ScheduleApiDetails } from '../types';
 
 type LoadType = {
   total_interview: number;
@@ -15,7 +15,7 @@ type LoadType = {
 
 export const isIntervLoadPassed = (
   current_day: Dayjs,
-  db_details: DBDetailsType,
+  db_details: ScheduleApiDetails,
   inter_id: string,
   int_schedule_setting: schedulingSettingType,
   plan_comb: InterviewSessionApiRespType[],

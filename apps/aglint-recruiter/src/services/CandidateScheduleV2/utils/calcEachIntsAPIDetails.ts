@@ -1,5 +1,4 @@
 import {
-  APIFindAvailability,
   APIOptions,
   holidayType,
   InterDayFreeTime,
@@ -12,7 +11,7 @@ import {
 import { ScheduleUtils } from '@aglint/shared-utils';
 import { Dayjs } from 'dayjs';
 
-import { DBDetailsType } from '../types';
+import { ScheduleApiDetails } from '../types';
 import { getInterviewerBlockedTimes } from './getInterviewerBlockedTimes';
 import {
   convertTimeDurStrToDayjsChunk,
@@ -33,13 +32,10 @@ import { userTzDayjs } from './userTzDayjs';
  * @returns returns array of free time chunks for each interviewer for every given date bw the daterange
  */
 //
-export const findEachInterviewerFreeTimes = (
+export const calcEachIntsAPIDetails = (
   ints_details: InterDetailsType[],
-  api_payload: Omit<APIFindAvailability, 'options'>,
   api_options: APIOptions,
-  db_details: DBDetailsType,
-  start_date: string,
-  end_date: string,
+  api_details: ScheduleApiDetails,
 ) => {
   // one interview free time
   const findInterviewerWorkHrFreeTime = (
@@ -106,19 +102,19 @@ export const findEachInterviewerFreeTimes = (
     let holiday: TimeDurationType = {
       startTime: current_day
         .startOf('day')
-        .tz(api_payload.candidate_tz)
+        .tz(api_details.req_user_tz)
         .format(),
-      endTime: current_day.endOf('day').tz(api_payload.candidate_tz).format(),
+      endTime: current_day.endOf('day').tz(api_details.req_user_tz).format(),
     };
     let day_off: TimeDurationType = {
       ...holiday,
     };
 
-    const is_holiday = db_details.comp_schedule_setting.totalDaysOff.find(
+    const is_holiday = api_details.comp_schedule_setting.totalDaysOff.find(
       (holiday: holidayType) =>
         current_day.isSame(
           userTzDayjs(holiday.date, 'DD MMM YYYY').tz(
-            db_details.comp_schedule_setting.timeZone.tzCode,
+            api_details.comp_schedule_setting.timeZone.tzCode,
           ),
           'date',
         ),
@@ -156,9 +152,9 @@ export const findEachInterviewerFreeTimes = (
       return [];
     }
     let current_day_blocked_times = getInterviewerBlockedTimes(
-      db_details.comp_schedule_setting,
+      api_details.comp_schedule_setting,
       interviewer.cal_date_events[current_day.startOf('day').format()] ?? [], // when for particular day there are no events
-      api_payload.candidate_tz,
+      api_details.req_user_tz,
       api_options,
     );
 
@@ -239,13 +235,13 @@ export const findEachInterviewerFreeTimes = (
           chunk_js.startTime,
           cand_time.startTime,
         )
-          .tz(api_payload.candidate_tz)
+          .tz(api_details.req_user_tz)
           .format();
         curr_day_work_hrs.endTime = dayjsMin(
           chunk_js.endTime,
           cand_time.endTime,
         )
-          .tz(api_payload.candidate_tz)
+          .tz(api_details.req_user_tz)
           .format();
         work_time_duration.push({
           ...curr_day_work_hrs,
@@ -288,13 +284,13 @@ export const findEachInterviewerFreeTimes = (
             chunk_js.startTime,
             cand_time.startTime,
           )
-            .tz(api_payload.candidate_tz)
+            .tz(api_details.req_user_tz)
             .format();
           curr_day_work_hrs.endTime = dayjsMin(
             chunk_js.endTime,
             cand_time.endTime,
           )
-            .tz(api_payload.candidate_tz)
+            .tz(api_details.req_user_tz)
             .format();
           work_time_duration.push({
             ...curr_day_work_hrs,
@@ -403,8 +399,8 @@ export const findEachInterviewerFreeTimes = (
     const work_hr_chunks: TimeDurationDayjsType[] = work_hours_range
       .map((work) => {
         return {
-          startTime: userTzDayjs(work.startTime).tz(api_payload.candidate_tz),
-          endTime: userTzDayjs(work.endTime).tz(api_payload.candidate_tz),
+          startTime: userTzDayjs(work.startTime).tz(api_details.req_user_tz),
+          endTime: userTzDayjs(work.endTime).tz(api_details.req_user_tz),
         };
       })
       .sort((e1, e2) => {
@@ -430,8 +426,8 @@ export const findEachInterviewerFreeTimes = (
     let upd_interv: InterDetailsType = { ...interv };
     upd_interv = findInterviewerWorkHrFreeTime(
       upd_interv,
-      userTzDayjs(start_date).tz(api_payload.candidate_tz).startOf('day'),
-      userTzDayjs(end_date).tz(api_payload.candidate_tz).endOf('day'),
+      api_details.schedule_dates.user_start_date_js,
+      api_details.schedule_dates.user_end_date_js,
     );
     upd_interv = { ...upd_interv };
     return upd_interv;

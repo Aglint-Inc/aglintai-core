@@ -18,6 +18,7 @@ export function TeamListItem({
   textLocation = "29 Aug 2023",
   textLastActive = "29 Aug 2023",
   slotThreeDot,
+  slotBadge,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "team-table-list")} tag="div">
@@ -53,6 +54,7 @@ export function TeamListItem({
           >
             <Text content={userStatusText} size="1" />
           </_Builtin.Block>
+          <_Builtin.Block tag="div">{slotBadge}</_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "user-detail-wrap")}
