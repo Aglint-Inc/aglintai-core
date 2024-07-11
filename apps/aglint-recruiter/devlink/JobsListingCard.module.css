@@ -1,13 +1,12 @@
 .rd-job-list-item {
   display: grid;
-  padding: var(--space-4);
+  padding-right: var(--space-4);
+  padding-left: var(--space-4);
   justify-content: space-between;
   justify-items: stretch;
   align-items: center;
   flex: 0 auto;
   grid-auto-columns: 1fr;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
   grid-template-columns: 1fr;
   grid-template-rows: auto;
 
@@ -19,8 +18,6 @@
   transition: all 200ms ease;
 
   text-decoration: none;
-
-  cursor: pointer;
 }
 
 .rd-job-list-item:hover {
@@ -42,6 +39,11 @@
   }
 }
 
+.click_spacer_16 {
+  height: 16px;
+  cursor: pointer;
+}
+
 .rd-job-info-wrapper {
   display: flex;
   width: 100%;
@@ -51,6 +53,8 @@
   flex: 1;
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
+
+  cursor: pointer;
 }
 
 .rd-company-info-block {
@@ -292,12 +296,16 @@
 }
 
 .applicants-number-wrapper {
-  display: flex;
+  display: grid;
+  padding-top: 8px;
   justify-content: space-between;
   align-items: center;
   flex: 1;
+  grid-auto-columns: 1fr;
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
+  grid-template-columns: max-content 1fr;
+  grid-template-rows: auto;
 }
 
 @media screen and (max-width: 991px) {
@@ -311,14 +319,26 @@
   overflow: hidden;
   flex-direction: row;
   flex-wrap: nowrap;
+  grid-column-gap: 3px;
+  grid-row-gap: 3px;
+
   border-radius: var(--radius-2);
 }
 
-.pipline_item {
+.pupeline_pill {
+  position: relative;
+  display: flex;
+  transition: opacity 300ms ease;
+  color: var(--neutral-3);
+  cursor: pointer;
+}
+
+.short_pipeline {
   position: relative;
   z-index: 2;
 
   display: flex;
+  height: 100%;
   padding-right: var(--space-4);
   padding-left: var(--space-4);
   justify-content: flex-start;
@@ -329,17 +349,33 @@
   background-color: var(--neutral-3);
 }
 
-.connector {
+.connecting_embed {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  color: var(--neutral-3);
 }
 
-.embed_flex {
-  display: flex;
-  align-items: center;
+.connecting_embed.is_absolute {
+  position: absolute;
+  left: -12px;
+  top: 0%;
+  right: auto;
+  bottom: 0%;
 }
 
-#w-node-_386f3b7b-e9ac-d3e4-5660-9b25755cbcef-e4f6dd07 {
+.flex_end_cursdor {
+  display: flex;
+  height: 100%;
+  justify-content: flex-end;
+  align-items: center;
+  cursor: pointer;
+}
+
+#w-node-_461ea21c-dff4-f2e0-3807-df801cb5bccb-e4f6dd07 {
+}
+#w-node-a59fdab3-4a41-7f67-5475-8f76c5678d29-e4f6dd07 {
+}
+#w-node-a59fdab3-4a41-7f67-5475-8f76c5678d2a-e4f6dd07 {
+}
+#w-node-fd801a9c-fafd-cb7f-ee44-ae19a9fdb141-e4f6dd07 {
+}
+#w-node-f1d789ae-0dc9-e05d-864a-d3bce827e58c-e4f6dd07 {
 }

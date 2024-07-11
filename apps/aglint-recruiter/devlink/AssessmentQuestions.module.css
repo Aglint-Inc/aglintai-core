@@ -189,6 +189,16 @@
   color: var(--blue600-aad8d97e);
 }
 
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
 .div-block-544 {
   display: flex;
   padding: 10px 20px;

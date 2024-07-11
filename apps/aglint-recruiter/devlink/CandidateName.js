@@ -43,8 +43,8 @@ export function CandidateName({
         onClickButton={onClickResume}
         size="1"
         isLeftIcon={true}
-        textButton=""
-        iconName=""
+        textButton="Resume"
+        iconName="contact_page"
         iconSize="3"
         color="neutral"
         iconWeight="medium"

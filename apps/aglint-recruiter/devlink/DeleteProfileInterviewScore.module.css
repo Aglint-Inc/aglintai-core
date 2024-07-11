@@ -283,6 +283,16 @@
   color: var(--blue600-aad8d97e);
 }
 
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
 .ps-score-intro-wrapper {
   display: flex;
   max-width: 340px;

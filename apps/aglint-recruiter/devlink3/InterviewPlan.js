@@ -31,7 +31,7 @@ export function InterviewPlan({
         </_Builtin.Block>
       ) : null}
       <_Builtin.Block className={_utils.cx(_styles, "title_wrap")} tag="div">
-        <Text content="Interview plan for this job" weight="bold" />
+        <Text content="Interview plan for this job" weight="medium" />
         <Text
           weight=""
           content="Add your interview type to form an interview plan. You can find your interview type in scheduler"

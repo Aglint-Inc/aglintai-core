@@ -477,6 +477,16 @@
   color: var(--blue600-aad8d97e);
 }
 
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
 .list-nxt-text {
   display: block;
   margin-top: 6px;
