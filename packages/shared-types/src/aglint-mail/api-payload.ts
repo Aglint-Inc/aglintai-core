@@ -243,6 +243,7 @@ type Payloads = {
       emailBody: string;
       subject: string;
       companyLogo: string;
+      selfScheduleLink: string;
     };
   };
   sendAvailabilityRequest_email_applicant: {

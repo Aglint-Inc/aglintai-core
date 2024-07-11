@@ -89,6 +89,7 @@ export async function dbUtil(
       emailBody: filled_comp_template.body,
       companyLogo: recruiter.logo,
       subject: filled_comp_template.subject,
+      selfScheduleLink: scheduleLink,
     };
 
   return {
