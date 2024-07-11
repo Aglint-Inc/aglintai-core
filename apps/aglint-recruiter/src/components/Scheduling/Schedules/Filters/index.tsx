@@ -1,5 +1,4 @@
 import { Popover, Stack } from '@mui/material';
-import dayjs from 'dayjs';
 import _ from 'lodash';
 import { MouseEvent, useEffect, useState, useTransition } from 'react';
 
@@ -10,7 +9,10 @@ import SearchField from '@/src/components/Common/SearchField/SearchField';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
-import { useScheduleStatesContext } from '../ScheduleStatesContext';
+import {
+  useAllScheduleList,
+  useScheduleStatesContext,
+} from '../ScheduleStatesContext';
 import { FilterOptionsType } from '../types';
 import { filterOptions, getListItems } from '../utils';
 import FilterChip from './FilterChip';
@@ -22,12 +24,8 @@ const initialFilter = filterOptions.reduce((acc, item) => {
 }, {});
 
 function Filters() {
-  const {
-    allSchedules,
-    setFilterSchedule,
-    filterSchedules,
-    setLoadingSchedules,
-  } = useScheduleStatesContext();
+  const { allSchedules, setFilterSchedule, setLoadingSchedules } =
+    useScheduleStatesContext();
 
   const [selectedFilters, setSelectedFilters] = useState<FilterOptionsType[]>(
     [],
@@ -138,124 +136,124 @@ function Filters() {
     );
   };
 
-  function getMeetingIdsForMembers() {
-    const filteredMeetingIds = allSchedules
-      .filter((schedule) =>
-        schedule.users?.some((user) => selectedInterviewers.includes(user.id)),
-      )
-      .map((schedule) => schedule.interview_meeting.meeting_id);
-    return filteredMeetingIds;
-  }
-  function getDateRangeSelected(e) {
-    const filteredByDateRange = allSchedules
-      .filter(
-        (schedule) =>
-          dayjs(schedule.interview_meeting.start_time).isAfter(
-            dayjs(e[0]).add(-1, 'day'),
-            'day',
-          ) &&
-          dayjs(schedule.interview_meeting.start_time).isBefore(
-            dayjs(e[1]).add(1, 'day'),
-            'day',
-          ),
-      )
-      .map((schedule) => schedule.interview_meeting.meeting_id);
-    return filteredByDateRange;
-  }
+  // function getMeetingIdsForMembers() {
+  //   const filteredMeetingIds = allSchedules
+  //     .filter((schedule) =>
+  //       schedule.users?.some((user) => selectedInterviewers.includes(user.id)),
+  //     )
+  //     .map((schedule) => schedule.interview_meeting.meeting_id);
+  //   return filteredMeetingIds;
+  // }
+  // function getDateRangeSelected(e) {
+  //   const filteredByDateRange = allSchedules
+  //     .filter(
+  //       (schedule) =>
+  //         dayjs(schedule.interview_meeting.start_time).isAfter(
+  //           dayjs(e[0]).add(-1, 'day'),
+  //           'day',
+  //         ) &&
+  //         dayjs(schedule.interview_meeting.start_time).isBefore(
+  //           dayjs(e[1]).add(1, 'day'),
+  //           'day',
+  //         ),
+  //     )
+  //     .map((schedule) => schedule.interview_meeting.meeting_id);
+  //   return filteredByDateRange;
+  // }
 
-  useEffect(() => {
-    if (Array.isArray(allSchedules)) {
-      const filteredSchedule = allSchedules.filter((schedule) => {
-        const statusMatch =
-          !selectedStatus.length ||
-          selectedStatus.includes(String(schedule.interview_meeting.status));
-        const memberMatch =
-          !getMeetingIdsForMembers().length ||
-          getMeetingIdsForMembers().includes(
-            String(schedule.interview_meeting.meeting_id),
-          );
-        const jobMatch =
-          !selectedJob.length ||
-          selectedJob.includes(String(schedule.interview_meeting.job_id));
-        const scheduleTypeMatch =
-          !selectedScheduleType.length ||
-          selectedScheduleType.includes(
-            String(schedule.interview_meeting.schedule_type),
-          );
+  // useEffect(() => {
+  //   if (Array.isArray(allSchedules)) {
+  //     const filteredSchedule = allSchedules.filter((schedule) => {
+  //       const statusMatch =
+  //         !selectedStatus.length ||
+  //         selectedStatus.includes(String(schedule.interview_meeting.status));
+  //       const memberMatch =
+  //         !getMeetingIdsForMembers().length ||
+  //         getMeetingIdsForMembers().includes(
+  //           String(schedule.interview_meeting.meeting_id),
+  //         );
+  //       const jobMatch =
+  //         !selectedJob.length ||
+  //         selectedJob.includes(String(schedule.interview_meeting.job_id));
+  //       const scheduleTypeMatch =
+  //         !selectedScheduleType.length ||
+  //         selectedScheduleType.includes(
+  //           String(schedule.interview_meeting.schedule_type),
+  //         );
 
-        const dateRangeMatch =
-          !selectedDateRange.length ||
-          getDateRangeSelected(selectedDateRange).includes(
-            String(schedule.interview_meeting.meeting_id),
-          );
-        return (
-          statusMatch &&
-          memberMatch &&
-          jobMatch &&
-          scheduleTypeMatch &&
-          dateRangeMatch
-        );
-      });
+  //       const dateRangeMatch =
+  //         !selectedDateRange.length ||
+  //         getDateRangeSelected(selectedDateRange).includes(
+  //           String(schedule.interview_meeting.meeting_id),
+  //         );
+  //       return (
+  //         statusMatch &&
+  //         memberMatch &&
+  //         jobMatch &&
+  //         scheduleTypeMatch &&
+  //         dateRangeMatch
+  //       );
+  //     });
 
-      if (searchText) {
-        const filteredSchedules = filterSchedules.filter((ele) => {
-          if (
-            ele.interview_meeting.session_name
-              .toLowerCase()
-              .includes(searchText.toLowerCase())
-          ) {
-            return ele;
-          }
-        });
-        setFilterSchedule(filteredSchedules);
-      } else {
-        setFilterSchedule(filteredSchedule);
-      }
+  //     if (searchText) {
+  //       const filteredSchedules = filterSchedules.filter((ele) => {
+  //         if (
+  //           ele.interview_meeting.session_name
+  //             .toLowerCase()
+  //             .includes(searchText.toLowerCase())
+  //         ) {
+  //           return ele;
+  //         }
+  //       });
+  //       setFilterSchedule(filteredSchedules);
+  //     } else {
+  //       setFilterSchedule(filteredSchedule);
+  //     }
 
-      // setFilterSchedule(filteredSchedule);
-      setLoadingSchedules(false);
-    }
-  }, [
-    selectedInterviewers,
-    selectedStatus,
-    selectedJob,
-    selectedScheduleType,
-    selectedDateRange,
-    allSchedules,
-  ]);
+  //     // setFilterSchedule(filteredSchedule);
+  //     setLoadingSchedules(false);
+  //   }
+  // }, [
+  //   selectedInterviewers,
+  //   selectedStatus,
+  //   selectedJob,
+  //   selectedScheduleType,
+  //   selectedDateRange,
+  //   allSchedules,
+  // ]);
 
-  const handleTextChange = (e) => {
-    const value = e.target.value;
-    setSearchText(value);
-    startTransition(() => {
-      if (value) {
-        const filteredSchedules = filterSchedules.filter((ele) => {
-          if (
-            ele.interview_meeting.session_name
-              .toLowerCase()
-              .includes(value.toLowerCase())
-          ) {
-            return ele;
-          }
-        });
-        setFilterSchedule(filteredSchedules);
-      } else {
-        setFilterSchedule(allSchedules);
-      }
-    });
-  };
+  // const handleTextChange = (e) => {
+  //   const value = e.target.value;
+  //   setSearchText(value);
+  //   startTransition(() => {
+  //     if (value) {
+  //       const filteredSchedules = filterSchedules.filter((ele) => {
+  //         if (
+  //           ele.interview_meeting.session_name
+  //             .toLowerCase()
+  //             .includes(value.toLowerCase())
+  //         ) {
+  //           return ele;
+  //         }
+  //       });
+  //       setFilterSchedule(filteredSchedules);
+  //     } else {
+  //       setFilterSchedule(allSchedules);
+  //     }
+  //   });
+  // };
 
   const handleTextClear = () => {
     setSearchText('');
     startTransition(() => {
-      setFilterSchedule(allSchedules);
+      // setFilterSchedule(allSchedules);
     });
   };
   return (
     <Stack direction={'row'} spacing={'var(--space-3)'}>
       <SearchField
         value={searchText}
-        onChange={handleTextChange}
+        onChange={() => {}}
         onClear={handleTextClear}
         placeholder={'Search session.'}
       />

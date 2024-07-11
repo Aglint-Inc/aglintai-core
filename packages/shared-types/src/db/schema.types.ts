@@ -2309,6 +2309,8 @@ export type Database = {
           interview_coordinator: string | null
           interview_instructions: string | null
           interview_plan: Json | null
+          interview_plan_warning_ignore: boolean
+          interview_session_warning_ignore: boolean
           interview_success: string | null
           intro_videos: Json | null
           is_ats_sync: boolean
@@ -2363,6 +2365,8 @@ export type Database = {
           interview_coordinator?: string | null
           interview_instructions?: string | null
           interview_plan?: Json | null
+          interview_plan_warning_ignore?: boolean
+          interview_session_warning_ignore?: boolean
           interview_success?: string | null
           intro_videos?: Json | null
           is_ats_sync?: boolean
@@ -2417,6 +2421,8 @@ export type Database = {
           interview_coordinator?: string | null
           interview_instructions?: string | null
           interview_plan?: Json | null
+          interview_plan_warning_ignore?: boolean
+          interview_session_warning_ignore?: boolean
           interview_success?: string | null
           intro_videos?: Json | null
           is_ats_sync?: boolean
@@ -4029,10 +4035,12 @@ export type Database = {
           id: string | null
           instructions: string | null
           interview_schedule_id: string | null
+          job_id: string | null
           meeting_flow: Database["public"]["Enums"]["meeting_flow"] | null
           meeting_json: Json | null
           meeting_link: string | null
           organizer_id: string | null
+          recruiter_id: string | null
           schedule_type:
             | Database["public"]["Enums"]["interview_schedule_type"]
             | null
@@ -4047,6 +4055,20 @@ export type Database = {
             | null
         }
         Relationships: [
+          {
+            foreignKeyName: "applications_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "public_jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "applications_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "job_view"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "interview_meeting_organizer_id_fkey"
             columns: ["organizer_id"]
@@ -4089,6 +4111,13 @@ export type Database = {
             referencedRelation: "interview_schedule"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "public_jobs_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
         ]
       }
       meeting_interviewers: {
@@ -4101,11 +4130,13 @@ export type Database = {
           is_confirmed: boolean | null
           last_name: string | null
           meeting_id: string | null
+          postion: string | null
           profile_image: string | null
           session_id: string | null
           session_relation_id: string | null
           session_type: Database["public"]["Enums"]["session_type"] | null
           training_type: Database["public"]["Enums"]["interviewer_type"] | null
+          tz_code: string | null
           user_id: string | null
         }
         Relationships: [
@@ -4416,7 +4447,6 @@ export type Database = {
         Args: {
           session_id: string
           interview_plan_id: string
-          job_id: string
         }
         Returns: undefined
       }
@@ -4440,6 +4470,10 @@ export type Database = {
       embeddingresume: {
         Args: Record<PropertyKey, never>
         Returns: Json
+      }
+      expire_new_applications: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       fetch_interview_data: {
         Args: {
@@ -5269,6 +5303,13 @@ export type Database = {
       schedulercron: {
         Args: Record<PropertyKey, never>
         Returns: Json
+      }
+      score_application: {
+        Args: {
+          scores?: Json
+          parameter_weights?: Json
+        }
+        Returns: number
       }
       search_candidates: {
         Args: {

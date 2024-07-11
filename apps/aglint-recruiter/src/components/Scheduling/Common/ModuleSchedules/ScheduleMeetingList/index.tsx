@@ -3,31 +3,29 @@ import dayjs from 'dayjs';
 
 import { NewMyScheduleCard } from '@/devlink3/NewMyScheduleCard';
 
+import { getAllScheduleList } from '../../../Schedules/ScheduleStatesContext';
 import { DateIcon } from '../../../Settings/Components/DateSelector';
-import { ScheduleListType } from '../hooks';
 import ScheduleMeetingCard from '../ScheduleMeetingCard';
 
 function ScheduleMeetingList({
   filterSchedules,
 }: {
-  filterSchedules: ScheduleListType;
+  filterSchedules: Awaited<ReturnType<typeof getAllScheduleList>>;
 }) {
   return (
     <Stack spacing={'var(--space-4)'}>
       {transformData(filterSchedules).map((sch, ind) => {
         const date = Object.keys(sch)[0];
-        const schedules = sch[String(date)] as ScheduleListType;
+        const schedules = sch[String(date)] as Awaited<
+          ReturnType<typeof getAllScheduleList>
+        >;
         return (
           <NewMyScheduleCard
             key={ind}
             textDate={date != 'undefined' ? dayjs(date).format('DD') : null}
             textDay={date != 'undefined' ? dayjs(date).format('ddd') : null}
             textMonth={
-              date != 'undefined' ? (
-                dayjs(date).format('MMM')
-              ) : (
-                <DateIcon />
-              )
+              date != 'undefined' ? dayjs(date).format('MMM') : <DateIcon />
             }
             slotMyScheduleSubCard={schedules.map((meetingDetails, i) => {
               return (
@@ -43,11 +41,13 @@ function ScheduleMeetingList({
 
 export default ScheduleMeetingList;
 
-function transformData(inputData: ScheduleListType) {
+function transformData(
+  inputData: Awaited<ReturnType<typeof getAllScheduleList>> | null,
+) {
   const transformedData = {};
 
   inputData?.forEach((item) => {
-    const date = item.interview_meeting.start_time?.split('T')[0]; // Extracting date from start_time
+    const date = item.start_time?.split('T')[0]; // Extracting date from start_time
     if (!transformedData[String(date)]) {
       transformedData[String(date)] = [];
     }
