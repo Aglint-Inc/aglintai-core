@@ -1,6 +1,5 @@
 import {
   AllSessionIntDetails,
-  CompServiceKeyCred,
   InterviewerMeetingScheduled,
   InterviewModuleType,
   InterviewSession,
@@ -12,7 +11,6 @@ import {
 } from '@aglint/shared-types';
 import { ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
 
-import { decrypt_string } from '@/src/utils/integrations/crypt-funcs';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import { ScheduleApiDetails, ScheduleDBDetailsParams } from '../types';
@@ -52,7 +50,7 @@ export const dbFetchScheduleApiDetails = async (
     int_modules_data,
     inter_data,
     interview_sessions,
-    company_cred,
+    company_cred_hash_str,
   } = await fetchAndVerifyDb(
     params,
     is_fetch_meeting_data ? schedule_dates : undefined,
@@ -124,7 +122,7 @@ export const dbFetchScheduleApiDetails = async (
     req_user_tz: params.req_user_tz,
     schedule_dates: schedule_dates,
     ses_with_ints: api_sess_ints,
-    company_cred,
+    company_cred_hash_str,
     all_inters: unique_inters,
     comp_schedule_setting,
     int_meetings,
@@ -183,9 +181,7 @@ export const fetchAndVerifyDb = async (
       .interview_modules as unknown as InterviewModuleType[][],
     interview_sessions: r[0].interview_sessions as InterviewSession[],
     inter_data: r[0].interviewers as unknown as SessionInterviewerType[][],
-    company_cred: r[0].service_cred
-      ? (JSON.parse(decrypt_string(r[0].service_cred)) as CompServiceKeyCred)
-      : null,
+    company_cred_hash_str: r[0].service_cred,
   };
 };
 

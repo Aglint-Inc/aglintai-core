@@ -4,7 +4,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
 import { CalEventAttendeesAuthDetails } from '@/src/utils/event_book/book_session';
-import { decrypt_string } from '@/src/utils/integrations/crypt-funcs';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 type BodyParams = {
@@ -19,10 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       email: calender_event.organizer.email,
     });
 
-    const google_cal = new GoogleCalender({
-      company_cred: comp_cred,
-      recruiter,
-    });
+    const google_cal = new GoogleCalender(comp_cred, recruiter);
 
     await google_cal.authorizeUser();
     await google_cal.updateEventStatus(calender_event.id, 'cancelled');
@@ -49,8 +45,8 @@ const getRecruiterCredentials = async ({ email }) => {
 
   const r: CalEventAttendeesAuthDetails = {
     email,
-    schedule_auth: user_schedule_auth as any,
+    schedule_auth: rec.recruiter_user.schedule_auth as any,
     user_id,
   };
-  return { comp_cred, recruiter: r };
+  return { comp_cred: rec.recruiter.service_json, recruiter: r };
 };

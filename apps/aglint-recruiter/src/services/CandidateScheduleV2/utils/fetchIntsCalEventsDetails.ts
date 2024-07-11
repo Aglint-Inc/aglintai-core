@@ -1,7 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import {
   CalConflictType,
-  CompServiceKeyCred,
   InterDetailsType,
   schedulingSettingType,
 } from '@aglint/shared-types';
@@ -22,7 +21,7 @@ export const fetchIntsCalEventsDetails = async (
       isCalenderConnected: false,
       tokens: i.schedule_auth,
     })),
-    company_cred: db_details.company_cred,
+    company_cred_hash_str: db_details.company_cred_hash_str,
     start_time: db_details.schedule_dates.user_start_date_js.format(),
     end_time: db_details.schedule_dates.user_end_date_js.format(),
   });
@@ -82,7 +81,7 @@ type FetchCalEventsParams = {
     InterDetailsType,
     'email' | 'tokens' | 'interviewer_id' | 'isCalenderConnected' | 'all_events'
   >[];
-  company_cred: CompServiceKeyCred;
+  company_cred_hash_str: string | null;
   start_time: string;
   end_time: string;
 };
@@ -90,17 +89,11 @@ const fetchIntsCalEvents = async (params: FetchCalEventsParams) => {
   const promisedInts = params.inter_details.map(async (int) => {
     const updated_int_details = { ...int };
     try {
-      const google_cal = new GoogleCalender(
-        {
-          recruiter: {
-            email: int.email,
-            schedule_auth: int.tokens,
-            user_id: int.interviewer_id,
-          },
-          company_cred: params.company_cred,
-        },
-        null,
-      );
+      const google_cal = new GoogleCalender(params.company_cred_hash_str, {
+        email: int.email,
+        schedule_auth: int.tokens,
+        user_id: int.interviewer_id,
+      });
       await google_cal.authorizeUser();
       const fetched_events = await google_cal.getAllCalenderEvents(
         params.start_time,

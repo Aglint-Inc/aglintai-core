@@ -1,6 +1,5 @@
 import {
   AllSessionIntDetails,
-  CompServiceKeyCred,
   InterDetailsType,
   InterviewerMeetingScheduled,
   InterviewSessionApiRespType,
@@ -24,7 +23,7 @@ export type ScheduleDBDetailsParams = {
 
 export type ScheduleApiDetails = {
   req_user_tz: string;
-  company_cred: CompServiceKeyCred;
+  company_cred_hash_str: string;
   ses_with_ints: InterviewSessionApiRespType[];
   all_inters: SessionInterviewerType[];
   comp_schedule_setting: schedulingSettingType;

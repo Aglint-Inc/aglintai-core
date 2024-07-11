@@ -18,7 +18,7 @@ export class GoogleCalender {
   private user_auth: any;
   constructor(
     _comp_domain_cred_hash: string | null,
-    _recruiter_auth: CalEventAttendeesAuthDetails,
+    _recruiter_auth: CalEventAttendeesAuthDetails | null,
     _recruiter_user_id: string = null,
   ) {
     this.auth_details = {
