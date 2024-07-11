@@ -61,6 +61,7 @@ export async function dbUtil(
   const recruiter_tz = meeting_organizer.scheduling_settings.timeZone.tzCode;
 
   let candidate_link = '';
+
   if (req_body.avail_req_id) {
     candidate_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.avail_req_id}`;
   } else {
@@ -94,11 +95,12 @@ export async function dbUtil(
     comp_email_temp,
   );
 
-  const react_email_placeholders: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['react_email_placeholders'] =
+  const react_email_placeholders: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['react_email_placeholders'] =
     {
       emailBody: filled_comp_template.body,
       companyLogo: logo,
       subject: filled_comp_template.subject,
+      availabilityReqLink: candidate_link,
     };
 
   return {

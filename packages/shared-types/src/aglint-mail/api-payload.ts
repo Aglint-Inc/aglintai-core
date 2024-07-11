@@ -256,6 +256,7 @@ type Payloads = {
       emailBody: string;
       subject: string;
       companyLogo: string;
+      availabilityReqLink: string;
     };
   };
   sendAvailReqReminder_email_applicant: {

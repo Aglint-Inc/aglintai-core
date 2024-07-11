@@ -12,6 +12,7 @@ import type { EmailTemplateAPi } from '@aglint/shared-types';
 import config from '../../tailwind.config';
 import { Footer } from '../components/template/Footer';
 import { companyLogoDummy } from '../utils/assets/common';
+import { ButtonSolid } from '../components/template/Button';
 
 type EmailType = EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>;
 
@@ -21,6 +22,8 @@ export const dummy: EmailType['react_email_placeholders'] = {
 
   companyLogo: companyLogoDummy,
   subject: '',
+  availabilityReqLink:
+    '${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.avail_req_id}',
 };
 
 // export get subject
@@ -29,6 +32,7 @@ export const getSubject = (companyName: any) => `${companyName}`;
 export const CandidateAvailabilityRequest = ({
   emailBody = dummy.emailBody,
   companyLogo = dummy.companyLogo,
+  availabilityReqLink = dummy.availabilityReqLink,
 }: EmailType['react_email_placeholders']) => {
   const htmlParser = Parser();
   return (
@@ -48,6 +52,10 @@ export const CandidateAvailabilityRequest = ({
               <Container className="text-text-sm text-neutral-12">
                 {htmlParser.parse(emailBody)}
               </Container>
+              <ButtonSolid
+                href={availabilityReqLink}
+                buttonText="View Details"
+              />
             </Container>
             <Footer />
           </Container>
