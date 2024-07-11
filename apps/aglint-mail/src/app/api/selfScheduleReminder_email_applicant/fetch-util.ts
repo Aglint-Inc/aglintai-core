@@ -54,7 +54,6 @@ export async function dbUtil(
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),
       jobRole: job_title,
-      selfScheduleLink: `<a href="${scheduleLink}" target="_blank" >here</a>`,
       organizerName: getFullName(
         meeting_organizer.first_name,
         meeting_organizer.last_name,

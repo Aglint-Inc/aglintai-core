@@ -90,8 +90,6 @@ export async function fetchUtil(
       ),
       interviewerFirstName: interviewer.first_name,
       interviewerLastName: interviewer.last_name,
-      meetingDetailsLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=candidate_details">here</a>`,
-      candidateScheduleLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}" target="_blank" >here</a>`,
     };
 
   const filled_comp_template = fillCompEmailTemplate(

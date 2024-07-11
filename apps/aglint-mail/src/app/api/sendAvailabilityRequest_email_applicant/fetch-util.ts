@@ -78,7 +78,6 @@ export async function dbUtil(
       candidateFirstName: first_name,
       companyName: company,
       jobRole: job_title,
-      availabilityReqLink: `<a href="${candidate_link}" target="_blank" >here</a>`,
       organizerName: getFullName(
         meeting_organizer.first_name,
         meeting_organizer.last_name,

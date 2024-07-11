@@ -40,7 +40,6 @@ export async function dbUtil(
   );
   const comp_email_placeholder: EmailTemplateAPi<'availabilityReqResend_email_candidate'>['comp_email_placeholders'] =
     {
-      availabilityReqLink: `<a href="${candidate_link}" target="_blank">here</a>`,
       candidateFirstName: first_name,
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),

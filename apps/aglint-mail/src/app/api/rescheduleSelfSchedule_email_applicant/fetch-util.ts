@@ -80,14 +80,11 @@ export async function fetchUtil(
     },
   );
 
-  const scheduleLink = `<a href='${req_body.self_schedule_link}' target="_blank">click here</a>`;
-
   const comp_email_placeholder: EmailTemplateAPi<'rescheduleSelfSchedule_email_applicant'>['comp_email_placeholders'] =
     {
       candidateFirstName: first_name,
       jobRole: job_title,
       companyName: company,
-      selfScheduleLink: scheduleLink,
       organizerName: getFullName(
         meeting_organizer.first_name,
         meeting_organizer.last_name,

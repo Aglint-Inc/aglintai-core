@@ -94,7 +94,6 @@ export async function fetchUtil(
       organizerFirstName: meeting_organizer.first_name,
       organizerLastName: meeting_organizer.last_name,
       OrganizerTimeZone: org_tz,
-      candidateScheduleLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}" target="_blank">here</a>`,
     };
 
   const filled_comp_template = fillCompEmailTemplate(
