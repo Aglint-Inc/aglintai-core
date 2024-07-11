@@ -5,6 +5,8 @@ import * as _interactions from "./interactions";
 import { GlobalIcon } from "./GlobalIcon";
 import { Text } from "./Text";
 import { Kbd } from "./Kbd";
+import { GlobalBadge } from "./GlobalBadge";
+import { ButtonSoft } from "./ButtonSoft";
 import { ViewTaskCard } from "./ViewTaskCard";
 import { TaskProgress } from "./TaskProgress";
 import * as _utils from "./utils";
@@ -58,7 +60,7 @@ export function ViewTask({
                 data-w-id="dafc1148-8c99-faba-54e3-1aae8d857a3c"
                 tag="div"
               >
-                <GlobalIcon iconName="keyboard_arrow_up" />
+                <GlobalIcon iconName="keyboard_arrow_up" size="3" />
                 <_Builtin.Block
                   className={_utils.cx(_styles, "tips-arrow-wrpa")}
                   tag="div"
@@ -92,7 +94,7 @@ export function ViewTask({
                 data-w-id="191a051c-c962-8e18-e110-c40d99c84658"
                 tag="div"
               >
-                <GlobalIcon iconName="keyboard_arrow_down" />
+                <GlobalIcon iconName="keyboard_arrow_down" size="3" />
                 <_Builtin.Block
                   className={_utils.cx(_styles, "tips-arrow-wrpa")}
                   tag="div"
@@ -112,7 +114,9 @@ export function ViewTask({
               </_Builtin.Block>
             ) : null}
           </_Builtin.Block>
-          <_Builtin.Block tag="div">{slotTaskHeader}</_Builtin.Block>
+          <_Builtin.Block tag="div">
+            {slotTaskHeader ?? <GlobalBadge />}
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "taskdrawer_controls")}
@@ -122,15 +126,26 @@ export function ViewTask({
             className={_utils.cx(_styles, "task_action_buttons")}
             tag="div"
           >
-            {slotActionButton}
+            {slotActionButton ?? <ButtonSoft size="1" />}
           </_Builtin.Block>
-          <_Builtin.Block tag="div">{slotButtonFilter}</_Builtin.Block>
+          <_Builtin.Block tag="div">
+            {slotButtonFilter ?? (
+              <ButtonSoft
+                size="1"
+                textButton=""
+                color="neutral"
+                isRightIcon={true}
+                iconSize="3"
+                iconName="keyboard_arrow_down"
+              />
+            )}
+          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "task-close-wrap")}
             tag="div"
             {...onClickClose}
           >
-            <GlobalIcon iconName="close" />
+            <GlobalIcon iconName="close" size="3" />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

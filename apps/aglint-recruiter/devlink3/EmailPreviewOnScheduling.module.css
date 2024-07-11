@@ -7,8 +7,8 @@
   padding-left: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: var(--space-5);
-  grid-row-gap: var(--space-5);
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
   height: calc(100vh - 96px);
 }
 

@@ -63,7 +63,7 @@ export function UserWithRole({
         <Text content={textRole} color="neutral" />
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "slot_iconbutton")}
+        className={_utils.cx(_styles, "slot_iconbutton-copy")}
         id={_utils.cx(
           _styles,
           "w-node-b098ac28-f9fd-7fd5-aa9f-536e270f4bd7-dcc3bff8"
