@@ -1,7 +1,7 @@
 import { Database, Tables } from "./schema.types";
 import { Type } from "./utils.types";
 
-export type CustomMembersMeta = {
+export type   CustomMembersMeta = {
   [id in
     | keyof Pick<
         Tables<"public_jobs">,
