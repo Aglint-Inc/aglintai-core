@@ -31,6 +31,16 @@ export const fetchUserSchedules = async (
     .eq('status', filter)
     .throwOnError();
 
+  if (data.length === 0) {
+    return {
+      schedules: [],
+      totalInterviewsToday: 0,
+      totalHoursToday: 0,
+      totalInterviewsThisWeek: 0,
+      totalHoursThisWeek: 0,
+    };
+  }
+
   const user = data[0]?.meeting_interviewers?.find(
     (interviewer) => interviewer.user_id === user_id,
   );
@@ -38,7 +48,7 @@ export const fetchUserSchedules = async (
   return {
     schedules: data,
     totalInterviewsToday: user?.totalinterviewstoday || 0,
-    totalHoursToday: user?.totalhourstoday,
+    totalHoursToday: user?.totalhourstoday || 0,
     totalInterviewsThisWeek: user?.totalinterviewsthisweek || 0,
     totalHoursThisWeek: user?.totalhoursthisweek || 0,
   };

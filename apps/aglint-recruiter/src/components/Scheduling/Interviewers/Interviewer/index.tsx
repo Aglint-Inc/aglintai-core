@@ -58,7 +58,9 @@ function Interviewer() {
       totalInterviewsToday,
     },
     isLoading,
-  } = useAllSchedulesByUserId({filter});
+  } = useAllSchedulesByUserId({ filter });
+
+  console.log(totalHoursToday);
 
   const tab = (router.query.tab || 'overview') as
     | 'overview'
