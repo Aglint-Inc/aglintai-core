@@ -2,7 +2,6 @@ import * as React from 'react';
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { Session } from '../components/template/Sessions';
 import { companyLogoDummy } from '../utils/assets/common';
-import { ButtonSolid } from '../components/template/Button';
 import { EmailContainer } from '../components/template/Container';
 
 type EmailType = EmailTemplateAPi<'meetingDeclined_email_organizer'>;
@@ -24,8 +23,6 @@ export const dummy: EmailType['react_email_placeholders'] = {
   },
   subject:
     '<p>{{interviewerFullName}} Declined Interview for <span class="temp-variable" data-type="temp-variable" data-id="jobRole">{{jobRole}}</span> with <span class="temp-variable" data-type="temp-variable" data-id="candidateFirstName">{{candidateFirstName}}</span> </p>',
-  meetingDetailsLink: '',
-  candidateScheduleLink: '',
 };
 
 export const getSubject = (companyName: any) => `${companyName}`;
@@ -34,12 +31,10 @@ export const meetingDeclinedEmailOrganizer = ({
   emailBody = dummy.emailBody,
   companyLogo = dummy.companyLogo,
   meetingDetail = dummy.meetingDetail,
-  meetingDetailsLink = dummy.meetingDetailsLink,
 }: EmailType['react_email_placeholders']) => {
   return (
     <EmailContainer companyLogo={companyLogo} emailBody={emailBody}>
       <Session meetingDetail={meetingDetail} />
-      <ButtonSolid href={meetingDetailsLink} buttonText="View Details" />
     </EmailContainer>
   );
 };

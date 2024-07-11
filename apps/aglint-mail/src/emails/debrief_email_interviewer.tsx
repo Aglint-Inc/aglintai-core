@@ -34,7 +34,7 @@ export const DebriefCalendarInvite = ({
   emailBody = dummy.emailBody,
   meetingDetails = dummy.meetingDetails,
   companyLogo = dummy.companyLogo,
-  candidateLink = dummy.candidateLink,
+  candidateLink = '',
 }: EmailType['react_email_placeholders']) => {
   return (
     <EmailContainer companyLogo={companyLogo} emailBody={emailBody}>

@@ -80,13 +80,13 @@ export const renderEmailTemplates = async (
   filename: string,
   emailBody: string,
 ) => {
-  const { default: Template, dummy } = await import(
-    `../../../emails/${filename}`
-  );
+  const { default: Template } = await import(`../../../emails/${filename}`);
 
-  dummy.body = emailBody;
-  dummy.emailBody = emailBody;
-  const element = createElement(Template, dummy);
+  const templateData = {
+    body: emailBody,
+    emailBody: emailBody,
+  };
+  const element = createElement(Template, templateData);
   const html = render(element);
   return { html };
 };
