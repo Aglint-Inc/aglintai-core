@@ -1,4 +1,4 @@
-import { PauseJson } from '@aglint/shared-types';
+import { DatabaseTable, PauseJson } from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
@@ -32,14 +32,20 @@ export const useAllInterviewModules = () => {
   return query;
 };
 
-export const useAllSchedulesByModuleId = () => {
+export const useAllSchedulesByModuleId = ({
+  filter,
+}: {
+  filter: DatabaseTable['interview_meeting']['status'];
+}) => {
   const router = useRouter();
+  const module_id = router.query.module_id as string;
   const query = useQuery({
     queryKey: QueryKeysInteviewModules.SCHEDULES_BY_MODULE_ID({
-      moduleId: router.query.module_id as string,
+      moduleId: module_id,
+      filter,
     }),
-    queryFn: () => fetchModuleSchedules(router.query.module_id as string),
-    enabled: !!router.query.module_id,
+    queryFn: () => fetchModuleSchedules(module_id, filter),
+    enabled: !!module_id,
     placeholderData: [],
   });
   return query;

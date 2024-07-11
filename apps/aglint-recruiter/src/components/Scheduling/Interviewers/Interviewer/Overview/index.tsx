@@ -5,8 +5,8 @@ import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview';
 
-import { ScheduleListType } from '../../../Common/ModuleSchedules/hooks';
 import ScheduleMeetingCard from '../../../Common/ModuleSchedules/ScheduleMeetingCard';
+import { SchedulesSupabase } from '../../../schedules-query';
 import { DetailsWithCount, PauseDialog } from '../../type';
 import TraininingModules from '../TabModules/TraininingModules';
 
@@ -17,12 +17,12 @@ function Overview({
 }: {
   detailsWithCount: DetailsWithCount;
   setPauseResumeDialog: Dispatch<React.SetStateAction<PauseDialog>>;
-  scheduleList: ScheduleListType;
+  scheduleList: SchedulesSupabase;
 }) {
   const router = useRouter();
   const upcomingScheduleList =
     scheduleList?.filter(
-      (item) => item.interview_meeting.status === 'confirmed',
+      (item) => item.status === 'confirmed',
     ) || [];
 
   const trainingModulesList =

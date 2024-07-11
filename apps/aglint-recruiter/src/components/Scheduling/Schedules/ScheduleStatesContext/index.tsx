@@ -126,7 +126,7 @@ export async function getAllScheduleList({ ...filter }: { Schedule }) {
   //     target_rec_id: recruiter_id,
   //   },
   // );
-  const filters = schedulesSupabase
+  const filters = schedulesSupabase()
     .eq('recruiter_id', recruiter_id)
     .eq('meeting_interviewers.is_confirmed', true);
 

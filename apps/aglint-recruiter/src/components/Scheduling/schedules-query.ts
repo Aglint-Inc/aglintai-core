@@ -1,14 +1,15 @@
-import { QueryData } from "@supabase/supabase-js";
+import { QueryData } from '@supabase/supabase-js';
 
-import { supabase } from "@/src/utils/supabase/client";
+import { supabase } from '@/src/utils/supabase/client';
 
-export const schedulesSupabase = supabase
-  .from('meeting_details')
-  .select(
-    '*,applications(candidates(first_name,last_name)), public_jobs(id,company,job_title), meeting_interviewers(*)',
-  );
+export const schedulesSupabase = () =>
+  supabase
+    .from('meeting_details')
+    .select(
+      '*,applications(candidates(first_name,last_name)), public_jobs(id,company,job_title), meeting_interviewers(*)',
+    );
 
-export type SchedulesSupabase = QueryData<typeof schedulesSupabase>;
+export type SchedulesSupabase = QueryData<ReturnType<typeof schedulesSupabase>>;
 
 export function transformDataSchedules(inputData: SchedulesSupabase) {
   const transformedData = {};

@@ -1,4 +1,4 @@
-import { PauseJson, SupabaseType } from '@aglint/shared-types';
+import { DatabaseTable, PauseJson, SupabaseType } from '@aglint/shared-types';
 import axios from 'axios';
 import dayjs from 'dayjs';
 
@@ -16,9 +16,13 @@ import {
 import { calculateHourDifference } from '../utils';
 import { useGetMeetingsByModuleId } from './hooks';
 
-export const fetchModuleSchedules = async (module_id: string) => {
-  const { data } = await schedulesSupabase
+export const fetchModuleSchedules = async (
+  module_id: string,
+  filter: DatabaseTable['interview_meeting']['status'],
+) => {
+  const { data } = await schedulesSupabase()
     .eq('module_id', module_id)
+    .eq('status', filter)
     .throwOnError();
 
   return data;

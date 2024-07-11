@@ -50,7 +50,7 @@ function SlotBodyComp({
   const router = useRouter();
   const { loading } = useSchedulingContext();
 
-  const { data: meetingData } = useGetMeetingsByModuleId();
+  const { data: meetingData, isLoading } = useGetMeetingsByModuleId();
 
   const currentTab = router.query.tab as TabsModuleMembers['queryParams'];
 
@@ -129,7 +129,7 @@ function SlotBodyComp({
                       editModule.settings?.require_training
                     }
                     slotQualifiedMemberList={
-                      !schedulesLoading && (
+                      !isLoading && (
                         <SlotQualifiedMembers
                           editModule={editModule}
                           meetingData={meetingData}

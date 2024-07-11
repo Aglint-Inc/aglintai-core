@@ -1,7 +1,7 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 import { InterviewMemberSide } from '@/devlink2/InterviewMemberSide';
@@ -12,15 +12,18 @@ import ScheduleMeetingCard from '../../Common/ModuleSchedules/ScheduleMeetingCar
 import { transformDataSchedules } from '../../schedules-query';
 import { DateIcon } from '../../Settings/Components/DateSelector';
 import { useAllSchedulesByModuleId } from '../queries/hooks';
+import Loader from '@/src/components/Common/Loader';
 
 function SchedulesModules() {
-  const [filter, setFilter] = React.useState<
-    'confirmed' | 'cancelled' | 'completed'
-  >('confirmed');
+  const [filter, setFilter] =
+    useState<DatabaseTable['interview_meeting']['status']>('confirmed');
 
   const [changeText, setChangeText] = React.useState('');
 
-  const { data: allSchedules, isLoading } = useAllSchedulesByModuleId();
+  const { data: allSchedules, isFetching: isLoading } =
+    useAllSchedulesByModuleId({
+      filter,
+    });
 
   const countCalculation = (
     tab: DatabaseTable['interview_meeting']['status'],
@@ -59,8 +62,8 @@ function SchedulesModules() {
       }}
       slotInterviewCard={
         <>
-          {isLoading ? (
-            ''
+          {isLoading && allSchedules.length === 0 ? (
+            <Loader />
           ) : allSchedules.length === 0 ? (
             <AllInterviewEmpty textDynamic='No schedule found' />
           ) : (

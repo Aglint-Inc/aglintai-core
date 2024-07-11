@@ -1,7 +1,9 @@
+import { DatabaseTable } from '@aglint/shared-types';
+
 type InterviewModulesQueryKey = ['interview_modules'];
 type SchedulesByModuleIdQueryKey = [
-  'interview_modules_id',
-  { module_id: string },
+  'interview_schedules_modules_id',
+  { module_id: string; filter: DatabaseTable['interview_meeting']['status'] },
 ];
 type ProgressByModuleIdQueryKey = [
   'progress_by_module_id',
@@ -18,10 +20,19 @@ type MeetingsByModuleIdQueryKey = [
 
 export const QueryKeysInteviewModules = {
   INTERVIEW_MODULES: ['interview_modules'] as InterviewModulesQueryKey,
-  SCHEDULES_BY_MODULE_ID: ({ moduleId }: { moduleId: string }) =>
+  SCHEDULES_BY_MODULE_ID: ({
+    moduleId,
+    filter,
+  }: {
+    moduleId: string;
+    filter: DatabaseTable['interview_meeting']['status'];
+  }) =>
     [
-      'interview_modules_id',
-      { module_id: moduleId },
+      'interview_schedules_modules_id',
+      {
+        module_id: moduleId,
+        filter: filter,
+      },
     ] as SchedulesByModuleIdQueryKey,
   PROGRESS_BY_MODULE_ID: ({ moduleId }: { moduleId: string }) =>
     [
