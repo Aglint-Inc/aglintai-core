@@ -23,16 +23,16 @@ export const dummy: EmailType['react_email_placeholders'] = {
   companyLogo: companyLogoDummy,
   subject: '',
   availabilityReqLink:
-    '${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.avail_req_id}',
+    'process.env.NEXT_PUBLIC_APP_URL/scheduling/request-availability/avail_req_id',
 };
 
 // export get subject
 export const getSubject = (companyName: any) => `${companyName}`;
 
 export const CandidateAvailabilityRequest = ({
-  emailBody = dummy.emailBody,
-  companyLogo = dummy.companyLogo,
   availabilityReqLink = dummy.availabilityReqLink,
+  companyLogo = dummy.companyLogo,
+  emailBody = dummy.emailBody,
 }: EmailType['react_email_placeholders']) => {
   const htmlParser = Parser();
   return (
