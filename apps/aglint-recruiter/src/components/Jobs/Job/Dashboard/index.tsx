@@ -586,18 +586,13 @@ const Schedules = () => {
 const useBanners = () => {
   const { push } = useRouter();
   const { publishStatus } = useJob();
-  const {
-    job,
-    isInterviewPlanDisabled,
-    isInterviewSessionEmpty,
-    status,
-    handleWarningUpdate,
-  } = useJobDashboard();
+  const { job, isInterviewPlanDisabled, isInterviewSessionEmpty, status } =
+    useJobDashboard();
 
   const banners: React.JSX.Element[] = [];
   if (job.status === 'draft') banners.push(<JobsBanner />);
 
-  if (isInterviewPlanDisabled && !job?.dashboard_warnings?.interview_plan)
+  if (isInterviewPlanDisabled)
     banners.push(
       <DashboardWarning
         textWarningTitle={'Interview plan not set'}
@@ -612,7 +607,7 @@ const useBanners = () => {
               color={'accent'}
               highContrast={'true'}
               onClickButton={{
-                onClick: () => handleWarningUpdate({ interview_plan: true }),
+                onClick: () => {}, //handleWarningUpdate({ interview_plan: true }),
               }}
             />
 
@@ -629,7 +624,7 @@ const useBanners = () => {
         }
       />,
     );
-  if (isInterviewSessionEmpty && !job?.dashboard_warnings?.interview_session)
+  if (isInterviewSessionEmpty)
     banners.push(
       <DashboardWarning
         textWarningTitle={'Interview plan not set'}
@@ -644,7 +639,7 @@ const useBanners = () => {
               color={'accent'}
               highContrast={'true'}
               onClickButton={{
-                onClick: () => handleWarningUpdate({ interview_session: true }),
+                onClick: () => {}, //handleWarningUpdate({ interview_session: true }),
               }}
             />
 
@@ -765,7 +760,7 @@ const useBanners = () => {
               color={'accent'}
               highContrast={'true'}
               onClickButton={{
-                onClick: () => handleWarningUpdate({ job_description: true }),
+                onClick: () => {}, //handleWarningUpdate({ job_description: true }),
               }}
             />
 
@@ -782,10 +777,7 @@ const useBanners = () => {
         }
       />,
     );
-  if (
-    status.scoring_criteria_changed &&
-    !job?.dashboard_warnings?.score_changed
-  )
+  if (status.scoring_criteria_changed)
     banners.push(
       <DashboardWarning
         textWarningTitle={'Scoring criteria has been updated'}
@@ -797,7 +789,7 @@ const useBanners = () => {
               size={2}
               color={'neutral'}
               onClickButton={{
-                onClick: () => handleWarningUpdate({ score_changed: true }),
+                onClick: () => {}, //handleWarningUpdate({ score_changed: true }),
               }}
             />
 
@@ -1148,10 +1140,7 @@ const InterviewModule = () => {
       textName={'Interview Plan'}
       slotIcon={<SchedulingIcon />}
       slotEnableDisable={<></>}
-      isWarning={
-        (isInterviewPlanDisabled && !job?.dashboard_warnings?.interview_plan) ||
-        (isInterviewSessionEmpty && !job?.dashboard_warnings?.interview_session)
-      }
+      isWarning={isInterviewPlanDisabled || isInterviewSessionEmpty}
     />
   );
 };

@@ -306,7 +306,6 @@ export const useApplicationsActions = () => {
     {
       job_id,
     },
-    section,
     checklist,
   );
 

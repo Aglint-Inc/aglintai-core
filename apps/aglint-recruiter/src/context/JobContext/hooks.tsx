@@ -3,9 +3,8 @@ import { useParams } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
 
 import { handleJobApi } from '@/src/apiUtils/job/utils';
-import { jobQueries } from '@/src/queries/job';
+import { jobQueries, useInvalidateJobQueries } from '@/src/queries/job';
 import {
-  useRescoreApplications,
   useUploadApplication,
   useUploadCsv,
   useUploadResume,
@@ -80,8 +79,9 @@ const useJobContext = () => {
         validateDescription(job?.draft?.description ?? ''),
       description_changed:
         !job.scoring_criteria_loading &&
-        !job?.dashboard_warnings?.job_description &&
-        (job?.draft?.description ?? '') !== job?.description,
+        (job?.draft?.description ?? '') !== job?.description &&
+        JSON.stringify(job?.draft?.jd_json ?? {}) ===
+          JSON.stringify(job?.jd_json ?? {}),
       jd_json_error: !job.scoring_criteria_loading && !jdValidity,
       scoring_criteria_changed:
         JSON.stringify(job?.draft?.jd_json ?? {}) !==
@@ -91,7 +91,6 @@ const useJobContext = () => {
   const interviewPlans = useQuery(jobQueries.interview_plans({ id: job_id }));
 
   const { mutateAsync: jobAsyncUpdate, mutate: jobUpdate } = useJobUpdate();
-  const { mutateAsync: handleRescoreApplications } = useRescoreApplications();
 
   const handleJobUpdate = async (
     jobId: string,
@@ -156,16 +155,8 @@ const useJobContext = () => {
         ...safeJob,
         ...safeJob.draft,
         status: 'published',
-        dashboard_warnings: {
-          ...safeJob.dashboard_warnings,
-          job_description: false,
-          score_changed: false,
-        },
       });
       toast.success('Job published successfully');
-      if (status.scoring_criteria_changed) {
-        await handleRescoreApplications({ job_id: job?.id });
-      }
       return true;
     } else {
       if (publishStatus.loading)
@@ -201,6 +192,8 @@ const useJobContext = () => {
     job_id,
   });
 
+  const { removeJobQueries } = useInvalidateJobQueries();
+
   useQueries({
     queries: [
       jobQueries.job({
@@ -225,9 +218,7 @@ const useJobContext = () => {
       return;
     }
     if (!jobPolling) {
-      queryClient.removeQueries({
-        queryKey: jobQueries.job({ id: job_id }).queryKey,
-      });
+      removeJobQueries(job_id);
     }
   }, [jobPolling]);
 
@@ -243,7 +234,6 @@ const useJobContext = () => {
     handleJobAsyncUpdate,
     handleJobUpdate,
     handleRegenerateJd,
-    handleRescoreApplications,
     handleUploadApplication,
     handleUploadResume,
     handleUploadCsv,

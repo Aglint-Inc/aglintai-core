@@ -29,7 +29,6 @@ import ScoreWheel, {
 } from '@/src/components/Common/ScoreWheel';
 import UITextField from '@/src/components/Common/UITextField';
 import { useJob } from '@/src/context/JobContext';
-import { useJobDashboard } from '@/src/context/JobDashboard';
 import { palette } from '@/src/context/Theme/Theme';
 import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/jobs/types';
@@ -312,7 +311,6 @@ const ProfileScore = () => {
 const Banners = () => {
   const { push } = useRouter();
   const { job, handleRegenerateJd, status } = useJob();
-  const { handleWarningUpdate } = useJobDashboard();
   if (status.loading) return <></>;
   if (status.description_error)
     return (
@@ -341,9 +339,7 @@ const Banners = () => {
       />
     );
   if (status.description_changed)
-    return job?.dashboard_warnings?.job_description ? (
-      <></>
-    ) : (
+    return (
       <BannerWarning
         textBanner={
           'Job description has changed. Regenerate for updated scoring criterias.'
@@ -355,7 +351,7 @@ const Banners = () => {
               size={2}
               highContrast='true'
               onClickButton={{
-                onClick: () => handleWarningUpdate({ job_description: true }),
+                onClick: () => {}, //handleWarningUpdate({ job_description: true }),
               }}
             />
             <ButtonSolid

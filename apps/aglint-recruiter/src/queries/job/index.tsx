@@ -1,10 +1,16 @@
 import type { DatabaseTable } from '@aglint/shared-types';
-import { QueryClient, queryOptions } from '@tanstack/react-query';
+import {
+  QueryClient,
+  queryOptions,
+  useQueryClient,
+} from '@tanstack/react-query';
 import axios from 'axios';
 
 import { GetInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
 
-import { GC_TIME } from '..';
+import { GC_TIME, noPollingKey } from '..';
+import { applicationsQueries } from '../job-applications';
+import { jobDashboardQueryKeys } from '../job-dashboard/keys';
 import { readJob } from '../jobs';
 import { jobsQueryKeys } from '../jobs/keys';
 import { Job } from '../jobs/types';
@@ -39,7 +45,11 @@ const jobQueries = {
     }),
   interview_plans: ({ id }: JobRequisite) =>
     queryOptions({
-      queryKey: [...jobQueries.job({ id }).queryKey, 'interview_plans'],
+      queryKey: [
+        ...jobQueries.job({ id }).queryKey,
+        'interview_plans',
+        noPollingKey,
+      ],
       queryFn: async () =>
         (await axios.get(`/api/scheduling/get_interview_plans?job_id=${id}`))
           .data as GetInterviewPlansType['respone'],
@@ -57,6 +67,24 @@ const jobQueries = {
       },
     });
   },
+};
+
+export const useInvalidateJobQueries = () => {
+  const queryClient = useQueryClient();
+  const removeJobQueries = (id: Job['id']) => {
+    queryClient.removeQueries({
+      queryKey: jobQueries.job({ id }).queryKey,
+      predicate: (query) => query.queryKey.includes(''),
+    });
+    queryClient.removeQueries({
+      queryKey: applicationsQueries.all({ job_id: id }).queryKey,
+    });
+    queryClient.removeQueries({
+      queryKey: jobDashboardQueryKeys.dashboard({ id }).queryKey,
+    });
+  };
+
+  return { removeJobQueries };
 };
 
 type Pollers = JobRequisite &

@@ -1,5 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import { useCallback } from 'react';
 
 import {
   useAllAssessments,
@@ -17,15 +16,7 @@ import { useJobWorkflow } from '@/src/queries/job-workflow';
 import { useJob } from '../JobContext';
 
 const useProviderJobDashboardActions = () => {
-  const {
-    jobLoad,
-    job,
-    total,
-    job_id,
-    interviewPlans,
-    status,
-    handleJobUpdate,
-  } = useJob();
+  const { jobLoad, job, total, job_id, interviewPlans, status } = useJob();
 
   const assessments = useAllAssessments();
   const templates = useAllAssessmentTemplates();
@@ -60,18 +51,6 @@ const useProviderJobDashboardActions = () => {
     (isInterviewPlanDisabled ||
       interviewPlans?.data?.interview_session?.length === 0);
 
-  const handleWarningUpdate = useCallback(
-    (dashboard_warnings: Partial<(typeof job)['dashboard_warnings']>) => {
-      handleJobUpdate(job?.id, {
-        dashboard_warnings: {
-          ...job?.dashboard_warnings,
-          ...dashboard_warnings,
-        },
-      });
-    },
-    [job?.id, job?.dashboard_warnings],
-  );
-
   const value = {
     job,
     jobLoad,
@@ -89,7 +68,6 @@ const useProviderJobDashboardActions = () => {
     locations,
     total,
     status,
-    handleWarningUpdate,
   };
 
   return value;

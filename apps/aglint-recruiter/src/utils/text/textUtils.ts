@@ -27,7 +27,6 @@ export function capitalizeSentence(
   let words = sentence.split(' ');
   // Capitalize the first letter of each word, ignoring specified words
 
-  console.log(sentence, '🔥', words);
   for (let i = 0; i < words.length; i++) {
     let word = words[i];
 
@@ -37,7 +36,6 @@ export function capitalizeSentence(
       words[i] = word.charAt(0).toUpperCase() + word.slice(1);
     }
   }
-  console.log(words, '🔥🤓');
   // Join the words back into a sentence
   return words.join(' ');
 }
