@@ -2,7 +2,6 @@ import { APIFindAvailability } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
@@ -32,6 +31,7 @@ import {
   setNoOptions,
   setResSendToCandidate,
   setSchedulingOptions,
+  setSelectedTaskId,
   setStepScheduling,
   useSchedulingFlowStore,
 } from './store';
@@ -41,7 +41,6 @@ export const useSelfSchedulingDrawer = ({
 }: {
   refetch: () => void;
 }) => {
-  const router = useRouter();
   const { recruiter, recruiterUser } = useAuthDetails();
   const {
     selectedApplication,
@@ -70,6 +69,7 @@ export const useSelfSchedulingDrawer = ({
     schedulingOptions,
     fetchingPlan,
     scheduleFlow,
+    selectedTaskId,
   } = useSchedulingFlowStore((state) => ({
     dateRange: state.dateRange,
     filteredSchedulingOptions: state.filteredSchedulingOptions,
@@ -79,9 +79,8 @@ export const useSelfSchedulingDrawer = ({
     schedulingOptions: state.schedulingOptions,
     fetchingPlan: state.fetchingPlan,
     scheduleFlow: state.scheduleFlow,
+    selectedTaskId: state.selectedTaskId,
   }));
-
-  const task_id = router.query.task as string;
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
 
@@ -129,9 +128,7 @@ export const useSelfSchedulingDrawer = ({
         ]);
         setStepScheduling('request_availibility');
       }
-    }
-
-    if (stepScheduling === 'preference') {
+    } else if (stepScheduling === 'preference') {
       const filterSlots = filterSchedulingOptionsArray({
         schedulingOptions,
         filters,
@@ -202,7 +199,7 @@ export const useSelfSchedulingDrawer = ({
         user_tz: dayjs.tz.guess(),
         selectedApplicationLog,
         selectedSlots,
-        task_id,
+        task_id: selectedTaskId,
       };
       const res = await axios.post(
         '/api/scheduling/application/sendtocandidate',
@@ -211,12 +208,12 @@ export const useSelfSchedulingDrawer = ({
 
       if (res.status === 200) {
         const resObj = res?.data?.data as ApiResponseSendToCandidate['data'];
-
-        setResSendToCandidate(resObj);
-        isDebrief
-          ? toast.success('Debrief scheduled')
-          : toast.success('Booking link sent to candidate.');
-        setStepScheduling('success_screen');
+        setResSendToCandidate(resObj); // this is used for copy link in the final step of self scheduling
+        if (isDebrief) {
+          toast.success('Debrief scheduled');
+        } else {
+          setStepScheduling('success_screen');
+        }
       } else {
         throw new Error('Error sending to candidate.');
       }
@@ -305,7 +302,7 @@ export const useSelfSchedulingDrawer = ({
         return;
       }
 
-      if (!task_id) {
+      if (!selectedTaskId) {
         const bodyParams: ApiBodyParamsScheduleAgentWithoutTaskId = {
           application_id: selectedApplication.id,
           dateRange: dateRange,
@@ -348,7 +345,7 @@ export const useSelfSchedulingDrawer = ({
             recruiterUser.last_name,
           ),
           session_ids: selectedSessionIds,
-          task_id: task_id,
+          task_id: selectedTaskId,
           type: type,
           candidate_name: getFullName(
             selectedApplication.candidates.first_name,
@@ -388,26 +385,17 @@ export const useSelfSchedulingDrawer = ({
       setSelectedSessionIds([]);
       setStepScheduling('pick_date');
       setSelectedApplicationLog(null);
-      removeQueryParams();
+      setSelectedTaskId(null);
       setRequestSessionIds([]);
       setRescheduleSessionIds([]);
     }
   };
 
-  const removeQueryParams = () => {
-    const currentPath = router.pathname;
-    const currentQuery = { ...router.query };
-    delete currentQuery.task_id;
-    router.replace({
-      pathname: currentPath,
-      query: currentQuery,
-    });
-  };
+
 
   return {
     onClickPrimary,
     resetStateSelfScheduling,
-    removeQueryParams,
     findScheduleOptions,
     onClickScheduleAgent,
   };

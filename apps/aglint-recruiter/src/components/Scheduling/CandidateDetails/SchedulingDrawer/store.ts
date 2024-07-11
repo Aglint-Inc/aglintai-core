@@ -81,7 +81,7 @@ const initialState: SchedulingFlow = {
   selectedCombIds: [],
   emailData: null,
   resSendToCandidate: null,
-  selectedTaskId: null,
+  selectedTaskId: null, 
 };
 
 export const useSchedulingFlowStore = create<SchedulingFlow>()(() => ({
