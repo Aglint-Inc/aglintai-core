@@ -13,7 +13,7 @@ import { Session } from '../components/template/Sessions';
 import config from '../../tailwind.config';
 import { Footer } from '../components/template/Footer';
 import { companyLogoDummy } from '../utils/assets/common';
-import { ButtonSolid } from '../components/emails/Button';
+import { ButtonSolid } from '../components/template/Button';
 
 // export dummy
 export const dummy: EmailTemplateAPi<'interviewStart_email_interviewers'>['react_email_placeholders'] =

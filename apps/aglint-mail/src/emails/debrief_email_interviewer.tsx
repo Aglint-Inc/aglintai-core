@@ -13,7 +13,7 @@ import { Session } from '../components/template/Sessions';
 import config from '../../tailwind.config';
 import { Footer } from '../components/template/Footer';
 import { companyLogoDummy } from '../utils/assets/common';
-import { ButtonSolid } from '../components/emails/Button';
+import { ButtonSolid } from '../components/template/Button';
 
 type EmailType = EmailTemplateAPi<'debrief_email_interviewer'>;
 

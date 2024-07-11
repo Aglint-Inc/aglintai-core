@@ -12,7 +12,7 @@ import type { EmailTemplateAPi } from '@aglint/shared-types';
 import config from '../../tailwind.config';
 import { Footer } from '../components/template/Footer';
 import { companyLogoDummy } from '../utils/assets/common';
-import { ButtonSolid } from '../components/emails/Button';
+import { ButtonSolid } from '../components/template/Button';
 
 type EmailType = EmailTemplateAPi<'interviewEnd_email_interviewerForFeedback'>;
 
