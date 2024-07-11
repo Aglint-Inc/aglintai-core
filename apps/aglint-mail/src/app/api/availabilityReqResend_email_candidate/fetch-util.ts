@@ -33,14 +33,16 @@ export async function dbUtil(
     public_jobs: { company, job_title },
   } = avail_req_data.applications;
 
-  const candidate_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.avail_req_id}`;
+  const candidate_link = req_body.avail_req_id
+    ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.avail_req_id}`
+    : '';
+
   const comp_email_temp = await fetchCompEmailTemp(
     recruiter_id,
     'availabilityReqResend_email_candidate',
   );
   const comp_email_placeholder: EmailTemplateAPi<'availabilityReqResend_email_candidate'>['comp_email_placeholders'] =
     {
-      availabilityReqLink: `<a href="${candidate_link}">here</a>`,
       candidateFirstName: first_name,
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),
@@ -65,6 +67,7 @@ export async function dbUtil(
       emailBody: filled_comp_template.body,
       companyLogo: logo,
       subject: filled_comp_template.subject,
+      availabilityReqLink: candidate_link,
     };
 
   return {

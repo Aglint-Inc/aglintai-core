@@ -108,13 +108,17 @@ export async function fetchUtil(
     comp_email_temp,
   );
 
+  const candLink = req_body.meeting_id
+    ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${req_body.meeting_id}&tab=candidate_details`
+    : '';
+
   const react_email_placeholders: EmailTemplateAPi<'interviewStart_email_interviewers'>['react_email_placeholders'] =
     {
       companyLogo: candidateJob.candidates.recruiter.logo,
       emailBody: filled_comp_template.body,
       subject: filled_comp_template.subject,
       meetingDetails: meeting_details,
-      candidateLink: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${req_body.meeting_id}&tab=candidate_details`,
+      candidateLink: candLink,
     };
 
   return {

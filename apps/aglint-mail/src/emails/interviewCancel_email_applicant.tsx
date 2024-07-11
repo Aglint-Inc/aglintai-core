@@ -1,18 +1,8 @@
-import {
-  Body,
-  Container,
-  Head,
-  Html,
-  Img,
-  Tailwind,
-} from '@react-email/components';
-import { Parser } from 'html-to-react';
 import * as React from 'react';
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { Session } from '../components/template/Sessions';
-import config from '../../tailwind.config';
-import { Footer } from '../components/template/Footer';
 import { companyLogoDummy } from '../utils/assets/common';
+import { EmailContainer } from '../components/template/Container';
 
 type EmailType = EmailTemplateAPi<'InterviewCancelReq_email_recruiter'>;
 export const dummy: EmailType['react_email_placeholders'] = {
@@ -43,34 +33,12 @@ export const InterviewBookingConfirmation = ({
   companyLogo = dummy.companyLogo,
   meetingDetails = dummy.meetingDetails,
 }: EmailType['react_email_placeholders']) => {
-  const htmlParser = Parser();
   return (
-    <Html>
-      <Head />
-      <Tailwind config={config}>
-        {/* <Preview></Preview> */}
-        <Body className="bg-neutral-3 font-sans  p-[20px]">
-          <Container className="px-[3px] mx-auto">
-            <Container className="p-[50px] bg-white rounded-[8px]">
-              <Img
-                alt="Company logo"
-                className="w-[80px] mb-[10px]"
-                src={companyLogo}
-              />
-
-              <Container className="text-text-sm text-neutral-12">
-                {htmlParser.parse(emailBody)}
-              </Container>
-
-              {meetingDetails.map((meetingDetail, i) => (
-                <Session key={i} meetingDetail={meetingDetail} />
-              ))}
-            </Container>
-            <Footer />
-          </Container>
-        </Body>
-      </Tailwind>
-    </Html>
+    <EmailContainer companyLogo={companyLogo} emailBody={emailBody}>
+      {meetingDetails.map((meetingDetail, i) => (
+        <Session key={i} meetingDetail={meetingDetail} />
+      ))}
+    </EmailContainer>
   );
 };
 export default InterviewBookingConfirmation;
