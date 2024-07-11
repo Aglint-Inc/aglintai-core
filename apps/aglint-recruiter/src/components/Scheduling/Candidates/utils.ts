@@ -206,25 +206,6 @@ export function convertNumberToWord(number) {
   return result.trim();
 }
 
-export function transformData(inputData) {
-  const transformedData = {};
-
-  inputData?.forEach((item) => {
-    const date = item.start_time.split('T')[0]; // Extracting date from start_time
-    if (!transformedData[date]) {
-      transformedData[date] = [];
-    }
-    transformedData[date].push(item);
-  });
-
-  const result = [];
-  for (const date in transformedData) {
-    result.push({ [date]: transformedData[date] });
-  }
-
-  return result;
-}
-
 export const getScheduleBgcolor = (
   status: InterviewMeetingTypeDb['status'],
 ) => {

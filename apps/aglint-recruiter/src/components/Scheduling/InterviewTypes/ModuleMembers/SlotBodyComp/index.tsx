@@ -13,10 +13,8 @@ import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import ModuleSchedules from '../../../Common/ModuleSchedules';
 import Instructions from '../../../ScheduleDetails/Instructions';
 import {
-  useAllSchedulesByModuleId,
   useGetMeetingsByModuleId,
   useModuleAndUsers,
 } from '../../queries/hooks';
@@ -31,6 +29,7 @@ import DeleteMemberDialog from '../DeleteMemberDialog';
 import ModuleSettingComp from '../ModuleSetting';
 import PauseDialog from '../PauseDialog';
 import ResumeMemberDialog from '../ResumeMemberDialog';
+import SchedulesModules from '../Schedules';
 import { TabsModuleMembers } from '../type';
 import SettingsDialog from './AddMemberDialog';
 import SlotQualifiedMembers from './SlotQualifiedMembers';
@@ -50,16 +49,8 @@ function SlotBodyComp({
 }: SlotBodyCompProps) {
   const router = useRouter();
   const { loading } = useSchedulingContext();
-  const {
-    data: scheduleList,
-    isLoading: schedulesLoading,
-    isFetched,
-  } = useAllSchedulesByModuleId();
 
-  const { data: meetingData } = useGetMeetingsByModuleId({
-    schedulesLoading: schedulesLoading,
-    user_ids: editModule?.relations?.map((user) => user.user_id) || [],
-  });
+  const { data: meetingData } = useGetMeetingsByModuleId();
 
   const currentTab = router.query.tab as TabsModuleMembers['queryParams'];
 
@@ -165,12 +156,7 @@ function SlotBodyComp({
                     }}
                   />
                 )}
-                {currentTab === 'schedules' && (
-                  <ModuleSchedules
-                    newScheduleList={scheduleList}
-                    isFetched={isFetched}
-                  />
-                )}
+                {currentTab === 'schedules' && <SchedulesModules />}
 
                 {currentTab === 'instructions' && (
                   <ShowCode>

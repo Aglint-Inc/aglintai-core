@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { ScheduleListType } from '../../Common/ModuleSchedules/hooks';
+import { schedulesSupabase } from '../../schedules-query';
 import { initialEditModule } from '../store';
 import {
   MemberType,
@@ -16,15 +16,12 @@ import {
 import { calculateHourDifference } from '../utils';
 import { useGetMeetingsByModuleId } from './hooks';
 
-export const fetchModules = async (module_id: string) => {
-  const { data, error } = await supabase.rpc(
-    'get_interview_schedule_by_module_id',
-    {
-      target_module_id: module_id,
-    },
-  );
-  if (error) throw new Error(error.message);
-  return data as unknown as ScheduleListType;
+export const fetchModuleSchedules = async (module_id: string) => {
+  const { data } = await schedulesSupabase
+    .eq('module_id', module_id)
+    .throwOnError();
+
+  return data;
 };
 
 export const fetchProgress = async ({
