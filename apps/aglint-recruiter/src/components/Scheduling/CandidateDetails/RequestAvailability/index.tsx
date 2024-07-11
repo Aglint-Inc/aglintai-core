@@ -15,7 +15,6 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -71,8 +70,6 @@ import {
 } from './utils';
 
 function RequestAvailability() {
-  const router = useRouter();
-  const selectedTaskId = router.query.task_id as string;
   const { recruiter, recruiterUser } = useAuthDetails();
 
   const {
@@ -81,7 +78,8 @@ function RequestAvailability() {
     selectedApplication,
     selectedSchedule,
   } = useSchedulingApplicationStore();
-  const { scheduleFlow } = useSchedulingFlowStore();
+  const { scheduleFlow, updateRequestAvailibityId, selectedTaskId } =
+    useSchedulingFlowStore();
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
   const { selectedDate } = useRequestAvailabilityContext();
   const [loading, setLoading] = useState(false);
@@ -208,7 +206,7 @@ function RequestAvailability() {
 
       if (scheduleFlow === 'update_request_availibility') {
         const result = await updateCandidateRequestAvailability({
-          id: String(router.query?.candidate_request_availability),
+          id: updateRequestAvailibityId,
           data: {
             availability: availability,
             date_range: selectedDate.map((ele) => ele.format('DD/MM/YYYY')),
@@ -223,7 +221,7 @@ function RequestAvailability() {
         const { data: requestData } = await axios.post(
           `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,
           {
-            request_id: router.query?.candidate_request_availability,
+            request_id: updateRequestAvailibityId,
           },
         );
         const task_id = requestData.id;

@@ -13,7 +13,9 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import {
   setDateRange,
   setIsScheduleNowOpen,
+  setRequestAvailibityId,
   setScheduleFlow,
+  setSelectedTaskId,
   setStepScheduling,
 } from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/store';
 import {
@@ -59,8 +61,9 @@ function TaskActionButtons({
               size={1}
               onClickButton={{
                 onClick: () => {
+                  setRequestAvailibityId(selectedTask.request_availability_id);
                   router.push(
-                    `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/application/${selectedTask.application_id}?request_availability_id=${selectedTask.request_availability_id}`,
+                    `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/application/${selectedTask.application_id}`,
                   );
                 },
               }}
@@ -136,8 +139,9 @@ function TaskActionButtons({
                     selectedTask.session_ids.map((ele) => ele.id),
                   );
                 }
+                setSelectedTaskId(selectedTask.id);
                 router.push(
-                  `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/application/${selectedTask.application_id}?task_id=${selectedTask.id}`,
+                  `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/application/${selectedTask.application_id}`,
                 );
               },
             }}

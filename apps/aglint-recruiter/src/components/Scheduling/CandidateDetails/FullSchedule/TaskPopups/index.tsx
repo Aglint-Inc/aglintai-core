@@ -12,17 +12,19 @@ import {
   setDateRange,
   setIsScheduleNowOpen,
   setStepScheduling,
+  useSchedulingFlowStore,
 } from '../../SchedulingDrawer/store';
 import { setRescheduleSessionIds } from '../../store';
 
 function TaskPopups() {
   const [tasks, setTasks] = useState<DatabaseView['tasks_view'][]>(null);
   const router = useRouter();
+  const {updateRequestAvailibityId}=useSchedulingFlowStore()
   useEffect(() => {
     if (router.query.application_id) {
       getTaskDetails(router.query.application_id as string);
     }
-  }, [router.query?.candidate_request_availability]);
+  }, [updateRequestAvailibityId]);
 
   const getTaskDetails = async (application_id: string) => {
     const { data } = await supabase
