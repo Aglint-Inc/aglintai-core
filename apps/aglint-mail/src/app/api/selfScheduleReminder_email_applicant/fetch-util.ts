@@ -10,14 +10,14 @@ import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 export async function dbUtil(
   req_body: EmailTemplateAPi<'selfScheduleReminder_email_applicant'>['api_payload'],
 ) {
-  const { data: filterJson } = await supabaseAdmin
-    .from('interview_filter_json')
-    .select(
-      'filter_json,session_ids,interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company,recruiter),candidates(first_name,last_name,email,recruiter(logo))))',
-    )
-    .eq('id', req_body.filter_id)
-    .single()
-    .throwOnError();
+  const [filterJson] = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_filter_json')
+      .select(
+        'filter_json,session_ids,interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company,recruiter),candidates(first_name,last_name,email,recruiter(logo))))',
+      )
+      .eq('id', req_body.filter_id),
+  );
 
   const [meetingDetails] = supabaseWrap(
     await supabaseAdmin
@@ -54,7 +54,7 @@ export async function dbUtil(
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),
       jobRole: job_title,
-      selfScheduleLink: `<a href="${scheduleLink}">here</a>`,
+      selfScheduleLink: `<a href="${scheduleLink}" target="_blank" >here</a>`,
       organizerName: getFullName(
         meeting_organizer.first_name,
         meeting_organizer.last_name,
@@ -74,6 +74,7 @@ export async function dbUtil(
       emailBody: filled_comp_template.body,
       companyLogo: recruiter.logo,
       subject: filled_comp_template.subject,
+      selfScheduleLink: scheduleLink,
     };
 
   return {

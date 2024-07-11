@@ -279,6 +279,7 @@ type Payloads = {
     react_email_placeholders: {
       emailBody: string;
       subject: string;
+      selfScheduleLink: string;
       companyLogo: string;
     };
   };
