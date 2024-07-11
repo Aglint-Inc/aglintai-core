@@ -72,6 +72,7 @@ export async function dbUtil(
       emailBody: filled_comp_template.body,
       companyLogo: logo,
       subject: filled_comp_template.subject,
+      availabilityReqLink: candidate_link,
     };
 
   return {

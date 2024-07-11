@@ -268,6 +268,7 @@ type Payloads = {
       emailBody: string;
       subject: string;
       companyLogo: string;
+      availabilityReqLink: string;
     };
   };
   selfScheduleReminder_email_applicant: {
