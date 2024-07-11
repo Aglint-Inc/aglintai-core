@@ -16,24 +16,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     });
 
-    const cand_schedule = new CandidatesSchedulingV2(
-      {
-        recruiter_id: parsed_body.recruiter_id,
-        session_ids: [parsed_body.session_id],
-        candidate_tz: parsed_body.user_tz,
-        end_date_str: userTzDayjs(parsed_body.slot_start_time)
-          .tz(parsed_body.user_tz)
-          .format('DD/MM/YYYY'),
-        start_date_str: userTzDayjs(parsed_body.slot_start_time)
-          .tz(parsed_body.user_tz)
-          .format('DD/MM/YYYY'),
-      },
-      parsed_body.api_options,
-    );
-    await cand_schedule.fetchDetails();
+    const cand_schedule = new CandidatesSchedulingV2(parsed_body.api_options);
+    await cand_schedule.fetchDetails({
+      company_id: parsed_body.recruiter_id,
+      session_ids: [parsed_body.session_id],
+      req_user_tz: parsed_body.user_tz,
+      end_date_str: userTzDayjs(parsed_body.slot_start_time)
+        .tz(parsed_body.user_tz)
+        .format('DD/MM/YYYY'),
+      start_date_str: userTzDayjs(parsed_body.slot_start_time)
+        .tz(parsed_body.user_tz)
+        .format('DD/MM/YYYY'),
+    });
     cand_schedule.ignoreTrainee();
-    // cand_schedule.ignoreInterviewer(parsed_body.ignore_interviewer);
-    await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
 
     const [single_day_slots] = cand_schedule.findCandSlotForTheDay();
     if (!single_day_slots) {

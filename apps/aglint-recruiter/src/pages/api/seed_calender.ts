@@ -20,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { company_id } = req.body;
     const { deleteAllMeetings, fetchDetails, fillEventsForTheDay } =
       seedCalendersUtil(cal_start_date, cal_end_date);
-    const { company_cred, uniq_inters, interview_type_details } =
+    const { company_cred_hash_str, uniq_inters, interview_type_details } =
       await fetchDetails(company_id);
 
     for (let inter of uniq_inters) {
@@ -51,15 +51,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           occ_cnt: 0,
         },
       };
+      let recruiter_auth = {
+        user_id: interviewer_info.user_id,
+        email: interviewer_info.email,
+        schedule_auth: interviewer_info.schedule_auth,
+      };
       const int_schd_sett = interviewer_info.scheduling_settings;
-      const google_cal = new GoogleCalender({
-        recruiter: {
-          user_id: interviewer_info.user_id,
-          email: interviewer_info.email,
-          schedule_auth: interviewer_info.schedule_auth,
-        },
-        company_cred: company_cred,
-      });
+      const google_cal = new GoogleCalender(
+        company_cred_hash_str,
+        recruiter_auth,
+      );
       await google_cal.authorizeUser();
 
       console.log(interviewer_info.email);

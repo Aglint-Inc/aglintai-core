@@ -11,7 +11,6 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
 
-import { decrypt_string } from '../integrations/crypt-funcs';
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 import {
   MeetingLimit,
@@ -77,15 +76,8 @@ export const seedCalendersUtil = (
         .select('scheduling_settings,service_json')
         .eq('id', company_id),
     );
-    const { scheduling_settings: comp_schedule_setting, service_json } =
-      rec_details;
-    const companyCred = JSON.parse(
-      decrypt_string(service_json),
-    ) as CompServiceKeyCred;
-    comp_details = {
-      comp_schedule_setting,
-      companyCred,
-    };
+    const { scheduling_settings: comp_schedule_setting } = rec_details;
+
     interview_modules = supabaseWrap(
       await supabaseAdmin
         .from('interview_module')
@@ -107,7 +99,7 @@ export const seedCalendersUtil = (
     const uniq_inters = Array.from(new Set(interviewers.map((i) => i.user_id)));
 
     return {
-      company_cred: companyCred,
+      company_cred_hash_str: rec_details.service_json,
       comp_schedule_setting,
       interview_type_details: interviewers,
       uniq_inters,

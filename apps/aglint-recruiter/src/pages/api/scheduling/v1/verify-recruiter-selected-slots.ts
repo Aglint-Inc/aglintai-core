@@ -40,18 +40,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         include_conflicting_slots: {},
       });
     }
-    const cand_schedule = new CandidatesSchedulingV2(
-      {
-        candidate_tz: candidate_tz,
-        end_date_str: end_date_str,
-        recruiter_id: filter_json_data.interview_schedule.recruiter_id,
-        session_ids: filter_json_data.session_ids,
-        start_date_str: start_date_str,
-      },
-      zod_options,
-    );
-    await cand_schedule.fetchDetails();
-    await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
+    const cand_schedule = new CandidatesSchedulingV2(zod_options);
+    await cand_schedule.fetchDetails({
+      req_user_tz: candidate_tz,
+      end_date_str: end_date_str,
+      company_id: filter_json_data.interview_schedule.recruiter_id,
+      session_ids: filter_json_data.session_ids,
+      start_date_str: start_date_str,
+    });
     let all_day_plans = [];
 
     // email agent schedule link
