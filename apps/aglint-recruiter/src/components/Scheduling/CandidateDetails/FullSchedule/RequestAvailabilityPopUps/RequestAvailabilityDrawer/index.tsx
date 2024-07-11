@@ -22,6 +22,11 @@ import { useAllActivities, useGetScheduleApplication } from '../../../hooks';
 import { updateCandidateRequestAvailability } from '../../../RequestAvailability/RequestAvailabilityContext';
 import DayCardWrapper from '../../../SchedulingDrawer/StepSlotOptions/DayCardWrapper';
 import {
+  setRequestAvailibityId,
+  setSelectedTaskId,
+  useSchedulingFlowStore,
+} from '../../../SchedulingDrawer/store';
+import {
   setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../../../store';
@@ -39,26 +44,22 @@ function RequestAvailabilityDrawer() {
     setSelectedDateSlots,
   } = useAvailabilityContext();
   const { selectedApplication } = useSchedulingApplicationStore();
+  const { requestAvailibityId } = useSchedulingFlowStore();
   const [loading, setLoading] = useState(false);
   const {
     data: availableSlots,
     isFetched,
     isLoading,
   } = useRequestAvailabilityDetails({
-    request_id: router.query?.request_availability_id as string,
+    request_id: requestAvailibityId,
   });
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
   const { refetch } = useAllActivities({
     application_id: selectedApplication.id,
   });
   function closeDrawer() {
-    const currentPath = router.pathname; // Get current path
-    const currentQuery = { ...router.query }; // Get current query parameters
-    delete currentQuery.request_availability_id; // Remove the specific query parameter
-    router.replace({
-      pathname: currentPath,
-      query: currentQuery,
-    });
+    setRequestAvailibityId(null);
+    setSelectedTaskId(null);
     fetchInterviewDataByApplication();
     setSelectedSessionIds([]);
     refetch();
@@ -75,7 +76,7 @@ function RequestAvailabilityDrawer() {
     if (availableSlots && selectedIndex !== availableSlots.length) {
       handleClick(availableSlots[Number(selectedIndex)]?.selected_dates);
     }
-  }, [availableSlots, selectedIndex, router.query?.request_availability_id]);
+  }, [availableSlots, selectedIndex, requestAvailibityId]);
 
   async function handleContinue() {
     if (selectedIndex !== availableSlots.length) {
@@ -88,7 +89,7 @@ function RequestAvailabilityDrawer() {
       const { data: task } = await axios.post(
         `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,
         {
-          request_id: router.query?.request_availability_id,
+          request_id: requestAvailibityId,
         },
       );
       const task_id = task.id;
@@ -101,7 +102,7 @@ function RequestAvailabilityDrawer() {
         .flat();
 
       const bodyParams: APIConfirmRecruiterSelectedOption = {
-        availability_req_id: String(router.query?.request_availability_id),
+        availability_req_id: String(requestAvailibityId),
         selectedOption: {
           plan_comb_id: nanoid(),
           sessions: allSessions, // sessions
@@ -119,7 +120,7 @@ function RequestAvailabilityDrawer() {
 
         if (res.status === 200) {
           await updateCandidateRequestAvailability({
-            id: String(router.query?.request_availability_id),
+            id: requestAvailibityId,
             data: {
               booking_confirmed: true,
             },
@@ -137,7 +138,7 @@ function RequestAvailabilityDrawer() {
   function handleBack() {
     if (selectedIndex !== 0) setSelectedIndex((pre) => pre - 1);
   }
-  const openAvailabilityDrawer = Boolean(router.query?.request_availability_id);
+  const openAvailabilityDrawer = Boolean(requestAvailibityId);
   return (
     <Drawer
       onClose={closeDrawer}
