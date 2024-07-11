@@ -13,6 +13,7 @@ import { Session } from '../components/template/Sessions';
 import config from '../../tailwind.config';
 import { Footer } from '../components/template/Footer';
 import { companyLogoDummy } from '../utils/assets/common';
+import { ButtonSolid } from '../components/template/Button';
 
 type EmailType = EmailTemplateAPi<'meetingAccepted_email_organizer'>;
 
@@ -33,7 +34,8 @@ export const dummy: EmailType['react_email_placeholders'] = {
   },
   subject:
     '<p><span class="temp-variable" data-type="temp-variable" data-id="interviewerName">{{interviewerName}}</span> Accepted Interview for <span class="temp-variable" data-type="temp-variable" data-id="jobRole">{{jobRole}}</span> with <span class="temp-variable" data-type="temp-variable" data-id="candidateFirstName">{{candidateFirstName}}</span></p>',
-  meetingDetailsLink: '',
+  meetingDetailsLink:
+    'process.env.NEXT_PUBLIC_APP_URL/scheduling/view?meeting_id=interview_meeting_id&tab=candidate_details',
   candidateScheduleLink: '',
 };
 
@@ -43,6 +45,7 @@ export const meetingDeclinedEmailOrganizer = ({
   emailBody = dummy.emailBody,
   companyLogo = dummy.companyLogo,
   meetingDetail = dummy.meetingDetail,
+  meetingDetailsLink = dummy.meetingDetailsLink,
 }: EmailType['react_email_placeholders']) => {
   const htmlParser = Parser();
   return (
@@ -62,6 +65,10 @@ export const meetingDeclinedEmailOrganizer = ({
                 {htmlParser.parse(emailBody)}
               </Container>
               <Session meetingDetail={meetingDetail} />
+              <ButtonSolid
+                href={meetingDetailsLink}
+                buttonText="Meeting Details"
+              />
             </Container>
             <Footer />
           </Container>
