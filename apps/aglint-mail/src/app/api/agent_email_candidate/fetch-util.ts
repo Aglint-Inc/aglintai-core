@@ -57,7 +57,7 @@ export async function fetchUtil(
       companyName: company,
       jobRole: job_title,
       OrganizerTimeZone: recruiter_tz,
-      selfScheduleLink: `<a href="${scheduleLink}">here</a>`,
+      selfScheduleLink: `<a href="${scheduleLink}" target="_blank" >here</a>`,
       organizerName: getFullName(recr.first_name, recr.last_name),
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),

@@ -98,7 +98,7 @@ export async function fetchUtil(
       organizerLastName: meeting_organizer.last_name,
       OrganizerTimeZone: int_tz,
       rescheduleReason: session_cancel.reason,
-      candidateScheduleLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}">here</a>`,
+      candidateScheduleLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}" target="_blank">here</a>`,
     };
 
   const filled_comp_template = fillCompEmailTemplate(

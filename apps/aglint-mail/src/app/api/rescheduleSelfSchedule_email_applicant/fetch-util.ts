@@ -80,7 +80,7 @@ export async function fetchUtil(
     },
   );
 
-  const scheduleLink = `<a href='${req_body.self_schedule_link}'>click here</a>`;
+  const scheduleLink = `<a href='${req_body.self_schedule_link}' target="_blank">click here</a>`;
 
   const comp_email_placeholder: EmailTemplateAPi<'rescheduleSelfSchedule_email_applicant'>['comp_email_placeholders'] =
     {
