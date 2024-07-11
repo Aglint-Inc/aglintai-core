@@ -2,6 +2,7 @@ import { RecruiterUserType } from '@aglint/shared-types';
 import { Autocomplete, Dialog, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import UITextField from '@/src/components/Common/UITextField';
 import { type useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -9,19 +10,21 @@ import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 function RoleEditMember({
   user,
+  defaultRole,
   close,
   errorMessage,
   handelMemberUpdate,
   options,
 }: {
   user: RecruiterUserType;
+  defaultRole?: string;
   close: () => void;
   errorMessage: string;
   // eslint-disable-next-line no-unused-vars
   handelMemberUpdate: ReturnType<typeof useAuthDetails>['handelMemberUpdate'];
   options: { role: string; id: string }[];
 }) {
-  const [role_id, setRole_id] = useState<string>(user.role_id);
+  const [role_id, setRole_id] = useState<string>(defaultRole || user.role_id);
   return (
     <Dialog
       open={true}
@@ -49,6 +52,18 @@ function RoleEditMember({
         }}
         slotWidget={
           <>
+            {role_id && role_id !== user.role_id && (
+              <GlobalBannerInline
+                color={'warning'}
+                textContent={
+                  'User role will be changed to ' +
+                  capitalizeFirstLetter(
+                    options.find((item) => item.id === role_id).role,
+                  )
+                }
+                slotButton={<></>}
+              />
+            )}
             {errorMessage && (
               <Typography fontWeight={600}>Warning: {errorMessage}</Typography>
             )}

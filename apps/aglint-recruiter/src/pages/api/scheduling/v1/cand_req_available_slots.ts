@@ -28,20 +28,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
     const fetched_details = await fetchDetails(parsed_body);
     const cand_schedule = new CandidatesSchedulingV2(
-      {
-        session_ids:
-          fetched_details.avail_req_details.request_session_relation.map(
-            (s) => s.interview_session.id,
-          ),
-        start_date_str: fetched_details.avail_req_details.date_range[0],
-        end_date_str: fetched_details.avail_req_details.date_range[1],
-        recruiter_id: parsed_body.recruiter_id,
-        candidate_tz: parsed_body.candidate_tz,
-      },
       fetched_details.updated_api_options,
     );
-    await cand_schedule.fetchDetails();
-    await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
+    await cand_schedule.fetchDetails({
+      session_ids:
+        fetched_details.avail_req_details.request_session_relation.map(
+          (s) => s.interview_session.id,
+        ),
+      start_date_str: fetched_details.avail_req_details.date_range[0],
+      end_date_str: fetched_details.avail_req_details.date_range[1],
+      company_id: parsed_body.recruiter_id,
+      req_user_tz: parsed_body.candidate_tz,
+    });
     const all_day_plans = cand_schedule.findAvailabilitySlotsDateRange();
     const curr_round_options = convertToOptionsReqSlot(
       fetched_details,

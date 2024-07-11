@@ -167,11 +167,11 @@ const UserSearch = ({
                           }}
                         >
                           {capitalizeFirstLetter(
-                            `${item.first_name || ''} ${item.last_name || ''}`,
+                            `${item.first_name || ''} ${item.last_name || ''} (${capitalizeFirstLetter(item.role)})`,
                           )}
                         </Typography>
                         <Typography>
-                          {capitalizeFirstLetter(item.role)}
+                          {capitalizeFirstLetter(item.department)}
                         </Typography>
                       </Stack>
                     </Stack>

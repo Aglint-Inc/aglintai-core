@@ -1,11 +1,13 @@
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+
 import { GlobalInfo } from '@/devlink2/GlobalInfo';
 
 import { useSchedulingFlowStore } from '../store';
 
 function ErrorsFindAvailibility() {
-  const { noOptions } = useSchedulingFlowStore((state) => ({
+  const { noOptions, noSlotReasons } = useSchedulingFlowStore((state) => ({
     noOptions: state.noOptions,
-    // filteredSchedulingOptions: state.filteredSchedulingOptions,
+    noSlotReasons: state.noSlotReasons,
   }));
 
   return (
@@ -17,19 +19,24 @@ function ErrorsFindAvailibility() {
             'No available slots found. Please try expanding the date ranges.'
           }
           textDescription={null}
-          showWidget={false}
-          // slotWidget={
-          //   <ul>
-          //     {errors.map((error) => {
-          //       return (
-          //         <li key={error.date}>
-          //           {dayjsLocal(error.date).format('MMM DD')} :{' '}
-          //           {error.errors.join(', ')}
-          //         </li>
-          //       );
-          //     })}
-          //   </ul>
-          // }
+          showWidget={noSlotReasons.length > 0}
+          slotWidget={
+            <ul>
+              {noSlotReasons.map((error) => {
+                const formatDateTange = error.date_range.map((date) => {
+                  return dayjsLocal(date).format('MMM DD');
+                });
+                const allReasons = error.plans
+                  .flatMap((plan) => plan.no_slot_reasons)
+                  .flatMap((reason) => reason.reason);
+                return (
+                  <li key={error.date_range.join()}>
+                    {formatDateTange.join(', ')} : {allReasons.join(', ')}
+                  </li>
+                );
+              })}
+            </ul>
+          }
         />
       )}
     </>

@@ -1,7 +1,6 @@
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -13,8 +12,11 @@ import toast from '@/src/utils/toast';
 
 import {
   setIsScheduleNowOpen,
+  setRequestAvailibityId,
   setScheduleFlow,
   setStepScheduling,
+  setUpdateRequestAvailibityId,
+  useSchedulingFlowStore,
 } from '../../SchedulingDrawer/store';
 import {
   setRequestSessionIds,
@@ -25,35 +27,16 @@ import { useAvailabilityContext } from './RequestAvailabilityContext';
 import RequestAvailabilityDrawer from './RequestAvailabilityDrawer';
 
 function RequestAvailabilityPopUps() {
-  const router = useRouter();
   const { availabilities, initialSessions } = useSchedulingApplicationStore();
 
   const { setSelectedRequestAvailability } = useAvailabilityContext();
-
+  const { updateRequestAvailibityId } = useSchedulingFlowStore();
   function openDrawer(id: string) {
-    const currentPath = router.pathname;
-    const currentQuery = router.query;
-    const updatedQuery = {
-      ...currentQuery,
-      request_availability_id: id,
-    };
-    router.replace({
-      pathname: currentPath,
-      query: updatedQuery,
-    });
+    setRequestAvailibityId(id);
   }
 
   function handleRequestAgain(request_id: string, session_ids: string[]) {
-    const currentPath = router.pathname;
-    const currentQuery = router.query;
-    const updatedQuery = {
-      ...currentQuery,
-      candidate_request_availability: request_id,
-    };
-    router.replace({
-      pathname: currentPath,
-      query: updatedQuery,
-    });
+    setUpdateRequestAvailibityId(request_id);
     setIsScheduleNowOpen(true);
     setStepScheduling('pick_date');
     setScheduleFlow('update_request_availibility');
@@ -70,10 +53,7 @@ function RequestAvailabilityPopUps() {
   }
 
   const selectedRequest = availabilities?.find((item) => {
-    return (
-      item.candidate_request_availability.id ==
-      router.query?.candidate_request_availability
-    );
+    return item.candidate_request_availability.id == updateRequestAvailibityId;
   });
 
   const reqSesIds = selectedRequest?.request_session_relations
@@ -82,10 +62,11 @@ function RequestAvailabilityPopUps() {
 
   useEffect(() => {
     if (selectedRequest) setRequestSessionIds(reqSesIds);
-  }, [router.query?.candidate_request_availability]);
+  }, [updateRequestAvailibityId]);
 
   return (
     <div>
+      {/* for scheduling request availability */}
       <RequestAvailabilityDrawer />
       <Stack direction={'column'} gap={1}>
         {availabilities &&
@@ -203,6 +184,7 @@ function RequestAvailabilityPopUps() {
                           />
                           <ButtonSoft
                             textButton={'Request Again'}
+                            color={'neutral'}
                             isLoading={false}
                             isLeftIcon={false}
                             isRightIcon={false}

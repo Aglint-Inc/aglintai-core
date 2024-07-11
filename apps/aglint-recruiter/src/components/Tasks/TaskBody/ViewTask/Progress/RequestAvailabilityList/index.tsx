@@ -7,8 +7,10 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import {
   setIsScheduleNowOpen,
+  setRequestAvailibityId,
   setScheduleFlow,
   setStepScheduling,
+  setUpdateRequestAvailibityId,
 } from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/store';
 import {
   setRequestSessionIds,
@@ -56,8 +58,9 @@ function RequestAvailabilityList({
             size={1}
             onClickButton={{
               onClick: () => {
+                setRequestAvailibityId(selectedTask.request_availability_id);
                 router.push(
-                  `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/application/${selectedTask.application_id}?request_availability_id=${selectedTask.candidate_request_availability.id}`,
+                  `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/application/${selectedTask.application_id}`,
                 );
               },
             }}
@@ -79,8 +82,11 @@ function RequestAvailabilityList({
                 setRequestSessionIds(
                   selectedTask.session_ids.map((ele) => ele.id),
                 );
+                setUpdateRequestAvailibityId(
+                  selectedTask.candidate_request_availability.id,
+                );
                 router.push(
-                  `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/application/${selectedTask.application_id}?candidate_request_availability=${selectedTask.candidate_request_availability.id}`,
+                  `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/application/${selectedTask.application_id}`,
                 );
               },
             }}
