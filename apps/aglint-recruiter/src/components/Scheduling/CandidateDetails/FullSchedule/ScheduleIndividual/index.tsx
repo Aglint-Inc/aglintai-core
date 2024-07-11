@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { StatusBadge } from '@/devlink2/StatusBadge';
 import { GlobalScheduleCard } from '@/devlink3/GlobalScheduleCard';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 import IconScheduleType from '../../../Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '../../../Candidates/utils';
@@ -31,12 +32,21 @@ function ScheduleIndividualCard({
   cancelReasons = [],
   gridStyle = '1.1fr 1.7fr 0.6fr',
   isCollapseButtonsVisible = false,
-  currentSession,
+  currentSession, // this is there only in candidate schedule page
 }: ScheduleIndividualCardType) {
+  const { recruiter } = useAuthDetails();
   const [collapsed, setCollapsed] = useState(false);
 
-  const confirmedUsers =
-    users?.filter((user) => user.interview_session_relation.is_confirmed) || [];
+  const usersWithErrors = users.filter(
+    (user) =>
+      !!user?.interview_module_relation?.pause_json ||
+      !(
+        (!!recruiter.service_json &&
+          recruiter.email.split('@')[1] ===
+            user.user_details.email.split('@')[1]) ||
+        !!(user.user_details.schedule_auth as any)?.access_token
+      ),
+  );
 
   return (
     <GlobalScheduleCard
@@ -50,6 +60,7 @@ function ScheduleIndividualCard({
       slotCheckbox={
         <Checkbox
           size='small'
+          disabled={usersWithErrors.length === users.length}
           checked={selectedSessionIds.includes(interview_session.id)}
           onClick={(e) => {
             e.stopPropagation();
@@ -60,9 +71,11 @@ function ScheduleIndividualCard({
       isSelectedVisible={selectedSessionIds.includes(interview_session.id)}
       isDropdownIconVisible={
         isCollapseNeeded &&
-        (interview_meeting?.status === 'confirmed' ||
+        (!interview_meeting ||
+          interview_meeting?.status === 'confirmed' ||
           interview_meeting?.status === 'completed' ||
-          interview_meeting?.status === 'waiting')
+          interview_meeting?.status === 'waiting' ||
+          interview_meeting?.status === 'not_scheduled')
       }
       isDateVisible={
         interview_meeting?.status === 'confirmed' ||
@@ -76,6 +89,7 @@ function ScheduleIndividualCard({
       iconMeetingPlatform={
         <IconScheduleType type={interview_session.schedule_type} />
       }
+      isRoleVisible={!!jobTitle}
       slotGlobalBadge={
         interview_meeting?.status ? (
           <StatusBadge
@@ -127,9 +141,8 @@ function ScheduleIndividualCard({
           <CollapseContent
             candidate={candidate}
             collapsed={collapsed}
-            confirmedUsers={confirmedUsers}
+            allUsers={users || []}
             currentSession={currentSession}
-            interview_meeting={interview_meeting}
             jobTitle={jobTitle}
             isCollapseButtonsVisible={isCollapseButtonsVisible}
           />
@@ -152,7 +165,11 @@ function ScheduleIndividualCard({
         <RequestStatusUnconfirmed interview_meeting={interview_meeting} />
       }
       slotRequestDetail={
-        <CancelRescheduleBadges cancelReasons={cancelReasons} />
+        <CancelRescheduleBadges
+          cancelReasons={cancelReasons}
+          users={users}
+          interview_meeting={interview_meeting}
+        />
       }
     />
   );

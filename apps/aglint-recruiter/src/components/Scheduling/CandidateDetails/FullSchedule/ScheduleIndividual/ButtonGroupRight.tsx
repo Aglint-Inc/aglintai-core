@@ -1,13 +1,18 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import React from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 
 import { SchedulingApplication, setIsEditOpen } from '../../store';
-import { setDebriefMembers, setEditSession, setSelectedInterviewers, setTrainingInterviewers, setTrainingToggle } from '../EditDrawer/store';
+import {
+  setDebriefMembers,
+  setEditSession,
+  setSelectedInterviewers,
+  setTrainingInterviewers,
+  setTrainingToggle,
+} from '../EditDrawer/store';
 import { ScheduleIndividualCardType } from './types';
 
 function ButtonGroupRight({
@@ -22,6 +27,7 @@ function ButtonGroupRight({
   isViewDetailVisible: boolean;
 }) {
   const router = useRouter();
+
   return (
     <Stack direction={'row'} spacing={'var(--space-2)'}>
       {isViewDetailVisible &&

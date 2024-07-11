@@ -3,7 +3,7 @@ import {
   DatabaseTable,
   DateRangePlansType,
   InterviewModuleType,
-  JobApplcationDB
+  JobApplcationDB,
 } from '@aglint/shared-types';
 
 import { ResumeJson } from '@/src/apiUtils/resumeScoring/types';
@@ -50,6 +50,7 @@ export type SessionsType = {
       profile_image: string;
       position: string;
       scheduling_settings: DatabaseTable['recruiter_user']['scheduling_settings'];
+      schedule_auth: DatabaseTable['recruiter_user']['schedule_auth'];
     };
   }[];
   cancel_reasons: DatabaseTable['interview_session_cancel'][] | null;

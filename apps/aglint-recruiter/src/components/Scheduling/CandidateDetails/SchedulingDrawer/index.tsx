@@ -16,7 +16,7 @@ import { useSelfSchedulingDrawer } from './hooks';
 import RescheduleSlot from './RescheduleSlot';
 import SelfScheduleSuccess from './SelfScheduleSuccess';
 import StepScheduleFilter from './StepScheduleFilter';
-import SelectDateRange from './StepSelectDate';
+import SelectDateRange from './StepSelectDate/StepSelectDate';
 import StepSlotOptions from './StepSlotOptions';
 import {
   resetSchedulingFlowStore,
@@ -150,6 +150,8 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                       stepScheduling === 'self_scheduling_email_preview'
                     ) {
                       setStepScheduling('slot_options');
+                    } else if (stepScheduling === 'reschedule') {
+                      resetStateSelfScheduling();
                     }
                   },
                 }}

@@ -8,7 +8,7 @@ import SessionCard from '@/src/components/Scheduling/InterviewTypes/ModuleMember
 import { ProgressUser } from '@/src/components/Scheduling/InterviewTypes/ModuleMembers/SlotBodyComp/SlotTrainingMembers';
 import { ModuleType } from '@/src/components/Scheduling/InterviewTypes/types';
 import { getFullName } from '@/src/utils/jsonResume';
-import { numberToOrdinalText } from '@/src/utils/numberToText/numberToOrdinalText';
+import { numberToOrdinalText } from '@/src/utils/number/numberToOrdinalText';
 
 export default function IProgressDrawer({
   module,

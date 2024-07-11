@@ -7,6 +7,7 @@ import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { Text } from '@/devlink/Text';
 import { DateOption } from '@/devlink3/DateOption';
+import { EmptySlotReason } from '@/devlink3/EmptySlotReason';
 import { ScheduleOption } from '@/devlink3/ScheduleOption';
 import { TextWithIcon } from '@/devlink3/TextWithIcon';
 
@@ -104,6 +105,10 @@ function DayCardWrapper({
     }
   }, [selectedCombIds]);
 
+  const noSlotReasons = item.plans
+    .flat()
+    .flatMap((plan) => plan.no_slot_reasons.map((reason) => reason.reason));
+
   return (
     <>
       <DateOption
@@ -119,11 +124,15 @@ function DayCardWrapper({
         }
         slotRightBlock={
           <>
-            <Text
-              content={`${noOfTotalSlots} options, ${noOfSelectedSlots} selected`}
-              color={isSelected ? 'accent' : 'neutral'}
-            />
-            <DayCardConflicts slotsWithDaySessions={slotsWithDaySessions} />
+            {!noSlotReasons.length && (
+              <>
+                <Text
+                  content={`${noOfTotalSlots} options, ${noOfSelectedSlots} selected`}
+                  color={isSelected ? 'accent' : 'neutral'}
+                />
+                <DayCardConflicts slotsWithDaySessions={slotsWithDaySessions} />
+              </>
+            )}
 
             {isDayCollapseNeeded && (
               <IconButtonSoft
@@ -139,7 +148,7 @@ function DayCardWrapper({
             )}
           </>
         }
-        isCheckboxVisible={isDayCheckboxNeeded}
+        isCheckboxVisible={isDayCheckboxNeeded && !noSlotReasons.length}
         isSelected={isSelected}
         slotCheckbox={
           <Checkbox
@@ -175,53 +184,74 @@ function DayCardWrapper({
           !isDisabled && (
             <Collapse in={isDayCollapseNeeded ? collapse : true}>
               <Stack spacing={'var(--space-2)'} pt={'var(--space-2)'}>
-                {slotsWithDaySessions.slice(0, displayedSlots)?.map((slot) => {
-                  return (
-                    <ScheduleOption
-                      slotCheckbox={
-                        <>
-                          {isSlotCheckboxNeeded && (
-                            <Checkbox
-                              checked={selectedCombIds.includes(
-                                slot.plan_comb_id,
-                              )}
-                              onClick={() => onClickSelect(slot.plan_comb_id)}
-                            />
-                          )}
-                          {isRadioNeeded && (
-                            <Radio
-                              checked={selectedCombIds.includes(
-                                slot.plan_comb_id,
-                              )}
-                              onClick={() => {
-                                onClickSelect(slot.plan_comb_id);
-                              }}
-                            />
-                          )}
-                        </>
-                      }
-                      key={slot.plan_comb_id}
-                      isSelected={selectedCombIds.includes(slot.plan_comb_id)}
-                      isCheckbox={isSlotCheckboxNeeded || isRadioNeeded}
-                      slotSingleDaySchedule={slot.daySessions?.map(
-                        (item, ind) => {
-                          return (
-                            <SingleDayCard
-                              isAutoCollapse={isAutoCollapse}
-                              key={ind}
-                              item={item}
-                              ind={ind}
-                              isMultiDay={isMultiDay}
-                              isCollapseNeeded={isSlotCollapseNeeded}
-                              selectedCombIds={selectedCombIds}
-                              comb_id={slot.plan_comb_id}
-                            />
-                          );
-                        },
-                      )}
+                {noSlotReasons.length === 0 ? (
+                  <>
+                    {slotsWithDaySessions
+                      .slice(0, displayedSlots)
+                      ?.map((slot) => {
+                        return (
+                          <ScheduleOption
+                            slotCheckbox={
+                              <>
+                                {isSlotCheckboxNeeded && (
+                                  <Checkbox
+                                    checked={selectedCombIds.includes(
+                                      slot.plan_comb_id,
+                                    )}
+                                    onClick={() =>
+                                      onClickSelect(slot.plan_comb_id)
+                                    }
+                                  />
+                                )}
+                                {isRadioNeeded && (
+                                  <Radio
+                                    checked={selectedCombIds.includes(
+                                      slot.plan_comb_id,
+                                    )}
+                                    onClick={() => {
+                                      onClickSelect(slot.plan_comb_id);
+                                    }}
+                                  />
+                                )}
+                              </>
+                            }
+                            key={slot.plan_comb_id}
+                            isSelected={selectedCombIds.includes(
+                              slot.plan_comb_id,
+                            )}
+                            isCheckbox={isSlotCheckboxNeeded || isRadioNeeded}
+                            slotSingleDaySchedule={slot.daySessions?.map(
+                              (item, ind) => {
+                                return (
+                                  <SingleDayCard
+                                    isAutoCollapse={isAutoCollapse}
+                                    key={ind}
+                                    item={item}
+                                    ind={ind}
+                                    isMultiDay={isMultiDay}
+                                    isCollapseNeeded={isSlotCollapseNeeded}
+                                    selectedCombIds={selectedCombIds}
+                                    comb_id={slot.plan_comb_id}
+                                  />
+                                );
+                              },
+                            )}
+                          />
+                        );
+                      })}
+                  </>
+                ) : (
+                  noSlotReasons.map((reason, index) => (
+                    <EmptySlotReason
+                      key={index}
+                      textMain={reason}
+                      iconName={'nightlife'}
+                      color={'info'}
+                      textSub={''}
                     />
-                  );
-                })}
+                  ))
+                )}
+
                 {displayedSlots < slots.length && (
                   <Stack direction={'row'} justifyContent={'center'} p={1}>
                     <ButtonGhost

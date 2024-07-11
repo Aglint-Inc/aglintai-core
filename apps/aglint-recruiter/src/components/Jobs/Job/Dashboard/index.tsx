@@ -84,19 +84,20 @@ const JobDashboard = () => {
 };
 
 const getMatches = (
-  counts: ReturnType<typeof useJobDashboard>['matches']['data'],
+  application_match: Job['application_match'],
+  total: number,
 ) => {
-  return Object.entries(counts?.matches ?? {}).reduce(
+  return Object.entries(application_match ?? {}).reduce(
     (acc, [key, value]) => {
       acc[key] = {
         count: getPlural(value, 'candidate'),
-        percentage: `${value ? Math.trunc((value / counts.total) * 100) : 0}%`,
+        percentage: `${value ? ((value / total) * 100).toFixed(1) : 0}%`,
       };
       return acc;
     },
     {} as {
       // eslint-disable-next-line no-unused-vars
-      [id in keyof typeof counts.matches]: {
+      [id in keyof typeof application_match]: {
         count: number;
         percentage: string;
       };
@@ -107,13 +108,13 @@ const getMatches = (
 const Dashboard = () => {
   const {
     job,
+    total,
     applicationScoringPollEnabled,
     handleJobAsyncUpdate,
     handlePublish,
     canPublish,
   } = useJob();
   const {
-    matches: { data: counts },
     schedules: { data: schedule },
   } = useJobDashboard();
   const { push } = useRouter();
@@ -125,7 +126,7 @@ const Dashboard = () => {
 
   const { getParams } = useApplicationsParams();
 
-  const score_matches = getMatches(counts);
+  const score_matches = getMatches(job.application_match, total);
   const [popover, setPopover] = useState(false);
 
   const handleCloseJob = useCallback(async () => {
@@ -201,44 +202,44 @@ const Dashboard = () => {
             }
             onClickTopMatch={{
               style: { cursor: 'pointer' },
-              onClick: () => handleFilter('Top match'),
+              onClick: () => handleFilter('top_match'),
             }}
             textTopMatchPercentage={
-              score_matches?.topMatch?.percentage ?? '---'
+              score_matches?.top_match?.percentage ?? '---'
             }
-            textTopMatchCount={score_matches?.topMatch?.count ?? '---'}
+            textTopMatchCount={score_matches?.top_match?.count ?? '---'}
             onClickGoodMatch={{
               style: { cursor: 'pointer' },
-              onClick: () => handleFilter('Good match'),
+              onClick: () => handleFilter('good_match'),
             }}
             textGoodMatchPercentage={
-              score_matches?.goodMatch?.percentage ?? '---'
+              score_matches?.good_match?.percentage ?? '---'
             }
-            textGoodMatchCount={score_matches?.goodMatch?.count ?? '---'}
+            textGoodMatchCount={score_matches?.good_match?.count ?? '---'}
             onClickAverageMatch={{
               style: { cursor: 'pointer' },
-              onClick: () => handleFilter('Average match'),
+              onClick: () => handleFilter('average_match'),
             }}
             textAverageMatchPercentage={
-              score_matches?.averageMatch?.percentage ?? '---'
+              score_matches?.average_match?.percentage ?? '---'
             }
-            textAveageMatchCount={score_matches?.averageMatch?.count ?? '---'}
+            textAveageMatchCount={score_matches?.average_match?.count ?? '---'}
             onClickBelowAverage={{
               style: { cursor: 'pointer' },
-              onClick: () => handleFilter('Poor match'),
+              onClick: () => handleFilter('poor_match'),
             }}
             textBelowAveragePercentage={
-              score_matches?.poorMatch?.percentage ?? '---'
+              score_matches?.poor_match?.percentage ?? '---'
             }
-            textBelowAverageCount={score_matches?.poorMatch?.count ?? '---'}
+            textBelowAverageCount={score_matches?.poor_match?.count ?? '---'}
             onClickNotaMatch={{
               style: { cursor: 'pointer' },
-              onClick: () => handleFilter('Not a match'),
+              onClick: () => handleFilter('not_a_match'),
             }}
             textNotAMatchPercentage={
-              score_matches?.noMatch?.percentage ?? '---'
+              score_matches?.not_a_match?.percentage ?? '---'
             }
-            textNotAMatchCount={score_matches?.noMatch?.count ?? '---'}
+            textNotAMatchCount={score_matches?.not_a_match?.count ?? '---'}
             slotLocationGraphBlock={<Doughnut />}
             slotExperienceGraph={<LineGraph />}
             slotSkillGraphBlock={<Bars />}
@@ -285,7 +286,7 @@ const Dashboard = () => {
                       job?.processing_count.processed +
                       job?.processing_count.unavailable +
                       job?.processing_count.unparsable
-                    }/${counts?.total ?? '---'}`}
+                    }/${total ?? '---'}`}
                     slotScoringLoader={scoringLoader}
                   />
                 )}
@@ -392,10 +393,7 @@ const Roles = () => {
 
 const BreadCrumbs = () => {
   const router = useRouter();
-  const {
-    job,
-    matches: { data: counts },
-  } = useJobDashboard();
+  const { job, total } = useJobDashboard();
   return (
     <>
       <Breadcrum
@@ -409,7 +407,7 @@ const BreadCrumbs = () => {
         }}
       />
       <Breadcrum
-        textName={`${capitalize(job?.job_title ?? 'Job')} ${counts?.total ? `(${counts.total})` : ''}`}
+        textName={`${capitalize(job?.job_title ?? 'Job')} ${total ? `(${total})` : ''}`}
         showArrow
       />
       <Preview />
@@ -1024,7 +1022,7 @@ const EmailTemplatesModule = () => {
 export type DashboardGraphOptions<
   T extends keyof Pick<
     ReturnType<typeof useJobDashboard>,
-    'assessments' | 'locations' | 'matches' | 'skills' | 'tenureAndExperience'
+    'assessments' | 'locations' | 'skills' | 'tenureAndExperience'
   >,
 > = {
   // eslint-disable-next-line no-unused-vars
