@@ -13,6 +13,7 @@ import { Session } from '../components/template/Sessions';
 import config from '../../tailwind.config';
 import { Footer } from '../components/template/Footer';
 import { companyLogoDummy } from '../utils/assets/common';
+import { ButtonSolid } from '../components/template/Button';
 
 type EmailType = EmailTemplateAPi<'meetingDeclined_email_organizer'>;
 
@@ -43,6 +44,7 @@ export const meetingDeclinedEmailOrganizer = ({
   emailBody = dummy.emailBody,
   companyLogo = dummy.companyLogo,
   meetingDetail = dummy.meetingDetail,
+  meetingDetailsLink = dummy.meetingDetailsLink,
 }: EmailType['react_email_placeholders']) => {
   const htmlParser = Parser();
   return (
@@ -62,6 +64,10 @@ export const meetingDeclinedEmailOrganizer = ({
                 {htmlParser.parse(emailBody)}
               </Container>
               <Session meetingDetail={meetingDetail} />
+              <ButtonSolid
+                href={meetingDetailsLink}
+                buttonText="View Details"
+              />
             </Container>
             <Footer />
           </Container>
