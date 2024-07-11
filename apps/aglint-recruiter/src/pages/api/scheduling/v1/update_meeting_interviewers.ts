@@ -2,7 +2,6 @@
 import {
   APIUpdateMeetingInterviewers,
   CalendarEvent,
-  CompServiceKeyCred,
   ScheduleAuthType,
 } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
@@ -11,7 +10,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
 import { CalEventAttendeesAuthDetails } from '@/src/utils/event_book/book_session';
-import { decrypt_string } from '@/src/utils/integrations/crypt-funcs';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 const required_fields: (keyof APIUpdateMeetingInterviewers)[] = [
@@ -30,20 +28,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { replaced_inters } = req.body as APIUpdateMeetingInterviewers;
 
     const {
-      company_cred,
+      company_cred_hash_str,
       meeting_organizer_auth,
       session_ints_auth,
       meeting_details,
       session_intes,
     } = await fetch_details(req.body);
 
-    const google_cal = new GoogleCalender({
-      company_cred: company_cred,
-      recruiter: {
-        email: meeting_organizer_auth.email,
-        schedule_auth: meeting_organizer_auth.schedule_auth,
-        user_id: meeting_organizer_auth.user_id,
-      },
+    const google_cal = new GoogleCalender(company_cred_hash_str, {
+      email: meeting_organizer_auth.email,
+      schedule_auth: meeting_organizer_auth.schedule_auth,
+      user_id: meeting_organizer_auth.user_id,
     });
     await google_cal.authorizeUser();
     let updated_attendees_auth = session_ints_auth.filter((int) =>
@@ -60,10 +55,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const attendees_promises = updated_attendees_auth.map(async (int) => {
       const email = (int.schedule_auth as ScheduleAuthType)?.email ?? int.email;
-      const int_cal = new GoogleCalender({
-        company_cred: company_cred,
-        recruiter: int,
-      });
+      const int_cal = new GoogleCalender(company_cred_hash_str, int);
       await int_cal.authorizeUser();
       await int_cal.importEvent(updated_event, email);
     });
@@ -117,7 +109,7 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
         ...meeting_details,
         organizer_email: rec_auth.email,
         organizer_id: rec_auth.user_id,
-        schedule_auth: rec_auth.schedule_auth as ScheduleAuthType,
+        schedule_auth: rec_auth.schedule_auth,
       };
     })(),
     (async () => {
@@ -155,15 +147,9 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
       user_id: int.recruiter_user.user_id,
     }));
   const hashed_comp_cred = session_ints_auth_details[0].recruiter.service_json;
-  let company_cred: CompServiceKeyCred;
-  if (hashed_comp_cred) {
-    company_cred = JSON.parse(
-      decrypt_string(hashed_comp_cred),
-    ) as CompServiceKeyCred;
-  }
 
   return {
-    company_cred,
+    company_cred_hash_str: hashed_comp_cred,
     meeting_organizer_auth,
     session_ints_auth,
     meeting_details,

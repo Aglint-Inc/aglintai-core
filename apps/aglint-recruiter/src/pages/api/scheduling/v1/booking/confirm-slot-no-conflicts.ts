@@ -30,20 +30,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const selected_date = userTzDayjs(parsed.selected_slot.slot_start_time)
       .tz(parsed.cand_tz)
       .format('DD/MM/YYYY');
-    const cand_schedule = new CandidatesSchedulingV2(
-      {
-        candidate_tz: parsed.cand_tz,
-        start_date_str: selected_date,
-        end_date_str: selected_date,
-        recruiter_id: filter_json_data.interview_schedule.recruiter_id,
-        session_ids: filter_json_data.session_ids,
-      },
-      zod_options,
-    );
+    const cand_schedule = new CandidatesSchedulingV2(zod_options);
 
-    await cand_schedule.fetchDetails();
+    await cand_schedule.fetchDetails({
+      req_user_tz: parsed.cand_tz,
+      start_date_str: selected_date,
+      end_date_str: selected_date,
+      company_id: filter_json_data.interview_schedule.recruiter_id,
+      session_ids: filter_json_data.session_ids,
+    });
 
-    await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
     const [first_day_slots] = cand_schedule.findCandSlotForTheDay();
 
     const curr_time_slots = first_day_slots.plans.filter((curr_day_slot) => {

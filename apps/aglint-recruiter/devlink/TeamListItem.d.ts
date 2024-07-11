@@ -14,4 +14,5 @@ declare function TeamListItem(props: {
   textLocation?: React.ReactNode;
   textLastActive?: React.ReactNode;
   slotThreeDot?: Types.Devlink.Slot;
+  slotBadge?: Types.Devlink.Slot;
 }): React.JSX.Element;

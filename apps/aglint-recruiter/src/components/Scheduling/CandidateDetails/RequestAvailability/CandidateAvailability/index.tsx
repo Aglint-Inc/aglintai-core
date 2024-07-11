@@ -19,7 +19,6 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
 
@@ -118,11 +117,7 @@ function CandidateAvailability() {
         data: { slots: daySlots, user_timezone: userTzDayjs.tz.guess() },
       },
     );
-    await supabaseAdmin
-      .from('candidates')
-      .update({ timezone: userTzDayjs.tz.guess() })
-      .eq('id', candidateRequestAvailability.applications.candidates.id)
-      .throwOnError();
+ 
     if (task.id) {
       await insertTaskProgress({
         taskData: {

@@ -7,6 +7,7 @@ import {
   setDateRange,
   setIsScheduleNowOpen,
   setScheduleFlow,
+  setSelectedTaskId,
   setStepScheduling,
 } from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/store';
 import {
@@ -67,8 +68,9 @@ function ScheduleNowCard({
                     selectedTask.session_ids.map((ele) => ele.id),
                   );
                 }
+                setSelectedTaskId(selectedTask.id)
                 router.push(
-                  `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/application/${selectedTask.application_id}?task_id=${selectedTask.id}`,
+                  `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/application/${selectedTask.application_id}`,
                 );
               },
             }}

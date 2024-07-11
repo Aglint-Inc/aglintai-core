@@ -17,18 +17,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       end_date_str,
       recruiter_id,
     } = await fetchCandidateAvailability(parsedData.cand_availability_id);
-    const cand_schedule = new CandidatesSchedulingV2(
-      {
-        recruiter_id: recruiter_id,
-        session_ids: session_ids,
-        candidate_tz: parsedData.user_tz,
-        start_date_str: start_date_str,
-        end_date_str: end_date_str,
-      },
-      api_options,
-    );
-    await cand_schedule.fetchDetails();
-    await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
+    const cand_schedule = new CandidatesSchedulingV2(api_options);
+    await cand_schedule.fetchDetails({
+      company_id: recruiter_id,
+      session_ids: session_ids,
+      req_user_tz: parsedData.user_tz,
+      start_date_str: start_date_str,
+      end_date_str: end_date_str,
+    });
     const all_combs = cand_schedule.getCandidateSelectedSlots(
       candidate_selected_slots,
     );
