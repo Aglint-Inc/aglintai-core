@@ -22,7 +22,7 @@ export function EditEmail({
   onClickCloseTip = {},
   isTipVisible = true,
   slotSaveButton,
-  currentModule,
+  currentModule = "jobs",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "edit-email-wrap")} tag="div">
@@ -100,7 +100,10 @@ export function EditEmail({
           ) : null}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%5Bdata-edit-email-module-name%3D%22scheduler%22%5D%7B%0A%09height%3Acalc(100vh%20-%20180px)%3B%0A%7D%0A%3C%2Fstyle%3E" />
+      <_Builtin.HtmlEmbed
+        className={_utils.cx(_styles, "embed_css")}
+        value="%3Cstyle%3E%0A%5Bdata-edit-email-module-name%3D%22scheduler%22%5D%7B%0A%09height%3Acalc(100vh%20-%20196px)%3B%0A%20%20overflow%3A%20auto%3B%0A%7D%0A%5Bdata-edit-email-module-name%3D%22jobs%22%5D%7B%0A%09%09height%3A%20calc(100vh%20-%20142px)%3B%0A%20%20%20%20overflow%3A%20auto%3B%0A%7D%0A%20%20%20%20%0A%3C%2Fstyle%3E"
+      />
     </_Component>
   );
 }
