@@ -1,10 +1,9 @@
-import { Body, Container, Img, Tailwind } from '@react-email/components';
-import { Html } from 'next/document';
-import config from '../../../tailwind.config';
+import { Body, Container, Html, Img, Tailwind } from '@react-email/components';
 import { Parser } from 'html-to-react';
+import config from '../../../tailwind.config';
 import { Footer } from './Footer';
 
-export function EmailContainer({
+export const EmailContainer = ({
   companyLogo,
   emailBody,
   children,
@@ -12,7 +11,7 @@ export function EmailContainer({
   companyLogo: string;
   emailBody: string;
   children?: React.ReactNode;
-}) {
+}) => {
   const htmlParser = Parser();
   return (
     <Html>
@@ -37,4 +36,4 @@ export function EmailContainer({
       </Tailwind>
     </Html>
   );
-}
+};
