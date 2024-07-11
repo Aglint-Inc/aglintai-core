@@ -261,20 +261,10 @@ export class CandidatesSchedulingV2 {
 
     exploreSessionCombs([], 0);
 
-    const curr_day_slots = all_schedule_combs.filter((comb) => {
-      return comb.sessions.length > 0;
-    });
-
-    // is slots are there along with err reasons only send slots
-    if (curr_day_slots.length > 0) {
-      // sorting slots
-      return curr_day_slots.sort((slot1, slot2) => {
-        return (
-          userTzDayjs(slot1.sessions[0].start_time).unix() -
-          userTzDayjs(slot2.sessions[0].start_time).unix()
-        );
-      });
-    } else {
+    if (
+      all_schedule_combs.length > 0 &&
+      all_schedule_combs.every((s) => s.no_slot_reasons.length > 0)
+    ) {
       const single_comb_reason: PlanCombinationRespType = {
         plan_comb_id: nanoid(),
         sessions: [],
@@ -287,6 +277,17 @@ export class CandidatesSchedulingV2 {
         ];
       });
       return [single_comb_reason];
+    } else {
+      return all_schedule_combs
+        .filter((comb) => {
+          return comb.sessions.length > 0;
+        })
+        .sort((slot1, slot2) => {
+          return (
+            userTzDayjs(slot1.sessions[0].start_time).unix() -
+            userTzDayjs(slot2.sessions[0].start_time).unix()
+          );
+        });
     }
   };
 

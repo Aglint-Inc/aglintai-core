@@ -9,4 +9,5 @@ declare function GlobalInfo(props: {
   color?: Types.Builtin.Text;
   slotWidget?: Types.Devlink.Slot;
   showWidget?: Types.Visibility.VisibilityConditions;
+  showDescription?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
