@@ -4,6 +4,7 @@ import { create } from 'zustand';
 import { ApiResponseSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
 
 import { ApiResponseFindAvailability } from '../types';
+import { filterSchedulingOptionsArray } from './StepScheduleFilter/utils';
 
 export interface SchedulingFlow {
   isScheduleNowOpen: boolean;

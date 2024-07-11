@@ -207,7 +207,7 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                       isCollapseNeeded={true}
                       isEditIconVisible={true}
                       isViewDetailVisible={true}
-                      gridStyle={'1.1fr 1.7fr 0.6fr'}
+                      gridStyle={'1fr 1.8fr 0.8fr'}
                       cancelReasons={session.cancel_reasons || []}
                       currentSession={session}
                     />
