@@ -1,6 +1,5 @@
 import {
   Body,
-  Button,
   Container,
   Head,
   Html,
@@ -14,6 +13,7 @@ import config from '../../tailwind.config';
 import { Session } from '../components/template/Sessions';
 import { Footer } from '../components/template/Footer';
 import { companyLogoDummy } from '../utils/assets/common';
+import { ButtonSolid } from '../components/emails/Button';
 
 type EmailType = EmailTemplateAPi<'confInterview_email_organizer'>;
 
@@ -65,12 +65,10 @@ export const ConfirmMailToOrganizer = ({
               </Container>
 
               <Session meetingDetail={meetingDetails} />
-              <Button
-                className="px-3 py-2 bg-accent-9 text-white br rounded-[4px] text-text-xs"
+              <ButtonSolid
                 href={candidateDetails}
-              >
-                Candidate details
-              </Button>
+                buttonText="Candidate Details"
+              />
             </Container>
             <Footer />
           </Container>

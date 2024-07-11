@@ -1,6 +1,5 @@
 import {
   Body,
-  Button,
   Container,
   Head,
   Html,
@@ -14,6 +13,7 @@ import config from '../../tailwind.config';
 import { Session } from '../components/template/Sessions';
 import { Footer } from '../components/template/Footer';
 import { companyLogoDummy } from '../utils/assets/common';
+import { ButtonSolid } from '../components/emails/Button';
 
 type EmailType = EmailTemplateAPi<'interReschedReq_email_recruiter'>;
 
@@ -70,12 +70,7 @@ export const CandidateRescheduleRequest = ({
               {meetingDetails.map((meetingDetail, i) => (
                 <Session key={i} meetingDetail={meetingDetail} />
               ))}
-              <Button
-                className="px-3 py-2 bg-accent-9 text-white br rounded-[4px] text-text-xs"
-                href={resheduleLink}
-              >
-                Rescheudle
-              </Button>
+              <ButtonSolid href={resheduleLink} buttonText="Rescheudle" />
             </Container>
             <Footer />
           </Container>

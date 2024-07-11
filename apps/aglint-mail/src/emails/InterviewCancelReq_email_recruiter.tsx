@@ -1,6 +1,5 @@
 import {
   Body,
-  Button,
   Container,
   Head,
   Html,
@@ -14,6 +13,7 @@ import { Session } from '../components/template/Sessions';
 import config from '../../tailwind.config';
 import { Footer } from '../components/template/Footer';
 import { companyLogoDummy } from '../utils/assets/common';
+import { ButtonSolid } from '../components/emails/Button';
 
 type EmailType = EmailTemplateAPi<'InterviewCancelReq_email_recruiter'>;
 
@@ -69,13 +69,7 @@ export const CandidateCancelRequest = ({
               {meetingDetails.map((meetingDetail, i) => (
                 <Session key={i} meetingDetail={meetingDetail} />
               ))}
-              {/* #D93F4C */}
-              <Button
-                className="px-3 py-2 bg-accent-9 text-white br rounded-[4px] text-text-xs"
-                href={meetingLink}
-              >
-                Candidate Details
-              </Button>
+              <ButtonSolid href={meetingLink} buttonText="Candidate Details" />
             </Container>
             <Footer />
           </Container>

@@ -1,6 +1,5 @@
 import {
   Body,
-  Button,
   Container,
   Head,
   Html,
@@ -14,6 +13,7 @@ import { Session } from '../components/template/Sessions';
 import config from '../../tailwind.config';
 import { Footer } from '../components/template/Footer';
 import { companyLogoDummy } from '../utils/assets/common';
+import { ButtonSolid } from '../components/emails/Button';
 
 // export dummy
 export const dummy: EmailTemplateAPi<'interviewStart_email_organizer'>['react_email_placeholders'] =
@@ -65,12 +65,10 @@ export const interviewStartEmailOrganizer = ({
                 {htmlParser.parse(emailBody)}
               </Container>
               <Session meetingDetail={meetingDetail} />
-              <Button
-                className="px-3 py-2 bg-accent-9 text-white br rounded-[4px] text-text-xs"
+              <ButtonSolid
                 href={candidateLink}
-              >
-                Candidate details
-              </Button>
+                buttonText="Candidate details"
+              />
             </Container>
             <Footer />
           </Container>

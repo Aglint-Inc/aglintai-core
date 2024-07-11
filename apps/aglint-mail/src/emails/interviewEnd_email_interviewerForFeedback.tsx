@@ -1,6 +1,5 @@
 import {
   Body,
-  Button,
   Container,
   Head,
   Html,
@@ -13,6 +12,7 @@ import type { EmailTemplateAPi } from '@aglint/shared-types';
 import config from '../../tailwind.config';
 import { Footer } from '../components/template/Footer';
 import { companyLogoDummy } from '../utils/assets/common';
+import { ButtonSolid } from '../components/emails/Button';
 
 type EmailType = EmailTemplateAPi<'interviewEnd_email_interviewerForFeedback'>;
 
@@ -50,12 +50,7 @@ const InterviewEndEmailInterviewerForFeedback = ({
               <Container className="text-text-sm text-neutral-12">
                 {htmlParser.parse(emailBody)}
               </Container>
-              <Button
-                className="px-3 py-2 bg-accent-9 text-white br rounded-[4px] text-text-xs"
-                href={interviewFeedbackLink}
-              >
-                Feedback
-              </Button>
+              <ButtonSolid href={interviewFeedbackLink} buttonText="Feedback" />
             </Container>
             <Footer />
           </Container>
