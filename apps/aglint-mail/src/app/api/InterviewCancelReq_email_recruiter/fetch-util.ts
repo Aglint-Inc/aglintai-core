@@ -94,7 +94,6 @@ export async function fetchUtil(
       organizerFirstName: meeting_organizer.first_name,
       organizerLastName: meeting_organizer.last_name,
       OrganizerTimeZone: org_tz,
-      candidateScheduleLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}">here</a>`,
     };
 
   const filled_comp_template = fillCompEmailTemplate(
@@ -102,13 +101,16 @@ export async function fetchUtil(
     comp_email_temp,
   );
 
+  const meetLink = req_body.application_id
+    ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}`
+    : '';
   const react_email_placeholders: EmailTemplateAPi<'InterviewCancelReq_email_recruiter'>['react_email_placeholders'] =
     {
       companyLogo: candidateJob.candidates.recruiter.logo,
       emailBody: filled_comp_template.body,
       subject: filled_comp_template.subject,
       meetingDetails: meeting_details,
-      meetingLink: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}`,
+      meetingLink: meetLink,
     };
 
   return {

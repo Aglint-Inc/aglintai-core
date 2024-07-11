@@ -459,11 +459,7 @@ function SideDrawerEdit() {
                     }
                   />
                 ) : (
-                  <DebriedForm
-                    debriefMembers={debriefMembers}
-                    optionMembers={optionMembers}
-                    setDebriefMembers={setDebriefMembers}
-                  />
+                  <DebriedForm optionMembers={optionMembers} />
                 )}
               </Stack>
             }

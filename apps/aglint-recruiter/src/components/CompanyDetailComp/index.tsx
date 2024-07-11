@@ -105,7 +105,7 @@ const CompanyDetailComp = () => {
               }}
             /> */}
             <NavSublink
-              textLink={'Team'}
+              textLink={'Users'}
               isActive={router.query?.tab === 'team'}
               onClickNav={{
                 onClick: () => {
@@ -114,7 +114,7 @@ const CompanyDetailComp = () => {
               }}
             />
             <NavSublink
-              textLink={'Roles & Permissions'}
+              textLink={'Roles'}
               isActive={router.query?.tab === 'roles'}
               onClickNav={{
                 onClick: () => {

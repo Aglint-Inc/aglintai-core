@@ -31,6 +31,24 @@ function RequestStatusUnconfirmed({
               fontSize={1}
               iconSize={2}
             />
+          ) : interview_meeting?.meeting_flow === 'mail_agent' ? (
+            <TextWithIcon
+              iconName={'attach_email'}
+              textContent={'Scheduling Via Email Agent'}
+              color={'warning'}
+              fontWeight={'regular'}
+              fontSize={1}
+              iconSize={2}
+            />
+          ) : interview_meeting?.meeting_flow === 'phone_agent' ? (
+            <TextWithIcon
+              iconName={'phone_call'}
+              textContent={'Scheduling Via Phone Agent'}
+              color={'warning'}
+              fontWeight={'regular'}
+              fontSize={1}
+              iconSize={2}
+            />
           ) : (
             ''
           )}

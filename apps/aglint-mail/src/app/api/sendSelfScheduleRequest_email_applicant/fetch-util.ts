@@ -62,9 +62,12 @@ export async function dbUtil(
     'sendSelfScheduleRequest_email_applicant',
   );
   const task_id = req_body.task_id;
-  const scheduleLink = task_id
-    ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.id}?filter_id=${req_body.filter_json_id}&task_id=${task_id}`
-    : `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.id}?filter_id=${req_body.filter_json_id}`;
+  let scheduleLink = '';
+  if (filterJson.id && req_body.filter_json_id) {
+    scheduleLink = task_id
+      ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.id}?filter_id=${req_body.filter_json_id}&task_id=${task_id}`
+      : `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.id}?filter_id=${req_body.filter_json_id}`;
+  }
   const comp_email_placeholder: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['comp_email_placeholders'] =
     {
       candidateFirstName: first_name,
@@ -89,6 +92,7 @@ export async function dbUtil(
       emailBody: filled_comp_template.body,
       companyLogo: recruiter.logo,
       subject: filled_comp_template.subject,
+      selfScheduleLink: scheduleLink,
     };
 
   return {

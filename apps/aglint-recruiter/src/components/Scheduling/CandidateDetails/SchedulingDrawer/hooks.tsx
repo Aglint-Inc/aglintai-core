@@ -29,6 +29,7 @@ import {
   setFilteredSchedulingOptions,
   setIsScheduleNowOpen,
   setNoOptions,
+  setNoSlotReasons,
   setRequestAvailibityId,
   setResSendToCandidate,
   setSchedulingOptions,
@@ -84,69 +85,82 @@ export const useSchedulingDrawer = ({ refetch }: { refetch: () => void }) => {
   const { setSelectedDate } = useRequestAvailabilityContext();
 
   const onClickPrimary = async () => {
+    if (scheduleFlow === 'self_scheduling' || scheduleFlow === 'debrief') {
+      await selfSchedulingOrDebriefFlow();
+    } else if (
+      scheduleFlow === 'phone_agent' ||
+      scheduleFlow === 'email_agent'
+    ) {
+      await agentFlow();
+    } else if (
+      scheduleFlow === 'create_request_availibility' ||
+      scheduleFlow === 'update_request_availibility'
+    ) {
+      await requestAvailabilityFlow();
+    }
+  };
+
+  const selfSchedulingOrDebriefFlow = async () => {
     if (stepScheduling === 'pick_date') {
-      if (scheduleFlow === 'self_scheduling' || scheduleFlow === 'debrief') {
-        setNoOptions(false);
-        const resOptions = await findScheduleOptions({
-          dateRange: dateRange,
-          session_ids: selectedSessionIds,
-          rec_id: recruiter.id,
-        });
-
-        if (resOptions.length === 0) {
-          setNoOptions(true);
-          return;
-        }
-
-        const filterSlots = filterSchedulingOptionsArray({
-          schedulingOptions: resOptions,
-          filters,
-        });
-        if (filterSlots.numberTotal === 0) {
-          setFilteredSchedulingOptions(filterSlots.combs);
-          setNoOptions(true);
-          toast.warning('No availability found with the selected preferences.');
-          return;
-        }
-        setStepScheduling('preference');
-      } else if (
-        scheduleFlow === 'phone_agent' ||
-        scheduleFlow === 'email_agent'
-      ) {
-        await onClickScheduleAgent(scheduleFlow);
-        refetch();
-      } else if (
-        scheduleFlow === 'create_request_availibility' ||
-        scheduleFlow === 'update_request_availibility'
-      ) {
-        setSelectedDate([
-          dayjs(dateRange.start_date),
-          dayjs(dateRange.end_date),
-        ]);
-        setStepScheduling('request_availibility');
+      setNoOptions(false);
+      const resOptions = await findScheduleOptions({
+        dateRange: dateRange,
+        session_ids: selectedSessionIds,
+        rec_id: recruiter.id,
+      });
+      // if api return empty array if user select same date and break duration is more than 1 day
+      if (resOptions.length === 0) {
+        setNoOptions(true);
+        return;
       }
+      setSchedulingOptions(resOptions); // this is global state which we dont alter in self scheduling flow
+
+      const filterSlots = filterSchedulingOptionsArray({
+        schedulingOptions: resOptions,
+        filters: {
+          isNoConflicts: true,
+          isSoftConflicts: true,
+          isHardConflicts: true,
+          isOutSideWorkHours: true,
+          preferredInterviewers: [],
+          preferredDateRanges: [],
+          isWorkLoad: false,
+        },
+      }); // before taking to preference step we generate combinations with all filters true to check if there are any slots available
+
+      // numberTotal is the total number of slots available (including conflicts)
+      if (filterSlots.numberTotal === 0) {
+        setNoSlotReasons(filterSlots.combs);
+        setNoOptions(true);
+        return;
+      }
+      setStepScheduling('preference');
     } else if (stepScheduling === 'preference') {
+      // here we put user selected filters and generate combinations
       const filterSlots = filterSchedulingOptionsArray({
         schedulingOptions,
         filters,
       });
+
       if (filterSlots.numberTotal === 0) {
         toast.warning('No availability found with the selected preferences.');
         return;
       }
-      setFilteredSchedulingOptions(filterSlots.combs);
+
+      setFilteredSchedulingOptions(filterSlots.combs); // this is used for rendering combinations in slot options step
       setStepScheduling('slot_options');
     } else if (stepScheduling === 'slot_options') {
       if (scheduleFlow === 'debrief') {
-        if (selectedCombIds.length === 0) {
+        // isDebrief is not neccessary here but its an extra check
+        if (isDebrief && selectedCombIds.length === 0) {
           toast.warning('Please select a time slot to schedule.');
           return;
         }
         if (!isSendingToCandidate) {
           await onClickSendToCandidate();
-          refetch();
         }
       } else if (scheduleFlow === 'self_scheduling') {
+        // if it normal session then user has to select atleast 5 combinations
         if (!isDebrief && selectedCombIds.length < 5) {
           toast.warning('Please select at least 5 time slots to schedule.');
           return;
@@ -160,22 +174,25 @@ export const useSchedulingDrawer = ({ refetch }: { refetch: () => void }) => {
     }
   };
 
+  const agentFlow = async () => {
+    if (
+      stepScheduling === 'pick_date' &&
+      (scheduleFlow === 'phone_agent' || scheduleFlow === 'email_agent')
+    ) {
+      await onClickScheduleAgent(scheduleFlow);
+    }
+  };
+
+  const requestAvailabilityFlow = async () => {
+    if (stepScheduling === 'pick_date') {
+      setSelectedDate([dayjs(dateRange.start_date), dayjs(dateRange.end_date)]);
+      setStepScheduling('request_availibility');
+    }
+  };
+
   const onClickSendToCandidate = async () => {
     try {
       setIsSendingToCandidate(true);
-      if (selectedSessionIds.length === 0) {
-        throw new Error('Please select a session to schedule.');
-      }
-
-      if (isDebrief && selectedCombIds.length === 0) {
-        toast.warning('Please select a time slot to schedule.');
-        return;
-      }
-      if (!isDebrief && selectedCombIds.length < 5) {
-        toast.warning('Please select at least 5 time slots to schedule.');
-        return;
-      }
-
       const plans = filteredSchedulingOptions.map((opt) => opt.plans).flat();
       const selectedDebrief = plans.find(
         (opt) => selectedCombIds[0] === opt.plan_comb_id,
@@ -207,10 +224,12 @@ export const useSchedulingDrawer = ({ refetch }: { refetch: () => void }) => {
         const resObj = res?.data?.data as ApiResponseSendToCandidate['data'];
         setResSendToCandidate(resObj); // this is used for copy link in the final step of self scheduling
         if (isDebrief) {
+          setIsScheduleNowOpen(false);
           toast.success('Debrief scheduled');
         } else {
           setStepScheduling('success_screen');
         }
+        refetch();
       } else {
         throw new Error('Error sending to candidate.');
       }
@@ -257,22 +276,18 @@ export const useSchedulingDrawer = ({ refetch }: { refetch: () => void }) => {
 
       if (res.status === 200) {
         const slots = res.data as ApiResponseFindAvailability;
-
         if (slots.length === 0) {
           toast.error('No availability found.');
-        } else {
-          setSchedulingOptions(slots);
+          return [];
         }
         return slots;
       } else {
         toast.error('Error retrieving availability.');
+        return [];
       }
     } catch (error) {
-      if (error?.response?.data?.message) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error('Error retrieving availability.');
-      }
+      toast.error('Error retrieving availability.');
+      return [];
     } finally {
       setFetchingPlan(false);
     }
@@ -281,21 +296,25 @@ export const useSchedulingDrawer = ({ refetch }: { refetch: () => void }) => {
   const onClickScheduleAgent = async (type: 'phone_agent' | 'email_agent') => {
     try {
       setFetchingPlan(true);
-      const bodyParamsAvailibility: APIFindAvailability = {
+
+      const resOptions = await findScheduleOptions({
+        dateRange: dateRange,
         session_ids: selectedSessionIds,
-        recruiter_id: recruiter.id,
-        start_date_str: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
-        end_date_str: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-        candidate_tz: dayjs.tz.guess(),
-      };
+        rec_id: recruiter.id,
+      });
 
-      const resAllOptions = await axios.post(
-        '/api/scheduling/v1/find_availability',
-        bodyParamsAvailibility,
-      );
+      if (resOptions.length === 0) {
+        setNoOptions(true);
+        return;
+      }
 
-      if (resAllOptions.data.length === 0) {
-        toast.warning('No availability found.');
+      const filterSlots = filterSchedulingOptionsArray({
+        schedulingOptions: resOptions,
+        filters,
+      });
+
+      if (filterSlots.numberNoConflicts === 0) {
+        setNoOptions(true);
         return;
       }
 
@@ -365,18 +384,19 @@ export const useSchedulingDrawer = ({ refetch }: { refetch: () => void }) => {
           );
         }
       }
+      refetch();
+      fetchInterviewDataByApplication();
+      resetStateSelfScheduling();
     } catch (e) {
       //
     } finally {
       setFetchingPlan(false);
-      fetchInterviewDataByApplication();
-      setSelectedSessionIds([]);
-      resetStateSelfScheduling();
     }
   };
 
   const resetStateSelfScheduling = () => {
     if (!isSendingToCandidate && !fetchingPlan) {
+      setNoOptions(false);
       setIsScheduleNowOpen(false);
       setSchedulingOptions([]);
       setFilteredSchedulingOptions([]);

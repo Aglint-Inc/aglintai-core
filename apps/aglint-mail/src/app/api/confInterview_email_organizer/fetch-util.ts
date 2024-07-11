@@ -71,6 +71,10 @@ export async function fetchUtil(
       comp_email_placeholder,
       comp_email_temp,
     );
+
+    const candidateLink = req_body.application_id
+      ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}`
+      : '';
     const react_email_placeholders: EmailTemplateAPi<'confInterview_email_organizer'>['react_email_placeholders'] =
       {
         companyLogo: logo,
@@ -87,7 +91,7 @@ export async function fetchUtil(
           sessionTypeIcon: sessionTypeIcon(int_session.session_type),
           meetingIcon: scheduleTypeIcon(int_session.schedule_type),
         },
-        candidateDetails: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}`,
+        candidateDetails: candidateLink,
       };
     return {
       filled_comp_template,

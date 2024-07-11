@@ -4,6 +4,7 @@ import { create } from 'zustand';
 import { ApiResponseSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
 
 import { ApiResponseFindAvailability } from '../types';
+import { filterSchedulingOptionsArray } from './StepScheduleFilter/utils';
 
 export interface SchedulingFlow {
   isScheduleNowOpen: boolean;
@@ -56,6 +57,7 @@ export interface SchedulingFlow {
   selectedTaskId: string | null;
   requestAvailibityId: string | null;
   updateRequestAvailibityId: string | null;
+  noSlotReasons: ReturnType<typeof filterSchedulingOptionsArray>['combs'];
 }
 
 const initialState: SchedulingFlow = {
@@ -86,6 +88,7 @@ const initialState: SchedulingFlow = {
   selectedTaskId: null, // selected task id used when user come for scheduling via task
   requestAvailibityId: null, // request availibility id used when hr click schedule now after user submit request availibility
   updateRequestAvailibityId: null,
+  noSlotReasons: [],
 };
 
 export const useSchedulingFlowStore = create<SchedulingFlow>()(() => ({
@@ -95,6 +98,12 @@ export const useSchedulingFlowStore = create<SchedulingFlow>()(() => ({
 export const setUpdateRequestAvailibityId = (
   updateRequestAvailibityId: string | null,
 ) => useSchedulingFlowStore.setState({ updateRequestAvailibityId });
+
+export const setNoSlotReasons = (
+  noSlotReasons: SchedulingFlow['noSlotReasons'],
+) => useSchedulingFlowStore.setState({ noSlotReasons });
+
+
 
 export const setRequestAvailibityId = (requestAvailibityId: string | null) =>
   useSchedulingFlowStore.setState({ requestAvailibityId });
