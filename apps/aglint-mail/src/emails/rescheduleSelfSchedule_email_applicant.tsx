@@ -5,7 +5,7 @@ import { companyLogoDummy } from '../utils/assets/common';
 import { ButtonSolid } from '../components/template/Button';
 import { EmailContainer } from '../components/template/Container';
 
-type EmailType = EmailTemplateAPi<'interReschedReq_email_recruiter'>;
+type EmailType = EmailTemplateAPi<'rescheduleSelfSchedule_email_applicant'>;
 
 // export dummy
 export const dummy: EmailType['react_email_placeholders'] = {

@@ -2,7 +2,6 @@ import * as React from 'react';
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { Session } from '../components/template/Sessions';
 import { companyLogoDummy } from '../utils/assets/common';
-import { ButtonSolid } from '../components/template/Button';
 import { EmailContainer } from '../components/template/Container';
 
 type EmailType = EmailTemplateAPi<'InterviewCancelReq_email_recruiter'>;
@@ -26,7 +25,6 @@ export const dummy: EmailType['react_email_placeholders'] = {
     },
   ],
   subject: '',
-  meetingLink: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/84caebfb-8db6-4881-a88f-400726884504`,
 };
 
 // export get subject
@@ -35,7 +33,6 @@ export const getSubject = (companyName: any) => `${companyName}`;
 export const CandidateCancelRequest = ({
   emailBody = dummy.emailBody,
   meetingDetails = dummy.meetingDetails,
-  meetingLink = dummy.meetingLink,
   companyLogo = dummy.companyLogo,
 }: EmailType['react_email_placeholders']) => {
   return (
@@ -43,7 +40,6 @@ export const CandidateCancelRequest = ({
       {meetingDetails.map((meetingDetail, i) => (
         <Session key={i} meetingDetail={meetingDetail} />
       ))}
-      <ButtonSolid href={meetingLink} buttonText="Candidate Details" />
     </EmailContainer>
   );
 };

@@ -19,7 +19,7 @@ export const getSubject = (companyName: any) => `${companyName}`;
 export const InterviewResent = ({
   emailBody = dummy.emailBody,
   companyLogo = dummy.companyLogo,
-  selfScheduleLink = dummy.selfScheduleLink,
+  selfScheduleLink = '',
 }: EmailType['react_email_placeholders']) => {
   return (
     <EmailContainer companyLogo={companyLogo} emailBody={emailBody}>

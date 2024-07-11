@@ -49,7 +49,7 @@ export async function fetchUtil(
     'agent_email_candidate',
   );
 
-  // const scheduleLink = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.interview_schedule.id}?filter_id=${req_body.filter_id}`;
+  const scheduleLink = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.interview_schedule.id}?filter_id=${req_body.filter_id}`;
 
   const comp_email_placeholder: EmailTemplateAPi<'agent_email_candidate'>['comp_email_placeholders'] =
     {
@@ -71,6 +71,7 @@ export async function fetchUtil(
         end_date,
         recruiter_tz,
       ).format(DAYJS_FORMATS.DATE_FORMATZ)}`,
+      selfScheduleLink: `<a href="${scheduleLink}" target="_blank">here</a>`,
     };
 
   const filled_comp_template = fillCompEmailTemplate(

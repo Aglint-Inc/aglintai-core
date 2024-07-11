@@ -83,3 +83,9 @@
 .slot-edit-email-bottom {
   margin-top: var(--space-5);
 }
+
+.embed_css {
+  position: absolute;
+  z-index: -100;
+  pointer-events: none;
+}

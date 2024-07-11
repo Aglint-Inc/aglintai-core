@@ -3,7 +3,6 @@ import * as React from 'react';
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { Session } from '../components/template/Sessions';
 import { companyLogoDummy } from '../utils/assets/common';
-import { ButtonSolid } from '../components/template/Button';
 import { EmailContainer } from '../components/template/Container';
 
 type EmailType = EmailTemplateAPi<'interReschedReq_email_recruiter'>;
@@ -27,7 +26,6 @@ export const dummy: EmailType['react_email_placeholders'] = {
     },
   ],
   subject: '',
-  resheduleLink: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/e8218fdc-524c-4f05-8786-23399370777b`,
 };
 
 // export get subject
@@ -37,7 +35,6 @@ export const CandidateRescheduleRequest = ({
   emailBody = dummy.emailBody,
   meetingDetails = dummy.meetingDetails,
   companyLogo = dummy.companyLogo,
-  resheduleLink = '',
 }: EmailType['react_email_placeholders']) => {
   return (
     <EmailContainer companyLogo={companyLogo} emailBody={emailBody}>
@@ -47,7 +44,6 @@ export const CandidateRescheduleRequest = ({
       {meetingDetails.map((meetingDetail, i) => (
         <Session key={i} meetingDetail={meetingDetail} />
       ))}
-      <ButtonSolid href={resheduleLink} buttonText="Reschedule" />
     </EmailContainer>
   );
 };
