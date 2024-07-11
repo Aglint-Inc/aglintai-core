@@ -12,7 +12,7 @@ import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
 import ButtonReschedule from './ButtonReschedule';
 import EmailPreviewSelfSchedule from './EmailPreviewSelfSchedule';
 import HeaderIcon from './HeaderIcon';
-import { useSelfSchedulingDrawer } from './hooks';
+import { useSchedulingDrawer } from './hooks';
 import RescheduleSlot from './RescheduleSlot';
 import SelfScheduleSuccess from './SelfScheduleSuccess';
 import StepScheduleFilter from './StepScheduleFilter';
@@ -66,7 +66,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
     .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
     .some((ses) => ses.interview_session.session_type === 'debrief');
 
-  const { resetStateSelfScheduling, onClickPrimary } = useSelfSchedulingDrawer({
+  const { resetStateSelfScheduling, onClickPrimary } = useSchedulingDrawer({
     refetch,
   });
 

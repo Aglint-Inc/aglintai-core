@@ -29,6 +29,7 @@ import {
   setFilteredSchedulingOptions,
   setIsScheduleNowOpen,
   setNoOptions,
+  setRequestAvailibityId,
   setResSendToCandidate,
   setSchedulingOptions,
   setSelectedTaskId,
@@ -36,11 +37,7 @@ import {
   useSchedulingFlowStore,
 } from './store';
 
-export const useSelfSchedulingDrawer = ({
-  refetch,
-}: {
-  refetch: () => void;
-}) => {
+export const useSchedulingDrawer = ({ refetch }: { refetch: () => void }) => {
   const { recruiter, recruiterUser } = useAuthDetails();
   const {
     selectedApplication,
@@ -382,16 +379,16 @@ export const useSelfSchedulingDrawer = ({
     if (!isSendingToCandidate && !fetchingPlan) {
       setIsScheduleNowOpen(false);
       setSchedulingOptions([]);
+      setFilteredSchedulingOptions([]);
       setSelectedSessionIds([]);
       setStepScheduling('pick_date');
       setSelectedApplicationLog(null);
       setSelectedTaskId(null);
       setRequestSessionIds([]);
       setRescheduleSessionIds([]);
+      setRequestAvailibityId(null);
     }
   };
-
-
 
   return {
     onClickPrimary,
