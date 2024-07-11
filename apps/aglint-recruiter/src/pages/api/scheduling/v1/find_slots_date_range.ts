@@ -20,18 +20,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     });
 
-    const cand_schedule = new CandidatesSchedulingV2(
-      {
-        recruiter_id: parsedData.recruiter_id,
-        session_ids: parsedData.session_ids,
-        candidate_tz: parsedData.candidate_tz,
-        start_date_str: parsedData.start_date_str,
-        end_date_str: parsedData.end_date_str,
-      },
-      parsedData.options,
-    );
-    await cand_schedule.fetchDetails();
-    await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
+    const cand_schedule = new CandidatesSchedulingV2(parsedData.options);
+    await cand_schedule.fetchDetails({
+      company_id: parsedData.recruiter_id,
+      session_ids: parsedData.session_ids,
+      req_user_tz: parsedData.candidate_tz,
+      start_date_str: parsedData.start_date_str,
+      end_date_str: parsedData.end_date_str,
+    });
     const all_day_plans = cand_schedule.findCandSlotsForDateRange();
 
     return res.status(200).json(all_day_plans);

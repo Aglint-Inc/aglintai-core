@@ -1,6 +1,5 @@
 import {
   AllSessionIntDetails,
-  CompServiceKeyCred,
   InterDetailsType,
   InterviewerMeetingScheduled,
   InterviewSessionApiRespType,
@@ -10,17 +9,31 @@ import {
   TimeDurationDayjsType,
   TimeDurationType,
 } from '@aglint/shared-types';
+import { Dayjs } from 'dayjs';
 
-import { UserMeetingDetails } from './utils/fetch_details_from_db';
+import { UserMeetingDetails } from './utils/dbFetchScheduleApiDetails';
 
-export type DBDetailsType = {
-  company_cred: CompServiceKeyCred;
+export type ScheduleDBDetailsParams = {
+  session_ids: string[];
+  company_id: string;
+  start_date_str: string;
+  end_date_str: string;
+  req_user_tz: string;
+};
+
+export type ScheduleApiDetails = {
+  req_user_tz: string;
+  company_cred_hash_str: string;
   ses_with_ints: InterviewSessionApiRespType[];
   all_inters: SessionInterviewerType[];
   comp_schedule_setting: schedulingSettingType;
   int_meetings: InterviewerMeetingScheduled[];
   ints_schd_meetings: UserMeetingDetails;
   all_session_int_details: AllSessionIntDetails;
+  schedule_dates: {
+    user_start_date_js: Dayjs;
+    user_end_date_js: Dayjs;
+  };
 };
 
 export type IntervsWorkHrsEventType = Pick<
