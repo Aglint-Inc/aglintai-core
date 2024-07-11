@@ -143,7 +143,7 @@ BEGIN
     -- if NEW.slots is not null then
         FOR wa_record IN
             select w_a.workflow_id as workflow_id, w_a.id as workflow_action_id, w.interval as interval_minutes, w.phase as phase,
-                  json_build_object('schedule_id', i_s.id, 'application_id', i_s.application_id, 'email_type', c_e_t.type, 'avail_req_id', NEW.id, 'sessions', NEW.session_ids ) as meta
+                  json_build_object('schedule_id', i_s.id, 'application_id', i_s.application_id, 'email_type', c_e_t.type, 'avail_req_id', NEW.id ) as meta
             from interview_schedule i_s 
             JOIN applications a ON a.id = i_s.application_id
             JOIN workflow_job_relation w_a_r ON w_a_r.job_id = a.job_id
@@ -162,3 +162,4 @@ $function$
 ;
 
 CREATE TRIGGER after_insert_candidate_request_availability AFTER INSERT ON public.candidate_request_availability FOR EACH ROW EXECUTE FUNCTION workflow_log_on_insert_candidate_request_availability();
+

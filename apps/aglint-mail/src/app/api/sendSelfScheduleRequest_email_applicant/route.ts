@@ -9,8 +9,6 @@ export async function POST(req: Request) {
   try {
     const req_body = v.parse(sendSelfScheduleRequest_email_applicant, meta);
 
-    // console.log(req_body?.filter_json_id || req_body.application_id);
-
     if (!req_body.filter_json_id && !req_body.application_id) {
       throw new Error('missing details');
     }

@@ -57,7 +57,6 @@ export async function fetchUtil(
       companyName: company,
       jobRole: job_title,
       OrganizerTimeZone: recruiter_tz,
-      selfScheduleLink: `<a href="${scheduleLink}">here</a>`,
       organizerName: getFullName(recr.first_name, recr.last_name),
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),
@@ -72,6 +71,7 @@ export async function fetchUtil(
         end_date,
         recruiter_tz,
       ).format(DAYJS_FORMATS.DATE_FORMATZ)}`,
+      selfScheduleLink: `<a href="${scheduleLink}" target="_blank">here</a>`,
     };
 
   const filled_comp_template = fillCompEmailTemplate(

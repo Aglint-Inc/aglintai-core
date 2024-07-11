@@ -98,22 +98,19 @@ export async function fetchUtil(
       organizerLastName: meeting_organizer.last_name,
       OrganizerTimeZone: int_tz,
       rescheduleReason: session_cancel.reason,
-      candidateScheduleLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}">here</a>`,
+      candidateScheduleLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}" target="_blank">here</a>`,
     };
 
   const filled_comp_template = fillCompEmailTemplate(
     comp_email_placeholder,
     comp_email_temp,
   );
-
-  const candidateLink = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}`;
   const react_email_placeholders: EmailTemplateAPi<'interReschedReq_email_recruiter'>['react_email_placeholders'] =
     {
       companyLogo: candidateJob.candidates.recruiter.logo,
       emailBody: filled_comp_template.body,
       subject: filled_comp_template.subject,
       meetingDetails: meeting_details,
-      resheduleLink: candidateLink,
     };
 
   return {
