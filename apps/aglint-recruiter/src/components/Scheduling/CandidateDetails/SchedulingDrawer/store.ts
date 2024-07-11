@@ -54,21 +54,22 @@ export interface SchedulingFlow {
   emailData: { html: string; subject: string } | null;
   resSendToCandidate: ApiResponseSendToCandidate['data'];
   selectedTaskId: string | null;
+  requestAvailibityId: string | null;
 }
 
 const initialState: SchedulingFlow = {
-  isScheduleNowOpen: false,
+  isScheduleNowOpen: false, //scheduling drawer open
   dateRange: {
     start_date: '',
     end_date: '',
   },
-  schedulingOptions: [],
-  filteredSchedulingOptions: [],
+  schedulingOptions: [], // find availability api response
+  filteredSchedulingOptions: [], // filtered options based on filters self scheduling flow
   stepScheduling: 'pick_date',
-  noOptions: false,
-  isSendToCandidateOpen: false,
+  noOptions: false, // no options found in find availability api
+  isSendToCandidateOpen: false, //loader for send to candidate api in self scheduling flow and also api in agent flow
   scheduleFlow: 'self_scheduling',
-  fetchingPlan: false,
+  fetchingPlan: false, // in self scheduling flow fetching plan loader find_availability api
   filters: {
     isNoConflicts: true,
     isSoftConflicts: true,
@@ -77,16 +78,20 @@ const initialState: SchedulingFlow = {
     preferredInterviewers: [],
     preferredDateRanges: [],
     isWorkLoad: true,
-  },
+  }, // self scheduling flow filters
   selectedCombIds: [],
-  emailData: null,
-  resSendToCandidate: null,
-  selectedTaskId: null,
+  emailData: null, // email data for showing preview
+  resSendToCandidate: null, //used only in self scheduling flow last step copy link which contains ids
+  selectedTaskId: null, // selected task id used when user come for scheduling via task
+  requestAvailibityId: null, // request availibility id used when hr click schedule now after user submit request availibility
 };
 
 export const useSchedulingFlowStore = create<SchedulingFlow>()(() => ({
   ...initialState,
 }));
+
+export const setRequestAvailibityId = (requestAvailibityId: string | null) =>
+  useSchedulingFlowStore.setState({ requestAvailibityId });
 
 export const setSelectedTaskId = (selectedTaskId: string | null) =>
   useSchedulingFlowStore.setState({ selectedTaskId });
