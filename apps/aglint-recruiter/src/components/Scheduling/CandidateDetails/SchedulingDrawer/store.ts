@@ -57,6 +57,7 @@ export interface SchedulingFlow {
   selectedTaskId: string | null;
   requestAvailibityId: string | null;
   updateRequestAvailibityId: string | null;
+  noSlotReasons: ReturnType<typeof filterSchedulingOptionsArray>['combs'];
 }
 
 const initialState: SchedulingFlow = {
@@ -87,11 +88,16 @@ const initialState: SchedulingFlow = {
   selectedTaskId: null, // selected task id used when user come for scheduling via task
   requestAvailibityId: null, // request availibility id used when hr click schedule now after user submit request availibility
   updateRequestAvailibityId: null,
+  noSlotReasons: [],
 };
 
 export const useSchedulingFlowStore = create<SchedulingFlow>()(() => ({
   ...initialState,
 }));
+
+export const setNoSlotReasons = (
+  noSlotReasons: SchedulingFlow['noSlotReasons'],
+) => useSchedulingFlowStore.setState({ noSlotReasons });
 
 export const setUpdateRequestAvailibityId = (
   updateRequestAvailibityId: string | null,
