@@ -437,6 +437,7 @@ const sendToCandidate = async ({
         },
       })
       .eq('id', selectedApplicationLog.id);
+
     await supabase
       .from('interview_filter_json')
       .delete()

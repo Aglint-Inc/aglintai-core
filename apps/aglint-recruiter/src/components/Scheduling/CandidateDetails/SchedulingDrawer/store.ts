@@ -4,6 +4,7 @@ import { create } from 'zustand';
 import { ApiResponseSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
 
 import { ApiResponseFindAvailability } from '../types';
+import { filterSchedulingOptionsArray } from './StepScheduleFilter/utils';
 
 export interface SchedulingFlow {
   isScheduleNowOpen: boolean;
@@ -55,6 +56,7 @@ export interface SchedulingFlow {
   resSendToCandidate: ApiResponseSendToCandidate['data'];
   selectedTaskId: string | null;
   requestAvailibityId: string | null;
+  noSlotReasons: ReturnType<typeof filterSchedulingOptionsArray>['combs'];
 }
 
 const initialState: SchedulingFlow = {
@@ -84,11 +86,16 @@ const initialState: SchedulingFlow = {
   resSendToCandidate: null, //used only in self scheduling flow last step copy link which contains ids
   selectedTaskId: null, // selected task id used when user come for scheduling via task
   requestAvailibityId: null, // request availibility id used when hr click schedule now after user submit request availibility
+  noSlotReasons: [],
 };
 
 export const useSchedulingFlowStore = create<SchedulingFlow>()(() => ({
   ...initialState,
 }));
+
+export const setNoSlotReasons = (
+  noSlotReasons: SchedulingFlow['noSlotReasons'],
+) => useSchedulingFlowStore.setState({ noSlotReasons });
 
 export const setRequestAvailibityId = (requestAvailibityId: string | null) =>
   useSchedulingFlowStore.setState({ requestAvailibityId });
