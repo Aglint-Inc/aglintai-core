@@ -97,6 +97,9 @@ export async function fetchUtil(
     comp_email_temp,
   );
 
+  const meetLink = recruiter_user.interview_meeting.id
+    ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=candidate_details`
+    : '';
   const react_email_placeholders: EmailTemplateAPi<'meetingDeclined_email_organizer'>['react_email_placeholders'] =
     {
       companyLogo: candidate.recruiter.logo,
@@ -104,7 +107,7 @@ export async function fetchUtil(
       subject: filled_comp_template.subject,
       meetingDetail: meeting_detail,
       candidateScheduleLink: '',
-      meetingDetailsLink: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=candidate_details`,
+      meetingDetailsLink: meetLink,
     };
 
   return {

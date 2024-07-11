@@ -107,7 +107,7 @@ export async function fetchUtil(
       emailBody: filled_comp_template.body,
       subject: filled_comp_template.subject,
       meetingDetails: meeting_details,
-      resheduleLink: self_schedule_link,
+      resheduleLink: self_schedule_link ? self_schedule_link : '',
     };
 
   return {

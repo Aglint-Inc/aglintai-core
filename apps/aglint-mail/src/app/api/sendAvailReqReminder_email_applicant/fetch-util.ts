@@ -40,7 +40,9 @@ export async function dbUtil(
     public_jobs: { company, job_title },
   } = avail_req_data.applications;
 
-  const candidate_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.avail_req_id}`;
+  const candidate_link = req_body.avail_req_id
+    ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.avail_req_id}`
+    : '';
   const comp_email_temp = await fetchCompEmailTemp(
     recruiter_id,
     'sendAvailReqReminder_email_applicant',

@@ -13,8 +13,12 @@ export const ButtonSolid = ({
 }) => {
   return (
     <Button
-      className={`px-3 py-2 bg-${color}-9 text-white br rounded-[4px] text-text-xs`}
+      className={`px-3 py-2 bg-${color}-9 text-white br rounded-[4px] text-text-xs cursor-not-allowed`}
       href={href}
+      style={{
+        pointerEvents: href ? 'auto' : 'none',
+        cursor: href ? 'pointer' : 'not-allowed',
+      }}
     >
       {buttonText}
     </Button>

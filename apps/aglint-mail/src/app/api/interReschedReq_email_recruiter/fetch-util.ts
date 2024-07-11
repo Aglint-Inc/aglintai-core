@@ -105,7 +105,9 @@ export async function fetchUtil(
     comp_email_temp,
   );
 
-  const candidateLink = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}`;
+  const candidateLink = req_body.application_id
+    ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}`
+    : '';
   const react_email_placeholders: EmailTemplateAPi<'interReschedReq_email_recruiter'>['react_email_placeholders'] =
     {
       companyLogo: candidateJob.candidates.recruiter.logo,

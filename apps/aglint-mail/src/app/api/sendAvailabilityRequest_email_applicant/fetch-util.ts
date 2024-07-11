@@ -60,13 +60,9 @@ export async function dbUtil(
 
   const recruiter_tz = meeting_organizer.scheduling_settings.timeZone.tzCode;
 
-  let candidate_link = '';
-
-  if (req_body.avail_req_id) {
-    candidate_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.avail_req_id}`;
-  } else {
-    candidate_link = '#';
-  }
+  const candidate_link = req_body.avail_req_id
+    ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.avail_req_id}`
+    : '';
 
   const comp_email_temp = await fetchCompEmailTemp(
     recruiter_id,
