@@ -133,9 +133,6 @@ const Dashboard = () => {
   const score_matches = getMatches(job.application_match, total);
   const [popover, setPopover] = useState(false);
 
-  const handleCloseJob = useCallback(async () => {
-    return await handleJobAsyncUpdate(job.id, { status: 'closed' });
-  }, [job.id]);
   const handleDeleteJob = useCallback(() => {
     push(`${ROUTES['/jobs']()}?status=${job?.status ?? 'all'}`);
     handleJobDelete(job.id);
@@ -147,9 +144,7 @@ const Dashboard = () => {
         handleDeleteJob();
         break;
       case 'published':
-        {
-          await handleCloseJob();
-        }
+        await handleJobAsyncUpdate({ status: 'closed' });
         break;
       case 'closed':
         handleDeleteJob();
@@ -585,7 +580,7 @@ const Schedules = () => {
 
 const useBanners = () => {
   const { push } = useRouter();
-  const { publishStatus } = useJob();
+  const { publishStatus, handleJobUpdate } = useJob();
   const { job, isInterviewPlanDisabled, isInterviewSessionEmpty, status } =
     useJobDashboard();
 
@@ -607,7 +602,8 @@ const useBanners = () => {
               color={'accent'}
               highContrast={'true'}
               onClickButton={{
-                onClick: () => {}, //handleWarningUpdate({ interview_plan: true }),
+                onClick: () =>
+                  handleJobUpdate({ interview_plan_warning_ignore: true }), //handleWarningUpdate({ interview_plan: true }),
               }}
             />
 
@@ -639,7 +635,8 @@ const useBanners = () => {
               color={'accent'}
               highContrast={'true'}
               onClickButton={{
-                onClick: () => {}, //handleWarningUpdate({ interview_session: true }),
+                onClick: () =>
+                  handleJobUpdate({ interview_session_warning_ignore: true }),
               }}
             />
 

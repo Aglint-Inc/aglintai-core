@@ -93,23 +93,21 @@ const useJobContext = () => {
   const { mutateAsync: jobAsyncUpdate, mutate: jobUpdate } = useJobUpdate();
 
   const handleJobUpdate = async (
-    jobId: string,
     job: Omit<Parameters<typeof jobUpdate>[0], 'recruiter_id'>,
   ) => {
     if (recruiter) {
-      jobUpdate({ ...job, id: jobId, recruiter_id: recruiter.id });
+      jobUpdate({ ...job, id: job_id, recruiter_id: recruiter.id });
     }
   };
 
   const handleJobAsyncUpdate = async (
-    jobId: string,
     job: Omit<Parameters<typeof jobUpdate>[0], 'recruiter_id'>,
   ) => {
     if (recruiter) {
       try {
         return await jobAsyncUpdate({
           ...job,
-          id: jobId,
+          id: job_id,
           recruiter_id: recruiter.id,
         });
       } catch {
@@ -151,7 +149,7 @@ const useJobContext = () => {
         application_match,
         ...safeJob
       } = job;
-      await handleJobAsyncUpdate(safeJob.id, {
+      await handleJobAsyncUpdate({
         ...safeJob,
         ...safeJob.draft,
         status: 'published',
@@ -176,7 +174,7 @@ const useJobContext = () => {
   };
 
   const handleRegenerateJd = async (job: Job) => {
-    await handleJobAsyncUpdate(job?.id, {
+    await handleJobAsyncUpdate({
       scoring_criteria_loading: true,
     });
     await handleGenerateJd(job.id, true);

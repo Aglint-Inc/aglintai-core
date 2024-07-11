@@ -207,7 +207,7 @@ const validateForms = (fields: JobDetailsForm) => {
   }, {} as JobDetailsForm);
 };
 
-type Payload = Parameters<ReturnType<typeof useJob>['handleJobAsyncUpdate']>[1];
+type Payload = Parameters<ReturnType<typeof useJob>['handleJobAsyncUpdate']>[0];
 
 const JobEditForm = ({
   fields,
@@ -228,13 +228,7 @@ const JobEditForm = ({
 
   const handleSave = async () => {
     setSaving(true);
-    const payload = { draft: { ...job.draft, ...newJob } };
-    if (job?.description !== newJob?.description)
-      payload['dashboard_warnings'] = {
-        ...job?.dashboard_warnings,
-        job_description: false,
-      };
-    await handleJobAsyncUpdate(job.id, payload);
+    await handleJobAsyncUpdate({ draft: { ...job.draft, ...newJob } });
     setSaving(false);
   };
 

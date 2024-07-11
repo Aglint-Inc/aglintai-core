@@ -116,7 +116,7 @@ const ProfileScoreControls = () => {
     setWeight(obj);
   };
   const handleSubmit = async () => {
-    await handleJobAsyncUpdate(job.id, { parameter_weights: safeWeights });
+    await handleJobAsyncUpdate({ parameter_weights: safeWeights });
   };
   useEffect(() => {
     if (!initialRef.current) {
@@ -371,7 +371,7 @@ const Banners = () => {
 
 const Section: FC<{ type: Sections }> = ({ type }) => {
   const {
-    job: { draft, id },
+    job: { draft },
     handleJobUpdate,
   } = useJob();
   const { jd_json } = draft;
@@ -383,7 +383,7 @@ const Section: FC<{ type: Sections }> = ({ type }) => {
         : 'skills';
   const handleDelete = (index: number) => {
     const newSection = jd_json[section].filter((e, i) => i !== index);
-    handleJobUpdate(id, {
+    handleJobUpdate({
       draft: { ...draft, jd_json: { ...jd_json, [section]: newSection } },
     });
   };
@@ -399,7 +399,7 @@ const Section: FC<{ type: Sections }> = ({ type }) => {
       },
       [] as unknown as (typeof item)[],
     );
-    handleJobUpdate(id, {
+    handleJobUpdate({
       draft: {
         ...draft,
         jd_json: { ...jd_json, [section]: newSection },
@@ -409,7 +409,7 @@ const Section: FC<{ type: Sections }> = ({ type }) => {
   const handleCreate = (
     item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number],
   ) => {
-    handleJobUpdate(id, {
+    handleJobUpdate({
       draft: {
         ...draft,
         jd_json: { ...jd_json, [section]: [...jd_json[section], item] },
