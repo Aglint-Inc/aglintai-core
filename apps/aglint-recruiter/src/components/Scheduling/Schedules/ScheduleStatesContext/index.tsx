@@ -56,16 +56,32 @@ function ScheduleStatesProvider({ children }) {
     useState<SchedulesSupabase | null>(null);
   const [loadingSchedules, setLoadingSchedules] = useState(true);
 
-  const [filterState, setFilterState] = useState(initialFilterState);
+  const [filterState, setFilterState] = useState(
+    localStorage.getItem('scheduleFilterIds')
+      ? JSON.parse(localStorage.getItem('scheduleFilterIds'))
+      : initialFilterState,
+  );
 
   const updateFilterState = (
     key: keyof typeof initialFilterState,
     value: string[],
   ) => {
-    setFilterState((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
+    setFilterState((prevState) => {
+      let states = {
+        ...prevState,
+        [key]: value,
+      };
+      if (key !== 'date_range') {
+        localStorage.setItem(
+          'scheduleFilterIds',
+          JSON.stringify({
+            ...states,
+            date_range: [dayjsLocal().add(7, 'day').format('YYYY-MM-DD')],
+          }),
+        );
+      }
+      return states;
+    });
   };
 
   const {

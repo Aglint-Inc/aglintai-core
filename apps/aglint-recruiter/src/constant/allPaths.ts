@@ -239,7 +239,6 @@ export const PATHS = [
 '/support/create',
 '/support',
 '/tasks',
-'/test1',
 '/thanks-page',
 '/workflows/[id]',
 '/workflows',
