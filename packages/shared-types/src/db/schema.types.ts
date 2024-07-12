@@ -2030,6 +2030,70 @@ export type Database = {
           },
         ]
       }
+      logs: {
+        Row: {
+          created_at: string
+          id: number
+          message: string | null
+          meta: Json | null
+          method: string | null
+          name: string
+          parent_log_id: number | null
+          recruiter_id: string | null
+          status: string
+          type: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          message?: string | null
+          meta?: Json | null
+          method?: string | null
+          name: string
+          parent_log_id?: number | null
+          recruiter_id?: string | null
+          status: string
+          type: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          message?: string | null
+          meta?: Json | null
+          method?: string | null
+          name?: string
+          parent_log_id?: number | null
+          recruiter_id?: string | null
+          status?: string
+          type?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "logs_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       new_tasks: {
         Row: {
           agent: Database["public"]["Enums"]["task_agent_type"] | null
@@ -2290,6 +2354,18 @@ export type Database = {
         }
         Relationships: []
       }
+      plan_count: {
+        Row: {
+          count: number | null
+        }
+        Insert: {
+          count?: number | null
+        }
+        Update: {
+          count?: number | null
+        }
+        Relationships: []
+      }
       public_jobs: {
         Row: {
           active_status: Json
@@ -2309,6 +2385,8 @@ export type Database = {
           interview_coordinator: string | null
           interview_instructions: string | null
           interview_plan: Json | null
+          interview_plan_warning_ignore: boolean
+          interview_session_warning_ignore: boolean
           interview_success: string | null
           intro_videos: Json | null
           is_ats_sync: boolean
@@ -2363,6 +2441,8 @@ export type Database = {
           interview_coordinator?: string | null
           interview_instructions?: string | null
           interview_plan?: Json | null
+          interview_plan_warning_ignore?: boolean
+          interview_session_warning_ignore?: boolean
           interview_success?: string | null
           intro_videos?: Json | null
           is_ats_sync?: boolean
@@ -2417,6 +2497,8 @@ export type Database = {
           interview_coordinator?: string | null
           interview_instructions?: string | null
           interview_plan?: Json | null
+          interview_plan_warning_ignore?: boolean
+          interview_session_warning_ignore?: boolean
           interview_success?: string | null
           intro_videos?: Json | null
           is_ats_sync?: boolean
@@ -3267,6 +3349,30 @@ export type Database = {
           },
         ]
       }
+      session_count: {
+        Row: {
+          count: number | null
+        }
+        Insert: {
+          count?: number | null
+        }
+        Update: {
+          count?: number | null
+        }
+        Relationships: []
+      }
+      sessions_count: {
+        Row: {
+          count: number | null
+        }
+        Insert: {
+          count?: number | null
+        }
+        Update: {
+          count?: number | null
+        }
+        Relationships: []
+      }
       support_groups: {
         Row: {
           company_id: string | null
@@ -3918,6 +4024,8 @@ export type Database = {
           hiring_manager: string | null
           id: string | null
           interview_coordinator: string | null
+          interview_plan_warning_ignore: boolean | null
+          interview_session_warning_ignore: boolean | null
           jd_json: Json | null
           job_title: string | null
           job_type: Database["public"]["Enums"]["public_job_type"] | null
@@ -4024,15 +4132,19 @@ export type Database = {
           cal_event_id: string | null
           candidate_feedback: Json | null
           confirmed_date: string | null
+          confirmed_user_ids: string[] | null
           created_at: string | null
           end_time: string | null
           id: string | null
           instructions: string | null
           interview_schedule_id: string | null
+          job_id: string | null
           meeting_flow: Database["public"]["Enums"]["meeting_flow"] | null
           meeting_json: Json | null
           meeting_link: string | null
+          module_id: string | null
           organizer_id: string | null
+          recruiter_id: string | null
           schedule_type:
             | Database["public"]["Enums"]["interview_schedule_type"]
             | null
@@ -4047,6 +4159,20 @@ export type Database = {
             | null
         }
         Relationships: [
+          {
+            foreignKeyName: "applications_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "public_jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "applications_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "job_view"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "interview_meeting_organizer_id_fkey"
             columns: ["organizer_id"]
@@ -4089,6 +4215,20 @@ export type Database = {
             referencedRelation: "interview_schedule"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "public_interview_session_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "interview_module"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_jobs_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
         ]
       }
       meeting_interviewers: {
@@ -4101,11 +4241,17 @@ export type Database = {
           is_confirmed: boolean | null
           last_name: string | null
           meeting_id: string | null
+          position: string | null
           profile_image: string | null
           session_id: string | null
           session_relation_id: string | null
           session_type: Database["public"]["Enums"]["session_type"] | null
+          totalhoursthisweek: number | null
+          totalhourstoday: number | null
+          totalinterviewsthisweek: number | null
+          totalinterviewstoday: number | null
           training_type: Database["public"]["Enums"]["interviewer_type"] | null
+          tz_code: string | null
           user_id: string | null
         }
         Relationships: [
@@ -4246,12 +4392,6 @@ export type Database = {
       }
       batchsavegreenhouse: {
         Args: Record<PropertyKey, never>
-        Returns: Json[]
-      }
-      batchsavegreenhouse_test: {
-        Args: {
-          rec_id: string
-        }
         Returns: Json[]
       }
       batchscorecron: {
@@ -4416,7 +4556,6 @@ export type Database = {
         Args: {
           session_id: string
           interview_plan_id: string
-          job_id: string
         }
         Returns: undefined
       }
@@ -4440,6 +4579,10 @@ export type Database = {
       embeddingresume: {
         Args: Record<PropertyKey, never>
         Returns: Json
+      }
+      expire_new_applications: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       fetch_interview_data: {
         Args: {
@@ -5269,6 +5412,13 @@ export type Database = {
       schedulercron: {
         Args: Record<PropertyKey, never>
         Returns: Json
+      }
+      score_application: {
+        Args: {
+          scores?: Json
+          parameter_weights?: Json
+        }
+        Returns: number
       }
       search_candidates: {
         Args: {
