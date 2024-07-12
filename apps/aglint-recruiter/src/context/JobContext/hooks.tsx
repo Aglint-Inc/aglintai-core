@@ -208,7 +208,7 @@ const useJobContext = () => {
     job_id,
   });
 
-  const { removeJobQueries } = useInvalidateJobQueries();
+  const { revalidateJobQueries } = useInvalidateJobQueries();
 
   useQueries({
     queries: [
@@ -234,7 +234,7 @@ const useJobContext = () => {
       return;
     }
     if (!jobPolling) {
-      removeJobQueries(job_id);
+      revalidateJobQueries(job_id);
     }
   }, [jobPolling]);
 
