@@ -3924,6 +3924,8 @@ export type Database = {
           hiring_manager: string | null
           id: string | null
           interview_coordinator: string | null
+          interview_plan_warning_ignore: boolean | null
+          interview_session_warning_ignore: boolean | null
           jd_json: Json | null
           job_title: string | null
           job_type: Database["public"]["Enums"]["public_job_type"] | null
@@ -4039,6 +4041,7 @@ export type Database = {
           meeting_flow: Database["public"]["Enums"]["meeting_flow"] | null
           meeting_json: Json | null
           meeting_link: string | null
+          module_id: string | null
           organizer_id: string | null
           recruiter_id: string | null
           schedule_type:
@@ -4112,6 +4115,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "public_interview_session_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "interview_module"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "public_jobs_recruiter_id_fkey"
             columns: ["recruiter_id"]
             isOneToOne: false
@@ -4130,11 +4140,13 @@ export type Database = {
           is_confirmed: boolean | null
           last_name: string | null
           meeting_id: string | null
+          position: string | null
           profile_image: string | null
           session_id: string | null
           session_relation_id: string | null
           session_type: Database["public"]["Enums"]["session_type"] | null
           training_type: Database["public"]["Enums"]["interviewer_type"] | null
+          tz_code: string | null
           user_id: string | null
         }
         Relationships: [

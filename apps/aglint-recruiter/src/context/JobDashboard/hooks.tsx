@@ -45,11 +45,13 @@ const useProviderJobDashboardActions = () => {
   const workflows = useJobWorkflow({ id: job?.id });
 
   const isInterviewPlanDisabled =
-    !interviewPlans.isPending && !interviewPlans?.data;
+    interviewPlans.status !== 'pending' &&
+    !interviewPlans?.data &&
+    !job?.interview_plan_warning_ignore;
   const isInterviewSessionEmpty =
-    !interviewPlans.isPending &&
-    (isInterviewPlanDisabled ||
-      interviewPlans?.data?.interview_session?.length === 0);
+    interviewPlans.status !== 'pending' &&
+    interviewPlans?.data?.interview_session?.length === 0 &&
+    !job?.interview_session_warning_ignore;
 
   const value = {
     job,

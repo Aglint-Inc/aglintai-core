@@ -580,8 +580,8 @@ const Schedules = () => {
 
 const useBanners = () => {
   const { push } = useRouter();
-  const { publishStatus, handleJobUpdate } = useJob();
-  const { job, isInterviewPlanDisabled, isInterviewSessionEmpty, status } =
+  const { job, publishStatus, handleJobUpdate } = useJob();
+  const { isInterviewPlanDisabled, isInterviewSessionEmpty, status } =
     useJobDashboard();
 
   const banners: React.JSX.Element[] = [];
@@ -603,7 +603,7 @@ const useBanners = () => {
               highContrast={'true'}
               onClickButton={{
                 onClick: () =>
-                  handleJobUpdate({ interview_plan_warning_ignore: true }), //handleWarningUpdate({ interview_plan: true }),
+                  handleJobUpdate({ interview_plan_warning_ignore: true }),
               }}
             />
 
@@ -757,7 +757,7 @@ const useBanners = () => {
               color={'accent'}
               highContrast={'true'}
               onClickButton={{
-                onClick: () => {}, //handleWarningUpdate({ job_description: true }),
+                onClick: () => {},
               }}
             />
 
@@ -786,7 +786,7 @@ const useBanners = () => {
               size={2}
               color={'neutral'}
               onClickButton={{
-                onClick: () => {}, //handleWarningUpdate({ score_changed: true }),
+                onClick: () => {},
               }}
             />
 
