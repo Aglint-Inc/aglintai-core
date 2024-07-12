@@ -38,7 +38,9 @@ export const fetchUserSchedules = async ({
   member_id: string;
   textSearch: string;
 }) => {
-  const query = schedulesSupabase().contains('confirmed_user_ids', [member_id]);
+  const query = schedulesSupabase()
+    .contains('confirmed_user_ids', [member_id])
+    .eq('meeting_interviewers.is_confirmed', true);
 
   if (textSearch) {
     query.ilike('session_name', `%${textSearch}%`);

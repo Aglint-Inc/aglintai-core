@@ -49,7 +49,9 @@ export const fetchModuleSchedules = async (
   filter: DatabaseTable['interview_meeting']['status'],
   changeText: string,
 ) => {
-  const query = schedulesSupabase().eq('module_id', module_id);
+  const query = schedulesSupabase()
+    .eq('module_id', module_id)
+    .eq('meeting_interviewers.is_confirmed', true);
 
   if (changeText) {
     query.ilike('session_name', `%${changeText}%`);
