@@ -8,7 +8,7 @@ import ScheduleMeetingList from '../../Common/ModuleSchedules/ScheduleMeetingLis
 import { useScheduleStatesContext } from '../ScheduleStatesContext';
 
 function ScheduleList() {
-  const { filterSchedules, loadingSchedules } = useScheduleStatesContext();
+  const { filteredSchedules, loadingSchedules } = useScheduleStatesContext();
 
   return (
     <Stack padding={'var(--space-4)'}>
@@ -17,7 +17,7 @@ function ScheduleList() {
           <Loader />
         </Stack>
       )}
-      {!loadingSchedules && filterSchedules.length === 0 && (
+      {!loadingSchedules && filteredSchedules.length === 0 && (
         <Box
           sx={{
             display: 'flex',
@@ -33,7 +33,7 @@ function ScheduleList() {
           </Box>
         </Box>
       )}
-      <ScheduleMeetingList filterSchedules={filterSchedules} />
+      <ScheduleMeetingList filterSchedules={filteredSchedules} />
     </Stack>
   );
 }
