@@ -47,19 +47,12 @@ const handler = async (
   );
   const { job_id, regenerate = false } =
     req.body as JobProfileScoreApi['request'];
-  const { data } = await supabase
+  const { data: job } = await supabase
     .from('public_jobs')
     .select('description, draft, job_title')
-    .eq('id', job_id);
-  if (
-    !(
-      data &&
-      data[0] &&
-      data[0]?.draft &&
-      (data[0]?.draft as any)?.description &&
-      ((data[0]?.draft as any)?.description ?? '').length > 100
-    )
-  ) {
+    .eq('id', job_id)
+    .single();
+  if ((job?.draft?.description ?? '').length < 100) {
     await supabase
       .from('public_jobs')
       .update({ scoring_criteria_loading: false })
@@ -76,8 +69,8 @@ const handler = async (
     await supabase
       .from('public_jobs')
       .update({ scoring_criteria_loading: true })
-      .eq('id', job_id);
-    const job = data[0];
+      .eq('id', job_id)
+      .single();
     const jsonPromise = newJdJson(
       `Job role : ${job.job_title}
 
