@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 
 import { NewMyScheduleCard } from '@/devlink3/NewMyScheduleCard';
 
-import { getAllScheduleList } from '../../../Schedules/ScheduleStatesContext';
 import {
   SchedulesSupabase,
   transformDataSchedules,
@@ -43,27 +42,3 @@ function ScheduleMeetingList({
 
 export default ScheduleMeetingList;
 
-function transformData(
-  inputData: Awaited<ReturnType<typeof getAllScheduleList>> | null,
-) {
-  const transformedData = {};
-
-  inputData?.forEach((item) => {
-    const date = item.start_time?.split('T')[0]; // Extracting date from start_time
-    if (!transformedData[String(date)]) {
-      transformedData[String(date)] = [];
-    }
-    transformedData[String(date)].push(item);
-  });
-
-  const result = [];
-  for (const date in transformedData) {
-    result.push({ [date]: transformedData[String(date)] });
-  }
-
-  return result.sort((a, b) => {
-    const dateA = Object.keys(a)[0];
-    const dateB = Object.keys(b)[0];
-    return (new Date(dateA) as any) - (new Date(dateB) as any);
-  });
-}

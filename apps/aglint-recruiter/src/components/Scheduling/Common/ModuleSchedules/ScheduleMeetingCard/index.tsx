@@ -76,7 +76,7 @@ function ScheduleMeetingCard({
                         end_time={meetingDetails.end_time}
                         first_name={user.first_name}
                         last_name={user.last_name}
-                        position={user.postion}
+                        position={user.position}
                         profile_image={user.profile_image}
                         training_type={user.training_type}
                         tzCode={user.tz_code}
