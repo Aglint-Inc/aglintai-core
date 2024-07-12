@@ -1,2 +1,0 @@
-drop trigger if exists after_update_candidate_request_availability ON candidate_request_availability;
-drop function if exists workflow_log_on_update_candidate_request_availability;
