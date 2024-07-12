@@ -300,6 +300,7 @@ const Filters = () => {
         name: key,
         value: value,
         type: 'filter',
+        iconname: '',
         icon: <FilterIcon filter={key as FilterIconProps['filter']} />,
         setValue: (newValue) =>
           setFilters({ [key]: structuredClone(newValue) }),
@@ -307,6 +308,7 @@ const Filters = () => {
       })),
     [filters],
   );
+
   const component = useMemo(
     () => (
       <FilterHeader

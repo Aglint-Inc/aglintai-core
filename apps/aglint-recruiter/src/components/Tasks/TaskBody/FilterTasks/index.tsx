@@ -4,11 +4,13 @@ import FilterHeader from '@/src/components/Common/FilterHeader';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 
 function FilterTasks() {
-  const { search, filter, handelSearch, handelFilter, 
-    // handelResetFilter 
-  } =
-
-    useTasksContext();
+  const {
+    search,
+    filter,
+    handelSearch,
+    handelFilter,
+    // handelResetFilter
+  } = useTasksContext();
   const allResetShow = !!Object.values(filter)
     .map((ele) => ele.values)
     .flat().length;
@@ -30,6 +32,7 @@ function FilterTasks() {
           name: 'Candidate',
           options: filter.candidate.options,
           filterSearch: true,
+          iconname: 'person',
           searchPlaceholder: 'Search candidates',
           setValue: (val) => {
             const preData =
@@ -46,6 +49,7 @@ function FilterTasks() {
         {
           type: 'filter',
           name: 'Status',
+          iconname: 'filter_tilt_shift',
           options: filter.status.options,
           setValue: (val) => {
             const preData =
@@ -62,6 +66,7 @@ function FilterTasks() {
         {
           type: 'filter',
           name: 'Priority',
+          iconname: 'arrow_drop_down_circle',
           options: filter.priority.options,
           setValue: (val) => {
             const preData =
@@ -80,6 +85,7 @@ function FilterTasks() {
           type: 'filter',
           name: 'Assignee',
           filterSearch: true,
+          iconname: 'account_circle',
           searchPlaceholder: 'Search Assignee',
           options: [
             { header: 'Agents', options: agentsDetails },
@@ -101,6 +107,7 @@ function FilterTasks() {
           type: 'filter',
           name: 'Job',
           filterSearch: true,
+          iconname: 'work',
           searchPlaceholder: 'Search Job',
           options: filter.jobTitle.options,
           setValue: (val) => {
@@ -118,6 +125,7 @@ function FilterTasks() {
         {
           type: 'filter',
           name: 'Type',
+          iconname: 'arrow_drop_down_circle',
           options: filter.type.options,
           setValue: (val) => {
             const preData =

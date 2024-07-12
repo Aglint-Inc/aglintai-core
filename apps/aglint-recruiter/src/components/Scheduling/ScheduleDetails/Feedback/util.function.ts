@@ -57,8 +57,8 @@ export const saveInterviewerFeedback = async ({
 };
 
 export const re_mapper = {
-  0: 'Strongly not recommended',
-  1: 'Not recommended',
+  0: '',
+  1: 'Strongly not recommended',
   2: 'Not recommended',
   3: 'Not recommended',
   4: 'Not recommended',

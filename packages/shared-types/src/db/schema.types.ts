@@ -4552,6 +4552,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      fail_processing_applications: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       fetch_interview_data: {
         Args: {
           rec_id: string
