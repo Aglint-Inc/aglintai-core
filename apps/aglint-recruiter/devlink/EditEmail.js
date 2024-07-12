@@ -23,6 +23,7 @@ export function EditEmail({
   isTipVisible = true,
   slotSaveButton,
   currentModule = "jobs",
+  showPreview = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "edit-email-wrap")} tag="div">
@@ -61,14 +62,18 @@ export function EditEmail({
                 tag="div"
               >
                 <Text content={textEmailName} weight="medium" />
-                <ButtonGhost
-                  onClickButton={onClickPreview}
-                  size="1"
-                  isLeftIcon={false}
-                  iconSize="3"
-                  iconName=""
-                  textButton="Preview"
-                />
+                {isPreviewVisible ? (
+                  <_Builtin.Block tag="div">
+                    <ButtonGhost
+                      onClickButton={onClickPreview}
+                      size="1"
+                      isLeftIcon={false}
+                      iconSize="3"
+                      iconName=""
+                      textButton="Preview"
+                    />
+                  </_Builtin.Block>
+                ) : null}
               </_Builtin.Block>
               <Text content={editEmailDescription} color="neutral" />
             </_Builtin.Block>

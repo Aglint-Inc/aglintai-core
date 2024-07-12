@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import React, { ReactNode } from 'react';
 
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { AddFilter } from '@/devlink2/AddFilter';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
@@ -61,6 +62,7 @@ export type FilterComponentType = {
   options: dynamicOptionsTypes;
   value: string[];
   filterSearch?: boolean;
+  iconname: string;
   searchPlaceholder?: string;
   // eslint-disable-next-line no-unused-vars
   setValue: (value: string[]) => void;
@@ -153,6 +155,7 @@ function FilterSwitcher(filter: FilterTypes, index: number) {
           setValue={(values) => {
             filter.setValue(values);
           }}
+          iconname={filter.iconname}
           icon={filter.icon}
         />
       );
@@ -209,6 +212,7 @@ export function FilterComponent({
   options: itemList,
   setValue: setSelectedItems,
   value: selectedItems,
+  iconname = '',
   filterSearch = false,
   searchPlaceholder = '',
   icon,
@@ -295,7 +299,7 @@ export function FilterComponent({
                 nested={false}
               />
             ) : (
-              <Typography>No {title}</Typography>
+              <GlobalEmptyState textDesc={`No ${title}`} iconName={iconname} />
             )
           }
           onClickReset={{
