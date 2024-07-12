@@ -37,11 +37,6 @@
   border-radius: var(--radius-1);
 }
 
-.user-status-wrap {
-  padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-full);
-}
-
 .user-detail-wrap {
   margin-left: var(--space-6);
 }

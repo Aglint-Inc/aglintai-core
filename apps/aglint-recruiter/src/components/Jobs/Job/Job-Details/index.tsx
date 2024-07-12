@@ -22,7 +22,7 @@ import {
 import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/jobs/types';
 import ROUTES from '@/src/utils/routing/routes';
-import { capitalize } from '@/src/utils/text/textUtils';
+import { capitalizeSentence } from '@/src/utils/text/textUtils';
 
 import Loader from '../../../Common/Loader';
 
@@ -165,7 +165,7 @@ const BreadCrumbs = ({ job }: { job: Job }) => {
     <>
       <Breadcrum
         isLink
-        textName={`${capitalize(job?.status ?? 'all')} jobs`}
+        textName={`${capitalizeSentence(job?.status ?? 'all')} jobs`}
         onClickLink={{
           onClick: () => {
             push(`${ROUTES['/jobs']()}?status=${job?.status ?? 'all'}`);
@@ -175,7 +175,7 @@ const BreadCrumbs = ({ job }: { job: Job }) => {
       />
       <Breadcrum
         isLink
-        textName={capitalize(job?.job_title ?? 'Job')}
+        textName={capitalizeSentence(job?.job_title ?? 'Job')}
         onClickLink={{
           onClick: () => {
             push(ROUTES['/jobs/[id]']({ id: job?.id }));
@@ -207,7 +207,7 @@ const validateForms = (fields: JobDetailsForm) => {
   }, {} as JobDetailsForm);
 };
 
-type Payload = Parameters<ReturnType<typeof useJob>['handleJobAsyncUpdate']>[1];
+type Payload = Parameters<ReturnType<typeof useJob>['handleJobAsyncUpdate']>[0];
 
 const JobEditForm = ({
   fields,
@@ -228,13 +228,7 @@ const JobEditForm = ({
 
   const handleSave = async () => {
     setSaving(true);
-    const payload = { draft: { ...job.draft, ...newJob } };
-    if (job?.description !== newJob?.description)
-      payload['dashboard_warnings'] = {
-        ...job?.dashboard_warnings,
-        job_description: false,
-      };
-    await handleJobAsyncUpdate(job.id, payload);
+    await handleJobAsyncUpdate({ draft: { ...job.draft, ...newJob } });
     setSaving(false);
   };
 

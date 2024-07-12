@@ -70,15 +70,12 @@ const JobAssessmentDashboardBreadCrumbs = () => {
 };
 
 const EnableAssessment = () => {
-  const {
-    job: { id },
-    handleJobAsyncUpdate,
-  } = useJob();
+  const { handleJobAsyncUpdate } = useJob();
   const [disable, setDisable] = useState(false);
   const handelEnable = async () => {
     if (!disable) {
       setDisable(true);
-      await handleJobAsyncUpdate(id, { assessment: true });
+      await handleJobAsyncUpdate({ assessment: true });
       setDisable(false);
     }
   };

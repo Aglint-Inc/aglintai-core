@@ -7,7 +7,7 @@ import { PageLayout } from '@/devlink2/PageLayout';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
 import { useWorkflowStore } from '@/src/context/Workflows/store';
 import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { capitalizeSentence } from '@/src/utils/text/textUtils';
 
 import { WithPermission } from '../../withPermission';
 
@@ -36,7 +36,7 @@ const BreadCrumbs = () => {
       />
       <Breadcrum
         showArrow
-        textName={workflow ? `${capitalizeAll(workflow.title)}` : '---'}
+        textName={workflow ? `${capitalizeSentence(workflow.title)}` : '---'}
       />
     </>
   );

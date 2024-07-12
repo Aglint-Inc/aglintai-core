@@ -49,7 +49,7 @@ const handler = async (
     req.body as JobProfileScoreApi['request'];
   const { data } = await supabase
     .from('public_jobs')
-    .select('description, draft, job_title, dashboard_warnings')
+    .select('description, draft, job_title')
     .eq('id', job_id);
   if (
     !(
@@ -100,7 +100,6 @@ Job description: ${(job.draft as any).description}`,
       draft: { ...(job.draft as any), jd_json: j },
       scoring_criteria_loading: false,
       parameter_weights: weights,
-      dashboard_warnings: { ...job?.dashboard_warnings, score_changed: false },
     };
     if (regenerate) delete payload.jd_json;
     await supabase.from('public_jobs').update(payload).eq('id', job_id);
