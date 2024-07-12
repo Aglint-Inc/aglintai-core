@@ -12,6 +12,4 @@ export type JobCreate = Required<
       Job,
       'hiring_manager' | 'recruiter' | 'recruiting_coordinator' | 'sourcer'
     >
-> & {
-  description_hash: Job['description_hash'];
-};
+>;
