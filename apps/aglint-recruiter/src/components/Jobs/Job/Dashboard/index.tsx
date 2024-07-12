@@ -305,7 +305,7 @@ const Dashboard = () => {
               <>
                 <IconButtonGhost
                   color={'neutral'}
-                  iconSize={4}
+                  iconSize={6}
                   iconName='more_vert'
                   onClickButton={{
                     onClick: () => {
