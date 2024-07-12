@@ -3273,6 +3273,30 @@ export type Database = {
           },
         ]
       }
+      session_count: {
+        Row: {
+          count: number | null
+        }
+        Insert: {
+          count?: number | null
+        }
+        Update: {
+          count?: number | null
+        }
+        Relationships: []
+      }
+      sessions_count: {
+        Row: {
+          count: number | null
+        }
+        Insert: {
+          count?: number | null
+        }
+        Update: {
+          count?: number | null
+        }
+        Relationships: []
+      }
       support_groups: {
         Row: {
           company_id: string | null
@@ -4032,6 +4056,7 @@ export type Database = {
           cal_event_id: string | null
           candidate_feedback: Json | null
           confirmed_date: string | null
+          confirmed_user_ids: string[] | null
           created_at: string | null
           end_time: string | null
           id: string | null
@@ -4145,6 +4170,10 @@ export type Database = {
           session_id: string | null
           session_relation_id: string | null
           session_type: Database["public"]["Enums"]["session_type"] | null
+          totalhoursthisweek: number | null
+          totalhourstoday: number | null
+          totalinterviewsthisweek: number | null
+          totalinterviewstoday: number | null
           training_type: Database["public"]["Enums"]["interviewer_type"] | null
           tz_code: string | null
           user_id: string | null

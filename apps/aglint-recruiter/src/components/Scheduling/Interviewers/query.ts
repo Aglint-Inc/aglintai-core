@@ -1,15 +1,22 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
+
+import { supabase } from '@/src/utils/supabase/client';
 
 import { schedulesSupabase } from '../schedules-query';
 
-export const useAllSchedulesByUserId = ({ filter }) => {
-  const router = useRouter();
-  const member_id = router.query.member_id as string;
+export const useAllSchedulesByUserId = ({
+  filter,
+  member_id,
+  textSearch,
+}: {
+  filter: DatabaseTable['interview_meeting']['status'];
+  member_id: string;
+  textSearch: string;
+}) => {
   const query = useQuery({
-    queryKey: ['schedulesByModuleId', member_id, filter],
-    queryFn: () => fetchUserSchedules(member_id, filter),
+    queryKey: ['schedulesByModuleId', member_id, filter, textSearch],
+    queryFn: () => fetchUserSchedules({ member_id, filter, textSearch }),
     enabled: !!member_id,
     placeholderData: {
       schedules: [],
@@ -22,14 +29,26 @@ export const useAllSchedulesByUserId = ({ filter }) => {
   return query;
 };
 
-export const fetchUserSchedules = async (
-  user_id: string,
-  filter: DatabaseTable['interview_meeting']['status'],
-) => {
-  const { data } = await schedulesSupabase()
-    .contains('confirmed_user_ids', [user_id])
-    .eq('status', filter)
-    .throwOnError();
+export const fetchUserSchedules = async ({
+  filter,
+  member_id,
+  textSearch,
+}: {
+  filter: DatabaseTable['interview_meeting']['status'];
+  member_id: string;
+  textSearch: string;
+}) => {
+  const query = schedulesSupabase().contains('confirmed_user_ids', [member_id]);
+
+  if (textSearch) {
+    query.ilike('session_name', `%${textSearch}%`);
+  }
+
+  if (filter) {
+    query.eq('status', filter);
+  }
+
+  const { data } = await query.throwOnError();
 
   if (data.length === 0) {
     return {
@@ -42,7 +61,7 @@ export const fetchUserSchedules = async (
   }
 
   const user = data[0]?.meeting_interviewers?.find(
-    (interviewer) => interviewer.user_id === user_id,
+    (interviewer) => interviewer.user_id === member_id,
   );
 
   return {
@@ -51,5 +70,33 @@ export const fetchUserSchedules = async (
     totalHoursToday: user?.totalhourstoday || 0,
     totalInterviewsThisWeek: user?.totalinterviewsthisweek || 0,
     totalHoursThisWeek: user?.totalhoursthisweek || 0,
+  };
+};
+
+export const fetchSchedulesCountByUserId = async (user_id: string) => {
+  const { data } = await supabase
+    .from('meeting_details')
+    .select()
+    .contains('confirmed_user_ids', [user_id]);
+
+  const upcomingCount = data.reduce(
+    (acc, cur) => (cur.status === 'confirmed' ? acc + 1 : acc),
+    0,
+  );
+
+  const completedCount = data.reduce(
+    (acc, cur) => (cur.status === 'completed' ? acc + 1 : acc),
+    0,
+  );
+
+  const cancelledCount = data.reduce(
+    (acc, cur) => (cur.status === 'cancelled' ? acc + 1 : acc),
+    0,
+  );
+
+  return {
+    upcomingCount,
+    completedCount,
+    cancelledCount,
   };
 };

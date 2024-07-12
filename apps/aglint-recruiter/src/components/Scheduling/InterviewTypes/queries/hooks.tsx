@@ -34,8 +34,10 @@ export const useAllInterviewModules = () => {
 
 export const useAllSchedulesByModuleId = ({
   filter,
+  changeText,
 }: {
   filter: DatabaseTable['interview_meeting']['status'];
+  changeText: string;
 }) => {
   const router = useRouter();
   const module_id = router.query.module_id as string;
@@ -43,8 +45,9 @@ export const useAllSchedulesByModuleId = ({
     queryKey: QueryKeysInteviewModules.SCHEDULES_BY_MODULE_ID({
       moduleId: module_id,
       filter,
+      changeText,
     }),
-    queryFn: () => fetchModuleSchedules(module_id, filter),
+    queryFn: () => fetchModuleSchedules(module_id, filter, changeText),
     enabled: !!module_id,
     placeholderData: [],
   });

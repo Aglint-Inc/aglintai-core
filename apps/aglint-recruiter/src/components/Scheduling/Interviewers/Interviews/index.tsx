@@ -1,7 +1,8 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
-import React from 'react';
+import { useRouter } from 'next/router';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 import { InterviewMemberSide } from '@/devlink2/InterviewMemberSide';
@@ -14,27 +15,42 @@ import {
   transformDataSchedules,
 } from '../../schedules-query';
 import { DateIcon } from '../../Settings/Components/DateSelector';
+import { fetchSchedulesCountByUserId } from '../query';
 
 function Interviews({
   allSchedules,
   isLoading,
   filter,
   setFilter,
+  changeText,
+  setChangeText,
 }: {
   allSchedules: SchedulesSupabase;
   isLoading: boolean;
   filter: DatabaseTable['interview_meeting']['status'];
-  setFilter: React.Dispatch<
-    React.SetStateAction<DatabaseTable['interview_meeting']['status']>
+  setFilter: Dispatch<
+    SetStateAction<DatabaseTable['interview_meeting']['status']>
   >;
+  changeText: string;
+  setChangeText: Dispatch<SetStateAction<string>>;
 }) {
-  const [changeText, setChangeText] = React.useState('');
+  const router = useRouter();
+  const [counts, setCounts] = useState({
+    upcomingCount: 0,
+    completedCount: 0,
+    cancelledCount: 0,
+  });
 
-  const countCalculation = (
-    tab: DatabaseTable['interview_meeting']['status'],
-  ) => {
-    return allSchedules.filter((sch) => sch.status === tab).length;
-  };
+  const member_id = router?.query?.member_id as string;
+
+  useEffect(() => {
+    if (member_id) {
+      (async () => {
+        const res = await fetchSchedulesCountByUserId(member_id);
+        setCounts(res);
+      })();
+    }
+  }, [member_id]);
 
   return (
     <InterviewMemberSide
@@ -46,16 +62,16 @@ function Interviews({
               setChangeText(e.target.value);
             }}
             onClear={() => setChangeText('')}
-            placeholder={'Search by session.'}
+            placeholder={'Search by session name'}
           />
         </Stack>
       }
       isUpcomingActive={filter === 'confirmed'}
       isCancelActive={filter === 'cancelled'}
       isCompletedActive={filter === 'completed'}
-      textUpcomingCount={countCalculation('waiting')}
-      textCancelledCount={countCalculation('cancelled')}
-      textPastCount={countCalculation('completed')}
+      textUpcomingCount={counts.upcomingCount}
+      textCancelledCount={counts.cancelledCount}
+      textPastCount={counts.completedCount}
       onClickUpcoming={{
         onClick: () => setFilter('confirmed'),
       }}

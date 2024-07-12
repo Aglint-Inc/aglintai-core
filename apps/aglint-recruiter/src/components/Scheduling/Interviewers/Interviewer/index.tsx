@@ -40,6 +40,7 @@ function Interviewer() {
   });
   const [filter, setFilter] =
     useState<DatabaseTable['interview_meeting']['status']>('confirmed');
+  const [changeText, setChangeText] = useState('');
 
   const user_id = router.query.member_id as string;
 
@@ -58,9 +59,11 @@ function Interviewer() {
       totalInterviewsToday,
     },
     isLoading,
-  } = useAllSchedulesByUserId({ filter });
-
-  console.log(totalHoursToday);
+  } = useAllSchedulesByUserId({
+    filter,
+    member_id: router.query.member_id as string,
+    textSearch: changeText,
+  });
 
   const tab = (router.query.tab || 'overview') as
     | 'overview'
@@ -236,6 +239,8 @@ function Interviewer() {
                         isLoading={isLoading}
                         filter={filter}
                         setFilter={setFilter}
+                        changeText={changeText}
+                        setChangeText={setChangeText}
                       />
                     )}
                   </>

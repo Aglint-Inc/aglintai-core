@@ -16,14 +16,50 @@ import {
 import { calculateHourDifference } from '../utils';
 import { useGetMeetingsByModuleId } from './hooks';
 
+export const fetchSchedulesCountByModule = async (module_id: string) => {
+  const { data } = await supabase
+    .from('meeting_details')
+    .select()
+    .eq('module_id', module_id);
+
+  const upcomingCount = data.reduce(
+    (acc, cur) => (cur.status === 'confirmed' ? acc + 1 : acc),
+    0,
+  );
+
+  const completedCount = data.reduce(
+    (acc, cur) => (cur.status === 'completed' ? acc + 1 : acc),
+    0,
+  );
+
+  const cancelledCount = data.reduce(
+    (acc, cur) => (cur.status === 'cancelled' ? acc + 1 : acc),
+    0,
+  );
+
+  return {
+    upcomingCount,
+    completedCount,
+    cancelledCount,
+  };
+};
+
 export const fetchModuleSchedules = async (
   module_id: string,
   filter: DatabaseTable['interview_meeting']['status'],
+  changeText: string,
 ) => {
-  const { data } = await schedulesSupabase()
-    .eq('module_id', module_id)
-    .eq('status', filter)
-    .throwOnError();
+  const query = schedulesSupabase().eq('module_id', module_id);
+
+  if (changeText) {
+    query.ilike('session_name', `%${changeText}%`);
+  }
+
+  if (filter) {
+    query.eq('status', filter);
+  }
+
+  const { data } = await query.throwOnError();
 
   return data;
 };
