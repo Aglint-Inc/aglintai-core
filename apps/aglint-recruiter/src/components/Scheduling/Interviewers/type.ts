@@ -1,6 +1,5 @@
 import { InterviewModuleType, RecruiterUserType } from '@aglint/shared-types';
 
-import { ScheduleListType } from '../Common/ModuleSchedules/hooks';
 import { ModuleType } from '../InterviewTypes/types';
 import { SchedulesSupabase } from '../schedules-query';
 
