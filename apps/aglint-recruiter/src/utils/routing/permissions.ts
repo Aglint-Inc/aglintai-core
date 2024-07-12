@@ -73,6 +73,8 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/application/schedulewithagentwithouttaskid': [
     'scheduler_enabled',
   ],
+  '/api/scheduling/get-accesstoken': ['scheduler_enabled'],
+  '/api/email-outreach/get-user-email': ['scheduler_enabled'],
   '/api/scheduling/application/schedulewithagent': ['scheduler_enabled'],
   //v1 apis
   '/api/scheduling/v1/get-candidate-selected-slots': ['scheduler_enabled'],
