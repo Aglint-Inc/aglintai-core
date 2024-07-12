@@ -14,6 +14,7 @@ export function GlobalCta({
   textDescription = "Candidate recieved a link to submit availability between 12 June 2024 to 13 June 2024.",
   slotButton,
   iconName = "mark_email_read",
+  slotCustomIcon,
 }) {
   return (
     <_Component
@@ -21,7 +22,16 @@ export function GlobalCta({
       tag="div"
       data-color={color}
     >
-      <GlobalIcon iconName={iconName} size="9" weight="light" color="inherit" />
+      <_Builtin.Block tag="div">
+        {slotCustomIcon ?? (
+          <GlobalIcon
+            iconName={iconName}
+            size="9"
+            weight="light"
+            color="inherit"
+          />
+        )}
+      </_Builtin.Block>
       <Text content={textTitle} weight="medium" color="neutral-12" />
       <Text
         content={textDescription}

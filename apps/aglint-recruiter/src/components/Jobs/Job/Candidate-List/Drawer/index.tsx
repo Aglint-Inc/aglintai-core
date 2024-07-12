@@ -54,6 +54,7 @@ const Drawer = () => {
           file_url: placeholderData?.file_url,
           activity_count: placeholderData?.activity_count,
           task_count: placeholderData?.task_count,
+          status: placeholderData?.status,
         }
       : undefined;
 
