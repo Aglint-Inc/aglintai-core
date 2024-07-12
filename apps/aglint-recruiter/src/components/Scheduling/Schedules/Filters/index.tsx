@@ -353,6 +353,7 @@ function Filters() {
                   spacing={'var(--space-2)'}
                   alignItems={'center'}
                   key={i}
+                  padding={'8px'}
                 >
                   {filterOption.Icon}
                   <FilterPill
