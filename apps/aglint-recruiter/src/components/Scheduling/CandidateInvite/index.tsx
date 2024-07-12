@@ -4,7 +4,6 @@ import { CandidateResponseSelfSchedule } from '@aglint/shared-types/src/db/table
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import {
   Alert,
-  Box,
   Container,
   Dialog,
   FormControlLabel,
@@ -34,7 +33,6 @@ import { InterviewConfirmed } from '@/devlink2/InterviewConfirmed';
 import { InterviewConfirmedCard } from '@/devlink2/InterviewConfirmedCard';
 import { RequestReschedule } from '@/devlink2/RequestReschedule';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
-import { ScheduleButton } from '@/devlink3/ScheduleButton';
 import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
 import NotFoundPage from '@/src/pages/404';
@@ -372,14 +370,34 @@ export const ConfirmedInvitePage = (
             <Stack direction={'row'} gap={2}>
               {(!cancelReschedulingDetails ||
                 cancelReschedulingDetails.all == false) && (
-                <>
-                  <ScheduleButton
+                <Stack direction={'row'} gap={'var(--space-2)'}>
+                  <ButtonSoft
+                    textButton={'Reschedule'}
+                    size={2}
+                    color={'neutral'}
+                    iconName='event_repeat'
+                    isLeftIcon
+                    onClickButton={{
+                      onClick: () => setCancelReschedule('reschedule'),
+                    }}
+                  />
+                  <ButtonSoft
+                    textButton={'Cancel'}
+                    size={2}
+                    color={'error'}
+                    iconName='event_busy'
+                    isLeftIcon
+                    onClickButton={{
+                      onClick: () => setCancelReschedule('cancel'),
+                    }}
+                  />
+                  {/* <ScheduleButton
                     textLabel={'Reschedule'}
                     onClickProps={{
                       onClick: () => setCancelReschedule('reschedule'),
                     }}
-                  />
-                  <ScheduleButton
+                  /> */}
+                  {/* <ScheduleButton
                     textLabel={'Cancel'}
                     textColorProps={{
                       style: { color: '#D93F4C' },
@@ -398,8 +416,8 @@ export const ConfirmedInvitePage = (
                         <GlobalIcon iconName='event_busy' color={'inherit'} />
                       </Box>
                     }
-                  />
-                </>
+                  /> */}
+                </Stack>
               )}
             </Stack>
           }
