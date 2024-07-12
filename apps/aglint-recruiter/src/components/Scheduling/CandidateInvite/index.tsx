@@ -391,32 +391,6 @@ export const ConfirmedInvitePage = (
                       onClick: () => setCancelReschedule('cancel'),
                     }}
                   />
-                  {/* <ScheduleButton
-                    textLabel={'Reschedule'}
-                    onClickProps={{
-                      onClick: () => setCancelReschedule('reschedule'),
-                    }}
-                  /> */}
-                  {/* <ScheduleButton
-                    textLabel={'Cancel'}
-                    textColorProps={{
-                      style: { color: '#D93F4C' },
-                    }}
-                    onClickProps={{
-                      onClick: () => setCancelReschedule('cancel'),
-                      style: { background: '#FFF0F1' },
-                    }}
-                    slotIcon={
-                      <Box
-                        display={'flex'}
-                        height={'100%'}
-                        justifyContent={'center'}
-                        alignItems={'center'}
-                      >
-                        <GlobalIcon iconName='event_busy' color={'inherit'} />
-                      </Box>
-                    }
-                  /> */}
                 </Stack>
               )}
             </Stack>
