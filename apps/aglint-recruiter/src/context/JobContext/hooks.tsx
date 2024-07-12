@@ -101,7 +101,9 @@ const useJobContext = () => {
           } as Omit<Job['draft'], 'jd_json'>,
         ),
       jd_json_error: !job.scoring_criteria_loading && !jdValidity,
-      scoring_criteria_changed: !isEqual(job.draft.jd_json, job.jd_json),
+      scoring_criteria_changed:
+        !job.scoring_criteria_loading &&
+        !isEqual(job.draft.jd_json, job.jd_json),
     };
 
   const interviewPlans = useQuery(jobQueries.interview_plans({ id: job_id }));

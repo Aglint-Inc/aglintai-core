@@ -744,7 +744,7 @@ const useBanners = () => {
         }
       />,
     );
-  else if (status.description_changed)
+  if (status.description_changed)
     banners.push(
       <DashboardWarning
         textWarningTitle={'Job details have changed'}
@@ -1165,7 +1165,9 @@ const ProfileScoreModule = () => {
   };
   const isAlert = status.jd_json_error && !status.description_error;
   const isWarning =
-    !isAlert && (status.description_changed || status.description_error);
+    !isAlert &&
+    ((status.description_changed && !status.scoring_criteria_changed) ||
+      status.description_error);
   return (
     <ModuleCard
       onClickCard={{ onClick: () => handleClick() }}

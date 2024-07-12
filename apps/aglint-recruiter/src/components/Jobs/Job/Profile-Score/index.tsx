@@ -338,7 +338,7 @@ const Banners = () => {
         }}
       />
     );
-  if (status.description_changed)
+  if (status.description_changed && !status.scoring_criteria_changed)
     return (
       <BannerWarning
         textBanner={
