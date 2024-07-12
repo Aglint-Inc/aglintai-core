@@ -29,11 +29,10 @@ import ScoreWheel, {
 } from '@/src/components/Common/ScoreWheel';
 import UITextField from '@/src/components/Common/UITextField';
 import { useJob } from '@/src/context/JobContext';
-import { useJobDashboard } from '@/src/context/JobDashboard';
 import { palette } from '@/src/context/Theme/Theme';
 import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/jobs/types';
-import { capitalize } from '@/src/utils/text/textUtils';
+import { capitalize, capitalizeSentence } from '@/src/utils/text/textUtils';
 
 type Sections = 'experience' | 'education' | 'skills';
 
@@ -117,7 +116,7 @@ const ProfileScoreControls = () => {
     setWeight(obj);
   };
   const handleSubmit = async () => {
-    await handleJobAsyncUpdate(job.id, { parameter_weights: safeWeights });
+    await handleJobAsyncUpdate({ parameter_weights: safeWeights });
   };
   useEffect(() => {
     if (!initialRef.current) {
@@ -312,7 +311,6 @@ const ProfileScore = () => {
 const Banners = () => {
   const { push } = useRouter();
   const { job, handleRegenerateJd, status } = useJob();
-  const { handleWarningUpdate } = useJobDashboard();
   if (status.loading) return <></>;
   if (status.description_error)
     return (
@@ -340,10 +338,8 @@ const Banners = () => {
         }}
       />
     );
-  if (status.description_changed)
-    return job?.dashboard_warnings?.job_description ? (
-      <></>
-    ) : (
+  if (status.description_changed && !status.scoring_criteria_changed)
+    return (
       <BannerWarning
         textBanner={
           'Job description has changed. Regenerate for updated scoring criterias.'
@@ -355,7 +351,7 @@ const Banners = () => {
               size={2}
               highContrast='true'
               onClickButton={{
-                onClick: () => handleWarningUpdate({ job_description: true }),
+                onClick: () => {}, //handleWarningUpdate({ job_description: true }),
               }}
             />
             <ButtonSolid
@@ -375,7 +371,7 @@ const Banners = () => {
 
 const Section: FC<{ type: Sections }> = ({ type }) => {
   const {
-    job: { draft, id },
+    job: { draft },
     handleJobUpdate,
   } = useJob();
   const { jd_json } = draft;
@@ -387,7 +383,7 @@ const Section: FC<{ type: Sections }> = ({ type }) => {
         : 'skills';
   const handleDelete = (index: number) => {
     const newSection = jd_json[section].filter((e, i) => i !== index);
-    handleJobUpdate(id, {
+    handleJobUpdate({
       draft: { ...draft, jd_json: { ...jd_json, [section]: newSection } },
     });
   };
@@ -403,7 +399,7 @@ const Section: FC<{ type: Sections }> = ({ type }) => {
       },
       [] as unknown as (typeof item)[],
     );
-    handleJobUpdate(id, {
+    handleJobUpdate({
       draft: {
         ...draft,
         jd_json: { ...jd_json, [section]: newSection },
@@ -413,7 +409,7 @@ const Section: FC<{ type: Sections }> = ({ type }) => {
   const handleCreate = (
     item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number],
   ) => {
-    handleJobUpdate(id, {
+    handleJobUpdate({
       draft: {
         ...draft,
         jd_json: { ...jd_json, [section]: [...jd_json[section], item] },
@@ -671,7 +667,7 @@ const BreadCrumbs = () => {
     <>
       <Breadcrum
         isLink
-        textName={`${capitalize(job?.status ?? 'all')} jobs`}
+        textName={`${capitalizeSentence(job?.status ?? 'all')} jobs`}
         onClickLink={{
           onClick: () => {
             push(`/jobs?status=${job?.status ?? 'all'}`);
@@ -681,7 +677,7 @@ const BreadCrumbs = () => {
       />
       <Breadcrum
         isLink
-        textName={capitalize(job?.job_title ?? 'Job')}
+        textName={capitalizeSentence(job?.job_title ?? 'Job')}
         onClickLink={{
           onClick: () => {
             push(`/jobs/${job?.id}`);

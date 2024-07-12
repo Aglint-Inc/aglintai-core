@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(400).send('missing fields');
 
   try {
-    const google_cal = new GoogleCalender(null, attendee_interv_id);
+    const google_cal = new GoogleCalender(null, null, attendee_interv_id);
     await google_cal.authorizeUser();
     const event = await google_cal.getCalenderEventById(event_id);
     return res.status(200).json({ event_attendees_status: event.attendees });

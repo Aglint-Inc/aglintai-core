@@ -6,6 +6,7 @@ import Loader from '@/src/components/Common/Loader';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useWorkflows } from '@/src/context/Workflows';
 import ROUTES from '@/src/utils/routing/routes';
+import { capitalizeSentence } from '@/src/utils/text/textUtils';
 
 import {
   useWorkflowStore,
@@ -60,7 +61,7 @@ const Cards = (props: {
         <OptimisticWrapper key={id} loading={loading}>
           <WorkflowCard
             key={id}
-            textWorkflowName={title}
+            textWorkflowName={capitalizeSentence(title ?? '---')}
             textWorkflowTrigger={getTriggerOption(trigger, phase)}
             textJobs={`Used in ${jobCount} job${jobCount === 1 ? '' : 's'}`}
             onClickDelete={{

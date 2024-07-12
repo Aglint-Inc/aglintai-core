@@ -33,7 +33,8 @@ function ButtonGroupRight({
       {isViewDetailVisible &&
         (interview_meeting?.status === 'completed' ||
           interview_meeting?.status === 'confirmed' ||
-          interview_meeting?.status === 'waiting') && (
+          interview_meeting?.status === 'waiting' ||
+          interview_meeting?.status === 'cancelled') && (
           <>
             <ButtonSolid
               size={1}

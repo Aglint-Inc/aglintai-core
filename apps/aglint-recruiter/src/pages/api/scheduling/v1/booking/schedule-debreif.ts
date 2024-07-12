@@ -11,17 +11,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const body = req.body as APIScheduleDebreif;
     const fetched_details = await fetchCandDetailsForDebreifBooking(body);
     const cand_schedule = new CandidatesSchedulingV2(
-      {
-        candidate_tz: body.user_tz,
-        start_date_str: fetched_details.start_date_str,
-        end_date_str: fetched_details.end_date_str,
-        recruiter_id: fetched_details.company.id,
-        session_ids: body.selectedOption.sessions.map((s) => s.session_id),
-      },
       fetched_details.zod_options,
     );
-    await cand_schedule.fetchDetails();
-    await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
+    await cand_schedule.fetchDetails({
+      req_user_tz: body.user_tz,
+      start_date_str: fetched_details.start_date_str,
+      end_date_str: fetched_details.end_date_str,
+      company_id: fetched_details.company.id,
+      session_ids: body.selectedOption.sessions.map((s) => s.session_id),
+    });
     const verified_plans = cand_schedule.verifyIntSelectedSlots([
       body.selectedOption,
     ]);

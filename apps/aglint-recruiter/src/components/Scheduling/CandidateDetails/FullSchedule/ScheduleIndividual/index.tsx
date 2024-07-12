@@ -30,7 +30,7 @@ function ScheduleIndividualCard({
   isEditIconVisible = false,
   isViewDetailVisible = false,
   cancelReasons = [],
-  gridStyle = '1.1fr 1.7fr 0.6fr',
+  gridStyle = '1fr 1.8fr 0.8fr',
   isCollapseButtonsVisible = false,
   currentSession, // this is there only in candidate schedule page
 }: ScheduleIndividualCardType) {
@@ -69,14 +69,7 @@ function ScheduleIndividualCard({
         />
       }
       isSelectedVisible={selectedSessionIds.includes(interview_session.id)}
-      isDropdownIconVisible={
-        isCollapseNeeded &&
-        (!interview_meeting ||
-          interview_meeting?.status === 'confirmed' ||
-          interview_meeting?.status === 'completed' ||
-          interview_meeting?.status === 'waiting' ||
-          interview_meeting?.status === 'not_scheduled')
-      }
+      isDropdownIconVisible={isCollapseNeeded}
       isDateVisible={
         interview_meeting?.status === 'confirmed' ||
         interview_meeting?.status === 'completed'

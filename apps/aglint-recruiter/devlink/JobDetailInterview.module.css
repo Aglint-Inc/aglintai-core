@@ -19,21 +19,3 @@
   justify-content: flex-start;
   align-items: center;
 }
-
-.jdi-btn {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  grid-column-gap: var(--space-1);
-  grid-row-gap: var(--space-1);
-
-  transition: all 200ms ease;
-
-  color: var(--sky-11);
-
-  cursor: pointer;
-}
-
-.jdi-btn:hover {
-  color: var(--sky-12);
-}

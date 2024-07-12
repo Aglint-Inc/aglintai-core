@@ -7,7 +7,7 @@ import Loader from '@/src/components/Common/Loader';
 import { useJob } from '@/src/context/JobContext';
 import { useJobs } from '@/src/context/JobsContext';
 import ROUTES from '@/src/utils/routing/routes';
-import { capitalize } from '@/src/utils/text/textUtils';
+import { capitalizeSentence } from '@/src/utils/text/textUtils';
 
 import JobWorkflow from './list';
 
@@ -37,7 +37,7 @@ const BreadCrumbs = () => {
     <>
       <Breadcrum
         isLink
-        textName={`${capitalize(job?.status ?? 'all')} jobs`}
+        textName={`${capitalizeSentence(job?.status ?? 'all')} jobs`}
         onClickLink={{
           onClick: () => {
             push(ROUTES['/jobs']() + `?status=${job?.status ?? 'all'}`);
@@ -47,7 +47,7 @@ const BreadCrumbs = () => {
       />
       <Breadcrum
         isLink
-        textName={capitalize(job?.job_title ?? 'Job')}
+        textName={capitalizeSentence(job?.job_title ?? 'Job')}
         onClickLink={{
           onClick: () => {
             push(ROUTES['/jobs/[id]']({ id: job?.id }));

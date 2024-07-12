@@ -13,19 +13,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     });
     parsedData.options.return_empty_slots_err = true;
-    const cand_schedule = new CandidatesSchedulingV2(
-      {
-        recruiter_id: parsedData.recruiter_id,
-        session_ids: parsedData.session_ids,
-        candidate_tz: parsedData.candidate_tz,
-        start_date_str: parsedData.start_date_str,
-        end_date_str: parsedData.end_date_str,
-      },
-      parsedData.options,
-    );
+    const cand_schedule = new CandidatesSchedulingV2(parsedData.options);
 
-    await cand_schedule.fetchDetails();
-    await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
+    await cand_schedule.fetchDetails({
+      company_id: parsedData.recruiter_id,
+      req_user_tz: parsedData.candidate_tz,
+      session_ids: parsedData.session_ids,
+      start_date_str: parsedData.start_date_str,
+      end_date_str: parsedData.end_date_str,
+    });
     const slots = cand_schedule.findAvailabilitySlotsDateRange();
     return res.status(200).json(slots);
   } catch (error) {

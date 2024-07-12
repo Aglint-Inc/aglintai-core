@@ -34,12 +34,7 @@
   justify-content: center;
   align-items: center;
 
-  border-radius: var(--radius-full);
-}
-
-.user-status-wrap {
-  padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-1);
 }
 
 .user-detail-wrap {

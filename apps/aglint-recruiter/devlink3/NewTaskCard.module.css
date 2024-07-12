@@ -44,6 +44,10 @@
   justify-content: space-between;
 }
 
+.task_row_cell.is_status {
+  padding-left: 4px;
+}
+
 .div-block-1449 {
   position: absolute;
   left: 0%;

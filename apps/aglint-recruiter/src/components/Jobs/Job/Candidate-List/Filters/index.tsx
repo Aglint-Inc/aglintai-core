@@ -39,7 +39,6 @@ const Filters = () => {
       })),
     [resumeScoreTypes, capitalize, application_match],
   );
-
   const filterOptions = { badges, resume_score };
   const safeFilters: Parameters<typeof FilterHeader>[0]['filters'] = useMemo(
     () =>
@@ -50,6 +49,7 @@ const Filters = () => {
             name: key,
             value: value ?? [],
             type: 'filter',
+            iconname: '',
             icon: <></>,
             setValue: (newValue: typeof value) =>
               setFilters({ [key]: structuredClone(newValue) }),

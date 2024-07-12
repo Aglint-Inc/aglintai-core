@@ -102,10 +102,7 @@ const PERMISSIONS: Permissions = {
     ['scheduler_enabled'],
   '/api/scheduling/get_interview_training_progress': ['scheduler_enabled'],
   // request availability mail apis
-  '/api/emails/sendAvailabilityRequest_email_applicant': [
-    'scheduler_enabled',
-    'scheduler_create',
-  ],
+  '/api/emails/sendAvailabilityRequest_email_applicant': ['scheduler_enabled'],
   '/api/scheduling/v1/find-alternative-time-slots': ['scheduler_update'],
   '/api/scheduling/v1/update_meeting_interviewers': ['scheduler_update'],
   '/api/request_feedback': ['scheduler_update'],

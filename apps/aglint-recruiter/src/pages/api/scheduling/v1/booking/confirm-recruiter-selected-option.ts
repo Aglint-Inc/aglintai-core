@@ -12,19 +12,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const fetched_details = await fetchCandAvailForBooking(body);
 
     const cand_schedule = new CandidatesSchedulingV2(
-      {
-        candidate_tz: body.user_tz,
-        start_date_str: fetched_details.start_date_str,
-        end_date_str: fetched_details.end_date_str,
-        recruiter_id: fetched_details.recruiter_id,
-        session_ids: body.selectedOption.sessions.map((s) => s.session_id),
-      },
       fetched_details.zod_options,
     );
 
-    await cand_schedule.fetchDetails();
+    await cand_schedule.fetchDetails({
+      req_user_tz: body.user_tz,
+      start_date_str: fetched_details.start_date_str,
+      end_date_str: fetched_details.end_date_str,
+      company_id: fetched_details.recruiter_id,
+      session_ids: body.selectedOption.sessions.map((s) => s.session_id),
+    });
 
-    await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
     const verified_plans = cand_schedule.verifyIntSelectedSlots([
       body.selectedOption,
     ]);

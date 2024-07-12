@@ -1,18 +1,8 @@
-import {
-  Body,
-  Button,
-  Container,
-  Head,
-  Html,
-  Img,
-  Tailwind,
-} from '@react-email/components';
-import { Parser } from 'html-to-react';
 import * as React from 'react';
 import type { EmailTemplateAPi } from '@aglint/shared-types';
-import config from '../../tailwind.config';
-import { Footer } from '../components/template/Footer';
 import { companyLogoDummy } from '../utils/assets/common';
+import { ButtonSolid } from '../components/template/Button';
+import { EmailContainer } from '../components/template/Container';
 
 type EmailType = EmailTemplateAPi<'interviewEnd_email_interviewerForFeedback'>;
 
@@ -30,38 +20,12 @@ export const getSubject = (companyName: any) => `${companyName}`;
 const InterviewEndEmailInterviewerForFeedback = ({
   emailBody = dummy.emailBody,
   companyLogo = dummy.companyLogo,
-  interviewFeedbackLink = dummy.interviewFeedbackLink,
+  interviewFeedbackLink = '',
 }: EmailType['react_email_placeholders']) => {
-  const htmlParser = Parser();
   return (
-    <Html>
-      <Head />
-      <Tailwind config={config}>
-        {/* <Preview></Preview> */}
-        <Body className="bg-neutral-3 font-sans  p-[20px]">
-          <Container className="px-[3px] mx-auto">
-            <Container className="p-[50px] bg-white rounded-[8px]">
-              <Img
-                alt="Company logo"
-                className="w-[80px] mb-[10px]"
-                src={companyLogo}
-              />
-
-              <Container className="text-text-sm text-neutral-12">
-                {htmlParser.parse(emailBody)}
-              </Container>
-              <Button
-                className="px-3 py-2 bg-accent-9 text-white br rounded-[4px] text-text-xs"
-                href={interviewFeedbackLink}
-              >
-                Feedback
-              </Button>
-            </Container>
-            <Footer />
-          </Container>
-        </Body>
-      </Tailwind>
-    </Html>
+    <EmailContainer companyLogo={companyLogo} emailBody={emailBody}>
+      <ButtonSolid href={interviewFeedbackLink} buttonText="Feedback" />
+    </EmailContainer>
   );
 };
 export default InterviewEndEmailInterviewerForFeedback;

@@ -114,7 +114,7 @@
   border: 1px solid var(--sand-3);
   border-radius: var(--radius-3);
 
-  background-color: var(--sand-2);
+  background-color: var(--neutral-3);
 }
 
 .taskdrawer_controls {
@@ -186,6 +186,7 @@
 .task_activityy {
   display: flex;
   min-height: 200px;
+  margin-top: 10px;
   padding: var(--space-1);
   flex-direction: column;
   flex-wrap: nowrap;

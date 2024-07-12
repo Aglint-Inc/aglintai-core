@@ -1,4 +1,3 @@
-import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 
 import { Breadcrum } from '@/devlink2/Breadcrum';
@@ -7,6 +6,7 @@ import JobAgent from '@/src/components/Agent/JobAgent';
 import Seo from '@/src/components/Common/Seo';
 import { JobAssistantProvider } from '@/src/context/JobAssistant';
 import { JobProvider, useJob } from '@/src/context/JobContext';
+import { capitalizeSentence } from '@/src/utils/text/textUtils';
 
 const JobAgentPage = () => {
   return (
@@ -38,7 +38,7 @@ const BreadCrumbs = () => {
     <>
       <Breadcrum
         isLink
-        textName={`${capitalize(job?.status ?? 'all')} jobs`}
+        textName={`${capitalizeSentence(job?.status ?? 'all')} jobs`}
         onClickLink={{
           onClick: () => {
             router.push(`/jobs?status=${job?.status ?? 'all'}`);
@@ -48,7 +48,7 @@ const BreadCrumbs = () => {
       />
       <Breadcrum
         isLink
-        textName={capitalize(job?.job_title ?? 'Job')}
+        textName={capitalizeSentence(job?.job_title ?? 'Job')}
         onClickLink={{
           onClick: () => {
             router.push(`/jobs/${job?.id}`);

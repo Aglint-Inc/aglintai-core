@@ -1,7 +1,7 @@
 import { Database, Tables } from "./schema.types";
 import { Type } from "./utils.types";
 
-export type CustomMembersMeta = {
+export type   CustomMembersMeta = {
   [id in
     | keyof Pick<
         Tables<"public_jobs">,
@@ -40,13 +40,12 @@ export type CustomEmailTypes = Extract<
 export type CustomJobParamters = Type<
   Pick<
     Database["public"]["Tables"]["public_jobs"]["Row"],
-    "parameter_weights" | "jd_json" | "draft" | "dashboard_warnings"
+    "parameter_weights" | "jd_json" | "draft"
   >,
   {
     parameter_weights: CustomParameterWeights;
     jd_json: CustomJdJson;
     draft: CustomDraft;
-    dashboard_warnings: CustomDashboardWarnings;
   }
 >;
 
