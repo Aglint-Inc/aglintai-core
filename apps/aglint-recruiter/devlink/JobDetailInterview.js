@@ -1,8 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { Text } from "./Text";
-import { GlobalIcon } from "./GlobalIcon";
+import { ButtonSoft } from "./ButtonSoft";
 import * as _utils from "./utils";
 import _styles from "./JobDetailInterview.module.css";
 
@@ -18,14 +17,14 @@ export function JobDetailInterview({
         {slotNewInterviewPlanCard}
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "jdi-btn-wrap")} tag="div">
-        <_Builtin.Block
-          className={_utils.cx(_styles, "jdi-btn")}
-          tag="div"
-          {...onClickViewScheduler}
-        >
-          <Text content={textButton} />
-          <GlobalIcon iconName="" size="5" />
-        </_Builtin.Block>
+        <ButtonSoft
+          onClickButton={onClickViewScheduler}
+          size="2"
+          iconSize="3"
+          textButton="View In Scheduler"
+          isRightIcon={true}
+          iconName="north_east"
+        />
       </_Builtin.Block>
     </_Component>
   );
