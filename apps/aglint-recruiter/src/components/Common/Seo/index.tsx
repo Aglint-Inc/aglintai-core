@@ -13,9 +13,20 @@ const defaultMeta = {
     'https://ftyioiysswsjxamofooi.supabase.co/storage/v1/object/public/images/aglinthq.jpg',
   type: 'website',
   robots: 'follow, index',
+  jsonLd: null,
 };
 
-export default function Seo(props) {
+export default function Seo(props: {
+  title: string;
+  site_name?: string;
+  description?: string;
+  url?: string;
+  icon?: string;
+  image?: string;
+  type?: string;
+  robots?: string;
+  jsonLd?: any;
+}) {
   const router = useRouter();
   const meta = {
     ...defaultMeta,

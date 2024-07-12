@@ -25,12 +25,6 @@ export function DatePickerBody({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "slot_global_info")}
-            tag="div"
-          >
-            {slotGlobalnfo ?? <SlotComp componentNeme="Global info" />}
-          </_Builtin.Block>
-          <_Builtin.Block
             className={_utils.cx(_styles, "selcted_schedule_info")}
             tag="div"
           >
@@ -57,6 +51,12 @@ export function DatePickerBody({
                 </>
               )}
             </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "slot_global_info")}
+            tag="div"
+          >
+            {slotGlobalnfo ?? <SlotComp componentNeme="Global info" />}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "flex-v4-copy")}

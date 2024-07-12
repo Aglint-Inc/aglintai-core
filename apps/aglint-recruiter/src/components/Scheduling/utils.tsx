@@ -63,3 +63,16 @@ export const formatTimeWithTimeZone = ({
         .format('hh:mm A')} ${timeZone ? timezone : ''}`
     : '--';
 };
+
+//accept dayjs.tz only
+export const getShortTimeZone = (timeZone: string) => {
+  const tZTime = dayjsLocal()
+    .tz(timeZone || userTzDayjs.tz.guess())
+    .format('zzz');
+  const timezone = tZTime
+    .split(' ')
+    .map((ele) => ele[0])
+    .join('');
+
+  return timezone;
+};

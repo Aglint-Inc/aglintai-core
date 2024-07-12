@@ -36,8 +36,10 @@
 .slot_newtab_pill {
   display: flex;
   height: 36px;
+  margin-top: 10px;
   justify-content: flex-start;
   align-items: center;
+
   border-bottom: 1px solid var(--neutral-6);
 }
 
@@ -50,7 +52,7 @@
 
   background-color: white;
 
-  height: calc(100vh - 157px);
+  height: calc(100vh - 167px);
 }
 
 .candidate_details {

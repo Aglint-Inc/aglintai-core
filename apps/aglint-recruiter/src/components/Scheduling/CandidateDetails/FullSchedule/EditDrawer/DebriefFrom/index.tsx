@@ -6,34 +6,29 @@ import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
 import { SidedrawerBodyDebrief } from '@/devlink2/SidedrawerBodyDebrief';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
-import { DropDown, ScheduleTypeField } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
+import {
+  DropDown,
+  ScheduleTypeField,
+} from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { sessionDurations } from '@/src/utils/scheduling/const';
 
-import {
-  setMembers,
-  useSchedulingApplicationStore,
-} from '../../../store';
-import { setEditSession, useEditSessionDrawerStore } from '../store';
+import { setMembers, useSchedulingApplicationStore } from '../../../store';
+import { setDebriefMembers, setEditSession, useEditSessionDrawerStore } from '../store';
 import { Interviewer } from '../types';
 
-function DebriedForm({
-  debriefMembers,
-  optionMembers,
-  setDebriefMembers,
-}: {
-  debriefMembers: Interviewer[];
-  optionMembers: Interviewer[];
-  setDebriefMembers: React.Dispatch<React.SetStateAction<Interviewer[]>>;
-}) {
+function DebriedForm({ optionMembers }: { optionMembers: Interviewer[] }) {
   const { recruiter } = useAuthDetails();
-  const editSession = useEditSessionDrawerStore(
-    (state) => state.editSession,
-  );
   const members = useSchedulingApplicationStore((state) => state.members);
+  const { editSession, debriefMembers } = useEditSessionDrawerStore(
+    (state) => ({
+      editSession: state.editSession,
+      debriefMembers: state.debriefMembers,
+    }),
+  );
 
   const onChange = (e) => {
     const selectedUser = members?.find(

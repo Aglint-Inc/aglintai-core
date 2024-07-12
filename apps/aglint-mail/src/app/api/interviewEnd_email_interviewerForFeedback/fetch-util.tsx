@@ -57,7 +57,6 @@ export async function fetchUtil(
       ),
       interviewerFirstName: interviewer.first_name,
       interviewerLastName: interviewer.last_name,
-      interviewFeedbackLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=feedback">here</a>`,
     };
 
   const filled_comp_template = fillCompEmailTemplate(
@@ -65,12 +64,16 @@ export async function fetchUtil(
     comp_email_temp,
   );
 
+  const feedLink = recruiter_user.interview_meeting.id
+    ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=feedback`
+    : '';
+
   const react_email_placeholders: EmailTemplateAPi<'interviewEnd_email_interviewerForFeedback'>['react_email_placeholders'] =
     {
       companyLogo: candidate.recruiter.logo,
       emailBody: filled_comp_template.body,
       subject: filled_comp_template.subject,
-      interviewFeedbackLink: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=feedback`,
+      interviewFeedbackLink: feedLink,
     };
 
   return {

@@ -90,8 +90,7 @@ export async function fetchUtil(
       ),
       interviewerFirstName: interviewer.first_name,
       interviewerLastName: interviewer.last_name,
-      meetingDetailsLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=candidate_details">here</a>`,
-      candidateScheduleLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}">here</a>`,
+      meetingDetailsLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=candidate_details" target="_blank">here</a>`,
     };
 
   const filled_comp_template = fillCompEmailTemplate(
@@ -105,8 +104,6 @@ export async function fetchUtil(
       emailBody: filled_comp_template.body,
       subject: filled_comp_template.subject,
       meetingDetail: meeting_detail,
-      candidateScheduleLink: '',
-      meetingDetailsLink: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=candidate_details`,
     };
 
   return {

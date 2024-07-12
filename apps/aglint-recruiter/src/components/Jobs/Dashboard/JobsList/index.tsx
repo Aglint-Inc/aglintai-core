@@ -7,7 +7,9 @@ import React from 'react';
 import { AtsBadge } from '@/devlink/AtsBadge';
 import { JobEmptyState } from '@/devlink/JobEmptyState';
 import { JobsListingCard } from '@/devlink/JobsListingCard';
+import { useApplicationsParams } from '@/src/context/ApplicationsContext/hooks';
 import { Job } from '@/src/queries/jobs/types';
+import { Application } from '@/src/types/applications.types';
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeSentence } from '@/src/utils/text/textUtils';
@@ -28,7 +30,9 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
   const isScreeningEnabled = useFeatureFlagEnabled('isPhoneScreeningEnabled');
   const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
 
+  const { getParams } = useApplicationsParams();
   const router = useRouter();
+  const { push } = useRouter();
   if (jobs?.length == 0) {
     return (
       <YTransform uniqueKey={router.query.status}>
@@ -36,6 +40,10 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
       </YTransform>
     );
   }
+
+  const handlClick = (id: string, section: Application['status']) => {
+    push(`/jobs/${id}/candidate-list?${getParams({ section })}`);
+  };
   return (
     <>
       {jobs?.map((job, ind) => {
@@ -50,6 +58,22 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
           <>
             <ScrollList key={ind} uniqueKey={job.id}>
               <JobsListingCard
+                onClickNew={{ onClick: () => handlClick(job.id, 'new') }}
+                onClickAssessment={{
+                  onClick: () => handlClick(job.id, 'assessment'),
+                }}
+                onClickDisqualified={{
+                  onClick: () => handlClick(job.id, 'disqualified'),
+                }}
+                onClickInterview={{
+                  onClick: () => handlClick(job.id, 'interview'),
+                }}
+                onClickQualified={{
+                  onClick: () => handlClick(job.id, 'qualified'),
+                }}
+                onClickScreening={{
+                  onClick: () => handlClick(job.id, 'screening'),
+                }}
                 isAssessmentPillVisible={isAssessmentEnabled && job.assessment}
                 isScreeningPillsVisible={
                   isScreeningEnabled && job.phone_screen_enabled

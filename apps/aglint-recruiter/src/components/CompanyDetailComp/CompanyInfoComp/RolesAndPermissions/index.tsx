@@ -1,9 +1,11 @@
 /* eslint-disable security/detect-object-injection */
+import { RecruiterUserType } from '@aglint/shared-types';
 import {
   Avatar,
   List,
   ListItemButton,
   Popover,
+  Stack,
   Typography,
 } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -11,22 +13,25 @@ import React, { useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { Permissions } from '@/devlink/Permissions';
 import { RolesAndPermissions } from '@/devlink/RolesAndPermissions';
 import { RolesAndPermissionsDetail } from '@/devlink/RolesAndPermissionsDetail';
 import { RolesRow } from '@/devlink/RolesRow';
 import { RolesRowSkeleton } from '@/devlink/RolesRowSkeleton';
-import { UserWithRole } from '@/devlink/UserWithRole';
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { Skeleton } from '@/devlink2/Skeleton';
 import { ToggleWithText } from '@/devlink3/ToggleWithText';
 import axios from '@/src/client/axios';
+import Seo from '@/src/components/Common/Seo';
 import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { type GetRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
 import { type SetRoleAndPermissionAPI } from '@/src/pages/api/setRoleAndPermission/type';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
+
+import RoleEditMember from './RoleDetails/RoleEditMember';
+import { RoleUserWidget } from './RoleDetails/RoleUserWidget';
 
 function RolesAndPermissionsComponent() {
   const {
@@ -35,35 +40,46 @@ function RolesAndPermissionsComponent() {
     handelUpdateRole,
     role,
     roleDetails,
-    setRole,
+    setSelectRole,
   } = useRoleAndPermissions();
 
-  return role ? (
-    // roleDetailsComponent
-    <RoleDetails
-      role={role}
-      roleDetails={roleDetails}
-      back={() => setRole(null)}
-      AllRoles={Object.entries(data.rolesAndPermissions).map(
-        // eslint-disable-next-line no-unused-vars
-        ([_, details]) => ({
-          role: details.name,
-          switchRole: () => setRole(details),
-        }),
-      )}
-      // updateRole={setRole}
-      updateRoles={handelUpdateRole}
-    />
-  ) : (
-    <RolesAndPermissions
-      slotRolesRow={
-        <RoleTable
-          roles={data?.rolesAndPermissions || {}}
-          loading={loading}
-          setRole={setRole}
+  return (
+    <>
+      <Seo title='Roles & Permissions' />
+      {role ? ( // roleDetailsComponent
+        <RoleDetails
+          role={role}
+          roleDetails={roleDetails}
+          back={() => setSelectRole(null)}
+          AllRoles={Object.entries(data.rolesAndPermissions).map(
+            // eslint-disable-next-line no-unused-vars
+            ([key, details]) => ({
+              role: details.name,
+              id: details.id,
+              count: {
+                users: details?.assignedTo.length || 0,
+                permissions:
+                  details?.permissions.filter((item) => item.isActive).length ||
+                  0,
+              },
+              switchRole: () => setSelectRole(key),
+            }),
+          )}
+          // updateRole={setRole}
+          updateRoles={handelUpdateRole}
         />
-      }
-    />
+      ) : (
+        <RolesAndPermissions
+          slotRolesRow={
+            <RoleTable
+              roles={data?.rolesAndPermissions || {}}
+              loading={loading}
+              setRole={setSelectRole}
+            />
+          }
+        />
+      )}
+    </>
   );
 }
 
@@ -79,11 +95,7 @@ const RoleTable = ({
   >['rolesAndPermissions'];
   setRole: (
     // eslint-disable-next-line no-unused-vars
-    x: Awaited<
-      ReturnType<typeof getRoleAndPermissionsWithUserCount>
-    >['rolesAndPermissions'][string] & {
-      name: string;
-    },
+    x: string,
   ) => void;
 }) => {
   const { members } = useAuthDetails();
@@ -93,10 +105,10 @@ const RoleTable = ({
         <RolesRowSkeleton key={'y'} slotSkeleton={<Skeleton />} />,
         <RolesRowSkeleton key={'z'} slotSkeleton={<Skeleton />} />,
       ]
-    : Object.keys(roles || {})
-        .sort((a, b) => rolesOrder[roles[a].name] - rolesOrder[roles[b].name])
-        .map((item) => {
-          const role = roles[item];
+    : Object.entries(roles || {})
+        .sort((a, b) => rolesOrder[a[1].name] - rolesOrder[b[1].name])
+        .map(([key, details]) => {
+          const role = details;
           const count = role.assignedTo.length;
           return (
             <RolesRow
@@ -105,7 +117,7 @@ const RoleTable = ({
               textDescription={role.description}
               onClickRow={{
                 onClick: () => {
-                  setRole({ ...role });
+                  setRole(key);
                 },
               }}
               slotAvatars={
@@ -141,14 +153,15 @@ const RoleTable = ({
 const useRoleAndPermissions = () => {
   const { recruiter } = useAuthDetails();
   const queryClient = useQueryClient();
+  const query = useQuery({
+    queryKey: ['app', recruiter?.id, 'role-and-permissions'],
+    queryFn: getRoleAndPermissionsWithUserCount,
+    enabled: Boolean(recruiter?.id),
+  });
 
-  const [role, setRole] = useState<
-    Awaited<
-      ReturnType<typeof getRoleAndPermissionsWithUserCount>
-    >['rolesAndPermissions'][string] & {
-      name: string;
-    }
-  >(null);
+  const [selectRole, setSelectRole] = useState<string>(null);
+
+  const role = query.data?.rolesAndPermissions?.[selectRole] || null;
   const roleDetails = app_modules.reduce(
     (acc, curr) => {
       if (
@@ -204,13 +217,6 @@ const useRoleAndPermissions = () => {
                 return item;
               },
             );
-
-          setRole((pre) => {
-            return {
-              ...pre,
-              permissions: tempData.rolesAndPermissions[role_id].permissions,
-            };
-          });
           return tempData;
         },
       );
@@ -238,12 +244,6 @@ const useRoleAndPermissions = () => {
               return item;
             });
           toast.success('Role updated successfully');
-          setRole((pre) => {
-            return {
-              ...pre,
-              permissions: tempData.rolesAndPermissions[role_id].permissions,
-            };
-          });
           setLastState(null);
           return tempData;
         },
@@ -262,28 +262,20 @@ const useRoleAndPermissions = () => {
             const tempData = structuredClone(prevData);
             tempData.rolesAndPermissions[role_id].permissions[lastState.index] =
               lastState.permission;
-            setRole((pre) => {
-              return {
-                ...pre,
-                permissions: tempData.rolesAndPermissions[role_id].permissions,
-              };
-            });
             setLastState(null);
             return tempData;
           },
         );
     },
   });
+
   return {
     role,
     roleDetails,
-    setRole,
+    selectRole,
+    setSelectRole,
     handelUpdateRole,
-    ...useQuery({
-      queryKey: ['app', recruiter?.id, 'role-and-permissions'],
-      queryFn: getRoleAndPermissionsWithUserCount,
-      enabled: Boolean(recruiter?.id),
-    }),
+    ...query,
   };
   // const updateRole;
 };
@@ -317,6 +309,8 @@ function RoleDetails({
   };
   AllRoles: {
     role: string;
+    id: string;
+    count: { users: number; permissions: number };
     switchRole: () => void;
   }[];
   updateRoles: (
@@ -326,109 +320,113 @@ function RoleDetails({
     >[0],
   ) => void;
 }) {
-  const { members } = useAuthDetails();
+  const [editUser, setEditUser] = useState<{
+    user: RecruiterUserType;
+    role: string;
+  }>(null);
+  const { recruiterUser, members, handelMemberUpdate } = useAuthDetails();
+  const { refetch } = useRoleAndPermissions();
   return (
-    <RolesAndPermissionsDetail
-      textRoleName={
-        <RoleDropDown options={AllRoles} selectedItem={role.name} />
-      }
-      // textRoleName={capitalizeFirstLetter(role.name + ' Role')}
-      textTotalEnabledPermissions={`${role.permissions.filter((item) => item.isActive).length} out of ${role.permissions.length} permissions enabled.`}
-      slotBackButton={
-        <ButtonGhost
-          size={2}
-          color={'neutral'}
-          isLeftIcon={true}
-          iconName={'arrow_back_ios'}
-          textButton={'Back'}
-          iconSize={3}
-          onClickButton={{ onClick: back }}
-        />
-      }
-      slotPermissions={Object.entries(roleDetails || {}).map(
-        ([module, { description, permissions }]) => {
-          return (
-            <Permissions
-              key={module}
-              textDescription={description}
-              textTitle={capitalizeFirstLetter(module)}
-              slotToggleWithText={permissions?.map((permission) => {
-                if (!permission) return null;
+    <>
+      <RolesAndPermissionsDetail
+        textRoleName={
+          <RoleDropDown options={AllRoles} selectedItem={role.name} />
+        }
+        // textRoleName={capitalizeFirstLetter(role.name + ' Role')}
+        textTotalEnabledPermissions={`${role.permissions.filter((item) => item.isActive).length} out of ${role.permissions.length} permissions enabled.`}
+        slotBackButton={
+          <ButtonGhost
+            size={2}
+            color={'neutral'}
+            isLeftIcon={true}
+            iconName={'arrow_back_ios'}
+            textButton={'Back'}
+            iconSize={3}
+            onClickButton={{ onClick: back }}
+          />
+        }
+        slotPermissions={
+          <>
+            {role.name === 'admin' && (
+              <GlobalBannerInline
+                color={'warning'}
+                textContent={'Admin role can not be Edited.'}
+                slotButton={<></>}
+              />
+            )}
+            {Object.entries(roleDetails || {}).map(
+              ([module, { description, permissions }]) => {
                 return (
-                  <ToggleWithText
-                    isSubText={!!permission.description}
-                    textSub={permission.description}
-                    key={permission.id}
-                    textToggleLight={permission.title}
-                    slotToggle={
-                      <AntSwitch
-                        checked={permission.isActive}
-                        disabled={!role.isEditable}
-                        onClick={() => {
-                          const data = {
-                            add: null,
-                            delete: null,
-                            role_id: role.id,
-                          };
+                  <Permissions
+                    key={module}
+                    textDescription={description}
+                    textTitle={capitalizeFirstLetter(module)}
+                    slotToggleWithText={permissions?.map((permission) => {
+                      if (!permission) return null;
+                      return (
+                        <ToggleWithText
+                          isSubText={!!permission.description}
+                          textSub={permission.description}
+                          key={permission.id}
+                          textToggleLight={permission.title}
+                          slotToggle={
+                            <AntSwitch
+                              checked={permission.isActive}
+                              disabled={!role.isEditable}
+                              onClick={() => {
+                                const data = {
+                                  add: null,
+                                  delete: null,
+                                  role_id: role.id,
+                                };
 
-                          if (permission.isActive) {
-                            data.delete = permission.relation_id;
-                          } else {
-                            data.add = permission.id;
+                                if (permission.isActive) {
+                                  data.delete = permission.relation_id;
+                                } else {
+                                  data.add = permission.id;
+                                }
+                                updateRoles(data);
+                              }}
+                            />
                           }
-                          updateRoles(data);
-                        }}
-                      />
-                    }
+                        />
+                      );
+                    })}
                   />
                 );
-              })}
-            />
-          );
-        },
-      )}
-      textUserCount={`Users (${role.assignedTo.length || 0})`}
-      slotUserWithRole={
-        role.assignedTo.length ? (
-          role.assignedTo.map((user_id) => {
-            const user = members.find((member) => member.user_id === user_id);
-            if (!user) return;
-            return (
-              <UserWithRole
-                key={user_id}
-                textName={`${user.first_name || ''} ${user.last_name || ''}`.trim()}
-                textRole={user.position}
-                slotBadge={
-                  <GlobalBadge
-                    color={user.is_suspended ? 'error' : 'success'}
-                    textBadge={user.is_suspended ? 'Suspended' : 'Active'}
-                  />
-                }
-                slotAvatar={
-                  <Avatar
-                    key={user_id}
-                    src={user.profile_image}
-                    variant='rounded'
-                    alt={user.first_name}
-                    sx={{ height: '100%', width: '100%' }}
-                  />
-                }
-              />
-            );
-          })
-        ) : (
-          <GlobalEmptyState
-            styleEmpty={{
-              style: {
-                backgroundColor: 'var(--neutral-3)',
               },
-            }}
-            iconName={'group'}
-            textDesc={'No Users Assigned'}
+            )}
+          </>
+        }
+        textUserCount={`Users (${role.assignedTo.length || 0})`}
+        slotUserWithRole={
+          <RoleUserWidget
+            role={role}
+            members={members}
+            setEditUser={(x) => setEditUser({ user: x, role: role.id })}
           />
-        )
-      }
-    />
+        }
+      />
+      {editUser && (
+        <RoleEditMember
+          close={() => setEditUser(null)}
+          user={editUser.user}
+          defaultRole={editUser.role}
+          options={AllRoles.map((role) => ({ role: role.role, id: role.id }))}
+          errorMessage={
+            recruiterUser.user_id === editUser.user.user_id &&
+            'You can not edit your own role'
+          }
+          handelMemberUpdate={async (x) => {
+            const res = await handelMemberUpdate(x);
+            toast.success('Role updated successfully');
+            setEditUser(null);
+            refetch();
+            return res;
+          }}
+        />
+      )}
+    </>
   );
 }
 
@@ -456,42 +454,35 @@ const app_modules: {
   permissions: string[];
 }[] = [
   {
-    name: 'enable disable Apps',
+    name: 'Enable or Disable Apps',
     dependency: null,
     description:
-      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
+      'Manage the apps available for the [Role Name] in your Aglint account. By enabling an app, the role will have access to it. You can configure permissions for each app in the sections below.',
     permissions: [
-      'jobs_enabled',
-      'assessment_enabled',
-      'phone_screening_enabled',
-      'integrations_enabled',
-      'sourcing_enabled',
-      'workflow_enabled',
-      'company_setting_enabled',
-      'team_enabled',
-      'scheduler_enabled',
       'tasks_enabled',
-      'settings_scheduler_enable',
+      'jobs_enabled',
+      'scheduler_enabled',
+      'workflow_enabled',
+      'integrations_enabled',
+      'company_setting_enabled',
+      // 'assessment_enabled',
+      // 'phone_screening_enabled',
+      // 'sourcing_enabled',
+      // 'settings_scheduler_enable',
     ],
   },
   {
-    name: 'candidate permissions',
-    dependency: null,
+    name: 'Tasks Application Permissions',
+    dependency: 'tasks_enabled',
     description:
-      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
-    permissions: [
-      'candidates_add',
-      'candidates_read',
-      'candidates_update',
-      'candidates_delete',
-      'candidates_moveStage',
-    ],
+      'Here are the permissions enabled for the [Role] role to manage the Tasks Application:',
+    permissions: ['tasks_read', 'tasks_create', 'tasks_update', 'tasks_delete'],
   },
   {
-    name: 'job permissions',
+    name: 'Jobs Application Permissions',
     dependency: 'jobs_enabled',
     description:
-      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Jobs module:',
+      'Here are the permissions enabled for the [Role] role to manage the Jobs Application:',
     permissions: [
       'jobs_read',
       'jobs_create',
@@ -501,12 +492,39 @@ const app_modules: {
       'jobs_archive',
       'jobs_restore',
       'jobs_delete',
+      'candidates_read',
+      'candidates_add',
+      'candidates_delete',
       'profileScore_view',
-      'profileScore_update',
+      'candidates_moveStage',
+      // 'candidates_update',
       'jobs_assignHiringManager',
       'jobs_assignRecruiter',
       'jobs_assignCoordinator',
       'jobs_assignSourcer',
+      // 'profileScore_update',
+    ],
+  },
+  {
+    name: 'Scheduling  Application Permissions',
+    dependency: 'scheduler_enabled',
+    description:
+      'Here are the permissions enabled for the [Role] role to manage the Scheduling Application:',
+    permissions: [
+      'scheduler_read',
+      'scheduler_create',
+      'scheduler_update',
+      'scheduler_delete',
+      'scheduler_request_availability',
+      'scheduler_send_scheduling',
+      'interviews_read',
+      'interviews_update',
+      'interviews_delete',
+      'scheduler_interview_types_create',
+      'scheduler_interview_types_read',
+      'scheduler_interview_types_update',
+      'scheduler_interviewer_edit',
+      'settings_scheduler_update',
     ],
   },
   // {
@@ -530,81 +548,54 @@ const app_modules: {
   //     'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
   //   permissions: ['reports_view', 'reports_generate', 'reports_export'],
   // },
+
   {
-    name: 'settings permissions',
-    dependency: 'company_setting_enabled',
-    description:
-      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
-    permissions: ['settings_view', 'settings_update'],
-  },
-  {
-    name: 'task permissions',
-    dependency: 'tasks_enabled',
-    description:
-      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
-    permissions: ['tasks_create', 'tasks_read', 'tasks_update', 'tasks_delete'],
-  },
-  {
-    name: 'Workflow permissions',
+    name: 'Workflows Application Permissions',
     dependency: 'workflow_enabled',
     description:
-      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
+      'Here are the permissions enabled for the [Role] role to manage the Workflows Application:',
     permissions: [
-      'workflow_create',
       'workflow_read',
+      'workflow_create',
       'workflow_update',
       'workflow_delete',
     ],
   },
+
+  // {
+  //   name: 'User permissions',
+  //   dependency: null,
+  //   description:
+  //     'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
+  //   permissions: [
+  //     'team_read',
+  //     'team_create',
+  //     'team_update',
+  //     'team_delete',
+  //     'settings_team_enable',
+  //     'settings_team_update',
+  //   ],
+  // },
   {
-    name: 'scheduler permissions',
-    dependency: 'scheduler_enabled',
+    name: 'Company Settings Permissions',
+    dependency: 'company_setting_enabled',
     description:
-      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
+      'Here are the permissions enabled for the [Role] role to manage the Company Settings',
     permissions: [
-      'scheduler_read',
-      'scheduler_create',
-      'scheduler_update',
-      'scheduler_delete',
-      'scheduler_request_availability',
-      'scheduler_send_scheduling',
-      'interviews_read',
-      'interviews_update',
-      'interviews_delete',
-      'scheduler_interview_types_create',
-      'scheduler_interview_types_read',
-      'scheduler_interview_types_update',
-      'scheduler_interviewer_edit',
-      'settings_scheduler_update',
+      'settings_view',
+      'settings_update',
+      'settings_company_enable',
+      'settings_company_update',
+      'settings_roles_enable',
+      'settings_roles_update',
+      'team_enabled',
+      'team_read',
+      'team_create',
+      'team_update',
+      'team_delete',
+      'settings_team_enable',
+      'settings_team_update',
     ],
-  },
-  {
-    name: 'User Manage permissions',
-    dependency: null,
-    description:
-      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
-    permissions: ['team_read', 'team_create', 'team_update', 'team_delete'],
-  },
-  {
-    name: 'Company permissions',
-    dependency: 'company_setting_enabled',
-    description:
-      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
-    permissions: ['settings_company_enable', 'settings_company_update'],
-  },
-  {
-    name: 'team permissions',
-    dependency: 'team_enabled',
-    description:
-      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
-    permissions: ['settings_team_enable', 'settings_team_update'],
-  },
-  {
-    name: 'Roles permissions',
-    dependency: 'company_setting_enabled',
-    description:
-      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
-    permissions: ['settings_roles_enable', 'settings_roles_update'],
   },
 ];
 
@@ -614,13 +605,12 @@ const RoleDropDown = ({
 }: {
   options: {
     role: string;
+    count: { users: number; permissions: number };
     switchRole: () => void;
   }[];
   selectedItem: string;
 }) => {
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null,
-  );
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const open = Boolean(anchorEl);
   const id = open ? 'sort-Options' : undefined;
@@ -664,9 +654,14 @@ const RoleDropDown = ({
     </>
   );
 };
+
 function newFunction(
   itemList: {
     role: string;
+    count: {
+      users: number;
+      permissions: number;
+    };
     switchRole: () => void;
   }[],
   handleClose: () => void,
@@ -682,15 +677,23 @@ function newFunction(
             handleClose();
           }}
         >
-          <Typography
-            sx={{
-              fontSize: '14px',
-              fontWeight: 600,
-              cursor: 'pointer',
-            }}
-          >
-            {capitalizeFirstLetter(item.role)}
-          </Typography>
+          <Stack>
+            <Typography
+              sx={{
+                fontSize: '14px',
+                fontWeight: 600,
+              }}
+            >
+              {`${capitalizeFirstLetter(item.role)} (${item.count.permissions})`}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: '14px',
+              }}
+            >
+              {`Assigned to ${item.count.users} Users`}
+            </Typography>
+          </Stack>
         </ListItemButton>
       );
     });

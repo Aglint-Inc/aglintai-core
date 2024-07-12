@@ -43,11 +43,25 @@ export const useEditSession = () => {
     trainingInterviewers: state.trainingInterviewers,
     debriefMembers: state.debriefMembers,
   }));
+
+  const isDebrief = allSessions
+    .filter(
+      (ses) => editSession?.interview_session.id === ses.interview_session.id,
+    )
+    .some((ses) => ses.interview_session.session_type === 'debrief');
+
   const handleSave = async () => {
     try {
-      if (selectedInterviewers.length === 0) {
-        toast.warning('Please select at least one interviewer.');
-        return;
+      if (!isDebrief) {
+        if (selectedInterviewers.length === 0) {
+          toast.warning('Please select at least one interviewer.');
+          return;
+        }
+      } else {
+        if (debriefMembers.length === 0) {
+          toast.warning('Please select at least one member.');
+          return;
+        }
       }
       setSaving(true);
       if (!selectedSchedule && !saving) {

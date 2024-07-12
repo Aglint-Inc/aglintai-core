@@ -22,6 +22,7 @@ import {
   setTrainingStatus,
 } from '../../../store';
 import { ModuleType } from '../../../types';
+import { getPauseMemberText } from '../utils';
 
 function SlotQualifiedMembers({
   editModule,
@@ -111,13 +112,7 @@ function SlotQualifiedMembers({
             isMoveToQualifierVisible={false}
             isTrainingProgessVisible={true}
             isTrainingCompletedVisible={false}
-            textPauseResumeDate={
-              !user.pause_json?.isManual
-                ? user.pause_json?.end_date
-                  ? `Until ${dayjs(user.pause_json.end_date).format('DD MMMM YYYY')}`
-                  : '--'
-                : 'Indefinately'
-            }
+            textPauseResumeDate={getPauseMemberText(user.pause_json)}
             onClickRemoveModule={{
               onClick: () => {
                 setSelUser(user);

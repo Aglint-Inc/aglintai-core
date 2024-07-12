@@ -16,6 +16,7 @@ import type { CustomRecruiter } from "./recruiter.types";
 import type { CustomRecruiterUser } from "./recruiter_user.types";
 import type { CustomWorkflowAction } from "./workflow_action.types";
 import { CustomPermissions } from "./permissions";
+import { CustomModuleRelation } from "./interview_module_relation";
 
 type DatabaseTables = Database["public"]["Tables"];
 type DatabaseTableInsert<T extends keyof DatabaseTables> =
@@ -73,5 +74,6 @@ export type Tables = Type<
     interview_filter_json: CustomInterviewFilterJson;
     company_email_template: CustomCompanyEmailTemplate;
     permissions: CustomPermissions;
+    interview_module_relation: CustomModuleRelation;
   }
 >;

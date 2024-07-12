@@ -153,8 +153,8 @@ export default function EmailTemplateEditForm({
           <TipTapAIEditor
             enablAI={false}
             placeholder={''}
-            maxHeight='250px'
             height='360px'
+            minHeight='360px'
             editor_type='email'
             template_type={selectedTemplate.type}
             handleChange={emailBodyChange}

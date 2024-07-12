@@ -40,7 +40,9 @@ export async function dbUtil(
     public_jobs: { company, job_title },
   } = avail_req_data.applications;
 
-  const candidate_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.avail_req_id}`;
+  const candidate_link = req_body.avail_req_id
+    ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.avail_req_id}`
+    : '';
   const comp_email_temp = await fetchCompEmailTemp(
     recruiter_id,
     'sendAvailReqReminder_email_applicant',
@@ -50,7 +52,6 @@ export async function dbUtil(
       candidateFirstName: first_name,
       companyName: company,
       jobRole: job_title,
-      availabilityReqLink: `<a href="${candidate_link}">here</a>`,
       organizerName: getFullName(
         meeting_organizer.first_name,
         meeting_organizer.last_name,
@@ -72,6 +73,7 @@ export async function dbUtil(
       emailBody: filled_comp_template.body,
       companyLogo: logo,
       subject: filled_comp_template.subject,
+      availabilityReqLink: candidate_link,
     };
 
   return {

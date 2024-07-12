@@ -128,7 +128,7 @@ function FilterStatus() {
         <FilterDropdown
           slotOption={
             <>
-              {renderStatus('waiting', 'Waiting')}
+              {renderStatus('waiting', 'Unconfirmed')}
               {renderStatus('confirmed', 'Confirmed')}
               {renderStatus('completed', 'Completed')}
               {renderStatus('cancelled', 'Cancelled')}

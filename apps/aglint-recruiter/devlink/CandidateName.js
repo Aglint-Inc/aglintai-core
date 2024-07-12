@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { ButtonSoft } from "./ButtonSoft";
 import * as _utils from "./utils";
 import _styles from "./CandidateName.module.css";
 
@@ -38,24 +39,16 @@ export function CandidateName({
           />
         </_Builtin.Block>
       ) : null}
-      {isResume ? (
-        <_Builtin.Block
-          className={_utils.cx(_styles, "radix-button")}
-          tag="div"
-          button-color-soft="neutral"
-          button-high-contrast-soft="false"
-          button-size-soft="1"
-          {...onClickResume}
-        >
-          <_Builtin.Block tag="div">
-            <_Builtin.HtmlEmbed
-              className={_utils.cx(_styles, "icon_placeholder")}
-              value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M4.5%2012.75H10.5C10.7188%2012.75%2010.8984%2012.6797%2011.0391%2012.5391C11.1797%2012.3984%2011.25%2012.2188%2011.25%2012V4.75781C11.25%204.53906%2011.1797%204.35938%2011.0391%204.21875L9.28125%202.46094C9.14062%202.32031%208.96875%202.25%208.76562%202.25H4.5C4.28125%202.25%204.10156%202.32031%203.96094%202.46094C3.82031%202.60156%203.75%202.78125%203.75%203V12C3.75%2012.2188%203.82031%2012.3984%203.96094%2012.5391C4.10156%2012.6797%204.28125%2012.75%204.5%2012.75ZM10.5%2013.5H4.5C4.07812%2013.4844%203.72656%2013.3359%203.44531%2013.0547C3.16406%2012.7734%203.01562%2012.4219%203%2012V3C3.01562%202.57812%203.16406%202.22656%203.44531%201.94531C3.72656%201.66406%204.07812%201.51563%204.5%201.5H8.76562C9.17188%201.5%209.52344%201.64844%209.82031%201.94531L11.5547%203.67969C11.8516%203.97656%2012%204.33594%2012%204.75781V12C11.9844%2012.4219%2011.8359%2012.7734%2011.5547%2013.0547C11.2734%2013.3359%2010.9219%2013.4844%2010.5%2013.5Z%22%20fill%3D%22%2363635E%22%2F%3E%0A%3C%2Fsvg%3E"
-            />
-          </_Builtin.Block>
-          <_Builtin.Block tag="div">{"Resume"}</_Builtin.Block>
-        </_Builtin.Block>
-      ) : null}
+      <ButtonSoft
+        onClickButton={onClickResume}
+        size="1"
+        isLeftIcon={true}
+        textButton="Resume"
+        iconName="contact_page"
+        iconSize="3"
+        color="neutral"
+        iconWeight="medium"
+      />
     </_Component>
   );
 }

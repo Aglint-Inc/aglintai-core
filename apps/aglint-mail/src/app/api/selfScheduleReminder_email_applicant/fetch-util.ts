@@ -10,14 +10,14 @@ import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 export async function dbUtil(
   req_body: EmailTemplateAPi<'selfScheduleReminder_email_applicant'>['api_payload'],
 ) {
-  const { data: filterJson } = await supabaseAdmin
-    .from('interview_filter_json')
-    .select(
-      'filter_json,session_ids,interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company,recruiter),candidates(first_name,last_name,email,recruiter(logo))))',
-    )
-    .eq('id', req_body.filter_id)
-    .single()
-    .throwOnError();
+  const [filterJson] = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_filter_json')
+      .select(
+        'filter_json,session_ids,interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company,recruiter),candidates(first_name,last_name,email,recruiter(logo))))',
+      )
+      .eq('id', req_body.filter_id),
+  );
 
   const [meetingDetails] = supabaseWrap(
     await supabaseAdmin
@@ -44,9 +44,12 @@ export async function dbUtil(
     'selfScheduleReminder_email_applicant',
   );
   const task_id = req_body.task_id;
-  const scheduleLink = task_id
-    ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.interview_schedule.id}?filter_id=${req_body.filter_id}&task_id=${task_id}`
-    : `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.interview_schedule.id}?filter_id=${req_body.filter_id}`;
+  let scheduleLink = '';
+  if (filterJson.interview_schedule.id && req_body.filter_id) {
+    scheduleLink = task_id
+      ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.interview_schedule.id}?filter_id=${req_body.filter_id}&task_id=${task_id}`
+      : `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.interview_schedule.id}?filter_id=${req_body.filter_id}`;
+  }
   const comp_email_placeholder: EmailTemplateAPi<'selfScheduleReminder_email_applicant'>['comp_email_placeholders'] =
     {
       candidateFirstName: first_name,
@@ -54,7 +57,6 @@ export async function dbUtil(
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),
       jobRole: job_title,
-      selfScheduleLink: `<a href="${scheduleLink}">here</a>`,
       organizerName: getFullName(
         meeting_organizer.first_name,
         meeting_organizer.last_name,
@@ -74,6 +76,7 @@ export async function dbUtil(
       emailBody: filled_comp_template.body,
       companyLogo: recruiter.logo,
       subject: filled_comp_template.subject,
+      selfScheduleLink: scheduleLink,
     };
 
   return {

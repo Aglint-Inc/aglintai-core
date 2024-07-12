@@ -15,7 +15,10 @@ export default function SearchField({
 }: {
   value: string;
   placeholder?: string;
-  onChange: any;
+  onChange: (
+    // eslint-disable-next-line no-unused-vars
+    x: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void;
   onClear: any;
   isFullWidth?: boolean;
 }) {

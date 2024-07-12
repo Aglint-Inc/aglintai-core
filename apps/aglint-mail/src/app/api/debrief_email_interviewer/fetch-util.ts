@@ -101,13 +101,17 @@ export async function fetchUtil(
       comp_email_temp,
     );
 
+    const candidateLink = req_body.application_id
+      ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}`
+      : '';
+
     const react_email_placeholders: EmailTemplateAPi<'debrief_email_interviewer'>['react_email_placeholders'] =
       {
         companyLogo: candidateJob.candidates.recruiter.logo,
         emailBody: filled_comp_template.body,
         subject: filled_comp_template.subject,
         meetingDetails: meeting_detail,
-        candidateLink: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}`,
+        candidateLink: candidateLink,
       };
 
     return {

@@ -12,6 +12,9 @@ export function GlobalInfo({
   textDescription = "The interview is complete. Click the button for requesting interviewer feedback.",
   iconName = "info",
   color = "neutral",
+  slotWidget,
+  showWidget = false,
+  showDescription = true,
 }) {
   return (
     <_Component
@@ -34,7 +37,14 @@ export function GlobalInfo({
           fontWeight="medium"
           color="inherit"
         />
-        <Text content={textDescription} color="neutral" weight="" />
+        {showDescription ? (
+          <_Builtin.Block tag="div">
+            <Text content={textDescription} color="neutral" weight="" />
+          </_Builtin.Block>
+        ) : null}
+        {showWidget ? (
+          <_Builtin.Block tag="div">{slotWidget}</_Builtin.Block>
+        ) : null}
       </_Builtin.Block>
     </_Component>
   );
