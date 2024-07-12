@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { AtsCard } from '@/devlink/AtsCard';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GreenhouseApiKey } from '@/devlink/GreenhouseApiKey';
 import { GreenhouseAts } from '@/devlink/GreenhouseAts';
 import { IntegrationFetching } from '@/devlink/IntegrationFetching';
@@ -15,7 +16,6 @@ import { LeverApiKey } from '@/devlink/LeverApiKey';
 import { LoadingJobsAts } from '@/devlink/LoadingJobsAts';
 import { NoResultAts } from '@/devlink/NoResultAts';
 import { SkeletonLoaderAtsCard } from '@/devlink/SkeletonLoaderAtsCard';
-import { ButtonPrimaryDefaultRegular } from '@/devlink3/ButtonPrimaryDefaultRegular';
 import LoaderLever from '@/public/lottie/AddJobWithIntegrations';
 import FetchingJobsLever from '@/public/lottie/FetchingJobsLever';
 import UITextField from '@/src/components/Common/UITextField';
@@ -46,6 +46,7 @@ export function GreenhouseModal() {
   const { jobs, handleJobsRefresh } = useJobs();
   const [loading, setLoading] = useState(false);
   const [postings, setPostings] = useState<JobGreenhouse[]>([]);
+  const [error, setError] = useState<boolean>(false);
   const [selectedGreenhousePostings, setSelectedGreenhousePostings] = useState<
     JobGreenhouse[]
   >([]);
@@ -157,6 +158,10 @@ export function GreenhouseModal() {
   };
 
   const submitApiKey = async () => {
+    if (!apiRef.current.value) {
+      setError(true);
+      return;
+    }
     try {
       setLoading(true);
       const response = await axios.post('/api/greenhouse/getPostings', {
@@ -223,19 +228,23 @@ export function GreenhouseModal() {
         integration.greenhouse.step === STATE_GREENHOUSE_DIALOG.ERROR ? (
           <GreenhouseApiKey
             slotPrimaryButton={
-              <ButtonPrimaryDefaultRegular
-                buttonText={'Submit'}
+              <ButtonSolid
+                textButton='Submit'
                 isDisabled={loading}
-                buttonProps={{
-                  onClick: () => {
-                    submitApiKey();
-                  },
+                isLoading={loading}
+                onClickButton={{
+                  onClick: submitApiKey,
                 }}
+                size={2}
               />
             }
             slotInput={
               <UITextField
                 ref={apiRef}
+                height={32}
+                error={error}
+                helperText='Please enter a API key'
+                onFocus={() => setError(false)}
                 labelSize='small'
                 fullWidth
                 placeholder='API key'
