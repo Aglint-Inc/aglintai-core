@@ -9,10 +9,8 @@ import axios from 'axios';
 import { GetInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
 
 import { GC_TIME, noPollingKey } from '..';
-import { applicationsQueries } from '../job-applications';
-import { jobDashboardQueryKeys } from '../job-dashboard/keys';
 import { readJob } from '../jobs';
-import { jobsQueryKeys } from '../jobs/keys';
+import { jobKey, jobsQueryKeys } from '../jobs/keys';
 import { Job } from '../jobs/types';
 
 const jobQueries = {
@@ -61,8 +59,12 @@ const jobQueries = {
       refetchInterval: enabled ? 5000 : false,
       queryKey: ['job_polling', { id }],
       queryFn: async () => {
-        const jobQueryKey = jobQueries.job({ id }).queryKey;
-        queryClient.invalidateQueries({ queryKey: jobQueryKey });
+        queryClient.invalidateQueries({
+          predicate: (query) =>
+            query.queryKey.includes(jobKey) &&
+            query.queryKey.find((key) => (key as any)?.id === id) &&
+            !query.queryKey.includes(noPollingKey),
+        });
         return true;
       },
     });
@@ -73,14 +75,10 @@ export const useInvalidateJobQueries = () => {
   const queryClient = useQueryClient();
   const removeJobQueries = (id: Job['id']) => {
     queryClient.removeQueries({
-      queryKey: jobQueries.job({ id }).queryKey,
-      predicate: (query) => query.queryKey.includes(''),
-    });
-    queryClient.removeQueries({
-      queryKey: applicationsQueries.all({ job_id: id }).queryKey,
-    });
-    queryClient.removeQueries({
-      queryKey: jobDashboardQueryKeys.dashboard({ id }).queryKey,
+      predicate: (query) =>
+        query.queryKey.includes(jobKey) &&
+        query.queryKey.find((key) => (key as any)?.id === id) &&
+        !query.queryKey.includes(noPollingKey),
     });
   };
 
