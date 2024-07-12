@@ -380,7 +380,7 @@ export const ConfirmedInvitePage = (
                     }}
                   />
                   <ScheduleButton
-                    textLabel={'Cancel Schedule'}
+                    textLabel={'Cancel'}
                     textColorProps={{
                       style: { color: '#D93F4C' },
                     }}
@@ -664,7 +664,7 @@ const CancelRescheduleDialog = ({
           <TextField
             multiline
             placeholder='Add additional notes.'
-            minRows={4}
+            rows={6}
             value={formData.additionalNote}
             fullWidth
             onChange={(e) =>
