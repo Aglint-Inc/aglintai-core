@@ -4,6 +4,8 @@ import {
   NextApiResponse,
 } from '@/src/interface/NextApiRequest.interface';
 
+import { AglintLogger } from '../logger/logger';
+
 /**
  * Returns a function that sends a response with the given data and error, or an error message if the status is 500.
  *
@@ -52,6 +54,11 @@ export const getResponseFactory = <T>(res: NextApiResponse) => {
 export function apiRequestHandlerFactory<T extends ApiInterface>(
   req: NextApiRequest,
   res: NextApiResponse,
+  log?: {
+    name: string;
+    level?: 'info' | 'error' | 'debug' | 'debug-only';
+    logDetailsLevel?: 'anonymous' | 'basic' | 'full';
+  },
 ) {
   /**
    * Sends a response with the given data and error, or an error message if the status is 500.
@@ -66,14 +73,25 @@ export function apiRequestHandlerFactory<T extends ApiInterface>(
     {
       data,
       error,
+      logger,
     }: {
       data?: T['response'];
       error?: string;
+      logger?: AglintLogger;
+      // {
+      //   data: Parameters<typeof logApi>[0];
+      //   level: Parameters<typeof logApi>[1];
+      // };
     },
     status?: number,
   ) {
     status = status || (error ? 500 : 200);
     if (res.headersSent) return;
+    logger &&
+      (status === 200
+        ? logger.info({ status: 'success', meta: { response: data } })
+        : logger.error({ status: 'error', meta: { error }, message: error }));
+
     return res.status(status).send(status === 200 ? data : { error });
   }
   const requesterDetails = {
@@ -95,13 +113,33 @@ export function apiRequestHandlerFactory<T extends ApiInterface>(
    */
   async function apiMethodHandler(
     method: 'POST' | 'GET',
-    // eslint-disable-next-line no-unused-vars
-    apiImplementation: (reqDetails: {
-      body?: T['request'];
-      requesterDetails: typeof requesterDetails;
-    }) => Promise<T['response'] | { error: string; status?: number }>,
+    apiImplementation: (
+      // eslint-disable-next-line no-unused-vars
+      reqDetails: {
+        body?: T['request'];
+        requesterDetails: typeof requesterDetails;
+      },
+      // eslint-disable-next-line no-unused-vars
+      logger?: AglintLogger,
+    ) => Promise<T['response'] | { error: string; status?: number }>,
     required?: (keyof T['request'])[],
   ) {
+    let logger: AglintLogger;
+
+    if (log?.name && (log?.level || AglintLogger.checkGlobalLogLevel())) {
+      logger = new AglintLogger(
+        {
+          name: String(log.name),
+          recruiter_id: requesterDetails?.recruiter_id,
+          user_id: requesterDetails?.user_id,
+          type: 'api',
+        },
+        {
+          level: log.level,
+          detailsLevel: log.logDetailsLevel,
+        },
+      );
+    }
     try {
       if (req.method !== method) {
         res.setHeader('Allow', method);
@@ -128,13 +166,30 @@ export function apiRequestHandlerFactory<T extends ApiInterface>(
           }
         }
       }
-      const response = await apiImplementation(reqDetails);
-      if (response && typeof response === 'object' && 'error' in response) {
-        return getResponse({ error: response.error }, response.status);
+
+      if (logger) {
+        await logger.info({
+          meta: { payload: reqDetails.body },
+          status: 'start',
+        });
       }
-      return getResponse({ data: response });
+
+      const response = await apiImplementation(reqDetails, logger);
+      if (response && typeof response === 'object' && 'error' in response) {
+        return getResponse(
+          {
+            error: response.error,
+            logger,
+          },
+          response.status,
+        );
+      }
+      return getResponse({
+        data: response,
+        logger,
+      });
     } catch (e) {
-      return getResponse({ error: e.message }, 500);
+      return getResponse({ error: e.message, logger }, 500);
     }
   }
   return apiMethodHandler;

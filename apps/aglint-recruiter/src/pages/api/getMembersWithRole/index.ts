@@ -18,8 +18,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const apiMethod = apiRequestHandlerFactory<API_getMembersWithRole>(req, res);
-  return apiMethod('GET', async ({ requesterDetails }) => {
+  const apiMethod = apiRequestHandlerFactory<API_getMembersWithRole>(req, res, {
+    name: '/api/getMembersWithRole',
+  });
+  return apiMethod('GET', async ({ requesterDetails }, logger) => {
     const rec_id = requesterDetails.recruiter_id;
     if (!rec_id) {
       return {
@@ -29,6 +31,7 @@ export default async function handler(
         status: 400,
       };
     }
+    logger?.info({ message: 'hi its working' });
     return getMembers(rec_id);
   });
 }
