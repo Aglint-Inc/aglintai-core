@@ -43,7 +43,7 @@ export const useApplicationContext = (
   const interview = useQuery(
     applicationQuery.interview({
       ...props,
-      enabled: tab === 'Interview' || !!props?.showTabs,
+      enabled: false, //tab === 'Interview' || !!props?.showTabs,
     }),
   );
   const tasks = useQuery(

@@ -6,6 +6,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { capitalize } from 'lodash';
 import { useMemo, useState } from 'react';
 
+import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { TeamListItem } from '@/devlink/TeamListItem';
 import { TeamOptionList } from '@/devlink/TeamOptionList';
@@ -102,6 +103,24 @@ const Member = ({
       <TeamListItem
         // isDeleteDisable={member.role !== 'admin' ? false : true}
         // isEditInviteVisible={member.join_status === 'invited'}
+        slotBadge={
+          <GlobalBadge
+            color={
+              member.is_suspended
+                ? 'error'
+                : member.join_status === 'joined'
+                  ? 'success'
+                  : 'warning'
+            }
+            textBadge={capitalize(
+              member.is_suspended
+                ? 'Suspended'
+                : member.join_status === 'joined'
+                  ? 'Active'
+                  : member.join_status,
+            )}
+          />
+        }
         slotThreeDot={
           <>
             <Stack onClick={handleClick}>
@@ -201,43 +220,6 @@ const Member = ({
         textDepartment={member.department}
         textDesignation={member.position}
         slotUserRole={<Stack>{capitalizeAll(member.role)}</Stack>}
-        userStatusProps={{
-          style:
-            member.join_status === 'invited'
-              ? {
-                  backgroundColor: 'var(--warning-a2)',
-                  border: '1px solid var(--warning-6)',
-                  color: 'var(--warning-a11)',
-                  padding: 'var(--space-1) var(--space-2)',
-                  fontWeight: '500',
-                }
-              : member.is_suspended === true
-                ? {
-                    backgroundColor: 'var(--error-a2)',
-                    border: '1px solid var(--error-6)',
-                    color: 'var(--error-a11)',
-                    padding: 'var(--space-1) var(--space-2)',
-                    fontWeight: '500',
-                  }
-                : {
-                    backgroundColor: 'var(--success-a2)',
-                    border: '1px solid var(--success-a6)',
-                    color: 'var(--success-a11)',
-                    padding: 'var(--space-1) var(--space-2)',
-                    fontWeight: '500',
-                  },
-        }}
-        userStatusText={
-          <Stack>
-            {capitalize(
-              member.is_suspended
-                ? 'Suspended'
-                : member.join_status === 'joined'
-                  ? 'Active'
-                  : member.join_status,
-            )}
-          </Stack>
-        }
       />
     </>
   );

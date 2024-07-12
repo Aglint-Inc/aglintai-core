@@ -8,8 +8,6 @@ import _styles from "./TeamListItem.module.css";
 export function TeamListItem({
   as: _Component = _Builtin.Block,
   slotUserRole,
-  userStatusProps = {},
-  userStatusText = "Active",
   userName = "Roberto Carlos",
   userEmail = "roberto@sample.com",
   slotProfileImage,
@@ -46,13 +44,6 @@ export function TeamListItem({
             tag="div"
           >
             <Text content={userName} weight="medium" />
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "user-status-wrap")}
-            tag="div"
-            {...userStatusProps}
-          >
-            <Text content={userStatusText} size="1" />
           </_Builtin.Block>
           <_Builtin.Block tag="div">{slotBadge}</_Builtin.Block>
         </_Builtin.Block>

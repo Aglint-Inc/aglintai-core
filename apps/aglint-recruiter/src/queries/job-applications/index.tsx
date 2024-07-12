@@ -24,7 +24,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { GC_TIME } from '..';
-import { jobQueries } from '../job';
+import { jobQueries, useInvalidateJobQueries } from '../job';
 
 const ROWS = 30;
 
@@ -308,10 +308,7 @@ export const diffApplication = (
 
 export const useUploadApplication = ({ job_id }: Pick<Params, 'job_id'>) => {
   const { recruiter_id } = useAuthDetails();
-  const queryClient = useQueryClient();
-  const jobQueryKey = jobQueries.job({
-    id: job_id,
-  }).queryKey;
+  const { removeJobQueries } = useInvalidateJobQueries();
   return useMutation({
     mutationFn: async (
       payload: Omit<HandleUploadApplication, 'job_id' | 'recruiter_id'>,
@@ -325,7 +322,7 @@ export const useUploadApplication = ({ job_id }: Pick<Params, 'job_id'>) => {
     },
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: async () => {
-      await queryClient.removeQueries({ queryKey: jobQueryKey });
+      removeJobQueries(job_id);
       toast.success('Uploaded successfully');
     },
   });
@@ -356,10 +353,7 @@ const handleUploadApplication = async (payload: HandleUploadApplication) => {
 
 export const useUploadResume = (params: Pick<Params, 'job_id'>) => {
   const { recruiter_id } = useAuthDetails();
-  const queryClient = useQueryClient();
-  const jobQueryKey = jobQueries.job({
-    id: params.job_id,
-  }).queryKey;
+  const { removeJobQueries } = useInvalidateJobQueries();
   return useMutation({
     mutationFn: async (
       payload: Omit<HandleUploadResume, 'job_id' | 'recruiter_id'>,
@@ -373,7 +367,7 @@ export const useUploadResume = (params: Pick<Params, 'job_id'>) => {
     },
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: async () => {
-      await queryClient.removeQueries({ queryKey: jobQueryKey });
+      removeJobQueries(params.job_id);
       toast.success('Uploaded successfully');
     },
   });
@@ -422,10 +416,7 @@ const handleBulkResumeUpload = async (payload: HandleUploadResume) => {
 
 export const useUploadCsv = (params: Pick<Params, 'job_id'>) => {
   const { recruiter_id } = useAuthDetails();
-  const queryClient = useQueryClient();
-  const jobQueryKey = jobQueries.job({
-    id: params.job_id,
-  }).queryKey;
+  const { removeJobQueries } = useInvalidateJobQueries();
   return useMutation({
     mutationFn: async (
       payload: Omit<HandleUploadCsv, 'job_id' | 'recruiter_id'>,
@@ -439,7 +430,7 @@ export const useUploadCsv = (params: Pick<Params, 'job_id'>) => {
     },
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: async () => {
-      await queryClient.removeQueries({ queryKey: jobQueryKey });
+      removeJobQueries(params.job_id);
       toast.success('Uploaded successfully');
     },
   });
@@ -462,10 +453,9 @@ const handleBulkCsvUpload = async (payload: HandleUploadCsv) => {
 
 export const useMoveApplications = (
   payload: ApplicationsAllQueryPrerequistes,
-  source: ApplicationsParams['section'],
   applications: ApplicationsStore['checklist'],
 ) => {
-  const queryClient = useQueryClient();
+  const { removeJobQueries } = useInvalidateJobQueries();
   return useMutation({
     mutationFn: async (
       args: Omit<
@@ -476,10 +466,7 @@ export const useMoveApplications = (
       await moveApplications({ job_id: payload.job_id, applications, ...args });
     },
     onSuccess: async () => {
-      const jobQueryKey = jobQueries.job({
-        id: payload.job_id,
-      }).queryKey;
-      await queryClient.removeQueries({ queryKey: jobQueryKey });
+      removeJobQueries(payload.job_id);
       toast.success('Moved successfully');
     },
   });
@@ -532,33 +519,3 @@ const moveApplications = async ({
     })(),
   ]);
 };
-
-export const useRescoreApplications = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: async (args: Parameters<typeof rescoreApplications>[0]) => {
-      await rescoreApplications({
-        job_id: args.job_id,
-      });
-    },
-    onSuccess: async (_, variables) => {
-      const jobQueryKey = jobQueries.job({
-        id: variables.job_id,
-      }).queryKey;
-      await queryClient.removeQueries({ queryKey: jobQueryKey });
-    },
-  });
-};
-const rescoreApplications = async ({
-  job_id,
-}: ApplicationsAllQueryPrerequistes) =>
-  await supabase
-    .from('applications')
-    .update({
-      overall_score: -1,
-      processing_status: 'not started',
-      score_json: null,
-      retry: 0,
-    })
-    .eq('job_id', job_id)
-    .throwOnError();

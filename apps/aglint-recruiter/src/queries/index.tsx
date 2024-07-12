@@ -46,6 +46,7 @@ const reactQueryPageRoute: (keyof Pages)[] = [
 ];
 
 export const appKey = 'app';
+export const noPollingKey = 'no-polling';
 
 export const QueryProvider: React.FC<{ children: React.JSX.Element }> = ({
   children,
