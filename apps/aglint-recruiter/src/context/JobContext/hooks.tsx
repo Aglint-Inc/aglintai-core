@@ -1,4 +1,5 @@
 import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
+import { isEqual } from 'lodash';
 import { useParams } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
 
@@ -73,19 +74,34 @@ const useJobContext = () => {
 
   const status = job &&
     jobLoad && {
-      loading: job.scoring_criteria_loading,
+      loading: job?.scoring_criteria_loading,
       description_error:
-        !job.scoring_criteria_loading &&
+        !job?.scoring_criteria_loading &&
         validateDescription(job?.draft?.description ?? ''),
       description_changed:
         !job.scoring_criteria_loading &&
-        (job?.draft?.description ?? '') !== job?.description &&
-        JSON.stringify(job?.draft?.jd_json ?? {}) ===
-          JSON.stringify(job?.jd_json ?? {}),
+        !isEqual(
+          {
+            company: job.draft.company,
+            department: job.draft.department,
+            description: job.draft.description,
+            job_title: job.draft.job_title,
+            job_type: job.draft.job_type,
+            location: job.draft.location,
+            workplace_type: job.draft.workplace_type,
+          } as Omit<Job['draft'], 'jd_json'>,
+          {
+            company: job.company,
+            department: job.department,
+            description: job.description,
+            job_title: job.job_title,
+            job_type: job.job_type,
+            location: job.location,
+            workplace_type: job.workplace_type,
+          } as Omit<Job['draft'], 'jd_json'>,
+        ),
       jd_json_error: !job.scoring_criteria_loading && !jdValidity,
-      scoring_criteria_changed:
-        JSON.stringify(job?.draft?.jd_json ?? {}) !==
-        JSON.stringify(job?.jd_json ?? {}),
+      scoring_criteria_changed: !isEqual(job.draft.jd_json, job.jd_json),
     };
 
   const interviewPlans = useQuery(jobQueries.interview_plans({ id: job_id }));

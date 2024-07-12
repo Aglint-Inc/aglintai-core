@@ -747,17 +747,29 @@ const useBanners = () => {
   else if (status.description_changed)
     banners.push(
       <DashboardWarning
-        textWarningTitle={'Job description has changed'}
-        textDesc={'You may need to adjust the criteria for profile scoring.'}
+        textWarningTitle={'Job details have changed'}
+        textDesc={'You may need to publish these changes.'}
         slotButton={
           <>
             <ButtonSoft
-              textButton='Ignore'
+              textButton='Revert'
               size={2}
               color={'accent'}
               highContrast={'true'}
               onClickButton={{
-                onClick: () => {},
+                onClick: () =>
+                  handleJobUpdate({
+                    draft: {
+                      ...job.draft,
+                      company: job.company,
+                      department: job.department,
+                      description: job.description,
+                      job_title: job.job_title,
+                      job_type: job.job_type,
+                      location: job.location,
+                      workplace_type: job.workplace_type,
+                    },
+                  }),
               }}
             />
 
@@ -782,11 +794,14 @@ const useBanners = () => {
         slotButton={
           <>
             <ButtonSoft
-              textButton='Ignore'
+              textButton='Revert'
               size={2}
               color={'neutral'}
               onClickButton={{
-                onClick: () => {},
+                onClick: () =>
+                  handleJobUpdate({
+                    draft: { ...job.draft, jd_json: job.jd_json },
+                  }),
               }}
             />
 
