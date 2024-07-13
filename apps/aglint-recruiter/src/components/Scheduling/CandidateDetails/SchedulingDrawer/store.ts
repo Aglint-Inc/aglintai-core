@@ -103,9 +103,6 @@ export const setUpdateRequestAvailibityId = (
   updateRequestAvailibityId: string | null,
 ) => useSchedulingFlowStore.setState({ updateRequestAvailibityId });
 
-
-
-
 export const setRequestAvailibityId = (requestAvailibityId: string | null) =>
   useSchedulingFlowStore.setState({ requestAvailibityId });
 

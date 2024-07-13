@@ -133,18 +133,18 @@ function ListCardInterviewerModules({
     );
 
   const completedMeetings = moduleMeetings.filter(
-    (item) => item.interview_meeting.status === 'completed',
+    (item) => item.status === 'completed',
   );
 
   const shadowMeetings = completedMeetings.filter((item) =>
-    item.users.some(
-      (user) => user.id === user_id && user.training_type === 'shadow',
+    item.meeting_interviewers.some(
+      (user) => user.user_id === user_id && user.training_type === 'shadow',
     ),
   );
 
   const reverseShadowMeetings = completedMeetings.filter((item) =>
-    item.users.some(
-      (user) => user.id === user_id && user.training_type === 'reverse_shadow',
+    item.meeting_interviewers.some(
+      (user) => user.user_id === user_id && user.training_type === 'reverse_shadow',
     ),
   );
 
@@ -159,7 +159,7 @@ function ListCardInterviewerModules({
   ].map((item, ind) => {
     return {
       ...item,
-      meeting: shadowMeetings[Number(ind)]?.interview_meeting,
+      meeting: shadowMeetings[Number(ind)],
     };
   });
 
@@ -174,7 +174,7 @@ function ListCardInterviewerModules({
   ].map((item, ind) => {
     return {
       ...item,
-      meeting: reverseShadowMeetings[Number(ind)]?.interview_meeting,
+      meeting: reverseShadowMeetings[Number(ind)],
     };
   });
 
