@@ -133,7 +133,7 @@ function ListCardInterviewerModules({
     );
 
   const completedMeetings = moduleMeetings.filter(
-    (item) => item.interview_meeting.status === 'completed',
+    (item) => item.status === 'completed',
   );
 
   const shadowMeetings = completedMeetings.filter((item) =>
