@@ -46,7 +46,7 @@ export function IntegrationCard({
                 tag="div"
               >
                 <GlobalBadge
-                  color="info"
+                  color="success"
                   iconName=""
                   textBadge="Connected"
                   size="1"

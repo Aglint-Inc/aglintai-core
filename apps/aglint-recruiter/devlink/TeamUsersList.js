@@ -36,7 +36,7 @@ export function TeamUsersList({
           tag="div"
         >
           <Text
-            content="Manage Team"
+            content="Manage User"
             size="2"
             weight="medium"
             align=""
@@ -44,7 +44,7 @@ export function TeamUsersList({
             color=""
           />
           <Text
-            content="Invite team members and manage their roles and profile details in one place. Assign managers and roles such as interviewer, hiring manager, or recruiter to ensure an organized team structure."
+            content="Invite your hiring team members and manage their roles and profile details in one place. Assign roles such as interviewer, hiring manager, or recruiter to ensure an organized team structure and compliance with user permissions in the organization."
             size="2"
             weight=""
             align=""
