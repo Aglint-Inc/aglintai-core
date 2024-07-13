@@ -657,6 +657,7 @@ function RequestAvailability() {
                 />
                 <ButtonSolid
                   size={2}
+                  isDisabled={totalCount === 0}
                   textButton={'Continue'}
                   onClickButton={{
                     onClick: () => {
