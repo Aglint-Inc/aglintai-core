@@ -78,7 +78,7 @@ function Filters() {
         filters={[
           {
             type: 'filter',
-            name: '',
+            name: 'Status',
             options: [
               { id: 'completed', label: 'Completed' },
               { id: 'cancelled', label: 'Cancelled' },
@@ -86,14 +86,6 @@ function Filters() {
               { id: 'waiting', label: 'Waiting' },
             ],
             setValue: (val) => {
-              // const preData =
-              //   JSON.parse(localStorage.getItem('taskFilters')) || {};
-              // preData.Candidate = [...val];
-              // localStorage.setItem('taskFilters', JSON.stringify(preData));
-              // handelFilter({
-              //   ...filter,
-              //   candidate: { ...filter.candidate, values: val },
-              // });
               updateFilterState('status', val);
             },
             value: filterState.status,
@@ -103,11 +95,13 @@ function Filters() {
             type: 'filter',
             name: 'Interviewer',
             options: members
-              .filter((ele) => !ele.is_suspended)
-              .map((member) => ({
-                id: member.user_id,
-                label: getFullName(member.first_name, member.last_name),
-              })),
+              ? members
+                  .filter((ele) => !ele.is_suspended)
+                  .map((member) => ({
+                    id: member.user_id,
+                    label: getFullName(member.first_name, member.last_name),
+                  }))
+              : [],
             filterSearch: true,
             searchPlaceholder: 'Interviewer',
             setValue: (val) => {
@@ -146,7 +140,9 @@ function Filters() {
             setValue: (val) => {
               updateFilterState('date_range', val);
             },
-            value: [filterState.date_range[filterState.date_range.length - 1]],
+            value: filterState.date_range.length
+              ? [filterState.date_range[filterState.date_range.length - 1]]
+              : [],
             iconname: 'filter_tilt_shift',
           },
         ]}

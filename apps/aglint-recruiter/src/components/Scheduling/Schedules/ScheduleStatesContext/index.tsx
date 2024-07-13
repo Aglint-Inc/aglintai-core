@@ -114,17 +114,19 @@ function ScheduleStatesProvider({ children }) {
 export { ScheduleStatesProvider, useScheduleStatesContext };
 
 export const useAllScheduleList = (filters: ScheduleFilerType) => {
+  const { date_range, interviewers, jobs, schedule_types, status, searchText } =
+    filters;
   const { recruiter_id } = useAuthDetails();
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: [
       'get_All_Schedule_List',
-      ...filters.status,
-      ...filters.jobs,
-      ...filters.schedule_types,
-      ...filters.interviewers,
-      ...filters.date_range,
-      filters.searchText,
+      ...status,
+      ...jobs,
+      ...schedule_types,
+      ...interviewers,
+      ...date_range,
+      searchText,
     ],
 
     queryFn: () =>
@@ -190,6 +192,5 @@ export async function getAllScheduleList({
   }
 
   const { data: schedules } = await filtersAll.throwOnError();
-
   return schedules;
 }
