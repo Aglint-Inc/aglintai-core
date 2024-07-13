@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import toast from '@/src/utils/toast';
 
 import MembersAutoComplete from '../../../Common/MembersTextField';
 import { useAddMemberHandler } from '../../queries/hooks';
@@ -32,15 +33,20 @@ function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
   );
 
   const onClickAddMember = async () => {
-    setLoading(true);
-    await addMemberHandler({
-      module_id: editModule.id,
-      selectedUsers: selectedUsers,
-      trainingStatus: trainingStatus,
-    });
-    setIsAddMemberDialogOpen(false);
-    setSelectedUsers([]);
-    setLoading(false);
+    try {
+      setLoading(true);
+      await addMemberHandler({
+        module_id: editModule.id,
+        selectedUsers: selectedUsers,
+        trainingStatus: trainingStatus,
+      });
+      setIsAddMemberDialogOpen(false);
+      setSelectedUsers([]);
+    } catch {
+      toast.error('Error adding member.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -82,7 +88,9 @@ function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
           },
         }}
         onClickAction={{
-          onClick: onClickAddMember,
+          onClick: () => {
+            if (!loading) onClickAddMember();
+          },
         }}
         textPopupButton={'Add'}
       />
