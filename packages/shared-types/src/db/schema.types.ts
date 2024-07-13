@@ -2030,6 +2030,70 @@ export type Database = {
           },
         ]
       }
+      logs: {
+        Row: {
+          created_at: string
+          id: number
+          message: string | null
+          meta: Json | null
+          method: string | null
+          name: string
+          parent_log_id: number | null
+          recruiter_id: string | null
+          status: string
+          type: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          message?: string | null
+          meta?: Json | null
+          method?: string | null
+          name: string
+          parent_log_id?: number | null
+          recruiter_id?: string | null
+          status: string
+          type: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          message?: string | null
+          meta?: Json | null
+          method?: string | null
+          name?: string
+          parent_log_id?: number | null
+          recruiter_id?: string | null
+          status?: string
+          type?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "logs_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       new_tasks: {
         Row: {
           agent: Database["public"]["Enums"]["task_agent_type"] | null
@@ -2290,6 +2354,18 @@ export type Database = {
         }
         Relationships: []
       }
+      plan_count: {
+        Row: {
+          count: number | null
+        }
+        Insert: {
+          count?: number | null
+        }
+        Update: {
+          count?: number | null
+        }
+        Relationships: []
+      }
       public_jobs: {
         Row: {
           active_status: Json
@@ -2297,10 +2373,8 @@ export type Database = {
           company: string | null
           company_details: string | null
           created_at: string
-          dashboard_warnings: Json
           department: string | null
           description: string | null
-          description_hash: number
           draft: Json | null
           end_video: Json | null
           experience_in_months: number | null
@@ -2353,10 +2427,8 @@ export type Database = {
           company?: string | null
           company_details?: string | null
           created_at?: string
-          dashboard_warnings?: Json
           department?: string | null
           description?: string | null
-          description_hash?: number
           draft?: Json | null
           end_video?: Json | null
           experience_in_months?: number | null
@@ -2409,10 +2481,8 @@ export type Database = {
           company?: string | null
           company_details?: string | null
           created_at?: string
-          dashboard_warnings?: Json
           department?: string | null
           description?: string | null
-          description_hash?: number
           draft?: Json | null
           end_video?: Json | null
           experience_in_months?: number | null
@@ -3939,10 +4009,8 @@ export type Database = {
           assessment: boolean | null
           company: string | null
           created_at: string | null
-          dashboard_warnings: Json | null
           department: string | null
           description: string | null
-          description_hash: number | null
           draft: Json | null
           flags: Json | null
           hiring_manager: string | null
@@ -4314,16 +4382,6 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: Json[]
       }
-      batchsavegreenhouse: {
-        Args: Record<PropertyKey, never>
-        Returns: Json[]
-      }
-      batchsavegreenhouse_test: {
-        Args: {
-          rec_id: string
-        }
-        Returns: Json[]
-      }
       batchscorecron: {
         Args: {
           function_value: string
@@ -4372,55 +4430,6 @@ export type Database = {
         }
         Returns: boolean
       }
-      citext:
-        | {
-            Args: {
-              "": boolean
-            }
-            Returns: string
-          }
-        | {
-            Args: {
-              "": string
-            }
-            Returns: string
-          }
-        | {
-            Args: {
-              "": unknown
-            }
-            Returns: string
-          }
-      citext_hash: {
-        Args: {
-          "": string
-        }
-        Returns: number
-      }
-      citextin: {
-        Args: {
-          "": unknown
-        }
-        Returns: string
-      }
-      citextout: {
-        Args: {
-          "": string
-        }
-        Returns: unknown
-      }
-      citextrecv: {
-        Args: {
-          "": unknown
-        }
-        Returns: string
-      }
-      citextsend: {
-        Args: {
-          "": string
-        }
-        Returns: string
-      }
       connectassessmenttemplate: {
         Args: {
           assessmentid: string
@@ -4458,30 +4467,14 @@ export type Database = {
         }
         Returns: undefined
       }
-      create_user: {
+      createrecuriterrelation: {
         Args: {
-          email: string
-          password: string
-          user_id: string
+          in_user_id: string
+          in_recruiter_id: string
+          in_is_active: boolean
         }
-        Returns: undefined
+        Returns: boolean
       }
-      createrecuriterrelation:
-        | {
-            Args: {
-              in_user_id: string
-              in_recruiter_id: string
-            }
-            Returns: boolean
-          }
-        | {
-            Args: {
-              in_user_id: string
-              in_recruiter_id: string
-              in_is_active: boolean
-            }
-            Returns: boolean
-          }
       delete_session: {
         Args: {
           session_id: string
@@ -4506,11 +4499,11 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: Json[]
       }
-      embeddingresume: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
       expire_new_applications: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      fail_processing_applications: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
@@ -4534,20 +4527,6 @@ export type Database = {
           schedule: Json
           interview_session_meetings: Json
         }[]
-      }
-      fetch_interview_data_page_number: {
-        Args: {
-          rec_id: string
-          application_id: string
-          text_search_filter?: string
-          status_filter?: string[]
-          job_id_filter?: string[]
-          panel_id_filter?: string[]
-          sch_type?: string[]
-          date_range_filter?: unknown
-          sort_by?: string
-        }
-        Returns: number
       }
       fetch_slots_api_details: {
         Args: {
@@ -4816,15 +4795,6 @@ export type Database = {
           workflow_count: number
         }[]
       }
-      get_meetings_by_interviewer: {
-        Args: {
-          int_id: string
-        }
-        Returns: {
-          meeting_id: string
-          interviewer_id: string
-        }[]
-      }
       get_present_scheduled_jobs: {
         Args: Record<PropertyKey, never>
         Returns: Json[]
@@ -4874,15 +4844,6 @@ export type Database = {
           result_created_at: string
           assessment_result: Json[]
           phonescreening_templateid: string
-        }[]
-      }
-      get_test_interview: {
-        Args: {
-          user_test_id: string
-        }
-        Returns: {
-          rec_user: Json
-          interview_session_meetings: Json
         }[]
       }
       getallresumematches: {
@@ -4939,40 +4900,6 @@ export type Database = {
         }
         Returns: Json
       }
-      getjob: {
-        Args: {
-          jobid: string
-        }
-        Returns: {
-          active_status: Json
-          assessment: boolean
-          company: string
-          created_at: string
-          department: string
-          description: string
-          description_hash: number
-          draft: Json
-          id: string
-          jd_json: Json
-          job_title: string
-          job_type: Database["public"]["Enums"]["public_job_type"]
-          location: string
-          parameter_weights: Json
-          phone_screen_enabled: boolean
-          posted_by: string
-          recruiter_id: string
-          scoring_criteria_loading: boolean
-          status: Database["public"]["Enums"]["public_job_status"]
-          workplace_type: Database["public"]["Enums"]["public_job_workplace"]
-          hiring_manager: string
-          recruiter: string
-          recruiting_coordinator: string
-          sourcer: string
-          interview_coordinator: string
-          count: Json
-          processing_count: Json
-        }[]
-      }
       getjobapplicationcountforcandidates: {
         Args: {
           candidate_ids: string[]
@@ -5018,41 +4945,6 @@ export type Database = {
           mode: Database["public"]["Enums"]["assessment_mode"]
           duration: number
         }[]
-      }
-      getjobs: {
-        Args: {
-          recruiterid: string
-        }
-        Returns: {
-          active_status: Json
-          assessment: boolean
-          company: string
-          created_at: string
-          department: string
-          description: string
-          description_hash: number
-          draft: Json
-          id: string
-          jd_json: Json
-          job_title: string
-          job_type: Database["public"]["Enums"]["public_job_type"]
-          location: string
-          parameter_weights: Json
-          phone_screen_enabled: boolean
-          posted_by: string
-          recruiter_id: string
-          scoring_criteria_loading: boolean
-          status: Database["public"]["Enums"]["public_job_status"]
-          workplace_type: Database["public"]["Enums"]["public_job_workplace"]
-          count: Json
-          processing_count: Json
-        }[]
-      }
-      getjobsv2: {
-        Args: {
-          recruiter_id: string
-        }
-        Returns: Json[]
       }
       getlocationspool: {
         Args: {
@@ -5114,12 +5006,6 @@ export type Database = {
         }
         Returns: Json
       }
-      getskillspool: {
-        Args: {
-          jobid: string
-        }
-        Returns: Json
-      }
       greenhousecandidatesync: {
         Args: Record<PropertyKey, never>
         Returns: Json
@@ -5176,97 +5062,6 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
-      job_application_filter_sort: {
-        Args: {
-          jb_id: string
-          min_lat?: number
-          min_long?: number
-          max_lat?: number
-          max_long?: number
-          j_status?: string
-          from_rec_num?: number
-          end_rec_num?: number
-          min_resume_score?: number
-          max_resume_score?: number
-          min_interview_score?: number
-          max_interview_score?: number
-          sort_column_text?: string
-          is_sort_desc?: boolean
-          text_search_qry?: string
-          sort_by_schedule?: string
-          is_locat_filter_on?: boolean
-        }
-        Returns: {
-          job_app: Json
-          cand: Json
-          tasks: Json
-          candfiles: Json
-          assres: Json
-          schedule: Json
-          interview_session_meetings: Json
-          fil_res: number
-        }[]
-      }
-      kkkjob_application_filter_sort: {
-        Args: {
-          jb_id: string
-          min_lat?: number
-          min_long?: number
-          max_lat?: number
-          max_long?: number
-          j_status?: string
-          from_rec_num?: number
-          end_rec_num?: number
-          min_resume_score?: number
-          max_resume_score?: number
-          min_interview_score?: number
-          max_interview_score?: number
-          sort_column_text?: string
-          is_sort_desc?: boolean
-          text_search_qry?: string
-          sort_by_schedule?: string
-          is_locat_filter_on?: boolean
-        }
-        Returns: {
-          job_app: Json
-          cand: Json
-          candfiles: Json
-          assres: Json
-          schedule: Json
-          panel: Json
-          fil_res: number
-        }[]
-      }
-      kkkjob_application_filter_sort2: {
-        Args: {
-          jb_id: string
-          min_lat?: number
-          min_long?: number
-          max_lat?: number
-          max_long?: number
-          j_status?: string
-          from_rec_num?: number
-          end_rec_num?: number
-          min_resume_score?: number
-          max_resume_score?: number
-          min_interview_score?: number
-          max_interview_score?: number
-          sort_column_text?: string
-          is_sort_desc?: boolean
-          text_search_qry?: string
-          sort_by_schedule?: string
-          is_locat_filter_on?: boolean
-        }
-        Returns: {
-          job_app: Json
-          cand: Json
-          candfiles: Json
-          assres: Json
-          schedule: Json
-          panel: Json
-          fil_res: number
-        }[]
-      }
       levercandidatesync: {
         Args: Record<PropertyKey, never>
         Returns: Json
@@ -5283,21 +5078,6 @@ export type Database = {
           metadata: Json
           similarity: number
           json_resume: Json
-        }[]
-      }
-      match_questions: {
-        Args: {
-          query_embedding: string
-          match_threshold: number
-          match_count: number
-        }
-        Returns: {
-          id: string
-          question: Json
-          level: string
-          type: string
-          duration: number
-          similarity: number
         }[]
       }
       move_scheduled_jobs_sourcing_to_active: {
