@@ -1,3 +1,4 @@
+import { DatabaseTable } from '@aglint/shared-types';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -13,19 +14,15 @@ import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
-import ModuleSchedules from '../../Common/ModuleSchedules';
-import { useScheduleList } from '../../Common/ModuleSchedules/hooks';
 import DynamicLoader from '../DynamicLoader';
+import Interviews from '../Interviews';
 import PauseResumeDialog from '../PauseResumeDialog';
+import { useAllSchedulesByUserId } from '../query';
 import { DetailsWithCount, PauseDialog } from '../type';
 import { useImrQuery } from './hooks';
 import InterviewerLevelSettings from './InterviewerLevelSettings';
 import Overview from './Overview';
 import TabInterviewModules from './TabModules';
-
-export type detailsWithCount = {
-  InterviewerDe;
-};
 
 function Interviewer() {
   const router = useRouter();
@@ -41,6 +38,9 @@ function Interviewer() {
     isLoading: false,
     end_time: '',
   });
+  const [filter, setFilter] =
+    useState<DatabaseTable['interview_meeting']['status']>('confirmed');
+  const [changeText, setChangeText] = useState('');
 
   const user_id = router.query.member_id as string;
 
@@ -52,16 +52,17 @@ function Interviewer() {
 
   const {
     data: {
-      schedules: scheduleList,
+      schedules: allSchedules,
       totalHoursThisWeek,
       totalHoursToday,
       totalInterviewsThisWeek,
       totalInterviewsToday,
     },
-    isFetched: isScheduleFetched,
-    isLoading: isLoadingSchedule,
-  } = useScheduleList({
-    user_id: user_id,
+    isLoading,
+  } = useAllSchedulesByUserId({
+    filter,
+    member_id: router.query.member_id as string,
+    textSearch: changeText,
   });
 
   const tab = (router.query.tab || 'overview') as
@@ -75,17 +76,17 @@ function Interviewer() {
     return {
       ...interviewerDetails,
       modules: interviewerDetails?.modules.map((item) => {
-        const moduleMeetings = scheduleList.filter(
-          (sch) => sch.interview_meeting.module_id === item.module_id,
+        const moduleMeetings = allSchedules.filter(
+          (sch) => sch.module_id === item.module_id,
         );
         const completedCount = moduleMeetings.filter(
-          (sch) => sch.interview_meeting.status === 'completed',
+          (sch) => sch.status === 'completed',
         ).length;
         const cancelledCount = moduleMeetings.filter(
-          (sch) => sch.interview_meeting.status === 'cancelled',
+          (sch) => sch.status === 'cancelled',
         ).length;
         const confirmedCount = moduleMeetings.filter(
-          (sch) => sch.interview_meeting.status === 'confirmed',
+          (sch) => sch.status === 'confirmed',
         ).length;
         return {
           ...item,
@@ -99,6 +100,7 @@ function Interviewer() {
   }, [interviewerDetails]);
 
   const { breadcrum, setBreadcrum } = useBreadcrumContext();
+
   useEffect(() => {
     if (interviewerDetails?.interviewer?.user_id) {
       setBreadcrum([
@@ -123,7 +125,7 @@ function Interviewer() {
         slotTopbarLeft={<>{breadcrum}</>}
         slotBody={
           <>
-            {isLoadingInterviewer || isLoadingSchedule ? (
+            {isLoadingInterviewer || isLoading ? (
               <DynamicLoader />
             ) : (
               <InterviewerDetail
@@ -192,7 +194,7 @@ function Interviewer() {
                       <Overview
                         detailsWithCount={detailsWithCount}
                         setPauseResumeDialog={setPauseResumeDialog}
-                        scheduleList={scheduleList}
+                        scheduleList={allSchedules}
                       />
                     )}
                     {tab === 'keywords' && (
@@ -232,9 +234,13 @@ function Interviewer() {
                       />
                     )}
                     {tab === 'allschedules' && (
-                      <ModuleSchedules
-                        newScheduleList={scheduleList}
-                        isFetched={isScheduleFetched}
+                      <Interviews
+                        allSchedules={allSchedules}
+                        isLoading={isLoading}
+                        filter={filter}
+                        setFilter={setFilter}
+                        changeText={changeText}
+                        setChangeText={setChangeText}
                       />
                     )}
                   </>

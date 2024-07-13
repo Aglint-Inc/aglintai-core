@@ -2,55 +2,49 @@ import { DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 import { InterviewMemberSide } from '@/devlink2/InterviewMemberSide';
 import { NewMyScheduleCard } from '@/devlink3/NewMyScheduleCard';
+import Loader from '@/src/components/Common/Loader';
 import SearchField from '@/src/components/Common/SearchField/SearchField';
 
 import ScheduleMeetingCard from '../../Common/ModuleSchedules/ScheduleMeetingCard';
-import {
-  SchedulesSupabase,
-  transformDataSchedules,
-} from '../../schedules-query';
+import { transformDataSchedules } from '../../schedules-query';
 import { DateIcon } from '../../Settings/Components/DateSelector';
-import { fetchSchedulesCountByUserId } from '../query';
+import { useAllSchedulesByModuleId } from '../queries/hooks';
+import { fetchSchedulesCountByModule } from '../queries/utils';
 
-function Interviews({
-  allSchedules,
-  isLoading,
-  filter,
-  setFilter,
-  changeText,
-  setChangeText,
-}: {
-  allSchedules: SchedulesSupabase;
-  isLoading: boolean;
-  filter: DatabaseTable['interview_meeting']['status'];
-  setFilter: Dispatch<
-    SetStateAction<DatabaseTable['interview_meeting']['status']>
-  >;
-  changeText: string;
-  setChangeText: Dispatch<SetStateAction<string>>;
-}) {
+function SchedulesModules() {
   const router = useRouter();
+  const [filter, setFilter] =
+    useState<DatabaseTable['interview_meeting']['status']>('confirmed');
+
+  const [changeText, setChangeText] = useState('');
+
+  const { data: allSchedules, isFetching: isLoading } =
+    useAllSchedulesByModuleId({
+      filter,
+      changeText,
+    });
+
   const [counts, setCounts] = useState({
     upcomingCount: 0,
     completedCount: 0,
     cancelledCount: 0,
   });
 
-  const member_id = router?.query?.member_id as string;
-
   useEffect(() => {
-    if (member_id) {
+    if (router.query.module_id) {
       (async () => {
-        const res = await fetchSchedulesCountByUserId(member_id);
+        const res = await fetchSchedulesCountByModule(
+          router.query.module_id as string,
+        );
         setCounts(res);
       })();
     }
-  }, [member_id]);
+  }, []);
 
   return (
     <InterviewMemberSide
@@ -83,8 +77,8 @@ function Interviews({
       }}
       slotInterviewCard={
         <>
-          {isLoading ? (
-            ''
+          {isLoading && allSchedules.length === 0 ? (
+            <Loader />
           ) : allSchedules.length === 0 ? (
             <AllInterviewEmpty textDynamic='No schedule found' />
           ) : (
@@ -131,4 +125,4 @@ function Interviews({
   );
 }
 
-export default Interviews;
+export default SchedulesModules;

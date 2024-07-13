@@ -1,4 +1,4 @@
-import { PauseJson } from '@aglint/shared-types';
+import { DatabaseTable, PauseJson } from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
@@ -14,7 +14,7 @@ import {
   addMemberbyUserIds,
   deleteRelationByUserDbDelete,
   fetchInterviewModules,
-  fetchModules,
+  fetchModuleSchedules,
   fetchProgress,
   getMeetingsByModuleId,
   resumePauseDbUpdate,
@@ -31,37 +31,36 @@ export const useAllInterviewModules = () => {
   return query;
 };
 
-export const useAllSchedulesByModuleId = () => {
+export const useAllSchedulesByModuleId = ({
+  filter,
+  changeText,
+}: {
+  filter: DatabaseTable['interview_meeting']['status'];
+  changeText: string;
+}) => {
   const router = useRouter();
+  const module_id = router.query.module_id as string;
   const query = useQuery({
     queryKey: QueryKeysInteviewModules.SCHEDULES_BY_MODULE_ID({
-      moduleId: router.query.module_id as string,
+      moduleId: module_id,
+      filter,
+      changeText,
     }),
-    queryFn: () => fetchModules(router.query.module_id as string),
-    // enabled: !!router.query.module_id,
-    // initialData: [],
-    // refetchOnWindowFocus: false,
+    queryFn: () => fetchModuleSchedules(module_id, filter, changeText),
+    enabled: !!module_id,
+    placeholderData: [],
   });
   return query;
 };
 
-export const useGetMeetingsByModuleId = ({
-  schedulesLoading,
-  user_ids,
-}: {
-  schedulesLoading: boolean;
-  user_ids: string[];
-}) => {
+export const useGetMeetingsByModuleId = () => {
   const router = useRouter();
   const query = useQuery({
     queryKey: QueryKeysInteviewModules.MEETINGS_BY_MODULE_ID({
       moduleId: router.query.module_id as string,
-      user_ids: user_ids,
     }),
     queryFn: () => getMeetingsByModuleId(router.query.module_id as string),
-    enabled: !schedulesLoading && user_ids.length > 0,
-    initialData: [],
-    refetchOnWindowFocus: false,
+    enabled: !!router.query.module_id,
   });
   return query;
 };

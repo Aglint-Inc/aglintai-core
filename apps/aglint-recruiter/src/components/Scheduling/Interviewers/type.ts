@@ -1,7 +1,7 @@
 import { InterviewModuleType, RecruiterUserType } from '@aglint/shared-types';
 
-import { ScheduleListType } from '../Common/ModuleSchedules/hooks';
 import { ModuleType } from '../InterviewTypes/types';
+import { SchedulesSupabase } from '../schedules-query';
 
 export interface InterviewerDetailsType {
   modules: {
@@ -27,7 +27,7 @@ export type DetailsWithCount = Omit<InterviewerDetailsType, 'modules'> & {
     cancelledCount: number;
     completedCount: number;
     confirmedCount: number;
-    moduleMeetings: ScheduleListType;
+    moduleMeetings: SchedulesSupabase;
   })[];
 };
 
