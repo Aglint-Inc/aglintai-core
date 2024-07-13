@@ -280,6 +280,7 @@ export function FilterComponent({
       >
         <FilterDropdown
           isRemoveVisible={false}
+          isResetVisible={itemList.length !== 0}
           slotOption={
             itemList.length ? (
               <FilterOptionsList

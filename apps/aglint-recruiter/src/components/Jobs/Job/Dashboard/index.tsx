@@ -162,19 +162,6 @@ const Dashboard = () => {
     [canPublish],
   );
 
-  const scoringLoader = useMemo(
-    () => (
-      <Stack sx={{ width: '12px', aspectRatio: 1 }}>
-        <CircularProgress
-          color='inherit'
-          size={'100%'}
-          sx={{ color: 'var(--white)' }}
-        />
-      </Stack>
-    ),
-    [],
-  );
-
   const handleFilter = (
     resume_score: ApplicationsParams['filters']['resume_score'][number],
   ) => {
@@ -286,7 +273,15 @@ const Dashboard = () => {
                       job?.processing_count.unavailable +
                       job?.processing_count.unparsable
                     }/${total ?? '---'}`}
-                    slotScoringLoader={scoringLoader}
+                    slotScoringLoader={
+                      <Stack sx={{ width: '12px', aspectRatio: 1 }}>
+                        <CircularProgress
+                          color='inherit'
+                          size={'100%'}
+                          sx={{ color: 'var(--white)' }}
+                        />
+                      </Stack>
+                    }
                   />
                 )}
                 <AddCandidateButton

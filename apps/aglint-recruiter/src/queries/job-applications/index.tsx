@@ -308,7 +308,7 @@ export const diffApplication = (
 
 export const useUploadApplication = ({ job_id }: Pick<Params, 'job_id'>) => {
   const { recruiter_id } = useAuthDetails();
-  const { removeJobQueries } = useInvalidateJobQueries();
+  const { revalidateJobQueries } = useInvalidateJobQueries();
   return useMutation({
     mutationFn: async (
       payload: Omit<HandleUploadApplication, 'job_id' | 'recruiter_id'>,
@@ -322,7 +322,7 @@ export const useUploadApplication = ({ job_id }: Pick<Params, 'job_id'>) => {
     },
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: async () => {
-      removeJobQueries(job_id);
+      revalidateJobQueries(job_id);
       toast.success('Uploaded successfully');
     },
   });
@@ -353,7 +353,7 @@ const handleUploadApplication = async (payload: HandleUploadApplication) => {
 
 export const useUploadResume = (params: Pick<Params, 'job_id'>) => {
   const { recruiter_id } = useAuthDetails();
-  const { removeJobQueries } = useInvalidateJobQueries();
+  const { revalidateJobQueries } = useInvalidateJobQueries();
   return useMutation({
     mutationFn: async (
       payload: Omit<HandleUploadResume, 'job_id' | 'recruiter_id'>,
@@ -367,7 +367,7 @@ export const useUploadResume = (params: Pick<Params, 'job_id'>) => {
     },
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: async () => {
-      removeJobQueries(params.job_id);
+      revalidateJobQueries(params.job_id);
       toast.success('Uploaded successfully');
     },
   });
@@ -416,7 +416,7 @@ const handleBulkResumeUpload = async (payload: HandleUploadResume) => {
 
 export const useUploadCsv = (params: Pick<Params, 'job_id'>) => {
   const { recruiter_id } = useAuthDetails();
-  const { removeJobQueries } = useInvalidateJobQueries();
+  const { revalidateJobQueries } = useInvalidateJobQueries();
   return useMutation({
     mutationFn: async (
       payload: Omit<HandleUploadCsv, 'job_id' | 'recruiter_id'>,
@@ -430,7 +430,7 @@ export const useUploadCsv = (params: Pick<Params, 'job_id'>) => {
     },
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: async () => {
-      removeJobQueries(params.job_id);
+      revalidateJobQueries(params.job_id);
       toast.success('Uploaded successfully');
     },
   });
@@ -455,7 +455,7 @@ export const useMoveApplications = (
   payload: ApplicationsAllQueryPrerequistes,
   applications: ApplicationsStore['checklist'],
 ) => {
-  const { removeJobQueries } = useInvalidateJobQueries();
+  const { revalidateJobQueries } = useInvalidateJobQueries();
   return useMutation({
     mutationFn: async (
       args: Omit<
@@ -466,7 +466,7 @@ export const useMoveApplications = (
       await moveApplications({ job_id: payload.job_id, applications, ...args });
     },
     onSuccess: async () => {
-      removeJobQueries(payload.job_id);
+      revalidateJobQueries(payload.job_id);
       toast.success('Moved successfully');
     },
   });

@@ -72,7 +72,7 @@ export const useJobCreate = () => {
 export const useJobUpdate = () => {
   const queryClient = useQueryClient();
   const { queryKey } = jobsQueryKeys.jobs();
-  const { removeJobQueries } = useInvalidateJobQueries();
+  const { revalidateJobQueries } = useInvalidateJobQueries();
   const mutation = useMutation({
     mutationFn: (job: Parameters<typeof updateJob>[0]) => updateJob(job),
     onMutate: (job) => {
@@ -95,7 +95,7 @@ export const useJobUpdate = () => {
         parameter_weights ||
         (draft && jd_json && !isEqual(draft.jd_json, jd_json))
       ) {
-        removeJobQueries(id);
+        revalidateJobQueries(id);
       }
     },
     onError: (_, __, context) => {

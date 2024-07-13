@@ -1,10 +1,12 @@
 import type { DatabaseTable } from '@aglint/shared-types';
 import {
   QueryClient,
+  QueryFilters,
   queryOptions,
   useQueryClient,
 } from '@tanstack/react-query';
 import axios from 'axios';
+import { useCallback } from 'react';
 
 import { GetInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
 
@@ -73,16 +75,26 @@ const jobQueries = {
 
 export const useInvalidateJobQueries = () => {
   const queryClient = useQueryClient();
-  const removeJobQueries = (id: Job['id']) => {
-    queryClient.removeQueries({
-      predicate: (query) =>
+  const predicateFn = useCallback(
+    (id): QueryFilters['predicate'] =>
+      (query) =>
         query.queryKey.includes(jobKey) &&
         query.queryKey.find((key) => (key as any)?.id === id) &&
         !query.queryKey.includes(noPollingKey),
+    [jobKey, noPollingKey],
+  );
+  const revalidateJobQueries = (id: Job['id']) => {
+    queryClient.refetchQueries({
+      type: 'active',
+      predicate: predicateFn(id),
+    });
+    queryClient.removeQueries({
+      type: 'inactive',
+      predicate: predicateFn(id),
     });
   };
 
-  return { removeJobQueries };
+  return { revalidateJobQueries };
 };
 
 type Pollers = JobRequisite &

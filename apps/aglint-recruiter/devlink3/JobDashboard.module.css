@@ -199,10 +199,6 @@
   line-height: 28px;
 }
 
-.text-xl.text-count-schedule {
-  color: #151d48;
-}
-
 .candidate_flex {
   display: flex;
   grid-column-gap: 4px;
@@ -264,10 +260,6 @@
 .flex-horizontal.center.gap-2 {
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
-}
-
-.flex-horizontal.center.gap-2.hide {
-  display: none;
 }
 
 .flex-horizontal.center.gap-1 {

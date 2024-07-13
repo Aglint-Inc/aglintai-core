@@ -1,3 +1,8 @@
+.ats-wrappers-outer {
+  border: 1px none var(--neutral-6);
+  border-radius: var(--radius-4);
+}
+
 .api-key-wrappers {
   display: flex;
   margin-top: 10px;
@@ -321,16 +326,6 @@
 
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
-}
-
-.fw-semibold.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
 }
 
 .lever-api-generate-wrap {

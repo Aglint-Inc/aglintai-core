@@ -333,16 +333,6 @@
   color: var(--blue600-aad8d97e);
 }
 
-.fw-semibold.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
 .text-grey-600.mt-5 {
   margin-top: 5px;
 }

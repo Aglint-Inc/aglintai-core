@@ -177,16 +177,6 @@
   color: var(--blue600-aad8d97e);
 }
 
-.fw-semibold.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
 .color-grey-600.mt-8 {
   margin-top: 8px;
 }

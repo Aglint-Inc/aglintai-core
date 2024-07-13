@@ -91,10 +91,6 @@
   background-color: var(--sand-4);
 }
 
-.cursor-pointer {
-  cursor: pointer;
-}
-
 .tips-arrow-wrpa {
   position: absolute;
   left: -9px;

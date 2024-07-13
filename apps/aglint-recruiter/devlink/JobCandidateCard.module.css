@@ -286,16 +286,6 @@
   text-transform: capitalize;
 }
 
-.fw-semibold.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
 .frame-1018 {
   display: flex;
   justify-content: flex-start;
