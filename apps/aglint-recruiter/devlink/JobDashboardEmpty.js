@@ -249,7 +249,11 @@ export function JobDashboardEmpty({
                 content="If the applicant tracking system (ATS) you are using is not listed here, please don't hesitate to"
                 color="neutral"
               />
-              <_Builtin.Block tag="div" {...onClickRequestIntegration}>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "cursor-pointer")}
+                tag="div"
+                {...onClickRequestIntegration}
+              >
                 <Text content="request integration." color="accent" />
               </_Builtin.Block>
             </_Builtin.Block>

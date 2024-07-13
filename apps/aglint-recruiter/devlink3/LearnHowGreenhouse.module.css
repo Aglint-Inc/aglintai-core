@@ -45,18 +45,6 @@
   list-style-type: decimal;
 }
 
-.learn-list-how.mt-20 {
-  margin-top: 20px;
-}
-
-.mt-20 {
-  margin-top: 20px;
-}
-
-.learn-list-how.mt-20.mb-20 {
-  margin-bottom: 20px;
-}
-
 .popup_link_block {
   display: flex;
   flex-direction: column;
