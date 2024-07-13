@@ -269,15 +269,21 @@ const AuthProvider = ({ children }) => {
         manager_id: undefined,
         role: undefined,
         last_login: undefined,
+        created_by: undefined,
+        role_id: undefined,
       })
       .eq('user_id', id || userDetails.user.id)
       .select()
       .single();
     if (!error) {
       setRecruiterUser({
-        ...details,
         ...data,
-      } as RecruiterUserType);
+        manager_id: details.manager_id,
+        role: details.role,
+        last_login: details.last_login,
+        created_by: details.created_by,
+        role_id: details.role_id,
+      });
       return true;
     } else {
       toast.error(`Oops! Something went wrong. (${error.message})`);
