@@ -366,6 +366,7 @@ function CandidateAvailability() {
                   slotPrimaryButton={
                     !isSubmitted && (
                       <ButtonSolid
+                        size={2}
                         onClickButton={{ onClick: handleSubmit }}
                         textButton={'Submit Availability'}
                         isLoading={submitLoading}
