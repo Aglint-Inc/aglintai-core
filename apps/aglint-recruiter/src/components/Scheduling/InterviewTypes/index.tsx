@@ -6,7 +6,7 @@ import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { EmptyState } from '@/devlink2/EmptyState';
 import { InterviewModuleCard } from '@/devlink2/InterviewModuleCard';
 import { InterviewModuleTable } from '@/devlink2/InterviewModuleTable';
-import { ArchivedButton } from '@/devlink3/ArchivedButton';
+import { TaskSwitchButton } from '@/devlink3/TaskSwitchButton';
 import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
 
@@ -66,29 +66,52 @@ export function Modules() {
         <>
           <InterviewModuleTable
             slotFilter={
-              <Stack direction={'row'} gap={2}>
-                <SearchField
-                  value={textSearch}
-                  onClear={() => setTextSearch('')}
-                  placeholder='Search by name.'
-                  onChange={(e) => {
-                    setTextSearch(e.target.value);
-                  }}
-                />
-                <FilterDepartment />
-                <FilterCreatedBy />
-                {(departments.length > 0 || createdBy.length > 0) && (
-                  <ButtonGhost
-                    textButton='Reset All'
-                    iconName='refresh'
-                    size={2}
-                    onClickButton={{
-                      onClick: filterReset,
+              <Stack
+                direction={'row'}
+                width={'100%'}
+                justifyContent={'space-between'}
+              >
+                <Stack direction={'row'} gap={2}>
+                  <SearchField
+                    value={textSearch}
+                    onClear={() => setTextSearch('')}
+                    placeholder='Search by name.'
+                    onChange={(e) => {
+                      setTextSearch(e.target.value);
                     }}
-                    isLeftIcon
-                    color={'neutral'}
                   />
-                )}
+                  <FilterDepartment />
+                  <FilterCreatedBy />
+                  {(departments.length > 0 || createdBy.length > 0) && (
+                    <ButtonGhost
+                      textButton='Reset All'
+                      iconName='refresh'
+                      size={2}
+                      onClickButton={{
+                        onClick: filterReset,
+                      }}
+                      isLeftIcon
+                      color={'neutral'}
+                    />
+                  )}
+                </Stack>{' '}
+                <TaskSwitchButton
+                  isIconVisible={false}
+                  isJobCandActive={showArchive}
+                  isListActive={!showArchive}
+                  onClickJobCand={{
+                    onClick: () => {
+                      setShowArchive(true);
+                    },
+                  }}
+                  onClickList={{
+                    onClick: () => {
+                      setShowArchive(false);
+                    },
+                  }}
+                  textFirst={'Show Archived'}
+                  textSecond={'Hide Archived'}
+                />
               </Stack>
             }
             slotInterviewModuleCard={
@@ -167,21 +190,6 @@ export function Modules() {
                         />
                       );
                     })}
-
-                    <ArchivedButton
-                      isHideVisible={archives && showArchive}
-                      isShowVisible={archives && !showArchive}
-                      onClickHide={{
-                        onClick: () => {
-                          setShowArchive((prev) => !prev);
-                        },
-                      }}
-                      onClickShow={{
-                        onClick: () => {
-                          setShowArchive((prev) => !prev);
-                        },
-                      }}
-                    />
                   </>
                 ) : (
                   <Stack p={2}>

@@ -64,8 +64,8 @@ function Instructions({
           }
           textPopupButton={'Save'}
           onClickAction={{
-            onClick: () => {
-              updateInstruction();
+            onClick: async () => {
+              await updateInstruction();
               closeModal();
             },
           }}
@@ -80,7 +80,7 @@ function Instructions({
             <Stack direction={'row'} justifyContent={'start'}>
               <ButtonSoft
                 isLeftIcon={true}
-                slotIcon={<GlobalIcon iconName={'edit'} size={'3'}/>}
+                slotIcon={<GlobalIcon iconName={'edit'} size={'3'} />}
                 size={1}
                 textButton={'Edit Instruction'}
                 onClickButton={{

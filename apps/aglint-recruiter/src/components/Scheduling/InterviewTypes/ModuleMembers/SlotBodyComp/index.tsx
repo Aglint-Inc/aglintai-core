@@ -2,12 +2,10 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 import { InterviewMemberList } from '@/devlink2/InterviewMemberList';
 import { ModuleMembers } from '@/devlink2/ModuleMembers';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import Loader from '@/src/components/Common/Loader';
-import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
@@ -31,7 +29,7 @@ import PauseDialog from '../PauseDialog';
 import ResumeMemberDialog from '../ResumeMemberDialog';
 import SchedulesModules from '../Schedules';
 import { TabsModuleMembers } from '../type';
-import SettingsDialog from './AddMemberDialog';
+import SettingsDialog from './EditModule';
 import SlotQualifiedMembers from './SlotQualifiedMembers';
 import SlotTrainingMembers from './SlotTrainingMembers';
 import { tabsModuleMembers } from './utils';
@@ -57,6 +55,7 @@ function SlotBodyComp({
   const [textValue, setTextValue] = useState(null);
 
   const { refetch } = useModuleAndUsers();
+  
   async function updateInstruction() {
     if (textValue) {
       const { data } = await supabase
@@ -159,26 +158,14 @@ function SlotBodyComp({
                 {currentTab === 'schedules' && <SchedulesModules />}
 
                 {currentTab === 'instructions' && (
-                  <ShowCode>
-                    <ShowCode.When isTrue={!!editModule?.instructions}>
-                      <Instructions
-                        instruction={editModule?.instructions}
-                        setTextValue={setTextValue}
-                        showEditButton={true}
-                        updateInstruction={updateInstruction}
-                      />
-                    </ShowCode.When>
-                    <ShowCode.Else>
-                      <Stack
-                        direction={'row'}
-                        justifyContent={'center'}
-                        alignItems={'center'}
-                        height={'calc(100vh - 185px)'}
-                      >
-                        <AllInterviewEmpty textDynamic='No Instructions' />
-                      </Stack>
-                    </ShowCode.Else>
-                  </ShowCode>
+                  <>
+                    <Instructions
+                      instruction={editModule?.instructions}
+                      setTextValue={setTextValue}
+                      showEditButton={true}
+                      updateInstruction={updateInstruction}
+                    />
+                  </>
                 )}
 
                 {currentTab === 'training' && (

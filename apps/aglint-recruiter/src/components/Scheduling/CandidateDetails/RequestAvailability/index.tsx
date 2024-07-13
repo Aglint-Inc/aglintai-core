@@ -1,8 +1,7 @@
 import {
   DatabaseTable,
-  DatabaseTableInsert,
   EmailTemplateAPi,
-  InterviewSessionTypeDB,
+  InterviewSessionTypeDB
 } from '@aglint/shared-types';
 import { ScheduleUtils } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
@@ -41,6 +40,7 @@ import {
 import { getCompanyDaysCnt } from '@/src/services/CandidateScheduleV2/utils/companyWorkingDays';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
+import { handleMeetingsOrganizerResetRelations } from '@/src/utils/scheduling/upsertMeetingsWithOrganizerId';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -279,17 +279,12 @@ function RequestAvailability() {
           })),
         );
 
-        const updateMeetings: DatabaseTableInsert['interview_meeting'][] =
-          localSessions.map((ses) => {
-            return {
-              id: ses.interview_meeting.id,
-              interview_schedule_id:
-                ses.interview_meeting.interview_schedule_id,
-              status: 'waiting',
-              meeting_flow: 'candidate_request',
-            };
-          });
-        await supabase.from('interview_meeting').upsert(updateMeetings);
+        await handleMeetingsOrganizerResetRelations({
+          application_id: selectedApplication.id,
+          meeting_flow: 'candidate_request',
+          selectedSessions: localSessions,
+          supabase,
+        });
 
         // send request availability email to candidate
         const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =

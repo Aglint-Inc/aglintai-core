@@ -139,7 +139,7 @@ function CancelScheduleDialog({
             }
           },
         }}
-        buttonText={'Decline'}
+        buttonText={'Cancel'}
       />
     </Dialog>
   );
