@@ -7,13 +7,13 @@ import { useEffect, useRef, useState } from 'react';
 
 import { AtsCard } from '@/devlink/AtsCard';
 import { AtsJobs } from '@/devlink/AtsJobs';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { IntegrationFetching } from '@/devlink/IntegrationFetching';
 import { IntegrationModal } from '@/devlink/IntegrationModal';
 import { LeverApiKey } from '@/devlink/LeverApiKey';
 import { LoadingJobsAts } from '@/devlink/LoadingJobsAts';
 import { NoResultAts } from '@/devlink/NoResultAts';
 import { SkeletonLoaderAtsCard } from '@/devlink/SkeletonLoaderAtsCard';
-import { ButtonPrimaryDefaultRegular } from '@/devlink3/ButtonPrimaryDefaultRegular';
 import LoaderLever from '@/public/lottie/AddJobWithIntegrations';
 import FetchingJobsLever from '@/public/lottie/FetchingJobsLever';
 import UITextField from '@/src/components/Common/UITextField';
@@ -46,6 +46,7 @@ export function LeverModalComp() {
   const [selectedLeverPostings, setSelectedLeverPostings] = useState([]);
   const [leverFilter, setLeverFilter] = useState('published');
   const [initialFetch, setInitialFetch] = useState(true);
+  const [error, setError] = useState<boolean>(false);
   const apiRef = useRef(null);
 
   useEffect(() => {
@@ -136,6 +137,10 @@ export function LeverModalComp() {
   };
 
   const submitApiKey = async () => {
+    if (!apiRef.current.value) {
+      setError(true);
+      return;
+    }
     try {
       setLoading(true);
       const response = await axios.post('/api/lever/getPostings', {
@@ -193,14 +198,14 @@ export function LeverModalComp() {
         integration.lever.step === STATE_LEVER_DIALOG.ERROR ? (
           <LeverApiKey
             slotPrimaryButton={
-              <ButtonPrimaryDefaultRegular
-                buttonText={'Submit'}
+              <ButtonSolid
+                textButton='Submit'
                 isDisabled={loading}
-                buttonProps={{
-                  onClick: () => {
-                    submitApiKey();
-                  },
+                isLoading={loading}
+                onClickButton={{
+                  onClick: submitApiKey,
                 }}
+                size={2}
               />
             }
             onClickSupport={{
@@ -216,7 +221,10 @@ export function LeverModalComp() {
               <UITextField
                 ref={apiRef}
                 labelSize='small'
+                error={error}
+                helperText='Please enter a API key'
                 fullWidth
+                height={32}
                 placeholder='API key'
                 type='password'
               />

@@ -192,7 +192,6 @@ export const deleteInterviewSession = async ({
 }: {
   session_id: string;
   interview_plan_id: string;
-  job_id: string;
 }) => {
   const { error } = await supabase.rpc('delete_session', {
     session_id,

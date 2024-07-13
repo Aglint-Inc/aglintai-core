@@ -8,4 +8,5 @@ declare function FilterDropdown(props: {
   onClickDelete?: Types.Devlink.RuntimeProps;
   isRemoveVisible?: Types.Visibility.VisibilityConditions;
   link?: Types.Basic.Link;
+  isResetVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

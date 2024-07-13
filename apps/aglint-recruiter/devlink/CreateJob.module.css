@@ -159,6 +159,12 @@
   opacity: 0.8;
 }
 
+.code-embed-2 {
+  display: flex;
+  width: 18px;
+  height: 24px;
+}
+
 .create-job-empty {
   display: flex;
   flex-direction: column;

@@ -33,7 +33,7 @@ export const getSubject = (companyName: any) => `${companyName}`;
 export const interviewStartEmailOrganizer = ({
   emailBody = dummy.emailBody,
   meetingDetail = dummy.meetingDetail,
-  candidateLink = dummy.candidateLink,
+  candidateLink = '',
   companyLogo = dummy.companyLogo,
 }: EmailTemplateAPi<'interviewStart_email_organizer'>['react_email_placeholders']) => {
   return (

@@ -90,6 +90,7 @@ export async function fetchUtil(
       ),
       interviewerFirstName: interviewer.first_name,
       interviewerLastName: interviewer.last_name,
+      meetingDetailsLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=candidate_details" target="_blank">here</a>`,
     };
 
   const filled_comp_template = fillCompEmailTemplate(
@@ -97,17 +98,12 @@ export async function fetchUtil(
     comp_email_temp,
   );
 
-  const meetLink = recruiter_user.interview_meeting.id
-    ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=candidate_details`
-    : '';
   const react_email_placeholders: EmailTemplateAPi<'meetingDeclined_email_organizer'>['react_email_placeholders'] =
     {
       companyLogo: candidate.recruiter.logo,
       emailBody: filled_comp_template.body,
       subject: filled_comp_template.subject,
       meetingDetail: meeting_detail,
-      candidateScheduleLink: '',
-      meetingDetailsLink: meetLink,
     };
 
   return {

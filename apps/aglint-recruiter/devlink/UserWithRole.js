@@ -70,7 +70,7 @@ export function UserWithRole({
         )}
         tag="div"
       >
-        {slotButton ?? <IconButtonGhost iconName="" color="error" />}
+        {slotButton ?? <IconButtonGhost iconName="delete" color="error" />}
       </_Builtin.Block>
     </_Component>
   );

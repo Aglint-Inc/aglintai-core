@@ -17,7 +17,6 @@ export const ButtonSolid = ({
       href={href}
       style={{
         pointerEvents: href ? 'auto' : 'none',
-        cursor: href ? 'pointer' : 'not-allowed',
       }}
     >
       {buttonText}

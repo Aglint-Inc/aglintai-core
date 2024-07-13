@@ -95,15 +95,13 @@ export const useSchedulingFlowStore = create<SchedulingFlow>()(() => ({
   ...initialState,
 }));
 
-export const setUpdateRequestAvailibityId = (
-  updateRequestAvailibityId: string | null,
-) => useSchedulingFlowStore.setState({ updateRequestAvailibityId });
-
 export const setNoSlotReasons = (
   noSlotReasons: SchedulingFlow['noSlotReasons'],
 ) => useSchedulingFlowStore.setState({ noSlotReasons });
 
-
+export const setUpdateRequestAvailibityId = (
+  updateRequestAvailibityId: string | null,
+) => useSchedulingFlowStore.setState({ updateRequestAvailibityId });
 
 export const setRequestAvailibityId = (requestAvailibityId: string | null) =>
   useSchedulingFlowStore.setState({ requestAvailibityId });

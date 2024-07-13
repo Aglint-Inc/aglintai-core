@@ -150,9 +150,3 @@
 .text-gray-600 {
   color: var(--sand-11);
 }
-
-.text-gray-600.is_link {
-  color: #337fbd;
-  text-decoration: underline;
-  cursor: pointer;
-}

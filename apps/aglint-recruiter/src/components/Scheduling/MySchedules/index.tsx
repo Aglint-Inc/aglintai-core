@@ -46,7 +46,7 @@ function MySchedule() {
     try {
       localStorage.setItem(
         'gmail-redirect-path',
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=mySchedules`,
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=myschedules`,
       );
       const { data } = await axios.get('/api/scheduling/google-consent');
 

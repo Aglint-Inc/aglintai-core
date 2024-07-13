@@ -110,6 +110,7 @@ function Filters({ setFilteredInterviewer }) {
         />
         <FilterDropDown
           title={'Qualified'}
+          iconname='person_check'
           itemList={uniqueQualifiedModules}
           selectedItems={selectedQualifiedModule}
           setSelectedItems={setSelectedQualifiedModule}
@@ -122,6 +123,7 @@ function Filters({ setFilteredInterviewer }) {
         />
         <FilterDropDown
           title={'Training'}
+          iconname='person_check'
           itemList={uniqueTrainingModules}
           selectedItems={selectedTrainingModule}
           setSelectedItems={setSelectedTrainingModule}

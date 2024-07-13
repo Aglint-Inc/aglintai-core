@@ -4,7 +4,7 @@ import React from 'react';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import ROUTES from '@/src/utils/routing/routes';
-import { capitalize } from '@/src/utils/text/textUtils';
+import { capitalizeSentence } from '@/src/utils/text/textUtils';
 
 export const BreadCrumbs = () => {
   const { push } = useRouter();
@@ -13,7 +13,7 @@ export const BreadCrumbs = () => {
     <>
       <Breadcrum
         isLink
-        textName={`${capitalize(job?.status ?? 'all')} jobs`}
+        textName={`${capitalizeSentence(job?.status ?? 'all')} jobs`}
         onClickLink={{
           onClick: () => {
             push(`${ROUTES['/jobs']()}?status=${job?.status ?? 'all'}`);
@@ -23,7 +23,7 @@ export const BreadCrumbs = () => {
       />
       <Breadcrum
         isLink
-        textName={capitalize(job?.job_title ?? '---')}
+        textName={capitalizeSentence(job?.job_title ?? '---')}
         onClickLink={{
           onClick: () => {
             push(ROUTES['/jobs/[id]']({ id: job?.id }));

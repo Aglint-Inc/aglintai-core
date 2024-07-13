@@ -91,10 +91,6 @@
   background-color: var(--sand-4);
 }
 
-.cursor-pointer {
-  cursor: pointer;
-}
-
 .tips-arrow-wrpa {
   position: absolute;
   left: -9px;
@@ -114,7 +110,7 @@
   border: 1px solid var(--sand-3);
   border-radius: var(--radius-3);
 
-  background-color: var(--sand-2);
+  background-color: var(--neutral-3);
 }
 
 .taskdrawer_controls {

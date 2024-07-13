@@ -33,6 +33,7 @@ function FilterJobDashboard({
           {
             type: 'filter',
             name: 'department',
+            iconname: 'apartment',
             options: filterOptions.department,
             setValue: (val) => {
               setFilterValues({
@@ -45,6 +46,7 @@ function FilterJobDashboard({
           {
             type: 'filter',
             name: 'Job Location',
+            iconname: 'location_on',
             options: filterOptions.location,
             setValue: (val) => {
               setFilterValues({
@@ -57,6 +59,7 @@ function FilterJobDashboard({
           {
             type: 'filter',
             name: 'Job type',
+            iconname: 'work',
             options: filterOptions.type,
             setValue: (val) => {
               setFilterValues({
@@ -69,6 +72,7 @@ function FilterJobDashboard({
           {
             type: 'filter',
             name: 'hiring manager',
+            iconname: 'person',
             options: filterOptions.hiringManager,
             setValue: (val) => {
               setFilterValues({
@@ -81,6 +85,7 @@ function FilterJobDashboard({
           {
             type: 'filter',
             name: 'recruiter',
+            iconname: 'person',
             options: filterOptions.recruiter,
             setValue: (val) => {
               setFilterValues({

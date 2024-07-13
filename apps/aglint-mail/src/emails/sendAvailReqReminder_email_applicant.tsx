@@ -22,7 +22,7 @@ export const getSubject = (companyName: any) => `${companyName}`;
 export const CandidateAvailabilityRequest = ({
   emailBody = dummy.emailBody,
   companyLogo = dummy.companyLogo,
-  availabilityReqLink = dummy.availabilityReqLink,
+  availabilityReqLink = '',
 }: EmailType['react_email_placeholders']) => {
   return (
     <EmailContainer companyLogo={companyLogo} emailBody={emailBody}>

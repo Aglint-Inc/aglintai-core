@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import React from 'react';
 
 import { Checkbox } from '@/devlink/Checkbox';
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import { ShowCode } from '@/src/components/Common/ShowCode';
@@ -95,6 +96,7 @@ function FilterChip({
         }}
       >
         <FilterDropdown
+          isResetVisible={itemList?.length !== 0}
           slotOption={
             <ShowCode>
               <ShowCode.When isTrue={filterType.name === 'date_range'}>
@@ -154,8 +156,12 @@ function FilterChip({
                       </Stack>
                     );
                   })}
-                  {itemList?.length === 0 &&
-                    `No ${capitalizeAll(filterType.name)}`}
+                  {itemList?.length === 0 && (
+                    <GlobalEmptyState
+                      // iconName={''}
+                      textDesc={`No ${capitalizeAll(filterType.name)}`}
+                    />
+                  )}
                 </Stack>
               </ShowCode.Else>
             </ShowCode>

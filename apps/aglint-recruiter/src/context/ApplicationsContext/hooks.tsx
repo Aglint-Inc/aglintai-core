@@ -306,7 +306,6 @@ export const useApplicationsActions = () => {
     {
       job_id,
     },
-    section,
     checklist,
   );
 
@@ -409,7 +408,7 @@ export const useApplicationsActions = () => {
 
 const EMAIL_VISIBILITIES: {
   // eslint-disable-next-line no-unused-vars
-  [id in ApplicationsParams['section']]: ApplicationsParams['section'][];
+  [id in Application['status']]: Application['status'][];
 } = {
   new: ['disqualified'],
   screening: ['new'],
@@ -419,9 +418,9 @@ const EMAIL_VISIBILITIES: {
   disqualified: ['new', 'screening', 'assessment', 'interview', 'qualified'],
 };
 
-const CASCADE_VISIBILITIES: {
+export const CASCADE_VISIBILITIES: {
   // eslint-disable-next-line no-unused-vars
-  [id in ApplicationsParams['section']]: ApplicationsParams['section'][];
+  [id in Application['status']]: Application['status'][];
 } = {
   new: [
     'new',

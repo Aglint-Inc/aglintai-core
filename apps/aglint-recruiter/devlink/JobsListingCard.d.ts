@@ -22,4 +22,10 @@ declare function JobsListingCard(props: {
   isAssessmentPillVisible?: Types.Visibility.VisibilityConditions;
   interviewCount?: React.ReactNode;
   isInterviewPillVisible?: Types.Visibility.VisibilityConditions;
+  onClickNew?: Types.Devlink.RuntimeProps;
+  onClickScreening?: Types.Devlink.RuntimeProps;
+  onClickAssessment?: Types.Devlink.RuntimeProps;
+  onClickInterview?: Types.Devlink.RuntimeProps;
+  onClickQualified?: Types.Devlink.RuntimeProps;
+  onClickDisqualified?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

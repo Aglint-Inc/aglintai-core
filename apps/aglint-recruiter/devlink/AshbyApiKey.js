@@ -19,7 +19,7 @@ export function AshbyApiKey({
   _interactions.useInteractions(_interactionsData, _styles);
 
   return (
-    <_Component tag="div">
+    <_Component className={_utils.cx(_styles, "ats-wrappers-outer")} tag="div">
       <_Builtin.Block tag="div">
         {"Enter your Ashby API key to continue"}
       </_Builtin.Block>

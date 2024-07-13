@@ -1,11 +1,16 @@
 import {
   additionalRescheduleNotes,
   cancelReason,
+  candidateProfileLink,
   candidates,
+  candidateScheduleLink,
   date_range,
   dates,
   interviewer,
+  interviewFeedbackLink,
+  interviewInstructionLink,
   jobDetails,
+  meetingDetailsLink,
   organizer,
   rescheduleReason,
   selfSchedulingLink,
@@ -26,6 +31,7 @@ export const emailVariablePayloads = {
     ...candidates,
     ...jobDetails,
     date_range,
+    selfSchedulingLink,
   ],
   confInterview_email_organizer: [...organizer, ...candidates, ...jobDetails],
   confirmInterview_email_applicant: [
@@ -45,6 +51,7 @@ export const emailVariablePayloads = {
     cancelReason,
     additionalRescheduleNotes,
     ...jobDetails,
+    candidateScheduleLink,
   ],
   interReschedReq_email_recruiter: [
     ...organizer,
@@ -53,6 +60,7 @@ export const emailVariablePayloads = {
     additionalRescheduleNotes,
     ...jobDetails,
     ...dates,
+    candidateScheduleLink,
   ],
 
   interviewStart_email_applicant: [
@@ -74,7 +82,6 @@ export const emailVariablePayloads = {
     ...candidates,
     ...jobDetails,
     ...organizer,
-    selfSchedulingLink,
   ],
   sendAvailReqReminder_email_applicant: [
     ...candidates,
@@ -102,6 +109,10 @@ export const emailVariablePayloads = {
     ...jobDetails,
     ...interviewer,
     ...organizer,
+    candidateScheduleLink,
+    candidateProfileLink,
+    interviewInstructionLink,
+    interviewFeedbackLink,
   ],
   interviewStart_email_organizer: [...candidates, ...jobDetails, ...organizer],
   meetingAccepted_email_organizer: [
@@ -115,6 +126,7 @@ export const emailVariablePayloads = {
     ...interviewer,
     ...organizer,
     ...jobDetails,
+    meetingDetailsLink,
   ],
   interviewEnd_email_interviewerForFeedback: [
     ...candidates,

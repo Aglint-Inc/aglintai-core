@@ -17,4 +17,5 @@ declare function EditEmail(props: {
   isTipVisible?: Types.Visibility.VisibilityConditions;
   slotSaveButton?: Types.Devlink.Slot;
   currentModule?: Types.Builtin.Text;
+  showPreview?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

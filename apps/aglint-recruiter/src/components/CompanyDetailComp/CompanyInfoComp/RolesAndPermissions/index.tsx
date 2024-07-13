@@ -454,28 +454,35 @@ const app_modules: {
   permissions: string[];
 }[] = [
   {
-    name: 'enable disable Apps',
+    name: 'Enable or Disable Apps',
     dependency: null,
     description:
-      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
+      'Manage the apps available for the [Role Name] in your Aglint account. By enabling an app, the role will have access to it. You can configure permissions for each app in the sections below.',
     permissions: [
+      'tasks_enabled',
       'jobs_enabled',
+      'scheduler_enabled',
+      'workflow_enabled',
+      'integrations_enabled',
+      'company_setting_enabled',
       // 'assessment_enabled',
       // 'phone_screening_enabled',
-      'integrations_enabled',
       // 'sourcing_enabled',
-      'workflow_enabled',
-      'company_setting_enabled',
-      'scheduler_enabled',
-      'tasks_enabled',
-      'settings_scheduler_enable',
+      // 'settings_scheduler_enable',
     ],
   },
   {
-    name: 'job permissions',
+    name: 'Tasks Application Permissions',
+    dependency: 'tasks_enabled',
+    description:
+      'Here are the permissions enabled for the [Role] role to manage the Tasks Application:',
+    permissions: ['tasks_read', 'tasks_create', 'tasks_update', 'tasks_delete'],
+  },
+  {
+    name: 'Jobs Application Permissions',
     dependency: 'jobs_enabled',
     description:
-      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Jobs module:',
+      'Here are the permissions enabled for the [Role] role to manage the Jobs Application:',
     permissions: [
       'jobs_read',
       'jobs_create',
@@ -485,17 +492,39 @@ const app_modules: {
       'jobs_archive',
       'jobs_restore',
       'jobs_delete',
+      'candidates_read',
+      'candidates_add',
+      'candidates_delete',
       'profileScore_view',
-      'profileScore_update',
+      'candidates_moveStage',
+      // 'candidates_update',
       'jobs_assignHiringManager',
       'jobs_assignRecruiter',
       'jobs_assignCoordinator',
       'jobs_assignSourcer',
-      'candidates_add',
-      'candidates_read',
-      'candidates_update',
-      'candidates_delete',
-      'candidates_moveStage',
+      // 'profileScore_update',
+    ],
+  },
+  {
+    name: 'Scheduling  Application Permissions',
+    dependency: 'scheduler_enabled',
+    description:
+      'Here are the permissions enabled for the [Role] role to manage the Scheduling Application:',
+    permissions: [
+      'scheduler_read',
+      'scheduler_create',
+      'scheduler_update',
+      'scheduler_delete',
+      'scheduler_request_availability',
+      'scheduler_send_scheduling',
+      'interviews_read',
+      'interviews_update',
+      'interviews_delete',
+      'scheduler_interview_types_create',
+      'scheduler_interview_types_read',
+      'scheduler_interview_types_update',
+      'scheduler_interviewer_edit',
+      'settings_scheduler_update',
     ],
   },
   // {
@@ -519,47 +548,20 @@ const app_modules: {
   //     'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
   //   permissions: ['reports_view', 'reports_generate', 'reports_export'],
   // },
+
   {
-    name: 'task permissions',
-    dependency: 'tasks_enabled',
-    description:
-      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
-    permissions: ['tasks_create', 'tasks_read', 'tasks_update', 'tasks_delete'],
-  },
-  {
-    name: 'Workflow permissions',
+    name: 'Workflows Application Permissions',
     dependency: 'workflow_enabled',
     description:
-      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
+      'Here are the permissions enabled for the [Role] role to manage the Workflows Application:',
     permissions: [
-      'workflow_create',
       'workflow_read',
+      'workflow_create',
       'workflow_update',
       'workflow_delete',
     ],
   },
-  {
-    name: 'scheduler permissions',
-    dependency: 'scheduler_enabled',
-    description:
-      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
-    permissions: [
-      'scheduler_read',
-      'scheduler_create',
-      'scheduler_update',
-      'scheduler_delete',
-      'scheduler_request_availability',
-      'scheduler_send_scheduling',
-      'interviews_read',
-      'interviews_update',
-      'interviews_delete',
-      'scheduler_interview_types_create',
-      'scheduler_interview_types_read',
-      'scheduler_interview_types_update',
-      'scheduler_interviewer_edit',
-      'settings_scheduler_update',
-    ],
-  },
+
   // {
   //   name: 'User permissions',
   //   dependency: null,
@@ -575,10 +577,10 @@ const app_modules: {
   //   ],
   // },
   {
-    name: 'Company permissions',
+    name: 'Company Settings Permissions',
     dependency: 'company_setting_enabled',
     description:
-      'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
+      'Here are the permissions enabled for the [Role] role to manage the Company Settings',
     permissions: [
       'settings_view',
       'settings_update',

@@ -1,24 +1,35 @@
+import { Dialog } from '@mui/material';
 import { useRouter } from 'next/router';
 import type React from 'react';
+import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ConnectedJobsList } from '@/devlink/ConnectedJobsList';
+import { DcPopup } from '@/devlink/DcPopup';
 import { Breadcrum } from '@/devlink2/Breadcrum';
+import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import { PageLayout } from '@/devlink2/PageLayout';
+import { TextWithIcon } from '@/devlink3/TextWithIcon';
+import { useWorkflows } from '@/src/context/Workflows';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
 import { useWorkflowStore } from '@/src/context/Workflows/store';
 import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { capitalizeSentence } from '@/src/utils/text/textUtils';
 
+import UITextField from '../../Common/UITextField';
 import { WithPermission } from '../../withPermission';
 
 type LayoutProps = React.PropsWithChildren;
 const Layout = (props: LayoutProps) => {
   return (
-    <PageLayout
-      slotTopbarLeft={<BreadCrumbs />}
-      slotBody={props.children}
-      slotTopbarRight={<Edit />}
-    />
+    <>
+      <PageLayout
+        slotTopbarLeft={<BreadCrumbs />}
+        slotBody={props.children}
+        slotTopbarRight={<Edit />}
+      />
+      <DeletePopup />
+    </>
   );
 };
 
@@ -36,23 +47,127 @@ const BreadCrumbs = () => {
       />
       <Breadcrum
         showArrow
-        textName={workflow ? `${capitalizeAll(workflow.title)}` : '---'}
+        textName={workflow ? `${capitalizeSentence(workflow.title)}` : '---'}
       />
     </>
   );
 };
 
 const Edit = () => {
-  const setPopup = useWorkflowStore(({ setPopup }) => setPopup);
+  const { workflow } = useWorkflow();
+  const { setPopup, setDeletion } = useWorkflowStore(
+    ({ setPopup, setDeletion }) => ({ setPopup, setDeletion }),
+  );
   return (
     <WithPermission permission={['workflow_update']}>
-      <ButtonSoft
-        size={'2'}
-        iconName={'bolt'}
-        isLeftIcon={true}
-        textButton={'Edit Workflow'}
-        onClickButton={{ onClick: () => setPopup({ open: true }) }}
-      />
+      {workflow ? (
+        <>
+          <ButtonSoft
+            size={'2'}
+            iconName={'bolt'}
+            isLeftIcon={true}
+            textButton={'Edit Workflow'}
+            onClickButton={{ onClick: () => setPopup({ open: true }) }}
+          />
+          <ButtonSoft
+            size={2}
+            iconName={'delete'}
+            color={'error'}
+            textButton='Delete Workflow'
+            onClickButton={{
+              onClick: () =>
+                setDeletion({
+                  open: true,
+                  workflow: { id: workflow.id, jobs: workflow.jobs },
+                }),
+            }}
+          />
+        </>
+      ) : (
+        <></>
+      )}
     </WithPermission>
+  );
+};
+
+const DeletePopup = () => {
+  const { push } = useRouter();
+  const { handleDeleteWorkflow } = useWorkflows();
+  const { workflow } = useWorkflow();
+  const { deletion, closeDeletion } = useWorkflowStore(
+    ({ deletion, closeDeletion }) => ({
+      deletion,
+      closeDeletion,
+    }),
+  );
+  const [value, setValue] = useState('');
+  const count = deletion?.workflow?.jobs?.length ?? 0;
+  const title = workflow?.title ?? '';
+  const enabled = title.trim() === value.trim();
+
+  const handleClose = () => {
+    closeDeletion();
+    setValue('');
+  };
+  return (
+    <Dialog open={deletion.open}>
+      <DcPopup
+        onClickClosePopup={{ onClick: () => handleClose() }}
+        popupName={'Delete workflow'}
+        slotBody={
+          <>
+            <GlobalBannerShort
+              color={'error'}
+              slotButtons={<></>}
+              textTitle={
+                count === 0
+                  ? ' Are you sure you want to delete this workflow?'
+                  : `This workflow is being used in ${count} job${count === 1 ? '' : 's'}. Are you sure you want to unlink and Delete this workflow?`
+              }
+              textDescription={`Confirm  delete by typing the workflow name "${title.trim()}"`}
+            />
+            {count ? (
+              <ConnectedJobsList
+                slotTextWithIcon={<TextWithIcon iconName={'work'} />}
+              />
+            ) : (
+              <></>
+            )}
+            <UITextField
+              value={value}
+              placeholder='Enter workflow name here'
+              onChange={(e) => {
+                setValue(e.target.value);
+              }}
+            />
+          </>
+        }
+        slotButtons={
+          <>
+            <ButtonSoft
+              color={'neutal'}
+              size={2}
+              onClickButton={{ onClick: () => handleClose() }}
+              textButton={'Cancel'}
+            />
+            <ButtonSoft
+              color={'error'}
+              size={2}
+              isDisabled={!enabled}
+              onClickButton={{
+                onClick: () => {
+                  if (enabled) {
+                    push(ROUTES['/workflows']());
+                    handleDeleteWorkflow({ id: deletion.workflow?.id });
+                    handleClose();
+                  }
+                },
+              }}
+              textButton={'Delete'}
+            />
+          </>
+        }
+      />
+    </Dialog>
   );
 };
