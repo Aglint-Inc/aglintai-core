@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GlobalBanner } from '@/devlink2/GlobalBanner';
+import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import {
   setIsScheduleNowOpen,
   setRequestAvailibityId,
@@ -37,7 +37,7 @@ function RequestAvailabilityList({
     );
 
   return (
-    <GlobalBanner
+    <GlobalBannerShort
       color={'warning'}
       iconName={'schedule'}
       textTitle={'Candidate submitted availability'}

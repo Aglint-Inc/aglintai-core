@@ -11,15 +11,16 @@ import { supabase } from '@/src/utils/supabase/client';
 import {
   setDateRange,
   setIsScheduleNowOpen,
+  setSelectedTaskId,
   setStepScheduling,
   useSchedulingFlowStore,
 } from '../../SchedulingDrawer/store';
-import { setRescheduleSessionIds } from '../../store';
+import { setRescheduleSessionIds, setSelectedSessionIds } from '../../store';
 
 function TaskPopups() {
   const [tasks, setTasks] = useState<DatabaseView['tasks_view'][]>(null);
   const router = useRouter();
-  const {updateRequestAvailibityId}=useSchedulingFlowStore()
+  const { updateRequestAvailibityId } = useSchedulingFlowStore();
   useEffect(() => {
     if (router.query.application_id) {
       getTaskDetails(router.query.application_id as string);
@@ -62,8 +63,15 @@ function TaskPopups() {
                         start_date: tasks[0].schedule_date_range.start_date,
                         end_date: tasks[0].schedule_date_range.end_date,
                       });
+                      setSelectedTaskId(tasks[0].id);
+                      setSelectedSessionIds(
+                        tasks[0].session_ids.map((ele) => ele.id),
+                      );
+                      setRescheduleSessionIds(
+                        tasks[0].session_ids.map((ele) => ele.id),
+                      );
                       router.push(
-                        `/scheduling/application/${router.query.application_id}?task_id=${tasks[0].id}`,
+                        `/scheduling/application/${router.query.application_id}`,
                       );
                       setIsScheduleNowOpen(true);
                     },
