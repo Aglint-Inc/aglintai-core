@@ -189,7 +189,6 @@ export type DeleteInterviewSession = Parameters<
 export const deleteInterviewSession = async ({
   session_id,
   interview_plan_id,
-  job_id,
 }: {
   session_id: string;
   interview_plan_id: string;
@@ -198,7 +197,6 @@ export const deleteInterviewSession = async ({
   const { error } = await supabase.rpc('delete_session', {
     session_id,
     interview_plan_id,
-    job_id,
   });
   if (error) throw new Error(error.message);
 };
