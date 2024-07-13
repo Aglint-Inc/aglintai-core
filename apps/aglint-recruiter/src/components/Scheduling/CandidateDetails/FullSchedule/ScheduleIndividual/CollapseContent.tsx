@@ -7,6 +7,7 @@ import { Text } from '@/devlink3/Text';
 import { TextWithIcon } from '@/devlink3/TextWithIcon';
 import InterviewerAcceptDeclineIcon from '@/src/components/Common/Icons/InterviewerAcceptDeclineIcon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import { CustomTooltip } from '@/src/components/Common/Tooltip';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { numberToText } from '@/src/utils/number/numberToText';
@@ -52,6 +53,8 @@ function CollapseContent({
     );
   }
 
+  const cancelReasons = currentSession?.cancel_reasons;
+
   return (
     <Collapse in={collapsed}>
       {!!currentSession && (
@@ -93,13 +96,16 @@ function CollapseContent({
             <Stack spacing={'var(--space-2)'}>
               <Text
                 content={
-                  interview_session.session_type === 'panel'
-                    ? `${numberToText(
-                        interview_session.interviewer_cnt,
-                      )} of the member below will be picked as interviewer`
-                    : interview_session.session_type === 'individual'
-                      ? `One of the member below will be picked as interviewer`
-                      : 'Interviewer(s)'
+                  interview_meeting?.status === 'confirmed' ||
+                  interview_meeting?.status === 'completed'
+                    ? 'Interviewer(s)'
+                    : interview_session.session_type === 'panel'
+                      ? `${numberToText(
+                          interview_session.interviewer_cnt,
+                        )} of the member below will be picked as interviewer`
+                      : interview_session.session_type === 'individual'
+                        ? `One of the member below will be picked as interviewer`
+                        : 'Interviewer(s)'
                 }
                 size={1}
                 color={'neutral'}
@@ -115,6 +121,12 @@ function CollapseContent({
                       user.user_details.email.split('@')[1]) ||
                   !!(user.user_details.schedule_auth as any)?.access_token;
 
+                const cancelReason = cancelReasons?.find(
+                  (reason) =>
+                    reason.session_relation_id ===
+                    user.interview_session_relation.id,
+                );
+
                 return (
                   <GlobalUserDetail
                     slotCandidateStatus={
@@ -126,11 +138,43 @@ function CollapseContent({
                       >
                         {(interview_meeting?.status === 'confirmed' ||
                           interview_meeting?.status === 'completed') && (
-                          <InterviewerAcceptDeclineIcon
-                            type={
-                              user.interview_session_relation.accepted_status
-                            }
-                          />
+                          <>
+                            <CustomTooltip
+                              hidden={!cancelReason?.reason}
+                              title={
+                                <Stack
+                                  p={'var(--space-2)'}
+                                  spacing={'var(--space-1)'}
+                                >
+                                  <Text
+                                    size={2}
+                                    content={`Reason : ${cancelReason?.reason}`}
+                                    color={'info'}
+                                    weight={'regular'}
+                                  />
+                                  <Text
+                                    size={1}
+                                    content={`Notes : ${cancelReason?.other_details?.note}`}
+                                    weight={'regular'}
+                                    color={'neutral'}
+                                  />
+                                </Stack>
+                              }
+                            >
+                              <Stack
+                                sx={{
+                                  cursor: 'pointer',
+                                }}
+                              >
+                                <InterviewerAcceptDeclineIcon
+                                  type={
+                                    user.interview_session_relation
+                                      .accepted_status
+                                  }
+                                />
+                              </Stack>
+                            </CustomTooltip>
+                          </>
                         )}
 
                         {interview_meeting?.status !== 'confirmed' &&
