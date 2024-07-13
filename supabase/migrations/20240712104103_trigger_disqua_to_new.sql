@@ -1,12 +1,3 @@
--- Create the trigger
-CREATE TRIGGER trigger_delete_interview_schedule
-AFTER UPDATE OF status ON public.applications
-FOR EACH ROW
-WHEN (OLD.status = 'disqualified' AND NEW.status = 'new')
-EXECUTE FUNCTION delete_interview_schedule_on_status_update();
-
-
--- Create the trigger function
 CREATE OR REPLACE FUNCTION delete_interview_schedule_on_status_update()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -16,6 +7,13 @@ BEGIN
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+
+-- Create the trigger
+CREATE TRIGGER trigger_delete_interview_schedule
+AFTER UPDATE OF status ON public.applications
+FOR EACH ROW
+WHEN (OLD.status = 'disqualified' AND NEW.status = 'new')
+EXECUTE FUNCTION delete_interview_schedule_on_status_update();
 
 
 
