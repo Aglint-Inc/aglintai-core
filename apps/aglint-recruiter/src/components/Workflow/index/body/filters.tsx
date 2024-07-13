@@ -36,6 +36,7 @@ const Filters = () => {
         active: value.length,
         name: key,
         value: value,
+        iconname: '',
         type: 'filter',
         icon: <FilterIcon filter={key as FilterIconProps['filter']} />,
         setValue: (newValue) =>

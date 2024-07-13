@@ -20,7 +20,6 @@ export type TipTapAIEditorParams = {
   placeholder: string;
   initialValue: string | undefined;
   enablAI?: boolean;
-  maxHeight?: string;
   // eslint-disable-next-line no-unused-vars
   handleChange: (s: string) => void;
   showWarnOnEdit?: () => void;
@@ -34,6 +33,7 @@ export type TipTapAIEditorParams = {
   disabled?: boolean;
   singleLine?: boolean;
   height?: string;
+  minHeight?: string;
   border?: boolean;
   borderRadius?: React.CSSProperties['borderRadius'];
   editor_type?: 'email' | 'regular';
@@ -53,6 +53,7 @@ const TipTapAIEditor = ({
   },
   singleLine = false,
   height = 'auto',
+  minHeight = 'auto',
   disabled = false,
   border = false,
   borderRadius,
@@ -159,7 +160,7 @@ const TipTapAIEditor = ({
               opacity: disabled ? 0.5 : 1,
               backgroundColor: 'var(--white)',
               borderRadius: borderRadius || 'var(--radius-2)',
-              // maxHeight: maxHeight,
+              minHeight: minHeight,
               height: height,
               overflow: 'auto',
               '& .ProseMirror': {

@@ -1,12 +1,12 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { isEqual } from 'lodash';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { applicationsQueries } from '../job-applications';
-import { jobDashboardQueryKeys } from '../job-dashboard/keys';
+import { useInvalidateJobQueries } from '../job';
 import { jobsQueryKeys } from './keys';
 import { Job, JobCreate, JobInsert } from './types';
 
@@ -72,6 +72,7 @@ export const useJobCreate = () => {
 export const useJobUpdate = () => {
   const queryClient = useQueryClient();
   const { queryKey } = jobsQueryKeys.jobs();
+  const { revalidateJobQueries } = useInvalidateJobQueries();
   const mutation = useMutation({
     mutationFn: (job: Parameters<typeof updateJob>[0]) => updateJob(job),
     onMutate: (job) => {
@@ -89,14 +90,12 @@ export const useJobUpdate = () => {
       queryClient.setQueryData<Job[]>(queryKey, newJobs);
       return { previousJobs, newJobs };
     },
-    onSuccess: (_, { id, parameter_weights }) => {
-      if (parameter_weights) {
-        queryClient.removeQueries({
-          queryKey: applicationsQueries.all({ job_id: id }).queryKey,
-        });
-        queryClient.removeQueries({
-          queryKey: jobDashboardQueryKeys.dashboard({ id }).queryKey,
-        });
+    onSuccess: (_, { id, parameter_weights, draft, jd_json }) => {
+      if (
+        parameter_weights ||
+        (draft && jd_json && !isEqual(draft.jd_json, jd_json))
+      ) {
+        revalidateJobQueries(id);
       }
     },
     onError: (_, __, context) => {

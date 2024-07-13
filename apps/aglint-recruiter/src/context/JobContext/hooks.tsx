@@ -1,11 +1,11 @@
 import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
+import { isEqual } from 'lodash';
 import { useParams } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
 
 import { handleJobApi } from '@/src/apiUtils/job/utils';
-import { jobQueries } from '@/src/queries/job';
+import { jobQueries, useInvalidateJobQueries } from '@/src/queries/job';
 import {
-  useRescoreApplications,
   useUploadApplication,
   useUploadCsv,
   useUploadResume,
@@ -74,43 +74,58 @@ const useJobContext = () => {
 
   const status = job &&
     jobLoad && {
-      loading: job.scoring_criteria_loading,
+      loading: job?.scoring_criteria_loading,
       description_error:
-        !job.scoring_criteria_loading &&
+        !job?.scoring_criteria_loading &&
         validateDescription(job?.draft?.description ?? ''),
       description_changed:
         !job.scoring_criteria_loading &&
-        !job?.dashboard_warnings?.job_description &&
-        (job?.draft?.description ?? '') !== job?.description,
+        !isEqual(
+          {
+            company: job.draft.company,
+            department: job.draft.department,
+            description: job.draft.description,
+            job_title: job.draft.job_title,
+            job_type: job.draft.job_type,
+            location: job.draft.location,
+            workplace_type: job.draft.workplace_type,
+          } as Omit<Job['draft'], 'jd_json'>,
+          {
+            company: job.company,
+            department: job.department,
+            description: job.description,
+            job_title: job.job_title,
+            job_type: job.job_type,
+            location: job.location,
+            workplace_type: job.workplace_type,
+          } as Omit<Job['draft'], 'jd_json'>,
+        ),
       jd_json_error: !job.scoring_criteria_loading && !jdValidity,
       scoring_criteria_changed:
-        JSON.stringify(job?.draft?.jd_json ?? {}) !==
-        JSON.stringify(job?.jd_json ?? {}),
+        !job.scoring_criteria_loading &&
+        !isEqual(job.draft.jd_json, job.jd_json),
     };
 
   const interviewPlans = useQuery(jobQueries.interview_plans({ id: job_id }));
 
   const { mutateAsync: jobAsyncUpdate, mutate: jobUpdate } = useJobUpdate();
-  const { mutateAsync: handleRescoreApplications } = useRescoreApplications();
 
   const handleJobUpdate = async (
-    jobId: string,
     job: Omit<Parameters<typeof jobUpdate>[0], 'recruiter_id'>,
   ) => {
     if (recruiter) {
-      jobUpdate({ ...job, id: jobId, recruiter_id: recruiter.id });
+      jobUpdate({ ...job, id: job_id, recruiter_id: recruiter.id });
     }
   };
 
   const handleJobAsyncUpdate = async (
-    jobId: string,
     job: Omit<Parameters<typeof jobUpdate>[0], 'recruiter_id'>,
   ) => {
     if (recruiter) {
       try {
         return await jobAsyncUpdate({
           ...job,
-          id: jobId,
+          id: job_id,
           recruiter_id: recruiter.id,
         });
       } catch {
@@ -141,22 +156,23 @@ const useJobContext = () => {
 
   const handlePublish = async () => {
     if (publishStatus.publishable) {
-      // eslint-disable-next-line no-unused-vars
-      const { processing_count, section_count, flags, ...safeJob } = job;
-      await handleJobAsyncUpdate(safeJob.id, {
+      const {
+        // eslint-disable-next-line no-unused-vars
+        processing_count,
+        // eslint-disable-next-line no-unused-vars
+        section_count,
+        // eslint-disable-next-line no-unused-vars
+        flags,
+        // eslint-disable-next-line no-unused-vars
+        application_match,
+        ...safeJob
+      } = job;
+      await handleJobAsyncUpdate({
         ...safeJob,
         ...safeJob.draft,
         status: 'published',
-        dashboard_warnings: {
-          ...safeJob.dashboard_warnings,
-          job_description: false,
-          score_changed: false,
-        },
       });
       toast.success('Job published successfully');
-      if (status.scoring_criteria_changed) {
-        await handleRescoreApplications({ job_id: job?.id });
-      }
       return true;
     } else {
       if (publishStatus.loading)
@@ -176,7 +192,7 @@ const useJobContext = () => {
   };
 
   const handleRegenerateJd = async (job: Job) => {
-    await handleJobAsyncUpdate(job?.id, {
+    await handleJobAsyncUpdate({
       scoring_criteria_loading: true,
     });
     await handleGenerateJd(job.id, true);
@@ -191,6 +207,8 @@ const useJobContext = () => {
   const { mutate: handleUploadCsv } = useUploadCsv({
     job_id,
   });
+
+  const { revalidateJobQueries } = useInvalidateJobQueries();
 
   useQueries({
     queries: [
@@ -216,9 +234,7 @@ const useJobContext = () => {
       return;
     }
     if (!jobPolling) {
-      queryClient.removeQueries({
-        queryKey: jobQueries.job({ id: job_id }).queryKey,
-      });
+      revalidateJobQueries(job_id);
     }
   }, [jobPolling]);
 
@@ -234,7 +250,6 @@ const useJobContext = () => {
     handleJobAsyncUpdate,
     handleJobUpdate,
     handleRegenerateJd,
-    handleRescoreApplications,
     handleUploadApplication,
     handleUploadResume,
     handleUploadCsv,

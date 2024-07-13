@@ -2,8 +2,8 @@ import { Dialog, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRef, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { IntegrationThanks } from '@/devlink2/IntegrationThanks';
-import { ButtonPrimaryDefaultRegular } from '@/devlink3/ButtonPrimaryDefaultRegular';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
@@ -57,9 +57,8 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
       <ShowCode.When isTrue={showThanks}>
         <IntegrationThanks
           slotButtonClose={
-            <ButtonPrimaryDefaultRegular
-              buttonText={'Close'}
-              buttonProps={{
+            <ButtonSoft
+              onClickButton={{
                 onClick: () => {
                   close();
                   setTimeout(() => {
@@ -67,7 +66,20 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
                   }, 500);
                 },
               }}
+              size={2}
+              textButton={'Close'}
             />
+            // <ButtonPrimaryDefaultRegular
+            //   buttonText={'Close'}
+            //   buttonProps={{
+            //     onClick: () => {
+            //       close();
+            //       setTimeout(() => {
+            //         setShowThanks(false);
+            //       }, 500);
+            //     },
+            //   }}
+            // />
           }
         />
       </ShowCode.When>

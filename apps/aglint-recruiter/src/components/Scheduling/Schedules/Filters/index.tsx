@@ -10,8 +10,6 @@ import { useJobs } from '@/src/context/JobsContext';
 
 import { useScheduleStatesContext } from '../ScheduleStatesContext';
 
-
-
 function Filters() {
   const { updateFilterState, filterState } = useScheduleStatesContext();
 
@@ -80,7 +78,7 @@ function Filters() {
         filters={[
           {
             type: 'filter',
-            name: 'Status',
+            name: '',
             options: [
               { id: 'completed', label: 'Completed' },
               { id: 'cancelled', label: 'Cancelled' },
@@ -99,6 +97,7 @@ function Filters() {
               updateFilterState('status', val);
             },
             value: filterState.status,
+            iconname: 'filter_tilt_shift',
           },
           {
             type: 'filter',
@@ -115,6 +114,7 @@ function Filters() {
               updateFilterState('interviewers', val);
             },
             value: filterState.interviewers,
+            iconname: 'person',
           },
           {
             type: 'filter',
@@ -124,6 +124,7 @@ function Filters() {
               updateFilterState('schedule_types', val);
             },
             value: filterState.schedule_types,
+            iconname: 'filter_tilt_shift',
           },
           {
             type: 'filter',
@@ -136,6 +137,7 @@ function Filters() {
             },
 
             value: filterState.jobs,
+            iconname: 'filter_tilt_shift',
           },
           {
             type: 'filter',
@@ -145,6 +147,7 @@ function Filters() {
               updateFilterState('date_range', val);
             },
             value: [filterState.date_range[filterState.date_range.length - 1]],
+            iconname: 'filter_tilt_shift',
           },
         ]}
       />

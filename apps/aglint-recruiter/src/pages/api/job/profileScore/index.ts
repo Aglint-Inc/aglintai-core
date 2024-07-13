@@ -47,19 +47,12 @@ const handler = async (
   );
   const { job_id, regenerate = false } =
     req.body as JobProfileScoreApi['request'];
-  const { data } = await supabase
+  const { data: job } = await supabase
     .from('public_jobs')
-    .select('description, draft, job_title, dashboard_warnings')
-    .eq('id', job_id);
-  if (
-    !(
-      data &&
-      data[0] &&
-      data[0]?.draft &&
-      (data[0]?.draft as any)?.description &&
-      ((data[0]?.draft as any)?.description ?? '').length > 100
-    )
-  ) {
+    .select('description, draft, job_title')
+    .eq('id', job_id)
+    .single();
+  if ((job?.draft?.description ?? '').length < 100) {
     await supabase
       .from('public_jobs')
       .update({ scoring_criteria_loading: false })
@@ -76,8 +69,8 @@ const handler = async (
     await supabase
       .from('public_jobs')
       .update({ scoring_criteria_loading: true })
-      .eq('id', job_id);
-    const job = data[0];
+      .eq('id', job_id)
+      .single();
     const jsonPromise = newJdJson(
       `Job role : ${job.job_title}
 
@@ -100,7 +93,6 @@ Job description: ${(job.draft as any).description}`,
       draft: { ...(job.draft as any), jd_json: j },
       scoring_criteria_loading: false,
       parameter_weights: weights,
-      dashboard_warnings: { ...job?.dashboard_warnings, score_changed: false },
     };
     if (regenerate) delete payload.jd_json;
     await supabase.from('public_jobs').update(payload).eq('id', job_id);

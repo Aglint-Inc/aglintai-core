@@ -653,10 +653,11 @@ function RequestAvailability() {
                       setStepScheduling('pick_date');
                     },
                   }}
-                  textButton={'back'}
+                  textButton={'Back'}
                 />
                 <ButtonSolid
                   size={2}
+                  isDisabled={totalCount === 0}
                   textButton={'Continue'}
                   onClickButton={{
                     onClick: () => {

@@ -45,9 +45,7 @@ const ResumePreviewer = ({
     <Dialog
       sx={{
         '& .MuiDialog-paper': {
-          borderRadius: '0px !important',
-          border: 'none !important',
-          backgroundColor: '#343639',
+          backgroundColor: 'transparent !important',
         },
         '.MuiDialog-container': {
           height: 'auto',

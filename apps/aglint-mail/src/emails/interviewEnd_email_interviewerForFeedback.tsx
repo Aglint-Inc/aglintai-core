@@ -20,7 +20,7 @@ export const getSubject = (companyName: any) => `${companyName}`;
 const InterviewEndEmailInterviewerForFeedback = ({
   emailBody = dummy.emailBody,
   companyLogo = dummy.companyLogo,
-  interviewFeedbackLink = dummy.interviewFeedbackLink,
+  interviewFeedbackLink = '',
 }: EmailType['react_email_placeholders']) => {
   return (
     <EmailContainer companyLogo={companyLogo} emailBody={emailBody}>

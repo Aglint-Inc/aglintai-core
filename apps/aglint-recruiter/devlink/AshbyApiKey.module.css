@@ -1,3 +1,8 @@
+.ats-wrappers-outer {
+  border: 1px none var(--neutral-6);
+  border-radius: var(--radius-4);
+}
+
 .api-key-wrappers {
   display: flex;
   margin-top: 10px;

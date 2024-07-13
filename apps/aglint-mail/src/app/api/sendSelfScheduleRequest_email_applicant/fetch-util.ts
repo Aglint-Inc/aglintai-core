@@ -73,7 +73,6 @@ export async function dbUtil(
       candidateFirstName: first_name,
       companyName: company,
       jobRole: job_title,
-      selfScheduleLink: `<a href="${scheduleLink}" target="_blank" >here</a>`,
       organizerName: getFullName(organizer.first_name, organizer.last_name),
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),

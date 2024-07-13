@@ -4,7 +4,6 @@ import { CandidateResponseSelfSchedule } from '@aglint/shared-types/src/db/table
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import {
   Alert,
-  Box,
   Container,
   Dialog,
   FormControlLabel,
@@ -34,7 +33,6 @@ import { InterviewConfirmed } from '@/devlink2/InterviewConfirmed';
 import { InterviewConfirmedCard } from '@/devlink2/InterviewConfirmedCard';
 import { RequestReschedule } from '@/devlink2/RequestReschedule';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
-import { ScheduleButton } from '@/devlink3/ScheduleButton';
 import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
 import NotFoundPage from '@/src/pages/404';
@@ -372,34 +370,28 @@ export const ConfirmedInvitePage = (
             <Stack direction={'row'} gap={2}>
               {(!cancelReschedulingDetails ||
                 cancelReschedulingDetails.all == false) && (
-                <>
-                  <ScheduleButton
-                    textLabel={'Reschedule'}
-                    onClickProps={{
+                <Stack direction={'row'} gap={'var(--space-2)'}>
+                  <ButtonSoft
+                    textButton={'Reschedule'}
+                    size={2}
+                    color={'neutral'}
+                    iconName='event_repeat'
+                    isLeftIcon
+                    onClickButton={{
                       onClick: () => setCancelReschedule('reschedule'),
                     }}
                   />
-                  <ScheduleButton
-                    textLabel={'Cancel Schedule'}
-                    textColorProps={{
-                      style: { color: '#D93F4C' },
-                    }}
-                    onClickProps={{
+                  <ButtonSoft
+                    textButton={'Cancel'}
+                    size={2}
+                    color={'error'}
+                    iconName='event_busy'
+                    isLeftIcon
+                    onClickButton={{
                       onClick: () => setCancelReschedule('cancel'),
-                      style: { background: '#FFF0F1' },
                     }}
-                    slotIcon={
-                      <Box
-                        display={'flex'}
-                        height={'100%'}
-                        justifyContent={'center'}
-                        alignItems={'center'}
-                      >
-                        <GlobalIcon iconName='event_busy' color={'inherit'} />
-                      </Box>
-                    }
                   />
-                </>
+                </Stack>
               )}
             </Stack>
           }
@@ -664,7 +656,7 @@ const CancelRescheduleDialog = ({
           <TextField
             multiline
             placeholder='Add additional notes.'
-            minRows={4}
+            rows={6}
             value={formData.additionalNote}
             fullWidth
             onChange={(e) =>

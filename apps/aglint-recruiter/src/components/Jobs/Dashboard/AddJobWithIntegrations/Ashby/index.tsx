@@ -9,13 +9,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { AshbyApiKey } from '@/devlink/AshbyApiKey';
 import { AshbyAtsJob } from '@/devlink/AshbyAtsJob';
 import { AtsCard } from '@/devlink/AtsCard';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { IntegrationFetching } from '@/devlink/IntegrationFetching';
 import { IntegrationModal } from '@/devlink/IntegrationModal';
 import { LeverApiKey } from '@/devlink/LeverApiKey';
 import { LoadingJobsAts } from '@/devlink/LoadingJobsAts';
 import { NoResultAts } from '@/devlink/NoResultAts';
 import { SkeletonLoaderAtsCard } from '@/devlink/SkeletonLoaderAtsCard';
-import { ButtonPrimaryDefaultRegular } from '@/devlink3/ButtonPrimaryDefaultRegular';
 import LoaderLever from '@/public/lottie/AddJobWithIntegrations';
 import FetchingJobsLever from '@/public/lottie/FetchingJobsLever';
 import UITextField from '@/src/components/Common/UITextField';
@@ -44,6 +44,7 @@ export function AshbyModalComp() {
     JobAshby[]
   >([]);
   const [initialFetch, setInitialFetch] = useState<boolean>(true);
+  const [error, setError] = useState<boolean>(false);
   const apiRef = useRef(null);
 
   useEffect(() => {
@@ -133,6 +134,10 @@ export function AshbyModalComp() {
   };
 
   const submitApiKey = async () => {
+    if (!apiRef.current.value) {
+      setError(true);
+      return;
+    }
     try {
       setLoading(true);
       const response = await axios.post('/api/ashby/getPostings', {
@@ -194,20 +199,24 @@ export function AshbyModalComp() {
         integration.ashby.step === STATE_ASHBY_DIALOG.ERROR ? (
           <AshbyApiKey
             slotPrimaryButton={
-              <ButtonPrimaryDefaultRegular
-                buttonText={'Submit'}
+              <ButtonSolid
+                textButton='Submit'
                 isDisabled={loading}
-                buttonProps={{
-                  onClick: () => {
-                    submitApiKey();
-                  },
+                isLoading={loading}
+                onClickButton={{
+                  onClick: submitApiKey,
                 }}
+                size={2}
               />
             }
             slotInput={
               <UITextField
                 ref={apiRef}
+                onFocus={() => setError(false)}
+                error={error}
+                helperText='Please enter a API key'
                 labelSize='small'
+                height={32}
                 fullWidth
                 placeholder='API key'
                 type='password'

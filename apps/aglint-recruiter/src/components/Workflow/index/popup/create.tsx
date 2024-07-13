@@ -54,7 +54,7 @@ const Create = () => {
         size={'2'}
         iconName={'bolt'}
         isLeftIcon={true}
-        textButton={'New Workflow'}
+        textButton={'Create'}
         onClickButton={{ onClick: () => setPopup({ open: true }) }}
       />
       <Dialog open={open} onClose={() => handleClose()}>

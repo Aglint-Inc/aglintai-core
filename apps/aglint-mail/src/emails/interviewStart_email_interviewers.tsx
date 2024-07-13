@@ -33,7 +33,7 @@ export const getSubject = (companyName: any) => `${companyName}`;
 export const ConfirmMailToOrganizerRemainder = ({
   emailBody = dummy.emailBody,
   meetingDetails = dummy.meetingDetails,
-  candidateLink = dummy.candidateLink,
+  candidateLink = '',
   companyLogo = dummy.companyLogo,
 }: EmailTemplateAPi<'interviewStart_email_interviewers'>['react_email_placeholders']) => {
   return (

@@ -314,40 +314,6 @@ export function CompanyListing({
               </_Builtin.Block>
             ) : null}
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "aglint-powered-footer", "pt-100")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-432")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-933")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-sm", "color-grey-600")}
-                  tag="div"
-                >
-                  {"Powered By"}
-                </_Builtin.Block>
-                <_Builtin.Image
-                  loading="lazy"
-                  width="auto"
-                  height="auto"
-                  alt=""
-                  src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6515c71a265110c954626cb3_Frame%202%20(1).svg"
-                />
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-sm", "text-grey-600")}
-                tag="div"
-              >
-                {"© 2024 Aglint Inc. All Rights Reserved"}
-              </_Builtin.Block>
-            </_Builtin.Block>
-          </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

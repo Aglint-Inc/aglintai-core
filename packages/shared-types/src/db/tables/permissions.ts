@@ -1,4 +1,3 @@
-import type { DatabaseEnums } from "../index.schema.types";
 import type { TableType } from "./index.types";
 
 export type CustomPermissions = TableType<

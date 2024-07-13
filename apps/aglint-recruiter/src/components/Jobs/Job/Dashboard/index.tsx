@@ -60,7 +60,11 @@ import { Job } from '@/src/queries/jobs/types';
 import { Application } from '@/src/types/applications.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
-import { capitalize, capitalizeAll } from '@/src/utils/text/textUtils';
+import {
+  capitalize,
+  capitalizeAll,
+  capitalizeSentence,
+} from '@/src/utils/text/textUtils';
 
 import { UploadApplications } from '../Common/UploadApplications';
 import DashboardBarChart from './BarChart2';
@@ -129,9 +133,6 @@ const Dashboard = () => {
   const score_matches = getMatches(job.application_match, total);
   const [popover, setPopover] = useState(false);
 
-  const handleCloseJob = useCallback(async () => {
-    return await handleJobAsyncUpdate(job.id, { status: 'closed' });
-  }, [job.id]);
   const handleDeleteJob = useCallback(() => {
     push(`${ROUTES['/jobs']()}?status=${job?.status ?? 'all'}`);
     handleJobDelete(job.id);
@@ -143,9 +144,7 @@ const Dashboard = () => {
         handleDeleteJob();
         break;
       case 'published':
-        {
-          await handleCloseJob();
-        }
+        await handleJobAsyncUpdate({ status: 'closed' });
         break;
       case 'closed':
         handleDeleteJob();
@@ -161,19 +160,6 @@ const Dashboard = () => {
       />
     ),
     [canPublish],
-  );
-
-  const scoringLoader = useMemo(
-    () => (
-      <Stack sx={{ width: '12px', aspectRatio: 1 }}>
-        <CircularProgress
-          color='inherit'
-          size={'100%'}
-          sx={{ color: 'var(--white)' }}
-        />
-      </Stack>
-    ),
-    [],
   );
 
   const handleFilter = (
@@ -287,7 +273,15 @@ const Dashboard = () => {
                       job?.processing_count.unavailable +
                       job?.processing_count.unparsable
                     }/${total ?? '---'}`}
-                    slotScoringLoader={scoringLoader}
+                    slotScoringLoader={
+                      <Stack sx={{ width: '12px', aspectRatio: 1 }}>
+                        <CircularProgress
+                          color='inherit'
+                          size={'100%'}
+                          sx={{ color: 'var(--white)' }}
+                        />
+                      </Stack>
+                    }
                   />
                 )}
                 <AddCandidateButton
@@ -306,7 +300,7 @@ const Dashboard = () => {
               <>
                 <IconButtonGhost
                   color={'neutral'}
-                  iconSize={4}
+                  iconSize={6}
                   iconName='more_vert'
                   onClickButton={{
                     onClick: () => {
@@ -398,7 +392,7 @@ const BreadCrumbs = () => {
     <>
       <Breadcrum
         isLink
-        textName={`${capitalize(job?.status ?? 'all')} jobs`}
+        textName={`${capitalizeSentence(job?.status ?? 'all')} jobs`}
         onClickLink={{
           onClick: () => {
             router.push(`/jobs?status=${job?.status ?? 'all'}`);
@@ -407,7 +401,7 @@ const BreadCrumbs = () => {
         }}
       />
       <Breadcrum
-        textName={`${capitalize(job?.job_title ?? 'Job')} ${total ? `(${total})` : ''}`}
+        textName={`${capitalizeSentence(job?.job_title ?? 'Job')} ${total ? `(${total})` : ''}`}
         showArrow
       />
       <Preview />
@@ -581,19 +575,14 @@ const Schedules = () => {
 
 const useBanners = () => {
   const { push } = useRouter();
-  const { publishStatus } = useJob();
-  const {
-    job,
-    isInterviewPlanDisabled,
-    isInterviewSessionEmpty,
-    status,
-    handleWarningUpdate,
-  } = useJobDashboard();
+  const { job, publishStatus, handleJobUpdate } = useJob();
+  const { isInterviewPlanDisabled, isInterviewSessionEmpty, status } =
+    useJobDashboard();
 
   const banners: React.JSX.Element[] = [];
   if (job.status === 'draft') banners.push(<JobsBanner />);
 
-  if (isInterviewPlanDisabled && !job?.dashboard_warnings?.interview_plan)
+  if (isInterviewPlanDisabled)
     banners.push(
       <DashboardWarning
         textWarningTitle={'Interview plan not set'}
@@ -608,7 +597,8 @@ const useBanners = () => {
               color={'accent'}
               highContrast={'true'}
               onClickButton={{
-                onClick: () => handleWarningUpdate({ interview_plan: true }),
+                onClick: () =>
+                  handleJobUpdate({ interview_plan_warning_ignore: true }),
               }}
             />
 
@@ -625,7 +615,7 @@ const useBanners = () => {
         }
       />,
     );
-  if (isInterviewSessionEmpty && !job?.dashboard_warnings?.interview_session)
+  if (isInterviewSessionEmpty)
     banners.push(
       <DashboardWarning
         textWarningTitle={'Interview plan not set'}
@@ -640,7 +630,8 @@ const useBanners = () => {
               color={'accent'}
               highContrast={'true'}
               onClickButton={{
-                onClick: () => handleWarningUpdate({ interview_session: true }),
+                onClick: () =>
+                  handleJobUpdate({ interview_session_warning_ignore: true }),
               }}
             />
 
@@ -748,20 +739,32 @@ const useBanners = () => {
         }
       />,
     );
-  else if (status.description_changed)
+  if (status.description_changed)
     banners.push(
       <DashboardWarning
-        textWarningTitle={'Job description has changed'}
-        textDesc={'You may need to adjust the criteria for profile scoring.'}
+        textWarningTitle={'Job details have changed'}
+        textDesc={'You may need to publish these changes.'}
         slotButton={
           <>
             <ButtonSoft
-              textButton='Ignore'
+              textButton='Revert'
               size={2}
               color={'accent'}
               highContrast={'true'}
               onClickButton={{
-                onClick: () => handleWarningUpdate({ job_description: true }),
+                onClick: () =>
+                  handleJobUpdate({
+                    draft: {
+                      ...job.draft,
+                      company: job.company,
+                      department: job.department,
+                      description: job.description,
+                      job_title: job.job_title,
+                      job_type: job.job_type,
+                      location: job.location,
+                      workplace_type: job.workplace_type,
+                    },
+                  }),
               }}
             />
 
@@ -778,10 +781,7 @@ const useBanners = () => {
         }
       />,
     );
-  if (
-    status.scoring_criteria_changed &&
-    !job?.dashboard_warnings?.score_changed
-  )
+  if (status.scoring_criteria_changed)
     banners.push(
       <DashboardWarning
         textWarningTitle={'Scoring criteria has been updated'}
@@ -789,11 +789,14 @@ const useBanners = () => {
         slotButton={
           <>
             <ButtonSoft
-              textButton='Ignore'
+              textButton='Revert'
               size={2}
               color={'neutral'}
               onClickButton={{
-                onClick: () => handleWarningUpdate({ score_changed: true }),
+                onClick: () =>
+                  handleJobUpdate({
+                    draft: { ...job.draft, jd_json: job.jd_json },
+                  }),
               }}
             />
 
@@ -1144,10 +1147,7 @@ const InterviewModule = () => {
       textName={'Interview Plan'}
       slotIcon={<SchedulingIcon />}
       slotEnableDisable={<></>}
-      isWarning={
-        (isInterviewPlanDisabled && !job?.dashboard_warnings?.interview_plan) ||
-        (isInterviewSessionEmpty && !job?.dashboard_warnings?.interview_session)
-      }
+      isWarning={isInterviewPlanDisabled || isInterviewSessionEmpty}
     />
   );
 };
@@ -1160,7 +1160,9 @@ const ProfileScoreModule = () => {
   };
   const isAlert = status.jd_json_error && !status.description_error;
   const isWarning =
-    !isAlert && (status.description_changed || status.description_error);
+    !isAlert &&
+    ((status.description_changed && !status.scoring_criteria_changed) ||
+      status.description_error);
   return (
     <ModuleCard
       onClickCard={{ onClick: () => handleClick() }}

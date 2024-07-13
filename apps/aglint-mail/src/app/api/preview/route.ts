@@ -37,6 +37,7 @@ const all_possible_dynamic_values: {
   startDate: 'Fri, May 12, 2024',
   endDate: 'May 13, 2024',
   time: '10:30 AM - 11:00 PM',
+  meetingDetailsLink: '',
 };
 
 export async function POST(req: Request) {
@@ -80,13 +81,13 @@ export const renderEmailTemplates = async (
   filename: string,
   emailBody: string,
 ) => {
-  const { default: Template, dummy } = await import(
-    `../../../emails/${filename}`
-  );
+  const { default: Template } = await import(`../../../emails/${filename}`);
 
-  dummy.body = emailBody;
-  dummy.emailBody = emailBody;
-  const element = createElement(Template, dummy);
+  const templateData = {
+    body: emailBody,
+    emailBody: emailBody,
+  };
+  const element = createElement(Template, templateData);
   const html = render(element);
   return { html };
 };

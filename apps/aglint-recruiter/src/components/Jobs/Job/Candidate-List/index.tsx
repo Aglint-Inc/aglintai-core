@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 
 import { JobDetails } from '@/devlink2/JobDetails';
 import { JobsBanner } from '@/devlink3/JobsBanner';
+import { ScoreSetting } from '@/devlink3/ScoreSetting';
 import Loader from '@/src/components/Common/Loader';
 import PublishButton from '@/src/components/Common/PublishButton';
 import { useApplications } from '@/src/context/ApplicationsContext';
@@ -41,7 +42,13 @@ const ApplicationsDashboard = () => {
 export default ApplicationsDashboard;
 
 const ApplicationsComponent = () => {
-  const { job, handlePublish, canPublish } = useJob();
+  const {
+    job,
+    handlePublish,
+    canPublish,
+    total,
+    applicationScoringPollEnabled,
+  } = useJob();
   const { setImportPopup, checklist } = useApplicationsStore(
     ({ setImportPopup, checklist }) => ({ setImportPopup, checklist }),
   );
@@ -51,7 +58,26 @@ const ApplicationsComponent = () => {
         isImportCandidates={job.status === 'published'}
         onclickAddCandidates={{ onClick: () => setImportPopup(true) }}
         isFetchingPillVisible={false}
-        slotRefresh={<></>}
+        slotRefresh={
+          applicationScoringPollEnabled && (
+            <ScoreSetting
+              textScoreCount={`${
+                job?.processing_count.processed +
+                job?.processing_count.unavailable +
+                job?.processing_count.unparsable
+              }/${total ?? '---'}`}
+              slotScoringLoader={
+                <Stack sx={{ width: '12px', aspectRatio: 1 }}>
+                  <CircularProgress
+                    color='inherit'
+                    size={'100%'}
+                    sx={{ color: 'var(--white)' }}
+                  />
+                </Stack>
+              }
+            />
+          )
+        }
         slotShowFilterButton={<></>}
         slotLoadingLottie={
           <CircularProgress
@@ -64,16 +90,18 @@ const ApplicationsComponent = () => {
         }
         slotBreadcrumb={<BreadCrumbs />}
         slotGlobalBanner={
-          job?.status === 'draft' && (
-            <JobsBanner
-              slotButton={
-                <PublishButton
-                  onClick={() => handlePublish()}
-                  disabled={!canPublish}
-                />
-              }
-            />
-          )
+          <>
+            {job?.status === 'draft' && (
+              <JobsBanner
+                slotButton={
+                  <PublishButton
+                    onClick={() => handlePublish()}
+                    disabled={!canPublish}
+                  />
+                }
+              />
+            )}
+          </>
         }
         slotTabs={<Tabs />}
         slotTable={<Table />}

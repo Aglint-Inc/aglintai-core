@@ -1,3 +1,0 @@
-alter table "public"."public_jobs" alter column "screening_questions" set default ARRAY['{"id": "_TtFCnB4eaNdK5RZ-LsAL", "copy": "Skill", "category": "skill", "questions": []}'::jsonb, '{"id": "OHA290kmXtmow8f85UDWs", "copy": "Behavior", "category": "behavior", "questions": []}'::jsonb, '{"id": "LTezJA4H_rfZKdt1Rll9-", "copy": "communication", "category": "communication", "questions": []}'::jsonb, '{"id": "Myjsxafr-GsUMSO4O2-bJ", "copy": "Performance", "category": "performance", "questions": []}'::jsonb, '{"id": "wQcmD1Y72rtd4cMuk2CG1", "copy": "Education", "category": "education", "questions": []}'::jsonb, '{"id": "thq14SF4XYQk_XgTEx61e", "copy": "General", "category": "general", "questions": []}'::jsonb];
-
-

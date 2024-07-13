@@ -2030,73 +2030,6 @@ export type Database = {
           },
         ]
       }
-      logs: {
-        Row: {
-          created_at: string
-          error: string | null
-          id: number
-          meta: Json | null
-          method: string | null
-          name: string
-          parent_log_id: number | null
-          payload: Json | null
-          recruiter_id: string | null
-          response: Json | null
-          type: string
-          user_id: string | null
-        }
-        Insert: {
-          created_at?: string
-          error?: string | null
-          id?: number
-          meta?: Json | null
-          method?: string | null
-          name: string
-          parent_log_id?: number | null
-          payload?: Json | null
-          recruiter_id?: string | null
-          response?: Json | null
-          type: string
-          user_id?: string | null
-        }
-        Update: {
-          created_at?: string
-          error?: string | null
-          id?: number
-          meta?: Json | null
-          method?: string | null
-          name?: string
-          parent_log_id?: number | null
-          payload?: Json | null
-          recruiter_id?: string | null
-          response?: Json | null
-          type?: string
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "logs_recruiter_id_fkey"
-            columns: ["recruiter_id"]
-            isOneToOne: false
-            referencedRelation: "recruiter"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "logs_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "debreif_meeting_interviewers"
-            referencedColumns: ["user_id"]
-          },
-          {
-            foreignKeyName: "logs_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "recruiter_user"
-            referencedColumns: ["user_id"]
-          },
-        ]
-      }
       new_tasks: {
         Row: {
           agent: Database["public"]["Enums"]["task_agent_type"] | null
@@ -2354,18 +2287,6 @@ export type Database = {
           name?: Database["public"]["Enums"]["permissions_type"]
           title?: string
           updated_at?: string | null
-        }
-        Relationships: []
-      }
-      plan_count: {
-        Row: {
-          count: number | null
-        }
-        Insert: {
-          count?: number | null
-        }
-        Update: {
-          count?: number | null
         }
         Relationships: []
       }

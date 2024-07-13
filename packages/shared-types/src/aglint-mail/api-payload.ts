@@ -164,7 +164,6 @@ type Payloads = {
       subject: string;
       emailBody: string;
       companyLogo: string;
-      meetingLink: string;
       meetingDetails: MeetingDetailCardType[];
     };
   };
@@ -178,7 +177,6 @@ type Payloads = {
       emailBody: string;
       companyLogo: string;
       meetingDetails: MeetingDetailCardType[];
-      resheduleLink: string;
     };
   };
 
@@ -308,8 +306,6 @@ type Payloads = {
       emailBody: string;
       subject: string;
       companyLogo: string;
-      meetingDetailsLink: string;
-      candidateScheduleLink: string;
       meetingDetail: MeetingDetailCardType;
     };
   };

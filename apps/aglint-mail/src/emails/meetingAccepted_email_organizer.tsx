@@ -35,7 +35,7 @@ export const meetingDeclinedEmailOrganizer = ({
   emailBody = dummy.emailBody,
   companyLogo = dummy.companyLogo,
   meetingDetail = dummy.meetingDetail,
-  meetingDetailsLink = dummy.meetingDetailsLink,
+  meetingDetailsLink = '',
 }: EmailType['react_email_placeholders']) => {
   return (
     <EmailContainer companyLogo={companyLogo} emailBody={emailBody}>

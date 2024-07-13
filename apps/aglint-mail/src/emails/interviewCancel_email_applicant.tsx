@@ -4,7 +4,7 @@ import { Session } from '../components/template/Sessions';
 import { companyLogoDummy } from '../utils/assets/common';
 import { EmailContainer } from '../components/template/Container';
 
-type EmailType = EmailTemplateAPi<'InterviewCancelReq_email_recruiter'>;
+type EmailType = EmailTemplateAPi<'interviewCancel_email_applicant'>;
 export const dummy: EmailType['react_email_placeholders'] = {
   emailBody:
     '<p>Dear {{ candidateFirstName }},</p><p>I regret to inform you that we need to cancel your scheduled interview session at {{ companyName }}.</p><p>We apologize for any inconvenience caused and will be in touch soon to reschedule.</p><p>Best regards,<br>{{ companyName }}</p>',
@@ -23,7 +23,6 @@ export const dummy: EmailType['react_email_placeholders'] = {
     },
   ],
   subject: '',
-  meetingLink: '',
 };
 
 export const getSubject = (companyName: any) => `${companyName}`;

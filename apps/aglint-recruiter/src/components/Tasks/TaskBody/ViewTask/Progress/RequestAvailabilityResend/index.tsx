@@ -1,11 +1,11 @@
 import { DatabaseView } from '@aglint/shared-types';
 import { Stack, Tooltip } from '@mui/material';
 import axios from 'axios';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GlobalBanner } from '@/devlink2/GlobalBanner';
+import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import UITypography from '@/src/components/Common/UITypography';
 import toast from '@/src/utils/toast';
 
@@ -29,7 +29,7 @@ function RequestAvailabilityResend({
   };
 
   return (
-    <GlobalBanner
+    <GlobalBannerShort
       color={'warning'}
       iconName={'schedule'}
       textTitle={'Waiting for candidates availability submission'}

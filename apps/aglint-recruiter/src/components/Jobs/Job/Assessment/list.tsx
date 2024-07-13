@@ -180,18 +180,12 @@ const AssessmentEditor = ({
   const { job, handleJobAsyncUpdate } = useJob();
   const [value, setValue] = useState(job[payload]);
   const initialRef = useRef(true);
-  const handleUpdate = useCallback(
-    async (message: string) => {
-      await handleJobAsyncUpdate(job.id, { [payload]: message });
-    },
-    [job.id],
-  );
   useEffect(() => {
     if (initialRef.current) {
       initialRef.current = false;
     } else {
       const timer = setTimeout(async () => {
-        await handleUpdate(value);
+        await handleJobAsyncUpdate({ [payload]: value });
       }, 400);
       return () => clearTimeout(timer);
     }
@@ -412,7 +406,7 @@ const AssessmentPreview = () => {
   const handleDisable = async () => {
     if (!disable) {
       setDisable(true);
-      await handleJobAsyncUpdate(id, { assessment: false });
+      await handleJobAsyncUpdate({ assessment: false });
       setDisable(false);
     }
   };

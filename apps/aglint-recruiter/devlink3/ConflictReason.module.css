@@ -20,14 +20,6 @@
   grid-row-gap: var(--space-2);
 }
 
-.flex-horizontal.center.gap-2.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-}
-
 .flex-horizontal.center.gap-1 {
   grid-column-gap: var(--space-1);
   grid-row-gap: var(--space-1);
@@ -56,6 +48,10 @@
 }
 
 .embed_flex.hide {
+  display: none;
+}
+
+.hide {
   display: none;
 }
 

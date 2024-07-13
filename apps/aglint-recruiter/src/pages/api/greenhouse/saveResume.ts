@@ -1,15 +1,18 @@
 /* eslint-disable no-console */
+import { DatabaseTable } from '@aglint/shared-types';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+
+
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).end();
   }
 
-  let payload = req.body;
+  let payload = req.body as DatabaseTable["greenhouse_reference"] ;
 
   if (payload.application_id) {
     if (!payload.resume) {

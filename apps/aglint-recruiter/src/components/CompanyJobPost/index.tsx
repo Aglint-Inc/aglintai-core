@@ -10,6 +10,7 @@ import { OfficeLocationCard } from '@/devlink/OfficeLocationCard';
 import { OpenJobListingCard } from '@/devlink/OpenJobListingCard';
 import ROUTES from '@/src/utils/routing/routes';
 
+import Footer from '../Common/Footer';
 import Icon from '../Common/Icons/Icon';
 
 interface CompanyJobPostType {
@@ -118,6 +119,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
           },
         )}
       />
+      <Footer brand={true}/>
     </Stack>
   );
 };

@@ -1,46 +1,42 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
-import { DB } from '@aglint/shared-types';
-import { createClient } from '@supabase/supabase-js';
+import { DatabaseTable } from '@aglint/shared-types';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+
 const url = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/greenhouse/saveResume`;
-
-const supabase = createClient<DB>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY,
-);
-
-interface BatchSaveResponse {
-  data: Array<Record<string, unknown>>; // Adjust this based on the actual structure of the returned JSONB objects
-  error?: any; // Adjust this based on the expected error structure
-}
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { data: applications, error } = (await supabase.rpc(
-      'batchsavegreenhouse',
-    )) as BatchSaveResponse;
+    const { data: applications, error } = await supabaseAdmin
+      .from('greenhouse_reference')
+      .select()
+      .eq('resume_saved', false)
+      .not('resume', 'is', null)
+      .order('created_at', {
+        ascending: true,
+      })
+      .limit(50);
 
     if (error) {
       throw new Error(error.message);
     } else {
       if (applications?.length > 0) {
         await Promise.all(
-          applications.map(async (application) => {
+          applications.map(async (ref) => {
             try {
-              await axios.post(`${url}`, {
-                ...application,
-              });
+              const bodyParams: DatabaseTable['greenhouse_reference'] = ref;
+              await axios.post(`${url}`, bodyParams);
               console.log(
                 'Request successful for application:',
-                application.application_id,
+                ref.application_id,
               );
             } catch (error) {
               console.error(
                 'Error for application:',
-                application.application_id,
+                ref.application_id,
                 error.message,
               );
               // You might want to handle errors here
