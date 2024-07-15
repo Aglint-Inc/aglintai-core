@@ -40,7 +40,7 @@ export interface Error1 {
 }
 function SlideDetailsTwo() {
   const router = useRouter();
-  const { setStep, recruiter, userDetails } = useSignupDetails();
+  const { recruiter, userDetails } = useSignupDetails();
 
   useEffect(() => {
     if (router.asPath == `${ROUTES['/signup']()}?step=${stepObj.detailsTwo}`) {
@@ -58,25 +58,6 @@ function SlideDetailsTwo() {
       slotMain={
         <>
           <CompanyDetails />
-
-          <Stack
-            alignItems={'center'}
-            direction={'row'}
-            justifyContent={'center'}
-          >
-            <ButtonGhost
-              textButton='Skip this step'
-              size={2}
-              onClickButton={{
-                onClick: () => {
-                  router.push(`?step=${stepObj.atsSystem}`, undefined, {
-                    shallow: true,
-                  });
-                  setStep(stepObj.atsSystem);
-                },
-              }}
-            />
-          </Stack>
         </>
       }
     />
@@ -403,13 +384,31 @@ export function CompanyDetails() {
                 },
               }}
             />
-            <ButtonSolid
-              size={2}
-              textButton='Continue'
-              onClickButton={{
-                onClick: submitHandler,
-              }}
-            />
+            <Stack
+              direction={'row'}
+              alignItems={'center'}
+              gap={'var(--space-2)'}
+            >
+              <ButtonGhost
+                textButton='Skip'
+                size={2}
+                onClickButton={{
+                  onClick: () => {
+                    router.push(`?step=${stepObj.atsSystem}`, undefined, {
+                      shallow: true,
+                    });
+                    setStep(stepObj.atsSystem);
+                  },
+                }}
+              />
+              <ButtonSolid
+                size={2}
+                textButton='Continue'
+                onClickButton={{
+                  onClick: submitHandler,
+                }}
+              />
+            </Stack>
           </Stack>
         </Stack>
       }
