@@ -3,27 +3,27 @@ import {supabaseWrap} from '@aglint/shared-utils';
 import {getJsonRecords} from 'src/data';
 import {supabaseAdmin} from 'src/supabase/SupabaseAdmin';
 
-export const seedRecruiterUser = async () => {
+export const seedRolePermissions = async () => {
   const recruiter_user_seed_data = (await getJsonRecords(
-    'recruiter_user'
-  )) as DatabaseTable['recruiter_user'][];
+    'role_permissions'
+  )) as DatabaseTable['role_permissions'][];
 
   supabaseWrap(
-    await supabaseAdmin.from('recruiter_user').delete().neq('email', null)
+    await supabaseAdmin.from('role_permissions').delete().not('id', 'is', null)
   );
 
   const promises = recruiter_user_seed_data.map(async rec => {
     return supabaseWrap(
       await supabaseAdmin
-        .from('recruiter_user')
+        .from('role_permissions')
         .insert({
           ...rec,
         })
         .select()
     );
   });
-  const seeded_users = await Promise.all(promises);
+  const roles_per = await Promise.all(promises);
 
-  console.log('created users', seeded_users.length);
-  return seeded_users;
+  console.log('created roles and permissions', roles_per.length);
+  return roles_per;
 };

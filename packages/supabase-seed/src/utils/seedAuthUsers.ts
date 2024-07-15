@@ -1,27 +1,9 @@
 import {supabaseWrap} from '@aglint/shared-utils';
 import {supabaseAdmin} from 'src/supabase/SupabaseAdmin';
-import {DatabaseTable} from '@aglint/shared-types';
 import {getJsonRecords} from 'src/data';
 
-export const seedAuthUsers = async (
-  recruiter_seed_data: DatabaseTable['recruiter'][],
-  recruiter_user_seed_data: DatabaseTable['recruiter_user'][]
-) => {
-  let all_auth_users: (
-    | DatabaseTable['recruiter']
-    | DatabaseTable['recruiter_user']
-  )[] = [];
-
-  all_auth_users = [...recruiter_seed_data, ...recruiter_user_seed_data];
-
-  const uniq_auth_users = new Set<string>();
-  all_auth_users = all_auth_users.filter(u => {
-    if (!uniq_auth_users.has(u.email)) {
-      uniq_auth_users.add(u.email);
-      return true;
-    }
-    return false;
-  });
+export const seedAuthUsers = async () => {
+  const all_auth_users = (await getJsonRecords('auth_users')) as any[];
   const promises = all_auth_users.map(async rec => {
     supabaseWrap(
       await supabaseAdmin.rpc('reset_auth_users_identities', {
@@ -29,14 +11,15 @@ export const seedAuthUsers = async (
       })
     );
 
-    const user = supabaseWrap(
-      await supabaseAdmin.auth.signUp({
+    supabaseWrap(
+      await supabaseAdmin.rpc('create_auth_user', {
+        app_meta_data: {},
         email: rec.email,
         password: 'Welcome@123',
+        user_id: rec.id,
+        user_meta_data: {},
       })
     );
-
-    return user.user;
   });
 
   const auth_users = await Promise.all(promises);

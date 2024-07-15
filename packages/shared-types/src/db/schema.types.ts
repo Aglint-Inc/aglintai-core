@@ -4481,6 +4481,16 @@ export type Database = {
           total_records: number
         }[]
       }
+      create_auth_user: {
+        Args: {
+          email: string
+          password: string
+          user_id: string
+          app_meta_data: Json
+          user_meta_data: Json
+        }
+        Returns: undefined
+      }
       create_new_workflow_action_log: {
         Args: {
           workflow_id: string
