@@ -222,6 +222,7 @@ const useRoleAndPermissions = () => {
       );
     },
     onSuccess(resData, { add, delete: toDelete, role_id }) {
+      add;
       queryClient.setQueryData(
         ['app', recruiter?.id, 'role-and-permissions'],
         (
@@ -232,11 +233,11 @@ const useRoleAndPermissions = () => {
           const tempData = structuredClone(prevData);
           tempData.rolesAndPermissions[role_id].permissions =
             tempData.rolesAndPermissions[role_id].permissions.map((item) => {
-              if (add === item.id) {
-                const temp = resData.addedPermissions;
-                if (temp) {
-                  item = { ...item, ...temp, isActive: true };
-                }
+              const temp = resData.addedPermissions.find(
+                (added) => added.id == item.id,
+              );
+              if (temp) {
+                item = { ...item, ...temp, isActive: true };
               }
               if (toDelete === item.relation_id) {
                 item = { ...item, relation_id: null, isActive: false };
