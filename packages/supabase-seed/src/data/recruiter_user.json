@@ -1,0 +1,2377 @@
+[
+  {
+    "created_at": "2024-07-12 13:45:50.301799+00",
+    "user_id": "86d5afa6-0717-4df7-b33c-cc318093dbe3",
+    "first_name": "Ravi",
+    "last_name": "K",
+    "email": "ravi@aglinthq.com",
+    "profile_image": "https://ecfwsyxpcuzxlxrkhxjz.supabase.co/storage/v1/object/public/recruiter-user/public/86d5afa6-0717-4df7-b33c-cc318093dbe3?t=2024-07-12T14:31:32.577Z",
+    "phone": null,
+    "joined_at": "2024-07-12 13:45:50.301799+00",
+    "join_status": "joined",
+    "position": "CTO",
+    "email_auth": null,
+    "email_outreach_templates": null,
+    "schedule_auth": null,
+    "scheduling_settings": {
+      "timeZone": {
+        "utc": "+05:30",
+        "name": "(GMT+05:30) Colombo, Dehiwala-Mount Lavinia, Moratuwa, Jaffna, Negombo",
+        "label": "Asia/Colombo (GMT+05:30)",
+        "tzCode": "Asia/Colombo"
+      },
+      "totalDaysOff": [
+        {
+          "date": "01 Jan 2024",
+          "event_name": "New Year Day"
+        },
+        {
+          "date": "16 Jan 2024",
+          "event_name": "Martin Luther King Jr. Day"
+        },
+        {
+          "date": "19 Feb 2024",
+          "event_name": "Presidents Day"
+        },
+        {
+          "date": "27 May 2024",
+          "event_name": "Memorial Day"
+        },
+        {
+          "date": "19 Jun 2024",
+          "event_name": "Juneteenth National Independence Day"
+        },
+        {
+          "date": "04 Jul 2024",
+          "event_name": "Independence Day"
+        },
+        {
+          "date": "02 Sep 2024",
+          "event_name": "Labor Day"
+        },
+        {
+          "date": "14 Oct 2024",
+          "event_name": "Columbus Day"
+        },
+        {
+          "date": "11 Nov 2024",
+          "event_name": "Veterans Day"
+        },
+        {
+          "date": "28 Nov 2024",
+          "event_name": "Thanksgiving Day"
+        },
+        {
+          "date": "25 Dec 2024",
+          "event_name": "Christmas Day"
+        }
+      ],
+      "workingHours": [
+        {
+          "day": "sunday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "monday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "tuesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "wednesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "thursday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "friday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "saturday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        }
+      ],
+      "interviewLoad": {
+        "dailyLimit": {
+          "type": "Hours",
+          "value": 4
+        },
+        "weeklyLimit": {
+          "type": "Hours",
+          "value": 20
+        }
+      },
+      "schedulingKeyWords": {
+        "free": [
+          "Personal Time",
+          "Break",
+          "Team Lunch",
+          "Networking Event",
+          "Office Hours",
+          "Casual Meetup"
+        ],
+        "outOfOffice": ["Maternity Leave", "Vacation", "PTO", "Out of Office"],
+        "SoftConflicts": [
+          "Daily Standup",
+          "Sync Up",
+          "Project Review",
+          "Sprint Planning",
+          "Strategy Session",
+          "Team Briefing"
+        ],
+        "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
+      }
+    },
+    "department": "Product Management",
+    "interview_location": "Pleasanton, California, United States",
+    "employment": "fulltime",
+    "is_suspended": false,
+    "linked_in": null
+  },
+  {
+    "created_at": "2024-07-12 13:46:53.19411+00",
+    "user_id": "d0ad9f54-521a-4fc1-bd2f-face74c29f6a",
+    "first_name": "Dheeraj",
+    "last_name": "Kumar",
+    "email": "dheeraj@aglinthq.com",
+    "profile_image": null,
+    "phone": null,
+    "joined_at": "2024-07-12 13:46:53.19411+00",
+    "join_status": "joined",
+    "position": "Developer",
+    "email_auth": null,
+    "email_outreach_templates": null,
+    "schedule_auth": null,
+    "scheduling_settings": {
+      "timeZone": {
+        "utc": "+05:30",
+        "name": "(GMT+05:30) Colombo, Dehiwala-Mount Lavinia, Moratuwa, Jaffna, Negombo",
+        "label": "Asia/Colombo (GMT+05:30)",
+        "tzCode": "Asia/Colombo"
+      },
+      "totalDaysOff": [
+        {
+          "date": "01 Jan 2024",
+          "event_name": "New Year Day"
+        },
+        {
+          "date": "16 Jan 2024",
+          "event_name": "Martin Luther King Jr. Day"
+        },
+        {
+          "date": "19 Feb 2024",
+          "event_name": "Presidents Day"
+        },
+        {
+          "date": "27 May 2024",
+          "event_name": "Memorial Day"
+        },
+        {
+          "date": "19 Jun 2024",
+          "event_name": "Juneteenth National Independence Day"
+        },
+        {
+          "date": "04 Jul 2024",
+          "event_name": "Independence Day"
+        },
+        {
+          "date": "02 Sep 2024",
+          "event_name": "Labor Day"
+        },
+        {
+          "date": "14 Oct 2024",
+          "event_name": "Columbus Day"
+        },
+        {
+          "date": "11 Nov 2024",
+          "event_name": "Veterans Day"
+        },
+        {
+          "date": "28 Nov 2024",
+          "event_name": "Thanksgiving Day"
+        },
+        {
+          "date": "25 Dec 2024",
+          "event_name": "Christmas Day"
+        }
+      ],
+      "workingHours": [
+        {
+          "day": "sunday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "monday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "tuesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "wednesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "thursday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "friday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "saturday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        }
+      ],
+      "interviewLoad": {
+        "dailyLimit": {
+          "type": "Hours",
+          "value": 4
+        },
+        "weeklyLimit": {
+          "type": "Hours",
+          "value": 20
+        }
+      },
+      "schedulingKeyWords": {
+        "free": [
+          "Personal Time",
+          "Break",
+          "Team Lunch",
+          "Networking Event",
+          "Office Hours",
+          "Casual Meetup"
+        ],
+        "outOfOffice": ["Maternity Leave", "Vacation", "PTO", "Out of Office"],
+        "SoftConflicts": [
+          "Daily Standup",
+          "Sync Up",
+          "Project Review",
+          "Sprint Planning",
+          "Strategy Session",
+          "Team Briefing"
+        ],
+        "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
+      }
+    },
+    "department": "Software Development",
+    "interview_location": "Pleasanton, California, United States",
+    "employment": "fulltime",
+    "is_suspended": false,
+    "linked_in": null
+  },
+  {
+    "created_at": "2024-07-12 13:53:49.039735+00",
+    "user_id": "ae5eceb7-24f3-4550-9784-b56c354e0978",
+    "first_name": "Dileep",
+    "last_name": "B C",
+    "email": "dileep@aglinthq.com",
+    "profile_image": null,
+    "phone": null,
+    "joined_at": "2024-07-12 13:53:49.039735+00",
+    "join_status": "joined",
+    "position": "Engineer",
+    "email_auth": null,
+    "email_outreach_templates": null,
+    "schedule_auth": null,
+    "scheduling_settings": {
+      "timeZone": {
+        "utc": "+05:30",
+        "name": "(GMT+05:30) Colombo, Dehiwala-Mount Lavinia, Moratuwa, Jaffna, Negombo",
+        "label": "Asia/Colombo (GMT+05:30)",
+        "tzCode": "Asia/Colombo"
+      },
+      "totalDaysOff": [
+        {
+          "date": "01 Jan 2024",
+          "event_name": "New Year Day"
+        },
+        {
+          "date": "16 Jan 2024",
+          "event_name": "Martin Luther King Jr. Day"
+        },
+        {
+          "date": "19 Feb 2024",
+          "event_name": "Presidents Day"
+        },
+        {
+          "date": "27 May 2024",
+          "event_name": "Memorial Day"
+        },
+        {
+          "date": "19 Jun 2024",
+          "event_name": "Juneteenth National Independence Day"
+        },
+        {
+          "date": "04 Jul 2024",
+          "event_name": "Independence Day"
+        },
+        {
+          "date": "02 Sep 2024",
+          "event_name": "Labor Day"
+        },
+        {
+          "date": "14 Oct 2024",
+          "event_name": "Columbus Day"
+        },
+        {
+          "date": "11 Nov 2024",
+          "event_name": "Veterans Day"
+        },
+        {
+          "date": "28 Nov 2024",
+          "event_name": "Thanksgiving Day"
+        },
+        {
+          "date": "25 Dec 2024",
+          "event_name": "Christmas Day"
+        }
+      ],
+      "workingHours": [
+        {
+          "day": "sunday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "monday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "tuesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "wednesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "thursday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "friday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "saturday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        }
+      ],
+      "interviewLoad": {
+        "dailyLimit": {
+          "type": "Hours",
+          "value": 4
+        },
+        "weeklyLimit": {
+          "type": "Hours",
+          "value": 20
+        }
+      },
+      "schedulingKeyWords": {
+        "free": [
+          "Personal Time",
+          "Break",
+          "Team Lunch",
+          "Networking Event",
+          "Office Hours",
+          "Casual Meetup"
+        ],
+        "outOfOffice": ["Maternity Leave", "Vacation", "PTO", "Out of Office"],
+        "SoftConflicts": [
+          "Daily Standup",
+          "Sync Up",
+          "Project Review",
+          "Sprint Planning",
+          "Strategy Session",
+          "Team Briefing"
+        ],
+        "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
+      }
+    },
+    "department": "Software Development",
+    "interview_location": "Pleasanton, California, United States",
+    "employment": "fulltime",
+    "is_suspended": false,
+    "linked_in": null
+  },
+  {
+    "created_at": "2024-07-12 14:13:26.381445+00",
+    "user_id": "70fb688f-e8d5-4335-9a28-fc4dfc294737",
+    "first_name": "Raj",
+    "last_name": "Singh",
+    "email": "raj@aglinthq.com",
+    "profile_image": null,
+    "phone": null,
+    "joined_at": "2024-07-12 14:13:26.381445+00",
+    "join_status": "joined",
+    "position": "CEO",
+    "email_auth": null,
+    "email_outreach_templates": null,
+    "schedule_auth": null,
+    "scheduling_settings": {
+      "timeZone": {
+        "utc": "-08:00",
+        "name": "(GMT-08:00) Los Angeles, San Diego, San Jose, San Francisco, Seattle",
+        "label": "America/Los_Angeles (GMT-08:00)",
+        "tzCode": "America/Los_Angeles"
+      },
+      "break_hour": {
+        "end_time": "13:30",
+        "start_time": "13:00"
+      },
+      "totalDaysOff": [
+        {
+          "date": "01 Jan 2024",
+          "event_name": "New Year Day"
+        },
+        {
+          "date": "16 Jan 2024",
+          "event_name": "Martin Luther King Jr. Day"
+        },
+        {
+          "date": "19 Feb 2024",
+          "event_name": "Presidents Day"
+        },
+        {
+          "date": "27 May 2024",
+          "event_name": "Memorial Day"
+        },
+        {
+          "date": "19 Jun 2024",
+          "event_name": "Juneteenth National Independence Day"
+        },
+        {
+          "date": "04 Jul 2024",
+          "event_name": "Independence Day"
+        },
+        {
+          "date": "02 Sep 2024",
+          "event_name": "Labor Day"
+        },
+        {
+          "date": "14 Oct 2024",
+          "event_name": "Columbus Day"
+        },
+        {
+          "date": "11 Nov 2024",
+          "event_name": "Veterans Day"
+        },
+        {
+          "date": "28 Nov 2024",
+          "event_name": "Thanksgiving Day"
+        },
+        {
+          "date": "25 Dec 2024",
+          "event_name": "Christmas Day"
+        }
+      ],
+      "workingHours": [
+        {
+          "day": "sunday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "monday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "tuesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "wednesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "thursday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "friday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "saturday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        }
+      ],
+      "interviewLoad": {
+        "dailyLimit": {
+          "type": "Hours",
+          "value": 4
+        },
+        "weeklyLimit": {
+          "type": "Hours",
+          "value": 20
+        }
+      },
+      "debrief_defaults": {
+        "sourcer": false,
+        "recruiter": false,
+        "hiring_manager": false,
+        "previous_interviewers": false,
+        "recruiting_coordinator": false
+      },
+      "schedulingKeyWords": {
+        "free": [
+          "Personal Time",
+          "Break",
+          "Team Lunch",
+          "Networking Event",
+          "Office Hours",
+          "Casual Meetup"
+        ],
+        "outOfOffice": ["Maternity Leave", "Vacation", "PTO", "Out of Office"],
+        "SoftConflicts": [
+          "Daily Standup",
+          "Sync Up",
+          "Project Review",
+          "Sprint Planning",
+          "Strategy Session",
+          "Team Briefing"
+        ],
+        "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
+      },
+      "isAutomaticTimeZone": false
+    },
+    "department": "Product Management",
+    "interview_location": "Pleasanton, California, United States",
+    "employment": "fulltime",
+    "is_suspended": false,
+    "linked_in": null
+  },
+  {
+    "created_at": "2024-07-12 14:24:19.821759+00",
+    "user_id": "d22c8849-ec0b-42a7-8607-5deda22eece6",
+    "first_name": "Rajeev",
+    "last_name": "Harikar",
+    "email": "rajeev@aglinthq.com",
+    "profile_image": null,
+    "phone": null,
+    "joined_at": "2024-07-12 14:24:19.821759+00",
+    "join_status": "invited",
+    "position": "Lead Quality Analyst ",
+    "email_auth": null,
+    "email_outreach_templates": null,
+    "schedule_auth": null,
+    "scheduling_settings": {
+      "timeZone": {
+        "utc": "-08:00",
+        "name": "(GMT-08:00) Los Angeles, San Diego, San Jose, San Francisco, Seattle",
+        "label": "America/Los_Angeles (GMT-08:00)",
+        "tzCode": "America/Los_Angeles"
+      },
+      "break_hour": {
+        "end_time": "13:30",
+        "start_time": "13:00"
+      },
+      "totalDaysOff": [
+        {
+          "date": "01 Jan 2024",
+          "event_name": "New Year Day"
+        },
+        {
+          "date": "16 Jan 2024",
+          "event_name": "Martin Luther King Jr. Day"
+        },
+        {
+          "date": "19 Feb 2024",
+          "event_name": "Presidents Day"
+        },
+        {
+          "date": "27 May 2024",
+          "event_name": "Memorial Day"
+        },
+        {
+          "date": "19 Jun 2024",
+          "event_name": "Juneteenth National Independence Day"
+        },
+        {
+          "date": "04 Jul 2024",
+          "event_name": "Independence Day"
+        },
+        {
+          "date": "02 Sep 2024",
+          "event_name": "Labor Day"
+        },
+        {
+          "date": "14 Oct 2024",
+          "event_name": "Columbus Day"
+        },
+        {
+          "date": "11 Nov 2024",
+          "event_name": "Veterans Day"
+        },
+        {
+          "date": "28 Nov 2024",
+          "event_name": "Thanksgiving Day"
+        },
+        {
+          "date": "25 Dec 2024",
+          "event_name": "Christmas Day"
+        }
+      ],
+      "workingHours": [
+        {
+          "day": "sunday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "monday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "tuesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "wednesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "thursday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "friday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "saturday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        }
+      ],
+      "interviewLoad": {
+        "dailyLimit": {
+          "type": "Hours",
+          "value": 4
+        },
+        "weeklyLimit": {
+          "type": "Hours",
+          "value": 20
+        }
+      },
+      "debrief_defaults": {
+        "sourcer": false,
+        "recruiter": false,
+        "hiring_manager": false,
+        "previous_interviewers": false,
+        "recruiting_coordinator": false
+      },
+      "schedulingKeyWords": {
+        "free": [
+          "Personal Time",
+          "Break",
+          "Team Lunch",
+          "Networking Event",
+          "Office Hours",
+          "Casual Meetup"
+        ],
+        "outOfOffice": ["Maternity Leave", "Vacation", "PTO", "Out of Office"],
+        "SoftConflicts": [
+          "Daily Standup",
+          "Sync Up",
+          "Project Review",
+          "Sprint Planning",
+          "Strategy Session",
+          "Team Briefing"
+        ],
+        "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
+      },
+      "isAutomaticTimeZone": false
+    },
+    "department": "Software Development",
+    "interview_location": "Bengaluru, Karnataka, India",
+    "employment": "fulltime",
+    "is_suspended": false,
+    "linked_in": null
+  },
+  {
+    "created_at": "2024-07-12 14:25:47.584829+00",
+    "user_id": "ed340b87-de2a-4c0c-b3b4-c5844dad12ee",
+    "first_name": "Ogyen",
+    "last_name": "Thoga",
+    "email": "ogyen@aglinthq.com",
+    "profile_image": null,
+    "phone": null,
+    "joined_at": "2024-07-12 14:25:47.584829+00",
+    "join_status": "invited",
+    "position": "Frontend Developer",
+    "email_auth": null,
+    "email_outreach_templates": null,
+    "schedule_auth": null,
+    "scheduling_settings": {
+      "timeZone": {
+        "utc": "-08:00",
+        "name": "(GMT-08:00) Los Angeles, San Diego, San Jose, San Francisco, Seattle",
+        "label": "America/Los_Angeles (GMT-08:00)",
+        "tzCode": "America/Los_Angeles"
+      },
+      "break_hour": {
+        "end_time": "13:30",
+        "start_time": "13:00"
+      },
+      "totalDaysOff": [
+        {
+          "date": "01 Jan 2024",
+          "event_name": "New Year Day"
+        },
+        {
+          "date": "16 Jan 2024",
+          "event_name": "Martin Luther King Jr. Day"
+        },
+        {
+          "date": "19 Feb 2024",
+          "event_name": "Presidents Day"
+        },
+        {
+          "date": "27 May 2024",
+          "event_name": "Memorial Day"
+        },
+        {
+          "date": "19 Jun 2024",
+          "event_name": "Juneteenth National Independence Day"
+        },
+        {
+          "date": "04 Jul 2024",
+          "event_name": "Independence Day"
+        },
+        {
+          "date": "02 Sep 2024",
+          "event_name": "Labor Day"
+        },
+        {
+          "date": "14 Oct 2024",
+          "event_name": "Columbus Day"
+        },
+        {
+          "date": "11 Nov 2024",
+          "event_name": "Veterans Day"
+        },
+        {
+          "date": "28 Nov 2024",
+          "event_name": "Thanksgiving Day"
+        },
+        {
+          "date": "25 Dec 2024",
+          "event_name": "Christmas Day"
+        }
+      ],
+      "workingHours": [
+        {
+          "day": "sunday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "monday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "tuesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "wednesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "thursday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "friday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "saturday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        }
+      ],
+      "interviewLoad": {
+        "dailyLimit": {
+          "type": "Hours",
+          "value": 4
+        },
+        "weeklyLimit": {
+          "type": "Hours",
+          "value": 20
+        }
+      },
+      "debrief_defaults": {
+        "sourcer": false,
+        "recruiter": false,
+        "hiring_manager": false,
+        "previous_interviewers": false,
+        "recruiting_coordinator": false
+      },
+      "schedulingKeyWords": {
+        "free": [
+          "Personal Time",
+          "Break",
+          "Team Lunch",
+          "Networking Event",
+          "Office Hours",
+          "Casual Meetup"
+        ],
+        "outOfOffice": ["Maternity Leave", "Vacation", "PTO", "Out of Office"],
+        "SoftConflicts": [
+          "Daily Standup",
+          "Sync Up",
+          "Project Review",
+          "Sprint Planning",
+          "Strategy Session",
+          "Team Briefing"
+        ],
+        "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
+      },
+      "isAutomaticTimeZone": false
+    },
+    "department": "Software Development",
+    "interview_location": "Bengaluru, Karnataka, India",
+    "employment": "fulltime",
+    "is_suspended": false,
+    "linked_in": null
+  },
+  {
+    "created_at": "2024-07-12 14:12:32.229749+00",
+    "user_id": "10ee2995-f932-4a85-960b-f666ddea3d97",
+    "first_name": "Raimon",
+    "last_name": "Simon",
+    "email": "raimon@aglinthq.com",
+    "profile_image": null,
+    "phone": null,
+    "joined_at": "2024-07-12 14:12:32.229749+00",
+    "join_status": "joined",
+    "position": "Product Designer",
+    "email_auth": null,
+    "email_outreach_templates": null,
+    "schedule_auth": null,
+    "scheduling_settings": {
+      "timeZone": {
+        "utc": "+05:30",
+        "name": "(GMT+05:30) Colombo, Dehiwala-Mount Lavinia, Moratuwa, Jaffna, Negombo",
+        "label": "Asia/Colombo (GMT+05:30)",
+        "tzCode": "Asia/Colombo"
+      },
+      "totalDaysOff": [
+        {
+          "date": "01 Jan 2024",
+          "event_name": "New Year Day"
+        },
+        {
+          "date": "16 Jan 2024",
+          "event_name": "Martin Luther King Jr. Day"
+        },
+        {
+          "date": "19 Feb 2024",
+          "event_name": "Presidents Day"
+        },
+        {
+          "date": "27 May 2024",
+          "event_name": "Memorial Day"
+        },
+        {
+          "date": "19 Jun 2024",
+          "event_name": "Juneteenth National Independence Day"
+        },
+        {
+          "date": "04 Jul 2024",
+          "event_name": "Independence Day"
+        },
+        {
+          "date": "02 Sep 2024",
+          "event_name": "Labor Day"
+        },
+        {
+          "date": "14 Oct 2024",
+          "event_name": "Columbus Day"
+        },
+        {
+          "date": "11 Nov 2024",
+          "event_name": "Veterans Day"
+        },
+        {
+          "date": "28 Nov 2024",
+          "event_name": "Thanksgiving Day"
+        },
+        {
+          "date": "25 Dec 2024",
+          "event_name": "Christmas Day"
+        }
+      ],
+      "workingHours": [
+        {
+          "day": "sunday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "monday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "tuesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "wednesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "thursday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "friday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "saturday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        }
+      ],
+      "interviewLoad": {
+        "dailyLimit": {
+          "type": "Hours",
+          "value": 4
+        },
+        "weeklyLimit": {
+          "type": "Hours",
+          "value": 20
+        }
+      },
+      "schedulingKeyWords": {
+        "free": [
+          "Personal Time",
+          "Break",
+          "Team Lunch",
+          "Networking Event",
+          "Office Hours",
+          "Casual Meetup"
+        ],
+        "outOfOffice": ["Maternity Leave", "Vacation", "PTO", "Out of Office"],
+        "SoftConflicts": [
+          "Daily Standup",
+          "Sync Up",
+          "Project Review",
+          "Sprint Planning",
+          "Strategy Session",
+          "Team Briefing"
+        ],
+        "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
+      }
+    },
+    "department": "Product Management",
+    "interview_location": "Pleasanton, California, United States",
+    "employment": "fulltime",
+    "is_suspended": false,
+    "linked_in": null
+  },
+  {
+    "created_at": "2024-07-12 14:27:04.046429+00",
+    "user_id": "fe00d160-0e57-4091-83bd-3953a9faf2d4",
+    "first_name": "Chandan",
+    "last_name": "Kumar",
+    "email": "chandan@aglinthq.com",
+    "profile_image": null,
+    "phone": null,
+    "joined_at": "2024-07-12 14:27:04.046429+00",
+    "join_status": "invited",
+    "position": "Frontend Developer",
+    "email_auth": null,
+    "email_outreach_templates": null,
+    "schedule_auth": null,
+    "scheduling_settings": {
+      "timeZone": {
+        "utc": "-08:00",
+        "name": "(GMT-08:00) Los Angeles, San Diego, San Jose, San Francisco, Seattle",
+        "label": "America/Los_Angeles (GMT-08:00)",
+        "tzCode": "America/Los_Angeles"
+      },
+      "break_hour": {
+        "end_time": "13:30",
+        "start_time": "13:00"
+      },
+      "totalDaysOff": [
+        {
+          "date": "01 Jan 2024",
+          "event_name": "New Year Day"
+        },
+        {
+          "date": "16 Jan 2024",
+          "event_name": "Martin Luther King Jr. Day"
+        },
+        {
+          "date": "19 Feb 2024",
+          "event_name": "Presidents Day"
+        },
+        {
+          "date": "27 May 2024",
+          "event_name": "Memorial Day"
+        },
+        {
+          "date": "19 Jun 2024",
+          "event_name": "Juneteenth National Independence Day"
+        },
+        {
+          "date": "04 Jul 2024",
+          "event_name": "Independence Day"
+        },
+        {
+          "date": "02 Sep 2024",
+          "event_name": "Labor Day"
+        },
+        {
+          "date": "14 Oct 2024",
+          "event_name": "Columbus Day"
+        },
+        {
+          "date": "11 Nov 2024",
+          "event_name": "Veterans Day"
+        },
+        {
+          "date": "28 Nov 2024",
+          "event_name": "Thanksgiving Day"
+        },
+        {
+          "date": "25 Dec 2024",
+          "event_name": "Christmas Day"
+        }
+      ],
+      "workingHours": [
+        {
+          "day": "sunday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "monday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "tuesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "wednesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "thursday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "friday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "saturday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        }
+      ],
+      "interviewLoad": {
+        "dailyLimit": {
+          "type": "Hours",
+          "value": 4
+        },
+        "weeklyLimit": {
+          "type": "Hours",
+          "value": 20
+        }
+      },
+      "debrief_defaults": {
+        "sourcer": false,
+        "recruiter": false,
+        "hiring_manager": false,
+        "previous_interviewers": false,
+        "recruiting_coordinator": false
+      },
+      "schedulingKeyWords": {
+        "free": [
+          "Personal Time",
+          "Break",
+          "Team Lunch",
+          "Networking Event",
+          "Office Hours",
+          "Casual Meetup"
+        ],
+        "outOfOffice": ["Maternity Leave", "Vacation", "PTO", "Out of Office"],
+        "SoftConflicts": [
+          "Daily Standup",
+          "Sync Up",
+          "Project Review",
+          "Sprint Planning",
+          "Strategy Session",
+          "Team Briefing"
+        ],
+        "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
+      },
+      "isAutomaticTimeZone": false
+    },
+    "department": "Software Development",
+    "interview_location": "Bengaluru, Karnataka, India",
+    "employment": "contractor",
+    "is_suspended": false,
+    "linked_in": null
+  },
+  {
+    "created_at": "2024-07-12 14:27:51.625104+00",
+    "user_id": "cd8c9d02-9eda-41f1-9bfb-593761440949",
+    "first_name": "Daya",
+    "last_name": "Prabhu",
+    "email": "daya@aglinthq.com",
+    "profile_image": null,
+    "phone": null,
+    "joined_at": "2024-07-12 14:27:51.625104+00",
+    "join_status": "invited",
+    "position": "Architect",
+    "email_auth": null,
+    "email_outreach_templates": null,
+    "schedule_auth": null,
+    "scheduling_settings": {
+      "timeZone": {
+        "utc": "-08:00",
+        "name": "(GMT-08:00) Los Angeles, San Diego, San Jose, San Francisco, Seattle",
+        "label": "America/Los_Angeles (GMT-08:00)",
+        "tzCode": "America/Los_Angeles"
+      },
+      "break_hour": {
+        "end_time": "13:30",
+        "start_time": "13:00"
+      },
+      "totalDaysOff": [
+        {
+          "date": "01 Jan 2024",
+          "event_name": "New Year Day"
+        },
+        {
+          "date": "16 Jan 2024",
+          "event_name": "Martin Luther King Jr. Day"
+        },
+        {
+          "date": "19 Feb 2024",
+          "event_name": "Presidents Day"
+        },
+        {
+          "date": "27 May 2024",
+          "event_name": "Memorial Day"
+        },
+        {
+          "date": "19 Jun 2024",
+          "event_name": "Juneteenth National Independence Day"
+        },
+        {
+          "date": "04 Jul 2024",
+          "event_name": "Independence Day"
+        },
+        {
+          "date": "02 Sep 2024",
+          "event_name": "Labor Day"
+        },
+        {
+          "date": "14 Oct 2024",
+          "event_name": "Columbus Day"
+        },
+        {
+          "date": "11 Nov 2024",
+          "event_name": "Veterans Day"
+        },
+        {
+          "date": "28 Nov 2024",
+          "event_name": "Thanksgiving Day"
+        },
+        {
+          "date": "25 Dec 2024",
+          "event_name": "Christmas Day"
+        }
+      ],
+      "workingHours": [
+        {
+          "day": "sunday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "monday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "tuesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "wednesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "thursday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "friday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "saturday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        }
+      ],
+      "interviewLoad": {
+        "dailyLimit": {
+          "type": "Hours",
+          "value": 4
+        },
+        "weeklyLimit": {
+          "type": "Hours",
+          "value": 20
+        }
+      },
+      "debrief_defaults": {
+        "sourcer": false,
+        "recruiter": false,
+        "hiring_manager": false,
+        "previous_interviewers": false,
+        "recruiting_coordinator": false
+      },
+      "schedulingKeyWords": {
+        "free": [
+          "Personal Time",
+          "Break",
+          "Team Lunch",
+          "Networking Event",
+          "Office Hours",
+          "Casual Meetup"
+        ],
+        "outOfOffice": ["Maternity Leave", "Vacation", "PTO", "Out of Office"],
+        "SoftConflicts": [
+          "Daily Standup",
+          "Sync Up",
+          "Project Review",
+          "Sprint Planning",
+          "Strategy Session",
+          "Team Briefing"
+        ],
+        "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
+      },
+      "isAutomaticTimeZone": false
+    },
+    "department": "Software Development",
+    "interview_location": "Bengaluru, Karnataka, India",
+    "employment": "parttime",
+    "is_suspended": false,
+    "linked_in": null
+  },
+  {
+    "created_at": "2024-07-12 14:30:21.661306+00",
+    "user_id": "327d5930-617d-411e-8ffd-8b3b782a86c1",
+    "first_name": "Punith",
+    "last_name": "G",
+    "email": "punithg@aglinthq.com",
+    "profile_image": null,
+    "phone": null,
+    "joined_at": "2024-07-12 14:30:21.661306+00",
+    "join_status": "invited",
+    "position": "Fullstack Developer",
+    "email_auth": null,
+    "email_outreach_templates": null,
+    "schedule_auth": null,
+    "scheduling_settings": {
+      "timeZone": {
+        "utc": "-08:00",
+        "name": "(GMT-08:00) Los Angeles, San Diego, San Jose, San Francisco, Seattle",
+        "label": "America/Los_Angeles (GMT-08:00)",
+        "tzCode": "America/Los_Angeles"
+      },
+      "break_hour": {
+        "end_time": "13:30",
+        "start_time": "13:00"
+      },
+      "totalDaysOff": [
+        {
+          "date": "01 Jan 2024",
+          "event_name": "New Year Day"
+        },
+        {
+          "date": "16 Jan 2024",
+          "event_name": "Martin Luther King Jr. Day"
+        },
+        {
+          "date": "19 Feb 2024",
+          "event_name": "Presidents Day"
+        },
+        {
+          "date": "27 May 2024",
+          "event_name": "Memorial Day"
+        },
+        {
+          "date": "19 Jun 2024",
+          "event_name": "Juneteenth National Independence Day"
+        },
+        {
+          "date": "04 Jul 2024",
+          "event_name": "Independence Day"
+        },
+        {
+          "date": "02 Sep 2024",
+          "event_name": "Labor Day"
+        },
+        {
+          "date": "14 Oct 2024",
+          "event_name": "Columbus Day"
+        },
+        {
+          "date": "11 Nov 2024",
+          "event_name": "Veterans Day"
+        },
+        {
+          "date": "28 Nov 2024",
+          "event_name": "Thanksgiving Day"
+        },
+        {
+          "date": "25 Dec 2024",
+          "event_name": "Christmas Day"
+        }
+      ],
+      "workingHours": [
+        {
+          "day": "sunday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "monday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "tuesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "wednesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "thursday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "friday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "saturday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        }
+      ],
+      "interviewLoad": {
+        "dailyLimit": {
+          "type": "Hours",
+          "value": 4
+        },
+        "weeklyLimit": {
+          "type": "Hours",
+          "value": 20
+        }
+      },
+      "debrief_defaults": {
+        "sourcer": false,
+        "recruiter": false,
+        "hiring_manager": false,
+        "previous_interviewers": false,
+        "recruiting_coordinator": false
+      },
+      "schedulingKeyWords": {
+        "free": [
+          "Personal Time",
+          "Break",
+          "Team Lunch",
+          "Networking Event",
+          "Office Hours",
+          "Casual Meetup"
+        ],
+        "outOfOffice": ["Maternity Leave", "Vacation", "PTO", "Out of Office"],
+        "SoftConflicts": [
+          "Daily Standup",
+          "Sync Up",
+          "Project Review",
+          "Sprint Planning",
+          "Strategy Session",
+          "Team Briefing"
+        ],
+        "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
+      },
+      "isAutomaticTimeZone": false
+    },
+    "department": "Software Development",
+    "interview_location": "Bengaluru, Karnataka, India",
+    "employment": "fulltime",
+    "is_suspended": false,
+    "linked_in": null
+  },
+  {
+    "created_at": "2024-07-12 13:55:16.120462+00",
+    "user_id": "5ecdc2cf-f8a2-467d-9b5a-3b2a83beda87",
+    "first_name": "Chandra",
+    "last_name": "Kumar",
+    "email": "chandra@aglinthq.com",
+    "profile_image": null,
+    "phone": null,
+    "joined_at": "2024-07-12 13:55:16.120462+00",
+    "join_status": "joined",
+    "position": "SDE",
+    "email_auth": null,
+    "email_outreach_templates": null,
+    "schedule_auth": null,
+    "scheduling_settings": {
+      "timeZone": {
+        "utc": "+05:30",
+        "name": "(GMT+05:30) Colombo, Dehiwala-Mount Lavinia, Moratuwa, Jaffna, Negombo",
+        "label": "Asia/Colombo (GMT+05:30)",
+        "tzCode": "Asia/Colombo"
+      },
+      "totalDaysOff": [
+        {
+          "date": "01 Jan 2024",
+          "event_name": "New Year Day"
+        },
+        {
+          "date": "16 Jan 2024",
+          "event_name": "Martin Luther King Jr. Day"
+        },
+        {
+          "date": "19 Feb 2024",
+          "event_name": "Presidents Day"
+        },
+        {
+          "date": "27 May 2024",
+          "event_name": "Memorial Day"
+        },
+        {
+          "date": "19 Jun 2024",
+          "event_name": "Juneteenth National Independence Day"
+        },
+        {
+          "date": "04 Jul 2024",
+          "event_name": "Independence Day"
+        },
+        {
+          "date": "02 Sep 2024",
+          "event_name": "Labor Day"
+        },
+        {
+          "date": "14 Oct 2024",
+          "event_name": "Columbus Day"
+        },
+        {
+          "date": "11 Nov 2024",
+          "event_name": "Veterans Day"
+        },
+        {
+          "date": "28 Nov 2024",
+          "event_name": "Thanksgiving Day"
+        },
+        {
+          "date": "25 Dec 2024",
+          "event_name": "Christmas Day"
+        }
+      ],
+      "workingHours": [
+        {
+          "day": "sunday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "monday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "tuesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "wednesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "thursday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "friday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "saturday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        }
+      ],
+      "interviewLoad": {
+        "dailyLimit": {
+          "type": "Hours",
+          "value": 4
+        },
+        "weeklyLimit": {
+          "type": "Hours",
+          "value": 20
+        }
+      },
+      "schedulingKeyWords": {
+        "free": [
+          "Personal Time",
+          "Break",
+          "Team Lunch",
+          "Networking Event",
+          "Office Hours",
+          "Casual Meetup"
+        ],
+        "outOfOffice": ["Maternity Leave", "Vacation", "PTO", "Out of Office"],
+        "SoftConflicts": [
+          "Daily Standup",
+          "Sync Up",
+          "Project Review",
+          "Sprint Planning",
+          "Strategy Session",
+          "Team Briefing"
+        ],
+        "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
+      }
+    },
+    "department": "Software Development",
+    "interview_location": "Pleasanton, California, United States",
+    "employment": "fulltime",
+    "is_suspended": false,
+    "linked_in": null
+  },
+  {
+    "created_at": "2024-07-12 12:28:26.317354+00",
+    "user_id": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "first_name": "Chinmai ",
+    "last_name": "C R",
+    "email": "chinmai@aglinthq.com",
+    "profile_image": null,
+    "phone": "+91 80780-81250",
+    "joined_at": "2024-07-12 12:28:26.317354+00",
+    "join_status": "joined",
+    "position": "Engineering Manager",
+    "email_auth": null,
+    "email_outreach_templates": null,
+    "schedule_auth": null,
+    "scheduling_settings": {
+      "timeZone": {
+        "utc": "+05:30",
+        "name": "(GMT+05:30) Colombo, Dehiwala-Mount Lavinia, Moratuwa, Jaffna, Negombo",
+        "label": "Asia/Colombo (GMT+05:30)",
+        "tzCode": "Asia/Colombo"
+      },
+      "totalDaysOff": [
+        {
+          "date": "01 Jan 2024",
+          "event_name": "New Year Day"
+        },
+        {
+          "date": "16 Jan 2024",
+          "event_name": "Martin Luther King Jr. Day"
+        },
+        {
+          "date": "19 Feb 2024",
+          "event_name": "Presidents Day"
+        },
+        {
+          "date": "27 May 2024",
+          "event_name": "Memorial Day"
+        },
+        {
+          "date": "19 Jun 2024",
+          "event_name": "Juneteenth National Independence Day"
+        },
+        {
+          "date": "04 Jul 2024",
+          "event_name": "Independence Day"
+        },
+        {
+          "date": "02 Sep 2024",
+          "event_name": "Labor Day"
+        },
+        {
+          "date": "14 Oct 2024",
+          "event_name": "Columbus Day"
+        },
+        {
+          "date": "11 Nov 2024",
+          "event_name": "Veterans Day"
+        },
+        {
+          "date": "28 Nov 2024",
+          "event_name": "Thanksgiving Day"
+        },
+        {
+          "date": "25 Dec 2024",
+          "event_name": "Christmas Day"
+        }
+      ],
+      "workingHours": [
+        {
+          "day": "sunday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "monday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "tuesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "wednesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "thursday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "friday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "saturday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        }
+      ],
+      "interviewLoad": {
+        "dailyLimit": {
+          "type": "Hours",
+          "value": 4
+        },
+        "weeklyLimit": {
+          "type": "Hours",
+          "value": 20
+        }
+      },
+      "schedulingKeyWords": {
+        "free": [
+          "Personal Time",
+          "Break",
+          "Team Lunch",
+          "Networking Event",
+          "Office Hours",
+          "Casual Meetup"
+        ],
+        "outOfOffice": [
+          "Maternity leave",
+          "vacation",
+          "pto",
+          "out of office",
+          "ooo"
+        ],
+        "SoftConflicts": [
+          "Daily Standup",
+          "Sync Up",
+          "Project Review",
+          "Sprint Planning",
+          "Strategy Session",
+          "Team Briefing"
+        ],
+        "recruitingBlocks": ["dedicated recruiting", "Recruiting Block"]
+      }
+    },
+    "department": "Engineering",
+    "interview_location": "Pleasanton, California, United States",
+    "employment": "fulltime",
+    "is_suspended": false,
+    "linked_in": "https://www.linkedin.com/in/ravik/"
+  },
+  {
+    "created_at": "2024-07-12 18:14:20.872017+00",
+    "user_id": "eb767434-1a33-4e6e-930d-68c7620b1022",
+    "first_name": "Chinmai ",
+    "last_name": "Personal ",
+    "email": "chinmaichromium@gmail.com",
+    "profile_image": null,
+    "phone": null,
+    "joined_at": "2024-07-12 18:14:20.872017+00",
+    "join_status": "joined",
+    "position": "Developer",
+    "email_auth": null,
+    "email_outreach_templates": null,
+    "schedule_auth": {
+      "email": "chinmaichromium@gmail.com",
+      "expiry_date": 1720812175869,
+      "access_token": "ya29.a0AXooCgvZdZkgFra-6qrMFiUKTtDsue3HJW-VhUJyXfA7fFhb2JyVu_-zthWey64-GurSz8ZaqPCcspnmxCEBaP1a79OWAP5fvV8EDRetSK-uxJT2PRnycgvQ7Rau59KfefPwCPu8iht8ZdnGuIHB5mLL71smBgVzBm7daCgYKAfsSARISFQHGX2MijTNxrQRKh01TYHuXKouyDg0171",
+      "refresh_token": "1//0gIzPhLcDnpvoCgYIARAAGBASNwF-L9IrN0qbqbNbin_FeL7vjx-mCpLHVaJVznX86c28OZvaxop5LUHz46cqiOzaAd7GqbQpViU"
+    },
+    "scheduling_settings": {
+      "timeZone": {
+        "utc": "-08:00",
+        "name": "(GMT-08:00) Los Angeles, San Diego, San Jose, San Francisco, Seattle",
+        "label": "America/Los_Angeles (GMT-08:00)",
+        "tzCode": "America/Los_Angeles"
+      },
+      "break_hour": {
+        "end_time": "13:30",
+        "start_time": "13:00"
+      },
+      "totalDaysOff": [
+        {
+          "date": "01 Jan 2024",
+          "event_name": "New Year Day"
+        },
+        {
+          "date": "16 Jan 2024",
+          "event_name": "Martin Luther King Jr. Day"
+        },
+        {
+          "date": "19 Feb 2024",
+          "event_name": "Presidents Day"
+        },
+        {
+          "date": "27 May 2024",
+          "event_name": "Memorial Day"
+        },
+        {
+          "date": "19 Jun 2024",
+          "event_name": "Juneteenth National Independence Day"
+        },
+        {
+          "date": "04 Jul 2024",
+          "event_name": "Independence Day"
+        },
+        {
+          "date": "02 Sep 2024",
+          "event_name": "Labor Day"
+        },
+        {
+          "date": "14 Oct 2024",
+          "event_name": "Columbus Day"
+        },
+        {
+          "date": "11 Nov 2024",
+          "event_name": "Veterans Day"
+        },
+        {
+          "date": "28 Nov 2024",
+          "event_name": "Thanksgiving Day"
+        },
+        {
+          "date": "25 Dec 2024",
+          "event_name": "Christmas Day"
+        }
+      ],
+      "workingHours": [
+        {
+          "day": "sunday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "monday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "tuesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "wednesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "thursday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "friday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "saturday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        }
+      ],
+      "interviewLoad": {
+        "dailyLimit": {
+          "type": "Hours",
+          "value": 4
+        },
+        "weeklyLimit": {
+          "type": "Hours",
+          "value": 20
+        }
+      },
+      "debrief_defaults": {
+        "sourcer": false,
+        "recruiter": false,
+        "hiring_manager": false,
+        "previous_interviewers": false,
+        "recruiting_coordinator": false
+      },
+      "schedulingKeyWords": {
+        "free": [
+          "Personal Time",
+          "Break",
+          "Team Lunch",
+          "Networking Event",
+          "Office Hours",
+          "Casual Meetup"
+        ],
+        "outOfOffice": ["Maternity Leave", "Vacation", "PTO", "Out of Office"],
+        "SoftConflicts": [
+          "Daily Standup",
+          "Sync Up",
+          "Project Review",
+          "Sprint Planning",
+          "Strategy Session",
+          "Team Briefing"
+        ],
+        "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
+      },
+      "isAutomaticTimeZone": false
+    },
+    "department": "Software Development",
+    "interview_location": null,
+    "employment": "contractor",
+    "is_suspended": false,
+    "linked_in": null
+  },
+  {
+    "created_at": "2024-07-14 08:26:17.001059+00",
+    "user_id": "0f7d2be5-db9d-4f3f-9cef-ea59f418faa1",
+    "first_name": "vvk",
+    "last_name": "VVK",
+    "email": "vivek@aglinthq.com",
+    "profile_image": null,
+    "phone": "+91 74159-8322",
+    "joined_at": "2024-07-14 08:26:17.001059+00",
+    "join_status": "joined",
+    "position": "dfsdf",
+    "email_auth": null,
+    "email_outreach_templates": null,
+    "schedule_auth": null,
+    "scheduling_settings": {
+      "timeZone": {
+        "utc": "-08:00",
+        "name": "(GMT-08:00) Los Angeles, San Diego, San Jose, San Francisco, Seattle",
+        "label": "America/Los_Angeles (GMT-08:00)",
+        "tzCode": "America/Los_Angeles"
+      },
+      "break_hour": {
+        "end_time": "13:00",
+        "start_time": "12:00"
+      },
+      "totalDaysOff": [
+        {
+          "date": "01 Jan 2024",
+          "event_name": "New Year Day"
+        },
+        {
+          "date": "16 Jan 2024",
+          "event_name": "Martin Luther King Jr. Day"
+        },
+        {
+          "date": "19 Feb 2024",
+          "event_name": "Presidents Day"
+        },
+        {
+          "date": "27 May 2024",
+          "event_name": "Memorial Day"
+        },
+        {
+          "date": "19 Jun 2024",
+          "event_name": "Juneteenth National Independence Day"
+        },
+        {
+          "date": "04 Jul 2024",
+          "event_name": "Independence Day"
+        },
+        {
+          "date": "02 Sep 2024",
+          "event_name": "Labor Day"
+        },
+        {
+          "date": "14 Oct 2024",
+          "event_name": "Columbus Day"
+        },
+        {
+          "date": "11 Nov 2024",
+          "event_name": "Veterans Day"
+        },
+        {
+          "date": "28 Nov 2024",
+          "event_name": "Thanksgiving Day"
+        },
+        {
+          "date": "25 Dec 2024",
+          "event_name": "Christmas Day"
+        }
+      ],
+      "workingHours": [
+        {
+          "day": "sunday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "monday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "tuesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "wednesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "thursday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "friday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "saturday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        }
+      ],
+      "interviewLoad": {
+        "dailyLimit": {
+          "type": "Hours",
+          "value": 4
+        },
+        "weeklyLimit": {
+          "type": "Hours",
+          "value": 20
+        }
+      },
+      "debrief_defaults": {
+        "sourcer": false,
+        "recruiter": false,
+        "hiring_manager": false,
+        "previous_interviewers": false,
+        "recruiting_coordinator": false
+      },
+      "schedulingKeyWords": {
+        "free": [
+          "Personal Time",
+          "Break",
+          "Team Lunch",
+          "Networking Event",
+          "Office Hours",
+          "Casual Meetup"
+        ],
+        "outOfOffice": ["Maternity Leave", "Vacation", "PTO", "Out of Office"],
+        "SoftConflicts": [
+          "Daily Standup",
+          "Sync Up",
+          "Project Review",
+          "Sprint Planning",
+          "Strategy Session",
+          "Team Briefing"
+        ],
+        "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
+      },
+      "isAutomaticTimeZone": false
+    },
+    "department": "Software Development",
+    "interview_location": null,
+    "employment": "fulltime",
+    "is_suspended": false,
+    "linked_in": null
+  }
+]
