@@ -3,17 +3,15 @@ import {supabaseAdmin} from 'src/supabase/SupabaseAdmin';
 import {DatabaseTable} from '@aglint/shared-types';
 import {getJsonRecords} from 'src/data';
 
-export const seedAuthUsers = async () => {
+export const seedAuthUsers = async (
+  recruiter_seed_data: DatabaseTable['recruiter'][],
+  recruiter_user_seed_data: DatabaseTable['recruiter_user'][]
+) => {
   let all_auth_users: (
     | DatabaseTable['recruiter']
     | DatabaseTable['recruiter_user']
   )[] = [];
-  const recruiter_seed_data = (await getJsonRecords(
-    'recruiter'
-  )) as DatabaseTable['recruiter'][];
-  const recruiter_user_seed_data = (await getJsonRecords(
-    'recruiter_user'
-  )) as DatabaseTable['recruiter_user'][];
+
   all_auth_users = [...recruiter_seed_data, ...recruiter_user_seed_data];
 
   const uniq_auth_users = new Set<string>();
@@ -41,5 +39,7 @@ export const seedAuthUsers = async () => {
     return user.user;
   });
 
-  return await Promise.all(promises);
+  const auth_users = await Promise.all(promises);
+  console.debug('created auth records', auth_users.length);
+  return auth_users;
 };

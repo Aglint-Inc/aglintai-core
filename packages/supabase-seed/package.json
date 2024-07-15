@@ -14,7 +14,8 @@
     "dotenv": "^16.4.1",
     "gts": "^5.3.0",
     "prettier": "^3.2.5",
-    "supabase": "^1.183.5"
+    "supabase": "^1.183.5",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@aglint/shared-types": "*",
