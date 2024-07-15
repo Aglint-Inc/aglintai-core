@@ -18,6 +18,7 @@ import {
   interviewStartEmailInterviewersSchema,
   interviewStartEmailOrganizerSchema,
   meetingDeclinedEmailOrganizerSchema,
+  onSignupEmailAdminSchema,
   phoneScreenEmailCandidateSchema,
   phoneScreenRemindEmailApplicantSchema,
   selfScheduleReminderEmailApplicantSchema,
@@ -321,6 +322,17 @@ type Payloads = {
       subject: string;
       companyLogo: string;
       interviewFeedbackLink: string;
+    };
+  };
+  onSignup_email_admin: {
+    api_payload: v.InferInput<typeof onSignupEmailAdminSchema>;
+    comp_email_placeholders: {
+      [key in (typeof emailVariablePayloads)["onSignup_email_admin"][number]]: string;
+    };
+    react_email_placeholders: {
+      emailBody: string;
+      subject: string;
+      companyLogo: string;
     };
   };
 };
