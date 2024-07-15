@@ -4372,55 +4372,6 @@ export type Database = {
         }
         Returns: boolean
       }
-      citext:
-        | {
-            Args: {
-              "": boolean
-            }
-            Returns: string
-          }
-        | {
-            Args: {
-              "": string
-            }
-            Returns: string
-          }
-        | {
-            Args: {
-              "": unknown
-            }
-            Returns: string
-          }
-      citext_hash: {
-        Args: {
-          "": string
-        }
-        Returns: number
-      }
-      citextin: {
-        Args: {
-          "": unknown
-        }
-        Returns: string
-      }
-      citextout: {
-        Args: {
-          "": string
-        }
-        Returns: unknown
-      }
-      citextrecv: {
-        Args: {
-          "": unknown
-        }
-        Returns: string
-      }
-      citextsend: {
-        Args: {
-          "": string
-        }
-        Returns: string
-      }
       connectassessmenttemplate: {
         Args: {
           assessmentid: string

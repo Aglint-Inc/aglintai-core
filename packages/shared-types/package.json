@@ -3,7 +3,7 @@
   "scripts": {
     "lint": "tsup",
     "build": "tsup",
-    "supabase:dev": "npx supabase gen types typescript --project-id plionpfmgvenmdwwjzac --schema public > src/db/schema.types.ts",
+    "supabase:dev": "npx supabase gen types typescript --project-id ecfwsyxpcuzxlxrkhxjz --schema public > src/db/schema.types.ts",
     "supabase:local": "npx supabase gen types typescript --local > src/db/schema.types.ts",
     "pull": "git pull origin development --no-rebase"
   },

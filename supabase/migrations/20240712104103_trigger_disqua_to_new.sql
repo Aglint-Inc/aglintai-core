@@ -1,4 +1,3 @@
--- Create the trigger function
 CREATE OR REPLACE FUNCTION delete_interview_schedule_on_status_update()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -17,6 +16,9 @@ WHEN (OLD.status = 'disqualified' AND NEW.status = 'new')
 EXECUTE FUNCTION delete_interview_schedule_on_status_update();
 
 
+
+ALTER TABLE public.interview_module_relation
+DROP CONSTRAINT IF EXISTS unique_user_module;
+
 ALTER TABLE public.interview_module_relation
 ADD CONSTRAINT unique_user_module UNIQUE (user_id, module_id);
-

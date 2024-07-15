@@ -96,12 +96,12 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
               </Stack>
               <Stack direction={'column'} spacing={'var(--space-2)'}>
                 <Typography fontSize={'14px'} variant='body1'>
-                  Description (Optional)
+                  Description
                 </Typography>
                 <TextField
                   multiline
                   minRows={5}
-                  placeholder='Add a brief description (optional)'
+                  placeholder='Add a brief description (Optional)'
                   inputRef={descriptionRef}
                 />
               </Stack>

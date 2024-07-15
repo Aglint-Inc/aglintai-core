@@ -4,6 +4,7 @@ import type React from 'react';
 import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ConnectedJobsList } from '@/devlink/ConnectedJobsList';
 import { DcPopup } from '@/devlink/DcPopup';
 import { Breadcrum } from '@/devlink2/Breadcrum';
@@ -145,12 +146,12 @@ const DeletePopup = () => {
         slotButtons={
           <>
             <ButtonSoft
-              color={'neutal'}
+              color={'neutral'}
               size={2}
               onClickButton={{ onClick: () => handleClose() }}
               textButton={'Cancel'}
             />
-            <ButtonSoft
+            <ButtonSolid
               color={'error'}
               size={2}
               isDisabled={!enabled}
