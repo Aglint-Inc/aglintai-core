@@ -147,6 +147,13 @@ function SlotQualifiedMembers({
                     vertical: 'top',
                     horizontal: 'right',
                   }}
+                  PaperProps={{
+                    style: {
+                      boxShadow: 'none',
+                      borderRadius: 0,
+                      backgroundColor: 'transparent',
+                    },
+                  }}
                 >
                   <MemberListCardOption
                     isMoveToQualifierVisible={false}

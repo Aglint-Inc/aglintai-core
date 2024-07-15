@@ -87,6 +87,13 @@ function ListCardInterviewerModules({
                 vertical: 'top',
                 horizontal: 'right',
               }}
+              PaperProps={{
+                style: {
+                  boxShadow: 'none',
+                  borderRadius: 0,
+                  backgroundColor: 'transparent',
+                },
+              }}
             >
               <MemberListCardOption
                 isMoveToQualifierVisible={false}
@@ -263,6 +270,13 @@ function ListCardInterviewerModules({
               transformOrigin={{
                 vertical: 'top',
                 horizontal: 'right',
+              }}
+              PaperProps={{
+                style: {
+                  boxShadow: 'none',
+                  borderRadius: 0,
+                  backgroundColor: 'transparent',
+                },
               }}
             >
               <MemberListCardOption

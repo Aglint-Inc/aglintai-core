@@ -20,7 +20,6 @@ export function MemberListCardOption({
     <_Component
       className={_utils.cx(_styles, "mlc-three-dot-content")}
       tag="div"
-      box-shadow="4"
     >
       {isMoveToQualifierVisible ? (
         <_Builtin.Block
