@@ -48,7 +48,7 @@ function ListCardInterviewerModules({
             setCollapseOpen((pre) => !pre);
           },
         }}
-        isMoveToQualifierVisible={false}
+        // isMoveToQualifierVisible={false}
         isTrainingProgessVisible={true}
         isTrainingProgressDetailVisible={true}
         slotTrainingProgressDetail={
@@ -64,12 +64,12 @@ function ListCardInterviewerModules({
         textName={interview_module.name}
         isTextObjectiveVisible={false}
         isPauseResumeVisible={Boolean(pause_json)}
-        isPauseVisible={!pause_json}
-        isResumeVisible={Boolean(pause_json)}
+        // isPauseVisible={!pause_json}
+        // isResumeVisible={Boolean(pause_json)}
         isScheduleCountVisible={true}
         isProfileVisible={false}
-        isRoleVisible={false}
-        isRemoveVisible={false}
+        // isRoleVisible={false}
+        // isRemoveVisible={false}
         isInterviewsVisible={false}
         textConfirmed={confirmedCount}
         textCancel={cancelledCount}
@@ -97,29 +97,29 @@ function ListCardInterviewerModules({
             }));
           },
         }}
-        onClickResumeInterview={{
-          onClick: () => {
-            setPauseResumeDialog((pre) => ({
-              ...pre,
-              isOpen: true,
-              type: 'resume',
-              panel_id: module_id,
-              isLoading: false,
-              end_time: module.pause_json.end_date,
-            }));
-          },
-        }}
-        onClickRemoveModule={{
-          onClick: () => {
-            setPauseResumeDialog((pre) => ({
-              ...pre,
-              isOpen: true,
-              type: 'remove',
-              panel_id: module_id,
-              isLoading: false,
-            }));
-          },
-        }}
+        // onClickResumeInterview={{
+        //   onClick: () => {
+        //     setPauseResumeDialog((pre) => ({
+        //       ...pre,
+        //       isOpen: true,
+        //       type: 'resume',
+        //       panel_id: module_id,
+        //       isLoading: false,
+        //       end_time: module.pause_json.end_date,
+        //     }));
+        //   },
+        // }}
+        // onClickRemoveModule={{
+        //   onClick: () => {
+        //     setPauseResumeDialog((pre) => ({
+        //       ...pre,
+        //       isOpen: true,
+        //       type: 'remove',
+        //       panel_id: module_id,
+        //       isLoading: false,
+        //     }));
+        //   },
+        // }}
         onClickCard={{
           onClick: () => {
             router.push(
@@ -144,7 +144,8 @@ function ListCardInterviewerModules({
 
   const reverseShadowMeetings = completedMeetings.filter((item) =>
     item.meeting_interviewers.some(
-      (user) => user.user_id === user_id && user.training_type === 'reverse_shadow',
+      (user) =>
+        user.user_id === user_id && user.training_type === 'reverse_shadow',
     ),
   );
 
@@ -192,9 +193,9 @@ function ListCardInterviewerModules({
         textPause={
           'Paused from assigning to new interviews with this interview type'
         }
-        isMoveToQualifierVisible={false}
+        // isMoveToQualifierVisible={false}
         isTrainingProgessVisible={true}
-        isRemoveVisible={false}
+        // isRemoveVisible={false}
         isInterviewsVisible={false}
         slotProgressBar={
           <>
@@ -276,11 +277,11 @@ function ListCardInterviewerModules({
         textName={interview_module.name}
         isTextObjectiveVisible={false}
         isPauseResumeVisible={Boolean(pause_json)}
-        isPauseVisible={!pause_json}
-        isResumeVisible={Boolean(pause_json)}
+        // isPauseVisible={!pause_json}
+        // isResumeVisible={Boolean(pause_json)}
         isScheduleCountVisible={false}
         isProfileVisible={false}
-        isRoleVisible={false}
+        // isRoleVisible={false}
         textPauseResumeDate={
           pause_json
             ? pause_json.isManual
@@ -301,29 +302,29 @@ function ListCardInterviewerModules({
             }));
           },
         }}
-        onClickResumeInterview={{
-          onClick: () => {
-            setPauseResumeDialog((pre) => ({
-              ...pre,
-              isOpen: true,
-              type: 'resume',
-              panel_id: module_id,
-              isLoading: false,
-              end_time: module.pause_json.end_date,
-            }));
-          },
-        }}
-        onClickRemoveModule={{
-          onClick: () => {
-            setPauseResumeDialog((pre) => ({
-              ...pre,
-              isOpen: true,
-              type: 'remove',
-              panel_id: module_id,
-              isLoading: false,
-            }));
-          },
-        }}
+        // onClickResumeInterview={{
+        //   onClick: () => {
+        //     setPauseResumeDialog((pre) => ({
+        //       ...pre,
+        //       isOpen: true,
+        //       type: 'resume',
+        //       panel_id: module_id,
+        //       isLoading: false,
+        //       end_time: module.pause_json.end_date,
+        //     }));
+        //   },
+        // }}
+        // onClickRemoveModule={{
+        //   onClick: () => {
+        //     setPauseResumeDialog((pre) => ({
+        //       ...pre,
+        //       isOpen: true,
+        //       type: 'remove',
+        //       panel_id: module_id,
+        //       isLoading: false,
+        //     }));
+        //   },
+        // }}
         // onClickViewProgress={{
         //   onClick: () => {
         //     setMeetingDetails({
