@@ -8,7 +8,7 @@ import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   console.log('incoming body', req.body);
-
+  supabaseAdmin;
   const getResponse = getResponseFactory<APIWorkFlowCron['response']>(res);
   const { id, workflow_id, workflow_action_id, execution_time, meta } =
     req.body as APIWorkFlowCron['request'];
