@@ -34,7 +34,7 @@ export const fetchSignupTemp = async (
 ) => {
   const [template] = supabaseWrap(
     await supabaseAdmin
-      .from('job_email_template')
+      .from('company_email_template')
       .select()
       .eq('type', mail_type),
   );

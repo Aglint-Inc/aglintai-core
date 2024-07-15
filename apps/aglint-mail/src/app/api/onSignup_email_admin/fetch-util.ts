@@ -6,13 +6,18 @@ import { fetchSignupTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'onSignup_email_admin'>['api_payload'],
 ) {
-  const [organizer] = supabaseWrap(
+  const [recruiterUser] = supabaseWrap(
     await supabaseAdmin
-      .from('recruiter_relation')
-      .select(
-        'recruiter_user(first_name,last_name,scheduling_settings,email),recruiter(logo)',
-      )
-      .eq('user_id', req_body.recruiter_id),
+      .from('recruiter_user')
+      .select('first_name,last_name,scheduling_settings,email')
+      .eq('user_id', req_body.recruiter_user_id),
+  );
+
+  const [recruiter] = supabaseWrap(
+    await supabaseAdmin
+      .from('recruiter')
+      .select('logo')
+      .eq('id', req_body.recruiter_id),
   );
 
   const comp_email_temp = await fetchSignupTemp('onSignup_email_admin');
@@ -20,13 +25,12 @@ export async function fetchUtil(
   const comp_email_placeholder: EmailTemplateAPi<'onSignup_email_admin'>['comp_email_placeholders'] =
     {
       organizerName: getFullName(
-        organizer.recruiter_user.first_name,
-        organizer.recruiter_user.last_name,
+        recruiterUser.first_name,
+        recruiterUser.last_name,
       ),
-      organizerFirstName: organizer.recruiter_user.first_name,
-      organizerLastName: organizer.recruiter_user.last_name,
-      OrganizerTimeZone:
-        organizer.recruiter_user.scheduling_settings.timeZone.tzCode,
+      organizerFirstName: recruiterUser.first_name,
+      organizerLastName: recruiterUser.last_name,
+      OrganizerTimeZone: recruiterUser.scheduling_settings.timeZone.tzCode,
     };
   const filled_comp_template = fillCompEmailTemplate(
     comp_email_placeholder,
@@ -34,7 +38,7 @@ export async function fetchUtil(
   );
   const react_email_placeholders: EmailTemplateAPi<'onSignup_email_admin'>['react_email_placeholders'] =
     {
-      companyLogo: organizer.recruiter.logo,
+      companyLogo: recruiter.logo,
       emailBody: filled_comp_template.body,
       subject: filled_comp_template.subject,
     };
@@ -42,6 +46,6 @@ export async function fetchUtil(
   return {
     filled_comp_template,
     react_email_placeholders,
-    recipient_email: organizer.recruiter_user.email,
+    recipient_email: recruiterUser.email,
   };
 }
