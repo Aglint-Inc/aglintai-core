@@ -1,0 +1,2096 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["auth", "public"]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model audit_log_entries {
+  instance_id String?   @db.Uuid
+  id          String    @id @db.Uuid
+  payload     Json?     @db.Json
+  created_at  DateTime? @db.Timestamptz(6)
+  ip_address  String    @default("") @db.VarChar(64)
+
+  @@index([instance_id], map: "audit_logs_instance_id_idx")
+  @@schema("auth")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model flow_state {
+  id                     String                @id @db.Uuid
+  user_id                String?               @db.Uuid
+  auth_code              String
+  code_challenge_method  code_challenge_method
+  code_challenge         String
+  provider_type          String
+  provider_access_token  String?
+  provider_refresh_token String?
+  created_at             DateTime?             @db.Timestamptz(6)
+  updated_at             DateTime?             @db.Timestamptz(6)
+  authentication_method  String
+  auth_code_issued_at    DateTime?             @db.Timestamptz(6)
+  saml_relay_states      saml_relay_states[]
+
+  @@index([created_at(sort: Desc)])
+  @@index([auth_code], map: "idx_auth_code")
+  @@index([user_id, authentication_method], map: "idx_user_id_auth_method")
+  @@schema("auth")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model identities {
+  provider_id     String
+  user_id         String    @db.Uuid
+  identity_data   Json
+  provider        String
+  last_sign_in_at DateTime? @db.Timestamptz(6)
+  created_at      DateTime? @db.Timestamptz(6)
+  updated_at      DateTime? @db.Timestamptz(6)
+  email           String?   @default(dbgenerated("lower((identity_data ->> 'email'::text))"))
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  users           users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([provider_id, provider], map: "identities_provider_id_provider_unique")
+  @@index([email])
+  @@index([user_id])
+  @@schema("auth")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model instances {
+  id              String    @id @db.Uuid
+  uuid            String?   @db.Uuid
+  raw_base_config String?
+  created_at      DateTime? @db.Timestamptz(6)
+  updated_at      DateTime? @db.Timestamptz(6)
+
+  @@schema("auth")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model mfa_amr_claims {
+  session_id            String   @db.Uuid
+  created_at            DateTime @db.Timestamptz(6)
+  updated_at            DateTime @db.Timestamptz(6)
+  authentication_method String
+  id                    String   @id(map: "amr_id_pk") @db.Uuid
+  sessions              sessions @relation(fields: [session_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([session_id, authentication_method], map: "mfa_amr_claims_session_id_authentication_method_pkey")
+  @@schema("auth")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model mfa_challenges {
+  id          String      @id @db.Uuid
+  factor_id   String      @db.Uuid
+  created_at  DateTime    @db.Timestamptz(6)
+  verified_at DateTime?   @db.Timestamptz(6)
+  ip_address  String      @db.Inet
+  mfa_factors mfa_factors @relation(fields: [factor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "mfa_challenges_auth_factor_id_fkey")
+
+  @@index([created_at(sort: Desc)], map: "mfa_challenge_created_at_idx")
+  @@schema("auth")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model mfa_factors {
+  id             String           @id @db.Uuid
+  user_id        String           @db.Uuid
+  friendly_name  String?
+  factor_type    factor_type
+  status         factor_status
+  created_at     DateTime         @db.Timestamptz(6)
+  updated_at     DateTime         @db.Timestamptz(6)
+  secret         String?
+  mfa_challenges mfa_challenges[]
+  users          users            @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([user_id, created_at], map: "factor_id_created_at_idx")
+  @@index([user_id])
+  @@schema("auth")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model one_time_tokens {
+  id         String              @id @db.Uuid
+  user_id    String              @db.Uuid
+  token_type one_time_token_type
+  token_hash String
+  relates_to String
+  created_at DateTime            @default(now()) @db.Timestamp(6)
+  updated_at DateTime            @default(now()) @db.Timestamp(6)
+  users      users               @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([user_id, token_type])
+  @@index([relates_to], map: "one_time_tokens_relates_to_hash_idx", type: Hash)
+  @@index([token_hash], map: "one_time_tokens_token_hash_hash_idx", type: Hash)
+  @@schema("auth")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model refresh_tokens {
+  instance_id String?   @db.Uuid
+  id          BigInt    @id @default(autoincrement())
+  token       String?   @unique(map: "refresh_tokens_token_unique") @db.VarChar(255)
+  user_id     String?   @db.VarChar(255)
+  revoked     Boolean?
+  created_at  DateTime? @db.Timestamptz(6)
+  updated_at  DateTime? @db.Timestamptz(6)
+  parent      String?   @db.VarChar(255)
+  session_id  String?   @db.Uuid
+  sessions    sessions? @relation(fields: [session_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([instance_id])
+  @@index([instance_id, user_id])
+  @@index([parent])
+  @@index([session_id, revoked])
+  @@index([updated_at(sort: Desc)])
+  @@schema("auth")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model saml_providers {
+  id                String        @id @db.Uuid
+  sso_provider_id   String        @db.Uuid
+  entity_id         String        @unique
+  metadata_xml      String
+  metadata_url      String?
+  attribute_mapping Json?
+  created_at        DateTime?     @db.Timestamptz(6)
+  updated_at        DateTime?     @db.Timestamptz(6)
+  name_id_format    String?
+  sso_providers     sso_providers @relation(fields: [sso_provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([sso_provider_id])
+  @@schema("auth")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model saml_relay_states {
+  id              String        @id @db.Uuid
+  sso_provider_id String        @db.Uuid
+  request_id      String
+  for_email       String?
+  redirect_to     String?
+  created_at      DateTime?     @db.Timestamptz(6)
+  updated_at      DateTime?     @db.Timestamptz(6)
+  flow_state_id   String?       @db.Uuid
+  flow_state      flow_state?   @relation(fields: [flow_state_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  sso_providers   sso_providers @relation(fields: [sso_provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([created_at(sort: Desc)])
+  @@index([for_email])
+  @@index([sso_provider_id])
+  @@schema("auth")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model schema_migrations {
+  version String @id @db.VarChar(255)
+
+  @@schema("auth")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sessions {
+  id             String           @id @db.Uuid
+  user_id        String           @db.Uuid
+  created_at     DateTime?        @db.Timestamptz(6)
+  updated_at     DateTime?        @db.Timestamptz(6)
+  factor_id      String?          @db.Uuid
+  aal            aal_level?
+  not_after      DateTime?        @db.Timestamptz(6)
+  refreshed_at   DateTime?        @db.Timestamp(6)
+  user_agent     String?
+  ip             String?          @db.Inet
+  tag            String?
+  mfa_amr_claims mfa_amr_claims[]
+  refresh_tokens refresh_tokens[]
+  users          users            @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([not_after(sort: Desc)])
+  @@index([user_id])
+  @@index([user_id, created_at], map: "user_id_created_at_idx")
+  @@schema("auth")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+model sso_domains {
+  id              String        @id @db.Uuid
+  sso_provider_id String        @db.Uuid
+  domain          String
+  created_at      DateTime?     @db.Timestamptz(6)
+  updated_at      DateTime?     @db.Timestamptz(6)
+  sso_providers   sso_providers @relation(fields: [sso_provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([sso_provider_id])
+  @@schema("auth")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+model sso_providers {
+  id                String              @id @db.Uuid
+  resource_id       String?
+  created_at        DateTime?           @db.Timestamptz(6)
+  updated_at        DateTime?           @db.Timestamptz(6)
+  saml_providers    saml_providers[]
+  saml_relay_states saml_relay_states[]
+  sso_domains       sso_domains[]
+
+  @@schema("auth")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+model users {
+  instance_id                 String?              @db.Uuid
+  id                          String               @id @db.Uuid
+  aud                         String?              @db.VarChar(255)
+  role                        String?              @db.VarChar(255)
+  email                       String?              @db.VarChar(255)
+  encrypted_password          String?              @db.VarChar(255)
+  email_confirmed_at          DateTime?            @db.Timestamptz(6)
+  invited_at                  DateTime?            @db.Timestamptz(6)
+  confirmation_token          String?              @db.VarChar(255)
+  confirmation_sent_at        DateTime?            @db.Timestamptz(6)
+  recovery_token              String?              @db.VarChar(255)
+  recovery_sent_at            DateTime?            @db.Timestamptz(6)
+  email_change_token_new      String?              @db.VarChar(255)
+  email_change                String?              @db.VarChar(255)
+  email_change_sent_at        DateTime?            @db.Timestamptz(6)
+  last_sign_in_at             DateTime?            @db.Timestamptz(6)
+  raw_app_meta_data           Json?
+  raw_user_meta_data          Json?
+  is_super_admin              Boolean?
+  created_at                  DateTime?            @db.Timestamptz(6)
+  updated_at                  DateTime?            @db.Timestamptz(6)
+  phone                       String?              @unique
+  phone_confirmed_at          DateTime?            @db.Timestamptz(6)
+  phone_change                String?              @default("")
+  phone_change_token          String?              @default("") @db.VarChar(255)
+  phone_change_sent_at        DateTime?            @db.Timestamptz(6)
+  confirmed_at                DateTime?            @default(dbgenerated("LEAST(email_confirmed_at, phone_confirmed_at)")) @db.Timestamptz(6)
+  email_change_token_current  String?              @default("") @db.VarChar(255)
+  email_change_confirm_status Int?                 @default(0) @db.SmallInt
+  banned_until                DateTime?            @db.Timestamptz(6)
+  reauthentication_token      String?              @default("") @db.VarChar(255)
+  reauthentication_sent_at    DateTime?            @db.Timestamptz(6)
+  is_sso_user                 Boolean              @default(false)
+  deleted_at                  DateTime?            @db.Timestamptz(6)
+  is_anonymous                Boolean              @default(false)
+  identities                  identities[]
+  mfa_factors                 mfa_factors[]
+  one_time_tokens             one_time_tokens[]
+  sessions                    sessions[]
+  recruiter_relation          recruiter_relation[]
+  recruiter_user              recruiter_user?
+  support_ticket              support_ticket[]
+
+  @@index([instance_id])
+  @@index([is_anonymous])
+  @@schema("auth")
+}
+
+model aglint_candidates {
+  aglint_id                     String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at                    DateTime           @default(now()) @db.Timestamptz(6)
+  id                            String
+  city                          String?
+  name                          String?
+  email                         String?
+  state                         String?
+  title                         String?
+  country                       String?
+  headline                      String?
+  functions                     String[]
+  last_name                     String?
+  photo_url                     String?
+  seniority                     String?
+  first_name                    String?
+  github_url                    String?
+  departments                   String[]
+  show_intent                   Boolean?
+  twitter_url                   String?
+  email_status                  String?
+  facebook_url                  String?
+  linkedin_url                  String?
+  organization                  Json?
+  subdepartments                String[]
+  intent_strength               String?
+  organization_id               String?
+  employment_history            Json[]
+  is_likely_to_engage           Boolean?
+  revealed_for_current_team     Boolean?
+  extrapolated_email_confidence String?
+  search_query                  Json
+  phone_numbers                 Json?
+  email_fetch_status            email_fetch_status @default(not_fetched)
+
+  @@schema("public")
+}
+
+model ai_videos {
+  id         BigInt   @id @default(autoincrement())
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  video_id   String?  @db.VarChar
+  video_url  String?  @db.VarChar
+  file_url   String?  @db.VarChar
+  error      Json?
+
+  @@schema("public")
+}
+
+model application_email_status {
+  id             String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at     DateTime          @default(now()) @db.Timestamptz(6)
+  application_id String            @db.Uuid
+  email          email_slack_types
+  applications   applications      @relation(fields: [application_id], references: [id], onDelete: Cascade)
+
+  @@schema("public")
+}
+
+model application_logs {
+  created_at     DateTime           @default(now()) @db.Timestamptz(6)
+  title          String?
+  task_id        String?            @db.Uuid
+  description    String?
+  application_id String             @db.Uuid
+  id             String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_by     String?            @db.Uuid
+  metadata       Json?
+  logged_by      application_logger @default(system)
+  module         modules            @default(standard)
+  recruiter_user recruiter_user?    @relation(fields: [created_by], references: [user_id], onUpdate: NoAction)
+  new_tasks      new_tasks?         @relation(fields: [task_id], references: [id], onUpdate: NoAction)
+  applications   applications       @relation(fields: [application_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "public_application_logs_application_id_fkey")
+
+  @@schema("public")
+}
+
+model application_reference {
+  id           BigInt   @id @default(autoincrement())
+  created_at   DateTime @default(now()) @db.Timestamptz(6)
+  ats_json     Json     @db.Json
+  is_processed Boolean  @default(false)
+  recruiter_id String   @db.Uuid
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model applications {
+  id                                                                 String                           @id(map: "new_application_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at                                                         DateTime                         @default(now()) @db.Timestamptz(6)
+  applied_at                                                         DateTime                         @default(now()) @db.Timestamptz(6)
+  job_id                                                             String                           @db.Uuid
+  candidate_file_id                                                  String?                          @db.Uuid
+  score_json                                                         Json?
+  overall_score                                                      Decimal                          @default(-1) @db.Decimal
+  processing_status                                                  application_processing_status    @default(not_started)
+  status                                                             application_status               @default(new)
+  retry                                                              Decimal                          @default(0) @db.Decimal
+  status_emails_sent                                                 Json                             @default("{}")
+  is_resume_fetching                                                 Boolean                          @default(false)
+  assessment_id                                                      String?                          @db.Uuid
+  phone_screening                                                    Json?
+  candidate_id                                                       String?                          @db.Uuid
+  overall_interview_score                                            Decimal                          @default(-1) @db.Decimal
+  converted_at                                                       DateTime?                        @db.Timestamptz(6)
+  feedback                                                           Json?
+  bookmarked                                                         Boolean                          @default(false)
+  is_new                                                             Boolean                          @default(false)
+  source                                                             application_source               @default(manual_upload)
+  processing_started_at                                              DateTime?                        @db.Timestamptz(6)
+  application_email_status                                           application_email_status[]
+  application_logs                                                   application_logs[]
+  assessment_results_applications_assessment_idToassessment_results  assessment_results?              @relation("applications_assessment_idToassessment_results", fields: [assessment_id], references: [id], onUpdate: NoAction)
+  candidate_files                                                    candidate_files?                 @relation(fields: [candidate_file_id], references: [id], onUpdate: NoAction)
+  candidates                                                         candidates?                      @relation(fields: [candidate_id], references: [id], onDelete: Cascade)
+  public_jobs                                                        public_jobs                      @relation(fields: [job_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  assessment_results_assessment_results_application_idToapplications assessment_results[]             @relation("assessment_results_application_idToapplications")
+  candidate_request_availability                                     candidate_request_availability[]
+  interview_schedule                                                 interview_schedule?
+  new_tasks                                                          new_tasks[]
+  scheduling_agent_chat_history                                      scheduling_agent_chat_history[]
+  screening_answers                                                  screening_answers?
+
+  @@index([candidate_file_id])
+  @@index([candidate_id])
+  @@index([job_id])
+  @@schema("public")
+}
+
+model assessment {
+  id                      String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at              DateTime                  @default(now()) @db.Timestamptz(6)
+  title                   String?
+  description             String?
+  type                    template_type?
+  recruiter_id            String                    @db.Uuid
+  level                   question_level            @default(basic)
+  mode                    assessment_mode           @default(classic)
+  recruiter               recruiter                 @relation(fields: [recruiter_id], references: [id], onDelete: Cascade)
+  assessment_job_relation assessment_job_relation[]
+  assessment_question     assessment_question[]
+  assessment_results      assessment_results[]
+
+  @@schema("public")
+}
+
+model assessment_job_relation {
+  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at    DateTime     @default(now()) @db.Timestamptz(6)
+  assessment_id String       @db.Uuid
+  job_id        String?      @db.Uuid
+  assessment    assessment   @relation(fields: [assessment_id], references: [id], onDelete: Cascade)
+  public_jobs   public_jobs? @relation(fields: [job_id], references: [id])
+
+  @@schema("public")
+}
+
+model assessment_question {
+  id                 String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at         DateTime        @default(now()) @db.Timestamptz(6)
+  assessment_id      String          @db.Uuid
+  question           Json?
+  answer             Json?
+  duration           Decimal?        @db.Decimal
+  level              question_level?
+  parent_question_id String?         @db.Uuid
+  description        Json?           @default("{\"show\": false, \"value\": \"\"}")
+  required           Boolean         @default(true)
+  type               question_type   @default(qna)
+  order              Decimal         @default(0) @db.Decimal
+  assessment         assessment      @relation(fields: [assessment_id], references: [id], onDelete: Cascade)
+  question_bank      question_bank?  @relation(fields: [parent_question_id], references: [id], map: "public_assessment_question_parent_question_id_fkey")
+
+  @@schema("public")
+}
+
+model assessment_results {
+  id                                                           String         @id(map: "new_assessment_results_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at                                                   DateTime       @default(now()) @db.Timestamptz(6)
+  duration                                                     Decimal?       @db.Decimal
+  application_id                                               String         @db.Uuid
+  responses                                                    Json[]
+  result                                                       Json[]
+  assessment_id                                                String?        @db.Uuid
+  is_submitted                                                 Boolean?       @default(false)
+  applications_applications_assessment_idToassessment_results  applications[] @relation("applications_assessment_idToassessment_results")
+  applications_assessment_results_application_idToapplications applications   @relation("assessment_results_application_idToapplications", fields: [application_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  assessment                                                   assessment?    @relation(fields: [assessment_id], references: [id], map: "public_assessment_results_assessment_id_fkey")
+
+  @@schema("public")
+}
+
+model assessment_template {
+  id                         String                       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at                 DateTime                     @default(now()) @db.Timestamptz(6)
+  title                      String?
+  description                String?
+  embeddings                 Unsupported("vector")?
+  type                       template_type?
+  mode                       assessment_mode              @default(classic)
+  level                      question_level               @default(basic)
+  template_question_relation template_question_relation[]
+
+  @@schema("public")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model cancel_data {
+  row_to_json Json? @db.Json
+
+  @@ignore
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model candidate_files {
+  id                   String                 @id(map: "new_candidate_files_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at           DateTime               @default(now()) @db.Timestamptz(6)
+  candidate_id         String                 @db.Uuid
+  file_url             String?
+  resume_text          String?
+  resume_json          Json?
+  skills_embedding     Unsupported("vector")?
+  education_embedding  Unsupported("vector")?
+  experience_embedding Unsupported("vector")?
+  resume_embedding     Unsupported("vector")?
+  type                 file_type?             @default(resume)
+  applications         applications[]
+  candidates           candidates             @relation(fields: [candidate_id], references: [id], onDelete: Cascade)
+
+  @@schema("public")
+}
+
+model candidate_list {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  candidates   String[]  @default([])
+  name         String
+  recruiter_id String    @db.Uuid
+  recruiter    recruiter @relation(fields: [recruiter_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model candidate_request_availability {
+  created_at               DateTime                   @default(now()) @db.Timestamptz(6)
+  date_range               Json?                      @default("{\"end_date\": null, \"start_date\": null}")
+  availability             Json?                      @default("{}")
+  number_of_days           Int?
+  number_of_slots          BigInt?
+  is_task_created          Boolean?                   @default(true)
+  total_slots              BigInt?
+  application_id           String                     @db.Uuid
+  recruiter_id             String                     @db.Uuid
+  slots                    Json?
+  id                       String                     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_timezone            String?
+  booking_confirmed        Boolean                    @default(false)
+  visited                  Boolean?                   @default(false)
+  applications             applications               @relation(fields: [application_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  recruiter                recruiter                  @relation(fields: [recruiter_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  new_tasks                new_tasks[]
+  request_session_relation request_session_relation[]
+
+  @@schema("public")
+}
+
+model candidate_search_history {
+  id                    BigInt          @id @default(autoincrement())
+  created_at            DateTime        @default(now()) @db.Timestamptz(6)
+  recruiter_id          String          @db.Uuid
+  is_search_jd          Boolean?        @default(false)
+  query_json            Json?
+  search_results        Json[]          @default([])
+  bookmarked_candidates String[]        @default([])
+  search_query          String?
+  db_search             db_search_type? @default(candidate)
+  candidates            String[]        @default([])
+  used_credits          Json            @default("{\"email_credits\": 0, \"export_credits\": 0, \"mobile_credits\": 0}")
+  recruiter             recruiter       @relation(fields: [recruiter_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model candidates {
+  created_at           DateTime                 @default(now()) @db.Timestamptz(6)
+  recruiter_id         String?                  @db.Uuid
+  email                String                   @db.Citext
+  avatar               String?
+  city                 String?
+  state                String?
+  country              String?
+  experience_in_months Decimal?                 @db.Decimal
+  last_updated         DateTime                 @default(now()) @db.Timestamptz(6)
+  id                   String                   @id(map: "new_candidate_pkey") @unique @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  first_name           String                   @default("not set") @db.Citext
+  last_name            String?                  @db.Citext
+  geolocation          Unsupported("geometry")?
+  linkedin             String?
+  phone                String?
+  current_company      String?
+  timezone             String?
+  current_job_title    String?
+  applications         applications[]
+  candidate_files      candidate_files[]
+  recruiter            recruiter?               @relation(fields: [recruiter_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([recruiter_id, email], map: "candidate_ukey")
+  @@schema("public")
+}
+
+model company_email_template {
+  id              String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at      DateTime          @default(now()) @db.Timestamptz(6)
+  recruiter_id    String            @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subject         String
+  body            String
+  from_name       String?
+  type            email_slack_types
+  recruiter       recruiter         @relation(fields: [recruiter_id], references: [id], onDelete: Cascade)
+  workflow_action workflow_action[]
+
+  @@unique([recruiter_id, type], map: "recruiter_email_slack_type_ukey")
+  @@schema("public")
+}
+
+model company_search_cache {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at    DateTime @default(now()) @db.Timestamptz(6)
+  company_name  String
+  website_url   String?
+  search_result Json
+
+  @@schema("public")
+}
+
+model env {
+  id         BigInt   @id @default(autoincrement())
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  name       String?
+  value      String?
+
+  @@schema("public")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model function_url {
+  value String?
+
+  @@ignore
+  @@schema("public")
+}
+
+model greenhouse_reference {
+  id             BigInt   @id @default(autoincrement())
+  created_at     DateTime @default(now()) @db.Timestamptz(6)
+  application_id String   @db.Uuid
+  public_job_id  String   @db.Uuid
+  posting_id     String
+  greenhouse_id  String
+  resume         String?
+  resume_saved   Boolean  @default(false)
+
+  @@schema("public")
+}
+
+model integrations {
+  id                   String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at           DateTime  @default(now()) @db.Timestamptz(6)
+  recruiter_id         String    @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  schedule_agent_email String?   @default("agent@ai.aglinthq.com")
+  twilio_phone_number  String?   @default("+12512066348")
+  domain_admin_email   String?
+  service_json         String?
+  recruiter            recruiter @relation(fields: [recruiter_id], references: [id], onDelete: Cascade)
+
+  @@schema("public")
+}
+
+model interview_filter_json {
+  id                            String                         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at                    DateTime                       @default(now()) @db.Timestamptz(6)
+  filter_json                   Json
+  schedule_id                   String                         @db.Uuid
+  session_ids                   String[]                       @default([]) @db.Uuid
+  created_by                    String?                        @default(dbgenerated("auth.uid()")) @db.Uuid
+  selected_options              Json[]
+  viewed_on                     DateTime?                      @db.Timestamptz(6)
+  confirmed_on                  DateTime?                      @db.Timestamptz(6)
+  recruiter_user                recruiter_user?                @relation(fields: [created_by], references: [user_id], onUpdate: NoAction, map: "public_interview_filter_json_created_by_fkey")
+  interview_schedule            interview_schedule             @relation(fields: [schedule_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "public_interview_filter_json_schedule_id_fkey")
+  new_tasks                     new_tasks[]
+  scheduling_agent_chat_history scheduling_agent_chat_history?
+
+  @@schema("public")
+}
+
+model interview_meeting {
+  id                    String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at            DateTime                  @default(now()) @db.Timestamptz(6)
+  interview_schedule_id String                    @db.Uuid
+  meeting_json          Json?
+  status                interview_schedule_status @default(confirmed)
+  instructions          String?
+  meeting_link          String?
+  confirmed_date        DateTime?                 @db.Timestamptz(6)
+  start_time            DateTime?                 @db.Timestamptz(6)
+  end_time              DateTime?                 @db.Timestamptz(6)
+  cal_event_id          String?
+  candidate_feedback    Json?
+  organizer_id          String?                   @db.Uuid
+  meeting_flow          meeting_flow              @default(self_scheduling)
+  recruiter_user        recruiter_user?           @relation(fields: [organizer_id], references: [user_id], onUpdate: NoAction)
+  interview_schedule    interview_schedule        @relation(fields: [interview_schedule_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "public_interview_meeting_interview_schedule_id_fkey")
+  interview_session     interview_session[]
+
+  @@index([interview_schedule_id])
+  @@schema("public")
+}
+
+model interview_module {
+  created_at                DateTime                    @default(now()) @db.Timestamptz(6)
+  name                      String
+  recruiter_id              String                      @db.Uuid
+  id                        String                      @id(map: "interview_panel_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  duration_available        Json?                       @default("{\"activeDuration\": 30, \"availabletimeSlots\": []}")
+  description               String?
+  settings                  Json?
+  instructions              String?
+  department                String?
+  created_by                String?                     @default(dbgenerated("auth.uid()")) @db.Uuid
+  is_archived               Boolean                     @default(false)
+  recruiter                 recruiter                   @relation(fields: [recruiter_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "interview_panel_recruiter_id_fkey")
+  recruiter_user            recruiter_user?             @relation(fields: [created_by], references: [user_id], onUpdate: NoAction, map: "public_interview_module_created_by_fkey")
+  interview_module_relation interview_module_relation[]
+  interview_session         interview_session[]
+
+  @@schema("public")
+}
+
+model interview_module_relation {
+  id                         String                       @id(map: "interview_panel_relation_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id                    String                       @db.Uuid
+  module_id                  String                       @db.Uuid
+  pause_json                 Json?
+  training_status            status_training              @default(qualified)
+  interview_module           interview_module             @relation(fields: [module_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "interview_panel_relation_panel_id_fkey")
+  recruiter_user             recruiter_user               @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "public_interview_module_relation_user_id_fkey")
+  interview_session_relation interview_session_relation[]
+
+  @@unique([user_id, module_id], map: "unique_user_module")
+  @@index([user_id, module_id])
+  @@schema("public")
+}
+
+model interview_plan {
+  created_at        DateTime            @default(now()) @db.Timestamptz(6)
+  id                String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  job_id            String              @unique @db.Uuid
+  public_jobs       public_jobs         @relation(fields: [job_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "public_interview_plan_job_id_fkey")
+  interview_session interview_session[]
+
+  @@schema("public")
+}
+
+model interview_schedule {
+  id                                                               String                     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at                                                       DateTime                   @default(now()) @db.Timestamptz(6)
+  application_id                                                   String                     @unique @db.Uuid
+  schedule_name                                                    String
+  created_by                                                       String                     @default(dbgenerated("auth.uid()")) @db.Uuid
+  calender_event_api_status                                        Json?                      @default("{\"error\": null, \"api_status\": \"not_started\"}")
+  coordinator_id                                                   String?                    @db.Uuid
+  is_get_more_option                                               Boolean                    @default(false)
+  is_completed                                                     Boolean                    @default(false)
+  recruiter_id                                                     String                     @db.Uuid
+  interview_filter_json                                            interview_filter_json[]
+  interview_meeting                                                interview_meeting[]
+  applications                                                     applications               @relation(fields: [application_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  recruiter_user_interview_schedule_coordinator_idTorecruiter_user recruiter_user?            @relation("interview_schedule_coordinator_idTorecruiter_user", fields: [coordinator_id], references: [user_id], onUpdate: NoAction, map: "public_interview_schedule_coordinator_id_fkey")
+  recruiter_user_interview_schedule_created_byTorecruiter_user     recruiter_user             @relation("interview_schedule_created_byTorecruiter_user", fields: [created_by], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "public_interview_schedule_created_by_fkey")
+  recruiter                                                        recruiter                  @relation(fields: [recruiter_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "public_interview_schedule_recruiter_id_fkey")
+  interview_session_cancel                                         interview_session_cancel[]
+
+  @@schema("public")
+}
+
+model interview_session {
+  id                         String                       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at                 DateTime                     @default(now()) @db.Timestamptz(6)
+  module_id                  String?                      @db.Uuid
+  interview_plan_id          String?                      @db.Uuid
+  session_order              Decimal                      @default(1) @db.Decimal
+  session_duration           Decimal                      @default(30) @db.Decimal
+  break_duration             Decimal?                     @default(0) @db.Decimal
+  interviewer_cnt            Decimal?                     @default(1) @db.Decimal
+  session_type               session_type                 @default(panel)
+  location                   String?
+  schedule_type              interview_schedule_type      @default(google_meet)
+  name                       String?
+  meeting_id                 String?                      @db.Uuid
+  members_meta               Json                         @default("{\"sourcer\": false, \"recruiter\": false, \"hiring_manager\": false, \"previous_interviewers\": false, \"recruiting_coordinator\": false}")
+  interview_plan             interview_plan?              @relation(fields: [interview_plan_id], references: [id], onDelete: Cascade, map: "public_interview_session_interview_plan_id_fkey")
+  interview_meeting          interview_meeting?           @relation(fields: [meeting_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "public_interview_session_meeting_id_fkey")
+  interview_module           interview_module?            @relation(fields: [module_id], references: [id], onUpdate: NoAction, map: "public_interview_session_module_id_fkey")
+  interview_session_cancel   interview_session_cancel[]
+  interview_session_relation interview_session_relation[]
+  request_session_relation   request_session_relation?
+  task_session_relation      task_session_relation[]
+
+  @@index([meeting_id, interview_plan_id, module_id])
+  @@schema("public")
+}
+
+model interview_session_cancel {
+  id                         String                      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at                 DateTime                    @default(now()) @db.Timestamptz(6)
+  session_relation_id        String?                     @db.Uuid
+  reason                     String
+  is_resolved                Boolean                     @default(false)
+  session_id                 String                      @db.Uuid
+  schedule_id                String?                     @db.Uuid
+  type                       cancel_type                 @default(declined)
+  other_details              Json?
+  cancel_user_id             String?                     @db.Uuid
+  is_ignored                 Boolean                     @default(false)
+  recruiter_user             recruiter_user?             @relation(fields: [cancel_user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+  interview_schedule         interview_schedule?         @relation(fields: [schedule_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  interview_session          interview_session           @relation(fields: [session_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  interview_session_relation interview_session_relation? @relation(fields: [session_relation_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model interview_session_relation {
+  id                           String                     @id(map: "inteview_session_relation_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  session_id                   String                     @db.Uuid
+  interviewer_type             status_training            @default(qualified)
+  interview_module_relation_id String?                    @db.Uuid
+  training_type                interviewer_type?
+  user_id                      String?                    @db.Uuid
+  is_confirmed                 Boolean                    @default(false)
+  feedback                     Json?
+  accepted_status              session_accepted_status    @default(waiting)
+  interview_session_cancel     interview_session_cancel[]
+  interview_module_relation    interview_module_relation? @relation(fields: [interview_module_relation_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "public_interview_session_relation_interview_module_relation_id_")
+  recruiter_user               recruiter_user?            @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "public_interview_session_relation_user_id_fkey")
+  interview_session            interview_session          @relation(fields: [session_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "public_inteview_session_relation_session_id_fkey")
+
+  @@index([session_id, interview_module_relation_id, user_id])
+  @@schema("public")
+}
+
+model job_assiatan_chat {
+  id                         String                       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at                 DateTime                     @default(now()) @db.Timestamptz(6)
+  job_id                     String                       @db.Uuid
+  name                       String?
+  thread_id                  String
+  updated_at                 DateTime                     @default(now()) @db.Timestamptz(6)
+  last_message               String?
+  public_jobs                public_jobs                  @relation(fields: [job_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  job_assiatan_chat_messages job_assiatan_chat_messages[]
+
+  @@schema("public")
+}
+
+model job_assiatan_chat_messages {
+  id                   BigInt            @id @default(autoincrement())
+  created_at           DateTime          @default(now()) @db.Timestamptz(6)
+  job_assiatan_chat_id String            @db.Uuid
+  sender               String
+  type                 String
+  message_id           String
+  content              Json
+  job_assiatan_chat    job_assiatan_chat @relation(fields: [job_assiatan_chat_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model job_email_template {
+  id          String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at  DateTime          @default(now()) @db.Timestamptz(6)
+  job_id      String            @db.Uuid
+  subject     String?
+  body        String?
+  from_name   String?
+  type        email_slack_types
+  public_jobs public_jobs       @relation(fields: [job_id], references: [id], onDelete: Cascade)
+
+  @@unique([job_id, type], map: "job_email_type")
+  @@schema("public")
+}
+
+model job_reference {
+  id            BigInt      @id @default(autoincrement())
+  created_at    DateTime    @default(now()) @db.Timestamptz(6)
+  ats_json      Json?
+  public_job_id String      @db.Uuid
+  ats           String?
+  ats_job_id    String
+  recruiter_id  String      @db.Uuid
+  public_jobs   public_jobs @relation(fields: [public_job_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  recruiter     recruiter   @relation(fields: [recruiter_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model lever_job_reference {
+  id             BigInt      @id @default(autoincrement())
+  created_at     DateTime    @default(now()) @db.Timestamptz(6)
+  last_synced_at DateTime?   @default(now()) @db.Timestamp(6)
+  posting_id     String      @db.Uuid
+  job_id         String      @db.Uuid
+  recruiter_id   String?     @db.Uuid
+  public_jobs    public_jobs @relation(fields: [job_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  recruiter      recruiter?  @relation(fields: [recruiter_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model lever_reference {
+  created_at     DateTime    @default(now()) @db.Timestamptz(6)
+  last_synced    DateTime    @default(now()) @db.Timestamptz(6)
+  application_id String      @id @db.Uuid
+  opportunity_id String      @db.Uuid
+  posting_id     String      @db.Uuid
+  public_job_id  String      @db.Uuid
+  stage          String?
+  feedback       Json?
+  public_jobs    public_jobs @relation(fields: [public_job_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model logs {
+  id             BigInt          @id @default(autoincrement())
+  created_at     DateTime        @default(now()) @db.Timestamptz(6)
+  name           String
+  recruiter_id   String?         @db.Uuid
+  user_id        String?         @db.Uuid
+  method         String?
+  type           String
+  status         String
+  parent_log_id  BigInt?
+  meta           Json?
+  message        String?
+  recruiter      recruiter?      @relation(fields: [recruiter_id], references: [id], onUpdate: NoAction)
+  recruiter_user recruiter_user? @relation(fields: [user_id], references: [user_id], onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model new_tasks {
+  id                             String                          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at                     DateTime                        @default(now()) @db.Timestamptz(6)
+  name                           String
+  due_date                       DateTime?                       @db.Timestamptz(6)
+  assignee                       String[]                        @db.Uuid
+  start_date                     DateTime?                       @default(now()) @db.Timestamptz(6)
+  application_id                 String?                         @db.Uuid
+  recruiter_id                   String?                         @db.Uuid
+  schedule_date_range            Json?
+  created_by                     String                          @db.Uuid
+  type                           task_type_enum?                 @default(schedule)
+  status                         task_status                     @default(not_started)
+  agent                          task_agent_type?
+  filter_id                      String?                         @db.Uuid
+  priority                       task_priority                   @default(medium)
+  task_owner                     String?                         @db.Uuid
+  trigger_count                  Decimal                         @default(0) @db.Decimal
+  task_action                    Json?                           @default("{}")
+  request_availability_id        String?                         @db.Uuid
+  application_logs               application_logs[]
+  candidate_request_availability candidate_request_availability? @relation(fields: [request_availability_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  applications                   applications?                   @relation(fields: [application_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "public_new_tasks_application_id_fkey")
+  recruiter_user                 recruiter_user                  @relation(fields: [created_by], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "public_new_tasks_cretaed_by_fkey")
+  interview_filter_json          interview_filter_json?          @relation(fields: [filter_id], references: [id], onUpdate: NoAction, map: "public_new_tasks_filter_id_fkey")
+  new_tasks_progress             new_tasks_progress[]
+  scheduling_agent_chat_history  scheduling_agent_chat_history[]
+  task_session_relation          task_session_relation[]
+
+  @@schema("public")
+}
+
+model new_tasks_progress {
+  id            String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at    DateTime      @default(now()) @db.Timestamptz(6)
+  title         String
+  created_by    Json
+  progress_type progress_type @default(standard)
+  jsonb_data    Json?
+  task_id       String        @db.Uuid
+  title_meta    Json?         @default("{}")
+  new_tasks     new_tasks     @relation(fields: [task_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "public_new_tasks_progress_task_id_fkey")
+
+  @@schema("public")
+}
+
+model notify_me {
+  id         String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  email      String
+  job_id     String?
+  job_title  String?
+
+  @@schema("public")
+}
+
+model outreached_emails {
+  id                BigInt         @id @default(autoincrement())
+  candidate_id      String
+  email             Json           @default("{}")
+  email_sent        Boolean        @default(false)
+  recruiter_user_id String         @db.Uuid
+  recruiter_user    recruiter_user @relation(fields: [recruiter_user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model permissions {
+  id               BigInt             @id @default(autoincrement())
+  name             permissions_type   @unique
+  created_at       DateTime?          @default(now()) @db.Timestamp(6)
+  updated_at       DateTime?          @default(now()) @db.Timestamp(6)
+  is_enable        Boolean?           @default(true)
+  description      String?
+  title            String
+  dependency_tree  Json               @default("{\"child\": [], \"parent\": null, \"sibling\": null}")
+  role_permissions role_permissions[]
+
+  @@schema("public")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model plan_count {
+  count BigInt?
+
+  @@ignore
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model public_jobs {
+  id                                                                String                          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at                                                        DateTime                        @default(now()) @db.Timestamptz(6)
+  company_details                                                   String?
+  overview                                                          String?
+  logo                                                              String?
+  company                                                           String?
+  location                                                          String?
+  job_title                                                         String?
+  description                                                       String?
+  skills                                                            String[]
+  slug                                                              String                          @default("")
+  job_type                                                          public_job_type?                @default(full_time)
+  workplace_type                                                    public_job_workplace?           @default(on_site)
+  screening_setting                                                 Json?                           @default("{}")
+  screening_questions                                               Json[]                          @default(["{\"id\": \"_TtFCnB4eaNdK5RZ-LsAL\", \"copy\": \"Skill\", \"category\": \"skill\", \"questions\": []}", "{\"id\": \"OHA290kmXtmow8f85UDWs\", \"copy\": \"Behavior\", \"category\": \"behavior\", \"questions\": []}", "{\"id\": \"LTezJA4H_rfZKdt1Rll9-\", \"copy\": \"communication\", \"category\": \"communication\", \"questions\": []}", "{\"id\": \"Myjsxafr-GsUMSO4O2-bJ\", \"copy\": \"Performance\", \"category\": \"performance\", \"questions\": []}", "{\"id\": \"wQcmD1Y72rtd4cMuk2CG1\", \"copy\": \"Education\", \"category\": \"education\", \"questions\": []}", "{\"id\": \"thq14SF4XYQk_XgTEx61e\", \"copy\": \"General\", \"category\": \"general\", \"questions\": []}"])
+  job_criteria                                                      Json?                           @default("{}")
+  posted_by                                                         String                          @default("Aglint")
+  active_status                                                     Json                            @default("{\"closed\": {\"isActive\": false, \"timeStamp\": null}, \"sourcing\": {\"isActive\": false, \"timeStamp\": null}, \"interviewing\": {\"isActive\": false, \"timeStamp\": null}}")
+  updated_at                                                        DateTime?                       @default(now()) @db.Timestamp(6)
+  department                                                        String?
+  recruiter_id                                                      String                          @db.Uuid
+  new_screening_setting                                             Json                            @default("{\"interview\": {\"isManual\": true, \"qualificationRange\": null}, \"screening\": {\"isManual\": true, \"qualificationRange\": null}, \"interviewMail\": {\"isManual\": true, \"timestamp\": null}, \"feedbackVisible\": false, \"disqualifiedMail\": {\"isManual\": true, \"timestamp\": null}}")
+  parameter_weights                                                 Json                            @default("{\"skills\": 0, \"education\": 0, \"experience\": 0}")
+  jd_json                                                           Json?
+  end_video                                                         Json?
+  intro_videos                                                      Json?
+  start_video                                                       Json?
+  video_assessment                                                  Boolean                         @default(false)
+  draft                                                             Json?
+  status                                                            public_job_status               @default(draft)
+  interview_instructions                                            String?
+  assessment                                                        Boolean?                        @default(false)
+  is_ats_sync                                                       Boolean                         @default(false)
+  phone_screening                                                   Json?
+  jd_changed                                                        Boolean?                        @default(false)
+  phone_screen_enabled                                              Boolean?                        @default(false)
+  job_details_embedding                                             Unsupported("vector")?
+  experience_in_months                                              Decimal?                        @db.Decimal
+  location_json                                                     Json?
+  screening_template                                                String?                         @db.Uuid
+  interview_success                                                 String?
+  interview_plan                                                    Json?
+  scoring_criteria_loading                                          Boolean                         @default(false)
+  hiring_manager                                                    String?                         @db.Uuid
+  recruiter                                                         String?                         @db.Uuid
+  recruiting_coordinator                                            String?                         @db.Uuid
+  sourcer                                                           String?                         @db.Uuid
+  interview_coordinator                                             String?                         @db.Uuid
+  interview_plan_warning_ignore                                     Boolean                         @default(false)
+  interview_session_warning_ignore                                  Boolean                         @default(false)
+  applications                                                      applications[]
+  assessment_job_relation                                           assessment_job_relation[]
+  interview_plan                                                    interview_plan?
+  job_assiatan_chat                                                 job_assiatan_chat[]
+  job_email_template                                                job_email_template[]
+  job_reference                                                     job_reference[]
+  lever_job_reference                                               lever_job_reference[]
+  lever_reference                                                   lever_reference[]
+  recruiter_user_public_jobs_hiring_managerTorecruiter_user         recruiter_user?                 @relation("public_jobs_hiring_managerTorecruiter_user", fields: [hiring_manager], references: [user_id])
+  recruiter_user_public_jobs_interview_coordinatorTorecruiter_user  recruiter_user?                 @relation("public_jobs_interview_coordinatorTorecruiter_user", fields: [interview_coordinator], references: [user_id])
+  recruiter_user_public_jobs_recruiterTorecruiter_user              recruiter_user?                 @relation("public_jobs_recruiterTorecruiter_user", fields: [recruiter], references: [user_id])
+  recruiter                                                         recruiter                       @relation(fields: [recruiter_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  recruiter_user_public_jobs_recruiting_coordinatorTorecruiter_user recruiter_user?                 @relation("public_jobs_recruiting_coordinatorTorecruiter_user", fields: [recruiting_coordinator], references: [user_id])
+  recruiter_user_public_jobs_sourcerTorecruiter_user                recruiter_user?                 @relation("public_jobs_sourcerTorecruiter_user", fields: [sourcer], references: [user_id])
+  screening_questions                                               screening_questions?            @relation(fields: [screening_template], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "public_public_jobs_screening_template_fkey")
+  scheduling_agent_chat_history                                     scheduling_agent_chat_history[]
+  support_ticket                                                    support_ticket[]
+  workflow_job_relation                                             workflow_job_relation[]
+
+  @@schema("public")
+}
+
+model question_bank {
+  id                         String                       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at                 DateTime                     @default(now()) @db.Timestamptz(6)
+  question                   Json?
+  answer                     Json?
+  level                      question_level?
+  embeddings                 Unsupported("vector")?
+  duration                   Decimal?                     @db.Decimal
+  description                Json?                        @default("{\"show\": false, \"value\": \"\"}")
+  required                   Boolean                      @default(true)
+  type                       question_type                @default(qna)
+  assessment_question        assessment_question[]
+  template_question_relation template_question_relation[]
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model recruiter {
+  id                             String                           @id(map: "recruiter_id_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  recruiter_type                 String?
+  name                           String?
+  email                          String?
+  company_website                String?
+  industry                       String?
+  logo                           String?
+  phone_number                   String?
+  primary_contact                Json?
+  hr_contact                     Json?
+  available_roles                String[]                         @default([])
+  departments                    String[]                         @default([])
+  technology_score               String[]                         @default([])
+  company_overview               String?
+  e_o_statement                  String?
+  application_process            String?
+  m_v_statement                  String?
+  employment_type                Json                             @default("{\"contract\": true, \"fulltime\": true, \"parttime\": true, \"temporary\": true, \"volunteer\": true, \"internship\": true}")
+  workplace_type                 Json                             @default("{\"hybrid\": true, \"onsite\": true, \"offsite\": true}")
+  company_values                 String?
+  benefits                       String?
+  employee_size                  String?
+  office_locations               Json[]                           @default([])
+  socials                        Json?                            @default("{\"custom\": {}, \"twitter\": \"\", \"youtube\": \"\", \"facebook\": \"\", \"linkedin\": \"\", \"instagram\": \"\"}")
+  lever_key                      String?
+  ai_avatar                      Json?
+  audio_avatar_id                Decimal                          @default(0) @db.Decimal
+  video_assessment               Boolean?                         @default(false)
+  ats_familiar                   String?
+  use_of_purpose                 Json?
+  recruiter_active               Boolean?                         @default(false)
+  greenhouse_key                 String?
+  assistant_id                   String?
+  ashby_key                      String?
+  ashby_sync_token               String?
+  ashby_last_synced              DateTime?                        @db.Timestamptz(6)
+  created_at                     DateTime                         @default(now()) @db.Timestamptz(6)
+  service_json                   String?
+  scheduling_settings            Json?                            @default("{\"timeZone\": {\"utc\": \"-08:00\", \"name\": \"(GMT-08:00) Los Angeles, San Diego, San Jose, San Francisco, Seattle\", \"label\": \"America/Los_Angeles (GMT-08:00)\", \"tzCode\": \"America/Los_Angeles\"}, \"break_hour\": {\"end_time\": \"13:30\", \"start_time\": \"13:00\"}, \"totalDaysOff\": [{\"date\": \"01 Jan 2024\", \"event_name\": \"New Year Day\"}, {\"date\": \"16 Jan 2024\", \"event_name\": \"Martin Luther King Jr. Day\"}, {\"date\": \"19 Feb 2024\", \"event_name\": \"Presidents Day\"}, {\"date\": \"27 May 2024\", \"event_name\": \"Memorial Day\"}, {\"date\": \"19 Jun 2024\", \"event_name\": \"Juneteenth National Independence Day\"}, {\"date\": \"04 Jul 2024\", \"event_name\": \"Independence Day\"}, {\"date\": \"02 Sep 2024\", \"event_name\": \"Labor Day\"}, {\"date\": \"14 Oct 2024\", \"event_name\": \"Columbus Day\"}, {\"date\": \"11 Nov 2024\", \"event_name\": \"Veterans Day\"}, {\"date\": \"28 Nov 2024\", \"event_name\": \"Thanksgiving Day\"}, {\"date\": \"25 Dec 2024\", \"event_name\": \"Christmas Day\"}], \"workingHours\": [{\"day\": \"sunday\", \"isWorkDay\": false, \"timeRange\": {\"endTime\": \"17:00\", \"startTime\": \"09:00\"}}, {\"day\": \"monday\", \"isWorkDay\": true, \"timeRange\": {\"endTime\": \"17:00\", \"startTime\": \"09:00\"}}, {\"day\": \"tuesday\", \"isWorkDay\": true, \"timeRange\": {\"endTime\": \"17:00\", \"startTime\": \"09:00\"}}, {\"day\": \"wednesday\", \"isWorkDay\": true, \"timeRange\": {\"endTime\": \"17:00\", \"startTime\": \"09:00\"}}, {\"day\": \"thursday\", \"isWorkDay\": true, \"timeRange\": {\"endTime\": \"17:00\", \"startTime\": \"09:00\"}}, {\"day\": \"friday\", \"isWorkDay\": true, \"timeRange\": {\"endTime\": \"17:00\", \"startTime\": \"09:00\"}}, {\"day\": \"saturday\", \"isWorkDay\": false, \"timeRange\": {\"endTime\": \"17:00\", \"startTime\": \"09:00\"}}], \"interviewLoad\": {\"dailyLimit\": {\"type\": \"Hours\", \"value\": 4}, \"weeklyLimit\": {\"type\": \"Hours\", \"value\": 20}}, \"debrief_defaults\": {\"sourcer\": false, \"recruiter\": false, \"hiring_manager\": false, \"previous_interviewers\": false, \"recruiting_coordinator\": false}, \"schedulingKeyWords\": {\"free\": [\"Personal Time\", \"Break\", \"Team Lunch\", \"Networking Event\", \"Office Hours\", \"Casual Meetup\"], \"outOfOffice\": [\"Maternity Leave\", \"Vacation\", \"PTO\", \"Out of Office\"], \"SoftConflicts\": [\"Daily Standup\", \"Sync Up\", \"Project Review\", \"Sprint Planning\", \"Strategy Session\", \"Team Briefing\"], \"recruitingBlocks\": [\"Dedicated Recruiting\", \"Recruiting Block\"]}, \"isAutomaticTimeZone\": false}")
+  zoom_auth                      String?
+  google_workspace_domain        String?
+  scheduling_reason              Json?                            @default("{\"internal\": {\"decline\": [\"Conflict with Another Meeting\", \"Unexpected Urgency\", \"Travel Delays or Issues\", \"Technical Difficulties\", \"Other\"], \"cancellation\": [\"Position Filled\", \"Budget Constraints\", \"Reevaluation of Hiring Needs\", \"Other\"], \"rescheduling\": [\"Conflict with Another Meeting\", \"Unexpected Urgency\", \"Travel Delays or Issues\", \"Technical Difficulties\", \"Other\"]}, \"candidate\": {\"cancellation\": [\"Conflicting Schedule\", \"Health Reasons\", \"Unexpected Emergency\", \"Job Offer Accepted\", \"Other\"], \"rescheduling\": [\"Request for a Different Time\", \"Request for a Different Date\", \"Additional Preparation Needed\", \"Change of Interview Mode\", \"Other\"]}}")
+  domain_admin_email             String?
+  assessment                     assessment[]
+  candidate_list                 candidate_list[]
+  candidate_request_availability candidate_request_availability[]
+  candidate_search_history       candidate_search_history[]
+  candidates                     candidates[]
+  company_email_template         company_email_template[]
+  integrations                   integrations?
+  interview_module               interview_module[]
+  interview_schedule             interview_schedule[]
+  job_reference                  job_reference[]
+  lever_job_reference            lever_job_reference[]
+  logs                           logs[]
+  public_jobs                    public_jobs[]
+  recruiter_relation             recruiter_relation[]
+  request_integration_tool       request_integration_tool[]
+  role_permissions               role_permissions[]
+  roles                          roles[]
+  scheduling_agent_chat_history  scheduling_agent_chat_history[]
+  screening_questions            screening_questions[]
+  support_groups                 support_groups[]
+  support_ticket                 support_ticket[]
+  workflow                       workflow[]
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model recruiter_relation {
+  id                                                           BigInt          @id @default(autoincrement())
+  created_at                                                   DateTime        @default(now()) @db.Timestamptz(6)
+  recruiter_id                                                 String          @db.Uuid
+  user_id                                                      String          @db.Uuid
+  is_active                                                    Boolean         @default(false)
+  created_by                                                   String          @default(dbgenerated("auth.uid()")) @db.Uuid
+  manager_id                                                   String?         @db.Uuid
+  role                                                         user_roles
+  role_id                                                      String?         @db.Uuid
+  recruiter_user_recruiter_relation_user_idTorecruiter_user    recruiter_user  @relation("recruiter_relation_user_idTorecruiter_user", fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "public_recruiter_relation_user_id_fkey")
+  users                                                        users           @relation(fields: [created_by], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  recruiter_user_recruiter_relation_manager_idTorecruiter_user recruiter_user? @relation("recruiter_relation_manager_idTorecruiter_user", fields: [manager_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+  recruiter                                                    recruiter       @relation(fields: [recruiter_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  roles                                                        roles?          @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([user_id, recruiter_id], map: "recruiter_relation_ukey")
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model recruiter_user {
+  created_at                                                           DateTime                     @default(now()) @db.Timestamptz(6)
+  user_id                                                              String                       @id @db.Uuid
+  first_name                                                           String?
+  last_name                                                            String?
+  email                                                                String?
+  profile_image                                                        String?
+  phone                                                                String?
+  joined_at                                                            DateTime?                    @default(now()) @db.Timestamptz(6)
+  join_status                                                          String                       @default("invited")
+  position                                                             String?
+  email_auth                                                           Json?
+  email_outreach_templates                                             Json[]
+  schedule_auth                                                        Json?
+  scheduling_settings                                                  Json?                        @default("{\"timeZone\": {\"utc\": \"-08:00\", \"name\": \"(GMT-08:00) Los Angeles, San Diego, San Jose, San Francisco, Seattle\", \"label\": \"America/Los_Angeles (GMT-08:00)\", \"tzCode\": \"America/Los_Angeles\"}, \"break_hour\": {\"end_time\": \"13:30\", \"start_time\": \"13:00\"}, \"totalDaysOff\": [{\"date\": \"01 Jan 2024\", \"event_name\": \"New Year Day\"}, {\"date\": \"16 Jan 2024\", \"event_name\": \"Martin Luther King Jr. Day\"}, {\"date\": \"19 Feb 2024\", \"event_name\": \"Presidents Day\"}, {\"date\": \"27 May 2024\", \"event_name\": \"Memorial Day\"}, {\"date\": \"19 Jun 2024\", \"event_name\": \"Juneteenth National Independence Day\"}, {\"date\": \"04 Jul 2024\", \"event_name\": \"Independence Day\"}, {\"date\": \"02 Sep 2024\", \"event_name\": \"Labor Day\"}, {\"date\": \"14 Oct 2024\", \"event_name\": \"Columbus Day\"}, {\"date\": \"11 Nov 2024\", \"event_name\": \"Veterans Day\"}, {\"date\": \"28 Nov 2024\", \"event_name\": \"Thanksgiving Day\"}, {\"date\": \"25 Dec 2024\", \"event_name\": \"Christmas Day\"}], \"workingHours\": [{\"day\": \"sunday\", \"isWorkDay\": false, \"timeRange\": {\"endTime\": \"17:00\", \"startTime\": \"09:00\"}}, {\"day\": \"monday\", \"isWorkDay\": true, \"timeRange\": {\"endTime\": \"17:00\", \"startTime\": \"09:00\"}}, {\"day\": \"tuesday\", \"isWorkDay\": true, \"timeRange\": {\"endTime\": \"17:00\", \"startTime\": \"09:00\"}}, {\"day\": \"wednesday\", \"isWorkDay\": true, \"timeRange\": {\"endTime\": \"17:00\", \"startTime\": \"09:00\"}}, {\"day\": \"thursday\", \"isWorkDay\": true, \"timeRange\": {\"endTime\": \"17:00\", \"startTime\": \"09:00\"}}, {\"day\": \"friday\", \"isWorkDay\": true, \"timeRange\": {\"endTime\": \"17:00\", \"startTime\": \"09:00\"}}, {\"day\": \"saturday\", \"isWorkDay\": false, \"timeRange\": {\"endTime\": \"17:00\", \"startTime\": \"09:00\"}}], \"interviewLoad\": {\"dailyLimit\": {\"type\": \"Hours\", \"value\": 4}, \"weeklyLimit\": {\"type\": \"Hours\", \"value\": 20}}, \"schedulingKeyWords\": {\"free\": [\"Personal Time\", \"Break\", \"Team Lunch\", \"Networking Event\", \"Office Hours\", \"Casual Meetup\"], \"outOfOffice\": [\"Maternity leave\", \"vacation\", \"pto\", \"out of office\", \"ooo\"], \"SoftConflicts\": [\"Daily Standup\", \"Sync Up\", \"Project Review\", \"Sprint Planning\", \"Strategy Session\", \"Team Briefing\"], \"recruitingBlocks\": [\"dedicated recruiting\", \"Recruiting Block\"]}, \"isAutomaticTimeZone\": false}")
+  department                                                           String?
+  interview_location                                                   String?
+  employment                                                           employment_type_enum         @default(fulltime)
+  is_suspended                                                         Boolean                      @default(false)
+  linked_in                                                            String?
+  application_logs                                                     application_logs[]
+  interview_filter_json                                                interview_filter_json[]
+  interview_meeting                                                    interview_meeting[]
+  interview_module                                                     interview_module[]
+  interview_module_relation                                            interview_module_relation[]
+  interview_schedule_interview_schedule_coordinator_idTorecruiter_user interview_schedule[]         @relation("interview_schedule_coordinator_idTorecruiter_user")
+  interview_schedule_interview_schedule_created_byTorecruiter_user     interview_schedule[]         @relation("interview_schedule_created_byTorecruiter_user")
+  interview_session_cancel                                             interview_session_cancel[]
+  interview_session_relation                                           interview_session_relation[]
+  logs                                                                 logs[]
+  new_tasks                                                            new_tasks[]
+  outreached_emails                                                    outreached_emails[]
+  public_jobs_public_jobs_hiring_managerTorecruiter_user               public_jobs[]                @relation("public_jobs_hiring_managerTorecruiter_user")
+  public_jobs_public_jobs_interview_coordinatorTorecruiter_user        public_jobs[]                @relation("public_jobs_interview_coordinatorTorecruiter_user")
+  public_jobs_public_jobs_recruiterTorecruiter_user                    public_jobs[]                @relation("public_jobs_recruiterTorecruiter_user")
+  public_jobs_public_jobs_recruiting_coordinatorTorecruiter_user       public_jobs[]                @relation("public_jobs_recruiting_coordinatorTorecruiter_user")
+  public_jobs_public_jobs_sourcerTorecruiter_user                      public_jobs[]                @relation("public_jobs_sourcerTorecruiter_user")
+  recruiter_relation_recruiter_relation_user_idTorecruiter_user        recruiter_relation[]         @relation("recruiter_relation_user_idTorecruiter_user")
+  recruiter_relation_recruiter_relation_manager_idTorecruiter_user     recruiter_relation[]         @relation("recruiter_relation_manager_idTorecruiter_user")
+  users                                                                users                        @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model request_integration_tool {
+  id           BigInt     @id @default(autoincrement())
+  created_at   DateTime   @default(now()) @db.Timestamptz(6)
+  recruiter_id String?    @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tool_name    String?
+  description  String?
+  recruiter    recruiter? @relation(fields: [recruiter_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "public_request_integration_tool_recruiter_id_fkey")
+
+  @@schema("public")
+}
+
+model request_session_relation {
+  id                             String                         @id(map: "request_availability_relation_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  session_id                     String                         @unique @db.Uuid
+  request_availability_id        String                         @db.Uuid
+  candidate_request_availability candidate_request_availability @relation(fields: [request_availability_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "request_availability_relation_request_availability_id_fkey")
+  interview_session              interview_session              @relation(fields: [session_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "request_availability_relation_session_id_fkey")
+
+  @@schema("public")
+}
+
+model role_permissions {
+  id            String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  role_id       String      @db.Uuid
+  permission_id Int
+  recruiter_id  String      @db.Uuid
+  permissions   permissions @relation(fields: [permission_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  recruiter     recruiter   @relation(fields: [recruiter_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  roles         roles       @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([role_id, permission_id, recruiter_id], map: "role_permissions_unique_key")
+  @@schema("public")
+}
+
+model roles {
+  id                 String               @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  recruiter_id       String               @db.Uuid
+  name               String
+  created_at         DateTime             @default(now()) @db.Timestamp(6)
+  updated_at         DateTime             @default(now()) @db.Timestamp(6)
+  description        String?
+  recruiter_relation recruiter_relation[]
+  role_permissions   role_permissions[]
+  recruiter          recruiter            @relation(fields: [recruiter_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model rp_logs {
+  id             BigInt   @id @default(autoincrement())
+  created_at     DateTime @default(now()) @db.Timestamptz(6)
+  application_id String   @db.Uuid
+  logs           Json     @default("{}")
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model rp_token_usage {
+  id               BigInt   @id @default(autoincrement())
+  created_at       DateTime @default(now()) @db.Timestamptz(6)
+  application_id   String   @db.Uuid
+  token_used_json  Json?
+  total_token_used Decimal? @db.Decimal
+  task             String?
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model scheduling_agent_chat_history {
+  created_at            DateTime              @default(now()) @db.Timestamptz(6)
+  application_id        String?               @db.Uuid
+  job_id                String                @db.Uuid
+  chat_history          Json[]                @default([])
+  company_id            String?               @db.Uuid
+  filter_json_id        String                @unique(map: "scheduling-agent-chat-history_filter_json_id_key") @db.Uuid
+  task_id               String?               @db.Uuid
+  agent_processing      Boolean               @default(false)
+  thread_id             String                @db.Uuid
+  email_from_name       String
+  email_subject         String
+  applications          applications?         @relation(fields: [application_id], references: [id], map: "public_scheduling-agent-chat-history_application_id_fkey")
+  recruiter             recruiter?            @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "public_scheduling-agent-chat-history_company_id_fkey")
+  interview_filter_json interview_filter_json @relation(fields: [filter_json_id], references: [id], onDelete: Cascade, map: "public_scheduling-agent-chat-history_filter_json_id_fkey")
+  public_jobs           public_jobs           @relation(fields: [job_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "public_scheduling-agent-chat-history_job_id_fkey")
+  new_tasks             new_tasks?            @relation(fields: [task_id], references: [id], onDelete: Cascade, map: "public_scheduling-agent-chat-history_task_id_fkey")
+
+  @@id([filter_json_id, thread_id], map: "scheduling-agent-chat-history_pkey")
+  @@schema("public")
+}
+
+model screening_answers {
+  created_at   DateTime     @default(now()) @db.Timestamptz(6)
+  answers      Json
+  screening_id String       @id @unique(map: "screening_answers_id_key") @default(dbgenerated("auth.uid()")) @db.Uuid
+  applications applications @relation(fields: [screening_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "public_screening_answers_screening_id_fkey")
+
+  @@schema("public")
+}
+
+model screening_questions {
+  created_at   DateTime      @default(now()) @db.Timestamptz(6)
+  title        String
+  questions    Json
+  recruiter_id String        @db.Uuid
+  id           String        @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  public_jobs  public_jobs[]
+  recruiter    recruiter     @relation(fields: [recruiter_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "public_screening_questions_recruiter_id_fkey")
+
+  @@schema("public")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model session_count {
+  count BigInt?
+
+  @@ignore
+  @@schema("public")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model sessions_count {
+  count BigInt?
+
+  @@ignore
+  @@schema("public")
+}
+
+model support_groups {
+  id         String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  created_at DateTime?  @default(now()) @db.Timestamp(6)
+  updated_at DateTime?  @default(now()) @db.Timestamp(6)
+  user_ids   String[]   @default([]) @db.Uuid
+  company_id String?    @db.Uuid
+  recruiter  recruiter? @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model support_ticket {
+  idx              String      @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  created_at       DateTime?   @default(now()) @db.Timestamp(6)
+  updated_at       DateTime?   @default(now()) @db.Timestamp(6)
+  user_id          String?     @db.Uuid
+  company_id       String?     @db.Uuid
+  job_id           String      @db.Uuid
+  title            String
+  type             String
+  action_pending   Json        @default("{}")
+  assign_to        String?     @db.Uuid
+  content          Json[]      @default([])
+  state            String      @default("created")
+  priority         String      @default("low")
+  user_name        String
+  email_updates    Boolean     @default(false)
+  email            String?
+  attachments      String[]
+  support_group_id String?     @db.Uuid
+  application_id   String?     @db.Uuid
+  id               String      @id @default("")
+  recruiter        recruiter?  @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  public_jobs      public_jobs @relation(fields: [job_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users            users?      @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model task_session_relation {
+  id                String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  session_id        String            @db.Uuid
+  task_id           String            @db.Uuid
+  interview_session interview_session @relation(fields: [session_id], references: [id], onDelete: Cascade)
+  new_tasks         new_tasks         @relation(fields: [task_id], references: [id], onDelete: Cascade)
+
+  @@schema("public")
+}
+
+model template_question_relation {
+  id                  String              @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  created_at          DateTime            @default(now()) @db.Timestamptz(6)
+  template_id         String              @db.Uuid
+  question_id         String              @db.Uuid
+  order               Decimal?            @db.Decimal
+  question_bank       question_bank       @relation(fields: [question_id], references: [id], onDelete: Cascade)
+  assessment_template assessment_template @relation(fields: [template_id], references: [id], onDelete: Cascade)
+
+  @@schema("public")
+}
+
+model threads {
+  id              BigInt   @id(map: "Threads_pkey") @default(autoincrement())
+  created_at      DateTime @default(now()) @db.Timestamptz(6)
+  thread_id       String?
+  assistant_id    String?
+  candidate_name  String?
+  candidate_email String?
+  candidate_phone String?
+  chat_end        Boolean?
+  applied         Boolean?
+  file_url        String?
+  document_text   String?
+  designation     String?
+
+  @@schema("public")
+}
+
+model workflow {
+  id                    String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at            DateTime                @default(now()) @db.Timestamptz(6)
+  trigger               workflow_trigger
+  phase                 workflow_phase
+  interval              Decimal                 @default(0) @db.Decimal
+  title                 String?
+  recruiter_id          String                  @db.Uuid
+  auto_connect          Boolean                 @default(false)
+  description           String?
+  recruiter             recruiter               @relation(fields: [recruiter_id], references: [id], onDelete: Cascade)
+  workflow_action       workflow_action[]
+  workflow_action_logs  workflow_action_logs[]
+  workflow_job_relation workflow_job_relation[]
+
+  @@schema("public")
+}
+
+model workflow_action {
+  id                     String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at             DateTime               @default(now()) @db.Timestamptz(6)
+  workflow_id            String                 @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  order                  Decimal                @db.Decimal
+  payload                Json?
+  email_template_id      String                 @db.Uuid
+  company_email_template company_email_template @relation(fields: [email_template_id], references: [id])
+  workflow               workflow               @relation(fields: [workflow_id], references: [id], onDelete: Cascade)
+  workflow_action_logs   workflow_action_logs[]
+
+  @@schema("public")
+}
+
+model workflow_action_logs {
+  id                 BigInt                        @id @default(autoincrement())
+  created_at         DateTime                      @default(now()) @db.Timestamptz(6)
+  started_at         DateTime?                     @db.Timestamptz(6)
+  completed_at       DateTime?                     @db.Timestamptz(6)
+  tries              Decimal                       @default(0) @db.Decimal
+  status             application_processing_status @default(not_started)
+  workflow_id        String                        @db.Uuid
+  workflow_action_id String                        @db.Uuid
+  meta               Json?
+  execute_at         DateTime                      @db.Timestamptz(6)
+  workflow_action    workflow_action               @relation(fields: [workflow_action_id], references: [id], onDelete: Cascade)
+  workflow           workflow                      @relation(fields: [workflow_id], references: [id], onDelete: Cascade)
+
+  @@schema("public")
+}
+
+model workflow_job_relation {
+  id          String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at  DateTime    @default(now()) @db.Timestamptz(6)
+  job_id      String      @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workflow_id String      @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  public_jobs public_jobs @relation(fields: [job_id], references: [id], onDelete: Cascade)
+  workflow    workflow    @relation(fields: [workflow_id], references: [id], onDelete: Cascade)
+
+  @@schema("public")
+}
+
+enum aal_level {
+  aal1
+  aal2
+  aal3
+
+  @@schema("auth")
+}
+
+enum code_challenge_method {
+  s256
+  plain
+
+  @@schema("auth")
+}
+
+enum factor_status {
+  unverified
+  verified
+
+  @@schema("auth")
+}
+
+enum factor_type {
+  totp
+  webauthn
+
+  @@schema("auth")
+}
+
+enum one_time_token_type {
+  confirmation_token
+  reauthentication_token
+  recovery_token
+  email_change_token_new
+  email_change_token_current
+  phone_change_token
+
+  @@schema("auth")
+}
+
+enum activity_type {
+  aglint
+  user
+  candidate
+
+  @@schema("public")
+}
+
+enum agent_type {
+  scheduler
+  job
+  sourcing
+  screening
+
+  @@schema("public")
+}
+
+enum agent_types {
+  scheduler
+  screening
+  job_assistant
+  sourcing
+
+  @@schema("public")
+}
+
+enum application_logger {
+  email_agent
+  phone_agent
+  user
+  system
+  candidate
+
+  @@schema("public")
+}
+
+enum application_match {
+  top_match
+  good_match
+  average_match
+  poor_match
+  not_a_match
+  unknown_match
+
+  @@schema("public")
+}
+
+enum application_processing_status {
+  not_started @map("not started")
+  processing
+  failed
+  success
+
+  @@schema("public")
+}
+
+enum application_source {
+  ashby
+  lever
+  greenhouse
+  resume_upload
+  manual_upload
+  csv_upload
+  apply_link
+  candidate_database
+
+  @@schema("public")
+}
+
+enum application_status {
+  new
+  assessment
+  qualified
+  disqualified
+  screening
+  interview
+
+  @@schema("public")
+}
+
+enum assessment_mode {
+  classic
+  verbal
+  visual
+
+  @@schema("public")
+}
+
+enum cancel_type {
+  reschedule
+  declined
+
+  @@schema("public")
+}
+
+enum db_search_type {
+  aglint
+  candidate
+
+  @@schema("public")
+}
+
+enum email_fetch_status {
+  not_fetched     @map("not fetched")
+  success
+  unable_to_fetch @map("unable to fetch")
+
+  @@schema("public")
+}
+
+enum email_slack_types {
+  interviewEnd_slack_interviewers
+  interviewerConfirmation_slack_interviewers
+  interviewStart_slack_interviewers
+  agent_email_candidate
+  applicantReject_email_applicant
+  applicationRecieved_email_applicant
+  confInterview_email_organizer
+  confirmInterview_email_applicant
+  debrief_email_interviewer
+  interReschedReq_email_recruiter
+  interviewCancel_email_applicant
+  InterviewCancelReq_email_recruiter
+  interviewReschedule_email_applicant
+  interviewStart_email_applicant
+  interviewStart_email_interviewers
+  phoneScreen_email_candidate
+  phoneScreenRemind_email_applicant
+  selfScheduleReminder_email_applicant
+  sendAvailReqReminder_email_applicant
+  sendSelfScheduleRequest_email_applicant
+  sendAvailabilityRequest_email_applicant
+  availabilityReqResend_email_candidate
+  interviewDetails_calender_interviewer
+  rescheduleSelfSchedule_email_applicant
+  interviewStart_email_organizer
+  meetingDeclined_email_organizer
+  meetingAccepted_email_organizer
+  candidateBook_slack_interviewerForFeedback
+  candidateBook_email_interviewerForFeedback
+  interviewEnd_slack_interviewerForFeedback
+  interviewEnd_email_interviewerForFeedback
+  candidateBook_slack_interviewerForConfirmation
+
+  @@schema("public")
+}
+
+enum employment_type_enum {
+  fulltime
+  parttime
+  contractor
+
+  @@schema("public")
+}
+
+enum file_type {
+  resume
+  coverletter
+  cv
+  image
+
+  @@schema("public")
+}
+
+enum icon_status_activity {
+  success
+  waiting
+  error
+
+  @@schema("public")
+}
+
+enum interview_schedule_status {
+  waiting
+  confirmed
+  completed
+  cancelled
+  reschedule
+  not_scheduled
+
+  @@schema("public")
+}
+
+enum interview_schedule_type {
+  in_person_meeting
+  google_meet
+  phone_call
+  zoom
+
+  @@schema("public")
+}
+
+enum interviewer_type {
+  qualified
+  shadow
+  reverse_shadow
+
+  @@schema("public")
+}
+
+enum meeting_flow {
+  self_scheduling
+  candidate_request
+  debrief
+  mail_agent
+  phone_agent
+
+  @@schema("public")
+}
+
+enum modules {
+  standard
+  scheduler
+  assessment
+  jobs
+
+  @@schema("public")
+}
+
+enum permissions_type {
+  jobs_create
+  jobs_read
+  jobs_update
+  jobs_delete
+  jobs_publish
+  jobs_unpublish
+  jobs_archive
+  jobs_restore
+  jobs_assignHiringManager
+  jobs_assignRecruiter
+  jobs_assignCoordinator
+  jobs_assignSourcer
+  candidates_add
+  candidates_read
+  candidates_update
+  candidates_delete
+  candidates_moveStage
+  profileScore_view
+  profileScore_update
+  interviews_schedule
+  interviews_read
+  interviews_update
+  interviews_delete
+  reports_generate
+  reports_view
+  reports_export
+  settings_view
+  settings_update
+  tasks_enabled
+  jobs_enabled
+  scheduler_enabled
+  sourcing_enabled
+  phone_screening_enabled
+  assessment_enabled
+  integrations_enabled
+  company_setting_enabled
+  workflow_enabled
+  workflow_create
+  workflow_read
+  workflow_update
+  workflow_delete
+  team_enabled
+  team_create
+  team_read
+  team_update
+  team_delete
+  tasks_create
+  tasks_read
+  tasks_update
+  tasks_delete
+  scheduler_create
+  scheduler_read
+  scheduler_update
+  scheduler_delete
+  scheduler_request_availability
+  scheduler_send_scheduling
+  scheduler_interview_types_create
+  scheduler_interview_types_read
+  scheduler_interview_types_update
+  scheduler_interviewer_edit
+  settings_scheduler_enable
+  settings_scheduler_update
+  settings_company_enable
+  settings_company_update
+  settings_team_enable
+  settings_team_update
+  settings_roles_enable
+  settings_roles_update
+
+  @@schema("public")
+}
+
+enum progress_type {
+  standard
+  interview_schedule
+  email_messages
+  call_completed
+  call_failed
+  email_failed
+  call_disconnected
+  email_follow_up
+  call_follow_up
+  email_follow_up_reminder
+  call_follow_up_reminder
+  request_availability_list
+  request_availability
+  self_schedule
+  send_email
+  request_submitted
+  schedule
+  closed
+  completed
+
+  @@schema("public")
+}
+
+enum public_job_status {
+  draft
+  published
+  closed
+
+  @@schema("public")
+}
+
+enum public_job_type {
+  contract
+  full_time  @map("full time")
+  part_time  @map("part time")
+  temporary
+  volunteer
+  internship
+
+  @@schema("public")
+}
+
+enum public_job_workplace {
+  hybrid
+  on_site  @map("on site")
+  off_site @map("off site")
+
+  @@schema("public")
+}
+
+enum question_level {
+  basic
+  intermediate
+  advanced
+
+  @@schema("public")
+}
+
+enum question_type {
+  scq
+  mcq
+  qna
+  code
+
+  @@schema("public")
+}
+
+enum recruiter_rolesx {
+  admin
+  member
+  interviewer
+  scheduler
+  recruiter
+
+  @@schema("public")
+}
+
+enum resume_processing_state {
+  unavailable
+  fetching
+  processing
+  unparsable
+  processed
+
+  @@schema("public")
+}
+
+enum sender_type {
+  aglint
+  you
+  system
+  user
+
+  @@schema("public")
+}
+
+enum session_accepted_status {
+  waiting
+  accepted
+  declined
+  request_reschedule
+
+  @@schema("public")
+}
+
+enum session_type {
+  panel
+  individual
+  debrief
+
+  @@schema("public")
+}
+
+enum status_training {
+  qualified
+  training
+
+  @@schema("public")
+}
+
+enum sub_task_status {
+  completed
+  pending
+  in_progress
+  failed
+  closed
+
+  @@schema("public")
+}
+
+enum task_agent_type {
+  phone
+  email
+  job
+
+  @@schema("public")
+}
+
+enum task_priority {
+  high
+  low
+  medium
+
+  @@schema("public")
+}
+
+enum task_status {
+  pending
+  in_progress
+  completed
+  closed
+  not_started
+  scheduled
+  cancelled
+  overdue
+  on_hold
+  failed
+
+  @@schema("public")
+}
+
+enum task_type_enum {
+  schedule
+  training
+  empty
+  availability
+  self_schedule
+
+  @@schema("public")
+}
+
+enum template_type {
+  cognitive
+  language
+  personality
+  culture
+  programming
+  role
+  situational
+  software
+  typing
+
+  @@schema("public")
+}
+
+enum user_roles {
+  admin
+  recruiter
+  interviewer
+  recruiting_coordinator
+  sourcer
+  hiring_manager
+
+  @@schema("public")
+}
+
+enum workflow_phase {
+  before
+  after
+  now
+
+  @@schema("public")
+}
+
+enum workflow_trigger {
+  selfScheduleReminder
+  interviewStart
+  sendAvailReqReminder
+  interviewerConfirmation
+  interviewEnd
+  meetingDeclined
+  meetingAccepted
+  candidateBook
+
+  @@schema("public")
+}
