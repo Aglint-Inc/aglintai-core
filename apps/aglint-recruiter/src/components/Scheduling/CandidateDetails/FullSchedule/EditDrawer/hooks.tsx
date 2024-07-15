@@ -126,6 +126,7 @@ export const useEditSession = () => {
             };
 
             editInterviewSession(editInterviewSessionParams);
+            toast.success('Session saved successfully.');
           } else {
             const updateDebriefParams: UpdateDebriefSession = {
               break_duration: editSession.interview_session.break_duration,
@@ -178,6 +179,7 @@ export const useEditSession = () => {
           };
 
           await editInterviewSession(editInterviewSessionParams);
+          toast.success('Session saved successfully.');
         } else {
           const updateDebriefParams: UpdateDebriefSession = {
             break_duration: editSession.interview_session.break_duration,
