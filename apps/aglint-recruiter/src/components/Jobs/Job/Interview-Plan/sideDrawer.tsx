@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Drawer } from '@mui/material';
+import { Drawer, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -55,11 +55,13 @@ const InterviewDrawers = ({
           handleClose={() => handleClose()}
         />
       ) : (
-        <InterviewPlanEmpty
-          onClickCreateInterviewPlan={{
-            onClick: () => push('/scheduling?tab=interviewtypes'),
-          }}
-        />
+        <Stack px={'80px'}>
+          <InterviewPlanEmpty
+            onClickCreateInterviewPlan={{
+              onClick: () => push('/scheduling?tab=interviewtypes'),
+            }}
+          />
+        </Stack>
       )}
     </Drawer>
   );
