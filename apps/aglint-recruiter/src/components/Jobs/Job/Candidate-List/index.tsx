@@ -1,15 +1,14 @@
 import { CircularProgress, Stack } from '@mui/material';
 import { useEffect } from 'react';
 
+import { Page404 } from '@/devlink/Page404';
 import { JobDetails } from '@/devlink2/JobDetails';
 import { JobsBanner } from '@/devlink3/JobsBanner';
 import { ScoreSetting } from '@/devlink3/ScoreSetting';
 import Loader from '@/src/components/Common/Loader';
 import PublishButton from '@/src/components/Common/PublishButton';
-import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useJob } from '@/src/context/JobContext';
-import NotFoundPage from '@/src/pages/404';
 
 import { UploadApplications } from '../Common/UploadApplications';
 import { Actions } from './Actions';
@@ -21,16 +20,16 @@ import { Table } from './Table';
 import Tabs from './Tabs';
 
 const ApplicationsDashboard = () => {
-  const { job, jobLoad } = useApplications();
+  const { job, jobLoad } = useJob();
   const resetAll = useApplicationsStore(({ resetAll }) => resetAll);
   useEffect(() => {
     return () => resetAll();
   }, []);
   return jobLoad ? (
-    job !== undefined ? (
+    job ? (
       <ApplicationsComponent />
     ) : (
-      <NotFoundPage />
+      <Page404 />
     )
   ) : (
     <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>

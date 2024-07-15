@@ -26,6 +26,7 @@ import { CandidateConfirmationPage } from '@/devlink/CandidateConfirmationPage';
 import { CandidateScheduleCard } from '@/devlink/CandidateScheduleCard';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
+import { Page404 } from '@/devlink/Page404';
 import { SelectedDateAndTime } from '@/devlink/SelectedDateAndTime';
 import { SessionAndTime } from '@/devlink/SessionAndTime';
 import { SessionInfo } from '@/devlink/SessionInfo';
@@ -35,7 +36,6 @@ import { RequestReschedule } from '@/devlink2/RequestReschedule';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
-import NotFoundPage from '@/src/pages/404';
 import { API_get_scheduling_reason } from '@/src/pages/api/get_scheduling_reason/types';
 import { useInviteSlots } from '@/src/queries/candidate-invite';
 import { supabase } from '@/src/utils/supabase/client';
@@ -72,7 +72,7 @@ const CandidateInviteNew = () => {
         </Stack>
       ) : load === null ? (
         <Stack style={{ transform: 'translateY(-50%)' }}>
-          <NotFoundPage />
+          <Page404 />
         </Stack>
       ) : (
         <>
@@ -131,7 +131,7 @@ const CandidateInvitePlanPage = () => {
     { rounds: [] as ScheduleCardProps['round'][] },
   );
 
-  if (meetings.length === 0) return <NotFoundPage />;
+  if (meetings.length === 0) return <Page404 />;
 
   if (!waiting)
     return (

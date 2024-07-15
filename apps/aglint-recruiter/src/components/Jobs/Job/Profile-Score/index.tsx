@@ -9,6 +9,7 @@ import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { Checkbox } from '@/devlink/Checkbox';
+import { Page404 } from '@/devlink/Page404';
 import { ScoreCard } from '@/devlink/ScoreCard';
 import { ScoreCardEdit } from '@/devlink/ScoreCardEdit';
 import { ScorePercentage } from '@/devlink/ScorePercentage';
@@ -30,7 +31,6 @@ import ScoreWheel, {
 import UITextField from '@/src/components/Common/UITextField';
 import { useJob } from '@/src/context/JobContext';
 import { palette } from '@/src/context/Theme/Theme';
-import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/jobs/types';
 import { capitalize, capitalizeSentence } from '@/src/utils/text/textUtils';
 
@@ -40,10 +40,10 @@ const JobProfileScoreDashboard = () => {
   const { jobLoad, job } = useJob();
 
   return jobLoad ? (
-    job !== undefined && job.status !== 'closed' ? (
+    job && job?.status !== 'closed' ? (
       <ProfileScorePage />
     ) : (
-      <NotFoundPage />
+      <Page404 />
     )
   ) : (
     <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>

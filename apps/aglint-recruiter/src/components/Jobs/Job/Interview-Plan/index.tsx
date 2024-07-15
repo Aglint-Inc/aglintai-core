@@ -2,13 +2,14 @@
 import { Stack } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import React, { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
+import { Page404 } from '@/devlink/Page404';
 import { RolesPill } from '@/devlink/RolesPill';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
@@ -24,7 +25,6 @@ import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loa
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { useJob } from '@/src/context/JobContext';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
-import NotFoundPage from '@/src/pages/404';
 import { CompanyMember } from '@/src/queries/company-members';
 import { DeleteInterviewSession } from '@/src/queries/interview-plans';
 import {
@@ -47,10 +47,10 @@ import { getBreakLabel } from './utils';
 const JobNewInterviewPlanDashboard = () => {
   const { initialLoad, job } = useJobInterviewPlan();
   return initialLoad ? (
-    job !== undefined ? (
+    job ? (
       <InterviewPlanPage />
     ) : (
-      <NotFoundPage />
+      <Page404 />
     )
   ) : (
     <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>

@@ -3,6 +3,7 @@ import { CircularProgress, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
+import { Page404 } from '@/devlink/Page404';
 import { SavedChanges } from '@/devlink/SavedChanges';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
@@ -10,7 +11,6 @@ import { JobDetailBlock } from '@/devlink3/JobDetailBlock';
 import { useJob } from '@/src/context/JobContext';
 import { validateString } from '@/src/context/JobContext/utils';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/jobs/types';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeSentence } from '@/src/utils/text/textUtils';
@@ -26,10 +26,10 @@ const JobHiringTeamDashboard = () => {
   const { jobLoad, job } = useJob();
 
   return jobLoad ? (
-    job !== undefined && job.status !== 'closed' ? (
+    job && job.status !== 'closed' ? (
       <JobEdit />
     ) : (
-      <NotFoundPage />
+      <Page404 />
     )
   ) : (
     <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
