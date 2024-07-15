@@ -591,18 +591,6 @@ const AddMember = ({
                       }}
                       textButton={'Invite'}
                     />
-                    {/* <AUIButton
-                    disabled=
-                    size='medium'
-                    onClick={() => {
-                      setIsDisable(true);
-                      if (checkValidation()) {
-                        inviteUser();
-                      }
-                    }}
-                  >
-                    Invite
-                  </AUIButton> */}
                   </Stack>
                 </Stack>
               }
