@@ -97,7 +97,17 @@ export function AllInterviewCard({
           tag="div"
         >
           <Text content={textName} />
-          <Text content={textCurrentRole} color="neutral" weight="" size="1" />
+          <_Builtin.Block
+            className={_utils.cx(_styles, "one-line-clamp")}
+            tag="div"
+          >
+            <Text
+              content={textCurrentRole}
+              color="neutral"
+              weight=""
+              size="1"
+            />
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1710")}
