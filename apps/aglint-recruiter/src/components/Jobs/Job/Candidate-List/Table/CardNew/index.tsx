@@ -92,7 +92,15 @@ const ApplicationCard = memo(
         highlightType={isSelected ? 'highlighted' : 'checked'}
         slotBookmark={<Banners application={application} />}
         isDragVisible={isChecked}
-        onClickSelect={{ onClick: handleCheck }}
+        onClickSelect={{
+          onClick: handleCheck,
+          style: {
+            display:
+              application?.resume_processing_state === 'processed'
+                ? 'flex'
+                : 'none',
+          },
+        }}
         isChecked={isChecked}
         slotProfileImage={<></>}
         name={capitalizeAll(application.name)}
