@@ -14,7 +14,7 @@ export const seedRecruiterUser = async (
   );
 
   const promises = recruiter_user_seed_data.map(async rec => {
-    console.log(rec.user_id, rec.email, auth_user_map[rec.email]);
+    await supabaseAdmin.auth.signOut();
     return supabaseWrap(
       await supabaseAdmin
         .from('recruiter_user')
@@ -27,6 +27,6 @@ export const seedRecruiterUser = async (
   });
   const seeded_users = await Promise.all(promises);
 
-  console.log('seeded users', seeded_users.length);
+  console.log('created users', seeded_users.length);
   return seeded_users;
 };

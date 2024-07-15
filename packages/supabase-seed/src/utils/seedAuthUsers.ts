@@ -40,6 +40,6 @@ export const seedAuthUsers = async (
   });
 
   const auth_users = await Promise.all(promises);
-  console.debug('created auth records', auth_users.length);
+  console.log('created auth records', auth_users.length);
   return auth_users;
 };

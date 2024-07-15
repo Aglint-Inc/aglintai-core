@@ -3,6 +3,7 @@ import {seedAuthUsers} from './utils/seedAuthUsers';
 import {getJsonRecords} from './data';
 import {seedRecruiterUser} from './utils/seedRecruiterUser';
 import {seedCompanies} from './utils/seedCompanies';
+import {seedCompaniesRoles} from './utils/seedRoles';
 
 const main = async () => {
   const recruiter_seed_data = (await getJsonRecords(
@@ -20,11 +21,12 @@ const main = async () => {
     auth_user_map[r.email] = r.id;
   });
   const company_data = await seedCompanies(recruiter_seed_data);
+
   const recruiter_user_data = await seedRecruiterUser(
     auth_user_map,
     recruiter_user_seed_data
   );
-  console.log(recruiter_user_data);
+  const s = await seedCompaniesRoles(company_data);
 };
 
 main();

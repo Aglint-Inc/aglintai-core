@@ -10,20 +10,20 @@ export const seedCompanies = async (
   );
 
   const promises = recruiter_seed_data.map(async rec => {
-    console.log(rec.id);
-    return supabaseWrap(
+    await supabaseAdmin.auth.signOut();
+    const [recruiter] = supabaseWrap(
       await supabaseAdmin
         .from('recruiter')
         .insert({
           email: rec.email,
           recruiter_type: rec.recruiter_type,
           recruiter_active: rec.recruiter_active,
-          id: rec.id,
         })
         .select()
     );
+    return recruiter;
   });
   const seeded_companies = await Promise.all(promises);
-  console.log('seeded companies', seeded_companies.length);
+  console.log('created companies', seeded_companies.length);
   return seeded_companies;
 };
