@@ -10,7 +10,6 @@ import { JobDetailBlock } from '@/devlink3/JobDetailBlock';
 import { useJob } from '@/src/context/JobContext';
 import { validateString } from '@/src/context/JobContext/utils';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/jobs/types';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeSentence } from '@/src/utils/text/textUtils';
@@ -21,15 +20,16 @@ import {
   JobMetaFormProps,
   useJobForms,
 } from '../../Create/form';
+import JobNotFound from '../Common/JobNotFound';
 
 const JobHiringTeamDashboard = () => {
   const { jobLoad, job } = useJob();
 
   return jobLoad ? (
-    job !== undefined && job.status !== 'closed' ? (
+    job && job.status !== 'closed' ? (
       <JobEdit />
     ) : (
-      <NotFoundPage />
+      <JobNotFound />
     )
   ) : (
     <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>

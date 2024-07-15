@@ -54,7 +54,6 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJob } from '@/src/context/JobContext';
 import { useJobDashboard } from '@/src/context/JobDashboard';
 import { useJobs } from '@/src/context/JobsContext';
-import NotFoundPage from '@/src/pages/404';
 import { useCompanyMembers } from '@/src/queries/company-members';
 import { Job } from '@/src/queries/jobs/types';
 import { Application } from '@/src/types/applications.types';
@@ -66,6 +65,7 @@ import {
   capitalizeSentence,
 } from '@/src/utils/text/textUtils';
 
+import JobNotFound from '../Common/JobNotFound';
 import { UploadApplications } from '../Common/UploadApplications';
 import DashboardBarChart from './BarChart2';
 import DashboardDoughnutChart from './doughnut';
@@ -73,12 +73,12 @@ import DashboardLineChart from './lineChart';
 import TenureAndExpSummary from './tenureAndExpSummary';
 
 const JobDashboard = () => {
-  const { jobLoad, job } = useJobDashboard();
+  const { job, jobLoad } = useJob();
   return jobLoad ? (
-    job !== undefined ? (
+    job ? (
       <Dashboard />
     ) : (
-      <NotFoundPage />
+      <JobNotFound />
     )
   ) : (
     <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
@@ -230,7 +230,7 @@ const Dashboard = () => {
             slotExperienceGraph={<LineGraph />}
             slotSkillGraphBlock={<Bars />}
             slotPipeline={<Pipeline />}
-            slotModuleCard={<Modules />}
+            slotModuleCard={job?.status !== 'closed' && <Modules />}
             slotCardWithNumber={<TenureAndExpSummary />}
             isViewScheduleVisible={schedule?.length > 3}
             onClickViewSchedule={{
@@ -340,7 +340,7 @@ const Roles = () => {
       Object.entries(coordinatorsData)
         // eslint-disable-next-line no-unused-vars
         .filter(([_, value]) => value)
-        .reduce((acc, [key, value]) => {
+        .reduce((acc, [key, value], i) => {
           const user = (data ?? []).find(({ user_id }) => user_id === value);
           if (user) {
             const name = getFullName(
@@ -349,6 +349,7 @@ const Roles = () => {
             );
             acc.push(
               <RoleList
+                key={i}
                 slotImage={
                   <MuiAvatar
                     src={user?.profile_image ?? null}
