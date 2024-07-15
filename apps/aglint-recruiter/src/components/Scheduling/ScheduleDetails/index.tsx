@@ -10,6 +10,7 @@ import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ScheduleDetailTabs } from '@/devlink3/ScheduleDetailTabs';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
+import { useKeyPress } from '@/src/hooks/useKeyPress';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -171,6 +172,45 @@ function SchedulingViewComp() {
       //
     }
   };
+
+  const sections = viewScheduleTabs
+    .filter(
+      (item) =>
+        !item.hide &&
+        (item.tab !== 'feedback' ||
+          schedule?.interview_meeting?.status === 'completed'),
+    )
+    .map((item) => item.tab);
+
+  const tabCount: number = sections.length - 1;
+  const currentTab: string = router.query.tab as string;
+  const currentIndex: number = sections.indexOf(currentTab);
+
+  const handlePrevious = () => {
+    const pre =
+      // eslint-disable-next-line security/detect-object-injection
+      currentIndex === 0 ? sections[tabCount] : sections[currentIndex - 1];
+
+    router.replace(
+      `/scheduling/view?meeting_id=${router.query.meeting_id}&tab=${pre}`,
+    );
+  };
+  const handleNext = () => {
+    const next =
+      currentIndex === tabCount ? sections[0] : sections[currentIndex + 1];
+
+    router.replace(
+      `/scheduling/view?meeting_id=${router.query.meeting_id}&tab=${next}`,
+    );
+  };
+
+  const { pressed: right } = useKeyPress('ArrowRight');
+  const { pressed: left } = useKeyPress('ArrowLeft');
+
+  useEffect(() => {
+    if (left) handlePrevious();
+    else if (right) handleNext();
+  }, [left, right]);
 
   return (
     <>
