@@ -4,10 +4,10 @@ import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { Text } from '@/devlink/Text';
 import { GeneralPopupLarge } from '@/devlink3/GeneralPopupLarge';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
-import { Text } from '@/devlink';
 
 function Instructions({
   instruction,
