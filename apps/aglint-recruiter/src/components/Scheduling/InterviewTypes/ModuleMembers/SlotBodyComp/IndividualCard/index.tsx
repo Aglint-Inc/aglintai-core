@@ -9,17 +9,17 @@ import { TrainingProgressDetail } from '@/devlink2/TrainingProgressDetail';
 import { TrainingStatus } from '@/devlink2/TrainingStatus';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { SessionIcon } from '@/src/components/Scheduling/Common/ScheduleProgress/scheduleProgressPill';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+// import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { numberToOrdinalText } from '@/src/utils/number/numberToOrdinalText';
 import ROUTES from '@/src/utils/routing/routes';
 
 import { useProgressModuleUsers } from '../../../queries/hooks';
 import {
-  setIsDeleteMemberDialogOpen,
-  setIsMovedToQualifiedDialogOpen,
+  // setIsDeleteMemberDialogOpen,
+  // setIsMovedToQualifiedDialogOpen,
   setIsPauseDialogOpen,
-  setIsResumeDialogOpen,
+  // setIsResumeDialogOpen,
   setSelUser,
 } from '../../../store';
 import { MemberType, ModuleType } from '../../../types';
@@ -40,13 +40,13 @@ function IndividualCard({
   progressDataUser: ReturnType<typeof useProgressModuleUsers>['data'];
 }) {
   const router = useRouter();
-  const { recruiterUser } = useAuthDetails();
+  // const { recruiterUser } = useAuthDetails();
   const [isCollapseOpen, setIsCollapseOpen] = useState(false);
 
-  const isMoveToQualifierVisible =
-    recruiterUser.role === 'admin' ||
-    (editModule.settings.reqruire_approval &&
-      editModule.settings.approve_users.includes(user.user_id));
+  // const isMoveToQualifierVisible =
+  //   recruiterUser.role === 'admin' ||
+  //   (editModule.settings.reqruire_approval &&
+  //     editModule.settings.approve_users.includes(user.user_id));
 
   const userSettings = user.recruiter_user.scheduling_settings;
 
@@ -201,37 +201,37 @@ function IndividualCard({
           },
         }}
         isTrainingProgressDetailVisible={true}
-        onClickMoveToQualifier={{
-          onClick: () => {
-            setSelUser(user);
-            setIsMovedToQualifiedDialogOpen(true);
-          },
-        }}
+        // onClickMoveToQualifier={{
+        //   onClick: () => {
+        //     setSelUser(user);
+        //     setIsMovedToQualifiedDialogOpen(true);
+        //   },
+        // }}
         key={user.user_id}
-        isMoveToQualifierVisible={isMoveToQualifierVisible}
+        // isMoveToQualifierVisible={isMoveToQualifierVisible}
         textPauseResumeDate={getPauseMemberText(user.pause_json)}
-        onClickRemoveModule={{
-          onClick: () => {
-            setSelUser(user);
-            setIsDeleteMemberDialogOpen(true);
-          },
-        }}
+        // onClickRemoveModule={{
+        //   onClick: () => {
+        //     setSelUser(user);
+        //     setIsDeleteMemberDialogOpen(true);
+        //   },
+        // }}
         onClickPauseInterview={{
           onClick: () => {
             setSelUser(user);
             setIsPauseDialogOpen(true);
           },
         }}
-        onClickResumeInterview={{
-          onClick: () => {
-            setSelUser(user);
-            setIsResumeDialogOpen(true);
-          },
-        }}
-        onHoverDot={false}
+        // onClickResumeInterview={{
+        //   onClick: () => {
+        //     setSelUser(user);
+        //     setIsResumeDialogOpen(true);
+        //   },
+        // }}
+        // onHoverDot={false}
         isPauseResumeVisible={Boolean(user.pause_json)}
-        isPauseVisible={!user.pause_json}
-        isResumeVisible={Boolean(user.pause_json)}
+        // isPauseVisible={!user.pause_json}
+        // isResumeVisible={Boolean(user.pause_json)}
         slotProfileImage={
           <MuiAvatar
             src={member.profile_image}
