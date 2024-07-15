@@ -5,7 +5,7 @@ import { ButtonSoft } from '@/devlink3/ButtonSoft';
 import ROUTES from '@/src/utils/routing/routes';
 
 const JobNotFound = () => {
-  const { push } = useRouter();
+  const { replace } = useRouter();
   return (
     <Page404
       text404={'Job not found'}
@@ -14,7 +14,7 @@ const JobNotFound = () => {
           iconSize={2}
           color={'neutral'}
           textButton={'Go to Jobs'}
-          onClickButton={{ onClick: () => push(ROUTES['/jobs']()) }}
+          onClickButton={{ onClick: () => replace(ROUTES['/jobs']()) }}
         />
       }
     />
