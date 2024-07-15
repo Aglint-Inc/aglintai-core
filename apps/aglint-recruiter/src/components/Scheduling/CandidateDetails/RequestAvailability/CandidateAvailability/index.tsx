@@ -370,6 +370,7 @@ function CandidateAvailability() {
                         onClickButton={{ onClick: handleSubmit }}
                         textButton={'Submit Availability'}
                         isLoading={submitLoading}
+                        isDisabled={multiDaySessions.length !== daySlots.length}
                       />
                     )
                   }

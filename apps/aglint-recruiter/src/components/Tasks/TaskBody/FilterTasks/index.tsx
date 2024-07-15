@@ -29,60 +29,6 @@ function FilterTasks() {
       filters={[
         {
           type: 'filter',
-          name: 'Candidate',
-          options: filter.candidate.options,
-          filterSearch: true,
-          iconname: 'person',
-          searchPlaceholder: 'Search candidates',
-          setValue: (val) => {
-            const preData =
-              JSON.parse(localStorage.getItem('taskFilters')) || {};
-            preData.Candidate = [...val];
-            localStorage.setItem('taskFilters', JSON.stringify(preData));
-            handelFilter({
-              ...filter,
-              candidate: { ...filter.candidate, values: val },
-            });
-          },
-          value: filter.candidate.values,
-        },
-        {
-          type: 'filter',
-          name: 'Status',
-          iconname: 'filter_tilt_shift',
-          options: filter.status.options,
-          setValue: (val) => {
-            const preData =
-              JSON.parse(localStorage.getItem('taskFilters')) || {};
-            preData.Status = [...val];
-            localStorage.setItem('taskFilters', JSON.stringify(preData));
-            handelFilter({
-              ...filter,
-              status: { ...filter.status, values: val },
-            });
-          },
-          value: filter.status.values,
-        },
-        {
-          type: 'filter',
-          name: 'Priority',
-          iconname: 'arrow_drop_down_circle',
-          options: filter.priority.options,
-          setValue: (val) => {
-            const preData =
-              JSON.parse(localStorage.getItem('taskFilters')) || {};
-            preData.Priority = [...val];
-            localStorage.setItem('taskFilters', JSON.stringify(preData));
-            handelFilter({
-              ...filter,
-              priority: { ...filter.priority, values: val },
-            });
-          },
-          value: filter.priority.values,
-        },
-
-        {
-          type: 'filter',
           name: 'Assignee',
           filterSearch: true,
           iconname: 'account_circle',
@@ -124,6 +70,26 @@ function FilterTasks() {
         },
         {
           type: 'filter',
+          name: 'Candidate',
+          options: filter.candidate.options,
+          filterSearch: true,
+          iconname: 'person',
+          searchPlaceholder: 'Search candidates',
+          setValue: (val) => {
+            const preData =
+              JSON.parse(localStorage.getItem('taskFilters')) || {};
+            preData.Candidate = [...val];
+            localStorage.setItem('taskFilters', JSON.stringify(preData));
+            handelFilter({
+              ...filter,
+              candidate: { ...filter.candidate, values: val },
+            });
+          },
+          value: filter.candidate.values,
+        },
+
+        {
+          type: 'filter',
           name: 'Type',
           iconname: 'arrow_drop_down_circle',
           options: filter.type.options,
@@ -138,6 +104,40 @@ function FilterTasks() {
             });
           },
           value: filter.type.values,
+        },
+        {
+          type: 'filter',
+          name: 'Priority',
+          iconname: 'arrow_drop_down_circle',
+          options: filter.priority.options,
+          setValue: (val) => {
+            const preData =
+              JSON.parse(localStorage.getItem('taskFilters')) || {};
+            preData.Priority = [...val];
+            localStorage.setItem('taskFilters', JSON.stringify(preData));
+            handelFilter({
+              ...filter,
+              priority: { ...filter.priority, values: val },
+            });
+          },
+          value: filter.priority.values,
+        },
+        {
+          type: 'filter',
+          name: 'Status',
+          iconname: 'filter_tilt_shift',
+          options: filter.status.options,
+          setValue: (val) => {
+            const preData =
+              JSON.parse(localStorage.getItem('taskFilters')) || {};
+            preData.Status = [...val];
+            localStorage.setItem('taskFilters', JSON.stringify(preData));
+            handelFilter({
+              ...filter,
+              status: { ...filter.status, values: val },
+            });
+          },
+          value: filter.status.values,
         },
       ]}
       dateRangeSelector={{
