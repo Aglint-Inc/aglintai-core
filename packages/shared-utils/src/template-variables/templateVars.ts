@@ -134,4 +134,5 @@ export const emailVariablePayloads = {
     ...organizer,
     ...jobDetails,
   ],
+  onSignup_email_admin: [...organizer],
 };

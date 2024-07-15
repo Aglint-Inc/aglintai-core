@@ -28,3 +28,15 @@ export const fetchJobEmailTemp = async (
   );
   return template;
 };
+
+export const fetchSignupTemp = async (
+  mail_type: DatabaseEnums['email_slack_types'],
+) => {
+  const [template] = supabaseWrap(
+    await supabaseAdmin
+      .from('job_email_template')
+      .select()
+      .eq('type', mail_type),
+  );
+  return template;
+};

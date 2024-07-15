@@ -149,3 +149,6 @@ export const interviewEndEmailInterviewerForFeedbackSchema = v.object({
   recruiter_user_id: v.string(),
   application_id: v.string(),
 });
+export const onSignupEmailAdminSchema = v.object({
+  recruiter_id: v.string(),
+});
