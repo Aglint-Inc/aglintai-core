@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "scripts": {
     "dev:build": "npm run build --workspace=@aglint/shared-utils",
-    "seed": "tsup --watch --onSuccess \"console-ninja && node dist/seed.js\"",
+    "seed": "tsup && node dist/seed.js\"",
+    "dev": "tsup --watch --onSuccess \"console-ninja && node dist/seed.js\"",
     "compile": "tsc",
     "fix": "gts fix"
   },
