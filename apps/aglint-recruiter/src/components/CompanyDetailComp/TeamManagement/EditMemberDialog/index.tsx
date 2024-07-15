@@ -443,40 +443,6 @@ const EditMember = ({
                 />
               </Stack>
               <Stack width={'100%'} marginTop={'var(--space-2)'}>
-                {/* <AUIButton
-                disabled={isDisable}
-                size='large'
-                onClick={() => {
-                  setIsDisable(true);
-                  if (checkValidation()) {
-                    // inviteUser();
-                    handelMemberUpdate({
-                      user_id: member.user_id,
-                      data: {
-                        first_name: form.first_name,
-                        last_name: form.last_name,
-                        interview_location: form.interview_location,
-                        linked_in: form.linked_in,
-                        employment: form.employment,
-                        department: form.department,
-                        position: form.designation,
-                        role: form.role.toLowerCase() as typeof form.role,
-                        manager_id: form.manager_id,
-                      },
-                    })
-                      .then(() => {
-                        onClose();
-                        toast.success('Member updated successfully.');
-                      })
-                      .catch(() => {
-                        toast.error('Error updating member.');
-                        setIsDisable(false);
-                      });
-                  }
-                }}
-              >
-                Update
-              </AUIButton> */}
                 <ButtonSolid
                   size={2}
                   textButton='Update'
