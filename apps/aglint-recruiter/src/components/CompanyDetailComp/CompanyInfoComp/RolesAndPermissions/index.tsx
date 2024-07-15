@@ -349,8 +349,8 @@ function RoleDetails({
           <>
             {role.name === 'admin' && (
               <GlobalBannerInline
-                color={'warning'}
-                textContent={'Admin role can not be Edited.'}
+                color={'info'}
+                textContent={'You cannot edit the primary admin role permissions.'}
                 slotButton={<></>}
               />
             )}

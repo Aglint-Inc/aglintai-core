@@ -109,8 +109,8 @@ export function Modules() {
                       setShowArchive(false);
                     },
                   }}
-                  textFirst={'Show Archived'}
-                  textSecond={'Hide Archived'}
+                  textFirst={'Active'}
+                  textSecond={'Archived'}
                 />
               </Stack>
             }
