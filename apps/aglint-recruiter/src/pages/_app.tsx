@@ -4,7 +4,6 @@ import '@styles/globals.scss';
 import PropTypes from 'prop-types';
 import 'regenerator-runtime/runtime';
 
-import { PHProvider } from '../components/PostHog/postHog';
 import ScreenSizeProvider from '../context/ResizeWindow/ResizeWindow';
 // import { SupportProvider } from '../context/SupportContext/SupportContext';
 import Providers from '../context/Providers';
@@ -18,17 +17,15 @@ const MyApp = ({ Component, pageProps }) => {
   if (Component?.publicProvider) {
     return (
       <>
-        <PHProvider>
-          <DevlinkMainProvider>
-            <Theme>
-              <ScreenSizeProvider>
-                <QueryProvider>
-                  {provider(<Component {...pageProps} />)}
-                </QueryProvider>
-              </ScreenSizeProvider>
-            </Theme>
-          </DevlinkMainProvider>
-        </PHProvider>
+        <DevlinkMainProvider>
+          <Theme>
+            <ScreenSizeProvider>
+              <QueryProvider>
+                {provider(<Component {...pageProps} />)}
+              </QueryProvider>
+            </ScreenSizeProvider>
+          </Theme>
+        </DevlinkMainProvider>
       </>
     );
   }

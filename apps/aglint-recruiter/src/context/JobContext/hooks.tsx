@@ -247,6 +247,7 @@ const useJobContext = () => {
     applicationScoringPollEnabled,
     jobPolling,
     interviewPlans,
+    revalidateJobQueries: () => revalidateJobQueries(job_id),
     handleJobAsyncUpdate,
     handleJobUpdate,
     handleRegenerateJd,

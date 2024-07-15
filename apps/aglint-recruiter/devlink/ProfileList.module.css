@@ -239,9 +239,35 @@
 }
 
 .div-block-952 {
+  position: relative;
+
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
+}
+
+.role-link {
+  position: absolute;
+  left: auto;
+  top: 0%;
+  right: 0%;
+  bottom: auto;
+
+  display: none;
+  width: 20px;
+  height: 20px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: var(--radius-2);
+
+  background-color: var(--neutral-3);
+
+  cursor: pointer;
+}
+
+.role-link:hover {
+  opacity: 0.8;
 }

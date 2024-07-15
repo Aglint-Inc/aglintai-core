@@ -338,7 +338,12 @@ export function CandidateListItem({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-titlecase", "text-no-wrap")}
+            className={_utils.cx(
+              _styles,
+              "text-titlecase",
+              "text-no-wrap",
+              "one-line-clamp"
+            )}
             tag="div"
           >
             {jobTitle}
@@ -376,7 +381,12 @@ export function CandidateListItem({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-titlecase", "text-no-wrap")}
+            className={_utils.cx(
+              _styles,
+              "text-titlecase",
+              "text-no-wrap",
+              "one-line-clamp"
+            )}
             tag="div"
           >
             {location}

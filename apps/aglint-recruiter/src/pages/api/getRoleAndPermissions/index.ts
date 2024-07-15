@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
 
-import { GetRoleAndPermissionsAPI } from '../getRoleAndPermissions/type';
+import { GetRoleAndPermissionsAPI } from './type';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,

@@ -15,9 +15,9 @@ import { useGetMeetingsByModuleId } from '../../../queries/hooks';
 import { getHours } from '../../../queries/utils';
 import {
   setIsAddMemberDialogOpen,
-  setIsDeleteMemberDialogOpen,
+  // setIsDeleteMemberDialogOpen,
   setIsPauseDialogOpen,
-  setIsResumeDialogOpen,
+  // setIsResumeDialogOpen,
   setSelUser,
   setTrainingStatus,
 } from '../../../store';
@@ -109,32 +109,32 @@ function SlotQualifiedMembers({
             }}
             isDropdownIconVisible={false}
             key={user.user_id}
-            isMoveToQualifierVisible={false}
+            // isMoveToQualifierVisible={false}
             isTrainingProgessVisible={true}
             isTrainingCompletedVisible={false}
             textPauseResumeDate={getPauseMemberText(user.pause_json)}
-            onClickRemoveModule={{
-              onClick: () => {
-                setSelUser(user);
-                setIsDeleteMemberDialogOpen(true);
-              },
-            }}
+            // onClickRemoveModule={{
+            //   onClick: () => {
+            //     setSelUser(user);
+            //     setIsDeleteMemberDialogOpen(true);
+            //   },
+            // }}
             onClickPauseInterview={{
               onClick: () => {
                 setSelUser(user);
                 setIsPauseDialogOpen(true);
               },
             }}
-            onClickResumeInterview={{
-              onClick: () => {
-                setSelUser(user);
-                setIsResumeDialogOpen(true);
-              },
-            }}
-            onHoverDot={false}
+            // onClickResumeInterview={{
+            //   onClick: () => {
+            //     setSelUser(user);
+            //     setIsResumeDialogOpen(true);
+            //   },
+            // }}
+            // onHoverDot={false}
             isPauseResumeVisible={Boolean(user.pause_json)}
-            isPauseVisible={!user.pause_json}
-            isResumeVisible={Boolean(user.pause_json)}
+            // isPauseVisible={!user.pause_json}
+            // isResumeVisible={Boolean(user.pause_json)}
             slotProfileImage={
               <MuiAvatar
                 src={member.profile_image}

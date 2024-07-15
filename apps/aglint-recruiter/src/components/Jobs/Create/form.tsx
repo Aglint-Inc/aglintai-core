@@ -312,16 +312,16 @@ JobDepartment.displayName = 'JobDepartment';
 type Roles = ReturnType<typeof useCompanyMembers>['data'][number]['role'];
 
 const roles = {
-  hiring_manager: () => [...new Set<Roles>(['admin', 'hiring_manager'])],
+  'hiring manager': () => [...new Set<Roles>(['admin', 'hiring manager'])],
   recruiter: () => [
     ...new Set<Roles>([
-      ...roles.hiring_manager(),
-      'recruiting_coordinator',
+      ...roles['hiring manager'](),
+      'recruiting coordinator',
       'recruiter',
       'sourcer',
     ]),
   ],
-  recruiting_coordinator: () => [...new Set<Roles>([...roles.recruiter()])],
+  'recruiting coordinator': () => [...new Set<Roles>([...roles.recruiter()])],
   sourcer: () => [...new Set<Roles>([...roles.recruiter()])],
 } as const as {
   // eslint-disable-next-line no-unused-vars
