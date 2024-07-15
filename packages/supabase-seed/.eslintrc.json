@@ -10,7 +10,7 @@
         "endOfLine": "auto"
       }
     ],
-    "no-console": ["error", {"allow": ["error"]}],
+    // "no-console": ["error", {"allow": ["error"]}],
     "node/no-unpublished-import": "off"
   },
   "ignorePatterns": ["dist"]
