@@ -47,7 +47,7 @@ export function Page404({
             )}
             tag="div"
           >
-            <Text content={text404} size="3" color="error" align="center" />
+            <Text content={text404} size="3" align="center" />
           </_Builtin.Block>
           <_Builtin.Block
             id={_utils.cx(
