@@ -5,25 +5,28 @@ import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
 import Loader from '@/src/components/Common/Loader';
 import { useJob } from '@/src/context/JobContext';
-import { useJobs } from '@/src/context/JobsContext';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeSentence } from '@/src/utils/text/textUtils';
 
+import JobNotFound from '../Common/JobNotFound';
 import JobWorkflow from './list';
 
 const JobWorkflowDashboard = () => {
-  const { initialLoad } = useJobs();
-  return (
-    <Stack height={'100%'} width={'100%'}>
-      {!initialLoad ? (
-        <Loader />
-      ) : (
-        <PageLayout
-          slotTopbarLeft={<BreadCrumbs />}
-          slotTopbarRight={<></>}
-          slotBody={<JobWorkflow />}
-        />
-      )}
+  const { jobLoad, job } = useJob();
+
+  return jobLoad ? (
+    job && job?.status !== 'closed' ? (
+      <PageLayout
+        slotTopbarLeft={<BreadCrumbs />}
+        slotTopbarRight={<></>}
+        slotBody={<JobWorkflow />}
+      />
+    ) : (
+      <JobNotFound />
+    )
+  ) : (
+    <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
+      <Loader />
     </Stack>
   );
 };
