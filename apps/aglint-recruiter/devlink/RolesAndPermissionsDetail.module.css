@@ -48,6 +48,14 @@
   height: calc(100vh - 97px);
 }
 
+.rpd-banner {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
 .count_permissions {
   padding: var(--space-3);
   border-radius: var(--radius-3);
