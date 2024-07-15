@@ -1,10 +1,13 @@
-import { Stack } from '@mui/material';
+import { Popover, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 import { ButtonSurface } from '@/devlink/ButtonSurface';
+import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { EmptyGeneral } from '@/devlink2/EmptyGeneral';
 import { MemberListCard } from '@/devlink2/MemberListCard';
+import { MemberListCardOption } from '@/devlink2/MemberListCardOption';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import IconPlusFilter from '@/src/components/Scheduling/Schedules/Filters/FilterChip/IconPlusFilter';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
@@ -66,6 +69,18 @@ function SlotQualifiedMembers({
       return { ...user, weekly, daily };
     }); // need to write rpc which calc everything in db and return
 
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
   return (
     <>
       {allQualified.length === 0 && (
@@ -109,32 +124,63 @@ function SlotQualifiedMembers({
             }}
             isDropdownIconVisible={false}
             key={user.user_id}
-            isMoveToQualifierVisible={false}
+            slotThreeDot={
+              <>
+                <Stack onClick={handleClick}>
+                  <IconButtonGhost
+                    iconName='more_vert'
+                    size={2}
+                    iconSize={6}
+                    color={'neutral'}
+                  />
+                </Stack>
+                <Popover
+                  id={id}
+                  open={open}
+                  anchorEl={anchorEl}
+                  onClose={handleClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                >
+                  <MemberListCardOption
+                    isMoveToQualifierVisible={false}
+                    isPauseVisible={!user.pause_json}
+                    isResumeVisible={Boolean(user.pause_json)}
+                    onClickRemoveModule={{
+                      onClick: () => {
+                        setSelUser(user);
+                        setIsDeleteMemberDialogOpen(true);
+                        handleClose();
+                      },
+                    }}
+                    onClickResumeInterview={{
+                      onClick: () => {
+                        setSelUser(user);
+                        setIsResumeDialogOpen(true);
+                        handleClose();
+                      },
+                    }}
+                    onClickPauseInterview={{
+                      onClick: () => {
+                        setSelUser(user);
+                        setIsPauseDialogOpen(true);
+                        handleClose();
+                      },
+                    }}
+                  />
+                </Popover>
+              </>
+            }
             isTrainingProgessVisible={true}
             isTrainingCompletedVisible={false}
             textPauseResumeDate={getPauseMemberText(user.pause_json)}
-            onClickRemoveModule={{
-              onClick: () => {
-                setSelUser(user);
-                setIsDeleteMemberDialogOpen(true);
-              },
-            }}
-            onClickPauseInterview={{
-              onClick: () => {
-                setSelUser(user);
-                setIsPauseDialogOpen(true);
-              },
-            }}
-            onClickResumeInterview={{
-              onClick: () => {
-                setSelUser(user);
-                setIsResumeDialogOpen(true);
-              },
-            }}
-            onHoverDot={false}
             isPauseResumeVisible={Boolean(user.pause_json)}
-            isPauseVisible={!user.pause_json}
-            isResumeVisible={Boolean(user.pause_json)}
             slotProfileImage={
               <MuiAvatar
                 src={member.profile_image}
