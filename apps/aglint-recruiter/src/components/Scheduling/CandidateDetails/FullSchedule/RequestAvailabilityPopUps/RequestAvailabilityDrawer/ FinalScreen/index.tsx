@@ -2,10 +2,12 @@ import {
   EmailTemplateAPi,
   SessionCombinationRespType,
 } from '@aglint/shared-types';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { EmailPreviewOnScheduling } from '@/devlink3/EmailPreviewOnScheduling';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
@@ -41,20 +43,25 @@ function FinalScreen() {
         })),
       },
     };
+
+  function getEmail() {
+    setFetching(true);
+    axios
+      .post('/api/emails/confirmInterview_email_applicant', {
+        meta: { ...payload },
+      })
+      .then(({ data }) => {
+        setEmailData(data);
+        setFetching(false);
+      })
+      .catch(() => {
+        toast.error('Fail to fetch email preview');
+        setFetching(false);
+      });
+  }
   useEffect(() => {
     if (!emailData) {
-      axios
-        .post('/api/emails/confirmInterview_email_applicant', {
-          meta: { ...payload },
-        })
-        .then(({ data }) => {
-          setEmailData(data);
-          setFetching(false);
-        })
-        .catch(() => {
-          toast.error('Fail to fetch email preview');
-          setFetching(false);
-        });
+      getEmail();
     }
   }, []);
   return (
@@ -68,7 +75,35 @@ function FinalScreen() {
           textSlotCount={'Please confirm the selected schedule'}
           slotButton={<></>}
           textEmailPreview={
-            'While clicking send to candidate ,an email containing the following message will be sent to the candidate:'
+            <Stack spacing={1} direction={'column'}>
+              <Typography>
+                {
+                  'While clicking send to candidate ,an email containing the following message will be sent to the candidate:'
+                }
+              </Typography>
+              <Stack direction={'row'} spacing={1} justifyItems={'start'}>
+                <ButtonSoft
+                  size={1}
+                  textButton={'Edit email'}
+                  color={'neutral'}
+                  onClickButton={{
+                    onClick: () => {
+                      window.open(
+                        `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=agent_email_candidate&template_tab=email`,
+                      );
+                    },
+                  }}
+                />
+                <IconButtonSoft
+                  size={1}
+                  color={'neutral'}
+                  iconName={'refresh'}
+                  onClickButton={{
+                    onClick: getEmail,
+                  }}
+                />
+              </Stack>
+            </Stack>
           }
           slotEmailPreview={
             <ShowCode>

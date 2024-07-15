@@ -29,7 +29,7 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
           await axios.post('/api/sendgrid', {
             fromEmail: recruiter.email,
             fromName: recruiter?.name,
-            email: ['raj@aglinthq.com', 'ravi@aglinthq.com'],
+            email: 'ravi@aglinthq.com',
             subject: 'Integration Tool Request',
             text: `
                   <body>
@@ -49,11 +49,7 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
   }
 
   return (
-    <Dialog
-      open={isOpen}
-      onClose={close}
-      maxWidth={'md'}
-    >
+    <Dialog open={isOpen} onClose={close} maxWidth={'md'}>
       <ShowCode.When isTrue={showThanks}>
         <IntegrationThanks
           slotButtonClose={
@@ -86,7 +82,6 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
       <ShowCode.When isTrue={!showThanks}>
         <ConfirmationPopup
           isIcon={false}
-          
           textPopupTitle={'Request Integration'}
           textPopupDescription={
             <Stack direction={'column'} spacing={'16px'}>

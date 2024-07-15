@@ -1,12 +1,14 @@
 import { EmailTemplateAPi } from '@aglint/shared-types';
+import { Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { EmailPreviewOnScheduling } from '@/devlink3/EmailPreviewOnScheduling';
+import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
 
@@ -29,7 +31,7 @@ function EmailPreview({
   const [emailData, setEmailData] = useState<{ html: string; subject: string }>(
     null,
   );
-  const [fetching, setFetching] = useState(true);
+  const [fetching, setFetching] = useState(false);
   const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
     {
       preview_details: {
@@ -37,25 +39,61 @@ function EmailPreview({
       },
       organizer_user_id: recruiterUser.user_id,
     };
+
+  function getEmail() {
+    setFetching(true);
+    axios
+      .post('/api/emails/sendAvailabilityRequest_email_applicant', {
+        meta: { ...payload },
+      })
+      .then(({ data }) => {
+        setEmailData(data);
+        setFetching(false);
+      })
+      .catch(() => {
+        toast.error('Fail to fetch email preview');
+        setFetching(false);
+      });
+  }
   useEffect(() => {
     if (!emailData) {
-      axios
-        .post('/api/emails/sendAvailabilityRequest_email_applicant', {
-          meta: { ...payload },
-        })
-        .then(({ data }) => {
-          setEmailData(data);
-          setFetching(false);
-        })
-        .catch(() => {
-          toast.error('Fail to fetch email preview');
-          setFetching(false);
-        });
+      getEmail();
     }
   }, []);
 
   return (
     <EmailPreviewOnScheduling
+      textEmailPreview={
+        <Stack spacing={1} direction={'column'}>
+          <Typography>
+            To proceed with requesting the candidate’s availability, please
+            click on the button below. Upon doing so, an email containing the
+            following message will be sent to the candidate:
+          </Typography>
+          <Stack direction={'row'} spacing={1} justifyItems={'start'}>
+            <ButtonSoft
+              size={1}
+              textButton={'Edit email'}
+              color={'neutral'}
+              onClickButton={{
+                onClick: () => {
+                  window.open(
+                    `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=agent_email_candidate&template_tab=email`,
+                  );
+                },
+              }}
+            />
+            <IconButtonSoft
+              size={1}
+              color={'neutral'}
+              iconName={'refresh'}
+              onClickButton={{
+                onClick: getEmail,
+              }}
+            />
+          </Stack>
+        </Stack>
+      }
       slotButton={
         <>
           <ButtonSoft
@@ -81,7 +119,9 @@ function EmailPreview({
       slotEmailPreview={
         <ShowCode>
           <ShowCode.When isTrue={fetching}>
-            <DynamicLoader height='50vh' />
+            <Stack height={'80vh'} width={'538px'}>
+              <Loader />
+            </Stack>
           </ShowCode.When>
           <ShowCode.Else>
             <iframe

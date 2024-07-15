@@ -281,7 +281,7 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
               }}
               textButton={singleDay ? 'Submit Availability' : 'Done'}
               isLoading={loading}
-              isDisabled={!markAsAllDateSelected}
+              isDisabled={!markAsAllSlotsSelected}
             />
           }
           slotCalenderPick={
