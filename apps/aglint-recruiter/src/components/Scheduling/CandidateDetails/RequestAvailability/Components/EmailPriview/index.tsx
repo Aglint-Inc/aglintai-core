@@ -78,7 +78,7 @@ function EmailPreview({
               onClickButton={{
                 onClick: () => {
                   window.open(
-                    'http://localhost:3000/scheduling?tab=settings&subtab=emailTemplate&email=agent_email_candidate&template_tab=email',
+                    `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=agent_email_candidate&template_tab=email`,
                   );
                 },
               }}
