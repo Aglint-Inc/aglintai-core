@@ -51,9 +51,10 @@ const Action = ({
   const { application_id } = useApplication();
   return (
     <GeneralBanner
+    color={'warning'}
       titleColorProps={{
         style: {
-          color: 'var(--info-11)',
+          color: 'var(--warning-11)',
         },
       }}
       textHeading={'Schedule interview'}

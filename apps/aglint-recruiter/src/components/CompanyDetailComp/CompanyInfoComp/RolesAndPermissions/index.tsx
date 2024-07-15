@@ -367,17 +367,18 @@ function RoleDetails({
             onClickButton={{ onClick: back }}
           />
         }
+        slotBanner={  <>  
+          {role.name === 'admin' && (
+          <GlobalBannerInline
+            color={'info'}
+            textContent={'You cannot edit the primary admin role permissions.'}
+            slotButton={<></>}
+          />
+        )}
+        </>}
         slotPermissions={
           <>
-            {role.name === 'admin' && (
-              <GlobalBannerInline
-                color={'info'}
-                textContent={
-                  'You cannot edit the primary admin role permissions.'
-                }
-                slotButton={<></>}
-              />
-            )}
+        
             {Object.entries(roleDetails || {}).map(
               ([module, { description, permissions }]) => {
                 return (
