@@ -16,6 +16,7 @@ import EmailPreviewPopover from '@/src/components/Common/EmailTemplateEditor/Ema
 import EmailTemplateEditForm from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
 import SearchField from '@/src/components/Common/SearchField/SearchField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useKeyPress } from '@/src/hooks/useKeyPress';
 import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { supabase } from '@/src/utils/supabase/client';
@@ -149,6 +150,31 @@ function SchedulerEmailTemps({ setSaving }) {
   const selectedTemplate = templates.find(
     (t) => t.type === selectedTemplateType,
   );
+
+  const sections = template_tabs.map((tab) => tab.key);
+  const tabCount: number = sections.length - 1;
+  const currentIndex: number = sections.indexOf(temp_tab);
+
+  const handlePrevious = () => {
+    const pre =
+      // eslint-disable-next-line security/detect-object-injection
+      currentIndex === 0 ? sections[tabCount] : sections[currentIndex - 1];
+    handleChangeTemplateTab(pre);
+  };
+  const handleNext = () => {
+    const next =
+      currentIndex === tabCount ? sections[0] : sections[currentIndex + 1];
+    handleChangeTemplateTab(next);
+  };
+
+  const { pressed: right } = useKeyPress('ArrowRight');
+  const { pressed: left } = useKeyPress('ArrowLeft');
+
+  useEffect(() => {
+    if (left) handlePrevious();
+    else if (right) handleNext();
+  }, [left, right]);
+
   return (
     <Stack>
       <Box>
