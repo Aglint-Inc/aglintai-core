@@ -328,10 +328,23 @@ const roles = {
   [id in Roles]: () => Roles[];
 };
 
+const nameToRole = (name: MetaForms['name']): Roles => {
+  switch (name) {
+    case 'recruiting_coordinator':
+      return 'recruiting coordinator';
+    case 'hiring_manager':
+      return 'hiring manager';
+    default:
+      return name as Roles;
+  }
+};
+
 const JobCoordinator: FC<MetaForms> = memo(({ name, onChange, value }) => {
   const { data } = useCompanyMembers();
   const options = (data ?? [])
-    .filter(({ role }) => (roles[name] ?? (() => []))().includes(role))
+    .filter(({ role }) =>
+      (roles[nameToRole(name)] ?? (() => []))().includes(role),
+    )
     .map((c) => ({
       name: getFullName(c.first_name, c.last_name),
       value: c.user_id,
