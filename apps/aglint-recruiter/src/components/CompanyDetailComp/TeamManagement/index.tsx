@@ -294,7 +294,8 @@ const TeamManagement = () => {
         pendInvitesVisibility={Boolean(inviteUser)}
         onClickViewPendingInvites={{
           onClick: () => {
-            setOpenDrawer({ open: true, window: 'pendingMember' });
+            setSelectedStatus(['invited']);
+            // setOpenDrawer({ open: true, window: 'pendingMember' });
           },
         }}
         textPending={`You currently have ${converter.toWords(
