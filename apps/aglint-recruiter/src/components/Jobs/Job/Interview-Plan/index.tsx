@@ -9,7 +9,6 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
-import { Page404 } from '@/devlink/Page404';
 import { RolesPill } from '@/devlink/RolesPill';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
@@ -40,6 +39,7 @@ import {
 } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
+import JobNotFound from '../Common/JobNotFound';
 import InterviewDeletePopup, { InterviewDeletePopupType } from './deletePopup';
 import InterviewDrawers from './sideDrawer';
 import { getBreakLabel } from './utils';
@@ -50,7 +50,7 @@ const JobNewInterviewPlanDashboard = () => {
     job ? (
       <InterviewPlanPage />
     ) : (
-      <Page404 />
+      <JobNotFound />
     )
   ) : (
     <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>

@@ -3,7 +3,6 @@ import { CircularProgress, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
-import { Page404 } from '@/devlink/Page404';
 import { SavedChanges } from '@/devlink/SavedChanges';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
@@ -21,6 +20,7 @@ import {
   JobMetaFormProps,
   useJobForms,
 } from '../../Create/form';
+import JobNotFound from '../Common/JobNotFound';
 
 const JobHiringTeamDashboard = () => {
   const { jobLoad, job } = useJob();
@@ -29,7 +29,7 @@ const JobHiringTeamDashboard = () => {
     job && job.status !== 'closed' ? (
       <JobEdit />
     ) : (
-      <Page404 />
+      <JobNotFound />
     )
   ) : (
     <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>

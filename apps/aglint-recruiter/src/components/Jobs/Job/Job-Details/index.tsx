@@ -10,7 +10,6 @@ import { CircularProgress, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
-import { Page404 } from '@/devlink/Page404';
 import { SavedChanges } from '@/devlink/SavedChanges';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
@@ -25,6 +24,7 @@ import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeSentence } from '@/src/utils/text/textUtils';
 
 import Loader from '../../../Common/Loader';
+import JobNotFound from '../Common/JobNotFound';
 
 const JobDetailsDashboard = () => {
   const { jobLoad, job } = useJob();
@@ -33,7 +33,7 @@ const JobDetailsDashboard = () => {
     job && job?.status !== 'closed' ? (
       <JobEdit />
     ) : (
-      <Page404 />
+      <JobNotFound />
     )
   ) : (
     <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>

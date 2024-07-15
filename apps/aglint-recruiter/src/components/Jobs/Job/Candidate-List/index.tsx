@@ -1,7 +1,6 @@
 import { CircularProgress, Stack } from '@mui/material';
 import { useEffect } from 'react';
 
-import { Page404 } from '@/devlink/Page404';
 import { JobDetails } from '@/devlink2/JobDetails';
 import { JobsBanner } from '@/devlink3/JobsBanner';
 import { ScoreSetting } from '@/devlink3/ScoreSetting';
@@ -10,6 +9,7 @@ import PublishButton from '@/src/components/Common/PublishButton';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useJob } from '@/src/context/JobContext';
 
+import JobNotFound from '../Common/JobNotFound';
 import { UploadApplications } from '../Common/UploadApplications';
 import { Actions } from './Actions';
 import DNDProvider from './DNDProvider';
@@ -29,7 +29,7 @@ const ApplicationsDashboard = () => {
     job ? (
       <ApplicationsComponent />
     ) : (
-      <Page404 />
+      <JobNotFound />
     )
   ) : (
     <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>

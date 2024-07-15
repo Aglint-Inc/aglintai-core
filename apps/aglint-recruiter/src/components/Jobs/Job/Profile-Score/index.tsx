@@ -9,7 +9,6 @@ import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { Checkbox } from '@/devlink/Checkbox';
-import { Page404 } from '@/devlink/Page404';
 import { ScoreCard } from '@/devlink/ScoreCard';
 import { ScoreCardEdit } from '@/devlink/ScoreCardEdit';
 import { ScorePercentage } from '@/devlink/ScorePercentage';
@@ -34,6 +33,8 @@ import { palette } from '@/src/context/Theme/Theme';
 import { Job } from '@/src/queries/jobs/types';
 import { capitalize, capitalizeSentence } from '@/src/utils/text/textUtils';
 
+import JobNotFound from '../Common/JobNotFound';
+
 type Sections = 'experience' | 'education' | 'skills';
 
 const JobProfileScoreDashboard = () => {
@@ -43,7 +44,7 @@ const JobProfileScoreDashboard = () => {
     job && job?.status !== 'closed' ? (
       <ProfileScorePage />
     ) : (
-      <Page404 />
+      <JobNotFound />
     )
   ) : (
     <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>

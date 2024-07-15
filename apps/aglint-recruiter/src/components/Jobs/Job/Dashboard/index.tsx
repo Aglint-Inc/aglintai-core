@@ -11,7 +11,6 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CloseDeleteJob } from '@/devlink/CloseDeleteJob';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
-import { Page404 } from '@/devlink/Page404';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { AddCandidateButton } from '@/devlink3/AddCandidateButton';
@@ -66,6 +65,7 @@ import {
   capitalizeSentence,
 } from '@/src/utils/text/textUtils';
 
+import JobNotFound from '../Common/JobNotFound';
 import { UploadApplications } from '../Common/UploadApplications';
 import DashboardBarChart from './BarChart2';
 import DashboardDoughnutChart from './doughnut';
@@ -78,7 +78,7 @@ const JobDashboard = () => {
     job ? (
       <Dashboard />
     ) : (
-      <Page404 />
+      <JobNotFound />
     )
   ) : (
     <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
