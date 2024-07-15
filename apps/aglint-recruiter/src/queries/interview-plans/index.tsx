@@ -68,7 +68,7 @@ export const useUpdateInterviewSession = () => {
 
 export const useDeleteInterviewSession = () => {
   const queryClient = useQueryClient();
-  const { job_id } = useJob();
+  const { job_id, revalidateJobQueries } = useJob();
   const id = job_id;
   const { queryKey } = jobQueries.interview_plans({ id });
   const { mutationKey } = interviewSessionMutationKeys.delete();
@@ -77,7 +77,10 @@ export const useDeleteInterviewSession = () => {
     mutationKey,
     mutationFn: async (args: DeleteInterviewSession) => {
       await deleteInterviewSession(args);
-      await Promise.allSettled([queryClient.invalidateQueries({ queryKey })]);
+      await Promise.allSettled([
+        queryClient.invalidateQueries({ queryKey }),
+        revalidateJobQueries(),
+      ]);
     },
     onError: () => {
       toast.error('Unable to delete interview session.');
