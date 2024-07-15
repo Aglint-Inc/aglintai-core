@@ -185,7 +185,7 @@ const MoveCandidateInterview = () => {
     }),
   );
 
-  const [taskCheck, setTaskCheck] = useState(false);
+  const [taskCheck, setTaskCheck] = useState(true);
   const [task, setTask] = useState<TaskType>(null);
   const [assigner, setAssigner] = useState(null);
   const createTask = async () =>
