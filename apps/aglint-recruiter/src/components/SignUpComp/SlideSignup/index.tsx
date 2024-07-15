@@ -114,8 +114,9 @@ const SlideTwoSignUp = () => {
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
-
+  const [signUplLading, setSignUpLoading] = useState(false);
   const handelSignUp = async () => {
+    setSignUpLoading(true);
     try {
       if (!(await formValidation())) return null;
       const authdata = await supabase.auth.signUp({
@@ -173,6 +174,7 @@ const SlideTwoSignUp = () => {
       toast.error(err.message);
       router.push(ROUTES['/signup']());
     }
+    setSignUpLoading(false);
   };
 
   // const oauthHandler = async (provider) => {
@@ -243,7 +245,10 @@ const SlideTwoSignUp = () => {
     return (
       <WelcomeSlider3
         isSignUpButtonVisible={
-          !details.first_name || !details.email || !details.password
+          signUplLading ||
+          !details.first_name ||
+          !details.email ||
+          !details.password
         }
         // onClickRegisterWithGoogle={{
         //   onClick: () => {
